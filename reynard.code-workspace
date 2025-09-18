@@ -1,12 +1,12 @@
 {
   "folders": [
     {
-      "name": "🗒️ Prompts",
-      "path": ".cursor/prompts",
-    },
-    {
       "name": "🦊 Reynard Root",
       "path": ".",
+    },
+    {
+      "name": "🗒️ Prompts",
+      "path": ".cursor/prompts",
     },
     {
       "name": "📦 Packages",
@@ -502,6 +502,7 @@
     "task.showDecorations": "always",
     "files.autoSave": "onFocusChange",
     "files.autoSaveDelay": 1000,
+    "markdown.validate.enabled": true,
   },
   "extensions": {
     "recommendations": [

@@ -7,6 +7,17 @@
 
 import { defineConfig, devices } from "@playwright/test";
 import { detectAuthAppPort, getAppBaseUrl } from "../core/config/port-detector";
+import { createResultsManager, TEST_TYPES } from "../core/utils/results-manager";
+
+// 🦊 Initialize results manager for i18n tests
+const resultsManager = createResultsManager(TEST_TYPES.I18N, {
+  environment: process.env.NODE_ENV || "development",
+  branch: process.env.GIT_BRANCH || "unknown",
+  commit: process.env.GIT_COMMIT || "unknown"
+});
+
+// Create directories and get paths
+const resultsPaths = resultsManager.createDirectories();
 
 export default defineConfig({
   testDir: "../suites",
@@ -25,12 +36,7 @@ export default defineConfig({
   workers: 1,
 
   /* Enhanced reporting for performance metrics */
-  reporter: [
-    ["html", { outputFolder: "i18n-benchmark-results", open: "never" }],
-    ["json", { outputFile: "i18n-benchmark-results.json" }],
-    ["junit", { outputFile: "i18n-benchmark-results.xml" }],
-    ["list"],
-  ],
+  reporter: resultsManager.getReporterConfig(),
 
   /* Shared settings optimized for performance testing */
   use: {
@@ -131,7 +137,7 @@ export default defineConfig({
   },
 
   /* Output directory for benchmark results */
-  outputDir: "../results/i18n-benchmark-results/",
+  outputDir: resultsManager.getOutputDir(),
 
   /* Global setup and teardown for performance testing */
   globalSetup: "../core/setup/global-i18n-setup.ts",

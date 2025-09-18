@@ -6,9 +6,22 @@
  *
  * @author Pool-Theorist-35 (Reynard Otter Specialist)
  * @since 1.0.0
+ * 
+ * 🦊 *whiskers twitch with unified precision* Now uses centralized results management.
  */
 
 import { defineConfig, devices } from "@playwright/test";
+import { createResultsManager, TEST_TYPES } from "../core/utils/results-manager";
+
+// 🦊 Initialize results manager for benchmark tests
+const resultsManager = createResultsManager(TEST_TYPES.BENCHMARK, {
+  environment: process.env.NODE_ENV || "development",
+  branch: process.env.GIT_BRANCH || "unknown",
+  commit: process.env.GIT_COMMIT || "unknown"
+});
+
+// Create directories and get paths
+const resultsPaths = resultsManager.createDirectories();
 
 export default defineConfig({
   testDir: "../suites/benchmark",
@@ -27,12 +40,7 @@ export default defineConfig({
   workers: 1,
 
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [
-    ["html", { outputFolder: "../results/benchmark-results", open: "never" }],
-    ["json", { outputFile: "../results/benchmark-results.json" }],
-    ["junit", { outputFile: "../results/benchmark-results.xml" }],
-    ["list"],
-  ],
+  reporter: resultsManager.getReporterConfig(),
 
   /* Shared settings for all the projects below. */
   use: {
@@ -103,7 +111,7 @@ export default defineConfig({
   },
 
   /* Output directory for test artifacts */
-  outputDir: "../results/benchmark-artifacts/",
+  outputDir: resultsManager.getOutputDir(),
 
   /* Global setup and teardown */
   globalSetup: "../core/setup/benchmark-setup.ts",

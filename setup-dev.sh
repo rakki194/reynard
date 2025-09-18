@@ -45,6 +45,7 @@ fi
 
 # Activate virtual environment
 print_status "Activating virtual environment..."
+# shellcheck source=/dev/null
 source ~/venv/bin/activate
 print_success "Virtual environment activated"
 
@@ -82,7 +83,7 @@ print_success "Development dependencies installed"
 
 # Run basic tests
 print_status "Running basic tests..."
-python -c "
+if python -c "
 import sys
 try:
     from reynard_agent_naming import AgentNameManager
@@ -106,9 +107,7 @@ except ImportError as e:
     sys.exit(1)
 
 print('✅ All basic imports successful!')
-"
-
-if [[ $? -eq 0 ]]; then
+"; then
     print_success "All services are properly installed and importable!"
 else
     print_error "Some services failed to import. Check the output above."

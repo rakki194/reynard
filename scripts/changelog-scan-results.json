@@ -1,0 +1,3203 @@
+{
+  "monoliths": {
+    "monoliths": [
+      {
+        "file_path": "packages/api-client/node_modules/web-streams-polyfill/dist/polyfill.js",
+        "line_count": 4424,
+        "absolute_path": "/home/kade/runeset/reynard/packages/api-client/node_modules/web-streams-polyfill/dist/polyfill.js"
+      },
+      {
+        "file_path": "packages/api-client/node_modules/web-streams-polyfill/dist/ponyfill.js",
+        "line_count": 4398,
+        "absolute_path": "/home/kade/runeset/reynard/packages/api-client/node_modules/web-streams-polyfill/dist/ponyfill.js"
+      },
+      {
+        "file_path": "packages/api-client/node_modules/web-streams-polyfill/dist/polyfill.es6.js",
+        "line_count": 4254,
+        "absolute_path": "/home/kade/runeset/reynard/packages/api-client/node_modules/web-streams-polyfill/dist/polyfill.es6.js"
+      },
+      {
+        "file_path": "packages/api-client/node_modules/web-streams-polyfill/dist/ponyfill.es6.js",
+        "line_count": 4228,
+        "absolute_path": "/home/kade/runeset/reynard/packages/api-client/node_modules/web-streams-polyfill/dist/ponyfill.es6.js"
+      },
+      {
+        "file_path": "packages/api-client/node_modules/web-streams-polyfill/dist/polyfill.es2018.js",
+        "line_count": 4196,
+        "absolute_path": "/home/kade/runeset/reynard/packages/api-client/node_modules/web-streams-polyfill/dist/polyfill.es2018.js"
+      },
+      {
+        "file_path": "packages/api-client/node_modules/web-streams-polyfill/dist/ponyfill.es2018.js",
+        "line_count": 4170,
+        "absolute_path": "/home/kade/runeset/reynard/packages/api-client/node_modules/web-streams-polyfill/dist/ponyfill.es2018.js"
+      },
+      {
+        "file_path": "packages/dev-server-management/dist/DevServerManager-2Sw6A2LS.js",
+        "line_count": 1439,
+        "absolute_path": "/home/kade/runeset/reynard/packages/dev-server-management/dist/DevServerManager-2Sw6A2LS.js"
+      },
+      {
+        "file_path": "packages/project-architecture/dist/index.js",
+        "line_count": 927,
+        "absolute_path": "/home/kade/runeset/reynard/packages/project-architecture/dist/index.js"
+      },
+      {
+        "file_path": "scripts/mcp/services/search_service.py",
+        "line_count": 748,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/search_service.py"
+      },
+      {
+        "file_path": "packages/api-client/test-dist/generated/runtime.js",
+        "line_count": 702,
+        "absolute_path": "/home/kade/runeset/reynard/packages/api-client/test-dist/generated/runtime.js"
+      },
+      {
+        "file_path": "packages/service-manager/dist/index.js",
+        "line_count": 660,
+        "absolute_path": "/home/kade/runeset/reynard/packages/service-manager/dist/index.js"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-markdown-links.js",
+        "line_count": 648,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-markdown-links.js"
+      },
+      {
+        "file_path": "scripts/mcp/tools/ecs_agent_tools.py",
+        "line_count": 617,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/ecs_agent_tools.py"
+      },
+      {
+        "file_path": "packages/tools/src/core/git_tools.py",
+        "line_count": 570,
+        "absolute_path": "/home/kade/runeset/reynard/packages/tools/src/core/git_tools.py"
+      },
+      {
+        "file_path": "backend/app/services/embedding_visualization_service.py",
+        "line_count": 521,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/services/embedding_visualization_service.py"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-markdown-links-refactored.js",
+        "line_count": 503,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-markdown-links-refactored.js"
+      },
+      {
+        "file_path": "packages/dev-server-management/dist/cli.js",
+        "line_count": 482,
+        "absolute_path": "/home/kade/runeset/reynard/packages/dev-server-management/dist/cli.js"
+      },
+      {
+        "file_path": "scripts/validation/css/validate-css-variables.js",
+        "line_count": 466,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/css/validate-css-variables.js"
+      },
+      {
+        "file_path": "packages/tools/src/core/registry.py",
+        "line_count": 464,
+        "absolute_path": "/home/kade/runeset/reynard/packages/tools/src/core/registry.py"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-sentence-length.test.js",
+        "line_count": 461,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-sentence-length.test.js"
+      },
+      {
+        "file_path": "scripts/mcp/tools/test_git_automation_tools.py",
+        "line_count": 458,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/test_git_automation_tools.py"
+      },
+      {
+        "file_path": "scripts/mcp/services/tool_config_service.py",
+        "line_count": 454,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/tool_config_service.py"
+      },
+      {
+        "file_path": "scripts/validation/css/validate-css-variables-refactored.js",
+        "line_count": 453,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/css/validate-css-variables-refactored.js"
+      },
+      {
+        "file_path": "scripts/testing/test_validate_python.py",
+        "line_count": 452,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/testing/test_validate_python.py"
+      },
+      {
+        "file_path": "scripts/testing/validate-python.test.py",
+        "line_count": 452,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/testing/validate-python.test.py"
+      },
+      {
+        "file_path": "scripts/mcp/tools/git_automation_tools.py",
+        "line_count": 434,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/git_automation_tools.py"
+      },
+      {
+        "file_path": "backend/tests/test_gallery_api.py",
+        "line_count": 429,
+        "absolute_path": "/home/kade/runeset/reynard/backend/tests/test_gallery_api.py"
+      },
+      {
+        "file_path": "backend/tests/test_scraping_models.py",
+        "line_count": 427,
+        "absolute_path": "/home/kade/runeset/reynard/backend/tests/test_scraping_models.py"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-sentence-length.js",
+        "line_count": 426,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-sentence-length.js"
+      },
+      {
+        "file_path": "packages/tools/src/core/datetime_tools.py",
+        "line_count": 409,
+        "absolute_path": "/home/kade/runeset/reynard/packages/tools/src/core/datetime_tools.py"
+      },
+      {
+        "file_path": "packages/testing/dist/test-utils.jsx",
+        "line_count": 406,
+        "absolute_path": "/home/kade/runeset/reynard/packages/testing/dist/test-utils.jsx"
+      },
+      {
+        "file_path": "backend/app/security/security_middleware.py",
+        "line_count": 404,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/security/security_middleware.py"
+      },
+      {
+        "file_path": "scripts/mcp/services/playwright_browser_service.py",
+        "line_count": 402,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/playwright_browser_service.py"
+      },
+      {
+        "file_path": "scripts/validation/css/validate-css-variables.test.js",
+        "line_count": 402,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/css/validate-css-variables.test.js"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-sentence-length-refactored.js",
+        "line_count": 395,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-sentence-length-refactored.js"
+      },
+      {
+        "file_path": "packages/ecs-world/src/reynard_ecs_world/world/agent_world.py",
+        "line_count": 390,
+        "absolute_path": "/home/kade/runeset/reynard/packages/ecs-world/src/reynard_ecs_world/world/agent_world.py"
+      },
+      {
+        "file_path": "backend/app/core/router_mixins.py",
+        "line_count": 388,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/core/router_mixins.py"
+      },
+      {
+        "file_path": "scripts/mcp/resilient_main.py",
+        "line_count": 385,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/resilient_main.py"
+      },
+      {
+        "file_path": "backend/tests/test_rag_phase2.py",
+        "line_count": 380,
+        "absolute_path": "/home/kade/runeset/reynard/backend/tests/test_rag_phase2.py"
+      },
+      {
+        "file_path": "packages/dashboard/src/components/PerformanceMetricsPanel.tsx",
+        "line_count": 376,
+        "absolute_path": "/home/kade/runeset/reynard/packages/dashboard/src/components/PerformanceMetricsPanel.tsx"
+      },
+      {
+        "file_path": "scripts/validation/css/validate-css-variables-refactored.test.js",
+        "line_count": 376,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/css/validate-css-variables-refactored.test.js"
+      },
+      {
+        "file_path": "scripts/mcp/services/ripgrep_service.py",
+        "line_count": 367,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/ripgrep_service.py"
+      },
+      {
+        "file_path": "packages/games/src/union-find/UnionFindGame.tsx",
+        "line_count": 359,
+        "absolute_path": "/home/kade/runeset/reynard/packages/games/src/union-find/UnionFindGame.tsx"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-markdown-links.test.js",
+        "line_count": 355,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-markdown-links.test.js"
+      },
+      {
+        "file_path": "scripts/efficient-changelog-scanner.py",
+        "line_count": 354,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/efficient-changelog-scanner.py"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-markdown-toc.test.js",
+        "line_count": 352,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-markdown-toc.test.js"
+      },
+      {
+        "file_path": "packages/tools/src/core/base.py",
+        "line_count": 351,
+        "absolute_path": "/home/kade/runeset/reynard/packages/tools/src/core/base.py"
+      },
+      {
+        "file_path": "backend/app/api/embedding_visualization.py",
+        "line_count": 350,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/api/embedding_visualization.py"
+      },
+      {
+        "file_path": "scripts/mcp/services/vscode_service.py",
+        "line_count": 350,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/vscode_service.py"
+      },
+      {
+        "file_path": "scripts/mcp/tools/test_git_automation_simple.py",
+        "line_count": 350,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/test_git_automation_simple.py"
+      },
+      {
+        "file_path": "packages/gallery/src/components/Gallery.tsx",
+        "line_count": 345,
+        "absolute_path": "/home/kade/runeset/reynard/packages/gallery/src/components/Gallery.tsx"
+      },
+      {
+        "file_path": "backend/app/core/config_mixin.py",
+        "line_count": 344,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/core/config_mixin.py"
+      },
+      {
+        "file_path": "packages/api-client/node_modules/.ignored/node-fetch/src/utils/multipart-parser.js",
+        "line_count": 342,
+        "absolute_path": "/home/kade/runeset/reynard/packages/api-client/node_modules/.ignored/node-fetch/src/utils/multipart-parser.js"
+      },
+      {
+        "file_path": "backend/tests/test_gallery_service.py",
+        "line_count": 342,
+        "absolute_path": "/home/kade/runeset/reynard/backend/tests/test_gallery_service.py"
+      },
+      {
+        "file_path": "backend/app/core/error_handler.py",
+        "line_count": 340,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/core/error_handler.py"
+      },
+      {
+        "file_path": "scripts/mcp/config/tool_config.py",
+        "line_count": 340,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/config/tool_config.py"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-markdown-toc-refactored.js",
+        "line_count": 333,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-markdown-toc-refactored.js"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-markdown-toc.js",
+        "line_count": 332,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-markdown-toc.js"
+      },
+      {
+        "file_path": "scripts/utils/dev-tools/husky-toolkit-manager.js",
+        "line_count": 330,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/utils/dev-tools/husky-toolkit-manager.js"
+      },
+      {
+        "file_path": "packages/tools/src/core/api_endpoints.py",
+        "line_count": 328,
+        "absolute_path": "/home/kade/runeset/reynard/packages/tools/src/core/api_endpoints.py"
+      },
+      {
+        "file_path": "backend/app/security/input_validator.py",
+        "line_count": 328,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/security/input_validator.py"
+      },
+      {
+        "file_path": "backend/app/security/secure_ollama.py",
+        "line_count": 322,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/security/secure_ollama.py"
+      },
+      {
+        "file_path": "backend/tests/test_scraping_service.py",
+        "line_count": 317,
+        "absolute_path": "/home/kade/runeset/reynard/backend/tests/test_scraping_service.py"
+      },
+      {
+        "file_path": "backend/tests/test_semantic_search.py",
+        "line_count": 317,
+        "absolute_path": "/home/kade/runeset/reynard/backend/tests/test_semantic_search.py"
+      },
+      {
+        "file_path": "backend/app/security/secure_summarization_routes.py",
+        "line_count": 304,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/security/secure_summarization_routes.py"
+      },
+      {
+        "file_path": "scripts/mcp/services/connection_manager.py",
+        "line_count": 304,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/connection_manager.py"
+      },
+      {
+        "file_path": "backend/app/core/exceptions.py",
+        "line_count": 299,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/core/exceptions.py"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-italic-to-blockquote.test.js",
+        "line_count": 297,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-italic-to-blockquote.test.js"
+      },
+      {
+        "file_path": "backend/app/core/penetration_testing.py",
+        "line_count": 294,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/core/penetration_testing.py"
+      },
+      {
+        "file_path": "packages/gallery/src/components/AdvancedComponentsDemo.tsx",
+        "line_count": 293,
+        "absolute_path": "/home/kade/runeset/reynard/packages/gallery/src/components/AdvancedComponentsDemo.tsx"
+      },
+      {
+        "file_path": "backend/tests/test_mcp_tools.py",
+        "line_count": 292,
+        "absolute_path": "/home/kade/runeset/reynard/backend/tests/test_mcp_tools.py"
+      },
+      {
+        "file_path": "packages/api-client/node_modules/.ignored/node-fetch/src/index.js",
+        "line_count": 291,
+        "absolute_path": "/home/kade/runeset/reynard/packages/api-client/node_modules/.ignored/node-fetch/src/index.js"
+      },
+      {
+        "file_path": "packages/caption-ui/src/components/CaptionInput.tsx",
+        "line_count": 289,
+        "absolute_path": "/home/kade/runeset/reynard/packages/caption-ui/src/components/CaptionInput.tsx"
+      },
+      {
+        "file_path": "packages/tools/src/core/decorators.py",
+        "line_count": 287,
+        "absolute_path": "/home/kade/runeset/reynard/packages/tools/src/core/decorators.py"
+      },
+      {
+        "file_path": "packages/tools/src/core/executor.py",
+        "line_count": 284,
+        "absolute_path": "/home/kade/runeset/reynard/packages/tools/src/core/executor.py"
+      },
+      {
+        "file_path": "scripts/validation/workflows/extract-workflow-shell.js",
+        "line_count": 283,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/workflows/extract-workflow-shell.js"
+      },
+      {
+        "file_path": "backend/app/services/image_processing_service.py",
+        "line_count": 282,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/services/image_processing_service.py"
+      },
+      {
+        "file_path": "backend/app/core/lifespan_manager.py",
+        "line_count": 280,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/core/lifespan_manager.py"
+      },
+      {
+        "file_path": "backend/tests/test_api_endpoints.py",
+        "line_count": 279,
+        "absolute_path": "/home/kade/runeset/reynard/backend/tests/test_api_endpoints.py"
+      },
+      {
+        "file_path": "scripts/mcp/services/mermaid_service.py",
+        "line_count": 276,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/mermaid_service.py"
+      },
+      {
+        "file_path": "packages/tools/src/core/nlweb_tools.py",
+        "line_count": 272,
+        "absolute_path": "/home/kade/runeset/reynard/packages/tools/src/core/nlweb_tools.py"
+      },
+      {
+        "file_path": "backend/app/core/logging_middleware.py",
+        "line_count": 272,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/core/logging_middleware.py"
+      },
+      {
+        "file_path": "scripts/mcp/services/semantic_search_service.py",
+        "line_count": 270,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/semantic_search_service.py"
+      },
+      {
+        "file_path": "packages/gallery/src/__tests__/FileUpload.test.tsx",
+        "line_count": 268,
+        "absolute_path": "/home/kade/runeset/reynard/packages/gallery/src/__tests__/FileUpload.test.tsx"
+      },
+      {
+        "file_path": "backend/app/security/secure_auth.py",
+        "line_count": 268,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/security/secure_auth.py"
+      },
+      {
+        "file_path": "backend/app/core/service_registry.py",
+        "line_count": 265,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/core/service_registry.py"
+      },
+      {
+        "file_path": "backend/app/core/config.py",
+        "line_count": 264,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/core/config.py"
+      },
+      {
+        "file_path": "packages/api-client/node_modules/formdata-polyfill/FormData.js",
+        "line_count": 258,
+        "absolute_path": "/home/kade/runeset/reynard/packages/api-client/node_modules/formdata-polyfill/FormData.js"
+      },
+      {
+        "file_path": "scripts/mcp/tests/test_ecs_automatic_breeding.py",
+        "line_count": 256,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/test_ecs_automatic_breeding.py"
+      },
+      {
+        "file_path": "backend/app/core/base_router.py",
+        "line_count": 254,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/core/base_router.py"
+      },
+      {
+        "file_path": "scripts/mcp/tools/image_viewer_tools.py",
+        "line_count": 253,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/image_viewer_tools.py"
+      },
+      {
+        "file_path": "scripts/mcp/tools/test_git_automation_standalone.py",
+        "line_count": 253,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/test_git_automation_standalone.py"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-italic-to-blockquote-refactored.test.js",
+        "line_count": 251,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-italic-to-blockquote-refactored.test.js"
+      },
+      {
+        "file_path": "scripts/mcp/tests/test_ecs_simple.py",
+        "line_count": 250,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/test_ecs_simple.py"
+      },
+      {
+        "file_path": "backend/app/security/sql_injection_patterns.py",
+        "line_count": 246,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/security/sql_injection_patterns.py"
+      },
+      {
+        "file_path": "scripts/mcp/tools/tool_management_tools.py",
+        "line_count": 246,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/tool_management_tools.py"
+      },
+      {
+        "file_path": "packages/components-core/src/navigation/BreadcrumbButton.tsx",
+        "line_count": 245,
+        "absolute_path": "/home/kade/runeset/reynard/packages/components-core/src/navigation/BreadcrumbButton.tsx"
+      },
+      {
+        "file_path": "packages/gallery/src/__tests__/Gallery.test.tsx",
+        "line_count": 245,
+        "absolute_path": "/home/kade/runeset/reynard/packages/gallery/src/__tests__/Gallery.test.tsx"
+      },
+      {
+        "file_path": "packages/caption-ui/src/components/TagAutocomplete.tsx",
+        "line_count": 244,
+        "absolute_path": "/home/kade/runeset/reynard/packages/caption-ui/src/components/TagAutocomplete.tsx"
+      },
+      {
+        "file_path": "packages/tools/src/core/streaming_example_tool.py",
+        "line_count": 242,
+        "absolute_path": "/home/kade/runeset/reynard/packages/tools/src/core/streaming_example_tool.py"
+      },
+      {
+        "file_path": "packages/gallery/src/components/GalleryGrid.tsx",
+        "line_count": 242,
+        "absolute_path": "/home/kade/runeset/reynard/packages/gallery/src/components/GalleryGrid.tsx"
+      },
+      {
+        "file_path": "scripts/mcp/services/ecs_client.py",
+        "line_count": 240,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/ecs_client.py"
+      },
+      {
+        "file_path": "backend/app/core/logging_config.py",
+        "line_count": 238,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/core/logging_config.py"
+      },
+      {
+        "file_path": "backend/app/security/mcp_auth.py",
+        "line_count": 237,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/security/mcp_auth.py"
+      },
+      {
+        "file_path": "scripts/changelog-scanner.py",
+        "line_count": 236,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/changelog-scanner.py"
+      },
+      {
+        "file_path": "scripts/mcp/services/resilient_tool_wrapper.py",
+        "line_count": 234,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/resilient_tool_wrapper.py"
+      },
+      {
+        "file_path": "backend/app/security/secure_ollama_routes.py",
+        "line_count": 233,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/security/secure_ollama_routes.py"
+      },
+      {
+        "file_path": "scripts/mcp/tools/agent_tools_ecs.py",
+        "line_count": 233,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_tools_ecs.py"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-sentence-length-refactored.test.js",
+        "line_count": 229,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-sentence-length-refactored.test.js"
+      },
+      {
+        "file_path": "scripts/mcp/comprehensive_agent_simulation.py",
+        "line_count": 227,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/comprehensive_agent_simulation.py"
+      },
+      {
+        "file_path": "scripts/mcp/simple_trait_simulation.py",
+        "line_count": 227,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/simple_trait_simulation.py"
+      },
+      {
+        "file_path": "packages/api-client/node_modules/.ignored/node-fetch/src/body.js",
+        "line_count": 225,
+        "absolute_path": "/home/kade/runeset/reynard/packages/api-client/node_modules/.ignored/node-fetch/src/body.js"
+      },
+      {
+        "file_path": "packages/comfy/src/components/ComfyText2ImgForm.tsx",
+        "line_count": 224,
+        "absolute_path": "/home/kade/runeset/reynard/packages/comfy/src/components/ComfyText2ImgForm.tsx"
+      },
+      {
+        "file_path": "backend/app/security/error_handler.py",
+        "line_count": 217,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/security/error_handler.py"
+      },
+      {
+        "file_path": "scripts/simple-changelog-scanner.py",
+        "line_count": 211,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/simple-changelog-scanner.py"
+      },
+      {
+        "file_path": "backend/tests/conftest.py",
+        "line_count": 209,
+        "absolute_path": "/home/kade/runeset/reynard/backend/tests/conftest.py"
+      },
+      {
+        "file_path": "backend/app/extractors/registry.py",
+        "line_count": 207,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/extractors/registry.py"
+      },
+      {
+        "file_path": "scripts/validation/shared/validation-base.js",
+        "line_count": 204,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/shared/validation-base.js"
+      },
+      {
+        "file_path": "scripts/mcp/test_resilient_server.py",
+        "line_count": 202,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/test_resilient_server.py"
+      },
+      {
+        "file_path": "packages/games/src/collision/CollisionGame.tsx",
+        "line_count": 201,
+        "absolute_path": "/home/kade/runeset/reynard/packages/games/src/collision/CollisionGame.tsx"
+      },
+      {
+        "file_path": "packages/api-client/test-dist/composables/useRAG.js",
+        "line_count": 200,
+        "absolute_path": "/home/kade/runeset/reynard/packages/api-client/test-dist/composables/useRAG.js"
+      },
+      {
+        "file_path": "backend/scripts/dev-server.py",
+        "line_count": 200,
+        "absolute_path": "/home/kade/runeset/reynard/backend/scripts/dev-server.py"
+      },
+      {
+        "file_path": "packages/api-client/test-dist/composables/useCaption.js",
+        "line_count": 198,
+        "absolute_path": "/home/kade/runeset/reynard/packages/api-client/test-dist/composables/useCaption.js"
+      },
+      {
+        "file_path": "backend/scripts/update_rag_config.py",
+        "line_count": 198,
+        "absolute_path": "/home/kade/runeset/reynard/backend/scripts/update_rag_config.py"
+      },
+      {
+        "file_path": "backend/app/core/service_initializers.py",
+        "line_count": 197,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/core/service_initializers.py"
+      },
+      {
+        "file_path": "packages/api-client/node_modules/.ignored/node-fetch/src/request.js",
+        "line_count": 194,
+        "absolute_path": "/home/kade/runeset/reynard/packages/api-client/node_modules/.ignored/node-fetch/src/request.js"
+      },
+      {
+        "file_path": "packages/components-core/src/primitives/SidebarButton.tsx",
+        "line_count": 193,
+        "absolute_path": "/home/kade/runeset/reynard/packages/components-core/src/primitives/SidebarButton.tsx"
+      },
+      {
+        "file_path": "packages/games/src/geometry/GeometryDemo.tsx",
+        "line_count": 193,
+        "absolute_path": "/home/kade/runeset/reynard/packages/games/src/geometry/GeometryDemo.tsx"
+      },
+      {
+        "file_path": "packages/tools/src/core/streaming_base.py",
+        "line_count": 191,
+        "absolute_path": "/home/kade/runeset/reynard/packages/tools/src/core/streaming_base.py"
+      },
+      {
+        "file_path": "backend/app/security/secure_auth_routes.py",
+        "line_count": 191,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/security/secure_auth_routes.py"
+      },
+      {
+        "file_path": "backend/app/auth/jwt_utils.py",
+        "line_count": 190,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/auth/jwt_utils.py"
+      },
+      {
+        "file_path": "backend/app/auth/user_service.py",
+        "line_count": 188,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/auth/user_service.py"
+      },
+      {
+        "file_path": "backend/app/caption_generation/plugin.py",
+        "line_count": 187,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/caption_generation/plugin.py"
+      },
+      {
+        "file_path": "scripts/mcp/services/breeding_service.py",
+        "line_count": 186,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/breeding_service.py"
+      },
+      {
+        "file_path": "scripts/mcp/services/monolith_analysis_service.py",
+        "line_count": 186,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/monolith_analysis_service.py"
+      },
+      {
+        "file_path": "packages/docs-site/src/App.tsx",
+        "line_count": 185,
+        "absolute_path": "/home/kade/runeset/reynard/packages/docs-site/src/App.tsx"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-italic-to-blockquote.js",
+        "line_count": 185,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-italic-to-blockquote.js"
+      },
+      {
+        "file_path": "packages/api-client/test-dist/utils/index.js",
+        "line_count": 184,
+        "absolute_path": "/home/kade/runeset/reynard/packages/api-client/test-dist/utils/index.js"
+      },
+      {
+        "file_path": "packages/docs-site/src/pages/HomePage.tsx",
+        "line_count": 180,
+        "absolute_path": "/home/kade/runeset/reynard/packages/docs-site/src/pages/HomePage.tsx"
+      },
+      {
+        "file_path": "packages/gallery/src/components/FileUploadZone.tsx",
+        "line_count": 179,
+        "absolute_path": "/home/kade/runeset/reynard/packages/gallery/src/components/FileUploadZone.tsx"
+      },
+      {
+        "file_path": "backend/app/core/api_endpoints.py",
+        "line_count": 179,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/core/api_endpoints.py"
+      },
+      {
+        "file_path": "packages/api-client/node_modules/.ignored/node-fetch/src/headers.js",
+        "line_count": 177,
+        "absolute_path": "/home/kade/runeset/reynard/packages/api-client/node_modules/.ignored/node-fetch/src/headers.js"
+      },
+      {
+        "file_path": "backend/app/ecs/endpoints.py",
+        "line_count": 176,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/ecs/endpoints.py"
+      },
+      {
+        "file_path": "scripts/mcp/tools/git_automation_definitions.py",
+        "line_count": 176,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/git_automation_definitions.py"
+      },
+      {
+        "file_path": "scripts/mcp/start_resilient_server.py",
+        "line_count": 174,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/start_resilient_server.py"
+      },
+      {
+        "file_path": "packages/api-client/test-dist/composables/useAuth.js",
+        "line_count": 173,
+        "absolute_path": "/home/kade/runeset/reynard/packages/api-client/test-dist/composables/useAuth.js"
+      },
+      {
+        "file_path": "packages/api-client/test-dist/composables/useChat.js",
+        "line_count": 172,
+        "absolute_path": "/home/kade/runeset/reynard/packages/api-client/test-dist/composables/useChat.js"
+      },
+      {
+        "file_path": "scripts/mcp/tools/config_tools.py",
+        "line_count": 172,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/config_tools.py"
+      },
+      {
+        "file_path": "packages/caption-ui/src/components/TOMLEditor.tsx",
+        "line_count": 166,
+        "absolute_path": "/home/kade/runeset/reynard/packages/caption-ui/src/components/TOMLEditor.tsx"
+      },
+      {
+        "file_path": "packages/components-core/src/layout/HeroSection.tsx",
+        "line_count": 166,
+        "absolute_path": "/home/kade/runeset/reynard/packages/components-core/src/layout/HeroSection.tsx"
+      },
+      {
+        "file_path": "packages/components-core/src/Tabs.tsx",
+        "line_count": 164,
+        "absolute_path": "/home/kade/runeset/reynard/packages/components-core/src/Tabs.tsx"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-italic-to-blockquote-refactored.js",
+        "line_count": 164,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-italic-to-blockquote-refactored.js"
+      },
+      {
+        "file_path": "packages/components-core/src/icons/Icon.tsx",
+        "line_count": 163,
+        "absolute_path": "/home/kade/runeset/reynard/packages/components-core/src/icons/Icon.tsx"
+      },
+      {
+        "file_path": "backend/app/extractors/reynard_gallery.py",
+        "line_count": 163,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/extractors/reynard_gallery.py"
+      },
+      {
+        "file_path": "packages/components-core/src/primitives/Tabs.tsx",
+        "line_count": 162,
+        "absolute_path": "/home/kade/runeset/reynard/packages/components-core/src/primitives/Tabs.tsx"
+      },
+      {
+        "file_path": "scripts/mcp/services/file_discovery_service.py",
+        "line_count": 162,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/file_discovery_service.py"
+      },
+      {
+        "file_path": "scripts/mcp/cleanup_deprecated.py",
+        "line_count": 161,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/cleanup_deprecated.py"
+      },
+      {
+        "file_path": "scripts/mcp/tools/mermaid_tools.py",
+        "line_count": 161,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/mermaid_tools.py"
+      },
+      {
+        "file_path": "scripts/validation/simple-doc-validation.js",
+        "line_count": 160,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/simple-doc-validation.js"
+      },
+      {
+        "file_path": "scripts/validation/shared/file-utils.js",
+        "line_count": 160,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/shared/file-utils.js"
+      },
+      {
+        "file_path": "backend/app/extractors/reynard_user.py",
+        "line_count": 159,
+        "absolute_path": "/home/kade/runeset/reynard/backend/app/extractors/reynard_user.py"
+      },
+      {
+        "file_path": "scripts/mcp/protocol/tool_config.py",
+        "line_count": 159,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_config.py"
+      },
+      {
+        "file_path": "scripts/mcp/services/vscode_tasks_service.py",
+        "line_count": 157,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/vscode_tasks_service.py"
+      },
+      {
+        "file_path": "scripts/mcp/services/auth_service.py",
+        "line_count": 157,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/auth_service.py"
+      },
+      {
+        "file_path": "packages/api-client/node_modules/fetch-blob/index.js",
+        "line_count": 156,
+        "absolute_path": "/home/kade/runeset/reynard/packages/api-client/node_modules/fetch-blob/index.js"
+      },
+      {
+        "file_path": "scripts/validate_mermaid.py",
+        "line_count": 154,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validate_mermaid.py"
+      },
+      {
+        "file_path": "scripts/mcp/services/file_search_service.py",
+        "line_count": 153,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/file_search_service.py"
+      },
+      {
+        "file_path": "packages/games/src/roguelike/roguelike-component.tsx",
+        "line_count": 150,
+        "absolute_path": "/home/kade/runeset/reynard/packages/games/src/roguelike/roguelike-component.tsx"
+      },
+      {
+        "file_path": "backend/tests/test_advanced_query_expansion.py",
+        "line_count": 149,
+        "absolute_path": "/home/kade/runeset/reynard/backend/tests/test_advanced_query_expansion.py"
+      },
+      {
+        "file_path": "scripts/mcp/services/auth_client.py",
+        "line_count": 145,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/auth_client.py"
+      },
+      {
+        "file_path": "scripts/mcp/protocol/tool_registry.py",
+        "line_count": 144,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_registry.py"
+      },
+      {
+        "file_path": "scripts/validation/markdown/changelog-formatter.js",
+        "line_count": 144,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/changelog-formatter.js"
+      },
+      {
+        "file_path": "scripts/validation/shared/cli-utils.js",
+        "line_count": 143,
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/shared/cli-utils.js"
+      },
+      {
+        "file_path": "packages/components-core/src/primitives/IconButton.tsx",
+        "line_count": 141,
+        "absolute_path": "/home/kade/runeset/reynard/packages/components-core/src/primitives/IconButton.tsx"
+      }
+    ],
+    "count": 174
+  },
+  "development_tools": {
+    "tools": [
+      {
+        "file_path": "scripts/mcp/check_tool_names.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/check_tool_names.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/test_tools_list.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/test_tools_list.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/config/tool_config.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/config/tool_config.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/protocol/tool_config.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_config.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/protocol/tool_registry.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_registry.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/protocol/tool_router.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_router.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/protocol/tool_handlers.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_handlers.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/protocol/tool_router_new.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_router_new.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/services/tool_config_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/tool_config_service.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/services/resilient_tool_wrapper.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/resilient_tool_wrapper.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/tools/ecs_agent_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/ecs_agent_tools.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/tools/image_viewer_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/image_viewer_tools.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/tools/test_git_automation_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/test_git_automation_tools.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/tools/version_vscode_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/version_vscode_tools.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/tools/tool_management_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/tool_management_tools.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/tools/agent_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_tools.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/tools/mermaid_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/mermaid_tools.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/tools/git_automation_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/git_automation_tools.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/tools/secrets_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/secrets_tools.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/tools/linting_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/linting_tools.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/tools/agent_tools_ecs.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_tools_ecs.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/tools/config_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/config_tools.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/tools/vscode_tasks_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/vscode_tasks_tools.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/tools/utility_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/utility_tools.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/tools/playwright_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/playwright_tools.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/tools/monolith_detection/tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/monolith_detection/tools.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/enhanced_search_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/enhanced_search_tools.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/search_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/search_tools.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/__tests__/test_search_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/__tests__/test_search_tools.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/tests/unit/test_tool_router.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/unit/test_tool_router.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/tests/unit/test_agent_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/unit/test_agent_tools.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/tools/utility_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/utility_tools.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/services/agent_manager.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/agent_manager.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/services/connection_manager.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/connection_manager.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/mcp/tests/unit/test_agent_manager.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/unit/test_agent_manager.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/utils/agent-naming/enhanced_agent_manager.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/utils/agent-naming/enhanced_agent_manager.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/simple-changelog-scanner.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/simple-changelog-scanner.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/changelog-scanner.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/changelog-scanner.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/efficient-changelog-scanner.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/efficient-changelog-scanner.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "scripts/debug-scanner.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/debug-scanner.py",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/code-quality/src/security/tool-config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/code-quality/src/security/tool-config.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/code-quality/src/security/utils/tool-executor.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/code-quality/src/security/utils/tool-executor.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/nlweb/src/router/tool-validator.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/nlweb/src/router/tool-validator.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/nlweb/src/router/tool-index.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/nlweb/src/router/tool-index.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/nlweb/src/router/tool-searcher.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/nlweb/src/router/tool-searcher.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/nlweb/src/router/tool-stats.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/nlweb/src/router/tool-stats.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/nlweb/src/tools/ai-tools.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/nlweb/src/tools/ai-tools.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/nlweb/src/tools/batch-tools.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/nlweb/src/tools/batch-tools.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/nlweb/src/tools/file-tools.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/nlweb/src/tools/file-tools.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/nlweb/src/tools/git-tools.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/nlweb/src/tools/git-tools.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/nlweb/src/api/handlers/toolsHandler.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/nlweb/src/api/handlers/toolsHandler.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/chat/src/types/tools.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/chat/src/types/tools.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/git-automation/src/mcp-tools.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/git-automation/src/mcp-tools.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/core/src/utils/fallback-utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/core/src/utils/fallback-utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/core/src/modules/notification-utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/core/src/modules/notification-utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/ai-shared/src/types/utilities.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/ai-shared/src/types/utilities.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/caption-ui/src/composables/tag-selection-utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/caption-ui/src/composables/tag-selection-utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/file-processing/src/config/file-type-utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/file-processing/src/config/file-type-utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/file-processing/src/processors/utils/canvas-utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/file-processing/src/processors/utils/canvas-utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/file-processing/src/__tests__/security/test-utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/file-processing/src/__tests__/security/test-utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/games/src/ecs/component-utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/games/src/ecs/component-utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/gallery/src/components/BreadcrumbNavigation/utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/gallery/src/components/BreadcrumbNavigation/utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/gallery/src/components/FileUpload/utils/file-utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/gallery/src/components/FileUpload/utils/file-utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/gallery/src/components/FileUpload/utils/upload-utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/gallery/src/components/FileUpload/utils/upload-utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/project-architecture/src/utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/project-architecture/src/utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/project-architecture/dist/utils.d.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/project-architecture/dist/utils.d.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/project-architecture/src/__tests__/architecture-utils.test.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/project-architecture/src/__tests__/architecture-utils.test.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/connection/src/http/utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/connection/src/http/utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/monaco/src/solid-monaco/utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/monaco/src/solid-monaco/utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/charts/src/__tests__/utils.test.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/charts/src/__tests__/utils.test.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/components/src/theme/theme-utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/components/src/theme/theme-utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/components/src/__tests__/test-utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/components/src/__tests__/test-utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/code-quality/src/security/utils/analysis-utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/code-quality/src/security/utils/analysis-utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/nlweb/src/api/utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/nlweb/src/api/utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/components-themes/src/theme/theme-utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/components-themes/src/theme/theme-utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/i18n/dist/__tests__/test-utils.d.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/i18n/dist/__tests__/test-utils.d.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/i18n/dist/intl/utilities.d.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/i18n/dist/intl/utilities.d.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/i18n/dist/utils/basic/locale-utils.d.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/i18n/dist/utils/basic/locale-utils.d.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/i18n/dist/utils/basic/translation-utils.d.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/i18n/dist/utils/basic/translation-utils.d.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/i18n/dist/types/core/i18n-utilities-types.d.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/i18n/dist/types/core/i18n-utilities-types.d.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/i18n/dist/__tests__/features/test-utils.d.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/i18n/dist/__tests__/features/test-utils.d.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/i18n/dist/__tests__/core/test-utils.d.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/i18n/dist/__tests__/core/test-utils.d.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/i18n/src/intl/utilities.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/i18n/src/intl/utilities.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/i18n/src/utils/basic/locale-utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/i18n/src/utils/basic/locale-utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/i18n/src/utils/basic/translation-utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/i18n/src/utils/basic/translation-utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/i18n/src/types/core/i18n-utilities-types.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/i18n/src/types/core/i18n-utilities-types.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/i18n/src/__tests__/features/test-utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/i18n/src/__tests__/features/test-utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/i18n/src/__tests__/core/test-utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/i18n/src/__tests__/core/test-utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/testing/dist/test-utils.d.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/testing/dist/test-utils.d.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/testing/dist/config/utilities.d.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/testing/dist/config/utilities.d.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/testing/dist/scripts/cli-utils.d.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/testing/dist/scripts/cli-utils.d.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/testing/dist/utils/assertion-utils.d.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/testing/dist/utils/assertion-utils.d.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/testing/dist/utils/mock-utils.d.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/testing/dist/utils/mock-utils.d.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/testing/dist/utils/dom-utils.d.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/testing/dist/utils/dom-utils.d.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/testing/src/config/utilities.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/testing/src/config/utilities.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/testing/src/__tests__/mock-utils.test.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/testing/src/__tests__/mock-utils.test.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/testing/src/scripts/cli-utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/testing/src/scripts/cli-utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/testing/src/utils/assertion-utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/testing/src/utils/assertion-utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/testing/src/utils/dom-utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/testing/src/utils/dom-utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/testing/src/utils/mock-utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/testing/src/utils/mock-utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/validation/src/utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/validation/src/utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/chat/src/utils/parsing-utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/chat/src/utils/parsing-utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/ui/src/data/DataTable.utils.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/ui/src/data/DataTable.utils.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/caption-ui/src/components/tag-bubble-helpers.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/caption-ui/src/components/tag-bubble-helpers.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/i18n/src/__tests__/utils/grammar-helpers.test.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/i18n/src/__tests__/utils/grammar-helpers.test.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/core/src/modules/notification-manager.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/core/src/modules/notification-manager.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/games/src/ecs/performance/wasm-manager.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/games/src/ecs/performance/wasm-manager.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/connection/src/manager.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/connection/src/manager.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/connection/src/__tests__/manager.test.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/connection/src/__tests__/manager.test.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/settings/src/storage/storage-manager.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/settings/src/storage/storage-manager.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/3d/src/types/managers.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/3d/src/types/managers.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/i18n/dist/core/providers/locale-manager.d.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/i18n/dist/core/providers/locale-manager.d.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/i18n/src/core/providers/locale-manager.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/i18n/src/core/providers/locale-manager.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/git-automation/src/changelog-manager.test.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/git-automation/src/changelog-manager.test.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/git-automation/src/version-manager.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/git-automation/src/version-manager.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/git-automation/src/changelog-manager.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/git-automation/src/changelog-manager.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/git-automation/src/version-manager.test.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/git-automation/src/version-manager.test.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/queue-watcher/src/queue-manager.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/queue-watcher/src/queue-manager.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/queue-watcher/dist/queue-manager.d.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/queue-watcher/dist/queue-manager.d.ts",
+        "type": "development_tool"
+      },
+      {
+        "file_path": "packages/queue-watcher/src/__tests__/queue-manager.test.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/queue-watcher/src/__tests__/queue-manager.test.ts",
+        "type": "development_tool"
+      }
+    ],
+    "count": 120
+  },
+  "mcp_tools": {
+    "mcp_files": [
+      {
+        "file_path": "scripts/mcp/cleanup_deprecated.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/cleanup_deprecated.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/debug_server.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/debug_server.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/check_tool_names.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/check_tool_names.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tcp_server.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tcp_server.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/start_resilient_server.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/start_resilient_server.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/debug_mcp.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/debug_mcp.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/test_full_mcp.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/test_full_mcp.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/comprehensive_agent_simulation.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/comprehensive_agent_simulation.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/test_mcp_protocol.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/test_mcp_protocol.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/run_tests.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/run_tests.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/simple_trait_simulation.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/simple_trait_simulation.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/resilient_main.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/resilient_main.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/test_resilient_server.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/test_resilient_server.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/test_tools_list.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/test_tools_list.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/config/tool_config.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/config/tool_config.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/config/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/config/__init__.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/stubs/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/stubs/__init__.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/protocol/mcp_handler.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/mcp_handler.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/protocol/tool_config.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_config.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/protocol/tool_registry.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_registry.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/protocol/tool_router.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_router.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/protocol/tool_handlers.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_handlers.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/protocol/tool_router_new.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_router_new.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/protocol/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/__init__.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/examples/breeding_notifications.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/examples/breeding_notifications.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tests/conftest.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/conftest.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tests/test_ecs_simple.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/test_ecs_simple.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tests/test_ecs_automatic_breeding.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/test_ecs_automatic_breeding.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tests/test_ecs_notifications.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/test_ecs_notifications.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tests/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/__init__.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/search_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/search_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/ripgrep_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/ripgrep_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/ecs_client.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/ecs_client.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/file_search_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/file_search_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/file_analysis_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/file_analysis_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/security_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/security_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/metrics_aggregation_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/metrics_aggregation_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/vscode_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/vscode_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/vscode_tasks_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/vscode_tasks_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/agent_manager.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/agent_manager.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/auth_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/auth_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/mermaid_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/mermaid_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/breeding_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/breeding_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/version_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/version_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/formatting_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/formatting_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/tool_config_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/tool_config_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/auth_client.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/auth_client.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/resilient_tool_wrapper.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/resilient_tool_wrapper.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/validation_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/validation_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/file_discovery_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/file_discovery_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/playwright_browser_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/playwright_browser_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/monolith_analysis_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/monolith_analysis_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/linting_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/linting_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/connection_manager.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/connection_manager.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/semantic_search_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/semantic_search_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/__init__.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/ecs_agent_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/ecs_agent_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/image_viewer_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/image_viewer_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/test_git_automation_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/test_git_automation_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/version_vscode_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/version_vscode_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/tool_management_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/tool_management_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/secrets_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/secrets_definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/git_automation_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/git_automation_definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/agent_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/linting_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/linting_definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/version_vscode_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/version_vscode_definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/mermaid_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/mermaid_definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/test_git_automation_standalone.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/test_git_automation_standalone.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/test_git_automation_simple.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/test_git_automation_simple.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/mermaid_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/mermaid_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/git_automation_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/git_automation_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/config_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/config_definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/secrets_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/secrets_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/linting_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/linting_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/image_viewer_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/image_viewer_definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/vscode_tasks_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/vscode_tasks_definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/agent_tools_ecs.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_tools_ecs.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/config_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/config_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/vscode_tasks_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/vscode_tasks_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/agent_management.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/ecs_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/ecs_definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/utility_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/utility_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/playwright_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/playwright_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/__init__.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/utils/logging_config.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/utils/logging_config.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/utils/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/utils/__init__.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/middleware/auth_middleware.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/middleware/auth_middleware.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/monolith_detection/tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/monolith_detection/tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/monolith_detection/definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/monolith_detection/definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/monolith_detection/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/monolith_detection/__init__.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/search_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/search_definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/file_search.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/file_search.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/enhanced_search_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/enhanced_search_definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/ripgrep_search.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/ripgrep_search.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/ignore_config.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/ignore_config.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/semantic_search.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/semantic_search.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/bm25_search.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/bm25_search.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/enhanced_semantic_search.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/enhanced_semantic_search.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/enhanced_search_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/enhanced_search_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/search_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/search_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/__init__.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/agent_management/breeding.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management/breeding.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/agent_management/persona.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management/persona.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/agent_management/behavior.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management/behavior.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/agent_management/definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management/definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/agent_management/ecs.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management/ecs.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/agent_management/base.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management/base.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/agent_management/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management/__init__.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/__tests__/test_nlp_queries.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/__tests__/test_nlp_queries.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/__tests__/conftest.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/__tests__/conftest.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/__tests__/test_ignore_config.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/__tests__/test_ignore_config.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/__tests__/test_search_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/__tests__/test_search_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/__tests__/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/__tests__/__init__.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tests/unit/test_version_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/unit/test_version_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tests/unit/test_tool_router.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/unit/test_tool_router.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tests/unit/test_simple.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/unit/test_simple.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tests/unit/test_mcp_handler.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/unit/test_mcp_handler.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tests/unit/test_agent_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/unit/test_agent_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tests/unit/test_agent_manager.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/unit/test_agent_manager.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tests/unit/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/unit/__init__.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tests/integration/test_mcp_server_integration.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/integration/test_mcp_server_integration.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tests/integration/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/integration/__init__.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tests/fixtures/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/fixtures/__init__.py",
+        "type": "mcp_file"
+      }
+    ],
+    "mcp_tools": [
+      {
+        "file_path": "scripts/mcp/cleanup_deprecated.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/cleanup_deprecated.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/check_tool_names.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/check_tool_names.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tcp_server.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tcp_server.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/start_resilient_server.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/start_resilient_server.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/comprehensive_agent_simulation.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/comprehensive_agent_simulation.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/run_tests.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/run_tests.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/simple_trait_simulation.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/simple_trait_simulation.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/resilient_main.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/resilient_main.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/config/tool_config.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/config/tool_config.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/protocol/mcp_handler.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/mcp_handler.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/protocol/tool_config.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_config.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/protocol/tool_registry.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_registry.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/protocol/tool_router.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_router.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/protocol/tool_handlers.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_handlers.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/protocol/tool_router_new.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_router_new.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/examples/breeding_notifications.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/examples/breeding_notifications.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tests/conftest.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/conftest.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/search_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/search_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/ripgrep_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/ripgrep_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/ecs_client.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/ecs_client.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/file_search_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/file_search_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/file_analysis_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/file_analysis_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/security_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/security_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/metrics_aggregation_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/metrics_aggregation_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/vscode_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/vscode_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/vscode_tasks_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/vscode_tasks_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/agent_manager.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/agent_manager.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/auth_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/auth_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/mermaid_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/mermaid_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/breeding_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/breeding_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/version_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/version_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/formatting_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/formatting_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/tool_config_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/tool_config_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/auth_client.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/auth_client.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/resilient_tool_wrapper.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/resilient_tool_wrapper.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/validation_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/validation_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/file_discovery_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/file_discovery_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/playwright_browser_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/playwright_browser_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/monolith_analysis_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/monolith_analysis_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/linting_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/linting_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/connection_manager.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/connection_manager.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/services/semantic_search_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/semantic_search_service.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/ecs_agent_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/ecs_agent_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/image_viewer_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/image_viewer_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/version_vscode_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/version_vscode_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/tool_management_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/tool_management_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/secrets_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/secrets_definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/git_automation_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/git_automation_definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/agent_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/linting_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/linting_definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/version_vscode_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/version_vscode_definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/mermaid_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/mermaid_definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/mermaid_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/mermaid_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/git_automation_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/git_automation_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/config_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/config_definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/secrets_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/secrets_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/linting_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/linting_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/image_viewer_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/image_viewer_definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/vscode_tasks_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/vscode_tasks_definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/agent_tools_ecs.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_tools_ecs.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/config_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/config_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/vscode_tasks_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/vscode_tasks_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/agent_management.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/ecs_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/ecs_definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/utility_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/utility_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/playwright_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/playwright_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/utils/logging_config.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/utils/logging_config.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/middleware/auth_middleware.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/middleware/auth_middleware.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/monolith_detection/tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/monolith_detection/tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/monolith_detection/definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/monolith_detection/definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/search_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/search_definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/file_search.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/file_search.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/enhanced_search_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/enhanced_search_definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/ripgrep_search.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/ripgrep_search.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/ignore_config.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/ignore_config.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/semantic_search.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/semantic_search.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/bm25_search.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/bm25_search.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/enhanced_semantic_search.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/enhanced_semantic_search.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/enhanced_search_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/enhanced_search_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/search_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/search_tools.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/agent_management/breeding.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management/breeding.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/agent_management/persona.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management/persona.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/agent_management/behavior.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management/behavior.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/agent_management/definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management/definitions.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/agent_management/ecs.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management/ecs.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/agent_management/base.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management/base.py",
+        "type": "mcp_file"
+      },
+      {
+        "file_path": "scripts/mcp/tools/search/__tests__/conftest.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/__tests__/conftest.py",
+        "type": "mcp_file"
+      }
+    ],
+    "registered_tools": 75,
+    "count": 88
+  },
+  "validation_tools": {
+    "validation_tools": [
+      {
+        "file_path": "scripts/validation/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/__init__.py",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/css/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/css/__init__.py",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/workflows/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/workflows/__init__.py",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/markdown/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/__init__.py",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/python/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/python/__init__.py",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/python/python_validation/validators.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/python/python_validation/validators.py",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/python/python_validation/command_runner.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/python/python_validation/command_runner.py",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/python/python_validation/colors.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/python/python_validation/colors.py",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/python/python_validation/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/python/python_validation/__init__.py",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/doc-tests.js",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/doc-tests.js",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/simple-doc-validation.js",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/simple-doc-validation.js",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/css/validate-css-variables-refactored.test.js",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/css/validate-css-variables-refactored.test.js",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/css/validate-css-variables.js",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/css/validate-css-variables.js",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/css/validate-css-variables-refactored.js",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/css/validate-css-variables-refactored.js",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/css/validate-css-variables.test.js",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/css/validate-css-variables.test.js",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/workflows/extract-workflow-shell.js",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/workflows/extract-workflow-shell.js",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/markdown/changelog-formatter.js",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/changelog-formatter.js",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-markdown-toc.js",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-markdown-toc.js",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-sentence-length-refactored.test.js",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-sentence-length-refactored.test.js",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-markdown-links.test.js",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-markdown-links.test.js",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-italic-to-blockquote-refactored.js",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-italic-to-blockquote-refactored.js",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-italic-to-blockquote.js",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-italic-to-blockquote.js",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-sentence-length-refactored.js",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-sentence-length-refactored.js",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-markdown-toc.test.js",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-markdown-toc.test.js",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-sentence-length.js",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-sentence-length.js",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-markdown-links.js",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-markdown-links.js",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-markdown-toc-refactored.js",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-markdown-toc-refactored.js",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-italic-to-blockquote.test.js",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-italic-to-blockquote.test.js",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-sentence-length.test.js",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-sentence-length.test.js",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-markdown-links-refactored.js",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-markdown-links-refactored.js",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/markdown/validate-italic-to-blockquote-refactored.test.js",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-italic-to-blockquote-refactored.test.js",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/shared/colors.js",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/shared/colors.js",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/shared/validation-base.js",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/shared/validation-base.js",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/shared/cli-utils.js",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/shared/cli-utils.js",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/shared/file-utils.js",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/shared/file-utils.js",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "scripts/validation/shared/index.js",
+        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/shared/index.js",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/queue-watcher/vitest.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/queue-watcher/vitest.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/fluent-icons/vitest.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/fluent-icons/vitest.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/themes/vitest.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/themes/vitest.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/error-boundaries/vitest.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/error-boundaries/vitest.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/gallery-ai/vitest.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/gallery-ai/vitest.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/git-automation/vitest.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/git-automation/vitest.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/model-management/vitest.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/model-management/vitest.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/gallery-dl/vitest.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/gallery-dl/vitest.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/floating-panel/vitest.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/floating-panel/vitest.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/ui/vitest.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/ui/vitest.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/validation/vitest.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/validation/vitest.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/testing/vitest.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/testing/vitest.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/testing/vitest.docs.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/testing/vitest.docs.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/testing/vitest.simple.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/testing/vitest.simple.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/i18n/vitest.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/i18n/vitest.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/unified-repository/vitest.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/unified-repository/vitest.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/caption/vitest.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/caption/vitest.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/segmentation/vitest.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/segmentation/vitest.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/code-quality/vitest.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/code-quality/vitest.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/service-manager/vitest.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/service-manager/vitest.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/image/vitest.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/image/vitest.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/diagram-generator/vitest.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/diagram-generator/vitest.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/scraping/vitest.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/scraping/vitest.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/scraping/vitest.docs.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/scraping/vitest.docs.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/components/vitest.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/components/vitest.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/charts/vitest.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/charts/vitest.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/connection/vitest.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/connection/vitest.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/colors/vitest.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/colors/vitest.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/gallery/vitest.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/gallery/vitest.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/games/vitest.config.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/games/vitest.config.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/code-quality/src/security/parsers/eslint-parser.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/code-quality/src/security/parsers/eslint-parser.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/testing/dist/utils/i18n-lint-script.d.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/testing/dist/utils/i18n-lint-script.d.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/testing/dist/utils/i18n-eslint-plugin.d.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/testing/dist/utils/i18n-eslint-plugin.d.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/testing/dist/scripts/commands/eslint-command.d.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/testing/dist/scripts/commands/eslint-command.d.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/testing/src/__tests__/i18n-eslint-plugin.test.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/testing/src/__tests__/i18n-eslint-plugin.test.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/testing/src/__tests__/i18n-lint-script.test.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/testing/src/__tests__/i18n-lint-script.test.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/testing/src/utils/i18n-lint-script.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/testing/src/utils/i18n-lint-script.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/testing/src/utils/i18n-eslint-plugin.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/testing/src/utils/i18n-eslint-plugin.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/testing/src/scripts/commands/eslint-command.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/testing/src/scripts/commands/eslint-command.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/dev-server-management/src/cli/utils/status-format.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/dev-server-management/src/cli/utils/status-format.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/dev-server-management/src/cli/utils/time-format.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/dev-server-management/src/cli/utils/time-format.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/dev-server-management/src/cli/utils/size-format.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/dev-server-management/src/cli/utils/size-format.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/dev-server-management/src/cli/utils/progress-format.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/dev-server-management/src/cli/utils/progress-format.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/core/src/utils/formatters.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/core/src/utils/formatters.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/core/src/__tests__/utils/formatters.test.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/core/src/__tests__/utils/formatters.test.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/annotating-core/src/utils/image-formats.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/annotating-core/src/utils/image-formats.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/i18n/dist/types/core/intl-number-formatter.d.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/i18n/dist/types/core/intl-number-formatter.d.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/i18n/dist/types/core/intl-relative-time-formatter.d.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/i18n/dist/types/core/intl-relative-time-formatter.d.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/i18n/dist/types/core/intl-date-formatter.d.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/i18n/dist/types/core/intl-date-formatter.d.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/i18n/src/types/core/intl-relative-time-formatter.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/i18n/src/types/core/intl-relative-time-formatter.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/i18n/src/types/core/intl-date-formatter.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/i18n/src/types/core/intl-date-formatter.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/i18n/src/types/core/intl-number-formatter.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/i18n/src/types/core/intl-number-formatter.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/algorithms/src/__tests__/geometry/shapes/polygon-algorithms-transformations.test.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/algorithms/src/__tests__/geometry/shapes/polygon-algorithms-transformations.test.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/algorithms/src/__tests__/geometry/shapes/circle-transformations.test.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/algorithms/src/__tests__/geometry/shapes/circle-transformations.test.ts",
+        "type": "validation_tool"
+      },
+      {
+        "file_path": "packages/algorithms/src/geometry/transformations/transformation-algorithms.ts",
+        "absolute_path": "/home/kade/runeset/reynard/packages/algorithms/src/geometry/transformations/transformation-algorithms.ts",
+        "type": "validation_tool"
+      }
+    ],
+    "count": 91
+  },
+  "vscode_files": {
+    "vscode_files": [
+      {
+        "file_path": ".vscode/settings.json",
+        "absolute_path": "/home/kade/runeset/reynard/.vscode/settings.json",
+        "type": "vscode_config"
+      },
+      {
+        "file_path": ".vscode/extensions.json",
+        "absolute_path": "/home/kade/runeset/reynard/.vscode/extensions.json",
+        "type": "vscode_config"
+      },
+      {
+        "file_path": ".vscode/package.json",
+        "absolute_path": "/home/kade/runeset/reynard/.vscode/package.json",
+        "type": "vscode_config"
+      },
+      {
+        "file_path": ".vscode/launch.json",
+        "absolute_path": "/home/kade/runeset/reynard/.vscode/launch.json",
+        "type": "vscode_config"
+      },
+      {
+        "file_path": ".vscode/tasks.json",
+        "absolute_path": "/home/kade/runeset/reynard/.vscode/tasks.json",
+        "type": "vscode_config"
+      },
+      {
+        "file_path": ".vscode/test-toc-conflict.js",
+        "absolute_path": "/home/kade/runeset/reynard/.vscode/test-toc-conflict.js",
+        "type": "vscode_config"
+      },
+      {
+        "file_path": ".vscode/queue-manager.js",
+        "absolute_path": "/home/kade/runeset/reynard/.vscode/queue-manager.js",
+        "type": "vscode_config"
+      },
+      {
+        "file_path": ".vscode/keybindings.json",
+        "absolute_path": "/home/kade/runeset/reynard/.vscode/keybindings.json",
+        "type": "vscode_config"
+      },
+      {
+        "file_path": ".vscode/README.md",
+        "absolute_path": "/home/kade/runeset/reynard/.vscode/README.md",
+        "type": "vscode_config"
+      }
+    ],
+    "count": 9
+  },
+  "packages": {
+    "packages": [
+      {
+        "file_path": "package.json",
+        "name": "reynard",
+        "version": "0.8.6",
+        "type": "package"
+      },
+      {
+        "file_path": "packages/queue-watcher/package.json",
+        "name": "reynard-queue-watcher",
+        "version": "0.1.0",
+        "type": "package"
+      },
+      {
+        "file_path": "packages/algorithms/package.json",
+        "name": "reynard-algorithms",
+        "version": "0.3.0",
+        "type": "package"
+      },
+      {
+        "file_path": "packages/auth/package.json",
+        "name": "reynard-auth",
+        "version": "0.2.0",
+        "type": "package"
+      },
+      {
+        "file_path": "packages/docs-generator/package.json",
+        "name": "reynard-docs-generator",
+        "version": "0.1.2",
+        "type": "package"
+      },
+      {
+        "file_path": "packages/fluent-icons/package.json",
+        "name": "reynard-fluent-icons",
+        "version": "0.1.2",
+        "type": "package"
+      },
+      {
+        "file_path": "packages/themes/package.json",
+        "name": "reynard-themes",
+        "version": "0.3.0",
+        "type": "package"
+      },
+      {
+        "file_path": "packages/features/package.json",
+        "name": "reynard-features",
+        "version": "0.1.2",
+        "type": "package"
+      },
+      {
+        "file_path": "packages/repository-search/package.json",
+        "name": "reynard-repository-search",
+        "version": "0.1.0",
+        "type": "package"
+      },
+      {
+        "file_path": "packages/components-dashboard/package.json",
+        "name": "reynard-components-dashboard",
+        "version": "0.1.0",
+        "type": "package"
+      },
+      {
+        "file_path": "packages/error-boundaries/package.json",
+        "name": "reynard-error-boundaries",
+        "version": "0.2.0",
+        "type": "package"
+      },
+      {
+        "file_path": "packages/gallery-ai/package.json",
+        "name": "reynard-gallery-ai",
+        "version": "0.2.0",
+        "type": "package"
+      },
+      {
+        "file_path": "packages/git-automation/package.json",
+        "name": "reynard-git-automation",
+        "version": "0.1.0",
+        "type": "package"
+      },
+      {
+        "file_path": "packages/model-management/package.json",
+        "name": "reynard-model-management",
+        "version": "0.1.2",
+        "type": "package"
+      },
+      {
+        "file_path": "packages/rag/package.json",
+        "name": "reynard-rag",
+        "version": "0.2.0",
+        "type": "package"
+      },
+      {
+        "file_path": "packages/config/package.json",
+        "name": "reynard-config",
+        "version": "0.1.2",
+        "type": "package"
+      },
+      {
+        "file_path": "packages/annotating-wdv3/package.json",
+        "name": "reynard-annotating-wdv3",
+        "version": "0.2.0",
+        "type": "package"
+      },
+      {
+        "file_path": "packages/gallery-dl/package.json",
+        "name": "reynard-gallery-dl",
+        "version": "0.1.0",
+        "type": "package"
+      },
+      {
+        "file_path": "packages/components-charts/package.json",
+        "name": "reynard-components-charts",
+        "version": "0.1.0",
+        "type": "package"
+      },
+      {
+        "file_path": "packages/repository-storage/package.json",
+        "name": "reynard-repository-storage",
+        "version": "0.1.0",
+        "type": "package"
+      },
+      {
+        "file_path": "packages/floating-panel/package.json",
+        "name": "reynard-floating-panel",
+        "version": "0.1.0",
+        "type": "package"
+      },
+      {
+        "file_path": "backend/package.json",
+        "name": "reynard-backend",
+        "version": "0.1.3",
+        "type": "package"
+      },
+      {
+        "file_path": "e2e/package.json",
+        "name": "reynard-e2e-testing-framework",
+        "version": "2.0.0",
+        "type": "package"
+      }
+    ],
+    "count": 23
+  }
+}

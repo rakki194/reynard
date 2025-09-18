@@ -26,12 +26,12 @@ TOOLS=("ruff" "black" "mypy" "pylint")
 MISSING_TOOLS=()
 
 for tool in "${TOOLS[@]}"; do
-    if ! command -v "$tool" &> /dev/null; then
-        MISSING_TOOLS+=("$tool")
+    if ! command -v "${tool}" &> /dev/null; then
+        MISSING_TOOLS+=("${tool}")
     fi
 done
 
-if [ ${#MISSING_TOOLS[@]} -ne 0 ]; then
+if [[ ${#MISSING_TOOLS[@]} -ne 0 ]]; then
     echo "⚠️  Missing tools: ${MISSING_TOOLS[*]}"
     echo "Installing missing tools..."
     pip install "${MISSING_TOOLS[@]}"
@@ -41,10 +41,10 @@ echo "✅ All tools available"
 
 # Step 3: Python file detection
 echo "📁 Step 3: Detecting Python files..."
-PYTHON_FILES=$(find . -name "*.py" -not -path "./venv/*" -not -path "./.venv/*" -not -path "./node_modules/*" -not -path "./third_party/*" | wc -l)
-echo "📊 Found $PYTHON_FILES Python files to process"
+PYTHON_FILES=$(find . -name "*.py" -not -path "./venv/*" -not -path "./.venv/*" -not -path "./node_modules/*" -not -path "./third_party/*" | wc -l) || true
+echo "📊 Found ${PYTHON_FILES} Python files to process"
 
-if [ "$PYTHON_FILES" -eq 0 ]; then
+if [[ "${PYTHON_FILES}" -eq 0 ]]; then
     echo "⚠️  No Python files found. Exiting."
     exit 0
 fi
@@ -87,7 +87,7 @@ echo "📋 Step 8: Generating quality report..."
 echo ""
 echo "🎉 Python Formatting & Linting Workflow Completed!"
 echo "📊 Summary:"
-echo "   📁 Python files processed: $PYTHON_FILES"
+echo "   📁 Python files processed: ${PYTHON_FILES}"
 echo "   🔍 Ruff: Linting and import sorting completed"
 echo "   🎨 Black: Code formatting completed"
 echo "   🔬 MyPy: Type checking completed"

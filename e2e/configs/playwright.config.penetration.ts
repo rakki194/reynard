@@ -6,6 +6,17 @@
  */
 
 import { defineConfig, devices } from "@playwright/test";
+import { createResultsManager, TEST_TYPES } from "../core/utils/results-manager";
+
+// 🦊 Initialize results manager for penetration tests
+const resultsManager = createResultsManager(TEST_TYPES.PENETRATION, {
+  environment: process.env.NODE_ENV || "development",
+  branch: process.env.GIT_BRANCH || "unknown",
+  commit: process.env.GIT_COMMIT || "unknown"
+});
+
+// Create directories and get paths
+const resultsPaths = resultsManager.createDirectories();
 
 export default defineConfig({
   testDir: "../suites",

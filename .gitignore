@@ -5,6 +5,19 @@ agent-names.json
 .agent-name
 .ruff_cache/
 .jwt_secret
+
+# E2E Test Results - Keep important ones, ignore temporary ones
+# Keep the unified results structure but ignore old scattered results
+e2e/results/e2e/
+e2e/results/effects/
+e2e/results/benchmark/
+e2e/results/i18n/
+e2e/results/penetration/
+e2e/results/performance/
+e2e/results/components/
+e2e/results/dom/
+
+# Ignore old scattered results (these will be cleaned up)
 *results/
 *-report/
 core-i18n-results-final.json

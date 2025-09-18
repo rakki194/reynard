@@ -725,6 +725,1097 @@
       },
       "problemMatcher": [],
       "detail": "Automatically start CHANGELOG.md file watcher with markdown linting when workspace opens"
+    },
+    {
+      "label": "🚀 Dev Server Manager - Status",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/dev/dev-server-manager.sh", "status"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Show status of all running development servers"
+    },
+    {
+      "label": "🚀 Dev Server Manager - List Projects",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/dev/dev-server-manager.sh", "list"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "List all available Reynard projects for development"
+    },
+    {
+      "label": "🚀 Dev Server Manager - Stop All",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/dev/dev-server-manager.sh", "stop-all"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Stop all running development servers"
+    },
+    {
+      "label": "🧪 Vitest Global Queue - Status",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/testing/vitest-global-queue.sh", "status"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Show status of global vitest process queue"
+    },
+    {
+      "label": "🧪 Vitest Global Queue - Cleanup",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/testing/vitest-global-queue.sh", "cleanup"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Clean up dead vitest processes from global queue"
+    },
+    {
+      "label": "🧪 Vitest Global Queue - Run Tests",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/testing/vitest-global-queue.sh", "run", "vscode-agent", "--run"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Run tests using global vitest queue with agent coordination"
+    },
+    {
+      "label": "🧪 Vitest Global Queue - Run Coverage",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/testing/vitest-global-queue.sh", "run", "vscode-agent", "--coverage"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Run test coverage using global vitest queue"
+    },
+    {
+      "label": "🔍 Shell Script Validation",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/validation/validate-shell-scripts.sh"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Validate all shell scripts using shellcheck"
+    },
+    {
+      "label": "🔍 Workflow Validation",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/validation/validate-workflows.sh"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Validate all GitHub Actions workflows using actionlint"
+    },
+    {
+      "label": "🦊 MCP Server - Start",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/mcp/start-mcp-server.sh"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Start the Reynard MCP server for agent integration"
+    },
+    {
+      "label": "🦊 MCP Server - Test Tools",
+      "type": "shell",
+      "command": "bash",
+      "args": ["-c", "source ~/venv/bin/activate && cd scripts/mcp && python test_tools_list.py"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Test MCP server tools and functionality"
+    },
+    {
+      "label": "🦊 MCP Server - Debug",
+      "type": "shell",
+      "command": "bash",
+      "args": ["-c", "source ~/venv/bin/activate && cd scripts/mcp && python debug_mcp.py"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Debug MCP server configuration and connections"
+    },
+    {
+      "label": "🎯 Agent Diagram Generator",
+      "type": "shell",
+      "command": "bash",
+      "args": ["-c", "source ~/venv/bin/activate && cd scripts/agent_diagram && python cli.py generate"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Generate agent contribution diagrams"
+    },
+    {
+      "label": "🎯 Agent Diagram - Test",
+      "type": "shell",
+      "command": "bash",
+      "args": ["-c", "source ~/venv/bin/activate && cd scripts/agent_diagram && python -m pytest tests/ -v"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Run tests for agent diagram generator"
+    },
+    {
+      "label": "📊 Dependency Analysis",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/analyze-deps.sh"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Analyze package dependencies and identify unused packages"
+    },
+    {
+      "label": "🔍 Circular Dependency Detection",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/detect-circular.sh"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Detect circular dependencies in the monorepo"
+    },
+    {
+      "label": "🧹 Tracked Junk Files Detection",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/detect-tracked-junk-files.sh"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Detect tracked files that should be in .gitignore"
+    },
+    {
+      "label": "🔧 Fix Package Builds",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/fix-package-builds.sh"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Fix common package build issues across the monorepo"
+    },
+    {
+      "label": "⚡ Optimize Peer Dependencies",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/optimize-peer-deps.sh"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Optimize peer dependencies across packages"
+    },
+    {
+      "label": "🔄 Update Package Configs",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/update-package-configs.sh"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Update package configurations across the monorepo"
+    },
+    {
+      "label": "🎨 Generate Project Diagrams",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/generate-project-diagrams.sh"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Generate visual diagrams of project architecture"
+    },
+    {
+      "label": "🐍 Python Workflow Automation",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/python-workflow-automation.sh"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Run Python workflow automation tasks"
+    },
+    {
+      "label": "🔒 Setup SSL Certificates",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/setup-ssl.sh"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Setup SSL certificates for development"
+    },
+    {
+      "label": "🚀 Deploy to Production (CPU)",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/deploy-cpu-production.sh"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Deploy to CPU-optimized production environment"
+    },
+    {
+      "label": "🚀 Deploy to Production (Full)",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/deploy-production.sh"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Deploy to full production environment"
+    },
+    {
+      "label": "🧪 Test Production Deployment",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/test-production.sh"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Test production deployment configuration"
+    },
+    {
+      "label": "🎮 ECS World Simulation",
+      "type": "shell",
+      "command": "bash",
+      "args": ["-c", "source ~/venv/bin/activate && cd services/ecs-world && python main.py"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Start ECS world simulation for agent testing"
+    },
+    {
+      "label": "🎮 ECS World - Test Simple",
+      "type": "shell",
+      "command": "bash",
+      "args": ["-c", "source ~/venv/bin/activate && cd scripts/mcp && python simple_trait_simulation.py"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Run simple ECS trait simulation test"
+    },
+    {
+      "label": "🎮 ECS World - Test Comprehensive",
+      "type": "shell",
+      "command": "bash",
+      "args": ["-c", "source ~/venv/bin/activate && cd scripts/mcp && python comprehensive_agent_simulation.py"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Run comprehensive ECS agent simulation test"
+    },
+    {
+      "label": "🎯 Game Engine - Test ECS",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "reynard-games", "test", "--", "--run", "src/ecs"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Test ECS game engine components"
+    },
+    {
+      "label": "🎯 Game Engine - Test Collision",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "reynard-games", "test", "--", "--run", "src/collision"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Test collision detection systems"
+    },
+    {
+      "label": "🎯 Game Engine - Test Performance",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "reynard-games", "test", "--", "--run", "src/performance"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Test game engine performance optimizations"
+    },
+    {
+      "label": "🎨 3D Engine - Test Components",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "reynard-3d", "test", "--", "--run"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Test 3D engine components and rendering"
+    },
+    {
+      "label": "🧠 AI Shared - Test Models",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "reynard-ai-shared", "test", "--", "--run"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Test AI model management and utilities"
+    },
+    {
+      "label": "🔍 RAG System - Test Search",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "reynard-rag", "test", "--", "--run"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Test RAG search and embedding systems"
+    },
+    {
+      "label": "📊 Charts - Test Visualizations",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "reynard-charts", "test", "--", "--run"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Test chart components and data visualizations"
+    },
+    {
+      "label": "🎨 Animation - Test Systems",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "reynard-animation", "test", "--", "--run"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Test animation systems and transitions"
+    },
+    {
+      "label": "🔧 Code Quality - Test Security",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "reynard-code-quality", "test", "--", "--run", "src/security"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Test code quality security analysis tools"
+    },
+    {
+      "label": "🌐 I18n - Test Translations",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/testing/i18n-test-all.sh"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Test internationalization and translation systems"
+    },
+    {
+      "label": "🌐 I18n - CI Validation",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/testing/i18n-ci.sh"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Run CI validation for i18n systems"
+    },
+    {
+      "label": "🌐 I18n - CI Validation (Lenient)",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/testing/i18n-ci-lenient.sh"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Run lenient CI validation for i18n systems"
+    },
+    {
+      "label": "📚 Documentation - Generate",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["run", "docs:generate"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Generate documentation from code"
+    },
+    {
+      "label": "📚 Documentation - Watch",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["run", "docs:watch"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Watch and regenerate documentation on changes"
+    },
+    {
+      "label": "📚 Documentation - Dev Server",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["run", "docs:dev"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Start documentation development server"
+    },
+    {
+      "label": "📚 Documentation - Build",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["run", "docs:build"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Build documentation for production"
+    },
+    {
+      "label": "📚 Documentation - Serve",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["run", "docs:serve"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Serve built documentation locally"
+    },
+    {
+      "label": "🧪 Test Mermaid Rendering",
+      "type": "shell",
+      "command": "bash",
+      "args": ["-c", "source ~/venv/bin/activate && python scripts/test_mermaid_render.py"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Test Mermaid diagram rendering functionality"
+    },
+    {
+      "label": "🧪 Test Enhanced Search",
+      "type": "shell",
+      "command": "bash",
+      "args": ["-c", "source ~/venv/bin/activate && python scripts/test_enhanced_search.py"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Test enhanced search functionality"
+    },
+    {
+      "label": "🧪 Test Backend Integration",
+      "type": "shell",
+      "command": "bash",
+      "args": ["-c", "source ~/venv/bin/activate && python scripts/test-backend.py"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Test backend integration and API endpoints"
+    },
+    {
+      "label": "🔒 Test MCP Authentication",
+      "type": "shell",
+      "command": "bash",
+      "args": ["-c", "source ~/venv/bin/activate && python scripts/test-mcp-auth.py"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Test MCP server authentication and security"
+    },
+    {
+      "label": "🎯 Examples - 3D Demo",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "3d-demo", "dev"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Start 3D demo example application"
+    },
+    {
+      "label": "🎯 Examples - Algorithm Bench",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "algo-bench", "dev"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Start algorithm benchmarking example"
+    },
+    {
+      "label": "🎯 Examples - Auth App",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "auth-app", "dev:full"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Start authentication example with backend"
+    },
+    {
+      "label": "🎯 Examples - Comprehensive Dashboard",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "comprehensive-dashboard", "dev"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Start comprehensive dashboard example"
+    },
+    {
+      "label": "🎯 Examples - ECS Agent Tracker",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "ecs-agent-tracker", "dev"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Start ECS agent tracker example"
+    },
+    {
+      "label": "🎯 Examples - Image Caption App",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "image-caption-app", "dev"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Start image caption AI example"
+    },
+    {
+      "label": "🎯 Examples - Prompt Note",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "prompt-note", "start:full"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Start prompt note example with backend"
+    },
+    {
+      "label": "🎯 Examples - Test App",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "test-app", "dev"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Start test application example"
+    },
+    {
+      "label": "🎯 Examples - Hue Shifting Demo",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "hue-shifting-demo", "dev"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Start hue shifting color demo"
+    },
+    {
+      "label": "🎯 Examples - I18n Demo",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "i18n-demo", "dev"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Start internationalization demo"
+    },
+    {
+      "label": "🎯 Examples - Icons Demo",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "icons-demo", "dev"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Start icons showcase demo"
+    },
+    {
+      "label": "🎯 Examples - Multi Theme Demo",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "multi-theme", "dev"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Start multi-theme demonstration"
+    },
+    {
+      "label": "🎯 Examples - RAG Demo",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "rag-demo", "dev"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Start RAG (Retrieval Augmented Generation) demo"
+    },
+    {
+      "label": "🎯 Examples - Features App",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "features-app", "dev"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Start features showcase application"
+    },
+    {
+      "label": "🎯 Examples - File Test",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "file-test", "dev"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Start file processing test application"
+    },
+    {
+      "label": "🎯 Examples - Clock",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "clock", "dev"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Start clock component demo"
+    },
+    {
+      "label": "🎯 Examples - Comfy Demo",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "comfy-demo", "dev"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Start ComfyUI integration demo"
+    },
+    {
+      "label": "🎯 Examples - Error Demo",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "error-demo", "dev:full"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Start error handling demonstration"
+    },
+    {
+      "label": "🎯 Examples - Embedding Visualization",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "embedding-visualization-demo", "dev"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Start embedding visualization demo"
+    },
+    {
+      "label": "🎯 Examples - Basic App",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "basic-app", "dev"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Start basic application template"
+    },
+    {
+      "label": "🎯 Examples - Tutorial App",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "tutorial-app", "dev"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Start tutorial application"
     }
   ]
 }

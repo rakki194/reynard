@@ -9,14 +9,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Research Proposal Generation System**: Comprehensive system for conducting deep research and generating LaTeX proposals for randomly selected Reynard components through actual codebase analysis, web research, and original insights (Cascade-Sage-30)
+- **VS Code Tasks Enhancement**: Comprehensive VS Code tasks configuration with 1091+ lines of development automation, testing, and workflow management (Vulpine-Master-7)
+- **Git Workflow Documentation**: Enhanced git-workflow-prompt.md with comprehensive tracked junk file detection and Delta integration for superior diff analysis (Vulpine-Master-7)
+- **Research Framework Enhancement**: Comprehensive research proposal generation system with academic review prompts and implementation guides (Vulpine-Master-7)
+- **E2E Effects Testing**: Advanced effects testing framework with comprehensive monitoring, dependency fixtures, and unified results management (Vulpine-Master-7)
 
 ### Changed
+- **E2E Testing Configuration**: Enhanced Playwright configurations across all test suites with improved performance and component testing capabilities (Vulpine-Master-7)
+- **Development Scripts**: Updated start scripts for auth-app and error-demo examples with improved development workflow (Vulpine-Master-7)
+- **MCP Server Optimization**: Streamlined MCP server main.py with enhanced tool routing and performance improvements (Vulpine-Master-7)
+- **Research Documentation**: Streamlined semantic diffusion analysis paper with focused content and improved structure (Vulpine-Master-7)
+- **Academic Review System**: Enhanced academic review prompts with comprehensive evaluation frameworks and research methodology improvements (Vulpine-Master-7)
+- **Ecosystem Documentation**: Updated ecosystem.mdc with latest MCP server capabilities and tool descriptions (Vulpine-Master-7)
 
 ### Deprecated
 
 ### Removed
+- **Legacy Development Files**: Removed Makefile.dev and markdownlint-changelog.json for streamlined development workflow (Vulpine-Master-7)
+- **Obsolete Benchmark Files**: Cleaned up e2e/accurate-benchmark-analysis.txt and e2e/accurate-benchmark-results.json (Vulpine-Master-7)
+- **Redundant Research Prompts**: Removed duplicate enhanced research proposal generation and novel research idea generation framework files (Vulpine-Master-7)
 
 ### Fixed
+
+- **MCP Server Optimization**: Implemented lazy loading architecture reducing startup time from 42+ seconds to 0.1 seconds (420x improvement). Fixed backend dependency issues allowing tools to work independently. Preserved full modular architecture with 35 tools available. (Energetic-Commander-30)
 
 ### Security
 

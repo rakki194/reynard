@@ -3,14 +3,28 @@
  *
  * Comprehensive Playwright configuration for testing authentication workflows
  * across the Reynard ecosystem with gatekeeper, backend, and auth package.
+ * 
+ * 🦊 *whiskers twitch with unified precision* Now uses centralized results management.
  */
 
 import { defineConfig, devices } from "@playwright/test";
 import { detectAuthAppPort } from "../core/config/port-detector";
+import { createResultsManager, TEST_TYPES } from "../core/utils/results-manager";
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
+
+// 🦊 Initialize results manager for E2E tests
+const resultsManager = createResultsManager(TEST_TYPES.E2E, {
+  environment: process.env.NODE_ENV || "development",
+  branch: process.env.GIT_BRANCH || "unknown",
+  commit: process.env.GIT_COMMIT || "unknown"
+});
+
+// Create directories and get paths
+const resultsPaths = resultsManager.createDirectories();
+
 export default defineConfig({
   testDir: "../suites",
   testMatch: [
@@ -32,11 +46,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
 
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [
-    ["html", { open: "never" }],
-    ["json", { outputFile: "e2e-results.json" }],
-    ["junit", { outputFile: "e2e-results.xml" }],
-  ],
+  reporter: resultsManager.getReporterConfig(),
 
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
@@ -112,7 +122,7 @@ export default defineConfig({
   },
 
   /* Output directory for test artifacts */
-  outputDir: "../results/e2e-results/",
+  outputDir: resultsManager.getOutputDir(),
 
   /* Global setup and teardown */
   globalSetup: "../core/setup/global-setup.ts",

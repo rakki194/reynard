@@ -11,7 +11,7 @@ if ! systemctl is-active --quiet postgresql; then
 fi
 
 # Check if database exists
-if ! sudo -u postgres psql -lqt | cut -d \| -f 1 | grep -qw yipyap; then
+if ! sudo -u postgres psql -lqt | cut -d \| -f 1 | grep -qw yipyap || true; then
     echo "📊 Database 'yipyap' not found. Creating it..."
     sudo -u postgres createdb yipyap
     sudo -u postgres psql -c "CREATE USER yipyap WITH PASSWORD 'yipyap';"
@@ -19,24 +19,21 @@ if ! sudo -u postgres psql -lqt | cut -d \| -f 1 | grep -qw yipyap; then
 fi
 
 # Install Python dependencies if needed
-if [ ! -d "backend/venv" ]; then
+if [[ ! -d "backend/venv" ]]; then
     echo "🐍 Setting up Python virtual environment..."
-    cd backend
-    python -m venv venv
-    source venv/bin/activate
-    pip install -r requirements.txt
-    cd ..
+    (cd backend && python -m venv venv)
+    # shellcheck source=/dev/null
+    source backend/venv/bin/activate
+    pip install -r backend/requirements.txt
 fi
 
 # Setup database schema
 echo "🔧 Setting up database schema..."
-cd backend
-source venv/bin/activate
-cd ..
-python setup_database.py
+# shellcheck source=/dev/null
+(cd backend && source venv/bin/activate && cd .. && python setup_database.py)
 
 # Install Node.js dependencies if needed
-if [ ! -d "node_modules" ]; then
+if [[ ! -d "node_modules" ]]; then
     echo "📦 Installing Node.js dependencies..."
     pnpm install
 fi

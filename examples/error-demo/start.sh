@@ -47,8 +47,7 @@ echo ""
 
 # Install Node.js dependencies
 echo "📦 Installing Node.js dependencies..."
-pnpm install
-if [ $? -ne 0 ]; then
+if ! pnpm install; then
     echo "❌ Failed to install Node.js dependencies"
     exit 1
 fi
