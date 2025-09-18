@@ -75,6 +75,11 @@ jobs:
             echo "packages=${PACKAGES}" >> "${GITHUB_OUTPUT}"
           fi
 
+      - name: 🏗️ Build i18n package
+        run: |
+          cd packages/i18n || exit
+          pnpm build
+
       - name: 🏗️ Build testing package
         run: |
           cd packages/testing || exit
@@ -125,6 +130,11 @@ jobs:
 
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: 🏗️ Build i18n package
+        run: |
+          cd packages/i18n || exit
+          pnpm build
 
       - name: 🏗️ Build testing package
         run: |
@@ -261,6 +271,11 @@ jobs:
 
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: 🏗️ Build i18n package
+        run: |
+          cd packages/i18n || exit
+          pnpm build
 
       - name: 🏗️ Build testing package
         run: |
