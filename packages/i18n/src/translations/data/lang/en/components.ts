@@ -41,5 +41,6 @@ export const componentTranslations = {
     chromaControl: "Chroma control",
     alphaControl: "Alpha control",
     opacityControl: "Opacity control",
+    animationSpeedControl: "Animation speed control",
   },
 };

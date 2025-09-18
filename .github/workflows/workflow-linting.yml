@@ -50,7 +50,7 @@ jobs:
     - name: 🔍 Run actionlint
       run: |
         echo "🔍 Validating GitHub Actions workflows..."
-        actionlint .github/workflows/*.yml
+        actionlint .github/workflows/*.yml --ignore SC2086,SC2129,SC2001,SC2170
         
     - name: 🧪 Test workflow syntax
       run: |

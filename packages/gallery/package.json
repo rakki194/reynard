@@ -38,6 +38,7 @@
     "reynard-core": "workspace:*",
     "reynard-components": "workspace:*",
     "reynard-composables": "workspace:*",
+    "reynard-i18n": "workspace:*",
     "@solid-primitives/intersection-observer": "2.2.2",
     "@solid-primitives/resize-observer": "2.1.3",
     "@solid-primitives/event-listener": "2.4.3"

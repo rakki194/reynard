@@ -36,6 +36,7 @@
     "reynard-core": "workspace:*",
     "reynard-components": "workspace:*",
     "reynard-fluent-icons": "workspace:*",
+    "reynard-i18n": "workspace:*",
     "reynard-monaco": "workspace:*",
     "reynard-audio": "workspace:*",
     "reynard-video": "workspace:*",

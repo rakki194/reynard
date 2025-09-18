@@ -65,7 +65,7 @@ export const ColorControls: Component<ColorControlsProps> = props => {
             value={props.selectedChroma}
             onChange={props.onChromaChange}
             class="chroma-slider"
-            aria-label="Chroma control"
+            aria-label={t("components.colorPicker.chromaControl")}
           />
         </div>
         <div class="control-group">
@@ -78,7 +78,7 @@ export const ColorControls: Component<ColorControlsProps> = props => {
             value={props.animationSpeed}
             onChange={props.onSpeedChange}
             class="speed-slider"
-            aria-label="Animation speed control"
+            aria-label={t("components.colorPicker.animationSpeedControl")}
           />
         </div>
       </div>

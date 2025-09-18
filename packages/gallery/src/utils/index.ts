@@ -12,6 +12,7 @@ import type {
   FilterConfiguration,
   BreadcrumbItem,
 } from "../types";
+import { useI18n } from "reynard-i18n";
 
 /**
  * File type detection utilities
@@ -82,17 +83,18 @@ export function formatDuration(seconds: number): string {
 export function formatDate(timestamp: number, format: "short" | "long" | "relative" = "short"): string {
   const date = new Date(timestamp);
   const now = new Date();
+  const { t } = useI18n();
 
   if (format === "relative") {
     const diffMs = now.getTime() - date.getTime();
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-    if (diffDays === 0) return "Today";
-    if (diffDays === 1) return "Yesterday";
-    if (diffDays < 7) return `${diffDays} days ago`;
-    if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
-    if (diffDays < 365) return `${Math.floor(diffDays / 30)} months ago`;
-    return `${Math.floor(diffDays / 365)} years ago`;
+    if (diffDays === 0) return t("gallery.time.today");
+    if (diffDays === 1) return t("gallery.time.yesterday");
+    if (diffDays < 7) return t("gallery.time.daysAgo", { count: diffDays });
+    if (diffDays < 30) return t("gallery.time.weeksAgo", { count: Math.floor(diffDays / 7) });
+    if (diffDays < 365) return t("gallery.time.monthsAgo", { count: Math.floor(diffDays / 30) });
+    return t("gallery.time.yearsAgo", { count: Math.floor(diffDays / 365) });
   }
 
   if (format === "long") {
@@ -271,10 +273,11 @@ export function filterItems(items: (FileItem | FolderItem)[], config: FilterConf
  */
 export function generateBreadcrumbs(currentPath: string): BreadcrumbItem[] {
   const parts = currentPath.split("/").filter(Boolean);
+  const { t } = useI18n();
   const breadcrumbs: BreadcrumbItem[] = [
     {
       path: "",
-      label: "Home",
+      label: t("gallery.navigation.home"),
       clickable: true,
     },
   ];

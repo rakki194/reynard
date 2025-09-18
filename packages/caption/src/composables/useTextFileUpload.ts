@@ -7,6 +7,7 @@
 import { createSignal } from "solid-js";
 import { TextFile } from "../types/TextTypes";
 import { processTextFile } from "../utils/textFileUtils";
+import { useI18n } from "reynard-i18n";
 
 export interface UseTextFileUploadOptions {
   maxFiles?: number;
@@ -16,6 +17,7 @@ export interface UseTextFileUploadOptions {
 export const useTextFileUpload = (options: UseTextFileUploadOptions = {}) => {
   const [isLoading, setIsLoading] = createSignal(false);
   const [error, setError] = createSignal<string | null>(null);
+  const { t } = useI18n();
 
   // Process uploaded files with error handling
   const processFileWithErrorHandling = async (file: File): Promise<TextFile> => {
@@ -25,7 +27,7 @@ export const useTextFileUpload = (options: UseTextFileUploadOptions = {}) => {
     try {
       return await processTextFile(file);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Failed to process text file";
+      const errorMessage = err instanceof Error ? err.message : t("caption.errors.failedToProcessTextFile");
       setError(errorMessage);
       options.onError?.(errorMessage);
       throw new Error(errorMessage);

@@ -13,6 +13,7 @@ import { chartTranslations } from "./charts";
 import { authTranslations } from "./auth";
 import { chatTranslations } from "./chat";
 import { monacoTranslations } from "./monaco";
+import { captionTranslations } from "./caption";
 
 export default {
   common: commonTranslations,
@@ -24,4 +25,5 @@ export default {
   auth: authTranslations,
   chat: chatTranslations,
   monaco: monacoTranslations,
+  caption: captionTranslations,
 } as const satisfies Translations;
