@@ -1185,6 +1185,9 @@ importers:
 
   packages/algorithms:
     dependencies:
+      reynard-i18n:
+        specifier: workspace:*
+        version: link:../i18n
       solid-js:
         specifier: 1.9.9
         version: 1.9.9
@@ -1481,6 +1484,9 @@ importers:
       node-fetch:
         specifier: ^3.3.2
         version: 3.3.2
+      reynard-i18n:
+        specifier: workspace:*
+        version: link:../i18n
       solid-js:
         specifier: 1.9.9
         version: 1.9.9
@@ -1686,6 +1692,9 @@ importers:
       reynard-fluent-icons:
         specifier: workspace:*
         version: link:../fluent-icons
+      reynard-i18n:
+        specifier: workspace:*
+        version: link:../i18n
       reynard-image:
         specifier: workspace:*
         version: link:../image
@@ -3029,6 +3038,9 @@ importers:
       reynard-core:
         specifier: workspace:*
         version: link:../core
+      reynard-i18n:
+        specifier: workspace:*
+        version: link:../i18n
     devDependencies:
       '@solidjs/testing-library':
         specifier: 0.8.10
@@ -3400,6 +3412,9 @@ importers:
       reynard-composables:
         specifier: workspace:*
         version: link:../composables
+      reynard-i18n:
+        specifier: workspace:*
+        version: link:../i18n
       reynard-themes:
         specifier: workspace:*
         version: link:../themes
