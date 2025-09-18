@@ -39,7 +39,7 @@ export const RoguelikeGameComponent: Component<RoguelikeGameProps> = props => {
       setIsLoading(false);
     } catch (err) {
       console.error("Failed to initialize rogue-like game:", err);
-      setError(err instanceof Error ? err.message : "Unknown error");
+      setError(err instanceof Error ? err.message : t("games.errors.unknownError"));
       setIsLoading(false);
     }
   });
@@ -110,7 +110,7 @@ export const RoguelikeGameComponent: Component<RoguelikeGameProps> = props => {
                         game.start();
                         setIsLoading(false);
                       } catch (err) {
-                        setError(err instanceof Error ? err.message : "Unknown error");
+                        setError(err instanceof Error ? err.message : t("games.errors.unknownError"));
                         setIsLoading(false);
                       }
                     }

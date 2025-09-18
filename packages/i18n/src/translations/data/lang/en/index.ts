@@ -17,6 +17,7 @@ import { captionTranslations } from "./caption";
 import { apiClientTranslations } from "./api-client";
 import { algorithmsTranslations } from "./algorithms";
 import { testingTranslations } from "./testing";
+import { gamesTranslations } from "./games";
 import { coreTranslations } from "./core";
 
 export default {
@@ -33,4 +34,5 @@ export default {
   apiClient: apiClientTranslations,
   algorithms: algorithmsTranslations,
   testing: testingTranslations,
+  games: gamesTranslations,
 } as const satisfies Translations;

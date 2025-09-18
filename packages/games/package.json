@@ -49,6 +49,7 @@
     "reynard-algorithms": "workspace:*",
     "reynard-components": "workspace:*",
     "reynard-fluent-icons": "workspace:*",
+    "reynard-i18n": "workspace:*",
     "reynard-themes": "workspace:*"
   },
   "devDependencies": {

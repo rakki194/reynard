@@ -2377,6 +2377,9 @@ importers:
 
   packages/connection:
     dependencies:
+      reynard-i18n:
+        specifier: workspace:*
+        version: link:../i18n
       reynard-validation:
         specifier: workspace:*
         version: link:../validation

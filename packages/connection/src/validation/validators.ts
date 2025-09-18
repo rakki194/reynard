@@ -7,6 +7,7 @@
  */
 
 import { ValidationResult, ValidationUtils } from "./core";
+import { useI18n } from "reynard-i18n";
 
 // ============================================================================
 // Basic Field Validators
@@ -15,13 +16,13 @@ import { ValidationResult, ValidationUtils } from "./core";
 /**
  * Validate an email address
  */
-export function validateEmail(email: string, fieldName = "email"): ValidationResult {
+export function validateEmail(email: string, fieldName = "email", t?: (key: string) => string): ValidationResult {
   return ValidationUtils.validateValue(
     email,
     {
       type: "email",
       required: true,
-      errorMessage: "Must be a valid email address",
+      errorMessage: t ? t("connection.validation.email.invalid") : "Must be a valid email address",
     },
     { fieldName }
   );
@@ -30,7 +31,7 @@ export function validateEmail(email: string, fieldName = "email"): ValidationRes
 /**
  * Validate a password
  */
-export function validatePassword(password: string, fieldName = "password"): ValidationResult {
+export function validatePassword(password: string, fieldName = "password", t?: (key: string) => string): ValidationResult {
   return ValidationUtils.validateValue(
     password,
     {
@@ -39,7 +40,7 @@ export function validatePassword(password: string, fieldName = "password"): Vali
       minLength: 8,
       maxLength: 128,
       pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
-      errorMessage: "Password must be 8-128 characters with uppercase, lowercase, number, and special character",
+      errorMessage: t ? t("connection.validation.password.requirements") : "Password must be 8-128 characters with uppercase, lowercase, number, and special character",
     },
     { fieldName }
   );
@@ -48,7 +49,7 @@ export function validatePassword(password: string, fieldName = "password"): Vali
 /**
  * Validate a username
  */
-export function validateUsername(username: string, fieldName = "username"): ValidationResult {
+export function validateUsername(username: string, fieldName = "username", t?: (key: string) => string): ValidationResult {
   return ValidationUtils.validateValue(
     username,
     {
@@ -57,7 +58,7 @@ export function validateUsername(username: string, fieldName = "username"): Vali
       minLength: 3,
       maxLength: 30,
       pattern: /^[a-zA-Z0-9_-]+$/,
-      errorMessage: "Username must be 3-30 characters with only letters, numbers, underscores, and hyphens",
+      errorMessage: t ? t("connection.validation.username.requirements") : "Username must be 3-30 characters with only letters, numbers, underscores, and hyphens",
     },
     { fieldName }
   );
@@ -124,7 +125,7 @@ export function validateApiKey(apiKey: string, fieldName = "apiKey"): Validation
 /**
  * Validate an authentication token
  */
-export function validateToken(token: string, fieldName = "token"): ValidationResult {
+export function validateToken(token: string, fieldName = "token", t?: (key: string) => string): ValidationResult {
   return ValidationUtils.validateValue(
     token,
     {
@@ -132,7 +133,7 @@ export function validateToken(token: string, fieldName = "token"): ValidationRes
       required: true,
       minLength: 20,
       maxLength: 512,
-      errorMessage: "Token must be 20-512 characters",
+      errorMessage: t ? t("connection.validation.token.requirements") : "Token must be 20-512 characters",
     },
     { fieldName }
   );
@@ -145,7 +146,7 @@ export function validateToken(token: string, fieldName = "token"): ValidationRes
 /**
  * Validate a filename
  */
-export function validateFileName(fileName: string, fieldName = "fileName"): ValidationResult {
+export function validateFileName(fileName: string, fieldName = "fileName", t?: (key: string) => string): ValidationResult {
   return ValidationUtils.validateValue(
     fileName,
     {
@@ -154,7 +155,7 @@ export function validateFileName(fileName: string, fieldName = "fileName"): Vali
       minLength: 1,
       maxLength: 255,
       pattern: /^[^<>:"/\\|?*\x00-\x1f]+$/,
-      errorMessage: "Filename cannot contain invalid characters",
+      errorMessage: t ? t("connection.validation.filename.invalidCharacters") : "Filename cannot contain invalid characters",
     },
     { fieldName }
   );
@@ -163,14 +164,14 @@ export function validateFileName(fileName: string, fieldName = "fileName"): Vali
 /**
  * Validate a MIME type
  */
-export function validateMimeType(mimeType: string, fieldName = "mimeType"): ValidationResult {
+export function validateMimeType(mimeType: string, fieldName = "mimeType", t?: (key: string) => string): ValidationResult {
   return ValidationUtils.validateValue(
     mimeType,
     {
       type: "string",
       required: true,
       pattern: /^[a-zA-Z0-9][a-zA-Z0-9!#$&\-\^_]*\/[a-zA-Z0-9][a-zA-Z0-9!#$&\-\^_]*$/,
-      errorMessage: "Must be a valid MIME type",
+      errorMessage: t ? t("connection.validation.mimeType.invalid") : "Must be a valid MIME type",
     },
     { fieldName }
   );
@@ -221,7 +222,7 @@ export function validatePort(port: number, fieldName = "port"): ValidationResult
 /**
  * Validate a timeout value
  */
-export function validateTimeout(timeout: number, fieldName = "timeout"): ValidationResult {
+export function validateTimeout(timeout: number, fieldName = "timeout", t?: (key: string) => string): ValidationResult {
   return ValidationUtils.validateValue(
     timeout,
     {
@@ -229,7 +230,7 @@ export function validateTimeout(timeout: number, fieldName = "timeout"): Validat
       required: true,
       min: 1000,
       max: 300000, // 5 minutes
-      errorMessage: "Timeout must be between 1 second and 5 minutes",
+      errorMessage: t ? t("connection.validation.timeout.range") : "Timeout must be between 1 second and 5 minutes",
     },
     { fieldName }
   );
@@ -259,7 +260,7 @@ export function validateRetryCount(retryCount: number, fieldName = "retryCount")
 /**
  * Validate a model name
  */
-export function validateModelName(modelName: string, fieldName = "modelName"): ValidationResult {
+export function validateModelName(modelName: string, fieldName = "modelName", t?: (key: string) => string): ValidationResult {
   return ValidationUtils.validateValue(
     modelName,
     {
@@ -268,7 +269,7 @@ export function validateModelName(modelName: string, fieldName = "modelName"): V
       minLength: 1,
       maxLength: 100,
       pattern: /^[a-zA-Z0-9._-]+$/,
-      errorMessage: "Model name must be 1-100 characters with only letters, numbers, dots, underscores, and hyphens",
+      errorMessage: t ? t("connection.validation.modelName.requirements") : "Model name must be 1-100 characters with only letters, numbers, dots, underscores, and hyphens",
     },
     { fieldName }
   );
