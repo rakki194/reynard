@@ -25,12 +25,12 @@ jobs:
     - name: 🏗️ Setup pnpm
       uses: pnpm/action-setup@v4
       with:
-        version: ${{ env.PNPM_VERSION }}
+        version: "${{ env.PNPM_VERSION }}"
         
     - name: 🟢 Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ env.NODE_VERSION }}
+        node-version: "${{ env.NODE_VERSION }}"
         cache: 'pnpm'
         
     - name: 💾 Cache dependencies
@@ -40,32 +40,32 @@ jobs:
           ~/.pnpm-store
           node_modules
           packages/*/node_modules
-        key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+        key: "${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}"
         restore-keys: |
-          ${{ runner.os }}-pnpm-
+          "${{ runner.os }}-pnpm-"
         
     - name: 📦 Install dependencies
       run: pnpm install --frozen-lockfile
       
     - name: 🏗️ Build testing package
       run: |
-        cd packages/testing
+        cd packages/testing || exit
         pnpm build
         
     - name: ✅ Validate i18n setup
       run: |
-        cd packages/testing
+        cd packages/testing || exit
         pnpm i18n:validate
         
     - name: 🔍 Run ESLint with i18n rules
       run: |
-        cd packages/testing
+        cd packages/testing || exit
         pnpm i18n:eslint
       continue-on-error: true
       
     - name: 🧪 Run comprehensive i18n tests
       run: |
-        cd packages/testing
+        cd packages/testing || exit
         pnpm i18n:test --output ../../i18n-results.json --report ../../i18n-report.md
         
     - name: 📤 Upload i18n results

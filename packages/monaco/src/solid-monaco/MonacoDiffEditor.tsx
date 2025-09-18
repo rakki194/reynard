@@ -5,7 +5,6 @@ import { Loader } from "./Loader";
 import { MonacoContainer } from "./MonacoContainer";
 import { getOrCreateModel } from "./utils";
 import { LoaderParams } from "./types";
-import { useI18n } from "reynard-i18n";
 import "./MonacoDiffEditor.css";
 
 const viewStates = new Map();
@@ -78,8 +77,7 @@ export const MonacoDiffEditor = (inputProps: MonacoDiffEditorProps) => {
         return;
       }
 
-      const { t } = useI18n();
-      console.error(t("monaco.errors.couldNotInitializeMonaco"), error);
+      console.error("Could not initialize Monaco", error);
     }
   });
 

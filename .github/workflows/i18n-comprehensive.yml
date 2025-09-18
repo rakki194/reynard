@@ -28,8 +28,8 @@ jobs:
     name: 🦊 Setup & Validation
     runs-on: ubuntu-latest
     outputs:
-      cache-hit: ${{ steps.cache-deps.outputs.cache-hit }}
-      packages-to-test: ${{ steps.determine-packages.outputs.packages }}
+      cache-hit: "${{ steps.cache-deps.outputs.cache-hit }}"
+      packages-to-test: "${{ steps.determine-packages.outputs.packages }}"
 
     steps:
       - name: 📥 Checkout code
@@ -40,12 +40,12 @@ jobs:
       - name: 🏗️ Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: ${{ env.PNPM_VERSION }}
+          version: "${{ env.PNPM_VERSION }}"
 
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: "${{ env.NODE_VERSION }}"
           cache: 'pnpm'
 
       - name: 💾 Cache dependencies
@@ -56,9 +56,9 @@ jobs:
             ~/.pnpm-store
             node_modules
             packages/*/node_modules
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: "${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}"
           restore-keys: |
-            ${{ runner.os }}-pnpm-
+            "${{ runner.os }}-pnpm-"
 
       - name: 📦 Install dependencies
         if: steps.cache-deps.outputs.cache-hit != 'true'
@@ -77,12 +77,12 @@ jobs:
 
       - name: 🏗️ Build testing package
         run: |
-          cd packages/testing
+          cd packages/testing || exit
           pnpm build
 
       - name: ✅ Validate i18n setup
         run: |
-          cd packages/testing
+          cd packages/testing || exit
           pnpm i18n:validate
 
   # 🦦 Comprehensive i18n Testing
@@ -104,12 +104,12 @@ jobs:
       - name: 🏗️ Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: ${{ env.PNPM_VERSION }}
+          version: "${{ env.PNPM_VERSION }}"
 
-      - name: 🟢 Setup Node.js ${{ matrix.node-version }}
+      - name: 🟢 Setup Node.js "${{ matrix.node-version }}"
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: "${{ matrix.node-version }}"
           cache: 'pnpm'
 
       - name: 💾 Restore dependencies
@@ -119,22 +119,22 @@ jobs:
             ~/.pnpm-store
             node_modules
             packages/*/node_modules
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: "${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}"
           restore-keys: |
-            ${{ runner.os }}-pnpm-
+            "${{ runner.os }}-pnpm-"
 
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: 🏗️ Build testing package
         run: |
-          cd packages/testing
+          cd packages/testing || exit
           pnpm build
 
-      - name: 🧪 Run i18n tests (${{ matrix.test-type }})
+      - name: 🧪 Run i18n tests ("${{ matrix.test-type }}")
         id: i18n-tests
         run: |
-          cd packages/testing
+          cd packages/testing || exit
           case "${{ matrix.test-type }}" in
             "comprehensive")
               pnpm i18n:test --output ../../i18n-results-${{ matrix.node-version }}.json --report ../../i18n-report-${{ matrix.node-version }}.md
@@ -151,7 +151,7 @@ jobs:
       - name: 📊 Generate i18n report
         if: always() && matrix.test-type == 'comprehensive'
         run: |
-          cd packages/testing
+          cd packages/testing || exit
           pnpm i18n:test --output ../../i18n-results-${{ matrix.node-version }}.json --report ../../i18n-report-${{ matrix.node-version }}.md
 
       - name: 📤 Upload i18n results
@@ -177,12 +177,12 @@ jobs:
       - name: 🏗️ Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: ${{ env.PNPM_VERSION }}
+          version: "${{ env.PNPM_VERSION }}"
 
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: "${{ env.NODE_VERSION }}"
           cache: 'pnpm'
 
       - name: 💾 Restore dependencies
@@ -192,16 +192,16 @@ jobs:
             ~/.pnpm-store
             node_modules
             packages/*/node_modules
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: "${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}"
           restore-keys: |
-            ${{ runner.os }}-pnpm-
+            "${{ runner.os }}-pnpm-"
 
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: 🔍 Run ESLint with i18n rules
         run: |
-          cd packages/testing
+          cd packages/testing || exit
           pnpm i18n:eslint
         continue-on-error: true
 
@@ -240,12 +240,12 @@ jobs:
       - name: 🏗️ Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: ${{ env.PNPM_VERSION }}
+          version: "${{ env.PNPM_VERSION }}"
 
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: "${{ env.NODE_VERSION }}"
           cache: 'pnpm'
 
       - name: 💾 Restore dependencies
@@ -255,16 +255,16 @@ jobs:
             ~/.pnpm-store
             node_modules
             packages/*/node_modules
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: "${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}"
           restore-keys: |
-            ${{ runner.os }}-pnpm-
+            "${{ runner.os }}-pnpm-"
 
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: 🏗️ Build testing package
         run: |
-          cd packages/testing
+          cd packages/testing || exit
           pnpm build
 
       - name: 🌍 Validate i18next resources
@@ -284,7 +284,7 @@ jobs:
 
       - name: 🔍 Check for hardcoded strings
         run: |
-          cd packages/testing
+          cd packages/testing || exit
           pnpm i18n:eslint --fail-on-hardcoded
         continue-on-error: true
 

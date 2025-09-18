@@ -14,6 +14,7 @@ import { authTranslations } from "./auth";
 import { chatTranslations } from "./chat";
 import { monacoTranslations } from "./monaco";
 import { captionTranslations } from "./caption";
+import { apiClientTranslations } from "./api-client";
 
 export default {
   common: commonTranslations,
@@ -26,4 +27,5 @@ export default {
   chat: chatTranslations,
   monaco: monacoTranslations,
   caption: captionTranslations,
+  apiClient: apiClientTranslations,
 } as const satisfies Translations;

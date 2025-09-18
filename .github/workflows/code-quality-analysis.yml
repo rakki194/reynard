@@ -39,13 +39,13 @@ jobs:
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: "${{ env.NODE_VERSION }}"
           cache: 'pnpm'
 
       - name: 🐍 Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
+          python-version: "${{ env.PYTHON_VERSION }}"
           cache: 'pip'
 
       - name: 📦 Install Dependencies
@@ -61,7 +61,7 @@ jobs:
       - name: 🔧 Setup Reynard Code Quality
         run: |
           # Build the code quality package
-          cd packages/code-quality
+          cd packages/code-quality || exit
           pnpm build
 
           # Initialize quality gates
@@ -70,21 +70,21 @@ jobs:
       - name: 🦊 Run Code Quality Analysis
         id: analysis
         run: |
-          cd packages/code-quality
+          cd packages/code-quality || exit
 
           # Run comprehensive analysis
           node dist/cli.js analyze \
             --project ../../ \
-            --environment ${{ github.event.inputs.environment || 'development' }} \
+            --environment "${{ github.event.inputs.environment || 'development' }}" \
             --output ../../analysis-results.json \
             --format summary
 
           # Check exit code
           ANALYSIS_EXIT_CODE=$?
-          echo "analysis_exit_code=${ANALYSIS_EXIT_CODE}" >> "$GITHUB_OUTPUT"
+          echo "analysis_exit_code=${ANALYSIS_EXIT_CODE}" >> "${GITHUB_OUTPUT}"
 
           # Parse results for summary
-          if [ -f "../../analysis-results.json" ]; then
+          if [[ -f "../../analysis-results.json" ]]; then
             ISSUES_COUNT=$(node -e "const data = require('../../analysis-results.json'); console.log(data.analysis.issues.length)")
             VULNERABILITIES_COUNT=$(node -e "const data = require('../../analysis-results.json'); console.log(data.security?.summary?.totalVulnerabilities || 0)")
             CRITICAL_VULNERABILITIES=$(node -e "const data = require('../../analysis-results.json'); console.log(data.security?.summary?.criticalVulnerabilities || 0)")
@@ -95,13 +95,13 @@ jobs:
               echo "vulnerabilities_count=${VULNERABILITIES_COUNT}"
               echo "critical_vulnerabilities=${CRITICAL_VULNERABILITIES}"
               echo "high_vulnerabilities=${HIGH_VULNERABILITIES}"
-            } >> "$GITHUB_OUTPUT"
+            } >> "${GITHUB_OUTPUT}"
           fi
 
       - name: 🐺 Run Security Analysis
         id: security
         run: |
-          cd packages/code-quality
+          cd packages/code-quality || exit
 
           # Run security analysis
           node dist/cli.js security \
@@ -111,22 +111,22 @@ jobs:
 
           # Check exit code
           SECURITY_EXIT_CODE=$?
-          echo "security_exit_code=${SECURITY_EXIT_CODE}" >> "$GITHUB_OUTPUT"
+          echo "security_exit_code=${SECURITY_EXIT_CODE}" >> "${GITHUB_OUTPUT}"
 
       - name: 🚪 Evaluate Quality Gates
         id: quality-gates
         run: |
-          cd packages/code-quality
+          cd packages/code-quality || exit
 
           # Evaluate quality gates
           node dist/cli.js quality-gate \
             --project ../../ \
-            --environment ${{ github.event.inputs.environment || 'development' }} \
+            --environment "${{ github.event.inputs.environment || 'development' }}" \
             --metrics ../../analysis-results.json
 
           # Check exit code
           QUALITY_GATE_EXIT_CODE=$?
-          echo "quality_gate_exit_code=${QUALITY_GATE_EXIT_CODE}" >> "$GITHUB_OUTPUT"
+          echo "quality_gate_exit_code=${QUALITY_GATE_EXIT_CODE}" >> "${GITHUB_OUTPUT}"
 
       - name: 📊 Upload Analysis Results
         uses: actions/upload-artifact@v4
@@ -257,7 +257,7 @@ jobs:
           CRITICAL_VULNS="${{ steps.analysis.outputs.critical_vulnerabilities }}"
           HIGH_VULNS="${{ steps.analysis.outputs.high_vulnerabilities }}"
           QUALITY_GATE_CODE="${{ steps.quality-gates.outputs.quality_gate_exit_code }}"
-          
+
           if [ "${CRITICAL_VULNS:-0}" -gt 0 ]; then
             echo "❌ Critical vulnerabilities found. Failing workflow."
             exit 1
@@ -288,7 +288,7 @@ jobs:
       - name: 🐍 Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
+          python-version: "${{ env.PYTHON_VERSION }}"
           cache: 'pip'
 
       - name: 📦 Install Security Tools
@@ -325,13 +325,13 @@ jobs:
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: "${{ env.NODE_VERSION }}"
           cache: 'pnpm'
 
       - name: 🐍 Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
+          python-version: "${{ env.PYTHON_VERSION }}"
           cache: 'pip'
 
       - name: 📦 Install Dependencies

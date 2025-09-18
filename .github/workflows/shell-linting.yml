@@ -46,13 +46,13 @@ jobs:
             -not -path "./examples/*/node_modules/*" \
             -not -path "./templates/*/node_modules/*")
 
-          if [ -z "$SHELL_FILES" ]; then
+          if [[ -z "${SHELL_FILES}" ]]; then
             echo "✅ No shell scripts found to lint"
             exit 0
           fi
 
           echo "📊 Found $(echo "${SHELL_FILES}" | wc -l) shell scripts to lint:"
-          printf '  - %s\n' ${SHELL_FILES}
+          printf '  - %s\n' "${SHELL_FILES}"
           echo ""
 
           # Run ShellCheck on all files
@@ -65,7 +65,7 @@ jobs:
           fi
 
           # Run ShellCheck with configuration
-          if shellcheck --rcfile=.shellcheckrc ${SHELL_FILES}; then
+          if shellcheck --rcfile=.shellcheckrc "${SHELL_FILES}"; then
             echo "✅ All shell scripts passed ShellCheck validation!"
           else
             echo "❌ ShellCheck found issues in shell scripts"

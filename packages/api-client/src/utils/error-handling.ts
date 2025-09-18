@@ -3,6 +3,7 @@
  */
 
 import type { ApiError } from "../types.js";
+import { useI18n } from "reynard-i18n";
 
 export class ReynardApiError extends Error implements ApiError {
   public status: number;
@@ -16,7 +17,7 @@ export class ReynardApiError extends Error implements ApiError {
   }
 }
 
-export function handleApiError(error: any): ReynardApiError {
+export function handleApiError(error: any, t?: (key: string) => string): ReynardApiError {
   if (error instanceof ReynardApiError) {
     return error;
   }
@@ -32,5 +33,5 @@ export function handleApiError(error: any): ReynardApiError {
   }
 
   // Generic error
-  return new ReynardApiError(0, null, error.message || "Unknown error");
+  return new ReynardApiError(0, null, error.message || (t ? t("apiClient.errors.unknownError") : "Unknown error"));
 }
