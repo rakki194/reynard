@@ -173,31 +173,31 @@ def conduct_codebase_analysis(original_query, project_context):
     # Determine if codebase analysis is relevant
     if not is_codebase_relevant(original_query):
         return {'relevant': False, 'analysis': None}
-    
+
     # Extract code-related concepts from query
     code_concepts = extract_code_concepts(original_query)
-    
+
     # Analyze existing code patterns
     code_patterns = analyze_existing_patterns(code_concepts, project_context)
-    
+
     # Identify project-specific terminology
     project_terminology = identify_project_terminology(code_concepts, project_context)
-    
+
     # Understand architectural patterns
     architectural_patterns = analyze_architectural_patterns(code_concepts, project_context)
-    
+
     # Examine related functionality
     related_functionality = examine_related_functionality(code_concepts, project_context)
-    
+
     # Gather context from documentation
     documentation_context = gather_documentation_context(code_concepts, project_context)
-    
+
     # Analyze dependencies and relationships
     dependencies = analyze_dependencies(code_concepts, project_context)
-    
+
     # Identify coding standards and conventions
     coding_standards = identify_coding_standards(project_context)
-    
+
     return {
         'relevant': True,
         'code_concepts': code_concepts,
@@ -221,7 +221,7 @@ def is_codebase_relevant(original_query):
         'repository', 'git', 'commit', 'branch', 'merge', 'pull request',
         'syntax', 'error', 'bug', 'feature', 'development', 'programming'
     ]
-    
+
     query_lower = original_query.lower()
     return any(indicator in query_lower for indicator in code_indicators)
 
@@ -231,16 +231,16 @@ def extract_code_concepts(original_query):
     """
     # Use semantic search to find relevant code concepts
     code_concepts = semantic_search(original_query, search_type="code")
-    
+
     # Extract specific technical terms
     technical_terms = extract_technical_terms(original_query)
-    
+
     # Identify programming languages mentioned
     programming_languages = identify_programming_languages(original_query)
-    
+
     # Find framework/library references
     frameworks_libraries = identify_frameworks_libraries(original_query)
-    
+
     return {
         'semantic_concepts': code_concepts,
         'technical_terms': technical_terms,
@@ -257,16 +257,16 @@ def analyze_existing_patterns(code_concepts, project_context):
         query=code_concepts['semantic_concepts'],
         search_type="implementation"
     )
-    
+
     # Identify common patterns
     common_patterns = identify_common_patterns(similar_implementations)
-    
+
     # Analyze code structure
     code_structure = analyze_code_structure(similar_implementations)
-    
+
     # Find design patterns used
     design_patterns = identify_design_patterns(similar_implementations)
-    
+
     return {
         'similar_implementations': similar_implementations,
         'common_patterns': common_patterns,
@@ -280,16 +280,16 @@ def identify_project_terminology(code_concepts, project_context):
     """
     # Extract naming conventions
     naming_conventions = analyze_naming_conventions(project_context)
-    
+
     # Identify domain-specific terms
     domain_terms = identify_domain_terms(code_concepts, project_context)
-    
+
     # Find project-specific abbreviations
     abbreviations = identify_abbreviations(project_context)
-    
+
     # Analyze comment patterns
     comment_patterns = analyze_comment_patterns(project_context)
-    
+
     return {
         'naming_conventions': naming_conventions,
         'domain_terms': domain_terms,
@@ -350,19 +350,19 @@ def analyze_codebase_relevance(original_query, codebase_context):
     """
     # Identify codebase-specific terminology gaps
     terminology_gaps = identify_terminology_gaps(original_query, codebase_context)
-    
+
     # Analyze pattern alignment
     pattern_alignment = analyze_pattern_alignment(original_query, codebase_context)
-    
+
     # Identify architectural context needs
     architectural_context = identify_architectural_context(original_query, codebase_context)
-    
+
     # Assess dependency awareness
     dependency_awareness = assess_dependency_awareness(original_query, codebase_context)
-    
+
     # Evaluate coding standard alignment
     coding_standard_alignment = evaluate_coding_standard_alignment(original_query, codebase_context)
-    
+
     return {
         'terminology_gaps': terminology_gaps,
         'pattern_alignment': pattern_alignment,
@@ -426,27 +426,27 @@ def integrate_codebase_insights(codebase_analysis, codebase_context, improvement
     terminology_enhancements = address_terminology_gaps(
         codebase_analysis['terminology_gaps'], codebase_context
     )
-    
+
     # Align with existing patterns
     pattern_alignment_enhancements = align_with_existing_patterns(
         codebase_analysis['pattern_alignment'], codebase_context
     )
-    
+
     # Add architectural context
     architectural_context_enhancements = add_architectural_context(
         codebase_analysis['architectural_context'], codebase_context
     )
-    
+
     # Include dependency awareness
     dependency_awareness_enhancements = include_dependency_awareness(
         codebase_analysis['dependency_awareness'], codebase_context
     )
-    
+
     # Ensure coding standard compliance
     coding_standard_enhancements = ensure_coding_standard_compliance(
         codebase_analysis['coding_standard_alignment'], codebase_context
     )
-    
+
     return {
         'terminology_enhancements': terminology_enhancements,
         'pattern_alignment_enhancements': pattern_alignment_enhancements,
@@ -512,27 +512,27 @@ def integrate_codebase_enhancements(query, codebase_integration):
     terminology_enhanced = apply_terminology_enhancements(
         query, codebase_integration['terminology_enhancements']
     )
-    
+
     # Apply pattern alignment enhancements
     pattern_aligned = apply_pattern_alignment_enhancements(
         terminology_enhanced, codebase_integration['pattern_alignment_enhancements']
     )
-    
+
     # Apply architectural context enhancements
     architecturally_contextualized = apply_architectural_context_enhancements(
         pattern_aligned, codebase_integration['architectural_context_enhancements']
     )
-    
+
     # Apply dependency awareness enhancements
     dependency_aware = apply_dependency_awareness_enhancements(
         architecturally_contextualized, codebase_integration['dependency_awareness_enhancements']
     )
-    
+
     # Apply coding standard enhancements
     standards_compliant = apply_coding_standard_enhancements(
         dependency_aware, codebase_integration['coding_standard_enhancements']
     )
-    
+
     return standards_compliant
 ```
 
