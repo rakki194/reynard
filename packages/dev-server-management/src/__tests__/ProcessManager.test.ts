@@ -23,12 +23,12 @@ describe("ProcessManager", () => {
   beforeEach(async () => {
     const testEnv = setupTestEnvironment();
     mockProcess = testEnv.mockProcess;
-    
+
     // Configure the mocks
     const { spawn, exec } = await import("node:child_process");
     vi.mocked(spawn).mockImplementation(mockProcess.spawn);
     vi.mocked(exec).mockImplementation(mockProcess.exec);
-    
+
     processManager = new ProcessManager();
   });
 
@@ -79,9 +79,9 @@ describe("ProcessManager", () => {
         throw new Error("Command not found");
       });
 
-      await expect(
-        processManager.startProcess("test-project", projectConfig, processOptions)
-      ).rejects.toThrow("Command not found");
+      await expect(processManager.startProcess("test-project", projectConfig, processOptions)).rejects.toThrow(
+        "Command not found"
+      );
     });
 
     it("should stop a running process", async () => {
@@ -153,9 +153,9 @@ describe("ProcessManager", () => {
         throw new Error("Restart failed");
       });
 
-      await expect(
-        processManager.restartProcess("test-project", projectConfig, processOptions)
-      ).rejects.toThrow("Restart failed");
+      await expect(processManager.restartProcess("test-project", projectConfig, processOptions)).rejects.toThrow(
+        "Restart failed"
+      );
     });
   });
 
@@ -323,9 +323,9 @@ describe("ProcessManager", () => {
         return mockProc;
       });
 
-      await expect(
-        processManager.startProcess("test-project", projectConfig, processOptions)
-      ).rejects.toThrow("Process startup timeout");
+      await expect(processManager.startProcess("test-project", projectConfig, processOptions)).rejects.toThrow(
+        "Process startup timeout"
+      );
     });
 
     it("should handle process shutdown timeout", async () => {
@@ -344,9 +344,9 @@ describe("ProcessManager", () => {
         // Don't actually kill the process
       });
 
-      await expect(
-        processManager.stopProcess("test-project", { timeout: 100 })
-      ).rejects.toThrow("Process shutdown timeout");
+      await expect(processManager.stopProcess("test-project", { timeout: 100 })).rejects.toThrow(
+        "Process shutdown timeout"
+      );
     });
   });
 
@@ -496,13 +496,13 @@ describe("ProcessManager", () => {
 
   describe("Process Dependencies", () => {
     it("should start processes with dependencies", async () => {
-      const projectConfig1 = createMockProjectConfig({ 
+      const projectConfig1 = createMockProjectConfig({
         name: "project1",
-        dependencies: []
+        dependencies: [],
       });
-      const projectConfig2 = createMockProjectConfig({ 
+      const projectConfig2 = createMockProjectConfig({
         name: "project2",
-        dependencies: ["project1"]
+        dependencies: ["project1"],
       });
       const processOptions: ProcessOptions = {
         command: "node",
@@ -530,13 +530,13 @@ describe("ProcessManager", () => {
     });
 
     it("should handle dependency failures", async () => {
-      const projectConfig1 = createMockProjectConfig({ 
+      const projectConfig1 = createMockProjectConfig({
         name: "project1",
-        dependencies: []
+        dependencies: [],
       });
-      const projectConfig2 = createMockProjectConfig({ 
+      const projectConfig2 = createMockProjectConfig({
         name: "project2",
-        dependencies: ["project1"]
+        dependencies: ["project1"],
       });
       const processOptions: ProcessOptions = {
         command: "node",
@@ -563,9 +563,9 @@ describe("ProcessManager", () => {
 
   describe("Process Environment", () => {
     it("should set process environment variables", async () => {
-      const projectConfig = createMockProjectConfig({ 
+      const projectConfig = createMockProjectConfig({
         name: "test-project",
-        env: { NODE_ENV: "development", PORT: "3000" }
+        env: { NODE_ENV: "development", PORT: "3000" },
       });
       const processOptions: ProcessOptions = {
         command: "node",
@@ -582,8 +582,8 @@ describe("ProcessManager", () => {
         expect.objectContaining({
           env: expect.objectContaining({
             NODE_ENV: "development",
-            PORT: "3000"
-          })
+            PORT: "3000",
+          }),
         })
       );
     });
@@ -603,8 +603,8 @@ describe("ProcessManager", () => {
         ["server.js"],
         expect.objectContaining({
           env: expect.objectContaining({
-            PATH: process.env.PATH
-          })
+            PATH: process.env.PATH,
+          }),
         })
       );
     });

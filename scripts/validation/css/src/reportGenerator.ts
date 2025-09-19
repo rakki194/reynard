@@ -5,10 +5,7 @@
 
 import fs from "fs";
 import path from "path";
-import type {
-  ValidationResult,
-  ReportOptions,
-} from "./types.js";
+import type { ValidationResult, ReportOptions } from "./types.js";
 import { CSSLogger } from "./logger.js";
 
 export class ReportGenerator {

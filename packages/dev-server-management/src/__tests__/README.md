@@ -153,29 +153,29 @@ Test command-line interface functionality:
 ### Mock Data Factory Functions
 
 ```typescript
-createMockProjectConfig(overrides)
-createMockDevServerConfig(overrides)
-createMockServerInfo(overrides)
-createMockHealthStatus(overrides)
-createMockProcessInfo(overrides)
-createMockPortInfo(overrides)
+createMockProjectConfig(overrides);
+createMockDevServerConfig(overrides);
+createMockServerInfo(overrides);
+createMockHealthStatus(overrides);
+createMockProcessInfo(overrides);
+createMockPortInfo(overrides);
 ```
 
 ### Test Helpers
 
 ```typescript
-waitForEvent(emitter, event, timeout)
-waitForEvents(emitter, events, timeout)
-expectEventEmitted(emitter, eventType, project)
-expectConfigValid(config)
-expectProjectConfigValid(project)
+waitForEvent(emitter, event, timeout);
+waitForEvents(emitter, events, timeout);
+expectEventEmitted(emitter, eventType, project);
+expectConfigValid(config);
+expectProjectConfigValid(project);
 ```
 
 ### Environment Setup
 
 ```typescript
-setupTestEnvironment()
-cleanupTestEnvironment()
+setupTestEnvironment();
+cleanupTestEnvironment();
 ```
 
 ## Best Practices
@@ -352,4 +352,4 @@ pnpm test:coverage --reporter=verbose src/__tests__/ConfigManager.test.ts
 
 ---
 
-*Built with the cunning precision of a fox* 🦊
+_Built with the cunning precision of a fox_ 🦊

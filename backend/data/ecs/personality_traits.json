@@ -1,0 +1,265 @@
+{
+  "personality_traits": {
+    "dominance": {
+      "name": "Dominance",
+      "description": "The tendency to take charge and lead others",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.5
+    },
+    "independence": {
+      "name": "Independence", 
+      "description": "The preference for working alone and making autonomous decisions",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.5
+    },
+    "patience": {
+      "name": "Patience",
+      "description": "The ability to wait and remain calm in difficult situations",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.5
+    },
+    "aggression": {
+      "name": "Aggression",
+      "description": "The tendency to be confrontational and assertive",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.3
+    },
+    "charisma": {
+      "name": "Charisma",
+      "description": "The natural ability to attract and influence others",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.5
+    },
+    "creativity": {
+      "name": "Creativity",
+      "description": "The ability to think outside the box and generate novel ideas",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.5
+    },
+    "perfectionism": {
+      "name": "Perfectionism",
+      "description": "The drive to achieve flawless results",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.4
+    },
+    "adaptability": {
+      "name": "Adaptability",
+      "description": "The ability to adjust to new situations and changes",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.6
+    },
+    "playfulness": {
+      "name": "Playfulness",
+      "description": "The tendency to approach tasks with a fun, light-hearted attitude",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.5
+    },
+    "intelligence": {
+      "name": "Intelligence",
+      "description": "The capacity for learning, reasoning, and problem-solving",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.6
+    },
+    "loyalty": {
+      "name": "Loyalty",
+      "description": "The commitment to support and defend others",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.7
+    },
+    "curiosity": {
+      "name": "Curiosity",
+      "description": "The desire to learn and explore new things",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.6
+    },
+    "courage": {
+      "name": "Courage",
+      "description": "The ability to face fear and take risks",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.5
+    },
+    "empathy": {
+      "name": "Empathy",
+      "description": "The ability to understand and share the feelings of others",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.5
+    },
+    "determination": {
+      "name": "Determination",
+      "description": "The persistence to achieve goals despite obstacles",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.6
+    },
+    "spontaneity": {
+      "name": "Spontaneity",
+      "description": "The tendency to act on impulse and embrace unpredictability",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.4
+    }
+  },
+  "spirit_base_traits": {
+    "fox": {
+      "cunning": 0.8,
+      "intelligence": 0.7,
+      "independence": 0.6,
+      "curiosity": 0.7,
+      "creativity": 0.6,
+      "agility": 0.8,
+      "adaptability": 0.8,
+      "patience": 0.5,
+      "aggression": 0.3,
+      "charisma": 0.6,
+      "perfectionism": 0.4,
+      "playfulness": 0.5,
+      "loyalty": 0.6,
+      "courage": 0.5,
+      "empathy": 0.5,
+      "determination": 0.6,
+      "spontaneity": 0.4
+    },
+    "wolf": {
+      "loyalty": 0.9,
+      "protectiveness": 0.8,
+      "courage": 0.7,
+      "strength": 0.7,
+      "endurance": 0.8,
+      "leadership": 0.6,
+      "dominance": 0.7,
+      "independence": 0.4,
+      "patience": 0.6,
+      "aggression": 0.6,
+      "charisma": 0.5,
+      "creativity": 0.4,
+      "perfectionism": 0.5,
+      "adaptability": 0.5,
+      "playfulness": 0.3,
+      "intelligence": 0.6,
+      "curiosity": 0.5,
+      "empathy": 0.7,
+      "determination": 0.8,
+      "spontaneity": 0.2
+    },
+    "otter": {
+      "playfulness": 0.9,
+      "creativity": 0.7,
+      "agility": 0.8,
+      "curiosity": 0.8,
+      "empathy": 0.7,
+      "coordination": 0.8,
+      "dominance": 0.2,
+      "independence": 0.3,
+      "patience": 0.4,
+      "aggression": 0.2,
+      "charisma": 0.7,
+      "perfectionism": 0.3,
+      "adaptability": 0.7,
+      "intelligence": 0.6,
+      "loyalty": 0.8,
+      "courage": 0.5,
+      "determination": 0.6,
+      "spontaneity": 0.8
+    },
+    "eagle": {
+      "intelligence": 0.8,
+      "leadership": 0.7,
+      "courage": 0.7,
+      "speed": 0.8,
+      "coordination": 0.7,
+      "determination": 0.8,
+      "dominance": 0.6,
+      "independence": 0.7,
+      "patience": 0.6,
+      "aggression": 0.4,
+      "charisma": 0.6,
+      "creativity": 0.5,
+      "perfectionism": 0.6,
+      "adaptability": 0.6,
+      "playfulness": 0.3,
+      "loyalty": 0.6,
+      "curiosity": 0.7,
+      "empathy": 0.5,
+      "spontaneity": 0.3
+    },
+    "lion": {
+      "dominance": 0.8,
+      "courage": 0.8,
+      "strength": 0.7,
+      "charisma": 0.8,
+      "leadership": 0.7,
+      "protectiveness": 0.7,
+      "independence": 0.5,
+      "patience": 0.5,
+      "aggression": 0.6,
+      "creativity": 0.4,
+      "perfectionism": 0.5,
+      "adaptability": 0.5,
+      "playfulness": 0.4,
+      "intelligence": 0.6,
+      "loyalty": 0.8,
+      "curiosity": 0.5,
+      "empathy": 0.6,
+      "determination": 0.7,
+      "spontaneity": 0.3
+    },
+    "tiger": {
+      "aggression": 0.7,
+      "strength": 0.8,
+      "speed": 0.7,
+      "cunning": 0.6,
+      "independence": 0.7,
+      "determination": 0.8,
+      "dominance": 0.6,
+      "patience": 0.6,
+      "charisma": 0.4,
+      "creativity": 0.4,
+      "perfectionism": 0.5,
+      "adaptability": 0.5,
+      "playfulness": 0.2,
+      "intelligence": 0.6,
+      "loyalty": 0.5,
+      "curiosity": 0.5,
+      "courage": 0.7,
+      "empathy": 0.4,
+      "spontaneity": 0.3
+    },
+    "dragon": {
+      "intelligence": 0.9,
+      "wisdom": 0.8,
+      "power": 0.9,
+      "mystery": 0.8,
+      "majesty": 0.8,
+      "ancient_knowledge": 0.9,
+      "dominance": 0.8,
+      "independence": 0.8,
+      "patience": 0.8,
+      "aggression": 0.5,
+      "charisma": 0.7,
+      "creativity": 0.6,
+      "perfectionism": 0.7,
+      "adaptability": 0.6,
+      "playfulness": 0.2,
+      "loyalty": 0.7,
+      "curiosity": 0.6,
+      "courage": 0.8,
+      "empathy": 0.5,
+      "determination": 0.8,
+      "spontaneity": 0.2
+    }
+  }
+}

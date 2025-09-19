@@ -235,7 +235,7 @@ result = tools.call_tool('get_code_metrics_summary', {
 ### File Structure
 
 ```
-scripts/mcp/
+services/mcp-server/
 ├── tools/
 │   ├── monolith_detection_tools.py      # Main tool implementation
 │   └── monolith_detection_definitions.py # MCP tool definitions
@@ -293,7 +293,7 @@ proper error handling, logging, and response formatting.
 **Path resolution errors**:
 
 - Use `../../` prefix for project root relative paths
-- Check MCP server working directory is `scripts/mcp/`
+- Check MCP server working directory is `services/mcp-server/`
 - Verify file permissions and accessibility
 
 **Performance issues**:

@@ -31,19 +31,19 @@ describe("DevServerManager", () => {
     mockFS = testEnv.mockFS;
     mockProcess = testEnv.mockProcess;
     mockNetwork = testEnv.mockNetwork;
-    
+
     // Configure the mocks
     const { readFile, writeFile, access } = await import("node:fs/promises");
     const { spawn, exec } = await import("node:child_process");
     const { createServer } = await import("node:net");
-    
+
     vi.mocked(readFile).mockImplementation(mockFS.readFile);
     vi.mocked(writeFile).mockImplementation(mockFS.writeFile);
     vi.mocked(access).mockImplementation(mockFS.access);
     vi.mocked(spawn).mockImplementation(mockProcess.spawn);
     vi.mocked(exec).mockImplementation(mockProcess.exec);
     vi.mocked(createServer).mockImplementation(mockNetwork.createServer);
-    
+
     devServerManager = new DevServerManager("test-config.json");
   });
 
@@ -182,9 +182,9 @@ describe("DevServerManager", () => {
     beforeEach(async () => {
       const mockConfig = createMockDevServerConfig({
         projects: {
-          "project1": createMockProjectConfig({ name: "project1", port: 3000 }),
-          "project2": createMockProjectConfig({ name: "project2", port: 3001 }),
-          "project3": createMockProjectConfig({ name: "project3", port: 3002 }),
+          project1: createMockProjectConfig({ name: "project1", port: 3000 }),
+          project2: createMockProjectConfig({ name: "project2", port: 3001 }),
+          project3: createMockProjectConfig({ name: "project3", port: 3002 }),
         },
       });
       mockFS.setFile("test-config.json", JSON.stringify(mockConfig, null, 2));
@@ -209,9 +209,7 @@ describe("DevServerManager", () => {
       mockNetwork.setPortInUse(3001, true); // Port conflict
       mockNetwork.setPortInUse(3002, false);
 
-      await expect(
-        devServerManager.startMultiple(["project1", "project2", "project3"])
-      ).rejects.toThrow();
+      await expect(devServerManager.startMultiple(["project1", "project2", "project3"])).rejects.toThrow();
     });
 
     it("should stop all servers", async () => {
@@ -269,8 +267,8 @@ describe("DevServerManager", () => {
     it("should get status for all servers", async () => {
       const mockConfig = createMockDevServerConfig({
         projects: {
-          "project1": createMockProjectConfig({ name: "project1", port: 3000 }),
-          "project2": createMockProjectConfig({ name: "project2", port: 3001 }),
+          project1: createMockProjectConfig({ name: "project1", port: 3000 }),
+          project2: createMockProjectConfig({ name: "project2", port: 3001 }),
         },
       });
       mockFS.setFile("test-config.json", JSON.stringify(mockConfig, null, 2));
@@ -310,8 +308,8 @@ describe("DevServerManager", () => {
     it("should get health status for all servers", async () => {
       const mockConfig = createMockDevServerConfig({
         projects: {
-          "project1": createMockProjectConfig({ name: "project1", port: 3000 }),
-          "project2": createMockProjectConfig({ name: "project2", port: 3001 }),
+          project1: createMockProjectConfig({ name: "project1", port: 3000 }),
+          project2: createMockProjectConfig({ name: "project2", port: 3001 }),
         },
       });
       mockFS.setFile("test-config.json", JSON.stringify(mockConfig, null, 2));
@@ -385,7 +383,9 @@ describe("DevServerManager", () => {
     });
 
     it("should handle project not found errors", async () => {
-      await expect(devServerManager.start("non-existent-project")).rejects.toThrow("Project 'non-existent-project' not found");
+      await expect(devServerManager.start("non-existent-project")).rejects.toThrow(
+        "Project 'non-existent-project' not found"
+      );
     });
 
     it("should handle port conflict errors", async () => {
@@ -542,12 +542,12 @@ describe("DevServerManager", () => {
     beforeEach(async () => {
       const mockConfig = createMockDevServerConfig({
         projects: {
-          "backend": createMockProjectConfig({
+          backend: createMockProjectConfig({
             name: "backend",
             port: 8000,
             dependencies: [],
           }),
-          "frontend": createMockProjectConfig({
+          frontend: createMockProjectConfig({
             name: "frontend",
             port: 3000,
             dependencies: ["backend"],
@@ -563,7 +563,7 @@ describe("DevServerManager", () => {
       mockNetwork.setPortInUse(3000, false);
 
       const startOrder: string[] = [];
-      devServerManager.on("server_started", (event) => {
+      devServerManager.on("server_started", event => {
         startOrder.push(event.project);
       });
 
@@ -589,7 +589,7 @@ describe("DevServerManager", () => {
       await devServerManager.start("frontend");
 
       const stopOrder: string[] = [];
-      devServerManager.on("server_stopped", (event) => {
+      devServerManager.on("server_stopped", event => {
         stopOrder.push(event.project);
       });
 
@@ -647,9 +647,9 @@ describe("DevServerManager", () => {
           restartDelay: 1000,
         },
         projects: {
-          "project1": createMockProjectConfig({ name: "project1", port: 3000 }),
-          "project2": createMockProjectConfig({ name: "project2", port: 3001 }),
-          "project3": createMockProjectConfig({ name: "project3", port: 3002 }),
+          project1: createMockProjectConfig({ name: "project1", port: 3000 }),
+          project2: createMockProjectConfig({ name: "project2", port: 3001 }),
+          project3: createMockProjectConfig({ name: "project3", port: 3002 }),
         },
       });
       mockFS.setFile("test-config.json", JSON.stringify(mockConfig, null, 2));

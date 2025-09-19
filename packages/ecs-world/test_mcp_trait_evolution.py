@@ -27,7 +27,7 @@ def test_mcp_agent_creation_and_evolution():
     cd /home/kade/runeset/reynard && \
     python -c "
 import sys
-sys.path.append('scripts/mcp')
+sys.path.append('services/mcp-server')
 from reynard_mcp_server.tools.ecs_agent_tools import ECSAgentTools
 
 # Initialize MCP tools
@@ -69,7 +69,7 @@ def test_mcp_simulation_time_progression():
     cd /home/kade/runeset/reynard && \
     python -c "
 import sys
-sys.path.append('scripts/mcp')
+sys.path.append('services/mcp-server')
 from reynard_mcp_server.tools.ecs_agent_tools import ECSAgentTools
 import time
 
@@ -116,7 +116,7 @@ def test_mcp_breeding_and_trait_inheritance():
     cd /home/kade/runeset/reynard && \
     python -c "
 import sys
-sys.path.append('scripts/mcp')
+sys.path.append('services/mcp-server')
 from reynard_mcp_server.tools.ecs_agent_tools import ECSAgentTools
 
 # Initialize MCP tools
@@ -163,7 +163,7 @@ def test_mcp_trait_evolution_over_time():
     cd /home/kade/runeset/reynard && \
     python -c "
 import sys
-sys.path.append('scripts/mcp')
+sys.path.append('services/mcp-server')
 from reynard_mcp_server.tools.ecs_agent_tools import ECSAgentTools
 import time
 
@@ -219,7 +219,7 @@ def test_mcp_comprehensive_evolution_simulation():
     cd /home/kade/runeset/reynard && \
     python -c "
 import sys
-sys.path.append('scripts/mcp')
+sys.path.append('services/mcp-server')
 from reynard_mcp_server.tools.ecs_agent_tools import ECSAgentTools
 import time
 

@@ -4,20 +4,18 @@ Test Interaction System
 Unit and integration tests for the interaction system components and functionality.
 """
 
-import time
 from reynard_ecs_world.components.interaction import (
     InteractionComponent,
     Interaction,
     InteractionType,
     InteractionOutcome,
     Relationship,
-    CommunicationStyle,
 )
 from reynard_ecs_world.systems.interaction_system import InteractionSystem
 from reynard_ecs_world.world.agent_world import AgentWorld
 
 
-def test_interaction_component():
+def test_interaction_component() -> None:
     """Test InteractionComponent functionality."""
     print("🧪 Testing InteractionComponent...")
     
@@ -75,7 +73,7 @@ def test_interaction_component():
     print("✅ InteractionComponent tests passed!")
 
 
-def test_relationship():
+def test_relationship() -> None:
     """Test Relationship functionality."""
     print("🧪 Testing Relationship...")
     
@@ -128,7 +126,7 @@ def test_relationship():
     print("✅ Relationship tests passed!")
 
 
-def test_interaction_system():
+def test_interaction_system() -> None:
     """Test InteractionSystem functionality."""
     print("🧪 Testing InteractionSystem...")
     
@@ -144,6 +142,8 @@ def test_interaction_system():
     from reynard_ecs_world.components.position import PositionComponent
     pos1 = agent1.get_component(PositionComponent)
     pos2 = agent2.get_component(PositionComponent)
+    assert pos1 is not None, "Agent1 should have PositionComponent"
+    assert pos2 is not None, "Agent2 should have PositionComponent"
     pos1.x, pos1.y = 100.0, 100.0
     pos2.x, pos2.y = 120.0, 100.0  # Within interaction range
     
@@ -172,7 +172,7 @@ def test_interaction_system():
     print("✅ InteractionSystem tests passed!")
 
 
-def test_agent_world_integration():
+def test_agent_world_integration() -> None:
     """Test integration with AgentWorld."""
     print("🧪 Testing AgentWorld integration...")
     
@@ -187,6 +187,8 @@ def test_agent_world_integration():
     from reynard_ecs_world.components.position import PositionComponent
     pos1 = agent1.get_component(PositionComponent)
     pos2 = agent2.get_component(PositionComponent)
+    assert pos1 is not None, "Agent1 should have PositionComponent"
+    assert pos2 is not None, "Agent2 should have PositionComponent"
     pos1.x, pos1.y = 100.0, 100.0
     pos2.x, pos2.y = 110.0, 100.0  # Within interaction range
     
@@ -213,7 +215,7 @@ def test_agent_world_integration():
     print("✅ AgentWorld integration tests passed!")
 
 
-def test_interaction_simulation():
+def test_interaction_simulation() -> None:
     """Test realistic interaction simulation."""
     print("🧪 Testing interaction simulation...")
     
@@ -226,6 +228,7 @@ def test_interaction_simulation():
     for i in range(5):
         agent = world.create_agent(f"agent_{i}", "fox", "foundation")
         pos = agent.get_component(PositionComponent)
+        assert pos is not None, f"Agent {i} should have PositionComponent"
         pos.x = 100.0 + i * 20.0  # Spread them out
         pos.y = 100.0
         agents.append(agent)
@@ -259,7 +262,7 @@ def test_interaction_simulation():
     print("✅ Interaction simulation tests passed!")
 
 
-def main():
+def main() -> bool:
     """Run all interaction system tests."""
     print("🦊 Starting Interaction System Tests...\n")
     
@@ -273,7 +276,7 @@ def main():
         print("\n🎉 All Interaction System tests passed!")
         print("✅ Phase 2: Interaction Framework implementation is working correctly!")
         
-    except Exception as e:
+    except (AssertionError, ValueError, TypeError, AttributeError) as e:
         print(f"\n❌ Test failed: {e}")
         import traceback
         traceback.print_exc()

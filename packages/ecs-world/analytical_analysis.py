@@ -7,16 +7,14 @@ meaningful insights about evolutionary patterns, genetic dynamics, and emergent 
 
 Author: Wit-Prime-13 (Fox Specialist)
 """
-
-import json
-import numpy as np
-import matplotlib.pyplot as plt
-from scipy import stats
-from scipy.optimize import curve_fit
-import pandas as pd
 from pathlib import Path
 from typing import Dict, List, Tuple, Any
 import warnings
+import json
+import numpy as np
+from scipy import stats
+from scipy.optimize import curve_fit
+
 warnings.filterwarnings('ignore')
 
 

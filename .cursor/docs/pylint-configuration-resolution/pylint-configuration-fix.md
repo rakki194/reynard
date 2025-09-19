@@ -135,7 +135,7 @@ Python 3.13.7 (main, Aug 15 2025, 12:34:02) [GCC 15.2.1 20250813]
 
 - `package.json` - Contains Python linting scripts
 - `scripts/python-workflow-automation.sh` - Uses Pylint directly
-- `scripts/mcp/tools/linting_tools.py` - MCP linting integration
+- `services/mcp-server/tools/linting_tools.py` - MCP linting integration
 
 ## Lessons Learned
 

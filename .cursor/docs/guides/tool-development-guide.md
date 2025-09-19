@@ -18,7 +18,7 @@
 The Reynard MCP server follows a modular architecture with clear separation of concerns:
 
 ```
-scripts/mcp/
+services/mcp-server/
 ├── main.py                 # Server entry point
 ├── protocol/               # MCP protocol handling
 │   ├── mcp_handler.py     # Main protocol handler
@@ -124,7 +124,7 @@ class MyService:
 
 ### Step 1: Create the Tool Handler
 
-Create a new file `scripts/mcp/tools/my_tools.py`:
+Create a new file `services/mcp-server/tools/my_tools.py`:
 
 ```python
 #!/usr/bin/env python3
@@ -173,7 +173,7 @@ class MyTools:
 
 ### Step 2: Create the Tool Definition
 
-Create `scripts/mcp/tools/my_definitions.py`:
+Create `services/mcp-server/tools/my_definitions.py`:
 
 ```python
 #!/usr/bin/env python3
@@ -214,7 +214,7 @@ def get_my_tool_definitions() -> dict[str, dict[str, Any]]:
 
 ### Step 3: Create the Service
 
-Create `scripts/mcp/services/my_service.py`:
+Create `services/mcp-server/services/my_service.py`:
 
 ```python
 #!/usr/bin/env python3
@@ -262,7 +262,7 @@ class MyService:
 
 Add your tool to the configuration:
 
-1. **Add to tool config** (`scripts/mcp/protocol/tool_config.py`):
+1. **Add to tool config** (`services/mcp-server/protocol/tool_config.py`):
 
 ```python
 MY_TOOLS: Set[str] = {
@@ -279,7 +279,7 @@ TOOL_EXECUTION_TYPES: Dict[str, ToolExecutionType] = {
 }
 ```
 
-3. **Add to main definitions** (`scripts/mcp/tools/definitions.py`):
+3. **Add to main definitions** (`services/mcp-server/tools/definitions.py`):
 
 ```python
 from .my_definitions import get_my_tool_definitions
@@ -294,7 +294,7 @@ def get_tool_definitions() -> dict[str, dict[str, Any]]:
     }
 ```
 
-4. **Add to main server** (`scripts/mcp/main.py`):
+4. **Add to main server** (`services/mcp-server/main.py`):
 
 ```python
 from tools.my_tools import MyTools
@@ -310,7 +310,7 @@ class MCPServer:
         )
 ```
 
-5. **Add to tool router** (`scripts/mcp/protocol/tool_router.py`):
+5. **Add to tool router** (`services/mcp-server/protocol/tool_router.py`):
 
 ```python
 from tools.my_tools import MyTools
@@ -460,7 +460,7 @@ export interface ToolExecutionContext {
 Create tests for your tools:
 
 ```python
-# scripts/mcp/tests/unit/test_my_tools.py
+# services/mcp-server/tests/unit/test_my_tools.py
 import pytest
 from tools.my_tools import MyTools
 
@@ -482,7 +482,7 @@ class TestMyTools:
 ### 2. Integration Tests
 
 ```python
-# scripts/mcp/tests/integration/test_my_tools_integration.py
+# services/mcp-server/tests/integration/test_my_tools_integration.py
 import pytest
 from protocol.mcp_handler import MCPHandler
 from tools.my_tools import MyTools

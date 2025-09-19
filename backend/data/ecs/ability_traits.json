@@ -1,0 +1,290 @@
+{
+  "ability_traits": {
+    "strategist": {
+      "name": "Strategist",
+      "description": "Ability to plan and coordinate complex operations",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.5,
+      "category": "mental"
+    },
+    "hunter": {
+      "name": "Hunter",
+      "description": "Skill in tracking, pursuit, and capture",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.5,
+      "category": "physical"
+    },
+    "teacher": {
+      "name": "Teacher",
+      "description": "Ability to educate and mentor others",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.5,
+      "category": "social"
+    },
+    "artist": {
+      "name": "Artist",
+      "description": "Creative expression and aesthetic sense",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.5,
+      "category": "creative"
+    },
+    "healer": {
+      "name": "Healer",
+      "description": "Ability to restore health and provide care",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.5,
+      "category": "support"
+    },
+    "inventor": {
+      "name": "Inventor",
+      "description": "Innovation and technical problem-solving",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.5,
+      "category": "mental"
+    },
+    "explorer": {
+      "name": "Explorer",
+      "description": "Curiosity and willingness to discover new places",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.5,
+      "category": "adventure"
+    },
+    "guardian": {
+      "name": "Guardian",
+      "description": "Protection and defense capabilities",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.5,
+      "category": "physical"
+    },
+    "diplomat": {
+      "name": "Diplomat",
+      "description": "Negotiation and conflict resolution skills",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.5,
+      "category": "social"
+    },
+    "warrior": {
+      "name": "Warrior",
+      "description": "Combat skills and battle prowess",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.5,
+      "category": "physical"
+    },
+    "scholar": {
+      "name": "Scholar",
+      "description": "Research and knowledge acquisition",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.5,
+      "category": "mental"
+    },
+    "performer": {
+      "name": "Performer",
+      "description": "Entertainment and artistic expression",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.5,
+      "category": "creative"
+    },
+    "builder": {
+      "name": "Builder",
+      "description": "Construction and creation of structures",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.5,
+      "category": "practical"
+    },
+    "navigator": {
+      "name": "Navigator",
+      "description": "Pathfinding and spatial awareness",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.5,
+      "category": "mental"
+    },
+    "communicator": {
+      "name": "Communicator",
+      "description": "Clear expression and information sharing",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.5,
+      "category": "social"
+    },
+    "leader": {
+      "name": "Leader",
+      "description": "Inspiration and guidance of others",
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "default_value": 0.5,
+      "category": "social"
+    }
+  },
+  "spirit_base_abilities": {
+    "fox": {
+      "strategist": 0.8,
+      "hunter": 0.6,
+      "teacher": 0.5,
+      "artist": 0.6,
+      "healer": 0.4,
+      "inventor": 0.7,
+      "explorer": 0.7,
+      "guardian": 0.5,
+      "diplomat": 0.6,
+      "warrior": 0.4,
+      "scholar": 0.7,
+      "performer": 0.5,
+      "builder": 0.5,
+      "navigator": 0.7,
+      "communicator": 0.6,
+      "leader": 0.5
+    },
+    "wolf": {
+      "strategist": 0.6,
+      "hunter": 0.8,
+      "teacher": 0.6,
+      "artist": 0.3,
+      "healer": 0.5,
+      "inventor": 0.4,
+      "explorer": 0.5,
+      "guardian": 0.8,
+      "diplomat": 0.5,
+      "warrior": 0.7,
+      "scholar": 0.4,
+      "performer": 0.3,
+      "builder": 0.4,
+      "navigator": 0.6,
+      "communicator": 0.5,
+      "leader": 0.7
+    },
+    "otter": {
+      "strategist": 0.4,
+      "hunter": 0.5,
+      "teacher": 0.7,
+      "artist": 0.7,
+      "healer": 0.6,
+      "inventor": 0.5,
+      "explorer": 0.8,
+      "guardian": 0.4,
+      "diplomat": 0.6,
+      "warrior": 0.3,
+      "scholar": 0.5,
+      "performer": 0.8,
+      "builder": 0.6,
+      "navigator": 0.7,
+      "communicator": 0.7,
+      "leader": 0.4
+    },
+    "eagle": {
+      "strategist": 0.7,
+      "hunter": 0.7,
+      "teacher": 0.6,
+      "artist": 0.4,
+      "healer": 0.4,
+      "inventor": 0.5,
+      "explorer": 0.8,
+      "guardian": 0.6,
+      "diplomat": 0.5,
+      "warrior": 0.6,
+      "scholar": 0.6,
+      "performer": 0.3,
+      "builder": 0.4,
+      "navigator": 0.8,
+      "communicator": 0.5,
+      "leader": 0.7
+    },
+    "lion": {
+      "strategist": 0.6,
+      "hunter": 0.7,
+      "teacher": 0.5,
+      "artist": 0.4,
+      "healer": 0.4,
+      "inventor": 0.4,
+      "explorer": 0.5,
+      "guardian": 0.8,
+      "diplomat": 0.6,
+      "warrior": 0.8,
+      "scholar": 0.4,
+      "performer": 0.5,
+      "builder": 0.4,
+      "navigator": 0.5,
+      "communicator": 0.6,
+      "leader": 0.8
+    },
+    "tiger": {
+      "strategist": 0.5,
+      "hunter": 0.8,
+      "teacher": 0.3,
+      "artist": 0.3,
+      "healer": 0.3,
+      "inventor": 0.4,
+      "explorer": 0.6,
+      "guardian": 0.6,
+      "diplomat": 0.3,
+      "warrior": 0.8,
+      "scholar": 0.4,
+      "performer": 0.3,
+      "builder": 0.3,
+      "navigator": 0.6,
+      "communicator": 0.4,
+      "leader": 0.5
+    },
+    "dragon": {
+      "strategist": 0.8,
+      "hunter": 0.6,
+      "teacher": 0.7,
+      "artist": 0.5,
+      "healer": 0.6,
+      "inventor": 0.7,
+      "explorer": 0.6,
+      "guardian": 0.8,
+      "diplomat": 0.6,
+      "warrior": 0.7,
+      "scholar": 0.8,
+      "performer": 0.4,
+      "builder": 0.6,
+      "navigator": 0.6,
+      "communicator": 0.6,
+      "leader": 0.7
+    }
+  },
+  "ability_categories": {
+    "mental": {
+      "abilities": ["strategist", "inventor", "scholar", "navigator"],
+      "description": "Cognitive and analytical skills"
+    },
+    "physical": {
+      "abilities": ["hunter", "guardian", "warrior"],
+      "description": "Physical prowess and combat skills"
+    },
+    "social": {
+      "abilities": ["teacher", "diplomat", "communicator", "leader"],
+      "description": "Interpersonal and leadership skills"
+    },
+    "creative": {
+      "abilities": ["artist", "performer"],
+      "description": "Artistic and expressive abilities"
+    },
+    "support": {
+      "abilities": ["healer"],
+      "description": "Care and assistance capabilities"
+    },
+    "adventure": {
+      "abilities": ["explorer"],
+      "description": "Exploration and discovery skills"
+    },
+    "practical": {
+      "abilities": ["builder"],
+      "description": "Construction and practical skills"
+    }
+  }
+}

@@ -1,0 +1,484 @@
+#!/usr/bin/env python3
+"""
+ECS Agent Tools
+===============
+
+ECS world simulation integration for agent management.
+Follows the 140-line axiom and modular architecture principles.
+"""
+
+import secrets
+from typing import Any
+
+import sys
+from pathlib import Path
+
+# Add the agent naming package to the path
+agent_naming_path = Path(__file__).parent.parent.parent / "services" / "agent-naming" / "reynard_agent_naming"
+sys.path.insert(0, str(agent_naming_path))
+
+from agent_naming import AgentNameManager, AnimalSpirit, NamingStyle
+
+from .agent_management.behavior import BehaviorAgentTools
+
+
+class ECSAgentTools:
+    """Handles ECS world simulation integration for agents."""
+
+    def __init__(self, agent_manager: AgentNameManager, ecs_agent_tools: Any = None) -> None:
+        self.agent_manager = agent_manager
+        self.ecs_agent_tools = ecs_agent_tools
+        self.behavior_tools = BehaviorAgentTools()
+
+    async def agent_startup_sequence(self, arguments: dict[str, Any]) -> dict[str, Any]:
+        """Complete agent initialization sequence with ECS integration."""
+        agent_id = arguments.get("agent_id", "current-session")
+        preferred_style = arguments.get("preferred_style")
+        force_spirit = arguments.get("force_spirit")
+
+        # Generate a proper agent ID if a generic one is provided
+        if agent_id in [
+            "current-session",
+            "test-agent",
+            "agent",
+            "user",
+            "default",
+            "temp",
+            "temporary",
+            "placeholder",
+            "unknown",
+            "new-agent",
+        ]:
+            agent_id = self._generate_unique_agent_id()
+
+        # Roll spirit if not forced
+        if force_spirit:
+            spirit = AnimalSpirit(force_spirit)
+        else:
+            spirit = self.agent_manager.roll_agent_spirit(weighted=True)
+
+        # Select style if not specified
+        if not preferred_style:
+            styles = [
+                NamingStyle.FOUNDATION,
+                NamingStyle.EXO,
+                NamingStyle.HYBRID,
+                NamingStyle.CYBERPUNK,
+                NamingStyle.MYTHOLOGICAL,
+                NamingStyle.SCIENTIFIC,
+            ]
+            preferred_style = secrets.choice(styles)
+        else:
+            preferred_style = NamingStyle(preferred_style)
+
+        # Create agent with ECS integration using FastAPI backend
+        agent_data = await self._create_agent_with_fastapi_ecs(
+            agent_id, spirit, preferred_style
+        )
+
+        startup_text = await self._format_startup_response(agent_data, spirit, preferred_style)
+
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": startup_text,
+                }
+            ]
+        }
+
+    def get_simulation_status(self, arguments: dict[str, Any]) -> dict[str, Any]:
+        """Get comprehensive simulation status."""
+        _ = arguments  # Unused but required for interface consistency
+        if not self.agent_manager.ecs_available and not self.ecs_agent_tools:
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "ECS world simulation not available. Basic agent management only.",
+                    }
+                ]
+            }
+
+        # Use ECS tools world if available, otherwise fall back to agent manager
+        if self.ecs_agent_tools:
+            try:
+                # Note: ECS components are now accessed through the FastAPI backend
+                # via the ECS client, not through direct imports
+
+                # Get agents from ECS tools world
+                agents = self.ecs_agent_tools.world.get_entities_with_components(
+                    AgentComponent
+                )
+                mature_agents = []
+                for entity in agents:
+                    lifecycle = entity.get_component(LifecycleComponent)
+                    if lifecycle and lifecycle.age >= lifecycle.maturity_age:
+                        mature_agents.append(entity)
+
+                # Get simulation time from agent manager if available
+                agent_status = (
+                    self.agent_manager.get_simulation_status()
+                    if self.agent_manager.ecs_available
+                    else {}
+                )
+
+                status_text = self._format_ecs_status(
+                    agent_status, len(agents), len(mature_agents)
+                )
+
+                return {"content": [{"type": "text", "text": status_text}]}
+            except Exception:
+                # Fall back to agent manager if ECS tools fail
+                pass
+
+        # Fallback to agent manager
+        status = self.agent_manager.get_simulation_status()
+        status_text = self._format_agent_manager_status(status)
+
+        return {"content": [{"type": "text", "text": status_text}]}
+
+    def accelerate_time(self, arguments: dict[str, Any]) -> dict[str, Any]:
+        """Adjust time acceleration factor."""
+        factor = arguments.get("factor", 10.0)
+        self.agent_manager.accelerate_time(factor)
+
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"Time acceleration set to {factor}x",
+                }
+            ]
+        }
+
+    def nudge_time(self, arguments: dict[str, Any]) -> dict[str, Any]:
+        """Nudge simulation time forward (for MCP actions)."""
+        amount = arguments.get("amount", 0.1)
+        self.agent_manager.nudge_time(amount)
+
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"Simulation time nudged forward by {amount}",
+                }
+            ]
+        }
+
+    def _generate_unique_agent_id(self) -> str:
+        """Generate a unique agent ID based on timestamp and random number."""
+        import random
+        import time
+
+        return f"agent-{int(time.time())}-{random.randint(1000, 9999)}"
+
+    async def _create_agent_with_fastapi_ecs(
+        self, agent_id: str, spirit: AnimalSpirit, style: NamingStyle
+    ) -> dict[str, Any]:
+        """Create agent using FastAPI backend ECS system."""
+        try:
+            # Import ECS client
+            from services.ecs_client import get_ecs_client
+            
+            # Get ECS client and create agent
+            ecs_client = get_ecs_client()
+            await ecs_client.start()
+            
+            # Create agent in FastAPI backend ECS
+            result = await ecs_client.create_agent(
+                agent_id=agent_id,
+                spirit=spirit.value,
+                style=style.value
+            )
+            
+            if result.get("success"):
+                # Get agent name from result or generate one
+                agent_name = result.get("name") or self.agent_manager.generate_name(spirit, style)
+                
+                # Assign name in agent manager for persistence
+                self.agent_manager.assign_name(agent_id, agent_name)
+                
+                return {
+                    "agent_id": agent_id,
+                    "name": agent_name,
+                    "ecs_available": True,
+                    "fastapi_ecs": True,
+                    "persona": result.get("persona", {}),
+                    "lora_config": result.get("lora_config", {})
+                }
+            else:
+                # Fallback to basic creation
+                agent_name = self.agent_manager.generate_name(spirit, style)
+                self.agent_manager.assign_name(agent_id, agent_name)
+                
+                return {
+                    "agent_id": agent_id,
+                    "name": agent_name,
+                    "ecs_available": False,
+                    "fastapi_ecs": False,
+                    "error": result.get("error", "Unknown error")
+                }
+                
+        except Exception as e:
+            # Fallback to basic creation
+            agent_name = self.agent_manager.generate_name(spirit, style)
+            self.agent_manager.assign_name(agent_id, agent_name)
+            
+            return {
+                "agent_id": agent_id,
+                "name": agent_name,
+                "ecs_available": False,
+                "fastapi_ecs": False,
+                "error": str(e)
+            }
+
+    def _get_spirit_emoji(self, spirit: str) -> str:
+        """Get the emoji for a specific animal spirit type."""
+        spirit_emojis = {
+            "fox": "🦊",
+            "wolf": "🐺",
+            "otter": "🦦",
+            "eagle": "🦅",
+            "lion": "🦁",
+            "tiger": "🐅",
+            "dragon": "🐉"
+        }
+        return spirit_emojis.get(spirit, "🦊")  # Default to fox emoji
+
+    async def _format_startup_response(
+        self, agent_data: dict, spirit: AnimalSpirit, style: NamingStyle
+    ) -> str:
+        """Format the startup response text."""
+        # Get the correct emoji for the spirit
+        spirit_emoji = self._get_spirit_emoji(spirit.value)
+        startup_text = (
+            f"🎯 Agent Startup Complete!\n"
+            f"{spirit_emoji} Spirit: {spirit.value}\n"
+            f"🎨 Style: {style.value}\n"
+            f"📛 Name: {agent_data['name']}\n"
+            f"✅ Assigned: True\n"
+        )
+
+        # Add ECS information if available
+        if agent_data.get("ecs_available", False):
+            startup_text += self._format_ecs_startup_info(agent_data)
+            # Add location and nearby agents information
+            startup_text += await self._format_agent_location_info(agent_data['agent_id'])
+            # Add social interactions information
+            startup_text += await self._format_social_interactions_info(agent_data['agent_id'])
+
+        startup_text += "\n🔧 Development Environment:\n"
+        startup_text += self._format_version_info()
+
+        return startup_text
+
+    def _format_ecs_startup_info(self, agent_data: dict) -> str:
+        """Format ECS-specific startup information."""
+        ecs_text = ""
+
+        # Display persona information
+        persona = agent_data.get("persona", {})
+        if persona:
+            ecs_text += f"🎭 Enhanced Persona: A {persona.get('spirit', 'Unknown')} with {persona.get('style', 'Unknown')} style. {persona.get('personality_summary', 'Generated personality profile.')}\n"
+
+            # Display dominant traits with detailed descriptions
+            dominant_traits = persona.get("dominant_traits", [])[:3]
+            if dominant_traits:
+                ecs_text += f"   🎯 Dominant Traits: {', '.join(dominant_traits)}\n"
+                ecs_text += f"   📊 Trait Analysis:\n"
+
+                trait_descriptions = self._get_trait_descriptions()
+                for trait in dominant_traits:
+                    description = trait_descriptions.get(trait, "Unique characteristic")
+                    ecs_text += f"     • {trait.title()}: {description} 🔥\n"
+
+            # Add communication style and specializations
+            ecs_text += "   💬 Communication: Enthusiastic, playful, and encouraging. Uses lots of gestures and expressions. Loves to share discoveries.\n"
+            ecs_text += "   🎯 Specializations: Creativity, Teaching, Entertainment\n"
+            ecs_text += "   🎭 Behavioral Patterns:\n"
+            ecs_text += "     • Makes work feel like play\n"
+            ecs_text += "     • Encourages others to try new things\n"
+            ecs_text += "   🎪 Roleplay Quirks:\n"
+            ecs_text += "     • Loves to show off new skills\n"
+            ecs_text += "     • Has a habit of grooming others' fur\n"
+            ecs_text += "     • Has a collection of smooth stones\n"
+            ecs_text += "   📖 Backstory: Spent their childhood exploring rivers and streams\n"
+            ecs_text += "   🎮 Favorite Activities: Playing games, Exploring, Playing games\n"
+            ecs_text += "   🎯 Goals: Teach and learn\n"
+            ecs_text += "   💕 Relationships: Prefers close, meaningful relationships with a few trusted individuals. Values personal space.\n"
+            ecs_text += "   💼 Work Style: Makes work fun and engaging. Brings energy and enthusiasm to any task.\n"
+            ecs_text += "   👥 Social Style: Prefers small, intimate gatherings with close friends. Values quality over quantity in relationships.\n"
+        else:
+            ecs_text += "🎭 Persona: Generated\n"
+
+        # Display LoRA configuration
+        lora_config = agent_data.get("lora_config", {})
+        if lora_config:
+            ecs_text += "\n🧠 LoRA Configuration:\n"
+            ecs_text += f"   Base Model: {lora_config.get('base_model', 'Unknown')}\n"
+            ecs_text += f"   Rank: {lora_config.get('lora_rank', 'N/A')} | Alpha: {lora_config.get('lora_alpha', 'N/A')}\n"
+            ecs_text += f"   Target Modules: {', '.join(lora_config.get('target_modules', []))}\n"
+        else:
+            ecs_text += "\n🧠 LoRA Configuration:\n"
+            ecs_text += "   Base Model: reynard-agent-base\n"
+            ecs_text += "   Rank: 16 | Alpha: 32\n"
+            ecs_text += "   Target Modules: q_proj, v_proj, k_proj, o_proj\n"
+
+        # Add gender identity
+        ecs_text += "\n👤 Gender Identity: Bigender (they/them/theirs)\n"
+
+        return ecs_text
+
+    def _get_trait_descriptions(self) -> dict[str, str]:
+        """Get trait descriptions for display."""
+        return {
+            "dominance": "Natural leadership and assertiveness",
+            "loyalty": "Strong commitment to pack/family bonds",
+            "cunning": "Strategic thinking and clever problem-solving",
+            "aggression": "Intense combativeness and drive",
+            "intelligence": "High problem-solving and learning ability",
+            "creativity": "Innovation and artistic expression",
+            "playfulness": "Joy and lighthearted approach to life",
+            "protectiveness": "Strong defensive instincts",
+            "empathy": "Deep understanding of others' emotions",
+            "charisma": "Social magnetism and influence",
+            "independence": "Self-reliance and autonomy",
+            "cooperation": "Teamwork and collaboration skills",
+            "curiosity": "Desire to explore and discover",
+            "patience": "Tolerance for delays and challenges",
+            "adaptability": "Flexibility in changing situations",
+            "perfectionism": "Attention to detail and quality",
+        }
+
+    def _format_version_info(self) -> str:
+        """Format version information for startup."""
+        version_info = {
+            "python": {"available": True, "version": "3.13.7"},
+            "node": {"available": True, "version": "v24.8.0"},
+            "npm": {"available": True, "version": "11.6.0"},
+            "pnpm": {"available": True, "version": "8.15.0"},
+            "typescript": {"available": True, "version": "5.9.2"},
+        }
+
+        version_text = ""
+        for tool, info in version_info.items():
+            if info.get("available", False):
+                version_text += f"  • {tool.title()}: {info['version']}\n"
+            else:
+                version_text += f"  • {tool.title()}: Not available\n"
+
+        return version_text
+
+    def _format_ecs_status(
+        self, agent_status: dict, total_agents: int, mature_agents: int
+    ) -> str:
+        """Format ECS status information."""
+        status_text = "ECS World Simulation Status:\n"
+        status_text += f"Simulation Time: {agent_status.get('simulation_time', 0):.2f}\n"
+        status_text += f"Time Acceleration: {agent_status.get('time_acceleration', 1):.1f}x\n"
+        status_text += f"Total Agents: {total_agents}\n"
+        status_text += f"Mature Agents: {mature_agents}\n"
+        status_text += f"Agent Personas: {agent_status.get('agent_personas', 0)}\n"
+        status_text += f"LoRA Configs: {agent_status.get('lora_configs', 0)}\n"
+        status_text += f"Real Time Elapsed: {agent_status.get('real_time_elapsed', 0):.2f}s\n"
+
+        return status_text
+
+    def _format_agent_manager_status(self, status: dict) -> str:
+        """Format agent manager status information."""
+        status_text = "ECS World Simulation Status:\n"
+        status_text += f"Simulation Time: {status.get('simulation_time', 0):.2f}\n"
+        status_text += f"Time Acceleration: {status.get('time_acceleration', 1):.1f}x\n"
+        status_text += f"Total Agents: {status.get('total_agents', 0)}\n"
+        status_text += f"Mature Agents: {status.get('mature_agents', 0)}\n"
+        status_text += f"Agent Personas: {status.get('agent_personas', 0)}\n"
+        status_text += f"LoRA Configs: {status.get('lora_configs', 0)}\n"
+        status_text += f"Real Time Elapsed: {status.get('real_time_elapsed', 0):.2f}s\n"
+
+        return status_text
+
+    async def _format_agent_location_info(self, agent_id: str) -> str:
+        """Format agent location and nearby agents information."""
+        location_text = "\n==================================================\n🌍 ECS WORLD SIMULATION\n==================================================\n"
+        
+        try:
+            # Get agent location from FastAPI backend ECS
+            from services.ecs_client import get_ecs_client
+            
+            ecs_client = get_ecs_client()
+            await ecs_client.start()
+            
+            # Get agent position
+            position_result = await ecs_client.get_agent_position(agent_id)
+            if position_result:
+                location_text += f"📍 Current Location: ({position_result['x']:.1f}, {position_result['y']:.1f})\n"
+                location_text += f"🎯 Target: ({position_result['target_x']:.1f}, {position_result['target_y']:.1f})\n"
+                location_text += f"⚡ Movement Speed: {position_result['movement_speed']:.1f}\n"
+                
+                # Get nearby agents
+                nearby_result = await ecs_client.get_nearby_agents(agent_id, radius=200.0)
+                nearby_agents = nearby_result.get("nearby_agents", [])
+                
+                if nearby_agents:
+                    # Sort by distance and take top 3
+                    nearby_agents.sort(key=lambda x: x['distance'])
+                    top_3 = nearby_agents[:3]
+                    
+                    location_text += f"\n👥 Nearby Agents ({len(top_3)}):\n"
+                    for i, agent in enumerate(top_3, 1):
+                        location_text += f"   {i}. {agent['name']} ({agent['agent_id'][:8]}...)\n"
+                        location_text += f"      Distance: {agent['distance']:.1f} units\n"
+                        location_text += f"      Location: ({agent['x']:.1f}, {agent['y']:.1f})\n"
+                        location_text += f"      Spirit: {agent['spirit']}\n"
+                else:
+                    location_text += "\n👥 Nearby Agents: None found\n"
+            else:
+                location_text += "📍 Current Location: Agent not found in ECS world\n"
+                
+        except Exception as e:
+            location_text += f"📍 Current Location: Error retrieving location - {str(e)}\n"
+            
+        return location_text
+
+    async def _format_social_interactions_info(self, agent_id: str) -> str:
+        """Format social interactions and communications information."""
+        social_text = ""
+        
+        try:
+            # Get social interactions from FastAPI backend ECS
+            from services.ecs_client import get_ecs_client
+            
+            ecs_client = get_ecs_client()
+            await ecs_client.start()
+            
+            # Get recent interactions
+            interactions_result = await ecs_client.get_interaction_history(agent_id, limit=5)
+            recent_interactions = interactions_result.get("interactions", [])
+            
+            if recent_interactions:
+                social_text += f"\n💬 Recent Communications ({len(recent_interactions)}):\n"
+                for interaction in recent_interactions:
+                    social_text += f"   • {interaction.get('type', 'communication')} with {interaction.get('participant', 'Unknown')}\n"
+                    social_text += f"     Outcome: {interaction.get('outcome', 'neutral')} | Impact: {interaction.get('impact', 0.0):+.2f}\n"
+                    social_text += f"     Time: {interaction.get('timestamp', 'Unknown')}\n"
+            else:
+                social_text += "\n💬 Recent Communications: None\n"
+            
+            # Get social stats
+            social_stats_result = await ecs_client.get_agent_social_stats(agent_id)
+            if social_stats_result:
+                social_text += "\n🤝 Social Network:\n"
+                social_text += f"   Total Relationships: {social_stats_result.get('total_relationships', 0)}\n"
+                social_text += f"   Positive: {social_stats_result.get('positive_relationships', 0)} | Negative: {social_stats_result.get('negative_relationships', 0)}\n"
+                social_text += f"   Social Energy: {social_stats_result.get('social_energy', 0.0):.1f}/{social_stats_result.get('max_social_energy', 1.0):.1f}\n"
+                social_text += f"   Active Interactions: {social_stats_result.get('active_interactions', 0)}\n"
+                social_text += f"   Communication Style: {social_stats_result.get('communication_style', 'casual')}\n"
+            else:
+                social_text += "\n🤝 Social Network: No data available\n"
+                
+        except Exception as e:
+            social_text += f"\n💬 Social Information: Error retrieving data - {str(e)}\n"
+            
+        return social_text
+

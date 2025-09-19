@@ -108,7 +108,7 @@ pnpm --filter reynard-queue-watcher start CHANGELOG.md
   1. scripts/changelog-scanner.py
   2. scripts/changelog-watcher.sh
   3. packages/queue-watcher/src/cli.ts
-  4. scripts/mcp/main.py
+  4. services/mcp-server/main.py
   5. packages/code-quality/src/security/
 ```
 

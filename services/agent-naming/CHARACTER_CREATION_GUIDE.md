@@ -1,6 +1,6 @@
 # 🎭 Character Creation System - Complete Guide
 
-🦊 *whiskers twitch with excitement* The character creation system allows agents to create specific characters with detailed customization options through the MCP server!
+🦊 _whiskers twitch with excitement_ The character creation system allows agents to create specific characters with detailed customization options through the MCP server!
 
 ## 🎯 **Overview**
 
@@ -391,6 +391,6 @@ delete_result = await character_tools.delete_character({
 
 ## 🎉 **Conclusion**
 
-🦊 *whiskers twitch with satisfaction* The character creation system provides comprehensive tools for creating, managing, and customizing characters with detailed traits, appearance, background, and skills. Whether you need mentors, rivals, villains, or companions, the system can generate rich, detailed characters that fit any scenario!
+🦊 _whiskers twitch with satisfaction_ The character creation system provides comprehensive tools for creating, managing, and customizing characters with detailed traits, appearance, background, and skills. Whether you need mentors, rivals, villains, or companions, the system can generate rich, detailed characters that fit any scenario!
 
-*red fur gleams with pride* Now you can create specific characters with the MCP server and bring them to life with detailed customization options! 🎭✨
+_red fur gleams with pride_ Now you can create specific characters with the MCP server and bring them to life with detailed customization options! 🎭✨

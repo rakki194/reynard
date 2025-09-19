@@ -13,23 +13,15 @@ export default defineConfig({
     // Test environment
     environment: "node",
     globals: true,
-    
+
     // Test file patterns
-    include: [
-      "src/**/*.{test,spec}.{js,ts}",
-    ],
-    exclude: [
-      "node_modules/**",
-      "dist/**",
-      "**/*.d.ts",
-      "src/__tests__/setup.ts",
-      "src/__tests__/test-utils.ts",
-    ],
-    
+    include: ["src/**/*.{test,spec}.{js,ts}"],
+    exclude: ["node_modules/**", "dist/**", "**/*.d.ts", "src/__tests__/setup.ts", "src/__tests__/test-utils.ts"],
+
     // Test timeout
     testTimeout: 10000,
     hookTimeout: 10000,
-    
+
     // Coverage configuration
     coverage: {
       provider: "v8",
@@ -55,16 +47,16 @@ export default defineConfig({
         },
       },
     },
-    
+
     // Test setup
     setupFiles: ["./src/__tests__/setup.ts"],
-    
+
     // Reporter configuration
     reporter: ["verbose"],
-    
+
     // Watch mode configuration
     watch: false,
-    
+
     // Pool configuration for parallel tests
     pool: "threads",
     poolOptions: {
@@ -72,16 +64,16 @@ export default defineConfig({
         singleThread: false,
       },
     },
-    
+
     // Test isolation
     isolate: true,
-    
+
     // Mock configuration
     mockReset: true,
     restoreMocks: true,
     clearMocks: true,
   },
-  
+
   // Resolve configuration
   resolve: {
     alias: {
@@ -92,7 +84,7 @@ export default defineConfig({
       "@types": resolve(__dirname, "src/types"),
     },
   },
-  
+
   // Define global constants
   define: {
     __TEST__: true,

@@ -110,7 +110,7 @@ class ReynardComponentSelector:
         
         # Backend services (Weight: 20%)
         backend_services = [
-            'backend/app', 'services/mcp-server', 'services/ecs-world',
+            'backend/app', 'services/mcp-server',
             'services/agent-naming', 'services/gatekeeper'
         ]
         for service in backend_services:

@@ -7,11 +7,7 @@
 
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { PortManager } from "../core/PortManager.js";
-import {
-  createMockPortInfo,
-  setupTestEnvironment,
-  cleanupTestEnvironment,
-} from "./test-utils.js";
+import { createMockPortInfo, setupTestEnvironment, cleanupTestEnvironment } from "./test-utils.js";
 import type { PortInfo, PortAllocation, ProjectCategory } from "../types/index.js";
 
 describe("PortManager", () => {
@@ -21,11 +17,11 @@ describe("PortManager", () => {
   beforeEach(async () => {
     const testEnv = setupTestEnvironment();
     mockNetwork = testEnv.mockNetwork;
-    
+
     // Configure the mocks
     const { createServer } = await import("node:net");
     vi.mocked(createServer).mockImplementation(mockNetwork.createServer);
-    
+
     portManager = new PortManager();
   });
 
@@ -105,16 +101,14 @@ describe("PortManager", () => {
         mockNetwork.setPortInUse(port, true);
       }
 
-      await expect(
-        portManager.allocatePort("test-project", 3000, "package")
-      ).rejects.toThrow("No available ports");
+      await expect(portManager.allocatePort("test-project", 3000, "package")).rejects.toThrow("No available ports");
     });
 
     it("should respect reserved ports", async () => {
-      portManager.setPortRange("package", { 
-        start: 3000, 
-        end: 3009, 
-        reserved: [3000, 3001] 
+      portManager.setPortRange("package", {
+        start: 3000,
+        end: 3009,
+        reserved: [3000, 3001],
       });
 
       const allocation = await portManager.allocatePort("test-project", 3000, "package");
@@ -422,23 +416,19 @@ describe("PortManager", () => {
       portManager.setPortRange("package", { start: 3000, end: 3009 });
       mockNetwork.isPortInUse.mockRejectedValueOnce(new Error("Network error"));
 
-      await expect(
-        portManager.allocatePort("test-project", 3000, "package")
-      ).rejects.toThrow("Network error");
+      await expect(portManager.allocatePort("test-project", 3000, "package")).rejects.toThrow("Network error");
     });
 
     it("should handle invalid project names", async () => {
       portManager.setPortRange("package", { start: 3000, end: 3009 });
 
-      await expect(
-        portManager.allocatePort("", 3000, "package")
-      ).rejects.toThrow("Invalid project name");
+      await expect(portManager.allocatePort("", 3000, "package")).rejects.toThrow("Invalid project name");
     });
 
     it("should handle invalid categories", async () => {
-      await expect(
-        portManager.allocatePort("test-project", 3000, "invalid" as ProjectCategory)
-      ).rejects.toThrow("Invalid category");
+      await expect(portManager.allocatePort("test-project", 3000, "invalid" as ProjectCategory)).rejects.toThrow(
+        "Invalid category"
+      );
     });
   });
 });

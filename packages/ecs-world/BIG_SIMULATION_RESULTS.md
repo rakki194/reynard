@@ -13,7 +13,7 @@ The big ECS world evolution simulation successfully demonstrated complex trait e
 ### Population Dynamics
 
 - **Initial Population**: 150 agents
-- **Final Population**: 410 agents  
+- **Final Population**: 410 agents
 - **Population Growth Rate**: 173.33%
 - **Population Stability**: 0.282 (moderate volatility)
 - **Total Agents Created**: 2,590

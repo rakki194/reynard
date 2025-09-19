@@ -30,42 +30,44 @@ vi.mock("fs", () => ({
     readdirSync: vi.fn((_path: any) => {
       if (_path === "/test-project") {
         return [
-          { 
-            name: "styles.css", 
-            isFile: () => true, 
+          {
+            name: "styles.css",
+            isFile: () => true,
             isDirectory: () => false,
             isBlockDevice: () => false,
             isCharacterDevice: () => false,
             isSymbolicLink: () => false,
             isFIFO: () => false,
             isSocket: () => false,
-            parentPath: ""
+            parentPath: "",
           },
-          { 
-            name: "components", 
-            isFile: () => false, 
+          {
+            name: "components",
+            isFile: () => false,
             isDirectory: () => true,
             isBlockDevice: () => false,
             isCharacterDevice: () => false,
             isSymbolicLink: () => false,
             isFIFO: () => false,
             isSocket: () => false,
-            parentPath: ""
+            parentPath: "",
           },
         ] as any;
       }
       if (_path === "/test-project/components") {
-        return [{ 
-          name: "button.css", 
-          isFile: () => true, 
-          isDirectory: () => false,
-          isBlockDevice: () => false,
-          isCharacterDevice: () => false,
-          isSymbolicLink: () => false,
-          isFIFO: () => false,
-          isSocket: () => false,
-          parentPath: ""
-        }] as any;
+        return [
+          {
+            name: "button.css",
+            isFile: () => true,
+            isDirectory: () => false,
+            isBlockDevice: () => false,
+            isCharacterDevice: () => false,
+            isSymbolicLink: () => false,
+            isFIFO: () => false,
+            isSocket: () => false,
+            parentPath: "",
+          },
+        ] as any;
       }
       return [];
     }),
@@ -77,7 +79,7 @@ vi.mock("fs", () => ({
     copyFileSync: vi.fn(),
   },
   readFileSync: vi.fn((_path: any) => {
-      const content = mockFiles.get(_path);
+    const content = mockFiles.get(_path);
     if (content === undefined) {
       throw new Error("File not found");
     }
@@ -86,44 +88,46 @@ vi.mock("fs", () => ({
   writeFileSync: vi.fn(),
   existsSync: vi.fn((_path: string) => mockFiles.has(_path)),
   readdirSync: vi.fn((_path: any) => {
-        if (_path === "/test-project") {
+    if (_path === "/test-project") {
       return [
-        { 
-          name: "styles.css", 
-          isFile: () => true, 
+        {
+          name: "styles.css",
+          isFile: () => true,
           isDirectory: () => false,
           isBlockDevice: () => false,
           isCharacterDevice: () => false,
           isSymbolicLink: () => false,
           isFIFO: () => false,
           isSocket: () => false,
-          parentPath: ""
+          parentPath: "",
         },
-        { 
-          name: "components", 
-          isFile: () => false, 
+        {
+          name: "components",
+          isFile: () => false,
           isDirectory: () => true,
           isBlockDevice: () => false,
           isCharacterDevice: () => false,
           isSymbolicLink: () => false,
           isFIFO: () => false,
           isSocket: () => false,
-          parentPath: ""
+          parentPath: "",
         },
       ] as any;
     }
-        if (_path === "/test-project/components") {
-      return [{ 
-        name: "button.css", 
-        isFile: () => true, 
-        isDirectory: () => false,
-        isBlockDevice: () => false,
-        isCharacterDevice: () => false,
-        isSymbolicLink: () => false,
-        isFIFO: () => false,
-        isSocket: () => false,
-        parentPath: ""
-      }] as any;
+    if (_path === "/test-project/components") {
+      return [
+        {
+          name: "button.css",
+          isFile: () => true,
+          isDirectory: () => false,
+          isBlockDevice: () => false,
+          isCharacterDevice: () => false,
+          isSymbolicLink: () => false,
+          isFIFO: () => false,
+          isSocket: () => false,
+          parentPath: "",
+        },
+      ] as any;
     }
     return [];
   }),
@@ -215,17 +219,19 @@ describe("CSSVariableValidator", () => {
       const fs = await import("fs");
       vi.mocked(fs.readdirSync).mockImplementation((_path: any) => {
         if (_path === "/test-project") {
-          return [{ 
-            name: "styles.css", 
-            isFile: () => true, 
-            isDirectory: () => false,
-            isBlockDevice: () => false,
-            isCharacterDevice: () => false,
-            isSymbolicLink: () => false,
-            isFIFO: () => false,
-            isSocket: () => false,
-            parentPath: ""
-          }] as any;
+          return [
+            {
+              name: "styles.css",
+              isFile: () => true,
+              isDirectory: () => false,
+              isBlockDevice: () => false,
+              isCharacterDevice: () => false,
+              isSymbolicLink: () => false,
+              isFIFO: () => false,
+              isSocket: () => false,
+              parentPath: "",
+            },
+          ] as any;
         }
         return [];
       });
@@ -263,17 +269,19 @@ describe("CSSVariableValidator", () => {
       const fs = await import("fs");
       vi.mocked(fs.readdirSync).mockImplementation((_path: any) => {
         if (_path === "/test-project") {
-          return [{ 
-            name: "styles.css", 
-            isFile: () => true, 
-            isDirectory: () => false,
-            isBlockDevice: () => false,
-            isCharacterDevice: () => false,
-            isSymbolicLink: () => false,
-            isFIFO: () => false,
-            isSocket: () => false,
-            parentPath: ""
-          }] as any;
+          return [
+            {
+              name: "styles.css",
+              isFile: () => true,
+              isDirectory: () => false,
+              isBlockDevice: () => false,
+              isCharacterDevice: () => false,
+              isSymbolicLink: () => false,
+              isFIFO: () => false,
+              isSocket: () => false,
+              parentPath: "",
+            },
+          ] as any;
         }
         return [];
       });
@@ -309,17 +317,19 @@ describe("CSSVariableValidator", () => {
       const fs = await import("fs");
       vi.mocked(fs.readdirSync).mockImplementation((_path: any) => {
         if (_path === "/test-project") {
-          return [{ 
-            name: "styles.css", 
-            isFile: () => true, 
-            isDirectory: () => false,
-            isBlockDevice: () => false,
-            isCharacterDevice: () => false,
-            isSymbolicLink: () => false,
-            isFIFO: () => false,
-            isSocket: () => false,
-            parentPath: ""
-          }] as any;
+          return [
+            {
+              name: "styles.css",
+              isFile: () => true,
+              isDirectory: () => false,
+              isBlockDevice: () => false,
+              isCharacterDevice: () => false,
+              isSymbolicLink: () => false,
+              isFIFO: () => false,
+              isSocket: () => false,
+              parentPath: "",
+            },
+          ] as any;
         }
         return [];
       });

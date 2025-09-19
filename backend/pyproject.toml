@@ -44,7 +44,6 @@ dependencies = [
     "argon2-cffi",
     "cryptography",
     "reynard-gatekeeper @ file:///home/kade/runeset/reynard/services/gatekeeper",
-    "reynard-ecs-world @ file:///home/kade/runeset/reynard/services/ecs-world",
 ]
 
 [project.optional-dependencies]

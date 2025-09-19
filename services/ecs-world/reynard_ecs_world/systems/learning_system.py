@@ -63,7 +63,7 @@ class LearningSystem(System):
         # Update knowledge decay for all agents
         self._update_knowledge_decay(delta_time)
 
-    def _process_learning_dynamics(self, delta_time: float) -> None:
+    def _process_learning_dynamics(self, delta_time: float) -> None:  # noqa: ARG002
         """Process learning dynamics including knowledge transfer and teaching."""
         entities = self.get_entities_with_components(KnowledgeComponent)
 
@@ -89,7 +89,7 @@ class LearningSystem(System):
                 continue
 
             # Find nearby agents
-            for j, entity2 in enumerate(entities[i+1:], i+1):
+            for entity2 in entities[i+1:]:
                 knowledge_comp2 = entity2.get_component(KnowledgeComponent)
                 social_comp2 = entity2.get_component(SocialComponent)
                 
@@ -128,8 +128,8 @@ class LearningSystem(System):
         agent2: Any, 
         knowledge_comp1: KnowledgeComponent, 
         knowledge_comp2: KnowledgeComponent,
-        social_comp1: SocialComponent,
-        social_comp2: SocialComponent
+        social_comp1: SocialComponent,  # noqa: ARG002
+        social_comp2: SocialComponent  # noqa: ARG002
     ) -> None:
         """Check for knowledge sharing opportunities between two agents."""
         # Find knowledge that agent1 can teach to agent2
@@ -154,7 +154,7 @@ class LearningSystem(System):
                 )
                 
                 if opportunity_id:
-                    logger.info(f"Created learning opportunity for {agent2.id} to learn '{knowledge.title}' from {agent1.id}")
+                    logger.info("Created learning opportunity for %s to learn '%s' from %s", agent2.id, knowledge.title, agent1.id)
 
         # Do the same for agent2 teaching agent1
         teachable_knowledge = knowledge_comp2.get_teachable_knowledge()
@@ -176,7 +176,7 @@ class LearningSystem(System):
                 )
                 
                 if opportunity_id:
-                    logger.info(f"Created learning opportunity for {agent1.id} to learn '{knowledge.title}' from {agent2.id}")
+                    logger.info("Created learning opportunity for %s to learn '%s' from %s", agent1.id, knowledge.title, agent2.id)
 
     def _determine_learning_method(self, teacher: Any, student: Any, knowledge: Knowledge) -> LearningMethod:
         """Determine the best learning method for knowledge transfer."""
@@ -334,7 +334,7 @@ class LearningSystem(System):
                     student_knowledge.remove_learning_opportunity(opp_id)
                     break
             
-            logger.info(f"Teaching session: {teacher.id} taught '{knowledge.title}' to {student.id}")
+            logger.info("Teaching session: %s taught '%s' to %s", teacher.id, knowledge.title, student.id)
 
     def _process_learning_opportunities(self, entities: List[Any]) -> None:
         """Process learning opportunities for agents."""
@@ -394,7 +394,7 @@ class LearningSystem(System):
             # Remove the learning opportunity
             student_knowledge.remove_learning_opportunity(opportunity.id)
             
-            logger.info(f"Learning session: {student.id} learned '{knowledge.title}' from {teacher.id}")
+            logger.info("Learning session: %s learned '%s' from %s", student.id, knowledge.title, teacher.id)
 
     def _cleanup_expired_opportunities(self, entities: List[Any]) -> None:
         """Clean up expired learning opportunities."""
@@ -492,7 +492,7 @@ class LearningSystem(System):
             self.total_learning_sessions += 1
             self.total_knowledge_transfers += 1
             
-            logger.info(f"Manual knowledge transfer: {teacher_id} taught '{knowledge.title}' to {student_id}")
+            logger.info("Manual knowledge transfer: %s taught '%s' to %s", teacher_id, knowledge.title, student_id)
             return True
         
         return False

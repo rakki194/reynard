@@ -1,15 +1,12 @@
 import { DevServerManager } from "../../core/DevServerManager.js";
 import type { GlobalOptions } from "./types.js";
 
-export const handleStats = async (
-  options: { json?: boolean },
-  globalOptions: GlobalOptions
-) => {
+export const handleStats = async (options: { json?: boolean }, globalOptions: GlobalOptions) => {
   try {
     const devServerManager = new DevServerManager(globalOptions.config);
     await devServerManager.initialize();
     const stats = await devServerManager.getStats();
-    
+
     console.log("Server Statistics:");
     console.log(`Total projects: ${stats.totalProjects}`);
     console.log(`Running projects: ${stats.runningProjects}`);

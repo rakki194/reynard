@@ -16,15 +16,7 @@
     "test": "vitest",
     "clean": "rm -rf dist"
   },
-  "keywords": [
-    "css",
-    "variables",
-    "validation",
-    "reynard",
-    "themes",
-    "consistency",
-    "linting"
-  ],
+  "keywords": ["css", "variables", "validation", "reynard", "themes", "consistency", "linting"],
   "author": "Reynard Framework",
   "license": "MIT",
   "dependencies": {

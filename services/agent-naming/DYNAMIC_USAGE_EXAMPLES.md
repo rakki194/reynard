@@ -1,6 +1,6 @@
 # 🦊 Dynamic Agent Naming Configuration - Usage Examples
 
-*whiskers twitch with excitement* Here are practical examples of how to use the dynamic agent naming configuration system!
+_whiskers twitch with excitement_ Here are practical examples of how to use the dynamic agent naming configuration system!
 
 ## 🎯 **Quick Start Examples**
 
@@ -219,8 +219,16 @@ Edit `naming_config.json`:
       "description": "Rebirth, renewal, transformation",
       "emoji": "🔥",
       "base_names": [
-        "Phoenix", "Rising", "Renewal", "Transformation", "Rebirth",
-        "Eternal", "Immortal", "Flame", "Ash", "Resurrection"
+        "Phoenix",
+        "Rising",
+        "Renewal",
+        "Transformation",
+        "Rebirth",
+        "Eternal",
+        "Immortal",
+        "Flame",
+        "Ash",
+        "Resurrection"
       ],
       "generation_numbers": [1, 3, 7, 13, 21, 34, 55],
       "weight": 0.6,
@@ -335,7 +343,7 @@ print(response.json())
 
 ## 🎉 **Conclusion**
 
-🦊 *whiskers twitch with satisfaction* The dynamic agent naming configuration system provides complete flexibility for any naming scenario! You can:
+🦊 _whiskers twitch with satisfaction_ The dynamic agent naming configuration system provides complete flexibility for any naming scenario! You can:
 
 - **Switch themes instantly**: From animal spirits to cyberpunk to mythological
 - **Customize on the fly**: Enable/disable schemes, styles, and spirits
@@ -343,4 +351,4 @@ print(response.json())
 - **Validate settings**: Ensure configuration is correct before use
 - **Extend easily**: Add new schemes, styles, and spirits via JSON
 
-*red fur gleams with pride* Now you can easily adapt the naming system to any project, theme, or creative vision with just a few API calls! 🦊✨
+_red fur gleams with pride_ Now you can easily adapt the naming system to any project, theme, or creative vision with just a few API calls! 🦊✨

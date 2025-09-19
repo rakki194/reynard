@@ -10,12 +10,12 @@ export const handleHealth = async (
     const devServerManager = new DevServerManager(globalOptions.config);
     await devServerManager.initialize();
     const health = await devServerManager.health(project);
-    
-            if (project) {
-              console.log(`Health for: ${project}`);
-              const projectHealth = health.find(h => h.project === project);
-              console.log(`Status: ${projectHealth?.health === "healthy" ? "healthy" : "unhealthy"}`);
-            } else {
+
+    if (project) {
+      console.log(`Health for: ${project}`);
+      const projectHealth = health.find(h => h.project === project);
+      console.log(`Status: ${projectHealth?.health === "healthy" ? "healthy" : "unhealthy"}`);
+    } else {
       console.log("Health for: all projects");
       console.log(`Total checks: ${health.length}`);
     }

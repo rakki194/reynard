@@ -207,7 +207,7 @@ The old `robot_name_generator.py` and deprecated `services/agent_manager.py` hav
 
 ```bash
 # Test the naming system
-cd scripts/mcp
+cd services/mcp-server
 python3 -c "
 from agent_naming import ReynardRobotNamer, AnimalSpirit, NamingStyle, NamingConfig
 

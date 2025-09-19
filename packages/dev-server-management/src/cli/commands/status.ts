@@ -10,13 +10,13 @@ export const handleStatus = async (
     const devServerManager = new DevServerManager(globalOptions.config);
     await devServerManager.initialize();
     const status = await devServerManager.status(project);
-    
-            if (project) {
-              console.log(`Status for: ${project}`);
-              const projectStatus = status.find(s => s.name === project);
-              console.log(`Status: ${projectStatus?.status || "unknown"}`);
-              console.log(`Port: ${projectStatus?.port || "unknown"}`);
-            } else {
+
+    if (project) {
+      console.log(`Status for: ${project}`);
+      const projectStatus = status.find(s => s.name === project);
+      console.log(`Status: ${projectStatus?.status || "unknown"}`);
+      console.log(`Port: ${projectStatus?.port || "unknown"}`);
+    } else {
       console.log("Status for: all projects");
       console.log(`Total projects: ${status.length}`);
     }

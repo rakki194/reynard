@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "last_updated": "2025-09-19T10:37:05.316878",
+  "last_updated": "",
   "tools": {
     "generate_agent_name": {
       "name": "generate_agent_name",
@@ -42,6 +42,14 @@
       "dependencies": [],
       "config": {}
     },
+    "get_spirit_emoji": {
+      "name": "get_spirit_emoji",
+      "category": "agent",
+      "enabled": true,
+      "description": "Get emoji for animal spirit types",
+      "dependencies": [],
+      "config": {}
+    },
     "agent_startup_sequence": {
       "name": "agent_startup_sequence",
       "category": "agent",
@@ -63,6 +71,78 @@
       "category": "agent",
       "enabled": true,
       "description": "Get LoRA configuration for agent persona",
+      "dependencies": [],
+      "config": {}
+    },
+    "create_character": {
+      "name": "create_character",
+      "category": "character",
+      "enabled": true,
+      "description": "Create a new character with detailed customization",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_character": {
+      "name": "get_character",
+      "category": "character",
+      "enabled": true,
+      "description": "Get detailed character information by ID",
+      "dependencies": [],
+      "config": {}
+    },
+    "list_characters": {
+      "name": "list_characters",
+      "category": "character",
+      "enabled": true,
+      "description": "List all characters with optional filtering",
+      "dependencies": [],
+      "config": {}
+    },
+    "search_characters": {
+      "name": "search_characters",
+      "category": "character",
+      "enabled": true,
+      "description": "Search characters by name, description, or tags",
+      "dependencies": [],
+      "config": {}
+    },
+    "update_character": {
+      "name": "update_character",
+      "category": "character",
+      "enabled": true,
+      "description": "Update character information",
+      "dependencies": [],
+      "config": {}
+    },
+    "delete_character": {
+      "name": "delete_character",
+      "category": "character",
+      "enabled": true,
+      "description": "Delete a character by ID",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_character_types": {
+      "name": "get_character_types",
+      "category": "character",
+      "enabled": true,
+      "description": "Get available character types",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_personality_traits": {
+      "name": "get_personality_traits",
+      "category": "character",
+      "enabled": true,
+      "description": "Get available personality traits",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_ability_traits": {
+      "name": "get_ability_traits",
+      "category": "character",
+      "enabled": true,
+      "description": "Get available ability traits",
       "dependencies": [],
       "config": {}
     },

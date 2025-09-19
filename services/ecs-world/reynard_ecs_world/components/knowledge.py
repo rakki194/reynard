@@ -5,7 +5,7 @@ Agent knowledge, learning capabilities, and knowledge transfer systems.
 """
 
 import uuid
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Set
@@ -413,7 +413,7 @@ class KnowledgeComponent(Component):
         
         return min(1.0, base_effectiveness + curiosity_bonus + learning_rate_bonus)
 
-    def process_knowledge_decay(self, delta_time: float) -> None:
+    def process_knowledge_decay(self, delta_time: float) -> None:  # noqa: ARG002
         """Process knowledge decay over time."""
         current_time = datetime.now()
         time_since_update = (current_time - self.last_knowledge_update).total_seconds()

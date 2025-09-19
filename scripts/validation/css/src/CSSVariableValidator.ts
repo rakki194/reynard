@@ -82,7 +82,7 @@ export class CSSVariableValidator {
       // Step 2: Extract variables from all files
       this.logger.info("🔬 Extracting CSS variables...");
       const filePaths = cssFiles.map(f => f.path);
-        const { definitions, usage } = this.extractor.extractFromFiles(filePaths);
+      const { definitions, usage } = this.extractor.extractFromFiles(filePaths);
 
       // Update summary with actual file count
       const summary = this.validator["generateSummary"](definitions, usage, [], [], []);

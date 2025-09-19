@@ -255,7 +255,7 @@ warn_no_return = true
 warn_unreachable = true
 strict_equality = true
 show_error_codes = true
-mypy_path = "scripts:services/agent-naming:services/ecs-world:services/gatekeeper:services/mcp-server"
+mypy_path = "scripts:services/agent-naming:services/gatekeeper:services/mcp-server"
 
 # Module-specific overrides for external libraries
 [[tool.mypy.overrides]]
@@ -295,7 +295,6 @@ line-length = 88
 src = [
     "scripts",
     "services/agent-naming",
-    "services/ecs-world",
     "services/gatekeeper",
     "services/mcp-server",
 ]
@@ -371,7 +370,7 @@ known-first-party = [
 ]
 
 [tool.pylint.master]
-init-hook = "import sys; import os; sys.path.append('scripts'); sys.path.append('services/agent-naming'); sys.path.append('services/ecs-world'); sys.path.append('services/gatekeeper'); sys.path.append('services/mcp-server'); venv_path = os.path.expanduser('~/venv/lib/python3.13/site-packages'); sys.path.insert(0, venv_path)"
+init-hook = "import sys; import os; sys.path.append('scripts'); sys.path.append('services/agent-naming'); sys.path.append('services/gatekeeper'); sys.path.append('services/mcp-server'); venv_path = os.path.expanduser('~/venv/lib/python3.13/site-packages'); sys.path.insert(0, venv_path)"
 max-module-lines = 250
 
 [tool.pylint.format]
@@ -443,7 +442,6 @@ source = [
     "backend/app",
     "services/gatekeeper/reynard_gatekeeper",
     "services/agent-naming/reynard_agent_naming",
-    "services/ecs-world/reynard_ecs_world",
     "services/mcp-server/reynard_mcp_server",
     "fenrir",
 ]

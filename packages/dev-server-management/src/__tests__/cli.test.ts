@@ -53,10 +53,10 @@ describe("CLI Commands", () => {
   beforeEach(() => {
     const testEnv = setupTestEnvironment();
     program = new Command();
-    
+
     // Reset all mocks
     vi.clearAllMocks();
-    
+
     // Setup default mock implementations
     mockDevServerManager.initialize.mockResolvedValue(undefined);
     mockDevServerManager.start.mockResolvedValue(undefined);
@@ -101,18 +101,14 @@ describe("CLI Commands", () => {
       const startCommand = createStartCommand();
       program.addCommand(startCommand);
 
-      await expect(
-        program.parseAsync(["node", "dev-server", "start", "test-project"])
-      ).rejects.toThrow("Start failed");
+      await expect(program.parseAsync(["node", "dev-server", "start", "test-project"])).rejects.toThrow("Start failed");
     });
 
     it("should require project name", async () => {
       const startCommand = createStartCommand();
       program.addCommand(startCommand);
 
-      await expect(
-        program.parseAsync(["node", "dev-server", "start"])
-      ).rejects.toThrow();
+      await expect(program.parseAsync(["node", "dev-server", "start"])).rejects.toThrow();
     });
   });
 
@@ -133,18 +129,14 @@ describe("CLI Commands", () => {
       const stopCommand = createStopCommand();
       program.addCommand(stopCommand);
 
-      await expect(
-        program.parseAsync(["node", "dev-server", "stop", "test-project"])
-      ).rejects.toThrow("Stop failed");
+      await expect(program.parseAsync(["node", "dev-server", "stop", "test-project"])).rejects.toThrow("Stop failed");
     });
 
     it("should require project name", async () => {
       const stopCommand = createStopCommand();
       program.addCommand(stopCommand);
 
-      await expect(
-        program.parseAsync(["node", "dev-server", "stop"])
-      ).rejects.toThrow();
+      await expect(program.parseAsync(["node", "dev-server", "stop"])).rejects.toThrow();
     });
   });
 
@@ -165,18 +157,16 @@ describe("CLI Commands", () => {
       const restartCommand = createRestartCommand();
       program.addCommand(restartCommand);
 
-      await expect(
-        program.parseAsync(["node", "dev-server", "restart", "test-project"])
-      ).rejects.toThrow("Restart failed");
+      await expect(program.parseAsync(["node", "dev-server", "restart", "test-project"])).rejects.toThrow(
+        "Restart failed"
+      );
     });
 
     it("should require project name", async () => {
       const restartCommand = createRestartCommand();
       program.addCommand(restartCommand);
 
-      await expect(
-        program.parseAsync(["node", "dev-server", "restart"])
-      ).rejects.toThrow();
+      await expect(program.parseAsync(["node", "dev-server", "restart"])).rejects.toThrow();
     });
   });
 
@@ -215,9 +205,7 @@ describe("CLI Commands", () => {
       const statusCommand = createStatusCommand();
       program.addCommand(statusCommand);
 
-      await expect(
-        program.parseAsync(["node", "dev-server", "status"])
-      ).rejects.toThrow("Status failed");
+      await expect(program.parseAsync(["node", "dev-server", "status"])).rejects.toThrow("Status failed");
     });
   });
 
@@ -244,9 +232,7 @@ describe("CLI Commands", () => {
       const listCommand = createListCommand();
       program.addCommand(listCommand);
 
-      await expect(
-        program.parseAsync(["node", "dev-server", "list"])
-      ).rejects.toThrow("List failed");
+      await expect(program.parseAsync(["node", "dev-server", "list"])).rejects.toThrow("List failed");
     });
   });
 
@@ -285,9 +271,7 @@ describe("CLI Commands", () => {
       const healthCommand = createHealthCommand();
       program.addCommand(healthCommand);
 
-      await expect(
-        program.parseAsync(["node", "dev-server", "health"])
-      ).rejects.toThrow("Health check failed");
+      await expect(program.parseAsync(["node", "dev-server", "health"])).rejects.toThrow("Health check failed");
     });
   });
 
@@ -320,9 +304,9 @@ describe("CLI Commands", () => {
       const configCommand = createConfigCommand();
       program.addCommand(configCommand);
 
-      await expect(
-        program.parseAsync(["node", "dev-server", "config", "reload"])
-      ).rejects.toThrow("Config reload failed");
+      await expect(program.parseAsync(["node", "dev-server", "config", "reload"])).rejects.toThrow(
+        "Config reload failed"
+      );
     });
   });
 
@@ -355,9 +339,7 @@ describe("CLI Commands", () => {
       const statsCommand = createStatsCommand();
       program.addCommand(statsCommand);
 
-      await expect(
-        program.parseAsync(["node", "dev-server", "stats"])
-      ).rejects.toThrow("Stats failed");
+      await expect(program.parseAsync(["node", "dev-server", "stats"])).rejects.toThrow("Stats failed");
     });
   });
 
@@ -387,9 +369,7 @@ describe("CLI Commands", () => {
       const startMultipleCommand = createStartMultipleCommand();
       program.addCommand(startMultipleCommand);
 
-      await expect(
-        program.parseAsync(["node", "dev-server", "start-multiple"])
-      ).rejects.toThrow();
+      await expect(program.parseAsync(["node", "dev-server", "start-multiple"])).rejects.toThrow();
     });
   });
 
@@ -410,9 +390,7 @@ describe("CLI Commands", () => {
       const stopAllCommand = createStopAllCommand();
       program.addCommand(stopAllCommand);
 
-      await expect(
-        program.parseAsync(["node", "dev-server", "stop-all"])
-      ).rejects.toThrow("Stop all failed");
+      await expect(program.parseAsync(["node", "dev-server", "stop-all"])).rejects.toThrow("Stop all failed");
     });
   });
 
@@ -421,18 +399,14 @@ describe("CLI Commands", () => {
       const startCommand = createStartCommand();
       program.addCommand(startCommand);
 
-      await expect(
-        program.parseAsync(["node", "dev-server", "unknown-command"])
-      ).rejects.toThrow();
+      await expect(program.parseAsync(["node", "dev-server", "unknown-command"])).rejects.toThrow();
     });
 
     it("should handle missing arguments gracefully", async () => {
       const startCommand = createStartCommand();
       program.addCommand(startCommand);
 
-      await expect(
-        program.parseAsync(["node", "dev-server", "start"])
-      ).rejects.toThrow();
+      await expect(program.parseAsync(["node", "dev-server", "start"])).rejects.toThrow();
     });
 
     it("should handle invalid options gracefully", async () => {
@@ -535,9 +509,7 @@ describe("CLI Commands", () => {
       const startCommand = createStartCommand();
       program.addCommand(startCommand);
 
-      await expect(
-        program.parseAsync(["node", "dev-server", "start", "test-project"])
-      ).rejects.toThrow("Init failed");
+      await expect(program.parseAsync(["node", "dev-server", "start", "test-project"])).rejects.toThrow("Init failed");
     });
 
     it("should handle cleanup errors", async () => {
@@ -610,9 +582,7 @@ describe("CLI Commands", () => {
       // Capture console output
       const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
-      await expect(
-        program.parseAsync(["node", "dev-server", "start", "test-project"])
-      ).rejects.toThrow();
+      await expect(program.parseAsync(["node", "dev-server", "start", "test-project"])).rejects.toThrow();
 
       expect(consoleSpy).toHaveBeenCalled();
       const output = consoleSpy.mock.calls.map(call => call[0]).join(" ");

@@ -344,9 +344,12 @@ The server is configured for Cursor IDE integration via `cursor-mcp-config.json`
   "mcpServers": {
     "reynard-mcp": {
       "command": "bash",
-      "args": ["-c", "source ~/venv/bin/activate && cd /home/kade/runeset/reynard/scripts/mcp && python3 main.py"],
+      "args": [
+        "-c",
+        "source ~/venv/bin/activate && cd /home/kade/runeset/reynard/services/mcp-server && python3 main.py"
+      ],
       "env": {
-        "PYTHONPATH": "/home/kade/runeset/reynard/scripts/mcp"
+        "PYTHONPATH": "/home/kade/runeset/reynard/services/mcp-server"
       }
     }
   }
@@ -378,11 +381,11 @@ The MCP server follows a modular architecture with:
 **Symptoms**: MCP tools not available or timing out
 **Solution**:
 
-1. Check server is running: `cd /home/kade/runeset/reynard/scripts/mcp && python3 main.py`
+1. Check server is running: `cd /home/kade/runeset/reynard/services/mcp-server && python3 main.py`
 2. Verify configuration in `cursor-mcp-config.json`
 3. Test with: `python3 test-mcp-server.py`
 4. Check Python virtual environment: `source ~/venv/bin/activate`
-5. Verify PYTHONPATH: `/home/kade/runeset/reynard/scripts/mcp`
+5. Verify PYTHONPATH: `/home/kade/runeset/reynard/services/mcp-server`
 
 #### Name Generation Issues
 

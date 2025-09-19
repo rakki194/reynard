@@ -37,7 +37,7 @@ This experimental toolkit provides production-ready implementations of the promp
 ### **Code Analysis**
 
 - **tree-sitter**: Multi-language AST parsing
-- **tree-sitter-***: Language-specific parsers
+- **tree-sitter-\***: Language-specific parsers
 
 ## 🏗️ **Architecture**
 
@@ -211,4 +211,4 @@ This toolkit follows the Reynard way of excellence:
 
 ---
 
-*This experimental toolkit transforms the conceptual Python scripts from the prompt refinement guide into production-ready implementations that leverage both cutting-edge libraries and existing Reynard infrastructure.*
+_This experimental toolkit transforms the conceptual Python scripts from the prompt refinement guide into production-ready implementations that leverage both cutting-edge libraries and existing Reynard infrastructure._

@@ -24,18 +24,18 @@ The current system requires **THREE SEPARATE REGISTRATION SYSTEMS** to be kept i
 
 ```python
 # Step 1: Create Tool Implementation
-# File: scripts/mcp/tools/character_tools.py
+# File: services/mcp-server/tools/character_tools.py
 
 # Step 2: Import Tool in Main Server
-# File: scripts/mcp/main.py
+# File: services/mcp-server/main.py
 from tools.character_tools import CharacterTools
 
 # Step 3: Initialize Tool Handler
-# File: scripts/mcp/main.py
+# File: services/mcp-server/main.py
 self._tool_handlers["character_tools"] = CharacterTools(self.tool_registry)
 
 # Step 4: Register Tools in Tool Registry
-# File: scripts/mcp/main.py
+# File: services/mcp-server/main.py
 self.tool_registry.register_tool(
     "create_character",
     self._tool_handlers["character_tools"].create_character,
@@ -44,12 +44,12 @@ self.tool_registry.register_tool(
 )
 
 # Step 5: Add Category to ToolCategory Enum
-# File: scripts/mcp/config/tool_config.py
+# File: services/mcp-server/config/tool_config.py
 class ToolCategory(Enum):
     CHARACTER = "character"
 
 # Step 6: Update ToolConfigManager Default Config
-# File: scripts/mcp/config/tool_config.py
+# File: services/mcp-server/config/tool_config.py
 "create_character": ToolConfig(
     name="create_character",
     category=ToolCategory.CHARACTER,
@@ -57,7 +57,7 @@ class ToolCategory(Enum):
 ),
 
 # Step 7: Update ToolConfigService Default Config
-# File: scripts/mcp/services/tool_config_service.py
+# File: services/mcp-server/services/tool_config_service.py
 "create_character": {
     "name": "create_character",
     "category": "character",
@@ -68,9 +68,9 @@ class ToolCategory(Enum):
 },
 
 # Step 8: Regenerate Configuration File
-rm scripts/mcp/tool_config.json
+rm services/mcp-server/tool_config.json
 pkill -f "python3 main.py"
-cd scripts/mcp && python3 main.py &
+cd services/mcp-server && python3 main.py &
 ```
 
 ## The Legendary Solution: THE Tool Registration System
@@ -127,7 +127,7 @@ async def create_character(tool_registry, **kwargs):
 #### 1.1 The Tool Registry
 
 ```python
-# scripts/mcp/protocol/tool_registry.py
+# services/mcp-server/protocol/tool_registry.py
 from typing import Dict, Any, Callable, Optional
 from dataclasses import dataclass, field
 from enum import Enum
@@ -273,7 +273,7 @@ def register_tool(
 #### 1.2 Auto-Sync Configuration Services
 
 ```python
-# scripts/mcp/services/tool_config_service.py
+# services/mcp-server/services/tool_config_service.py
 class ToolConfigService:
     """Configuration service with auto-sync capabilities."""
 
@@ -416,10 +416,10 @@ async def get_tools_by_category(category: str):
 
 **No Migration - Just Replace Everything**
 
-1. **Replace `scripts/mcp/protocol/tool_registry.py`** - Complete replacement
-2. **Replace `scripts/mcp/services/tool_config_service.py`** - Complete replacement
-3. **Replace `scripts/mcp/config/tool_config.py`** - Complete replacement
-4. **Update `scripts/mcp/main.py`** - Use new system
+1. **Replace `services/mcp-server/protocol/tool_registry.py`** - Complete replacement
+2. **Replace `services/mcp-server/services/tool_config_service.py`** - Complete replacement
+3. **Replace `services/mcp-server/config/tool_config.py`** - Complete replacement
+4. **Update `services/mcp-server/main.py`** - Use new system
 5. **Update all tool implementations** - Use `@register_tool` decorator
 6. **Update FastAPI backend** - Use new endpoints
 7. **Delete old files** - Remove legacy code entirely
@@ -428,10 +428,10 @@ async def get_tools_by_category(category: str):
 
 ```python
 # Step 1: Replace the core registry
-# scripts/mcp/protocol/tool_registry.py - COMPLETE REPLACEMENT
+# services/mcp-server/protocol/tool_registry.py - COMPLETE REPLACEMENT
 
 # Step 2: Update main.py to use new system
-# scripts/mcp/main.py
+# services/mcp-server/main.py
 from protocol.tool_registry import tool_registry
 
 class MCPServer:
@@ -445,7 +445,7 @@ class MCPServer:
         pass
 
 # Step 3: Convert all tool implementations
-# scripts/mcp/tools/character_tools.py
+# services/mcp-server/tools/character_tools.py
 from protocol.tool_registry import register_tool
 
 @register_tool(
@@ -465,9 +465,9 @@ from app.api.mcp.tool_endpoints import router as tool_router
 app.include_router(tool_router, prefix="/api")
 
 # Step 5: Delete old files
-# rm scripts/mcp/protocol/tool_registry.py.old
-# rm scripts/mcp/services/tool_config_service.py.old
-# rm scripts/mcp/config/tool_config.py.old
+# rm services/mcp-server/protocol/tool_registry.py.old
+# rm services/mcp-server/services/tool_config_service.py.old
+# rm services/mcp-server/config/tool_config.py.old
 ```
 
 ## Benefits of THE Tool Registration System

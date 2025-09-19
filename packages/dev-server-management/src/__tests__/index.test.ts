@@ -17,7 +17,7 @@ describe("Dev Server Management Test Suite", () => {
     it("should cover all core components", () => {
       // Core components that should be tested:
       // - ConfigManager
-      // - PortManager  
+      // - PortManager
       // - ProcessManager
       // - HealthChecker
       // - DevServerManager

@@ -23,12 +23,12 @@ describe("HealthChecker", () => {
   beforeEach(async () => {
     const testEnv = setupTestEnvironment();
     mockNetwork = testEnv.mockNetwork;
-    
+
     // Configure the mocks
     const { spawn, exec } = await import("node:child_process");
     vi.mocked(spawn).mockImplementation(testEnv.mockProcess.spawn);
     vi.mocked(exec).mockImplementation(testEnv.mockProcess.exec);
-    
+
     healthChecker = new HealthChecker();
   });
 
@@ -210,7 +210,7 @@ describe("HealthChecker", () => {
       };
 
       const mockExec = vi.fn().mockImplementationOnce(() => {
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
           setTimeout(() => resolve({ stdout: "", stderr: "", exitCode: 0 }), 200);
         });
       });
@@ -620,7 +620,7 @@ describe("HealthChecker", () => {
     it("should emit health check started events", async () => {
       const events: Array<{ type: string; project: string }> = [];
 
-      healthChecker.onHealthCheckEvent((event) => {
+      healthChecker.onHealthCheckEvent(event => {
         events.push({ type: event.type, project: event.project });
       });
 
@@ -641,7 +641,7 @@ describe("HealthChecker", () => {
     it("should emit health check completed events", async () => {
       const events: Array<{ type: string; project: string }> = [];
 
-      healthChecker.onHealthCheckEvent((event) => {
+      healthChecker.onHealthCheckEvent(event => {
         events.push({ type: event.type, project: event.project });
       });
 
@@ -671,7 +671,7 @@ describe("HealthChecker", () => {
     it("should emit health check failed events", async () => {
       const events: Array<{ type: string; project: string }> = [];
 
-      healthChecker.onHealthCheckEvent((event) => {
+      healthChecker.onHealthCheckEvent(event => {
         events.push({ type: event.type, project: event.project });
       });
 

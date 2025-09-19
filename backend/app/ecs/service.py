@@ -10,7 +10,7 @@ from typing import Any
 
 from fastapi import FastAPI
 
-from reynard_ecs_world import AgentWorld, set_world_instance
+from .world import AgentWorld
 
 logger = logging.getLogger(__name__)
 
@@ -42,11 +42,9 @@ class ECSWorldService:
             # Create the world instance
             self._world = AgentWorld(data_dir=self.data_dir)
 
-            # Set as singleton
-            set_world_instance(self._world)
-
             # Start the world simulation
-            await self._world.start_global_breeding()
+            # Note: The new AgentWorld doesn't have start_global_breeding method
+            # This will be handled by the systems during update cycles
 
             logger.info("✅ ECS World Service initialized successfully")
 
@@ -59,7 +57,8 @@ class ECSWorldService:
         try:
             if self._world:
                 logger.info("🌍 Shutting down ECS World Service")
-                await self._world.stop_global_breeding()
+                # Save agents before shutdown
+                self._world.save_agents()
                 self._world = None
                 logger.info("✅ ECS World Service shutdown complete")
         except Exception as e:
@@ -95,12 +94,16 @@ class ECSWorldService:
                 "mature_agents": 0,
             }
 
+        world_stats = self._world.get_world_stats()
         return {
             "status": "active",
-            "entity_count": self._world.get_entity_count(),
-            "system_count": self._world.get_system_count(),
-            "agent_count": len(self._world.get_agent_entities()),
-            "mature_agents": len(self._world.get_mature_agents()),
+            "entity_count": world_stats["total_agents"],
+            "system_count": world_stats["systems_active"],
+            "agent_count": world_stats["total_agents"],
+            "mature_agents": world_stats["total_agents"],  # Simplified for now
+            "generation_distribution": world_stats["generation_distribution"],
+            "spirit_distribution": world_stats["spirit_distribution"],
+            "current_time": world_stats["current_time"]
         }
 
 

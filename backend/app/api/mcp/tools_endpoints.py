@@ -77,7 +77,7 @@ async def _send_mcp_request(method: str, params: dict[str, Any]) -> Any:
     except ConnectionRefusedError:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="MCP server is not running. Please start it with: cd scripts/mcp && python main.py",
+            detail="MCP server is not running. Please start it with: cd services/mcp-server && python main.py",
         )
     except Exception as e:
         logger.error(f"MCP request failed for method {method}: {e}")

@@ -42,9 +42,9 @@
         "absolute_path": "/home/kade/runeset/reynard/packages/project-architecture/dist/index.js"
       },
       {
-        "file_path": "scripts/mcp/services/search_service.py",
+        "file_path": "services/mcp-server/services/search_service.py",
         "line_count": 748,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/search_service.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/search_service.py"
       },
       {
         "file_path": "packages/api-client/test-dist/generated/runtime.js",
@@ -62,9 +62,9 @@
         "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-markdown-links.js"
       },
       {
-        "file_path": "scripts/mcp/tools/ecs_agent_tools.py",
+        "file_path": "services/mcp-server/tools/ecs_agent_tools.py",
         "line_count": 617,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/ecs_agent_tools.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/ecs_agent_tools.py"
       },
       {
         "file_path": "packages/tools/src/core/git_tools.py",
@@ -102,14 +102,14 @@
         "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-sentence-length.test.js"
       },
       {
-        "file_path": "scripts/mcp/tools/test_git_automation_tools.py",
+        "file_path": "services/mcp-server/tools/test_git_automation_tools.py",
         "line_count": 458,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/test_git_automation_tools.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/test_git_automation_tools.py"
       },
       {
-        "file_path": "scripts/mcp/services/tool_config_service.py",
+        "file_path": "services/mcp-server/services/tool_config_service.py",
         "line_count": 454,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/tool_config_service.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/tool_config_service.py"
       },
       {
         "file_path": "scripts/validation/css/validate-css-variables-refactored.js",
@@ -127,9 +127,9 @@
         "absolute_path": "/home/kade/runeset/reynard/scripts/testing/validate-python.test.py"
       },
       {
-        "file_path": "scripts/mcp/tools/git_automation_tools.py",
+        "file_path": "services/mcp-server/tools/git_automation_tools.py",
         "line_count": 434,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/git_automation_tools.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/git_automation_tools.py"
       },
       {
         "file_path": "backend/tests/test_gallery_api.py",
@@ -162,9 +162,9 @@
         "absolute_path": "/home/kade/runeset/reynard/backend/app/security/security_middleware.py"
       },
       {
-        "file_path": "scripts/mcp/services/playwright_browser_service.py",
+        "file_path": "services/mcp-server/services/playwright_browser_service.py",
         "line_count": 402,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/playwright_browser_service.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/playwright_browser_service.py"
       },
       {
         "file_path": "scripts/validation/css/validate-css-variables.test.js",
@@ -187,9 +187,9 @@
         "absolute_path": "/home/kade/runeset/reynard/backend/app/core/router_mixins.py"
       },
       {
-        "file_path": "scripts/mcp/resilient_main.py",
+        "file_path": "services/mcp-server/resilient_main.py",
         "line_count": 385,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/resilient_main.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/resilient_main.py"
       },
       {
         "file_path": "backend/tests/test_rag_phase2.py",
@@ -207,9 +207,9 @@
         "absolute_path": "/home/kade/runeset/reynard/scripts/validation/css/validate-css-variables-refactored.test.js"
       },
       {
-        "file_path": "scripts/mcp/services/ripgrep_service.py",
+        "file_path": "services/mcp-server/services/ripgrep_service.py",
         "line_count": 367,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/ripgrep_service.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/ripgrep_service.py"
       },
       {
         "file_path": "packages/games/src/union-find/UnionFindGame.tsx",
@@ -242,14 +242,14 @@
         "absolute_path": "/home/kade/runeset/reynard/backend/app/api/embedding_visualization.py"
       },
       {
-        "file_path": "scripts/mcp/services/vscode_service.py",
+        "file_path": "services/mcp-server/services/vscode_service.py",
         "line_count": 350,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/vscode_service.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/vscode_service.py"
       },
       {
-        "file_path": "scripts/mcp/tools/test_git_automation_simple.py",
+        "file_path": "services/mcp-server/tools/test_git_automation_simple.py",
         "line_count": 350,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/test_git_automation_simple.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/test_git_automation_simple.py"
       },
       {
         "file_path": "packages/gallery/src/components/Gallery.tsx",
@@ -277,9 +277,9 @@
         "absolute_path": "/home/kade/runeset/reynard/backend/app/core/error_handler.py"
       },
       {
-        "file_path": "scripts/mcp/config/tool_config.py",
+        "file_path": "services/mcp-server/config/tool_config.py",
         "line_count": 340,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/config/tool_config.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/config/tool_config.py"
       },
       {
         "file_path": "scripts/validation/markdown/validate-markdown-toc-refactored.js",
@@ -327,9 +327,9 @@
         "absolute_path": "/home/kade/runeset/reynard/backend/app/security/secure_summarization_routes.py"
       },
       {
-        "file_path": "scripts/mcp/services/connection_manager.py",
+        "file_path": "services/mcp-server/services/connection_manager.py",
         "line_count": 304,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/connection_manager.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/connection_manager.py"
       },
       {
         "file_path": "backend/app/core/exceptions.py",
@@ -392,9 +392,9 @@
         "absolute_path": "/home/kade/runeset/reynard/backend/tests/test_api_endpoints.py"
       },
       {
-        "file_path": "scripts/mcp/services/mermaid_service.py",
+        "file_path": "services/mcp-server/services/mermaid_service.py",
         "line_count": 276,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/mermaid_service.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/mermaid_service.py"
       },
       {
         "file_path": "packages/tools/src/core/nlweb_tools.py",
@@ -407,9 +407,9 @@
         "absolute_path": "/home/kade/runeset/reynard/backend/app/core/logging_middleware.py"
       },
       {
-        "file_path": "scripts/mcp/services/semantic_search_service.py",
+        "file_path": "services/mcp-server/services/semantic_search_service.py",
         "line_count": 270,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/semantic_search_service.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/semantic_search_service.py"
       },
       {
         "file_path": "packages/gallery/src/__tests__/FileUpload.test.tsx",
@@ -437,9 +437,9 @@
         "absolute_path": "/home/kade/runeset/reynard/packages/api-client/node_modules/formdata-polyfill/FormData.js"
       },
       {
-        "file_path": "scripts/mcp/tests/test_ecs_automatic_breeding.py",
+        "file_path": "services/mcp-server/tests/test_ecs_automatic_breeding.py",
         "line_count": 256,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/test_ecs_automatic_breeding.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tests/test_ecs_automatic_breeding.py"
       },
       {
         "file_path": "backend/app/core/base_router.py",
@@ -447,14 +447,14 @@
         "absolute_path": "/home/kade/runeset/reynard/backend/app/core/base_router.py"
       },
       {
-        "file_path": "scripts/mcp/tools/image_viewer_tools.py",
+        "file_path": "services/mcp-server/tools/image_viewer_tools.py",
         "line_count": 253,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/image_viewer_tools.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/image_viewer_tools.py"
       },
       {
-        "file_path": "scripts/mcp/tools/test_git_automation_standalone.py",
+        "file_path": "services/mcp-server/tools/test_git_automation_standalone.py",
         "line_count": 253,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/test_git_automation_standalone.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/test_git_automation_standalone.py"
       },
       {
         "file_path": "scripts/validation/markdown/validate-italic-to-blockquote-refactored.test.js",
@@ -462,9 +462,9 @@
         "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-italic-to-blockquote-refactored.test.js"
       },
       {
-        "file_path": "scripts/mcp/tests/test_ecs_simple.py",
+        "file_path": "services/mcp-server/tests/test_ecs_simple.py",
         "line_count": 250,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/test_ecs_simple.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tests/test_ecs_simple.py"
       },
       {
         "file_path": "backend/app/security/sql_injection_patterns.py",
@@ -472,9 +472,9 @@
         "absolute_path": "/home/kade/runeset/reynard/backend/app/security/sql_injection_patterns.py"
       },
       {
-        "file_path": "scripts/mcp/tools/tool_management_tools.py",
+        "file_path": "services/mcp-server/tools/tool_management_tools.py",
         "line_count": 246,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/tool_management_tools.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/tool_management_tools.py"
       },
       {
         "file_path": "packages/components-core/src/navigation/BreadcrumbButton.tsx",
@@ -502,9 +502,9 @@
         "absolute_path": "/home/kade/runeset/reynard/packages/gallery/src/components/GalleryGrid.tsx"
       },
       {
-        "file_path": "scripts/mcp/services/ecs_client.py",
+        "file_path": "services/mcp-server/services/ecs_client.py",
         "line_count": 240,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/ecs_client.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/ecs_client.py"
       },
       {
         "file_path": "backend/app/core/logging_config.py",
@@ -522,9 +522,9 @@
         "absolute_path": "/home/kade/runeset/reynard/scripts/changelog-scanner.py"
       },
       {
-        "file_path": "scripts/mcp/services/resilient_tool_wrapper.py",
+        "file_path": "services/mcp-server/services/resilient_tool_wrapper.py",
         "line_count": 234,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/resilient_tool_wrapper.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/resilient_tool_wrapper.py"
       },
       {
         "file_path": "backend/app/security/secure_ollama_routes.py",
@@ -532,9 +532,9 @@
         "absolute_path": "/home/kade/runeset/reynard/backend/app/security/secure_ollama_routes.py"
       },
       {
-        "file_path": "scripts/mcp/tools/agent_tools_ecs.py",
+        "file_path": "services/mcp-server/tools/agent_tools_ecs.py",
         "line_count": 233,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_tools_ecs.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/agent_tools_ecs.py"
       },
       {
         "file_path": "scripts/validation/markdown/validate-sentence-length-refactored.test.js",
@@ -542,14 +542,14 @@
         "absolute_path": "/home/kade/runeset/reynard/scripts/validation/markdown/validate-sentence-length-refactored.test.js"
       },
       {
-        "file_path": "scripts/mcp/comprehensive_agent_simulation.py",
+        "file_path": "services/mcp-server/comprehensive_agent_simulation.py",
         "line_count": 227,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/comprehensive_agent_simulation.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/comprehensive_agent_simulation.py"
       },
       {
-        "file_path": "scripts/mcp/simple_trait_simulation.py",
+        "file_path": "services/mcp-server/simple_trait_simulation.py",
         "line_count": 227,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/simple_trait_simulation.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/simple_trait_simulation.py"
       },
       {
         "file_path": "packages/api-client/node_modules/.ignored/node-fetch/src/body.js",
@@ -587,9 +587,9 @@
         "absolute_path": "/home/kade/runeset/reynard/scripts/validation/shared/validation-base.js"
       },
       {
-        "file_path": "scripts/mcp/test_resilient_server.py",
+        "file_path": "services/mcp-server/test_resilient_server.py",
         "line_count": 202,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/test_resilient_server.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/test_resilient_server.py"
       },
       {
         "file_path": "packages/games/src/collision/CollisionGame.tsx",
@@ -662,14 +662,14 @@
         "absolute_path": "/home/kade/runeset/reynard/backend/app/caption_generation/plugin.py"
       },
       {
-        "file_path": "scripts/mcp/services/breeding_service.py",
+        "file_path": "services/mcp-server/services/breeding_service.py",
         "line_count": 186,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/breeding_service.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/breeding_service.py"
       },
       {
-        "file_path": "scripts/mcp/services/monolith_analysis_service.py",
+        "file_path": "services/mcp-server/services/monolith_analysis_service.py",
         "line_count": 186,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/monolith_analysis_service.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/monolith_analysis_service.py"
       },
       {
         "file_path": "packages/docs-site/src/App.tsx",
@@ -712,14 +712,14 @@
         "absolute_path": "/home/kade/runeset/reynard/backend/app/ecs/endpoints.py"
       },
       {
-        "file_path": "scripts/mcp/tools/git_automation_definitions.py",
+        "file_path": "services/mcp-server/tools/git_automation_definitions.py",
         "line_count": 176,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/git_automation_definitions.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/git_automation_definitions.py"
       },
       {
-        "file_path": "scripts/mcp/start_resilient_server.py",
+        "file_path": "services/mcp-server/start_resilient_server.py",
         "line_count": 174,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/start_resilient_server.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/start_resilient_server.py"
       },
       {
         "file_path": "packages/api-client/test-dist/composables/useAuth.js",
@@ -732,9 +732,9 @@
         "absolute_path": "/home/kade/runeset/reynard/packages/api-client/test-dist/composables/useChat.js"
       },
       {
-        "file_path": "scripts/mcp/tools/config_tools.py",
+        "file_path": "services/mcp-server/tools/config_tools.py",
         "line_count": 172,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/config_tools.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/config_tools.py"
       },
       {
         "file_path": "packages/caption-ui/src/components/TOMLEditor.tsx",
@@ -772,19 +772,19 @@
         "absolute_path": "/home/kade/runeset/reynard/packages/components-core/src/primitives/Tabs.tsx"
       },
       {
-        "file_path": "scripts/mcp/services/file_discovery_service.py",
+        "file_path": "services/mcp-server/services/file_discovery_service.py",
         "line_count": 162,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/file_discovery_service.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/file_discovery_service.py"
       },
       {
-        "file_path": "scripts/mcp/cleanup_deprecated.py",
+        "file_path": "services/mcp-server/cleanup_deprecated.py",
         "line_count": 161,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/cleanup_deprecated.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/cleanup_deprecated.py"
       },
       {
-        "file_path": "scripts/mcp/tools/mermaid_tools.py",
+        "file_path": "services/mcp-server/tools/mermaid_tools.py",
         "line_count": 161,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/mermaid_tools.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/mermaid_tools.py"
       },
       {
         "file_path": "scripts/validation/simple-doc-validation.js",
@@ -802,19 +802,19 @@
         "absolute_path": "/home/kade/runeset/reynard/backend/app/extractors/reynard_user.py"
       },
       {
-        "file_path": "scripts/mcp/protocol/tool_config.py",
+        "file_path": "services/mcp-server/protocol/tool_config.py",
         "line_count": 159,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_config.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/protocol/tool_config.py"
       },
       {
-        "file_path": "scripts/mcp/services/vscode_tasks_service.py",
+        "file_path": "services/mcp-server/services/vscode_tasks_service.py",
         "line_count": 157,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/vscode_tasks_service.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/vscode_tasks_service.py"
       },
       {
-        "file_path": "scripts/mcp/services/auth_service.py",
+        "file_path": "services/mcp-server/services/auth_service.py",
         "line_count": 157,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/auth_service.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/auth_service.py"
       },
       {
         "file_path": "packages/api-client/node_modules/fetch-blob/index.js",
@@ -827,9 +827,9 @@
         "absolute_path": "/home/kade/runeset/reynard/scripts/validate_mermaid.py"
       },
       {
-        "file_path": "scripts/mcp/services/file_search_service.py",
+        "file_path": "services/mcp-server/services/file_search_service.py",
         "line_count": 153,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/file_search_service.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/file_search_service.py"
       },
       {
         "file_path": "packages/games/src/roguelike/roguelike-component.tsx",
@@ -842,14 +842,14 @@
         "absolute_path": "/home/kade/runeset/reynard/backend/tests/test_advanced_query_expansion.py"
       },
       {
-        "file_path": "scripts/mcp/services/auth_client.py",
+        "file_path": "services/mcp-server/services/auth_client.py",
         "line_count": 145,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/auth_client.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/auth_client.py"
       },
       {
-        "file_path": "scripts/mcp/protocol/tool_registry.py",
+        "file_path": "services/mcp-server/protocol/tool_registry.py",
         "line_count": 144,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_registry.py"
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/protocol/tool_registry.py"
       },
       {
         "file_path": "scripts/validation/markdown/changelog-formatter.js",
@@ -872,178 +872,178 @@
   "development_tools": {
     "tools": [
       {
-        "file_path": "scripts/mcp/check_tool_names.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/check_tool_names.py",
+        "file_path": "services/mcp-server/check_tool_names.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/check_tool_names.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/test_tools_list.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/test_tools_list.py",
+        "file_path": "services/mcp-server/test_tools_list.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/test_tools_list.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/config/tool_config.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/config/tool_config.py",
+        "file_path": "services/mcp-server/config/tool_config.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/config/tool_config.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/protocol/tool_config.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_config.py",
+        "file_path": "services/mcp-server/protocol/tool_config.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/protocol/tool_config.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/protocol/tool_registry.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_registry.py",
+        "file_path": "services/mcp-server/protocol/tool_registry.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/protocol/tool_registry.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/protocol/tool_router.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_router.py",
+        "file_path": "services/mcp-server/protocol/tool_router.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/protocol/tool_router.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/protocol/tool_handlers.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_handlers.py",
+        "file_path": "services/mcp-server/protocol/tool_handlers.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/protocol/tool_handlers.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/protocol/tool_router_new.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_router_new.py",
+        "file_path": "services/mcp-server/protocol/tool_router_new.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/protocol/tool_router_new.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/services/tool_config_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/tool_config_service.py",
+        "file_path": "services/mcp-server/services/tool_config_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/tool_config_service.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/services/resilient_tool_wrapper.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/resilient_tool_wrapper.py",
+        "file_path": "services/mcp-server/services/resilient_tool_wrapper.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/resilient_tool_wrapper.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/tools/ecs_agent_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/ecs_agent_tools.py",
+        "file_path": "services/mcp-server/tools/ecs_agent_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/ecs_agent_tools.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/tools/image_viewer_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/image_viewer_tools.py",
+        "file_path": "services/mcp-server/tools/image_viewer_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/image_viewer_tools.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/tools/test_git_automation_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/test_git_automation_tools.py",
+        "file_path": "services/mcp-server/tools/test_git_automation_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/test_git_automation_tools.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/tools/version_vscode_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/version_vscode_tools.py",
+        "file_path": "services/mcp-server/tools/version_vscode_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/version_vscode_tools.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/tools/tool_management_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/tool_management_tools.py",
+        "file_path": "services/mcp-server/tools/tool_management_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/tool_management_tools.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/tools/agent_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_tools.py",
+        "file_path": "services/mcp-server/tools/agent_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/agent_tools.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/tools/mermaid_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/mermaid_tools.py",
+        "file_path": "services/mcp-server/tools/mermaid_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/mermaid_tools.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/tools/git_automation_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/git_automation_tools.py",
+        "file_path": "services/mcp-server/tools/git_automation_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/git_automation_tools.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/tools/secrets_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/secrets_tools.py",
+        "file_path": "services/mcp-server/tools/secrets_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/secrets_tools.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/tools/linting_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/linting_tools.py",
+        "file_path": "services/mcp-server/tools/linting_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/linting_tools.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/tools/agent_tools_ecs.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_tools_ecs.py",
+        "file_path": "services/mcp-server/tools/agent_tools_ecs.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/agent_tools_ecs.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/tools/config_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/config_tools.py",
+        "file_path": "services/mcp-server/tools/config_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/config_tools.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/tools/vscode_tasks_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/vscode_tasks_tools.py",
+        "file_path": "services/mcp-server/tools/vscode_tasks_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/vscode_tasks_tools.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/tools/utility_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/utility_tools.py",
+        "file_path": "services/mcp-server/tools/utility_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/utility_tools.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/tools/playwright_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/playwright_tools.py",
+        "file_path": "services/mcp-server/tools/playwright_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/playwright_tools.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/tools/monolith_detection/tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/monolith_detection/tools.py",
+        "file_path": "services/mcp-server/tools/monolith_detection/tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/monolith_detection/tools.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/tools/search/enhanced_search_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/enhanced_search_tools.py",
+        "file_path": "services/mcp-server/tools/search/enhanced_search_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/enhanced_search_tools.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/tools/search/search_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/search_tools.py",
+        "file_path": "services/mcp-server/tools/search/search_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/search_tools.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/tools/search/__tests__/test_search_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/__tests__/test_search_tools.py",
+        "file_path": "services/mcp-server/tools/search/__tests__/test_search_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/__tests__/test_search_tools.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/tests/unit/test_tool_router.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/unit/test_tool_router.py",
+        "file_path": "services/mcp-server/tests/unit/test_tool_router.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tests/unit/test_tool_router.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/tests/unit/test_agent_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/unit/test_agent_tools.py",
+        "file_path": "services/mcp-server/tests/unit/test_agent_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tests/unit/test_agent_tools.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/tools/utility_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/utility_tools.py",
+        "file_path": "services/mcp-server/tools/utility_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/utility_tools.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/services/agent_manager.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/agent_manager.py",
+        "file_path": "services/mcp-server/services/agent_manager.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/agent_manager.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/services/connection_manager.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/connection_manager.py",
+        "file_path": "services/mcp-server/services/connection_manager.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/connection_manager.py",
         "type": "development_tool"
       },
       {
-        "file_path": "scripts/mcp/tests/unit/test_agent_manager.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/unit/test_agent_manager.py",
+        "file_path": "services/mcp-server/tests/unit/test_agent_manager.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tests/unit/test_agent_manager.py",
         "type": "development_tool"
       },
       {
@@ -1477,1065 +1477,1065 @@
   "mcp_tools": {
     "mcp_files": [
       {
-        "file_path": "scripts/mcp/cleanup_deprecated.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/cleanup_deprecated.py",
+        "file_path": "services/mcp-server/cleanup_deprecated.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/cleanup_deprecated.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/debug_server.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/debug_server.py",
+        "file_path": "services/mcp-server/debug_server.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/debug_server.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/check_tool_names.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/check_tool_names.py",
+        "file_path": "services/mcp-server/check_tool_names.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/check_tool_names.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tcp_server.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tcp_server.py",
+        "file_path": "services/mcp-server/tcp_server.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tcp_server.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/start_resilient_server.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/start_resilient_server.py",
+        "file_path": "services/mcp-server/start_resilient_server.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/start_resilient_server.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/debug_mcp.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/debug_mcp.py",
+        "file_path": "services/mcp-server/debug_mcp.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/debug_mcp.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/test_full_mcp.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/test_full_mcp.py",
+        "file_path": "services/mcp-server/test_full_mcp.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/test_full_mcp.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/comprehensive_agent_simulation.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/comprehensive_agent_simulation.py",
+        "file_path": "services/mcp-server/comprehensive_agent_simulation.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/comprehensive_agent_simulation.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/test_mcp_protocol.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/test_mcp_protocol.py",
+        "file_path": "services/mcp-server/test_mcp_protocol.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/test_mcp_protocol.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/run_tests.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/run_tests.py",
+        "file_path": "services/mcp-server/run_tests.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/run_tests.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/simple_trait_simulation.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/simple_trait_simulation.py",
+        "file_path": "services/mcp-server/simple_trait_simulation.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/simple_trait_simulation.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/resilient_main.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/resilient_main.py",
+        "file_path": "services/mcp-server/resilient_main.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/resilient_main.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/test_resilient_server.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/test_resilient_server.py",
+        "file_path": "services/mcp-server/test_resilient_server.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/test_resilient_server.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/test_tools_list.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/test_tools_list.py",
+        "file_path": "services/mcp-server/test_tools_list.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/test_tools_list.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/config/tool_config.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/config/tool_config.py",
+        "file_path": "services/mcp-server/config/tool_config.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/config/tool_config.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/config/__init__.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/config/__init__.py",
+        "file_path": "services/mcp-server/config/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/config/__init__.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/stubs/__init__.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/stubs/__init__.py",
+        "file_path": "services/mcp-server/stubs/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/stubs/__init__.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/protocol/mcp_handler.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/mcp_handler.py",
+        "file_path": "services/mcp-server/protocol/mcp_handler.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/protocol/mcp_handler.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/protocol/tool_config.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_config.py",
+        "file_path": "services/mcp-server/protocol/tool_config.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/protocol/tool_config.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/protocol/tool_registry.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_registry.py",
+        "file_path": "services/mcp-server/protocol/tool_registry.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/protocol/tool_registry.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/protocol/tool_router.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_router.py",
+        "file_path": "services/mcp-server/protocol/tool_router.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/protocol/tool_router.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/protocol/tool_handlers.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_handlers.py",
+        "file_path": "services/mcp-server/protocol/tool_handlers.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/protocol/tool_handlers.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/protocol/tool_router_new.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_router_new.py",
+        "file_path": "services/mcp-server/protocol/tool_router_new.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/protocol/tool_router_new.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/protocol/__init__.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/__init__.py",
+        "file_path": "services/mcp-server/protocol/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/protocol/__init__.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/examples/breeding_notifications.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/examples/breeding_notifications.py",
+        "file_path": "services/mcp-server/examples/breeding_notifications.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/examples/breeding_notifications.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tests/conftest.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/conftest.py",
+        "file_path": "services/mcp-server/tests/conftest.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tests/conftest.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tests/test_ecs_simple.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/test_ecs_simple.py",
+        "file_path": "services/mcp-server/tests/test_ecs_simple.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tests/test_ecs_simple.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tests/test_ecs_automatic_breeding.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/test_ecs_automatic_breeding.py",
+        "file_path": "services/mcp-server/tests/test_ecs_automatic_breeding.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tests/test_ecs_automatic_breeding.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tests/test_ecs_notifications.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/test_ecs_notifications.py",
+        "file_path": "services/mcp-server/tests/test_ecs_notifications.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tests/test_ecs_notifications.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tests/__init__.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/__init__.py",
+        "file_path": "services/mcp-server/tests/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tests/__init__.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/search_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/search_service.py",
+        "file_path": "services/mcp-server/services/search_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/search_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/ripgrep_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/ripgrep_service.py",
+        "file_path": "services/mcp-server/services/ripgrep_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/ripgrep_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/ecs_client.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/ecs_client.py",
+        "file_path": "services/mcp-server/services/ecs_client.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/ecs_client.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/file_search_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/file_search_service.py",
+        "file_path": "services/mcp-server/services/file_search_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/file_search_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/file_analysis_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/file_analysis_service.py",
+        "file_path": "services/mcp-server/services/file_analysis_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/file_analysis_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/security_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/security_service.py",
+        "file_path": "services/mcp-server/services/security_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/security_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/metrics_aggregation_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/metrics_aggregation_service.py",
+        "file_path": "services/mcp-server/services/metrics_aggregation_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/metrics_aggregation_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/vscode_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/vscode_service.py",
+        "file_path": "services/mcp-server/services/vscode_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/vscode_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/vscode_tasks_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/vscode_tasks_service.py",
+        "file_path": "services/mcp-server/services/vscode_tasks_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/vscode_tasks_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/agent_manager.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/agent_manager.py",
+        "file_path": "services/mcp-server/services/agent_manager.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/agent_manager.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/auth_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/auth_service.py",
+        "file_path": "services/mcp-server/services/auth_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/auth_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/mermaid_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/mermaid_service.py",
+        "file_path": "services/mcp-server/services/mermaid_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/mermaid_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/breeding_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/breeding_service.py",
+        "file_path": "services/mcp-server/services/breeding_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/breeding_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/version_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/version_service.py",
+        "file_path": "services/mcp-server/services/version_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/version_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/formatting_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/formatting_service.py",
+        "file_path": "services/mcp-server/services/formatting_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/formatting_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/tool_config_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/tool_config_service.py",
+        "file_path": "services/mcp-server/services/tool_config_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/tool_config_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/auth_client.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/auth_client.py",
+        "file_path": "services/mcp-server/services/auth_client.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/auth_client.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/resilient_tool_wrapper.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/resilient_tool_wrapper.py",
+        "file_path": "services/mcp-server/services/resilient_tool_wrapper.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/resilient_tool_wrapper.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/validation_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/validation_service.py",
+        "file_path": "services/mcp-server/services/validation_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/validation_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/file_discovery_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/file_discovery_service.py",
+        "file_path": "services/mcp-server/services/file_discovery_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/file_discovery_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/playwright_browser_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/playwright_browser_service.py",
+        "file_path": "services/mcp-server/services/playwright_browser_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/playwright_browser_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/monolith_analysis_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/monolith_analysis_service.py",
+        "file_path": "services/mcp-server/services/monolith_analysis_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/monolith_analysis_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/linting_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/linting_service.py",
+        "file_path": "services/mcp-server/services/linting_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/linting_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/connection_manager.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/connection_manager.py",
+        "file_path": "services/mcp-server/services/connection_manager.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/connection_manager.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/semantic_search_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/semantic_search_service.py",
+        "file_path": "services/mcp-server/services/semantic_search_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/semantic_search_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/__init__.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/__init__.py",
+        "file_path": "services/mcp-server/services/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/__init__.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/ecs_agent_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/ecs_agent_tools.py",
+        "file_path": "services/mcp-server/tools/ecs_agent_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/ecs_agent_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/image_viewer_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/image_viewer_tools.py",
+        "file_path": "services/mcp-server/tools/image_viewer_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/image_viewer_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/test_git_automation_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/test_git_automation_tools.py",
+        "file_path": "services/mcp-server/tools/test_git_automation_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/test_git_automation_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/version_vscode_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/version_vscode_tools.py",
+        "file_path": "services/mcp-server/tools/version_vscode_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/version_vscode_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/tool_management_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/tool_management_tools.py",
+        "file_path": "services/mcp-server/tools/tool_management_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/tool_management_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/secrets_definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/secrets_definitions.py",
+        "file_path": "services/mcp-server/tools/secrets_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/secrets_definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/git_automation_definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/git_automation_definitions.py",
+        "file_path": "services/mcp-server/tools/git_automation_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/git_automation_definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/agent_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_tools.py",
+        "file_path": "services/mcp-server/tools/agent_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/agent_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/linting_definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/linting_definitions.py",
+        "file_path": "services/mcp-server/tools/linting_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/linting_definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/version_vscode_definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/version_vscode_definitions.py",
+        "file_path": "services/mcp-server/tools/version_vscode_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/version_vscode_definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/mermaid_definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/mermaid_definitions.py",
+        "file_path": "services/mcp-server/tools/mermaid_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/mermaid_definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/test_git_automation_standalone.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/test_git_automation_standalone.py",
+        "file_path": "services/mcp-server/tools/test_git_automation_standalone.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/test_git_automation_standalone.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/test_git_automation_simple.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/test_git_automation_simple.py",
+        "file_path": "services/mcp-server/tools/test_git_automation_simple.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/test_git_automation_simple.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/mermaid_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/mermaid_tools.py",
+        "file_path": "services/mcp-server/tools/mermaid_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/mermaid_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/git_automation_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/git_automation_tools.py",
+        "file_path": "services/mcp-server/tools/git_automation_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/git_automation_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/config_definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/config_definitions.py",
+        "file_path": "services/mcp-server/tools/config_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/config_definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/secrets_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/secrets_tools.py",
+        "file_path": "services/mcp-server/tools/secrets_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/secrets_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/linting_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/linting_tools.py",
+        "file_path": "services/mcp-server/tools/linting_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/linting_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/image_viewer_definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/image_viewer_definitions.py",
+        "file_path": "services/mcp-server/tools/image_viewer_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/image_viewer_definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/vscode_tasks_definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/vscode_tasks_definitions.py",
+        "file_path": "services/mcp-server/tools/vscode_tasks_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/vscode_tasks_definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/agent_tools_ecs.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_tools_ecs.py",
+        "file_path": "services/mcp-server/tools/agent_tools_ecs.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/agent_tools_ecs.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/config_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/config_tools.py",
+        "file_path": "services/mcp-server/tools/config_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/config_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/vscode_tasks_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/vscode_tasks_tools.py",
+        "file_path": "services/mcp-server/tools/vscode_tasks_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/vscode_tasks_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/agent_management.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management.py",
+        "file_path": "services/mcp-server/tools/agent_management.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/agent_management.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/ecs_definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/ecs_definitions.py",
+        "file_path": "services/mcp-server/tools/ecs_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/ecs_definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/definitions.py",
+        "file_path": "services/mcp-server/tools/definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/utility_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/utility_tools.py",
+        "file_path": "services/mcp-server/tools/utility_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/utility_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/playwright_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/playwright_tools.py",
+        "file_path": "services/mcp-server/tools/playwright_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/playwright_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/__init__.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/__init__.py",
+        "file_path": "services/mcp-server/tools/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/__init__.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/utils/logging_config.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/utils/logging_config.py",
+        "file_path": "services/mcp-server/utils/logging_config.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/utils/logging_config.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/utils/__init__.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/utils/__init__.py",
+        "file_path": "services/mcp-server/utils/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/utils/__init__.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/middleware/auth_middleware.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/middleware/auth_middleware.py",
+        "file_path": "services/mcp-server/middleware/auth_middleware.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/middleware/auth_middleware.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/monolith_detection/tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/monolith_detection/tools.py",
+        "file_path": "services/mcp-server/tools/monolith_detection/tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/monolith_detection/tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/monolith_detection/definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/monolith_detection/definitions.py",
+        "file_path": "services/mcp-server/tools/monolith_detection/definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/monolith_detection/definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/monolith_detection/__init__.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/monolith_detection/__init__.py",
+        "file_path": "services/mcp-server/tools/monolith_detection/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/monolith_detection/__init__.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/search/search_definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/search_definitions.py",
+        "file_path": "services/mcp-server/tools/search/search_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/search_definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/search/file_search.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/file_search.py",
+        "file_path": "services/mcp-server/tools/search/file_search.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/file_search.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/search/enhanced_search_definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/enhanced_search_definitions.py",
+        "file_path": "services/mcp-server/tools/search/enhanced_search_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/enhanced_search_definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/search/ripgrep_search.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/ripgrep_search.py",
+        "file_path": "services/mcp-server/tools/search/ripgrep_search.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/ripgrep_search.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/search/ignore_config.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/ignore_config.py",
+        "file_path": "services/mcp-server/tools/search/ignore_config.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/ignore_config.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/search/semantic_search.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/semantic_search.py",
+        "file_path": "services/mcp-server/tools/search/semantic_search.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/semantic_search.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/search/bm25_search.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/bm25_search.py",
+        "file_path": "services/mcp-server/tools/search/bm25_search.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/bm25_search.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/search/enhanced_semantic_search.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/enhanced_semantic_search.py",
+        "file_path": "services/mcp-server/tools/search/enhanced_semantic_search.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/enhanced_semantic_search.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/search/enhanced_search_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/enhanced_search_tools.py",
+        "file_path": "services/mcp-server/tools/search/enhanced_search_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/enhanced_search_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/search/search_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/search_tools.py",
+        "file_path": "services/mcp-server/tools/search/search_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/search_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/search/__init__.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/__init__.py",
+        "file_path": "services/mcp-server/tools/search/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/__init__.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/agent_management/breeding.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management/breeding.py",
+        "file_path": "services/mcp-server/tools/agent_management/breeding.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/agent_management/breeding.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/agent_management/persona.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management/persona.py",
+        "file_path": "services/mcp-server/tools/agent_management/persona.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/agent_management/persona.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/agent_management/behavior.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management/behavior.py",
+        "file_path": "services/mcp-server/tools/agent_management/behavior.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/agent_management/behavior.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/agent_management/definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management/definitions.py",
+        "file_path": "services/mcp-server/tools/agent_management/definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/agent_management/definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/agent_management/ecs.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management/ecs.py",
+        "file_path": "services/mcp-server/tools/agent_management/ecs.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/agent_management/ecs.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/agent_management/base.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management/base.py",
+        "file_path": "services/mcp-server/tools/agent_management/base.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/agent_management/base.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/agent_management/__init__.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management/__init__.py",
+        "file_path": "services/mcp-server/tools/agent_management/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/agent_management/__init__.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/search/__tests__/test_nlp_queries.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/__tests__/test_nlp_queries.py",
+        "file_path": "services/mcp-server/tools/search/__tests__/test_nlp_queries.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/__tests__/test_nlp_queries.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/search/__tests__/conftest.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/__tests__/conftest.py",
+        "file_path": "services/mcp-server/tools/search/__tests__/conftest.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/__tests__/conftest.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/search/__tests__/test_ignore_config.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/__tests__/test_ignore_config.py",
+        "file_path": "services/mcp-server/tools/search/__tests__/test_ignore_config.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/__tests__/test_ignore_config.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/search/__tests__/test_search_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/__tests__/test_search_tools.py",
+        "file_path": "services/mcp-server/tools/search/__tests__/test_search_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/__tests__/test_search_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/search/__tests__/__init__.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/__tests__/__init__.py",
+        "file_path": "services/mcp-server/tools/search/__tests__/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/__tests__/__init__.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tests/unit/test_version_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/unit/test_version_service.py",
+        "file_path": "services/mcp-server/tests/unit/test_version_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tests/unit/test_version_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tests/unit/test_tool_router.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/unit/test_tool_router.py",
+        "file_path": "services/mcp-server/tests/unit/test_tool_router.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tests/unit/test_tool_router.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tests/unit/test_simple.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/unit/test_simple.py",
+        "file_path": "services/mcp-server/tests/unit/test_simple.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tests/unit/test_simple.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tests/unit/test_mcp_handler.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/unit/test_mcp_handler.py",
+        "file_path": "services/mcp-server/tests/unit/test_mcp_handler.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tests/unit/test_mcp_handler.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tests/unit/test_agent_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/unit/test_agent_tools.py",
+        "file_path": "services/mcp-server/tests/unit/test_agent_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tests/unit/test_agent_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tests/unit/test_agent_manager.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/unit/test_agent_manager.py",
+        "file_path": "services/mcp-server/tests/unit/test_agent_manager.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tests/unit/test_agent_manager.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tests/unit/__init__.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/unit/__init__.py",
+        "file_path": "services/mcp-server/tests/unit/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tests/unit/__init__.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tests/integration/test_mcp_server_integration.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/integration/test_mcp_server_integration.py",
+        "file_path": "services/mcp-server/tests/integration/test_mcp_server_integration.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tests/integration/test_mcp_server_integration.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tests/integration/__init__.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/integration/__init__.py",
+        "file_path": "services/mcp-server/tests/integration/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tests/integration/__init__.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tests/fixtures/__init__.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/fixtures/__init__.py",
+        "file_path": "services/mcp-server/tests/fixtures/__init__.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tests/fixtures/__init__.py",
         "type": "mcp_file"
       }
     ],
     "mcp_tools": [
       {
-        "file_path": "scripts/mcp/cleanup_deprecated.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/cleanup_deprecated.py",
+        "file_path": "services/mcp-server/cleanup_deprecated.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/cleanup_deprecated.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/check_tool_names.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/check_tool_names.py",
+        "file_path": "services/mcp-server/check_tool_names.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/check_tool_names.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tcp_server.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tcp_server.py",
+        "file_path": "services/mcp-server/tcp_server.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tcp_server.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/start_resilient_server.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/start_resilient_server.py",
+        "file_path": "services/mcp-server/start_resilient_server.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/start_resilient_server.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/comprehensive_agent_simulation.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/comprehensive_agent_simulation.py",
+        "file_path": "services/mcp-server/comprehensive_agent_simulation.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/comprehensive_agent_simulation.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/run_tests.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/run_tests.py",
+        "file_path": "services/mcp-server/run_tests.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/run_tests.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/simple_trait_simulation.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/simple_trait_simulation.py",
+        "file_path": "services/mcp-server/simple_trait_simulation.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/simple_trait_simulation.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/resilient_main.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/resilient_main.py",
+        "file_path": "services/mcp-server/resilient_main.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/resilient_main.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/config/tool_config.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/config/tool_config.py",
+        "file_path": "services/mcp-server/config/tool_config.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/config/tool_config.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/protocol/mcp_handler.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/mcp_handler.py",
+        "file_path": "services/mcp-server/protocol/mcp_handler.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/protocol/mcp_handler.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/protocol/tool_config.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_config.py",
+        "file_path": "services/mcp-server/protocol/tool_config.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/protocol/tool_config.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/protocol/tool_registry.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_registry.py",
+        "file_path": "services/mcp-server/protocol/tool_registry.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/protocol/tool_registry.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/protocol/tool_router.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_router.py",
+        "file_path": "services/mcp-server/protocol/tool_router.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/protocol/tool_router.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/protocol/tool_handlers.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_handlers.py",
+        "file_path": "services/mcp-server/protocol/tool_handlers.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/protocol/tool_handlers.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/protocol/tool_router_new.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/protocol/tool_router_new.py",
+        "file_path": "services/mcp-server/protocol/tool_router_new.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/protocol/tool_router_new.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/examples/breeding_notifications.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/examples/breeding_notifications.py",
+        "file_path": "services/mcp-server/examples/breeding_notifications.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/examples/breeding_notifications.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tests/conftest.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tests/conftest.py",
+        "file_path": "services/mcp-server/tests/conftest.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tests/conftest.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/search_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/search_service.py",
+        "file_path": "services/mcp-server/services/search_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/search_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/ripgrep_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/ripgrep_service.py",
+        "file_path": "services/mcp-server/services/ripgrep_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/ripgrep_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/ecs_client.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/ecs_client.py",
+        "file_path": "services/mcp-server/services/ecs_client.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/ecs_client.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/file_search_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/file_search_service.py",
+        "file_path": "services/mcp-server/services/file_search_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/file_search_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/file_analysis_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/file_analysis_service.py",
+        "file_path": "services/mcp-server/services/file_analysis_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/file_analysis_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/security_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/security_service.py",
+        "file_path": "services/mcp-server/services/security_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/security_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/metrics_aggregation_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/metrics_aggregation_service.py",
+        "file_path": "services/mcp-server/services/metrics_aggregation_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/metrics_aggregation_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/vscode_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/vscode_service.py",
+        "file_path": "services/mcp-server/services/vscode_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/vscode_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/vscode_tasks_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/vscode_tasks_service.py",
+        "file_path": "services/mcp-server/services/vscode_tasks_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/vscode_tasks_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/agent_manager.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/agent_manager.py",
+        "file_path": "services/mcp-server/services/agent_manager.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/agent_manager.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/auth_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/auth_service.py",
+        "file_path": "services/mcp-server/services/auth_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/auth_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/mermaid_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/mermaid_service.py",
+        "file_path": "services/mcp-server/services/mermaid_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/mermaid_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/breeding_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/breeding_service.py",
+        "file_path": "services/mcp-server/services/breeding_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/breeding_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/version_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/version_service.py",
+        "file_path": "services/mcp-server/services/version_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/version_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/formatting_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/formatting_service.py",
+        "file_path": "services/mcp-server/services/formatting_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/formatting_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/tool_config_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/tool_config_service.py",
+        "file_path": "services/mcp-server/services/tool_config_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/tool_config_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/auth_client.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/auth_client.py",
+        "file_path": "services/mcp-server/services/auth_client.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/auth_client.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/resilient_tool_wrapper.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/resilient_tool_wrapper.py",
+        "file_path": "services/mcp-server/services/resilient_tool_wrapper.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/resilient_tool_wrapper.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/validation_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/validation_service.py",
+        "file_path": "services/mcp-server/services/validation_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/validation_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/file_discovery_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/file_discovery_service.py",
+        "file_path": "services/mcp-server/services/file_discovery_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/file_discovery_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/playwright_browser_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/playwright_browser_service.py",
+        "file_path": "services/mcp-server/services/playwright_browser_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/playwright_browser_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/monolith_analysis_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/monolith_analysis_service.py",
+        "file_path": "services/mcp-server/services/monolith_analysis_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/monolith_analysis_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/linting_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/linting_service.py",
+        "file_path": "services/mcp-server/services/linting_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/linting_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/connection_manager.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/connection_manager.py",
+        "file_path": "services/mcp-server/services/connection_manager.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/connection_manager.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/services/semantic_search_service.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/services/semantic_search_service.py",
+        "file_path": "services/mcp-server/services/semantic_search_service.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/services/semantic_search_service.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/ecs_agent_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/ecs_agent_tools.py",
+        "file_path": "services/mcp-server/tools/ecs_agent_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/ecs_agent_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/image_viewer_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/image_viewer_tools.py",
+        "file_path": "services/mcp-server/tools/image_viewer_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/image_viewer_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/version_vscode_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/version_vscode_tools.py",
+        "file_path": "services/mcp-server/tools/version_vscode_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/version_vscode_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/tool_management_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/tool_management_tools.py",
+        "file_path": "services/mcp-server/tools/tool_management_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/tool_management_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/secrets_definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/secrets_definitions.py",
+        "file_path": "services/mcp-server/tools/secrets_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/secrets_definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/git_automation_definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/git_automation_definitions.py",
+        "file_path": "services/mcp-server/tools/git_automation_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/git_automation_definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/agent_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_tools.py",
+        "file_path": "services/mcp-server/tools/agent_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/agent_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/linting_definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/linting_definitions.py",
+        "file_path": "services/mcp-server/tools/linting_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/linting_definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/version_vscode_definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/version_vscode_definitions.py",
+        "file_path": "services/mcp-server/tools/version_vscode_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/version_vscode_definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/mermaid_definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/mermaid_definitions.py",
+        "file_path": "services/mcp-server/tools/mermaid_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/mermaid_definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/mermaid_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/mermaid_tools.py",
+        "file_path": "services/mcp-server/tools/mermaid_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/mermaid_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/git_automation_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/git_automation_tools.py",
+        "file_path": "services/mcp-server/tools/git_automation_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/git_automation_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/config_definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/config_definitions.py",
+        "file_path": "services/mcp-server/tools/config_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/config_definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/secrets_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/secrets_tools.py",
+        "file_path": "services/mcp-server/tools/secrets_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/secrets_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/linting_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/linting_tools.py",
+        "file_path": "services/mcp-server/tools/linting_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/linting_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/image_viewer_definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/image_viewer_definitions.py",
+        "file_path": "services/mcp-server/tools/image_viewer_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/image_viewer_definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/vscode_tasks_definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/vscode_tasks_definitions.py",
+        "file_path": "services/mcp-server/tools/vscode_tasks_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/vscode_tasks_definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/agent_tools_ecs.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_tools_ecs.py",
+        "file_path": "services/mcp-server/tools/agent_tools_ecs.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/agent_tools_ecs.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/config_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/config_tools.py",
+        "file_path": "services/mcp-server/tools/config_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/config_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/vscode_tasks_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/vscode_tasks_tools.py",
+        "file_path": "services/mcp-server/tools/vscode_tasks_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/vscode_tasks_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/agent_management.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management.py",
+        "file_path": "services/mcp-server/tools/agent_management.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/agent_management.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/ecs_definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/ecs_definitions.py",
+        "file_path": "services/mcp-server/tools/ecs_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/ecs_definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/definitions.py",
+        "file_path": "services/mcp-server/tools/definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/utility_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/utility_tools.py",
+        "file_path": "services/mcp-server/tools/utility_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/utility_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/playwright_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/playwright_tools.py",
+        "file_path": "services/mcp-server/tools/playwright_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/playwright_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/utils/logging_config.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/utils/logging_config.py",
+        "file_path": "services/mcp-server/utils/logging_config.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/utils/logging_config.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/middleware/auth_middleware.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/middleware/auth_middleware.py",
+        "file_path": "services/mcp-server/middleware/auth_middleware.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/middleware/auth_middleware.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/monolith_detection/tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/monolith_detection/tools.py",
+        "file_path": "services/mcp-server/tools/monolith_detection/tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/monolith_detection/tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/monolith_detection/definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/monolith_detection/definitions.py",
+        "file_path": "services/mcp-server/tools/monolith_detection/definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/monolith_detection/definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/search/search_definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/search_definitions.py",
+        "file_path": "services/mcp-server/tools/search/search_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/search_definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/search/file_search.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/file_search.py",
+        "file_path": "services/mcp-server/tools/search/file_search.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/file_search.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/search/enhanced_search_definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/enhanced_search_definitions.py",
+        "file_path": "services/mcp-server/tools/search/enhanced_search_definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/enhanced_search_definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/search/ripgrep_search.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/ripgrep_search.py",
+        "file_path": "services/mcp-server/tools/search/ripgrep_search.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/ripgrep_search.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/search/ignore_config.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/ignore_config.py",
+        "file_path": "services/mcp-server/tools/search/ignore_config.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/ignore_config.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/search/semantic_search.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/semantic_search.py",
+        "file_path": "services/mcp-server/tools/search/semantic_search.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/semantic_search.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/search/bm25_search.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/bm25_search.py",
+        "file_path": "services/mcp-server/tools/search/bm25_search.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/bm25_search.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/search/enhanced_semantic_search.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/enhanced_semantic_search.py",
+        "file_path": "services/mcp-server/tools/search/enhanced_semantic_search.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/enhanced_semantic_search.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/search/enhanced_search_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/enhanced_search_tools.py",
+        "file_path": "services/mcp-server/tools/search/enhanced_search_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/enhanced_search_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/search/search_tools.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/search_tools.py",
+        "file_path": "services/mcp-server/tools/search/search_tools.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/search_tools.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/agent_management/breeding.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management/breeding.py",
+        "file_path": "services/mcp-server/tools/agent_management/breeding.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/agent_management/breeding.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/agent_management/persona.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management/persona.py",
+        "file_path": "services/mcp-server/tools/agent_management/persona.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/agent_management/persona.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/agent_management/behavior.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management/behavior.py",
+        "file_path": "services/mcp-server/tools/agent_management/behavior.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/agent_management/behavior.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/agent_management/definitions.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management/definitions.py",
+        "file_path": "services/mcp-server/tools/agent_management/definitions.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/agent_management/definitions.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/agent_management/ecs.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management/ecs.py",
+        "file_path": "services/mcp-server/tools/agent_management/ecs.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/agent_management/ecs.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/agent_management/base.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/agent_management/base.py",
+        "file_path": "services/mcp-server/tools/agent_management/base.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/agent_management/base.py",
         "type": "mcp_file"
       },
       {
-        "file_path": "scripts/mcp/tools/search/__tests__/conftest.py",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/mcp/tools/search/__tests__/conftest.py",
+        "file_path": "services/mcp-server/tools/search/__tests__/conftest.py",
+        "absolute_path": "/home/kade/runeset/reynard/services/mcp-server/tools/search/__tests__/conftest.py",
         "type": "mcp_file"
       }
     ],

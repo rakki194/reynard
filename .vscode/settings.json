@@ -28,7 +28,6 @@
   "pylint.path": [
     "${workspaceFolder}/scripts",
     "${workspaceFolder}/services/agent-naming",
-    "${workspaceFolder}/services/ecs-world",
     "${workspaceFolder}/services/gatekeeper",
     "${workspaceFolder}/services/mcp-server"
   ],

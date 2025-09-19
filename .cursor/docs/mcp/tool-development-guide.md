@@ -11,7 +11,7 @@ This guide provides comprehensive instructions for developing MCP (Model Context
 The Reynard MCP server follows a modular architecture with clear separation of concerns:
 
 ```
-scripts/mcp/
+services/mcp-server/
 ├── main.py                 # Server entry point
 ├── tools/                  # Tool implementations
 │   ├── __init__.py        # Lazy imports
@@ -585,4 +585,4 @@ class ConfigurableToolClass:
 - [MCP Specification](https://modelcontextprotocol.io/docs)
 - [JSON Schema Documentation](https://json-schema.org/learn/)
 - [Python asyncio Guide](https://docs.python.org/3/library/asyncio.html)
-- [Reynard MCP Server](https://github.com/your-org/reynard/tree/main/scripts/mcp)
+- [Reynard MCP Server](https://github.com/your-org/reynard/tree/main/services/mcp-server)

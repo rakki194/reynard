@@ -80,20 +80,24 @@ export const createMockProcess = () => {
       processes.set(options.project, mockChildProcess);
       return mockChildProcess;
     }),
-    exec: vi.fn().mockImplementation((command: string, callback: (error: Error | null, stdout: string, stderr: string) => void) => {
-      // Mock exec for commands like 'lsof'
-      if (command.includes("lsof -i :")) {
-        callback(null, "", ""); // No process found on port
-      } else {
-        callback(null, "mock stdout", "");
-      }
-    }),
+    exec: vi
+      .fn()
+      .mockImplementation(
+        (command: string, callback: (error: Error | null, stdout: string, stderr: string) => void) => {
+          // Mock exec for commands like 'lsof'
+          if (command.includes("lsof -i :")) {
+            callback(null, "", ""); // No process found on port
+          } else {
+            callback(null, "mock stdout", "");
+          }
+        }
+      ),
   };
 };
 
 // Create a simple mock network
 export const createMockNetwork = () => ({
-  createServer: vi.fn().mockImplementation((callback) => ({
+  createServer: vi.fn().mockImplementation(callback => ({
     listen: vi.fn().mockImplementation((port, callback) => {
       callback?.();
       return { close: vi.fn() };
@@ -224,11 +228,9 @@ export const createStatusCommand = () => {
 
 export const createListCommand = () => {
   const command = new Command("list");
-  command
-    .description("List available projects")
-    .action(async () => {
-      // Mock implementation for testing
-    });
+  command.description("List available projects").action(async () => {
+    // Mock implementation for testing
+  });
   return command;
 };
 
@@ -245,21 +247,17 @@ export const createHealthCommand = () => {
 
 export const createConfigCommand = () => {
   const command = new Command("config");
-  command
-    .description("Show configuration")
-    .action(async () => {
-      // Mock implementation for testing
-    });
+  command.description("Show configuration").action(async () => {
+    // Mock implementation for testing
+  });
   return command;
 };
 
 export const createStatsCommand = () => {
   const command = new Command("stats");
-  command
-    .description("Show server statistics")
-    .action(async () => {
-      // Mock implementation for testing
-    });
+  command.description("Show server statistics").action(async () => {
+    // Mock implementation for testing
+  });
   return command;
 };
 
@@ -276,11 +274,9 @@ export const createStartMultipleCommand = () => {
 
 export const createStopAllCommand = () => {
   const command = new Command("stop-all");
-  command
-    .description("Stop all development servers")
-    .action(async () => {
-      // Mock implementation for testing
-    });
+  command.description("Stop all development servers").action(async () => {
+    // Mock implementation for testing
+  });
   return command;
 };
 

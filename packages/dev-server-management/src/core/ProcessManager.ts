@@ -171,22 +171,22 @@ export class ProcessManager extends EventEmitter {
     let stdioConfig: any;
     if (options.detached) {
       // For detached processes, redirect stdio to files
-      const logDir = join(cwd, '.dev-server-logs');
-      
+      const logDir = join(cwd, ".dev-server-logs");
+
       // Ensure log directory exists
       try {
         await fs.mkdir(logDir, { recursive: true });
       } catch (error) {
         // Directory might already exist, ignore error
       }
-      
+
       const outFile = join(logDir, `${project}-out.log`);
       const errFile = join(logDir, `${project}-err.log`);
-      
-      const out = await fs.open(outFile, 'a');
-      const err = await fs.open(errFile, 'a');
-      
-      stdioConfig = ['ignore', out.fd, err.fd];
+
+      const out = await fs.open(outFile, "a");
+      const err = await fs.open(errFile, "a");
+
+      stdioConfig = ["ignore", out.fd, err.fd];
     } else {
       stdioConfig = options.inheritStdio ? "inherit" : "pipe";
     }

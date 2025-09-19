@@ -6,7 +6,7 @@ This directory contains the refactored Reynard services, organized as proper Pyt
 
 ## 🏗️ **Architecture Overview**
 
-```
+```text
 services/
 ├── agent-naming/           # Agent naming system with animal spirit themes
 │   ├── reynard_agent_naming/
@@ -63,7 +63,8 @@ source venv/bin/activate
 
 # Install each service in development mode
 cd services/agent-naming && pip install -e .
-cd services/ecs-world && pip install -e .
+# ECS functionality is now consolidated in the FastAPI backend
+# cd services/ecs-world && pip install -e .
 cd services/gatekeeper && pip install -e .
 cd services/mcp-server && pip install -e .
 ```
@@ -144,7 +145,6 @@ make -f Makefile.dev test
 
 # Test specific service
 cd services/agent-naming && python -m pytest tests/
-cd services/ecs-world && python -m pytest tests/
 cd services/gatekeeper && python -m pytest tests/
 cd services/mcp-server && python -m pytest tests/
 ```

@@ -84,7 +84,7 @@ class SimpleChangelogScanner:
                 search_type="hybrid",
                 top_k=15,
                 file_types=[".py"],
-                directories=["../../scripts/mcp/"],
+                directories=["../../services/mcp-server/"],
             )
             mcp_tools = result.get("results", [])
             print(f"Found {len(mcp_tools)} MCP tool files")

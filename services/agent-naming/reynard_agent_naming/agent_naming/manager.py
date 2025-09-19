@@ -15,13 +15,11 @@ from .modular_generator import ModularAgentNamer
 from .types import AnimalSpirit, NamingConfig, NamingScheme, NamingStyle
 from .dynamic_config import DynamicConfigManager
 
-# Try to import ECS world simulation
-try:
-    from reynard_ecs_world import WorldSimulation
-    ECS_AVAILABLE = True
-except ImportError:
-    WorldSimulation = None
-    ECS_AVAILABLE = False
+# ECS integration is now handled through the FastAPI backend
+# The ECS world simulation is consolidated into the backend
+# and accessed through the ECS client for MCP tools
+ECS_AVAILABLE = False
+WorldSimulation = None
 
 logger = logging.getLogger(__name__)
 
@@ -208,14 +206,12 @@ class AgentNameManager:
                 raise ValueError("ECS world simulation not available")
             entity = self._create_ecs_agent(agent_id, spirit_str, style_str, name, parent1_id, parent2_id)
 
-            # Get agent component for name
-            from reynard_ecs_world import AgentComponent
-
-            agent_component = entity.get_component(AgentComponent)
-            if agent_component and agent_component.name:
-                name = agent_component.name
-                if name:
-                    self.assign_name(agent_id, name)
+            # ECS integration is now handled through the FastAPI backend
+            # Direct ECS imports are no longer available
+            # For now, use the provided name or generate one
+            if not name:
+                name = self.generate_name(spirit, style)
+            self.assign_name(agent_id, name)
 
             # Nudge time forward for this action
             if self.world_simulation:

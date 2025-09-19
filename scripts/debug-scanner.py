@@ -53,7 +53,7 @@ def main():
     mcp_dir = project_root / "scripts" / "mcp"
     if mcp_dir.exists():
         mcp_files = list(mcp_dir.rglob("*.py"))
-        print(f"Found {len(mcp_files)} Python files in scripts/mcp/")
+        print(f"Found {len(mcp_files)} Python files in services/mcp-server/")
         for i, file_path in enumerate(mcp_files[:5]):
             print(f"  {i + 1}. {file_path.relative_to(project_root)}")
     else:

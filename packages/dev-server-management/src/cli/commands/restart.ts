@@ -1,10 +1,7 @@
 import { DevServerManager } from "../../core/DevServerManager.js";
 import type { GlobalOptions } from "./types.js";
 
-export const handleRestart = async (
-  project: string,
-  globalOptions: GlobalOptions
-) => {
+export const handleRestart = async (project: string, globalOptions: GlobalOptions) => {
   try {
     const devServerManager = new DevServerManager(globalOptions.config);
     await devServerManager.initialize();

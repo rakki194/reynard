@@ -8,4 +8,60 @@ from .config import ECSConfig
 from .endpoints import router as ecs_router
 from .service import ECSWorldService, get_ecs_world
 
-__all__ = ["ECSConfig", "ECSWorldService", "ecs_router", "get_ecs_world"]
+# Core ECS components
+from .core import Component, Entity, System, ECSWorld
+
+# ECS Components
+from .components import (
+    AgentComponent,
+    PositionComponent,
+    LifecycleComponent,
+    LineageComponent,
+    ReproductionComponent,
+    TraitComponent,
+    SocialComponent,
+    GenderComponent,
+    MemoryComponent,
+    KnowledgeComponent,
+    InteractionComponent
+)
+
+# ECS Systems
+from .systems import (
+    MemorySystem,
+    LearningSystem,
+    InteractionSystem,
+    SocialSystem,
+    GenderSystem
+)
+
+# ECS World
+from .world import AgentWorld
+
+__all__ = [
+    "ECSConfig", 
+    "ECSWorldService", 
+    "ecs_router", 
+    "get_ecs_world",
+    "Component",
+    "Entity", 
+    "System",
+    "ECSWorld",
+    "AgentComponent",
+    "PositionComponent",
+    "LifecycleComponent", 
+    "LineageComponent",
+    "ReproductionComponent",
+    "TraitComponent",
+    "SocialComponent",
+    "GenderComponent",
+    "MemoryComponent",
+    "KnowledgeComponent",
+    "InteractionComponent",
+    "MemorySystem",
+    "LearningSystem",
+    "InteractionSystem",
+    "SocialSystem",
+    "GenderSystem",
+    "AgentWorld"
+]

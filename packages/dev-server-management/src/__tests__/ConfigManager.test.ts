@@ -32,29 +32,32 @@ describe("ConfigManager", () => {
   beforeEach(async () => {
     // Create mock file system
     mockFS = createMockFileSystem();
-    
+
     // Set up default config file
-    mockFS.setFile("test-config.json", JSON.stringify({
-      projects: {
-        "test-project": {
-          name: "Test Project",
-          type: "package",
-          command: "npm run dev",
-          port: 3000,
-          healthCheck: {
-            type: "http",
-            path: "/health"
-          }
-        }
-      }
-    }));
-    
+    mockFS.setFile(
+      "test-config.json",
+      JSON.stringify({
+        projects: {
+          "test-project": {
+            name: "Test Project",
+            type: "package",
+            command: "npm run dev",
+            port: 3000,
+            healthCheck: {
+              type: "http",
+              path: "/health",
+            },
+          },
+        },
+      })
+    );
+
     // Configure the mocks
     const { readFile, writeFile, access } = await import("node:fs/promises");
     vi.mocked(readFile).mockImplementation(mockFS.readFile);
     vi.mocked(writeFile).mockImplementation(mockFS.writeFile);
     vi.mocked(access).mockImplementation(mockFS.access);
-    
+
     configManager = new ConfigManager("test-config.json");
   });
 
@@ -112,10 +115,7 @@ describe("ConfigManager", () => {
       const mockConfig = createMockDevServerConfig();
       await configManager.saveConfig(mockConfig);
 
-      expect(mockFS.writeFile).toHaveBeenCalledWith(
-        "test-config.json",
-        JSON.stringify(mockConfig, null, 2)
-      );
+      expect(mockFS.writeFile).toHaveBeenCalledWith("test-config.json", JSON.stringify(mockConfig, null, 2));
     });
 
     it("should handle save errors gracefully", async () => {
@@ -239,8 +239,8 @@ describe("ConfigManager", () => {
     it("should detect port conflicts", async () => {
       const configWithConflicts = createMockDevServerConfig({
         projects: {
-          "project1": createMockProjectConfig({ name: "project1", port: 3000 }),
-          "project2": createMockProjectConfig({ name: "project2", port: 3000 }),
+          project1: createMockProjectConfig({ name: "project1", port: 3000 }),
+          project2: createMockProjectConfig({ name: "project2", port: 3000 }),
         },
       });
 
@@ -270,11 +270,11 @@ describe("ConfigManager", () => {
     it("should detect circular dependencies", async () => {
       const configWithCircularDeps = createMockDevServerConfig({
         projects: {
-          "project1": createMockProjectConfig({
+          project1: createMockProjectConfig({
             name: "project1",
             dependencies: ["project2"],
           }),
-          "project2": createMockProjectConfig({
+          project2: createMockProjectConfig({
             name: "project2",
             dependencies: ["project1"],
           }),
@@ -290,7 +290,7 @@ describe("ConfigManager", () => {
     it("should detect missing dependencies", async () => {
       const configWithMissingDeps = createMockDevServerConfig({
         projects: {
-          "project1": createMockProjectConfig({
+          project1: createMockProjectConfig({
             name: "project1",
             dependencies: ["non-existent-project"],
           }),
@@ -405,10 +405,7 @@ describe("ConfigManager", () => {
       configManager.setProject("persistent-project", newProject);
       await configManager.persistConfig();
 
-      expect(mockFS.writeFile).toHaveBeenCalledWith(
-        "test-config.json",
-        expect.stringContaining("persistent-project")
-      );
+      expect(mockFS.writeFile).toHaveBeenCalledWith("test-config.json", expect.stringContaining("persistent-project"));
     });
 
     it("should handle persistence errors", async () => {

@@ -5,12 +5,16 @@ Specialized ECS world for agent management with breeding and trait inheritance.
 """
 
 import logging
+import os
 import random
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 from ..components import (
     AgentComponent,
+    GenderComponent,
+    GenderIdentity,
+    GenderProfile,
     GroupType,
     InteractionComponent,
     InteractionType,
@@ -28,7 +32,7 @@ from ..components import (
 )
 from ..core.entity import Entity
 from ..core.world import ECSWorld
-from ..systems import InteractionSystem, LearningSystem, MemorySystem, SocialSystem
+from ..systems import GenderSystem, InteractionSystem, LearningSystem, MemorySystem, SocialSystem
 
 logger = logging.getLogger(__name__)
 
@@ -51,8 +55,6 @@ class AgentWorld(ECSWorld):
         super().__init__()
         if data_dir is None:
             # Use absolute path from current working directory
-            import os
-
             self.data_dir = Path(os.getcwd()) / "data" / "ecs"
         else:
             # Ensure data_dir is a Path object
@@ -64,6 +66,7 @@ class AgentWorld(ECSWorld):
         self.add_system(InteractionSystem(self))
         self.add_system(SocialSystem(self))
         self.add_system(LearningSystem(self))
+        self.add_system(GenderSystem(self))
 
         # Load existing agents
         self._load_existing_agents()
@@ -119,13 +122,19 @@ class AgentWorld(ECSWorld):
         entity.add_component(InteractionComponent())
         entity.add_component(SocialComponent())
         entity.add_component(KnowledgeComponent())
+        
+        # Add gender component with default identity
+        default_identity = GenderIdentity.NON_BINARY  # Default to inclusive identity
+        entity.add_component(GenderComponent(
+            profile=GenderProfile(primary_identity=default_identity)
+        ))
 
         # Add position with random starting location
         start_x = random.uniform(100, 800)
         start_y = random.uniform(100, 600)
         entity.add_component(PositionComponent(start_x, start_y))
 
-        logger.info(f"Created agent {agent_id} with name {name}")
+        logger.info("Created agent %s with name %s", agent_id, name)
         return entity
 
     def create_offspring(
@@ -181,6 +190,12 @@ class AgentWorld(ECSWorld):
         offspring.add_component(InteractionComponent())
         offspring.add_component(SocialComponent())
         offspring.add_component(KnowledgeComponent())
+        
+        # Add gender component with default identity
+        default_identity = GenderIdentity.NON_BINARY  # Default to inclusive identity
+        offspring.add_component(GenderComponent(
+            profile=GenderProfile(primary_identity=default_identity)
+        ))
 
         # Add position with random starting location
         start_x = random.uniform(100, 800)
@@ -192,7 +207,7 @@ class AgentWorld(ECSWorld):
         self._update_parent_lineage(parent2, offspring_id)
 
         logger.info(
-            f"Created offspring {offspring_id} from parents {parent1_id} and {parent2_id}"
+            "Created offspring %s from parents %s and %s", offspring_id, parent1_id, parent2_id
         )
         return offspring
 
@@ -295,7 +310,7 @@ class AgentWorld(ECSWorld):
 
         Args:
             agent_id: ID of the agent
-            depth: Depth of lineage to retrieve
+            depth: Depth of lineage to retrieve (currently not implemented)
 
         Returns:
             Dictionary with lineage information
@@ -308,12 +323,15 @@ class AgentWorld(ECSWorld):
         if not lineage:
             return {}
 
+        # TODO: Implement depth-based lineage retrieval
+        # For now, return all lineage data regardless of depth
         return {
             "agent": {"agent_id": agent_id},
             "parents": lineage.parents,
             "children": lineage.children,
             "ancestors": lineage.ancestors,
             "descendants": lineage.descendants,
+            "depth_requested": depth,  # Include the requested depth for future implementation
         }
 
     def enable_automatic_reproduction(self, enabled: bool = True) -> None:
@@ -324,7 +342,7 @@ class AgentWorld(ECSWorld):
             enabled: Whether to enable automatic reproduction
         """
         # This would be implemented with a reproduction system
-        logger.info(f"Automatic reproduction {'enabled' if enabled else 'disabled'}")
+        logger.info("Automatic reproduction %s", "enabled" if enabled else "disabled")
 
     async def start_global_breeding(self) -> None:
         """Start the global breeding scheduler."""
@@ -371,29 +389,71 @@ class AgentWorld(ECSWorld):
             Generated agent name
         """
         try:
-            # Import the proper naming system from the installed library
-            from agent_naming import (
-                AnimalSpirit,
-                NamingConfig,
-                NamingStyle,
-                ReynardRobotNamer,
-            )
+            # Use the backend data service for name generation
+            import asyncio
+            import httpx
+            
+            async def _fetch_name_data() -> str:
+                async with httpx.AsyncClient(timeout=10.0) as client:
+                    try:
+                        # Get spirit names
+                        response = await client.get(f"http://localhost:8000/api/ecs/naming/animal-spirits/{spirit}")
+                        if response.status_code == 200:
+                            spirit_data = response.json()
+                            spirit_names = spirit_data.get("names", [])
+                        else:
+                            spirit_names = [spirit.title()]
+                        
+                        # Get naming components
+                        response = await client.get("http://localhost:8000/api/ecs/naming/components")
+                        if response.status_code == 200:
+                            components = response.json()
+                        else:
+                            components = {}
+                        
+                        # Get generation numbers
+                        response = await client.get(f"http://localhost:8000/api/ecs/naming/generation-numbers/{spirit}")
+                        if response.status_code == 200:
+                            gen_data = response.json()
+                            generation_numbers = gen_data.get("numbers", [])
+                        else:
+                            generation_numbers = [random.randint(1, 100)]
+                        
+                        # Generate name based on style
+                        if not spirit_names:
+                            spirit_names = [spirit.title()]
+                        
+                        spirit_name = random.choice(spirit_names)
+                        generation = random.choice(generation_numbers)
+                        
+                        if style == "foundation":
+                            suffixes = components.get("foundation_suffixes", ["Prime", "Sage", "Oracle"])
+                            suffix = random.choice(suffixes)
+                            return f"{spirit_name}-{suffix}-{generation}"
+                        elif style == "exo":
+                            suffixes = components.get("exo_suffixes", ["Strike", "Guard", "Sentinel"])
+                            suffix = random.choice(suffixes)
+                            return f"{spirit_name}-{suffix}-{generation}"
+                        elif style == "cyberpunk":
+                            prefixes = components.get("cyberpunk_prefixes", ["Cyber", "Neo", "Mega"])
+                            suffixes = components.get("cyberpunk_suffixes", ["Nexus", "Grid", "Web"])
+                            prefix = random.choice(prefixes)
+                            suffix = random.choice(suffixes)
+                            return f"{prefix}-{spirit_name}-{suffix}"
+                        else:
+                            # Default foundation style
+                            suffixes = components.get("foundation_suffixes", ["Prime", "Sage", "Oracle"])
+                            suffix = random.choice(suffixes)
+                            return f"{spirit_name}-{suffix}-{generation}"
+                            
+                    except (httpx.RequestError, httpx.TimeoutException, httpx.HTTPStatusError) as e:
+                        logger.warning("Failed to fetch name data from backend: %s", e)
+                        return f"{spirit.title()}-{style.title()}-{random.randint(1, 100)}"
+            
+            # Run the async function
+            return asyncio.run(_fetch_name_data())
 
-            # Convert string parameters to proper enums
-            spirit_enum = AnimalSpirit(spirit) if isinstance(spirit, str) else spirit
-            style_enum = NamingStyle(style) if isinstance(style, str) else style
-
-            # Use the proper name generator
-            namer = ReynardRobotNamer()
-            config = NamingConfig(spirit=spirit_enum, style=style_enum, count=1)
-            names = namer.generate_batch(config)
-
-            if names:
-                return names[0].name
-            # Fallback to simple name if generation fails
-            return f"Agent-{random.randint(1, 999)}"
-
-        except Exception as e:
+        except (asyncio.TimeoutError, RuntimeError, ImportError) as e:
             logger.warning("Failed to generate proper name: %s, using fallback", e)
             # Fallback to simple name if anything goes wrong
             return f"Agent-{random.randint(1, 999)}"
@@ -669,7 +729,7 @@ class AgentWorld(ECSWorld):
         Returns:
             True if memory was stored successfully, False otherwise
         """
-        memory_system = self.get_system(MemorySystem)
+        memory_system = cast(MemorySystem, self.get_system(MemorySystem))
         if not memory_system:
             logger.warning("Memory system not found")
             return False
@@ -706,7 +766,7 @@ class AgentWorld(ECSWorld):
         Returns:
             List of matching memories
         """
-        memory_system = self.get_system(MemorySystem)
+        memory_system = cast(MemorySystem, self.get_system(MemorySystem))
         if not memory_system:
             logger.warning("Memory system not found")
             return []
@@ -729,7 +789,7 @@ class AgentWorld(ECSWorld):
         Returns:
             Dictionary with memory statistics
         """
-        memory_system = self.get_system(MemorySystem)
+        memory_system = cast(MemorySystem, self.get_system(MemorySystem))
         if not memory_system:
             return {}
 
@@ -742,7 +802,7 @@ class AgentWorld(ECSWorld):
         Returns:
             Dictionary with system-wide memory statistics
         """
-        memory_system = self.get_system(MemorySystem)
+        memory_system = cast(MemorySystem, self.get_system(MemorySystem))
         if not memory_system:
             return {}
 
@@ -761,7 +821,7 @@ class AgentWorld(ECSWorld):
         Returns:
             True if interaction was initiated successfully
         """
-        interaction_system = self.get_system(InteractionSystem)
+        interaction_system = cast(InteractionSystem, self.get_system(InteractionSystem))
         if not interaction_system:
             logger.warning("Interaction system not found")
             return False
@@ -779,7 +839,7 @@ class AgentWorld(ECSWorld):
         Returns:
             Dictionary with relationship information
         """
-        interaction_system = self.get_system(InteractionSystem)
+        interaction_system = cast(InteractionSystem, self.get_system(InteractionSystem))
         if not interaction_system:
             return {"error": "Interaction system not found"}
 
@@ -812,7 +872,7 @@ class AgentWorld(ECSWorld):
         Returns:
             Dictionary with system-wide interaction statistics
         """
-        interaction_system = self.get_system(InteractionSystem)
+        interaction_system = cast(InteractionSystem, self.get_system(InteractionSystem))
         if not interaction_system:
             return {}
 
@@ -838,7 +898,7 @@ class AgentWorld(ECSWorld):
         Returns:
             Group ID if successful, empty string if failed
         """
-        social_system = self.get_system(SocialSystem)
+        social_system = cast(SocialSystem, self.get_system(SocialSystem))
         if not social_system:
             logger.warning("Social system not found")
             return ""
@@ -855,7 +915,7 @@ class AgentWorld(ECSWorld):
         Returns:
             Dictionary with network information
         """
-        social_system = self.get_system(SocialSystem)
+        social_system = cast(SocialSystem, self.get_system(SocialSystem))
         if not social_system:
             return {"error": "Social system not found"}
 
@@ -871,7 +931,7 @@ class AgentWorld(ECSWorld):
         Returns:
             Dictionary with group information
         """
-        social_system = self.get_system(SocialSystem)
+        social_system = cast(SocialSystem, self.get_system(SocialSystem))
         if not social_system:
             return {"error": "Social system not found"}
 
@@ -904,7 +964,7 @@ class AgentWorld(ECSWorld):
         Returns:
             Dictionary with system-wide social statistics
         """
-        social_system = self.get_system(SocialSystem)
+        social_system = cast(SocialSystem, self.get_system(SocialSystem))
         if not social_system:
             return {}
 
@@ -948,12 +1008,12 @@ class AgentWorld(ECSWorld):
         """
         entity = self.get_entity(agent_id)
         if not entity:
-            logger.warning(f"Agent {agent_id} not found")
+            logger.warning("Agent %s not found", agent_id)
             return ""
 
         knowledge_comp = entity.get_component(KnowledgeComponent)
         if not knowledge_comp:
-            logger.warning(f"Agent {agent_id} has no knowledge component")
+            logger.warning("Agent %s has no knowledge component", agent_id)
             return ""
 
         return knowledge_comp.add_knowledge(
@@ -989,7 +1049,7 @@ class AgentWorld(ECSWorld):
         Returns:
             True if transfer was successful
         """
-        learning_system = self.get_system(LearningSystem)
+        learning_system = cast(LearningSystem, self.get_system(LearningSystem))
         if not learning_system:
             logger.warning("Learning system not found")
             return False
@@ -1026,7 +1086,7 @@ class AgentWorld(ECSWorld):
         Returns:
             Dictionary with transfer statistics
         """
-        learning_system = self.get_system(LearningSystem)
+        learning_system = cast(LearningSystem, self.get_system(LearningSystem))
         if not learning_system:
             return {"error": "Learning system not found"}
 
@@ -1039,9 +1099,109 @@ class AgentWorld(ECSWorld):
         Returns:
             Dictionary with system-wide learning statistics
         """
-        learning_system = self.get_system(LearningSystem)
+        learning_system = cast(LearningSystem, self.get_system(LearningSystem))
         if not learning_system:
             return {}
 
         return learning_system.get_system_stats()
+
+    # Gender Management Methods
+
+    def update_gender_identity(self, agent_id: str, new_identity: GenderIdentity) -> bool:
+        """
+        Update an agent's gender identity.
+        
+        Args:
+            agent_id: ID of the agent to update
+            new_identity: New gender identity
+            
+        Returns:
+            True if successful, False otherwise
+        """
+        gender_system = cast(GenderSystem, self.get_system(GenderSystem))
+        if not gender_system:
+            return False
+
+        return gender_system.update_gender_identity(agent_id, new_identity)
+
+    def add_support_agent(self, agent_id: str, support_agent_id: str) -> bool:
+        """
+        Add a support agent to an agent's support network.
+        
+        Args:
+            agent_id: ID of the agent to add support to
+            support_agent_id: ID of the supportive agent
+            
+        Returns:
+            True if successful, False otherwise
+        """
+        gender_system = cast(GenderSystem, self.get_system(GenderSystem))
+        if not gender_system:
+            return False
+
+        return gender_system.add_support_agent(agent_id, support_agent_id)
+
+    def remove_support_agent(self, agent_id: str, support_agent_id: str) -> bool:
+        """
+        Remove a support agent from an agent's support network.
+        
+        Args:
+            agent_id: ID of the agent to remove support from
+            support_agent_id: ID of the supportive agent to remove
+            
+        Returns:
+            True if successful, False otherwise
+        """
+        gender_system = cast(GenderSystem, self.get_system(GenderSystem))
+        if not gender_system:
+            return False
+
+        return gender_system.remove_support_agent(agent_id, support_agent_id)
+
+    def update_coming_out_status(self, agent_id: str, other_agent_id: str, knows: bool) -> bool:
+        """
+        Update who knows about an agent's gender identity.
+        
+        Args:
+            agent_id: ID of the agent whose identity is being shared
+            other_agent_id: ID of the agent who now knows/doesn't know
+            knows: Whether the other agent knows about the identity
+            
+        Returns:
+            True if successful, False otherwise
+        """
+        gender_system = cast(GenderSystem, self.get_system(GenderSystem))
+        if not gender_system:
+            return False
+
+        return gender_system.update_coming_out_status(agent_id, other_agent_id, knows)
+
+    def get_gender_stats(self, agent_id: str) -> dict[str, Any]:
+        """
+        Get gender statistics for a specific agent.
+        
+        Args:
+            agent_id: ID of the agent to get stats for
+            
+        Returns:
+            Dictionary with gender statistics
+        """
+        gender_system = self.get_system(GenderSystem)
+        if not gender_system:
+            return {}
+
+        return gender_system.get_agent_gender_info(agent_id) or {}
+
+    def get_gender_system_stats(self) -> dict[str, Any]:
+        """
+        Get comprehensive gender system statistics.
+        
+        Returns:
+            Dictionary with system-wide gender statistics
+        """
+        gender_system = cast(GenderSystem, self.get_system(GenderSystem))
+        if not gender_system:
+            return {}
+
+        return gender_system.get_gender_statistics()
 

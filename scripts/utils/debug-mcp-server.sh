@@ -14,7 +14,7 @@ echo "Python version: $(python3 --version)" >&2
 echo "Virtual env: ${VIRTUAL_ENV}" >&2
 
 # Change to the correct directory
-cd /home/kade/runeset/reynard/scripts/mcp || exit
+cd /home/kade/runeset/reynard/services/mcp-server || exit
 
 echo "Changed to directory: $(pwd)" >&2
 echo "Files in directory:" >&2

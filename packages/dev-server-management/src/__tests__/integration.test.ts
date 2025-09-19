@@ -28,19 +28,19 @@ describe("Dev Server Management Integration Tests", () => {
     mockFS = testEnv.mockFS;
     mockProcess = testEnv.mockProcess;
     mockNetwork = testEnv.mockNetwork;
-    
+
     // Configure the mocks
     const { readFile, writeFile, access } = await import("node:fs/promises");
     const { spawn, exec } = await import("node:child_process");
     const { createServer } = await import("node:net");
-    
+
     vi.mocked(readFile).mockImplementation(mockFS.readFile);
     vi.mocked(writeFile).mockImplementation(mockFS.writeFile);
     vi.mocked(access).mockImplementation(mockFS.access);
     vi.mocked(spawn).mockImplementation(mockProcess.spawn);
     vi.mocked(exec).mockImplementation(mockProcess.exec);
     vi.mocked(createServer).mockImplementation(mockNetwork.createServer);
-    
+
     devServerManager = new DevServerManager("test-config.json");
   });
 
@@ -57,7 +57,7 @@ describe("Dev Server Management Integration Tests", () => {
     it("should handle a complete development session", async () => {
       const mockConfig = createMockDevServerConfig({
         projects: {
-          "frontend": createMockProjectConfig({
+          frontend: createMockProjectConfig({
             name: "frontend",
             port: 3000,
             description: "Frontend application",
@@ -70,7 +70,7 @@ describe("Dev Server Management Integration Tests", () => {
               interval: 10000,
             },
           }),
-          "backend": createMockProjectConfig({
+          backend: createMockProjectConfig({
             name: "backend",
             port: 8000,
             description: "Backend API",
@@ -149,7 +149,7 @@ describe("Dev Server Management Integration Tests", () => {
     it("should handle dependency-based startup", async () => {
       const mockConfig = createMockDevServerConfig({
         projects: {
-          "database": createMockProjectConfig({
+          database: createMockProjectConfig({
             name: "database",
             port: 5432,
             description: "Database service",
@@ -158,7 +158,7 @@ describe("Dev Server Management Integration Tests", () => {
             args: ["run", "postgres"],
             dependencies: [],
           }),
-          "backend": createMockProjectConfig({
+          backend: createMockProjectConfig({
             name: "backend",
             port: 8000,
             description: "Backend API",
@@ -167,7 +167,7 @@ describe("Dev Server Management Integration Tests", () => {
             args: ["main.py"],
             dependencies: ["database"],
           }),
-          "frontend": createMockProjectConfig({
+          frontend: createMockProjectConfig({
             name: "frontend",
             port: 3000,
             description: "Frontend application",
@@ -189,7 +189,7 @@ describe("Dev Server Management Integration Tests", () => {
 
       // Start frontend (should start database and backend first)
       const startEvents: DevServerEvent[] = [];
-      devServerManager.on("server_started", (event) => {
+      devServerManager.on("server_started", event => {
         startEvents.push(event);
       });
 
@@ -203,7 +203,7 @@ describe("Dev Server Management Integration Tests", () => {
 
       // Stop frontend (should stop in reverse order)
       const stopEvents: DevServerEvent[] = [];
-      devServerManager.on("server_stopped", (event) => {
+      devServerManager.on("server_stopped", event => {
         stopEvents.push(event);
       });
 
@@ -221,12 +221,12 @@ describe("Dev Server Management Integration Tests", () => {
     it("should handle port conflicts gracefully", async () => {
       const mockConfig = createMockDevServerConfig({
         projects: {
-          "project1": createMockProjectConfig({
+          project1: createMockProjectConfig({
             name: "project1",
             port: 3000,
             category: "package",
           }),
-          "project2": createMockProjectConfig({
+          project2: createMockProjectConfig({
             name: "project2",
             port: 3000, // Same port as project1
             category: "package",
@@ -342,7 +342,7 @@ describe("Dev Server Management Integration Tests", () => {
     it("should handle configuration updates during runtime", async () => {
       const initialConfig = createMockDevServerConfig({
         projects: {
-          "project1": createMockProjectConfig({
+          project1: createMockProjectConfig({
             name: "project1",
             port: 3000,
             description: "Initial project",
@@ -360,12 +360,12 @@ describe("Dev Server Management Integration Tests", () => {
       // Update configuration
       const updatedConfig = createMockDevServerConfig({
         projects: {
-          "project1": createMockProjectConfig({
+          project1: createMockProjectConfig({
             name: "project1",
             port: 3000,
             description: "Updated project",
           }),
-          "project2": createMockProjectConfig({
+          project2: createMockProjectConfig({
             name: "project2",
             port: 3001,
             description: "New project",
@@ -406,11 +406,11 @@ describe("Dev Server Management Integration Tests", () => {
     it("should handle multiple concurrent operations", async () => {
       const mockConfig = createMockDevServerConfig({
         projects: {
-          "project1": createMockProjectConfig({ name: "project1", port: 3000 }),
-          "project2": createMockProjectConfig({ name: "project2", port: 3001 }),
-          "project3": createMockProjectConfig({ name: "project3", port: 3002 }),
-          "project4": createMockProjectConfig({ name: "project4", port: 3003 }),
-          "project5": createMockProjectConfig({ name: "project5", port: 3004 }),
+          project1: createMockProjectConfig({ name: "project1", port: 3000 }),
+          project2: createMockProjectConfig({ name: "project2", port: 3001 }),
+          project3: createMockProjectConfig({ name: "project3", port: 3002 }),
+          project4: createMockProjectConfig({ name: "project4", port: 3003 }),
+          project5: createMockProjectConfig({ name: "project5", port: 3004 }),
         },
       });
 
@@ -494,7 +494,7 @@ describe("Dev Server Management Integration Tests", () => {
       mockNetwork.setPortInUse(3000, false);
 
       const events: DevServerEvent[] = [];
-      devServerManager.on("event", (event) => {
+      devServerManager.on("event", event => {
         events.push(event);
       });
 
@@ -544,8 +544,8 @@ describe("Dev Server Management Integration Tests", () => {
     it("should properly cleanup all resources on shutdown", async () => {
       const mockConfig = createMockDevServerConfig({
         projects: {
-          "project1": createMockProjectConfig({ name: "project1", port: 3000 }),
-          "project2": createMockProjectConfig({ name: "project2", port: 3001 }),
+          project1: createMockProjectConfig({ name: "project1", port: 3000 }),
+          project2: createMockProjectConfig({ name: "project2", port: 3001 }),
         },
       });
 

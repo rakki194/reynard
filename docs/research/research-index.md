@@ -100,6 +100,7 @@ understand the relationships between different research areas.
 - **Performance Optimization** → [Technical Documentation](./technical-docs/gallery-performance-validation.md) | [Algorithms](./algorithms/)
 - **Penetration Testing** → [Security Research](./security-research/)
 - **Phyllotactic Patterns** → [Animations](./animations/) | [Academic Papers](./animations/the-mathematics-of-phyllotatic-spirals/)
+- **PHOENIX Framework** → [Algorithms](./algorithms/phoenix-evolutionary-knowledge-distillation/) | [Academic Papers](./algorithms/phoenix-evolutionary-knowledge-distillation/)
 - **PostgreSQL** → [Technical Documentation](./technical-docs/rag.md) | [Architecture](./architecture/)
 
 ### Q
@@ -178,6 +179,7 @@ understand the relationships between different research areas.
 - **Modular Architecture** → Proven scalability and maintainability benefits
 - **Performance Optimization** → Significant system performance improvements
 - **AI/ML Integration** → Advanced machine learning model integration
+- **PHOENIX Framework** → Revolutionary evolutionary knowledge distillation with statistical validation
 
 ### Medium Impact Research
 

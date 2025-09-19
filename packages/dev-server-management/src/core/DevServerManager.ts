@@ -298,10 +298,10 @@ export class DevServerManager extends EventEmitter implements IDevServerManager 
 
       // Start batch in parallel
       const batchResults = await Promise.allSettled(batch.map(project => this.start(project)));
-      
+
       batchResults.forEach((result, index) => {
         const project = batch[index];
-        if (result.status === 'fulfilled') {
+        if (result.status === "fulfilled") {
           results.push({ success: true });
           startedProjects.add(project);
         } else {

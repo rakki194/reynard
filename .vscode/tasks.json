@@ -865,7 +865,7 @@
       "label": "🦊 MCP Server - Start",
       "type": "shell",
       "command": "bash",
-      "args": ["scripts/mcp/start-mcp-server.sh"],
+      "args": ["services/mcp-server/start-mcp-server.sh"],
       "group": "build",
       "presentation": {
         "echo": true,
@@ -881,7 +881,7 @@
       "label": "🦊 MCP Server - Test Tools",
       "type": "shell",
       "command": "bash",
-      "args": ["-c", "source ~/venv/bin/activate && cd scripts/mcp && python test_tools_list.py"],
+      "args": ["-c", "source ~/venv/bin/activate && cd services/mcp-server && python test_tools_list.py"],
       "group": "test",
       "presentation": {
         "echo": true,
@@ -896,7 +896,7 @@
       "label": "🦊 MCP Server - Debug",
       "type": "shell",
       "command": "bash",
-      "args": ["-c", "source ~/venv/bin/activate && cd scripts/mcp && python debug_mcp.py"],
+      "args": ["-c", "source ~/venv/bin/activate && cd services/mcp-server && python debug_mcp.py"],
       "group": "test",
       "presentation": {
         "echo": true,
@@ -1121,7 +1121,7 @@
       "label": "🎮 ECS World Simulation",
       "type": "shell",
       "command": "bash",
-      "args": ["-c", "source ~/venv/bin/activate && cd services/ecs-world && python main.py"],
+      "args": ["-c", "source ~/venv/bin/activate && cd backend && python -m uvicorn app.main:app --reload"],
       "group": "build",
       "presentation": {
         "echo": true,
@@ -1137,7 +1137,7 @@
       "label": "🎮 ECS World - Test Simple",
       "type": "shell",
       "command": "bash",
-      "args": ["-c", "source ~/venv/bin/activate && cd scripts/mcp && python simple_trait_simulation.py"],
+      "args": ["-c", "source ~/venv/bin/activate && cd services/mcp-server && python simple_trait_simulation.py"],
       "group": "test",
       "presentation": {
         "echo": true,
@@ -1152,7 +1152,10 @@
       "label": "🎮 ECS World - Test Comprehensive",
       "type": "shell",
       "command": "bash",
-      "args": ["-c", "source ~/venv/bin/activate && cd scripts/mcp && python comprehensive_agent_simulation.py"],
+      "args": [
+        "-c",
+        "source ~/venv/bin/activate && cd services/mcp-server && python comprehensive_agent_simulation.py"
+      ],
       "group": "test",
       "presentation": {
         "echo": true,

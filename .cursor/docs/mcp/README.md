@@ -181,9 +181,9 @@ Systematic approach to debugging MCP issues:
 
 ### Reynard Project
 
-- [Reynard MCP Server](https://github.com/your-org/reynard/tree/main/scripts/mcp)
-- [Tool Registry](https://github.com/your-org/reynard/tree/main/scripts/mcp/tools)
-- [Configuration](https://github.com/your-org/reynard/tree/main/scripts/mcp/tool_config.json)
+- [Reynard MCP Server](https://github.com/your-org/reynard/tree/main/services/mcp-server)
+- [Tool Registry](https://github.com/your-org/reynard/tree/main/services/mcp-server/tools)
+- [Configuration](https://github.com/your-org/reynard/tree/main/services/mcp-server/tool_config.json)
 
 ### Community
 

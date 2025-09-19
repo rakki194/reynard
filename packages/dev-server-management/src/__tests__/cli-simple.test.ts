@@ -43,7 +43,7 @@ describe("CLI Commands - Simple Tests", () => {
   beforeEach(() => {
     // Reset all mocks
     vi.clearAllMocks();
-    
+
     // Setup default mock implementations
     mockDevServerManager.initialize.mockResolvedValue(undefined);
     mockDevServerManager.start.mockResolvedValue(undefined);
