@@ -590,7 +590,7 @@ async def initiate_interaction(
                 "success": False,
                 "message": "Agent cannot interact (low energy, cooldown, or too many active interactions)",
                 "social_energy": interaction_component1.social_energy,
-                "active_interactions": len(interaction_component1.active_interactions),
+                "active_interactions": len([i for i in interaction_component1.interactions if i.duration > 0]),
             }
 
         # For now, return a simple interaction initiation
@@ -667,7 +667,7 @@ async def get_interaction_history(
             )
 
         # Get recent interactions
-        recent_interactions = interaction_component.interaction_history[-limit:]
+        recent_interactions = interaction_component.interactions[-limit:]
 
         interactions = []
         for interaction in recent_interactions:
@@ -687,7 +687,7 @@ async def get_interaction_history(
 
         return {
             "interactions": interactions,
-            "total_count": len(interaction_component.interaction_history),
+            "total_count": len(interaction_component.interactions),
         }
     except HTTPException:
         raise

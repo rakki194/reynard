@@ -25,6 +25,7 @@ class ToolCategory(Enum):
     AGENT = "agent"
     CHARACTER = "character"
     ECS = "ecs"
+    SOCIAL = "social"
     LINTING = "linting"
     FORMATTING = "formatting"
     SEARCH = "search"

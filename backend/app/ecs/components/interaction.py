@@ -8,7 +8,7 @@ relationship tracking, and interaction history.
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Set
+from typing import Any, Dict, List
 
 from ..core.component import Component
 
@@ -245,7 +245,7 @@ class InteractionComponent(Component):
                 "close_relationships": 0
             }
         
-        relationship_types = {}
+        relationship_types: Dict[str, int] = {}
         total_strength = 0.0
         total_trust = 0.0
         total_familiarity = 0.0
@@ -286,11 +286,21 @@ class InteractionComponent(Component):
                 "interaction_outcomes": {},
                 "average_duration": 0.0,
                 "total_social_time": self.total_social_time,
-                "success_rate": 0.0
+                "success_rate": 0.0,
+                "successful_interactions": self.successful_interactions,
+                "failed_interactions": self.failed_interactions,
+                "social_energy": self.social_energy,
+                "max_social_energy": self.max_social_energy,
+                "energy_percentage": self.social_energy / self.max_social_energy,
+                "active_interactions": len([i for i in self.interactions if i.duration > 0]),
+                "total_relationships": len(self.relationships),
+                "positive_relationships": len(self.get_positive_relationships()),
+                "negative_relationships": len(self.relationships) - len(self.get_positive_relationships()),
+                "communication_style": self.preferred_communication_style.value
             }
         
-        interaction_types = {}
-        interaction_outcomes = {}
+        interaction_types: Dict[str, int] = {}
+        interaction_outcomes: Dict[str, int] = {}
         total_duration = 0.0
         
         for interaction in self.interactions:
@@ -313,7 +323,15 @@ class InteractionComponent(Component):
             "total_social_time": self.total_social_time,
             "success_rate": success_rate,
             "successful_interactions": self.successful_interactions,
-            "failed_interactions": self.failed_interactions
+            "failed_interactions": self.failed_interactions,
+            "social_energy": self.social_energy,
+            "max_social_energy": self.max_social_energy,
+            "energy_percentage": self.social_energy / self.max_social_energy,
+            "active_interactions": len([i for i in self.interactions if i.duration > 0]),
+            "total_relationships": len(self.relationships),
+            "positive_relationships": len(self.get_positive_relationships()),
+            "negative_relationships": len(self.relationships) - len(self.get_positive_relationships()),
+            "communication_style": self.preferred_communication_style.value
         }
 
     def recover_social_energy(self, delta_time: float) -> None:
@@ -410,3 +428,13 @@ class InteractionComponent(Component):
             if interaction.interaction_type == interaction_type
         ]
         return type_interactions[-limit:] if type_interactions else []
+
+    @property
+    def interaction_history(self) -> List[Interaction]:
+        """Get the interaction history (alias for interactions)."""
+        return self.interactions
+
+    @property
+    def relationship_map(self) -> Dict[str, Relationship]:
+        """Get the relationship map (alias for relationships)."""
+        return self.relationships

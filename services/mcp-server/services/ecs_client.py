@@ -387,8 +387,13 @@ class ECSClient:
         Returns:
             List of recent interactions
         """
-        params = {"limit": limit}
-        return await self._request("GET", f"/agents/{agent_id}/interactions", params=params)
+        try:
+            params = {"limit": limit}
+            return await self._request("GET", f"/agents/{agent_id}/interactions", params=params)
+        except Exception as e:
+            logger.warning(f"Failed to get interaction history for {agent_id}: {e}")
+            # Return empty history as fallback
+            return {"interactions": [], "total_count": 0}
 
     async def get_agent_relationships(self, agent_id: str) -> Dict[str, Any]:
         """
@@ -412,7 +417,25 @@ class ECSClient:
         Returns:
             Social interaction statistics
         """
-        return await self._request("GET", f"/agents/{agent_id}/social_stats")
+        try:
+            return await self._request("GET", f"/agents/{agent_id}/social_stats")
+        except Exception as e:
+            logger.warning(f"Failed to get social stats for {agent_id}: {e}")
+            # Return default stats as fallback
+            return {
+                "total_interactions": 0,
+                "successful_interactions": 0,
+                "failed_interactions": 0,
+                "success_rate": 0.0,
+                "social_energy": 1.0,
+                "max_social_energy": 1.0,
+                "energy_percentage": 1.0,
+                "active_interactions": 0,
+                "total_relationships": 0,
+                "positive_relationships": 0,
+                "negative_relationships": 0,
+                "communication_style": "casual"
+            }
 
     async def get_nearby_agents(self, agent_id: str, radius: float = 100.0) -> Dict[str, Any]:
         """

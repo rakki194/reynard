@@ -12,6 +12,9 @@ agent_naming_path = services_path / "agent-naming"
 if str(agent_naming_path) not in sys.path:
     sys.path.insert(0, str(agent_naming_path))
 
+# Import social tools to register them
+from . import social_tools
+
 # Lazy imports to improve startup performance
 # Only import what's needed when it's actually used
 
@@ -37,6 +40,26 @@ def get_ecs_agent_tools():
     """Lazy import for ECS agent tools."""
     from .ecs_agent_tools import ECSAgentTools
     return ECSAgentTools
+
+
+def get_social_tools():
+    """Lazy import for social tools."""
+    from .social_tools import (
+        initiate_interaction,
+        send_chat_message,
+        get_interaction_history,
+        get_agent_relationships,
+        get_agent_social_stats,
+        get_nearby_agents
+    )
+    return {
+        "initiate_interaction": initiate_interaction,
+        "send_chat_message": send_chat_message,
+        "get_interaction_history": get_interaction_history,
+        "get_agent_relationships": get_agent_relationships,
+        "get_agent_social_stats": get_agent_social_stats,
+        "get_nearby_agents": get_nearby_agents
+    }
 
 
 def get_image_viewer_tools():
@@ -97,6 +120,7 @@ __all__ = [
     "get_config_tools",
     "get_agent_tools",
     "get_ecs_agent_tools",
+    "get_social_tools",
     "get_image_viewer_tools",
     "get_linting_tools",
     "get_mermaid_tools",

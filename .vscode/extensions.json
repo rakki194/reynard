@@ -39,16 +39,14 @@
     "ms-vscode.vscode-typescript-next",
 
     // Testing
-    "vitest.explorer",
-    "vscode-icons-team.vscode-icons",
+    //"vitest.explorer",
 
     // Code Quality
-    "sonarsource.sonarlint-vscode",
+    //"sonarsource.sonarlint-vscode",
     "ms-vscode.vscode-eslint",
 
     // Utilities
-    "ms-vscode.hexeditor",
-    "ms-vscode.vscode-json",
+    //"ms-vscode.hexeditor",
     "catppuccin.catppuccin-vsc-icons"
   ],
   "unwantedRecommendations": [

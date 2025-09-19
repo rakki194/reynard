@@ -110,89 +110,10 @@ class ECSAgentTools:
             ]
         }
 
-    def get_simulation_status(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Get comprehensive simulation status."""
+    async def get_simulation_status(self, arguments: dict[str, Any]) -> dict[str, Any]:
+        """Get comprehensive simulation status from FastAPI ECS backend."""
         _ = arguments  # Unused but required for interface consistency
-        if not self.agent_manager.ecs_available and not self.ecs_agent_tools:
-            return {
-                "content": [
-                    {
-                        "type": "text",
-                        "text": "ECS world simulation not available. Basic agent management only.",
-                    }
-                ]
-            }
-
-        # Use ECS tools world if available, otherwise fall back to agent manager
-        if self.ecs_agent_tools:
-            try:
-                # Note: ECS components are now accessed through the FastAPI backend
-                # via the ECS client, not through direct imports
-
-                # Get agents from ECS tools world
-                agents = self.ecs_agent_tools.world.get_entities_with_components(
-                    AgentComponent
-                )
-                mature_agents = []
-                for entity in agents:
-                    lifecycle = entity.get_component(LifecycleComponent)
-                    if lifecycle and lifecycle.age >= lifecycle.maturity_age:
-                        mature_agents.append(entity)
-
-                # Get simulation time from agent manager if available
-                agent_status = (
-                    self.agent_manager.get_simulation_status()
-                    if self.agent_manager.ecs_available
-                    else {}
-                )
-
-                status_text = self._format_ecs_status(
-                    agent_status, len(agents), len(mature_agents)
-                )
-
-                return {"content": [{"type": "text", "text": status_text}]}
-            except Exception:
-                # Fall back to agent manager if ECS tools fail
-                pass
-
-        # Fallback to agent manager
-        status = self.agent_manager.get_simulation_status()
-        status_text = self._format_agent_manager_status(status)
-
-        return {"content": [{"type": "text", "text": status_text}]}
-
-    def accelerate_time(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Adjust time acceleration factor."""
-        factor = arguments.get("factor", 10.0)
-        self.agent_manager.accelerate_time(factor)
-
-        return {
-            "content": [
-                {
-                    "type": "text",
-                    "text": f"Time acceleration set to {factor}x",
-                }
-            ]
-        }
-
-    def nudge_time(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Nudge simulation time forward (for MCP actions)."""
-        amount = arguments.get("amount", 0.1)
-        self.agent_manager.nudge_time(amount)
-
-        return {
-            "content": [
-                {
-                    "type": "text",
-                    "text": f"Simulation time nudged forward by {amount}",
-                }
-            ]
-        }
-
-    async def _create_agent_with_ecs_client(
-        self, agent_id: str, spirit: AnimalSpirit, style: NamingStyle
-    ) -> dict[str, Any]:
-        """Create agent using ECS client instead of direct integration."""
+        
         try:
             from services.ecs_client import get_ecs_client
             
@@ -200,28 +121,114 @@ class ECSAgentTools:
             ecs_client = get_ecs_client()
             await ecs_client.start()
             
-            # Create agent in ECS world
-            ecs_result = await ecs_client.create_agent(
-                agent_id=agent_id,
-                spirit=spirit.value,
-                style=style.value
-            )
+            # Get world status from FastAPI backend
+            world_status = await ecs_client.get_world_status()
             
-            # Generate name using agent manager
-            name = await self.agent_manager.generate_name(spirit.value, style.value)
-            self.agent_manager.assign_name(agent_id, name)
+            # Get all agents from FastAPI backend
+            agents = await ecs_client.get_agents()
             
             # Close ECS client
             await ecs_client.close()
             
+            # Format status text
+            status_text = self._format_fastapi_ecs_status(world_status, agents)
+            
+            return {"content": [{"type": "text", "text": status_text}]}
+            
+        except Exception as e:
             return {
-                "agent_id": agent_id,
-                "name": name,
-                "ecs_available": True,
-                "ecs_result": ecs_result,
-                "persona": None,  # Could be enhanced with ECS persona data
-                "lora_config": None,  # Could be enhanced with ECS LoRA data
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"ECS world simulation not available: {str(e)}",
+                    }
+                ]
             }
+
+    async def accelerate_time(self, arguments: dict[str, Any]) -> dict[str, Any]:
+        """Adjust time acceleration factor (FastAPI backend doesn't support this yet)."""
+        factor = arguments.get("factor", 10.0)
+        
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"Time acceleration not yet supported in FastAPI ECS backend. Requested: {factor}x",
+                }
+            ]
+        }
+
+    async def nudge_time(self, arguments: dict[str, Any]) -> dict[str, Any]:
+        """Nudge simulation time forward (FastAPI backend doesn't support this yet)."""
+        amount = arguments.get("amount", 0.1)
+        
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"Time nudging not yet supported in FastAPI ECS backend. Requested: {amount}",
+                }
+            ]
+        }
+
+    async def _create_agent_with_ecs_client(
+        self, agent_id: str, spirit: AnimalSpirit, style: NamingStyle
+    ) -> dict[str, Any]:
+        """Create agent using ECS client or connect to existing agent."""
+        try:
+            from services.ecs_client import get_ecs_client
+            
+            # Get ECS client
+            ecs_client = get_ecs_client()
+            await ecs_client.start()
+            
+            # Check if agent already exists in ECS world
+            existing_agents = await ecs_client.get_agents()
+            existing_agent = None
+            for agent in existing_agents:
+                if agent.get("agent_id") == agent_id:
+                    existing_agent = agent
+                    break
+            
+            if existing_agent:
+                # Agent already exists, use existing data
+                name = existing_agent.get("name", "Unknown")
+                self.agent_manager.assign_name(agent_id, name)
+                
+                await ecs_client.close()
+                
+                return {
+                    "agent_id": agent_id,
+                    "name": name,
+                    "ecs_available": True,
+                    "ecs_result": existing_agent,
+                    "ecs_status": "existing",
+                    "persona": None,  # Could be enhanced with ECS persona data
+                    "lora_config": None,  # Could be enhanced with ECS LoRA data
+                }
+            else:
+                # Create new agent in ECS world
+                ecs_result = await ecs_client.create_agent(
+                    agent_id=agent_id,
+                    spirit=spirit.value,
+                    style=style.value
+                )
+                
+                # Generate name using agent manager
+                name = await self.agent_manager.generate_name(spirit.value, style.value)
+                self.agent_manager.assign_name(agent_id, name)
+                
+                await ecs_client.close()
+                
+                return {
+                    "agent_id": agent_id,
+                    "name": name,
+                    "ecs_available": True,
+                    "ecs_result": ecs_result,
+                    "ecs_status": "created",
+                    "persona": None,  # Could be enhanced with ECS persona data
+                    "lora_config": None,  # Could be enhanced with ECS LoRA data
+                }
             
         except Exception as e:
             # Fallback to basic creation
@@ -282,6 +289,15 @@ class ECSAgentTools:
     def _format_ecs_startup_info(self, agent_data: dict) -> str:
         """Format ECS-specific startup information with enhanced details."""
         ecs_text = ""
+        
+        # Show ECS connection status
+        ecs_status = agent_data.get("ecs_status", "unknown")
+        if ecs_status == "existing":
+            ecs_text += "✅ Connected to existing ECS agent\n"
+        elif ecs_status == "created":
+            ecs_text += "🆕 Created new ECS agent\n"
+        else:
+            ecs_text += "🔗 Connected to ECS world\n"
 
         # Display enhanced persona information
         enhanced_persona = agent_data.get("enhanced_persona")
@@ -485,32 +501,20 @@ class ECSAgentTools:
 
         return version_text
 
-    def _format_ecs_status(
-        self, agent_status: dict, total_agents: int, mature_agents: int
-    ) -> str:
-        """Format ECS status information."""
-        status_text = "ECS World Simulation Status:\n"
-        status_text += f"Simulation Time: {agent_status.get('simulation_time', 0):.2f}\n"
-        status_text += f"Time Acceleration: {agent_status.get('time_acceleration', 1):.1f}x\n"
-        status_text += f"Total Agents: {total_agents}\n"
-        status_text += f"Mature Agents: {mature_agents}\n"
-        status_text += f"Agent Personas: {agent_status.get('agent_personas', 0)}\n"
-        status_text += f"LoRA Configs: {agent_status.get('lora_configs', 0)}\n"
-        status_text += f"Real Time Elapsed: {agent_status.get('real_time_elapsed', 0):.2f}s\n"
-
-        return status_text
-
-    def _format_agent_manager_status(self, status: dict) -> str:
-        """Format agent manager status information."""
-        status_text = "ECS World Simulation Status:\n"
-        status_text += f"Simulation Time: {status.get('simulation_time', 0):.2f}\n"
-        status_text += f"Time Acceleration: {status.get('time_acceleration', 1):.1f}x\n"
-        status_text += f"Total Agents: {status.get('total_agents', 0)}\n"
-        status_text += f"Mature Agents: {status.get('mature_agents', 0)}\n"
-        status_text += f"Agent Personas: {status.get('agent_personas', 0)}\n"
-        status_text += f"LoRA Configs: {status.get('lora_configs', 0)}\n"
-        status_text += f"Real Time Elapsed: {status.get('real_time_elapsed', 0):.2f}s\n"
-
+    def _format_fastapi_ecs_status(self, world_status: dict, agents: list) -> str:
+        """Format FastAPI ECS status information."""
+        status_text = "🌍 FastAPI ECS World Simulation Status:\n"
+        status_text += f"Status: {world_status.get('status', 'unknown')}\n"
+        status_text += f"Entity Count: {world_status.get('entity_count', 0)}\n"
+        status_text += f"System Count: {world_status.get('system_count', 0)}\n"
+        status_text += f"Agent Count: {world_status.get('agent_count', 0)}\n"
+        status_text += f"Mature Agents: {world_status.get('mature_agents', 0)}\n"
+        
+        if agents:
+            status_text += "\n🦁 Active Agents:\n"
+            for agent in agents:
+                status_text += f"  • {agent.get('name', 'Unknown')} ({agent.get('agent_id', 'Unknown')}) - {agent.get('spirit', 'Unknown')}\n"
+        
         return status_text
     
     def _get_dominant_traits_from_persona(self, persona: Any) -> List[str]:
