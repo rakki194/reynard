@@ -17,7 +17,7 @@ from typing import Any
 agent_naming_path = Path(__file__).parent.parent.parent / "services" / "agent-naming" / "reynard_agent_naming"
 sys.path.insert(0, str(agent_naming_path))
 
-from agent_naming import AgentNameManager
+from services.backend_agent_manager import BackendAgentManager
 from protocol.tool_registry import register_tool
 
 from .agent_management.base import BaseAgentTools
@@ -28,10 +28,10 @@ from .agent_management.behavior import BehaviorAgentTools
 
 
 # Initialize agent manager and tools
-agent_manager = AgentNameManager()
+agent_manager = BackendAgentManager()
 base_tools = BaseAgentTools(agent_manager)
-# Pass the world simulation from agent manager to ECS tools
-ecs_tools = ECSAgentTools(agent_manager, agent_manager.world_simulation)
+# Pass the world simulation from agent manager to ECS tools  
+ecs_tools = ECSAgentTools(agent_manager, None)
 persona_tools = PersonaAgentTools(agent_manager)
 breeding_tools = BreedingAgentTools(agent_manager)
 behavior_tools = BehaviorAgentTools()
@@ -41,15 +41,15 @@ behavior_tools = BehaviorAgentTools()
     name="generate_agent_name",
     category="agent",
     description="Generate robot names with animal spirit themes",
-    execution_type="sync",
+    execution_type="async",
     enabled=True,
     dependencies=[],
     config={}
 )
-def generate_agent_name(**kwargs) -> dict[str, Any]:
+async def generate_agent_name(**kwargs) -> dict[str, Any]:
     """Generate a new robot name."""
     arguments = kwargs.get("arguments", {})
-    return base_tools.generate_agent_name(arguments)
+    return await base_tools.generate_agent_name(arguments)
 
 
 @register_tool(
@@ -101,30 +101,30 @@ def list_agent_names(**kwargs) -> dict[str, Any]:
     name="roll_agent_spirit",
     category="agent",
     description="Randomly select an animal spirit (weighted distribution)",
-    execution_type="sync",
+    execution_type="async",
     enabled=True,
     dependencies=[],
     config={}
 )
-def roll_agent_spirit(**kwargs) -> dict[str, Any]:
+async def roll_agent_spirit(**kwargs) -> dict[str, Any]:
     """Randomly select an animal spirit."""
     arguments = kwargs.get("arguments", {})
-    return base_tools.roll_agent_spirit(arguments)
+    return await base_tools.roll_agent_spirit(arguments)
 
 
 @register_tool(
     name="get_spirit_emoji",
     category="agent",
     description="Get emoji for animal spirit types",
-    execution_type="sync",
+    execution_type="async",
     enabled=True,
     dependencies=[],
     config={}
 )
-def get_spirit_emoji(**kwargs) -> dict[str, Any]:
+async def get_spirit_emoji(**kwargs) -> dict[str, Any]:
     """Get emoji for animal spirit types."""
     arguments = kwargs.get("arguments", {})
-    return base_tools.get_spirit_emoji(arguments)
+    return await base_tools.get_spirit_emoji(arguments)
 
 
 @register_tool(

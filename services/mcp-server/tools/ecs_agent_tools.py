@@ -100,15 +100,15 @@ async def create_ecs_agent(**kwargs) -> dict[str, Any]:
     name="get_ecs_agent_status",
     category="ecs",
     description="Get status of all agents in the ECS system",
-    execution_type="sync",
+    execution_type="async",
     enabled=True,
     dependencies=[],
     config={}
 )
-def get_ecs_agent_status(**kwargs) -> dict[str, Any]:
+async def get_ecs_agent_status(**kwargs) -> dict[str, Any]:
     """Get status of all agents in the ECS system."""
     try:
-        result = ecs_client.get_agent_status()
+        result = await ecs_client.get_agents()
         
         if result.get("success"):
             return {

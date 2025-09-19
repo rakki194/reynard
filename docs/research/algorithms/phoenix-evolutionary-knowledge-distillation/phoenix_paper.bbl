@@ -1,3 +1,21 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{1}
+
+\bibitem{cloud2025subliminal}
+A.~Cloud, M.~Le, J.~Chua, J.~Betley, A.~Sztyber-Betley, J.~Hilton, S.~Marks,
+  and O.~Evans, ``Subliminal learning: language models transmit behavioral
+  traits via hidden signals in data,'' {\em arXiv preprint arXiv:2507.14805v1},
+  2025.
+\newblock Foundational work demonstrating that language models transmit
+  behavioral traits through semantically unrelated data, providing the
+  theoretical foundation for our PHOENIX framework.
+
+\bibitem{hinton2015distilling}
+G.~Hinton, O.~Vinyals, and J.~Dean, ``Distilling the knowledge in a neural
+  network,'' {\em arXiv preprint arXiv:1503.02531}, 2015.
+
+\bibitem{romero2014fitnets}
+A.~Romero, N.~Ballas, S.~E. Kahou, A.~Chassang, C.~Gatta, and Y.~Bengio,
+  ``Fitnets: Hints for thin deep nets,'' {\em arXiv preprint arXiv:1412.6550},
+  2014.
 
 \end{thebibliography}
