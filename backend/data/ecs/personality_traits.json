@@ -8,7 +8,7 @@
       "default_value": 0.5
     },
     "independence": {
-      "name": "Independence", 
+      "name": "Independence",
       "description": "The preference for working alone and making autonomous decisions",
       "min_value": 0.0,
       "max_value": 1.0,

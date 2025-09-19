@@ -20,22 +20,30 @@ DEBOUNCE_DELAY=2  # seconds
 
 # Function to log with timestamp
 log() {
-    echo -e "${BLUE}[$(date '+%Y-%m-%d %H:%M:%S')]${NC} $1"
+    local timestamp
+    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    echo -e "${BLUE}[${timestamp}]${NC} $1"
 }
 
 # Function to log success
 log_success() {
-    echo -e "${GREEN}[$(date '+%Y-%m-%d %H:%M:%S')] ✅${NC} $1"
+    local timestamp
+    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    echo -e "${GREEN}[${timestamp}] ✅${NC} $1"
 }
 
 # Function to log error
 log_error() {
-    echo -e "${RED}[$(date '+%Y-%m-%d %H:%M:%S')] ❌${NC} $1"
+    local timestamp
+    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    echo -e "${RED}[${timestamp}] ❌${NC} $1"
 }
 
 # Function to log warning
 log_warning() {
-    echo -e "${YELLOW}[$(date '+%Y-%m-%d %H:%M:%S')] ⚠️${NC} $1"
+    local timestamp
+    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    echo -e "${YELLOW}[${timestamp}] ⚠️${NC} $1"
 }
 
 # Function to run markdown linting and formatting
@@ -137,7 +145,7 @@ main() {
         log "👀 Using inotifywait for file monitoring"
 
         # Monitor CHANGELOG.md for modifications
-        inotifywait -m -e modify "${PROJECT_ROOT}/${CHANGELOG_FILE}" 2>/dev/null | while read -r directory events filename; do
+        inotifywait -m -e modify "${PROJECT_ROOT}/${CHANGELOG_FILE}" 2>/dev/null | while read -r directory _ filename; do
             handle_file_change "${directory}${filename}" "MODIFY"
         done
     else

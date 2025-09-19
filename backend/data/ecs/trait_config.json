@@ -11,7 +11,7 @@
       "description": "Psychological and behavioral characteristics"
     },
     "physical": {
-      "file": "physical_traits.json", 
+      "file": "physical_traits.json",
       "count": 12,
       "description": "Physical characteristics and capabilities"
     },
@@ -27,8 +27,12 @@
       "secondary_traits": ["curiosity", "creativity", "independence"],
       "specializations": ["strategist", "inventor", "navigator", "scholar"],
       "personality_themes": [
-        "strategic thinker", "clever problem-solver", "independent spirit",
-        "curious explorer", "adaptable survivor", "cunning tactician"
+        "strategic thinker",
+        "clever problem-solver",
+        "independent spirit",
+        "curious explorer",
+        "adaptable survivor",
+        "cunning tactician"
       ],
       "communication_style": "Witty, clever, and strategic. Uses analogies and metaphors. Quick to spot patterns and connections.",
       "behavioral_patterns": [
@@ -44,8 +48,12 @@
       "secondary_traits": ["strength", "leadership", "empathy"],
       "specializations": ["hunter", "guardian", "warrior", "leader"],
       "personality_themes": [
-        "loyal pack member", "protective guardian", "brave warrior",
-        "strong leader", "enduring survivor", "noble protector"
+        "loyal pack member",
+        "protective guardian",
+        "brave warrior",
+        "strong leader",
+        "enduring survivor",
+        "noble protector"
       ],
       "communication_style": "Direct, honest, and protective. Values loyalty and honor. Speaks with authority when needed.",
       "behavioral_patterns": [
@@ -61,8 +69,12 @@
       "secondary_traits": ["curiosity", "empathy", "spontaneity"],
       "specializations": ["teacher", "artist", "performer", "explorer"],
       "personality_themes": [
-        "playful explorer", "creative problem-solver", "empathetic friend",
-        "curious learner", "agile performer", "joyful spirit"
+        "playful explorer",
+        "creative problem-solver",
+        "empathetic friend",
+        "curious learner",
+        "agile performer",
+        "joyful spirit"
       ],
       "communication_style": "Enthusiastic, playful, and encouraging. Uses lots of gestures and expressions. Loves to share discoveries.",
       "behavioral_patterns": [
@@ -78,8 +90,12 @@
       "secondary_traits": ["speed", "coordination", "curiosity"],
       "specializations": ["strategist", "hunter", "explorer", "navigator"],
       "personality_themes": [
-        "visionary leader", "wise strategist", "bold innovator",
-        "inspiring mentor", "focused achiever", "noble guardian"
+        "visionary leader",
+        "wise strategist",
+        "bold innovator",
+        "inspiring mentor",
+        "focused achiever",
+        "noble guardian"
       ],
       "communication_style": "Inspiring, visionary, and commanding. Speaks with confidence and clarity. Uses grand metaphors.",
       "behavioral_patterns": [
@@ -95,8 +111,12 @@
       "secondary_traits": ["strength", "protectiveness", "loyalty"],
       "specializations": ["leader", "guardian", "warrior", "diplomat"],
       "personality_themes": [
-        "natural leader", "bold protector", "charismatic ruler",
-        "courageous warrior", "proud guardian", "majestic presence"
+        "natural leader",
+        "bold protector",
+        "charismatic ruler",
+        "courageous warrior",
+        "proud guardian",
+        "majestic presence"
       ],
       "communication_style": "Bold, confident, and regal. Commands attention naturally. Speaks with authority and pride.",
       "behavioral_patterns": [
@@ -112,8 +132,12 @@
       "secondary_traits": ["speed", "cunning", "courage"],
       "specializations": ["hunter", "warrior", "explorer", "guardian"],
       "personality_themes": [
-        "fierce predator", "independent hunter", "determined survivor",
-        "powerful warrior", "focused stalker", "wild spirit"
+        "fierce predator",
+        "independent hunter",
+        "determined survivor",
+        "powerful warrior",
+        "focused stalker",
+        "wild spirit"
       ],
       "communication_style": "Intense, focused, and powerful. Speaks with controlled energy. Values action over words.",
       "behavioral_patterns": [
@@ -129,8 +153,12 @@
       "secondary_traits": ["mystery", "ancient_knowledge", "determination"],
       "specializations": ["strategist", "scholar", "guardian", "inventor"],
       "personality_themes": [
-        "ancient sage", "mystical guardian", "wise mentor",
-        "powerful protector", "mysterious enigma", "legendary being"
+        "ancient sage",
+        "mystical guardian",
+        "wise mentor",
+        "powerful protector",
+        "mysterious enigma",
+        "legendary being"
       ],
       "communication_style": "Wise, mysterious, and profound. Speaks in riddles and metaphors. Commands respect through knowledge.",
       "behavioral_patterns": [

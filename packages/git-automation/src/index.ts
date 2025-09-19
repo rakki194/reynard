@@ -16,5 +16,5 @@ export {
   type ChangelogSection,
   type ChangelogEntry,
 } from "./changelog-manager.js";
-export { VersionManager, type VersionInfo, type PackageVersionInfo } from "./version-manager.js";
-export { GitWorkflowOrchestrator, type WorkflowOptions, type WorkflowResult } from "./workflow-orchestrator.js";
+export { VersionManager, type VersionInfo } from "./version-manager.js";
+export { GitWorkflowOrchestrator, type WorkflowOptions } from "./workflow-orchestrator.js";

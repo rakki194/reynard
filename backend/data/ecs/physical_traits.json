@@ -188,27 +188,27 @@
   },
   "physical_categories": {
     "size_categories": {
-      "small": {"min": 0.0, "max": 0.33, "description": "Compact and nimble"},
-      "medium": {"min": 0.34, "max": 0.66, "description": "Balanced proportions"},
-      "large": {"min": 0.67, "max": 1.0, "description": "Imposing and powerful"}
+      "small": { "min": 0.0, "max": 0.33, "description": "Compact and nimble" },
+      "medium": { "min": 0.34, "max": 0.66, "description": "Balanced proportions" },
+      "large": { "min": 0.67, "max": 1.0, "description": "Imposing and powerful" }
     },
     "build_types": {
-      "lean": {"traits": ["agility", "speed", "flexibility"], "description": "Streamlined and quick"},
-      "muscular": {"traits": ["strength", "endurance", "stamina"], "description": "Powerful and robust"},
-      "stocky": {"traits": ["strength", "endurance", "vitality"], "description": "Solid and durable"},
-      "athletic": {"traits": ["agility", "coordination", "reflexes"], "description": "Well-balanced and capable"}
+      "lean": { "traits": ["agility", "speed", "flexibility"], "description": "Streamlined and quick" },
+      "muscular": { "traits": ["strength", "endurance", "stamina"], "description": "Powerful and robust" },
+      "stocky": { "traits": ["strength", "endurance", "vitality"], "description": "Solid and durable" },
+      "athletic": { "traits": ["agility", "coordination", "reflexes"], "description": "Well-balanced and capable" }
     },
     "color_patterns": {
-      "solid": {"description": "Uniform coloration"},
-      "striped": {"description": "Linear markings"},
-      "spotted": {"description": "Circular or irregular spots"},
-      "mixed": {"description": "Combination of patterns"}
+      "solid": { "description": "Uniform coloration" },
+      "striped": { "description": "Linear markings" },
+      "spotted": { "description": "Circular or irregular spots" },
+      "mixed": { "description": "Combination of patterns" }
     },
     "markings": {
-      "none": {"description": "No special markings"},
-      "alpha_stripe": {"description": "Distinctive leadership marking"},
-      "beta_mark": {"description": "Secondary rank marking"},
-      "gamma_dot": {"description": "Subtle identification mark"}
+      "none": { "description": "No special markings" },
+      "alpha_stripe": { "description": "Distinctive leadership marking" },
+      "beta_mark": { "description": "Secondary rank marking" },
+      "gamma_dot": { "description": "Subtle identification mark" }
     }
   }
 }

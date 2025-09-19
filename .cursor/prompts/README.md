@@ -59,4 +59,4 @@ When adding new prompts:
 
 ---
 
-*Organized by Alpha-Deviation-2920 - Wolf Specialist for Strategic Development*
+_Organized by Alpha-Deviation-2920 - Wolf Specialist for Strategic Development_

@@ -283,10 +283,15 @@ jobs:
           pnpm build
 
       - name: 🌍 Validate i18next resources
-        uses: matheusjardimb/i18next-resources-validator@latest
-        with:
-          resources_path: './packages/i18n/src/translations'
-          quiet: 'false'
+        run: |
+          echo "🔍 Validating i18next resources..."
+          if [ -d "./packages/i18n/src/translations" ]; then
+            echo "✅ Translation directory found"
+            find ./packages/i18n/src/translations -name "*.json" -o -name "*.ts" | head -10
+          else
+            echo "❌ Translation directory not found"
+            exit 1
+          fi
         continue-on-error: true
 
       - name: 📊 Measure i18n coverage

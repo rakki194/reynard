@@ -72,6 +72,36 @@ jobs:
         run: |
           cd packages/testing || exit
           pnpm i18n:test --output ../../i18n-results.json --report ../../i18n-report.md
+        continue-on-error: true
+
+      - name: 📄 Create fallback i18n results
+        if: failure()
+        run: |
+          echo "Creating fallback i18n results file..."
+          cat > i18n-results.json << 'EOF'
+          {
+            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "overallSuccess": false,
+            "summary": {
+              "totalPackages": 0,
+              "successfulPackages": 0,
+              "failedPackages": 0,
+              "totalErrors": 1,
+              "totalWarnings": 0
+            },
+            "duration": 0,
+            "packages": [],
+            "error": "i18n tests failed to run"
+          }
+          EOF
+
+          cat > i18n-report.md << 'EOF'
+          # i18n Test Report
+
+          ## Status: ❌ FAILED
+
+          The i18n tests failed to run. Please check the workflow logs for details.
+          EOF
 
       - name: 📤 Upload i18n results
         uses: actions/upload-artifact@v4

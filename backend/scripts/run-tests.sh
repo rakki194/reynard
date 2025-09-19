@@ -127,9 +127,9 @@ esac
 print_status "Starting Reynard Backend Test Suite"
 print_status "Test Type: $TEST_TYPE"
 print_status "Coverage: $COVERAGE"
-print_status "Verbose: $VERBOSE"
-print_status "Parallel: $PARALLEL"
-print_status "Report Format: $REPORT_FORMAT"
+print_status "Verbose: ${VERBOSE}"
+print_status "Parallel: ${PARALLEL}"
+print_status "Report Format: ${REPORT_FORMAT}"
 
 # Check if we're in the right directory
 if [[ ! -f "main.py" ]]; then
@@ -148,7 +148,7 @@ fi
 #bash -c "source venv/bin/activate && pip install -q -r requirements.txt && pip install -q -r requirements-test.txt"
 
 # Clean up previous test artifacts
-if [[ "$CLEANUP" == "true" ]]; then
+if [[ "${CLEANUP}" == "true" ]]; then
     print_status "Cleaning up previous test artifacts..."
     rm -rf htmlcov/
     rm -f .coverage
@@ -163,72 +163,72 @@ fi
 PYTEST_CMD="pytest"
 
 # Add test path based on type
-case $TEST_TYPE in
+case ${TEST_TYPE} in
     unit)
-        PYTEST_CMD="$PYTEST_CMD tests/test_auth/ tests/test_security/test_input_validation.py"
+        PYTEST_CMD="${PYTEST_CMD} tests/test_auth/ tests/test_security/test_input_validation.py"
         ;;
     integration)
-        PYTEST_CMD="$PYTEST_CMD tests/test_integration/"
+        PYTEST_CMD="${PYTEST_CMD} tests/test_integration/"
         ;;
     security)
-        PYTEST_CMD="$PYTEST_CMD tests/test_security/"
+        PYTEST_CMD="${PYTEST_CMD} tests/test_security/"
         ;;
     api)
-        PYTEST_CMD="$PYTEST_CMD tests/test_api/"
+        PYTEST_CMD="${PYTEST_CMD} tests/test_api/"
         ;;
     auth)
-        PYTEST_CMD="$PYTEST_CMD tests/test_auth/"
+        PYTEST_CMD="${PYTEST_CMD} tests/test_auth/"
         ;;
     all)
-        PYTEST_CMD="$PYTEST_CMD tests/"
+        PYTEST_CMD="${PYTEST_CMD} tests/"
         ;;
 esac
 
 # Add coverage options
-if [[ "$COVERAGE" == "true" ]]; then
-    PYTEST_CMD="$PYTEST_CMD --cov=app --cov-report=term-missing"
+if [[ "${COVERAGE}" == "true" ]]; then
+    PYTEST_CMD="${PYTEST_CMD} --cov=app --cov-report=term-missing"
     
-    case $REPORT_FORMAT in
+    case ${REPORT_FORMAT} in
         html)
-            PYTEST_CMD="$PYTEST_CMD --cov-report=html:htmlcov"
+            PYTEST_CMD="${PYTEST_CMD} --cov-report=html:htmlcov"
             ;;
         xml)
-            PYTEST_CMD="$PYTEST_CMD --cov-report=xml:coverage.xml"
+            PYTEST_CMD="${PYTEST_CMD} --cov-report=xml:coverage.xml"
             ;;
     esac
 fi
 
 # Add parallel execution
-if [[ "$PARALLEL" == "true" ]]; then
-    PYTEST_CMD="$PYTEST_CMD -n auto"
+if [[ "${PARALLEL}" == "true" ]]; then
+    PYTEST_CMD="${PYTEST_CMD} -n auto"
 fi
 
 # Add verbose output
-if [[ "$VERBOSE" == "true" ]]; then
-    PYTEST_CMD="$PYTEST_CMD -v -s"
+if [[ "${VERBOSE}" == "true" ]]; then
+    PYTEST_CMD="${PYTEST_CMD} -v -s"
 fi
 
 # Add other options
-PYTEST_CMD="$PYTEST_CMD --tb=short --strict-markers"
+PYTEST_CMD="${PYTEST_CMD} --tb=short --strict-markers"
 
 # Run tests
 print_status "Running tests..."
-print_status "Command: $PYTEST_CMD"
+print_status "Command: ${PYTEST_CMD}"
 
 # Execute the test command with proper venv activation
-if bash -c "source venv/bin/activate && $PYTEST_CMD"; then
+if bash -c "source venv/bin/activate && ${PYTEST_CMD}"; then
     print_success "All tests passed!"
     
     # Show coverage summary if enabled
-    if [[ "$COVERAGE" == "true" ]]; then
+    if [[ "${COVERAGE}" == "true" ]]; then
         print_status "Coverage report generated"
-        if [[ "$REPORT_FORMAT" == "html" ]]; then
+        if [[ "${REPORT_FORMAT}" == "html" ]]; then
             print_status "HTML coverage report available at: htmlcov/index.html"
         fi
     fi
     
     # Show test artifacts
-    if [[ "$CLEANUP" == "false" ]]; then
+    if [[ "${CLEANUP}" == "false" ]]; then
         print_status "Test artifacts preserved"
     fi
     

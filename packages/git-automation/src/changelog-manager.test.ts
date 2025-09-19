@@ -126,7 +126,7 @@ All notable changes to this project will be documented in this file.
     });
   });
 
-  describe("promoteUnreleasedToRelease", () => {
+  describe("promoteToVersion", () => {
     it("should promote unreleased changes to release", async () => {
       const changelogContent = `# Changelog
 
@@ -148,11 +148,11 @@ All notable changes to this project will be documented in this file.
       mockReadFile.mockResolvedValue(changelogContent);
       mockWriteFile.mockResolvedValue();
 
-      await manager.promoteUnreleasedToRelease("1.3.0", "2024-02-01");
+      await manager.promoteToVersion("1.3.0");
 
       expect(mockWriteFile).toHaveBeenCalledWith(
         expect.stringContaining("CHANGELOG.md"),
-        expect.stringContaining("## [1.3.0] - 2024-02-01"),
+        expect.stringContaining("## [1.3.0]"),
         "utf-8"
       );
     });
@@ -182,7 +182,7 @@ All notable changes to this project will be documented in this file.
 
       mockReadFile.mockResolvedValue(changelogContent);
 
-      await manager.promoteUnreleasedToRelease("1.3.0", "2024-02-01");
+      await manager.promoteToVersion("1.3.0");
 
       expect(mockWriteFile).not.toHaveBeenCalled();
     });
@@ -190,11 +190,11 @@ All notable changes to this project will be documented in this file.
     it("should handle promotion errors", async () => {
       mockReadFile.mockRejectedValue(new Error("Read error"));
 
-      await expect(manager.promoteUnreleasedToRelease("1.3.0", "2024-02-01")).rejects.toThrow("Read error");
+      await expect(manager.promoteToVersion("1.3.0")).rejects.toThrow("Read error");
     });
   });
 
-  describe("addUnreleasedEntry", () => {
+  describe("addEntry", () => {
     it("should add new entry to unreleased section", async () => {
       const changelogContent = `# Changelog
 
@@ -212,7 +212,7 @@ All notable changes to this project will be documented in this file.
       mockReadFile.mockResolvedValue(changelogContent);
       mockWriteFile.mockResolvedValue();
 
-      await manager.addUnreleasedEntry("added", "New feature X");
+      await manager.addEntry({ type: "added", description: "New feature X" });
 
       expect(mockWriteFile).toHaveBeenCalledWith(
         expect.stringContaining("CHANGELOG.md"),
@@ -224,137 +224,15 @@ All notable changes to this project will be documented in this file.
     it("should handle add entry errors", async () => {
       mockReadFile.mockRejectedValue(new Error("Read error"));
 
-      await expect(manager.addUnreleasedEntry("added", "New feature")).rejects.toThrow("Read error");
+      await expect(manager.addEntry({ type: "added", description: "New feature" })).rejects.toThrow("Read error");
     });
   });
 
-  describe("validateChangelog", () => {
-    it("should validate correct changelog structure", async () => {
-      const changelogContent = `# Changelog
-
-## [Unreleased]
-
-### Added
-- New feature
-
-## [1.2.0] - 2024-01-15
-
-### Added
-- Feature D
-`;
-
-      mockReadFile.mockResolvedValue(changelogContent);
-
-      const result = await manager.validateChangelog();
-
-      expect(result.valid).toBe(true);
-      expect(result.issues).toHaveLength(0);
-    });
-
-    it("should detect missing unreleased section", async () => {
-      const changelogContent = `# Changelog
-
-## [1.2.0] - 2024-01-15
-
-### Added
-- Feature D
-`;
-
-      mockReadFile.mockResolvedValue(changelogContent);
-
-      const result = await manager.validateChangelog();
-
-      expect(result.valid).toBe(false);
-      expect(result.issues).toContain("Missing [Unreleased] section");
-    });
-
-    it("should detect invalid version format", async () => {
-      const changelogContent = `# Changelog
-
-## [Unreleased]
-
-### Added
-- New feature
-
-## [invalid-version] - 2024-01-15
-
-### Added
-- Feature D
-`;
-
-      mockReadFile.mockResolvedValue(changelogContent);
-
-      const result = await manager.validateChangelog();
-
-      expect(result.valid).toBe(false);
-      expect(result.issues).toContain("Invalid version format: invalid-version");
-    });
-
-    it("should detect invalid date format", async () => {
-      const changelogContent = `# Changelog
-
-## [Unreleased]
-
-### Added
-- New feature
-
-## [1.2.0] - 2024/01/15
-
-### Added
-- Feature D
-`;
-
-      mockReadFile.mockResolvedValue(changelogContent);
-
-      const result = await manager.validateChangelog();
-
-      expect(result.valid).toBe(false);
-      expect(result.issues).toContain("Invalid date format: 2024/01/15");
-    });
-
-    it("should detect chronological order issues", async () => {
-      const changelogContent = `# Changelog
-
-## [Unreleased]
-
-### Added
-- New feature
-
-## [1.2.0] - 2024-01-15
-
-### Added
-- Feature D
-
-## [1.3.0] - 2024-02-01
-
-### Added
-- Feature E
-`;
-
-      mockReadFile.mockResolvedValue(changelogContent);
-
-      const result = await manager.validateChangelog();
-
-      expect(result.valid).toBe(false);
-      expect(result.issues).toContain("Releases are not in chronological order (newest first)");
-    });
-
-    it("should handle validation errors", async () => {
-      mockReadFile.mockRejectedValue(new Error("Read error"));
-
-      await expect(manager.validateChangelog()).rejects.toThrow("Read error");
-    });
-  });
-
-  describe("displayChangelog", () => {
-    it("should display changelog structure correctly", () => {
+  describe("getCurrentVersion", () => {
+    it("should return current version from changelog structure", () => {
       const structure = {
         header: "# Changelog",
-        unreleased: [
-          { type: "added" as const, description: "New feature A" },
-          { type: "added" as const, description: "New feature B" },
-          { type: "fixed" as const, description: "Bug fix C" },
-        ],
+        unreleased: [],
         releases: [
           {
             version: "1.2.0",
@@ -364,46 +242,41 @@ All notable changes to this project will be documented in this file.
         ],
       };
 
-      const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+      const version = manager.getCurrentVersion(structure);
 
-      manager.displayChangelog(structure);
-
-      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("📚 CHANGELOG.md Structure:"));
-      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("📝 Unreleased entries: 3"));
-      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("📦 Versioned releases: 1"));
-      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("Added: 2"));
-      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("Fixed: 1"));
-
-      consoleSpy.mockRestore();
+      expect(version).toBe("1.2.0");
     });
 
-    it("should display empty changelog structure", () => {
+    it("should return null when no releases exist", () => {
       const structure = {
         header: "# Changelog",
         unreleased: [],
         releases: [],
       };
 
-      const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+      const version = manager.getCurrentVersion(structure);
 
-      manager.displayChangelog(structure);
-
-      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("📝 Unreleased entries: 0"));
-      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("📦 Versioned releases: 0"));
-
-      consoleSpy.mockRestore();
+      expect(version).toBeNull();
     });
   });
 
-  describe("getCurrentDate", () => {
-    it("should return current date in YYYY-MM-DD format", () => {
-      const date = manager.getCurrentDate();
+  describe("getNextVersion", () => {
+    it("should calculate next major version for breaking changes", () => {
+      const nextVersion = manager.getNextVersion("1.2.0", ["breaking", "major"]);
 
-      expect(date).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(nextVersion).toBe("2.0.0");
+    });
 
-      // Should be today's date
-      const today = new Date().toISOString().split("T")[0];
-      expect(date).toBe(today);
+    it("should calculate next minor version for features", () => {
+      const nextVersion = manager.getNextVersion("1.2.0", ["feature", "minor"]);
+
+      expect(nextVersion).toBe("1.3.0");
+    });
+
+    it("should calculate next patch version for fixes", () => {
+      const nextVersion = manager.getNextVersion("1.2.0", ["fix", "patch"]);
+
+      expect(nextVersion).toBe("1.2.1");
     });
   });
 });

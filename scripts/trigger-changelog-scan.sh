@@ -12,12 +12,16 @@ NC='\033[0m' # No Color
 
 # Function to log with timestamp
 log() {
-    echo -e "${BLUE}[$(date '+%Y-%m-%d %H:%M:%S')]${NC} $1"
+    local timestamp
+    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    echo -e "${BLUE}[${timestamp}]${NC} $1"
 }
 
 # Function to log success
 log_success() {
-    echo -e "${GREEN}[$(date '+%Y-%m-%d %H:%M:%S')] ✅${NC} $1"
+    local timestamp
+    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    echo -e "${GREEN}[${timestamp}] ✅${NC} $1"
 }
 
 # Main function

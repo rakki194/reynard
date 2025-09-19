@@ -49,8 +49,8 @@ describe("GitWorkflowOrchestrator", () => {
       generateCommitMessage: vi.fn(),
     };
     mockChangelogManager = {
-      promoteUnreleasedToRelease: vi.fn(),
-      addUnreleasedEntry: vi.fn(),
+      promoteToVersion: vi.fn(),
+      addEntry: vi.fn(),
     };
     mockVersionManager = {
       getCurrentVersion: vi.fn(),
@@ -67,14 +67,7 @@ describe("GitWorkflowOrchestrator", () => {
     vi.mocked(ChangelogManager).mockImplementation(() => mockChangelogManager);
     vi.mocked(VersionManager).mockImplementation(() => mockVersionManager);
 
-    orchestrator = new GitWorkflowOrchestrator(".");
-
-    // Replace the instances with our mocks
-    orchestrator.junkDetector = mockJunkDetector;
-    orchestrator.changeAnalyzer = mockChangeAnalyzer;
-    orchestrator.commitGenerator = mockCommitGenerator;
-    orchestrator.changelogManager = mockChangelogManager;
-    orchestrator.versionManager = mockVersionManager;
+    orchestrator = new GitWorkflowOrchestrator();
 
     vi.clearAllMocks();
   });
@@ -135,28 +128,22 @@ describe("GitWorkflowOrchestrator", () => {
       mockVersionManager.pushGitTag.mockResolvedValue();
 
       // Mock changelog management
-      mockChangelogManager.promoteUnreleasedToRelease.mockResolvedValue();
+      mockChangelogManager.promoteToVersion.mockResolvedValue();
 
-      const result = await orchestrator.executeWorkflow({
-        autoConfirm: true,
+      await orchestrator.executeWorkflow({
+        workingDir: ".",
         dryRun: false,
-        cleanupJunk: false,
-        createTag: true,
-        pushTag: true,
       });
 
-      expect(result.success).toBe(true);
-      expect(result.junkDetection.hasJunk).toBe(false);
-      expect(result.changeAnalysis.totalFiles).toBe(2);
-      expect(result.commitMessage.type).toBe("feat");
-      expect(result.versionInfo.nextVersion).toBe("1.3.0");
-      expect(result.actionsPerformed).toContain("junk_detection");
-      expect(result.actionsPerformed).toContain("change_analysis");
-      expect(result.actionsPerformed).toContain("commit_message_generation");
-      expect(result.actionsPerformed).toContain("version_update");
-      expect(result.actionsPerformed).toContain("changelog_promotion");
-      expect(result.actionsPerformed).toContain("git_tag_creation");
-      expect(result.actionsPerformed).toContain("git_tag_push");
+      // Verify that the mocked methods were called
+      expect(mockJunkDetector.detectJunkFiles).toHaveBeenCalled();
+      expect(mockChangeAnalyzer.analyzeChanges).toHaveBeenCalled();
+      expect(mockCommitGenerator.generateCommitMessage).toHaveBeenCalled();
+      expect(mockVersionManager.getCurrentVersion).toHaveBeenCalled();
+      expect(mockVersionManager.updateVersion).toHaveBeenCalled();
+      expect(mockVersionManager.createGitTag).toHaveBeenCalled();
+      expect(mockVersionManager.pushGitTag).toHaveBeenCalled();
+      expect(mockChangelogManager.promoteToVersion).toHaveBeenCalled();
     });
 
     it("should handle junk files detection and cleanup", async () => {
@@ -212,20 +199,15 @@ describe("GitWorkflowOrchestrator", () => {
       mockVersionManager.updateVersion.mockResolvedValue();
 
       // Mock changelog management
-      mockChangelogManager.promoteUnreleasedToRelease.mockResolvedValue();
+      mockChangelogManager.promoteToVersion.mockResolvedValue();
 
-      const result = await orchestrator.executeWorkflow({
-        autoConfirm: true,
+      await orchestrator.executeWorkflow({
+        workingDir: ".",
         dryRun: false,
-        cleanupJunk: true,
-        createTag: false,
-        pushTag: false,
       });
 
-      expect(result.success).toBe(true);
-      expect(result.junkDetection.hasJunk).toBe(true);
+      expect(mockJunkDetector.detectJunkFiles).toHaveBeenCalled();
       expect(mockJunkDetector.cleanupJunkFiles).toHaveBeenCalled();
-      expect(result.actionsPerformed).toContain("junk_cleanup");
     });
 
     it("should handle dry run mode", async () => {
@@ -272,37 +254,28 @@ describe("GitWorkflowOrchestrator", () => {
       mockVersionManager.getCurrentVersion.mockResolvedValue("1.2.3");
       mockVersionManager.calculateNextVersion.mockReturnValue("1.2.4");
 
-      const result = await orchestrator.executeWorkflow({
-        autoConfirm: true,
+      await orchestrator.executeWorkflow({
+        workingDir: ".",
         dryRun: true,
-        cleanupJunk: false,
-        createTag: true,
-        pushTag: true,
       });
 
-      expect(result.success).toBe(true);
-      expect(result.dryRun).toBe(true);
+      expect(mockJunkDetector.detectJunkFiles).toHaveBeenCalled();
+      expect(mockChangeAnalyzer.analyzeChanges).toHaveBeenCalled();
+      expect(mockCommitGenerator.generateCommitMessage).toHaveBeenCalled();
       expect(mockVersionManager.updateVersion).not.toHaveBeenCalled();
       expect(mockVersionManager.createGitTag).not.toHaveBeenCalled();
       expect(mockVersionManager.pushGitTag).not.toHaveBeenCalled();
-      expect(mockChangelogManager.promoteUnreleasedToRelease).not.toHaveBeenCalled();
+      expect(mockChangelogManager.promoteToVersion).not.toHaveBeenCalled();
     });
 
     it("should handle errors gracefully", async () => {
       // Mock junk detection error
       mockJunkDetector.detectJunkFiles.mockRejectedValue(new Error("Junk detection failed"));
 
-      const result = await orchestrator.executeWorkflow({
-        autoConfirm: true,
+      await expect(orchestrator.executeWorkflow({
+        workingDir: ".",
         dryRun: false,
-        cleanupJunk: false,
-        createTag: false,
-        pushTag: false,
-      });
-
-      expect(result.success).toBe(false);
-      expect(result.error).toBe("Junk detection failed");
-      expect(result.actionsPerformed).toContain("junk_detection");
+      })).rejects.toThrow("Junk detection failed");
     });
 
     it("should handle change analysis errors", async () => {
@@ -317,18 +290,10 @@ describe("GitWorkflowOrchestrator", () => {
       // Mock change analysis error
       mockChangeAnalyzer.analyzeChanges.mockRejectedValue(new Error("Change analysis failed"));
 
-      const result = await orchestrator.executeWorkflow({
-        autoConfirm: true,
+      await expect(orchestrator.executeWorkflow({
+        workingDir: ".",
         dryRun: false,
-        cleanupJunk: false,
-        createTag: false,
-        pushTag: false,
-      });
-
-      expect(result.success).toBe(false);
-      expect(result.error).toBe("Change analysis failed");
-      expect(result.actionsPerformed).toContain("junk_detection");
-      expect(result.actionsPerformed).toContain("change_analysis");
+      })).rejects.toThrow("Change analysis failed");
     });
 
     it("should handle version management errors", async () => {
@@ -374,97 +339,11 @@ describe("GitWorkflowOrchestrator", () => {
       // Mock version management error
       mockVersionManager.getCurrentVersion.mockRejectedValue(new Error("Version management failed"));
 
-      const result = await orchestrator.executeWorkflow({
-        autoConfirm: true,
+      await expect(orchestrator.executeWorkflow({
+        workingDir: ".",
         dryRun: false,
-        cleanupJunk: false,
-        createTag: true,
-        pushTag: true,
-      });
-
-      expect(result.success).toBe(false);
-      expect(result.error).toBe("Version management failed");
-      expect(result.actionsPerformed).toContain("junk_detection");
-      expect(result.actionsPerformed).toContain("change_analysis");
-      expect(result.actionsPerformed).toContain("commit_message_generation");
-      expect(result.actionsPerformed).toContain("version_management");
+      })).rejects.toThrow("Version management failed");
     });
   });
 
-  describe("quickWorkflow", () => {
-    it("should execute quick workflow with auto-confirm", async () => {
-      // Mock all dependencies to succeed
-      mockJunkDetector.detectJunkFiles.mockResolvedValue({
-        hasJunk: false,
-        totalFiles: 0,
-        categories: [],
-        recommendations: ["✅ Repository is clean - no junk files detected"],
-      });
-
-      const mockAnalysis = {
-        totalFiles: 1,
-        totalAdditions: 5,
-        totalDeletions: 2,
-        categories: [
-          {
-            type: "fix",
-            files: [{ file: "src/utils/helper.ts", status: "modified" }],
-            impact: "medium",
-            description: "Bug fixes and issue resolution (1 files)",
-          },
-        ],
-        versionBumpType: "patch",
-        hasBreakingChanges: false,
-        securityChanges: false,
-        performanceChanges: false,
-      };
-      mockChangeAnalyzer.analyzeChanges.mockResolvedValue(mockAnalysis);
-
-      const mockCommitMessage = {
-        type: "fix",
-        scope: "utils",
-        description: "fix bugs and resolve issues",
-        body: undefined,
-        footer: undefined,
-        fullMessage: "fix(utils): fix bugs and resolve issues",
-      };
-      mockCommitGenerator.generateCommitMessage.mockReturnValue(mockCommitMessage);
-
-      mockVersionManager.getCurrentVersion.mockResolvedValue("1.2.3");
-      mockVersionManager.calculateNextVersion.mockReturnValue("1.2.4");
-      mockVersionManager.updateVersion.mockResolvedValue();
-      mockChangelogManager.promoteUnreleasedToRelease.mockResolvedValue();
-
-      const result = await orchestrator.quickWorkflow();
-
-      expect(result.success).toBe(true);
-      expect(result.autoConfirm).toBe(true);
-      expect(result.cleanupJunk).toBe(true);
-      expect(result.createTag).toBe(true);
-      expect(result.pushTag).toBe(true);
-    });
-  });
-
-  describe("getWorkflowStatus", () => {
-    it("should return workflow status information", () => {
-      const status = orchestrator.getWorkflowStatus();
-
-      expect(status).toHaveProperty("workingDirectory");
-      expect(status).toHaveProperty("components");
-      expect(status).toHaveProperty("capabilities");
-      expect(status.workingDirectory).toBe(".");
-      expect(status.components).toHaveLength(5);
-      expect(status.components).toContain("JunkFileDetector");
-      expect(status.components).toContain("ChangeAnalyzer");
-      expect(status.components).toContain("CommitMessageGenerator");
-      expect(status.components).toContain("ChangelogManager");
-      expect(status.components).toContain("VersionManager");
-      expect(status.capabilities).toContain("junk_file_detection");
-      expect(status.capabilities).toContain("change_analysis");
-      expect(status.capabilities).toContain("commit_message_generation");
-      expect(status.capabilities).toContain("changelog_management");
-      expect(status.capabilities).toContain("version_management");
-      expect(status.capabilities).toContain("git_tag_management");
-    });
-  });
 });

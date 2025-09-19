@@ -347,8 +347,8 @@ describe("CommitMessageGenerator", () => {
     });
   });
 
-  describe("displayCommitMessage", () => {
-    it("should display commit message correctly", () => {
+  describe("displayPreview", () => {
+    it("should display commit message preview correctly", () => {
       const commitMessage = {
         type: "feat",
         scope: "components",
@@ -361,22 +361,15 @@ describe("CommitMessageGenerator", () => {
 
       const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
 
-      generator.displayCommitMessage(commitMessage);
+      generator.displayPreview(commitMessage);
 
-      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("📝 Generated Commit Message:"));
-      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("Type: feat"));
-      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("Scope: components"));
-      expect(consoleSpy).toHaveBeenCalledWith(
-        expect.stringContaining("Description: add new features and capabilities")
-      );
-      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("Body:"));
-      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("Footer:"));
-      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("Full Message:"));
+      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("📝 Commit Message Preview:"));
+      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("feat(components): add new features and capabilities"));
 
       consoleSpy.mockRestore();
     });
 
-    it("should display commit message without optional fields", () => {
+    it("should display simple commit message preview", () => {
       const commitMessage = {
         type: "fix",
         scope: undefined,
@@ -388,14 +381,51 @@ describe("CommitMessageGenerator", () => {
 
       const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
 
-      generator.displayCommitMessage(commitMessage);
+      generator.displayPreview(commitMessage);
 
-      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("Type: fix"));
-      expect(consoleSpy).not.toHaveBeenCalledWith(expect.stringContaining("Scope:"));
-      expect(consoleSpy).not.toHaveBeenCalledWith(expect.stringContaining("Body:"));
-      expect(consoleSpy).not.toHaveBeenCalledWith(expect.stringContaining("Footer:"));
+      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("📝 Commit Message Preview:"));
+      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("fix: fix bugs and resolve issues"));
 
       consoleSpy.mockRestore();
+    });
+  });
+
+  describe("getStatistics", () => {
+    it("should calculate commit message statistics correctly", () => {
+      const commitMessage = {
+        type: "feat",
+        scope: "components",
+        description: "add new features and capabilities",
+        body: "Detailed description of changes",
+        footer: "Version bump: minor",
+        fullMessage:
+          "feat(components): add new features and capabilities\n\nDetailed description of changes\n\nVersion bump: minor",
+      };
+
+      const stats = generator.getStatistics(commitMessage);
+
+      expect(stats.headerLength).toBeGreaterThan(0);
+      expect(stats.bodyLength).toBe(30); // "Detailed description of changes"
+      expect(stats.footerLength).toBe(18); // "Version bump: minor"
+      expect(stats.totalLength).toBe(commitMessage.fullMessage.length);
+    });
+
+    it("should handle commit message without body and footer", () => {
+      const commitMessage = {
+        type: "fix",
+        scope: undefined,
+        description: "fix bugs and resolve issues",
+        body: undefined,
+        footer: undefined,
+        fullMessage: "fix: fix bugs and resolve issues",
+      };
+
+      const stats = generator.getStatistics(commitMessage);
+
+      expect(stats.headerLength).toBeGreaterThan(0);
+      expect(stats.bodyLength).toBe(0);
+      expect(stats.footerLength).toBe(0);
+      expect(stats.totalLength).toBe(commitMessage.fullMessage.length);
     });
   });
 });
