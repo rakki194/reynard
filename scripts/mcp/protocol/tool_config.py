@@ -17,6 +17,7 @@ AGENT_TOOLS: set[str] = {
     "get_agent_name",
     "list_agent_names",
     "roll_agent_spirit",
+    "get_spirit_emoji",
     "agent_startup_sequence",
     "get_agent_persona",
     "get_lora_config",

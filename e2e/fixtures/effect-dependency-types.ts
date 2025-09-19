@@ -1,6 +1,6 @@
 /**
  * 🦊 EFFECT DEPENDENCY TYPES
- * 
+ *
  * Type definitions for testing SolidJS createEffect dependency array issues.
  */
 

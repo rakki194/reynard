@@ -1,6 +1,6 @@
 # 🦊 GUARDIAN Framework Test Suite
 
-*whiskers twitch with strategic cunning* This comprehensive test suite implements the GUARDIAN (Guaranteed Uninterrupted API Response Detection and Infinite-loop Abatement Network) framework to prevent the React useEffect dependency array issue that caused the Cloudflare outage on September 12, 2025, adapted for SolidJS in the Reynard ecosystem.
+_whiskers twitch with strategic cunning_ This comprehensive test suite implements the GUARDIAN (Guaranteed Uninterrupted API Response Detection and Infinite-loop Abatement Network) framework to prevent the React useEffect dependency array issue that caused the Cloudflare outage on September 12, 2025, adapted for SolidJS in the Reynard ecosystem.
 
 ## 🚨 The Problem: Cloudflare Outage Analysis
 
@@ -19,10 +19,10 @@ useEffect(() => {
     metadata: {
       source: "dashboard",
       version: "1.0.0",
-      timestamp: Date.now() // This changes every time!
-    }
+      timestamp: Date.now(), // This changes every time!
+    },
   };
-  
+
   // This API call runs infinitely because tenantService is always "new"
   fetchOrganizationData(tenantService);
 }, [tenantService]); // ❌ Object reference changes every render
@@ -50,10 +50,10 @@ createEffect(() => {
     metadata: {
       source: "dashboard",
       version: "1.0.0",
-      timestamp: Date.now() // This changes every time!
-    }
+      timestamp: Date.now(), // This changes every time!
+    },
   };
-  
+
   // This API call runs infinitely
   fetchOrganizationData(tenantService);
 }, [tenantService]); // ❌ Object reference changes every render
@@ -72,8 +72,8 @@ const tenantService = createMemo(() => ({
   metadata: {
     source: "dashboard",
     version: "1.0.0",
-    timestamp: Date.now()
-  }
+    timestamp: Date.now(),
+  },
 }));
 
 createEffect(() => {
@@ -104,12 +104,12 @@ const [state, setState] = createStore({
   user: {
     id: "user-456",
     name: "John Doe",
-    permissions: ["read", "write"]
+    permissions: ["read", "write"],
   },
   organization: {
     id: "org-123",
-    name: "Acme Corp"
-  }
+    name: "Acme Corp",
+  },
 });
 
 createEffect(() => {
@@ -223,19 +223,19 @@ def do_GET(self):
     # 1. Check circuit breaker
     if not self.check_circuit_breaker():
         return self.send_error(503, "Circuit Breaker Open")
-    
+
     # 2. Check rate limit
     if not self.check_rate_limit():
         return self.send_error(429, "Rate Limit Exceeded")
-    
+
     # 3. Check rapid request detection
     if not self.check_rapid_request_detection():
         return self.send_error(429, "Rapid Request Pattern Detected")
-    
+
     # 4. Check request pattern detection
     if not self.check_request_pattern_detection(path, method):
         return self.send_error(429, "Identical Request Pattern Detected")
-    
+
     # 5. Process request if all checks pass
     self.handle_request()
 ```
@@ -266,13 +266,13 @@ curl -X POST http://localhost:12526/api/v1/control/reset
 
 Based on comprehensive testing:
 
-| Protection Type | Requests Blocked | Success Rate | Effectiveness |
-|----------------|------------------|--------------|---------------|
-| No Protection | 0 | 100% | ❌ None |
-| Rate Limiting Only | 0-20% | 80-100% | ⚠️ Limited |
-| Rapid Request Detection | 40-60% | 40-60% | ✅ Good |
-| Request Pattern Detection | 30-50% | 50-70% | ✅ Good |
-| Combined Protection | 60-80% | 20-40% | ✅ Excellent |
+| Protection Type           | Requests Blocked | Success Rate | Effectiveness |
+| ------------------------- | ---------------- | ------------ | ------------- |
+| No Protection             | 0                | 100%         | ❌ None       |
+| Rate Limiting Only        | 0-20%            | 80-100%      | ⚠️ Limited    |
+| Rapid Request Detection   | 40-60%           | 40-60%       | ✅ Good       |
+| Request Pattern Detection | 30-50%           | 50-70%       | ✅ Good       |
+| Combined Protection       | 60-80%           | 20-40%       | ✅ Excellent  |
 
 ### Real-World Performance
 
@@ -286,7 +286,7 @@ Based on comprehensive testing:
 ### Effect Monitor Integration
 
 ```javascript
-import { EffectMonitor, createMonitoredEffect } from './core/monitoring/effect-monitor';
+import { EffectMonitor, createMonitoredEffect } from "./core/monitoring/effect-monitor";
 
 // Initialize monitoring
 const effectMonitor = new EffectMonitor({
@@ -295,7 +295,7 @@ const effectMonitor = new EffectMonitor({
   maxMemoryUsageMB: 100,
   maxCpuUsagePercent: 80,
   detectionWindowMs: 5000,
-  alertThreshold: 0.8
+  alertThreshold: 0.8,
 });
 
 // Start monitoring
@@ -311,7 +311,7 @@ createMonitoredEffect(
 );
 
 // Set up alerts
-effectMonitor.onAlert((message) => {
+effectMonitor.onAlert(message => {
   console.error("🚨 Effect Alert:", message);
   // Send to monitoring service, show user notification, etc.
 });
@@ -357,7 +357,7 @@ The test suite automatically detects:
 #### Object Recreation Scenarios
 
 - ✅ Object recreation in dependency array
-- ✅ Array recreation in dependency array  
+- ✅ Array recreation in dependency array
 - ✅ Function recreation in dependency array
 - ✅ Nested object recreation
 
@@ -434,12 +434,12 @@ npx playwright test suites/effects/ --reporter=json
 
 ```javascript
 const defaultConfig = {
-  maxApiCallsPerSecond: 10,      // Maximum API calls per second
-  maxEffectExecutions: 5,        // Maximum effect executions in detection window
-  maxMemoryUsageMB: 100,         // Maximum memory usage in MB
-  maxCpuUsagePercent: 80,        // Maximum CPU usage percentage
-  detectionWindowMs: 5000,       // Detection window in milliseconds
-  alertThreshold: 0.8            // Alert threshold (0.0 to 1.0)
+  maxApiCallsPerSecond: 10, // Maximum API calls per second
+  maxEffectExecutions: 5, // Maximum effect executions in detection window
+  maxMemoryUsageMB: 100, // Maximum memory usage in MB
+  maxCpuUsagePercent: 80, // Maximum CPU usage percentage
+  detectionWindowMs: 5000, // Detection window in milliseconds
+  alertThreshold: 0.8, // Alert threshold (0.0 to 1.0)
 };
 ```
 
@@ -448,10 +448,10 @@ const defaultConfig = {
 ```javascript
 // Custom configuration for specific scenarios
 const customMonitor = new EffectMonitor({
-  maxApiCallsPerSecond: 5,       // Stricter for critical APIs
-  maxEffectExecutions: 3,        // Lower threshold for sensitive effects
-  detectionWindowMs: 3000,       // Faster detection
-  alertThreshold: 0.9            // Higher confidence required
+  maxApiCallsPerSecond: 5, // Stricter for critical APIs
+  maxEffectExecutions: 3, // Lower threshold for sensitive effects
+  detectionWindowMs: 3000, // Faster detection
+  alertThreshold: 0.9, // Higher confidence required
 });
 ```
 
@@ -485,13 +485,13 @@ packages/
 ### Usage in Reynard Components
 
 ```javascript
-import { createStableEffect } from '@reynard/solidjs-prevention';
-import { EffectMonitor } from '@reynard/effects-monitoring';
+import { createStableEffect } from "@reynard/solidjs-prevention";
+import { EffectMonitor } from "@reynard/effects-monitoring";
 
 // In your Reynard component
 export function DashboardComponent(props) {
   const effectMonitor = new EffectMonitor();
-  
+
   // Stable effect with monitoring
   createStableEffect(
     () => {
@@ -500,7 +500,7 @@ export function DashboardComponent(props) {
     [props.organizationId],
     "dashboard-organization-effect"
   );
-  
+
   return <div>Dashboard content</div>;
 }
 ```
@@ -614,13 +614,13 @@ export function DashboardComponent(props) {
 ### Alert Examples
 
 ```
-🚨 INFINITE LOOP DETECTED in effect "dashboard-organization-effect": 
+🚨 INFINITE LOOP DETECTED in effect "dashboard-organization-effect":
    15 executions in 3000ms
 
-🚨 API CALL SPAM DETECTED: 
+🚨 API CALL SPAM DETECTED:
    25.5 calls/second (limit: 10)
 
-🚨 MEMORY LEAK DETECTED in effect "data-processing-effect": 
+🚨 MEMORY LEAK DETECTED in effect "data-processing-effect":
    Large objects detected in closure
 ```
 
@@ -778,4 +778,4 @@ for i in {1..10}; do curl -s http://localhost:12526/api/v1/organizations -w "Req
 
 ---
 
-*🦊 This comprehensive test suite ensures that the Reynard ecosystem is protected from the type of outage that affected Cloudflare. By implementing proper reactive patterns, comprehensive monitoring, and multi-layered backend protection, we can prevent infinite loops and maintain system stability. The solution combines frontend prevention with backend protection to create a robust defense against the types of outages that affected Cloudflare and other major services.*
+_🦊 This comprehensive test suite ensures that the Reynard ecosystem is protected from the type of outage that affected Cloudflare. By implementing proper reactive patterns, comprehensive monitoring, and multi-layered backend protection, we can prevent infinite loops and maintain system stability. The solution combines frontend prevention with backend protection to create a robust defense against the types of outages that affected Cloudflare and other major services._

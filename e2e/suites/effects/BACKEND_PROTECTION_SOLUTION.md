@@ -110,18 +110,18 @@ _global_state = {
     'rate_limit_requests': 5,
     'rate_limit_window': 10,
     'request_timestamps': [],
-    
+
     # Circuit breaker
     'circuit_breaker_threshold': 10,
     'circuit_breaker_failures': 0,
     'circuit_breaker_timeout': 30,
-    
+
     # Rapid request detection
     'rapid_request_detection_enabled': True,
     'rapid_request_threshold': 3,
     'rapid_request_window': 1,
     'rapid_request_timestamps': [],
-    
+
     # Request pattern detection
     'request_pattern_detection_enabled': True,
     'identical_request_threshold': 5,
@@ -139,19 +139,19 @@ def do_GET(self):
     # 1. Check circuit breaker
     if not self.check_circuit_breaker():
         return self.send_error(503, "Circuit Breaker Open")
-    
+
     # 2. Check rate limit
     if not self.check_rate_limit():
         return self.send_error(429, "Rate Limit Exceeded")
-    
+
     # 3. Check rapid request detection
     if not self.check_rapid_request_detection():
         return self.send_error(429, "Rapid Request Pattern Detected")
-    
+
     # 4. Check request pattern detection
     if not self.check_request_pattern_detection(path, method):
         return self.send_error(429, "Identical Request Pattern Detected")
-    
+
     # 5. Process request if all checks pass
     self.handle_request()
 ```
@@ -184,13 +184,13 @@ curl -X POST http://localhost:12526/api/v1/control/reset
 
 Based on comprehensive testing:
 
-| Protection Type | Requests Blocked | Success Rate | Effectiveness |
-|----------------|------------------|--------------|---------------|
-| No Protection | 0 | 100% | ❌ None |
-| Rate Limiting Only | 0-20% | 80-100% | ⚠️ Limited |
-| Rapid Request Detection | 40-60% | 40-60% | ✅ Good |
-| Request Pattern Detection | 30-50% | 50-70% | ✅ Good |
-| Combined Protection | 60-80% | 20-40% | ✅ Excellent |
+| Protection Type           | Requests Blocked | Success Rate | Effectiveness |
+| ------------------------- | ---------------- | ------------ | ------------- |
+| No Protection             | 0                | 100%         | ❌ None       |
+| Rate Limiting Only        | 0-20%            | 80-100%      | ⚠️ Limited    |
+| Rapid Request Detection   | 40-60%           | 40-60%       | ✅ Good       |
+| Request Pattern Detection | 30-50%           | 50-70%       | ✅ Good       |
+| Combined Protection       | 60-80%           | 20-40%       | ✅ Excellent  |
 
 ### Real-World Performance
 

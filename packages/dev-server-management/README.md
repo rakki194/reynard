@@ -1,270 +1,282 @@
 # 🦊 Dev Server Management
 
-_Modern development server management for the Reynard ecosystem_
+A comprehensive TypeScript-based development server management system for the Reynard monorepo. This package provides a unified CLI interface for managing multiple development servers across packages, examples, and templates.
 
-A sophisticated, type-safe development server management system that provides intelligent port allocation, process orchestration, health monitoring, and seamless integration with the Reynard ecosystem.
+## Features
 
-## ✨ Features
+- **🚀 Unified CLI**: Single command interface for all development servers
+- **📊 Process Management**: Start, stop, and monitor multiple servers
+- **🔧 Configuration-Driven**: JSON-based configuration for all projects
+- **⚡ Detached Mode**: Run servers in the background with proper process detachment
+- **📈 Health Monitoring**: Built-in health checks and status reporting
+- **🎯 Port Management**: Automatic port allocation and conflict resolution
+- **📝 Logging**: Comprehensive logging with file redirection for detached processes
 
-- **🎯 Intelligent Port Management**: Automatic port allocation with conflict detection and resolution
-- **🔄 Process Orchestration**: Cross-platform process management with dependency resolution
-- **🏥 Health Monitoring**: Real-time health checks with multiple protocols (HTTP, command, port)
-- **⚙️ Type-Safe Configuration**: Comprehensive TypeScript support with runtime validation
-- **🔗 Reynard Integration**: Seamless integration with existing Reynard packages
-- **📊 Real-time Monitoring**: Event-driven architecture with comprehensive status reporting
-- **🛠️ CLI Interface**: Modern command-line interface with rich output formatting
+## Installation
 
-## 🚀 Quick Start
-
-### Installation
+The dev-server-management package is already included in the Reynard monorepo. To use it:
 
 ```bash
-pnpm add dev-server-management
+# Build the package
+cd packages/dev-server-management
+pnpm build
+
+# The CLI will be available as 'dev-server' after building
 ```
 
-### Basic Usage
+## Quick Start
 
-```typescript
-import { DevServerManager } from "dev-server-management";
-
-// Create and initialize the manager
-const manager = new DevServerManager("dev-server.config.json");
-await manager.initialize();
-
-// Start a development server
-await manager.start("my-project");
-
-// Check status
-const status = await manager.status("my-project");
-console.log(status);
-
-// Stop the server
-await manager.stop("my-project");
-```
-
-### CLI Usage
+### List Available Projects
 
 ```bash
-# Start a development server
-dev-server start my-project
+dev-server list
+```
 
-# Check server status
+### Start a Development Server
+
+```bash
+# Start in foreground (attached)
+dev-server start test-app
+
+# Start in background (detached)
+dev-server start test-app --detached
+```
+
+### Check Server Status
+
+```bash
+# Check all servers
 dev-server status
 
-# List available projects
-dev-server list
+# Check specific server
+dev-server status test-app
+```
+
+### Stop Servers
+
+```bash
+# Stop specific server
+dev-server stop test-app
 
 # Stop all servers
 dev-server stop-all
 ```
 
-## 📋 Configuration
+## Configuration
 
-### Configuration File (`dev-server.config.json`)
+The system uses `dev-server.config.json` in the project root to define available projects:
 
 ```json
 {
-  "version": "1.0.0",
-  "global": {
-    "defaultStartupTimeout": 30000,
-    "defaultShutdownTimeout": 10000,
-    "healthCheckInterval": 5000,
-    "autoRestart": true,
-    "maxRestartAttempts": 3
-  },
   "projects": {
-    "my-frontend": {
-      "name": "my-frontend",
-      "port": 3000,
-      "description": "Frontend application",
-      "category": "package",
+    "test-app": {
+      "name": "test-app",
+      "port": 3011,
+      "description": "Comprehensive test application",
+      "category": "example",
       "autoReload": true,
       "hotReload": true,
       "command": "pnpm",
       "args": ["run", "dev"],
+      "cwd": "examples/test-app",
       "healthCheck": {
-        "endpoint": "http://localhost:3000/health",
-        "timeout": 5000,
-        "interval": 10000
-      }
-    },
-    "my-backend": {
-      "name": "my-backend",
-      "port": 8000,
-      "description": "Backend API server",
-      "category": "backend",
-      "autoReload": true,
-      "hotReload": false,
-      "command": "python",
-      "args": ["main.py"],
-      "healthCheck": {
-        "endpoint": "http://localhost:8000/health",
+        "endpoint": "http://localhost:3011/health",
         "timeout": 5000
       }
     }
-  },
-  "portRanges": {
-    "package": { "start": 3000, "end": 3009 },
-    "example": { "start": 3010, "end": 3019 },
-    "backend": { "start": 8000, "end": 8009 },
-    "e2e": { "start": 3020, "end": 3029 }
-  },
-  "logging": {
-    "level": "info",
-    "format": "colored"
   }
 }
 ```
 
-## 🏗️ Architecture
+### Configuration Options
 
-### Core Components
+- **name**: Project identifier
+- **port**: Port number for the development server
+- **description**: Human-readable description
+- **category**: Project category (package, example, template, backend)
+- **autoReload**: Enable automatic reloading
+- **hotReload**: Enable hot module replacement
+- **command**: Command to execute (default: "pnpm")
+- **args**: Command arguments (default: ["run", "dev"])
+- **cwd**: Working directory for the project
+- **healthCheck**: Health check configuration
 
-- **ConfigManager**: Type-safe configuration management with validation
-- **PortManager**: Intelligent port allocation and conflict resolution
-- **ProcessManager**: Cross-platform process lifecycle management
-- **HealthChecker**: Real-time health monitoring with multiple protocols
-- **DevServerManager**: Main orchestrator integrating all components
+## CLI Commands
 
-### Integration with Reynard Ecosystem
+### `dev-server list`
 
-- **ServiceManager**: Leverages existing service management patterns
-- **QueueManager**: Uses queue-based processing for startup orchestration
-- **Event System**: Integrates with Reynard's event-driven architecture
-- **Type System**: Consistent TypeScript patterns across the ecosystem
-
-## 📚 API Reference
-
-### DevServerManager
-
-```typescript
-class DevServerManager {
-  // Lifecycle
-  initialize(): Promise<void>;
-  cleanup(): Promise<void>;
-
-  // Server management
-  start(project: string): Promise<void>;
-  stop(project: string): Promise<void>;
-  restart(project: string): Promise<void>;
-  startMultiple(projects: string[]): Promise<void>;
-  stopAll(): Promise<void>;
-
-  // Status and monitoring
-  status(project?: string): Promise<ServerInfo[]>;
-  health(project?: string): Promise<HealthStatus[]>;
-  list(): Promise<ProjectConfig[]>;
-
-  // Configuration
-  reloadConfig(): Promise<void>;
-}
-```
-
-### Event System
-
-```typescript
-// Listen for events
-manager.on("server_started", event => {
-  console.log(`Server ${event.project} started on port ${event.data.port}`);
-});
-
-manager.on("health_check_failed", event => {
-  console.log(`Health check failed for ${event.project}: ${event.data.error}`);
-});
-```
-
-## 🔧 Advanced Usage
-
-### Custom Health Checks
-
-```typescript
-// HTTP health check
-const config = {
-  healthCheck: {
-    endpoint: "http://localhost:3000/health",
-    timeout: 5000,
-    expectedResponse: "OK",
-  },
-};
-
-// Command-based health check
-const config = {
-  healthCheck: {
-    command: "curl -f http://localhost:3000/health",
-    timeout: 5000,
-    expectedResponse: /OK/,
-  },
-};
-```
-
-### Dependency Management
-
-```typescript
-const config = {
-  name: "frontend",
-  dependencies: ["backend", "database"],
-  // ... other config
-};
-```
-
-### Event Handling
-
-```typescript
-manager.on("event", event => {
-  switch (event.type) {
-    case "server_started":
-      console.log(`✅ ${event.project} started`);
-      break;
-    case "server_error":
-      console.log(`❌ ${event.project} error: ${event.data.error}`);
-      break;
-    case "health_check_failed":
-      console.log(`🏥 ${event.project} health check failed`);
-      break;
-  }
-});
-```
-
-## 🧪 Testing
+List all available projects with their configuration.
 
 ```bash
+dev-server list
+```
+
+### `dev-server start <project> [options]`
+
+Start a development server for the specified project.
+
+**Options:**
+
+- `--detached`: Run the server in the background
+- `--port <number>`: Override the configured port
+- `--env <key=value>`: Set environment variables
+
+**Examples:**
+
+```bash
+# Start in foreground
+dev-server start test-app
+
+# Start in background
+dev-server start test-app --detached
+
+# Start with custom port
+dev-server start test-app --port 4000
+
+# Start with environment variables
+dev-server start frontend --env VITE_API_BASE_URL=http://localhost:8000
+```
+
+### `dev-server stop <project>`
+
+Stop a running development server.
+
+```bash
+dev-server stop test-app
+```
+
+### `dev-server stop-all`
+
+Stop all running development servers.
+
+```bash
+dev-server stop-all
+```
+
+### `dev-server status [project]`
+
+Show the status of development servers.
+
+```bash
+# Show all servers
+dev-server status
+
+# Show specific server
+dev-server status test-app
+```
+
+### `dev-server restart <project>`
+
+Restart a development server.
+
+```bash
+dev-server restart test-app
+```
+
+## Detached Mode
+
+When using `--detached`, the server runs in the background and the CLI exits immediately. The server's output is redirected to log files in `.dev-server-logs/`:
+
+- `{project}-out.log`: Standard output
+- `{project}-err.log`: Error output
+
+## Integration with Package.json
+
+The system integrates with your package.json scripts:
+
+```json
+{
+  "scripts": {
+    "dev:status": "dev-server status",
+    "dev:list": "dev-server list",
+    "dev:stop-all": "dev-server stop-all"
+  }
+}
+```
+
+## VS Code Integration
+
+VS Code tasks are configured to use the new system:
+
+```json
+{
+  "label": "🚀 Dev Server Manager - Status",
+  "type": "shell",
+  "command": "dev-server",
+  "args": ["status"]
+}
+```
+
+## Architecture
+
+The dev-server-management package consists of:
+
+- **CLI Interface**: Command-line interface for user interaction
+- **DevServerManager**: Core server management logic
+- **ProcessManager**: Process spawning and lifecycle management
+- **ConfigManager**: Configuration loading and validation
+- **PortManager**: Port allocation and conflict resolution
+- **HealthChecker**: Health monitoring and status reporting
+
+## Development
+
+To contribute to the dev-server-management package:
+
+```bash
+cd packages/dev-server-management
+
+# Install dependencies
+pnpm install
+
+# Build the package
+pnpm build
+
 # Run tests
 pnpm test
 
-# Run tests with coverage
-pnpm test:coverage
-
-# Run tests in watch mode
-pnpm test:watch
+# Watch mode for development
+pnpm dev
 ```
 
-## 📦 Migration from Legacy System
+## Migration from Legacy System
 
-The package includes migration utilities to transition from the existing shell-based system:
+The legacy shell-based dev server system has been replaced with this TypeScript-based solution. All references have been updated:
 
-```typescript
-import { ConfigManager } from "dev-server-management";
+- ✅ `package.json` scripts updated
+- ✅ VS Code tasks updated
+- ✅ Documentation updated
+- ✅ Configuration migrated
 
-const configManager = new ConfigManager();
-await configManager.migrateFromOldFormat("old-dev-server-config.json");
-```
+## Troubleshooting
 
-## 🤝 Contributing
+### Server Won't Start
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
+1. Check if the port is already in use:
 
-## 📄 License
+   ```bash
+   dev-server status
+   ```
 
-MIT License - see [LICENSE](LICENSE) for details.
+2. Verify the project configuration in `dev-server.config.json`
 
-## 🦊 Reynard Ecosystem
+3. Check the log files in `.dev-server-logs/`
 
-This package is part of the Reynard ecosystem. Learn more at [reynard.dev](https://reynard.dev).
+### Detached Mode Issues
 
----
+If detached mode isn't working properly:
 
-_Built with the cunning precision of a fox_ 🦊
+1. Ensure the project has a valid `cwd` configuration
+2. Check that the command and args are correct
+3. Verify file permissions for log directory creation
+
+### Port Conflicts
+
+The system automatically manages port allocation, but if you encounter conflicts:
+
+1. Check `dev-server status` for port usage
+2. Update the port in `dev-server.config.json`
+3. Restart the conflicting server
+
+## License
+
+Part of the Reynard monorepo. See the main project license for details.

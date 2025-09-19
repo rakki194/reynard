@@ -76,10 +76,10 @@ case "${1:-}" in
         exec pnpm run dev
         ;;
     "dev:status")
-        bash "$(dirname "$0")/dev-server-queue.sh" status
+        dev-server status
         ;;
     "dev:stop")
-        stop_all_servers
+        dev-server stop-all
         ;;
     "dev:help"|"help")
         show_help

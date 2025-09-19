@@ -12,7 +12,7 @@ import { createResultsManager, TEST_TYPES } from "../core/utils/results-manager"
 const resultsManager = createResultsManager(TEST_TYPES.PENETRATION, {
   environment: process.env.NODE_ENV || "development",
   branch: process.env.GIT_BRANCH || "unknown",
-  commit: process.env.GIT_COMMIT || "unknown"
+  commit: process.env.GIT_COMMIT || "unknown",
 });
 
 // Create directories and get paths

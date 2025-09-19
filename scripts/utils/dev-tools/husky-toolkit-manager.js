@@ -33,10 +33,10 @@ class HuskyToolkitManager {
     this.tools = {
       "workflow-shell": {
         name: "Workflow Shell Validation",
-        script: "extract-workflow-shell.js",
+        script: "dist/cli.js",
         description: "Extracts and validates shell scripts from GitHub workflows",
         category: "security",
-        dependencies: ["node", "shellcheck"],
+        dependencies: ["node", "shellcheck", "pnpm"],
       },
       "workflow-lint": {
         name: "Workflow Linting",

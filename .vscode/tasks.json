@@ -353,8 +353,8 @@
     {
       "label": "🐺 Validate Workflow Shell Scripts",
       "type": "shell",
-      "command": "pnpm",
-      "args": ["run", "workflow:shell:extract"],
+      "command": "bash",
+      "args": ["-c", "cd scripts/validation/workflows && pnpm start"],
       "group": "test",
       "presentation": {
         "echo": true,
@@ -365,7 +365,7 @@
         "clear": false
       },
       "problemMatcher": [],
-      "detail": "Extract and validate shell scripts from GitHub workflows"
+      "detail": "Extract and validate shell scripts from GitHub workflows using TypeScript tool"
     },
     {
       "label": "🎨 Validate CSS Variables",
@@ -729,8 +729,8 @@
     {
       "label": "🚀 Dev Server Manager - Status",
       "type": "shell",
-      "command": "bash",
-      "args": ["scripts/dev/dev-server-manager.sh", "status"],
+      "command": "dev-server",
+      "args": ["status"],
       "group": "build",
       "presentation": {
         "echo": true,
@@ -744,8 +744,8 @@
     {
       "label": "🚀 Dev Server Manager - List Projects",
       "type": "shell",
-      "command": "bash",
-      "args": ["scripts/dev/dev-server-manager.sh", "list"],
+      "command": "dev-server",
+      "args": ["list"],
       "group": "build",
       "presentation": {
         "echo": true,
@@ -759,8 +759,8 @@
     {
       "label": "🚀 Dev Server Manager - Stop All",
       "type": "shell",
-      "command": "bash",
-      "args": ["scripts/dev/dev-server-manager.sh", "stop-all"],
+      "command": "dev-server",
+      "args": ["stop-all"],
       "group": "build",
       "presentation": {
         "echo": true,

@@ -1,41 +1,27 @@
-/**
- * 🦊 Dev Server Management CLI - Status Command
- *
- * Handles showing server status information.
- */
-
-import chalk from "chalk";
 import { DevServerManager } from "../../core/DevServerManager.js";
-import { createStatusTable, createHealthTable } from "../utils/table.js";
-import type { StatusOptions, GlobalOptions } from "./types.js";
+import type { GlobalOptions } from "./types.js";
 
-export async function handleStatus(
+export const handleStatus = async (
   project: string | undefined,
-  options: StatusOptions,
+  options: { json?: boolean; health?: boolean },
   globalOptions: GlobalOptions
-): Promise<void> {
-  const manager = new DevServerManager(globalOptions.config);
-
+) => {
   try {
-    await manager.initialize();
-
-    if (options.health) {
-      const health = await manager.health(project);
-      if (options.json) {
-        console.log(JSON.stringify(health, null, 2));
-      } else {
-        console.log(createHealthTable(health));
-      }
-    } else {
-      const status = await manager.status(project);
-      if (options.json) {
-        console.log(JSON.stringify(status, null, 2));
-      } else {
-        console.log(createStatusTable(status));
-      }
+    const devServerManager = new DevServerManager(globalOptions.config);
+    await devServerManager.initialize();
+    const status = await devServerManager.status(project);
+    
+            if (project) {
+              console.log(`Status for: ${project}`);
+              const projectStatus = status.find(s => s.name === project);
+              console.log(`Status: ${projectStatus?.status || "unknown"}`);
+              console.log(`Port: ${projectStatus?.port || "unknown"}`);
+            } else {
+      console.log("Status for: all projects");
+      console.log(`Total projects: ${status.length}`);
     }
   } catch (error) {
-    console.error(chalk.red("❌ Failed to get status:"), error);
+    console.error(`Failed to get status:`, error);
     process.exit(1);
   }
-}
+};

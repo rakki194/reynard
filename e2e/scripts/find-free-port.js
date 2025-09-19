@@ -2,11 +2,11 @@
 
 /**
  * 🦊 Find Free Port Utility
- * 
+ *
  * Simple utility to find a free port for testing
  */
 
-import net from 'net';
+import net from "net";
 
 function findFreePort(startPort = 12525, maxAttempts = 100) {
   return new Promise((resolve, reject) => {
@@ -20,16 +20,16 @@ function findFreePort(startPort = 12525, maxAttempts = 100) {
       }
 
       const server = net.createServer();
-      
+
       server.listen(port, () => {
-        server.once('close', () => {
+        server.once("close", () => {
           resolve(port);
         });
         server.close();
       });
 
-      server.on('error', (err) => {
-        if (err.code === 'EADDRINUSE') {
+      server.on("error", err => {
+        if (err.code === "EADDRINUSE") {
           attempts++;
           tryPort(port + 1);
         } else {
@@ -50,7 +50,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       process.exit(0);
     })
     .catch(err => {
-      console.error('Error finding free port:', err.message);
+      console.error("Error finding free port:", err.message);
       process.exit(1);
     });
 }

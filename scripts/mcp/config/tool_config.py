@@ -22,6 +22,7 @@ class ToolCategory(Enum):
     """Tool category enumeration."""
 
     AGENT = "agent"
+    CHARACTER = "character"
     ECS = "ecs"
     LINTING = "linting"
     FORMATTING = "formatting"
@@ -197,6 +198,11 @@ class ToolConfigManager:
                 category=ToolCategory.AGENT,
                 description="Randomly select animal spirits",
             ),
+            "get_spirit_emoji": ToolConfig(
+                name="get_spirit_emoji",
+                category=ToolCategory.AGENT,
+                description="Get emoji for animal spirit types",
+            ),
             "agent_startup_sequence": ToolConfig(
                 name="agent_startup_sequence",
                 category=ToolCategory.AGENT,
@@ -211,6 +217,52 @@ class ToolConfigManager:
                 name="get_lora_config",
                 category=ToolCategory.AGENT,
                 description="Get LoRA configuration for agent persona",
+            ),
+            # Character Tools
+            "create_character": ToolConfig(
+                name="create_character",
+                category=ToolCategory.CHARACTER,
+                description="Create a new character with detailed customization",
+            ),
+            "get_character": ToolConfig(
+                name="get_character",
+                category=ToolCategory.CHARACTER,
+                description="Get detailed character information by ID",
+            ),
+            "list_characters": ToolConfig(
+                name="list_characters",
+                category=ToolCategory.CHARACTER,
+                description="List all characters with optional filtering",
+            ),
+            "search_characters": ToolConfig(
+                name="search_characters",
+                category=ToolCategory.CHARACTER,
+                description="Search characters by name, description, or tags",
+            ),
+            "update_character": ToolConfig(
+                name="update_character",
+                category=ToolCategory.CHARACTER,
+                description="Update character information",
+            ),
+            "delete_character": ToolConfig(
+                name="delete_character",
+                category=ToolCategory.CHARACTER,
+                description="Delete a character by ID",
+            ),
+            "get_character_types": ToolConfig(
+                name="get_character_types",
+                category=ToolCategory.CHARACTER,
+                description="Get available character types",
+            ),
+            "get_personality_traits": ToolConfig(
+                name="get_personality_traits",
+                category=ToolCategory.CHARACTER,
+                description="Get available personality traits",
+            ),
+            "get_ability_traits": ToolConfig(
+                name="get_ability_traits",
+                category=ToolCategory.CHARACTER,
+                description="Get available ability traits",
             ),
             "get_current_time": ToolConfig(
                 name="get_current_time",

@@ -1,84 +1,79 @@
 /**
  * 🦊 EFFECTS TEST CONFIGURATION
- * 
+ *
  * *whiskers twitch with strategic cunning* Playwright configuration specifically
  * for testing SolidJS createEffect patterns and preventing Cloudflare-style outages.
- * 
+ *
  * 🦊 *whiskers twitch with unified precision* Now uses centralized results management.
  */
 
-import { defineConfig, devices } from '@playwright/test';
-import { createResultsManager, TEST_TYPES } from '../core/utils/results-manager';
+import { defineConfig, devices } from "@playwright/test";
+import { createResultsManager, TEST_TYPES } from "../core/utils/results-manager";
 
 // 🦊 Initialize results manager for effects tests
 const resultsManager = createResultsManager(TEST_TYPES.EFFECTS, {
   environment: process.env.NODE_ENV || "development",
   branch: process.env.GIT_BRANCH || "unknown",
-  commit: process.env.GIT_COMMIT || "unknown"
+  commit: process.env.GIT_COMMIT || "unknown",
 });
 
 // Create directories and get paths
 const resultsPaths = resultsManager.createDirectories();
 
 export default defineConfig({
-  testDir: '../suites/effects',
+  testDir: "../suites/effects",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: resultsManager.getReporterConfig(),
   use: {
-    baseURL: 'http://localhost:12525',
-    trace: 'on-first-retry',
-    screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
+    baseURL: "http://localhost:12525",
+    trace: "on-first-retry",
+    screenshot: "only-on-failure",
+    video: "retain-on-failure",
     actionTimeout: 10000,
     navigationTimeout: 30000,
   },
   projects: [
     {
-      name: 'chromium-effects',
-      use: { 
-        ...devices['Desktop Chrome'],
+      name: "chromium-effects",
+      use: {
+        ...devices["Desktop Chrome"],
         // Enhanced monitoring for effect tests
         launchOptions: {
-          args: [
-            '--enable-logging',
-            '--log-level=0',
-            '--enable-performance-monitoring',
-            '--memory-pressure-off'
-          ]
-        }
+          args: ["--enable-logging", "--log-level=0", "--enable-performance-monitoring", "--memory-pressure-off"],
+        },
       },
     },
     {
-      name: 'firefox-effects',
-      use: { 
-        ...devices['Desktop Firefox'],
+      name: "firefox-effects",
+      use: {
+        ...devices["Desktop Firefox"],
         // Firefox-specific settings for effect monitoring
         launchOptions: {
           firefoxUserPrefs: {
-            'dom.webnotifications.enabled': false,
-            'dom.push.enabled': false,
-            'media.navigator.permission.disabled': true
-          }
-        }
+            "dom.webnotifications.enabled": false,
+            "dom.push.enabled": false,
+            "media.navigator.permission.disabled": true,
+          },
+        },
       },
     },
     {
-      name: 'webkit-effects',
-      use: { 
-        ...devices['Desktop Safari'],
+      name: "webkit-effects",
+      use: {
+        ...devices["Desktop Safari"],
         // WebKit-specific settings
         launchOptions: {
-          args: ['--enable-logging']
-        }
+          args: ["--enable-logging"],
+        },
       },
     },
   ],
   webServer: {
-    command: 'python3 -m http.server 12525 --directory fixtures',
-    url: 'http://localhost:12525',
+    command: "python3 -m http.server 12525 --directory fixtures",
+    url: "http://localhost:12525",
     reuseExistingServer: !process.env.CI,
     timeout: 120000,
   },

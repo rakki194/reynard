@@ -10,6 +10,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from dotenv import load_dotenv
+from app.config.rag_config import RAGConfig as NewRAGConfig
 
 # Load environment variables
 load_dotenv()
@@ -71,25 +72,8 @@ class NLWebConfig(ServiceConfig):
     proxy_sse_idle_timeout_ms: int = 15000
 
 
-@dataclass
-class RAGConfig(ServiceConfig):
-    """RAG service configuration."""
-
-    pg_dsn: str = "postgresql://user:password@localhost:5432/reynard_rag"
-    ollama_base_url: str = "http://localhost:11434"
-    text_model: str = "mxbai-embed-large"
-    code_model: str = "bge-m3"
-    caption_model: str = "nomic-embed-text"
-    clip_model: str = "ViT-L-14/openai"
-    chunk_max_tokens: int = 512
-    chunk_min_tokens: int = 100
-    chunk_overlap_ratio: float = 0.15
-    ingest_batch_size_text: int = 16
-    ingest_concurrency: int = 2
-    ingest_max_attempts: int = 5
-    ingest_backoff_base_s: float = 0.5
-    query_rate_limit_per_minute: int = 60
-    ingest_rate_limit_per_minute: int = 10
+# RAGConfig is now imported from app.config.rag_config
+# This maintains backward compatibility while using the new configuration system
 
 
 @dataclass
@@ -205,7 +189,7 @@ class AppConfig:
     gatekeeper: GatekeeperConfig = field(default_factory=GatekeeperConfig)
     comfy: ComfyConfig = field(default_factory=ComfyConfig)
     nlweb: NLWebConfig = field(default_factory=NLWebConfig)
-    rag: RAGConfig = field(default_factory=RAGConfig)
+    rag: NewRAGConfig = field(default_factory=NewRAGConfig)
     ollama: OllamaConfig = field(default_factory=OllamaConfig)
     tts: TTSConfig = field(default_factory=TTSConfig)
 
@@ -293,6 +277,7 @@ def get_service_configs() -> dict[str, dict[str, Any]]:
             "rag_ingest_backoff_base_s": config.rag.ingest_backoff_base_s,
             "rag_query_rate_limit_per_minute": config.rag.query_rate_limit_per_minute,
             "rag_ingest_rate_limit_per_minute": config.rag.ingest_rate_limit_per_minute,
+            "embedding_backends": config.rag.embedding_backends.to_dict(),
         },
         "ollama": {
             "ollama": {

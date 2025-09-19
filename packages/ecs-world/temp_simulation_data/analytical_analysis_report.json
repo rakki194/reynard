@@ -1,0 +1,825 @@
+{
+  "population_dynamics": {
+    "linear_model": {
+      "slope": 31.333333333333336,
+      "intercept": 162.44444444444443,
+      "r_squared": 0.9957926371149513,
+      "p_value": 1.4082469171353717e-09,
+      "std_error": 0.769800358919493
+    },
+    "exponential_model": {
+      "growth_rate": 0.10624113683523581,
+      "initial_population": 181.51099595657374,
+      "r_squared": 0.9716731120375866
+    },
+    "logistic_model": {
+      "carrying_capacity": 514.1838565080614,
+      "initial_population": 161.28347488932752,
+      "growth_rate": 0.2625855006728319,
+      "r_squared": 0.9951218224760078
+    },
+    "growth_metrics": {
+      "average_growth_rate": 0.13637658266550645,
+      "growth_rate_volatility": 0.0776366607437532,
+      "doubling_time": 5.082596784669705,
+      "total_growth_factor": 2.7333333333333334
+    }
+  },
+  "genetic_diversity": {
+    "decay_model": {
+      "initial_diversity": 0.2767418455675728,
+      "decay_rate": 0.03152240494004929,
+      "r_squared": 0.9451220185515575,
+      "half_life": 21.989032305060586
+    },
+    "diversity_metrics": {
+      "initial_diversity": 0.2852815693444374,
+      "final_diversity": 0.2211618955149182,
+      "total_change": -0.06411967382951919,
+      "relative_change": -0.2247592579389652,
+      "average_change_rate": -0.008014959228689899,
+      "diversity_volatility": 0.004470540462741085,
+      "diversity_stability": 0.9170341309548324
+    },
+    "convergence": {
+      "convergence_generation": 6,
+      "convergence_threshold": 0.01,
+      "final_diversity": 0.2211618955149182
+    }
+  },
+  "trait_evolution": {
+    "individual_traits": {
+      "dominance": {
+        "trend_analysis": {
+          "slope": -0.0020049367031008698,
+          "intercept": 0.5219942136592208,
+          "r_squared": 0.7465199659353198,
+          "p_value": 0.0026662990019245872,
+          "std_error": 0.00044157330533876654,
+          "correlation": -0.8640138690642182
+        },
+        "variance_evolution": {
+          "variance_slope": -0.007312479781784443,
+          "variance_correlation": -0.9133080210598895,
+          "variance_p_value": 0.0005798017713394124
+        },
+        "evolution_metrics": {
+          "initial_value": 0.5244803688258954,
+          "final_value": 0.5062502400923341,
+          "total_change": -0.018230128733561335,
+          "relative_change": -0.03475845773669546,
+          "average_evolution_rate": -0.002278766091695167,
+          "evolution_volatility": 0.003852506904253438,
+          "trait_stability": 0.9883428394406791
+        }
+      },
+      "loyalty": {
+        "trend_analysis": {
+          "slope": -0.00342791409821294,
+          "intercept": 0.5341251586330149,
+          "r_squared": 0.8081508974956749,
+          "p_value": 0.0009764148278464061,
+          "std_error": 0.0006312691505229289,
+          "correlation": -0.8989721338816209
+        },
+        "variance_evolution": {
+          "variance_slope": -0.00590611086994419,
+          "variance_correlation": -0.9786885163645768,
+          "variance_p_value": 4.556716813441082e-06
+        },
+        "evolution_metrics": {
+          "initial_value": 0.5385581876229412,
+          "final_value": 0.5088954565984385,
+          "total_change": -0.029662731024502675,
+          "relative_change": -0.05507804301597646,
+          "average_evolution_rate": -0.0037078413780628344,
+          "evolution_volatility": 0.00418979879835514,
+          "trait_stability": 0.981081377345649
+        }
+      },
+      "cunning": {
+        "trend_analysis": {
+          "slope": 0.0019262835547358007,
+          "intercept": 0.5292548857076395,
+          "r_squared": 0.4520436747301087,
+          "p_value": 0.04725261815076757,
+          "std_error": 0.0008015931012095041,
+          "correlation": 0.6723419328958359
+        },
+        "variance_evolution": {
+          "variance_slope": -0.008881415320827377,
+          "variance_correlation": -0.9431706463497153,
+          "variance_p_value": 0.00013623821804913203
+        },
+        "evolution_metrics": {
+          "initial_value": 0.5183324978443224,
+          "final_value": 0.5407112516234929,
+          "total_change": 0.022378753779170424,
+          "relative_change": 0.04317451418199853,
+          "average_evolution_rate": 0.002797344222396303,
+          "evolution_volatility": 0.006747899493810919,
+          "trait_stability": 0.9862233876546823
+        }
+      },
+      "aggression": {
+        "trend_analysis": {
+          "slope": -0.00029158800639148555,
+          "intercept": 0.5183627236970347,
+          "r_squared": 0.03743634828789745,
+          "p_value": 0.6179265908542408,
+          "std_error": 0.0005588414694955129,
+          "correlation": -0.19348474949694988
+        },
+        "variance_evolution": {
+          "variance_slope": -0.0073773264393836736,
+          "variance_correlation": -0.9847996052585869,
+          "variance_p_value": 1.4047319354047322e-06
+        },
+        "evolution_metrics": {
+          "initial_value": 0.515837011204775,
+          "final_value": 0.5154160816894254,
+          "total_change": -0.00042092951534955514,
+          "relative_change": -0.0008160126284200576,
+          "average_evolution_rate": -5.261618941869439e-05,
+          "evolution_volatility": 0.006332460424893645,
+          "trait_stability": 0.9924764672109038
+        }
+      },
+      "intelligence": {
+        "trend_analysis": {
+          "slope": 0.0015563308956442626,
+          "intercept": 0.5135373484118251,
+          "r_squared": 0.35062092994518995,
+          "p_value": 0.09297184174918602,
+          "std_error": 0.0008005401970528805,
+          "correlation": 0.5921325273494017
+        },
+        "variance_evolution": {
+          "variance_slope": -0.005443352307231196,
+          "variance_correlation": -0.9512126120174689,
+          "variance_p_value": 8.050667773679498e-05
+        },
+        "evolution_metrics": {
+          "initial_value": 0.5038468903227638,
+          "final_value": 0.5209755792083577,
+          "total_change": 0.017128688885593935,
+          "relative_change": 0.03399582137863611,
+          "average_evolution_rate": 0.002141086110699242,
+          "evolution_volatility": 0.00646729986247571,
+          "trait_stability": 0.9869433337062877
+        }
+      },
+      "creativity": {
+        "trend_analysis": {
+          "slope": 0.0011328762731439058,
+          "intercept": 0.4775706565359456,
+          "r_squared": 0.29202718636201447,
+          "p_value": 0.13307761244856772,
+          "std_error": 0.0006666994694086764,
+          "correlation": 0.5403953981687986
+        },
+        "variance_evolution": {
+          "variance_slope": -0.007929362423431584,
+          "variance_correlation": -0.9604816015025149,
+          "variance_p_value": 3.886239893441068e-05
+        },
+        "evolution_metrics": {
+          "initial_value": 0.4853301302768146,
+          "final_value": 0.48642434276443935,
+          "total_change": 0.0010942124876247572,
+          "relative_change": 0.002254573576548108,
+          "average_evolution_rate": 0.00013677656095309465,
+          "evolution_volatility": 0.007567864406200749,
+          "trait_stability": 0.9887724207109957
+        }
+      },
+      "playfulness": {
+        "trend_analysis": {
+          "slope": -0.0018044295515711297,
+          "intercept": 0.5147200243572212,
+          "r_squared": 0.6760734222007633,
+          "p_value": 0.0065228819708895245,
+          "std_error": 0.0004720818143890453,
+          "correlation": -0.822236840697839
+        },
+        "variance_evolution": {
+          "variance_slope": -0.00895706967531758,
+          "variance_correlation": -0.971237022374503,
+          "variance_p_value": 1.2919564269722288e-05
+        },
+        "evolution_metrics": {
+          "initial_value": 0.519844945032537,
+          "final_value": 0.505067893312718,
+          "total_change": -0.014777051719819023,
+          "relative_change": -0.028425883258120614,
+          "average_evolution_rate": -0.001847131464977378,
+          "evolution_volatility": 0.002921538086891537,
+          "trait_stability": 0.988834983999782
+        }
+      },
+      "patience": {
+        "trend_analysis": {
+          "slope": -0.0038872241215049223,
+          "intercept": 0.4922368985026728,
+          "r_squared": 0.6343005298387384,
+          "p_value": 0.010204764058550512,
+          "std_error": 0.001115591481693544,
+          "correlation": -0.7964298649841921
+        },
+        "variance_evolution": {
+          "variance_slope": -0.009330481598383818,
+          "variance_correlation": -0.9535777370416716,
+          "variance_p_value": 6.781307457610494e-05
+        },
+        "evolution_metrics": {
+          "initial_value": 0.4900255749423464,
+          "final_value": 0.4672359463779652,
+          "total_change": -0.022789628564381215,
+          "relative_change": -0.04650701867359171,
+          "average_evolution_rate": -0.002848703570547652,
+          "evolution_volatility": 0.008571109077587465,
+          "trait_stability": 0.9735629986453611
+        }
+      }
+    },
+    "cross_trait_correlations": {
+      "dominance": {
+        "loyalty": 0.7353188725259732,
+        "cunning": -0.7277267162978716,
+        "aggression": 0.014008394357196726,
+        "intelligence": -0.4325248241378112,
+        "creativity": -0.39611801278689845,
+        "playfulness": 0.7137551347492551,
+        "patience": 0.5577663406864437
+      },
+      "loyalty": {
+        "dominance": 0.7353188725259733,
+        "cunning": -0.7891523058893306,
+        "aggression": -0.06098761304670766,
+        "intelligence": -0.7853316431537887,
+        "creativity": -0.500864214759613,
+        "playfulness": 0.9278733005341087,
+        "patience": 0.9234944719712377
+      },
+      "cunning": {
+        "dominance": -0.7277267162978714,
+        "loyalty": -0.7891523058893307,
+        "aggression": 0.38749538300644704,
+        "intelligence": 0.823341519130744,
+        "creativity": 0.1762719358957514,
+        "playfulness": -0.889209499950864,
+        "patience": -0.5864681860885549
+      },
+      "aggression": {
+        "dominance": 0.014008394357196727,
+        "loyalty": -0.06098761304670766,
+        "cunning": 0.3874953830064471,
+        "intelligence": 0.07196090276506334,
+        "creativity": 0.14022460273896037,
+        "playfulness": -0.1406990933433211,
+        "patience": -0.027587568574633983
+      },
+      "intelligence": {
+        "dominance": -0.4325248241378112,
+        "loyalty": -0.7853316431537887,
+        "cunning": 0.8233415191307442,
+        "aggression": 0.07196090276506333,
+        "creativity": 0.03751911140096907,
+        "playfulness": -0.8488809351929845,
+        "patience": -0.6765984660298231
+      },
+      "creativity": {
+        "dominance": -0.39611801278689845,
+        "loyalty": -0.5008642147596131,
+        "cunning": 0.17627193589575144,
+        "aggression": 0.14022460273896037,
+        "intelligence": 0.03751911140096907,
+        "playfulness": -0.41123971994460834,
+        "patience": -0.6940299360143168
+      },
+      "playfulness": {
+        "dominance": 0.7137551347492551,
+        "loyalty": 0.9278733005341087,
+        "cunning": -0.8892094999508641,
+        "aggression": -0.1406990933433211,
+        "intelligence": -0.8488809351929845,
+        "creativity": -0.41123971994460834,
+        "patience": 0.8339039390360704
+      },
+      "patience": {
+        "dominance": 0.5577663406864437,
+        "loyalty": 0.9234944719712377,
+        "cunning": -0.5864681860885549,
+        "aggression": -0.027587568574633983,
+        "intelligence": -0.6765984660298232,
+        "creativity": -0.6940299360143168,
+        "playfulness": 0.8339039390360704
+      }
+    },
+    "trait_correlation_matrix": [
+      [
+        1.0,
+        0.7353188725259732,
+        -0.7277267162978716,
+        0.014008394357196726,
+        -0.4325248241378112,
+        -0.39611801278689845,
+        0.7137551347492551,
+        0.5577663406864437
+      ],
+      [
+        0.7353188725259733,
+        1.0,
+        -0.7891523058893306,
+        -0.06098761304670766,
+        -0.7853316431537887,
+        -0.500864214759613,
+        0.9278733005341087,
+        0.9234944719712377
+      ],
+      [
+        -0.7277267162978714,
+        -0.7891523058893307,
+        0.9999999999999998,
+        0.38749538300644704,
+        0.823341519130744,
+        0.1762719358957514,
+        -0.889209499950864,
+        -0.5864681860885549
+      ],
+      [
+        0.014008394357196727,
+        -0.06098761304670766,
+        0.3874953830064471,
+        0.9999999999999998,
+        0.07196090276506334,
+        0.14022460273896037,
+        -0.1406990933433211,
+        -0.027587568574633983
+      ],
+      [
+        -0.4325248241378112,
+        -0.7853316431537887,
+        0.8233415191307442,
+        0.07196090276506333,
+        1.0,
+        0.03751911140096907,
+        -0.8488809351929845,
+        -0.6765984660298231
+      ],
+      [
+        -0.39611801278689845,
+        -0.5008642147596131,
+        0.17627193589575144,
+        0.14022460273896037,
+        0.03751911140096907,
+        0.9999999999999999,
+        -0.41123971994460834,
+        -0.6940299360143168
+      ],
+      [
+        0.7137551347492551,
+        0.9278733005341087,
+        -0.8892094999508641,
+        -0.1406990933433211,
+        -0.8488809351929845,
+        -0.41123971994460834,
+        1.0,
+        0.8339039390360704
+      ],
+      [
+        0.5577663406864437,
+        0.9234944719712377,
+        -0.5864681860885549,
+        -0.027587568574633983,
+        -0.6765984660298232,
+        -0.6940299360143168,
+        0.8339039390360704,
+        0.9999999999999999
+      ]
+    ]
+  },
+  "breeding_dynamics": {
+    "compatibility_distribution": {
+      "mean": 0.6976765828378865,
+      "median": 0.7032324804259227,
+      "std": 0.08917419169950476,
+      "min": 0.34764631815282376,
+      "max": 0.9009553422901091,
+      "skewness": -0.4428175044173023,
+      "kurtosis": 0.3605404753040675
+    },
+    "generation_analysis": {
+      "1": {
+        "breeding_count": 50,
+        "avg_compatibility": 0.6725796556628442,
+        "compatibility_std": 0.08768070432537972,
+        "min_compatibility": 0.3933605228757082,
+        "max_compatibility": 0.8404315214496189
+      },
+      "2": {
+        "breeding_count": 50,
+        "avg_compatibility": 0.665798126806527,
+        "compatibility_std": 0.07789413087245317,
+        "min_compatibility": 0.4410639669265294,
+        "max_compatibility": 0.8675240223043317
+      },
+      "3": {
+        "breeding_count": 50,
+        "avg_compatibility": 0.6664806528238083,
+        "compatibility_std": 0.10046446047629155,
+        "min_compatibility": 0.34764631815282376,
+        "max_compatibility": 0.8802584343504297
+      },
+      "4": {
+        "breeding_count": 50,
+        "avg_compatibility": 0.691207832958249,
+        "compatibility_std": 0.07869465952595743,
+        "min_compatibility": 0.5347648252363151,
+        "max_compatibility": 0.9009553422901091
+      },
+      "5": {
+        "breeding_count": 50,
+        "avg_compatibility": 0.7148206346818777,
+        "compatibility_std": 0.08997752368109131,
+        "min_compatibility": 0.4185988959678085,
+        "max_compatibility": 0.8644127444376616
+      },
+      "6": {
+        "breeding_count": 50,
+        "avg_compatibility": 0.7206011956765225,
+        "compatibility_std": 0.08641069140618374,
+        "min_compatibility": 0.5080626751693667,
+        "max_compatibility": 0.8809779664017927
+      },
+      "7": {
+        "breeding_count": 50,
+        "avg_compatibility": 0.7292706311270529,
+        "compatibility_std": 0.07073591857967497,
+        "min_compatibility": 0.5833250246309505,
+        "max_compatibility": 0.8645020863443708
+      },
+      "8": {
+        "breeding_count": 50,
+        "avg_compatibility": 0.7206539329662099,
+        "compatibility_std": 0.08945322249620535,
+        "min_compatibility": 0.5341212134283875,
+        "max_compatibility": 0.8950597603014201
+      }
+    },
+    "compatibility_trend": {
+      "slope": 0.009998296345332877,
+      "correlation": 0.9157436969770826,
+      "p_value": 0.0014024619070091384,
+      "std_error": 0.0017907969413836233
+    },
+    "breeding_efficiency": {
+      "total_attempts": 400,
+      "successful_breedings": 400,
+      "efficiency": 1.0
+    }
+  },
+  "spirit_competition": {
+    "spirit_performance": {
+      "fox": {
+        "initial_population": 22,
+        "final_population": 61,
+        "growth_rate": 1.7727272727272727,
+        "breeding_events": 856,
+        "breeding_efficiency": 20.654155495978554,
+        "avg_population": 41.44444444444444,
+        "population_volatility": 11.538448876219705,
+        "population_over_time": [
+          22,
+          28,
+          35,
+          38,
+          43,
+          45,
+          47,
+          54,
+          61
+        ]
+      },
+      "wolf": {
+        "initial_population": 22,
+        "final_population": 68,
+        "growth_rate": 2.090909090909091,
+        "breeding_events": 929,
+        "breeding_efficiency": 19.00227272727273,
+        "avg_population": 48.888888888888886,
+        "population_volatility": 14.363877876615389,
+        "population_over_time": [
+          22,
+          33,
+          40,
+          45,
+          52,
+          56,
+          59,
+          65,
+          68
+        ]
+      },
+      "otter": {
+        "initial_population": 27,
+        "final_population": 70,
+        "growth_rate": 1.5925925925925926,
+        "breeding_events": 1120,
+        "breeding_efficiency": 22.105263157894736,
+        "avg_population": 50.666666666666664,
+        "population_volatility": 12.814921857827391,
+        "population_over_time": [
+          27,
+          39,
+          44,
+          47,
+          49,
+          54,
+          59,
+          67,
+          70
+        ]
+      },
+      "eagle": {
+        "initial_population": 32,
+        "final_population": 71,
+        "growth_rate": 1.21875,
+        "breeding_events": 1133,
+        "breeding_efficiency": 20.19207920792079,
+        "avg_population": 56.111111111111114,
+        "population_volatility": 13.875994013999257,
+        "population_over_time": [
+          32,
+          42,
+          45,
+          50,
+          56,
+          67,
+          69,
+          73,
+          71
+        ]
+      },
+      "lion": {
+        "initial_population": 25,
+        "final_population": 80,
+        "growth_rate": 2.2,
+        "breeding_events": 962,
+        "breeding_efficiency": 19.325892857142858,
+        "avg_population": 49.77777777777778,
+        "population_volatility": 16.74500109669734,
+        "population_over_time": [
+          25,
+          33,
+          37,
+          44,
+          46,
+          52,
+          64,
+          67,
+          80
+        ]
+      },
+      "tiger": {
+        "initial_population": 22,
+        "final_population": 60,
+        "growth_rate": 1.7272727272727273,
+        "breeding_events": 816,
+        "breeding_efficiency": 19.956521739130437,
+        "avg_population": 40.888888888888886,
+        "population_volatility": 12.784056428435855,
+        "population_over_time": [
+          22,
+          25,
+          29,
+          36,
+          44,
+          46,
+          52,
+          54,
+          60
+        ]
+      }
+    },
+    "spirit_rankings": [
+      [
+        "lion",
+        {
+          "initial_population": 25,
+          "final_population": 80,
+          "growth_rate": 2.2,
+          "breeding_events": 962,
+          "breeding_efficiency": 19.325892857142858,
+          "avg_population": 49.77777777777778,
+          "population_volatility": 16.74500109669734,
+          "population_over_time": [
+            25,
+            33,
+            37,
+            44,
+            46,
+            52,
+            64,
+            67,
+            80
+          ]
+        }
+      ],
+      [
+        "eagle",
+        {
+          "initial_population": 32,
+          "final_population": 71,
+          "growth_rate": 1.21875,
+          "breeding_events": 1133,
+          "breeding_efficiency": 20.19207920792079,
+          "avg_population": 56.111111111111114,
+          "population_volatility": 13.875994013999257,
+          "population_over_time": [
+            32,
+            42,
+            45,
+            50,
+            56,
+            67,
+            69,
+            73,
+            71
+          ]
+        }
+      ],
+      [
+        "otter",
+        {
+          "initial_population": 27,
+          "final_population": 70,
+          "growth_rate": 1.5925925925925926,
+          "breeding_events": 1120,
+          "breeding_efficiency": 22.105263157894736,
+          "avg_population": 50.666666666666664,
+          "population_volatility": 12.814921857827391,
+          "population_over_time": [
+            27,
+            39,
+            44,
+            47,
+            49,
+            54,
+            59,
+            67,
+            70
+          ]
+        }
+      ],
+      [
+        "wolf",
+        {
+          "initial_population": 22,
+          "final_population": 68,
+          "growth_rate": 2.090909090909091,
+          "breeding_events": 929,
+          "breeding_efficiency": 19.00227272727273,
+          "avg_population": 48.888888888888886,
+          "population_volatility": 14.363877876615389,
+          "population_over_time": [
+            22,
+            33,
+            40,
+            45,
+            52,
+            56,
+            59,
+            65,
+            68
+          ]
+        }
+      ],
+      [
+        "fox",
+        {
+          "initial_population": 22,
+          "final_population": 61,
+          "growth_rate": 1.7727272727272727,
+          "breeding_events": 856,
+          "breeding_efficiency": 20.654155495978554,
+          "avg_population": 41.44444444444444,
+          "population_volatility": 11.538448876219705,
+          "population_over_time": [
+            22,
+            28,
+            35,
+            38,
+            43,
+            45,
+            47,
+            54,
+            61
+          ]
+        }
+      ],
+      [
+        "tiger",
+        {
+          "initial_population": 22,
+          "final_population": 60,
+          "growth_rate": 1.7272727272727273,
+          "breeding_events": 816,
+          "breeding_efficiency": 19.956521739130437,
+          "avg_population": 40.888888888888886,
+          "population_volatility": 12.784056428435855,
+          "population_over_time": [
+            22,
+            25,
+            29,
+            36,
+            44,
+            46,
+            52,
+            54,
+            60
+          ]
+        }
+      ]
+    ],
+    "competitive_analysis": {
+      "fox": {
+        "competitive_advantage": 0.005685325476992187,
+        "rank": 5
+      },
+      "wolf": {
+        "competitive_advantage": 0.3238671436588103,
+        "rank": 4
+      },
+      "otter": {
+        "competitive_advantage": -0.17444935465768796,
+        "rank": 3
+      },
+      "eagle": {
+        "competitive_advantage": -0.5482919472502805,
+        "rank": 2
+      },
+      "lion": {
+        "competitive_advantage": 0.43295805274971966,
+        "rank": 1
+      },
+      "tiger": {
+        "competitive_advantage": -0.03976921997755323,
+        "rank": 6
+      }
+    }
+  },
+  "conclusions": {
+    "population_growth_model": "linear",
+    "genetic_diversity_pattern": "exponential_decay",
+    "trait_evolution_drivers": [
+      {
+        "trait": "dominance",
+        "change": -0.018230128733561335,
+        "trend": "decreasing"
+      },
+      {
+        "trait": "loyalty",
+        "change": -0.029662731024502675,
+        "trend": "decreasing"
+      },
+      {
+        "trait": "cunning",
+        "change": 0.022378753779170424,
+        "trend": "increasing"
+      },
+      {
+        "trait": "intelligence",
+        "change": 0.017128688885593935,
+        "trend": "increasing"
+      },
+      {
+        "trait": "playfulness",
+        "change": -0.014777051719819023,
+        "trend": "decreasing"
+      },
+      {
+        "trait": "patience",
+        "change": -0.022789628564381215,
+        "trend": "decreasing"
+      }
+    ],
+    "breeding_success_factors": [
+      "high_compatibility_threshold",
+      "increasing_compatibility_over_time"
+    ],
+    "spirit_competition_insights": [
+      "Lion was most successful"
+    ],
+    "evolutionary_pressures": [
+      "strategic_thinking_selection",
+      "independence_selection"
+    ],
+    "system_dynamics": {
+      "growth_type": "linear",
+      "diversity_trend": "exponential_decay",
+      "evolutionary_stability": "dynamic",
+      "competitive_balance": "balanced"
+    }
+  }
+}

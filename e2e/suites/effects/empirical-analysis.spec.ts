@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
 interface TestResult {
   scenario: string;
@@ -17,19 +17,19 @@ interface TestResult {
   backendStatus: any;
 }
 
-test.describe('🔬 Empirical Analysis: Cloudflare Outage Prevention', () => {
+test.describe("🔬 Empirical Analysis: Cloudflare Outage Prevention", () => {
   let testResults: TestResult[] = [];
 
   // Helper function to configure the mock API server
   async function configureServer(page: any, config: any) {
     const response = await page.evaluate(async (configData: any) => {
-      return await fetch('http://localhost:12526/api/v1/control/configure', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(configData)
+      return await fetch("http://localhost:12526/api/v1/control/configure", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(configData),
       }).then(r => r.json());
     }, config);
-    
+
     console.log(`🔧 Server configured:`, response);
     return response;
   }
@@ -37,11 +37,11 @@ test.describe('🔬 Empirical Analysis: Cloudflare Outage Prevention', () => {
   // Helper function to reset the mock API server
   async function resetServer(page: any) {
     const response = await page.evaluate(async () => {
-      return await fetch('http://localhost:12526/api/v1/control/reset', {
-        method: 'GET'
+      return await fetch("http://localhost:12526/api/v1/control/reset", {
+        method: "GET",
       }).then(r => r.json());
     });
-    
+
     console.log(`🔄 Server reset:`, response);
     return response;
   }
@@ -49,11 +49,11 @@ test.describe('🔬 Empirical Analysis: Cloudflare Outage Prevention', () => {
   // Helper function to get server status
   async function getServerStatus(page: any) {
     const response = await page.evaluate(async () => {
-      return await fetch('http://localhost:12526/api/v1/control/status', {
-        method: 'GET'
+      return await fetch("http://localhost:12526/api/v1/control/status", {
+        method: "GET",
       }).then(r => r.json());
     });
-    
+
     return response;
   }
 
@@ -61,13 +61,13 @@ test.describe('🔬 Empirical Analysis: Cloudflare Outage Prevention', () => {
   async function runScenario(page: any, scenarioName: string, config: any, effectCode: string) {
     console.log(`\n🧪 Running scenario: ${scenarioName}`);
     console.log(`📋 Configuration:`, config);
-    
+
     // Reset server state
     await resetServer(page);
-    
+
     // Configure server
     await configureServer(page, config);
-    
+
     // Inject effect monitor
     await page.evaluate(() => {
       window.effectMonitor = {
@@ -78,10 +78,10 @@ test.describe('🔬 Empirical Analysis: Cloudflare Outage Prevention', () => {
           if (!this.effectExecutions.has(effectId)) {
             this.effectExecutions.set(effectId, []);
           }
-          this.effectExecutions.get(effectId)?.push({ 
-            timestamp: Date.now(), 
-            executionTime, 
-            dependencies 
+          this.effectExecutions.get(effectId)?.push({
+            timestamp: Date.now(),
+            executionTime,
+            dependencies,
           });
           const executions = this.effectExecutions.get(effectId)!;
           if (executions.length > 5) {
@@ -95,7 +95,7 @@ test.describe('🔬 Empirical Analysis: Cloudflare Outage Prevention', () => {
             requestId,
             status,
             responseTime,
-            timestamp: Date.now()
+            timestamp: Date.now(),
           });
         },
         getAlertMessages() {
@@ -107,7 +107,7 @@ test.describe('🔬 Empirical Analysis: Cloudflare Outage Prevention', () => {
           const executionCount = executions.length;
           const isInfiniteLoop = executionCount > 5;
           return { executionCount, isInfiniteLoop };
-        }
+        },
       };
     });
 
@@ -124,14 +124,14 @@ test.describe('🔬 Empirical Analysis: Cloudflare Outage Prevention', () => {
       // Execute the provided effect code
       eval(code);
 
-      return { 
-        renderCount, 
-        apiCallCount, 
-        successfulCalls, 
+      return {
+        renderCount,
+        apiCallCount,
+        successfulCalls,
         failedCalls,
         rateLimitedCalls,
         circuitBreakerCalls,
-        totalResponseTime
+        totalResponseTime,
       };
     }, effectCode);
 
@@ -153,7 +153,7 @@ test.describe('🔬 Empirical Analysis: Cloudflare Outage Prevention', () => {
       const failedCalls = calls.filter(call => call.status >= 400);
       const rateLimitedCalls = calls.filter(call => call.status === 429);
       const circuitBreakerCalls = calls.filter(call => call.status === 503);
-      
+
       return {
         totalCalls: calls.length,
         successfulCalls: successfulCalls.length,
@@ -161,7 +161,7 @@ test.describe('🔬 Empirical Analysis: Cloudflare Outage Prevention', () => {
         rateLimitedCalls: rateLimitedCalls.length,
         circuitBreakerCalls: circuitBreakerCalls.length,
         averageResponseTime: calls.reduce((sum, call) => sum + call.responseTime, 0) / calls.length || 0,
-        errorRate: failedCalls.length / calls.length || 0
+        errorRate: failedCalls.length / calls.length || 0,
       };
     });
 
@@ -180,28 +180,32 @@ test.describe('🔬 Empirical Analysis: Cloudflare Outage Prevention', () => {
         circuitBreakerCalls: browserApiStats.circuitBreakerCalls,
         averageResponseTime: browserApiStats.averageResponseTime,
         errorRate: browserApiStats.errorRate,
-        infiniteLoopDetected: browserAlerts.some(msg => msg.includes("INFINITE LOOP DETECTED"))
+        infiniteLoopDetected: browserAlerts.some(msg => msg.includes("INFINITE LOOP DETECTED")),
       },
-      backendStatus
+      backendStatus,
     };
 
     testResults.push(testResult);
-    
+
     console.log(`📊 Results for ${scenarioName}:`, testResult.metrics);
-    
+
     return testResult;
   }
 
-  test('🧪 Comprehensive Empirical Analysis', async ({ page }) => {
+  test("🧪 Comprehensive Empirical Analysis", async ({ page }) => {
     // Navigate to test page
-    await page.goto('/effect-test-page.html');
+    await page.goto("/effect-test-page.html");
 
     // Test 1: Baseline - No protections, problematic pattern
-    await runScenario(page, 'Baseline - No Protections', {
-      rate_limiting_enabled: false,
-      circuit_breaker_enabled: false,
-      failure_simulation_enabled: false
-    }, `
+    await runScenario(
+      page,
+      "Baseline - No Protections",
+      {
+        rate_limiting_enabled: false,
+        circuit_breaker_enabled: false,
+        failure_simulation_enabled: false,
+      },
+      `
       // Simulate the problematic Cloudflare pattern
       for (let i = 0; i < 10; i++) {
         renderCount++;
@@ -250,15 +254,20 @@ test.describe('🔬 Empirical Analysis: Cloudflare Outage Prevention', () => {
         
         await new Promise(resolve => setTimeout(resolve, 50));
       }
-    `);
+    `
+    );
 
     // Test 2: Rate Limiting Only
-    await runScenario(page, 'Rate Limiting Only', {
-      rate_limiting_enabled: true,
-      circuit_breaker_enabled: false,
-      failure_simulation_enabled: false,
-      rate_limit_requests: 5
-    }, `
+    await runScenario(
+      page,
+      "Rate Limiting Only",
+      {
+        rate_limiting_enabled: true,
+        circuit_breaker_enabled: false,
+        failure_simulation_enabled: false,
+        rate_limit_requests: 5,
+      },
+      `
       // Same problematic pattern but with rate limiting
       for (let i = 0; i < 10; i++) {
         renderCount++;
@@ -304,16 +313,21 @@ test.describe('🔬 Empirical Analysis: Cloudflare Outage Prevention', () => {
         
         await new Promise(resolve => setTimeout(resolve, 50));
       }
-    `);
+    `
+    );
 
     // Test 3: Circuit Breaker Only
-    await runScenario(page, 'Circuit Breaker Only', {
-      rate_limiting_enabled: false,
-      circuit_breaker_enabled: true,
-      failure_simulation_enabled: true,
-      failure_rate: 0.1,
-      circuit_breaker_threshold: 3
-    }, `
+    await runScenario(
+      page,
+      "Circuit Breaker Only",
+      {
+        rate_limiting_enabled: false,
+        circuit_breaker_enabled: true,
+        failure_simulation_enabled: true,
+        failure_rate: 0.1,
+        circuit_breaker_threshold: 3,
+      },
+      `
       // Same problematic pattern but with circuit breaker
       for (let i = 0; i < 10; i++) {
         renderCount++;
@@ -359,17 +373,22 @@ test.describe('🔬 Empirical Analysis: Cloudflare Outage Prevention', () => {
         
         await new Promise(resolve => setTimeout(resolve, 50));
       }
-    `);
+    `
+    );
 
     // Test 4: Combined Protections
-    await runScenario(page, 'Combined Protections', {
-      rate_limiting_enabled: true,
-      circuit_breaker_enabled: true,
-      failure_simulation_enabled: true,
-      failure_rate: 0.1,
-      rate_limit_requests: 5,
-      circuit_breaker_threshold: 3
-    }, `
+    await runScenario(
+      page,
+      "Combined Protections",
+      {
+        rate_limiting_enabled: true,
+        circuit_breaker_enabled: true,
+        failure_simulation_enabled: true,
+        failure_rate: 0.1,
+        rate_limit_requests: 5,
+        circuit_breaker_threshold: 3,
+      },
+      `
       // Same problematic pattern but with all protections
       for (let i = 0; i < 10; i++) {
         renderCount++;
@@ -415,14 +434,19 @@ test.describe('🔬 Empirical Analysis: Cloudflare Outage Prevention', () => {
         
         await new Promise(resolve => setTimeout(resolve, 50));
       }
-    `);
+    `
+    );
 
     // Test 5: Frontend Prevention - Stable References
-    await runScenario(page, 'Frontend Prevention - Stable References', {
-      rate_limiting_enabled: false,
-      circuit_breaker_enabled: false,
-      failure_simulation_enabled: false
-    }, `
+    await runScenario(
+      page,
+      "Frontend Prevention - Stable References",
+      {
+        rate_limiting_enabled: false,
+        circuit_breaker_enabled: false,
+        failure_simulation_enabled: false,
+      },
+      `
       // Frontend prevention: stable object reference
       const stableTenantService = {
         organizationId: "org-123",
@@ -469,14 +493,19 @@ test.describe('🔬 Empirical Analysis: Cloudflare Outage Prevention', () => {
         
         await new Promise(resolve => setTimeout(resolve, 50));
       }
-    `);
+    `
+    );
 
     // Test 6: Frontend Prevention - Primitive Dependencies
-    await runScenario(page, 'Frontend Prevention - Primitive Dependencies', {
-      rate_limiting_enabled: false,
-      circuit_breaker_enabled: false,
-      failure_simulation_enabled: false
-    }, `
+    await runScenario(
+      page,
+      "Frontend Prevention - Primitive Dependencies",
+      {
+        rate_limiting_enabled: false,
+        circuit_breaker_enabled: false,
+        failure_simulation_enabled: false,
+      },
+      `
       // Frontend prevention: primitive dependencies
       const organizationId = "org-123";
       const userId = "user-456";
@@ -517,17 +546,22 @@ test.describe('🔬 Empirical Analysis: Cloudflare Outage Prevention', () => {
         
         await new Promise(resolve => setTimeout(resolve, 50));
       }
-    `);
+    `
+    );
 
     // Test 7: Complete Solution - Frontend + Backend
-    await runScenario(page, 'Complete Solution - Frontend + Backend', {
-      rate_limiting_enabled: true,
-      circuit_breaker_enabled: true,
-      failure_simulation_enabled: true,
-      failure_rate: 0.1,
-      rate_limit_requests: 5,
-      circuit_breaker_threshold: 3
-    }, `
+    await runScenario(
+      page,
+      "Complete Solution - Frontend + Backend",
+      {
+        rate_limiting_enabled: true,
+        circuit_breaker_enabled: true,
+        failure_simulation_enabled: true,
+        failure_rate: 0.1,
+        rate_limit_requests: 5,
+        circuit_breaker_threshold: 3,
+      },
+      `
       // Complete solution: stable frontend + backend protections
       const stableTenantService = {
         organizationId: "org-123",
@@ -572,12 +606,13 @@ test.describe('🔬 Empirical Analysis: Cloudflare Outage Prevention', () => {
         
         await new Promise(resolve => setTimeout(resolve, 50));
       }
-    `);
+    `
+    );
 
     // Analyze and log results
-    console.log('\n📊 EMPIRICAL ANALYSIS RESULTS:');
-    console.log('=====================================');
-    
+    console.log("\n📊 EMPIRICAL ANALYSIS RESULTS:");
+    console.log("=====================================");
+
     testResults.forEach((result, index) => {
       console.log(`\n${index + 1}. ${result.scenario}`);
       console.log(`   Configuration:`, result.configuration);
@@ -586,13 +621,13 @@ test.describe('🔬 Empirical Analysis: Cloudflare Outage Prevention', () => {
     });
 
     // Save results to file for analysis
-    await page.evaluate((results) => {
+    await page.evaluate(results => {
       const dataStr = JSON.stringify(results, null, 2);
-      const dataBlob = new Blob([dataStr], {type: 'application/json'});
+      const dataBlob = new Blob([dataStr], { type: "application/json" });
       const url = URL.createObjectURL(dataBlob);
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
-      link.download = 'empirical-analysis-results.json';
+      link.download = "empirical-analysis-results.json";
       link.click();
       URL.revokeObjectURL(url);
     }, testResults);

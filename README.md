@@ -1,15 +1,15 @@
 # 🦊 Reynard
 
-> _From dataset editor to multi-modal CMS: The evolution of a cunning framework_
+> _The Apex Predator of Modular SolidJS Development_
 
-Reynard is a SolidJS framework derived from **YipYap**, a multi-modal content management system. The framework extracts
-and modularizes YipYap's proven architectural patterns into reusable packages for modern web development.
+Reynard is a comprehensive SolidJS framework with 40+ specialized packages, built for modern web development with AI/ML integration, advanced theming, and enterprise-grade architecture.
 
 ## Table of Contents
 
 - [🦊 Reynard](#-reynard)
   - [Table of Contents](#table-of-contents)
   - [🚀 Quick Start](#-quick-start)
+    - [Development Server Management](#development-server-management)
   - [📚 Documentation](#-documentation)
   - [✨ Key Features](#-key-features)
   - [📦 Package Ecosystem](#-package-ecosystem)
@@ -131,15 +131,36 @@ and modularizes YipYap's proven architectural patterns into reusable packages fo
 ## 🚀 Quick Start
 
 ```bash
-# Install core package
+# Install core packages
 pnpm install reynard-core solid-js
-
-# Install additional packages as needed
 pnpm install reynard-components reynard-chat reynard-rag reynard-auth
 
-# Start building
+# Create new project
 pnpm create reynard-app my-app
 ```
+
+### Development Server Management
+
+Reynard includes a comprehensive dev server management system:
+
+```bash
+# List all available projects
+dev-server list
+
+# Start a development server
+dev-server start test-app
+
+# Start in detached mode (background)
+dev-server start test-app --detached
+
+# Check server status
+dev-server status
+
+# Stop all servers
+dev-server stop-all
+```
+
+See the [Dev Server Management README](packages/dev-server-management/README.md) for complete documentation.
 
 ```tsx
 import { createSignal } from "solid-js";
@@ -176,43 +197,38 @@ function App() {
 
 - **🎯 Multi-Modal Content Management** - Images, videos, audio, documents, and specialized formats
 - **🤖 AI/ML Integration** - Caption generation, RAG system, object detection, and TTS
-- **🌍 Single Authoritative ECS World** - Centralized agent simulation with trait inheritance and breeding
-- **🔗 MCP Server Integration** - Comprehensive MCP tools for agent management and world simulation
-- **🎨 8 Built-in Themes** - Light, dark, and custom themes with CSS custom properties
-- **🌍 37 Languages** - Internationalization with RTL support and locale-aware formatting
-- **♿ WCAG 2.1 Compliance** - Full accessibility with ARIA labels and keyboard navigation
-- **⚡ Performance Optimized** - Bundle splitting, lazy loading, and intelligent caching
-- **🔧 TypeScript First** - Full type safety with comprehensive type definitions
+- **🌍 ECS World Simulation** - Centralized agent simulation with trait inheritance and breeding
+- **🔗 MCP Server Integration** - 47 comprehensive development tools
+- **🎨 Advanced Theming** - 8 built-in themes with OKLCH color system
+- **🌍 Internationalization** - 37 languages with RTL support
+- **♿ Accessibility** - WCAG 2.1 compliance with full keyboard navigation
+- **⚡ Performance** - Bundle splitting, lazy loading, and intelligent caching
+- **🔧 TypeScript First** - Full type safety with comprehensive definitions
 
 ## 📦 Package Ecosystem
 
-Reynard's package ecosystem is built on the foundation of YipYap's proven architecture, with each package designed to be
-independently useful while working seamlessly together. The core package has minimal dependencies and works standalone,
-while other packages can be added as needed. All packages are published to npm and ready for production use!
+Reynard's modular architecture includes 40+ specialized packages, each designed for specific use cases while working seamlessly together.
 
 ### Core Packages
-
 - **`reynard-core`** - Foundation utilities, notifications, localStorage, validation
 - **`reynard-components`** - UI components, modals, tooltips, forms
-- **`reynard-themes`** - Theming system with 8 built-in themes and i18n support
-- **`reynard-ecs-world`** - Single authoritative ECS World simulation with agent management
+- **`reynard-themes`** - Theming system with 8 built-in themes
+- **`reynard-ecs-world`** - ECS World simulation with agent management
 - **`reynard-i18n`** - Internationalization with 37 language support
 
 ### Specialized Packages
-
-- **`reynard-chat`** - Real-time chat system with streaming and tool integration
+- **`reynard-chat`** - Real-time chat with streaming and tool integration
 - **`reynard-rag`** - RAG system with EmbeddingGemma integration
-- **`reynard-auth`** - Complete authentication system with JWT and security features
-- **`reynard-charts`** - Data visualization components built on Chart.js
+- **`reynard-auth`** - Complete authentication with JWT and security
+- **`reynard-charts`** - Data visualization with Chart.js
 - **`reynard-gallery`** - Advanced file management with drag-and-drop
-- **`reynard-annotating`** - AI-powered caption generation with multiple models
+- **`reynard-annotating`** - AI-powered caption generation
 - **`reynard-caption`** - Caption editing UI with tag management
-- **`reynard-floating-panel`** - Advanced floating panel system with staggered animations and state management
 - **`reynard-3d`** - Three.js integration for 3D graphics
 - **`reynard-monaco`** - Code editor integration
 - **`reynard-games`** - Game development utilities
 
-_[View complete package list and documentation →](./docs/packages.md)_
+_[View complete package documentation →](./docs/packages.md)_
 
 ## 🎯 Philosophy
 

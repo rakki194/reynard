@@ -1,33 +1,19 @@
-/**
- * 🦊 Dev Server Management CLI - Config Command
- *
- * Handles configuration management operations.
- */
-
-import chalk from "chalk";
-import ora from "ora";
 import { DevServerManager } from "../../core/DevServerManager.js";
-import type { ConfigOptions, GlobalOptions } from "./types.js";
+import type { GlobalOptions } from "./types.js";
 
-export async function handleConfig(options: ConfigOptions, globalOptions: GlobalOptions): Promise<void> {
-  const manager = new DevServerManager(globalOptions.config);
-
+export const handleConfig = async (
+  options: { validate?: boolean; migrate?: string },
+  globalOptions: GlobalOptions
+) => {
   try {
-    await manager.initialize();
-
-    if (options.validate) {
-      const spinner = ora("Validating configuration...").start();
-      // Configuration validation would be implemented here
-      spinner.succeed(chalk.green("✅ Configuration is valid"));
-    }
-
-    if (options.migrate) {
-      const spinner = ora("Migrating configuration...").start();
-      // Migration would be implemented here
-      spinner.succeed(chalk.green("✅ Configuration migrated successfully"));
-    }
+    const devServerManager = new DevServerManager(globalOptions.config);
+    await devServerManager.initialize();
+    const config = await devServerManager.getConfig();
+    
+    console.log("Configuration:");
+    console.log(JSON.stringify(config, null, 2));
   } catch (error) {
-    console.error(chalk.red("❌ Configuration operation failed:"), error);
+    console.error(`Failed to get config:`, error);
     process.exit(1);
   }
-}
+};

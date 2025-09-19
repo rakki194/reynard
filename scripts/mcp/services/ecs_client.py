@@ -273,6 +273,161 @@ class ECSClient:
         """Get breeding statistics."""
         return await self._request("GET", "/breeding/stats")
 
+    # Position and Movement Methods
+
+    async def get_agent_position(self, agent_id: str) -> Dict[str, Any]:
+        """
+        Get the current position of an agent.
+
+        Args:
+            agent_id: Agent to get position for
+
+        Returns:
+            Position data including x, y coordinates and movement info
+        """
+        return await self._request("GET", f"/agents/{agent_id}/position")
+
+    async def get_all_agent_positions(self) -> Dict[str, Any]:
+        """
+        Get positions of all agents in the world.
+
+        Returns:
+            Dictionary mapping agent IDs to their position data
+        """
+        return await self._request("GET", "/agents/positions")
+
+    async def move_agent(self, agent_id: str, x: float, y: float) -> Dict[str, Any]:
+        """
+        Move an agent to a specific position.
+
+        Args:
+            agent_id: Agent to move
+            x: Target X coordinate
+            y: Target Y coordinate
+
+        Returns:
+            Movement confirmation and new position
+        """
+        data = {"x": x, "y": y}
+        return await self._request("POST", f"/agents/{agent_id}/move", data=data)
+
+    async def move_agent_towards(self, agent_id: str, target_agent_id: str, distance: float = 50.0) -> Dict[str, Any]:
+        """
+        Move an agent towards another agent.
+
+        Args:
+            agent_id: Agent to move
+            target_agent_id: Agent to move towards
+            distance: Distance to maintain from target (default: 50.0)
+
+        Returns:
+            Movement confirmation and new position
+        """
+        data = {"target_agent_id": target_agent_id, "distance": distance}
+        return await self._request("POST", f"/agents/{agent_id}/move_towards", data=data)
+
+    async def get_agent_distance(self, agent1_id: str, agent2_id: str) -> Dict[str, Any]:
+        """
+        Get the distance between two agents.
+
+        Args:
+            agent1_id: First agent ID
+            agent2_id: Second agent ID
+
+        Returns:
+            Distance information between the agents
+        """
+        return await self._request("GET", f"/agents/{agent1_id}/distance/{agent2_id}")
+
+    # Interaction and Communication Methods
+
+    async def initiate_interaction(self, agent1_id: str, agent2_id: str, interaction_type: str = "communication") -> Dict[str, Any]:
+        """
+        Initiate an interaction between two agents.
+
+        Args:
+            agent1_id: First agent ID
+            agent2_id: Second agent ID
+            interaction_type: Type of interaction (communication, collaboration, social, etc.)
+
+        Returns:
+            Interaction initiation result
+        """
+        data = {"agent2_id": agent2_id, "interaction_type": interaction_type}
+        return await self._request("POST", f"/agents/{agent1_id}/interact", data=data)
+
+    async def send_chat_message(self, sender_id: str, receiver_id: str, message: str, interaction_type: str = "communication") -> Dict[str, Any]:
+        """
+        Send a chat message from one agent to another.
+
+        Args:
+            sender_id: Agent sending the message
+            receiver_id: Agent receiving the message
+            message: Message content
+            interaction_type: Type of interaction (communication, social, etc.)
+
+        Returns:
+            Chat message result and interaction data
+        """
+        data = {
+            "receiver_id": receiver_id,
+            "message": message,
+            "interaction_type": interaction_type
+        }
+        return await self._request("POST", f"/agents/{sender_id}/chat", data=data)
+
+    async def get_interaction_history(self, agent_id: str, limit: int = 10) -> Dict[str, Any]:
+        """
+        Get the interaction history for an agent.
+
+        Args:
+            agent_id: Agent to get history for
+            limit: Maximum number of interactions to return
+
+        Returns:
+            List of recent interactions
+        """
+        params = {"limit": limit}
+        return await self._request("GET", f"/agents/{agent_id}/interactions", params=params)
+
+    async def get_agent_relationships(self, agent_id: str) -> Dict[str, Any]:
+        """
+        Get all relationships for an agent.
+
+        Args:
+            agent_id: Agent to get relationships for
+
+        Returns:
+            Dictionary of relationships with other agents
+        """
+        return await self._request("GET", f"/agents/{agent_id}/relationships")
+
+    async def get_agent_social_stats(self, agent_id: str) -> Dict[str, Any]:
+        """
+        Get social interaction statistics for an agent.
+
+        Args:
+            agent_id: Agent to get stats for
+
+        Returns:
+            Social interaction statistics
+        """
+        return await self._request("GET", f"/agents/{agent_id}/social_stats")
+
+    async def get_nearby_agents(self, agent_id: str, radius: float = 100.0) -> Dict[str, Any]:
+        """
+        Get all agents within a certain radius of an agent.
+
+        Args:
+            agent_id: Agent to check around
+            radius: Search radius in world units
+
+        Returns:
+            List of nearby agents with their positions and distances
+        """
+        params = {"radius": radius}
+        return await self._request("GET", f"/agents/{agent_id}/nearby", params=params)
+
 
 # Global ECS client instance
 _ecs_client: Optional[ECSClient] = None

@@ -494,4 +494,4 @@ Your research ideas should reflect the cunning intelligence, playful thoroughnes
 
 ---
 
-*This novel research idea generation framework ensures that every research idea addresses genuine knowledge gaps, introduces novel methodologies, and makes original contributions to the field. Each idea should advance knowledge rather than simply describing existing systems.*
+_This novel research idea generation framework ensures that every research idea addresses genuine knowledge gaps, introduces novel methodologies, and makes original contributions to the field. Each idea should advance knowledge rather than simply describing existing systems._

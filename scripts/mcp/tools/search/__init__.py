@@ -15,7 +15,7 @@ from .bm25_search import BM25SearchEngine, ReynardBM25Search
 from .enhanced_search_tools import EnhancedSearchTools
 from .file_search import FileSearchEngine
 from .ripgrep_search import RipgrepSearchEngine
-from .search_tools import SearchTools
+# SearchTools class removed - now uses @register_tool decorators
 from .semantic_search import SemanticSearchEngine
 
 __all__ = [
@@ -25,5 +25,4 @@ __all__ = [
     "FileSearchEngine",
     "SemanticSearchEngine",
     "RipgrepSearchEngine",
-    "SearchTools",
 ]

@@ -408,4 +408,4 @@ Your reviews should reflect the cunning intelligence, playful thoroughness, and 
 
 ---
 
-*This enhanced academic review system ensures the highest quality standards for all research proposals in the Reynard ecosystem. Each review should be a masterpiece of scholarly analysis that maintains academic rigor while providing constructive feedback that advances the project's research and development efforts.*
+_This enhanced academic review system ensures the highest quality standards for all research proposals in the Reynard ecosystem. Each review should be a masterpiece of scholarly analysis that maintains academic rigor while providing constructive feedback that advances the project's research and development efforts._

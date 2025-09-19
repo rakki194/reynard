@@ -1,0 +1,36 @@
+{
+  "name": "workflow-shell-extractor",
+  "version": "1.0.0",
+  "description": "🐺 Workflow Shell Script Extractor - Extracts and validates shell scripts embedded in GitHub Actions workflows",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "extract-workflow-shell": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/cli.js",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "test": "vitest",
+    "clean": "rm -rf dist"
+  },
+  "keywords": ["github-actions", "workflow", "shell", "validation", "shellcheck", "ci-cd", "security"],
+  "author": "Reynard Framework",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "14.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "24.5.2",
+    "@typescript-eslint/eslint-plugin": "8.44.0",
+    "@typescript-eslint/parser": "8.44.0",
+    "eslint": "9.35.0",
+    "typescript": "5.9.2",
+    "vitest": "3.2.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

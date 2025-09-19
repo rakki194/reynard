@@ -1,0 +1,12 @@
+name: Simple Test
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test variable quoting
+        run: |
+          if [ $VAR ]; then
+            echo "Variable not quoted"
+          fi
+

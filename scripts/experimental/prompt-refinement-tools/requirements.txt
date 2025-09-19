@@ -1,0 +1,48 @@
+# Prompt Refinement Tools - Experimental Libraries
+# ================================================
+
+# Web Scraping & HTTP
+requests-html
+playwright
+aiohttp
+beautifulsoup4
+lxml
+
+# Semantic Search & Vector Databases
+chromadb
+faiss-gpu
+# Or if you prefer this one:
+#faiss-gpu-cuvs
+sentence-transformers
+
+# Natural Language Processing
+spacy
+nltk
+transformers
+torch
+
+# Code Analysis
+tree-sitter
+tree-sitter-python
+tree-sitter-typescript
+tree-sitter-javascript
+tree-sitter-java
+tree-sitter-cpp
+
+# Data Processing
+pandas
+numpy
+scikit-learn
+
+# Async & Utilities
+asyncio-throttle
+aiofiles
+python-dotenv
+pydantic
+
+# Development & Testing
+pytest
+pytest-asyncio
+black
+flake8
+mypy

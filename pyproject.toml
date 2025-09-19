@@ -387,11 +387,6 @@ max-statements = 60
 [tool.pylint.messages_control]
 disable = []
 
-[tool.pylint."messages_control.overrides"]
-"*.pyi" = [
-    "undefined-variable", # Allow undefined variables in .pyi files
-]
-
 [tool.bandit]
 exclude_dirs = [
     "tests",

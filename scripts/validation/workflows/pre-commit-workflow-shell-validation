@@ -33,14 +33,23 @@ fi
 
 # Get the directory where this script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-EXTRACTOR_SCRIPT="$SCRIPT_DIR/extract-workflow-shell.js"
+EXTRACTOR_SCRIPT="$SCRIPT_DIR/dist/cli.js"
 PROJECT_ROOT="$(git rev-parse --show-toplevel)"
 
 # Check if extractor script exists
 if [[ ! -f "${EXTRACTOR_SCRIPT}" ]]; then
     echo -e "${YELLOW}⚠️  Workflow shell extractor not found at: ${EXTRACTOR_SCRIPT}${NC}"
-    echo -e "${YELLOW}   Skipping workflow shell validation...${NC}"
-    exit 0
+    echo -e "${YELLOW}   Building TypeScript project...${NC}"
+    cd "${SCRIPT_DIR}"
+    if command -v pnpm &> /dev/null; then
+        pnpm run build
+    elif command -v npm &> /dev/null; then
+        npm run build
+    else
+        echo -e "${RED}❌ No package manager found (pnpm/npm)${NC}"
+        exit 1
+    fi
+    cd "${PROJECT_ROOT}"
 fi
 
 # Get list of staged workflow files
@@ -71,7 +80,7 @@ else
         echo -e "${RED}   Please fix the shell script issues above before committing${NC}"
         echo ""
         echo -e "${YELLOW}💡 Tips:${NC}"
-        echo -e "${YELLOW}   - Run 'node scripts/validation/workflows/extract-workflow-shell.js --fix' to auto-fix common issues${NC}"
+        echo -e "${YELLOW}   - Run 'pnpm start --fix' in scripts/validation/workflows/ to auto-fix common issues${NC}"
         echo -e "${YELLOW}   - Use '[[ ]]' instead of '[ ]' for bash tests${NC}"
         echo -e "${YELLOW}   - Add braces around variables: \${VAR} instead of \$VAR${NC}"
         echo -e "${YELLOW}   - Check .shellcheckrc configuration for rules${NC}"

@@ -1,6 +1,6 @@
 /**
  * i18n ESLint Configuration for Reynard Testing Package
- * 
+ *
  * This configuration extends the main ESLint config with i18n-specific rules
  * for validating internationalization patterns across all packages.
  */

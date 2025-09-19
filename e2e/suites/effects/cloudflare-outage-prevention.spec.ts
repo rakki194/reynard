@@ -1,6 +1,6 @@
 /**
  * 🦊 CLOUDFLARE OUTAGE PREVENTION TEST SUITE
- * 
+ *
  * *whiskers twitch with strategic cunning* Comprehensive test suite to verify
  * and prevent the React useEffect dependency array issue that caused the
  * Cloudflare outage on September 12, 2025, adapted for SolidJS.
@@ -12,7 +12,7 @@ import {
   EffectDependencyFixtures,
   type IEffectDependencyScenario,
   type IApiCallTracker,
-  type IEffectMetrics
+  type IEffectMetrics,
 } from "../../fixtures/effect-dependency-fixtures";
 import { TestUserData } from "../../fixtures/user-data";
 
@@ -28,12 +28,12 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
       maxMemoryUsageMB: 50,
       maxCpuUsagePercent: 70,
       detectionWindowMs: 3000, // 3 seconds for faster testing
-      alertThreshold: 0.8
+      alertThreshold: 0.8,
     });
 
     // Capture alert messages
     alertMessages = [];
-    effectMonitor.onAlert((message) => {
+    effectMonitor.onAlert(message => {
       alertMessages.push(message);
     });
 
@@ -47,7 +47,7 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
   test.afterEach(async () => {
     // Stop monitoring
     effectMonitor.stopMonitoring();
-    
+
     // Generate and save report
     const report = effectMonitor.generateReport();
     console.log("🦊 Effect Monitoring Report:", report);
@@ -55,8 +55,9 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
 
   test.describe("Object Recreation Scenarios", () => {
     test("should detect infinite loop from object recreation in dependency array", async ({ page }) => {
-      const scenario = EffectDependencyFixtures.getCloudflareOutageScenarios()
-        .find(s => s.name === "cloudflare_tenant_service_bug")!;
+      const scenario = EffectDependencyFixtures.getCloudflareOutageScenarios().find(
+        s => s.name === "cloudflare_tenant_service_bug"
+      )!;
 
       console.log(`🦊 Testing scenario: ${scenario.name}`);
       console.log(`Description: ${scenario.description}`);
@@ -68,7 +69,7 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
           alertMessages: [],
           effectExecutions: new Map(),
           apiCalls: [],
-          
+
           trackEffectExecution(effectId, executionTime, dependencySnapshot) {
             if (!this.effectExecutions.has(effectId)) {
               this.effectExecutions.set(effectId, []);
@@ -76,16 +77,18 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
             this.effectExecutions.get(effectId).push({
               timestamp: Date.now(),
               executionTime,
-              dependencySnapshot
+              dependencySnapshot,
             });
-            
+
             // Check for infinite loop
             const executions = this.effectExecutions.get(effectId);
             if (executions.length > 5) {
-              this.alertMessages.push(`INFINITE LOOP DETECTED in effect "${effectId}": ${executions.length} executions`);
+              this.alertMessages.push(
+                `INFINITE LOOP DETECTED in effect "${effectId}": ${executions.length} executions`
+              );
             }
           },
-          
+
           trackApiCall(endpoint, method, requestId, status = 200, responseTime = 0) {
             this.apiCalls.push({
               endpoint,
@@ -93,39 +96,41 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
               requestId,
               status,
               responseTime,
-              timestamp: Date.now()
+              timestamp: Date.now(),
             });
-            
+
             // Check for API spam
             const recentCalls = this.apiCalls.filter(call => Date.now() - call.timestamp < 5000);
             if (recentCalls.length > 10) {
               this.alertMessages.push(`API CALL SPAM DETECTED: ${recentCalls.length} calls in 5 seconds`);
             }
-            
+
             // Check for high error rate
             const recentErrors = recentCalls.filter(call => call.status >= 400);
             if (recentCalls.length > 5 && recentErrors.length / recentCalls.length > 0.5) {
-              this.alertMessages.push(`HIGH ERROR RATE DETECTED: ${Math.round(recentErrors.length / recentCalls.length * 100)}% errors`);
+              this.alertMessages.push(
+                `HIGH ERROR RATE DETECTED: ${Math.round((recentErrors.length / recentCalls.length) * 100)}% errors`
+              );
             }
           },
-          
+
           getAlertMessages() {
             return this.alertMessages;
           },
-          
+
           getEffectMetrics(effectId) {
             const executions = this.effectExecutions.get(effectId) || [];
             return {
               effectId,
               executionCount: executions.length,
-              isInfiniteLoop: executions.length > 5
+              isInfiniteLoop: executions.length > 5,
             };
-          }
+          },
         };
       });
 
       // Simulate the problematic effect with REAL API calls
-      const result = await page.evaluate(async (scenarioData) => {
+      const result = await page.evaluate(async scenarioData => {
         // This simulates the exact Cloudflare bug with real HTTP requests
         let renderCount = 0;
         let apiCallCount = 0;
@@ -134,7 +139,7 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
 
         async function simulateProblematicEffect() {
           renderCount++;
-          
+
           // This object is recreated on every render - the bug!
           const tenantService = {
             organizationId: "org-123",
@@ -143,31 +148,27 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
             metadata: {
               source: "dashboard",
               version: "1.0.0",
-              timestamp: Date.now() // This changes every time!
-            }
+              timestamp: Date.now(), // This changes every time!
+            },
           };
 
           // Track the effect execution
-          window.effectMonitor.trackEffectExecution(
-            "problematic-effect",
-            Math.random() * 10,
-            tenantService
-          );
+          window.effectMonitor.trackEffectExecution("problematic-effect", Math.random() * 10, tenantService);
 
           // Make REAL API call (this is what caused the Cloudflare outage!)
           try {
             apiCallCount++;
             console.log(`Making REAL API call #${apiCallCount} triggered by render #${renderCount}`);
-            
+
             const startTime = Date.now();
             const response = await fetch("http://localhost:12526/api/v1/organizations", {
               method: "GET",
               headers: {
-                "Content-Type": "application/json"
-              }
+                "Content-Type": "application/json",
+              },
             });
             const responseTime = Date.now() - startTime;
-            
+
             if (response.ok) {
               successfulCalls++;
               const data = await response.json();
@@ -188,15 +189,9 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
           } catch (error) {
             failedCalls++;
             console.log(`💥 API call #${apiCallCount} errored:`, error.message);
-            
+
             // Track the failed API call
-            window.effectMonitor.trackApiCall(
-              "/api/v1/organizations",
-              "GET",
-              `req-${apiCallCount}`,
-              0,
-              0
-            );
+            window.effectMonitor.trackApiCall("/api/v1/organizations", "GET", `req-${apiCallCount}`, 0, 0);
           }
         }
 
@@ -241,25 +236,25 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
         const recentCalls = calls.filter(call => Date.now() - call.timestamp < 5000);
         const successfulCalls = calls.filter(call => call.status >= 200 && call.status < 300);
         const failedCalls = calls.filter(call => call.status >= 400);
-        
+
         return {
           totalCalls: calls.length,
           recentCalls: recentCalls.length,
           successfulCalls: successfulCalls.length,
           failedCalls: failedCalls.length,
           averageResponseTime: calls.reduce((sum, call) => sum + call.responseTime, 0) / calls.length || 0,
-          errorRate: failedCalls.length / calls.length || 0
+          errorRate: failedCalls.length / calls.length || 0,
         };
       });
-      
+
       // Verify we made real API calls (they might fail due to CORS/network, but that's OK for testing)
       expect(browserApiStats.totalCalls).toBeGreaterThan(scenario.maxAllowedApiCalls);
-      
+
       // The important thing is that we attempted real API calls
       // Even if they fail, this proves we're testing real HTTP requests
       expect(result.apiCallCount).toBeGreaterThan(0);
       expect(result.renderCount).toBeGreaterThan(0);
-      
+
       // Log the real API call results
       console.log(`🦊 Real API Call Results:`);
       console.log(`  Total calls: ${browserApiStats.totalCalls}`);
@@ -270,8 +265,9 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
     });
 
     test("should detect infinite loop from array recreation in dependency array", async ({ page }) => {
-      const scenario = EffectDependencyFixtures.getCloudflareOutageScenarios()
-        .find(s => s.name === "array_dependency_recreation")!;
+      const scenario = EffectDependencyFixtures.getCloudflareOutageScenarios().find(
+        s => s.name === "array_dependency_recreation"
+      )!;
 
       // Inject the effect monitor into the page
       await page.evaluate(() => {
@@ -279,7 +275,7 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
           alertMessages: [],
           effectExecutions: new Map(),
           apiCalls: [],
-          
+
           trackEffectExecution(effectId, executionTime, dependencySnapshot) {
             if (!this.effectExecutions.has(effectId)) {
               this.effectExecutions.set(effectId, []);
@@ -287,63 +283,57 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
             this.effectExecutions.get(effectId).push({
               timestamp: Date.now(),
               executionTime,
-              dependencySnapshot
+              dependencySnapshot,
             });
-            
+
             const executions = this.effectExecutions.get(effectId);
             if (executions.length > 5) {
-              this.alertMessages.push(`INFINITE LOOP DETECTED in effect "${effectId}": ${executions.length} executions`);
+              this.alertMessages.push(
+                `INFINITE LOOP DETECTED in effect "${effectId}": ${executions.length} executions`
+              );
             }
           },
-          
+
           trackApiCall(endpoint, method, requestId) {
             this.apiCalls.push({
               endpoint,
               method,
               requestId,
-              timestamp: Date.now()
+              timestamp: Date.now(),
             });
           },
-          
+
           getAlertMessages() {
             return this.alertMessages;
           },
-          
+
           getEffectMetrics(effectId) {
             const executions = this.effectExecutions.get(effectId) || [];
             return {
               effectId,
               executionCount: executions.length,
-              isInfiniteLoop: executions.length > 5
+              isInfiniteLoop: executions.length > 5,
             };
-          }
+          },
         };
       });
 
-      await page.evaluate((scenarioData) => {
+      await page.evaluate(scenarioData => {
         let renderCount = 0;
         let apiCallCount = 0;
 
         function simulateArrayRecreationBug() {
           renderCount++;
-          
+
           // This array is recreated on every render - the bug!
           const permissions = ["read", "write", "admin"];
-          
+
           apiCallCount++;
           console.log(`API call #${apiCallCount} triggered by array recreation`);
 
-          window.effectMonitor.trackEffectExecution(
-            "array-recreation-effect",
-            Math.random() * 10,
-            permissions
-          );
+          window.effectMonitor.trackEffectExecution("array-recreation-effect", Math.random() * 10, permissions);
 
-          window.effectMonitor.trackApiCall(
-            "/api/v1/user-permissions",
-            "GET",
-            `req-${apiCallCount}`
-          );
+          window.effectMonitor.trackApiCall("/api/v1/user-permissions", "GET", `req-${apiCallCount}`);
         }
 
         // Simulate multiple renders
@@ -372,36 +362,31 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
     });
 
     test("should detect infinite loop from function recreation in dependency array", async ({ page }) => {
-      const scenario = EffectDependencyFixtures.getCloudflareOutageScenarios()
-        .find(s => s.name === "function_dependency_recreation")!;
+      const scenario = EffectDependencyFixtures.getCloudflareOutageScenarios().find(
+        s => s.name === "function_dependency_recreation"
+      )!;
 
-      await page.evaluate((scenarioData) => {
+      await page.evaluate(scenarioData => {
         let renderCount = 0;
         let apiCallCount = 0;
 
         function simulateFunctionRecreationBug() {
           renderCount++;
-          
+
           // This function is recreated on every render - the bug!
           const callback = () => {
             console.log("Callback executed");
           };
-          
+
           apiCallCount++;
           console.log(`API call #${apiCallCount} triggered by function recreation`);
 
           if (window.effectMonitor) {
-            window.effectMonitor.trackEffectExecution(
-              "function-recreation-effect",
-              Math.random() * 10,
-              { callback: callback.toString() }
-            );
+            window.effectMonitor.trackEffectExecution("function-recreation-effect", Math.random() * 10, {
+              callback: callback.toString(),
+            });
 
-            window.effectMonitor.trackApiCall(
-              "/api/v1/callback-endpoint",
-              "POST",
-              `req-${apiCallCount}`
-            );
+            window.effectMonitor.trackApiCall("/api/v1/callback-endpoint", "POST", `req-${apiCallCount}`);
           }
         }
 
@@ -417,7 +402,7 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
 
       // Verify detection
       expect(alertMessages.some(msg => msg.includes("INFINITE LOOP DETECTED"))).toBe(true);
-      
+
       const effectMetrics = effectMonitor.getEffectMetrics("function-recreation-effect");
       expect(effectMetrics!.isInfiniteLoop).toBe(true);
     });
@@ -425,10 +410,11 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
 
   test.describe("Prevention Pattern Tests", () => {
     test("should NOT trigger infinite loop with stable object references", async ({ page }) => {
-      const scenario = EffectDependencyFixtures.getPreventionPatternScenarios()
-        .find(s => s.name === "stable_object_reference")!;
+      const scenario = EffectDependencyFixtures.getPreventionPatternScenarios().find(
+        s => s.name === "stable_object_reference"
+      )!;
 
-      await page.evaluate((scenarioData) => {
+      await page.evaluate(scenarioData => {
         let renderCount = 0;
         let apiCallCount = 0;
 
@@ -440,16 +426,16 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
           metadata: {
             source: "dashboard",
             version: "1.0.0",
-            timestamp: 1234567890 // Fixed timestamp
-          }
+            timestamp: 1234567890, // Fixed timestamp
+          },
         };
 
         function simulateStableEffect() {
           renderCount++;
-          
+
           // Use the stable reference
           const tenantService = stableTenantService;
-          
+
           // Only make API call once (or when dependencies actually change)
           if (renderCount === 1) {
             apiCallCount++;
@@ -457,18 +443,10 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
           }
 
           if (window.effectMonitor) {
-            window.effectMonitor.trackEffectExecution(
-              "stable-effect",
-              Math.random() * 10,
-              tenantService
-            );
+            window.effectMonitor.trackEffectExecution("stable-effect", Math.random() * 10, tenantService);
 
             if (apiCallCount > 0) {
-              window.effectMonitor.trackApiCall(
-                "/api/v1/organizations",
-                "GET",
-                `req-${apiCallCount}`
-              );
+              window.effectMonitor.trackApiCall("/api/v1/organizations", "GET", `req-${apiCallCount}`);
             }
           }
         }
@@ -485,7 +463,7 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
 
       // Verify NO infinite loop was detected
       expect(alertMessages.some(msg => msg.includes("INFINITE LOOP DETECTED"))).toBe(false);
-      
+
       const effectMetrics = effectMonitor.getEffectMetrics("stable-effect");
       expect(effectMetrics).not.toBeNull();
       expect(effectMetrics!.executionCount).toBeLessThanOrEqual(scenario.maxAllowedApiCalls);
@@ -497,10 +475,11 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
     });
 
     test("should NOT trigger infinite loop with memoized dependencies", async ({ page }) => {
-      const scenario = EffectDependencyFixtures.getPreventionPatternScenarios()
-        .find(s => s.name === "memoized_dependencies")!;
+      const scenario = EffectDependencyFixtures.getPreventionPatternScenarios().find(
+        s => s.name === "memoized_dependencies"
+      )!;
 
-      await page.evaluate((scenarioData) => {
+      await page.evaluate(scenarioData => {
         let renderCount = 0;
         let apiCallCount = 0;
 
@@ -510,17 +489,17 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
 
         function simulateMemoizedEffect() {
           renderCount++;
-          
+
           // Create dependencies
           const deps = {
             userId: "user-456",
-            organizationId: "org-123"
+            organizationId: "org-123",
           };
-          
+
           // Check if dependencies actually changed
           const depsHash = JSON.stringify(deps);
           const depsChanged = depsHash !== lastDepsHash;
-          
+
           if (depsChanged) {
             memoizedDeps = deps;
             lastDepsHash = depsHash;
@@ -529,18 +508,10 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
           }
 
           if (window.effectMonitor) {
-            window.effectMonitor.trackEffectExecution(
-              "memoized-effect",
-              Math.random() * 10,
-              memoizedDeps
-            );
+            window.effectMonitor.trackEffectExecution("memoized-effect", Math.random() * 10, memoizedDeps);
 
             if (depsChanged) {
-              window.effectMonitor.trackApiCall(
-                "/api/v1/user-data",
-                "GET",
-                `req-${apiCallCount}`
-              );
+              window.effectMonitor.trackApiCall("/api/v1/user-data", "GET", `req-${apiCallCount}`);
             }
           }
         }
@@ -557,17 +528,18 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
 
       // Verify NO infinite loop was detected
       expect(alertMessages.some(msg => msg.includes("INFINITE LOOP DETECTED"))).toBe(false);
-      
+
       const effectMetrics = effectMonitor.getEffectMetrics("memoized-effect");
       expect(effectMetrics!.isInfiniteLoop).toBe(false);
       expect(effectMetrics!.executionCount).toBeLessThanOrEqual(scenario.maxAllowedApiCalls);
     });
 
     test("should NOT trigger infinite loop with primitive dependencies", async ({ page }) => {
-      const scenario = EffectDependencyFixtures.getPreventionPatternScenarios()
-        .find(s => s.name === "primitive_dependencies")!;
+      const scenario = EffectDependencyFixtures.getPreventionPatternScenarios().find(
+        s => s.name === "primitive_dependencies"
+      )!;
 
-      await page.evaluate((scenarioData) => {
+      await page.evaluate(scenarioData => {
         let renderCount = 0;
         let apiCallCount = 0;
 
@@ -578,7 +550,7 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
 
         function simulatePrimitiveEffect() {
           renderCount++;
-          
+
           // Only make API call when primitives actually change
           if (renderCount === 1) {
             apiCallCount++;
@@ -586,18 +558,14 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
           }
 
           if (window.effectMonitor) {
-            window.effectMonitor.trackEffectExecution(
-              "primitive-effect",
-              Math.random() * 10,
-              { userId, organizationId, isActive }
-            );
+            window.effectMonitor.trackEffectExecution("primitive-effect", Math.random() * 10, {
+              userId,
+              organizationId,
+              isActive,
+            });
 
             if (apiCallCount > 0) {
-              window.effectMonitor.trackApiCall(
-                "/api/v1/user-status",
-                "GET",
-                `req-${apiCallCount}`
-              );
+              window.effectMonitor.trackApiCall("/api/v1/user-status", "GET", `req-${apiCallCount}`);
             }
           }
         }
@@ -614,7 +582,7 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
 
       // Verify NO infinite loop was detected
       expect(alertMessages.some(msg => msg.includes("INFINITE LOOP DETECTED"))).toBe(false);
-      
+
       const effectMetrics = effectMonitor.getEffectMetrics("primitive-effect");
       expect(effectMetrics!.isInfiniteLoop).toBe(false);
     });
@@ -626,11 +594,7 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
         // Simulate the Cloudflare scenario: many API calls in short time
         for (let i = 0; i < 20; i++) {
           if (window.effectMonitor) {
-            window.effectMonitor.trackApiCall(
-              "/api/v1/organizations",
-              "GET",
-              `req-${i}`
-            );
+            window.effectMonitor.trackApiCall("/api/v1/organizations", "GET", `req-${i}`);
           }
         }
       });
@@ -639,9 +603,9 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
 
       // Check for API call spam detection
       expect(alertMessages.some(msg => msg.includes("API CALL SPAM DETECTED"))).toBe(true);
-      
+
       const apiStats = effectMonitor.getApiCallStats();
-      expect(apiStats.callsPerSecond).toBeGreaterThan(effectMonitor['config'].maxApiCallsPerSecond);
+      expect(apiStats.callsPerSecond).toBeGreaterThan(effectMonitor["config"].maxApiCallsPerSecond);
     });
 
     test("should detect memory usage spikes from infinite loops", async ({ page }) => {
@@ -662,7 +626,7 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
 
       // Check for infinite loop detection
       expect(alertMessages.some(msg => msg.includes("INFINITE LOOP DETECTED"))).toBe(true);
-      
+
       const effectMetrics = effectMonitor.getEffectMetrics("memory-intensive-effect");
       expect(effectMetrics!.isInfiniteLoop).toBe(true);
     });
@@ -671,54 +635,47 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
   test.describe("Real-world Cloudflare Scenario", () => {
     test("should reproduce and detect the exact Cloudflare dashboard bug", async ({ page }) => {
       const cloudflareScenario = EffectDependencyFixtures.getCloudflareDashboardScenario();
-      
+
       console.log("🦊 Reproducing Cloudflare Dashboard Bug:");
       console.log(`Component: ${cloudflareScenario.componentName}`);
       console.log(`API Endpoint: ${cloudflareScenario.apiEndpoint}`);
 
-      await page.evaluate((scenario) => {
+      await page.evaluate(scenario => {
         let renderCount = 0;
         let apiCallCount = 0;
         let lastApiCallTime = 0;
 
         function simulateCloudflareDashboardBug() {
           renderCount++;
-          
+
           // This is the exact problematic pattern from Cloudflare
           const tenantService = {
             organizationId: "org-123",
-            userId: "user-456", 
+            userId: "user-456",
             permissions: ["read", "write"],
             lastUpdated: Date.now(),
             // This metadata object is recreated every time - the bug!
             metadata: {
               source: "dashboard",
               version: "1.0.0",
-              timestamp: Date.now() // This changes every time!
-            }
+              timestamp: Date.now(), // This changes every time!
+            },
           };
 
           // Simulate the API call that overwhelmed Cloudflare's Tenant Service
           const now = Date.now();
-          if (now - lastApiCallTime > 100) { // Rate limit simulation
+          if (now - lastApiCallTime > 100) {
+            // Rate limit simulation
             apiCallCount++;
             lastApiCallTime = now;
             console.log(`Cloudflare API call #${apiCallCount} (render #${renderCount})`);
           }
 
           if (window.effectMonitor) {
-            window.effectMonitor.trackEffectExecution(
-              "cloudflare-dashboard-effect",
-              Math.random() * 15,
-              tenantService
-            );
+            window.effectMonitor.trackEffectExecution("cloudflare-dashboard-effect", Math.random() * 15, tenantService);
 
             if (apiCallCount > 0) {
-              window.effectMonitor.trackApiCall(
-                scenario.apiEndpoint,
-                "GET",
-                `cloudflare-req-${apiCallCount}`
-              );
+              window.effectMonitor.trackApiCall(scenario.apiEndpoint, "GET", `cloudflare-req-${apiCallCount}`);
             }
           }
         }
@@ -728,10 +685,10 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
           simulateCloudflareDashboardBug();
         }
 
-        return { 
-          renderCount, 
+        return {
+          renderCount,
           apiCallCount,
-          scenario: scenario
+          scenario: scenario,
         };
       }, cloudflareScenario);
 
@@ -765,16 +722,8 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
       await page.evaluate(() => {
         for (let i = 0; i < 5; i++) {
           if (window.effectMonitor) {
-            window.effectMonitor.trackEffectExecution(
-              "test-effect",
-              Math.random() * 10,
-              { test: "data" }
-            );
-            window.effectMonitor.trackApiCall(
-              "/api/test",
-              "GET",
-              `test-req-${i}`
-            );
+            window.effectMonitor.trackEffectExecution("test-effect", Math.random() * 10, { test: "data" });
+            window.effectMonitor.trackApiCall("/api/test", "GET", `test-req-${i}`);
           }
         }
       });
@@ -783,7 +732,7 @@ test.describe("🦊 Cloudflare Outage Prevention Tests", () => {
 
       // Generate report
       const report = effectMonitor.generateReport();
-      
+
       // Verify report contains expected sections
       expect(report).toContain("# 🦊 Effect Monitoring Report");
       expect(report).toContain("## Effect Execution Metrics");

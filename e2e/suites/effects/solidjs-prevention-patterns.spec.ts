@@ -1,6 +1,6 @@
 /**
  * 🦊 SOLIDJS PREVENTION PATTERNS TEST SUITE
- * 
+ *
  * *whiskers twitch with strategic cunning* Comprehensive test suite demonstrating
  * how to prevent the Cloudflare useEffect dependency array issue in SolidJS
  * using proper reactive patterns and best practices.
@@ -18,11 +18,11 @@ test.describe("🦊 SolidJS Prevention Patterns", () => {
     effectMonitor = new EffectMonitor({
       maxApiCallsPerSecond: 3,
       maxEffectExecutions: 2,
-      detectionWindowMs: 2000
+      detectionWindowMs: 2000,
     });
 
     alertMessages = [];
-    effectMonitor.onAlert((message) => {
+    effectMonitor.onAlert(message => {
       alertMessages.push(message);
     });
 
@@ -51,8 +51,8 @@ test.describe("🦊 SolidJS Prevention Patterns", () => {
               metadata: {
                 source: "dashboard",
                 version: "1.0.0",
-                timestamp: Date.now()
-              }
+                timestamp: Date.now(),
+              },
             };
             lastDepsHash = depsHash;
           }
@@ -62,16 +62,12 @@ test.describe("🦊 SolidJS Prevention Patterns", () => {
         // Simulate effect with stable object
         const deps = { organizationId: "org-123", userId: "user-456", permissions: ["read"] };
         const stableObject = createStableObject(deps);
-        
+
         // Multiple renders with same dependencies
         for (let i = 0; i < 5; i++) {
           const obj = createStableObject(deps);
           if (window.effectMonitor) {
-            window.effectMonitor.trackEffectExecution(
-              "stable-memo-effect",
-              Math.random() * 5,
-              obj
-            );
+            window.effectMonitor.trackEffectExecution("stable-memo-effect", Math.random() * 5, obj);
           }
         }
 
@@ -82,7 +78,7 @@ test.describe("🦊 SolidJS Prevention Patterns", () => {
 
       // Verify no infinite loop
       expect(alertMessages.some(msg => msg.includes("INFINITE LOOP DETECTED"))).toBe(false);
-      
+
       const effectMetrics = effectMonitor.getEffectMetrics("stable-memo-effect");
       expect(effectMetrics!.executionCount).toBeLessThanOrEqual(2);
     });
@@ -97,13 +93,9 @@ test.describe("🦊 SolidJS Prevention Patterns", () => {
         function createEffectWithPrimitives() {
           // Primitives are stable by nature
           const effectDeps = [userId, organizationId, isActive];
-          
+
           if (window.effectMonitor) {
-            window.effectMonitor.trackEffectExecution(
-              "primitive-signals-effect",
-              Math.random() * 5,
-              effectDeps
-            );
+            window.effectMonitor.trackEffectExecution("primitive-signals-effect", Math.random() * 5, effectDeps);
           }
         }
 
@@ -128,24 +120,20 @@ test.describe("🦊 SolidJS Prevention Patterns", () => {
           user: {
             id: "user-456",
             name: "John Doe",
-            permissions: ["read", "write"]
+            permissions: ["read", "write"],
           },
           organization: {
             id: "org-123",
-            name: "Acme Corp"
-          }
+            name: "Acme Corp",
+          },
         };
 
         function createEffectWithStore() {
           // Store provides stable references
           const state = storeState;
-          
+
           if (window.effectMonitor) {
-            window.effectMonitor.trackEffectExecution(
-              "store-state-effect",
-              Math.random() * 5,
-              state
-            );
+            window.effectMonitor.trackEffectExecution("store-state-effect", Math.random() * 5, state);
           }
         }
 
@@ -175,11 +163,11 @@ test.describe("🦊 SolidJS Prevention Patterns", () => {
         function createEffectWithIndividualDeps() {
           // Each primitive is stable
           if (window.effectMonitor) {
-            window.effectMonitor.trackEffectExecution(
-              "individual-deps-effect",
-              Math.random() * 5,
-              [userId, organizationId, isActive]
-            );
+            window.effectMonitor.trackEffectExecution("individual-deps-effect", Math.random() * 5, [
+              userId,
+              organizationId,
+              isActive,
+            ]);
           }
         }
 
@@ -204,20 +192,16 @@ test.describe("🦊 SolidJS Prevention Patterns", () => {
 
         function createEffectWithObjectLiteral() {
           renderCount++;
-          
+
           // This object is recreated every time
           const config = {
             apiUrl: "/api/v1",
             timeout: 5000,
-            retries: 3
+            retries: 3,
           };
 
           if (window.effectMonitor) {
-            window.effectMonitor.trackEffectExecution(
-              "object-literal-effect",
-              Math.random() * 5,
-              config
-            );
+            window.effectMonitor.trackEffectExecution("object-literal-effect", Math.random() * 5, config);
           }
         }
 
@@ -243,16 +227,12 @@ test.describe("🦊 SolidJS Prevention Patterns", () => {
 
         function createEffectWithArrayLiteral() {
           renderCount++;
-          
+
           // This array is recreated every time
           const permissions = ["read", "write", "admin"];
 
           if (window.effectMonitor) {
-            window.effectMonitor.trackEffectExecution(
-              "array-literal-effect",
-              Math.random() * 5,
-              permissions
-            );
+            window.effectMonitor.trackEffectExecution("array-literal-effect", Math.random() * 5, permissions);
           }
         }
 
@@ -285,7 +265,7 @@ test.describe("🦊 SolidJS Prevention Patterns", () => {
           if (now - lastCallTime > debounceMs) {
             apiCallCount++;
             lastCallTime = now;
-            
+
             if (window.effectMonitor) {
               window.effectMonitor.trackApiCall(endpoint, "GET", `debounced-req-${apiCallCount}`);
             }
@@ -295,11 +275,7 @@ test.describe("🦊 SolidJS Prevention Patterns", () => {
         // Simulate rapid effect executions
         for (let i = 0; i < 10; i++) {
           if (window.effectMonitor) {
-            window.effectMonitor.trackEffectExecution(
-              "debounced-effect",
-              Math.random() * 5,
-              { iteration: i }
-            );
+            window.effectMonitor.trackEffectExecution("debounced-effect", Math.random() * 5, { iteration: i });
           }
           debouncedApiCall("/api/v1/data");
         }
@@ -322,7 +298,7 @@ test.describe("🦊 SolidJS Prevention Patterns", () => {
 
         function cachedApiCall(endpoint: string, params: any) {
           const cacheKey = `${endpoint}-${JSON.stringify(params)}`;
-          
+
           if (cache.has(cacheKey)) {
             console.log("Cache hit for", cacheKey);
             return cache.get(cacheKey);
@@ -331,22 +307,18 @@ test.describe("🦊 SolidJS Prevention Patterns", () => {
           apiCallCount++;
           const response = { data: "cached response", timestamp: Date.now() };
           cache.set(cacheKey, response);
-          
+
           if (window.effectMonitor) {
             window.effectMonitor.trackApiCall(endpoint, "GET", `cached-req-${apiCallCount}`);
           }
-          
+
           return response;
         }
 
         // Simulate multiple calls with same parameters
         for (let i = 0; i < 8; i++) {
           if (window.effectMonitor) {
-            window.effectMonitor.trackEffectExecution(
-              "cached-effect",
-              Math.random() * 5,
-              { iteration: i }
-            );
+            window.effectMonitor.trackEffectExecution("cached-effect", Math.random() * 5, { iteration: i });
           }
           cachedApiCall("/api/v1/user", { userId: "user-456" });
         }
@@ -369,37 +341,33 @@ test.describe("🦊 SolidJS Prevention Patterns", () => {
 
         function deduplicatedApiCall(endpoint: string, params: any) {
           const requestKey = `${endpoint}-${JSON.stringify(params)}`;
-          
+
           if (pendingRequests.has(requestKey)) {
             console.log("Deduplicating request for", requestKey);
             return pendingRequests.get(requestKey);
           }
 
           apiCallCount++;
-          const requestPromise = new Promise((resolve) => {
+          const requestPromise = new Promise(resolve => {
             setTimeout(() => {
               resolve({ data: "deduplicated response" });
               pendingRequests.delete(requestKey);
             }, 100);
           });
-          
+
           pendingRequests.set(requestKey, requestPromise);
-          
+
           if (window.effectMonitor) {
             window.effectMonitor.trackApiCall(endpoint, "GET", `dedup-req-${apiCallCount}`);
           }
-          
+
           return requestPromise;
         }
 
         // Simulate concurrent calls with same parameters
         for (let i = 0; i < 6; i++) {
           if (window.effectMonitor) {
-            window.effectMonitor.trackEffectExecution(
-              "deduplicated-effect",
-              Math.random() * 5,
-              { iteration: i }
-            );
+            window.effectMonitor.trackEffectExecution("deduplicated-effect", Math.random() * 5, { iteration: i });
           }
           deduplicatedApiCall("/api/v1/data", { id: "123" });
         }
@@ -427,7 +395,7 @@ test.describe("🦊 SolidJS Prevention Patterns", () => {
         function exponentialBackoffApiCall(endpoint: string, attempt: number = 0) {
           const now = Date.now();
           const delay = baseDelay * Math.pow(2, attempt);
-          
+
           if (attempt > 0 && now - lastRetryTime < delay) {
             console.log(`Backing off for ${delay}ms`);
             return;
@@ -435,7 +403,7 @@ test.describe("🦊 SolidJS Prevention Patterns", () => {
 
           retryCount++;
           lastRetryTime = now;
-          
+
           if (window.effectMonitor) {
             window.effectMonitor.trackApiCall(endpoint, "GET", `backoff-req-${retryCount}`);
           }
@@ -472,7 +440,7 @@ test.describe("🦊 SolidJS Prevention Patterns", () => {
 
         function circuitBreakerApiCall(endpoint: string) {
           const now = Date.now();
-          
+
           if (circuitState === "OPEN") {
             if (now - lastFailureTime > recoveryTimeout) {
               circuitState = "HALF_OPEN";
@@ -493,7 +461,7 @@ test.describe("🦊 SolidJS Prevention Patterns", () => {
           if (isFailure) {
             failureCount++;
             lastFailureTime = now;
-            
+
             if (failureCount >= failureThreshold) {
               circuitState = "OPEN";
               console.log("Circuit breaker: OPEN");
@@ -527,16 +495,12 @@ test.describe("🦊 SolidJS Prevention Patterns", () => {
         const effects = [
           { name: "fast-effect", duration: 5 },
           { name: "medium-effect", duration: 25 },
-          { name: "slow-effect", duration: 100 }
+          { name: "slow-effect", duration: 100 },
         ];
 
         effects.forEach(effect => {
           if (window.effectMonitor) {
-            window.effectMonitor.trackEffectExecution(
-              effect.name,
-              effect.duration,
-              { test: "performance" }
-            );
+            window.effectMonitor.trackEffectExecution(effect.name, effect.duration, { test: "performance" });
           }
         });
       });
@@ -546,7 +510,7 @@ test.describe("🦊 SolidJS Prevention Patterns", () => {
       // Verify performance tracking
       const allMetrics = effectMonitor.getAllEffectMetrics();
       expect(allMetrics.size).toBe(3);
-      
+
       const slowEffect = allMetrics.get("slow-effect");
       expect(slowEffect!.averageExecutionTime).toBeGreaterThan(50);
     });
@@ -555,14 +519,13 @@ test.describe("🦊 SolidJS Prevention Patterns", () => {
       await page.evaluate(() => {
         // Simulate memory leak from effect closure
         const largeData = new Array(10000).fill("memory leak data");
-        
+
         for (let i = 0; i < 5; i++) {
           if (window.effectMonitor) {
-            window.effectMonitor.trackEffectExecution(
-              "memory-leak-effect",
-              Math.random() * 10,
-              { largeData, iteration: i }
-            );
+            window.effectMonitor.trackEffectExecution("memory-leak-effect", Math.random() * 10, {
+              largeData,
+              iteration: i,
+            });
           }
         }
       });
@@ -579,7 +542,7 @@ test.describe("🦊 SolidJS Prevention Patterns", () => {
     test("should demonstrate all prevention patterns", async ({ page }) => {
       const patterns = [
         "Stable object references with createMemo",
-        "Primitive dependencies with createSignal", 
+        "Primitive dependencies with createSignal",
         "Complex state with createStore",
         "Debounced API calls",
         "Cached API responses",
@@ -587,7 +550,7 @@ test.describe("🦊 SolidJS Prevention Patterns", () => {
         "Exponential backoff",
         "Circuit breaker pattern",
         "Performance monitoring",
-        "Memory leak detection"
+        "Memory leak detection",
       ];
 
       console.log("🦊 SolidJS Prevention Patterns Demonstrated:");

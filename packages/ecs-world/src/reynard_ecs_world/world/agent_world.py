@@ -15,6 +15,7 @@ from ..components import (
     LineageComponent,
     PositionComponent,
     ReproductionComponent,
+    SocialComponent,
     TraitComponent,
 )
 from ..core.entity import Entity
@@ -99,6 +100,7 @@ class AgentWorld(ECSWorld):
         entity.add_component(LineageComponent())
         entity.add_component(LifecycleComponent())
         entity.add_component(ReproductionComponent())
+        entity.add_component(SocialComponent())
 
         # Add position with random starting location
         start_x = random.uniform(100, 800)

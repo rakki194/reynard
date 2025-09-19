@@ -287,4 +287,4 @@ def cohens_d(group1, group2):
 
 ---
 
-*This methodology provides a rigorous framework for validating the effectiveness of Cloudflare outage prevention techniques through comprehensive experimental design and statistical analysis.*
+_This methodology provides a rigorous framework for validating the effectiveness of Cloudflare outage prevention techniques through comprehensive experimental design and statistical analysis._

@@ -11,7 +11,8 @@ The random choices are used purely for creative name generation, not for securit
 
 import random  # nosec B311 - Used for non-cryptographic name generation
 
-from .types import AgentName, AnimalSpirit, NamingConfig, NamingStyle
+from .generators import AlternativeNamingGenerator
+from .types import AgentName, AnimalSpirit, NamingConfig, NamingScheme, NamingStyle
 
 
 class ReynardRobotNamer:
@@ -22,6 +23,7 @@ class ReynardRobotNamer:
         self._load_animal_spirits()
         self._load_naming_components()
         self._load_generation_numbers()
+        self.alternative_generator = AlternativeNamingGenerator()
 
     def _load_animal_spirits(self) -> None:
         """Load animal spirit base names with diverse and exotic animals."""
@@ -685,6 +687,11 @@ class ReynardRobotNamer:
     def generate_single_name(self, config: NamingConfig) -> AgentName:
         """Generate a single name based on configuration."""
         try:
+            # Check if using alternative naming scheme
+            if config.scheme != NamingScheme.ANIMAL_SPIRIT:
+                return self.alternative_generator.generate_name(config)
+
+            # Use original animal spirit scheme
             style_generators = {
                 NamingStyle.FOUNDATION: self.generate_foundation_style,
                 NamingStyle.EXO: self.generate_exo_style,

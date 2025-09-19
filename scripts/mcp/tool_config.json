@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "last_updated": "",
+  "last_updated": "2025-09-19T13:18:20.135582",
   "tools": {
     "generate_agent_name": {
       "name": "generate_agent_name",
@@ -30,7 +30,7 @@
       "name": "list_agent_names",
       "category": "agent",
       "enabled": true,
-      "description": "List all assigned agent names",
+      "description": "List all agents and their names",
       "dependencies": [],
       "config": {}
     },
@@ -38,7 +38,15 @@
       "name": "roll_agent_spirit",
       "category": "agent",
       "enabled": true,
-      "description": "Randomly select animal spirits",
+      "description": "Randomly select an animal spirit (weighted distribution)",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_spirit_emoji": {
+      "name": "get_spirit_emoji",
+      "category": "agent",
+      "enabled": true,
+      "description": "Get emoji for animal spirit types",
       "dependencies": [],
       "config": {}
     },
@@ -46,7 +54,7 @@
       "name": "agent_startup_sequence",
       "category": "agent",
       "enabled": true,
-      "description": "Complete initialization with ECS integration",
+      "description": "Complete agent initialization with random spirit selection",
       "dependencies": [],
       "config": {}
     },
@@ -63,6 +71,78 @@
       "category": "agent",
       "enabled": true,
       "description": "Get LoRA configuration for agent persona",
+      "dependencies": [],
+      "config": {}
+    },
+    "create_character": {
+      "name": "create_character",
+      "category": "character",
+      "enabled": true,
+      "description": "Create a new character with detailed customization",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_character": {
+      "name": "get_character",
+      "category": "character",
+      "enabled": true,
+      "description": "Get detailed character information by ID",
+      "dependencies": [],
+      "config": {}
+    },
+    "list_characters": {
+      "name": "list_characters",
+      "category": "character",
+      "enabled": true,
+      "description": "List all characters with optional filtering",
+      "dependencies": [],
+      "config": {}
+    },
+    "search_characters": {
+      "name": "search_characters",
+      "category": "character",
+      "enabled": true,
+      "description": "Search characters by name, description, or tags",
+      "dependencies": [],
+      "config": {}
+    },
+    "update_character": {
+      "name": "update_character",
+      "category": "character",
+      "enabled": true,
+      "description": "Update character information",
+      "dependencies": [],
+      "config": {}
+    },
+    "delete_character": {
+      "name": "delete_character",
+      "category": "character",
+      "enabled": true,
+      "description": "Delete a character by ID",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_character_types": {
+      "name": "get_character_types",
+      "category": "character",
+      "enabled": true,
+      "description": "Get available character types",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_personality_traits": {
+      "name": "get_personality_traits",
+      "category": "character",
+      "enabled": true,
+      "description": "Get available personality traits",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_ability_traits": {
+      "name": "get_ability_traits",
+      "category": "character",
+      "enabled": true,
+      "description": "Get available ability traits",
       "dependencies": [],
       "config": {}
     },
@@ -214,7 +294,7 @@
       "name": "semantic_search",
       "category": "search",
       "enabled": true,
-      "description": "Perform semantic search using vector embeddings",
+      "description": "Perform semantic search using vector embeddings and RAG backend",
       "dependencies": [],
       "config": {}
     },
@@ -222,7 +302,7 @@
       "name": "search_enhanced",
       "category": "search",
       "enabled": true,
-      "description": "Enhanced BM25 search with query expansion",
+      "description": "Enhanced BM25 search with query expansion, filtering, and intelligent suggestions",
       "dependencies": [],
       "config": {}
     },
@@ -316,41 +396,337 @@
     },
     "detect_monoliths": {
       "name": "detect_monoliths",
-      "category": "monolith",
+      "category": "analysis",
       "enabled": true,
-      "description": "Detect large monolithic files that violate the 140-line axiom",
+      "description": "🦊 Detect large monolithic files that violate the 140-line axiom. Perfect for finding code that needs refactoring into smaller, more maintainable modules. Use this to identify files that are too complex and should be broken down.",
       "dependencies": [],
       "config": {}
     },
     "analyze_file_complexity": {
       "name": "analyze_file_complexity",
-      "category": "monolith",
+      "category": "analysis",
       "enabled": true,
-      "description": "Deep-dive analysis of a specific file's complexity metrics",
+      "description": "🔍 Deep-dive analysis of a specific file's complexity metrics. Perfect for understanding why a file is considered a monolith and what specific refactoring opportunities exist.",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_agent_position": {
+      "name": "get_agent_position",
+      "category": "ecs",
+      "enabled": true,
+      "description": "Get the current position of a specific agent",
+      "dependencies": [],
+      "config": {}
+    },
+    "move_agent": {
+      "name": "move_agent",
+      "category": "ecs",
+      "enabled": true,
+      "description": "Move an agent to a specific position",
+      "dependencies": [],
+      "config": {}
+    },
+    "move_agent_towards": {
+      "name": "move_agent_towards",
+      "category": "ecs",
+      "enabled": true,
+      "description": "Move an agent towards another agent",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_agent_distance": {
+      "name": "get_agent_distance",
+      "category": "ecs",
+      "enabled": true,
+      "description": "Get the distance between two agents",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_nearby_agents": {
+      "name": "get_nearby_agents",
+      "category": "ecs",
+      "enabled": true,
+      "description": "Get all agents within a certain radius of an agent",
+      "dependencies": [],
+      "config": {}
+    },
+    "initiate_interaction": {
+      "name": "initiate_interaction",
+      "category": "ecs",
+      "enabled": true,
+      "description": "Initiate an interaction between two agents",
+      "dependencies": [],
+      "config": {}
+    },
+    "send_chat_message": {
+      "name": "send_chat_message",
+      "category": "ecs",
+      "enabled": true,
+      "description": "Send a chat message from one agent to another",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_agent_social_stats": {
+      "name": "get_agent_social_stats",
+      "category": "ecs",
+      "enabled": true,
+      "description": "Get social interaction statistics for an agent",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_tool_configs": {
+      "name": "get_tool_configs",
+      "category": "management",
+      "enabled": true,
+      "description": "Get all tool configurations and statistics",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_tool_status": {
+      "name": "get_tool_status",
+      "category": "management",
+      "enabled": true,
+      "description": "Get status of a specific tool or all tools",
+      "dependencies": [],
+      "config": {}
+    },
+    "enable_tool": {
+      "name": "enable_tool",
+      "category": "management",
+      "enabled": true,
+      "description": "Enable a specific tool",
+      "dependencies": [],
+      "config": {}
+    },
+    "disable_tool": {
+      "name": "disable_tool",
+      "category": "management",
+      "enabled": true,
+      "description": "Disable a specific tool",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_tool_metadata": {
+      "name": "get_tool_metadata",
+      "category": "management",
+      "enabled": true,
+      "description": "Get metadata for a specific tool",
+      "dependencies": [],
+      "config": {}
+    },
+    "list_tools_by_category": {
+      "name": "list_tools_by_category",
+      "category": "management",
+      "enabled": true,
+      "description": "List tools grouped by category",
+      "dependencies": [],
+      "config": {}
+    },
+    "render_mermaid_to_png": {
+      "name": "render_mermaid_to_png",
+      "category": "visualization",
+      "enabled": true,
+      "description": "Render mermaid diagram to PNG format",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_mermaid_diagram_stats": {
+      "name": "get_mermaid_diagram_stats",
+      "category": "visualization",
+      "enabled": true,
+      "description": "Get statistics and analysis of a mermaid diagram",
+      "dependencies": [],
+      "config": {}
+    },
+    "test_mermaid_render": {
+      "name": "test_mermaid_render",
+      "category": "visualization",
+      "enabled": true,
+      "description": "Test mermaid diagram rendering with a simple example",
+      "dependencies": [],
+      "config": {}
+    },
+    "git_status": {
+      "name": "git_status",
+      "category": "git",
+      "enabled": true,
+      "description": "Get current Git repository status",
+      "dependencies": [],
+      "config": {}
+    },
+    "git_branch_info": {
+      "name": "git_branch_info",
+      "category": "git",
+      "enabled": true,
+      "description": "Get current branch information",
+      "dependencies": [],
+      "config": {}
+    },
+    "git_commit_history": {
+      "name": "git_commit_history",
+      "category": "git",
+      "enabled": true,
+      "description": "Get recent commit history",
+      "dependencies": [],
+      "config": {}
+    },
+    "git_diff": {
+      "name": "git_diff",
+      "category": "git",
+      "enabled": true,
+      "description": "Get diff of current changes",
+      "dependencies": [],
+      "config": {}
+    },
+    "git_add": {
+      "name": "git_add",
+      "category": "git",
+      "enabled": true,
+      "description": "Add files to Git staging area",
+      "dependencies": [],
+      "config": {}
+    },
+    "git_commit": {
+      "name": "git_commit",
+      "category": "git",
+      "enabled": true,
+      "description": "Create a new commit",
+      "dependencies": [],
+      "config": {}
+    },
+    "git_push": {
+      "name": "git_push",
+      "category": "git",
+      "enabled": true,
+      "description": "Push commits to remote repository",
+      "dependencies": [],
+      "config": {}
+    },
+    "git_pull": {
+      "name": "git_pull",
+      "category": "git",
+      "enabled": true,
+      "description": "Pull latest changes from remote repository",
       "dependencies": [],
       "config": {}
     },
     "get_secret": {
       "name": "get_secret",
-      "category": "utility",
+      "category": "secrets",
       "enabled": true,
-      "description": "Retrieve a user secret by name (e.g., GH_TOKEN for GitHub operations)",
+      "description": "Retrieve a user secret by name",
       "dependencies": [],
       "config": {}
     },
-    "list_available_secrets": {
-      "name": "list_available_secrets",
-      "category": "utility",
+    "list_secrets": {
+      "name": "list_secrets",
+      "category": "secrets",
       "enabled": true,
-      "description": "List all available secrets that agents can access",
+      "description": "List all available secrets",
       "dependencies": [],
       "config": {}
     },
-    "validate_secret": {
-      "name": "validate_secret",
-      "category": "utility",
+    "check_secret": {
+      "name": "check_secret",
+      "category": "secrets",
       "enabled": true,
-      "description": "Validate that a secret is properly configured and accessible",
+      "description": "Check if a secret is available and set",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_secret_info": {
+      "name": "get_secret_info",
+      "category": "secrets",
+      "enabled": true,
+      "description": "Get detailed information about a secret",
+      "dependencies": [],
+      "config": {}
+    },
+    "validate_vscode_task": {
+      "name": "validate_vscode_task",
+      "category": "vscode",
+      "enabled": true,
+      "description": "Validate that a VS Code task exists and is executable",
+      "dependencies": [],
+      "config": {}
+    },
+    "execute_vscode_task": {
+      "name": "execute_vscode_task",
+      "category": "vscode",
+      "enabled": true,
+      "description": "Execute a VS Code task by name",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_vscode_task_info": {
+      "name": "get_vscode_task_info",
+      "category": "vscode",
+      "enabled": true,
+      "description": "Get detailed information about a specific VS Code task",
+      "dependencies": [],
+      "config": {}
+    },
+    "search_content": {
+      "name": "search_content",
+      "category": "search",
+      "enabled": true,
+      "description": "Search for content using BM25 with query expansion",
+      "dependencies": [],
+      "config": {}
+    },
+    "list_files": {
+      "name": "list_files",
+      "category": "search",
+      "enabled": true,
+      "description": "List files in a directory with optional filtering",
+      "dependencies": [],
+      "config": {}
+    },
+    "search_code_patterns": {
+      "name": "search_code_patterns",
+      "category": "search",
+      "enabled": true,
+      "description": "Search for specific code patterns (functions, classes, imports, etc.)",
+      "dependencies": [],
+      "config": {}
+    },
+    "hybrid_search": {
+      "name": "hybrid_search",
+      "category": "search",
+      "enabled": true,
+      "description": "Perform hybrid search combining semantic and traditional text search",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_query_suggestions": {
+      "name": "get_query_suggestions",
+      "category": "search",
+      "enabled": true,
+      "description": "Get intelligent query suggestions based on project content",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_search_analytics": {
+      "name": "get_search_analytics",
+      "category": "search",
+      "enabled": true,
+      "description": "Get search analytics and statistics",
+      "dependencies": [],
+      "config": {}
+    },
+    "clear_search_cache": {
+      "name": "clear_search_cache",
+      "category": "search",
+      "enabled": true,
+      "description": "Clear search cache and temporary files",
+      "dependencies": [],
+      "config": {}
+    },
+    "reindex_project": {
+      "name": "reindex_project",
+      "category": "search",
+      "enabled": true,
+      "description": "Reindex the entire project for search",
       "dependencies": [],
       "config": {}
     }

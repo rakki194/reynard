@@ -10,6 +10,7 @@ from .lifecycle import LifecycleComponent
 from .lineage import LineageComponent
 from .position import PositionComponent
 from .reproduction import ReproductionComponent
+from .social import SocialComponent
 from .traits import TraitComponent
 
 __all__ = [
@@ -18,5 +19,6 @@ __all__ = [
     "LineageComponent",
     "PositionComponent",
     "ReproductionComponent",
+    "SocialComponent",
     "TraitComponent",
 ]

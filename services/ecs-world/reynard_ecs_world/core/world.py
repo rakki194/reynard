@@ -97,6 +97,21 @@ class ECSWorld:
             self.systems.remove(system)
             logger.debug(f"Removed system {type(system).__name__}")
 
+    def get_system(self, system_type: type[System]) -> System | None:
+        """
+        Get a system by type.
+
+        Args:
+            system_type: The type of system to retrieve
+
+        Returns:
+            The system if found, None otherwise
+        """
+        for system in self.systems:
+            if isinstance(system, system_type):
+                return system
+        return None
+
     def update(self, delta_time: float) -> None:
         """
         Update all systems.

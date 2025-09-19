@@ -18,6 +18,7 @@ from protocol.mcp_handler import MCPHandler
 from protocol.tool_registry import ToolExecutionType, ToolRegistry
 from services.tool_config_service import ToolConfigService
 from tools.agent_tools import AgentTools
+from tools.character_tools import CharacterTools
 from tools.config_tools import ConfigTools
 from tools.ecs_agent_tools import ECSAgentTools
 from tools.image_viewer_tools import ImageViewerTools
@@ -33,6 +34,7 @@ from tools.vscode_tasks_tools import VSCodeTasksTools
 from utils.logging_config import setup_logging
 
 from reynard_agent_naming import AgentNameManager
+from services.naming_config_service import NamingConfigService
 
 logger = setup_logging()
 
@@ -43,6 +45,7 @@ class MCPServer:
     def __init__(self) -> None:
         # Initialize services
         self.agent_manager = AgentNameManager()
+        self.naming_config_service = NamingConfigService()
 
         # Initialize tool configuration service
         self.tool_config_service = ToolConfigService()
@@ -53,6 +56,7 @@ class MCPServer:
         # Initialize tool handlers
         self.ecs_agent_tools = ECSAgentTools()
         self.agent_tools = AgentTools(self.agent_manager, self.ecs_agent_tools)
+        self.character_tools = CharacterTools(self.tool_registry)
         self.search_tools = SearchTools()
         self.utility_tools = UtilityTools()
         self.linting_tools = LintingTools()
@@ -111,6 +115,18 @@ class MCPServer:
             "agent",
         )
         self.tool_registry.register_tool(
+            "get_available_naming_schemes",
+            self.agent_tools.get_available_naming_schemes,
+            ToolExecutionType.SYNC,
+            "agent",
+        )
+        self.tool_registry.register_tool(
+            "set_naming_scheme_config",
+            self.agent_tools.set_naming_scheme_config,
+            ToolExecutionType.SYNC,
+            "agent",
+        )
+        self.tool_registry.register_tool(
             "get_agent_persona",
             self.agent_tools.get_agent_persona,
             ToolExecutionType.SYNC,
@@ -121,6 +137,62 @@ class MCPServer:
             self.agent_tools.get_lora_config,
             ToolExecutionType.SYNC,
             "agent",
+        )
+
+        # Character tools
+        self.tool_registry.register_tool(
+            "create_character",
+            self.character_tools.create_character,
+            ToolExecutionType.ASYNC,
+            "character",
+        )
+        self.tool_registry.register_tool(
+            "get_character",
+            self.character_tools.get_character,
+            ToolExecutionType.ASYNC,
+            "character",
+        )
+        self.tool_registry.register_tool(
+            "list_characters",
+            self.character_tools.list_characters,
+            ToolExecutionType.ASYNC,
+            "character",
+        )
+        self.tool_registry.register_tool(
+            "search_characters",
+            self.character_tools.search_characters,
+            ToolExecutionType.ASYNC,
+            "character",
+        )
+        self.tool_registry.register_tool(
+            "update_character",
+            self.character_tools.update_character,
+            ToolExecutionType.ASYNC,
+            "character",
+        )
+        self.tool_registry.register_tool(
+            "delete_character",
+            self.character_tools.delete_character,
+            ToolExecutionType.ASYNC,
+            "character",
+        )
+        self.tool_registry.register_tool(
+            "get_character_types",
+            self.character_tools.get_character_types,
+            ToolExecutionType.ASYNC,
+            "character",
+        )
+        self.tool_registry.register_tool(
+            "get_personality_traits",
+            self.character_tools.get_personality_traits,
+            ToolExecutionType.ASYNC,
+            "character",
+        )
+        self.tool_registry.register_tool(
+            "get_ability_traits",
+            self.character_tools.get_ability_traits,
+            ToolExecutionType.ASYNC,
+            "character",
         )
 
         # Utility tools
@@ -308,15 +380,9 @@ class MCPServer:
 
         # Register unified search tools
         self.tool_registry.register_tool(
-            "bm25_search",
-            self.search_tools.bm25_search,
-            ToolExecutionType.SYNC,
-            "search",
-        )
-        self.tool_registry.register_tool(
-            "search_needle_in_haystack",
-            self.search_tools.search_needle_in_haystack,
-            ToolExecutionType.SYNC,
+            "search_enhanced",
+            self.search_tools.search_enhanced,
+            ToolExecutionType.ASYNC,
             "search",
         )
         self.tool_registry.register_tool(
@@ -352,24 +418,6 @@ class MCPServer:
         self.tool_registry.register_tool(
             "hybrid_search",
             self.search_tools.hybrid_search,
-            ToolExecutionType.ASYNC,
-            "search",
-        )
-        self.tool_registry.register_tool(
-            "embed_text",
-            self.search_tools.embed_text,
-            ToolExecutionType.ASYNC,
-            "search",
-        )
-        self.tool_registry.register_tool(
-            "index_documents",
-            self.search_tools.index_documents,
-            ToolExecutionType.ASYNC,
-            "search",
-        )
-        self.tool_registry.register_tool(
-            "search_enhanced",
-            self.search_tools.search_enhanced,
             ToolExecutionType.ASYNC,
             "search",
         )

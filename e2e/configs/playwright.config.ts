@@ -3,7 +3,7 @@
  *
  * Comprehensive Playwright configuration for testing authentication workflows
  * across the Reynard ecosystem with gatekeeper, backend, and auth package.
- * 
+ *
  * 🦊 *whiskers twitch with unified precision* Now uses centralized results management.
  */
 
@@ -19,7 +19,7 @@ import { createResultsManager, TEST_TYPES } from "../core/utils/results-manager"
 const resultsManager = createResultsManager(TEST_TYPES.E2E, {
   environment: process.env.NODE_ENV || "development",
   branch: process.env.GIT_BRANCH || "unknown",
-  commit: process.env.GIT_COMMIT || "unknown"
+  commit: process.env.GIT_COMMIT || "unknown",
 });
 
 // Create directories and get paths

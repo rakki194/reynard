@@ -1,18 +1,18 @@
 /**
  * 🦊 EFFECT DEPENDENCY FIXTURES
- * 
- * Fixtures for testing SolidJS createEffect dependency array issues that caused the 
+ *
+ * Fixtures for testing SolidJS createEffect dependency array issues that caused the
  * Cloudflare outage. These fixtures simulate the exact scenarios that led to infinite
  * API call loops.
  */
 
 import type { ITestUserData } from "./user-data";
 import { TestUserData } from "./user-data";
-import type { 
-  IEffectDependencyScenario, 
-  IApiCallTracker, 
-  IEffectMetrics, 
-  ITenantServiceMock 
+import type {
+  IEffectDependencyScenario,
+  IApiCallTracker,
+  IEffectMetrics,
+  ITenantServiceMock,
 } from "./effect-dependency-types";
 
 /**
@@ -32,17 +32,17 @@ export class EffectDependencyFixtures {
         maxAllowedApiCalls: 3,
         userData: TestUserData.getValidUser(),
         shouldFail: true,
-        failureReason: "Object recreated on every render causes infinite API calls"
+        failureReason: "Object recreated on every render causes infinite API calls",
       },
       {
         name: "array_dependency_recreation",
         description: "Tests array recreation in dependency array",
-        scenarioType: "array_recreation", 
+        scenarioType: "array_recreation",
         expectedApiCalls: 1,
         maxAllowedApiCalls: 3,
         userData: TestUserData.getValidUser(),
         shouldFail: true,
-        failureReason: "Array recreated on every render causes infinite API calls"
+        failureReason: "Array recreated on every render causes infinite API calls",
       },
       {
         name: "function_dependency_recreation",
@@ -52,7 +52,7 @@ export class EffectDependencyFixtures {
         maxAllowedApiCalls: 3,
         userData: TestUserData.getValidUser(),
         shouldFail: true,
-        failureReason: "Function recreated on every render causes infinite API calls"
+        failureReason: "Function recreated on every render causes infinite API calls",
       },
       {
         name: "nested_object_dependency",
@@ -62,8 +62,8 @@ export class EffectDependencyFixtures {
         maxAllowedApiCalls: 3,
         userData: TestUserData.getValidUser(),
         shouldFail: true,
-        failureReason: "Nested object recreated on every render causes infinite API calls"
-      }
+        failureReason: "Nested object recreated on every render causes infinite API calls",
+      },
     ];
   }
 
@@ -79,7 +79,7 @@ export class EffectDependencyFixtures {
         expectedApiCalls: 1,
         maxAllowedApiCalls: 1,
         userData: TestUserData.getValidUser(),
-        shouldFail: false
+        shouldFail: false,
       },
       {
         name: "memoized_dependencies",
@@ -88,7 +88,7 @@ export class EffectDependencyFixtures {
         expectedApiCalls: 1,
         maxAllowedApiCalls: 1,
         userData: TestUserData.getValidUser(),
-        shouldFail: false
+        shouldFail: false,
       },
       {
         name: "primitive_dependencies",
@@ -97,8 +97,8 @@ export class EffectDependencyFixtures {
         expectedApiCalls: 1,
         maxAllowedApiCalls: 1,
         userData: TestUserData.getValidUser(),
-        shouldFail: false
-      }
+        shouldFail: false,
+      },
     ];
   }
 
@@ -108,14 +108,14 @@ export class EffectDependencyFixtures {
   static createProblematicTenantService(): ITenantServiceMock {
     return {
       organizationId: "org-123",
-      userId: "user-456", 
+      userId: "user-456",
       permissions: ["read", "write"],
       lastUpdated: Date.now(),
       metadata: {
         source: "dashboard",
         version: "1.0.0",
-        timestamp: Date.now()
-      }
+        timestamp: Date.now(),
+      },
     };
   }
 
@@ -125,8 +125,8 @@ export class EffectDependencyFixtures {
   static createStableTenantService(): ITenantServiceMock {
     const stableMetadata = {
       source: "dashboard",
-      version: "1.0.0", 
-      timestamp: Date.now()
+      version: "1.0.0",
+      timestamp: Date.now(),
     };
 
     return {
@@ -134,7 +134,7 @@ export class EffectDependencyFixtures {
       userId: "user-456",
       permissions: ["read", "write"],
       lastUpdated: Date.now(),
-      metadata: stableMetadata
+      metadata: stableMetadata,
     };
   }
 
@@ -145,7 +145,7 @@ export class EffectDependencyFixtures {
     return [
       { id: 1, name: "item1" },
       { id: 2, name: "item2" },
-      { id: 3, name: "item3" }
+      { id: 3, name: "item3" },
     ];
   }
 
@@ -156,7 +156,7 @@ export class EffectDependencyFixtures {
     const stableArray = [
       { id: 1, name: "item1" },
       { id: 2, name: "item2" },
-      { id: 3, name: "item3" }
+      { id: 3, name: "item3" },
     ];
     return stableArray;
   }
@@ -189,10 +189,10 @@ export class EffectDependencyFixtures {
         level2: {
           level3: {
             data: "nested data",
-            timestamp: Date.now()
-          }
-        }
-      }
+            timestamp: Date.now(),
+          },
+        },
+      },
     };
   }
 
@@ -206,21 +206,17 @@ export class EffectDependencyFixtures {
         level2: {
           level3: {
             data: "nested data",
-            timestamp: stableTimestamp
-          }
-        }
-      }
+            timestamp: stableTimestamp,
+          },
+        },
+      },
     };
   }
 
   /**
    * Generate mock API call tracker
    */
-  static createApiCallTracker(
-    endpoint: string,
-    method: string = "GET",
-    payload?: unknown
-  ): IApiCallTracker {
+  static createApiCallTracker(endpoint: string, method: string = "GET", payload?: unknown): IApiCallTracker {
     return {
       endpoint,
       method,
@@ -228,17 +224,14 @@ export class EffectDependencyFixtures {
       requestId: `req-${Math.random().toString(36).substr(2, 9)}`,
       payload,
       responseStatus: 200,
-      responseTime: Math.random() * 100 + 50
+      responseTime: Math.random() * 100 + 50,
     };
   }
 
   /**
    * Generate effect execution metrics
    */
-  static createEffectMetrics(
-    effectId: string,
-    executionCount: number = 0
-  ): IEffectMetrics {
+  static createEffectMetrics(effectId: string, executionCount: number = 0): IEffectMetrics {
     return {
       effectId,
       executionCount,
@@ -246,7 +239,7 @@ export class EffectDependencyFixtures {
       averageExecutionTime: 0,
       totalExecutionTime: 0,
       dependencyChanges: 0,
-      isInfiniteLoop: executionCount > 10
+      isInfiniteLoop: executionCount > 10,
     };
   }
 
@@ -300,7 +293,7 @@ createEffect(() => {
   fetchOrganizationData(tenantService());
 }, [tenantService]); // ✅ Stable memoized reference
 `,
-      apiEndpoint: "/api/v1/organizations"
+      apiEndpoint: "/api/v1/organizations",
     };
   }
 
@@ -317,7 +310,7 @@ createEffect(() => {
       maxApiCallsPerSecond: 10,
       maxEffectExecutions: 5,
       maxMemoryUsageMB: 100,
-      maxCpuUsagePercent: 80
+      maxCpuUsagePercent: 80,
     };
   }
 }

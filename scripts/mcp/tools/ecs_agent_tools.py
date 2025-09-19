@@ -4,716 +4,795 @@ ECS Agent Tools
 ===============
 
 MCP tool handlers for ECS-based agent management.
-Provides tools for creating, managing, and automating agent systems.
+Now uses the new @register_tool decorator system for automatic registration.
 
+Provides tools for creating, managing, and automating agent systems.
 Uses the authoritative ECS World via FastAPI backend connection.
-Follows the 140-line axiom and modular architecture principles.
 """
 
 import json
 import logging
-import math
 from typing import Any
 
-from services.ecs_client import ECSClient, get_ecs_client
+from services.ecs_client import get_ecs_client
+from protocol.tool_registry import register_tool
 
 logger = logging.getLogger(__name__)
 
+# Initialize ECS client
+ecs_client = get_ecs_client()
 
-class ECSAgentTools:
-    """Handles ECS-based agent tool operations via FastAPI backend."""
 
-    def __init__(self, ecs_client: ECSClient | None = None):
-        """Initialize ECS agent tools with FastAPI backend connection."""
-        self.ecs_client = ecs_client or get_ecs_client()
-        self.automatic_reproduction = True
+@register_tool(
+    name="create_ecs_agent",
+    category="ecs",
+    description="Create a new agent using the ECS system",
+    execution_type="async",
+    enabled=True,
+    dependencies=[],
+    config={}
+)
+async def create_ecs_agent(**kwargs) -> dict[str, Any]:
+    """Create a new agent using ECS system via FastAPI backend."""
+    arguments = kwargs.get("arguments", {})
+    agent_id = arguments.get("agent_id", "")
+    spirit = arguments.get("spirit", "fox")
+    style = arguments.get("style", "foundation")
+    name = arguments.get("name")
 
-    async def create_ecs_agent(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Create a new agent using ECS system via FastAPI backend."""
-        agent_id = arguments.get("agent_id", "")
-        spirit = arguments.get("spirit", "fox")
-        style = arguments.get("style", "foundation")
-        name = arguments.get("name")
+    # Generate a proper agent ID if a generic one is provided
+    if not agent_id or agent_id in [
+        "current-session",
+        "test-agent",
+        "agent",
+        "user",
+        "default",
+        "temp",
+        "temporary",
+        "placeholder",
+        "unknown",
+        "new-agent",
+    ]:
+        import uuid
+        agent_id = f"agent-{uuid.uuid4().hex[:8]}"
 
-        # Generate a proper agent ID if a generic one is provided
-        if not agent_id or agent_id in [
-            "current-session",
-            "test-agent",
-            "agent",
-            "user",
-            "default",
-            "temp",
-            "temporary",
-            "placeholder",
-            "unknown",
-            "new-agent",
-        ]:
-            import random
-            import time
+    try:
+        # Create agent via ECS client
+        result = await ecs_client.create_agent(
+            agent_id=agent_id,
+            spirit=spirit,
+            style=style,
+            name=name
+        )
 
-            agent_id = f"agent-{int(time.time())}-{random.randint(1000, 9999)}"
-
-        try:
-            agent_data = await self.ecs_client.create_agent(
-                agent_id, spirit, style, name
-            )
-
+        if result.get("success"):
             return {
                 "content": [
                     {
                         "type": "text",
-                        "text": f"Created ECS agent {agent_data['agent_id']} with name {agent_data['name']}",
+                        "text": f"✅ ECS Agent created successfully!\n\n{json.dumps(result, indent=2)}"
                     }
                 ]
             }
-        except Exception as e:
-            return {
-                "content": [
-                    {"type": "text", "text": f"Failed to create ECS agent: {e}"}
-                ]
-            }
-
-    async def create_ecs_offspring(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Create offspring using ECS system via FastAPI backend."""
-        parent1_id = arguments.get("parent1_id", "")
-        parent2_id = arguments.get("parent2_id", "")
-        offspring_id = arguments.get("offspring_id", "")
-
-        # Generate a proper offspring ID if a generic one is provided
-        if not offspring_id or offspring_id in [
-            "current-session",
-            "test-agent",
-            "agent",
-            "user",
-            "default",
-            "temp",
-            "temporary",
-            "placeholder",
-            "unknown",
-            "new-agent",
-            "offspring",
-            "child",
-        ]:
-            import random
-            import time
-
-            offspring_id = f"offspring-{int(time.time())}-{random.randint(1000, 9999)}"
-
-        try:
-            offspring_data = await self.ecs_client.create_offspring(
-                parent1_id, parent2_id, offspring_id
-            )
-
+        else:
             return {
                 "content": [
                     {
                         "type": "text",
-                        "text": f"Created ECS offspring {offspring_data['agent_id']} from parents {parent1_id} and {parent2_id}",
-                    }
-                ]
-            }
-        except Exception as e:
-            return {
-                "content": [
-                    {"type": "text", "text": f"Failed to create ECS offspring: {e}"}
-                ]
-            }
-
-    async def enable_automatic_reproduction(
-        self, arguments: dict[str, Any]
-    ) -> dict[str, Any]:
-        """Enable or disable automatic reproduction via FastAPI backend."""
-        enabled = arguments.get("enabled", True)
-
-        try:
-            result = await self.ecs_client.enable_breeding(enabled)
-            self.automatic_reproduction = enabled
-
-            return {
-                "content": [
-                    {
-                        "type": "text",
-                        "text": result.get(
-                            "message",
-                            f"Automatic reproduction {'enabled' if enabled else 'disabled'}",
-                        ),
-                    }
-                ]
-            }
-        except Exception as e:
-            return {
-                "content": [{"type": "text", "text": f"Failed to toggle breeding: {e}"}]
-            }
-
-    async def get_ecs_agent_status(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Get status of all ECS agents via FastAPI backend."""
-        try:
-            status_data = await self.ecs_client.get_world_status()
-            agents_data = await self.ecs_client.get_agents()
-
-            status_text = "ECS Agent Status:\n"
-            status_text += f"Status: {status_data.get('status', 'unknown')}\n"
-            status_text += f"Total agents: {status_data.get('agent_count', 0)}\n"
-            status_text += f"Mature agents: {status_data.get('mature_agents', 0)}\n"
-            status_text += f"Entity count: {status_data.get('entity_count', 0)}\n"
-            status_text += f"System count: {status_data.get('system_count', 0)}\n"
-            status_text += f"Automatic reproduction: {'enabled' if self.automatic_reproduction else 'disabled'}\n"
-
-            return {"content": [{"type": "text", "text": status_text}]}
-        except Exception as e:
-            return {
-                "content": [{"type": "text", "text": f"Failed to get ECS status: {e}"}]
-            }
-
-    def get_ecs_agent_positions(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Get positions of all ECS agents with enhanced spatial data."""
-        try:
-            from reynard_ecs_world import (
-                AgentComponent,
-                LifecycleComponent,
-                PositionComponent,
-            )
-
-            agents = self.world.get_entities_with_components(
-                AgentComponent, PositionComponent
-            )
-            agent_data = []
-
-            for entity in agents:
-                agent_comp = entity.get_component(AgentComponent)
-                position_comp = entity.get_component(PositionComponent)
-                lifecycle_comp = entity.get_component(LifecycleComponent)
-
-                if agent_comp and position_comp:
-                    # Calculate age from lifecycle component if available
-                    age = 0.0
-                    maturity_age = 18.0
-                    if lifecycle_comp:
-                        age = lifecycle_comp.age
-                        maturity_age = lifecycle_comp.maturity_age
-
-                    agent_data.append(
-                        {
-                            "id": entity.id,
-                            "name": agent_comp.name,
-                            "spirit": agent_comp.spirit,
-                            "style": agent_comp.style,
-                            "age": age,
-                            "maturity_age": maturity_age,
-                            "position": {"x": position_comp.x, "y": position_comp.y},
-                            "target": {
-                                "x": position_comp.target_x,
-                                "y": position_comp.target_y,
-                            },
-                            "velocity": {
-                                "x": position_comp.velocity_x,
-                                "y": position_comp.velocity_y,
-                            },
-                            "movement_speed": position_comp.movement_speed,
-                            "last_update": position_comp.last_update,
-                        }
-                    )
-
-            return {
-                "content": [{"type": "text", "text": json.dumps(agent_data, indent=2)}]
-            }
-        except Exception as e:
-            return {
-                "content": [
-                    {"type": "text", "text": f"Failed to get agent positions: {e}"}
-                ]
-            }
-
-    async def find_ecs_compatible_mates(
-        self, arguments: dict[str, Any]
-    ) -> dict[str, Any]:
-        """Find compatible mates for an agent via FastAPI backend."""
-        agent_id = arguments.get("agent_id", "")
-        max_results = arguments.get("max_results", 5)
-
-        try:
-            mates_data = await self.ecs_client.find_compatible_mates(
-                agent_id, max_results
-            )
-
-            mates_text = f"Compatible mates for {agent_id}:\n"
-            for mate in mates_data.get("compatible_mates", []):
-                mates_text += f"- {mate}\n"
-
-            return {"content": [{"type": "text", "text": mates_text}]}
-        except Exception as e:
-            return {
-                "content": [
-                    {"type": "text", "text": f"Failed to find compatible mates: {e}"}
-                ]
-            }
-
-    async def analyze_ecs_compatibility(
-        self, arguments: dict[str, Any]
-    ) -> dict[str, Any]:
-        """Analyze genetic compatibility between two agents via FastAPI backend."""
-        agent1_id = arguments.get("agent1_id", "")
-        agent2_id = arguments.get("agent2_id", "")
-
-        try:
-            compatibility = await self.ecs_client.analyze_compatibility(
-                agent1_id, agent2_id
-            )
-
-            compat_text = "Compatibility Analysis:\n"
-            compat_text += f"Agent 1: {agent1_id}\n"
-            compat_text += f"Agent 2: {agent2_id}\n"
-            compat_text += (
-                f"Compatibility: {compatibility.get('compatibility', 0):.2f}\n"
-            )
-            compat_text += f"Analysis: {compatibility.get('analysis', 'N/A')}\n"
-            compat_text += f"Recommended: {compatibility.get('recommended', False)}"
-
-            return {"content": [{"type": "text", "text": compat_text}]}
-        except Exception as e:
-            return {
-                "content": [
-                    {"type": "text", "text": f"Failed to analyze compatibility: {e}"}
-                ]
-            }
-
-    async def get_ecs_lineage(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Get agent lineage information via FastAPI backend."""
-        agent_id = arguments.get("agent_id", "")
-        depth = arguments.get("depth", 3)
-
-        try:
-            lineage = await self.ecs_client.get_agent_lineage(agent_id, depth)
-
-            lineage_text = f"Lineage for {agent_id}:\n"
-            lineage_text += f"Parents: {lineage.get('parents', [])}\n"
-            lineage_text += f"Children: {lineage.get('children', [])}\n"
-            lineage_text += f"Ancestors: {lineage.get('ancestors', [])}\n"
-            lineage_text += f"Descendants: {lineage.get('descendants', [])}"
-
-            return {"content": [{"type": "text", "text": lineage_text}]}
-        except Exception as e:
-            return {
-                "content": [{"type": "text", "text": f"Failed to get lineage: {e}"}]
-            }
-
-    def update_ecs_world(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Update the ECS world (simulate time passage)."""
-        delta_time = arguments.get("delta_time", 1.0)
-
-        try:
-            # Use the inherited update method from ECSWorld
-            self.world.update(delta_time)
-            self.world.cleanup_destroyed_entities()
-
-            return {
-                "content": [
-                    {
-                        "type": "text",
-                        "text": f"ECS world updated with delta_time={delta_time}",
-                    }
-                ]
-            }
-        except Exception as e:
-            return {
-                "content": [
-                    {"type": "text", "text": f"Failed to update ECS world: {e}"}
-                ]
-            }
-
-    def search_agents_by_proximity(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Find agents within a specified distance of a target position."""
-        try:
-            from reynard_ecs_world import AgentComponent, PositionComponent
-
-            target_x = arguments.get("x", 0.0)
-            target_y = arguments.get("y", 0.0)
-            max_distance = arguments.get("max_distance", 100.0)
-            max_results = arguments.get("max_results", 10)
-
-            agents = self.world.get_entities_with_components(
-                AgentComponent, PositionComponent
-            )
-            nearby_agents = []
-
-            for entity in agents:
-                agent_comp = entity.get_component(AgentComponent)
-                position_comp = entity.get_component(PositionComponent)
-
-                if agent_comp and position_comp:
-                    distance = math.sqrt(
-                        (position_comp.x - target_x) ** 2
-                        + (position_comp.y - target_y) ** 2
-                    )
-
-                    if distance <= max_distance:
-                        nearby_agents.append(
-                            {
-                                "id": entity.id,
-                                "name": agent_comp.name,
-                                "spirit": agent_comp.spirit,
-                                "position": {
-                                    "x": position_comp.x,
-                                    "y": position_comp.y,
-                                },
-                                "distance": round(distance, 2),
-                            }
-                        )
-
-            # Sort by distance
-            nearby_agents.sort(key=lambda x: x["distance"])
-
-            return {
-                "content": [
-                    {
-                        "type": "text",
-                        "text": json.dumps(nearby_agents[:max_results], indent=2),
-                    }
-                ]
-            }
-        except Exception as e:
-            return {
-                "content": [
-                    {
-                        "type": "text",
-                        "text": f"Failed to search agents by proximity: {e}",
+                        "text": f"❌ Failed to create ECS agent: {result.get('error', 'Unknown error')}"
                     }
                 ]
             }
 
-    def search_agents_by_region(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Find agents within a rectangular region."""
-        try:
-            from reynard_ecs_world import AgentComponent, PositionComponent
-
-            min_x = arguments.get("min_x", 0.0)
-            min_y = arguments.get("min_y", 0.0)
-            max_x = arguments.get("max_x", 1000.0)
-            max_y = arguments.get("max_y", 1000.0)
-
-            agents = self.world.get_entities_with_components(
-                AgentComponent, PositionComponent
-            )
-            region_agents = []
-
-            for entity in agents:
-                agent_comp = entity.get_component(AgentComponent)
-                position_comp = entity.get_component(PositionComponent)
-
-                if agent_comp and position_comp:
-                    if (
-                        min_x <= position_comp.x <= max_x
-                        and min_y <= position_comp.y <= max_y
-                    ):
-                        region_agents.append(
-                            {
-                                "id": entity.id,
-                                "name": agent_comp.name,
-                                "spirit": agent_comp.spirit,
-                                "position": {
-                                    "x": position_comp.x,
-                                    "y": position_comp.y,
-                                },
-                            }
-                        )
-
-            return {
-                "content": [
-                    {"type": "text", "text": json.dumps(region_agents, indent=2)}
-                ]
-            }
-        except Exception as e:
-            return {
-                "content": [
-                    {"type": "text", "text": f"Failed to search agents by region: {e}"}
-                ]
-            }
-
-    def get_agent_movement_path(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Get the movement path and trajectory for a specific agent."""
-        try:
-            from reynard_ecs_world import AgentComponent, PositionComponent
-
-            agent_id = arguments.get("agent_id", "")
-
-            entity = self.world.get_entity(agent_id)
-            if not entity:
-                return {
-                    "content": [{"type": "text", "text": f"Agent {agent_id} not found"}]
+    except Exception as e:
+        logger.exception("Error creating ECS agent: %s", e)
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"❌ Error creating ECS agent: {e!s}"
                 }
+            ]
+        }
 
-            agent_comp = entity.get_component(AgentComponent)
-            position_comp = entity.get_component(PositionComponent)
 
-            if not agent_comp or not position_comp:
-                return {
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": f"Agent {agent_id} missing position data",
-                        }
-                    ]
+@register_tool(
+    name="get_ecs_agent_status",
+    category="ecs",
+    description="Get status of all agents in the ECS system",
+    execution_type="sync",
+    enabled=True,
+    dependencies=[],
+    config={}
+)
+def get_ecs_agent_status(**kwargs) -> dict[str, Any]:
+    """Get status of all agents in the ECS system."""
+    try:
+        result = ecs_client.get_agent_status()
+        
+        if result.get("success"):
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"📊 ECS Agent Status:\n\n{json.dumps(result, indent=2)}"
+                    }
+                ]
+            }
+        else:
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"❌ Failed to get ECS agent status: {result.get('error', 'Unknown error')}"
+                    }
+                ]
+            }
+
+    except Exception as e:
+        logger.exception("Error getting ECS agent status: %s", e)
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"❌ Error getting ECS agent status: {e!s}"
                 }
+            ]
+        }
 
-            # Calculate movement vector and estimated arrival time
-            dx = position_comp.target_x - position_comp.x
-            dy = position_comp.target_y - position_comp.y
-            distance = math.sqrt(dx**2 + dy**2)
 
-            estimated_time = (
-                distance / position_comp.movement_speed
-                if position_comp.movement_speed > 0
-                else 0
-            )
-
-            path_data = {
-                "agent_id": agent_id,
-                "name": agent_comp.name,
-                "current_position": {"x": position_comp.x, "y": position_comp.y},
-                "target_position": {
-                    "x": position_comp.target_x,
-                    "y": position_comp.target_y,
-                },
-                "velocity": {
-                    "x": position_comp.velocity_x,
-                    "y": position_comp.velocity_y,
-                },
-                "movement_speed": position_comp.movement_speed,
-                "distance_to_target": round(distance, 2),
-                "estimated_arrival_time": round(estimated_time, 2),
-                "is_moving": distance > 0.1,
-                "last_update": position_comp.last_update,
-            }
-
-            return {
-                "content": [{"type": "text", "text": json.dumps(path_data, indent=2)}]
-            }
-        except Exception as e:
+@register_tool(
+    name="get_ecs_agent_positions",
+    category="ecs",
+    description="Get positions of all agents in the ECS system",
+    execution_type="async",
+    enabled=True,
+    dependencies=[],
+    config={}
+)
+async def get_ecs_agent_positions(**kwargs) -> dict[str, Any]:
+    """Get positions of all agents in the ECS system."""
+    try:
+        result = await ecs_client.get_all_agent_positions()
+        
+        positions = result.get("positions", {})
+        if positions:
+            position_text = "📍 ECS Agent Positions:\n"
+            for agent_id, pos_data in positions.items():
+                position_text += f"  • {agent_id}: ({pos_data['x']:.1f}, {pos_data['y']:.1f})\n"
+                position_text += f"    Target: ({pos_data['target_x']:.1f}, {pos_data['target_y']:.1f})\n"
+                position_text += f"    Velocity: ({pos_data['velocity_x']:.1f}, {pos_data['velocity_y']:.1f})\n"
+                position_text += f"    Speed: {pos_data['movement_speed']:.1f}\n\n"
+            
             return {
                 "content": [
-                    {"type": "text", "text": f"Failed to get agent movement path: {e}"}
+                    {
+                        "type": "text",
+                        "text": position_text
+                    }
+                ]
+            }
+        else:
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "📍 No agents found in the ECS world"
+                    }
                 ]
             }
 
-    def get_spatial_analytics(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Get comprehensive spatial analytics for all agents."""
-        try:
-            import statistics
-
-            from reynard_ecs_world import AgentComponent, PositionComponent
-
-            agents = self.world.get_entities_with_components(
-                AgentComponent, PositionComponent
-            )
-
-            if not agents:
-                return {
-                    "content": [
-                        {"type": "text", "text": "No agents with position data found"}
-                    ]
+    except Exception as e:
+        logger.exception("Error getting ECS agent positions: %s", e)
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"❌ Error getting ECS agent positions: {e!s}"
                 }
+            ]
+        }
 
-            positions = []
-            velocities = []
-            movement_speeds = []
 
-            for entity in agents:
-                position_comp = entity.get_component(PositionComponent)
-                if position_comp:
-                    positions.append((position_comp.x, position_comp.y))
-                    velocities.append(
-                        (position_comp.velocity_x, position_comp.velocity_y)
-                    )
-                    movement_speeds.append(position_comp.movement_speed)
-
-            # Calculate spatial statistics
-            x_coords = [pos[0] for pos in positions]
-            y_coords = [pos[1] for pos in positions]
-
-            analytics = {
-                "total_agents": len(agents),
-                "spatial_distribution": {
-                    "center_of_mass": {
-                        "x": round(statistics.mean(x_coords), 2),
-                        "y": round(statistics.mean(y_coords), 2),
-                    },
-                    "bounds": {
-                        "min_x": round(min(x_coords), 2),
-                        "max_x": round(max(x_coords), 2),
-                        "min_y": round(min(y_coords), 2),
-                        "max_y": round(max(y_coords), 2),
-                    },
-                    "spread": {
-                        "x_std": round(
-                            statistics.stdev(x_coords) if len(x_coords) > 1 else 0, 2
-                        ),
-                        "y_std": round(
-                            statistics.stdev(y_coords) if len(y_coords) > 1 else 0, 2
-                        ),
-                    },
-                },
-                "movement_statistics": {
-                    "avg_speed": round(statistics.mean(movement_speeds), 2),
-                    "max_speed": round(max(movement_speeds), 2),
-                    "min_speed": round(min(movement_speeds), 2),
-                    "speed_std": round(
-                        (
-                            statistics.stdev(movement_speeds)
-                            if len(movement_speeds) > 1
-                            else 0
-                        ),
-                        2,
-                    ),
-                },
-                "velocity_analysis": {
-                    "avg_velocity_magnitude": round(
-                        statistics.mean(
-                            [math.sqrt(vx**2 + vy**2) for vx, vy in velocities]
-                        ),
-                        2,
-                    ),
-                    "stationary_agents": len(
-                        [
-                            v
-                            for v in velocities
-                            if math.sqrt(v[0] ** 2 + v[1] ** 2) < 0.1
-                        ]
-                    ),
-                },
-            }
-
-            return {
-                "content": [{"type": "text", "text": json.dumps(analytics, indent=2)}]
-            }
-        except Exception as e:
-            return {
-                "content": [
-                    {"type": "text", "text": f"Failed to get spatial analytics: {e}"}
-                ]
-            }
-
-    def start_global_breeding(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Start the global breeding scheduler."""
-        try:
-            import asyncio
-
-            # Start the breeding scheduler
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            loop.run_until_complete(self.world.start_global_breeding())
-            loop.close()
-
+@register_tool(
+    name="get_simulation_status",
+    category="ecs",
+    description="Get comprehensive ECS world simulation status",
+    execution_type="sync",
+    enabled=True,
+    dependencies=[],
+    config={}
+)
+def get_simulation_status(**kwargs) -> dict[str, Any]:
+    """Get comprehensive ECS world simulation status."""
+    try:
+        result = ecs_client.get_simulation_status()
+        
+        if result.get("success"):
             return {
                 "content": [
                     {
                         "type": "text",
-                        "text": "Global breeding scheduler started successfully",
+                        "text": f"🌍 ECS Simulation Status:\n\n{json.dumps(result, indent=2)}"
                     }
                 ]
             }
-        except Exception as e:
-            return {
-                "content": [
-                    {"type": "text", "text": f"Failed to start global breeding: {e}"}
-                ]
-            }
-
-    def stop_global_breeding(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Stop the global breeding scheduler."""
-        try:
-            import asyncio
-
-            # Stop the breeding scheduler
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            loop.run_until_complete(self.world.stop_global_breeding())
-            loop.close()
-
+        else:
             return {
                 "content": [
                     {
                         "type": "text",
-                        "text": "Global breeding scheduler stopped successfully",
+                        "text": f"❌ Failed to get simulation status: {result.get('error', 'Unknown error')}"
                     }
                 ]
             }
-        except Exception as e:
-            return {
-                "content": [
-                    {"type": "text", "text": f"Failed to stop global breeding: {e}"}
-                ]
-            }
 
-    async def get_breeding_statistics(
-        self, arguments: dict[str, Any]
-    ) -> dict[str, Any]:
-        """Get breeding statistics via FastAPI backend."""
-        try:
-            stats = await self.ecs_client.get_breeding_stats()
-            return {"content": [{"type": "text", "text": json.dumps(stats, indent=2)}]}
-        except Exception as e:
-            return {
-                "content": [
-                    {"type": "text", "text": f"Failed to get breeding statistics: {e}"}
-                ]
-            }
+    except Exception as e:
+        logger.exception("Error getting simulation status: %s", e)
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"❌ Error getting simulation status: {e!s}"
+                }
+            ]
+        }
 
-    async def get_simulation_status(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Get comprehensive ECS world simulation status via FastAPI backend."""
-        try:
-            # Get basic world status
-            status_data = await self.ecs_client.get_world_status()
-            breeding_stats = await self.ecs_client.get_breeding_stats()
 
-            status = {
-                "world_status": status_data.get("status", "unknown"),
-                "entity_count": status_data.get("entity_count", 0),
-                "agent_count": status_data.get("agent_count", 0),
-                "mature_agents": status_data.get("mature_agents", 0),
-                "breeding_stats": breeding_stats,
-                "simulation_time": 0.0,  # Placeholder - would come from world simulation
-                "time_acceleration": 10.0,  # Placeholder - would come from world simulation
-            }
-
+@register_tool(
+    name="accelerate_time",
+    category="ecs",
+    description="Adjust time acceleration factor for world simulation",
+    execution_type="sync",
+    enabled=True,
+    dependencies=[],
+    config={}
+)
+def accelerate_time(**kwargs) -> dict[str, Any]:
+    """Adjust time acceleration factor for world simulation."""
+    arguments = kwargs.get("arguments", {})
+    acceleration = arguments.get("acceleration", 10.0)
+    
+    try:
+        result = ecs_client.accelerate_time(acceleration)
+        
+        if result.get("success"):
             return {
                 "content": [
                     {
                         "type": "text",
-                        "text": f"ECS World Simulation Status: {json.dumps(status, indent=2)}",
+                        "text": f"⏰ Time acceleration set to {acceleration}x\n\n{json.dumps(result, indent=2)}"
                     }
                 ]
             }
-        except Exception as e:
+        else:
             return {
                 "content": [
-                    {"type": "text", "text": f"Failed to get simulation status: {e}"}
+                    {
+                        "type": "text",
+                        "text": f"❌ Failed to accelerate time: {result.get('error', 'Unknown error')}"
+                    }
                 ]
             }
 
-    def accelerate_time(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Adjust time acceleration factor for world simulation."""
-        try:
-            factor = arguments.get("factor", 10.0)
-            # Placeholder - would set time acceleration in world simulation
+    except Exception as e:
+        logger.exception("Error accelerating time: %s", e)
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"❌ Error accelerating time: {e!s}"
+                }
+            ]
+        }
+
+
+@register_tool(
+    name="nudge_time",
+    category="ecs",
+    description="Nudge simulation time forward (for MCP actions)",
+    execution_type="sync",
+    enabled=True,
+    dependencies=[],
+    config={}
+)
+def nudge_time(**kwargs) -> dict[str, Any]:
+    """Nudge simulation time forward (for MCP actions)."""
+    arguments = kwargs.get("arguments", {})
+    nudge_amount = arguments.get("nudge_amount", 0.05)
+    
+    try:
+        result = ecs_client.nudge_time(nudge_amount)
+        
+        if result.get("success"):
             return {
                 "content": [
-                    {"type": "text", "text": f"Time acceleration set to {factor}x"}
+                    {
+                        "type": "text",
+                        "text": f"⏰ Time nudged forward by {nudge_amount} units\n\n{json.dumps(result, indent=2)}"
+                    }
                 ]
             }
-        except Exception as e:
+        else:
             return {
-                "content": [{"type": "text", "text": f"Failed to accelerate time: {e}"}]
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"❌ Failed to nudge time: {result.get('error', 'Unknown error')}"
+                    }
+                ]
             }
 
-    def nudge_time(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Nudge simulation time forward (for MCP actions)."""
-        try:
-            amount = arguments.get("amount", 0.05)
-            # Placeholder - would nudge time in world simulation
+    except Exception as e:
+        logger.exception("Error nudging time: %s", e)
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"❌ Error nudging time: {e!s}"
+                }
+            ]
+        }
+
+
+# Enhanced Position and Movement Tools
+
+@register_tool(
+    name="get_agent_position",
+    category="ecs",
+    description="Get the current position of a specific agent",
+    execution_type="async",
+    enabled=True,
+    dependencies=[],
+    config={}
+)
+async def get_agent_position(**kwargs) -> dict[str, Any]:
+    """Get the current position of a specific agent."""
+    try:
+        arguments = kwargs.get("arguments", {})
+        agent_id = arguments.get("agent_id")
+        
+        if not agent_id:
             return {
                 "content": [
-                    {"type": "text", "text": f"Time nudged forward by {amount} units"}
+                    {
+                        "type": "text",
+                        "text": "❌ Error: agent_id is required"
+                    }
                 ]
             }
-        except Exception as e:
-            return {"content": [{"type": "text", "text": f"Failed to nudge time: {e}"}]}
+        
+        result = await ecs_client.get_agent_position(agent_id)
+        
+        position_text = f"📍 Position of {agent_id}:\n"
+        position_text += f"  Current: ({result['x']:.1f}, {result['y']:.1f})\n"
+        position_text += f"  Target: ({result['target_x']:.1f}, {result['target_y']:.1f})\n"
+        position_text += f"  Velocity: ({result['velocity_x']:.1f}, {result['velocity_y']:.1f})\n"
+        position_text += f"  Movement Speed: {result['movement_speed']:.1f}"
+        
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": position_text
+                }
+            ]
+        }
+
+    except Exception as e:
+        logger.exception("Error getting agent position: %s", e)
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"❌ Error getting agent position: {e!s}"
+                }
+            ]
+        }
+
+
+@register_tool(
+    name="move_agent",
+    category="ecs",
+    description="Move an agent to a specific position",
+    execution_type="async",
+    enabled=True,
+    dependencies=[],
+    config={}
+)
+async def move_agent(**kwargs) -> dict[str, Any]:
+    """Move an agent to a specific position."""
+    try:
+        arguments = kwargs.get("arguments", {})
+        agent_id = arguments.get("agent_id")
+        x = arguments.get("x")
+        y = arguments.get("y")
+        
+        if not agent_id or x is None or y is None:
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "❌ Error: agent_id, x, and y are required"
+                    }
+                ]
+            }
+        
+        result = await ecs_client.move_agent(agent_id, float(x), float(y))
+        
+        move_text = f"🚀 Moved {agent_id} to position ({x}, {y}):\n"
+        move_text += f"  Current: ({result['x']:.1f}, {result['y']:.1f})\n"
+        move_text += f"  Target: ({result['target_x']:.1f}, {result['target_y']:.1f})\n"
+        move_text += f"  Velocity: ({result['velocity_x']:.1f}, {result['velocity_y']:.1f})"
+        
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": move_text
+                }
+            ]
+        }
+
+    except Exception as e:
+        logger.exception("Error moving agent: %s", e)
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"❌ Error moving agent: {e!s}"
+                }
+            ]
+        }
+
+
+@register_tool(
+    name="move_agent_towards",
+    category="ecs",
+    description="Move an agent towards another agent",
+    execution_type="async",
+    enabled=True,
+    dependencies=[],
+    config={}
+)
+async def move_agent_towards(**kwargs) -> dict[str, Any]:
+    """Move an agent towards another agent."""
+    try:
+        arguments = kwargs.get("arguments", {})
+        agent_id = arguments.get("agent_id")
+        target_agent_id = arguments.get("target_agent_id")
+        distance = arguments.get("distance", 50.0)
+        
+        if not agent_id or not target_agent_id:
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "❌ Error: agent_id and target_agent_id are required"
+                    }
+                ]
+            }
+        
+        result = await ecs_client.move_agent_towards(agent_id, target_agent_id, float(distance))
+        
+        move_text = f"🎯 Moved {agent_id} towards {target_agent_id} (distance: {distance}):\n"
+        move_text += f"  Current: ({result['x']:.1f}, {result['y']:.1f})\n"
+        move_text += f"  Target: ({result['target_x']:.1f}, {result['target_y']:.1f})\n"
+        move_text += f"  Velocity: ({result['velocity_x']:.1f}, {result['velocity_y']:.1f})"
+        
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": move_text
+                }
+            ]
+        }
+
+    except Exception as e:
+        logger.exception("Error moving agent towards target: %s", e)
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"❌ Error moving agent towards target: {e!s}"
+                }
+            ]
+        }
+
+
+@register_tool(
+    name="get_agent_distance",
+    category="ecs",
+    description="Get the distance between two agents",
+    execution_type="async",
+    enabled=True,
+    dependencies=[],
+    config={}
+)
+async def get_agent_distance(**kwargs) -> dict[str, Any]:
+    """Get the distance between two agents."""
+    try:
+        arguments = kwargs.get("arguments", {})
+        agent1_id = arguments.get("agent1_id")
+        agent2_id = arguments.get("agent2_id")
+        
+        if not agent1_id or not agent2_id:
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "❌ Error: agent1_id and agent2_id are required"
+                    }
+                ]
+            }
+        
+        result = await ecs_client.get_agent_distance(agent1_id, agent2_id)
+        
+        distance_text = f"📏 Distance between {agent1_id} and {agent2_id}:\n"
+        distance_text += f"  Distance: {result['distance']:.1f} units\n"
+        distance_text += f"  {agent1_id} position: ({result['position1']['x']:.1f}, {result['position1']['y']:.1f})\n"
+        distance_text += f"  {agent2_id} position: ({result['position2']['x']:.1f}, {result['position2']['y']:.1f})"
+        
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": distance_text
+                }
+            ]
+        }
+
+    except Exception as e:
+        logger.exception("Error getting agent distance: %s", e)
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"❌ Error getting agent distance: {e!s}"
+                }
+            ]
+        }
+
+
+@register_tool(
+    name="get_nearby_agents",
+    category="ecs",
+    description="Get all agents within a certain radius of an agent",
+    execution_type="async",
+    enabled=True,
+    dependencies=[],
+    config={}
+)
+async def get_nearby_agents(**kwargs) -> dict[str, Any]:
+    """Get all agents within a certain radius of an agent."""
+    try:
+        arguments = kwargs.get("arguments", {})
+        agent_id = arguments.get("agent_id")
+        radius = arguments.get("radius", 100.0)
+        
+        if not agent_id:
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "❌ Error: agent_id is required"
+                    }
+                ]
+            }
+        
+        result = await ecs_client.get_nearby_agents(agent_id, float(radius))
+        
+        nearby_agents = result.get("nearby_agents", [])
+        if nearby_agents:
+            nearby_text = f"👥 Agents near {agent_id} (radius: {radius}):\n"
+            for agent in nearby_agents:
+                nearby_text += f"  • {agent['name']} ({agent['agent_id']}): {agent['spirit']}\n"
+                nearby_text += f"    Position: ({agent['x']:.1f}, {agent['y']:.1f})\n"
+                nearby_text += f"    Distance: {agent['distance']:.1f}\n\n"
+        else:
+            nearby_text = f"👥 No agents found within {radius} units of {agent_id}"
+        
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": nearby_text
+                }
+            ]
+        }
+
+    except Exception as e:
+        logger.exception("Error getting nearby agents: %s", e)
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"❌ Error getting nearby agents: {e!s}"
+                }
+            ]
+        }
+
+
+# Interaction and Communication Tools
+
+@register_tool(
+    name="initiate_interaction",
+    category="ecs",
+    description="Initiate an interaction between two agents",
+    execution_type="async",
+    enabled=True,
+    dependencies=[],
+    config={}
+)
+async def initiate_interaction(**kwargs) -> dict[str, Any]:
+    """Initiate an interaction between two agents."""
+    try:
+        arguments = kwargs.get("arguments", {})
+        agent1_id = arguments.get("agent1_id")
+        agent2_id = arguments.get("agent2_id")
+        interaction_type = arguments.get("interaction_type", "communication")
+        
+        if not agent1_id or not agent2_id:
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "❌ Error: agent1_id and agent2_id are required"
+                    }
+                ]
+            }
+        
+        result = await ecs_client.initiate_interaction(agent1_id, agent2_id, interaction_type)
+        
+        if result.get("success"):
+            interaction_text = f"🤝 Interaction initiated between {agent1_id} and {agent2_id}:\n"
+            interaction_text += f"  Type: {result['interaction_type']}\n"
+            interaction_text += f"  Message: {result['message']}\n"
+            interaction_text += f"  Agent 1 Energy: {result.get('agent1_energy', 'N/A')}"
+        else:
+            interaction_text = f"❌ Failed to initiate interaction:\n"
+            interaction_text += f"  Message: {result['message']}\n"
+            interaction_text += f"  Social Energy: {result.get('social_energy', 'N/A')}\n"
+            interaction_text += f"  Active Interactions: {result.get('active_interactions', 'N/A')}"
+        
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": interaction_text
+                }
+            ]
+        }
+
+    except Exception as e:
+        logger.exception("Error initiating interaction: %s", e)
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"❌ Error initiating interaction: {e!s}"
+                }
+            ]
+        }
+
+
+@register_tool(
+    name="send_chat_message",
+    category="ecs",
+    description="Send a chat message from one agent to another",
+    execution_type="async",
+    enabled=True,
+    dependencies=[],
+    config={}
+)
+async def send_chat_message(**kwargs) -> dict[str, Any]:
+    """Send a chat message from one agent to another."""
+    try:
+        arguments = kwargs.get("arguments", {})
+        sender_id = arguments.get("sender_id")
+        receiver_id = arguments.get("receiver_id")
+        message = arguments.get("message")
+        interaction_type = arguments.get("interaction_type", "communication")
+        
+        if not sender_id or not receiver_id or not message:
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "❌ Error: sender_id, receiver_id, and message are required"
+                    }
+                ]
+            }
+        
+        result = await ecs_client.send_chat_message(sender_id, receiver_id, message, interaction_type)
+        
+        if result.get("success"):
+            chat_text = f"💬 Chat message sent from {sender_id} to {receiver_id}:\n"
+            chat_text += f"  Message: \"{result['content']}\"\n"
+            chat_text += f"  Type: {result['interaction_type']}\n"
+            chat_text += f"  Sender Energy: {result.get('sender_energy', 'N/A')}"
+        else:
+            chat_text = f"❌ Failed to send chat message:\n"
+            chat_text += f"  Message: {result['message']}\n"
+            chat_text += f"  Social Energy: {result.get('social_energy', 'N/A')}"
+        
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": chat_text
+                }
+            ]
+        }
+
+    except Exception as e:
+        logger.exception("Error sending chat message: %s", e)
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"❌ Error sending chat message: {e!s}"
+                }
+            ]
+        }
+
+
+@register_tool(
+    name="get_agent_social_stats",
+    category="ecs",
+    description="Get social interaction statistics for an agent",
+    execution_type="async",
+    enabled=True,
+    dependencies=[],
+    config={}
+)
+async def get_agent_social_stats(**kwargs) -> dict[str, Any]:
+    """Get social interaction statistics for an agent."""
+    try:
+        arguments = kwargs.get("arguments", {})
+        agent_id = arguments.get("agent_id")
+        
+        if not agent_id:
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "❌ Error: agent_id is required"
+                    }
+                ]
+            }
+        
+        result = await ecs_client.get_agent_social_stats(agent_id)
+        
+        stats_text = f"📊 Social Stats for {agent_id}:\n"
+        stats_text += f"  Total Interactions: {result['total_interactions']}\n"
+        stats_text += f"  Successful: {result['successful_interactions']}\n"
+        stats_text += f"  Failed: {result['failed_interactions']}\n"
+        stats_text += f"  Success Rate: {result['success_rate']:.1%}\n"
+        stats_text += f"  Social Energy: {result['social_energy']:.2f}/{result['max_social_energy']:.2f} ({result['energy_percentage']:.1%})\n"
+        stats_text += f"  Active Interactions: {result['active_interactions']}\n"
+        stats_text += f"  Total Relationships: {result['total_relationships']}\n"
+        stats_text += f"  Positive Relationships: {result['positive_relationships']}\n"
+        stats_text += f"  Negative Relationships: {result['negative_relationships']}\n"
+        stats_text += f"  Communication Style: {result['communication_style']}"
+        
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": stats_text
+                }
+            ]
+        }
+
+    except Exception as e:
+        logger.exception("Error getting agent social stats: %s", e)
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"❌ Error getting agent social stats: {e!s}"
+                }
+            ]
+        }

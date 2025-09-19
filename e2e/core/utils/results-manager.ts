@@ -1,9 +1,9 @@
 /**
  * @fileoverview Unified Results Manager for E2E Testing
- * 
+ *
  * 🦊 *whiskers twitch with organizational precision* Centralized system for managing
  * all E2E test results in a unified, date-organized structure.
- * 
+ *
  * @author Strategic-Fox-42 (Reynard Fox Specialist)
  * @since 1.0.0
  */
@@ -39,9 +39,9 @@ export interface ResultsPaths {
 
 /**
  * 🦊 Results Manager - Unified E2E Test Results Organization
- * 
+ *
  * Creates a consistent, date-organized structure for all test results:
- * 
+ *
  * results/
  * ├── e2e/
  * │   └── 2025-01-15_14-30-25_auth-flow/
@@ -80,7 +80,7 @@ export class ResultsManager {
       environment: process.env.NODE_ENV || "development",
       branch: process.env.GIT_BRANCH || "unknown",
       commit: process.env.GIT_COMMIT || "unknown",
-      ...options
+      ...options,
     };
   }
 
@@ -89,14 +89,14 @@ export class ResultsManager {
    */
   public generateResultsPaths(): ResultsPaths {
     const { testType, timestamp, runId } = this.testRunInfo;
-    
+
     // Create descriptive run directory name
     const runDirName = `${timestamp}_${runId}`;
-    
+
     const baseDir = this.baseResultsDir;
     const testTypeDir = join(baseDir, testType);
     const runDir = join(testTypeDir, runDirName);
-    
+
     return {
       baseDir,
       testTypeDir,
@@ -107,7 +107,7 @@ export class ResultsManager {
       artifactsDir: join(runDir, "artifacts"),
       screenshotsDir: join(runDir, "screenshots"),
       tracesDir: join(runDir, "traces"),
-      videosDir: join(runDir, "videos")
+      videosDir: join(runDir, "videos"),
     };
   }
 
@@ -116,7 +116,7 @@ export class ResultsManager {
    */
   public createDirectories(): ResultsPaths {
     const paths = this.generateResultsPaths();
-    
+
     // Create all directories
     const dirs = [
       paths.baseDir,
@@ -125,7 +125,7 @@ export class ResultsManager {
       paths.artifactsDir,
       paths.screenshotsDir,
       paths.tracesDir,
-      paths.videosDir
+      paths.videosDir,
     ];
 
     for (const dir of dirs) {
@@ -143,16 +143,19 @@ export class ResultsManager {
    */
   public getReporterConfig(): any[] {
     const paths = this.generateResultsPaths();
-    
+
     return [
-      ["html", { 
-        outputFolder: paths.runDir, 
-        open: "never",
-        attachmentsBaseURL: "attachments/"
-      }],
+      [
+        "html",
+        {
+          outputFolder: paths.runDir,
+          open: "never",
+          attachmentsBaseURL: "attachments/",
+        },
+      ],
       ["json", { outputFile: paths.jsonReport }],
       ["junit", { outputFile: paths.junitReport }],
-      ["list"]
+      ["list"],
     ];
   }
 
@@ -170,12 +173,12 @@ export class ResultsManager {
   private generateTimestamp(): string {
     const now = new Date();
     const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const seconds = String(now.getSeconds()).padStart(2, '0');
-    
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    const seconds = String(now.getSeconds()).padStart(2, "0");
+
     return `${year}-${month}-${day}_${hours}-${minutes}-${seconds}`;
   }
 
@@ -183,8 +186,8 @@ export class ResultsManager {
    * 🦊 Generate short run ID (8 characters)
    */
   private generateRunId(): string {
-    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
+    const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
     for (let i = 0; i < 8; i++) {
       result += chars.charAt(Math.floor(Math.random() * chars.length));
     }
@@ -220,14 +223,15 @@ export class ResultsManager {
   public static getLatestRunDir(testType: string): string | null {
     const baseDir = join(__dirname, "../../results");
     const testTypeDir = join(baseDir, testType);
-    
+
     if (!existsSync(testTypeDir)) {
       return null;
     }
 
     // Get all run directories and sort by name (timestamp)
-    const fs = require('fs');
-    const dirs = fs.readdirSync(testTypeDir, { withFileTypes: true })
+    const fs = require("fs");
+    const dirs = fs
+      .readdirSync(testTypeDir, { withFileTypes: true })
       .filter((dirent: any) => dirent.isDirectory())
       .map((dirent: any) => dirent.name)
       .sort()
@@ -242,13 +246,14 @@ export class ResultsManager {
   public static listTestRuns(testType: string): string[] {
     const baseDir = join(__dirname, "../../results");
     const testTypeDir = join(baseDir, testType);
-    
+
     if (!existsSync(testTypeDir)) {
       return [];
     }
 
-    const fs = require('fs');
-    return fs.readdirSync(testTypeDir, { withFileTypes: true })
+    const fs = require("fs");
+    return fs
+      .readdirSync(testTypeDir, { withFileTypes: true })
       .filter((dirent: any) => dirent.isDirectory())
       .map((dirent: any) => dirent.name)
       .sort()
@@ -260,15 +265,15 @@ export class ResultsManager {
    */
   public static cleanupOldRuns(testType: string, keepCount: number = 10): void {
     const runs = this.listTestRuns(testType);
-    
+
     if (runs.length <= keepCount) {
       return;
     }
 
     const baseDir = join(__dirname, "../../results");
     const testTypeDir = join(baseDir, testType);
-    const fs = require('fs');
-    const path = require('path');
+    const fs = require("fs");
+    const path = require("path");
 
     // Remove old runs
     const runsToDelete = runs.slice(keepCount);
@@ -295,15 +300,14 @@ export function createResultsManager(testType: string, options?: Partial<TestRun
  * 🦊 Get standardized test type names
  */
 export const TEST_TYPES = {
-  E2E: 'e2e',
-  EFFECTS: 'effects', 
-  BENCHMARK: 'benchmark',
-  I18N: 'i18n',
-  PENETRATION: 'penetration',
-  PERFORMANCE: 'performance',
-  COMPONENTS: 'components',
-  DOM: 'dom'
+  E2E: "e2e",
+  EFFECTS: "effects",
+  BENCHMARK: "benchmark",
+  I18N: "i18n",
+  PENETRATION: "penetration",
+  PERFORMANCE: "performance",
+  COMPONENTS: "components",
+  DOM: "dom",
 } as const;
 
-export type TestType = typeof TEST_TYPES[keyof typeof TEST_TYPES];
-
+export type TestType = (typeof TEST_TYPES)[keyof typeof TEST_TYPES];

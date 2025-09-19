@@ -4,7 +4,9 @@ Mermaid Tools Handler
 =====================
 
 Handles mermaid diagram-related MCP tool calls.
-Follows the 100-line axiom and modular architecture principles.
+Now uses the new @register_tool decorator system for automatic registration.
+
+Follows the 140-line axiom and modular architecture principles.
 """
 
 import logging
@@ -18,186 +20,280 @@ if str(mcp_dir) not in sys.path:
     sys.path.insert(0, str(mcp_dir))
 
 from services.mermaid_service import MermaidService
+from protocol.tool_registry import register_tool
 
 logger = logging.getLogger(__name__)
 
+# Initialize service
+mermaid_service = MermaidService()
 
-class MermaidTools:
-    """Handles mermaid diagram tool operations."""
 
-    def __init__(self) -> None:
-        self.mermaid_service = MermaidService()
+@register_tool(
+    name="validate_mermaid_diagram",
+    category="visualization",
+    description="Validate mermaid diagram syntax and check for errors",
+    execution_type="sync",
+    enabled=True,
+    dependencies=[],
+    config={}
+)
+def validate_mermaid_diagram(**kwargs) -> dict[str, Any]:
+    """Validate mermaid diagram syntax."""
+    arguments = kwargs.get("arguments", {})
+    diagram_content = arguments.get("diagram_content", "")
 
-    def validate_mermaid_diagram(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Validate mermaid diagram syntax."""
-        diagram_content = arguments.get("diagram_content", "")
+    if not diagram_content:
+        return {
+            "content": [
+                {"type": "text", "text": "❌ Error: No diagram content provided"}
+            ]
+        }
 
-        if not diagram_content:
-            return {
-                "content": [
-                    {"type": "text", "text": "❌ Error: No diagram content provided"}
-                ]
-            }
+    is_valid, errors, warnings = mermaid_service.validate_diagram(diagram_content)
 
-        is_valid, errors, warnings = self.mermaid_service.validate_diagram(
-            diagram_content
-        )
+    result_text = (
+        "✅ Mermaid diagram is valid!"
+        if is_valid
+        else "❌ Mermaid diagram has errors:"
+    )
 
-        result_text = (
-            "✅ Mermaid diagram is valid!"
-            if is_valid
-            else "❌ Mermaid diagram has errors:"
-        )
+    if errors:
+        result_text += "\n\n🚨 Errors:\n" + "\n".join(f"• {error}" for error in errors)
 
-        if errors:
-            result_text += "\n\nErrors:"
-            for error in errors:
-                result_text += f"\n  - {error}"
+    if warnings:
+        result_text += "\n\n⚠️ Warnings:\n" + "\n".join(f"• {warning}" for warning in warnings)
 
-        if warnings:
-            result_text += "\n\n⚠️  Warnings:"
-            for warning in warnings:
-                result_text += f"\n  - {warning}"
+    return {"content": [{"type": "text", "text": result_text}]}
 
-        return {"content": [{"type": "text", "text": result_text}]}
 
-    def render_mermaid_to_svg(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Render mermaid diagram to SVG."""
-        diagram_content = arguments.get("diagram_content", "")
+@register_tool(
+    name="render_mermaid_to_svg",
+    category="visualization",
+    description="Render mermaid diagram to SVG format",
+    execution_type="sync",
+    enabled=True,
+    dependencies=[],
+    config={}
+)
+def render_mermaid_to_svg(**kwargs) -> dict[str, Any]:
+    """Render mermaid diagram to SVG format."""
+    arguments = kwargs.get("arguments", {})
+    diagram_content = arguments.get("diagram_content", "")
+    output_path = arguments.get("output_path")
 
-        if not diagram_content:
-            return {
-                "content": [
-                    {"type": "text", "text": "❌ Error: No diagram content provided"}
-                ]
-            }
+    if not diagram_content:
+        return {
+            "content": [
+                {"type": "text", "text": "❌ Error: No diagram content provided"}
+            ]
+        }
 
-        success, svg_content, error = self.mermaid_service.render_diagram_to_svg(
-            diagram_content
-        )
-
-        if success:
+    try:
+        svg_content = mermaid_service.render_to_svg(diagram_content)
+        
+        if output_path:
+            # Save to file
+            with open(output_path, 'w', encoding='utf-8') as f:
+                f.write(svg_content)
             return {
                 "content": [
                     {
                         "type": "text",
-                        "text": f"✅ Successfully rendered diagram to SVG ({len(svg_content)} characters)",
-                    },
-                    {"type": "text", "text": svg_content},
+                        "text": f"✅ Mermaid diagram rendered to SVG and saved to: {output_path}"
+                    }
                 ]
             }
-        return {
-            "content": [
-                {"type": "text", "text": f"❌ Failed to render diagram: {error}"}
-            ]
-        }
-
-    def render_mermaid_to_png(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Render mermaid diagram to PNG."""
-        diagram_content = arguments.get("diagram_content", "")
-
-        if not diagram_content:
-            return {
-                "content": [
-                    {"type": "text", "text": "❌ Error: No diagram content provided"}
-                ]
-            }
-
-        success, png_path, error = self.mermaid_service.render_diagram_to_png(
-            diagram_content
-        )
-
-        if success:
-            # Open the image with imv
-            import subprocess
-
-            try:
-                subprocess.Popen(
-                    ["imv", png_path],
-                    stdout=subprocess.DEVNULL,
-                    stderr=subprocess.DEVNULL,
-                )
-                return {
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": f"✅ Successfully rendered diagram to PNG and opened with imv\n📁 Saved to: {png_path}",
-                        }
-                    ]
-                }
-            except Exception as e:
-                return {
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": f"✅ Successfully rendered diagram to PNG\n📁 Saved to: {png_path}\n⚠️ Could not open with imv: {e}",
-                        }
-                    ]
-                }
-        return {
-            "content": [
-                {"type": "text", "text": f"❌ Failed to render diagram: {error}"}
-            ]
-        }
-
-    def get_mermaid_diagram_stats(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Get statistics about a mermaid diagram."""
-        diagram_content = arguments.get("diagram_content", "")
-
-        if not diagram_content:
-            return {
-                "content": [
-                    {"type": "text", "text": "❌ Error: No diagram content provided"}
-                ]
-            }
-
-        stats = self.mermaid_service.get_diagram_stats(diagram_content)
-
-        if "error" in stats:
+        else:
+            # Return SVG content
             return {
                 "content": [
                     {
                         "type": "text",
-                        "text": f"❌ Error analyzing diagram: {stats['error']}",
+                        "text": f"✅ Mermaid diagram rendered to SVG:\n\n{svg_content}"
                     }
                 ]
             }
 
-        stats_text = "📊 Diagram Statistics:\n"
-        stats_text += f"  - Total lines: {stats.get('total_lines', 0)}\n"
-        stats_text += f"  - Connections: {stats.get('connections', 0)}\n"
-        stats_text += f"  - Style rules: {stats.get('style_rules', 0)}\n"
-        stats_text += f"  - Has theme: {stats.get('has_theme', False)}\n"
-        stats_text += f"  - Diagram type: {stats.get('diagram_type', 'unknown')}"
+    except Exception as e:
+        logger.exception("Error rendering mermaid diagram: %s", e)
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"❌ Error rendering mermaid diagram: {e!s}"
+                }
+            ]
+        }
 
-        return {"content": [{"type": "text", "text": stats_text}]}
 
-    def test_mermaid_render(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Test mermaid diagram rendering with a simple example."""
-        test_diagram = """%%{init: {'theme': 'neutral'}}%%
+@register_tool(
+    name="render_mermaid_to_png",
+    category="visualization",
+    description="Render mermaid diagram to PNG format",
+    execution_type="sync",
+    enabled=True,
+    dependencies=[],
+    config={}
+)
+def render_mermaid_to_png(**kwargs) -> dict[str, Any]:
+    """Render mermaid diagram to PNG format."""
+    arguments = kwargs.get("arguments", {})
+    diagram_content = arguments.get("diagram_content", "")
+    output_path = arguments.get("output_path")
+    width = arguments.get("width", 800)
+    height = arguments.get("height", 600)
+
+    if not diagram_content:
+        return {
+            "content": [
+                {"type": "text", "text": "❌ Error: No diagram content provided"}
+            ]
+        }
+
+    try:
+        png_data = mermaid_service.render_to_png(diagram_content, width, height)
+        
+        if output_path:
+            # Save to file
+            with open(output_path, 'wb') as f:
+                f.write(png_data)
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"✅ Mermaid diagram rendered to PNG and saved to: {output_path}"
+                    }
+                ]
+            }
+        else:
+            # Return base64 encoded PNG
+            import base64
+            png_base64 = base64.b64encode(png_data).decode('utf-8')
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"✅ Mermaid diagram rendered to PNG (base64):\n\n{png_base64}"
+                    }
+                ]
+            }
+
+    except Exception as e:
+        logger.exception("Error rendering mermaid diagram to PNG: %s", e)
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"❌ Error rendering mermaid diagram to PNG: {e!s}"
+                }
+            ]
+        }
+
+
+@register_tool(
+    name="get_mermaid_diagram_stats",
+    category="visualization",
+    description="Get statistics and analysis of a mermaid diagram",
+    execution_type="sync",
+    enabled=True,
+    dependencies=[],
+    config={}
+)
+def get_mermaid_diagram_stats(**kwargs) -> dict[str, Any]:
+    """Get statistics and analysis of a mermaid diagram."""
+    arguments = kwargs.get("arguments", {})
+    diagram_content = arguments.get("diagram_content", "")
+
+    if not diagram_content:
+        return {
+            "content": [
+                {"type": "text", "text": "❌ Error: No diagram content provided"}
+            ]
+        }
+
+    try:
+        stats = mermaid_service.get_diagram_stats(diagram_content)
+        
+        result_text = "📊 Mermaid Diagram Statistics:\n\n"
+        for key, value in stats.items():
+            result_text += f"• {key}: {value}\n"
+        
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": result_text
+                }
+            ]
+        }
+
+    except Exception as e:
+        logger.exception("Error getting mermaid diagram stats: %s", e)
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"❌ Error getting mermaid diagram stats: {e!s}"
+                }
+            ]
+        }
+
+
+@register_tool(
+    name="test_mermaid_render",
+    category="visualization",
+    description="Test mermaid diagram rendering with a simple example",
+    execution_type="sync",
+    enabled=True,
+    dependencies=[],
+    config={}
+)
+def test_mermaid_render(**kwargs) -> dict[str, Any]:
+    """Test mermaid diagram rendering with a simple example."""
+    test_diagram = """
 graph TD
-    A[Start] --> B[Process]
-    B --> C[End]"""
+    A[Start] --> B{Is it working?}
+    B -->|Yes| C[Great!]
+    B -->|No| D[Debug]
+    D --> B
+    C --> E[End]
+"""
 
-        # Validate
-        is_valid, errors, warnings = self.mermaid_service.validate_diagram(test_diagram)
-
-        result_text = "🧪 Mermaid Rendering Test\n\n"
-        result_text += f"Validation: {'✅ Valid' if is_valid else '❌ Invalid'}\n"
-
+    try:
+        # Test validation
+        is_valid, errors, warnings = mermaid_service.validate_diagram(test_diagram)
+        
+        result_text = "🧪 Mermaid Rendering Test:\n\n"
+        result_text += f"✅ Validation: {'PASSED' if is_valid else 'FAILED'}\n"
+        
         if errors:
-            result_text += f"Errors: {len(errors)}\n"
+            result_text += f"🚨 Errors: {len(errors)}\n"
         if warnings:
-            result_text += f"Warnings: {len(warnings)}\n"
+            result_text += f"⚠️ Warnings: {len(warnings)}\n"
+        
+        # Test SVG rendering
+        try:
+            svg_content = mermaid_service.render_to_svg(test_diagram)
+            result_text += "✅ SVG Rendering: PASSED\n"
+        except Exception as e:
+            result_text += f"❌ SVG Rendering: FAILED - {e!s}\n"
+        
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": result_text
+                }
+            ]
+        }
 
-        # Try to render
-        success, svg_content, error = self.mermaid_service.render_diagram_to_svg(
-            test_diagram
-        )
-        result_text += (
-            f"SVG Rendering: {'✅ Success' if success else f'❌ Failed: {error}'}\n"
-        )
-
-        result_text += f"\nTest Diagram:\n```mermaid\n{test_diagram}\n```"
-
-        return {"content": [{"type": "text", "text": result_text}]}
+    except Exception as e:
+        logger.exception("Error testing mermaid render: %s", e)
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"❌ Error testing mermaid render: {e!s}"
+                }
+            ]
+        }

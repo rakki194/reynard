@@ -64,7 +64,9 @@ nginx/
 2. **Local Development Setup:**
 
    ```bash
-   ./scripts/dev/setup-dev-nginx.sh
+   # Start development servers using the dev server manager
+   dev-server start frontend
+   dev-server start backend
    ```
 
 ### Production
@@ -78,7 +80,11 @@ nginx/
 2. **Manual Server Setup (Arch Linux):**
 
    ```bash
-   sudo ./scripts/dev/setup-nginx-arch.sh
+   # Configure nginx and start development servers
+   sudo systemctl enable nginx
+   sudo systemctl start nginx
+   dev-server start frontend --detached
+   dev-server start backend --detached
    ```
 
 ## Features

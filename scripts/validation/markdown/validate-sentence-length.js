@@ -9,24 +9,21 @@
  * 🦊 Reynard Coding Standards: Cunning agile development with feral tenacity
  */
 
-import { execSync } from "child_process";
-import fs from "fs";
-
-// Colors for terminal output (matching Reynard style)
-const Colors = {
-  RED: "\u001b[0;31m",
-  GREEN: "\u001b[0;32m",
-  YELLOW: "\u001b[1;33m",
-  BLUE: "\u001b[0;34m",
-  PURPLE: "\u001b[0;35m",
-  CYAN: "\u001b[0;36m",
-  WHITE: "\u001b[1;37m",
-  NC: "\u001b[0m", // No Color
-};
-
-function printColored(message, color = Colors.NC) {
-  console.log(`${color}${message}${Colors.NC}`);
-}
+import {
+  Colors,
+  getAllMarkdownFiles,
+  getStagedMarkdownFiles,
+  handleExit,
+  parseCommonArgs,
+  printColored,
+  printError,
+  printHeader,
+  printSuccess,
+  printWarning,
+  safeReadFile,
+  safeWriteFile,
+  showHelp,
+} from "../shared/index.js";
 
 /**
  * Break up long sentences using 2025 best practices for technical documentation
@@ -102,78 +99,66 @@ function isSpecialMarkdownElement(line, context = []) {
  * @returns {string} Broken line
  */
 function breakLineIntelligently(line, maxLength) {
-  if (line.length <= maxLength) {
-    return line;
-  }
-
-  // Find the best break points using 2025 best practices
   const breakPoints = findOptimalBreakPoints(line, maxLength);
 
   if (breakPoints.length === 0) {
-    // Fallback: break at word boundaries
     return breakAtWordBoundary(line, maxLength);
   }
 
-  // Use the best break point
   const bestBreak = breakPoints[0];
-  const before = line.substring(0, bestBreak.position).trim();
-  const after = line.substring(bestBreak.position).trim();
-
-  // Add proper indentation for continuation
   const indent = getIndentation(line);
-  const continuation = indent + after;
+  const firstPart = line.substring(0, bestBreak.position);
+  const secondPart = line.substring(bestBreak.position).trim();
 
-  const result = before + "\n" + continuation;
-
-  // Recursively break the continuation if it's still too long
-  if (continuation.length > maxLength) {
-    const brokenContinuation = breakLineIntelligently(continuation, maxLength);
-    return before + "\n" + brokenContinuation;
-  }
-
-  return result;
+  return `${firstPart}\n${indent}${secondPart}`;
 }
 
 /**
- * Create a break point object with validation
- * @param {number} position - Position in line
- * @param {number} score - Break point score
+ * Create a break point object
+ * @param {number} position - Position in the line
+ * @param {number} score - Quality score (higher is better)
  * @param {string} type - Type of break point
- * @param {string} word - Matched word/character
+ * @param {string} word - Word at the break point
  * @param {number} maxLength - Maximum line length
- * @returns {Object|null} Break point object or null if invalid
+ * @returns {Object} Break point object
  */
 function createBreakPoint(position, score, type, word, maxLength) {
-  if (position < maxLength && position > maxLength * 0.3) {
-    return {
-      position,
-      score,
-      type,
-      word,
-    };
-  }
-  return null;
+  return {
+    position,
+    score,
+    type,
+    word,
+    // Prefer breaks that result in more balanced line lengths
+    balanceScore: Math.abs(position - maxLength / 2),
+  };
 }
 
 /**
- * Find break points for conjunction patterns
+ * Find conjunction break points (and, or, but, etc.)
  * @param {string} line - Line to analyze
  * @param {number} maxLength - Maximum line length
- * @returns {Array} Array of break point objects
+ * @returns {Array} Array of break points
  */
 function findConjunctionBreakPoints(line, maxLength) {
-  const breakPoints = [];
-  const conjunctionPatterns = [
-    /\s+(and|but|while|because|since|although|though|if|when|where|so|yet|or|nor)\s+/gi,
-    /\s+(however|therefore|moreover|furthermore|nevertheless|consequently|additionally)\s+/gi,
+  const conjunctions = [
+    /\s+and\s+/gi,
+    /\s+or\s+/gi,
+    /\s+but\s+/gi,
+    /\s+yet\s+/gi,
+    /\s+so\s+/gi,
+    /\s+for\s+/gi,
+    /\s+nor\s+/gi,
   ];
 
-  for (const pattern of conjunctionPatterns) {
+  const breakPoints = [];
+
+  for (const pattern of conjunctions) {
     let match;
     while ((match = pattern.exec(line)) !== null) {
       const position = match.index + match[0].length;
-      const breakPoint = createBreakPoint(position, 10, "conjunction", match[1], maxLength);
-      if (breakPoint) breakPoints.push(breakPoint);
+      if (position < maxLength && position > maxLength * 0.3) {
+        breakPoints.push(createBreakPoint(position, 8, "conjunction", match[0].trim(), maxLength));
+      }
     }
   }
 
@@ -181,21 +166,38 @@ function findConjunctionBreakPoints(line, maxLength) {
 }
 
 /**
- * Find break points for punctuation patterns
+ * Find punctuation break points
  * @param {string} line - Line to analyze
  * @param {number} maxLength - Maximum line length
- * @returns {Array} Array of break point objects
+ * @returns {Array} Array of break points
  */
 function findPunctuationBreakPoints(line, maxLength) {
   const breakPoints = [];
-  const punctuationPatterns = [/,\s+/g, /;\s+/g];
 
-  for (const pattern of punctuationPatterns) {
-    let match;
-    while ((match = pattern.exec(line)) !== null) {
-      const position = match.index + match[0].length;
-      const breakPoint = createBreakPoint(position, 8, "punctuation", match[0].trim(), maxLength);
-      if (breakPoint) breakPoints.push(breakPoint);
+  // Semicolons (high priority)
+  const semicolonMatches = line.matchAll(/;\s+/g);
+  for (const match of semicolonMatches) {
+    const position = match.index + match[0].length;
+    if (position < maxLength && position > maxLength * 0.2) {
+      breakPoints.push(createBreakPoint(position, 9, "semicolon", ";", maxLength));
+    }
+  }
+
+  // Commas (medium priority)
+  const commaMatches = line.matchAll(/,\s+/g);
+  for (const match of commaMatches) {
+    const position = match.index + match[0].length;
+    if (position < maxLength && position > maxLength * 0.3) {
+      breakPoints.push(createBreakPoint(position, 6, "comma", ",", maxLength));
+    }
+  }
+
+  // Colons (medium priority)
+  const colonMatches = line.matchAll(/:\s+/g);
+  for (const match of colonMatches) {
+    const position = match.index + match[0].length;
+    if (position < maxLength && position > maxLength * 0.2) {
+      breakPoints.push(createBreakPoint(position, 7, "colon", ":", maxLength));
     }
   }
 
@@ -203,44 +205,43 @@ function findPunctuationBreakPoints(line, maxLength) {
 }
 
 /**
- * Common preposition patterns grouped by complexity
- */
-const PREPOSITION_PATTERNS = {
-  // Basic spatial prepositions (simple, common)
-  basic: /\s+(in|on|at|by|for|with|from|to|of|about)\s+/gi,
-
-  // Directional prepositions
-  directional: /\s+(under|over|through|above|below|between|among)\s+/gi,
-
-  // Temporal prepositions
-  temporal: /\s+(during|before|after|within|without)\s+/gi,
-
-  // Complex spatial prepositions
-  complex: /\s+(against|toward|towards|into|onto|upon|beneath|beyond)\s+/gi,
-
-  // Relationship prepositions
-  relationship: /\s+(beside|besides|except|including|regarding|concerning)\s+/gi,
-
-  // Conditional prepositions
-  conditional: /\s+(considering|given|provided|assuming|supposing)\s+/gi,
-};
-
-/**
- * Find break points for preposition patterns using modular regex approach
+ * Find preposition break points
  * @param {string} line - Line to analyze
  * @param {number} maxLength - Maximum line length
- * @returns {Array} Array of break point objects
+ * @returns {Array} Array of break points
  */
 function findPrepositionBreakPoints(line, maxLength) {
+  const prepositions = [
+    /\s+in\s+/gi,
+    /\s+on\s+/gi,
+    /\s+at\s+/gi,
+    /\s+to\s+/gi,
+    /\s+for\s+/gi,
+    /\s+of\s+/gi,
+    /\s+with\s+/gi,
+    /\s+by\s+/gi,
+    /\s+from\s+/gi,
+    /\s+about\s+/gi,
+    /\s+into\s+/gi,
+    /\s+through\s+/gi,
+    /\s+during\s+/gi,
+    /\s+before\s+/gi,
+    /\s+after\s+/gi,
+    /\s+above\s+/gi,
+    /\s+below\s+/gi,
+    /\s+between\s+/gi,
+    /\s+among\s+/gi,
+  ];
+
   const breakPoints = [];
 
-  // Process each preposition pattern group
-  for (const pattern of Object.values(PREPOSITION_PATTERNS)) {
+  for (const pattern of prepositions) {
     let match;
     while ((match = pattern.exec(line)) !== null) {
       const position = match.index + match[0].length;
-      const breakPoint = createBreakPoint(position, 6, "preposition", match[1], maxLength);
-      if (breakPoint) breakPoints.push(breakPoint);
+      if (position < maxLength && position > maxLength * 0.4) {
+        breakPoints.push(createBreakPoint(position, 5, "preposition", match[0].trim(), maxLength));
+      }
     }
   }
 
@@ -248,32 +249,23 @@ function findPrepositionBreakPoints(line, maxLength) {
 }
 
 /**
- * Relative pronoun patterns grouped by type
- */
-const RELATIVE_PRONOUN_PATTERNS = {
-  // Basic relative pronouns
-  basic: /\s+(which|that|who|whom|whose|where|when|why|how|what)\s+/gi,
-
-  // Compound relative pronouns
-  compound: /\s+(whoever|whomever|whatever|whichever|wherever|whenever|however)\s+/gi,
-};
-
-/**
- * Find break points for relative pronoun patterns using modular regex approach
+ * Find relative clause break points
  * @param {string} line - Line to analyze
  * @param {number} maxLength - Maximum line length
- * @returns {Array} Array of break point objects
+ * @returns {Array} Array of break points
  */
 function findRelativeBreakPoints(line, maxLength) {
+  const relatives = [/\s+which\s+/gi, /\s+that\s+/gi, /\s+who\s+/gi, /\s+where\s+/gi];
+
   const breakPoints = [];
 
-  // Process each relative pronoun pattern group
-  for (const pattern of Object.values(RELATIVE_PRONOUN_PATTERNS)) {
+  for (const pattern of relatives) {
     let match;
     while ((match = pattern.exec(line)) !== null) {
       const position = match.index + match[0].length;
-      const breakPoint = createBreakPoint(position, 7, "relative", match[1], maxLength);
-      if (breakPoint) breakPoints.push(breakPoint);
+      if (position < maxLength && position > maxLength * 0.3) {
+        breakPoints.push(createBreakPoint(position, 6, "relative", match[0].trim(), maxLength));
+      }
     }
   }
 
@@ -281,28 +273,26 @@ function findRelativeBreakPoints(line, maxLength) {
 }
 
 /**
- * Sort break points by score and position
- * @param {Array} breakPoints - Array of break point objects
- * @param {number} maxLength - Maximum line length
- * @returns {Array} Sorted array of break points
+ * Sort break points by quality score
+ * @param {Array} breakPoints - Array of break points
+ * @returns {Array} Sorted break points
  */
-function sortBreakPoints(breakPoints, maxLength) {
+function sortBreakPoints(breakPoints) {
   return breakPoints.sort((a, b) => {
+    // Primary sort by score (higher is better)
     if (a.score !== b.score) {
       return b.score - a.score;
     }
-    // If scores are equal, prefer break points closer to maxLength
-    const aDistance = Math.abs(a.position - maxLength);
-    const bDistance = Math.abs(b.position - maxLength);
-    return aDistance - bDistance;
+    // Secondary sort by balance (closer to maxLength/2 is better)
+    return a.balanceScore - b.balanceScore;
   });
 }
 
 /**
- * Find optimal break points using sentence breaking best practices
+ * Find optimal break points for a line
  * @param {string} line - Line to analyze
  * @param {number} maxLength - Maximum line length
- * @returns {Array} Array of break point objects with position and score
+ * @returns {Array} Sorted array of break points
  */
 function findOptimalBreakPoints(line, maxLength) {
   const breakPoints = [
@@ -312,11 +302,11 @@ function findOptimalBreakPoints(line, maxLength) {
     ...findRelativeBreakPoints(line, maxLength),
   ];
 
-  return sortBreakPoints(breakPoints, maxLength);
+  return sortBreakPoints(breakPoints);
 }
 
 /**
- * Fallback method to break at word boundaries
+ * Break at word boundary as fallback
  * @param {string} line - Line to break
  * @param {number} maxLength - Maximum line length
  * @returns {string} Broken line
@@ -361,119 +351,105 @@ function getIndentation(line) {
 
 /**
  * Validate a single markdown file for sentence length
- * @param {string} filePath - Path to markdown file
- * @param {number} maxLength - Maximum line length
- * @returns {Object} Validation result
+ * @param {string} filePath - Path to the markdown file
+ * @param {number} maxLength - Maximum line length (default: 120)
+ * @returns {Object} Result object with success status and issues found
  */
 function validateSentenceLength(filePath, maxLength = 120) {
   try {
-    const content = fs.readFileSync(filePath, "utf8");
+    const content = safeReadFile(filePath);
+    if (!content) {
+      return {
+        success: false,
+        issues: [],
+        needsFix: false,
+        error: "Could not read file",
+      };
+    }
+
     const lines = content.split("\n");
-    const violations = [];
+    const issues = [];
 
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
       const lineNumber = i + 1;
-      const context = lines.slice(0, i);
 
-      if (line.length > maxLength && !isSpecialMarkdownElement(line, context)) {
-        violations.push({
-          line: lineNumber,
-          length: line.length,
-          content: line.trim(),
-          suggestion: breakLineIntelligently(line, maxLength),
-        });
+      if (line.length > maxLength) {
+        const context = lines.slice(0, i);
+        if (!isSpecialMarkdownElement(line, context)) {
+          issues.push({
+            line: lineNumber,
+            length: line.length,
+            content: line.substring(0, 50) + (line.length > 50 ? "..." : ""),
+            suggestion: "Break this line to improve readability",
+          });
+        }
       }
     }
 
     return {
-      valid: violations.length === 0,
-      file: filePath,
-      violations,
-      totalLines: lines.length,
-      violationCount: violations.length,
+      success: true,
+      issues,
+      needsFix: issues.length > 0,
     };
   } catch (error) {
+    printError(`Error processing ${filePath}: ${error.message}`);
     return {
-      valid: false,
-      error: `Failed to read file: ${error.message}`,
-      file: filePath,
-      line: 0,
+      success: false,
+      issues: [],
+      needsFix: false,
+      error: error.message,
     };
   }
 }
 
 /**
- * Auto-fix sentence length issues
- * @param {string} filePath - Path to markdown file
- * @param {number} maxLength - Maximum line length
- * @returns {Object} Fix result
+ * Auto-fix sentence length issues in a markdown file
+ * @param {string} filePath - Path to the markdown file
+ * @param {number} maxLength - Maximum line length (default: 120)
+ * @returns {Object} Result object with success status and changes made
  */
 function autoFixSentenceLength(filePath, maxLength = 120) {
   try {
-    const content = fs.readFileSync(filePath, "utf8");
-    const fixedContent = breakLongSentences(content, maxLength);
-
-    if (content !== fixedContent) {
-      fs.writeFileSync(filePath, fixedContent, "utf8");
+    const content = safeReadFile(filePath);
+    if (!content) {
       return {
-        success: true,
-        file: filePath,
-        fixed: true,
-      };
-    } else {
-      return {
-        success: true,
-        file: filePath,
-        fixed: false,
+        success: false,
+        modified: false,
+        changesCount: 0,
+        error: "Could not read file",
       };
     }
+
+    const originalContent = content;
+    const fixedContent = breakLongSentences(content, maxLength);
+    const modified = originalContent !== fixedContent;
+
+    if (modified) {
+      const writeSuccess = safeWriteFile(filePath, fixedContent);
+      if (!writeSuccess) {
+        return {
+          success: false,
+          modified: false,
+          changesCount: 0,
+          error: "Could not write file",
+        };
+      }
+    }
+
+    return {
+      success: true,
+      modified,
+      changesCount: modified ? 1 : 0,
+    };
   } catch (error) {
+    printError(`Error fixing ${filePath}: ${error.message}`);
     return {
       success: false,
-      error: `Failed to fix file: ${error.message}`,
-      file: filePath,
+      modified: false,
+      changesCount: 0,
+      error: error.message,
     };
-  }
-}
-
-/**
- * Get staged markdown files
- * @returns {Array} Array of staged markdown file paths
- */
-function getStagedMarkdownFiles() {
-  try {
-    const stagedFiles = execSync("git diff --cached --name-only --diff-filter=ACM", { encoding: "utf8" });
-    const allFiles = stagedFiles
-      .trim()
-      .split("\n")
-      .filter(f => f);
-
-    return allFiles.filter(file => file.endsWith(".md"));
-  } catch (error) {
-    printColored(`❌ Failed to get staged files: ${error.message}`, Colors.RED);
-    return [];
-  }
-}
-
-/**
- * Get all markdown files in the project, excluding specified directories
- * @returns {Array} Array of all markdown file paths
- */
-function getAllMarkdownFiles() {
-  try {
-    const allFiles = execSync(
-      'find . -name "*.md" -not -path "./node_modules/*" -not -path "./.git/*" -not -path "./third_party/*"',
-      { encoding: "utf8" }
-    );
-
-    return allFiles
-      .trim()
-      .split("\n")
-      .filter(f => f && f.trim());
-  } catch (error) {
-    printColored(`❌ Failed to get all markdown files: ${error.message}`, Colors.RED);
-    return [];
   }
 }
 
@@ -482,176 +458,121 @@ function getAllMarkdownFiles() {
  * @param {Array} files - Array of file paths to validate (optional, defaults to staged files)
  * @param {number} maxLength - Maximum line length
  * @param {boolean} allFiles - Whether to process all markdown files
+ * @param {boolean} fix - Whether to apply fixes
  * @returns {boolean} True if all validations pass
  */
-function validateSentenceLengths(files = null, maxLength = 120, allFiles = false) {
+function validateSentenceLengths(files = null, maxLength = 120, allFiles = false, fix = false) {
   const filesToCheck = files || (allFiles ? getAllMarkdownFiles() : getStagedMarkdownFiles());
 
   if (filesToCheck.length === 0) {
     if (allFiles) {
-      printColored("✅ No markdown files found in project", Colors.GREEN);
+      printSuccess("No markdown files found in project");
     } else {
-      printColored("✅ No markdown files staged for commit", Colors.GREEN);
+      printSuccess("No markdown files staged for commit");
     }
     return true;
   }
 
-  printColored(`🦊 Found ${filesToCheck.length} markdown file(s) to validate:`, Colors.PURPLE);
+  const action = fix ? "Fixing" : "Validating";
+  printHeader(`${action} sentence length in ${filesToCheck.length} markdown file(s):`);
   for (const file of filesToCheck) {
     printColored(`  - ${file}`, Colors.CYAN);
   }
   printColored("", Colors.NC);
 
   let allValid = true;
+  let totalIssues = 0;
   const results = [];
 
   for (const file of filesToCheck) {
-    const result = validateSentenceLength(file, maxLength);
-    results.push(result);
+    printColored(`📄 Processing: ${file}`, Colors.BLUE);
 
-    if (!result.valid) {
+    let result;
+    if (fix) {
+      result = autoFixSentenceLength(file, maxLength);
+    } else {
+      result = validateSentenceLength(file, maxLength);
+    }
+
+    results.push({ file, ...result });
+
+    if (!result.success) {
       allValid = false;
-      printColored(`❌ ${file}: ${result.violationCount} line length violations found`, Colors.RED);
-
-      for (const violation of result.violations) {
-        printColored(`   Line ${violation.line}: ${violation.length} characters`, Colors.YELLOW);
-        printColored(
-          `   Content: ${violation.content.substring(0, 80)}${violation.content.length > 80 ? "..." : ""}`,
-          Colors.CYAN
-        );
-        printColored(`   Suggestion:`, Colors.BLUE);
-        const suggestionLines = violation.suggestion.split("\n");
-        for (const suggestionLine of suggestionLines) {
-          printColored(`     ${suggestionLine}`, Colors.CYAN);
-        }
-        printColored("", Colors.NC);
+    } else if (fix) {
+      if (result.modified) {
+        printSuccess(`  Fixed sentence length issues`);
+        totalIssues += result.changesCount;
+      } else {
+        printSuccess(`  No sentence length issues found`);
       }
     } else {
-      printColored(`✅ ${file}: All lines within ${maxLength} character limit`, Colors.GREEN);
+      if (result.issues && result.issues.length > 0) {
+        allValid = false;
+        totalIssues += result.issues.length;
+        printWarning(`  Found ${result.issues.length} long lines`);
+
+        for (const issue of result.issues.slice(0, 3)) {
+          printColored(`    Line ${issue.line} (${issue.length} chars): ${issue.content}`, Colors.YELLOW);
+        }
+
+        if (result.issues.length > 3) {
+          printColored(`    ... and ${result.issues.length - 3} more`, Colors.YELLOW);
+        }
+      } else {
+        printSuccess(`  All lines are within ${maxLength} characters`);
+      }
     }
+    printColored("", Colors.NC);
   }
 
-  if (!allValid) {
-    printColored("\n💡 Tips:", Colors.YELLOW);
-    printColored("   - Break long sentences at conjunctions (and, but, while, because)", Colors.YELLOW);
-    printColored("   - Use commas and semicolons as natural break points", Colors.YELLOW);
-    printColored("   - Break after prepositions when possible", Colors.YELLOW);
-    printColored("   - Use relative pronouns as break points", Colors.YELLOW);
-    printColored(
-      '   - Run "node scripts/validation/markdown/validate-sentence-length.js --fix" to auto-fix',
-      Colors.YELLOW
-    );
-    printColored('   - Use "git commit --no-verify" to skip this check (not recommended)', Colors.YELLOW);
+  // Summary
+  if (fix) {
+    if (totalIssues > 0) {
+      printSuccess(`Successfully fixed sentence length issues in ${totalIssues} file(s)!`);
+    } else {
+      printSuccess("No sentence length issues found to fix.");
+    }
+  } else {
+    if (totalIssues > 0) {
+      printWarning(`Found ${totalIssues} long lines that should be broken up.`);
+      printWarning("   Run with --fix to automatically break long lines.");
+    } else {
+      printSuccess("All lines are within the recommended length!");
+    }
   }
 
   return allValid;
 }
 
-/**
- * Auto-fix sentence length issues
- * @param {Array} files - Array of file paths to fix (optional, defaults to staged files)
- * @param {number} maxLength - Maximum line length
- * @param {boolean} allFiles - Whether to process all markdown files
- */
-function autoFixSentenceLengths(files = null, maxLength = 120, allFiles = false) {
-  const filesToCheck = files || (allFiles ? getAllMarkdownFiles() : getStagedMarkdownFiles());
-
-  if (filesToCheck.length === 0) {
-    if (allFiles) {
-      printColored("✅ No markdown files found in project", Colors.GREEN);
-    } else {
-      printColored("✅ No markdown files to fix", Colors.GREEN);
-    }
-    return true;
-  }
-
-  printColored(`🦊 Auto-fixing sentence lengths in ${filesToCheck.length} markdown file(s):`, Colors.PURPLE);
-
-  let allFixed = true;
-
-  for (const file of filesToCheck) {
-    const result = autoFixSentenceLength(file, maxLength);
-
-    if (!result.success) {
-      printColored(`❌ ${file}: Failed to fix - ${result.error}`, Colors.RED);
-      allFixed = false;
-    } else if (result.fixed) {
-      printColored(`✅ ${file}: Fixed sentence length issues`, Colors.GREEN);
-    } else {
-      printColored(`✅ ${file}: No fixes needed`, Colors.GREEN);
-    }
-  }
-
-  return allFixed;
-}
-
-// CLI interface
+// Command line interface
 function main() {
-  const args = process.argv.slice(2);
+  const args = parseCommonArgs();
 
-  if (args.includes("--help") || args.includes("-h")) {
-    printColored("🦊 Reynard Sentence Length Validator", Colors.WHITE);
-    printColored("=".repeat(50), Colors.CYAN);
-    printColored("Usage:", Colors.BLUE);
-    printColored("  node validate-sentence-length.js [options]", Colors.CYAN);
-    printColored("", Colors.NC);
-    printColored("Options:", Colors.BLUE);
-    printColored("  --fix        Auto-fix sentence length issues", Colors.CYAN);
-    printColored("  --all        Process all markdown files (skips node_modules, .git, third_party)", Colors.CYAN);
-    printColored("  --length N   Set maximum line length (default: 120)", Colors.CYAN);
-    printColored("  --help, -h   Show this help message", Colors.CYAN);
-    printColored("  <files>      Validate specific files instead of staged files", Colors.CYAN);
-    printColored("", Colors.NC);
-    printColored("Examples:", Colors.BLUE);
-    printColored("  node validate-sentence-length.js", Colors.CYAN);
-    printColored("  node validate-sentence-length.js --fix", Colors.CYAN);
-    printColored("  node validate-sentence-length.js --fix --all", Colors.CYAN);
-    printColored("  node validate-sentence-length.js --length 100", Colors.CYAN);
-    printColored("  node validate-sentence-length.js docs/README.md", Colors.CYAN);
-    return 0;
+  if (args.help) {
+    showHelp(
+      "Sentence Length Validator for Reynard Framework",
+      "Validates and fixes sentence length in markdown files to maintain readability and comply with line length limits.",
+      {
+        examples: [
+          "node validate-sentence-length.js",
+          "node validate-sentence-length.js --fix",
+          "node validate-sentence-length.js --fix --all",
+        ],
+        notes: [
+          "This script implements 2025 best practices for technical documentation sentence breaking.",
+          "It intelligently breaks lines at conjunctions, punctuation, and prepositions.",
+        ],
+      }
+    );
   }
 
-  // Parse max length
-  let maxLength = 120;
-  const lengthIndex = args.findIndex(arg => arg === "--length");
-  if (lengthIndex !== -1 && args[lengthIndex + 1]) {
-    maxLength = parseInt(args[lengthIndex + 1], 10);
-    if (isNaN(maxLength) || maxLength < 40) {
-      printColored("❌ Invalid length value. Must be a number >= 40", Colors.RED);
-      return 1;
-    }
-  }
-
-  // Check for --all option
-  const allFiles = args.includes("--all");
-
-  if (args.includes("--fix")) {
-    const files = args.filter(arg => !arg.startsWith("--") && arg !== maxLength.toString());
-    return autoFixSentenceLengths(files.length > 0 ? files : null, maxLength, allFiles) ? 0 : 1;
-  } else {
-    const files = args.filter(arg => !arg.startsWith("--") && arg !== maxLength.toString());
-    return validateSentenceLengths(files.length > 0 ? files : null, maxLength, allFiles) ? 0 : 1;
-  }
+  const success = validateSentenceLengths(null, 120, args.all, args.fix);
+  handleExit(success, args.strict, 0);
 }
 
 // Run if called directly
 if (import.meta.url === `file://${process.argv[1]}`) {
-  process.exit(main());
+  main();
 }
 
-export {
-  autoFixSentenceLength,
-  autoFixSentenceLengths,
-  breakAtWordBoundary,
-  breakLineIntelligently,
-  breakLongSentences,
-  createBreakPoint,
-  findConjunctionBreakPoints,
-  findOptimalBreakPoints,
-  findPrepositionBreakPoints,
-  findPunctuationBreakPoints,
-  findRelativeBreakPoints,
-  sortBreakPoints,
-  validateSentenceLength,
-  validateSentenceLengths,
-};
+export { autoFixSentenceLength, validateSentenceLength, validateSentenceLengths };

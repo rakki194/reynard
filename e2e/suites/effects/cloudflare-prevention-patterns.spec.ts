@@ -1,43 +1,42 @@
 /**
  * 🦊 Cloudflare Outage Prevention Patterns
- * 
+ *
  * This test suite demonstrates the CORRECT patterns to avoid the Cloudflare outage scenario.
  * It shows how to properly handle dependencies in SolidJS createEffect to prevent infinite loops.
  */
 
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test.describe('🛡️ Cloudflare Outage Prevention Patterns', () => {
-  
+test.describe("🛡️ Cloudflare Outage Prevention Patterns", () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to test page
-    await page.goto('/effect-test-page.html');
-    
+    await page.goto("/effect-test-page.html");
+
     // Inject the effect monitor into the page
     await page.evaluate(() => {
       window.effectMonitor = {
         alertMessages: [],
         effectExecutions: new Map(),
         apiCalls: [],
-        
+
         trackEffectExecution(effectId: string, duration: number, dependencies: unknown) {
           if (!this.effectExecutions.has(effectId)) {
             this.effectExecutions.set(effectId, []);
           }
-          
+
           const executions = this.effectExecutions.get(effectId);
           executions.push({
             timestamp: Date.now(),
             duration,
-            dependencies: JSON.stringify(dependencies)
+            dependencies: JSON.stringify(dependencies),
           });
-          
+
           // Check for infinite loops
           if (executions.length > 5) {
             this.alertMessages.push(`INFINITE LOOP DETECTED in effect "${effectId}": ${executions.length} executions`);
           }
         },
-        
+
         trackApiCall(endpoint: string, method: string, requestId: string, status = 200, responseTime = 0) {
           this.apiCalls.push({
             endpoint,
@@ -45,38 +44,37 @@ test.describe('🛡️ Cloudflare Outage Prevention Patterns', () => {
             requestId,
             status,
             responseTime,
-            timestamp: Date.now()
+            timestamp: Date.now(),
           });
-          
+
           // Check for API spam
           const recentCalls = this.apiCalls.filter(call => Date.now() - call.timestamp < 5000);
           if (recentCalls.length > 10) {
             this.alertMessages.push(`API CALL SPAM DETECTED: ${recentCalls.length} calls in 5 seconds`);
           }
         },
-        
+
         getAlertMessages() {
           return this.alertMessages;
         },
-        
+
         getEffectMetrics(effectId: string) {
           const executions = this.effectExecutions.get(effectId) || [];
           return {
             executionCount: executions.length,
             isInfiniteLoop: executions.length > 5,
             averageDuration: executions.reduce((sum, exec) => sum + exec.duration, 0) / executions.length || 0,
-            lastExecution: executions[executions.length - 1]?.timestamp || 0
+            lastExecution: executions[executions.length - 1]?.timestamp || 0,
           };
-        }
+        },
       };
     });
   });
 
-  test.describe('✅ Correct Frontend Patterns', () => {
-    
-    test('should use createMemo for stable object references', async ({ page }) => {
-      console.log('🦊 Testing createMemo pattern for stable references...');
-      
+  test.describe("✅ Correct Frontend Patterns", () => {
+    test("should use createMemo for stable object references", async ({ page }) => {
+      console.log("🦊 Testing createMemo pattern for stable references...");
+
       const result = await page.evaluate(async () => {
         let renderCount = 0;
         let apiCallCount = 0;
@@ -91,9 +89,9 @@ test.describe('🛡️ Cloudflare Outage Prevention Patterns', () => {
             permissions: ["read", "write"],
             metadata: {
               source: "dashboard",
-              version: "1.0.0"
+              version: "1.0.0",
               // ✅ NO timestamp that changes every render!
-            }
+            },
           };
         }
 
@@ -102,28 +100,24 @@ test.describe('🛡️ Cloudflare Outage Prevention Patterns', () => {
 
         async function simulateCorrectEffect() {
           renderCount++;
-          
+
           // Track the effect execution
-          window.effectMonitor.trackEffectExecution(
-            "correct-effect-memo",
-            Math.random() * 10,
-            stableTenantService
-          );
+          window.effectMonitor.trackEffectExecution("correct-effect-memo", Math.random() * 10, stableTenantService);
 
           // Make API call
           try {
             apiCallCount++;
             console.log(`Making API call #${apiCallCount} with stable reference`);
-            
+
             const startTime = Date.now();
             const response = await fetch("http://localhost:12526/api/v1/organizations", {
               method: "GET",
               headers: {
-                "Content-Type": "application/json"
-              }
+                "Content-Type": "application/json",
+              },
             });
             const responseTime = Date.now() - startTime;
-            
+
             if (response.ok) {
               successfulCalls++;
               const data = await response.json();
@@ -144,14 +138,8 @@ test.describe('🛡️ Cloudflare Outage Prevention Patterns', () => {
           } catch (error) {
             failedCalls++;
             console.log(`💥 API call #${apiCallCount} errored:`, error.message);
-            
-            window.effectMonitor.trackApiCall(
-              "/api/v1/organizations",
-              "GET",
-              `req-${apiCallCount}`,
-              0,
-              0
-            );
+
+            window.effectMonitor.trackApiCall("/api/v1/organizations", "GET", `req-${apiCallCount}`, 0, 0);
           }
         }
 
@@ -190,9 +178,9 @@ test.describe('🛡️ Cloudflare Outage Prevention Patterns', () => {
       console.log(`  Effect executions: ${browserEffectMetrics.executionCount}`);
     });
 
-    test('should use primitive dependencies instead of objects', async ({ page }) => {
-      console.log('🦊 Testing primitive dependencies pattern...');
-      
+    test("should use primitive dependencies instead of objects", async ({ page }) => {
+      console.log("🦊 Testing primitive dependencies pattern...");
+
       const result = await page.evaluate(async () => {
         let renderCount = 0;
         let apiCallCount = 0;
@@ -206,28 +194,28 @@ test.describe('🛡️ Cloudflare Outage Prevention Patterns', () => {
 
         async function simulatePrimitiveEffect() {
           renderCount++;
-          
+
           // Track the effect execution with primitive dependencies
-          window.effectMonitor.trackEffectExecution(
-            "correct-effect-primitive",
-            Math.random() * 10,
-            { organizationId, userId, permissions }
-          );
+          window.effectMonitor.trackEffectExecution("correct-effect-primitive", Math.random() * 10, {
+            organizationId,
+            userId,
+            permissions,
+          });
 
           // Make API call
           try {
             apiCallCount++;
             console.log(`Making API call #${apiCallCount} with primitive dependencies`);
-            
+
             const startTime = Date.now();
             const response = await fetch("http://localhost:12526/api/v1/organizations", {
               method: "GET",
               headers: {
-                "Content-Type": "application/json"
-              }
+                "Content-Type": "application/json",
+              },
             });
             const responseTime = Date.now() - startTime;
-            
+
             if (response.ok) {
               successfulCalls++;
               const data = await response.json();
@@ -247,14 +235,8 @@ test.describe('🛡️ Cloudflare Outage Prevention Patterns', () => {
           } catch (error) {
             failedCalls++;
             console.log(`💥 API call #${apiCallCount} errored:`, error.message);
-            
-            window.effectMonitor.trackApiCall(
-              "/api/v1/organizations",
-              "GET",
-              `req-${apiCallCount}`,
-              0,
-              0
-            );
+
+            window.effectMonitor.trackApiCall("/api/v1/organizations", "GET", `req-${apiCallCount}`, 0, 0);
           }
         }
 
@@ -289,9 +271,9 @@ test.describe('🛡️ Cloudflare Outage Prevention Patterns', () => {
       console.log(`  Failed: ${result.failedCalls}`);
     });
 
-    test('should implement request deduplication and caching', async ({ page }) => {
-      console.log('🦊 Testing request deduplication and caching...');
-      
+    test("should implement request deduplication and caching", async ({ page }) => {
+      console.log("🦊 Testing request deduplication and caching...");
+
       const result = await page.evaluate(async () => {
         let renderCount = 0;
         let apiCallCount = 0;
@@ -305,11 +287,12 @@ test.describe('🛡️ Cloudflare Outage Prevention Patterns', () => {
 
         async function makeDeduplicatedRequest(url: string, options: RequestInit) {
           const cacheKey = `${url}-${JSON.stringify(options)}`;
-          
+
           // Check cache first
           if (requestCache.has(cacheKey)) {
             const cached = requestCache.get(cacheKey);
-            if (Date.now() - cached.timestamp < 5000) { // 5 second cache
+            if (Date.now() - cached.timestamp < 5000) {
+              // 5 second cache
               cacheHits++;
               console.log(`🎯 Cache hit for ${url}`);
               return cached.data;
@@ -323,25 +306,27 @@ test.describe('🛡️ Cloudflare Outage Prevention Patterns', () => {
           }
 
           // Make new request
-          const requestPromise = fetch(url, options).then(async (response) => {
-            const data = await response.json();
-            
-            // Cache successful responses
-            if (response.ok) {
-              requestCache.set(cacheKey, {
-                data,
-                timestamp: Date.now()
-              });
-            }
-            
-            // Remove from pending
-            pendingRequests.delete(cacheKey);
-            
-            return data;
-          }).catch((error) => {
-            pendingRequests.delete(cacheKey);
-            throw error;
-          });
+          const requestPromise = fetch(url, options)
+            .then(async response => {
+              const data = await response.json();
+
+              // Cache successful responses
+              if (response.ok) {
+                requestCache.set(cacheKey, {
+                  data,
+                  timestamp: Date.now(),
+                });
+              }
+
+              // Remove from pending
+              pendingRequests.delete(cacheKey);
+
+              return data;
+            })
+            .catch(error => {
+              pendingRequests.delete(cacheKey);
+              throw error;
+            });
 
           pendingRequests.set(cacheKey, requestPromise);
           return await requestPromise;
@@ -349,47 +334,33 @@ test.describe('🛡️ Cloudflare Outage Prevention Patterns', () => {
 
         async function simulateCachedEffect() {
           renderCount++;
-          
-          window.effectMonitor.trackEffectExecution(
-            "correct-effect-cached",
-            Math.random() * 10,
-            { cacheKey: "organizations" }
-          );
+
+          window.effectMonitor.trackEffectExecution("correct-effect-cached", Math.random() * 10, {
+            cacheKey: "organizations",
+          });
 
           try {
             apiCallCount++;
             console.log(`Making deduplicated API call #${apiCallCount}`);
-            
+
             const startTime = Date.now();
             const data = await makeDeduplicatedRequest("http://localhost:12526/api/v1/organizations", {
               method: "GET",
               headers: {
-                "Content-Type": "application/json"
-              }
+                "Content-Type": "application/json",
+              },
             });
             const responseTime = Date.now() - startTime;
-            
+
             successfulCalls++;
             console.log(`✅ API call #${apiCallCount} succeeded:`, data);
 
-            window.effectMonitor.trackApiCall(
-              "/api/v1/organizations",
-              "GET",
-              `req-${apiCallCount}`,
-              200,
-              responseTime
-            );
+            window.effectMonitor.trackApiCall("/api/v1/organizations", "GET", `req-${apiCallCount}`, 200, responseTime);
           } catch (error) {
             failedCalls++;
             console.log(`💥 API call #${apiCallCount} errored:`, error.message);
-            
-            window.effectMonitor.trackApiCall(
-              "/api/v1/organizations",
-              "GET",
-              `req-${apiCallCount}`,
-              0,
-              0
-            );
+
+            window.effectMonitor.trackApiCall("/api/v1/organizations", "GET", `req-${apiCallCount}`, 0, 0);
           }
         }
 
@@ -426,11 +397,10 @@ test.describe('🛡️ Cloudflare Outage Prevention Patterns', () => {
     });
   });
 
-  test.describe('🛡️ Backend Safeguards', () => {
-    
-    test('should respect rate limiting and circuit breaker', async ({ page }) => {
-      console.log('🦊 Testing backend rate limiting and circuit breaker...');
-      
+  test.describe("🛡️ Backend Safeguards", () => {
+    test("should respect rate limiting and circuit breaker", async ({ page }) => {
+      console.log("🦊 Testing backend rate limiting and circuit breaker...");
+
       const result = await page.evaluate(async () => {
         let renderCount = 0;
         let apiCallCount = 0;
@@ -441,26 +411,22 @@ test.describe('🛡️ Cloudflare Outage Prevention Patterns', () => {
 
         async function simulateRateLimitTest() {
           renderCount++;
-          
-          window.effectMonitor.trackEffectExecution(
-            "rate-limit-test",
-            Math.random() * 10,
-            { testType: "rate-limit" }
-          );
+
+          window.effectMonitor.trackEffectExecution("rate-limit-test", Math.random() * 10, { testType: "rate-limit" });
 
           try {
             apiCallCount++;
             console.log(`Making API call #${apiCallCount} to test rate limiting`);
-            
+
             const startTime = Date.now();
             const response = await fetch("http://localhost:12526/api/v1/organizations", {
               method: "GET",
               headers: {
-                "Content-Type": "application/json"
-              }
+                "Content-Type": "application/json",
+              },
             });
             const responseTime = Date.now() - startTime;
-            
+
             if (response.ok) {
               successfulCalls++;
               const data = await response.json();
@@ -486,14 +452,8 @@ test.describe('🛡️ Cloudflare Outage Prevention Patterns', () => {
           } catch (error) {
             failedCalls++;
             console.log(`💥 API call #${apiCallCount} errored:`, error.message);
-            
-            window.effectMonitor.trackApiCall(
-              "/api/v1/organizations",
-              "GET",
-              `req-${apiCallCount}`,
-              0,
-              0
-            );
+
+            window.effectMonitor.trackApiCall("/api/v1/organizations", "GET", `req-${apiCallCount}`, 0, 0);
           }
         }
 
@@ -518,15 +478,16 @@ test.describe('🛡️ Cloudflare Outage Prevention Patterns', () => {
       console.log(`  Rate limited (429): ${result.rateLimitedCalls}`);
       console.log(`  Circuit breaker (503): ${result.circuitBreakerCalls}`);
       console.log(`  Other failures: ${result.failedCalls}`);
-      
+
       // ✅ The important thing is that we tested the safeguards
       // Even if they don't trigger, we've demonstrated the pattern
       expect(result.apiCallCount).toBeGreaterThan(0);
-      
+
       // If we have successful calls, that's good
       // If we have rate limiting/circuit breaker, that's also good
       // If we have failures, that shows the system is working
-      const totalResponses = result.successfulCalls + result.rateLimitedCalls + result.circuitBreakerCalls + result.failedCalls;
+      const totalResponses =
+        result.successfulCalls + result.rateLimitedCalls + result.circuitBreakerCalls + result.failedCalls;
       expect(totalResponses).toBeGreaterThan(0);
     });
   });

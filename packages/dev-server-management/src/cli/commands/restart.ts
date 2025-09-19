@@ -1,27 +1,17 @@
-/**
- * 🦊 Dev Server Management CLI - Restart Command
- *
- * Handles restarting development servers.
- */
-
-import chalk from "chalk";
-import ora from "ora";
 import { DevServerManager } from "../../core/DevServerManager.js";
 import type { GlobalOptions } from "./types.js";
 
-export async function handleRestart(project: string, globalOptions: GlobalOptions): Promise<void> {
-  const manager = new DevServerManager(globalOptions.config);
-
+export const handleRestart = async (
+  project: string,
+  globalOptions: GlobalOptions
+) => {
   try {
-    await manager.initialize();
-
-    const spinner = ora(`Restarting ${project}...`).start();
-
-    await manager.restart(project);
-
-    spinner.succeed(chalk.green(`✅ ${project} restarted successfully`));
+    const devServerManager = new DevServerManager(globalOptions.config);
+    await devServerManager.initialize();
+    await devServerManager.restart(project);
+    console.log(`Restarting project: ${project}`);
   } catch (error) {
-    console.error(chalk.red(`❌ Failed to restart ${project}:`), error);
+    console.error(`Failed to restart project ${project}:`, error);
     process.exit(1);
   }
-}
+};

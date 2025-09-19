@@ -35,7 +35,7 @@ The agent naming system provides comprehensive robot name generation inspired by
 ### Basic Name Generation
 
 ```python
-from agent_naming import ReynardRobotNamer, AnimalSpirit, NamingStyle, NamingConfig
+from agent_naming import AnimalSpirit, NamingConfig, NamingStyle, ReynardRobotNamer
 
 # Create generator
 namer = ReynardRobotNamer()

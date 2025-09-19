@@ -16,7 +16,11 @@ logger = logging.getLogger(__name__)
 class JWTSecretManager:
     """Manages JWT secret keys with persistence and security."""
 
-    def __init__(self, secret_file_path: str = "backend/.jwt_secret"):
+    def __init__(self, secret_file_path: str | None = None):
+        if secret_file_path is None:
+            # Use absolute path to backend directory
+            backend_dir = Path(__file__).parent.parent.parent
+            secret_file_path = backend_dir / ".jwt_secret"
         self.secret_file_path = Path(secret_file_path)
         self._secret_key: str | None = None
         self._ensure_secret_file()

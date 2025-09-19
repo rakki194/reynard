@@ -8,24 +8,21 @@
  * 🦊 Reynard Coding Standards: Cunning agile development with feral tenacity
  */
 
-import { execSync } from "child_process";
-import fs from "fs";
-
-// Colors for terminal output (matching Reynard style)
-const Colors = {
-  RED: "\u001b[0;31m",
-  GREEN: "\u001b[0;32m",
-  YELLOW: "\u001b[1;33m",
-  BLUE: "\u001b[0;34m",
-  PURPLE: "\u001b[0;35m",
-  CYAN: "\u001b[0;36m",
-  WHITE: "\u001b[1;37m",
-  NC: "\u001b[0m", // No Color
-};
-
-function printColored(message, color = Colors.NC) {
-  console.log(`${color}${message}${Colors.NC}`);
-}
+import {
+  Colors,
+  getAllMarkdownFiles,
+  getStagedMarkdownFiles,
+  handleExit,
+  parseCommonArgs,
+  printColored,
+  printError,
+  printHeader,
+  printSuccess,
+  printWarning,
+  safeReadFile,
+  safeWriteFile,
+  showHelp,
+} from "../shared/index.js";
 
 /**
  * Convert italic text to blockquotes in a markdown file
@@ -35,7 +32,17 @@ function printColored(message, color = Colors.NC) {
  */
 function convertItalicToBlockquote(filePath, fix = false) {
   try {
-    const content = fs.readFileSync(filePath, "utf8");
+    const content = safeReadFile(filePath);
+    if (!content) {
+      return {
+        success: false,
+        modified: false,
+        changesCount: 0,
+        needsFix: false,
+        error: "Could not read file",
+      };
+    }
+
     const lines = content.split("\n");
     let modified = false;
     let changesCount = 0;
@@ -77,8 +84,18 @@ function convertItalicToBlockquote(filePath, fix = false) {
 
     if (fix && modified) {
       const newContent = newLines.join("\n");
-      fs.writeFileSync(filePath, newContent, "utf8");
-      printColored(`  ✅ Fixed ${changesCount} italic-to-blockquote conversion(s)`, Colors.GREEN);
+      const writeSuccess = safeWriteFile(filePath, newContent);
+      if (writeSuccess) {
+        printSuccess(`  Fixed ${changesCount} italic-to-blockquote conversion(s)`);
+      } else {
+        return {
+          success: false,
+          modified: false,
+          changesCount: 0,
+          needsFix: false,
+          error: "Could not write file",
+        };
+      }
     }
 
     return {
@@ -88,7 +105,7 @@ function convertItalicToBlockquote(filePath, fix = false) {
       needsFix: modified && !fix,
     };
   } catch (error) {
-    printColored(`  ❌ Error processing ${filePath}: ${error.message}`, Colors.RED);
+    printError(`  Error processing ${filePath}: ${error.message}`);
     return {
       success: false,
       modified: false,
@@ -96,45 +113,6 @@ function convertItalicToBlockquote(filePath, fix = false) {
       needsFix: false,
       error: error.message,
     };
-  }
-}
-
-/**
- * Get staged markdown files
- * @returns {Array} Array of staged markdown file paths
- */
-function getStagedMarkdownFiles() {
-  try {
-    const output = execSync("git diff --cached --name-only --diff-filter=ACM", {
-      encoding: "utf8",
-    });
-    return output
-      .split("\n")
-      .filter(file => file.trim() && file.endsWith(".md"))
-      .map(file => file.trim());
-  } catch (error) {
-    printColored(`Error getting staged files: ${error.message}`, Colors.RED);
-    return [];
-  }
-}
-
-/**
- * Get all markdown files in the project
- * @returns {Array} Array of all markdown file paths
- */
-function getAllMarkdownFiles() {
-  try {
-    const output = execSync(
-      "find . -name '*.md' -not -path './node_modules/*' -not -path './third_party/*' -not -path './backend/venv/*'",
-      { encoding: "utf8" }
-    );
-    return output
-      .split("\n")
-      .filter(file => file.trim())
-      .map(file => file.trim());
-  } catch (error) {
-    printColored(`Error getting all markdown files: ${error.message}`, Colors.RED);
-    return [];
   }
 }
 
@@ -150,15 +128,15 @@ function validateItalicToBlockquote(files = null, allFiles = false, fix = false)
 
   if (filesToCheck.length === 0) {
     if (allFiles) {
-      printColored("✅ No markdown files found in project", Colors.GREEN);
+      printSuccess("No markdown files found in project");
     } else {
-      printColored("✅ No markdown files staged for commit", Colors.GREEN);
+      printSuccess("No markdown files staged for commit");
     }
     return true;
   }
 
   const action = fix ? "Converting" : "Validating";
-  printColored(`🦊 ${action} italic-to-blockquote in ${filesToCheck.length} markdown file(s):`, Colors.PURPLE);
+  printHeader(`${action} italic-to-blockquote in ${filesToCheck.length} markdown file(s):`);
   for (const file of filesToCheck) {
     printColored(`  - ${file}`, Colors.CYAN);
   }
@@ -183,7 +161,7 @@ function validateItalicToBlockquote(files = null, allFiles = false, fix = false)
     }
 
     if (result.success && !result.modified) {
-      printColored(`  ✅ No italic-to-blockquote conversions needed`, Colors.GREEN);
+      printSuccess("  No italic-to-blockquote conversions needed");
     }
     printColored("", Colors.NC);
   }
@@ -191,16 +169,16 @@ function validateItalicToBlockquote(files = null, allFiles = false, fix = false)
   // Summary
   if (fix) {
     if (totalChanges > 0) {
-      printColored(`🦊 Successfully converted ${totalChanges} italic text(s) to blockquotes!`, Colors.GREEN);
+      printSuccess(`Successfully converted ${totalChanges} italic text(s) to blockquotes!`);
     } else {
-      printColored(`🦊 No italic-to-blockquote conversions needed.`, Colors.GREEN);
+      printSuccess("No italic-to-blockquote conversions needed.");
     }
   } else {
     if (totalChanges > 0) {
-      printColored(`🦊 Found ${totalChanges} italic text(s) that should be converted to blockquotes.`, Colors.YELLOW);
-      printColored(`   Run with --fix to automatically convert them.`, Colors.YELLOW);
+      printWarning(`Found ${totalChanges} italic text(s) that should be converted to blockquotes.`);
+      printWarning("   Run with --fix to automatically convert them.");
     } else {
-      printColored(`🦊 All italic text formatting is correct!`, Colors.GREEN);
+      printSuccess("All italic text formatting is correct!");
     }
   }
 
@@ -209,36 +187,25 @@ function validateItalicToBlockquote(files = null, allFiles = false, fix = false)
 
 // Command line interface
 function main() {
-  const args = process.argv.slice(2);
-  const fix = args.includes("--fix");
-  const allFiles = args.includes("--all");
-  const help = args.includes("--help") || args.includes("-h");
+  const args = parseCommonArgs();
 
-  if (help) {
-    printColored("🦊 Italic to Blockquote Converter for Reynard Framework", Colors.PURPLE);
-    printColored("", Colors.NC);
-    printColored("Usage:", Colors.WHITE);
-    printColored("  node scripts/validation/markdown/validate-italic-to-blockquote.js [options]", Colors.CYAN);
-    printColored("", Colors.NC);
-    printColored("Options:", Colors.WHITE);
-    printColored("  --fix     Apply fixes automatically", Colors.CYAN);
-    printColored("  --all     Process all markdown files (default: staged files only)", Colors.CYAN);
-    printColored("  --help    Show this help message", Colors.CYAN);
-    printColored("", Colors.NC);
-    printColored("Examples:", Colors.WHITE);
-    printColored("  node scripts/validation/markdown/validate-italic-to-blockquote.js", Colors.CYAN);
-    printColored("  node scripts/validation/markdown/validate-italic-to-blockquote.js --fix", Colors.CYAN);
-    printColored("  node scripts/validation/markdown/validate-italic-to-blockquote.js --fix --all", Colors.CYAN);
-    printColored("", Colors.NC);
-    printColored(
-      "🦊 This script converts italic text (*text*) to blockquotes (>text) in markdown files.",
-      Colors.PURPLE
+  if (args.help) {
+    showHelp(
+      "Italic to Blockquote Converter for Reynard Framework",
+      "Converts italic text (*text*) to blockquotes (>text) in markdown files for better readability.",
+      {
+        examples: [
+          "node validate-italic-to-blockquote.js",
+          "node validate-italic-to-blockquote.js --fix",
+          "node validate-italic-to-blockquote.js --fix --all",
+        ],
+        notes: ["This script converts italic text (*text*) to blockquotes (>text) in markdown files."],
+      }
     );
-    return;
   }
 
-  const success = validateItalicToBlockquote(null, allFiles, fix);
-  process.exit(success ? 0 : 1);
+  const success = validateItalicToBlockquote(null, args.all, args.fix);
+  handleExit(success, args.strict, 0);
 }
 
 // Run if called directly

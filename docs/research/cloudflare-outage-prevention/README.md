@@ -47,13 +47,13 @@ docs/research/cloudflare-outage-prevention/
 
 ## 📊 Experimental Results
 
-| Test Scenario | API Calls | Success Rate | Infinite Loop | Status |
-|---------------|-----------|--------------|---------------|---------|
-| Problematic Pattern | 10 | 100% | ✅ Detected | ⚠️ Working |
-| Stable References | 5 | 100% | ❌ Prevented | ✅ Fixed |
-| Primitive Dependencies | 5 | 100% | ❌ Prevented | ✅ Fixed |
-| Request Deduplication | 10 | 100% | ❌ Prevented | ✅ Fixed |
-| Backend Safeguards | 20 | 100% | ❌ Prevented | ✅ Fixed |
+| Test Scenario          | API Calls | Success Rate | Infinite Loop | Status     |
+| ---------------------- | --------- | ------------ | ------------- | ---------- |
+| Problematic Pattern    | 10        | 100%         | ✅ Detected   | ⚠️ Working |
+| Stable References      | 5         | 100%         | ❌ Prevented  | ✅ Fixed   |
+| Primitive Dependencies | 5         | 100%         | ❌ Prevented  | ✅ Fixed   |
+| Request Deduplication  | 10        | 100%         | ❌ Prevented  | ✅ Fixed   |
+| Backend Safeguards     | 20        | 100%         | ❌ Prevented  | ✅ Fixed   |
 
 ## 🛠️ Implementation
 
@@ -128,4 +128,4 @@ For questions about this research, please contact the Reynard Framework Research
 
 ---
 
-*This research demonstrates how proper frontend patterns, backend safeguards, and comprehensive E2E testing can prevent catastrophic outages like the Cloudflare incident. The multi-layered defense system provides robust protection against infinite loops, API spam, and cascade failures.*
+_This research demonstrates how proper frontend patterns, backend safeguards, and comprehensive E2E testing can prevent catastrophic outages like the Cloudflare incident. The multi-layered defense system provides robust protection against infinite loops, API spam, and cascade failures._

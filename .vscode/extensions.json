@@ -40,12 +40,6 @@
 
     // Testing
     "vitest.explorer",
-    "ms-python.pytest",
-
-    // Docker
-    "ms-azuretools.vscode-docker",
-
-    // File Icons
     "vscode-icons-team.vscode-icons",
 
     // Code Quality

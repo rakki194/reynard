@@ -5,9 +5,6 @@
  * Leverages existing Reynard ecosystem patterns for consistency.
  */
 
-import type { ServiceStatus, ServiceHealth } from "reynard-service-manager";
-import type { QueueStatus, ProcessingResult } from "reynard-queue-watcher";
-
 // ============================================================================
 // Core Configuration Types
 // ============================================================================
@@ -143,8 +140,8 @@ export interface ProcessInfo {
   env: Record<string, string>;
   /** Process output streams */
   streams: {
-    stdout: NodeJS.ReadableStream;
-    stderr: NodeJS.ReadableStream;
+    stdout: NodeJS.ReadableStream | null;
+    stderr: NodeJS.ReadableStream | null;
   };
   /** Exit code (if process has exited) */
   exitCode?: number;
@@ -415,7 +412,7 @@ export interface DevServerManager {
   /** Get health status */
   health(project?: string): Promise<HealthStatus[]>;
   /** Start multiple servers */
-  startMultiple(projects: string[]): Promise<void>;
+  startMultiple(projects: string[]): Promise<Array<{ success: boolean; error?: string }>>;
   /** Stop all servers */
   stopAll(): Promise<void>;
   /** Reload configuration */

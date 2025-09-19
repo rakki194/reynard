@@ -8,7 +8,276 @@
     "maxRestartAttempts": 3,
     "restartDelay": 1000
   },
-  "projects": {},
+  "projects": {
+    "reynard-core": {
+      "name": "reynard-core",
+      "port": 3000,
+      "description": "Core utilities and modules",
+      "category": "package",
+      "autoReload": true,
+      "hotReload": true,
+      "command": "pnpm",
+      "args": ["run", "dev"],
+      "healthCheck": {
+        "endpoint": "http://localhost:3000/health",
+        "timeout": 5000
+      }
+    },
+    "reynard-components": {
+      "name": "reynard-components",
+      "port": 3001,
+      "description": "UI component library",
+      "category": "package",
+      "autoReload": true,
+      "hotReload": true,
+      "command": "pnpm",
+      "args": ["run", "dev"],
+      "healthCheck": {
+        "endpoint": "http://localhost:3001/health",
+        "timeout": 5000
+      }
+    },
+    "reynard-charts": {
+      "name": "reynard-charts",
+      "port": 3002,
+      "description": "Chart components and visualizations",
+      "category": "package",
+      "autoReload": true,
+      "hotReload": true,
+      "command": "pnpm",
+      "args": ["run", "dev"],
+      "healthCheck": {
+        "endpoint": "http://localhost:3002/health",
+        "timeout": 5000
+      }
+    },
+    "reynard-themes": {
+      "name": "reynard-themes",
+      "port": 3003,
+      "description": "Theme system and styling",
+      "category": "package",
+      "autoReload": true,
+      "hotReload": true,
+      "command": "pnpm",
+      "args": ["run", "dev"],
+      "healthCheck": {
+        "endpoint": "http://localhost:3003/health",
+        "timeout": 5000
+      }
+    },
+    "reynard-fluent-icons": {
+      "name": "reynard-fluent-icons",
+      "port": 3004,
+      "description": "Fluent UI icon components",
+      "category": "package",
+      "autoReload": true,
+      "hotReload": true,
+      "command": "pnpm",
+      "args": ["run", "dev"],
+      "healthCheck": {
+        "endpoint": "http://localhost:3004/health",
+        "timeout": 5000
+      }
+    },
+    "reynard-3d": {
+      "name": "reynard-3d",
+      "port": 3005,
+      "description": "3D graphics and WebGL components",
+      "category": "package",
+      "autoReload": true,
+      "hotReload": true,
+      "command": "pnpm",
+      "args": ["run", "dev"],
+      "healthCheck": {
+        "endpoint": "http://localhost:3005/health",
+        "timeout": 5000
+      }
+    },
+    "reynard-algorithms": {
+      "name": "reynard-algorithms",
+      "port": 3006,
+      "description": "Algorithm implementations and utilities",
+      "category": "package",
+      "autoReload": true,
+      "hotReload": true,
+      "command": "pnpm",
+      "args": ["run", "dev"],
+      "healthCheck": {
+        "endpoint": "http://localhost:3006/health",
+        "timeout": 5000
+      }
+    },
+    "reynard-colors": {
+      "name": "reynard-colors",
+      "port": 3007,
+      "description": "Color system and utilities",
+      "category": "package",
+      "autoReload": true,
+      "hotReload": true,
+      "command": "pnpm",
+      "args": ["run", "dev"],
+      "healthCheck": {
+        "endpoint": "http://localhost:3007/health",
+        "timeout": 5000
+      }
+    },
+    "reynard-unified-repository": {
+      "name": "reynard-unified-repository",
+      "port": 3008,
+      "description": "Unified repository and multimodal dataset management system",
+      "category": "package",
+      "autoReload": true,
+      "hotReload": true,
+      "command": "pnpm",
+      "args": ["run", "dev"],
+      "healthCheck": {
+        "endpoint": "http://localhost:3008/health",
+        "timeout": 5000
+      }
+    },
+    "test-app": {
+      "name": "test-app",
+      "port": 3011,
+      "description": "Comprehensive test application",
+      "category": "example",
+      "autoReload": true,
+      "hotReload": true,
+      "command": "pnpm",
+      "args": ["run", "dev"],
+      "cwd": "examples/test-app",
+      "healthCheck": {
+        "endpoint": "http://localhost:3011/health",
+        "timeout": 5000
+      }
+    },
+    "basic-app": {
+      "name": "basic-app",
+      "port": 3016,
+      "description": "Basic application example",
+      "category": "example",
+      "autoReload": true,
+      "hotReload": true,
+      "command": "pnpm",
+      "args": ["run", "dev"],
+      "healthCheck": {
+        "endpoint": "http://localhost:3016/health",
+        "timeout": 5000
+      }
+    },
+    "auth-app": {
+      "name": "auth-app",
+      "port": 3017,
+      "description": "Authentication example",
+      "category": "example",
+      "autoReload": true,
+      "hotReload": true,
+      "command": "pnpm",
+      "args": ["run", "dev"],
+      "healthCheck": {
+        "endpoint": "http://localhost:3017/health",
+        "timeout": 5000
+      }
+    },
+    "i18n-demo": {
+      "name": "i18n-demo",
+      "port": 3018,
+      "description": "Internationalization demo",
+      "category": "example",
+      "autoReload": true,
+      "hotReload": true,
+      "command": "pnpm",
+      "args": ["run", "dev"],
+      "healthCheck": {
+        "endpoint": "http://localhost:3018/health",
+        "timeout": 5000
+      }
+    },
+    "comprehensive-dashboard": {
+      "name": "comprehensive-dashboard",
+      "port": 3019,
+      "description": "Full-featured dashboard example",
+      "category": "example",
+      "autoReload": true,
+      "hotReload": true,
+      "command": "pnpm",
+      "args": ["run", "dev"],
+      "healthCheck": {
+        "endpoint": "http://localhost:3019/health",
+        "timeout": 5000
+      }
+    },
+    "clock": {
+      "name": "clock",
+      "port": 3020,
+      "description": "Clock application example",
+      "category": "example",
+      "autoReload": true,
+      "hotReload": true,
+      "command": "pnpm",
+      "args": ["run", "dev"],
+      "healthCheck": {
+        "endpoint": "http://localhost:3020/health",
+        "timeout": 5000
+      }
+    },
+    "3d-demo": {
+      "name": "3d-demo",
+      "port": 3021,
+      "description": "3D graphics demonstration",
+      "category": "example",
+      "autoReload": true,
+      "hotReload": true,
+      "command": "pnpm",
+      "args": ["run", "dev"],
+      "healthCheck": {
+        "endpoint": "http://localhost:3021/health",
+        "timeout": 5000
+      }
+    },
+    "algo-bench": {
+      "name": "algo-bench",
+      "port": 3022,
+      "description": "Algorithm benchmarking tool",
+      "category": "example",
+      "autoReload": true,
+      "hotReload": true,
+      "command": "pnpm",
+      "args": ["run", "dev"],
+      "healthCheck": {
+        "endpoint": "http://localhost:3022/health",
+        "timeout": 5000
+      }
+    },
+    "backend": {
+      "name": "backend",
+      "port": 8000,
+      "description": "Main Python backend server",
+      "category": "backend",
+      "autoReload": true,
+      "hotReload": false,
+      "command": "python",
+      "args": ["main.py"],
+      "cwd": "backend",
+      "healthCheck": {
+        "endpoint": "http://localhost:8000/health",
+        "timeout": 5000
+      }
+    },
+    "playwright": {
+      "name": "playwright",
+      "port": 3023,
+      "description": "End-to-end testing suite",
+      "category": "e2e",
+      "autoReload": false,
+      "hotReload": false,
+      "command": "pnpm",
+      "args": ["run", "test"],
+      "healthCheck": {
+        "command": "pnpm run test:health",
+        "timeout": 10000
+      }
+    }
+  },
   "portRanges": {
     "package": {
       "start": 3000,

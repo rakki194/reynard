@@ -19,6 +19,5 @@ if str(mcp_dir) not in sys.path:
     sys.path.insert(0, str(mcp_dir))
 
 from tools.monolith_detection.definitions import get_monolith_detection_tool_definitions
-from tools.monolith_detection.tools import MonolithDetectionTools
 
-__all__ = ["MonolithDetectionTools", "get_monolith_detection_tool_definitions"]
+__all__ = ["get_monolith_detection_tool_definitions"]

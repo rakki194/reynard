@@ -13,6 +13,10 @@
       "path": "./packages",
     },
     {
+      "name": "👽 Third Party",
+      "path": "./third_party",
+    }
+    {
       "name": "🎯 Examples",
       "path": "./examples",
     },

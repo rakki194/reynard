@@ -353,14 +353,14 @@ gh api repos/owner/repo --header 'If-None-Match: "etag_value"'
 
 ## Comparison: GitHub CLI vs Manual Methods
 
-| Feature | GitHub CLI | Manual curl |
-|---------|------------|-------------|
-| Authentication | Built-in | Manual headers |
-| JSON Processing | Native jq support | Manual parsing |
-| Error Handling | User-friendly | Raw HTTP errors |
-| Rate Limiting | Automatic handling | Manual management |
-| Security | Token management | Manual token handling |
-| Usability | Simple commands | Complex syntax |
+| Feature         | GitHub CLI         | Manual curl           |
+| --------------- | ------------------ | --------------------- |
+| Authentication  | Built-in           | Manual headers        |
+| JSON Processing | Native jq support  | Manual parsing        |
+| Error Handling  | User-friendly      | Raw HTTP errors       |
+| Rate Limiting   | Automatic handling | Manual management     |
+| Security        | Token management   | Manual token handling |
+| Usability       | Simple commands    | Complex syntax        |
 
 ## Conclusion
 
@@ -383,4 +383,4 @@ GitHub CLI provides a much more efficient and secure way to interact with GitHub
 
 ---
 
-*This guide demonstrates the power and simplicity of GitHub CLI for common GitHub operations while maintaining security best practices.*
+_This guide demonstrates the power and simplicity of GitHub CLI for common GitHub operations while maintaining security best practices._

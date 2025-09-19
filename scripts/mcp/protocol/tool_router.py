@@ -31,9 +31,9 @@ class ToolRouter:
 
             # Execute the tool based on its execution type
             if handler.execution_type == ToolExecutionType.ASYNC:
-                result = await handler.handler_method(arguments)
+                result = await handler.handler_method(arguments=arguments)
             else:
-                result = handler.handler_method(arguments)
+                result = handler.handler_method(arguments=arguments)
 
             return result
 

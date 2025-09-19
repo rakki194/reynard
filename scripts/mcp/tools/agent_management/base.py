@@ -111,6 +111,22 @@ class BaseAgentTools:
 
         return f"agent-{int(time.time())}-{random.randint(1000, 9999)}"
 
+    def get_spirit_emoji(self, arguments: dict[str, Any]) -> dict[str, Any]:
+        """Get the emoji for a specific animal spirit type."""
+        from services.spirit_emoji_service import spirit_emoji_service
+        
+        spirit_str = arguments.get("spirit", "")
+        emoji = spirit_emoji_service.get_spirit_emoji(spirit_str)
+        
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"Spirit emoji for {spirit_str}: {emoji}",
+                }
+            ]
+        }
+
     def _get_version_info(self) -> dict[str, Any]:
         """Get simplified version information for startup."""
         return {

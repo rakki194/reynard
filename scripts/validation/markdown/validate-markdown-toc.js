@@ -9,24 +9,20 @@
  * 🦊 Reynard Coding Standards: Cunning agile development with feral tenacity
  */
 
-import { execSync } from "child_process";
-import fs from "fs";
-
-// Colors for terminal output (matching Reynard style)
-const Colors = {
-  RED: "\u001b[0;31m",
-  GREEN: "\u001b[0;32m",
-  YELLOW: "\u001b[1;33m",
-  BLUE: "\u001b[0;34m",
-  PURPLE: "\u001b[0;35m",
-  CYAN: "\u001b[0;36m",
-  WHITE: "\u001b[1;37m",
-  NC: "\u001b[0m", // No Color
-};
-
-function printColored(message, color = Colors.NC) {
-  console.log(`${color}${message}${Colors.NC}`);
-}
+import {
+  Colors,
+  getStagedMarkdownFiles,
+  handleExit,
+  parseCommonArgs,
+  printColored,
+  printError,
+  printHeader,
+  printSuccess,
+  printWarning,
+  safeReadFile,
+  safeWriteFile,
+  showHelp,
+} from "../shared/index.js";
 
 /**
  * Parse markdown content and extract headings
@@ -106,43 +102,40 @@ function generateToC(headings, startLevel = 2) {
     headingGroups.push(currentGroup);
   }
 
-  // Generate ToC from groups
+  // Generate ToC entries
   for (const group of headingGroups) {
-    const anchor = group.main.text
-      .toLowerCase()
-      .replace(/[^\w\s-]/g, "") // Remove special characters
-      .replace(/\s+/g, "-") // Replace spaces with hyphens
-      .replace(/-+/g, "-") // Replace multiple hyphens with single
-      .replace(/^-|-$/g, ""); // Remove leading/trailing hyphens
+    const anchor = generateAnchor(group.main.text);
+    tocLines.push(`- [${group.main.text}](#${anchor})`);
 
-    const link = `[${group.main.text}](#${anchor})`;
-    tocLines.push(`- ${link}`);
-
-    // Add sub-headings with proper nesting
-    let lastLevel = startLevel;
+    // Add sub-headings
     for (const sub of group.subs) {
-      const subAnchor = sub.text
-        .toLowerCase()
-        .replace(/[^\w\s-]/g, "") // Remove special characters
-        .replace(/\s+/g, "-") // Replace spaces with hyphens
-        .replace(/-+/g, "-") // Replace multiple hyphens with single
-        .replace(/^-|-$/g, ""); // Remove leading/trailing hyphens
-
-      const subLink = `[${sub.text}](#${subAnchor})`;
+      const subAnchor = generateAnchor(sub.text);
       const indent = "  ".repeat(sub.level - startLevel);
-      tocLines.push(`${indent}- ${subLink}`);
-      lastLevel = sub.level;
+      tocLines.push(`${indent}- [${sub.text}](#${subAnchor})`);
     }
   }
 
-  tocLines.push(""); // Empty line after ToC
   return tocLines.join("\n");
+}
+
+/**
+ * Generate an anchor link from heading text
+ * @param {string} text - Heading text
+ * @returns {string} Anchor link
+ */
+function generateAnchor(text) {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "") // Remove special characters
+    .replace(/\s+/g, "-") // Replace spaces with hyphens
+    .replace(/-+/g, "-") // Replace multiple hyphens with single
+    .replace(/^-|-$/g, ""); // Remove leading/trailing hyphens
 }
 
 /**
  * Extract existing ToC from markdown content
  * @param {string} content - Markdown file content
- * @returns {Object} ToC info with content, startLine, endLine
+ * @returns {Object} ToC information
  */
 function extractExistingToC(content) {
   const lines = content.split("\n");
@@ -150,60 +143,47 @@ function extractExistingToC(content) {
   let tocEnd = -1;
   let tocContent = "";
 
-  // Look for ToC section
+  // Find ToC section
   for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-
-    // Check for ToC heading (case insensitive, various formats, flexible whitespace)
-    if (line.match(/^##\s+(table\s+of\s+contents|toc|contents?)\s*$/i)) {
+    const line = lines[i].trim();
+    if (line.match(/^##\s+table\s+of\s+contents$/i)) {
       tocStart = i;
-      tocContent = line + "\n";
-
-      // Collect ToC content until next heading or empty line followed by heading
-      for (let j = i + 1; j < lines.length; j++) {
-        const nextLine = lines[j];
-
-        // Stop at any heading that's not a ToC heading
-        if (nextLine.match(/^#+\s+/) && !nextLine.match(/^#+\s+(table\s+of\s+contents|toc|contents?)\s*$/i)) {
-          tocEnd = j - 1;
-          break;
-        }
-
-        // Stop at empty line followed by heading (that's not a ToC heading)
-        if (
-          nextLine.trim() === "" &&
-          j + 1 < lines.length &&
-          lines[j + 1].match(/^#+\s+/) &&
-          !lines[j + 1].match(/^#+\s+(table\s+of\s+contents|toc|contents?)\s*$/i)
-        ) {
-          tocEnd = j - 1;
-          break;
-        }
-
-        tocContent += nextLine + "\n";
-      }
-
-      if (tocEnd === -1) {
-        tocEnd = lines.length - 1;
-      }
-
       break;
     }
   }
 
+  if (tocStart === -1) {
+    return { found: false, content: "", startLine: -1, endLine: -1 };
+  }
+
+  // Find end of ToC (next heading or end of file)
+  for (let i = tocStart + 1; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (line.match(/^#{1,6}\s+/)) {
+      tocEnd = i;
+      break;
+    }
+  }
+
+  if (tocEnd === -1) {
+    tocEnd = lines.length;
+  }
+
+  tocContent = lines.slice(tocStart, tocEnd).join("\n");
+
   return {
-    content: tocContent.trim(),
+    found: true,
+    content: tocContent,
     startLine: tocStart + 1,
-    endLine: tocEnd + 1,
-    found: tocStart !== -1,
+    endLine: tocEnd,
   };
 }
 
 /**
- * Check if ToC is up-to-date
- * @param {string} existingToC - Current ToC content
+ * Check if existing ToC is up to date
+ * @param {string} existingToC - Existing ToC content
  * @param {string} expectedToC - Expected ToC content
- * @returns {boolean} True if ToC is up-to-date
+ * @returns {boolean} True if ToC is up to date
  */
 function isToCUpToDate(existingToC, expectedToC) {
   // Normalize both ToCs for comparison
@@ -222,257 +202,259 @@ function isToCUpToDate(existingToC, expectedToC) {
 }
 
 /**
- * Validate a single markdown file
- * @param {string} filePath - Path to markdown file
- * @returns {Object} Validation result
+ * Validate a single markdown file for ToC
+ * @param {string} filePath - Path to the markdown file
+ * @returns {Object} Result object with success status and issues found
  */
 function validateMarkdownFile(filePath) {
   try {
-    const content = fs.readFileSync(filePath, "utf8");
+    const content = safeReadFile(filePath);
+    if (!content) {
+      return {
+        success: false,
+        issues: [],
+        needsFix: false,
+        error: "Could not read file",
+      };
+    }
+
     const headings = extractHeadings(content);
-
-    // Find first H2 heading
-    const firstH2 = headings.find(h => h.level === 2);
-
-    if (!firstH2) {
-      return {
-        valid: false,
-        error: "No H2 heading found",
-        file: filePath,
-        line: 0,
-      };
-    }
-
-    // Extract existing ToC
     const existingToC = extractExistingToC(content);
+    const expectedToC = generateToC(headings);
+    const issues = [];
 
+    // Check if ToC exists
     if (!existingToC.found) {
-      return {
-        valid: false,
-        error: "No Table of Contents found after first H2 heading",
-        file: filePath,
-        line: firstH2.lineNumber + 1,
-        suggestion: 'Add a "## Table of Contents" section after the first H2 heading',
-      };
-    }
-
-    // Generate expected ToC
-    const expectedToC = generateToC(headings, 2);
-
-    // Check if ToC is up-to-date
-    if (!isToCUpToDate(existingToC.content, expectedToC)) {
-      return {
-        valid: false,
-        error: "Table of Contents is out of date",
-        file: filePath,
-        line: existingToC.startLine,
-        suggestion: "Update the ToC to match current headings",
-        expectedToC: expectedToC,
-      };
+      if (headings.length > 1) {
+        issues.push({
+          type: "missing",
+          message: "Table of Contents is missing",
+          suggestion: "Add a Table of Contents section after the first heading",
+        });
+      }
+    } else {
+      // Check if ToC is up to date
+      if (!isToCUpToDate(existingToC.content, expectedToC)) {
+        issues.push({
+          type: "outdated",
+          message: "Table of Contents is outdated",
+          suggestion: "Update the Table of Contents to match current headings",
+        });
+      }
     }
 
     return {
-      valid: true,
-      file: filePath,
-      tocLineCount: existingToC.endLine - existingToC.startLine + 1,
+      success: true,
+      issues,
+      needsFix: issues.length > 0,
+      existingToC,
+      expectedToC,
     };
   } catch (error) {
+    printError(`Error processing ${filePath}: ${error.message}`);
     return {
-      valid: false,
-      error: `Failed to read file: ${error.message}`,
-      file: filePath,
-      line: 0,
+      success: false,
+      issues: [],
+      needsFix: false,
+      error: error.message,
     };
   }
 }
 
 /**
- * Get staged markdown files in target directories
- * @returns {Array} Array of staged markdown file paths
+ * Auto-fix ToC issues in a markdown file
+ * @param {string} filePath - Path to the markdown file
+ * @returns {Object} Result object with success status and changes made
  */
-function getStagedMarkdownFiles() {
+function autoFixToC(filePath) {
   try {
-    const stagedFiles = execSync("git diff --cached --name-only --diff-filter=ACM", { encoding: "utf8" });
-    const allFiles = stagedFiles
-      .trim()
-      .split("\n")
-      .filter(f => f);
+    const content = safeReadFile(filePath);
+    if (!content) {
+      return {
+        success: false,
+        modified: false,
+        changesCount: 0,
+        error: "Could not read file",
+      };
+    }
 
-    // Filter for markdown files in target directories
-    const targetDirs = ["backend/", "docs/", "src/"];
-    const markdownFiles = allFiles.filter(file => {
-      return file.endsWith(".md") && targetDirs.some(dir => file.startsWith(dir));
-    });
+    const headings = extractHeadings(content);
+    const existingToC = extractExistingToC(content);
+    const expectedToC = generateToC(headings);
 
-    return markdownFiles;
+    if (expectedToC === "") {
+      return {
+        success: true,
+        modified: false,
+        changesCount: 0,
+      };
+    }
+
+    let newContent = content;
+    let changesCount = 0;
+
+    if (!existingToC.found) {
+      // Insert ToC after first heading
+      const lines = content.split("\n");
+      let insertIndex = 0;
+
+      // Find first heading
+      for (let i = 0; i < lines.length; i++) {
+        if (lines[i].match(/^#{1,6}\s+/)) {
+          insertIndex = i + 1;
+          break;
+        }
+      }
+
+      // Insert ToC
+      lines.splice(insertIndex, 0, "", expectedToC, "");
+      newContent = lines.join("\n");
+      changesCount = 1;
+    } else {
+      // Replace existing ToC
+      const lines = content.split("\n");
+      const beforeToC = lines.slice(0, existingToC.startLine - 1);
+      const afterToC = lines.slice(existingToC.endLine);
+      newContent = [...beforeToC, expectedToC, "", ...afterToC].join("\n");
+      changesCount = 1;
+    }
+
+    if (newContent !== content) {
+      const writeSuccess = safeWriteFile(filePath, newContent);
+      if (!writeSuccess) {
+        return {
+          success: false,
+          modified: false,
+          changesCount: 0,
+          error: "Could not write file",
+        };
+      }
+    }
+
+    return {
+      success: true,
+      modified: newContent !== content,
+      changesCount,
+    };
   } catch (error) {
-    printColored(`❌ Failed to get staged files: ${error.message}`, Colors.RED);
-    return [];
+    printError(`Error fixing ${filePath}: ${error.message}`);
+    return {
+      success: false,
+      modified: false,
+      changesCount: 0,
+      error: error.message,
+    };
   }
 }
 
 /**
  * Main validation function
  * @param {Array} files - Array of file paths to validate (optional, defaults to staged files)
+ * @param {boolean} fix - Whether to apply fixes
  * @returns {boolean} True if all validations pass
  */
-function validateMarkdownToC(files = null) {
+function validateMarkdownToC(files = null, fix = false) {
   const filesToCheck = files || getStagedMarkdownFiles();
 
   if (filesToCheck.length === 0) {
-    printColored("✅ No markdown files staged for commit", Colors.GREEN);
+    printSuccess("No markdown files staged for commit");
     return true;
   }
 
-  printColored(`🦊 Found ${filesToCheck.length} markdown file(s) to validate:`, Colors.PURPLE);
+  const action = fix ? "Fixing" : "Validating";
+  printHeader(`${action} Table of Contents in ${filesToCheck.length} markdown file(s):`);
   for (const file of filesToCheck) {
     printColored(`  - ${file}`, Colors.CYAN);
   }
   printColored("", Colors.NC);
 
   let allValid = true;
+  let totalIssues = 0;
   const results = [];
 
   for (const file of filesToCheck) {
-    const result = validateMarkdownFile(file);
-    results.push(result);
+    printColored(`📄 Processing: ${file}`, Colors.BLUE);
 
-    if (!result.valid) {
-      allValid = false;
-      printColored(`❌ ${file}: ${result.error}`, Colors.RED);
-
-      if (result.line > 0) {
-        printColored(`   Line ${result.line}`, Colors.YELLOW);
-      }
-
-      if (result.suggestion) {
-        printColored(`   💡 ${result.suggestion}`, Colors.YELLOW);
-      }
-
-      if (result.expectedToC) {
-        printColored("   Expected ToC:", Colors.BLUE);
-        const tocLines = result.expectedToC.split("\n");
-        for (const line of tocLines) {
-          printColored(`     ${line}`, Colors.CYAN);
-        }
-      }
-
-      printColored("", Colors.NC);
+    let result;
+    if (fix) {
+      result = autoFixToC(file);
     } else {
-      printColored(`✅ ${file}: ToC is valid (${result.tocLineCount} lines)`, Colors.GREEN);
+      result = validateMarkdownFile(file);
     }
+
+    results.push({ file, ...result });
+
+    if (!result.success) {
+      allValid = false;
+    } else if (fix) {
+      if (result.modified) {
+        printSuccess(`  Fixed Table of Contents`);
+        totalIssues += result.changesCount;
+      } else {
+        printSuccess(`  Table of Contents is already up to date`);
+      }
+    } else {
+      if (result.issues && result.issues.length > 0) {
+        allValid = false;
+        totalIssues += result.issues.length;
+
+        for (const issue of result.issues) {
+          printWarning(`  ${issue.message}`);
+          if (issue.suggestion) {
+            printColored(`    💡 ${issue.suggestion}`, Colors.YELLOW);
+          }
+        }
+      } else {
+        printSuccess(`  Table of Contents is valid`);
+      }
+    }
+    printColored("", Colors.NC);
   }
 
-  if (!allValid) {
-    printColored("\n💡 Tips:", Colors.YELLOW);
-    printColored('   - Add "## Table of Contents" after your first H2 heading', Colors.YELLOW);
-    printColored("   - Update ToC when adding/removing/renaming headings", Colors.YELLOW);
-    printColored("   - Use consistent heading hierarchy (H2, H3, etc.)", Colors.YELLOW);
-    printColored(
-      '   - Run "node scripts/validation/markdown/validate-markdown-toc.js --fix" to auto-fix some issues',
-      Colors.YELLOW
-    );
-    printColored('   - Use "git commit --no-verify" to skip this check (not recommended)', Colors.YELLOW);
+  // Summary
+  if (fix) {
+    if (totalIssues > 0) {
+      printSuccess(`Successfully fixed Table of Contents in ${totalIssues} file(s)!`);
+    } else {
+      printSuccess("All Table of Contents are already up to date.");
+    }
+  } else {
+    if (totalIssues > 0) {
+      printWarning(`Found ${totalIssues} Table of Contents issues.`);
+      printWarning("   Run with --fix to automatically fix them.");
+    } else {
+      printSuccess("All Table of Contents are valid!");
+    }
   }
 
   return allValid;
 }
 
-/**
- * Auto-fix ToC issues where possible
- * @param {Array} files - Array of file paths to fix (optional, defaults to staged files)
- */
-function autoFixToC(files = null) {
-  const filesToCheck = files || getStagedMarkdownFiles();
-
-  if (filesToCheck.length === 0) {
-    printColored("✅ No markdown files to fix", Colors.GREEN);
-    return true;
-  }
-
-  printColored(`🦊 Auto-fixing ToC in ${filesToCheck.length} markdown file(s):`, Colors.PURPLE);
-
-  let allFixed = true;
-
-  for (const file of filesToCheck) {
-    try {
-      const content = fs.readFileSync(file, "utf8");
-      const headings = extractHeadings(content);
-      const firstH2 = headings.find(h => h.level === 2);
-
-      if (!firstH2) {
-        printColored(`⚠️  ${file}: No H2 heading found, skipping`, Colors.YELLOW);
-        continue;
-      }
-
-      const existingToC = extractExistingToC(content);
-      const expectedToC = generateToC(headings, 2);
-
-      if (!existingToC.found) {
-        // Insert ToC after first H2
-        const lines = content.split("\n");
-        const insertIndex = firstH2.lineNumber; // 0-based
-
-        lines.splice(insertIndex, 0, "", expectedToC);
-
-        fs.writeFileSync(file, lines.join("\n"), "utf8");
-        printColored(`✅ ${file}: Added ToC after first H2`, Colors.GREEN);
-      } else if (!isToCUpToDate(existingToC.content, expectedToC)) {
-        // Replace existing ToC
-        const lines = content.split("\n");
-        const startIndex = existingToC.startLine - 1; // Convert to 0-based
-        const endIndex = existingToC.endLine - 1; // Convert to 0-based
-
-        lines.splice(startIndex, endIndex - startIndex + 1, expectedToC);
-
-        fs.writeFileSync(file, lines.join("\n"), "utf8");
-        printColored(`✅ ${file}: Updated ToC`, Colors.GREEN);
-      } else {
-        printColored(`✅ ${file}: ToC is already up-to-date`, Colors.GREEN);
-      }
-    } catch (error) {
-      printColored(`❌ ${file}: Failed to fix - ${error.message}`, Colors.RED);
-      allFixed = false;
-    }
-  }
-
-  return allFixed;
-}
-
-// CLI interface
+// Command line interface
 function main() {
-  const args = process.argv.slice(2);
+  const args = parseCommonArgs();
 
-  if (args.includes("--help") || args.includes("-h")) {
-    printColored("🦊 Reynard Markdown ToC Validator", Colors.WHITE);
-    printColored("=" * 50, Colors.CYAN);
-    printColored("Usage:", Colors.BLUE);
-    printColored("  node validate-markdown-toc.js [options]", Colors.CYAN);
-    printColored("", Colors.NC);
-    printColored("Options:", Colors.BLUE);
-    printColored("  --fix        Auto-fix ToC issues where possible", Colors.CYAN);
-    printColored("  --help, -h   Show this help message", Colors.CYAN);
-    printColored("  <files>      Validate specific files instead of staged files", Colors.CYAN);
-    printColored("", Colors.NC);
-    printColored("Examples:", Colors.BLUE);
-    printColored("  node validate-markdown-toc.js", Colors.CYAN);
-    printColored("  node validate-markdown-toc.js --fix", Colors.CYAN);
-    printColored("  node validate-markdown-toc.js docs/README.md", Colors.CYAN);
-    return 0;
+  if (args.help) {
+    showHelp(
+      "Table of Contents Validator for Reynard Framework",
+      "Validates and fixes Table of Contents in markdown files to ensure they are present and up-to-date.",
+      {
+        examples: ["node validate-markdown-toc.js", "node validate-markdown-toc.js --fix"],
+        notes: [
+          "This script ensures all markdown files have proper Table of Contents sections.",
+          "It automatically generates ToC entries from document headings.",
+        ],
+      }
+    );
   }
 
-  if (args.includes("--fix")) {
-    const files = args.filter(arg => !arg.startsWith("--"));
-    return autoFixToC(files.length > 0 ? files : null) ? 0 : 1;
-  } else {
-    const files = args.filter(arg => !arg.startsWith("--"));
-    return validateMarkdownToC(files.length > 0 ? files : null) ? 0 : 1;
-  }
+  const success = validateMarkdownToC(null, args.fix);
+  handleExit(success, args.strict, 0);
 }
 
 // Run if called directly
 if (import.meta.url === `file://${process.argv[1]}`) {
-  process.exit(main());
+  main();
 }
 
-export { autoFixToC, extractHeadings, generateToC, validateMarkdownFile, validateMarkdownToC };
+export { autoFixToC, validateMarkdownFile, validateMarkdownToC };

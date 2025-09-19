@@ -377,11 +377,6 @@
         "absolute_path": "/home/kade/runeset/reynard/packages/tools/src/core/executor.py"
       },
       {
-        "file_path": "scripts/validation/workflows/extract-workflow-shell.js",
-        "line_count": 283,
-        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/workflows/extract-workflow-shell.js"
-      },
-      {
         "file_path": "backend/app/services/image_processing_service.py",
         "line_count": 282,
         "absolute_path": "/home/kade/runeset/reynard/backend/app/services/image_processing_service.py"
@@ -2622,11 +2617,6 @@
       {
         "file_path": "scripts/validation/css/validate-css-variables.test.js",
         "absolute_path": "/home/kade/runeset/reynard/scripts/validation/css/validate-css-variables.test.js",
-        "type": "validation_tool"
-      },
-      {
-        "file_path": "scripts/validation/workflows/extract-workflow-shell.js",
-        "absolute_path": "/home/kade/runeset/reynard/scripts/validation/workflows/extract-workflow-shell.js",
         "type": "validation_tool"
       },
       {

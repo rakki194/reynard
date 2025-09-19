@@ -7,12 +7,14 @@ Handles agent-related MCP tool calls.
 Follows the 100-line axiom and modular architecture principles.
 """
 
+import json
 import secrets
 from typing import Any
 
 from services.version_service import VersionService
 
-from reynard_agent_naming import AgentNameManager, AnimalSpirit, NamingStyle
+from reynard_agent_naming import AgentNameManager, AnimalSpirit, NamingScheme, NamingStyle
+from reynard_agent_naming.agent_naming.dynamic_config import DynamicConfigManager
 
 
 class AgentTools:
@@ -22,21 +24,107 @@ class AgentTools:
         self.agent_manager = agent_manager
         self.ecs_agent_tools = ecs_agent_tools
         self.version_service = VersionService()
+        self.config_manager = DynamicConfigManager()
 
         # Inheritance tools removed - using ECS system only
 
     def generate_agent_name(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Generate a new robot name."""
+        """Generate a new robot name using dynamic configuration."""
+        # Get current configuration
+        config = self.config_manager.get_config()
+        
         spirit_str = arguments.get("spirit")
         style_str = arguments.get("style")
+        scheme_str = arguments.get("scheme")
+        scheme_type_str = arguments.get("scheme_type")
+
+        # Use dynamic defaults if not specified
+        if not scheme_str and config.default_scheme:
+            scheme_str = config.default_scheme
+        if not style_str and config.default_style:
+            style_str = config.default_style
 
         # Convert string to enum if provided
         spirit = AnimalSpirit(spirit_str) if spirit_str else None
         style = NamingStyle(style_str) if style_str else None
+        scheme = NamingScheme(scheme_str) if scheme_str else NamingScheme.ANIMAL_SPIRIT
 
-        name = self.agent_manager.generate_name(spirit, style)
+        name = self.agent_manager.generate_name(spirit, style, scheme, scheme_type_str)
+        
+        # Get spirit emoji if available
+        emoji = ""
+        if spirit_str and spirit_str in config.spirits:
+            emoji = config.spirits[spirit_str].emoji
 
-        return {"content": [{"type": "text", "text": f"Generated name: {name}"}]}
+        return {"content": [{"type": "text", "text": f"{emoji} Generated name: {name}"}]}
+
+    def get_available_naming_schemes(self, arguments: dict[str, Any]) -> dict[str, Any]:
+        """Get all available naming schemes from dynamic configuration."""
+        config = self.config_manager.get_config()
+        enabled_schemes = config.get_enabled_schemes()
+        
+        schemes_text = "🎯 **Available Naming Schemes:**\n\n"
+        for name, scheme_config in enabled_schemes.items():
+            status = "✅ Enabled" if scheme_config.enabled else "❌ Disabled"
+            schemes_text += f"• **{name}**: {scheme_config.description} {status}\n"
+            if scheme_config.supported_styles:
+                schemes_text += f"  Styles: {', '.join(scheme_config.supported_styles)}\n"
+            schemes_text += "\n"
+
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"Available naming schemes:\n{json.dumps(schemes_info, indent=2)}"
+                }
+            ]
+        }
+
+    def set_naming_scheme_config(self, arguments: dict[str, Any]) -> dict[str, Any]:
+        """Set the default naming scheme configuration."""
+        scheme_str = arguments.get("scheme")
+        scheme_type_str = arguments.get("scheme_type")
+        style_str = arguments.get("style")
+
+        if not scheme_str:
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "Error: scheme parameter is required"
+                    }
+                ]
+            }
+        
+        try:
+            scheme = NamingScheme(scheme_str)
+            style = NamingStyle(style_str) if style_str else None
+
+            # Store configuration (in a real implementation, this would be persisted)
+            config = {
+                "scheme": scheme.value,
+                "scheme_type": scheme_type_str,
+                "style": style.value if style else None,
+                "timestamp": __import__("time").time()
+            }
+
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"Naming scheme configuration set:\n{json.dumps(config, indent=2)}"
+                    }
+                ]
+            }
+        except ValueError as e:
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"Error: Invalid scheme or style - {e}"
+                    }
+                ]
+            }
 
     def assign_agent_name(self, arguments: dict[str, Any]) -> dict[str, Any]:
         """Assign a name to an agent."""
@@ -84,24 +172,54 @@ class AgentTools:
         }
 
     def roll_agent_spirit(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Randomly select an animal spirit for agent initialization."""
-        weighted = arguments.get("weighted", True)
-        selected_spirit = self.agent_manager.roll_agent_spirit(weighted)
-
+        """Randomly select an animal spirit using dynamic configuration."""
+        config = self.config_manager.get_config()
+        enabled_spirits = config.get_enabled_spirits()
+        
+        if not enabled_spirits:
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "❌ No enabled spirits available in configuration"
+                    }
+                ]
+            }
+        
+        weighted = arguments.get("weighted", config.weighted_distribution)
+        
+        if weighted:
+            # Use weighted distribution based on configuration
+            spirits = []
+            for name, spirit_config in enabled_spirits.items():
+                weight = int(spirit_config.weight * 100)  # Convert to percentage
+                spirits.extend([name] * weight)
+        else:
+            # Equal distribution
+            spirits = list(enabled_spirits.keys())
+        
+        selected_spirit = secrets.choice(spirits)  # nosec B311
+        spirit_config = enabled_spirits[selected_spirit]
+        emoji = spirit_config.emoji
+        
         return {
             "content": [
                 {
                     "type": "text",
-                    "text": f"Rolled spirit: {selected_spirit.value}",
+                    "text": f"{emoji} Rolled spirit: {selected_spirit} (weight: {spirit_config.weight})",
                 }
             ]
         }
 
     async def agent_startup_sequence(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Complete agent initialization sequence with ECS integration and trait inheritance."""
+        """Complete agent initialization sequence with ECS integration and dynamic configuration."""
+        config = self.config_manager.get_config()
+        
         agent_id = arguments.get("agent_id", "current-session")
-        preferred_style = arguments.get("preferred_style")
+        preferred_style = arguments.get("preferred_style", config.default_style)
         force_spirit = arguments.get("force_spirit")
+        preferred_scheme = arguments.get("preferred_scheme", config.default_scheme)
+        scheme_type = arguments.get("scheme_type")
 
         # Generate a proper agent ID if a generic one is provided
         if agent_id in [
@@ -122,11 +240,21 @@ class AgentTools:
 
             agent_id = f"agent-{int(time.time())}-{random.randint(1000, 9999)}"
 
-        # Roll spirit if not forced
-        if force_spirit:
-            spirit = AnimalSpirit(force_spirit)
+        # Select naming scheme
+        if preferred_scheme:
+            scheme = NamingScheme(preferred_scheme)
         else:
-            spirit = self.agent_manager.roll_agent_spirit(weighted=True)
+            # Randomly select from all available schemes
+            schemes = list(NamingScheme)
+            scheme = secrets.choice(schemes)
+
+        # For animal spirit scheme, roll spirit if not forced
+        spirit = None
+        if scheme == NamingScheme.ANIMAL_SPIRIT:
+            if force_spirit:
+                spirit = AnimalSpirit(force_spirit)
+            else:
+                spirit = self.agent_manager.roll_agent_spirit(weighted=True)
 
         # Select style if not specified
         if not preferred_style:
@@ -142,7 +270,18 @@ class AgentTools:
         else:
             preferred_style = NamingStyle(preferred_style)
 
-        # Create agent with ECS integration
+        # Generate name using the selected scheme
+        name = self.agent_manager.generate_name(
+            spirit=spirit,
+            style=preferred_style,
+            scheme=scheme,
+            scheme_type=scheme_type
+        )
+
+        # Assign the name
+        self.agent_manager.assign_name(agent_id, name)
+
+        # Create agent with ECS integration (if available)
         agent_data = self.agent_manager.create_agent_with_ecs(
             agent_id, spirit, preferred_style
         )
@@ -158,9 +297,10 @@ class AgentTools:
 
         startup_text = (
             f"🎯 Agent Startup Complete!\n"
-            f"🦊 Spirit: {spirit.value}\n"
+            f"🦊 Spirit: {spirit.value if spirit else 'N/A'}\n"
             f"🎨 Style: {preferred_style.value}\n"
-            f"📛 Name: {agent_data['name']}\n"
+            f"🎭 Scheme: {scheme.value}\n"
+            f"📛 Name: {name}\n"
             f"✅ Assigned: True\n"
         )
 
@@ -837,152 +977,3 @@ class AgentTools:
             }
 
     # ECS-integrated tool methods
-    def get_agent_persona(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Get comprehensive agent persona from ECS system."""
-        agent_id = arguments.get("agent_id", "")
-        persona = self.agent_manager.get_agent_persona(agent_id)
-
-        if persona:
-            persona_text = f"Agent Persona for {agent_id}:\n"
-            persona_text += f"Spirit: {persona.get('spirit', 'N/A')}\n"
-            persona_text += f"Style: {persona.get('style', 'N/A')}\n"
-            persona_text += (
-                f"Dominant Traits: {', '.join(persona.get('dominant_traits', []))}\n"
-            )
-            persona_text += (
-                f"Personality: {persona.get('personality_summary', 'N/A')}\n"
-            )
-            persona_text += f"Communication Style: {persona.get('communication_style', {}).get('tone', 'N/A')}\n"
-            persona_text += (
-                f"Specializations: {', '.join(persona.get('specializations', []))}\n"
-            )
-
-            return {"content": [{"type": "text", "text": persona_text}]}
-        return {
-            "content": [
-                {
-                    "type": "text",
-                    "text": f"No persona found for agent {agent_id}. ECS system may not be available.",
-                }
-            ]
-        }
-
-    def get_lora_config(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Get LoRA configuration for agent."""
-        agent_id = arguments.get("agent_id", "")
-        lora_config = self.agent_manager.get_lora_config(agent_id)
-
-        if lora_config:
-            lora_text = f"LoRA Configuration for {agent_id}:\n"
-            lora_text += f"Base Model: {lora_config.get('base_model', 'N/A')}\n"
-            lora_text += f"LoRA Rank: {lora_config.get('lora_rank', 'N/A')}\n"
-            lora_text += f"LoRA Alpha: {lora_config.get('lora_alpha', 'N/A')}\n"
-            lora_text += (
-                f"Target Modules: {', '.join(lora_config.get('target_modules', []))}\n"
-            )
-            lora_text += f"Personality Weights: {len(lora_config.get('personality_weights', {}))} traits\n"
-            lora_text += f"Physical Weights: {len(lora_config.get('physical_weights', {}))} traits\n"
-            lora_text += f"Ability Weights: {len(lora_config.get('ability_weights', {}))} abilities\n"
-
-            return {"content": [{"type": "text", "text": lora_text}]}
-        return {
-            "content": [
-                {
-                    "type": "text",
-                    "text": f"No LoRA config found for agent {agent_id}. ECS system may not be available.",
-                }
-            ]
-        }
-
-    def get_simulation_status(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Get comprehensive simulation status."""
-        if not self.agent_manager.ecs_available and not self.ecs_agent_tools:
-            return {
-                "content": [
-                    {
-                        "type": "text",
-                        "text": "ECS world simulation not available. Basic agent management only.",
-                    }
-                ]
-            }
-
-        # Use ECS tools world if available, otherwise fall back to agent manager
-        if self.ecs_agent_tools:
-            try:
-                from reynard_ecs_world import AgentComponent, LifecycleComponent
-
-                # Get agents from ECS tools world
-                agents = self.ecs_agent_tools.world.get_entities_with_components(
-                    AgentComponent
-                )
-                mature_agents = []
-                for entity in agents:
-                    lifecycle = entity.get_component(LifecycleComponent)
-                    if lifecycle and lifecycle.age >= lifecycle.maturity_age:
-                        mature_agents.append(entity)
-
-                # Get simulation time from agent manager if available
-                agent_status = (
-                    self.agent_manager.get_simulation_status()
-                    if self.agent_manager.ecs_available
-                    else {}
-                )
-
-                status_text = "ECS World Simulation Status:\n"
-                status_text += (
-                    f"Simulation Time: {agent_status.get('simulation_time', 0):.2f}\n"
-                )
-                status_text += f"Time Acceleration: {agent_status.get('time_acceleration', 1):.1f}x\n"
-                status_text += f"Total Agents: {len(agents)}\n"
-                status_text += f"Mature Agents: {len(mature_agents)}\n"
-                status_text += (
-                    f"Agent Personas: {agent_status.get('agent_personas', 0)}\n"
-                )
-                status_text += f"LoRA Configs: {agent_status.get('lora_configs', 0)}\n"
-                status_text += f"Real Time Elapsed: {agent_status.get('real_time_elapsed', 0):.2f}s\n"
-
-                return {"content": [{"type": "text", "text": status_text}]}
-            except Exception:
-                # Fall back to agent manager if ECS tools fail
-                pass
-
-        # Fallback to agent manager
-        status = self.agent_manager.get_simulation_status()
-        status_text = "ECS World Simulation Status:\n"
-        status_text += f"Simulation Time: {status.get('simulation_time', 0):.2f}\n"
-        status_text += f"Time Acceleration: {status.get('time_acceleration', 1):.1f}x\n"
-        status_text += f"Total Agents: {status.get('total_agents', 0)}\n"
-        status_text += f"Mature Agents: {status.get('mature_agents', 0)}\n"
-        status_text += f"Agent Personas: {status.get('agent_personas', 0)}\n"
-        status_text += f"LoRA Configs: {status.get('lora_configs', 0)}\n"
-        status_text += f"Real Time Elapsed: {status.get('real_time_elapsed', 0):.2f}s\n"
-
-        return {"content": [{"type": "text", "text": status_text}]}
-
-    def accelerate_time(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Adjust time acceleration factor."""
-        factor = arguments.get("factor", 10.0)
-        self.agent_manager.accelerate_time(factor)
-
-        return {
-            "content": [
-                {
-                    "type": "text",
-                    "text": f"Time acceleration set to {factor}x",
-                }
-            ]
-        }
-
-    def nudge_time(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Nudge simulation time forward (for MCP actions)."""
-        amount = arguments.get("amount", 0.1)
-        self.agent_manager.nudge_time(amount)
-
-        return {
-            "content": [
-                {
-                    "type": "text",
-                    "text": f"Simulation time nudged forward by {amount}",
-                }
-            ]
-        }

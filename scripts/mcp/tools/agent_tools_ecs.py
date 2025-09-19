@@ -172,13 +172,28 @@ class ECSAgentTools:
 
         return f"agent-{int(time.time())}-{random.randint(1000, 9999)}"
 
+    def _get_spirit_emoji(self, spirit: str) -> str:
+        """Get the emoji for a specific animal spirit type."""
+        spirit_emojis = {
+            "fox": "🦊",
+            "wolf": "🐺",
+            "otter": "🦦",
+            "eagle": "🦅",
+            "lion": "🦁",
+            "tiger": "🐅",
+            "dragon": "🐉"
+        }
+        return spirit_emojis.get(spirit, "🦊")  # Default to fox emoji
+
     def _format_startup_response(
         self, agent_data: dict, spirit: AnimalSpirit, style: NamingStyle
     ) -> str:
         """Format the startup response text."""
+        # Get the correct emoji for the spirit
+        spirit_emoji = self._get_spirit_emoji(spirit.value)
         startup_text = (
             f"🎯 Agent Startup Complete!\n"
-            f"🦊 Spirit: {spirit.value}\n"
+            f"{spirit_emoji} Spirit: {spirit.value}\n"
             f"🎨 Style: {style.value}\n"
             f"📛 Name: {agent_data['name']}\n"
             f"✅ Assigned: True\n"

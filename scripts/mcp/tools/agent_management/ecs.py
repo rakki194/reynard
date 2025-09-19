@@ -8,7 +8,7 @@ Follows the 140-line axiom and modular architecture principles.
 """
 
 import secrets
-from typing import Any
+from typing import Any, List
 
 import sys
 from pathlib import Path
@@ -79,6 +79,24 @@ class ECSAgentTools:
         agent_data = self.agent_manager.create_agent_with_ecs(
             agent_id, spirit, preferred_style
         )
+
+        # Generate enhanced persona for detailed roleplay
+        try:
+            from services.enhanced_persona_service import enhanced_persona_service
+            
+            enhanced_persona = enhanced_persona_service.generate_enhanced_persona(
+                name=agent_data.get("name", "Unknown"),
+                spirit=spirit.value,
+                style=preferred_style.value,
+                agent_id=agent_id
+            )
+            
+            # Add enhanced persona to agent data
+            agent_data["enhanced_persona"] = enhanced_persona
+            
+        except Exception as e:
+            print(f"Warning: Could not generate enhanced persona: {e}")
+            # Continue without enhanced persona
 
         startup_text = self._format_startup_response(agent_data, spirit, preferred_style)
 
@@ -176,59 +194,141 @@ class ECSAgentTools:
 
         return f"agent-{int(time.time())}-{random.randint(1000, 9999)}"
 
+    def _get_spirit_emoji(self, spirit: str) -> str:
+        """Get the emoji for a specific animal spirit type using centralized service."""
+        from services.spirit_emoji_service import spirit_emoji_service
+        return spirit_emoji_service.get_spirit_emoji(spirit)
+
     def _format_startup_response(
         self, agent_data: dict, spirit: AnimalSpirit, style: NamingStyle
     ) -> str:
-        """Format the startup response text."""
+        """Format the enhanced startup response text with detailed information."""
+        # Get the correct emoji for the spirit
+        spirit_emoji = self._get_spirit_emoji(spirit.value)
+        
+        # Enhanced startup header with more details
         startup_text = (
             f"🎯 Agent Startup Complete!\n"
-            f"🦊 Spirit: {spirit.value}\n"
-            f"🎨 Style: {style.value}\n"
+            f"{spirit_emoji} Spirit: {spirit.value.title()}\n"
+            f"🎨 Style: {style.value.title()}\n"
             f"📛 Name: {agent_data['name']}\n"
+            f"🆔 Agent ID: {agent_data.get('agent_id', 'Unknown')}\n"
             f"✅ Assigned: True\n"
         )
 
         # Add ECS information if available
         if agent_data.get("ecs_available", False):
+            startup_text += "\n" + "="*50 + "\n"
+            startup_text += "🌍 ECS WORLD SIMULATION\n"
+            startup_text += "="*50 + "\n"
             startup_text += self._format_ecs_startup_info(agent_data)
+        else:
+            startup_text += "\n⚠️  ECS World Simulation: Not Available\n"
 
-        startup_text += "\n🔧 Development Environment:\n"
+        startup_text += "\n" + "="*50 + "\n"
+        startup_text += "🔧 Development Environment\n"
+        startup_text += "="*50 + "\n"
         startup_text += self._format_version_info()
 
         return startup_text
 
     def _format_ecs_startup_info(self, agent_data: dict) -> str:
-        """Format ECS-specific startup information."""
+        """Format ECS-specific startup information with enhanced details."""
         ecs_text = ""
 
-        # Display persona information
-        persona = agent_data.get("persona", {})
-        if persona:
-            ecs_text += f"🎭 Persona: {persona.get('spirit', 'Unknown')} - {persona.get('style', 'Unknown')}\n"
+        # Display enhanced persona information
+        enhanced_persona = agent_data.get("enhanced_persona")
+        if enhanced_persona:
+            # Display rich personality summary
+            ecs_text += f"🎭 Enhanced Persona: {enhanced_persona.personality_summary}\n"
 
-            # Display dominant traits with detailed descriptions
-            dominant_traits = persona.get("dominant_traits", [])[:3]
+            # Display dominant traits with detailed descriptions and values
+            dominant_traits = self._get_dominant_traits_from_persona(enhanced_persona)
             if dominant_traits:
-                ecs_text += f"   Traits: {', '.join(dominant_traits)}\n"
-                ecs_text += "   Trait Details:\n"
+                ecs_text += f"   🎯 Dominant Traits: {', '.join(dominant_traits)}\n"
+                ecs_text += "   📊 Trait Analysis:\n"
 
                 trait_descriptions = self._get_trait_descriptions()
                 for trait in dominant_traits:
                     description = trait_descriptions.get(trait, "Unique characteristic")
-                    ecs_text += f"     • {trait.title()}: {description}\n"
+                    trait_value = getattr(enhanced_persona, trait, 0.5)
+                    value_indicator = self._get_trait_value_indicator(trait_value)
+                    ecs_text += f"     • {trait.title()}: {description} {value_indicator}\n"
 
-            ecs_text += f"   Personality: {persona.get('personality_summary', 'Generated')}\n"
+            # Display communication style
+            ecs_text += f"   💬 Communication: {enhanced_persona.communication_style}\n"
+
+            # Display specializations
+            if enhanced_persona.specializations:
+                ecs_text += f"   🎯 Specializations: {', '.join(enhanced_persona.specializations[:3])}\n"
+
+            # Display behavioral patterns
+            if enhanced_persona.behavioral_patterns:
+                ecs_text += "   🎭 Behavioral Patterns:\n"
+                for pattern in enhanced_persona.behavioral_patterns[:2]:
+                    ecs_text += f"     • {pattern}\n"
+
+            # Display roleplay quirks
+            if enhanced_persona.roleplay_quirks:
+                ecs_text += "   🎪 Roleplay Quirks:\n"
+                for quirk in enhanced_persona.roleplay_quirks[:3]:
+                    ecs_text += f"     • {quirk}\n"
+
+            # Display backstory elements
+            if enhanced_persona.backstory_elements:
+                ecs_text += f"   📖 Backstory: {enhanced_persona.backstory_elements[0]}\n"
+
+            # Display favorite activities
+            if enhanced_persona.favorite_activities:
+                ecs_text += f"   🎮 Favorite Activities: {', '.join(enhanced_persona.favorite_activities[:3])}\n"
+
+            # Display goals and aspirations
+            if enhanced_persona.goals_and_aspirations:
+                ecs_text += f"   🎯 Goals: {enhanced_persona.goals_and_aspirations[0]}\n"
+
+            # Display relationships style
+            ecs_text += f"   💕 Relationships: {enhanced_persona.relationships_style}\n"
+
+            # Display work approach
+            ecs_text += f"   💼 Work Style: {enhanced_persona.work_approach}\n"
+
+            # Display social preferences
+            ecs_text += f"   👥 Social Style: {enhanced_persona.social_preferences}\n"
         else:
-            ecs_text += "🎭 Persona: Generated\n"
+            # Fallback to basic persona if enhanced persona not available
+            persona = agent_data.get("persona", {})
+            if persona:
+                personality_summary = persona.get('personality_summary', 'Generated personality')
+                ecs_text += f"🎭 Persona: {personality_summary}\n"
+            else:
+                ecs_text += "🎭 Persona: Generated\n"
 
-        # Display LoRA configuration
+        # Display enhanced LoRA configuration
         lora_config = agent_data.get("lora_config", {})
         if lora_config:
-            ecs_text += f"\n🧠 LoRA: {lora_config.get('base_model', 'Unknown')} (Rank: {lora_config.get('lora_rank', 'N/A')})\n"
-            ecs_text += f"   Target Modules: {len(lora_config.get('target_modules', []))} modules\n"
-            ecs_text += f"   Personality Weights: {len(lora_config.get('personality_weights', {}))} traits\n"
+            ecs_text += "\n🧠 LoRA Configuration:\n"
+            ecs_text += f"   Base Model: {lora_config.get('base_model', 'Unknown')}\n"
+            ecs_text += f"   Rank: {lora_config.get('lora_rank', 'N/A')} | Alpha: {lora_config.get('lora_alpha', 'N/A')}\n"
+            ecs_text += f"   Target Modules: {', '.join(lora_config.get('target_modules', []))}\n"
+            
+            # Display trait weight summary
+            personality_weights = lora_config.get('personality_weights', {})
+            physical_weights = lora_config.get('physical_weights', {})
+            ability_weights = lora_config.get('ability_weights', {})
+            
+            if personality_weights:
+                ecs_text += f"   🎭 Personality Traits: {len(personality_weights)} configured\n"
+            if physical_weights:
+                ecs_text += f"   💪 Physical Traits: {len(physical_weights)} configured\n"
+            if ability_weights:
+                ecs_text += f"   ⚡ Abilities: {len(ability_weights)} configured\n"
         else:
             ecs_text += "\n🧠 LoRA: Configured\n"
+
+        # Add gender identity information (if available from ECS memory system)
+        gender_info = self._get_gender_identity_info(agent_data)
+        if gender_info:
+            ecs_text += f"\n👤 Gender Identity: {gender_info}\n"
 
         return ecs_text
 
@@ -251,7 +351,73 @@ class ECSAgentTools:
             "patience": "Tolerance for delays and challenges",
             "adaptability": "Flexibility in changing situations",
             "perfectionism": "Attention to detail and quality",
+            "size": "Physical stature and presence",
+            "strength": "Physical power and endurance",
+            "agility": "Speed and dexterity",
+            "endurance": "Stamina and resilience",
+            "hunter": "Tracking and pursuit abilities",
+            "healer": "Healing and restoration skills",
+            "scout": "Reconnaissance and exploration",
+            "guardian": "Protection and defense capabilities",
         }
+
+    def _get_trait_value(self, agent_data: dict, trait: str) -> float:
+        """Get trait value from LoRA configuration."""
+        lora_config = agent_data.get("lora_config", {})
+        personality_weights = lora_config.get('personality_weights', {})
+        physical_weights = lora_config.get('physical_weights', {})
+        ability_weights = lora_config.get('ability_weights', {})
+        
+        # Check all trait categories
+        if trait in personality_weights:
+            return float(personality_weights[trait])
+        elif trait in physical_weights:
+            return float(physical_weights[trait])
+        elif trait in ability_weights:
+            return float(ability_weights[trait])
+        
+        return 0.5  # Default neutral value
+
+    def _get_trait_value_indicator(self, value: float) -> str:
+        """Get visual indicator for trait value."""
+        if value >= 0.8:
+            return "🔥"  # Very high
+        elif value >= 0.6:
+            return "⭐"  # High
+        elif value >= 0.4:
+            return "⚡"  # Medium
+        elif value >= 0.2:
+            return "💫"  # Low
+        else:
+            return "🌱"  # Very low
+
+    def _get_gender_identity_info(self, agent_data: dict) -> str:  # noqa: ARG002
+        """Get gender identity information if available from ECS memory system."""
+        # This would integrate with the ECS memory interaction system
+        # For now, return a placeholder that could be enhanced
+        import random
+        
+        # Simulate gender identity generation based on ECS memory system proposal
+        gender_identities = [
+            "Male (he/him/his)",
+            "Female (she/her/hers)", 
+            "Non-binary (they/them/theirs)",
+            "Genderfluid (they/them/theirs)",
+            "Agender (they/them/theirs)",
+            "Bigender (they/them/theirs)",
+            "Demigender (they/them/theirs)",
+            "Transgender (they/them/theirs)",
+            "Genderqueer (they/them/theirs)",
+            "Two-spirit (they/them/theirs)",
+            "Prefer not to say (they/them/theirs)",
+            "Self-describe (they/them/theirs)"
+        ]
+        
+        # Weighted distribution favoring common identities
+        weights = [0.25, 0.25, 0.15, 0.08, 0.06, 0.05, 0.04, 0.04, 0.03, 0.02, 0.02, 0.01]
+        selected_identity = random.choices(gender_identities, weights=weights, k=1)[0]
+        
+        return selected_identity
 
     def _format_version_info(self) -> str:
         """Format version information for startup."""
@@ -299,3 +465,32 @@ class ECSAgentTools:
         status_text += f"Real Time Elapsed: {status.get('real_time_elapsed', 0):.2f}s\n"
 
         return status_text
+    
+    def _get_dominant_traits_from_persona(self, persona: Any) -> List[str]:
+        """Get dominant traits from enhanced persona object."""
+        if not persona:
+            return []
+        
+        # Get all personality traits and sort by value
+        personality_traits = {
+            "dominance": getattr(persona, "dominance", 0.0),
+            "loyalty": getattr(persona, "loyalty", 0.0),
+            "cunning": getattr(persona, "cunning", 0.0),
+            "aggression": getattr(persona, "aggression", 0.0),
+            "intelligence": getattr(persona, "intelligence", 0.0),
+            "creativity": getattr(persona, "creativity", 0.0),
+            "playfulness": getattr(persona, "playfulness", 0.0),
+            "protectiveness": getattr(persona, "protectiveness", 0.0),
+            "empathy": getattr(persona, "empathy", 0.0),
+            "charisma": getattr(persona, "charisma", 0.0),
+            "independence": getattr(persona, "independence", 0.0),
+            "patience": getattr(persona, "patience", 0.0),
+            "curiosity": getattr(persona, "curiosity", 0.0),
+            "courage": getattr(persona, "courage", 0.0),
+            "determination": getattr(persona, "determination", 0.0),
+            "spontaneity": getattr(persona, "spontaneity", 0.0)
+        }
+        
+        # Sort by value and return top 3
+        sorted_traits = sorted(personality_traits.items(), key=lambda x: x[1], reverse=True)
+        return [trait for trait, value in sorted_traits[:3]]

@@ -64,6 +64,5 @@ export {
 
 // Re-export default objects for convenience
 export { default as CLIUtils } from "./cli-utils.js";
-export { default as Colors } from "./colors.js";
 export { default as FileUtils } from "./file-utils.js";
 export { default as ValidationBase } from "./validation-base.js";

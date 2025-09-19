@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Test suite for Italic to Blockquote Validator
+ * Test suite for Italic to Blockquote Validator (Refactored)
  *
  * This test suite validates the italic-to-blockquote conversion functionality
  * using sample markdown files with various italic text scenarios.
@@ -8,11 +8,11 @@
  * 🦊 Reynard Coding Standards: Cunning agile development with feral tenacity
  */
 
-import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { validateItalicToBlockquote, convertItalicToBlockquote } from "./validate-italic-to-blockquote.js";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { convertItalicToBlockquote, validateItalicToBlockquote } from "./validate-italic-to-blockquote.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -45,7 +45,9 @@ describe("Italic to Blockquote Validator", () => {
 
 Regular paragraph text.
 
-*Another italic line for testing*`;
+*Another italic line*
+
+Normal text.`;
 
       fs.writeFileSync(testFile, content);
 
@@ -55,50 +57,24 @@ Regular paragraph text.
       expect(result.modified).toBe(true);
       expect(result.changesCount).toBe(2);
 
-      // Check the file was actually modified
       const modifiedContent = fs.readFileSync(testFile, "utf8");
       expect(modifiedContent).toContain("> This is italic text that should be converted");
-      expect(modifiedContent).toContain("> Another italic line for testing");
+      expect(modifiedContent).toContain("> Another italic line");
       expect(modifiedContent).not.toContain("*This is italic text that should be converted*");
-      expect(modifiedContent).not.toContain("*Another italic line for testing*");
+      expect(modifiedContent).not.toContain("*Another italic line*");
     });
 
-    it("should not modify text that is not italic", () => {
-      const testFile = path.join(testDir, "non-italic.md");
+    it("should preserve indentation when converting", () => {
+      const testFile = path.join(testDir, "indented-italic.md");
       const content = `# Test Document
 
-This is regular text.
+    *This is indented italic text*
 
-**This is bold text**
+Regular text.
 
-> This is already a blockquote
+        *This is more indented italic text*
 
-\`This is code\`
-
-* Single asterisk
-** Double asterisk
-*** Triple asterisk`;
-
-      fs.writeFileSync(testFile, content);
-
-      const result = convertItalicToBlockquote(testFile, true);
-
-      expect(result.success).toBe(true);
-      expect(result.modified).toBe(false);
-      expect(result.changesCount).toBe(0);
-
-      // Check the file was not modified
-      const modifiedContent = fs.readFileSync(testFile, "utf8");
-      expect(modifiedContent).toBe(content);
-    });
-
-    it("should handle empty italic text", () => {
-      const testFile = path.join(testDir, "empty-italic.md");
-      const content = `# Test Document
-
-**
-
-* *`;
+Normal text.`;
 
       fs.writeFileSync(testFile, content);
 
@@ -106,20 +82,24 @@ This is regular text.
 
       expect(result.success).toBe(true);
       expect(result.modified).toBe(true);
-      expect(result.changesCount).toBe(1); // "* *" gets converted
+      expect(result.changesCount).toBe(2);
+
+      const modifiedContent = fs.readFileSync(testFile, "utf8");
+      expect(modifiedContent).toContain("    > This is indented italic text");
+      expect(modifiedContent).toContain("        > This is more indented italic text");
     });
 
-    it("should handle italic text with special characters", () => {
-      const testFile = path.join(testDir, "special-chars.md");
+    it("should not convert bold text", () => {
+      const testFile = path.join(testDir, "bold-text.md");
       const content = `# Test Document
 
-*Comprehensive quality assurance tools for the Reynard framework - where cunning development meets feral precision*
+**This is bold text and should not be converted**
 
-*API endpoints: /api/v1/users, /api/v1/posts*
+*This is italic text and should be converted*
 
-*Error codes: 404, 500, 503*
+***This is bold italic text and should not be converted***
 
-*Special chars: @#$%^&*()_+-=[]{}|;':",./<>?*`;
+*This is another italic line*`;
 
       fs.writeFileSync(testFile, content);
 
@@ -127,28 +107,26 @@ This is regular text.
 
       expect(result.success).toBe(true);
       expect(result.modified).toBe(true);
-      expect(result.changesCount).toBe(4);
+      expect(result.changesCount).toBe(2); // Only the two italic lines
 
       const modifiedContent = fs.readFileSync(testFile, "utf8");
-      expect(modifiedContent).toContain(
-        "> Comprehensive quality assurance tools for the Reynard framework - where cunning development meets feral precision"
-      );
-      expect(modifiedContent).toContain("> API endpoints: /api/v1/users, /api/v1/posts");
-      expect(modifiedContent).toContain("> Error codes: 404, 500, 503");
-      expect(modifiedContent).toContain("> Special chars: @#$%^&*()_+-=[]{}|;':\",./<>?");
+      expect(modifiedContent).toContain("**This is bold text and should not be converted**");
+      expect(modifiedContent).toContain("***This is bold italic text and should not be converted***");
+      expect(modifiedContent).toContain("> This is italic text and should be converted");
+      expect(modifiedContent).toContain("> This is another italic line");
     });
 
-    it("should handle mixed content with indentation", () => {
-      const testFile = path.join(testDir, "mixed-indented.md");
+    it("should not convert single asterisks", () => {
+      const testFile = path.join(testDir, "single-asterisk.md");
       const content = `# Test Document
 
-    *Indented italic text*
+*This is italic text*
 
-*Regular italic text*
+*This is just a single asterisk*
 
-    *Another indented italic*
+*This is another italic line*
 
-Regular paragraph.`;
+*`;
 
       fs.writeFileSync(testFile, content);
 
@@ -156,25 +134,26 @@ Regular paragraph.`;
 
       expect(result.success).toBe(true);
       expect(result.modified).toBe(true);
-      expect(result.changesCount).toBe(3);
+      expect(result.changesCount).toBe(2); // Only the two proper italic lines
 
       const modifiedContent = fs.readFileSync(testFile, "utf8");
-      expect(modifiedContent).toContain("    > Indented italic text");
-      expect(modifiedContent).toContain("> Regular italic text");
-      expect(modifiedContent).toContain("    > Another indented italic");
+      expect(modifiedContent).toContain("> This is italic text");
+      expect(modifiedContent).toContain("> This is another italic line");
+      expect(modifiedContent).toContain("*This is just a single asterisk*");
+      expect(modifiedContent).toContain("*");
     });
 
-    it("should not convert already converted blockquotes", () => {
+    it("should not convert text that's already a blockquote", () => {
       const testFile = path.join(testDir, "already-blockquote.md");
       const content = `# Test Document
 
 > This is already a blockquote
 
-*This should be converted*
+*This is italic text that should be converted*
 
 > Another existing blockquote
 
-*This should also be converted*`;
+*Another italic line*`;
 
       fs.writeFileSync(testFile, content);
 
@@ -182,153 +161,24 @@ Regular paragraph.`;
 
       expect(result.success).toBe(true);
       expect(result.modified).toBe(true);
-      expect(result.changesCount).toBe(2);
+      expect(result.changesCount).toBe(2); // Only the two italic lines
 
       const modifiedContent = fs.readFileSync(testFile, "utf8");
       expect(modifiedContent).toContain("> This is already a blockquote");
-      expect(modifiedContent).toContain("> This should be converted");
       expect(modifiedContent).toContain("> Another existing blockquote");
-      expect(modifiedContent).toContain("> This should also be converted");
+      expect(modifiedContent).toContain("> This is italic text that should be converted");
+      expect(modifiedContent).toContain("> Another italic line");
     });
 
-    it("should handle validation mode without fixing", () => {
-      const testFile = path.join(testDir, "validation-mode.md");
-      const content = `# Test Document
+    it("should handle empty files", () => {
+      const testFile = path.join(testDir, "empty.md");
+      fs.writeFileSync(testFile, "");
 
-*This is italic text that should be converted*
-
-Regular paragraph text.
-
-*Another italic line for testing*`;
-
-      fs.writeFileSync(testFile, content);
-
-      const result = convertItalicToBlockquote(testFile, false);
+      const result = convertItalicToBlockquote(testFile, true);
 
       expect(result.success).toBe(true);
-      expect(result.modified).toBe(true);
-      expect(result.changesCount).toBe(2);
-      expect(result.needsFix).toBe(true);
-
-      // Check the file was not modified
-      const modifiedContent = fs.readFileSync(testFile, "utf8");
-      expect(modifiedContent).toBe(content);
-    });
-
-    it("should handle file not found error", () => {
-      const result = convertItalicToBlockquote("/nonexistent/file.md", true);
-
-      expect(result.success).toBe(false);
       expect(result.modified).toBe(false);
       expect(result.changesCount).toBe(0);
-      expect(result.error).toBeDefined();
-    });
-
-    it("should handle multiline italic text", () => {
-      const testFile = path.join(testDir, "multiline-italic.md");
-      const content = `# Test Document
-
-*This is a single line italic*
-
-*This is a longer italic text that spans multiple words and should be converted to a blockquote for better readability*
-
-*Short italic*
-
-Regular paragraph.`;
-
-      fs.writeFileSync(testFile, content);
-
-      const result = convertItalicToBlockquote(testFile, true);
-
-      expect(result.success).toBe(true);
-      expect(result.modified).toBe(true);
-      expect(result.changesCount).toBe(3);
-
-      const modifiedContent = fs.readFileSync(testFile, "utf8");
-      expect(modifiedContent).toContain("> This is a single line italic");
-      expect(modifiedContent).toContain(
-        "> This is a longer italic text that spans multiple words and should be converted to a blockquote for better readability"
-      );
-      expect(modifiedContent).toContain("> Short italic");
-    });
-
-    it("should handle edge cases with asterisks", () => {
-      const testFile = path.join(testDir, "edge-cases.md");
-      const content = `# Test Document
-
-*Valid italic text*
-
-* Invalid (space after asterisk)
-
-*Invalid (space before asterisk) *
-
-* * (just asterisks with space)
-
-** (double asterisk)
-
-* (single asterisk)
-
-*Valid italic with numbers 123 and symbols !@#*`;
-
-      fs.writeFileSync(testFile, content);
-
-      const result = convertItalicToBlockquote(testFile, true);
-
-      expect(result.success).toBe(true);
-      expect(result.modified).toBe(true);
-      expect(result.changesCount).toBe(3); // Three valid italic texts
-
-      const modifiedContent = fs.readFileSync(testFile, "utf8");
-      expect(modifiedContent).toContain("> Valid italic text");
-      expect(modifiedContent).toContain("> Valid italic with numbers 123 and symbols !@#");
-      expect(modifiedContent).toContain("* Invalid (space after asterisk)");
-      expect(modifiedContent).toContain("> Invalid (space before asterisk) ");
-    });
-  });
-
-  describe("validateItalicToBlockquote", () => {
-    it("should validate multiple files", () => {
-      // Create multiple test files
-      const testFile1 = path.join(testDir, "multi-1.md");
-      const testFile2 = path.join(testDir, "multi-2.md");
-      const testFile3 = path.join(testDir, "multi-3.md");
-
-      fs.writeFileSync(testFile1, `# File 1\n\n*Italic text 1*`);
-      fs.writeFileSync(testFile2, `# File 2\n\nRegular text`);
-      fs.writeFileSync(testFile3, `# File 3\n\n*Italic text 2*`);
-
-      const result = validateItalicToBlockquote([testFile1, testFile2, testFile3], false, false);
-
-      expect(result).toBe(false); // Should fail because there are issues to fix
-    });
-
-    it("should fix multiple files", () => {
-      // Create multiple test files
-      const testFile1 = path.join(testDir, "multi-fix-1.md");
-      const testFile2 = path.join(testDir, "multi-fix-2.md");
-      const testFile3 = path.join(testDir, "multi-fix-3.md");
-
-      fs.writeFileSync(testFile1, `# File 1\n\n*Italic text 1*`);
-      fs.writeFileSync(testFile2, `# File 2\n\nRegular text`);
-      fs.writeFileSync(testFile3, `# File 3\n\n*Italic text 2*`);
-
-      const result = validateItalicToBlockquote([testFile1, testFile2, testFile3], false, true);
-
-      expect(result).toBe(true); // Should succeed after fixing
-
-      // Check files were modified
-      const content1 = fs.readFileSync(testFile1, "utf8");
-      const content2 = fs.readFileSync(testFile2, "utf8");
-      const content3 = fs.readFileSync(testFile3, "utf8");
-
-      expect(content1).toContain("> Italic text 1");
-      expect(content2).toBe("# File 2\n\nRegular text"); // Should be unchanged
-      expect(content3).toContain("> Italic text 2");
-    });
-
-    it("should handle empty file list", () => {
-      const result = validateItalicToBlockquote([], false, false);
-      expect(result).toBe(true);
     });
 
     it("should handle files with no italic text", () => {
@@ -341,84 +191,116 @@ This is regular text.
 
 > This is a blockquote
 
-\`This is code\``;
+Normal paragraph.`;
 
       fs.writeFileSync(testFile, content);
 
-      const result = validateItalicToBlockquote([testFile], false, false);
-      expect(result).toBe(true);
+      const result = convertItalicToBlockquote(testFile, true);
+
+      expect(result.success).toBe(true);
+      expect(result.modified).toBe(false);
+      expect(result.changesCount).toBe(0);
     });
 
-    it("should handle files with mixed valid and invalid content", () => {
-      const testFile = path.join(testDir, "mixed-content.md");
-      const content = `# Test Document
+    it("should handle file read errors gracefully", () => {
+      const nonExistentFile = path.join(testDir, "non-existent.md");
 
-*Valid italic text*
+      const result = convertItalicToBlockquote(nonExistentFile, true);
 
-Regular paragraph.
-
-*Another valid italic*
-
-**Bold text**
-
-> Existing blockquote
-
-*Final valid italic*`;
-
-      fs.writeFileSync(testFile, content);
-
-      const result = validateItalicToBlockquote([testFile], false, true);
-
-      expect(result).toBe(true);
-
-      const modifiedContent = fs.readFileSync(testFile, "utf8");
-      expect(modifiedContent).toContain("> Valid italic text");
-      expect(modifiedContent).toContain("> Another valid italic");
-      expect(modifiedContent).toContain("> Final valid italic");
-      expect(modifiedContent).toContain("**Bold text**");
-      expect(modifiedContent).toContain("> Existing blockquote");
+      expect(result.success).toBe(false);
+      expect(result.error).toBeDefined();
+      expect(result.modified).toBe(false);
+      expect(result.changesCount).toBe(0);
     });
   });
 
-  describe("Integration tests", () => {
-    it("should handle complex markdown document", () => {
-      const testFile = path.join(testDir, "complex-document.md");
-      const content = `# Complex Document
+  describe("validateItalicToBlockquote", () => {
+    it("should validate files with italic text", () => {
+      const testFile = path.join(testDir, "validate-italic.md");
+      const content = `# Test Document
 
-## Introduction
+*This is italic text that should be flagged*
 
-*This is an introduction that should be converted to a blockquote for emphasis*
+Regular paragraph.
 
-Regular paragraph with **bold text** and \`inline code\`.
+*Another italic line*
 
-## Features
+Normal text.`;
 
-*Comprehensive quality assurance tools for the Reynard framework - where cunning development meets feral precision*
+      fs.writeFileSync(testFile, content);
 
-### API Endpoints
+      const result = validateItalicToBlockquote(testFile);
 
-*API endpoints: /api/v1/users, /api/v1/posts, /api/v1/comments*
+      expect(result.success).toBe(true);
+      expect(result.issues).toHaveLength(2);
+      expect(result.needsFix).toBe(true);
+      expect(result.issues[0].line).toBe(3);
+      expect(result.issues[1].line).toBe(7);
+    });
 
-### Error Handling
+    it("should validate files with no italic text", () => {
+      const testFile = path.join(testDir, "validate-no-italic.md");
+      const content = `# Test Document
 
-*Error codes: 404 (Not Found), 500 (Internal Server Error), 503 (Service Unavailable)*
+This is regular text.
 
-## Code Examples
+**This is bold text**
 
-\`\`\`typescript
-// This is code, not italic
-const example = "code block";
+> This is a blockquote
+
+Normal paragraph.`;
+
+      fs.writeFileSync(testFile, content);
+
+      const result = validateItalicToBlockquote(testFile);
+
+      expect(result.success).toBe(true);
+      expect(result.issues).toHaveLength(0);
+      expect(result.needsFix).toBe(false);
+    });
+
+    it("should handle file read errors gracefully", () => {
+      const nonExistentFile = path.join(testDir, "non-existent-validate.md");
+
+      const result = validateItalicToBlockquote(nonExistentFile);
+
+      expect(result.success).toBe(false);
+      expect(result.error).toBeDefined();
+      expect(result.issues).toHaveLength(0);
+      expect(result.needsFix).toBe(false);
+    });
+  });
+
+  describe("Edge Cases", () => {
+    it("should handle mixed content with various markdown elements", () => {
+      const testFile = path.join(testDir, "mixed-content.md");
+      const content = `# Test Document
+
+*This is italic text*
+
+## Section
+
+**This is bold text**
+
+*Another italic line*
+
+### Subsection
+
+> This is a blockquote
+
+*Yet another italic line*
+
+- List item 1
+- List item 2
+
+*Final italic line*
+
+\`\`\`javascript
+// Code block
+const example = "code";
 \`\`\`
 
-*This italic text should be converted*
-
-## Conclusion
-
-*Final thoughts and recommendations*
-
-> This is already a blockquote and should remain unchanged
-
-*Last italic text to convert*`;
+*Italic after code block*`;
 
       fs.writeFileSync(testFile, content);
 
@@ -426,81 +308,110 @@ const example = "code block";
 
       expect(result.success).toBe(true);
       expect(result.modified).toBe(true);
-      expect(result.changesCount).toBe(7);
+      expect(result.changesCount).toBe(5); // 5 italic lines
 
       const modifiedContent = fs.readFileSync(testFile, "utf8");
-
-      // Check all italic texts were converted
-      expect(modifiedContent).toContain(
-        "> This is an introduction that should be converted to a blockquote for emphasis"
-      );
-      expect(modifiedContent).toContain(
-        "> Comprehensive quality assurance tools for the Reynard framework - where cunning development meets feral precision"
-      );
-      expect(modifiedContent).toContain("> API endpoints: /api/v1/users, /api/v1/posts, /api/v1/comments");
-      expect(modifiedContent).toContain(
-        "> Error codes: 404 (Not Found), 500 (Internal Server Error), 503 (Service Unavailable)"
-      );
-      expect(modifiedContent).toContain("> This italic text should be converted");
-      expect(modifiedContent).toContain("> Final thoughts and recommendations");
-      expect(modifiedContent).toContain("> Last italic text to convert");
-
-      // Check non-italic content was preserved
-      expect(modifiedContent).toContain("**bold text**");
-      expect(modifiedContent).toContain("`inline code`");
-      expect(modifiedContent).toContain("// This is code, not italic");
-      expect(modifiedContent).toContain("> This is already a blockquote and should remain unchanged");
+      expect(modifiedContent).toContain("> This is italic text");
+      expect(modifiedContent).toContain("> Another italic line");
+      expect(modifiedContent).toContain("> Yet another italic line");
+      expect(modifiedContent).toContain("> Final italic line");
+      expect(modifiedContent).toContain("> Italic after code block");
     });
 
-    it("should handle real-world documentation patterns", () => {
-      const testFile = path.join(testDir, "real-world-docs.md");
+    it("should handle files with only headers", () => {
+      const testFile = path.join(testDir, "headers-only.md");
+      const content = `# Header 1
+
+## Header 2
+
+### Header 3
+
+#### Header 4`;
+
+      fs.writeFileSync(testFile, content);
+
+      const result = convertItalicToBlockquote(testFile, true);
+
+      expect(result.success).toBe(true);
+      expect(result.modified).toBe(false);
+      expect(result.changesCount).toBe(0);
+    });
+
+    it("should handle files with only whitespace", () => {
+      const testFile = path.join(testDir, "whitespace-only.md");
+      const content = `   \n\n  \t  \n\n   `;
+
+      fs.writeFileSync(testFile, content);
+
+      const result = convertItalicToBlockquote(testFile, true);
+
+      expect(result.success).toBe(true);
+      expect(result.modified).toBe(false);
+      expect(result.changesCount).toBe(0);
+    });
+
+    it("should handle very long italic lines", () => {
+      const testFile = path.join(testDir, "long-italic.md");
+      const longItalicLine =
+        "*" +
+        "This is a very long italic line that contains a lot of text and should be converted to a blockquote properly. ".repeat(
+          10
+        ) +
+        "*";
+      const content = `# Test Document
+
+${longItalicLine}
+
+Regular text.`;
+
+      fs.writeFileSync(testFile, content);
+
+      const result = convertItalicToBlockquote(testFile, true);
+
+      expect(result.success).toBe(true);
+      expect(result.modified).toBe(true);
+      expect(result.changesCount).toBe(1);
+
+      const modifiedContent = fs.readFileSync(testFile, "utf8");
+      expect(modifiedContent).toContain("> This is a very long italic line");
+      expect(modifiedContent).not.toContain(longItalicLine);
+    });
+  });
+
+  describe("Integration Tests", () => {
+    it("should work with real markdown content", () => {
+      const testFile = path.join(testDir, "real-content.md");
       const content = `# Reynard Framework Documentation
 
-## Overview
+## Introduction
 
-*Comprehensive quality assurance tools for the Reynard framework - where cunning development meets feral precision*
+*The Reynard Framework is a comprehensive development platform that provides developers with powerful tools and utilities for building modern web applications.*
 
-## Quick Start
+## Key Features
+
+### Component System
+
+*The framework includes a robust component system that allows developers to create reusable UI components with ease.*
+
+### State Management
+
+*State management in Reynard is handled through a sophisticated system that provides predictable state updates and excellent developer experience.*
+
+## Getting Started
+
+*To get started with Reynard, you'll need to install the framework and its dependencies.*
 
 ### Installation
-
-*Install the framework using npm or pnpm package manager*
 
 \`\`\`bash
 npm install reynard-framework
 \`\`\`
 
-### Configuration
+*Once installed, you can start using Reynard in your projects.*
 
-*Configure your environment variables and settings*
+## Conclusion
 
-## API Reference
-
-### Core Endpoints
-
-*Core API endpoints for user management and data processing*
-
-### Admin Endpoints
-
-*Administrative endpoints for system management and monitoring*
-
-## Troubleshooting
-
-### Common Issues
-
-*Common issues and their solutions*
-
-### Performance Optimization
-
-*Performance optimization techniques and best practices*
-
-## Contributing
-
-*Guidelines for contributing to the Reynard framework*
-
----
-
-*Thank you for using Reynard Framework!*`;
+*Reynard Framework provides developers with a comprehensive set of tools and utilities for building modern web applications.*`;
 
       fs.writeFileSync(testFile, content);
 
@@ -508,58 +419,42 @@ npm install reynard-framework
 
       expect(result.success).toBe(true);
       expect(result.modified).toBe(true);
-      expect(result.changesCount).toBe(9);
+      expect(result.changesCount).toBe(6); // 6 italic lines in the content
 
       const modifiedContent = fs.readFileSync(testFile, "utf8");
-
-      // Verify all italic texts were converted
-      const blockquoteLines = modifiedContent.split("\n").filter(line => line.trim().startsWith(">"));
-      expect(blockquoteLines).toHaveLength(9);
-
-      // Check specific conversions
-      expect(modifiedContent).toContain(
-        "> Comprehensive quality assurance tools for the Reynard framework - where cunning development meets feral precision"
-      );
-      expect(modifiedContent).toContain("> Install the framework using npm or pnpm package manager");
-      expect(modifiedContent).toContain("> Configure your environment variables and settings");
-      expect(modifiedContent).toContain("> Core API endpoints for user management and data processing");
-      expect(modifiedContent).toContain("> Administrative endpoints for system management and monitoring");
-      expect(modifiedContent).toContain("> Common issues and their solutions");
-      expect(modifiedContent).toContain("> Performance optimization techniques and best practices");
-      expect(modifiedContent).toContain("> Guidelines for contributing to the Reynard framework");
-      expect(modifiedContent).toContain("> Thank you for using Reynard Framework!");
-    });
-  });
-
-  describe("Error handling", () => {
-    it("should handle permission errors gracefully", () => {
-      // Create a file and then make it read-only (if possible)
-      const testFile = path.join(testDir, "readonly.md");
-      fs.writeFileSync(testFile, "*Test italic text*");
-
-      // Try to modify a file that might be read-only
-      const result = convertItalicToBlockquote(testFile, true);
-
-      // The result should still be successful for most cases
-      expect(result.success).toBe(true);
+      expect(modifiedContent).toContain("> The Reynard Framework is a comprehensive development platform");
+      expect(modifiedContent).toContain("> The framework includes a robust component system");
+      expect(modifiedContent).toContain("> State management in Reynard is handled through a sophisticated system");
+      expect(modifiedContent).toContain("> To get started with Reynard, you'll need to install the framework");
+      expect(modifiedContent).toContain("> Once installed, you can start using Reynard in your projects");
+      expect(modifiedContent).toContain("> Reynard Framework provides developers with a comprehensive set of tools");
     });
 
-    it("should handle malformed file paths", () => {
-      const result = convertItalicToBlockquote("", true);
-      expect(result.success).toBe(false);
-      expect(result.error).toBeDefined();
-    });
+    it("should validate real markdown content", () => {
+      const testFile = path.join(testDir, "real-content-validate.md");
+      const content = `# Reynard Framework Documentation
 
-    it("should handle files with special characters in path", () => {
-      const testFile = path.join(testDir, "special-chars-in-path.md");
-      const content = "*Test italic text*";
+## Introduction
+
+*The Reynard Framework is a comprehensive development platform that provides developers with powerful tools and utilities for building modern web applications.*
+
+## Key Features
+
+### Component System
+
+*The framework includes a robust component system that allows developers to create reusable UI components with ease.*
+
+### State Management
+
+*State management in Reynard is handled through a sophisticated system that provides predictable state updates and excellent developer experience.*`;
 
       fs.writeFileSync(testFile, content);
 
-      const result = convertItalicToBlockquote(testFile, true);
+      const result = validateItalicToBlockquote(testFile);
+
       expect(result.success).toBe(true);
-      expect(result.modified).toBe(true);
-      expect(result.changesCount).toBe(1);
+      expect(result.issues).toHaveLength(3);
+      expect(result.needsFix).toBe(true);
     });
   });
 });

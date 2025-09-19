@@ -23,4 +23,4 @@ python3 main.py --dry-run
 - Health monitoring
 - Single-file architecture
 
-*Built with fox cunning, otter thoroughness, and wolf resilience!* 🦊🦦🐺
+_Built with fox cunning, otter thoroughness, and wolf resilience!_ 🦊🦦🐺

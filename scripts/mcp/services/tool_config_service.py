@@ -1,8 +1,12 @@
+#!/usr/bin/env python3
 """
-Tool Configuration Service for MCP Server
+Enhanced Tool Configuration Service
+===================================
 
-This service manages tool enable/disable states, configuration, and provides
-a bridge between the MCP server and the FastAPI backend for tool management.
+Enhanced service that bridges the new tool registry with existing configuration
+services, providing seamless auto-sync capabilities.
+
+Follows the 140-line axiom and modular architecture principles.
 """
 
 import json
@@ -11,16 +15,19 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, Optional
 
+# Import moved to avoid circular dependency
+
 logger = logging.getLogger(__name__)
 
 
 class ToolConfigService:
-    """Service for managing tool configurations and states."""
+    """Enhanced service for managing tool configurations with auto-sync capabilities."""
 
-    def __init__(self, config_file_path: str = "tool_config.json"):
-        """Initialize the tool configuration service."""
+    def __init__(self, config_file_path: str = "tool_config.json", tool_registry=None):
+        """Initialize the enhanced tool configuration service."""
         self.config_file_path = Path(config_file_path)
         self.config_data: Dict[str, Any] = {}
+        self.tool_registry = tool_registry
         self._load_config()
 
     def _load_config(self) -> None:
@@ -34,9 +41,7 @@ class ToolConfigService:
                 # Create default configuration
                 self._create_default_config()
                 self._save_config()
-                logger.info(
-                    f"Created default tool configuration at {self.config_file_path}"
-                )
+                logger.info(f"Created default tool configuration at {self.config_file_path}")
         except Exception as e:
             logger.error(f"Failed to load tool configuration: {e}")
             self._create_default_config()
@@ -46,336 +51,7 @@ class ToolConfigService:
         self.config_data = {
             "version": "1.0.0",
             "last_updated": datetime.now().isoformat(),
-            "tools": {
-                "generate_agent_name": {
-                    "name": "generate_agent_name",
-                    "category": "agent",
-                    "enabled": True,
-                    "description": "Generate robot names with animal spirit themes",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "assign_agent_name": {
-                    "name": "assign_agent_name",
-                    "category": "agent",
-                    "enabled": True,
-                    "description": "Assign names to agents with persistence",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "get_agent_name": {
-                    "name": "get_agent_name",
-                    "category": "agent",
-                    "enabled": True,
-                    "description": "Retrieve current agent names",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "list_agent_names": {
-                    "name": "list_agent_names",
-                    "category": "agent",
-                    "enabled": True,
-                    "description": "List all assigned agent names",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "roll_agent_spirit": {
-                    "name": "roll_agent_spirit",
-                    "category": "agent",
-                    "enabled": True,
-                    "description": "Randomly select animal spirits",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "agent_startup_sequence": {
-                    "name": "agent_startup_sequence",
-                    "category": "agent",
-                    "enabled": True,
-                    "description": "Complete initialization with ECS integration",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "get_agent_persona": {
-                    "name": "get_agent_persona",
-                    "category": "agent",
-                    "enabled": True,
-                    "description": "Get comprehensive agent persona from ECS system",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "get_lora_config": {
-                    "name": "get_lora_config",
-                    "category": "agent",
-                    "enabled": True,
-                    "description": "Get LoRA configuration for agent persona",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "get_current_time": {
-                    "name": "get_current_time",
-                    "category": "utility",
-                    "enabled": True,
-                    "description": "Get current date and time with timezone support",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "get_current_location": {
-                    "name": "get_current_location",
-                    "category": "utility",
-                    "enabled": True,
-                    "description": "Get location based on IP address",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "send_desktop_notification": {
-                    "name": "send_desktop_notification",
-                    "category": "utility",
-                    "enabled": True,
-                    "description": "Send desktop notifications using libnotify",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "restart_mcp_server": {
-                    "name": "restart_mcp_server",
-                    "category": "utility",
-                    "enabled": True,
-                    "description": "Restart the MCP server with different methods",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "create_ecs_agent": {
-                    "name": "create_ecs_agent",
-                    "category": "ecs",
-                    "enabled": True,
-                    "description": "Create a new agent using the ECS system",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "create_ecs_offspring": {
-                    "name": "create_ecs_offspring",
-                    "category": "ecs",
-                    "enabled": True,
-                    "description": "Create offspring agent from two parent agents using ECS",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "get_ecs_agent_status": {
-                    "name": "get_ecs_agent_status",
-                    "category": "ecs",
-                    "enabled": True,
-                    "description": "Get status of all agents in the ECS system",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "get_ecs_agent_positions": {
-                    "name": "get_ecs_agent_positions",
-                    "category": "ecs",
-                    "enabled": True,
-                    "description": "Get positions of all agents in the ECS system",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "get_simulation_status": {
-                    "name": "get_simulation_status",
-                    "category": "ecs",
-                    "enabled": True,
-                    "description": "Get comprehensive ECS world simulation status",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "accelerate_time": {
-                    "name": "accelerate_time",
-                    "category": "ecs",
-                    "enabled": True,
-                    "description": "Adjust time acceleration factor for world simulation",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "nudge_time": {
-                    "name": "nudge_time",
-                    "category": "ecs",
-                    "enabled": True,
-                    "description": "Nudge simulation time forward (for MCP actions)",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "lint_frontend": {
-                    "name": "lint_frontend",
-                    "category": "linting",
-                    "enabled": True,
-                    "description": "ESLint for TypeScript/JavaScript (with auto-fix)",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "lint_python": {
-                    "name": "lint_python",
-                    "category": "linting",
-                    "enabled": True,
-                    "description": "Flake8, Pylint for Python (with auto-fix)",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "lint_markdown": {
-                    "name": "lint_markdown",
-                    "category": "linting",
-                    "enabled": True,
-                    "description": "markdownlint validation (with auto-fix)",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "run_all_linting": {
-                    "name": "run_all_linting",
-                    "category": "linting",
-                    "enabled": True,
-                    "description": "Execute entire linting suite (with auto-fix)",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "format_frontend": {
-                    "name": "format_frontend",
-                    "category": "formatting",
-                    "enabled": True,
-                    "description": "Prettier formatting (with check-only mode)",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "format_python": {
-                    "name": "format_python",
-                    "category": "formatting",
-                    "enabled": True,
-                    "description": "Black + isort formatting (with check-only mode)",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "search_files": {
-                    "name": "search_files",
-                    "category": "search",
-                    "enabled": True,
-                    "description": "Search for files by name pattern in the project",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "semantic_search": {
-                    "name": "semantic_search",
-                    "category": "search",
-                    "enabled": True,
-                    "description": "Perform semantic search using vector embeddings",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "search_enhanced": {
-                    "name": "search_enhanced",
-                    "category": "search",
-                    "enabled": True,
-                    "description": "Enhanced BM25 search with query expansion",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "validate_mermaid_diagram": {
-                    "name": "validate_mermaid_diagram",
-                    "category": "visualization",
-                    "enabled": True,
-                    "description": "Validate mermaid diagram syntax and check for errors",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "render_mermaid_to_svg": {
-                    "name": "render_mermaid_to_svg",
-                    "category": "visualization",
-                    "enabled": True,
-                    "description": "Render mermaid diagram to SVG format",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "open_image": {
-                    "name": "open_image",
-                    "category": "visualization",
-                    "enabled": True,
-                    "description": "Open an image file with the imv image viewer",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "scan_security": {
-                    "name": "scan_security",
-                    "category": "security",
-                    "enabled": True,
-                    "description": "Complete security audit (Bandit, audit-ci, type checking)",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "scan_security_fast": {
-                    "name": "scan_security_fast",
-                    "category": "security",
-                    "enabled": True,
-                    "description": "Run fast security scanning (skips slow Bandit checks)",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "get_versions": {
-                    "name": "get_versions",
-                    "category": "version",
-                    "enabled": True,
-                    "description": "Get versions of Python, Node.js, npm, pnpm, and TypeScript",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "get_python_version": {
-                    "name": "get_python_version",
-                    "category": "version",
-                    "enabled": True,
-                    "description": "Get Python version information",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "get_vscode_active_file": {
-                    "name": "get_vscode_active_file",
-                    "category": "vscode",
-                    "enabled": True,
-                    "description": "Get currently active file path in VS Code",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "discover_vscode_tasks": {
-                    "name": "discover_vscode_tasks",
-                    "category": "vscode",
-                    "enabled": True,
-                    "description": "Discover all available VS Code tasks from tasks.json",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "playwright_screenshot": {
-                    "name": "playwright_screenshot",
-                    "category": "playwright",
-                    "enabled": True,
-                    "description": "Take screenshots using Playwright browser automation",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "playwright_navigate": {
-                    "name": "playwright_navigate",
-                    "category": "playwright",
-                    "enabled": True,
-                    "description": "Navigate to URLs and interact with web pages",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "detect_monoliths": {
-                    "name": "detect_monoliths",
-                    "category": "monolith",
-                    "enabled": True,
-                    "description": "Detect large monolithic files that violate the 140-line axiom",
-                    "dependencies": [],
-                    "config": {},
-                },
-                "analyze_file_complexity": {
-                    "name": "analyze_file_complexity",
-                    "category": "monolith",
-                    "enabled": True,
-                    "description": "Deep-dive analysis of a specific file's complexity metrics",
-                    "dependencies": [],
-                    "config": {},
-                },
-            },
+            "tools": {}
         }
 
     def _save_config(self) -> None:
@@ -388,6 +64,38 @@ class ToolConfigService:
         except Exception as e:
             logger.error(f"Failed to save tool configuration: {e}")
             raise
+
+    def sync_tool_with_services(self, tool_metadata):
+        """Sync a single tool with all configuration services."""
+        # Sync with ToolConfigService
+        self._sync_with_config_service(tool_metadata)
+
+        # Update configuration file
+        self._update_configuration_file()
+
+    def _sync_with_config_service(self, tool_metadata):
+        """Sync tool with ToolConfigService."""
+        tool_config = {
+            "name": tool_metadata.name,
+            "category": tool_metadata.category,
+            "enabled": tool_metadata.enabled,
+            "description": tool_metadata.description,
+            "dependencies": tool_metadata.dependencies,
+            "config": tool_metadata.config,
+        }
+
+        # Update or create tool config
+        self.update_tool_config(tool_metadata.name, tool_config)
+
+    def _update_configuration_file(self):
+        """Update the configuration file with current state."""
+        self._save_config()
+
+    def auto_sync_all_tools(self):
+        """Auto-sync all tools from the registry."""
+        if self.tool_registry:
+            for tool_metadata in self.tool_registry.list_all_tools().values():
+                self.sync_tool_with_services(tool_metadata)
 
     def get_all_tools(self) -> Dict[str, Any]:
         """Get all tool configurations."""
@@ -430,17 +138,16 @@ class ToolConfigService:
         current_state = self.config_data["tools"][tool_name]["enabled"]
         self.config_data["tools"][tool_name]["enabled"] = not current_state
         self._save_config()
-        logger.info(
-            f"Toggled tool {tool_name} to {'enabled' if not current_state else 'disabled'}"
-        )
+        logger.info(f"Toggled tool {tool_name} to {'enabled' if not current_state else 'disabled'}")
         return True
 
     def update_tool_config(self, tool_name: str, config: Dict[str, Any]) -> bool:
         """Update a tool's configuration."""
-        if tool_name not in self.config_data.get("tools", {}):
-            return False
+        if "tools" not in self.config_data:
+            self.config_data["tools"] = {}
 
-        self.config_data["tools"][tool_name]["config"].update(config)
+        # Create or update tool config
+        self.config_data["tools"][tool_name] = config
         self._save_config()
         logger.info(f"Updated configuration for tool: {tool_name}")
         return True

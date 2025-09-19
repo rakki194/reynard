@@ -11,14 +11,24 @@ from typing import Any
 
 from ..components import (
     AgentComponent,
+    GroupType,
+    InteractionComponent,
+    InteractionType,
+    KnowledgeComponent,
+    KnowledgeType,
+    LearningMethod,
     LifecycleComponent,
     LineageComponent,
+    MemoryComponent,
+    MemoryType,
     PositionComponent,
     ReproductionComponent,
+    SocialComponent,
     TraitComponent,
 )
 from ..core.entity import Entity
 from ..core.world import ECSWorld
+from ..systems import InteractionSystem, LearningSystem, MemorySystem, SocialSystem
 
 logger = logging.getLogger(__name__)
 
@@ -48,6 +58,12 @@ class AgentWorld(ECSWorld):
             # Ensure data_dir is a Path object
             self.data_dir = Path(data_dir)
         self.data_dir.mkdir(parents=True, exist_ok=True)
+
+        # Add systems
+        self.add_system(MemorySystem(self))
+        self.add_system(InteractionSystem(self))
+        self.add_system(SocialSystem(self))
+        self.add_system(LearningSystem(self))
 
         # Load existing agents
         self._load_existing_agents()
@@ -99,6 +115,10 @@ class AgentWorld(ECSWorld):
         entity.add_component(LineageComponent())
         entity.add_component(LifecycleComponent())
         entity.add_component(ReproductionComponent())
+        entity.add_component(MemoryComponent())
+        entity.add_component(InteractionComponent())
+        entity.add_component(SocialComponent())
+        entity.add_component(KnowledgeComponent())
 
         # Add position with random starting location
         start_x = random.uniform(100, 800)
@@ -157,6 +177,10 @@ class AgentWorld(ECSWorld):
         offspring.add_component(LineageComponent([parent1_id, parent2_id]))
         offspring.add_component(LifecycleComponent())
         offspring.add_component(ReproductionComponent())
+        offspring.add_component(MemoryComponent())
+        offspring.add_component(InteractionComponent())
+        offspring.add_component(SocialComponent())
+        offspring.add_component(KnowledgeComponent())
 
         # Add position with random starting location
         start_x = random.uniform(100, 800)
@@ -464,13 +488,13 @@ class AgentWorld(ECSWorld):
         if not agent_comp:
             return {}
 
-        # Generate basic persona from available components
+        # Generate rich persona from available components
         persona = {
             "spirit": agent_comp.spirit,
             "style": agent_comp.style,
             "name": agent_comp.name,
             "dominant_traits": [],
-            "personality_summary": f"A {agent_comp.spirit} with {agent_comp.style} style",
+            "personality_summary": self._generate_personality_summary(agent_comp.spirit, trait_comp),
         }
 
         if trait_comp:
@@ -517,3 +541,507 @@ class AgentWorld(ECSWorld):
             config["ability_weights"] = trait_comp.abilities.copy()
 
         return config
+
+    def _generate_personality_summary(self, spirit: str, trait_comp: TraitComponent | None) -> str:
+        """
+        Generate a rich personality summary based on spirit and traits.
+
+        Args:
+            spirit: The animal spirit type
+            trait_comp: The trait component with personality data
+
+        Returns:
+            Rich personality description
+        """
+        if not trait_comp:
+            return f"A {spirit} with a balanced, adaptable nature"
+
+        # Get dominant traits
+        dominant_traits = trait_comp.get_dominant_traits(3)
+        if not dominant_traits:
+            return self._get_default_personality(spirit)
+
+        # Get personality based on traits
+        return self._determine_personality_type(spirit, dominant_traits)
+
+    def _get_default_personality(self, spirit: str) -> str:
+        """Get default personality for a spirit type."""
+        defaults = {
+            "fox": "A sly fox with natural cunning and adaptability",
+            "wolf": "A powerful wolf with pack instincts and protective nature",
+            "otter": "A playful otter with natural curiosity and enthusiasm",
+            "eagle": "A majestic eagle with keen vision and noble bearing",
+            "lion": "A regal lion with natural authority and pride",
+            "tiger": "A powerful tiger with fierce independence and strength",
+            "dragon": "An ancient dragon with wisdom and powerful presence"
+        }
+        return defaults.get(spirit, defaults["fox"])
+
+    def _determine_personality_type(self, spirit: str, dominant_traits: dict[str, float]) -> str:
+        """Determine personality type based on dominant traits."""
+        trait_names = list(dominant_traits.keys())
+        trait_values = list(dominant_traits.values())
+        top_trait = trait_names[0]
+        top_value = trait_values[0]
+
+        # Check for high-value traits
+        if top_value > 0.8:
+            return self._get_high_trait_personality(spirit, top_trait)
+
+        # Check for balanced personality
+        if len(trait_values) >= 2 and max(trait_values) - min(trait_values) < 0.3:
+            return self._get_balanced_personality(spirit)
+
+        # Default personality
+        return self._get_default_personality(spirit)
+
+    def _get_high_trait_personality(self, spirit: str, trait: str) -> str:
+        """Get personality for high-value traits."""
+        personalities = {
+            "fox": {
+                "cunning": "A cunning fox with sharp wit and strategic thinking",
+                "intelligence": "An intelligent fox with keen problem-solving abilities",
+                "creativity": "A creative fox with innovative approaches to challenges"
+            },
+            "wolf": {
+                "dominance": "A dominant wolf with strong leadership and pack coordination",
+                "loyalty": "A loyal wolf with unwavering commitment to the pack",
+                "aggression": "An aggressive wolf with fierce determination and drive"
+            },
+            "otter": {
+                "creativity": "A playful otter with boundless creativity and joy",
+                "intelligence": "An intelligent otter with curious and analytical mind"
+            },
+            "eagle": {
+                "dominance": "A majestic eagle with commanding presence and vision",
+                "intelligence": "A wise eagle with keen insight and strategic thinking"
+            },
+            "lion": {
+                "dominance": "A regal lion with natural authority and commanding presence",
+                "aggression": "A fierce lion with powerful determination and strength"
+            },
+            "tiger": {
+                "aggression": "A fierce tiger with intense focus and powerful determination",
+                "dominance": "A powerful tiger with commanding presence and strength"
+            },
+            "dragon": {
+                "intelligence": "An ancient dragon with vast wisdom and knowledge",
+                "dominance": "A powerful dragon with commanding presence and authority"
+            }
+        }
+        spirit_personalities = personalities.get(spirit, personalities["fox"])
+        return spirit_personalities.get(trait, self._get_default_personality(spirit))
+
+    def _get_balanced_personality(self, spirit: str) -> str:
+        """Get balanced personality for a spirit type."""
+        balanced = {
+            "fox": "A clever fox with balanced cunning and wisdom",
+            "wolf": "A strong wolf with natural leadership and loyalty",
+            "otter": "A joyful otter with playful spirit and sharp intelligence",
+            "eagle": "A noble eagle with soaring vision and sharp intellect",
+            "lion": "A noble lion with royal bearing and strong leadership",
+            "tiger": "A strong tiger with fierce independence and power",
+            "dragon": "A wise dragon with ancient knowledge and powerful presence"
+        }
+        return balanced.get(spirit, self._get_default_personality(spirit))
+
+    # Memory management methods
+    def store_memory(
+        self,
+        agent_id: str,
+        memory_type: MemoryType,
+        content: str,
+        importance: float = 0.5,
+        emotional_weight: float = 0.0,
+        associated_agents: list[str] | None = None
+    ) -> bool:
+        """
+        Store a memory for an agent.
+        
+        Args:
+            agent_id: ID of the agent to store memory for
+            memory_type: Type of memory to store
+            content: Memory content/description
+            importance: Importance level (0.0 to 1.0)
+            emotional_weight: Emotional significance (-1.0 to 1.0)
+            associated_agents: List of agent IDs associated with this memory
+            
+        Returns:
+            True if memory was stored successfully, False otherwise
+        """
+        memory_system = self.get_system(MemorySystem)
+        if not memory_system:
+            logger.warning("Memory system not found")
+            return False
+
+        memory_id = memory_system.store_memory_for_agent(
+            agent_id=agent_id,
+            memory_type=memory_type,
+            content=content,
+            importance=importance,
+            emotional_weight=emotional_weight,
+            associated_agents=associated_agents
+        )
+
+        return bool(memory_id)
+
+    def retrieve_memories(
+        self,
+        agent_id: str,
+        query: str = "",
+        memory_type: MemoryType | None = None,
+        limit: int = 10,
+        min_importance: float = 0.0
+    ) -> list[Any]:
+        """
+        Retrieve memories for an agent based on query and type.
+        
+        Args:
+            agent_id: ID of the agent to retrieve memories for
+            query: Text query to search for in memory content
+            memory_type: Filter by specific memory type
+            limit: Maximum number of memories to return
+            min_importance: Minimum importance threshold
+            
+        Returns:
+            List of matching memories
+        """
+        memory_system = self.get_system(MemorySystem)
+        if not memory_system:
+            logger.warning("Memory system not found")
+            return []
+
+        return memory_system.retrieve_memories_for_agent(
+            agent_id=agent_id,
+            query=query,
+            memory_type=memory_type,
+            limit=limit,
+            min_importance=min_importance
+        )
+
+    def get_memory_stats(self, agent_id: str) -> dict[str, Any]:
+        """
+        Get memory statistics for an agent.
+        
+        Args:
+            agent_id: ID of the agent to get stats for
+            
+        Returns:
+            Dictionary with memory statistics
+        """
+        memory_system = self.get_system(MemorySystem)
+        if not memory_system:
+            return {}
+
+        return memory_system.get_memory_stats_for_agent(agent_id)
+
+    def get_memory_system_stats(self) -> dict[str, Any]:
+        """
+        Get comprehensive memory system statistics.
+        
+        Returns:
+            Dictionary with system-wide memory statistics
+        """
+        memory_system = self.get_system(MemorySystem)
+        if not memory_system:
+            return {}
+
+        return memory_system.get_system_stats()
+
+    # Interaction management methods
+    def initiate_interaction(self, agent1_id: str, agent2_id: str, interaction_type: InteractionType) -> bool:
+        """
+        Initiate an interaction between two agents.
+        
+        Args:
+            agent1_id: ID of first agent
+            agent2_id: ID of second agent
+            interaction_type: Type of interaction to initiate
+            
+        Returns:
+            True if interaction was initiated successfully
+        """
+        interaction_system = self.get_system(InteractionSystem)
+        if not interaction_system:
+            logger.warning("Interaction system not found")
+            return False
+
+        return interaction_system.initiate_interaction(agent1_id, agent2_id, interaction_type)
+
+    def get_relationship_status(self, agent1_id: str, agent2_id: str) -> dict[str, Any]:
+        """
+        Get relationship status between two agents.
+        
+        Args:
+            agent1_id: ID of first agent
+            agent2_id: ID of second agent
+            
+        Returns:
+            Dictionary with relationship information
+        """
+        interaction_system = self.get_system(InteractionSystem)
+        if not interaction_system:
+            return {"error": "Interaction system not found"}
+
+        return interaction_system.get_relationship_status(agent1_id, agent2_id)
+
+    def get_interaction_stats(self, agent_id: str) -> dict[str, Any]:
+        """
+        Get interaction statistics for an agent.
+        
+        Args:
+            agent_id: ID of the agent to get stats for
+            
+        Returns:
+            Dictionary with interaction statistics
+        """
+        entity = self.get_entity(agent_id)
+        if not entity:
+            return {}
+
+        interaction_comp = entity.get_component(InteractionComponent)
+        if not interaction_comp:
+            return {}
+
+        return interaction_comp.get_interaction_stats()
+
+    def get_interaction_system_stats(self) -> dict[str, Any]:
+        """
+        Get comprehensive interaction system statistics.
+        
+        Returns:
+            Dictionary with system-wide interaction statistics
+        """
+        interaction_system = self.get_system(InteractionSystem)
+        if not interaction_system:
+            return {}
+
+        return interaction_system.get_system_stats()
+
+    # Social management methods
+    def create_social_group(
+        self, 
+        creator_id: str, 
+        group_name: str, 
+        group_type: GroupType,
+        member_ids: list[str]
+    ) -> str:
+        """
+        Create a social group.
+        
+        Args:
+            creator_id: ID of the agent creating the group
+            group_name: Name of the group
+            group_type: Type of group to create
+            member_ids: List of agent IDs to include in the group
+            
+        Returns:
+            Group ID if successful, empty string if failed
+        """
+        social_system = self.get_system(SocialSystem)
+        if not social_system:
+            logger.warning("Social system not found")
+            return ""
+
+        return social_system.create_social_group(creator_id, group_name, group_type, member_ids)
+
+    def get_social_network(self, agent_id: str) -> dict[str, Any]:
+        """
+        Get social network information for an agent.
+        
+        Args:
+            agent_id: ID of the agent to get network for
+            
+        Returns:
+            Dictionary with network information
+        """
+        social_system = self.get_system(SocialSystem)
+        if not social_system:
+            return {"error": "Social system not found"}
+
+        return social_system.get_social_network(agent_id)
+
+    def get_group_info(self, group_id: str) -> dict[str, Any]:
+        """
+        Get information about a social group.
+        
+        Args:
+            group_id: ID of the group to get info for
+            
+        Returns:
+            Dictionary with group information
+        """
+        social_system = self.get_system(SocialSystem)
+        if not social_system:
+            return {"error": "Social system not found"}
+
+        return social_system.get_group_info(group_id)
+
+    def get_social_stats(self, agent_id: str) -> dict[str, Any]:
+        """
+        Get social statistics for an agent.
+        
+        Args:
+            agent_id: ID of the agent to get stats for
+            
+        Returns:
+            Dictionary with social statistics
+        """
+        entity = self.get_entity(agent_id)
+        if not entity:
+            return {}
+
+        social_comp = entity.get_component(SocialComponent)
+        if not social_comp:
+            return {}
+
+        return social_comp.get_social_stats()
+
+    def get_social_system_stats(self) -> dict[str, Any]:
+        """
+        Get comprehensive social system statistics.
+        
+        Returns:
+            Dictionary with system-wide social statistics
+        """
+        social_system = self.get_system(SocialSystem)
+        if not social_system:
+            return {}
+
+        return social_system.get_system_stats()
+
+    # Knowledge management methods
+    def add_knowledge(
+        self,
+        agent_id: str,
+        title: str,
+        knowledge_type: KnowledgeType,
+        description: str,
+        proficiency: float = 0.1,
+        confidence: float = 0.5,
+        learning_method: LearningMethod = LearningMethod.EXPERIENCE,
+        source_agent: str | None = None,
+        tags: list[str] | None = None,
+        difficulty: float = 0.5,
+        importance: float = 0.5,
+        transferability: float = 0.5
+    ) -> str:
+        """
+        Add knowledge to an agent's knowledge base.
+        
+        Args:
+            agent_id: ID of the agent to add knowledge to
+            title: Title of the knowledge
+            knowledge_type: Type of knowledge
+            description: Description of the knowledge
+            proficiency: Initial proficiency level (0.0 to 1.0)
+            confidence: Confidence in the knowledge (0.0 to 1.0)
+            learning_method: How the knowledge was acquired
+            source_agent: Agent who taught this knowledge
+            tags: Tags for categorization
+            difficulty: Difficulty of the knowledge
+            importance: Importance of the knowledge
+            transferability: How easy it is to teach this knowledge
+            
+        Returns:
+            Knowledge ID if successful, empty string if failed
+        """
+        entity = self.get_entity(agent_id)
+        if not entity:
+            logger.warning(f"Agent {agent_id} not found")
+            return ""
+
+        knowledge_comp = entity.get_component(KnowledgeComponent)
+        if not knowledge_comp:
+            logger.warning(f"Agent {agent_id} has no knowledge component")
+            return ""
+
+        return knowledge_comp.add_knowledge(
+            title=title,
+            knowledge_type=knowledge_type,
+            description=description,
+            proficiency=proficiency,
+            confidence=confidence,
+            learning_method=learning_method,
+            source_agent=source_agent,
+            tags=tags,
+            difficulty=difficulty,
+            importance=importance,
+            transferability=transferability
+        )
+
+    def transfer_knowledge(
+        self,
+        teacher_id: str,
+        student_id: str,
+        knowledge_id: str,
+        learning_method: LearningMethod = LearningMethod.TEACHING
+    ) -> bool:
+        """
+        Transfer knowledge between agents.
+        
+        Args:
+            teacher_id: ID of the agent teaching the knowledge
+            student_id: ID of the agent learning the knowledge
+            knowledge_id: ID of the knowledge to transfer
+            learning_method: Method of learning
+            
+        Returns:
+            True if transfer was successful
+        """
+        learning_system = self.get_system(LearningSystem)
+        if not learning_system:
+            logger.warning("Learning system not found")
+            return False
+
+        return learning_system.transfer_knowledge(teacher_id, student_id, knowledge_id, learning_method)
+
+    def get_knowledge_stats(self, agent_id: str) -> dict[str, Any]:
+        """
+        Get knowledge statistics for an agent.
+        
+        Args:
+            agent_id: ID of the agent to get stats for
+            
+        Returns:
+            Dictionary with knowledge statistics
+        """
+        entity = self.get_entity(agent_id)
+        if not entity:
+            return {}
+
+        knowledge_comp = entity.get_component(KnowledgeComponent)
+        if not knowledge_comp:
+            return {}
+
+        return knowledge_comp.get_knowledge_stats()
+
+    def get_knowledge_transfer_stats(self, agent_id: str) -> dict[str, Any]:
+        """
+        Get knowledge transfer statistics for an agent.
+        
+        Args:
+            agent_id: ID of the agent to get stats for
+            
+        Returns:
+            Dictionary with transfer statistics
+        """
+        learning_system = self.get_system(LearningSystem)
+        if not learning_system:
+            return {"error": "Learning system not found"}
+
+        return learning_system.get_knowledge_transfer_stats(agent_id)
+
+    def get_learning_system_stats(self) -> dict[str, Any]:
+        """
+        Get comprehensive learning system statistics.
+        
+        Returns:
+            Dictionary with system-wide learning statistics
+        """
+        learning_system = self.get_system(LearningSystem)
+        if not learning_system:
+            return {}
+
+        return learning_system.get_system_stats()
+

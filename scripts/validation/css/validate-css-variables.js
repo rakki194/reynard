@@ -2,34 +2,49 @@
 /**
  * CSS Variable Validation Script for Reynard Projects
  *
- * This script validates CSS variables across all Reynard projects to ensure:
- * - No undefined variables are used
- * - Variable definitions are consistent across themes
- * - No typos in variable names
+ * ⚠️  DEPRECATED: This JavaScript version has been replaced by a TypeScript implementation.
  *
- * Usage:
- *   node validate-css-variables.js [--fix] [--strict]
+ * Please use the new TypeScript version:
+ *   cd scripts/validation/css
+ *   pnpm install
+ *   pnpm run build
+ *   pnpm start [options]
  *
- * Options:
- *   --fix     Attempt to fix common issues automatically
- *   --strict  Fail on any inconsistencies (for CI/CD)
+ * Or run directly:
+ *   node dist/cli.js [options]
+ *
+ * The new TypeScript version provides:
+ * - Better type safety and error handling
+ * - More comprehensive validation rules
+ * - Multiple report formats (Markdown, JSON, Text)
+ * - Improved CLI interface with Commander.js
+ * - Extensive test coverage
+ * - Better import resolution
+ * - Theme validation support
+ *
+ * This file is kept for backward compatibility but will be removed in a future version.
  */
 
 import fs from "fs";
 import path from "path";
-import process from "process";
-import console from "console";
+import {
+  BaseValidator,
+  Colors,
+  findProjectRoot,
+  parseCommonArgs,
+  printColored,
+  printError,
+  printHeader,
+  printSuccess,
+  printWarning,
+  safeReadFile,
+  scanDirectory,
+} from "../shared/index.js";
 
 // Configuration
 const CONFIG = {
   // Directories to scan for CSS files
   scanDirs: ["packages", "examples", "templates", "src", "styles"],
-
-  // Verbose mode - show all CSS files being processed
-  verbose: process.argv.includes("--verbose") || process.argv.includes("--list-files"),
-
-  // Files to ignore
-  ignorePatterns: [/node_modules/, /dist/, /build/, /\.git/, /__pycache__/, /\.next/, /coverage/, /\.cache/],
 
   // Critical variables that must be consistent
   criticalVariables: [
@@ -52,8 +67,9 @@ const CONFIG = {
   themeVariables: ["accent", "bg-color", "secondary-bg", "card-bg", "text-primary", "text-secondary", "border-color"],
 };
 
-class CSSVariableValidator {
+class CSSVariableValidator extends BaseValidator {
   constructor(options = {}) {
+    super(options);
     this.options = { ...CONFIG, ...options };
     this.variables = {
       definitions: new Map(),
@@ -65,97 +81,55 @@ class CSSVariableValidator {
     };
     this.errors = [];
     this.warnings = [];
+    this.projectRoot = findProjectRoot();
   }
 
   /**
    * Find all CSS files in the project
    */
-  findCSSFiles(rootDir = process.cwd()) {
+  findCSSFiles(rootDir = null) {
+    const root = rootDir || this.projectRoot;
     const cssFiles = [];
 
     if (this.options.verbose) {
-      console.log("🔍 Scanning for CSS files in Reynard projects...");
+      printColored("🔍 Scanning for CSS files in Reynard projects...", Colors.BLUE);
     }
 
-    const scanDirectory = dir => {
-      if (!fs.existsSync(dir)) return;
-
-      const items = fs.readdirSync(dir);
-
-      for (const item of items) {
-        const fullPath = path.join(dir, item);
-        let stat;
-        try {
-          stat = fs.statSync(fullPath);
-        } catch (error) {
-          // Skip broken symlinks and other filesystem errors
-          continue;
-        }
-
-        if (stat.isDirectory()) {
-          // Skip ignored directories
-          if (this.options.ignorePatterns.some(pattern => pattern.test(fullPath))) {
-            continue;
-          }
-
-          // Only scan configured directories
-          const dirName = path.basename(fullPath);
-          if (this.options.scanDirs.includes(dirName) || dirName.startsWith("reynard")) {
-            scanDirectory(fullPath);
-          } else {
-            // Also scan subdirectories within configured directories
-            // Check if any ancestor directory is in the configured scan directories
-            const pathParts = fullPath.split(path.sep);
-            const shouldScan = pathParts.some(
-              part => this.options.scanDirs.includes(part) || part.startsWith("reynard")
-            );
-            if (shouldScan) {
-              scanDirectory(fullPath);
-            }
-          }
-        } else if (item.endsWith(".css")) {
-          // Only include CSS files that are not in ignored directories
-          if (!this.options.ignorePatterns.some(pattern => pattern.test(fullPath))) {
-            cssFiles.push(fullPath);
-            if (this.options.verbose) {
-              // Show relative path for better readability
-              const relativePath = path.relative(rootDir, fullPath);
-              console.log(`  📄 ${relativePath}`);
-            }
-          }
-        }
+    for (const scanDir of this.options.scanDirs) {
+      const fullPath = path.join(root, scanDir);
+      if (fs.existsSync(fullPath)) {
+        const files = scanDirectory(fullPath, [".css"]);
+        cssFiles.push(...files);
       }
-    };
-
-    scanDirectory(rootDir);
+    }
 
     if (this.options.verbose) {
-      console.log(`\n📊 Summary:`);
-      console.log(`  Total CSS files found: ${cssFiles.length}`);
+      printColored(`\n📊 Summary:`, Colors.BLUE);
+      printColored(`  Total CSS files found: ${cssFiles.length}`, Colors.BLUE);
 
       // Break down by project type
       const reynardMain = cssFiles.filter(f => f.includes("/reynard/") && !f.includes("/reynard-"));
       const reynardApps = cssFiles.filter(f => f.includes("/reynard-"));
 
-      console.log(`  Main reynard directory: ${reynardMain.length} files`);
-      console.log(`  Reynard apps (reynard-*): ${reynardApps.length} files`);
+      printColored(`  Main reynard directory: ${reynardMain.length} files`, Colors.BLUE);
+      printColored(`  Reynard apps (reynard-*): ${reynardApps.length} files`, Colors.BLUE);
 
       if (reynardMain.length > 0) {
-        console.log(`\n📁 Main reynard directory files:`);
+        printColored(`\n📁 Main reynard directory files:`, Colors.BLUE);
         reynardMain.forEach(f => {
-          const relativePath = path.relative(rootDir, f);
-          console.log(`    ${relativePath}`);
+          const relativePath = path.relative(root, f);
+          printColored(`    ${relativePath}`, Colors.CYAN);
         });
       }
 
       if (reynardApps.length > 0) {
-        console.log(`\n📱 Reynard apps files:`);
+        printColored(`\n📱 Reynard apps files:`, Colors.BLUE);
         reynardApps.forEach(f => {
-          const relativePath = path.relative(rootDir, f);
-          console.log(`    ${relativePath}`);
+          const relativePath = path.relative(root, f);
+          printColored(`    ${relativePath}`, Colors.CYAN);
         });
       }
-      console.log("");
+      printColored("", Colors.NC);
     }
 
     return cssFiles;
@@ -193,7 +167,9 @@ class CSSVariableValidator {
    * Extract CSS imports from a file
    */
   extractImports(filePath) {
-    const content = fs.readFileSync(filePath, "utf8");
+    const content = safeReadFile(filePath);
+    if (!content) return [];
+
     const lines = content.split("\n");
     const imports = [];
 
@@ -235,7 +211,17 @@ class CSSVariableValidator {
 
     visitedFiles.add(filePath);
 
-    const content = fs.readFileSync(filePath, "utf8");
+    const content = safeReadFile(filePath);
+    if (!content) {
+      visitedFiles.delete(filePath);
+      return {
+        definitions: [],
+        usage: [],
+        themes: new Map(),
+        imports: [],
+      };
+    }
+
     const lines = content.split("\n");
     const fileVariables = {
       definitions: [],
@@ -339,14 +325,14 @@ class CSSVariableValidator {
               importedVia: filePath,
             });
           }
-        } catch (error) {
+        } catch {
           // Skip files that can't be read (permissions, etc.)
           if (this.options.verbose) {
-            console.log(`  ⚠️  Could not read imported file: ${importInfo.resolvedPath}`);
+            printColored(`  ⚠️  Could not read imported file: ${importInfo.resolvedPath}`, Colors.YELLOW);
           }
         }
       } else if (this.options.verbose) {
-        console.log(`  ⚠️  Imported file not found: ${importInfo.resolvedPath}`);
+        printColored(`  ⚠️  Imported file not found: ${importInfo.resolvedPath}`, Colors.YELLOW);
       }
     }
 
@@ -358,16 +344,16 @@ class CSSVariableValidator {
    * Analyze all CSS files
    */
   analyze() {
-    console.log("🔍 Scanning for CSS files...");
+    printColored("🔍 Scanning for CSS files...", Colors.BLUE);
     const cssFiles = this.findCSSFiles();
-    console.log(`📁 Found ${cssFiles.length} CSS files`);
+    printColored(`📁 Found ${cssFiles.length} CSS files`, Colors.BLUE);
 
     if (cssFiles.length === 0) {
       this.warnings.push("No CSS files found in the project");
       return;
     }
 
-    console.log("🔬 Analyzing CSS variables...");
+    printColored("🔬 Analyzing CSS variables...", Colors.BLUE);
 
     // Collect all variables
     for (const file of cssFiles) {
@@ -376,12 +362,12 @@ class CSSVariableValidator {
 
         // Show import information in verbose mode
         if (this.options.verbose && fileVars.imports.length > 0) {
-          const relativePath = path.relative(process.cwd(), file);
-          console.log(`  📦 ${relativePath} imports:`);
+          const relativePath = path.relative(this.projectRoot, file);
+          printColored(`  📦 ${relativePath} imports:`, Colors.CYAN);
           for (const imp of fileVars.imports) {
-            const importRelativePath = path.relative(process.cwd(), imp.resolvedPath);
+            const importRelativePath = path.relative(this.projectRoot, imp.resolvedPath);
             const exists = fs.existsSync(imp.resolvedPath) ? "✅" : "❌";
-            console.log(`    ${exists} ${imp.originalPath} → ${importRelativePath}`);
+            printColored(`    ${exists} ${imp.originalPath} → ${importRelativePath}`, Colors.CYAN);
           }
         }
 
@@ -473,12 +459,6 @@ class CSSVariableValidator {
         issues.push("'tertiary' should be 'tertiary'");
       }
 
-      // Check for missing hyphens in compound words
-      // Disabled: This was generating false positives for valid naming like --color-primary
-      // if (varName.includes("color") && !varName.includes("-color")) {
-      //   issues.push("Consider using '-color' suffix for consistency");
-      // }
-
       if (issues.length > 0) {
         this.variables.typos.push({
           variable: varName,
@@ -552,9 +532,6 @@ class CSSVariableValidator {
       report.push("");
     }
 
-    // Note: We don't check for value inconsistencies as different values
-    // across themes or components may be intentional
-
     // Missing variables
     if (this.variables.missing.length > 0) {
       report.push("## Missing Variable Definitions");
@@ -570,7 +547,7 @@ class CSSVariableValidator {
           report.push(`- **Import Context**: Used in files that import from:`);
           const importSources = [...new Set(importedUsages.map(u => u.importedFrom))];
           for (const source of importSources) {
-            const relativeSource = path.relative(process.cwd(), source);
+            const relativeSource = path.relative(this.projectRoot, source);
             report.push(`  - ${relativeSource}`);
           }
         }
@@ -627,15 +604,23 @@ class CSSVariableValidator {
 
 // CLI interface
 function main() {
-  const args = process.argv.slice(2);
+  // Show deprecation warning
+  console.warn("⚠️  WARNING: This JavaScript version is deprecated!");
+  console.warn("Please use the new TypeScript version:");
+  console.warn("  cd scripts/validation/css");
+  console.warn("  pnpm install && pnpm run build");
+  console.warn("  pnpm start [options]");
+  console.warn("");
+
+  const args = parseCommonArgs();
   const options = {
-    fix: args.includes("--fix"),
-    strict: args.includes("--strict"),
-    verbose: args.includes("--verbose"),
+    fix: args.fix,
+    strict: args.strict,
+    verbose: args.verbose,
   };
 
-  console.log("🎨 Reynard CSS Variable Validator");
-  console.log("==================================");
+  printHeader("Reynard CSS Variable Validator (DEPRECATED)");
+  printColored("===========================================", Colors.CYAN);
 
   const validator = new CSSVariableValidator(options);
   validator.analyze();
@@ -646,20 +631,20 @@ function main() {
   // Save report
   const reportPath = path.join(process.cwd(), "css-validation-report.md");
   fs.writeFileSync(reportPath, report);
-  console.log(`\n📄 Report saved to: ${reportPath}`);
+  printColored(`\n📄 Report saved to: ${reportPath}`, Colors.BLUE);
 
   // Exit with appropriate code
   const exitCode = validator.getExitCode();
   if (exitCode === 1) {
-    console.log("\n❌ Validation failed with errors");
+    printError("\nValidation failed with errors");
     process.exit(1);
   } else if (exitCode === 2) {
-    console.log("\n⚠️ Validation passed with warnings");
+    printWarning("\nValidation passed with warnings");
     if (options.strict) {
       process.exit(1);
     }
   } else {
-    console.log("\n✅ Validation passed");
+    printSuccess("\nValidation passed");
   }
 }
 

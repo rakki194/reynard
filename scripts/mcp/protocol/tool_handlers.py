@@ -38,6 +38,7 @@ class AgentToolHandler(BaseToolHandler):
             "get_agent_name": self.agent_tools.get_agent_name,
             "list_agent_names": self.agent_tools.list_agent_names,
             "roll_agent_spirit": self.agent_tools.roll_agent_spirit,
+            "get_spirit_emoji": self.agent_tools.get_spirit_emoji,
             "agent_startup_sequence": self.agent_tools.agent_startup_sequence,
             "get_agent_persona": self.agent_tools.get_agent_persona,
             "get_lora_config": self.agent_tools.get_lora_config,

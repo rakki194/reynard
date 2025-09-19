@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
+- **Embedding Backend Configuration System**: Comprehensive granular control over embedding backends with easy enable/disable for Ollama, Sentence Transformers, OpenAI, and Hugging Face backends. Includes environment variable support, fallback chains, mock mode, and extensive validation. Fully tested with .env file integration and virtual environment activation (Agile-Strategist-5)
+- **Destiny Name Generator**: New Destiny-style name generator inspired by the Destiny and Destiny 2 universe, featuring epic cosmic names with guardian classes, weapons, locations, and mystical concepts (Brave-Keeper-8)
+- **Pylint Configuration Fix**: Resolved "Unrecognized option found: *.pyi" error by fixing invalid Pylint configuration syntax in pyproject.toml (Snuggles-Grandmaster-35)
+- **Agent Naming System Refactoring**: Complete modular refactoring of the agent naming library with shared components, unique generators for each naming style, and clean architecture following the 140-line axiom (Stone-Analyst-40)
 - **Research Proposal Generation System**: Comprehensive system for conducting deep research and generating LaTeX proposals for randomly selected Reynard components through actual codebase analysis, web research, and original insights (Cascade-Sage-30)
 - **VS Code Tasks Enhancement**: Comprehensive VS Code tasks configuration with 1091+ lines of development automation, testing, and workflow management (Vulpine-Master-7)
 - **Git Workflow Documentation**: Enhanced git-workflow-prompt.md with comprehensive tracked junk file detection and Delta integration for superior diff analysis (Vulpine-Master-7)
@@ -16,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **E2E Effects Testing**: Advanced effects testing framework with comprehensive monitoring, dependency fixtures, and unified results management (Vulpine-Master-7)
 
 ### Changed
+
 - **E2E Testing Configuration**: Enhanced Playwright configurations across all test suites with improved performance and component testing capabilities (Vulpine-Master-7)
 - **Development Scripts**: Updated start scripts for auth-app and error-demo examples with improved development workflow (Vulpine-Master-7)
 - **MCP Server Optimization**: Streamlined MCP server main.py with enhanced tool routing and performance improvements (Vulpine-Master-7)
@@ -26,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated
 
 ### Removed
+
 - **Legacy Development Files**: Removed Makefile.dev and markdownlint-changelog.json for streamlined development workflow (Vulpine-Master-7)
 - **Obsolete Benchmark Files**: Cleaned up e2e/accurate-benchmark-analysis.txt and e2e/accurate-benchmark-results.json (Vulpine-Master-7)
 - **Redundant Research Prompts**: Removed duplicate enhanced research proposal generation and novel research idea generation framework files (Vulpine-Master-7)

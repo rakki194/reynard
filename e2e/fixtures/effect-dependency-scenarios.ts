@@ -1,6 +1,6 @@
 /**
  * 🦊 EFFECT DEPENDENCY SCENARIOS
- * 
+ *
  * Test scenarios for SolidJS createEffect dependency array issues.
  */
 
@@ -25,17 +25,17 @@ export class EffectDependencyScenarios {
         maxAllowedApiCalls: 3,
         userData: TestUserData.getValidUser(),
         shouldFail: true,
-        failureReason: "Object recreated on every render causes infinite API calls"
+        failureReason: "Object recreated on every render causes infinite API calls",
       },
       {
         name: "array_dependency_recreation",
         description: "Tests array recreation in dependency array",
-        scenarioType: "array_recreation", 
+        scenarioType: "array_recreation",
         expectedApiCalls: 1,
         maxAllowedApiCalls: 3,
         userData: TestUserData.getValidUser(),
         shouldFail: true,
-        failureReason: "Array recreated on every render causes infinite API calls"
+        failureReason: "Array recreated on every render causes infinite API calls",
       },
       {
         name: "function_dependency_recreation",
@@ -45,7 +45,7 @@ export class EffectDependencyScenarios {
         maxAllowedApiCalls: 3,
         userData: TestUserData.getValidUser(),
         shouldFail: true,
-        failureReason: "Function recreated on every render causes infinite API calls"
+        failureReason: "Function recreated on every render causes infinite API calls",
       },
       {
         name: "nested_object_dependency",
@@ -55,8 +55,8 @@ export class EffectDependencyScenarios {
         maxAllowedApiCalls: 3,
         userData: TestUserData.getValidUser(),
         shouldFail: true,
-        failureReason: "Nested object recreated on every render causes infinite API calls"
-      }
+        failureReason: "Nested object recreated on every render causes infinite API calls",
+      },
     ];
   }
 
@@ -72,7 +72,7 @@ export class EffectDependencyScenarios {
         expectedApiCalls: 1,
         maxAllowedApiCalls: 1,
         userData: TestUserData.getValidUser(),
-        shouldFail: false
+        shouldFail: false,
       },
       {
         name: "memoized_dependencies",
@@ -81,7 +81,7 @@ export class EffectDependencyScenarios {
         expectedApiCalls: 1,
         maxAllowedApiCalls: 1,
         userData: TestUserData.getValidUser(),
-        shouldFail: false
+        shouldFail: false,
       },
       {
         name: "primitive_dependencies",
@@ -90,8 +90,8 @@ export class EffectDependencyScenarios {
         expectedApiCalls: 1,
         maxAllowedApiCalls: 1,
         userData: TestUserData.getValidUser(),
-        shouldFail: false
-      }
+        shouldFail: false,
+      },
     ];
   }
 }

@@ -9,6 +9,8 @@ import os
 from dataclasses import dataclass, field
 from typing import Any
 
+from app.config.embedding_backend_config import EmbeddingBackendsConfig
+
 
 @dataclass
 class RAGConfig:
@@ -79,6 +81,11 @@ class RAGConfig:
         default_factory=lambda: int(os.getenv("RAG_INGEST_RATE_LIMIT_PER_MINUTE", "10"))
     )
 
+    # Embedding backend configuration
+    embedding_backends: EmbeddingBackendsConfig = field(
+        default_factory=EmbeddingBackendsConfig
+    )
+
     def to_dict(self) -> dict[str, Any]:
         """Convert configuration to dictionary format expected by services."""
         return {
@@ -98,6 +105,7 @@ class RAGConfig:
             "rag_ingest_backoff_base_s": self.ingest_backoff_base_s,
             "rag_query_rate_limit_per_minute": self.query_rate_limit_per_minute,
             "rag_ingest_rate_limit_per_minute": self.ingest_rate_limit_per_minute,
+            "embedding_backends": self.embedding_backends.to_dict(),
         }
 
     def validate(self) -> None:
@@ -130,6 +138,9 @@ class RAGConfig:
             raise ValueError(
                 "RAG configuration error: RAG_CHUNK_OVERLAP_RATIO must be between 0 and 1"
             )
+        
+        # Validate embedding backends configuration
+        self.embedding_backends.validate()
 
 
 # Global config instance

@@ -108,16 +108,16 @@ def develop_search_terms(proposal):
     """
     # Extract key concepts from proposal
     key_concepts = extract_key_concepts(proposal)
-    
+
     # Generate search term variations
     search_variations = generate_search_variations(key_concepts)
-    
+
     # Create domain-specific terms
     domain_terms = create_domain_specific_terms(proposal)
-    
+
     # Generate cross-domain terms
     cross_domain_terms = generate_cross_domain_terms(proposal)
-    
+
     return {
         'key_concepts': key_concepts,
         'variations': search_variations,
@@ -134,29 +134,29 @@ def execute_comprehensive_search(search_terms):
     Execute comprehensive search across multiple databases
     """
     search_results = {}
-    
+
     # Academic databases
     academic_databases = [
         'ieee_xplore', 'acm_digital_library', 'google_scholar',
         'arxiv', 'researchgate', 'semantic_scholar', 'dblp',
         'springerlink', 'sciencedirect', 'jstor'
     ]
-    
+
     for database in academic_databases:
         results = search_database(database, search_terms)
         search_results[database] = results
-    
+
     # Technical sources
     technical_sources = [
         'github', 'stackoverflow', 'technical_blogs',
         'conference_proceedings', 'patent_databases',
         'technical_standards', 'open_source_docs'
     ]
-    
+
     for source in technical_sources:
         results = search_technical_source(source, search_terms)
         search_results[source] = results
-    
+
     return search_results
 ```
 
@@ -170,18 +170,18 @@ def assess_relevance(search_results, proposal):
     Assess relevance of search results to the proposal
     """
     relevant_works = []
-    
+
     for source, results in search_results.items():
         for result in results:
             # Calculate relevance score
             relevance_score = calculate_relevance_score(result, proposal)
-            
+
             # Assess similarity level
             similarity_level = assess_similarity_level(result, proposal)
-            
+
             # Determine novelty impact
             novelty_impact = determine_novelty_impact(result, proposal)
-            
+
             if relevance_score > 0.7:  # High relevance threshold
                 relevant_works.append({
                     'source': source,
@@ -190,7 +190,7 @@ def assess_relevance(search_results, proposal):
                     'similarity_level': similarity_level,
                     'novelty_impact': novelty_impact
                 })
-    
+
     return relevant_works
 ```
 
@@ -202,24 +202,24 @@ def perform_detailed_comparison(relevant_works, proposal):
     Perform detailed comparison with relevant works
     """
     comparison_results = []
-    
+
     for work in relevant_works:
         # Compare methodologies
         methodology_comparison = compare_methodologies(work['result'], proposal)
-        
+
         # Compare experimental designs
         experimental_comparison = compare_experimental_designs(work['result'], proposal)
-        
+
         # Compare results and claims
         results_comparison = compare_results_claims(work['result'], proposal)
-        
+
         # Assess novelty level
         novelty_level = assess_novelty_level(
             methodology_comparison,
             experimental_comparison,
             results_comparison
         )
-        
+
         comparison_results.append({
             'work': work,
             'methodology_comparison': methodology_comparison,
@@ -227,7 +227,7 @@ def perform_detailed_comparison(relevant_works, proposal):
             'results_comparison': results_comparison,
             'novelty_level': novelty_level
         })
-    
+
     return comparison_results
 ```
 
@@ -241,13 +241,13 @@ def determine_novelty_level(comparison_results):
     Determine overall novelty level of the proposal
     """
     novelty_scores = []
-    
+
     for comparison in comparison_results:
         novelty_scores.append(comparison['novelty_level'])
-    
+
     # Calculate overall novelty score
     overall_novelty = calculate_overall_novelty(novelty_scores)
-    
+
     # Determine novelty category
     if overall_novelty >= 0.9:
         novelty_category = "GENUINELY_NOVEL"
@@ -257,7 +257,7 @@ def determine_novelty_level(comparison_results):
         novelty_category = "MINORLY_NOVEL"
     else:
         novelty_category = "NOT_NOVEL"
-    
+
     return {
         'overall_novelty': overall_novelty,
         'novelty_category': novelty_category,
@@ -273,13 +273,13 @@ def assess_novelty_risk(novelty_assessment, comparison_results):
     Assess risk associated with novelty claims
     """
     risk_factors = []
-    
+
     # Check for high-similarity works
     high_similarity_works = [
         work for work in comparison_results
         if work['novelty_level'] < 0.3
     ]
-    
+
     if high_similarity_works:
         risk_factors.append({
             'type': 'HIGH_SIMILARITY',
@@ -287,13 +287,13 @@ def assess_novelty_risk(novelty_assessment, comparison_results):
             'works': high_similarity_works,
             'risk_level': 'HIGH'
         })
-    
+
     # Check for recent similar work
     recent_works = [
         work for work in comparison_results
         if is_recent_work(work['work']['result'])
     ]
-    
+
     if recent_works:
         risk_factors.append({
             'type': 'RECENT_SIMILAR_WORK',
@@ -301,13 +301,13 @@ def assess_novelty_risk(novelty_assessment, comparison_results):
             'works': recent_works,
             'risk_level': 'MEDIUM'
         })
-    
+
     # Check for patent conflicts
     patent_works = [
         work for work in comparison_results
         if is_patent(work['work']['result'])
     ]
-    
+
     if patent_works:
         risk_factors.append({
             'type': 'PATENT_CONFLICT',
@@ -315,7 +315,7 @@ def assess_novelty_risk(novelty_assessment, comparison_results):
             'works': patent_works,
             'risk_level': 'HIGH'
         })
-    
+
     return risk_factors
 ```
 
@@ -522,4 +522,4 @@ Your novelty verification should reflect the cunning intelligence, playful thoro
 
 ---
 
-*This novelty verification system ensures that every research proposal undergoes rigorous web research to validate novelty claims and identify any existing work. Each verification should be a masterpiece of research analysis that maintains academic integrity while providing comprehensive evidence-based assessments.*
+_This novelty verification system ensures that every research proposal undergoes rigorous web research to validate novelty claims and identify any existing work. Each verification should be a masterpiece of research analysis that maintains academic integrity while providing comprehensive evidence-based assessments._

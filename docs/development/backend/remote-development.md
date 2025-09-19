@@ -13,17 +13,17 @@ over SSH). This is useful for development scenarios where you want to:
 
 ## Quick Start
 
-### Method 1: Using the Development Script
+### Method 1: Using the Dev Server Manager
 
 1. Make sure your backend is running on the remote machine (e.g., `otter_den`)
-2. Run the development script:
+2. Use the dev server manager to start the frontend:
 
 ```bash
-# Using default values (otter_den:7000)
-./scripts/dev-remote.sh
+# Start the frontend with remote backend configuration
+dev-server start frontend --env VITE_API_BASE_URL=http://otter_den:7000
 
-# Or specify custom host and port
-./scripts/dev-remote.sh your-remote-host 8000
+# Or start in detached mode
+dev-server start frontend --detached --env VITE_API_BASE_URL=http://otter_den:7000
 ```
 
 ### Method 2: Using Environment Variables
@@ -43,13 +43,13 @@ over SSH). This is useful for development scenarios where you want to:
 2. Start the development server:
 
    ```bash
-   npm run dev
+   dev-server start frontend
    ```
 
 ### Method 3: Direct Command Line
 
 ```bash
-VITE_API_BASE_URL=http://otter_den:7000 npm run dev
+VITE_API_BASE_URL=http://otter_den:7000 dev-server start frontend
 ```
 
 ## Configuration
@@ -75,7 +75,7 @@ If direct network access isn't available, you can use SSH tunneling:
 ssh -L 7000:localhost:7000 otter_den
 
 # Then use localhost in your configuration
-VITE_API_BASE_URL=http://localhost:7000 npm run dev
+VITE_API_BASE_URL=http://localhost:7000 dev-server start frontend
 ```
 
 ## Troubleshooting

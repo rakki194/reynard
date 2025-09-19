@@ -8,6 +8,8 @@
 import { spawn, ChildProcess } from "node:child_process";
 import { EventEmitter } from "node:events";
 import { resolve } from "node:path";
+import { promises as fs } from "node:fs";
+import { join } from "node:path";
 import type { ProcessInfo, ProcessOptions, ServerStatus, ProjectConfig } from "../types/index.js";
 import { ProcessStartError } from "../types/index.js";
 
@@ -165,13 +167,42 @@ export class ProcessManager extends EventEmitter {
     const command = options.command || config.command || "pnpm";
     const args = options.args || config.args || ["run", "dev"];
 
+    // Prepare stdio configuration
+    let stdioConfig: any;
+    if (options.detached) {
+      // For detached processes, redirect stdio to files
+      const logDir = join(cwd, '.dev-server-logs');
+      
+      // Ensure log directory exists
+      try {
+        await fs.mkdir(logDir, { recursive: true });
+      } catch (error) {
+        // Directory might already exist, ignore error
+      }
+      
+      const outFile = join(logDir, `${project}-out.log`);
+      const errFile = join(logDir, `${project}-err.log`);
+      
+      const out = await fs.open(outFile, 'a');
+      const err = await fs.open(errFile, 'a');
+      
+      stdioConfig = ['ignore', out.fd, err.fd];
+    } else {
+      stdioConfig = options.inheritStdio ? "inherit" : "pipe";
+    }
+
     // Spawn the process
     const childProcess = spawn(command, args, {
       cwd,
       env,
-      stdio: options.inheritStdio ? "inherit" : "pipe",
+      stdio: stdioConfig,
       detached: options.detached || false,
     });
+
+    // If detached, unref the process to allow parent to exit
+    if (options.detached) {
+      childProcess.unref();
+    }
 
     // Create process info
     const processInfo: ProcessInfo = {
@@ -183,16 +214,18 @@ export class ProcessManager extends EventEmitter {
       cwd,
       env,
       streams: {
-        stdout: childProcess.stdout!,
-        stderr: childProcess.stderr!,
+        stdout: childProcess.stdout,
+        stderr: childProcess.stderr,
       },
     };
 
     // Set up process event handlers
     this.setupProcessEventHandlers(childProcess, processInfo);
 
-    // Wait for process to start
-    await this.waitForProcessStart(childProcess, options.timeout);
+    // Wait for process to start (skip for detached processes)
+    if (!options.detached) {
+      await this.waitForProcessStart(childProcess, options.timeout);
+    }
 
     return processInfo;
   }

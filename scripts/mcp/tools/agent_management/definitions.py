@@ -26,7 +26,7 @@ def get_agent_tool_definitions() -> dict[str, dict[str, Any]]:
                     "style": {
                         "type": "string",
                         "description": "Naming style",
-                        "enum": ["foundation", "exo", "hybrid", "cyberpunk", "mythological", "scientific"]
+                        "enum": ["foundation", "exo", "hybrid", "cyberpunk", "mythological", "scientific", "destiny"]
                     }
                 }
             }
@@ -143,6 +143,21 @@ def get_agent_tool_definitions() -> dict[str, dict[str, Any]]:
                     }
                 },
                 "required": ["title", "message"]
+            }
+        },
+        "get_spirit_emoji": {
+            "name": "get_spirit_emoji",
+            "description": "Get the emoji for a specific animal spirit type",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "spirit": {
+                        "type": "string",
+                        "description": "Animal spirit type (fox, wolf, otter, etc.)",
+                        "enum": ["fox", "wolf", "otter", "eagle", "lion", "tiger", "dragon"]
+                    }
+                },
+                "required": ["spirit"]
             }
         }
     }

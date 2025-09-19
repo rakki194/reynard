@@ -1,0 +1,890 @@
+{
+  "char_1a26ea0bdc818649": {
+    "character_id": "char_1a26ea0bdc818649",
+    "name": "Alpha-Lupus-8",
+    "character_type": "agent",
+    "created_by": "test-agent-456",
+    "created_at": "2025-09-19 10:38:04",
+    "spirit": "wolf",
+    "naming_scheme": "animal_spirit",
+    "naming_style": "exo",
+    "traits": {
+      "personality": {
+        "loyalty": 0.9,
+        "leadership": 0.8,
+        "determination": 0.8,
+        "courage": 0.7,
+        "teamwork": 0.8
+      },
+      "physical": {
+        "size": 0.6792474487772308,
+        "strength": 0.5173099221112674,
+        "agility": 0.8939811971825562,
+        "endurance": 0.8840298160285638,
+        "appearance": 0.4932559945301255,
+        "grace": 0.40940320020777377,
+        "speed": 0.6575558899880107,
+        "coordination": 0.8553443399117369,
+        "stamina": 0.31622353861190644,
+        "flexibility": 0.7971096013447151,
+        "reflexes": 0.7170952041176262,
+        "vitality": 0.4859761623667158
+      },
+      "abilities": {
+        "strategist": 0.42828586287158465,
+        "hunter": 0.6249734738964441,
+        "teacher": 0.6646675776161091,
+        "artist": 0.6932864052853394,
+        "healer": 0.2870040860557205,
+        "inventor": 0.736024853830491,
+        "explorer": 0.30659879576567795,
+        "guardian": 0.7824479308069048,
+        "diplomat": 0.29739924491971836,
+        "warrior": 0.7127140845741873,
+        "scholar": 0.441543047217767,
+        "performer": 0.376889260730803,
+        "builder": 0.4987907567647662,
+        "navigator": 0.6921325972855554,
+        "communicator": 0.3915691203926239,
+        "leader": 0.24986420956375716
+      }
+    },
+    "appearance": {
+      "species": "wolf",
+      "color_primary": "gray",
+      "color_secondary": "white",
+      "color_accent": "black",
+      "size": "large",
+      "build": "muscular",
+      "markings": [],
+      "accessories": [],
+      "equipment": [],
+      "style": "casual",
+      "theme": "neutral"
+    },
+    "background": {
+      "origin": "Generated",
+      "birthplace": "Unknown",
+      "upbringing": "Standard",
+      "education": "Specialized Training",
+      "profession": "Protector/Guard",
+      "experience_level": "intermediate",
+      "specializations": [
+        "guardian",
+        "inventor",
+        "warrior"
+      ],
+      "family": "Unknown",
+      "relationships": [],
+      "affiliations": [],
+      "primary_goal": "Fulfill role and purpose",
+      "secondary_goals": [],
+      "motivations": [
+        "Personal growth",
+        "Service to others"
+      ],
+      "defining_moments": [],
+      "secrets": [],
+      "fears": []
+    },
+    "skills": {
+      "technical_skills": {
+        "Engineering": 0.736024853830491,
+        "Research": 0.441543047217767
+      },
+      "social_skills": {},
+      "combat_skills": {
+        "Combat": 0.7127140845741873,
+        "Tracking": 0.6249734738964441
+      },
+      "special_abilities": [],
+      "knowledge_areas": {
+        "General Knowledge": 0.6,
+        "Protector/Guard": 0.8
+      },
+      "languages": [
+        "Common"
+      ]
+    },
+    "preferences": {
+      "communication_style": "casual",
+      "formality_level": "medium",
+      "work_style": "leading",
+      "decision_making": "analytical",
+      "social_energy": "medium",
+      "group_size_preference": "small",
+      "quirks": [],
+      "habits": [],
+      "preferences": [],
+      "dislikes": []
+    },
+    "description": "A fierce and loyal wolf warrior",
+    "tags": [
+      "warrior",
+      "wolf",
+      "loyal"
+    ],
+    "custom_data": {},
+    "is_active": true,
+    "last_updated": "2025-09-19 10:38:04"
+  },
+  "char_e3b0f794d6f0d44c": {
+    "character_id": "char_e3b0f794d6f0d44c",
+    "name": "Test-Character-123",
+    "character_type": "agent",
+    "created_by": "mcp-test-agent",
+    "created_at": "2025-09-19 10:42:16",
+    "spirit": "fox",
+    "naming_scheme": "animal_spirit",
+    "naming_style": "foundation",
+    "traits": {
+      "personality": {
+        "intelligence": 0.9,
+        "creativity": 0.8,
+        "adaptability": 0.9,
+        "curiosity": 0.8,
+        "independence": 0.7
+      },
+      "physical": {
+        "size": 0.6235781321356204,
+        "strength": 0.8664653573200736,
+        "agility": 0.42982162190750983,
+        "endurance": 0.5013621796196535,
+        "appearance": 0.3824753415431781,
+        "grace": 0.40560041837497085,
+        "speed": 0.5119233774765131,
+        "coordination": 0.7392444092275459,
+        "stamina": 0.8212717917396051,
+        "flexibility": 0.8842386765853301,
+        "reflexes": 0.7911623196562938,
+        "vitality": 0.49959702224026975
+      },
+      "abilities": {
+        "strategist": 0.36034189380177023,
+        "hunter": 0.30208577859266017,
+        "teacher": 0.26686106374851054,
+        "artist": 0.5407906522474538,
+        "healer": 0.39498364116034435,
+        "inventor": 0.3487675573075605,
+        "explorer": 0.3464628767179845,
+        "guardian": 0.35587587504325724,
+        "diplomat": 0.6850205652257872,
+        "warrior": 0.5545659926056129,
+        "scholar": 0.621822941972906,
+        "performer": 0.5432860795934669,
+        "builder": 0.6200137753823212,
+        "navigator": 0.6976274386841912,
+        "communicator": 0.6567615625916501,
+        "leader": 0.40335282284562524
+      }
+    },
+    "appearance": {
+      "species": "fox",
+      "color_primary": "red",
+      "color_secondary": "white",
+      "color_accent": "black",
+      "size": "medium",
+      "build": "slender",
+      "markings": [],
+      "accessories": [],
+      "equipment": [],
+      "style": "casual",
+      "theme": "neutral"
+    },
+    "background": {
+      "origin": "Generated",
+      "birthplace": "Unknown",
+      "upbringing": "Standard",
+      "education": "Specialized Training",
+      "profession": "Pilot/Navigator",
+      "experience_level": "intermediate",
+      "specializations": [
+        "navigator",
+        "diplomat",
+        "communicator"
+      ],
+      "family": "Unknown",
+      "relationships": [],
+      "affiliations": [],
+      "primary_goal": "Fulfill role and purpose",
+      "secondary_goals": [],
+      "motivations": [
+        "Personal growth",
+        "Service to others"
+      ],
+      "defining_moments": [],
+      "secrets": [],
+      "fears": []
+    },
+    "skills": {
+      "technical_skills": {
+        "Engineering": 0.3487675573075605,
+        "Research": 0.621822941972906
+      },
+      "social_skills": {},
+      "combat_skills": {
+        "Combat": 0.5545659926056129,
+        "Tracking": 0.30208577859266017
+      },
+      "special_abilities": [],
+      "knowledge_areas": {
+        "General Knowledge": 0.6,
+        "Pilot/Navigator": 0.8
+      },
+      "languages": [
+        "Common",
+        "Technical",
+        "Ancient"
+      ]
+    },
+    "preferences": {
+      "communication_style": "casual",
+      "formality_level": "medium",
+      "work_style": "collaborative",
+      "decision_making": "analytical",
+      "social_energy": "medium",
+      "group_size_preference": "small",
+      "quirks": [],
+      "habits": [],
+      "preferences": [],
+      "dislikes": []
+    },
+    "description": "A test character created via MCP server",
+    "tags": [],
+    "custom_data": {},
+    "is_active": true,
+    "last_updated": "2025-09-19 10:42:16"
+  },
+  "char_f90ec251a8df3d86": {
+    "character_id": "char_f90ec251a8df3d86",
+    "name": "Sage-Vulpine-13",
+    "character_type": "mentor",
+    "created_by": "demo-agent-001",
+    "created_at": "2025-09-19 10:43:10",
+    "spirit": "fox",
+    "naming_scheme": "animal_spirit",
+    "naming_style": "foundation",
+    "traits": {
+      "personality": {
+        "intelligence": 0.9,
+        "creativity": 0.8,
+        "adaptability": 0.9,
+        "curiosity": 0.8,
+        "independence": 0.7,
+        "wisdom": 0.74,
+        "patience": 0.71,
+        "empathy": 0.71
+      },
+      "physical": {
+        "size": 0.496373819555841,
+        "strength": 0.899073845451414,
+        "agility": 0.5640368628426946,
+        "endurance": 0.5887936351552627,
+        "appearance": 0.76713550522378,
+        "grace": 0.6113768164860226,
+        "speed": 0.8118766561910276,
+        "coordination": 0.6367314812102864,
+        "stamina": 0.46700299576482984,
+        "flexibility": 0.4282179716281793,
+        "reflexes": 0.5435910124826375,
+        "vitality": 0.786921424739344
+      },
+      "abilities": {
+        "strategist": 0.5361531147351433,
+        "hunter": 0.47130501093992416,
+        "teacher": 0.4259452399305693,
+        "artist": 0.29941249009140253,
+        "healer": 0.4480245364123868,
+        "inventor": 0.4519002877308186,
+        "explorer": 0.6576727516918164,
+        "guardian": 0.34994021592606567,
+        "diplomat": 0.6964623458952245,
+        "warrior": 0.370488490425859,
+        "scholar": 0.7072967451601484,
+        "performer": 0.7600457981199964,
+        "builder": 0.21248335495224013,
+        "navigator": 0.4487483112645916,
+        "communicator": 0.6113996928664833,
+        "leader": 0.39654395551764
+      }
+    },
+    "appearance": {
+      "species": "fox",
+      "color_primary": "red",
+      "color_secondary": "white",
+      "color_accent": "black",
+      "size": "medium",
+      "build": "slender",
+      "markings": [],
+      "accessories": [],
+      "equipment": [],
+      "style": "casual",
+      "theme": "neutral"
+    },
+    "background": {
+      "origin": "Generated",
+      "birthplace": "Unknown",
+      "upbringing": "Standard",
+      "education": "Specialized Training",
+      "profession": "Entertainer",
+      "experience_level": "intermediate",
+      "specializations": [
+        "performer",
+        "scholar",
+        "diplomat"
+      ],
+      "family": "Unknown",
+      "relationships": [],
+      "affiliations": [],
+      "primary_goal": "Fulfill role and purpose",
+      "secondary_goals": [],
+      "motivations": [
+        "Personal growth",
+        "Service to others"
+      ],
+      "defining_moments": [],
+      "secrets": [],
+      "fears": []
+    },
+    "skills": {
+      "technical_skills": {
+        "Engineering": 0.4519002877308186,
+        "Research": 0.7072967451601484
+      },
+      "social_skills": {
+        "Counseling": 0.71
+      },
+      "combat_skills": {
+        "Combat": 0.370488490425859,
+        "Tracking": 0.47130501093992416
+      },
+      "special_abilities": [],
+      "knowledge_areas": {
+        "General Knowledge": 0.6,
+        "Entertainer": 0.8
+      },
+      "languages": [
+        "Common",
+        "Technical",
+        "Ancient"
+      ]
+    },
+    "preferences": {
+      "communication_style": "casual",
+      "formality_level": "medium",
+      "work_style": "collaborative",
+      "decision_making": "analytical",
+      "social_energy": "medium",
+      "group_size_preference": "small",
+      "quirks": [],
+      "habits": [],
+      "preferences": [],
+      "dislikes": []
+    },
+    "description": "A wise and experienced fox mentor who guides young agents",
+    "tags": [
+      "mentor",
+      "fox",
+      "wise",
+      "experienced"
+    ],
+    "custom_data": {},
+    "is_active": true,
+    "last_updated": "2025-09-19 10:43:10"
+  },
+  "char_439eaa0310980f85": {
+    "character_id": "char_439eaa0310980f85",
+    "name": "Alpha-Lupus-8",
+    "character_type": "agent",
+    "created_by": "demo-agent-002",
+    "created_at": "2025-09-19 10:43:10",
+    "spirit": "wolf",
+    "naming_scheme": "animal_spirit",
+    "naming_style": "exo",
+    "traits": {
+      "personality": {
+        "loyalty": 0.9,
+        "leadership": 0.8,
+        "determination": 0.8,
+        "courage": 0.7,
+        "teamwork": 0.8
+      },
+      "physical": {
+        "size": 0.831233949336718,
+        "strength": 0.5760714798216464,
+        "agility": 0.5193687704768811,
+        "endurance": 0.5855379303702406,
+        "appearance": 0.568558972795215,
+        "grace": 0.4322893411207809,
+        "speed": 0.5194486787193044,
+        "coordination": 0.3343707068896174,
+        "stamina": 0.5241556179693341,
+        "flexibility": 0.5025942095175427,
+        "reflexes": 0.8593913373033013,
+        "vitality": 0.3788016279061577
+      },
+      "abilities": {
+        "strategist": 0.6567287461123011,
+        "hunter": 0.23912390633040587,
+        "teacher": 0.23477230082788614,
+        "artist": 0.35330932024072786,
+        "healer": 0.6439871511506503,
+        "inventor": 0.6665657942790018,
+        "explorer": 0.38686435565529864,
+        "guardian": 0.7231312074363052,
+        "diplomat": 0.5208280939853154,
+        "warrior": 0.6954320790015731,
+        "scholar": 0.3780015018875874,
+        "performer": 0.6855996013292147,
+        "builder": 0.22894474387817937,
+        "navigator": 0.36645395777834067,
+        "communicator": 0.35150401979408086,
+        "leader": 0.5805551324988281
+      }
+    },
+    "appearance": {
+      "species": "wolf",
+      "color_primary": "gray",
+      "color_secondary": "white",
+      "color_accent": "black",
+      "size": "large",
+      "build": "muscular",
+      "markings": [],
+      "accessories": [],
+      "equipment": [],
+      "style": "casual",
+      "theme": "neutral"
+    },
+    "background": {
+      "origin": "Generated",
+      "birthplace": "Unknown",
+      "upbringing": "Standard",
+      "education": "Specialized Training",
+      "profession": "Protector/Guard",
+      "experience_level": "intermediate",
+      "specializations": [
+        "guardian",
+        "warrior",
+        "performer"
+      ],
+      "family": "Unknown",
+      "relationships": [],
+      "affiliations": [],
+      "primary_goal": "Fulfill role and purpose",
+      "secondary_goals": [],
+      "motivations": [
+        "Personal growth",
+        "Service to others"
+      ],
+      "defining_moments": [],
+      "secrets": [],
+      "fears": []
+    },
+    "skills": {
+      "technical_skills": {
+        "Engineering": 0.6665657942790018,
+        "Research": 0.3780015018875874
+      },
+      "social_skills": {},
+      "combat_skills": {
+        "Combat": 0.6954320790015731,
+        "Tracking": 0.23912390633040587
+      },
+      "special_abilities": [],
+      "knowledge_areas": {
+        "General Knowledge": 0.6,
+        "Protector/Guard": 0.8
+      },
+      "languages": [
+        "Common"
+      ]
+    },
+    "preferences": {
+      "communication_style": "casual",
+      "formality_level": "medium",
+      "work_style": "leading",
+      "decision_making": "analytical",
+      "social_energy": "medium",
+      "group_size_preference": "small",
+      "quirks": [],
+      "habits": [],
+      "preferences": [],
+      "dislikes": []
+    },
+    "description": "A fierce and loyal wolf warrior, protector of the pack",
+    "tags": [
+      "warrior",
+      "wolf",
+      "loyal",
+      "protector"
+    ],
+    "custom_data": {},
+    "is_active": true,
+    "last_updated": "2025-09-19 10:43:10"
+  },
+  "char_eb1829c75be52918": {
+    "character_id": "char_eb1829c75be52918",
+    "name": "Test-Character-MCP-456",
+    "character_type": "agent",
+    "created_by": "mcp-restart-test-agent",
+    "created_at": "2025-09-19 11:03:25",
+    "spirit": "fox",
+    "naming_scheme": "animal_spirit",
+    "naming_style": "foundation",
+    "traits": {
+      "personality": {
+        "intelligence": 0.9,
+        "creativity": 0.8,
+        "adaptability": 0.9,
+        "curiosity": 0.8,
+        "independence": 0.7
+      },
+      "physical": {
+        "size": 0.7351975403597397,
+        "strength": 0.6674127557320623,
+        "agility": 0.8486955357886812,
+        "endurance": 0.3387044586253249,
+        "appearance": 0.34796825550655697,
+        "grace": 0.4512214284918222,
+        "speed": 0.6514330067880261,
+        "coordination": 0.736062627571068,
+        "stamina": 0.46454439744139003,
+        "flexibility": 0.32076602447251573,
+        "reflexes": 0.4767449226605915,
+        "vitality": 0.8704209347277683
+      },
+      "abilities": {
+        "strategist": 0.27682179495303394,
+        "hunter": 0.7333163393109854,
+        "teacher": 0.545855423683371,
+        "artist": 0.7178665766752783,
+        "healer": 0.4269530162971639,
+        "inventor": 0.749631659625926,
+        "explorer": 0.5976229700814735,
+        "guardian": 0.5407393891739135,
+        "diplomat": 0.42141354496796257,
+        "warrior": 0.6430070298171079,
+        "scholar": 0.46678580332324476,
+        "performer": 0.5103947619211768,
+        "builder": 0.510328458376492,
+        "navigator": 0.6016844546677925,
+        "communicator": 0.7022085354589165,
+        "leader": 0.6902855667353363
+      }
+    },
+    "appearance": {
+      "species": "fox",
+      "color_primary": "red",
+      "color_secondary": "white",
+      "color_accent": "black",
+      "size": "medium",
+      "build": "slender",
+      "markings": [],
+      "accessories": [],
+      "equipment": [],
+      "style": "casual",
+      "theme": "neutral"
+    },
+    "background": {
+      "origin": "Generated",
+      "birthplace": "Unknown",
+      "upbringing": "Standard",
+      "education": "Specialized Training",
+      "profession": "Engineer/Inventor",
+      "experience_level": "intermediate",
+      "specializations": [
+        "inventor",
+        "hunter",
+        "artist"
+      ],
+      "family": "Unknown",
+      "relationships": [],
+      "affiliations": [],
+      "primary_goal": "Fulfill role and purpose",
+      "secondary_goals": [],
+      "motivations": [
+        "Personal growth",
+        "Service to others"
+      ],
+      "defining_moments": [],
+      "secrets": [],
+      "fears": []
+    },
+    "skills": {
+      "technical_skills": {
+        "Engineering": 0.749631659625926,
+        "Research": 0.46678580332324476
+      },
+      "social_skills": {},
+      "combat_skills": {
+        "Combat": 0.6430070298171079,
+        "Tracking": 0.7333163393109854
+      },
+      "special_abilities": [],
+      "knowledge_areas": {
+        "General Knowledge": 0.6,
+        "Engineer/Inventor": 0.8
+      },
+      "languages": [
+        "Common",
+        "Technical",
+        "Ancient"
+      ]
+    },
+    "preferences": {
+      "communication_style": "casual",
+      "formality_level": "medium",
+      "work_style": "collaborative",
+      "decision_making": "analytical",
+      "social_energy": "medium",
+      "group_size_preference": "small",
+      "quirks": [],
+      "habits": [],
+      "preferences": [],
+      "dislikes": []
+    },
+    "description": "A test character created via MCP server restart",
+    "tags": [],
+    "custom_data": {},
+    "is_active": true,
+    "last_updated": "2025-09-19 11:03:25"
+  },
+  "char_41a49e2d8fcbb7b1": {
+    "character_id": "char_41a49e2d8fcbb7b1",
+    "name": "Fang-Wise-48",
+    "character_type": "agent",
+    "created_by": "current-session",
+    "created_at": "2025-09-19 12:16:17",
+    "spirit": "tiger",
+    "naming_scheme": "animal_spirit",
+    "naming_style": "foundation",
+    "traits": {
+      "personality": {},
+      "physical": {
+        "size": 0.8661648149483523,
+        "strength": 0.7080961544036422,
+        "agility": 0.559685144874167,
+        "endurance": 0.8891024916069048,
+        "appearance": 0.8568977963067965,
+        "grace": 0.43402838452144277,
+        "speed": 0.5640511999967985,
+        "coordination": 0.5801915865702759,
+        "stamina": 0.8827535649761458,
+        "flexibility": 0.6160794254619684,
+        "reflexes": 0.8138846737500312,
+        "vitality": 0.33289753386072274
+      },
+      "abilities": {
+        "strategist": 0.6722574555266987,
+        "hunter": 0.4523311368326092,
+        "teacher": 0.45093009741314655,
+        "artist": 0.2760877503828806,
+        "healer": 0.22442742073476085,
+        "inventor": 0.20029442192346536,
+        "explorer": 0.7213284566256362,
+        "guardian": 0.5281725242538053,
+        "diplomat": 0.6064038353116636,
+        "warrior": 0.529717522352865,
+        "scholar": 0.4083935014428785,
+        "performer": 0.6606147175040618,
+        "builder": 0.6922774913463443,
+        "navigator": 0.7020263950531525,
+        "communicator": 0.372422713582914,
+        "leader": 0.3885181251881371
+      }
+    },
+    "appearance": {
+      "species": "unknown",
+      "color_primary": "gray",
+      "color_secondary": "white",
+      "color_accent": "black",
+      "size": "medium",
+      "build": "average",
+      "markings": [],
+      "accessories": [],
+      "equipment": [],
+      "style": "casual",
+      "theme": "neutral"
+    },
+    "background": {
+      "origin": "Generated",
+      "birthplace": "Unknown",
+      "upbringing": "Standard",
+      "education": "Specialized Training",
+      "profession": "Explorer/Researcher",
+      "experience_level": "intermediate",
+      "specializations": [
+        "explorer",
+        "navigator",
+        "builder"
+      ],
+      "family": "Unknown",
+      "relationships": [],
+      "affiliations": [],
+      "primary_goal": "Fulfill role and purpose",
+      "secondary_goals": [],
+      "motivations": [
+        "Personal growth",
+        "Service to others"
+      ],
+      "defining_moments": [],
+      "secrets": [],
+      "fears": []
+    },
+    "skills": {
+      "technical_skills": {
+        "Engineering": 0.20029442192346536,
+        "Research": 0.4083935014428785
+      },
+      "social_skills": {},
+      "combat_skills": {
+        "Combat": 0.529717522352865,
+        "Tracking": 0.4523311368326092
+      },
+      "special_abilities": [],
+      "knowledge_areas": {
+        "General Knowledge": 0.6,
+        "Explorer/Researcher": 0.8
+      },
+      "languages": [
+        "Common"
+      ]
+    },
+    "preferences": {
+      "communication_style": "casual",
+      "formality_level": "medium",
+      "work_style": "collaborative",
+      "decision_making": "analytical",
+      "social_energy": "medium",
+      "group_size_preference": "small",
+      "quirks": [],
+      "habits": [],
+      "preferences": [],
+      "dislikes": []
+    },
+    "description": "",
+    "tags": [],
+    "custom_data": {},
+    "is_active": true,
+    "last_updated": "2025-09-19 12:16:17"
+  },
+  "char_e852841af5cefa9f": {
+    "character_id": "char_e852841af5cefa9f",
+    "name": "Fang-Wise-48",
+    "character_type": "agent",
+    "created_by": "current-session",
+    "created_at": "2025-09-19 12:16:32",
+    "spirit": "tiger",
+    "naming_scheme": "animal_spirit",
+    "naming_style": "foundation",
+    "traits": {
+      "personality": {},
+      "physical": {
+        "size": 0.7760196530399113,
+        "strength": 0.37272797666270274,
+        "agility": 0.3378572687136178,
+        "endurance": 0.7025096205274943,
+        "appearance": 0.7512533655892335,
+        "grace": 0.49423645527846616,
+        "speed": 0.7456038369890119,
+        "coordination": 0.3800461234028959,
+        "stamina": 0.8696317196149785,
+        "flexibility": 0.793557980417634,
+        "reflexes": 0.6902220507718249,
+        "vitality": 0.7966668969677742
+      },
+      "abilities": {
+        "strategist": 0.29392586348478633,
+        "hunter": 0.29686486505389353,
+        "teacher": 0.21795797937212522,
+        "artist": 0.43466478322028734,
+        "healer": 0.6834264866468701,
+        "inventor": 0.5164726028935194,
+        "explorer": 0.2598835994611479,
+        "guardian": 0.7644440572558531,
+        "diplomat": 0.281511615408384,
+        "warrior": 0.5646702748709398,
+        "scholar": 0.564494048744588,
+        "performer": 0.38173257798137405,
+        "builder": 0.7317762254302307,
+        "navigator": 0.5692274177249088,
+        "communicator": 0.43241837261954585,
+        "leader": 0.30262478460977527
+      }
+    },
+    "appearance": {
+      "species": "unknown",
+      "color_primary": "gray",
+      "color_secondary": "white",
+      "color_accent": "black",
+      "size": "medium",
+      "build": "average",
+      "markings": [],
+      "accessories": [],
+      "equipment": [],
+      "style": "casual",
+      "theme": "neutral"
+    },
+    "background": {
+      "origin": "Generated",
+      "birthplace": "Unknown",
+      "upbringing": "Standard",
+      "education": "Specialized Training",
+      "profession": "Protector/Guard",
+      "experience_level": "intermediate",
+      "specializations": [
+        "guardian",
+        "builder",
+        "healer"
+      ],
+      "family": "Unknown",
+      "relationships": [],
+      "affiliations": [],
+      "primary_goal": "Fulfill role and purpose",
+      "secondary_goals": [],
+      "motivations": [
+        "Personal growth",
+        "Service to others"
+      ],
+      "defining_moments": [],
+      "secrets": [],
+      "fears": []
+    },
+    "skills": {
+      "technical_skills": {
+        "Engineering": 0.5164726028935194,
+        "Research": 0.564494048744588
+      },
+      "social_skills": {},
+      "combat_skills": {
+        "Combat": 0.5646702748709398,
+        "Tracking": 0.29686486505389353
+      },
+      "special_abilities": [],
+      "knowledge_areas": {
+        "General Knowledge": 0.6,
+        "Protector/Guard": 0.8
+      },
+      "languages": [
+        "Common"
+      ]
+    },
+    "preferences": {
+      "communication_style": "casual",
+      "formality_level": "medium",
+      "work_style": "collaborative",
+      "decision_making": "analytical",
+      "social_energy": "medium",
+      "group_size_preference": "small",
+      "quirks": [],
+      "habits": [],
+      "preferences": [],
+      "dislikes": []
+    },
+    "description": "",
+    "tags": [],
+    "custom_data": {},
+    "is_active": true,
+    "last_updated": "2025-09-19 12:16:32"
+  }
+}

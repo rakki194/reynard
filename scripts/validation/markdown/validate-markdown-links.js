@@ -12,29 +12,25 @@
  * 🦊 Reynard Coding Standards: Cunning agile development with feral tenacity
  */
 
-import { execSync } from "child_process";
 import fs from "fs";
 import path from "path";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Colors for terminal output (matching Reynard style)
-const Colors = {
-  RED: "\u001b[0;31m",
-  GREEN: "\u001b[0;32m",
-  YELLOW: "\u001b[1;33m",
-  BLUE: "\u001b[0;34m",
-  PURPLE: "\u001b[0;35m",
-  CYAN: "\u001b[0;36m",
-  WHITE: "\u001b[1;37m",
-  NC: "\u001b[0m", // No Color
-};
-
-function printColored(message, color = Colors.NC) {
-  console.log(`${color}${message}${Colors.NC}`);
-}
+import {
+  BaseValidator,
+  Colors,
+  FileValidationResult,
+  ValidationResult,
+  createError,
+  findProjectRoot,
+  getStagedMarkdownFiles,
+  handleExit,
+  parseCommonArgs,
+  printColored,
+  printError,
+  printHeader,
+  printSuccess,
+  safeReadFile,
+  showHelp,
+} from "../shared/index.js";
 
 /**
  * Configuration for link validation
@@ -54,21 +50,6 @@ const Config = {
     "todos/",
   ],
 
-  // Directories to exclude from scanning
-  excludeDirectories: [
-    "node_modules/",
-    "third_party/",
-    ".git/",
-    "dist/",
-    "build/",
-    "coverage/",
-    "htmlcov/",
-    "__pycache__/",
-    ".venv/",
-    "venv/",
-    ".husky/node_modules/",
-  ],
-
   // File extensions to scan
   markdownExtensions: [".md", ".markdown", ".mdown", ".mkdn", ".mkd"],
 
@@ -83,79 +64,25 @@ const Config = {
 };
 
 /**
- * Link validation result
+ * Link validation result extending base validation result
  */
-class LinkValidationResult {
+class LinkValidationResult extends ValidationResult {
   constructor(file, line, column, link, type, status, message, suggestion = null) {
-    this.file = file;
-    this.line = line;
-    this.column = column;
+    super(file, line, column, message, type, status);
     this.link = link;
-    this.type = type; // 'internal', 'external', 'anchor', 'image'
-    this.status = status; // 'valid', 'broken', 'warning', 'error'
-    this.message = message;
     this.suggestion = suggestion;
-    this.timestamp = new Date().toISOString();
   }
 }
 
 /**
- * File validation result
+ * Main validation class extending base validator
  */
-class FileValidationResult {
-  constructor(file) {
-    this.file = file;
-    this.links = [];
-    this.errors = [];
-    this.warnings = [];
-    this.valid = true;
-  }
-
-  addLink(linkResult) {
-    this.links.push(linkResult);
-
-    if (linkResult.status === "error" || linkResult.status === "broken") {
-      this.errors.push(linkResult);
-      this.valid = false;
-    } else if (linkResult.status === "warning") {
-      this.warnings.push(linkResult);
-    }
-  }
-}
-
-/**
- * Main validation class
- */
-class MarkdownLinkValidator {
+class MarkdownLinkValidator extends BaseValidator {
   constructor() {
-    this.projectRoot = this.findProjectRoot();
+    super();
+    this.projectRoot = findProjectRoot();
     this.markdownFiles = new Map(); // file path -> content
     this.anchorCache = new Map(); // file path -> Set of anchors
-    this.results = [];
-    this.stats = {
-      totalFiles: 0,
-      totalLinks: 0,
-      validLinks: 0,
-      brokenLinks: 0,
-      warnings: 0,
-      errors: 0,
-    };
-  }
-
-  /**
-   * Find the project root directory
-   */
-  findProjectRoot() {
-    let currentDir = path.dirname(__filename);
-
-    while (currentDir !== path.dirname(currentDir)) {
-      if (fs.existsSync(path.join(currentDir, "package.json"))) {
-        return currentDir;
-      }
-      currentDir = path.dirname(currentDir);
-    }
-
-    return process.cwd();
   }
 
   /**
@@ -163,8 +90,21 @@ class MarkdownLinkValidator {
    */
   shouldExcludeDirectory(dirPath) {
     const relativePath = path.relative(this.projectRoot, dirPath);
+    const excludeDirectories = [
+      "node_modules/",
+      "third_party/",
+      ".git/",
+      "dist/",
+      "build/",
+      "coverage/",
+      "htmlcov/",
+      "__pycache__/",
+      ".venv/",
+      "venv/",
+      ".husky/node_modules/",
+    ];
 
-    return Config.excludeDirectories.some(
+    return excludeDirectories.some(
       excludeDir =>
         relativePath.startsWith(excludeDir) ||
         relativePath.includes("/" + excludeDir) ||
@@ -227,14 +167,11 @@ class MarkdownLinkValidator {
       return this.markdownFiles.get(filePath);
     }
 
-    try {
-      const content = fs.readFileSync(filePath, "utf8");
+    const content = safeReadFile(filePath);
+    if (content) {
       this.markdownFiles.set(filePath, content);
-      return content;
-    } catch (error) {
-      printColored(`❌ Error reading file ${filePath}: ${error.message}`, Colors.RED);
-      return null;
     }
+    return content;
   }
 
   /**
@@ -636,142 +573,61 @@ class MarkdownLinkValidator {
   }
 
   /**
+   * Validate a single file (implements BaseValidator interface)
+   */
+  async validateFile(filePath) {
+    const fileResult = new FileValidationResult(filePath);
+    const content = this.loadMarkdownFile(filePath);
+
+    if (!content) {
+      fileResult.addResult(createError(filePath, 0, "Could not read file"));
+      return fileResult;
+    }
+
+    const links = this.extractLinks(content, filePath);
+
+    if (links.length === 0) {
+      return fileResult;
+    }
+
+    // Validate each link
+    for (const link of links) {
+      const linkResult = await this.validateLink(link, filePath, fileResult);
+      fileResult.addResult(linkResult);
+    }
+
+    return fileResult;
+  }
+
+  /**
    * Validate all markdown files
    */
   async validateAll() {
-    printColored("🦊 Reynard Markdown Link Validator", Colors.PURPLE);
+    printHeader("Reynard Markdown Link Validator");
     printColored("=".repeat(50), Colors.CYAN);
 
     const markdownFiles = this.findMarkdownFiles();
     this.stats.totalFiles = markdownFiles.length;
 
     if (markdownFiles.length === 0) {
-      printColored("✅ No markdown files found to validate", Colors.GREEN);
+      printSuccess("No markdown files found to validate");
       return true;
     }
 
     printColored(`📁 Found ${markdownFiles.length} markdown files to validate`, Colors.BLUE);
     printColored("", Colors.NC);
 
-    let allValid = true;
-
-    for (const filePath of markdownFiles) {
-      const relativePath = path.relative(this.projectRoot, filePath);
-      printColored(`🔍 Validating: ${relativePath}`, Colors.CYAN);
-
-      const fileResult = new FileValidationResult(filePath);
-      const content = this.loadMarkdownFile(filePath);
-
-      if (!content) {
-        continue;
-      }
-
-      const links = this.extractLinks(content, filePath);
-      this.stats.totalLinks += links.length;
-
-      if (links.length === 0) {
-        printColored(`  ✅ No links found`, Colors.GREEN);
-        continue;
-      }
-
-      printColored(`  📎 Found ${links.length} links`, Colors.BLUE);
-
-      // Validate each link
-      for (const link of links) {
-        const linkResult = await this.validateLink(link, filePath, fileResult);
-        fileResult.addLink(linkResult);
-
-        // Update stats
-        if (linkResult.status === "valid") {
-          this.stats.validLinks++;
-        } else if (linkResult.status === "broken" || linkResult.status === "error") {
-          this.stats.brokenLinks++;
-        } else if (linkResult.status === "warning") {
-          this.stats.warnings++;
-        }
-      }
-
-      // Report results for this file
-      if (fileResult.valid) {
-        printColored(`  ✅ All links valid`, Colors.GREEN);
-      } else {
-        allValid = false;
-        printColored(`  ❌ ${fileResult.errors.length} broken links found`, Colors.RED);
-
-        for (const error of fileResult.errors) {
-          printColored(`    Line ${error.line}: ${error.message}`, Colors.RED);
-          if (error.suggestion) {
-            printColored(`    💡 ${error.suggestion}`, Colors.YELLOW);
-          }
-        }
-      }
-
-      if (fileResult.warnings.length > 0) {
-        printColored(`  ⚠️  ${fileResult.warnings.length} warnings`, Colors.YELLOW);
-
-        for (const warning of fileResult.warnings) {
-          printColored(`    Line ${warning.line}: ${warning.message}`, Colors.YELLOW);
-          if (warning.suggestion) {
-            printColored(`    💡 ${warning.suggestion}`, Colors.YELLOW);
-          }
-        }
-      }
-
-      this.results.push(fileResult);
-    }
-
-    // Print summary
+    const results = await this.validateFiles(markdownFiles);
     this.printSummary();
 
-    return allValid;
-  }
-
-  /**
-   * Print validation summary
-   */
-  printSummary() {
-    printColored("", Colors.NC);
-    printColored("📊 Validation Summary", Colors.PURPLE);
-    printColored("=".repeat(30), Colors.CYAN);
-    printColored(`📁 Files scanned: ${this.stats.totalFiles}`, Colors.BLUE);
-    printColored(`📎 Total links: ${this.stats.totalLinks}`, Colors.BLUE);
-    printColored(`✅ Valid links: ${this.stats.validLinks}`, Colors.GREEN);
-    printColored(`❌ Broken links: ${this.stats.brokenLinks}`, Colors.RED);
-    printColored(`⚠️  Warnings: ${this.stats.warnings}`, Colors.YELLOW);
-
-    if (this.stats.brokenLinks > 0) {
-      printColored("", Colors.NC);
-      printColored("💡 Tips for fixing broken links:", Colors.YELLOW);
-      printColored("  - Check file paths and ensure files exist", Colors.YELLOW);
-      printColored("  - Verify anchor names match heading text", Colors.YELLOW);
-      printColored("  - Use relative paths for internal links", Colors.YELLOW);
-      printColored("  - Test external URLs in a browser", Colors.YELLOW);
-      printColored(
-        '  - Run "node scripts/validation/markdown/validate-markdown-links.js --fix" to auto-fix some issues',
-        Colors.YELLOW
-      );
-    }
+    return !this.hasErrors();
   }
 
   /**
    * Get staged markdown files for pre-commit validation
    */
   getStagedMarkdownFiles() {
-    try {
-      const stagedFiles = execSync("git diff --cached --name-only --diff-filter=ACM", { encoding: "utf8" });
-      const allFiles = stagedFiles
-        .trim()
-        .split("\n")
-        .filter(f => f);
-
-      return allFiles.filter(file => {
-        const ext = path.extname(file).toLowerCase();
-        return Config.markdownExtensions.includes(ext);
-      });
-    } catch (error) {
-      printColored(`❌ Failed to get staged files: ${error.message}`, Colors.RED);
-      return [];
-    }
+    return getStagedMarkdownFiles();
   }
 
   /**
@@ -781,7 +637,7 @@ class MarkdownLinkValidator {
     const stagedFiles = this.getStagedMarkdownFiles();
 
     if (stagedFiles.length === 0) {
-      printColored("✅ No markdown files staged for commit", Colors.GREEN);
+      printSuccess("No markdown files staged for commit");
       return true;
     }
 
@@ -791,89 +647,48 @@ class MarkdownLinkValidator {
     }
     printColored("", Colors.NC);
 
-    let allValid = true;
+    const fullPaths = stagedFiles.map(file => path.join(this.projectRoot, file));
+    const results = await this.validateFiles(fullPaths);
 
-    for (const file of stagedFiles) {
-      const fullPath = path.join(this.projectRoot, file);
-
-      if (!fs.existsSync(fullPath)) {
-        printColored(`❌ Staged file not found: ${file}`, Colors.RED);
-        allValid = false;
-        continue;
-      }
-
-      const fileResult = new FileValidationResult(fullPath);
-      const content = this.loadMarkdownFile(fullPath);
-
-      if (!content) {
-        allValid = false;
-        continue;
-      }
-
-      const links = this.extractLinks(content, fullPath);
-
-      for (const link of links) {
-        const linkResult = await this.validateLink(link, fullPath, fileResult);
-        fileResult.addLink(linkResult);
-      }
-
-      if (!fileResult.valid) {
-        allValid = false;
-        printColored(`❌ ${file}: ${fileResult.errors.length} broken links found`, Colors.RED);
-
-        for (const error of fileResult.errors) {
-          printColored(`   Line ${error.line}: ${error.message}`, Colors.RED);
-          if (error.suggestion) {
-            printColored(`   💡 ${error.suggestion}`, Colors.YELLOW);
-          }
-        }
-      } else {
-        printColored(`✅ ${file}: All links valid`, Colors.GREEN);
-      }
-    }
-
-    return allValid;
+    return !this.hasErrors();
   }
 }
 
 // CLI interface
 async function main() {
-  const args = process.argv.slice(2);
+  const args = parseCommonArgs();
 
-  if (args.includes("--help") || args.includes("-h")) {
-    printColored("🦊 Reynard Markdown Link Validator", Colors.WHITE);
-    printColored("=".repeat(50), Colors.CYAN);
-    printColored("Usage:", Colors.BLUE);
-    printColored("  node validate-markdown-links.js [options]", Colors.CYAN);
-    printColored("", Colors.NC);
-    printColored("Options:", Colors.BLUE);
-    printColored("  --staged     Validate only staged files (for pre-commit)", Colors.CYAN);
-    printColored("  --all        Validate all markdown files in project", Colors.CYAN);
-    printColored("  --help, -h   Show this help message", Colors.CYAN);
-    printColored("", Colors.NC);
-    printColored("Examples:", Colors.BLUE);
-    printColored("  node validate-markdown-links.js --staged", Colors.CYAN);
-    printColored("  node validate-markdown-links.js --all", Colors.CYAN);
-    return 0;
+  if (args.help) {
+    showHelp(
+      "Reynard Markdown Link Validator",
+      "Validates all markdown links in the project, including internal links, external URLs, and anchor references.",
+      {
+        examples: ["node validate-markdown-links.js --staged", "node validate-markdown-links.js --all"],
+        notes: [
+          "This script validates internal document links, external URLs, anchor links, and image references.",
+          "It provides detailed error messages and suggestions for fixing broken links.",
+        ],
+      }
+    );
   }
 
   const validator = new MarkdownLinkValidator();
 
   try {
-    if (args.includes("--staged")) {
+    if (args.staged) {
       const success = await validator.validateStaged();
-      return success ? 0 : 1;
-    } else if (args.includes("--all")) {
+      handleExit(success, args.strict, 0);
+    } else if (args.all) {
       const success = await validator.validateAll();
-      return success ? 0 : 1;
+      handleExit(success, args.strict, 0);
     } else {
       // Default: validate staged files
       const success = await validator.validateStaged();
-      return success ? 0 : 1;
+      handleExit(success, args.strict, 0);
     }
   } catch (error) {
-    printColored(`❌ Validation failed: ${error.message}`, Colors.RED);
-    return 1;
+    printError(`Validation failed: ${error.message}`);
+    handleExit(false, args.strict, 0);
   }
 }
 

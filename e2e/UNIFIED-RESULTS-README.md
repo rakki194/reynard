@@ -1,6 +1,6 @@
 # 🦊 Unified E2E Test Results System
 
-*whiskers twitch with organizational precision* The Reynard E2E testing system now uses a unified, date-organized results structure that provides complete traceability and easy navigation of all test runs.
+_whiskers twitch with organizational precision_ The Reynard E2E testing system now uses a unified, date-organized results structure that provides complete traceability and easy navigation of all test runs.
 
 ## 📁 Directory Structure
 
@@ -45,16 +45,16 @@ Each test run directory uses the format: `YYYY-MM-DD_HH-MM-SS_RUNID`
 
 ## 🦊 Test Types
 
-| Test Type | Directory | Description |
-|-----------|-----------|-------------|
-| `e2e` | `results/e2e/` | Main E2E authentication workflows |
-| `effects` | `results/effects/` | SolidJS createEffect pattern tests |
-| `benchmark` | `results/benchmark/` | Performance benchmarking |
-| `i18n` | `results/i18n/` | Internationalization performance |
-| `penetration` | `results/penetration/` | Security penetration tests |
-| `performance` | `results/performance/` | Load and performance testing |
-| `components` | `results/components/` | Component E2E tests |
-| `dom` | `results/dom/` | DOM assertion tests |
+| Test Type     | Directory              | Description                        |
+| ------------- | ---------------------- | ---------------------------------- |
+| `e2e`         | `results/e2e/`         | Main E2E authentication workflows  |
+| `effects`     | `results/effects/`     | SolidJS createEffect pattern tests |
+| `benchmark`   | `results/benchmark/`   | Performance benchmarking           |
+| `i18n`        | `results/i18n/`        | Internationalization performance   |
+| `penetration` | `results/penetration/` | Security penetration tests         |
+| `performance` | `results/performance/` | Load and performance testing       |
+| `components`  | `results/components/`  | Component E2E tests                |
+| `dom`         | `results/dom/`         | DOM assertion tests                |
 
 ## 📊 Report Files
 
@@ -114,7 +114,7 @@ ls -la results/e2e/
 ### Programmatic Access
 
 ```typescript
-import { ResultsManager, TEST_TYPES } from './core/utils/results-manager';
+import { ResultsManager, TEST_TYPES } from "./core/utils/results-manager";
 
 // Get latest run directory
 const latestRun = ResultsManager.getLatestRunDir(TEST_TYPES.E2E);
@@ -166,10 +166,10 @@ You can provide custom run IDs for specific test runs:
 
 ```typescript
 const resultsManager = createResultsManager(TEST_TYPES.E2E, {
-  runId: 'custom-run-123',
-  environment: 'staging',
-  branch: 'feature/new-auth',
-  commit: 'abc123def456'
+  runId: "custom-run-123",
+  environment: "staging",
+  branch: "feature/new-auth",
+  commit: "abc123def456",
 });
 ```
 
@@ -238,8 +238,8 @@ results/
 3. **Old directories can be cleaned up** when no longer needed
 4. **Update any scripts** that reference old result paths
 
-## 🦊 *whiskers twitch with satisfaction*
+## 🦊 _whiskers twitch with satisfaction_
 
 The unified results system provides complete traceability, easy navigation, and professional organization of all E2E test results. Every test run is now a complete, self-contained package with all artifacts, reports, and metadata needed for analysis and debugging.
 
-*red fur gleams with organizational pride* No more hunting for scattered results - everything is exactly where it should be! 🦊
+_red fur gleams with organizational pride_ No more hunting for scattered results - everything is exactly where it should be! 🦊

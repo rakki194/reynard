@@ -17,6 +17,7 @@ import type {
   HealthStatus,
   DevServerEvent,
   DevServerEventType,
+  DevServerConfig,
 } from "../types/index.js";
 import { ProjectNotFoundError } from "../types/index.js";
 
@@ -69,7 +70,7 @@ export class DevServerManager extends EventEmitter implements IDevServerManager 
   /**
    * Start a development server
    */
-  async start(project: string): Promise<void> {
+  async start(project: string, options?: { detached?: boolean }): Promise<void> {
     await this.ensureInitialized();
 
     const config = this.configManager.getProject(project);
@@ -94,6 +95,7 @@ export class DevServerManager extends EventEmitter implements IDevServerManager 
         cwd: updatedConfig.cwd,
         env: updatedConfig.env,
         timeout: updatedConfig.startupTimeout || 30000,
+        detached: options?.detached || false,
       };
 
       const processInfo = await this.processManager.startProcess(project, updatedConfig, processOptions);
@@ -252,10 +254,20 @@ export class DevServerManager extends EventEmitter implements IDevServerManager 
   }
 
   /**
+   * Get configuration
+   */
+  async getConfig(): Promise<DevServerConfig> {
+    await this.ensureInitialized();
+    return this.configManager.loadConfig();
+  }
+
+  /**
    * Start multiple servers
    */
-  async startMultiple(projects: string[]): Promise<void> {
+  async startMultiple(projects: string[]): Promise<Array<{ success: boolean; error?: string }>> {
     await this.ensureInitialized();
+
+    const results: Array<{ success: boolean; error?: string }> = [];
 
     // Start servers in parallel, but respect dependencies
     const startedProjects = new Set<string>();
@@ -277,16 +289,30 @@ export class DevServerManager extends EventEmitter implements IDevServerManager 
       }
 
       if (batch.length === 0) {
-        throw new Error("Circular dependency detected or missing dependencies");
+        // Mark remaining projects as failed
+        remainingProjects.forEach(project => {
+          results.push({ success: false, error: "Circular dependency detected or missing dependencies" });
+        });
+        break;
       }
 
       // Start batch in parallel
-      await Promise.all(batch.map(project => this.start(project)));
+      const batchResults = await Promise.allSettled(batch.map(project => this.start(project)));
+      
+      batchResults.forEach((result, index) => {
+        const project = batch[index];
+        if (result.status === 'fulfilled') {
+          results.push({ success: true });
+          startedProjects.add(project);
+        } else {
+          results.push({ success: false, error: result.reason?.message || "Unknown error" });
+        }
+      });
 
-      // Update tracking
-      batch.forEach(project => startedProjects.add(project));
       remainingProjects.splice(0, remainingProjects.length, ...remainingProjects.filter(p => !batch.includes(p)));
     }
+
+    return results;
   }
 
   /**
@@ -374,14 +400,15 @@ export class DevServerManager extends EventEmitter implements IDevServerManager 
   /**
    * Get manager statistics
    */
-  getStats(): {
+  async getStats(): Promise<{
     isInitialized: boolean;
     totalProjects: number;
     runningProjects: number;
     processStats: any;
     healthStats: any;
     portStats: any;
-  } {
+  }> {
+    await this.ensureInitialized();
     const allProjects = this.configManager.getAllProjects();
     const processStats = this.processManager.getProcessStats();
     const healthStats = this.healthChecker.getHealthSummary();

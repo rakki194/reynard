@@ -1,0 +1,222 @@
+{
+  "article_0": {
+    "content": "Apple's new M4 chip delivers 50% better performance than M3\n\nApple has unveiled its new M4 chip, promising substantial performance improvements over the previous generation. The chip features enhanced CPU cores, improved GPU performance, and better power efficiency. Early benchmarks show up to 50% better performance in CPU-intensive tasks and 30% improvement in graphics workloads.",
+    "metadata": {
+      "title": "Apple's new M4 chip delivers 50% better performance than M3",
+      "category": "Technology",
+      "date": "2024-09-19",
+      "url": "https://arstechnica.com/gadgets/2024/09/apple-m4-chip-performance/",
+      "key_concepts": [
+        "benchmark",
+        "workload",
+        "early benchmarks",
+        "m3 apple",
+        "enhanced cpu cores",
+        "graphic",
+        "performance",
+        "gpu performance",
+        "chip",
+        "better power efficiency"
+      ]
+    },
+    "source": "unknown"
+  },
+  "article_1": {
+    "content": "SpaceX successfully launches 100th Falcon 9 mission this year\n\nSpaceX has achieved another milestone, completing its 100th Falcon 9 launch of 2024. The mission successfully deployed 60 Starlink satellites into low Earth orbit. This represents a significant increase in launch frequency compared to previous years, demonstrating the company's improved operational efficiency.",
+    "metadata": {
+      "title": "SpaceX successfully launches 100th Falcon 9 mission this year",
+      "category": "Science",
+      "date": "2024-09-18",
+      "url": "https://arstechnica.com/science/2024/09/spacex-falcon-9-100th-mission/",
+      "key_concepts": [
+        "launch frequency",
+        "increase",
+        "company",
+        "frequency",
+        "another milestone",
+        "satellite",
+        "launch",
+        "efficiency",
+        "earth",
+        "orbit"
+      ]
+    },
+    "source": "unknown"
+  },
+  "article_2": {
+    "content": "Microsoft announces new AI-powered coding assistant for Visual Studio\n\nMicrosoft has unveiled a new AI-powered coding assistant integrated directly into Visual Studio. The assistant can generate code, explain complex functions, and help debug issues. It supports multiple programming languages and integrates with existing development workflows. Early testing shows significant productivity improvements for developers.",
+    "metadata": {
+      "title": "Microsoft announces new AI-powered coding assistant for Visual Studio",
+      "category": "Software",
+      "date": "2024-09-17",
+      "url": "https://arstechnica.com/information-technology/2024/09/microsoft-ai-coding-assistant/",
+      "key_concepts": [
+        "code",
+        "debug issues",
+        "ai",
+        "visual studio microsoft",
+        "programming",
+        "assistant",
+        "complex functions",
+        "it",
+        "development",
+        "workflow"
+      ]
+    },
+    "source": "unknown"
+  },
+  "article_3": {
+    "content": "Tesla's Full Self-Driving beta shows improved performance in latest update\n\nTesla has released a new beta version of its Full Self-Driving software with significant improvements. The update includes better handling of construction zones, improved pedestrian detection, and enhanced lane-changing capabilities. Beta testers report smoother rides and more confident decision-making in complex traffic situations.",
+    "metadata": {
+      "title": "Tesla's Full Self-Driving beta shows improved performance in latest update",
+      "category": "Automotive",
+      "date": "2024-09-16",
+      "url": "https://arstechnica.com/cars/2024/09/tesla-fsd-beta-update/",
+      "key_concepts": [
+        "capability",
+        "handling",
+        "beta",
+        "traffic",
+        "complex traffic situations",
+        "improved performance",
+        "update",
+        "performance",
+        "better handling",
+        "version"
+      ]
+    },
+    "source": "unknown"
+  },
+  "article_4": {
+    "content": "Google's new quantum computer achieves quantum advantage in optimization\n\nGoogle has announced that its new quantum computer has achieved quantum advantage in solving optimization problems. The processor, featuring 1000+ qubits, can solve certain optimization problems exponentially faster than the best classical algorithms. This represents a significant milestone in practical quantum computing applications.",
+    "metadata": {
+      "title": "Google's new quantum computer achieves quantum advantage in optimization",
+      "category": "Science",
+      "date": "2024-09-15",
+      "url": "https://arstechnica.com/science/2024/09/google-quantum-advantage/",
+      "key_concepts": [
+        "application",
+        "problem",
+        "optimization",
+        "certain optimization problems",
+        "algorithm",
+        "quantum advantage",
+        "computing",
+        "google",
+        "quantum",
+        "the processor"
+      ]
+    },
+    "source": "unknown"
+  },
+  "article_5": {
+    "content": "Meta's new VR headset offers 8K resolution and eye tracking\n\nMeta has unveiled its next-generation VR headset featuring 8K resolution displays and advanced eye tracking technology. The headset offers significantly improved visual fidelity and more natural interaction through eye-based controls. The device also includes improved hand tracking and spatial audio capabilities.",
+    "metadata": {
+      "title": "Meta's new VR headset offers 8K resolution and eye tracking",
+      "category": "Gaming",
+      "date": "2024-09-14",
+      "url": "https://arstechnica.com/gadgets/2024/09/meta-vr-8k-headset/",
+      "key_concepts": [
+        "technology",
+        "capability",
+        "eye",
+        "meta",
+        "more natural interaction",
+        "resolution",
+        "audio",
+        "control",
+        "generation",
+        "tracking"
+      ]
+    },
+    "source": "unknown"
+  },
+  "article_6": {
+    "content": "OpenAI releases GPT-5 with improved reasoning capabilities\n\nOpenAI has released GPT-5, the next generation of its large language model. The new model demonstrates improved reasoning capabilities, better mathematical problem-solving, and enhanced understanding of complex instructions. Early testing shows substantial improvements in accuracy and reliability across various tasks.",
+    "metadata": {
+      "title": "OpenAI releases GPT-5 with improved reasoning capabilities",
+      "category": "AI",
+      "date": "2024-09-13",
+      "url": "https://arstechnica.com/information-technology/2024/09/openai-gpt-5-release/",
+      "key_concepts": [
+        "problem",
+        "capability",
+        "various tasks",
+        "early testing",
+        "language",
+        "task",
+        "generation",
+        "the new model",
+        "understanding",
+        "improvement"
+      ]
+    },
+    "source": "unknown"
+  },
+  "article_7": {
+    "content": "NASA's James Webb Space Telescope discovers water on exoplanet\n\nNASA's James Webb Space Telescope has made a groundbreaking discovery, detecting water vapor in the atmosphere of an exoplanet located 120 light-years away. This finding provides new insights into the potential for life on other planets and advances our understanding of planetary formation and atmospheric composition.",
+    "metadata": {
+      "title": "NASA's James Webb Space Telescope discovers water on exoplanet",
+      "category": "Space",
+      "date": "2024-09-12",
+      "url": "https://arstechnica.com/science/2024/09/jwst-water-exoplanet/",
+      "key_concepts": [
+        "this finding",
+        "nasa",
+        "formation",
+        "an exoplanet",
+        "composition",
+        "insight",
+        "atmospheric composition",
+        "vapor",
+        "james webb space telescope",
+        "water"
+      ]
+    },
+    "source": "unknown"
+  },
+  "article_8": {
+    "content": "AMD's new Ryzen 9000 series offers 20% better gaming performance\n\nAMD has launched its new Ryzen 9000 series processors, featuring improved architecture and higher clock speeds. The processors offer up to 20% better gaming performance compared to the previous generation, along with improved power efficiency. The new chips support the latest DDR5 memory and PCIe 5.0 standards.",
+    "metadata": {
+      "title": "AMD's new Ryzen 9000 series offers 20% better gaming performance",
+      "category": "Hardware",
+      "date": "2024-09-11",
+      "url": "https://arstechnica.com/gadgets/2024/09/amd-ryzen-9000-gaming/",
+      "key_concepts": [
+        "architecture",
+        "higher clock speeds",
+        "speed",
+        "performance",
+        "series",
+        "memory",
+        "chip",
+        "gaming",
+        "the previous generation",
+        "amd"
+      ]
+    },
+    "source": "unknown"
+  },
+  "article_9": {
+    "content": "Amazon's new delivery drones begin commercial operations in select cities\n\nAmazon has officially launched its drone delivery service in select cities across the United States. The service promises to deliver packages weighing up to 5 pounds within 30 minutes of ordering. The drones feature advanced navigation systems and can operate in various weather conditions. This represents a significant step forward in automated delivery systems.",
+    "metadata": {
+      "title": "Amazon's new delivery drones begin commercial operations in select cities",
+      "category": "Logistics",
+      "date": "2024-09-10",
+      "url": "https://arstechnica.com/tech-policy/2024/09/amazon-delivery-drones/",
+      "key_concepts": [
+        "the service",
+        "the united states",
+        "30 minutes",
+        "ordering",
+        "city",
+        "delivery",
+        "drone",
+        "step",
+        "select cities",
+        "the drones"
+      ]
+    },
+    "source": "unknown"
+  }
+}
