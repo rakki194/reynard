@@ -71,7 +71,7 @@ else
         echo -e "${RED}   Please fix the shell script issues above before committing${NC}"
         echo ""
         echo -e "${YELLOW}💡 Tips:${NC}"
-        echo -e "${YELLOW}   - Run 'node .husky/extract-workflow-shell.js --fix' to auto-fix common issues${NC}"
+        echo -e "${YELLOW}   - Run 'node scripts/validation/workflows/extract-workflow-shell.js --fix' to auto-fix common issues${NC}"
         echo -e "${YELLOW}   - Use '[[ ]]' instead of '[ ]' for bash tests${NC}"
         echo -e "${YELLOW}   - Add braces around variables: \${VAR} instead of \$VAR${NC}"
         echo -e "${YELLOW}   - Check .shellcheckrc configuration for rules${NC}"
