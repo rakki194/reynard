@@ -22,7 +22,7 @@ export const DocsCodeBlock = props => {
     const handleRun = () => {
         props.onRun?.(props.code);
     };
-    return (<div class={`docs-code-block ${props.className || ""}`}>
+    return (<div class={`docs-code-block ${props.class || ""}`}>
       <Show when={props.title}>
         <div class="docs-code-block-header">
           <h4 class="docs-code-block-title">{props.title}</h4>
@@ -65,7 +65,7 @@ export const DocsCodeEditor = props => {
         const result = props.onRun?.(code());
         setOutput(result || "");
     };
-    return (<div class={`docs-code-editor ${props.className || ""}`}>
+    return (<div class={`docs-code-editor ${props.class || ""}`}>
       <div class="docs-code-editor-header">
         <span class="docs-code-editor-language">{props.language}</span>
         <Button size="sm" variant="primary" onClick={handleRun} class="docs-code-editor-run">
@@ -95,7 +95,7 @@ export const DocsCodeExample = props => {
         const result = props.onRun?.(props.code);
         setOutput(result || "");
     };
-    return (<Card class={`docs-code-example ${props.className || ""}`}>
+    return (<Card class={`docs-code-example ${props.class || ""}`}>
       <div class="docs-code-example-header">
         <h4 class="docs-code-example-title">{props.title}</h4>
         <Show when={props.description}>
@@ -166,10 +166,17 @@ export const DocsCodeComparison = props => {
       </div>
     </div>);
 };
+interface DocsCodeSnippetProps {
+  code: string;
+  language?: string;
+  copyable?: boolean;
+  class?: string;
+}
+
 /**
  * Code snippet component for inline code
  */
-export const DocsCodeSnippet = props => {
+export const DocsCodeSnippet = (props: DocsCodeSnippetProps) => {
     const [copied, setCopied] = createSignal(false);
     const handleCopy = async () => {
         try {
@@ -181,7 +188,7 @@ export const DocsCodeSnippet = props => {
             console.error("Failed to copy code:", err);
         }
     };
-    return (<code class={`docs-code-snippet ${props.className || ""}`}>
+    return (<code class={`docs-code-snippet ${props.class || ""}`}>
       {props.code}
       <Show when={props.copyable}>
         <button class="docs-code-snippet-copy" onClick={handleCopy} title="Copy code">
