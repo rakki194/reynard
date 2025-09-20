@@ -6,7 +6,7 @@ real-time capabilities._
 ## Overview
 
 Reynard Charts provides a comprehensive suite of data visualization components built on Chart.js,
-enhanced with advanced features from
+enhanced with features from
 yipyap's visualization system. The package features unified OKLCH color management, real-time data streaming,
 statistical analysis tools, and performance optimization.
 
@@ -427,7 +427,7 @@ To enable OKLCH colors in existing charts:
 
 🦊> _Reynard Charts provides a professional, performant, and
 accessible data visualization solution that
-combines the best of Chart.js with advanced features from
+combines the best of Chart.js with features from
 yipyap's visualization system. The unified OKLCH color management ensures consistent,
 accessible colors across all visualizations, while the real-time capabilities and
 performance monitoring make it suitable for production applications._
@@ -444,4 +444,4 @@ Key benefits:
 - **Flexibility**: Extensible architecture supports custom visualizations
 - **Integration**: Seamless integration with Reynard's theming system
 
-_Build exceptional data visualizations that outfox complexity and deliver insights with style._ 🦊
+_Build well-designed data visualizations that handle complexity and deliver insights with style._ 🦊

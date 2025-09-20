@@ -2,8 +2,8 @@
 
 > Advanced floating panel system with staggered animations and state management for Reynard
 
-A sophisticated floating panel system based on Yipyap's BoundingBoxEditor implementation,
-featuring staggered animations, state management, draggable panels, and advanced overlay effects.
+A floating panel system based on Yipyap's BoundingBoxEditor implementation,
+featuring staggered animations, state management, draggable panels, and overlay effects.
 
 ## ✨ Features
 
@@ -94,12 +94,12 @@ function MyApp() {
 ### Composables
 
 - **useOverlayManager**: Manages overlay state and panel coordination
-- **useStaggeredAnimation**: Handles sophisticated animation timing
+- **useStaggeredAnimation**: Handles animation timing
 - **useDraggablePanel**: Provides drag functionality with constraints
 
 ### Animation System
 
-The system uses a sophisticated animation approach based on Yipyap's patterns:
+The system uses an animation approach based on Yipyap's patterns:
 
 ```css
 /* Staggered entrance animations */
@@ -145,7 +145,7 @@ The system supports multiple built-in themes:
 
 ## 🖱️ Drag & Drop
 
-Panels support sophisticated drag functionality:
+Panels support drag functionality:
 
 ```tsx
 const draggablePanel = useDraggablePanel(panelRef, {
@@ -165,7 +165,7 @@ const draggablePanel = useDraggablePanel(panelRef, {
 
 ## 🎭 Advanced Animations
 
-Configure sophisticated animation timing:
+Configure animation timing:
 
 ```tsx
 const animation = useStaggeredAnimation({

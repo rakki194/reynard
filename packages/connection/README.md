@@ -101,7 +101,7 @@ import {
   createUserAgentMiddleware,
 } from "reynard-connection";
 
-// Create a sophisticated HTTP client for authentication flows
+// Create an HTTP client for authentication flows
 const authClient = new HTTPClient({
   baseUrl: "https://auth.example.com",
   timeout: 30000,

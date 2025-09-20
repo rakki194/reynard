@@ -230,7 +230,7 @@ const nearest = spatialHash.findNearest(0, 0);
 
 ### ⚡ Performance Utilities
 
-Comprehensive performance monitoring and optimization toolkit with advanced features.
+Comprehensive performance monitoring and optimization toolkit with useful features.
 
 ```typescript
 import {
@@ -409,7 +409,7 @@ const transformedPoint = TransformOps.applyToPoint(transform, point1);
 
 ### Performance Utilities Performance
 
-- **Memory Overhead**: Minimal for basic operations with advanced memory pooling
+- **Memory Overhead**: Minimal for basic operations with memory pooling
 - **Accuracy**: High-precision timing using `performance.now()` with microsecond precision
 - **Optimizations**: Memory leak detection, frame rate monitoring, and performance budgets
 - **Monitoring**: Real-time performance tracking with comprehensive statistics
@@ -424,7 +424,7 @@ const transformedPoint = TransformOps.applyToPoint(transform, point1);
 
 ### Memory Pool Management
 
-The algorithms package includes sophisticated memory pool management for high-performance applications:
+The algorithms package includes memory pool management for high-performance applications:
 
 ```typescript
 import { EnhancedMemoryPool, MemoryPoolCore } from "reynard-algorithms";

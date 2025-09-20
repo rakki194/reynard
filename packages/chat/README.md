@@ -1,6 +1,6 @@
 # Reynard Chat System 🦊💬
 
-A comprehensive, production-ready chat messaging system for SolidJS applications with advanced streaming capabilities,
+A comprehensive, production-ready chat messaging system for SolidJS applications with streaming capabilities,
 markdown parsing, thinking sections, and tool integration.
 
 ## ✨ Features
@@ -1060,7 +1060,7 @@ const chat = useChat({
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
+2. Create a feature branch: `git checkout -b feature/new-feature`
 3. Make your changes with tests
 4. Run the test suite: `npm test`
 5. Submit a pull request

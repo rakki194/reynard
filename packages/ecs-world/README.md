@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Reynard ECS World is a comprehensive Entity Component System (ECS) implementation designed for agent simulation, trait inheritance, and world management. This package provides a modular, scalable foundation for creating complex agent-based simulations with genetic inheritance, behavioral systems, and real-time world progression.
+The Reynard ECS World is a comprehensive Entity Component System (ECS) implementation designed for agent simulation, trait inheritance, and world management. This package provides a modular foundation for creating agent-based simulations with genetic inheritance, behavioral systems, and real-time world progression.
 
 ## Features
 

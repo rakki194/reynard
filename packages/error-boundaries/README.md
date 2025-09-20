@@ -2,7 +2,7 @@
 
 > **Comprehensive Error Boundary System for Reynard Framework** 🦊
 
-A sophisticated error boundary system that provides graceful error handling, recovery mechanisms, and
+An error boundary system that provides graceful error handling, recovery mechanisms, and
 comprehensive error reporting for SolidJS applications built with Reynard.
 
 ## ✨ Features

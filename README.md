@@ -241,7 +241,7 @@ function App() {
 
 ## 📦 Package Ecosystem
 
-Reynard's package ecosystem is built on the foundation of YipYap's proven architecture, with each package designed to be
+Reynard's package ecosystem is built on the foundation of YipYap's architecture, with each package designed to be
 independently useful while working seamlessly together. The core package has minimal dependencies and works standalone,
 while other packages can be added as needed. All packages are published to npm and ready for production use!
 
@@ -312,7 +312,7 @@ _[View FENRIR security testing guide →](./fenrir/README.md)_
 
 Reynard includes comprehensive security testing through **FENRIR** (Framework for
 Exploitative Network Reconnaissance and
-Intrusion Research), a sophisticated security testing arsenal inspired by Elder Pliny's CL4R1T4S research.
+Intrusion Research), a security testing framework inspired by Elder Pliny's CL4R1T4S research.
 
 > _Security Testing Capabilities:_
 
@@ -398,7 +398,7 @@ _[View complete theming guide →](./docs/packages.md#reynard-themes)_
 - **💬 Chat Demo** - Real-time chat with streaming, P2P, and tool integration
 - **📊 Comprehensive Dashboard** - Full-featured dashboard with charts and analytics
 - **🎨 Multi-Theme Gallery** - Advanced theming showcase with component library
-- **⏰ Clock App** - Clock, timer, and alarm application with advanced features
+- **⏰ Clock App** - Clock, timer, and alarm application with useful features
 - **🌍 i18n Demo** - Internationalization showcase with 37 languages and RTL support
 - **🎮 3D Demo** - Three.js integration for 3D graphics and visualizations
 
@@ -412,7 +412,7 @@ _[View complete examples and templates →](./docs/examples.md)_
 
 ### reynard-chat
 
-Production-ready chat messaging system for SolidJS applications with advanced streaming capabilities, markdown parsing,
+Production-ready chat messaging system for SolidJS applications with streaming capabilities, markdown parsing,
 thinking sections, and tool integration.
 
 #### Chat Features
@@ -663,7 +663,7 @@ Advanced file and media management system with drag-and-drop, responsive grids, 
 - **Media Support** - Images, videos, audio, text, and document preview
 - **Responsive Grid** - Adaptive layouts (grid, list, masonry) with virtual scrolling
 - **File Upload** - Drag-and-drop upload with progress tracking and validation
-- **Search & Filter** - Real-time search with advanced filtering options
+- **Search & Filter** - Real-time search with filtering options
 - **Favorites** - Mark files as favorites with persistent storage
 - **Selection** - Multi-select with keyboard shortcuts and context menus
 
@@ -1223,7 +1223,7 @@ Reynard examples showcase the full spectrum of capabilities, from simple demos t
 - **💬 Chat Demo** - Real-time chat with streaming, P2P, and tool integration
 - **📊 Comprehensive Dashboard** - Full-featured dashboard with charts, settings, and analytics
 - **🎨 Multi-Theme Gallery** - Advanced theming showcase with component library
-- **⏰ Clock App** - Clock, timer, and alarm application with advanced features
+- **⏰ Clock App** - Clock, timer, and alarm application with useful features
 - **🌍 i18n Demo** - Internationalization showcase with 37 languages and RTL support
 - **🎮 3D Demo** - Three.js integration for 3D graphics and visualizations
 - **🧪 Algorithm Bench** - Performance testing and algorithm demonstrations
@@ -1448,8 +1448,8 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## 🙏 Acknowledgments
 
-Reynard is built upon the foundation of exceptional open-source projects and
-cutting-edge research. We extend our deepest gratitude to the communities and
+Reynard is built upon the foundation of open-source projects and
+research. We extend our gratitude to the communities and
 contributors who make this framework possible.
 
 ### **🦊 Core Framework & Libraries**
@@ -1457,7 +1457,7 @@ contributors who make this framework possible.
 #### **Frontend Framework**
 
 - **[SolidJS](https://solidjs.com)** ([GitHub](https://github.com/solidjs/solid)) - The reactive framework that powers
-  Reynard with fine-grained reactivity and exceptional performance
+  Reynard with fine-grained reactivity and good performance
 - **[Solid Primitives](https://github.com/solidjs-community/solid-primitives)** - Comprehensive collection of reactive
   primitives and utilities for SolidJS applications
 
@@ -1638,10 +1638,10 @@ contributors who make this framework possible.
 
 #### **CL4R1T4S Research**
 
-Reynard's advanced security testing capabilities are inspired by
+Reynard's security testing capabilities are inspired by
 [Elder Pliny's CL4R1T4S research](https://github.com/elder-plinius/CL4R1T4S) into AI system prompt transparency and
-observability. This groundbreaking work has revolutionized our understanding of AI system behavior and
-security, directly influencing the development of FENRIR's advanced exploitation techniques.
+observability. This work has contributed to our understanding of AI system behavior and
+security, directly influencing the development of FENRIR's exploitation techniques.
 
 > _"In order to trust the output, one must understand the input."_ - Elder Pliny
 
