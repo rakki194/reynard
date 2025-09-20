@@ -144,7 +144,7 @@ def get_social_tool_definitions() -> dict[str, dict[str, Any]]:
                     "exact_match": {
                         "type": "boolean",
                         "description": "Whether to require exact match",
-                        "default": false
+                        "default": False
                     }
                 },
                 "required": ["query"]

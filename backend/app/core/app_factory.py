@@ -36,6 +36,8 @@ from app.api.rag import router as rag_router
 from app.api.search import router as search_router
 from app.api.summarization import router as summarization_router
 from app.api.tts import router as tts_router
+from app.api.email_routes import router as email_router
+from app.api.imap_routes import router as imap_router
 
 # Core API endpoints
 from app.core.api_endpoints import router as core_router
@@ -196,3 +198,9 @@ def _setup_routers(app: FastAPI) -> None:
 
     # ECS World Router
     app.include_router(ecs_router, prefix="/api/ecs")
+    
+    # Email Router
+    app.include_router(email_router)
+    
+    # IMAP Router
+    app.include_router(imap_router)

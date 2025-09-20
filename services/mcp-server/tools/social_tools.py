@@ -18,13 +18,13 @@ logger = logging.getLogger(__name__)
 
 
 @register_tool(
-    "initiate_interaction",
-    "social",
-    "Initiate an interaction between two agents",
-    "async",
-    True,
-    [],
-    {}
+    name="initiate_interaction",
+    category="social",
+    description="Initiate an interaction between two agents",
+    execution_type="async",
+    enabled=True,
+    dependencies=[],
+    config={}
 )
 async def initiate_interaction(arguments: dict[str, Any]) -> dict[str, Any]:
     """
@@ -97,13 +97,13 @@ async def initiate_interaction(arguments: dict[str, Any]) -> dict[str, Any]:
 
 
 @register_tool(
-    "send_chat_message",
-    "social",
-    "Send a chat message from one agent to another with automatic agent ID resolution",
-    "async",
-    True,
-    [],
-    {}
+    name="send_chat_message",
+    category="social",
+    description="Send a chat message from one agent to another with automatic agent ID resolution",
+    execution_type="async",
+    enabled=True,
+    dependencies=[],
+    config={}
 )
 async def send_chat_message(arguments: dict[str, Any]) -> dict[str, Any]:
     """
@@ -202,13 +202,13 @@ async def send_chat_message(arguments: dict[str, Any]) -> dict[str, Any]:
 
 
 @register_tool(
-    "get_interaction_history",
-    "social",
-    "Get the interaction history for an agent",
-    "async",
-    True,
-    [],
-    {}
+    name="get_interaction_history",
+    category="social",
+    description="Get the interaction history for an agent",
+    execution_type="async",
+    enabled=True,
+    dependencies=[],
+    config={}
 )
 async def get_interaction_history(arguments: dict[str, Any]) -> dict[str, Any]:
     """
@@ -283,13 +283,13 @@ async def get_interaction_history(arguments: dict[str, Any]) -> dict[str, Any]:
 
 
 @register_tool(
-    "find_ecs_agent",
-    "social",
-    "Find an agent in the ECS world by name or ID with flexible matching",
-    "async",
-    True,
-    [],
-    {}
+    name="find_ecs_agent",
+    category="social",
+    description="Find an agent in the ECS world by name or ID with flexible matching",
+    execution_type="async",
+    enabled=True,
+    dependencies=[],
+    config={}
 )
 async def find_ecs_agent(arguments: dict[str, Any]) -> dict[str, Any]:
     """
@@ -361,13 +361,13 @@ async def find_ecs_agent(arguments: dict[str, Any]) -> dict[str, Any]:
 
 
 @register_tool(
-    "get_ecs_world_status",
-    "social",
-    "Get the current status of the ECS world including agent counts and system health",
-    "async",
-    True,
-    [],
-    {}
+    name="get_ecs_world_status",
+    category="social",
+    description="Get the current status of the ECS world including agent counts and system health",
+    execution_type="async",
+    enabled=True,
+    dependencies=[],
+    config={}
 )
 async def get_ecs_world_status(arguments: dict[str, Any]) -> dict[str, Any]:
     """
@@ -422,13 +422,13 @@ async def get_ecs_world_status(arguments: dict[str, Any]) -> dict[str, Any]:
 
 
 @register_tool(
-    "get_agent_relationships",
-    "social",
-    "Get all relationships for an agent",
-    "async",
-    True,
-    [],
-    {}
+    name="get_agent_relationships",
+    category="social",
+    description="Get all relationships for an agent",
+    execution_type="async",
+    enabled=True,
+    dependencies=[],
+    config={}
 )
 async def get_agent_relationships(arguments: dict[str, Any]) -> dict[str, Any]:
     """
@@ -504,13 +504,13 @@ async def get_agent_relationships(arguments: dict[str, Any]) -> dict[str, Any]:
 
 
 @register_tool(
-    "get_agent_social_stats",
-    "social",
-    "Get social interaction statistics for an agent",
-    "async",
-    True,
-    [],
-    {}
+    name="get_agent_social_stats",
+    category="social",
+    description="Get social interaction statistics for an agent",
+    execution_type="async",
+    enabled=True,
+    dependencies=[],
+    config={}
 )
 async def get_agent_social_stats(arguments: dict[str, Any]) -> dict[str, Any]:
     """
@@ -594,13 +594,13 @@ async def get_agent_social_stats(arguments: dict[str, Any]) -> dict[str, Any]:
 
 
 @register_tool(
-    "get_nearby_agents",
-    "social",
-    "Get all agents within a certain radius of an agent",
-    "async",
-    True,
-    [],
-    {}
+    name="get_nearby_agents",
+    category="social",
+    description="Get all agents within a certain radius of an agent",
+    execution_type="async",
+    enabled=True,
+    dependencies=[],
+    config={}
 )
 async def get_nearby_agents(arguments: dict[str, Any]) -> dict[str, Any]:
     """
