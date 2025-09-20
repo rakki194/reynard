@@ -1,0 +1,53 @@
+# PHOENIX: Progressive Hierarchical Optimization and Evolutionary Neural Intelligence eXtraction
+# Python dependencies for the PHOENIX framework
+
+# Core dependencies
+numpy
+scipy
+pandas
+matplotlib
+seaborn
+
+# Statistical analysis
+statsmodels
+scikit-learn
+
+# Data structures and utilities
+pydantic
+dataclasses-json
+typing-extensions
+
+# Async and concurrency
+asyncio-mqtt
+aiofiles
+
+# JSON and data handling
+orjson
+ujson
+
+# Testing
+pytest
+pytest-asyncio
+pytest-cov
+pytest-mock
+
+# Development tools
+black
+isort
+flake8
+mypy
+
+# Documentation
+sphinx
+sphinx-rtd-theme
+
+# Integration with Reynard systems
+# Note: These will be installed from the Reynard monorepo
+# reynard-ecs-world
+# reynard-agent-naming
+# reynard-mcp-server
+
+# Optional: Advanced ML libraries
+# torch
+# transformers
+# sentence-transformers

@@ -5,6 +5,99 @@
 Execute a comprehensive Git workflow that analyzes code changes, creates meaningful commit messages, updates
 documentation, and manages versioning across the Reynard monorepo.
 
+## Agent State Persistence
+
+**CRITICAL**: Before executing any Git workflow, ensure agent state persistence is properly configured and maintained.
+
+### Agent State Management
+
+The Reynard ecosystem includes sophisticated agent state persistence through multiple systems:
+
+#### 1. Agent Naming System Persistence
+
+- **Storage**: `services/agent-naming/data/agent-names.json`
+- **Manager**: `AgentNameManager` class with automatic save/load
+- **ECS Integration**: Full integration with ECS world simulation
+- **State Includes**: Agent ID, name, spirit, style, generation timestamp, ECS entity data
+
+#### 2. ECS World Simulation Persistence
+
+- **Storage**: `services/ecs-world/data/ecs/` directory
+- **Components**: Memory, traits, lineage, social relationships, position data
+- **Systems**: Memory decay, trait inheritance, social interaction tracking
+- **State Includes**: Complete agent personality profiles, relationships, memories, evolution data
+
+#### 3. MCP Server Agent Integration
+
+- **Storage**: Integrated through agent-naming and ECS systems
+- **Tools**: 47 comprehensive MCP tools for agent management
+- **State Includes**: Tool configurations, agent interactions, session data
+
+### Agent State Persistence Protocol
+
+**MANDATORY**: Follow this protocol for all Git workflow operations:
+
+```bash
+# Step 0: Agent State Persistence Check (MANDATORY FIRST STEP)
+echo "🦁 Checking agent state persistence..."
+
+# Verify agent naming system is accessible
+if [ -f "services/agent-naming/data/agent-names.json" ]; then
+    echo "✅ Agent naming system persistence verified"
+else
+    echo "⚠️  Agent naming system not initialized - creating default state"
+    mkdir -p services/agent-naming/data
+    echo '{}' > services/agent-naming/data/agent-names.json
+fi
+
+# Verify ECS world data directory exists
+if [ -d "services/ecs-world/data/ecs" ]; then
+    echo "✅ ECS world persistence verified"
+else
+    echo "⚠️  ECS world not initialized - creating default structure"
+    mkdir -p services/ecs-world/data/ecs
+fi
+
+# Check for active agent sessions
+if [ -f "services/agent-naming/data/agent-names.json" ]; then
+    AGENT_COUNT=$(jq 'length' services/agent-naming/data/agent-names.json 2>/dev/null || echo "0")
+    echo "📊 Active agent sessions: $AGENT_COUNT"
+fi
+
+echo "✅ Agent state persistence check completed"
+```
+
+### Release Manager Agent State
+
+**PERMANENT RELEASE MANAGER**: The system supports permanent agent roles with persistent state:
+
+- **Agent ID**: `permanent-release-manager-success-advisor-8`
+- **Role**: Permanent Release Manager
+- **State Persistence**: Full ECS integration with memory, traits, and relationship tracking
+- **Capabilities**: Complete Git workflow automation, version management, changelog generation
+- **Authority**: Authorized to execute all release operations with full system access
+
+### Agent State Backup Protocol
+
+Before major Git operations, backup agent state:
+
+```bash
+# Create agent state backup
+BACKUP_DIR="backups/agent-state-$(date +%Y%m%d-%H%M%S)"
+mkdir -p "$BACKUP_DIR"
+
+# Backup agent naming data
+cp services/agent-naming/data/agent-names.json "$BACKUP_DIR/" 2>/dev/null || true
+
+# Backup ECS world data
+cp -r services/ecs-world/data/ecs "$BACKUP_DIR/" 2>/dev/null || true
+
+# Backup MCP server state
+cp services/mcp-server/tool_config.json "$BACKUP_DIR/" 2>/dev/null || true
+
+echo "✅ Agent state backed up to $BACKUP_DIR"
+```
+
 ## Complete Workflow Steps
 
 ### 1. Analyze Source Code Changes
@@ -741,12 +834,56 @@ echo "✅ Successfully released v$NEW_VERSION with Git tag!"
 ```bash
 #!/bin/bash
 
-# Git Workflow Automation Script with Junk File Detection and Delta Enhancement
+# Git Workflow Automation Script with Agent State Persistence, Junk File Detection and Delta Enhancement
 set -e
 
-echo "🦦 Starting Reynard Git Workflow Automation with Tracked Junk File Detection and Delta..."
+echo "🦁 Starting Reynard Git Workflow Automation with Agent State Persistence, Tracked Junk File Detection and Delta..."
 
-# Step 0: Tracked junk file detection (MANDATORY FIRST STEP)
+# Step 0: Agent State Persistence Check (MANDATORY FIRST STEP)
+echo "🦁 Checking agent state persistence..."
+
+# Verify agent naming system is accessible
+if [ -f "services/agent-naming/data/agent-names.json" ]; then
+    echo "✅ Agent naming system persistence verified"
+else
+    echo "⚠️  Agent naming system not initialized - creating default state"
+    mkdir -p services/agent-naming/data
+    echo '{}' > services/agent-naming/data/agent-names.json
+fi
+
+# Verify ECS world data directory exists
+if [ -d "services/ecs-world/data/ecs" ]; then
+    echo "✅ ECS world persistence verified"
+else
+    echo "⚠️  ECS world not initialized - creating default structure"
+    mkdir -p services/ecs-world/data/ecs
+fi
+
+# Check for active agent sessions
+if [ -f "services/agent-naming/data/agent-names.json" ]; then
+    AGENT_COUNT=$(jq 'length' services/agent-naming/data/agent-names.json 2>/dev/null || echo "0")
+    echo "📊 Active agent sessions: $AGENT_COUNT"
+fi
+
+echo "✅ Agent state persistence check completed"
+
+# Step 0.5: Agent State Backup (RECOMMENDED)
+echo "💾 Creating agent state backup..."
+BACKUP_DIR="backups/agent-state-$(date +%Y%m%d-%H%M%S)"
+mkdir -p "$BACKUP_DIR"
+
+# Backup agent naming data
+cp services/agent-naming/data/agent-names.json "$BACKUP_DIR/" 2>/dev/null || true
+
+# Backup ECS world data
+cp -r services/ecs-world/data/ecs "$BACKUP_DIR/" 2>/dev/null || true
+
+# Backup MCP server state
+cp services/mcp-server/tool_config.json "$BACKUP_DIR/" 2>/dev/null || true
+
+echo "✅ Agent state backed up to $BACKUP_DIR"
+
+# Step 1: Tracked junk file detection (MANDATORY SECOND STEP)
 echo "🔍 Performing tracked junk file detection..."
 if ! ./scripts/detect-tracked-junk-files.sh; then
     echo "❌ Tracked junk files detected. Please clean up before proceeding."
