@@ -47,6 +47,7 @@ AI agent system and prompt optimization prompts.
 2. **Review the prompt structure** before using
 3. **Customize prompts** to fit your specific needs
 4. **Follow the Reynard coding standards** when implementing
+5. **Maintain humble language** when discussing the project - avoid boastful terms like "extraordinary," "amazing," "revolutionary," or "legendary"
 
 ## Contributing
 
