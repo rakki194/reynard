@@ -18,13 +18,13 @@ logger = logging.getLogger(__name__)
 
 
 @register_tool(
-    name="initiate_interaction",
-    description="Initiate an interaction between two agents",
-    category="social",
-    execution_type="async",
-    enabled=True,
-    dependencies=[],
-    config={},
+    "initiate_interaction",
+    "social",
+    "Initiate an interaction between two agents",
+    "async",
+    True,
+    [],
+    {}
 )
 async def initiate_interaction(arguments: dict[str, Any]) -> dict[str, Any]:
     """
@@ -97,36 +97,36 @@ async def initiate_interaction(arguments: dict[str, Any]) -> dict[str, Any]:
 
 
 @register_tool(
-    name="send_chat_message",
-    description="Send a chat message from one agent to another",
-    category="social",
-    execution_type="async",
-    enabled=True,
-    dependencies=[],
-    config={},
+    "send_chat_message",
+    "social",
+    "Send a chat message from one agent to another with automatic agent ID resolution",
+    "async",
+    True,
+    [],
+    {}
 )
 async def send_chat_message(arguments: dict[str, Any]) -> dict[str, Any]:
     """
-    Send a chat message from one agent to another.
+    Send a chat message from one agent to another with automatic agent ID resolution.
 
     Args:
-        arguments: Dictionary containing sender_id, receiver_id, message, and interaction_type
+        arguments: Dictionary containing sender_id, receiver (ID or name), message, and interaction_type
 
     Returns:
         Chat message result
     """
     try:
         sender_id = arguments.get("sender_id")
-        receiver_id = arguments.get("receiver_id")
+        receiver = arguments.get("receiver")  # Can be ID or name
         message = arguments.get("message")
         interaction_type = arguments.get("interaction_type", "communication")
 
-        if not sender_id or not receiver_id or not message:
+        if not sender_id or not receiver or not message:
             return {
                 "content": [
                     {
                         "type": "text",
-                        "text": "❌ Error: sender_id, receiver_id, and message are required",
+                        "text": "❌ Error: sender_id, receiver, and message are required",
                     }
                 ]
             }
@@ -134,6 +134,31 @@ async def send_chat_message(arguments: dict[str, Any]) -> dict[str, Any]:
         # Get ECS client
         ecs_client = get_ecs_client()
         await ecs_client.start()
+
+        # Resolve receiver agent ID if it's a name
+        receiver_id = receiver
+        try:
+            # Try to find agent by name if receiver doesn't look like an ID
+            if not receiver.startswith(('agent-', 'success-advisor-', 'permanent-release-manager-')):
+                # Search for agent by name
+                search_result = await ecs_client.find_agent_by_name(receiver)
+                if search_result and search_result.get("success"):
+                    matches = search_result.get("matches", [])
+                    if matches:
+                        receiver_id = matches[0].get("agent_id", receiver)
+                        logger.info(f"Resolved agent name '{receiver}' to ID '{receiver_id}'")
+                    else:
+                        return {
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": f"❌ Error: Could not find agent with name '{receiver}'",
+                                }
+                            ]
+                        }
+        except Exception as e:
+            logger.warning(f"Could not resolve agent name '{receiver}': {e}")
+            # Continue with original receiver value
 
         # Send chat message
         result = await ecs_client.send_chat_message(
@@ -146,8 +171,10 @@ async def send_chat_message(arguments: dict[str, Any]) -> dict[str, Any]:
         # Format response
         if result.get("success", False):
             response_text = f"💬 {result.get('message', 'Message sent')}\n"
-            response_text += f"From: {sender_id} → To: {receiver_id}\n"
-            response_text += f"Content: {result.get('content', message)}\n"
+            response_text += f"From: {sender_id} → To: {receiver_id}"
+            if receiver != receiver_id:
+                response_text += f" (resolved from '{receiver}')"
+            response_text += f"\nContent: {result.get('content', message)}\n"
             response_text += f"Type: {result.get('interaction_type', 'unknown')}\n"
             response_text += f"Sender Energy: {result.get('sender_energy', 'unknown')}"
         else:
@@ -175,13 +202,13 @@ async def send_chat_message(arguments: dict[str, Any]) -> dict[str, Any]:
 
 
 @register_tool(
-    name="get_interaction_history",
-    description="Get the interaction history for an agent",
-    category="social",
-    execution_type="async",
-    enabled=True,
-    dependencies=[],
-    config={},
+    "get_interaction_history",
+    "social",
+    "Get the interaction history for an agent",
+    "async",
+    True,
+    [],
+    {}
 )
 async def get_interaction_history(arguments: dict[str, Any]) -> dict[str, Any]:
     """
@@ -256,13 +283,152 @@ async def get_interaction_history(arguments: dict[str, Any]) -> dict[str, Any]:
 
 
 @register_tool(
-    name="get_agent_relationships",
-    description="Get all relationships for an agent",
-    category="social",
-    execution_type="async",
-    enabled=True,
-    dependencies=[],
-    config={},
+    "find_ecs_agent",
+    "social",
+    "Find an agent in the ECS world by name or ID with flexible matching",
+    "async",
+    True,
+    [],
+    {}
+)
+async def find_ecs_agent(arguments: dict[str, Any]) -> dict[str, Any]:
+    """
+    Find an agent in the ECS world by name or ID with flexible matching.
+
+    Args:
+        arguments: Dictionary containing query and exact_match
+
+    Returns:
+        Agent search results
+    """
+    try:
+        query = arguments.get("query")
+        exact_match = arguments.get("exact_match", False)
+
+        if not query:
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "❌ Error: query parameter is required",
+                    }
+                ]
+            }
+
+        # Get ECS client
+        ecs_client = get_ecs_client()
+        await ecs_client.start()
+
+        # Search for agents
+        result = await ecs_client.find_agent_by_name(query, exact_match)
+
+        # Close ECS client
+        await ecs_client.close()
+
+        # Format response
+        if result.get("success", False):
+            matches = result.get("matches", [])
+            response_text = f"🔍 Found {len(matches)} matching agents for '{query}':\n\n"
+            
+            for i, match in enumerate(matches, 1):
+                response_text += f"{i}. **{match.get('name', 'Unknown')}**\n"
+                response_text += f"   ID: {match.get('agent_id', 'Unknown')}\n"
+                response_text += f"   Spirit: {match.get('spirit', 'Unknown')}\n"
+                response_text += f"   Generation: {match.get('generation', 'Unknown')}\n"
+                response_text += f"   Active: {match.get('active', 'Unknown')}\n\n"
+        else:
+            response_text = f"❌ {result.get('message', 'Failed to search for agents')}"
+
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": response_text,
+                }
+            ]
+        }
+
+    except Exception as e:  # pylint: disable=broad-exception-caught
+        logger.error(f"Error finding ECS agent: {e}")
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"❌ Error finding ECS agent: {str(e)}",
+                }
+            ]
+        }
+
+
+@register_tool(
+    "get_ecs_world_status",
+    "social",
+    "Get the current status of the ECS world including agent counts and system health",
+    "async",
+    True,
+    [],
+    {}
+)
+async def get_ecs_world_status(arguments: dict[str, Any]) -> dict[str, Any]:
+    """
+    Get the current status of the ECS world.
+
+    Returns:
+        ECS world status information
+    """
+    try:
+        # Get ECS client
+        ecs_client = get_ecs_client()
+        await ecs_client.start()
+
+        # Get world status
+        result = await ecs_client.get_world_status()
+
+        # Close ECS client
+        await ecs_client.close()
+
+        # Format response
+        if result.get("success", False):
+            status = result.get("status", {})
+            response_text = f"🌍 **ECS World Status**\n\n"
+            response_text += f"Status: {status.get('status', 'Unknown')}\n"
+            response_text += f"Total Agents: {status.get('agent_count', 'Unknown')}\n"
+            response_text += f"Active Agents: {status.get('agent_count', 'Unknown')}\n"
+            response_text += f"Total Interactions: {status.get('total_interactions', 'Unknown')}\n"
+            response_text += f"Database Type: {status.get('database_type', 'Unknown')}\n"
+            response_text += f"Initialized: {status.get('initialized', 'Unknown')}"
+        else:
+            response_text = f"❌ {result.get('message', 'Failed to get world status')}"
+
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": response_text,
+                }
+            ]
+        }
+
+    except Exception as e:  # pylint: disable=broad-exception-caught
+        logger.error(f"Error getting ECS world status: {e}")
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"❌ Error getting ECS world status: {str(e)}",
+                }
+            ]
+        }
+
+
+@register_tool(
+    "get_agent_relationships",
+    "social",
+    "Get all relationships for an agent",
+    "async",
+    True,
+    [],
+    {}
 )
 async def get_agent_relationships(arguments: dict[str, Any]) -> dict[str, Any]:
     """
@@ -338,13 +504,13 @@ async def get_agent_relationships(arguments: dict[str, Any]) -> dict[str, Any]:
 
 
 @register_tool(
-    name="get_agent_social_stats",
-    description="Get social interaction statistics for an agent",
-    category="social",
-    execution_type="async",
-    enabled=True,
-    dependencies=[],
-    config={},
+    "get_agent_social_stats",
+    "social",
+    "Get social interaction statistics for an agent",
+    "async",
+    True,
+    [],
+    {}
 )
 async def get_agent_social_stats(arguments: dict[str, Any]) -> dict[str, Any]:
     """
@@ -428,13 +594,13 @@ async def get_agent_social_stats(arguments: dict[str, Any]) -> dict[str, Any]:
 
 
 @register_tool(
-    name="get_nearby_agents",
-    description="Get all agents within a certain radius of an agent",
-    category="social",
-    execution_type="async",
-    enabled=True,
-    dependencies=[],
-    config={},
+    "get_nearby_agents",
+    "social",
+    "Get all agents within a certain radius of an agent",
+    "async",
+    True,
+    [],
+    {}
 )
 async def get_nearby_agents(arguments: dict[str, Any]) -> dict[str, Any]:
     """

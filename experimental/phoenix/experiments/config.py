@@ -35,7 +35,7 @@ class ExperimentConfig:
 
     # Experiment parameters
     experiment_type: ExperimentType
-    target_agent_id: str = "success-advisor-8"
+    target_agent_id: str = "permanent-release-manager-success-advisor-8"  # Updated for PostgreSQL
     population_size: int = 50
     max_generations: int = 20
     num_trials: int = 10
@@ -45,6 +45,10 @@ class ExperimentConfig:
     selection_pressure: float = 0.8
     crossover_rate: float = 0.7
     elite_size: int = 5
+
+    # Data source configuration
+    use_postgresql: bool = True  # Use PostgreSQL instead of JSON files
+    postgres_connection_url: str = "postgresql://postgres:password@localhost:5432/reynard_ecs"
 
     # Evaluation parameters
     evaluation_metrics: List[EvaluationMetric] = None

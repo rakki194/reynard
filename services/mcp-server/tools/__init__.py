@@ -50,7 +50,9 @@ def get_social_tools():
         get_interaction_history,
         get_agent_relationships,
         get_agent_social_stats,
-        get_nearby_agents
+        get_nearby_agents,
+        find_ecs_agent,
+        get_ecs_world_status
     )
     return {
         "initiate_interaction": initiate_interaction,
@@ -58,7 +60,9 @@ def get_social_tools():
         "get_interaction_history": get_interaction_history,
         "get_agent_relationships": get_agent_relationships,
         "get_agent_social_stats": get_agent_social_stats,
-        "get_nearby_agents": get_nearby_agents
+        "get_nearby_agents": get_nearby_agents,
+        "find_ecs_agent": find_ecs_agent,
+        "get_ecs_world_status": get_ecs_world_status
     }
 
 

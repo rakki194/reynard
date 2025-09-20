@@ -61,10 +61,31 @@ class PostgresECSWorldService:
         except Exception as e:
             logger.error(f"❌ Error shutting down PostgreSQL ECS World Service: {e}")
 
+    def _ensure_initialized(self) -> None:
+        """Ensure the service is initialized."""
+        if not self._initialized:
+            logger.warning("ECS World Service not initialized, initializing synchronously...")
+            try:
+                # Initialize synchronously without async
+                logger.info("🌍 Initializing PostgreSQL ECS World Service")
+
+                # Create tables if they don't exist (synchronous)
+                self.db.create_tables_sync()
+
+                # Check database health (synchronous)
+                if not self.db.health_check_sync():
+                    raise RuntimeError("Database health check failed")
+
+                self._initialized = True
+                logger.info("✅ PostgreSQL ECS World Service initialized successfully")
+
+            except Exception as e:
+                logger.error(f"Failed to initialize ECS service: {e}")
+                raise RuntimeError("ECS World Service not initialized")
+
     def get_session(self) -> Session:
         """Get a database session."""
-        if not self._initialized:
-            raise RuntimeError("ECS World Service not initialized")
+        self._ensure_initialized()
         return self.db.get_session()
 
     # Agent Management Methods
@@ -104,6 +125,7 @@ class PostgresECSWorldService:
         Returns:
             Dictionary containing the created agent data
         """
+        self._ensure_initialized()
         try:
             with self.get_session() as session:
                 # Check if agent already exists
@@ -236,6 +258,7 @@ class PostgresECSWorldService:
         Returns:
             Dictionary containing agent data or None if not found
         """
+        self._ensure_initialized()
         try:
             with self.get_session() as session:
                 agent = session.query(Agent).filter(Agent.agent_id == agent_id).first()
@@ -293,6 +316,7 @@ class PostgresECSWorldService:
         Returns:
             List of dictionaries containing agent data
         """
+        self._ensure_initialized()
         try:
             with self.get_session() as session:
                 agents = session.query(Agent).filter(Agent.active == True).all()
@@ -335,6 +359,7 @@ class PostgresECSWorldService:
         Returns:
             Dictionary containing interaction data
         """
+        self._ensure_initialized()
         try:
             with self.get_session() as session:
                 # Check if both agents exist
@@ -375,6 +400,56 @@ class PostgresECSWorldService:
             logger.error(f"❌ Failed to send message from {sender_id} to {receiver_id}: {e}")
             raise HTTPException(status_code=500, detail=f"Failed to send message: {str(e)}")
 
+    async def get_agent_interactions(self, agent_id: str, limit: int = 10) -> List[Dict[str, Any]]:
+        """
+        Get interaction history for a specific agent.
+
+        Args:
+            agent_id: Agent identifier (string)
+            limit: Maximum number of interactions to return
+
+        Returns:
+            List of interaction dictionaries
+        """
+        self._ensure_initialized()
+        try:
+            with self.get_session() as session:
+                # First, get the agent's UUID from the string agent_id
+                agent = session.query(Agent).filter(Agent.agent_id == agent_id).first()
+                if not agent:
+                    logger.warning(f"Agent {agent_id} not found")
+                    return []
+
+                # Get interactions where the agent is either sender or receiver using UUID
+                interactions = session.query(AgentInteraction).filter(
+                    or_(
+                        AgentInteraction.sender_id == agent.id,
+                        AgentInteraction.receiver_id == agent.id
+                    )
+                ).order_by(AgentInteraction.created_at.desc()).limit(limit).all()
+
+                result = []
+                for interaction in interactions:
+                    # Get sender and receiver agent_ids for display
+                    sender_agent = session.query(Agent).filter(Agent.id == interaction.sender_id).first()
+                    receiver_agent = session.query(Agent).filter(Agent.id == interaction.receiver_id).first()
+                    
+                    result.append({
+                        "interaction_id": str(interaction.id),
+                        "sender_id": sender_agent.agent_id if sender_agent else str(interaction.sender_id),
+                        "receiver_id": receiver_agent.agent_id if receiver_agent else str(interaction.receiver_id),
+                        "message": interaction.message,
+                        "interaction_type": interaction.interaction_type,
+                        "timestamp": interaction.created_at.isoformat(),
+                        "energy_level": interaction.energy_level
+                    })
+
+                return result
+
+        except Exception as e:
+            logger.error(f"❌ Failed to get interactions for agent {agent_id}: {e}")
+            return []
+
     async def get_world_status(self) -> Dict[str, Any]:
         """
         Get the current status of the ECS world.
@@ -382,6 +457,7 @@ class PostgresECSWorldService:
         Returns:
             Dictionary containing world status information
         """
+        self._ensure_initialized()
         try:
             with self.get_session() as session:
                 total_agents = session.query(Agent).count()

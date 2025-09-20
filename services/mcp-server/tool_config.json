@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "last_updated": "2025-09-20T12:22:45.393669",
+  "last_updated": "2025-09-20T13:18:08.242389",
   "tools": {
     "generate_agent_name": {
       "name": "generate_agent_name",
@@ -458,6 +458,14 @@
       "dependencies": [],
       "config": {}
     },
+    "find_ecs_agent": {
+      "name": "find_ecs_agent",
+      "category": "social",
+      "enabled": true,
+      "description": "Find an agent in the ECS world by name or ID with flexible matching",
+      "dependencies": [],
+      "config": {}
+    },
     "get_agent_relationships": {
       "name": "get_agent_relationships",
       "category": "social",
@@ -471,6 +479,14 @@
       "category": "social",
       "enabled": true,
       "description": "Get social interaction statistics for an agent",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_ecs_world_status": {
+      "name": "get_ecs_world_status",
+      "category": "social",
+      "enabled": true,
+      "description": "Get the current status of the ECS world including agent counts and system health",
       "dependencies": [],
       "config": {}
     },
@@ -502,7 +518,7 @@
       "name": "send_chat_message",
       "category": "social",
       "enabled": true,
-      "description": "Send a chat message from one agent to another",
+      "description": "Send a chat message from one agent to another with automatic agent ID resolution",
       "dependencies": [],
       "config": {}
     },

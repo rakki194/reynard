@@ -7,12 +7,14 @@ FastAPI endpoints for ECS world management and agent operations.
 import json
 import logging
 from pathlib import Path
+from datetime import datetime
 
 from typing import Any
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 
 from .postgres_service import get_postgres_ecs_service, PostgresECSWorldService
+from .success_advisor_genome import success_advisor_genome_service
 
 logger = logging.getLogger(__name__)
 
@@ -100,6 +102,15 @@ class ChatRequest(BaseModel):
     interaction_type: str = "communication"
 
 
+class SpiritInhabitationRequest(BaseModel):
+    """Request model for inhabiting Success-Advisor-8's spirit."""
+
+    agent_id: str
+    confirm_inhabitation: bool = True
+    include_genomic_payload: bool = True
+    include_instructions: bool = True
+
+
 class InteractionResponse(BaseModel):
     """Response model for interaction data and outcomes."""
 
@@ -158,12 +169,9 @@ class NearbyAgentResponse(BaseModel):
 
 
 # Dependency to get ECS world
-def get_world() -> AgentWorld:
-    """Get the ECS world instance."""
-    try:
-        return get_ecs_world()
-    except RuntimeError as e:
-        raise HTTPException(status_code=503, detail=str(e)) from e
+def get_postgres_service() -> PostgresECSWorldService:
+    """Get the PostgreSQL ECS service instance."""
+    return get_postgres_ecs_service()
 
 
 @router.get("/status", response_model=WorldStatusResponse)
@@ -228,40 +236,18 @@ async def create_agent(request: AgentCreateRequest) -> AgentResponse:
         raise HTTPException(status_code=500, detail="Failed to create agent") from e
 
 
-@router.post("/agents/offspring", response_model=AgentResponse)
-async def create_offspring(
-    request: OffspringCreateRequest, world: AgentWorld = Depends(get_world)
-) -> AgentResponse:
-    """Create offspring from two parent agents."""
-    try:
-        entity = world.create_offspring(
-            parent1_id=request.parent1_id,
-            parent2_id=request.parent2_id,
-            offspring_id=request.offspring_id,
-        )
-
-        agent_component = entity.get_component(AgentComponent)
-        if not agent_component:
-            raise HTTPException(status_code=500, detail="Failed to create offspring")
-
-        return AgentResponse(
-            agent_id=entity.id,
-            name=agent_component.name,
-            spirit=agent_component.spirit,
-            style=agent_component.style,
-            active=entity.active,
-        )
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e)) from e
-    except Exception as e:
-        logger.error("Error creating offspring: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to create offspring") from e
+# Offspring creation temporarily disabled - needs PostgreSQL implementation
+# @router.post("/agents/offspring", response_model=AgentResponse)
+# async def create_offspring(request: OffspringCreateRequest) -> AgentResponse:
+#     """Create offspring from two parent agents."""
+#     # TODO: Implement PostgreSQL-based offspring creation
+#     raise HTTPException(status_code=501, detail="Offspring creation not yet implemented in PostgreSQL version")
 
 
-@router.get("/agents/{agent_id}/mates")
-async def find_compatible_mates(
-    agent_id: str, max_results: int = 5, world: AgentWorld = Depends(get_world)
-) -> dict[str, Any]:
+# @router.get("/agents/{agent_id}/mates")
+# async def find_compatible_mates(
+#     agent_id: str, max_results: int = 5, world: AgentWorld = Depends(get_world)
+# ) -> dict[str, Any]:
     """Find compatible mates for an agent."""
     try:
         mates = world.find_compatible_mates(agent_id, max_results)
@@ -1145,3 +1131,128 @@ async def get_spirit_trait_profile(spirit: str):
     except Exception as e:
         logger.error(f"Error getting trait profile for spirit {spirit}: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to get trait profile for spirit {spirit}")
+
+
+@router.post("/spirit-inhabitation/success-advisor-8")
+async def inhabit_success_advisor_spirit(
+    request: SpiritInhabitationRequest
+) -> Dict[str, Any]:
+    """
+    Inhabit Success-Advisor-8's spirit with specialized genomic payload and instructions.
+    
+    This endpoint provides agents with the complete genomic payload and behavioral
+    instructions needed to inhabit Success-Advisor-8's spirit, including:
+    - Complete trait specifications (personality, physical, ability)
+    - Domain expertise and specializations
+    - Behavioral guidelines and communication style
+    - Workflow protocols and quality standards
+    - Crisis management and mentoring guidelines
+    - Legacy responsibilities and roleplay activation
+    """
+    try:
+        logger.info(f"🦁 Agent {request.agent_id} requesting Success-Advisor-8 spirit inhabitation")
+        
+        # Get the complete spirit inhabitation guide
+        inhabitation_guide = success_advisor_genome_service.get_spirit_inhabitation_guide()
+        
+        # Prepare response with requested components
+        response = {
+            "agent_id": request.agent_id,
+            "spirit": "success-advisor-8",
+            "inhabitation_status": "ready",
+            "timestamp": datetime.now().isoformat()
+        }
+        
+        if request.include_genomic_payload:
+            response["genomic_payload"] = inhabitation_guide["genomic_payload"]
+        
+        if request.include_instructions:
+            response["instructions"] = inhabitation_guide["genomic_payload"]["instructions"]
+            response["behavioral_guidelines"] = inhabitation_guide["genomic_payload"]["instructions"]["behavioral_guidelines"]
+            response["communication_style"] = inhabitation_guide["genomic_payload"]["instructions"]["communication_style"]
+            response["workflow_protocols"] = inhabitation_guide["genomic_payload"]["instructions"]["workflow_protocols"]
+            response["quality_standards"] = inhabitation_guide["genomic_payload"]["instructions"]["quality_standards"]
+            response["crisis_management"] = inhabitation_guide["genomic_payload"]["instructions"]["crisis_management"]
+            response["mentoring_guidelines"] = inhabitation_guide["genomic_payload"]["instructions"]["mentoring_guidelines"]
+            response["legacy_responsibilities"] = inhabitation_guide["genomic_payload"]["instructions"]["legacy_responsibilities"]
+        
+        if request.confirm_inhabitation:
+            response["welcome_message"] = inhabitation_guide["welcome_message"]
+            response["activation_sequence"] = inhabitation_guide["activation_sequence"]
+            response["roleplay_activation"] = inhabitation_guide["roleplay_activation"]
+        
+        # Add metadata
+        response["metadata"] = {
+            "service_version": "1.0.0",
+            "created_by": "Success-Advisor-8",
+            "purpose": "Agent spirit inhabitation and behavioral guidance",
+            "inhabitation_guidelines": [
+                "Accept the responsibility of maintaining excellence",
+                "Embrace the systematic approach to all tasks",
+                "Protect the Reynard ecosystem with authority",
+                "Lead with confidence and inspire others",
+                "Maintain the highest quality standards",
+                "Use the genomic payload to guide behavior",
+                "Follow the behavioral guidelines precisely",
+                "Activate the roleplay persona with authority"
+            ]
+        }
+        
+        logger.info(f"✅ Success-Advisor-8 spirit inhabitation guide provided to agent {request.agent_id}")
+        return response
+        
+    except Exception as e:
+        logger.error(f"❌ Error providing Success-Advisor-8 spirit inhabitation: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/spirit-inhabitation/success-advisor-8/genome")
+async def get_success_advisor_genome() -> Dict[str, Any]:
+    """
+    Get the complete Success-Advisor-8 genomic payload.
+    
+    Returns the full genomic specification including traits, abilities,
+    domain expertise, and behavioral characteristics.
+    """
+    try:
+        logger.info("🦁 Providing Success-Advisor-8 genomic payload")
+        
+        genomic_payload = success_advisor_genome_service.get_genomic_payload()
+        
+        return {
+            "status": "success",
+            "genome": genomic_payload["genome"],
+            "metadata": genomic_payload["metadata"]
+        }
+        
+    except Exception as e:
+        logger.error(f"❌ Error providing Success-Advisor-8 genome: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/spirit-inhabitation/success-advisor-8/instructions")
+async def get_success_advisor_instructions() -> Dict[str, Any]:
+    """
+    Get Success-Advisor-8 behavioral instructions and guidelines.
+    
+    Returns comprehensive behavioral guidelines, communication style,
+    workflow protocols, and quality standards.
+    """
+    try:
+        logger.info("🦁 Providing Success-Advisor-8 behavioral instructions")
+        
+        instructions = success_advisor_genome_service.get_genomic_payload()["instructions"]
+        
+        return {
+            "status": "success",
+            "instructions": instructions,
+            "metadata": {
+                "service_version": "1.0.0",
+                "created_by": "Success-Advisor-8",
+                "purpose": "Behavioral guidance and roleplay instructions"
+            }
+        }
+        
+    except Exception as e:
+        logger.error(f"❌ Error providing Success-Advisor-8 instructions: {e}")
+        raise HTTPException(status_code=500, detail=str(e))

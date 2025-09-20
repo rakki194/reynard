@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.8.7] - 2025-09-20
 
+### Fixed
+- **ECS Database**: Resolved SQLAlchemy reserved attribute conflict by renaming `PerformanceMetric.metadata` column to `metric_metadata` (Strategic-Fox-13)
+
 ### Added
 
 - **Academic Review System**: Comprehensive academic evaluation of PHOENIX and PHOENIX Control experiments for Success-Advisor-8 reconstruction feasibility with validated theoretical foundation (Recognition-Grandmaster-27)

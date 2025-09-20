@@ -20,6 +20,7 @@ from .phoenix_reconstruction import PhoenixReconstruction
 from .evaluator import AgentEvaluator
 from .analyzer import StatisticalAnalyzer
 from .metrics import ReconstructionMetrics
+from ..src.integration.postgres_data_loader import get_postgres_data_loader
 
 
 class ExperimentOrchestrator:
@@ -31,6 +32,9 @@ class ExperimentOrchestrator:
         self.logger = logging.getLogger(__name__)
         self.results: Dict[str, Any] = {}
 
+        # Initialize PostgreSQL data loader
+        self.data_loader = get_postgres_data_loader()
+
         # Initialize components
         self.target = create_success_advisor_target()
         self.baseline_reconstruction = BaselineReconstruction(self.target)
@@ -40,6 +44,30 @@ class ExperimentOrchestrator:
 
         # Setup logging
         self._setup_logging()
+
+    async def load_target_agent_from_postgres(self) -> Optional[Dict[str, Any]]:
+        """
+        Load target agent data from PostgreSQL.
+
+        Returns:
+            Target agent data or None if not found
+        """
+        try:
+            if self.config.use_postgresql:
+                self.logger.info(f"Loading target agent {self.config.target_agent_id} from PostgreSQL")
+                target_data = await self.data_loader.load_agent_data(self.config.target_agent_id)
+                if target_data:
+                    self.logger.info("✅ Target agent loaded from PostgreSQL")
+                    return target_data
+                else:
+                    self.logger.warning("❌ Target agent not found in PostgreSQL")
+                    return None
+            else:
+                self.logger.info("Using JSON-based target agent data")
+                return None
+        except Exception as e:
+            self.logger.error(f"❌ Failed to load target agent from PostgreSQL: {e}")
+            return None
 
     def _setup_logging(self):
         """Setup logging configuration."""

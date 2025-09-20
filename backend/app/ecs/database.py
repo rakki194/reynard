@@ -11,7 +11,7 @@ from datetime import datetime, timezone
 from uuid import UUID, uuid4
 
 import asyncpg
-from sqlalchemy import create_engine, Column, String, Float, Boolean, DateTime, Text, Integer, ForeignKey, UniqueConstraint
+from sqlalchemy import create_engine, Column, String, Float, Boolean, DateTime, Text, Integer, ForeignKey, UniqueConstraint, text, JSON
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship, Session
 from sqlalchemy.dialects.postgresql import UUID as PostgresUUID
@@ -39,9 +39,9 @@ class Agent(Base):
     style = Column(String(100), nullable=False)
     generation = Column(Integer, default=1)
     active = Column(Boolean, default=True, index=True)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
-    last_activity = Column(DateTime(timezone=True), server_default=func.now())
+    created_at = Column(DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"))
+    updated_at = Column(DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"), onupdate=text("CURRENT_TIMESTAMP"))
+    last_activity = Column(DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"))
 
     # Relationships
     personality_traits = relationship("PersonalityTrait", back_populates="agent", cascade="all, delete-orphan")
@@ -54,6 +54,8 @@ class Agent(Base):
     specializations = relationship("AgentSpecialization", back_populates="agent", cascade="all, delete-orphan")
     domain_expertise = relationship("AgentDomainExpertise", back_populates="agent", cascade="all, delete-orphan")
     workflow_preferences = relationship("AgentWorkflowPreference", back_populates="agent", cascade="all, delete-orphan")
+    knowledge_base_entries = relationship("KnowledgeBaseEntry", back_populates="agent", cascade="all, delete-orphan")
+    performance_metrics = relationship("PerformanceMetric", back_populates="agent", cascade="all, delete-orphan")
 
 
 class PersonalityTrait(Base):
@@ -64,8 +66,8 @@ class PersonalityTrait(Base):
     agent_id = Column(PostgresUUID(as_uuid=True), ForeignKey("agents.id", ondelete="CASCADE"), nullable=False)
     trait_name = Column(String(100), nullable=False)
     trait_value = Column(Float, nullable=False)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+    created_at = Column(DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"))
+    updated_at = Column(DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"), onupdate=text("CURRENT_TIMESTAMP"))
 
     agent = relationship("Agent", back_populates="personality_traits")
     __table_args__ = (UniqueConstraint('agent_id', 'trait_name', name='uq_agent_personality_trait'),)
@@ -79,8 +81,8 @@ class PhysicalTrait(Base):
     agent_id = Column(PostgresUUID(as_uuid=True), ForeignKey("agents.id", ondelete="CASCADE"), nullable=False)
     trait_name = Column(String(100), nullable=False)
     trait_value = Column(Float, nullable=False)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+    created_at = Column(DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"))
+    updated_at = Column(DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"), onupdate=text("CURRENT_TIMESTAMP"))
 
     agent = relationship("Agent", back_populates="physical_traits")
     __table_args__ = (UniqueConstraint('agent_id', 'trait_name', name='uq_agent_physical_trait'),)
@@ -94,8 +96,8 @@ class AbilityTrait(Base):
     agent_id = Column(PostgresUUID(as_uuid=True), ForeignKey("agents.id", ondelete="CASCADE"), nullable=False)
     trait_name = Column(String(100), nullable=False)
     trait_value = Column(Float, nullable=False)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+    created_at = Column(DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"))
+    updated_at = Column(DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"), onupdate=text("CURRENT_TIMESTAMP"))
 
     agent = relationship("Agent", back_populates="ability_traits")
     __table_args__ = (UniqueConstraint('agent_id', 'trait_name', name='uq_agent_ability_trait'),)
@@ -114,8 +116,8 @@ class AgentPosition(Base):
     velocity_x = Column(Float, default=0.0)
     velocity_y = Column(Float, default=0.0)
     movement_speed = Column(Float, default=1.0)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+    created_at = Column(DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"))
+    updated_at = Column(DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"), onupdate=text("CURRENT_TIMESTAMP"))
 
     agent = relationship("Agent", back_populates="position")
 
@@ -130,7 +132,7 @@ class AgentInteraction(Base):
     interaction_type = Column(String(100), nullable=False)
     message = Column(Text)
     energy_level = Column(Float, default=1.0)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    created_at = Column(DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"))
 
     sender = relationship("Agent", foreign_keys=[sender_id], back_populates="interactions_sent")
     receiver = relationship("Agent", foreign_keys=[receiver_id], back_populates="interactions_received")
@@ -144,7 +146,7 @@ class AgentAchievement(Base):
     agent_id = Column(PostgresUUID(as_uuid=True), ForeignKey("agents.id", ondelete="CASCADE"), nullable=False)
     achievement_name = Column(String(255), nullable=False)
     achievement_description = Column(Text)
-    achieved_at = Column(DateTime(timezone=True), server_default=func.now())
+    achieved_at = Column(DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"))
 
     agent = relationship("Agent", back_populates="achievements")
 
@@ -157,7 +159,7 @@ class AgentSpecialization(Base):
     agent_id = Column(PostgresUUID(as_uuid=True), ForeignKey("agents.id", ondelete="CASCADE"), nullable=False)
     specialization = Column(String(255), nullable=False)
     proficiency = Column(Float, default=0.5)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    created_at = Column(DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"))
 
     agent = relationship("Agent", back_populates="specializations")
     __table_args__ = (UniqueConstraint('agent_id', 'specialization', name='uq_agent_specialization'),)
@@ -171,7 +173,7 @@ class AgentDomainExpertise(Base):
     agent_id = Column(PostgresUUID(as_uuid=True), ForeignKey("agents.id", ondelete="CASCADE"), nullable=False)
     domain = Column(String(255), nullable=False)
     expertise_level = Column(Float, default=0.5)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    created_at = Column(DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"))
 
     agent = relationship("Agent", back_populates="domain_expertise")
     __table_args__ = (UniqueConstraint('agent_id', 'domain', name='uq_agent_domain'),)
@@ -185,8 +187,8 @@ class AgentWorkflowPreference(Base):
     agent_id = Column(PostgresUUID(as_uuid=True), ForeignKey("agents.id", ondelete="CASCADE"), nullable=False)
     preference_name = Column(String(100), nullable=False)
     preference_value = Column(Boolean, default=False)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+    created_at = Column(DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"))
+    updated_at = Column(DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"), onupdate=text("CURRENT_TIMESTAMP"))
 
     agent = relationship("Agent", back_populates="workflow_preferences")
     __table_args__ = (UniqueConstraint('agent_id', 'preference_name', name='uq_agent_workflow_preference'),)
@@ -213,11 +215,30 @@ class ECSDatabase:
             logger.error(f"❌ Failed to create ECS database tables: {e}")
             raise
 
+    def create_tables_sync(self):
+        """Create all database tables synchronously."""
+        try:
+            Base.metadata.create_all(bind=self.engine)
+            logger.info("✅ ECS database tables created successfully")
+        except Exception as e:
+            logger.error(f"❌ Failed to create ECS database tables: {e}")
+            raise
+
     async def health_check(self) -> bool:
         """Check database health."""
         try:
             with self.get_session() as session:
-                session.execute("SELECT 1")
+                session.execute(text("SELECT 1"))
+                return True
+        except Exception as e:
+            logger.error(f"❌ Database health check failed: {e}")
+            return False
+
+    def health_check_sync(self) -> bool:
+        """Check database health synchronously."""
+        try:
+            with self.get_session() as session:
+                session.execute(text("SELECT 1"))
                 return True
         except Exception as e:
             logger.error(f"❌ Database health check failed: {e}")
@@ -226,6 +247,64 @@ class ECSDatabase:
     def close(self):
         """Close database connections."""
         self.engine.dispose()
+
+
+class KnowledgeBaseEntry(Base):
+    """Knowledge base entries for agents."""
+    __tablename__ = "knowledge_base_entries"
+
+    id = Column(PostgresUUID(as_uuid=True), primary_key=True, default=uuid4)
+    agent_id = Column(PostgresUUID(as_uuid=True), ForeignKey("agents.id", ondelete="CASCADE"), nullable=False)
+    domain = Column(String(255), nullable=False)
+    skill = Column(String(255), nullable=False)
+    proficiency_level = Column(Float, nullable=False)
+    last_updated = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+
+    agent = relationship("Agent", back_populates="knowledge_base_entries")
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "id": str(self.id),
+            "agent_id": str(self.agent_id),
+            "domain": self.domain,
+            "skill": self.skill,
+            "proficiency_level": self.proficiency_level,
+            "last_updated": self.last_updated.isoformat() if self.last_updated else None,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+        }
+
+    def __repr__(self) -> str:
+        return f"<KnowledgeBaseEntry(domain='{self.domain}', skill='{self.skill}', level={self.proficiency_level})>"
+
+
+class PerformanceMetric(Base):
+    """Performance metrics for agents."""
+    __tablename__ = "performance_metrics"
+
+    id = Column(PostgresUUID(as_uuid=True), primary_key=True, default=uuid4)
+    agent_id = Column(PostgresUUID(as_uuid=True), ForeignKey("agents.id", ondelete="CASCADE"), nullable=False)
+    metric_name = Column(String(255), nullable=False)
+    metric_value = Column(Float, nullable=False)
+    timestamp = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    metric_metadata = Column(JSON, nullable=True)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+
+    agent = relationship("Agent", back_populates="performance_metrics")
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "id": str(self.id),
+            "agent_id": str(self.agent_id),
+            "metric_name": self.metric_name,
+            "metric_value": self.metric_value,
+            "timestamp": self.timestamp.isoformat() if self.timestamp else None,
+            "metadata": self.metric_metadata,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+        }
+
+    def __repr__(self) -> str:
+        return f"<PerformanceMetric(name='{self.metric_name}', value={self.metric_value})>"
 
 
 # Global database instance

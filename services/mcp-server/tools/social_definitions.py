@@ -47,9 +47,9 @@ def get_social_tool_definitions() -> dict[str, dict[str, Any]]:
                         "type": "string",
                         "description": "Agent sending the message"
                     },
-                    "receiver_id": {
+                    "receiver": {
                         "type": "string",
-                        "description": "Agent receiving the message"
+                        "description": "Agent receiving the message (ID or name - will be automatically resolved)"
                     },
                     "message": {
                         "type": "string",
@@ -62,7 +62,7 @@ def get_social_tool_definitions() -> dict[str, dict[str, Any]]:
                         "default": "communication"
                     }
                 },
-                "required": ["sender_id", "receiver_id", "message"]
+                "required": ["sender_id", "receiver", "message"]
             }
         },
         "get_interaction_history": {
@@ -129,6 +129,34 @@ def get_social_tool_definitions() -> dict[str, dict[str, Any]]:
                     }
                 },
                 "required": ["agent_id"]
+            }
+        },
+        "find_ecs_agent": {
+            "name": "find_ecs_agent",
+            "description": "Find an agent in the ECS world by name or ID with flexible matching",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "Name or ID to search for"
+                    },
+                    "exact_match": {
+                        "type": "boolean",
+                        "description": "Whether to require exact match",
+                        "default": false
+                    }
+                },
+                "required": ["query"]
+            }
+        },
+        "get_ecs_world_status": {
+            "name": "get_ecs_world_status",
+            "description": "Get the current status of the ECS world including agent counts and system health",
+            "inputSchema": {
+                "type": "object",
+                "properties": {},
+                "required": []
             }
         }
     }

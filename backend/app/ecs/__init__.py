@@ -5,7 +5,7 @@ Provides ECS world integration as a singleton service for the Reynard backend.
 """
 
 from .config import ECSConfig
-from .endpoints import router as ecs_router
+from .simple_endpoints import router as ecs_router
 from .service import ECSWorldService, get_ecs_world
 
 # Core ECS components
