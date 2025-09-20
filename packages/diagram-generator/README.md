@@ -1,6 +1,6 @@
 # 🦊 Reynard Diagram Generator
 
-**Comprehensive diagram generation tool for Reynard project architecture visualization**
+## Comprehensive diagram generation tool for Reynard project architecture visualization
 
 [![npm version](https://img.shields.io/npm/v/reynard-diagram-generator.svg)](https://www.npmjs.com/package/reynard-diagram-generator)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -16,10 +16,14 @@ The `reynard-diagram-generator` package provides comprehensive diagram generatio
 - 📦 **Package Dependencies**: Detailed dependency relationship diagrams
 - 🧩 **Component Relationships**: Component interaction and relationship mapping
 - 📁 **File Structure**: Visual file and directory organization
+- 🔌 **Frontend-Backend Relationships**: Comprehensive frontend-backend connection mapping with API endpoints, authentication, and real-time features
+- 🌍 **Detailed Ecosystem Analysis**: In-depth package and component relationship analysis with import/export tracking
 - 🎨 **Multiple Formats**: SVG, PNG, and high-resolution PNG output
-- 🔍 **Codebase Analysis**: Automatic scanning for reusable components
+- 🔍 **Codebase Analysis**: Automatic scanning for reusable components and relationships
 - ⚡ **MCP Integration**: Leverages existing MCP Mermaid rendering service
 - 📊 **Comprehensive Reports**: Detailed generation summaries and metadata
+- 🎯 **Visual Indicators**: Authentication requirements, real-time features, and connection types
+- 📈 **Complexity Analysis**: Package complexity scoring and relationship strength analysis
 
 ## Installation
 
@@ -60,6 +64,8 @@ pnpm run generate:all --output ./docs/diagrams --high-res --theme neutral
 pnpm run generate:architecture
 pnpm run generate:components
 pnpm run generate:dependencies
+pnpm run generate:frontend-backend
+pnpm run generate:ecosystem
 ```
 
 ## API Reference
@@ -161,6 +167,28 @@ const generator = new FileStructureGenerator();
 const diagram = await generator.generate(analysis, config);
 ```
 
+#### Frontend-Backend Relationship Generator
+
+Creates comprehensive diagrams showing relationships between frontend packages and backend services, including API connections, authentication requirements, and real-time features.
+
+```typescript
+import { FrontendBackendRelationshipGenerator } from "reynard-diagram-generator";
+
+const generator = new FrontendBackendRelationshipGenerator();
+const diagram = await generator.generate(analysis, config);
+```
+
+#### Detailed Ecosystem Generator
+
+Generates in-depth analysis of all packages, components, and their detailed relationships with import/export tracking and complexity analysis.
+
+```typescript
+import { DetailedEcosystemGenerator } from "reynard-diagram-generator";
+
+const generator = new DetailedEcosystemGenerator();
+const diagram = await generator.generate(analysis, config);
+```
+
 ## Configuration
 
 ### DiagramGenerationConfig
@@ -208,7 +236,7 @@ const DEFAULT_CONFIG = {
 
 Generated diagrams are organized in the output directory:
 
-```
+```text
 diagrams/
 ├── architecture-overview.svg
 ├── architecture-overview.png
@@ -218,9 +246,53 @@ diagrams/
 ├── component-relationships.png
 ├── file-structure.svg
 ├── file-structure.png
+├── frontend-backend-relationships.svg
+├── frontend-backend-relationships.png
+├── detailed-ecosystem.svg
+├── detailed-ecosystem.png
 ├── generation-report.json
 └── *.mmd (Mermaid source files)
 ```
+
+## Advanced Diagram Types
+
+### Frontend-Backend Relationship Diagrams
+
+The `FrontendBackendRelationshipGenerator` creates comprehensive diagrams that visualize:
+
+- **🔐 Authentication Requirements**: Packages that require authentication
+- **⚡ Real-time Features**: WebSocket and Server-Sent Events connections
+- **🔌 API Client Packages**: Frontend packages that act as API clients
+- **🌐 Connection Management**: Networking and connection packages
+- **🎨 UI Components**: User interface packages and their backend connections
+- **🛠️ Utility Packages**: Helper packages and their dependencies
+
+#### Visual Indicators
+
+- **🔐 Authentication Required**: Packages that require authentication
+- **⚡ Real-time Features**: Packages with WebSocket or SSE capabilities
+- **🔌 API Client**: Packages that act as API clients
+- **🌐 Connection**: Networking and connection management packages
+- **🎨 UI**: User interface components
+- **🛠️ Utility**: Utility and helper packages
+
+#### Connection Types
+
+- **--> HTTP API**: Standard HTTP API connections
+- **<--> WebSocket**: Bidirectional real-time connections
+- **--> Server-Sent Events**: One-way real-time connections
+- **-.-> Internal Dependency**: Internal package dependencies
+
+### Detailed Ecosystem Analysis
+
+The `DetailedEcosystemGenerator` provides in-depth analysis including:
+
+- **Package Complexity Scoring**: Mathematical complexity analysis
+- **Import/Export Tracking**: Detailed dependency mapping
+- **Relationship Strength**: Weighted relationship analysis
+- **Component-Level Analysis**: Individual component relationships
+- **API Connection Mapping**: Frontend-backend communication patterns
+- **Data Flow Analysis**: Request-response and streaming patterns
 
 ## Integration with Existing Tools
 
@@ -352,4 +424,4 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ---
 
-_🦊 Part of the Reynard Framework - Cunning agile development tools_
+## Part of the Reynard Framework - Cunning agile development tools

@@ -55,9 +55,11 @@ describe("GitWorkflowOrchestrator", () => {
     mockVersionManager = {
       getCurrentVersion: vi.fn(),
       calculateNextVersion: vi.fn(),
+      getVersionInfo: vi.fn(),
       updateVersion: vi.fn(),
       createGitTag: vi.fn(),
       pushGitTag: vi.fn(),
+      bumpVersion: vi.fn(),
     };
 
     // Mock the constructors
@@ -123,6 +125,11 @@ describe("GitWorkflowOrchestrator", () => {
       // Mock version management
       mockVersionManager.getCurrentVersion.mockResolvedValue("1.2.3");
       mockVersionManager.calculateNextVersion.mockReturnValue("1.3.0");
+      mockVersionManager.getVersionInfo.mockResolvedValue({
+        current: "1.2.3",
+        next: "1.3.0",
+        bumpType: "minor"
+      });
       mockVersionManager.updateVersion.mockResolvedValue();
       mockVersionManager.createGitTag.mockResolvedValue();
       mockVersionManager.pushGitTag.mockResolvedValue();
@@ -132,6 +139,10 @@ describe("GitWorkflowOrchestrator", () => {
 
       await orchestrator.executeWorkflow({
         workingDir: ".",
+        cleanup: true,
+        commit: true,
+        version: true,
+        changelog: true,
         dryRun: false,
       });
 
@@ -139,10 +150,8 @@ describe("GitWorkflowOrchestrator", () => {
       expect(mockJunkDetector.detectJunkFiles).toHaveBeenCalled();
       expect(mockChangeAnalyzer.analyzeChanges).toHaveBeenCalled();
       expect(mockCommitGenerator.generateCommitMessage).toHaveBeenCalled();
-      expect(mockVersionManager.getCurrentVersion).toHaveBeenCalled();
-      expect(mockVersionManager.updateVersion).toHaveBeenCalled();
-      expect(mockVersionManager.createGitTag).toHaveBeenCalled();
-      expect(mockVersionManager.pushGitTag).toHaveBeenCalled();
+      expect(mockVersionManager.getVersionInfo).toHaveBeenCalled();
+      expect(mockVersionManager.bumpVersion).toHaveBeenCalled();
       expect(mockChangelogManager.promoteToVersion).toHaveBeenCalled();
     });
 
@@ -203,6 +212,7 @@ describe("GitWorkflowOrchestrator", () => {
 
       await orchestrator.executeWorkflow({
         workingDir: ".",
+        cleanup: true,
         dryRun: false,
       });
 
@@ -253,9 +263,18 @@ describe("GitWorkflowOrchestrator", () => {
       // Mock version management
       mockVersionManager.getCurrentVersion.mockResolvedValue("1.2.3");
       mockVersionManager.calculateNextVersion.mockReturnValue("1.2.4");
+      mockVersionManager.getVersionInfo.mockResolvedValue({
+        current: "1.2.3",
+        next: "1.2.4",
+        bumpType: "patch"
+      });
 
       await orchestrator.executeWorkflow({
         workingDir: ".",
+        cleanup: true,
+        commit: true,
+        version: true,
+        changelog: true,
         dryRun: true,
       });
 
@@ -274,6 +293,7 @@ describe("GitWorkflowOrchestrator", () => {
 
       await expect(orchestrator.executeWorkflow({
         workingDir: ".",
+        cleanup: true,
         dryRun: false,
       })).rejects.toThrow("Junk detection failed");
     });
@@ -337,10 +357,11 @@ describe("GitWorkflowOrchestrator", () => {
       mockCommitGenerator.generateCommitMessage.mockReturnValue(mockCommitMessage);
 
       // Mock version management error
-      mockVersionManager.getCurrentVersion.mockRejectedValue(new Error("Version management failed"));
+      mockVersionManager.bumpVersion.mockRejectedValue(new Error("Version management failed"));
 
       await expect(orchestrator.executeWorkflow({
         workingDir: ".",
+        version: true,
         dryRun: false,
       })).rejects.toThrow("Version management failed");
     });

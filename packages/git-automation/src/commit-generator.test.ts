@@ -405,8 +405,8 @@ describe("CommitMessageGenerator", () => {
       const stats = generator.getStatistics(commitMessage);
 
       expect(stats.headerLength).toBeGreaterThan(0);
-      expect(stats.bodyLength).toBe(30); // "Detailed description of changes"
-      expect(stats.footerLength).toBe(18); // "Version bump: minor"
+      expect(stats.bodyLength).toBe(31); // "Detailed description of changes"
+      expect(stats.footerLength).toBe(19); // "Version bump: minor"
       expect(stats.totalLength).toBe(commitMessage.fullMessage.length);
     });
 

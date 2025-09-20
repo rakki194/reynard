@@ -29,8 +29,7 @@ export class DiagramGeneratorMain {
     this.generators = new Map();
 
     // Initialize generators
-    for (const GeneratorClass of DIAGRAM_GENERATORS) {
-      const generator = new GeneratorClass();
+    for (const generator of DIAGRAM_GENERATORS) {
       this.generators.set(generator.type, generator);
     }
   }

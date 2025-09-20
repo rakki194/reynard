@@ -25,6 +25,8 @@
     "generate:architecture": "node dist/cli/generate-architecture.js",
     "generate:components": "node dist/cli/generate-components.js",
     "generate:dependencies": "node dist/cli/generate-dependencies.js",
+    "generate:frontend-backend": "tsx src/cli/generate-frontend-backend-diagram.ts",
+    "generate:ecosystem": "tsx scripts/generate-real-ecosystem.sh",
     "demo": "tsx demo.ts"
   },
   "keywords": ["diagram", "mermaid", "visualization", "architecture", "documentation", "reynard"],

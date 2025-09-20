@@ -8,7 +8,7 @@ import { glob } from "fast-glob";
 import { execa } from "execa";
 import chalk from "chalk";
 import ora from "ora";
-import { JunkFileResult, JunkDetectionResult } from "./types";
+import type { JunkFileResult, JunkDetectionResult } from "./types";
 
 export class JunkFileDetector {
   private readonly patterns = {

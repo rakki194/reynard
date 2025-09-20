@@ -79,13 +79,36 @@ export class CodebaseAnalyzer {
   private async analyzePackages(): Promise<PackageAnalysis[]> {
     const packages: PackageAnalysis[] = [];
 
-    for (const dir of this.architecture.directories) {
-      if (dir.category === "source" && dir.importance !== "excluded") {
-        const packageAnalysis = await this.analyzePackage(dir.path, dir);
-        if (packageAnalysis) {
-          packages.push(packageAnalysis);
+    // Analyze individual packages in the packages directory
+    const packagesDir = join(this.rootPath, "packages");
+    try {
+      const packageDirs = await readdir(packagesDir, { withFileTypes: true });
+      
+      for (const dir of packageDirs) {
+        if (dir.isDirectory() && !this.shouldSkipDirectory(dir.name)) {
+          const packagePath = join("packages", dir.name);
+          const packageAnalysis = await this.analyzePackage(packagePath, {
+            category: "source",
+            importance: this.determinePackageImportance(dir.name),
+          });
+          if (packageAnalysis) {
+            packages.push(packageAnalysis);
+          }
         }
       }
+    } catch (error) {
+      console.warn("⚠️ Failed to analyze packages directory:", error);
+    }
+
+    // Analyze backend directory
+    const backendPath = join(this.rootPath, "backend");
+    try {
+      const backendAnalysis = await this.analyzeBackendPackage(backendPath);
+      if (backendAnalysis) {
+        packages.push(backendAnalysis);
+      }
+    } catch (error) {
+      console.warn("⚠️ Failed to analyze backend directory:", error);
     }
 
     return packages;
@@ -386,7 +409,69 @@ export class CodebaseAnalyzer {
   }
 
   private shouldSkipDirectory(dirName: string): boolean {
-    return ["node_modules", "dist", "build", ".git", "__pycache__", "venv"].includes(dirName);
+    return ["node_modules", "dist", "build", ".git", "__pycache__", "venv", ".next", "coverage"].includes(dirName);
+  }
+
+  private determinePackageImportance(packageName: string): "critical" | "important" | "optional" {
+    const criticalPackages = ["core", "api-client", "connection", "components-core", "auth"];
+    const importantPackages = ["caption", "chat", "rag", "gallery", "testing", "themes"];
+    
+    if (criticalPackages.some(critical => packageName.includes(critical))) {
+      return "critical";
+    }
+    if (importantPackages.some(important => packageName.includes(important))) {
+      return "important";
+    }
+    return "optional";
+  }
+
+  private async analyzeBackendPackage(backendPath: string): Promise<PackageAnalysis | null> {
+    try {
+      const packageJsonPath = join(backendPath, "package.json");
+      let packageJson: any = null;
+      
+      try {
+        const packageJsonContent = await readFile(packageJsonPath, "utf-8");
+        packageJson = JSON.parse(packageJsonContent);
+      } catch {
+        // Backend might not have package.json, create a mock one
+        packageJson = {
+          name: "reynard-backend",
+          version: "1.0.0",
+          description: "Reynard Python Backend",
+        };
+      }
+
+      const components = await this.analyzeBackendComponents(backendPath);
+      const files = await this.analyzePackageFiles(backendPath);
+
+      return {
+        name: packageJson.name || "reynard-backend",
+        path: "backend",
+        type: "source",
+        importance: "critical",
+        dependencies: this.extractDependencies(packageJson),
+        exports: this.extractExports(packageJson),
+        components,
+        files,
+      };
+    } catch (error) {
+      console.warn(`⚠️ Failed to analyze backend package:`, error);
+      return null;
+    }
+  }
+
+  private async analyzeBackendComponents(backendPath: string): Promise<ComponentAnalysis[]> {
+    const components: ComponentAnalysis[] = [];
+    const appPath = join(backendPath, "app");
+
+    try {
+      await this.analyzeDirectoryForComponents(appPath, components, backendPath);
+    } catch (error) {
+      // Backend might not have app directory
+    }
+
+    return components;
   }
 
   private extractDependencies(packageJson: any): string[] {
@@ -395,7 +480,8 @@ export class CodebaseAnalyzer {
       ...Object.keys(packageJson.devDependencies || {}),
       ...Object.keys(packageJson.peerDependencies || {}),
     ];
-    return deps.filter(dep => !dep.startsWith("reynard-"));
+    // Include both internal and external dependencies for better analysis
+    return deps;
   }
 
   private extractExports(packageJson: any): string[] {
@@ -412,34 +498,55 @@ export class CodebaseAnalyzer {
   private extractFileExports(content: string): string[] {
     const exports: string[] = [];
 
-    // Match export statements
-    const exportRegex = /export\s+(?:default\s+)?(?:const|let|var|function|class|interface|type|enum)\s+(\w+)/g;
-    let match;
-    while ((match = exportRegex.exec(content)) !== null) {
-      exports.push(match[1]);
+    // Enhanced export patterns
+    const exportPatterns = [
+      /export\s+(?:const|let|var|function|class|interface|type|enum)\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/g,
+      /export\s*\{\s*([^}]+)\s*\}/g,
+      /export\s+default\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/g,
+      /export\s+\*\s+from\s+['"]([^'"]+)['"]/g,
+    ];
+
+    for (const pattern of exportPatterns) {
+      let match;
+      while ((match = pattern.exec(content)) !== null) {
+        const exportName = match[1];
+        if (exportName && exportName.trim()) {
+          // Handle named exports in braces
+          if (exportName.includes(',')) {
+            const namedExports = exportName.split(',').map(e => e.trim().split(' as ')[0].trim());
+            exports.push(...namedExports);
+          } else {
+            exports.push(exportName.trim());
+          }
+        }
+      }
     }
 
-    // Match named exports
-    const namedExportRegex = /export\s*{\s*([^}]+)\s*}/g;
-    while ((match = namedExportRegex.exec(content)) !== null) {
-      const namedExports = match[1].split(",").map(exp => exp.trim().split(" as ")[0]);
-      exports.push(...namedExports);
-    }
-
-    return exports;
+    return [...new Set(exports)]; // Remove duplicates
   }
 
   private extractFileImports(content: string): string[] {
     const imports: string[] = [];
 
-    // Match import statements
-    const importRegex = /import\s+(?:.*\s+from\s+)?['"]([^'"]+)['"]/g;
-    let match;
-    while ((match = importRegex.exec(content)) !== null) {
-      imports.push(match[1]);
+    // Enhanced import patterns to catch more cases
+    const importPatterns = [
+      /import\s+.*\s+from\s+['"]([^'"]+)['"]/g,
+      /import\s+['"]([^'"]+)['"]/g,
+      /from\s+['"]([^'"]+)['"]/g,
+      /require\s*\(\s*['"]([^'"]+)['"]\s*\)/g,
+    ];
+
+    for (const pattern of importPatterns) {
+      let match;
+      while ((match = pattern.exec(content)) !== null) {
+        const importPath = match[1];
+        if (importPath && !importPath.startsWith("node:")) {
+          imports.push(importPath);
+        }
+      }
     }
 
-    return imports;
+    return [...new Set(imports)]; // Remove duplicates
   }
 
   private extractFileDependencies(_content: string): string[] {

@@ -13,7 +13,7 @@ Guide for AI agents working within the Reynard ecosystem.
 This guide provides essential information for AI agents operating within the Reynard framework. It covers MCP server
 integration, naming conventions, development workflows, and best practices for maintaining the Reynard way of excellence.
 
-## MCP Server Integration
+### MCP Server Integration
 
 #### Agent Naming System
 
@@ -63,7 +63,7 @@ integration, naming conventions, development workflows, and best practices for m
 
 **❌ Common Mistake**: Don't manually assign simple names like "Vulpine" - use the generation system!
 
-#### Available MCP Tools
+## Available MCP Tools
 
 The Reynard MCP server provides **47 comprehensive tools** across 8 major categories:
 
@@ -81,62 +81,62 @@ The Reynard MCP server provides **47 comprehensive tools** across 8 major catego
 
 ### 🔍 Linting & Formatting Tools (8 tools)
 
-10. **`lint_frontend`** - ESLint for TypeScript/JavaScript (with auto-fix)
-11. **`format_frontend`** - Prettier formatting (with check-only mode)
-12. **`lint_python`** - Flake8, Pylint for Python (with auto-fix)
-13. **`format_python`** - Black + isort formatting (with check-only mode)
-14. **`lint_markdown`** - markdownlint validation (with auto-fix)
-15. **`validate_comprehensive`** - Run all custom validation scripts
-16. **`scan_security`** - Complete security audit (Bandit, audit-ci, type checking)
-17. **`run_all_linting`** - Execute entire linting suite (with auto-fix)
+1. **`lint_frontend`** - ESLint for TypeScript/JavaScript (with auto-fix)
+2. **`format_frontend`** - Prettier formatting (with check-only mode)
+3. **`lint_python`** - Flake8, Pylint for Python (with auto-fix)
+4. **`format_python`** - Black + isort formatting (with check-only mode)
+5. **`lint_markdown`** - markdownlint validation (with auto-fix)
+6. **`validate_comprehensive`** - Run all custom validation scripts
+7. **`scan_security`** - Complete security audit (Bandit, audit-ci, type checking)
+8. **`run_all_linting`** - Execute entire linting suite (with auto-fix)
 
 ### 📊 Version & VS Code Tools (9 tools)
 
-18. **`get_versions`** - Get versions of Python, Node.js, npm, pnpm, and TypeScript
-19. **`get_python_version`** - Get Python version information
-20. **`get_node_version`** - Get Node.js version information
-21. **`get_typescript_version`** - Get TypeScript version information
-22. **`get_vscode_active_file`** - Get currently active file path in VS Code
-23. **`get_vscode_workspace_info`** - Get VS Code workspace information and settings
-24. **`get_vscode_extensions`** - Get list of installed VS Code extensions
-25. **`scan_security_fast`** - Run fast security scanning (skips slow Bandit checks)
-26. **`scan_security_full`** - Run comprehensive security scanning including Bandit
+1. **`get_versions`** - Get versions of Python, Node.js, npm, pnpm, and TypeScript
+2. **`get_python_version`** - Get Python version information
+3. **`get_node_version`** - Get Node.js version information
+4. **`get_typescript_version`** - Get TypeScript version information
+5. **`get_vscode_active_file`** - Get currently active file path in VS Code
+6. **`get_vscode_workspace_info`** - Get VS Code workspace information and settings
+7. **`get_vscode_extensions`** - Get list of installed VS Code extensions
+8. **`scan_security_fast`** - Run fast security scanning (skips slow Bandit checks)
+9. **`scan_security_full`** - Run comprehensive security scanning including Bandit
 
 ### 🔍 File Search Tools (4 tools)
 
-27. **`search_files`** - Search for files by name pattern in the project
-28. **`list_files`** - List files in a directory with optional filtering
-29. **`semantic_search`** - Search for code by semantic meaning using grep patterns
-30. **`search_code_patterns`** - Search for specific code patterns (functions, classes, imports, etc.)
+1. **`search_files`** - Search for files by name pattern in the project
+2. **`list_files`** - List files in a directory with optional filtering
+3. **`semantic_search`** - Search for code by semantic meaning using grep patterns
+4. **`search_code_patterns`** - Search for specific code patterns (functions, classes, imports, etc.)
 
 ### 🧠 Semantic Search Tools (5 tools)
 
-31. **`semantic_search`** - Perform semantic search using vector embeddings and RAG backend
-32. **`hybrid_search`** - Perform hybrid search combining semantic and traditional text search
-33. **`embed_text`** - Generate vector embedding for text using RAG backend
-34. **`index_documents`** - Index documents for semantic search
-35. **`get_search_stats`** - Get semantic search service statistics and health status
+1. **`semantic_search`** - Perform semantic search using vector embeddings and RAG backend
+2. **`hybrid_search`** - Perform hybrid search combining semantic and traditional text search
+3. **`embed_text`** - Generate vector embedding for text using RAG backend
+4. **`index_documents`** - Index documents for semantic search
+5. **`get_search_stats`** - Get semantic search service statistics and health status
 
 ### 🖼️ Image Viewer Tools (3 tools)
 
-36. **`open_image`** - Open an image file with the imv image viewer
-37. **`search_images`** - Search for image files in a directory
-38. **`get_image_info`** - Get information about an image file
+1. **`open_image`** - Open an image file with the imv image viewer
+2. **`search_images`** - Search for image files in a directory
+3. **`get_image_info`** - Get information about an image file
 
 ### 📈 Mermaid Diagram Tools (5 tools)
 
-39. **`validate_mermaid_diagram`** - Validate mermaid diagram syntax and check for errors
-40. **`render_mermaid_to_svg`** - Render mermaid diagram to SVG format
-41. **`render_mermaid_to_png`** - Render mermaid diagram to PNG format
-42. **`get_mermaid_diagram_stats`** - Get statistics and analysis of a mermaid diagram
-43. **`test_mermaid_render`** - Test mermaid diagram rendering with a simple example
+1. **`validate_mermaid_diagram`** - Validate mermaid diagram syntax and check for errors
+2. **`render_mermaid_to_svg`** - Render mermaid diagram to SVG format
+3. **`render_mermaid_to_png`** - Render mermaid diagram to PNG format
+4. **`get_mermaid_diagram_stats`** - Get statistics and analysis of a mermaid diagram
+5. **`test_mermaid_render`** - Test mermaid diagram rendering with a simple example
 
 ### ⚙️ VS Code Tasks Tools (4 tools)
 
-44. **`discover_vscode_tasks`** - Discover all available VS Code tasks from tasks.json
-45. **`validate_vscode_task`** - Validate that a VS Code task exists and is executable
-46. **`execute_vscode_task`** - Execute a VS Code task by name
-47. **`get_vscode_task_info`** - Get detailed information about a specific VS Code task
+1. **`discover_vscode_tasks`** - Discover all available VS Code tasks from tasks.json
+2. **`validate_vscode_task`** - Validate that a VS Code task exists and is executable
+3. **`execute_vscode_task`** - Execute a VS Code task by name
+4. **`get_vscode_task_info`** - Get detailed information about a specific VS Code task
 
 ### Enhanced MCP Server Capabilities
 

@@ -8,20 +8,26 @@ import { ArchitectureOverviewGenerator } from "./ArchitectureOverviewGenerator.j
 import { PackageDependenciesGenerator } from "./PackageDependenciesGenerator.js";
 import { ComponentRelationshipsGenerator } from "./ComponentRelationshipsGenerator.js";
 import { FileStructureGenerator } from "./FileStructureGenerator.js";
+import { FrontendBackendRelationshipGenerator } from "./FrontendBackendRelationshipGenerator.js";
+import { DetailedEcosystemGenerator } from "./DetailedEcosystemGenerator.js";
 
 export {
   ArchitectureOverviewGenerator,
   PackageDependenciesGenerator,
   ComponentRelationshipsGenerator,
   FileStructureGenerator,
+  FrontendBackendRelationshipGenerator,
+  DetailedEcosystemGenerator,
 };
 
 // Export generator registry
 export const DIAGRAM_GENERATORS = [
-  ArchitectureOverviewGenerator,
-  PackageDependenciesGenerator,
-  ComponentRelationshipsGenerator,
-  FileStructureGenerator,
-] as const;
+  new ArchitectureOverviewGenerator(),
+  new PackageDependenciesGenerator(),
+  new ComponentRelationshipsGenerator(),
+  new FileStructureGenerator(),
+  new FrontendBackendRelationshipGenerator(),
+  new DetailedEcosystemGenerator(),
+];
 
 export type DiagramGeneratorClass = (typeof DIAGRAM_GENERATORS)[number];

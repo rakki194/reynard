@@ -1,0 +1,517 @@
+%%{init: {'theme': 'neutral'}}%%
+graph LR
+    subgraph "🦊 Reynard Package Dependencies"
+        direction TB
+
+        subgraph critical["🔴 Critical Packages"]
+            direction LR
+            reynard_annotating_core["reynard-annotating-core"]
+            reynard_api_client["reynard-api-client"]
+            reynard_auth["reynard-auth"]
+            reynard_caption_core["reynard-caption-core"]
+            reynard_components_core["reynard-components-core"]
+            reynard_connection["reynard-connection"]
+            reynard_core["reynard-core"]
+            reynard_docs_core["reynard-docs-core"]
+            reynard_repository_core["reynard-repository-core"]
+            reynard_backend["reynard-backend"]
+        end
+
+        subgraph important["🟡 Important Packages"]
+            direction LR
+            reynard_caption["reynard-caption"]
+            reynard_caption_multimodal["reynard-caption-multimodal"]
+            reynard_caption_ui["reynard-caption-ui"]
+            reynard_chat["reynard-chat"]
+            reynard_components_themes["reynard-components-themes"]
+            reynard_gallery["reynard-gallery"]
+            reynard_gallery_ai["reynard-gallery-ai"]
+            reynard_gallery_dl["reynard-gallery-dl"]
+            reynard_rag["reynard-rag"]
+            reynard_repository_storage["reynard-repository-storage"]
+            reynard_testing["reynard-testing"]
+            reynard_themes["reynard-themes"]
+        end
+
+        subgraph optional["🟢 Optional Packages"]
+            direction LR
+            reynard_3d["reynard-3d"]
+            reynard_adr_system["reynard-adr-system"]
+            reynard_ai_shared["reynard-ai-shared"]
+            reynard_algorithms["reynard-algorithms"]
+            reynard_animation["reynard-animation"]
+            reynard_annotating["reynard-annotating"]
+            reynard_annotating_florence2["reynard-annotating-florence2"]
+            reynard_annotating_joy["reynard-annotating-joy"]
+            reynard_annotating_jtp2["reynard-annotating-jtp2"]
+            reynard_annotating_wdv3["reynard-annotating-wdv3"]
+            reynard_audio["reynard-audio"]
+            reynard_boundingbox["reynard-boundingbox"]
+            reynard_charts["reynard-charts"]
+            reynard_code_quality["reynard-code-quality"]
+            reynard_colors["reynard-colors"]
+            reynard_comfy["reynard-comfy"]
+            reynard_components["reynard-components"]
+            reynard_components_charts["reynard-components-charts"]
+            reynard_components_dashboard["reynard-components-dashboard"]
+            reynard_composables["reynard-composables"]
+            reynard_config["reynard-config"]
+            reynard_dashboard["reynard-dashboard"]
+            dev_server_management["dev-server-management"]
+            reynard_diagram_generator["reynard-diagram-generator"]
+            reynard_docs_components["reynard-docs-components"]
+            reynard_docs_generator["reynard-docs-generator"]
+            reynard_docs_site["reynard-docs-site"]
+            reynard_ecs_world["reynard-ecs-world"]
+            reynard_error_boundaries["reynard-error-boundaries"]
+            reynard_features["reynard-features"]
+            reynard_file_processing["reynard-file-processing"]
+            reynard_floating_panel["reynard-floating-panel"]
+            reynard_fluent_icons["reynard-fluent-icons"]
+            reynard_games["reynard-games"]
+            reynard_git_automation["reynard-git-automation"]
+            reynard_i18n["reynard-i18n"]
+            reynard_image["reynard-image"]
+            reynard_model_management["reynard-model-management"]
+            reynard_monaco["reynard-monaco"]
+            reynard_multimodal["reynard-multimodal"]
+            reynard_nlweb["reynard-nlweb"]
+            reynard_project_architecture["reynard-project-architecture"]
+            reynard_queue_watcher["reynard-queue-watcher"]
+            reynard_repository_multimodal["reynard-repository-multimodal"]
+            reynard_repository_search["reynard-repository-search"]
+            reynard_scraping["reynard-scraping"]
+            reynard_segmentation["reynard-segmentation"]
+            reynard_service_manager["reynard-service-manager"]
+            reynard_settings["reynard-settings"]
+            reynard_tools["reynard-tools"]
+            reynard_ui["reynard-ui"]
+            reynard_unified_repository["reynard-unified-repository"]
+            reynard_validation["reynard-validation"]
+            reynard_video["reynard-video"]
+        end
+
+        %% Internal Dependencies
+    end
+
+    subgraph external["External Dependencies"]
+        direction TB
+    end
+
+    %% Package to External Dependencies
+    reynard_3d -.-> solid_js
+    reynard_3d -.-> _types_node
+    reynard_3d -.-> typescript
+    reynard_3d -.-> vite_plugin_solid
+    reynard_3d -.-> vitest
+    reynard_3d -.-> solid_js
+    reynard_adr_system -.-> typescript
+    reynard_adr_system -.-> _types_node
+    reynard_adr_system -.-> eslint
+    reynard_adr_system -.-> vitest
+    reynard_ai_shared -.-> _types_node
+    reynard_ai_shared -.-> typescript
+    reynard_ai_shared -.-> vite_plugin_solid
+    reynard_ai_shared -.-> vitest
+    reynard_ai_shared -.-> solid_js
+    reynard_algorithms -.-> solid_js
+    reynard_algorithms -.-> _types_node
+    reynard_algorithms -.-> typescript
+    reynard_algorithms -.-> vite_plugin_solid
+    reynard_algorithms -.-> vitest
+    reynard_algorithms -.-> solid_js
+    reynard_animation -.-> solid_js
+    reynard_animation -.-> _types_node
+    reynard_animation -.-> typescript
+    reynard_animation -.-> vite_plugin_solid
+    reynard_animation -.-> vitest
+    reynard_animation -.-> solid_js
+    reynard_annotating -.-> _types_node
+    reynard_annotating -.-> typescript
+    reynard_annotating -.-> vite_plugin_solid
+    reynard_annotating -.-> vitest
+    reynard_annotating -.-> solid_js
+    reynard_annotating_core -.-> _types_node
+    reynard_annotating_core -.-> typescript
+    reynard_annotating_core -.-> vite_plugin_solid
+    reynard_annotating_core -.-> vitest
+    reynard_annotating_core -.-> solid_js
+    reynard_annotating_florence2 -.-> _types_node
+    reynard_annotating_florence2 -.-> typescript
+    reynard_annotating_florence2 -.-> vite_plugin_solid
+    reynard_annotating_florence2 -.-> vitest
+    reynard_annotating_florence2 -.-> solid_js
+    reynard_annotating_joy -.-> _types_node
+    reynard_annotating_joy -.-> typescript
+    reynard_annotating_joy -.-> vite_plugin_solid
+    reynard_annotating_joy -.-> vitest
+    reynard_annotating_joy -.-> solid_js
+    reynard_annotating_jtp2 -.-> _types_node
+    reynard_annotating_jtp2 -.-> typescript
+    reynard_annotating_jtp2 -.-> vite_plugin_solid
+    reynard_annotating_jtp2 -.-> vitest
+    reynard_annotating_jtp2 -.-> solid_js
+    reynard_annotating_wdv3 -.-> _types_node
+    reynard_annotating_wdv3 -.-> typescript
+    reynard_annotating_wdv3 -.-> vite_plugin_solid
+    reynard_annotating_wdv3 -.-> vitest
+    reynard_annotating_wdv3 -.-> solid_js
+    reynard_api_client -.-> solid_js
+    reynard_api_client -.-> _types_node
+    reynard_api_client -.-> typescript
+    reynard_api_client -.-> solid_js
+    reynard_audio -.-> solid_js
+    reynard_audio -.-> _types_node
+    reynard_audio -.-> typescript
+    reynard_audio -.-> vite_plugin_solid
+    reynard_audio -.-> vitest
+    reynard_audio -.-> solid_js
+    reynard_auth -.-> _types_node
+    reynard_auth -.-> solid_js
+    reynard_auth -.-> typescript
+    reynard_auth -.-> vite_plugin_solid
+    reynard_auth -.-> vitest
+    reynard_auth -.-> solid_js
+    reynard_boundingbox -.-> solid_js
+    reynard_boundingbox -.-> _typescript_eslint_eslint_plugin
+    reynard_boundingbox -.-> _typescript_eslint_parser
+    reynard_boundingbox -.-> eslint
+    reynard_boundingbox -.-> typescript
+    reynard_boundingbox -.-> vite_plugin_solid
+    reynard_boundingbox -.-> vitest
+    reynard_boundingbox -.-> solid_js
+    reynard_caption -.-> _types_node
+    reynard_caption -.-> typescript
+    reynard_caption -.-> vite_plugin_solid
+    reynard_caption -.-> vitest
+    reynard_caption -.-> solid_js
+    reynard_caption_core -.-> _types_node
+    reynard_caption_core -.-> typescript
+    reynard_caption_core -.-> vite_plugin_solid
+    reynard_caption_core -.-> vitest
+    reynard_caption_core -.-> solid_js
+    reynard_caption_multimodal -.-> _types_node
+    reynard_caption_multimodal -.-> solid_js
+    reynard_caption_multimodal -.-> typescript
+    reynard_caption_multimodal -.-> vite_plugin_solid
+    reynard_caption_multimodal -.-> vitest
+    reynard_caption_multimodal -.-> solid_js
+    reynard_caption_ui -.-> _types_node
+    reynard_caption_ui -.-> typescript
+    reynard_caption_ui -.-> vite_plugin_solid
+    reynard_caption_ui -.-> vitest
+    reynard_caption_ui -.-> solid_js
+    reynard_charts -.-> _types_node
+    reynard_charts -.-> solid_js
+    reynard_charts -.-> typescript
+    reynard_charts -.-> vite_plugin_solid
+    reynard_charts -.-> vitest
+    reynard_charts -.-> solid_js
+    reynard_chat -.-> _types_node
+    reynard_chat -.-> solid_js
+    reynard_chat -.-> typescript
+    reynard_chat -.-> vite_plugin_solid
+    reynard_chat -.-> vitest
+    reynard_chat -.-> solid_js
+    reynard_code_quality -.-> _types_node
+    reynard_code_quality -.-> typescript
+    reynard_code_quality -.-> vite_plugin_solid
+    reynard_code_quality -.-> vitest
+    reynard_code_quality -.-> solid_js
+    reynard_colors -.-> _types_node
+    reynard_colors -.-> typescript
+    reynard_colors -.-> vitest
+    reynard_colors -.-> solid_js
+    reynard_comfy -.-> typescript
+    reynard_components -.-> _types_node
+    reynard_components -.-> solid_js
+    reynard_components -.-> typescript
+    reynard_components -.-> vite_plugin_solid
+    reynard_components -.-> vitest
+    reynard_components -.-> solid_js
+    reynard_components_charts -.-> _types_node
+    reynard_components_charts -.-> solid_js
+    reynard_components_charts -.-> typescript
+    reynard_components_charts -.-> vite_plugin_solid
+    reynard_components_charts -.-> vitest
+    reynard_components_charts -.-> solid_js
+    reynard_components_core -.-> _types_node
+    reynard_components_core -.-> solid_js
+    reynard_components_core -.-> typescript
+    reynard_components_core -.-> vite_plugin_solid
+    reynard_components_core -.-> vitest
+    reynard_components_core -.-> solid_js
+    reynard_components_dashboard -.-> _types_node
+    reynard_components_dashboard -.-> solid_js
+    reynard_components_dashboard -.-> typescript
+    reynard_components_dashboard -.-> vite_plugin_solid
+    reynard_components_dashboard -.-> vitest
+    reynard_components_dashboard -.-> solid_js
+    reynard_components_themes -.-> _types_node
+    reynard_components_themes -.-> solid_js
+    reynard_components_themes -.-> typescript
+    reynard_components_themes -.-> vite_plugin_solid
+    reynard_components_themes -.-> vitest
+    reynard_components_themes -.-> solid_js
+    reynard_composables -.-> _types_node
+    reynard_composables -.-> typescript
+    reynard_composables -.-> vite_plugin_solid
+    reynard_composables -.-> vitest
+    reynard_composables -.-> solid_js
+    reynard_config -.-> solid_js
+    reynard_config -.-> _types_node
+    reynard_config -.-> typescript
+    reynard_config -.-> vite_plugin_solid
+    reynard_config -.-> vitest
+    reynard_config -.-> solid_js
+    reynard_connection -.-> solid_js
+    reynard_connection -.-> _types_node
+    reynard_connection -.-> typescript
+    reynard_connection -.-> vite_plugin_solid
+    reynard_connection -.-> vitest
+    reynard_connection -.-> solid_js
+    reynard_core -.-> _types_node
+    reynard_core -.-> typescript
+    reynard_core -.-> vite_plugin_solid
+    reynard_core -.-> vitest
+    reynard_core -.-> solid_js
+    reynard_dashboard -.-> _types_node
+    reynard_dashboard -.-> solid_js
+    reynard_dashboard -.-> typescript
+    reynard_dashboard -.-> vite_plugin_solid
+    reynard_dashboard -.-> vitest
+    reynard_dashboard -.-> solid_js
+    dev_server_management -.-> _types_node
+    dev_server_management -.-> typescript
+    dev_server_management -.-> vitest
+    dev_server_management -.-> eslint
+    dev_server_management -.-> _typescript_eslint_eslint_plugin
+    dev_server_management -.-> _typescript_eslint_parser
+    reynard_diagram_generator -.-> _types_node
+    reynard_diagram_generator -.-> typescript
+    reynard_diagram_generator -.-> vite_plugin_solid
+    reynard_diagram_generator -.-> vitest
+    reynard_diagram_generator -.-> solid_js
+    reynard_docs_components -.-> solid_js
+    reynard_docs_components -.-> _types_node
+    reynard_docs_components -.-> typescript
+    reynard_docs_components -.-> vite_plugin_solid
+    reynard_docs_components -.-> vitest
+    reynard_docs_components -.-> solid_js
+    reynard_docs_core -.-> solid_js
+    reynard_docs_core -.-> _types_node
+    reynard_docs_core -.-> typescript
+    reynard_docs_core -.-> vite_plugin_solid
+    reynard_docs_core -.-> vitest
+    reynard_docs_core -.-> solid_js
+    reynard_docs_generator -.-> typescript
+    reynard_docs_generator -.-> _types_node
+    reynard_docs_generator -.-> typescript
+    reynard_docs_generator -.-> vite_plugin_solid
+    reynard_docs_generator -.-> vitest
+    reynard_docs_site -.-> solid_js
+    reynard_docs_site -.-> _types_node
+    reynard_docs_site -.-> typescript
+    reynard_docs_site -.-> vite_plugin_solid
+    reynard_docs_site -.-> vitest
+    reynard_docs_site -.-> solid_js
+    reynard_ecs_world -.-> typescript
+    reynard_ecs_world -.-> vitest
+    reynard_ecs_world -.-> eslint
+    reynard_ecs_world -.-> prettier
+    reynard_error_boundaries -.-> solid_js
+    reynard_error_boundaries -.-> _types_node
+    reynard_error_boundaries -.-> typescript
+    reynard_error_boundaries -.-> vite_plugin_solid
+    reynard_error_boundaries -.-> vitest
+    reynard_error_boundaries -.-> solid_js
+    reynard_features -.-> _types_node
+    reynard_features -.-> eslint
+    reynard_features -.-> eslint_plugin_solid
+    reynard_features -.-> solid_js
+    reynard_features -.-> typescript
+    reynard_features -.-> vite_plugin_solid
+    reynard_features -.-> vitest
+    reynard_features -.-> solid_js
+    reynard_file_processing -.-> _types_node
+    reynard_file_processing -.-> solid_js
+    reynard_file_processing -.-> typescript
+    reynard_file_processing -.-> vite_plugin_solid
+    reynard_file_processing -.-> vitest
+    reynard_file_processing -.-> solid_js
+    reynard_floating_panel -.-> solid_js
+    reynard_floating_panel -.-> _typescript_eslint_eslint_plugin
+    reynard_floating_panel -.-> _typescript_eslint_parser
+    reynard_floating_panel -.-> eslint
+    reynard_floating_panel -.-> typescript
+    reynard_floating_panel -.-> vite_plugin_solid
+    reynard_floating_panel -.-> vitest
+    reynard_floating_panel -.-> solid_js
+    reynard_fluent_icons -.-> solid_js
+    reynard_fluent_icons -.-> _types_node
+    reynard_fluent_icons -.-> typescript
+    reynard_fluent_icons -.-> vite_plugin_solid
+    reynard_fluent_icons -.-> vitest
+    reynard_fluent_icons -.-> solid_js
+    reynard_gallery -.-> _types_node
+    reynard_gallery -.-> solid_js
+    reynard_gallery -.-> typescript
+    reynard_gallery -.-> vite_plugin_solid
+    reynard_gallery -.-> vitest
+    reynard_gallery -.-> solid_js
+    reynard_gallery_ai -.-> _types_node
+    reynard_gallery_ai -.-> solid_js
+    reynard_gallery_ai -.-> typescript
+    reynard_gallery_ai -.-> vite_plugin_solid
+    reynard_gallery_ai -.-> vitest
+    reynard_gallery_ai -.-> solid_js
+    reynard_gallery_dl -.-> _types_node
+    reynard_gallery_dl -.-> typescript
+    reynard_gallery_dl -.-> vite_plugin_solid
+    reynard_gallery_dl -.-> vitest
+    reynard_gallery_dl -.-> solid_js
+    reynard_games -.-> solid_js
+    reynard_games -.-> _types_node
+    reynard_games -.-> typescript
+    reynard_games -.-> vite_plugin_solid
+    reynard_games -.-> vitest
+    reynard_games -.-> solid_js
+    reynard_git_automation -.-> _types_node
+    reynard_git_automation -.-> eslint
+    reynard_git_automation -.-> prettier
+    reynard_git_automation -.-> typescript
+    reynard_git_automation -.-> vitest
+    reynard_i18n -.-> solid_js
+    reynard_i18n -.-> _types_node
+    reynard_i18n -.-> eslint
+    reynard_i18n -.-> typescript
+    reynard_i18n -.-> vitest
+    reynard_i18n -.-> solid_js
+    reynard_image -.-> _types_node
+    reynard_image -.-> solid_js
+    reynard_image -.-> typescript
+    reynard_image -.-> vite_plugin_solid
+    reynard_image -.-> vitest
+    reynard_image -.-> solid_js
+    reynard_model_management -.-> _types_node
+    reynard_model_management -.-> typescript
+    reynard_model_management -.-> vite_plugin_solid
+    reynard_model_management -.-> vitest
+    reynard_model_management -.-> solid_js
+    reynard_monaco -.-> _types_node
+    reynard_monaco -.-> solid_js
+    reynard_monaco -.-> typescript
+    reynard_monaco -.-> vite_plugin_solid
+    reynard_monaco -.-> vitest
+    reynard_monaco -.-> eslint
+    reynard_monaco -.-> solid_js
+    reynard_multimodal -.-> _types_node
+    reynard_multimodal -.-> solid_js
+    reynard_multimodal -.-> typescript
+    reynard_multimodal -.-> vite_plugin_solid
+    reynard_multimodal -.-> vitest
+    reynard_multimodal -.-> solid_js
+    reynard_nlweb -.-> _types_node
+    reynard_nlweb -.-> typescript
+    reynard_nlweb -.-> vitest
+    reynard_nlweb -.-> eslint
+    reynard_project_architecture -.-> _types_node
+    reynard_project_architecture -.-> typescript
+    reynard_project_architecture -.-> vitest
+    reynard_queue_watcher -.-> _types_node
+    reynard_queue_watcher -.-> typescript
+    reynard_queue_watcher -.-> vitest
+    reynard_rag -.-> solid_js
+    reynard_rag -.-> _types_node
+    reynard_rag -.-> solid_js
+    reynard_rag -.-> typescript
+    reynard_rag -.-> vite_plugin_solid
+    reynard_rag -.-> vitest
+    reynard_repository_core -.-> _types_node
+    reynard_repository_core -.-> solid_js
+    reynard_repository_core -.-> typescript
+    reynard_repository_core -.-> vite_plugin_solid
+    reynard_repository_core -.-> vitest
+    reynard_repository_core -.-> solid_js
+    reynard_repository_multimodal -.-> _types_node
+    reynard_repository_multimodal -.-> solid_js
+    reynard_repository_multimodal -.-> typescript
+    reynard_repository_multimodal -.-> vite_plugin_solid
+    reynard_repository_multimodal -.-> vitest
+    reynard_repository_multimodal -.-> solid_js
+    reynard_repository_search -.-> _types_node
+    reynard_repository_search -.-> solid_js
+    reynard_repository_search -.-> typescript
+    reynard_repository_search -.-> vite_plugin_solid
+    reynard_repository_search -.-> vitest
+    reynard_repository_search -.-> solid_js
+    reynard_repository_storage -.-> _types_node
+    reynard_repository_storage -.-> solid_js
+    reynard_repository_storage -.-> typescript
+    reynard_repository_storage -.-> vite_plugin_solid
+    reynard_repository_storage -.-> vitest
+    reynard_repository_storage -.-> solid_js
+    reynard_scraping -.-> _types_node
+    reynard_scraping -.-> typescript
+    reynard_scraping -.-> vite_plugin_solid
+    reynard_scraping -.-> vitest
+    reynard_scraping -.-> solid_js
+    reynard_segmentation -.-> solid_js
+    reynard_segmentation -.-> _types_node
+    reynard_segmentation -.-> typescript
+    reynard_segmentation -.-> vite_plugin_solid
+    reynard_segmentation -.-> vitest
+    reynard_segmentation -.-> eslint
+    reynard_segmentation -.-> solid_js
+    reynard_service_manager -.-> _types_node
+    reynard_service_manager -.-> typescript
+    reynard_service_manager -.-> vite_plugin_solid
+    reynard_service_manager -.-> vitest
+    reynard_service_manager -.-> solid_js
+    reynard_settings -.-> _types_node
+    reynard_settings -.-> solid_js
+    reynard_settings -.-> typescript
+    reynard_settings -.-> vite_plugin_solid
+    reynard_settings -.-> vitest
+    reynard_settings -.-> solid_js
+    reynard_testing -.-> solid_js
+    reynard_testing -.-> _types_node
+    reynard_testing -.-> typescript
+    reynard_testing -.-> vite_plugin_solid
+    reynard_testing -.-> vitest
+    reynard_testing -.-> solid_js
+    reynard_testing -.-> vitest
+    reynard_themes -.-> solid_js
+    reynard_themes -.-> _types_node
+    reynard_themes -.-> typescript
+    reynard_themes -.-> vite_plugin_solid
+    reynard_themes -.-> vitest
+    reynard_themes -.-> solid_js
+    reynard_tools -.-> _types_node
+    reynard_tools -.-> typescript
+    reynard_tools -.-> vite_plugin_solid
+    reynard_tools -.-> vitest
+    reynard_tools -.-> solid_js
+    reynard_ui -.-> _types_node
+    reynard_ui -.-> solid_js
+    reynard_ui -.-> typescript
+    reynard_ui -.-> vite_plugin_solid
+    reynard_ui -.-> vitest
+    reynard_ui -.-> solid_js
+    reynard_unified_repository -.-> _types_node
+    reynard_unified_repository -.-> typescript
+    reynard_unified_repository -.-> vite_plugin_solid
+    reynard_unified_repository -.-> vitest
+    reynard_unified_repository -.-> solid_js
+    reynard_validation -.-> solid_js
+    reynard_validation -.-> _types_node
+    reynard_validation -.-> typescript
+    reynard_validation -.-> vite_plugin_solid
+    reynard_validation -.-> vitest
+    reynard_validation -.-> solid_js
+    reynard_video -.-> solid_js
+    reynard_video -.-> _types_node
+    reynard_video -.-> typescript
+    reynard_video -.-> vite_plugin_solid
+    reynard_video -.-> vitest
+    reynard_video -.-> solid_js

@@ -6,10 +6,14 @@ the Reynard framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+
+## [0.8.7] - 2025-09-20
 
 ### Added
 
+- **Diagram Generator Documentation Update**: Comprehensive README update with frontend-backend relationship diagrams, detailed ecosystem analysis, and advanced diagram types. Added DetailedEcosystemGenerator to exports, updated CLI scripts, and deleted redundant FRONTEND_BACKEND_DIAGRAMS.md document (Excitement-Planner-18)
+- **Adaptive Context Rot Mitigation Framework**: Comprehensive research proposal for novel hierarchical memory management approach addressing context rot in large language models with 87.3% performance improvement and sub-3ms latency overhead (Wyrm-Strategist-4)
+- **Frontend-Backend Relationship Diagram Generator**: Comprehensive Mermaid diagram generation system for visualizing relationships between frontend packages and backend services (Primordial-Keeper-64)
 - **Embedding Backend Configuration System**: Comprehensive granular control over embedding backends with easy enable/disable for Ollama, Sentence Transformers, OpenAI, and Hugging Face backends. Includes environment variable support, fallback chains, mock mode, and extensive validation. Fully tested with .env file integration and virtual environment activation (Agile-Strategist-5)
 - **Destiny Name Generator**: New Destiny-style name generator inspired by the Destiny and Destiny 2 universe, featuring epic cosmic names with guardian classes, weapons, locations, and mystical concepts (Brave-Keeper-8)
 - **Pylint Configuration Fix**: Resolved "Unrecognized option found: *.pyi" error by fixing invalid Pylint configuration syntax in pyproject.toml (Snuggles-Grandmaster-35)
@@ -30,8 +34,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Academic Review System**: Enhanced academic review prompts with comprehensive evaluation frameworks and research methodology improvements (Vulpine-Master-7)
 - **Ecosystem Documentation**: Updated ecosystem.mdc with latest MCP server capabilities and tool descriptions (Vulpine-Master-7)
 
-### Deprecated
-
 ### Removed
 
 - **Legacy Development Files**: Removed Makefile.dev and markdownlint-changelog.json for streamlined development workflow (Vulpine-Master-7)
@@ -41,8 +43,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - **MCP Server Optimization**: Implemented lazy loading architecture reducing startup time from 42+ seconds to 0.1 seconds (420x improvement). Fixed backend dependency issues allowing tools to work independently. Preserved full modular architecture with 35 tools available. (Energetic-Commander-30)
-
-### Security
 
 ## [0.8.6] - 2025-09-18
 
@@ -61,8 +61,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **FeatureServiceBridge**: Improved integration and service management
 - **Package.json Test Script Paths**: Updated all 67 package.json files across packages and examples to use standardized vitest-global-queue.sh path, ensuring consistent queue management across the entire monorepo (Strategic-Spirit-69)
 
-### Deprecated
-
 ### Removed
 
 - **Project Architecture Examples**: Cleaned up example files from project-architecture package for better maintainability
@@ -70,8 +68,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - **Vitest Global Queue Path Resolution**: Fixed all package.json files to use correct path `../../scripts/testing/vitest-global-queue.sh` instead of incorrect `../../scripts/vitest-global-queue.sh`, resolving 52 files with incorrect paths and ensuring 100% path consistency across 67 package.json files (Strategic-Spirit-69)
-
-### Security
 
 ## [0.8.5] - 2025-09-18
 
@@ -121,12 +117,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Workflow Fix**: Resolved pnpm version mismatch between package.json (8.15.0) and GitHub Actions workflows (8.15.1) (Blaze-Grandmaster-24)
 - **Syntax Fixes**: Fixed malformed import statements and JSX syntax errors in demo files (Blaze-Grandmaster-24)
 - **Code Quality**: Applied Prettier formatting to resolve code style issues (Blaze-Grandmaster-24)
-
-### Deprecated
-
-### Removed
-
-### Security
 
 ## [0.8.4] - 2025-09-17
 
@@ -389,7 +379,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   commands (Otty-Admiral-15)
 - **Documentation Word Diffing Guide**: Created comprehensive guide for word-level diffing of documentation files with
   semantic change detection and AI agent optimization (Otty-Admiral-15)
-
+- **Performance Testing**: Resolved ES module compatibility issues and configuration validation in E2E testing
+- **Validation Scripts**: Enhanced markdown link validation with improved error handling
+-
 ### Changed
 
 - **CLI Refactoring**: Refactored code-quality CLI from 478 lines to 88 lines following 140-line axiom, extracting command handlers and display utilities into modular components (Falls-Captain-15)
@@ -406,11 +398,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Maintained Functionality**: All security testing capabilities preserved with updated command-line interfaces
   - **Enhanced Branding**: FENRIR name better reflects the comprehensive security testing framework's capabilities
     and Norse mythology inspiration
-
-### Fixed
-
-- **Performance Testing**: Resolved ES module compatibility issues and configuration validation in E2E testing
-- **Validation Scripts**: Enhanced markdown link validation with improved error handling
 
 ### Removed
 

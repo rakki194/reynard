@@ -78,7 +78,9 @@ export type DiagramType =
   | "deployment-diagram"
   | "user-journey"
   | "data-flow"
-  | "system-overview";
+  | "system-overview"
+  | "frontend-backend-relationships"
+  | "detailed-ecosystem";
 
 export interface CodebaseAnalysis {
   /** Analyzed packages */

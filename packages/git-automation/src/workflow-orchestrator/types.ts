@@ -9,5 +9,6 @@ export interface WorkflowOptions {
   commit?: boolean;
   version?: boolean;
   changelog?: boolean;
+  cleanup?: boolean;
   dryRun?: boolean;
 }

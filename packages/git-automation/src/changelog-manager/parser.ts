@@ -86,7 +86,8 @@ export class ChangelogParser {
   }
 
   private isEntryLine(line: string): boolean {
-    return /^\s*[-*]\s+(added|changed|deprecated|removed|fixed|security):/i.test(line);
+    return /^\s*[-*]\s+(added|changed|deprecated|removed|fixed|security):/i.test(line) ||
+           /^\s*[-*]\s+[^:]+$/i.test(line);
   }
 
   private extractVersion(line: string): string {
@@ -95,7 +96,7 @@ export class ChangelogParser {
   }
 
   private extractDate(line: string): string | null {
-    const match = line.match(/\((\d{4}-\d{2}-\d{2})\)/);
+    const match = line.match(/\[?\d+\.\d+\.\d+\]?\s*-\s*(\d{4}-\d{2}-\d{2})/);
     return match ? match[1] : null;
   }
 
@@ -109,7 +110,16 @@ export class ChangelogParser {
       };
     }
 
-    // Fallback for malformed entries
+    // Fallback for simple entries without type prefix
+    const simpleMatch = line.match(/^\s*[-*]\s*(.+)/);
+    if (simpleMatch) {
+      return {
+        type: "added",
+        description: simpleMatch[1].trim(),
+      };
+    }
+
+    // Final fallback
     return {
       type: "changed",
       description: line.replace(/^\s*[-*]\s*/, "").trim(),

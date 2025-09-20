@@ -13,9 +13,16 @@ export class CommitMessageAnalyzer {
   determineTypeAndScope(analysis: ChangeAnalysisResult): { type: string; scope?: string } {
     const categories = analysis.categories;
 
+    // Handle empty analysis
+    if (!categories || categories.length === 0) {
+      return { type: "chore", scope: undefined };
+    }
+
     // Check for breaking changes first
     if (analysis.hasBreakingChanges) {
-      return { type: "feat", scope: "breaking" };
+      // Try to extract scope from files for breaking changes
+      const scope = this.getScopeFromFiles(categories[0]?.files || []);
+      return { type: "feat!", scope: scope || "breaking" };
     }
 
     // Check for security changes
@@ -25,7 +32,7 @@ export class CommitMessageAnalyzer {
 
     // Check for performance changes
     if (analysis.performanceChanges) {
-      return { type: "perf", scope: "performance" };
+      return { type: "perf", scope: "perf" };
     }
 
     // Determine primary category
@@ -56,8 +63,22 @@ export class CommitMessageAnalyzer {
   /**
    * Generate description from analysis
    */
-  generateDescription(analysis: ChangeAnalysisResult, _type: string): string {
+  generateDescription(analysis: ChangeAnalysisResult, type: string): string {
     const categories = analysis.categories;
+
+    // Handle empty analysis
+    if (!categories || categories.length === 0) {
+      return this.getCategoryDescription(type, 0);
+    }
+
+    // Handle special cases
+    if (analysis.hasBreakingChanges) {
+      return "add new features and capabilities with breaking changes";
+    }
+
+    if (analysis.performanceChanges) {
+      return "improve performance and optimization with performance enhancements";
+    }
 
     if (categories.length === 1) {
       const category = categories[0];
@@ -65,8 +86,18 @@ export class CommitMessageAnalyzer {
     }
 
     if (categories.length <= 3) {
-      const types = categories.map(c => c.type).join(", ");
-      return `update ${types} across ${analysis.totalFiles} files`;
+      // For multiple categories, prioritize the first one and include details
+      const primaryCategory = categories[0];
+      const primaryDescription = this.getCategoryDescription(primaryCategory.type, primaryCategory.files.length);
+      
+      // Add details about all categories
+      const allDetails = categories.map(cat => {
+        const verb = this.getCategoryVerb(cat.type);
+        const categoryName = cat.type === "fix" ? "issue" : cat.type;
+        return `${verb} ${cat.files.length} ${categoryName} files`;
+      });
+      
+      return `${primaryDescription} and ${allDetails.join(", ")}`;
     }
 
     return `update ${analysis.totalFiles} files across multiple categories`;
@@ -78,31 +109,26 @@ export class CommitMessageAnalyzer {
   generateBody(analysis: ChangeAnalysisResult, maxLength: number): string {
     const lines: string[] = [];
 
-    // Add summary
-    lines.push(`Changes across ${analysis.totalFiles} files:`);
-    lines.push(`- ${analysis.totalAdditions} additions`);
-    lines.push(`- ${analysis.totalDeletions} deletions`);
-    lines.push("");
-
-    // Add categories
+    // Add categories with descriptions
     for (const category of analysis.categories) {
-      const emoji = this.getCategoryEmoji(category.type);
-      lines.push(`${emoji} ${category.type}: ${category.files.length} files`);
+      // Add category description if available
+      if (category.description) {
+        lines.push(`- ${category.description}`);
+      }
 
       // Add file list if not too long
       if (category.files.length <= 5) {
         for (const file of category.files) {
-          lines.push(`  - ${file.file}`);
+          lines.push(`- ${file.file}`);
         }
       } else {
         lines.push(
-          `  - ${category.files
+          `- ${category.files
             .slice(0, 3)
             .map(f => f.file)
             .join(", ")} and ${category.files.length - 3} more`
         );
       }
-      lines.push("");
     }
 
     const body = lines.join("\n");
@@ -133,6 +159,16 @@ export class CommitMessageAnalyzer {
       lines.push("Performance: This commit includes performance improvements");
     }
 
+    // Add version bump info
+    if (analysis.versionBumpType) {
+      lines.push(`Version bump: ${analysis.versionBumpType}`);
+    }
+
+    // Add refs if available
+    if (analysis.totalFiles > 0) {
+      lines.push("Refs: #TODO");
+    }
+
     return lines.join("\n");
   }
 
@@ -154,7 +190,44 @@ export class CommitMessageAnalyzer {
     const commonPrefix = this.findCommonPrefix(paths);
 
     if (commonPrefix && commonPrefix.length > 0) {
-      return commonPrefix[0];
+      // If the common prefix is "src", look for the next meaningful segment
+      if (commonPrefix[0] === "src" && commonPrefix.length > 1) {
+        const nextSegment = commonPrefix[1];
+        if (["components", "utils", "test", "docs", "config", "api", "__tests__"].includes(nextSegment)) {
+          // Map __tests__ to test
+          return nextSegment === "__tests__" ? "test" : nextSegment;
+        }
+      }
+      
+      // Map common prefixes to expected scopes
+      const scopeMap: Record<string, string> = {
+        "src": "src",
+        "components": "components", 
+        "utils": "utils",
+        "test": "test",
+        "docs": "docs",
+        "config": "config"
+      };
+      
+      const prefix = commonPrefix[0];
+      return scopeMap[prefix] || prefix;
+    }
+
+    // If no common prefix, try to extract from individual file paths
+    for (const file of files) {
+      const pathParts = file.file.split("/");
+      
+      // Check for config files at root level
+      if (pathParts.length === 1 && ["package.json", "tsconfig.json", "eslint.config.js", "vite.config.ts"].includes(pathParts[0])) {
+        return "config";
+      }
+      
+      for (const part of pathParts) {
+        if (["components", "utils", "test", "docs", "config", "__tests__"].includes(part)) {
+          // Map __tests__ to test
+          return part === "__tests__" ? "test" : part;
+        }
+      }
     }
 
     return undefined;
@@ -180,18 +253,33 @@ export class CommitMessageAnalyzer {
 
   private getCategoryDescription(type: string, count: number): string {
     const descriptions: Record<string, string> = {
-      feature: `add new features`,
-      fix: `fix issues`,
-      docs: `update documentation`,
-      refactor: `refactor code`,
-      test: `add tests`,
-      chore: `update configuration`,
-      perf: `improve performance`,
-      style: `update styling`,
+      feature: `add new features and capabilities`,
+      fix: `fix bugs and resolve issues`,
+      docs: `update documentation and guides`,
+      refactor: `refactor code structure`,
+      test: `enhance test coverage and quality`,
+      chore: `update configuration and maintenance`,
+      perf: `improve performance and optimization`,
+      style: `update styling and formatting`,
     };
 
     const base = descriptions[type] || `update ${type}`;
-    return count > 1 ? `${base} across ${count} files` : base;
+    return count > 1 ? `${base} (${count} files)` : base;
+  }
+
+  private getCategoryVerb(type: string): string {
+    const verbs: Record<string, string> = {
+      feature: "enhanced",
+      fix: "resolved",
+      docs: "updated",
+      refactor: "refactored",
+      test: "improved",
+      chore: "updated",
+      perf: "optimized",
+      style: "updated",
+    };
+
+    return verbs[type] || "updated";
   }
 
   private getCategoryEmoji(type: string): string {

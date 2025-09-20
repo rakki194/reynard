@@ -1,0 +1,120 @@
+%%{init: {'theme': 'neutral'}}%%
+graph TB
+    subgraph "🦊 Reynard Frontend-Backend Architecture"
+        direction TB
+
+        subgraph frontend["🖥️ Frontend Packages"]
+            direction TB
+            subgraph utility["🛠️ utility"]
+                direction LR
+                reynard_3d[" reynard-3d"]
+                reynard_adr_system[" reynard-adr-system"]
+                reynard_ai_shared[" reynard-ai-shared"]
+                reynard_algorithms[" reynard-algorithms"]
+                reynard_animation[" reynard-animation"]
+                reynard_annotating[" reynard-annotating"]
+                reynard_annotating_core[" reynard-annotating-core"]
+                reynard_annotating_florence2[" reynard-annotating-florence2"]
+                reynard_annotating_joy[" reynard-annotating-joy"]
+                reynard_annotating_jtp2[" reynard-annotating-jtp2"]
+                reynard_annotating_wdv3[" reynard-annotating-wdv3"]
+                reynard_audio[" reynard-audio"]
+                reynard_auth["🔐 reynard-auth"]
+                reynard_boundingbox[" reynard-boundingbox"]
+                reynard_caption[" reynard-caption"]
+                reynard_caption_core[" reynard-caption-core"]
+                reynard_caption_multimodal[" reynard-caption-multimodal"]
+                reynard_charts[" reynard-charts"]
+                reynard_chat["⚡ reynard-chat"]
+                reynard_code_quality[" reynard-code-quality"]
+                reynard_colors[" reynard-colors"]
+                reynard_comfy[" reynard-comfy"]
+                reynard_config[" reynard-config"]
+                reynard_core[" reynard-core"]
+                reynard_dashboard[" reynard-dashboard"]
+                dev_server_management[" dev-server-management"]
+                reynard_diagram_generator[" reynard-diagram-generator"]
+                reynard_docs_core[" reynard-docs-core"]
+                reynard_docs_generator[" reynard-docs-generator"]
+                reynard_docs_site[" reynard-docs-site"]
+                reynard_ecs_world[" reynard-ecs-world"]
+                reynard_error_boundaries[" reynard-error-boundaries"]
+                reynard_features[" reynard-features"]
+                reynard_file_processing[" reynard-file-processing"]
+                reynard_floating_panel[" reynard-floating-panel"]
+                reynard_fluent_icons[" reynard-fluent-icons"]
+                reynard_gallery[" reynard-gallery"]
+                reynard_gallery_ai[" reynard-gallery-ai"]
+                reynard_gallery_dl[" reynard-gallery-dl"]
+                reynard_games[" reynard-games"]
+                reynard_git_automation[" reynard-git-automation"]
+                reynard_i18n[" reynard-i18n"]
+                reynard_image[" reynard-image"]
+                reynard_model_management[" reynard-model-management"]
+                reynard_monaco[" reynard-monaco"]
+                reynard_multimodal[" reynard-multimodal"]
+                reynard_nlweb[" reynard-nlweb"]
+                reynard_project_architecture[" reynard-project-architecture"]
+                reynard_queue_watcher[" reynard-queue-watcher"]
+                reynard_rag[" reynard-rag"]
+                reynard_repository_core[" reynard-repository-core"]
+                reynard_repository_multimodal[" reynard-repository-multimodal"]
+                reynard_repository_search[" reynard-repository-search"]
+                reynard_repository_storage[" reynard-repository-storage"]
+                reynard_scraping[" reynard-scraping"]
+                reynard_segmentation[" reynard-segmentation"]
+                reynard_settings[" reynard-settings"]
+                reynard_testing[" reynard-testing"]
+                reynard_themes[" reynard-themes"]
+                reynard_tools[" reynard-tools"]
+                reynard_unified_repository[" reynard-unified-repository"]
+                reynard_validation[" reynard-validation"]
+                reynard_video[" reynard-video"]
+            end
+            subgraph api_client["🔌 api-client"]
+                direction LR
+                reynard_api_client[" reynard-api-client"]
+            end
+            subgraph ui["🎨 ui"]
+                direction LR
+                reynard_caption_ui[" reynard-caption-ui"]
+                reynard_components[" reynard-components"]
+                reynard_components_charts[" reynard-components-charts"]
+                reynard_components_core[" reynard-components-core"]
+                reynard_components_dashboard[" reynard-components-dashboard"]
+                reynard_components_themes[" reynard-components-themes"]
+                reynard_docs_components[" reynard-docs-components"]
+                reynard_ui[" reynard-ui"]
+            end
+            subgraph composable["🧩 composable"]
+                direction LR
+                reynard_composables[" reynard-composables"]
+            end
+            subgraph connection["🌐 connection"]
+                direction LR
+                reynard_connection[" reynard-connection"]
+            end
+            subgraph service["⚙️ service"]
+                direction LR
+                reynard_service_manager[" reynard-service-manager"]
+            end
+        end
+
+        subgraph backend["⚙️ Backend Services"]
+            direction TB
+        end
+
+        %% API Connections
+
+        %% Internal Dependencies
+    end
+
+    subgraph legend["📋 Legend"]
+        direction LR
+        legend_auth["🔐 Authentication Required"]
+        legend_realtime["⚡ Real-time Features"]
+        legend_http["--> HTTP API"]
+        legend_ws["<--> WebSocket"]
+        legend_sse["--> Server-Sent Events"]
+        legend_dep["-.-> Internal Dependency"]
+    end

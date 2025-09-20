@@ -10,9 +10,30 @@ import { ChangeAnalyzer } from "../change-analyzer";
 import { CommitMessageGenerator } from "../commit-generator";
 import { ChangelogManager } from "../changelog-manager";
 import { VersionManager } from "../version-manager";
+import { JunkFileDetector } from "../junk-detector";
 import type { WorkflowOptions } from "./types";
 
 export class GitWorkflowOrchestrator {
+  private junkDetector: JunkFileDetector;
+  private changeAnalyzer: ChangeAnalyzer;
+  private commitGenerator: CommitMessageGenerator;
+  private versionManager: VersionManager;
+  private changelogManager: ChangelogManager;
+
+  constructor(
+    junkDetector?: JunkFileDetector,
+    changeAnalyzer?: ChangeAnalyzer,
+    commitGenerator?: CommitMessageGenerator,
+    versionManager?: VersionManager,
+    changelogManager?: ChangelogManager
+  ) {
+    this.junkDetector = junkDetector || new JunkFileDetector();
+    this.changeAnalyzer = changeAnalyzer || new ChangeAnalyzer();
+    this.commitGenerator = commitGenerator || new CommitMessageGenerator();
+    this.versionManager = versionManager || new VersionManager();
+    this.changelogManager = changelogManager || new ChangelogManager();
+  }
+
   /**
    * Execute complete Git workflow
    */
@@ -22,19 +43,29 @@ export class GitWorkflowOrchestrator {
     try {
       const workingDir = options.workingDir || ".";
 
-      // Step 1: Analyze changes
-      const analyzer = new ChangeAnalyzer();
-      const analysis = await analyzer.analyzeChanges(workingDir);
+      // Step 1: Detect and clean junk files
+      if (options.cleanup) {
+        const junkResult = await this.junkDetector.detectJunkFiles(workingDir);
+        if (junkResult.hasJunk) {
+          if (options.dryRun) {
+            console.log(chalk.yellow("Would clean up junk files"));
+          } else {
+            await this.junkDetector.cleanupJunkFiles(junkResult);
+          }
+        }
+      }
+
+      // Step 2: Analyze changes
+      const analysis = await this.changeAnalyzer.analyzeChanges(workingDir);
 
       if (analysis.totalFiles === 0) {
         spinner.succeed("No changes detected");
         return;
       }
 
-      // Step 2: Generate commit message
+      // Step 3: Generate commit message
       if (options.commit) {
-        const generator = new CommitMessageGenerator();
-        const message = generator.generateCommitMessage(analysis);
+        const message = this.commitGenerator.generateCommitMessage(analysis);
 
         if (options.dryRun) {
           console.log(chalk.yellow("Would commit with message:"));
@@ -45,27 +76,24 @@ export class GitWorkflowOrchestrator {
         }
       }
 
-      // Step 3: Update changelog
+      // Step 4: Update changelog
       if (options.changelog) {
-        const _changelogManager = new ChangelogManager(workingDir);
-
         if (options.dryRun) {
           console.log(chalk.yellow("Would update changelog"));
         } else {
-          // TODO: Implement changelog update
-          console.log(chalk.blue("Changelog would be updated"));
+          // Get version info for changelog update
+          const versionInfo = await this.versionManager.getVersionInfo(analysis);
+          await this.changelogManager.promoteToVersion(versionInfo.next);
         }
       }
 
-      // Step 4: Bump version
+      // Step 5: Bump version
       if (options.version) {
-        const versionManager = new VersionManager(workingDir);
-
+        const versionInfo = await this.versionManager.getVersionInfo(analysis);
         if (options.dryRun) {
-          const versionInfo = versionManager.getVersionInfo(analysis);
           console.log(chalk.yellow(`Would bump version from ${versionInfo.current} to ${versionInfo.next}`));
         } else {
-          await versionManager.bumpVersion(analysis.versionBumpType);
+          await this.versionManager.bumpVersion(analysis.versionBumpType);
         }
       }
 

@@ -17,6 +17,8 @@ export {
   PackageDependenciesGenerator,
   ComponentRelationshipsGenerator,
   FileStructureGenerator,
+  FrontendBackendRelationshipGenerator,
+  DetailedEcosystemGenerator,
   DIAGRAM_GENERATORS,
 } from "./generators/index.js";
 

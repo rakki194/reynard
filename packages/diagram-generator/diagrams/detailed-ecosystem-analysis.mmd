@@ -1,0 +1,167 @@
+%%{init: {'theme': 'neutral'}}%%
+graph TB
+
+    subgraph "🦊 Reynard Detailed Ecosystem Analysis"
+        direction TB
+
+        subgraph frontend["🖥️ Frontend Packages"]
+            direction TB
+            subgraph Core["🧠 Core"]
+                direction LR
+                reynard_annotating_core["🔴 reynard-annotating-core\n(0i/0e) [326]"]
+                reynard_caption_core["🔴 reynard-caption-core\n(0i/0e) [124]"]
+                reynard_components_core["🔴 reynard-components-core\n(0i/0e) [905]"]
+                reynard_config["🟢 reynard-config\n(0i/0e) [222]"]
+                reynard_core["🔴 reynard-core\n(0i/0e) [1423]"]
+                reynard_docs_core["🔴 reynard-docs-core\n(0i/0e) [360]"]
+                reynard_repository_core["🔴 reynard-repository-core\n(0i/0e) [40]"]
+            end
+
+            subgraph API["🔌 API"]
+                direction LR
+                reynard_api_client["🔴 reynard-api-client\n(0i/0e) [4335]"]
+                reynard_connection["🔴 reynard-connection\n(0i/0e) [1602]"]
+                reynard_scraping["🟢 reynard-scraping\n(0i/0e) [1619]"]
+            end
+
+            subgraph UI["🎨 UI"]
+                direction LR
+                reynard_caption_ui["🟡 reynard-caption-ui\n(0i/0e) [900]"]
+                reynard_components["🟢 reynard-components\n(0i/0e) [6141]"]
+                reynard_components_charts["🟢 reynard-components-charts\n(0i/0e) [181]"]
+                reynard_components_dashboard["🟢 reynard-components-dashboard\n(0i/0e) [3965]"]
+                reynard_components_themes["🟡 reynard-components-themes\n(0i/0e) [634]"]
+                reynard_docs_components["🟢 reynard-docs-components\n(0i/0e) [604]"]
+                reynard_ui["🟢 reynard-ui\n(0i/0e) [697]"]
+            end
+
+            subgraph Utilities["🛠️ Utilities"]
+                direction LR
+                reynard_3d["🟢 reynard-3d\n(0i/0e) [1299]"]
+                reynard_adr_system["🟢 reynard-adr-system\n(0i/0e) [2630]"]
+                reynard_ai_shared["🟢 reynard-ai-shared\n(0i/0e) [272]"]
+                reynard_algorithms["🟢 reynard-algorithms\n(0i/0e) [1447]"]
+                reynard_animation["🟢 reynard-animation\n(0i/0e) [240]"]
+                reynard_annotating["🟢 reynard-annotating\n(0i/0e) [276]"]
+                reynard_annotating_florence2["🟢 reynard-annotating-florence2\n(0i/0e) [7]"]
+                reynard_annotating_joy["🟢 reynard-annotating-joy\n(0i/0e) [6]"]
+                reynard_annotating_jtp2["🟢 reynard-annotating-jtp2\n(0i/0e) [8]"]
+                reynard_annotating_wdv3["🟢 reynard-annotating-wdv3\n(0i/0e) [7]"]
+                reynard_audio["🟢 reynard-audio\n(0i/0e) [805]"]
+                reynard_auth["🔴 reynard-auth\n(0i/0e) [794]"]
+                reynard_boundingbox["🟢 reynard-boundingbox\n(0i/0e) [584]"]
+                reynard_caption["🟡 reynard-caption\n(0i/0e) [1068]"]
+                reynard_caption_multimodal["🟡 reynard-caption-multimodal\n(0i/0e) [25]"]
+                reynard_charts["🟢 reynard-charts\n(0i/0e) [1488]"]
+                reynard_chat["🟡 reynard-chat\n(0i/0e) [1958]"]
+                reynard_code_quality["🟢 reynard-code-quality\n(0i/0e) [1034]"]
+                reynard_colors["🟢 reynard-colors\n(0i/0e) [362]"]
+                reynard_comfy["🟢 reynard-comfy\n(0i/0e) [287]"]
+                reynard_composables["🟢 reynard-composables\n(0i/0e) [183]"]
+                reynard_dashboard["🟢 reynard-dashboard\n(0i/0e) [217]"]
+                dev_server_management["🟢 dev-server-management\n(0i/0e) [806]"]
+                reynard_diagram_generator["🟢 reynard-diagram-generator\n(0i/0e) [714]"]
+                reynard_docs_generator["🟢 reynard-docs-generator\n(0i/0e) [681]"]
+                reynard_docs_site["🟢 reynard-docs-site\n(0i/0e) [347]"]
+                reynard_ecs_world["🟢 reynard-ecs-world\n(0i/0e) [226]"]
+                reynard_error_boundaries["🟢 reynard-error-boundaries\n(0i/0e) [302]"]
+                reynard_features["🟢 reynard-features\n(0i/0e) [245]"]
+                reynard_file_processing["🟢 reynard-file-processing\n(0i/0e) [811]"]
+                reynard_floating_panel["🟢 reynard-floating-panel\n(0i/0e) [318]"]
+                reynard_fluent_icons["🟢 reynard-fluent-icons\n(0i/0e) [385]"]
+                reynard_gallery["🟡 reynard-gallery\n(0i/0e) [1331]"]
+                reynard_gallery_ai["🟡 reynard-gallery-ai\n(0i/0e) [612]"]
+                reynard_gallery_dl["🟡 reynard-gallery-dl\n(0i/0e) [992]"]
+                reynard_games["🟢 reynard-games\n(0i/0e) [3524]"]
+                reynard_git_automation["🟢 reynard-git-automation\n(0i/0e) [504]"]
+                reynard_i18n["🟢 reynard-i18n\n(0i/0e) [1614]"]
+                reynard_image["🟢 reynard-image\n(0i/0e) [231]"]
+                reynard_model_management["🟢 reynard-model-management\n(0i/0e) [365]"]
+                reynard_monaco["🟢 reynard-monaco\n(0i/0e) [320]"]
+                reynard_multimodal["🟢 reynard-multimodal\n(0i/0e) [398]"]
+                reynard_nlweb["🟢 reynard-nlweb\n(0i/0e) [432]"]
+                reynard_project_architecture["🟢 reynard-project-architecture\n(0i/0e) [207]"]
+                reynard_queue_watcher["🟢 reynard-queue-watcher\n(0i/0e) [366]"]
+                reynard_rag["🟡 reynard-rag\n(0i/0e) [914]"]
+                reynard_repository_multimodal["🟢 reynard-repository-multimodal\n(0i/0e) [311]"]
+                reynard_repository_search["🟢 reynard-repository-search\n(0i/0e) [523]"]
+                reynard_repository_storage["🟡 reynard-repository-storage\n(0i/0e) [270]"]
+                reynard_segmentation["🟢 reynard-segmentation\n(0i/0e) [980]"]
+                reynard_settings["🟢 reynard-settings\n(0i/0e) [1701]"]
+                reynard_testing["🟡 reynard-testing\n(0i/0e) [1701]"]
+                reynard_themes["🟡 reynard-themes\n(0i/0e) [296]"]
+                reynard_tools["🟢 reynard-tools\n(0i/0e) [786]"]
+                reynard_unified_repository["🟢 reynard-unified-repository\n(0i/0e) [846]"]
+                reynard_validation["🟢 reynard-validation\n(0i/0e) [258]"]
+                reynard_video["🟢 reynard-video\n(0i/0e) [220]"]
+            end
+
+        subgraph backend["⚙️ Backend Services"]
+            direction TB
+            reynard_backend["🔴 reynard-backend\n(0i/0e) [8948]"]
+        end
+
+        %% Detailed Relationships
+        reynard_3d -.-> solid_js
+        reynard_3d -.-> three
+        reynard_3d -.-> _types_three
+        reynard_3d -.-> reynard_components
+        reynard_3d -.-> reynard_algorithms
+        reynard_3d -.-> reynard_composables
+        reynard_3d -.-> _solidjs_testing_library
+        reynard_3d -.-> _types_node
+        reynard_3d -.-> _vitest_coverage_v8
+        reynard_3d -.-> _vitest_ui
+        reynard_3d -.-> happy_dom
+        reynard_3d -.-> reynard_testing
+        reynard_3d -.-> typescript
+        reynard_3d -.-> vite
+        reynard_3d -.-> vite_plugin_solid
+        reynard_3d -.-> vitest
+        reynard_3d -.-> solid_js
+        reynard_3d <-- reynard_3d_BasePointCloudRenderer
+        reynard_3d <-- reynard_3d_ClusterStatisticsPanelProps
+        reynard_3d <-- reynard_3d_ClusterStatisticsPanel
+        reynard_3d <-- reynard_3d_ClusterVisualization
+        reynard_3d <-- reynard_3d_ErrorDisplayProps
+        reynard_3d <-- reynard_3d_ErrorDisplay
+        reynard_3d <-- reynard_3d_LoadingSpinnerProps
+        reynard_3d <-- reynard_3d_LoadingSpinner
+        reynard_3d <-- reynard_3d_PointCloudVisualization
+        reynard_3d <-- reynard_3d_RendererControls
+        reynard_3d <-- reynard_3d_RendererInfo
+        reynard_3d <-- reynard_3d_RendererStats
+        reynard_3d <-- reynard_3d_RendererUI
+        reynard_3d <-- reynard_3d_ThreeJSVisualization
+        reynard_3d <-- reynard_3d_ThreeJSVisualizationDemo
+        reynard_3d <-- reynard_3d_VectorVisualization
+        reynard_3d <-- reynard_3d___ThreeJSVisualization
+        reynard_3d <-- reynard_3d___LoadingSpinner
+        reynard_3d <-- reynard_3d___ErrorDisplay
+        reynard_3d <-- reynard_3d___PointCloudVisualization
+        reynard_3d <-- reynard_3d___ThreeJSVisualizationDemo
+        reynard_3d <-- reynard_3d___ClusterVisualization
+        reynard_3d <-- reynard_3d___VectorVisualization
+        reynard_3d <-- reynard_3d___BasePointCloudRenderer
+        reynard_3d <-- reynard_3d___useThreeJSAnimations
+        reynard_3d <-- reynard_3d___usePointAnimations
+        reynard_3d <-- reynard_3d___usePointTransitions
+        reynard_3d <-- reynard_3d___useAnimationState
+        reynard_3d <-- reynard_3d___useCameraAnimations
+        reynard_3d <-- reynard_3d___useClusterAnimations
+        reynard_3d <-- reynard_3d___useThreeJSVisualization
+        reynard_3d <-- reynard_3d___useThreeJSScene
+        reynard_3d <-- reynard_3d___useThreeJSControls
+
+        %% API Connections
+        reynard_api_client -->|API| reynard_backend
+    end
+
+    subgraph legend["📋 Legend"]
+        direction LR
+        legend_import["--> Import"]
+        legend_export["<-- Export"]
+        legend_dep["-.-> Dependency"]
+        legend_api["--> API"]
+        legend_data["<--> Data Flow"]
+    end

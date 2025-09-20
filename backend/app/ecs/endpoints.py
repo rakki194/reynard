@@ -804,11 +804,64 @@ def _load_json_data(filename: str):
         raise HTTPException(status_code=500, detail=f"Failed to load {filename}") from e
 
 
+def _get_races_directory() -> Path:
+    """Get the path to the races directory."""
+    backend_dir = Path(__file__).parent.parent.parent
+    return backend_dir / "data" / "ecs" / "races"
+
+
+def _load_race_data(spirit: str) -> dict[str, Any]:
+    """Load race data for a specific spirit from the races directory."""
+    try:
+        races_dir = _get_races_directory()
+        race_file = races_dir / f"{spirit}.json"
+        
+        if not race_file.exists():
+            raise HTTPException(
+                status_code=404, detail=f"Race data for spirit '{spirit}' not found"
+            )
+
+        with open(race_file, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except json.JSONDecodeError as e:
+        logger.error("Error parsing JSON from race file %s: %s", spirit, e)
+        raise HTTPException(status_code=500, detail=f"Invalid JSON in race file for {spirit}") from e
+    except Exception as e:
+        logger.error("Error loading race data for %s: %s", spirit, e)
+        raise HTTPException(status_code=500, detail=f"Failed to load race data for {spirit}") from e
+
+
+def _load_races_data() -> dict[str, Any]:
+    """Load all race data from the races directory and return in the old format."""
+    try:
+        races_dir = _get_races_directory()
+        if not races_dir.exists():
+            raise HTTPException(
+                status_code=404, detail="Races directory not found"
+            )
+
+        result = {}
+        for race_file in races_dir.glob("*.json"):
+            try:
+                with open(race_file, "r", encoding="utf-8") as f:
+                    race_data = json.load(f)
+                    spirit_name = race_data.get("name", race_file.stem)
+                    result[spirit_name] = race_data.get("names", [])
+            except (json.JSONDecodeError, KeyError) as e:
+                logger.warning("Error loading race file %s: %s", race_file, e)
+                continue
+
+        return result
+    except Exception as e:
+        logger.error("Error loading races data: %s", e)
+        raise HTTPException(status_code=500, detail="Failed to load races data") from e
+
+
 @router.get("/naming/animal-spirits", response_model=None)
 async def get_animal_spirits() -> dict[str, Any]:
     """Get all animal spirit names organized by spirit type."""
     try:
-        return _load_json_data("animal_spirits.json")
+        return _load_races_data()
     except HTTPException:
         raise
     except Exception as e:
@@ -820,10 +873,8 @@ async def get_animal_spirits() -> dict[str, Any]:
 async def get_animal_spirit_names(spirit: str) -> dict[str, Any]:
     """Get names for a specific animal spirit."""
     try:
-        data = _load_json_data("animal_spirits.json")
-        if spirit not in data:
-            raise HTTPException(status_code=404, detail=f"Spirit '{spirit}' not found")
-        return {"spirit": spirit, "names": data[spirit]}
+        race_data = _load_race_data(spirit)
+        return {"spirit": spirit, "names": race_data["names"]}
     except HTTPException:
         raise
     except Exception as e:
