@@ -14,7 +14,8 @@ import {
   OptimizedCollisionAdapter,
   type OptimizedCollisionConfig,
 } from "./optimization/adapters/optimized-collision-adapter";
-import { AlgorithmSelector, type WorkloadCharacteristics } from "./optimization/core/algorithm-selector";
+import { AlgorithmSelector } from "./optimization/core/algorithm-selector";
+import type { WorkloadCharacteristics } from "./optimization/core/algorithm-selector-types";
 import { EnhancedMemoryPool, type MemoryPoolConfig } from "./optimization/core/enhanced-memory-pool";
 import { checkCollision } from "./geometry/collision/aabb-collision";
 import type { AABB, CollisionPair } from "./geometry/collision/aabb-types";

@@ -8,7 +8,11 @@ import { DocRenderer } from "./renderer";
  * Main documentation engine class
  */
 export class ReynardDocEngine {
-    constructor(config) {
+    private config: any;
+    private parser: ContentParser;
+    private plugins: Map<string, any> = new Map();
+
+    constructor(config: any) {
         Object.defineProperty(this, "config", {
             enumerable: true,
             configurable: true,
@@ -55,19 +59,19 @@ export class ReynardDocEngine {
     /**
      * Render a documentation page
      */
-    render(page) {
-        return (props) => <DocRenderer content={page.content} metadata={page.metadata} type={page.type} {...props}/>;
+    render(page: any) {
+        return (props: any) => <DocRenderer content={page.content} metadata={page.metadata} type={page.type} {...props}/>;
     }
     /**
      * Parse content into a documentation page
      */
-    async parse(content, type) {
+    async parse(content: any, type: any) {
         return await this.parser.parse(content, type);
     }
     /**
      * Search through documentation pages
      */
-    search(query) {
+    search(query: any) {
         const results = [];
         const searchTerm = query.toLowerCase();
         for (const page of this.config.pages) {
@@ -92,26 +96,26 @@ export class ReynardDocEngine {
     /**
      * Get a page by ID
      */
-    getPage(id) {
-        return this.config.pages.find(page => page.id === id);
+    getPage(id: any) {
+        return this.config.pages.find((page: any) => page.id === id);
     }
     /**
      * Get a section by ID
      */
-    getSection(id) {
-        return this.config.sections.find(section => section.id === id);
+    getSection(id: any) {
+        return this.config.sections.find((section: any) => section.id === id);
     }
     /**
      * Add a plugin to the engine
      */
-    addPlugin(plugin) {
+    addPlugin(plugin: any) {
         this.plugins.set(plugin.name, plugin);
         plugin.install(this);
     }
     /**
      * Remove a plugin from the engine
      */
-    removePlugin(name) {
+    removePlugin(name: any) {
         const plugin = this.plugins.get(name);
         if (plugin) {
             plugin.uninstall?.(this);
@@ -121,7 +125,7 @@ export class ReynardDocEngine {
     /**
      * Get all pages in a section
      */
-    getPagesInSection(sectionId) {
+    getPagesInSection(sectionId: any) {
         const section = this.getSection(sectionId);
         return section?.pages || [];
     }
@@ -134,7 +138,7 @@ export class ReynardDocEngine {
     /**
      * Get breadcrumb trail for a page
      */
-    getBreadcrumbs(pageId) {
+    getBreadcrumbs(pageId: any) {
         const page = this.getPage(pageId);
         if (!page)
             return [];
@@ -155,7 +159,7 @@ export class ReynardDocEngine {
             }
             else {
                 // Find parent section
-                const parentSection = this.config.sections.find(section => section.pages.some(p => p.id === currentPage.id));
+                const parentSection = this.config.sections.find((section: any) => section.pages.some((p: any) => p.id === currentPage.id));
                 if (parentSection) {
                     breadcrumbs.unshift({
                         label: parentSection.title,
@@ -170,7 +174,7 @@ export class ReynardDocEngine {
     /**
      * Get related pages
      */
-    getRelatedPages(pageId, limit = 5) {
+    getRelatedPages(pageId: any, limit = 5) {
         const page = this.getPage(pageId);
         if (!page)
             return [];
@@ -181,15 +185,15 @@ export class ReynardDocEngine {
             if (otherPage.id === pageId)
                 continue;
             const otherTags = otherPage.metadata.tags || [];
-            const commonTags = pageTags.filter(tag => otherTags.includes(tag));
+            const commonTags = pageTags.filter((tag: any) => otherTags.includes(tag));
             if (commonTags.length > 0) {
                 related.push(otherPage);
             }
         }
         // Sort by number of common tags
         related.sort((a, b) => {
-            const aCommonTags = (a.metadata.tags || []).filter(tag => pageTags.includes(tag)).length;
-            const bCommonTags = (b.metadata.tags || []).filter(tag => pageTags.includes(tag)).length;
+            const aCommonTags = (a.metadata.tags || []).filter((tag: any) => pageTags.includes(tag)).length;
+            const bCommonTags = (b.metadata.tags || []).filter((tag: any) => pageTags.includes(tag)).length;
             return bCommonTags - aCommonTags;
         });
         return related.slice(0, limit);
@@ -197,7 +201,7 @@ export class ReynardDocEngine {
     /**
      * Update configuration
      */
-    updateConfig(newConfig) {
+    updateConfig(newConfig: any) {
         this.config = { ...this.config, ...newConfig };
     }
     /**
@@ -216,7 +220,7 @@ export class ReynardDocEngine {
 /**
  * Create a new documentation engine instance
  */
-export function createDocEngine(config) {
+export function createDocEngine(config: any) {
     return new ReynardDocEngine(config);
 }
 /**

@@ -46,3 +46,4 @@ class MetricsCalculator:
         max_possible_penalty = len(findings) * 4 * 1.0
         score = max(0, 100 - (total_penalty / max_possible_penalty * 100))
         return round(score, 1)
+

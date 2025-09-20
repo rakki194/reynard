@@ -6,7 +6,7 @@ import { Button, Card } from "reynard-components-core";
 /**
  * Code block component with syntax highlighting
  */
-export const DocsCodeBlock = props => {
+export const DocsCodeBlock = (props: any) => {
     const [copied, setCopied] = createSignal(false);
     const [isExpanded, setIsExpanded] = createSignal(false);
     const handleCopy = async () => {
@@ -54,10 +54,10 @@ export const DocsCodeBlock = props => {
 /**
  * Interactive code editor component
  */
-export const DocsCodeEditor = props => {
+export const DocsCodeEditor = (props: any) => {
     const [code, setCode] = createSignal(props.code);
     const [output, setOutput] = createSignal("");
-    const handleCodeChange = (newCode) => {
+    const handleCodeChange = (newCode: any) => {
         setCode(newCode);
         props.onChange?.(newCode);
     };
@@ -88,7 +88,7 @@ export const DocsCodeEditor = props => {
 /**
  * Code example component with live preview
  */
-export const DocsCodeExample = props => {
+export const DocsCodeExample = (props: any) => {
     const [activeTab, setActiveTab] = createSignal("preview");
     const [output, setOutput] = createSignal("");
     const handleRun = () => {
@@ -143,7 +143,7 @@ export const DocsCodeExample = props => {
 /**
  * Code comparison component
  */
-export const DocsCodeComparison = props => {
+export const DocsCodeComparison = (props: any) => {
     return (<div class={`docs-code-comparison ${props.className || ""}`}>
       <div class="docs-code-comparison-header">
         <h4>Code Comparison</h4>
@@ -201,6 +201,7 @@ interface DocsTerminalProps {
   commands: Array<{
     command: string;
     output?: string;
+    error?: string;
   }>;
   prompt?: string;
   class?: string;

@@ -148,3 +148,4 @@ echo "   1. Run 'pnpm install' to install the new dependencies"
 echo "   2. Test each package to ensure imports work correctly"
 echo "   3. Update specific imports based on what components are actually used"
 echo "   4. Remove any unused subpackage dependencies"
+

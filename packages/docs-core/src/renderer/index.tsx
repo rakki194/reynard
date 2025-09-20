@@ -6,7 +6,7 @@ import { Button, Card } from "reynard-components-core";
 /**
  * Main documentation renderer component
  */
-export const DocRenderer = props => {
+export const DocRenderer = (props: any) => {
     // const [isCodeExpanded, setIsCodeExpanded] = createSignal(false);
     // const [activeTab, setActiveTab] = createSignal(0);
     return (<div class={`doc-renderer ${props.className || ""}`}>
@@ -18,7 +18,7 @@ export const DocRenderer = props => {
 /**
  * Documentation header component
  */
-const DocHeader = props => {
+const DocHeader = (props: any) => {
     return (<header class="doc-header">
       <div class="doc-meta">
         <h1 class="doc-title">{props.metadata.title}</h1>
@@ -32,7 +32,7 @@ const DocHeader = props => {
 /**
  * Documentation content component
  */
-const DocContent = props => {
+const DocContent = (props: any) => {
     return (<main class="doc-content">
       <div class="doc-content-body" innerHTML={props.content} onClick={e => handleContentClick(e, props.onNavigate, props.onCodeRun)}/>
     </main>);
@@ -40,7 +40,7 @@ const DocContent = props => {
 /**
  * Documentation footer component
  */
-const DocFooter = props => {
+const DocFooter = (props: any) => {
     return (<footer class="doc-footer">
       <div class="doc-footer-content">
         {props.metadata.lastModified && (<p class="doc-last-modified">Last updated: {new Date(props.metadata.lastModified).toLocaleDateString()}</p>)}
@@ -51,7 +51,7 @@ const DocFooter = props => {
 /**
  * Code example renderer component
  */
-export const CodeExampleRenderer = props => {
+export const CodeExampleRenderer = (props: any) => {
     const [isExpanded, setIsExpanded] = createSignal(false);
     const [output, setOutput] = createSignal("");
     const handleRun = () => {
@@ -92,7 +92,7 @@ export const CodeExampleRenderer = props => {
 /**
  * API documentation renderer
  */
-export const ApiDocRenderer = props => {
+export const ApiDocRenderer = (props: any) => {
     return (<Card class="api-doc">
       <div class="api-doc-header">
         <h3 class="api-doc-name">{props.api.name}</h3>
@@ -141,8 +141,8 @@ export const ApiDocRenderer = props => {
 /**
  * Table of contents renderer
  */
-export const TableOfContents = props => {
-    const [headings, setHeadings] = createSignal([]);
+export const TableOfContents = (props: any) => {
+    const [headings, setHeadings] = createSignal<any[]>([]);
     createEffect(() => {
         const parser = new DOMParser();
         const doc = parser.parseFromString(props.content, "text/html");
@@ -174,7 +174,7 @@ export const TableOfContents = props => {
 /**
  * Handle clicks within documentation content
  */
-function handleContentClick(event, onNavigate, onCodeRun) {
+function handleContentClick(event: any, onNavigate: any, onCodeRun: any) {
     const target = event.target;
     // Handle copy code button clicks
     if (target.classList.contains("copy-button")) {

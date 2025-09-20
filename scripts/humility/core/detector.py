@@ -183,12 +183,18 @@ class HumilityDetector:
         if extensions is None:
             extensions = self.config.supported_extensions
         
-        # Find all files
+        # Use configurable excluded directories
+        excluded_dirs = self.config.excluded_directories
+        
+        # Find all files, excluding specified directories
         files = []
         for ext in extensions:
-            files.extend(directory.rglob(f'*{ext}'))
+            for file_path in directory.rglob(f'*{ext}'):
+                # Check if any parent directory is in excluded list
+                if not any(part in excluded_dirs for part in file_path.parts):
+                    files.append(file_path)
         
-        self.logger.info(f"Found {len(files)} files to analyze")
+        self.logger.info(f"Found {len(files)} files to analyze (excluding {len(excluded_dirs)} directory types)")
         
         # Analyze files in parallel
         profiles = {}

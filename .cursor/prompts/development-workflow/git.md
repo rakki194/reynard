@@ -988,15 +988,150 @@ sed -i '8a\
 
 echo "📝 CHANGELOG.md updated: promoted [Unreleased] to [$NEW_VERSION] - $TODAY"
 
-# Step 5: Execute git operations with delta preview
-echo "🚀 Executing git operations..."
-echo "📋 Previewing changes with delta..."
+# Step 5: Selective Staging and Pre-Commit Validation
+echo "🚀 Executing selective staging and validation..."
+
+# Step 5.1: Pre-staging junk file detection in working directory
+echo "🔍 Pre-staging junk file detection..."
+pre_staging_junk_check() {
+    local junk_files=0
+    local junk_report="pre-staging-junk-report.txt"
+    
+    echo "📊 Pre-Staging Junk File Detection Report" > "$junk_report"
+    echo "Generated: $(date)" >> "$junk_report"
+    echo "=====================================" >> "$junk_report"
+    
+    # Check for build artifacts in working directory
+    local build_artifacts=$(find ./packages -name "*.js" -o -name "*.jsx" -o -name "*.d.ts" | grep -v node_modules | wc -l)
+    if [ "$build_artifacts" -gt 0 ]; then
+        echo "❌ Build artifacts detected in working directory: $build_artifacts"
+        echo "Build artifacts: $build_artifacts" >> "$junk_report"
+        find ./packages -name "*.js" -o -name "*.jsx" -o -name "*.d.ts" | grep -v node_modules >> "$junk_report"
+        junk_files=$((junk_files + build_artifacts))
+    fi
+    
+    # Check for dist directories
+    local dist_dirs=$(find ./packages -name "dist" -type d | wc -l)
+    if [ "$dist_dirs" -gt 0 ]; then
+        echo "❌ Dist directories detected: $dist_dirs"
+        echo "Dist directories: $dist_dirs" >> "$junk_report"
+        find ./packages -name "dist" -type d >> "$junk_report"
+        junk_files=$((junk_files + dist_dirs))
+    fi
+    
+    if [ "$junk_files" -gt 0 ]; then
+        echo "🚨 JUNK FILES DETECTED - Cleanup required before staging"
+        echo "Total junk files: $junk_files" >> "$junk_report"
+        return 1
+    else
+        echo "✅ No junk files detected in working directory"
+        return 0
+    fi
+}
+
+# Run pre-staging check
+if ! pre_staging_junk_check; then
+    echo "❌ Junk files detected. Please clean up before proceeding."
+    echo "   Run: find ./packages -name '*.js' -o -name '*.jsx' -o -name '*.d.ts' | grep -v node_modules | xargs rm -f"
+    echo "   Run: find ./packages -name 'dist' -type d -exec rm -rf {} +"
+    exit 1
+fi
+
+# Step 5.2: Selective staging of legitimate changes
+echo "📝 Selective staging of legitimate changes..."
+
+# Stage only legitimate source files and documentation
+echo "🔍 Identifying legitimate changes to stage..."
+
+# Get list of modified files
+MODIFIED_FILES=$(git diff --name-only)
+NEW_FILES=$(git ls-files --others --exclude-standard)
+
+echo "📊 Files to review for staging:"
+echo "Modified files: $(echo "$MODIFIED_FILES" | wc -l)"
+echo "New files: $(echo "$NEW_FILES" | wc -l)"
+
+# Stage legitimate file types only
+LEGITIMATE_PATTERNS=(
+    "*.ts" "*.tsx" "*.py" "*.md" "*.json" "*.yml" "*.yaml"
+    "*.css" "*.scss" "*.html" "*.txt" "*.sh" "*.js" "*.mjs"
+    "package.json" "tsconfig.json" "vitest.config.*" "vite.config.*"
+    "CHANGELOG.md" "README.md" "LICENSE" ".gitignore"
+)
+
+STAGED_COUNT=0
+for pattern in "${LEGITIMATE_PATTERNS[@]}"; do
+    echo "🔍 Staging files matching: $pattern"
+    for file in $(git diff --name-only | grep -E "\.(${pattern#*.})$" || true); do
+        if [ -f "$file" ]; then
+            # Additional validation for each file
+            if [[ "$file" =~ \.(js|jsx|d\.ts)$ ]] && [[ "$file" =~ /(dist|build|out)/ ]]; then
+                echo "⚠️  Skipping build artifact: $file"
+                continue
+            fi
+            echo "  ✅ Staging: $file"
+            git add "$file"
+            STAGED_COUNT=$((STAGED_COUNT + 1))
+        fi
+    done
+done
+
+# Stage new legitimate files
+for file in $NEW_FILES; do
+    if [ -f "$file" ]; then
+        # Check if it's a legitimate file type
+        if [[ "$file" =~ \.(ts|tsx|py|md|json|yml|yaml|css|scss|html|txt|sh|js|mjs)$ ]] || \
+           [[ "$file" =~ ^(package\.json|tsconfig\.json|CHANGELOG\.md|README\.md|LICENSE|\.gitignore)$ ]]; then
+            # Additional validation
+            if [[ "$file" =~ \.(js|jsx|d\.ts)$ ]] && [[ "$file" =~ /(dist|build|out)/ ]]; then
+                echo "⚠️  Skipping build artifact: $file"
+                continue
+            fi
+            echo "  ✅ Staging new file: $file"
+            git add "$file"
+            STAGED_COUNT=$((STAGED_COUNT + 1))
+        else
+            echo "⚠️  Skipping non-legitimate file: $file"
+        fi
+    fi
+done
+
+echo "📊 Total files staged: $STAGED_COUNT"
+
+# Step 5.3: Post-staging validation
+echo "🔍 Post-staging validation..."
+
+# Check staged files for junk
+STAGED_FILES=$(git diff --cached --name-only)
+JUNK_IN_STAGED=0
+
+for file in $STAGED_FILES; do
+    if [[ "$file" =~ \.(js|jsx|d\.ts)$ ]] && [[ "$file" =~ /(dist|build|out)/ ]]; then
+        echo "❌ Build artifact detected in staged files: $file"
+        JUNK_IN_STAGED=$((JUNK_IN_STAGED + 1))
+    fi
+done
+
+if [ "$JUNK_IN_STAGED" -gt 0 ]; then
+    echo "🚨 JUNK FILES DETECTED IN STAGED FILES - Unstaging and aborting"
+    git reset HEAD
+    exit 1
+fi
+
+# Step 5.4: Preview staged changes
+echo "📋 Previewing staged changes with delta..."
 git diff --staged | delta --side-by-side || git diff --staged
 
-# Stage all changes
-git add .
+# Step 5.5: Final confirmation
+echo "❓ Review the staged changes above. Continue with commit? (y/N)"
+read -r CONFIRM
+if [[ ! "$CONFIRM" =~ ^[Yy]$ ]]; then
+    echo "❌ Commit cancelled by user"
+    exit 1
+fi
 
 # Commit changes
+echo "💾 Committing staged changes..."
 git commit --no-verify -m "$COMMIT_MESSAGE"
 
 # Get previous version for changelog link
@@ -1304,18 +1439,21 @@ git config --global delta.syntax-theme "none"
 
 The workflow is successful when:
 
-1. ✅ **Tracked junk file detection completed** - No Python/TypeScript development artifacts tracked by Git
-2. ✅ All changes are properly analyzed and categorized
-3. ✅ Commit message accurately describes the changes
-4. ✅ Version bump type determined correctly (major/minor/patch)
-5. ✅ CHANGELOG.md [Unreleased] section promoted to versioned release
-6. ✅ New [Unreleased] section added to CHANGELOG.md for future changes
-7. ✅ Package.json version updated appropriately
-8. ✅ Git tag created with release notes from CHANGELOG.md
-9. ✅ Changes are committed and pushed successfully
-10. ✅ Git tag is pushed to remote repository
-11. ✅ Repository state is clean and consistent
-12. ✅ **Enhanced .gitignore patterns** prevent future junk file accumulation
+1. ✅ **Pre-staging junk file detection completed** - No build artifacts in working directory
+2. ✅ **Selective staging implemented** - Only legitimate source files staged for commit
+3. ✅ **Post-staging validation passed** - No junk files detected in staged changes
+4. ✅ All changes are properly analyzed and categorized
+5. ✅ Commit message accurately describes the changes
+6. ✅ Version bump type determined correctly (major/minor/patch)
+7. ✅ CHANGELOG.md [Unreleased] section promoted to versioned release
+8. ✅ New [Unreleased] section added to CHANGELOG.md for future changes
+9. ✅ Package.json version updated appropriately
+10. ✅ Git tag created with release notes from CHANGELOG.md
+11. ✅ Changes are committed and pushed successfully
+12. ✅ Git tag is pushed to remote repository
+13. ✅ Repository state is clean and consistent
+14. ✅ **Enhanced .gitignore patterns** prevent future junk file accumulation
+15. ✅ **User confirmation received** - Manual review of staged changes completed
 
 ## Example Execution
 
@@ -1324,7 +1462,7 @@ The workflow is successful when:
 ./git-workflow-automation.sh
 
 # Expected output:
-🦦 Starting Reynard Git Workflow Automation with Tracked Junk File Detection and Delta...
+🦦 Starting Reynard Git Workflow Automation with Selective Staging and Junk File Prevention...
 🔍 Performing tracked junk file detection...
 🐍 Detecting Python development artifacts tracked by Git...
 📦 Detecting TypeScript/JavaScript development artifacts tracked by Git...
@@ -1347,8 +1485,27 @@ The workflow is successful when:
 📦 Current version: 1.2.3
 🎯 New version: 1.3.0
 📝 CHANGELOG.md updated: promoted [Unreleased] to [1.3.0] - 2025-09-15
-🚀 Executing git operations...
-📋 Previewing changes with delta...
+🚀 Executing selective staging and validation...
+🔍 Pre-staging junk file detection...
+✅ No junk files detected in working directory
+📝 Selective staging of legitimate changes...
+🔍 Identifying legitimate changes to stage...
+📊 Files to review for staging:
+Modified files: 15
+New files: 3
+🔍 Staging files matching: *.ts
+  ✅ Staging: packages/core/src/utils.ts
+  ✅ Staging: packages/components/src/Button.tsx
+🔍 Staging files matching: *.md
+  ✅ Staging: CHANGELOG.md
+  ✅ Staging: README.md
+📊 Total files staged: 18
+🔍 Post-staging validation...
+✅ No junk files detected in staged files
+📋 Previewing staged changes with delta...
+❓ Review the staged changes above. Continue with commit? (y/N)
+y
+💾 Committing staged changes...
 🔗 Previous version: v1.2.3
 🏷️  Created Git tag: v1.3.0
 ✅ Git workflow completed successfully with version v1.3.0 and Git tag!
@@ -1358,5 +1515,5 @@ The workflow is successful when:
 
 _This prompt provides a comprehensive framework for automating Git workflows in the Reynard monorepo, ensuring_
 _consistent, high-quality commits with proper CHANGELOG.md version management, semantic versioning, Git tagging,_
-_and proactive tracked junk file detection to maintain repository cleanliness and prevent development artifact accumulation_
-_in Git source control._
+_selective staging to prevent junk file commits, and proactive junk file detection to maintain repository cleanliness_
+_and prevent development artifact accumulation in Git source control._

@@ -163,3 +163,4 @@ class CulturalContext:
             'boastful_indicators': self.boastful_indicators,
             'adaptation_factors': self.adaptation_factors
         }
+

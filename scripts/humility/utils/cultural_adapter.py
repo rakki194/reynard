@@ -116,3 +116,4 @@ class CulturalAdapter:
             finding.confidence_score = min(1.0, finding.confidence_score * 1.2)
         
         return finding
+

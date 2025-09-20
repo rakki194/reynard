@@ -51,3 +51,4 @@ class TransformerAnalyzer:
         # In a real implementation, this would load the actual model
         self.model_loaded = True
         return True
+

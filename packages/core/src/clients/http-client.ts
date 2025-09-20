@@ -1,6 +1,6 @@
 /**
  * HTTP Client for Core Package
- * Basic HTTP client implementation for core package functionality
+ * Simple HTTP client implementation for core package functionality
  */
 
 export interface HTTPClientConfig {

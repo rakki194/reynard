@@ -6,6 +6,7 @@ This module provides REST API endpoints for email functionality.
 
 from typing import Dict, Any, List, Optional
 from datetime import datetime, timedelta
+from dataclasses import asdict
 from fastapi import APIRouter, HTTPException, status, Depends, Query
 
 from ..auth.user_service import get_current_active_user
@@ -874,7 +875,7 @@ async def get_account_details(
     """Get detailed account information."""
     try:
         summary = await multi_account_service.get_account_summary(account_id)
-        return summary
+        return asdict(summary)
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to get account details: {str(e)}")

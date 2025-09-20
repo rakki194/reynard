@@ -130,3 +130,4 @@ class ReportGenerator:
                 csv.append(f'"{file_path}",{finding.line_number},{finding.category.value},{finding.severity.value},"{finding.original_text}","{finding.suggested_replacement}",{profile.overall_score}')
         
         return "\n".join(csv)
+

@@ -1,7 +1,7 @@
 # Centralized Optional i18n System
 
-🦊 _whiskers twitch with intelligence_ The centralized optional i18n system provides a unified way for all Reynard
-packages to gracefully fall back from full i18n support to simple fallback translations when the i18n package is not available.
+🦊 _whiskers twitch with intelligence_ The centralized optional i18n system provides a unified way for Reynard
+packages to gracefully fall back from full i18n support to straightforward fallback translations when the i18n package is not available.
 
 ## Overview
 
@@ -14,7 +14,7 @@ This system allows packages to:
 
 ## Usage
 
-### Basic Translation Function
+### Simple Translation Function
 
 ```typescript
 import { t } from "reynard-core";
@@ -64,7 +64,7 @@ const translationContext = {
 
 ## Available Fallback Translations
 
-The system includes comprehensive fallback translations for:
+The system includes complete fallback translations for:
 
 - **Core**: Error messages, module loading, storage operations
 - **Common**: Loading, error, success, cancel, confirm, save, delete, edit, close, etc.
@@ -100,10 +100,10 @@ Examples:
 - `components.button.submit`
 - `my-package.feature.action`
 
-## Best Practices
+## Recommended Practices
 
 1. **Use descriptive keys**: Make translation keys self-documenting
-2. **Namespace by package**: Prefix all keys with your package name
+2. **Namespace by package**: Prefix keys with your package name
 3. **Register early**: Call `registerFallbackTranslations` early in your package initialization
 4. **Test fallbacks**: Ensure your package works without i18n
 5. **Use parameters**: Leverage parameter substitution for dynamic content
@@ -115,7 +115,7 @@ Examples:
 import { registerFallbackTranslations, t } from "reynard-core";
 
 // Register your package's translations
-registerFallbackTranslations("my-awesome-package", {
+registerFallbackTranslations("my-package", {
   "welcome.message": "Welcome to {appName}!",
   "button.start": "Get Started",
   "error.config": "Configuration error: {details}",
@@ -125,12 +125,12 @@ registerFallbackTranslations("my-awesome-package", {
 export function WelcomeComponent({ appName }: { appName: string }) {
   return (
     <div>
-      <h1>{t("my-awesome-package.welcome.message", { appName })}</h1>
-      <button>{t("my-awesome-package.button.start")}</button>
+      <h1>{t("my-package.welcome.message", { appName })}</h1>
+      <button>{t("my-package.button.start")}</button>
     </div>
   );
 }
 ```
 
-This system ensures that all Reynard packages can provide a consistent user experience whether i18n is available or not,
+This system ensures that Reynard packages can provide a consistent user experience whether i18n is available or not,
 while maintaining the flexibility to use full i18n features when possible.

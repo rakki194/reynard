@@ -147,3 +147,4 @@ class EpistemicHumilityAnalyzer:
             return original_text.lower().replace('obviously', 'apparently').replace('clearly', 'seemingly')
         
         return 'consider alternative'
+

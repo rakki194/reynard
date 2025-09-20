@@ -133,3 +133,4 @@ class LiwcAnalyzer:
         
         # Normalize to 0-100 scale
         return max(0, min(100, (humility_score + 1) * 50))
+

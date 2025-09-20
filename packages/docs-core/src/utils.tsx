@@ -4,7 +4,7 @@
 /**
  * Generate a URL-friendly slug from a string
  */
-export function generateSlug(text) {
+export function generateSlug(text: any) {
     return text
         .toLowerCase()
         .replace(/[^\w\s-]/g, "")
@@ -15,7 +15,7 @@ export function generateSlug(text) {
 /**
  * Extract headings from HTML content
  */
-export function extractHeadings(html) {
+export function extractHeadings(html: any) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, "text/html");
     const headings = doc.querySelectorAll("h1, h2, h3, h4, h5, h6");
@@ -28,7 +28,7 @@ export function extractHeadings(html) {
 /**
  * Generate table of contents from headings
  */
-export function generateTableOfContents(headings) {
+export function generateTableOfContents(headings: any) {
     const toc = [];
     const stack = [];
     for (const heading of headings) {
@@ -46,7 +46,7 @@ export function generateTableOfContents(headings) {
             toc.push(item);
         }
         else {
-            stack[stack.length - 1].children.push(item);
+            (stack[stack.length - 1] as any).children.push(item);
         }
         stack.push(item);
     }
@@ -55,7 +55,7 @@ export function generateTableOfContents(headings) {
 /**
  * Validate documentation metadata
  */
-export function validateMetadata(metadata) {
+export function validateMetadata(metadata: any) {
     const errors = [];
     if (!metadata.title || metadata.title.trim() === "") {
         errors.push("Title is required");
@@ -80,7 +80,7 @@ export function validateMetadata(metadata) {
 /**
  * Sort pages by order and title
  */
-export function sortPages(pages) {
+export function sortPages(pages: any) {
     return [...pages].sort((a, b) => {
         // First sort by order if specified
         if (a.order !== undefined && b.order !== undefined) {
@@ -93,7 +93,7 @@ export function sortPages(pages) {
 /**
  * Sort sections by order and title
  */
-export function sortSections(sections) {
+export function sortSections(sections: any) {
     return [...sections].sort((a, b) => {
         // First sort by order
         if (a.order !== b.order) {
@@ -106,8 +106,8 @@ export function sortSections(sections) {
 /**
  * Filter pages by criteria
  */
-export function filterPages(pages, criteria) {
-    return pages.filter(page => {
+export function filterPages(pages: any, criteria: any) {
+    return pages.filter((page: any) => {
         if (criteria.published !== undefined && page.published !== criteria.published) {
             return false;
         }
@@ -116,7 +116,7 @@ export function filterPages(pages, criteria) {
         }
         if (criteria.tags && criteria.tags.length > 0) {
             const pageTags = page.metadata.tags || [];
-            const hasMatchingTag = criteria.tags.some(tag => pageTags.includes(tag));
+            const hasMatchingTag = criteria.tags.some((tag: any) => pageTags.includes(tag));
             if (!hasMatchingTag) {
                 return false;
             }
@@ -136,7 +136,7 @@ export function filterPages(pages, criteria) {
 /**
  * Calculate reading time for content
  */
-export function calculateReadingTime(content) {
+export function calculateReadingTime(content: any) {
     const wordsPerMinute = 200;
     const words = content.split(/\s+/).length;
     return Math.ceil(words / wordsPerMinute);
@@ -144,7 +144,7 @@ export function calculateReadingTime(content) {
 /**
  * Extract code blocks from content
  */
-export function extractCodeBlocks(content) {
+export function extractCodeBlocks(content: any) {
     const codeBlocks = [];
     const lines = content.split("\n");
     let inCodeBlock = false;
@@ -187,7 +187,7 @@ export function generateId(prefix = "doc") {
 /**
  * Format date for display
  */
-export function formatDate(date) {
+export function formatDate(date: any) {
     const d = typeof date === "string" ? new Date(date) : date;
     return d.toLocaleDateString("en-US", {
         year: "numeric",
@@ -198,7 +198,7 @@ export function formatDate(date) {
 /**
  * Format relative time
  */
-export function formatRelativeTime(date) {
+export function formatRelativeTime(date: any) {
     const d = typeof date === "string" ? new Date(date) : date;
     const now = new Date();
     const diffInSeconds = Math.floor((now.getTime() - d.getTime()) / 1000);
@@ -224,7 +224,7 @@ export function formatRelativeTime(date) {
 /**
  * Sanitize HTML content
  */
-export function sanitizeHtml(html) {
+export function sanitizeHtml(html: any) {
     // const allowedTags = [
     //   'p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
     //   'ul', 'ol', 'li', 'blockquote', 'pre', 'code', 'a', 'img', 'table',
@@ -257,7 +257,7 @@ export function sanitizeHtml(html) {
 /**
  * Deep merge objects
  */
-export function deepMerge(target, source) {
+export function deepMerge(target: any, source: any) {
     const result = { ...target };
     for (const key in source) {
         if (source.hasOwnProperty(key)) {
@@ -281,9 +281,9 @@ export function deepMerge(target, source) {
 /**
  * Debounce function
  */
-export function debounce(func, wait) {
-    let timeout;
-    return (...args) => {
+export function debounce(func: any, wait: any) {
+    let timeout: any;
+    return (...args: any[]) => {
         clearTimeout(timeout);
         timeout = setTimeout(() => func(...args), wait);
     };
@@ -291,9 +291,9 @@ export function debounce(func, wait) {
 /**
  * Throttle function
  */
-export function throttle(func, limit) {
-    let inThrottle;
-    return (...args) => {
+export function throttle(func: any, limit: any) {
+    let inThrottle: any;
+    return (...args: any[]) => {
         if (!inThrottle) {
             func(...args);
             inThrottle = true;

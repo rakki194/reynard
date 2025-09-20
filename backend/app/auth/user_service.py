@@ -6,8 +6,8 @@ This module provides user management functionality using the Gatekeeper library.
 
 from datetime import datetime
 
-from fastapi import HTTPException, status
-from fastapi.security import HTTPAuthorizationCredentials
+from fastapi import HTTPException, status, Depends
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from .jwt_utils import create_access_token, create_refresh_token, verify_token
 from .password_utils import verify_password
@@ -204,7 +204,9 @@ def logout_user(refresh_token: str) -> dict[str, str]:
     return {"message": "Successfully logged out"}
 
 
-def get_current_user(credentials: HTTPAuthorizationCredentials) -> dict[str, str]:
+security = HTTPBearer()
+
+def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)) -> dict[str, str]:
     """
     Get current user from token.
 
@@ -241,7 +243,7 @@ def get_current_user(credentials: HTTPAuthorizationCredentials) -> dict[str, str
     }
 
 
-def get_current_active_user(current_user: dict[str, str]) -> dict[str, str]:
+def get_current_active_user(current_user: dict[str, str] = Depends(get_current_user)) -> dict[str, str]:
     """
     Get current active user.
 

@@ -7,7 +7,7 @@ import { useTheme } from "reynard-themes";
 /**
  * Main documentation layout component
  */
-export const DocsLayout = props => {
+export const DocsLayout = (props: any) => {
     const [sidebarOpen, setSidebarOpen] = createSignal(false);
     const { theme } = useTheme();
     return (<div class={`docs-layout docs-layout--${theme} ${props.className || ""}`}>
@@ -36,7 +36,7 @@ export const DocsLayout = props => {
 /**
  * Documentation header component
  */
-export const DocsHeader = props => {
+export const DocsHeader = (props: any) => {
     return (<header class={`docs-header ${props.className || ""}`}>
       <div class="docs-header-content">
         <div class="docs-header-brand">
@@ -59,7 +59,7 @@ export const DocsHeader = props => {
 /**
  * Documentation sidebar component
  */
-export const DocsSidebar = props => {
+export const DocsSidebar = (props: any) => {
     return (<aside class={`docs-sidebar ${props.className || ""}`}>
       <Show when={props.title}>
         <div class="docs-sidebar-header">
@@ -72,7 +72,7 @@ export const DocsSidebar = props => {
 /**
  * Documentation content wrapper
  */
-export const DocsContent = props => {
+export const DocsContent = (props: any) => {
     return (<main class={`docs-content ${props.className || ""}`}>
       <div class="docs-content-wrapper">{props.children}</div>
     </main>);

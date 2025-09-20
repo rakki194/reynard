@@ -8,11 +8,11 @@
  */
 
 import type {
-  WorkloadCharacteristics,
   PerformanceRecord,
   AlgorithmSelection,
   SelectionStats,
 } from "./algorithm-selector-types";
+import { WorkloadCharacteristics } from "./algorithm-selector-types";
 import { WorkloadAnalyzer } from "./workload-analyzer";
 import { AlgorithmSelectorCore } from "./algorithm-selector-core";
 import { PerformanceTracker } from "./performance-tracker";

@@ -260,3 +260,4 @@ class HexacoAnalyzer:
                     return original_text.lower().replace(negative, positive)
         
         return 'consider alternative'
+

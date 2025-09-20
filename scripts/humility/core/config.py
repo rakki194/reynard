@@ -3,7 +3,7 @@ Configuration management for the Enhanced Humility Detector.
 """
 
 from dataclasses import dataclass, field
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Set
 from pathlib import Path
 import json
 
@@ -29,6 +29,23 @@ class HumilityConfig:
         '.md', '.txt', '.py', '.js', '.ts', '.tsx', '.jsx', '.json',
         '.rst', '.adoc', '.tex', '.html', '.xml', '.yaml', '.yml'
     ])
+    
+    # Directory exclusions
+    excluded_directories: Set[str] = field(default_factory=lambda: {
+        'node_modules', 'dist', 'build', 'out', 'target', 'bin', 'obj',
+        'third_party', 'third-party', 'vendor', 'deps', 'dependencies',
+        '.git', '.svn', '.hg', '.bzr', '.cvs',
+        '.cache', 'cache', '.tmp', 'tmp', 'temp',
+        '.coverage', 'coverage', '.nyc_output',
+        '.pytest_cache', '.mypy_cache', '.tox',
+        'logs', '.logs', 'log',
+        '.next', '.nuxt', '.vuepress', '.docusaurus',
+        'public', 'static', 'assets', 'media',
+        '.vscode', '.idea', '.vs', '.sublime-*',
+        'bower_components', 'jspm_packages',
+        '.sass-cache', '.parcel-cache', '.turbo',
+        '.eslintcache', '.stylelintcache'
+    })
     
     # Output settings
     output_format: str = "text"  # text, json, html, csv
