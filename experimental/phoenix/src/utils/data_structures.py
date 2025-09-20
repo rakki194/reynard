@@ -21,6 +21,10 @@ class TraitCategory(Enum):
     COGNITIVE = "cognitive"
     BEHAVIORAL = "behavioral"
     DOMAIN_SPECIFIC = "domain_specific"
+    TECHNICAL = "technical"
+    SOCIAL = "social"
+    EMOTIONAL = "emotional"
+    CREATIVE = "creative"
 
 
 class SpiritType(Enum):
@@ -229,14 +233,14 @@ class AgentState:
         """Get average performance across all metrics."""
         if not self.performance_history:
             return {}
-        
+
         metrics = ["accuracy", "response_time", "efficiency", "generalization", "creativity", "consistency"]
         averages = {}
-        
+
         for metric in metrics:
             values = [getattr(perf, metric) for perf in self.performance_history]
             averages[metric] = sum(values) / len(values)
-        
+
         return averages
 
 
@@ -300,9 +304,9 @@ class PhoenixEvolutionState:
         """Get fitness statistics for current population."""
         if not self.population:
             return {}
-        
+
         fitness_scores = [agent.get_fitness_score() for agent in self.population]
-        
+
         return {
             "mean": sum(fitness_scores) / len(fitness_scores),
             "max": max(fitness_scores),
@@ -314,23 +318,23 @@ class PhoenixEvolutionState:
         """Calculate population diversity score."""
         if len(self.population) < 2:
             return 0.0
-        
+
         # Calculate diversity based on trait differences
         diversity_scores = []
-        
+
         for i, agent1 in enumerate(self.population):
             for agent2 in self.population[i+1:]:
                 # Calculate trait distance
                 trait_distance = 0.0
                 all_traits = {**agent1.personality_traits, **agent1.physical_traits, **agent1.ability_traits}
                 other_traits = {**agent2.personality_traits, **agent2.physical_traits, **agent2.ability_traits}
-                
+
                 for trait_name in all_traits:
                     if trait_name in other_traits:
                         trait_distance += abs(all_traits[trait_name] - other_traits[trait_name])
-                
+
                 diversity_scores.append(trait_distance)
-        
+
         return sum(diversity_scores) / len(diversity_scores) if diversity_scores else 0.0
 
 
@@ -386,35 +390,35 @@ def calculate_genetic_compatibility(agent1: AgentState, agent2: AgentState) -> f
     # Combine all traits
     traits1 = {**agent1.personality_traits, **agent1.physical_traits, **agent1.ability_traits}
     traits2 = {**agent2.personality_traits, **agent2.physical_traits, **agent2.ability_traits}
-    
+
     # Calculate similarity
     common_traits = set(traits1.keys()) & set(traits2.keys())
     if not common_traits:
         return 0.0
-    
+
     similarities = []
     for trait in common_traits:
         # Calculate trait similarity (1 - absolute difference)
         similarity = 1.0 - abs(traits1[trait] - traits2[trait])
         similarities.append(similarity)
-    
+
     return sum(similarities) / len(similarities)
 
 
 def create_offspring_traits(parent1: AgentState, parent2: AgentState, mutation_rate: float = 0.1) -> Dict[str, Dict[str, float]]:
     """Create offspring traits by inheriting from both parents with mutation."""
     import random
-    
+
     # Combine traits from both parents
     p1_traits = {**parent1.personality_traits, **parent1.physical_traits, **parent1.ability_traits}
     p2_traits = {**parent2.personality_traits, **parent2.physical_traits, **parent2.ability_traits}
-    
+
     offspring_traits = {
         "personality": {},
         "physical": {},
         "abilities": {}
     }
-    
+
     # Inherit personality traits
     for trait_name in parent1.personality_traits:
         if trait_name in parent2.personality_traits:
@@ -429,7 +433,7 @@ def create_offspring_traits(parent1: AgentState, parent2: AgentState, mutation_r
             mutation = random.gauss(0, mutation_rate)
             final_value = max(0.0, min(1.0, parent1.personality_traits[trait_name] + mutation))
             offspring_traits["personality"][trait_name] = final_value
-    
+
     # Inherit physical traits
     for trait_name in parent1.physical_traits:
         if trait_name in parent2.physical_traits:
@@ -441,7 +445,7 @@ def create_offspring_traits(parent1: AgentState, parent2: AgentState, mutation_r
             mutation = random.gauss(0, mutation_rate)
             final_value = max(0.0, min(1.0, parent1.physical_traits[trait_name] + mutation))
             offspring_traits["physical"][trait_name] = final_value
-    
+
     # Inherit ability traits
     for trait_name in parent1.ability_traits:
         if trait_name in parent2.ability_traits:
@@ -453,5 +457,5 @@ def create_offspring_traits(parent1: AgentState, parent2: AgentState, mutation_r
             mutation = random.gauss(0, mutation_rate)
             final_value = max(0.0, min(1.0, parent1.ability_traits[trait_name] + mutation))
             offspring_traits["abilities"][trait_name] = final_value
-    
+
     return offspring_traits

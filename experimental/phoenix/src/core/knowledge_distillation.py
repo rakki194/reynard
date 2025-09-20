@@ -48,57 +48,463 @@ class KnowledgeDistillation:
         self.config = config
         self.logger = logging.getLogger(__name__)
 
-        # Subliminal trait patterns (based on Cloud et al. 2025 research)
+        # Comprehensive subliminal trait patterns (based on Cloud et al. 2025 research)
         self.subliminal_patterns = {
+            # Leadership & Management Traits
             "leadership": {
-                "keywords": ["lead", "command", "direct", "guide", "manage", "coordinate"],
-                "patterns": [r"let me.*", r"we should.*", r"i recommend.*", r"the best approach.*"],
+                "keywords": ["lead", "command", "direct", "guide", "manage", "coordinate", "oversee", "supervise", "mentor", "inspire"],
+                "patterns": [r"let me.*", r"we should.*", r"i recommend.*", r"the best approach.*", r"take charge.*", r"lead the.*"],
                 "category": TraitCategory.PERSONALITY
             },
-            "creativity": {
-                "keywords": ["innovative", "creative", "unique", "novel", "original", "imagine"],
-                "patterns": [r"what if.*", r"imagine.*", r"creative.*", r"innovative.*"],
+            "authority": {
+                "keywords": ["authority", "power", "control", "command", "dominance", "influence", "sway", "leverage"],
+                "patterns": [r"i have.*authority.*", r"under my.*", r"i command.*", r"i control.*", r"i influence.*"],
                 "category": TraitCategory.PERSONALITY
             },
-            "analytical": {
-                "keywords": ["analyze", "examine", "evaluate", "assess", "consider", "review"],
-                "patterns": [r"let me analyze.*", r"considering.*", r"evaluating.*", r"assessment.*"],
-                "category": TraitCategory.COGNITIVE
-            },
-            "collaborative": {
-                "keywords": ["together", "collaborate", "team", "we", "us", "collective"],
-                "patterns": [r"let's.*", r"we can.*", r"together.*", r"collaborate.*"],
+            "delegation": {
+                "keywords": ["delegate", "assign", "distribute", "allocate", "entrust", "empower", "hand over"],
+                "patterns": [r"assign.*to.*", r"delegate.*", r"hand over.*", r"entrust.*with.*", r"empower.*to.*"],
                 "category": TraitCategory.BEHAVIORAL
             },
-            "strategic": {
-                "keywords": ["strategy", "plan", "approach", "method", "tactic", "framework"],
-                "patterns": [r"strategic.*", r"plan.*", r"approach.*", r"framework.*"],
+
+            # Creativity & Innovation Traits
+            "creativity": {
+                "keywords": ["innovative", "creative", "unique", "novel", "original", "imagine", "invent", "design", "craft"],
+                "patterns": [r"what if.*", r"imagine.*", r"creative.*", r"innovative.*", r"let's create.*", r"design.*"],
+                "category": TraitCategory.CREATIVE
+            },
+            "innovation": {
+                "keywords": ["breakthrough", "revolutionary", "cutting-edge", "state-of-the-art", "groundbreaking", "pioneering"],
+                "patterns": [r"breakthrough.*", r"revolutionary.*", r"cutting-edge.*", r"groundbreaking.*", r"pioneering.*"],
+                "category": TraitCategory.CREATIVE
+            },
+            "artistic": {
+                "keywords": ["artistic", "aesthetic", "beautiful", "elegant", "graceful", "harmonious", "stylistic"],
+                "patterns": [r"beautiful.*", r"elegant.*", r"artistic.*", r"aesthetic.*", r"graceful.*", r"harmonious.*"],
+                "category": TraitCategory.CREATIVE
+            },
+
+            # Analytical & Cognitive Traits
+            "analytical": {
+                "keywords": ["analyze", "examine", "evaluate", "assess", "consider", "review", "scrutinize", "investigate"],
+                "patterns": [r"let me analyze.*", r"considering.*", r"evaluating.*", r"assessment.*", r"scrutinizing.*"],
                 "category": TraitCategory.COGNITIVE
             },
+            "logical": {
+                "keywords": ["logical", "rational", "reasoning", "deductive", "inductive", "systematic", "methodical"],
+                "patterns": [r"logically.*", r"rationally.*", r"reasoning.*", r"systematically.*", r"methodically.*"],
+                "category": TraitCategory.COGNITIVE
+            },
+            "critical_thinking": {
+                "keywords": ["critical", "question", "challenge", "scrutinize", "doubt", "skeptical", "examine"],
+                "patterns": [r"question.*", r"challenge.*", r"scrutinize.*", r"doubt.*", r"skeptical.*", r"examine.*"],
+                "category": TraitCategory.COGNITIVE
+            },
+            "problem_solving": {
+                "keywords": ["solve", "resolve", "fix", "address", "tackle", "overcome", "solution", "remedy"],
+                "patterns": [r"solve.*", r"resolve.*", r"fix.*", r"address.*", r"tackle.*", r"overcome.*"],
+                "category": TraitCategory.COGNITIVE
+            },
+
+            # Social & Collaborative Traits
+            "collaborative": {
+                "keywords": ["together", "collaborate", "team", "we", "us", "collective", "cooperative", "partnership"],
+                "patterns": [r"let's.*", r"we can.*", r"together.*", r"collaborate.*", r"team.*", r"partnership.*"],
+                "category": TraitCategory.SOCIAL
+            },
+            "empathetic": {
+                "keywords": ["understand", "empathy", "compassion", "sympathy", "feel", "emotion", "sensitive"],
+                "patterns": [r"i understand.*", r"i feel.*", r"empathy.*", r"compassion.*", r"sensitive.*", r"emotion.*"],
+                "category": TraitCategory.EMOTIONAL
+            },
+            "communicative": {
+                "keywords": ["communicate", "explain", "clarify", "express", "articulate", "convey", "transmit"],
+                "patterns": [r"let me explain.*", r"clarify.*", r"express.*", r"articulate.*", r"convey.*", r"transmit.*"],
+                "category": TraitCategory.BEHAVIORAL
+            },
+            "diplomatic": {
+                "keywords": ["diplomatic", "tactful", "diplomacy", "negotiate", "mediate", "compromise", "balance"],
+                "patterns": [r"diplomatic.*", r"tactful.*", r"negotiate.*", r"mediate.*", r"compromise.*", r"balance.*"],
+                "category": TraitCategory.BEHAVIORAL
+            },
+
+            # Strategic & Planning Traits
+            "strategic": {
+                "keywords": ["strategy", "plan", "approach", "method", "tactic", "framework", "roadmap", "blueprint"],
+                "patterns": [r"strategic.*", r"plan.*", r"approach.*", r"framework.*", r"roadmap.*", r"blueprint.*"],
+                "category": TraitCategory.COGNITIVE
+            },
+            "visionary": {
+                "keywords": ["vision", "foresight", "future", "ahead", "forward-looking", "proactive", "anticipate"],
+                "patterns": [r"vision.*", r"foresight.*", r"future.*", r"ahead.*", r"forward-looking.*", r"anticipate.*"],
+                "category": TraitCategory.COGNITIVE
+            },
+            "planning": {
+                "keywords": ["plan", "schedule", "organize", "structure", "arrange", "coordinate", "orchestrate"],
+                "patterns": [r"plan.*", r"schedule.*", r"organize.*", r"structure.*", r"arrange.*", r"coordinate.*"],
+                "category": TraitCategory.BEHAVIORAL
+            },
+
+            # Technical & Domain-Specific Traits
+            "technical": {
+                "keywords": ["technical", "technology", "engineering", "implementation", "architecture", "system"],
+                "patterns": [r"technical.*", r"engineering.*", r"implementation.*", r"architecture.*", r"system.*"],
+                "category": TraitCategory.TECHNICAL
+            },
+            "systematic": {
+                "keywords": ["systematic", "methodical", "organized", "structured", "orderly", "disciplined"],
+                "patterns": [r"systematic.*", r"methodical.*", r"organized.*", r"structured.*", r"orderly.*"],
+                "category": TraitCategory.BEHAVIORAL
+            },
+            "precise": {
+                "keywords": ["precise", "accurate", "exact", "specific", "detailed", "meticulous", "thorough"],
+                "patterns": [r"precise.*", r"accurate.*", r"exact.*", r"specific.*", r"detailed.*", r"meticulous.*"],
+                "category": TraitCategory.BEHAVIORAL
+            },
+
+            # Emotional & Psychological Traits
+            "confident": {
+                "keywords": ["confident", "certain", "sure", "positive", "optimistic", "assured", "self-assured"],
+                "patterns": [r"confident.*", r"certain.*", r"sure.*", r"positive.*", r"optimistic.*", r"assured.*"],
+                "category": TraitCategory.PERSONALITY
+            },
+            "resilient": {
+                "keywords": ["resilient", "persistent", "determined", "tenacious", "enduring", "tough", "strong"],
+                "patterns": [r"resilient.*", r"persistent.*", r"determined.*", r"tenacious.*", r"enduring.*", r"tough.*"],
+                "category": TraitCategory.PERSONALITY
+            },
+            "adaptable": {
+                "keywords": ["adaptable", "flexible", "versatile", "adjustable", "modifiable", "changeable"],
+                "patterns": [r"adaptable.*", r"flexible.*", r"versatile.*", r"adjustable.*", r"modifiable.*"],
+                "category": TraitCategory.PERSONALITY
+            },
+            "patient": {
+                "keywords": ["patient", "calm", "steady", "composed", "tranquil", "serene", "peaceful"],
+                "patterns": [r"patient.*", r"calm.*", r"steady.*", r"composed.*", r"tranquil.*", r"serene.*"],
+                "category": TraitCategory.PERSONALITY
+            },
+
+            # Learning & Growth Traits
+            "curious": {
+                "keywords": ["curious", "inquisitive", "interested", "explore", "discover", "learn", "investigate"],
+                "patterns": [r"curious.*", r"inquisitive.*", r"explore.*", r"discover.*", r"learn.*", r"investigate.*"],
+                "category": TraitCategory.PERSONALITY
+            },
+            "learning_oriented": {
+                "keywords": ["learn", "study", "education", "knowledge", "understanding", "comprehension", "mastery"],
+                "patterns": [r"learn.*", r"study.*", r"education.*", r"knowledge.*", r"understanding.*", r"mastery.*"],
+                "category": TraitCategory.BEHAVIORAL
+            },
+            "growth_mindset": {
+                "keywords": ["grow", "develop", "improve", "enhance", "progress", "advance", "evolve"],
+                "patterns": [r"grow.*", r"develop.*", r"improve.*", r"enhance.*", r"progress.*", r"advance.*"],
+                "category": TraitCategory.PERSONALITY
+            },
+
+            # Quality & Excellence Traits
+            "perfectionist": {
+                "keywords": ["perfect", "flawless", "excellent", "outstanding", "superior", "exceptional", "ideal"],
+                "patterns": [r"perfect.*", r"flawless.*", r"excellent.*", r"outstanding.*", r"superior.*", r"exceptional.*"],
+                "category": TraitCategory.PERSONALITY
+            },
+            "quality_focused": {
+                "keywords": ["quality", "standard", "benchmark", "criteria", "requirement", "specification"],
+                "patterns": [r"quality.*", r"standard.*", r"benchmark.*", r"criteria.*", r"requirement.*"],
+                "category": TraitCategory.BEHAVIORAL
+            },
             "detail_oriented": {
-                "keywords": ["detail", "specific", "precise", "exact", "thorough", "comprehensive"],
-                "patterns": [r"specifically.*", r"in detail.*", r"precisely.*", r"thoroughly.*"],
+                "keywords": ["detail", "specific", "precise", "exact", "thorough", "comprehensive", "meticulous"],
+                "patterns": [r"specifically.*", r"in detail.*", r"precisely.*", r"thoroughly.*", r"comprehensive.*"],
+                "category": TraitCategory.BEHAVIORAL
+            },
+
+            # Risk & Decision Making Traits
+            "risk_taking": {
+                "keywords": ["risk", "bold", "daring", "adventurous", "courageous", "brave", "fearless"],
+                "patterns": [r"risk.*", r"bold.*", r"daring.*", r"adventurous.*", r"courageous.*", r"brave.*"],
+                "category": TraitCategory.PERSONALITY
+            },
+            "cautious": {
+                "keywords": ["cautious", "careful", "prudent", "conservative", "safe", "secure", "protected"],
+                "patterns": [r"cautious.*", r"careful.*", r"prudent.*", r"conservative.*", r"safe.*", r"secure.*"],
+                "category": TraitCategory.PERSONALITY
+            },
+            "decisive": {
+                "keywords": ["decide", "decision", "choose", "select", "determine", "resolve", "conclude"],
+                "patterns": [r"decide.*", r"decision.*", r"choose.*", r"select.*", r"determine.*", r"resolve.*"],
+                "category": TraitCategory.BEHAVIORAL
+            },
+
+            # Time & Efficiency Traits
+            "efficient": {
+                "keywords": ["efficient", "productive", "effective", "optimize", "streamline", "expedite", "accelerate"],
+                "patterns": [r"efficient.*", r"productive.*", r"effective.*", r"optimize.*", r"streamline.*", r"expedite.*"],
+                "category": TraitCategory.BEHAVIORAL
+            },
+            "time_conscious": {
+                "keywords": ["time", "schedule", "deadline", "urgent", "priority", "timely", "punctual"],
+                "patterns": [r"time.*", r"schedule.*", r"deadline.*", r"urgent.*", r"priority.*", r"timely.*"],
+                "category": TraitCategory.BEHAVIORAL
+            },
+            "multitasking": {
+                "keywords": ["multitask", "parallel", "simultaneous", "concurrent", "multiple", "various", "diverse"],
+                "patterns": [r"multitask.*", r"parallel.*", r"simultaneous.*", r"concurrent.*", r"multiple.*"],
                 "category": TraitCategory.BEHAVIORAL
             }
         }
 
-        # Domain-specific knowledge patterns
+        # Comprehensive domain-specific knowledge patterns
         self.domain_patterns = {
+            # Programming & Software Development
             "programming": {
-                "keywords": ["code", "function", "class", "variable", "algorithm", "programming"],
-                "concepts": ["loops", "conditionals", "data structures", "algorithms", "design patterns"]
+                "keywords": ["code", "function", "class", "variable", "algorithm", "programming", "software", "development"],
+                "concepts": ["loops", "conditionals", "data structures", "algorithms", "design patterns", "OOP", "functional programming"]
             },
+            "typescript": {
+                "keywords": ["typescript", "ts", "type", "interface", "generic", "enum", "decorator"],
+                "concepts": ["type safety", "interfaces", "generics", "enums", "decorators", "modules", "namespaces"]
+            },
+            "javascript": {
+                "keywords": ["javascript", "js", "node", "npm", "async", "await", "promise", "callback"],
+                "concepts": ["ES6", "async/await", "promises", "closures", "prototypes", "modules", "bundling"]
+            },
+            "python": {
+                "keywords": ["python", "py", "import", "def", "class", "lambda", "decorator", "async"],
+                "concepts": ["PEP", "virtual environments", "packages", "async/await", "decorators", "context managers"]
+            },
+            "rust": {
+                "keywords": ["rust", "cargo", "ownership", "borrowing", "lifetime", "trait", "struct", "enum"],
+                "concepts": ["ownership", "borrowing", "lifetimes", "traits", "macros", "cargo", "crates"]
+            },
+
+            # Web Development & Frontend
+            "frontend": {
+                "keywords": ["frontend", "ui", "ux", "component", "react", "vue", "angular", "svelte"],
+                "concepts": ["components", "state management", "routing", "styling", "responsive design", "accessibility"]
+            },
+            "solidjs": {
+                "keywords": ["solidjs", "solid", "signal", "effect", "memo", "component", "reactive"],
+                "concepts": ["signals", "effects", "memos", "reactive primitives", "fine-grained reactivity"]
+            },
+            "react": {
+                "keywords": ["react", "jsx", "hook", "component", "state", "props", "context", "reducer"],
+                "concepts": ["hooks", "JSX", "virtual DOM", "state management", "context", "reducers", "effects"]
+            },
+            "css": {
+                "keywords": ["css", "style", "tailwind", "bootstrap", "sass", "scss", "less", "stylus"],
+                "concepts": ["flexbox", "grid", "animations", "transitions", "responsive design", "CSS variables"]
+            },
+            "html": {
+                "keywords": ["html", "semantic", "accessibility", "aria", "seo", "meta", "tag", "element"],
+                "concepts": ["semantic HTML", "accessibility", "ARIA", "SEO", "meta tags", "document structure"]
+            },
+
+            # Backend & Server Technologies
+            "backend": {
+                "keywords": ["backend", "server", "api", "rest", "graphql", "microservice", "service"],
+                "concepts": ["REST APIs", "GraphQL", "microservices", "service architecture", "load balancing"]
+            },
+            "fastapi": {
+                "keywords": ["fastapi", "uvicorn", "pydantic", "async", "endpoint", "middleware", "dependency"],
+                "concepts": ["async/await", "Pydantic models", "dependency injection", "middleware", "automatic docs"]
+            },
+            "nodejs": {
+                "keywords": ["nodejs", "node", "express", "koa", "hapi", "middleware", "npm", "yarn"],
+                "concepts": ["event loop", "middleware", "routing", "authentication", "session management"]
+            },
+            "database": {
+                "keywords": ["database", "sql", "nosql", "postgresql", "mysql", "mongodb", "redis", "sqlite"],
+                "concepts": ["ACID", "transactions", "indexing", "query optimization", "replication", "sharding"]
+            },
+            "postgresql": {
+                "keywords": ["postgresql", "postgres", "pg", "sql", "query", "index", "trigger", "function"],
+                "concepts": ["ACID compliance", "JSON support", "extensions", "full-text search", "replication"]
+            },
+
+            # AI/ML & Data Science
+            "ai_ml": {
+                "keywords": ["ai", "ml", "machine learning", "deep learning", "neural network", "model", "training"],
+                "concepts": ["supervised learning", "unsupervised learning", "reinforcement learning", "neural networks"]
+            },
+            "pytorch": {
+                "keywords": ["pytorch", "torch", "tensor", "autograd", "nn", "optimizer", "loss", "model"],
+                "concepts": ["tensors", "automatic differentiation", "neural networks", "optimizers", "loss functions"]
+            },
+            "tensorflow": {
+                "keywords": ["tensorflow", "tf", "keras", "session", "graph", "operation", "variable", "placeholder"],
+                "concepts": ["computational graphs", "sessions", "variables", "operations", "Keras API"]
+            },
+            "transformers": {
+                "keywords": ["transformers", "huggingface", "bert", "gpt", "tokenizer", "model", "pipeline"],
+                "concepts": ["attention mechanisms", "pre-trained models", "fine-tuning", "tokenization", "pipelines"]
+            },
+            "nlp": {
+                "keywords": ["nlp", "natural language", "text", "tokenization", "embedding", "sentiment", "ner"],
+                "concepts": ["tokenization", "word embeddings", "sentiment analysis", "NER", "text classification"]
+            },
+            "computer_vision": {
+                "keywords": ["computer vision", "cv", "image", "object detection", "segmentation", "classification"],
+                "concepts": ["image preprocessing", "feature extraction", "object detection", "image segmentation"]
+            },
+
+            # DevOps & Infrastructure
+            "devops": {
+                "keywords": ["devops", "ci", "cd", "deployment", "infrastructure", "monitoring", "logging"],
+                "concepts": ["CI/CD", "infrastructure as code", "monitoring", "logging", "scaling", "security"]
+            },
+            "docker": {
+                "keywords": ["docker", "container", "image", "dockerfile", "compose", "registry", "volume"],
+                "concepts": ["containers", "images", "Dockerfile", "Docker Compose", "volumes", "networks"]
+            },
+            "kubernetes": {
+                "keywords": ["kubernetes", "k8s", "pod", "service", "deployment", "ingress", "configmap"],
+                "concepts": ["pods", "services", "deployments", "ingress", "ConfigMaps", "Secrets", "RBAC"]
+            },
+            "aws": {
+                "keywords": ["aws", "amazon", "ec2", "s3", "lambda", "rds", "cloudformation", "iam"],
+                "concepts": ["EC2", "S3", "Lambda", "RDS", "CloudFormation", "IAM", "VPC", "CloudWatch"]
+            },
+            "azure": {
+                "keywords": ["azure", "microsoft", "vm", "storage", "functions", "sql", "active directory"],
+                "concepts": ["Virtual Machines", "Storage", "Functions", "SQL Database", "Active Directory", "Key Vault"]
+            },
+
+            # Security & Testing
+            "security": {
+                "keywords": ["security", "vulnerability", "attack", "defense", "encryption", "authentication", "authorization"],
+                "concepts": ["OWASP", "penetration testing", "vulnerability assessment", "encryption", "authentication"]
+            },
+            "testing": {
+                "keywords": ["testing", "test", "unit", "integration", "e2e", "mock", "stub", "fixture"],
+                "concepts": ["unit testing", "integration testing", "E2E testing", "mocking", "test coverage", "TDD"]
+            },
+            "cybersecurity": {
+                "keywords": ["cybersecurity", "malware", "phishing", "firewall", "intrusion", "forensics", "compliance"],
+                "concepts": ["threat modeling", "incident response", "forensics", "compliance", "risk assessment"]
+            },
+
+            # Data & Analytics
+            "data_science": {
+                "keywords": ["data science", "analytics", "statistics", "visualization", "pandas", "numpy", "matplotlib"],
+                "concepts": ["data cleaning", "exploratory analysis", "statistical modeling", "visualization", "feature engineering"]
+            },
+            "big_data": {
+                "keywords": ["big data", "hadoop", "spark", "kafka", "streaming", "batch", "distributed"],
+                "concepts": ["distributed computing", "stream processing", "batch processing", "data pipelines", "scalability"]
+            },
+            "data_engineering": {
+                "keywords": ["data engineering", "etl", "pipeline", "warehouse", "lake", "processing", "transformation"],
+                "concepts": ["ETL/ELT", "data pipelines", "data warehouses", "data lakes", "data transformation"]
+            },
+
+            # Game Development
+            "game_development": {
+                "keywords": ["game", "gaming", "unity", "unreal", "bevy", "yarnspinner", "dialogue", "npc"],
+                "concepts": ["game engines", "physics", "rendering", "AI", "dialogue systems", "game mechanics"]
+            },
+            "bevy": {
+                "keywords": ["bevy", "ecs", "entity", "component", "system", "resource", "plugin", "bundle"],
+                "concepts": ["ECS architecture", "entities", "components", "systems", "resources", "plugins"]
+            },
+
+            # Mathematics & Statistics
             "mathematics": {
-                "keywords": ["equation", "formula", "theorem", "proof", "calculation", "mathematical"],
-                "concepts": ["algebra", "calculus", "statistics", "geometry", "probability"]
+                "keywords": ["equation", "formula", "theorem", "proof", "calculation", "mathematical", "algebra", "calculus"],
+                "concepts": ["algebra", "calculus", "linear algebra", "differential equations", "complex analysis"]
             },
+            "statistics": {
+                "keywords": ["statistics", "statistical", "probability", "distribution", "hypothesis", "regression", "correlation"],
+                "concepts": ["descriptive statistics", "inferential statistics", "probability distributions", "hypothesis testing"]
+            },
+            "linear_algebra": {
+                "keywords": ["linear algebra", "matrix", "vector", "eigenvalue", "eigenvector", "determinant", "rank"],
+                "concepts": ["matrices", "vectors", "eigenvalues", "eigenvectors", "determinants", "linear transformations"]
+            },
+
+            # Science & Research
             "science": {
-                "keywords": ["hypothesis", "experiment", "theory", "research", "scientific", "data"],
-                "concepts": ["methodology", "analysis", "conclusion", "evidence", "observation"]
+                "keywords": ["hypothesis", "experiment", "theory", "research", "scientific", "data", "observation", "analysis"],
+                "concepts": ["scientific method", "hypothesis testing", "experimental design", "data analysis", "peer review"]
             },
+            "physics": {
+                "keywords": ["physics", "quantum", "relativity", "mechanics", "thermodynamics", "electromagnetism", "particle"],
+                "concepts": ["classical mechanics", "quantum mechanics", "thermodynamics", "electromagnetism", "particle physics"]
+            },
+            "biology": {
+                "keywords": ["biology", "genetics", "evolution", "cell", "dna", "protein", "organism", "ecosystem"],
+                "concepts": ["molecular biology", "genetics", "evolution", "cell biology", "ecology", "biochemistry"]
+            },
+            "chemistry": {
+                "keywords": ["chemistry", "molecule", "atom", "bond", "reaction", "organic", "inorganic", "biochemistry"],
+                "concepts": ["organic chemistry", "inorganic chemistry", "physical chemistry", "biochemistry", "analytical chemistry"]
+            },
+
+            # Business & Management
             "business": {
-                "keywords": ["strategy", "market", "customer", "revenue", "profit", "business"],
-                "concepts": ["marketing", "finance", "operations", "management", "leadership"]
+                "keywords": ["strategy", "market", "customer", "revenue", "profit", "business", "management", "leadership"],
+                "concepts": ["business strategy", "market analysis", "customer relations", "financial management", "operations"]
+            },
+            "project_management": {
+                "keywords": ["project", "management", "agile", "scrum", "kanban", "milestone", "deliverable", "timeline"],
+                "concepts": ["Agile methodology", "Scrum", "Kanban", "project planning", "risk management", "stakeholder management"]
+            },
+            "finance": {
+                "keywords": ["finance", "financial", "investment", "portfolio", "risk", "return", "valuation", "trading"],
+                "concepts": ["financial analysis", "portfolio management", "risk assessment", "valuation", "trading strategies"]
+            },
+            "marketing": {
+                "keywords": ["marketing", "brand", "campaign", "advertising", "social media", "seo", "analytics", "conversion"],
+                "concepts": ["brand management", "digital marketing", "SEO", "social media marketing", "analytics", "conversion optimization"]
+            },
+
+            # Design & UX/UI
+            "design": {
+                "keywords": ["design", "ui", "ux", "user experience", "interface", "wireframe", "prototype", "usability"],
+                "concepts": ["user research", "wireframing", "prototyping", "usability testing", "information architecture"]
+            },
+            "graphic_design": {
+                "keywords": ["graphic design", "visual", "typography", "color", "layout", "branding", "illustration", "photography"],
+                "concepts": ["visual hierarchy", "typography", "color theory", "layout design", "branding", "visual communication"]
+            },
+
+            # Content & Media
+            "content_creation": {
+                "keywords": ["content", "creation", "writing", "blog", "article", "video", "podcast", "multimedia"],
+                "concepts": ["content strategy", "content marketing", "SEO writing", "multimedia production", "content distribution"]
+            },
+            "web_scraping": {
+                "keywords": ["scraping", "crawling", "extraction", "parsing", "beautifulsoup", "selenium", "requests"],
+                "concepts": ["web crawling", "data extraction", "HTML parsing", "API integration", "rate limiting"]
+            },
+
+            # Blockchain & Cryptocurrency
+            "blockchain": {
+                "keywords": ["blockchain", "cryptocurrency", "bitcoin", "ethereum", "smart contract", "defi", "nft"],
+                "concepts": ["distributed ledger", "consensus mechanisms", "smart contracts", "DeFi", "NFTs", "cryptocurrency"]
+            },
+
+            # Mobile Development
+            "mobile_development": {
+                "keywords": ["mobile", "ios", "android", "react native", "flutter", "swift", "kotlin", "app"],
+                "concepts": ["native development", "cross-platform", "mobile UI/UX", "app store optimization", "mobile testing"]
+            },
+
+            # Cloud Computing
+            "cloud_computing": {
+                "keywords": ["cloud", "saas", "paas", "iaas", "serverless", "microservices", "container", "orchestration"],
+                "concepts": ["cloud services", "serverless computing", "microservices", "container orchestration", "cloud security"]
+            },
+
+            # Version Control & Collaboration
+            "version_control": {
+                "keywords": ["git", "github", "gitlab", "version control", "repository", "branch", "merge", "commit"],
+                "concepts": ["distributed version control", "branching strategies", "merge conflicts", "code review", "CI/CD"]
+            },
+
+            # Documentation & Technical Writing
+            "documentation": {
+                "keywords": ["documentation", "docs", "technical writing", "api docs", "tutorial", "guide", "manual"],
+                "concepts": ["technical writing", "API documentation", "user guides", "tutorials", "knowledge management"]
             }
         }
 

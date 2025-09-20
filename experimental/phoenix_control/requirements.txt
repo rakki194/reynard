@@ -1,0 +1,26 @@
+# PHOENIX Control Dependencies
+# Success-Advisor-8 Distillation System
+
+# Core dependencies
+asyncio
+pathlib
+datetime
+json
+re
+subprocess
+os
+sys
+typing
+dataclasses
+enum
+
+# Optional dependencies for enhanced functionality
+psutil  # For performance monitoring
+matplotlib  # For visualization (optional)
+numpy  # For numerical operations (optional)
+
+# Development dependencies (optional)
+pytest  # For testing
+black  # For code formatting
+flake8  # For linting
+mypy  # For type checking

@@ -1,0 +1,15 @@
+{
+  "backup_timestamp": "20250920_112229",
+  "agent_count": 1,
+  "agent_states": {
+    "permanent-release-manager-success-advisor-8": {
+      "id": "permanent-release-manager-success-advisor-8",
+      "name": "Success-Advisor-8",
+      "spirit": "lion",
+      "style": "foundation",
+      "generation": 1,
+      "fitness": 0.6473274248473854,
+      "last_updated": "2025-09-20T11:22:29.919694"
+    }
+  }
+}

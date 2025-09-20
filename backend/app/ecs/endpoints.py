@@ -12,15 +12,12 @@ from typing import Any
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 
-from .world import AgentWorld
-from .components import AgentComponent, PositionComponent, InteractionComponent
-
-from .service import get_ecs_service, get_ecs_world
+from .postgres_service import get_postgres_ecs_service, PostgresECSWorldService
 
 logger = logging.getLogger(__name__)
 
 # Create router
-router = APIRouter(prefix="/ecs", tags=["ECS World"])
+router = APIRouter(prefix="", tags=["ECS World"])
 
 
 # Pydantic models for API
@@ -173,8 +170,8 @@ def get_world() -> AgentWorld:
 async def get_world_status() -> WorldStatusResponse:
     """Get the current ECS world status."""
     try:
-        service = get_ecs_service()
-        status = service.get_world_status()
+        service = get_postgres_ecs_service()
+        status = await service.get_world_status()
         return WorldStatusResponse(**status)
     except Exception as e:
         logger.error("Error getting world status: %s", e)
@@ -182,22 +179,23 @@ async def get_world_status() -> WorldStatusResponse:
 
 
 @router.get("/agents", response_model=list[AgentResponse])
-async def get_agents(world: AgentWorld = Depends(get_world)) -> list[AgentResponse]:
+async def get_agents() -> list[AgentResponse]:
     """Get all agents in the world."""
     try:
+        service = get_postgres_ecs_service()
+        agents_data = await service.get_all_agents()
+        
         agents = []
-        for entity in world.get_agent_entities():
-            agent_component = entity.get_component(AgentComponent)
-            if agent_component:
-                agents.append(
-                    AgentResponse(
-                        agent_id=entity.id,
-                        name=agent_component.name,
-                        spirit=agent_component.spirit,
-                        style=agent_component.style,
-                        active=entity.active,
-                    )
+        for agent_data in agents_data:
+            agents.append(
+                AgentResponse(
+                    agent_id=agent_data["agent_id"],
+                    name=agent_data["name"],
+                    spirit=agent_data["spirit"],
+                    style=agent_data["style"],
+                    active=agent_data["active"]
                 )
+            )
         return agents
     except Exception as e:
         logger.error("Error getting agents: %s", e)
@@ -205,30 +203,23 @@ async def get_agents(world: AgentWorld = Depends(get_world)) -> list[AgentRespon
 
 
 @router.post("/agents", response_model=AgentResponse)
-async def create_agent(
-    request: AgentCreateRequest, world: AgentWorld = Depends(get_world)
-) -> AgentResponse:
+async def create_agent(request: AgentCreateRequest) -> AgentResponse:
     """Create a new agent."""
     try:
-        entity = world.create_agent(
+        service = get_postgres_ecs_service()
+        agent_data = await service.create_agent(
             agent_id=request.agent_id,
-            spirit=request.spirit,
-            style=request.style,
             name=request.name,
+            spirit=request.spirit,
+            style=request.style
         )
 
-        agent_component = entity.get_component(AgentComponent)
-        if not agent_component:
-            raise HTTPException(
-                status_code=500, detail="Failed to create agent component"
-            )
-
         return AgentResponse(
-            agent_id=entity.id,
-            name=agent_component.name,
-            spirit=agent_component.spirit,
-            style=agent_component.style,
-            active=entity.active,
+            agent_id=agent_data["agent_id"],
+            name=agent_data["name"],
+            spirit=agent_data["spirit"],
+            style=agent_data["style"],
+            active=agent_data["active"]
         )
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e)) from e
@@ -609,40 +600,18 @@ async def initiate_interaction(
 
 
 @router.post("/agents/{agent_id}/chat")
-async def send_chat_message(
-    agent_id: str, request: ChatRequest, world: AgentWorld = Depends(get_world)
-):
+async def send_chat_message(agent_id: str, request: ChatRequest):
     """Send a chat message from one agent to another."""
     try:
-        entity1 = world.get_entity(agent_id)
-        entity2 = world.get_entity(request.receiver_id)
-
-        if not entity1 or not entity2:
-            raise HTTPException(status_code=404, detail="One or both agents not found")
-
-        interaction_component1 = entity1.get_component(InteractionComponent)
-        if not interaction_component1:
-            raise HTTPException(
-                status_code=404, detail="Agent has no interaction component"
-            )
-
-        # Check if agent can interact
-        if not interaction_component1.can_interact():
-            return {
-                "success": False,
-                "message": "Agent cannot send message (low energy, cooldown, or too many active interactions)",
-                "social_energy": interaction_component1.social_energy,
-            }
-
-        # For now, return a simple chat message result
-        # In a full implementation, this would create an actual interaction and store the message
-        return {
-            "success": True,
-            "message": f"Message sent from {agent_id} to {request.receiver_id}",
-            "content": request.message,
-            "interaction_type": request.interaction_type,
-            "sender_energy": interaction_component1.social_energy,
-        }
+        service = get_postgres_ecs_service()
+        result = await service.send_message(
+            sender_id=agent_id,
+            receiver_id=request.receiver_id,
+            message=request.message,
+            interaction_type=request.interaction_type
+        )
+        
+        return result
     except HTTPException:
         raise
     except Exception as e:

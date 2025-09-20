@@ -1,0 +1,198 @@
+{
+  "generation": 1,
+  "timestamp": "2025-09-20T11:22:29.915012",
+  "statistics": {
+    "population_size": 20,
+    "average_fitness": 0.03212401988599313,
+    "best_fitness": 0.6424803977198625,
+    "fitness_variance": 0.01960710041907796,
+    "population_diversity": 6.2057875412215076,
+    "convergence_rate": 0.0
+  },
+  "population_summary": [
+    {
+      "id": "permanent-release-manager-success-advisor-8",
+      "name": "Success-Advisor-8",
+      "spirit": "lion",
+      "style": "foundation",
+      "generation": 1,
+      "fitness": 0.6424803977198625,
+      "parents": []
+    },
+    {
+      "id": "offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229",
+      "name": "Lion-Foundation-94",
+      "spirit": "lion",
+      "style": "foundation",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": [
+        "permanent-release-manager-success-advisor-8",
+        "permanent-release-manager-success-advisor-8"
+      ]
+    },
+    {
+      "id": "agent_000",
+      "name": "Phoenix-Foundation-00",
+      "spirit": "phoenix",
+      "style": "foundation",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": []
+    },
+    {
+      "id": "agent_001",
+      "name": "Alien-Exo-01",
+      "spirit": "alien",
+      "style": "exo",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": []
+    },
+    {
+      "id": "agent_002",
+      "name": "Alien-Scientific-02",
+      "spirit": "alien",
+      "style": "scientific",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": []
+    },
+    {
+      "id": "agent_003",
+      "name": "Otter-Mythological-03",
+      "spirit": "otter",
+      "style": "mythological",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": []
+    },
+    {
+      "id": "agent_004",
+      "name": "Wolf-Mythological-04",
+      "spirit": "wolf",
+      "style": "mythological",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": []
+    },
+    {
+      "id": "agent_005",
+      "name": "Eagle-Cyberpunk-05",
+      "spirit": "eagle",
+      "style": "cyberpunk",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": []
+    },
+    {
+      "id": "agent_006",
+      "name": "Tiger-Mythological-06",
+      "spirit": "tiger",
+      "style": "mythological",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": []
+    },
+    {
+      "id": "agent_007",
+      "name": "Fox-Hybrid-07",
+      "spirit": "fox",
+      "style": "hybrid",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": []
+    },
+    {
+      "id": "agent_008",
+      "name": "Alien-Foundation-08",
+      "spirit": "alien",
+      "style": "foundation",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": []
+    },
+    {
+      "id": "agent_009",
+      "name": "Alien-Foundation-09",
+      "spirit": "alien",
+      "style": "foundation",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": []
+    },
+    {
+      "id": "agent_010",
+      "name": "Eagle-Cyberpunk-10",
+      "spirit": "eagle",
+      "style": "cyberpunk",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": []
+    },
+    {
+      "id": "agent_011",
+      "name": "Lion-Mythological-11",
+      "spirit": "lion",
+      "style": "mythological",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": []
+    },
+    {
+      "id": "agent_012",
+      "name": "Phoenix-Cyberpunk-12",
+      "spirit": "phoenix",
+      "style": "cyberpunk",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": []
+    },
+    {
+      "id": "agent_013",
+      "name": "Phoenix-Cyberpunk-13",
+      "spirit": "phoenix",
+      "style": "cyberpunk",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": []
+    },
+    {
+      "id": "agent_014",
+      "name": "Phoenix-Cyberpunk-14",
+      "spirit": "phoenix",
+      "style": "cyberpunk",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": []
+    },
+    {
+      "id": "agent_015",
+      "name": "Wolf-Scientific-15",
+      "spirit": "wolf",
+      "style": "scientific",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": []
+    },
+    {
+      "id": "agent_016",
+      "name": "Tiger-Cyberpunk-16",
+      "spirit": "tiger",
+      "style": "cyberpunk",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": []
+    },
+    {
+      "id": "agent_017",
+      "name": "Otter-Hybrid-17",
+      "spirit": "otter",
+      "style": "hybrid",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": []
+    }
+  ],
+  "genetic_material_count": 1
+}

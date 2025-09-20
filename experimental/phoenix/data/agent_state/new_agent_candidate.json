@@ -1,0 +1,27 @@
+{
+  "id": "new_agent_candidate",
+  "name": "New-Agent-Candidate",
+  "spirit": "fox",
+  "style": "foundation",
+  "generation": 1,
+  "parents": [],
+  "personality_traits": {
+    "curiosity": 0.7,
+    "adaptability": 0.6
+  },
+  "physical_traits": {
+    "intelligence": 0.6,
+    "agility": 0.8
+  },
+  "ability_traits": {
+    "basic_programming": 0.5,
+    "problem_solving": 0.6
+  },
+  "performance_history": [],
+  "knowledge_base": {
+    "basic_programming": 0.5,
+    "problem_solving": 0.6
+  },
+  "created_at": "2025-09-20T11:51:44.142927",
+  "last_updated": "2025-09-20T11:51:44.142928"
+}

@@ -12,11 +12,7 @@ from .core.phoenix_framework import PhoenixFramework
 from .core.evolutionary_ops import EvolutionaryOperators
 from .core.knowledge_distillation import KnowledgeDistillation
 from .core.statistical_validation import StatisticalValidation
-from .integration.ecs_integration import ECSIntegration
-from .integration.mcp_tools import PHOENIXMCPTools
-from .algorithms.subliminal_learning import SubliminalLearning
-from .algorithms.document_conditioning import DocumentConditioning
-from .algorithms.genetic_material import GeneticMaterial
+from .integration.agent_persistence import AgentStatePersistence
 from .utils.data_structures import (
     AgentGeneticMaterial,
     StructuredKnowledge,
@@ -38,13 +34,7 @@ __all__ = [
     "StatisticalValidation",
 
     # Integration
-    "ECSIntegration",
-    "PHOENIXMCPTools",
-
-    # Algorithms
-    "SubliminalLearning",
-    "DocumentConditioning",
-    "GeneticMaterial",
+    "AgentStatePersistence",
 
     # Data structures
     "AgentGeneticMaterial",

@@ -1,0 +1,255 @@
+{
+  "generation": 5,
+  "timestamp": "2025-09-20T11:22:29.930685",
+  "statistics": {
+    "population_size": 20,
+    "average_fitness": 0.15995034742429845,
+    "best_fitness": 0.8320967442044451,
+    "fitness_variance": 0.1024101241011168,
+    "population_diversity": 3.036498511315485,
+    "convergence_rate": 0.012225534649942768
+  },
+  "population_summary": [
+    {
+      "id": "offspring_agent_000_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229",
+      "name": "Phoenix-Foundation-17",
+      "spirit": "phoenix",
+      "style": "foundation",
+      "generation": 1,
+      "fitness": 0.8320967442044451,
+      "parents": [
+        "agent_000",
+        "offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229"
+      ]
+    },
+    {
+      "id": "offspring_offspring_offspring_agent_009_agent_012_20250920_112229_agent_000_20250920_112229_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229",
+      "name": "Phoenix-Foundation-51",
+      "spirit": "phoenix",
+      "style": "foundation",
+      "generation": 1,
+      "fitness": 0.795742189838514,
+      "parents": [
+        "offspring_offspring_agent_009_agent_012_20250920_112229_agent_000_20250920_112229",
+        "offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229"
+      ]
+    },
+    {
+      "id": "offspring_offspring_offspring_agent_012_agent_009_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_offspring_agent_000_offspring_agent_006_agent_012_20250920_112229_20250920_112229_20250920_112229",
+      "name": "Phoenix-Foundation-39",
+      "spirit": "phoenix",
+      "style": "foundation",
+      "generation": 1,
+      "fitness": 0.7877823743865879,
+      "parents": [
+        "offspring_offspring_agent_012_agent_009_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229",
+        "offspring_agent_000_offspring_agent_006_agent_012_20250920_112229_20250920_112229"
+      ]
+    },
+    {
+      "id": "offspring_offspring_agent_000_agent_012_20250920_112229_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229",
+      "name": "Phoenix-Foundation-56",
+      "spirit": "phoenix",
+      "style": "foundation",
+      "generation": 1,
+      "fitness": 0.7833856400564222,
+      "parents": [
+        "offspring_agent_000_agent_012_20250920_112229",
+        "offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229"
+      ]
+    },
+    {
+      "id": "offspring_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_offspring_agent_006_agent_012_20250920_112229_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229_20250920_112229",
+      "name": "Phoenix-Foundation-75",
+      "spirit": "phoenix",
+      "style": "foundation",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": [
+        "offspring_offspring_agent_000_agent_012_20250920_112229_offspring_offspring_agent_006_agent_012_20250920_112229_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229",
+        "offspring_offspring_agent_000_agent_012_20250920_112229_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229"
+      ]
+    },
+    {
+      "id": "offspring_offspring_offspring_offspring_agent_012_agent_009_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_offspring_agent_000_offspring_agent_006_agent_012_20250920_112229_20250920_112229_20250920_112229_offspring_agent_000_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229_20250920_112229",
+      "name": "Phoenix-Foundation-29",
+      "spirit": "phoenix",
+      "style": "foundation",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": [
+        "offspring_offspring_offspring_agent_012_agent_009_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_offspring_agent_000_offspring_agent_006_agent_012_20250920_112229_20250920_112229_20250920_112229",
+        "offspring_agent_000_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229"
+      ]
+    },
+    {
+      "id": "offspring_offspring_agent_000_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_offspring_agent_006_agent_012_20250920_112229_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229",
+      "name": "Phoenix-Foundation-27",
+      "spirit": "phoenix",
+      "style": "foundation",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": [
+        "offspring_agent_000_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229",
+        "offspring_offspring_agent_000_agent_012_20250920_112229_offspring_offspring_agent_006_agent_012_20250920_112229_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229"
+      ]
+    },
+    {
+      "id": "offspring_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_offspring_offspring_offspring_agent_006_agent_012_20250920_112229_permanent-release-manager-success-advisor-8_20250920_112229_offspring_agent_012_offspring_agent_006_agent_012_20250920_112229_20250920_112229_20250920_112229_20250920_112229",
+      "name": "Lion-Cyberpunk-40",
+      "spirit": "lion",
+      "style": "cyberpunk",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": [
+        "offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229",
+        "offspring_offspring_offspring_agent_006_agent_012_20250920_112229_permanent-release-manager-success-advisor-8_20250920_112229_offspring_agent_012_offspring_agent_006_agent_012_20250920_112229_20250920_112229_20250920_112229"
+      ]
+    },
+    {
+      "id": "offspring_agent_000_offspring_agent_012_offspring_agent_006_agent_012_20250920_112229_20250920_112229_20250920_112229",
+      "name": "Phoenix-Foundation-69",
+      "spirit": "phoenix",
+      "style": "foundation",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": [
+        "agent_000",
+        "offspring_agent_012_offspring_agent_006_agent_012_20250920_112229_20250920_112229"
+      ]
+    },
+    {
+      "id": "offspring_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_offspring_agent_006_agent_012_20250920_112229_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_offspring_offspring_offspring_agent_006_agent_012_20250920_112229_permanent-release-manager-success-advisor-8_20250920_112229_offspring_agent_012_offspring_agent_006_agent_012_20250920_112229_20250920_112229_20250920_112229_20250920_112229",
+      "name": "Phoenix-Cyberpunk-64",
+      "spirit": "phoenix",
+      "style": "cyberpunk",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": [
+        "offspring_offspring_agent_000_agent_012_20250920_112229_offspring_offspring_agent_006_agent_012_20250920_112229_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229",
+        "offspring_offspring_offspring_agent_006_agent_012_20250920_112229_permanent-release-manager-success-advisor-8_20250920_112229_offspring_agent_012_offspring_agent_006_agent_012_20250920_112229_20250920_112229_20250920_112229"
+      ]
+    },
+    {
+      "id": "offspring_offspring_agent_000_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229_offspring_offspring_offspring_agent_012_agent_009_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_offspring_agent_000_offspring_agent_006_agent_012_20250920_112229_20250920_112229_20250920_112229_20250920_112229",
+      "name": "Phoenix-Foundation-61",
+      "spirit": "phoenix",
+      "style": "foundation",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": [
+        "offspring_agent_000_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229",
+        "offspring_offspring_offspring_agent_012_agent_009_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_offspring_agent_000_offspring_agent_006_agent_012_20250920_112229_20250920_112229_20250920_112229"
+      ]
+    },
+    {
+      "id": "offspring_offspring_offspring_offspring_agent_012_agent_009_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_agent_000_20250920_112229_offspring_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_agent_000_20250920_112229_20250920_112229",
+      "name": "Lion-Foundation-74",
+      "spirit": "lion",
+      "style": "foundation",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": [
+        "offspring_offspring_offspring_agent_012_agent_009_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_agent_000_20250920_112229",
+        "offspring_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_agent_000_20250920_112229"
+      ]
+    },
+    {
+      "id": "offspring_offspring_offspring_offspring_agent_012_agent_009_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_offspring_agent_000_offspring_agent_006_agent_012_20250920_112229_20250920_112229_20250920_112229_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_offspring_agent_006_agent_012_20250920_112229_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229",
+      "name": "Phoenix-Foundation-42",
+      "spirit": "phoenix",
+      "style": "foundation",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": [
+        "offspring_offspring_offspring_agent_012_agent_009_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_offspring_agent_000_offspring_agent_006_agent_012_20250920_112229_20250920_112229_20250920_112229",
+        "offspring_offspring_agent_000_agent_012_20250920_112229_offspring_offspring_agent_006_agent_012_20250920_112229_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229"
+      ]
+    },
+    {
+      "id": "offspring_offspring_offspring_offspring_agent_009_agent_012_20250920_112229_agent_000_20250920_112229_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229_offspring_offspring_offspring_agent_006_agent_012_20250920_112229_permanent-release-manager-success-advisor-8_20250920_112229_offspring_agent_012_offspring_agent_006_agent_012_20250920_112229_20250920_112229_20250920_112229_20250920_112229",
+      "name": "Phoenix-Cyberpunk-80",
+      "spirit": "phoenix",
+      "style": "cyberpunk",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": [
+        "offspring_offspring_offspring_agent_009_agent_012_20250920_112229_agent_000_20250920_112229_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229",
+        "offspring_offspring_offspring_agent_006_agent_012_20250920_112229_permanent-release-manager-success-advisor-8_20250920_112229_offspring_agent_012_offspring_agent_006_agent_012_20250920_112229_20250920_112229_20250920_112229"
+      ]
+    },
+    {
+      "id": "offspring_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229_offspring_offspring_offspring_agent_006_agent_012_20250920_112229_permanent-release-manager-success-advisor-8_20250920_112229_offspring_agent_012_offspring_agent_006_agent_012_20250920_112229_20250920_112229_20250920_112229_20250920_112229",
+      "name": "Lion-Foundation-75",
+      "spirit": "lion",
+      "style": "foundation",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": [
+        "offspring_offspring_agent_000_agent_012_20250920_112229_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229",
+        "offspring_offspring_offspring_agent_006_agent_012_20250920_112229_permanent-release-manager-success-advisor-8_20250920_112229_offspring_agent_012_offspring_agent_006_agent_012_20250920_112229_20250920_112229_20250920_112229"
+      ]
+    },
+    {
+      "id": "offspring_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229_offspring_agent_000_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229_20250920_112229",
+      "name": "Phoenix-Foundation-13",
+      "spirit": "phoenix",
+      "style": "foundation",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": [
+        "offspring_offspring_agent_000_agent_012_20250920_112229_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229",
+        "offspring_agent_000_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229"
+      ]
+    },
+    {
+      "id": "offspring_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_agent_012_offspring_agent_006_agent_012_20250920_112229_20250920_112229_20250920_112229_offspring_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_offspring_agent_012_offspring_agent_006_agent_012_20250920_112229_20250920_112229_20250920_112229_20250920_112229",
+      "name": "Phoenix-Foundation-36",
+      "spirit": "phoenix",
+      "style": "foundation",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": [
+        "offspring_offspring_agent_000_agent_012_20250920_112229_offspring_agent_012_offspring_agent_006_agent_012_20250920_112229_20250920_112229_20250920_112229",
+        "offspring_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_offspring_agent_012_offspring_agent_006_agent_012_20250920_112229_20250920_112229_20250920_112229"
+      ]
+    },
+    {
+      "id": "offspring_offspring_offspring_offspring_agent_009_agent_012_20250920_112229_agent_000_20250920_112229_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229_offspring_agent_012_offspring_agent_006_agent_012_20250920_112229_20250920_112229_20250920_112229",
+      "name": "Phoenix-Foundation-24",
+      "spirit": "phoenix",
+      "style": "foundation",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": [
+        "offspring_offspring_offspring_agent_009_agent_012_20250920_112229_agent_000_20250920_112229_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229",
+        "offspring_agent_012_offspring_agent_006_agent_012_20250920_112229_20250920_112229"
+      ]
+    },
+    {
+      "id": "offspring_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229_offspring_agent_012_offspring_agent_006_agent_012_20250920_112229_20250920_112229_20250920_112229",
+      "name": "Phoenix-Foundation-19",
+      "spirit": "phoenix",
+      "style": "foundation",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": [
+        "offspring_offspring_agent_000_agent_012_20250920_112229_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229",
+        "offspring_agent_012_offspring_agent_006_agent_012_20250920_112229_20250920_112229"
+      ]
+    },
+    {
+      "id": "offspring_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229_offspring_offspring_offspring_agent_009_agent_012_20250920_112229_agent_000_20250920_112229_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229_20250920_112229",
+      "name": "Phoenix-Foundation-50",
+      "spirit": "phoenix",
+      "style": "foundation",
+      "generation": 1,
+      "fitness": 0.0,
+      "parents": [
+        "offspring_offspring_agent_000_agent_012_20250920_112229_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229",
+        "offspring_offspring_offspring_agent_009_agent_012_20250920_112229_agent_000_20250920_112229_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_20250920_112229"
+      ]
+    }
+  ],
+  "genetic_material_count": 17
+}

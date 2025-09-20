@@ -52,7 +52,7 @@ from app.core.penetration_testing import (
 from app.ecs.endpoints import router as ecs_router
 
 # ECS World integration
-from app.ecs.service import register_ecs_service
+from app.ecs.postgres_service import register_postgres_ecs_service
 
 # Middleware components
 from app.middleware.cors_config import setup_cors_middleware
@@ -103,8 +103,8 @@ def create_app() -> FastAPI:
     # Configure routers (before middleware wrapping)
     _setup_routers(app)
 
-    # Register ECS world service
-    register_ecs_service(app)
+    # Register PostgreSQL ECS world service
+    register_postgres_ecs_service(app)
 
     # Configure middleware (last to wrap everything)
     app = _setup_middleware(app, config)
@@ -195,4 +195,4 @@ def _setup_routers(app: FastAPI) -> None:
     app.include_router(nlweb_router)
 
     # ECS World Router
-    app.include_router(ecs_router, prefix="/api")
+    app.include_router(ecs_router, prefix="/api/ecs")

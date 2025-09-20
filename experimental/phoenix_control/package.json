@@ -1,0 +1,99 @@
+{
+  "name": "phoenix-control",
+  "version": "1.0.0",
+  "description": "PHOENIX Control - Success-Advisor-8 Agent State Management and Release Automation System",
+  "main": "src/__init__.py",
+  "scripts": {
+    "test": "python -m pytest tests/",
+    "lint": "python -m flake8 src/",
+    "format": "python -m black src/",
+    "type-check": "python -m mypy src/",
+    "quality": "python -m flake8 src/ && python -m black --check src/ && python -m mypy src/",
+    "examples": "python examples/basic_usage.py",
+    "examples:all": "for example in examples/*.py; do echo \"Running $example...\"; python \"$example\"; echo \"Completed $example\"; echo \"---\"; done",
+    "docs": "python -m pydoc -w src/",
+    "clean": "find . -type f -name '*.pyc' -delete && find . -type d -name '__pycache__' -delete",
+    "install": "pip install -r requirements.txt",
+    "dev": "pip install -r requirements.txt && python examples/basic_usage.py"
+  },
+  "keywords": [
+    "phoenix",
+    "control",
+    "agent",
+    "state",
+    "persistence",
+    "release",
+    "automation",
+    "quality",
+    "assurance",
+    "success-advisor",
+    "git",
+    "workflow",
+    "version",
+    "management",
+    "changelog",
+    "validation",
+    "security",
+    "performance",
+    "testing"
+  ],
+  "author": "Champion-Designer-32 (Wolf Specialist)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reynard/phoenix-control.git"
+  },
+  "bugs": {
+    "url": "https://github.com/reynard/phoenix-control/issues"
+  },
+  "homepage": "https://github.com/reynard/phoenix-control#readme",
+  "engines": {
+    "node": ">=18.0.0",
+    "python": ">=3.8.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "commander": "^11.0.0"
+  },
+  "files": ["src/", "examples/", "requirements.txt", "README.md", "CHANGELOG.md", "package.json"],
+  "directories": {
+    "lib": "src/",
+    "test": "tests/",
+    "doc": "docs/",
+    "example": "examples/"
+  },
+  "config": {
+    "phoenix": {
+      "version": "1.0.0",
+      "agent": "Success-Advisor-8",
+      "specialist": "Wolf",
+      "generation": "32",
+      "framework": "PHOENIX Control"
+    }
+  },
+  "phoenix": {
+    "agent": {
+      "name": "Success-Advisor-8",
+      "spirit": "wolf",
+      "style": "foundation",
+      "generation": 32,
+      "specialization": "Release Management and Quality Assurance"
+    },
+    "system": {
+      "version": "1.0.0",
+      "framework": "PHOENIX Control",
+      "architecture": "modular",
+      "components": [
+        "agent-state-persistence",
+        "release-automation",
+        "quality-assurance",
+        "version-management",
+        "changelog-management"
+      ]
+    }
+  }
+}
