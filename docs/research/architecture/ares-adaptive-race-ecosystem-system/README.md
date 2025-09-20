@@ -1,6 +1,6 @@
 # ARES: Adaptive Race Ecosystem System
 
-*A Hybrid Fox-Wolf Approach to Dynamic Agent Naming and Spirit Management*
+_A Hybrid Fox-Wolf Approach to Dynamic Agent Naming and Spirit Management_
 
 ## Overview
 

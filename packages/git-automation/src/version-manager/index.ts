@@ -166,9 +166,13 @@ export class VersionManager {
     }>
   > {
     try {
-      const { stdout } = await execa("find", [this.workingDir, "-name", "package.json", "-not", "-path", "*/node_modules/*"], { cwd: this.workingDir });
-      const packageJsonPaths = stdout.trim().split('\n').filter(Boolean);
-      
+      const { stdout } = await execa(
+        "find",
+        [this.workingDir, "-name", "package.json", "-not", "-path", "*/node_modules/*"],
+        { cwd: this.workingDir }
+      );
+      const packageJsonPaths = stdout.trim().split("\n").filter(Boolean);
+
       const versions = [];
       for (const packagePath of packageJsonPaths) {
         try {
@@ -176,7 +180,7 @@ export class VersionManager {
           if (packageJson.name && packageJson.version) {
             const currentVersion = packageJson.version;
             const nextVersion = this.calculateNextVersion(currentVersion, "patch"); // Default to patch bump
-            
+
             versions.push({
               name: packageJson.name,
               currentVersion,
@@ -189,7 +193,7 @@ export class VersionManager {
           console.warn(`Failed to read package.json at ${packagePath}: ${error}`);
         }
       }
-      
+
       return versions;
     } catch (error) {
       throw new Error(`Failed to get monorepo versions: ${error}`);
@@ -203,11 +207,11 @@ export class VersionManager {
     try {
       const changelogFile = changelogPath || join(this.workingDir, "CHANGELOG.md");
       const changelogContent = await readFile(changelogFile, "utf-8");
-      
+
       // Find the section for the specified version
-      const versionRegex = new RegExp(`## \\[${version}\\][\\s\\S]*?(?=## \\[|$)`, 'i');
+      const versionRegex = new RegExp(`## \\[${version}\\][\\s\\S]*?(?=## \\[|$)`, "i");
       const match = changelogContent.match(versionRegex);
-      
+
       if (match) {
         return match[0].trim();
       } else {
@@ -236,7 +240,7 @@ export class VersionManager {
   async getGitTags(): Promise<string[]> {
     try {
       const { stdout } = await execa("git", ["tag", "--list", "--sort=-version:refname"], { cwd: this.workingDir });
-      return stdout.trim().split('\n').filter(Boolean);
+      return stdout.trim().split("\n").filter(Boolean);
     } catch (error) {
       return [];
     }
@@ -272,19 +276,19 @@ export class VersionManager {
     // Remove pre-release and build metadata for comparison
     const cleanVersion1 = version1.split(/[-+]/)[0];
     const cleanVersion2 = version2.split(/[-+]/)[0];
-    
-    const v1Parts = cleanVersion1.split('.').map(Number);
-    const v2Parts = cleanVersion2.split('.').map(Number);
-    
+
+    const v1Parts = cleanVersion1.split(".").map(Number);
+    const v2Parts = cleanVersion2.split(".").map(Number);
+
     // Ensure both versions have 3 parts
     while (v1Parts.length < 3) v1Parts.push(0);
     while (v2Parts.length < 3) v2Parts.push(0);
-    
+
     for (let i = 0; i < 3; i++) {
       if (v1Parts[i] > v2Parts[i]) return 1;
       if (v1Parts[i] < v2Parts[i]) return -1;
     }
-    
+
     return 0;
   }
 
@@ -295,29 +299,29 @@ export class VersionManager {
     // Remove pre-release and build metadata for comparison
     const cleanFrom = fromVersion.split(/[-+]/)[0];
     const cleanTo = toVersion.split(/[-+]/)[0];
-    
-    const fromParts = cleanFrom.split('.').map(Number);
-    const toParts = cleanTo.split('.').map(Number);
-    
+
+    const fromParts = cleanFrom.split(".").map(Number);
+    const toParts = cleanTo.split(".").map(Number);
+
     // Ensure both versions have 3 parts
     while (fromParts.length < 3) fromParts.push(0);
     while (toParts.length < 3) toParts.push(0);
-    
+
     // Check if versions are valid
     if (fromParts.some(isNaN) || toParts.some(isNaN)) {
       return null;
     }
-    
+
     // Compare versions
     if (toParts[0] > fromParts[0]) return "major";
     if (toParts[0] < fromParts[0]) return null; // Downgrade
-    
+
     if (toParts[1] > fromParts[1]) return "minor";
     if (toParts[1] < fromParts[1]) return null; // Downgrade
-    
+
     if (toParts[2] > fromParts[2]) return "patch";
     if (toParts[2] < fromParts[2]) return null; // Downgrade
-    
+
     return null; // Same version
   }
 }

@@ -98,7 +98,9 @@ describe("JunkFileDetector", () => {
       const reynardFiles = [".reynard/cache.json", "reynard-temp/agent.log", ".reynard-temp/temp.json"];
       mockGlob.mockImplementation((patterns, options) => {
         const patternArray = Array.isArray(patterns) ? patterns : [patterns];
-        if (patternArray.some(p => p.includes(".reynard") || p.includes("reynard-cache") || p.includes("reynard-temp"))) {
+        if (
+          patternArray.some(p => p.includes(".reynard") || p.includes("reynard-cache") || p.includes("reynard-temp"))
+        ) {
           return Promise.resolve(reynardFiles);
         }
         return Promise.resolve([]);
@@ -143,7 +145,9 @@ describe("JunkFileDetector", () => {
           return Promise.resolve(tsFiles);
         }
         const patternArray = Array.isArray(patterns) ? patterns : [patterns];
-        if (patternArray.some(p => p.includes(".reynard") || p.includes("reynard-cache") || p.includes("reynard-temp"))) {
+        if (
+          patternArray.some(p => p.includes(".reynard") || p.includes("reynard-cache") || p.includes("reynard-temp"))
+        ) {
           return Promise.resolve(reynardFiles);
         }
         if (patterns.includes("**/.DS_Store")) {

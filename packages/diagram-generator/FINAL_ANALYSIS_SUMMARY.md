@@ -188,4 +188,4 @@ We have successfully created a **comprehensive, modular, and accurate** diagram 
 
 The diagrams now accurately represent the **structural aspects** of the Reynard ecosystem and provide a solid foundation for understanding the complex relationships between packages, components, and services.
 
-*Ancient wisdom flows through the completed system* 🐉✨
+_Ancient wisdom flows through the completed system_ 🐉✨

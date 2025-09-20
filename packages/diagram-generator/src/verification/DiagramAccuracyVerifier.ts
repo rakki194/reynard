@@ -1,6 +1,6 @@
 /**
  * 🦊 Diagram Accuracy Verifier
- * 
+ *
  * Verifies that generated diagrams accurately represent the real codebase
  * by cross-referencing with actual file contents and package.json files
  */
@@ -45,10 +45,7 @@ export class DiagramAccuracyVerifier {
     this.rootPath = rootPath;
   }
 
-  async verifyDiagramAccuracy(
-    generatedDiagram: string,
-    analysisData: any
-  ): Promise<VerificationResult> {
+  async verifyDiagramAccuracy(generatedDiagram: string, analysisData: any): Promise<VerificationResult> {
     const issues: VerificationIssue[] = [];
     const statistics: VerificationStatistics = {
       totalPackages: 0,
@@ -90,20 +87,24 @@ export class DiagramAccuracyVerifier {
     };
   }
 
-  private async verifyPackages(packages: any[], issues: VerificationIssue[], statistics: VerificationStatistics): Promise<void> {
+  private async verifyPackages(
+    packages: any[],
+    issues: VerificationIssue[],
+    statistics: VerificationStatistics
+  ): Promise<void> {
     statistics.totalPackages = packages.length;
 
     for (const pkg of packages) {
       try {
         const packagePath = join(this.rootPath, pkg.path);
         const packageJsonPath = join(packagePath, "package.json");
-        
+
         await stat(packageJsonPath);
         statistics.verifiedPackages++;
 
         // Verify package.json content
         const packageJson = JSON.parse(await readFile(packageJsonPath, "utf-8"));
-        
+
         if (packageJson.name !== pkg.name) {
           issues.push({
             type: "incorrect",
@@ -114,7 +115,6 @@ export class DiagramAccuracyVerifier {
             file: packageJsonPath,
           });
         }
-
       } catch (error) {
         issues.push({
           type: "missing",
@@ -126,13 +126,17 @@ export class DiagramAccuracyVerifier {
     }
   }
 
-  private async verifyDependencies(packages: any[], issues: VerificationIssue[], statistics: VerificationStatistics): Promise<void> {
+  private async verifyDependencies(
+    packages: any[],
+    issues: VerificationIssue[],
+    statistics: VerificationStatistics
+  ): Promise<void> {
     for (const pkg of packages) {
       try {
         const packagePath = join(this.rootPath, pkg.path);
         const packageJsonPath = join(packagePath, "package.json");
         const packageJson = JSON.parse(await readFile(packageJsonPath, "utf-8"));
-        
+
         const actualDeps = [
           ...Object.keys(packageJson.dependencies || {}),
           ...Object.keys(packageJson.devDependencies || {}),
@@ -169,25 +173,28 @@ export class DiagramAccuracyVerifier {
             });
           }
         }
-
       } catch (error) {
         // Package not found, already handled in verifyPackages
       }
     }
   }
 
-  private async verifyExportsAndImports(packages: any[], issues: VerificationIssue[], statistics: VerificationStatistics): Promise<void> {
+  private async verifyExportsAndImports(
+    packages: any[],
+    issues: VerificationIssue[],
+    statistics: VerificationStatistics
+  ): Promise<void> {
     for (const pkg of packages) {
       try {
         const packagePath = join(this.rootPath, pkg.path);
         const indexPath = join(packagePath, "src", "index.ts");
-        
+
         try {
           const indexContent = await readFile(indexPath, "utf-8");
           const actualExports = this.extractExportsFromContent(indexContent);
-          
+
           statistics.totalExports += pkg.exports.length;
-          
+
           for (const exportName of pkg.exports) {
             if (actualExports.includes(exportName)) {
               statistics.verifiedExports++;
@@ -202,7 +209,6 @@ export class DiagramAccuracyVerifier {
               });
             }
           }
-
         } catch (error) {
           // No index.ts file, check other files
           await this.verifyExportsInDirectory(packagePath, pkg, issues, statistics);
@@ -211,7 +217,7 @@ export class DiagramAccuracyVerifier {
         // Verify imports in components
         for (const component of pkg.components || []) {
           statistics.totalImports += component.imports?.length || 0;
-          
+
           if (component.imports) {
             for (const importPath of component.imports) {
               if (await this.verifyImportExists(importPath, packagePath)) {
@@ -229,23 +235,27 @@ export class DiagramAccuracyVerifier {
             }
           }
         }
-
       } catch (error) {
         // Package not found, already handled
       }
     }
   }
 
-  private async verifyExportsInDirectory(dirPath: string, pkg: any, issues: VerificationIssue[], statistics: VerificationStatistics): Promise<void> {
+  private async verifyExportsInDirectory(
+    dirPath: string,
+    pkg: any,
+    issues: VerificationIssue[],
+    statistics: VerificationStatistics
+  ): Promise<void> {
     try {
       const entries = await readdir(dirPath, { withFileTypes: true });
-      
+
       for (const entry of entries) {
         if (entry.isFile() && extname(entry.name) === ".ts") {
           const filePath = join(dirPath, entry.name);
           const content = await readFile(filePath, "utf-8");
           const actualExports = this.extractExportsFromContent(content);
-          
+
           for (const exportName of pkg.exports) {
             if (actualExports.includes(exportName)) {
               statistics.verifiedExports++;
@@ -312,7 +322,7 @@ export class DiagramAccuracyVerifier {
 
   private extractExportsFromContent(content: string): string[] {
     const exports: string[] = [];
-    
+
     const exportPatterns = [
       /export\s+(?:const|let|var|function|class|interface|type|enum)\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/g,
       /export\s*\{\s*([^}]+)\s*\}/g,
@@ -324,8 +334,8 @@ export class DiagramAccuracyVerifier {
       while ((match = pattern.exec(content)) !== null) {
         const exportName = match[1];
         if (exportName && exportName.trim()) {
-          if (exportName.includes(',')) {
-            const namedExports = exportName.split(',').map(e => e.trim().split(' as ')[0].trim());
+          if (exportName.includes(",")) {
+            const namedExports = exportName.split(",").map(e => e.trim().split(" as ")[0].trim());
             exports.push(...namedExports);
           } else {
             exports.push(exportName.trim());
@@ -346,29 +356,28 @@ export class DiagramAccuracyVerifier {
       issues: 0.1,
     };
 
-    const packageAccuracy = statistics.totalPackages > 0 ? 
-      (statistics.verifiedPackages / statistics.totalPackages) * 100 : 100;
-    
-    const dependencyAccuracy = statistics.totalDependencies > 0 ? 
-      (statistics.verifiedDependencies / statistics.totalDependencies) * 100 : 100;
-    
-    const exportAccuracy = statistics.totalExports > 0 ? 
-      (statistics.verifiedExports / statistics.totalExports) * 100 : 100;
-    
-    const importAccuracy = statistics.totalImports > 0 ? 
-      (statistics.verifiedImports / statistics.totalImports) * 100 : 100;
+    const packageAccuracy =
+      statistics.totalPackages > 0 ? (statistics.verifiedPackages / statistics.totalPackages) * 100 : 100;
+
+    const dependencyAccuracy =
+      statistics.totalDependencies > 0 ? (statistics.verifiedDependencies / statistics.totalDependencies) * 100 : 100;
+
+    const exportAccuracy =
+      statistics.totalExports > 0 ? (statistics.verifiedExports / statistics.totalExports) * 100 : 100;
+
+    const importAccuracy =
+      statistics.totalImports > 0 ? (statistics.verifiedImports / statistics.totalImports) * 100 : 100;
 
     const issuePenalty = issues.reduce((penalty, issue) => {
       const severityWeights = { low: 1, medium: 3, high: 5, critical: 10 };
       return penalty + severityWeights[issue.severity];
     }, 0);
 
-    const baseScore = (
+    const baseScore =
       packageAccuracy * weights.packages +
       dependencyAccuracy * weights.dependencies +
       exportAccuracy * weights.exports +
-      importAccuracy * weights.imports
-    );
+      importAccuracy * weights.imports;
 
     return Math.max(0, Math.min(100, baseScore - issuePenalty));
   }
@@ -385,12 +394,16 @@ export class DiagramAccuracyVerifier {
       recommendations.push("🚨 Fix critical issues in diagram generation");
     }
 
-    const missingPackages = issues.filter(issue => issue.type === "missing" && issue.description.includes("Package not found"));
+    const missingPackages = issues.filter(
+      issue => issue.type === "missing" && issue.description.includes("Package not found")
+    );
     if (missingPackages.length > 0) {
       recommendations.push("📦 Verify package paths and ensure all packages are accessible");
     }
 
-    const incorrectDeps = issues.filter(issue => issue.type === "incorrect" && issue.description.includes("Dependency"));
+    const incorrectDeps = issues.filter(
+      issue => issue.type === "incorrect" && issue.description.includes("Dependency")
+    );
     if (incorrectDeps.length > 0) {
       recommendations.push("🔗 Improve dependency extraction from package.json files");
     }

@@ -195,7 +195,7 @@ export class FrontendBackendRelationshipGenerator implements DiagramGenerator {
 
     // Analyze backend directory structure
     const backendPackages = analysis.packages.filter(pkg => pkg.path.startsWith("backend/"));
-    
+
     for (const pkg of backendPackages) {
       const endpoints = this.extractBackendEndpoints(pkg);
       const dataModels = this.extractBackendDataModels(pkg);
@@ -305,7 +305,7 @@ export class FrontendBackendRelationshipGenerator implements DiagramGenerator {
 
     // Group frontend packages by type
     const packagesByType = this.groupPackagesByType(analysis.frontendPackages);
-    
+
     for (const [type, packages] of Object.entries(packagesByType)) {
       if (packages.length === 0) continue;
 
@@ -365,7 +365,8 @@ export class FrontendBackendRelationshipGenerator implements DiagramGenerator {
     // Add data flows
     if (config.includeRelationships && analysis.dataFlows.length > 0) {
       lines.push("        %% Data Flows");
-      for (const flow of analysis.dataFlows.slice(0, 10)) { // Limit to prevent clutter
+      for (const flow of analysis.dataFlows.slice(0, 10)) {
+        // Limit to prevent clutter
         const sourceId = this.sanitizeId(flow.source);
         const targetId = this.sanitizeId(flow.target);
         const flowStyle = this.getDataFlowStyle(flow);
@@ -413,18 +414,18 @@ export class FrontendBackendRelationshipGenerator implements DiagramGenerator {
     if (name.includes("composable") || path.includes("composable")) return "composable";
     if (name.includes("service") || path.includes("service")) return "service";
     if (name.includes("ui") || name.includes("component") || path.includes("ui")) return "ui";
-    
+
     return "utility";
   }
 
   private extractBackendConnections(pkg: any): string[] {
     const connections: string[] = [];
-    
+
     // Check for API client usage
     if (pkg.dependencies.includes("reynard-api-client")) {
       connections.push("backend");
     }
-    
+
     // Check for connection package usage
     if (pkg.dependencies.includes("reynard-connection")) {
       connections.push("backend");
@@ -435,22 +436,22 @@ export class FrontendBackendRelationshipGenerator implements DiagramGenerator {
 
   private extractAPIEndpoints(pkg: any): string[] {
     const endpoints: string[] = [];
-    
+
     // This would be enhanced by analyzing actual API calls in the code
     // For now, we'll use heuristics based on package names and dependencies
-    
+
     if (pkg.name.includes("caption")) {
       endpoints.push("/api/caption", "/api/caption/upload", "/api/caption/monitoring");
     }
-    
+
     if (pkg.name.includes("chat")) {
       endpoints.push("/api/chat", "/api/ollama");
     }
-    
+
     if (pkg.name.includes("rag")) {
       endpoints.push("/api/rag", "/api/search");
     }
-    
+
     if (pkg.name.includes("gallery")) {
       endpoints.push("/api/gallery");
     }
@@ -460,20 +461,20 @@ export class FrontendBackendRelationshipGenerator implements DiagramGenerator {
 
   private extractDataModels(pkg: any): string[] {
     const models: string[] = [];
-    
+
     // Extract data models based on package purpose
     if (pkg.name.includes("caption")) {
       models.push("Caption", "CaptionRequest", "CaptionResponse");
     }
-    
+
     if (pkg.name.includes("chat")) {
       models.push("ChatMessage", "ChatRequest", "ChatResponse");
     }
-    
+
     if (pkg.name.includes("rag")) {
       models.push("SearchResult", "QueryRequest", "QueryResponse");
     }
-    
+
     if (pkg.name.includes("gallery")) {
       models.push("GalleryItem", "ImageMetadata");
     }
@@ -483,22 +484,20 @@ export class FrontendBackendRelationshipGenerator implements DiagramGenerator {
 
   private requiresAuthentication(pkg: any): boolean {
     // Check if package requires authentication
-    return pkg.dependencies.includes("reynard-auth") || 
-           pkg.name.includes("auth") ||
-           pkg.name.includes("secure");
+    return pkg.dependencies.includes("reynard-auth") || pkg.name.includes("auth") || pkg.name.includes("secure");
   }
 
   private extractRealtimeFeatures(pkg: any): string[] {
     const features: string[] = [];
-    
+
     if (pkg.dependencies.includes("reynard-connection")) {
       features.push("WebSocket", "SSE");
     }
-    
+
     if (pkg.name.includes("chat")) {
       features.push("Real-time Chat");
     }
-    
+
     if (pkg.name.includes("monitoring")) {
       features.push("Live Monitoring");
     }
@@ -508,20 +507,45 @@ export class FrontendBackendRelationshipGenerator implements DiagramGenerator {
 
   private extractBackendEndpoints(pkg: any): BackendEndpointAnalysis[] {
     const endpoints: BackendEndpointAnalysis[] = [];
-    
+
     // Analyze backend API structure based on actual backend directory
     if (pkg.path === "backend" || pkg.name === "reynard-backend") {
       // Add comprehensive backend endpoints based on actual backend structure
       endpoints.push(
-        { path: "/api/caption", method: "POST", purpose: "Generate captions", frontendUsers: ["reynard-caption", "reynard-api-client"] },
+        {
+          path: "/api/caption",
+          method: "POST",
+          purpose: "Generate captions",
+          frontendUsers: ["reynard-caption", "reynard-api-client"],
+        },
         { path: "/api/caption/upload", method: "POST", purpose: "Upload images", frontendUsers: ["reynard-caption"] },
-        { path: "/api/caption/monitoring", method: "GET", purpose: "Monitor progress", frontendUsers: ["reynard-caption"] },
-        { path: "/api/chat", method: "POST", purpose: "Chat completion", frontendUsers: ["reynard-chat", "reynard-api-client"] },
+        {
+          path: "/api/caption/monitoring",
+          method: "GET",
+          purpose: "Monitor progress",
+          frontendUsers: ["reynard-caption"],
+        },
+        {
+          path: "/api/chat",
+          method: "POST",
+          purpose: "Chat completion",
+          frontendUsers: ["reynard-chat", "reynard-api-client"],
+        },
         { path: "/api/ollama", method: "POST", purpose: "Ollama integration", frontendUsers: ["reynard-chat"] },
-        { path: "/api/rag", method: "POST", purpose: "RAG queries", frontendUsers: ["reynard-rag", "reynard-api-client"] },
+        {
+          path: "/api/rag",
+          method: "POST",
+          purpose: "RAG queries",
+          frontendUsers: ["reynard-rag", "reynard-api-client"],
+        },
         { path: "/api/search", method: "GET", purpose: "Semantic search", frontendUsers: ["reynard-rag"] },
         { path: "/api/gallery", method: "GET", purpose: "Gallery management", frontendUsers: ["reynard-gallery"] },
-        { path: "/api/auth", method: "POST", purpose: "Authentication", frontendUsers: ["reynard-auth", "reynard-api-client"] },
+        {
+          path: "/api/auth",
+          method: "POST",
+          purpose: "Authentication",
+          frontendUsers: ["reynard-auth", "reynard-api-client"],
+        },
         { path: "/api/health", method: "GET", purpose: "Health check", frontendUsers: ["reynard-connection"] },
         { path: "/api/ecs", method: "GET", purpose: "ECS world simulation", frontendUsers: ["reynard-ecs-world"] },
         { path: "/api/mcp", method: "POST", purpose: "MCP tools", frontendUsers: ["reynard-mcp-server"] }
@@ -533,17 +557,32 @@ export class FrontendBackendRelationshipGenerator implements DiagramGenerator {
 
   private extractBackendDataModels(pkg: any): string[] {
     const models: string[] = [];
-    
+
     if (pkg.path === "backend" || pkg.name === "reynard-backend") {
       // Add comprehensive backend data models
       models.push(
-        "Caption", "CaptionRequest", "CaptionResponse",
-        "ChatMessage", "ChatRequest", "ChatResponse",
-        "SearchResult", "QueryRequest", "QueryResponse",
-        "GalleryItem", "ImageMetadata", "UserProfile",
-        "AuthToken", "AuthRequest", "AuthResponse",
-        "ECSWorld", "Agent", "Trait", "Persona",
-        "MCPTool", "MCPRequest", "MCPResponse"
+        "Caption",
+        "CaptionRequest",
+        "CaptionResponse",
+        "ChatMessage",
+        "ChatRequest",
+        "ChatResponse",
+        "SearchResult",
+        "QueryRequest",
+        "QueryResponse",
+        "GalleryItem",
+        "ImageMetadata",
+        "UserProfile",
+        "AuthToken",
+        "AuthRequest",
+        "AuthResponse",
+        "ECSWorld",
+        "Agent",
+        "Trait",
+        "Persona",
+        "MCPTool",
+        "MCPRequest",
+        "MCPResponse"
       );
     }
 
@@ -554,122 +593,137 @@ export class FrontendBackendRelationshipGenerator implements DiagramGenerator {
     if (pkg.path.includes("secure") || pkg.name.includes("secure")) {
       return "jwt";
     }
-    
+
     if (pkg.path.includes("auth")) {
       return "jwt";
     }
-    
+
     return "none";
   }
 
   private extractRealtimeCapabilities(pkg: any): string[] {
     const capabilities: string[] = [];
-    
+
     if (pkg.path === "backend" || pkg.name === "reynard-backend") {
       capabilities.push(
-        "WebSocket", "Real-time streaming", "SSE", "Live updates",
-        "Real-time chat", "Live monitoring", "ECS world simulation"
+        "WebSocket",
+        "Real-time streaming",
+        "SSE",
+        "Live updates",
+        "Real-time chat",
+        "Live monitoring",
+        "ECS world simulation"
       );
     }
 
     return capabilities;
   }
 
-  private determineConnectionType(frontend: FrontendPackageAnalysis, backend: BackendServiceAnalysis): APIConnectionAnalysis["type"] {
+  private determineConnectionType(
+    frontend: FrontendPackageAnalysis,
+    backend: BackendServiceAnalysis
+  ): APIConnectionAnalysis["type"] {
     if (frontend.realtimeFeatures.length > 0 && backend.realtimeCapabilities.length > 0) {
       return "websocket";
     }
-    
+
     if (frontend.realtimeFeatures.includes("SSE") || backend.realtimeCapabilities.includes("SSE")) {
       return "sse";
     }
-    
+
     return "http";
   }
 
   private findMatchingEndpoints(frontend: FrontendPackageAnalysis, backend: BackendServiceAnalysis): string[] {
-    return frontend.apiEndpoints.filter(endpoint => 
-      backend.endpoints.some(be => be.path === endpoint)
-    );
+    return frontend.apiEndpoints.filter(endpoint => backend.endpoints.some(be => be.path === endpoint));
   }
 
-  private determineDataDirection(frontend: FrontendPackageAnalysis, backend: BackendServiceAnalysis): APIConnectionAnalysis["direction"] {
+  private determineDataDirection(
+    frontend: FrontendPackageAnalysis,
+    backend: BackendServiceAnalysis
+  ): APIConnectionAnalysis["direction"] {
     if (frontend.realtimeFeatures.length > 0) {
       return "bidirectional";
     }
-    
+
     return "request";
   }
 
-  private determineDataFlowPattern(frontend: FrontendPackageAnalysis, backend: BackendServiceAnalysis): DataFlowAnalysis["pattern"] {
+  private determineDataFlowPattern(
+    frontend: FrontendPackageAnalysis,
+    backend: BackendServiceAnalysis
+  ): DataFlowAnalysis["pattern"] {
     if (frontend.realtimeFeatures.length > 0) {
       return "real-time";
     }
-    
+
     if (frontend.name.includes("batch") || backend.name.includes("batch")) {
       return "batch";
     }
-    
+
     return "request-response";
   }
 
-  private determineDataFrequency(frontend: FrontendPackageAnalysis, backend: BackendServiceAnalysis): DataFlowAnalysis["frequency"] {
+  private determineDataFrequency(
+    frontend: FrontendPackageAnalysis,
+    backend: BackendServiceAnalysis
+  ): DataFlowAnalysis["frequency"] {
     if (frontend.realtimeFeatures.length > 0) {
       return "continuous";
     }
-    
+
     if (frontend.name.includes("monitoring") || frontend.name.includes("watch")) {
       return "periodic";
     }
-    
+
     return "on-demand";
   }
 
   private groupPackagesByType(packages: FrontendPackageAnalysis[]): Record<string, FrontendPackageAnalysis[]> {
     const grouped: Record<string, FrontendPackageAnalysis[]> = {};
-    
+
     for (const pkg of packages) {
       if (!grouped[pkg.type]) {
         grouped[pkg.type] = [];
       }
       grouped[pkg.type].push(pkg);
     }
-    
+
     return grouped;
   }
 
   private getTypeIcon(type: string): string {
     const icons: Record<string, string> = {
-      "ui": "🎨",
+      ui: "🎨",
       "api-client": "🔌",
-      "connection": "🌐",
-      "composable": "🧩",
-      "service": "⚙️",
-      "utility": "🛠️",
+      connection: "🌐",
+      composable: "🧩",
+      service: "⚙️",
+      utility: "🛠️",
     };
-    
+
     return icons[type] || "📦";
   }
 
   private getConnectionStyle(connection: APIConnectionAnalysis): string {
     const styles: Record<string, string> = {
-      "http": "-->",
-      "websocket": "<-->",
-      "sse": "-->",
-      "graphql": "-->",
+      http: "-->",
+      websocket: "<-->",
+      sse: "-->",
+      graphql: "-->",
     };
-    
+
     return styles[connection.type] || "-->";
   }
 
   private getDataFlowStyle(flow: DataFlowAnalysis): string {
     const styles: Record<string, string> = {
       "request-response": "-->",
-      "streaming": "-->",
-      "batch": "-->",
+      streaming: "-->",
+      batch: "-->",
       "real-time": "<-->",
     };
-    
+
     return styles[flow.pattern] || "-->";
   }
 

@@ -83,7 +83,7 @@ export class CodebaseAnalyzer {
     const packagesDir = join(this.rootPath, "packages");
     try {
       const packageDirs = await readdir(packagesDir, { withFileTypes: true });
-      
+
       for (const dir of packageDirs) {
         if (dir.isDirectory() && !this.shouldSkipDirectory(dir.name)) {
           const packagePath = join("packages", dir.name);
@@ -415,7 +415,7 @@ export class CodebaseAnalyzer {
   private determinePackageImportance(packageName: string): "critical" | "important" | "optional" {
     const criticalPackages = ["core", "api-client", "connection", "components-core", "auth"];
     const importantPackages = ["caption", "chat", "rag", "gallery", "testing", "themes"];
-    
+
     if (criticalPackages.some(critical => packageName.includes(critical))) {
       return "critical";
     }
@@ -429,7 +429,7 @@ export class CodebaseAnalyzer {
     try {
       const packageJsonPath = join(backendPath, "package.json");
       let packageJson: any = null;
-      
+
       try {
         const packageJsonContent = await readFile(packageJsonPath, "utf-8");
         packageJson = JSON.parse(packageJsonContent);
@@ -512,8 +512,8 @@ export class CodebaseAnalyzer {
         const exportName = match[1];
         if (exportName && exportName.trim()) {
           // Handle named exports in braces
-          if (exportName.includes(',')) {
-            const namedExports = exportName.split(',').map(e => e.trim().split(' as ')[0].trim());
+          if (exportName.includes(",")) {
+            const namedExports = exportName.split(",").map(e => e.trim().split(" as ")[0].trim());
             exports.push(...namedExports);
           } else {
             exports.push(exportName.trim());

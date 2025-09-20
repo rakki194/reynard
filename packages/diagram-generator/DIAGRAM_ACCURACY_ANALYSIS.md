@@ -47,29 +47,29 @@ This report analyzes the accuracy of the generated ecosystem diagrams compared t
 
 ### Package Structure Accuracy ✅
 
-| Aspect | Generated | Actual | Status |
-|--------|-----------|--------|--------|
-| Total Packages | 76 | 80 | ✅ Accurate |
-| Core Packages | 7 | 7 | ✅ Accurate |
-| API Packages | 3 | 3 | ✅ Accurate |
-| UI Packages | 7 | 7 | ✅ Accurate |
-| Utility Packages | 59 | 63 | ✅ Mostly Accurate |
+| Aspect           | Generated | Actual | Status             |
+| ---------------- | --------- | ------ | ------------------ |
+| Total Packages   | 76        | 80     | ✅ Accurate        |
+| Core Packages    | 7         | 7      | ✅ Accurate        |
+| API Packages     | 3         | 3      | ✅ Accurate        |
+| UI Packages      | 7         | 7      | ✅ Accurate        |
+| Utility Packages | 59        | 63     | ✅ Mostly Accurate |
 
 ### Dependency Relationship Accuracy ❌
 
-| Package | Generated Dependencies | Actual Dependencies | Status |
-|---------|----------------------|-------------------|--------|
-| `reynard-3d` | None | `reynard-components`, `reynard-algorithms`, `reynard-composables` | ❌ Missing |
-| `reynard-api-client` | None | `reynard-i18n` | ❌ Missing |
-| `reynard-connection` | None | `reynard-i18n`, `reynard-validation` | ❌ Missing |
+| Package              | Generated Dependencies | Actual Dependencies                                               | Status     |
+| -------------------- | ---------------------- | ----------------------------------------------------------------- | ---------- |
+| `reynard-3d`         | None                   | `reynard-components`, `reynard-algorithms`, `reynard-composables` | ❌ Missing |
+| `reynard-api-client` | None                   | `reynard-i18n`                                                    | ❌ Missing |
+| `reynard-connection` | None                   | `reynard-i18n`, `reynard-validation`                              | ❌ Missing |
 
 ### Import/Export Analysis ❌
 
-| File | Generated Imports | Actual Imports | Status |
-|------|------------------|---------------|--------|
-| `3d/src/components/PointCloudVisualization.tsx` | None | `reynard-components` | ❌ Missing |
-| `3d/src/components/ThreeJSVisualizationDemo.tsx` | None | `reynard-i18n` | ❌ Missing |
-| `api-client/src/generated/models/index.ts` | None | Multiple exports | ❌ Missing |
+| File                                             | Generated Imports | Actual Imports       | Status     |
+| ------------------------------------------------ | ----------------- | -------------------- | ---------- |
+| `3d/src/components/PointCloudVisualization.tsx`  | None              | `reynard-components` | ❌ Missing |
+| `3d/src/components/ThreeJSVisualizationDemo.tsx` | None              | `reynard-i18n`       | ❌ Missing |
+| `api-client/src/generated/models/index.ts`       | None              | Multiple exports     | ❌ Missing |
 
 ## Backend Integration Analysis ✅
 

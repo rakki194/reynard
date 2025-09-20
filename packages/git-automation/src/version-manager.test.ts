@@ -304,7 +304,6 @@ describe("VersionManager", () => {
     });
   });
 
-
   describe("generateReleaseNotes", () => {
     it("should generate release notes from changelog", async () => {
       const changelogContent = `# Changelog
@@ -395,6 +394,4 @@ describe("VersionManager", () => {
       expect(bumpType).toBe(null);
     });
   });
-
-
 });

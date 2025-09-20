@@ -1,6 +1,6 @@
 # 🛠️ Reynard MCP Server
 
-*whiskers twitch with digital intelligence* The Reynard MCP (Model Context Protocol) server is a comprehensive development toolkit that provides **47 powerful tools** across 8 major categories. This server embodies the Reynard way of excellence - strategic thinking, thorough analysis, and relentless pursuit of quality.
+_whiskers twitch with digital intelligence_ The Reynard MCP (Model Context Protocol) server is a comprehensive development toolkit that provides **47 powerful tools** across 8 major categories. This server embodies the Reynard way of excellence - strategic thinking, thorough analysis, and relentless pursuit of quality.
 
 ## 🌟 Overview
 
@@ -418,6 +418,6 @@ The Reynard MCP server follows the 140-line axiom and modular architecture princ
 
 ## 🎯 Mission Statement
 
-*three voices align in perfect harmony* The Reynard MCP server embodies the apex predator approach to development tooling. Every tool is crafted with the precision of a fox stalking its prey, the thoroughness of an otter exploring a stream, and the relentless determination of a wolf pack hunting down vulnerabilities.
+_three voices align in perfect harmony_ The Reynard MCP server embodies the apex predator approach to development tooling. Every tool is crafted with the precision of a fox stalking its prey, the thoroughness of an otter exploring a stream, and the relentless determination of a wolf pack hunting down vulnerabilities.
 
-*claws sharpen with satisfaction* This server is more than just tools - it's a complete ecosystem designed for agents who embrace excellence, demand quality, and refuse to settle for anything less than legendary solutions. Welcome to the hunt! 🦊🦦🐺
+_claws sharpen with satisfaction_ This server is more than just tools - it's a complete ecosystem designed for agents who embrace excellence, demand quality, and refuse to settle for anything less than legendary solutions. Welcome to the hunt! 🦊🦦🐺

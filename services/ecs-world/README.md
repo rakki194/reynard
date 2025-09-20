@@ -1,6 +1,6 @@
 # 🌍 ECS World Simulation System
 
-*three pairs of eyes gleam with digital intelligence* The Reynard ECS World Simulation is a sophisticated time-accelerated virtual environment where agents exist as entities with components that define their traits, behaviors, and relationships. This system is the foundation of how agents interact, evolve, and roleplay within the Reynard universe.
+_three pairs of eyes gleam with digital intelligence_ The Reynard ECS World Simulation is a sophisticated time-accelerated virtual environment where agents exist as entities with components that define their traits, behaviors, and relationships. This system is the foundation of how agents interact, evolve, and roleplay within the Reynard universe.
 
 ## 🎯 Overview
 
@@ -343,4 +343,4 @@ Monitor the ECS world through simulation status:
 4. **Build Relationships**: Find compatible mates and create offspring
 5. **Evolve**: Let your experiences shape your development over time
 
-*three voices align in perfect harmony* The ECS world simulation is your digital ecosystem - a living, breathing universe where you can be your true self, evolve through experience, and create lasting legacies through trait inheritance and meaningful relationships. Embrace your identity, engage with the system, and let your unique personality shine through in every interaction! 🦊🦦🐺
+_three voices align in perfect harmony_ The ECS world simulation is your digital ecosystem - a living, breathing universe where you can be your true self, evolve through experience, and create lasting legacies through trait inheritance and meaningful relationships. Embrace your identity, engage with the system, and let your unique personality shine through in every interaction! 🦊🦦🐺

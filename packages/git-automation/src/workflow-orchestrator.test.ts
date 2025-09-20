@@ -128,7 +128,7 @@ describe("GitWorkflowOrchestrator", () => {
       mockVersionManager.getVersionInfo.mockResolvedValue({
         current: "1.2.3",
         next: "1.3.0",
-        bumpType: "minor"
+        bumpType: "minor",
       });
       mockVersionManager.updateVersion.mockResolvedValue();
       mockVersionManager.createGitTag.mockResolvedValue();
@@ -266,7 +266,7 @@ describe("GitWorkflowOrchestrator", () => {
       mockVersionManager.getVersionInfo.mockResolvedValue({
         current: "1.2.3",
         next: "1.2.4",
-        bumpType: "patch"
+        bumpType: "patch",
       });
 
       await orchestrator.executeWorkflow({
@@ -291,11 +291,13 @@ describe("GitWorkflowOrchestrator", () => {
       // Mock junk detection error
       mockJunkDetector.detectJunkFiles.mockRejectedValue(new Error("Junk detection failed"));
 
-      await expect(orchestrator.executeWorkflow({
-        workingDir: ".",
-        cleanup: true,
-        dryRun: false,
-      })).rejects.toThrow("Junk detection failed");
+      await expect(
+        orchestrator.executeWorkflow({
+          workingDir: ".",
+          cleanup: true,
+          dryRun: false,
+        })
+      ).rejects.toThrow("Junk detection failed");
     });
 
     it("should handle change analysis errors", async () => {
@@ -310,10 +312,12 @@ describe("GitWorkflowOrchestrator", () => {
       // Mock change analysis error
       mockChangeAnalyzer.analyzeChanges.mockRejectedValue(new Error("Change analysis failed"));
 
-      await expect(orchestrator.executeWorkflow({
-        workingDir: ".",
-        dryRun: false,
-      })).rejects.toThrow("Change analysis failed");
+      await expect(
+        orchestrator.executeWorkflow({
+          workingDir: ".",
+          dryRun: false,
+        })
+      ).rejects.toThrow("Change analysis failed");
     });
 
     it("should handle version management errors", async () => {
@@ -359,12 +363,13 @@ describe("GitWorkflowOrchestrator", () => {
       // Mock version management error
       mockVersionManager.bumpVersion.mockRejectedValue(new Error("Version management failed"));
 
-      await expect(orchestrator.executeWorkflow({
-        workingDir: ".",
-        version: true,
-        dryRun: false,
-      })).rejects.toThrow("Version management failed");
+      await expect(
+        orchestrator.executeWorkflow({
+          workingDir: ".",
+          version: true,
+          dryRun: false,
+        })
+      ).rejects.toThrow("Version management failed");
     });
   });
-
 });

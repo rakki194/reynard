@@ -38,7 +38,8 @@ describe("ChangeAnalyzer", () => {
   describe("analyzeChanges", () => {
     it("should analyze staged changes", async () => {
       const mockDiffOutput = "M\tsrc/components/Button.tsx\nA\tsrc/components/Modal.tsx\nD\tsrc/old/Component.tsx";
-      const mockNumStatOutput = "10\t5\tsrc/components/Button.tsx\n5\t0\tsrc/components/Modal.tsx\n0\t3\tsrc/old/Component.tsx";
+      const mockNumStatOutput =
+        "10\t5\tsrc/components/Button.tsx\n5\t0\tsrc/components/Modal.tsx\n0\t3\tsrc/old/Component.tsx";
 
       mockExeca.mockImplementation((command, args) => {
         if (command === "git" && args.includes("diff") && args.includes("--name-status")) {
@@ -255,7 +256,7 @@ describe("ChangeAnalyzer", () => {
       mockExeca.mockRejectedValue(new Error("Git command failed"));
 
       const result = await analyzer.analyzeChanges(".");
-      
+
       // Implementation handles errors gracefully and returns empty result
       expect(result.totalFiles).toBe(0);
       expect(result.totalAdditions).toBe(0);

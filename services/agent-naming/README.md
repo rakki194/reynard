@@ -1,6 +1,6 @@
 # 🦊 Reynard Agent Naming System
 
-*whiskers twitch with cunning intelligence* The Reynard Agent Naming System is a sophisticated name generation engine that creates robot names inspired by Asimov's Foundation, Destiny's Exo, and other sci-fi universes, but infused with diverse animal spirits and mythological references.
+_whiskers twitch with cunning intelligence_ The Reynard Agent Naming System is a sophisticated name generation engine that creates robot names inspired by Asimov's Foundation, Destiny's Exo, and other sci-fi universes, but infused with diverse animal spirits and mythological references.
 
 ## 🎯 Overview
 
@@ -458,6 +458,6 @@ Names can be analyzed to extract spirit and style information, which can then be
 
 ## 🎯 Mission Statement
 
-*whiskers twitch with cunning satisfaction* The Reynard Agent Naming System embodies the art of digital identity creation. Every name is crafted with the precision of a fox stalking its prey, the thoroughness of an otter exploring a stream, and the relentless determination of a wolf pack hunting down the perfect identity.
+_whiskers twitch with cunning satisfaction_ The Reynard Agent Naming System embodies the art of digital identity creation. Every name is crafted with the precision of a fox stalking its prey, the thoroughness of an otter exploring a stream, and the relentless determination of a wolf pack hunting down the perfect identity.
 
-*claws sharpen with pride* This system is more than just name generation - it's a complete identity ecosystem that creates digital beings with rich personalities, meaningful names, and deep connections to their animal spirit heritage. Welcome to the hunt for the perfect name! 🦊🦦🐺
+_claws sharpen with pride_ This system is more than just name generation - it's a complete identity ecosystem that creates digital beings with rich personalities, meaningful names, and deep connections to their animal spirit heritage. Welcome to the hunt for the perfect name! 🦊🦦🐺

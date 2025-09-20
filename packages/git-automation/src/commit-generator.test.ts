@@ -364,7 +364,9 @@ describe("CommitMessageGenerator", () => {
       generator.displayPreview(commitMessage);
 
       expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("📝 Commit Message Preview:"));
-      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("feat(components): add new features and capabilities"));
+      expect(consoleSpy).toHaveBeenCalledWith(
+        expect.stringContaining("feat(components): add new features and capabilities")
+      );
 
       consoleSpy.mockRestore();
     });

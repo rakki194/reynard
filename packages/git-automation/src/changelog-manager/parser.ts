@@ -86,8 +86,9 @@ export class ChangelogParser {
   }
 
   private isEntryLine(line: string): boolean {
-    return /^\s*[-*]\s+(added|changed|deprecated|removed|fixed|security):/i.test(line) ||
-           /^\s*[-*]\s+[^:]+$/i.test(line);
+    return (
+      /^\s*[-*]\s+(added|changed|deprecated|removed|fixed|security):/i.test(line) || /^\s*[-*]\s+[^:]+$/i.test(line)
+    );
   }
 
   private extractVersion(line: string): string {

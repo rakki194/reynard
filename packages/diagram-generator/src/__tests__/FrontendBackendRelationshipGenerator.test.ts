@@ -8,7 +8,7 @@ import type { CodebaseAnalysis, DiagramGenerationConfig } from "../types.js";
 
 describe("FrontendBackendRelationshipGenerator", () => {
   const generator = new FrontendBackendRelationshipGenerator();
-  
+
   const mockAnalysis: CodebaseAnalysis = {
     packages: [
       {
@@ -103,7 +103,7 @@ describe("FrontendBackendRelationshipGenerator", () => {
 
   it("should validate input correctly", () => {
     expect(generator.validate(mockAnalysis)).toBe(true);
-    
+
     const emptyAnalysis: CodebaseAnalysis = {
       packages: [],
       dependencies: [],
@@ -124,13 +124,13 @@ describe("FrontendBackendRelationshipGenerator", () => {
       },
       relationships: [],
     };
-    
+
     expect(generator.validate(emptyAnalysis)).toBe(false);
   });
 
   it("should generate Mermaid content", async () => {
     const result = await generator.generate(mockAnalysis, mockConfig);
-    
+
     expect(result.mermaidContent).toBeDefined();
     expect(result.mermaidContent).toContain("graph TB");
     expect(result.mermaidContent).toContain("🦊 Reynard Frontend-Backend Architecture");
@@ -145,7 +145,7 @@ describe("FrontendBackendRelationshipGenerator", () => {
 
   it("should include proper metadata", async () => {
     const result = await generator.generate(mockAnalysis, mockConfig);
-    
+
     expect(result.metadata).toBeDefined();
     expect(result.metadata.type).toBe("frontend-backend-relationships");
     expect(result.metadata.title).toBe("Reynard Frontend-Backend Relationships");
@@ -157,7 +157,7 @@ describe("FrontendBackendRelationshipGenerator", () => {
 
   it("should include authentication and real-time indicators", async () => {
     const result = await generator.generate(mockAnalysis, mockConfig);
-    
+
     // Should include legend with authentication and real-time indicators
     expect(result.mermaidContent).toContain("🔐 Authentication Required");
     expect(result.mermaidContent).toContain("⚡ Real-time Features");
@@ -166,7 +166,7 @@ describe("FrontendBackendRelationshipGenerator", () => {
 
   it("should include API connection types", async () => {
     const result = await generator.generate(mockAnalysis, mockConfig);
-    
+
     // Should include different connection types in legend
     expect(result.mermaidContent).toContain("--> HTTP API");
     expect(result.mermaidContent).toContain("<--> WebSocket");
@@ -176,7 +176,7 @@ describe("FrontendBackendRelationshipGenerator", () => {
 
   it("should group packages by type", async () => {
     const result = await generator.generate(mockAnalysis, mockConfig);
-    
+
     // Should group frontend packages by type
     expect(result.mermaidContent).toContain("api-client");
     expect(result.mermaidContent).toContain("connection");

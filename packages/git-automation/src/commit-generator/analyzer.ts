@@ -89,14 +89,14 @@ export class CommitMessageAnalyzer {
       // For multiple categories, prioritize the first one and include details
       const primaryCategory = categories[0];
       const primaryDescription = this.getCategoryDescription(primaryCategory.type, primaryCategory.files.length);
-      
+
       // Add details about all categories
       const allDetails = categories.map(cat => {
         const verb = this.getCategoryVerb(cat.type);
         const categoryName = cat.type === "fix" ? "issue" : cat.type;
         return `${verb} ${cat.files.length} ${categoryName} files`;
       });
-      
+
       return `${primaryDescription} and ${allDetails.join(", ")}`;
     }
 
@@ -198,17 +198,17 @@ export class CommitMessageAnalyzer {
           return nextSegment === "__tests__" ? "test" : nextSegment;
         }
       }
-      
+
       // Map common prefixes to expected scopes
       const scopeMap: Record<string, string> = {
-        "src": "src",
-        "components": "components", 
-        "utils": "utils",
-        "test": "test",
-        "docs": "docs",
-        "config": "config"
+        src: "src",
+        components: "components",
+        utils: "utils",
+        test: "test",
+        docs: "docs",
+        config: "config",
       };
-      
+
       const prefix = commonPrefix[0];
       return scopeMap[prefix] || prefix;
     }
@@ -216,12 +216,15 @@ export class CommitMessageAnalyzer {
     // If no common prefix, try to extract from individual file paths
     for (const file of files) {
       const pathParts = file.file.split("/");
-      
+
       // Check for config files at root level
-      if (pathParts.length === 1 && ["package.json", "tsconfig.json", "eslint.config.js", "vite.config.ts"].includes(pathParts[0])) {
+      if (
+        pathParts.length === 1 &&
+        ["package.json", "tsconfig.json", "eslint.config.js", "vite.config.ts"].includes(pathParts[0])
+      ) {
         return "config";
       }
-      
+
       for (const part of pathParts) {
         if (["components", "utils", "test", "docs", "config", "__tests__"].includes(part)) {
           // Map __tests__ to test

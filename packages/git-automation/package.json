@@ -43,14 +43,7 @@
     "format": "prettier --write src",
     "type-check": "tsc --noEmit"
   },
-  "keywords": [
-    "git",
-    "automation",
-    "workflow",
-    "reynard",
-    "changelog",
-    "versioning"
-  ],
+  "keywords": ["git", "automation", "workflow", "reynard", "changelog", "versioning"],
   "author": "Reynard Team",
   "license": "MIT",
   "dependencies": {
@@ -73,8 +66,5 @@
     "typescript": "5.9.2",
     "vitest": "3.2.4"
   },
-  "files": [
-    "dist",
-    "README.md"
-  ]
+  "files": ["dist", "README.md"]
 }

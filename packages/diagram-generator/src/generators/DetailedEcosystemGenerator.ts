@@ -1,6 +1,6 @@
 /**
  * 🦊 Detailed Ecosystem Generator
- * 
+ *
  * Generates comprehensive diagrams showing detailed relationships
  * between all packages, components, and their actual imports/exports
  */
@@ -87,7 +87,7 @@ export class DetailedEcosystemGenerator implements DiagramGenerator {
   async generate(analysis: CodebaseAnalysis, config: DiagramGenerationConfig): Promise<DiagramOutput> {
     const detailedAnalysis = this.analyzeDetailedEcosystem(analysis);
     const mermaidContent = this.generateDetailedMermaidContent(detailedAnalysis, config);
-    
+
     const metadata: DiagramMetadata = {
       type: this.type,
       title: "Reynard Detailed Ecosystem Analysis",
@@ -132,7 +132,7 @@ export class DetailedEcosystemGenerator implements DiagramGenerator {
 
       const allExports = components.flatMap(comp => comp.exports || []);
       const allImports = components.flatMap(comp => comp.imports || []);
-      
+
       const internalConnections = allImports.filter(imp => imp && imp.startsWith("reynard-")).length;
       const externalConnections = allImports.filter(imp => imp && !imp.startsWith("reynard-")).length;
 
@@ -152,7 +152,10 @@ export class DetailedEcosystemGenerator implements DiagramGenerator {
     });
   }
 
-  private analyzeDetailedRelationships(analysis: CodebaseAnalysis, packages: DetailedPackageAnalysis[]): DetailedRelationshipAnalysis[] {
+  private analyzeDetailedRelationships(
+    analysis: CodebaseAnalysis,
+    packages: DetailedPackageAnalysis[]
+  ): DetailedRelationshipAnalysis[] {
     const relationships: DetailedRelationshipAnalysis[] = [];
 
     // Analyze package-level relationships
@@ -206,7 +209,7 @@ export class DetailedEcosystemGenerator implements DiagramGenerator {
 
   private analyzeAPIConnections(packages: DetailedPackageAnalysis[]): APIConnectionAnalysis[] {
     const connections: APIConnectionAnalysis[] = [];
-    
+
     const apiClientPackage = packages.find(pkg => pkg.name === "reynard-api-client");
     const backendPackage = packages.find(pkg => pkg.path === "backend");
 
@@ -216,12 +219,24 @@ export class DetailedEcosystemGenerator implements DiagramGenerator {
         backend: backendPackage.name,
         type: "http",
         endpoints: [
-          "/api/caption", "/api/chat", "/api/rag", "/api/gallery",
-          "/api/auth", "/api/health", "/api/ecs", "/api/mcp"
+          "/api/caption",
+          "/api/chat",
+          "/api/rag",
+          "/api/gallery",
+          "/api/auth",
+          "/api/health",
+          "/api/ecs",
+          "/api/mcp",
         ],
         dataTypes: [
-          "CaptionRequest", "ChatMessage", "SearchQuery", "GalleryItem",
-          "AuthToken", "HealthStatus", "ECSWorld", "MCPRequest"
+          "CaptionRequest",
+          "ChatMessage",
+          "SearchQuery",
+          "GalleryItem",
+          "AuthToken",
+          "HealthStatus",
+          "ECSWorld",
+          "MCPRequest",
         ],
         authentication: true,
       });
@@ -261,33 +276,33 @@ export class DetailedEcosystemGenerator implements DiagramGenerator {
       "%%{init: {'theme': 'neutral'}}%%",
       "graph TB",
       "",
-      "    subgraph \"🦊 Reynard Detailed Ecosystem Analysis\"",
+      '    subgraph "🦊 Reynard Detailed Ecosystem Analysis"',
       "        direction TB",
       "",
-      "        subgraph frontend[\"🖥️ Frontend Packages\"]",
+      '        subgraph frontend["🖥️ Frontend Packages"]',
       "            direction TB",
     ];
 
     // Group packages by type
     const packageGroups = this.groupPackagesByType(analysis.packages);
-    
+
     for (const [groupName, packages] of Object.entries(packageGroups)) {
       const groupEmoji = this.getGroupEmoji(groupName);
       lines.push(`            subgraph ${groupName}[\"${groupEmoji} ${groupName}\"]`);
       lines.push("                direction LR");
-      
+
       for (const pkg of packages) {
         const nodeId = this.sanitizeNodeId(pkg.name);
         const nodeLabel = this.createDetailedNodeLabel(pkg);
         lines.push(`                ${nodeId}[\"${nodeLabel}\"]`);
       }
-      
+
       lines.push("            end");
       lines.push("");
     }
 
     // Add backend services
-    lines.push("        subgraph backend[\"⚙️ Backend Services\"]");
+    lines.push('        subgraph backend["⚙️ Backend Services"]');
     lines.push("            direction TB");
     const backendPackages = analysis.packages.filter(pkg => pkg.type === "backend");
     for (const pkg of backendPackages) {
@@ -300,7 +315,8 @@ export class DetailedEcosystemGenerator implements DiagramGenerator {
 
     // Add detailed relationships
     lines.push("        %% Detailed Relationships");
-    for (const rel of analysis.relationships.slice(0, 50)) { // Limit for readability
+    for (const rel of analysis.relationships.slice(0, 50)) {
+      // Limit for readability
       const sourceId = this.sanitizeNodeId(rel.source);
       const targetId = this.sanitizeNodeId(rel.target);
       const edgeStyle = this.getEdgeStyle(rel.type, rel.strength);
@@ -318,13 +334,13 @@ export class DetailedEcosystemGenerator implements DiagramGenerator {
 
     lines.push("    end");
     lines.push("");
-    lines.push("    subgraph legend[\"📋 Legend\"]");
+    lines.push('    subgraph legend["📋 Legend"]');
     lines.push("        direction LR");
-    lines.push("        legend_import[\"--> Import\"]");
-    lines.push("        legend_export[\"<-- Export\"]");
-    lines.push("        legend_dep[\"-.-> Dependency\"]");
-    lines.push("        legend_api[\"--> API\"]");
-    lines.push("        legend_data[\"<--> Data Flow\"]");
+    lines.push('        legend_import["--> Import"]');
+    lines.push('        legend_export["<-- Export"]');
+    lines.push('        legend_dep["-.-> Dependency"]');
+    lines.push('        legend_api["--> API"]');
+    lines.push('        legend_data["<--> Data Flow"]');
     lines.push("    end");
 
     return lines.join("\n");
@@ -332,11 +348,11 @@ export class DetailedEcosystemGenerator implements DiagramGenerator {
 
   private groupPackagesByType(packages: DetailedPackageAnalysis[]): Record<string, DetailedPackageAnalysis[]> {
     const groups: Record<string, DetailedPackageAnalysis[]> = {
-      "Core": [],
-      "API": [],
-      "UI": [],
-      "Utilities": [],
-      "Services": [],
+      Core: [],
+      API: [],
+      UI: [],
+      Utilities: [],
+      Services: [],
     };
 
     for (const pkg of packages) {
@@ -361,11 +377,11 @@ export class DetailedEcosystemGenerator implements DiagramGenerator {
 
   private getGroupEmoji(groupName: string): string {
     const emojis: Record<string, string> = {
-      "Core": "🧠",
-      "API": "🔌",
-      "UI": "🎨",
-      "Utilities": "🛠️",
-      "Services": "⚙️",
+      Core: "🧠",
+      API: "🔌",
+      UI: "🎨",
+      Utilities: "🛠️",
+      Services: "⚙️",
     };
     return emojis[groupName] || "📦";
   }
@@ -379,11 +395,11 @@ export class DetailedEcosystemGenerator implements DiagramGenerator {
 
   private getEdgeStyle(type: string, strength: number): string {
     const styles: Record<string, string> = {
-      "imports": "-->",
-      "exports": "<--",
-      "depends": "-.->",
-      "api": "-->",
-      "data": "<-->",
+      imports: "-->",
+      exports: "<--",
+      depends: "-.->",
+      api: "-->",
+      data: "<-->",
     };
     return styles[type] || "-->";
   }

@@ -138,10 +138,10 @@ const mockAnalysis = {
 
 async function generateTestDiagram() {
   console.log("🐉 Generating Frontend-Backend Relationship Diagram...");
-  
+
   try {
     const generator = new FrontendBackendRelationshipGenerator();
-    
+
     const config = {
       outputDir: "./diagrams",
       generateSvg: false,
@@ -153,29 +153,28 @@ async function generateTestDiagram() {
       includeRelationships: true,
       includeMetadata: true,
     };
-    
+
     // Generate the diagram
     const result = await generator.generate(mockAnalysis, config);
-    
+
     // Create diagrams directory
     await import("fs/promises").then(fs => fs.mkdir("./diagrams", { recursive: true }));
-    
+
     // Save Mermaid content
     const mermaidPath = join(config.outputDir, "frontend-backend-relationships.mmd");
     await writeFile(mermaidPath, result.mermaidContent);
-    
+
     console.log(`✅ Diagram generated successfully!`);
     console.log(`📄 Mermaid file: ${mermaidPath}`);
     console.log(`📊 Nodes: ${result.metadata.nodeCount}`);
     console.log(`🔗 Edges: ${result.metadata.edgeCount}`);
     console.log(`📈 Complexity: ${result.metadata.complexityScore}`);
-    
+
     // Display the Mermaid content
     console.log("\n📋 Mermaid Diagram Content:");
-    console.log("=" .repeat(80));
+    console.log("=".repeat(80));
     console.log(result.mermaidContent);
-    console.log("=" .repeat(80));
-    
+    console.log("=".repeat(80));
   } catch (error) {
     console.error("❌ Error generating diagram:", error);
     process.exit(1);
