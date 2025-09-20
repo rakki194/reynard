@@ -136,6 +136,8 @@ class AIEmailResponseService:
         
         # Context storage
         self.contexts: Dict[str, EmailContext] = {}
+        self.responses: Dict[str, AIResponse] = {}
+        self.templates: Dict[str, Any] = {}
         
         # Initialize OpenAI client only if API key is available
         if OPENAI_AVAILABLE:
@@ -898,5 +900,78 @@ BODY: [response body]
         return prompt
 
 
-# Global AI response service instance
-ai_email_response_service = AIEmailResponseService()
+# Global AI response service instance - will be initialized lazily
+ai_email_response_service = None
+
+
+def get_ai_email_response_service() -> AIEmailResponseService:
+    """
+    Get the AI email response service instance with lazy initialization.
+    
+    Returns:
+        AIEmailResponseService: The initialized service instance
+    """
+    global ai_email_response_service
+    if ai_email_response_service is None:
+        ai_email_response_service = AIEmailResponseService()
+    return ai_email_response_service
+
+
+async def initialize_ai_email_response_service() -> bool:
+    """
+    Initialize the AI email response service.
+    
+    Returns:
+        bool: True if initialization was successful, False otherwise
+    """
+    try:
+        global ai_email_response_service
+        if ai_email_response_service is None:
+            ai_email_response_service = AIEmailResponseService()
+            logger.info("✅ AI email response service initialized successfully")
+        return True
+    except Exception as e:
+        logger.error(f"❌ AI email response service initialization failed: {e}")
+        return False
+
+
+async def shutdown_ai_email_response_service() -> None:
+    """
+    Shutdown the AI email response service.
+    """
+    try:
+        global ai_email_response_service
+        if ai_email_response_service is not None:
+            # Clean up any resources if needed
+            ai_email_response_service = None
+            logger.info("✅ AI email response service shutdown successfully")
+    except Exception as e:
+        logger.error(f"❌ AI email response service shutdown error: {e}")
+
+
+async def health_check_ai_email_response_service() -> bool:
+    """
+    Health check for the AI email response service.
+    
+    Returns:
+        bool: True if service is healthy, False otherwise
+    """
+    try:
+        global ai_email_response_service
+        if ai_email_response_service is None:
+            return False
+        
+        # Check if any AI services are available
+        available_services = []
+        if ai_email_response_service.openai_client:
+            available_services.append("OpenAI")
+        if ai_email_response_service.anthropic_client:
+            available_services.append("Anthropic")
+        if ai_email_response_service.ollama_available:
+            available_services.append("Ollama")
+        
+        # Service is healthy if at least one AI service is available
+        return len(available_services) > 0
+    except Exception as e:
+        logger.error(f"❌ AI email response service health check error: {e}")
+        return False

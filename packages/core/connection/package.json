@@ -1,0 +1,49 @@
+{
+  "name": "reynard-connection",
+  "version": "0.2.0",
+  "description": "Enterprise-grade networking for Reynard applications",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "tsc --build",
+    "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
+    "test": "source ../../../vitest.env.global && VITEST_AGENT_ID=connection-package ../../../scripts/testing/vitest-global-queue.sh run connection-package",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "keywords": ["connection", "networking", "websocket", "http", "sse", "reynard", "enterprise"],
+  "author": "Balazs Horvath",
+  "license": "MIT",
+  "dependencies": {
+    "solid-js": "1.9.9",
+    "reynard-i18n": "workspace:*",
+    "reynard-validation": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "24.5.2",
+    "@vitest/coverage-v8": "3.2.4",
+    "@vitest/ui": "3.2.4",
+    "reynard-testing": "workspace:*",
+    "typescript": "5.9.2",
+    "vite": "7.1.6",
+    "vite-plugin-solid": "2.11.8",
+    "vitest": "3.2.4"
+  },
+  "peerDependencies": {
+    "solid-js": "1.9.9"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

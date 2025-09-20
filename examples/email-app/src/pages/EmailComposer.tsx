@@ -23,13 +23,8 @@ export function EmailComposerPage() {
         <h1>Compose Email</h1>
         <p>Create and send email messages</p>
       </div>
-      
-      <EmailComposer
-        onSend={handleSend}
-        onSave={handleSave}
-        onCancel={handleCancel}
-      />
+
+      <EmailComposer onSend={handleSend} onSave={handleSave} onCancel={handleCancel} />
     </div>
   );
 }
-

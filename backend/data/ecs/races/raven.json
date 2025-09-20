@@ -1,0 +1,30 @@
+{
+  "name": "raven",
+  "category": "birds_of_prey_and_flight",
+  "description": "Intelligent corvids known for their wisdom and mystery",
+  "traits": [
+    "wise",
+    "mysterious",
+    "intelligent",
+    "observant",
+    "symbolic"
+  ],
+  "names": [
+    "Corvus",
+    "Raven",
+    "Crow",
+    "Intelligence",
+    "Mystery",
+    "Omen"
+  ],
+  "generation_numbers": [
+    13,
+    26,
+    39,
+    52,
+    65,
+    78,
+    91
+  ],
+  "emoji": "🐦‍⬛"
+}

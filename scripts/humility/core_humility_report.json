@@ -64,18 +64,7 @@
             "pattern_matched": "\\b(inferior|outdated|obsolete|archaic|primitive|basic|simple|limited|restricted|constrained)\\b",
             "word_position": 208,
             "line_length": 4496,
-            "surrounding_words": [
-              "to",
-              "gracefully",
-              "fall",
-              "back",
-              "from",
-              "full",
-              "i18n",
-              "support",
-              "to",
-              "simple"
-            ]
+            "surrounding_words": ["to", "gracefully", "fall", "back", "from", "full", "i18n", "support", "to", "simple"]
           },
           "behavioral_indicators": [],
           "cultural_context": null,
@@ -132,18 +121,7 @@
             "pattern_matched": "\\b(always|never|all|every|none|only|exclusively|completely|totally|absolutely|entirely|wholly)\\b",
             "word_position": 137,
             "line_length": 4496,
-            "surrounding_words": [
-              "d",
-              "optional",
-              "i18n",
-              "system",
-              "provides",
-              "a",
-              "unified",
-              "way",
-              "for",
-              "all"
-            ]
+            "surrounding_words": ["d", "optional", "i18n", "system", "provides", "a", "unified", "way", "for", "all"]
           },
           "behavioral_indicators": [],
           "cultural_context": null,
@@ -405,17 +383,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:02.755257"
     },
     "/home/kade/runeset/reynard/packages/core/vitest.docs.config.ts": {
@@ -426,17 +396,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:02.802603"
     },
     "/home/kade/runeset/reynard/packages/core/README.md": {
@@ -770,18 +732,7 @@
             "pattern_matched": "\\b(always|never|all|every|none|only|exclusively|completely|totally|absolutely|entirely|wholly)\\b",
             "word_position": 18019,
             "line_length": 20530,
-            "surrounding_words": [
-              "ing",
-              "_",
-              "the",
-              "package",
-              "supports",
-              "tree",
-              "shaking",
-              "so",
-              "you",
-              "only"
-            ]
+            "surrounding_words": ["ing", "_", "the", "package", "supports", "tree", "shaking", "so", "you", "only"]
           },
           "behavioral_indicators": [],
           "cultural_context": null,
@@ -804,18 +755,7 @@
             "pattern_matched": "\\b(always|never|all|every|none|only|exclusively|completely|totally|absolutely|entirely|wholly)\\b",
             "word_position": 18110,
             "line_length": 20530,
-            "surrounding_words": [
-              "ules",
-              "can",
-              "be",
-              "imported",
-              "separately",
-              "tsx",
-              "import",
-              "only",
-              "what",
-              "you"
-            ]
+            "surrounding_words": ["ules", "can", "be", "imported", "separately", "tsx", "import", "only", "what", "you"]
           },
           "behavioral_indicators": [],
           "cultural_context": null,
@@ -961,17 +901,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:02.835621"
     },
     "/home/kade/runeset/reynard/packages/core/src/test-setup.ts": {
@@ -982,17 +914,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:02.837274"
     },
     "/home/kade/runeset/reynard/packages/core/src/index.ts": {
@@ -1003,17 +927,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:02.839047"
     },
     "/home/kade/runeset/reynard/packages/core/src/security/mime-validation.ts": {
@@ -1024,17 +940,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:02.849623"
     },
     "/home/kade/runeset/reynard/packages/core/src/security/index.ts": {
@@ -1045,17 +953,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:02.859028"
     },
     "/home/kade/runeset/reynard/packages/core/src/security/validation.ts": {
@@ -1066,17 +966,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:02.868174"
     },
     "/home/kade/runeset/reynard/packages/core/src/security/file-validation.ts": {
@@ -1133,17 +1025,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:02.887528"
     },
     "/home/kade/runeset/reynard/packages/core/src/security/crypto.ts": {
@@ -1263,18 +1147,7 @@
             "pattern_matched": "\\b(always|never|all|every|none|only|exclusively|completely|totally|absolutely|entirely|wholly)\\b",
             "word_position": 921,
             "line_length": 5364,
-            "surrounding_words": [
-              "ps",
-              "wss",
-              "media",
-              "src",
-              "self",
-              "blob",
-              "object",
-              "src",
-              "none",
-              "base"
-            ]
+            "surrounding_words": ["ps", "wss", "media", "src", "self", "blob", "object", "src", "none", "base"]
           },
           "behavioral_indicators": [],
           "cultural_context": null,
@@ -1331,18 +1204,7 @@
             "pattern_matched": "\\b(always|never|all|every|none|only|exclusively|completely|totally|absolutely|entirely|wholly)\\b",
             "word_position": 2028,
             "line_length": 5364,
-            "surrounding_words": [
-              "self",
-              "https",
-              "media",
-              "src",
-              "self",
-              "object",
-              "src",
-              "none",
-              "base",
-              "uri"
-            ]
+            "surrounding_words": ["self", "https", "media", "src", "self", "object", "src", "none", "base", "uri"]
           },
           "behavioral_indicators": [],
           "cultural_context": null,
@@ -1433,18 +1295,7 @@
             "pattern_matched": "\\b(always|never|all|every|none|only|exclusively|completely|totally|absolutely|entirely|wholly)\\b",
             "word_position": 2719,
             "line_length": 5364,
-            "surrounding_words": [
-              "ws",
-              "wss",
-              "media",
-              "src",
-              "self",
-              "blob",
-              "object",
-              "src",
-              "none",
-              "base"
-            ]
+            "surrounding_words": ["ws", "wss", "media", "src", "self", "blob", "object", "src", "none", "base"]
           },
           "behavioral_indicators": [],
           "cultural_context": null,
@@ -1498,17 +1349,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:02.910164"
     },
     "/home/kade/runeset/reynard/packages/core/src/hf-cache/index.ts": {
@@ -1662,18 +1505,7 @@
             "pattern_matched": "\\b(always|never|all|every|none|only|exclusively|completely|totally|absolutely|entirely|wholly)\\b",
             "word_position": 1410,
             "line_length": 3795,
-            "surrounding_words": [
-              "union",
-              "patterns",
-              "bunion",
-              "s",
-              "select",
-              "b",
-              "gi",
-              "bunion",
-              "s",
-              "all"
-            ]
+            "surrounding_words": ["union", "patterns", "bunion", "s", "select", "b", "gi", "bunion", "s", "all"]
           },
           "behavioral_indicators": [],
           "cultural_context": null,
@@ -1739,17 +1571,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:02.927399"
     },
     "/home/kade/runeset/reynard/packages/core/src/security/input-validation.ts": {
@@ -1967,17 +1791,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:02.933983"
     },
     "/home/kade/runeset/reynard/packages/core/src/executor/types.ts": {
@@ -1988,17 +1804,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:02.936641"
     },
     "/home/kade/runeset/reynard/packages/core/src/lazy-loading/lazy-package-export.ts": {
@@ -2242,18 +2050,7 @@
             "pattern_matched": "\\b(always|never|all|every|none|only|exclusively|completely|totally|absolutely|entirely|wholly)\\b",
             "word_position": 184,
             "line_length": 432,
-            "surrounding_words": [
-              "is",
-              "handled",
-              "by",
-              "the",
-              "python",
-              "backend",
-              "re",
-              "export",
-              "all",
-              "types"
-            ]
+            "surrounding_words": ["is", "handled", "by", "the", "python", "backend", "re", "export", "all", "types"]
           },
           "behavioral_indicators": [],
           "cultural_context": null,
@@ -2346,18 +2143,7 @@
             "pattern_matched": "\\b(always|never|all|every|none|only|exclusively|completely|totally|absolutely|entirely|wholly)\\b",
             "word_position": 405,
             "line_length": 515,
-            "surrounding_words": [
-              "exported",
-              "but",
-              "not",
-              "as",
-              "runtime",
-              "properties",
-              "we",
-              "can",
-              "only",
-              "test"
-            ]
+            "surrounding_words": ["exported", "but", "not", "as", "runtime", "properties", "we", "can", "only", "test"]
           },
           "behavioral_indicators": [],
           "cultural_context": null,
@@ -2721,17 +2507,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.002431"
     },
     "/home/kade/runeset/reynard/packages/core/src/clients/http-client.ts": {
@@ -2800,17 +2578,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.014916"
     },
     "/home/kade/runeset/reynard/packages/core/src/utils/index.ts": {
@@ -2821,17 +2591,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.016628"
     },
     "/home/kade/runeset/reynard/packages/core/src/utils/translation-core.ts": {
@@ -3045,18 +2807,7 @@
             "pattern_matched": "\\b(always|never|all|every|none|only|exclusively|completely|totally|absolutely|entirely|wholly)\\b",
             "word_position": 108,
             "line_length": 324,
-            "surrounding_words": [
-              "tions",
-              "for",
-              "forms",
-              "and",
-              "data",
-              "this",
-              "file",
-              "re",
-              "exports",
-              "all"
-            ]
+            "surrounding_words": ["tions", "for", "forms", "and", "data", "this", "file", "re", "exports", "all"]
           },
           "behavioral_indicators": [],
           "cultural_context": null,
@@ -3282,17 +3033,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.131724"
     },
     "/home/kade/runeset/reynard/packages/core/src/utils/async.ts": {
@@ -3320,18 +3063,7 @@
             "pattern_matched": "\\b(always|never|all|every|none|only|exclusively|completely|totally|absolutely|entirely|wholly)\\b",
             "word_position": 110,
             "line_length": 311,
-            "surrounding_words": [
-              "ns",
-              "promises",
-              "and",
-              "timing",
-              "this",
-              "file",
-              "re",
-              "exports",
-              "all",
-              "async"
-            ]
+            "surrounding_words": ["ns", "promises", "and", "timing", "this", "file", "re", "exports", "all", "async"]
           },
           "behavioral_indicators": [],
           "cultural_context": null,
@@ -3639,17 +3371,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.264174"
     },
     "/home/kade/runeset/reynard/packages/core/src/utils/language-detection.ts": {
@@ -3754,17 +3478,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.246196"
     },
     "/home/kade/runeset/reynard/packages/core/src/utils/languageUtils.ts": {
@@ -3775,17 +3491,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.270633"
     },
     "/home/kade/runeset/reynard/packages/core/src/utils/formatters.ts": {
@@ -3980,17 +3688,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.277407"
     },
     "/home/kade/runeset/reynard/packages/core/src/composables/useLocalStorage.ts": {
@@ -4001,17 +3701,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.291783"
     },
     "/home/kade/runeset/reynard/packages/core/src/composables/index.ts": {
@@ -4022,17 +3714,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.315686"
     },
     "/home/kade/runeset/reynard/packages/core/src/composables/useDebounce.ts": {
@@ -4043,17 +3727,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.317963"
     },
     "/home/kade/runeset/reynard/packages/core/src/composables/localStorageSerializer.ts": {
@@ -4081,18 +3757,7 @@
             "pattern_matched": "\\b(inferior|outdated|obsolete|archaic|primitive|basic|simple|limited|restricted|constrained)\\b",
             "word_position": 507,
             "line_length": 1139,
-            "surrounding_words": [
-              "e",
-              "t",
-              "unknown",
-              "value",
-              "string",
-              "t",
-              "try",
-              "basic",
-              "validation",
-              "to"
-            ]
+            "surrounding_words": ["e", "t", "unknown", "value", "string", "t", "try", "basic", "validation", "to"]
           },
           "behavioral_indicators": [],
           "cultural_context": null,
@@ -4122,17 +3787,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.324821"
     },
     "/home/kade/runeset/reynard/packages/core/src/composables/storageEventHandler.ts": {
@@ -4143,17 +3800,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.358222"
     },
     "/home/kade/runeset/reynard/packages/core/src/composables/useNotifications.ts": {
@@ -4324,17 +3973,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.367314"
     },
     "/home/kade/runeset/reynard/packages/core/src/modules/index.ts": {
@@ -4345,17 +3986,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.363418"
     },
     "/home/kade/runeset/reynard/packages/core/src/modules/notification-manager.ts": {
@@ -4366,17 +3999,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.397803"
     },
     "/home/kade/runeset/reynard/packages/core/src/modules/notifications.ts": {
@@ -4443,17 +4068,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.410889"
     },
     "/home/kade/runeset/reynard/packages/core/src/composables/__tests__/media-query-test-setup.ts": {
@@ -4464,17 +4081,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.406605"
     },
     "/home/kade/runeset/reynard/packages/core/src/utils/validation/basic.ts": {
@@ -4502,14 +4111,7 @@
             "pattern_matched": "\\b(inferior|outdated|obsolete|archaic|primitive|basic|simple|limited|restricted|constrained)\\b",
             "word_position": 6,
             "line_length": 1751,
-            "surrounding_words": [
-              "basic",
-              "validation",
-              "utilities",
-              "simple",
-              "validation",
-              "function"
-            ]
+            "surrounding_words": ["basic", "validation", "utilities", "simple", "validation", "function"]
           },
           "behavioral_indicators": [],
           "cultural_context": null,
@@ -4972,18 +4574,7 @@
             "pattern_matched": "\\b(always|never|all|every|none|only|exclusively|completely|totally|absolutely|entirely|wholly)\\b",
             "word_position": 2073,
             "line_length": 2579,
-            "surrounding_words": [
-              "e",
-              "completed",
-              "promises",
-              "by",
-              "creating",
-              "a",
-              "new",
-              "array",
-              "with",
-              "only"
-            ]
+            "surrounding_words": ["e", "completed", "promises", "by", "creating", "a", "new", "array", "with", "only"]
           },
           "behavioral_indicators": [],
           "cultural_context": null,
@@ -5158,18 +4749,7 @@
             "pattern_matched": "\\b(guaranteed|certain|definite|sure|inevitable|unavoidable|unstoppable|irresistible)\\b",
             "word_position": 593,
             "line_length": 1040,
-            "surrounding_words": [
-              "age",
-              "validation",
-              "checks",
-              "if",
-              "person",
-              "is",
-              "at",
-              "least",
-              "a",
-              "certain"
-            ]
+            "surrounding_words": ["age", "validation", "checks", "if", "person", "is", "at", "least", "a", "certain"]
           },
           "behavioral_indicators": [],
           "cultural_context": null,
@@ -5250,13 +4830,7 @@
             "pattern_matched": "\\b(award-winning|industry-leading|best-in-class|world-class|top-tier|premium|elite|superior|advanced|sophisticated)\\b",
             "word_position": 488,
             "line_length": 499,
-            "surrounding_words": [
-              "makecancelable",
-              "type",
-              "cancelablepromise",
-              "from",
-              "advanced"
-            ]
+            "surrounding_words": ["makecancelable", "type", "cancelablepromise", "from", "advanced"]
           },
           "behavioral_indicators": [],
           "cultural_context": null,
@@ -5339,16 +4913,7 @@
             "pattern_matched": "\\b(award-winning|industry-leading|best-in-class|world-class|top-tier|premium|elite|superior|advanced|sophisticated)\\b",
             "word_position": 6,
             "line_length": 2255,
-            "surrounding_words": [
-              "advanced",
-              "async",
-              "utilities",
-              "complex",
-              "async",
-              "operations",
-              "like",
-              "p"
-            ]
+            "surrounding_words": ["advanced", "async", "utilities", "complex", "async", "operations", "like", "p"]
           },
           "behavioral_indicators": [],
           "cultural_context": null,
@@ -5429,18 +4994,7 @@
             "pattern_matched": "\\b(always|never|all|every|none|only|exclusively|completely|totally|absolutely|entirely|wholly)\\b",
             "word_position": 1237,
             "line_length": 1830,
-            "surrounding_words": [
-              "out",
-              "promise",
-              "t",
-              "const",
-              "timeout",
-              "new",
-              "promise",
-              "never",
-              "_",
-              "reject"
-            ]
+            "surrounding_words": ["out", "promise", "t", "const", "timeout", "new", "promise", "never", "_", "reject"]
           },
           "behavioral_indicators": [],
           "cultural_context": null,
@@ -5615,18 +5169,7 @@
             "pattern_matched": "\\b(always|never|all|every|none|only|exclusively|completely|totally|absolutely|entirely|wholly)\\b",
             "word_position": 2499,
             "line_length": 2572,
-            "surrounding_words": [
-              "ise",
-              "with",
-              "no",
-              "value",
-              "this",
-              "ensures",
-              "the",
-              "function",
-              "is",
-              "never"
-            ]
+            "surrounding_words": ["ise", "with", "no", "value", "this", "ensures", "the", "function", "is", "never"]
           },
           "behavioral_indicators": [],
           "cultural_context": null,
@@ -5738,17 +5281,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.617175"
     },
     "/home/kade/runeset/reynard/packages/core/src/utils/formatters/file-size.ts": {
@@ -5759,17 +5294,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.617553"
     },
     "/home/kade/runeset/reynard/packages/core/src/utils/formatters/date-time.ts": {
@@ -5780,17 +5307,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.625221"
     },
     "/home/kade/runeset/reynard/packages/core/src/utils/formatters/string.ts": {
@@ -5847,17 +5366,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.657656"
     },
     "/home/kade/runeset/reynard/packages/core/src/clients/__tests__/http-client-setup.ts": {
@@ -5868,17 +5379,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.648169"
     },
     "/home/kade/runeset/reynard/packages/core/src/lang/en/common.ts": {
@@ -5981,17 +5484,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.668098"
     },
     "/home/kade/runeset/reynard/packages/core/src/__tests__/security/url-validation.test.ts": {
@@ -6002,17 +5497,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.710931"
     },
     "/home/kade/runeset/reynard/packages/core/src/__tests__/security/crypto.test.ts": {
@@ -6377,17 +5864,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.758594"
     },
     "/home/kade/runeset/reynard/packages/core/src/__tests__/security/headers.test.ts": {
@@ -6616,17 +6095,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.842121"
     },
     "/home/kade/runeset/reynard/packages/core/src/__tests__/clients/http-client-config.test.ts": {
@@ -6637,17 +6108,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.847455"
     },
     "/home/kade/runeset/reynard/packages/core/src/__tests__/clients/http-client-upload.test.ts": {
@@ -6658,17 +6121,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:03.875542"
     },
     "/home/kade/runeset/reynard/packages/core/src/__tests__/clients/api-client.test.ts": {
@@ -7579,18 +7034,7 @@
             "pattern_matched": "\\b(always|never|all|every|none|only|exclusively|completely|totally|absolutely|entirely|wholly)\\b",
             "word_position": 4252,
             "line_length": 5549,
-            "surrounding_words": [
-              "re",
-              "errors",
-              "some",
-              "error",
-              "it",
-              "should",
-              "support",
-              "all",
-              "export",
-              "types"
-            ]
+            "surrounding_words": ["re", "errors", "some", "error", "it", "should", "support", "all", "export", "types"]
           },
           "behavioral_indicators": [],
           "cultural_context": null,
@@ -7745,17 +7189,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:04.000660"
     },
     "/home/kade/runeset/reynard/packages/core/src/__tests__/utils/async.test.ts": {
@@ -8224,17 +7660,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:04.035144"
     },
     "/home/kade/runeset/reynard/packages/core/src/__tests__/utils/formatters.test.ts": {
@@ -8245,17 +7673,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:04.100515"
     },
     "/home/kade/runeset/reynard/packages/core/src/__tests__/composables/useMediaQuery.breakpoints.test.ts": {
@@ -8266,17 +7686,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:04.101150"
     },
     "/home/kade/runeset/reynard/packages/core/src/__tests__/composables/useMediaQuery.preferences.test.ts": {
@@ -8287,17 +7699,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:04.111476"
     },
     "/home/kade/runeset/reynard/packages/core/src/__tests__/utils/validation.test.ts": {
@@ -8515,17 +7919,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:04.191379"
     },
     "/home/kade/runeset/reynard/packages/core/src/__tests__/composables/useNotifications.test.ts": {
@@ -8795,18 +8191,7 @@
             "pattern_matched": "\\b(always|never|all|every|none|only|exclusively|completely|totally|absolutely|entirely|wholly)\\b",
             "word_position": 321,
             "line_length": 2166,
-            "surrounding_words": [
-              "false",
-              "try",
-              "const",
-              "parsed",
-              "new",
-              "url",
-              "url",
-              "only",
-              "allow",
-              "http"
-            ]
+            "surrounding_words": ["false", "try", "const", "parsed", "new", "url", "url", "only", "allow", "http"]
           },
           "behavioral_indicators": [],
           "cultural_context": null,
@@ -8872,17 +8257,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:04.268388"
     },
     "/home/kade/runeset/reynard/packages/core/src/__tests__/modules/notifications.test.ts": {
@@ -8944,18 +8321,7 @@
             "pattern_matched": "\\b(always|never|all|every|none|only|exclusively|completely|totally|absolutely|entirely|wholly)\\b",
             "word_position": 4001,
             "line_length": 8932,
-            "surrounding_words": [
-              "group",
-              "a",
-              "tobe",
-              "true",
-              "it",
-              "should",
-              "clear",
-              "all",
-              "notifications",
-              "when"
-            ]
+            "surrounding_words": ["group", "a", "tobe", "true", "it", "should", "clear", "all", "notifications", "when"]
           },
           "behavioral_indicators": [],
           "cultural_context": null,
@@ -9031,17 +8397,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:04.377229"
     },
     "/home/kade/runeset/reynard/packages/core/src/security/input-validation/html.ts": {
@@ -9052,17 +8410,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:04.378977"
     },
     "/home/kade/runeset/reynard/packages/core/src/security/input-validation/password.ts": {
@@ -9073,17 +8423,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:04.400436"
     },
     "/home/kade/runeset/reynard/packages/core/src/security/input-validation/general.ts": {
@@ -9179,18 +8521,7 @@
             "pattern_matched": "\\b(always|never|all|every|none|only|exclusively|completely|totally|absolutely|entirely|wholly)\\b",
             "word_position": 1759,
             "line_length": 3944,
-            "surrounding_words": [
-              "ps1",
-              "const",
-              "parts",
-              "input",
-              "split",
-              "only",
-              "check",
-              "if",
-              "it",
-              "looks"
-            ]
+            "surrounding_words": ["ps1", "const", "parts", "input", "split", "only", "check", "if", "it", "looks"]
           },
           "behavioral_indicators": [],
           "cultural_context": null,
@@ -9222,17 +8553,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:04.408068"
     },
     "/home/kade/runeset/reynard/packages/core/src/security/crypto/hashing.ts": {
@@ -9243,17 +8566,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:04.411774"
     },
     "/home/kade/runeset/reynard/packages/core/src/security/crypto/index.ts": {
@@ -9322,17 +8637,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:04.413961"
     },
     "/home/kade/runeset/reynard/packages/core/tsconfig.declarations.json": {
@@ -9343,17 +8650,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:04.417886"
     },
     "/home/kade/runeset/reynard/packages/core/src/security/crypto/tokens.ts": {
@@ -9364,17 +8663,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:04.421192"
     },
     "/home/kade/runeset/reynard/packages/core/src/__tests__/doc-tests.test.tsx": {
@@ -9402,18 +8693,7 @@
             "pattern_matched": "\\b(inferior|outdated|obsolete|archaic|primitive|basic|simple|limited|restricted|constrained)\\b",
             "word_position": 349,
             "line_length": 1973,
-            "surrounding_words": [
-              "lidjs",
-              "testing",
-              "library",
-              "for",
-              "now",
-              "we",
-              "will",
-              "use",
-              "a",
-              "simple"
-            ]
+            "surrounding_words": ["lidjs", "testing", "library", "for", "now", "we", "will", "use", "a", "simple"]
           },
           "behavioral_indicators": [],
           "cultural_context": null,
@@ -9477,17 +8757,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:04.430946"
     },
     "/home/kade/runeset/reynard/packages/core/package.json": {
@@ -9498,17 +8770,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:04.436230"
     },
     "/home/kade/runeset/reynard/packages/core/.vitest-reports/global-report.json": {
@@ -9577,17 +8841,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:04.458356"
     },
     "/home/kade/runeset/reynard/packages/core/tsconfig.build.json": {
@@ -9598,17 +8854,9 @@
       "behavioral_humility": 0.0,
       "cultural_adaptation": 0.0,
       "findings": [],
-      "recommendations": [
-        "Focus on sincere and modest expression",
-        "Acknowledge limitations and uncertainties"
-      ],
-      "improvement_areas": [
-        "Honesty and humility in communication",
-        "Intellectual humility and openness"
-      ],
-      "strengths": [
-        "Maintains good balance of confidence and humility"
-      ],
+      "recommendations": ["Focus on sincere and modest expression", "Acknowledge limitations and uncertainties"],
+      "improvement_areas": ["Honesty and humility in communication", "Intellectual humility and openness"],
+      "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:04.460663"
     }
   }

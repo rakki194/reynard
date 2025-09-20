@@ -26,10 +26,7 @@
       "style": "foundation",
       "generation": 1,
       "fitness": 0.0,
-      "parents": [
-        "permanent-release-manager-success-advisor-8",
-        "permanent-release-manager-success-advisor-8"
-      ]
+      "parents": ["permanent-release-manager-success-advisor-8", "permanent-release-manager-success-advisor-8"]
     },
     {
       "id": "agent_000",

@@ -20,7 +20,7 @@ IS_RELOAD_MODE = os.environ.get("UVICORN_RELOAD_PROCESS") == "1"
 class ReynardGatekeeperConfig:
     """Configuration for Gatekeeper authentication system in Reynard."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         # Token configuration - use secure persistent secret key
         self.secret_key = get_jwt_secret_key()
         self.algorithm = get_jwt_algorithm()
@@ -62,7 +62,7 @@ class ReynardGatekeeperConfig:
             audience=self.audience,
         )
 
-    def get_user_backend(self):
+    def get_user_backend(self) -> MemoryBackend | PostgreSQLBackend | SQLiteBackend:
         """Get the appropriate user backend based on configuration."""
         if IS_RELOAD_MODE or self.use_memory_backend:
             # Use memory backend for development/reload mode
@@ -134,7 +134,7 @@ async def initialize_gatekeeper() -> AuthManager:
         raise
 
 
-async def shutdown_gatekeeper():
+async def shutdown_gatekeeper() -> None:
     """Shutdown Gatekeeper and cleanup resources."""
     global _auth_manager
     if _auth_manager is not None:

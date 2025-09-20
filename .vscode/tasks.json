@@ -477,28 +477,7 @@
       "label": "🔄 Start Queue-Based Watcher",
       "type": "shell",
       "command": "pnpm",
-      "args": [
-        "--filter",
-        "reynard-queue-watcher",
-        "watch",
-        "-d",
-        "../../packages",
-        "../../backend",
-        "../../services",
-        "../../docs",
-        "../../.cursor/docs",
-        "../../.cursor/prompts",
-        "../../.cursor/rules",
-        "../../examples",
-        "../../templates",
-        "../../e2e",
-        "../../scripts",
-        "../../services",
-        "../../nginx",
-        "../../todos",
-        "../../data",
-        "../../fenrir"
-      ],
+      "args": ["--filter", "reynard-queue-watcher", "watch"],
       "group": "build",
       "presentation": {
         "echo": true,
@@ -510,34 +489,13 @@
       },
       "isBackground": true,
       "problemMatcher": [],
-      "detail": "Start queue-based watcher with perfect file processing sequencing - includes all project directories from architecture"
+      "detail": "Start queue-based watcher with perfect file processing sequencing - uses project architecture for directory discovery"
     },
     {
       "label": "🔄 Auto-Start Queue-Based Watcher",
       "type": "shell",
       "command": "pnpm",
-      "args": [
-        "--filter",
-        "reynard-queue-watcher",
-        "watch",
-        "-d",
-        "../../packages",
-        "../../backend",
-        "../../services",
-        "../../docs",
-        "../../.cursor/docs",
-        "../../.cursor/prompts",
-        "../../.cursor/rules",
-        "../../examples",
-        "../../templates",
-        "../../e2e",
-        "../../scripts",
-        "../../services",
-        "../../nginx",
-        "../../todos",
-        "../../data",
-        "../../fenrir"
-      ],
+      "args": ["--filter", "reynard-queue-watcher", "watch"],
       "group": "build",
       "presentation": {
         "echo": true,
@@ -552,7 +510,7 @@
         "runOn": "folderOpen"
       },
       "problemMatcher": [],
-      "detail": "Automatically start queue-based watcher when workspace opens - includes all project directories from architecture"
+      "detail": "Automatically start queue-based watcher when workspace opens - uses project architecture for directory discovery"
     },
     {
       "label": "🧪 Test Markdown Validation",

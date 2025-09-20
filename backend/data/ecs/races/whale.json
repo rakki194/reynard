@@ -1,0 +1,30 @@
+{
+  "name": "whale",
+  "category": "aquatic_and_marine",
+  "description": "Majestic marine giants known for their wisdom and depth",
+  "traits": [
+    "wise",
+    "majestic",
+    "deep",
+    "ancient",
+    "powerful"
+  ],
+  "names": [
+    "Balaena",
+    "Megaptera",
+    "Physeter",
+    "Orcinus",
+    "Humpback",
+    "Sperm"
+  ],
+  "generation_numbers": [
+    7,
+    14,
+    21,
+    28,
+    35,
+    42,
+    49
+  ],
+  "emoji": "🐋"
+}

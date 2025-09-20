@@ -9,7 +9,7 @@ from datetime import datetime
 from fastapi import HTTPException, status, Depends
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
-from .jwt_utils import create_access_token, create_refresh_token, verify_token
+from .jwt_utils import create_access_token, create_refresh_token, verify_token_sync
 from .password_utils import verify_password
 from .user_models import (
     AuthResponse,
@@ -220,7 +220,7 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
         HTTPException: If token is invalid
     """
     token = credentials.credentials
-    payload = verify_token(token, "access")
+    payload = verify_token_sync(token, "access")
 
     if not payload:
         raise HTTPException(

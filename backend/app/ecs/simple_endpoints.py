@@ -395,3 +395,107 @@ async def get_spirit_generation_numbers(spirit: str) -> dict[str, Any]:
             status_code=500,
             detail=f"Failed to load generation numbers for spirit {spirit}",
         ) from e
+
+
+@router.get("/naming/config", response_model=None)
+async def get_naming_config() -> dict[str, Any]:
+    """Get the complete naming configuration."""
+    try:
+        config_file = _get_races_directory().parent / "naming_config.json"
+
+        if not config_file.exists():
+            raise HTTPException(
+                status_code=404, detail="Naming config file not found"
+            )
+
+        with open(config_file, "r", encoding="utf-8") as f:
+            data: dict[str, Any] = json.load(f)
+            return data
+    except json.JSONDecodeError as e:
+        logger.error("Error parsing JSON from naming config file: %s", e)
+        raise HTTPException(
+            status_code=500, detail="Invalid JSON in naming config file"
+        ) from e
+    except Exception as e:
+        logger.error("Error loading naming config: %s", e)
+        raise HTTPException(
+            status_code=500, detail="Failed to load naming config"
+        ) from e
+
+
+@router.get("/naming/config/spirits", response_model=None)
+async def get_naming_spirits() -> dict[str, Any]:
+    """Get all available spirits with their configurations."""
+    try:
+        config_file = _get_races_directory().parent / "naming_config.json"
+
+        if not config_file.exists():
+            raise HTTPException(
+                status_code=404, detail="Naming config file not found"
+            )
+
+        with open(config_file, "r", encoding="utf-8") as f:
+            data: dict[str, Any] = json.load(f)
+            return {"spirits": data.get("spirits", {})}
+    except json.JSONDecodeError as e:
+        logger.error("Error parsing JSON from naming config file: %s", e)
+        raise HTTPException(
+            status_code=500, detail="Invalid JSON in naming config file"
+        ) from e
+    except Exception as e:
+        logger.error("Error loading naming spirits: %s", e)
+        raise HTTPException(
+            status_code=500, detail="Failed to load naming spirits"
+        ) from e
+
+
+@router.get("/naming/config/styles", response_model=None)
+async def get_naming_styles() -> dict[str, Any]:
+    """Get all available naming styles."""
+    try:
+        config_file = _get_races_directory().parent / "naming_config.json"
+
+        if not config_file.exists():
+            raise HTTPException(
+                status_code=404, detail="Naming config file not found"
+            )
+
+        with open(config_file, "r", encoding="utf-8") as f:
+            data: dict[str, Any] = json.load(f)
+            return {"styles": data.get("styles", {})}
+    except json.JSONDecodeError as e:
+        logger.error("Error parsing JSON from naming config file: %s", e)
+        raise HTTPException(
+            status_code=500, detail="Invalid JSON in naming config file"
+        ) from e
+    except Exception as e:
+        logger.error("Error loading naming styles: %s", e)
+        raise HTTPException(
+            status_code=500, detail="Failed to load naming styles"
+        ) from e
+
+
+@router.get("/naming/config/schemes", response_model=None)
+async def get_naming_schemes() -> dict[str, Any]:
+    """Get all available naming schemes."""
+    try:
+        config_file = _get_races_directory().parent / "naming_config.json"
+
+        if not config_file.exists():
+            raise HTTPException(
+                status_code=404, detail="Naming config file not found"
+            )
+
+        with open(config_file, "r", encoding="utf-8") as f:
+            data: dict[str, Any] = json.load(f)
+            return {"schemes": data.get("schemes", {})}
+    except json.JSONDecodeError as e:
+        logger.error("Error parsing JSON from naming config file: %s", e)
+        raise HTTPException(
+            status_code=500, detail="Invalid JSON in naming config file"
+        ) from e
+    except Exception as e:
+        logger.error("Error loading naming schemes: %s", e)
+        raise HTTPException(
+            status_code=500, detail="Failed to load naming schemes"
+        ) from e

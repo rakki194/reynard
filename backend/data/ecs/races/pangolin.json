@@ -1,0 +1,30 @@
+{
+  "name": "pangolin",
+  "category": "exotic_and_unique",
+  "description": "Scaly anteaters known for their unique armor and rarity",
+  "traits": [
+    "unique",
+    "armored",
+    "scaled",
+    "rare",
+    "endangered"
+  ],
+  "names": [
+    "Manis",
+    "Scaly",
+    "Anteater",
+    "Armored",
+    "Unique",
+    "Rare"
+  ],
+  "generation_numbers": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "emoji": "🦎"
+}

@@ -1,5 +1,13 @@
 packages:
-  - packages/*
+  - packages/core/*
+  - packages/ui/*
+  - packages/ai/*
+  - packages/media/*
+  - packages/algorithms/*
+  - packages/docs/*
+  - packages/data/*
+  - packages/services/*
+  - packages/dev-tools/*
   - templates/*
   - examples/*
 

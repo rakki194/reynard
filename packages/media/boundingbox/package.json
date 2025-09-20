@@ -1,0 +1,55 @@
+{
+  "name": "reynard-boundingbox",
+  "version": "0.2.0",
+  "description": "Reusable bounding box and annotation editing components for Reynard",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./styles": "./dist/styles.css"
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc && vite build",
+    "dev": "vite build --watch",
+    "test": "source ../../../vitest.env.global && VITEST_AGENT_ID=boundingbox ../../../scripts/testing/vitest-global-queue.sh run boundingbox",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest --watch",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix"
+  },
+  "keywords": ["reynard", "bounding-box", "annotation", "image-editing", "solidjs", "fabricjs"],
+  "author": "Balazs Horvath",
+  "license": "MIT",
+  "dependencies": {
+    "solid-js": "1.9.9",
+    "fabric": "6.7.1",
+    "reynard-composables": "workspace:*",
+    "reynard-floating-panel": "workspace:*",
+    "reynard-themes": "workspace:*"
+  },
+  "devDependencies": {
+    "@solidjs/testing-library": "0.8.10",
+    "@types/fabric": "5.3.10",
+    "@typescript-eslint/eslint-plugin": "8.43.0",
+    "@typescript-eslint/parser": "8.43.0",
+    "eslint": "9.35.0",
+    "happy-dom": "^18.0.1",
+    "reynard-testing": "workspace:*",
+    "typescript": "5.9.2",
+    "vite": "7.1.6",
+    "vite-plugin-solid": "2.11.8",
+    "vitest": "3.2.4"
+  },
+  "peerDependencies": {
+    "solid-js": "1.9.9"
+  }
+}

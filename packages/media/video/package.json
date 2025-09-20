@@ -1,0 +1,68 @@
+{
+  "name": "reynard-video",
+  "version": "0.2.0",
+  "description": "Video processing and playback components for Reynard applications",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./components": {
+      "types": "./dist/components/index.d.ts",
+      "import": "./dist/components/index.js"
+    },
+    "./composables": {
+      "types": "./dist/composables/index.d.ts",
+      "import": "./dist/composables/index.js"
+    },
+    "./types": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/types/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
+    "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
+    "test": "source ../../../vitest.env.global && VITEST_AGENT_ID=video-package ../../../scripts/testing/vitest-global-queue.sh run video-package",
+    "test:coverage": "vitest run --coverage",
+    "test:coverage:check": "vitest run --coverage --reporter=verbose",
+    "test:docs": "vitest run --config vitest.docs.config.ts",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "keywords": ["reynard", "video", "media", "processing", "playback", "player", "thumbnail"],
+  "author": "Reynard Framework",
+  "license": "MIT",
+  "dependencies": {
+    "solid-js": "1.9.9",
+    "reynard-core": "workspace:*",
+    "reynard-components-core": "workspace:*",
+    "reynard-components-charts": "workspace:*",
+    "reynard-components-dashboard": "workspace:*",
+    "reynard-components-themes": "workspace:*",
+    "reynard-components-utils": "workspace:*",
+    "reynard-file-processing": "workspace:*"
+  },
+  "devDependencies": {
+    "@solidjs/testing-library": "0.8.10",
+    "@types/node": "24.5.2",
+    "@vitest/coverage-v8": "3.2.4",
+    "@vitest/ui": "3.2.4",
+    "happy-dom": "^18.0.1",
+    "reynard-testing": "workspace:*",
+    "typescript": "5.9.2",
+    "vite": "7.1.6",
+    "vite-plugin-solid": "2.11.8",
+    "vitest": "3.2.4"
+  },
+  "peerDependencies": {
+    "solid-js": "1.9.9"
+  }
+}

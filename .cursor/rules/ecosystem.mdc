@@ -232,19 +232,63 @@ Ready to outfox any challenge in the code jungle!
 
 ```text
 reynard/                          # Monorepo root
-├── packages/                     # All source code lives here
-│   ├── core/                    # Core utilities and modules
-│   │   ├── src/                 # Package-specific source code
-│   │   │   ├── __tests__/       # Package tests
-│   │   │   ├── components/      # Package components
-│   │   │   └── utils/           # Package utilities
-│   │   └── package.json
-│   ├── components/              # UI component library
-│   │   ├── src/                 # Package-specific source code
-│   │   │   ├── __tests__/       # Package tests
-│   │   │   └── components/      # UI components
-│   │   └── package.json
-│   └── [other-packages]/        # Each package is self-contained
+├── packages/                     # All source code lives here (semantically categorized)
+│   ├── ai/                      # AI & Machine Learning packages
+│   │   ├── ai-shared/           # Shared AI utilities and types
+│   │   ├── annotating-core/     # Core annotation functionality
+│   │   ├── caption/             # Image captioning functionality
+│   │   ├── comfy/               # ComfyUI integration
+│   │   ├── model-management/    # AI model management
+│   │   ├── multimodal/          # Multimodal AI capabilities
+│   │   ├── nlweb/               # Natural language web processing
+│   │   ├── rag/                 # Retrieval-Augmented Generation
+│   │   └── tool-calling/        # AI tool calling utilities
+│   ├── algorithms/              # Algorithm implementations
+│   │   └── algorithms/          # Algorithm implementations and data structures
+│   ├── core/                    # Core framework packages
+│   │   ├── composables/         # Reusable Vue composables
+│   │   ├── config/              # Configuration management
+│   │   ├── connection/          # WebSocket and real-time communication
+│   │   ├── core/                # Core utilities, types, and shared functionality
+│   │   ├── features/            # Feature flags and conditional functionality
+│   │   ├── i18n/                # Internationalization and localization
+│   │   ├── settings/            # User settings and preferences
+│   │   ├── testing/             # Testing utilities and configurations
+│   │   └── validation/          # Data validation and schema management
+│   ├── data/                    # Data processing packages
+│   │   ├── file-processing/     # File processing utilities
+│   │   ├── repository-core/     # Core repository functionality
+│   │   ├── repository-search/   # Search functionality
+│   │   ├── scraping/            # Web scraping utilities
+│   │   └── unified-repository/  # Unified data repository
+│   ├── dev-tools/               # Development tools
+│   │   ├── adr-system/          # Architecture Decision Records
+│   │   ├── code-quality/        # Code quality tools and utilities
+│   │   ├── git-automation/      # Git workflow automation
+│   │   └── project-architecture/ # Project architecture tools
+│   ├── docs/                    # Documentation packages
+│   │   ├── diagram-generator/   # Diagram generation utilities
+│   │   ├── docs-components/     # Documentation components
+│   │   └── docs-generator/      # Documentation generation
+│   ├── media/                   # Media processing packages
+│   │   ├── 3d/                  # 3D rendering and WebGL utilities
+│   │   ├── audio/               # Audio processing and playback
+│   │   ├── gallery/             # Image gallery and media management
+│   │   ├── image/               # Image processing and manipulation
+│   │   └── video/               # Video processing and playback
+│   ├── services/                # Service packages
+│   │   ├── api-client/          # API client utilities
+│   │   ├── auth/                # Authentication and authorization
+│   │   ├── chat/                # Chat functionality
+│   │   └── email/               # Email services
+│   └── ui/                      # UI & Components packages
+│       ├── animation/           # Animation utilities
+│       ├── charts/              # Chart and data visualization
+│       ├── components-core/     # Core UI component library
+│       ├── dashboard/           # Dashboard layout and functionality
+│       ├── floating-panel/      # Floating panel and overlay components
+│       ├── themes/              # Theme system and styling
+│       └── ui/                  # UI utilities and layout components
 ├── examples/                    # Example applications
 ├── templates/                   # Project templates
 ├── docs/                        # Documentation

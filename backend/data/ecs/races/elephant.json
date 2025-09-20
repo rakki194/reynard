@@ -1,0 +1,30 @@
+{
+  "name": "elephant",
+  "category": "bears_and_large_mammals",
+  "description": "Wise giants known for their memory and family bonds",
+  "traits": [
+    "wise",
+    "memory",
+    "family",
+    "gentle",
+    "ancient"
+  ],
+  "names": [
+    "Elephas",
+    "Loxodonta",
+    "Tusker",
+    "Memory",
+    "Wise",
+    "Gentle"
+  ],
+  "generation_numbers": [
+    15,
+    30,
+    45,
+    60,
+    75,
+    90,
+    105
+  ],
+  "emoji": "🐘"
+}

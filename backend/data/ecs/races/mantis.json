@@ -1,0 +1,30 @@
+{
+  "name": "mantis",
+  "category": "insects_and_arachnids",
+  "description": "Praying insects known for their patience and precision strikes",
+  "traits": [
+    "patient",
+    "precise",
+    "praying",
+    "stealthy",
+    "focused"
+  ],
+  "names": [
+    "Mantis",
+    "Praying",
+    "Preying",
+    "Stealth",
+    "Patience",
+    "Strike"
+  ],
+  "generation_numbers": [
+    4,
+    8,
+    12,
+    16,
+    20,
+    24,
+    28
+  ],
+  "emoji": "🦗"
+}

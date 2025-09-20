@@ -1,17 +1,9 @@
 {
-    "enabled": true,
-    "severity_threshold": "medium",
-    "file_extensions": [".md", ".txt", ".py", ".js", ".ts", ".tsx", ".jsx", ".json"],
-    "exclude_patterns": [
-        "node_modules/",
-        ".git/",
-        "dist/",
-        "build/",
-        "coverage/",
-        "*.min.js",
-        "*.bundle.js"
-    ],
-    "auto_fix": false,
-    "pre_commit_hook": true,
-    "ci_integration": true
+  "enabled": true,
+  "severity_threshold": "medium",
+  "file_extensions": [".md", ".txt", ".py", ".js", ".ts", ".tsx", ".jsx", ".json"],
+  "exclude_patterns": ["node_modules/", ".git/", "dist/", "build/", "coverage/", "*.min.js", "*.bundle.js"],
+  "auto_fix": false,
+  "pre_commit_hook": true,
+  "ci_integration": true
 }

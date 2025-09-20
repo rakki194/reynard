@@ -1,0 +1,66 @@
+{
+  "name": "reynard-project-architecture",
+  "version": "0.1.0",
+  "description": "🦊 Centralized project structure definition with semantic and syntactic pathing",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "pnpm clean && vite build && tsc -p tsconfig.build.json --declaration --emitDeclarationOnly && pnpm postbuild",
+    "clean": "pnpm clean:all",
+    "clean:all": "rm -rf dist && rm -f *.tsbuildinfo && find . -name '*.js' -not -path './node_modules/*' -not -path './dist/*' -delete && find . -name '*.d.ts' -not -path './node_modules/*' -not -path './dist/*' -delete && find . -name '*.js.map' -not -path './node_modules/*' -not -path './dist/*' -delete && find . -name '*.d.ts.map' -not -path './node_modules/*' -not -path './dist/*' -delete",
+    "postbuild": "chmod +x dist/index.js",
+    "dev": "vite build --watch",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "type-check": "tsc --noEmit",
+    "validate": "pnpm type-check && pnpm lint && pnpm test:run",
+    "report": "node -e \"import('./dist/index.js').then(m => console.log(m.generateProjectStructureReport()))\"",
+    "health-check": "node -e \"import('./dist/index.js').then(m => { const validation = m.validateProjectStructure(); console.log(validation.valid ? '✅ Project structure is valid' : '❌ Issues found:', validation.errors); })\"",
+    "generate-vscode": "node -e \"import('./dist/index.js').then(m => { const config = m.generateVSCodeTasksConfig(); console.log(JSON.stringify(config, null, 2)); })\"",
+    "analyze": "node -e \"import('./dist/index.js').then(m => { const result = m.queryDirectories({ category: 'source', importance: 'critical' }); console.log('Critical source directories:', result.directories.map(d => d.name)); })\""
+  },
+  "keywords": [
+    "reynard",
+    "project-architecture",
+    "project-structure",
+    "pathing",
+    "semantic",
+    "syntactic",
+    "monorepo",
+    "typescript"
+  ],
+  "author": "Reynard Framework",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "24.5.2",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.5",
+    "vitest": "^2.1.8"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/runeset/reynard.git",
+    "directory": "packages/project-architecture"
+  },
+  "bugs": {
+    "url": "https://github.com/runeset/reynard/issues"
+  },
+  "homepage": "https://github.com/runeset/reynard#readme"
+}

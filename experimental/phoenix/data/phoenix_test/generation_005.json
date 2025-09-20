@@ -113,10 +113,7 @@
       "style": "foundation",
       "generation": 1,
       "fitness": 0.0,
-      "parents": [
-        "agent_000",
-        "offspring_agent_012_offspring_agent_006_agent_012_20250920_112229_20250920_112229"
-      ]
+      "parents": ["agent_000", "offspring_agent_012_offspring_agent_006_agent_012_20250920_112229_20250920_112229"]
     },
     {
       "id": "offspring_offspring_offspring_agent_000_agent_012_20250920_112229_offspring_offspring_agent_006_agent_012_20250920_112229_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229_offspring_offspring_offspring_agent_006_agent_012_20250920_112229_permanent-release-manager-success-advisor-8_20250920_112229_offspring_agent_012_offspring_agent_006_agent_012_20250920_112229_20250920_112229_20250920_112229_20250920_112229",

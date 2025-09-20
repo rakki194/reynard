@@ -217,6 +217,16 @@ async def lifespan(app: FastAPI):
         startup_priority=90,  # High priority for agent simulation
     )
 
+    # Register AI email response service (after Ollama is initialized)
+    registry.register_service(
+        "ai_email_response",
+        {"enabled": True},  # Simple config for now
+        _init_ai_email_response_service,
+        _shutdown_ai_email_response_service,
+        _health_check_ai_email_response_service,
+        startup_priority=15,  # Lower priority than Ollama (25) to ensure Ollama starts first
+    )
+
     # Initialize all services
     logger.info("🚀 Starting Reynard API services...")
     start_time = time.time()
@@ -361,4 +371,43 @@ async def _health_check_search_service() -> bool:
             return False
     except Exception as e:
         logger.error(f"❌ Search service health check error: {e}")
+        return False
+
+
+# AI Email Response Service Functions
+async def _init_ai_email_response_service(config: dict[str, Any]) -> bool:
+    """Initialize the AI email response service."""
+    try:
+        from app.services.ai_email_response_service import initialize_ai_email_response_service
+
+        success = await initialize_ai_email_response_service()
+        if success:
+            logger.info("✅ AI email response service initialized successfully")
+        else:
+            logger.warning("⚠️ AI email response service initialization failed")
+        return success
+    except Exception as e:
+        logger.error(f"❌ AI email response service initialization error: {e}")
+        return False
+
+
+async def _shutdown_ai_email_response_service() -> None:
+    """Shutdown the AI email response service."""
+    try:
+        from app.services.ai_email_response_service import shutdown_ai_email_response_service
+
+        await shutdown_ai_email_response_service()
+        logger.info("✅ AI email response service shutdown successfully")
+    except Exception as e:
+        logger.error(f"❌ AI email response service shutdown error: {e}")
+
+
+async def _health_check_ai_email_response_service() -> bool:
+    """Health check for the AI email response service."""
+    try:
+        from app.services.ai_email_response_service import health_check_ai_email_response_service
+
+        return await health_check_ai_email_response_service()
+    except Exception as e:
+        logger.error(f"❌ AI email response service health check error: {e}")
         return False

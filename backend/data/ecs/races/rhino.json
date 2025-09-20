@@ -1,0 +1,30 @@
+{
+  "name": "rhino",
+  "category": "bears_and_large_mammals",
+  "description": "Armored giants known for their strength and territorial nature",
+  "traits": [
+    "armored",
+    "strong",
+    "territorial",
+    "endangered",
+    "powerful"
+  ],
+  "names": [
+    "Rhinoceros",
+    "Horn",
+    "Armored",
+    "Massive",
+    "Ancient",
+    "Powerful"
+  ],
+  "generation_numbers": [
+    8,
+    16,
+    24,
+    32,
+    40,
+    48,
+    56
+  ],
+  "emoji": "🦏"
+}

@@ -35,10 +35,7 @@
       "style": "foundation",
       "generation": 1,
       "fitness": 0.6910219662695262,
-      "parents": [
-        "permanent-release-manager-success-advisor-8",
-        "permanent-release-manager-success-advisor-8"
-      ]
+      "parents": ["permanent-release-manager-success-advisor-8", "permanent-release-manager-success-advisor-8"]
     },
     {
       "id": "permanent-release-manager-success-advisor-8",
@@ -56,10 +53,7 @@
       "style": "foundation",
       "generation": 1,
       "fitness": 0.0,
-      "parents": [
-        "agent_012",
-        "agent_009"
-      ]
+      "parents": ["agent_012", "agent_009"]
     },
     {
       "id": "offspring_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_agent_015_20250920_112229",
@@ -80,10 +74,7 @@
       "style": "foundation",
       "generation": 1,
       "fitness": 0.0,
-      "parents": [
-        "agent_006",
-        "agent_009"
-      ]
+      "parents": ["agent_006", "agent_009"]
     },
     {
       "id": "offspring_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_agent_017_20250920_112229",
@@ -104,10 +95,7 @@
       "style": "scientific",
       "generation": 1,
       "fitness": 0.0,
-      "parents": [
-        "agent_000",
-        "agent_015"
-      ]
+      "parents": ["agent_000", "agent_015"]
     },
     {
       "id": "offspring_agent_014_agent_015_20250920_112229",
@@ -116,10 +104,7 @@
       "style": "cyberpunk",
       "generation": 1,
       "fitness": 0.0,
-      "parents": [
-        "agent_014",
-        "agent_015"
-      ]
+      "parents": ["agent_014", "agent_015"]
     },
     {
       "id": "offspring_agent_001_agent_014_20250920_112229",
@@ -128,10 +113,7 @@
       "style": "exo",
       "generation": 1,
       "fitness": 0.0,
-      "parents": [
-        "agent_001",
-        "agent_014"
-      ]
+      "parents": ["agent_001", "agent_014"]
     },
     {
       "id": "offspring_agent_000_agent_008_20250920_112229",
@@ -140,10 +122,7 @@
       "style": "foundation",
       "generation": 1,
       "fitness": 0.0,
-      "parents": [
-        "agent_000",
-        "agent_008"
-      ]
+      "parents": ["agent_000", "agent_008"]
     },
     {
       "id": "offspring_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_agent_001_20250920_112229",
@@ -164,10 +143,7 @@
       "style": "foundation",
       "generation": 1,
       "fitness": 0.0,
-      "parents": [
-        "agent_009",
-        "agent_012"
-      ]
+      "parents": ["agent_009", "agent_012"]
     },
     {
       "id": "offspring_agent_006_agent_012_20250920_112229",
@@ -176,10 +152,7 @@
       "style": "mythological",
       "generation": 1,
       "fitness": 0.0,
-      "parents": [
-        "agent_006",
-        "agent_012"
-      ]
+      "parents": ["agent_006", "agent_012"]
     },
     {
       "id": "offspring_agent_016_agent_006_20250920_112229",
@@ -188,10 +161,7 @@
       "style": "cyberpunk",
       "generation": 1,
       "fitness": 0.0,
-      "parents": [
-        "agent_016",
-        "agent_006"
-      ]
+      "parents": ["agent_016", "agent_006"]
     },
     {
       "id": "offspring_agent_000_agent_012_20250920_112229",
@@ -200,10 +170,7 @@
       "style": "foundation",
       "generation": 1,
       "fitness": 0.0,
-      "parents": [
-        "agent_000",
-        "agent_012"
-      ]
+      "parents": ["agent_000", "agent_012"]
     },
     {
       "id": "offspring_agent_009_permanent-release-manager-success-advisor-8_20250920_112229",
@@ -212,10 +179,7 @@
       "style": "foundation",
       "generation": 1,
       "fitness": 0.0,
-      "parents": [
-        "agent_009",
-        "permanent-release-manager-success-advisor-8"
-      ]
+      "parents": ["agent_009", "permanent-release-manager-success-advisor-8"]
     },
     {
       "id": "offspring_agent_006_agent_012_20250920_112229",
@@ -224,10 +188,7 @@
       "style": "mythological",
       "generation": 1,
       "fitness": 0.0,
-      "parents": [
-        "agent_006",
-        "agent_012"
-      ]
+      "parents": ["agent_006", "agent_012"]
     },
     {
       "id": "offspring_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_agent_003_20250920_112229",

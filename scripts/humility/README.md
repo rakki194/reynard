@@ -135,9 +135,11 @@ python3 enhanced-humility-detector.py . --config config.json
 ### Core Components
 
 #### EnhancedHumilityDetector
+
 The main detection engine that orchestrates all analysis modules and combines their results.
 
 #### Analyzers
+
 - **PatternAnalyzer**: Enhanced regex-based pattern matching
 - **SentimentAnalyzer**: Emotional analysis for boastful sentiment
 - **HexacoAnalyzer**: HEXACO personality model integration
@@ -146,6 +148,7 @@ The main detection engine that orchestrates all analysis modules and combines th
 - **TransformerAnalyzer**: Placeholder for transformer model integration
 
 #### Utilities
+
 - **TextProcessor**: Advanced text preprocessing and feature extraction
 - **CulturalAdapter**: Cultural context adaptation
 - **MetricsCalculator**: Performance metrics calculation
@@ -154,11 +157,13 @@ The main detection engine that orchestrates all analysis modules and combines th
 ## Configuration Options
 
 ### Detection Settings
+
 - `min_confidence_threshold`: Minimum confidence for findings (0.0-1.0)
 - `min_severity_threshold`: Minimum severity level to report
 - `max_findings_per_file`: Maximum findings per file
 
 ### Feature Toggles
+
 - `use_transformer_models`: Enable transformer model analysis
 - `use_hexaco_assessment`: Enable HEXACO personality assessment
 - `use_epistemic_humility`: Enable epistemic humility evaluation
@@ -166,12 +171,14 @@ The main detection engine that orchestrates all analysis modules and combines th
 - `use_sentiment_analysis`: Enable sentiment analysis
 
 ### Advanced Features
+
 - `enable_real_time_monitoring`: Real-time analysis monitoring
 - `enable_trend_analysis`: Trend analysis over time
 - `enable_cultural_adaptation`: Cultural context adaptation
 - `enable_explainable_ai`: Explainable AI features
 
 ### Performance Settings
+
 - `parallel_processing`: Enable parallel file processing
 - `max_workers`: Maximum worker threads
 - `cache_results`: Cache analysis results
@@ -180,15 +187,19 @@ The main detection engine that orchestrates all analysis modules and combines th
 ## Output Formats
 
 ### Text Report (Default)
+
 Human-readable format with findings, recommendations, and metrics.
 
 ### JSON Report
+
 Machine-readable format for programmatic processing and integration.
 
 ### HTML Report
+
 Web-friendly format with styling and interactive elements.
 
 ### CSV Report
+
 Tabular format for spreadsheet analysis and data processing.
 
 ## Research Foundation
@@ -203,6 +214,7 @@ This enhanced detector is based on extensive research in:
 ## Future Enhancements
 
 ### Planned Features
+
 - **Transformer Model Integration**: Full BERT/RoBERTa implementation
 - **Real-time Monitoring**: Live analysis of streaming text
 - **Trend Analysis**: Historical analysis and trend detection
@@ -212,6 +224,7 @@ This enhanced detector is based on extensive research in:
 - **Plugin System**: Extensible architecture for custom analyzers
 
 ### Research Integration
+
 - **HumbleBench Integration**: Epistemic humility benchmarking
 - **Multimodal Analysis**: Voice, facial expression, and behavioral analysis
 - **Cross-lingual Support**: Multi-language humility detection
@@ -243,5 +256,4 @@ This enhanced detector builds upon research from:
 
 ---
 
-🦊 *whiskers twitch with strategic cunning* The Enhanced Humility Detector represents a significant advancement in automated humility assessment, combining cutting-edge research with practical implementation to promote more humble and effective communication in technology development.
-
+🦊 _whiskers twitch with strategic cunning_ The Enhanced Humility Detector represents a significant advancement in automated humility assessment, combining cutting-edge research with practical implementation to promote more humble and effective communication in technology development.

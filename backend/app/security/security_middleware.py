@@ -31,8 +31,8 @@ class SecurityMiddleware(BaseHTTPMiddleware):
     """
 
     def __init__(self, app: ASGIApp):
-        # Add search and RAG endpoints to exceptions
-        self.excluded_paths = ["/api/search", "/api/rag"]
+        # Add search, RAG, and AI email endpoints to exceptions
+        self.excluded_paths = ["/api/search", "/api/rag", "/api/email/ai"]
         super().__init__(app)
 
         # SQL injection patterns

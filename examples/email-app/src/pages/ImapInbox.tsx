@@ -1,81 +1,81 @@
 /**
  * IMAP Inbox Page for Email App
- * 
+ *
  * This page displays received emails from IMAP with agent integration.
  */
 
-import { createSignal, createEffect, For, Show } from 'solid-js'
-import { useImap } from 'reynard-email'
-import { Layout } from '../components/Layout'
+import { createSignal, createEffect, For, Show } from "solid-js";
+import { useImap } from "reynard-email";
+import { Layout } from "../components/Layout";
 
 export default function ImapInbox() {
-  const imap = useImap()
-  const [selectedEmail, setSelectedEmail] = createSignal<string | null>(null)
-  const [viewMode, setViewMode] = createSignal<'unread' | 'recent' | 'all'>('unread')
+  const imap = useImap();
+  const [selectedEmail, setSelectedEmail] = createSignal<string | null>(null);
+  const [viewMode, setViewMode] = createSignal<"unread" | "recent" | "all">("unread");
 
   // Auto-refresh status on mount
   createEffect(() => {
-    imap.refreshStatus()
-    imap.refreshSummary()
-  })
+    imap.refreshStatus();
+    imap.refreshSummary();
+  });
 
   // Get emails based on view mode
   const getEmails = () => {
     switch (viewMode()) {
-      case 'unread':
-        return imap.unreadEmails() || []
-      case 'recent':
-        return imap.recentEmails() || []
+      case "unread":
+        return imap.unreadEmails() || [];
+      case "recent":
+        return imap.recentEmails() || [];
       default:
-        return [...(imap.unreadEmails() || []), ...(imap.recentEmails() || [])]
+        return [...(imap.unreadEmails() || []), ...(imap.recentEmails() || [])];
     }
-  }
+  };
 
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return date.toLocaleString()
-  }
+    const date = new Date(dateString);
+    return date.toLocaleString();
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'received':
-        return 'text-blue-600'
-      case 'processed':
-        return 'text-green-600'
-      case 'replied':
-        return 'text-purple-600'
+      case "received":
+        return "text-blue-600";
+      case "processed":
+        return "text-green-600";
+      case "replied":
+        return "text-purple-600";
       default:
-        return 'text-gray-600'
+        return "text-gray-600";
     }
-  }
+  };
 
   const handleMarkAsRead = async (messageId: string) => {
-    const success = await imap.markAsRead(messageId)
+    const success = await imap.markAsRead(messageId);
     if (success) {
-      console.log('Email marked as read')
+      console.log("Email marked as read");
     }
-  }
+  };
 
   const handleMarkAsProcessed = async (messageId: string) => {
-    const success = await imap.markAsProcessed(messageId)
+    const success = await imap.markAsProcessed(messageId);
     if (success) {
-      console.log('Email marked as processed')
+      console.log("Email marked as processed");
     }
-  }
+  };
 
   const handleTestConnection = async () => {
-    const success = await imap.testConnection()
+    const success = await imap.testConnection();
     if (success) {
-      console.log('Connection test successful')
+      console.log("Connection test successful");
     }
-  }
+  };
 
   const handleStartMonitoring = async () => {
-    const success = await imap.startMonitoring(60)
+    const success = await imap.startMonitoring(60);
     if (success) {
-      console.log('Email monitoring started')
+      console.log("Email monitoring started");
     }
-  }
+  };
 
   return (
     <Layout>
@@ -104,10 +104,7 @@ export default function ImapInbox() {
               >
                 Start Monitoring
               </button>
-              <button
-                onClick={imap.stopMonitoring}
-                class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-              >
+              <button onClick={imap.stopMonitoring} class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
                 Stop Monitoring
               </button>
             </div>
@@ -117,10 +114,8 @@ export default function ImapInbox() {
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div class="p-4 bg-gray-50 rounded">
                 <h3 class="font-medium text-gray-900">Connection Status</h3>
-                <p class={`text-lg font-semibold ${
-                  imap.isConnected() ? 'text-green-600' : 'text-red-600'
-                }`}>
-                  {imap.status()?.status || 'Unknown'}
+                <p class={`text-lg font-semibold ${imap.isConnected() ? "text-green-600" : "text-red-600"}`}>
+                  {imap.status()?.status || "Unknown"}
                 </p>
               </div>
               <div class="p-4 bg-gray-50 rounded">
@@ -131,9 +126,7 @@ export default function ImapInbox() {
               </div>
               <div class="p-4 bg-gray-50 rounded">
                 <h3 class="font-medium text-gray-900">Mailbox</h3>
-                <p class="text-sm text-gray-600">
-                  {imap.status()?.config.mailbox}
-                </p>
+                <p class="text-sm text-gray-600">{imap.status()?.config.mailbox}</p>
               </div>
             </div>
           </Show>
@@ -151,27 +144,19 @@ export default function ImapInbox() {
             <h2 class="text-xl font-semibold mb-4">Email Summary</h2>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div class="text-center p-4 bg-blue-50 rounded">
-                <div class="text-2xl font-bold text-blue-600">
-                  {imap.emailSummary()?.total_emails || 0}
-                </div>
+                <div class="text-2xl font-bold text-blue-600">{imap.emailSummary()?.total_emails || 0}</div>
                 <div class="text-sm text-gray-600">Total Emails</div>
               </div>
               <div class="text-center p-4 bg-green-50 rounded">
-                <div class="text-2xl font-bold text-green-600">
-                  {imap.emailSummary()?.agent_emails || 0}
-                </div>
+                <div class="text-2xl font-bold text-green-600">{imap.emailSummary()?.agent_emails || 0}</div>
                 <div class="text-sm text-gray-600">Agent Emails</div>
               </div>
               <div class="text-center p-4 bg-yellow-50 rounded">
-                <div class="text-2xl font-bold text-yellow-600">
-                  {imap.emailSummary()?.unread_emails || 0}
-                </div>
+                <div class="text-2xl font-bold text-yellow-600">{imap.emailSummary()?.unread_emails || 0}</div>
                 <div class="text-sm text-gray-600">Unread</div>
               </div>
               <div class="text-center p-4 bg-purple-50 rounded">
-                <div class="text-2xl font-bold text-purple-600">
-                  {imap.emailSummary()?.replied_emails || 0}
-                </div>
+                <div class="text-2xl font-bold text-purple-600">{imap.emailSummary()?.replied_emails || 0}</div>
                 <div class="text-sm text-gray-600">Replied</div>
               </div>
             </div>
@@ -183,31 +168,31 @@ export default function ImapInbox() {
           <div class="border-b border-gray-200">
             <nav class="-mb-px flex">
               <button
-                onClick={() => setViewMode('unread')}
+                onClick={() => setViewMode("unread")}
                 class={`py-2 px-4 border-b-2 font-medium text-sm ${
-                  viewMode() === 'unread'
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  viewMode() === "unread"
+                    ? "border-blue-500 text-blue-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                 }`}
               >
                 Unread Emails
               </button>
               <button
-                onClick={() => setViewMode('recent')}
+                onClick={() => setViewMode("recent")}
                 class={`py-2 px-4 border-b-2 font-medium text-sm ${
-                  viewMode() === 'recent'
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  viewMode() === "recent"
+                    ? "border-blue-500 text-blue-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                 }`}
               >
                 Recent Emails
               </button>
               <button
-                onClick={() => setViewMode('all')}
+                onClick={() => setViewMode("all")}
                 class={`py-2 px-4 border-b-2 font-medium text-sm ${
-                  viewMode() === 'all'
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  viewMode() === "all"
+                    ? "border-blue-500 text-blue-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                 }`}
               >
                 All Emails
@@ -217,26 +202,25 @@ export default function ImapInbox() {
 
           {/* Email List */}
           <div class="divide-y divide-gray-200">
-            <Show when={getEmails().length > 0} fallback={
-              <div class="p-6 text-center text-gray-500">
-                No emails found for the selected view.
-              </div>
-            }>
+            <Show
+              when={getEmails().length > 0}
+              fallback={<div class="p-6 text-center text-gray-500">No emails found for the selected view.</div>}
+            >
               <For each={getEmails()}>
-                {(email) => (
+                {email => (
                   <div class="p-4 hover:bg-gray-50">
                     <div class="flex items-start justify-between">
                       <div class="flex-1 min-w-0">
                         <div class="flex items-center gap-2 mb-1">
-                          <h3 class="text-sm font-medium text-gray-900 truncate">
-                            {email.subject}
-                          </h3>
+                          <h3 class="text-sm font-medium text-gray-900 truncate">{email.subject}</h3>
                           <Show when={email.is_agent_email}>
                             <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                               Agent Email
                             </span>
                           </Show>
-                          <span class={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(email.status)}`}>
+                          <span
+                            class={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(email.status)}`}
+                          >
                             {email.status}
                           </span>
                         </div>
@@ -252,13 +236,9 @@ export default function ImapInbox() {
                             <span class="text-blue-600"> (Agent: {email.to_agent})</span>
                           </Show>
                         </div>
-                        <div class="text-sm text-gray-500">
-                          {formatDate(email.date)}
-                        </div>
+                        <div class="text-sm text-gray-500">{formatDate(email.date)}</div>
                         <Show when={email.body}>
-                          <p class="text-sm text-gray-700 mt-2 line-clamp-2">
-                            {email.body.substring(0, 200)}...
-                          </p>
+                          <p class="text-sm text-gray-700 mt-2 line-clamp-2">{email.body.substring(0, 200)}...</p>
                         </Show>
                       </div>
                       <div class="flex flex-col gap-2 ml-4">
@@ -298,15 +278,12 @@ export default function ImapInbox() {
               <div class="p-6">
                 <div class="flex justify-between items-center mb-4">
                   <h2 class="text-xl font-semibold">Email Details</h2>
-                  <button
-                    onClick={() => setSelectedEmail(null)}
-                    class="text-gray-400 hover:text-gray-600"
-                  >
+                  <button onClick={() => setSelectedEmail(null)} class="text-gray-400 hover:text-gray-600">
                     ✕
                   </button>
                 </div>
                 <Show when={getEmails().find(e => e.message_id === selectedEmail())}>
-                  {(email) => (
+                  {email => (
                     <div class="space-y-4">
                       <div>
                         <h3 class="font-medium text-gray-900">Subject</h3>
@@ -336,16 +313,12 @@ export default function ImapInbox() {
                       </div>
                       <div>
                         <h3 class="font-medium text-gray-900">Status</h3>
-                        <p class={`font-medium ${getStatusColor(email().status)}`}>
-                          {email().status}
-                        </p>
+                        <p class={`font-medium ${getStatusColor(email().status)}`}>{email().status}</p>
                       </div>
                       <Show when={email().body}>
                         <div>
                           <h3 class="font-medium text-gray-900">Body</h3>
-                          <div class="text-gray-700 whitespace-pre-wrap bg-gray-50 p-4 rounded">
-                            {email().body}
-                          </div>
+                          <div class="text-gray-700 whitespace-pre-wrap bg-gray-50 p-4 rounded">{email().body}</div>
                         </div>
                       </Show>
                       <Show when={email().html_body}>
@@ -359,7 +332,7 @@ export default function ImapInbox() {
                           <h3 class="font-medium text-gray-900">Attachments</h3>
                           <ul class="list-disc list-inside text-gray-700">
                             <For each={email().attachments}>
-                              {(attachment) => (
+                              {attachment => (
                                 <li>
                                   {attachment.filename} ({attachment.content_type}, {attachment.size} bytes)
                                 </li>
@@ -377,6 +350,5 @@ export default function ImapInbox() {
         </Show>
       </div>
     </Layout>
-  )
+  );
 }
-

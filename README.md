@@ -272,28 +272,99 @@ Reynard's package ecosystem is built on the foundation of YipYap's architecture,
 independently useful while working seamlessly together. The core package has minimal dependencies and works standalone,
 while other packages can be added as needed. All packages are published to npm and ready for production use!
 
-### Core Packages
+### 🤖 AI & Machine Learning (`packages/ai/`)
+- **`ai-shared`** - Shared AI utilities and types
+- **`annotating-core`** - Core annotation functionality
+- **`annotating-florence2`** - Florence2 model integration
+- **`annotating-joy`** - Joy model integration
+- **`annotating-jtp2`** - JTP2 model integration
+- **`annotating-ui`** - Annotation UI components
+- **`annotating-wdv3`** - WDV3 model integration
+- **`caption`** - Image captioning functionality
+- **`caption-core`** - Core captioning functionality
+- **`caption-multimodal`** - Multimodal captioning
+- **`caption-ui`** - Caption UI components
+- **`comfy`** - ComfyUI integration
+- **`model-management`** - AI model management
+- **`multimodal`** - Multimodal AI capabilities
+- **`nlweb`** - Natural language web processing
+- **`rag`** - Retrieval-Augmented Generation
+- **`tool-calling`** - AI tool calling utilities
 
-- **`reynard-core`** - Foundation utilities, notifications, localStorage, validation
-- **`reynard-components`** - UI components, modals, tooltips, forms
-- **`reynard-themes`** - Theming system with 8 built-in themes and i18n support
-- **`reynard-ecs-world`** - Single authoritative ECS World simulation with agent management
-- **`reynard-i18n`** - Internationalization with 37 language support
+### 🧮 Algorithms (`packages/algorithms/`)
+- **`algorithms`** - Algorithm implementations and data structures
 
-### Specialized Packages
+### 🏗️ Core Framework (`packages/core/`)
+- **`composables`** - Reusable Vue composables for common patterns
+- **`config`** - Configuration management and environment handling
+- **`connection`** - WebSocket and real-time communication utilities
+- **`core`** - Core utilities, types, and shared functionality
+- **`features`** - Feature flags and conditional functionality
+- **`i18n`** - Internationalization with 37 language support
+- **`settings`** - User settings and preferences management
+- **`testing`** - Testing utilities and configurations
+- **`validation`** - Data validation and schema management
 
-- **`reynard-chat`** - Real-time chat system with streaming and tool integration
-- **`reynard-rag`** - RAG system with EmbeddingGemma integration
-- **`reynard-auth`** - Complete authentication system with JWT and security features
-- **`reynard-charts`** - Data visualization components built on Chart.js
-- **`reynard-gallery`** - Advanced file management with drag-and-drop
-- **`reynard-annotating`** - AI-powered caption generation with multiple models
-- **`reynard-caption`** - Caption editing UI with tag management
-- **`reynard-email`** - Comprehensive email system with AI-powered responses, encryption, and analytics
-- **`reynard-floating-panel`** - Advanced floating panel system with staggered animations and state management
-- **`reynard-3d`** - Three.js integration for 3D graphics
-- **`reynard-monaco`** - Code editor integration
-- **`reynard-games`** - Game development utilities
+### 📊 Data Processing (`packages/data/`)
+- **`file-processing`** - File processing utilities
+- **`repository-core`** - Core repository functionality
+- **`repository-multimodal`** - Multimodal data repository
+- **`repository-search`** - Search functionality
+- **`repository-storage`** - Storage management
+- **`scraping`** - Web scraping utilities
+- **`unified-repository`** - Unified data repository
+
+### 🛠️ Development Tools (`packages/dev-tools/`)
+- **`adr-system`** - Architecture Decision Records
+- **`code-quality`** - Code quality tools and utilities
+- **`dev-server-management`** - Development server management
+- **`git-automation`** - Git workflow automation
+- **`humility-parser`** - Humility parser for documentation
+- **`project-architecture`** - Project architecture tools
+- **`queue-watcher`** - Queue monitoring and management
+
+### 📚 Documentation (`packages/docs/`)
+- **`diagram-generator`** - Diagram generation utilities
+- **`docs-components`** - Documentation components
+- **`docs-core`** - Core documentation functionality
+- **`docs-generator`** - Documentation generation
+- **`docs-site`** - Documentation site
+
+### 🎨 Media Processing (`packages/media/`)
+- **`3d`** - Three.js integration for 3D graphics
+- **`audio`** - Audio processing and playback
+- **`boundingbox`** - Bounding box and annotation tools
+- **`gallery`** - Advanced file management with drag-and-drop
+- **`gallery-ai`** - AI-powered gallery features
+- **`gallery-dl`** - Gallery download and scraping
+- **`image`** - Image processing and manipulation
+- **`segmentation`** - Image segmentation tools
+- **`video`** - Video processing and playback
+
+### 🔧 Services (`packages/services/`)
+- **`api-client`** - API client utilities
+- **`auth`** - Complete authentication system with JWT and security features
+- **`chat`** - Real-time chat system with streaming and tool integration
+- **`email`** - Comprehensive email system with AI-powered responses, encryption, and analytics
+- **`service-manager`** - Service management
+
+### 🎨 UI & Components (`packages/ui/`)
+- **`animation`** - Animation utilities
+- **`charts`** - Data visualization components built on Chart.js
+- **`colors`** - Color utilities and palettes
+- **`components-charts`** - Chart-specific components
+- **`components-core`** - UI components, modals, tooltips, forms
+- **`components-dashboard`** - Dashboard-specific components
+- **`components-themes`** - Theme-aware components
+- **`components-utils`** - Utility components
+- **`dashboard`** - Dashboard layout and functionality
+- **`error-boundaries`** - Error handling and boundary components
+- **`floating-panel`** - Advanced floating panel system with staggered animations and state management
+- **`fluent-icons`** - Icon library and components
+- **`games`** - Game development utilities
+- **`monaco`** - Code editor integration
+- **`themes`** - Theming system with 8 built-in themes and i18n support
+- **`ui`** - UI utilities and layout components
 
 _[View complete package list and documentation →](./docs/packages.md)_
 

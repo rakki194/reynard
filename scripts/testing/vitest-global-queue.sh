@@ -188,7 +188,7 @@ run_vitest() {
     # Run vitest with the global config from root directory
     # Change to root directory to ensure proper file resolution
     local root_dir
-    root_dir="$(dirname "$0")/.."
+    root_dir="$(dirname "$0")/../.."
     cd "${root_dir}"
 
     # Check if vitest.global.config.ts exists

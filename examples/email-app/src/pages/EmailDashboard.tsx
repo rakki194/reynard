@@ -4,7 +4,7 @@ import { Link } from "@solidjs/router";
 
 export function EmailDashboard() {
   const emailComposable = useEmail();
-  
+
   const [stats, setStats] = createSignal({
     totalSent: 0,
     totalReceived: 0,
@@ -18,7 +18,7 @@ export function EmailDashboard() {
     const sent = messages.filter(m => m.status === "sent").length;
     const received = messages.filter(m => m.status === "received").length;
     const unread = messages.filter(m => m.status === "unread").length;
-    
+
     setStats({
       totalSent: sent,
       totalReceived: received,
@@ -33,28 +33,28 @@ export function EmailDashboard() {
       description: "Send a new email message",
       icon: "✏️",
       link: "/compose",
-      color: "primary"
+      color: "primary",
     },
     {
       title: "View Inbox",
       description: "Check received messages",
       icon: "📥",
       link: "/inbox",
-      color: "secondary"
+      color: "secondary",
     },
     {
       title: "Manage Templates",
       description: "Create and edit email templates",
       icon: "📝",
       link: "/templates",
-      color: "success"
+      color: "success",
     },
     {
       title: "Agent Center",
       description: "Agent-to-agent communication",
       icon: "🤖",
       link: "/agents",
-      color: "warning"
+      color: "warning",
     },
   ];
 
@@ -85,7 +85,7 @@ export function EmailDashboard() {
                   <span class="status-value loading">Loading...</span>
                 </div>
               )}
-              
+
               {emailComposable.status()?.test_connection && (
                 <div class="status-item">
                   <span class="status-label">Connection:</span>
@@ -123,11 +123,9 @@ export function EmailDashboard() {
         <h2>Quick Actions</h2>
         <div class="actions-grid">
           <For each={quickActions}>
-            {(action) => (
+            {action => (
               <Link href={action.link} class="action-card">
-                <div class={`action-icon ${action.color}`}>
-                  {action.icon}
-                </div>
+                <div class={`action-icon ${action.color}`}>{action.icon}</div>
                 <div class="action-content">
                   <h3>{action.title}</h3>
                   <p>{action.description}</p>
@@ -144,15 +142,11 @@ export function EmailDashboard() {
         <div class="activity-list">
           {emailComposable.messages().length > 0 ? (
             <For each={emailComposable.messages().slice(0, 5)}>
-              {(message) => (
+              {message => (
                 <div class="activity-item">
-                  <div class="activity-icon">
-                    {message.status === "sent" ? "📤" : "📥"}
-                  </div>
+                  <div class="activity-icon">{message.status === "sent" ? "📤" : "📥"}</div>
                   <div class="activity-content">
-                    <div class="activity-title">
-                      {message.subject || "No Subject"}
-                    </div>
+                    <div class="activity-title">{message.subject || "No Subject"}</div>
                     <div class="activity-meta">
                       <span class="activity-recipients">
                         {message.status === "sent" ? "To: " : "From: "}
@@ -163,9 +157,7 @@ export function EmailDashboard() {
                       </span>
                     </div>
                   </div>
-                  <div class={`activity-status ${message.status}`}>
-                    {message.status}
-                  </div>
+                  <div class={`activity-status ${message.status}`}>{message.status}</div>
                 </div>
               )}
             </For>
@@ -191,4 +183,3 @@ export function EmailDashboard() {
     </div>
   );
 }
-

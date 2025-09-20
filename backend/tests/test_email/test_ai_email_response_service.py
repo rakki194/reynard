@@ -19,7 +19,7 @@ from app.services.ai_email_response_service import (
     EmailContext,
     AIResponse,
     AIResponseConfig,
-    ai_email_response_service
+    get_ai_email_response_service
 )
 
 
@@ -848,10 +848,11 @@ class TestAIEmailResponseService:
     @pytest.mark.asyncio
     async def test_global_service_instance(self):
         """Test the global service instance."""
-        assert isinstance(ai_email_response_service, AIEmailResponseService)
-        assert ai_email_response_service.data_dir.exists()
-        assert ai_email_response_service.responses_dir.exists()
-        assert ai_email_response_service.contexts_dir.exists()
+        service = get_ai_email_response_service()
+        assert isinstance(service, AIEmailResponseService)
+        assert service.data_dir.exists()
+        assert service.responses_dir.exists()
+        assert service.contexts_dir.exists()
 
 
 class TestEmailContext:

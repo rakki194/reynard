@@ -67,8 +67,8 @@ export function AgentEmailCenter() {
           <h3>Select Agent</h3>
           <div class="agent-selection">
             <For each={agents()}>
-              {(agent) => (
-                <div 
+              {agent => (
+                <div
                   class={`agent-option ${selectedAgent() === agent.id ? "selected" : ""}`}
                   onClick={() => setSelectedAgent(agent.id)}
                 >
@@ -91,27 +91,19 @@ export function AgentEmailCenter() {
             <h3>Agent Statistics</h3>
             <div class="agent-email-stats">
               <div class="agent-email-stat">
-                <div class="agent-email-stat-value">
-                  {agentEmailComposable().stats()?.total_sent || 0}
-                </div>
+                <div class="agent-email-stat-value">{agentEmailComposable().stats()?.total_sent || 0}</div>
                 <div class="agent-email-stat-label">Sent</div>
               </div>
               <div class="agent-email-stat">
-                <div class="agent-email-stat-value">
-                  {agentEmailComposable().stats()?.total_received || 0}
-                </div>
+                <div class="agent-email-stat-value">{agentEmailComposable().stats()?.total_received || 0}</div>
                 <div class="agent-email-stat-label">Received</div>
               </div>
               <div class="agent-email-stat">
-                <div class="agent-email-stat-value">
-                  {agentEmailComposable().stats()?.unread_count || 0}
-                </div>
+                <div class="agent-email-stat-value">{agentEmailComposable().stats()?.unread_count || 0}</div>
                 <div class="agent-email-stat-label">Unread</div>
               </div>
               <div class="agent-email-stat">
-                <div class="agent-email-stat-value">
-                  {agentEmailComposable().stats()?.active_conversations || 0}
-                </div>
+                <div class="agent-email-stat-value">{agentEmailComposable().stats()?.active_conversations || 0}</div>
                 <div class="agent-email-stat-label">Active</div>
               </div>
             </div>
@@ -127,37 +119,35 @@ export function AgentEmailCenter() {
                 <label>Target Agent</label>
                 <select
                   value={newMessage().targetAgent}
-                  onChange={(e) => setNewMessage(prev => ({ ...prev, targetAgent: e.currentTarget.value }))}
+                  onChange={e => setNewMessage(prev => ({ ...prev, targetAgent: e.currentTarget.value }))}
                 >
                   <option value="">Select target agent...</option>
                   <For each={agents().filter(a => a.id !== selectedAgent())}>
-                    {(agent) => (
-                      <option value={agent.id}>{agent.name}</option>
-                    )}
+                    {agent => <option value={agent.id}>{agent.name}</option>}
                   </For>
                 </select>
               </div>
-              
+
               <div class="email-form-group">
                 <label>Subject</label>
                 <input
                   type="text"
                   value={newMessage().subject}
-                  onInput={(e) => setNewMessage(prev => ({ ...prev, subject: e.currentTarget.value }))}
+                  onInput={e => setNewMessage(prev => ({ ...prev, subject: e.currentTarget.value }))}
                   placeholder="Enter subject..."
                 />
               </div>
-              
+
               <div class="email-form-group">
                 <label>Message</label>
                 <textarea
                   value={newMessage().body}
-                  onInput={(e) => setNewMessage(prev => ({ ...prev, body: e.currentTarget.value }))}
+                  onInput={e => setNewMessage(prev => ({ ...prev, body: e.currentTarget.value }))}
                   placeholder="Enter message..."
                   rows={4}
                 />
               </div>
-              
+
               <button
                 class="email-button email-button-primary"
                 onClick={handleSendToAgent}
@@ -203,7 +193,7 @@ export function AgentEmailCenter() {
             <div class="template-list">
               {agentEmailComposable().templates().length > 0 ? (
                 <For each={agentEmailComposable().templates()}>
-                  {(template) => (
+                  {template => (
                     <div class="template-item">
                       <div class="template-name">{template.name}</div>
                       <div class="template-subject">{template.subject}</div>
@@ -231,13 +221,11 @@ export function AgentEmailCenter() {
             <div class="message-list">
               {agentEmailComposable().messages().length > 0 ? (
                 <For each={agentEmailComposable().messages().slice(0, 5)}>
-                  {(message) => (
+                  {message => (
                     <div class="message-item">
                       <div class="message-subject">{message.subject}</div>
                       <div class="message-meta">
-                        <span class="message-recipients">
-                          To: {message.to_emails.join(", ")}
-                        </span>
+                        <span class="message-recipients">To: {message.to_emails.join(", ")}</span>
                         <span class="message-time">
                           {message.sent_at ? new Date(message.sent_at).toLocaleString() : "Draft"}
                         </span>
@@ -265,4 +253,3 @@ export function AgentEmailCenter() {
     </div>
   );
 }
-

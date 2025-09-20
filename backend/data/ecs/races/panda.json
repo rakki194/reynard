@@ -1,0 +1,30 @@
+{
+  "name": "panda",
+  "category": "bears_and_large_mammals",
+  "description": "Gentle giants known for their peaceful nature and bamboo diet",
+  "traits": [
+    "gentle",
+    "peaceful",
+    "bamboo",
+    "endangered",
+    "calm"
+  ],
+  "names": [
+    "Ailuropoda",
+    "Giant",
+    "Bamboo",
+    "Black",
+    "White",
+    "Gentle"
+  ],
+  "generation_numbers": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "emoji": "🐼"
+}

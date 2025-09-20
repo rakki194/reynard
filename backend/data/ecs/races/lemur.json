@@ -1,0 +1,30 @@
+{
+  "name": "lemur",
+  "category": "primates_and_intelligence",
+  "description": "Unique primates known for their diversity and island adaptation",
+  "traits": [
+    "unique",
+    "diverse",
+    "island",
+    "nocturnal",
+    "endemic"
+  ],
+  "names": [
+    "Lemur",
+    "Ring",
+    "Sifaka",
+    "Aye",
+    "Aye",
+    "Madagascar"
+  ],
+  "generation_numbers": [
+    4,
+    8,
+    12,
+    16,
+    20,
+    24,
+    28
+  ],
+  "emoji": "🦝"
+}

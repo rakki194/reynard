@@ -3,7 +3,7 @@ import { For } from "solid-js";
 
 export function Layout(props: { children?: any }) {
   const location = useLocation();
-  
+
   const navItems = [
     { path: "/", label: "Dashboard", icon: "📊" },
     { path: "/compose", label: "Compose", icon: "✏️" },
@@ -21,11 +21,8 @@ export function Layout(props: { children?: any }) {
         </div>
         <nav class="email-nav">
           <For each={navItems}>
-            {(item) => (
-              <Link
-                href={item.path}
-                class={location.pathname === item.path ? "active" : ""}
-              >
+            {item => (
+              <Link href={item.path} class={location.pathname === item.path ? "active" : ""}>
                 <span class="nav-icon">{item.icon}</span>
                 {item.label}
               </Link>
@@ -33,7 +30,7 @@ export function Layout(props: { children?: any }) {
           </For>
         </nav>
       </header>
-      
+
       <main class="email-main">
         <div class="email-content">
           <Outlet />

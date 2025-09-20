@@ -2,7 +2,13 @@
   "name": "fox",
   "category": "canines_and_foxes",
   "description": "Cunning and intelligent canines known for their strategic thinking and adaptability",
-  "traits": ["cunning", "intelligent", "adaptable", "strategic", "graceful"],
+  "traits": [
+    "cunning",
+    "intelligent",
+    "adaptable",
+    "strategic",
+    "graceful"
+  ],
   "names": [
     "Vulpine",
     "Vulpes",
@@ -46,6 +52,9 @@
     "Sunset",
     "Autumn",
     "Maple",
+    "Cedar",
+    "Fern",
+    "Willow",
     "Forest",
     "Woodland",
     "Meadow",
@@ -60,6 +69,8 @@
     "Grove",
     "Copse",
     "Glade",
+    "Dell",
+    "Vale",
     "Foxy",
     "Sneaky",
     "Elusive",
@@ -77,8 +88,18 @@
     "Enchanting",
     "Alluring",
     "Captivating",
-    "Mesmerizing"
+    "Mesmerizing",
+    "Bewitching",
+    "Spellbinding"
   ],
-  "generation_numbers": [3, 7, 13, 21, 34, 55, 89],
+  "generation_numbers": [
+    3,
+    7,
+    13,
+    21,
+    34,
+    55,
+    89
+  ],
   "emoji": "🦊"
 }

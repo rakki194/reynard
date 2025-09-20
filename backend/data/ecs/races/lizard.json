@@ -1,0 +1,30 @@
+{
+  "name": "lizard",
+  "category": "reptiles_and_amphibians",
+  "description": "Adaptable reptiles known for their regeneration and diversity",
+  "traits": [
+    "adaptable",
+    "regenerative",
+    "diverse",
+    "scaled",
+    "ancient"
+  ],
+  "names": [
+    "Lacerta",
+    "Gecko",
+    "Iguana",
+    "Monitor",
+    "Chameleon",
+    "Dragon"
+  ],
+  "generation_numbers": [
+    5,
+    10,
+    15,
+    20,
+    25,
+    30,
+    35
+  ],
+  "emoji": "🦎"
+}

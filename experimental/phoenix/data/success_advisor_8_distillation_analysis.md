@@ -24,7 +24,7 @@ This report presents a comprehensive analysis of the knowledge distillation proc
 - **Most Common Trait**: strategic
 - **Strongest Trait**: analytical
 
-#### Trait Frequency Distribution:
+#### Trait Frequency Distribution
 
 - **authority**: 1 occurrences, strength: 0.154, category: personality
 - **analytical**: 3 occurrences, strength: 0.359, category: cognitive
@@ -54,7 +54,7 @@ This report presents a comprehensive analysis of the knowledge distillation proc
 - **Unique Domains**: 23
 - **Most Relevant Domain**: version_control
 
-#### Domain Relevance Scores:
+#### Domain Relevance Scores
 
 - **tensorflow**: relevance: 0.218, occurrences: 6
 - **devops**: relevance: 0.187, occurrences: 7

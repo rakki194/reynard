@@ -14,7 +14,7 @@ from ..services.email_service import email_service, EmailMessage, EmailAttachmen
 from ..services.email_analytics_service import email_analytics_service
 from ..services.email_encryption_service import email_encryption_service
 from ..services.calendar_integration_service import calendar_integration_service
-from ..services.ai_email_response_service import ai_email_response_service
+from ..services.ai_email_response_service import get_ai_email_response_service
 from ..services.multi_account_service import multi_account_service
 from ..models.email_models import (
     EmailSendRequest,
@@ -701,7 +701,7 @@ async def analyze_email_context(
 ) -> Dict[str, Any]:
     """Analyze email to extract context for AI response generation."""
     try:
-        context = await ai_email_response_service.analyze_email_context(email_data)
+        context = await get_ai_email_response_service().analyze_email_context(email_data)
         
         return {
             "original_subject": context.original_subject,
@@ -736,7 +736,7 @@ async def generate_ai_response(
         # Convert dict to EmailContext object
         context = EmailContext(**email_context)
         
-        response = await ai_email_response_service.generate_response(
+        response = await get_ai_email_response_service().generate_response(
             email_context=context,
             response_type=response_type,
             custom_instructions=custom_instructions,
@@ -770,7 +770,7 @@ async def get_ai_response_history(
 ) -> List[Dict[str, Any]]:
     """Get AI response history for an email address."""
     try:
-        responses = await ai_email_response_service.get_response_history(
+        responses = await get_ai_email_response_service().get_response_history(
             email_address=email_address,
             limit=limit
         )

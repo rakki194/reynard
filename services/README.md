@@ -12,10 +12,6 @@ services/
 │   ├── reynard_agent_naming/
 │   ├── setup.py
 │   └── pyproject.toml
-├── ecs-world/             # ECS World simulation system
-│   ├── reynard_ecs_world/
-│   ├── setup.py
-│   └── pyproject.toml
 ├── gatekeeper/            # Authentication and authorization
 │   ├── reynard_gatekeeper/
 │   ├── setup.py
@@ -64,7 +60,6 @@ source venv/bin/activate
 # Install each service in development mode
 cd services/agent-naming && pip install -e .
 # ECS functionality is now consolidated in the FastAPI backend
-# cd services/ecs-world && pip install -e .
 cd services/gatekeeper && pip install -e .
 cd services/mcp-server && pip install -e .
 ```
@@ -77,13 +72,6 @@ cd services/mcp-server && pip install -e .
 - **Package**: `reynard_agent_naming`
 - **Dependencies**: None (pure Python)
 - **Usage**: `from reynard_agent_naming import AgentNameManager`
-
-### 🌍 ECS World (`reynard-ecs-world`)
-
-- **Purpose**: ECS World simulation system for agent management
-- **Package**: `reynard_ecs_world`
-- **Dependencies**: pydantic, asyncio, typing-extensions
-- **Usage**: `from reynard_ecs_world import AgentWorld`
 
 ### 🛡️ Gatekeeper (`reynard-gatekeeper`)
 
@@ -131,8 +119,7 @@ make -f Makefile.dev lint
 # MCP Server
 make -f Makefile.dev mcp-server
 
-# ECS World (if running standalone)
-make -f Makefile.dev ecs-world
+# ECS World is now integrated with FastAPI backend
 ```
 
 ## 🧪 **Testing**
@@ -159,7 +146,6 @@ cd services/mcp-server && python -m pytest tests/
 ### Service Dependencies
 
 - **agent-naming**: None (pure Python)
-- **ecs-world**: pydantic, asyncio, typing-extensions
 - **gatekeeper**: fastapi, pydantic, python-jose, argon2-cffi
 - **mcp-server**: All other services + aiohttp, PyJWT
 

@@ -1,0 +1,30 @@
+{
+  "name": "jackal",
+  "category": "canines_and_foxes",
+  "description": "Opportunistic canines known for their stealth and cunning",
+  "traits": [
+    "stealthy",
+    "opportunistic",
+    "cunning",
+    "nocturnal",
+    "persistent"
+  ],
+  "names": [
+    "Canis",
+    "Golden",
+    "Black",
+    "Side",
+    "Desert",
+    "Stealth"
+  ],
+  "generation_numbers": [
+    5,
+    10,
+    15,
+    20,
+    25,
+    30,
+    35
+  ],
+  "emoji": "🐺"
+}

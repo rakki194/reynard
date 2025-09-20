@@ -3,7 +3,7 @@ import { useEmail } from "reynard-email/composables";
 
 export function EmailInbox() {
   const emailComposable = useEmail();
-  
+
   const [selectedMessage, setSelectedMessage] = createSignal<any>(null);
   const [filter, setFilter] = createSignal<"all" | "unread" | "sent">("all");
 
@@ -28,30 +28,18 @@ export function EmailInbox() {
 
       <div class="inbox-controls">
         <div class="inbox-filters">
-          <button
-            class={`filter-button ${filter() === "all" ? "active" : ""}`}
-            onClick={() => setFilter("all")}
-          >
+          <button class={`filter-button ${filter() === "all" ? "active" : ""}`} onClick={() => setFilter("all")}>
             All Messages
           </button>
-          <button
-            class={`filter-button ${filter() === "unread" ? "active" : ""}`}
-            onClick={() => setFilter("unread")}
-          >
+          <button class={`filter-button ${filter() === "unread" ? "active" : ""}`} onClick={() => setFilter("unread")}>
             Unread
           </button>
-          <button
-            class={`filter-button ${filter() === "sent" ? "active" : ""}`}
-            onClick={() => setFilter("sent")}
-          >
+          <button class={`filter-button ${filter() === "sent" ? "active" : ""}`} onClick={() => setFilter("sent")}>
             Sent
           </button>
         </div>
-        
-        <button
-          class="email-button email-button-primary"
-          onClick={() => emailComposable.refreshMessages()}
-        >
+
+        <button class="email-button email-button-primary" onClick={() => emailComposable.refreshMessages()}>
           Refresh
         </button>
       </div>
@@ -60,8 +48,8 @@ export function EmailInbox() {
         <div class="message-list">
           {filteredMessages().length > 0 ? (
             <For each={filteredMessages()}>
-              {(message) => (
-                <div 
+              {message => (
+                <div
                   class={`message-item ${message.status === "unread" ? "unread" : ""}`}
                   onClick={() => setSelectedMessage(message)}
                 >
@@ -79,9 +67,7 @@ export function EmailInbox() {
                     {message.body.substring(0, 100)}
                     {message.body.length > 100 ? "..." : ""}
                   </div>
-                  <div class={`message-status ${message.status}`}>
-                    {message.status}
-                  </div>
+                  <div class={`message-status ${message.status}`}>{message.status}</div>
                 </div>
               )}
             </For>
@@ -100,14 +86,11 @@ export function EmailInbox() {
           <div class="message-detail">
             <div class="message-detail-header">
               <h3>{selectedMessage().subject || "No Subject"}</h3>
-              <button
-                class="email-button email-button-secondary"
-                onClick={() => setSelectedMessage(null)}
-              >
+              <button class="email-button email-button-secondary" onClick={() => setSelectedMessage(null)}>
                 Close
               </button>
             </div>
-            
+
             <div class="message-detail-meta">
               <div class="meta-item">
                 <span class="meta-label">From:</span>
@@ -121,16 +104,14 @@ export function EmailInbox() {
               </div>
               <div class="meta-item">
                 <span class="meta-label">Status:</span>
-                <span class={`meta-value status-${selectedMessage().status}`}>
-                  {selectedMessage().status}
-                </span>
+                <span class={`meta-value status-${selectedMessage().status}`}>{selectedMessage().status}</span>
               </div>
             </div>
-            
+
             <div class="message-detail-body">
               <pre>{selectedMessage().body}</pre>
             </div>
-            
+
             {selectedMessage().html_body && (
               <div class="message-detail-html">
                 <h4>HTML Version:</h4>
@@ -143,4 +124,3 @@ export function EmailInbox() {
     </div>
   );
 }
-

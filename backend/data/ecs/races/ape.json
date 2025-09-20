@@ -1,0 +1,30 @@
+{
+  "name": "ape",
+  "category": "primates_and_intelligence",
+  "description": "Intelligent primates known for their tool use and social complexity",
+  "traits": [
+    "intelligent",
+    "tool-using",
+    "social",
+    "complex",
+    "strong"
+  ],
+  "names": [
+    "Pan",
+    "Gorilla",
+    "Orangutan",
+    "Chimpanzee",
+    "Bonobo",
+    "Intelligence"
+  ],
+  "generation_numbers": [
+    11,
+    22,
+    33,
+    44,
+    55,
+    66,
+    77
+  ],
+  "emoji": "🦍"
+}

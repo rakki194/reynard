@@ -20,14 +20,14 @@ The `experimental/` directory contains cutting-edge research implementations and
 
 A groundbreaking methodology that formalizes multi-generational AI agent improvement through evolutionary knowledge distillation with adaptive document conditioning. Built upon the foundational work of Cloud et al. (2025) on subliminal learning.
 
-#### Key Features:
+#### Key Features
 
 - **🧬 Evolutionary Knowledge Distillation**: Treats agent outputs as evolutionary genetic material
 - **📊 Statistical Validation Framework**: Rigorous analysis with p-values, confidence intervals, and effect sizes
 - **🔗 Reynard Ecosystem Integration**: Leverages ECS world simulation and MCP server tools
 - **📈 Performance Metrics**: 30%+ improvement in task completion accuracy with statistical significance
 
-#### Architecture:
+#### Architecture
 
 ```text
 phoenix/
@@ -45,7 +45,7 @@ phoenix/
 └── docs/                        # Documentation
 ```
 
-#### Dependencies:
+#### Dependencies
 
 - **Core**: numpy, scipy, pandas, matplotlib, seaborn
 - **Statistical**: statsmodels, scikit-learn
@@ -60,14 +60,14 @@ phoenix/
 
 A clean, modular distillation of Success-Advisor-8's capabilities, extracted from the comprehensive PHOENIX framework. Provides independent, focused modules for agent state management, release automation, and quality assurance.
 
-#### Key Features:
+#### Key Features
 
 - **🦁 Success-Advisor-8 Agent State**: Complete state reconstruction and management
 - **🚀 Release Automation**: Git workflow, version management, changelog generation
 - **🛡️ Quality Assurance**: Code validation, security scanning, performance monitoring
 - **📊 Performance**: 95%+ task completion accuracy, 100% release success rate
 
-#### Architecture:
+#### Architecture
 
 ```text
 phoenix_control/
@@ -89,7 +89,7 @@ phoenix_control/
 └── tests/                       # Test suite
 ```
 
-#### Dependencies:
+#### Dependencies
 
 - **Core**: asyncio, pathlib, datetime, json, typing, dataclasses
 - **Optional**: psutil, matplotlib, numpy
@@ -103,7 +103,7 @@ phoenix_control/
 
 An experimental toolkit providing production-ready implementations of advanced prompt refinement concepts using cutting-edge Python libraries and Reynard infrastructure integration.
 
-#### Key Features:
+#### Key Features
 
 - **🌐 Web Research**: Multi-source scraping with playwright and requests-html
 - **🧠 Semantic Search**: Vector embeddings with sentence-transformers and faiss
@@ -111,7 +111,7 @@ An experimental toolkit providing production-ready implementations of advanced p
 - **🔍 Code Analysis**: Multi-language AST parsing with tree-sitter
 - **🔗 Reynard Integration**: Seamless integration with existing tools
 
-#### Architecture:
+#### Architecture
 
 ```text
 prompt-refinement-tools/
@@ -128,7 +128,7 @@ prompt-refinement-tools/
 └── data/                       # Vector stores and caches
 ```
 
-#### Dependencies:
+#### Dependencies
 
 - **Web Scraping**: requests-html, playwright, aiohttp, beautifulsoup4
 - **Semantic Search**: chromadb, faiss-gpu, sentence-transformers

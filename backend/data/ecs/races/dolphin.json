@@ -1,0 +1,30 @@
+{
+  "name": "dolphin",
+  "category": "aquatic_and_marine",
+  "description": "Intelligent marine mammals known for communication and social behavior",
+  "traits": [
+    "intelligent",
+    "social",
+    "communicative",
+    "playful",
+    "cooperative"
+  ],
+  "names": [
+    "Delphinus",
+    "Tursiops",
+    "Orca",
+    "Bottlenose",
+    "Spinner",
+    "Risso"
+  ],
+  "generation_numbers": [
+    6,
+    12,
+    18,
+    24,
+    30,
+    36,
+    42
+  ],
+  "emoji": "🐬"
+}

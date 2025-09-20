@@ -1,0 +1,30 @@
+{
+  "name": "flamingo",
+  "category": "exotic_and_unique",
+  "description": "Pink wading birds known for their elegance and balance",
+  "traits": [
+    "elegant",
+    "balanced",
+    "pink",
+    "wading",
+    "social"
+  ],
+  "names": [
+    "Phoenicopterus",
+    "Pink",
+    "Flamingo",
+    "Graceful",
+    "Standing",
+    "Elegant"
+  ],
+  "generation_numbers": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "emoji": "🦩"
+}

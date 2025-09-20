@@ -1,0 +1,30 @@
+{
+  "name": "kiwi",
+  "category": "exotic_and_unique",
+  "description": "Flightless birds known for their uniqueness and national symbol status",
+  "traits": [
+    "flightless",
+    "unique",
+    "national",
+    "nocturnal",
+    "endemic"
+  ],
+  "names": [
+    "Apteryx",
+    "Flightless",
+    "New",
+    "Zealand",
+    "Nocturnal",
+    "Unique"
+  ],
+  "generation_numbers": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "emoji": "🐦"
+}

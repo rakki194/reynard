@@ -1,0 +1,30 @@
+{
+  "name": "capybara",
+  "category": "exotic_and_unique",
+  "description": "Giant rodents known for their calm nature and social behavior",
+  "traits": [
+    "calm",
+    "social",
+    "giant",
+    "rodent",
+    "peaceful"
+  ],
+  "names": [
+    "Hydrochoerus",
+    "Giant",
+    "Rodent",
+    "Water",
+    "Social",
+    "Calm"
+  ],
+  "generation_numbers": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "emoji": "🐹"
+}

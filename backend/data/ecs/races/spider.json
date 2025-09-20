@@ -1,0 +1,30 @@
+{
+  "name": "spider",
+  "category": "insects_and_arachnids",
+  "description": "Web-weaving arachnids known for their patience and precision",
+  "traits": [
+    "patient",
+    "precise",
+    "web-weaving",
+    "eight-legged",
+    "strategic"
+  ],
+  "names": [
+    "Aranea",
+    "Tarantula",
+    "Web",
+    "Silk",
+    "Venom",
+    "Eight"
+  ],
+  "generation_numbers": [
+    8,
+    16,
+    24,
+    32,
+    40,
+    48,
+    56
+  ],
+  "emoji": "🕷️"
+}

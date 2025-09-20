@@ -1,0 +1,30 @@
+{
+  "name": "jaguar",
+  "category": "big_cats_and_predators",
+  "description": "Powerful big cats known for their strength and swimming ability",
+  "traits": [
+    "powerful",
+    "aquatic",
+    "strong",
+    "territorial",
+    "fierce"
+  ],
+  "names": [
+    "Panthera",
+    "Onca",
+    "Amazon",
+    "Powerful",
+    "Spotted",
+    "Hunter"
+  ],
+  "generation_numbers": [
+    6,
+    12,
+    18,
+    24,
+    30,
+    36,
+    42
+  ],
+  "emoji": "🐆"
+}

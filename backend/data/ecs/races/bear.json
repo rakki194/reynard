@@ -1,0 +1,30 @@
+{
+  "name": "bear",
+  "category": "bears_and_large_mammals",
+  "description": "Powerful omnivores known for their strength and seasonal wisdom",
+  "traits": [
+    "powerful",
+    "strong",
+    "seasonal",
+    "protective",
+    "wise"
+  ],
+  "names": [
+    "Ursus",
+    "Grizzly",
+    "Polar",
+    "Black",
+    "Brown",
+    "Kodiak"
+  ],
+  "generation_numbers": [
+    10,
+    20,
+    30,
+    40,
+    50,
+    60,
+    70
+  ],
+  "emoji": "🐻"
+}

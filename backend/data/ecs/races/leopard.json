@@ -1,0 +1,30 @@
+{
+  "name": "leopard",
+  "category": "big_cats_and_predators",
+  "description": "Stealthy big cats known for their agility and camouflage",
+  "traits": [
+    "stealthy",
+    "agile",
+    "camouflaged",
+    "patient",
+    "adaptable"
+  ],
+  "names": [
+    "Panthera",
+    "Pardus",
+    "Spotted",
+    "Stealth",
+    "Agile",
+    "Climber"
+  ],
+  "generation_numbers": [
+    7,
+    14,
+    21,
+    28,
+    35,
+    42,
+    49
+  ],
+  "emoji": "🐆"
+}

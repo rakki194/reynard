@@ -1,0 +1,30 @@
+{
+  "name": "peacock",
+  "category": "exotic_and_unique",
+  "description": "Majestic birds known for their stunning displays and beauty",
+  "traits": [
+    "majestic",
+    "beautiful",
+    "displaying",
+    "colorful",
+    "proud"
+  ],
+  "names": [
+    "Pavo",
+    "Peacock",
+    "Feather",
+    "Display",
+    "Colorful",
+    "Majestic"
+  ],
+  "generation_numbers": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "emoji": "🦚"
+}

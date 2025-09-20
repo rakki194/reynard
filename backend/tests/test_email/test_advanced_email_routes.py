@@ -607,7 +607,10 @@ class TestAdvancedEmailRoutes:
         from app.auth.user_service import get_current_active_user
         app.dependency_overrides[get_current_active_user] = mock_auth_dependency
         try:
-            with patch('app.api.email_routes.ai_email_response_service.analyze_email_context') as mock_analyze:
+            with patch('app.api.email_routes.get_ai_email_response_service') as mock_get_service:
+                mock_service = Mock()
+                mock_get_service.return_value = mock_service
+                
                 # Mock context response
                 mock_context = EmailContext(
                     context_id="context1",
@@ -624,7 +627,7 @@ class TestAdvancedEmailRoutes:
                     agent_personality={"tone": "professional", "style": "concise"},
                     extracted_at=datetime.now()
                 )
-                mock_analyze.return_value = mock_context
+                mock_service.analyze_email_context.return_value = mock_context
                 
                 email_data = {
                     "subject": "Question about project",
@@ -660,7 +663,10 @@ class TestAdvancedEmailRoutes:
         from app.auth.user_service import get_current_active_user
         app.dependency_overrides[get_current_active_user] = mock_auth_dependency
         try:
-            with patch('app.api.email_routes.ai_email_response_service.generate_response') as mock_generate:
+            with patch('app.api.email_routes.get_ai_email_response_service') as mock_get_service:
+                mock_service = Mock()
+                mock_get_service.return_value = mock_service
+                
                 # Mock AI response
                 mock_response = AIResponse(
                     response_id="response1",
@@ -676,7 +682,7 @@ class TestAdvancedEmailRoutes:
                     model_used="gpt-3.5-turbo",
                     processing_time_ms=1200
                 )
-                mock_generate.return_value = mock_response
+                mock_service.generate_response.return_value = mock_response
                 
                 email_context = {
                     "context_id": "context1",
@@ -722,7 +728,10 @@ class TestAdvancedEmailRoutes:
         from app.auth.user_service import get_current_active_user
         app.dependency_overrides[get_current_active_user] = mock_auth_dependency
         try:
-            with patch('app.api.email_routes.ai_email_response_service.get_response_history') as mock_get_history:
+            with patch('app.api.email_routes.get_ai_email_response_service') as mock_get_service:
+                mock_service = Mock()
+                mock_get_service.return_value = mock_service
+                
                 # Mock response history
                 mock_responses = [
                     AIResponse(
@@ -748,7 +757,7 @@ class TestAdvancedEmailRoutes:
                         model_used="gpt-3.5-turbo"
                     )
                 ]
-                mock_get_history.return_value = mock_responses
+                mock_service.get_response_history.return_value = mock_responses
                 
                 response = client.get(
                     "/api/email/ai/response-history",
@@ -1076,8 +1085,10 @@ class TestAdvancedEmailRoutes:
         from app.auth.user_service import get_current_active_user
         app.dependency_overrides[get_current_active_user] = mock_auth_dependency
         try:
-            with patch('app.api.email_routes.ai_email_response_service.analyze_email_context') as mock_analyze:
-                mock_analyze.side_effect = Exception("Service error")
+            with patch('app.api.email_routes.get_ai_email_response_service') as mock_get_service:
+                mock_service = Mock()
+                mock_get_service.return_value = mock_service
+                mock_service.analyze_email_context.side_effect = Exception("Service error")
                 
                 response = client.post(
                     "/api/email/ai/analyze-context",

@@ -6,12 +6,23 @@ the Reynard framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-
 ## [Unreleased]
 
 ### Added
+- **Package Structure Reorganization**: Completely restructured packages folder from flat to semantically categorized layout (Vulpine)
+  - **AI & Machine Learning** (`packages/ai/`): Consolidated all AI/ML packages including annotating, caption, comfy, model-management, multimodal, nlweb, rag, tool-calling
+  - **Algorithms** (`packages/algorithms/`): Moved algorithm implementations to dedicated category
+  - **Core Framework** (`packages/core/`): Organized core packages including composables, config, connection, core, features, i18n, settings, testing, validation
+  - **Data Processing** (`packages/data/`): Grouped data-related packages including file-processing, repository-*, scraping, unified-repository
+  - **Development Tools** (`packages/dev-tools/`): Consolidated dev tools including adr-system, code-quality, dev-server-management, git-automation, humility-parser, project-architecture, queue-watcher
+  - **Documentation** (`packages/docs/`): Organized documentation packages including diagram-generator, docs-*
+  - **Media Processing** (`packages/media/`): Grouped media packages including 3d, audio, boundingbox, gallery, image, segmentation, video
+  - **Services** (`packages/services/`): Consolidated service packages including api-client, auth, chat, email, service-manager
+  - **UI & Components** (`packages/ui/`): Organized UI packages including animation, charts, colors, components-*, dashboard, error-boundaries, floating-panel, fluent-icons, games, monaco, themes, ui
 
 ### Changed
+- **Documentation Updates**: Updated README.md and all documentation to reflect new semantic package categorization (Vulpine)
+- **Workspace Configuration**: Updated pnpm-workspace.yaml to reflect new package structure (Vulpine)
 
 ### Deprecated
 
@@ -19,29 +30,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Queue Watcher Fix**: Fixed auto-start queue watcher VS Code task and updated project architecture to reflect todos folder moved to .cursor/todos (Control-Grandmaster-72)
+- **Project Architecture Enhancement**: Updated project architecture to include detailed semantic package categorization with all 76 packages across 9 categories (AI, Algorithms, Core, Data, Dev-tools, Docs, Media, Services, UI) (Control-Grandmaster-72)
+- **Complete Package Discovery**: Comprehensive scan revealed 109 total packages across the entire project - 77 in packages/, 22 in examples/, 1 in templates/, 1 in e2e/, 2 in scripts/, 1 in backend/, 1 in experimental/, 1 in .vscode/, and 3 in third_party/ (Control-Grandmaster-72)
+
 ### Security
 
+## [0.9.3] - 2025-09-20
 
+### Changed
 
-## [0.9.2] - 2025-09-20\
+- **ECS Architecture Consolidation**: Moved standalone ECS world service from `services/ecs-world` to `/home/kade/ecs_world` and updated all references to use FastAPI backend ECS exclusively. This consolidates ECS functionality into a single authoritative source (Vulpine)
 
-### Added\
-
-### Changed\
-
-### Deprecated\
-
-### Removed\
-
-### Fixed\
-
-### Security\
-
-
+## [0.9.2] - 2025-09-20
 
 ## [0.8.7] - 2025-09-20
 
 ### Fixed
+
 - **ECS Database**: Resolved SQLAlchemy reserved attribute conflict by renaming `PerformanceMetric.metadata` column to `metric_metadata` (Strategic-Fox-13)
 
 ### Added
@@ -418,6 +424,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Performance Testing**: Resolved ES module compatibility issues and configuration validation in E2E testing
 - **Validation Scripts**: Enhanced markdown link validation with improved error handling
 -
+
 ### Changed
 
 - **CLI Refactoring**: Refactored code-quality CLI from 478 lines to 88 lines following 140-line axiom, extracting command handlers and display utilities into modular components (Falls-Captain-15)

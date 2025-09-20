@@ -26,10 +26,7 @@
       "style": "foundation",
       "generation": 1,
       "fitness": 0.7346514536641916,
-      "parents": [
-        "agent_012",
-        "agent_009"
-      ]
+      "parents": ["agent_012", "agent_009"]
     },
     {
       "id": "offspring_agent_000_agent_012_20250920_112229",
@@ -38,10 +35,7 @@
       "style": "foundation",
       "generation": 1,
       "fitness": 0.7289424113959282,
-      "parents": [
-        "agent_000",
-        "agent_012"
-      ]
+      "parents": ["agent_000", "agent_012"]
     },
     {
       "id": "offspring_agent_006_agent_012_20250920_112229",
@@ -50,10 +44,7 @@
       "style": "mythological",
       "generation": 1,
       "fitness": 0.7179530745007724,
-      "parents": [
-        "agent_006",
-        "agent_012"
-      ]
+      "parents": ["agent_006", "agent_012"]
     },
     {
       "id": "offspring_agent_012_offspring_agent_006_agent_012_20250920_112229_20250920_112229",
@@ -62,10 +53,7 @@
       "style": "cyberpunk",
       "generation": 1,
       "fitness": 0.0,
-      "parents": [
-        "agent_012",
-        "offspring_agent_006_agent_012_20250920_112229"
-      ]
+      "parents": ["agent_012", "offspring_agent_006_agent_012_20250920_112229"]
     },
     {
       "id": "offspring_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_offspring_agent_012_agent_009_20250920_112229_20250920_112229",
@@ -98,10 +86,7 @@
       "style": "foundation",
       "generation": 1,
       "fitness": 0.0,
-      "parents": [
-        "agent_000",
-        "offspring_agent_006_agent_012_20250920_112229"
-      ]
+      "parents": ["agent_000", "offspring_agent_006_agent_012_20250920_112229"]
     },
     {
       "id": "offspring_offspring_agent_006_agent_012_20250920_112229_agent_000_20250920_112229",
@@ -110,10 +95,7 @@
       "style": "mythological",
       "generation": 1,
       "fitness": 0.0,
-      "parents": [
-        "offspring_agent_006_agent_012_20250920_112229",
-        "agent_000"
-      ]
+      "parents": ["offspring_agent_006_agent_012_20250920_112229", "agent_000"]
     },
     {
       "id": "offspring_offspring_agent_009_agent_012_20250920_112229_agent_000_20250920_112229",
@@ -122,10 +104,7 @@
       "style": "foundation",
       "generation": 1,
       "fitness": 0.0,
-      "parents": [
-        "offspring_agent_009_agent_012_20250920_112229",
-        "agent_000"
-      ]
+      "parents": ["offspring_agent_009_agent_012_20250920_112229", "agent_000"]
     },
     {
       "id": "offspring_offspring_agent_012_agent_009_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229",
@@ -146,10 +125,7 @@
       "style": "mythological",
       "generation": 1,
       "fitness": 0.0,
-      "parents": [
-        "offspring_agent_012_agent_009_20250920_112229",
-        "offspring_agent_006_agent_012_20250920_112229"
-      ]
+      "parents": ["offspring_agent_012_agent_009_20250920_112229", "offspring_agent_006_agent_012_20250920_112229"]
     },
     {
       "id": "offspring_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_offspring_agent_001_agent_014_20250920_112229_20250920_112229",
@@ -170,10 +146,7 @@
       "style": "foundation",
       "generation": 1,
       "fitness": 0.0,
-      "parents": [
-        "offspring_agent_000_agent_012_20250920_112229",
-        "offspring_agent_006_agent_012_20250920_112229"
-      ]
+      "parents": ["offspring_agent_000_agent_012_20250920_112229", "offspring_agent_006_agent_012_20250920_112229"]
     },
     {
       "id": "offspring_offspring_agent_001_agent_014_20250920_112229_agent_012_20250920_112229",
@@ -182,10 +155,7 @@
       "style": "exo",
       "generation": 1,
       "fitness": 0.0,
-      "parents": [
-        "offspring_agent_001_agent_014_20250920_112229",
-        "agent_012"
-      ]
+      "parents": ["offspring_agent_001_agent_014_20250920_112229", "agent_012"]
     },
     {
       "id": "offspring_offspring_agent_012_agent_009_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229",
@@ -218,10 +188,7 @@
       "style": "cyberpunk",
       "generation": 1,
       "fitness": 0.0,
-      "parents": [
-        "agent_000",
-        "agent_012"
-      ]
+      "parents": ["agent_000", "agent_012"]
     },
     {
       "id": "offspring_offspring_agent_006_agent_012_20250920_112229_permanent-release-manager-success-advisor-8_20250920_112229",
@@ -230,10 +197,7 @@
       "style": "mythological",
       "generation": 1,
       "fitness": 0.0,
-      "parents": [
-        "offspring_agent_006_agent_012_20250920_112229",
-        "permanent-release-manager-success-advisor-8"
-      ]
+      "parents": ["offspring_agent_006_agent_012_20250920_112229", "permanent-release-manager-success-advisor-8"]
     },
     {
       "id": "offspring_offspring_agent_000_agent_012_20250920_112229_offspring_permanent-release-manager-success-advisor-8_permanent-release-manager-success-advisor-8_20250920_112229_20250920_112229",

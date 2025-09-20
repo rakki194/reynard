@@ -182,8 +182,8 @@ A comprehensive email management system for Reynard with agent integration, prov
 Templates support variable substitution using `{variable_name}` syntax:
 
 ```html
-Subject: Welcome to Reynard, {agent_name}!
-Body: Hello {agent_name}, your agent ID is {agent_id} and you joined on {join_date}.
+Subject: Welcome to Reynard, {agent_name}! Body: Hello {agent_name}, your agent ID is {agent_id} and you joined on
+{join_date}.
 ```
 
 ### Template Categories
@@ -261,4 +261,3 @@ pnpm test
 ## License
 
 This project is part of the Reynard ecosystem and follows the same licensing terms.
-

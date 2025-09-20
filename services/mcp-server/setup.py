@@ -14,7 +14,6 @@ setup(
     install_requires=[
         "reynard-agent-naming",
         "reynard-gatekeeper",
-        "reynard-ecs-world",
         "aiohttp",
         "PyJWT",
         "asyncio",

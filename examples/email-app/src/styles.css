@@ -278,23 +278,22 @@ body {
   .email-main {
     flex-direction: column;
   }
-  
+
   .email-sidebar {
     width: 100%;
     border-right: none;
     border-bottom: 1px solid oklch(var(--color-border));
   }
-  
+
   .email-content {
     padding: 1rem;
   }
-  
+
   .email-header {
     padding: 1rem;
   }
-  
+
   .email-nav {
     flex-wrap: wrap;
   }
 }
-

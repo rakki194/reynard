@@ -9,7 +9,7 @@ import logging
 from pathlib import Path
 from datetime import datetime
 
-from typing import Any
+from typing import Any, Dict
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 
@@ -24,7 +24,7 @@ router = APIRouter(prefix="", tags=["ECS World"])
 
 # Pydantic models for API
 class AgentCreateRequest(BaseModel):
-    """Request model for creating a new agent in the ECS world."""
+    """Request model for creating a new agent in the ECS service."""
 
     agent_id: str
     spirit: str | None = "fox"
@@ -175,11 +175,11 @@ def get_postgres_service() -> PostgresECSWorldService:
 
 
 @router.get("/status", response_model=WorldStatusResponse)
-async def get_world_status() -> WorldStatusResponse:
+async def get_postgres_service_status() -> WorldStatusResponse:
     """Get the current ECS world status."""
     try:
         service = get_postgres_ecs_service()
-        status = await service.get_world_status()
+        status = await service.get_postgres_service_status()
         return WorldStatusResponse(**status)
     except Exception as e:
         logger.error("Error getting world status: %s", e)
@@ -188,7 +188,7 @@ async def get_world_status() -> WorldStatusResponse:
 
 @router.get("/agents", response_model=list[AgentResponse])
 async def get_agents() -> list[AgentResponse]:
-    """Get all agents in the world."""
+    """Get all agents in the service."""
     try:
         service = get_postgres_ecs_service()
         agents_data = await service.get_all_agents()
@@ -246,11 +246,11 @@ async def create_agent(request: AgentCreateRequest) -> AgentResponse:
 
 # @router.get("/agents/{agent_id}/mates")
 # async def find_compatible_mates(
-#     agent_id: str, max_results: int = 5, world: AgentWorld = Depends(get_world)
+#     agent_id: str, max_results: int = 5, service: PostgresECSWorldService = Depends(get_postgres_service)
 # ) -> dict[str, Any]:
     """Find compatible mates for an agent."""
     try:
-        mates = world.find_compatible_mates(agent_id, max_results)
+        mates = service.find_compatible_mates(agent_id, max_results)
         return {"agent_id": agent_id, "compatible_mates": mates}
     except Exception as e:
         logger.error("Error finding mates: %s", e)
@@ -259,11 +259,11 @@ async def create_agent(request: AgentCreateRequest) -> AgentResponse:
 
 @router.get("/agents/{agent1_id}/compatibility/{agent2_id}")
 async def analyze_compatibility(
-    agent1_id: str, agent2_id: str, world: AgentWorld = Depends(get_world)
+    agent1_id: str, agent2_id: str, service: PostgresECSWorldService = Depends(get_postgres_service)
 ) -> dict[str, Any]:
     """Analyze genetic compatibility between two agents."""
     try:
-        compatibility = world.analyze_genetic_compatibility(agent1_id, agent2_id)
+        compatibility = service.analyze_genetic_compatibility(agent1_id, agent2_id)
         return compatibility
     except Exception as e:
         logger.error("Error analyzing compatibility: %s", e)
@@ -272,11 +272,11 @@ async def analyze_compatibility(
 
 @router.get("/agents/{agent_id}/lineage")
 async def get_agent_lineage(
-    agent_id: str, depth: int = 3, world: AgentWorld = Depends(get_world)
+    agent_id: str, depth: int = 3, service: PostgresECSWorldService = Depends(get_postgres_service)
 ):
     """Get agent family tree and lineage."""
     try:
-        lineage = world.get_agent_lineage(agent_id, depth)
+        lineage = service.get_agent_lineage(agent_id, depth)
         return lineage
     except Exception as e:
         logger.error("Error getting lineage: %s", e)
@@ -284,10 +284,10 @@ async def get_agent_lineage(
 
 
 @router.post("/breeding/enable")
-async def enable_breeding(enabled: bool = True, world: AgentWorld = Depends(get_world)) -> dict[str, str]:
+async def enable_breeding(enabled: bool = True, service: PostgresECSWorldService = Depends(get_postgres_service)) -> dict[str, str]:
     """Enable or disable automatic breeding."""
     try:
-        world.enable_automatic_reproduction(enabled)
+        service.enable_automatic_reproduction(enabled)
         return {"message": f"Automatic breeding {'enabled' if enabled else 'disabled'}"}
     except Exception as e:
         logger.error("Error toggling breeding: %s", e)
@@ -295,10 +295,10 @@ async def enable_breeding(enabled: bool = True, world: AgentWorld = Depends(get_
 
 
 @router.get("/breeding/stats")
-async def get_breeding_stats(world: AgentWorld = Depends(get_world)) -> dict[str, Any]:
+async def get_breeding_stats(world: PostgresECSWorldService = Depends(get_postgres_service)) -> dict[str, Any]:
     """Get breeding statistics."""
     try:
-        stats = world.get_breeding_stats()
+        stats = service.get_breeding_stats()
         return stats
     except Exception as e:
         logger.error("Error getting breeding stats: %s", e)
@@ -309,10 +309,10 @@ async def get_breeding_stats(world: AgentWorld = Depends(get_world)) -> dict[str
 
 
 @router.get("/agents/{agent_id}/position", response_model=PositionResponse)
-async def get_agent_position(agent_id: str, world: AgentWorld = Depends(get_world)) -> PositionResponse:
+async def get_agent_position(agent_id: str, service: PostgresECSWorldService = Depends(get_postgres_service)) -> PositionResponse:
     """Get the current position of an agent."""
     try:
-        entity = world.get_entity(agent_id)
+        entity = service.get_entity(agent_id)
         if not entity:
             raise HTTPException(status_code=404, detail="Agent not found")
 
@@ -340,11 +340,11 @@ async def get_agent_position(agent_id: str, world: AgentWorld = Depends(get_worl
 
 
 @router.get("/agents/positions")
-async def get_all_agent_positions(world: AgentWorld = Depends(get_world)) -> dict[str, Any]:
-    """Get positions of all agents in the world."""
+async def get_all_agent_positions(world: PostgresECSWorldService = Depends(get_postgres_service)) -> dict[str, Any]:
+    """Get positions of all agents in the service."""
     try:
         positions = {}
-        for entity in world.get_agent_entities():
+        for entity in service.get_agent_entities():
             position_component = entity.get_component(PositionComponent)
             if position_component:
                 positions[entity.id] = {
@@ -364,11 +364,11 @@ async def get_all_agent_positions(world: AgentWorld = Depends(get_world)) -> dic
 
 @router.post("/agents/{agent_id}/move", response_model=PositionResponse)
 async def move_agent(
-    agent_id: str, request: MoveRequest, world: AgentWorld = Depends(get_world)
+    agent_id: str, request: MoveRequest, service: PostgresECSWorldService = Depends(get_postgres_service)
 ):
     """Move an agent to a specific position."""
     try:
-        entity = world.get_entity(agent_id)
+        entity = service.get_entity(agent_id)
         if not entity:
             raise HTTPException(status_code=404, detail="Agent not found")
 
@@ -401,15 +401,15 @@ async def move_agent(
 
 @router.post("/agents/{agent_id}/move_towards", response_model=PositionResponse)
 async def move_agent_towards(
-    agent_id: str, request: MoveTowardsRequest, world: AgentWorld = Depends(get_world)
+    agent_id: str, request: MoveTowardsRequest, service: PostgresECSWorldService = Depends(get_postgres_service)
 ):
     """Move an agent towards another agent."""
     try:
-        entity = world.get_entity(agent_id)
+        entity = service.get_entity(agent_id)
         if not entity:
             raise HTTPException(status_code=404, detail="Agent not found")
 
-        target_entity = world.get_entity(request.target_agent_id)
+        target_entity = service.get_entity(request.target_agent_id)
         if not target_entity:
             raise HTTPException(status_code=404, detail="Target agent not found")
 
@@ -460,12 +460,12 @@ async def move_agent_towards(
 
 @router.get("/agents/{agent1_id}/distance/{agent2_id}")
 async def get_agent_distance(
-    agent1_id: str, agent2_id: str, world: AgentWorld = Depends(get_world)
+    agent1_id: str, agent2_id: str, service: PostgresECSWorldService = Depends(get_postgres_service)
 ):
     """Get the distance between two agents."""
     try:
-        entity1 = world.get_entity(agent1_id)
-        entity2 = world.get_entity(agent2_id)
+        entity1 = service.get_entity(agent1_id)
+        entity2 = service.get_entity(agent2_id)
 
         if not entity1 or not entity2:
             raise HTTPException(status_code=404, detail="One or both agents not found")
@@ -496,11 +496,11 @@ async def get_agent_distance(
 
 @router.get("/agents/{agent_id}/nearby")
 async def get_nearby_agents(
-    agent_id: str, radius: float = 100.0, world: AgentWorld = Depends(get_world)
+    agent_id: str, radius: float = 100.0, service: PostgresECSWorldService = Depends(get_postgres_service)
 ):
     """Get all agents within a certain radius of an agent."""
     try:
-        entity = world.get_entity(agent_id)
+        entity = service.get_entity(agent_id)
         if not entity:
             raise HTTPException(status_code=404, detail="Agent not found")
 
@@ -511,7 +511,7 @@ async def get_nearby_agents(
             )
 
         nearby_agents = []
-        for other_entity in world.get_agent_entities():
+        for other_entity in service.get_agent_entities():
             if other_entity.id == agent_id:
                 continue
 
@@ -545,12 +545,12 @@ async def get_nearby_agents(
 
 @router.post("/agents/{agent_id}/interact")
 async def initiate_interaction(
-    agent_id: str, request: InteractionRequest, world: AgentWorld = Depends(get_world)
+    agent_id: str, request: InteractionRequest, service: PostgresECSWorldService = Depends(get_postgres_service)
 ):
     """Initiate an interaction between two agents."""
     try:
-        entity1 = world.get_entity(agent_id)
-        entity2 = world.get_entity(request.agent2_id)
+        entity1 = service.get_entity(agent_id)
+        entity2 = service.get_entity(request.agent2_id)
 
         if not entity1 or not entity2:
             raise HTTPException(status_code=404, detail="One or both agents not found")
@@ -607,11 +607,11 @@ async def send_chat_message(agent_id: str, request: ChatRequest):
 
 @router.get("/agents/{agent_id}/interactions")
 async def get_interaction_history(
-    agent_id: str, limit: int = 10, world: AgentWorld = Depends(get_world)
+    agent_id: str, limit: int = 10, service: PostgresECSWorldService = Depends(get_postgres_service)
 ):
     """Get the interaction history for an agent."""
     try:
-        entity = world.get_entity(agent_id)
+        entity = service.get_entity(agent_id)
         if not entity:
             raise HTTPException(status_code=404, detail="Agent not found")
 
@@ -653,11 +653,11 @@ async def get_interaction_history(
 
 @router.get("/agents/{agent_id}/relationships")
 async def get_agent_relationships(
-    agent_id: str, world: AgentWorld = Depends(get_world)
+    agent_id: str, service: PostgresECSWorldService = Depends(get_postgres_service)
 ):
     """Get all relationships for an agent."""
     try:
-        entity = world.get_entity(agent_id)
+        entity = service.get_entity(agent_id)
         if not entity:
             raise HTTPException(status_code=404, detail="Agent not found")
 
@@ -694,11 +694,11 @@ async def get_agent_relationships(
 
 @router.get("/agents/{agent_id}/social_stats", response_model=SocialStatsResponse)
 async def get_agent_social_stats(
-    agent_id: str, world: AgentWorld = Depends(get_world)
+    agent_id: str, service: PostgresECSWorldService = Depends(get_postgres_service)
 ) -> SocialStatsResponse:
     """Get social interaction statistics for an agent."""
     try:
-        entity = world.get_entity(agent_id)
+        entity = service.get_entity(agent_id)
         if not entity:
             raise HTTPException(status_code=404, detail="Agent not found")
 

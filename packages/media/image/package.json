@@ -1,0 +1,63 @@
+{
+  "name": "reynard-image",
+  "version": "0.2.0",
+  "description": "Image processing and display components for Reynard applications",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./components": {
+      "types": "./dist/components/index.d.ts",
+      "import": "./dist/components/index.js"
+    },
+    "./composables": {
+      "types": "./dist/composables/index.d.ts",
+      "import": "./dist/composables/index.js"
+    },
+    "./types": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/types/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc && vite build",
+    "dev": "vite build --watch",
+    "test": "source ../../../vitest.env.global && VITEST_AGENT_ID=image-package ../../../scripts/testing/vitest-global-queue.sh run image-package",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": ["reynard", "image", "media", "processing", "display", "gallery", "metadata"],
+  "author": "Reynard Framework",
+  "license": "MIT",
+  "dependencies": {
+    "reynard-core": "workspace:*",
+    "reynard-components-core": "workspace:*",
+    "reynard-components-charts": "workspace:*",
+    "reynard-components-dashboard": "workspace:*",
+    "reynard-components-themes": "workspace:*",
+    "reynard-components-utils": "workspace:*",
+    "reynard-file-processing": "workspace:*"
+  },
+  "devDependencies": {
+    "@solidjs/testing-library": "0.8.10",
+    "@types/node": "24.5.2",
+    "@vitest/coverage-v8": "3.2.4",
+    "@vitest/ui": "3.2.4",
+    "happy-dom": "^18.0.1",
+    "reynard-testing": "workspace:*",
+    "solid-js": "^1.8.0",
+    "typescript": "5.9.2",
+    "vite": "7.1.6",
+    "vite-plugin-solid": "2.11.8",
+    "vitest": "3.2.4"
+  },
+  "peerDependencies": {
+    "solid-js": "^1.8.0"
+  }
+}

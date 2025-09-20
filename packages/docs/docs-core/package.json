@@ -1,0 +1,65 @@
+{
+  "name": "reynard-docs-core",
+  "version": "0.1.2",
+  "description": "Core documentation rendering engine for Reynard framework",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./renderer": {
+      "types": "./dist/renderer/index.d.ts",
+      "import": "./dist/renderer/index.js"
+    },
+    "./parser": {
+      "types": "./dist/parser/index.d.ts",
+      "import": "./dist/parser/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
+    "test": "source ../../../vitest.env.global && VITEST_AGENT_ID=docs-core-package ../../../scripts/testing/vitest-global-queue.sh run docs-core-package",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "keywords": ["documentation", "markdown", "rendering", "reynard", "solidjs"],
+  "author": "Balazs Horvath",
+  "license": "MIT",
+  "dependencies": {
+    "solid-js": "1.9.9",
+    "marked": "16.2.1",
+    "highlight.js": "11.11.1",
+    "gray-matter": "4.0.3",
+    "reynard-core": "workspace:*",
+    "reynard-components-core": "workspace:*",
+    "reynard-components-charts": "workspace:*",
+    "reynard-components-dashboard": "workspace:*",
+    "reynard-components-themes": "workspace:*",
+    "reynard-components-utils": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/marked": "5.0.2",
+    "@types/highlight.js": "9.12.4",
+    "@types/node": "24.5.2",
+    "@vitest/coverage-v8": "3.2.4",
+    "@vitest/ui": "3.2.4",
+    "typescript": "5.9.2",
+    "vite": "7.1.6",
+    "vite-plugin-solid": "2.11.8",
+    "vitest": "3.2.4"
+  },
+  "peerDependencies": {
+    "solid-js": "1.9.9"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

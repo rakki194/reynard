@@ -1,0 +1,30 @@
+{
+  "name": "coyote",
+  "category": "canines_and_foxes",
+  "description": "Adaptable canines known for their resourcefulness and survival skills",
+  "traits": [
+    "adaptable",
+    "resourceful",
+    "survivor",
+    "clever",
+    "independent"
+  ],
+  "names": [
+    "Canis",
+    "Prairie",
+    "Brush",
+    "Desert",
+    "Trickster",
+    "Wily"
+  ],
+  "generation_numbers": [
+    4,
+    8,
+    12,
+    16,
+    20,
+    24,
+    28
+  ],
+  "emoji": "🐺"
+}

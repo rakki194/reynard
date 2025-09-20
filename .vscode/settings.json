@@ -236,10 +236,6 @@
   "python.testing.unittestEnabled": false,
   "python.testing.pytestArgs": ["backend/tests"],
 
-  "eslint.enable": true,
-  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
-  "eslint.workingDirectories": [".", "packages/*", "examples/*", "templates/*"],
-
   "prettier.enable": true,
   "prettier.requireConfig": false,
   "prettier.useEditorConfig": false,
@@ -250,10 +246,6 @@
     "MD033": false,
     "MD041": false
   },
-
-  "shellcheck.enable": true,
-  "shellcheck.executablePath": "shellcheck",
-  "shellcheck.run": "onSave",
 
   // Enable auto-save for markdown files to trigger validation
   "files.autoSave": "onFocusChange",

@@ -996,11 +996,11 @@ echo "🔍 Pre-staging junk file detection..."
 pre_staging_junk_check() {
     local junk_files=0
     local junk_report="pre-staging-junk-report.txt"
-    
+
     echo "📊 Pre-Staging Junk File Detection Report" > "$junk_report"
     echo "Generated: $(date)" >> "$junk_report"
     echo "=====================================" >> "$junk_report"
-    
+
     # Check for build artifacts in working directory
     local build_artifacts=$(find ./packages -name "*.js" -o -name "*.jsx" -o -name "*.d.ts" | grep -v node_modules | wc -l)
     if [ "$build_artifacts" -gt 0 ]; then
@@ -1009,7 +1009,7 @@ pre_staging_junk_check() {
         find ./packages -name "*.js" -o -name "*.jsx" -o -name "*.d.ts" | grep -v node_modules >> "$junk_report"
         junk_files=$((junk_files + build_artifacts))
     fi
-    
+
     # Check for dist directories
     local dist_dirs=$(find ./packages -name "dist" -type d | wc -l)
     if [ "$dist_dirs" -gt 0 ]; then
@@ -1018,7 +1018,7 @@ pre_staging_junk_check() {
         find ./packages -name "dist" -type d >> "$junk_report"
         junk_files=$((junk_files + dist_dirs))
     fi
-    
+
     if [ "$junk_files" -gt 0 ]; then
         echo "🚨 JUNK FILES DETECTED - Cleanup required before staging"
         echo "Total junk files: $junk_files" >> "$junk_report"

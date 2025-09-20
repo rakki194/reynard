@@ -3,10 +3,10 @@ import { useEmail } from "reynard-email/composables";
 
 export function EmailTemplates() {
   const emailComposable = useEmail();
-  
+
   const [showCreateForm, setShowCreateForm] = createSignal(false);
   const [editingTemplate, setEditingTemplate] = createSignal<any>(null);
-  
+
   const [newTemplate, setNewTemplate] = createSignal({
     name: "",
     subject: "",
@@ -23,7 +23,7 @@ export function EmailTemplates() {
     }
 
     const success = await emailComposable.saveTemplate(newTemplate());
-    
+
     if (success) {
       setNewTemplate({
         name: "",
@@ -43,7 +43,7 @@ export function EmailTemplates() {
   const handleDeleteTemplate = async (templateId: string) => {
     if (confirm("Are you sure you want to delete this template?")) {
       const success = await emailComposable.deleteTemplate(templateId);
-      
+
       if (success) {
         alert("Template deleted successfully!");
       } else {
@@ -73,17 +73,11 @@ export function EmailTemplates() {
       </div>
 
       <div class="templates-controls">
-        <button
-          class="email-button email-button-primary"
-          onClick={() => setShowCreateForm(true)}
-        >
+        <button class="email-button email-button-primary" onClick={() => setShowCreateForm(true)}>
           Create Template
         </button>
-        
-        <button
-          class="email-button email-button-secondary"
-          onClick={() => emailComposable.refreshTemplates()}
-        >
+
+        <button class="email-button email-button-secondary" onClick={() => emailComposable.refreshTemplates()}>
           Refresh
         </button>
       </div>
@@ -112,23 +106,23 @@ export function EmailTemplates() {
                 ×
               </button>
             </div>
-            
+
             <div class="email-form">
               <div class="email-form-group">
                 <label>Template Name *</label>
                 <input
                   type="text"
                   value={newTemplate().name}
-                  onInput={(e) => setNewTemplate(prev => ({ ...prev, name: e.currentTarget.value }))}
+                  onInput={e => setNewTemplate(prev => ({ ...prev, name: e.currentTarget.value }))}
                   placeholder="Enter template name..."
                 />
               </div>
-              
+
               <div class="email-form-group">
                 <label>Category</label>
                 <select
                   value={newTemplate().category}
-                  onChange={(e) => setNewTemplate(prev => ({ ...prev, category: e.currentTarget.value as any }))}
+                  onChange={e => setNewTemplate(prev => ({ ...prev, category: e.currentTarget.value as any }))}
                 >
                   <option value="admin">Admin</option>
                   <option value="agent">Agent</option>
@@ -136,45 +130,48 @@ export function EmailTemplates() {
                   <option value="system">System</option>
                 </select>
               </div>
-              
+
               <div class="email-form-group">
                 <label>Subject *</label>
                 <input
                   type="text"
                   value={newTemplate().subject}
-                  onInput={(e) => setNewTemplate(prev => ({ ...prev, subject: e.currentTarget.value }))}
+                  onInput={e => setNewTemplate(prev => ({ ...prev, subject: e.currentTarget.value }))}
                   placeholder="Enter email subject..."
                 />
               </div>
-              
+
               <div class="email-form-group">
                 <label>Body *</label>
                 <textarea
                   value={newTemplate().body}
-                  onInput={(e) => setNewTemplate(prev => ({ ...prev, body: e.currentTarget.value }))}
+                  onInput={e => setNewTemplate(prev => ({ ...prev, body: e.currentTarget.value }))}
                   placeholder="Enter email body..."
                   rows={6}
                 />
               </div>
-              
+
               <div class="email-form-group">
                 <label>HTML Body</label>
                 <textarea
                   value={newTemplate().html_body}
-                  onInput={(e) => setNewTemplate(prev => ({ ...prev, html_body: e.currentTarget.value }))}
+                  onInput={e => setNewTemplate(prev => ({ ...prev, html_body: e.currentTarget.value }))}
                   placeholder="Enter HTML email body (optional)..."
                   rows={6}
                 />
               </div>
-              
+
               <div class="email-form-group">
                 <label>Variables</label>
                 <input
                   type="text"
                   placeholder="Enter variables separated by commas (e.g., name, email, date)..."
-                  onKeyDown={(e) => {
+                  onKeyDown={e => {
                     if (e.key === "Enter") {
-                      const variables = e.currentTarget.value.split(",").map(v => v.trim()).filter(v => v);
+                      const variables = e.currentTarget.value
+                        .split(",")
+                        .map(v => v.trim())
+                        .filter(v => v);
                       setNewTemplate(prev => ({ ...prev, variables }));
                       e.currentTarget.value = "";
                     }
@@ -183,15 +180,17 @@ export function EmailTemplates() {
                 {newTemplate().variables.length > 0 && (
                   <div class="variables-list">
                     <For each={newTemplate().variables}>
-                      {(variable) => (
+                      {variable => (
                         <span class="variable-tag">
                           {`{${variable}}`}
                           <button
                             type="button"
-                            onClick={() => setNewTemplate(prev => ({
-                              ...prev,
-                              variables: prev.variables.filter(v => v !== variable)
-                            }))}
+                            onClick={() =>
+                              setNewTemplate(prev => ({
+                                ...prev,
+                                variables: prev.variables.filter(v => v !== variable),
+                              }))
+                            }
                           >
                             ×
                           </button>
@@ -201,7 +200,7 @@ export function EmailTemplates() {
                   </div>
                 )}
               </div>
-              
+
               <div class="form-actions">
                 <button
                   class="email-button email-button-secondary"
@@ -212,10 +211,7 @@ export function EmailTemplates() {
                 >
                   Cancel
                 </button>
-                <button
-                  class="email-button email-button-primary"
-                  onClick={handleCreateTemplate}
-                >
+                <button class="email-button email-button-primary" onClick={handleCreateTemplate}>
                   {editingTemplate() ? "Update Template" : "Create Template"}
                 </button>
               </div>
@@ -228,31 +224,23 @@ export function EmailTemplates() {
       <div class="templates-list">
         {emailComposable.templates().length > 0 ? (
           <For each={emailComposable.templates()}>
-            {(template) => (
+            {template => (
               <div class="template-card">
                 <div class="template-header">
                   <div class="template-info">
                     <h3 class="template-name">{template.name}</h3>
-                    <span class={`template-category ${template.category}`}>
-                      {template.category}
-                    </span>
+                    <span class={`template-category ${template.category}`}>{template.category}</span>
                   </div>
                   <div class="template-actions">
-                    <button
-                      class="email-button email-button-secondary"
-                      onClick={() => handleEditTemplate(template)}
-                    >
+                    <button class="email-button email-button-secondary" onClick={() => handleEditTemplate(template)}>
                       Edit
                     </button>
-                    <button
-                      class="email-button email-button-danger"
-                      onClick={() => handleDeleteTemplate(template.id)}
-                    >
+                    <button class="email-button email-button-danger" onClick={() => handleDeleteTemplate(template.id)}>
                       Delete
                     </button>
                   </div>
                 </div>
-                
+
                 <div class="template-content">
                   <div class="template-subject">
                     <strong>Subject:</strong> {template.subject}
@@ -261,28 +249,22 @@ export function EmailTemplates() {
                     <strong>Body:</strong> {template.body.substring(0, 200)}
                     {template.body.length > 200 ? "..." : ""}
                   </div>
-                  
+
                   {template.variables.length > 0 && (
                     <div class="template-variables">
                       <strong>Variables:</strong>
                       <div class="variables-list">
                         <For each={template.variables}>
-                          {(variable) => (
-                            <span class="variable-tag">{`{${variable}}`}</span>
-                          )}
+                          {variable => <span class="variable-tag">{`{${variable}}`}</span>}
                         </For>
                       </div>
                     </div>
                   )}
                 </div>
-                
+
                 <div class="template-meta">
-                  <span class="template-created">
-                    Created: {new Date(template.created_at).toLocaleDateString()}
-                  </span>
-                  <span class="template-updated">
-                    Updated: {new Date(template.updated_at).toLocaleDateString()}
-                  </span>
+                  <span class="template-created">Created: {new Date(template.created_at).toLocaleDateString()}</span>
+                  <span class="template-updated">Updated: {new Date(template.updated_at).toLocaleDateString()}</span>
                 </div>
               </div>
             )}
@@ -308,4 +290,3 @@ export function EmailTemplates() {
     </div>
   );
 }
-

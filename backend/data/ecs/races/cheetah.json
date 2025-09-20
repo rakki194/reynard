@@ -1,0 +1,30 @@
+{
+  "name": "cheetah",
+  "category": "big_cats_and_predators",
+  "description": "Fastest land animals known for their speed and grace",
+  "traits": [
+    "fast",
+    "graceful",
+    "speed",
+    "agile",
+    "focused"
+  ],
+  "names": [
+    "Acinonyx",
+    "Jubatus",
+    "Speed",
+    "Spotted",
+    "Fast",
+    "Graceful"
+  ],
+  "generation_numbers": [
+    4,
+    8,
+    12,
+    16,
+    20,
+    24,
+    28
+  ],
+  "emoji": "🐆"
+}
