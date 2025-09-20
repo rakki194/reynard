@@ -74,6 +74,21 @@ export class BackendAnnotationManager implements IAnnotationManager {
     this.isStarted = false;
   }
 
+  /**
+   * Initialize the manager
+   */
+  async initialize(): Promise<void> {
+    await this.start();
+  }
+
+  /**
+   * Shutdown the manager
+   */
+  async shutdown(): Promise<void> {
+    await this.stop();
+    await this.annotationService.shutdown();
+  }
+
   getService(): AnnotationService {
     return this.annotationService;
   }
@@ -164,3 +179,8 @@ export class BackendAnnotationManager implements IAnnotationManager {
 export function createBackendAnnotationManager(config: BackendAnnotationManagerConfig): BackendAnnotationManager {
   return new BackendAnnotationManager(config);
 }
+
+/**
+ * Alias for createBackendAnnotationManager for backward compatibility
+ */
+export const createAnnotationManager = createBackendAnnotationManager;

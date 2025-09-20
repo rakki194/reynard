@@ -4,7 +4,7 @@
  */
 
 import { Component, Show, createSignal, createEffect } from "solid-js";
-import { Button, TextField } from "reynard-components";
+import { Button, TextField } from "reynard-components-core";
 import { useSettings } from "../composables/useSettings";
 
 export interface ServiceManagementSettingsProps {

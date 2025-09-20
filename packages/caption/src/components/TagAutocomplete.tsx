@@ -11,254 +11,175 @@
  * - Suggestion filtering and ranking
  * - Integration with existing tag systems
  */
-
-import { Component, createSignal, createMemo, createEffect, onMount, onCleanup, For, Show } from "solid-js";
-
-export interface TagSuggestion {
-  text: string;
-  count?: number;
-  category?: string;
-  metadata?: Record<string, any>;
-}
-
-export interface TagAutocompleteProps {
-  /** Current input value */
-  value: string;
-  /** Callback when value changes */
-  onChange: (value: string) => void;
-  /** Callback when a suggestion is selected */
-  onSuggestionSelect: (suggestion: string) => void;
-  /** Callback when input is submitted */
-  onSubmit?: (value: string) => void;
-  /** Minimum characters before showing suggestions */
-  minCharacters?: number;
-  /** Maximum number of suggestions to show */
-  maxSuggestions?: number;
-  /** Debounce delay in milliseconds */
-  debounceDelay?: number;
-  /** Backend API endpoint for suggestions */
-  apiEndpoint?: string;
-  /** Whether to show suggestion counts */
-  showCounts?: boolean;
-  /** Whether to show suggestion categories */
-  showCategories?: boolean;
-  /** Placeholder text */
-  placeholder?: string;
-  /** Whether the input is disabled */
-  disabled?: boolean;
-  /** Additional CSS class */
-  className?: string;
-}
-
-export const TagAutocomplete: Component<TagAutocompleteProps> = props => {
-  const [query, setQuery] = createSignal(props.value);
-  const [suggestions, setSuggestions] = createSignal<TagSuggestion[]>([]);
-  const [selectedIndex, setSelectedIndex] = createSignal(-1);
-  const [isOpen, setIsOpen] = createSignal(false);
-  const [isLoading, setIsLoading] = createSignal(false);
-  const [error, setError] = createSignal<string | null>(null);
-
-  let inputRef: HTMLInputElement | undefined;
-  let suggestionsRef: HTMLDivElement | undefined;
-  let debounceTimer: ReturnType<typeof setTimeout> | undefined;
-
-  // Computed values
-  const hasSuggestions = createMemo(() => suggestions().length > 0);
-  const selectedSuggestion = createMemo(() => {
-    const index = selectedIndex();
-    return index >= 0 && index < suggestions().length ? suggestions()[index] : null;
-  });
-
-  // Debounced search function
-  const debouncedSearch = (searchQuery: string) => {
-    if (debounceTimer) {
-      clearTimeout(debounceTimer);
-    }
-
-    debounceTimer = setTimeout(() => {
-      fetchSuggestions(searchQuery);
-    }, props.debounceDelay || 300);
-  };
-
-  // Fetch suggestions from backend
-  const fetchSuggestions = async (searchQuery: string) => {
-    if (!searchQuery || searchQuery.length < (props.minCharacters || 2)) {
-      setSuggestions([]);
-      setIsOpen(false);
-      return;
-    }
-
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const endpoint = props.apiEndpoint || "/api/tags/autocomplete";
-      const response = await fetch(
-        `${endpoint}?q=${encodeURIComponent(searchQuery)}&limit=${props.maxSuggestions || 10}`
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-
-      if (data.suggestions && Array.isArray(data.suggestions)) {
-        setSuggestions(data.suggestions);
-        setIsOpen(true);
-        setSelectedIndex(-1);
-      } else {
-        setSuggestions([]);
-        setIsOpen(false);
-      }
-    } catch (err) {
-      console.error("Failed to fetch tag suggestions:", err);
-      setError(err instanceof Error ? err.message : "Failed to fetch suggestions");
-      setSuggestions([]);
-      setIsOpen(false);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Handle input changes
-  const handleInputChange = (e: Event) => {
-    const target = e.target as HTMLInputElement;
-    const value = target.value;
-
-    setQuery(value);
-    props.onChange(value);
-
-    // Trigger debounced search
-    debouncedSearch(value);
-  };
-
-  // Handle keyboard navigation
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (!isOpen() || !hasSuggestions()) {
-      // Handle submit when no suggestions are open
-      if (e.key === "Enter") {
-        e.preventDefault();
-        props.onSubmit?.(query());
-      }
-      return;
-    }
-
-    switch (e.key) {
-      case "ArrowDown":
-        e.preventDefault();
-        setSelectedIndex(prev => (prev < suggestions().length - 1 ? prev + 1 : 0));
-        break;
-
-      case "ArrowUp":
-        e.preventDefault();
-        setSelectedIndex(prev => (prev > 0 ? prev - 1 : suggestions().length - 1));
-        break;
-
-      case "Enter":
-        e.preventDefault();
-        if (selectedSuggestion()) {
-          handleSuggestionSelect(selectedSuggestion()!.text);
-        } else {
-          props.onSubmit?.(query());
+import { createSignal, createMemo, createEffect, onMount, onCleanup, For, Show } from "solid-js";
+export const TagAutocomplete = props => {
+    const [query, setQuery] = createSignal(props.value);
+    const [suggestions, setSuggestions] = createSignal([]);
+    const [selectedIndex, setSelectedIndex] = createSignal(-1);
+    const [isOpen, setIsOpen] = createSignal(false);
+    const [isLoading, setIsLoading] = createSignal(false);
+    const [error, setError] = createSignal(null);
+    let inputRef;
+    let suggestionsRef;
+    let debounceTimer;
+    // Computed values
+    const hasSuggestions = createMemo(() => suggestions().length > 0);
+    const selectedSuggestion = createMemo(() => {
+        const index = selectedIndex();
+        return index >= 0 && index < suggestions().length ? suggestions()[index] : null;
+    });
+    // Debounced search function
+    const debouncedSearch = (searchQuery) => {
+        if (debounceTimer) {
+            clearTimeout(debounceTimer);
         }
-        break;
-
-      case "Escape":
-        e.preventDefault();
-        setIsOpen(false);
-        setSelectedIndex(-1);
-        break;
-
-      case "Tab":
-        if (selectedSuggestion()) {
-          e.preventDefault();
-          handleSuggestionSelect(selectedSuggestion()!.text);
+        debounceTimer = setTimeout(() => {
+            fetchSuggestions(searchQuery);
+        }, props.debounceDelay || 300);
+    };
+    // Fetch suggestions from backend
+    const fetchSuggestions = async (searchQuery) => {
+        if (!searchQuery || searchQuery.length < (props.minCharacters || 2)) {
+            setSuggestions([]);
+            setIsOpen(false);
+            return;
         }
-        break;
-    }
-  };
-
-  // Handle suggestion selection
-  const handleSuggestionSelect = (suggestion: string) => {
-    setQuery(suggestion);
-    props.onChange(suggestion);
-    props.onSuggestionSelect(suggestion);
-    setIsOpen(false);
-    setSelectedIndex(-1);
-
-    // Focus back to input
-    inputRef?.focus();
-  };
-
-  // Handle suggestion click
-  const handleSuggestionClick = (suggestion: TagSuggestion) => {
-    handleSuggestionSelect(suggestion.text);
-  };
-
-  // Handle input focus
-  const handleInputFocus = () => {
-    if (hasSuggestions()) {
-      setIsOpen(true);
-    }
-  };
-
-  // Handle input blur
-  const handleInputBlur = (e: FocusEvent) => {
-    // Delay closing to allow clicking on suggestions
-    setTimeout(() => {
-      if (!suggestionsRef?.contains(document.activeElement)) {
+        setIsLoading(true);
+        setError(null);
+        try {
+            const endpoint = props.apiEndpoint || "/api/tags/autocomplete";
+            const response = await fetch(`${endpoint}?q=${encodeURIComponent(searchQuery)}&limit=${props.maxSuggestions || 10}`);
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            const data = await response.json();
+            if (data.suggestions && Array.isArray(data.suggestions)) {
+                setSuggestions(data.suggestions);
+                setIsOpen(true);
+                setSelectedIndex(-1);
+            }
+            else {
+                setSuggestions([]);
+                setIsOpen(false);
+            }
+        }
+        catch (err) {
+            console.error("Failed to fetch tag suggestions:", err);
+            setError(err instanceof Error ? err.message : "Failed to fetch suggestions");
+            setSuggestions([]);
+            setIsOpen(false);
+        }
+        finally {
+            setIsLoading(false);
+        }
+    };
+    // Handle input changes
+    const handleInputChange = (e) => {
+        const target = e.target;
+        const value = target.value;
+        setQuery(value);
+        props.onChange(value);
+        // Trigger debounced search
+        debouncedSearch(value);
+    };
+    // Handle keyboard navigation
+    const handleKeyDown = (e) => {
+        if (!isOpen() || !hasSuggestions()) {
+            // Handle submit when no suggestions are open
+            if (e.key === "Enter") {
+                e.preventDefault();
+                props.onSubmit?.(query());
+            }
+            return;
+        }
+        switch (e.key) {
+            case "ArrowDown":
+                e.preventDefault();
+                setSelectedIndex(prev => (prev < suggestions().length - 1 ? prev + 1 : 0));
+                break;
+            case "ArrowUp":
+                e.preventDefault();
+                setSelectedIndex(prev => (prev > 0 ? prev - 1 : suggestions().length - 1));
+                break;
+            case "Enter":
+                e.preventDefault();
+                if (selectedSuggestion()) {
+                    handleSuggestionSelect(selectedSuggestion().text);
+                }
+                else {
+                    props.onSubmit?.(query());
+                }
+                break;
+            case "Escape":
+                e.preventDefault();
+                setIsOpen(false);
+                setSelectedIndex(-1);
+                break;
+            case "Tab":
+                if (selectedSuggestion()) {
+                    e.preventDefault();
+                    handleSuggestionSelect(selectedSuggestion().text);
+                }
+                break;
+        }
+    };
+    // Handle suggestion selection
+    const handleSuggestionSelect = (suggestion) => {
+        setQuery(suggestion);
+        props.onChange(suggestion);
+        props.onSuggestionSelect(suggestion);
         setIsOpen(false);
         setSelectedIndex(-1);
-      }
-    }, 150);
-  };
-
-  // Handle click outside
-  const handleClickOutside = (e: MouseEvent) => {
-    const target = e.target as Node;
-    if (!inputRef?.contains(target) && !suggestionsRef?.contains(target)) {
-      setIsOpen(false);
-      setSelectedIndex(-1);
-    }
-  };
-
-  // Update query when props change
-  createEffect(() => {
-    if (props.value !== query()) {
-      setQuery(props.value);
-    }
-  });
-
-  // Set up event listeners
-  onMount(() => {
-    document.addEventListener("click", handleClickOutside);
-  });
-
-  onCleanup(() => {
-    document.removeEventListener("click", handleClickOutside);
-    if (debounceTimer) {
-      clearTimeout(debounceTimer);
-    }
-  });
-
-  return (
-    <div class={`tag-autocomplete ${props.className || ""}`}>
+        // Focus back to input
+        inputRef?.focus();
+    };
+    // Handle suggestion click
+    const handleSuggestionClick = (suggestion) => {
+        handleSuggestionSelect(suggestion.text);
+    };
+    // Handle input focus
+    const handleInputFocus = () => {
+        if (hasSuggestions()) {
+            setIsOpen(true);
+        }
+    };
+    // Handle input blur
+    const handleInputBlur = (e) => {
+        // Delay closing to allow clicking on suggestions
+        setTimeout(() => {
+            if (!suggestionsRef?.contains(document.activeElement)) {
+                setIsOpen(false);
+                setSelectedIndex(-1);
+            }
+        }, 150);
+    };
+    // Handle click outside
+    const handleClickOutside = (e) => {
+        const target = e.target;
+        if (!inputRef?.contains(target) && !suggestionsRef?.contains(target)) {
+            setIsOpen(false);
+            setSelectedIndex(-1);
+        }
+    };
+    // Update query when props change
+    createEffect(() => {
+        if (props.value !== query()) {
+            setQuery(props.value);
+        }
+    });
+    // Set up event listeners
+    onMount(() => {
+        document.addEventListener("click", handleClickOutside);
+    });
+    onCleanup(() => {
+        document.removeEventListener("click", handleClickOutside);
+        if (debounceTimer) {
+            clearTimeout(debounceTimer);
+        }
+    });
+    return (<div class={`tag-autocomplete ${props.className || ""}`}>
       <div class="autocomplete-input-container">
-        <input
-          ref={inputRef}
-          type="text"
-          value={query()}
-          onInput={handleInputChange}
-          onKeyDown={handleKeyDown}
-          onFocus={handleInputFocus}
-          onBlur={handleInputBlur}
-          placeholder={props.placeholder || "Type to search tags..."}
-          disabled={props.disabled}
-          class="autocomplete-input"
-          autocomplete="off"
-          spellcheck={false}
-        />
+        <input ref={inputRef} type="text" value={query()} onInput={handleInputChange} onKeyDown={handleKeyDown} onFocus={handleInputFocus} onBlur={handleInputBlur} placeholder={props.placeholder || "Type to search tags..."} disabled={props.disabled} class="autocomplete-input" autocomplete="off" spellcheck={false}/>
 
         <Show when={isLoading()}>
           <div class="loading-indicator">
@@ -279,16 +200,11 @@ export const TagAutocomplete: Component<TagAutocompleteProps> = props => {
 
           <Show when={hasSuggestions()}>
             <For each={suggestions()}>
-              {(suggestion, index) => (
-                <div
-                  class="suggestion-item"
-                  classList={{
-                    selected: index() === selectedIndex(),
-                    "has-category": !!suggestion.category,
-                    "has-count": !!suggestion.count,
-                  }}
-                  onClick={() => handleSuggestionClick(suggestion)}
-                >
+              {(suggestion, index) => (<div class="suggestion-item" classList={{
+                selected: index() === selectedIndex(),
+                "has-category": !!suggestion.category,
+                "has-count": !!suggestion.count,
+            }} onClick={() => handleSuggestionClick(suggestion)}>
                   <div class="suggestion-content">
                     <span class="suggestion-text">{suggestion.text}</span>
 
@@ -300,8 +216,7 @@ export const TagAutocomplete: Component<TagAutocompleteProps> = props => {
                       <span class="suggestion-count">{suggestion.count}</span>
                     </Show>
                   </div>
-                </div>
-              )}
+                </div>)}
             </For>
           </Show>
 
@@ -321,6 +236,5 @@ export const TagAutocomplete: Component<TagAutocompleteProps> = props => {
           <span>Escape Close</span>
         </div>
       </div>
-    </div>
-  );
+    </div>);
 };

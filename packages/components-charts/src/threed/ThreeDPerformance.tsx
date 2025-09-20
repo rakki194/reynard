@@ -2,38 +2,27 @@
  * 3D Performance Monitoring Component
  * Performance metrics and color generation display
  */
-
-import { Component, For, createEffect } from "solid-js";
+import { For, createEffect } from "solid-js";
 import { useVisualizationEngine } from "reynard-charts";
 import { fluentIconsPackage } from "reynard-fluent-icons";
-
-interface ThreeDPerformanceProps {
-  theme: string;
-  pointCount: number;
-}
-
-export const ThreeDPerformance: Component<ThreeDPerformanceProps> = props => {
-  // Initialize visualization engine for OKLCH colors
-  const visualization = useVisualizationEngine({
-    theme: props.theme as "light" | "dark" | "gray" | "banana" | "strawberry" | "peanut",
-    useOKLCH: true,
-  });
-
-  // Color swatch refs
-  const colorSwatchRefs: HTMLElement[] = [];
-
-  // Update color swatch backgrounds
-  createEffect(() => {
-    const colors = visualization.generateColors(8);
-    colorSwatchRefs.forEach((ref, index) => {
-      if (ref && colors[index]) {
-        ref.style.backgroundColor = colors[index];
-      }
+export const ThreeDPerformance = props => {
+    // Initialize visualization engine for OKLCH colors
+    const visualization = useVisualizationEngine({
+        theme: props.theme,
+        useOKLCH: true,
     });
-  });
-
-  return (
-    <div class="performance-section">
+    // Color swatch refs
+    const colorSwatchRefs = [];
+    // Update color swatch backgrounds
+    createEffect(() => {
+        const colors = visualization.generateColors(8);
+        colorSwatchRefs.forEach((ref, index) => {
+            if (ref && colors[index]) {
+                ref.style.backgroundColor = colors[index];
+            }
+        });
+    });
+    return (<div class="performance-section">
       <h2>Performance Monitoring</h2>
       <div class="performance-grid">
         <div class="performance-card">
@@ -63,14 +52,10 @@ export const ThreeDPerformance: Component<ThreeDPerformanceProps> = props => {
           <div class="color-demo">
             <div class="color-palette">
               <For each={visualization.generateColors(8)}>
-                {(color, index) => (
-                  <div
-                    class="color-swatch"
-                    ref={el => {
-                      if (el) colorSwatchRefs[index()] = el;
-                    }}
-                  />
-                )}
+                {(color, index) => (<div class="color-swatch" ref={el => {
+                if (el)
+                    colorSwatchRefs[index()] = el;
+            }}/>)}
               </For>
             </div>
             <p>OKLCH 3D Color Palette</p>
@@ -81,52 +66,39 @@ export const ThreeDPerformance: Component<ThreeDPerformanceProps> = props => {
           <h3>Interaction Features</h3>
           <div class="features-list">
             <div class="feature-item">
-              {fluentIconsPackage.getIcon("hand") && (
-                <span class="feature-icon">
-                  <div
-                    // eslint-disable-next-line solid/no-innerhtml
-                    innerHTML={fluentIconsPackage.getIcon("hand")?.outerHTML}
-                  />
-                </span>
-              )}
+              {fluentIconsPackage.getIcon("hand") && (<span class="feature-icon">
+                  <div 
+        // eslint-disable-next-line solid/no-innerhtml
+        innerHTML={fluentIconsPackage.getIcon("hand")?.outerHTML}/>
+                </span>)}
               <span>Pan & Zoom</span>
             </div>
             <div class="feature-item">
-              {fluentIconsPackage.getIcon("target") && (
-                <span class="feature-icon">
-                  <div
-                    // eslint-disable-next-line solid/no-innerhtml
-                    innerHTML={fluentIconsPackage.getIcon("target")?.outerHTML}
-                  />
-                </span>
-              )}
+              {fluentIconsPackage.getIcon("target") && (<span class="feature-icon">
+                  <div 
+        // eslint-disable-next-line solid/no-innerhtml
+        innerHTML={fluentIconsPackage.getIcon("target")?.outerHTML}/>
+                </span>)}
               <span>Point Selection</span>
             </div>
             <div class="feature-item">
-              {fluentIconsPackage.getIcon("color") && (
-                <span class="feature-icon">
-                  <div
-                    // eslint-disable-next-line solid/no-innerhtml
-                    innerHTML={fluentIconsPackage.getIcon("color")?.outerHTML}
-                  />
-                </span>
-              )}
+              {fluentIconsPackage.getIcon("color") && (<span class="feature-icon">
+                  <div 
+        // eslint-disable-next-line solid/no-innerhtml
+        innerHTML={fluentIconsPackage.getIcon("color")?.outerHTML}/>
+                </span>)}
               <span>Color Mapping</span>
             </div>
             <div class="feature-item">
-              {fluentIconsPackage.getIcon("play") && (
-                <span class="feature-icon">
-                  <div
-                    // eslint-disable-next-line solid/no-innerhtml
-                    innerHTML={fluentIconsPackage.getIcon("play")?.outerHTML}
-                  />
-                </span>
-              )}
+              {fluentIconsPackage.getIcon("play") && (<span class="feature-icon">
+                  <div 
+        // eslint-disable-next-line solid/no-innerhtml
+        innerHTML={fluentIconsPackage.getIcon("play")?.outerHTML}/>
+                </span>)}
               <span>Animations</span>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
 };

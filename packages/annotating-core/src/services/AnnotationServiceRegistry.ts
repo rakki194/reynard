@@ -5,7 +5,7 @@
  * that integrates with the ai-shared ServiceRegistry for lifecycle management.
  */
 
-import { ServiceRegistry, getServiceRegistry, BaseAIService, ServiceConfig } from "reynard-ai-shared";
+import { ServiceRegistry, getServiceRegistry } from "reynard-ai-shared";
 import {
   AISharedBackendAnnotationService,
   AISharedBackendAnnotationServiceConfig,

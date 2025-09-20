@@ -34,7 +34,7 @@ export default defineConfig({
           "reynard-themes": "ReynardThemes",
           "reynard-fluent-icons": "ReynardFluentIcons",
           "reynard-charts": "ReynardCharts",
-          "reynard-components": "ReynardComponents",
+          "reynard-components-core": "ReynardComponentsCore",
           "chart.js": "Chart",
           "solid-chartjs": "SolidChartJS",
           "chartjs-adapter-date-fns": "ChartJSAdapterDateFns",

@@ -4,94 +4,47 @@
  * Sub-components for the Caption Generator to keep the main component
  * under the 140-line limit.
  */
-
-import type { CaptionResult } from "reynard-annotating-core";
-import { Component, For, Show } from "solid-js";
-import type { GeneratorInfo } from "../composables";
-
+import { For, Show } from "solid-js";
 // Model Selection Component
-export const ModelSelection: Component<{
-  generators: GeneratorInfo[];
-  selectedModel: string;
-  onModelSelect: (model: string) => void;
-}> = props => (
-  <div class="model-selection">
+export const ModelSelection = props => (<div class="model-selection">
     <label class="model-label">Select Model:</label>
     <div class="model-grid">
       <For each={props.generators}>
-        {generator => (
-          <button
-            type="button"
-            class="model-card"
-            classList={{
-              "model-card--selected": props.selectedModel === generator.name,
-              "model-card--unavailable": !generator.available,
-            }}
-            onClick={() => generator.available && props.onModelSelect(generator.name)}
-            disabled={!generator.available}
-          >
+        {generator => (<button type="button" class="model-card" classList={{
+            "model-card--selected": props.selectedModel === generator.name,
+            "model-card--unavailable": !generator.available,
+        }} onClick={() => generator.available && props.onModelSelect(generator.name)} disabled={!generator.available}>
             <div class="model-name">{generator.displayName}</div>
             <div class="model-description">{generator.description}</div>
             <Show when={!generator.available}>
               <div class="model-status">Unavailable</div>
             </Show>
-          </button>
-        )}
+          </button>)}
       </For>
     </div>
-  </div>
-);
-
+  </div>);
 // Image Upload Component
-export const ImageUpload: Component<{
-  imagePreview: string | null;
-  imageFile: File | null;
-  isDragOver: boolean;
-  onFileSelect: (file: File) => void;
-  onDragOver: (e: DragEvent) => void;
-  onDragLeave: (e: DragEvent) => void;
-  onDrop: (e: DragEvent) => void;
-  onFileInputClick: () => void;
-  fileInputRef: HTMLInputElement | undefined;
-}> = props => (
-  <div class="image-upload">
+export const ImageUpload = props => (<div class="image-upload">
     <label class="upload-label">Upload Image:</label>
-    <div
-      class="upload-area"
-      classList={{
+    <div class="upload-area" classList={{
         "upload-area--drag-over": props.isDragOver,
         "upload-area--has-file": !!props.imageFile,
-      }}
-      onDragOver={e => props.onDragOver(e)}
-      onDragLeave={e => props.onDragLeave(e)}
-      onDrop={e => props.onDrop(e)}
-      onClick={() => props.onFileInputClick()}
-    >
-      <input
-        ref={props.fileInputRef}
-        type="file"
-        accept="image/*"
-        style={{ display: "none" }}
-        onChange={e => {
-          const file = e.target.files?.[0];
-          if (file) props.onFileSelect(file);
-        }}
-      />
+    }} onDragOver={e => props.onDragOver(e)} onDragLeave={e => props.onDragLeave(e)} onDrop={e => props.onDrop(e)} onClick={() => props.onFileInputClick()}>
+      <input ref={props.fileInputRef} type="file" accept="image/*" style={{ display: "none" }} onChange={e => {
+        const file = e.target.files?.[0];
+        if (file)
+            props.onFileSelect(file);
+    }}/>
 
-      <Show
-        when={props.imagePreview}
-        fallback={
-          <div class="upload-placeholder">
+      <Show when={props.imagePreview} fallback={<div class="upload-placeholder">
             <div class="upload-icon">📷</div>
             <div class="upload-text">
               <strong>Click to upload</strong> or drag and drop
             </div>
             <div class="upload-hint">PNG, JPG, GIF up to 10MB</div>
-          </div>
-        }
-      >
+          </div>}>
         <div class="image-preview">
-          <img src={props.imagePreview!} alt="Preview" />
+          <img src={props.imagePreview} alt="Preview"/>
           <div class="image-info">
             <div class="image-name">{props.imageFile?.name}</div>
             <div class="image-size">{props.imageFile ? (props.imageFile.size / 1024 / 1024).toFixed(2) : "0"} MB</div>
@@ -99,16 +52,9 @@ export const ImageUpload: Component<{
         </div>
       </Show>
     </div>
-  </div>
-);
-
+  </div>);
 // Generation Results Component
-export const GenerationResults: Component<{
-  result: CaptionResult;
-  selectedModel: string;
-  captionData: unknown;
-}> = props => (
-  <div class="generation-results">
+export const GenerationResults = props => (<div class="generation-results">
     <h4 class="results-title">Generated Caption:</h4>
     <div class="results-content">
       <div class="caption-display">
@@ -130,5 +76,4 @@ export const GenerationResults: Component<{
         <span class="result-value">{props.result.success ? "Yes" : "No"}</span>
       </div>
     </div>
-  </div>
-);
+  </div>);

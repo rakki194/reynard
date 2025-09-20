@@ -11,6 +11,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
+from email.utils import formatdate, make_msgid
 from typing import List, Optional, Dict, Any
 from pathlib import Path
 import os
@@ -22,7 +23,7 @@ logger = logging.getLogger(__name__)
 class EmailConfig:
     """Email configuration settings."""
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")
         self.smtp_port = int(os.getenv("SMTP_PORT", "587"))
         self.smtp_username = os.getenv("SMTP_USERNAME", "")
@@ -99,11 +100,21 @@ class EmailService:
             Exception: If email sending fails
         """
         try:
-            # Create message
+            # Create message with improved headers
             msg = MIMEMultipart('alternative')
             msg['From'] = f"{self.config.from_name} <{self.config.from_email}>"
             msg['To'] = ", ".join(message.to_emails)
             msg['Subject'] = message.subject
+            msg['Date'] = formatdate(localtime=True)
+            msg['Message-ID'] = make_msgid(domain='gmail.com')
+            msg['MIME-Version'] = '1.0'
+            msg['X-Mailer'] = 'Reynard Email Service v1.0'
+            msg['X-Priority'] = '3'
+            msg['X-MSMail-Priority'] = 'Normal'
+            
+            # Add authentication headers for better deliverability
+            msg['X-Authenticated-User'] = self.config.from_email
+            msg['X-Originating-IP'] = '[127.0.0.1]'
             
             if message.cc_emails:
                 msg['Cc'] = ", ".join(message.cc_emails)
@@ -139,7 +150,7 @@ class EmailService:
             message.sent_at = datetime.now()
             message.message_id = msg['Message-ID']
             
-            logger.info(f"Email sent successfully to {message.to_emails}")
+            logger.info("Email sent successfully to %s", message.to_emails)
             
             return {
                 "success": True,
@@ -149,7 +160,7 @@ class EmailService:
             }
             
         except Exception as e:
-            logger.error(f"Failed to send email: {e}")
+            logger.error("Failed to send email: %s", e)
             raise
     
     async def _send_smtp(self, msg: MIMEMultipart, message: EmailMessage) -> None:
@@ -164,23 +175,33 @@ class EmailService:
         )
     
     def _send_smtp_sync(self, msg: MIMEMultipart, message: EmailMessage) -> None:
-        """Synchronous SMTP sending."""
+        """Synchronous SMTP sending with improved authentication."""
         server = None
         try:
+            logger.info("Connecting to %s:%s", self.config.smtp_server, self.config.smtp_port)
+            
             # Connect to server
             if self.config.use_tls:
                 server = smtplib.SMTP(self.config.smtp_server, self.config.smtp_port)
+                server.set_debuglevel(0)  # Set to 1 for debug output
                 server.starttls()
             else:
                 server = smtplib.SMTP_SSL(self.config.smtp_server, self.config.smtp_port)
+                server.set_debuglevel(0)
             
-            # Login
+            # Login with proper authentication
+            logger.info("Authenticating as %s", self.config.smtp_username)
             server.login(self.config.smtp_username, self.config.smtp_password)
             
             # Send email
             all_recipients = message.to_emails + message.cc_emails + message.bcc_emails
+            logger.info("Sending email to %s", all_recipients)
             server.send_message(msg, to_addrs=all_recipients)
+            logger.info("Email sent successfully!")
             
+        except Exception as e:
+            logger.error("SMTP Error: %s", e)
+            raise
         finally:
             if server:
                 server.quit()

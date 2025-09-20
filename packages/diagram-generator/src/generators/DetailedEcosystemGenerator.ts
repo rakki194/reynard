@@ -5,7 +5,7 @@
  * between all packages, components, and their actual imports/exports
  */
 
-import { DiagramGenerator, DiagramOutput, DiagramMetadata, DiagramGenerationConfig } from "../types.js";
+import { DiagramGenerator, DiagramOutput, DiagramMetadata, DiagramGenerationConfig, ComponentRelationship } from "../types.js";
 import { CodebaseAnalysis } from "../types.js";
 
 export interface DetailedEcosystemAnalysis {
@@ -19,7 +19,7 @@ export interface DetailedPackageAnalysis {
   name: string;
   path: string;
   type: "frontend" | "backend" | "service";
-  importance: "critical" | "important" | "optional";
+  importance: "critical" | "important" | "optional" | "excluded";
   components: DetailedComponentAnalysis[];
   dependencies: string[];
   exports: string[];
@@ -84,6 +84,10 @@ export class DetailedEcosystemGenerator implements DiagramGenerator {
   type = "detailed-ecosystem" as const;
   description = "Generates comprehensive diagrams showing detailed relationships between all packages and components";
 
+  validate(analysis: CodebaseAnalysis): boolean {
+    return analysis.packages.length > 0;
+  }
+
   async generate(analysis: CodebaseAnalysis, config: DiagramGenerationConfig): Promise<DiagramOutput> {
     const detailedAnalysis = this.analyzeDetailedEcosystem(analysis);
     const mermaidContent = this.generateDetailedMermaidContent(detailedAnalysis, config);
@@ -126,7 +130,7 @@ export class DetailedEcosystemGenerator implements DiagramGenerator {
         exports: comp.exports || [],
         imports: this.extractComponentImports(comp),
         dependencies: comp.dependencies || [],
-        relationships: comp.relationships || [],
+        relationships: this.mapComponentRelationships(comp.relationships || [], comp.name),
         complexity: comp.complexity || 1,
       }));
 
@@ -411,6 +415,15 @@ export class DetailedEcosystemGenerator implements DiagramGenerator {
   private extractComponentImports(component: any): string[] {
     // Extract imports from component relationships or file analysis
     return component.relationships?.filter((rel: any) => rel.type === "imports").map((rel: any) => rel.target) || [];
+  }
+
+  private mapComponentRelationships(relationships: ComponentRelationship[], sourceComponent: string): ComponentRelationshipAnalysis[] {
+    return relationships.map(rel => ({
+      source: sourceComponent,
+      target: rel.component,
+      type: rel.type as "imports" | "exports" | "uses",
+      strength: rel.strength,
+    }));
   }
 
   private determinePackageType(pkg: any): "frontend" | "backend" | "service" {

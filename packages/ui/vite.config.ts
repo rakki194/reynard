@@ -17,7 +17,7 @@ export default defineConfig({
           "solid-js": "solid",
           "solid-js/web": "solidWeb",
           "reynard-core": "ReynardCore",
-          "reynard-components": "ReynardComponents",
+          "reynard-components-core": "ReynardComponentsCore",
         },
         assetFileNames: assetInfo => {
           // Ensure consistent CSS naming - always use styles.css

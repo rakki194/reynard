@@ -3,7 +3,7 @@
  */
 
 import { createSignal } from "solid-js";
-import type { RAGQueryRequest, RAGQueryResponse, RAGStatsResponse } from "../generated/index.js";
+import type { RAGQueryRequest, RAGQueryResponse, RAGStatsResponse } from "../generated/index";
 
 export interface UseRAGOptions {
   basePath?: string;

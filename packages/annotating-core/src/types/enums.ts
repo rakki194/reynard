@@ -5,12 +5,7 @@
  * the annotation system for backend integration.
  */
 
-export enum CaptionType {
-  CAPTION = "caption",
-  TAGS = "tags",
-  E621 = "e621",
-  TOML = "toml",
-}
+// CaptionType is imported from reynard-ai-shared to maintain consistency
 
 export enum ModelCategory {
   LIGHTWEIGHT = "lightweight", // Fast, small models (JTP2, WDV3)

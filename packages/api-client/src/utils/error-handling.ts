@@ -2,7 +2,7 @@
  * Error handling utilities for API client
  */
 
-import type { ApiError } from "../types.js";
+import type { ApiError } from "../types";
 import { useI18n } from "reynard-i18n";
 
 export class ReynardApiError extends Error implements ApiError {

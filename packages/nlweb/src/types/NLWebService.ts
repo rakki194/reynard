@@ -4,9 +4,9 @@
  * Type definitions for NLWeb service.
  */
 
-import { NLWebToolRegistry } from "./NLWebTool.js";
-import { NLWebSuggestionRequest, NLWebSuggestionResponse } from "./NLWebSuggestion.js";
-import { NLWebHealthStatus, NLWebConfiguration } from "./NLWebHealth.js";
+import type { NLWebToolRegistry } from "./NLWebTool.js";
+import type { NLWebSuggestionRequest, NLWebSuggestionResponse } from "./NLWebSuggestion.js";
+import type { NLWebHealthStatus, NLWebConfiguration } from "./NLWebHealth.js";
 
 export interface NLWebService {
   /** Get the router instance */

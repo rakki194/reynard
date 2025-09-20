@@ -4,7 +4,7 @@
 
 import { Component, For, Show } from "solid-js";
 import { Button, Modal } from "reynard-components";
-import { CaptionType } from "reynard-annotating";
+import { CaptionType } from "reynard-annotating-core";
 import { TagBubble, CaptionInput } from "reynard-caption";
 import type { CaptionWorkflow } from "../types";
 

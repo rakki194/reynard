@@ -4,7 +4,7 @@
  */
 
 import { Component, createSignal, createMemo, Show, splitProps } from "solid-js";
-import { Button, Toggle } from "reynard-components";
+import { Button, Toggle } from "reynard-components-core";
 import { PasswordStrengthMeter } from "./PasswordStrengthMeter";
 import type { RegisterData } from "../types";
 import { validateEmail, validateUsername } from "../utils";
@@ -332,9 +332,8 @@ export const RegisterForm: Component<RegisterFormProps> = props => {
                 <Toggle
                   size="sm"
                   checked={acceptTerms()}
-                  onChange={e => setAcceptTerms(e.target.checked)}
+                  onChange={checked => setAcceptTerms(checked)}
                   disabled={local.loading}
-                  required
                 />
                 <span class="register-form__checkbox-mark"></span>
                 <span class="register-form__checkbox-label">
@@ -353,10 +352,9 @@ export const RegisterForm: Component<RegisterFormProps> = props => {
               <label class="register-form__checkbox">
                 <Toggle
                   size="sm"
-                  checked={local.acceptPrivacy}
-                  onChange={e => setAcceptPrivacy(e.target.checked)}
+                  checked={acceptPrivacy()}
+                  onChange={checked => setAcceptPrivacy(checked)}
                   disabled={local.loading}
-                  required
                 />
                 <span class="register-form__checkbox-mark"></span>
                 <span class="register-form__checkbox-label">

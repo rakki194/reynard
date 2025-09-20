@@ -20,7 +20,7 @@ export interface CaptionGeneratorHandlers {
  */
 export function useCaptionGeneratorHandlers(
   state: CaptionGeneratorState,
-  manager: import("reynard-annotating").BackendAnnotationManager | null,
+  manager: import("reynard-annotating-core").BackendAnnotationManager | null,
   onCaptionGenerated?: (result: import("reynard-annotating-core").CaptionResult) => void,
   onGenerationError?: (error: Error) => void
 ): CaptionGeneratorHandlers {

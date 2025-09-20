@@ -16,7 +16,7 @@ import {
   AnyAnnotationEvent,
 } from "../types/index.js";
 import { CaptionApiClient, createCaptionApiClient } from "../clients/index.js";
-import { SimpleEventManager } from "./EventManager.js";
+import { EventManager } from "./EventManager.js";
 import { BatchProcessor } from "./BatchProcessor.js";
 import { SingleCaptionProcessor } from "./SingleCaptionProcessor.js";
 import { GeneratorManager } from "./GeneratorManager.js";
@@ -31,7 +31,7 @@ export interface BackendAnnotationServiceConfig {
 
 export class BackendAnnotationService implements IAnnotationService {
   private client: CaptionApiClient;
-  private eventManager: SimpleEventManager;
+  private eventManager: EventManager;
   private singleProcessor: SingleCaptionProcessor;
   private batchProcessor: BatchProcessor;
   private generatorManager: GeneratorManager;
@@ -39,12 +39,28 @@ export class BackendAnnotationService implements IAnnotationService {
 
   constructor(config: BackendAnnotationServiceConfig) {
     this.client = createCaptionApiClient(config);
-    this.eventManager = new SimpleEventManager();
+    this.eventManager = new EventManager();
     this.singleProcessor = new SingleCaptionProcessor(this.client, this.eventManager);
     this.batchProcessor = new BatchProcessor(this.client, this.eventManager);
     this.generatorManager = new GeneratorManager(this.client);
     this.healthStatsManager = new HealthStatsManager();
     this.generatorManager.initializeGenerators();
+  }
+
+  /**
+   * Initialize the service
+   */
+  async initialize(): Promise<void> {
+    // Service is already initialized in constructor
+    // This method exists for compatibility with BaseAIService
+  }
+
+  /**
+   * Shutdown the service
+   */
+  async shutdown(): Promise<void> {
+    // Clean up any resources if needed
+    // Event listeners will be cleaned up when the service is destroyed
   }
 
   async generateCaption(task: CaptionTask): Promise<CaptionResult> {

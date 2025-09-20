@@ -23,8 +23,8 @@
         "timeout": 5000
       }
     },
-    "reynard-components": {
-      "name": "reynard-components",
+    "reynard-components-core": {
+      "name": "reynard-components-core",
       "port": 3001,
       "description": "UI component library",
       "category": "package",

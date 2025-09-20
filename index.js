@@ -6,7 +6,7 @@
 
 // Re-export everything from all Reynard packages
 export * from "reynard-algorithms";
-export * from "reynard-annotating";
+export * from "reynard-annotating-core";
 export * from "reynard-auth";
 export * from "reynard-boundingbox";
 export * from "reynard-caption";

@@ -3,12 +3,21 @@
  *
  * Displays individual video file information with thumbnail and metadata.
  */
-
 import { useI18n } from "reynard-i18n";
-import { Component, Show, createEffect, createSignal } from "solid-js";
-import { VideoFile } from "../types";
+import { Show, createEffect, createSignal } from "solid-js";
 
-export interface VideoFileCardProps {
+interface VideoFile {
+  id: string;
+  name: string;
+  url: string;
+  thumbnailUrl?: string;
+  thumbnail?: Blob;
+  duration?: number;
+  size?: number;
+  metadata?: any;
+}
+
+interface VideoFileCardProps {
   file: VideoFile;
   isSelected: boolean;
   onSelect: () => void;
@@ -16,27 +25,21 @@ export interface VideoFileCardProps {
   showMetadata?: boolean;
 }
 
-export const VideoFileCard: Component<VideoFileCardProps> = props => {
-  const { t } = useI18n();
-  const [thumbnailUrl, setThumbnailUrl] = createSignal<string | null>(null);
-
-  // Create thumbnail URL
-  createEffect(() => {
-    if (props.file.thumbnail) {
-      const url = URL.createObjectURL(props.file.thumbnail);
-      setThumbnailUrl(url);
-      return () => URL.revokeObjectURL(url);
-    }
-  });
-
-  return (
-    <div class="video-file-card" classList={{ selected: props.isSelected }} onClick={props.onSelect}>
+export const VideoFileCard = (props: VideoFileCardProps) => {
+    const { t } = useI18n();
+    const [thumbnailUrl, setThumbnailUrl] = createSignal<string | null>(null);
+    // Create thumbnail URL
+    createEffect(() => {
+        if (props.file.thumbnail) {
+            const url = URL.createObjectURL(props.file.thumbnail);
+            setThumbnailUrl(url);
+            return () => URL.revokeObjectURL(url);
+        }
+    });
+    return (<div class="video-file-card" classList={{ selected: props.isSelected }} onClick={props.onSelect}>
       <div class="video-thumbnail">
-        <Show
-          when={thumbnailUrl()}
-          fallback={<div class="thumbnail-placeholder">{t("video.thumbnailPlaceholder")}</div>}
-        >
-          <img src={thumbnailUrl()!} alt={props.file.name} />
+        <Show when={thumbnailUrl()} fallback={<div class="thumbnail-placeholder">{t("video.thumbnailPlaceholder")}</div>}>
+          <img src={thumbnailUrl()!} alt={props.file.name}/>
         </Show>
         <div class="play-overlay">
           <div class="play-button">▶</div>
@@ -47,7 +50,7 @@ export const VideoFileCard: Component<VideoFileCardProps> = props => {
         <h4 class="video-name" title={props.file.name}>
           {props.file.name}
         </h4>
-        <div class="video-size">{(props.file.size / (1024 * 1024)).toFixed(2)} MB</div>
+        <div class="video-size">{props.file.size ? (props.file.size / (1024 * 1024)).toFixed(2) + " MB" : "Unknown size"}</div>
 
         <Show when={props.showMetadata && props.file.metadata}>
           <div class="video-metadata">
@@ -56,8 +59,8 @@ export const VideoFileCard: Component<VideoFileCardProps> = props => {
               <span class="value">
                 {Math.floor(props.file.metadata.duration / 60)}:
                 {Math.floor(props.file.metadata.duration % 60)
-                  .toString()
-                  .padStart(2, "0")}
+            .toString()
+            .padStart(2, "0")}
               </span>
             </div>
             <div class="metadata-item">
@@ -74,16 +77,11 @@ export const VideoFileCard: Component<VideoFileCardProps> = props => {
         </Show>
       </div>
 
-      <button
-        class="remove-button"
-        onClick={e => {
-          e.stopPropagation();
-          props.onRemove();
-        }}
-        title={t("video.removeVideo")}
-      >
+      <button class="remove-button" onClick={e => {
+            e.stopPropagation();
+            props.onRemove();
+        }} title={t("video.removeVideo")}>
         ×
       </button>
-    </div>
-  );
+    </div>);
 };

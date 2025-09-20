@@ -14,7 +14,11 @@
     "reynard-themes": "workspace:*",
     "reynard-fluent-icons": "workspace:*",
     "reynard-3d": "workspace:*",
-    "reynard-components": "workspace:*",
+    "reynard-components-core": "workspace:*",
+    "reynard-components-charts": "workspace:*",
+    "reynard-components-dashboard": "workspace:*",
+    "reynard-components-themes": "workspace:*",
+    "reynard-components-utils": "workspace:*",
     "solid-js": "1.9.9",
     "three": "0.180.0",
     "@types/three": "0.180.0"

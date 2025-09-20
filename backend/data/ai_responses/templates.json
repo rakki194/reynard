@@ -1,0 +1,16 @@
+{
+  "greeting": {
+    "professional": "Dear {name},",
+    "friendly": "Hi {name}!",
+    "formal": "Dear {name},",
+    "casual": "Hey {name},"
+  },
+  "closing": {
+    "professional": "Best regards,\n{agent_name}",
+    "friendly": "Best,\n{agent_name}",
+    "formal": "Sincerely,\n{agent_name}",
+    "casual": "Thanks,\n{agent_name}"
+  },
+  "disclaimer": "This response was generated with AI assistance. Please review before sending.",
+  "signature": "{agent_name}\n{agent_title}\n{company_name}"
+}

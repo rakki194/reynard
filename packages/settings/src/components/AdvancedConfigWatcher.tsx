@@ -4,7 +4,7 @@
  */
 
 import { Component, Show, createSignal, createEffect } from "solid-js";
-import { Button, TextField, Tabs } from "reynard-components";
+import { Button, TextField, Tabs } from "reynard-components-core";
 import { useSettings } from "../composables/useSettings";
 
 export interface AdvancedConfigWatcherProps {

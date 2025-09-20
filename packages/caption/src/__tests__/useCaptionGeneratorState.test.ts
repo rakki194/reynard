@@ -8,7 +8,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { renderHook } from "@solidjs/testing-library";
 import { useCaptionGeneratorState, type CaptionGeneratorState } from "../../useCaptionGeneratorState";
-import type { CaptionResult } from "reynard-annotating";
+import type { CaptionResult } from "reynard-annotating-core";
 
 describe("useCaptionGeneratorState", () => {
   let state: CaptionGeneratorState;

@@ -37,7 +37,11 @@
   "license": "MIT",
   "dependencies": {
     "reynard-core": "workspace:*",
-    "reynard-components": "workspace:*",
+    "reynard-components-core": "workspace:*",
+    "reynard-components-charts": "workspace:*",
+    "reynard-components-dashboard": "workspace:*",
+    "reynard-components-themes": "workspace:*",
+    "reynard-components-utils": "workspace:*",
     "reynard-file-processing": "workspace:*"
   },
   "devDependencies": {

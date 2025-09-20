@@ -9,7 +9,7 @@ export { AudioGrid } from "./AudioGrid";
 export { AudioPlayer } from "./AudioPlayer";
 export { AudioAnalysisDashboard } from "./AudioAnalysisDashboard";
 export { AudioWaveformVisualizer } from "./AudioWaveformVisualizer";
-export { AudioWaveformComponents } from "./AudioWaveformComponents";
+export { LoadingState, ErrorState, WaveformCanvas, PlaybackControls } from "./AudioWaveformComponents";
 
 // Re-export types for convenience
 export type {

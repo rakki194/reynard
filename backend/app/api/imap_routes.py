@@ -1,247 +1,322 @@
 """
-IMAP API routes for Reynard Backend.
+IMAP API Routes for Reynard Backend.
 
-This module provides REST API endpoints for email receiving functionality.
+This module provides API endpoints for email receiving functionality.
 """
 
-from typing import Dict, Any
-from fastapi import APIRouter, HTTPException, status, Depends, Query
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
+from typing import List, Dict, Any
+import logging
 
-from ..auth.user_service import get_current_active_user
 from ..services.imap_service import imap_service
-from ..models.email_models import EmailStatusModel
+from ..auth.user_service import get_current_active_user
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/imap", tags=["imap"])
 
 
-@router.get("/status", response_model=EmailStatusModel)
-async def get_imap_status(
-    _current_user: dict = Depends(get_current_active_user)
-) -> EmailStatusModel:
+@router.get("/status")
+async def get_imap_status(current_user: dict = Depends(get_current_active_user)) -> Dict[str, Any]:
     """
-    Get IMAP service status.
+    Get IMAP service status and connection info.
     
-    Args:
-        current_user: Current authenticated user
-        
     Returns:
-        EmailStatusModel: IMAP service status
+        Dict containing IMAP service status
     """
     try:
-        # Test IMAP connection
-        test_connection = False
-        try:
-            await imap_service.connect()
-            test_connection = True
-            await imap_service.disconnect()
-        except Exception:
-            test_connection = False
+        # Try to connect to check status
+        connected = await imap_service.connect()
         
-        return EmailStatusModel(
-            service_configured=bool(imap_service.config.imap_username and imap_service.config.imap_password),
-            smtp_server=imap_service.config.imap_server,
-            from_email=imap_service.config.imap_username,
-            test_connection=test_connection,
-            last_test_time=None
-        )
+        if connected:
+            mailbox_info = await imap_service.get_mailbox_info()
+            await imap_service.disconnect()
+        else:
+            mailbox_info = {}
+        
+        return {
+            "status": "connected" if connected else "disconnected",
+            "mailbox_info": mailbox_info,
+            "config": {
+                "imap_server": imap_service.config.imap_server,
+                "imap_port": imap_service.config.imap_port,
+                "mailbox": imap_service.config.mailbox,
+                "use_ssl": imap_service.config.use_ssl,
+            }
+        }
         
     except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get IMAP status: {str(e)}"
-        )
+        logger.error(f"Failed to get IMAP status: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to get IMAP status: {str(e)}")
 
 
-@router.get("/unread")
+@router.get("/emails/unread")
 async def get_unread_emails(
-    limit: int = Query(10, ge=1, le=50, description="Maximum number of emails to retrieve"),
-    _current_user: dict = Depends(get_current_active_user)
-) -> Dict[str, Any]:
+    limit: int = 10,
+    current_user: dict = Depends(get_current_active_user)
+) -> List[Dict[str, Any]]:
     """
     Get unread emails.
     
     Args:
         limit: Maximum number of emails to retrieve
-        current_user: Current authenticated user
         
     Returns:
-        Dict containing unread emails
+        List of unread emails
     """
     try:
         emails = await imap_service.get_unread_emails(limit=limit)
         
-        # Convert EmailMessage objects to dictionaries
-        email_list = []
-        for email_msg in emails:
-            email_dict = {
-                "message_id": email_msg.message_id,
-                "subject": email_msg.subject,
-                "sender": email_msg.sender,
-                "recipient": email_msg.recipient,
-                "date": email_msg.date.isoformat(),
-                "body": email_msg.body,
-                "html_body": email_msg.html_body,
-                "attachments": email_msg.attachments
+        return [
+            {
+                "message_id": email.message_id,
+                "subject": email.subject,
+                "sender": email.sender,
+                "recipient": email.recipient,
+                "date": email.date.isoformat(),
+                "body": email.body,
+                "html_body": email.html_body,
+                "attachments": email.attachments,
+                "from_agent": email.from_agent,
+                "to_agent": email.to_agent,
+                "is_agent_email": email.is_agent_email,
+                "status": email.status,
             }
-            email_list.append(email_dict)
-        
-        return {
-            "success": True,
-            "count": len(email_list),
-            "emails": email_list
-        }
+            for email in emails
+        ]
         
     except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get unread emails: {str(e)}"
-        )
+        logger.error(f"Failed to get unread emails: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to get unread emails: {str(e)}")
 
 
-@router.get("/recent")
+@router.get("/emails/recent")
 async def get_recent_emails(
-    days: int = Query(7, ge=1, le=30, description="Number of days to look back"),
-    limit: int = Query(10, ge=1, le=50, description="Maximum number of emails to retrieve"),
-    _current_user: dict = Depends(get_current_active_user)
-) -> Dict[str, Any]:
+    days: int = 7,
+    limit: int = 10,
+    current_user: dict = Depends(get_current_active_user)
+) -> List[Dict[str, Any]]:
     """
     Get recent emails from the last N days.
     
     Args:
         days: Number of days to look back
         limit: Maximum number of emails to retrieve
-        current_user: Current authenticated user
         
     Returns:
-        Dict containing recent emails
+        List of recent emails
     """
     try:
         emails = await imap_service.get_recent_emails(days=days, limit=limit)
         
-        # Convert EmailMessage objects to dictionaries
-        email_list = []
-        for email_msg in emails:
-            email_dict = {
-                "message_id": email_msg.message_id,
-                "subject": email_msg.subject,
-                "sender": email_msg.sender,
-                "recipient": email_msg.recipient,
-                "date": email_msg.date.isoformat(),
-                "body": email_msg.body,
-                "html_body": email_msg.html_body,
-                "attachments": email_msg.attachments
+        return [
+            {
+                "message_id": email.message_id,
+                "subject": email.subject,
+                "sender": email.sender,
+                "recipient": email.recipient,
+                "date": email.date.isoformat(),
+                "body": email.body,
+                "html_body": email.html_body,
+                "attachments": email.attachments,
+                "from_agent": email.from_agent,
+                "to_agent": email.to_agent,
+                "is_agent_email": email.is_agent_email,
+                "status": email.status,
             }
-            email_list.append(email_dict)
-        
-        return {
-            "success": True,
-            "count": len(email_list),
-            "days": days,
-            "emails": email_list
-        }
+            for email in emails
+        ]
         
     except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get recent emails: {str(e)}"
-        )
+        logger.error(f"Failed to get recent emails: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to get recent emails: {str(e)}")
 
 
-@router.post("/mark-read")
+@router.get("/emails/agent/{agent_id}")
+async def get_agent_emails(
+    agent_id: str,
+    limit: int = 50,
+    current_user: dict = Depends(get_current_active_user)
+) -> List[Dict[str, Any]]:
+    """
+    Get emails for a specific agent.
+    
+    Args:
+        agent_id: Agent ID to get emails for
+        limit: Maximum number of emails to retrieve
+        
+    Returns:
+        List of agent emails
+    """
+    try:
+        emails = await imap_service.get_agent_emails(agent_id=agent_id, limit=limit)
+        
+        return [
+            {
+                "message_id": email.message_id,
+                "subject": email.subject,
+                "sender": email.sender,
+                "recipient": email.recipient,
+                "date": email.date.isoformat(),
+                "body": email.body,
+                "html_body": email.html_body,
+                "attachments": email.attachments,
+                "from_agent": email.from_agent,
+                "to_agent": email.to_agent,
+                "is_agent_email": email.is_agent_email,
+                "status": email.status,
+            }
+            for email in emails
+        ]
+        
+    except Exception as e:
+        logger.error(f"Failed to get agent emails: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to get agent emails: {str(e)}")
+
+
+@router.get("/emails/summary")
+async def get_emails_summary(current_user: dict = Depends(get_current_active_user)) -> Dict[str, Any]:
+    """
+    Get summary of received emails.
+    
+    Returns:
+        Dict containing email statistics
+    """
+    try:
+        summary = await imap_service.get_received_emails_summary()
+        return summary
+        
+    except Exception as e:
+        logger.error(f"Failed to get email summary: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to get email summary: {str(e)}")
+
+
+@router.post("/emails/{message_id}/mark-read")
 async def mark_email_as_read(
     message_id: str,
-    _current_user: dict = Depends(get_current_active_user)
+    current_user: dict = Depends(get_current_active_user)
 ) -> Dict[str, Any]:
     """
     Mark an email as read.
     
     Args:
         message_id: Email message ID
-        current_user: Current authenticated user
         
     Returns:
-        Dict containing operation result
+        Success status
     """
     try:
         success = await imap_service.mark_as_read(message_id)
         
-        return {
-            "success": success,
-            "message_id": message_id,
-            "message": "Email marked as read" if success else "Failed to mark email as read"
-        }
-        
+        if success:
+            return {"success": True, "message": "Email marked as read"}
+        else:
+            raise HTTPException(status_code=404, detail="Email not found or could not be marked as read")
+            
     except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to mark email as read: {str(e)}"
-        )
+        logger.error(f"Failed to mark email as read: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to mark email as read: {str(e)}")
 
 
-@router.get("/mailbox-info")
-async def get_mailbox_info(
-    _current_user: dict = Depends(get_current_active_user)
+@router.post("/emails/{message_id}/mark-processed")
+async def mark_email_as_processed(
+    message_id: str,
+    current_user: dict = Depends(get_current_active_user)
 ) -> Dict[str, Any]:
     """
-    Get mailbox information and statistics.
+    Mark an email as processed.
     
     Args:
-        current_user: Current authenticated user
+        message_id: Email message ID
         
     Returns:
-        Dict containing mailbox statistics
+        Success status
     """
     try:
-        info = await imap_service.get_mailbox_info()
+        success = await imap_service.mark_email_as_processed(message_id)
         
-        return {
-            "success": True,
-            "mailbox": imap_service.config.mailbox,
-            "info": info
-        }
-        
+        if success:
+            return {"success": True, "message": "Email marked as processed"}
+        else:
+            raise HTTPException(status_code=404, detail="Email not found or could not be marked as processed")
+            
     except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get mailbox info: {str(e)}"
-        )
+        logger.error(f"Failed to mark email as processed: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to mark email as processed: {str(e)}")
 
 
-@router.post("/test-connection")
-async def test_imap_connection(
-    _current_user: dict = Depends(get_current_active_user)
+@router.post("/monitoring/start")
+async def start_email_monitoring(
+    interval: int = 60,
+    background_tasks: BackgroundTasks = None,
+    current_user: dict = Depends(get_current_active_user)
 ) -> Dict[str, Any]:
     """
-    Test IMAP connection.
+    Start email monitoring in the background.
     
     Args:
-        current_user: Current authenticated user
+        interval: Check interval in seconds
+        background_tasks: FastAPI background tasks
         
     Returns:
-        Dict containing test result
+        Success status
+    """
+    try:
+        if background_tasks:
+            background_tasks.add_task(imap_service.start_email_monitoring, interval)
+            return {
+                "success": True, 
+                "message": f"Email monitoring started with {interval}s interval"
+            }
+        else:
+            raise HTTPException(status_code=500, detail="Background tasks not available")
+            
+    except Exception as e:
+        logger.error(f"Failed to start email monitoring: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to start email monitoring: {str(e)}")
+
+
+@router.get("/test")
+async def test_imap_connection(current_user: dict = Depends(get_current_active_user)) -> Dict[str, Any]:
+    """
+    Test IMAP connection and basic functionality.
+    
+    Returns:
+        Test results
     """
     try:
         # Test connection
         connected = await imap_service.connect()
         
-        if connected:
-            # Get mailbox info
-            info = await imap_service.get_mailbox_info()
-            await imap_service.disconnect()
-            
-            return {
-                "success": True,
-                "message": "IMAP connection successful",
-                "mailbox_info": info
-            }
-        else:
+        if not connected:
             return {
                 "success": False,
-                "message": "Failed to connect to IMAP server"
+                "message": "Failed to connect to IMAP server",
+                "details": "Check your IMAP configuration"
             }
         
+        # Test mailbox info
+        mailbox_info = await imap_service.get_mailbox_info()
+        
+        # Test getting a few emails
+        test_emails = await imap_service.get_unread_emails(limit=1)
+        
+        await imap_service.disconnect()
+        
+        return {
+            "success": True,
+            "message": "IMAP connection test successful",
+            "details": {
+                "mailbox_info": mailbox_info,
+                "test_emails_count": len(test_emails),
+                "connection_status": "connected"
+            }
+        }
+        
     except Exception as e:
+        logger.error(f"IMAP connection test failed: {e}")
         return {
             "success": False,
-            "message": f"IMAP connection test failed: {str(e)}"
+            "message": f"IMAP connection test failed: {str(e)}",
+            "details": "Check your IMAP configuration and credentials"
         }

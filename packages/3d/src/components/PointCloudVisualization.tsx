@@ -4,7 +4,7 @@ import { ThreeJSVisualization } from "./ThreeJSVisualization";
 import { usePointCloud } from "../composables/usePointCloud";
 import { useThreeJSAnimations } from "../composables/useThreeJSAnimations";
 import "./PointCloudVisualization.css";
-import { Toggle } from "reynard-components";
+import { Toggle } from "reynard-components-core";
 
 export const PointCloudVisualization: Component<PointCloudVisualizationProps> = props => {
   const animations = useThreeJSAnimations();
@@ -20,6 +20,12 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
   const [camera, setCamera] = createSignal<any>(null);
   const [renderer, setRenderer] = createSignal<any>(null);
   const [controls, setControls] = createSignal<any>(null);
+
+  // Performance settings state
+  const [instancingEnabled, setInstancingEnabled] = createSignal(pointCloud.enableInstancing());
+  const [lodEnabled, setLodEnabled] = createSignal(pointCloud.enableLOD());
+  const [cullingEnabled, setCullingEnabled] = createSignal(pointCloud.enableCulling());
+  const [highlightingEnabled, setHighlightingEnabled] = createSignal(pointCloud.enableHighlighting());
 
   // Initialize Three.js on mount
   onMount(() => {
@@ -71,7 +77,7 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
       let size = point.size || pointCloud.pointSize();
 
       if (pointCloud.enableHighlighting()) {
-        const isSelected = pointCloud.selectedPoints().some(p => p.id === point.id);
+        const isSelected = pointCloud.selectedPoints().some((p: any) => p.id === point.id);
         const isHovered = pointCloud.hoveredPoint()?.id === point.id;
 
         if (isSelected || isHovered) {
@@ -124,13 +130,8 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
     });
 
     // Set up interaction handlers
-    const handleClick = (event: any) => {
-      pointCloud.handlePointSelection(event, camera, scene);
-    };
-
-    const handleMouseMove = (event: any) => {
-      pointCloud.handlePointHover(event, camera, scene);
-    };
+    const handleClick = pointCloud.createPointSelectionHandler(camera, scene);
+    const handleMouseMove = pointCloud.createPointHoverHandler(camera, scene);
 
     // Add event listeners to renderer
     const canvas = renderer.domElement;
@@ -199,7 +200,7 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
             let size = point.size || pointCloud.pointSize();
 
             if (pointCloud.enableHighlighting()) {
-              const isSelected = selected.some(p => p.id === point.id);
+              const isSelected = selected.some((p: any) => p.id === point.id);
               const isHovered = pointCloud.hoveredPoint()?.id === point.id;
 
               if (isSelected || isHovered) {
@@ -237,7 +238,7 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
             let color = point.color || [1, 1, 1];
 
             if (pointCloud.enableHighlighting()) {
-              const isSelected = pointCloud.selectedPoints().some(p => p.id === point.id);
+              const isSelected = pointCloud.selectedPoints().some((p: any) => p.id === point.id);
               const isHovered = pointCloud.hoveredPoint()?.id === point.id;
 
               if (isSelected || isHovered) {
@@ -354,9 +355,9 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
             <Toggle
               size="sm"
               checked={instancingEnabled()}
-              onChange={e => {
-                console.log("Instancing:", e.currentTarget.checked);
-                setInstancingEnabled(e.currentTarget.checked);
+              onChange={checked => {
+                console.log("Instancing:", checked);
+                setInstancingEnabled(checked);
               }}
             />
             <span>Enable Instancing</span>
@@ -366,9 +367,9 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
             <Toggle
               size="sm"
               checked={lodEnabled()}
-              onChange={e => {
-                console.log("LOD:", e.currentTarget.checked);
-                setLodEnabled(e.currentTarget.checked);
+              onChange={checked => {
+                console.log("LOD:", checked);
+                setLodEnabled(checked);
               }}
             />
             <span>Enable LOD</span>
@@ -378,9 +379,9 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
             <Toggle
               size="sm"
               checked={cullingEnabled()}
-              onChange={e => {
-                console.log("Culling:", e.currentTarget.checked);
-                setCullingEnabled(e.currentTarget.checked);
+              onChange={checked => {
+                console.log("Culling:", checked);
+                setCullingEnabled(checked);
               }}
             />
             <span>Enable Culling</span>
@@ -390,9 +391,9 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
             <Toggle
               size="sm"
               checked={highlightingEnabled()}
-              onChange={e => {
-                console.log("Highlighting:", e.currentTarget.checked);
-                setHighlightingEnabled(e.currentTarget.checked);
+              onChange={checked => {
+                console.log("Highlighting:", checked);
+                setHighlightingEnabled(checked);
               }}
             />
             <span>Enable Highlighting</span>
@@ -409,7 +410,7 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
               </button>
             </div>
             <div class="selection-list">
-              {pointCloud.selectedPoints().map((point, index) => (
+              {pointCloud.selectedPoints().map((point: any, index: number) => (
                 <div class="selection-item">
                   <span class="selection-index">{index + 1}</span>
                   <span class="selection-id">{point.id}</span>
@@ -423,7 +424,7 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
                   <button
                     class="remove-selection"
                     onClick={() => {
-                      pointCloud.setSelectedPoints(prev => prev.filter(p => p.id !== point.id));
+                      pointCloud.setSelectedPoints((prev: any) => prev.filter((p: any) => p.id !== point.id));
                     }}
                     title="Remove from selection"
                   >

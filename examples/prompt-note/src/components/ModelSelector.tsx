@@ -6,12 +6,12 @@
 import { Component, createSignal, createResource, For } from "solid-js";
 import { Button, Card, Select } from "reynard-components";
 import { useNotifications } from "reynard-core";
-import { AnnotationManager } from "reynard-annotating";
+import { BackendAnnotationManager } from "reynard-annotating-core";
 
 interface ModelSelectorProps {
   selectedModel: string;
   onModelChange: (model: string) => void;
-  annotationManager: AnnotationManager;
+  annotationManager: BackendAnnotationManager;
 }
 
 interface ModelInfo {

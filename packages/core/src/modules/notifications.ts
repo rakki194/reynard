@@ -8,6 +8,9 @@ import { createSignal } from "solid-js";
 import { createNotificationManager } from "./notification-manager";
 import { Notification, createFullNotification, createNotificationObject } from "./notification-utils";
 
+// Re-export the Notification type for external use
+export type { Notification } from "./notification-utils";
+
 export interface NotificationsModule {
   readonly notifications: Notification[];
   notify: (

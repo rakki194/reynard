@@ -3,17 +3,17 @@
  */
 
 import { createSignal, createResource } from "solid-js";
-import type { UserLogin, UserCreate, UserResponse } from "../generated/index.js";
+import type { SecureUserLogin, UserCreate, UserPublic } from "../generated/index";
 
 export interface UseAuthOptions {
   basePath?: string;
 }
 
 export function useAuth(options: UseAuthOptions = {}) {
-  const [user, setUser] = createSignal<UserResponse | null>(null);
+  const [user, setUser] = createSignal<UserPublic | null>(null);
   const [isAuthenticated, setIsAuthenticated] = createSignal(false);
 
-  const login = async (credentials: UserLogin) => {
+  const login = async (credentials: SecureUserLogin) => {
     // Stub implementation
     console.log("Login attempt:", credentials);
     return { success: true, user: null };

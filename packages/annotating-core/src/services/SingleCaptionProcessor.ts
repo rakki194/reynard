@@ -6,12 +6,12 @@
 
 import { CaptionTask, CaptionResult, ErrorType } from "../types/index.js";
 import { CaptionApiClient, CaptionRequest } from "../clients/index.js";
-import { SimpleEventManager } from "./EventManager.js";
+import { EventManager } from "./EventManager.js";
 
 export class SingleCaptionProcessor {
   constructor(
     private client: CaptionApiClient,
-    private eventManager: SimpleEventManager
+    private eventManager: EventManager
   ) {}
 
   async processCaption(task: CaptionTask): Promise<CaptionResult> {

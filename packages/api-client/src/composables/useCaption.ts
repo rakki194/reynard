@@ -3,7 +3,7 @@
  */
 
 import { createSignal } from "solid-js";
-import type { CaptionRequest, CaptionResponse, GeneratorInfo } from "../generated/index.js";
+import type { CaptionRequest, CaptionResponse, GeneratorInfo } from "../generated/index";
 
 export interface UseCaptionOptions {
   basePath?: string;

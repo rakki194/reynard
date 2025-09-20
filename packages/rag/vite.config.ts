@@ -19,7 +19,7 @@ export default defineConfig({
           "solid-js/web": "solidWeb",
           "reynard-core": "ReynardCore",
           "reynard-fluent-icons": "ReynardFluentIcons",
-          "reynard-components": "ReynardComponents",
+          "reynard-components-core": "ReynardComponentsCore",
         },
         assetFileNames: assetInfo => {
           const assetName = (assetInfo as { fileName?: string }).fileName;

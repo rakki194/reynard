@@ -47,7 +47,11 @@
     "reynard-connection": "workspace:*",
     "reynard-fluent-icons": "workspace:*",
     "reynard-floating-panel": "workspace:*",
-    "reynard-components": "workspace:*"
+    "reynard-components-core": "workspace:*",
+    "reynard-components-charts": "workspace:*",
+    "reynard-components-dashboard": "workspace:*",
+    "reynard-components-themes": "workspace:*",
+    "reynard-components-utils": "workspace:*"
   },
   "devDependencies": {
     "@solidjs/testing-library": "0.8.10",

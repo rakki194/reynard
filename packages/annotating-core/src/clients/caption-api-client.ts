@@ -30,112 +30,123 @@ export class CaptionApiClient extends ApiClient {
    * Generate a single caption
    */
   async generateCaption(request: CaptionRequest): Promise<CaptionResponse> {
-    return this.httpClient.request({
+    const response = await this.httpClient.request({
       method: "POST",
       endpoint: "/caption/generate",
       data: request,
     });
+    return response.data;
   }
 
   /**
    * Generate captions for multiple images
    */
   async generateBatchCaptions(request: BatchCaptionRequest): Promise<CaptionResponse[]> {
-    return this.httpClient.request({
+    const response = await this.httpClient.request({
       method: "POST",
       endpoint: "/caption/batch",
       data: request,
     });
+    return response.data;
   }
 
   /**
    * Get available caption generators
    */
   async getAvailableGenerators(): Promise<Record<string, GeneratorInfo>> {
-    return this.httpClient.request({
+    const response = await this.httpClient.request({
       method: "GET",
       endpoint: "/caption/generators",
     });
+    return response.data;
   }
 
   /**
    * Get information about a specific generator
    */
   async getGeneratorInfo(generatorName: string): Promise<GeneratorInfo> {
-    return this.httpClient.request({
+    const response = await this.httpClient.request({
       method: "GET",
       endpoint: `/caption/generators/${generatorName}`,
     });
+    return response.data;
   }
 
   /**
    * Load a specific model
    */
   async loadModel(generatorName: string): Promise<{ success: boolean; message: string }> {
-    return this.httpClient.request({
+    const response = await this.httpClient.request({
       method: "POST",
       endpoint: `/caption/models/${generatorName}/load`,
     });
+    return response.data;
   }
 
   /**
    * Unload a specific model
    */
   async unloadModel(generatorName: string): Promise<{ success: boolean; message: string }> {
-    return this.httpClient.request({
+    const response = await this.httpClient.request({
       method: "POST",
       endpoint: `/caption/models/${generatorName}/unload`,
     });
+    return response.data;
   }
 
   /**
    * Get list of loaded models
    */
   async getLoadedModels(): Promise<string[]> {
-    return this.httpClient.request({
+    const response = await this.httpClient.request({
       method: "GET",
       endpoint: "/caption/models/loaded",
     });
+    return response.data;
   }
 
   /**
    * Get system statistics
    */
   async getSystemStats(): Promise<SystemStats> {
-    return this.httpClient.request({
+    const response = await this.httpClient.request({
       method: "GET",
       endpoint: "/caption/stats",
     });
+    return response.data;
   }
 
   /**
    * Get system health status
    */
   async getHealthStatus(): Promise<HealthStatus> {
-    return this.httpClient.request({
+    const response = await this.httpClient.request({
       method: "GET",
       endpoint: "/caption/health",
     });
+    return response.data;
   }
 
   /**
    * Get usage statistics for a specific model
    */
   async getModelStats(generatorName: string): Promise<ModelUsageStats> {
-    return this.httpClient.request({
+    const response = await this.httpClient.request({
       method: "GET",
       endpoint: `/caption/models/${generatorName}/stats`,
     });
+    return response.data;
   }
 
   /**
    * Get request queue status
    */
   async getQueueStatus(): Promise<any> {
-    return this.httpClient.request({
+    const response = await this.httpClient.request({
       method: "GET",
       endpoint: "/caption/queue",
     });
+    return response.data;
   }
 
   /**
@@ -150,10 +161,11 @@ export class CaptionApiClient extends ApiClient {
       formData.append("config", JSON.stringify(config));
     }
 
-    return this.httpClient.upload({
+    const response = await this.httpClient.upload({
       endpoint: "/caption/upload",
       formData,
     });
+    return response.data;
   }
 
   /**

@@ -10,6 +10,8 @@
 export { DiagramGeneratorMain as DiagramGenerator } from "./core/DiagramGenerator.js";
 export { CodebaseAnalyzer } from "./core/CodebaseAnalyzer.js";
 export { MermaidRenderer } from "./core/MermaidRenderer.js";
+import { DiagramGeneratorMain as DiagramGenerator } from "./core/DiagramGenerator.js";
+import type { DiagramGenerationConfig } from "./types.js";
 
 // Diagram generators
 export {
@@ -60,17 +62,17 @@ export const DEFAULT_CONFIG = {
 
 // Utility functions
 export const createDiagramGenerator = (rootPath?: string) => {
-  return new DiagramGeneratorMain(rootPath);
+  return new DiagramGenerator(rootPath);
 };
 
 export const generateAllDiagrams = async (config?: Partial<DiagramGenerationConfig>) => {
-  const generator = new DiagramGeneratorMain();
+  const generator = new DiagramGenerator();
   const fullConfig = { ...DEFAULT_CONFIG, ...config };
   return await generator.generateAll(fullConfig);
 };
 
 export const generateSpecificDiagram = async (diagramType: string, config?: Partial<DiagramGenerationConfig>) => {
-  const generator = new DiagramGeneratorMain();
+  const generator = new DiagramGenerator();
   const fullConfig = { ...DEFAULT_CONFIG, ...config };
   return await generator.generateDiagram(diagramType, fullConfig);
 };

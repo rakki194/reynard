@@ -3,7 +3,7 @@
  */
 
 import { createSignal } from "solid-js";
-import type { OllamaChatRequest, OllamaChatResponse } from "../generated/index.js";
+import type { OllamaChatRequest, OllamaChatResponse } from "../generated/index";
 
 export interface UseChatOptions {
   basePath?: string;

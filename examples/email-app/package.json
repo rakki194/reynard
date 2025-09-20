@@ -1,0 +1,41 @@
+{
+  "name": "reynard-email-app",
+  "version": "1.0.0",
+  "description": "Email management application for Reynard administrators",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier --write src"
+  },
+  "dependencies": {
+    "reynard-chat": "workspace:*",
+    "reynard-api-client": "workspace:*",
+    "reynard-components-core": "workspace:*",
+    "reynard-components-charts": "workspace:*",
+    "reynard-components-dashboard": "workspace:*",
+    "reynard-components-themes": "workspace:*",
+    "reynard-components-utils": "workspace:*",
+    "reynard-themes": "workspace:*",
+    "reynard-fluent-icons": "workspace:*",
+    "reynard-core": "workspace:*",
+    "reynard-composables": "workspace:*",
+    "solid-js": "1.9.9",
+    "@solidjs/router": "0.15.3"
+  },
+  "devDependencies": {
+    "@types/node": "24.5.2",
+    "typescript": "5.9.2",
+    "vite": "7.1.6",
+    "vite-plugin-solid": "2.11.8",
+    "vitest": "3.2.4",
+    "happy-dom": "18.0.1",
+    "reynard-testing": "workspace:*",
+    "eslint": "9.36.0",
+    "prettier": "3.6.2"
+  }
+}

@@ -28,7 +28,11 @@
   },
   "dependencies": {
     "reynard-charts": "workspace:*",
-    "reynard-components": "workspace:*",
+    "reynard-components-core": "workspace:*",
+    "reynard-components-charts": "workspace:*",
+    "reynard-components-dashboard": "workspace:*",
+    "reynard-components-themes": "workspace:*",
+    "reynard-components-utils": "workspace:*",
     "reynard-core": "workspace:*",
     "reynard-colors": "workspace:*",
     "reynard-themes": "workspace:*",

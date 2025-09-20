@@ -25,7 +25,7 @@ export async function setupClusterRaycaster(
   setHoveredCluster: (clusterId: string | null) => void,
   onClusterSelect?: (clusterId: string) => void
 ) {
-  const THREE = (await import("three")).default as unknown as ThreeJSModule;
+  const THREE = (await import("three")) as unknown as ThreeJSModule;
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
 

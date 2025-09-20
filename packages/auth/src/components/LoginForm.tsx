@@ -4,7 +4,7 @@
  */
 
 import { Component, createSignal, createMemo, Show, splitProps } from "solid-js";
-import { Button, Toggle } from "reynard-components";
+import { Button, Toggle } from "reynard-components-core";
 import type { LoginCredentials } from "../types";
 import { validateEmail } from "../utils";
 
@@ -211,7 +211,7 @@ export const LoginForm: Component<LoginFormProps> = props => {
                 <Toggle
                   size="sm"
                   checked={rememberMe()}
-                  onChange={e => setRememberMe(e.target.checked)}
+                  onChange={checked => setRememberMe(checked)}
                   disabled={local.loading}
                 />
                 <span class="login-form__checkbox-mark"></span>

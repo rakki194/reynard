@@ -33,7 +33,7 @@ export default defineConfig({
         manualChunks: {
           "solid-router": ["@solidjs/router"],
           "reynard-core": ["reynard-core"],
-          "reynard-components": ["reynard-components"],
+          "reynard-components-core": ["reynard-components-core"],
           "reynard-themes": ["reynard-themes"],
           "reynard-docs-core": ["reynard-docs-core"],
           "reynard-docs-components": ["reynard-docs-components"],

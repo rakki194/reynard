@@ -6,10 +6,10 @@
 
 // Backend services
 export { BackendAnnotationService, createBackendAnnotationService } from "./BackendAnnotationService.js";
-export { BackendAnnotationManager, createBackendAnnotationManager } from "./BackendAnnotationManager.js";
+export { BackendAnnotationManager, createBackendAnnotationManager, createAnnotationManager } from "./BackendAnnotationManager.js";
 
 // Supporting modules
-export { SimpleEventManager } from "./EventManager.js";
+export { EventManager } from "./EventManager.js";
 export { GeneratorConverter } from "./GeneratorConverter.js";
 export { BatchProcessor } from "./BatchProcessor.js";
 export { SingleCaptionProcessor } from "./SingleCaptionProcessor.js";

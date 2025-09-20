@@ -5,7 +5,8 @@
  * model management, and related functionality.
  */
 
-import { CaptionType, ModelCategory, ModelStatus } from "./enums";
+import type { CaptionType } from "reynard-ai-shared";
+import { ModelCategory, ModelStatus } from "./enums";
 
 export interface CaptionGenerator {
   name: string;

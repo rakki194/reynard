@@ -12,7 +12,7 @@ export default defineConfig({
         manualChunks: {
           "reynard-core": ["reynard-core"],
           "reynard-themes": ["reynard-themes"],
-          "reynard-components": ["reynard-components"],
+          "reynard-components-core": ["reynard-components-core"],
         },
       },
     },

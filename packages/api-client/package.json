@@ -17,23 +17,34 @@
   },
   "files": ["dist"],
   "scripts": {
-    "generate": "openapi-generator-cli generate -i http://localhost:8000/openapi.json -g typescript-fetch -o ./src/generated --additional-properties=typescriptThreePlus=true,supportsES6=true,withInterfaces=true,useSingleRequestParameter=true",
+    "generate": "openapi-generator-cli generate -i http://localhost:8000/openapi.json -g typescript-fetch -o ./src/generated --additional-properties=typescriptThreePlus=true,supportsES6=true,withInterfaces=true,useSingleRequestParameter=true,npmName=reynard-api-client",
     "generate:watch": "nodemon --watch ../../backend --exec 'pnpm run generate'",
     "build": "tsc && cp -r src/generated/* dist/generated/",
     "build:watch": "tsc --watch",
     "clean": "rm -rf dist src/generated",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=api-client ../../scripts/testing/vitest-global-queue.sh run api-client",
+    "test:coverage": "vitest run --coverage",
+    "test:coverage:check": "vitest run --coverage --reporter=verbose",
+    "evergreen": "node scripts/evergreen-update.js",
+    "evergreen:watch": "nodemon --watch ../../backend --exec 'pnpm run evergreen'",
+    "update": "pnpm run evergreen && pnpm run build"
   },
   "dependencies": {
-    "node-fetch": "^3.3.2",
     "reynard-i18n": "workspace:*",
     "solid-js": "1.9.9"
   },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "2.23.1",
     "@types/node": "24.5.2",
+    "@vitest/coverage-v8": "3.2.4",
+    "@vitest/ui": "3.2.4",
+    "happy-dom": "^18.0.1",
     "nodemon": "3.1.10",
-    "typescript": "5.9.2"
+    "reynard-testing": "workspace:*",
+    "typescript": "5.9.2",
+    "vite": "7.1.6",
+    "vitest": "3.2.4"
   },
   "peerDependencies": {
     "solid-js": "1.9.9"

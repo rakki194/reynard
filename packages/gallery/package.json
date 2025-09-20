@@ -36,7 +36,11 @@
   },
   "dependencies": {
     "reynard-core": "workspace:*",
-    "reynard-components": "workspace:*",
+    "reynard-components-core": "workspace:*",
+    "reynard-components-charts": "workspace:*",
+    "reynard-components-dashboard": "workspace:*",
+    "reynard-components-themes": "workspace:*",
+    "reynard-components-utils": "workspace:*",
     "reynard-composables": "workspace:*",
     "reynard-i18n": "workspace:*",
     "@solid-primitives/intersection-observer": "2.2.2",

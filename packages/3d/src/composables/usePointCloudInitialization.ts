@@ -28,7 +28,7 @@ export function usePointCloudInitialization() {
   ) => {
     // Initialize Three.js
     if (!threeJS) {
-      const THREE = (await import("three")).default as unknown as ThreeJSModule;
+      const THREE = (await import("three")) as unknown as ThreeJSModule;
       threeJS = THREE as unknown as ThreeJSInterface;
 
       // Initialize composables

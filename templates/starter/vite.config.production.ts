@@ -32,7 +32,7 @@ export default defineConfig({
     alias: {
       "~": new URL("./src", import.meta.url).pathname,
       "reynard-core": new URL("../../packages/core/src", import.meta.url).pathname,
-      "reynard-components": new URL("../../packages/components/src", import.meta.url).pathname,
+      "reynard-components-core": new URL("../../packages/components-core/src", import.meta.url).pathname,
       "reynard-themes": new URL("../../packages/themes/src", import.meta.url).pathname,
       "reynard-charts": new URL("../../packages/charts/src", import.meta.url).pathname,
       "reynard-fluent-icons": new URL("../../packages/fluent-icons/src", import.meta.url).pathname,

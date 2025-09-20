@@ -7,7 +7,7 @@
  */
 
 import { Chart, RealTimeChart } from "reynard-charts";
-import { Button } from "reynard-components";
+import { Button } from "reynard-components-core";
 import { AppLayout, Grid, GridItem } from "reynard-ui";
 import { Component, For, Show, createSignal, onCleanup, onMount } from "solid-js";
 import { CodeQualityAnalyzer } from "./CodeQualityAnalyzer";

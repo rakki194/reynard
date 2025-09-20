@@ -8,20 +8,20 @@ import { createSignal, onMount, onCleanup } from "solid-js";
 import type { AuthState, AuthConfiguration, AuthCallbacks, User } from "../types";
 import { createAuthOrchestrator } from "../utils";
 import { DEFAULT_AUTH_CONFIG } from "../types";
-import { useAuth as useGeneratedAuth, createReynardApiClient, type UserResponse } from "reynard-api-client";
+import { useAuth as useGeneratedAuth, createReynardApiClient, type UserPublic } from "reynard-api-client";
 
-// Utility function to convert UserResponse to User
-function convertUserResponseToUser(userResponse: UserResponse | null): User | null {
+// Utility function to convert UserPublic to User
+function convertUserResponseToUser(userResponse: UserPublic | null): User | null {
   if (!userResponse) return null;
 
   return {
-    id: userResponse.id.toString(),
+    id: userResponse.id?.toString() || "",
     username: userResponse.username,
-    email: userResponse.email,
-    fullName: userResponse.fullName || undefined,
-    role: "user" as const, // Default role since UserResponse doesn't have role
-    avatarUrl: undefined,
-    createdAt: userResponse.createdAt,
+    email: userResponse.email || undefined,
+    fullName: undefined, // UserPublic doesn't have fullName
+    role: userResponse.role === "regular" ? "user" : userResponse.role as any,
+    avatarUrl: userResponse.profilePictureUrl || undefined,
+    createdAt: userResponse.createdAt || new Date(),
     lastLogin: undefined,
     isActive: userResponse.isActive,
     preferences: undefined,

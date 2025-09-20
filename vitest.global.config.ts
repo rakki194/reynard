@@ -354,6 +354,25 @@ export default defineConfig({
         },
       },
 
+      {
+        name: "api-client",
+        root: "./packages/api-client",
+        test: {
+          setupFiles: ["./src/__tests__/setup.ts"],
+          include: ["src/**/*.{test,spec}.{js,ts,tsx}"],
+          coverage: {
+            thresholds: {
+              global: {
+                branches: 80,
+                functions: 85,
+                lines: 85,
+                statements: 85,
+              },
+            },
+          },
+        },
+      },
+
       // Examples
       {
         name: "comprehensive-dashboard",

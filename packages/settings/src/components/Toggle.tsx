@@ -4,7 +4,7 @@
  */
 
 import { Component, JSX, splitProps } from "solid-js";
-import { Toggle } from "reynard-components";
+import { Toggle } from "reynard-components-core";
 
 export interface ToggleProps extends Omit<JSX.InputHTMLAttributes<HTMLInputElement>, "type"> {
   /** Button state */

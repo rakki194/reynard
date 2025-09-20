@@ -6,7 +6,7 @@ import { vi } from "vitest";
 import { setupBrowserTest } from "./browser-setup.js";
 
 /**
- * Setup for component packages (reynard-caption, reynard-annotating, etc.)
+ * Setup for component packages (reynard-caption, reynard-annotating-core, etc.)
  * Includes component-specific mocks like File API, timers, and observers
  */
 export function setupComponentTest() {

@@ -2,7 +2,7 @@
  * Response parsing utilities for API client
  */
 
-import type { ApiResponse } from "../types.js";
+import type { ApiResponse } from "../types";
 
 export function parseApiResponse<T>(response: Response, data: T): ApiResponse<T> {
   return {

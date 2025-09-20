@@ -31,7 +31,11 @@
   "keywords": ["caption", "ui", "components", "text", "editing", "tags"],
   "dependencies": {
     "reynard-caption-core": "workspace:*",
-    "reynard-components": "workspace:*",
+    "reynard-components-core": "workspace:*",
+    "reynard-components-charts": "workspace:*",
+    "reynard-components-dashboard": "workspace:*",
+    "reynard-components-themes": "workspace:*",
+    "reynard-components-utils": "workspace:*",
     "reynard-fluent-icons": "workspace:*"
   },
   "devDependencies": {

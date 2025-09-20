@@ -25,7 +25,7 @@ export default defineConfig({
           "solid-js": "solid",
           "solid-js/web": "solidWeb",
           "reynard-core": "ReynardCore",
-          "reynard-components": "ReynardComponents",
+          "reynard-components-core": "ReynardComponentsCore",
           "@solid-primitives/intersection-observer": "SolidPrimitivesIntersectionObserver",
           "@solid-primitives/resize-observer": "SolidPrimitivesResizeObserver",
           "@solid-primitives/event-listener": "SolidPrimitivesEventListener",

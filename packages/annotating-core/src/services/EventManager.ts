@@ -1,12 +1,12 @@
 /**
- * Simple Event Manager
+ * Event Manager
  *
  * Handles event emission and listener management for annotation services.
  */
 
 import { AnyAnnotationEvent } from "../types/index.js";
 
-export class SimpleEventManager {
+export class EventManager {
   private listeners: Array<(event: AnyAnnotationEvent) => void> = [];
 
   addEventListener(listener: (event: AnyAnnotationEvent) => void): void {

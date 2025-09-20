@@ -17,7 +17,7 @@ export default defineConfig({
           "solid-js": "solid",
           "solid-js/web": "solidWeb",
           "reynard-core": "ReynardCore",
-          "reynard-components": "ReynardComponents",
+          "reynard-components-core": "ReynardComponentsCore",
         },
       },
     },

@@ -70,7 +70,7 @@ The segmentation package is designed to work harmoniously with existing Reynard 
 │
 ├── 🏗️ ANNOTATION CORE LAYER
 │   ├── reynard-annotating-core/     # BackendAnnotationService, task management
-│   └── reynard-annotating/          # Unified interface, generator coordination
+│   └── reynard-annotating-core/     # Unified interface, generator coordination
 │
 ├── 🎨 UI INTEGRATION LAYER
 │   ├── reynard-floating-panel/      # FloatingPanelOverlay, panel management

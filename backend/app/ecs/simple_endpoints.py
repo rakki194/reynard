@@ -77,7 +77,7 @@ async def get_agents() -> list[AgentResponse]:
     try:
         service = get_postgres_ecs_service()
         agents_data = await service.get_all_agents()
-        
+
         agents = []
         for agent_data in agents_data:
             agents.append(
@@ -86,7 +86,7 @@ async def get_agents() -> list[AgentResponse]:
                     name=agent_data["name"],
                     spirit=agent_data["spirit"],
                     style=agent_data["style"],
-                    active=agent_data["active"]
+                    active=agent_data["active"],
                 )
             )
         return agents
@@ -106,7 +106,7 @@ async def create_agent(request: AgentCreateRequest) -> AgentResponse:
             agent_id=request.agent_id,
             name=request.name or f"{spirit.title()}-{request.agent_id}",
             spirit=spirit,
-            style=style
+            style=style,
         )
 
         return AgentResponse(
@@ -114,7 +114,7 @@ async def create_agent(request: AgentCreateRequest) -> AgentResponse:
             name=agent_data["name"],
             spirit=agent_data["spirit"],
             style=agent_data["style"],
-            active=agent_data["active"]
+            active=agent_data["active"],
         )
     except HTTPException:
         raise
@@ -132,15 +132,17 @@ async def send_chat_message(agent_id: str, request: ChatRequest) -> dict[str, An
             sender_id=agent_id,
             receiver_id=request.receiver_id,
             message=request.message,
-            interaction_type=request.interaction_type
+            interaction_type=request.interaction_type,
         )
-        
+
         return result
     except HTTPException:
         raise
     except Exception as e:
         logger.error("Error sending chat message: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to send chat message") from e
+        raise HTTPException(
+            status_code=500, detail="Failed to send chat message"
+        ) from e
 
 
 @router.get("/spirit-inhabitation/success-advisor-8")
@@ -149,12 +151,12 @@ async def get_success_advisor_spirit_inhabitation() -> dict[str, Any]:
     try:
         spirit_service = get_success_advisor_spirit_service()
         guide = spirit_service.get_spirit_inhabitation_guide()
-        
+
         logger.info("🦁 Success-Advisor-8 spirit inhabitation guide provided")
         return guide
-        
+
     except Exception as e:
-        logger.error(f"❌ Error providing Success-Advisor-8 spirit inhabitation: {e}")
+        logger.error("❌ Error providing Success-Advisor-8 spirit inhabitation: %s", e)
         raise HTTPException(status_code=500, detail=str(e)) from e
 
 
@@ -164,16 +166,16 @@ async def get_success_advisor_system_prompt() -> dict[str, Any]:
     try:
         spirit_service = get_success_advisor_spirit_service()
         instructions = spirit_service.get_behavioral_instructions()
-        
+
         logger.info("🦁 Success-Advisor-8 system prompt provided")
         return {
             "system_prompt": instructions["system_prompt"],
             "communication_style": instructions["communication_style"],
-            "behavioral_guidelines": instructions["behavioral_guidelines"]
+            "behavioral_guidelines": instructions["behavioral_guidelines"],
         }
-        
+
     except Exception as e:
-        logger.error(f"❌ Error providing Success-Advisor-8 system prompt: {e}")
+        logger.error("❌ Error providing Success-Advisor-8 system prompt: %s", e)
         raise HTTPException(status_code=500, detail=str(e)) from e
 
 
@@ -183,12 +185,12 @@ async def get_success_advisor_genomic_payload() -> dict[str, Any]:
     try:
         spirit_service = get_success_advisor_spirit_service()
         payload = spirit_service.get_genomic_payload()
-        
+
         logger.info("🦁 Success-Advisor-8 genomic payload provided")
         return payload
-        
+
     except Exception as e:
-        logger.error(f"❌ Error providing Success-Advisor-8 genomic payload: {e}")
+        logger.error("❌ Error providing Success-Advisor-8 genomic payload: %s", e)
         raise HTTPException(status_code=500, detail=str(e)) from e
 
 
@@ -204,7 +206,7 @@ def _load_race_data(spirit: str) -> dict[str, Any]:
     try:
         races_dir = _get_races_directory()
         race_file = races_dir / f"{spirit}.json"
-        
+
         if not race_file.exists():
             raise HTTPException(
                 status_code=404, detail=f"Race data for spirit '{spirit}' not found"
@@ -215,10 +217,14 @@ def _load_race_data(spirit: str) -> dict[str, Any]:
             return data
     except json.JSONDecodeError as e:
         logger.error("Error parsing JSON from race file %s: %s", spirit, e)
-        raise HTTPException(status_code=500, detail=f"Invalid JSON in race file for {spirit}") from e
+        raise HTTPException(
+            status_code=500, detail=f"Invalid JSON in race file for {spirit}"
+        ) from e
     except Exception as e:
         logger.error("Error loading race data for %s: %s", spirit, e)
-        raise HTTPException(status_code=500, detail=f"Failed to load race data for {spirit}") from e
+        raise HTTPException(
+            status_code=500, detail=f"Failed to load race data for {spirit}"
+        ) from e
 
 
 def _load_races_data() -> dict[str, Any]:
@@ -226,7 +232,7 @@ def _load_races_data() -> dict[str, Any]:
     try:
         races_dir = _get_races_directory()
         all_races = {}
-        
+
         for race_file in races_dir.glob("*.json"):
             spirit = race_file.stem
             try:
@@ -236,7 +242,7 @@ def _load_races_data() -> dict[str, Any]:
             except json.JSONDecodeError as e:
                 logger.warning("Error parsing JSON from race file %s: %s", race_file, e)
                 continue
-        
+
         return {"races": all_races}
     except Exception as e:
         logger.error("Error loading races data: %s", e)
@@ -253,7 +259,9 @@ async def get_animal_spirits() -> dict[str, Any]:
         raise
     except Exception as e:
         logger.error("Error getting animal spirits: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to get animal spirits") from e
+        raise HTTPException(
+            status_code=500, detail="Failed to get animal spirits"
+        ) from e
 
 
 @router.get("/naming/animal-spirits/{spirit}", response_model=None)
@@ -268,4 +276,122 @@ async def get_animal_spirit_names(spirit: str) -> dict[str, Any]:
         logger.error("Error getting names for spirit %s: %s", spirit, e)
         raise HTTPException(
             status_code=500, detail=f"Failed to get names for spirit {spirit}"
+        ) from e
+
+
+@router.get("/naming/components", response_model=None)
+async def get_naming_components() -> dict[str, Any]:
+    """Get all naming components (suffixes, prefixes, etc.)."""
+    try:
+        components_file = _get_races_directory().parent / "naming_components.json"
+
+        if not components_file.exists():
+            raise HTTPException(
+                status_code=404, detail="Naming components file not found"
+            )
+
+        with open(components_file, "r", encoding="utf-8") as f:
+            data: dict[str, Any] = json.load(f)
+            return data
+    except json.JSONDecodeError as e:
+        logger.error("Error parsing JSON from naming components file: %s", e)
+        raise HTTPException(
+            status_code=500, detail="Invalid JSON in naming components file"
+        ) from e
+    except Exception as e:
+        logger.error("Error loading naming components: %s", e)
+        raise HTTPException(
+            status_code=500, detail="Failed to load naming components"
+        ) from e
+
+
+@router.get("/naming/components/{component_type}", response_model=None)
+async def get_naming_component_type(component_type: str) -> dict[str, Any]:
+    """Get a specific type of naming component."""
+    try:
+        components_file = _get_races_directory().parent / "naming_components.json"
+
+        if not components_file.exists():
+            raise HTTPException(
+                status_code=404, detail="Naming components file not found"
+            )
+
+        with open(components_file, "r", encoding="utf-8") as f:
+            data: dict[str, Any] = json.load(f)
+
+        if component_type not in data:
+            raise HTTPException(
+                status_code=404, detail=f"Component type '{component_type}' not found"
+            )
+
+        return {"component_type": component_type, "values": data[component_type]}
+    except json.JSONDecodeError as e:
+        logger.error("Error parsing JSON from naming components file: %s", e)
+        raise HTTPException(
+            status_code=500, detail="Invalid JSON in naming components file"
+        ) from e
+    except Exception as e:
+        logger.error("Error loading component type %s: %s", component_type, e)
+        raise HTTPException(
+            status_code=500, detail=f"Failed to load component type {component_type}"
+        ) from e
+
+
+@router.get("/naming/generation-numbers", response_model=None)
+async def get_generation_numbers() -> dict[str, Any]:
+    """Get generation numbers for all spirits."""
+    try:
+        generation_file = _get_races_directory().parent / "generation_numbers.json"
+
+        if not generation_file.exists():
+            raise HTTPException(
+                status_code=404, detail="Generation numbers file not found"
+            )
+
+        with open(generation_file, "r", encoding="utf-8") as f:
+            data: dict[str, Any] = json.load(f)
+            return data
+    except json.JSONDecodeError as e:
+        logger.error("Error parsing JSON from generation numbers file: %s", e)
+        raise HTTPException(
+            status_code=500, detail="Invalid JSON in generation numbers file"
+        ) from e
+    except Exception as e:
+        logger.error("Error loading generation numbers: %s", e)
+        raise HTTPException(
+            status_code=500, detail="Failed to load generation numbers"
+        ) from e
+
+
+@router.get("/naming/generation-numbers/{spirit}", response_model=None)
+async def get_spirit_generation_numbers(spirit: str) -> dict[str, Any]:
+    """Get generation numbers for a specific spirit."""
+    try:
+        generation_file = _get_races_directory().parent / "generation_numbers.json"
+
+        if not generation_file.exists():
+            raise HTTPException(
+                status_code=404, detail="Generation numbers file not found"
+            )
+
+        with open(generation_file, "r", encoding="utf-8") as f:
+            data: dict[str, Any] = json.load(f)
+
+        if spirit not in data:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Generation numbers for spirit '{spirit}' not found",
+            )
+
+        return {"spirit": spirit, "numbers": data[spirit]}
+    except json.JSONDecodeError as e:
+        logger.error("Error parsing JSON from generation numbers file: %s", e)
+        raise HTTPException(
+            status_code=500, detail="Invalid JSON in generation numbers file"
+        ) from e
+    except Exception as e:
+        logger.error("Error loading generation numbers for spirit %s: %s", spirit, e)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to load generation numbers for spirit {spirit}",
         ) from e

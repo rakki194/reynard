@@ -11,7 +11,6 @@ import {
   ServiceConfig,
   ServiceHealthInfo,
   ServiceHealth,
-  ServiceStatus,
   ServiceError,
 } from "reynard-ai-shared";
 import { BackendAnnotationService, BackendAnnotationServiceConfig } from "./BackendAnnotationService.js";

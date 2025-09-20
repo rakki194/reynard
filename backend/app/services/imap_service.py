@@ -12,6 +12,8 @@ from email.header import decode_header
 from typing import List, Optional, Dict, Any, Tuple, Union
 from datetime import datetime, timedelta
 import os
+import json
+from pathlib import Path
 from dataclasses import dataclass
 
 logger = logging.getLogger(__name__)
@@ -29,6 +31,10 @@ class EmailMessage:
     body: str
     html_body: Optional[str] = None
     attachments: Optional[List[Dict[str, Any]]] = None
+    from_agent: Optional[str] = None
+    to_agent: Optional[str] = None
+    is_agent_email: bool = False
+    status: str = "received"  # received, processed, replied
     
     def __post_init__(self) -> None:
         if self.attachments is None:
@@ -58,12 +64,19 @@ class IMAPConfig:
 
 
 class IMAPService:
-    """IMAP service for receiving emails."""
+    """IMAP service for receiving emails with agent integration."""
     
-    def __init__(self, config: Optional[IMAPConfig] = None):
+    def __init__(self, config: Optional[IMAPConfig] = None, data_dir: str = "data/imap_emails"):
         self.config = config or IMAPConfig()
         self._validate_config()
         self._connection: Optional[Union[imaplib.IMAP4, imaplib.IMAP4_SSL]] = None
+        
+        # Agent integration
+        self.data_dir = Path(data_dir)
+        self.data_dir.mkdir(parents=True, exist_ok=True)
+        self.received_emails_file = self.data_dir / "received_emails.json"
+        self.agent_emails_file = self.data_dir / "agent_emails.json"
+        self._load_received_emails()
     
     def _validate_config(self) -> None:
         """Validate IMAP configuration."""
@@ -71,6 +84,198 @@ class IMAPService:
             raise ValueError("IMAP username is required")
         if not self.config.imap_password:
             raise ValueError("IMAP password is required")
+    
+    def _load_received_emails(self) -> None:
+        """Load received emails from storage."""
+        try:
+            if self.received_emails_file.exists():
+                with open(self.received_emails_file, 'r') as f:
+                    data = json.load(f)
+                    self.received_emails = {
+                        msg_id: EmailMessage(**msg_data) 
+                        for msg_id, msg_data in data.items()
+                    }
+            else:
+                self.received_emails = {}
+        except Exception as e:
+            logger.error(f"Failed to load received emails: {e}")
+            self.received_emails = {}
+    
+    def _save_received_emails(self) -> None:
+        """Save received emails to storage."""
+        try:
+            data = {
+                msg_id: {
+                    "message_id": msg.message_id,
+                    "subject": msg.subject,
+                    "sender": msg.sender,
+                    "recipient": msg.recipient,
+                    "date": msg.date.isoformat(),
+                    "body": msg.body,
+                    "html_body": msg.html_body,
+                    "attachments": msg.attachments,
+                    "from_agent": msg.from_agent,
+                    "to_agent": msg.to_agent,
+                    "is_agent_email": msg.is_agent_email,
+                    "status": msg.status,
+                }
+                for msg_id, msg in self.received_emails.items()
+            }
+            with open(self.received_emails_file, 'w') as f:
+                json.dump(data, f, indent=2, default=str)
+        except Exception as e:
+            logger.error(f"Failed to save received emails: {e}")
+    
+    async def _detect_agent_email(self, email_msg: EmailMessage) -> EmailMessage:
+        """Detect if email is from/to an agent and update accordingly."""
+        try:
+            # Try to import agent email service
+            from .agent_email_service import agent_email_service
+            
+            # Check if sender is an agent
+            sender_config = await agent_email_service.get_agent_config_by_email(email_msg.sender)
+            if sender_config:
+                email_msg.from_agent = sender_config.agent_id
+                email_msg.is_agent_email = True
+            
+            # Check if recipient is an agent
+            recipient_config = await agent_email_service.get_agent_config_by_email(email_msg.recipient)
+            if recipient_config:
+                email_msg.to_agent = recipient_config.agent_id
+                email_msg.is_agent_email = True
+            
+            return email_msg
+        except ImportError:
+            logger.warning("Agent email service not available for email detection")
+            return email_msg
+        except Exception as e:
+            logger.error(f"Error detecting agent email: {e}")
+            return email_msg
+    
+    async def _process_agent_email(self, email_msg: EmailMessage) -> None:
+        """Process agent email and trigger appropriate actions."""
+        if not email_msg.is_agent_email:
+            return
+        
+        try:
+            from .agent_email_service import agent_email_service
+            
+            # Update agent stats
+            if email_msg.to_agent:
+                await agent_email_service.update_agent_stats(email_msg.to_agent, "received")
+            
+            # Log the interaction
+            if email_msg.from_agent and email_msg.to_agent:
+                await agent_email_service.log_agent_interaction(
+                    email_msg.from_agent,
+                    email_msg.to_agent,
+                    "email_received",
+                    {
+                        "subject": email_msg.subject,
+                        "message_id": email_msg.message_id,
+                        "date": email_msg.date.isoformat(),
+                    }
+                )
+            
+            # Check for auto-reply
+            if email_msg.to_agent:
+                target_config = await agent_email_service.get_agent_config(email_msg.to_agent)
+                if target_config and target_config.auto_reply_enabled:
+                    await self._send_auto_reply(email_msg, target_config)
+            
+            # Trigger automated responses based on email content
+            await self._trigger_automated_responses(email_msg)
+            
+        except Exception as e:
+            logger.error(f"Error processing agent email: {e}")
+    
+    async def _send_auto_reply(self, original_email: EmailMessage, agent_config) -> None:
+        """Send auto-reply for agent email."""
+        try:
+            from .email_service import email_service
+            from .agent_email_service import agent_email_service
+            
+            # Get auto-reply template
+            auto_reply_template = None
+            if agent_config.auto_reply_template:
+                templates = await agent_email_service.get_agent_templates(agent_config.agent_id)
+                auto_reply_template = next(
+                    (t for t in templates if t.id == agent_config.auto_reply_template), 
+                    None
+                )
+            
+            if auto_reply_template:
+                # Process template variables
+                subject = auto_reply_template.subject.replace("{sender_name}", original_email.sender)
+                body = auto_reply_template.body.replace("{sender_name}", original_email.sender)
+                html_body = auto_reply_template.html_body.replace("{sender_name}", original_email.sender) if auto_reply_template.html_body else None
+            else:
+                # Default auto-reply
+                subject = f"Re: {original_email.subject}"
+                body = f"Thank you for your email. This is an automated reply from {agent_config.agent_name}."
+                html_body = f"<p>Thank you for your email. This is an automated reply from <strong>{agent_config.agent_name}</strong>.</p>"
+            
+            # Send auto-reply
+            from ..models.email_models import EmailMessage as EmailMessageModel
+            reply_message = EmailMessageModel(
+                to_emails=[original_email.sender],
+                subject=subject,
+                body=body,
+                html_body=html_body,
+                reply_to=agent_config.agent_email,
+            )
+            
+            result = await email_service.send_email(reply_message)
+            
+            if result["success"]:
+                logger.info(f"Auto-reply sent for email {original_email.message_id}")
+                
+                # Update original email status
+                original_email.status = "replied"
+                self._save_received_emails()
+            
+        except Exception as e:
+            logger.error(f"Error sending auto-reply: {e}")
+    
+    async def _trigger_automated_responses(self, email_msg: EmailMessage) -> None:
+        """Trigger automated responses based on email content."""
+        if not email_msg.to_agent:
+            return
+        
+        try:
+            from .agent_email_service import agent_email_service
+            
+            # Analyze email content for trigger conditions
+            trigger_context = {
+                "sender": email_msg.sender,
+                "subject": email_msg.subject,
+                "body": email_msg.body,
+                "date": email_msg.date.isoformat(),
+                "message_id": email_msg.message_id,
+            }
+            
+            # Trigger based on email content
+            if "urgent" in email_msg.subject.lower() or "urgent" in email_msg.body.lower():
+                await agent_email_service.process_automated_email(
+                    email_msg.to_agent,
+                    "urgent_email_received",
+                    trigger_context
+                )
+            elif "question" in email_msg.subject.lower() or "?" in email_msg.body:
+                await agent_email_service.process_automated_email(
+                    email_msg.to_agent,
+                    "question_received",
+                    trigger_context
+                )
+            elif "meeting" in email_msg.subject.lower() or "meeting" in email_msg.body.lower():
+                await agent_email_service.process_automated_email(
+                    email_msg.to_agent,
+                    "meeting_request",
+                    trigger_context
+                )
+            
+        except Exception as e:
+            logger.error(f"Error triggering automated responses: {e}")
     
     async def connect(self) -> bool:
         """
@@ -116,7 +321,7 @@ class IMAPService:
     
     async def get_unread_emails(self, limit: int = 10) -> List[EmailMessage]:
         """
-        Get unread emails.
+        Get unread emails with agent integration.
         
         Args:
             limit: Maximum number of emails to retrieve
@@ -134,7 +339,26 @@ class IMAPService:
                 self._get_unread_emails_sync,
                 limit
             )
-            return emails
+            
+            # Process each email for agent integration
+            processed_emails = []
+            for email_msg in emails:
+                # Detect if it's an agent email
+                email_msg = await self._detect_agent_email(email_msg)
+                
+                # Store the email
+                self.received_emails[email_msg.message_id] = email_msg
+                
+                # Process agent email if applicable
+                if email_msg.is_agent_email:
+                    await self._process_agent_email(email_msg)
+                
+                processed_emails.append(email_msg)
+            
+            # Save received emails
+            self._save_received_emails()
+            
+            return processed_emails
         except Exception as e:
             logger.error(f"Failed to get unread emails: {e}")
             return []
@@ -431,6 +655,128 @@ class IMAPService:
         except Exception as e:
             logger.error(f"Error getting mailbox info: {e}")
             return {}
+    
+    async def get_agent_emails(self, agent_id: str, limit: int = 50) -> List[EmailMessage]:
+        """
+        Get emails for a specific agent.
+        
+        Args:
+            agent_id: Agent ID to get emails for
+            limit: Maximum number of emails to retrieve
+            
+        Returns:
+            List[EmailMessage]: List of agent emails
+        """
+        try:
+            from .agent_email_service import agent_email_service
+            
+            # Get agent config to find email address
+            agent_config = await agent_email_service.get_agent_config(agent_id)
+            if not agent_config:
+                return []
+            
+            # Filter emails for this agent
+            agent_emails = [
+                email_msg for email_msg in self.received_emails.values()
+                if (email_msg.from_agent == agent_id or 
+                    email_msg.to_agent == agent_id or
+                    email_msg.recipient == agent_config.agent_email or
+                    email_msg.sender == agent_config.agent_email)
+            ]
+            
+            # Sort by date (newest first)
+            agent_emails.sort(key=lambda x: x.date, reverse=True)
+            
+            return agent_emails[:limit]
+            
+        except Exception as e:
+            logger.error(f"Failed to get agent emails for {agent_id}: {e}")
+            return []
+    
+    async def get_received_emails_summary(self) -> Dict[str, Any]:
+        """
+        Get summary of received emails.
+        
+        Returns:
+            Dict containing email statistics
+        """
+        try:
+            total_emails = len(self.received_emails)
+            agent_emails = sum(1 for email_msg in self.received_emails.values() if email_msg.is_agent_email)
+            unread_emails = sum(1 for email_msg in self.received_emails.values() if email_msg.status == "received")
+            replied_emails = sum(1 for email_msg in self.received_emails.values() if email_msg.status == "replied")
+            
+            # Get agent breakdown
+            agent_breakdown = {}
+            for email_msg in self.received_emails.values():
+                if email_msg.from_agent:
+                    agent_breakdown[email_msg.from_agent] = agent_breakdown.get(email_msg.from_agent, 0) + 1
+                if email_msg.to_agent:
+                    agent_breakdown[email_msg.to_agent] = agent_breakdown.get(email_msg.to_agent, 0) + 1
+            
+            return {
+                "total_emails": total_emails,
+                "agent_emails": agent_emails,
+                "unread_emails": unread_emails,
+                "replied_emails": replied_emails,
+                "agent_breakdown": agent_breakdown,
+                "last_updated": datetime.now().isoformat()
+            }
+            
+        except Exception as e:
+            logger.error(f"Failed to get email summary: {e}")
+            return {}
+    
+    async def start_email_monitoring(self, interval: int = 60) -> None:
+        """
+        Start continuous email monitoring.
+        
+        Args:
+            interval: Check interval in seconds
+        """
+        logger.info(f"Starting email monitoring with {interval}s interval")
+        
+        while True:
+            try:
+                # Check for new emails
+                new_emails = await self.get_unread_emails(limit=50)
+                
+                if new_emails:
+                    logger.info(f"Received {len(new_emails)} new emails")
+                    
+                    # Process each new email
+                    for email_msg in new_emails:
+                        if email_msg.is_agent_email:
+                            logger.info(f"Processing agent email: {email_msg.subject}")
+                        else:
+                            logger.info(f"Processing regular email: {email_msg.subject}")
+                
+                # Wait for next check
+                await asyncio.sleep(interval)
+                
+            except Exception as e:
+                logger.error(f"Error in email monitoring: {e}")
+                await asyncio.sleep(interval)
+    
+    async def mark_email_as_processed(self, message_id: str) -> bool:
+        """
+        Mark an email as processed.
+        
+        Args:
+            message_id: Email message ID
+            
+        Returns:
+            bool: True if successful
+        """
+        try:
+            if message_id in self.received_emails:
+                self.received_emails[message_id].status = "processed"
+                self._save_received_emails()
+                return True
+            return False
+        except Exception as e:
+            logger.error(f"Failed to mark email as processed: {e}")
+            return False
 
 
 # Global IMAP service instance

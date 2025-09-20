@@ -17,7 +17,7 @@ export default defineConfig({
         globals: {
           "solid-js": "SolidJS",
           "reynard-core": "ReynardCore",
-          "reynard-components": "ReynardComponents",
+          "reynard-components-core": "ReynardComponentsCore",
           "reynard-fluent-icons": "ReynardFluentIcons",
         },
       },

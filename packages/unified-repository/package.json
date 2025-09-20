@@ -33,7 +33,11 @@
     "reynard-service-manager": "workspace:*",
     "reynard-connection": "workspace:*",
     "reynard-core": "workspace:*",
-    "reynard-components": "workspace:*",
+    "reynard-components-core": "workspace:*",
+    "reynard-components-charts": "workspace:*",
+    "reynard-components-dashboard": "workspace:*",
+    "reynard-components-themes": "workspace:*",
+    "reynard-components-utils": "workspace:*",
     "parquetjs": "^0.11.2"
   },
   "devDependencies": {

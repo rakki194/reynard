@@ -5,11 +5,11 @@
  * Types are organized into focused modules for better maintainability.
  */
 
+// Export task and result interfaces (includes CaptionType from ai-shared)
+export * from "./tasks";
+
 // Export all enums
 export * from "./enums";
-
-// Export task and result interfaces
-export * from "./tasks";
 
 // Export generator and model interfaces
 export * from "./generators";

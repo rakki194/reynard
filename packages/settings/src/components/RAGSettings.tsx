@@ -4,7 +4,7 @@
  */
 
 import { Component, Show, createSignal, createEffect } from "solid-js";
-import { Button, TextField, Select } from "reynard-components";
+import { Button, TextField, Select } from "reynard-components-core";
 import { Toggle } from "./Toggle";
 import { Button } from "./Button";
 import { useSettings } from "../composables/useSettings";

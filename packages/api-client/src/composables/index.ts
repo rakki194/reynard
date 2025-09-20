@@ -2,7 +2,10 @@
  * Composable exports for Reynard API client
  */
 
-export * from "./useAuth.js";
-export * from "./useCaption.js";
-export * from "./useChat.js";
-export * from "./useRAG.js";
+export * from "./useAuth";
+export * from "./useCaption";
+export * from "./useChat";
+export * from "./useRAG";
+export * from "./useEmail";
+export * from "./useECS";
+export * from "./useMCP";

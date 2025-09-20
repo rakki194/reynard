@@ -38,8 +38,8 @@ export function createRaycasterManager() {
 
     if (!currentRaycaster || !currentMouse) return [];
 
-    currentRaycaster.setFromCamera(currentMouse, camera);
-    return currentRaycaster.intersectObject(pointCloud);
+    currentRaycaster.setFromCamera(currentMouse, camera as any);
+    return currentRaycaster.intersectObject(pointCloud as any);
   };
 
   return {

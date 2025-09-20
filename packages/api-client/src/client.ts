@@ -3,15 +3,18 @@
  */
 
 import {
-  DefaultApi,
   Configuration,
   RagApi,
   CaptionApi,
   CaptionUploadApi,
   OllamaApi,
   AuthenticationApi,
-} from "./generated/index.js";
-import type { AuthFetchOptions, AuthFetch } from "./types.js";
+  HealthApi,
+  EmailApi,
+  AgentEmailApi,
+  ImapApi,
+} from "./generated/index";
+import type { AuthFetchOptions, AuthFetch } from "./types";
 
 export interface ReynardApiClientConfig {
   basePath?: string;
@@ -32,23 +35,31 @@ export function createReynardApiClient(config: ReynardApiClientConfig = {}) {
   });
 
   // Create API clients
-  const defaultApi = new DefaultApi(apiConfig);
+  const healthApi = new HealthApi(apiConfig);
   const ragApi = new RagApi(apiConfig);
   const captionApi = new CaptionApi(apiConfig);
   const captionUploadApi = new CaptionUploadApi(apiConfig);
   const ollamaApi = new OllamaApi(apiConfig);
   const authApi = new AuthenticationApi(apiConfig);
+  const emailApi = new EmailApi(apiConfig);
+  const agentEmailApi = new AgentEmailApi(apiConfig);
+  const imapApi = new ImapApi(apiConfig);
+
+  // Create composable instances (to be implemented)
+  // const emailService = useEmail({ config: apiConfig } as ReynardApiClient);
+  // const ecsService = useECS({ config: apiConfig } as ReynardApiClient);
+  // const mcpService = useMCP({ config: apiConfig } as ReynardApiClient);
 
   return {
-    api: defaultApi,
+    api: healthApi,
     config: apiConfig,
 
-    // Convenience methods
+    // Core services
     rag: {
-      query: ragApi.queryRagApiRagApiRagQueryPost.bind(ragApi),
-      ingest: ragApi.ingestDocumentsApiRagApiRagIngestPost.bind(ragApi),
-      stats: ragApi.getRagStatsApiRagApiRagAdminStatsGet.bind(ragApi),
-      documents: ragApi.getRagConfigApiRagApiRagConfigGet.bind(ragApi),
+      query: ragApi.queryRagApiRagQueryPost.bind(ragApi),
+      ingest: ragApi.ingestDocumentsApiRagIngestPost.bind(ragApi),
+      stats: ragApi.getRagStatsApiRagAdminStatsGet.bind(ragApi),
+      documents: ragApi.getRagConfigApiRagConfigGet.bind(ragApi),
     },
 
     caption: {
@@ -73,7 +84,39 @@ export function createReynardApiClient(config: ReynardApiClientConfig = {}) {
       me: authApi.getCurrentUserInfoApiAuthMeGet.bind(authApi),
     },
 
-    health: defaultApi.healthCheckApiHealthGet.bind(defaultApi),
+    email: {
+      send: emailApi.sendEmailApiEmailSendPost.bind(emailApi),
+      sendBulk: emailApi.sendBulkEmailApiEmailSendBulkPost.bind(emailApi),
+      getStatus: emailApi.getEmailStatusApiEmailStatusGet.bind(emailApi),
+    },
+
+    agentEmail: {
+      send: agentEmailApi.sendAgentEmailApiEmailAgentsAgentIdSendPost.bind(agentEmailApi),
+      sendBulk: agentEmailApi.sendAgentBulkEmailApiEmailAgentsAgentIdSendBulkPost.bind(agentEmailApi),
+      getConfig: agentEmailApi.getAgentEmailConfigApiEmailAgentsAgentIdConfigGet.bind(agentEmailApi),
+      updateConfig: agentEmailApi.updateAgentEmailConfigApiEmailAgentsAgentIdConfigPut.bind(agentEmailApi),
+      getStats: agentEmailApi.getAgentEmailStatsApiEmailAgentsAgentIdStatsGet.bind(agentEmailApi),
+      createTemplate: agentEmailApi.createAgentEmailTemplateApiEmailAgentsAgentIdTemplatesPost.bind(agentEmailApi),
+      triggerAutomated: agentEmailApi.triggerAgentAutomatedEmailApiEmailAgentsAgentIdTriggerPost.bind(agentEmailApi),
+    },
+
+    imap: {
+      testConnection: imapApi.testImapConnectionApiImapTestGet.bind(imapApi),
+      getStatus: imapApi.getImapStatusApiImapStatusGet.bind(imapApi),
+      getEmailsSummary: imapApi.getEmailsSummaryApiImapEmailsSummaryGet.bind(imapApi),
+      getRecentEmails: imapApi.getRecentEmailsApiImapEmailsRecentGet.bind(imapApi),
+      getUnreadEmails: imapApi.getUnreadEmailsApiImapEmailsUnreadGet.bind(imapApi),
+      getAgentEmails: imapApi.getAgentEmailsApiImapEmailsAgentAgentIdGet.bind(imapApi),
+      markAsRead: imapApi.markEmailAsReadApiImapEmailsMessageIdMarkReadPost.bind(imapApi),
+      markAsProcessed: imapApi.markEmailAsProcessedApiImapEmailsMessageIdMarkProcessedPost.bind(imapApi),
+      startMonitoring: imapApi.startEmailMonitoringApiImapMonitoringStartPost.bind(imapApi),
+    },
+
+    // New services (to be implemented)
+    // ecs: ecsService,
+    // mcp: mcpService,
+
+    health: healthApi.healthCheckApiHealthGet.bind(healthApi),
   };
 }
 

@@ -17,7 +17,7 @@ vi.mock("../../clients", () => ({
 }));
 
 vi.mock("../EventManager", () => ({
-  SimpleEventManager: vi.fn(() => ({
+  EventManager: vi.fn(() => ({
     emit: vi.fn(),
     on: vi.fn(),
     off: vi.fn(),

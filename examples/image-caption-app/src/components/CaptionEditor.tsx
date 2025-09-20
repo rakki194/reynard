@@ -6,7 +6,7 @@
 import { Component, Show, For } from "solid-js";
 import { Button, Card } from "reynard-components";
 import { TagBubble, CaptionInput } from "reynard-caption";
-import { CaptionType } from "reynard-annotating";
+import { CaptionType } from "reynard-annotating-core";
 import type { ImageItem } from "../App";
 
 interface CaptionEditorProps {

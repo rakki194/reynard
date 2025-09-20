@@ -1,0 +1,31 @@
+{
+  "test_suite": "Reynard Advanced Email Features",
+  "execution_time": "2025-09-20T17:12:04.265662",
+  "duration_seconds": 0.3698253631591797,
+  "exit_code": 4,
+  "status": "FAILED",
+  "test_files": [
+    "test_email_analytics_service.py",
+    "test_email_encryption_service.py",
+    "test_calendar_integration_service.py",
+    "test_ai_email_response_service.py",
+    "test_multi_account_service.py",
+    "test_advanced_email_routes.py"
+  ],
+  "features_tested": [
+    "Email Analytics - Comprehensive metrics and insights",
+    "Email Encryption - PGP/SMIME support with key management",
+    "Calendar Integration - Meeting extraction and scheduling",
+    "AI-Powered Responses - LLM integration for automated replies",
+    "Multi-Account Support - Account management and isolation",
+    "API Routes - RESTful endpoints for all features"
+  ],
+  "test_categories": {
+    "unit_tests": "Service layer functionality",
+    "integration_tests": "API endpoint integration",
+    "error_handling_tests": "Exception and error scenarios",
+    "data_persistence_tests": "Storage and retrieval",
+    "authentication_tests": "User authentication and authorization",
+    "performance_tests": "Response times and caching"
+  }
+}

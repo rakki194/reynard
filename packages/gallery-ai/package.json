@@ -51,12 +51,15 @@
   },
   "dependencies": {
     "reynard-gallery": "workspace:*",
-    "reynard-annotating": "workspace:*",
     "reynard-annotating-core": "workspace:*",
     "reynard-caption": "workspace:*",
     "reynard-ai-shared": "workspace:*",
     "reynard-core": "workspace:*",
-    "reynard-components": "workspace:*",
+    "reynard-components-core": "workspace:*",
+    "reynard-components-charts": "workspace:*",
+    "reynard-components-dashboard": "workspace:*",
+    "reynard-components-themes": "workspace:*",
+    "reynard-components-utils": "workspace:*",
     "@solid-primitives/intersection-observer": "2.2.2",
     "@solid-primitives/resize-observer": "2.1.3",
     "@solid-primitives/event-listener": "2.4.3"

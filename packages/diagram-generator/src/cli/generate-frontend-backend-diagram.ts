@@ -32,29 +32,24 @@ async function generateFrontendBackendDiagram() {
     // Generate the diagram
     const result = await generator.generateDiagram("frontend-backend-relationships", config);
 
-    if (result && result.diagrams && result.diagrams.length > 0) {
-      const diagram = result.diagrams[0];
-
+    if (result) {
       // Save Mermaid content
       const mermaidPath = join(config.outputDir, "frontend-backend-relationships.mmd");
-      await writeFile(mermaidPath, diagram.mermaidContent);
+      await writeFile(mermaidPath, result.mermaidContent);
 
       console.log(`✅ Diagram generated successfully!`);
       console.log(`📄 Mermaid file: ${mermaidPath}`);
-      console.log(`📊 Nodes: ${diagram.metadata.nodeCount}`);
-      console.log(`🔗 Edges: ${diagram.metadata.edgeCount}`);
-      console.log(`📈 Complexity: ${diagram.metadata.complexityScore}`);
+      console.log(`📊 Nodes: ${result.metadata.nodeCount}`);
+      console.log(`🔗 Edges: ${result.metadata.edgeCount}`);
+      console.log(`📈 Complexity: ${result.metadata.complexityScore}`);
 
       // Display the Mermaid content
       console.log("\n📋 Mermaid Diagram Content:");
       console.log("=".repeat(80));
-      console.log(diagram.mermaidContent);
+      console.log(result.mermaidContent);
       console.log("=".repeat(80));
     } else {
       console.error("❌ No diagrams were generated");
-      if (result && result.errors && result.errors.length > 0) {
-        console.error("Errors:", result.errors);
-      }
     }
   } catch (error) {
     console.error("❌ Error generating diagram:", error);

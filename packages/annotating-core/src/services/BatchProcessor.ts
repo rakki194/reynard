@@ -6,12 +6,12 @@
 
 import { CaptionTask, CaptionResult, AnnotationProgress } from "../types/index.js";
 import { CaptionApiClient } from "../clients/index.js";
-import { SimpleEventManager } from "./EventManager.js";
+import { EventManager } from "./EventManager.js";
 
 export class BatchProcessor {
   constructor(
     private client: CaptionApiClient,
-    private eventManager: SimpleEventManager
+    private eventManager: EventManager
   ) {}
 
   async processBatch(

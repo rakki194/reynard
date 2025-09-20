@@ -5,7 +5,7 @@
  * Extracted to keep composables under the 140-line limit.
  */
 
-import { createAnnotationManager } from "reynard-annotating";
+import { createAnnotationManager } from "reynard-annotating-core";
 
 export interface ModelManagerInstance {
   manager: ReturnType<typeof createAnnotationManager>;

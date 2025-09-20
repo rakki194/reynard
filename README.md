@@ -47,6 +47,27 @@ application development—where different tools and services work together to re
   - [📦 Package Ecosystem](#-package-ecosystem)
     - [Core Packages](#core-packages)
     - [Specialized Packages](#specialized-packages)
+  - [📧 Advanced Email Features](#-advanced-email-features)
+    - [🏗️ Email System Architecture](#️-email-system-architecture)
+    - [🚀 Email System Capabilities](#-email-system-capabilities)
+      - [📊 Advanced Email Analytics](#-advanced-email-analytics)
+      - [🔐 Email Encryption (PGP/SMIME)](#-email-encryption-pgpsmime)
+      - [📅 Calendar Integration](#-calendar-integration)
+      - [🤖 AI-Powered Email Responses](#-ai-powered-email-responses)
+      - [👥 Multi-Account Support](#-multi-account-support)
+    - [🔧 Technical Implementation](#-technical-implementation)
+      - [Architecture](#architecture)
+      - [Integration Points](#integration-points)
+    - [📈 Performance Features](#-performance-features)
+      - [Analytics Performance](#analytics-performance)
+      - [AI Response Performance](#ai-response-performance)
+    - [🛡️ Security Features](#️-security-features)
+      - [Encryption Security](#encryption-security)
+      - [Multi-Account Security](#multi-account-security)
+    - [🎯 Use Cases](#-use-cases)
+      - [For Administrators](#for-administrators)
+      - [For Agents](#for-agents)
+      - [For Users](#for-users)
   - [🎯 Philosophy](#-philosophy)
   - [🧪 Testing Overview](#-testing-overview)
   - [🐺 Security Testing with FENRIR](#-security-testing-with-fenrir)
@@ -105,6 +126,11 @@ application development—where different tools and services work together to re
       - [Caption Components](#caption-components)
       - [Caption Example Usage](#caption-example-usage)
       - [Complete Caption Workflow Example](#complete-caption-workflow-example)
+    - [reynard-email](#reynard-email)
+      - [Email Features](#email-features)
+      - [Email Components](#email-components)
+      - [Email Composables](#email-composables)
+      - [Email Example Usage](#email-example-usage)
     - [reynard-testing](#reynard-testing)
       - [Testing Features](#testing-features)
       - [Testing Utilities](#testing-utilities)
@@ -231,6 +257,7 @@ function App() {
 
 - **🎯 Multi-Modal Content Management** - Images, videos, audio, documents, and specialized formats
 - **🤖 AI/ML Integration** - Caption generation, RAG system, object detection, and TTS
+- **📧 Advanced Email System** - AI-powered responses, encryption, analytics, and multi-account support
 - **🌍 Single Authoritative ECS World** - Centralized agent simulation with trait inheritance and breeding
 - **🔗 MCP Server Integration** - Comprehensive MCP tools for agent management and world simulation
 - **🎨 8 Built-in Themes** - Light, dark, and custom themes with CSS custom properties
@@ -262,12 +289,287 @@ while other packages can be added as needed. All packages are published to npm a
 - **`reynard-gallery`** - Advanced file management with drag-and-drop
 - **`reynard-annotating`** - AI-powered caption generation with multiple models
 - **`reynard-caption`** - Caption editing UI with tag management
+- **`reynard-email`** - Comprehensive email system with AI-powered responses, encryption, and analytics
 - **`reynard-floating-panel`** - Advanced floating panel system with staggered animations and state management
 - **`reynard-3d`** - Three.js integration for 3D graphics
 - **`reynard-monaco`** - Code editor integration
 - **`reynard-games`** - Game development utilities
 
 _[View complete package list and documentation →](./docs/packages.md)_
+
+## 📧 Advanced Email Features
+
+Reynard includes a comprehensive email system with enterprise-grade capabilities, AI-powered intelligence, and advanced security features.
+
+### 🏗️ Email System Architecture
+
+```mermaid
+graph TB
+    %% Frontend Layer
+    subgraph "Frontend (SolidJS)"
+        direction TB
+        EC[EmailComposer]
+        EA[EmailAnalytics]
+        EM[EncryptionManager]
+        CS[CalendarScheduler]
+        MAM[MultiAccountManager]
+
+        subgraph "Composables"
+            UE[useEmail]
+            UAE[useAgentEmail]
+            UI[useImap]
+        end
+
+        subgraph "API Client"
+            AC[reynard-api-client]
+        end
+    end
+
+    %% Backend Services Layer
+    subgraph "Backend Services (FastAPI)"
+        direction TB
+
+        subgraph "Core Email Services"
+            ES[EmailService]
+            IS[ImapService]
+            AES[AgentEmailService]
+        end
+
+        subgraph "Advanced Email Services"
+            EAS[EmailAnalyticsService]
+            EES[EmailEncryptionService]
+            AERS[AIEmailResponseService]
+            CIS[CalendarIntegrationService]
+            MAS[MultiAccountService]
+        end
+
+        subgraph "API Routes"
+            ER[EmailRoutes]
+            IMR[ImapRoutes]
+            AER[AgentEmailRoutes]
+            EAR[EmailAnalyticsRoutes]
+        end
+    end
+
+    %% External Integrations
+    subgraph "External Services"
+        direction TB
+
+        subgraph "Email Providers"
+            SMTP[SMTP Servers]
+            IMAP[IMAP Servers]
+        end
+
+        subgraph "AI/LLM Services"
+            OpenAI[OpenAI GPT]
+            Claude[Anthropic Claude]
+        end
+
+        subgraph "Calendar Services"
+            GC[Google Calendar]
+            CD[CalDAV]
+        end
+
+        subgraph "Encryption"
+            PGP[PGP Keys]
+            SMIME[SMIME Certificates]
+        end
+    end
+
+    %% Data Storage
+    subgraph "Data Storage"
+        direction TB
+        JSON[JSON Files]
+        CACHE[Cache Storage]
+        KEYS[Key Storage]
+    end
+
+    %% ECS World Integration
+    subgraph "ECS World"
+        direction TB
+        AGENTS[Agent System]
+        TRAITS[Trait Inheritance]
+        BREEDING[Breeding System]
+    end
+
+    %% Connections
+    EC --> UE
+    EA --> UE
+    EM --> UE
+    CS --> UE
+    MAM --> UE
+
+    UE --> AC
+    UAE --> AC
+    UI --> AC
+
+    AC --> ER
+    AC --> IMR
+    AC --> AER
+    AC --> EAR
+
+    ER --> ES
+    IMR --> IS
+    AER --> AES
+    EAR --> EAS
+
+    ES --> SMTP
+    IS --> IMAP
+
+    EAS --> JSON
+    EES --> KEYS
+    AERS --> OpenAI
+    AERS --> Claude
+    CIS --> GC
+    CIS --> CD
+    MAS --> JSON
+
+    EES --> PGP
+    EES --> SMIME
+
+    AES --> AGENTS
+    AERS --> AGENTS
+
+    EAS --> CACHE
+    AERS --> CACHE
+
+    %% Styling
+    classDef frontend fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef backend fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef external fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef storage fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    classDef ecs fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+
+    class EC,EA,EM,CS,MAM,UE,UAE,UI,AC frontend
+    class ES,IS,AES,EAS,EES,AERS,CIS,MAS,ER,IMR,AER,EAR backend
+    class SMTP,IMAP,OpenAI,Claude,GC,CD,PGP,SMIME external
+    class JSON,CACHE,KEYS storage
+    class AGENTS,TRAITS,BREEDING ecs
+```
+
+This comprehensive diagram illustrates the complete email system architecture, showing:
+
+- **Frontend Layer**: SolidJS components and composables for user interaction
+- **Backend Services**: FastAPI services handling core and advanced email functionality
+- **External Integrations**: SMTP/IMAP servers, AI/LLM services, calendar providers, and encryption systems
+- **Data Storage**: JSON files, cache storage, and secure key storage
+- **ECS World Integration**: Agent system integration with trait inheritance and breeding capabilities
+
+The architecture demonstrates the modular design with clear separation of concerns, comprehensive external integrations, and seamless integration with the Reynard ECS agent system.
+
+### 🚀 Email System Capabilities
+
+#### 📊 Advanced Email Analytics
+
+- **Comprehensive Metrics** - Total emails, response times, volume trends, agent activity
+- **Intelligent Insights** - Automated analysis with trend detection, anomaly identification, and recommendations
+- **Performance Analytics** - Agent-specific performance tracking and benchmarking
+- **Real-time Dashboard** - Live analytics with caching for optimal performance
+- **Custom Reports** - Daily, weekly, monthly, and custom period reporting
+
+#### 🔐 Email Encryption (PGP/SMIME)
+
+- **PGP Support** - Full PGP key generation, import, and management
+- **SMIME Support** - SMIME encryption and signing capabilities
+- **Key Management** - Secure key storage with fingerprint validation
+- **Auto-encryption** - Configurable automatic encryption for sensitive emails
+- **Digital Signatures** - Email signing and verification
+
+#### 📅 Calendar Integration
+
+- **Meeting Extraction** - AI-powered extraction of meeting requests from emails
+- **Smart Scheduling** - Automatic meeting scheduling with conflict detection
+- **Calendar Sync** - Integration with Google Calendar and CalDAV
+- **Availability Checking** - Real-time availability and time slot suggestions
+- **Meeting Management** - Reschedule, cancel, and update meetings
+
+#### 🤖 AI-Powered Email Responses
+
+- **LLM Integration** - Support for OpenAI GPT and Anthropic Claude models
+- **Context Analysis** - Intelligent email context extraction and analysis
+- **Response Generation** - AI-powered email response creation with tone control
+- **Auto-replies** - Automated response generation for agent emails
+- **Response History** - Track and analyze AI response patterns
+
+#### 👥 Multi-Account Support
+
+- **Account Management** - Support for multiple email accounts per user/agent
+- **Permission System** - Granular permissions and access control
+- **Usage Tracking** - Comprehensive usage statistics and monitoring
+- **Account Isolation** - Separate configurations for each account
+- **Primary Account** - Designated primary accounts with fallback support
+
+### 🔧 Technical Implementation
+
+#### Architecture
+
+- **Modular Design** - Each feature is implemented as a separate service
+- **Async Support** - Full async/await support for optimal performance
+- **Error Handling** - Comprehensive error handling with detailed logging
+- **Data Persistence** - JSON-based storage with automatic serialization
+- **Caching** - Intelligent caching for frequently accessed data
+
+#### Integration Points
+
+- **Existing Email Service** - Seamless integration with current email infrastructure
+- **IMAP Service** - Enhanced with agent detection and automated processing
+- **Agent System** - Full integration with MCP/ECS agent framework
+- **Authentication** - Consistent authentication across all endpoints
+
+### 📈 Performance Features
+
+#### Analytics Performance
+
+- **Caching** - 15-minute cache for frequently accessed metrics
+- **Parallel Processing** - Concurrent data gathering for dashboard endpoints
+- **Efficient Storage** - Optimized JSON storage with compression
+- **Real-time Updates** - Live data updates with minimal latency
+
+#### AI Response Performance
+
+- **Model Selection** - Support for multiple LLM providers
+- **Response Caching** - Cache frequently generated responses
+- **Batch Processing** - Efficient batch processing for multiple requests
+- **Confidence Scoring** - Quality assessment for generated responses
+
+### 🛡️ Security Features
+
+#### Encryption Security
+
+- **Key Management** - Secure key generation and storage
+- **Access Control** - Permission-based key access
+- **Audit Trail** - Complete audit trail for encryption operations
+- **Key Rotation** - Support for key rotation and revocation
+
+#### Multi-Account Security
+
+- **Isolation** - Complete account isolation with separate configurations
+- **Permission System** - Granular permissions and access control
+- **Rate Limiting** - Per-account rate limiting and usage monitoring
+- **Domain Control** - Domain-based access restrictions
+
+### 🎯 Use Cases
+
+#### For Administrators
+
+- **Email Analytics** - Comprehensive email system monitoring and optimization
+- **Account Management** - Multi-account setup and management
+- **Security Control** - Encryption key management and security policies
+- **Performance Monitoring** - System-wide performance and usage analytics
+
+#### For Agents
+
+- **AI Responses** - Automated email response generation
+- **Meeting Scheduling** - Automatic meeting extraction and scheduling
+- **Encrypted Communication** - Secure email communication with PGP/SMIME
+- **Multi-Account** - Support for multiple email identities
+
+#### For Users
+
+- **Smart Inbox** - AI-powered email organization and prioritization
+- **Meeting Integration** - Seamless meeting scheduling from emails
+- **Secure Communication** - End-to-end encrypted email communication
+- **Analytics Dashboard** - Personal email analytics and insights
 
 ## 🎯 Philosophy
 
@@ -1132,6 +1434,63 @@ function CompleteCaptionWorkflow() {
         Save Caption
       </Button>
     </Card>
+  );
+}
+```
+
+### reynard-email
+
+Comprehensive email management system with AI-powered responses, encryption, analytics, and multi-account support.
+
+#### Email Features
+
+- **Advanced Analytics** - Comprehensive email metrics with intelligent insights and trend analysis
+- **AI-Powered Responses** - LLM integration for automated email response generation
+- **Email Encryption** - PGP and SMIME encryption support with key management
+- **Calendar Integration** - Meeting extraction and scheduling from emails
+- **Multi-Account Support** - Multiple email accounts with granular permissions
+- **Real-time Processing** - IMAP integration with agent detection and automated processing
+
+#### Email Components
+
+- **EmailComposer** - Rich email composition interface with templates and attachments
+- **EmailAnalytics** - Dashboard for email metrics and performance insights
+- **EncryptionManager** - PGP/SMIME key management and encryption controls
+- **CalendarScheduler** - Meeting scheduling and calendar integration
+- **MultiAccountManager** - Account management and permission controls
+
+#### Email Composables
+
+- **`useEmail()`** - Main email management with sending, templates, and status
+- **`useAgentEmail()`** - Agent-specific email functionality and automation
+- **`useImap()`** - IMAP integration for email receiving and processing
+
+#### Email Example Usage
+
+```tsx
+import { EmailComposer, useEmail, useAgentEmail } from "reynard-email";
+
+function EmailApp() {
+  const { sendEmail, templates, status } = useEmail();
+  const { sendAgentEmail, getAgentStats } = useAgentEmail();
+
+  const handleSendEmail = async () => {
+    const success = await sendEmail({
+      to_emails: ["user@example.com"],
+      subject: "Hello from Reynard",
+      body: "This is a test email from the Reynard email system.",
+      html_body: "<p>This is a <strong>test email</strong> from the Reynard email system.</p>",
+    });
+
+    if (success) {
+      console.log("Email sent successfully!");
+    }
+  };
+
+  return (
+    <div>
+      <EmailComposer onSend={handleSendEmail} templates={templates()} status={status()} />
+    </div>
   );
 }
 ```

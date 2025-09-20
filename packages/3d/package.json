@@ -48,8 +48,12 @@
     "solid-js": "1.9.9",
     "three": "0.180.0",
     "@types/three": "0.180.0",
-    "reynard-components": "0.1.1",
-    "reynard-algorithms": "0.1.0",
+    "reynard-components-core": "workspace:*",
+    "reynard-components-charts": "workspace:*",
+    "reynard-components-dashboard": "workspace:*",
+    "reynard-components-themes": "workspace:*",
+    "reynard-components-utils": "workspace:*",
+    "reynard-algorithms": "workspace:*",
     "reynard-composables": "workspace:*"
   },
   "devDependencies": {

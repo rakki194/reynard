@@ -4,7 +4,7 @@
  * Type definitions for NLWeb suggestions.
  */
 
-import { NLWebTool } from "./NLWebTool.js";
+import type { NLWebTool } from "./NLWebTool.js";
 
 export interface NLWebSuggestionRequest {
   /** User query to process */

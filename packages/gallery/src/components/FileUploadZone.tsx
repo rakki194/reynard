@@ -4,7 +4,7 @@
  */
 
 import { Component, Show, For, createSignal, onMount, onCleanup } from "solid-js";
-import { Button } from "reynard-components";
+import { Button } from "reynard-components-core";
 import type { UploadProgress, UploadConfiguration } from "../types";
 import { formatFileSize } from "../utils";
 // import "./FileUploadZone.css";

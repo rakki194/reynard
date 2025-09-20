@@ -4,7 +4,7 @@
  */
 
 import { Component } from "solid-js";
-import { Button } from "reynard-components";
+import { Button } from "reynard-components-core";
 
 export interface BreadcrumbActionsProps {
   showFullPaths: boolean;

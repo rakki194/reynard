@@ -6,7 +6,7 @@
  */
 
 // Backend services
-export { BackendAnnotationManager, createBackendAnnotationManager } from "./services/BackendAnnotationManager.js";
+export { BackendAnnotationManager, createBackendAnnotationManager, createAnnotationManager } from "./services/BackendAnnotationManager.js";
 export { BackendAnnotationService, createBackendAnnotationService } from "./services/BackendAnnotationService.js";
 export {
   AISharedBackendAnnotationService,
@@ -30,6 +30,9 @@ export {
 // Utilities
 export * from "./utils/index.js";
 
+// Event management
+export { EventManager } from "./services/EventManager.js";
+
 // Type exports
 export * from "./types/index.js";
 
@@ -45,3 +48,7 @@ export type {
   HealthStatus,
   AnyAnnotationEvent,
 } from "./types/index.js";
+
+// Export convenience functions and configuration
+export * from "./caption-generators.js";
+export * from "./config.js";

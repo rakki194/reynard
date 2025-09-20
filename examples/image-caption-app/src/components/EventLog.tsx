@@ -5,7 +5,7 @@
 
 import { Component, For } from "solid-js";
 import { Card } from "reynard-components";
-import type { AnyAnnotationEvent } from "reynard-annotating";
+import type { AnyAnnotationEvent } from "reynard-annotating-core";
 
 interface EventLogProps {
   events: AnyAnnotationEvent[];

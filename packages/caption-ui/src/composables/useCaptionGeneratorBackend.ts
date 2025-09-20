@@ -5,7 +5,7 @@
  * Extracted to keep the main component under the 140-line limit.
  */
 
-import { createAnnotationManager } from "reynard-annotating";
+import { createAnnotationManager } from "reynard-annotating-core";
 import { useCaption as useGeneratedCaption } from "reynard-api-client";
 import type { CaptionGeneratorState, GeneratorInfo } from "reynard-caption-core";
 import { onCleanup, onMount } from "solid-js";

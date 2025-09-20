@@ -18,7 +18,7 @@
     { "path": "../core" },
     { "path": "../components" },
     { "path": "../gallery" },
-    { "path": "../annotating" },
+    { "path": "../annotating-core" },
     { "path": "../caption" },
     { "path": "../ai-shared" }
   ]
