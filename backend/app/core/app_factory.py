@@ -52,7 +52,7 @@ from app.core.penetration_testing import (
     check_penetration_testing_state,
     setup_penetration_testing_middleware,
 )
-from app.ecs.simple_endpoints import router as ecs_router
+from app.ecs.endpoints import router as ecs_router
 
 # ECS World integration
 from app.ecs.postgres_service import register_postgres_ecs_service

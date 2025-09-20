@@ -1,0 +1,72 @@
+================================================================================
+FASTAPI ECS SEARCH PERFORMANCE BENCHMARK REPORT
+================================================================================
+Generated: 2025-09-21 00:16:20
+
+📊 FastAPI ECS Search Benchmark
+------------------------------------------------------------
+Total Tests: 85
+Successful: 85
+Failed: 0
+Success Rate: 100.0%
+
+⏱️  Response Time Statistics:
+  Average: 131.76 ms
+  Median:  173.53 ms
+  95th %:  202.81 ms
+  99th %:  203.54 ms
+
+🚀 Throughput:
+  Requests/sec: 36.02
+
+💾 Resource Usage:
+  Peak Memory: 0.16 MB
+  Peak CPU:    3620.10%
+
+🎯 Performance Recommendations:
+  ⚠️  Low throughput - consider connection pooling optimization
+  ⚠️  High CPU usage - consider async optimization
+
+📊 FastAPI ECS Search Benchmark
+------------------------------------------------------------
+Total Tests: 104
+Successful: 102
+Failed: 2
+Success Rate: 98.1%
+
+⏱️  Response Time Statistics:
+  Average: 35.69 ms
+  Median:  38.33 ms
+  95th %:  51.49 ms
+  99th %:  51.63 ms
+
+🚀 Throughput:
+  Requests/sec: 266.09
+
+💾 Resource Usage:
+  Peak Memory: 0.32 MB
+  Peak CPU:    1617.70%
+
+🎯 Performance Recommendations:
+  ⚠️  High CPU usage - consider async optimization
+
+❌ Failed Tests:
+  /api/ecs/agents: Status 422
+  /api/ecs/interactions: Status 404
+
+📊 Failed Benchmark
+------------------------------------------------------------
+Total Tests: 18
+Successful: 0
+Failed: 18
+Success Rate: 0.0%
+
+❌ Failed Tests:
+  /api/rag/query: Status 403
+  /api/rag/query: Status 403
+  /api/rag/query: Status 403
+  /api/rag/query: Status 403
+  /api/rag/query: Status 403
+  ... and 13 more failures
+
+================================================================================

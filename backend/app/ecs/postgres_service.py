@@ -13,7 +13,7 @@ from fastapi import FastAPI, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import and_, or_
 
-from .database import ecs_db, Agent, PersonalityTrait, PhysicalTrait, AbilityTrait, AgentPosition, AgentInteraction, AgentAchievement, AgentSpecialization, AgentDomainExpertise, AgentWorkflowPreference
+from .database import ecs_db, Agent, PersonalityTrait, PhysicalTrait, AbilityTrait, AgentPosition, AgentInteraction, AgentAchievement, AgentSpecialization, AgentDomainExpertise, AgentWorkflowPreference, NamingSpirit, NamingComponent, NamingConfig
 
 logger = logging.getLogger(__name__)
 
@@ -482,6 +482,178 @@ class PostgresECSWorldService:
                 "error": str(e),
                 "initialized": self._initialized
             }
+
+
+    # Naming Configuration Methods
+
+    async def get_naming_spirits(self) -> Dict[str, Any]:
+        """Get all available spirits with their configurations."""
+        try:
+            session = self.get_session()
+            spirits = session.query(NamingSpirit).filter(NamingSpirit.enabled == True).all()
+            
+            result = {}
+            for spirit in spirits:
+                result[spirit.name] = spirit.to_dict()
+            
+            session.close()
+            return {"spirits": result}
+            
+        except Exception as e:
+            logger.error(f"Error getting naming spirits: {e}")
+            raise
+
+    async def get_naming_spirit(self, spirit_name: str) -> Dict[str, Any]:
+        """Get a specific spirit configuration."""
+        try:
+            session = self.get_session()
+            spirit = session.query(NamingSpirit).filter(
+                and_(NamingSpirit.name == spirit_name, NamingSpirit.enabled == True)
+            ).first()
+            
+            if not spirit:
+                raise HTTPException(status_code=404, detail=f"Spirit '{spirit_name}' not found")
+            
+            result = spirit.to_dict()
+            session.close()
+            return {"spirit": spirit_name, "data": result}
+            
+        except HTTPException:
+            raise
+        except Exception as e:
+            logger.error(f"Error getting spirit {spirit_name}: {e}")
+            raise
+
+    async def get_naming_components(self) -> Dict[str, Any]:
+        """Get all naming components organized by type."""
+        try:
+            session = self.get_session()
+            components = session.query(NamingComponent).filter(NamingComponent.enabled == True).all()
+            
+            result = {}
+            for component in components:
+                if component.component_type not in result:
+                    result[component.component_type] = []
+                result[component.component_type].append(component.component_value)
+            
+            session.close()
+            return result
+            
+        except Exception as e:
+            logger.error(f"Error getting naming components: {e}")
+            raise
+
+    async def get_naming_component_type(self, component_type: str) -> Dict[str, Any]:
+        """Get a specific type of naming component."""
+        try:
+            session = self.get_session()
+            components = session.query(NamingComponent).filter(
+                and_(NamingComponent.component_type == component_type, NamingComponent.enabled == True)
+            ).all()
+            
+            if not components:
+                raise HTTPException(status_code=404, detail=f"Component type '{component_type}' not found")
+            
+            values = [component.component_value for component in components]
+            session.close()
+            return {"component_type": component_type, "values": values}
+            
+        except HTTPException:
+            raise
+        except Exception as e:
+            logger.error(f"Error getting component type {component_type}: {e}")
+            raise
+
+    async def get_naming_config(self) -> Dict[str, Any]:
+        """Get the complete naming configuration."""
+        try:
+            session = self.get_session()
+            configs = session.query(NamingConfig).filter(NamingConfig.enabled == True).all()
+            
+            result = {}
+            for config in configs:
+                result[config.config_key] = config.config_value
+            
+            session.close()
+            return result
+            
+        except Exception as e:
+            logger.error(f"Error getting naming config: {e}")
+            raise
+
+    async def get_naming_schemes(self) -> Dict[str, Any]:
+        """Get all available naming schemes."""
+        try:
+            session = self.get_session()
+            schemes_config = session.query(NamingConfig).filter(
+                and_(NamingConfig.config_key == "schemes", NamingConfig.enabled == True)
+            ).first()
+            
+            if not schemes_config:
+                return {"schemes": {}}
+            
+            session.close()
+            return {"schemes": schemes_config.config_value}
+            
+        except Exception as e:
+            logger.error(f"Error getting naming schemes: {e}")
+            raise
+
+    async def get_naming_styles(self) -> Dict[str, Any]:
+        """Get all available naming styles."""
+        try:
+            session = self.get_session()
+            styles_config = session.query(NamingConfig).filter(
+                and_(NamingConfig.config_key == "styles", NamingConfig.enabled == True)
+            ).first()
+            
+            if not styles_config:
+                return {"styles": {}}
+            
+            session.close()
+            return {"styles": styles_config.config_value}
+            
+        except Exception as e:
+            logger.error(f"Error getting naming styles: {e}")
+            raise
+
+    async def get_generation_numbers(self) -> Dict[str, Any]:
+        """Get generation numbers for all spirits."""
+        try:
+            session = self.get_session()
+            spirits = session.query(NamingSpirit).filter(NamingSpirit.enabled == True).all()
+            
+            result = {}
+            for spirit in spirits:
+                result[spirit.name] = spirit.generation_numbers
+            
+            session.close()
+            return result
+            
+        except Exception as e:
+            logger.error(f"Error getting generation numbers: {e}")
+            raise
+
+    async def get_spirit_generation_numbers(self, spirit_name: str) -> Dict[str, Any]:
+        """Get generation numbers for a specific spirit."""
+        try:
+            session = self.get_session()
+            spirit = session.query(NamingSpirit).filter(
+                and_(NamingSpirit.name == spirit_name, NamingSpirit.enabled == True)
+            ).first()
+            
+            if not spirit:
+                raise HTTPException(status_code=404, detail=f"Spirit '{spirit_name}' not found")
+            
+            result = {"spirit": spirit_name, "numbers": spirit.generation_numbers}
+            session.close()
+            return result
+            
+        except HTTPException:
+            raise
+        except Exception as e:
+            logger.error(f"Error getting generation numbers for spirit {spirit_name}: {e}")
+            raise
 
 
 # Global service instance

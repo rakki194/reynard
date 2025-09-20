@@ -39,8 +39,8 @@ class ReynardGatekeeperConfig:
             SecurityLevel, security_level_str.upper(), SecurityLevel.MEDIUM
         )
 
-        # Database configuration
-        self.database_url = os.getenv("DATABASE_URL", "sqlite:///./reynard.db")
+        # Database configuration - PostgreSQL is the default
+        self.database_url = os.getenv("DATABASE_URL", "postgresql://postgres:password@localhost:5432/reynard")
         self.use_memory_backend = (
             os.getenv("GATEKEEPER_USE_MEMORY_BACKEND", "false").lower() == "true"
         )
@@ -71,14 +71,14 @@ class ReynardGatekeeperConfig:
         if self.database_url.startswith(
             "postgresql://"
         ) or self.database_url.startswith("postgres://"):
-            # PostgreSQL backend for production
-            return PostgreSQLBackend(
-                database_url=self.database_url,
-                pool_size=self.backend_pool_size,
-                max_overflow=self.backend_max_overflow,
-            )
-        # SQLite backend for development
-        return SQLiteBackend(database_url=self.database_url)
+            # PostgreSQL backend (preferred)
+            return PostgreSQLBackend(database_url=self.database_url)
+        elif self.database_url.startswith("sqlite://"):
+            # SQLite backend (fallback only)
+            return SQLiteBackend(database_url=self.database_url)
+        else:
+            # Default to PostgreSQL if URL format is unclear
+            return PostgreSQLBackend(database_url=self.database_url)
 
     def create_auth_manager(self) -> AuthManager:
         """Create and configure the AuthManager instance."""

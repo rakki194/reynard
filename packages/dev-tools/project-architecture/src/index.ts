@@ -55,6 +55,11 @@ export {
   generateAdvancedTasks,
 } from "./vscode-generator.js";
 
+// Dependency analysis
+export {
+  DependencyAnalyzer,
+} from "./dependency-analyzer.js";
+
 // Type definitions
 export type {
   DirectoryCategory,

@@ -22,27 +22,11 @@ class BackendAgentManager:
     """Agent manager that fetches data from FastAPI backend."""
 
     def __init__(self, agent_names_file: Optional[str] = None):
-        self.agent_names_file = agent_names_file or "agent-names.json"
+        # Agent names are now stored in PostgreSQL ECS database
+        # No need for local JSON file storage
         self.agent_names: Dict[str, str] = {}
-        self._load_agent_names()
 
-    def _load_agent_names(self):
-        """Load existing agent names from file."""
-        try:
-            if Path(self.agent_names_file).exists():
-                with open(self.agent_names_file, 'r', encoding='utf-8') as f:
-                    self.agent_names = json.load(f)
-        except Exception as e:
-            logger.error(f"Error loading agent names: {e}")
-            self.agent_names = {}
-
-    def _save_agent_names(self):
-        """Save agent names to file."""
-        try:
-            with open(self.agent_names_file, 'w', encoding='utf-8') as f:
-                json.dump(self.agent_names, f, indent=2)
-        except Exception as e:
-            logger.error(f"Error saving agent names: {e}")
+    # JSON file methods removed - agent names are now stored in PostgreSQL ECS database
 
     async def generate_name(self, spirit: Optional[str] = None, style: Optional[str] = None) -> str:
         """Generate a new agent name using backend data."""

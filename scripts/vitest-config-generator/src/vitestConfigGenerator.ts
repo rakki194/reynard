@@ -4,44 +4,108 @@
  */
 
 import type { DirectoryDefinition } from "./types.js";
+import { readdirSync, statSync, existsSync } from "fs";
+import { join } from "path";
 
-// Mock functions for development - will be replaced with actual imports
+// Scan for all directories with package.json files
 function getTestableDirectories(): string[] {
-  return [
-    "packages/components",
-    "packages/components-core", 
-    "packages/core/core",
-    "packages/components-themes",
-    "packages/testing",
-    "packages/charts",
-    "packages/games",
-    "packages/i18n",
-    "packages/rag",
-    "packages/ai-shared",
-    "packages/segmentation",
-    "packages/video",
-    "packages/validation",
-    "packages/code-quality",
-    "packages/api-client",
-    "examples/comprehensive-dashboard",
-    "examples/test-app",
-    "templates/starter",
-    "scripts/testing"
-  ];
+  const testableDirs: string[] = [];
+  
+  // Find the project root (go up from scripts/vitest-config-generator to the root)
+  const projectRoot = join(process.cwd(), "../../");
+  
+  // Scan packages directory
+  const packagesDir = join(projectRoot, "packages");
+  if (existsSync(packagesDir)) {
+    scanDirectory(packagesDir, "packages", testableDirs);
+  }
+  
+  // Scan examples directory
+  const examplesDir = join(projectRoot, "examples");
+  if (existsSync(examplesDir)) {
+    scanDirectory(examplesDir, "examples", testableDirs);
+  }
+  
+  // Scan templates directory
+  const templatesDir = join(projectRoot, "templates");
+  if (existsSync(templatesDir)) {
+    scanDirectory(templatesDir, "templates", testableDirs);
+  }
+  
+  // Scan scripts directory for testable scripts
+  const scriptsDir = join(projectRoot, "scripts");
+  if (existsSync(scriptsDir)) {
+    scanDirectory(scriptsDir, "scripts", testableDirs);
+  }
+  
+  return testableDirs;
+}
+
+function scanDirectory(dirPath: string, prefix: string, testableDirs: string[]): void {
+  try {
+    const entries = readdirSync(dirPath);
+    
+    for (const entry of entries) {
+      // Skip node_modules and other build artifacts
+      if (entry === "node_modules" || entry === "dist" || entry === "build" || entry === "coverage" || entry.startsWith(".")) {
+        continue;
+      }
+      
+      const fullPath = join(dirPath, entry);
+      const stat = statSync(fullPath);
+      
+      if (stat.isDirectory()) {
+        const packageJsonPath = join(fullPath, "package.json");
+        if (existsSync(packageJsonPath)) {
+          const relativePath = prefix.startsWith("packages") ? prefix === "packages" ? `packages/${entry}` : `${prefix}/${entry}` :
+                              prefix === "examples" ? `examples/${entry}` :
+                              prefix === "templates" ? `templates/${entry}` :
+                              `scripts/${entry}`;
+          testableDirs.push(relativePath);
+        }
+        
+        // Recursively scan subdirectories for packages (packages have nested structure)
+        if (prefix === "packages") {
+          scanDirectory(fullPath, `packages/${entry}`, testableDirs);
+        } else if (prefix.startsWith("packages/")) {
+          // Continue scanning deeper for nested packages
+          scanDirectory(fullPath, `${prefix}/${entry}`, testableDirs);
+        }
+      }
+    }
+  } catch (error) {
+    console.warn(`⚠️  Could not scan directory ${dirPath}:`, error);
+  }
 }
 
 function getDirectoryDefinition(name: string): DirectoryDefinition | undefined {
-  // Mock implementation - return a basic directory definition
+  // Create a basic directory definition based on the path
+  const category = name.startsWith("packages/") ? "source" : 
+                   name.startsWith("examples/") ? "examples" :
+                   name.startsWith("templates/") ? "templates" : "scripts";
+  
+  const importance = name.startsWith("packages/") ? "critical" : 
+                     name.startsWith("examples/") ? "important" :
+                     name.startsWith("templates/") ? "important" : "optional";
+  
   return {
     name,
     path: name,
-    category: name.startsWith("packages/") ? "source" : 
-              name.startsWith("examples/") ? "examples" :
-              name.startsWith("templates/") ? "templates" : "scripts",
-    importance: name.startsWith("packages/") ? "critical" : "important",
+    category,
+    importance,
     testable: true,
     includePatterns: ["**/*.{test,spec}.{js,ts,tsx}"],
-    excludePatterns: ["node_modules", "dist", "build"]
+    excludePatterns: ["node_modules", "dist", "build", "coverage"],
+    fileTypes: ["ts", "tsx", "js", "jsx"],
+    description: `${category} package`,
+    watchable: true,
+    buildable: true,
+    lintable: true,
+    documentable: false,
+    relationships: [],
+    optional: importance === "optional",
+    generated: false,
+    thirdParty: false
   };
 }
 
@@ -52,9 +116,14 @@ function getGlobalExcludePatterns(): string[] {
     "**/build/**",
     "**/coverage/**",
     "**/.git/**",
-    "**/third_party/**"
+    "**/third_party/**",
+    "**/.vitest/**",
+    "**/temp/**",
+    "**/tmp/**"
   ];
 }
+
+
 import type {
   VitestGlobalConfig,
   GeneratorConfig,
@@ -134,6 +203,10 @@ export class VitestConfigGenerator {
       }
 
       // Apply filters based on configuration
+      if (!config.includePackages && directory.category === "source") {
+        continue;
+      }
+
       if (!config.includeExamples && directory.category === "examples") {
         continue;
       }

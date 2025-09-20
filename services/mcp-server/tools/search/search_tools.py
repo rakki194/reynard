@@ -18,60 +18,66 @@ import logging
 from pathlib import Path
 from typing import Any, Dict
 
-from services.search_service import SearchService
 from protocol.tool_registry import register_tool
 
-from .bm25_search import (
-    clear_search_cache,
-    get_query_suggestions,
-    get_search_stats,
-    reindex_project,
-    search_needle_in_haystack,
+# Import the unified search service from the backend
+import sys
+sys.path.append('/home/kade/runeset/reynard/backend')
+from app.api.search.search import SearchService
+from app.api.search.models import (
+    SemanticSearchRequest, SyntaxSearchRequest, HybridSearchRequest, 
+    IndexRequest
 )
-from .file_search import FileSearchEngine
-from .ripgrep_search import RipgrepSearchEngine
-from .semantic_search import SemanticSearchEngine
 
 logger = logging.getLogger(__name__)
 
-# Initialize search engines
+# Initialize the unified search service
 current_dir = Path(__file__).parent
 project_root = current_dir.parent.parent.parent.parent
-search_service = SearchService()
-file_search_engine = FileSearchEngine(project_root)
-ripgrep_search_engine = RipgrepSearchEngine(project_root)
-semantic_search_engine = SemanticSearchEngine()
+search_service = SearchService(project_root)
 
 
 @register_tool(
     name="search_content",
     category="search",
-    description="Search for content using BM25 with query expansion",
-    execution_type="sync",
+    description="Search for content using unified search service",
+    execution_type="async",
     enabled=True,
     dependencies=[],
     config={}
 )
-def search_content(**kwargs) -> dict[str, Any]:
-    """Search for content using BM25 with query expansion."""
+async def search_content(**kwargs) -> dict[str, Any]:
+    """Search for content using unified search service."""
     arguments = kwargs.get("arguments", {})
     query = arguments.get("query", "")
-    top_k = arguments.get("top_k", 20)
-    expand_query = arguments.get("expand_query", True)
+    max_results = arguments.get("top_k", 20)
+    file_types = arguments.get("file_types")
+    directories = arguments.get("directories")
     
     try:
-        result = search_needle_in_haystack(
+        # Use syntax search for content search
+        request = SyntaxSearchRequest(
             query=query,
-            top_k=top_k,
-            expand_query=expand_query,
-            project_root=project_root
+            max_results=max_results,
+            file_types=file_types,
+            directories=directories
         )
+        
+        result = await search_service.syntax_search(request)
+        
+        if result.success:
+            results_text = f"Found {result.total_results} results in {result.search_time:.3f}s\n\n"
+            for i, res in enumerate(result.results[:10], 1):
+                results_text += f"{i}. {res.file_path}:{res.line_number}\n"
+                results_text += f"   {res.content}\n\n"
+        else:
+            results_text = f"Search failed: {result.error}"
         
         return {
             "content": [
                 {
                     "type": "text",
-                    "text": f"🔍 Search Results for '{query}':\n\n{result}"
+                    "text": f"🔍 Search Results for '{query}':\n\n{results_text}"
                 }
             ]
         }
@@ -269,39 +275,46 @@ async def search_code_patterns(**kwargs) -> dict[str, Any]:
 @register_tool(
     name="semantic_search",
     category="search",
-    description="Perform semantic search using vector embeddings and RAG backend",
+    description="Perform semantic search using unified search service",
     execution_type="async",
     enabled=True,
     dependencies=[],
     config={}
 )
 async def semantic_search(**kwargs) -> dict[str, Any]:
-    """Perform semantic search using vector embeddings and RAG backend."""
+    """Perform semantic search using unified search service."""
     arguments = kwargs.get("arguments", {})
     query = arguments.get("query", "")
-    search_type = arguments.get("search_type", "hybrid")
+    max_results = arguments.get("top_k", 20)
     file_types = arguments.get("file_types")
     directories = arguments.get("directories")
-    top_k = arguments.get("top_k", 20)
     similarity_threshold = arguments.get("similarity_threshold", 0.7)
-    model = arguments.get("model")
     
     try:
-        result = await semantic_search_engine.semantic_search(
+        request = SemanticSearchRequest(
             query=query,
-            search_type=search_type,
+            max_results=max_results,
             file_types=file_types,
             directories=directories,
-            top_k=top_k,
-            similarity_threshold=similarity_threshold,
-            model=model
+            similarity_threshold=similarity_threshold
         )
+        
+        result = await search_service.semantic_search(request)
+        
+        if result.success:
+            results_text = f"Found {result.total_results} results in {result.search_time:.3f}s\n"
+            results_text += f"Strategies: {', '.join(result.search_strategies)}\n\n"
+            for i, res in enumerate(result.results[:10], 1):
+                results_text += f"{i}. {res.file_path}:{res.line_number} (score: {res.score:.3f})\n"
+                results_text += f"   {res.snippet}\n\n"
+        else:
+            results_text = f"Search failed: {result.error}"
         
         return {
             "content": [
                 {
                     "type": "text",
-                    "text": f"🧠 Semantic Search Results for '{query}':\n\n{result}"
+                    "text": f"🧠 Semantic Search Results for '{query}':\n\n{results_text}"
                 }
             ]
         }
@@ -320,33 +333,44 @@ async def semantic_search(**kwargs) -> dict[str, Any]:
 @register_tool(
     name="hybrid_search",
     category="search",
-    description="Perform hybrid search combining semantic and traditional text search",
+    description="Perform hybrid search combining semantic and syntax search",
     execution_type="async",
     enabled=True,
     dependencies=[],
     config={}
 )
 async def hybrid_search(**kwargs) -> dict[str, Any]:
-    """Perform hybrid search combining semantic and traditional text search."""
+    """Perform hybrid search combining semantic and syntax search."""
     arguments = kwargs.get("arguments", {})
     query = arguments.get("query", "")
-    top_k = arguments.get("top_k", 20)
+    max_results = arguments.get("top_k", 20)
     file_types = arguments.get("file_types")
     directories = arguments.get("directories")
     
     try:
-        result = await semantic_search_engine.hybrid_search(
+        request = HybridSearchRequest(
             query=query,
-            top_k=top_k,
+            max_results=max_results,
             file_types=file_types,
             directories=directories
         )
+        
+        result = await search_service.hybrid_search(request)
+        
+        if result.success:
+            results_text = f"Found {result.total_results} results in {result.search_time:.3f}s\n"
+            results_text += f"Strategies: {', '.join(result.search_strategies)}\n\n"
+            for i, res in enumerate(result.results[:10], 1):
+                results_text += f"{i}. {res.file_path}:{res.line_number} (score: {res.score:.3f}, type: {res.match_type})\n"
+                results_text += f"   {res.snippet}\n\n"
+        else:
+            results_text = f"Search failed: {result.error}"
         
         return {
             "content": [
                 {
                     "type": "text",
-                    "text": f"🔀 Hybrid Search Results for '{query}':\n\n{result}"
+                    "text": f"🔀 Hybrid Search Results for '{query}':\n\n{results_text}"
                 }
             ]
         }
@@ -357,6 +381,60 @@ async def hybrid_search(**kwargs) -> dict[str, Any]:
                 {
                     "type": "text",
                     "text": f"❌ Error in hybrid search: {e!s}"
+                }
+            ]
+        }
+
+
+@register_tool(
+    name="natural_language_search",
+    category="search",
+    description="Perform natural language search with NLP processing",
+    execution_type="async",
+    enabled=True,
+    dependencies=[],
+    config={}
+)
+async def natural_language_search(**kwargs) -> dict[str, Any]:
+    """Perform natural language search with NLP processing."""
+    arguments = kwargs.get("arguments", {})
+    query = arguments.get("query", "")
+    max_results = arguments.get("max_results", 10)
+    file_types = arguments.get("file_types")
+    directories = arguments.get("directories")
+    
+    try:
+        result = await search_service.natural_language_search(
+            query=query,
+            max_results=max_results,
+            file_types=file_types,
+            directories=directories
+        )
+        
+        if result.success:
+            results_text = f"Found {result.total_results} results in {result.search_time:.3f}s\n"
+            results_text += f"Strategies: {', '.join(result.search_strategies)}\n\n"
+            for i, res in enumerate(result.results[:10], 1):
+                results_text += f"{i}. {res.file_path}:{res.line_number} (score: {res.score:.3f})\n"
+                results_text += f"   {res.snippet}\n\n"
+        else:
+            results_text = f"Search failed: {result.error}"
+        
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"🗣️ Natural Language Search Results for '{query}':\n\n{results_text}"
+                }
+            ]
+        }
+    except Exception as e:
+        logger.exception("Error in natural_language_search: %s", e)
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"❌ Error in natural language search: {e!s}"
                 }
             ]
         }
@@ -408,21 +486,41 @@ def get_query_suggestions(**kwargs) -> dict[str, Any]:
     name="get_search_analytics",
     category="search",
     description="Get search analytics and statistics",
-    execution_type="sync",
+    execution_type="async",
     enabled=True,
     dependencies=[],
     config={}
 )
-def get_search_analytics(**kwargs) -> dict[str, Any]:
+async def get_search_analytics(**kwargs) -> dict[str, Any]:
     """Get search analytics and statistics."""
     try:
-        result = get_search_stats(project_root=project_root)
+        result = await search_service.get_search_stats()
+        
+        if hasattr(result, 'total_files_indexed'):
+            # Direct SearchStats object
+            stats_text = f"📊 Search Analytics:\n\n"
+            stats_text += f"   Total files indexed: {result.total_files_indexed}\n"
+            stats_text += f"   Total chunks: {result.total_chunks}\n"
+            stats_text += f"   Search count: {result.search_count}\n"
+            stats_text += f"   Average search time: {result.avg_search_time:.3f}s\n"
+            stats_text += f"   Cache hit rate: {result.cache_hit_rate:.1f}%\n"
+        elif isinstance(result, dict) and result.get("success"):
+            # Dictionary response
+            stats = result.get("data", {})
+            stats_text = f"📊 Search Analytics:\n\n"
+            stats_text += f"   Total files indexed: {stats.get('total_files_indexed', 0)}\n"
+            stats_text += f"   Total chunks: {stats.get('total_chunks', 0)}\n"
+            stats_text += f"   Search count: {stats.get('search_count', 0)}\n"
+            stats_text += f"   Average search time: {stats.get('avg_search_time', 0):.3f}s\n"
+            stats_text += f"   Cache hit rate: {stats.get('cache_hit_rate', 0):.1f}%\n"
+        else:
+            stats_text = f"❌ Failed to get search analytics: {result}"
         
         return {
             "content": [
                 {
                     "type": "text",
-                    "text": f"📊 Search Analytics:\n\n{result}"
+                    "text": stats_text
                 }
             ]
         }
@@ -483,14 +581,36 @@ def clear_search_cache(**kwargs) -> dict[str, Any]:
 )
 async def reindex_project(**kwargs) -> dict[str, Any]:
     """Reindex the entire project for search."""
+    arguments = kwargs.get("arguments", {})
+    project_root_path = arguments.get("project_root", str(project_root))
+    file_types = arguments.get("file_types", ['py', 'ts', 'tsx', 'js', 'jsx'])
+    directories = arguments.get("directories")
+    force_reindex = arguments.get("force_reindex", True)
+    
     try:
-        result = await reindex_project(project_root=project_root)
+        request = IndexRequest(
+            project_root=project_root_path,
+            file_types=file_types,
+            directories=directories,
+            force_reindex=force_reindex
+        )
+        
+        result = await search_service.index_codebase(request)
+        
+        if result.success:
+            results_text = f"✅ Project reindexed successfully!\n"
+            results_text += f"   Indexed files: {result.indexed_files}\n"
+            results_text += f"   Total chunks: {result.total_chunks}\n"
+            results_text += f"   Index time: {result.index_time:.3f}s\n"
+            results_text += f"   Model used: {result.model_used}\n"
+        else:
+            results_text = f"❌ Reindexing failed: {result.error}"
         
         return {
             "content": [
                 {
                     "type": "text",
-                    "text": f"🔄 Project Reindexed:\n\n{result}"
+                    "text": f"🔄 Project Reindexed:\n\n{results_text}"
                 }
             ]
         }

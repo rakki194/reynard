@@ -12,8 +12,8 @@ from pydantic import BaseModel
 class ECSConfig(BaseModel):
     """Configuration for the ECS world system."""
 
-    # Data persistence
-    data_dir: Path = Path("data/ecs")
+    # Data persistence - using PostgreSQL database
+    # data_dir: Path = Path("data/ecs")  # Deprecated: using PostgreSQL instead
 
     # Time management
     time_acceleration: float = 10.0

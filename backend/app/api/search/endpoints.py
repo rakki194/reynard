@@ -1,15 +1,17 @@
 """
-Search API Endpoints
-===================
+Unified Search API Endpoints
+===========================
 
-FastAPI endpoints for advanced search functionality.
+FastAPI endpoints for the unified search service with all search capabilities.
 """
 
 import logging
-from typing import Any
+import time
+from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Request
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel, Field
 
 from .models import (
     HybridSearchRequest,
@@ -18,20 +20,44 @@ from .models import (
     SemanticSearchRequest,
     SyntaxSearchRequest,
 )
-from .natural_language_endpoints import router as natural_language_router
-
-# SearchService is imported dynamically in get_search_service()
+from .search import SearchService
 
 logger = logging.getLogger(__name__)
 
 # Create router
 router = APIRouter(prefix="/api/search", tags=["search"])
 
-# Include natural language endpoints
-router.include_router(natural_language_router)
+
+class NaturalLanguageSearchRequest(BaseModel):
+    """Request model for natural language search."""
+
+    query: str = Field(..., description="Natural language search query")
+    max_results: int = Field(20, description="Maximum number of results to return")
+    file_types: Optional[List[str]] = Field(None, description="File extensions to search in")
+    directories: Optional[List[str]] = Field(None, description="Directories to search in")
+    enable_expansion: bool = Field(True, description="Enable query expansion")
+    confidence_threshold: float = Field(0.6, description="Minimum confidence threshold")
 
 
-def get_search_service() -> Any:
+class IntelligentSearchRequest(BaseModel):
+    """Request model for intelligent search."""
+
+    query: str = Field(..., description="Search query (natural language or structured)")
+    max_results: int = Field(20, description="Maximum number of results to return")
+    file_types: Optional[List[str]] = Field(None, description="File extensions to search in")
+    directories: Optional[List[str]] = Field(None, description="Directories to search in")
+    search_modes: Optional[List[str]] = Field(None, description="Specific search modes to use")
+
+
+class ContextualSearchRequest(BaseModel):
+    """Request model for contextual search."""
+
+    query: str = Field(..., description="Search query")
+    context: Optional[Dict[str, Any]] = Field(None, description="Additional context information")
+    max_results: int = Field(20, description="Maximum number of results to return")
+
+
+def get_search_service() -> SearchService:
     """Get the search service instance from the service registry."""
     from app.core.service_registry import get_service_registry
 
@@ -48,17 +74,28 @@ def get_search_service() -> Any:
 
 
 @router.post("/semantic", response_model=dict[str, Any])
-async def semantic_search(request: SemanticSearchRequest) -> JSONResponse:
+async def semantic_search(request: SemanticSearchRequest, http_request: Request) -> JSONResponse:
     """
-    Perform semantic search using vector embeddings.
+    Perform semantic search using vector embeddings with caching.
 
     This endpoint provides intelligent code search that understands the meaning
     and context of your queries, not just exact text matches.
     """
+    start_time = time.time()
+    
     try:
         search_service = get_search_service()
         result = await search_service.semantic_search(request)
-        return JSONResponse(content=result.dict())
+        
+        # Add performance metadata
+        response_data = result.dict()
+        response_data["performance"] = {
+            "endpoint_time_ms": (time.time() - start_time) * 1000,
+            "client_ip": http_request.client.host if http_request.client else "unknown",
+            "user_agent": http_request.headers.get("user-agent", "unknown")
+        }
+        
+        return JSONResponse(content=response_data)
     except Exception as e:
         logger.exception("Semantic search failed")
         raise HTTPException(status_code=500, detail=str(e)) from e
@@ -96,6 +133,59 @@ async def hybrid_search(request: HybridSearchRequest) -> JSONResponse:
         return JSONResponse(content=result.dict())
     except Exception as e:
         logger.exception("Hybrid search failed")
+        raise HTTPException(status_code=500, detail=str(e)) from e
+
+
+@router.post("/natural-language", response_model=dict[str, Any])
+async def natural_language_search(request: NaturalLanguageSearchRequest) -> JSONResponse:
+    """Perform natural language search with intelligent query processing."""
+    try:
+        search_service = get_search_service()
+        result = await search_service.natural_language_search(
+            query=request.query,
+            max_results=request.max_results,
+            file_types=request.file_types,
+            directories=request.directories,
+            enable_expansion=request.enable_expansion,
+            confidence_threshold=request.confidence_threshold,
+        )
+        return JSONResponse(content=result.dict())
+    except Exception as e:
+        logger.exception("Natural language search failed")
+        raise HTTPException(status_code=500, detail=str(e)) from e
+
+
+@router.post("/intelligent", response_model=dict[str, Any])
+async def intelligent_search(request: IntelligentSearchRequest) -> JSONResponse:
+    """Perform intelligent search that automatically chooses the best approach."""
+    try:
+        search_service = get_search_service()
+        result = await search_service.intelligent_search(
+            query=request.query,
+            max_results=request.max_results,
+            file_types=request.file_types,
+            directories=request.directories,
+            search_modes=request.search_modes,
+        )
+        return JSONResponse(content=result.dict())
+    except Exception as e:
+        logger.exception("Intelligent search failed")
+        raise HTTPException(status_code=500, detail=str(e)) from e
+
+
+@router.post("/contextual", response_model=dict[str, Any])
+async def contextual_search(request: ContextualSearchRequest) -> JSONResponse:
+    """Perform contextual search with additional context information."""
+    try:
+        search_service = get_search_service()
+        result = await search_service.contextual_search(
+            query=request.query,
+            context=request.context,
+            max_results=request.max_results,
+        )
+        return JSONResponse(content=result.dict())
+    except Exception as e:
+        logger.exception("Contextual search failed")
         raise HTTPException(status_code=500, detail=str(e)) from e
 
 
@@ -152,6 +242,24 @@ async def get_query_suggestions(
         return JSONResponse(content=suggestions.dict())
     except Exception as e:
         logger.exception("Failed to get query suggestions")
+        raise HTTPException(status_code=500, detail=str(e)) from e
+
+
+@router.get("/suggestions/intelligent", response_model=dict[str, Any])
+async def get_intelligent_suggestions(
+    query: str = Query(..., description="Query to get suggestions for"),
+    max_suggestions: int = Query(5, description="Maximum number of suggestions"),
+) -> JSONResponse:
+    """Get intelligent query suggestions based on natural language processing."""
+    try:
+        search_service = get_search_service()
+        result = await search_service.get_intelligent_suggestions(
+            query=query,
+            max_suggestions=max_suggestions,
+        )
+        return JSONResponse(content=result.dict())
+    except Exception as e:
+        logger.exception("Failed to get intelligent suggestions")
         raise HTTPException(status_code=500, detail=str(e)) from e
 
 
@@ -243,7 +351,112 @@ async def health_check() -> dict[str, str]:
             "service": "search",
             "indexed_files": str(stats.total_files_indexed),
             "total_chunks": str(stats.total_chunks),
+            "search_count": str(stats.search_count),
+            "avg_search_time": f"{stats.avg_search_time:.2f}ms",
+            "cache_hit_rate": f"{stats.cache_hit_rate:.1f}%"
         }
     except Exception as e:
         logger.exception("Health check failed")
         return {"status": "unhealthy", "service": "search", "error": str(e)}
+
+
+@router.get("/performance")
+async def get_performance_metrics() -> Dict[str, Any]:
+    """
+    Get detailed performance metrics for the search service.
+    
+    Returns comprehensive performance data including cache statistics,
+    search metrics, and optimization status.
+    """
+    try:
+        search_service = get_search_service()
+        
+        # Get performance metrics if available
+        if hasattr(search_service, 'get_performance_metrics'):
+            metrics = search_service.get_performance_metrics()
+        else:
+            # Fallback for non-optimized service
+            stats = await search_service.get_search_stats()
+            metrics = {
+                "search_metrics": {
+                    "total_searches": stats.search_count,
+                    "avg_search_time_ms": stats.avg_search_time,
+                    "cache_hit_rate": stats.cache_hit_rate
+                },
+                "cache_status": {
+                    "redis_available": False,
+                    "legacy_cache_size": 0
+                },
+                "optimization_status": {
+                    "optimization_available": False
+                }
+            }
+        
+        return {
+            "status": "success",
+            "timestamp": time.time(),
+            "metrics": metrics
+        }
+        
+    except Exception as e:
+        logger.exception("Failed to get performance metrics")
+        raise HTTPException(status_code=500, detail=str(e)) from e
+
+
+@router.post("/cache/clear")
+async def clear_search_cache(namespace: str = Query("search_results", description="Cache namespace to clear")) -> Dict[str, Any]:
+    """
+    Clear search cache.
+    
+    Allows clearing of cached search results to force fresh searches.
+    """
+    try:
+        search_service = get_search_service()
+        
+        if hasattr(search_service, 'clear_cache'):
+            success = await search_service.clear_cache(namespace)
+            return {
+                "status": "success" if success else "failed",
+                "namespace": namespace,
+                "message": f"Cache cleared for namespace: {namespace}" if success else "Failed to clear cache"
+            }
+        else:
+            return {
+                "status": "not_supported",
+                "message": "Cache clearing not supported by this service version"
+            }
+            
+    except Exception as e:
+        logger.exception("Failed to clear cache")
+        raise HTTPException(status_code=500, detail=str(e)) from e
+
+
+@router.get("/analyze-query")
+async def analyze_query(
+    query: str = Query(..., description="Query to analyze"),
+) -> Dict[str, Any]:
+    """Analyze a query to understand its intent and structure."""
+    try:
+        search_service = get_search_service()
+        
+        # Process the query using the NLP processor
+        processed_query = search_service.nlp_processor.process_query(query)
+        
+        return {
+            "success": True,
+            "query": query,
+            "analysis": {
+                "original_query": processed_query["original_query"],
+                "normalized_query": processed_query["normalized_query"],
+                "intent": processed_query["intent"],
+                "entities": processed_query["entities"],
+                "expanded_terms": processed_query["expanded_terms"],
+                "search_strategy": processed_query["search_strategy"],
+                "code_patterns": processed_query["code_patterns"],
+                "file_filters": processed_query["file_filters"],
+                "confidence": processed_query["confidence"],
+            },
+        }
+    except Exception as e:
+        logger.exception("Query analysis failed")
+        raise HTTPException(status_code=500, detail=str(e)) from e

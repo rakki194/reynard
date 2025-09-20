@@ -9,6 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
+- **Vitest Configuration Generator Integration**: Fully integrated vitest-config-generator into build process (Vulpine)
+  - **Major Scale Improvement**: Updated generator to discover all 102 testable projects (vs previous 18)
+  - **Comprehensive Project Discovery**: Now scans packages, examples, templates, and scripts directories
+  - **Nested Package Support**: Properly handles nested package structure (packages/category/package-name)
+  - **Smart Filtering**: Excludes node_modules, dist, build, coverage, and hidden directories
+  - **Configuration Size**: Generated config now 3,469 lines (83KB) vs previous 480 lines
+  - **Package Categories**: Correctly categorizes packages as "source", examples as "examples", etc.
+  - **CLI Options**: Added --include-packages flag (default: true) for comprehensive control
+  - **Build Scripts**: Added `vitest:generate`, `vitest:regenerate`, and `vitest:backup` commands to root package.json
+  - **Prebuild Hook**: Automatic vitest config regeneration before every build via `prebuild` script
+  - **VS Code Tasks**: Added 🦊 Generate Vitest Config, 🦊 Regenerate Vitest Config, and 🦊 Backup Vitest Config tasks
+  - **Architecture-Driven Configuration**: Replaced 480-line manual vitest.global.config.ts with 3,469-line generated configuration
+  - **Automatic Project Discovery**: Generates test configurations for all 102 testable projects automatically
+  - **Backup System**: Automatic backup of existing configurations before regeneration
+  - **Validation**: Built-in configuration validation and error handling
+
 - **Package Structure Reorganization**: Completely restructured packages folder from flat to semantically categorized layout (Vulpine)
   - **AI & Machine Learning** (`packages/ai/`): Consolidated all AI/ML packages including annotating, caption, comfy, model-management, multimodal, nlweb, rag, tool-calling
   - **Algorithms** (`packages/algorithms/`): Moved algorithm implementations to dedicated category
@@ -21,12 +38,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **UI & Components** (`packages/ui/`): Organized UI packages including animation, charts, colors, components-*, dashboard, error-boundaries, floating-panel, fluent-icons, games, monaco, themes, ui
 
 ### Changed
+
 - **Documentation Updates**: Updated README.md and all documentation to reflect new semantic package categorization (Vulpine)
 - **Workspace Configuration**: Updated pnpm-workspace.yaml to reflect new package structure (Vulpine)
-
+- **Gatekeeper PostgreSQL Migration**: Migrated gatekeeper authentication system from SQLite to PostgreSQL as the primary database. Updated all configuration files to use PostgreSQL by default, removed SQLite fallback, and migrated all user data. Deleted `reynard.db` and `e2e-test.db` files to ensure clean PostgreSQL-only architecture (Vulpine)
+- **Complete Database Consolidation**: Removed all `agent-names.json` files and updated agent naming services to use PostgreSQL ECS database exclusively. Created SQLAlchemy migration system with Alembic for ECS data. Removed duplicate `gatekeeper_users` table and ensured all systems use the correct `users` table. Updated e2e tests to use PostgreSQL databases (`reynard_e2e` and `reynard_ecs_e2e`) instead of SQLite (Vulpine)
 ### Deprecated
 
 ### Removed
+
+- **ECS Database Cleanup**: Removed duplicate JSON persistence files from `backend/data/ecs/` and verified that all ECS operations use PostgreSQL database exclusively. Fixed ECS endpoints import issues and ensured clean single-source architecture (Vulpine)
 
 ### Fixed
 

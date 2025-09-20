@@ -12,6 +12,7 @@ import type { GeneratorConfig } from "./types.js";
 interface CliOptions {
   verbose?: boolean;
   output?: string;
+  includePackages?: boolean;
   includeExamples?: boolean;
   includeTemplates?: boolean;
   includeScripts?: boolean;
@@ -35,6 +36,7 @@ program
 program
   .option("-v, --verbose", "Enable verbose output")
   .option("-o, --output <path>", "Output file path", "vitest.generated.config.ts")
+  .option("--include-packages", "Include package projects in configuration", true)
   .option("--include-examples", "Include example projects in configuration", true)
   .option("--include-templates", "Include template projects in configuration", true)
   .option("--include-scripts", "Include script projects in configuration", false)
@@ -54,6 +56,7 @@ program
       // Build configuration
       const config: GeneratorConfig = {
         outputPath: options.output,
+        includePackages: options.includePackages,
         includeExamples: options.includeExamples,
         includeTemplates: options.includeTemplates,
         includeScripts: options.includeScripts,

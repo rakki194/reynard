@@ -79,6 +79,7 @@ export interface VitestGlobalConfig {
 
 export interface GeneratorConfig {
   outputPath?: string;
+  includePackages?: boolean;
   includeExamples?: boolean;
   includeTemplates?: boolean;
   includeScripts?: boolean;

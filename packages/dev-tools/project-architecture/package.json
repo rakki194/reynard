@@ -29,7 +29,10 @@
     "report": "node -e \"import('./dist/index.js').then(m => console.log(m.generateProjectStructureReport()))\"",
     "health-check": "node -e \"import('./dist/index.js').then(m => { const validation = m.validateProjectStructure(); console.log(validation.valid ? '✅ Project structure is valid' : '❌ Issues found:', validation.errors); })\"",
     "generate-vscode": "node -e \"import('./dist/index.js').then(m => { const config = m.generateVSCodeTasksConfig(); console.log(JSON.stringify(config, null, 2)); })\"",
-    "analyze": "node -e \"import('./dist/index.js').then(m => { const result = m.queryDirectories({ category: 'source', importance: 'critical' }); console.log('Critical source directories:', result.directories.map(d => d.name)); })\""
+    "analyze": "node -e \"import('./dist/index.js').then(m => { const result = m.queryDirectories({ category: 'source', importance: 'critical' }); console.log('Critical source directories:', result.directories.map(d => d.name)); })\"",
+    "analyze-dependencies": "node -e \"import('./dist/dependency-analyzer.js').then(m => new m.DependencyAnalyzer().exportToFiles())\"",
+    "validate-dependencies": "node -e \"import('./dist/dependency-analyzer.js').then(m => { const analyzer = new m.DependencyAnalyzer(); const validation = analyzer.validateRelationships(); console.log('Validation Status:', validation.valid ? '✅ Valid' : '❌ Invalid'); if (validation.errors.length > 0) { console.log('Errors:', validation.errors); } if (validation.warnings.length > 0) { console.log('Warnings:', validation.warnings); } })\"",
+    "generate-simplified-diagrams": "node -e \"import('./dist/simplified-diagram-generator.js').then(m => new m.SimplifiedDiagramGenerator().exportDiagrams())\""
   },
   "keywords": [
     "reynard",

@@ -1777,6 +1777,48 @@
       "isBackground": true,
       "problemMatcher": [],
       "detail": "Start tutorial application"
+    },
+    {
+      "label": "🦊 Generate Vitest Config",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["vitest:generate"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🦊 Regenerate Vitest Config",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["vitest:regenerate"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🦊 Backup Vitest Config",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["vitest:backup"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
     }
   ]
 }

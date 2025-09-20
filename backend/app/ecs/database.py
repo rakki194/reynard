@@ -307,5 +307,96 @@ class PerformanceMetric(Base):
         return f"<PerformanceMetric(name='{self.metric_name}', value={self.metric_value})>"
 
 
+class NamingSpirit(Base):
+    """Naming spirit configuration model."""
+    __tablename__ = "naming_spirits"
+
+    id = Column(PostgresUUID(as_uuid=True), primary_key=True, default=uuid4)
+    name = Column(String(100), unique=True, nullable=False, index=True)
+    category = Column(String(100), nullable=False)
+    description = Column(Text, nullable=False)
+    emoji = Column(String(10), nullable=False)
+    enabled = Column(Boolean, default=True, index=True)
+    weight = Column(Float, default=1.0)
+    generation_numbers = Column(JSON, nullable=False)
+    traits = Column(JSON, nullable=False)
+    base_names = Column(JSON, nullable=False)
+    custom_data = Column(JSON, default={})
+    created_at = Column(DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"))
+    updated_at = Column(DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"), onupdate=text("CURRENT_TIMESTAMP"))
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary representation."""
+        return {
+            "name": self.name,
+            "enabled": self.enabled,
+            "description": self.description,
+            "emoji": self.emoji,
+            "base_names": self.base_names,
+            "generation_numbers": self.generation_numbers,
+            "weight": self.weight,
+            "custom_data": self.custom_data,
+        }
+
+    def __repr__(self) -> str:
+        return f"<NamingSpirit(name='{self.name}', category='{self.category}')>"
+
+
+class NamingComponent(Base):
+    """Naming component configuration model."""
+    __tablename__ = "naming_components"
+
+    id = Column(PostgresUUID(as_uuid=True), primary_key=True, default=uuid4)
+    component_type = Column(String(100), nullable=False, index=True)
+    component_name = Column(String(100), nullable=False)
+    component_value = Column(String(255), nullable=False)
+    enabled = Column(Boolean, default=True)
+    weight = Column(Float, default=1.0)
+    component_metadata = Column(JSON, default={})
+    created_at = Column(DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"))
+    updated_at = Column(DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"), onupdate=text("CURRENT_TIMESTAMP"))
+
+    __table_args__ = (UniqueConstraint('component_type', 'component_name', name='uq_component_type_name'),)
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary representation."""
+        return {
+            "component_type": self.component_type,
+            "component_name": self.component_name,
+            "component_value": self.component_value,
+            "enabled": self.enabled,
+            "weight": self.weight,
+            "metadata": self.component_metadata,
+        }
+
+    def __repr__(self) -> str:
+        return f"<NamingComponent(type='{self.component_type}', name='{self.component_name}')>"
+
+
+class NamingConfig(Base):
+    """Naming configuration model."""
+    __tablename__ = "naming_config"
+
+    id = Column(PostgresUUID(as_uuid=True), primary_key=True, default=uuid4)
+    config_key = Column(String(100), unique=True, nullable=False, index=True)
+    config_value = Column(JSON, nullable=False)
+    description = Column(Text)
+    enabled = Column(Boolean, default=True)
+    created_at = Column(DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"))
+    updated_at = Column(DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"), onupdate=text("CURRENT_TIMESTAMP"))
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary representation."""
+        return {
+            "config_key": self.config_key,
+            "config_value": self.config_value,
+            "description": self.description,
+            "enabled": self.enabled,
+        }
+
+    def __repr__(self) -> str:
+        return f"<NamingConfig(key='{self.config_key}')>"
+
+
 # Global database instance
 ecs_db = ECSDatabase()

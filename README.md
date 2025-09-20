@@ -45,8 +45,15 @@ application development—where different tools and services work together to re
   - [📚 Documentation](#-documentation)
   - [✨ Key Features](#-key-features)
   - [📦 Package Ecosystem](#-package-ecosystem)
-    - [Core Packages](#core-packages)
-    - [Specialized Packages](#specialized-packages)
+    - [🤖 AI \& Machine Learning (`packages/ai/`)](#-ai--machine-learning-packagesai)
+    - [🧮 Algorithms (`packages/algorithms/`)](#-algorithms-packagesalgorithms)
+    - [🏗️ Core Framework (`packages/core/`)](#️-core-framework-packagescore)
+    - [📊 Data Processing (`packages/data/`)](#-data-processing-packagesdata)
+    - [🛠️ Development Tools (`packages/dev-tools/`)](#️-development-tools-packagesdev-tools)
+    - [📚 Documentation (`packages/docs/`)](#-documentation-packagesdocs)
+    - [🎨 Media Processing (`packages/media/`)](#-media-processing-packagesmedia)
+    - [🔧 Services (`packages/services/`)](#-services-packagesservices)
+    - [🎨 UI \& Components (`packages/ui/`)](#-ui--components-packagesui)
   - [📧 Advanced Email Features](#-advanced-email-features)
     - [🏗️ Email System Architecture](#️-email-system-architecture)
     - [🚀 Email System Capabilities](#-email-system-capabilities)
@@ -273,6 +280,7 @@ independently useful while working seamlessly together. The core package has min
 while other packages can be added as needed. All packages are published to npm and ready for production use!
 
 ### 🤖 AI & Machine Learning (`packages/ai/`)
+
 - **`ai-shared`** - Shared AI utilities and types
 - **`annotating-core`** - Core annotation functionality
 - **`annotating-florence2`** - Florence2 model integration
@@ -292,9 +300,11 @@ while other packages can be added as needed. All packages are published to npm a
 - **`tool-calling`** - AI tool calling utilities
 
 ### 🧮 Algorithms (`packages/algorithms/`)
+
 - **`algorithms`** - Algorithm implementations and data structures
 
 ### 🏗️ Core Framework (`packages/core/`)
+
 - **`composables`** - Reusable Vue composables for common patterns
 - **`config`** - Configuration management and environment handling
 - **`connection`** - WebSocket and real-time communication utilities
@@ -306,6 +316,7 @@ while other packages can be added as needed. All packages are published to npm a
 - **`validation`** - Data validation and schema management
 
 ### 📊 Data Processing (`packages/data/`)
+
 - **`file-processing`** - File processing utilities
 - **`repository-core`** - Core repository functionality
 - **`repository-multimodal`** - Multimodal data repository
@@ -315,6 +326,7 @@ while other packages can be added as needed. All packages are published to npm a
 - **`unified-repository`** - Unified data repository
 
 ### 🛠️ Development Tools (`packages/dev-tools/`)
+
 - **`adr-system`** - Architecture Decision Records
 - **`code-quality`** - Code quality tools and utilities
 - **`dev-server-management`** - Development server management
@@ -324,6 +336,7 @@ while other packages can be added as needed. All packages are published to npm a
 - **`queue-watcher`** - Queue monitoring and management
 
 ### 📚 Documentation (`packages/docs/`)
+
 - **`diagram-generator`** - Diagram generation utilities
 - **`docs-components`** - Documentation components
 - **`docs-core`** - Core documentation functionality
@@ -331,6 +344,7 @@ while other packages can be added as needed. All packages are published to npm a
 - **`docs-site`** - Documentation site
 
 ### 🎨 Media Processing (`packages/media/`)
+
 - **`3d`** - Three.js integration for 3D graphics
 - **`audio`** - Audio processing and playback
 - **`boundingbox`** - Bounding box and annotation tools
@@ -342,6 +356,7 @@ while other packages can be added as needed. All packages are published to npm a
 - **`video`** - Video processing and playback
 
 ### 🔧 Services (`packages/services/`)
+
 - **`api-client`** - API client utilities
 - **`auth`** - Complete authentication system with JWT and security features
 - **`chat`** - Real-time chat system with streaming and tool integration
@@ -349,6 +364,7 @@ while other packages can be added as needed. All packages are published to npm a
 - **`service-manager`** - Service management
 
 ### 🎨 UI & Components (`packages/ui/`)
+
 - **`animation`** - Animation utilities
 - **`charts`** - Data visualization components built on Chart.js
 - **`colors`** - Color utilities and palettes

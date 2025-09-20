@@ -7,6 +7,8 @@ export default defineConfig({
     lib: {
       entry: {
         index: resolve(__dirname, "src/index.ts"),
+        "dependency-analyzer": resolve(__dirname, "src/dependency-analyzer.ts"),
+        "simplified-diagram-generator": resolve(__dirname, "src/simplified-diagram-generator.ts"),
       },
       formats: ["es", "cjs"],
       fileName: (format, entryName) => {

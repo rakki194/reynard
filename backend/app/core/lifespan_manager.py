@@ -41,6 +41,7 @@ from app.core.service_initializers import (
     init_ollama_service,
     init_rag_service,
     init_search_service,
+    shutdown_search_service,
     init_tts_service,
 )
 from app.core.service_registry import get_service_registry
@@ -174,7 +175,7 @@ async def lifespan(app: FastAPI):
         "search",
         service_configs.get("search", {"enabled": True}),
         init_search_service,
-        None,  # No shutdown function yet
+        shutdown_search_service,  # Proper shutdown with resource cleanup
         _health_check_search_service,
         startup_priority=20,  # Lower priority than RAG (25) to ensure RAG starts first
     )

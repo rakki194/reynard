@@ -30,7 +30,6 @@ class AgentNameManager:
     def __init__(self, data_dir: str | None = None):
         """Initialize the agent name manager."""
         self.data_dir = Path(data_dir) if data_dir else Path(__file__).parent.parent
-        self.agents_file = self.data_dir / "agent-names.json"
         self.namer = ModularAgentNamer()
 
         # Initialize dynamic configuration manager
@@ -47,7 +46,9 @@ class AgentNameManager:
                 logger.warning("Failed to initialize ECS world simulation: %s", e)
                 self.ecs_available = False
 
-        self._load_agents()
+        # Agent names are now stored in PostgreSQL ECS database
+        # No need to load from JSON files
+        self.agents = {}
 
     def _create_ecs_agent(self, agent_id: str, spirit_str: str, style_str: str, name: str | None, parent1_id: str | None, parent2_id: str | None) -> Any:
         """Create agent in ECS world simulation."""
@@ -57,25 +58,7 @@ class AgentNameManager:
             agent_id, spirit_str, style_str, name, parent1_id, parent2_id
         )
 
-    def _load_agents(self) -> None:
-        """Load agent names from persistent storage."""
-        if self.agents_file.exists():
-            try:
-                with self.agents_file.open(encoding="utf-8") as f:
-                    self.agents = json.load(f)
-            except (OSError, json.JSONDecodeError) as e:
-                logger.warning("Could not load agent names: %s", e)
-                self.agents = {}
-        else:
-            self.agents = {}
-
-    def _save_agents(self) -> None:
-        """Save agent names to persistent storage."""
-        try:
-            with self.agents_file.open("w", encoding="utf-8") as f:
-                json.dump(self.agents, f, indent=2)
-        except OSError:
-            logger.exception("Could not save agent names")
+    # JSON file methods removed - agent names are now stored in PostgreSQL ECS database
 
     def generate_name(
         self,

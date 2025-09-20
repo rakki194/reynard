@@ -223,10 +223,11 @@ async def init_tts_service(service_config: dict[str, Any]) -> bool:
 
 async def init_search_service(service_config: dict[str, Any]) -> bool:
     """
-    Initialize the Search service with dependency management.
+    Initialize the Optimized Search service with dependency management.
 
-    This function sets up the Search service which provides advanced search
-    capabilities including semantic search, syntax search, and hybrid search.
+    This function sets up the Optimized Search service which provides advanced search
+    capabilities including semantic search, syntax search, and hybrid search with
+    Redis caching, connection pooling, and performance monitoring.
     The service depends on the RAG service being available and properly initialized.
 
     Args:
@@ -240,9 +241,9 @@ async def init_search_service(service_config: dict[str, Any]) -> bool:
         Exception: Logged and returned as False for graceful error handling.
     """
     try:
-        from app.api.search.service import SearchService
+        from app.api.search.search import SearchService
 
-        # Create and initialize the search service
+        # Create and initialize the unified search service
         search_service = SearchService()
         success = await search_service.initialize()
         
@@ -251,11 +252,32 @@ async def init_search_service(service_config: dict[str, Any]) -> bool:
             from app.core.service_registry import get_service_registry
             registry = get_service_registry()
             registry.set_service_instance("search", search_service)
-            logger.info("🔍 Search service initialized successfully")
+            logger.info("🔍 Optimized Search service initialized successfully")
         else:
-            logger.warning("⚠️ Search service initialization failed")
+            logger.warning("⚠️ Optimized Search service initialization failed")
             
         return success
     except Exception as e:
-        logger.error(f"❌ Search service initialization failed: {e}")
+        logger.error(f"❌ Optimized Search service initialization failed: {e}")
         return False
+
+
+async def shutdown_search_service() -> None:
+    """
+    Shutdown the Search service and cleanup resources.
+    
+    Properly closes HTTP sessions, cache connections, and database connections.
+    """
+    try:
+        from app.core.service_registry import get_service_registry
+        registry = get_service_registry()
+        search_service = registry.get_service_instance("search")
+        
+        if search_service and hasattr(search_service, 'close'):
+            await search_service.close()
+            logger.info("🔍 Search service shutdown completed")
+        else:
+            logger.info("🔍 Search service was not initialized or already closed")
+            
+    except Exception as e:
+        logger.error(f"❌ Search service shutdown failed: {e}")

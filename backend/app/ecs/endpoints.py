@@ -15,6 +15,12 @@ from pydantic import BaseModel
 
 from .postgres_service import get_postgres_ecs_service, PostgresECSWorldService
 from .success_advisor_genome import success_advisor_genome_service
+from .cache_decorators import (
+    cache_naming_spirits, 
+    cache_naming_components, 
+    cache_naming_config,
+    invalidate_ecs_cache
+)
 
 logger = logging.getLogger(__name__)
 
@@ -179,7 +185,7 @@ async def get_postgres_service_status() -> WorldStatusResponse:
     """Get the current ECS world status."""
     try:
         service = get_postgres_ecs_service()
-        status = await service.get_postgres_service_status()
+        status = await service.get_world_status()
         return WorldStatusResponse(**status)
     except Exception as e:
         logger.error("Error getting world status: %s", e)
@@ -215,11 +221,18 @@ async def create_agent(request: AgentCreateRequest) -> AgentResponse:
     """Create a new agent."""
     try:
         service = get_postgres_ecs_service()
+        
+        # Generate a name if none provided
+        agent_name = request.name
+        if not agent_name:
+            # Generate a simple name using agent_id and spirit
+            agent_name = f"{request.spirit}-{request.agent_id.split('-')[-1]}"
+        
         agent_data = await service.create_agent(
             agent_id=request.agent_id,
-            name=request.name,
-            spirit=request.spirit,
-            style=request.style
+            name=agent_name,
+            spirit=request.spirit or "fox",
+            style=request.style or "foundation"
         )
 
         return AgentResponse(
@@ -248,345 +261,110 @@ async def create_agent(request: AgentCreateRequest) -> AgentResponse:
 # async def find_compatible_mates(
 #     agent_id: str, max_results: int = 5, service: PostgresECSWorldService = Depends(get_postgres_service)
 # ) -> dict[str, Any]:
-    """Find compatible mates for an agent."""
-    try:
-        mates = service.find_compatible_mates(agent_id, max_results)
-        return {"agent_id": agent_id, "compatible_mates": mates}
-    except Exception as e:
-        logger.error("Error finding mates: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to find compatible mates") from e
+#     """Find compatible mates for an agent."""
+#     try:
+#         mates = service.find_compatible_mates(agent_id, max_results)
+#         return {"agent_id": agent_id, "compatible_mates": mates}
+#     except Exception as e:
+#         logger.error("Error finding mates: %s", e)
+#         raise HTTPException(status_code=500, detail="Failed to find compatible mates") from e
 
 
-@router.get("/agents/{agent1_id}/compatibility/{agent2_id}")
-async def analyze_compatibility(
-    agent1_id: str, agent2_id: str, service: PostgresECSWorldService = Depends(get_postgres_service)
-) -> dict[str, Any]:
-    """Analyze genetic compatibility between two agents."""
-    try:
-        compatibility = service.analyze_genetic_compatibility(agent1_id, agent2_id)
-        return compatibility
-    except Exception as e:
-        logger.error("Error analyzing compatibility: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to analyze compatibility") from e
+# @router.get("/agents/{agent1_id}/compatibility/{agent2_id}")
+# async def analyze_compatibility(
+#     agent1_id: str, agent2_id: str, service: PostgresECSWorldService = Depends(get_postgres_service)
+# ) -> dict[str, Any]:
+#     """Analyze genetic compatibility between two agents."""
+#     # TODO: Implement PostgreSQL-based compatibility analysis
+#     raise HTTPException(status_code=501, detail="Compatibility analysis not yet implemented in PostgreSQL version")
 
 
-@router.get("/agents/{agent_id}/lineage")
-async def get_agent_lineage(
-    agent_id: str, depth: int = 3, service: PostgresECSWorldService = Depends(get_postgres_service)
-):
-    """Get agent family tree and lineage."""
-    try:
-        lineage = service.get_agent_lineage(agent_id, depth)
-        return lineage
-    except Exception as e:
-        logger.error("Error getting lineage: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to get agent lineage") from e
+# @router.get("/agents/{agent_id}/lineage")
+# async def get_agent_lineage(
+#     agent_id: str, depth: int = 3, service: PostgresECSWorldService = Depends(get_postgres_service)
+# ):
+#     """Get agent family tree and lineage."""
+#     # TODO: Implement PostgreSQL-based lineage tracking
+#     raise HTTPException(status_code=501, detail="Lineage tracking not yet implemented in PostgreSQL version")
 
 
-@router.post("/breeding/enable")
-async def enable_breeding(enabled: bool = True, service: PostgresECSWorldService = Depends(get_postgres_service)) -> dict[str, str]:
-    """Enable or disable automatic breeding."""
-    try:
-        service.enable_automatic_reproduction(enabled)
-        return {"message": f"Automatic breeding {'enabled' if enabled else 'disabled'}"}
-    except Exception as e:
-        logger.error("Error toggling breeding: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to toggle breeding") from e
+# @router.post("/breeding/enable")
+# async def enable_breeding(enabled: bool = True, service: PostgresECSWorldService = Depends(get_postgres_service)) -> dict[str, str]:
+#     """Enable or disable automatic breeding."""
+#     # TODO: Implement PostgreSQL-based breeding control
+#     raise HTTPException(status_code=501, detail="Breeding control not yet implemented in PostgreSQL version")
 
 
-@router.get("/breeding/stats")
-async def get_breeding_stats(world: PostgresECSWorldService = Depends(get_postgres_service)) -> dict[str, Any]:
-    """Get breeding statistics."""
-    try:
-        stats = service.get_breeding_stats()
-        return stats
-    except Exception as e:
-        logger.error("Error getting breeding stats: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to get breeding statistics") from e
+# @router.get("/breeding/stats")
+# async def get_breeding_stats(world: PostgresECSWorldService = Depends(get_postgres_service)) -> dict[str, Any]:
+#     """Get breeding statistics."""
+#     # TODO: Implement PostgreSQL-based breeding statistics
+#     raise HTTPException(status_code=501, detail="Breeding statistics not yet implemented in PostgreSQL version")
 
 
 # Position and Movement Endpoints
+# TODO: These endpoints require ECS component system implementation
+# Currently commented out as they use PositionComponent which is not available in PostgreSQL service
 
+# @router.get("/agents/{agent_id}/position", response_model=PositionResponse)
+# async def get_agent_position(agent_id: str, service: PostgresECSWorldService = Depends(get_postgres_service)) -> PositionResponse:
+#     """Get the current position of an agent."""
+#     # TODO: Implement PostgreSQL-based position tracking
+#     raise HTTPException(status_code=501, detail="Position tracking not yet implemented in PostgreSQL version")
 
-@router.get("/agents/{agent_id}/position", response_model=PositionResponse)
-async def get_agent_position(agent_id: str, service: PostgresECSWorldService = Depends(get_postgres_service)) -> PositionResponse:
-    """Get the current position of an agent."""
-    try:
-        entity = service.get_entity(agent_id)
-        if not entity:
-            raise HTTPException(status_code=404, detail="Agent not found")
+# @router.get("/agents/positions")
+# async def get_all_agent_positions(world: PostgresECSWorldService = Depends(get_postgres_service)) -> dict[str, Any]:
+#     """Get positions of all agents in the service."""
+#     # TODO: Implement PostgreSQL-based position tracking
+#     raise HTTPException(status_code=501, detail="Position tracking not yet implemented in PostgreSQL version")
 
-        position_component = entity.get_component(PositionComponent)
-        if not position_component:
-            raise HTTPException(
-                status_code=404, detail="Agent has no position component"
-            )
+# @router.post("/agents/{agent_id}/move", response_model=PositionResponse)
+# async def move_agent(
+#     agent_id: str, request: MoveRequest, service: PostgresECSWorldService = Depends(get_postgres_service)
+# ):
+#     """Move an agent to a specific position."""
+#     # TODO: Implement PostgreSQL-based movement system
+#     raise HTTPException(status_code=501, detail="Movement system not yet implemented in PostgreSQL version")
 
-        return PositionResponse(
-            agent_id=agent_id,
-            x=position_component.x,
-            y=position_component.y,
-            target_x=position_component.target_x,
-            target_y=position_component.target_y,
-            velocity_x=position_component.velocity_x,
-            velocity_y=position_component.velocity_y,
-            movement_speed=position_component.movement_speed,
-        )
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error("Error getting agent position: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to get agent position") from e
+# @router.post("/agents/{agent_id}/move_towards", response_model=PositionResponse)
+# async def move_agent_towards(
+#     agent_id: str, request: MoveTowardsRequest, service: PostgresECSWorldService = Depends(get_postgres_service)
+# ):
+#     """Move an agent towards another agent."""
+#     # TODO: Implement PostgreSQL-based movement system
+#     raise HTTPException(status_code=501, detail="Movement system not yet implemented in PostgreSQL version")
 
+# @router.get("/agents/{agent1_id}/distance/{agent2_id}")
+# async def get_agent_distance(
+#     agent1_id: str, agent2_id: str, service: PostgresECSWorldService = Depends(get_postgres_service)
+# ):
+#     """Get the distance between two agents."""
+#     # TODO: Implement PostgreSQL-based distance calculation
+#     raise HTTPException(status_code=501, detail="Distance calculation not yet implemented in PostgreSQL version")
 
-@router.get("/agents/positions")
-async def get_all_agent_positions(world: PostgresECSWorldService = Depends(get_postgres_service)) -> dict[str, Any]:
-    """Get positions of all agents in the service."""
-    try:
-        positions = {}
-        for entity in service.get_agent_entities():
-            position_component = entity.get_component(PositionComponent)
-            if position_component:
-                positions[entity.id] = {
-                    "x": position_component.x,
-                    "y": position_component.y,
-                    "target_x": position_component.target_x,
-                    "target_y": position_component.target_y,
-                    "velocity_x": position_component.velocity_x,
-                    "velocity_y": position_component.velocity_y,
-                    "movement_speed": position_component.movement_speed,
-                }
-        return {"positions": positions}
-    except Exception as e:
-        logger.error("Error getting all agent positions: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to get agent positions") from e
-
-
-@router.post("/agents/{agent_id}/move", response_model=PositionResponse)
-async def move_agent(
-    agent_id: str, request: MoveRequest, service: PostgresECSWorldService = Depends(get_postgres_service)
-):
-    """Move an agent to a specific position."""
-    try:
-        entity = service.get_entity(agent_id)
-        if not entity:
-            raise HTTPException(status_code=404, detail="Agent not found")
-
-        position_component = entity.get_component(PositionComponent)
-        if not position_component:
-            raise HTTPException(
-                status_code=404, detail="Agent has no position component"
-            )
-
-        # Update target position
-        position_component.target_x = request.x
-        position_component.target_y = request.y
-
-        return PositionResponse(
-            agent_id=agent_id,
-            x=position_component.x,
-            y=position_component.y,
-            target_x=position_component.target_x,
-            target_y=position_component.target_y,
-            velocity_x=position_component.velocity_x,
-            velocity_y=position_component.velocity_y,
-            movement_speed=position_component.movement_speed,
-        )
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error("Error moving agent: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to move agent") from e
-
-
-@router.post("/agents/{agent_id}/move_towards", response_model=PositionResponse)
-async def move_agent_towards(
-    agent_id: str, request: MoveTowardsRequest, service: PostgresECSWorldService = Depends(get_postgres_service)
-):
-    """Move an agent towards another agent."""
-    try:
-        entity = service.get_entity(agent_id)
-        if not entity:
-            raise HTTPException(status_code=404, detail="Agent not found")
-
-        target_entity = service.get_entity(request.target_agent_id)
-        if not target_entity:
-            raise HTTPException(status_code=404, detail="Target agent not found")
-
-        position_component = entity.get_component(PositionComponent)
-        target_position_component = target_entity.get_component(PositionComponent)
-
-        if not position_component or not target_position_component:
-            raise HTTPException(
-                status_code=404, detail="Agent or target has no position component"
-            )
-
-        # Calculate direction towards target
-        dx = target_position_component.x - position_component.x
-        dy = target_position_component.y - position_component.y
-        distance = (dx * dx + dy * dy) ** 0.5
-
-        if distance > 0:
-            # Normalize direction and apply distance
-            dx /= distance
-            dy /= distance
-
-            # Set target position at the specified distance from target
-            position_component.target_x = (
-                target_position_component.x - dx * request.distance
-            )
-            position_component.target_y = (
-                target_position_component.y - dy * request.distance
-            )
-
-        return PositionResponse(
-            agent_id=agent_id,
-            x=position_component.x,
-            y=position_component.y,
-            target_x=position_component.target_x,
-            target_y=position_component.target_y,
-            velocity_x=position_component.velocity_x,
-            velocity_y=position_component.velocity_y,
-            movement_speed=position_component.movement_speed,
-        )
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error("Error moving agent towards target: %s", e)
-        raise HTTPException(
-            status_code=500, detail="Failed to move agent towards target"
-        ) from e
-
-
-@router.get("/agents/{agent1_id}/distance/{agent2_id}")
-async def get_agent_distance(
-    agent1_id: str, agent2_id: str, service: PostgresECSWorldService = Depends(get_postgres_service)
-):
-    """Get the distance between two agents."""
-    try:
-        entity1 = service.get_entity(agent1_id)
-        entity2 = service.get_entity(agent2_id)
-
-        if not entity1 or not entity2:
-            raise HTTPException(status_code=404, detail="One or both agents not found")
-
-        position1 = entity1.get_component(PositionComponent)
-        position2 = entity2.get_component(PositionComponent)
-
-        if not position1 or not position2:
-            raise HTTPException(
-                status_code=404, detail="One or both agents have no position component"
-            )
-
-        distance = position1.distance_to(position2)
-
-        return {
-            "agent1_id": agent1_id,
-            "agent2_id": agent2_id,
-            "distance": distance,
-            "position1": {"x": position1.x, "y": position1.y},
-            "position2": {"x": position2.x, "y": position2.y},
-        }
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error("Error getting agent distance: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to get agent distance") from e
-
-
-@router.get("/agents/{agent_id}/nearby")
-async def get_nearby_agents(
-    agent_id: str, radius: float = 100.0, service: PostgresECSWorldService = Depends(get_postgres_service)
-):
-    """Get all agents within a certain radius of an agent."""
-    try:
-        entity = service.get_entity(agent_id)
-        if not entity:
-            raise HTTPException(status_code=404, detail="Agent not found")
-
-        position_component = entity.get_component(PositionComponent)
-        if not position_component:
-            raise HTTPException(
-                status_code=404, detail="Agent has no position component"
-            )
-
-        nearby_agents = []
-        for other_entity in service.get_agent_entities():
-            if other_entity.id == agent_id:
-                continue
-
-            other_position = other_entity.get_component(PositionComponent)
-            if other_position:
-                distance = position_component.distance_to(other_position)
-                if distance <= radius:
-                    agent_component = other_entity.get_component(AgentComponent)
-                    if agent_component:
-                        nearby_agents.append(
-                            NearbyAgentResponse(
-                                agent_id=other_entity.id,
-                                name=agent_component.name,
-                                spirit=agent_component.spirit,
-                                x=other_position.x,
-                                y=other_position.y,
-                                distance=distance,
-                            )
-                        )
-
-        return {"nearby_agents": nearby_agents, "radius": radius}
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error("Error getting nearby agents: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to get nearby agents") from e
+# @router.get("/agents/{agent_id}/nearby")
+# async def get_nearby_agents(
+#     agent_id: str, radius: float = 100.0, service: PostgresECSWorldService = Depends(get_postgres_service)
+# ):
+#     """Get all agents within a certain radius of an agent."""
+#     # TODO: Implement PostgreSQL-based spatial queries
+#     raise HTTPException(status_code=501, detail="Spatial queries not yet implemented in PostgreSQL version")
 
 
 # Interaction and Communication Endpoints
 
 
-@router.post("/agents/{agent_id}/interact")
-async def initiate_interaction(
-    agent_id: str, request: InteractionRequest, service: PostgresECSWorldService = Depends(get_postgres_service)
-):
-    """Initiate an interaction between two agents."""
-    try:
-        entity1 = service.get_entity(agent_id)
-        entity2 = service.get_entity(request.agent2_id)
-
-        if not entity1 or not entity2:
-            raise HTTPException(status_code=404, detail="One or both agents not found")
-
-        interaction_component1 = entity1.get_component(InteractionComponent)
-        if not interaction_component1:
-            raise HTTPException(
-                status_code=404, detail="Agent has no interaction component"
-            )
-
-        # Check if agent can interact
-        if not interaction_component1.can_interact():
-            return {
-                "success": False,
-                "message": "Agent cannot interact (low energy, cooldown, or too many active interactions)",
-                "social_energy": interaction_component1.social_energy,
-                "active_interactions": len([i for i in interaction_component1.interactions if i.duration > 0]),
-            }
-
-        # For now, return a simple interaction initiation
-        # In a full implementation, this would create an actual interaction
-        return {
-            "success": True,
-            "message": f"Interaction initiated between {agent_id} and {request.agent2_id}",
-            "interaction_type": request.interaction_type,
-            "agent1_energy": interaction_component1.social_energy,
-        }
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error("Error initiating interaction: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to initiate interaction") from e
+# @router.post("/agents/{agent_id}/interact")
+# async def initiate_interaction(
+#     agent_id: str, request: InteractionRequest, service: PostgresECSWorldService = Depends(get_postgres_service)
+# ):
+#     """Initiate an interaction between two agents."""
+#     # TODO: Implement PostgreSQL-based interaction system
+#     raise HTTPException(status_code=501, detail="Interaction system not yet implemented in PostgreSQL version")
 
 
 @router.post("/agents/{agent_id}/chat")
-async def send_chat_message(agent_id: str, request: ChatRequest):
+async def send_chat_message(agent_id: str, request: ChatRequest) -> dict[str, Any]:
     """Send a chat message from one agent to another."""
     try:
         service = get_postgres_ecs_service()
@@ -608,41 +386,13 @@ async def send_chat_message(agent_id: str, request: ChatRequest):
 @router.get("/agents/{agent_id}/interactions")
 async def get_interaction_history(
     agent_id: str, limit: int = 10, service: PostgresECSWorldService = Depends(get_postgres_service)
-):
+) -> dict[str, Any]:
     """Get the interaction history for an agent."""
     try:
-        entity = service.get_entity(agent_id)
-        if not entity:
-            raise HTTPException(status_code=404, detail="Agent not found")
-
-        interaction_component = entity.get_component(InteractionComponent)
-        if not interaction_component:
-            raise HTTPException(
-                status_code=404, detail="Agent has no interaction component"
-            )
-
-        # Get recent interactions
-        recent_interactions = interaction_component.interactions[-limit:]
-
-        interactions = []
-        for interaction in recent_interactions:
-            interactions.append(
-                InteractionResponse(
-                    interaction_id=interaction.id,
-                    participants=interaction.participants,
-                    interaction_type=interaction.interaction_type.value,
-                    content=interaction.content,
-                    outcome=interaction.outcome.value,
-                    relationship_impact=interaction.relationship_impact,
-                    timestamp=interaction.timestamp.isoformat(),
-                    duration=interaction.duration,
-                    energy_cost=interaction.energy_cost,
-                )
-            )
-
+        interactions = await service.get_agent_interactions(agent_id, limit)
         return {
             "interactions": interactions,
-            "total_count": len(interaction_component.interactions),
+            "total_count": len(interactions),
         }
     except HTTPException:
         raise
@@ -651,84 +401,22 @@ async def get_interaction_history(
         raise HTTPException(status_code=500, detail="Failed to get interaction history") from e
 
 
-@router.get("/agents/{agent_id}/relationships")
-async def get_agent_relationships(
-    agent_id: str, service: PostgresECSWorldService = Depends(get_postgres_service)
-):
-    """Get all relationships for an agent."""
-    try:
-        entity = service.get_entity(agent_id)
-        if not entity:
-            raise HTTPException(status_code=404, detail="Agent not found")
-
-        interaction_component = entity.get_component(InteractionComponent)
-        if not interaction_component:
-            raise HTTPException(
-                status_code=404, detail="Agent has no interaction component"
-            )
-
-        relationships = []
-        for relationship in interaction_component.relationship_map.values():
-            relationships.append(
-                RelationshipResponse(
-                    agent_id=relationship.agent_id,
-                    relationship_type=relationship.relationship_type,
-                    strength=relationship.strength,
-                    trust_level=relationship.trust_level,
-                    familiarity=relationship.familiarity,
-                    last_interaction=relationship.last_interaction.isoformat(),
-                    interaction_count=relationship.interaction_count,
-                    positive_interactions=relationship.positive_interactions,
-                    negative_interactions=relationship.negative_interactions,
-                    total_time_together=relationship.total_time_together,
-                )
-            )
-
-        return {"relationships": relationships, "total_count": len(relationships)}
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error("Error getting agent relationships: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to get agent relationships") from e
+# @router.get("/agents/{agent_id}/relationships")
+# async def get_agent_relationships(
+#     agent_id: str, service: PostgresECSWorldService = Depends(get_postgres_service)
+# ):
+#     """Get all relationships for an agent."""
+#     # TODO: Implement PostgreSQL-based relationship tracking
+#     raise HTTPException(status_code=501, detail="Relationship tracking not yet implemented in PostgreSQL version")
 
 
-@router.get("/agents/{agent_id}/social_stats", response_model=SocialStatsResponse)
-async def get_agent_social_stats(
-    agent_id: str, service: PostgresECSWorldService = Depends(get_postgres_service)
-) -> SocialStatsResponse:
-    """Get social interaction statistics for an agent."""
-    try:
-        entity = service.get_entity(agent_id)
-        if not entity:
-            raise HTTPException(status_code=404, detail="Agent not found")
-
-        interaction_component = entity.get_component(InteractionComponent)
-        if not interaction_component:
-            raise HTTPException(
-                status_code=404, detail="Agent has no interaction component"
-            )
-
-        stats = interaction_component.get_interaction_stats()
-
-        return SocialStatsResponse(
-            total_interactions=stats["total_interactions"],
-            successful_interactions=stats["successful_interactions"],
-            failed_interactions=stats["failed_interactions"],
-            success_rate=stats["success_rate"],
-            social_energy=stats["social_energy"],
-            max_social_energy=stats["max_social_energy"],
-            energy_percentage=stats["energy_percentage"],
-            active_interactions=stats["active_interactions"],
-            total_relationships=stats["total_relationships"],
-            positive_relationships=stats["positive_relationships"],
-            negative_relationships=stats["negative_relationships"],
-            communication_style=stats["communication_style"],
-        )
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error("Error getting agent social stats: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to get agent social stats") from e
+# @router.get("/agents/{agent_id}/social_stats", response_model=SocialStatsResponse)
+# async def get_agent_social_stats(
+#     agent_id: str, service: PostgresECSWorldService = Depends(get_postgres_service)
+# ) -> SocialStatsResponse:
+#     """Get social interaction statistics for an agent."""
+#     # TODO: Implement PostgreSQL-based social statistics
+#     raise HTTPException(status_code=501, detail="Social statistics not yet implemented in PostgreSQL version")
 
 
 # Name Generation Data Endpoints
@@ -786,25 +474,18 @@ def _load_race_data(spirit: str) -> dict[str, Any]:
         raise HTTPException(status_code=500, detail=f"Failed to load race data for {spirit}") from e
 
 
-def _load_races_data() -> dict[str, Any]:
-    """Load all race data from the races directory and return in the old format."""
+@cache_naming_spirits(ttl=1800)
+async def _load_races_data() -> dict[str, Any]:
+    """Load all race data from the database and return in the old format."""
     try:
-        races_dir = _get_races_directory()
-        if not races_dir.exists():
-            raise HTTPException(
-                status_code=404, detail="Races directory not found"
-            )
+        from .database import ecs_db, NamingSpirit
+        
+        with ecs_db.get_session() as session:
+            spirits = session.query(NamingSpirit).filter(NamingSpirit.enabled == True).all()
 
         result = {}
-        for race_file in races_dir.glob("*.json"):
-            try:
-                with open(race_file, "r", encoding="utf-8") as f:
-                    race_data = json.load(f)
-                    spirit_name = race_data.get("name", race_file.stem)
-                    result[spirit_name] = race_data.get("names", [])
-            except (json.JSONDecodeError, KeyError) as e:
-                logger.warning("Error loading race file %s: %s", race_file, e)
-                continue
+        for spirit in spirits:
+            result[spirit.name] = spirit.base_names or []
 
         return result
     except Exception as e:
@@ -812,11 +493,120 @@ def _load_races_data() -> dict[str, Any]:
         raise HTTPException(status_code=500, detail="Failed to load races data") from e
 
 
+@cache_naming_spirits(ttl=1800)
+async def _get_all_races_data_from_db() -> dict[str, Any]:
+    """Load all race data from the database with full details."""
+    try:
+        from .database import ecs_db, NamingSpirit
+        
+        with ecs_db.get_session() as session:
+            naming_spirits = session.query(NamingSpirit).all()
+            all_races = {}
+            
+            for spirit in naming_spirits:
+                all_races[spirit.name] = {
+                    "name": spirit.name,
+                    "category": spirit.category,
+                    "description": spirit.description,
+                    "emoji": spirit.emoji,
+                    "traits": spirit.traits,
+                    "names": spirit.base_names,
+                    "generation_numbers": spirit.generation_numbers
+                }
+            
+            return {"races": all_races}
+    except Exception as e:
+        logger.error("Error loading races data: %s", e)
+        raise HTTPException(status_code=500, detail="Failed to load races data") from e
+
+
+def _get_race_data_from_db(spirit: str) -> dict[str, Any]:
+    """Load race data for a specific spirit from the database."""
+    try:
+        from .database import ecs_db, NamingSpirit
+        
+        with ecs_db.get_session() as session:
+            naming_spirit = session.query(NamingSpirit).filter(
+                NamingSpirit.name == spirit
+            ).first()
+            
+            if not naming_spirit:
+                raise HTTPException(
+                    status_code=404, detail=f"Race data for spirit '{spirit}' not found"
+                )
+            
+            return {
+                "name": naming_spirit.name,
+                "category": naming_spirit.category,
+                "description": naming_spirit.description,
+                "emoji": naming_spirit.emoji,
+                "traits": naming_spirit.traits,
+                "names": naming_spirit.base_names,
+                "generation_numbers": naming_spirit.generation_numbers
+            }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error("Error loading race data for %s: %s", spirit, e)
+        raise HTTPException(
+            status_code=500, detail=f"Failed to load race data for {spirit}"
+        ) from e
+
+
+@cache_naming_components(ttl=1800)
+async def _get_naming_components_from_db() -> dict[str, Any]:
+    """Load naming components from the database."""
+    try:
+        from .database import ecs_db, NamingComponent
+        
+        with ecs_db.get_session() as session:
+            components = session.query(NamingComponent).all()
+            components_dict = {}
+            
+            for component in components:
+                if component.component_type not in components_dict:
+                    components_dict[component.component_type] = {
+                        "category": component.component_type,
+                        "description": f"Naming components for {component.component_type}",
+                        "enabled": component.enabled,
+                        "values": []
+                    }
+                
+                if component.enabled:
+                    components_dict[component.component_type]["values"].append(
+                        component.component_value
+                    )
+            
+            return components_dict
+    except Exception as e:
+        logger.error("Error loading naming components: %s", e)
+        raise HTTPException(status_code=500, detail="Failed to load naming components") from e
+
+
+@cache_naming_config(ttl=3600)
+async def _get_naming_config_from_db() -> dict[str, Any]:
+    """Load naming configuration from the database."""
+    try:
+        from .database import ecs_db, NamingConfig
+        
+        with ecs_db.get_session() as session:
+            configs = session.query(NamingConfig).all()
+            config_dict = {}
+            
+            for config in configs:
+                config_dict[config.config_key] = config.config_value
+            
+            return config_dict
+    except Exception as e:
+        logger.error("Error loading naming config: %s", e)
+        raise HTTPException(status_code=500, detail="Failed to load naming config") from e
+
+
 @router.get("/naming/animal-spirits", response_model=None)
 async def get_animal_spirits() -> dict[str, Any]:
     """Get all animal spirit names organized by spirit type."""
     try:
-        return _load_races_data()
+        return await _get_all_races_data_from_db()
     except HTTPException:
         raise
     except Exception as e:
@@ -828,7 +618,7 @@ async def get_animal_spirits() -> dict[str, Any]:
 async def get_animal_spirit_names(spirit: str) -> dict[str, Any]:
     """Get names for a specific animal spirit."""
     try:
-        race_data = _load_race_data(spirit)
+        race_data = _get_race_data_from_db(spirit)
         return {"spirit": spirit, "names": race_data["names"]}
     except HTTPException:
         raise
@@ -843,7 +633,7 @@ async def get_animal_spirit_names(spirit: str) -> dict[str, Any]:
 async def get_naming_components() -> dict[str, Any]:
     """Get all naming components (suffixes, prefixes, etc.)."""
     try:
-        return _load_json_data("naming_components.json")
+        return await _get_naming_components_from_db()
     except HTTPException:
         raise
     except Exception as e:
@@ -855,12 +645,12 @@ async def get_naming_components() -> dict[str, Any]:
 async def get_naming_component_type(component_type: str) -> dict[str, Any]:
     """Get a specific type of naming component."""
     try:
-        data = _load_json_data("naming_components.json")
-        if component_type not in data:
+        components = await _get_naming_components_from_db()
+        if component_type not in components:
             raise HTTPException(
                 status_code=404, detail=f"Component type '{component_type}' not found"
             )
-        return {"component_type": component_type, "values": data[component_type]}
+        return components[component_type]
     except HTTPException:
         raise
     except Exception as e:
@@ -874,7 +664,7 @@ async def get_naming_component_type(component_type: str) -> dict[str, Any]:
 async def get_naming_config() -> dict[str, Any]:
     """Get the complete naming configuration."""
     try:
-        return _load_json_data("naming_config.json")
+        return await _get_naming_config_from_db()
     except HTTPException:
         raise
     except Exception as e:
@@ -886,8 +676,8 @@ async def get_naming_config() -> dict[str, Any]:
 async def get_naming_schemes() -> dict[str, Any]:
     """Get all available naming schemes."""
     try:
-        data = _load_json_data("naming_config.json")
-        return {"schemes": data.get("schemes", {})}
+        config = await _get_naming_config_from_db()
+        return {"schemes": config.get("schemes", {})}
     except HTTPException:
         raise
     except Exception as e:
@@ -899,8 +689,8 @@ async def get_naming_schemes() -> dict[str, Any]:
 async def get_naming_styles() -> dict[str, Any]:
     """Get all available naming styles."""
     try:
-        data = _load_json_data("naming_config.json")
-        return {"styles": data.get("styles", {})}
+        config = await _get_naming_config_from_db()
+        return {"styles": config.get("styles", {})}
     except HTTPException:
         raise
     except Exception as e:
@@ -912,8 +702,18 @@ async def get_naming_styles() -> dict[str, Any]:
 async def get_naming_spirits() -> dict[str, Any]:
     """Get all available spirits with their configurations."""
     try:
-        data = _load_json_data("naming_config.json")
-        return {"spirits": data.get("spirits", {})}
+        races_data = _get_all_races_data_from_db()
+        spirits = {}
+        
+        for spirit_name, spirit_data in races_data["races"].items():
+            spirits[spirit_name] = {
+                "name": spirit_data["name"],
+                "category": spirit_data["category"],
+                "description": spirit_data["description"],
+                "emoji": spirit_data["emoji"]
+            }
+        
+        return {"spirits": spirits}
     except HTTPException:
         raise
     except Exception as e:
@@ -925,7 +725,13 @@ async def get_naming_spirits() -> dict[str, Any]:
 async def get_generation_numbers() -> dict[str, Any]:
     """Get generation numbers for all spirits."""
     try:
-        return _load_json_data("generation_numbers.json")
+        races_data = _get_all_races_data_from_db()
+        generation_numbers = {}
+        
+        for spirit_name, spirit_data in races_data["races"].items():
+            generation_numbers[spirit_name] = spirit_data["generation_numbers"]
+        
+        return {"generation_numbers": generation_numbers}
     except HTTPException:
         raise
     except Exception as e:
@@ -937,10 +743,8 @@ async def get_generation_numbers() -> dict[str, Any]:
 async def get_spirit_generation_numbers(spirit: str) -> dict[str, Any]:
     """Get generation numbers for a specific spirit."""
     try:
-        data = _load_json_data("generation_numbers.json")
-        if spirit not in data:
-            raise HTTPException(status_code=404, detail=f"Spirit '{spirit}' not found")
-        return {"spirit": spirit, "numbers": data[spirit]}
+        race_data = _get_race_data_from_db(spirit)
+        return {"spirit": spirit, "generation_numbers": race_data["generation_numbers"]}
     except HTTPException:
         raise
     except Exception as e:
@@ -996,7 +800,7 @@ async def get_character(character_id: str) -> dict[str, Any]:
 
 # Trait System Endpoints
 @router.get("/traits/personality", response_model=None)
-async def get_personality_traits():
+async def get_personality_traits() -> dict[str, Any]:
     """Get all personality trait definitions."""
     try:
         return _load_json_data("personality_traits.json")
@@ -1008,7 +812,7 @@ async def get_personality_traits():
 
 
 @router.get("/traits/personality/{spirit}", response_model=None)
-async def get_spirit_personality_traits(spirit: str):
+async def get_spirit_personality_traits(spirit: str) -> dict[str, Any]:
     """Get personality traits for a specific spirit."""
     try:
         data = _load_json_data("personality_traits.json")
@@ -1027,7 +831,7 @@ async def get_spirit_personality_traits(spirit: str):
 
 
 @router.get("/traits/physical", response_model=None)
-async def get_physical_traits():
+async def get_physical_traits() -> dict[str, Any]:
     """Get all physical trait definitions."""
     try:
         return _load_json_data("physical_traits.json")
@@ -1039,7 +843,7 @@ async def get_physical_traits():
 
 
 @router.get("/traits/physical/{spirit}", response_model=None)
-async def get_spirit_physical_traits(spirit: str):
+async def get_spirit_physical_traits(spirit: str) -> dict[str, Any]:
     """Get physical traits for a specific spirit."""
     try:
         data = _load_json_data("physical_traits.json")
@@ -1058,7 +862,7 @@ async def get_spirit_physical_traits(spirit: str):
 
 
 @router.get("/traits/abilities", response_model=None)
-async def get_ability_traits():
+async def get_ability_traits() -> dict[str, Any]:
     """Get all ability trait definitions."""
     try:
         return _load_json_data("ability_traits.json")
@@ -1070,7 +874,7 @@ async def get_ability_traits():
 
 
 @router.get("/traits/abilities/{spirit}", response_model=None)
-async def get_spirit_ability_traits(spirit: str):
+async def get_spirit_ability_traits(spirit: str) -> dict[str, Any]:
     """Get ability traits for a specific spirit."""
     try:
         data = _load_json_data("ability_traits.json")
@@ -1089,7 +893,7 @@ async def get_spirit_ability_traits(spirit: str):
 
 
 @router.get("/traits/config", response_model=None)
-async def get_trait_config():
+async def get_trait_config() -> dict[str, Any]:
     """Get the complete trait system configuration."""
     try:
         return _load_json_data("trait_config.json")
@@ -1101,7 +905,7 @@ async def get_trait_config():
 
 
 @router.get("/traits/spirit/{spirit}", response_model=None)
-async def get_spirit_trait_profile(spirit: str):
+async def get_spirit_trait_profile(spirit: str) -> dict[str, Any]:
     """Get complete trait profile for a specific spirit."""
     try:
         config_data = _load_json_data("trait_config.json")

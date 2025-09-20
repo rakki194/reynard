@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "last_updated": "2025-09-20T19:52:04.420186",
+  "last_updated": "2025-09-21T00:34:57.989875",
   "tools": {
     "generate_agent_name": {
       "name": "generate_agent_name",
@@ -294,7 +294,7 @@
       "name": "semantic_search",
       "category": "search",
       "enabled": true,
-      "description": "Perform semantic search using vector embeddings and RAG backend",
+      "description": "Perform semantic search using unified search service",
       "dependencies": [],
       "config": {}
     },
@@ -742,7 +742,7 @@
       "name": "hybrid_search",
       "category": "search",
       "enabled": true,
-      "description": "Perform hybrid search combining semantic and traditional text search",
+      "description": "Perform hybrid search combining semantic and syntax search",
       "dependencies": [],
       "config": {}
     },
@@ -751,6 +751,14 @@
       "category": "search",
       "enabled": true,
       "description": "List files in a directory with optional filtering",
+      "dependencies": [],
+      "config": {}
+    },
+    "natural_language_search": {
+      "name": "natural_language_search",
+      "category": "search",
+      "enabled": true,
+      "description": "Perform natural language search with NLP processing",
       "dependencies": [],
       "config": {}
     },
@@ -774,7 +782,7 @@
       "name": "search_content",
       "category": "search",
       "enabled": true,
-      "description": "Search for content using BM25 with query expansion",
+      "description": "Search for content using unified search service",
       "dependencies": [],
       "config": {}
     }

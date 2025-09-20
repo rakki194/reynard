@@ -2,11 +2,33 @@
 Search API Module
 ================
 
-Advanced search capabilities for the Reynard codebase.
-Provides semantic search, syntax search, and hybrid search functionality.
+Unified search API with semantic, syntax, hybrid, and natural language search capabilities.
 """
 
 from .endpoints import router
-from .service import SearchService
+from .models import (
+    HybridSearchRequest,
+    IndexRequest,
+    SearchRequest,
+    SearchResponse,
+    SearchResult,
+    SearchStats,
+    SemanticSearchRequest,
+    SuggestionsResponse,
+    SyntaxSearchRequest,
+)
+from .search import SearchService
 
-__all__ = ["SearchService", "router"]
+__all__ = [
+    "router",
+    "SearchService",
+    "SearchRequest",
+    "SearchResponse", 
+    "SearchResult",
+    "SearchStats",
+    "SemanticSearchRequest",
+    "SyntaxSearchRequest",
+    "HybridSearchRequest",
+    "IndexRequest",
+    "SuggestionsResponse",
+]
