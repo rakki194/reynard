@@ -197,12 +197,21 @@ export const DocsCodeSnippet = (props: DocsCodeSnippetProps) => {
       </Show>
     </code>);
 };
+interface DocsTerminalProps {
+  commands: Array<{
+    command: string;
+    output?: string;
+  }>;
+  prompt?: string;
+  class?: string;
+}
+
 /**
  * Terminal/console component
  */
-export const DocsTerminal = props => {
+export const DocsTerminal = (props: DocsTerminalProps) => {
     const prompt = () => props.prompt || "$";
-    return (<div class={`docs-terminal ${props.className || ""}`}>
+    return (<div class={`docs-terminal ${props.class || ""}`}>
       <div class="docs-terminal-header">
         <div class="docs-terminal-controls">
           <span class="docs-terminal-control"></span>
