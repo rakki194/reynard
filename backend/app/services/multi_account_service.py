@@ -65,6 +65,8 @@ class MultiAccountConfig:
     backup_interval_hours: int = 24
     auto_switch_accounts: bool = True
     account_isolation_enabled: bool = True
+    shared_resources_enabled: bool = False
+    rate_limiting_enabled: bool = True
 
 
 @dataclass
@@ -689,8 +691,8 @@ class MultiAccountService:
                 avg_response_time_hours=0.0,  # Not tracked in AccountUsage
                 storage_used_mb=usage.total_storage_used_mb,
                 last_activity=account.last_used or account.created_at,
-                usage_limits=None,
-                current_usage=asdict(usage),
+                usage_limits={},
+                current_usage={},
                 performance_metrics=None
             )
             

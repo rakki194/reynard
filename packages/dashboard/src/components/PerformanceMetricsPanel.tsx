@@ -37,6 +37,7 @@ export const PerformanceMetricsPanel = (props: PerformanceMetricsPanelProps) => 
         totalStyleApplications: 0,
         totalFrameDrops: 0,
         performanceScore: 0,
+        dataPoints: 0,
     });
     const [selectedMetric, setSelectedMetric] = createSignal<string>("frameRate");
     const [timeRange, setTimeRange] = createSignal<string>("5m");
@@ -111,6 +112,7 @@ export const PerformanceMetricsPanel = (props: PerformanceMetricsPanelProps) => 
                 totalStyleApplications,
                 totalFrameDrops,
                 performanceScore,
+                dataPoints: filteredHistory.length,
             };
             setMetrics(newMetrics);
             setLastUpdate(new Date());
