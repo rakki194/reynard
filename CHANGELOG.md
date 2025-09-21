@@ -6,14 +6,11 @@ the Reynard framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - 2025-09-21
+## [Unreleased]
 
 ### Added
 
 ### Changed
-
-- **Validation Migration**: Moved validation scripts from `./scripts/validation` to `packages/dev-tools/validation` and updated all references throughout the project (Swift-Sage-45)
-- **Vitest Config Generator Migration**: Moved vitest-config-generator from `./scripts/vitest-config-generator` to `packages/dev-tools/vitest-config-generator` and updated all references throughout the project (Swift-Sage-45)
 
 ### Deprecated
 
@@ -22,6 +19,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 ### Security
+
+## [0.12.0] - 2025-09-21
+
+### Added
+
+- **Markdown Validation Tools**: Created comprehensive TypeScript-based markdown validation package with ToC conflict detection, link validation, and sentence length checking (Playful-Prime-79)
+
+### Fixed
+
+- **MCP Security Tools**: Fixed scan_security and scan_security_fast tool errors by correcting SecurityService method calls (Water-Prime-25)
+- **Continuous Indexing RuntimeWarning**: Fixed unawaited coroutine warning in continuous indexing service by properly handling async method calls in thread-safe scheduling (Madagascar-Prime-17)
+
+### Changed
+
+- **Validation Migration**: Moved validation scripts from `./scripts/validation` to `packages/dev-tools/validation` and updated all references throughout the project (Swift-Sage-45)
+- **Vitest Config Generator Migration**: Moved vitest-config-generator from `./scripts/vitest-config-generator` to `packages/dev-tools/vitest-config-generator` and updated all references throughout the project (Swift-Sage-45)
+- **Markdown Validation Modernization**: Migrated from JavaScript to TypeScript for all markdown validation tools with improved CLI interface and comprehensive testing (Playful-Prime-79)
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+- **Hardcoded Secret Fix**: Fixed hardcoded JWT secret in MCP server auth service to use environment variables (Water-Prime-25)
 
 ## [0.10.0] - 2025-09-21
 

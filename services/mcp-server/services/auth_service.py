@@ -6,6 +6,7 @@ integrating with the FastAPI backend's authentication system.
 """
 
 import logging
+import os
 import time
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional
@@ -15,7 +16,7 @@ import jwt
 logger = logging.getLogger(__name__)
 
 # MCP Authentication Configuration
-MCP_JWT_SECRET = "reynard-mcp-secret-key-2025"  # In production, use env var
+MCP_JWT_SECRET = os.getenv("MCP_JWT_SECRET", "reynard-mcp-secret-key-2025-dev")  # Use env var in production
 MCP_JWT_ALGORITHM = "HS256"
 MCP_TOKEN_EXPIRE_HOURS = 24
 

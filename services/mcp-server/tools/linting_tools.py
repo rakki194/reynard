@@ -50,7 +50,7 @@ def _format_result(result: dict[str, Any], operation: str) -> dict[str, Any]:
     execution_type="async",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 async def lint_frontend(**kwargs) -> dict[str, Any]:
     """Lint frontend code with ESLint."""
@@ -68,7 +68,7 @@ async def lint_frontend(**kwargs) -> dict[str, Any]:
     execution_type="async",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 async def lint_python(**kwargs) -> dict[str, Any]:
     """Lint Python code with Flake8 and Pylint."""
@@ -86,7 +86,7 @@ async def lint_python(**kwargs) -> dict[str, Any]:
     execution_type="async",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 async def lint_markdown(**kwargs) -> dict[str, Any]:
     """Lint Markdown files with markdownlint."""
@@ -104,13 +104,13 @@ async def lint_markdown(**kwargs) -> dict[str, Any]:
     execution_type="async",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 async def run_all_linting(**kwargs) -> dict[str, Any]:
     """Run all linting tools."""
     arguments = kwargs.get("arguments", {})
     fix = arguments.get("fix", False)
-    result = await linting_service.run_all_linting(fix)
+    result = await linting_service.run_comprehensive_linting(fix)
     action = "All Linting (with fixes)" if fix else "All Linting"
     return _format_result(result, action)
 
@@ -122,7 +122,7 @@ async def run_all_linting(**kwargs) -> dict[str, Any]:
     execution_type="async",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 async def format_frontend(**kwargs) -> dict[str, Any]:
     """Format frontend code with Prettier."""
@@ -140,7 +140,7 @@ async def format_frontend(**kwargs) -> dict[str, Any]:
     execution_type="async",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 async def format_python(**kwargs) -> dict[str, Any]:
     """Format Python code with Black and isort."""
@@ -158,11 +158,13 @@ async def format_python(**kwargs) -> dict[str, Any]:
     execution_type="async",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 async def scan_security(**kwargs) -> dict[str, Any]:
     """Run comprehensive security scanning."""
-    result = await security_service.scan_security()
+    # kwargs are not used in this implementation but kept for API compatibility
+    _ = kwargs  # Suppress unused parameter warning
+    result = await security_service.run_comprehensive_security_scan(include_bandit=True)
     return _format_result(result, "Security Scanning")
 
 
@@ -173,9 +175,11 @@ async def scan_security(**kwargs) -> dict[str, Any]:
     execution_type="async",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 async def scan_security_fast(**kwargs) -> dict[str, Any]:
     """Run fast security scanning."""
-    result = await security_service.scan_security_fast()
+    # kwargs are not used in this implementation but kept for API compatibility
+    _ = kwargs  # Suppress unused parameter warning
+    result = await security_service.run_comprehensive_security_scan(include_bandit=False)
     return _format_result(result, "Fast Security Scanning")
