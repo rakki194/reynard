@@ -238,7 +238,7 @@ export const Processors = {
    */
   async validateSentenceLength(filePath) {
     const { execSync } = await import("child_process");
-    execSync(`node scripts/validation/markdown/validate-sentence-length.js --fix "${filePath}"`, {
+    execSync(`node packages/dev-tools/validation/markdown/validate-sentence-length.js --fix "${filePath}"`, {
       stdio: "inherit",
       cwd: process.cwd(),
     });
@@ -249,7 +249,7 @@ export const Processors = {
    */
   async validateToC(filePath) {
     const { execSync } = await import("child_process");
-    execSync(`node scripts/validation/markdown/validate-markdown-toc.js --fix "${filePath}"`, {
+    execSync(`node packages/dev-tools/validation/markdown/validate-markdown-toc.js --fix "${filePath}"`, {
       stdio: "inherit",
       cwd: process.cwd(),
     });
@@ -260,7 +260,7 @@ export const Processors = {
    */
   async validateLinks(filePath) {
     const { execSync } = await import("child_process");
-    execSync(`node scripts/validation/markdown/validate-markdown-links.js "${filePath}"`, {
+    execSync(`node packages/dev-tools/validation/markdown/validate-markdown-links.js "${filePath}"`, {
       stdio: "inherit",
       cwd: process.cwd(),
     });

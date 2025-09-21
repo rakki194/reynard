@@ -91,7 +91,7 @@ class ValidationService:
     async def validate_css_variables(self) -> dict[str, Any]:
         """Validate CSS custom properties usage."""
         return await self.run_command(
-            ["node", "scripts/validation/css/validate-css-variables.js"]
+            ["node", "packages/dev-tools/validation/css/validate-css-variables.js"]
         )
 
     async def validate_python_lines(self) -> dict[str, Any]:

@@ -738,43 +738,36 @@ async def get_naming_styles() -> dict[str, Any]:
 
 @router.get("/naming/config/spirits", response_model=None)
 async def get_naming_spirits() -> dict[str, Any]:
-    """Get all available spirits with their configurations."""
+    """Get all available spirits with their configurations from database."""
     try:
-        races_data = await _get_all_races_data_from_db()
-        spirits = {}
+        # Get database service
+        db = get_postgres_ecs_service()
         
-        for spirit_name, spirit_data in races_data["races"].items():
-            spirits[spirit_name] = {
-                "name": spirit_data["name"],
-                "category": spirit_data["category"],
-                "description": spirit_data["description"],
-                "emoji": spirit_data["emoji"]
-            }
+        # Get all naming spirits from database
+        spirits_data = await db.get_naming_spirits()
         
-        return {"spirits": spirits}
-    except HTTPException:
-        raise
+        return spirits_data
+        
     except Exception as e:
-        logger.error("Error getting naming spirits: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to get naming spirits") from e
+        logger.error("Error getting naming spirits from database: %s", e)
+        raise HTTPException(status_code=500, detail="Failed to get naming spirits from database") from e
 
 
 @router.get("/naming/generation-numbers", response_model=None)
 async def get_generation_numbers() -> dict[str, Any]:
-    """Get generation numbers for all spirits."""
+    """Get generation numbers for all spirits from database."""
     try:
-        races_data = await _get_all_races_data_from_db()
-        generation_numbers = {}
+        # Get database service
+        db = get_postgres_ecs_service()
         
-        for spirit_name, spirit_data in races_data["races"].items():
-            generation_numbers[spirit_name] = spirit_data["generation_numbers"]
+        # Get generation numbers from database
+        generation_numbers = await db.get_generation_numbers()
         
-        return {"generation_numbers": generation_numbers}
-    except HTTPException:
-        raise
+        return generation_numbers
+        
     except Exception as e:
-        logger.error("Error getting generation numbers: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to get generation numbers") from e
+        logger.error("Error getting generation numbers from database: %s", e)
+        raise HTTPException(status_code=500, detail="Failed to get generation numbers from database") from e
 
 
 @router.get("/naming/generation-numbers/{spirit}", response_model=None)
@@ -795,14 +788,40 @@ async def get_spirit_generation_numbers(spirit: str) -> dict[str, Any]:
 
 @router.get("/naming/enums", response_model=None)
 async def get_naming_enums() -> dict[str, Any]:
-    """Get all naming enums and categories."""
+    """Get all naming enums and categories from database."""
     try:
-        return _load_json_data("enums.json")
-    except HTTPException:
-        raise
+        # Get database session
+        db = get_postgres_ecs_service()
+        
+        # Get all naming spirits
+        spirits = await db.get_naming_spirits()
+        
+        # Get all naming components (styles, etc.)
+        components = await db.get_naming_components()
+        
+        # Get naming config
+        config = await db.get_naming_config()
+        
+        # Build enums response
+        enums_data = {
+            "spirits": spirits,
+            "components": components,
+            "config": config,
+            "styles": {
+                "foundation": {"enabled": True, "description": "Asimov-inspired strategic names"},
+                "exo": {"enabled": True, "description": "Combat/technical operational names"},
+                "hybrid": {"enabled": True, "description": "Mythological/historical references"},
+                "cyberpunk": {"enabled": True, "description": "Tech-prefixed cyber names"},
+                "mythological": {"enabled": True, "description": "Divine/mystical references"},
+                "scientific": {"enabled": True, "description": "Latin scientific classifications"}
+            }
+        }
+        
+        return enums_data
+        
     except Exception as e:
-        logger.error("Error getting naming enums: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to get naming enums") from e
+        logger.error("Error getting naming enums from database: %s", e)
+        raise HTTPException(status_code=500, detail="Failed to get naming enums from database") from e
 
 
 @router.get("/naming/characters", response_model=None)

@@ -13,11 +13,9 @@ from typing import Any
 import sys
 from pathlib import Path
 
-# Add the agent naming package to the path
-agent_naming_path = Path(__file__).parent.parent.parent / "services" / "agent-naming" / "reynard_agent_naming"
-sys.path.insert(0, str(agent_naming_path))
-
-from agent_naming import AgentNameManager, AnimalSpirit, NamingStyle
+# FastAPI ECS backend as single source of truth
+from services.backend_agent_manager import BackendAgentManager
+from services.dynamic_enum_service import dynamic_enum_service
 
 from .agent_management.behavior import BehaviorAgentTools
 
@@ -25,7 +23,7 @@ from .agent_management.behavior import BehaviorAgentTools
 class ECSAgentTools:
     """Handles ECS world simulation integration for agents."""
 
-    def __init__(self, agent_manager: AgentNameManager, ecs_agent_tools: Any = None) -> None:
+    def __init__(self, agent_manager: BackendAgentManager, ecs_agent_tools: Any = None) -> None:
         self.agent_manager = agent_manager
         self.ecs_agent_tools = ecs_agent_tools
         self.behavior_tools = BehaviorAgentTools()
@@ -51,25 +49,19 @@ class ECSAgentTools:
         ]:
             agent_id = self._generate_unique_agent_id()
 
-        # Roll spirit if not forced
+        # Roll spirit if not forced - use dynamic service
         if force_spirit:
-            spirit = AnimalSpirit(force_spirit)
+            spirit = await dynamic_enum_service.validate_spirit(force_spirit)
         else:
-            spirit = self.agent_manager.roll_agent_spirit(weighted=True)
+            spirit = await dynamic_enum_service.get_random_spirit(weighted=True)
 
-        # Select style if not specified
+        # Select style if not specified - use dynamic service
         if not preferred_style:
-            styles = [
-                NamingStyle.FOUNDATION,
-                NamingStyle.EXO,
-                NamingStyle.HYBRID,
-                NamingStyle.CYBERPUNK,
-                NamingStyle.MYTHOLOGICAL,
-                NamingStyle.SCIENTIFIC,
-            ]
-            preferred_style = secrets.choice(styles)
+            available_styles = await dynamic_enum_service.get_available_styles()
+            import random
+            preferred_style = random.choice(list(available_styles)) if available_styles else "foundation"
         else:
-            preferred_style = NamingStyle(preferred_style)
+            preferred_style = await dynamic_enum_service.validate_style(preferred_style)
 
         # Create agent with ECS integration using FastAPI backend
         agent_data = await self._create_agent_with_fastapi_ecs(
@@ -174,7 +166,7 @@ class ECSAgentTools:
         return f"agent-{int(time.time())}-{random.randint(1000, 9999)}"
 
     async def _create_agent_with_fastapi_ecs(
-        self, agent_id: str, spirit: AnimalSpirit, style: NamingStyle
+        self, agent_id: str, spirit: str, style: str
     ) -> dict[str, Any]:
         """Create agent using FastAPI backend ECS system."""
         try:
@@ -188,8 +180,8 @@ class ECSAgentTools:
             # Create agent in FastAPI backend ECS
             result = await ecs_client.create_agent(
                 agent_id=agent_id,
-                spirit=spirit.value,
-                style=style.value
+                spirit=spirit,
+                style=style
             )
             
             if result.get("success"):
@@ -247,15 +239,15 @@ class ECSAgentTools:
         return spirit_emojis.get(spirit, "🦊")  # Default to fox emoji
 
     async def _format_startup_response(
-        self, agent_data: dict, spirit: AnimalSpirit, style: NamingStyle
+        self, agent_data: dict, spirit: str, style: str
     ) -> str:
         """Format the startup response text."""
         # Get the correct emoji for the spirit
-        spirit_emoji = self._get_spirit_emoji(spirit.value)
+        spirit_emoji = self._get_spirit_emoji(spirit)
         startup_text = (
             f"🎯 Agent Startup Complete!\n"
-            f"{spirit_emoji} Spirit: {spirit.value}\n"
-            f"🎨 Style: {style.value}\n"
+            f"{spirit_emoji} Spirit: {spirit}\n"
+            f"🎨 Style: {style}\n"
             f"📛 Name: {agent_data['name']}\n"
             f"✅ Assigned: True\n"
         )

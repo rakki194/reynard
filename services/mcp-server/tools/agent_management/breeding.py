@@ -12,17 +12,14 @@ from typing import Any
 import sys
 from pathlib import Path
 
-# Add the agent naming package to the path
-agent_naming_path = Path(__file__).parent.parent.parent.parent.parent / "services" / "agent-naming" / "reynard_agent_naming"
-sys.path.insert(0, str(agent_naming_path))
-
-from agent_naming import AgentNameManager
+# Legacy agent-naming system removed - now using FastAPI ECS backend
+from services.backend_agent_manager import BackendAgentManager
 
 
 class BreedingAgentTools:
     """Handles agent breeding, lineage, and genetic compatibility."""
 
-    def __init__(self, agent_manager: AgentNameManager):
+    def __init__(self, agent_manager: BackendAgentManager):
         self.agent_manager = agent_manager
 
     def create_offspring(self, arguments: dict[str, Any]) -> dict[str, Any]:

@@ -107,7 +107,8 @@ class BackendAgentManager:
         """Assign a name to an agent."""
         try:
             self.agent_names[agent_id] = name
-            self._save_agent_names()
+            # Agent names are now stored in PostgreSQL ECS database
+            # No need for local JSON file storage
             return True
         except Exception as e:
             logger.error(f"Error assigning name: {e}")
@@ -122,35 +123,19 @@ class BackendAgentManager:
         return self.agent_names.copy()
 
     async def roll_agent_spirit(self, weighted: bool = True) -> str:
-        """Randomly select an animal spirit."""
+        """Randomly select an animal spirit using dynamic enum service."""
         try:
-            spirits_data = await backend_data_service.get_naming_spirits()
-            if not spirits_data:
-                return "fox"  # Fallback
-
-            if weighted:
-                # Use weights from the spirits data
-                spirits = []
-                weights = []
-                for spirit_name, spirit_data in spirits_data.items():
-                    spirits.append(spirit_name)
-                    weights.append(spirit_data.get("weight", 1.0))
-                
-                return random.choices(spirits, weights=weights)[0]
-            else:
-                # Equal probability
-                return random.choice(list(spirits_data.keys()))
-
+            from .dynamic_enum_service import dynamic_enum_service
+            return await dynamic_enum_service.get_random_spirit(weighted=weighted)
         except Exception as e:
             logger.error(f"Error rolling agent spirit: {e}")
             return "fox"  # Fallback
 
     async def get_spirit_emoji(self, spirit: str) -> str:
-        """Get emoji for a spirit."""
+        """Get emoji for a spirit using dynamic enum service."""
         try:
-            spirits_data = await backend_data_service.get_naming_spirits()
-            spirit_data = spirits_data.get(spirit, {})
-            return spirit_data.get("emoji", "🦊")  # Default fox emoji
+            from .dynamic_enum_service import dynamic_enum_service
+            return await dynamic_enum_service.get_spirit_emoji(spirit)
         except Exception as e:
             logger.error(f"Error getting spirit emoji: {e}")
             return "🦊"  # Fallback

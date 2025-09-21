@@ -42,10 +42,6 @@ import sys
 from pathlib import Path
 from typing import Any
 
-# Add the agent naming package to the path
-agent_naming_path = Path(__file__).parent.parent.parent / "services" / "agent-naming" / "reynard_agent_naming"
-sys.path.insert(0, str(agent_naming_path))
-
 from services.backend_agent_manager import BackendAgentManager
 from protocol.tool_registry import register_tool
 

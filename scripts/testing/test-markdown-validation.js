@@ -49,13 +49,13 @@ console.log("\n🦊 Testing markdown validation tools...");
 
 try {
   console.log("\n📚 Testing Table of Contents validation...");
-  execSync(`node scripts/validation/markdown/validate-markdown-toc.js --fix "${testFilePath}"`, {
+  execSync(`node packages/dev-tools/validation/markdown/validate-markdown-toc.js --fix "${testFilePath}"`, {
     stdio: "inherit",
     cwd: process.cwd(),
   });
 
   console.log("\n📝 Testing sentence length validation...");
-  execSync(`node scripts/validation/markdown/validate-sentence-length.js --fix "${testFilePath}"`, {
+  execSync(`node packages/dev-tools/validation/markdown/validate-sentence-length.js --fix "${testFilePath}"`, {
     stdio: "inherit",
     cwd: process.cwd(),
   });

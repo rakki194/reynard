@@ -3,14 +3,7 @@
 import sys
 from pathlib import Path
 
-# Add services directory to Python path
-mcp_dir = Path(__file__).parent.parent
-services_path = mcp_dir.parent.parent / "services"
-agent_naming_path = services_path / "agent-naming"
-
-# Add paths if they don't already exist
-if str(agent_naming_path) not in sys.path:
-    sys.path.insert(0, str(agent_naming_path))
+# Legacy agent-naming system removed - now using FastAPI ECS backend
 
 # Import social tools to register them
 from . import social_tools

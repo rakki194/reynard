@@ -4,7 +4,7 @@ import { execSync } from 'child_process';
 
 // Mock child_process
 vi.mock('child_process', async (importOriginal) => {
-  const actual = await importOriginal();
+  const actual = await importOriginal<typeof import('child_process')>();
   return {
     ...actual,
     execSync: vi.fn(),

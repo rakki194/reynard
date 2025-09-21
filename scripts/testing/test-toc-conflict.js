@@ -36,7 +36,7 @@ console.log("\n🦊 Testing ToC conflict detection...");
 try {
   // Run our custom ToC validator
   console.log("\n📚 Running our custom ToC validator...");
-  execSync(`node scripts/validation/markdown/validate-markdown-toc.js --fix "${testFilePath}"`, {
+  execSync(`node packages/dev-tools/validation/markdown/validate-markdown-toc.js --fix "${testFilePath}"`, {
     stdio: "inherit",
     cwd: process.cwd(),
   });

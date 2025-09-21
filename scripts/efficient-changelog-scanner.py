@@ -201,7 +201,7 @@ class EfficientChangelogScanner:
 
             # Search in specific validation directories
             validation_dirs = [
-                ("scripts/validation", ["*.py", "*.ts", "*.js"]),
+                ("packages/dev-tools/validation", ["*.py", "*.ts", "*.js"]),
                 (
                     "packages",
                     [

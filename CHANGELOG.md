@@ -6,13 +6,14 @@ the Reynard framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-
-
-## [0.11.0] - 2025-09-21
+## [Unreleased] - 2025-09-21
 
 ### Added
 
 ### Changed
+
+- **Validation Migration**: Moved validation scripts from `./scripts/validation` to `packages/dev-tools/validation` and updated all references throughout the project (Swift-Sage-45)
+- **Vitest Config Generator Migration**: Moved vitest-config-generator from `./scripts/vitest-config-generator` to `packages/dev-tools/vitest-config-generator` and updated all references throughout the project (Swift-Sage-45)
 
 ### Deprecated
 
@@ -41,7 +42,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Automatic Project Discovery**: Generates test configurations for all 102 testable projects automatically
   - **Backup System**: Automatic backup of existing configurations before regeneration
   - **Validation**: Built-in configuration validation and error handling
-
 - **Package Structure Reorganization**: Completely restructured packages folder from flat to semantically categorized layout (Vulpine)
   - **AI & Machine Learning** (`packages/ai/`): Consolidated all AI/ML packages including annotating, caption, comfy, model-management, multimodal, nlweb, rag, tool-calling
   - **Algorithms** (`packages/algorithms/`): Moved algorithm implementations to dedicated category
@@ -59,7 +59,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Workspace Configuration**: Updated pnpm-workspace.yaml to reflect new package structure (Vulpine)
 - **Gatekeeper PostgreSQL Migration**: Migrated gatekeeper authentication system from SQLite to PostgreSQL as the primary database. Updated all configuration files to use PostgreSQL by default, removed SQLite fallback, and migrated all user data. Deleted `reynard.db` and `e2e-test.db` files to ensure clean PostgreSQL-only architecture (Vulpine)
 - **Complete Database Consolidation**: Removed all `agent-names.json` files and updated agent naming services to use PostgreSQL ECS database exclusively. Created SQLAlchemy migration system with Alembic for ECS data. Removed duplicate `gatekeeper_users` table and ensured all systems use the correct `users` table. Updated e2e tests to use PostgreSQL databases (`reynard_e2e` and `reynard_ecs_e2e`) instead of SQLite (Vulpine)
-### Deprecated
 
 ### Removed
 

@@ -11,6 +11,8 @@ MAX_PROCESSES=4
 QUEUE_DIR="/tmp/vitest-global-queue"
 PID_FILE="${QUEUE_DIR}/vitest.pids"
 LOG_FILE="${QUEUE_DIR}/vitest-queue.log"
+AUTO_CLEANUP_TIMEOUT=15  # seconds
+AUTO_CLEANUP_PID_FILE="${QUEUE_DIR}/auto-cleanup.pid"
 
 # Colors for output
 RED='\033[0;31m'
@@ -22,29 +24,52 @@ NC='\033[0m' # No Color
 # Create queue directory if it doesn't exist
 mkdir -p "${QUEUE_DIR}"
 
+# Function to ensure auto-cleanup daemon is running
+ensure_auto_cleanup_running() {
+    # Only start auto-cleanup for commands that need it
+    case "${1:-}" in
+        "run"|"cleanup"|"force-cleanup")
+            start_auto_cleanup_daemon
+            ;;
+    esac
+}
+
 # Logging function
 log() {
     local timestamp
     timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-    echo -e "${BLUE}[${timestamp}]${NC} $1" | tee -a "${LOG_FILE}"
+    echo -e "${BLUE}[${timestamp}]${NC} $1"
+    echo -e "${BLUE}[${timestamp}]${NC} $1" >> "${LOG_FILE}"
 }
 
 error() {
-    echo -e "${RED}[ERROR]${NC} $1" | tee -a "${LOG_FILE}"
+    echo -e "${RED}[ERROR]${NC} $1"
+    echo -e "${RED}[ERROR]${NC} $1" >> "${LOG_FILE}"
 }
 
 success() {
-    echo -e "${GREEN}[SUCCESS]${NC} $1" | tee -a "${LOG_FILE}"
+    echo -e "${GREEN}[SUCCESS]${NC} $1"
+    echo -e "${GREEN}[SUCCESS]${NC} $1" >> "${LOG_FILE}"
 }
 
 warning() {
-    echo -e "${YELLOW}[WARNING]${NC} $1" | tee -a "${LOG_FILE}"
+    echo -e "${YELLOW}[WARNING]${NC} $1"
+    echo -e "${YELLOW}[WARNING]${NC} $1" >> "${LOG_FILE}"
 }
 
 # Function to get current vitest process count
 get_vitest_count() {
-    local count
-    count=$(pgrep -f "vitest" | wc -l)
+    local count=0
+    
+    # Count only processes that are registered in our PID file and still running
+    if [[ -f "${PID_FILE}" ]] && [[ -s "${PID_FILE}" ]]; then
+        while IFS=':' read -r pid agent timestamp; do
+            if kill -0 "${pid}" 2>/dev/null; then
+                count=$((count + 1))
+            fi
+        done < "${PID_FILE}"
+    fi
+    
     # Don't log here as it interferes with command substitution
     echo "${count}"
 }
@@ -53,7 +78,7 @@ get_vitest_count() {
 # Function to wait for available slot
 wait_for_slot() {
     local agent_id="${1:-unknown}"
-    local timeout="${2:-300}" # 5 minute timeout
+    local timeout="${2:-120}" # 2 minute timeout (reduced from 5 minutes)
 
     log "Agent ${agent_id} waiting for available vitest slot..."
 
@@ -61,6 +86,9 @@ wait_for_slot() {
     start_time=$(date +%s)
 
     while true; do
+        # Clean up dead processes before checking count
+        cleanup_dead_processes
+        
         local current_count
         current_count=$(get_vitest_count)
 
@@ -74,6 +102,8 @@ wait_for_slot() {
 
         if [[ "${elapsed}" -gt "${timeout}" ]]; then
             error "Agent ${agent_id} timed out waiting for vitest slot after ${timeout}s"
+            warning "Forcing cleanup of potentially stuck processes..."
+            force_cleanup_stuck_processes
             return 1
         fi
 
@@ -118,11 +148,30 @@ show_status() {
     echo -e "Current vitest processes: ${GREEN}${count}${NC}/${MAX_PROCESSES}"
     echo -e "Registered processes: ${GREEN}${registered_count}${NC}"
 
+    # Show auto-cleanup daemon status
+    if [[ -f "${AUTO_CLEANUP_PID_FILE}" ]]; then
+        local cleanup_pid
+        cleanup_pid=$(cat "${AUTO_CLEANUP_PID_FILE}" 2>/dev/null || echo "")
+        if [[ -n "${cleanup_pid}" ]] && kill -0 "${cleanup_pid}" 2>/dev/null; then
+            echo -e "Auto-cleanup daemon: ${GREEN}RUNNING${NC} (PID: ${cleanup_pid}, Timeout: ${AUTO_CLEANUP_TIMEOUT}s)"
+        else
+            echo -e "Auto-cleanup daemon: ${RED}STOPPED${NC}"
+        fi
+    else
+        echo -e "Auto-cleanup daemon: ${RED}STOPPED${NC}"
+    fi
+
     if [[ -f "${PID_FILE}" ]] && [[ -s "${PID_FILE}" ]]; then
         echo -e "\n${YELLOW}Active processes:${NC}"
         while IFS=':' read -r pid agent timestamp; do
             if kill -0 "${pid}" 2>/dev/null; then
-                echo -e "  PID ${pid} (Agent: ${agent}, Started: ${timestamp})"
+                # Calculate runtime
+                local start_time
+                start_time=$(date -d "${timestamp}" +%s 2>/dev/null || echo "0")
+                local current_time
+                current_time=$(date +%s)
+                local runtime=$((current_time - start_time))
+                echo -e "  PID ${pid} (Agent: ${agent}, Started: ${timestamp}, Runtime: ${runtime}s)"
             else
                 echo -e "  PID ${pid} (Agent: ${agent}, Started: ${timestamp}) ${RED}[DEAD]${NC}"
             fi
@@ -150,6 +199,133 @@ cleanup_dead_processes() {
     done < "${PID_FILE}"
 
     mv "${temp_file}" "${PID_FILE}"
+}
+
+# Function to force cleanup of stuck processes
+force_cleanup_stuck_processes() {
+    warning "Force cleaning up all vitest processes..."
+    
+    # Kill all vitest processes that might be stuck
+    pkill -f "vitest" 2>/dev/null || true
+    
+    # Clear the PID file
+    > "${PID_FILE}"
+    
+    # Wait a moment for processes to die
+    sleep 2
+    
+    log "Force cleanup completed"
+}
+
+# Function to start automatic cleanup daemon
+start_auto_cleanup_daemon() {
+    # Check if auto-cleanup daemon is already running
+    if [[ -f "${AUTO_CLEANUP_PID_FILE}" ]]; then
+        local cleanup_pid
+        cleanup_pid=$(cat "${AUTO_CLEANUP_PID_FILE}" 2>/dev/null || echo "")
+        if [[ -n "${cleanup_pid}" ]] && kill -0 "${cleanup_pid}" 2>/dev/null; then
+            log "Auto-cleanup daemon already running (PID: ${cleanup_pid})"
+            return 0
+        else
+            # Remove stale PID file
+            rm -f "${AUTO_CLEANUP_PID_FILE}"
+        fi
+    fi
+
+    log "Starting auto-cleanup daemon with ${AUTO_CLEANUP_TIMEOUT}s timeout..."
+    
+    # Create a separate script file for the daemon
+    local daemon_script="${QUEUE_DIR}/auto-cleanup-daemon.sh"
+    cat > "${daemon_script}" << 'EOF'
+#!/bin/bash
+set -euo pipefail
+
+# Configuration (will be replaced by actual values)
+MAX_PROCESSES=4
+QUEUE_DIR="/tmp/vitest-global-queue"
+PID_FILE="${QUEUE_DIR}/vitest.pids"
+LOG_FILE="${QUEUE_DIR}/vitest-queue.log"
+AUTO_CLEANUP_TIMEOUT=15
+
+while true; do
+    sleep "${AUTO_CLEANUP_TIMEOUT}"
+    
+    # Check for stuck processes
+    if [[ -f "${PID_FILE}" ]] && [[ -s "${PID_FILE}" ]]; then
+        stuck_processes=()
+        temp_file=$(mktemp)
+        
+        while IFS=':' read -r pid agent timestamp; do
+            if kill -0 "${pid}" 2>/dev/null; then
+                # Check if process has been running too long
+                start_time=$(date -d "${timestamp}" +%s 2>/dev/null || echo "0")
+                current_time=$(date +%s)
+                runtime=$((current_time - start_time))
+                
+                if [[ "${runtime}" -gt "${AUTO_CLEANUP_TIMEOUT}" ]]; then
+                    stuck_processes+=("${pid}:${agent}")
+                    echo "$(date '+%Y-%m-%d %H:%M:%S') [WARNING] Auto-cleanup: Killing stuck process PID ${pid} (Agent: ${agent}, Runtime: ${runtime}s)" >> "${LOG_FILE}"
+                    kill -TERM "${pid}" 2>/dev/null || true
+                    sleep 2
+                    # Force kill if still running
+                    if kill -0 "${pid}" 2>/dev/null; then
+                        echo "$(date '+%Y-%m-%d %H:%M:%S') [WARNING] Auto-cleanup: Force killing stubborn process PID ${pid}" >> "${LOG_FILE}"
+                        kill -KILL "${pid}" 2>/dev/null || true
+                    fi
+                else
+                    # Keep the process in the file
+                    echo "${pid}:${agent}:${timestamp}" >> "${temp_file}"
+                fi
+            else
+                echo "$(date '+%Y-%m-%d %H:%M:%S') [INFO] Auto-cleanup: Process PID ${pid} (Agent: ${agent}) already dead, cleaning up" >> "${LOG_FILE}"
+            fi
+        done < "${PID_FILE}"
+        
+        # Update PID file
+        mv "${temp_file}" "${PID_FILE}"
+        
+        if [[ ${#stuck_processes[@]} -gt 0 ]]; then
+            echo "$(date '+%Y-%m-%d %H:%M:%S') [INFO] Auto-cleanup: Cleaned up ${#stuck_processes[@]} stuck processes" >> "${LOG_FILE}"
+        fi
+    fi
+done
+EOF
+    
+    # Make the script executable
+    chmod +x "${daemon_script}"
+    
+    # Start the daemon script in background with proper detachment
+    # Use setsid to create a new session and redirect stdin to prevent hanging
+    setsid "${daemon_script}" < /dev/null > /dev/null 2>&1 &
+    
+    local daemon_pid=$!
+    # Fully detach the process from the terminal
+    disown
+    
+    echo "${daemon_pid}" > "${AUTO_CLEANUP_PID_FILE}"
+    log "Auto-cleanup daemon started (PID: ${daemon_pid})"
+}
+
+# Function to stop automatic cleanup daemon
+stop_auto_cleanup_daemon() {
+    if [[ -f "${AUTO_CLEANUP_PID_FILE}" ]]; then
+        local cleanup_pid
+        cleanup_pid=$(cat "${AUTO_CLEANUP_PID_FILE}" 2>/dev/null || echo "")
+        if [[ -n "${cleanup_pid}" ]] && kill -0 "${cleanup_pid}" 2>/dev/null; then
+            log "Stopping auto-cleanup daemon (PID: ${cleanup_pid})"
+            kill -TERM "${cleanup_pid}" 2>/dev/null || true
+            sleep 1
+            if kill -0 "${cleanup_pid}" 2>/dev/null; then
+                kill -KILL "${cleanup_pid}" 2>/dev/null || true
+            fi
+        fi
+        rm -f "${AUTO_CLEANUP_PID_FILE}"
+        # Clean up the daemon script
+        rm -f "${QUEUE_DIR}/auto-cleanup-daemon.sh"
+        log "Auto-cleanup daemon stopped"
+    else
+        log "Auto-cleanup daemon not running"
+    fi
 }
 
 # Function to run vitest with queue management
@@ -217,14 +393,34 @@ run_vitest() {
     exec pnpm exec vitest --config vitest.global.config.ts "$@"
 }
 
+# Ensure auto-cleanup daemon is running for relevant commands
+ensure_auto_cleanup_running "${1:-}"
+
 # Main script logic
 case "${1:-}" in
     "status")
         show_status
+        exit 0
         ;;
     "cleanup")
         cleanup_dead_processes
         success "Cleaned up dead processes"
+        exit 0
+        ;;
+    "force-cleanup")
+        force_cleanup_stuck_processes
+        success "Force cleaned up all vitest processes"
+        exit 0
+        ;;
+    "start-auto-cleanup")
+        start_auto_cleanup_daemon
+        success "Auto-cleanup daemon started"
+        exit 0
+        ;;
+    "stop-auto-cleanup")
+        stop_auto_cleanup_daemon
+        success "Auto-cleanup daemon stopped"
+        exit 0
         ;;
     "run")
         if [[ $# -lt 2 ]]; then
@@ -242,6 +438,9 @@ case "${1:-}" in
         echo "Commands:"
         echo "  status                    Show current queue status"
         echo "  cleanup                   Clean up dead processes"
+        echo "  force-cleanup             Force cleanup all vitest processes"
+        echo "  start-auto-cleanup        Start automatic cleanup daemon"
+        echo "  stop-auto-cleanup         Stop automatic cleanup daemon"
         echo "  run <agent_id> [args...]  Run vitest with queue management"
         echo ""
         echo "Examples:"
@@ -257,5 +456,10 @@ case "${1:-}" in
         echo "  VITEST_FILE_PARALLELISM=false  Disable file parallelism"
         echo "  VITEST_GLOBAL_QUEUE=1     Enable global queue mode"
         echo "  VITEST_AGENT_ID           Agent identifier"
+        echo ""
+        echo "Auto-Cleanup:"
+        echo "  Auto-cleanup daemon starts automatically for 'run', 'status', 'cleanup' commands"
+        echo "  Kills stuck processes after ${AUTO_CLEANUP_TIMEOUT} seconds"
+        echo "  Use 'stop-auto-cleanup' to disable, 'start-auto-cleanup' to enable manually"
         ;;
 esac

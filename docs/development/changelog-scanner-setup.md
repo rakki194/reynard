@@ -102,7 +102,7 @@ pnpm --filter reynard-queue-watcher start CHANGELOG.md
 🏗️  TOP MONOLITHS (>140 lines):
   1. packages/core/src/index.ts (245 lines)
   2. backend/app/main.py (189 lines)
-  3. scripts/validation/markdown/validator.py (156 lines)
+  3. packages/dev-tools/validation/markdown/validator.py (156 lines)
 
 🛠️  KEY DEVELOPMENT TOOLS:
   1. scripts/changelog-scanner.py

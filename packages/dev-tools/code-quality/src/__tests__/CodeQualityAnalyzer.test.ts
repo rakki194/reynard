@@ -4,51 +4,50 @@
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { CodeQualityAnalyzer } from "../CodeQualityAnalyzer";
-import { writeFileSync, unlinkSync, existsSync } from "fs";
 import { join } from "path";
 
 // Mock the component services
 vi.mock("../FileDiscoveryService", () => ({
   FileDiscoveryService: vi.fn().mockImplementation(() => ({
-    discoverFiles: vi.fn(),
-    countLines: vi.fn(),
-    detectLanguage: vi.fn(),
+    discoverFiles: vi.fn().mockResolvedValue([]),
+    countLines: vi.fn().mockResolvedValue(0),
+    detectLanguage: vi.fn().mockResolvedValue("unknown"),
   })),
 }));
 
 vi.mock("../LanguageAnalyzer", () => ({
   LanguageAnalyzer: vi.fn().mockImplementation(() => ({
-    analyzeLanguages: vi.fn(),
+    analyzeLanguages: vi.fn().mockResolvedValue([]),
   })),
 }));
 
 vi.mock("../MetricsCalculator", () => ({
   MetricsCalculator: vi.fn().mockImplementation(() => ({
-    calculateMetrics: vi.fn(),
-    updateMetricsWithIssues: vi.fn(),
-    updateMetricsWithJunkFiles: vi.fn(),
+    calculateMetrics: vi.fn().mockResolvedValue({}),
+    updateMetricsWithIssues: vi.fn().mockReturnValue({}),
+    updateMetricsWithJunkFiles: vi.fn().mockReturnValue({}),
   })),
 }));
 
 vi.mock("../IssueDetector", () => ({
   IssueDetector: vi.fn().mockImplementation(() => ({
-    detectIssues: vi.fn(),
+    detectIssues: vi.fn().mockResolvedValue([]),
   })),
 }));
 
 vi.mock("../QualityGateEvaluator", () => ({
   QualityGateEvaluator: vi.fn().mockImplementation(() => ({
-    evaluateQualityGates: vi.fn(),
-    determineQualityGateStatus: vi.fn(),
+    evaluateQualityGates: vi.fn().mockReturnValue([]),
+    determineQualityGateStatus: vi.fn().mockReturnValue("PASSED"),
     addQualityGate: vi.fn(),
     removeQualityGate: vi.fn(),
-    getQualityGates: vi.fn(),
+    getQualityGates: vi.fn().mockReturnValue([]),
   })),
 }));
 
 vi.mock("../FileAnalyzer", () => ({
   FileAnalyzer: vi.fn().mockImplementation(() => ({
-    analyzeFiles: vi.fn(),
+    analyzeFiles: vi.fn().mockResolvedValue([]),
   })),
 }));
 

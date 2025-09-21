@@ -12,7 +12,6 @@ setup(
     package_dir={"": "reynard_mcp_server"},
     python_requires=">=3.9",
     install_requires=[
-        "reynard-agent-naming",
         "reynard-gatekeeper",
         "aiohttp",
         "PyJWT",
@@ -20,6 +19,7 @@ setup(
         "pydantic",
         "pathlib",
         "typing-extensions",
+        "httpx",
     ],
     extras_require={
         "dev": [

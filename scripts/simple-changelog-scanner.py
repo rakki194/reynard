@@ -102,7 +102,7 @@ class SimpleChangelogScanner:
                 search_type="hybrid",
                 top_k=15,
                 file_types=[".py", ".ts", ".js"],
-                directories=["../../scripts/validation/", "../../packages/"],
+                directories=["../../packages/dev-tools/validation/", "../../packages/"],
             )
             validation_tools = result.get("results", [])
             print(f"Found {len(validation_tools)} validation tool files")

@@ -16,13 +16,7 @@ import time
 from pathlib import Path
 from typing import Any, Optional
 
-# Add libraries directory to Python path before any local imports
-services_path = Path(__file__).parent.parent.parent / "services"
-agent_naming_path = services_path / "agent-naming"
-if str(agent_naming_path) not in sys.path:
-    sys.path.insert(0, str(agent_naming_path))
-
-# Now import local modules (they will be found due to sys.path modification above)
+# Import local modules
 # pylint: disable=wrong-import-position
 from protocol.tool_registry import get_tool_registry
 from protocol.tool_discovery import ToolDiscovery

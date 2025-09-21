@@ -354,7 +354,7 @@
       "label": "🐺 Validate Workflow Shell Scripts",
       "type": "shell",
       "command": "bash",
-      "args": ["-c", "cd scripts/validation/workflows && pnpm start"],
+      "args": ["-c", "cd packages/dev-tools/validation/workflows && pnpm start"],
       "group": "test",
       "presentation": {
         "echo": true,
@@ -371,7 +371,7 @@
       "label": "🎨 Validate CSS Variables",
       "type": "shell",
       "command": "node",
-      "args": ["scripts/validation/css/validate-css-variables.js", "--strict"],
+      "args": ["packages/dev-tools/validation/css/validate-css-variables.js", "--strict"],
       "group": "test",
       "presentation": {
         "echo": true,
@@ -793,7 +793,7 @@
       "label": "🔍 Shell Script Validation",
       "type": "shell",
       "command": "bash",
-      "args": ["scripts/validation/validate-shell-scripts.sh"],
+      "args": ["packages/dev-tools/validation/validate-shell-scripts.sh"],
       "group": "test",
       "presentation": {
         "echo": true,
@@ -808,7 +808,7 @@
       "label": "🔍 Workflow Validation",
       "type": "shell",
       "command": "bash",
-      "args": ["scripts/validation/validate-workflows.sh"],
+      "args": ["packages/dev-tools/validation/validate-workflows.sh"],
       "group": "test",
       "presentation": {
         "echo": true,

@@ -4,8 +4,7 @@
 
 import { describe, it, expect, beforeEach, afterEach, vi, Mock } from 'vitest';
 import { CodeQualityAnalyzer } from '../CodeQualityAnalyzer';
-import { JunkFileDetector, JunkFileAnalysis } from '../JunkFileDetector';
-import { MetricsCalculator } from '../MetricsCalculator';
+import { JunkFileAnalysis } from '../JunkFileDetector';
 import { execSync } from 'child_process';
 
 // Using global mock from test-setup.ts

@@ -225,11 +225,8 @@ class ECSDataMigrator:
         """
         results = {}
         
-        # Find and migrate agent-names.json files
-        agent_names_files = [
-            "/home/kade/runeset/reynard/services/agent-naming/data/agent-names.json",
-            "/home/kade/runeset/reynard/services/agent-naming/reynard_agent_naming/agent-names.json"
-        ]
+        # Legacy agent-naming system removed - no JSON files to migrate
+        agent_names_files = []
         
         for file_path in agent_names_files:
             if Path(file_path).exists():

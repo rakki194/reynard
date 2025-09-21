@@ -5,7 +5,6 @@
 
 import { execSync } from "child_process";
 import { existsSync } from "fs";
-import { join } from "path";
 
 const TEST_FILES = [
   "src/__tests__/DocstringAnalyzer.test.ts",

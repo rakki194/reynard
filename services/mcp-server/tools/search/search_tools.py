@@ -16,25 +16,63 @@ Provides a clean interface to all search capabilities including:
 
 import logging
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 from protocol.tool_registry import register_tool
 
 # Import the unified search service from the backend
 import sys
 sys.path.append('/home/kade/runeset/reynard/backend')
-from app.api.search.search import SearchService
-from app.api.search.models import (
-    SemanticSearchRequest, SyntaxSearchRequest, HybridSearchRequest, 
-    IndexRequest
-)
 
 logger = logging.getLogger(__name__)
+
+try:
+    from app.api.search.search import SearchService
+    from app.api.search.models import (
+        SemanticSearchRequest, SyntaxSearchRequest, HybridSearchRequest, 
+        IndexRequest
+    )
+    BACKEND_AVAILABLE = True
+except ImportError as e:
+    logger.warning(f"Backend search service not available: {e}")
+    SearchService = None
+    SemanticSearchRequest = None
+    SyntaxSearchRequest = None
+    HybridSearchRequest = None
+    IndexRequest = None
+    BACKEND_AVAILABLE = False
+
+# Import local search engines
+try:
+    from .bm25_search import search_needle_in_haystack, ReynardBM25Search
+    from .file_search import FileSearchEngine
+    from .ripgrep_search import RipgrepSearchEngine
+    LOCAL_SEARCH_AVAILABLE = True
+except ImportError as e:
+    logger.warning(f"Local search engines not available: {e}")
+    search_needle_in_haystack = None
+    ReynardBM25Search = None
+    FileSearchEngine = None
+    RipgrepSearchEngine = None
+    LOCAL_SEARCH_AVAILABLE = False
 
 # Initialize the unified search service
 current_dir = Path(__file__).parent
 project_root = current_dir.parent.parent.parent.parent
-search_service = SearchService(project_root)
+
+# Initialize search service if backend is available
+if BACKEND_AVAILABLE:
+    search_service = SearchService(project_root)
+else:
+    search_service = None
+
+# Initialize local search engines
+if LOCAL_SEARCH_AVAILABLE:
+    file_search_engine = FileSearchEngine(project_root)
+    ripgrep_search_engine = RipgrepSearchEngine(project_root)
+else:
+    file_search_engine = None
+    ripgrep_search_engine = None
 
 
 @register_tool(
@@ -55,6 +93,16 @@ async def search_content(**kwargs) -> dict[str, Any]:
     directories = arguments.get("directories")
     
     try:
+        if not BACKEND_AVAILABLE or search_service is None:
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"❌ Backend search service not available. Please ensure the FastAPI backend is running."
+                    }
+                ]
+            }
+        
         # Use syntax search for content search
         request = SyntaxSearchRequest(
             query=query,
@@ -112,11 +160,21 @@ def search_enhanced(**kwargs) -> dict[str, Any]:
     directories = arguments.get("directories")
     
     try:
+        if not LOCAL_SEARCH_AVAILABLE or search_needle_in_haystack is None:
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"❌ Local search engines not available. Please ensure the search modules are properly installed."
+                    }
+                ]
+            }
+        
         result = search_needle_in_haystack(
-            query=query,
+            needle=query,
             top_k=top_k,
             expand_query=expand_query,
-            project_root=project_root,
+            project_root=str(project_root),
             file_types=file_types,
             directories=directories
         )
@@ -159,6 +217,16 @@ async def search_files(**kwargs) -> dict[str, Any]:
     include_hidden = arguments.get("include_hidden", False)
     
     try:
+        if not LOCAL_SEARCH_AVAILABLE or file_search_engine is None:
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"❌ Local search engines not available. Please ensure the search modules are properly installed."
+                    }
+                ]
+            }
+        
         result = await file_search_engine.search_files(
             pattern=pattern,
             directory=directory,
@@ -203,6 +271,16 @@ async def list_files(**kwargs) -> dict[str, Any]:
     include_hidden = arguments.get("include_hidden", False)
     
     try:
+        if not LOCAL_SEARCH_AVAILABLE or file_search_engine is None:
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"❌ Local search engines not available. Please ensure the search modules are properly installed."
+                    }
+                ]
+            }
+        
         result = await file_search_engine.list_files(
             directory=directory,
             pattern=pattern,
@@ -246,8 +324,18 @@ async def search_code_patterns(**kwargs) -> dict[str, Any]:
     directories = arguments.get("directories")
     
     try:
+        if not LOCAL_SEARCH_AVAILABLE or ripgrep_search_engine is None:
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"❌ Local search engines not available. Please ensure the search modules are properly installed."
+                    }
+                ]
+            }
+        
         result = await ripgrep_search_engine.search_code_patterns(
-            pattern=pattern,
+            pattern_type=pattern,
             file_types=file_types,
             directories=directories
         )
@@ -291,6 +379,16 @@ async def semantic_search(**kwargs) -> dict[str, Any]:
     similarity_threshold = arguments.get("similarity_threshold", 0.7)
     
     try:
+        if not BACKEND_AVAILABLE or search_service is None:
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"❌ Backend search service not available. Please ensure the FastAPI backend is running."
+                    }
+                ]
+            }
+        
         request = SemanticSearchRequest(
             query=query,
             max_results=max_results,
@@ -348,6 +446,16 @@ async def hybrid_search(**kwargs) -> dict[str, Any]:
     directories = arguments.get("directories")
     
     try:
+        if not BACKEND_AVAILABLE or search_service is None:
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"❌ Backend search service not available. Please ensure the FastAPI backend is running."
+                    }
+                ]
+            }
+        
         request = HybridSearchRequest(
             query=query,
             max_results=max_results,
@@ -404,6 +512,16 @@ async def natural_language_search(**kwargs) -> dict[str, Any]:
     directories = arguments.get("directories")
     
     try:
+        if not BACKEND_AVAILABLE or search_service is None:
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"❌ Backend search service not available. Please ensure the FastAPI backend is running."
+                    }
+                ]
+            }
+        
         result = await search_service.natural_language_search(
             query=query,
             max_results=max_results,
@@ -456,17 +574,32 @@ def get_query_suggestions(**kwargs) -> dict[str, Any]:
     max_suggestions = arguments.get("max_suggestions", 10)
     
     try:
-        result = get_query_suggestions(
-            query=query,
-            max_suggestions=max_suggestions,
-            project_root=project_root
-        )
+        if not BACKEND_AVAILABLE or search_service is None:
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"❌ Backend search service not available. Please ensure the FastAPI backend is running."
+                    }
+                ]
+            }
+        
+        # Use the search service to get suggestions
+        import asyncio
+        result = asyncio.run(search_service.get_query_suggestions(query, max_suggestions))
+        
+        if result.success:
+            suggestions_text = f"💡 Query Suggestions for '{query}':\n\n"
+            for i, suggestion in enumerate(result.suggestions[:max_suggestions], 1):
+                suggestions_text += f"{i}. {suggestion.suggestion} (confidence: {suggestion.confidence:.2f}, type: {suggestion.type})\n"
+        else:
+            suggestions_text = f"❌ Failed to get suggestions: {result.error}"
         
         return {
             "content": [
                 {
                     "type": "text",
-                    "text": f"💡 Query Suggestions for '{query}':\n\n{result}"
+                    "text": suggestions_text
                 }
             ]
         }
@@ -494,11 +627,21 @@ def get_query_suggestions(**kwargs) -> dict[str, Any]:
 async def get_search_analytics(**kwargs) -> dict[str, Any]:
     """Get search analytics and statistics."""
     try:
+        if not BACKEND_AVAILABLE or search_service is None:
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"❌ Backend search service not available. Please ensure the FastAPI backend is running."
+                    }
+                ]
+            }
+        
         result = await search_service.get_search_stats()
         
         if hasattr(result, 'total_files_indexed'):
             # Direct SearchStats object
-            stats_text = f"📊 Search Analytics:\n\n"
+            stats_text = "📊 Search Analytics:\n\n"
             stats_text += f"   Total files indexed: {result.total_files_indexed}\n"
             stats_text += f"   Total chunks: {result.total_chunks}\n"
             stats_text += f"   Search count: {result.search_count}\n"
@@ -507,7 +650,7 @@ async def get_search_analytics(**kwargs) -> dict[str, Any]:
         elif isinstance(result, dict) and result.get("success"):
             # Dictionary response
             stats = result.get("data", {})
-            stats_text = f"📊 Search Analytics:\n\n"
+            stats_text = "📊 Search Analytics:\n\n"
             stats_text += f"   Total files indexed: {stats.get('total_files_indexed', 0)}\n"
             stats_text += f"   Total chunks: {stats.get('total_chunks', 0)}\n"
             stats_text += f"   Search count: {stats.get('search_count', 0)}\n"
@@ -548,13 +691,31 @@ async def get_search_analytics(**kwargs) -> dict[str, Any]:
 def clear_search_cache(**kwargs) -> dict[str, Any]:
     """Clear search cache and temporary files."""
     try:
-        result = clear_search_cache(project_root=project_root)
+        if not LOCAL_SEARCH_AVAILABLE:
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"❌ Local search engines not available. Please ensure the search modules are properly installed."
+                    }
+                ]
+            }
+        
+        # Clear cache by reinitializing search engines
+        global file_search_engine, ripgrep_search_engine
+        file_search_engine = FileSearchEngine(project_root)
+        ripgrep_search_engine = RipgrepSearchEngine(project_root)
+        
+        result_text = "✅ Search cache cleared successfully!\n"
+        result_text += f"   - File search engine reinitialized\n"
+        result_text += f"   - Ripgrep search engine reinitialized\n"
+        result_text += f"   - Project root: {project_root}"
         
         return {
             "content": [
                 {
                     "type": "text",
-                    "text": f"🗑️ Search Cache Cleared:\n\n{result}"
+                    "text": f"🗑️ Search Cache Cleared:\n\n{result_text}"
                 }
             ]
         }
@@ -588,6 +749,16 @@ async def reindex_project(**kwargs) -> dict[str, Any]:
     force_reindex = arguments.get("force_reindex", True)
     
     try:
+        if not BACKEND_AVAILABLE or search_service is None:
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"❌ Backend search service not available. Please ensure the FastAPI backend is running."
+                    }
+                ]
+            }
+        
         request = IndexRequest(
             project_root=project_root_path,
             file_types=file_types,
@@ -598,7 +769,7 @@ async def reindex_project(**kwargs) -> dict[str, Any]:
         result = await search_service.index_codebase(request)
         
         if result.success:
-            results_text = f"✅ Project reindexed successfully!\n"
+            results_text = "✅ Project reindexed successfully!\n"
             results_text += f"   Indexed files: {result.indexed_files}\n"
             results_text += f"   Total chunks: {result.total_chunks}\n"
             results_text += f"   Index time: {result.index_time:.3f}s\n"

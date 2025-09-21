@@ -36,7 +36,7 @@ console.log("\n🦊 Simulating save process...");
 try {
   // Step 1: Run our custom validation (simulating what happens on save)
   console.log("\n📝 Step 1: Running our custom sentence length validator...");
-  execSync(`node scripts/validation/markdown/validate-sentence-length.js --fix "${testFilePath}"`, {
+  execSync(`node packages/dev-tools/validation/markdown/validate-sentence-length.js --fix "${testFilePath}"`, {
     stdio: "inherit",
     cwd: process.cwd(),
   });

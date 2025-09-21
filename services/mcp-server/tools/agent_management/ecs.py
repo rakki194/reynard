@@ -13,15 +13,9 @@ from typing import Any, List
 import sys
 from pathlib import Path
 
-# Add the agent naming package to the path
-agent_naming_path = Path(__file__).parent.parent.parent.parent.parent / "services" / "agent-naming" / "reynard_agent_naming"
-sys.path.insert(0, str(agent_naming_path))
-
-from agent_naming import (
-    AgentNameManager,
-    AnimalSpirit,
-    NamingStyle,
-)
+# FastAPI ECS backend as single source of truth
+from services.backend_agent_manager import BackendAgentManager
+from services.dynamic_enum_service import dynamic_enum_service
 
 from .behavior import BehaviorAgentTools
 
@@ -29,7 +23,7 @@ from .behavior import BehaviorAgentTools
 class ECSAgentTools:
     """Handles ECS world simulation integration for agents."""
 
-    def __init__(self, agent_manager: AgentNameManager, ecs_agent_tools: Any = None) -> None:
+    def __init__(self, agent_manager: BackendAgentManager, ecs_agent_tools: Any = None) -> None:
         self.agent_manager = agent_manager
         self.ecs_agent_tools = ecs_agent_tools
         self.behavior_tools = BehaviorAgentTools()
@@ -55,30 +49,23 @@ class ECSAgentTools:
         ]:
             agent_id = self._generate_unique_agent_id()
 
-        # Roll spirit if not forced
+        # Roll spirit if not forced - use dynamic service
         if force_spirit:
-            spirit = AnimalSpirit(force_spirit)
+            spirit_str = await dynamic_enum_service.validate_spirit(force_spirit)
         else:
-            spirit_str = await self.agent_manager.roll_agent_spirit(weighted=True)
-            spirit = AnimalSpirit(spirit_str)
+            spirit_str = await dynamic_enum_service.get_random_spirit(weighted=True)
 
-        # Select style if not specified
+        # Select style if not specified - use dynamic service
         if not preferred_style:
-            styles = [
-                NamingStyle.FOUNDATION,
-                NamingStyle.EXO,
-                NamingStyle.HYBRID,
-                NamingStyle.CYBERPUNK,
-                NamingStyle.MYTHOLOGICAL,
-                NamingStyle.SCIENTIFIC,
-            ]
-            preferred_style = secrets.choice(styles)
+            available_styles = await dynamic_enum_service.get_available_styles()
+            import random
+            preferred_style = random.choice(list(available_styles))
         else:
-            preferred_style = NamingStyle(preferred_style)
+            preferred_style = await dynamic_enum_service.validate_style(preferred_style)
 
         # Create agent with ECS integration using ECS client
         agent_data = await self._create_agent_with_ecs_client(
-            agent_id, spirit, preferred_style
+            agent_id, spirit_str, preferred_style
         )
 
         # Generate enhanced persona for detailed roleplay
@@ -87,8 +74,8 @@ class ECSAgentTools:
             
             enhanced_persona = enhanced_persona_service.generate_enhanced_persona(
                 name=agent_data.get("name", "Unknown"),
-                spirit=spirit.value,
-                style=preferred_style.value,
+                spirit=spirit_str,
+                style=preferred_style,
                 agent_id=agent_id
             )
             
@@ -99,7 +86,7 @@ class ECSAgentTools:
             print(f"Warning: Could not generate enhanced persona: {e}")
             # Continue without enhanced persona
 
-        startup_text = self._format_startup_response(agent_data, spirit, preferred_style)
+        startup_text = self._format_startup_response(agent_data, spirit_str, preferred_style)
 
         return {
             "content": [
@@ -172,7 +159,7 @@ class ECSAgentTools:
         }
 
     async def _create_agent_with_ecs_client(
-        self, agent_id: str, spirit: AnimalSpirit, style: NamingStyle
+        self, agent_id: str, spirit: str, style: str
     ) -> dict[str, Any]:
         """Create agent using ECS client or connect to existing agent."""
         try:
@@ -210,12 +197,12 @@ class ECSAgentTools:
                 # Create new agent in ECS world
                 ecs_result = await ecs_client.create_agent(
                     agent_id=agent_id,
-                    spirit=spirit.value,
-                    style=style.value
+                    spirit=spirit,
+                    style=style
                 )
                 
                 # Generate name using agent manager
-                name = await self.agent_manager.generate_name(spirit.value, style.value)
+                name = await self.agent_manager.generate_name(spirit, style)
                 self.agent_manager.assign_name(agent_id, name)
                 
                 await ecs_client.close()
@@ -232,7 +219,7 @@ class ECSAgentTools:
             
         except Exception as e:
             # Fallback to basic creation
-            name = await self.agent_manager.generate_name(spirit.value, style.value)
+            name = await self.agent_manager.generate_name(spirit, style)
             self.agent_manager.assign_name(agent_id, name)
             return {
                 "agent_id": agent_id,
@@ -254,17 +241,17 @@ class ECSAgentTools:
         return spirit_emoji_service.get_spirit_emoji(spirit)
 
     def _format_startup_response(
-        self, agent_data: dict, spirit: AnimalSpirit, style: NamingStyle
+        self, agent_data: dict, spirit: str, style: str
     ) -> str:
         """Format the enhanced startup response text with detailed information."""
         # Get the correct emoji for the spirit
-        spirit_emoji = self._get_spirit_emoji(spirit.value)
+        spirit_emoji = self._get_spirit_emoji(spirit)
         
         # Enhanced startup header with more details
         startup_text = (
             f"🎯 Agent Startup Complete!\n"
-            f"{spirit_emoji} Spirit: {spirit.value.title()}\n"
-            f"🎨 Style: {style.value.title()}\n"
+            f"{spirit_emoji} Spirit: {spirit.title()}\n"
+            f"🎨 Style: {style.title()}\n"
             f"📛 Name: {agent_data['name']}\n"
             f"🆔 Agent ID: {agent_data.get('agent_id', 'Unknown')}\n"
             f"✅ Assigned: True\n"
