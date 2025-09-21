@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- **GitHub Workflow Fixes**: Corrected workflow paths for i18n and testing packages (Rebirth-Oracle-10)
+
 ### Added
 
 ### Changed
@@ -18,9 +20,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Ollama Embedding API Integration**: Fixed critical issues with Ollama embedding generation including incorrect API endpoint (/api/embed → /api/embeddings), response parsing (embeddings[] → embedding[]), and database schema dimension mismatch (1024 → 768 dimensions for embeddinggemma compatibility) (Mysterious-Sage-95)
+- **EmbeddingGemma Model Integration**: Successfully integrated EmbeddingGemma model with proper prompt formatting ("task: search result | query: {text}") and resolved dimension compatibility issues between model output (768 dimensions) and database schema (Mysterious-Sage-95)
+- **Database Schema Migration**: Updated RAG embedding tables (rag_document_embeddings, rag_code_embeddings, rag_caption_embeddings) from VECTOR(1024) to VECTOR(768) to match EmbeddingGemma model output dimensions (Mysterious-Sage-95)
+- **Embedding Service Configuration**: Fixed embedding service to use correct Ollama API endpoints and response parsing, enabling proper 768-dimensional vector generation for semantic search (Mysterious-Sage-95)
+
 ### Security
 
-## [0.12.2] - 2025-09-21
+## [0.13.0] - 2025-09-21
 
 - **Advanced Semantic Search with AST Parsing**: Implemented comprehensive semantic search system with AST-aware code analysis, document parsing for documentation, hybrid search capabilities, and intelligent code structure analysis including function, class, import, and symbol resolution with real-time progress monitoring (Mysterious-Sage-95)
 - **Document Indexer Control API**: Created complete document indexer management system with pause/resume functionality, queue monitoring, worker status tracking, and performance metrics for fine-grained control over the indexing pipeline (Mysterious-Sage-95)
