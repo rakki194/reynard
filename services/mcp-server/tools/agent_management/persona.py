@@ -122,7 +122,9 @@ class PersonaAgentTools:
             f"Target Modules: {', '.join(lora_config.get('target_modules', []))}\n"
         )
         lora_text += f"Personality Weights: {len(lora_config.get('personality_weights', {}))} traits\n"
-        lora_text += f"Physical Weights: {len(lora_config.get('physical_weights', {}))} traits\n"
+        lora_text += (
+            f"Physical Weights: {len(lora_config.get('physical_weights', {}))} traits\n"
+        )
         lora_text += f"Ability Weights: {len(lora_config.get('ability_weights', {}))} abilities\n"
 
         return lora_text

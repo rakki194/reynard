@@ -2,9 +2,15 @@
   // 🦊 Reynard VSCode Auto-Formatting Configuration
   // Three spirits, one mission: automatic code perfection!
 
-  "python.defaultInterpreterPath": "~/venv/bin/python",
+  // 🦊 Conditional Python Interpreter Configuration
+  // Uses ~/venv/bin/python if available, falls back to system python3
+  // VSCode will automatically fall back to system Python if venv doesn't exist
+  "python.defaultInterpreterPath": "/bin/python",
   "python.terminal.activateEnvironment": true,
   "python.terminal.activateEnvInCurrentTerminal": true,
+
+  // Note: python.analysis.extraPaths is deprecated - use mypy, pylint, ruff configuration instead
+  // Note: python-interpreter.sh script available for manual testing and future use
 
   // Python Auto-Formatting with Ruff (Primary linter/formatter)
   "[python]": {
@@ -21,6 +27,7 @@
   },
 
   "mypy-type-checker.args": ["--config-file=${workspaceFolder}/pyproject.toml"],
+  "mypy-type-checker.interpreter": "/bin/python",
 
   // Pylint Configuration
   "pylint.importStrategy": "fromEnvironment",

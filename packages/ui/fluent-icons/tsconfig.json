@@ -24,6 +24,6 @@
       "~/*": ["./src/*"]
     }
   },
-  "include": ["src", "src/types"],
+  "include": ["src", "src/types", "src/**/*.d.ts"],
   "exclude": ["**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "**/*.spec.tsx", "**/test-setup.ts", "dist"]
 }

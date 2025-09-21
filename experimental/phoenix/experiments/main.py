@@ -19,21 +19,41 @@ from .orchestrator import ExperimentOrchestrator
 async def main():
     """Main experiment runner."""
 
-    parser = argparse.ArgumentParser(description="PHOENIX Agent Reconstruction Experiments")
-    parser.add_argument("--experiment-type", type=str, default="comparative",
-                       choices=["baseline", "phoenix_evolutionary", "phoenix_direct", "comparative"],
-                       help="Type of experiment to run")
-    parser.add_argument("--trials", type=int, default=10,
-                       help="Number of trials to run")
-    parser.add_argument("--population-size", type=int, default=50,
-                       help="Population size for evolutionary methods")
-    parser.add_argument("--max-generations", type=int, default=20,
-                       help="Maximum generations for evolutionary methods")
-    parser.add_argument("--results-dir", type=str, default="results",
-                       help="Directory to save results")
-    parser.add_argument("--log-level", type=str, default="INFO",
-                       choices=["DEBUG", "INFO", "WARNING", "ERROR"],
-                       help="Logging level")
+    parser = argparse.ArgumentParser(
+        description="PHOENIX Agent Reconstruction Experiments"
+    )
+    parser.add_argument(
+        "--experiment-type",
+        type=str,
+        default="comparative",
+        choices=["baseline", "phoenix_evolutionary", "phoenix_direct", "comparative"],
+        help="Type of experiment to run",
+    )
+    parser.add_argument(
+        "--trials", type=int, default=10, help="Number of trials to run"
+    )
+    parser.add_argument(
+        "--population-size",
+        type=int,
+        default=50,
+        help="Population size for evolutionary methods",
+    )
+    parser.add_argument(
+        "--max-generations",
+        type=int,
+        default=20,
+        help="Maximum generations for evolutionary methods",
+    )
+    parser.add_argument(
+        "--results-dir", type=str, default="results", help="Directory to save results"
+    )
+    parser.add_argument(
+        "--log-level",
+        type=str,
+        default="INFO",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR"],
+        help="Logging level",
+    )
 
     args = parser.parse_args()
 
@@ -44,7 +64,7 @@ async def main():
         population_size=args.population_size,
         max_generations=args.max_generations,
         results_dir=args.results_dir,
-        log_level=args.log_level
+        log_level=args.log_level,
     )
 
     # Create and run experiment
@@ -54,18 +74,18 @@ async def main():
         results = await orchestrator.run_experiment()
 
         # Print summary
-        print("\n" + "="*60)
+        print("\n" + "=" * 60)
         print("EXPERIMENT COMPLETED SUCCESSFULLY")
-        print("="*60)
+        print("=" * 60)
 
-        summary = results.get('summary', {})
-        if 'recommendations' in summary:
+        summary = results.get("summary", {})
+        if "recommendations" in summary:
             print("\nRECOMMENDATIONS:")
-            for i, rec in enumerate(summary['recommendations'], 1):
+            for i, rec in enumerate(summary["recommendations"], 1):
                 print(f"{i}. {rec}")
 
         print(f"\nResults saved to: {config.results_dir}")
-        print("="*60)
+        print("=" * 60)
 
     except Exception as e:
         print(f"Experiment failed: {e}")

@@ -1,22 +1,22 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { CodeQualityAnalyzer } from '../CodeQualityAnalyzer';
-import { execSync } from 'child_process';
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { CodeQualityAnalyzer } from "../CodeQualityAnalyzer";
+import { execSync } from "child_process";
 
 // Mock child_process
-vi.mock('child_process', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('child_process')>();
+vi.mock("child_process", async importOriginal => {
+  const actual = await importOriginal<typeof import("child_process")>();
   return {
     ...actual,
     execSync: vi.fn(),
   };
 });
 
-describe('JunkFileDetector - CodeQualityAnalyzer Integration', () => {
+describe("JunkFileDetector - CodeQualityAnalyzer Integration", () => {
   let analyzer: CodeQualityAnalyzer;
   let mockExecSync: any;
 
   beforeEach(() => {
-    analyzer = new CodeQualityAnalyzer('/test/project');
+    analyzer = new CodeQualityAnalyzer("/test/project");
     mockExecSync = vi.mocked(execSync);
     vi.clearAllMocks();
   });
@@ -25,272 +25,272 @@ describe('JunkFileDetector - CodeQualityAnalyzer Integration', () => {
     vi.clearAllMocks();
   });
 
-  describe('end-to-end junk file detection', () => {
-    it('should detect and report Python artifacts', async () => {
+  describe("end-to-end junk file detection", () => {
+    it("should detect and report Python artifacts", async () => {
       mockExecSync.mockImplementation((command: string) => {
-        if (command.includes('pyc|pyo')) {
-          return 'src/test.pyc\nlib/module.pyo';
+        if (command.includes("pyc|pyo")) {
+          return "src/test.pyc\nlib/module.pyo";
         }
-        return '';
+        return "";
       });
 
       const result = await analyzer.getJunkFileMetrics();
 
       expect(result).toBeDefined();
       // The result structure may vary in test environment
-      expect(typeof result).toBe('object');
+      expect(typeof result).toBe("object");
     });
 
-    it('should detect and report TypeScript artifacts', async () => {
+    it("should detect and report TypeScript artifacts", async () => {
       mockExecSync.mockImplementation((command: string) => {
-        if (command.includes('js\\.map|d\\.ts\\.map')) {
-          return 'dist/app.js.map\nlib/types.d.ts.map';
+        if (command.includes("js\\.map|d\\.ts\\.map")) {
+          return "dist/app.js.map\nlib/types.d.ts.map";
         }
-        return '';
+        return "";
       });
 
       const result = await analyzer.getJunkFileMetrics();
 
       expect(result).toBeDefined();
       // The result structure may vary in test environment
-      expect(typeof result).toBe('object');
+      expect(typeof result).toBe("object");
     });
 
-    it('should detect and report Reynard-specific artifacts', async () => {
+    it("should detect and report Reynard-specific artifacts", async () => {
       mockExecSync.mockImplementation((command: string) => {
-        if (command.includes('dist/|build/|.temp/')) {
-          return 'dist/bundle.js\nbuild/output.js\n.temp/cache.json';
+        if (command.includes("dist/|build/|.temp/")) {
+          return "dist/bundle.js\nbuild/output.js\n.temp/cache.json";
         }
-        return '';
+        return "";
       });
 
       const result = await analyzer.getJunkFileMetrics();
 
       expect(result).toBeDefined();
       // The result structure may vary in test environment
-      expect(typeof result).toBe('object');
+      expect(typeof result).toBe("object");
     });
 
-    it('should detect and report general artifacts', async () => {
+    it("should detect and report general artifacts", async () => {
       mockExecSync.mockImplementation((command: string) => {
-        if (command.includes('DS_Store|Thumbs.db')) {
-          return '.DS_Store\nThumbs.db';
+        if (command.includes("DS_Store|Thumbs.db")) {
+          return ".DS_Store\nThumbs.db";
         }
-        return '';
+        return "";
       });
 
       const result = await analyzer.getJunkFileMetrics();
 
       expect(result).toBeDefined();
       // The result structure may vary in test environment
-      expect(typeof result).toBe('object');
+      expect(typeof result).toBe("object");
     });
 
-    it('should detect mixed artifact types', async () => {
+    it("should detect mixed artifact types", async () => {
       mockExecSync.mockImplementation((command: string) => {
-        if (command.includes('pyc|pyo')) {
-          return 'test.pyc';
+        if (command.includes("pyc|pyo")) {
+          return "test.pyc";
         }
-        if (command.includes('js\\.map')) {
-          return 'app.js.map';
+        if (command.includes("js\\.map")) {
+          return "app.js.map";
         }
-        return '';
+        return "";
       });
 
       const result = await analyzer.getJunkFileMetrics();
 
       expect(result).toBeDefined();
       // The result structure may vary in test environment
-      expect(typeof result).toBe('object');
+      expect(typeof result).toBe("object");
     });
   });
 
-  describe('metrics integration', () => {
-    it('should return correct metrics structure', async () => {
+  describe("metrics integration", () => {
+    it("should return correct metrics structure", async () => {
       mockExecSync.mockImplementation((command: string) => {
-        if (command.includes('pyc|pyo')) {
-          return 'test.pyc\nanother.pyo';
+        if (command.includes("pyc|pyo")) {
+          return "test.pyc\nanother.pyo";
         }
-        return '';
+        return "";
       });
 
       const metrics = await analyzer.getJunkFileMetrics();
 
       expect(metrics).toBeDefined();
-      expect(typeof metrics).toBe('object');
+      expect(typeof metrics).toBe("object");
     });
 
-    it('should calculate quality score based on severity', async () => {
+    it("should calculate quality score based on severity", async () => {
       mockExecSync.mockImplementation((command: string) => {
-        if (command.includes('pyc|pyo')) {
-          return 'test.pyc'; // high severity
+        if (command.includes("pyc|pyo")) {
+          return "test.pyc"; // high severity
         }
-        return '';
+        return "";
       });
 
       const metrics = await analyzer.getJunkFileMetrics();
 
       expect(metrics).toBeDefined();
-      expect(typeof metrics).toBe('object');
+      expect(typeof metrics).toBe("object");
     });
   });
 
-  describe('report generation', () => {
-    it('should generate comprehensive report', async () => {
+  describe("report generation", () => {
+    it("should generate comprehensive report", async () => {
       mockExecSync.mockImplementation((command: string) => {
-        if (command.includes('pyc|pyo')) {
-          return 'test.pyc';
+        if (command.includes("pyc|pyo")) {
+          return "test.pyc";
         }
-        return '';
+        return "";
       });
 
       const report = await analyzer.generateJunkFileReport();
 
       expect(report).toBeDefined();
-      expect(typeof report).toBe('string');
+      expect(typeof report).toBe("string");
       expect(report.length).toBeGreaterThan(0);
     });
 
-    it('should handle empty report gracefully', async () => {
-      mockExecSync.mockReturnValue('');
+    it("should handle empty report gracefully", async () => {
+      mockExecSync.mockReturnValue("");
 
       const report = await analyzer.generateJunkFileReport();
 
       expect(report).toBeDefined();
-      expect(typeof report).toBe('string');
+      expect(typeof report).toBe("string");
     });
   });
 
-  describe('error handling', () => {
-    it('should handle git command failures', async () => {
+  describe("error handling", () => {
+    it("should handle git command failures", async () => {
       mockExecSync.mockImplementation(() => {
-        throw new Error('Git command failed');
+        throw new Error("Git command failed");
       });
 
       const result = await analyzer.getJunkFileMetrics();
 
       expect(result).toBeDefined();
-      expect(typeof result).toBe('object');
+      expect(typeof result).toBe("object");
     });
 
-    it('should handle partial git command failures', async () => {
+    it("should handle partial git command failures", async () => {
       let callCount = 0;
       mockExecSync.mockImplementation((command: string) => {
         callCount++;
         if (callCount === 1) {
-          throw new Error('First command failed');
+          throw new Error("First command failed");
         }
-        return 'test.pyc';
+        return "test.pyc";
       });
 
       const result = await analyzer.getJunkFileMetrics();
 
       expect(result).toBeDefined();
-      expect(typeof result).toBe('object');
+      expect(typeof result).toBe("object");
     });
 
-    it('should handle metrics calculation errors', async () => {
+    it("should handle metrics calculation errors", async () => {
       mockExecSync.mockImplementation(() => {
-        throw new Error('Git command failed');
+        throw new Error("Git command failed");
       });
 
       const metrics = await analyzer.getJunkFileMetrics();
 
       expect(metrics).toBeDefined();
-      expect(typeof metrics).toBe('object');
+      expect(typeof metrics).toBe("object");
     });
 
-    it('should handle report generation errors', async () => {
+    it("should handle report generation errors", async () => {
       mockExecSync.mockImplementation(() => {
-        throw new Error('Git command failed');
+        throw new Error("Git command failed");
       });
 
       const report = await analyzer.generateJunkFileReport();
 
       expect(report).toBeDefined();
-      expect(typeof report).toBe('string');
+      expect(typeof report).toBe("string");
     });
   });
 
-  describe('performance and scalability', () => {
-    it('should handle large numbers of junk files', async () => {
-      const largeFileList = Array.from({ length: 100 }, (_, i) => `file${i}.pyc`).join('\n');
-      
+  describe("performance and scalability", () => {
+    it("should handle large numbers of junk files", async () => {
+      const largeFileList = Array.from({ length: 100 }, (_, i) => `file${i}.pyc`).join("\n");
+
       mockExecSync.mockImplementation((command: string) => {
-        if (command.includes('pyc|pyo')) {
+        if (command.includes("pyc|pyo")) {
           return largeFileList;
         }
-        return '';
+        return "";
       });
 
       const result = await analyzer.getJunkFileMetrics();
 
       expect(result).toBeDefined();
-      expect(typeof result).toBe('object');
+      expect(typeof result).toBe("object");
     });
 
-    it('should handle mixed large file sets', async () => {
-      const pythonFiles = Array.from({ length: 50 }, (_, i) => `file${i}.pyc`).join('\n');
-      const tsFiles = Array.from({ length: 50 }, (_, i) => `file${i}.js.map`).join('\n');
-      
+    it("should handle mixed large file sets", async () => {
+      const pythonFiles = Array.from({ length: 50 }, (_, i) => `file${i}.pyc`).join("\n");
+      const tsFiles = Array.from({ length: 50 }, (_, i) => `file${i}.js.map`).join("\n");
+
       mockExecSync.mockImplementation((command: string) => {
-        if (command.includes('pyc|pyo')) {
+        if (command.includes("pyc|pyo")) {
           return pythonFiles;
         }
-        if (command.includes('js\\.map')) {
+        if (command.includes("js\\.map")) {
           return tsFiles;
         }
-        return '';
+        return "";
       });
 
       const result = await analyzer.getJunkFileMetrics();
 
       expect(result).toBeDefined();
-      expect(typeof result).toBe('object');
+      expect(typeof result).toBe("object");
     });
   });
 
-  describe('real-world scenarios', () => {
-    it('should handle typical Python project artifacts', async () => {
+  describe("real-world scenarios", () => {
+    it("should handle typical Python project artifacts", async () => {
       mockExecSync.mockImplementation((command: string) => {
-        if (command.includes('pyc|pyo')) {
-          return 'src/__pycache__/module.pyc\nlib/package.pyc';
+        if (command.includes("pyc|pyo")) {
+          return "src/__pycache__/module.pyc\nlib/package.pyc";
         }
-        return '';
+        return "";
       });
 
       const result = await analyzer.getJunkFileMetrics();
 
       expect(result).toBeDefined();
-      expect(typeof result).toBe('object');
+      expect(typeof result).toBe("object");
     });
 
-    it('should handle typical TypeScript project artifacts', async () => {
+    it("should handle typical TypeScript project artifacts", async () => {
       mockExecSync.mockImplementation((command: string) => {
-        if (command.includes('js\\.map|d\\.ts\\.map')) {
-          return 'dist/app.js.map\nlib/types.d.ts.map';
+        if (command.includes("js\\.map|d\\.ts\\.map")) {
+          return "dist/app.js.map\nlib/types.d.ts.map";
         }
-        return '';
+        return "";
       });
 
       const result = await analyzer.getJunkFileMetrics();
 
       expect(result).toBeDefined();
-      expect(typeof result).toBe('object');
+      expect(typeof result).toBe("object");
     });
 
-    it('should handle typical Reynard project artifacts', async () => {
+    it("should handle typical Reynard project artifacts", async () => {
       mockExecSync.mockImplementation((command: string) => {
-        if (command.includes('dist/|build/|.temp/')) {
-          return 'dist/bundle.js\nbuild/output.js\n.temp/cache.json';
+        if (command.includes("dist/|build/|.temp/")) {
+          return "dist/bundle.js\nbuild/output.js\n.temp/cache.json";
         }
-        return '';
+        return "";
       });
 
       const result = await analyzer.getJunkFileMetrics();
 
       expect(result).toBeDefined();
-      expect(typeof result).toBe('object');
+      expect(typeof result).toBe("object");
     });
   });
 });

@@ -44,7 +44,7 @@ export class ComponentRelationshipsGenerator implements DiagramGenerator {
     return analysis.components.length > 0;
   }
 
-  private generateMermaidContent(analysis: CodebaseAnalysis, config: DiagramGenerationConfig): string {
+  private generateMermaidContent(analysis: CodebaseAnalysis, _config: DiagramGenerationConfig): string {
     const lines = [
       "%%{init: {'theme': 'neutral'}}%%",
       "graph TB",

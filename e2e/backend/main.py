@@ -20,8 +20,12 @@ def main() -> None:
 
     # Set environment variables for e2e testing
     os.environ["ENVIRONMENT"] = "e2e-testing"
-    os.environ["DATABASE_URL"] = "postgresql://postgres:password@localhost:5432/reynard_e2e"
-    os.environ["ECS_DATABASE_URL"] = "postgresql://postgres:password@localhost:5432/reynard_ecs_e2e"
+    os.environ["DATABASE_URL"] = (
+        "postgresql://postgres:password@localhost:5432/reynard_e2e"
+    )
+    os.environ["ECS_DATABASE_URL"] = (
+        "postgresql://postgres:password@localhost:5432/reynard_ecs_e2e"
+    )
     os.environ["JWT_SECRET_KEY"] = "e2e-test-secret-key-not-for-production"
     os.environ["CORS_ORIGINS"] = "http://localhost:3001,http://localhost:3000"
     os.environ["PORT"] = "8000"

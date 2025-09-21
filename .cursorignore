@@ -59,3 +59,6 @@ temp/
 
 !.vscode/
 !.vscode/**/*
+
+# Allow TypeScript declaration files for SVG imports
+!**/svg.d.ts

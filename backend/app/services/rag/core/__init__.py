@@ -13,9 +13,4 @@ from .vector_store import VectorStoreService
 from .indexing import DocumentIndexer
 from .search import SearchEngine
 
-__all__ = [
-    "EmbeddingService",
-    "VectorStoreService", 
-    "DocumentIndexer",
-    "SearchEngine"
-]
+__all__ = ["EmbeddingService", "VectorStoreService", "DocumentIndexer", "SearchEngine"]

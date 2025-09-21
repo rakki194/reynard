@@ -24,6 +24,7 @@ from protocol.mcp_handler import MCPHandler
 from services.tool_config_service import ToolConfigService
 from services.backend_agent_manager import BackendAgentManager
 from utils.logging_config import setup_logging
+
 # pylint: enable=wrong-import-position
 
 # Optional imports

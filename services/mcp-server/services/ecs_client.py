@@ -311,7 +311,9 @@ class ECSClient:
         data = {"x": x, "y": y}
         return await self._request("POST", f"/agents/{agent_id}/move", data=data)
 
-    async def move_agent_towards(self, agent_id: str, target_agent_id: str, distance: float = 50.0) -> Dict[str, Any]:
+    async def move_agent_towards(
+        self, agent_id: str, target_agent_id: str, distance: float = 50.0
+    ) -> Dict[str, Any]:
         """
         Move an agent towards another agent.
 
@@ -324,9 +326,13 @@ class ECSClient:
             Movement confirmation and new position
         """
         data = {"target_agent_id": target_agent_id, "distance": distance}
-        return await self._request("POST", f"/agents/{agent_id}/move_towards", data=data)
+        return await self._request(
+            "POST", f"/agents/{agent_id}/move_towards", data=data
+        )
 
-    async def get_agent_distance(self, agent1_id: str, agent2_id: str) -> Dict[str, Any]:
+    async def get_agent_distance(
+        self, agent1_id: str, agent2_id: str
+    ) -> Dict[str, Any]:
         """
         Get the distance between two agents.
 
@@ -341,7 +347,9 @@ class ECSClient:
 
     # Interaction and Communication Methods
 
-    async def initiate_interaction(self, agent1_id: str, agent2_id: str, interaction_type: str = "communication") -> Dict[str, Any]:
+    async def initiate_interaction(
+        self, agent1_id: str, agent2_id: str, interaction_type: str = "communication"
+    ) -> Dict[str, Any]:
         """
         Initiate an interaction between two agents.
 
@@ -356,7 +364,13 @@ class ECSClient:
         data = {"agent2_id": agent2_id, "interaction_type": interaction_type}
         return await self._request("POST", f"/agents/{agent1_id}/interact", data=data)
 
-    async def send_chat_message(self, sender_id: str, receiver_id: str, message: str, interaction_type: str = "communication") -> Dict[str, Any]:
+    async def send_chat_message(
+        self,
+        sender_id: str,
+        receiver_id: str,
+        message: str,
+        interaction_type: str = "communication",
+    ) -> Dict[str, Any]:
         """
         Send a chat message from one agent to another.
 
@@ -372,11 +386,13 @@ class ECSClient:
         data = {
             "receiver_id": receiver_id,
             "message": message,
-            "interaction_type": interaction_type
+            "interaction_type": interaction_type,
         }
         return await self._request("POST", f"/agents/{sender_id}/chat", data=data)
 
-    async def get_interaction_history(self, agent_id: str, limit: int = 10) -> Dict[str, Any]:
+    async def get_interaction_history(
+        self, agent_id: str, limit: int = 10
+    ) -> Dict[str, Any]:
         """
         Get the interaction history for an agent.
 
@@ -389,7 +405,9 @@ class ECSClient:
         """
         try:
             params = {"limit": limit}
-            return await self._request("GET", f"/agents/{agent_id}/interactions", params=params)
+            return await self._request(
+                "GET", f"/agents/{agent_id}/interactions", params=params
+            )
         except Exception as e:
             logger.warning(f"Failed to get interaction history for {agent_id}: {e}")
             # Return empty history as fallback
@@ -434,10 +452,12 @@ class ECSClient:
                 "total_relationships": 0,
                 "positive_relationships": 0,
                 "negative_relationships": 0,
-                "communication_style": "casual"
+                "communication_style": "casual",
             }
 
-    async def get_nearby_agents(self, agent_id: str, radius: float = 100.0) -> Dict[str, Any]:
+    async def get_nearby_agents(
+        self, agent_id: str, radius: float = 100.0
+    ) -> Dict[str, Any]:
         """
         Get all agents within a certain radius of an agent.
 

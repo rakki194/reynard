@@ -39,7 +39,7 @@ describe("HealthChecker", () => {
   describe("HTTP Health Checks", () => {
     it("should perform successful HTTP health check", async () => {
       const healthCheckConfig: HealthCheckConfig = {
-        endpoint: "http://localhost:3000/health",
+        endpoint: "http://localhost:3000/api/health",
         timeout: 5000,
         expectedResponse: "OK",
       };
@@ -62,7 +62,7 @@ describe("HealthChecker", () => {
 
     it("should handle HTTP health check failures", async () => {
       const healthCheckConfig: HealthCheckConfig = {
-        endpoint: "http://localhost:3000/health",
+        endpoint: "http://localhost:3000/api/health",
         timeout: 5000,
       };
 
@@ -83,7 +83,7 @@ describe("HealthChecker", () => {
 
     it("should handle HTTP timeout", async () => {
       const healthCheckConfig: HealthCheckConfig = {
-        endpoint: "http://localhost:3000/health",
+        endpoint: "http://localhost:3000/api/health",
         timeout: 100, // Very short timeout
       };
 
@@ -101,7 +101,7 @@ describe("HealthChecker", () => {
 
     it("should handle network errors", async () => {
       const healthCheckConfig: HealthCheckConfig = {
-        endpoint: "http://localhost:3000/health",
+        endpoint: "http://localhost:3000/api/health",
         timeout: 5000,
       };
 
@@ -116,7 +116,7 @@ describe("HealthChecker", () => {
 
     it("should validate expected response", async () => {
       const healthCheckConfig: HealthCheckConfig = {
-        endpoint: "http://localhost:3000/health",
+        endpoint: "http://localhost:3000/api/health",
         timeout: 5000,
         expectedResponse: "OK",
       };
@@ -136,7 +136,7 @@ describe("HealthChecker", () => {
 
     it("should validate expected response with regex", async () => {
       const healthCheckConfig: HealthCheckConfig = {
-        endpoint: "http://localhost:3000/health",
+        endpoint: "http://localhost:3000/api/health",
         timeout: 5000,
         expectedResponse: /healthy|ok/i,
       };
@@ -157,7 +157,7 @@ describe("HealthChecker", () => {
   describe("Command-based Health Checks", () => {
     it("should perform successful command health check", async () => {
       const healthCheckConfig: HealthCheckConfig = {
-        command: "curl -f http://localhost:3000/health",
+        command: "curl -f http://localhost:3000/api/health",
         timeout: 5000,
         expectedResponse: "OK",
       };
@@ -182,7 +182,7 @@ describe("HealthChecker", () => {
 
     it("should handle command execution failures", async () => {
       const healthCheckConfig: HealthCheckConfig = {
-        command: "curl -f http://localhost:3000/health",
+        command: "curl -f http://localhost:3000/api/health",
         timeout: 5000,
       };
 
@@ -232,7 +232,7 @@ describe("HealthChecker", () => {
       const projectConfig = createMockProjectConfig({
         name: "test-project",
         healthCheck: {
-          endpoint: "http://localhost:3000/health",
+          endpoint: "http://localhost:3000/api/health",
           interval: 1000,
           timeout: 5000,
         },
@@ -258,7 +258,7 @@ describe("HealthChecker", () => {
       const projectConfig = createMockProjectConfig({
         name: "test-project",
         healthCheck: {
-          endpoint: "http://localhost:3000/health",
+          endpoint: "http://localhost:3000/api/health",
           interval: 1000,
           timeout: 5000,
         },
@@ -275,7 +275,7 @@ describe("HealthChecker", () => {
       const projectConfig = createMockProjectConfig({
         name: "test-project",
         healthCheck: {
-          endpoint: "http://localhost:3000/health",
+          endpoint: "http://localhost:3000/api/health",
           interval: 1000,
           timeout: 5000,
         },
@@ -304,7 +304,7 @@ describe("HealthChecker", () => {
       const projectConfig = createMockProjectConfig({
         name: "test-project",
         healthCheck: {
-          endpoint: "http://localhost:3000/health",
+          endpoint: "http://localhost:3000/api/health",
           interval: 1000,
           timeout: 5000,
         },
@@ -342,7 +342,7 @@ describe("HealthChecker", () => {
       const projectConfig = createMockProjectConfig({
         name: "test-project",
         healthCheck: {
-          endpoint: "http://localhost:3000/health",
+          endpoint: "http://localhost:3000/api/health",
           interval: 1000,
           timeout: 5000,
         },
@@ -377,7 +377,7 @@ describe("HealthChecker", () => {
       const projectConfig1 = createMockProjectConfig({
         name: "project1",
         healthCheck: {
-          endpoint: "http://localhost:3000/health",
+          endpoint: "http://localhost:3000/api/health",
           interval: 1000,
           timeout: 5000,
         },
@@ -386,7 +386,7 @@ describe("HealthChecker", () => {
       const projectConfig2 = createMockProjectConfig({
         name: "project2",
         healthCheck: {
-          endpoint: "http://localhost:3001/health",
+          endpoint: "http://localhost:3001/api/health",
           interval: 1000,
           timeout: 5000,
         },
@@ -415,7 +415,7 @@ describe("HealthChecker", () => {
       const projectConfig1 = createMockProjectConfig({
         name: "healthy-project",
         healthCheck: {
-          endpoint: "http://localhost:3000/health",
+          endpoint: "http://localhost:3000/api/health",
           interval: 1000,
           timeout: 5000,
         },
@@ -424,7 +424,7 @@ describe("HealthChecker", () => {
       const projectConfig2 = createMockProjectConfig({
         name: "unhealthy-project",
         healthCheck: {
-          endpoint: "http://localhost:3001/health",
+          endpoint: "http://localhost:3001/api/health",
           interval: 1000,
           timeout: 5000,
         },
@@ -458,7 +458,7 @@ describe("HealthChecker", () => {
   describe("Health Check Configuration", () => {
     it("should validate health check configuration", () => {
       const validConfig: HealthCheckConfig = {
-        endpoint: "http://localhost:3000/health",
+        endpoint: "http://localhost:3000/api/health",
         timeout: 5000,
         interval: 10000,
         expectedResponse: "OK",
@@ -484,7 +484,7 @@ describe("HealthChecker", () => {
 
     it("should validate command-based health check", () => {
       const commandConfig: HealthCheckConfig = {
-        command: "curl -f http://localhost:3000/health",
+        command: "curl -f http://localhost:3000/api/health",
         timeout: 5000,
         expectedResponse: "OK",
       };
@@ -498,7 +498,7 @@ describe("HealthChecker", () => {
       const projectConfig1 = createMockProjectConfig({
         name: "healthy-project",
         healthCheck: {
-          endpoint: "http://localhost:3000/health",
+          endpoint: "http://localhost:3000/api/health",
           interval: 1000,
           timeout: 5000,
         },
@@ -507,7 +507,7 @@ describe("HealthChecker", () => {
       const projectConfig2 = createMockProjectConfig({
         name: "unhealthy-project",
         healthCheck: {
-          endpoint: "http://localhost:3001/health",
+          endpoint: "http://localhost:3001/api/health",
           interval: 1000,
           timeout: 5000,
         },
@@ -541,7 +541,7 @@ describe("HealthChecker", () => {
       const projectConfig = createMockProjectConfig({
         name: "test-project",
         healthCheck: {
-          endpoint: "http://localhost:3000/health",
+          endpoint: "http://localhost:3000/api/health",
           interval: 1000,
           timeout: 5000,
         },
@@ -573,7 +573,7 @@ describe("HealthChecker", () => {
       const projectConfig1 = createMockProjectConfig({
         name: "project1",
         healthCheck: {
-          endpoint: "http://localhost:3000/health",
+          endpoint: "http://localhost:3000/api/health",
           interval: 1000,
           timeout: 5000,
         },
@@ -582,7 +582,7 @@ describe("HealthChecker", () => {
       const projectConfig2 = createMockProjectConfig({
         name: "project2",
         healthCheck: {
-          endpoint: "http://localhost:3001/health",
+          endpoint: "http://localhost:3001/api/health",
           interval: 1000,
           timeout: 5000,
         },
@@ -601,7 +601,7 @@ describe("HealthChecker", () => {
       const projectConfig = createMockProjectConfig({
         name: "test-project",
         healthCheck: {
-          endpoint: "http://localhost:3000/health",
+          endpoint: "http://localhost:3000/api/health",
           interval: 1000,
           timeout: 5000,
         },
@@ -627,7 +627,7 @@ describe("HealthChecker", () => {
       const projectConfig = createMockProjectConfig({
         name: "test-project",
         healthCheck: {
-          endpoint: "http://localhost:3000/health",
+          endpoint: "http://localhost:3000/api/health",
           interval: 1000,
           timeout: 5000,
         },
@@ -648,7 +648,7 @@ describe("HealthChecker", () => {
       const projectConfig = createMockProjectConfig({
         name: "test-project",
         healthCheck: {
-          endpoint: "http://localhost:3000/health",
+          endpoint: "http://localhost:3000/api/health",
           interval: 1000,
           timeout: 5000,
         },
@@ -678,7 +678,7 @@ describe("HealthChecker", () => {
       const projectConfig = createMockProjectConfig({
         name: "test-project",
         healthCheck: {
-          endpoint: "http://localhost:3000/health",
+          endpoint: "http://localhost:3000/api/health",
           interval: 1000,
           timeout: 5000,
         },

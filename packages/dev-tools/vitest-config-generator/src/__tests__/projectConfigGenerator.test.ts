@@ -109,10 +109,7 @@ describe("ProjectConfigGenerator", () => {
 
       const config = generator.generateProjectConfig(options);
 
-      expect(config.test.include).toEqual([
-        "src/**/*.{test,spec}.{js,ts,tsx}",
-        "src/**/*.{test,spec}.{js,ts,tsx}",
-      ]);
+      expect(config.test.include).toEqual(["src/**/*.{test,spec}.{js,ts,tsx}", "src/**/*.{test,spec}.{js,ts,tsx}"]);
     });
 
     it("should use default include patterns when directory has none", () => {

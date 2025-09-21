@@ -42,7 +42,7 @@ export const Processors = {
    */
   async validateSentenceLength(filePath: string): Promise<void> {
     try {
-      execSync(`node packages/dev-tools/validation/markdown/validate-sentence-length.js --fix "${filePath}"`, {
+      execSync(`node packages/dev-tools/validation/markdown/dist/cli.js sentence-length --fix "${filePath}"`, {
         stdio: "inherit",
         cwd: process.cwd(),
       });
@@ -58,7 +58,7 @@ export const Processors = {
    */
   async validateToC(filePath: string): Promise<void> {
     try {
-      execSync(`node packages/dev-tools/validation/markdown/validate-markdown-toc.js --fix "${filePath}"`, {
+      execSync(`node packages/dev-tools/validation/markdown/dist/cli.js toc --fix "${filePath}"`, {
         stdio: "inherit",
         cwd: process.cwd(),
       });
@@ -74,7 +74,7 @@ export const Processors = {
    */
   async validateLinks(filePath: string): Promise<void> {
     try {
-      execSync(`node packages/dev-tools/validation/markdown/validate-markdown-links.js "${filePath}"`, {
+      execSync(`node packages/dev-tools/validation/markdown/dist/cli.js links "${filePath}"`, {
         stdio: "inherit",
         cwd: process.cwd(),
       });

@@ -54,11 +54,11 @@ logger = logging.getLogger(__name__)
 class ServiceStatus(Enum):
     """
     Service status enumeration for lifecycle state tracking.
-    
+
     Defines the possible states a service can be in during its lifecycle,
     enabling comprehensive status monitoring and state management throughout
     the service initialization, running, and shutdown phases.
-    
+
     States:
         UNINITIALIZED: Service has not been initialized yet
         INITIALIZING: Service is currently being initialized
@@ -80,11 +80,11 @@ class ServiceStatus(Enum):
 class ServiceInfo:
     """
     Service information container for comprehensive service metadata management.
-    
+
     Stores complete service metadata including lifecycle information, configuration,
     function references, and operational status. This dataclass provides a structured
     way to manage service information throughout the service lifecycle.
-    
+
     Attributes:
         name (str): Unique service identifier
         status (ServiceStatus): Current service lifecycle status

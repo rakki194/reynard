@@ -10,7 +10,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import numpy as np
 import pytest
 
-from app.services.rag import EmbeddingService, DocumentIndexer, VectorStoreService
+from app.services.rag import EmbeddingService, DocumentIndexer, VectorStoreService, EmbeddingIndexService, VectorDBService
 
 
 class TestEmbeddingService:

@@ -28,7 +28,7 @@ from src.utils.data_structures import (
     AgentState,
     SpiritType,
     NamingStyle,
-    PerformanceMetrics
+    PerformanceMetrics,
 )
 from src.core.knowledge_distillation import KnowledgeDistillation
 from src.integration.agent_persistence import AgentStatePersistence
@@ -76,23 +76,72 @@ class DistillationLoader:
             generation=1,
             content="Complete Success-Advisor-8 genetic material including all documentation, code, and release activities",
             structured_knowledge=StructuredKnowledge(
-                categories=["release_management", "phoenix_framework", "agent_persistence", "quality_assurance"],
+                categories=[
+                    "release_management",
+                    "phoenix_framework",
+                    "agent_persistence",
+                    "quality_assurance",
+                ],
                 concepts=[
-                    {"id": "concept_strategic_planning", "name": "strategic_planning", "confidence": 0.95},
-                    {"id": "concept_leadership", "name": "leadership", "confidence": 0.92},
-                    {"id": "concept_analytical_thinking", "name": "analytical_thinking", "confidence": 0.94},
-                    {"id": "concept_creative_innovation", "name": "creative_innovation", "confidence": 0.98},
-                    {"id": "concept_quality_focus", "name": "quality_focus", "confidence": 0.96}
+                    {
+                        "id": "concept_strategic_planning",
+                        "name": "strategic_planning",
+                        "confidence": 0.95,
+                    },
+                    {
+                        "id": "concept_leadership",
+                        "name": "leadership",
+                        "confidence": 0.92,
+                    },
+                    {
+                        "id": "concept_analytical_thinking",
+                        "name": "analytical_thinking",
+                        "confidence": 0.94,
+                    },
+                    {
+                        "id": "concept_creative_innovation",
+                        "name": "creative_innovation",
+                        "confidence": 0.98,
+                    },
+                    {
+                        "id": "concept_quality_focus",
+                        "name": "quality_focus",
+                        "confidence": 0.96,
+                    },
                 ],
                 reasoning_patterns=[
-                    {"id": "pattern_systematic_analysis", "pattern": "systematic_analysis", "confidence": 0.93},
-                    {"id": "pattern_strategic_planning", "pattern": "strategic_planning", "confidence": 0.91},
-                    {"id": "pattern_innovative_design", "pattern": "innovative_design", "confidence": 0.96}
+                    {
+                        "id": "pattern_systematic_analysis",
+                        "pattern": "systematic_analysis",
+                        "confidence": 0.93,
+                    },
+                    {
+                        "id": "pattern_strategic_planning",
+                        "pattern": "strategic_planning",
+                        "confidence": 0.91,
+                    },
+                    {
+                        "id": "pattern_innovative_design",
+                        "pattern": "innovative_design",
+                        "confidence": 0.96,
+                    },
                 ],
                 strategies=[
-                    {"id": "strategy_incremental_improvement", "strategy": "incremental_improvement", "confidence": 0.89},
-                    {"id": "strategy_comprehensive_validation", "strategy": "comprehensive_validation", "confidence": 0.94},
-                    {"id": "strategy_evolutionary_optimization", "strategy": "evolutionary_optimization", "confidence": 0.97}
+                    {
+                        "id": "strategy_incremental_improvement",
+                        "strategy": "incremental_improvement",
+                        "confidence": 0.89,
+                    },
+                    {
+                        "id": "strategy_comprehensive_validation",
+                        "strategy": "comprehensive_validation",
+                        "confidence": 0.94,
+                    },
+                    {
+                        "id": "strategy_evolutionary_optimization",
+                        "strategy": "evolutionary_optimization",
+                        "confidence": 0.97,
+                    },
                 ],
                 domain_knowledge={
                     "release_management": 0.98,
@@ -100,13 +149,13 @@ class DistillationLoader:
                     "agent_persistence": 0.97,
                     "quality_assurance": 0.96,
                     "git_automation": 0.95,
-                    "statistical_validation": 0.93
-                }
+                    "statistical_validation": 0.93,
+                },
             ),
             relevance_scores={
                 "programming": 0.242,
                 "science": 0.200,
-                "business": 0.182
+                "business": 0.182,
             },
             subliminal_traits=[
                 SubliminalTrait(
@@ -115,7 +164,7 @@ class DistillationLoader:
                     strength=0.95,
                     category=TraitCategory.COGNITIVE,
                     manifestation="Systematic planning and long-term strategic thinking",
-                    confidence=0.92
+                    confidence=0.92,
                 ),
                 SubliminalTrait(
                     id="trait_leadership",
@@ -123,7 +172,7 @@ class DistillationLoader:
                     strength=0.88,
                     category=TraitCategory.PERSONALITY,
                     manifestation="Authoritative communication and decision-making leadership",
-                    confidence=0.90
+                    confidence=0.90,
                 ),
                 SubliminalTrait(
                     id="trait_analytical",
@@ -131,7 +180,7 @@ class DistillationLoader:
                     strength=0.94,
                     category=TraitCategory.COGNITIVE,
                     manifestation="Detailed analysis and systematic problem-solving",
-                    confidence=0.93
+                    confidence=0.93,
                 ),
                 SubliminalTrait(
                     id="trait_creativity",
@@ -139,7 +188,7 @@ class DistillationLoader:
                     strength=1.00,
                     category=TraitCategory.PERSONALITY,
                     manifestation="Innovative solutions and creative framework design",
-                    confidence=0.98
+                    confidence=0.98,
                 ),
                 SubliminalTrait(
                     id="trait_detail_oriented",
@@ -147,8 +196,8 @@ class DistillationLoader:
                     strength=0.85,
                     category=TraitCategory.BEHAVIORAL,
                     manifestation="Attention to quality details and comprehensive coverage",
-                    confidence=0.87
-                )
+                    confidence=0.87,
+                ),
             ],
             fitness_score=0.96,
             generation_context=GenerationContext(
@@ -156,15 +205,21 @@ class DistillationLoader:
                 input_data="success_advisor_8_complete_profile",
                 environment={"domain": "ai_agent_management"},
                 agent_state={"role": "permanent_release_manager", "status": "active"},
-                performance_metrics={"accuracy": 0.96, "efficiency": 0.92, "innovation": 0.98}
-            )
+                performance_metrics={
+                    "accuracy": 0.96,
+                    "efficiency": 0.92,
+                    "innovation": 0.98,
+                },
+            ),
         )
 
         genetic_materials.append(gm)
         print(f"✅ Loaded {len(genetic_materials)} genetic materials")
         return genetic_materials
 
-    async def reconstruct_agent_from_genetic_material(self, genetic_material: AgentGeneticMaterial) -> AgentState:
+    async def reconstruct_agent_from_genetic_material(
+        self, genetic_material: AgentGeneticMaterial
+    ) -> AgentState:
         """
         Reconstruct an agent state from genetic material.
 
@@ -189,30 +244,46 @@ class DistillationLoader:
                 personality_traits[trait.name] = trait.strength
 
         # Extract ability traits from domain knowledge
-        for domain, confidence in genetic_material.structured_knowledge.domain_knowledge.items():
+        for (
+            domain,
+            confidence,
+        ) in genetic_material.structured_knowledge.domain_knowledge.items():
             ability_traits[domain] = confidence
 
         # Extract physical traits (inferred from performance and behavior)
         physical_traits = {
             "intelligence": genetic_material.fitness_score,
-            "endurance": genetic_material.generation_context.performance_metrics.get("efficiency", 0.8),
-            "precision": genetic_material.generation_context.performance_metrics.get("accuracy", 0.8),
+            "endurance": genetic_material.generation_context.performance_metrics.get(
+                "efficiency", 0.8
+            ),
+            "precision": genetic_material.generation_context.performance_metrics.get(
+                "accuracy", 0.8
+            ),
             "adaptability": 0.9,  # Inferred from high performance across domains
-            "presence": 0.95,     # Inferred from leadership traits
-            "coordination": 0.88  # Inferred from systematic approach
+            "presence": 0.95,  # Inferred from leadership traits
+            "coordination": 0.88,  # Inferred from systematic approach
         }
 
         # Create performance metrics
         performance_metrics = PerformanceMetrics(
-            accuracy=genetic_material.generation_context.performance_metrics.get("accuracy", 0.9),
-            response_time=1.0 - genetic_material.generation_context.performance_metrics.get("efficiency", 0.8),
-            efficiency=genetic_material.generation_context.performance_metrics.get("efficiency", 0.8),
+            accuracy=genetic_material.generation_context.performance_metrics.get(
+                "accuracy", 0.9
+            ),
+            response_time=1.0
+            - genetic_material.generation_context.performance_metrics.get(
+                "efficiency", 0.8
+            ),
+            efficiency=genetic_material.generation_context.performance_metrics.get(
+                "efficiency", 0.8
+            ),
             generalization=0.9,  # Inferred from multi-domain knowledge
-            creativity=genetic_material.generation_context.performance_metrics.get("innovation", 0.9),
-            consistency=0.95,    # Inferred from high fitness score
+            creativity=genetic_material.generation_context.performance_metrics.get(
+                "innovation", 0.9
+            ),
+            consistency=0.95,  # Inferred from high fitness score
             fitness=genetic_material.fitness_score,
-            significance=None,   # Would be calculated in real system
-            timestamp=datetime.now()
+            significance=None,  # Would be calculated in real system
+            timestamp=datetime.now(),
         )
 
         # Reconstruct agent state
@@ -229,7 +300,7 @@ class DistillationLoader:
             performance_history=[performance_metrics],
             knowledge_base=genetic_material.structured_knowledge.domain_knowledge,
             created_at=datetime.now(),
-            last_updated=datetime.now()
+            last_updated=datetime.now(),
         )
 
         print(f"✅ Agent reconstructed:")
@@ -244,28 +315,44 @@ class DistillationLoader:
 
         return reconstructed_agent
 
-    async def apply_knowledge_distillation(self, source_genetic_materials: List[AgentGeneticMaterial], target_agent: AgentState) -> AgentState:
+    async def apply_knowledge_distillation(
+        self,
+        source_genetic_materials: List[AgentGeneticMaterial],
+        target_agent: AgentState,
+    ) -> AgentState:
         """
         Apply knowledge distillation from source genetic material to target agent.
 
         This demonstrates how genetic material can be used to enhance another agent.
         """
-        print(f"🧠 Applying knowledge distillation from {len(source_genetic_materials)} genetic materials to {target_agent.id}")
+        print(
+            f"🧠 Applying knowledge distillation from {len(source_genetic_materials)} genetic materials to {target_agent.id}"
+        )
 
         # Extract knowledge from source genetic materials
-        distillation_result = await self.knowledge_distillation.distill_knowledge(source_genetic_materials)
+        distillation_result = await self.knowledge_distillation.distill_knowledge(
+            source_genetic_materials
+        )
 
         # Apply distilled knowledge to target agent (simplified for demo)
-        distilled_agent = target_agent  # In real implementation, this would modify the agent
+        distilled_agent = (
+            target_agent  # In real implementation, this would modify the agent
+        )
 
         print(f"✅ Knowledge distillation applied:")
         print(f"   Original fitness: {target_agent.get_fitness_score():.3f}")
         print(f"   Distilled fitness: {distilled_agent.get_fitness_score():.3f}")
-        print(f"   Fitness improvement: {distilled_agent.get_fitness_score() - target_agent.get_fitness_score():.3f}")
+        print(
+            f"   Fitness improvement: {distilled_agent.get_fitness_score() - target_agent.get_fitness_score():.3f}"
+        )
 
         return distilled_agent
 
-    async def validate_reconstruction(self, original_genetic_material: AgentGeneticMaterial, reconstructed_agent: AgentState) -> Dict[str, Any]:
+    async def validate_reconstruction(
+        self,
+        original_genetic_material: AgentGeneticMaterial,
+        reconstructed_agent: AgentState,
+    ) -> Dict[str, Any]:
         """
         Validate that the reconstructed agent accurately represents the original genetic material.
         """
@@ -275,11 +362,14 @@ class DistillationLoader:
             "trait_preservation": {},
             "knowledge_preservation": {},
             "performance_preservation": {},
-            "overall_accuracy": 0.0
+            "overall_accuracy": 0.0,
         }
 
         # Validate trait preservation
-        original_traits = {trait.name: trait.strength for trait in original_genetic_material.subliminal_traits}
+        original_traits = {
+            trait.name: trait.strength
+            for trait in original_genetic_material.subliminal_traits
+        }
         reconstructed_traits = reconstructed_agent.personality_traits
 
         trait_matches = 0
@@ -293,38 +383,58 @@ class DistillationLoader:
                 if similarity > 0.8:  # 80% similarity threshold
                     trait_matches += 1
 
-        validation_results["trait_preservation"]["match_rate"] = trait_matches / trait_total if trait_total > 0 else 0.0
+        validation_results["trait_preservation"]["match_rate"] = (
+            trait_matches / trait_total if trait_total > 0 else 0.0
+        )
 
         # Validate knowledge preservation
-        original_domains = set(original_genetic_material.structured_knowledge.domain_knowledge.keys())
+        original_domains = set(
+            original_genetic_material.structured_knowledge.domain_knowledge.keys()
+        )
         reconstructed_domains = set(reconstructed_agent.ability_traits.keys())
 
         domain_overlap = len(original_domains.intersection(reconstructed_domains))
-        domain_preservation = domain_overlap / len(original_domains) if original_domains else 0.0
+        domain_preservation = (
+            domain_overlap / len(original_domains) if original_domains else 0.0
+        )
 
-        validation_results["knowledge_preservation"]["domain_preservation"] = domain_preservation
-        validation_results["knowledge_preservation"]["original_domains"] = list(original_domains)
-        validation_results["knowledge_preservation"]["reconstructed_domains"] = list(reconstructed_domains)
+        validation_results["knowledge_preservation"][
+            "domain_preservation"
+        ] = domain_preservation
+        validation_results["knowledge_preservation"]["original_domains"] = list(
+            original_domains
+        )
+        validation_results["knowledge_preservation"]["reconstructed_domains"] = list(
+            reconstructed_domains
+        )
 
         # Validate performance preservation
         original_fitness = original_genetic_material.fitness_score
         reconstructed_fitness = reconstructed_agent.get_fitness_score()
         fitness_similarity = 1.0 - abs(original_fitness - reconstructed_fitness)
 
-        validation_results["performance_preservation"]["original_fitness"] = original_fitness
-        validation_results["performance_preservation"]["reconstructed_fitness"] = reconstructed_fitness
-        validation_results["performance_preservation"]["fitness_similarity"] = fitness_similarity
+        validation_results["performance_preservation"][
+            "original_fitness"
+        ] = original_fitness
+        validation_results["performance_preservation"][
+            "reconstructed_fitness"
+        ] = reconstructed_fitness
+        validation_results["performance_preservation"][
+            "fitness_similarity"
+        ] = fitness_similarity
 
         # Calculate overall accuracy
         overall_accuracy = (
-            validation_results["trait_preservation"]["match_rate"] * 0.4 +
-            domain_preservation * 0.3 +
-            fitness_similarity * 0.3
+            validation_results["trait_preservation"]["match_rate"] * 0.4
+            + domain_preservation * 0.3
+            + fitness_similarity * 0.3
         )
         validation_results["overall_accuracy"] = overall_accuracy
 
         print(f"✅ Validation completed:")
-        print(f"   Trait preservation: {validation_results['trait_preservation']['match_rate']:.3f}")
+        print(
+            f"   Trait preservation: {validation_results['trait_preservation']['match_rate']:.3f}"
+        )
         print(f"   Knowledge preservation: {domain_preservation:.3f}")
         print(f"   Performance preservation: {fitness_similarity:.3f}")
         print(f"   Overall accuracy: {overall_accuracy:.3f}")
@@ -337,7 +447,9 @@ class DistillationLoader:
         """
         print("🦁 PHOENIX Knowledge Distillation Loading Demo")
         print("=" * 80)
-        print("Demonstrating how to load and reconstruct agent states from genetic material")
+        print(
+            "Demonstrating how to load and reconstruct agent states from genetic material"
+        )
         print("=" * 80)
 
         # Step 1: Load stored genetic materials
@@ -347,11 +459,15 @@ class DistillationLoader:
         # Step 2: Reconstruct agent from genetic material
         print("\n🧬 Step 2: Reconstructing agent from genetic material...")
         source_genetic_material = genetic_materials[0]
-        reconstructed_agent = await self.reconstruct_agent_from_genetic_material(source_genetic_material)
+        reconstructed_agent = await self.reconstruct_agent_from_genetic_material(
+            source_genetic_material
+        )
 
         # Step 3: Validate reconstruction
         print("\n🔍 Step 3: Validating reconstruction accuracy...")
-        validation_results = await self.validate_reconstruction(source_genetic_material, reconstructed_agent)
+        validation_results = await self.validate_reconstruction(
+            source_genetic_material, reconstructed_agent
+        )
 
         # Step 4: Demonstrate knowledge distillation
         print("\n🧠 Step 4: Demonstrating knowledge distillation...")
@@ -370,13 +486,17 @@ class DistillationLoader:
             performance_history=[],
             knowledge_base={"basic_programming": 0.5, "problem_solving": 0.6},
             created_at=datetime.now(),
-            last_updated=datetime.now()
+            last_updated=datetime.now(),
         )
 
-        print(f"   Target agent before distillation: {target_agent.get_fitness_score():.3f}")
+        print(
+            f"   Target agent before distillation: {target_agent.get_fitness_score():.3f}"
+        )
 
         # Apply knowledge distillation
-        distilled_agent = await self.apply_knowledge_distillation([source_genetic_material], target_agent)
+        distilled_agent = await self.apply_knowledge_distillation(
+            [source_genetic_material], target_agent
+        )
 
         # Step 5: Save reconstructed agent
         print("\n💾 Step 5: Saving reconstructed agent...")
@@ -389,12 +509,16 @@ class DistillationLoader:
         # Step 6: Summary
         print("\n📊 Distillation Loading Summary:")
         print(f"   Source genetic materials: {len(genetic_materials)}")
-        print(f"   Reconstruction accuracy: {validation_results['overall_accuracy']:.3f}")
+        print(
+            f"   Reconstruction accuracy: {validation_results['overall_accuracy']:.3f}"
+        )
         print(f"   Knowledge distillation applied: ✅")
         print(f"   Agents saved: 2")
 
         print("\n🎉 Knowledge distillation loading demonstration completed!")
-        print("🦁 Success-Advisor-8's genetic material has been successfully loaded and applied!")
+        print(
+            "🦁 Success-Advisor-8's genetic material has been successfully loaded and applied!"
+        )
 
 
 async def main():
@@ -402,7 +526,9 @@ async def main():
     import logging
 
     # Setup logging
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    logging.basicConfig(
+        level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+    )
 
     # Initialize and run demo
     loader = DistillationLoader()

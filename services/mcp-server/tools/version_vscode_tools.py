@@ -51,6 +51,7 @@ def _format_result(result: dict[str, Any], operation: str) -> dict[str, Any]:
         }
         if result_data:
             import json
+
             output_lines.append(f"\n📋 Data:\n{json.dumps(result_data, indent=2)}")
 
     return {"content": [{"type": "text", "text": "\n".join(output_lines)}]}
@@ -63,7 +64,7 @@ def _format_result(result: dict[str, Any], operation: str) -> dict[str, Any]:
     execution_type="sync",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 def get_versions(**kwargs) -> dict[str, Any]:
     """Get versions of Python, Node.js, npm, pnpm, and TypeScript."""
@@ -78,7 +79,7 @@ def get_versions(**kwargs) -> dict[str, Any]:
     execution_type="sync",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 def get_python_version(**kwargs) -> dict[str, Any]:
     """Get Python version information."""
@@ -93,7 +94,7 @@ def get_python_version(**kwargs) -> dict[str, Any]:
     execution_type="sync",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 def get_vscode_active_file(**kwargs) -> dict[str, Any]:
     """Get currently active file path in VS Code."""

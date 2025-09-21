@@ -358,7 +358,7 @@ describe("QualityGateManager", () => {
 
       const gates = manager.getQualityGates();
       expect(gates).toHaveLength(3);
-      
+
       const gateIds = gates.map(g => g.id);
       expect(gateIds).toContain("reynard-development");
       expect(gateIds).toContain("reynard-production");
@@ -427,7 +427,7 @@ describe("QualityGateManager", () => {
   describe("compareValues", () => {
     it("should compare numeric values correctly", () => {
       const managerAny = manager as any;
-      
+
       expect(managerAny.compareValues(5, 3, "GT")).toBe(true);
       expect(managerAny.compareValues(5, 3, "LT")).toBe(false);
       expect(managerAny.compareValues(5, 5, "EQ")).toBe(true);
@@ -440,7 +440,7 @@ describe("QualityGateManager", () => {
 
     it("should compare string values correctly", () => {
       const managerAny = manager as any;
-      
+
       expect(managerAny.compareValues("abc", "def", "LT")).toBe(true);
       expect(managerAny.compareValues("def", "abc", "GT")).toBe(true);
       expect(managerAny.compareValues("abc", "abc", "EQ")).toBe(true);
@@ -449,7 +449,7 @@ describe("QualityGateManager", () => {
 
     it("should compare boolean values correctly", () => {
       const managerAny = manager as any;
-      
+
       expect(managerAny.compareValues(true, true, "EQ")).toBe(true);
       expect(managerAny.compareValues(true, false, "NE")).toBe(true);
       expect(managerAny.compareValues(true, false, "EQ")).toBe(false);

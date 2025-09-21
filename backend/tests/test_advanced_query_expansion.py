@@ -25,7 +25,7 @@ class TestAdvancedQueryExpansion:
         """Test synonym-based query expansion."""
         query = "find python function"
         expansions = self.nlp._synonym_expansion(query)
-        
+
         # Should include Python synonyms
         assert any("py" in expansion for expansion in expansions)
         assert any("python3" in expansion for expansion in expansions)
@@ -34,11 +34,11 @@ class TestAdvancedQueryExpansion:
         """Test contextual query expansion."""
         query = "find function that handles errors"
         expansions = self.nlp._contextual_expansion(query)
-        
+
         # Should include function synonyms
         assert any("method" in expansion for expansion in expansions)
         assert any("procedure" in expansion for expansion in expansions)
-        
+
         # Should include error synonyms
         assert any("exception" in expansion for expansion in expansions)
         assert any("failure" in expansion for expansion in expansions)
@@ -47,7 +47,7 @@ class TestAdvancedQueryExpansion:
         """Test semantic similarity expansion."""
         query = "find user data handling"
         expansions = self.nlp._semantic_similarity_expansion(query)
-        
+
         # Should include semantic synonyms
         assert any("person" in expansion for expansion in expansions)
         assert any("information" in expansion for expansion in expansions)
@@ -56,7 +56,7 @@ class TestAdvancedQueryExpansion:
         """Test code pattern expansion."""
         query = "find function that implements authentication"
         expansions = self.nlp._code_pattern_expansion(query)
-        
+
         # Should include pattern variations
         assert any("locate" in expansion for expansion in expansions)
         assert any("search" in expansion for expansion in expansions)
@@ -66,7 +66,7 @@ class TestAdvancedQueryExpansion:
         """Test intent-based expansion."""
         query = "find authentication function"
         expansions = self.nlp._intent_based_expansion(query)
-        
+
         # Should include intent-specific expansions (authentication intent)
         assert any("auth" in expansion for expansion in expansions)
         assert any("login" in expansion for expansion in expansions)
@@ -76,10 +76,10 @@ class TestAdvancedQueryExpansion:
         """Test the main advanced query expansion method."""
         query = "find authentication function in python"
         expansions = self.nlp.generate_advanced_query_expansions(query)
-        
+
         # Should generate multiple types of expansions
         assert len(expansions) > 0
-        
+
         # Should include various expansion types
         assert any("py" in expansion for expansion in expansions)  # Synonym
         assert any("method" in expansion for expansion in expansions)  # Contextual
@@ -89,7 +89,7 @@ class TestAdvancedQueryExpansion:
         """Test hybrid expansion combining multiple techniques."""
         query = "find error handling function"
         hybrid = self.nlp.generate_hybrid_expansions(query)
-        
+
         # Should have all expansion types
         assert "synonym_expansions" in hybrid
         assert "contextual_expansions" in hybrid
@@ -97,7 +97,7 @@ class TestAdvancedQueryExpansion:
         assert "pattern_expansions" in hybrid
         assert "intent_expansions" in hybrid
         assert "all_expansions" in hybrid
-        
+
         # Each type should have expansions
         for expansion_type, expansions in hybrid.items():
             if expansion_type != "all_expansions":
@@ -108,19 +108,21 @@ class TestAdvancedQueryExpansion:
         """Test the quality of generated expansions."""
         query = "find authentication function"
         expansions = self.nlp.generate_advanced_query_expansions(query)
-        
+
         # Expansions should be relevant
         for expansion in expansions:
             assert isinstance(expansion, str)
             assert len(expansion) > 0
             # Should contain key terms from original query
-            assert any(term in expansion.lower() for term in ["find", "auth", "function"])
+            assert any(
+                term in expansion.lower() for term in ["find", "auth", "function"]
+            )
 
     def test_expansion_deduplication(self):
         """Test that expansions are deduplicated."""
         query = "find function"
         expansions = self.nlp.generate_advanced_query_expansions(query)
-        
+
         # Should not have duplicates
         assert len(expansions) == len(set(expansions))
 
@@ -130,12 +132,12 @@ class TestAdvancedQueryExpansion:
         python_query = "find python function"
         python_expansions = self.nlp._synonym_expansion(python_query)
         assert any("py" in expansion for expansion in python_expansions)
-        
+
         # Test JavaScript
         js_query = "find javascript function"
         js_expansions = self.nlp._synonym_expansion(js_query)
         assert any("js" in expansion for expansion in js_expansions)
-        
+
         # Test TypeScript
         ts_query = "find typescript function"
         ts_expansions = self.nlp._synonym_expansion(ts_query)
@@ -148,7 +150,7 @@ class TestAdvancedQueryExpansion:
         function_expansions = self.nlp._contextual_expansion(function_query)
         assert any("method" in expansion for expansion in function_expansions)
         assert any("procedure" in expansion for expansion in function_expansions)
-        
+
         # Test class concepts
         class_query = "find class"
         class_expansions = self.nlp._contextual_expansion(class_query)
@@ -159,7 +161,7 @@ class TestAdvancedQueryExpansion:
         """Test expansions for error handling concepts."""
         error_query = "find error handling"
         error_expansions = self.nlp._contextual_expansion(error_query)
-        
+
         assert any("exception" in expansion for expansion in error_expansions)
         assert any("failure" in expansion for expansion in error_expansions)
         assert any("bug" in expansion for expansion in error_expansions)
@@ -168,7 +170,7 @@ class TestAdvancedQueryExpansion:
         """Test expansions for authentication concepts."""
         auth_query = "find authentication"
         auth_expansions = self.nlp._contextual_expansion(auth_query)
-        
+
         assert any("auth" in expansion for expansion in auth_expansions)
         assert any("login" in expansion for expansion in auth_expansions)
         assert any("security" in expansion for expansion in auth_expansions)
@@ -176,15 +178,15 @@ class TestAdvancedQueryExpansion:
     def test_expansion_performance(self):
         """Test that expansions are generated quickly."""
         import time
-        
+
         query = "find authentication function in python"
         start_time = time.time()
-        
+
         expansions = self.nlp.generate_advanced_query_expansions(query)
-        
+
         end_time = time.time()
         execution_time = end_time - start_time
-        
+
         # Should complete quickly (less than 1 second)
         assert execution_time < 1.0
         assert len(expansions) > 0
@@ -193,7 +195,7 @@ class TestAdvancedQueryExpansion:
         """Test expansion handling for empty queries."""
         empty_query = ""
         expansions = self.nlp.generate_advanced_query_expansions(empty_query)
-        
+
         # Should handle empty queries gracefully
         assert isinstance(expansions, list)
         assert len(expansions) == 0
@@ -202,7 +204,7 @@ class TestAdvancedQueryExpansion:
         """Test expansion for single word queries."""
         single_word = "function"
         expansions = self.nlp.generate_advanced_query_expansions(single_word)
-        
+
         # Should still generate some expansions
         assert isinstance(expansions, list)
         # May or may not have expansions depending on the word
@@ -211,7 +213,7 @@ class TestAdvancedQueryExpansion:
         """Test expansion handling for queries with special characters."""
         special_query = "find @decorator function"
         expansions = self.nlp.generate_advanced_query_expansions(special_query)
-        
+
         # Should handle special characters gracefully
         assert isinstance(expansions, list)
         # Should not crash or produce invalid expansions

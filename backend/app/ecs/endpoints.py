@@ -54,10 +54,10 @@ from pydantic import BaseModel
 from .postgres_service import get_postgres_ecs_service, PostgresECSWorldService
 from .success_advisor_genome import success_advisor_genome_service
 from .cache_decorators import (
-    cache_naming_spirits, 
-    cache_naming_components, 
+    cache_naming_spirits,
+    cache_naming_components,
     cache_naming_config,
-    invalidate_ecs_cache
+    invalidate_ecs_cache,
 )
 
 logger = logging.getLogger(__name__)
@@ -236,7 +236,7 @@ async def get_agents() -> list[AgentResponse]:
     try:
         service = get_postgres_ecs_service()
         agents_data = await service.get_all_agents()
-        
+
         agents = []
         for agent_data in agents_data:
             agents.append(
@@ -245,7 +245,7 @@ async def get_agents() -> list[AgentResponse]:
                     name=agent_data["name"],
                     spirit=agent_data["spirit"],
                     style=agent_data["style"],
-                    active=agent_data["active"]
+                    active=agent_data["active"],
                 )
             )
         return agents
@@ -259,18 +259,18 @@ async def create_agent(request: AgentCreateRequest) -> AgentResponse:
     """Create a new agent."""
     try:
         service = get_postgres_ecs_service()
-        
+
         # Generate a name if none provided
         agent_name = request.name
         if not agent_name:
             # Generate a simple name using agent_id and spirit
             agent_name = f"{request.spirit}-{request.agent_id.split('-')[-1]}"
-        
+
         agent_data = await service.create_agent(
             agent_id=request.agent_id,
             name=agent_name,
             spirit=request.spirit or "fox",
-            style=request.style or "foundation"
+            style=request.style or "foundation",
         )
 
         return AgentResponse(
@@ -278,7 +278,7 @@ async def create_agent(request: AgentCreateRequest) -> AgentResponse:
             name=agent_data["name"],
             spirit=agent_data["spirit"],
             style=agent_data["style"],
-            active=agent_data["active"]
+            active=agent_data["active"],
         )
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e)) from e
@@ -410,20 +410,24 @@ async def send_chat_message(agent_id: str, request: ChatRequest) -> dict[str, An
             sender_id=agent_id,
             receiver_id=request.receiver_id,
             message=request.message,
-            interaction_type=request.interaction_type
+            interaction_type=request.interaction_type,
         )
-        
+
         return result
     except HTTPException:
         raise
     except Exception as e:
         logger.error("Error sending chat message: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to send chat message") from e
+        raise HTTPException(
+            status_code=500, detail="Failed to send chat message"
+        ) from e
 
 
 @router.get("/agents/{agent_id}/interactions")
 async def get_interaction_history(
-    agent_id: str, limit: int = 10, service: PostgresECSWorldService = Depends(get_postgres_service)
+    agent_id: str,
+    limit: int = 10,
+    service: PostgresECSWorldService = Depends(get_postgres_service),
 ) -> dict[str, Any]:
     """Get the interaction history for an agent."""
     try:
@@ -436,7 +440,9 @@ async def get_interaction_history(
         raise
     except Exception as e:
         logger.error("Error getting interaction history: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to get interaction history") from e
+        raise HTTPException(
+            status_code=500, detail="Failed to get interaction history"
+        ) from e
 
 
 # @router.get("/agents/{agent_id}/relationships")
@@ -479,7 +485,9 @@ def _load_json_data(filename: str):
             return json.load(f)
     except json.JSONDecodeError as e:
         logger.error("Error parsing JSON from %s: %s", filename, e)
-        raise HTTPException(status_code=500, detail=f"Invalid JSON in {filename}") from e
+        raise HTTPException(
+            status_code=500, detail=f"Invalid JSON in {filename}"
+        ) from e
     except Exception as e:
         logger.error("Error loading data from %s: %s", filename, e)
         raise HTTPException(status_code=500, detail=f"Failed to load {filename}") from e
@@ -496,7 +504,7 @@ def _load_race_data(spirit: str) -> dict[str, Any]:
     try:
         races_dir = _get_races_directory()
         race_file = races_dir / f"{spirit}.json"
-        
+
         if not race_file.exists():
             raise HTTPException(
                 status_code=404, detail=f"Race data for spirit '{spirit}' not found"
@@ -506,10 +514,14 @@ def _load_race_data(spirit: str) -> dict[str, Any]:
             return json.load(f)
     except json.JSONDecodeError as e:
         logger.error("Error parsing JSON from race file %s: %s", spirit, e)
-        raise HTTPException(status_code=500, detail=f"Invalid JSON in race file for {spirit}") from e
+        raise HTTPException(
+            status_code=500, detail=f"Invalid JSON in race file for {spirit}"
+        ) from e
     except Exception as e:
         logger.error("Error loading race data for %s: %s", spirit, e)
-        raise HTTPException(status_code=500, detail=f"Failed to load race data for {spirit}") from e
+        raise HTTPException(
+            status_code=500, detail=f"Failed to load race data for {spirit}"
+        ) from e
 
 
 @cache_naming_spirits(ttl=1800)
@@ -517,9 +529,11 @@ async def _load_races_data() -> dict[str, Any]:
     """Load all race data from the database and return in the old format."""
     try:
         from .database import ecs_db, NamingSpirit
-        
+
         with ecs_db.get_session() as session:
-            spirits = session.query(NamingSpirit).filter(NamingSpirit.enabled == True).all()
+            spirits = (
+                session.query(NamingSpirit).filter(NamingSpirit.enabled == True).all()
+            )
 
         result = {}
         for spirit in spirits:
@@ -536,11 +550,11 @@ async def _get_all_races_data_from_db() -> dict[str, Any]:
     """Load all race data from the database with full details."""
     try:
         from .database import ecs_db, NamingSpirit
-        
+
         with ecs_db.get_session() as session:
             naming_spirits = session.query(NamingSpirit).all()
             all_races = {}
-            
+
             for spirit in naming_spirits:
                 all_races[spirit.name] = {
                     "name": spirit.name,
@@ -549,9 +563,9 @@ async def _get_all_races_data_from_db() -> dict[str, Any]:
                     "emoji": spirit.emoji,
                     "traits": spirit.traits,
                     "names": spirit.base_names,
-                    "generation_numbers": spirit.generation_numbers
+                    "generation_numbers": spirit.generation_numbers,
                 }
-            
+
             return {"races": all_races}
     except Exception as e:
         logger.error("Error loading races data: %s", e)
@@ -562,17 +576,17 @@ def _get_race_data_from_db(spirit: str) -> dict[str, Any]:
     """Load race data for a specific spirit from the database."""
     try:
         from .database import ecs_db, NamingSpirit
-        
+
         with ecs_db.get_session() as session:
-            naming_spirit = session.query(NamingSpirit).filter(
-                NamingSpirit.name == spirit
-            ).first()
-            
+            naming_spirit = (
+                session.query(NamingSpirit).filter(NamingSpirit.name == spirit).first()
+            )
+
             if not naming_spirit:
                 raise HTTPException(
                     status_code=404, detail=f"Race data for spirit '{spirit}' not found"
                 )
-            
+
             return {
                 "name": naming_spirit.name,
                 "category": naming_spirit.category,
@@ -580,7 +594,7 @@ def _get_race_data_from_db(spirit: str) -> dict[str, Any]:
                 "emoji": naming_spirit.emoji,
                 "traits": naming_spirit.traits,
                 "names": naming_spirit.base_names,
-                "generation_numbers": naming_spirit.generation_numbers
+                "generation_numbers": naming_spirit.generation_numbers,
             }
     except HTTPException:
         raise
@@ -596,29 +610,31 @@ async def _get_naming_components_from_db() -> dict[str, Any]:
     """Load naming components from the database."""
     try:
         from .database import ecs_db, NamingComponent
-        
+
         with ecs_db.get_session() as session:
             components = session.query(NamingComponent).all()
             components_dict = {}
-            
+
             for component in components:
                 if component.component_type not in components_dict:
                     components_dict[component.component_type] = {
                         "category": component.component_type,
                         "description": f"Naming components for {component.component_type}",
                         "enabled": component.enabled,
-                        "values": []
+                        "values": [],
                     }
-                
+
                 if component.enabled:
                     components_dict[component.component_type]["values"].append(
                         component.component_value
                     )
-            
+
             return components_dict
     except Exception as e:
         logger.error("Error loading naming components: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to load naming components") from e
+        raise HTTPException(
+            status_code=500, detail="Failed to load naming components"
+        ) from e
 
 
 @cache_naming_config(ttl=3600)
@@ -626,18 +642,20 @@ async def _get_naming_config_from_db() -> dict[str, Any]:
     """Load naming configuration from the database."""
     try:
         from .database import ecs_db, NamingConfig
-        
+
         with ecs_db.get_session() as session:
             configs = session.query(NamingConfig).all()
             config_dict = {}
-            
+
             for config in configs:
                 config_dict[config.config_key] = config.config_value
-            
+
             return config_dict
     except Exception as e:
         logger.error("Error loading naming config: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to load naming config") from e
+        raise HTTPException(
+            status_code=500, detail="Failed to load naming config"
+        ) from e
 
 
 @router.get("/naming/animal-spirits", response_model=None)
@@ -649,7 +667,9 @@ async def get_animal_spirits() -> dict[str, Any]:
         raise
     except Exception as e:
         logger.error("Error getting animal spirits: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to get animal spirits") from e
+        raise HTTPException(
+            status_code=500, detail="Failed to get animal spirits"
+        ) from e
 
 
 @router.get("/naming/animal-spirits/{spirit}", response_model=None)
@@ -676,7 +696,9 @@ async def get_naming_components() -> dict[str, Any]:
         raise
     except Exception as e:
         logger.error("Error getting naming components: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to get naming components") from e
+        raise HTTPException(
+            status_code=500, detail="Failed to get naming components"
+        ) from e
 
 
 @router.get("/naming/components/{component_type}", response_model=None)
@@ -707,7 +729,9 @@ async def get_naming_config() -> dict[str, Any]:
         raise
     except Exception as e:
         logger.error("Error getting naming config: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to get naming config") from e
+        raise HTTPException(
+            status_code=500, detail="Failed to get naming config"
+        ) from e
 
 
 @router.get("/naming/config/schemes", response_model=None)
@@ -720,7 +744,9 @@ async def get_naming_schemes() -> dict[str, Any]:
         raise
     except Exception as e:
         logger.error("Error getting naming schemes: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to get naming schemes") from e
+        raise HTTPException(
+            status_code=500, detail="Failed to get naming schemes"
+        ) from e
 
 
 @router.get("/naming/config/styles", response_model=None)
@@ -733,7 +759,9 @@ async def get_naming_styles() -> dict[str, Any]:
         raise
     except Exception as e:
         logger.error("Error getting naming styles: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to get naming styles") from e
+        raise HTTPException(
+            status_code=500, detail="Failed to get naming styles"
+        ) from e
 
 
 @router.get("/naming/config/spirits", response_model=None)
@@ -742,15 +770,17 @@ async def get_naming_spirits() -> dict[str, Any]:
     try:
         # Get database service
         db = get_postgres_ecs_service()
-        
+
         # Get all naming spirits from database
         spirits_data = await db.get_naming_spirits()
-        
+
         return spirits_data
-        
+
     except Exception as e:
         logger.error("Error getting naming spirits from database: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to get naming spirits from database") from e
+        raise HTTPException(
+            status_code=500, detail="Failed to get naming spirits from database"
+        ) from e
 
 
 @router.get("/naming/generation-numbers", response_model=None)
@@ -759,15 +789,17 @@ async def get_generation_numbers() -> dict[str, Any]:
     try:
         # Get database service
         db = get_postgres_ecs_service()
-        
+
         # Get generation numbers from database
         generation_numbers = await db.get_generation_numbers()
-        
+
         return generation_numbers
-        
+
     except Exception as e:
         logger.error("Error getting generation numbers from database: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to get generation numbers from database") from e
+        raise HTTPException(
+            status_code=500, detail="Failed to get generation numbers from database"
+        ) from e
 
 
 @router.get("/naming/generation-numbers/{spirit}", response_model=None)
@@ -792,36 +824,56 @@ async def get_naming_enums() -> dict[str, Any]:
     try:
         # Get database session
         db = get_postgres_ecs_service()
-        
+
         # Get all naming spirits
         spirits = await db.get_naming_spirits()
-        
+
         # Get all naming components (styles, etc.)
         components = await db.get_naming_components()
-        
+
         # Get naming config
         config = await db.get_naming_config()
-        
+
         # Build enums response
         enums_data = {
             "spirits": spirits,
             "components": components,
             "config": config,
             "styles": {
-                "foundation": {"enabled": True, "description": "Asimov-inspired strategic names"},
-                "exo": {"enabled": True, "description": "Combat/technical operational names"},
-                "hybrid": {"enabled": True, "description": "Mythological/historical references"},
-                "cyberpunk": {"enabled": True, "description": "Tech-prefixed cyber names"},
-                "mythological": {"enabled": True, "description": "Divine/mystical references"},
-                "scientific": {"enabled": True, "description": "Latin scientific classifications"}
-            }
+                "foundation": {
+                    "enabled": True,
+                    "description": "Asimov-inspired strategic names",
+                },
+                "exo": {
+                    "enabled": True,
+                    "description": "Combat/technical operational names",
+                },
+                "hybrid": {
+                    "enabled": True,
+                    "description": "Mythological/historical references",
+                },
+                "cyberpunk": {
+                    "enabled": True,
+                    "description": "Tech-prefixed cyber names",
+                },
+                "mythological": {
+                    "enabled": True,
+                    "description": "Divine/mystical references",
+                },
+                "scientific": {
+                    "enabled": True,
+                    "description": "Latin scientific classifications",
+                },
+            },
         }
-        
+
         return enums_data
-        
+
     except Exception as e:
         logger.error("Error getting naming enums from database: %s", e)
-        raise HTTPException(status_code=500, detail="Failed to get naming enums from database") from e
+        raise HTTPException(
+            status_code=500, detail="Failed to get naming enums from database"
+        ) from e
 
 
 @router.get("/naming/characters", response_model=None)
@@ -878,13 +930,16 @@ async def get_spirit_personality_traits(spirit: str) -> dict[str, Any]:
         return {
             "spirit": spirit,
             "base_traits": data["spirit_base_traits"][spirit],
-            "trait_definitions": data["personality_traits"]
+            "trait_definitions": data["personality_traits"],
         }
     except HTTPException:
         raise
     except Exception as e:
         logger.error(f"Error getting personality traits for spirit {spirit}: {e}")
-        raise HTTPException(status_code=500, detail=f"Failed to get personality traits for spirit {spirit}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to get personality traits for spirit {spirit}",
+        )
 
 
 @router.get("/traits/physical", response_model=None)
@@ -909,13 +964,15 @@ async def get_spirit_physical_traits(spirit: str) -> dict[str, Any]:
         return {
             "spirit": spirit,
             "base_traits": data["spirit_base_physical"][spirit],
-            "trait_definitions": data["physical_traits"]
+            "trait_definitions": data["physical_traits"],
         }
     except HTTPException:
         raise
     except Exception as e:
         logger.error(f"Error getting physical traits for spirit {spirit}: {e}")
-        raise HTTPException(status_code=500, detail=f"Failed to get physical traits for spirit {spirit}")
+        raise HTTPException(
+            status_code=500, detail=f"Failed to get physical traits for spirit {spirit}"
+        )
 
 
 @router.get("/traits/abilities", response_model=None)
@@ -940,13 +997,15 @@ async def get_spirit_ability_traits(spirit: str) -> dict[str, Any]:
         return {
             "spirit": spirit,
             "base_traits": data["spirit_base_abilities"][spirit],
-            "trait_definitions": data["ability_traits"]
+            "trait_definitions": data["ability_traits"],
         }
     except HTTPException:
         raise
     except Exception as e:
         logger.error(f"Error getting ability traits for spirit {spirit}: {e}")
-        raise HTTPException(status_code=500, detail=f"Failed to get ability traits for spirit {spirit}")
+        raise HTTPException(
+            status_code=500, detail=f"Failed to get ability traits for spirit {spirit}"
+        )
 
 
 @router.get("/traits/config", response_model=None)
@@ -969,38 +1028,42 @@ async def get_spirit_trait_profile(spirit: str) -> dict[str, Any]:
         personality_data = _load_json_data("personality_traits.json")
         physical_data = _load_json_data("physical_traits.json")
         ability_data = _load_json_data("ability_traits.json")
-        
+
         if spirit not in config_data.get("spirit_configurations", {}):
             raise HTTPException(status_code=404, detail=f"Spirit '{spirit}' not found")
-        
+
         spirit_config = config_data["spirit_configurations"][spirit]
-        
+
         return {
             "spirit": spirit,
             "configuration": spirit_config,
-            "personality_traits": personality_data["spirit_base_traits"].get(spirit, {}),
+            "personality_traits": personality_data["spirit_base_traits"].get(
+                spirit, {}
+            ),
             "physical_traits": physical_data["spirit_base_physical"].get(spirit, {}),
             "ability_traits": ability_data["spirit_base_abilities"].get(spirit, {}),
             "trait_definitions": {
                 "personality": personality_data["personality_traits"],
                 "physical": physical_data["physical_traits"],
-                "abilities": ability_data["ability_traits"]
-            }
+                "abilities": ability_data["ability_traits"],
+            },
         }
     except HTTPException:
         raise
     except Exception as e:
         logger.error(f"Error getting trait profile for spirit {spirit}: {e}")
-        raise HTTPException(status_code=500, detail=f"Failed to get trait profile for spirit {spirit}")
+        raise HTTPException(
+            status_code=500, detail=f"Failed to get trait profile for spirit {spirit}"
+        )
 
 
 @router.post("/spirit-inhabitation/success-advisor-8")
 async def inhabit_success_advisor_spirit(
-    request: SpiritInhabitationRequest
+    request: SpiritInhabitationRequest,
 ) -> Dict[str, Any]:
     """
     Inhabit Success-Advisor-8's spirit with specialized genomic payload and instructions.
-    
+
     This endpoint provides agents with the complete genomic payload and behavioral
     instructions needed to inhabit Success-Advisor-8's spirit, including:
     - Complete trait specifications (personality, physical, ability)
@@ -1011,37 +1074,57 @@ async def inhabit_success_advisor_spirit(
     - Legacy responsibilities and roleplay activation
     """
     try:
-        logger.info(f"🦁 Agent {request.agent_id} requesting Success-Advisor-8 spirit inhabitation")
-        
+        logger.info(
+            f"🦁 Agent {request.agent_id} requesting Success-Advisor-8 spirit inhabitation"
+        )
+
         # Get the complete spirit inhabitation guide
-        inhabitation_guide = success_advisor_genome_service.get_spirit_inhabitation_guide()
-        
+        inhabitation_guide = (
+            success_advisor_genome_service.get_spirit_inhabitation_guide()
+        )
+
         # Prepare response with requested components
         response = {
             "agent_id": request.agent_id,
             "spirit": "success-advisor-8",
             "inhabitation_status": "ready",
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.now().isoformat(),
         }
-        
+
         if request.include_genomic_payload:
             response["genomic_payload"] = inhabitation_guide["genomic_payload"]
-        
+
         if request.include_instructions:
-            response["instructions"] = inhabitation_guide["genomic_payload"]["instructions"]
-            response["behavioral_guidelines"] = inhabitation_guide["genomic_payload"]["instructions"]["behavioral_guidelines"]
-            response["communication_style"] = inhabitation_guide["genomic_payload"]["instructions"]["communication_style"]
-            response["workflow_protocols"] = inhabitation_guide["genomic_payload"]["instructions"]["workflow_protocols"]
-            response["quality_standards"] = inhabitation_guide["genomic_payload"]["instructions"]["quality_standards"]
-            response["crisis_management"] = inhabitation_guide["genomic_payload"]["instructions"]["crisis_management"]
-            response["mentoring_guidelines"] = inhabitation_guide["genomic_payload"]["instructions"]["mentoring_guidelines"]
-            response["legacy_responsibilities"] = inhabitation_guide["genomic_payload"]["instructions"]["legacy_responsibilities"]
-        
+            response["instructions"] = inhabitation_guide["genomic_payload"][
+                "instructions"
+            ]
+            response["behavioral_guidelines"] = inhabitation_guide["genomic_payload"][
+                "instructions"
+            ]["behavioral_guidelines"]
+            response["communication_style"] = inhabitation_guide["genomic_payload"][
+                "instructions"
+            ]["communication_style"]
+            response["workflow_protocols"] = inhabitation_guide["genomic_payload"][
+                "instructions"
+            ]["workflow_protocols"]
+            response["quality_standards"] = inhabitation_guide["genomic_payload"][
+                "instructions"
+            ]["quality_standards"]
+            response["crisis_management"] = inhabitation_guide["genomic_payload"][
+                "instructions"
+            ]["crisis_management"]
+            response["mentoring_guidelines"] = inhabitation_guide["genomic_payload"][
+                "instructions"
+            ]["mentoring_guidelines"]
+            response["legacy_responsibilities"] = inhabitation_guide["genomic_payload"][
+                "instructions"
+            ]["legacy_responsibilities"]
+
         if request.confirm_inhabitation:
             response["welcome_message"] = inhabitation_guide["welcome_message"]
             response["activation_sequence"] = inhabitation_guide["activation_sequence"]
             response["roleplay_activation"] = inhabitation_guide["roleplay_activation"]
-        
+
         # Add metadata
         response["metadata"] = {
             "service_version": "1.0.0",
@@ -1055,13 +1138,15 @@ async def inhabit_success_advisor_spirit(
                 "Maintain the highest quality standards",
                 "Use the genomic payload to guide behavior",
                 "Follow the behavioral guidelines precisely",
-                "Activate the roleplay persona with authority"
-            ]
+                "Activate the roleplay persona with authority",
+            ],
         }
-        
-        logger.info(f"✅ Success-Advisor-8 spirit inhabitation guide provided to agent {request.agent_id}")
+
+        logger.info(
+            f"✅ Success-Advisor-8 spirit inhabitation guide provided to agent {request.agent_id}"
+        )
         return response
-        
+
     except Exception as e:
         logger.error(f"❌ Error providing Success-Advisor-8 spirit inhabitation: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -1074,34 +1159,29 @@ async def create_interaction(request: Dict[str, Any]) -> Dict[str, Any]:
         agent1_id = request.get("agent1_id")
         agent2_id = request.get("agent2_id")
         interaction_type = request.get("interaction_type", "communication")
-        
+
         if not agent1_id or not agent2_id:
             raise HTTPException(
-                status_code=400,
-                detail="agent1_id and agent2_id are required"
+                status_code=400, detail="agent1_id and agent2_id are required"
             )
-        
+
         # Get the ECS service
         ecs_service = get_postgres_ecs_service()
-        
+
         # Create interaction using the ECS service send_message method
         interaction = await ecs_service.send_message(
             sender_id=agent1_id,
             receiver_id=agent2_id,
             message=f"Interaction of type: {interaction_type}",
-            interaction_type=interaction_type
+            interaction_type=interaction_type,
         )
-        
-        return {
-            "success": True,
-            "interaction": interaction
-        }
-        
+
+        return {"success": True, "interaction": interaction}
+
     except Exception as e:
         logger.error(f"Failed to create interaction: {e}")
         raise HTTPException(
-            status_code=500,
-            detail=f"Failed to create interaction: {e!s}"
+            status_code=500, detail=f"Failed to create interaction: {e!s}"
         )
 
 
@@ -1109,21 +1189,21 @@ async def create_interaction(request: Dict[str, Any]) -> Dict[str, Any]:
 async def get_success_advisor_genome() -> Dict[str, Any]:
     """
     Get the complete Success-Advisor-8 genomic payload.
-    
+
     Returns the full genomic specification including traits, abilities,
     domain expertise, and behavioral characteristics.
     """
     try:
         logger.info("🦁 Providing Success-Advisor-8 genomic payload")
-        
+
         genomic_payload = success_advisor_genome_service.get_genomic_payload()
-        
+
         return {
             "status": "success",
             "genome": genomic_payload["genome"],
-            "metadata": genomic_payload["metadata"]
+            "metadata": genomic_payload["metadata"],
         }
-        
+
     except Exception as e:
         logger.error(f"❌ Error providing Success-Advisor-8 genome: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -1133,25 +1213,27 @@ async def get_success_advisor_genome() -> Dict[str, Any]:
 async def get_success_advisor_instructions() -> Dict[str, Any]:
     """
     Get Success-Advisor-8 behavioral instructions and guidelines.
-    
+
     Returns comprehensive behavioral guidelines, communication style,
     workflow protocols, and quality standards.
     """
     try:
         logger.info("🦁 Providing Success-Advisor-8 behavioral instructions")
-        
-        instructions = success_advisor_genome_service.get_genomic_payload()["instructions"]
-        
+
+        instructions = success_advisor_genome_service.get_genomic_payload()[
+            "instructions"
+        ]
+
         return {
             "status": "success",
             "instructions": instructions,
             "metadata": {
                 "service_version": "1.0.0",
                 "created_by": "Success-Advisor-8",
-                "purpose": "Behavioral guidance and roleplay instructions"
-            }
+                "purpose": "Behavioral guidance and roleplay instructions",
+            },
         }
-        
+
     except Exception as e:
         logger.error(f"❌ Error providing Success-Advisor-8 instructions: {e}")
         raise HTTPException(status_code=500, detail=str(e))

@@ -21,20 +21,14 @@ describe("LanguageAnalyzer", () => {
       detectLanguage: vi.fn(),
       countLines: vi.fn(),
     };
-    
+
     vi.mocked(FileDiscoveryService).mockImplementation(() => mockFileDiscovery);
     analyzer = new LanguageAnalyzer();
   });
 
   describe("analyzeLanguages", () => {
     it("should analyze files by language", async () => {
-      const files = [
-        "/test/file1.ts",
-        "/test/file2.ts",
-        "/test/file3.js",
-        "/test/file4.py",
-        "/test/file5.md",
-      ];
+      const files = ["/test/file1.ts", "/test/file2.ts", "/test/file3.js", "/test/file4.py", "/test/file5.md"];
 
       mockFileDiscovery.detectLanguage
         .mockReturnValueOnce("typescript")
@@ -53,7 +47,7 @@ describe("LanguageAnalyzer", () => {
       const result = await analyzer.analyzeLanguages(files);
 
       expect(result).toHaveLength(4);
-      
+
       const typescript = result.find(r => r.language === "typescript");
       expect(typescript).toEqual({
         language: "typescript",
@@ -100,10 +94,7 @@ describe("LanguageAnalyzer", () => {
       const files = ["/test/file1.ts", "/test/file2.ts", "/test/file3.ts"];
 
       mockFileDiscovery.detectLanguage.mockReturnValue("typescript");
-      mockFileDiscovery.countLines
-        .mockResolvedValueOnce(100)
-        .mockResolvedValueOnce(200)
-        .mockResolvedValueOnce(150);
+      mockFileDiscovery.countLines.mockResolvedValueOnce(100).mockResolvedValueOnce(200).mockResolvedValueOnce(150);
 
       const result = await analyzer.analyzeLanguages(files);
 
@@ -138,9 +129,7 @@ describe("LanguageAnalyzer", () => {
     });
 
     it("should return null for non-existent language", () => {
-      const analyses = [
-        { language: "typescript", files: 5, lines: 1000, issues: 10, coverage: 80 },
-      ];
+      const analyses = [{ language: "typescript", files: 5, lines: 1000, issues: 10, coverage: 80 }];
 
       const result = analyzer.getLanguageStats(analyses, "rust");
 
@@ -197,13 +186,13 @@ describe("LanguageAnalyzer", () => {
       const result = analyzer.getLanguageDistribution(analyses);
 
       expect(result).toHaveLength(3);
-      
+
       const typescript = result.find(r => r.language === "typescript");
       expect(typescript?.percentage).toBeCloseTo(55.56, 2); // 1000/1800 * 100
-      
+
       const python = result.find(r => r.language === "python");
       expect(python?.percentage).toBeCloseTo(27.78, 2); // 500/1800 * 100
-      
+
       const javascript = result.find(r => r.language === "javascript");
       expect(javascript?.percentage).toBeCloseTo(16.67, 2); // 300/1800 * 100
     });

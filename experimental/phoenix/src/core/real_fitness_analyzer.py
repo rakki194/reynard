@@ -32,7 +32,7 @@ class RealFitnessAnalyzer:
             "efficiency": 0.2,
             "creativity": 0.15,
             "consistency": 0.15,
-            "generalization": 0.2
+            "generalization": 0.2,
         }
 
         # Performance thresholds
@@ -40,10 +40,12 @@ class RealFitnessAnalyzer:
             "excellent": 0.8,
             "good": 0.6,
             "average": 0.4,
-            "poor": 0.2
+            "poor": 0.2,
         }
 
-    async def analyze_generation_fitness(self, agents: List[AgentState]) -> EvolutionStatistics:
+    async def analyze_generation_fitness(
+        self, agents: List[AgentState]
+    ) -> EvolutionStatistics:
         """
         Analyze real fitness data for a generation of agents.
         """
@@ -81,7 +83,9 @@ class RealFitnessAnalyzer:
         median_fitness = np.median(fitness_array)
 
         # Calculate performance distribution
-        performance_distribution = self._calculate_performance_distribution(fitness_array)
+        performance_distribution = self._calculate_performance_distribution(
+            fitness_array
+        )
 
         # Calculate diversity metrics
         diversity_score = self._calculate_diversity_score(agents)
@@ -101,7 +105,7 @@ class RealFitnessAnalyzer:
             performance_distribution=performance_distribution,
             diversity_score=diversity_score,
             convergence_metrics=convergence_metrics,
-            timestamp=datetime.now()
+            timestamp=datetime.now(),
         )
 
     def _create_empty_statistics(self) -> EvolutionStatistics:
@@ -118,7 +122,7 @@ class RealFitnessAnalyzer:
             performance_distribution={},
             diversity_score=0.0,
             convergence_metrics={},
-            timestamp=datetime.now()
+            timestamp=datetime.now(),
         )
 
     def _calculate_fitness_from_traits(self, agent: AgentState) -> float:
@@ -158,21 +162,16 @@ class RealFitnessAnalyzer:
 
         # Weighted combination
         total_fitness = (
-            personality_fitness * 0.4 +
-            ability_fitness * 0.4 +
-            physical_fitness * 0.2
+            personality_fitness * 0.4 + ability_fitness * 0.4 + physical_fitness * 0.2
         )
 
         return min(total_fitness, 1.0)
 
-    def _calculate_performance_distribution(self, fitness_scores: np.ndarray) -> Dict[str, int]:
+    def _calculate_performance_distribution(
+        self, fitness_scores: np.ndarray
+    ) -> Dict[str, int]:
         """Calculate performance distribution across quality levels."""
-        distribution = {
-            "excellent": 0,
-            "good": 0,
-            "average": 0,
-            "poor": 0
-        }
+        distribution = {"excellent": 0, "good": 0, "average": 0, "poor": 0}
 
         for score in fitness_scores:
             if score >= self.performance_thresholds["excellent"]:
@@ -243,14 +242,14 @@ class RealFitnessAnalyzer:
 
         # Combined diversity score
         total_diversity = (
-            spirit_diversity * 0.3 +
-            style_diversity * 0.2 +
-            trait_diversity * 0.5
+            spirit_diversity * 0.3 + style_diversity * 0.2 + trait_diversity * 0.5
         )
 
         return min(total_diversity, 1.0)
 
-    def _calculate_convergence_metrics(self, fitness_scores: np.ndarray) -> Dict[str, float]:
+    def _calculate_convergence_metrics(
+        self, fitness_scores: np.ndarray
+    ) -> Dict[str, float]:
         """Calculate convergence metrics for the population."""
         if len(fitness_scores) <= 1:
             return {"convergence_rate": 0.0, "stability": 0.0}
@@ -264,13 +263,11 @@ class RealFitnessAnalyzer:
         deviations = np.abs(fitness_scores - mean_score)
         stability = 1.0 - np.mean(deviations)
 
-        return {
-            "convergence_rate": convergence_rate,
-            "stability": max(stability, 0.0)
-        }
+        return {"convergence_rate": convergence_rate, "stability": max(stability, 0.0)}
 
-    async def get_real_fitness_distribution(self, agents: List[AgentState],
-                                          n_samples: int = 100) -> np.ndarray:
+    async def get_real_fitness_distribution(
+        self, agents: List[AgentState], n_samples: int = 100
+    ) -> np.ndarray:
         """
         Get real fitness distribution from actual agent data.
         Replaces the simulated fitness distribution.
@@ -302,12 +299,15 @@ class RealFitnessAnalyzer:
         fitness_array = np.array(fitness_scores)
         # Use systematic sampling instead of random bootstrap
         step = len(fitness_array) / n_samples
-        bootstrap_samples = np.array([fitness_array[int(i * step)] for i in range(n_samples)])
+        bootstrap_samples = np.array(
+            [fitness_array[int(i * step)] for i in range(n_samples)]
+        )
 
         return bootstrap_samples
 
-    async def compare_generations(self, generation1: List[AgentState],
-                                generation2: List[AgentState]) -> Dict[str, Any]:
+    async def compare_generations(
+        self, generation1: List[AgentState], generation2: List[AgentState]
+    ) -> Dict[str, Any]:
         """
         Compare fitness between two generations using real data.
         """
@@ -329,11 +329,16 @@ class RealFitnessAnalyzer:
         if len(fitness1) > 0 and len(fitness2) > 0:
             # Perform t-test
             from scipy import stats
+
             t_stat, p_value = stats.ttest_ind(fitness2, fitness1)
 
             # Calculate effect size (Cohen's d)
             pooled_std = np.sqrt((np.var(fitness1) + np.var(fitness2)) / 2)
-            effect_size = (np.mean(fitness2) - np.mean(fitness1)) / pooled_std if pooled_std > 0 else 0.0
+            effect_size = (
+                (np.mean(fitness2) - np.mean(fitness1)) / pooled_std
+                if pooled_std > 0
+                else 0.0
+            )
         else:
             t_stat, p_value, effect_size = 0.0, 1.0, 0.0
 
@@ -347,5 +352,7 @@ class RealFitnessAnalyzer:
             "p_value": p_value,
             "effect_size": effect_size,
             "is_significant": p_value < 0.05,
-            "improvement_direction": "positive" if fitness_improvement > 0 else "negative"
+            "improvement_direction": (
+                "positive" if fitness_improvement > 0 else "negative"
+            ),
         }

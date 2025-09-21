@@ -288,7 +288,6 @@ module = [
 ]
 ignore_missing_imports = true
 
-
 [tool.ruff]
 target-version = "py313"
 line-length = 88
@@ -475,7 +474,6 @@ exclude_lines = [
     "# noqa",
     "# fmt: skip",
 ]
-
 [tool.coverage.html]
 directory = "htmlcov"
 

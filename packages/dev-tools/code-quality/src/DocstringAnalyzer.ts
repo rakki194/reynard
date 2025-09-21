@@ -274,8 +274,12 @@ export class DocstringAnalyzer {
       }
 
       // Class definition (skip comment lines)
-      if ((line.startsWith("class ") || line.includes(" class ")) && 
-          !line.trim().startsWith("//") && !line.trim().startsWith("*") && !line.trim().startsWith("/*")) {
+      if (
+        (line.startsWith("class ") || line.includes(" class ")) &&
+        !line.trim().startsWith("//") &&
+        !line.trim().startsWith("*") &&
+        !line.trim().startsWith("/*")
+      ) {
         const className = this.extractTypeScriptClassName(line);
         const classDocstring = this.extractTypeScriptClassDocstring(lines, i);
         classes.push(classDocstring);
@@ -350,14 +354,14 @@ export class DocstringAnalyzer {
 
   private extractPythonFunctionDocstring(lines: string[], funcLine: number): FunctionDocstring {
     const funcName = this.extractPythonFunctionName(lines[funcLine]);
-    
+
     // Look for docstring in the function body
     for (let i = funcLine + 1; i < lines.length; i++) {
       const line = lines[i].trim();
-      
+
       // Skip empty lines and comments
       if (!line || line.startsWith("#")) continue;
-      
+
       // Check for docstring
       if (line.startsWith('"""') || line.startsWith("'''")) {
         const docstring = this.extractPythonDocstring(lines, i);
@@ -370,7 +374,7 @@ export class DocstringAnalyzer {
           issues: this.identifyDocstringIssues(docstring, this.minFunctionDocstringLength, "function"),
         };
       }
-      
+
       // If we hit non-empty, non-comment code, no docstring
       if (line && !line.startsWith("#")) {
         break;
@@ -389,14 +393,14 @@ export class DocstringAnalyzer {
 
   private extractPythonClassDocstring(lines: string[], classLine: number): ClassDocstring {
     const className = this.extractPythonClassName(lines[classLine]);
-    
+
     // Look for docstring in the class body
     for (let i = classLine + 1; i < lines.length; i++) {
       const line = lines[i].trim();
-      
+
       // Skip empty lines and comments
       if (!line || line.startsWith("#")) continue;
-      
+
       // Check for docstring
       if (line.startsWith('"""') || line.startsWith("'''")) {
         const docstring = this.extractPythonDocstring(lines, i);
@@ -409,7 +413,7 @@ export class DocstringAnalyzer {
           issues: this.identifyDocstringIssues(docstring, this.minClassDocstringLength, "class"),
         };
       }
-      
+
       // If we hit non-empty, non-comment code, no docstring
       if (line && !line.startsWith("#")) {
         break;
@@ -430,12 +434,12 @@ export class DocstringAnalyzer {
     const startLineContent = lines[startLine].trim();
     const isTripleQuote = startLineContent.startsWith('"""');
     const quoteType = isTripleQuote ? '"""' : "'''";
-    
+
     // Single line docstring
     if (startLineContent.endsWith(quoteType) && startLineContent.length > 6) {
       return startLineContent.slice(3, -3).trim();
     }
-    
+
     // Multi-line docstring
     let docstring = startLineContent.slice(3).trim();
     for (let i = startLine + 1; i < lines.length; i++) {
@@ -447,7 +451,7 @@ export class DocstringAnalyzer {
       }
       docstring += "\n" + line.trim();
     }
-    
+
     return docstring.trim();
   }
 
@@ -492,14 +496,14 @@ export class DocstringAnalyzer {
 
   private extractTypeScriptFunctionDocstring(lines: string[], funcLine: number): FunctionDocstring {
     const funcName = this.extractTypeScriptFunctionName(lines[funcLine]);
-    
+
     // Look for JSDoc before the function
     for (let i = funcLine - 1; i >= 0; i--) {
       const line = lines[i].trim();
-      
+
       // Skip empty lines
       if (!line) continue;
-      
+
       // Check for JSDoc
       if (line.startsWith("/**")) {
         const docstring = this.extractTypeScriptDocstring(lines, i);
@@ -512,7 +516,7 @@ export class DocstringAnalyzer {
           issues: this.identifyDocstringIssues(docstring, this.minFunctionDocstringLength, "function"),
         };
       }
-      
+
       // If we hit non-empty, non-comment code, no docstring
       if (line && !line.startsWith("//") && !line.startsWith("*")) {
         break;
@@ -531,14 +535,14 @@ export class DocstringAnalyzer {
 
   private extractTypeScriptClassDocstring(lines: string[], classLine: number): ClassDocstring {
     const className = this.extractTypeScriptClassName(lines[classLine]);
-    
+
     // Look for JSDoc before the class
     for (let i = classLine - 1; i >= 0; i--) {
       const line = lines[i].trim();
-      
+
       // Skip empty lines
       if (!line) continue;
-      
+
       // Check for JSDoc
       if (line.startsWith("/**")) {
         const docstring = this.extractTypeScriptDocstring(lines, i);
@@ -551,7 +555,7 @@ export class DocstringAnalyzer {
           issues: this.identifyDocstringIssues(docstring, this.minClassDocstringLength, "class"),
         };
       }
-      
+
       // If we hit non-empty, non-comment code, no docstring
       if (line && !line.startsWith("//") && !line.startsWith("*")) {
         break;
@@ -570,10 +574,10 @@ export class DocstringAnalyzer {
 
   private extractTypeScriptDocstring(lines: string[], startLine: number): string {
     let docstring = "";
-    
+
     for (let i = startLine; i < lines.length; i++) {
       const line = lines[i].trim();
-      
+
       if (line.startsWith("/**")) {
         docstring += line.slice(3).trim();
       } else if (line.startsWith("*")) {
@@ -584,7 +588,7 @@ export class DocstringAnalyzer {
         break;
       }
     }
-    
+
     return docstring.trim();
   }
 
@@ -593,7 +597,7 @@ export class DocstringAnalyzer {
     if (line.trim().startsWith("//") || line.trim().startsWith("*") || line.trim().startsWith("/*")) {
       return false;
     }
-    
+
     return (
       line.includes("function ") ||
       line.includes("=>") ||
@@ -606,13 +610,13 @@ export class DocstringAnalyzer {
     // Try various function patterns
     let match = line.match(/function\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/);
     if (match) return match[1];
-    
+
     match = line.match(/(?:const|let|var)\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s*[=:]/);
     if (match) return match[1];
-    
+
     match = line.match(/([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\(/);
     if (match) return match[1];
-    
+
     return "unknown";
   }
 
@@ -622,63 +626,84 @@ export class DocstringAnalyzer {
   }
 
   // Quality assessment methods
-  private assessDocstringQuality(docstring: string, minLength: number, context: "function" | "class" | "module" = "function"): "excellent" | "good" | "poor" | "missing" {
+  private assessDocstringQuality(
+    docstring: string,
+    minLength: number,
+    context: "function" | "class" | "module" = "function"
+  ): "excellent" | "good" | "poor" | "missing" {
     if (!docstring) return "missing";
-    
+
     if (docstring.length < minLength) return "poor";
-    
+
     // Check for common quality indicators
     const hasDescription = docstring.length > minLength;
-    const hasParameters = docstring.includes("@param") || docstring.includes("Parameters:") || docstring.includes("Args:");
-    const hasReturns = docstring.includes("@return") || docstring.includes("Returns:") || docstring.includes("@returns");
+    const hasParameters =
+      docstring.includes("@param") || docstring.includes("Parameters:") || docstring.includes("Args:");
+    const hasReturns =
+      docstring.includes("@return") || docstring.includes("Returns:") || docstring.includes("@returns");
     const hasExamples = docstring.includes("@example") || docstring.includes("Example:");
-    
+
     // For functions, use all quality indicators
     if (context === "function") {
-      const qualityScore = (hasDescription ? 1 : 0) + (hasParameters ? 1 : 0) + (hasReturns ? 1 : 0) + (hasExamples ? 1 : 0);
-      
+      const qualityScore =
+        (hasDescription ? 1 : 0) + (hasParameters ? 1 : 0) + (hasReturns ? 1 : 0) + (hasExamples ? 1 : 0);
+
       if (qualityScore >= 3) return "excellent";
       if (qualityScore >= 2) return "good";
       return "poor";
     }
-    
+
     // For classes and modules, be more lenient - just need a good description
     if (context === "class" || context === "module") {
       if (hasDescription && docstring.length >= minLength * 1.5) return "excellent";
       if (hasDescription) return "good";
       return "poor";
     }
-    
+
     return "poor";
   }
 
-  private identifyDocstringIssues(docstring: string, minLength: number, context: "function" | "class" | "module" = "function"): string[] {
+  private identifyDocstringIssues(
+    docstring: string,
+    minLength: number,
+    context: "function" | "class" | "module" = "function"
+  ): string[] {
     const issues: string[] = [];
-    
+
     if (!docstring) {
       issues.push("Missing docstring");
       return issues;
     }
-    
+
     if (docstring.length < minLength) {
       issues.push(`Docstring too short (${docstring.length} chars, minimum ${minLength})`);
     }
-    
+
     // Only check for parameter documentation for functions
-    if (context === "function" && !docstring.includes("@param") && !docstring.includes("Parameters:") && !docstring.includes("Args:")) {
+    if (
+      context === "function" &&
+      !docstring.includes("@param") &&
+      !docstring.includes("Parameters:") &&
+      !docstring.includes("Args:")
+    ) {
       issues.push("Missing parameter documentation");
     }
-    
+
     // Only check for return value documentation for functions
-    if (context === "function" && !docstring.includes("@return") && !docstring.includes("Returns:") && !docstring.includes("@returns")) {
+    if (
+      context === "function" &&
+      !docstring.includes("@return") &&
+      !docstring.includes("Returns:") &&
+      !docstring.includes("@returns")
+    ) {
       issues.push("Missing return value documentation");
     }
-    
+
     // Only check for usage examples for functions
     if (context === "function" && !docstring.includes("@example") && !docstring.includes("Example:")) {
       issues.push("Missing usage examples");
     }
-    
+
     return issues;
   }
 
@@ -698,7 +723,13 @@ export class DocstringAnalyzer {
     };
   }
 
-  private createPoorDocstringIssue(file: string, line: number, type: string, name: string, issues: string[]): QualityIssue {
+  private createPoorDocstringIssue(
+    file: string,
+    line: number,
+    type: string,
+    name: string,
+    issues: string[]
+  ): QualityIssue {
     return {
       id: `docstring-poor-${file}:${line}`,
       type: "CODE_SMELL" as IssueType,

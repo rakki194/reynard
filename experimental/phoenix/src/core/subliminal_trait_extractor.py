@@ -21,7 +21,7 @@ from ..utils.data_structures import (
     AgentGeneticMaterial,
     SubliminalTrait,
     TraitCategory,
-    StructuredKnowledge
+    StructuredKnowledge,
 )
 
 
@@ -45,10 +45,10 @@ class SubliminalTraitExtractor:
 
         # Semantic analysis weights
         self.semantic_weights = {
-            'lexical': 0.3,
-            'syntactic': 0.2,
-            'semantic': 0.3,
-            'contextual': 0.2
+            "lexical": 0.3,
+            "syntactic": 0.2,
+            "semantic": 0.3,
+            "contextual": 0.2,
         }
 
         self.logger.info("🧠 Subliminal trait extractor initialized")
@@ -61,114 +61,177 @@ class SubliminalTraitExtractor:
                 "lexical_patterns": [
                     r"\b(analyze|examine|evaluate|assess|scrutinize|investigate)\b",
                     r"\b(logical|systematic|methodical|rational)\b",
-                    r"\b(consider|review|assess|evaluate)\b"
+                    r"\b(consider|review|assess|evaluate)\b",
                 ],
                 "syntactic_patterns": [
                     r"let me \w+ (analyze|examine|evaluate)",
                     r"considering \w+ factors",
                     r"based on \w+ analysis",
-                    r"systematic \w+ approach"
+                    r"systematic \w+ approach",
                 ],
-                "semantic_indicators": ["analysis", "evaluation", "assessment", "reasoning"],
-                "contextual_cues": ["data", "evidence", "facts", "metrics", "statistics"],
-                "confidence_boosters": ["thoroughly", "carefully", "systematically", "methodically"],
-                "category": TraitCategory.COGNITIVE
+                "semantic_indicators": [
+                    "analysis",
+                    "evaluation",
+                    "assessment",
+                    "reasoning",
+                ],
+                "contextual_cues": [
+                    "data",
+                    "evidence",
+                    "facts",
+                    "metrics",
+                    "statistics",
+                ],
+                "confidence_boosters": [
+                    "thoroughly",
+                    "carefully",
+                    "systematically",
+                    "methodically",
+                ],
+                "category": TraitCategory.COGNITIVE,
             },
-
             "creative_thinking": {
                 "lexical_patterns": [
                     r"\b(innovative|creative|novel|original|unique)\b",
                     r"\b(imagine|design|craft|invent|create)\b",
-                    r"\b(artistic|aesthetic|beautiful|elegant)\b"
+                    r"\b(artistic|aesthetic|beautiful|elegant)\b",
                 ],
                 "syntactic_patterns": [
                     r"what if \w+",
                     r"imagine \w+",
                     r"creative \w+ solution",
-                    r"innovative \w+ approach"
+                    r"innovative \w+ approach",
                 ],
-                "semantic_indicators": ["creativity", "innovation", "design", "artistry"],
+                "semantic_indicators": [
+                    "creativity",
+                    "innovation",
+                    "design",
+                    "artistry",
+                ],
                 "contextual_cues": ["ideas", "concepts", "solutions", "approaches"],
-                "confidence_boosters": ["brilliant", "inspired", "original", "groundbreaking"],
-                "category": TraitCategory.CREATIVE
+                "confidence_boosters": [
+                    "brilliant",
+                    "inspired",
+                    "original",
+                    "groundbreaking",
+                ],
+                "category": TraitCategory.CREATIVE,
             },
-
             # Leadership and Social Traits
             "leadership": {
                 "lexical_patterns": [
                     r"\b(lead|guide|direct|manage|coordinate|oversee)\b",
                     r"\b(command|authority|influence|inspire|motivate)\b",
-                    r"\b(mentor|coach|teach|guide)\b"
+                    r"\b(mentor|coach|teach|guide)\b",
                 ],
                 "syntactic_patterns": [
                     r"let me \w+ (lead|guide|direct)",
                     r"we should \w+",
                     r"i recommend \w+",
-                    r"take charge \w+"
+                    r"take charge \w+",
                 ],
-                "semantic_indicators": ["leadership", "management", "guidance", "direction"],
+                "semantic_indicators": [
+                    "leadership",
+                    "management",
+                    "guidance",
+                    "direction",
+                ],
                 "contextual_cues": ["team", "group", "project", "initiative"],
-                "confidence_boosters": ["confidently", "authoritatively", "decisively", "strategically"],
-                "category": TraitCategory.PERSONALITY
+                "confidence_boosters": [
+                    "confidently",
+                    "authoritatively",
+                    "decisively",
+                    "strategically",
+                ],
+                "category": TraitCategory.PERSONALITY,
             },
-
             "collaboration": {
                 "lexical_patterns": [
                     r"\b(collaborate|cooperate|work together|team up)\b",
                     r"\b(partner|ally|colleague|teammate)\b",
-                    r"\b(share|contribute|support|help)\b"
+                    r"\b(share|contribute|support|help)\b",
                 ],
                 "syntactic_patterns": [
                     r"let's \w+ together",
                     r"we can \w+",
                     r"working with \w+",
-                    r"team effort \w+"
+                    r"team effort \w+",
                 ],
-                "semantic_indicators": ["collaboration", "cooperation", "teamwork", "partnership"],
+                "semantic_indicators": [
+                    "collaboration",
+                    "cooperation",
+                    "teamwork",
+                    "partnership",
+                ],
                 "contextual_cues": ["team", "group", "together", "collective"],
-                "confidence_boosters": ["enthusiastically", "willingly", "actively", "positively"],
-                "category": TraitCategory.SOCIAL
+                "confidence_boosters": [
+                    "enthusiastically",
+                    "willingly",
+                    "actively",
+                    "positively",
+                ],
+                "category": TraitCategory.SOCIAL,
             },
-
             # Problem-Solving Traits
             "problem_solving": {
                 "lexical_patterns": [
                     r"\b(solve|resolve|fix|address|tackle|handle)\b",
                     r"\b(solution|approach|strategy|method)\b",
-                    r"\b(debug|troubleshoot|diagnose)\b"
+                    r"\b(debug|troubleshoot|diagnose)\b",
                 ],
                 "syntactic_patterns": [
                     r"let me \w+ (solve|fix|address)",
                     r"the solution \w+",
                     r"approach to \w+",
-                    r"strategy for \w+"
+                    r"strategy for \w+",
                 ],
-                "semantic_indicators": ["problem-solving", "troubleshooting", "debugging", "resolution"],
+                "semantic_indicators": [
+                    "problem-solving",
+                    "troubleshooting",
+                    "debugging",
+                    "resolution",
+                ],
                 "contextual_cues": ["issue", "problem", "challenge", "obstacle"],
-                "confidence_boosters": ["effectively", "efficiently", "successfully", "systematically"],
-                "category": TraitCategory.COGNITIVE
+                "confidence_boosters": [
+                    "effectively",
+                    "efficiently",
+                    "successfully",
+                    "systematically",
+                ],
+                "category": TraitCategory.COGNITIVE,
             },
-
             "adaptability": {
                 "lexical_patterns": [
                     r"\b(adapt|adjust|modify|change|flexible)\b",
                     r"\b(versatile|dynamic|responsive|agile)\b",
-                    r"\b(evolve|transform|shift|pivot)\b"
+                    r"\b(evolve|transform|shift|pivot)\b",
                 ],
                 "syntactic_patterns": [
                     r"adapt to \w+",
                     r"adjust \w+ approach",
                     r"flexible \w+",
-                    r"responsive to \w+"
+                    r"responsive to \w+",
                 ],
-                "semantic_indicators": ["adaptability", "flexibility", "versatility", "responsiveness"],
-                "contextual_cues": ["change", "environment", "circumstances", "requirements"],
+                "semantic_indicators": [
+                    "adaptability",
+                    "flexibility",
+                    "versatility",
+                    "responsiveness",
+                ],
+                "contextual_cues": [
+                    "change",
+                    "environment",
+                    "circumstances",
+                    "requirements",
+                ],
                 "confidence_boosters": ["quickly", "easily", "seamlessly", "naturally"],
-                "category": TraitCategory.BEHAVIORAL
-            }
+                "category": TraitCategory.BEHAVIORAL,
+            },
         }
 
-    def extract_traits_from_output(self, agent_output: str, agent_state: AgentState) -> List[SubliminalTrait]:
+    def extract_traits_from_output(
+        self, agent_output: str, agent_state: AgentState
+    ) -> List[SubliminalTrait]:
         """
         Extract subliminal traits from agent output using multi-modal analysis.
 
@@ -179,7 +242,9 @@ class SubliminalTraitExtractor:
         Returns:
             List of extracted subliminal traits
         """
-        self.logger.debug(f"Extracting traits from output of length {len(agent_output)}")
+        self.logger.debug(
+            f"Extracting traits from output of length {len(agent_output)}"
+        )
 
         extracted_traits = []
 
@@ -192,8 +257,12 @@ class SubliminalTraitExtractor:
                     name=trait_name,
                     strength=trait_score,
                     category=pattern_data["category"],
-                    manifestation=self._extract_manifestation(agent_output, pattern_data),
-                    confidence=self._calculate_confidence(agent_output, pattern_data, trait_score)
+                    manifestation=self._extract_manifestation(
+                        agent_output, pattern_data
+                    ),
+                    confidence=self._calculate_confidence(
+                        agent_output, pattern_data, trait_score
+                    ),
                 )
                 extracted_traits.append(trait)
 
@@ -205,28 +274,39 @@ class SubliminalTraitExtractor:
         scores = {}
 
         # Lexical analysis
-        lexical_score = self._analyze_lexical_patterns(text, pattern_data["lexical_patterns"])
+        lexical_score = self._analyze_lexical_patterns(
+            text, pattern_data["lexical_patterns"]
+        )
         scores["lexical"] = lexical_score
 
         # Syntactic analysis
-        syntactic_score = self._analyze_syntactic_patterns(text, pattern_data["syntactic_patterns"])
+        syntactic_score = self._analyze_syntactic_patterns(
+            text, pattern_data["syntactic_patterns"]
+        )
         scores["syntactic"] = syntactic_score
 
         # Semantic analysis
-        semantic_score = self._analyze_semantic_indicators(text, pattern_data["semantic_indicators"])
+        semantic_score = self._analyze_semantic_indicators(
+            text, pattern_data["semantic_indicators"]
+        )
         scores["semantic"] = semantic_score
 
         # Contextual analysis
-        contextual_score = self._analyze_contextual_cues(text, pattern_data["contextual_cues"])
+        contextual_score = self._analyze_contextual_cues(
+            text, pattern_data["contextual_cues"]
+        )
         scores["contextual"] = contextual_score
 
         # Weighted combination
-        total_score = sum(scores[modality] * self.semantic_weights[modality]
-                         for modality in scores)
+        total_score = sum(
+            scores[modality] * self.semantic_weights[modality] for modality in scores
+        )
 
         # Apply confidence boosters
-        confidence_boost = self._calculate_confidence_boost(text, pattern_data["confidence_boosters"])
-        total_score *= (1 + confidence_boost)
+        confidence_boost = self._calculate_confidence_boost(
+            text, pattern_data["confidence_boosters"]
+        )
+        total_score *= 1 + confidence_boost
 
         return min(1.0, total_score)
 
@@ -281,26 +361,34 @@ class SubliminalTraitExtractor:
 
         return "; ".join(manifestations[:3])  # Limit to 3 total manifestations
 
-    def _calculate_confidence(self, text: str, pattern_data: Dict[str, Any], trait_score: float) -> float:
+    def _calculate_confidence(
+        self, text: str, pattern_data: Dict[str, Any], trait_score: float
+    ) -> float:
         """Calculate confidence in trait extraction."""
         base_confidence = trait_score
 
         # Boost confidence for multiple pattern matches
         pattern_matches = 0
-        for pattern_list in [pattern_data["lexical_patterns"], pattern_data["syntactic_patterns"]]:
+        for pattern_list in [
+            pattern_data["lexical_patterns"],
+            pattern_data["syntactic_patterns"],
+        ]:
             for pattern in pattern_list:
                 if re.search(pattern, text, re.IGNORECASE):
                     pattern_matches += 1
 
         # Boost confidence for contextual coherence
-        contextual_matches = sum(1 for cue in pattern_data["contextual_cues"]
-                               if cue.lower() in text.lower())
+        contextual_matches = sum(
+            1 for cue in pattern_data["contextual_cues"] if cue.lower() in text.lower()
+        )
 
         confidence_boost = (pattern_matches * 0.05) + (contextual_matches * 0.1)
 
         return min(1.0, base_confidence + confidence_boost)
 
-    def analyze_trait_correlations(self, traits: List[SubliminalTrait]) -> Dict[str, float]:
+    def analyze_trait_correlations(
+        self, traits: List[SubliminalTrait]
+    ) -> Dict[str, float]:
         """Analyze correlations between extracted traits."""
         if len(traits) < 2:
             return {}
@@ -311,17 +399,21 @@ class SubliminalTraitExtractor:
 
         # Calculate pairwise correlations
         for i, trait1 in enumerate(traits):
-            for j, trait2 in enumerate(traits[i+1:], i+1):
+            for j, trait2 in enumerate(traits[i + 1 :], i + 1):
                 correlation_key = f"{trait1.name}_{trait2.name}"
 
                 # Simple correlation based on strength similarity
                 strength_correlation = 1.0 - abs(trait1.strength - trait2.strength)
 
                 # Category-based correlation
-                category_correlation = 1.0 if trait1.category == trait2.category else 0.5
+                category_correlation = (
+                    1.0 if trait1.category == trait2.category else 0.5
+                )
 
                 # Combined correlation
-                combined_correlation = (strength_correlation * 0.6 + category_correlation * 0.4)
+                combined_correlation = (
+                    strength_correlation * 0.6 + category_correlation * 0.4
+                )
                 correlations[correlation_key] = combined_correlation
 
         return correlations
@@ -343,27 +435,32 @@ class SubliminalTraitExtractor:
         for category, category_traits in trait_categories.items():
             if len(category_traits) > 1:
                 for i, trait1 in enumerate(category_traits):
-                    for trait2 in category_traits[i+1:]:
+                    for trait2 in category_traits[i + 1 :]:
                         total_pairs += 1
                         # Check for potential contradictions
                         if self._are_contradictory(trait1, trait2):
                             contradictions += 1
 
-        consistency_score = 1.0 - (contradictions / total_pairs) if total_pairs > 0 else 1.0
+        consistency_score = (
+            1.0 - (contradictions / total_pairs) if total_pairs > 0 else 1.0
+        )
         return max(0.0, consistency_score)
 
-    def _are_contradictory(self, trait1: SubliminalTrait, trait2: SubliminalTrait) -> bool:
+    def _are_contradictory(
+        self, trait1: SubliminalTrait, trait2: SubliminalTrait
+    ) -> bool:
         """Check if two traits are contradictory."""
         # Define contradictory trait pairs
         contradictory_pairs = [
             ("analytical_thinking", "creative_thinking"),
             ("leadership", "collaboration"),
-            ("problem_solving", "adaptability")
+            ("problem_solving", "adaptability"),
         ]
 
         for pair in contradictory_pairs:
-            if ((trait1.name == pair[0] and trait2.name == pair[1]) or
-                (trait1.name == pair[1] and trait2.name == pair[0])):
+            if (trait1.name == pair[0] and trait2.name == pair[1]) or (
+                trait1.name == pair[1] and trait2.name == pair[0]
+            ):
                 # Check if both traits have high strength (contradiction)
                 if trait1.strength > 0.7 and trait2.strength > 0.7:
                     return True

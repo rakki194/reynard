@@ -32,7 +32,7 @@ describe("MetricsCalculator", () => {
   beforeEach(() => {
     calculator = new MetricsCalculator();
     tempDir = join(process.cwd(), "temp-test-files");
-    
+
     // Create temp directory if it doesn't exist
     if (!existsSync(tempDir)) {
       mkdirSync(tempDir, { recursive: true });
@@ -97,10 +97,7 @@ class DocumentedClass:
     });
 
     it("should handle files with no docstring content", async () => {
-      const nonDocstringFiles = [
-        join(tempDir, "test.txt"),
-        join(tempDir, "test.json"),
-      ];
+      const nonDocstringFiles = [join(tempDir, "test.txt"), join(tempDir, "test.json")];
 
       writeFileSync(nonDocstringFiles[0], "This is a text file");
       writeFileSync(nonDocstringFiles[1], '{"key": "value"}');

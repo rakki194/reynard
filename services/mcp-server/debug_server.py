@@ -38,6 +38,7 @@ try:
     print("\nTesting tool router...")
     # Create a simple tool registry for testing
     from protocol.tool_registry import ToolRegistry
+
     registry = ToolRegistry()
     router = ToolRouter(registry)
     print("✓ ToolRouter created")

@@ -31,21 +31,10 @@ class TestAgentState:
             style=NamingStyle.FOUNDATION,
             generation=42,
             specialization="Testing and Quality Assurance",
-            traits={
-                "dominance": 0.7,
-                "independence": 0.8,
-                "patience": 0.9
-            },
-            abilities={
-                "strategist": 0.9,
-                "hunter": 0.7,
-                "teacher": 0.8
-            },
+            traits={"dominance": 0.7, "independence": 0.8, "patience": 0.9},
+            abilities={"strategist": 0.9, "hunter": 0.7, "teacher": 0.8},
             performance_history=[],
-            knowledge_base={
-                "testing": 0.9,
-                "quality": 0.8
-            }
+            knowledge_base={"testing": 0.9, "quality": 0.8},
         )
 
         # Test basic properties
@@ -65,14 +54,10 @@ class TestAgentState:
             style=NamingStyle.FOUNDATION,
             generation=42,
             specialization="Testing",
-            traits={
-                "dominance": 0.7,
-                "independence": 0.8,
-                "patience": 0.9
-            },
+            traits={"dominance": 0.7, "independence": 0.8, "patience": 0.9},
             abilities={},
             performance_history=[],
-            knowledge_base={}
+            knowledge_base={},
         )
 
         # Test trait structure
@@ -94,13 +79,9 @@ class TestAgentState:
             generation=42,
             specialization="Testing",
             traits={},
-            abilities={
-                "strategist": 0.9,
-                "hunter": 0.7,
-                "teacher": 0.8
-            },
+            abilities={"strategist": 0.9, "hunter": 0.7, "teacher": 0.8},
             performance_history=[],
-            knowledge_base={}
+            knowledge_base={},
         )
 
         # Test ability structure
@@ -124,11 +105,7 @@ class TestAgentState:
             traits={},
             abilities={},
             performance_history=[],
-            knowledge_base={
-                "testing": 0.9,
-                "quality": 0.8,
-                "automation": 0.7
-            }
+            knowledge_base={"testing": 0.9, "quality": 0.8, "automation": 0.7},
         )
 
         # Test knowledge base structure
@@ -147,14 +124,14 @@ class TestAgentState:
                 "timestamp": "2025-01-15T10:30:00Z",
                 "action": "test_action",
                 "success": True,
-                "details": "Test performance entry"
+                "details": "Test performance entry",
             },
             {
                 "timestamp": "2025-01-15T11:00:00Z",
                 "action": "another_action",
                 "success": False,
-                "details": "Another test performance entry"
-            }
+                "details": "Another test performance entry",
+            },
         ]
 
         agent_state = AgentState(
@@ -167,7 +144,7 @@ class TestAgentState:
             traits={},
             abilities={},
             performance_history=performance_history,
-            knowledge_base={}
+            knowledge_base={},
         )
 
         # Test performance history structure
@@ -192,7 +169,7 @@ class TestAgentState:
             traits={"dominance": 0.7},
             abilities={"strategist": 0.9},
             performance_history=[],
-            knowledge_base={"testing": 0.9}
+            knowledge_base={"testing": 0.9},
         )
 
         # Test serialization to dict
@@ -222,7 +199,7 @@ class TestAgentState:
             traits={"dominance": 0.7},
             abilities={"strategist": 0.9},
             performance_history=[],
-            knowledge_base={"testing": 0.9}
+            knowledge_base={"testing": 0.9},
         )
 
         # Serialize to dict
@@ -256,7 +233,7 @@ class TestAgentState:
             traits={"dominance": 0.7},
             abilities={"strategist": 0.9},
             performance_history=[],
-            knowledge_base={"testing": 0.9}
+            knowledge_base={"testing": 0.9},
         )
 
         # Test validation
@@ -273,7 +250,7 @@ class TestAgentState:
             traits={},
             abilities={},
             performance_history=[],
-            knowledge_base={}
+            knowledge_base={},
         )
 
         # Test validation failure
@@ -291,7 +268,7 @@ class TestAgentState:
             traits={"dominance": 0.7},
             abilities={"strategist": 0.9},
             performance_history=[],
-            knowledge_base={"testing": 0.9}
+            knowledge_base={"testing": 0.9},
         )
 
         agent_state2 = AgentState(
@@ -304,7 +281,7 @@ class TestAgentState:
             traits={"dominance": 0.7},
             abilities={"strategist": 0.9},
             performance_history=[],
-            knowledge_base={"testing": 0.9}
+            knowledge_base={"testing": 0.9},
         )
 
         # Test equality
@@ -321,7 +298,7 @@ class TestAgentState:
             traits={"dominance": 0.8},
             abilities={"strategist": 0.8},
             performance_history=[],
-            knowledge_base={"testing": 0.8}
+            knowledge_base={"testing": 0.8},
         )
 
         assert agent_state1 != agent_state3

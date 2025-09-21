@@ -16,8 +16,13 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from phoenix_control.src.utils.data_structures import (
-    SpiritType, NamingStyle, AgentState, PerformanceMetrics,
-    StatisticalSignificance, ReleaseConfig, QualityConfig
+    SpiritType,
+    NamingStyle,
+    AgentState,
+    PerformanceMetrics,
+    StatisticalSignificance,
+    ReleaseConfig,
+    QualityConfig,
 )
 
 
@@ -58,10 +63,16 @@ class TestSpiritType:
     def test_spirit_type_all_values(self):
         """Test all spirit type values are accessible."""
         all_spirits = [
-            SpiritType.FOX, SpiritType.WOLF, SpiritType.OTTER,
-            SpiritType.EAGLE, SpiritType.LION, SpiritType.TIGER,
-            SpiritType.DRAGON, SpiritType.PHOENIX, SpiritType.ALIEN,
-            SpiritType.YETI
+            SpiritType.FOX,
+            SpiritType.WOLF,
+            SpiritType.OTTER,
+            SpiritType.EAGLE,
+            SpiritType.LION,
+            SpiritType.TIGER,
+            SpiritType.DRAGON,
+            SpiritType.PHOENIX,
+            SpiritType.ALIEN,
+            SpiritType.YETI,
         ]
 
         for spirit in all_spirits:
@@ -99,8 +110,12 @@ class TestNamingStyle:
     def test_naming_style_all_values(self):
         """Test all naming style values are accessible."""
         all_styles = [
-            NamingStyle.FOUNDATION, NamingStyle.EXO, NamingStyle.HYBRID,
-            NamingStyle.CYBERPUNK, NamingStyle.MYTHOLOGICAL, NamingStyle.SCIENTIFIC
+            NamingStyle.FOUNDATION,
+            NamingStyle.EXO,
+            NamingStyle.HYBRID,
+            NamingStyle.CYBERPUNK,
+            NamingStyle.MYTHOLOGICAL,
+            NamingStyle.SCIENTIFIC,
         ]
 
         for style in all_styles:
@@ -121,7 +136,7 @@ class TestPerformanceMetrics:
             duration=1.5,
             memory_usage=128.5,
             cpu_usage=25.0,
-            details="Test performance metrics"
+            details="Test performance metrics",
         )
 
         # Test basic properties
@@ -136,9 +151,7 @@ class TestPerformanceMetrics:
     def test_performance_metrics_defaults(self):
         """Test performance metrics with default values."""
         metrics = PerformanceMetrics(
-            timestamp="2025-01-15T10:30:00Z",
-            action="test_action",
-            success=True
+            timestamp="2025-01-15T10:30:00Z", action="test_action", success=True
         )
 
         # Test default values
@@ -156,7 +169,7 @@ class TestPerformanceMetrics:
             duration=1.5,
             memory_usage=128.5,
             cpu_usage=25.0,
-            details="Test performance metrics"
+            details="Test performance metrics",
         )
 
         # Test serialization to dict
@@ -180,7 +193,7 @@ class TestPerformanceMetrics:
             duration=1.5,
             memory_usage=128.5,
             cpu_usage=25.0,
-            details="Test performance metrics"
+            details="Test performance metrics",
         )
 
         # Serialize to dict
@@ -210,7 +223,7 @@ class TestStatisticalSignificance:
             sample_size=100,
             effect_size=0.5,
             is_significant=True,
-            interpretation="Significant difference detected"
+            interpretation="Significant difference detected",
         )
 
         # Test basic properties
@@ -224,9 +237,7 @@ class TestStatisticalSignificance:
     def test_statistical_significance_defaults(self):
         """Test statistical significance with default values."""
         significance = StatisticalSignificance(
-            p_value=0.05,
-            confidence_level=0.95,
-            sample_size=100
+            p_value=0.05, confidence_level=0.95, sample_size=100
         )
 
         # Test default values
@@ -242,7 +253,7 @@ class TestStatisticalSignificance:
             sample_size=100,
             effect_size=0.5,
             is_significant=True,
-            interpretation="Significant difference detected"
+            interpretation="Significant difference detected",
         )
 
         # Test serialization to dict
@@ -264,7 +275,7 @@ class TestStatisticalSignificance:
             sample_size=100,
             effect_size=0.5,
             is_significant=True,
-            interpretation="Significant difference detected"
+            interpretation="Significant difference detected",
         )
 
         # Serialize to dict
@@ -294,7 +305,7 @@ class TestReleaseConfig:
             agent_state_tracking=True,
             create_tag=True,
             push_remote=False,
-            version_type="auto"
+            version_type="auto",
         )
 
         # Test basic properties
@@ -328,7 +339,7 @@ class TestReleaseConfig:
             agent_state_tracking=True,
             create_tag=True,
             push_remote=False,
-            version_type="auto"
+            version_type="auto",
         )
 
         # Test serialization to dict
@@ -352,7 +363,7 @@ class TestReleaseConfig:
             agent_state_tracking=True,
             create_tag=True,
             push_remote=False,
-            version_type="auto"
+            version_type="auto",
         )
 
         # Serialize to dict
@@ -384,7 +395,7 @@ class TestQualityConfig:
             enable_performance_testing=True,
             enable_documentation_validation=True,
             strict_mode=True,
-            auto_fix=True
+            auto_fix=True,
         )
 
         # Test basic properties
@@ -421,7 +432,7 @@ class TestQualityConfig:
             enable_performance_testing=True,
             enable_documentation_validation=True,
             strict_mode=True,
-            auto_fix=True
+            auto_fix=True,
         )
 
         # Test serialization to dict
@@ -447,7 +458,7 @@ class TestQualityConfig:
             enable_performance_testing=True,
             enable_documentation_validation=True,
             strict_mode=True,
-            auto_fix=True
+            auto_fix=True,
         )
 
         # Serialize to dict
@@ -461,8 +472,13 @@ class TestQualityConfig:
         assert new_config.enable_formatting == config.enable_formatting
         assert new_config.enable_type_checking == config.enable_type_checking
         assert new_config.enable_security_scanning == config.enable_security_scanning
-        assert new_config.enable_performance_testing == config.enable_performance_testing
-        assert new_config.enable_documentation_validation == config.enable_documentation_validation
+        assert (
+            new_config.enable_performance_testing == config.enable_performance_testing
+        )
+        assert (
+            new_config.enable_documentation_validation
+            == config.enable_documentation_validation
+        )
         assert new_config.strict_mode == config.strict_mode
         assert new_config.auto_fix == config.auto_fix
 

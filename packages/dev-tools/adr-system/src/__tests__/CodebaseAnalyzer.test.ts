@@ -95,7 +95,7 @@ describe("CodebaseAnalyzer", () => {
       const result = await analyzer.analyzeCodebase();
 
       expect(Array.isArray(result.patterns)).toBe(true);
-      
+
       // Check pattern structure if patterns exist
       if (result.patterns.length > 0) {
         const pattern = result.patterns[0];
@@ -141,7 +141,9 @@ describe("CodebaseAnalyzer", () => {
         expect(typeof suggestion.id).toBe("string");
         expect(typeof suggestion.title).toBe("string");
         expect(["low", "medium", "high", "critical"]).toContain(suggestion.priority);
-        expect(["security", "performance", "scalability", "integration", "maintainability"]).toContain(suggestion.category);
+        expect(["security", "performance", "scalability", "integration", "maintainability"]).toContain(
+          suggestion.category
+        );
         expect(Array.isArray(suggestion.reasoning)).toBe(true);
         expect(Array.isArray(suggestion.evidence)).toBe(true);
         expect(typeof suggestion.template).toBe("string");
@@ -154,7 +156,7 @@ describe("CodebaseAnalyzer", () => {
   describe("error handling", () => {
     it("should handle file read errors gracefully", async () => {
       const problematicAnalyzer = new CodebaseAnalyzer("/nonexistent/path");
-      
+
       const result = await problematicAnalyzer.analyzeCodebase();
       expect(result.metrics.totalFiles).toBe(0);
     });
@@ -162,7 +164,7 @@ describe("CodebaseAnalyzer", () => {
     it("should handle directory scan errors gracefully", async () => {
       const mockAnalyzer = new CodebaseAnalyzer("/invalid/path");
       const result = await mockAnalyzer.analyzeCodebase();
-      
+
       expect(result).toBeDefined();
       expect(result.metrics.totalFiles).toBe(0);
     });

@@ -1,6 +1,6 @@
 /**
  * Security Tab Component
- * 
+ *
  * Security tab content for the Code Quality Dashboard
  */
 
@@ -28,9 +28,9 @@ export const SecurityTab: Component<SecurityTabProps> = props => {
                 <div class="text-sm text-gray-600">Vulnerabilities</div>
               </div>
               <div class="text-center">
-                      <div class="text-3xl font-bold text-orange-600">
-                        {props.securityAnalysis?.summary.totalHotspots || 0}
-                      </div>
+                <div class="text-3xl font-bold text-orange-600">
+                  {props.securityAnalysis?.summary.totalHotspots || 0}
+                </div>
                 <div class="text-sm text-gray-600">Security Hotspots</div>
               </div>
               <div class="text-center">

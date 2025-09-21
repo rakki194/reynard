@@ -107,7 +107,7 @@ class BaseAgentTools:
         """Get the emoji for a specific animal spirit type."""
         spirit_str = arguments.get("spirit", "")
         emoji = await self.agent_manager.get_spirit_emoji(spirit_str)
-        
+
         return {
             "content": [
                 {

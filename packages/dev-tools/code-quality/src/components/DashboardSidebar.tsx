@@ -1,6 +1,6 @@
 /**
  * Dashboard Sidebar Component
- * 
+ *
  * Navigation sidebar for the Code Quality Dashboard
  */
 
@@ -62,11 +62,7 @@ export const DashboardSidebar: Component<SidebarProps> = props => {
           {props.isLoading ? "Analyzing..." : "Refresh Analysis"}
         </Button>
 
-        <Button
-          onClick={props.onToggleAutoRefresh}
-          variant="secondary"
-          class="w-full mt-2"
-        >
+        <Button onClick={props.onToggleAutoRefresh} variant="secondary" class="w-full mt-2">
           {props.autoRefresh ? "Stop Auto-Refresh" : "Start Auto-Refresh"}
         </Button>
       </div>

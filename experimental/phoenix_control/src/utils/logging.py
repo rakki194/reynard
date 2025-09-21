@@ -15,7 +15,7 @@ from datetime import datetime
 def setup_logging(
     log_level: str = "INFO",
     log_file: Optional[str] = None,
-    log_format: Optional[str] = None
+    log_format: Optional[str] = None,
 ) -> logging.Logger:
     """
     Setup logging configuration for PHOENIX Control.
@@ -30,15 +30,13 @@ def setup_logging(
     """
     # Default log format
     if log_format is None:
-        log_format = (
-            '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-        )
+        log_format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 
     # Create formatter
     formatter = logging.Formatter(log_format)
 
     # Get root logger
-    logger = logging.getLogger('phoenix_control')
+    logger = logging.getLogger("phoenix_control")
     logger.setLevel(getattr(logging, log_level.upper()))
 
     # Clear existing handlers
@@ -73,7 +71,7 @@ def get_logger(name: str) -> logging.Logger:
     Returns:
         Logger instance
     """
-    return logging.getLogger(f'phoenix_control.{name}')
+    return logging.getLogger(f"phoenix_control.{name}")
 
 
 class PhoenixLogger:
@@ -87,7 +85,9 @@ class PhoenixLogger:
     def info(self, message: str, operation: Optional[str] = None):
         """Log info message with agent context."""
         if operation:
-            formatted_message = f"{self.spirit_emoji} {self.agent_name} - {operation}: {message}"
+            formatted_message = (
+                f"{self.spirit_emoji} {self.agent_name} - {operation}: {message}"
+            )
         else:
             formatted_message = f"{self.spirit_emoji} {self.agent_name}: {message}"
         self.logger.info(formatted_message)

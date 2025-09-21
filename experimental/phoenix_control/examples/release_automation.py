@@ -41,7 +41,9 @@ async def main():
         print(f"   Version Info: {version_info}")
 
         # Suggest next version based on change type
-        next_version = await version_manager.suggest_next_version(current_version, "feature")
+        next_version = await version_manager.suggest_next_version(
+            current_version, "feature"
+        )
         if next_version:
             print(f"   Suggested Next Version: {next_version}")
     else:
@@ -78,7 +80,7 @@ async def main():
         agent_state_tracking=True,
         create_tag=True,
         push_remote=False,  # Set to False for demo
-        version_type="auto"
+        version_type="auto",
     )
 
     print(f"   Auto Backup: {release_config.auto_backup}")
@@ -128,7 +130,7 @@ async def main():
     entries = [
         ("Added", "New feature for automated release management"),
         ("Changed", "Improved version detection algorithm"),
-        ("Fixed", "Resolved issue with changelog formatting")
+        ("Fixed", "Resolved issue with changelog formatting"),
     ]
 
     for change_type, description in entries:

@@ -19,23 +19,22 @@ def get_social_tool_definitions() -> dict[str, dict[str, Any]]:
             "inputSchema": {
                 "type": "object",
                 "properties": {
-                    "agent1_id": {
-                        "type": "string",
-                        "description": "First agent ID"
-                    },
-                    "agent2_id": {
-                        "type": "string", 
-                        "description": "Second agent ID"
-                    },
+                    "agent1_id": {"type": "string", "description": "First agent ID"},
+                    "agent2_id": {"type": "string", "description": "Second agent ID"},
                     "interaction_type": {
                         "type": "string",
                         "description": "Type of interaction",
-                        "enum": ["communication", "social", "collaboration", "conflict"],
-                        "default": "communication"
-                    }
+                        "enum": [
+                            "communication",
+                            "social",
+                            "collaboration",
+                            "conflict",
+                        ],
+                        "default": "communication",
+                    },
                 },
-                "required": ["agent1_id", "agent2_id"]
-            }
+                "required": ["agent1_id", "agent2_id"],
+            },
         },
         "send_chat_message": {
             "name": "send_chat_message",
@@ -45,25 +44,22 @@ def get_social_tool_definitions() -> dict[str, dict[str, Any]]:
                 "properties": {
                     "sender_id": {
                         "type": "string",
-                        "description": "Agent sending the message"
+                        "description": "Agent sending the message",
                     },
                     "receiver": {
                         "type": "string",
-                        "description": "Agent receiving the message (ID or name - will be automatically resolved)"
+                        "description": "Agent receiving the message (ID or name - will be automatically resolved)",
                     },
-                    "message": {
-                        "type": "string",
-                        "description": "Message content"
-                    },
+                    "message": {"type": "string", "description": "Message content"},
                     "interaction_type": {
                         "type": "string",
                         "description": "Type of interaction",
                         "enum": ["communication", "social", "collaboration"],
-                        "default": "communication"
-                    }
+                        "default": "communication",
+                    },
                 },
-                "required": ["sender_id", "receiver", "message"]
-            }
+                "required": ["sender_id", "receiver", "message"],
+            },
         },
         "get_interaction_history": {
             "name": "get_interaction_history",
@@ -73,16 +69,16 @@ def get_social_tool_definitions() -> dict[str, dict[str, Any]]:
                 "properties": {
                     "agent_id": {
                         "type": "string",
-                        "description": "Agent to get history for"
+                        "description": "Agent to get history for",
                     },
                     "limit": {
                         "type": "integer",
                         "description": "Maximum number of interactions to return",
-                        "default": 10
-                    }
+                        "default": 10,
+                    },
                 },
-                "required": ["agent_id"]
-            }
+                "required": ["agent_id"],
+            },
         },
         "get_agent_relationships": {
             "name": "get_agent_relationships",
@@ -92,11 +88,11 @@ def get_social_tool_definitions() -> dict[str, dict[str, Any]]:
                 "properties": {
                     "agent_id": {
                         "type": "string",
-                        "description": "Agent to get relationships for"
+                        "description": "Agent to get relationships for",
                     }
                 },
-                "required": ["agent_id"]
-            }
+                "required": ["agent_id"],
+            },
         },
         "get_agent_social_stats": {
             "name": "get_agent_social_stats",
@@ -106,11 +102,11 @@ def get_social_tool_definitions() -> dict[str, dict[str, Any]]:
                 "properties": {
                     "agent_id": {
                         "type": "string",
-                        "description": "Agent to get stats for"
+                        "description": "Agent to get stats for",
                     }
                 },
-                "required": ["agent_id"]
-            }
+                "required": ["agent_id"],
+            },
         },
         "get_nearby_agents": {
             "name": "get_nearby_agents",
@@ -120,16 +116,16 @@ def get_social_tool_definitions() -> dict[str, dict[str, Any]]:
                 "properties": {
                     "agent_id": {
                         "type": "string",
-                        "description": "Agent to check around"
+                        "description": "Agent to check around",
                     },
                     "radius": {
                         "type": "number",
                         "description": "Search radius in world units",
-                        "default": 100.0
-                    }
+                        "default": 100.0,
+                    },
                 },
-                "required": ["agent_id"]
-            }
+                "required": ["agent_id"],
+            },
         },
         "find_ecs_agent": {
             "name": "find_ecs_agent",
@@ -139,24 +135,20 @@ def get_social_tool_definitions() -> dict[str, dict[str, Any]]:
                 "properties": {
                     "query": {
                         "type": "string",
-                        "description": "Name or ID to search for"
+                        "description": "Name or ID to search for",
                     },
                     "exact_match": {
                         "type": "boolean",
                         "description": "Whether to require exact match",
-                        "default": False
-                    }
+                        "default": False,
+                    },
                 },
-                "required": ["query"]
-            }
+                "required": ["query"],
+            },
         },
         "get_ecs_world_status": {
             "name": "get_ecs_world_status",
             "description": "Get the current status of the ECS world including agent counts and system health",
-            "inputSchema": {
-                "type": "object",
-                "properties": {},
-                "required": []
-            }
-        }
+            "inputSchema": {"type": "object", "properties": {}, "required": []},
+        },
     }

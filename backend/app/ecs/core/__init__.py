@@ -9,9 +9,4 @@ from .entity import Entity
 from .system import System
 from .world import ECSWorld
 
-__all__ = [
-    "Component",
-    "Entity",
-    "System", 
-    "ECSWorld"
-]
+__all__ = ["Component", "Entity", "System", "ECSWorld"]

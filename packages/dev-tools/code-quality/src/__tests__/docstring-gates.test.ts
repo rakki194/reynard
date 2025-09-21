@@ -15,10 +15,8 @@ describe("Docstring Quality Gates", () => {
   describe("Predefined Quality Gates", () => {
     it("should have standard quality gates with correct properties", () => {
       expect(DOCSTRING_QUALITY_GATES).toHaveLength(5);
-      
-      const coverageGate = DOCSTRING_QUALITY_GATES.find(gate => 
-        gate.id === "docstring-coverage-minimum"
-      );
+
+      const coverageGate = DOCSTRING_QUALITY_GATES.find(gate => gate.id === "docstring-coverage-minimum");
       expect(coverageGate).toBeDefined();
       expect(coverageGate?.name).toBe("Minimum Docstring Coverage");
       expect(coverageGate?.enabled).toBe(true);
@@ -31,10 +29,8 @@ describe("Docstring Quality Gates", () => {
 
     it("should have strict quality gates with higher thresholds", () => {
       expect(STRICT_DOCSTRING_QUALITY_GATES).toHaveLength(5);
-      
-      const coverageGate = STRICT_DOCSTRING_QUALITY_GATES.find(gate => 
-        gate.id === "strict-docstring-coverage"
-      );
+
+      const coverageGate = STRICT_DOCSTRING_QUALITY_GATES.find(gate => gate.id === "strict-docstring-coverage");
       expect(coverageGate).toBeDefined();
       expect(coverageGate?.conditions[0].threshold).toBe(95);
       expect(coverageGate?.conditions[0].errorThreshold).toBe(90);
@@ -42,10 +38,8 @@ describe("Docstring Quality Gates", () => {
 
     it("should have relaxed quality gates with lower thresholds", () => {
       expect(RELAXED_DOCSTRING_QUALITY_GATES).toHaveLength(5);
-      
-      const coverageGate = RELAXED_DOCSTRING_QUALITY_GATES.find(gate => 
-        gate.id === "relaxed-docstring-coverage"
-      );
+
+      const coverageGate = RELAXED_DOCSTRING_QUALITY_GATES.find(gate => gate.id === "relaxed-docstring-coverage");
       expect(coverageGate).toBeDefined();
       expect(coverageGate?.conditions[0].threshold).toBe(60);
       expect(coverageGate?.conditions[0].errorThreshold).toBe(50);
@@ -53,7 +47,7 @@ describe("Docstring Quality Gates", () => {
 
     it("should have all required gate types", () => {
       const gateIds = DOCSTRING_QUALITY_GATES.map(gate => gate.id);
-      
+
       expect(gateIds).toContain("docstring-coverage-minimum");
       expect(gateIds).toContain("docstring-quality-minimum");
       expect(gateIds).toContain("function-documentation-coverage");
@@ -62,29 +56,19 @@ describe("Docstring Quality Gates", () => {
     });
 
     it("should have correct metric types for each gate", () => {
-      const coverageGate = DOCSTRING_QUALITY_GATES.find(gate => 
-        gate.id === "docstring-coverage-minimum"
-      );
+      const coverageGate = DOCSTRING_QUALITY_GATES.find(gate => gate.id === "docstring-coverage-minimum");
       expect(coverageGate?.conditions[0].metric).toBe("docstringCoverage");
 
-      const qualityGate = DOCSTRING_QUALITY_GATES.find(gate => 
-        gate.id === "docstring-quality-minimum"
-      );
+      const qualityGate = DOCSTRING_QUALITY_GATES.find(gate => gate.id === "docstring-quality-minimum");
       expect(qualityGate?.conditions[0].metric).toBe("docstringQualityScore");
 
-      const functionGate = DOCSTRING_QUALITY_GATES.find(gate => 
-        gate.id === "function-documentation-coverage"
-      );
+      const functionGate = DOCSTRING_QUALITY_GATES.find(gate => gate.id === "function-documentation-coverage");
       expect(functionGate?.conditions[0].metric).toBe("documentedFunctions");
 
-      const classGate = DOCSTRING_QUALITY_GATES.find(gate => 
-        gate.id === "class-documentation-coverage"
-      );
+      const classGate = DOCSTRING_QUALITY_GATES.find(gate => gate.id === "class-documentation-coverage");
       expect(classGate?.conditions[0].metric).toBe("documentedClasses");
 
-      const moduleGate = DOCSTRING_QUALITY_GATES.find(gate => 
-        gate.id === "module-documentation-coverage"
-      );
+      const moduleGate = DOCSTRING_QUALITY_GATES.find(gate => gate.id === "module-documentation-coverage");
       expect(moduleGate?.conditions[0].metric).toBe("documentedModules");
     });
   });
@@ -134,51 +118,33 @@ describe("Docstring Quality Gates", () => {
       expect(customGate.conditions).toHaveLength(5);
 
       // Check coverage condition
-      const coverageCondition = customGate.conditions.find(c => 
-        c.metric === "docstringCoverage"
-      );
+      const coverageCondition = customGate.conditions.find(c => c.metric === "docstringCoverage");
       expect(coverageCondition?.threshold).toBe(85);
       expect(coverageCondition?.errorThreshold).toBe(76.5); // 85 * 0.9
 
       // Check quality condition
-      const qualityCondition = customGate.conditions.find(c => 
-        c.metric === "docstringQualityScore"
-      );
+      const qualityCondition = customGate.conditions.find(c => c.metric === "docstringQualityScore");
       expect(qualityCondition?.threshold).toBe(75);
       expect(qualityCondition?.errorThreshold).toBe(67.5); // 75 * 0.9
 
       // Check function condition
-      const functionCondition = customGate.conditions.find(c => 
-        c.metric === "documentedFunctions"
-      );
+      const functionCondition = customGate.conditions.find(c => c.metric === "documentedFunctions");
       expect(functionCondition?.threshold).toBe(0.9);
       expect(functionCondition?.errorThreshold).toBe(0.81); // 0.9 * 0.9
 
       // Check class condition
-      const classCondition = customGate.conditions.find(c => 
-        c.metric === "documentedClasses"
-      );
+      const classCondition = customGate.conditions.find(c => c.metric === "documentedClasses");
       expect(classCondition?.threshold).toBe(0.95);
       expect(classCondition?.errorThreshold).toBe(0.855); // 0.95 * 0.9
 
       // Check module condition
-      const moduleCondition = customGate.conditions.find(c => 
-        c.metric === "documentedModules"
-      );
+      const moduleCondition = customGate.conditions.find(c => c.metric === "documentedModules");
       expect(moduleCondition?.threshold).toBe(1.0);
       expect(moduleCondition?.errorThreshold).toBe(0.9); // 1.0 * 0.9
     });
 
     it("should create gate with all required conditions", () => {
-      const customGate = createCustomDocstringGate(
-        "test-gate",
-        "Test Gate",
-        50,
-        40,
-        0.5,
-        0.6,
-        0.7
-      );
+      const customGate = createCustomDocstringGate("test-gate", "Test Gate", 50, 40, 0.5, 0.6, 0.7);
 
       const metrics = customGate.conditions.map(c => c.metric);
       expect(metrics).toContain("docstringCoverage");
@@ -189,15 +155,7 @@ describe("Docstring Quality Gates", () => {
     });
 
     it("should handle edge case values", () => {
-      const customGate = createCustomDocstringGate(
-        "edge-gate",
-        "Edge Case Gate",
-        0,
-        0,
-        0,
-        0,
-        0
-      );
+      const customGate = createCustomDocstringGate("edge-gate", "Edge Case Gate", 0, 0, 0, 0, 0);
 
       expect(customGate.conditions).toHaveLength(5);
       customGate.conditions.forEach(condition => {
@@ -207,15 +165,7 @@ describe("Docstring Quality Gates", () => {
     });
 
     it("should handle maximum values", () => {
-      const customGate = createCustomDocstringGate(
-        "max-gate",
-        "Maximum Gate",
-        100,
-        100,
-        1.0,
-        1.0,
-        1.0
-      );
+      const customGate = createCustomDocstringGate("max-gate", "Maximum Gate", 100, 100, 1.0, 1.0, 1.0);
 
       expect(customGate.conditions).toHaveLength(5);
       customGate.conditions.forEach(condition => {

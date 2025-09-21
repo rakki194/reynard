@@ -111,35 +111,35 @@ class NaturalLanguageProcessor:
     def process_query(self, query: str) -> Dict[str, Any]:
         """
         Process a natural language query into structured search parameters.
-        
+
         Args:
             query: Natural language search query
-            
+
         Returns:
             Structured search parameters with intent, expanded terms, and filters
         """
         try:
             # Clean and normalize the query
             normalized_query = self._normalize_query(query)
-            
+
             # Detect search intent
             intent = self._detect_intent(normalized_query)
-            
+
             # Extract entities and concepts
             entities = self._extract_entities(normalized_query)
-            
+
             # Expand query with synonyms and related terms
             expanded_terms = self._expand_query(normalized_query)
-            
+
             # Determine search strategy
             search_strategy = self._determine_search_strategy(intent, entities)
-            
+
             # Generate code patterns if applicable
             code_patterns = self._generate_code_patterns(intent, entities)
-            
+
             # Determine file types and directories
             file_filters = self._determine_file_filters(intent, entities)
-            
+
             return {
                 "original_query": query,
                 "normalized_query": normalized_query,
@@ -151,7 +151,7 @@ class NaturalLanguageProcessor:
                 "file_filters": file_filters,
                 "confidence": self._calculate_confidence(intent, entities),
             }
-            
+
         except Exception as e:
             logger.exception(f"Error processing natural language query: {e}")
             return {
@@ -171,31 +171,49 @@ class NaturalLanguageProcessor:
         """Normalize the query for processing."""
         # Convert to lowercase
         normalized = query.lower().strip()
-        
+
         # Remove extra whitespace
-        normalized = re.sub(r'\s+', ' ', normalized)
-        
+        normalized = re.sub(r"\s+", " ", normalized)
+
         # Remove common stop words but keep code-relevant ones
         stop_words = {
-            "the", "a", "an", "and", "or", "but", "in", "on", "at", "to", "for",
-            "of", "with", "by", "from", "up", "about", "into", "through", "during"
+            "the",
+            "a",
+            "an",
+            "and",
+            "or",
+            "but",
+            "in",
+            "on",
+            "at",
+            "to",
+            "for",
+            "of",
+            "with",
+            "by",
+            "from",
+            "up",
+            "about",
+            "into",
+            "through",
+            "during",
         }
-        
+
         words = normalized.split()
         filtered_words = [word for word in words if word not in stop_words]
-        
+
         return " ".join(filtered_words)
 
     def _detect_intent(self, query: str) -> str:
         """Detect the search intent from the query."""
         query_lower = query.lower()
-        
+
         # Check against intent patterns
         for intent, patterns in self.intent_patterns.items():
             for pattern in patterns:
                 if re.search(pattern, query_lower):
                     return intent
-        
+
         # Default to general search
         return "general_search"
 
@@ -203,41 +221,47 @@ class NaturalLanguageProcessor:
         """Extract entities and concepts from the query."""
         entities = []
         query_lower = query.lower()
-        
+
         # Extract programming language indicators
         for lang, patterns in self.language_patterns.items():
             if any(pattern in query_lower for pattern in patterns):
-                entities.append({
-                    "type": "programming_language",
-                    "value": lang,
-                    "confidence": 0.8,
-                })
-        
+                entities.append(
+                    {
+                        "type": "programming_language",
+                        "value": lang,
+                        "confidence": 0.8,
+                    }
+                )
+
         # Extract code concepts
         for concept, synonyms in self.concept_synonyms.items():
             if concept in query_lower or any(syn in query_lower for syn in synonyms):
-                entities.append({
-                    "type": "code_concept",
-                    "value": concept,
-                    "confidence": 0.7,
-                })
-        
+                entities.append(
+                    {
+                        "type": "code_concept",
+                        "value": concept,
+                        "confidence": 0.7,
+                    }
+                )
+
         # Extract potential function/class names (capitalized words)
-        potential_names = re.findall(r'\b[A-Z][a-zA-Z0-9_]*\b', query)
+        potential_names = re.findall(r"\b[A-Z][a-zA-Z0-9_]*\b", query)
         for name in potential_names:
-            entities.append({
-                "type": "potential_identifier",
-                "value": name,
-                "confidence": 0.6,
-            })
-        
+            entities.append(
+                {
+                    "type": "potential_identifier",
+                    "value": name,
+                    "confidence": 0.6,
+                }
+            )
+
         return entities
 
     def _expand_query(self, query: str) -> List[str]:
         """Expand query with synonyms and related terms."""
         expanded = [query]
         query_lower = query.lower()
-        
+
         # Add synonyms for detected concepts
         for concept, synonyms in self.concept_synonyms.items():
             if concept in query_lower:
@@ -245,82 +269,100 @@ class NaturalLanguageProcessor:
                     expanded_query = query_lower.replace(concept, synonym)
                     if expanded_query not in expanded:
                         expanded.append(expanded_query)
-        
+
         # Add related terms based on intent
         if "function" in query_lower:
-            expanded.extend([
-                query_lower + " def",
-                query_lower + " method",
-                "def " + query_lower,
-            ])
-        
+            expanded.extend(
+                [
+                    query_lower + " def",
+                    query_lower + " method",
+                    "def " + query_lower,
+                ]
+            )
+
         if "class" in query_lower:
-            expanded.extend([
-                query_lower + " class",
-                "class " + query_lower,
-            ])
-        
+            expanded.extend(
+                [
+                    query_lower + " class",
+                    "class " + query_lower,
+                ]
+            )
+
         return expanded[:5]  # Limit to top 5 expansions
 
-    def _determine_search_strategy(self, intent: str, entities: List[Dict[str, Any]]) -> str:
+    def _determine_search_strategy(
+        self, intent: str, entities: List[Dict[str, Any]]
+    ) -> str:
         """Determine the best search strategy based on intent and entities."""
         # If we have specific code patterns, use hybrid search
         if intent in ["function_search", "class_search"]:
             return "hybrid"
-        
+
         # If we have programming language entities, use syntax search
         if any(entity["type"] == "programming_language" for entity in entities):
             return "syntax"
-        
+
         # Default to semantic search for natural language queries
         return "semantic"
 
-    def _generate_code_patterns(self, intent: str, entities: List[Dict[str, Any]]) -> List[str]:
+    def _generate_code_patterns(
+        self, intent: str, entities: List[Dict[str, Any]]
+    ) -> List[str]:
         """Generate code patterns based on intent and entities."""
         patterns = []
-        
+
         if intent == "function_search":
-            patterns.extend([
-                r"def\s+\w+",
-                r"function\s+\w+",
-                r"const\s+\w+\s*=",
-                r"public\s+\w+\s+\w+\(",
-            ])
-        
+            patterns.extend(
+                [
+                    r"def\s+\w+",
+                    r"function\s+\w+",
+                    r"const\s+\w+\s*=",
+                    r"public\s+\w+\s+\w+\(",
+                ]
+            )
+
         elif intent == "class_search":
-            patterns.extend([
-                r"class\s+\w+",
-                r"interface\s+\w+",
-                r"struct\s+\w+",
-            ])
-        
+            patterns.extend(
+                [
+                    r"class\s+\w+",
+                    r"interface\s+\w+",
+                    r"struct\s+\w+",
+                ]
+            )
+
         elif intent == "error_handling":
-            patterns.extend([
-                r"try\s*\{",
-                r"catch\s*\(",
-                r"except\s+",
-                r"throw\s+",
-                r"raise\s+",
-            ])
-        
+            patterns.extend(
+                [
+                    r"try\s*\{",
+                    r"catch\s*\(",
+                    r"except\s+",
+                    r"throw\s+",
+                    r"raise\s+",
+                ]
+            )
+
         # Add patterns based on entities
         for entity in entities:
             if entity["type"] == "potential_identifier":
                 patterns.append(rf"\b{re.escape(entity['value'])}\b")
-        
+
         return patterns
 
-    def _determine_file_filters(self, intent: str, entities: List[Dict[str, Any]]) -> Dict[str, Any]:
+    def _determine_file_filters(
+        self, intent: str, entities: List[Dict[str, Any]]
+    ) -> Dict[str, Any]:
         """Determine file type and directory filters."""
         file_types = self._get_file_types_from_entities(entities)
         directories = self._get_directories_from_intent(intent, entities)
-        
+
         return {
             "file_types": file_types,
             "directories": directories,
         }
 
-    def _get_file_types_from_entities(self, entities: List[Dict[str, Any]]) -> List[str] | None:
+    def _get_file_types_from_entities(
+        self, entities: List[Dict[str, Any]]
+    ) -> List[str] | None:
         """Get file types based on programming language entities."""
         for entity in entities:
             if entity["type"] == "programming_language":
@@ -337,7 +379,9 @@ class NaturalLanguageProcessor:
                     return ["rs"]
         return None
 
-    def _get_directories_from_intent(self, intent: str, entities: List[Dict[str, Any]]) -> List[str] | None:
+    def _get_directories_from_intent(
+        self, intent: str, entities: List[Dict[str, Any]]
+    ) -> List[str] | None:
         """Get directories based on intent and entities."""
         # Determine directories based on intent
         if intent == "api_endpoints":
@@ -346,7 +390,7 @@ class NaturalLanguageProcessor:
             return ["tests", "**/__tests__"]
         elif intent == "configuration":
             return None  # Will be determined by file types
-        
+
         # Determine directories based on programming language entities
         for entity in entities:
             if entity["type"] == "programming_language":
@@ -355,56 +399,62 @@ class NaturalLanguageProcessor:
                     return ["backend", "scripts"]
                 elif lang in ["typescript", "javascript"]:
                     return ["packages", "examples", "templates"]
-        
+
         return None
 
-    def _calculate_confidence(self, intent: str, entities: List[Dict[str, Any]]) -> float:
+    def _calculate_confidence(
+        self, intent: str, entities: List[Dict[str, Any]]
+    ) -> float:
         """Calculate confidence score for the processed query."""
         confidence = 0.5  # Base confidence
-        
+
         # Increase confidence based on intent specificity
         if intent != "general_search":
             confidence += 0.2
-        
+
         # Increase confidence based on number of entities
         confidence += min(len(entities) * 0.1, 0.3)
-        
+
         # Increase confidence for programming language detection
         if any(entity["type"] == "programming_language" for entity in entities):
             confidence += 0.2
-        
+
         return min(confidence, 1.0)
 
     def generate_search_suggestions(self, query: str) -> List[Dict[str, Any]]:
         """Generate intelligent search suggestions based on the query."""
         suggestions = []
         processed = self.process_query(query)
-        
+
         # Suggest more specific queries based on intent
         if processed["intent"] == "general_search":
-            suggestions.extend([
-                {
-                    "suggestion": f"function that {query}",
-                    "type": "intent_refinement",
-                    "confidence": 0.8,
-                },
-                {
-                    "suggestion": f"class that {query}",
-                    "type": "intent_refinement", 
-                    "confidence": 0.8,
-                },
-            ])
-        
+            suggestions.extend(
+                [
+                    {
+                        "suggestion": f"function that {query}",
+                        "type": "intent_refinement",
+                        "confidence": 0.8,
+                    },
+                    {
+                        "suggestion": f"class that {query}",
+                        "type": "intent_refinement",
+                        "confidence": 0.8,
+                    },
+                ]
+            )
+
         # Suggest related concepts
         for entity in processed["entities"]:
             if entity["type"] == "code_concept":
                 concept = entity["value"]
                 if concept in self.concept_synonyms:
                     for synonym in self.concept_synonyms[concept][:2]:
-                        suggestions.append({
-                            "suggestion": query.replace(concept, synonym),
-                            "type": "synonym",
-                            "confidence": 0.6,
-                        })
-        
+                        suggestions.append(
+                            {
+                                "suggestion": query.replace(concept, synonym),
+                                "type": "synonym",
+                                "confidence": 0.6,
+                            }
+                        )
+
         return suggestions[:5]  # Limit to top 5 suggestions

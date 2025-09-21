@@ -1,14 +1,171 @@
 """
-Security module for Reynard Backend.
+🔐 Comprehensive Security Module for Reynard Backend
 
-This module provides comprehensive security utilities including
+This module provides enterprise-grade security infrastructure including
+key management, encryption utilities, security configuration, audit logging,
 input validation, security headers, and threat detection.
+
+Key Components:
+- Key Management: Centralized key management with HSM simulation
+- Encryption Utilities: AES-256-GCM, RSA, and secure hashing
+- Security Configuration: Environment-based security policies
+- Audit Logging: Comprehensive security event logging
+- Input Validation: SQL injection, XSS, and command injection protection
+- Security Headers: HTTP security headers and CSP policies
+- Threat Detection: Real-time security violation detection
+
+Author: Vulpine (Security-focused Fox Specialist)
+Version: 1.0.0
 """
 
+# Core security components
+from .key_manager import (
+    KeyManager,
+    KeyType,
+    KeyStatus,
+    KeyMetadata,
+    get_key_manager,
+    get_key,
+    generate_key,
+    rotate_key,
+    revoke_key,
+    list_keys,
+    cleanup_expired_keys,
+)
+from .encryption_utils import (
+    EncryptionUtils,
+    EncryptionError,
+    DecryptionError,
+    encrypt_data,
+    decrypt_data,
+    hash_string,
+    generate_password_hash,
+    verify_password_hash,
+)
+from .security_config import (
+    SecurityConfig,
+    SecurityLevel,
+    EncryptionAlgorithm,
+    HashAlgorithm,
+    DatabaseSecurityConfig,
+    SessionSecurityConfig,
+    APISecurityConfig,
+    EncryptionConfig,
+    AuditLoggingConfig,
+    SecurityHeadersConfig,
+    get_security_config,
+    get_database_security_config,
+    get_session_security_config,
+    get_api_security_config,
+    get_encryption_config,
+    get_audit_logging_config,
+    get_security_headers_config,
+)
+from .audit_logger import (
+    SecurityAuditLogger,
+    SecurityEvent,
+    SecurityEventType,
+    SecurityEventSeverity,
+    get_security_audit_logger,
+    log_security_event,
+    log_authentication_event,
+    log_authorization_event,
+    log_data_access_event,
+    log_security_violation,
+    log_system_event,
+)
+
+# Database and Session Security
+from .database_encryption import (
+    DatabaseEncryptionManager, DatabaseEncryptionError,
+    get_database_encryption_manager, encrypt_database_field, decrypt_database_field
+)
+from .session_encryption import (
+    SessionEncryptionManager, SessionData, SessionEncryptionError,
+    get_session_encryption_manager, create_encrypted_session, get_encrypted_session,
+    update_encrypted_session, delete_encrypted_session, revoke_user_sessions,
+    cleanup_expired_sessions
+)
+from .api_key_manager import (
+    APIKeyManager, APIKeyMetadata, APIKeyStatus, APIKeyScope,
+    get_api_key_manager, create_api_key, validate_api_key, check_api_key_rate_limit,
+    revoke_api_key, rotate_api_key, list_api_keys
+)
+
+# Legacy security components
 from .input_validator import validate_input_security
 from .security_headers import add_security_headers_middleware
+from .security_middleware import SecurityMiddleware, setup_security_middleware
+from .jwt_secret_manager import JWTSecretManager, get_jwt_secret_manager
 
 __all__ = [
+    # Key Management
+    "KeyManager",
+    "KeyType",
+    "KeyStatus",
+    "KeyMetadata",
+    "get_key_manager",
+    "get_key",
+    "generate_key",
+    "rotate_key",
+    "revoke_key",
+    "list_keys",
+    "cleanup_expired_keys",
+    # Encryption Utilities
+    "EncryptionUtils",
+    "EncryptionError",
+    "DecryptionError",
+    "encrypt_data",
+    "decrypt_data",
+    "hash_string",
+    "generate_password_hash",
+    "verify_password_hash",
+    # Security Configuration
+    "SecurityConfig",
+    "SecurityLevel",
+    "EncryptionAlgorithm",
+    "HashAlgorithm",
+    "DatabaseSecurityConfig",
+    "SessionSecurityConfig",
+    "APISecurityConfig",
+    "EncryptionConfig",
+    "AuditLoggingConfig",
+    "SecurityHeadersConfig",
+    "get_security_config",
+    "get_database_security_config",
+    "get_session_security_config",
+    "get_api_security_config",
+    "get_encryption_config",
+    "get_audit_logging_config",
+    "get_security_headers_config",
+    # Audit Logging
+    "SecurityAuditLogger",
+    "SecurityEvent",
+    "SecurityEventType",
+    "SecurityEventSeverity",
+    "get_security_audit_logger",
+    "log_security_event",
+    "log_authentication_event",
+    "log_authorization_event",
+    "log_data_access_event",
+    "log_security_violation",
+    "log_system_event",
+    # Database and Session Security
+    "DatabaseEncryptionManager", "DatabaseEncryptionError",
+    "get_database_encryption_manager", "encrypt_database_field", "decrypt_database_field",
+    "SessionEncryptionManager", "SessionData", "SessionEncryptionError",
+    "get_session_encryption_manager", "create_encrypted_session", "get_encrypted_session",
+    "update_encrypted_session", "delete_encrypted_session", "revoke_user_sessions",
+    "cleanup_expired_sessions",
+    "APIKeyManager", "APIKeyMetadata", "APIKeyStatus", "APIKeyScope",
+    "get_api_key_manager", "create_api_key", "validate_api_key", "check_api_key_rate_limit",
+    "revoke_api_key", "rotate_api_key", "list_api_keys",
+    
+    # Legacy Components
     "add_security_headers_middleware",
     "validate_input_security",
+    "SecurityMiddleware",
+    "setup_security_middleware",
+    "JWTSecretManager",
+    "get_jwt_secret_manager",
 ]

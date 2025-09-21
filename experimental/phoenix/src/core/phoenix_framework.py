@@ -29,7 +29,7 @@ from ..utils.data_structures import (
     SpiritType,
     NamingStyle,
     PerformanceMetrics,
-    StatisticalSignificance
+    StatisticalSignificance,
 )
 from .evolutionary_ops import EvolutionaryOperators
 from .knowledge_distillation import KnowledgeDistillation
@@ -87,11 +87,8 @@ class PhoenixFramework:
         log_file = self.data_dir / "phoenix.log"
         logging.basicConfig(
             level=logging.INFO,
-            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-            handlers=[
-                logging.FileHandler(log_file),
-                logging.StreamHandler()
-            ]
+            format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+            handlers=[logging.FileHandler(log_file), logging.StreamHandler()],
         )
 
     def add_integration(self, integration: Any):
@@ -99,7 +96,9 @@ class PhoenixFramework:
         self.integrations.append(integration)
         self.logger.info(f"🔗 Added integration: {type(integration).__name__}")
 
-    async def initialize_population(self, initial_agents: Optional[List[AgentState]] = None) -> List[AgentState]:
+    async def initialize_population(
+        self, initial_agents: Optional[List[AgentState]] = None
+    ) -> List[AgentState]:
         """
         Initialize the initial population of agents.
 
@@ -109,10 +108,12 @@ class PhoenixFramework:
         Returns:
             List of initialized agents
         """
-        self.logger.info(f"🧬 Initializing population of {self.config.population_size} agents...")
+        self.logger.info(
+            f"🧬 Initializing population of {self.config.population_size} agents..."
+        )
 
         if initial_agents:
-            population = initial_agents[:self.config.population_size]
+            population = initial_agents[: self.config.population_size]
         else:
             population = await self._create_random_population()
 
@@ -129,23 +130,23 @@ class PhoenixFramework:
                 fitness_variance=0.0,
                 population_diversity=0.0,
                 convergence_rate=0.0,
-                significance=StatisticalSignificance(0.0, (0.0, 0.0), 0.0, 0.0, 0)
+                significance=StatisticalSignificance(0.0, (0.0, 0.0), 0.0, 0.0, 0),
             ),
             convergence=ConvergenceStatus(
                 converged=False,
                 convergence_generation=None,
                 confidence=0.0,
                 convergence_type="none",
-                convergence_metrics={}
+                convergence_metrics={},
             ),
             elite=[],
             diversity_metrics={},
-            config=self.config
+            config=self.config,
         )
 
         # Notify integrations
         for integration in self.integrations:
-            if hasattr(integration, 'on_population_initialized'):
+            if hasattr(integration, "on_population_initialized"):
                 await integration.on_population_initialized(population)
 
         self.logger.info(f"✅ Population initialized with {len(population)} agents")
@@ -168,7 +169,7 @@ class PhoenixFramework:
             "charisma": (0.0, 1.0),
             "creativity": (0.0, 1.0),
             "perfectionism": (0.0, 1.0),
-            "adaptability": (0.0, 1.0)
+            "adaptability": (0.0, 1.0),
         }
 
         physical_traits = {
@@ -177,7 +178,7 @@ class PhoenixFramework:
             "agility": (0.0, 1.0),
             "endurance": (0.0, 1.0),
             "appearance": (0.0, 1.0),
-            "grace": (0.0, 1.0)
+            "grace": (0.0, 1.0),
         }
 
         ability_traits = {
@@ -186,7 +187,7 @@ class PhoenixFramework:
             "teacher": (0.0, 1.0),
             "artist": (0.0, 1.0),
             "healer": (0.0, 1.0),
-            "inventor": (0.0, 1.0)
+            "inventor": (0.0, 1.0),
         }
 
         for i in range(self.config.population_size):
@@ -210,39 +211,61 @@ class PhoenixFramework:
                 physical_traits=physical,
                 ability_traits=abilities,
                 performance_history=[],
-                knowledge_base={}
+                knowledge_base={},
             )
 
             population.append(agent)
 
         return population
 
-    def _generate_spirit_based_traits(self, spirit: SpiritType, trait_ranges: Dict[str, Tuple[float, float]]) -> Dict[str, float]:
+    def _generate_spirit_based_traits(
+        self, spirit: SpiritType, trait_ranges: Dict[str, Tuple[float, float]]
+    ) -> Dict[str, float]:
         """Generate traits based on spirit characteristics rather than random values."""
         traits = {}
 
         # Define spirit-specific trait preferences
         spirit_preferences = {
             SpiritType.FOX: {
-                "curiosity": 0.8, "intelligence": 0.9, "adaptability": 0.9,
-                "strategist": 0.9, "problem_solving": 0.8, "inventor": 0.7
+                "curiosity": 0.8,
+                "intelligence": 0.9,
+                "adaptability": 0.9,
+                "strategist": 0.9,
+                "problem_solving": 0.8,
+                "inventor": 0.7,
             },
             SpiritType.WOLF: {
-                "loyalty": 0.9, "teamwork": 0.9, "leadership": 0.8,
-                "hunter": 0.8, "coordination": 0.9, "guardian": 0.8
+                "loyalty": 0.9,
+                "teamwork": 0.9,
+                "leadership": 0.8,
+                "hunter": 0.8,
+                "coordination": 0.9,
+                "guardian": 0.8,
             },
             SpiritType.OTTER: {
-                "playfulness": 0.9, "creativity": 0.8, "curiosity": 0.8,
-                "artist": 0.8, "explorer": 0.7, "performer": 0.7
+                "playfulness": 0.9,
+                "creativity": 0.8,
+                "curiosity": 0.8,
+                "artist": 0.8,
+                "explorer": 0.7,
+                "performer": 0.7,
             },
             SpiritType.EAGLE: {
-                "independence": 0.9, "intelligence": 0.8, "patience": 0.8,
-                "strategist": 0.8, "navigator": 0.9, "scholar": 0.8
+                "independence": 0.9,
+                "intelligence": 0.8,
+                "patience": 0.8,
+                "strategist": 0.8,
+                "navigator": 0.9,
+                "scholar": 0.8,
             },
             SpiritType.LION: {
-                "leadership": 0.9, "courage": 0.9, "dominance": 0.8,
-                "warrior": 0.8, "guardian": 0.9, "performer": 0.7
-            }
+                "leadership": 0.9,
+                "courage": 0.9,
+                "dominance": 0.8,
+                "warrior": 0.8,
+                "guardian": 0.9,
+                "performer": 0.7,
+            },
         }
 
         # Get preferences for this spirit, or use defaults
@@ -253,7 +276,9 @@ class PhoenixFramework:
                 # Use spirit preference with some variation
                 base_value = preferences[trait_name]
                 variation = (max_val - min_val) * 0.1  # 10% variation
-                traits[trait_name] = max(min_val, min(max_val, base_value + variation * (0.5 - 0.5)))  # Small variation
+                traits[trait_name] = max(
+                    min_val, min(max_val, base_value + variation * (0.5 - 0.5))
+                )  # Small variation
             else:
                 # Use balanced middle value for traits not specific to this spirit
                 traits[trait_name] = (min_val + max_val) / 2.0
@@ -267,13 +292,17 @@ class PhoenixFramework:
         Returns:
             Final evolution state
         """
-        self.logger.info(f"🚀 Starting PHOENIX evolution for {self.config.max_generations} generations...")
+        self.logger.info(
+            f"🚀 Starting PHOENIX evolution for {self.config.max_generations} generations..."
+        )
 
         if not self.evolution_state:
             await self.initialize_population()
 
         for generation in range(1, self.config.max_generations + 1):
-            self.logger.info(f"🧬 Generation {generation}/{self.config.max_generations}")
+            self.logger.info(
+                f"🧬 Generation {generation}/{self.config.max_generations}"
+            )
 
             # Run one generation
             await self.run_generation()
@@ -304,7 +333,9 @@ class PhoenixFramework:
             await self._extract_genetic_material()
 
         # 3. Select parents for breeding
-        parents = await self.evolutionary_ops.select_parents(self.evolution_state.population)
+        parents = await self.evolutionary_ops.select_parents(
+            self.evolution_state.population
+        )
 
         # 4. Create offspring through breeding
         offspring = await self._breed_offspring(parents)
@@ -323,8 +354,10 @@ class PhoenixFramework:
 
         # 9. Notify integrations
         for integration in self.integrations:
-            if hasattr(integration, 'on_generation_completed'):
-                await integration.on_generation_completed(generation, self.evolution_state)
+            if hasattr(integration, "on_generation_completed"):
+                await integration.on_generation_completed(
+                    generation, self.evolution_state
+                )
 
     async def _evaluate_population(self):
         """Evaluate the current population's performance."""
@@ -338,14 +371,22 @@ class PhoenixFramework:
 
         self.logger.info("✅ Population evaluation completed")
 
-    async def _generate_performance_metrics(self, agent: AgentState) -> PerformanceMetrics:
+    async def _generate_performance_metrics(
+        self, agent: AgentState
+    ) -> PerformanceMetrics:
         """Generate real performance metrics for an agent."""
         # Generate real agent output based on agent characteristics
-        task = "Analyze and provide a strategic solution for optimizing system performance"
-        agent_output = await self.performance_analyzer.generate_real_agent_output(agent, task)
+        task = (
+            "Analyze and provide a strategic solution for optimizing system performance"
+        )
+        agent_output = await self.performance_analyzer.generate_real_agent_output(
+            agent, task
+        )
 
         # Analyze the real output to get performance metrics
-        performance_metrics = await self.performance_analyzer.analyze_agent_output(agent, agent_output)
+        performance_metrics = await self.performance_analyzer.analyze_agent_output(
+            agent, agent_output
+        )
 
         return performance_metrics
 
@@ -354,30 +395,40 @@ class PhoenixFramework:
         self.logger.info("🧬 Extracting genetic material from top performers...")
 
         # Sort agents by fitness
-        sorted_agents = sorted(self.evolution_state.population,
-                             key=lambda a: a.get_fitness_score(), reverse=True)
+        sorted_agents = sorted(
+            self.evolution_state.population,
+            key=lambda a: a.get_fitness_score(),
+            reverse=True,
+        )
 
         # Extract from top 20% of agents
-        top_performers = sorted_agents[:max(1, len(sorted_agents) // 5)]
+        top_performers = sorted_agents[: max(1, len(sorted_agents) // 5)]
 
         for agent in top_performers:
             # Generate real agent output based on agent characteristics
             task = "Provide a comprehensive analysis and strategic recommendations"
-            agent_output = await self.performance_analyzer.generate_real_agent_output(agent, task)
+            agent_output = await self.performance_analyzer.generate_real_agent_output(
+                agent, task
+            )
 
             # Extract genetic material from real output
-            genetic_material = await self.knowledge_distillation.extract_genetic_material(
-                agent=agent,
-                output=agent_output,
-                generation=self.evolution_state.current_generation
+            genetic_material = (
+                await self.knowledge_distillation.extract_genetic_material(
+                    agent=agent,
+                    output=agent_output,
+                    generation=self.evolution_state.current_generation,
+                )
             )
 
             self.evolution_state.genetic_material_pool.append(genetic_material)
 
-        self.logger.info(f"✅ Extracted genetic material from {len(top_performers)} agents")
+        self.logger.info(
+            f"✅ Extracted genetic material from {len(top_performers)} agents"
+        )
 
-
-    async def _breed_offspring(self, parents: List[Tuple[AgentState, AgentState]]) -> List[AgentState]:
+    async def _breed_offspring(
+        self, parents: List[Tuple[AgentState, AgentState]]
+    ) -> List[AgentState]:
         """Breed offspring from selected parents."""
         self.logger.info(f"👶 Breeding offspring from {len(parents)} parent pairs...")
 
@@ -394,8 +445,11 @@ class PhoenixFramework:
     async def _update_population(self, new_offspring: List[AgentState]):
         """Update population with new offspring and elite preservation."""
         # Sort current population by fitness
-        sorted_population = sorted(self.evolution_state.population,
-                                 key=lambda a: a.get_fitness_score(), reverse=True)
+        sorted_population = sorted(
+            self.evolution_state.population,
+            key=lambda a: a.get_fitness_score(),
+            reverse=True,
+        )
 
         # Preserve elite
         elite_count = max(1, int(len(sorted_population) * self.config.elite_rate))
@@ -406,7 +460,7 @@ class PhoenixFramework:
 
         # Ensure population size
         if len(new_population) > self.config.population_size:
-            new_population = new_population[:self.config.population_size]
+            new_population = new_population[: self.config.population_size]
         elif len(new_population) < self.config.population_size:
             # Fill with random agents if needed
             additional_needed = self.config.population_size - len(new_population)
@@ -421,7 +475,9 @@ class PhoenixFramework:
         self.evolution_state.population = new_population
         self.evolution_state.elite = elite
 
-        self.logger.info(f"✅ Population updated: {len(elite)} elite + {len(new_offspring)} offspring")
+        self.logger.info(
+            f"✅ Population updated: {len(elite)} elite + {len(new_offspring)} offspring"
+        )
 
     async def _update_evolution_statistics(self, generation: int):
         """Update evolution statistics for current generation."""
@@ -431,7 +487,9 @@ class PhoenixFramework:
         fitness_scores = [agent.get_fitness_score() for agent in population]
         avg_fitness = sum(fitness_scores) / len(fitness_scores)
         best_fitness = max(fitness_scores)
-        fitness_variance = sum((f - avg_fitness) ** 2 for f in fitness_scores) / len(fitness_scores)
+        fitness_variance = sum((f - avg_fitness) ** 2 for f in fitness_scores) / len(
+            fitness_scores
+        )
 
         # Calculate diversity
         diversity = self.evolution_state.get_diversity_score()
@@ -440,7 +498,9 @@ class PhoenixFramework:
         convergence_rate = 0.0
         if len(self.generation_history) > 0:
             prev_avg = self.generation_history[-1].average_fitness
-            convergence_rate = abs(avg_fitness - prev_avg) / prev_avg if prev_avg > 0 else 0.0
+            convergence_rate = (
+                abs(avg_fitness - prev_avg) / prev_avg if prev_avg > 0 else 0.0
+            )
 
         # Create statistics
         stats = EvolutionStatistics(
@@ -451,16 +511,20 @@ class PhoenixFramework:
             fitness_variance=fitness_variance,
             population_diversity=diversity,
             convergence_rate=convergence_rate,
-            significance=StatisticalSignificance(0.05, (0.0, 1.0), 0.5, 0.8, len(population))
+            significance=StatisticalSignificance(
+                0.05, (0.0, 1.0), 0.5, 0.8, len(population)
+            ),
         )
 
         self.evolution_state.statistics = stats
         self.generation_history.append(stats)
 
-        self.logger.info(f"📊 Generation {generation} stats: "
-                        f"Avg fitness={avg_fitness:.3f}, "
-                        f"Best fitness={best_fitness:.3f}, "
-                        f"Diversity={diversity:.3f}")
+        self.logger.info(
+            f"📊 Generation {generation} stats: "
+            f"Avg fitness={avg_fitness:.3f}, "
+            f"Best fitness={best_fitness:.3f}, "
+            f"Diversity={diversity:.3f}"
+        )
 
     async def _check_convergence(self):
         """Check if evolution has converged."""
@@ -468,12 +532,21 @@ class PhoenixFramework:
             return  # Need at least 5 generations to check convergence
 
         # Check fitness convergence
-        recent_fitness = [stats.average_fitness for stats in self.generation_history[-5:]]
-        fitness_variance = sum((f - sum(recent_fitness)/len(recent_fitness)) ** 2 for f in recent_fitness) / len(recent_fitness)
+        recent_fitness = [
+            stats.average_fitness for stats in self.generation_history[-5:]
+        ]
+        fitness_variance = sum(
+            (f - sum(recent_fitness) / len(recent_fitness)) ** 2 for f in recent_fitness
+        ) / len(recent_fitness)
 
         # Check diversity convergence
-        recent_diversity = [stats.population_diversity for stats in self.generation_history[-5:]]
-        diversity_variance = sum((d - sum(recent_diversity)/len(recent_diversity)) ** 2 for d in recent_diversity) / len(recent_diversity)
+        recent_diversity = [
+            stats.population_diversity for stats in self.generation_history[-5:]
+        ]
+        diversity_variance = sum(
+            (d - sum(recent_diversity) / len(recent_diversity)) ** 2
+            for d in recent_diversity
+        ) / len(recent_diversity)
 
         # Convergence criteria
         fitness_converged = fitness_variance < self.config.convergence_threshold
@@ -487,8 +560,8 @@ class PhoenixFramework:
                 convergence_type="mixed",
                 convergence_metrics={
                     "fitness_variance": fitness_variance,
-                    "diversity_variance": diversity_variance
-                }
+                    "diversity_variance": diversity_variance,
+                },
             )
 
     async def _save_generation_data(self, generation: int):
@@ -504,7 +577,7 @@ class PhoenixFramework:
                 "best_fitness": self.evolution_state.statistics.best_fitness,
                 "fitness_variance": self.evolution_state.statistics.fitness_variance,
                 "population_diversity": self.evolution_state.statistics.population_diversity,
-                "convergence_rate": self.evolution_state.statistics.convergence_rate
+                "convergence_rate": self.evolution_state.statistics.convergence_rate,
             },
             "population_summary": [
                 {
@@ -514,14 +587,14 @@ class PhoenixFramework:
                     "style": agent.style.value,
                     "generation": agent.generation,
                     "fitness": agent.get_fitness_score(),
-                    "parents": agent.parents
+                    "parents": agent.parents,
                 }
                 for agent in self.evolution_state.population
             ],
-            "genetic_material_count": len(self.evolution_state.genetic_material_pool)
+            "genetic_material_count": len(self.evolution_state.genetic_material_pool),
         }
 
-        with open(data_file, 'w') as f:
+        with open(data_file, "w") as f:
             json.dump(generation_data, f, indent=2)
 
         self.logger.info(f"💾 Saved generation {generation} data to {data_file}")
@@ -540,13 +613,15 @@ class PhoenixFramework:
             "best_fitness": self.evolution_state.statistics.best_fitness,
             "average_fitness": self.evolution_state.statistics.average_fitness,
             "population_diversity": self.evolution_state.statistics.population_diversity,
-            "genetic_material_pool_size": len(self.evolution_state.genetic_material_pool),
+            "genetic_material_pool_size": len(
+                self.evolution_state.genetic_material_pool
+            ),
             "elite_count": len(self.evolution_state.elite),
             "config": {
                 "population_size": self.config.population_size,
                 "max_generations": self.config.max_generations,
                 "selection_pressure": self.config.selection_pressure,
                 "mutation_rate": self.config.mutation_rate,
-                "elite_rate": self.config.elite_rate
-            }
+                "elite_rate": self.config.elite_rate,
+            },
         }

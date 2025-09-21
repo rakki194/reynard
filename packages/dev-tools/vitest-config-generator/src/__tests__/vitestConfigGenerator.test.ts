@@ -15,7 +15,7 @@ describe("VitestConfigGenerator", () => {
   beforeEach(() => {
     logger = new VitestConfigLogger(false);
     generator = new VitestConfigGenerator(logger);
-    
+
     // Mock console methods to avoid output during tests
     vi.spyOn(console, "log").mockImplementation(() => {});
     vi.spyOn(console, "warn").mockImplementation(() => {});
@@ -49,7 +49,7 @@ describe("VitestConfigGenerator", () => {
       const result = generator.generateConfig(config);
 
       expect(result.success).toBe(true);
-      
+
       // Should only include packages, not examples or templates
       const projectNames = result.config.test.projects?.map(p => p.name) || [];
       expect(projectNames.some(name => name.startsWith("examples/"))).toBe(false);
@@ -66,7 +66,7 @@ describe("VitestConfigGenerator", () => {
       const result = generator.generateConfig(config);
 
       expect(result.success).toBe(true);
-      
+
       const projectNames = result.config.test.projects?.map(p => p.name) || [];
       expect(projectNames.some(name => name.startsWith("examples/"))).toBe(true);
     });
@@ -81,7 +81,7 @@ describe("VitestConfigGenerator", () => {
       const result = generator.generateConfig(config);
 
       expect(result.success).toBe(true);
-      
+
       const projectNames = result.config.test.projects?.map(p => p.name) || [];
       expect(projectNames.some(name => name.startsWith("templates/"))).toBe(true);
     });
@@ -96,7 +96,7 @@ describe("VitestConfigGenerator", () => {
       const result = generator.generateConfig(config);
 
       expect(result.success).toBe(true);
-      
+
       const projectNames = result.config.test.projects?.map(p => p.name) || [];
       expect(projectNames.some(name => name.startsWith("scripts/"))).toBe(true);
     });
@@ -114,7 +114,7 @@ describe("VitestConfigGenerator", () => {
       const result = generator.generateConfig(config);
 
       expect(result.success).toBe(true);
-      
+
       // Check that custom thresholds are applied
       const firstProject = result.config.test.projects?.[0];
       expect(firstProject?.test.coverage?.thresholds?.global?.branches).toBe(90);

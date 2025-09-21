@@ -65,7 +65,7 @@ describe("Dev Server Management Integration Tests", () => {
             command: "pnpm",
             args: ["run", "dev"],
             healthCheck: {
-              endpoint: "http://localhost:3000/health",
+              endpoint: "http://localhost:3000/api/health",
               timeout: 5000,
               interval: 10000,
             },
@@ -78,7 +78,7 @@ describe("Dev Server Management Integration Tests", () => {
             command: "python",
             args: ["main.py"],
             healthCheck: {
-              endpoint: "http://localhost:8000/health",
+              endpoint: "http://localhost:8000/api/health",
               timeout: 5000,
               interval: 10000,
             },
@@ -311,7 +311,7 @@ describe("Dev Server Management Integration Tests", () => {
             name: "unhealthy-project",
             port: 3000,
             healthCheck: {
-              endpoint: "http://localhost:3000/health",
+              endpoint: "http://localhost:3000/api/health",
               timeout: 1000,
               interval: 500,
             },

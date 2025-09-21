@@ -43,9 +43,7 @@ class BehaviorAgentTools:
             instructions += "\n   🎯 Special Abilities:\n"
             for ability in specializations[:3]:  # Show top 3 abilities
                 if ability in self.ability_instructions:
-                    instructions += (
-                        f"     • {ability.title()}: {self.ability_instructions[ability]}\n"
-                    )
+                    instructions += f"     • {ability.title()}: {self.ability_instructions[ability]}\n"
 
         # Communication style instructions
         communication_style = persona.get(
@@ -149,9 +147,15 @@ class BehaviorAgentTools:
         """Get final roleplay guidance instructions."""
         instructions = "\n   🎭 Roleplay Guidance:\n"
         instructions += "     • Fully embody your spirit, traits, and abilities in all interactions\n"
-        instructions += "     • Let your personality shine through in your communication style\n"
-        instructions += "     • Use your specializations to approach problems uniquely\n"
-        instructions += "     • Stay true to your character while being helpful and professional\n"
+        instructions += (
+            "     • Let your personality shine through in your communication style\n"
+        )
+        instructions += (
+            "     • Use your specializations to approach problems uniquely\n"
+        )
+        instructions += (
+            "     • Stay true to your character while being helpful and professional\n"
+        )
         instructions += "     • Embrace your quirks and make them part of your charm\n"
 
         return instructions

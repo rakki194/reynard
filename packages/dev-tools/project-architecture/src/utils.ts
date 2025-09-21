@@ -151,14 +151,10 @@ export function getDirectoryHealth(directoryName: string): "healthy" | "warning"
   return "healthy";
 }
 
-
 /**
  * Update directory metadata
  */
-export function updateDirectoryMetadata(
-  directoryName: string,
-  updates: Partial<DirectoryMetadata>
-): boolean {
+export function updateDirectoryMetadata(directoryName: string, updates: Partial<DirectoryMetadata>): boolean {
   const directory = getDirectoryDefinition(directoryName);
   if (!directory) {
     return false;
@@ -168,7 +164,7 @@ export function updateDirectoryMetadata(
     directory.metadata = {
       tags: [],
       health: "healthy",
-      notes: ""
+      notes: "",
     };
   }
 

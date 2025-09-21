@@ -1,6 +1,6 @@
 # 🦦 Docstring Validation System
 
-*splashes with thoroughness* Comprehensive docstring coverage and quality analysis for Python and TypeScript code.
+_splashes with thoroughness_ Comprehensive docstring coverage and quality analysis for Python and TypeScript code.
 
 ## Overview
 
@@ -95,10 +95,7 @@ const analyzer = new DocstringAnalyzer();
 const analysis = await analyzer.analyzeFile("./src/utils.py");
 
 // Analyze multiple files
-const analyses = await analyzer.analyzeFiles([
-  "./src/utils.py",
-  "./src/components.ts"
-]);
+const analyses = await analyzer.analyzeFiles(["./src/utils.py", "./src/components.ts"]);
 
 // Get overall metrics
 const metrics = analyzer.getOverallMetrics(analyses);
@@ -123,10 +120,7 @@ console.log("Quality Score:", result.metrics.docstringQualityScore);
 #### Quality Gates
 
 ```typescript
-import { 
-  getDocstringQualityGates, 
-  createCustomDocstringGate 
-} from "@reynard/code-quality";
+import { getDocstringQualityGates, createCustomDocstringGate } from "@reynard/code-quality";
 
 // Use predefined gates
 const standardGates = getDocstringQualityGates("standard");
@@ -140,7 +134,7 @@ const customGate = createCustomDocstringGate(
   75, // quality threshold
   0.9, // function coverage
   0.95, // class coverage
-  1.0  // module coverage
+  1.0 // module coverage
 );
 ```
 
@@ -170,7 +164,7 @@ The analyzer looks for:
 Default minimum lengths:
 
 - **Functions**: 10 characters
-- **Classes**: 15 characters  
+- **Classes**: 15 characters
 - **Modules**: 30 characters
 
 ## Issue Detection
@@ -198,11 +192,11 @@ import { createCustomDocstringGate } from "@reynard/code-quality";
 const customGate = createCustomDocstringGate(
   "enterprise-standards",
   "Enterprise Documentation Standards",
-  95,  // 95% coverage required
-  85,  // 85% quality score required
+  95, // 95% coverage required
+  85, // 85% quality score required
   0.95, // 95% of functions documented
-  1.0,  // 100% of classes documented
-  1.0   // 100% of modules documented
+  1.0, // 100% of classes documented
+  1.0 // 100% of modules documented
 );
 ```
 
@@ -212,7 +206,7 @@ const customGate = createCustomDocstringGate(
 // Custom file discovery
 const files = await fileDiscovery.discoverFiles("./src", {
   include: ["**/*.py", "**/*.ts", "**/*.tsx"],
-  exclude: ["**/tests/**", "**/node_modules/**", "**/dist/**"]
+  exclude: ["**/tests/**", "**/node_modules/**", "**/dist/**"],
 });
 ```
 
@@ -274,17 +268,17 @@ fi
 def calculate_total(items: List[Item], tax_rate: float) -> float:
     """
     Calculate the total cost including tax for a list of items.
-    
+
     Args:
         items: List of items to calculate total for
         tax_rate: Tax rate as a decimal (e.g., 0.08 for 8%)
-        
+
     Returns:
         Total cost including tax
-        
+
     Raises:
         ValueError: If tax_rate is negative
-        
+
     Example:
         >>> items = [Item(price=10.0), Item(price=20.0)]
         >>> total = calculate_total(items, 0.08)
@@ -293,22 +287,22 @@ def calculate_total(items: List[Item], tax_rate: float) -> float:
     """
     if tax_rate < 0:
         raise ValueError("Tax rate cannot be negative")
-    
+
     subtotal = sum(item.price for item in items)
     return subtotal * (1 + tax_rate)
 ```
 
 ### TypeScript JSDoc
 
-```typescript
+````typescript
 /**
  * Calculate the total cost including tax for a list of items.
- * 
+ *
  * @param items - List of items to calculate total for
  * @param taxRate - Tax rate as a decimal (e.g., 0.08 for 8%)
  * @returns Total cost including tax
  * @throws {Error} If taxRate is negative
- * 
+ *
  * @example
  * ```typescript
  * const items = [new Item(10.0), new Item(20.0)];
@@ -321,11 +315,11 @@ export function calculateTotal(items: Item[], taxRate: number): number {
   if (taxRate < 0) {
     throw new Error("Tax rate cannot be negative");
   }
-  
+
   const subtotal = items.reduce((sum, item) => sum + item.price, 0);
   return subtotal * (1 + taxRate);
 }
-```
+````
 
 ## Troubleshooting
 

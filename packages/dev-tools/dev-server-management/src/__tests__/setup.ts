@@ -118,7 +118,7 @@ export const createMockProjectConfig = (overrides = {}) => ({
   port: 3000,
   category: "frontend",
   healthCheck: {
-    url: "http://localhost:3000/health",
+    url: "http://localhost:3000/api/health",
     interval: 1000,
     timeout: 5000,
   },
@@ -147,7 +147,7 @@ export const createMockDevServerConfig = (overrides = {}) => ({
     template: { start: 3400, end: 3499 },
   },
   healthCheck: {
-    endpoint: "/health",
+    endpoint: "/api/health",
     timeout: 5000,
     interval: 5000,
   },

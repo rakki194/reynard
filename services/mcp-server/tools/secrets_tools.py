@@ -22,7 +22,7 @@ AVAILABLE_SECRETS = {
     "GH_TOKEN": {
         "description": "GitHub Personal Access Token for GitHub CLI and API operations",
         "usage": "Used for GitHub workflows, repository operations, and API calls",
-        "env_var": "GH_TOKEN"
+        "env_var": "GH_TOKEN",
     }
 }
 
@@ -34,7 +34,7 @@ AVAILABLE_SECRETS = {
     execution_type="sync",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 def get_secret(**kwargs) -> dict[str, Any]:
     """Retrieve a user secret by name."""
@@ -47,7 +47,7 @@ def get_secret(**kwargs) -> dict[str, Any]:
             "content": [
                 {
                     "type": "text",
-                    "text": f"Error: Secret '{secret_name}' is not available. Available secrets: {list(AVAILABLE_SECRETS.keys())}"
+                    "text": f"Error: Secret '{secret_name}' is not available. Available secrets: {list(AVAILABLE_SECRETS.keys())}",
                 }
             ]
         }
@@ -63,7 +63,7 @@ def get_secret(**kwargs) -> dict[str, Any]:
             "content": [
                 {
                     "type": "text",
-                    "text": f"Error: Secret '{secret_name}' is not set in environment variable '{env_var}'"
+                    "text": f"Error: Secret '{secret_name}' is not set in environment variable '{env_var}'",
                 }
             ]
         }
@@ -79,7 +79,7 @@ def get_secret(**kwargs) -> dict[str, Any]:
         "content": [
             {
                 "type": "text",
-                "text": f"Secret '{secret_name}': {display_value}\nDescription: {secret_info['description']}\nUsage: {secret_info['usage']}"
+                "text": f"Secret '{secret_name}': {display_value}\nDescription: {secret_info['description']}\nUsage: {secret_info['usage']}",
             }
         ]
     }
@@ -92,28 +92,28 @@ def get_secret(**kwargs) -> dict[str, Any]:
     execution_type="sync",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 def list_secrets(**kwargs) -> dict[str, Any]:
     """List all available secrets."""
     secrets_list = []
-    
+
     for secret_name, secret_info in AVAILABLE_SECRETS.items():
         env_var = secret_info["env_var"]
         is_set = os.getenv(env_var) is not None
         status = "✅ Set" if is_set else "❌ Not set"
-        
+
         secrets_list.append(
             f"• {secret_name} ({env_var}): {status}\n"
             f"  Description: {secret_info['description']}\n"
             f"  Usage: {secret_info['usage']}"
         )
-    
+
     return {
         "content": [
             {
                 "type": "text",
-                "text": f"Available Secrets:\n\n" + "\n\n".join(secrets_list)
+                "text": f"Available Secrets:\n\n" + "\n\n".join(secrets_list),
             }
         ]
     }
@@ -126,7 +126,7 @@ def list_secrets(**kwargs) -> dict[str, Any]:
     execution_type="sync",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 def check_secret(**kwargs) -> dict[str, Any]:
     """Check if a secret is available and set."""
@@ -138,7 +138,7 @@ def check_secret(**kwargs) -> dict[str, Any]:
             "content": [
                 {
                     "type": "text",
-                    "text": f"❌ Secret '{secret_name}' is not available. Available secrets: {list(AVAILABLE_SECRETS.keys())}"
+                    "text": f"❌ Secret '{secret_name}' is not available. Available secrets: {list(AVAILABLE_SECRETS.keys())}",
                 }
             ]
         }
@@ -146,15 +146,15 @@ def check_secret(**kwargs) -> dict[str, Any]:
     secret_info = AVAILABLE_SECRETS[secret_name]
     env_var = secret_info["env_var"]
     secret_value = os.getenv(env_var)
-    
+
     is_set = secret_value is not None
     status = "✅ Available and set" if is_set else "❌ Not set"
-    
+
     return {
         "content": [
             {
                 "type": "text",
-                "text": f"Secret '{secret_name}' ({env_var}): {status}\nDescription: {secret_info['description']}"
+                "text": f"Secret '{secret_name}' ({env_var}): {status}\nDescription: {secret_info['description']}",
             }
         ]
     }
@@ -167,7 +167,7 @@ def check_secret(**kwargs) -> dict[str, Any]:
     execution_type="sync",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 def get_secret_info(**kwargs) -> dict[str, Any]:
     """Get detailed information about a secret."""
@@ -179,7 +179,7 @@ def get_secret_info(**kwargs) -> dict[str, Any]:
             "content": [
                 {
                     "type": "text",
-                    "text": f"❌ Secret '{secret_name}' is not available. Available secrets: {list(AVAILABLE_SECRETS.keys())}"
+                    "text": f"❌ Secret '{secret_name}' is not available. Available secrets: {list(AVAILABLE_SECRETS.keys())}",
                 }
             ]
         }
@@ -187,21 +187,21 @@ def get_secret_info(**kwargs) -> dict[str, Any]:
     secret_info = AVAILABLE_SECRETS[secret_name]
     env_var = secret_info["env_var"]
     secret_value = os.getenv(env_var)
-    
+
     is_set = secret_value is not None
     status = "✅ Set" if is_set else "❌ Not set"
     length = len(secret_value) if secret_value else 0
-    
+
     return {
         "content": [
             {
                 "type": "text",
                 "text": f"Secret Information: {secret_name}\n"
-                       f"Environment Variable: {env_var}\n"
-                       f"Status: {status}\n"
-                       f"Length: {length} characters\n"
-                       f"Description: {secret_info['description']}\n"
-                       f"Usage: {secret_info['usage']}"
+                f"Environment Variable: {env_var}\n"
+                f"Status: {status}\n"
+                f"Length: {length} characters\n"
+                f"Description: {secret_info['description']}\n"
+                f"Usage: {secret_info['usage']}",
             }
         ]
     }

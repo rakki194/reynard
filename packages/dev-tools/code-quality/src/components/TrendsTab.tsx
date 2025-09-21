@@ -1,6 +1,6 @@
 /**
  * Trends Tab Component
- * 
+ *
  * Trends tab content for the Code Quality Dashboard
  */
 

@@ -15,7 +15,7 @@ from datetime import datetime
 from ..utils.data_structures import (
     AgentState,
     PerformanceMetrics,
-    StatisticalSignificance
+    StatisticalSignificance,
 )
 from ..utils.logging import PhoenixLogger
 
@@ -49,13 +49,17 @@ class AgentStateManager:
             # Validate agent state
             validation = await self.validate_agent_state(agent_state)
             if not validation["is_valid"]:
-                self.logger.error(f"Invalid agent state: {validation['errors']}", "registration")
+                self.logger.error(
+                    f"Invalid agent state: {validation['errors']}", "registration"
+                )
                 return False
 
             # Register agent
             self.agent_states[agent_state.id] = agent_state
 
-            self.logger.success(f"Agent {agent_state.name} registered successfully", "registration")
+            self.logger.success(
+                f"Agent {agent_state.name} registered successfully", "registration"
+            )
             return True
 
         except Exception as e:
@@ -92,9 +96,7 @@ class AgentStateManager:
         return agent_ids
 
     async def update_agent_performance(
-        self,
-        agent_id: str,
-        metrics: PerformanceMetrics
+        self, agent_id: str, metrics: PerformanceMetrics
     ) -> bool:
         """
         Update agent performance metrics.
@@ -122,11 +124,17 @@ class AgentStateManager:
             agent_state.knowledge_base["total_operations"] += 1
             agent_state.knowledge_base["last_activity"] = datetime.now().isoformat()
 
-            self.logger.success(f"Performance updated for {agent_id} - Fitness: {metrics.fitness:.3f}", "performance_update")
+            self.logger.success(
+                f"Performance updated for {agent_id} - Fitness: {metrics.fitness:.3f}",
+                "performance_update",
+            )
             return True
 
         except Exception as e:
-            self.logger.error(f"Failed to update performance for {agent_id}: {e}", "performance_update")
+            self.logger.error(
+                f"Failed to update performance for {agent_id}: {e}",
+                "performance_update",
+            )
             return False
 
     async def validate_agent_state(self, agent_state: AgentState) -> Dict[str, Any]:
@@ -143,7 +151,7 @@ class AgentStateManager:
             "is_valid": True,
             "errors": [],
             "warnings": [],
-            "checks": {}
+            "checks": {},
         }
 
         try:
@@ -159,15 +167,21 @@ class AgentStateManager:
             # Check trait ranges
             for trait_name, value in agent_state.personality_traits.items():
                 if not 0.0 <= value <= 1.0:
-                    validation_results["warnings"].append(f"Personality trait {trait_name} out of range: {value}")
+                    validation_results["warnings"].append(
+                        f"Personality trait {trait_name} out of range: {value}"
+                    )
 
             for trait_name, value in agent_state.physical_traits.items():
                 if not 0.0 <= value <= 1.0:
-                    validation_results["warnings"].append(f"Physical trait {trait_name} out of range: {value}")
+                    validation_results["warnings"].append(
+                        f"Physical trait {trait_name} out of range: {value}"
+                    )
 
             for trait_name, value in agent_state.ability_traits.items():
                 if not 0.0 <= value <= 1.0:
-                    validation_results["warnings"].append(f"Ability trait {trait_name} out of range: {value}")
+                    validation_results["warnings"].append(
+                        f"Ability trait {trait_name} out of range: {value}"
+                    )
 
             # Check performance history
             if not agent_state.performance_history:
@@ -175,7 +189,9 @@ class AgentStateManager:
             else:
                 for i, perf in enumerate(agent_state.performance_history):
                     if not 0.0 <= perf.fitness <= 1.0:
-                        validation_results["warnings"].append(f"Performance {i} fitness out of range: {perf.fitness}")
+                        validation_results["warnings"].append(
+                            f"Performance {i} fitness out of range: {perf.fitness}"
+                        )
 
             # Check knowledge base
             if not agent_state.knowledge_base:
@@ -184,14 +200,18 @@ class AgentStateManager:
             validation_results["checks"] = {
                 "has_id": bool(agent_state.id),
                 "has_name": bool(agent_state.name),
-                "has_traits": bool(agent_state.personality_traits or
-                                 agent_state.physical_traits or
-                                 agent_state.ability_traits),
+                "has_traits": bool(
+                    agent_state.personality_traits
+                    or agent_state.physical_traits
+                    or agent_state.ability_traits
+                ),
                 "has_performance": bool(agent_state.performance_history),
                 "has_knowledge": bool(agent_state.knowledge_base),
-                "trait_count": (len(agent_state.personality_traits) +
-                              len(agent_state.physical_traits) +
-                              len(agent_state.ability_traits))
+                "trait_count": (
+                    len(agent_state.personality_traits)
+                    + len(agent_state.physical_traits)
+                    + len(agent_state.ability_traits)
+                ),
             }
 
         except Exception as e:
@@ -213,7 +233,7 @@ class AgentStateManager:
                 "spirits": {},
                 "styles": {},
                 "generations": {},
-                "fitness_stats": {}
+                "fitness_stats": {},
             }
 
         spirits = {}
@@ -244,7 +264,7 @@ class AgentStateManager:
                 "mean": sum(fitness_scores) / len(fitness_scores),
                 "min": min(fitness_scores),
                 "max": max(fitness_scores),
-                "count": len(fitness_scores)
+                "count": len(fitness_scores),
             }
 
         return {
@@ -252,7 +272,7 @@ class AgentStateManager:
             "spirits": spirits,
             "styles": styles,
             "generations": generations,
-            "fitness_stats": fitness_stats
+            "fitness_stats": fitness_stats,
         }
 
     async def get_top_performers(self, count: int = 5) -> List[AgentState]:
@@ -272,12 +292,14 @@ class AgentStateManager:
         sorted_agents = sorted(
             self.agent_states.values(),
             key=lambda agent: agent.get_fitness_score(),
-            reverse=True
+            reverse=True,
         )
 
         top_performers = sorted_agents[:count]
 
-        self.logger.info(f"Retrieved top {len(top_performers)} performers", "performance_analysis")
+        self.logger.info(
+            f"Retrieved top {len(top_performers)} performers", "performance_analysis"
+        )
         return top_performers
 
     async def get_agents_by_spirit(self, spirit: str) -> List[AgentState]:
@@ -291,11 +313,14 @@ class AgentStateManager:
             List of agents with the specified spirit
         """
         matching_agents = [
-            agent for agent in self.agent_states.values()
+            agent
+            for agent in self.agent_states.values()
             if agent.spirit.value == spirit
         ]
 
-        self.logger.info(f"Found {len(matching_agents)} agents with spirit {spirit}", "spirit_filter")
+        self.logger.info(
+            f"Found {len(matching_agents)} agents with spirit {spirit}", "spirit_filter"
+        )
         return matching_agents
 
     async def get_agents_by_generation(self, generation: int) -> List[AgentState]:
@@ -309,11 +334,15 @@ class AgentStateManager:
             List of agents in the specified generation
         """
         matching_agents = [
-            agent for agent in self.agent_states.values()
+            agent
+            for agent in self.agent_states.values()
             if agent.generation == generation
         ]
 
-        self.logger.info(f"Found {len(matching_agents)} agents in generation {generation}", "generation_filter")
+        self.logger.info(
+            f"Found {len(matching_agents)} agents in generation {generation}",
+            "generation_filter",
+        )
         return matching_agents
 
     async def remove_agent(self, agent_id: str) -> bool:

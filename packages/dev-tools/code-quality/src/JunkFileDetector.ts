@@ -76,7 +76,7 @@ export class JunkFileDetector {
           file,
           category: "python",
           reason: "Python bytecode file",
-          severity: "high"
+          severity: "high",
         });
       });
 
@@ -87,7 +87,7 @@ export class JunkFileDetector {
           file,
           category: "python",
           reason: "Python cache directory",
-          severity: "high"
+          severity: "high",
         });
       });
 
@@ -98,7 +98,7 @@ export class JunkFileDetector {
           file,
           category: "python",
           reason: "Python build artifact",
-          severity: "medium"
+          severity: "medium",
         });
       });
 
@@ -109,18 +109,20 @@ export class JunkFileDetector {
           file,
           category: "python",
           reason: "Virtual environment file",
-          severity: "critical"
+          severity: "critical",
         });
       });
 
       // Python testing artifacts
-      const testArtifacts = this.runGitCommand('git ls-files | grep -E "(\\.pytest_cache|\\.coverage|htmlcov|\\.tox)/"');
+      const testArtifacts = this.runGitCommand(
+        'git ls-files | grep -E "(\\.pytest_cache|\\.coverage|htmlcov|\\.tox)/"'
+      );
       testArtifacts.forEach(file => {
         results.push({
           file,
           category: "python",
           reason: "Python testing artifact",
-          severity: "medium"
+          severity: "medium",
         });
       });
 
@@ -131,10 +133,9 @@ export class JunkFileDetector {
           file,
           category: "python",
           reason: "IDE temporary file",
-          severity: "low"
+          severity: "low",
         });
       });
-
     } catch (error) {
       console.warn("⚠️ Error detecting Python artifacts:", error);
     }
@@ -156,18 +157,20 @@ export class JunkFileDetector {
           file,
           category: "typescript",
           reason: "Source map file",
-          severity: "medium"
+          severity: "medium",
         });
       });
 
       // Build directories (excluding legitimate ones)
-      const buildDirs = this.runGitCommand('git ls-files | grep -E "(dist|build|out)/" | grep -v -E "(test-dist|examples/|packages/)"');
+      const buildDirs = this.runGitCommand(
+        'git ls-files | grep -E "(dist|build|out)/" | grep -v -E "(test-dist|examples/|packages/)"'
+      );
       buildDirs.forEach(file => {
         results.push({
           file,
           category: "typescript",
           reason: "Build directory",
-          severity: "high"
+          severity: "high",
         });
       });
 
@@ -178,7 +181,7 @@ export class JunkFileDetector {
           file,
           category: "typescript",
           reason: "Package manager file",
-          severity: "critical"
+          severity: "critical",
         });
       });
 
@@ -189,18 +192,20 @@ export class JunkFileDetector {
           file,
           category: "typescript",
           reason: "Package manager cache",
-          severity: "high"
+          severity: "high",
         });
       });
 
       // Build cache files
-      const buildCache = this.runGitCommand('git ls-files | grep -E "\\.tsbuildinfo$|\\.eslintcache|\\.stylelintcache"');
+      const buildCache = this.runGitCommand(
+        'git ls-files | grep -E "\\.tsbuildinfo$|\\.eslintcache|\\.stylelintcache"'
+      );
       buildCache.forEach(file => {
         results.push({
           file,
           category: "typescript",
           reason: "Build cache file",
-          severity: "medium"
+          severity: "medium",
         });
       });
 
@@ -211,7 +216,7 @@ export class JunkFileDetector {
           file,
           category: "typescript",
           reason: "Coverage directory",
-          severity: "medium"
+          severity: "medium",
         });
       });
 
@@ -222,7 +227,7 @@ export class JunkFileDetector {
           file,
           category: "typescript",
           reason: "Build tool cache",
-          severity: "medium"
+          severity: "medium",
         });
       });
 
@@ -233,10 +238,9 @@ export class JunkFileDetector {
           file,
           category: "typescript",
           reason: "Bundled JavaScript file",
-          severity: "high"
+          severity: "high",
         });
       });
-
     } catch (error) {
       console.warn("⚠️ Error detecting TypeScript artifacts:", error);
     }
@@ -252,13 +256,15 @@ export class JunkFileDetector {
 
     try {
       // Generated files
-      const generatedFiles = this.runGitCommand('git ls-files | grep -E "\\.generated\\.|\\.auto\\.|(temp|tmp|\\.temp)/"');
+      const generatedFiles = this.runGitCommand(
+        'git ls-files | grep -E "\\.generated\\.|\\.auto\\.|(temp|tmp|\\.temp)/"'
+      );
       generatedFiles.forEach(file => {
         results.push({
           file,
           category: "reynard",
           reason: "Generated or temporary file",
-          severity: "medium"
+          severity: "medium",
         });
       });
 
@@ -269,7 +275,7 @@ export class JunkFileDetector {
           file,
           category: "reynard",
           reason: "Backup file",
-          severity: "low"
+          severity: "low",
         });
       });
 
@@ -280,7 +286,7 @@ export class JunkFileDetector {
           file,
           category: "reynard",
           reason: "MCP temporary file",
-          severity: "medium"
+          severity: "medium",
         });
       });
 
@@ -291,18 +297,20 @@ export class JunkFileDetector {
           file,
           category: "reynard",
           reason: "ECS simulation temporary file",
-          severity: "medium"
+          severity: "medium",
         });
       });
 
       // Agent cache files
-      const agentFiles = this.runGitCommand('git ls-files | grep -E "agent-names-.*\\.json$|(\\.agent-cache|agent-temp)/"');
+      const agentFiles = this.runGitCommand(
+        'git ls-files | grep -E "agent-names-.*\\.json$|(\\.agent-cache|agent-temp)/"'
+      );
       agentFiles.forEach(file => {
         results.push({
           file,
           category: "reynard",
           reason: "Agent cache file",
-          severity: "medium"
+          severity: "medium",
         });
       });
 
@@ -313,10 +321,9 @@ export class JunkFileDetector {
           file,
           category: "reynard",
           reason: "Agent log file",
-          severity: "low"
+          severity: "low",
         });
       });
-
     } catch (error) {
       console.warn("⚠️ Error detecting Reynard artifacts:", error);
     }
@@ -338,10 +345,9 @@ export class JunkFileDetector {
           file,
           category: "general",
           reason: "Log or temporary file",
-          severity: "low"
+          severity: "low",
         });
       });
-
     } catch (error) {
       console.warn("⚠️ Error detecting general artifacts:", error);
     }
@@ -354,12 +360,15 @@ export class JunkFileDetector {
    */
   private runGitCommand(command: string): string[] {
     try {
-      const output = execSync(command, { 
+      const output = execSync(command, {
         cwd: this.projectRoot,
-        encoding: 'utf8',
-        stdio: ['pipe', 'pipe', 'pipe']
+        encoding: "utf8",
+        stdio: ["pipe", "pipe", "pipe"],
       });
-      return output.trim().split('\n').filter(line => line.trim().length > 0);
+      return output
+        .trim()
+        .split("\n")
+        .filter(line => line.trim().length > 0);
     } catch (error) {
       // Command failed or no matches found
       return [];
@@ -382,7 +391,10 @@ export class JunkFileDetector {
 
     // Calculate quality score (0-100, higher is better)
     const totalIssues = files.length;
-    const qualityScore = totalIssues === 0 ? 100 : Math.max(0, 100 - (criticalIssues * 20 + highIssues * 10 + mediumIssues * 5 + lowIssues * 2));
+    const qualityScore =
+      totalIssues === 0
+        ? 100
+        : Math.max(0, 100 - (criticalIssues * 20 + highIssues * 10 + mediumIssues * 5 + lowIssues * 2));
 
     const recommendations = this.generateRecommendations(files);
 
@@ -398,7 +410,7 @@ export class JunkFileDetector {
       lowIssues,
       files,
       recommendations,
-      qualityScore: Math.round(qualityScore)
+      qualityScore: Math.round(qualityScore),
     };
   }
 
@@ -417,7 +429,9 @@ export class JunkFileDetector {
 
     const criticalFiles = files.filter(f => f.severity === "critical");
     if (criticalFiles.length > 0) {
-      recommendations.push(`1. Remove ${criticalFiles.length} critical files from Git tracking using 'git rm --cached <file>'`);
+      recommendations.push(
+        `1. Remove ${criticalFiles.length} critical files from Git tracking using 'git rm --cached <file>'`
+      );
     }
 
     const highFiles = files.filter(f => f.severity === "high");
@@ -442,7 +456,7 @@ export class JunkFileDetector {
    */
   generateReport(analysis: JunkFileAnalysis): string {
     let report = "🔍 Git-Tracked Junk File Detection Report\n";
-    report += "=" .repeat(50) + "\n\n";
+    report += "=".repeat(50) + "\n\n";
 
     report += "📊 Summary:\n";
     report += `   🐍 Python artifacts: ${analysis.pythonArtifacts} files\n`;
@@ -466,9 +480,9 @@ export class JunkFileDetector {
           critical: "🔴",
           high: "🟠",
           medium: "🟡",
-          low: "🟢"
+          low: "🟢",
         }[file.severity];
-        
+
         report += `   ${severityEmoji} ${file.file} (${file.category}: ${file.reason})\n`;
       });
       report += "\n";

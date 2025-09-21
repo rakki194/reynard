@@ -37,18 +37,22 @@ class SearchService:
         """Initialize the unified search service."""
         if project_root is None:
             current_dir = Path(__file__).parent
-            self.project_root = current_dir.parent.parent.parent.parent  # Points to reynard/backend
+            self.project_root = (
+                current_dir.parent.parent.parent.parent
+            )  # Points to reynard/backend
         else:
             self.project_root = project_root
 
         # Initialize search handlers
         self.semantic_handler = SemanticSearchHandler(self)
         self.syntax_handler = SyntaxSearchHandler(self)
-        self.hybrid_handler = HybridSearchHandler(self, self.semantic_handler, self.syntax_handler)
-        
+        self.hybrid_handler = HybridSearchHandler(
+            self, self.semantic_handler, self.syntax_handler
+        )
+
         # Initialize NLP processor
         self.nlp_processor = NaturalLanguageProcessor()
-        
+
         # Natural language search configuration
         self._nlp_enabled = True
         self._query_expansion_enabled = True
@@ -64,7 +68,7 @@ class SearchService:
         except Exception:
             logger.exception("Failed to initialize unified search service")
             return False
-    
+
     async def close(self):
         """Close the search service and cleanup resources."""
         try:
@@ -75,31 +79,34 @@ class SearchService:
     def _generate_cache_key(self, request: Any, search_type: str) -> str:
         """Generate a cache key for the search request."""
         import hashlib
+
         request_data = {
             "query": request.query,
-            "max_results": getattr(request, 'max_results', 20),
-            "file_types": getattr(request, 'file_types', []),
-            "directories": getattr(request, 'directories', []),
-            "search_type": search_type
+            "max_results": getattr(request, "max_results", 20),
+            "file_types": getattr(request, "file_types", []),
+            "directories": getattr(request, "directories", []),
+            "search_type": search_type,
         }
-        
+
         # Add additional parameters based on search type
-        if hasattr(request, 'similarity_threshold'):
+        if hasattr(request, "similarity_threshold"):
             request_data["similarity_threshold"] = request.similarity_threshold
-        if hasattr(request, 'case_sensitive'):
+        if hasattr(request, "case_sensitive"):
             request_data["case_sensitive"] = request.case_sensitive
-        if hasattr(request, 'whole_word'):
+        if hasattr(request, "whole_word"):
             request_data["whole_word"] = request.whole_word
-        
+
         # Create hash
         request_str = str(sorted(request_data.items()))
         return hashlib.md5(request_str.encode()).hexdigest()
-    
+
     async def _get_cached_result(self, cache_key: str) -> Optional[SearchResponse]:
         """Get cached search result."""
         return None  # Simplified for now
-    
-    async def _cache_result(self, cache_key: str, result: SearchResponse, ttl: int = 3600):
+
+    async def _cache_result(
+        self, cache_key: str, result: SearchResponse, ttl: int = 3600
+    ):
         """Cache search result."""
         pass  # Simplified for now
 
@@ -108,7 +115,7 @@ class SearchService:
         """Get search metrics."""
         from dataclasses import dataclass
         from datetime import datetime
-        
+
         @dataclass
         class SearchMetrics:
             total_searches: int = 0
@@ -117,27 +124,33 @@ class SearchService:
             average_search_time_ms: float = 0.0
             total_search_time_ms: float = 0.0
             last_reset: datetime = None
-            
+
             def __post_init__(self):
                 if self.last_reset is None:
                     self.last_reset = datetime.now()
-            
+
             @property
             def cache_hit_rate(self) -> float:
                 total_requests = self.cache_hits + self.cache_misses
-                return (self.cache_hits / total_requests * 100) if total_requests > 0 else 0.0
-            
+                return (
+                    (self.cache_hits / total_requests * 100)
+                    if total_requests > 0
+                    else 0.0
+                )
+
             def record_search(self, search_time_ms: float, cache_hit: bool = False):
                 self.total_searches += 1
                 self.total_search_time_ms += search_time_ms
-                self.average_search_time_ms = self.total_search_time_ms / self.total_searches
-                
+                self.average_search_time_ms = (
+                    self.total_search_time_ms / self.total_searches
+                )
+
                 if cache_hit:
                     self.cache_hits += 1
                 else:
                     self.cache_misses += 1
-        
-        if not hasattr(self, '_search_metrics'):
+
+        if not hasattr(self, "_search_metrics"):
             self._search_metrics = SearchMetrics()
         return self._search_metrics
 
@@ -164,7 +177,7 @@ class SearchService:
     ) -> SearchResponse:
         """Perform natural language search with intelligent query processing."""
         start_time = time.time()
-        
+
         # Check if NLP is enabled
         if not self._nlp_enabled:
             return SearchResponse(
@@ -175,18 +188,20 @@ class SearchService:
                 search_time=time.time() - start_time,
                 error="Natural Language Processing is disabled.",
             )
-        
+
         try:
             # Process the natural language query
             processed_query = self.nlp_processor.process_query(query)
-            
+
             # Check confidence threshold
             if processed_query["confidence"] < confidence_threshold:
-                logger.warning(f"Low confidence query: {query} (confidence: {processed_query['confidence']})")
-            
+                logger.warning(
+                    f"Low confidence query: {query} (confidence: {processed_query['confidence']})"
+                )
+
             # Determine search strategy based on processed query
             search_strategy = processed_query["search_strategy"]
-            
+
             # Execute search based on strategy
             if search_strategy == "semantic":
                 return await self._execute_semantic_nlp_search(
@@ -205,7 +220,7 @@ class SearchService:
                 return await self._execute_general_nlp_search(
                     processed_query, max_results, start_time
                 )
-                
+
         except Exception as e:
             logger.exception("Natural language search failed")
             return SearchResponse(
@@ -227,14 +242,16 @@ class SearchService:
     ) -> SearchResponse:
         """Perform intelligent search that automatically chooses the best approach."""
         start_time = time.time()
-        
+
         try:
             # Process the query to determine if it's natural language
             processed_query = self.nlp_processor.process_query(query)
-            
+
             # Determine if this is a natural language query
-            is_natural_language = self._is_natural_language_query(query, processed_query)
-            
+            is_natural_language = self._is_natural_language_query(
+                query, processed_query
+            )
+
             if is_natural_language:
                 # Use natural language search
                 return await self.natural_language_search(
@@ -248,7 +265,7 @@ class SearchService:
                 return await self._execute_expanded_search(
                     query, max_results, file_types, directories, start_time
                 )
-                
+
         except Exception as e:
             logger.exception("Intelligent search failed")
             return SearchResponse(
@@ -268,17 +285,17 @@ class SearchService:
     ) -> SearchResponse:
         """Perform contextual search with additional context information."""
         start_time = time.time()
-        
+
         try:
             # Enhance query with context
             enhanced_query = self._enhance_query_with_context(query, context)
-            
+
             # Process the enhanced query
             processed_query = self.nlp_processor.process_query(enhanced_query)
-            
+
             # Determine file filters based on context
             file_filters = self._determine_contextual_filters(context)
-            
+
             # Execute search with contextual information
             return await self.natural_language_search(
                 query=enhanced_query,
@@ -286,7 +303,7 @@ class SearchService:
                 file_types=file_filters.get("file_types"),
                 directories=file_filters.get("directories"),
             )
-            
+
         except Exception as e:
             logger.exception("Contextual search failed")
             return SearchResponse(
@@ -305,42 +322,41 @@ class SearchService:
         try:
             # Get suggestions from NLP processor
             nlp_suggestions = self.nlp_processor.generate_search_suggestions(query)
-            
+
             # Get traditional suggestions
-            traditional_suggestions = await self.get_query_suggestions(query, max_suggestions)
-            
+            traditional_suggestions = await self.get_query_suggestions(
+                query, max_suggestions
+            )
+
             # Convert QuerySuggestion objects to dictionaries
             traditional_suggestions_dict = [
-                {
-                    "suggestion": s.suggestion,
-                    "confidence": s.confidence,
-                    "type": s.type
-                }
+                {"suggestion": s.suggestion, "confidence": s.confidence, "type": s.type}
                 for s in traditional_suggestions.suggestions
             ]
-            
+
             # Combine and rank suggestions
             combined_suggestions = self._combine_suggestions(
                 nlp_suggestions, traditional_suggestions_dict, max_suggestions
             )
-            
+
             # Convert to QuerySuggestion objects
             from .models import QuerySuggestion
+
             query_suggestions = [
                 QuerySuggestion(
                     suggestion=s["suggestion"],
                     confidence=s["confidence"],
-                    type=s["type"]
+                    type=s["type"],
                 )
                 for s in combined_suggestions
             ]
-            
+
             return SuggestionsResponse(
                 success=True,
                 query=query,
                 suggestions=query_suggestions,
             )
-            
+
         except Exception as e:
             logger.exception("Failed to get intelligent suggestions")
             return SuggestionsResponse(
@@ -461,13 +477,13 @@ class SearchService:
             similarity_threshold=0.7,
             search_type="semantic",
         )
-        
+
         # Execute semantic search
         result = await self.semantic_search(semantic_request)
-        
+
         # Enhance results with NLP metadata
         result.search_strategies = ["semantic", "nlp_processed"]
-        
+
         return result
 
     async def _execute_syntax_nlp_search(
@@ -484,13 +500,13 @@ class SearchService:
             whole_word=False,
             context_lines=2,
         )
-        
+
         # Execute syntax search
         result = await self.syntax_search(syntax_request)
-        
+
         # Enhance results with NLP metadata
         result.search_strategies = ["syntax", "nlp_processed"]
-        
+
         return result
 
     async def _execute_hybrid_nlp_search(
@@ -507,13 +523,13 @@ class SearchService:
             syntax_weight=0.4,
             similarity_threshold=0.7,
         )
-        
+
         # Execute hybrid search
         result = await self.hybrid_search(hybrid_request)
-        
+
         # Enhance results with NLP metadata
         result.search_strategies = ["hybrid", "nlp_processed"]
-        
+
         return result
 
     async def _execute_general_nlp_search(
@@ -522,7 +538,7 @@ class SearchService:
         """Execute general search with NLP processing."""
         # Try multiple search strategies and combine results
         results = []
-        
+
         # Semantic search
         try:
             semantic_result = await self._execute_semantic_nlp_search(
@@ -532,7 +548,7 @@ class SearchService:
                 results.extend(semantic_result.results)
         except Exception:
             pass
-        
+
         # Syntax search
         try:
             syntax_result = await self._execute_syntax_nlp_search(
@@ -542,11 +558,11 @@ class SearchService:
                 results.extend(syntax_result.results)
         except Exception:
             pass
-        
+
         # Remove duplicates and limit results
         unique_results = self._deduplicate_results(results)
         limited_results = unique_results[:max_results]
-        
+
         return SearchResponse(
             success=True,
             query=processed_query["original_query"],
@@ -567,7 +583,7 @@ class SearchService:
         """Execute search with query expansion."""
         # Expand the query
         expanded_terms = self.nlp_processor._expand_query(query)
-        
+
         # Execute searches for each expanded term
         all_results = []
         for term in expanded_terms[:3]:  # Limit to top 3 expansions
@@ -580,18 +596,18 @@ class SearchService:
                     directories=directories,
                     similarity_threshold=0.6,
                 )
-                
+
                 result = await self.semantic_search(semantic_request)
                 if result.success:
                     all_results.extend(result.results)
-                    
+
             except Exception:
                 continue
-        
+
         # Remove duplicates and limit results
         unique_results = self._deduplicate_results(all_results)
         limited_results = unique_results[:max_results]
-        
+
         return SearchResponse(
             success=True,
             query=query,
@@ -601,30 +617,47 @@ class SearchService:
             search_strategies=["expanded", "semantic"],
         )
 
-    def _is_natural_language_query(self, query: str, processed_query: Dict[str, Any]) -> bool:
+    def _is_natural_language_query(
+        self, query: str, processed_query: Dict[str, Any]
+    ) -> bool:
         """Determine if a query is natural language."""
         # Check for natural language indicators
         natural_language_indicators = [
-            "how", "what", "where", "when", "why", "which", "who",
-            "find", "show", "get", "search", "look", "locate",
-            "function that", "class that", "method that",
-            "error handling", "authentication", "configuration",
+            "how",
+            "what",
+            "where",
+            "when",
+            "why",
+            "which",
+            "who",
+            "find",
+            "show",
+            "get",
+            "search",
+            "look",
+            "locate",
+            "function that",
+            "class that",
+            "method that",
+            "error handling",
+            "authentication",
+            "configuration",
         ]
-        
+
         query_lower = query.lower()
-        
+
         # Check for natural language indicators
         if any(indicator in query_lower for indicator in natural_language_indicators):
             return True
-        
+
         # Check for high confidence NLP processing
         if processed_query["confidence"] > 0.7:
             return True
-        
+
         # Check for specific intent detection
         if processed_query["intent"] != "general_search":
             return True
-        
+
         return False
 
     def _enhance_query_with_context(
@@ -633,27 +666,27 @@ class SearchService:
         """Enhance query with contextual information."""
         if not context:
             return query
-        
+
         enhanced_parts = [query]
-        
+
         # Add file context
         if "file_path" in context:
             file_path = context["file_path"]
             if file_path:
                 enhanced_parts.append(f"in file {file_path}")
-        
+
         # Add function context
         if "function_name" in context:
             function_name = context["function_name"]
             if function_name:
                 enhanced_parts.append(f"related to {function_name}")
-        
+
         # Add class context
         if "class_name" in context:
             class_name = context["class_name"]
             if class_name:
                 enhanced_parts.append(f"in class {class_name}")
-        
+
         return " ".join(enhanced_parts)
 
     def _determine_contextual_filters(
@@ -662,10 +695,10 @@ class SearchService:
         """Determine file filters based on context."""
         if not context:
             return {"file_types": None, "directories": None}
-        
+
         file_types = None
         directories = None
-        
+
         # Determine file types from context
         if "file_path" in context:
             file_path = context["file_path"]
@@ -673,14 +706,14 @@ class SearchService:
                 file_ext = Path(file_path).suffix.lstrip(".")
                 if file_ext:
                     file_types = [file_ext]
-        
+
         # Determine directories from context
         if "file_path" in context:
             file_path = context["file_path"]
             if file_path:
                 file_dir = str(Path(file_path).parent)
                 directories = [file_dir]
-        
+
         return {"file_types": file_types, "directories": directories}
 
     def _combine_suggestions(
@@ -691,25 +724,29 @@ class SearchService:
     ) -> List[Dict[str, Any]]:
         """Combine NLP and traditional suggestions."""
         combined = []
-        
+
         # Add NLP suggestions first (higher priority)
         for suggestion in nlp_suggestions:
-            combined.append({
-                "suggestion": suggestion["suggestion"],
-                "confidence": suggestion["confidence"],
-                "type": suggestion["type"],
-                "source": "nlp",
-            })
-        
+            combined.append(
+                {
+                    "suggestion": suggestion["suggestion"],
+                    "confidence": suggestion["confidence"],
+                    "type": suggestion["type"],
+                    "source": "nlp",
+                }
+            )
+
         # Add traditional suggestions
         for suggestion in traditional_suggestions:
-            combined.append({
-                "suggestion": suggestion["suggestion"],
-                "confidence": suggestion.get("confidence", 0.5),
-                "type": suggestion.get("type", "traditional"),
-                "source": "traditional",
-            })
-        
+            combined.append(
+                {
+                    "suggestion": suggestion["suggestion"],
+                    "confidence": suggestion.get("confidence", 0.5),
+                    "type": suggestion.get("type", "traditional"),
+                    "source": "traditional",
+                }
+            )
+
         # Sort by confidence and limit
         combined.sort(key=lambda x: x["confidence"], reverse=True)
         return combined[:max_suggestions]
@@ -718,13 +755,13 @@ class SearchService:
         """Remove duplicate results based on file path and line number."""
         seen = set()
         unique_results = []
-        
+
         for result in results:
             key = f"{result.file_path}:{result.line_number}"
             if key not in seen:
                 seen.add(key)
                 unique_results.append(result)
-        
+
         return unique_results
 
     def _generate_code_suggestions(self, query: str) -> List[Dict[str, Any]]:
@@ -783,21 +820,21 @@ class SearchService:
         """Index via RAG service."""
         try:
             from app.core.service_registry import get_service_registry
-            
+
             registry = get_service_registry()
             rag_service = registry.get_service_instance("rag")
-            
+
             if rag_service is None:
                 return {"success": False, "error": "RAG service not available"}
-            
+
             # For now, return a placeholder response since indexing is not fully implemented
             return {
-                "success": True, 
+                "success": True,
                 "data": {
                     "indexed_files": 0,
                     "total_chunks": 0,
-                    "model_used": "placeholder"
-                }
+                    "model_used": "placeholder",
+                },
             }
 
         except Exception as e:
@@ -807,13 +844,13 @@ class SearchService:
         """Get stats from RAG service."""
         try:
             from app.core.service_registry import get_service_registry
-            
+
             registry = get_service_registry()
             rag_service = registry.get_service_instance("rag")
-            
+
             if rag_service is None:
                 return {"success": False, "error": "RAG service not available"}
-            
+
             # Get stats from the RAG service
             stats = await rag_service.get_stats()
             return {"success": True, "data": stats}
@@ -829,73 +866,78 @@ class SearchService:
             indexed_files = 0
             total_chunks = 0
             ignored_files = 0
-            
+
             # Determine the root directory to index
             if request.project_root:
                 root_path = Path(request.project_root)
             else:
                 root_path = self.project_root
-            
+
             # Create ignore file parser
             ignore_parser = create_ignore_parser(root_path)
             ignore_stats = ignore_parser.get_ignore_stats()
             logger.info(f"Ignore file stats: {ignore_stats}")
-            
+
             # Get file extensions to index
-            file_extensions = request.file_types or ['py', 'ts', 'tsx', 'js', 'jsx']
-            
+            file_extensions = request.file_types or ["py", "ts", "tsx", "js", "jsx"]
+
             # Get directories to index
             directories = request.directories or []
-            
+
             # If no directories specified, index the entire project
             if not directories:
                 search_paths = [root_path]
             else:
                 search_paths = [root_path / dir_path for dir_path in directories]
-            
+
             # Index files
             for search_path in search_paths:
                 if not search_path.exists():
                     continue
-                    
+
                 for file_path in search_path.rglob("*"):
                     # Skip directories
                     if file_path.is_dir():
                         continue
-                    
+
                     # Check if file should be ignored
                     if ignore_parser.should_ignore(file_path):
                         ignored_files += 1
                         continue
-                    
+
                     # Skip hidden files and directories (additional safety)
-                    if any(part.startswith('.') for part in file_path.parts):
+                    if any(part.startswith(".") for part in file_path.parts):
                         # But allow .cursorignore and .gitignore themselves
-                        if file_path.name not in ['.cursorignore', '.gitignore']:
+                        if file_path.name not in [".cursorignore", ".gitignore"]:
                             ignored_files += 1
                             continue
-                    
+
                     # Check file extension
-                    if file_path.suffix.lstrip('.') in file_extensions:
+                    if file_path.suffix.lstrip(".") in file_extensions:
                         try:
                             # Read file content to count chunks
-                            with open(file_path, 'r', encoding='utf-8') as f:
+                            with open(file_path, "r", encoding="utf-8") as f:
                                 content = f.read()
-                                
+
                             # Simple chunking: split by lines and group into chunks
-                            lines = content.split('\n')
+                            lines = content.split("\n")
                             chunk_size = request.chunk_size or 50
-                            chunks = [lines[i:i + chunk_size] for i in range(0, len(lines), chunk_size)]
-                            
+                            chunks = [
+                                lines[i : i + chunk_size]
+                                for i in range(0, len(lines), chunk_size)
+                            ]
+
                             indexed_files += 1
                             total_chunks += len(chunks)
-                            
+
                         except Exception as e:
                             logger.warning(f"Failed to index {file_path}: {e}")
                             continue
-            
-            logger.info(f"Indexing completed: {indexed_files} files indexed, {ignored_files} files ignored")
-            
+
+            logger.info(
+                f"Indexing completed: {indexed_files} files indexed, {ignored_files} files ignored"
+            )
+
             return IndexResponse(
                 success=True,
                 indexed_files=indexed_files,
@@ -903,7 +945,7 @@ class SearchService:
                 index_time=time.time() - start_time,
                 model_used="local",
             )
-            
+
         except Exception as e:
             logger.exception("Local indexing failed")
             return IndexResponse(

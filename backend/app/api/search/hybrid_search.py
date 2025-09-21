@@ -11,7 +11,13 @@ import logging
 import time
 from typing import Any, Dict, List
 
-from .models import HybridSearchRequest, SearchResponse, SearchResult, SemanticSearchRequest, SyntaxSearchRequest
+from .models import (
+    HybridSearchRequest,
+    SearchResponse,
+    SearchResult,
+    SemanticSearchRequest,
+    SyntaxSearchRequest,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +25,9 @@ logger = logging.getLogger(__name__)
 class HybridSearchHandler:
     """Handles hybrid search operations combining semantic and syntax search."""
 
-    def __init__(self, search_service: Any, semantic_handler: Any, syntax_handler: Any) -> None:
+    def __init__(
+        self, search_service: Any, semantic_handler: Any, syntax_handler: Any
+    ) -> None:
         """Initialize the hybrid search handler."""
         self.search_service = search_service
         self.semantic_handler = semantic_handler
@@ -34,7 +42,9 @@ class HybridSearchHandler:
             # Check cache first
             cached_result = await self.search_service._get_cached_result(cache_key)
             if cached_result:
-                self.search_service._metrics.record_search(time.time() - start_time, cache_hit=True)
+                self.search_service._metrics.record_search(
+                    time.time() - start_time, cache_hit=True
+                )
                 logger.debug(f"Cache hit for hybrid search: {request.query[:50]}...")
                 return cached_result
 
@@ -58,7 +68,9 @@ class HybridSearchHandler:
             )
 
             # Run both searches in parallel for better performance
-            semantic_task = asyncio.create_task(self.semantic_handler.search(semantic_req))
+            semantic_task = asyncio.create_task(
+                self.semantic_handler.search(semantic_req)
+            )
             syntax_task = asyncio.create_task(self.syntax_handler.search(syntax_req))
 
             semantic_response, syntax_response = await asyncio.gather(
@@ -67,17 +79,27 @@ class HybridSearchHandler:
 
             # Handle exceptions from parallel tasks
             if isinstance(semantic_response, Exception):
-                logger.warning("Semantic search failed in hybrid: %s", semantic_response)
-                semantic_response = SearchResponse(
-                    success=False, query=request.query, total_results=0, results=[], 
-                    search_time=0, error=str(semantic_response)
+                logger.warning(
+                    "Semantic search failed in hybrid: %s", semantic_response
                 )
-            
+                semantic_response = SearchResponse(
+                    success=False,
+                    query=request.query,
+                    total_results=0,
+                    results=[],
+                    search_time=0,
+                    error=str(semantic_response),
+                )
+
             if isinstance(syntax_response, Exception):
                 logger.warning("Syntax search failed in hybrid: %s", syntax_response)
                 syntax_response = SearchResponse(
-                    success=False, query=request.query, total_results=0, results=[], 
-                    search_time=0, error=str(syntax_response)
+                    success=False,
+                    query=request.query,
+                    total_results=0,
+                    results=[],
+                    search_time=0,
+                    error=str(syntax_response),
                 )
 
             # Combine results - now both are guaranteed to be SearchResponse objects
@@ -93,10 +115,14 @@ class HybridSearchHandler:
                 search_time=time.time() - start_time,
                 search_strategies=["semantic", "syntax", "hybrid"],
             )
-            
+
             # Cache the result
-            await self.search_service._cache_result(cache_key, search_response, ttl=1800)  # 30 minutes for hybrid search
-            self.search_service._metrics.record_search(time.time() - start_time, cache_hit=False)
+            await self.search_service._cache_result(
+                cache_key, search_response, ttl=1800
+            )  # 30 minutes for hybrid search
+            self.search_service._metrics.record_search(
+                time.time() - start_time, cache_hit=False
+            )
             return search_response
 
         except Exception as e:
@@ -109,7 +135,9 @@ class HybridSearchHandler:
                 search_time=time.time() - start_time,
                 error=str(e),
             )
-            self.search_service._metrics.record_search(time.time() - start_time, cache_hit=False)
+            self.search_service._metrics.record_search(
+                time.time() - start_time, cache_hit=False
+            )
             return error_result
 
     def _combine_search_results(
@@ -148,4 +176,4 @@ class HybridSearchHandler:
 
         # Sort by score and limit results
         combined.sort(key=lambda x: x.score, reverse=True)
-        return combined[:request.max_results]
+        return combined[: request.max_results]

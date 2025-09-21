@@ -32,7 +32,7 @@ def rag_config():
         "rag_alert_thresholds": {
             "latency_ms": 2000,
             "error_rate": 0.05,
-            "memory_usage_mb": 1000
+            "memory_usage_mb": 1000,
         },
         "rag_security_enabled": True,
         "rag_encryption_enabled": True,
@@ -42,7 +42,7 @@ def rag_config():
         "rag_feedback_collection_enabled": True,
         "rag_documentation_enabled": True,
         "rag_auto_documentation_enabled": True,
-        "rag_migrations_enabled": False
+        "rag_migrations_enabled": False,
     }
 
 
@@ -54,14 +54,14 @@ def mock_embedding_service():
     service.embed_batch.return_value = [
         [0.1, 0.2, 0.3] * 100,
         [0.4, 0.5, 0.6] * 100,
-        [0.7, 0.8, 0.9] * 100
+        [0.7, 0.8, 0.9] * 100,
     ]
     service.health_check.return_value = True
     service.get_embedding_stats.return_value = {
         "enabled": True,
         "model": "embeddinggemma:latest",
         "cache_hit_rate": 0.85,
-        "total_requests": 100
+        "total_requests": 100,
     }
     return service
 
@@ -73,17 +73,17 @@ def mock_vector_store_service():
     service.health_check.return_value = {
         "status": "healthy",
         "pgvector_version": "0.5.1",
-        "connection_status": "connected"
+        "connection_status": "connected",
     }
     service.similarity_search.return_value = [
         {"id": 1, "text": "Test result 1", "similarity": 0.95},
-        {"id": 2, "text": "Test result 2", "similarity": 0.90}
+        {"id": 2, "text": "Test result 2", "similarity": 0.90},
     ]
     service.insert_document_embeddings.return_value = {"inserted": 1}
     service.get_vector_store_stats.return_value = {
         "enabled": True,
         "connection_status": "connected",
-        "total_embeddings": 1000
+        "total_embeddings": 1000,
     }
     return service
 
@@ -96,18 +96,14 @@ def mock_document_indexer():
     service.index_documents.return_value = {
         "status": "completed",
         "processed": 1,
-        "chunks_created": 3
+        "chunks_created": 3,
     }
     service.get_metrics.return_value = {
         "enabled": True,
         "is_running": True,
         "queue_depth": 0,
         "active_workers": 2,
-        "metrics": {
-            "documents_processed": 10,
-            "chunks_created": 30,
-            "errors": 0
-        }
+        "metrics": {"documents_processed": 10, "chunks_created": 30, "errors": 0},
     }
     return service
 
@@ -119,13 +115,13 @@ def mock_search_engine():
     service.health_check.return_value = True
     service.search.return_value = [
         {"id": 1, "text": "Search result 1", "score": 0.95},
-        {"id": 2, "text": "Search result 2", "score": 0.90}
+        {"id": 2, "text": "Search result 2", "score": 0.90},
     ]
     service.get_search_stats.return_value = {
         "enabled": True,
         "total_searches": 100,
         "avg_latency_ms": 150.0,
-        "search_types": ["semantic", "keyword", "hybrid"]
+        "search_types": ["semantic", "keyword", "hybrid"],
     }
     return service
 
@@ -140,10 +136,10 @@ def mock_performance_monitor():
         "enabled": True,
         "metrics": {
             "latency": {"count": 100, "avg": 150.0, "max": 300.0},
-            "throughput": {"count": 100, "avg": 10.0, "max": 20.0}
+            "throughput": {"count": 100, "avg": 10.0, "max": 20.0},
         },
         "alerts": [],
-        "system_health": "healthy"
+        "system_health": "healthy",
     }
     return service
 
@@ -164,14 +160,14 @@ def mock_security_service():
         "security_features": {
             "encryption": True,
             "audit_logging": True,
-            "access_control": True
-        }
+            "access_control": True,
+        },
     }
     service.get_security_stats.return_value = {
         "enabled": True,
         "total_audit_logs": 100,
         "active_policies": 4,
-        "encryption_keys_configured": 4
+        "encryption_keys_configured": 4,
     }
     return service
 
@@ -188,20 +184,20 @@ def mock_continuous_improvement():
         "overall_success": True,
         "significant_improvements": 2,
         "total_metrics": 3,
-        "recommendation": "implement"
+        "recommendation": "implement",
     }
     service.collect_feedback.return_value = "feedback_123"
     service.get_improvement_progress.return_value = {
         "current_month": "2024-01",
         "target_improvement_percent": 5.0,
         "actual_improvement_percent": 7.5,
-        "on_track": True
+        "on_track": True,
     }
     service.get_continuous_improvement_stats.return_value = {
         "enabled": True,
         "total_experiments": 5,
         "active_experiments": 2,
-        "total_feedback": 50
+        "total_feedback": 50,
     }
     return service
 
@@ -211,27 +207,35 @@ def mock_documentation_service():
     """Mock documentation service for testing."""
     service = AsyncMock()
     service.health_check.return_value = True
-    service.generate_user_documentation.return_value = "# RAG System User Guide\n\nTest documentation"
-    service.generate_api_reference.return_value = "# RAG System API Reference\n\nTest API docs"
-    service.generate_developer_guide.return_value = "# RAG System Developer Guide\n\nTest dev guide"
-    service.generate_troubleshooting_guide.return_value = "# Troubleshooting Guide\n\nTest troubleshooting"
+    service.generate_user_documentation.return_value = (
+        "# RAG System User Guide\n\nTest documentation"
+    )
+    service.generate_api_reference.return_value = (
+        "# RAG System API Reference\n\nTest API docs"
+    )
+    service.generate_developer_guide.return_value = (
+        "# RAG System Developer Guide\n\nTest dev guide"
+    )
+    service.generate_troubleshooting_guide.return_value = (
+        "# Troubleshooting Guide\n\nTest troubleshooting"
+    )
     service.generate_training_materials.return_value = {
         "user_guide": "# User Guide",
         "api_reference": "# API Reference",
         "developer_guide": "# Developer Guide",
-        "troubleshooting": "# Troubleshooting"
+        "troubleshooting": "# Troubleshooting",
     }
     service.save_documentation.return_value = {
         "user_guide": "/tmp/docs/user_guide.md",
         "api_reference": "/tmp/docs/api_reference.md",
         "developer_guide": "/tmp/docs/developer_guide.md",
-        "troubleshooting": "/tmp/docs/troubleshooting.md"
+        "troubleshooting": "/tmp/docs/troubleshooting.md",
     }
     service.get_documentation_stats.return_value = {
         "enabled": True,
         "templates_available": 4,
         "api_examples_count": 10,
-        "best_practices_categories": 4
+        "best_practices_categories": 4,
     }
     return service
 
@@ -249,15 +253,17 @@ def mock_model_evaluator():
             "code_specificity": 0.8,
             "throughput_per_second": 10.0,
             "error_rate": 0.01,
-            "timestamp": "2024-01-01T00:00:00"
+            "timestamp": "2024-01-01T00:00:00",
         }
     }
-    service.generate_evaluation_report.return_value = "# Model Evaluation Report\n\nTest report"
+    service.generate_evaluation_report.return_value = (
+        "# Model Evaluation Report\n\nTest report"
+    )
     service.get_evaluation_stats.return_value = {
         "models_to_test": 5,
         "test_queries": 10,
         "evaluations_completed": 1,
-        "models_available": ["embeddinggemma:latest", "nomic-embed-text"]
+        "models_available": ["embeddinggemma:latest", "nomic-embed-text"],
     }
     return service
 
@@ -291,11 +297,11 @@ class Calculator:
         return a * b
 ''',
             "file_path": "test.py",
-            "language": "python"
+            "language": "python",
         },
         {
             "file_id": "test_2",
-            "content": '''
+            "content": """
 function greetUser(name) {
     return `Hello, ${name}!`;
 }
@@ -317,10 +323,10 @@ class UserManager {
         return this.users.length;
     }
 }
-''',
+""",
             "file_path": "test.js",
-            "language": "javascript"
-        }
+            "language": "javascript",
+        },
     ]
 
 
@@ -332,7 +338,7 @@ def sample_search_queries():
         "calculator class",
         "fibonacci calculation",
         "user management",
-        "authentication system"
+        "authentication system",
     ]
 
 

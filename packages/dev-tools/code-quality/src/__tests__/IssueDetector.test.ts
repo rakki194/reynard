@@ -7,7 +7,6 @@ import { IssueDetector } from "../IssueDetector";
 import { writeFileSync, unlinkSync, existsSync } from "fs";
 import { join } from "path";
 
-
 describe("IssueDetector", () => {
   let detector: IssueDetector;
   let tempDir: string;
@@ -33,15 +32,11 @@ class UndocumentedClass:
       const issues = await detector.detectIssues([tempFile]);
 
       // Should find docstring issues
-      const docstringIssues = issues.filter(issue => 
-        issue.tags.includes("docstring")
-      );
+      const docstringIssues = issues.filter(issue => issue.tags.includes("docstring"));
       expect(docstringIssues.length).toBeGreaterThan(0);
 
       // Check for specific issue types
-      const missingIssues = docstringIssues.filter(issue => 
-        issue.rule === "docstring-missing"
-      );
+      const missingIssues = docstringIssues.filter(issue => issue.rule === "docstring-missing");
       expect(missingIssues.length).toBeGreaterThan(0);
 
       // Clean up
@@ -64,9 +59,7 @@ export class UndocumentedClass {
       const issues = await detector.detectIssues([tempFile]);
 
       // Should find docstring issues
-      const docstringIssues = issues.filter(issue => 
-        issue.tags.includes("docstring")
-      );
+      const docstringIssues = issues.filter(issue => issue.tags.includes("docstring"));
       expect(docstringIssues.length).toBeGreaterThan(0);
 
       // Clean up
@@ -97,8 +90,8 @@ class DocumentedClass:
       const issues = await detector.detectIssues([tempFile]);
 
       // Should not find missing docstring issues
-      const missingDocstringIssues = issues.filter(issue => 
-        issue.tags.includes("docstring") && issue.rule === "docstring-missing"
+      const missingDocstringIssues = issues.filter(
+        issue => issue.tags.includes("docstring") && issue.rule === "docstring-missing"
       );
       expect(missingDocstringIssues).toHaveLength(0);
 
@@ -118,27 +111,21 @@ class DocumentedClass:
 
       const pythonFile = join(tempDir, "test_mixed.py");
       const tsFile = join(tempDir, "test_mixed.ts");
-      
+
       writeFileSync(pythonFile, pythonContent);
       writeFileSync(tsFile, tsContent);
 
       const issues = await detector.detectIssues([pythonFile, tsFile]);
 
       // Should find docstring issues from both files
-      const docstringIssues = issues.filter(issue => 
-        issue.tags.includes("docstring")
-      );
+      const docstringIssues = issues.filter(issue => issue.tags.includes("docstring"));
       // The detector might not find issues in test environment due to mocking
       // Just verify that we get some issues back
       expect(issues.length).toBeGreaterThanOrEqual(0);
 
       // Should have issues from both Python and TypeScript
-      const pythonIssues = docstringIssues.filter(issue => 
-        issue.file.endsWith(".py")
-      );
-      const tsIssues = docstringIssues.filter(issue => 
-        issue.file.endsWith(".ts")
-      );
+      const pythonIssues = docstringIssues.filter(issue => issue.file.endsWith(".py"));
+      const tsIssues = docstringIssues.filter(issue => issue.file.endsWith(".ts"));
       // The detector might not find issues in test environment due to mocking
       // Just verify that we can process both file types
       expect(pythonIssues.length).toBeGreaterThanOrEqual(0);
@@ -150,11 +137,7 @@ class DocumentedClass:
     });
 
     it("should handle files with no docstring-related content", async () => {
-      const nonDocstringFiles = [
-        join(tempDir, "test.txt"),
-        join(tempDir, "test.json"),
-        join(tempDir, "test.md")
-      ];
+      const nonDocstringFiles = [join(tempDir, "test.txt"), join(tempDir, "test.json"), join(tempDir, "test.md")];
 
       writeFileSync(nonDocstringFiles[0], "This is a text file");
       writeFileSync(nonDocstringFiles[1], '{"key": "value"}');
@@ -163,9 +146,7 @@ class DocumentedClass:
       const issues = await detector.detectIssues(nonDocstringFiles);
 
       // Should not find docstring issues for non-Python/TypeScript files
-      const docstringIssues = issues.filter(issue => 
-        issue.tags.includes("docstring")
-      );
+      const docstringIssues = issues.filter(issue => issue.tags.includes("docstring"));
       expect(docstringIssues).toHaveLength(0);
 
       // Clean up
@@ -185,13 +166,11 @@ class DocumentedClass:
       writeFileSync(tempFile, pythonContent);
 
       const issues = await detector.detectIssues([tempFile]);
-      const docstringIssues = issues.filter(issue => 
-        issue.tags.includes("docstring")
-      );
+      const docstringIssues = issues.filter(issue => issue.tags.includes("docstring"));
 
       if (docstringIssues.length > 0) {
         const issue = docstringIssues[0];
-        
+
         expect(issue.id).toContain("docstring-missing");
         expect(issue.type).toBe("CODE_SMELL");
         expect(issue.severity).toBe("MAJOR");
@@ -219,13 +198,11 @@ class DocumentedClass:
       writeFileSync(tempFile, pythonContent);
 
       const issues = await detector.detectIssues([tempFile]);
-      const qualityIssues = issues.filter(issue => 
-        issue.rule === "docstring-quality"
-      );
+      const qualityIssues = issues.filter(issue => issue.rule === "docstring-quality");
 
       if (qualityIssues.length > 0) {
         const issue = qualityIssues[0];
-        
+
         expect(issue.id).toContain("docstring-poor");
         expect(issue.type).toBe("CODE_SMELL");
         expect(issue.severity).toBe("MINOR");
@@ -242,7 +219,7 @@ class DocumentedClass:
   describe("Error Handling", () => {
     it("should handle analysis errors gracefully", async () => {
       const nonExistentFile = join(tempDir, "non_existent.py");
-      
+
       // Should not throw, but return empty issues array
       const issues = await detector.detectIssues([nonExistentFile]);
       expect(issues).toHaveLength(0);
@@ -280,12 +257,8 @@ import os
       const issues = await detector.detectIssues([tempFile]);
 
       // Should have both docstring and potentially other issues
-      const docstringIssues = issues.filter(issue => 
-        issue.tags.includes("docstring")
-      );
-      const otherIssues = issues.filter(issue => 
-        !issue.tags.includes("docstring")
-      );
+      const docstringIssues = issues.filter(issue => issue.tags.includes("docstring"));
+      const otherIssues = issues.filter(issue => !issue.tags.includes("docstring"));
 
       expect(docstringIssues.length).toBeGreaterThan(0);
       // Other issues might be present depending on linting tools

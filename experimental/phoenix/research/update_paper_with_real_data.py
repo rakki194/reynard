@@ -35,24 +35,32 @@ class PhoenixPaperUpdater:
         results = {}
 
         # Load comprehensive experiment results
-        comp_results_file = self.results_path / "experimental_results" / "comprehensive_experiment_results.json"
+        comp_results_file = (
+            self.results_path
+            / "experimental_results"
+            / "comprehensive_experiment_results.json"
+        )
         if comp_results_file.exists():
-            with open(comp_results_file, 'r') as f:
+            with open(comp_results_file, "r") as f:
                 results["comprehensive"] = json.load(f)
 
         # Load analysis results
-        analysis_file = self.results_path / "analysis_results" / "phoenix_analysis_results.json"
+        analysis_file = (
+            self.results_path / "analysis_results" / "phoenix_analysis_results.json"
+        )
         if analysis_file.exists():
-            with open(analysis_file, 'r') as f:
+            with open(analysis_file, "r") as f:
                 results["analysis"] = json.load(f)
 
         return results
 
     def _load_analysis_results(self) -> Dict[str, Any]:
         """Load analysis results."""
-        analysis_file = self.results_path / "analysis_results" / "phoenix_analysis_results.json"
+        analysis_file = (
+            self.results_path / "analysis_results" / "phoenix_analysis_results.json"
+        )
         if analysis_file.exists():
-            with open(analysis_file, 'r') as f:
+            with open(analysis_file, "r") as f:
                 return json.load(f)
         return {}
 
@@ -66,21 +74,31 @@ class PhoenixPaperUpdater:
 
             # Agent creation metrics
             agent_creation = comp_data.get("agent_creation", {})
-            metrics["agent_creation_success_rate"] = agent_creation.get("success_rate", 0.0) * 100
+            metrics["agent_creation_success_rate"] = (
+                agent_creation.get("success_rate", 0.0) * 100
+            )
             metrics["agent_creation_time"] = agent_creation.get("creation_time", 0.0)
             metrics["agent_creation_rate"] = agent_creation.get("creation_rate", 0.0)
 
             # Knowledge distillation metrics
             knowledge_dist = comp_data.get("knowledge_distillation", {})
-            metrics["knowledge_distillation_success_rate"] = knowledge_dist.get("success_rate", 0.0) * 100
+            metrics["knowledge_distillation_success_rate"] = (
+                knowledge_dist.get("success_rate", 0.0) * 100
+            )
             metrics["trait_accuracy"] = knowledge_dist.get("trait_accuracy", 0.0) * 100
-            metrics["knowledge_transfer_rate"] = knowledge_dist.get("knowledge_transfer_rate", 0.0)
+            metrics["knowledge_transfer_rate"] = knowledge_dist.get(
+                "knowledge_transfer_rate", 0.0
+            )
 
             # Evolutionary operations metrics
             evolution_ops = comp_data.get("evolutionary_operations", {})
-            metrics["evolution_success_rate"] = evolution_ops.get("success_rate", 0.0) * 100
+            metrics["evolution_success_rate"] = (
+                evolution_ops.get("success_rate", 0.0) * 100
+            )
             metrics["diversity_score"] = evolution_ops.get("diversity_score", 0.0) * 100
-            metrics["convergence_rate"] = evolution_ops.get("convergence_rate", 0.0) * 100
+            metrics["convergence_rate"] = (
+                evolution_ops.get("convergence_rate", 0.0) * 100
+            )
 
         # Extract from analysis results
         if "analysis" in self.experimental_results:
@@ -89,9 +107,15 @@ class PhoenixPaperUpdater:
 
             if "comparative_stats" in simple_test:
                 comp_stats = simple_test["comparative_stats"]
-                metrics["best_success_rate"] = comp_stats.get("best_success_rate", 0.0) * 100
-                metrics["average_success_rate"] = comp_stats.get("average_success_rate", 0.0) * 100
-                metrics["success_rate_std"] = comp_stats.get("success_rate_std", 0.0) * 100
+                metrics["best_success_rate"] = (
+                    comp_stats.get("best_success_rate", 0.0) * 100
+                )
+                metrics["average_success_rate"] = (
+                    comp_stats.get("average_success_rate", 0.0) * 100
+                )
+                metrics["success_rate_std"] = (
+                    comp_stats.get("success_rate_std", 0.0) * 100
+                )
 
         return metrics
 
@@ -167,26 +191,30 @@ Statistical analysis based on actual experimental data:
             return False
 
         # Read the current paper
-        with open(self.paper_path, 'r') as f:
+        with open(self.paper_path, "r") as f:
             paper_content = f.read()
 
         # Replace the results table
-        table_pattern = r'\\begin\{table\}\[H\].*?\\end\{table\}'
+        table_pattern = r"\\begin\{table\}\[H\].*?\\end\{table\}"
         new_table = self._generate_real_data_table()
 
         # Find and replace the table
         if re.search(table_pattern, paper_content, re.DOTALL):
-            paper_content = re.sub(table_pattern, new_table, paper_content, flags=re.DOTALL)
+            paper_content = re.sub(
+                table_pattern, new_table, paper_content, flags=re.DOTALL
+            )
             print("✅ Updated results table with real data")
         else:
             print("⚠️ Results table not found in paper")
 
         # Replace the statistical analysis section
-        stats_pattern = r'Statistical significance analysis will be conducted.*?(?=\\\\subsection|\Z)'
+        stats_pattern = r"Statistical significance analysis will be conducted.*?(?=\\\\subsection|\Z)"
         new_stats = self._generate_real_statistical_analysis()
 
         if re.search(stats_pattern, paper_content, re.DOTALL):
-            paper_content = re.sub(stats_pattern, new_stats, paper_content, flags=re.DOTALL)
+            paper_content = re.sub(
+                stats_pattern, new_stats, paper_content, flags=re.DOTALL
+            )
             print("✅ Updated statistical analysis with real data")
         else:
             print("⚠️ Statistical analysis section not found in paper")
@@ -209,13 +237,15 @@ This research paper has been updated to reflect actual experimental results rath
 """
 
         # Insert the integrity note before the results section
-        results_pattern = r'(\\section\{Results and Analysis\})'
+        results_pattern = r"(\\section\{Results and Analysis\})"
         if re.search(results_pattern, paper_content):
-            paper_content = re.sub(results_pattern, integrity_note + r'\1', paper_content)
+            paper_content = re.sub(
+                results_pattern, integrity_note + r"\1", paper_content
+            )
             print("✅ Added data integrity section")
 
         # Write the updated paper
-        with open(self.paper_path, 'w') as f:
+        with open(self.paper_path, "w") as f:
             f.write(paper_content)
 
         print(f"✅ Paper updated successfully: {self.paper_path}")

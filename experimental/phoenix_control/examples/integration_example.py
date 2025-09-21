@@ -51,7 +51,7 @@ async def main():
         agent_state_tracking=True,
         create_tag=True,
         push_remote=False,  # Set to False for demo
-        version_type="auto"
+        version_type="auto",
     )
     release_automation = ReleaseAutomation(release_config)
     print("   ✅ Release automation system configured")
@@ -65,7 +65,7 @@ async def main():
         enable_performance_testing=True,
         enable_documentation_validation=True,
         strict_mode=True,
-        auto_fix=True
+        auto_fix=True,
     )
     quality_validator = CodeQualityValidation()
     security_qa = SecurityQualityAssurance()
@@ -97,17 +97,21 @@ async def main():
     frontend_result = await quality_validator.validate_frontend()
     backend_result = await quality_validator.validate_backend()
 
-    frontend_passed = all([
-        frontend_result['linting']['passed'],
-        frontend_result['formatting']['passed'],
-        frontend_result['type_safety']['passed']
-    ])
+    frontend_passed = all(
+        [
+            frontend_result["linting"]["passed"],
+            frontend_result["formatting"]["passed"],
+            frontend_result["type_safety"]["passed"],
+        ]
+    )
 
-    backend_passed = all([
-        backend_result['linting']['passed'],
-        backend_result['formatting']['passed'],
-        backend_result['type_safety']['passed']
-    ])
+    backend_passed = all(
+        [
+            backend_result["linting"]["passed"],
+            backend_result["formatting"]["passed"],
+            backend_result["type_safety"]["passed"],
+        ]
+    )
 
     print(f"   Frontend Quality: {'✅' if frontend_passed else '❌'}")
     print(f"   Backend Quality: {'✅' if backend_passed else '❌'}")
@@ -126,12 +130,14 @@ async def main():
     print("\n4. Release Preparation...")
 
     # Check if all quality gates pass
-    quality_gates_passed = all([
-        frontend_passed,
-        backend_passed,
-        security_result['passed'],
-        performance_result['passed']
-    ])
+    quality_gates_passed = all(
+        [
+            frontend_passed,
+            backend_passed,
+            security_result["passed"],
+            performance_result["passed"],
+        ]
+    )
 
     if quality_gates_passed:
         print("   ✅ All quality gates passed - ready for release")
@@ -140,7 +146,9 @@ async def main():
         version_manager = VersionManager()
         current_version = await version_manager.get_current_version()
         if current_version:
-            next_version = await version_manager.suggest_next_version(current_version, "feature")
+            next_version = await version_manager.suggest_next_version(
+                current_version, "feature"
+            )
             print(f"   Current Version: {current_version}")
             print(f"   Next Version: {next_version}")
 
@@ -151,9 +159,15 @@ async def main():
             print("   ✅ Changelog created")
 
         # Add release entry
-        await changelog_manager.add_entry("Added", "New feature for automated release management")
-        await changelog_manager.add_entry("Changed", "Improved version detection algorithm")
-        await changelog_manager.add_entry("Fixed", "Resolved issue with changelog formatting")
+        await changelog_manager.add_entry(
+            "Added", "New feature for automated release management"
+        )
+        await changelog_manager.add_entry(
+            "Changed", "Improved version detection algorithm"
+        )
+        await changelog_manager.add_entry(
+            "Fixed", "Resolved issue with changelog formatting"
+        )
         print("   ✅ Changelog updated")
 
     else:
@@ -174,12 +188,14 @@ async def main():
         print("   ✓ Updating agent state")
 
         # Update Success-Advisor-8 performance
-        success_advisor.performance_history.append({
-            "timestamp": "2025-01-15T10:30:00Z",
-            "action": "release_execution",
-            "success": True,
-            "details": "Successfully executed release workflow"
-        })
+        success_advisor.performance_history.append(
+            {
+                "timestamp": "2025-01-15T10:30:00Z",
+                "action": "release_execution",
+                "success": True,
+                "details": "Successfully executed release workflow",
+            }
+        )
 
         # Save updated state
         await persistence.save_agent(success_advisor)
@@ -219,7 +235,7 @@ async def main():
         "Changelog Management": changelog_manager is not None,
         "Code Quality Validation": quality_validator is not None,
         "Security Quality Assurance": security_qa is not None,
-        "Performance Quality Assurance": performance_qa is not None
+        "Performance Quality Assurance": performance_qa is not None,
     }
 
     print("   System Component Status:")

@@ -74,14 +74,37 @@ export function generateAutoStartQueueWatcherTask(): any {
 export function generateBuildTasks(): any[] {
   const buildableDirectories = getBuildableDirectories();
 
-  return buildableDirectories.map(dir => {
-    // Handle Python services differently
-    if (dir.startsWith("services/")) {
+  return buildableDirectories
+    .map(dir => {
+      // Handle Python services differently
+      if (dir.startsWith("services/")) {
+        const baseTask = {
+          label: `🔨 Build ${dir}`,
+          type: "shell",
+          command: "bash",
+          args: ["-c", `cd ${dir} && pip install -e .`],
+          group: "build",
+          presentation: {
+            echo: true,
+            reveal: "always",
+            focus: false,
+            panel: "shared",
+            showReuseMessage: true,
+            clear: false,
+          },
+          problemMatcher: ["$python"],
+          detail: `Build ${dir} Python service`,
+        };
+
+        return [baseTask];
+      }
+
+      // Handle TypeScript/JavaScript packages
       const baseTask = {
         label: `🔨 Build ${dir}`,
         type: "shell",
-        command: "bash",
-        args: ["-c", `cd ${dir} && pip install -e .`],
+        command: "pnpm",
+        args: ["--filter", `reynard-${dir}`, "build"],
         group: "build",
         presentation: {
           echo: true,
@@ -91,51 +114,30 @@ export function generateBuildTasks(): any[] {
           showReuseMessage: true,
           clear: false,
         },
-        problemMatcher: ["$python"],
-        detail: `Build ${dir} Python service`,
+        problemMatcher: ["$tsc"],
+        detail: `Build ${dir} package`,
       };
 
-      return [baseTask];
-    }
+      // Add watch variant
+      const watchTask = {
+        ...baseTask,
+        label: `🔨 Build ${dir} (Watch)`,
+        args: ["--filter", `reynard-${dir}`, "dev"],
+        isBackground: true,
+        detail: `Build ${dir} package in watch mode`,
+      };
 
-    // Handle TypeScript/JavaScript packages
-    const baseTask = {
-      label: `🔨 Build ${dir}`,
-      type: "shell",
-      command: "pnpm",
-      args: ["--filter", `reynard-${dir}`, "build"],
-      group: "build",
-      presentation: {
-        echo: true,
-        reveal: "always",
-        focus: false,
-        panel: "shared",
-        showReuseMessage: true,
-        clear: false,
-      },
-      problemMatcher: ["$tsc"],
-      detail: `Build ${dir} package`,
-    };
+      // Add clean variant
+      const cleanTask = {
+        ...baseTask,
+        label: `🧹 Clean ${dir}`,
+        args: ["--filter", `reynard-${dir}`, "clean"],
+        detail: `Clean ${dir} package`,
+      };
 
-    // Add watch variant
-    const watchTask = {
-      ...baseTask,
-      label: `🔨 Build ${dir} (Watch)`,
-      args: ["--filter", `reynard-${dir}`, "dev"],
-      isBackground: true,
-      detail: `Build ${dir} package in watch mode`,
-    };
-
-    // Add clean variant
-    const cleanTask = {
-      ...baseTask,
-      label: `🧹 Clean ${dir}`,
-      args: ["--filter", `reynard-${dir}`, "clean"],
-      detail: `Clean ${dir} package`,
-    };
-
-    return [baseTask, watchTask, cleanTask];
-  }).flat();
+      return [baseTask, watchTask, cleanTask];
+    })
+    .flat();
 }
 
 /**
@@ -313,7 +315,10 @@ export function generateAdvancedTasks(): any[] {
       label: "🐍 Install All Services",
       type: "shell",
       command: "bash",
-      args: ["-c", "cd services/agent-naming && pip install -e . && cd ../gatekeeper && pip install -e . && cd ../mcp-server && pip install -e ."],
+      args: [
+        "-c",
+        "cd services/agent-naming && pip install -e . && cd ../gatekeeper && pip install -e . && cd ../mcp-server && pip install -e .",
+      ],
       group: "build",
       presentation: {
         echo: true,
@@ -330,7 +335,10 @@ export function generateAdvancedTasks(): any[] {
       label: "🧪 Test All Services",
       type: "shell",
       command: "bash",
-      args: ["-c", "cd services/agent-naming && python -m pytest tests/ -v && cd ../gatekeeper && python -m pytest tests/ -v && cd ../mcp-server && python -m pytest tests/ -v"],
+      args: [
+        "-c",
+        "cd services/agent-naming && python -m pytest tests/ -v && cd ../gatekeeper && python -m pytest tests/ -v && cd ../mcp-server && python -m pytest tests/ -v",
+      ],
       group: "test",
       presentation: {
         echo: true,
@@ -347,7 +355,10 @@ export function generateAdvancedTasks(): any[] {
       label: "🔍 Lint All Services",
       type: "shell",
       command: "bash",
-      args: ["-c", "cd services/agent-naming && python -m ruff check . --fix && cd ../gatekeeper && python -m ruff check . --fix && cd ../mcp-server && python -m ruff check . --fix"],
+      args: [
+        "-c",
+        "cd services/agent-naming && python -m ruff check . --fix && cd ../gatekeeper && python -m ruff check . --fix && cd ../mcp-server && python -m ruff check . --fix",
+      ],
       group: "build",
       presentation: {
         echo: true,

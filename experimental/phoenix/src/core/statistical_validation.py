@@ -20,7 +20,7 @@ from ..utils.data_structures import (
     EvolutionStatistics,
     PerformanceMetrics,
     StatisticalSignificance,
-    StatisticalAnalysisResult
+    StatisticalAnalysisResult,
 )
 from .real_fitness_analyzer import RealFitnessAnalyzer
 
@@ -53,9 +53,13 @@ class StatisticalValidation:
         self.power = 0.8  # Statistical power
         self.effect_size_threshold = 0.2  # Minimum effect size (Cohen's d)
 
-        self.logger.info(f"📊 Statistical validation system initialized (α={self.alpha})")
+        self.logger.info(
+            f"📊 Statistical validation system initialized (α={self.alpha})"
+        )
 
-    async def analyze_performance(self, generation_results: List[EvolutionStatistics]) -> StatisticalAnalysisResult:
+    async def analyze_performance(
+        self, generation_results: List[EvolutionStatistics]
+    ) -> StatisticalAnalysisResult:
         """
         Analyze performance improvements across generations.
 
@@ -65,7 +69,9 @@ class StatisticalValidation:
         Returns:
             Statistical analysis result
         """
-        self.logger.info(f"📈 Analyzing performance across {len(generation_results)} generations")
+        self.logger.info(
+            f"📈 Analyzing performance across {len(generation_results)} generations"
+        )
 
         if len(generation_results) < 2:
             return StatisticalAnalysisResult(
@@ -75,7 +81,7 @@ class StatisticalValidation:
                 confidence_interval=(0.0, 0.0),
                 is_significant=False,
                 interpretation="Insufficient data for statistical analysis",
-                recommendations=["Collect more generations of data"]
+                recommendations=["Collect more generations of data"],
             )
 
         # Extract fitness data
@@ -89,24 +95,32 @@ class StatisticalValidation:
         improvement_result = await self._analyze_improvement(generation_results)
 
         # Combine results
-        combined_result = self._combine_analysis_results(trend_result, improvement_result)
+        combined_result = self._combine_analysis_results(
+            trend_result, improvement_result
+        )
 
-        self.logger.info(f"✅ Performance analysis completed: p={combined_result.p_value:.4f}, "
-                        f"effect_size={combined_result.effect_size:.3f}")
+        self.logger.info(
+            f"✅ Performance analysis completed: p={combined_result.p_value:.4f}, "
+            f"effect_size={combined_result.effect_size:.3f}"
+        )
 
         return combined_result
 
-    async def _analyze_trend(self, generations: List[int], fitness_scores: List[float]) -> StatisticalAnalysisResult:
+    async def _analyze_trend(
+        self, generations: List[int], fitness_scores: List[float]
+    ) -> StatisticalAnalysisResult:
         """Analyze trend in fitness scores over generations."""
         # Linear regression analysis
-        slope, intercept, r_value, p_value, std_err = stats.linregress(generations, fitness_scores)
+        slope, intercept, r_value, p_value, std_err = stats.linregress(
+            generations, fitness_scores
+        )
 
         # Calculate effect size (correlation coefficient)
         effect_size = abs(r_value)
 
         # Calculate confidence interval for slope
         n = len(generations)
-        t_critical = stats.t.ppf(1 - self.alpha/2, n - 2)
+        t_critical = stats.t.ppf(1 - self.alpha / 2, n - 2)
         slope_ci = (slope - t_critical * std_err, slope + t_critical * std_err)
 
         # Determine significance and interpretation
@@ -123,7 +137,9 @@ class StatisticalValidation:
         if is_significant and slope > 0:
             recommendations.append("Evolution is showing significant improvement")
         elif not is_significant:
-            recommendations.append("Consider running more generations or adjusting parameters")
+            recommendations.append(
+                "Consider running more generations or adjusting parameters"
+            )
 
         return StatisticalAnalysisResult(
             test_name="linear_trend_analysis",
@@ -132,10 +148,12 @@ class StatisticalValidation:
             confidence_interval=slope_ci,
             is_significant=is_significant,
             interpretation=interpretation,
-            recommendations=recommendations
+            recommendations=recommendations,
         )
 
-    async def _analyze_improvement(self, generation_results: List[EvolutionStatistics]) -> StatisticalAnalysisResult:
+    async def _analyze_improvement(
+        self, generation_results: List[EvolutionStatistics]
+    ) -> StatisticalAnalysisResult:
         """Analyze improvement between first and last generations."""
         if len(generation_results) < 2:
             return StatisticalAnalysisResult(
@@ -145,7 +163,7 @@ class StatisticalValidation:
                 confidence_interval=(0.0, 0.0),
                 is_significant=False,
                 interpretation="Insufficient data for improvement analysis",
-                recommendations=["Collect more generations of data"]
+                recommendations=["Collect more generations of data"],
             )
 
         # Compare first and last generation
@@ -155,10 +173,10 @@ class StatisticalValidation:
         # Perform t-test for fitness improvement using real data
         # Get real fitness distributions from actual agent data
         first_fitness = await self.fitness_analyzer.get_real_fitness_distribution(
-            first_gen.agents if hasattr(first_gen, 'agents') else [], n_samples=100
+            first_gen.agents if hasattr(first_gen, "agents") else [], n_samples=100
         )
         last_fitness = await self.fitness_analyzer.get_real_fitness_distribution(
-            last_gen.agents if hasattr(last_gen, 'agents') else [], n_samples=100
+            last_gen.agents if hasattr(last_gen, "agents") else [], n_samples=100
         )
 
         # If no real data available, create synthetic data based on statistics
@@ -179,8 +197,8 @@ class StatisticalValidation:
         # Calculate confidence interval for difference
         n1, n2 = len(first_fitness), len(last_fitness)
         df = n1 + n2 - 2
-        t_critical = stats.t.ppf(1 - self.alpha/2, df)
-        se_diff = pooled_std * np.sqrt(1/n1 + 1/n2)
+        t_critical = stats.t.ppf(1 - self.alpha / 2, df)
+        se_diff = pooled_std * np.sqrt(1 / n1 + 1 / n2)
         diff = np.mean(last_fitness) - np.mean(first_fitness)
         ci = (diff - t_critical * se_diff, diff + t_critical * se_diff)
 
@@ -196,9 +214,13 @@ class StatisticalValidation:
 
         recommendations = []
         if is_significant and improvement > 0:
-            recommendations.append("Significant improvement detected - evolution is working")
+            recommendations.append(
+                "Significant improvement detected - evolution is working"
+            )
         elif not is_significant:
-            recommendations.append("No significant improvement - consider parameter adjustment")
+            recommendations.append(
+                "No significant improvement - consider parameter adjustment"
+            )
 
         return StatisticalAnalysisResult(
             test_name="generation_improvement_test",
@@ -207,30 +229,39 @@ class StatisticalValidation:
             confidence_interval=ci,
             is_significant=is_significant,
             interpretation=interpretation,
-            recommendations=recommendations
+            recommendations=recommendations,
         )
 
-
-    def _combine_analysis_results(self, trend_result: StatisticalAnalysisResult,
-                                improvement_result: StatisticalAnalysisResult) -> StatisticalAnalysisResult:
+    def _combine_analysis_results(
+        self,
+        trend_result: StatisticalAnalysisResult,
+        improvement_result: StatisticalAnalysisResult,
+    ) -> StatisticalAnalysisResult:
         """Combine multiple analysis results."""
         # Use the more conservative (higher) p-value
         combined_p_value = max(trend_result.p_value, improvement_result.p_value)
 
         # Use the larger effect size
-        combined_effect_size = max(trend_result.effect_size, improvement_result.effect_size)
+        combined_effect_size = max(
+            trend_result.effect_size, improvement_result.effect_size
+        )
 
         # Combine confidence intervals (use improvement test CI as it's more specific)
         combined_ci = improvement_result.confidence_interval
 
         # Determine overall significance
-        is_significant = combined_p_value < self.alpha and combined_effect_size > self.effect_size_threshold
+        is_significant = (
+            combined_p_value < self.alpha
+            and combined_effect_size > self.effect_size_threshold
+        )
 
         # Combine interpretations
         combined_interpretation = f"Combined analysis: {trend_result.interpretation}. {improvement_result.interpretation}"
 
         # Combine recommendations
-        combined_recommendations = list(set(trend_result.recommendations + improvement_result.recommendations))
+        combined_recommendations = list(
+            set(trend_result.recommendations + improvement_result.recommendations)
+        )
 
         return StatisticalAnalysisResult(
             test_name="combined_analysis",
@@ -239,10 +270,12 @@ class StatisticalValidation:
             confidence_interval=combined_ci,
             is_significant=is_significant,
             interpretation=combined_interpretation,
-            recommendations=combined_recommendations
+            recommendations=combined_recommendations,
         )
 
-    async def analyze_convergence(self, generation_results: List[EvolutionStatistics]) -> StatisticalAnalysisResult:
+    async def analyze_convergence(
+        self, generation_results: List[EvolutionStatistics]
+    ) -> StatisticalAnalysisResult:
         """
         Analyze convergence of the evolutionary process.
 
@@ -252,7 +285,9 @@ class StatisticalValidation:
         Returns:
             Convergence analysis result
         """
-        self.logger.info(f"🎯 Analyzing convergence across {len(generation_results)} generations")
+        self.logger.info(
+            f"🎯 Analyzing convergence across {len(generation_results)} generations"
+        )
 
         if len(generation_results) < 5:
             return StatisticalAnalysisResult(
@@ -262,7 +297,7 @@ class StatisticalValidation:
                 confidence_interval=(0.0, 0.0),
                 is_significant=False,
                 interpretation="Insufficient data for convergence analysis (need ≥5 generations)",
-                recommendations=["Run more generations for convergence analysis"]
+                recommendations=["Run more generations for convergence analysis"],
             )
 
         # Analyze fitness variance over time
@@ -270,20 +305,26 @@ class StatisticalValidation:
         generations = list(range(len(fitness_variances)))
 
         # Test if variance is decreasing (convergence indicator)
-        slope, intercept, r_value, p_value, std_err = stats.linregress(generations, fitness_variances)
+        slope, intercept, r_value, p_value, std_err = stats.linregress(
+            generations, fitness_variances
+        )
 
         # Calculate effect size
         effect_size = abs(r_value)
 
         # Calculate confidence interval for slope
         n = len(generations)
-        t_critical = stats.t.ppf(1 - self.alpha/2, n - 2)
+        t_critical = stats.t.ppf(1 - self.alpha / 2, n - 2)
         slope_ci = (slope - t_critical * std_err, slope + t_critical * std_err)
 
         # Determine convergence
-        is_converging = p_value < self.alpha and slope < 0  # Negative slope indicates decreasing variance
+        is_converging = (
+            p_value < self.alpha and slope < 0
+        )  # Negative slope indicates decreasing variance
 
-        interpretation = f"Fitness variance trend: {'decreasing' if slope < 0 else 'increasing'} "
+        interpretation = (
+            f"Fitness variance trend: {'decreasing' if slope < 0 else 'increasing'} "
+        )
         if is_converging:
             interpretation += f"(converging, p={p_value:.4f})"
         else:
@@ -291,9 +332,13 @@ class StatisticalValidation:
 
         recommendations = []
         if is_converging:
-            recommendations.append("Population is converging - consider stopping evolution")
+            recommendations.append(
+                "Population is converging - consider stopping evolution"
+            )
         else:
-            recommendations.append("Population not converging - continue evolution or adjust parameters")
+            recommendations.append(
+                "Population not converging - continue evolution or adjust parameters"
+            )
 
         return StatisticalAnalysisResult(
             test_name="convergence_analysis",
@@ -302,10 +347,12 @@ class StatisticalValidation:
             confidence_interval=slope_ci,
             is_significant=is_converging,
             interpretation=interpretation,
-            recommendations=recommendations
+            recommendations=recommendations,
         )
 
-    async def analyze_diversity(self, generation_results: List[EvolutionStatistics]) -> StatisticalAnalysisResult:
+    async def analyze_diversity(
+        self, generation_results: List[EvolutionStatistics]
+    ) -> StatisticalAnalysisResult:
         """
         Analyze population diversity over generations.
 
@@ -315,7 +362,9 @@ class StatisticalValidation:
         Returns:
             Diversity analysis result
         """
-        self.logger.info(f"🌈 Analyzing diversity across {len(generation_results)} generations")
+        self.logger.info(
+            f"🌈 Analyzing diversity across {len(generation_results)} generations"
+        )
 
         if len(generation_results) < 3:
             return StatisticalAnalysisResult(
@@ -325,7 +374,7 @@ class StatisticalValidation:
                 confidence_interval=(0.0, 0.0),
                 is_significant=False,
                 interpretation="Insufficient data for diversity analysis",
-                recommendations=["Collect more generations of data"]
+                recommendations=["Collect more generations of data"],
             )
 
         # Analyze diversity trend
@@ -333,14 +382,16 @@ class StatisticalValidation:
         generations = list(range(len(diversity_scores)))
 
         # Linear regression on diversity
-        slope, intercept, r_value, p_value, std_err = stats.linregress(generations, diversity_scores)
+        slope, intercept, r_value, p_value, std_err = stats.linregress(
+            generations, diversity_scores
+        )
 
         # Calculate effect size
         effect_size = abs(r_value)
 
         # Calculate confidence interval
         n = len(generations)
-        t_critical = stats.t.ppf(1 - self.alpha/2, n - 2)
+        t_critical = stats.t.ppf(1 - self.alpha / 2, n - 2)
         slope_ci = (slope - t_critical * std_err, slope + t_critical * std_err)
 
         # Determine diversity trend
@@ -355,7 +406,9 @@ class StatisticalValidation:
 
         recommendations = []
         if is_significant and slope < 0:
-            recommendations.append("Diversity is decreasing - consider increasing mutation rate")
+            recommendations.append(
+                "Diversity is decreasing - consider increasing mutation rate"
+            )
         elif is_significant and slope > 0:
             recommendations.append("Diversity is increasing - good for exploration")
         else:
@@ -368,10 +421,12 @@ class StatisticalValidation:
             confidence_interval=slope_ci,
             is_significant=is_significant,
             interpretation=interpretation,
-            recommendations=recommendations
+            recommendations=recommendations,
         )
 
-    async def power_analysis(self, effect_size: float, sample_size: int) -> Dict[str, Any]:
+    async def power_analysis(
+        self, effect_size: float, sample_size: int
+    ) -> Dict[str, Any]:
         """
         Perform statistical power analysis.
 
@@ -386,10 +441,14 @@ class StatisticalValidation:
         power = stats.power.ttest_power(effect_size, sample_size, alpha=self.alpha)
 
         # Calculate minimum detectable effect size
-        min_effect_size = stats.power.ttest_solve_power(power=self.power, nobs=sample_size, alpha=self.alpha)
+        min_effect_size = stats.power.ttest_solve_power(
+            power=self.power, nobs=sample_size, alpha=self.alpha
+        )
 
         # Calculate required sample size for desired power
-        required_n = stats.power.ttest_solve_power(effect_size=effect_size, power=self.power, alpha=self.alpha)
+        required_n = stats.power.ttest_solve_power(
+            effect_size=effect_size, power=self.power, alpha=self.alpha
+        )
 
         return {
             "current_power": power,
@@ -398,10 +457,12 @@ class StatisticalValidation:
             "effect_size": effect_size,
             "sample_size": sample_size,
             "alpha": self.alpha,
-            "target_power": self.power
+            "target_power": self.power,
         }
 
-    async def calculate_confidence_interval(self, data: List[float], confidence_level: float = 0.95) -> Tuple[float, float]:
+    async def calculate_confidence_interval(
+        self, data: List[float], confidence_level: float = 0.95
+    ) -> Tuple[float, float]:
         """
         Calculate confidence interval for a dataset.
 
@@ -428,7 +489,9 @@ class StatisticalValidation:
 
         return ci
 
-    async def effect_size_analysis(self, group1: List[float], group2: List[float]) -> Dict[str, float]:
+    async def effect_size_analysis(
+        self, group1: List[float], group2: List[float]
+    ) -> Dict[str, float]:
         """
         Calculate various effect size measures.
 
@@ -459,7 +522,7 @@ class StatisticalValidation:
             "cohens_d": cohens_d,
             "hedges_g": hedges_g,
             "glass_delta": glass_delta,
-            "interpretation": self._interpret_effect_size(abs(cohens_d))
+            "interpretation": self._interpret_effect_size(abs(cohens_d)),
         }
 
     def _interpret_effect_size(self, effect_size: float) -> str:
@@ -473,7 +536,9 @@ class StatisticalValidation:
         else:
             return "large effect"
 
-    async def generate_statistical_report(self, generation_results: List[EvolutionStatistics]) -> Dict[str, Any]:
+    async def generate_statistical_report(
+        self, generation_results: List[EvolutionStatistics]
+    ) -> Dict[str, Any]:
         """
         Generate comprehensive statistical report.
 
@@ -500,10 +565,20 @@ class StatisticalValidation:
         # Power analysis using real fitness data
         if len(generation_results) >= 2:
             first_fitness = await self.fitness_analyzer.get_real_fitness_distribution(
-                generation_results[0].agents if hasattr(generation_results[0], 'agents') else [], n_samples=100
+                (
+                    generation_results[0].agents
+                    if hasattr(generation_results[0], "agents")
+                    else []
+                ),
+                n_samples=100,
             )
             last_fitness = await self.fitness_analyzer.get_real_fitness_distribution(
-                generation_results[-1].agents if hasattr(generation_results[-1], 'agents') else [], n_samples=100
+                (
+                    generation_results[-1].agents
+                    if hasattr(generation_results[-1], "agents")
+                    else []
+                ),
+                n_samples=100,
             )
 
             # Fallback to synthetic data if no real data available
@@ -514,8 +589,7 @@ class StatisticalValidation:
 
             effect_sizes = await self.effect_size_analysis(first_fitness, last_fitness)
             power_analysis = await self.power_analysis(
-                effect_sizes["cohens_d"],
-                len(first_fitness) + len(last_fitness)
+                effect_sizes["cohens_d"], len(first_fitness) + len(last_fitness)
             )
         else:
             effect_sizes = {"cohens_d": 0.0, "interpretation": "insufficient data"}
@@ -527,7 +601,7 @@ class StatisticalValidation:
                 "generation_count": len(generation_results),
                 "analysis_timestamp": datetime.now().isoformat(),
                 "significance_threshold": self.alpha,
-                "target_power": self.power
+                "target_power": self.power,
             },
             "performance_analysis": {
                 "test_name": performance_analysis.test_name,
@@ -535,7 +609,7 @@ class StatisticalValidation:
                 "effect_size": performance_analysis.effect_size,
                 "is_significant": performance_analysis.is_significant,
                 "interpretation": performance_analysis.interpretation,
-                "recommendations": performance_analysis.recommendations
+                "recommendations": performance_analysis.recommendations,
             },
             "convergence_analysis": {
                 "test_name": convergence_analysis.test_name,
@@ -543,7 +617,7 @@ class StatisticalValidation:
                 "effect_size": convergence_analysis.effect_size,
                 "is_converging": convergence_analysis.is_significant,
                 "interpretation": convergence_analysis.interpretation,
-                "recommendations": convergence_analysis.recommendations
+                "recommendations": convergence_analysis.recommendations,
             },
             "diversity_analysis": {
                 "test_name": diversity_analysis.test_name,
@@ -551,7 +625,7 @@ class StatisticalValidation:
                 "effect_size": diversity_analysis.effect_size,
                 "is_significant": diversity_analysis.is_significant,
                 "interpretation": diversity_analysis.interpretation,
-                "recommendations": diversity_analysis.recommendations
+                "recommendations": diversity_analysis.recommendations,
             },
             "summary_statistics": {
                 "fitness": {
@@ -559,61 +633,76 @@ class StatisticalValidation:
                     "std": np.std(fitness_scores),
                     "min": np.min(fitness_scores),
                     "max": np.max(fitness_scores),
-                    "confidence_interval": fitness_ci
+                    "confidence_interval": fitness_ci,
                 },
                 "diversity": {
                     "mean": np.mean(diversity_scores),
                     "std": np.std(diversity_scores),
                     "min": np.min(diversity_scores),
                     "max": np.max(diversity_scores),
-                    "confidence_interval": diversity_ci
-                }
+                    "confidence_interval": diversity_ci,
+                },
             },
             "effect_size_analysis": effect_sizes,
             "power_analysis": power_analysis,
             "overall_assessment": self._generate_overall_assessment(
                 performance_analysis, convergence_analysis, diversity_analysis
-            )
+            ),
         }
 
         self.logger.info("✅ Statistical report generated successfully")
         return report
 
-    def _generate_overall_assessment(self, performance: StatisticalAnalysisResult,
-                                   convergence: StatisticalAnalysisResult,
-                                   diversity: StatisticalAnalysisResult) -> Dict[str, Any]:
+    def _generate_overall_assessment(
+        self,
+        performance: StatisticalAnalysisResult,
+        convergence: StatisticalAnalysisResult,
+        diversity: StatisticalAnalysisResult,
+    ) -> Dict[str, Any]:
         """Generate overall assessment of the evolutionary process."""
         # Count significant results
-        significant_tests = sum([
-            performance.is_significant,
-            convergence.is_significant,
-            diversity.is_significant
-        ])
+        significant_tests = sum(
+            [
+                performance.is_significant,
+                convergence.is_significant,
+                diversity.is_significant,
+            ]
+        )
 
         # Determine overall status
         if significant_tests >= 2:
             status = "excellent"
-            assessment = "Evolution is showing strong statistical evidence of improvement"
+            assessment = (
+                "Evolution is showing strong statistical evidence of improvement"
+            )
         elif significant_tests == 1:
             status = "good"
             assessment = "Evolution is showing some statistical evidence of improvement"
         else:
             status = "needs_improvement"
-            assessment = "Evolution is not showing strong statistical evidence of improvement"
+            assessment = (
+                "Evolution is not showing strong statistical evidence of improvement"
+            )
 
         # Generate recommendations
         recommendations = []
         if not performance.is_significant:
-            recommendations.append("Consider running more generations or adjusting selection pressure")
+            recommendations.append(
+                "Consider running more generations or adjusting selection pressure"
+            )
         if not convergence.is_significant:
-            recommendations.append("Population may not be converging - check diversity maintenance")
+            recommendations.append(
+                "Population may not be converging - check diversity maintenance"
+            )
         if not diversity.is_significant:
-            recommendations.append("Monitor population diversity - may need parameter adjustment")
+            recommendations.append(
+                "Monitor population diversity - may need parameter adjustment"
+            )
 
         return {
             "status": status,
             "assessment": assessment,
             "significant_tests": significant_tests,
             "total_tests": 3,
-            "recommendations": recommendations
+            "recommendations": recommendations,
         }

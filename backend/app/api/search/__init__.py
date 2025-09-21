@@ -23,7 +23,7 @@ __all__ = [
     "router",
     "SearchService",
     "SearchRequest",
-    "SearchResponse", 
+    "SearchResponse",
     "SearchResult",
     "SearchStats",
     "SemanticSearchRequest",

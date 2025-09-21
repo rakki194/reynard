@@ -59,11 +59,11 @@ load_dotenv()
 class ServiceConfig:
     """
     Base configuration class for all Reynard backend services.
-    
+
     Provides common configuration parameters that are shared across all services,
     including enablement toggles, timeout settings, and retry mechanisms. This
     base class ensures consistent configuration patterns throughout the system.
-    
+
     Attributes:
         enabled (bool): Whether the service is enabled (default: True)
         timeout (int): Service operation timeout in seconds (default: 30)

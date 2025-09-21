@@ -25,7 +25,7 @@ from src.utils.data_structures import (
     SpiritType,
     NamingStyle,
     PerformanceMetrics,
-    StatisticalSignificance
+    StatisticalSignificance,
 )
 from src.core.knowledge_distillation import KnowledgeDistillation
 from src.integration.agent_persistence import AgentStatePersistence
@@ -54,7 +54,9 @@ class SuccessAdvisor8DistillationAnalyzer:
 
     async def load_agent_state(self):
         """Load Success-Advisor-8's agent state."""
-        self.agent_state = await self.agent_persistence.load_agent_state("permanent-release-manager-success-advisor-8")
+        self.agent_state = await self.agent_persistence.load_agent_state(
+            "permanent-release-manager-success-advisor-8"
+        )
         if not self.agent_state:
             self.logger.error("Failed to load Success-Advisor-8 agent state")
             return False
@@ -65,7 +67,9 @@ class SuccessAdvisor8DistillationAnalyzer:
         docs = {}
 
         # Release management documentation
-        docs["release_management_overview"] = """
+        docs[
+            "release_management_overview"
+        ] = """
 # Release Management Overview
 ## Reynard Framework Release Management System
 
@@ -98,7 +102,9 @@ The Reynard Framework Release Management System is a comprehensive, automated ap
 - **Convergence Detection**: Automated detection of process optimization
 """
 
-        docs["agent_state_persistence"] = """
+        docs[
+            "agent_state_persistence"
+        ] = """
 # Agent State Persistence System
 ## Comprehensive Agent State Management for Release Management
 
@@ -131,7 +137,9 @@ Each agent state contains:
 - **Relationships**: Social connections and interaction history
 """
 
-        docs["git_workflow_automation"] = """
+        docs[
+            "git_workflow_automation"
+        ] = """
 # Git Workflow Automation Guide
 ## Comprehensive Git Workflow Automation for Release Management
 
@@ -184,7 +192,9 @@ The Reynard ecosystem includes sophisticated agent state persistence through mul
    - Error handling and recovery
 """
 
-        docs["release_quality_assurance"] = """
+        docs[
+            "release_quality_assurance"
+        ] = """
 # Release Quality Assurance Framework
 ## Comprehensive Quality Assurance for Reynard Framework Releases
 
@@ -223,7 +233,9 @@ The framework tracks comprehensive quality metrics:
         code = {}
 
         # PHOENIX Framework core
-        code["phoenix_framework"] = """
+        code[
+            "phoenix_framework"
+        ] = """
 class PhoenixFramework:
     '''
     Main PHOENIX framework for evolutionary knowledge distillation.
@@ -267,7 +279,9 @@ class PhoenixFramework:
         self.logger.info(f"🦁 PHOENIX Framework initialized with config: {config}")
 """
 
-        code["evolutionary_operators"] = """
+        code[
+            "evolutionary_operators"
+        ] = """
 class EvolutionaryOperators:
     '''
     Enhanced evolutionary operators for PHOENIX framework.
@@ -300,7 +314,9 @@ class EvolutionaryOperators:
         self.logger.info("🧬 Evolutionary operators initialized")
 """
 
-        code["knowledge_distillation"] = """
+        code[
+            "knowledge_distillation"
+        ] = """
 class KnowledgeDistillation:
     '''
     Knowledge distillation system for PHOENIX framework.
@@ -344,7 +360,9 @@ class KnowledgeDistillation:
         self.logger.info("🧠 Knowledge distillation system initialized")
 """
 
-        code["statistical_validation"] = """
+        code[
+            "statistical_validation"
+        ] = """
 class StatisticalValidation:
     '''
     Statistical validation system for PHOENIX framework.
@@ -421,7 +439,6 @@ class StatisticalValidation:
 - **Release Time**: ~15 minutes
 - **Success Rate**: 100%
 """,
-
             "phoenix_implementation": """
 ## PHOENIX Framework Implementation
 
@@ -460,7 +477,7 @@ class StatisticalValidation:
 - **Test Coverage**: 100% of core components
 - **Documentation**: 4 comprehensive guides
 - **Success Rate**: 100%
-"""
+""",
         }
 
         return activities
@@ -487,26 +504,30 @@ class StatisticalValidation:
             self.logger.info(f"🧬 Extracting genetic material from {content_name}...")
 
             # Extract genetic material
-            genetic_material = await self.knowledge_distillation.extract_genetic_material(
-                agent=self.agent_state,
-                output=content_text,
-                generation=1
+            genetic_material = (
+                await self.knowledge_distillation.extract_genetic_material(
+                    agent=self.agent_state, output=content_text, generation=1
+                )
             )
 
             genetic_materials.append(genetic_material)
 
-            self.logger.info(f"✅ Extracted genetic material from {content_name}: "
-                           f"{len(genetic_material.subliminal_traits)} traits, "
-                           f"{len(genetic_material.relevance_scores)} domains")
+            self.logger.info(
+                f"✅ Extracted genetic material from {content_name}: "
+                f"{len(genetic_material.subliminal_traits)} traits, "
+                f"{len(genetic_material.relevance_scores)} domains"
+            )
 
         # Perform knowledge distillation
         self.logger.info("🧠 Performing knowledge distillation...")
-        distillation_result = await self.knowledge_distillation.distill_knowledge(genetic_materials)
+        distillation_result = await self.knowledge_distillation.distill_knowledge(
+            genetic_materials
+        )
 
         return {
             "genetic_materials": genetic_materials,
             "distillation_result": distillation_result,
-            "content_analysis": self._analyze_content_types(all_content)
+            "content_analysis": self._analyze_content_types(all_content),
         }
 
     def _analyze_content_types(self, content):
@@ -515,7 +536,7 @@ class StatisticalValidation:
             "total_content_pieces": len(content),
             "content_types": {},
             "total_length": 0,
-            "average_length": 0
+            "average_length": 0,
         }
 
         for name, text in content.items():
@@ -538,7 +559,7 @@ class StatisticalValidation:
             "subliminal_traits": {},
             "knowledge_domains": {},
             "quality_metrics": {},
-            "insights": []
+            "insights": [],
         }
 
         # Analyze genetic materials
@@ -548,10 +569,13 @@ class StatisticalValidation:
         # Summary statistics
         analysis["summary"] = {
             "total_genetic_materials": len(genetic_materials),
-            "total_subliminal_traits": sum(len(gm.subliminal_traits) for gm in genetic_materials),
+            "total_subliminal_traits": sum(
+                len(gm.subliminal_traits) for gm in genetic_materials
+            ),
             "total_domains": sum(len(gm.relevance_scores) for gm in genetic_materials),
             "distillation_quality": distillation_result.distillation_quality,
-            "average_fitness": sum(gm.fitness_score for gm in genetic_materials) / len(genetic_materials)
+            "average_fitness": sum(gm.fitness_score for gm in genetic_materials)
+            / len(genetic_materials),
         }
 
         # Analyze subliminal traits
@@ -574,15 +598,23 @@ class StatisticalValidation:
 
         # Calculate average strengths
         for trait_name in trait_strengths:
-            trait_strengths[trait_name] = sum(trait_strengths[trait_name]) / len(trait_strengths[trait_name])
+            trait_strengths[trait_name] = sum(trait_strengths[trait_name]) / len(
+                trait_strengths[trait_name]
+            )
 
         analysis["subliminal_traits"] = {
             "unique_traits": len(trait_counts),
             "trait_frequency": trait_counts,
             "trait_strengths": trait_strengths,
             "trait_categories": trait_categories,
-            "most_common_trait": max(trait_counts, key=trait_counts.get) if trait_counts else None,
-            "strongest_trait": max(trait_strengths, key=trait_strengths.get) if trait_strengths else None
+            "most_common_trait": (
+                max(trait_counts, key=trait_counts.get) if trait_counts else None
+            ),
+            "strongest_trait": (
+                max(trait_strengths, key=trait_strengths.get)
+                if trait_strengths
+                else None
+            ),
         }
 
         # Analyze knowledge domains
@@ -601,8 +633,14 @@ class StatisticalValidation:
         analysis["knowledge_domains"] = {
             "unique_domains": len(all_domains),
             "domain_scores": domain_averages,
-            "most_relevant_domain": max(domain_averages, key=domain_averages.get) if domain_averages else None,
-            "domain_distribution": {domain: len(scores) for domain, scores in all_domains.items()}
+            "most_relevant_domain": (
+                max(domain_averages, key=domain_averages.get)
+                if domain_averages
+                else None
+            ),
+            "domain_distribution": {
+                domain: len(scores) for domain, scores in all_domains.items()
+            },
         }
 
         # Quality metrics
@@ -612,7 +650,7 @@ class StatisticalValidation:
             "total_content_length": results["content_analysis"]["total_length"],
             "genetic_material_quality": distillation_result.distillation_quality,
             "trait_richness": len(trait_counts),
-            "domain_coverage": len(all_domains)
+            "domain_coverage": len(all_domains),
         }
 
         # Generate insights
@@ -621,19 +659,27 @@ class StatisticalValidation:
         # Trait insights
         if trait_counts:
             most_common = max(trait_counts, key=trait_counts.get)
-            insights.append(f"Most frequently expressed trait: {most_common} ({trait_counts[most_common]} occurrences)")
+            insights.append(
+                f"Most frequently expressed trait: {most_common} ({trait_counts[most_common]} occurrences)"
+            )
 
         if trait_strengths:
             strongest = max(trait_strengths, key=trait_strengths.get)
-            insights.append(f"Strongest trait expression: {strongest} (strength: {trait_strengths[strongest]:.3f})")
+            insights.append(
+                f"Strongest trait expression: {strongest} (strength: {trait_strengths[strongest]:.3f})"
+            )
 
         # Domain insights
         if domain_averages:
             most_relevant = max(domain_averages, key=domain_averages.get)
-            insights.append(f"Most relevant knowledge domain: {most_relevant} (relevance: {domain_averages[most_relevant]:.3f})")
+            insights.append(
+                f"Most relevant knowledge domain: {most_relevant} (relevance: {domain_averages[most_relevant]:.3f})"
+            )
 
         # Quality insights
-        insights.append(f"Knowledge distillation quality: {distillation_result.distillation_quality:.3f}")
+        insights.append(
+            f"Knowledge distillation quality: {distillation_result.distillation_quality:.3f}"
+        )
         insights.append(f"Total genetic materials extracted: {len(genetic_materials)}")
         insights.append(f"Unique subliminal traits detected: {len(trait_counts)}")
         insights.append(f"Knowledge domains covered: {len(all_domains)}")
@@ -672,9 +718,9 @@ This report presents a comprehensive analysis of the knowledge distillation proc
 #### Trait Frequency Distribution:
 """
 
-        for trait, count in analysis['subliminal_traits']['trait_frequency'].items():
-            strength = analysis['subliminal_traits']['trait_strengths'][trait]
-            category = analysis['subliminal_traits']['trait_categories'][trait].value
+        for trait, count in analysis["subliminal_traits"]["trait_frequency"].items():
+            strength = analysis["subliminal_traits"]["trait_strengths"][trait]
+            category = analysis["subliminal_traits"]["trait_categories"][trait].value
             report += f"- **{trait}**: {count} occurrences, strength: {strength:.3f}, category: {category}\n"
 
         report += f"""
@@ -685,8 +731,8 @@ This report presents a comprehensive analysis of the knowledge distillation proc
 #### Domain Relevance Scores:
 """
 
-        for domain, score in analysis['knowledge_domains']['domain_scores'].items():
-            count = analysis['knowledge_domains']['domain_distribution'][domain]
+        for domain, score in analysis["knowledge_domains"]["domain_scores"].items():
+            count = analysis["knowledge_domains"]["domain_distribution"][domain]
             report += f"- **{domain}**: relevance: {score:.3f}, occurrences: {count}\n"
 
         report += f"""
@@ -701,7 +747,7 @@ This report presents a comprehensive analysis of the knowledge distillation proc
 
 """
 
-        for insight in analysis['insights']:
+        for insight in analysis["insights"]:
             report += f"- {insight}\n"
 
         report += f"""
@@ -730,7 +776,9 @@ async def main():
     print("=" * 60)
 
     # Setup logging
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    logging.basicConfig(
+        level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+    )
 
     # Initialize analyzer
     analyzer = SuccessAdvisor8DistillationAnalyzer()
@@ -752,8 +800,12 @@ async def main():
 
     print(f"✅ Knowledge distillation completed:")
     print(f"   Genetic materials: {len(results['genetic_materials'])}")
-    print(f"   Distillation quality: {results['distillation_result'].distillation_quality:.3f}")
-    print(f"   Content pieces analyzed: {results['content_analysis']['total_content_pieces']}")
+    print(
+        f"   Distillation quality: {results['distillation_result'].distillation_quality:.3f}"
+    )
+    print(
+        f"   Content pieces analyzed: {results['content_analysis']['total_content_pieces']}"
+    )
     print()
 
     # Analyze results
@@ -775,7 +827,7 @@ async def main():
     report_file = Path("data/success_advisor_8_distillation_analysis.md")
     report_file.parent.mkdir(parents=True, exist_ok=True)
 
-    with open(report_file, 'w') as f:
+    with open(report_file, "w") as f:
         f.write(report)
 
     print(f"✅ Report saved to: {report_file}")
@@ -783,7 +835,7 @@ async def main():
 
     # Display key insights
     print("🔍 Key Insights:")
-    for insight in analysis['insights']:
+    for insight in analysis["insights"]:
         print(f"   • {insight}")
     print()
 

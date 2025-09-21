@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
     execution_type="sync",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 def get_current_time(**kwargs) -> dict[str, Any]:
     """Get the current date and time with timezone support."""
@@ -89,7 +89,7 @@ def get_current_time(**kwargs) -> dict[str, Any]:
     execution_type="sync",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 def get_current_location(**kwargs) -> dict[str, Any]:
     """Get the current location based on IP address."""
@@ -161,7 +161,7 @@ def get_current_location(**kwargs) -> dict[str, Any]:
     execution_type="sync",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 def send_desktop_notification(**kwargs) -> dict[str, Any]:
     """Send a desktop notification using libnotify."""
@@ -175,9 +175,7 @@ def send_desktop_notification(**kwargs) -> dict[str, Any]:
     try:
         # Check if notify-send is available
         try:
-            subprocess.run(
-                ["which", "notify-send"], check=True, capture_output=True
-            )
+            subprocess.run(["which", "notify-send"], check=True, capture_output=True)
         except subprocess.CalledProcessError:
             return {
                 "content": [

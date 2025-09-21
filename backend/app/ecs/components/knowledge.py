@@ -15,47 +15,51 @@ from ..core.component import Component
 
 class KnowledgeType(Enum):
     """Types of knowledge that agents can possess."""
-    FACTUAL = "factual"        # Facts and information
+
+    FACTUAL = "factual"  # Facts and information
     PROCEDURAL = "procedural"  # Skills and how-to knowledge
     CONCEPTUAL = "conceptual"  # Abstract concepts and theories
     EXPERIENTIAL = "experiential"  # Personal experiences and insights
-    SOCIAL = "social"          # Social knowledge and cultural information
-    TECHNICAL = "technical"    # Technical skills and expertise
-    CREATIVE = "creative"      # Creative abilities and artistic knowledge
-    EMOTIONAL = "emotional"    # Emotional intelligence and empathy
+    SOCIAL = "social"  # Social knowledge and cultural information
+    TECHNICAL = "technical"  # Technical skills and expertise
+    CREATIVE = "creative"  # Creative abilities and artistic knowledge
+    EMOTIONAL = "emotional"  # Emotional intelligence and empathy
 
 
 class LearningMethod(Enum):
     """Methods by which knowledge is acquired."""
-    OBSERVATION = "observation"      # Learning by watching others
-    PRACTICE = "practice"            # Learning by doing
-    TEACHING = "teaching"            # Learning by teaching others
-    EXPERIENCE = "experience"        # Learning from direct experience
-    STUDY = "study"                  # Learning through study and research
+
+    OBSERVATION = "observation"  # Learning by watching others
+    PRACTICE = "practice"  # Learning by doing
+    TEACHING = "teaching"  # Learning by teaching others
+    EXPERIENCE = "experience"  # Learning from direct experience
+    STUDY = "study"  # Learning through study and research
     COLLABORATION = "collaboration"  # Learning through teamwork
-    MENTORSHIP = "mentorship"        # Learning from a mentor
+    MENTORSHIP = "mentorship"  # Learning from a mentor
     EXPERIMENTATION = "experimentation"  # Learning through trial and error
 
 
 class KnowledgeLevel(Enum):
     """Levels of knowledge proficiency."""
-    BEGINNER = "beginner"      # 0-20% proficiency
-    NOVICE = "novice"          # 20-40% proficiency
+
+    BEGINNER = "beginner"  # 0-20% proficiency
+    NOVICE = "novice"  # 20-40% proficiency
     INTERMEDIATE = "intermediate"  # 40-60% proficiency
-    ADVANCED = "advanced"      # 60-80% proficiency
-    EXPERT = "expert"          # 80-95% proficiency
-    MASTER = "master"          # 95-100% proficiency
+    ADVANCED = "advanced"  # 60-80% proficiency
+    EXPERT = "expert"  # 80-95% proficiency
+    MASTER = "master"  # 95-100% proficiency
 
 
 @dataclass
 class Knowledge:
     """A piece of knowledge or skill possessed by an agent."""
+
     id: str
     title: str
     knowledge_type: KnowledgeType
     description: str
     proficiency: float  # 0.0 to 1.0
-    confidence: float   # 0.0 to 1.0
+    confidence: float  # 0.0 to 1.0
     acquired_at: datetime = None
     last_used: datetime = None
     usage_count: int = 0
@@ -63,7 +67,7 @@ class Knowledge:
     source_agent: str | None = None  # Agent who taught this knowledge
     tags: List[str] = None
     prerequisites: List[str] = None  # Required knowledge IDs
-    applications: List[str] = None   # How this knowledge can be applied
+    applications: List[str] = None  # How this knowledge can be applied
     difficulty: float = 0.5  # 0.0 (easy) to 1.0 (very difficult)
     importance: float = 0.5  # 0.0 (low) to 1.0 (high)
     transferability: float = 0.5  # 0.0 (hard to teach) to 1.0 (easy to teach)
@@ -80,7 +84,7 @@ class Knowledge:
             self.prerequisites = []
         if self.applications is None:
             self.applications = []
-        
+
         self.proficiency = max(0.0, min(1.0, self.proficiency))
         self.confidence = max(0.0, min(1.0, self.confidence))
         self.difficulty = max(0.0, min(1.0, self.difficulty))
@@ -121,6 +125,7 @@ class Knowledge:
 @dataclass
 class LearningOpportunity:
     """A potential learning opportunity for an agent."""
+
     id: str
     knowledge_id: str
     source_agent: str
@@ -136,7 +141,7 @@ class LearningOpportunity:
         """Validate learning opportunity data."""
         if self.created_at is None:
             self.created_at = datetime.now()
-        
+
         self.estimated_difficulty = max(0.0, min(1.0, self.estimated_difficulty))
         self.learning_potential = max(0.0, min(1.0, self.learning_potential))
 
@@ -150,21 +155,21 @@ class LearningOpportunity:
         """Calculate the overall learning score for this opportunity."""
         if self.is_expired() or not self.prerequisites_met:
             return 0.0
-        
+
         # Higher score for easier, shorter, more valuable opportunities
         difficulty_factor = 1.0 - self.estimated_difficulty
-        duration_factor = max(0.1, 1.0 - (self.estimated_duration / 3600.0))  # Normalize to hours
+        duration_factor = max(
+            0.1, 1.0 - (self.estimated_duration / 3600.0)
+        )  # Normalize to hours
         potential_factor = self.learning_potential
-        
-        return (difficulty_factor * 0.3 + 
-                duration_factor * 0.3 + 
-                potential_factor * 0.4)
+
+        return difficulty_factor * 0.3 + duration_factor * 0.3 + potential_factor * 0.4
 
 
 class KnowledgeComponent(Component):
     """
     Agent knowledge and learning capabilities component.
-    
+
     Manages knowledge acquisition, storage, transfer, and application
     with comprehensive learning tracking and skill development.
     """
@@ -172,7 +177,7 @@ class KnowledgeComponent(Component):
     def __init__(self, knowledge_capacity: int = 500):
         """
         Initialize the knowledge component.
-        
+
         Args:
             knowledge_capacity: Maximum number of knowledge items to store
         """
@@ -201,11 +206,11 @@ class KnowledgeComponent(Component):
         applications: List[str] | None = None,
         difficulty: float = 0.5,
         importance: float = 0.5,
-        transferability: float = 0.5
+        transferability: float = 0.5,
     ) -> str:
         """
         Acquire new knowledge.
-        
+
         Args:
             title: Knowledge title
             knowledge_type: Type of knowledge
@@ -220,7 +225,7 @@ class KnowledgeComponent(Component):
             difficulty: Knowledge difficulty
             importance: Knowledge importance
             transferability: How easy it is to teach this knowledge
-            
+
         Returns:
             Knowledge ID
         """
@@ -230,7 +235,7 @@ class KnowledgeComponent(Component):
             prerequisites = []
         if applications is None:
             applications = []
-            
+
         knowledge_id = str(uuid.uuid4())
         knowledge = Knowledge(
             id=knowledge_id,
@@ -246,25 +251,25 @@ class KnowledgeComponent(Component):
             applications=applications,
             difficulty=difficulty,
             importance=importance,
-            transferability=transferability
+            transferability=transferability,
         )
-        
+
         # Check capacity and remove least important knowledge if needed
         if len(self.knowledge) >= self.knowledge_capacity:
             self._remove_least_important_knowledge()
-        
+
         self.knowledge[knowledge_id] = knowledge
         self.total_knowledge_acquired += 1
-        
+
         return knowledge_id
 
     def get_knowledge(self, knowledge_id: str) -> Knowledge | None:
         """
         Get knowledge by ID.
-        
+
         Args:
             knowledge_id: ID of knowledge to retrieve
-            
+
         Returns:
             Knowledge object or None if not found
         """
@@ -277,11 +282,11 @@ class KnowledgeComponent(Component):
         min_proficiency: float = 0.0,
         max_proficiency: float = 1.0,
         tags: List[str] | None = None,
-        limit: int = 10
+        limit: int = 10,
     ) -> List[Knowledge]:
         """
         Search knowledge based on various criteria.
-        
+
         Args:
             query: Text query to search for
             knowledge_type: Filter by knowledge type
@@ -289,46 +294,50 @@ class KnowledgeComponent(Component):
             max_proficiency: Maximum proficiency threshold
             tags: Filter by tags
             limit: Maximum number of results
-            
+
         Returns:
             List of matching knowledge
         """
         if tags is None:
             tags = []
-            
+
         results = []
-        
+
         for knowledge in self.knowledge.values():
             # Check proficiency range
             if not (min_proficiency <= knowledge.proficiency <= max_proficiency):
                 continue
-                
+
             # Check knowledge type
             if knowledge_type and knowledge.knowledge_type != knowledge_type:
                 continue
-                
+
             # Check tags
             if tags and not any(tag in knowledge.tags for tag in tags):
                 continue
-                
+
             # Check text query
-            if query and query.lower() not in knowledge.title.lower() and query.lower() not in knowledge.description.lower():
+            if (
+                query
+                and query.lower() not in knowledge.title.lower()
+                and query.lower() not in knowledge.description.lower()
+            ):
                 continue
-                
+
             results.append(knowledge)
-        
+
         # Sort by proficiency and importance
         results.sort(key=lambda k: (k.proficiency, k.importance), reverse=True)
-        
+
         return results[:limit]
 
     def use_knowledge(self, knowledge_id: str) -> bool:
         """
         Use knowledge and update usage statistics.
-        
+
         Args:
             knowledge_id: ID of knowledge to use
-            
+
         Returns:
             True if knowledge was found and used
         """
@@ -342,16 +351,16 @@ class KnowledgeComponent(Component):
         self,
         knowledge_id: str,
         target_agent_id: str,
-        teaching_effectiveness: float = 1.0
+        teaching_effectiveness: float = 1.0,
     ) -> bool:
         """
         Teach knowledge to another agent.
-        
+
         Args:
             knowledge_id: ID of knowledge to teach
             target_agent_id: ID of agent to teach
             teaching_effectiveness: Effectiveness of teaching (0.0 to 1.0)
-            
+
         Returns:
             True if knowledge was found and can be taught
         """
@@ -366,16 +375,16 @@ class KnowledgeComponent(Component):
         self,
         source_agent_id: str,
         knowledge_id: str,
-        learning_effectiveness: float = 1.0
+        learning_effectiveness: float = 1.0,
     ) -> str | None:
         """
         Learn knowledge from another agent.
-        
+
         Args:
             source_agent_id: ID of agent to learn from
             knowledge_id: ID of knowledge to learn
             learning_effectiveness: Effectiveness of learning (0.0 to 1.0)
-            
+
         Returns:
             New knowledge ID if successful, None otherwise
         """
@@ -392,24 +401,26 @@ class KnowledgeComponent(Component):
                 "knowledge_levels": {},
                 "average_proficiency": 0.0,
                 "total_acquired": self.total_knowledge_acquired,
-                "total_taught": self.total_knowledge_taught
+                "total_taught": self.total_knowledge_taught,
             }
-        
+
         knowledge_types = {}
         knowledge_levels = {}
         total_proficiency = 0.0
-        
+
         for knowledge in self.knowledge.values():
             # Count by type
-            knowledge_types[knowledge.knowledge_type.value] = knowledge_types.get(knowledge.knowledge_type.value, 0) + 1
-            
+            knowledge_types[knowledge.knowledge_type.value] = (
+                knowledge_types.get(knowledge.knowledge_type.value, 0) + 1
+            )
+
             # Count by level
             level = knowledge.get_knowledge_level()
             knowledge_levels[level.value] = knowledge_levels.get(level.value, 0) + 1
-            
+
             # Sum proficiency
             total_proficiency += knowledge.proficiency
-        
+
         return {
             "total_knowledge": len(self.knowledge),
             "knowledge_types": knowledge_types,
@@ -418,31 +429,33 @@ class KnowledgeComponent(Component):
             "total_acquired": self.total_knowledge_acquired,
             "total_taught": self.total_knowledge_taught,
             "knowledge_capacity": self.knowledge_capacity,
-            "capacity_usage": len(self.knowledge) / self.knowledge_capacity
+            "capacity_usage": len(self.knowledge) / self.knowledge_capacity,
         }
 
-    def get_knowledge_by_type(self, knowledge_type: KnowledgeType, limit: int = 10) -> List[Knowledge]:
+    def get_knowledge_by_type(
+        self, knowledge_type: KnowledgeType, limit: int = 10
+    ) -> List[Knowledge]:
         """Get knowledge of a specific type."""
         return self.search_knowledge(knowledge_type=knowledge_type, limit=limit)
 
-    def get_expertise_areas(self, min_proficiency: float = 0.7, limit: int = 10) -> List[Knowledge]:
+    def get_expertise_areas(
+        self, min_proficiency: float = 0.7, limit: int = 10
+    ) -> List[Knowledge]:
         """Get areas where the agent has high proficiency."""
-        return self.search_knowledge(
-            min_proficiency=min_proficiency,
-            limit=limit
-        )
+        return self.search_knowledge(min_proficiency=min_proficiency, limit=limit)
 
-    def get_learning_opportunities(self, max_proficiency: float = 0.3, limit: int = 10) -> List[Knowledge]:
+    def get_learning_opportunities(
+        self, max_proficiency: float = 0.3, limit: int = 10
+    ) -> List[Knowledge]:
         """Get knowledge areas that need improvement."""
-        return self.search_knowledge(
-            max_proficiency=max_proficiency,
-            limit=limit
-        )
+        return self.search_knowledge(max_proficiency=max_proficiency, limit=limit)
 
-    def update_learning_preference(self, method: LearningMethod, preference: float) -> None:
+    def update_learning_preference(
+        self, method: LearningMethod, preference: float
+    ) -> None:
         """
         Update learning preference for a specific method.
-        
+
         Args:
             method: Learning method to update
             preference: Preference value (0.0 to 1.0)
@@ -457,22 +470,21 @@ class KnowledgeComponent(Component):
         """Remove the least important knowledge to make room."""
         if not self.knowledge:
             return
-            
+
         # Find knowledge with lowest importance and proficiency
         least_important = min(
-            self.knowledge.values(),
-            key=lambda k: (k.importance, k.proficiency)
+            self.knowledge.values(), key=lambda k: (k.importance, k.proficiency)
         )
-        
+
         del self.knowledge[least_important.id]
 
     def can_learn_knowledge(self, knowledge_id: str) -> bool:
         """
         Check if the agent can learn a specific knowledge.
-        
+
         Args:
             knowledge_id: ID of knowledge to check
-            
+
         Returns:
             True if prerequisites are met
         """

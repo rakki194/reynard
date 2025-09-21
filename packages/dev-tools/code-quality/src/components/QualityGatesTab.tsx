@@ -1,6 +1,6 @@
 /**
  * Quality Gates Tab Component
- * 
+ *
  * Quality Gates tab content for the Code Quality Dashboard
  */
 

@@ -16,14 +16,7 @@
     "test": "vitest",
     "clean": "rm -rf dist"
   },
-  "keywords": [
-    "vitest",
-    "config",
-    "generator",
-    "reynard",
-    "architecture",
-    "testing"
-  ],
+  "keywords": ["vitest", "config", "generator", "reynard", "architecture", "testing"],
   "author": "Reynard Framework",
   "license": "MIT",
   "dependencies": {

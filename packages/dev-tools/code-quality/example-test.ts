@@ -10,7 +10,7 @@ import { join } from "path";
 
 async function runExampleTest() {
   console.log("🦦 Docstring Validation System - Example Test");
-  console.log("=" .repeat(50));
+  console.log("=".repeat(50));
 
   const analyzer = new DocstringAnalyzer();
   const tempDir = join(process.cwd(), "temp-example");
@@ -146,7 +146,7 @@ export class UndocumentedClass {
     // Create temporary files
     const pythonFile = join(tempDir, "example.py");
     const tsFile = join(tempDir, "example.ts");
-    
+
     writeFileSync(pythonFile, pythonContent);
     writeFileSync(tsFile, tsContent);
 
@@ -157,12 +157,18 @@ export class UndocumentedClass {
     // Analyze Python file
     console.log("\n🐍 Analyzing Python file...");
     const pythonAnalysis = await analyzer.analyzeFile(pythonFile);
-    
-    console.log(`   Functions: ${pythonAnalysis.metrics.documentedFunctions}/${pythonAnalysis.metrics.totalFunctions} documented`);
-    console.log(`   Classes: ${pythonAnalysis.metrics.documentedClasses}/${pythonAnalysis.metrics.totalClasses} documented`);
-    console.log(`   Modules: ${pythonAnalysis.metrics.documentedModules}/${pythonAnalysis.metrics.totalModules} documented`);
+
+    console.log(
+      `   Functions: ${pythonAnalysis.metrics.documentedFunctions}/${pythonAnalysis.metrics.totalFunctions} documented`
+    );
+    console.log(
+      `   Classes: ${pythonAnalysis.metrics.documentedClasses}/${pythonAnalysis.metrics.totalClasses} documented`
+    );
+    console.log(
+      `   Modules: ${pythonAnalysis.metrics.documentedModules}/${pythonAnalysis.metrics.totalModules} documented`
+    );
     console.log(`   Issues found: ${pythonAnalysis.issues.length}`);
-    
+
     if (pythonAnalysis.issues.length > 0) {
       console.log("   Issues:");
       pythonAnalysis.issues.forEach(issue => {
@@ -173,12 +179,14 @@ export class UndocumentedClass {
     // Analyze TypeScript file
     console.log("\n📘 Analyzing TypeScript file...");
     const tsAnalysis = await analyzer.analyzeFile(tsFile);
-    
-    console.log(`   Functions: ${tsAnalysis.metrics.documentedFunctions}/${tsAnalysis.metrics.totalFunctions} documented`);
+
+    console.log(
+      `   Functions: ${tsAnalysis.metrics.documentedFunctions}/${tsAnalysis.metrics.totalFunctions} documented`
+    );
     console.log(`   Classes: ${tsAnalysis.metrics.documentedClasses}/${tsAnalysis.metrics.totalClasses} documented`);
     console.log(`   Modules: ${tsAnalysis.metrics.documentedModules}/${tsAnalysis.metrics.totalModules} documented`);
     console.log(`   Issues found: ${tsAnalysis.issues.length}`);
-    
+
     if (tsAnalysis.issues.length > 0) {
       console.log("   Issues:");
       tsAnalysis.issues.forEach(issue => {
@@ -190,7 +198,7 @@ export class UndocumentedClass {
     console.log("\n📊 Overall Metrics:");
     const analyses = [pythonAnalysis, tsAnalysis];
     const overallMetrics = analyzer.getOverallMetrics(analyses);
-    
+
     console.log(`   Total Functions: ${overallMetrics.totalFunctions}`);
     console.log(`   Documented Functions: ${overallMetrics.documentedFunctions}`);
     console.log(`   Total Classes: ${overallMetrics.totalClasses}`);
@@ -206,35 +214,38 @@ export class UndocumentedClass {
     const standardGates = getDocstringQualityGates("standard");
     const strictGates = getDocstringQualityGates("strict");
     const relaxedGates = getDocstringQualityGates("relaxed");
-    
+
     console.log(`   Standard gates: ${standardGates.length}`);
     console.log(`   Strict gates: ${strictGates.length}`);
     console.log(`   Relaxed gates: ${relaxedGates.length}`);
-    
+
     // Check if metrics pass standard gates
     const coverageGate = standardGates.find(gate => gate.id === "docstring-coverage-minimum");
     const qualityGate = standardGates.find(gate => gate.id === "docstring-quality-minimum");
-    
+
     if (coverageGate && qualityGate) {
       const coveragePassed = overallMetrics.coveragePercentage >= (coverageGate.conditions[0].threshold as number);
       const qualityPassed = overallMetrics.qualityScore >= (qualityGate.conditions[0].threshold as number);
-      
-      console.log(`   Coverage gate (${coverageGate.conditions[0].threshold}%): ${coveragePassed ? "✅ PASSED" : "❌ FAILED"}`);
-      console.log(`   Quality gate (${qualityGate.conditions[0].threshold}): ${qualityPassed ? "✅ PASSED" : "❌ FAILED"}`);
+
+      console.log(
+        `   Coverage gate (${coverageGate.conditions[0].threshold}%): ${coveragePassed ? "✅ PASSED" : "❌ FAILED"}`
+      );
+      console.log(
+        `   Quality gate (${qualityGate.conditions[0].threshold}): ${qualityPassed ? "✅ PASSED" : "❌ FAILED"}`
+      );
     }
 
     console.log("\n🎉 Example test completed successfully!");
-
   } catch (error) {
     console.error("❌ Example test failed:", error);
   } finally {
     // Clean up temporary files
     const pythonFile = join(tempDir, "example.py");
     const tsFile = join(tempDir, "example.ts");
-    
+
     if (existsSync(pythonFile)) unlinkSync(pythonFile);
     if (existsSync(tsFile)) unlinkSync(tsFile);
-    
+
     console.log("\n🧹 Cleaned up temporary files");
   }
 }

@@ -1,12 +1,12 @@
 /**
  * 🦊 Reynard Backend Annotation Manager
  * =====================================
- * 
+ *
  * Comprehensive annotation management system that interfaces with the FastAPI backend
  * for sophisticated image annotation, caption generation, and model management.
  * This manager provides a simplified interface to complex backend services while
  * maintaining full functionality for annotation workflows.
- * 
+ *
  * The BackendAnnotationManager provides:
  * - Image annotation and caption generation through backend services
  * - Model management and configuration via FastAPI endpoints
@@ -14,7 +14,7 @@
  * - Health monitoring and service status management
  * - Usage statistics and performance metrics
  * - Error handling and graceful degradation
- * 
+ *
  * Key Features:
  * - Backend Service Integration: Seamless communication with FastAPI backend
  * - Event System: Real-time progress tracking and status updates
@@ -22,16 +22,16 @@
  * - Health Monitoring: Service health checks and status reporting
  * - Usage Analytics: Comprehensive usage statistics and metrics
  * - Error Recovery: Graceful error handling and service recovery
- * 
+ *
  * Architecture:
  * - BackendAnnotationService: Core backend communication layer
  * - SimpleEventSystem: Lightweight event management for progress tracking
  * - Model Management: Dynamic model configuration and loading
  * - Health Monitoring: Service health checks and status reporting
- * 
+ *
  * The manager simplifies complex backend operations while providing a clean,
  * intuitive interface for annotation workflows within the Reynard ecosystem.
- * 
+ *
  * @author Reynard Development Team
  * @version 1.0.0
  */
@@ -52,11 +52,11 @@ import {
 } from "./BackendAnnotationService.js";
 /**
  * Simple event system for backend annotation manager.
- * 
+ *
  * Provides lightweight event management for annotation progress tracking
  * and status updates. This system allows components to subscribe to
  * annotation events and receive real-time updates during processing.
- * 
+ *
  * @class SimpleEventSystem
  */
 class SimpleEventSystem {
@@ -64,7 +64,7 @@ class SimpleEventSystem {
 
   /**
    * Add an event listener for annotation events.
-   * 
+   *
    * @param listener - Function to call when annotation events occur
    */
   addEventListener(listener: (event: AnyAnnotationEvent) => void): void {
@@ -73,7 +73,7 @@ class SimpleEventSystem {
 
   /**
    * Remove an event listener.
-   * 
+   *
    * @param listener - Function to remove from event listeners
    */
   removeEventListener(listener: (event: AnyAnnotationEvent) => void): void {
@@ -85,7 +85,7 @@ class SimpleEventSystem {
 
   /**
    * Emit an annotation event to all registered listeners.
-   * 
+   *
    * @param event - The annotation event to emit
    */
   emitEvent(event: AnyAnnotationEvent): void {
@@ -103,12 +103,12 @@ export type BackendAnnotationManagerConfig = BackendAnnotationServiceConfig;
 
 /**
  * Backend Annotation Manager implementation.
- * 
+ *
  * Provides comprehensive annotation management through backend service integration.
  * This manager implements the IAnnotationManager interface while delegating
  * complex operations to the FastAPI backend for improved performance and
  * scalability.
- * 
+ *
  * @class BackendAnnotationManager
  * @implements {IAnnotationManager}
  */

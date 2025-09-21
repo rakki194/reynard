@@ -180,9 +180,7 @@ class GenderSystem(System):
                 ),
             )
 
-    def _calculate_support_level(
-        self, entity: "Entity", social_comp: None
-    ) -> float:
+    def _calculate_support_level(self, entity: "Entity", social_comp: None) -> float:
         """Calculate the level of social support for an agent."""
         # Get support network from gender component
         gender_comp = entity.get_component(GenderComponent)
@@ -208,9 +206,7 @@ class GenderSystem(System):
 
         return total_strength / valid_relationships
 
-    def _process_social_gender_dynamics(
-        self, delta_time: float
-    ) -> None:
+    def _process_social_gender_dynamics(self, delta_time: float) -> None:
         """Process social dynamics related to gender."""
         entities = self.get_entities_with_components(GenderComponent)
 
@@ -350,9 +346,7 @@ class GenderSystem(System):
                 # Update support networks based on social relationships
                 self._update_support_network(gender_comp)
 
-    def _update_support_network(
-        self, gender_comp: GenderComponent
-    ) -> None:
+    def _update_support_network(self, gender_comp: GenderComponent) -> None:
         """Update support network for an agent."""
         # For now, this is a simplified implementation
         # In a full implementation, this would check actual social relationships
@@ -528,7 +522,9 @@ class GenderSystem(System):
 
         return False
 
-    def update_coming_out_status(self, agent_id: str, other_agent_id: str, knows: bool) -> bool:
+    def update_coming_out_status(
+        self, agent_id: str, other_agent_id: str, knows: bool
+    ) -> bool:
         """Update who knows about an agent's gender identity."""
         entity = self.world.get_entity(agent_id)
         if not entity:
@@ -540,11 +536,13 @@ class GenderSystem(System):
 
         # Update coming out status for specific agent
         gender_comp.profile.update_coming_out_status(other_agent_id, knows)
-        
+
         # Log the change
         logger.info(
-            "Coming out status update: %s -> %s (knows: %s)", 
-            agent_id, other_agent_id, knows
+            "Coming out status update: %s -> %s (knows: %s)",
+            agent_id,
+            other_agent_id,
+            knows,
         )
 
         return True

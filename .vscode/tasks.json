@@ -5,7 +5,10 @@
       "label": "🐍: Run Tests",
       "type": "shell",
       "command": "bash",
-      "args": ["-c", "source ~/venv/bin/activate && cd backend && python -m pytest tests/ -v"],
+      "args": [
+        "-c",
+        "if [ -f ~/venv/bin/activate ]; then source ~/venv/bin/activate && cd backend && python -m pytest tests/ -v; else echo \"Virtual environment not found at ~/venv/bin/activate, using system Python...\" && cd backend && python3 -m pytest tests/ -v; fi"
+      ],
       "group": "test",
       "presentation": {
         "echo": true,
@@ -21,7 +24,7 @@
       "command": "bash",
       "args": [
         "-c",
-        "source ~/venv/bin/activate && cd backend && python -m pytest tests/ -v --cov=app --cov-report=html"
+        "if [ -f ~/venv/bin/activate ]; then source ~/venv/bin/activate && cd backend && python -m pytest tests/ -v --cov=app --cov-report=html; else echo \"Virtual environment not found at ~/venv/bin/activate, using system Python...\" && cd backend && python3 -m pytest tests/ -v --cov=app --cov-report=html; fi"
       ],
       "group": "test",
       "presentation": {
@@ -36,7 +39,10 @@
       "label": "🐍: Lint with Ruff",
       "type": "shell",
       "command": "bash",
-      "args": ["-c", "source ~/venv/bin/activate && ruff check backend/ fenrir/ services/"],
+      "args": [
+        "-c",
+        "if [ -f ~/venv/bin/activate ]; then source ~/venv/bin/activate && ruff check backend/ fenrir/ services/; else echo \"Virtual environment not found at ~/venv/bin/activate, using system ruff...\" && ruff check backend/ fenrir/ services/; fi"
+      ],
       "group": "build",
       "presentation": {
         "echo": true,
@@ -50,7 +56,10 @@
       "label": "🐍: Format with Ruff",
       "type": "shell",
       "command": "bash",
-      "args": ["-c", "source ~/venv/bin/activate && ruff format backend/ fenrir/ services/"],
+      "args": [
+        "-c",
+        "if [ -f ~/venv/bin/activate ]; then source ~/venv/bin/activate && ruff format backend/ fenrir/ services/; else echo \"Virtual environment not found at ~/venv/bin/activate, using system ruff...\" && ruff format backend/ fenrir/ services/; fi"
+      ],
       "group": "build",
       "presentation": {
         "echo": true,
@@ -64,7 +73,10 @@
       "label": "🐍: Type Check with mypy",
       "type": "shell",
       "command": "bash",
-      "args": ["-c", "source ~/venv/bin/activate && mypy backend/ fenrir/ services/"],
+      "args": [
+        "-c",
+        "if [ -f ~/venv/bin/activate ]; then source ~/venv/bin/activate && mypy backend/ fenrir/ services/; else echo \"Virtual environment not found at ~/venv/bin/activate, using system mypy...\" && mypy backend/ fenrir/ services/; fi"
+      ],
       "group": "build",
       "presentation": {
         "echo": true,
@@ -78,7 +90,10 @@
       "label": "Python: Start Backend Server",
       "type": "shell",
       "command": "bash",
-      "args": ["-c", "source ~/venv/bin/activate && cd backend && python scripts/dev-server.py"],
+      "args": [
+        "-c",
+        "if [ -f ~/venv/bin/activate ]; then source ~/venv/bin/activate && cd backend && python scripts/dev-server.py; else echo \"Virtual environment not found at ~/venv/bin/activate, using system Python...\" && cd backend && python3 scripts/dev-server.py; fi"
+      ],
       "group": "build",
       "presentation": {
         "echo": true,
@@ -93,7 +108,10 @@
       "label": "🐍 Auto-Start Backend Server",
       "type": "shell",
       "command": "bash",
-      "args": ["-c", "source ~/venv/bin/activate && cd backend && python scripts/dev-server.py"],
+      "args": [
+        "-c",
+        "if [ -f ~/venv/bin/activate ]; then source ~/venv/bin/activate && cd backend && python scripts/dev-server.py; else echo \"Virtual environment not found at ~/venv/bin/activate, using system Python...\" && cd backend && python3 scripts/dev-server.py; fi"
+      ],
       "group": "build",
       "presentation": {
         "echo": true,
@@ -1819,6 +1837,21 @@
         "panel": "shared"
       },
       "problemMatcher": []
+    },
+    {
+      "label": "🐍 Setup Python Interpreter",
+      "type": "shell",
+      "command": "bash",
+      "args": [".vscode/setup-python-interpreter.sh"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Detect and configure the best Python interpreter for the workspace"
     }
   ]
 }

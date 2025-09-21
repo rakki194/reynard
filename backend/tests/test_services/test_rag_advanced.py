@@ -12,8 +12,11 @@ from typing import List, Dict, Any
 from datetime import datetime, timedelta
 
 from app.services.rag.advanced import (
-    PerformanceMonitor, SecurityService, ContinuousImprovement, 
-    DocumentationService, ModelEvaluator
+    PerformanceMonitor,
+    SecurityService,
+    ContinuousImprovement,
+    DocumentationService,
+    ModelEvaluator,
 )
 
 
@@ -29,8 +32,8 @@ class TestPerformanceMonitor:
             "rag_alert_thresholds": {
                 "latency_ms": 2000,
                 "error_rate": 0.05,
-                "memory_usage_mb": 1000
-            }
+                "memory_usage_mb": 1000,
+            },
         }
 
     @pytest.fixture
@@ -48,8 +51,10 @@ class TestPerformanceMonitor:
     @pytest.mark.asyncio
     async def test_record_metric(self, performance_monitor):
         """Test recording performance metrics."""
-        await performance_monitor.record_metric("latency", 150.0, {"operation": "search"})
-        
+        await performance_monitor.record_metric(
+            "latency", 150.0, {"operation": "search"}
+        )
+
         stats = performance_monitor.get_performance_stats()
         assert "latency" in stats["metrics"]
         assert stats["metrics"]["latency"]["count"] >= 1
@@ -58,8 +63,10 @@ class TestPerformanceMonitor:
     async def test_alert_threshold_exceeded(self, performance_monitor):
         """Test alert generation when thresholds are exceeded."""
         # Record metric that exceeds threshold
-        await performance_monitor.record_metric("latency", 3000.0, {"operation": "search"})
-        
+        await performance_monitor.record_metric(
+            "latency", 3000.0, {"operation": "search"}
+        )
+
         alerts = await performance_monitor.check_alerts()
         assert len(alerts) > 0
         assert any(alert["metric"] == "latency" for alert in alerts)
@@ -69,19 +76,23 @@ class TestPerformanceMonitor:
         """Test performance regression detection."""
         # Record baseline metrics
         for i in range(10):
-            await performance_monitor.record_metric("latency", 100.0 + i, {"operation": "search"})
-        
+            await performance_monitor.record_metric(
+                "latency", 100.0 + i, {"operation": "search"}
+            )
+
         # Record degraded metrics
         for i in range(10):
-            await performance_monitor.record_metric("latency", 200.0 + i, {"operation": "search"})
-        
+            await performance_monitor.record_metric(
+                "latency", 200.0 + i, {"operation": "search"}
+            )
+
         regressions = await performance_monitor.detect_regressions()
         assert len(regressions) > 0
 
     def test_get_performance_stats(self, performance_monitor):
         """Test performance statistics retrieval."""
         stats = performance_monitor.get_performance_stats()
-        
+
         assert "enabled" in stats
         assert "metrics" in stats
         assert "alerts" in stats
@@ -93,7 +104,7 @@ class TestPerformanceMonitor:
         # Record high usage metrics
         for i in range(100):
             await performance_monitor.record_metric("memory_usage", 800.0 + i, {})
-        
+
         recommendations = await performance_monitor.get_capacity_recommendations()
         assert len(recommendations) > 0
         assert any("memory" in rec["type"].lower() for rec in recommendations)
@@ -108,7 +119,7 @@ class TestSecurityService:
         return {
             "rag_security_enabled": True,
             "rag_encryption_enabled": True,
-            "rag_audit_logging_enabled": True
+            "rag_audit_logging_enabled": True,
         }
 
     @pytest.fixture
@@ -128,11 +139,11 @@ class TestSecurityService:
         """Test data encryption and decryption."""
         test_data = "Sensitive information"
         access_level = security_service.AccessLevel.CONFIDENTIAL
-        
+
         encrypted = await security_service.encrypt_data(test_data, access_level)
         assert encrypted != test_data
         assert len(encrypted) > 0
-        
+
         decrypted = await security_service.decrypt_data(encrypted, access_level)
         assert decrypted == test_data
 
@@ -143,7 +154,7 @@ class TestSecurityService:
         operation = security_service.OperationType.READ
         resource_type = "document"
         access_level = security_service.AccessLevel.INTERNAL
-        
+
         # Test allowed access
         has_permission = await security_service.check_access_permission(
             user_id, operation, resource_type, access_level
@@ -157,12 +168,12 @@ class TestSecurityService:
         operation = security_service.OperationType.SEARCH
         resource_type = "document"
         access_level = security_service.AccessLevel.PUBLIC
-        
+
         # Perform operation that should be logged
         await security_service.check_access_permission(
             user_id, operation, resource_type, access_level
         )
-        
+
         # Check audit logs
         logs = await security_service.get_audit_logs(user_id=user_id)
         assert len(logs) > 0
@@ -175,14 +186,19 @@ class TestSecurityService:
         operation = security_service.OperationType.READ
         resource_type = "document"
         access_level = security_service.AccessLevel.RESTRICTED
-        
+
         # Simulate multiple failed access attempts
         for i in range(6):
             await security_service._log_audit_event(
-                user_id, operation, resource_type, f"resource_{i}",
-                access_level, success=False, details={"error": "Access denied"}
+                user_id,
+                operation,
+                resource_type,
+                f"resource_{i}",
+                access_level,
+                success=False,
+                details={"error": "Access denied"},
             )
-        
+
         # Check if suspicious activity was detected
         logs = await security_service.get_audit_logs(user_id=user_id)
         assert len(logs) >= 6
@@ -192,10 +208,12 @@ class TestSecurityService:
         """Test security report generation."""
         # Generate some audit activity
         await security_service.check_access_permission(
-            "user1", security_service.OperationType.READ, "document", 
-            security_service.AccessLevel.PUBLIC
+            "user1",
+            security_service.OperationType.READ,
+            "document",
+            security_service.AccessLevel.PUBLIC,
         )
-        
+
         report = await security_service.get_security_report()
         assert "report_timestamp" in report
         assert "total_audit_logs" in report
@@ -205,7 +223,7 @@ class TestSecurityService:
     def test_get_security_stats(self, security_service):
         """Test security service statistics."""
         stats = security_service.get_security_stats()
-        
+
         assert "enabled" in stats
         assert "total_audit_logs" in stats
         assert "active_policies" in stats
@@ -221,7 +239,7 @@ class TestContinuousImprovement:
         return {
             "rag_continuous_improvement_enabled": True,
             "rag_ab_testing_enabled": True,
-            "rag_feedback_collection_enabled": True
+            "rag_feedback_collection_enabled": True,
         }
 
     @pytest.fixture
@@ -245,9 +263,9 @@ class TestContinuousImprovement:
             improvement_type=continuous_improvement.ImprovementType.ACCURACY,
             control_config={"model": "embeddinggemma:latest"},
             treatment_config={"model": "nomic-embed-text"},
-            traffic_split=0.5
+            traffic_split=0.5,
         )
-        
+
         assert experiment_id is not None
         assert experiment_id in continuous_improvement.experiments
 
@@ -261,13 +279,13 @@ class TestContinuousImprovement:
             hypothesis="New model will improve accuracy by 10%",
             improvement_type=continuous_improvement.ImprovementType.ACCURACY,
             control_config={"model": "embeddinggemma:latest"},
-            treatment_config={"model": "nomic-embed-text"}
+            treatment_config={"model": "nomic-embed-text"},
         )
-        
+
         # Start experiment
         success = await continuous_improvement.start_experiment(experiment_id)
         assert success is True
-        
+
         experiment = continuous_improvement.experiments[experiment_id]
         assert experiment.status == continuous_improvement.ExperimentStatus.RUNNING
 
@@ -281,10 +299,10 @@ class TestContinuousImprovement:
             hypothesis="New model will improve accuracy by 10%",
             improvement_type=continuous_improvement.ImprovementType.ACCURACY,
             control_config={"model": "embeddinggemma:latest"},
-            treatment_config={"model": "nomic-embed-text"}
+            treatment_config={"model": "nomic-embed-text"},
         )
         await continuous_improvement.start_experiment(experiment_id)
-        
+
         # Collect data
         success = await continuous_improvement.collect_experiment_data(
             experiment_id, "user1", "control", {"accuracy": 0.85}
@@ -302,10 +320,10 @@ class TestContinuousImprovement:
             improvement_type=continuous_improvement.ImprovementType.ACCURACY,
             control_config={"model": "embeddinggemma:latest"},
             treatment_config={"model": "nomic-embed-text"},
-            minimum_sample_size=2
+            minimum_sample_size=2,
         )
         await continuous_improvement.start_experiment(experiment_id)
-        
+
         # Collect sample data
         await continuous_improvement.collect_experiment_data(
             experiment_id, "user1", "control", {"accuracy": 0.80}
@@ -313,7 +331,7 @@ class TestContinuousImprovement:
         await continuous_improvement.collect_experiment_data(
             experiment_id, "user2", "treatment", {"accuracy": 0.90}
         )
-        
+
         # Analyze experiment
         analysis = await continuous_improvement.analyze_experiment(experiment_id)
         assert "overall_success" in analysis
@@ -328,9 +346,9 @@ class TestContinuousImprovement:
             results=[{"text": "ML implementation", "score": 0.9}],
             relevance_score=4,
             satisfaction_score=5,
-            comments="Very helpful results"
+            comments="Very helpful results",
         )
-        
+
         assert feedback_id is not None
         assert len(continuous_improvement.feedback_data) > 0
 
@@ -338,7 +356,7 @@ class TestContinuousImprovement:
     async def test_get_improvement_progress(self, continuous_improvement):
         """Test improvement progress tracking."""
         progress = await continuous_improvement.get_improvement_progress()
-        
+
         assert "current_month" in progress
         assert "target_improvement_percent" in progress
         assert "actual_improvement_percent" in progress
@@ -347,7 +365,7 @@ class TestContinuousImprovement:
     def test_get_continuous_improvement_stats(self, continuous_improvement):
         """Test continuous improvement statistics."""
         stats = continuous_improvement.get_continuous_improvement_stats()
-        
+
         assert "enabled" in stats
         assert "total_experiments" in stats
         assert "active_experiments" in stats
@@ -362,7 +380,7 @@ class TestDocumentationService:
         """Test configuration."""
         return {
             "rag_documentation_enabled": True,
-            "rag_auto_documentation_enabled": True
+            "rag_auto_documentation_enabled": True,
         }
 
     @pytest.fixture
@@ -381,7 +399,7 @@ class TestDocumentationService:
     async def test_generate_user_documentation(self, documentation_service):
         """Test user documentation generation."""
         doc = await documentation_service.generate_user_documentation()
-        
+
         assert "RAG System User Guide" in doc
         assert "Quick Start" in doc
         assert "API Examples" in doc
@@ -391,7 +409,7 @@ class TestDocumentationService:
     async def test_generate_api_reference(self, documentation_service):
         """Test API reference generation."""
         doc = await documentation_service.generate_api_reference()
-        
+
         assert "RAG System API Reference" in doc
         assert "RAGService" in doc
         assert "Methods" in doc
@@ -400,7 +418,7 @@ class TestDocumentationService:
     async def test_generate_developer_guide(self, documentation_service):
         """Test developer guide generation."""
         doc = await documentation_service.generate_developer_guide()
-        
+
         assert "RAG System Developer Guide" in doc
         assert "System Architecture" in doc
         assert "Development Setup" in doc
@@ -409,7 +427,7 @@ class TestDocumentationService:
     async def test_generate_troubleshooting_guide(self, documentation_service):
         """Test troubleshooting guide generation."""
         doc = await documentation_service.generate_troubleshooting_guide()
-        
+
         assert "RAG System Troubleshooting Guide" in doc
         assert "Common Issues" in doc
 
@@ -417,7 +435,7 @@ class TestDocumentationService:
     async def test_generate_training_materials(self, documentation_service):
         """Test comprehensive training materials generation."""
         materials = await documentation_service.generate_training_materials()
-        
+
         assert "user_guide" in materials
         assert "api_reference" in materials
         assert "developer_guide" in materials
@@ -427,9 +445,9 @@ class TestDocumentationService:
     async def test_save_documentation(self, documentation_service, tmp_path):
         """Test saving documentation to files."""
         output_dir = str(tmp_path / "docs")
-        
+
         saved_files = await documentation_service.save_documentation(output_dir)
-        
+
         assert len(saved_files) == 4
         assert "user_guide" in saved_files
         assert "api_reference" in saved_files
@@ -439,7 +457,7 @@ class TestDocumentationService:
     def test_get_documentation_stats(self, documentation_service):
         """Test documentation service statistics."""
         stats = documentation_service.get_documentation_stats()
-        
+
         assert "enabled" in stats
         assert "templates_available" in stats
         assert "api_examples_count" in stats
@@ -462,7 +480,7 @@ class TestModelEvaluator:
         service = AsyncMock()
         service.similarity_search.return_value = [
             {"text": "function that calculates fibonacci", "score": 0.95},
-            {"text": "fibonacci implementation", "score": 0.90}
+            {"text": "fibonacci implementation", "score": 0.90},
         ]
         return service
 
@@ -481,23 +499,23 @@ class TestModelEvaluator:
     async def test_evaluate_models(self, model_evaluator):
         """Test model evaluation."""
         results = await model_evaluator.evaluate_models()
-        
+
         assert len(results) > 0
         assert all("embeddinggemma" in model for model in results.keys())
-        
+
         for model, metrics in results.items():
-            assert hasattr(metrics, 'model_name')
-            assert hasattr(metrics, 'retrieval_accuracy')
-            assert hasattr(metrics, 'latency_ms')
+            assert hasattr(metrics, "model_name")
+            assert hasattr(metrics, "retrieval_accuracy")
+            assert hasattr(metrics, "latency_ms")
 
     def test_calculate_retrieval_accuracy(self, model_evaluator):
         """Test retrieval accuracy calculation."""
         results = [
             {"text": "function that calculates fibonacci numbers"},
-            {"text": "fibonacci implementation"}
+            {"text": "fibonacci implementation"},
         ]
         expected = ["fibonacci", "fib", "calculate_fibonacci"]
-        
+
         accuracy = model_evaluator._calculate_retrieval_accuracy(results, expected)
         assert 0.0 <= accuracy <= 1.0
 
@@ -513,7 +531,7 @@ class TestModelEvaluator:
                 code_specificity=0.8,
                 throughput_per_second=10.0,
                 error_rate=0.01,
-                timestamp="2024-01-01"
+                timestamp="2024-01-01",
             ),
             "model2": model_evaluator.EvaluationMetrics(
                 model_name="model2",
@@ -523,10 +541,10 @@ class TestModelEvaluator:
                 code_specificity=0.7,
                 throughput_per_second=8.0,
                 error_rate=0.02,
-                timestamp="2024-01-01"
-            )
+                timestamp="2024-01-01",
+            ),
         }
-        
+
         rankings = model_evaluator.rank_models(results)
         assert len(rankings) == 2
         assert rankings[0][1] >= rankings[1][1]  # First model should have higher score
@@ -543,12 +561,12 @@ class TestModelEvaluator:
                 code_specificity=0.8,
                 throughput_per_second=10.0,
                 error_rate=0.01,
-                timestamp="2024-01-01"
+                timestamp="2024-01-01",
             )
         }
-        
+
         report = model_evaluator.generate_evaluation_report(results)
-        
+
         assert "Embedding Model Evaluation Report" in report
         assert "Model Rankings" in report
         assert "Detailed Metrics" in report
@@ -557,7 +575,7 @@ class TestModelEvaluator:
     def test_get_evaluation_stats(self, model_evaluator):
         """Test evaluation statistics."""
         stats = model_evaluator.get_evaluation_stats()
-        
+
         assert "models_to_test" in stats
         assert "test_queries" in stats
         assert "evaluations_completed" in stats
@@ -574,7 +592,7 @@ class TestRAGAdvancedIntegration:
             "rag_monitoring_enabled": True,
             "rag_security_enabled": True,
             "rag_continuous_improvement_enabled": True,
-            "rag_documentation_enabled": True
+            "rag_documentation_enabled": True,
         }
 
     @pytest.mark.asyncio
@@ -585,19 +603,23 @@ class TestRAGAdvancedIntegration:
         security_service = SecurityService(config)
         continuous_improvement = ContinuousImprovement(config)
         documentation_service = DocumentationService(config)
-        
+
         # Test performance monitoring
-        await performance_monitor.record_metric("latency", 150.0, {"operation": "search"})
+        await performance_monitor.record_metric(
+            "latency", 150.0, {"operation": "search"}
+        )
         stats = performance_monitor.get_performance_stats()
         assert "metrics" in stats
-        
+
         # Test security
         has_permission = await security_service.check_access_permission(
-            "user1", security_service.OperationType.READ, "document", 
-            security_service.AccessLevel.PUBLIC
+            "user1",
+            security_service.OperationType.READ,
+            "document",
+            security_service.AccessLevel.PUBLIC,
         )
         assert has_permission is True
-        
+
         # Test continuous improvement
         experiment_id = await continuous_improvement.create_experiment(
             name="Test Experiment",
@@ -605,10 +627,10 @@ class TestRAGAdvancedIntegration:
             hypothesis="New model will improve accuracy",
             improvement_type=continuous_improvement.ImprovementType.ACCURACY,
             control_config={"model": "embeddinggemma:latest"},
-            treatment_config={"model": "nomic-embed-text"}
+            treatment_config={"model": "nomic-embed-text"},
         )
         assert experiment_id is not None
-        
+
         # Test documentation
         doc = await documentation_service.generate_user_documentation()
         assert "RAG System User Guide" in doc

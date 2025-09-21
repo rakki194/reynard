@@ -13,6 +13,19 @@ from datetime import datetime
 from typing import Any
 
 
+class ContextFilter(logging.Filter):
+    """Filter to add context data to log records."""
+    
+    def __init__(self, context_data):
+        super().__init__()
+        self.context_data = context_data
+
+    def filter(self, record):
+        for key, value in self.context_data.items():
+            setattr(record, key, value)
+        return True
+
+
 class StructuredFormatter(logging.Formatter):
     """
     Custom formatter that outputs structured JSON logs.
@@ -273,16 +286,6 @@ def add_log_context(context: dict[str, Any]) -> None:
     Args:
         context: Dictionary of context data to add
     """
-
-    class ContextFilter(logging.Filter):
-        def __init__(self, context_data):
-            super().__init__()
-            self.context_data = context_data
-
-        def filter(self, record):
-            for key, value in self.context_data.items():
-                setattr(record, key, value)
-            return True
 
     # Add context filter to all Reynard loggers
     context_filter = ContextFilter(context)

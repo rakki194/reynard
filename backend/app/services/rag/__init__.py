@@ -28,22 +28,26 @@ from .rag_service import RAGService
 from .core import EmbeddingService, VectorStoreService, DocumentIndexer, SearchEngine
 
 # Advanced services
-from .advanced import PerformanceMonitor, SecurityService, ContinuousImprovement, DocumentationService, ModelEvaluator
+from .advanced import (
+    PerformanceMonitor,
+    SecurityService,
+    ContinuousImprovement,
+    DocumentationService,
+    ModelEvaluator,
+)
 
 __all__ = [
     # Main service
     "RAGService",
-    
     # Core services
     "EmbeddingService",
-    "VectorStoreService", 
+    "VectorStoreService",
     "DocumentIndexer",
     "SearchEngine",
-    
     # Advanced services
     "PerformanceMonitor",
     "SecurityService",
-    "ContinuousImprovement", 
+    "ContinuousImprovement",
     "DocumentationService",
-    "ModelEvaluator"
+    "ModelEvaluator",
 ]

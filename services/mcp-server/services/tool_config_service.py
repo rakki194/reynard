@@ -28,17 +28,17 @@ class ToolConfigService:
         """Initialize the enhanced tool configuration service."""
         logger.debug("🕐 Starting ToolConfigService.__init__")
         start_time = time.time()
-        
+
         self.config_file_path = Path(config_file_path)
         self.config_data: Dict[str, Any] = {}
         self.tool_registry = tool_registry
-        
+
         logger.debug("🕐 Loading config in ToolConfigService...")
         config_start = time.time()
         self._load_config()
         config_elapsed = time.time() - config_start
         logger.debug(f"✅ Config loaded in ToolConfigService in {config_elapsed:.3f}s")
-        
+
         total_elapsed = time.time() - start_time
         logger.debug(f"✅ ToolConfigService.__init__ completed in {total_elapsed:.3f}s")
 
@@ -53,7 +53,9 @@ class ToolConfigService:
                 # Create default configuration
                 self._create_default_config()
                 self._save_config()
-                logger.info(f"Created default tool configuration at {self.config_file_path}")
+                logger.info(
+                    f"Created default tool configuration at {self.config_file_path}"
+                )
         except Exception as e:
             logger.error(f"Failed to load tool configuration: {e}")
             self._create_default_config()
@@ -63,7 +65,7 @@ class ToolConfigService:
         self.config_data = {
             "version": "1.0.0",
             "last_updated": datetime.now().isoformat(),
-            "tools": {}
+            "tools": {},
         }
 
     def _save_config(self) -> None:
@@ -150,7 +152,9 @@ class ToolConfigService:
         current_state = self.config_data["tools"][tool_name]["enabled"]
         self.config_data["tools"][tool_name]["enabled"] = not current_state
         self._save_config()
-        logger.info(f"Toggled tool {tool_name} to {'enabled' if not current_state else 'disabled'}")
+        logger.info(
+            f"Toggled tool {tool_name} to {'enabled' if not current_state else 'disabled'}"
+        )
         return True
 
     def update_tool_config(self, tool_name: str, config: Dict[str, Any]) -> bool:

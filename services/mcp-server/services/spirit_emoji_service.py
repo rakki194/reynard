@@ -13,13 +13,13 @@ from .backend_data_service import BackendDataService
 
 class SpiritEmojiService:
     """Centralized service for spirit emoji management using FastAPI backend."""
-    
+
     def __init__(self) -> None:
         """Initialize the spirit emoji service."""
         self._emoji_cache: Dict[str, str] = {}
         self._backend_service = BackendDataService()
         self._load_emojis()
-    
+
     def _load_emojis(self) -> None:
         """Load emoji mappings from the FastAPI backend."""
         try:
@@ -31,25 +31,29 @@ class SpiritEmojiService:
                     # So we'll just use the fallback emojis for now
                     spirits_data = None
                 else:
-                    spirits_data = loop.run_until_complete(self._backend_service.get_naming_spirits())
+                    spirits_data = loop.run_until_complete(
+                        self._backend_service.get_naming_spirits()
+                    )
             except RuntimeError:
                 # No event loop exists, create a new one
                 loop = asyncio.new_event_loop()
                 asyncio.set_event_loop(loop)
-                spirits_data = loop.run_until_complete(self._backend_service.get_naming_spirits())
+                spirits_data = loop.run_until_complete(
+                    self._backend_service.get_naming_spirits()
+                )
                 loop.close()
-            
+
             if spirits_data:
                 for spirit_name, spirit_config in spirits_data.items():
                     if spirit_config.get("enabled", True):
                         emoji = spirit_config.get("emoji", "")
                         if emoji:
                             self._emoji_cache[spirit_name] = emoji
-            
+
             # Add fallback emojis for common spirits not in config
             fallback_emojis = {
                 "fox": "🦊",
-                "wolf": "🐺", 
+                "wolf": "🐺",
                 "otter": "🦦",
                 "eagle": "🦅",
                 "lion": "🦁",
@@ -82,14 +86,14 @@ class SpiritEmojiService:
                 "kraken": "🐙",
                 "yeti": "❄️",
                 "alien": "👽",
-                "robot": "🤖"
+                "robot": "🤖",
             }
-            
+
             # Add fallbacks for any missing emojis
             for spirit, emoji in fallback_emojis.items():
                 if spirit not in self._emoji_cache:
                     self._emoji_cache[spirit] = emoji
-                    
+
         except Exception as e:
             print(f"Warning: Could not load emoji configuration from backend: {e}")
             # Use fallback emojis if config loading fails
@@ -100,25 +104,25 @@ class SpiritEmojiService:
                 "eagle": "🦅",
                 "lion": "🦁",
                 "tiger": "🐅",
-                "dragon": "🐉"
+                "dragon": "🐉",
             }
-    
+
     def get_spirit_emoji(self, spirit: str) -> str:
         """Get the emoji for a specific spirit."""
         if not spirit:
             return "🦊"  # Default to fox
-        
+
         # Normalize spirit name (lowercase, handle variations)
         normalized_spirit = spirit.lower().strip()
-        
+
         # Direct lookup
         if normalized_spirit in self._emoji_cache:
             return self._emoji_cache[normalized_spirit]
-        
+
         # Handle common variations
         variations = {
             "vulpine": "fox",
-            "lupine": "wolf", 
+            "lupine": "wolf",
             "lupus": "wolf",
             "canine": "wolf",
             "feline": "lion",
@@ -127,21 +131,21 @@ class SpiritEmojiService:
             "draconic": "dragon",
             "ursine": "bear",
             "serpentine": "snake",
-            "reptilian": "lizard"
+            "reptilian": "lizard",
         }
-        
+
         if normalized_spirit in variations:
             base_spirit = variations[normalized_spirit]
             if base_spirit in self._emoji_cache:
                 return self._emoji_cache[base_spirit]
-        
+
         # Return default fox emoji if not found
         return self._emoji_cache.get("fox", "🦊")
-    
+
     def get_all_emojis(self) -> Dict[str, str]:
         """Get all available spirit emojis."""
         return self._emoji_cache.copy()
-    
+
     def reload_config(self) -> None:
         """Reload the emoji configuration from file."""
         self._emoji_cache.clear()

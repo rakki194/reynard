@@ -16,15 +16,15 @@ export default defineConfig({
     },
     rollupOptions: {
       external: [
-        "solid-js", 
-        "solid-js/web", 
-        "chokidar", 
-        "commander", 
-        "fs/promises", 
-        "fs", 
-        "path", 
-        "child_process", 
-        "events", 
+        "solid-js",
+        "solid-js/web",
+        "chokidar",
+        "commander",
+        "fs/promises",
+        "fs",
+        "path",
+        "child_process",
+        "events",
         "util",
         "reynard-core",
         "reynard-ui",
@@ -34,7 +34,7 @@ export default defineConfig({
         "reynard-components-dashboard",
         "reynard-components-themes",
         "reynard-components-utils",
-        "reynard-fluent-icons"
+        "reynard-fluent-icons",
       ],
       output: {
         globals: {
@@ -52,7 +52,7 @@ export default defineConfig({
           "reynard-components-utils": "ReynardComponentsUtils",
           "reynard-fluent-icons": "ReynardFluentIcons",
         },
-        exports: "named"
+        exports: "named",
       },
     },
     sourcemap: true,

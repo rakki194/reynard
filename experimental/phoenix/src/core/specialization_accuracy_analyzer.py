@@ -20,7 +20,7 @@ from ..utils.data_structures import (
     AgentState,
     AgentGeneticMaterial,
     SpiritType,
-    NamingStyle
+    NamingStyle,
 )
 
 
@@ -44,10 +44,10 @@ class SpecializationAccuracyAnalyzer:
 
         # Specialization scoring weights
         self.specialization_weights = {
-            'role_alignment': 0.3,
-            'expertise_depth': 0.25,
-            'behavioral_consistency': 0.25,
-            'knowledge_application': 0.2
+            "role_alignment": 0.3,
+            "expertise_depth": 0.25,
+            "behavioral_consistency": 0.25,
+            "knowledge_application": 0.2,
         }
 
         self.logger.info("🎭 Specialization accuracy analyzer initialized")
@@ -56,142 +56,170 @@ class SpecializationAccuracyAnalyzer:
         """Initialize spirit-specific specialization patterns."""
         return {
             "fox": {
-                "primary_specializations": ["strategic_planning", "problem_solving", "adaptability"],
+                "primary_specializations": [
+                    "strategic_planning",
+                    "problem_solving",
+                    "adaptability",
+                ],
                 "role_patterns": {
                     "strategic_planning": [
                         r"\b(strategy|strategic|planning|roadmap|vision)\b",
                         r"\b(long-term|future|goals|objectives|milestones)\b",
-                        r"\b(analyze|evaluate|assess|consider|weigh)\b"
+                        r"\b(analyze|evaluate|assess|consider|weigh)\b",
                     ],
                     "problem_solving": [
                         r"\b(solve|resolve|fix|address|tackle)\b",
                         r"\b(solution|approach|method|strategy)\b",
-                        r"\b(debug|troubleshoot|diagnose|investigate)\b"
+                        r"\b(debug|troubleshoot|diagnose|investigate)\b",
                     ],
                     "adaptability": [
                         r"\b(adapt|adjust|modify|change|flexible)\b",
                         r"\b(versatile|dynamic|responsive|agile)\b",
-                        r"\b(evolve|transform|shift|pivot)\b"
-                    ]
+                        r"\b(evolve|transform|shift|pivot)\b",
+                    ],
                 },
                 "behavioral_indicators": [
                     r"\b(cunning|clever|strategic|tactical)\b",
                     r"\b(analyze|evaluate|consider|weigh)\b",
-                    r"\b(approach|method|strategy|tactic)\b"
+                    r"\b(approach|method|strategy|tactic)\b",
                 ],
-                "knowledge_domains": ["strategy", "analysis", "planning", "optimization"]
+                "knowledge_domains": [
+                    "strategy",
+                    "analysis",
+                    "planning",
+                    "optimization",
+                ],
             },
-
             "wolf": {
-                "primary_specializations": ["leadership", "team_coordination", "protection"],
+                "primary_specializations": [
+                    "leadership",
+                    "team_coordination",
+                    "protection",
+                ],
                 "role_patterns": {
                     "leadership": [
                         r"\b(lead|guide|direct|manage|coordinate)\b",
                         r"\b(command|authority|influence|inspire|motivate)\b",
-                        r"\b(mentor|coach|teach|guide|develop)\b"
+                        r"\b(mentor|coach|teach|guide|develop)\b",
                     ],
                     "team_coordination": [
                         r"\b(team|group|collaborate|coordinate|organize)\b",
                         r"\b(work together|cooperation|partnership|alliance)\b",
-                        r"\b(delegate|assign|distribute|allocate)\b"
+                        r"\b(delegate|assign|distribute|allocate)\b",
                     ],
                     "protection": [
                         r"\b(protect|guard|defend|secure|safeguard)\b",
                         r"\b(security|safety|reliability|stability)\b",
-                        r"\b(monitor|watch|oversee|supervise)\b"
-                    ]
+                        r"\b(monitor|watch|oversee|supervise)\b",
+                    ],
                 },
                 "behavioral_indicators": [
                     r"\b(pack|team|group|collective)\b",
                     r"\b(protect|guard|defend|secure)\b",
-                    r"\b(lead|guide|direct|command)\b"
+                    r"\b(lead|guide|direct|command)\b",
                 ],
-                "knowledge_domains": ["leadership", "teamwork", "security", "management"]
+                "knowledge_domains": [
+                    "leadership",
+                    "teamwork",
+                    "security",
+                    "management",
+                ],
             },
-
             "otter": {
-                "primary_specializations": ["testing", "quality_assurance", "playful_innovation"],
+                "primary_specializations": [
+                    "testing",
+                    "quality_assurance",
+                    "playful_innovation",
+                ],
                 "role_patterns": {
                     "testing": [
                         r"\b(test|testing|validate|verify|check)\b",
                         r"\b(quality|assurance|QA|validation)\b",
-                        r"\b(debug|troubleshoot|fix|resolve)\b"
+                        r"\b(debug|troubleshoot|fix|resolve)\b",
                     ],
                     "quality_assurance": [
                         r"\b(quality|standards|best practices|excellence)\b",
                         r"\b(review|inspect|audit|evaluate)\b",
-                        r"\b(improve|enhance|optimize|refine)\b"
+                        r"\b(improve|enhance|optimize|refine)\b",
                     ],
                     "playful_innovation": [
                         r"\b(creative|innovative|fun|playful|experimental)\b",
                         r"\b(explore|discover|experiment|try)\b",
-                        r"\b(imagine|design|create|invent)\b"
-                    ]
+                        r"\b(imagine|design|create|invent)\b",
+                    ],
                 },
                 "behavioral_indicators": [
                     r"\b(playful|fun|creative|experimental)\b",
                     r"\b(test|validate|check|verify)\b",
-                    r"\b(explore|discover|experiment)\b"
+                    r"\b(explore|discover|experiment)\b",
                 ],
-                "knowledge_domains": ["testing", "quality", "innovation", "creativity"]
+                "knowledge_domains": ["testing", "quality", "innovation", "creativity"],
             },
-
             "lion": {
-                "primary_specializations": ["leadership", "authority", "strategic_vision"],
+                "primary_specializations": [
+                    "leadership",
+                    "authority",
+                    "strategic_vision",
+                ],
                 "role_patterns": {
                     "leadership": [
                         r"\b(lead|command|direct|govern|rule)\b",
                         r"\b(authority|power|influence|dominance)\b",
-                        r"\b(inspire|motivate|guide|mentor)\b"
+                        r"\b(inspire|motivate|guide|mentor)\b",
                     ],
                     "authority": [
                         r"\b(authority|power|control|command|dominance)\b",
                         r"\b(responsibility|accountability|oversight)\b",
-                        r"\b(decision|choice|judgment|determination)\b"
+                        r"\b(decision|choice|judgment|determination)\b",
                     ],
                     "strategic_vision": [
                         r"\b(vision|mission|purpose|direction)\b",
                         r"\b(strategic|long-term|future|goals)\b",
-                        r"\b(inspire|motivate|guide|lead)\b"
-                    ]
+                        r"\b(inspire|motivate|guide|lead)\b",
+                    ],
                 },
                 "behavioral_indicators": [
                     r"\b(confident|bold|decisive|authoritative)\b",
                     r"\b(lead|command|direct|govern)\b",
-                    r"\b(inspire|motivate|guide|mentor)\b"
+                    r"\b(inspire|motivate|guide|mentor)\b",
                 ],
-                "knowledge_domains": ["leadership", "strategy", "management", "vision"]
+                "knowledge_domains": ["leadership", "strategy", "management", "vision"],
             },
-
             "eagle": {
-                "primary_specializations": ["vision", "analysis", "strategic_oversight"],
+                "primary_specializations": [
+                    "vision",
+                    "analysis",
+                    "strategic_oversight",
+                ],
                 "role_patterns": {
                     "vision": [
                         r"\b(vision|overview|perspective|insight)\b",
                         r"\b(see|observe|monitor|watch)\b",
-                        r"\b(analyze|examine|study|investigate)\b"
+                        r"\b(analyze|examine|study|investigate)\b",
                     ],
                     "analysis": [
                         r"\b(analyze|examine|evaluate|assess)\b",
                         r"\b(insight|understanding|comprehension)\b",
-                        r"\b(pattern|trend|correlation|relationship)\b"
+                        r"\b(pattern|trend|correlation|relationship)\b",
                     ],
                     "strategic_oversight": [
                         r"\b(oversee|supervise|monitor|watch)\b",
                         r"\b(strategic|high-level|executive|management)\b",
-                        r"\b(guidance|direction|leadership|vision)\b"
-                    ]
+                        r"\b(guidance|direction|leadership|vision)\b",
+                    ],
                 },
                 "behavioral_indicators": [
                     r"\b(soar|fly|high|elevated)\b",
                     r"\b(see|observe|monitor|watch)\b",
-                    r"\b(analyze|examine|study|investigate)\b"
+                    r"\b(analyze|examine|study|investigate)\b",
                 ],
-                "knowledge_domains": ["analysis", "strategy", "oversight", "vision"]
-            }
+                "knowledge_domains": ["analysis", "strategy", "oversight", "vision"],
+            },
         }
 
-    def analyze_specialization_accuracy(self, agent_output: str, agent_state: AgentState) -> Dict[str, Any]:
+    def analyze_specialization_accuracy(
+        self, agent_output: str, agent_state: AgentState
+    ) -> Dict[str, Any]:
         """
         Analyze specialization accuracy for an agent.
 
@@ -202,7 +230,9 @@ class SpecializationAccuracyAnalyzer:
         Returns:
             Dictionary of specialization accuracy analysis results
         """
-        self.logger.debug(f"Analyzing specialization accuracy for {agent_state.spirit} agent")
+        self.logger.debug(
+            f"Analyzing specialization accuracy for {agent_state.spirit} agent"
+        )
 
         spirit = agent_state.spirit.lower()
         if spirit not in self.spirit_specializations:
@@ -218,17 +248,23 @@ class SpecializationAccuracyAnalyzer:
         expertise_depth = self._analyze_expertise_depth(agent_output, spirit_spec)
 
         # Analyze behavioral consistency
-        behavioral_consistency = self._analyze_behavioral_consistency(agent_output, spirit_spec)
+        behavioral_consistency = self._analyze_behavioral_consistency(
+            agent_output, spirit_spec
+        )
 
         # Analyze knowledge application
-        knowledge_application = self._analyze_knowledge_application(agent_output, spirit_spec)
+        knowledge_application = self._analyze_knowledge_application(
+            agent_output, spirit_spec
+        )
 
         # Calculate overall specialization accuracy
         overall_accuracy = (
-            role_alignment * self.specialization_weights['role_alignment'] +
-            expertise_depth * self.specialization_weights['expertise_depth'] +
-            behavioral_consistency * self.specialization_weights['behavioral_consistency'] +
-            knowledge_application * self.specialization_weights['knowledge_application']
+            role_alignment * self.specialization_weights["role_alignment"]
+            + expertise_depth * self.specialization_weights["expertise_depth"]
+            + behavioral_consistency
+            * self.specialization_weights["behavioral_consistency"]
+            + knowledge_application
+            * self.specialization_weights["knowledge_application"]
         )
 
         return {
@@ -239,9 +275,15 @@ class SpecializationAccuracyAnalyzer:
             "behavioral_consistency": behavioral_consistency,
             "knowledge_application": knowledge_application,
             "primary_specializations": spirit_spec["primary_specializations"],
-            "specialization_scores": self._calculate_specialization_scores(agent_output, spirit_spec),
-            "behavioral_indicators": self._extract_behavioral_indicators(agent_output, spirit_spec),
-            "knowledge_domain_coverage": self._analyze_knowledge_domain_coverage(agent_output, spirit_spec)
+            "specialization_scores": self._calculate_specialization_scores(
+                agent_output, spirit_spec
+            ),
+            "behavioral_indicators": self._extract_behavioral_indicators(
+                agent_output, spirit_spec
+            ),
+            "knowledge_domain_coverage": self._analyze_knowledge_domain_coverage(
+                agent_output, spirit_spec
+            ),
         }
 
     def _analyze_role_alignment(self, text: str, spirit_spec: Dict[str, Any]) -> float:
@@ -275,25 +317,27 @@ class SpecializationAccuracyAnalyzer:
                 expertise_score = pattern_matches / len(patterns) if patterns else 0.0
                 expertise_scores.append(expertise_score)
 
-        return sum(expertise_scores) / len(expertise_scores) if expertise_scores else 0.0
+        return (
+            sum(expertise_scores) / len(expertise_scores) if expertise_scores else 0.0
+        )
 
-    def _analyze_behavioral_consistency(self, text: str, spirit_spec: Dict[str, Any]) -> float:
+    def _analyze_behavioral_consistency(
+        self, text: str, spirit_spec: Dict[str, Any]
+    ) -> float:
         """Analyze consistency with expected behavioral patterns."""
         behavioral_patterns = spirit_spec["behavioral_indicators"]
         return self._analyze_pattern_matches(text, behavioral_patterns)
 
-    def _analyze_knowledge_application(self, text: str, spirit_spec: Dict[str, Any]) -> float:
+    def _analyze_knowledge_application(
+        self, text: str, spirit_spec: Dict[str, Any]
+    ) -> float:
         """Analyze application of knowledge in relevant domains."""
         knowledge_domains = spirit_spec["knowledge_domains"]
         domain_scores = []
 
         for domain in knowledge_domains:
             # Look for domain-specific terminology and concepts
-            domain_patterns = [
-                rf"\b{domain}\b",
-                rf"\b{domain}.*\b",
-                rf"\b.*{domain}\b"
-            ]
+            domain_patterns = [rf"\b{domain}\b", rf"\b{domain}.*\b", rf"\b.*{domain}\b"]
             domain_score = self._analyze_pattern_matches(text, domain_patterns)
             domain_scores.append(domain_score)
 
@@ -310,7 +354,9 @@ class SpecializationAccuracyAnalyzer:
 
         return matches / total_patterns if total_patterns > 0 else 0.0
 
-    def _calculate_specialization_scores(self, text: str, spirit_spec: Dict[str, Any]) -> Dict[str, float]:
+    def _calculate_specialization_scores(
+        self, text: str, spirit_spec: Dict[str, Any]
+    ) -> Dict[str, float]:
         """Calculate individual specialization scores."""
         specialization_scores = {}
 
@@ -322,7 +368,9 @@ class SpecializationAccuracyAnalyzer:
 
         return specialization_scores
 
-    def _extract_behavioral_indicators(self, text: str, spirit_spec: Dict[str, Any]) -> List[str]:
+    def _extract_behavioral_indicators(
+        self, text: str, spirit_spec: Dict[str, Any]
+    ) -> List[str]:
         """Extract specific behavioral indicators from text."""
         indicators = []
         behavioral_patterns = spirit_spec["behavioral_indicators"]
@@ -333,24 +381,24 @@ class SpecializationAccuracyAnalyzer:
 
         return indicators[:5]  # Limit to 5 total indicators
 
-    def _analyze_knowledge_domain_coverage(self, text: str, spirit_spec: Dict[str, Any]) -> Dict[str, float]:
+    def _analyze_knowledge_domain_coverage(
+        self, text: str, spirit_spec: Dict[str, Any]
+    ) -> Dict[str, float]:
         """Analyze coverage of knowledge domains."""
         domain_coverage = {}
         knowledge_domains = spirit_spec["knowledge_domains"]
 
         for domain in knowledge_domains:
             # Look for domain-specific content
-            domain_patterns = [
-                rf"\b{domain}\b",
-                rf"\b{domain}.*\b",
-                rf"\b.*{domain}\b"
-            ]
+            domain_patterns = [rf"\b{domain}\b", rf"\b{domain}.*\b", rf"\b.*{domain}\b"]
             coverage_score = self._analyze_pattern_matches(text, domain_patterns)
             domain_coverage[domain] = coverage_score
 
         return domain_coverage
 
-    def calculate_cross_specialization_transfer(self, specialization_results: List[Dict[str, Any]]) -> Dict[str, float]:
+    def calculate_cross_specialization_transfer(
+        self, specialization_results: List[Dict[str, Any]]
+    ) -> Dict[str, float]:
         """Calculate potential for cross-specialization knowledge transfer."""
         if len(specialization_results) < 2:
             return {}
@@ -358,7 +406,7 @@ class SpecializationAccuracyAnalyzer:
         transfer_potential = {}
 
         for i, result1 in enumerate(specialization_results):
-            for result2 in specialization_results[i+1:]:
+            for result2 in specialization_results[i + 1 :]:
                 spirit1 = result1["spirit_type"]
                 spirit2 = result2["spirit_type"]
                 transfer_key = f"{spirit1}_to_{spirit2}"
@@ -385,17 +433,20 @@ class SpecializationAccuracyAnalyzer:
             ("fox", "eagle"),  # Strategic planning + Vision
             ("wolf", "lion"),  # Team coordination + Authority
             ("otter", "fox"),  # Testing + Problem solving
-            ("eagle", "lion")  # Analysis + Leadership
+            ("eagle", "lion"),  # Analysis + Leadership
         ]
 
         for pair in complementary_pairs:
-            if ((spirit1 == pair[0] and spirit2 == pair[1]) or
-                (spirit1 == pair[1] and spirit2 == pair[0])):
+            if (spirit1 == pair[0] and spirit2 == pair[1]) or (
+                spirit1 == pair[1] and spirit2 == pair[0]
+            ):
                 return True
 
         return False
 
-    def validate_specialization_consistency(self, specialization_results: List[Dict[str, Any]]) -> float:
+    def validate_specialization_consistency(
+        self, specialization_results: List[Dict[str, Any]]
+    ) -> float:
         """Validate consistency of specialization results across agents."""
         if len(specialization_results) < 2:
             return 1.0
@@ -405,7 +456,9 @@ class SpecializationAccuracyAnalyzer:
         mean_accuracy = sum(accuracies) / len(accuracies)
 
         # Calculate variance
-        variance = sum((acc - mean_accuracy) ** 2 for acc in accuracies) / len(accuracies)
+        variance = sum((acc - mean_accuracy) ** 2 for acc in accuracies) / len(
+            accuracies
+        )
 
         # Convert variance to consistency score (lower variance = higher consistency)
         consistency_score = max(0.0, 1.0 - variance)

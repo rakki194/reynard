@@ -39,7 +39,7 @@ monolith_analysis = MonolithAnalysisService()
     execution_type="sync",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 def detect_monoliths(**kwargs) -> dict[str, Any]:
     """Detect large monolithic files based on precise code modularity rules."""
@@ -50,7 +50,7 @@ def detect_monoliths(**kwargs) -> dict[str, Any]:
     directories = arguments.get("directories", ["packages/", "examples/", "backend/"])
     top_n = arguments.get("top_n", 20)
     include_metrics = arguments.get("include_metrics", True)
-    
+
     try:
         result = monolith_analysis.detect_monoliths(
             max_lines=max_lines,
@@ -58,24 +58,18 @@ def detect_monoliths(**kwargs) -> dict[str, Any]:
             file_types=file_types,
             directories=directories,
             top_n=top_n,
-            include_metrics=include_metrics
+            include_metrics=include_metrics,
         )
-        
+
         return {
             "content": [
-                {
-                    "type": "text",
-                    "text": f"🦊 Monolith Detection Results:\n\n{result}"
-                }
+                {"type": "text", "text": f"🦊 Monolith Detection Results:\n\n{result}"}
             ]
         }
     except Exception as e:
         return {
             "content": [
-                {
-                    "type": "text",
-                    "text": f"❌ Error detecting monoliths: {e!s}"
-                }
+                {"type": "text", "text": f"❌ Error detecting monoliths: {e!s}"}
             ]
         }
 
@@ -87,44 +81,33 @@ def detect_monoliths(**kwargs) -> dict[str, Any]:
     execution_type="sync",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 def analyze_file_complexity(**kwargs) -> dict[str, Any]:
     """Deep-dive analysis of a specific file's complexity metrics."""
     arguments = kwargs.get("arguments", {})
     file_path = arguments.get("file_path")
     include_ast_analysis = arguments.get("include_ast_analysis", True)
-    
+
     if not file_path:
-        return {
-            "content": [
-                {
-                    "type": "text",
-                    "text": "❌ File path is required"
-                }
-            ]
-        }
-    
+        return {"content": [{"type": "text", "text": "❌ File path is required"}]}
+
     try:
         result = file_analysis.analyze_file_complexity(
-            file_path=file_path,
-            include_ast_analysis=include_ast_analysis
+            file_path=file_path, include_ast_analysis=include_ast_analysis
         )
-        
+
         return {
             "content": [
                 {
                     "type": "text",
-                    "text": f"🔍 File Complexity Analysis for {file_path}:\n\n{result}"
+                    "text": f"🔍 File Complexity Analysis for {file_path}:\n\n{result}",
                 }
             ]
         }
     except Exception as e:
         return {
             "content": [
-                {
-                    "type": "text",
-                    "text": f"❌ Error analyzing file complexity: {e!s}"
-                }
+                {"type": "text", "text": f"❌ Error analyzing file complexity: {e!s}"}
             ]
         }

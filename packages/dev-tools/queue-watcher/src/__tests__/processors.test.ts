@@ -58,7 +58,7 @@ describe("Processors", () => {
       await Processors.validateSentenceLength(filePath);
 
       expect(mockExecSync).toHaveBeenCalledWith(
-        expect.stringContaining("validate-sentence-length.js"),
+        expect.stringContaining("dist/cli.js sentence-length --fix"),
         expect.objectContaining({
           stdio: "inherit",
           cwd: expect.any(String),
@@ -91,7 +91,7 @@ describe("Processors", () => {
       await Processors.validateToC(filePath);
 
       expect(mockExecSync).toHaveBeenCalledWith(
-        expect.stringContaining("validate-markdown-toc.js"),
+        expect.stringContaining("dist/cli.js toc --fix"),
         expect.objectContaining({
           stdio: "inherit",
           cwd: expect.any(String),
@@ -124,7 +124,7 @@ describe("Processors", () => {
       await Processors.validateLinks(filePath);
 
       expect(mockExecSync).toHaveBeenCalledWith(
-        expect.stringContaining("validate-markdown-links.js"),
+        expect.stringContaining("dist/cli.js links"),
         expect.objectContaining({
           stdio: "inherit",
           cwd: expect.any(String),

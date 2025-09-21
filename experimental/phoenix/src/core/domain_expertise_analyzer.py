@@ -19,7 +19,7 @@ from collections import defaultdict
 from ..utils.data_structures import (
     AgentState,
     AgentGeneticMaterial,
-    StructuredKnowledge
+    StructuredKnowledge,
 )
 
 
@@ -43,10 +43,10 @@ class DomainExpertiseAnalyzer:
 
         # Expertise scoring weights
         self.expertise_weights = {
-            'terminology': 0.25,
-            'concepts': 0.25,
-            'methodology': 0.25,
-            'context': 0.25
+            "terminology": 0.25,
+            "concepts": 0.25,
+            "methodology": 0.25,
+            "context": 0.25,
         }
 
         self.logger.info("🎯 Domain expertise analyzer initialized")
@@ -59,138 +59,166 @@ class DomainExpertiseAnalyzer:
                     r"\b(algorithm|data structure|complexity|optimization)\b",
                     r"\b(design pattern|architecture|framework|library)\b",
                     r"\b(refactoring|debugging|testing|deployment)\b",
-                    r"\b(API|SDK|framework|library|package)\b"
+                    r"\b(API|SDK|framework|library|package)\b",
                 ],
                 "concepts": [
                     r"\b(OOP|functional programming|SOLID principles)\b",
                     r"\b(agile|scrum|CI/CD|DevOps)\b",
                     r"\b(version control|git|repository|branch)\b",
-                    r"\b(containerization|microservices|scalability)\b"
+                    r"\b(containerization|microservices|scalability)\b",
                 ],
                 "methodology": [
                     r"\b(test-driven development|TDD)\b",
                     r"\b(continuous integration|continuous deployment)\b",
                     r"\b(code review|pair programming)\b",
-                    r"\b(iterative development|sprint planning)\b"
+                    r"\b(iterative development|sprint planning)\b",
                 ],
-                "context_indicators": ["code", "programming", "development", "software", "application"],
+                "context_indicators": [
+                    "code",
+                    "programming",
+                    "development",
+                    "software",
+                    "application",
+                ],
                 "expertise_levels": {
                     "beginner": ["basic", "simple", "fundamental"],
                     "intermediate": ["advanced", "complex", "sophisticated"],
-                    "expert": ["expert", "master", "specialist", "architect"]
-                }
+                    "expert": ["expert", "master", "specialist", "architect"],
+                },
             },
-
             "machine_learning": {
                 "terminology": [
                     r"\b(neural network|deep learning|reinforcement learning)\b",
                     r"\b(supervised|unsupervised|semi-supervised)\b",
                     r"\b(feature engineering|model training|hyperparameter)\b",
-                    r"\b(overfitting|underfitting|cross-validation)\b"
+                    r"\b(overfitting|underfitting|cross-validation)\b",
                 ],
                 "concepts": [
                     r"\b(backpropagation|gradient descent|optimization)\b",
                     r"\b(CNN|RNN|LSTM|transformer|attention)\b",
                     r"\b(classification|regression|clustering|dimensionality reduction)\b",
-                    r"\b(bias-variance tradeoff|regularization|ensemble)\b"
+                    r"\b(bias-variance tradeoff|regularization|ensemble)\b",
                 ],
                 "methodology": [
                     r"\b(train|validation|test split)\b",
                     r"\b(feature selection|model selection)\b",
                     r"\b(hyperparameter tuning|grid search)\b",
-                    r"\b(model evaluation|metrics|ROC|AUC)\b"
+                    r"\b(model evaluation|metrics|ROC|AUC)\b",
                 ],
-                "context_indicators": ["model", "training", "prediction", "algorithm", "data"],
+                "context_indicators": [
+                    "model",
+                    "training",
+                    "prediction",
+                    "algorithm",
+                    "data",
+                ],
                 "expertise_levels": {
                     "beginner": ["basic", "simple", "linear"],
                     "intermediate": ["advanced", "complex", "deep"],
-                    "expert": ["state-of-the-art", "cutting-edge", "research", "novel"]
-                }
+                    "expert": ["state-of-the-art", "cutting-edge", "research", "novel"],
+                },
             },
-
             "data_science": {
                 "terminology": [
                     r"\b(statistical analysis|hypothesis testing|correlation)\b",
                     r"\b(data visualization|EDA|exploratory data analysis)\b",
                     r"\b(data cleaning|preprocessing|feature engineering)\b",
-                    r"\b(regression|classification|clustering|anomaly detection)\b"
+                    r"\b(regression|classification|clustering|anomaly detection)\b",
                 ],
                 "concepts": [
                     r"\b(central limit theorem|p-value|confidence interval)\b",
                     r"\b(overfitting|bias|variance|cross-validation)\b",
                     r"\b(feature selection|dimensionality reduction)\b",
-                    r"\b(ensemble methods|boosting|bagging)\b"
+                    r"\b(ensemble methods|boosting|bagging)\b",
                 ],
                 "methodology": [
                     r"\b(CRISP-DM|data mining process)\b",
                     r"\b(statistical significance|A/B testing)\b",
                     r"\b(data pipeline|ETL|data warehousing)\b",
-                    r"\b(experimental design|randomized controlled trial)\b"
+                    r"\b(experimental design|randomized controlled trial)\b",
                 ],
-                "context_indicators": ["data", "analysis", "statistics", "insights", "patterns"],
+                "context_indicators": [
+                    "data",
+                    "analysis",
+                    "statistics",
+                    "insights",
+                    "patterns",
+                ],
                 "expertise_levels": {
                     "beginner": ["basic", "simple", "descriptive"],
                     "intermediate": ["advanced", "predictive", "diagnostic"],
-                    "expert": ["prescriptive", "causal", "experimental", "research"]
-                }
+                    "expert": ["prescriptive", "causal", "experimental", "research"],
+                },
             },
-
             "artificial_intelligence": {
                 "terminology": [
                     r"\b(artificial intelligence|AI|machine learning|ML)\b",
                     r"\b(natural language processing|NLP|computer vision)\b",
                     r"\b(expert system|knowledge representation)\b",
-                    r"\b(heuristic|search algorithm|optimization)\b"
+                    r"\b(heuristic|search algorithm|optimization)\b",
                 ],
                 "concepts": [
                     r"\b(symbolic AI|connectionist|hybrid approach)\b",
                     r"\b(rule-based system|knowledge base|inference engine)\b",
                     r"\b(planning|reasoning|problem solving)\b",
-                    r"\b(agent|multi-agent system|swarm intelligence)\b"
+                    r"\b(agent|multi-agent system|swarm intelligence)\b",
                 ],
                 "methodology": [
                     r"\b(expert system development|knowledge engineering)\b",
                     r"\b(heuristic search|A* algorithm|genetic algorithm)\b",
                     r"\b(rule-based reasoning|case-based reasoning)\b",
-                    r"\b(agent-based modeling|simulation)\b"
+                    r"\b(agent-based modeling|simulation)\b",
                 ],
-                "context_indicators": ["intelligence", "reasoning", "automation", "cognitive", "agent"],
+                "context_indicators": [
+                    "intelligence",
+                    "reasoning",
+                    "automation",
+                    "cognitive",
+                    "agent",
+                ],
                 "expertise_levels": {
                     "beginner": ["basic", "simple", "rule-based"],
                     "intermediate": ["advanced", "hybrid", "intelligent"],
-                    "expert": ["autonomous", "cognitive", "general", "AGI"]
-                }
+                    "expert": ["autonomous", "cognitive", "general", "AGI"],
+                },
             },
-
             "research_methodology": {
                 "terminology": [
                     r"\b(hypothesis|research question|methodology)\b",
                     r"\b(peer review|literature review|meta-analysis)\b",
                     r"\b(statistical significance|effect size|power analysis)\b",
-                    r"\b(validity|reliability|generalizability)\b"
+                    r"\b(validity|reliability|generalizability)\b",
                 ],
                 "concepts": [
                     r"\b(experimental design|quasi-experimental|observational)\b",
                     r"\b(randomized controlled trial|RCT|cohort study)\b",
                     r"\b(systematic review|meta-analysis|evidence synthesis)\b",
-                    r"\b(qualitative|quantitative|mixed methods)\b"
+                    r"\b(qualitative|quantitative|mixed methods)\b",
                 ],
                 "methodology": [
                     r"\b(research protocol|IRB|ethics approval)\b",
                     r"\b(data collection|sampling|recruitment)\b",
                     r"\b(statistical analysis|data analysis|interpretation)\b",
-                    r"\b(publication|dissemination|knowledge translation)\b"
+                    r"\b(publication|dissemination|knowledge translation)\b",
                 ],
-                "context_indicators": ["research", "study", "investigation", "analysis", "evidence"],
+                "context_indicators": [
+                    "research",
+                    "study",
+                    "investigation",
+                    "analysis",
+                    "evidence",
+                ],
                 "expertise_levels": {
                     "beginner": ["basic", "introductory", "foundational"],
                     "intermediate": ["advanced", "sophisticated", "rigorous"],
-                    "expert": ["cutting-edge", "pioneering", "groundbreaking", "novel"]
-                }
-            }
+                    "expert": ["cutting-edge", "pioneering", "groundbreaking", "novel"],
+                },
+            },
         }
 
-    def analyze_domain_expertise(self, agent_output: str, agent_state: AgentState) -> Dict[str, Dict[str, Any]]:
+    def analyze_domain_expertise(
+        self, agent_output: str, agent_state: AgentState
+    ) -> Dict[str, Dict[str, Any]]:
         """
         Analyze domain expertise from agent output.
 
@@ -201,7 +229,9 @@ class DomainExpertiseAnalyzer:
         Returns:
             Dictionary of domain expertise analysis results
         """
-        self.logger.debug(f"Analyzing domain expertise from output of length {len(agent_output)}")
+        self.logger.debug(
+            f"Analyzing domain expertise from output of length {len(agent_output)}"
+        )
 
         domain_expertise = {}
 
@@ -211,11 +241,21 @@ class DomainExpertiseAnalyzer:
             if expertise_score > 0.1:  # Minimum threshold for domain detection
                 domain_expertise[domain] = {
                     "expertise_score": expertise_score,
-                    "expertise_level": self._determine_expertise_level(agent_output, patterns),
-                    "confidence": self._calculate_domain_confidence(agent_output, patterns, expertise_score),
-                    "indicators": self._extract_domain_indicators(agent_output, patterns),
-                    "terminology_usage": self._analyze_terminology_usage(agent_output, patterns),
-                    "concept_depth": self._analyze_concept_depth(agent_output, patterns)
+                    "expertise_level": self._determine_expertise_level(
+                        agent_output, patterns
+                    ),
+                    "confidence": self._calculate_domain_confidence(
+                        agent_output, patterns, expertise_score
+                    ),
+                    "indicators": self._extract_domain_indicators(
+                        agent_output, patterns
+                    ),
+                    "terminology_usage": self._analyze_terminology_usage(
+                        agent_output, patterns
+                    ),
+                    "concept_depth": self._analyze_concept_depth(
+                        agent_output, patterns
+                    ),
                 }
 
         self.logger.info(f"Detected expertise in {len(domain_expertise)} domains")
@@ -238,12 +278,15 @@ class DomainExpertiseAnalyzer:
         scores["methodology"] = methodology_score
 
         # Analyze contextual relevance
-        context_score = self._analyze_contextual_relevance(text, patterns["context_indicators"])
+        context_score = self._analyze_contextual_relevance(
+            text, patterns["context_indicators"]
+        )
         scores["context"] = context_score
 
         # Weighted combination
-        total_score = sum(scores[aspect] * self.expertise_weights[aspect]
-                         for aspect in scores)
+        total_score = sum(
+            scores[aspect] * self.expertise_weights[aspect] for aspect in scores
+        )
 
         return min(1.0, total_score)
 
@@ -270,8 +313,9 @@ class DomainExpertiseAnalyzer:
 
         level_scores = {}
         for level, indicators in expertise_levels.items():
-            score = sum(1 for indicator in indicators
-                       if indicator.lower() in text.lower())
+            score = sum(
+                1 for indicator in indicators if indicator.lower() in text.lower()
+            )
             level_scores[level] = score
 
         # Determine level based on highest score
@@ -284,7 +328,9 @@ class DomainExpertiseAnalyzer:
         else:
             return "unknown"
 
-    def _calculate_domain_confidence(self, text: str, patterns: Dict[str, Any], expertise_score: float) -> float:
+    def _calculate_domain_confidence(
+        self, text: str, patterns: Dict[str, Any], expertise_score: float
+    ) -> float:
         """Calculate confidence in domain expertise assessment."""
         base_confidence = expertise_score
 
@@ -295,13 +341,17 @@ class DomainExpertiseAnalyzer:
                 pattern_type_matches += 1
 
         # Boost confidence for contextual coherence
-        contextual_matches = self._analyze_contextual_relevance(text, patterns["context_indicators"])
+        contextual_matches = self._analyze_contextual_relevance(
+            text, patterns["context_indicators"]
+        )
 
         confidence_boost = (pattern_type_matches * 0.1) + (contextual_matches * 0.2)
 
         return min(1.0, base_confidence + confidence_boost)
 
-    def _extract_domain_indicators(self, text: str, patterns: Dict[str, Any]) -> List[str]:
+    def _extract_domain_indicators(
+        self, text: str, patterns: Dict[str, Any]
+    ) -> List[str]:
         """Extract specific domain indicators from text."""
         indicators = []
 
@@ -317,13 +367,15 @@ class DomainExpertiseAnalyzer:
 
         return indicators[:5]  # Limit to 5 total indicators
 
-    def _analyze_terminology_usage(self, text: str, patterns: Dict[str, Any]) -> Dict[str, Any]:
+    def _analyze_terminology_usage(
+        self, text: str, patterns: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """Analyze terminology usage patterns."""
         terminology_analysis = {
             "total_terms": 0,
             "unique_terms": set(),
             "term_frequency": defaultdict(int),
-            "sophistication_score": 0.0
+            "sophistication_score": 0.0,
         }
 
         for pattern in patterns["terminology"]:
@@ -342,12 +394,14 @@ class DomainExpertiseAnalyzer:
 
         return terminology_analysis
 
-    def _analyze_concept_depth(self, text: str, patterns: Dict[str, Any]) -> Dict[str, Any]:
+    def _analyze_concept_depth(
+        self, text: str, patterns: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """Analyze depth of concept understanding."""
         concept_analysis = {
             "concept_count": 0,
             "concept_complexity": 0.0,
-            "concept_integration": 0.0
+            "concept_integration": 0.0,
         }
 
         # Count concept mentions
@@ -356,8 +410,14 @@ class DomainExpertiseAnalyzer:
             concept_analysis["concept_count"] += len(matches)
 
         # Analyze concept complexity (based on concept sophistication)
-        complex_concepts = ["neural network", "deep learning", "reinforcement learning",
-                          "transformer", "attention mechanism", "backpropagation"]
+        complex_concepts = [
+            "neural network",
+            "deep learning",
+            "reinforcement learning",
+            "transformer",
+            "attention mechanism",
+            "backpropagation",
+        ]
 
         complexity_score = 0.0
         for concept in complex_concepts:
@@ -376,7 +436,9 @@ class DomainExpertiseAnalyzer:
 
         return concept_analysis
 
-    def calculate_cross_domain_transfer(self, domain_expertise: Dict[str, Dict[str, Any]]) -> Dict[str, float]:
+    def calculate_cross_domain_transfer(
+        self, domain_expertise: Dict[str, Dict[str, Any]]
+    ) -> Dict[str, float]:
         """Calculate potential for cross-domain knowledge transfer."""
         if len(domain_expertise) < 2:
             return {}
@@ -386,7 +448,7 @@ class DomainExpertiseAnalyzer:
 
         # Calculate transfer potential between domain pairs
         for i, domain1 in enumerate(domains):
-            for domain2 in domains[i+1:]:
+            for domain2 in domains[i + 1 :]:
                 transfer_key = f"{domain1}_to_{domain2}"
 
                 # Calculate transfer potential based on expertise levels and concept overlap
@@ -411,12 +473,13 @@ class DomainExpertiseAnalyzer:
             ("data_science", "machine_learning"),
             ("artificial_intelligence", "machine_learning"),
             ("research_methodology", "data_science"),
-            ("software_engineering", "data_science")
+            ("software_engineering", "data_science"),
         ]
 
         for pair in complementary_pairs:
-            if ((domain1 == pair[0] and domain2 == pair[1]) or
-                (domain1 == pair[1] and domain2 == pair[0])):
+            if (domain1 == pair[0] and domain2 == pair[1]) or (
+                domain1 == pair[1] and domain2 == pair[0]
+            ):
                 return True
 
         return False

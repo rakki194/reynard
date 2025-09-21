@@ -66,7 +66,7 @@ async def main():
             "patience": 0.9,
             "aggression": 0.3,
             "charisma": 0.6,
-            "creativity": 0.8
+            "creativity": 0.8,
         },
         abilities={
             "strategist": 0.9,
@@ -74,15 +74,15 @@ async def main():
             "teacher": 0.8,
             "artist": 0.6,
             "healer": 0.5,
-            "inventor": 0.8
+            "inventor": 0.8,
         },
         performance_history=[],
         knowledge_base={
             "release_management": 0.95,
             "quality_assurance": 0.9,
             "git_workflow": 0.85,
-            "version_control": 0.9
-        }
+            "version_control": 0.9,
+        },
     )
 
     print(f"   Created Agent: {new_agent.name}")
@@ -170,9 +170,9 @@ async def main():
         print(f"     Common Abilities: {len(comparison['common_abilities'])}")
         print(f"     Common Knowledge: {len(comparison['common_knowledge'])}")
 
-        if comparison['similarity_score'] > 0.8:
+        if comparison["similarity_score"] > 0.8:
             print("     🎯 High similarity - agents are very similar")
-        elif comparison['similarity_score'] > 0.6:
+        elif comparison["similarity_score"] > 0.6:
             print("     ✅ Moderate similarity - agents share some traits")
         else:
             print("     🔄 Low similarity - agents are quite different")

@@ -80,7 +80,7 @@ The system uses `dev-server.config.json` in the project root to define available
       "args": ["run", "dev"],
       "cwd": "examples/test-app",
       "healthCheck": {
-        "endpoint": "http://localhost:3011/health",
+        "endpoint": "http://localhost:3011/api/health",
         "timeout": 5000
       }
     }

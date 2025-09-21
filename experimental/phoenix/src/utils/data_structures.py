@@ -17,6 +17,7 @@ from enum import Enum
 
 class TraitCategory(Enum):
     """Categories of traits for agent characterization."""
+
     PERSONALITY = "personality"
     COGNITIVE = "cognitive"
     BEHAVIORAL = "behavioral"
@@ -29,6 +30,7 @@ class TraitCategory(Enum):
 
 class SpiritType(Enum):
     """Available spirit types for agents."""
+
     FOX = "fox"
     WOLF = "wolf"
     OTTER = "otter"
@@ -43,6 +45,7 @@ class SpiritType(Enum):
 
 class NamingStyle(Enum):
     """Naming styles for agent generation."""
+
     FOUNDATION = "foundation"
     EXO = "exo"
     HYBRID = "hybrid"
@@ -54,6 +57,7 @@ class NamingStyle(Enum):
 @dataclass
 class SubliminalTrait:
     """Subliminal trait embedded in agent output."""
+
     id: str
     name: str
     strength: float  # 0.0 to 1.0
@@ -66,6 +70,7 @@ class SubliminalTrait:
 @dataclass
 class StructuredKnowledge:
     """Structured representation of agent knowledge."""
+
     categories: List[str]
     concepts: List[Dict[str, Any]]
     reasoning_patterns: List[Dict[str, Any]]
@@ -77,6 +82,7 @@ class StructuredKnowledge:
 @dataclass
 class GenerationContext:
     """Context in which genetic material was generated."""
+
     task: str
     input_data: str
     environment: Dict[str, Any]
@@ -88,6 +94,7 @@ class GenerationContext:
 @dataclass
 class StatisticalSignificance:
     """Statistical significance information."""
+
     p_value: float
     confidence_interval: Tuple[float, float]
     effect_size: float
@@ -99,6 +106,7 @@ class StatisticalSignificance:
 @dataclass
 class PerformanceMetrics:
     """Comprehensive performance metrics."""
+
     accuracy: float
     response_time: float
     efficiency: float
@@ -113,6 +121,7 @@ class PerformanceMetrics:
 @dataclass
 class AgentGeneticMaterial:
     """Agent genetic material - core concept of PHOENIX."""
+
     id: str
     agent_id: str
     generation: int
@@ -137,7 +146,7 @@ class AgentGeneticMaterial:
                 "reasoning_patterns": self.structured_knowledge.reasoning_patterns,
                 "strategies": self.structured_knowledge.strategies,
                 "domain_knowledge": self.structured_knowledge.domain_knowledge,
-                "confidence_scores": self.structured_knowledge.confidence_scores
+                "confidence_scores": self.structured_knowledge.confidence_scores,
             },
             "relevance_scores": self.relevance_scores,
             "subliminal_traits": [
@@ -148,7 +157,7 @@ class AgentGeneticMaterial:
                     "category": trait.category.value,
                     "manifestation": trait.manifestation,
                     "confidence": trait.confidence,
-                    "detected_at": trait.detected_at.isoformat()
+                    "detected_at": trait.detected_at.isoformat(),
                 }
                 for trait in self.subliminal_traits
             ],
@@ -159,9 +168,9 @@ class AgentGeneticMaterial:
                 "environment": self.generation_context.environment,
                 "agent_state": self.generation_context.agent_state,
                 "performance_metrics": self.generation_context.performance_metrics,
-                "timestamp": self.generation_context.timestamp.isoformat()
+                "timestamp": self.generation_context.timestamp.isoformat(),
             },
-            "created_at": self.created_at.isoformat()
+            "created_at": self.created_at.isoformat(),
         }
 
     @classmethod
@@ -178,7 +187,7 @@ class AgentGeneticMaterial:
                 reasoning_patterns=data["structured_knowledge"]["reasoning_patterns"],
                 strategies=data["structured_knowledge"]["strategies"],
                 domain_knowledge=data["structured_knowledge"]["domain_knowledge"],
-                confidence_scores=data["structured_knowledge"]["confidence_scores"]
+                confidence_scores=data["structured_knowledge"]["confidence_scores"],
             ),
             relevance_scores=data["relevance_scores"],
             subliminal_traits=[
@@ -189,7 +198,7 @@ class AgentGeneticMaterial:
                     category=TraitCategory(trait["category"]),
                     manifestation=trait["manifestation"],
                     confidence=trait["confidence"],
-                    detected_at=datetime.fromisoformat(trait["detected_at"])
+                    detected_at=datetime.fromisoformat(trait["detected_at"]),
                 )
                 for trait in data["subliminal_traits"]
             ],
@@ -200,15 +209,18 @@ class AgentGeneticMaterial:
                 environment=data["generation_context"]["environment"],
                 agent_state=data["generation_context"]["agent_state"],
                 performance_metrics=data["generation_context"]["performance_metrics"],
-                timestamp=datetime.fromisoformat(data["generation_context"]["timestamp"])
+                timestamp=datetime.fromisoformat(
+                    data["generation_context"]["timestamp"]
+                ),
             ),
-            created_at=datetime.fromisoformat(data["created_at"])
+            created_at=datetime.fromisoformat(data["created_at"]),
         )
 
 
 @dataclass
 class AgentState:
     """Complete state of an agent."""
+
     id: str
     name: str
     spirit: SpiritType
@@ -234,7 +246,14 @@ class AgentState:
         if not self.performance_history:
             return {}
 
-        metrics = ["accuracy", "response_time", "efficiency", "generalization", "creativity", "consistency"]
+        metrics = [
+            "accuracy",
+            "response_time",
+            "efficiency",
+            "generalization",
+            "creativity",
+            "consistency",
+        ]
         averages = {}
 
         for metric in metrics:
@@ -247,6 +266,7 @@ class AgentState:
 @dataclass
 class PhoenixConfig:
     """Configuration for PHOENIX framework."""
+
     population_size: int = 100
     max_generations: int = 20
     selection_pressure: float = 0.8
@@ -265,6 +285,7 @@ class PhoenixConfig:
 @dataclass
 class EvolutionStatistics:
     """Statistics tracking evolution progress."""
+
     generation: int
     population_size: int
     average_fitness: float
@@ -279,6 +300,7 @@ class EvolutionStatistics:
 @dataclass
 class ConvergenceStatus:
     """Status of evolutionary convergence."""
+
     converged: bool
     convergence_generation: Optional[int]
     confidence: float
@@ -289,6 +311,7 @@ class ConvergenceStatus:
 @dataclass
 class PhoenixEvolutionState:
     """Current state of PHOENIX evolution."""
+
     current_generation: int
     population: List[AgentState]
     genetic_material_pool: List[AgentGeneticMaterial]
@@ -311,7 +334,14 @@ class PhoenixEvolutionState:
             "mean": sum(fitness_scores) / len(fitness_scores),
             "max": max(fitness_scores),
             "min": min(fitness_scores),
-            "std": (sum((x - sum(fitness_scores) / len(fitness_scores)) ** 2 for x in fitness_scores) / len(fitness_scores)) ** 0.5
+            "std": (
+                sum(
+                    (x - sum(fitness_scores) / len(fitness_scores)) ** 2
+                    for x in fitness_scores
+                )
+                / len(fitness_scores)
+            )
+            ** 0.5,
         }
 
     def get_diversity_score(self) -> float:
@@ -323,24 +353,37 @@ class PhoenixEvolutionState:
         diversity_scores = []
 
         for i, agent1 in enumerate(self.population):
-            for agent2 in self.population[i+1:]:
+            for agent2 in self.population[i + 1 :]:
                 # Calculate trait distance
                 trait_distance = 0.0
-                all_traits = {**agent1.personality_traits, **agent1.physical_traits, **agent1.ability_traits}
-                other_traits = {**agent2.personality_traits, **agent2.physical_traits, **agent2.ability_traits}
+                all_traits = {
+                    **agent1.personality_traits,
+                    **agent1.physical_traits,
+                    **agent1.ability_traits,
+                }
+                other_traits = {
+                    **agent2.personality_traits,
+                    **agent2.physical_traits,
+                    **agent2.ability_traits,
+                }
 
                 for trait_name in all_traits:
                     if trait_name in other_traits:
-                        trait_distance += abs(all_traits[trait_name] - other_traits[trait_name])
+                        trait_distance += abs(
+                            all_traits[trait_name] - other_traits[trait_name]
+                        )
 
                 diversity_scores.append(trait_distance)
 
-        return sum(diversity_scores) / len(diversity_scores) if diversity_scores else 0.0
+        return (
+            sum(diversity_scores) / len(diversity_scores) if diversity_scores else 0.0
+        )
 
 
 @dataclass
 class BreedingResult:
     """Result of agent breeding operation."""
+
     offspring: List[AgentState]
     genetic_material_used: List[AgentGeneticMaterial]
     breeding_statistics: Dict[str, Any]
@@ -351,6 +394,7 @@ class BreedingResult:
 @dataclass
 class KnowledgeDistillationResult:
     """Result of knowledge distillation operation."""
+
     extracted_knowledge: StructuredKnowledge
     subliminal_traits: List[SubliminalTrait]
     relevance_scores: Dict[str, float]
@@ -362,6 +406,7 @@ class KnowledgeDistillationResult:
 @dataclass
 class StatisticalAnalysisResult:
     """Result of statistical analysis."""
+
     test_name: str
     p_value: float
     effect_size: float
@@ -373,6 +418,7 @@ class StatisticalAnalysisResult:
 
 
 # Utility functions for data structure operations
+
 
 def serialize_agent_genetic_material(material: AgentGeneticMaterial) -> str:
     """Serialize agent genetic material to JSON string."""
@@ -388,8 +434,16 @@ def deserialize_agent_genetic_material(json_str: str) -> AgentGeneticMaterial:
 def calculate_genetic_compatibility(agent1: AgentState, agent2: AgentState) -> float:
     """Calculate genetic compatibility between two agents."""
     # Combine all traits
-    traits1 = {**agent1.personality_traits, **agent1.physical_traits, **agent1.ability_traits}
-    traits2 = {**agent2.personality_traits, **agent2.physical_traits, **agent2.ability_traits}
+    traits1 = {
+        **agent1.personality_traits,
+        **agent1.physical_traits,
+        **agent1.ability_traits,
+    }
+    traits2 = {
+        **agent2.personality_traits,
+        **agent2.physical_traits,
+        **agent2.ability_traits,
+    }
 
     # Calculate similarity
     common_traits = set(traits1.keys()) & set(traits2.keys())
@@ -405,25 +459,34 @@ def calculate_genetic_compatibility(agent1: AgentState, agent2: AgentState) -> f
     return sum(similarities) / len(similarities)
 
 
-def create_offspring_traits(parent1: AgentState, parent2: AgentState, mutation_rate: float = 0.1) -> Dict[str, Dict[str, float]]:
+def create_offspring_traits(
+    parent1: AgentState, parent2: AgentState, mutation_rate: float = 0.1
+) -> Dict[str, Dict[str, float]]:
     """Create offspring traits by inheriting from both parents with mutation."""
     import random
 
     # Combine traits from both parents
-    p1_traits = {**parent1.personality_traits, **parent1.physical_traits, **parent1.ability_traits}
-    p2_traits = {**parent2.personality_traits, **parent2.physical_traits, **parent2.ability_traits}
-
-    offspring_traits = {
-        "personality": {},
-        "physical": {},
-        "abilities": {}
+    p1_traits = {
+        **parent1.personality_traits,
+        **parent1.physical_traits,
+        **parent1.ability_traits,
     }
+    p2_traits = {
+        **parent2.personality_traits,
+        **parent2.physical_traits,
+        **parent2.ability_traits,
+    }
+
+    offspring_traits = {"personality": {}, "physical": {}, "abilities": {}}
 
     # Inherit personality traits
     for trait_name in parent1.personality_traits:
         if trait_name in parent2.personality_traits:
             # Average parent traits
-            avg_value = (parent1.personality_traits[trait_name] + parent2.personality_traits[trait_name]) / 2
+            avg_value = (
+                parent1.personality_traits[trait_name]
+                + parent2.personality_traits[trait_name]
+            ) / 2
             # Add mutation
             mutation = random.gauss(0, mutation_rate)
             final_value = max(0.0, min(1.0, avg_value + mutation))
@@ -431,31 +494,42 @@ def create_offspring_traits(parent1: AgentState, parent2: AgentState, mutation_r
         else:
             # Inherit from parent1 with mutation
             mutation = random.gauss(0, mutation_rate)
-            final_value = max(0.0, min(1.0, parent1.personality_traits[trait_name] + mutation))
+            final_value = max(
+                0.0, min(1.0, parent1.personality_traits[trait_name] + mutation)
+            )
             offspring_traits["personality"][trait_name] = final_value
 
     # Inherit physical traits
     for trait_name in parent1.physical_traits:
         if trait_name in parent2.physical_traits:
-            avg_value = (parent1.physical_traits[trait_name] + parent2.physical_traits[trait_name]) / 2
+            avg_value = (
+                parent1.physical_traits[trait_name]
+                + parent2.physical_traits[trait_name]
+            ) / 2
             mutation = random.gauss(0, mutation_rate)
             final_value = max(0.0, min(1.0, avg_value + mutation))
             offspring_traits["physical"][trait_name] = final_value
         else:
             mutation = random.gauss(0, mutation_rate)
-            final_value = max(0.0, min(1.0, parent1.physical_traits[trait_name] + mutation))
+            final_value = max(
+                0.0, min(1.0, parent1.physical_traits[trait_name] + mutation)
+            )
             offspring_traits["physical"][trait_name] = final_value
 
     # Inherit ability traits
     for trait_name in parent1.ability_traits:
         if trait_name in parent2.ability_traits:
-            avg_value = (parent1.ability_traits[trait_name] + parent2.ability_traits[trait_name]) / 2
+            avg_value = (
+                parent1.ability_traits[trait_name] + parent2.ability_traits[trait_name]
+            ) / 2
             mutation = random.gauss(0, mutation_rate)
             final_value = max(0.0, min(1.0, avg_value + mutation))
             offspring_traits["abilities"][trait_name] = final_value
         else:
             mutation = random.gauss(0, mutation_rate)
-            final_value = max(0.0, min(1.0, parent1.ability_traits[trait_name] + mutation))
+            final_value = max(
+                0.0, min(1.0, parent1.ability_traits[trait_name] + mutation)
+            )
             offspring_traits["abilities"][trait_name] = final_value
 
     return offspring_traits

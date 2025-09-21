@@ -22,7 +22,7 @@ from .components import (
     GenderComponent,
     MemoryComponent,
     KnowledgeComponent,
-    InteractionComponent
+    InteractionComponent,
 )
 
 # ECS Systems
@@ -31,23 +31,23 @@ from .systems import (
     LearningSystem,
     InteractionSystem,
     SocialSystem,
-    GenderSystem
+    GenderSystem,
 )
 
 # ECS World
 from .world import AgentWorld
 
 __all__ = [
-    "ECSConfig", 
-    "ECSWorldService", 
+    "ECSConfig",
+    "ECSWorldService",
     "get_ecs_world",
     "Component",
-    "Entity", 
+    "Entity",
     "System",
     "ECSWorld",
     "AgentComponent",
     "PositionComponent",
-    "LifecycleComponent", 
+    "LifecycleComponent",
     "LineageComponent",
     "ReproductionComponent",
     "TraitComponent",
@@ -61,5 +61,5 @@ __all__ = [
     "InteractionSystem",
     "SocialSystem",
     "GenderSystem",
-    "AgentWorld"
+    "AgentWorld",
 ]

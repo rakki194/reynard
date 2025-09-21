@@ -1,13 +1,13 @@
 /**
  * 🦊 Reynard Project Architecture Types
  * =====================================
- * 
+ *
  * Comprehensive type definitions for the Reynard project structure system,
  * providing sophisticated type safety and architectural guidance for the
  * entire Reynard ecosystem. This module defines the core types used throughout
  * the project architecture analysis, dependency management, and structural
  * validation systems.
- * 
+ *
  * The type system provides:
  * - Directory classification and categorization for architectural analysis
  * - File type definitions for comprehensive project structure understanding
@@ -15,33 +15,33 @@
  * - Importance levels for prioritizing architectural components
  * - Configuration types for project structure validation and analysis
  * - Interface definitions for extensible architecture management
- * 
+ *
  * Key Features:
  * - Type Safety: Comprehensive TypeScript types for all architectural concepts
  * - Extensibility: Modular type definitions that can be extended for new use cases
  * - Documentation: Self-documenting types with clear descriptions and examples
  * - Validation: Type-based validation for architectural consistency
  * - Analysis: Types supporting sophisticated project structure analysis
- * 
+ *
  * Architecture Categories:
  * - Directory Types: Classification system for project directories
  * - File Types: Comprehensive file type definitions
  * - Relationship Types: Dependency and relationship classifications
  * - Importance Levels: Priority and significance classifications
  * - Configuration Types: Project structure configuration definitions
- * 
+ *
  * @author Reynard Development Team
  * @version 1.0.0
  */
 
 /**
  * Directory category classification for architectural analysis.
- * 
+ *
  * Defines the classification system for project directories, enabling
  * sophisticated architectural analysis and dependency mapping. Each
  * category represents a specific architectural role within the project
  * structure.
- * 
+ *
  * @type {string}
  */
 export type DirectoryCategory =
@@ -354,4 +354,3 @@ export interface DirectoryArchitectureMetadata {
   /** Additional notes about the directory */
   notes: string;
 }
-

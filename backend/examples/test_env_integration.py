@@ -17,28 +17,30 @@ sys.path.insert(0, str(backend_dir))
 
 from app.config.embedding_backend_config import (
     EmbeddingBackendsConfig,
-    reset_embedding_backends_config
+    reset_embedding_backends_config,
 )
 
 
 def test_env_file_integration():
     """Test that .env file variables are properly loaded."""
-    
+
     print("🦦 Testing .env File Integration")
     print("=" * 40)
-    
+
     # Test 1: Default configuration
     print("\n1. Testing default configuration:")
     reset_embedding_backends_config()
     config = EmbeddingBackendsConfig()
-    
+
     print(f"  Ollama enabled: {config.backends['ollama'].enabled}")
-    print(f"  Sentence Transformers enabled: {config.backends['sentence_transformers'].enabled}")
+    print(
+        f"  Sentence Transformers enabled: {config.backends['sentence_transformers'].enabled}"
+    )
     print(f"  Mock mode: {config.mock_mode}")
-    
+
     # Test 2: Simulate .env file with custom settings
     print("\n2. Testing with simulated .env variables:")
-    
+
     # Simulate environment variables that would be in a .env file
     test_env_vars = {
         "EMBEDDING_OLLAMA_ENABLED": "false",
@@ -46,37 +48,49 @@ def test_env_file_integration():
         "EMBEDDING_MOCK_MODE": "false",
         "EMBEDDING_DEFAULT_BACKEND": "sentence_transformers",
         "EMBEDDING_OLLAMA_TIMEOUT": "60",
-        "EMBEDDING_SENTENCE_TRANSFORMERS_MAX_CONCURRENT": "2"
+        "EMBEDDING_SENTENCE_TRANSFORMERS_MAX_CONCURRENT": "2",
     }
-    
+
     # Temporarily set environment variables
     original_env = {}
     for key, value in test_env_vars.items():
         original_env[key] = os.environ.get(key)
         os.environ[key] = value
-    
+
     try:
         # Reset and create new config with environment variables
         reset_embedding_backends_config()
         config = EmbeddingBackendsConfig()
-        
+
         print(f"  Ollama enabled: {config.backends['ollama'].enabled}")
-        print(f"  Sentence Transformers enabled: {config.backends['sentence_transformers'].enabled}")
+        print(
+            f"  Sentence Transformers enabled: {config.backends['sentence_transformers'].enabled}"
+        )
         print(f"  Mock mode: {config.mock_mode}")
         print(f"  Default backend: {config.default_backend}")
         print(f"  Ollama timeout: {config.backends['ollama'].timeout_seconds}")
-        print(f"  ST max concurrent: {config.backends['sentence_transformers'].max_concurrent_requests}")
-        
+        print(
+            f"  ST max concurrent: {config.backends['sentence_transformers'].max_concurrent_requests}"
+        )
+
         # Verify the settings were applied
-        assert config.backends['ollama'].enabled is False, "Ollama should be disabled"
-        assert config.backends['sentence_transformers'].enabled is True, "Sentence Transformers should be enabled"
+        assert config.backends["ollama"].enabled is False, "Ollama should be disabled"
+        assert (
+            config.backends["sentence_transformers"].enabled is True
+        ), "Sentence Transformers should be enabled"
         assert config.mock_mode is False, "Mock mode should be disabled"
-        assert config.default_backend == "sentence_transformers", "Default backend should be sentence_transformers"
-        assert config.backends['ollama'].timeout_seconds == 60, "Ollama timeout should be 60"
-        assert config.backends['sentence_transformers'].max_concurrent_requests == 2, "ST max concurrent should be 2"
-        
+        assert (
+            config.default_backend == "sentence_transformers"
+        ), "Default backend should be sentence_transformers"
+        assert (
+            config.backends["ollama"].timeout_seconds == 60
+        ), "Ollama timeout should be 60"
+        assert (
+            config.backends["sentence_transformers"].max_concurrent_requests == 2
+        ), "ST max concurrent should be 2"
+
         print("  ✅ All environment variable tests passed!")
-        
+
     finally:
         # Restore original environment
         for key, original_value in original_env.items():
@@ -84,33 +98,35 @@ def test_env_file_integration():
                 os.environ.pop(key, None)
             else:
                 os.environ[key] = original_value
-    
+
     # Test 3: Mock mode from .env
     print("\n3. Testing mock mode from .env:")
-    
+
     mock_env_vars = {
         "EMBEDDING_MOCK_MODE": "true",
         "EMBEDDING_OLLAMA_ENABLED": "false",
-        "EMBEDDING_SENTENCE_TRANSFORMERS_ENABLED": "false"
+        "EMBEDDING_SENTENCE_TRANSFORMERS_ENABLED": "false",
     }
-    
+
     original_env = {}
     for key, value in mock_env_vars.items():
         original_env[key] = os.environ.get(key)
         os.environ[key] = value
-    
+
     try:
         reset_embedding_backends_config()
         config = EmbeddingBackendsConfig()
-        
+
         print(f"  Mock mode: {config.mock_mode}")
         print(f"  Ollama enabled: {config.backends['ollama'].enabled}")
-        print(f"  Sentence Transformers enabled: {config.backends['sentence_transformers'].enabled}")
-        
+        print(
+            f"  Sentence Transformers enabled: {config.backends['sentence_transformers'].enabled}"
+        )
+
         assert config.mock_mode is True, "Mock mode should be enabled"
-        
+
         print("  ✅ Mock mode test passed!")
-        
+
     finally:
         # Restore original environment
         for key, original_value in original_env.items():
@@ -118,7 +134,7 @@ def test_env_file_integration():
                 os.environ.pop(key, None)
             else:
                 os.environ[key] = original_value
-    
+
     print("\n🎉 All .env integration tests passed!")
     print("\nTo use this in your application:")
     print("1. Create a .env file in your backend directory")
@@ -128,9 +144,9 @@ def test_env_file_integration():
 
 def create_sample_env_file():
     """Create a sample .env file for testing."""
-    
+
     print("\n📝 Creating sample .env file...")
-    
+
     sample_env_content = """# Sample .env file for embedding backend configuration
 
 # Disable Sentence Transformers, use only Ollama
@@ -147,12 +163,12 @@ EMBEDDING_MOCK_MODE=false
 EMBEDDING_ALLOW_FALLBACK=false
 EMBEDDING_DEFAULT_BACKEND=ollama
 """
-    
+
     # Create sample .env file in examples directory
     sample_env_path = Path(__file__).parent / "sample.env"
     with open(sample_env_path, "w") as f:
         f.write(sample_env_content)
-    
+
     print(f"✅ Sample .env file created: {sample_env_path}")
     print("\nTo use this sample:")
     print(f"1. Copy it to your backend directory: cp {sample_env_path} backend/.env")
@@ -163,4 +179,3 @@ EMBEDDING_DEFAULT_BACKEND=ollama
 if __name__ == "__main__":
     test_env_file_integration()
     create_sample_env_file()
-

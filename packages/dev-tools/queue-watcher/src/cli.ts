@@ -7,6 +7,7 @@
 import { program } from "commander";
 import fs from "fs";
 import path from "path";
+import chokidar from "chokidar";
 import { DEFAULT_CONFIG } from "./config.js";
 import { shouldExcludeFile, wasRecentlyProcessed } from "./file-utils.js";
 import { Processors } from "./processors.js";
@@ -15,6 +16,39 @@ import type { FileType } from "./types.js";
 
 // Track recently processed files to avoid excessive runs
 const recentlyProcessed = new Map<string, number>();
+
+/**
+ * Get file type from extension
+ */
+function getFileTypeFromExtension(filePath: string): FileType | null {
+  const ext = path.extname(filePath).toLowerCase();
+
+  switch (ext) {
+    case ".md":
+    case ".mdx":
+      return "markdown";
+    case ".ts":
+    case ".tsx":
+      return "typescript";
+    case ".js":
+    case ".jsx":
+      return "javascript";
+    case ".py":
+      return "python";
+    case ".json":
+      return "json";
+    case ".yaml":
+    case ".yml":
+      return "yaml";
+    case ".css":
+      return "css";
+    case ".html":
+    case ".htm":
+      return "html";
+    default:
+      return null;
+  }
+}
 
 /**
  * Process a file through the appropriate processor
@@ -33,49 +67,16 @@ function processFile(filePath: string, excludePatterns: RegExp[], cooldown: numb
   }
 
   // Get file type and process accordingly
-  const ext = path.extname(filePath).toLowerCase();
-  let fileType: FileType | null = null;
+  const fileType = getFileTypeFromExtension(filePath);
 
-  switch (ext) {
-    case ".md":
-    case ".mdx":
-      fileType = "markdown";
-      break;
-    case ".ts":
-    case ".tsx":
-      fileType = "typescript";
-      break;
-    case ".js":
-    case ".jsx":
-      fileType = "javascript";
-      break;
-    case ".py":
-      fileType = "python";
-      break;
-    case ".json":
-      fileType = "json";
-      break;
-    case ".yaml":
-    case ".yml":
-      fileType = "yaml";
-      break;
-    case ".css":
-      fileType = "css";
-      break;
-    case ".html":
-    case ".htm":
-      fileType = "html";
-      break;
-    default:
-      console.log(`⏭️  Skipping unsupported file type: ${filePath}`);
-      return;
+  if (!fileType) {
+    console.log(`⏭️  Skipping unsupported file type: ${filePath}`);
+    return;
   }
 
-  if (fileType) {
-    console.log(`🔄 Processing ${fileType} file: ${filePath}`);
-    // For now, just use the waitForStable processor for all file types
-    queueManager.enqueueFile(filePath, [Processors.waitForStable], { fileType });
-  }
+  console.log(`🔄 Processing ${fileType} file: ${filePath}`);
+  // For now, just use the waitForStable processor for all file types
+  queueManager.enqueueFile(filePath, [Processors.waitForStable], { fileType });
 }
 
 /**
@@ -87,17 +88,34 @@ function setupFileWatchers(watchDirectories: string[], excludePatterns: RegExp[]
       console.log(`👀 Watching directory: ${dir}`);
 
       try {
-        fs.watch(dir, { recursive: true }, (eventType, filename) => {
-          if (filename && eventType === "change") {
-            const filePath = path.join(dir, filename);
-
-            // Only process on file changes (not deletions)
-            if (fs.existsSync(filePath)) {
-              console.log(`📝 File ${eventType}: ${filePath}`);
-              processFile(filePath, excludePatterns, cooldown);
-            }
-          }
+        const watcher = chokidar.watch(dir, {
+          ignored: /(^|[/\\])\../, // ignore dotfiles
+          persistent: true,
+          ignoreInitial: true,
+          followSymlinks: false,
+          cwd: ".",
         });
+
+        watcher
+          .on("change", filePath => {
+            console.log(`📝 File changed: ${filePath}`);
+            processFile(filePath, excludePatterns, cooldown);
+          })
+          .on("add", filePath => {
+            console.log(`📝 File added: ${filePath}`);
+            processFile(filePath, excludePatterns, cooldown);
+          })
+          .on("unlink", filePath => {
+            console.log(`🗑️  File removed: ${filePath}`);
+            // Don't process deleted files
+          })
+          .on("error", error => {
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            console.error(`❌ Watcher error for directory ${dir}:`, errorMessage);
+          })
+          .on("ready", () => {
+            console.log(`✅ Watcher ready for directory: ${dir}`);
+          });
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
         console.error(`❌ Failed to watch directory ${dir}:`, errorMessage);

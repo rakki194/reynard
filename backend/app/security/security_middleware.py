@@ -80,7 +80,6 @@ class SecurityMiddleware(BaseHTTPMiddleware):
             r"(\b(globals|locals|vars|dir|hasattr|getattr|setattr)\b)",
             r"(\b(__builtins__|__import__|__name__|__file__|__doc__)\b)",
             r"(\b(exec|eval|compile|__import__|getattr|setattr|delattr)\b)",
-            r"(\b(open|file|input|raw_input|compile|exec|eval)\b)",
         ]
 
         # XSS patterns
@@ -103,10 +102,6 @@ class SecurityMiddleware(BaseHTTPMiddleware):
             r"(\b(\.\.%252F|\.\.%255C|\.\.%c0%af|\.\.%c1%9c)\b)",
             r"(\b(\.\.%2e%2f|\.\.%2e%5c|\.\.%252e%252f|\.\.%252e%255c)\b)",
             r"(\b(\.\.%c0%2f|\.\.%c1%9c|\.\.%c0%af|\.\.%c1%9c)\b)",
-            r"(\b(\.\.%252f|\.\.%255c|\.\.%c0%af|\.\.%c1%9c)\b)",
-            r"(\b(\.\.%2f|\.\.%5c|\.\.%c0%af|\.\.%c1%9c)\b)",
-            r"(\b(\.\.%252f|\.\.%255c|\.\.%c0%af|\.\.%c1%9c)\b)",
-            r"(\b(\.\.%2f|\.\.%5c|\.\.%c0%af|\.\.%c1%9c)\b)",
         ]
 
         # Null byte injection patterns
@@ -119,13 +114,7 @@ class SecurityMiddleware(BaseHTTPMiddleware):
         # LDAP injection patterns
         self.ldap_patterns = [
             r"(\*\)\()",  # *)(uid=*
-            r"(\*\)\()",  # *)(|(uid=*
             r"(\*\)\)\()",  # *))(|(uid=*
-            r"(\*\)\)\()",  # *))(|(objectClass=*
-            r"(\*\)\)\()",  # *))(|(objectClass=user
-            r"(\*\)\)\()",  # *))(|(objectClass=person
-            r"(\*\)\)\()",  # *))(|(objectClass=organizationalPerson
-            r"(\*\)\)\()",  # *))(|(objectClass=inetOrgPerson
         ]
 
         # NoSQL injection patterns
@@ -144,9 +133,12 @@ class SecurityMiddleware(BaseHTTPMiddleware):
 
         # Control character patterns (only dangerous ones)
         self.control_char_patterns = [
-            r"(\x00|\x01|\x02|\x03|\x04|\x05|\x06|\x07|\x08|\x0B|\x0C|\x0E|\x0F)",  # Control chars
-            r"(\x10|\x11|\x12|\x13|\x14|\x15|\x16|\x17|\x18|\x19|\x1A|\x1B|\x1C|\x1D|\x1E|\x1F)",  # More control chars
-            r"(\x1F|\x7F)",  # Only dangerous control chars (DEL and unit separator)
+            # Control chars
+            r"(\x00|\x01|\x02|\x03|\x04|\x05|\x06|\x07|\x08|\x0B|\x0C|\x0E|\x0F)",
+            # More control chars
+            r"(\x10|\x11|\x12|\x13|\x14|\x15|\x16|\x17|\x18|\x19|\x1A|\x1B|\x1C|\x1D|\x1E|\x1F)",
+            # Only dangerous control chars (DEL and unit separator)
+            r"(\x1F|\x7F)",
         ]
 
         # Dangerous file extensions
@@ -200,10 +192,10 @@ class SecurityMiddleware(BaseHTTPMiddleware):
         ]
 
     async def dispatch(self, request: Request, call_next):
+        """Process the request through security validation."""
         # Skip security checks for search endpoints
         if any(request.url.path.startswith(path) for path in self.excluded_paths):
             return await call_next(request)
-        """Process the request through security validation."""
         try:
             # Allow basic API paths to bypass most validation
             if request.url.path in [
@@ -225,14 +217,14 @@ class SecurityMiddleware(BaseHTTPMiddleware):
 
             # Validate request path
             if not self._validate_path(request.url.path):
-                logger.warning(f"Path validation failed for: {request.url.path}")
+                logger.warning("Path validation failed for: %s", request.url.path)
                 return self._security_error(
                     "Invalid path detected", status.HTTP_400_BAD_REQUEST
                 )
 
             # Validate request headers
             if not self._validate_headers(request.headers):
-                logger.warning(f"Header validation failed for: {request.url.path}")
+                logger.warning("Header validation failed for: %s", request.url.path)
                 return self._security_error(
                     "Invalid headers detected", status.HTTP_400_BAD_REQUEST
                 )
@@ -242,7 +234,7 @@ class SecurityMiddleware(BaseHTTPMiddleware):
 
             # Validate request body
             if body and not self._validate_body(body, request.url.path):
-                logger.warning(f"Body validation failed for: {request.url.path}")
+                logger.warning("Body validation failed for: %s", request.url.path)
                 return self._security_error(
                     "Malicious content detected", status.HTTP_400_BAD_REQUEST
                 )
@@ -251,12 +243,10 @@ class SecurityMiddleware(BaseHTTPMiddleware):
             response = await call_next(request)
 
             # Sanitize response headers
-            response = self._sanitize_response_headers(response)
+            return self._sanitize_response_headers(response)
 
-            return response
-
-        except Exception as e:
-            logger.error(f"Security middleware error: {e}")
+        except Exception:
+            logger.exception("Security middleware error")
             return self._security_error(
                 "Internal security error", status.HTTP_500_INTERNAL_SERVER_ERROR
             )
@@ -270,28 +260,19 @@ class SecurityMiddleware(BaseHTTPMiddleware):
         # Check for path traversal
         for pattern in self.path_traversal_patterns:
             if re.search(pattern, path, re.IGNORECASE):
-                logger.warning(f"Path traversal attempt detected: {path}")
+                logger.warning("Path traversal attempt detected: %s", path)
                 return False
 
         # Check for dangerous file extensions
         for ext in self.dangerous_extensions:
             if path.lower().endswith(ext):
-                logger.warning(f"Dangerous file extension detected: {path}")
+                logger.warning("Dangerous file extension detected: %s", path)
                 return False
 
         return True
 
     def _validate_headers(self, headers: dict[str, str]) -> bool:
         """Validate request headers for security issues."""
-        # Check for suspicious headers
-        suspicious_headers = [
-            "x-forwarded-for",
-            "x-real-ip",
-            "x-originating-ip",
-            "x-remote-ip",
-            "x-remote-addr",
-            "x-client-ip",
-        ]
 
         # Headers that should be excluded from SQL injection checks
         safe_headers = {
@@ -313,9 +294,10 @@ class SecurityMiddleware(BaseHTTPMiddleware):
             header_lower = header_name.lower()
 
             # Skip validation for user-agent header with legitimate tools
-            if header_lower == "user-agent":
-                if self._is_legitimate_user_agent(header_value):
-                    continue
+            if header_lower == "user-agent" and self._is_legitimate_user_agent(
+                header_value
+            ):
+                continue
 
             # Skip SQL injection checks for safe HTTP headers
             if header_lower in safe_headers:
@@ -325,7 +307,9 @@ class SecurityMiddleware(BaseHTTPMiddleware):
             for pattern in self.sql_patterns:
                 if re.search(pattern, header_value, re.IGNORECASE):
                     logger.warning(
-                        f"SQL injection attempt in header {header_name}: {header_value}"
+                        "SQL injection attempt in header %s: %s",
+                        header_name,
+                        header_value,
                     )
                     return False
 
@@ -333,7 +317,9 @@ class SecurityMiddleware(BaseHTTPMiddleware):
             for pattern in self.command_patterns:
                 if re.search(pattern, header_value, re.IGNORECASE):
                     logger.warning(
-                        f"Command injection attempt in header {header_name}: {header_value}"
+                        "Command injection attempt in header %s: %s",
+                        header_name,
+                        header_value,
                     )
                     return False
 
@@ -390,7 +376,7 @@ class SecurityMiddleware(BaseHTTPMiddleware):
         for pattern in self.command_patterns[:10]:  # Only check most dangerous patterns
             if re.search(pattern, content, re.IGNORECASE):
                 logger.warning(
-                    f"Command injection attempt in AI content: {content[:100]}..."
+                    "Command injection attempt in AI content: %s...", content[:100]
                 )
                 return False
 
@@ -398,61 +384,33 @@ class SecurityMiddleware(BaseHTTPMiddleware):
 
     def _validate_general_content(self, content: str) -> bool:
         """Validate general content with full security checks."""
-        # Check for SQL injection
-        for pattern in self.sql_patterns:
-            if re.search(pattern, content, re.IGNORECASE):
-                logger.warning(f"SQL injection attempt detected: {content[:100]}...")
-                return False
+        validation_checks = [
+            (self.sql_patterns, "SQL injection attempt detected"),
+            (self.command_patterns, "Command injection attempt detected"),
+            (self.xss_patterns, "XSS attempt detected"),
+            (self.path_traversal_patterns, "Path traversal attempt detected"),
+            (self.null_byte_patterns, "Null byte injection attempt detected"),
+            (self.ldap_patterns, "LDAP injection attempt detected"),
+            (self.nosql_patterns, "NoSQL injection attempt detected"),
+            (
+                self.control_char_patterns,
+                "Control character injection attempt detected",
+            ),
+        ]
 
-        # Check for command injection
-        for pattern in self.command_patterns:
-            if re.search(pattern, content, re.IGNORECASE):
-                logger.warning(
-                    f"Command injection attempt detected: {content[:100]}..."
-                )
-                return False
-
-        # Check for XSS
-        for pattern in self.xss_patterns:
-            if re.search(pattern, content, re.IGNORECASE):
-                logger.warning(f"XSS attempt detected: {content[:100]}...")
-                return False
-
-        # Check for path traversal
-        for pattern in self.path_traversal_patterns:
-            if re.search(pattern, content, re.IGNORECASE):
-                logger.warning(f"Path traversal attempt detected: {content[:100]}...")
-                return False
-
-        # Check for null byte injection
-        for pattern in self.null_byte_patterns:
-            if re.search(pattern, content, re.IGNORECASE):
-                logger.warning(
-                    f"Null byte injection attempt detected: {content[:100]}..."
-                )
-                return False
-
-        # Check for LDAP injection
-        for pattern in self.ldap_patterns:
-            if re.search(pattern, content, re.IGNORECASE):
-                logger.warning(f"LDAP injection attempt detected: {content[:100]}...")
-                return False
-
-        # Check for NoSQL injection
-        for pattern in self.nosql_patterns:
-            if re.search(pattern, content, re.IGNORECASE):
-                logger.warning(f"NoSQL injection attempt detected: {content[:100]}...")
-                return False
-
-        # Check for control characters
-        for pattern in self.control_char_patterns:
-            if re.search(pattern, content, re.IGNORECASE):
-                logger.warning(
-                    f"Control character injection attempt detected: {content[:100]}..."
-                )
+        for patterns, message in validation_checks:
+            if self._check_patterns(content, patterns, message):
                 return False
 
         return True
+
+    def _check_patterns(self, content: str, patterns: list[str], message: str) -> bool:
+        """Check content against a list of patterns."""
+        for pattern in patterns:
+            if re.search(pattern, content, re.IGNORECASE):
+                logger.warning("%s: %s...", message, content[:100])
+                return True
+        return False
 
     async def _get_request_body(self, request: Request) -> str | None:
         """Safely get the request body."""
@@ -460,8 +418,8 @@ class SecurityMiddleware(BaseHTTPMiddleware):
             body = await request.body()
             if body:
                 return body.decode("utf-8", errors="ignore")
-        except Exception as e:
-            logger.error(f"Error reading request body: {e}")
+        except Exception:
+            logger.exception("Error reading request body")
         return None
 
     def _sanitize_response_headers(self, response) -> Any:
@@ -494,7 +452,7 @@ class SecurityMiddleware(BaseHTTPMiddleware):
 
     def _security_error(self, message: str, status_code: int) -> JSONResponse:
         """Return a standardized security error response."""
-        logger.warning(f"Security violation: {message}")
+        logger.warning("Security violation: %s", message)
         return JSONResponse(
             status_code=status_code,
             content={
@@ -507,6 +465,4 @@ class SecurityMiddleware(BaseHTTPMiddleware):
 
 def setup_security_middleware(app: ASGIApp) -> ASGIApp:
     """Set up the security middleware with search endpoint exceptions."""
-    """Set up the security middleware."""
     return SecurityMiddleware(app)
-

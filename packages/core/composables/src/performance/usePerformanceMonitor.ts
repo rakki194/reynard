@@ -1,11 +1,11 @@
 /**
  * 🦊 Reynard Performance Monitor Composable
  * ========================================
- * 
+ *
  * Comprehensive performance monitoring composable for SolidJS applications within
  * the Reynard ecosystem. This composable provides sophisticated performance
  * tracking, metrics collection, and optimization insights for web applications.
- * 
+ *
  * The Performance Monitor provides:
  * - Real-time performance metrics collection and analysis
  * - DOM and CSS performance monitoring with detailed insights
@@ -14,7 +14,7 @@
  * - System freeze detection and performance warnings
  * - Comprehensive performance reporting and visualization
  * - Integration with Reynard performance optimization systems
- * 
+ *
  * Key Features:
  * - Operation Tracking: Detailed timing and throughput metrics
  * - DOM Performance: Update count, duration, and efficiency analysis
@@ -23,7 +23,7 @@
  * - Rendering Analysis: Frame timing and drop detection
  * - System Monitoring: Browser freeze detection and analysis
  * - Warning System: Performance threshold alerts and recommendations
- * 
+ *
  * @author Reynard Development Team
  * @version 1.0.0
  */
@@ -32,11 +32,11 @@ import { createSignal, onCleanup, onMount } from "solid-js";
 
 /**
  * Comprehensive performance metrics interface for detailed performance analysis.
- * 
+ *
  * Provides detailed metrics for operation performance, DOM updates, CSS processing,
  * memory usage, browser rendering, and system performance. This interface enables
  * comprehensive performance monitoring and optimization insights.
- * 
+ *
  * @interface PerformanceMetrics
  */
 export interface PerformanceMetrics {

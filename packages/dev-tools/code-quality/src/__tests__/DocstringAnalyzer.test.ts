@@ -90,9 +90,7 @@ class UndocumentedClass:
       expect(analysis.issues.length).toBeGreaterThan(0);
 
       // Check for missing docstring issues
-      const missingIssues = analysis.issues.filter(issue => 
-        issue.rule === "docstring-missing"
-      );
+      const missingIssues = analysis.issues.filter(issue => issue.rule === "docstring-missing");
       expect(missingIssues.length).toBeGreaterThan(0);
 
       // Clean up
@@ -118,9 +116,7 @@ class PoorClass:
       expect(analysis.issues.length).toBeGreaterThan(0);
 
       // Check for poor quality issues
-      const qualityIssues = analysis.issues.filter(issue => 
-        issue.rule === "docstring-quality"
-      );
+      const qualityIssues = analysis.issues.filter(issue => issue.rule === "docstring-quality");
       expect(qualityIssues.length).toBeGreaterThan(0);
 
       // Clean up
@@ -251,7 +247,7 @@ export function undocumentedFunction(): string {
 
       const pythonFile = join(tempDir, "test_multi.py");
       const tsFile = join(tempDir, "test_multi.ts");
-      
+
       writeFileSync(pythonFile, pythonContent);
       writeFileSync(tsFile, tsContent);
 
@@ -275,17 +271,15 @@ export function undocumentedFunction(): string {
   describe("Error Handling", () => {
     it("should throw error for non-existent file", async () => {
       const nonExistentFile = join(tempDir, "non_existent.py");
-      
-      await expect(analyzer.analyzeFile(nonExistentFile))
-        .rejects.toThrow("File not found");
+
+      await expect(analyzer.analyzeFile(nonExistentFile)).rejects.toThrow("File not found");
     });
 
     it("should throw error for unsupported language", async () => {
       const unsupportedFile = join(tempDir, "test.txt");
       writeFileSync(unsupportedFile, "This is a text file");
 
-      await expect(analyzer.analyzeFile(unsupportedFile))
-        .rejects.toThrow("Cannot detect language for file");
+      await expect(analyzer.analyzeFile(unsupportedFile)).rejects.toThrow("Cannot detect language for file");
 
       // Clean up
       if (existsSync(unsupportedFile)) unlinkSync(unsupportedFile);
@@ -348,7 +342,7 @@ def missing_function():
       const analysis = await analyzer.analyzeFile(tempFile);
 
       expect(analysis.functions).toHaveLength(4);
-      
+
       const excellentFunc = analysis.functions.find(f => f.name === "excellent_function");
       const goodFunc = analysis.functions.find(f => f.name === "good_function");
       const poorFunc = analysis.functions.find(f => f.name === "poor_function");

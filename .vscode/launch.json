@@ -23,7 +23,8 @@
       "console": "integratedTerminal",
       "env": {
         "PYTHONPATH": "${workspaceFolder}/backend"
-      }
+      },
+      "python": "${env:HOME}/venv/bin/python"
     }
   ],
   "compounds": [

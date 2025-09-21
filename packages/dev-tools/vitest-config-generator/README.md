@@ -56,21 +56,21 @@ node dist/cli.js --backup --validate
 
 ### CLI Options
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `-v, --verbose` | Enable verbose output | `false` |
-| `-o, --output <path>` | Output file path | `vitest.generated.config.ts` |
-| `--include-examples` | Include example projects | `true` |
-| `--include-templates` | Include template projects | `true` |
-| `--include-scripts` | Include script projects | `false` |
-| `--max-workers <number>` | Maximum number of workers | `1` |
-| `--environment <env>` | Test environment | `happy-dom` |
-| `--branches <number>` | Coverage threshold for branches | `80` |
-| `--functions <number>` | Coverage threshold for functions | `85` |
-| `--lines <number>` | Coverage threshold for lines | `85` |
-| `--statements <number>` | Coverage threshold for statements | `85` |
-| `--backup` | Create backup of existing configuration | `true` |
-| `--validate` | Validate generated configuration | `true` |
+| Option                   | Description                             | Default                      |
+| ------------------------ | --------------------------------------- | ---------------------------- |
+| `-v, --verbose`          | Enable verbose output                   | `false`                      |
+| `-o, --output <path>`    | Output file path                        | `vitest.generated.config.ts` |
+| `--include-examples`     | Include example projects                | `true`                       |
+| `--include-templates`    | Include template projects               | `true`                       |
+| `--include-scripts`      | Include script projects                 | `false`                      |
+| `--max-workers <number>` | Maximum number of workers               | `1`                          |
+| `--environment <env>`    | Test environment                        | `happy-dom`                  |
+| `--branches <number>`    | Coverage threshold for branches         | `80`                         |
+| `--functions <number>`   | Coverage threshold for functions        | `85`                         |
+| `--lines <number>`       | Coverage threshold for lines            | `85`                         |
+| `--statements <number>`  | Coverage threshold for statements       | `85`                         |
+| `--backup`               | Create backup of existing configuration | `true`                       |
+| `--validate`             | Validate generated configuration        | `true`                       |
 
 ## Architecture
 

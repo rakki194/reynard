@@ -39,11 +39,8 @@ class SimpleTestRunner:
 
         logging.basicConfig(
             level=getattr(logging, self.config.log_level),
-            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-            handlers=[
-                logging.FileHandler(log_file),
-                logging.StreamHandler()
-            ]
+            format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+            handlers=[logging.FileHandler(log_file), logging.StreamHandler()],
         )
 
     async def run_baseline_test(self) -> Dict[str, Any]:
@@ -52,54 +49,56 @@ class SimpleTestRunner:
         self.logger.info("Starting baseline reconstruction test")
 
         results = {
-            'test_config': self.config.__dict__,
-            'target_agent': self.target.__dict__,
-            'start_time': datetime.now().isoformat(),
-            'methods': {},
-            'summary': {}
+            "test_config": self.config.__dict__,
+            "target_agent": self.target.__dict__,
+            "start_time": datetime.now().isoformat(),
+            "methods": {},
+            "summary": {},
         }
 
         # Test random reconstruction
         self.logger.info("Testing random reconstruction")
         random_agent = self.baseline_reconstruction.reconstruct_random()
         random_metrics = self.baseline_reconstruction.evaluate_reconstruction()
-        results['methods']['random'] = {
-            'agent': random_agent.__dict__,
-            'metrics': random_metrics.to_dict()
+        results["methods"]["random"] = {
+            "agent": random_agent.__dict__,
+            "metrics": random_metrics.to_dict(),
         }
 
         # Test average reconstruction
         self.logger.info("Testing average reconstruction")
         average_agent = self.baseline_reconstruction.reconstruct_average()
         average_metrics = self.baseline_reconstruction.evaluate_reconstruction()
-        results['methods']['average'] = {
-            'agent': average_agent.__dict__,
-            'metrics': average_metrics.to_dict()
+        results["methods"]["average"] = {
+            "agent": average_agent.__dict__,
+            "metrics": average_metrics.to_dict(),
         }
 
         # Test documentation-based reconstruction
         self.logger.info("Testing documentation-based reconstruction")
         doc_data = {
-            'personality_traits': self.target.personality_traits,
-            'physical_traits': self.target.physical_traits,
-            'ability_traits': self.target.ability_traits,
-            'knowledge_base': {
-                'domain_expertise': self.target.domain_expertise,
-                'specializations': self.target.specializations,
-                'achievements': self.target.achievements
-            }
+            "personality_traits": self.target.personality_traits,
+            "physical_traits": self.target.physical_traits,
+            "ability_traits": self.target.ability_traits,
+            "knowledge_base": {
+                "domain_expertise": self.target.domain_expertise,
+                "specializations": self.target.specializations,
+                "achievements": self.target.achievements,
+            },
         }
 
-        doc_agent = self.baseline_reconstruction.reconstruct_documentation_based(doc_data)
+        doc_agent = self.baseline_reconstruction.reconstruct_documentation_based(
+            doc_data
+        )
         doc_metrics = self.baseline_reconstruction.evaluate_reconstruction()
-        results['methods']['documentation'] = {
-            'agent': doc_agent.__dict__,
-            'metrics': doc_metrics.to_dict()
+        results["methods"]["documentation"] = {
+            "agent": doc_agent.__dict__,
+            "metrics": doc_metrics.to_dict(),
         }
 
         # Calculate summary
-        results['summary'] = self._calculate_summary(results['methods'])
-        results['end_time'] = datetime.now().isoformat()
+        results["summary"] = self._calculate_summary(results["methods"])
+        results["end_time"] = datetime.now().isoformat()
 
         # Save results
         await self._save_results(results)
@@ -111,33 +110,33 @@ class SimpleTestRunner:
         """Calculate summary statistics."""
 
         summary = {
-            'method_comparison': {},
-            'best_method': None,
-            'overall_success_rates': {}
+            "method_comparison": {},
+            "best_method": None,
+            "overall_success_rates": {},
         }
 
         best_score = -1
         best_method = None
 
         for method_name, method_data in methods.items():
-            metrics = method_data['metrics']
-            overall_success = metrics.get('overall_success', 0)
+            metrics = method_data["metrics"]
+            overall_success = metrics.get("overall_success", 0)
 
-            summary['overall_success_rates'][method_name] = overall_success
-            summary['method_comparison'][method_name] = {
-                'trait_accuracy': metrics.get('trait_accuracy', 0),
-                'performance_match': metrics.get('performance_match', 0),
-                'behavioral_similarity': metrics.get('behavioral_similarity', 0),
-                'knowledge_fidelity': metrics.get('knowledge_fidelity', 0),
-                'overall_success': overall_success
+            summary["overall_success_rates"][method_name] = overall_success
+            summary["method_comparison"][method_name] = {
+                "trait_accuracy": metrics.get("trait_accuracy", 0),
+                "performance_match": metrics.get("performance_match", 0),
+                "behavioral_similarity": metrics.get("behavioral_similarity", 0),
+                "knowledge_fidelity": metrics.get("knowledge_fidelity", 0),
+                "overall_success": overall_success,
             }
 
             if overall_success > best_score:
                 best_score = overall_success
                 best_method = method_name
 
-        summary['best_method'] = best_method
-        summary['best_score'] = best_score
+        summary["best_method"] = best_method
+        summary["best_score"] = best_score
 
         return summary
 
@@ -145,18 +144,18 @@ class SimpleTestRunner:
         """Save test results."""
 
         results_file = Path(self.config.results_dir) / "simple_test_results.json"
-        with open(results_file, 'w') as f:
+        with open(results_file, "w") as f:
             json.dump(results, f, indent=2, default=str)
 
         # Save summary report
         summary_file = Path(self.config.results_dir) / "simple_test_summary.txt"
-        with open(summary_file, 'w') as f:
+        with open(summary_file, "w") as f:
             f.write(self._generate_summary_report(results))
 
     def _generate_summary_report(self, results: Dict[str, Any]) -> str:
         """Generate summary report."""
 
-        summary = results.get('summary', {})
+        summary = results.get("summary", {})
 
         report = f"""
 PHOENIX Baseline Reconstruction Test Summary
@@ -171,7 +170,7 @@ Test Configuration:
 Method Comparison:
 """
 
-        for method_name, comparison in summary.get('method_comparison', {}).items():
+        for method_name, comparison in summary.get("method_comparison", {}).items():
             report += f"""
 {method_name.upper()}:
 - Trait Accuracy: {comparison['trait_accuracy']:.3f}
@@ -199,7 +198,7 @@ async def main():
         experiment_type=ExperimentType.BASELINE,
         num_trials=1,
         results_dir="test_results",
-        log_level="INFO"
+        log_level="INFO",
     )
 
     # Run test
@@ -207,17 +206,17 @@ async def main():
     results = await runner.run_baseline_test()
 
     # Print summary
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("BASELINE TEST COMPLETED SUCCESSFULLY")
-    print("="*60)
+    print("=" * 60)
 
-    summary = results.get('summary', {})
-    if 'best_method' in summary:
+    summary = results.get("summary", {})
+    if "best_method" in summary:
         print(f"Best Method: {summary['best_method']}")
         print(f"Best Score: {summary['best_score']:.3f}")
 
     print(f"Results saved to: {config.results_dir}")
-    print("="*60)
+    print("=" * 60)
 
 
 if __name__ == "__main__":

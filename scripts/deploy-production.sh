@@ -96,7 +96,7 @@ docker-compose -f "${COMPOSE_FILE}" ps
 
 # Test backend health
 echo -e "${YELLOW}🔍 Testing backend health...${NC}"
-if curl -f http://localhost:8000/health > /dev/null 2>&1; then
+if curl -f http://localhost:8000/api/health > /dev/null 2>&1; then
     echo -e "${GREEN}✅ Backend is healthy${NC}"
 else
     echo -e "${RED}❌ Backend health check failed${NC}"
@@ -107,7 +107,7 @@ fi
 
 # Test frontend health
 echo -e "${YELLOW}🔍 Testing frontend health...${NC}"
-if curl -f http://localhost/health > /dev/null 2>&1; then
+if curl -f http://localhost/api/health > /dev/null 2>&1; then
     echo -e "${GREEN}✅ Frontend is healthy${NC}"
 else
     echo -e "${RED}❌ Frontend health check failed${NC}"
@@ -143,7 +143,7 @@ echo -e "${GREEN}🎉 Reynard Production Deployment Complete!${NC}"
 echo -e "${BLUE}📊 Deployment Summary:${NC}"
 echo -e "  🌐 Frontend: http://${DOMAIN}"
 echo -e "  🔧 Backend API: http://${DOMAIN}/api"
-echo -e "  📊 Health Check: http://${DOMAIN}/health"
+echo -e "  📊 Health Check: http://${DOMAIN}/api/health"
 echo -e "  🗄️  Database: PostgreSQL on port 5432"
 echo -e "  🔴 Redis: Redis on port 6379"
 echo ""

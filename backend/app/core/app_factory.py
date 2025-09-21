@@ -199,12 +199,12 @@ def _setup_routers(app: FastAPI) -> None:
 
     # ECS World Router
     app.include_router(ecs_router, prefix="/api/ecs")
-    
+
     # Email Router
     app.include_router(email_router)
-    
+
     # Agent Email Router
     app.include_router(agent_email_router)
-    
+
     # IMAP Router
     app.include_router(imap_router)

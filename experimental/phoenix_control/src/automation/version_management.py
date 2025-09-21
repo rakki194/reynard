@@ -27,7 +27,9 @@ class VersionManager:
     def __init__(self):
         """Initialize version manager."""
         self.logger = PhoenixLogger("version_manager")
-        self.version_pattern = re.compile(r'^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$')
+        self.version_pattern = re.compile(
+            r"^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$"
+        )
 
         self.logger.info("Version manager initialized", "initialization")
 
@@ -43,7 +45,9 @@ class VersionManager:
         """
         match = self.version_pattern.match(version_string)
         if not match:
-            self.logger.warning(f"Invalid version format: {version_string}", "version_parse")
+            self.logger.warning(
+                f"Invalid version format: {version_string}", "version_parse"
+            )
             return None
 
         major, minor, patch, prerelease, build = match.groups()
@@ -54,7 +58,7 @@ class VersionManager:
             "patch": int(patch),
             "prerelease": prerelease,
             "build": build,
-            "version_string": version_string
+            "version_string": version_string,
         }
 
         self.logger.debug(f"Parsed version: {version_info}", "version_parse")
@@ -75,7 +79,9 @@ class VersionManager:
         v2_info = self.parse_version(version2)
 
         if not v1_info or not v2_info:
-            self.logger.error("Invalid version strings for comparison", "version_compare")
+            self.logger.error(
+                "Invalid version strings for comparison", "version_compare"
+            )
             return 0
 
         # Compare major, minor, patch
@@ -136,7 +142,10 @@ class VersionManager:
         # Construct new version string
         new_version = f"{new_version_info['major']}.{new_version_info['minor']}.{new_version_info['patch']}"
 
-        self.logger.info(f"Version bumped: {current_version} -> {new_version} ({bump_type})", "version_bump")
+        self.logger.info(
+            f"Version bumped: {current_version} -> {new_version} ({bump_type})",
+            "version_bump",
+        )
         return new_version
 
     async def get_current_version(self, package_path: str = ".") -> Optional[str]:
@@ -160,7 +169,7 @@ class VersionManager:
                 cwd=package_path,
                 capture_output=True,
                 text=True,
-                check=True
+                check=True,
             )
 
             version = result.stdout.strip().strip('"')
@@ -199,7 +208,7 @@ class VersionManager:
                 cwd=package_path,
                 capture_output=True,
                 text=True,
-                check=True
+                check=True,
             )
 
             self.logger.success(f"Version set to: {version}", "version_set")
@@ -221,7 +230,7 @@ class VersionManager:
                 ["git", "describe", "--tags", "--abbrev=0"],
                 capture_output=True,
                 text=True,
-                check=True
+                check=True,
             )
 
             tag = result.stdout.strip()
@@ -244,10 +253,12 @@ class VersionManager:
                 ["git", "tag", "--sort=-version:refname"],
                 capture_output=True,
                 text=True,
-                check=True
+                check=True,
             )
 
-            tags = [tag.strip() for tag in result.stdout.strip().split('\n') if tag.strip()]
+            tags = [
+                tag.strip() for tag in result.stdout.strip().split("\n") if tag.strip()
+            ]
             self.logger.info(f"Found {len(tags)} tags", "tags_get")
             return tags
 
@@ -290,10 +301,12 @@ class VersionManager:
             "prerelease": version_info["prerelease"],
             "build": version_info["build"],
             "is_prerelease": version_info["prerelease"] is not None,
-            "is_release": version_info["prerelease"] is None
+            "is_release": version_info["prerelease"] is None,
         }
 
-    async def suggest_next_version(self, current_version: str, change_type: str) -> Optional[str]:
+    async def suggest_next_version(
+        self, current_version: str, change_type: str
+    ) -> Optional[str]:
         """
         Suggest next version based on change type.
 
@@ -311,5 +324,7 @@ class VersionManager:
         elif change_type == "fix":
             return self.bump_version(current_version, "patch")
         else:
-            self.logger.warning(f"Unknown change type: {change_type}", "version_suggest")
+            self.logger.warning(
+                f"Unknown change type: {change_type}", "version_suggest"
+            )
             return None

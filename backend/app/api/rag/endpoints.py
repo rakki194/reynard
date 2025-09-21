@@ -62,12 +62,12 @@ async def query_rag(
 ):
     """
     Perform advanced semantic search using the RAG (Retrieval-Augmented Generation) system.
-    
+
     Executes sophisticated semantic search queries using vector embeddings and similarity
     matching to find relevant documents and information. The RAG system understands the
     semantic meaning of queries, not just exact text matches, providing intelligent
     search results that match the intent and context of the search request.
-    
+
     The search process includes:
     1. Query processing and semantic analysis
     2. Vector embedding generation for the query
@@ -75,7 +75,7 @@ async def query_rag(
     4. Result ranking and relevance scoring
     5. Optional reranking for improved accuracy
     6. Response formatting with metadata
-    
+
     Args:
         request (RAGQueryRequest): Search request containing:
             - q (str): Search query text
@@ -84,18 +84,18 @@ async def query_rag(
             - similarity_threshold (float, optional): Minimum similarity score
             - enable_reranking (bool, optional): Enable intelligent reranking
         mcp_client (MCPTokenData): Authenticated MCP client data
-    
+
     Returns:
         RAGQueryResponse: Search results containing:
             - results (list): List of matching documents with metadata
             - total_results (int): Total number of matching documents
             - query_metadata (dict): Query processing information
             - performance_metrics (dict): Search performance data
-    
+
     Raises:
         HTTPException: If search fails or service is unavailable
         ValidationError: If request parameters are invalid
-        
+
     Example:
         ```python
         request = RAGQueryRequest(
@@ -129,37 +129,37 @@ async def query_rag(
 async def embed_texts(request: dict):
     """
     Generate vector embeddings for text content using the RAG system.
-    
+
     Creates high-dimensional vector representations of text content that capture
     semantic meaning and enable similarity-based search and analysis. The embedding
     generation process uses advanced language models to create dense vector
     representations that preserve semantic relationships between texts.
-    
+
     The embedding process includes:
     1. Text preprocessing and normalization
     2. Tokenization and encoding
     3. Vector embedding generation using language models
     4. Dimensionality optimization and normalization
     5. Metadata extraction and storage
-    
+
     Args:
         request (dict): Embedding request containing:
             - texts (list[str]): List of text strings to embed
             - model (str, optional): Embedding model to use
             - normalize (bool, optional): Whether to normalize embeddings
             - metadata (dict, optional): Additional metadata for the texts
-    
+
     Returns:
         dict: Embedding response containing:
             - embeddings (list[list[float]]): Vector embeddings for each text
             - metadata (dict): Embedding generation metadata
             - model_info (dict): Information about the embedding model
             - performance_metrics (dict): Generation performance data
-    
+
     Raises:
         HTTPException: If embedding generation fails
         ValidationError: If request parameters are invalid
-        
+
     Example:
         ```python
         request = {
@@ -174,19 +174,15 @@ async def embed_texts(request: dict):
         service = get_rag_service()
         texts = request.get("texts", [])
         model = request.get("model", "mxbai-embed-large")
-        
+
         # Generate embeddings
         embeddings = []
         for text in texts:
             # This is a placeholder - implement actual embedding generation
             embedding = [0.1] * 384  # Placeholder embedding
             embeddings.append(embedding)
-        
-        return {
-            "embeddings": embeddings,
-            "model": model,
-            "count": len(embeddings)
-        }
+
+        return {"embeddings": embeddings, "model": model, "count": len(embeddings)}
     except Exception as e:
         logger.error(f"Failed to generate embeddings: {e}")
         raise HTTPException(
@@ -219,11 +215,7 @@ async def test_query_rag(request: RAGQueryRequest):
 @router.get("/health")
 async def health_check():
     """Simple health check for RAG service."""
-    return {
-        "status": "healthy",
-        "service": "rag",
-        "message": "RAG service is running"
-    }
+    return {"status": "healthy", "service": "rag", "message": "RAG service is running"}
 
 
 @router.post("/test-token")
@@ -232,7 +224,7 @@ async def get_test_token():
     try:
         import jwt
         import time
-        
+
         # Create a test token
         payload = {
             "client_id": "test-benchmark",
@@ -240,15 +232,15 @@ async def get_test_token():
             "permissions": ["rag:query", "rag:config"],
             "issued_at": time.time(),
             "expires_at": time.time() + 3600,  # 1 hour
-            "scope": "mcp"
+            "scope": "mcp",
         }
-        
+
         token = jwt.encode(payload, "reynard-mcp-secret-key-2025", algorithm="HS256")
-        
+
         return {
             "token": token,
             "expires_in": 3600,
-            "permissions": payload["permissions"]
+            "permissions": payload["permissions"],
         }
     except Exception as e:
         logger.error(f"Failed to generate test token: {e}")

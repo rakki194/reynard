@@ -6,6 +6,7 @@
 
 import fs from "fs";
 import path from "path";
+import chokidar from "chokidar";
 import { WATCH_DIRECTORIES } from "./config.js";
 import { shouldExcludeFile, wasRecentlyProcessed } from "./file-utils.js";
 import { queueManager } from "./queue-manager.js";
@@ -88,17 +89,34 @@ export function setupFileWatchers(): void {
       console.log(`👀 Watching directory: ${dir}`);
 
       try {
-        fs.watch(dir, { recursive: true }, (eventType, filename) => {
-          if (filename && eventType === "change") {
-            const filePath = path.join(dir, filename);
-
-            // Only process on file changes (not deletions)
-            if (fs.existsSync(filePath)) {
-              console.log(`📝 File ${eventType}: ${filePath}`);
-              processFile(filePath);
-            }
-          }
+        const watcher = chokidar.watch(dir, {
+          ignored: /(^|[/\\])\../, // ignore dotfiles
+          persistent: true,
+          ignoreInitial: true,
+          followSymlinks: false,
+          cwd: ".",
         });
+
+        watcher
+          .on("change", filePath => {
+            console.log(`📝 File changed: ${filePath}`);
+            processFile(filePath);
+          })
+          .on("add", filePath => {
+            console.log(`📝 File added: ${filePath}`);
+            processFile(filePath);
+          })
+          .on("unlink", filePath => {
+            console.log(`🗑️  File removed: ${filePath}`);
+            // Don't process deleted files
+          })
+          .on("error", error => {
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            console.error(`❌ Watcher error for directory ${dir}:`, errorMessage);
+          })
+          .on("ready", () => {
+            console.log(`✅ Watcher ready for directory: ${dir}`);
+          });
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
         console.error(`❌ Failed to watch directory ${dir}:`, errorMessage);

@@ -13,7 +13,7 @@ from .data_structures import (
     StatisticalSignificance,
     AgentConfig,
     ReleaseConfig,
-    QualityConfig
+    QualityConfig,
 )
 
 from .logging import setup_logging, get_logger
@@ -28,5 +28,5 @@ __all__ = [
     "ReleaseConfig",
     "QualityConfig",
     "setup_logging",
-    "get_logger"
+    "get_logger",
 ]

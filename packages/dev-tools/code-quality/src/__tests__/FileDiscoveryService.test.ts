@@ -56,9 +56,7 @@ describe("FileDiscoveryService", () => {
 
     it("should exclude node_modules and other patterns", async () => {
       // Test with just src and package.json to verify basic functionality
-      mockReaddir
-        .mockResolvedValueOnce(["src", "package.json"] as any)
-        .mockResolvedValueOnce(["index.ts"] as any);
+      mockReaddir.mockResolvedValueOnce(["src", "package.json"] as any).mockResolvedValueOnce(["index.ts"] as any);
 
       // Mock file reads - successful read means it's a file, rejected means it's a directory
       mockReadFile
@@ -74,9 +72,7 @@ describe("FileDiscoveryService", () => {
     });
 
     it("should handle empty directories", async () => {
-      mockReaddir
-        .mockResolvedValueOnce(["src", "package.json"] as any)
-        .mockResolvedValueOnce([] as any); // empty src directory
+      mockReaddir.mockResolvedValueOnce(["src", "package.json"] as any).mockResolvedValueOnce([] as any); // empty src directory
 
       // Mock file reads
       mockReadFile
@@ -188,7 +184,7 @@ describe("FileDiscoveryService", () => {
     it("should correctly identify supported files", () => {
       // Access private method through any type
       const serviceAny = service as any;
-      
+
       expect(serviceAny.isSupportedFile(".ts")).toBe(true);
       expect(serviceAny.isSupportedFile(".tsx")).toBe(true);
       expect(serviceAny.isSupportedFile(".js")).toBe(true);
@@ -199,7 +195,7 @@ describe("FileDiscoveryService", () => {
       expect(serviceAny.isSupportedFile(".yml")).toBe(true);
       expect(serviceAny.isSupportedFile(".yaml")).toBe(true);
       expect(serviceAny.isSupportedFile(".json")).toBe(true);
-      
+
       expect(serviceAny.isSupportedFile(".css")).toBe(false);
       expect(serviceAny.isSupportedFile(".xml")).toBe(false);
       expect(serviceAny.isSupportedFile(".txt")).toBe(false);

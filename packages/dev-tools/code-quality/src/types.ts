@@ -129,8 +129,8 @@ export interface EmojiRoleplayMetrics {
 }
 
 export interface EmojiRoleplayIssue {
-  type: 'EMOJI' | 'ROLEPLAY_PATTERN' | 'ROLEPLAY_ACTION';
-  severity: 'MAJOR' | 'MINOR' | 'INFO';
+  type: "EMOJI" | "ROLEPLAY_PATTERN" | "ROLEPLAY_ACTION";
+  severity: "MAJOR" | "MINOR" | "INFO";
   line: number;
   column: number;
   message: string;

@@ -13,6 +13,7 @@ from enum import Enum
 
 class SpiritType(Enum):
     """Animal spirit types for agents."""
+
     FOX = "fox"
     WOLF = "wolf"
     OTTER = "otter"
@@ -27,6 +28,7 @@ class SpiritType(Enum):
 
 class NamingStyle(Enum):
     """Naming styles for agents."""
+
     FOUNDATION = "foundation"
     EXO = "exo"
     HYBRID = "hybrid"
@@ -38,6 +40,7 @@ class NamingStyle(Enum):
 @dataclass
 class StatisticalSignificance:
     """Statistical significance information."""
+
     p_value: float
     confidence_interval: Tuple[float, float]
     effect_size: float
@@ -48,6 +51,7 @@ class StatisticalSignificance:
 @dataclass
 class PerformanceMetrics:
     """Performance metrics for an agent."""
+
     accuracy: float
     response_time: float
     efficiency: float
@@ -62,6 +66,7 @@ class PerformanceMetrics:
 @dataclass
 class AgentState:
     """Complete agent state representation."""
+
     id: str
     name: str
     spirit: SpiritType
@@ -85,9 +90,7 @@ class AgentState:
     def get_dominant_traits(self, count: int = 3) -> List[Tuple[str, float]]:
         """Get the dominant personality traits."""
         sorted_traits = sorted(
-            self.personality_traits.items(),
-            key=lambda x: x[1],
-            reverse=True
+            self.personality_traits.items(), key=lambda x: x[1], reverse=True
         )
         return sorted_traits[:count]
 
@@ -103,6 +106,7 @@ class AgentState:
 @dataclass
 class AgentConfig:
     """Configuration for agent operations."""
+
     id: str
     name: str
     spirit: SpiritType
@@ -116,6 +120,7 @@ class AgentConfig:
 @dataclass
 class ReleaseConfig:
     """Configuration for release automation."""
+
     auto_backup: bool = True
     comprehensive_analysis: bool = True
     detailed_logging: bool = True
@@ -128,6 +133,7 @@ class ReleaseConfig:
 @dataclass
 class QualityConfig:
     """Configuration for quality assurance."""
+
     run_linting: bool = True
     run_formatting: bool = True
     run_type_checking: bool = True
@@ -140,6 +146,7 @@ class QualityConfig:
 @dataclass
 class ReleaseResult:
     """Result of a release operation."""
+
     success: bool
     version: str
     commit_hash: str
@@ -153,6 +160,7 @@ class ReleaseResult:
 @dataclass
 class QualityResult:
     """Result of quality assurance checks."""
+
     all_passed: bool
     passed_checks: int
     failed_checks: int
@@ -176,15 +184,15 @@ def create_success_advisor_config() -> AgentConfig:
             "comprehensive_analysis": True,
             "detailed_logging": True,
             "agent_state_tracking": True,
-            "ecs_integration": True
+            "ecs_integration": True,
         },
         specializations=[
             "git_workflow_automation",
             "version_management",
             "changelog_generation",
             "security_scanning",
-            "agent_state_management"
-        ]
+            "agent_state_management",
+        ],
     )
 
 

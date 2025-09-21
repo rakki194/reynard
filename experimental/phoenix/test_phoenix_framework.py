@@ -27,12 +27,14 @@ async def test_phoenix_framework():
     print("=" * 60)
 
     # Setup logging
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    logging.basicConfig(
+        level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+    )
 
     # Initialize PHOENIX configuration
     config = PhoenixConfig(
         population_size=20,  # Small population for testing
-        max_generations=5,   # Few generations for testing
+        max_generations=5,  # Few generations for testing
         selection_pressure=0.8,
         mutation_rate=0.1,
         crossover_rate=0.7,
@@ -43,7 +45,7 @@ async def test_phoenix_framework():
         significance_threshold=0.05,
         enable_knowledge_distillation=True,
         enable_subliminal_learning=True,
-        enable_document_conditioning=True
+        enable_document_conditioning=True,
     )
 
     print(f"📋 PHOENIX Configuration:")
@@ -81,8 +83,8 @@ async def test_phoenix_framework():
     print(f"   Valid: {validation['is_valid']}")
     print(f"   Errors: {len(validation['errors'])}")
     print(f"   Warnings: {len(validation['warnings'])}")
-    if validation['warnings']:
-        for warning in validation['warnings'][:3]:  # Show first 3 warnings
+    if validation["warnings"]:
+        for warning in validation["warnings"][:3]:  # Show first 3 warnings
             print(f"     - {warning}")
     print()
 
@@ -99,7 +101,9 @@ async def test_phoenix_framework():
     population = await phoenix.initialize_population(initial_population)
 
     print(f"✅ Population initialized with {len(population)} agents")
-    print(f"   Best agent: {population[0].name} (fitness: {population[0].get_fitness_score():.3f})")
+    print(
+        f"   Best agent: {population[0].name} (fitness: {population[0].get_fitness_score():.3f})"
+    )
     print()
 
     # Run a few generations of evolution
@@ -112,17 +116,23 @@ async def test_phoenix_framework():
         print(f"   Population Size: {len(final_state.population)}")
         print(f"   Best Fitness: {final_state.statistics.best_fitness:.3f}")
         print(f"   Average Fitness: {final_state.statistics.average_fitness:.3f}")
-        print(f"   Population Diversity: {final_state.statistics.population_diversity:.3f}")
+        print(
+            f"   Population Diversity: {final_state.statistics.population_diversity:.3f}"
+        )
         print(f"   Converged: {final_state.convergence.converged}")
         print(f"   Genetic Material Pool: {len(final_state.genetic_material_pool)}")
         print()
 
         # Show top performers
         print("🏆 Top Performers:")
-        sorted_population = sorted(final_state.population, key=lambda a: a.get_fitness_score(), reverse=True)
+        sorted_population = sorted(
+            final_state.population, key=lambda a: a.get_fitness_score(), reverse=True
+        )
         for i, agent in enumerate(sorted_population[:5]):
-            print(f"   {i+1}. {agent.name} - Fitness: {agent.get_fitness_score():.3f}, "
-                  f"Spirit: {agent.spirit.value}, Generation: {agent.generation}")
+            print(
+                f"   {i+1}. {agent.name} - Fitness: {agent.get_fitness_score():.3f}, "
+                f"Spirit: {agent.spirit.value}, Generation: {agent.generation}"
+            )
         print()
 
         # Get evolution summary
@@ -136,6 +146,7 @@ async def test_phoenix_framework():
     except Exception as e:
         print(f"❌ Evolution failed: {e}")
         import traceback
+
         traceback.print_exc()
 
     # Test agent persistence
@@ -155,7 +166,7 @@ async def test_phoenix_framework():
     print(f"   Spirits: {stats['spirits']}")
     print(f"   Styles: {stats['styles']}")
     print(f"   Generations: {stats['generations']}")
-    if stats['fitness_stats']:
+    if stats["fitness_stats"]:
         print(f"   Fitness Stats: {stats['fitness_stats']}")
     print()
 

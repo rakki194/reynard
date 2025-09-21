@@ -48,21 +48,10 @@ class TestAgentStatePersistence:
             style=NamingStyle.FOUNDATION,
             generation=42,
             specialization="Testing and Quality Assurance",
-            traits={
-                "dominance": 0.7,
-                "independence": 0.8,
-                "patience": 0.9
-            },
-            abilities={
-                "strategist": 0.9,
-                "hunter": 0.7,
-                "teacher": 0.8
-            },
+            traits={"dominance": 0.7, "independence": 0.8, "patience": 0.9},
+            abilities={"strategist": 0.9, "hunter": 0.7, "teacher": 0.8},
             performance_history=[],
-            knowledge_base={
-                "testing": 0.9,
-                "quality": 0.8
-            }
+            knowledge_base={"testing": 0.9, "quality": 0.8},
         )
 
     def test_persistence_initialization(self, temp_dir):
@@ -110,7 +99,9 @@ class TestAgentStatePersistence:
         assert loaded_agent.specialization == sample_agent_state.specialization
         assert loaded_agent.traits == sample_agent_state.traits
         assert loaded_agent.abilities == sample_agent_state.abilities
-        assert loaded_agent.performance_history == sample_agent_state.performance_history
+        assert (
+            loaded_agent.performance_history == sample_agent_state.performance_history
+        )
         assert loaded_agent.knowledge_base == sample_agent_state.knowledge_base
 
     def test_load_nonexistent_agent(self, persistence):
@@ -135,7 +126,7 @@ class TestAgentStatePersistence:
             traits={"dominance": 0.8},
             abilities={"strategist": 0.8},
             performance_history=[],
-            knowledge_base={"testing": 0.8}
+            knowledge_base={"testing": 0.8},
         )
 
         persistence.save_agent(agent1)
@@ -226,7 +217,7 @@ class TestAgentStatePersistence:
             traits={},
             abilities={},
             performance_history=[],
-            knowledge_base={}
+            knowledge_base={},
         )
 
         validation_result = persistence.validate_agent_state(invalid_agent)
@@ -248,7 +239,7 @@ class TestAgentStatePersistence:
             traits={"dominance": 0.8},
             abilities={"strategist": 0.8},
             performance_history=[],
-            knowledge_base={"testing": 0.8}
+            knowledge_base={"testing": 0.8},
         )
 
         # Compare agents

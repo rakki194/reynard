@@ -64,12 +64,12 @@ router = APIRouter()
 async def chat(request: OllamaChatRequest):
     """
     Advanced chat interface with Ollama AI models.
-    
+
     Provides sophisticated conversational AI capabilities using Ollama models with
     configurable parameters, system prompts, and tool calling support. This endpoint
     enables natural language interactions with AI models while maintaining context
     and supporting advanced features like function calling and custom parameters.
-    
+
     The chat process includes:
     1. Request validation and parameter processing
     2. Model selection and configuration
@@ -77,7 +77,7 @@ async def chat(request: OllamaChatRequest):
     4. AI model interaction with streaming support
     5. Response processing and tool call handling
     6. Performance metrics collection and logging
-    
+
     Args:
         request (OllamaChatRequest): Chat request containing:
             - message (str): User message for AI interaction
@@ -87,7 +87,7 @@ async def chat(request: OllamaChatRequest):
             - max_tokens (int, optional): Maximum tokens to generate
             - tools (list, optional): Available tools for function calling
             - context (dict, optional): Additional context for the conversation
-    
+
     Returns:
         OllamaChatResponse: Chat response containing:
             - response (str): AI-generated response text
@@ -96,11 +96,11 @@ async def chat(request: OllamaChatRequest):
             - processing_time (float): Response generation time
             - tool_calls (list): Function calls made during generation
             - metadata (dict): Additional response metadata
-    
+
     Raises:
         HTTPException: If chat request fails or service is unavailable
         ValidationError: If request parameters are invalid
-        
+
     Example:
         ```python
         request = OllamaChatRequest(

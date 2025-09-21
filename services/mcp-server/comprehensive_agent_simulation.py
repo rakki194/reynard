@@ -18,6 +18,24 @@ if str(mcp_dir) not in sys.path:
     sys.path.insert(0, str(mcp_dir))
 
 # Note: ECS components are now accessed through the FastAPI backend
+# Import ECS components for local simulation
+try:
+    from backend.app.ecs.core import ECSWorld, Entity
+    from backend.app.ecs.components import (
+        AgentComponent, TraitComponent, LifecycleComponent, 
+        ReproductionComponent, LineageComponent
+    )
+    from backend.app.ecs.models import AgentTraits
+except ImportError:
+    # Fallback for when ECS components are not available
+    ECSWorld = None
+    Entity = None
+    AgentComponent = None
+    TraitComponent = None
+    LifecycleComponent = None
+    ReproductionComponent = None
+    LineageComponent = None
+    AgentTraits = None
 # via the ECS client, not through direct imports
 # This simulation should be updated to use the ECS client for all ECS operations
 

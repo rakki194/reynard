@@ -173,9 +173,7 @@ export class MetricsCalculator {
   private async calculateDocstringMetrics(files: string[]): Promise<DocstringMetrics> {
     try {
       // Filter for Python and TypeScript files
-      const docstringFiles = files.filter(
-        f => f.endsWith(".py") || f.endsWith(".ts") || f.endsWith(".tsx")
-      );
+      const docstringFiles = files.filter(f => f.endsWith(".py") || f.endsWith(".ts") || f.endsWith(".tsx"));
 
       if (docstringFiles.length === 0) {
         return {

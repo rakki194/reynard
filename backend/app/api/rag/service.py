@@ -51,9 +51,7 @@ class RAGService:
             # Initialize indexing service
             self._indexing_service = DocumentIndexer()
             await self._indexing_service.initialize(
-                self._config,
-                self._vector_db_service,
-                self._embedding_service
+                self._config, self._vector_db_service, self._embedding_service
             )
 
             self._initialized = True
@@ -333,8 +331,17 @@ class RAGService:
 
 
 def get_rag_service() -> RAGService:
-    """Get the global RAG service instance."""
-    global _rag_service
-    if _rag_service is None:
-        _rag_service = RAGService()
-    return _rag_service
+    """Get the RAG service instance from the service registry."""
+    from app.core.service_registry import get_service_registry
+
+    registry = get_service_registry()
+    rag_service = registry.get_service_instance("rag")
+
+    if rag_service is None:
+        # Fallback to creating a new instance if not in registry
+        global _rag_service
+        if _rag_service is None:
+            _rag_service = RAGService()
+        return _rag_service
+
+    return rag_service

@@ -18,10 +18,7 @@ export class ConfigWriter {
   /**
    * Write the generated configuration to a file
    */
-  writeConfig(
-    result: GeneratorResult,
-    outputPath: string = "vitest.generated.config.ts"
-  ): boolean {
+  writeConfig(result: GeneratorResult, outputPath: string = "vitest.generated.config.ts"): boolean {
     try {
       if (!result.success) {
         this.logger.error("Cannot write configuration: generation failed");
@@ -53,7 +50,7 @@ export class ConfigWriter {
    */
   private generateConfigFile(config: VitestGlobalConfig): string {
     const timestamp = new Date().toISOString();
-    
+
     return `/**
  * 🦊 Generated Vitest Configuration
  * Auto-generated from project architecture on ${timestamp}
@@ -80,7 +77,7 @@ export default defineConfig(${JSON.stringify(config, null, 2)});
 
       const backupPath = `${configPath}.backup.${Date.now()}`;
       fs.copyFileSync(configPath, backupPath);
-      
+
       this.logger.info(`Backed up current config to: ${backupPath}`);
       return true;
     } catch (error) {

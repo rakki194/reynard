@@ -16,5 +16,5 @@ __all__ = [
     "PhoenixFramework",
     "EvolutionaryOperators",
     "KnowledgeDistillation",
-    "StatisticalValidation"
+    "StatisticalValidation",
 ]

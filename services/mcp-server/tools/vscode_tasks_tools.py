@@ -47,7 +47,7 @@ def _format_result(result: dict[str, Any], operation: str) -> dict[str, Any]:
     execution_type="sync",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 def discover_vscode_tasks(**kwargs) -> dict[str, Any]:
     """Discover all available VS Code tasks."""
@@ -64,24 +64,17 @@ def discover_vscode_tasks(**kwargs) -> dict[str, Any]:
     execution_type="sync",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 def validate_vscode_task(**kwargs) -> dict[str, Any]:
     """Validate a specific VS Code task."""
     arguments = kwargs.get("arguments", {})
     task_name = arguments.get("task_name")
     workspace_path = arguments.get("workspace_path", ".")
-    
+
     if not task_name:
-        return {
-            "content": [
-                {
-                    "type": "text",
-                    "text": "❌ Task name is required"
-                }
-            ]
-        }
-    
+        return {"content": [{"type": "text", "text": "❌ Task name is required"}]}
+
     result = tasks_service.validate_task(task_name, workspace_path)
     return _format_result(result, f"Validate VS Code Task: {task_name}")
 
@@ -93,24 +86,17 @@ def validate_vscode_task(**kwargs) -> dict[str, Any]:
     execution_type="sync",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 def execute_vscode_task(**kwargs) -> dict[str, Any]:
     """Execute a VS Code task by name."""
     arguments = kwargs.get("arguments", {})
     task_name = arguments.get("task_name")
     workspace_path = arguments.get("workspace_path", ".")
-    
+
     if not task_name:
-        return {
-            "content": [
-                {
-                    "type": "text",
-                    "text": "❌ Task name is required"
-                }
-            ]
-        }
-    
+        return {"content": [{"type": "text", "text": "❌ Task name is required"}]}
+
     result = tasks_service.execute_task(task_name, workspace_path)
     return _format_result(result, f"Execute VS Code Task: {task_name}")
 
@@ -122,23 +108,16 @@ def execute_vscode_task(**kwargs) -> dict[str, Any]:
     execution_type="sync",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 def get_vscode_task_info(**kwargs) -> dict[str, Any]:
     """Get detailed information about a specific VS Code task."""
     arguments = kwargs.get("arguments", {})
     task_name = arguments.get("task_name")
     workspace_path = arguments.get("workspace_path", ".")
-    
+
     if not task_name:
-        return {
-            "content": [
-                {
-                    "type": "text",
-                    "text": "❌ Task name is required"
-                }
-            ]
-        }
-    
+        return {"content": [{"type": "text", "text": "❌ Task name is required"}]}
+
     result = tasks_service.get_task_info(task_name, workspace_path)
     return _format_result(result, f"Get VS Code Task Info: {task_name}")

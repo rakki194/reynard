@@ -13,20 +13,20 @@ Version: 1.0.0
 import asyncio
 import json
 import logging
-import numpy as np
-import pandas as pd
-import scipy.stats as stats
+import re
+from dataclasses import asdict, dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Tuple
-from dataclasses import dataclass, asdict
+from typing import Any
+
 import matplotlib.pyplot as plt
-import seaborn as sns
+import numpy as np
+import pandas as pd
+from scipy import stats
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
 
@@ -34,6 +34,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class HonestValidationConfig:
     """Configuration for honest validation experiments."""
+
     experiment_name: str
     num_trials: int = 30  # Minimum for statistical validity
     significance_threshold: float = 0.05
@@ -47,16 +48,17 @@ class HonestValidationConfig:
 @dataclass
 class HonestValidationResults:
     """Results from honest validation experiments."""
+
     experiment_name: str
     timestamp: str
-    config: Dict[str, Any]
-    baseline_results: List[Dict[str, Any]]
-    phoenix_results: List[Dict[str, Any]]
-    statistical_analysis: Dict[str, Any]
-    effect_sizes: Dict[str, float]
-    confidence_intervals: Dict[str, Tuple[float, float]]
-    significance_tests: Dict[str, Dict[str, Any]]
-    recommendations: List[str]
+    config: dict[str, Any]
+    baseline_results: list[dict[str, Any]]
+    phoenix_results: list[dict[str, Any]]
+    statistical_analysis: dict[str, Any]
+    effect_sizes: dict[str, float]
+    confidence_intervals: dict[str, tuple[float, float]]
+    significance_tests: dict[str, dict[str, Any]]
+    recommendations: list[str]
     honest_assessment: str
 
 
@@ -78,23 +80,27 @@ class HonestValidationRunner:
         self.results_dir.mkdir(parents=True, exist_ok=True)
 
         # Results storage
-        self.baseline_results: List[Dict[str, Any]] = []
-        self.phoenix_results: List[Dict[str, Any]] = []
+        self.baseline_results: list[dict[str, Any]] = []
+        self.phoenix_results: list[dict[str, Any]] = []
 
         # Setup logging
         self.logger = logging.getLogger(__name__)
         self._setup_logging()
 
-        self.logger.info(f"🦊 Honest validation runner initialized: {config.experiment_name}")
+        self.logger.info(
+            f"🦊 Honest validation runner initialized: {config.experiment_name}"
+        )
 
     def _setup_logging(self):
         """Setup logging configuration."""
-        log_file = self.results_dir / f"{self.config.experiment_name}_honest_validation.log"
+        log_file = (
+            self.results_dir / f"{self.config.experiment_name}_honest_validation.log"
+        )
         file_handler = logging.FileHandler(log_file)
         file_handler.setLevel(logging.INFO)
 
         formatter = logging.Formatter(
-            '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+            "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
         )
         file_handler.setFormatter(formatter)
 
@@ -129,56 +135,113 @@ class HonestValidationRunner:
         The solution is both innovative and reliable, following best practices in software development.
         """
 
-    def _analyze_output_quality(self, output: str, output_type: str) -> Dict[str, float]:
+    def _analyze_output_quality(
+        self, output: str, output_type: str
+    ) -> dict[str, float]:
         """Analyze the quality of agent output."""
         # Basic text analysis
         word_count = len(output.split())
-        sentence_count = len([s for s in output.split('.') if s.strip()])
+        sentence_count = len([s for s in output.split(".") if s.strip()])
         avg_sentence_length = word_count / sentence_count if sentence_count > 0 else 0
 
         # Technical terminology analysis
         technical_terms = [
-            "algorithm", "architecture", "framework", "optimization", "scalable",
-            "robust", "systematic", "strategic", "innovative", "sophisticated",
-            "comprehensive", "validation", "testing", "performance", "efficiency"
+            "algorithm",
+            "architecture",
+            "framework",
+            "optimization",
+            "scalable",
+            "robust",
+            "systematic",
+            "strategic",
+            "innovative",
+            "sophisticated",
+            "comprehensive",
+            "validation",
+            "testing",
+            "performance",
+            "efficiency",
         ]
 
-        technical_term_count = sum(1 for term in technical_terms if term.lower() in output.lower())
+        technical_term_count = sum(
+            1 for term in technical_terms if term.lower() in output.lower()
+        )
         technical_density = technical_term_count / word_count if word_count > 0 else 0
 
         # Sophistication indicators
         sophistication_indicators = [
-            "systematically", "strategically", "comprehensively", "sophisticated",
-            "innovative", "advanced", "robust", "scalable", "optimal"
+            "systematically",
+            "strategically",
+            "comprehensively",
+            "sophisticated",
+            "innovative",
+            "advanced",
+            "robust",
+            "scalable",
+            "optimal",
         ]
 
-        sophistication_count = sum(1 for indicator in sophistication_indicators if indicator.lower() in output.lower())
-        sophistication_score = sophistication_count / word_count if word_count > 0 else 0
+        sophistication_count = sum(
+            1
+            for indicator in sophistication_indicators
+            if indicator.lower() in output.lower()
+        )
+        sophistication_score = (
+            sophistication_count / word_count if word_count > 0 else 0
+        )
 
         # Problem-solving indicators
         problem_solving_indicators = [
-            "analyze", "evaluate", "assess", "consider", "recommend", "solution",
-            "approach", "method", "strategy", "technique", "framework"
+            "analyze",
+            "evaluate",
+            "assess",
+            "consider",
+            "recommend",
+            "solution",
+            "approach",
+            "method",
+            "strategy",
+            "technique",
+            "framework",
         ]
 
-        problem_solving_count = sum(1 for indicator in problem_solving_indicators if indicator.lower() in output.lower())
-        problem_solving_score = problem_solving_count / word_count if word_count > 0 else 0
+        problem_solving_count = sum(
+            1
+            for indicator in problem_solving_indicators
+            if indicator.lower() in output.lower()
+        )
+        problem_solving_score = (
+            problem_solving_count / word_count if word_count > 0 else 0
+        )
 
         # Leadership indicators
         leadership_indicators = [
-            "lead", "guide", "direct", "manage", "coordinate", "oversee",
-            "command", "authority", "influence", "inspire", "motivate"
+            "lead",
+            "guide",
+            "direct",
+            "manage",
+            "coordinate",
+            "oversee",
+            "command",
+            "authority",
+            "influence",
+            "inspire",
+            "motivate",
         ]
 
-        leadership_count = sum(1 for indicator in leadership_indicators if indicator.lower() in output.lower())
+        leadership_count = sum(
+            1
+            for indicator in leadership_indicators
+            if indicator.lower() in output.lower()
+        )
         leadership_score = leadership_count / word_count if word_count > 0 else 0
 
         # Calculate overall quality score
         overall_quality = (
-            technical_density * 0.3 +
-            sophistication_score * 0.25 +
-            problem_solving_score * 0.25 +
-            leadership_score * 0.2
+            technical_density * 0.3
+            + sophistication_score * 0.25
+            + problem_solving_score * 0.25
+            + leadership_score * 0.2
         )
 
         return {
@@ -190,35 +253,35 @@ class HonestValidationRunner:
             "problem_solving_score": problem_solving_score,
             "leadership_score": leadership_score,
             "overall_quality": overall_quality,
-            "output_type": output_type
+            "output_type": output_type,
         }
 
-    def _extract_traits_from_output(self, output: str) -> Dict[str, Any]:
+    def _extract_traits_from_output(self, output: str) -> dict[str, Any]:
         """Extract traits from agent output using real analysis."""
         traits = {
             "trait_accuracy": 0.0,
             "extracted_traits_count": 0,
-            "knowledge_fidelity": 0.0
+            "knowledge_fidelity": 0.0,
         }
 
         # Define trait patterns
         trait_patterns = {
             "analytical_thinking": [
                 r"\b(analyze|evaluate|assess|examine|investigate)\b",
-                r"\b(logical|systematic|methodical|structured)\b"
+                r"\b(logical|systematic|methodical|structured)\b",
             ],
             "creative_thinking": [
                 r"\b(innovative|creative|novel|unique|original)\b",
-                r"\b(imaginative|inventive|unconventional)\b"
+                r"\b(imaginative|inventive|unconventional)\b",
             ],
             "leadership": [
                 r"\b(lead|guide|direct|coordinate|manage)\b",
-                r"\b(strategic|vision|direction|authority)\b"
+                r"\b(strategic|vision|direction|authority)\b",
             ],
             "problem_solving": [
                 r"\b(solve|resolve|address|tackle|overcome)\b",
-                r"\b(solution|approach|strategy|method)\b"
-            ]
+                r"\b(solution|approach|strategy|method)\b",
+            ],
         }
 
         # Count trait manifestations
@@ -240,31 +303,62 @@ class HonestValidationRunner:
 
         # Calculate knowledge fidelity based on technical content
         technical_terms = [
-            "algorithm", "data structure", "optimization", "architecture",
-            "framework", "implementation", "performance", "efficiency"
+            "algorithm",
+            "data structure",
+            "optimization",
+            "architecture",
+            "framework",
+            "implementation",
+            "performance",
+            "efficiency",
         ]
 
-        technical_mentions = sum(1 for term in technical_terms
-                               if re.search(rf"\b{re.escape(term)}\b", output, re.IGNORECASE))
-        traits["knowledge_fidelity"] = min(technical_mentions / len(technical_terms), 1.0)
+        technical_mentions = sum(
+            1
+            for term in technical_terms
+            if re.search(rf"\b{re.escape(term)}\b", output, re.IGNORECASE)
+        )
+        traits["knowledge_fidelity"] = min(
+            technical_mentions / len(technical_terms), 1.0
+        )
 
         return traits
 
-    def _analyze_domain_expertise(self, output: str) -> Dict[str, Any]:
+    def _analyze_domain_expertise(self, output: str) -> dict[str, Any]:
         """Analyze domain expertise in agent output."""
         domains = {
             "software_engineering": [
-                "software", "development", "programming", "code", "application",
-                "system", "architecture", "design", "implementation"
+                "software",
+                "development",
+                "programming",
+                "code",
+                "application",
+                "system",
+                "architecture",
+                "design",
+                "implementation",
             ],
             "machine_learning": [
-                "machine learning", "AI", "artificial intelligence", "model",
-                "algorithm", "data", "training", "neural network"
+                "machine learning",
+                "AI",
+                "artificial intelligence",
+                "model",
+                "algorithm",
+                "data",
+                "training",
+                "neural network",
             ],
             "project_management": [
-                "project", "management", "planning", "timeline", "milestone",
-                "resource", "budget", "stakeholder", "deliverable"
-            ]
+                "project",
+                "management",
+                "planning",
+                "timeline",
+                "milestone",
+                "resource",
+                "budget",
+                "stakeholder",
+                "deliverable",
+            ],
         }
 
         domain_scores = {}
@@ -283,10 +377,10 @@ class HonestValidationRunner:
         return {
             "domain_expertise": sum(domain_scores.values()) / max(total_domains, 1),
             "domain_count": total_domains,
-            "specialization_accuracy": min(total_domains / len(domains), 1.0)
+            "specialization_accuracy": min(total_domains / len(domains), 1.0),
         }
 
-    async def run_baseline_experiment(self) -> Dict[str, Any]:
+    async def run_baseline_experiment(self) -> dict[str, Any]:
         """Run baseline experiment."""
         self.logger.info("🔬 Running baseline experiment...")
 
@@ -304,7 +398,7 @@ class HonestValidationRunner:
         self.logger.info(f"✅ Baseline experiment completed: {baseline_metrics}")
         return baseline_metrics
 
-    async def run_phoenix_experiment(self) -> Dict[str, Any]:
+    async def run_phoenix_experiment(self) -> dict[str, Any]:
         """Run Phoenix experiment."""
         self.logger.info("🦁 Running Phoenix experiment...")
 
@@ -324,7 +418,9 @@ class HonestValidationRunner:
 
     async def run_honest_validation(self) -> HonestValidationResults:
         """Run honest validation with multiple trials."""
-        self.logger.info(f"🚀 Starting honest validation with {self.config.num_trials} trials...")
+        self.logger.info(
+            f"🚀 Starting honest validation with {self.config.num_trials} trials..."
+        )
 
         # Run multiple trials
         for trial in range(self.config.num_trials):
@@ -365,7 +461,7 @@ class HonestValidationRunner:
             confidence_intervals=statistical_analysis.get("confidence_intervals", {}),
             significance_tests=statistical_analysis.get("significance_tests", {}),
             recommendations=recommendations,
-            honest_assessment=honest_assessment
+            honest_assessment=honest_assessment,
         )
 
         # Save results
@@ -378,7 +474,7 @@ class HonestValidationRunner:
         self.logger.info("✅ Honest validation completed successfully!")
         return results
 
-    def _perform_statistical_analysis(self) -> Dict[str, Any]:
+    def _perform_statistical_analysis(self) -> dict[str, Any]:
         """Perform comprehensive statistical analysis."""
         self.logger.info("📊 Performing statistical analysis...")
 
@@ -388,9 +484,15 @@ class HonestValidationRunner:
 
         # Define metrics to analyze
         metrics = [
-            "overall_quality", "trait_accuracy", "knowledge_fidelity",
-            "domain_expertise", "specialization_accuracy", "technical_density",
-            "sophistication_score", "problem_solving_score", "leadership_score"
+            "overall_quality",
+            "trait_accuracy",
+            "knowledge_fidelity",
+            "domain_expertise",
+            "specialization_accuracy",
+            "technical_density",
+            "sophistication_score",
+            "problem_solving_score",
+            "leadership_score",
         ]
 
         analysis_results = {
@@ -398,7 +500,7 @@ class HonestValidationRunner:
             "effect_sizes": {},
             "confidence_intervals": {},
             "significance_tests": {},
-            "power_analysis": {}
+            "power_analysis": {},
         }
 
         for metric in metrics:
@@ -411,20 +513,26 @@ class HonestValidationRunner:
                     "baseline": {
                         "mean": np.mean(baseline_values),
                         "std": np.std(baseline_values),
-                        "median": np.median(baseline_values)
+                        "median": np.median(baseline_values),
                     },
                     "phoenix": {
                         "mean": np.mean(phoenix_values),
                         "std": np.std(phoenix_values),
-                        "median": np.median(phoenix_values)
-                    }
+                        "median": np.median(phoenix_values),
+                    },
                 }
 
                 # Effect size (Cohen's d)
-                pooled_std = np.sqrt(((len(baseline_values) - 1) * np.var(baseline_values) +
-                                    (len(phoenix_values) - 1) * np.var(phoenix_values)) /
-                                   (len(baseline_values) + len(phoenix_values) - 2))
-                effect_size = (np.mean(phoenix_values) - np.mean(baseline_values)) / pooled_std
+                pooled_std = np.sqrt(
+                    (
+                        (len(baseline_values) - 1) * np.var(baseline_values)
+                        + (len(phoenix_values) - 1) * np.var(phoenix_values)
+                    )
+                    / (len(baseline_values) + len(phoenix_values) - 2)
+                )
+                effect_size = (
+                    np.mean(phoenix_values) - np.mean(baseline_values)
+                ) / pooled_std
                 analysis_results["effect_sizes"][metric] = effect_size
 
                 # Confidence intervals
@@ -432,17 +540,17 @@ class HonestValidationRunner:
                     self.config.confidence_level,
                     len(baseline_values) - 1,
                     loc=np.mean(baseline_values),
-                    scale=stats.sem(baseline_values)
+                    scale=stats.sem(baseline_values),
                 )
                 phoenix_ci = stats.t.interval(
                     self.config.confidence_level,
                     len(phoenix_values) - 1,
                     loc=np.mean(phoenix_values),
-                    scale=stats.sem(phoenix_values)
+                    scale=stats.sem(phoenix_values),
                 )
                 analysis_results["confidence_intervals"][metric] = {
                     "baseline": baseline_ci,
-                    "phoenix": phoenix_ci
+                    "phoenix": phoenix_ci,
                 }
 
                 # Significance test (t-test)
@@ -451,26 +559,33 @@ class HonestValidationRunner:
                     "t_statistic": t_stat,
                     "p_value": p_value,
                     "significant": p_value < self.config.significance_threshold,
-                    "effect_size": effect_size
+                    "effect_size": effect_size,
                 }
 
                 # Power analysis
-                power = self._calculate_power(effect_size, len(baseline_values), self.config.significance_threshold)
+                power = self._calculate_power(
+                    effect_size,
+                    len(baseline_values),
+                    self.config.significance_threshold,
+                )
                 analysis_results["power_analysis"][metric] = power
 
         self.logger.info("✅ Statistical analysis completed")
         return analysis_results
 
-    def _calculate_power(self, effect_size: float, sample_size: int, alpha: float) -> float:
+    def _calculate_power(
+        self, effect_size: float, sample_size: int, alpha: float
+    ) -> float:
         """Calculate statistical power."""
         if effect_size >= self.config.min_effect_size and sample_size >= 30:
             return 0.8  # Good power
-        elif effect_size >= 0.1 and sample_size >= 20:
+        if effect_size >= 0.1 and sample_size >= 20:
             return 0.6  # Moderate power
-        else:
-            return 0.4  # Low power
+        return 0.4  # Low power
 
-    def _generate_recommendations(self, statistical_analysis: Dict[str, Any]) -> List[str]:
+    def _generate_recommendations(
+        self, statistical_analysis: dict[str, Any]
+    ) -> list[str]:
         """Generate recommendations based on statistical analysis."""
         recommendations = []
 
@@ -481,9 +596,13 @@ class HonestValidationRunner:
                 significant_metrics.append(metric)
 
         if significant_metrics:
-            recommendations.append(f"Phoenix shows significant improvements in: {', '.join(significant_metrics)}")
+            recommendations.append(
+                f"Phoenix shows significant improvements in: {', '.join(significant_metrics)}"
+            )
         else:
-            recommendations.append("No significant improvements detected - consider increasing sample size or effect size")
+            recommendations.append(
+                "No significant improvements detected - consider increasing sample size or effect size"
+            )
 
         # Analyze effect sizes
         large_effects = []
@@ -492,7 +611,9 @@ class HonestValidationRunner:
                 large_effects.append(metric)
 
         if large_effects:
-            recommendations.append(f"Large effect sizes observed in: {', '.join(large_effects)}")
+            recommendations.append(
+                f"Large effect sizes observed in: {', '.join(large_effects)}"
+            )
 
         # Analyze power
         low_power_metrics = []
@@ -501,30 +622,39 @@ class HonestValidationRunner:
                 low_power_metrics.append(metric)
 
         if low_power_metrics:
-            recommendations.append(f"Low statistical power in: {', '.join(low_power_metrics)} - consider increasing sample size")
+            recommendations.append(
+                f"Low statistical power in: {', '.join(low_power_metrics)} - consider increasing sample size"
+            )
 
         # General recommendations
-        recommendations.extend([
-            "Conduct additional trials for more robust statistical validation",
-            "Implement proper experimental controls and randomization",
-            "Consider longitudinal studies for long-term effects",
-            "Validate results across different agent types and scenarios",
-            "Focus on improving knowledge fidelity and trait accuracy",
-            "Implement actual Phoenix algorithms rather than simulations"
-        ])
+        recommendations.extend(
+            [
+                "Conduct additional trials for more robust statistical validation",
+                "Implement proper experimental controls and randomization",
+                "Consider longitudinal studies for long-term effects",
+                "Validate results across different agent types and scenarios",
+                "Focus on improving knowledge fidelity and trait accuracy",
+                "Implement actual Phoenix algorithms rather than simulations",
+            ]
+        )
 
         return recommendations
 
-    def _generate_honest_assessment(self, statistical_analysis: Dict[str, Any]) -> str:
+    def _generate_honest_assessment(self, statistical_analysis: dict[str, Any]) -> str:
         """Generate honest assessment of Phoenix capabilities."""
         # Count significant improvements
-        significant_count = sum(1 for test in statistical_analysis.get("significance_tests", {}).values()
-                              if test.get("significant", False))
+        significant_count = sum(
+            1
+            for test in statistical_analysis.get("significance_tests", {}).values()
+            if test.get("significant", False)
+        )
         total_metrics = len(statistical_analysis.get("significance_tests", {}))
 
         # Calculate average effect size
         effect_sizes = list(statistical_analysis.get("effect_sizes", {}).values())
-        avg_effect_size = np.mean([abs(es) for es in effect_sizes]) if effect_sizes else 0.0
+        avg_effect_size = (
+            np.mean([abs(es) for es in effect_sizes]) if effect_sizes else 0.0
+        )
 
         # Generate assessment
         if significant_count == 0:
@@ -537,8 +667,10 @@ class HonestValidationRunner:
             assessment = f"HONEST ASSESSMENT: Phoenix shows STRONG improvements in {significant_count}/{total_metrics} metrics with meaningful effect sizes. The system demonstrates clear value and effectiveness."
 
         # Add specific findings
-        assessment += f"\n\nSPECIFIC FINDINGS:\n"
-        assessment += f"- Significant improvements: {significant_count}/{total_metrics} metrics\n"
+        assessment += "\n\nSPECIFIC FINDINGS:\n"
+        assessment += (
+            f"- Significant improvements: {significant_count}/{total_metrics} metrics\n"
+        )
         assessment += f"- Average effect size: {avg_effect_size:.3f}\n"
         assessment += f"- Statistical power: {'Adequate' if all(p >= 0.8 for p in statistical_analysis.get('power_analysis', {}).values()) else 'Insufficient'}\n"
 
@@ -546,31 +678,46 @@ class HonestValidationRunner:
 
     def _save_intermediate_results(self, trial: int):
         """Save intermediate results during validation."""
-        intermediate_file = self.results_dir / f"intermediate_results_trial_{trial}.json"
+        intermediate_file = (
+            self.results_dir / f"intermediate_results_trial_{trial}.json"
+        )
 
         intermediate_data = {
             "trial": trial,
-            "baseline_results": self.baseline_results[-1] if self.baseline_results else None,
-            "phoenix_results": self.phoenix_results[-1] if self.phoenix_results else None,
-            "timestamp": datetime.now().isoformat()
+            "baseline_results": (
+                self.baseline_results[-1] if self.baseline_results else None
+            ),
+            "phoenix_results": (
+                self.phoenix_results[-1] if self.phoenix_results else None
+            ),
+            "timestamp": datetime.now().isoformat(),
         }
 
-        with open(intermediate_file, 'w') as f:
+        with open(intermediate_file, "w") as f:
             json.dump(intermediate_data, f, indent=2, default=str)
 
     def _save_results(self, results: HonestValidationResults):
         """Save complete validation results."""
         # Save as JSON
-        results_file = self.results_dir / f"{self.config.experiment_name}_honest_validation_results.json"
-        with open(results_file, 'w') as f:
+        results_file = (
+            self.results_dir
+            / f"{self.config.experiment_name}_honest_validation_results.json"
+        )
+        with open(results_file, "w") as f:
             json.dump(asdict(results), f, indent=2, default=str)
 
         # Save as CSV for analysis
         baseline_df = pd.DataFrame(self.baseline_results)
         phoenix_df = pd.DataFrame(self.phoenix_results)
 
-        baseline_df.to_csv(self.results_dir / f"{self.config.experiment_name}_baseline_results.csv", index=False)
-        phoenix_df.to_csv(self.results_dir / f"{self.config.experiment_name}_phoenix_results.csv", index=False)
+        baseline_df.to_csv(
+            self.results_dir / f"{self.config.experiment_name}_baseline_results.csv",
+            index=False,
+        )
+        phoenix_df.to_csv(
+            self.results_dir / f"{self.config.experiment_name}_phoenix_results.csv",
+            index=False,
+        )
 
         self.logger.info(f"Results saved to {self.results_dir}")
 
@@ -579,9 +726,12 @@ class HonestValidationRunner:
         self.logger.info("📊 Generating visualization plots...")
 
         # Set up plotting style
-        plt.style.use('default')
+        plt.style.use("default")
         fig, axes = plt.subplots(3, 3, figsize=(15, 12))
-        fig.suptitle(f'Phoenix Honest Validation Results: {self.config.experiment_name}', fontsize=16)
+        fig.suptitle(
+            f"Phoenix Honest Validation Results: {self.config.experiment_name}",
+            fontsize=16,
+        )
 
         # Convert results to DataFrames
         baseline_df = pd.DataFrame(self.baseline_results)
@@ -589,9 +739,15 @@ class HonestValidationRunner:
 
         # Define metrics to plot
         metrics = [
-            "overall_quality", "trait_accuracy", "knowledge_fidelity",
-            "domain_expertise", "specialization_accuracy", "technical_density",
-            "sophistication_score", "problem_solving_score", "leadership_score"
+            "overall_quality",
+            "trait_accuracy",
+            "knowledge_fidelity",
+            "domain_expertise",
+            "specialization_accuracy",
+            "technical_density",
+            "sophistication_score",
+            "problem_solving_score",
+            "leadership_score",
         ]
 
         for i, metric in enumerate(metrics):
@@ -601,19 +757,28 @@ class HonestValidationRunner:
 
                 # Create box plot
                 data_to_plot = [baseline_df[metric].values, phoenix_df[metric].values]
-                ax.boxplot(data_to_plot, labels=['Baseline', 'Phoenix'])
-                ax.set_title(f'{metric.replace("_", " ").title()}')
-                ax.set_ylabel('Score')
+                ax.boxplot(data_to_plot, labels=["Baseline", "Phoenix"])
+                ax.set_title(f"{metric.replace('_', ' ').title()}")
+                ax.set_ylabel("Score")
 
                 # Add statistical annotation
                 baseline_mean = np.mean(baseline_df[metric].values)
                 phoenix_mean = np.mean(phoenix_df[metric].values)
-                ax.text(0.5, 0.95, f'Baseline: {baseline_mean:.3f}\nPhoenix: {phoenix_mean:.3f}',
-                       transform=ax.transAxes, verticalalignment='top', fontsize=8)
+                ax.text(
+                    0.5,
+                    0.95,
+                    f"Baseline: {baseline_mean:.3f}\nPhoenix: {phoenix_mean:.3f}",
+                    transform=ax.transAxes,
+                    verticalalignment="top",
+                    fontsize=8,
+                )
 
         plt.tight_layout()
-        plot_file = self.results_dir / f"{self.config.experiment_name}_honest_validation_plots.png"
-        plt.savefig(plot_file, dpi=300, bbox_inches='tight')
+        plot_file = (
+            self.results_dir
+            / f"{self.config.experiment_name}_honest_validation_plots.png"
+        )
+        plt.savefig(plot_file, dpi=300, bbox_inches="tight")
         plt.close()
 
         self.logger.info(f"Plots saved to {plot_file}")
@@ -642,7 +807,7 @@ Significance Tests:
             significance = "SIGNIFICANT" if test["significant"] else "NOT SIGNIFICANT"
             report += f"- {metric}: {significance} (p = {test['p_value']:.4f}, effect size = {test['effect_size']:.3f})\n"
 
-        report += f"""
+        report += """
 Effect Sizes:
 ------------
 """
@@ -652,7 +817,7 @@ Effect Sizes:
             interpretation = self._interpret_effect_size(effect_size)
             report += f"- {metric}: {effect_size:.3f} ({interpretation})\n"
 
-        report += f"""
+        report += """
 RECOMMENDATIONS
 ===============
 
@@ -683,10 +848,10 @@ CONCLUSIONS
 ===========
 
 This honest validation provides a realistic assessment of Phoenix capabilities.
-The results show {'significant improvements' if any(test['significant'] for test in results.significance_tests.values()) else 'no significant improvements'}
+The results show {"significant improvements" if any(test["significant"] for test in results.significance_tests.values()) else "no significant improvements"}
 across the tested metrics.
 
-{'The Phoenix system demonstrates clear value and effectiveness' if any(test['significant'] and test['effect_size'] >= 0.5 for test in results.significance_tests.values()) else 'The Phoenix system requires substantial development before demonstrating meaningful enhancements'}.
+{"The Phoenix system demonstrates clear value and effectiveness" if any(test["significant"] and test["effect_size"] >= 0.5 for test in results.significance_tests.values()) else "The Phoenix system requires substantial development before demonstrating meaningful enhancements"}.
 
 ---
 Report generated by Honest Validation Runner v1.0.0
@@ -700,12 +865,11 @@ Analysis completed: {datetime.now().isoformat()}
         abs_effect = abs(effect_size)
         if abs_effect < 0.2:
             return "negligible"
-        elif abs_effect < 0.5:
+        if abs_effect < 0.5:
             return "small"
-        elif abs_effect < 0.8:
+        if abs_effect < 0.8:
             return "medium"
-        else:
-            return "large"
+        return "large"
 
 
 async def main():
@@ -729,7 +893,7 @@ async def main():
 
     # Save report
     report_file = runner.results_dir / f"{config.experiment_name}_honest_report.txt"
-    with open(report_file, 'w') as f:
+    with open(report_file, "w") as f:
         f.write(report)
 
     print(f"\n📊 Full results saved to: {runner.results_dir}")

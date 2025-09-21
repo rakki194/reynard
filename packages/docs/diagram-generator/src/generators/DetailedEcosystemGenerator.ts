@@ -163,7 +163,7 @@ export class DetailedEcosystemGenerator implements DiagramGenerator {
   }
 
   private analyzeDetailedRelationships(
-    analysis: CodebaseAnalysis,
+    _analysis: CodebaseAnalysis,
     packages: DetailedPackageAnalysis[]
   ): DetailedRelationshipAnalysis[] {
     const relationships: DetailedRelationshipAnalysis[] = [];
@@ -281,7 +281,10 @@ export class DetailedEcosystemGenerator implements DiagramGenerator {
     return flows;
   }
 
-  private generateDetailedMermaidContent(analysis: DetailedEcosystemAnalysis, config: DiagramGenerationConfig): string {
+  private generateDetailedMermaidContent(
+    analysis: DetailedEcosystemAnalysis,
+    _config: DiagramGenerationConfig
+  ): string {
     const lines = [
       "%%{init: {'theme': 'neutral'}}%%",
       "graph TB",
@@ -403,7 +406,7 @@ export class DetailedEcosystemGenerator implements DiagramGenerator {
     return `${importance} ${pkg.name}\\n${connections} ${complexity}`;
   }
 
-  private getEdgeStyle(type: string, strength: number): string {
+  private getEdgeStyle(type: string, _strength: number): string {
     const styles: Record<string, string> = {
       imports: "-->",
       exports: "<--",

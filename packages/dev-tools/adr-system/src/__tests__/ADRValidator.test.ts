@@ -31,12 +31,12 @@ describe("ADRValidator", () => {
     it("should validate a valid ADR file", async () => {
       const filePath = `${testEnv.adrDirectory}/001-sample-adr.md`;
       const result = await validator.validateADR(filePath);
-      
+
       expect(result).toHaveProperty("isValid");
       expect(result).toHaveProperty("errors");
       expect(result).toHaveProperty("warnings");
       expect(result).toHaveProperty("suggestions");
-      
+
       expect(Array.isArray(result.errors)).toBe(true);
       expect(Array.isArray(result.warnings)).toBe(true);
       expect(Array.isArray(result.suggestions)).toBe(true);
@@ -44,7 +44,7 @@ describe("ADRValidator", () => {
 
     it("should handle file read errors", async () => {
       const result = await validator.validateADR("/nonexistent/file.md");
-      
+
       expect(result.isValid).toBe(false);
       expect(result.errors.length).toBeGreaterThan(0);
       expect(result.errors[0]).toContain("Failed to read or parse ADR file");
@@ -53,11 +53,9 @@ describe("ADRValidator", () => {
     it("should validate required sections", async () => {
       const filePath = `${testEnv.adrDirectory}/001-sample-adr.md`;
       const result = await validator.validateADR(filePath);
-      
+
       // Should not have errors for missing required sections since the sample ADR has them
-      const missingSectionErrors = result.errors.filter(error => 
-        error.includes("Missing required section")
-      );
+      const missingSectionErrors = result.errors.filter(error => error.includes("Missing required section"));
       expect(missingSectionErrors.length).toBe(0);
     });
 
@@ -71,12 +69,12 @@ describe("ADRValidator", () => {
 ## Context
 This ADR is missing required sections.
 `;
-      
+
       const filePath = `${testEnv.adrDirectory}/999-incomplete-adr.md`;
       await require("fs/promises").writeFile(filePath, incompleteADR);
-      
+
       const result = await validator.validateADR(filePath);
-      
+
       expect(result.isValid).toBe(false);
       expect(result.errors.some(error => error.includes("Missing required section: decision"))).toBe(true);
       expect(result.errors.some(error => error.includes("Missing required section: consequences"))).toBe(true);
@@ -85,10 +83,8 @@ This ADR is missing required sections.
     it("should detect placeholder text", async () => {
       const filePath = `${testEnv.adrDirectory}/002-another-adr.md`;
       const result = await validator.validateADR(filePath);
-      
-      const placeholderWarnings = result.warnings.filter(warning => 
-        warning.includes("placeholder text")
-      );
+
+      const placeholderWarnings = result.warnings.filter(warning => warning.includes("placeholder text"));
       expect(placeholderWarnings.length).toBeGreaterThan(0);
     });
 
@@ -107,15 +103,13 @@ Short.
 ## Consequences
 Short.
 `;
-      
+
       const filePath = `${testEnv.adrDirectory}/998-short-adr.md`;
       await require("fs/promises").writeFile(filePath, shortADR);
-      
+
       const result = await validator.validateADR(filePath);
-      
-      const shortWarnings = result.warnings.filter(warning => 
-        warning.includes("too short")
-      );
+
+      const shortWarnings = result.warnings.filter(warning => warning.includes("too short"));
       expect(shortWarnings.length).toBeGreaterThan(0);
     });
 
@@ -139,26 +133,22 @@ We will implement this.
 ### Negative
 - [ ] Drawback 1
 `;
-      
+
       const filePath = `${testEnv.adrDirectory}/997-todo-adr.md`;
       await require("fs/promises").writeFile(filePath, todoADR);
-      
+
       const result = await validator.validateADR(filePath);
-      
-      const todoSuggestions = result.suggestions.filter(suggestion => 
-        suggestion.includes("TODO items")
-      );
+
+      const todoSuggestions = result.suggestions.filter(suggestion => suggestion.includes("TODO items"));
       expect(todoSuggestions.length).toBeGreaterThan(0);
     });
 
     it("should validate decision section", async () => {
       const filePath = `${testEnv.adrDirectory}/001-sample-adr.md`;
       const result = await validator.validateADR(filePath);
-      
+
       // The sample ADR has a proper decision section
-      const decisionErrors = result.errors.filter(error => 
-        error.includes("Decision section")
-      );
+      const decisionErrors = result.errors.filter(error => error.includes("Decision section"));
       expect(decisionErrors.length).toBe(0);
     });
 
@@ -181,16 +171,16 @@ Yes.
 ### Negative
 - Bad
 `;
-      
+
       // Ensure the ADR directory exists
       await require("fs/promises").mkdir(testEnv.adrDirectory, { recursive: true });
-      
+
       const filePath = `${testEnv.adrDirectory}/996-brief-decision-adr.md`;
       await require("fs/promises").writeFile(filePath, briefDecisionADR);
-      
+
       const result = await validator.validateADR(filePath);
-      
-      const briefWarnings = result.warnings.filter(warning => 
+
+      const briefWarnings = result.warnings.filter(warning =>
         warning.includes("Decision section appears to be too brief")
       );
       expect(briefWarnings.length).toBeGreaterThan(0);
@@ -199,9 +189,9 @@ Yes.
     it("should validate consequences section", async () => {
       const filePath = `${testEnv.adrDirectory}/001-sample-adr.md`;
       const result = await validator.validateADR(filePath);
-      
+
       // The sample ADR has proper consequences section
-      const consequencesErrors = result.errors.filter(error => 
+      const consequencesErrors = result.errors.filter(error =>
         error.includes("Consequences section must include both positive and negative outcomes")
       );
       expect(consequencesErrors.length).toBe(0);
@@ -222,13 +212,13 @@ We will do this.
 ## Consequences
 Only positive outcomes listed.
 `;
-      
+
       const filePath = `${testEnv.adrDirectory}/995-incomplete-consequences-adr.md`;
       await require("fs/promises").writeFile(filePath, incompleteConsequencesADR);
-      
+
       const result = await validator.validateADR(filePath);
-      
-      const consequencesErrors = result.errors.filter(error => 
+
+      const consequencesErrors = result.errors.filter(error =>
         error.includes("Consequences section must include both positive and negative outcomes")
       );
       expect(consequencesErrors.length).toBeGreaterThan(0);
@@ -253,13 +243,13 @@ We will do this.
 ### Negative
 - Bad
 `;
-      
+
       const filePath = `${testEnv.adrDirectory}/994-no-implementation-adr.md`;
       await require("fs/promises").writeFile(filePath, noImplementationADR);
-      
+
       const result = await validator.validateADR(filePath);
-      
-      const implementationWarnings = result.warnings.filter(warning => 
+
+      const implementationWarnings = result.warnings.filter(warning =>
         warning.includes("Consider adding an implementation plan section")
       );
       expect(implementationWarnings.length).toBeGreaterThan(0);
@@ -284,13 +274,13 @@ We will do this.
 ### Negative
 - Bad
 `;
-      
+
       const filePath = `${testEnv.adrDirectory}/993-no-review-adr.md`;
       await require("fs/promises").writeFile(filePath, noReviewADR);
-      
+
       const result = await validator.validateADR(filePath);
-      
-      const reviewWarnings = result.warnings.filter(warning => 
+
+      const reviewWarnings = result.warnings.filter(warning =>
         warning.includes("Consider adding a review and updates section")
       );
       expect(reviewWarnings.length).toBeGreaterThan(0);
@@ -300,10 +290,10 @@ We will do this.
   describe("validateAllADRs", () => {
     it("should validate all ADR files in directory", async () => {
       const results = await validator.validateAllADRs();
-      
+
       expect(results).toBeInstanceOf(Map);
       expect(results.size).toBeGreaterThan(0);
-      
+
       for (const [filename, result] of results) {
         expect(typeof filename).toBe("string");
         expect(result).toHaveProperty("isValid");
@@ -317,17 +307,17 @@ We will do this.
       await testEnv.cleanup();
       testEnv = await createTestEnvironment();
       const emptyValidator = new ADRValidator(testEnv.adrDirectory);
-      
+
       const results = await emptyValidator.validateAllADRs();
-      
+
       expect(results.size).toBe(0);
     });
 
     it("should handle directory read errors", async () => {
       const invalidValidator = new ADRValidator("/nonexistent/directory");
-      
+
       const results = await invalidValidator.validateAllADRs();
-      
+
       expect(results.size).toBe(0);
     });
   });
@@ -336,18 +326,16 @@ We will do this.
     it("should parse ADR content correctly", async () => {
       const filePath = `${testEnv.adrDirectory}/001-sample-adr.md`;
       const result = await validator.validateADR(filePath);
-      
+
       // Should not have parsing errors
-      const parsingErrors = result.errors.filter(error => 
-        error.includes("Failed to read or parse ADR file")
-      );
+      const parsingErrors = result.errors.filter(error => error.includes("Failed to read or parse ADR file"));
       expect(parsingErrors.length).toBe(0);
     });
 
     it("should extract status correctly", async () => {
       const filePath = `${testEnv.adrDirectory}/001-sample-adr.md`;
       const result = await validator.validateADR(filePath);
-      
+
       // The sample ADR has "Accepted" status
       expect(result.isValid).toBe(true);
     });
@@ -358,12 +346,12 @@ We will do this.
 This is not a properly formatted ADR.
 It's missing proper section headers.
 `;
-      
+
       const filePath = `${testEnv.adrDirectory}/992-malformed-adr.md`;
       await require("fs/promises").writeFile(filePath, malformedADR);
-      
+
       const result = await validator.validateADR(filePath);
-      
+
       // Should detect missing required sections
       expect(result.isValid).toBe(false);
       expect(result.errors.length).toBeGreaterThan(0);

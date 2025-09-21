@@ -313,7 +313,6 @@ export class CodebaseAnalyzer {
    * Analyze global dependencies
    */
   private async analyzeDependencies(): Promise<DependencyAnalysis[]> {
-    const dependencies: DependencyAnalysis[] = [];
     const dependencyMap = new Map<string, DependencyAnalysis>();
 
     // Analyze root package.json
@@ -578,7 +577,6 @@ export class CodebaseAnalyzer {
   }
 
   private calculateComplexity(content: string): number {
-    const lines = content.split("\n");
     let complexity = 0;
 
     // Count control structures

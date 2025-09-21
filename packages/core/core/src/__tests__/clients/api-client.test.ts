@@ -170,7 +170,7 @@ describe("ApiClient", () => {
 
       expect(mockHttpClient.request).toHaveBeenCalledWith({
         method: "GET",
-        endpoint: "/health",
+        endpoint: "/api/health",
       });
 
       expect(healthStatus).toEqual({

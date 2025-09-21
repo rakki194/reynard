@@ -110,11 +110,11 @@ class SearchService:
 
             # Fallback to local semantic search
             if not SENTENCE_TRANSFORMERS_AVAILABLE:
-                        return {
-                            "success": False,
+                return {
+                    "success": False,
                     "error": "Semantic search not available - sentence transformers not installed",
-                            "query": query,
-                        }
+                    "query": query,
+                }
 
             return await self._local_semantic_search(
                 query, file_types, directories, top_k, similarity_threshold, model

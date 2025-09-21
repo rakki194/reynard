@@ -21,7 +21,7 @@ class BackendDataService:
     """Service to fetch name generation data from FastAPI backend."""
 
     def __init__(self, backend_url: str = "http://localhost:8000"):
-        self.backend_url = backend_url.rstrip('/')
+        self.backend_url = backend_url.rstrip("/")
         self.client = httpx.AsyncClient(timeout=30.0)
 
     async def close(self):
@@ -31,7 +31,9 @@ class BackendDataService:
     async def get_animal_spirits(self) -> Dict[str, List[str]]:
         """Get all animal spirit names organized by spirit type."""
         try:
-            response = await self.client.get(f"{self.backend_url}/api/ecs/naming/animal-spirits")
+            response = await self.client.get(
+                f"{self.backend_url}/api/ecs/naming/animal-spirits"
+            )
             response.raise_for_status()
             return response.json()
         except Exception as e:
@@ -42,7 +44,9 @@ class BackendDataService:
     async def get_animal_spirit_names(self, spirit: str) -> List[str]:
         """Get names for a specific animal spirit."""
         try:
-            response = await self.client.get(f"{self.backend_url}/api/ecs/naming/animal-spirits/{spirit}")
+            response = await self.client.get(
+                f"{self.backend_url}/api/ecs/naming/animal-spirits/{spirit}"
+            )
             response.raise_for_status()
             data = response.json()
             return data.get("names", [])
@@ -53,7 +57,9 @@ class BackendDataService:
     async def get_naming_components(self) -> Dict[str, List[str]]:
         """Get all naming components (suffixes, prefixes, etc.)."""
         try:
-            response = await self.client.get(f"{self.backend_url}/api/ecs/naming/components")
+            response = await self.client.get(
+                f"{self.backend_url}/api/ecs/naming/components"
+            )
             response.raise_for_status()
             return response.json()
         except Exception as e:
@@ -63,7 +69,9 @@ class BackendDataService:
     async def get_naming_component_type(self, component_type: str) -> List[str]:
         """Get a specific type of naming component."""
         try:
-            response = await self.client.get(f"{self.backend_url}/api/ecs/naming/components/{component_type}")
+            response = await self.client.get(
+                f"{self.backend_url}/api/ecs/naming/components/{component_type}"
+            )
             response.raise_for_status()
             data = response.json()
             return data.get("values", [])
@@ -74,7 +82,9 @@ class BackendDataService:
     async def get_naming_config(self) -> Dict[str, Any]:
         """Get the complete naming configuration."""
         try:
-            response = await self.client.get(f"{self.backend_url}/api/ecs/naming/config")
+            response = await self.client.get(
+                f"{self.backend_url}/api/ecs/naming/config"
+            )
             response.raise_for_status()
             return response.json()
         except Exception as e:
@@ -84,7 +94,9 @@ class BackendDataService:
     async def get_naming_schemes(self) -> Dict[str, Any]:
         """Get all available naming schemes."""
         try:
-            response = await self.client.get(f"{self.backend_url}/api/ecs/naming/config/schemes")
+            response = await self.client.get(
+                f"{self.backend_url}/api/ecs/naming/config/schemes"
+            )
             response.raise_for_status()
             data = response.json()
             return data.get("schemes", {})
@@ -95,7 +107,9 @@ class BackendDataService:
     async def get_naming_styles(self) -> Dict[str, Any]:
         """Get all available naming styles."""
         try:
-            response = await self.client.get(f"{self.backend_url}/api/ecs/naming/config/styles")
+            response = await self.client.get(
+                f"{self.backend_url}/api/ecs/naming/config/styles"
+            )
             response.raise_for_status()
             data = response.json()
             return data.get("styles", {})
@@ -106,7 +120,9 @@ class BackendDataService:
     async def get_naming_spirits(self) -> Dict[str, Any]:
         """Get all available spirits with their configurations."""
         try:
-            response = await self.client.get(f"{self.backend_url}/api/ecs/naming/config/spirits")
+            response = await self.client.get(
+                f"{self.backend_url}/api/ecs/naming/config/spirits"
+            )
             response.raise_for_status()
             data = response.json()
             return data.get("spirits", {})
@@ -117,7 +133,9 @@ class BackendDataService:
     async def get_generation_numbers(self) -> Dict[str, List[int]]:
         """Get generation numbers for all spirits."""
         try:
-            response = await self.client.get(f"{self.backend_url}/api/ecs/naming/generation-numbers")
+            response = await self.client.get(
+                f"{self.backend_url}/api/ecs/naming/generation-numbers"
+            )
             response.raise_for_status()
             return response.json()
         except Exception as e:
@@ -127,7 +145,9 @@ class BackendDataService:
     async def get_spirit_generation_numbers(self, spirit: str) -> List[int]:
         """Get generation numbers for a specific spirit."""
         try:
-            response = await self.client.get(f"{self.backend_url}/api/ecs/naming/generation-numbers/{spirit}")
+            response = await self.client.get(
+                f"{self.backend_url}/api/ecs/naming/generation-numbers/{spirit}"
+            )
             response.raise_for_status()
             data = response.json()
             return data.get("numbers", [])
@@ -148,7 +168,9 @@ class BackendDataService:
     async def get_characters(self) -> Dict[str, Any]:
         """Get all stored characters."""
         try:
-            response = await self.client.get(f"{self.backend_url}/api/ecs/naming/characters")
+            response = await self.client.get(
+                f"{self.backend_url}/api/ecs/naming/characters"
+            )
             response.raise_for_status()
             return response.json()
         except Exception as e:
@@ -158,7 +180,9 @@ class BackendDataService:
     async def get_character(self, character_id: str) -> Optional[Dict[str, Any]]:
         """Get a specific character by ID."""
         try:
-            response = await self.client.get(f"{self.backend_url}/api/ecs/naming/characters/{character_id}")
+            response = await self.client.get(
+                f"{self.backend_url}/api/ecs/naming/characters/{character_id}"
+            )
             response.raise_for_status()
             data = response.json()
             return data.get("character")
@@ -167,13 +191,19 @@ class BackendDataService:
             return None
 
     # Trait System Methods
-    async def get_personality_traits(self, spirit: Optional[str] = None) -> Dict[str, Any]:
+    async def get_personality_traits(
+        self, spirit: Optional[str] = None
+    ) -> Dict[str, Any]:
         """Get personality trait definitions, optionally for a specific spirit."""
         try:
             if spirit:
-                response = await self.client.get(f"{self.backend_url}/api/ecs/traits/personality/{spirit}")
+                response = await self.client.get(
+                    f"{self.backend_url}/api/ecs/traits/personality/{spirit}"
+                )
             else:
-                response = await self.client.get(f"{self.backend_url}/api/ecs/traits/personality")
+                response = await self.client.get(
+                    f"{self.backend_url}/api/ecs/traits/personality"
+                )
             response.raise_for_status()
             return response.json()
         except Exception as e:
@@ -184,9 +214,13 @@ class BackendDataService:
         """Get physical trait definitions, optionally for a specific spirit."""
         try:
             if spirit:
-                response = await self.client.get(f"{self.backend_url}/api/ecs/traits/physical/{spirit}")
+                response = await self.client.get(
+                    f"{self.backend_url}/api/ecs/traits/physical/{spirit}"
+                )
             else:
-                response = await self.client.get(f"{self.backend_url}/api/ecs/traits/physical")
+                response = await self.client.get(
+                    f"{self.backend_url}/api/ecs/traits/physical"
+                )
             response.raise_for_status()
             return response.json()
         except Exception as e:
@@ -197,9 +231,13 @@ class BackendDataService:
         """Get ability trait definitions, optionally for a specific spirit."""
         try:
             if spirit:
-                response = await self.client.get(f"{self.backend_url}/api/ecs/traits/abilities/{spirit}")
+                response = await self.client.get(
+                    f"{self.backend_url}/api/ecs/traits/abilities/{spirit}"
+                )
             else:
-                response = await self.client.get(f"{self.backend_url}/api/ecs/traits/abilities")
+                response = await self.client.get(
+                    f"{self.backend_url}/api/ecs/traits/abilities"
+                )
             response.raise_for_status()
             return response.json()
         except Exception as e:
@@ -209,7 +247,9 @@ class BackendDataService:
     async def get_trait_config(self) -> Dict[str, Any]:
         """Get the complete trait system configuration."""
         try:
-            response = await self.client.get(f"{self.backend_url}/api/ecs/traits/config")
+            response = await self.client.get(
+                f"{self.backend_url}/api/ecs/traits/config"
+            )
             response.raise_for_status()
             return response.json()
         except Exception as e:
@@ -219,7 +259,9 @@ class BackendDataService:
     async def get_spirit_trait_profile(self, spirit: str) -> Dict[str, Any]:
         """Get complete trait profile for a specific spirit."""
         try:
-            response = await self.client.get(f"{self.backend_url}/api/ecs/traits/spirit/{spirit}")
+            response = await self.client.get(
+                f"{self.backend_url}/api/ecs/traits/spirit/{spirit}"
+            )
             response.raise_for_status()
             return response.json()
         except Exception as e:

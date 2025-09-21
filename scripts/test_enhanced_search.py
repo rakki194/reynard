@@ -20,7 +20,7 @@ from services.search_service import SearchService
 async def test_search():
     """Test the search service."""
     print("🦊 Testing Search Service...")
-    
+
     # Initialize the service
     service = SearchService()
 

@@ -19,7 +19,7 @@ from ..utils.data_structures import (
     PerformanceMetrics,
     StatisticalSignificance,
     AgentConfig,
-    create_success_advisor_config
+    create_success_advisor_config,
 )
 from ..utils.logging import PhoenixLogger
 
@@ -52,7 +52,9 @@ class SuccessAdvisor8:
         Returns:
             Reconstructed agent state
         """
-        self.logger.info("Initializing agent state from documentation", "initialization")
+        self.logger.info(
+            "Initializing agent state from documentation", "initialization"
+        )
 
         # Reconstruct agent state
         self.agent_state = await self._reconstruct_agent_state()
@@ -88,7 +90,7 @@ class SuccessAdvisor8:
             "aggression": 0.82,
             "creativity": 0.86,
             "perfectionism": 0.89,
-            "adaptability": 0.88
+            "adaptability": 0.88,
         }
 
         # Physical traits (lion characteristics)
@@ -104,7 +106,7 @@ class SuccessAdvisor8:
             "stamina": 0.86,
             "flexibility": 0.80,
             "reflexes": 0.83,
-            "vitality": 0.89
+            "vitality": 0.89,
         }
 
         # Ability traits (release management specializations)
@@ -124,7 +126,7 @@ class SuccessAdvisor8:
             "inventor": 0.88,
             "explorer": 0.84,
             "guardian": 0.90,
-            "diplomat": 0.85
+            "diplomat": 0.85,
         }
 
         # Performance history (from successful v0.8.7 release)
@@ -142,8 +144,8 @@ class SuccessAdvisor8:
                     confidence_interval=(0.85, 0.99),
                     effect_size=0.8,
                     power=0.9,
-                    sample_size=100
-                )
+                    sample_size=100,
+                ),
             )
         ]
 
@@ -154,19 +156,19 @@ class SuccessAdvisor8:
                 "version_management": 0.93,
                 "changelog_generation": 0.91,
                 "security_scanning": 0.89,
-                "quality_assurance": 0.92
+                "quality_assurance": 0.92,
             },
             "phoenix_framework": {
                 "evolutionary_knowledge_distillation": 0.88,
                 "statistical_validation": 0.85,
                 "agent_breeding": 0.87,
-                "subliminal_learning": 0.83
+                "subliminal_learning": 0.83,
             },
             "reynard_ecosystem": {
                 "ecs_world_integration": 0.90,
                 "mcp_server_tools": 0.92,
                 "agent_naming_system": 0.89,
-                "trait_inheritance": 0.86
+                "trait_inheritance": 0.86,
             },
             "specializations": self.config.specializations,
             "achievements": [
@@ -175,7 +177,7 @@ class SuccessAdvisor8:
                 "Created comprehensive documentation",
                 "Established agent state persistence",
                 "Developed release automation system",
-                "Implemented quality assurance framework"
+                "Implemented quality assurance framework",
             ],
             "workflow_preferences": self.config.workflow_preferences,
             "authority_level": self.config.authority_level,
@@ -183,7 +185,7 @@ class SuccessAdvisor8:
             "creation_timestamp": datetime.now().isoformat(),
             "last_activity": datetime.now().isoformat(),
             "session_count": 1,
-            "total_operations": 0
+            "total_operations": 0,
         }
 
         # Create agent state
@@ -200,10 +202,12 @@ class SuccessAdvisor8:
             performance_history=performance_history,
             knowledge_base=knowledge_base,
             created_at=datetime.now(),
-            last_updated=datetime.now()
+            last_updated=datetime.now(),
         )
 
-        self.logger.success("Agent state reconstructed from documentation", "reconstruction")
+        self.logger.success(
+            "Agent state reconstructed from documentation", "reconstruction"
+        )
         return agent_state
 
     async def get_agent_state(self) -> Optional[AgentState]:
@@ -241,7 +245,10 @@ class SuccessAdvisor8:
         self.agent_state.knowledge_base["last_activity"] = datetime.now().isoformat()
         self.agent_state.knowledge_base["total_operations"] += 1
 
-        self.logger.success(f"Performance updated - Fitness: {metrics.fitness:.3f}", "performance_update")
+        self.logger.success(
+            f"Performance updated - Fitness: {metrics.fitness:.3f}",
+            "performance_update",
+        )
         return True
 
     async def get_dominant_traits(self, count: int = 3) -> List[tuple]:
@@ -319,16 +326,24 @@ class SuccessAdvisor8:
             "spirit": self.agent_state.spirit.value,
             "style": self.agent_state.style.value,
             "role": self.agent_state.knowledge_base.get("role", "unknown"),
-            "authority_level": self.agent_state.knowledge_base.get("authority_level", "unknown"),
+            "authority_level": self.agent_state.knowledge_base.get(
+                "authority_level", "unknown"
+            ),
             "generation": self.agent_state.generation,
             "fitness_score": self.agent_state.get_fitness_score(),
-            "dominant_traits": [{"trait": trait, "value": value} for trait, value in dominant_traits],
+            "dominant_traits": [
+                {"trait": trait, "value": value} for trait, value in dominant_traits
+            ],
             "specializations": specializations,
             "achievements": achievements,
-            "total_operations": self.agent_state.knowledge_base.get("total_operations", 0),
-            "last_activity": self.agent_state.knowledge_base.get("last_activity", "unknown"),
+            "total_operations": self.agent_state.knowledge_base.get(
+                "total_operations", 0
+            ),
+            "last_activity": self.agent_state.knowledge_base.get(
+                "last_activity", "unknown"
+            ),
             "created_at": self.agent_state.created_at.isoformat(),
-            "last_updated": self.agent_state.last_updated.isoformat()
+            "last_updated": self.agent_state.last_updated.isoformat(),
         }
 
     async def validate_agent_state(self) -> Dict[str, Any]:
@@ -343,14 +358,14 @@ class SuccessAdvisor8:
                 "is_valid": False,
                 "errors": ["Agent state not initialized"],
                 "warnings": [],
-                "checks": {}
+                "checks": {},
             }
 
         validation_results = {
             "is_valid": True,
             "errors": [],
             "warnings": [],
-            "checks": {}
+            "checks": {},
         }
 
         # Check required fields
@@ -365,15 +380,21 @@ class SuccessAdvisor8:
         # Check trait ranges
         for trait_name, value in self.agent_state.personality_traits.items():
             if not 0.0 <= value <= 1.0:
-                validation_results["warnings"].append(f"Personality trait {trait_name} out of range: {value}")
+                validation_results["warnings"].append(
+                    f"Personality trait {trait_name} out of range: {value}"
+                )
 
         for trait_name, value in self.agent_state.physical_traits.items():
             if not 0.0 <= value <= 1.0:
-                validation_results["warnings"].append(f"Physical trait {trait_name} out of range: {value}")
+                validation_results["warnings"].append(
+                    f"Physical trait {trait_name} out of range: {value}"
+                )
 
         for trait_name, value in self.agent_state.ability_traits.items():
             if not 0.0 <= value <= 1.0:
-                validation_results["warnings"].append(f"Ability trait {trait_name} out of range: {value}")
+                validation_results["warnings"].append(
+                    f"Ability trait {trait_name} out of range: {value}"
+                )
 
         # Check performance history
         if not self.agent_state.performance_history:
@@ -386,19 +407,26 @@ class SuccessAdvisor8:
         validation_results["checks"] = {
             "has_id": bool(self.agent_state.id),
             "has_name": bool(self.agent_state.name),
-            "has_traits": bool(self.agent_state.personality_traits or
-                             self.agent_state.physical_traits or
-                             self.agent_state.ability_traits),
+            "has_traits": bool(
+                self.agent_state.personality_traits
+                or self.agent_state.physical_traits
+                or self.agent_state.ability_traits
+            ),
             "has_performance": bool(self.agent_state.performance_history),
             "has_knowledge": bool(self.agent_state.knowledge_base),
-            "trait_count": (len(self.agent_state.personality_traits) +
-                          len(self.agent_state.physical_traits) +
-                          len(self.agent_state.ability_traits))
+            "trait_count": (
+                len(self.agent_state.personality_traits)
+                + len(self.agent_state.physical_traits)
+                + len(self.agent_state.ability_traits)
+            ),
         }
 
         if validation_results["is_valid"]:
             self.logger.success("Agent state validation passed", "validation")
         else:
-            self.logger.error(f"Agent state validation failed: {validation_results['errors']}", "validation")
+            self.logger.error(
+                f"Agent state validation failed: {validation_results['errors']}",
+                "validation",
+            )
 
         return validation_results

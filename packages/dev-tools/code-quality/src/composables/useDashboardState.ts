@@ -1,6 +1,6 @@
 /**
  * Dashboard State Composable
- * 
+ *
  * Manages the state and logic for the Code Quality Dashboard
  */
 
@@ -44,7 +44,7 @@ export function useDashboardState(props: DashboardProps) {
   const analyzer = new CodeQualityAnalyzer(props.projectRoot);
   const qualityGateManager = new QualityGateManager(props.projectRoot);
   const securityIntegration = new SecurityAnalysisIntegration(props.projectRoot);
-  
+
   // Use auto-refresh composable
   const { startAutoRefresh, stopAutoRefresh } = useAutoRefresh(props.refreshInterval);
 
@@ -73,10 +73,10 @@ export function useDashboardState(props: DashboardProps) {
     try {
       const analysisResult = await analyzer.analyzeProject();
       const files = analysisResult.files.map((f: any) => f.path);
-      
+
       const [securityResult, qualityGateResults] = await Promise.all([
         runSecurityAnalysis(files),
-        Promise.resolve(runQualityGatesEvaluation(analysisResult.metrics))
+        Promise.resolve(runQualityGatesEvaluation(analysisResult.metrics)),
       ]);
 
       setState(prev => ({

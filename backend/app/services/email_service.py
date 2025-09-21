@@ -61,11 +61,11 @@ logger = logging.getLogger(__name__)
 class EmailConfig:
     """
     Email configuration settings for SMTP server connection and authentication.
-    
+
     Manages all email-related configuration including SMTP server settings,
     authentication credentials, and security options. Configuration values
     are loaded from environment variables with sensible defaults.
-    
+
     Attributes:
         smtp_server (str): SMTP server hostname or IP address
         smtp_port (int): SMTP server port number
@@ -75,7 +75,7 @@ class EmailConfig:
         from_email (str): Default sender email address
         from_name (str): Default sender display name
     """
-    
+
     def __init__(self) -> None:
         self.smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")
         self.smtp_port = int(os.getenv("SMTP_PORT", "587"))
@@ -88,18 +88,18 @@ class EmailConfig:
 
 class EmailAttachment:
     """Email attachment model."""
-    
+
     def __init__(self, file_path: str, filename: Optional[str] = None):
         self.file_path = Path(file_path)
         self.filename = filename or self.file_path.name
-        
+
         if not self.file_path.exists():
             raise FileNotFoundError(f"Attachment file not found: {file_path}")
 
 
 class EmailMessage:
     """Email message model."""
-    
+
     def __init__(
         self,
         to_emails: List[str],
@@ -109,7 +109,7 @@ class EmailMessage:
         cc_emails: Optional[List[str]] = None,
         bcc_emails: Optional[List[str]] = None,
         attachments: Optional[List[EmailAttachment]] = None,
-        reply_to: Optional[str] = None
+        reply_to: Optional[str] = None,
     ):
         self.to_emails = to_emails
         self.subject = subject
@@ -125,11 +125,11 @@ class EmailMessage:
 
 class EmailService:
     """Email service for sending emails via SMTP."""
-    
+
     def __init__(self, config: Optional[EmailConfig] = None):
         self.config = config or EmailConfig()
         self._validate_config()
-    
+
     def _validate_config(self) -> None:
         """Validate email configuration."""
         if not self.config.smtp_username:
@@ -138,178 +138,167 @@ class EmailService:
             raise ValueError("SMTP password is required")
         if not self.config.from_email:
             raise ValueError("From email is required")
-    
+
     async def send_email(self, message: EmailMessage) -> Dict[str, Any]:
         """
         Send an email message.
-        
+
         Args:
             message: Email message to send
-            
+
         Returns:
             Dict containing send result and message ID
-            
+
         Raises:
             Exception: If email sending fails
         """
         try:
             # Create message with improved headers
-            msg = MIMEMultipart('alternative')
-            msg['From'] = f"{self.config.from_name} <{self.config.from_email}>"
-            msg['To'] = ", ".join(message.to_emails)
-            msg['Subject'] = message.subject
-            msg['Date'] = formatdate(localtime=True)
-            msg['Message-ID'] = make_msgid(domain='gmail.com')
-            msg['MIME-Version'] = '1.0'
-            msg['X-Mailer'] = 'Reynard Email Service v1.0'
-            msg['X-Priority'] = '3'
-            msg['X-MSMail-Priority'] = 'Normal'
-            
+            msg = MIMEMultipart("alternative")
+            msg["From"] = f"{self.config.from_name} <{self.config.from_email}>"
+            msg["To"] = ", ".join(message.to_emails)
+            msg["Subject"] = message.subject
+            msg["Date"] = formatdate(localtime=True)
+            msg["Message-ID"] = make_msgid(domain="gmail.com")
+            msg["MIME-Version"] = "1.0"
+            msg["X-Mailer"] = "Reynard Email Service v1.0"
+            msg["X-Priority"] = "3"
+            msg["X-MSMail-Priority"] = "Normal"
+
             # Add authentication headers for better deliverability
-            msg['X-Authenticated-User'] = self.config.from_email
-            msg['X-Originating-IP'] = '[127.0.0.1]'
-            
+            msg["X-Authenticated-User"] = self.config.from_email
+            msg["X-Originating-IP"] = "[127.0.0.1]"
+
             if message.cc_emails:
-                msg['Cc'] = ", ".join(message.cc_emails)
-            
+                msg["Cc"] = ", ".join(message.cc_emails)
+
             if message.reply_to:
-                msg['Reply-To'] = message.reply_to
-            
+                msg["Reply-To"] = message.reply_to
+
             # Add text body
-            text_part = MIMEText(message.body, 'plain', 'utf-8')
+            text_part = MIMEText(message.body, "plain", "utf-8")
             msg.attach(text_part)
-            
+
             # Add HTML body if provided
             if message.html_body:
-                html_part = MIMEText(message.html_body, 'html', 'utf-8')
+                html_part = MIMEText(message.html_body, "html", "utf-8")
                 msg.attach(html_part)
-            
+
             # Add attachments
             for attachment in message.attachments:
-                with open(attachment.file_path, 'rb') as f:
-                    part = MIMEBase('application', 'octet-stream')
+                with open(attachment.file_path, "rb") as f:
+                    part = MIMEBase("application", "octet-stream")
                     part.set_payload(f.read())
                     encoders.encode_base64(part)
                     part.add_header(
-                        'Content-Disposition',
-                        f'attachment; filename= {attachment.filename}'
+                        "Content-Disposition",
+                        f"attachment; filename= {attachment.filename}",
                     )
                     msg.attach(part)
-            
+
             # Send email
             await self._send_smtp(msg, message)
-            
+
             # Update message with sent info
             message.sent_at = datetime.now()
-            message.message_id = msg['Message-ID']
-            
+            message.message_id = msg["Message-ID"]
+
             logger.info("Email sent successfully to %s", message.to_emails)
-            
+
             return {
                 "success": True,
                 "message_id": message.message_id,
                 "sent_at": message.sent_at.isoformat(),
-                "recipients": message.to_emails
+                "recipients": message.to_emails,
             }
-            
+
         except Exception as e:
             logger.error("Failed to send email: %s", e)
             raise
-    
+
     async def _send_smtp(self, msg: MIMEMultipart, message: EmailMessage) -> None:
         """Send email via SMTP."""
         # Run SMTP in thread pool to avoid blocking
         loop = asyncio.get_event_loop()
-        await loop.run_in_executor(
-            None, 
-            self._send_smtp_sync, 
-            msg, 
-            message
-        )
-    
+        await loop.run_in_executor(None, self._send_smtp_sync, msg, message)
+
     def _send_smtp_sync(self, msg: MIMEMultipart, message: EmailMessage) -> None:
         """Synchronous SMTP sending with improved authentication."""
         server = None
         try:
-            logger.info("Connecting to %s:%s", self.config.smtp_server, self.config.smtp_port)
-            
+            logger.info(
+                "Connecting to %s:%s", self.config.smtp_server, self.config.smtp_port
+            )
+
             # Connect to server
             if self.config.use_tls:
                 server = smtplib.SMTP(self.config.smtp_server, self.config.smtp_port)
                 server.set_debuglevel(0)  # Set to 1 for debug output
                 server.starttls()
             else:
-                server = smtplib.SMTP_SSL(self.config.smtp_server, self.config.smtp_port)
+                server = smtplib.SMTP_SSL(
+                    self.config.smtp_server, self.config.smtp_port
+                )
                 server.set_debuglevel(0)
-            
+
             # Login with proper authentication
             logger.info("Authenticating as %s", self.config.smtp_username)
             server.login(self.config.smtp_username, self.config.smtp_password)
-            
+
             # Send email
             all_recipients = message.to_emails + message.cc_emails + message.bcc_emails
             logger.info("Sending email to %s", all_recipients)
             server.send_message(msg, to_addrs=all_recipients)
             logger.info("Email sent successfully!")
-            
+
         except Exception as e:
             logger.error("SMTP Error: %s", e)
             raise
         finally:
             if server:
                 server.quit()
-    
+
     async def send_simple_email(
-        self,
-        to_email: str,
-        subject: str,
-        body: str,
-        html_body: Optional[str] = None
+        self, to_email: str, subject: str, body: str, html_body: Optional[str] = None
     ) -> Dict[str, Any]:
         """
         Send a simple email.
-        
+
         Args:
             to_email: Recipient email address
             subject: Email subject
             body: Plain text body
             html_body: Optional HTML body
-            
+
         Returns:
             Dict containing send result
         """
         message = EmailMessage(
-            to_emails=[to_email],
-            subject=subject,
-            body=body,
-            html_body=html_body
+            to_emails=[to_email], subject=subject, body=body, html_body=html_body
         )
         return await self.send_email(message)
-    
+
     async def send_bulk_email(
         self,
         to_emails: List[str],
         subject: str,
         body: str,
-        html_body: Optional[str] = None
+        html_body: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
         Send bulk email to multiple recipients.
-        
+
         Args:
             to_emails: List of recipient email addresses
             subject: Email subject
             body: Plain text body
             html_body: Optional HTML body
-            
+
         Returns:
             Dict containing send result
         """
         message = EmailMessage(
-            to_emails=to_emails,
-            subject=subject,
-            body=body,
-            html_body=html_body
+            to_emails=to_emails, subject=subject, body=body, html_body=html_body
         )
         return await self.send_email(message)
 

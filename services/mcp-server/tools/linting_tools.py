@@ -181,5 +181,7 @@ async def scan_security_fast(**kwargs) -> dict[str, Any]:
     """Run fast security scanning."""
     # kwargs are not used in this implementation but kept for API compatibility
     _ = kwargs  # Suppress unused parameter warning
-    result = await security_service.run_comprehensive_security_scan(include_bandit=False)
+    result = await security_service.run_comprehensive_security_scan(
+        include_bandit=False
+    )
     return _format_result(result, "Fast Security Scanning")

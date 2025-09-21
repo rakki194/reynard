@@ -469,7 +469,7 @@ class TestGalleryAPI:
 
     def test_health_check(self):
         """Test health check endpoint."""
-        response = self.client.get("/health")
+        response = self.client.get("/api/health")
 
         assert response.status_code == 200
         data = response.json()

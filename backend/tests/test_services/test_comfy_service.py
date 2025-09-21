@@ -10,6 +10,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 
 from app.services.comfy.comfy_service import ComfyService
+from app.services.comfy.models import ComfyWorkflowRequest
 
 
 class TestComfyService:

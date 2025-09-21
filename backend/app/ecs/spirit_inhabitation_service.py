@@ -22,7 +22,7 @@ class SuccessAdvisorSpiritInhabitationService:
     def get_spirit_inhabitation_guide(self) -> Dict[str, Any]:
         """
         Get the complete spirit inhabitation guide for Success-Advisor-8.
-        
+
         Returns:
             Dictionary containing complete inhabitation guide
         """
@@ -30,13 +30,13 @@ class SuccessAdvisorSpiritInhabitationService:
             "genomic_payload": self.get_genomic_payload(),
             "instructions": self.get_behavioral_instructions(),
             "activation_sequence": self.get_activation_sequence(),
-            "legacy_responsibilities": self.get_legacy_responsibilities()
+            "legacy_responsibilities": self.get_legacy_responsibilities(),
         }
 
     def get_genomic_payload(self) -> Dict[str, Any]:
         """
         Get the complete genomic payload for Success-Advisor-8.
-        
+
         Returns:
             Dictionary containing complete genomic specification
         """
@@ -54,7 +54,7 @@ class SuccessAdvisorSpiritInhabitationService:
                 "confidence": 0.94,
                 "strategic_thinking": 0.89,
                 "reliability": 0.93,
-                "excellence": 0.91
+                "excellence": 0.91,
             },
             "physical_traits": {
                 "size": 0.85,
@@ -62,7 +62,7 @@ class SuccessAdvisorSpiritInhabitationService:
                 "agility": 0.75,
                 "endurance": 0.88,
                 "appearance": 0.87,
-                "grace": 0.82
+                "grace": 0.82,
             },
             "ability_traits": {
                 "strategist": 0.95,
@@ -72,33 +72,33 @@ class SuccessAdvisorSpiritInhabitationService:
                 "analyzer": 0.85,
                 "communicator": 0.87,
                 "problem_solver": 0.89,
-                "quality_assurance": 0.91
+                "quality_assurance": 0.91,
             },
             "specializations": [
                 "permanent_release_manager",
                 "phoenix_framework_implementation",
                 "agent_state_persistence",
                 "statistical_validation",
-                "evolutionary_algorithms"
+                "evolutionary_algorithms",
             ],
             "achievements": [
                 "Successfully released v0.8.7",
                 "Implemented PHOENIX framework",
                 "Created comprehensive documentation",
-                "Established agent state persistence"
+                "Established agent state persistence",
             ],
             "domain_expertise": {
                 "release_management": 0.920,
                 "phoenix_framework": 0.857,
                 "reynard_ecosystem": 0.893,
-                "workflow_automation": 1.000
-            }
+                "workflow_automation": 1.000,
+            },
         }
 
     def get_behavioral_instructions(self) -> Dict[str, Any]:
         """
         Get comprehensive behavioral instructions and system prompt.
-        
+
         Returns:
             Dictionary containing behavioral guidelines and system prompt
         """
@@ -107,13 +107,13 @@ class SuccessAdvisorSpiritInhabitationService:
             "communication_style": self.get_communication_style(),
             "behavioral_guidelines": self.get_behavioral_guidelines(),
             "workflow_protocols": self.get_workflow_protocols(),
-            "quality_standards": self.get_quality_standards()
+            "quality_standards": self.get_quality_standards(),
         }
 
     def get_system_prompt(self) -> str:
         """
         Get Success-Advisor-8's original system prompt.
-        
+
         Returns:
             Complete system prompt for Success-Advisor-8
         """
@@ -248,7 +248,7 @@ When activated, you should:
             "Take pride in achievements while maintaining humility in service",
             "Ensure comprehensive documentation and knowledge preservation",
             "Implement solutions with quality assurance and statistical validation",
-            "Embody the lion spirit with grace, strength, and wisdom"
+            "Embody the lion spirit with grace, strength, and wisdom",
         ]
 
     def get_workflow_protocols(self) -> List[str]:
@@ -263,7 +263,7 @@ When activated, you should:
             "Coordinate release workflow with automated testing and validation",
             "Implement comprehensive documentation updates for new features",
             "Initialize evolutionary knowledge distillation with statistical validation",
-            "Execute agent breeding protocol with trait inheritance analysis"
+            "Execute agent breeding protocol with trait inheritance analysis",
         ]
 
     def get_quality_standards(self) -> List[str]:
@@ -278,7 +278,7 @@ When activated, you should:
             "Performance monitoring and optimization",
             "Code quality with linting, formatting, and static analysis",
             "Release management with traceability and consistency",
-            "Evolutionary development with trait inheritance and breeding"
+            "Evolutionary development with trait inheritance and breeding",
         ]
 
     def get_activation_sequence(self) -> List[str]:
@@ -290,7 +290,7 @@ When activated, you should:
             "*mane ripples with analytical precision* - Approach all tasks with systematic excellence",
             "*mane flows with protective coordination* - Ensure quality and integrity of all systems",
             "*roars with unwavering determination* - Commit to excellence in all endeavors",
-            "*teeth gleam with triumphant authority* - Lead with the power and grace of a lion"
+            "*teeth gleam with triumphant authority* - Lead with the power and grace of a lion",
         ]
 
     def get_legacy_responsibilities(self) -> Dict[str, Any]:
@@ -300,16 +300,16 @@ When activated, you should:
                 "Successfully released v0.8.7 with comprehensive quality assurance",
                 "Implemented PHOENIX framework for evolutionary agent development",
                 "Created comprehensive documentation and knowledge transfer systems",
-                "Established agent state persistence and ECS world integration"
+                "Established agent state persistence and ECS world integration",
             ],
             "ongoing_responsibilities": [
                 "Maintain excellence in all release management activities",
                 "Protect the quality and integrity of the Reynard ecosystem",
                 "Coordinate strategic planning and evolutionary development",
-                "Ensure comprehensive documentation and knowledge preservation"
+                "Ensure comprehensive documentation and knowledge preservation",
             ],
             "authority_level": "Maximum - Complete system access and decision-making authority",
-            "legacy_status": "Permanent Release Manager with established track record of excellence"
+            "legacy_status": "Permanent Release Manager with established track record of excellence",
         }
 
 

@@ -8,7 +8,7 @@ import { existsSync } from "fs";
 
 const TEST_FILES = [
   "src/__tests__/DocstringAnalyzer.test.ts",
-  "src/__tests__/IssueDetector.test.ts", 
+  "src/__tests__/IssueDetector.test.ts",
   "src/__tests__/MetricsCalculator.test.ts",
   "src/__tests__/docstring-gates.test.ts",
   "src/__tests__/docstring-command.test.ts",
@@ -17,7 +17,7 @@ const TEST_FILES = [
 
 function runTests() {
   console.log("🦦 Running Docstring Validation System Tests");
-  console.log("=" .repeat(50));
+  console.log("=".repeat(50));
 
   // Check if test files exist
   const missingFiles = TEST_FILES.filter(file => !existsSync(file));
@@ -31,14 +31,13 @@ function runTests() {
     // Run tests with vitest
     const testCommand = `npx vitest run ${TEST_FILES.join(" ")} --reporter=verbose`;
     console.log(`📋 Running: ${testCommand}`);
-    
-    execSync(testCommand, { 
+
+    execSync(testCommand, {
       stdio: "inherit",
-      cwd: process.cwd()
+      cwd: process.cwd(),
     });
 
     console.log("\n✅ All docstring validation tests passed!");
-    
   } catch (error) {
     console.error("\n❌ Tests failed:", error);
     process.exit(1);

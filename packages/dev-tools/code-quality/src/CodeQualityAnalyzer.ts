@@ -140,20 +140,21 @@ export class CodeQualityAnalyzer extends EventEmitter {
    */
   async scanEmojiRoleplay(): Promise<EmojiRoleplayScanResult[]> {
     console.log("Scanning for emojis and roleplay language...");
-    
+
     const files = await this.fileDiscovery.discoverFiles(this.projectRoot);
-    const supportedFiles = files.filter(file => 
-      file.endsWith('.md') || 
-      file.endsWith('.py') || 
-      file.endsWith('.ts') || 
-      file.endsWith('.tsx') || 
-      file.endsWith('.js') || 
-      file.endsWith('.jsx') ||
-      file.endsWith('.txt')
+    const supportedFiles = files.filter(
+      file =>
+        file.endsWith(".md") ||
+        file.endsWith(".py") ||
+        file.endsWith(".ts") ||
+        file.endsWith(".tsx") ||
+        file.endsWith(".js") ||
+        file.endsWith(".jsx") ||
+        file.endsWith(".txt")
     );
 
     const results = this.emojiRoleplayScanner.scanFiles(supportedFiles);
-    
+
     console.log(`Scanned ${supportedFiles.length} files for emojis and roleplay language`);
     return results;
   }
@@ -164,17 +165,13 @@ export class CodeQualityAnalyzer extends EventEmitter {
   async getEmojiRoleplayMetrics(): Promise<EmojiRoleplayMetrics> {
     const scanResults = await this.scanEmojiRoleplay();
     const summary = this.emojiRoleplayScanner.getScanSummary(scanResults);
-    
+
     const filesWithEmojis = scanResults.filter(r => r.emojiCount > 0).length;
-    const filesWithRoleplay = scanResults.filter(r => 
-      r.roleplayPatternCount > 0 || r.roleplayActionCount > 0
-    ).length;
+    const filesWithRoleplay = scanResults.filter(r => r.roleplayPatternCount > 0 || r.roleplayActionCount > 0).length;
 
     // Calculate professional language score (0-100, higher is better)
     const totalFiles = scanResults.length;
-    const professionalLanguageScore = totalFiles > 0 
-      ? Math.max(0, 100 - (summary.totalIssues / totalFiles) * 10)
-      : 100;
+    const professionalLanguageScore = totalFiles > 0 ? Math.max(0, 100 - (summary.totalIssues / totalFiles) * 10) : 100;
 
     return {
       totalEmojis: summary.totalEmojis,
@@ -182,7 +179,7 @@ export class CodeQualityAnalyzer extends EventEmitter {
       totalRoleplayActions: summary.totalRoleplayActions,
       filesWithEmojis,
       filesWithRoleplay,
-      professionalLanguageScore: Math.round(professionalLanguageScore)
+      professionalLanguageScore: Math.round(professionalLanguageScore),
     };
   }
 
@@ -231,7 +228,7 @@ export class CodeQualityAnalyzer extends EventEmitter {
       totalJunkFiles: analysis.totalFiles,
       criticalJunkFiles: analysis.criticalIssues,
       highJunkFiles: analysis.highIssues,
-      qualityScore: analysis.qualityScore
+      qualityScore: analysis.qualityScore,
     };
   }
 }

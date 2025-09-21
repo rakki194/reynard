@@ -167,7 +167,9 @@ async def create_agent_email_template(
         AgentEmailTemplate: Created agent email template
     """
     try:
-        created_template = await agent_email_service.create_agent_template(agent_id, template)
+        created_template = await agent_email_service.create_agent_template(
+            agent_id, template
+        )
         return created_template
     except Exception as e:
         logger.error(f"Failed to create agent template for {agent_id}: {e}")
@@ -203,7 +205,9 @@ async def delete_agent_email_template(
             )
         return {"success": True, "message": "Template deleted successfully"}
     except Exception as e:
-        logger.error(f"Failed to delete agent template {template_id} for {agent_id}: {e}")
+        logger.error(
+            f"Failed to delete agent template {template_id} for {agent_id}: {e}"
+        )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to delete agent template: {str(e)}",
@@ -229,7 +233,9 @@ async def send_agent_email(
     """
     try:
         # Get target agent email
-        target_config = await agent_email_service.get_agent_config(request.target_agent_id)
+        target_config = await agent_email_service.get_agent_config(
+            request.target_agent_id
+        )
         if not target_config:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -253,14 +259,19 @@ async def send_agent_email(
 
         # Update agent stats
         await agent_email_service.update_agent_stats(agent_id, "sent")
-        await agent_email_service.update_agent_stats(request.target_agent_id, "received")
+        await agent_email_service.update_agent_stats(
+            request.target_agent_id, "received"
+        )
 
         # Log the interaction
         await agent_email_service.log_agent_interaction(
-            agent_id, request.target_agent_id, "email_sent", {
+            agent_id,
+            request.target_agent_id,
+            "email_sent",
+            {
                 "subject": request.message.subject,
                 "message_id": result.get("message_id"),
-            }
+            },
         )
 
         return EmailSendResponse(
@@ -268,7 +279,7 @@ async def send_agent_email(
             message_id=result.get("message_id"),
             sent_at=result.get("sent_at"),
             recipients=result["recipients"],
-            error=result.get("error")
+            error=result.get("error"),
         )
 
     except Exception as e:
@@ -324,17 +335,22 @@ async def send_agent_bulk_email(
         result = await email_service.send_bulk_email(bulk_request)
 
         # Update agent stats
-        await agent_email_service.update_agent_stats(agent_id, "sent", len(target_emails))
+        await agent_email_service.update_agent_stats(
+            agent_id, "sent", len(target_emails)
+        )
         for target_agent_id in request.target_agent_ids:
             await agent_email_service.update_agent_stats(target_agent_id, "received")
 
         # Log the interactions
         for target_agent_id in request.target_agent_ids:
             await agent_email_service.log_agent_interaction(
-                agent_id, target_agent_id, "bulk_email_sent", {
+                agent_id,
+                target_agent_id,
+                "bulk_email_sent",
+                {
                     "subject": request.message.subject,
                     "total_recipients": len(target_emails),
-                }
+                },
             )
 
         return result
@@ -372,7 +388,7 @@ async def trigger_agent_automated_email(
             agent_email_service.process_automated_email,
             agent_id,
             request.event_type,
-            request.context
+            request.context,
         )
 
         return {
@@ -444,7 +460,9 @@ async def get_agent_email_interactions(
         Dict: Agent email interactions
     """
     try:
-        interactions = await agent_email_service.get_agent_interactions(agent_id, limit, offset)
+        interactions = await agent_email_service.get_agent_interactions(
+            agent_id, limit, offset
+        )
         return {
             "interactions": interactions,
             "total": len(interactions),

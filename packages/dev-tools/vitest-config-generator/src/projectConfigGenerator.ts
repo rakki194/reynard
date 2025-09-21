@@ -75,12 +75,7 @@ export class ProjectConfigGenerator {
     }
 
     // Add common test exclusions
-    exclude.push(
-      "node_modules",
-      "dist",
-      "build",
-      "coverage"
-    );
+    exclude.push("node_modules", "dist", "build", "coverage");
 
     return exclude;
   }
@@ -151,10 +146,12 @@ export class ProjectConfigGenerator {
 
   private getEnvironmentOptions(directory: DirectoryDefinition) {
     // Special environment options for components
-    if (directory.name === "packages/components" || 
-        directory.name === "packages/components-core" ||
-        directory.name === "components" || 
-        directory.name === "components-core") {
+    if (
+      directory.name === "packages/components" ||
+      directory.name === "packages/components-core" ||
+      directory.name === "components" ||
+      directory.name === "components-core"
+    ) {
       return {
         happyDOM: {
           url: "http://localhost:3000",

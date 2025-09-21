@@ -25,7 +25,13 @@ from ..components import (
 )
 from ..core.entity import Entity
 from ..core.world import ECSWorld
-from ..systems import GenderSystem, InteractionSystem, LearningSystem, MemorySystem, SocialSystem
+from ..systems import (
+    GenderSystem,
+    InteractionSystem,
+    LearningSystem,
+    MemorySystem,
+    SocialSystem,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -65,7 +71,7 @@ class AgentWorld(ECSWorld):
 
         # Initialize time tracking
         self.current_time = 0.0
-        
+
         # Load existing agents
         self._load_existing_agents()
 
@@ -105,20 +111,15 @@ class AgentWorld(ECSWorld):
             name = f"{spirit.capitalize()}-{random.randint(1, 999)}"
 
         # Add core components
-        entity.add_component(AgentComponent(
-            name=name,
-            spirit=spirit,
-            style=style
-        ))
+        entity.add_component(AgentComponent(name=name, spirit=spirit, style=style))
 
         # Add lifecycle component
         entity.add_component(LifecycleComponent())
 
         # Add position component
-        entity.add_component(PositionComponent(
-            x=random.uniform(-100, 100),
-            y=random.uniform(-100, 100)
-        ))
+        entity.add_component(
+            PositionComponent(x=random.uniform(-100, 100), y=random.uniform(-100, 100))
+        )
 
         # Add trait component with generated traits
         entity.add_component(TraitComponent())
@@ -145,9 +146,10 @@ class AgentWorld(ECSWorld):
 
         # Add gender component
         from ..components.gender import GenderProfile, GenderIdentity, GenderExpression
+
         gender_profile = GenderProfile(
             primary_identity=GenderIdentity.NON_BINARY,
-            expression_style=GenderExpression.NEUTRAL
+            expression_style=GenderExpression.NEUTRAL,
         )
         entity.add_component(GenderComponent(gender_profile))
 
@@ -192,7 +194,9 @@ class AgentWorld(ECSWorld):
 
         # Generate offspring ID
         if offspring_id is None:
-            offspring_id = f"offspring_{parent1_id}_{parent2_id}_{random.randint(1000, 9999)}"
+            offspring_id = (
+                f"offspring_{parent1_id}_{parent2_id}_{random.randint(1000, 9999)}"
+            )
 
         # Create offspring entity
         offspring = self.create_entity(offspring_id)
@@ -209,7 +213,7 @@ class AgentWorld(ECSWorld):
         offspring_agent = AgentComponent(
             name=f"Offspring-{random.randint(1, 999)}",
             spirit=random.choice([agent1.spirit, agent2.spirit]),
-            style=random.choice([agent1.style, agent2.style])
+            style=random.choice([agent1.style, agent2.style]),
         )
         offspring.add_component(offspring_agent)
 
@@ -220,10 +224,12 @@ class AgentWorld(ECSWorld):
         pos1 = parent1.get_component(PositionComponent)
         pos2 = parent2.get_component(PositionComponent)
         if pos1 and pos2:
-            offspring.add_component(PositionComponent(
-                x=(pos1.x + pos2.x) / 2 + random.uniform(-10, 10),
-                y=(pos1.y + pos2.y) / 2 + random.uniform(-10, 10)
-            ))
+            offspring.add_component(
+                PositionComponent(
+                    x=(pos1.x + pos2.x) / 2 + random.uniform(-10, 10),
+                    y=(pos1.y + pos2.y) / 2 + random.uniform(-10, 10),
+                )
+            )
         else:
             offspring.add_component(PositionComponent())
 
@@ -265,7 +271,7 @@ class AgentWorld(ECSWorld):
         # Create gender profile for offspring
         offspring_gender_profile = GenderProfile(
             primary_identity=GenderIdentity.NON_BINARY,
-            expression_style=GenderExpression.ANDROGYNOUS
+            expression_style=GenderExpression.ANDROGYNOUS,
         )
         offspring.add_component(GenderComponent(offspring_gender_profile))
 
@@ -275,10 +281,14 @@ class AgentWorld(ECSWorld):
         repro1.offspring_count += 1
         repro2.offspring_count += 1
 
-        logger.info(f"Created offspring {offspring_id} from parents {parent1_id} and {parent2_id}")
+        logger.info(
+            f"Created offspring {offspring_id} from parents {parent1_id} and {parent2_id}"
+        )
         return offspring
 
-    def _inherit_traits(self, traits1: TraitComponent, traits2: TraitComponent) -> TraitComponent:
+    def _inherit_traits(
+        self, traits1: TraitComponent, traits2: TraitComponent
+    ) -> TraitComponent:
         """Create offspring traits by inheriting from parents."""
         offspring_traits = TraitComponent()
 
@@ -286,36 +296,36 @@ class AgentWorld(ECSWorld):
         for trait_name in offspring_traits.personality:
             parent1_value = traits1.personality.get(trait_name, 0.5)
             parent2_value = traits2.personality.get(trait_name, 0.5)
-            
+
             # Average with some mutation
             base_value = (parent1_value + parent2_value) / 2
             mutation = random.uniform(-0.1, 0.1)
             final_value = max(0.0, min(1.0, base_value + mutation))
-            
+
             offspring_traits.personality[trait_name] = final_value
 
         # Inherit physical traits
         for trait_name in offspring_traits.physical:
             parent1_value = traits1.physical.get(trait_name, 0.5)
             parent2_value = traits2.physical.get(trait_name, 0.5)
-            
+
             # Average with some mutation
             base_value = (parent1_value + parent2_value) / 2
             mutation = random.uniform(-0.1, 0.1)
             final_value = max(0.0, min(1.0, base_value + mutation))
-            
+
             offspring_traits.physical[trait_name] = final_value
 
         # Inherit ability traits
         for trait_name in offspring_traits.abilities:
             parent1_value = traits1.abilities.get(trait_name, 0.5)
             parent2_value = traits2.abilities.get(trait_name, 0.5)
-            
+
             # Average with some mutation
             base_value = (parent1_value + parent2_value) / 2
             mutation = random.uniform(-0.1, 0.1)
             final_value = max(0.0, min(1.0, base_value + mutation))
-            
+
             offspring_traits.abilities[trait_name] = final_value
 
         return offspring_traits
@@ -368,14 +378,27 @@ class AgentWorld(ECSWorld):
             compatibility = agent_traits.calculate_compatibility(other_traits)
 
             if compatibility > 0.4:  # Minimum compatibility threshold
-                compatible_mates.append({
-                    "agent_id": entity.id,
-                    "compatibility": compatibility,
-                    "name": entity.get_component(AgentComponent).name if entity.get_component(AgentComponent) else "Unknown"
-                })
+                compatible_mates.append(
+                    {
+                        "agent_id": entity.id,
+                        "compatibility": compatibility,
+                        "name": (
+                            entity.get_component(AgentComponent).name
+                            if entity.get_component(AgentComponent)
+                            else "Unknown"
+                        ),
+                    }
+                )
 
         # Sort by compatibility and return top results
-        compatible_mates.sort(key=lambda x: float(x["compatibility"]) if isinstance(x["compatibility"], (int, float)) else 0.0, reverse=True)
+        compatible_mates.sort(
+            key=lambda x: (
+                float(x["compatibility"])
+                if isinstance(x["compatibility"], (int, float))
+                else 0.0
+            ),
+            reverse=True,
+        )
         return compatible_mates[:max_results]
 
     def analyze_genetic_compatibility(self, agent1_id: str, agent2_id: str) -> dict:
@@ -404,9 +427,15 @@ class AgentWorld(ECSWorld):
         compatibility = traits1.calculate_compatibility(traits2)
 
         # Analyze trait similarities
-        personality_similarity = self._calculate_trait_similarity(traits1.personality, traits2.personality)
-        physical_similarity = self._calculate_trait_similarity(traits1.physical, traits2.physical)
-        ability_similarity = self._calculate_trait_similarity(traits1.abilities, traits2.abilities)
+        personality_similarity = self._calculate_trait_similarity(
+            traits1.personality, traits2.personality
+        )
+        physical_similarity = self._calculate_trait_similarity(
+            traits1.physical, traits2.physical
+        )
+        ability_similarity = self._calculate_trait_similarity(
+            traits1.abilities, traits2.abilities
+        )
 
         return {
             "agent1_id": agent1_id,
@@ -415,7 +444,11 @@ class AgentWorld(ECSWorld):
             "personality_similarity": personality_similarity,
             "physical_similarity": physical_similarity,
             "ability_similarity": ability_similarity,
-            "recommendation": "Recommended" if compatibility > 0.6 else "Not recommended" if compatibility < 0.4 else "Neutral"
+            "recommendation": (
+                "Recommended"
+                if compatibility > 0.6
+                else "Not recommended" if compatibility < 0.4 else "Neutral"
+            ),
         }
 
     def _calculate_trait_similarity(self, traits1: dict, traits2: dict) -> float:
@@ -424,10 +457,10 @@ class AgentWorld(ECSWorld):
         trait_count = 0
 
         for trait_name in dir(traits1):
-            if not trait_name.startswith('_'):
+            if not trait_name.startswith("_"):
                 trait1_value = getattr(traits1, trait_name)
                 trait2_value = getattr(traits2, trait_name)
-                
+
                 if isinstance(trait1_value, (int, float)):
                     total_diff += abs(trait1_value - trait2_value)
                     trait_count += 1
@@ -462,11 +495,17 @@ class AgentWorld(ECSWorld):
             ancestor = self.get_entity(ancestor_id)
             if ancestor:
                 ancestor_agent = ancestor.get_component(AgentComponent)
-                ancestors.append({
-                    "id": ancestor_id,
-                    "name": ancestor_agent.name if ancestor_agent else "Unknown",
-                    "generation": ancestor.get_component(LineageComponent).generation if ancestor.get_component(LineageComponent) else 0
-                })
+                ancestors.append(
+                    {
+                        "id": ancestor_id,
+                        "name": ancestor_agent.name if ancestor_agent else "Unknown",
+                        "generation": (
+                            ancestor.get_component(LineageComponent).generation
+                            if ancestor.get_component(LineageComponent)
+                            else 0
+                        ),
+                    }
+                )
 
         # Get descendant information
         descendants = []
@@ -474,11 +513,19 @@ class AgentWorld(ECSWorld):
             descendant = self.get_entity(descendant_id)
             if descendant:
                 descendant_agent = descendant.get_component(AgentComponent)
-                descendants.append({
-                    "id": descendant_id,
-                    "name": descendant_agent.name if descendant_agent else "Unknown",
-                    "generation": descendant.get_component(LineageComponent).generation if descendant.get_component(LineageComponent) else 0
-                })
+                descendants.append(
+                    {
+                        "id": descendant_id,
+                        "name": (
+                            descendant_agent.name if descendant_agent else "Unknown"
+                        ),
+                        "generation": (
+                            descendant.get_component(LineageComponent).generation
+                            if descendant.get_component(LineageComponent)
+                            else 0
+                        ),
+                    }
+                )
 
         return {
             "agent_id": agent_id,
@@ -487,7 +534,7 @@ class AgentWorld(ECSWorld):
             "children": lineage.children,
             "ancestors": ancestors,
             "descendants": descendants,
-            "family_size": len(ancestors) + len(descendants) + 1
+            "family_size": len(ancestors) + len(descendants) + 1,
         }
 
     def _load_existing_agents(self) -> None:
@@ -505,7 +552,7 @@ class AgentWorld(ECSWorld):
     def get_agent_entities(self) -> list[Entity]:
         """
         Get all entities that have AgentComponent.
-        
+
         Returns:
             List of entities that are agents
         """
@@ -514,7 +561,7 @@ class AgentWorld(ECSWorld):
     def get_world_stats(self) -> dict:
         """Get comprehensive world statistics."""
         total_agents = len(self.entities)
-        
+
         # Count agents by generation
         generation_counts: dict[int, int] = {}
         for entity in self.entities.values():
@@ -536,5 +583,5 @@ class AgentWorld(ECSWorld):
             "generation_distribution": generation_counts,
             "spirit_distribution": spirit_counts,
             "systems_active": len(self.systems),
-            "current_time": self.current_time
+            "current_time": self.current_time,
         }

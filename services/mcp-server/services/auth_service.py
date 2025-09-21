@@ -16,7 +16,9 @@ import jwt
 logger = logging.getLogger(__name__)
 
 # MCP Authentication Configuration
-MCP_JWT_SECRET = os.getenv("MCP_JWT_SECRET", "reynard-mcp-secret-key-2025-dev")  # Use env var in production
+MCP_JWT_SECRET = os.getenv(
+    "MCP_TOKEN_SECRET", "reynard-mcp-secret-key-2025-dev"
+)  # Use env var in production
 MCP_JWT_ALGORITHM = "HS256"
 MCP_TOKEN_EXPIRE_HOURS = 24
 

@@ -128,6 +128,11 @@ markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
     "integration: marks tests as integration tests",
     "unit: marks tests as unit tests",
+    "panda_spirit: Tests written with panda spirit and thoroughness",
+    "continuous_indexing: Tests for continuous indexing service",
+    "continuous_indexing_config: Tests for continuous indexing configuration",
+    "asyncio: Async tests that require asyncio",
+    "fast: Fast running tests",
 ]
 
 [tool.coverage.run]

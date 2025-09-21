@@ -16,12 +16,12 @@ class ToolDefinition:
         self.name = name
         self.description = description
         self.parameters = parameters
-    
+
     def to_dict(self) -> dict[str, Any]:
         return {
             "name": self.name,
             "description": self.description,
-            "parameters": self.parameters
+            "parameters": self.parameters,
         }
 
 
@@ -42,6 +42,7 @@ def get_tool_definitions() -> dict[str, dict[str, Any]]:
     # Import agent tools (if available)
     try:
         from .agent_management import get_agent_tool_definitions
+
         if get_agent_tool_definitions is not None:
             agent_tools = get_agent_tool_definitions()
         else:

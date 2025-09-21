@@ -113,7 +113,7 @@ class ToolConfigManager:
         """Load configuration from file or create default."""
         logger.debug("🕐 Starting ToolConfigManager.load_config")
         start_time = time.time()
-        
+
         if self._config is not None:
             logger.debug("✅ Returning cached config")
             return self._config

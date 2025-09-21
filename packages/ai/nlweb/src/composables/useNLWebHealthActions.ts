@@ -14,7 +14,7 @@ import { makeNLWebRequest, handleAPIError } from "./useNLWebRequest.js";
 export function createHealthAction(state: NLWebState, baseUrl: string, requestTimeout: number): () => Promise<void> {
   return async (): Promise<void> => {
     try {
-      const response = await makeNLWebRequest<NLWebHealthStatus>("/health", baseUrl, requestTimeout);
+      const response = await makeNLWebRequest<NLWebHealthStatus>("/api/nlweb/health", baseUrl, requestTimeout);
       state.setHealth(response);
     } catch (error) {
       handleAPIError(state, error, "Failed to get health status");

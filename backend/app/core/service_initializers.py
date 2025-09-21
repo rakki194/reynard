@@ -141,18 +141,19 @@ async def init_rag_service(service_config: dict[str, Any]) -> bool:
         Exception: Logged and returned as False for graceful error handling.
     """
     try:
-        from app.api.rag.service import get_rag_service
+        from app.services.rag.rag_service import RAGService
 
-        # Get the RAG service instance and initialize it
-        rag_service = get_rag_service()
+        # Create and initialize the new RAG service with continuous indexing
+        rag_service = RAGService(service_config)
         await rag_service.initialize()
-        
+
         # Store the service instance in the registry
         from app.core.service_registry import get_service_registry
+
         registry = get_service_registry()
         registry.set_service_instance("rag", rag_service)
-        
-        logger.info("🧠 RAG service initialized successfully")
+
+        logger.info("🧠 RAG service with continuous indexing initialized successfully")
         return True
     except Exception as e:
         logger.error(f"❌ RAG initialization failed: {e}")
@@ -246,16 +247,17 @@ async def init_search_service(service_config: dict[str, Any]) -> bool:
         # Create and initialize the optimized search service
         search_service = OptimizedSearchService()
         success = await search_service.initialize()
-        
+
         if success:
             # Store the service instance for later use
             from app.core.service_registry import get_service_registry
+
             registry = get_service_registry()
             registry.set_service_instance("search", search_service)
             logger.info("🔍 Optimized Search service initialized successfully")
         else:
             logger.warning("⚠️ Optimized Search service initialization failed")
-            
+
         return success
     except Exception as e:
         logger.error(f"❌ Optimized Search service initialization failed: {e}")
@@ -265,19 +267,20 @@ async def init_search_service(service_config: dict[str, Any]) -> bool:
 async def shutdown_search_service() -> None:
     """
     Shutdown the Search service and cleanup resources.
-    
+
     Properly closes HTTP sessions, cache connections, and database connections.
     """
     try:
         from app.core.service_registry import get_service_registry
+
         registry = get_service_registry()
         search_service = registry.get_service_instance("search")
-        
-        if search_service and hasattr(search_service, 'close'):
+
+        if search_service and hasattr(search_service, "close"):
             await search_service.close()
             logger.info("🔍 Search service shutdown completed")
         else:
             logger.info("🔍 Search service was not initialized or already closed")
-            
+
     except Exception as e:
         logger.error(f"❌ Search service shutdown failed: {e}")

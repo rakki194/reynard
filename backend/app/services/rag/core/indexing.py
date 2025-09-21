@@ -26,6 +26,7 @@ logger = logging.getLogger("uvicorn")
 try:
     import tree_sitter
     from tree_sitter import Language, Parser
+
     TREE_SITTER_AVAILABLE = True
 except ImportError:
     TREE_SITTER_AVAILABLE = False
@@ -37,6 +38,7 @@ except ImportError:
 @dataclass
 class ChunkMetadata:
     """Metadata for a document chunk."""
+
     chunk_id: str
     chunk_index: int
     chunk_type: str  # 'function', 'class', 'import', 'generic'
@@ -51,6 +53,7 @@ class ChunkMetadata:
 @dataclass
 class DocumentChunk:
     """A chunk of a document with metadata."""
+
     text: str
     metadata: ChunkMetadata
     embedding: Optional[List[float]] = None
@@ -59,6 +62,7 @@ class DocumentChunk:
 @dataclass
 class QueueItem:
     """Item in the processing queue."""
+
     kind: str  # "docs" | "images" | "captions"
     payload: Dict[str, Any]
     job_id: Optional[str] = None
@@ -78,15 +82,17 @@ class ASTCodeChunker:
     def _initialize_parsers(self) -> None:
         """Initialize tree-sitter parsers for supported languages."""
         if not TREE_SITTER_AVAILABLE:
-            logger.warning("tree-sitter not available, falling back to regex-based chunking")
+            logger.warning(
+                "tree-sitter not available, falling back to regex-based chunking"
+            )
             return
 
         languages = {
-            'python': 'tree-sitter-python',
-            'typescript': 'tree-sitter-typescript',
-            'javascript': 'tree-sitter-javascript',
-            'java': 'tree-sitter-java',
-            'cpp': 'tree-sitter-cpp'
+            "python": "tree-sitter-python",
+            "typescript": "tree-sitter-typescript",
+            "javascript": "tree-sitter-javascript",
+            "java": "tree-sitter-java",
+            "cpp": "tree-sitter-cpp",
         }
 
         for lang, lib in languages.items():
@@ -100,9 +106,15 @@ class ASTCodeChunker:
 
         self._initialized = True
 
-    def chunk_code_ast_aware(self, code: str, language: str) -> Tuple[List[DocumentChunk], Dict[str, Any]]:
+    def chunk_code_ast_aware(
+        self, code: str, language: str
+    ) -> Tuple[List[DocumentChunk], Dict[str, Any]]:
         """Chunk code using AST boundaries for semantic coherence."""
-        if not self._initialized or language not in self.parsers or self.parsers[language] is None:
+        if (
+            not self._initialized
+            or language not in self.parsers
+            or self.parsers[language] is None
+        ):
             return self._fallback_chunking(code, language)
 
         try:
@@ -113,29 +125,35 @@ class ASTCodeChunker:
             logger.warning(f"AST parsing failed for {language}: {e}, using fallback")
             return self._fallback_chunking(code, language)
 
-    def _fallback_chunking(self, code: str, language: str) -> Tuple[List[DocumentChunk], Dict[str, Any]]:
+    def _fallback_chunking(
+        self, code: str, language: str
+    ) -> Tuple[List[DocumentChunk], Dict[str, Any]]:
         """Fallback to regex-based chunking if AST parsing fails."""
-        if language == 'python':
+        if language == "python":
             return self._chunk_python_regex(code)
-        elif language in ['typescript', 'javascript']:
+        elif language in ["typescript", "javascript"]:
             return self._chunk_js_regex(code)
-        elif language == 'java':
+        elif language == "java":
             return self._chunk_java_regex(code)
-        elif language == 'cpp':
+        elif language == "cpp":
             return self._chunk_cpp_regex(code)
         else:
             return self._chunk_generic_regex(code)
 
-    def _chunk_python_regex(self, code: str) -> Tuple[List[DocumentChunk], Dict[str, Any]]:
+    def _chunk_python_regex(
+        self, code: str
+    ) -> Tuple[List[DocumentChunk], Dict[str, Any]]:
         """Python regex-based chunking for functions and classes."""
         chunks = []
         symbol_map = {}
-        lines = code.split('\n')
+        lines = code.split("\n")
 
         # Regex patterns for Python
-        function_pattern = re.compile(r'^(\s*)def\s+(\w+)\s*\(', re.MULTILINE)
-        class_pattern = re.compile(r'^(\s*)class\s+(\w+)\s*\(?', re.MULTILINE)
-        import_pattern = re.compile(r'^(import\s+\w+|from\s+\w+\s+import)', re.MULTILINE)
+        function_pattern = re.compile(r"^(\s*)def\s+(\w+)\s*\(", re.MULTILINE)
+        class_pattern = re.compile(r"^(\s*)class\s+(\w+)\s*\(?", re.MULTILINE)
+        import_pattern = re.compile(
+            r"^(import\s+\w+|from\s+\w+\s+import)", re.MULTILINE
+        )
 
         # Find all matches
         functions = list(function_pattern.finditer(code))
@@ -144,77 +162,77 @@ class ASTCodeChunker:
 
         # Process imports first
         for match in imports:
-            start_line = code[:match.start()].count('\n') + 1
+            start_line = code[: match.start()].count("\n") + 1
             end_line = start_line
             chunk_text = lines[start_line - 1]
-            
+
             chunk_id = f"import_{start_line}"
             metadata = ChunkMetadata(
                 chunk_id=chunk_id,
                 chunk_index=len(chunks),
-                chunk_type='import',
+                chunk_type="import",
                 start_line=start_line,
                 end_line=end_line,
-                language='python',
-                tokens=self._estimate_tokens(chunk_text)
+                language="python",
+                tokens=self._estimate_tokens(chunk_text),
             )
-            
+
             chunks.append(DocumentChunk(text=chunk_text, metadata=metadata))
 
         # Process functions
         for match in functions:
             func_name = match.group(2)
-            start_line = code[:match.start()].count('\n') + 1
+            start_line = code[: match.start()].count("\n") + 1
             end_line = self._find_function_end(code, match.start(), lines)
-            
-            chunk_text = '\n'.join(lines[start_line-1:end_line])
+
+            chunk_text = "\n".join(lines[start_line - 1 : end_line])
             chunk_id = f"func_{func_name}_{start_line}"
-            
+
             metadata = ChunkMetadata(
                 chunk_id=chunk_id,
                 chunk_index=len(chunks),
-                chunk_type='function',
+                chunk_type="function",
                 start_line=start_line,
                 end_line=end_line,
-                language='python',
+                language="python",
                 name=func_name,
-                tokens=self._estimate_tokens(chunk_text)
+                tokens=self._estimate_tokens(chunk_text),
             )
-            
+
             chunks.append(DocumentChunk(text=chunk_text, metadata=metadata))
 
             symbol_map[func_name] = {
-                'type': 'function',
-                'line': start_line,
-                'chunk_index': len(chunks) - 1
+                "type": "function",
+                "line": start_line,
+                "chunk_index": len(chunks) - 1,
             }
 
         # Process classes
         for match in classes:
             class_name = match.group(2)
-            start_line = code[:match.start()].count('\n') + 1
+            start_line = code[: match.start()].count("\n") + 1
             end_line = self._find_class_end(code, match.start(), lines)
-            
-            chunk_text = '\n'.join(lines[start_line-1:end_line])
+
+            chunk_text = "\n".join(lines[start_line - 1 : end_line])
             chunk_id = f"class_{class_name}_{start_line}"
-            
+
             metadata = ChunkMetadata(
                 chunk_id=chunk_id,
                 chunk_index=len(chunks),
-                chunk_type='class',
+                chunk_type="class",
                 start_line=start_line,
                 end_line=end_line,
-                language='python',
+                language="python",
                 name=class_name,
-                tokens=self._estimate_tokens(chunk_text)
+                tokens=self._estimate_tokens(chunk_text),
             )
-            
+
             chunks.append(DocumentChunk(text=chunk_text, metadata=metadata))
 
             symbol_map[class_name] = {
-                'type': 'class',
-                'line': start_line,
-                'chunk_index': len(chunks) - 1
+                "type": "class",
+                "line": start_line,
+                "chunk_index": len(chunks) - 1,
             }
 
         return chunks, symbol_map
@@ -223,12 +241,19 @@ class ASTCodeChunker:
         """JavaScript/TypeScript regex-based chunking."""
         chunks = []
         symbol_map = {}
-        lines = code.split('\n')
+        lines = code.split("\n")
 
         # Regex patterns for JavaScript/TypeScript
-        function_pattern = re.compile(r'^(export\s+)?(async\s+)?function\s+(\w+)\s*\(', re.MULTILINE)
-        class_pattern = re.compile(r'^(export\s+)?class\s+(\w+)\s*(extends\s+\w+)?\s*{', re.MULTILINE)
-        arrow_function_pattern = re.compile(r'^(export\s+)?(const|let|var)\s+(\w+)\s*=\s*(async\s+)?\([^)]*\)\s*=>', re.MULTILINE)
+        function_pattern = re.compile(
+            r"^(export\s+)?(async\s+)?function\s+(\w+)\s*\(", re.MULTILINE
+        )
+        class_pattern = re.compile(
+            r"^(export\s+)?class\s+(\w+)\s*(extends\s+\w+)?\s*{", re.MULTILINE
+        )
+        arrow_function_pattern = re.compile(
+            r"^(export\s+)?(const|let|var)\s+(\w+)\s*=\s*(async\s+)?\([^)]*\)\s*=>",
+            re.MULTILINE,
+        )
 
         # Find all matches
         functions = list(function_pattern.finditer(code))
@@ -238,70 +263,78 @@ class ASTCodeChunker:
         # Process functions
         for match in functions:
             func_name = match.group(3)
-            start_line = code[:match.start()].count('\n') + 1
+            start_line = code[: match.start()].count("\n") + 1
             end_line = self._find_js_function_end(code, match.start(), lines)
-            
-            chunk_text = '\n'.join(lines[start_line-1:end_line])
+
+            chunk_text = "\n".join(lines[start_line - 1 : end_line])
             chunk_id = f"func_{func_name}_{start_line}"
-            
+
             metadata = ChunkMetadata(
                 chunk_id=chunk_id,
                 chunk_index=len(chunks),
-                chunk_type='function',
+                chunk_type="function",
                 start_line=start_line,
                 end_line=end_line,
-                language='javascript',
+                language="javascript",
                 name=func_name,
-                tokens=self._estimate_tokens(chunk_text)
+                tokens=self._estimate_tokens(chunk_text),
             )
-            
+
             chunks.append(DocumentChunk(text=chunk_text, metadata=metadata))
 
             symbol_map[func_name] = {
-                'type': 'function',
-                'line': start_line,
-                'chunk_index': len(chunks) - 1
+                "type": "function",
+                "line": start_line,
+                "chunk_index": len(chunks) - 1,
             }
 
         # Process classes
         for match in classes:
             class_name = match.group(2)
-            start_line = code[:match.start()].count('\n') + 1
+            start_line = code[: match.start()].count("\n") + 1
             end_line = self._find_js_class_end(code, match.start(), lines)
-            
-            chunk_text = '\n'.join(lines[start_line-1:end_line])
+
+            chunk_text = "\n".join(lines[start_line - 1 : end_line])
             chunk_id = f"class_{class_name}_{start_line}"
-            
+
             metadata = ChunkMetadata(
                 chunk_id=chunk_id,
                 chunk_index=len(chunks),
-                chunk_type='class',
+                chunk_type="class",
                 start_line=start_line,
                 end_line=end_line,
-                language='javascript',
+                language="javascript",
                 name=class_name,
-                tokens=self._estimate_tokens(chunk_text)
+                tokens=self._estimate_tokens(chunk_text),
             )
-            
+
             chunks.append(DocumentChunk(text=chunk_text, metadata=metadata))
 
             symbol_map[class_name] = {
-                'type': 'class',
-                'line': start_line,
-                'chunk_index': len(chunks) - 1
+                "type": "class",
+                "line": start_line,
+                "chunk_index": len(chunks) - 1,
             }
 
         return chunks, symbol_map
 
-    def _chunk_java_regex(self, code: str) -> Tuple[List[DocumentChunk], Dict[str, Any]]:
+    def _chunk_java_regex(
+        self, code: str
+    ) -> Tuple[List[DocumentChunk], Dict[str, Any]]:
         """Java regex-based chunking."""
         chunks = []
         symbol_map = {}
-        lines = code.split('\n')
+        lines = code.split("\n")
 
         # Java patterns
-        class_pattern = re.compile(r'^(public\s+|private\s+|protected\s+)?(static\s+)?(final\s+)?class\s+(\w+)', re.MULTILINE)
-        method_pattern = re.compile(r'^(public\s+|private\s+|protected\s+)?(static\s+)?(\w+\s+)*(\w+)\s+(\w+)\s*\(', re.MULTILINE)
+        class_pattern = re.compile(
+            r"^(public\s+|private\s+|protected\s+)?(static\s+)?(final\s+)?class\s+(\w+)",
+            re.MULTILINE,
+        )
+        method_pattern = re.compile(
+            r"^(public\s+|private\s+|protected\s+)?(static\s+)?(\w+\s+)*(\w+)\s+(\w+)\s*\(",
+            re.MULTILINE,
+        )
 
         # Process classes and methods
         classes = list(class_pattern.finditer(code))
@@ -309,29 +342,29 @@ class ASTCodeChunker:
 
         for match in classes:
             class_name = match.group(4)
-            start_line = code[:match.start()].count('\n') + 1
+            start_line = code[: match.start()].count("\n") + 1
             end_line = self._find_java_class_end(code, match.start(), lines)
-            
-            chunk_text = '\n'.join(lines[start_line-1:end_line])
+
+            chunk_text = "\n".join(lines[start_line - 1 : end_line])
             chunk_id = f"class_{class_name}_{start_line}"
-            
+
             metadata = ChunkMetadata(
                 chunk_id=chunk_id,
                 chunk_index=len(chunks),
-                chunk_type='class',
+                chunk_type="class",
                 start_line=start_line,
                 end_line=end_line,
-                language='java',
+                language="java",
                 name=class_name,
-                tokens=self._estimate_tokens(chunk_text)
+                tokens=self._estimate_tokens(chunk_text),
             )
-            
+
             chunks.append(DocumentChunk(text=chunk_text, metadata=metadata))
 
             symbol_map[class_name] = {
-                'type': 'class',
-                'line': start_line,
-                'chunk_index': len(chunks) - 1
+                "type": "class",
+                "line": start_line,
+                "chunk_index": len(chunks) - 1,
             }
 
         return chunks, symbol_map
@@ -340,115 +373,123 @@ class ASTCodeChunker:
         """C++ regex-based chunking."""
         chunks = []
         symbol_map = {}
-        lines = code.split('\n')
+        lines = code.split("\n")
 
         # C++ patterns
-        class_pattern = re.compile(r'^(class|struct)\s+(\w+)', re.MULTILINE)
-        function_pattern = re.compile(r'^(\w+\s+)*(\w+)\s+(\w+)\s*\([^)]*\)\s*{', re.MULTILINE)
+        class_pattern = re.compile(r"^(class|struct)\s+(\w+)", re.MULTILINE)
+        function_pattern = re.compile(
+            r"^(\w+\s+)*(\w+)\s+(\w+)\s*\([^)]*\)\s*{", re.MULTILINE
+        )
 
         classes = list(class_pattern.finditer(code))
         functions = list(function_pattern.finditer(code))
 
         for match in classes:
             class_name = match.group(2)
-            start_line = code[:match.start()].count('\n') + 1
+            start_line = code[: match.start()].count("\n") + 1
             end_line = self._find_cpp_class_end(code, match.start(), lines)
-            
-            chunk_text = '\n'.join(lines[start_line-1:end_line])
+
+            chunk_text = "\n".join(lines[start_line - 1 : end_line])
             chunk_id = f"class_{class_name}_{start_line}"
-            
+
             metadata = ChunkMetadata(
                 chunk_id=chunk_id,
                 chunk_index=len(chunks),
-                chunk_type='class',
+                chunk_type="class",
                 start_line=start_line,
                 end_line=end_line,
-                language='cpp',
+                language="cpp",
                 name=class_name,
-                tokens=self._estimate_tokens(chunk_text)
+                tokens=self._estimate_tokens(chunk_text),
             )
-            
+
             chunks.append(DocumentChunk(text=chunk_text, metadata=metadata))
 
             symbol_map[class_name] = {
-                'type': 'class',
-                'line': start_line,
-                'chunk_index': len(chunks) - 1
+                "type": "class",
+                "line": start_line,
+                "chunk_index": len(chunks) - 1,
             }
 
         return chunks, symbol_map
 
-    def _chunk_generic_regex(self, code: str) -> Tuple[List[DocumentChunk], Dict[str, Any]]:
+    def _chunk_generic_regex(
+        self, code: str
+    ) -> Tuple[List[DocumentChunk], Dict[str, Any]]:
         """Generic regex-based chunking for unsupported languages."""
         chunks = []
         symbol_map = {}
-        lines = code.split('\n')
+        lines = code.split("\n")
 
         # Simple line-based chunking
         chunk_size = 50  # lines per chunk
         for i in range(0, len(lines), chunk_size):
-            chunk_lines = lines[i:i + chunk_size]
-            chunk_text = '\n'.join(chunk_lines)
+            chunk_lines = lines[i : i + chunk_size]
+            chunk_text = "\n".join(chunk_lines)
             chunk_id = f"generic_{i}_{i + len(chunk_lines)}"
-            
+
             metadata = ChunkMetadata(
                 chunk_id=chunk_id,
                 chunk_index=len(chunks),
-                chunk_type='generic',
+                chunk_type="generic",
                 start_line=i + 1,
                 end_line=min(i + chunk_size, len(lines)),
-                language='generic',
-                tokens=self._estimate_tokens(chunk_text)
+                language="generic",
+                tokens=self._estimate_tokens(chunk_text),
             )
-            
+
             chunks.append(DocumentChunk(text=chunk_text, metadata=metadata))
 
         return chunks, symbol_map
 
     def _find_function_end(self, code: str, start_pos: int, lines: List[str]) -> int:
         """Find the end of a Python function."""
-        current_line = code[:start_pos].count('\n') + 1
-        
+        current_line = code[:start_pos].count("\n") + 1
+
         for i in range(current_line, len(lines)):
             line = lines[i].strip()
-            if line.startswith('def ') or line.startswith('class ') or line.startswith('@'):
+            if (
+                line.startswith("def ")
+                or line.startswith("class ")
+                or line.startswith("@")
+            ):
                 return i
             if i == len(lines) - 1:
                 return i + 1
-        
+
         return len(lines)
 
     def _find_class_end(self, code: str, start_pos: int, lines: List[str]) -> int:
         """Find the end of a Python class."""
-        current_line = code[:start_pos].count('\n') + 1
-        
+        current_line = code[:start_pos].count("\n") + 1
+
         for i in range(current_line, len(lines)):
             line = lines[i].strip()
-            if line.startswith('class ') and i > current_line:
+            if line.startswith("class ") and i > current_line:
                 return i
             if i == len(lines) - 1:
                 return i + 1
-        
+
         return len(lines)
 
     def _find_js_function_end(self, code: str, start_pos: int, lines: List[str]) -> int:
         """Find the end of a JavaScript function."""
-        current_line = code[:start_pos].count('\n') + 1
+        current_line = code[:start_pos].count("\n") + 1
         return min(current_line + 20, len(lines))  # Assume 20 lines max
 
     def _find_js_class_end(self, code: str, start_pos: int, lines: List[str]) -> int:
         """Find the end of a JavaScript class."""
-        current_line = code[:start_pos].count('\n') + 1
+        current_line = code[:start_pos].count("\n") + 1
         return min(current_line + 50, len(lines))  # Assume 50 lines max
 
     def _find_java_class_end(self, code: str, start_pos: int, lines: List[str]) -> int:
         """Find the end of a Java class."""
-        current_line = code[:start_pos].count('\n') + 1
+        current_line = code[:start_pos].count("\n") + 1
         return min(current_line + 100, len(lines))  # Assume 100 lines max
 
     def _find_cpp_class_end(self, code: str, start_pos: int, lines: List[str]) -> int:
         """Find the end of a C++ class."""
-        current_line = code[:start_pos].count('\n') + 1
+        current_line = code[:start_pos].count("\n") + 1
         return min(current_line + 100, len(lines))  # Assume 100 lines max
 
     def _estimate_tokens(self, text: str) -> int:
@@ -469,7 +510,7 @@ class ASTCodeChunker:
             "tree_sitter_available": TREE_SITTER_AVAILABLE,
             "initialized": self._initialized,
             "supported_languages": self.get_supported_languages(),
-            "parsers_loaded": len([p for p in self.parsers.values() if p is not None])
+            "parsers_loaded": len([p for p in self.parsers.values() if p is not None]),
         }
 
 
@@ -518,9 +559,9 @@ class DocumentIndexer:
         self._chunk_min_tokens = 100
         self._chunk_overlap_ratio = 0.15
 
-    async def initialize(self, config: Dict[str, Any], 
-                        vector_store_service=None, 
-                        embedding_service=None) -> bool:
+    async def initialize(
+        self, config: Dict[str, Any], vector_store_service=None, embedding_service=None
+    ) -> bool:
         """Initialize the document indexer."""
         try:
             self._enabled = config.get("rag_enabled", False)
@@ -632,44 +673,46 @@ class DocumentIndexer:
     async def _process_document(self, payload: Dict[str, Any]):
         """Process a document payload."""
         # Extract document information
-        file_path = payload.get('path')
-        content = payload.get('content', '')
-        file_type = payload.get('file_type', 'text')
+        file_path = payload.get("path")
+        content = payload.get("content", "")
+        file_type = payload.get("file_type", "text")
         language = self._detect_language(file_path, file_type)
-        
+
         # Chunk the document
         chunks, symbol_map = self.ast_chunker.chunk_code_ast_aware(content, language)
-        
+
         # Generate embeddings for chunks
         if self._embedding_service:
             chunk_texts = [chunk.text for chunk in chunks]
             embeddings = await self._embedding_service.embed_batch(chunk_texts)
-            
+
             # Add embeddings to chunks
             for chunk, embedding in zip(chunks, embeddings):
                 chunk.embedding = embedding
-        
+
         # Store in vector database
         if self._vector_store_service:
             embedding_data = []
             for chunk in chunks:
-                embedding_data.append({
-                    'file_id': payload.get('file_id'),
-                    'chunk_index': chunk.metadata.chunk_index,
-                    'chunk_text': chunk.text,
-                    'embedding': chunk.embedding or [],
-                    'metadata': {
-                        'chunk_id': chunk.metadata.chunk_id,
-                        'chunk_type': chunk.metadata.chunk_type,
-                        'start_line': chunk.metadata.start_line,
-                        'end_line': chunk.metadata.end_line,
-                        'language': chunk.metadata.language,
-                        'name': chunk.metadata.name,
-                        'tokens': chunk.metadata.tokens,
-                        'symbol_map': symbol_map
+                embedding_data.append(
+                    {
+                        "file_id": payload.get("file_id"),
+                        "chunk_index": chunk.metadata.chunk_index,
+                        "chunk_text": chunk.text,
+                        "embedding": chunk.embedding or [],
+                        "metadata": {
+                            "chunk_id": chunk.metadata.chunk_id,
+                            "chunk_type": chunk.metadata.chunk_type,
+                            "start_line": chunk.metadata.start_line,
+                            "end_line": chunk.metadata.end_line,
+                            "language": chunk.metadata.language,
+                            "name": chunk.metadata.name,
+                            "tokens": chunk.metadata.tokens,
+                            "symbol_map": symbol_map,
+                        },
                     }
-                })
-            
+                )
+
             await self._vector_store_service.insert_document_embeddings(embedding_data)
 
     async def _process_image(self, payload: Dict[str, Any]):
@@ -685,29 +728,31 @@ class DocumentIndexer:
     def _detect_language(self, file_path: str, file_type: str) -> str:
         """Detect programming language from file path and type."""
         if not file_path:
-            return 'generic'
-        
+            return "generic"
+
         path = Path(file_path)
         suffix = path.suffix.lower()
-        
-        language_map = {
-            '.py': 'python',
-            '.ts': 'typescript',
-            '.tsx': 'typescript',
-            '.js': 'javascript',
-            '.jsx': 'javascript',
-            '.java': 'java',
-            '.cpp': 'cpp',
-            '.cc': 'cpp',
-            '.cxx': 'cpp',
-            '.c': 'cpp',
-            '.h': 'cpp',
-            '.hpp': 'cpp',
-        }
-        
-        return language_map.get(suffix, 'generic')
 
-    async def index_documents(self, documents: List[Dict[str, Any]]) -> AsyncGenerator[Dict[str, Any], None]:
+        language_map = {
+            ".py": "python",
+            ".ts": "typescript",
+            ".tsx": "typescript",
+            ".js": "javascript",
+            ".jsx": "javascript",
+            ".java": "java",
+            ".cpp": "cpp",
+            ".cc": "cpp",
+            ".cxx": "cpp",
+            ".c": "cpp",
+            ".h": "cpp",
+            ".hpp": "cpp",
+        }
+
+        return language_map.get(suffix, "generic")
+
+    async def index_documents(
+        self, documents: List[Dict[str, Any]]
+    ) -> AsyncGenerator[Dict[str, Any], None]:
         """Index documents with streaming progress."""
         if not self._enabled:
             yield {"type": "error", "error": "DocumentIndexer not enabled"}
@@ -725,9 +770,7 @@ class DocumentIndexer:
                 # Queue batch items
                 for doc in batch:
                     queue_item = QueueItem(
-                        kind="docs", 
-                        payload=doc, 
-                        job_id=f"batch_{i}_{len(batch)}"
+                        kind="docs", payload=doc, job_id=f"batch_{i}_{len(batch)}"
                     )
                     await self._queue.put(queue_item)
                     self._metrics["enqueued"] += 1

@@ -19,7 +19,7 @@ async def check_messages():
     """Check messages and system status for Success-Advisor-8."""
     service = PostgresECSWorldService()
     await service.startup()
-    
+
     try:
         # Check world status
         status = await service.get_world_status()
@@ -27,7 +27,7 @@ async def check_messages():
         print("=" * 50)
         for key, value in status.items():
             print(f"{key}: {value}")
-        
+
         # Check if Success-Advisor-8 exists
         print("\n🦁 Success-Advisor-8 Status:")
         print("=" * 50)
@@ -42,7 +42,7 @@ async def check_messages():
             print(f"Last Activity: {agent.get('last_activity', 'N/A')}")
         else:
             print("❌ Success-Advisor-8 not found in ECS system")
-        
+
         # Check if there are any interactions
         print("\n🦁 Message/Interaction Status:")
         print("=" * 50)
@@ -50,11 +50,13 @@ async def check_messages():
         print(f"Total interactions in system: {total_interactions}")
         if total_interactions > 0:
             print("✅ There are interactions in the system!")
-            
+
             # Get Success-Advisor-8's interaction history
             print("\n🦁 Success-Advisor-8 Message History:")
             print("=" * 50)
-            interactions = await service.get_agent_interactions("success-advisor-8", limit=10)
+            interactions = await service.get_agent_interactions(
+                "success-advisor-8", limit=10
+            )
             if interactions:
                 for i, interaction in enumerate(interactions, 1):
                     print(f"{i}. From: {interaction['sender_id']}")
@@ -69,7 +71,7 @@ async def check_messages():
         else:
             print("❌ No interactions/messages found in the system")
             print("This means no agents have sent messages to Success-Advisor-8 yet")
-        
+
         # Get first 5 agents as examples
         print("\n🦁 First 5 Agents in ECS System:")
         print("=" * 50)
@@ -84,10 +86,11 @@ async def check_messages():
                 print(f"... and {len(agents) - 5} more agents")
         else:
             print("No agents found in ECS system")
-            
+
     except Exception as e:
         print(f"❌ Error checking system: {e}")
         import traceback
+
         traceback.print_exc()
     finally:
         await service.shutdown()

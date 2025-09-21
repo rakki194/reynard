@@ -18,6 +18,7 @@ from sqlalchemy import (
     String,
     create_engine,
     text,
+    Engine,
 )
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, declarative_base, sessionmaker

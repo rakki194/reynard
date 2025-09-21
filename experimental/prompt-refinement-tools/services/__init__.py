@@ -12,7 +12,7 @@ from .code_analysis import CodeAnalysisService
 
 __all__ = [
     "PromptRefinementService",
-    "WebScrapingService", 
+    "WebScrapingService",
     "SemanticSearchService",
     "NLPProcessingService",
     "CodeAnalysisService",

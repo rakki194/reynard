@@ -14,6 +14,7 @@ from ..core.component import Component
 
 class SocialRole(Enum):
     """Social roles within groups and communities."""
+
     LEADER = "leader"
     FOLLOWER = "follower"
     MEDIATOR = "mediator"
@@ -26,6 +27,7 @@ class SocialRole(Enum):
 
 class GroupType(Enum):
     """Types of social groups."""
+
     FRIENDSHIP = "friendship"
     WORK = "work"
     FAMILY = "family"
@@ -38,6 +40,7 @@ class GroupType(Enum):
 
 class SocialStatus(Enum):
     """Social status levels."""
+
     OUTCAST = "outcast"
     MARGINAL = "marginal"
     ACCEPTED = "accepted"
@@ -49,6 +52,7 @@ class SocialStatus(Enum):
 @dataclass
 class SocialGroup:
     """A social group or community."""
+
     id: str
     name: str
     group_type: GroupType
@@ -140,6 +144,7 @@ class SocialGroup:
 @dataclass
 class SocialConnection:
     """A connection in the social network."""
+
     target_agent: str
     connection_strength: float  # 0.0 to 1.0
     connection_type: str  # friend, rival, mentor, student, etc.
@@ -147,7 +152,9 @@ class SocialConnection:
     shared_groups: int = 0
     last_interaction: datetime = field(default_factory=datetime.now)
     interaction_frequency: float = 0.0  # Interactions per day
-    influence_flow: float = 0.0  # -1.0 to 1.0 (negative = influenced by, positive = influences)
+    influence_flow: float = (
+        0.0  # -1.0 to 1.0 (negative = influenced by, positive = influences)
+    )
 
     def __post_init__(self) -> None:
         """Validate connection data after initialization."""
@@ -157,8 +164,9 @@ class SocialConnection:
 
     def update_connection(self, interaction_impact: float) -> None:
         """Update connection based on interaction."""
-        self.connection_strength = max(0.0, min(1.0, 
-            self.connection_strength + interaction_impact * 0.1))
+        self.connection_strength = max(
+            0.0, min(1.0, self.connection_strength + interaction_impact * 0.1)
+        )
         self.last_interaction = datetime.now()
 
     def get_connection_quality(self) -> float:
@@ -169,7 +177,7 @@ class SocialConnection:
 class SocialComponent(Component):
     """
     Agent social behavior and group dynamics.
-    
+
     Manages social networks, group memberships, social status,
     influence systems, and community participation.
     """
@@ -198,14 +206,16 @@ class SocialComponent(Component):
         self.leadership_opportunities: int = 0
         self._agent_id: str = "unknown"
 
-    def add_social_connection(self, target_agent: str, connection_type: str = "neutral") -> bool:
+    def add_social_connection(
+        self, target_agent: str, connection_type: str = "neutral"
+    ) -> bool:
         """
         Add a social connection to another agent.
-        
+
         Args:
             target_agent: ID of the agent to connect with
             connection_type: Type of connection (friend, rival, etc.)
-            
+
         Returns:
             True if connection was added successfully
         """
@@ -213,7 +223,7 @@ class SocialComponent(Component):
             connection = SocialConnection(
                 target_agent=target_agent,
                 connection_strength=0.1,  # Start with weak connection
-                connection_type=connection_type
+                connection_type=connection_type,
             )
             self.social_network[target_agent] = connection
             self.network_size = len(self.social_network)
@@ -239,18 +249,29 @@ class SocialComponent(Component):
 
     def get_connections_by_type(self, connection_type: str) -> List[SocialConnection]:
         """Get all connections of a specific type."""
-        return [conn for conn in self.social_network.values() 
-                if conn.connection_type == connection_type]
+        return [
+            conn
+            for conn in self.social_network.values()
+            if conn.connection_type == connection_type
+        ]
 
-    def get_strong_connections(self, min_strength: float = 0.7) -> List[SocialConnection]:
+    def get_strong_connections(
+        self, min_strength: float = 0.7
+    ) -> List[SocialConnection]:
         """Get connections with strength above threshold."""
-        return [conn for conn in self.social_network.values() 
-                if conn.connection_strength >= min_strength]
+        return [
+            conn
+            for conn in self.social_network.values()
+            if conn.connection_strength >= min_strength
+        ]
 
     def get_weak_connections(self, max_strength: float = 0.3) -> List[SocialConnection]:
         """Get connections with strength below threshold."""
-        return [conn for conn in self.social_network.values() 
-                if conn.connection_strength <= max_strength]
+        return [
+            conn
+            for conn in self.social_network.values()
+            if conn.connection_strength <= max_strength
+        ]
 
     def join_group(self, group_id: str) -> bool:
         """Join a social group."""
@@ -288,10 +309,10 @@ class SocialComponent(Component):
         """Calculate overall social influence based on network and status."""
         # Base influence from network size
         network_influence = min(1.0, self.network_size / 20.0)
-        
+
         # Leadership bonus
         leadership_bonus = len(self.leadership_roles) * 0.2
-        
+
         # Status bonus
         status_bonus = {
             SocialStatus.OUTCAST: -0.3,
@@ -299,13 +320,15 @@ class SocialComponent(Component):
             SocialStatus.ACCEPTED: 0.1,
             SocialStatus.POPULAR: 0.3,
             SocialStatus.INFLUENTIAL: 0.5,
-            SocialStatus.LEADER: 0.7
+            SocialStatus.LEADER: 0.7,
         }.get(self.social_status, 0.0)
-        
+
         # Charisma bonus
         charisma_bonus = self.charisma * 0.2
-        
-        total_influence = network_influence + leadership_bonus + status_bonus + charisma_bonus
+
+        total_influence = (
+            network_influence + leadership_bonus + status_bonus + charisma_bonus
+        )
         self.social_influence = max(0.0, min(2.0, total_influence))
         return self.social_influence
 
@@ -314,7 +337,7 @@ class SocialComponent(Component):
         influence = self.calculate_social_influence()
         network_size = self.network_size
         leadership_count = len(self.leadership_roles)
-        
+
         # Determine status based on metrics
         if influence >= 1.5 and leadership_count >= 2:
             self.social_status = SocialStatus.LEADER
@@ -333,8 +356,9 @@ class SocialComponent(Component):
         """Recover social energy over time."""
         if self.social_energy < self.max_social_energy:
             recovery_amount = self.energy_recovery_rate * delta_time
-            self.social_energy = min(self.max_social_energy, 
-                                   self.social_energy + recovery_amount)
+            self.social_energy = min(
+                self.max_social_energy, self.social_energy + recovery_amount
+            )
 
     def consume_social_energy(self, amount: float) -> bool:
         """Consume social energy for group activities."""
@@ -347,7 +371,7 @@ class SocialComponent(Component):
         """Get comprehensive social statistics."""
         strong_connections = len(self.get_strong_connections())
         weak_connections = len(self.get_weak_connections())
-        
+
         return {
             "social_status": self.social_status.value,
             "social_influence": self.social_influence,
@@ -368,12 +392,12 @@ class SocialComponent(Component):
             "negative_interactions": self.negative_interactions,
             "groups_created": self.groups_created,
             "groups_joined": self.groups_joined,
-            "leadership_opportunities": self.leadership_opportunities
+            "leadership_opportunities": self.leadership_opportunities,
         }
 
     def get_agent_id(self) -> str:
         """Get the agent ID for this component."""
-        return getattr(self, '_agent_id', 'unknown')
+        return getattr(self, "_agent_id", "unknown")
 
     def set_agent_id(self, agent_id: str) -> None:
         """Set the agent ID for this component."""

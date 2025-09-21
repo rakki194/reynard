@@ -30,7 +30,7 @@ describe("ADRGenerator", () => {
     it("should initialize templates", () => {
       const templates = generator.getAvailableTemplates();
       expect(templates.length).toBeGreaterThan(0);
-      
+
       const templateNames = templates.map(t => t.name);
       expect(templateNames).toContain("Security ADR Template");
       expect(templateNames).toContain("Performance ADR Template");
@@ -55,7 +55,7 @@ describe("ADRGenerator", () => {
 
     it("should generate ADR from suggestion", async () => {
       const filePath = await generator.generateADRFromSuggestion(sampleSuggestion);
-      
+
       expect(typeof filePath).toBe("string");
       expect(filePath).toContain("test-architecture-decision.md");
       expect(filePath).toContain(testEnv.adrDirectory);
@@ -63,15 +63,16 @@ describe("ADRGenerator", () => {
 
     it("should throw error for invalid template", async () => {
       const invalidSuggestion = { ...sampleSuggestion, template: "invalid-template" };
-      
-      await expect(generator.generateADRFromSuggestion(invalidSuggestion))
-        .rejects.toThrow("Template not found: invalid-template");
+
+      await expect(generator.generateADRFromSuggestion(invalidSuggestion)).rejects.toThrow(
+        "Template not found: invalid-template"
+      );
     });
 
     it("should generate ADR with correct content structure", async () => {
       const filePath = await generator.generateADRFromSuggestion(sampleSuggestion);
       const content = await require("fs/promises").readFile(filePath, "utf-8");
-      
+
       expect(content).toContain("# ADR-");
       expect(content).toContain("Test Architecture Decision");
       expect(content).toContain("## Status");
@@ -87,43 +88,43 @@ describe("ADRGenerator", () => {
     it("should include suggestion reasoning in context", async () => {
       const filePath = await generator.generateADRFromSuggestion(sampleSuggestion);
       const content = await require("fs/promises").readFile(filePath, "utf-8");
-      
+
       expect(content).toContain("This is a test decision");
       expect(content).toContain("It needs to be documented");
     });
 
-  it("should include evidence in context", async () => {
-    // Create a fresh test environment to avoid ID conflicts
-    const freshTestEnv = await createTestEnvironment();
-    const freshGenerator = new ADRGenerator(freshTestEnv.adrDirectory, freshTestEnv.templateDirectory);
+    it("should include evidence in context", async () => {
+      // Create a fresh test environment to avoid ID conflicts
+      const freshTestEnv = await createTestEnvironment();
+      const freshGenerator = new ADRGenerator(freshTestEnv.adrDirectory, freshTestEnv.templateDirectory);
 
-    const suggestionWithEvidence = {
-      ...sampleSuggestion,
-      evidence: ["Evidence 1", "Evidence 2"]
-    };
+      const suggestionWithEvidence = {
+        ...sampleSuggestion,
+        evidence: ["Evidence 1", "Evidence 2"],
+      };
 
-    const filePath = await freshGenerator.generateADRFromSuggestion(suggestionWithEvidence);
-    const content = await require("fs/promises").readFile(filePath, "utf-8");
+      const filePath = await freshGenerator.generateADRFromSuggestion(suggestionWithEvidence);
+      const content = await require("fs/promises").readFile(filePath, "utf-8");
 
-    expect(content).toContain("### Evidence");
-    expect(content).toContain("- Evidence 1");
-    expect(content).toContain("- Evidence 2");
+      expect(content).toContain("### Evidence");
+      expect(content).toContain("- Evidence 1");
+      expect(content).toContain("- Evidence 2");
 
-    // Clean up the fresh test environment
-    await freshTestEnv.cleanup();
-  });
+      // Clean up the fresh test environment
+      await freshTestEnv.cleanup();
+    });
 
     it("should include stakeholders in footer", async () => {
       const filePath = await generator.generateADRFromSuggestion(sampleSuggestion);
       const content = await require("fs/promises").readFile(filePath, "utf-8");
-      
+
       expect(content).toContain("**Stakeholders**: Development Team, Architecture Team");
     });
 
     it("should include priority and category in footer", async () => {
       const filePath = await generator.generateADRFromSuggestion(sampleSuggestion);
       const content = await require("fs/promises").readFile(filePath, "utf-8");
-      
+
       expect(content).toContain("**Priority**: HIGH");
       expect(content).toContain("**Category**: PERFORMANCE");
     });
@@ -157,14 +158,14 @@ describe("ADRGenerator", () => {
 
     it("should generate multiple ADRs", async () => {
       const filePaths = await generator.generateMultipleADRs(suggestions);
-      
+
       expect(filePaths.length).toBe(2);
       expect(filePaths.every(path => typeof path === "string")).toBe(true);
     });
 
     it("should sort suggestions by priority", async () => {
       const filePaths = await generator.generateMultipleADRs(suggestions);
-      
+
       // Critical priority should be generated first
       const firstContent = await require("fs/promises").readFile(filePaths[0], "utf-8");
       expect(firstContent).toContain("First Decision");
@@ -172,13 +173,10 @@ describe("ADRGenerator", () => {
     });
 
     it("should handle generation errors gracefully", async () => {
-      const invalidSuggestions = [
-        { ...suggestions[0], template: "invalid-template" },
-        suggestions[1],
-      ];
-      
+      const invalidSuggestions = [{ ...suggestions[0], template: "invalid-template" }, suggestions[1]];
+
       const filePaths = await generator.generateMultipleADRs(invalidSuggestions);
-      
+
       // Should only generate the valid suggestion
       expect(filePaths.length).toBe(1);
     });
@@ -187,10 +185,10 @@ describe("ADRGenerator", () => {
   describe("template management", () => {
     it("should get available templates", () => {
       const templates = generator.getAvailableTemplates();
-      
+
       expect(Array.isArray(templates)).toBe(true);
       expect(templates.length).toBeGreaterThan(0);
-      
+
       templates.forEach(template => {
         expect(template).toHaveProperty("name");
         expect(template).toHaveProperty("category");
@@ -202,7 +200,7 @@ describe("ADRGenerator", () => {
 
     it("should get template by name", () => {
       const securityTemplate = generator.getTemplate("security");
-      
+
       expect(securityTemplate).toBeDefined();
       expect(securityTemplate?.name).toBe("Security ADR Template");
       expect(securityTemplate?.category).toBe("security");
@@ -221,9 +219,9 @@ describe("ADRGenerator", () => {
         requiredFields: ["customField"],
         optionalFields: ["optionalField"],
       };
-      
+
       generator.addTemplate(customTemplate);
-      
+
       const retrievedTemplate = generator.getTemplate("custom-template");
       expect(retrievedTemplate).toBeDefined();
       expect(retrievedTemplate?.name).toBe("Custom Template");
@@ -232,10 +230,10 @@ describe("ADRGenerator", () => {
 
   describe("ADR ID generation", () => {
     it("should generate sequential ADR IDs", async () => {
-    // Create a completely fresh test environment without any existing ADRs
-    const freshTestEnv = await createEmptyTestEnvironment();
-    const freshGenerator = new ADRGenerator(freshTestEnv.adrDirectory, freshTestEnv.templateDirectory);
-      
+      // Create a completely fresh test environment without any existing ADRs
+      const freshTestEnv = await createEmptyTestEnvironment();
+      const freshGenerator = new ADRGenerator(freshTestEnv.adrDirectory, freshTestEnv.templateDirectory);
+
       const suggestion1: ADRSuggestion = {
         id: "test-1",
         title: "Test 1",
@@ -247,7 +245,7 @@ describe("ADRGenerator", () => {
         estimatedImpact: "low",
         stakeholders: ["Team"],
       };
-      
+
       const suggestion2: ADRSuggestion = {
         id: "test-2",
         title: "Test 2",
@@ -259,13 +257,13 @@ describe("ADRGenerator", () => {
         estimatedImpact: "low",
         stakeholders: ["Team"],
       };
-      
+
       const filePath1 = await freshGenerator.generateADRFromSuggestion(suggestion1);
       const filePath2 = await freshGenerator.generateADRFromSuggestion(suggestion2);
-      
+
       expect(filePath1).toContain("001-");
       expect(filePath2).toContain("002-");
-      
+
       // Clean up the fresh test environment
       await freshTestEnv.cleanup();
     });
@@ -273,7 +271,7 @@ describe("ADRGenerator", () => {
     it("should handle existing ADR files", async () => {
       // Create existing ADR files
       await createSampleADRFiles(testEnv.adrDirectory);
-      
+
       const suggestion: ADRSuggestion = {
         id: "test-new",
         title: "New Test",
@@ -285,9 +283,9 @@ describe("ADRGenerator", () => {
         estimatedImpact: "low",
         stakeholders: ["Team"],
       };
-      
+
       const filePath = await generator.generateADRFromSuggestion(suggestion);
-      
+
       // Should generate ID after existing files
       expect(filePath).toContain("003-");
     });
@@ -306,9 +304,9 @@ describe("ADRGenerator", () => {
         estimatedImpact: "low",
         stakeholders: ["Team"],
       };
-      
+
       const filePath = await generator.generateADRFromSuggestion(suggestion);
-      
+
       expect(filePath).toContain("test-special-characters-symbols.md");
     });
   });

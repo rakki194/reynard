@@ -48,11 +48,11 @@ from pydantic import BaseModel, ConfigDict, Field
 class OllamaChatRequest(BaseModel):
     """
     Request model for Ollama chat interactions with comprehensive validation.
-    
+
     Provides type-safe request handling for chat interactions with Ollama AI models,
     including message validation, model configuration, and advanced parameters for
     controlling AI behavior and response generation.
-    
+
     Attributes:
         message (str): User message for AI interaction (1-10000 characters)
         model (str): Ollama model to use for generation (default: "embeddinggemma:latest")

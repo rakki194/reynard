@@ -42,7 +42,7 @@ from app.utils.image_types import ImageTransform
 class TestImageProcessing:
     """
     Comprehensive test cases for the ImageProcessing class.
-    
+
     Provides thorough testing of all image processing functionality including
     dimension validation, aspect ratio calculations, resize operations, and
     transformation handling. This test class ensures reliability and correctness
@@ -52,7 +52,7 @@ class TestImageProcessing:
     def test_validate_dimensions_valid(self):
         """
         Test dimension validation with valid input parameters.
-        
+
         Validates that the ImageProcessing.validate_dimensions method correctly
         identifies valid image dimensions within acceptable ranges. Tests various
         valid dimension combinations including minimum, typical, and maximum values.
@@ -64,7 +64,7 @@ class TestImageProcessing:
     def test_validate_dimensions_invalid(self):
         """
         Test dimension validation with invalid input parameters.
-        
+
         Validates that the ImageProcessing.validate_dimensions method correctly
         rejects invalid image dimensions including zero values, negative values,
         and dimensions exceeding maximum limits. Ensures proper error handling

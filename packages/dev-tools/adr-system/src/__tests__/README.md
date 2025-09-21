@@ -1,6 +1,6 @@
 # ADR System Test Suite
 
-🦊 *whiskers twitch with strategic cunning* This comprehensive test suite ensures the ADR System operates with the precision of a fox stalking its prey, the thoroughness of an otter exploring streams, and the relentless determination of a wolf pack.
+🦊 _whiskers twitch with strategic cunning_ This comprehensive test suite ensures the ADR System operates with the precision of a fox stalking its prey, the thoroughness of an otter exploring streams, and the relentless determination of a wolf pack.
 
 ## Overview
 
@@ -255,6 +255,6 @@ The test suite is optimized for:
 
 ---
 
-🦊 *whiskers twitch with satisfaction* The ADR System test suite embodies the Reynard way of excellence - strategic thinking, thorough analysis, and relentless pursuit of quality. Every test is crafted with the cunning of a fox, the thoroughness of an otter, and the determination of a wolf pack.
+🦊 _whiskers twitch with satisfaction_ The ADR System test suite embodies the Reynard way of excellence - strategic thinking, thorough analysis, and relentless pursuit of quality. Every test is crafted with the cunning of a fox, the thoroughness of an otter, and the determination of a wolf pack.
 
-*Built with 🦊 fox cunning, 🦦 otter thoroughness, and 🐺 wolf precision for the Reynard framework*
+_Built with 🦊 fox cunning, 🦦 otter thoroughness, and 🐺 wolf precision for the Reynard framework_

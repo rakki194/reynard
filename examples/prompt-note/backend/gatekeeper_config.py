@@ -9,6 +9,7 @@ from gatekeeper import AuthManager, SecurityLevel, TokenConfig
 from gatekeeper.backends.memory import MemoryBackend
 from gatekeeper.backends.postgresql import PostgreSQLBackend
 from gatekeeper.backends.sqlite import SQLiteBackend
+from gatekeeper.backends.base import UserBackend
 
 # Detect reload mode for optimization
 IS_RELOAD_MODE = os.environ.get("UVICORN_RELOAD_PROCESS") == "1"

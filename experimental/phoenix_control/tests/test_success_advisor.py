@@ -102,12 +102,14 @@ class TestSuccessAdvisor8:
 
         # Test adding performance entry
         initial_count = len(agent.performance_history)
-        agent.performance_history.append({
-            "timestamp": "2025-01-15T10:30:00Z",
-            "action": "test_action",
-            "success": True,
-            "details": "Test performance entry"
-        })
+        agent.performance_history.append(
+            {
+                "timestamp": "2025-01-15T10:30:00Z",
+                "action": "test_action",
+                "success": True,
+                "details": "Test performance entry",
+            }
+        )
 
         assert len(agent.performance_history) == initial_count + 1
 
@@ -145,12 +147,14 @@ class TestSuccessAdvisor8:
         initial_knowledge = agent.knowledge_base.copy()
 
         # Perform operations
-        agent.performance_history.append({
-            "timestamp": "2025-01-15T10:30:00Z",
-            "action": "test_operation",
-            "success": True,
-            "details": "Test operation"
-        })
+        agent.performance_history.append(
+            {
+                "timestamp": "2025-01-15T10:30:00Z",
+                "action": "test_operation",
+                "success": True,
+                "details": "Test operation",
+            }
+        )
 
         # Verify state consistency
         assert agent.traits == initial_traits

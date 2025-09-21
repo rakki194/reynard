@@ -13,7 +13,11 @@ from typing import Dict, Any, List, Optional
 from datetime import datetime
 import asyncio
 
-from ..utils.data_structures import AgentState, PerformanceMetrics, StatisticalSignificance
+from ..utils.data_structures import (
+    AgentState,
+    PerformanceMetrics,
+    StatisticalSignificance,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -31,62 +35,64 @@ class RealPerformanceAnalyzer:
             "problem_solving": [
                 r"\b(analyze|evaluate|assess|examine|investigate)\b",
                 r"\b(solution|approach|strategy|method|technique)\b",
-                r"\b(logical|systematic|methodical|structured)\b"
+                r"\b(logical|systematic|methodical|structured)\b",
             ],
             "technical_accuracy": [
                 r"\b(algorithm|data structure|optimization|complexity)\b",
                 r"\b(implementation|architecture|design pattern)\b",
-                r"\b(performance|efficiency|scalability)\b"
+                r"\b(performance|efficiency|scalability)\b",
             ],
             "domain_knowledge": [
                 r"\b(software engineering|machine learning|AI|development)\b",
                 r"\b(framework|library|tool|technology)\b",
-                r"\b(best practice|standard|convention)\b"
-            ]
+                r"\b(best practice|standard|convention)\b",
+            ],
         }
 
         self.efficiency_patterns = {
             "conciseness": [
                 r"\b(concise|brief|succinct|direct)\b",
-                r"\b(efficient|optimal|streamlined)\b"
+                r"\b(efficient|optimal|streamlined)\b",
             ],
             "clarity": [
                 r"\b(clear|obvious|straightforward|simple)\b",
-                r"\b(understandable|comprehensible|accessible)\b"
+                r"\b(understandable|comprehensible|accessible)\b",
             ],
             "actionability": [
                 r"\b(implement|execute|apply|deploy)\b",
-                r"\b(step|process|procedure|workflow)\b"
-            ]
+                r"\b(step|process|procedure|workflow)\b",
+            ],
         }
 
         self.creativity_patterns = {
             "innovation": [
                 r"\b(innovative|novel|unique|original)\b",
-                r"\b(creative|imaginative|inventive)\b"
+                r"\b(creative|imaginative|inventive)\b",
             ],
             "adaptation": [
                 r"\b(adapt|modify|customize|tailor)\b",
-                r"\b(flexible|versatile|adaptable)\b"
+                r"\b(flexible|versatile|adaptable)\b",
             ],
             "exploration": [
                 r"\b(explore|experiment|investigate|discover)\b",
-                r"\b(alternative|different|new approach)\b"
-            ]
+                r"\b(alternative|different|new approach)\b",
+            ],
         }
 
         self.consistency_patterns = {
             "coherence": [
                 r"\b(consistent|coherent|aligned|unified)\b",
-                r"\b(follows|maintains|adheres to)\b"
+                r"\b(follows|maintains|adheres to)\b",
             ],
             "reliability": [
                 r"\b(reliable|dependable|stable|robust)\b",
-                r"\b(proven|tested|validated|verified)\b"
-            ]
+                r"\b(proven|tested|validated|verified)\b",
+            ],
         }
 
-    async def analyze_agent_output(self, agent: AgentState, output: str) -> PerformanceMetrics:
+    async def analyze_agent_output(
+        self, agent: AgentState, output: str
+    ) -> PerformanceMetrics:
         """
         Analyze real agent output to generate performance metrics.
         """
@@ -106,8 +112,11 @@ class RealPerformanceAnalyzer:
 
         # Calculate overall fitness
         fitness = self._calculate_fitness(
-            accuracy_score, efficiency_score, creativity_score,
-            consistency_score, generalization_score
+            accuracy_score,
+            efficiency_score,
+            creativity_score,
+            consistency_score,
+            generalization_score,
         )
 
         # Create statistical significance based on real analysis
@@ -116,7 +125,7 @@ class RealPerformanceAnalyzer:
             confidence_interval=(0.0, 1.0),
             effect_size=self._calculate_effect_size(agent, output),
             power=0.8,
-            sample_size=len(output.split())  # Use word count as sample size
+            sample_size=len(output.split()),  # Use word count as sample size
         )
 
         return PerformanceMetrics(
@@ -127,7 +136,7 @@ class RealPerformanceAnalyzer:
             creativity=creativity_score,
             consistency=consistency_score,
             fitness=fitness,
-            significance=significance
+            significance=significance,
         )
 
     def _analyze_accuracy(self, output: str) -> float:
@@ -214,7 +223,7 @@ class RealPerformanceAnalyzer:
         char_time = char_count * 0.001
 
         # Time based on complexity (sentence count)
-        sentence_count = len(re.findall(r'[.!?]+', output))
+        sentence_count = len(re.findall(r"[.!?]+", output))
         complexity_time = sentence_count * 0.05
 
         return base_time + word_time + char_time + complexity_time
@@ -222,8 +231,15 @@ class RealPerformanceAnalyzer:
     def _analyze_generalization(self, output: str) -> float:
         """Analyze generalization based on domain coverage and applicability."""
         domains = [
-            "software engineering", "machine learning", "AI", "development",
-            "architecture", "design", "testing", "deployment", "optimization"
+            "software engineering",
+            "machine learning",
+            "AI",
+            "development",
+            "architecture",
+            "design",
+            "testing",
+            "deployment",
+            "optimization",
         ]
 
         domain_mentions = 0
@@ -236,24 +252,32 @@ class RealPerformanceAnalyzer:
 
         # Bonus for general applicability terms
         general_terms = ["applicable", "general", "universal", "broad", "versatile"]
-        general_mentions = sum(1 for term in general_terms
-                             if re.search(rf"\b{re.escape(term)}\b", output, re.IGNORECASE))
+        general_mentions = sum(
+            1
+            for term in general_terms
+            if re.search(rf"\b{re.escape(term)}\b", output, re.IGNORECASE)
+        )
 
         general_bonus = min(general_mentions * 0.1, 0.3)
 
         return min(domain_score + general_bonus, 1.0)
 
-    def _calculate_fitness(self, accuracy: float, efficiency: float,
-                          creativity: float, consistency: float,
-                          generalization: float) -> float:
+    def _calculate_fitness(
+        self,
+        accuracy: float,
+        efficiency: float,
+        creativity: float,
+        consistency: float,
+        generalization: float,
+    ) -> float:
         """Calculate overall fitness score."""
         # Weighted combination of all metrics
         fitness = (
-            accuracy * 0.3 +
-            efficiency * 0.2 +
-            creativity * 0.15 +
-            consistency * 0.15 +
-            generalization * 0.2
+            accuracy * 0.3
+            + efficiency * 0.2
+            + creativity * 0.15
+            + consistency * 0.15
+            + generalization * 0.2
         )
 
         return min(fitness, 1.0)
@@ -262,10 +286,10 @@ class RealPerformanceAnalyzer:
         """Calculate effect size based on agent traits and output quality."""
         # Base effect size from agent traits
         trait_effect = (
-            agent.personality_traits.get("intelligence", 0.5) * 0.3 +
-            agent.ability_traits.get("strategist", 0.5) * 0.3 +
-            agent.ability_traits.get("inventor", 0.5) * 0.2 +
-            agent.personality_traits.get("creativity", 0.5) * 0.2
+            agent.personality_traits.get("intelligence", 0.5) * 0.3
+            + agent.ability_traits.get("strategist", 0.5) * 0.3
+            + agent.ability_traits.get("inventor", 0.5) * 0.2
+            + agent.personality_traits.get("creativity", 0.5) * 0.2
         )
 
         # Output quality effect
@@ -295,30 +319,46 @@ class RealPerformanceAnalyzer:
             "dragon": f"As an ancient {agent.spirit.value}, I bring wisdom and power:",
             "phoenix": f"As a transformative {agent.spirit.value}, I rise with renewal:",
             "alien": f"As an otherworldly {agent.spirit.value}, I approach with cosmic perspective:",
-            "yeti": f"As a mysterious {agent.spirit.value}, I bring elemental strength:"
+            "yeti": f"As a mysterious {agent.spirit.value}, I bring elemental strength:",
         }
 
-        output_parts.append(spirit_intro.get(agent.spirit.value, f"As a {agent.spirit.value}, I approach this task:"))
+        output_parts.append(
+            spirit_intro.get(
+                agent.spirit.value, f"As a {agent.spirit.value}, I approach this task:"
+            )
+        )
 
         # Add content based on personality traits
         if agent.personality_traits.get("curiosity", 0) > 0.7:
-            output_parts.append("I'm deeply curious about the underlying patterns and possibilities.")
+            output_parts.append(
+                "I'm deeply curious about the underlying patterns and possibilities."
+            )
 
         if agent.personality_traits.get("strategic_thinking", 0) > 0.7:
-            output_parts.append("Let me analyze this systematically and develop a strategic approach.")
+            output_parts.append(
+                "Let me analyze this systematically and develop a strategic approach."
+            )
 
         if agent.personality_traits.get("adaptability", 0) > 0.7:
-            output_parts.append("I'll adapt my approach based on the specific requirements and constraints.")
+            output_parts.append(
+                "I'll adapt my approach based on the specific requirements and constraints."
+            )
 
         # Add content based on ability traits
         if agent.ability_traits.get("problem_solving", 0) > 0.7:
-            output_parts.append("I'll break down the problem into manageable components and solve each systematically.")
+            output_parts.append(
+                "I'll break down the problem into manageable components and solve each systematically."
+            )
 
         if agent.ability_traits.get("planning", 0) > 0.7:
-            output_parts.append("I'll create a comprehensive plan with clear milestones and success criteria.")
+            output_parts.append(
+                "I'll create a comprehensive plan with clear milestones and success criteria."
+            )
 
         if agent.ability_traits.get("communication", 0) > 0.7:
-            output_parts.append("I'll ensure clear communication and alignment with all stakeholders.")
+            output_parts.append(
+                "I'll ensure clear communication and alignment with all stakeholders."
+            )
 
         # Add task-specific content
         output_parts.append(f"For the task: {task}")
@@ -342,9 +382,14 @@ class RealPerformanceAnalyzer:
             "dragon": "With ancient wisdom and elemental power, we'll transform this challenge.",
             "phoenix": "Through renewal and transformation, we'll rise above this challenge.",
             "alien": "With otherworldly perspective, we'll approach this from a new dimension.",
-            "yeti": "With elemental strength and mountain wisdom, we'll overcome this challenge."
+            "yeti": "With elemental strength and mountain wisdom, we'll overcome this challenge.",
         }
 
-        output_parts.append(spirit_conclusion.get(agent.spirit.value, "I'm ready to tackle this challenge with determination."))
+        output_parts.append(
+            spirit_conclusion.get(
+                agent.spirit.value,
+                "I'm ready to tackle this challenge with determination.",
+            )
+        )
 
         return " ".join(output_parts)

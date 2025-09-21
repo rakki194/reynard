@@ -22,7 +22,7 @@ describe("ConfigWriter", () => {
     logger = new VitestConfigLogger(false);
     writer = new ConfigWriter(logger);
     mockFs = vi.mocked(fs);
-    
+
     // Reset all mocks
     vi.clearAllMocks();
   });
@@ -78,10 +78,7 @@ describe("ConfigWriter", () => {
 
       writer.writeConfig(mockResult, "deep/path/test-config.ts");
 
-      expect(mockFs.mkdirSync).toHaveBeenCalledWith(
-        expect.stringContaining("deep/path"),
-        { recursive: true }
-      );
+      expect(mockFs.mkdirSync).toHaveBeenCalledWith(expect.stringContaining("deep/path"), { recursive: true });
     });
 
     it("should not create directory if it already exists", () => {

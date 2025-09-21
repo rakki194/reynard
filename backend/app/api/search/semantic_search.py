@@ -17,6 +17,7 @@ from .code_tokenizer import get_code_tokenizer
 # Optional import for BM25
 try:
     from rank_bm25 import BM25Okapi
+
     BM25_AVAILABLE = True
 except ImportError:
     BM25Okapi = None
@@ -48,7 +49,9 @@ class SemanticSearchHandler:
             # Try RAG backend first
             rag_result = await self._search_via_rag(request)
             if rag_result.get("success"):
-                result = self._format_rag_response(rag_result, request.query, start_time)
+                result = self._format_rag_response(
+                    rag_result, request.query, start_time
+                )
                 await self.search_service._cache_result(cache_key, result)
                 self.search_service._metrics.record_search(time.time() - start_time, cache_hit=False)  # type: ignore[attr-defined]
                 return result
@@ -58,7 +61,9 @@ class SemanticSearchHandler:
             # Fallback to local semantic search
             result = await self._local_semantic_search(request, start_time)
             await self.search_service._cache_result(cache_key, result)
-            self.search_service._metrics.record_search(time.time() - start_time, cache_hit=False)
+            self.search_service._metrics.record_search(
+                time.time() - start_time, cache_hit=False
+            )
             return result
 
         except Exception as e:
@@ -71,29 +76,31 @@ class SemanticSearchHandler:
                 search_time=time.time() - start_time,
                 error=str(e),
             )
-            self.search_service._metrics.record_search(time.time() - start_time, cache_hit=False)
+            self.search_service._metrics.record_search(
+                time.time() - start_time, cache_hit=False
+            )
             return error_result
 
     async def _search_via_rag(self, request: SemanticSearchRequest) -> dict[str, Any]:
         """Search via RAG service."""
         try:
             from app.core.service_registry import get_service_registry
-            
+
             registry = get_service_registry()
             rag_service = registry.get_service_instance("rag")
-            
+
             if rag_service is None:
                 return {"success": False, "error": "RAG service not available"}
-            
+
             # Use the RAG service directly
             result = await rag_service.query(
                 query=request.query,
                 modality=request.search_type,
                 top_k=request.max_results,
                 similarity_threshold=request.similarity_threshold,
-                enable_reranking=False
+                enable_reranking=False,
             )
-            
+
             return {"success": True, "data": result}
 
         except Exception as e:
@@ -162,7 +169,7 @@ class SemanticSearchHandler:
             documents = []
             file_paths = []
             tokenizer = get_code_tokenizer()
-            
+
             for file_path in files:
                 try:
                     content = await self._read_file_content(file_path)
@@ -193,7 +200,9 @@ class SemanticSearchHandler:
 
             # Create results
             results = []
-            for i, (file_path, score) in enumerate(zip(file_paths, scores, strict=True)):
+            for i, (file_path, score) in enumerate(
+                zip(file_paths, scores, strict=True)
+            ):
                 if score > request.similarity_threshold:
                     # Find the best matching line
                     content = " ".join(documents[i])
@@ -213,7 +222,7 @@ class SemanticSearchHandler:
 
             # Sort by score and limit results
             results.sort(key=lambda x: x.score, reverse=True)
-            results = results[:request.max_results]
+            results = results[: request.max_results]
 
             return SearchResponse(
                 success=True,
@@ -282,23 +291,25 @@ class SemanticSearchHandler:
 
             # Get file types to search
             file_types = request.file_types or ["py", "ts", "tsx", "js", "jsx", "md"]
-            patterns = [f"*.{ft}" if not ft.startswith('*') else ft for ft in file_types]
+            patterns = [
+                f"*.{ft}" if not ft.startswith("*") else ft for ft in file_types
+            ]
 
             for pattern in patterns:
                 for file_path in search_path.rglob(pattern):
                     # Skip directories
                     if file_path.is_dir():
                         continue
-                    
+
                     # Check if file should be ignored
                     if ignore_parser.should_ignore(file_path):
                         continue
-                    
+
                     # Skip hidden files (additional safety)
-                    if any(part.startswith('.') for part in file_path.parts):
-                        if file_path.name not in ['.cursorignore', '.gitignore']:
+                    if any(part.startswith(".") for part in file_path.parts):
+                        if file_path.name not in [".cursorignore", ".gitignore"]:
                             continue
-                    
+
                     files.append(file_path)
 
         return files[:1000]  # Limit to prevent memory issues
@@ -313,13 +324,13 @@ class SemanticSearchHandler:
             if file_path.stat().st_size > 1024 * 1024:  # 1MB limit
                 return None
 
-            return file_path.read_text(encoding='utf-8', errors='ignore')
+            return file_path.read_text(encoding="utf-8", errors="ignore")
         except Exception:
             return None
 
     def _find_best_matching_line(self, content: str, query: str) -> Dict[str, Any]:
         """Find the best matching line in content for the query."""
-        lines = content.split('\n')
+        lines = content.split("\n")
         query_lower = query.lower()
 
         best_score = 0
@@ -339,10 +350,6 @@ class SemanticSearchHandler:
         # Get context around the best line
         context_start = max(0, best_line - 3)
         context_end = min(len(lines), best_line + 2)
-        context = '\n'.join(lines[context_start:context_end])
+        context = "\n".join(lines[context_start:context_end])
 
-        return {
-            "line_number": best_line,
-            "content": best_content,
-            "context": context
-        }
+        return {"line_number": best_line, "content": best_content, "context": context}

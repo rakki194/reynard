@@ -19,7 +19,7 @@ from ..utils.data_structures import (
     SpiritType,
     NamingStyle,
     PerformanceMetrics,
-    StatisticalSignificance
+    StatisticalSignificance,
 )
 
 
@@ -56,7 +56,9 @@ class AgentStatePersistence:
         Returns:
             Reconstructed agent state
         """
-        self.logger.info("🦁 Reconstructing Success-Advisor-8 agent state from documentation")
+        self.logger.info(
+            "🦁 Reconstructing Success-Advisor-8 agent state from documentation"
+        )
 
         # Agent identity from documentation
         agent_id = "permanent-release-manager-success-advisor-8"
@@ -73,7 +75,7 @@ class AgentStatePersistence:
             "confidence": 0.94,
             "strategic_thinking": 0.89,
             "reliability": 0.93,
-            "excellence": 0.91
+            "excellence": 0.91,
         }
 
         # Physical traits (lion characteristics)
@@ -83,7 +85,7 @@ class AgentStatePersistence:
             "agility": 0.75,
             "endurance": 0.88,
             "appearance": 0.87,
-            "grace": 0.82
+            "grace": 0.82,
         }
 
         # Ability traits (release management specializations)
@@ -95,7 +97,7 @@ class AgentStatePersistence:
             "analyzer": 0.85,
             "communicator": 0.87,
             "problem_solver": 0.89,
-            "quality_assurance": 0.91
+            "quality_assurance": 0.91,
         }
 
         # Performance history (from successful v0.8.7 release)
@@ -113,8 +115,8 @@ class AgentStatePersistence:
                     confidence_interval=(0.85, 0.99),
                     effect_size=0.8,
                     power=0.9,
-                    sample_size=100
-                )
+                    sample_size=100,
+                ),
             )
         ]
 
@@ -125,40 +127,40 @@ class AgentStatePersistence:
                 "version_management": 0.93,
                 "changelog_generation": 0.91,
                 "security_scanning": 0.89,
-                "quality_assurance": 0.92
+                "quality_assurance": 0.92,
             },
             "phoenix_framework": {
                 "evolutionary_knowledge_distillation": 0.88,
                 "statistical_validation": 0.85,
                 "agent_breeding": 0.87,
-                "subliminal_learning": 0.83
+                "subliminal_learning": 0.83,
             },
             "reynard_ecosystem": {
                 "ecs_world_integration": 0.90,
                 "mcp_server_tools": 0.92,
                 "agent_naming_system": 0.89,
-                "trait_inheritance": 0.86
+                "trait_inheritance": 0.86,
             },
             "specializations": [
                 "permanent_release_manager",
                 "phoenix_framework_implementation",
                 "agent_state_persistence",
                 "statistical_validation",
-                "evolutionary_algorithms"
+                "evolutionary_algorithms",
             ],
             "achievements": [
                 "Successfully released v0.8.7",
                 "Implemented PHOENIX framework",
                 "Created comprehensive documentation",
-                "Established agent state persistence"
+                "Established agent state persistence",
             ],
             "workflow_preferences": {
                 "auto_backup": True,
                 "comprehensive_analysis": True,
                 "detailed_logging": True,
                 "agent_state_tracking": True,
-                "ecs_integration": True
-            }
+                "ecs_integration": True,
+            },
         }
 
         # Create agent state
@@ -175,7 +177,7 @@ class AgentStatePersistence:
             performance_history=performance_history,
             knowledge_base=knowledge_base,
             created_at=datetime.now(),
-            last_updated=datetime.now()
+            last_updated=datetime.now(),
         )
 
         # Store the reconstructed agent state
@@ -220,20 +222,20 @@ class AgentStatePersistence:
                             "confidence_interval": perf.significance.confidence_interval,
                             "effect_size": perf.significance.effect_size,
                             "power": perf.significance.power,
-                            "sample_size": perf.significance.sample_size
+                            "sample_size": perf.significance.sample_size,
                         },
-                        "timestamp": perf.timestamp.isoformat()
+                        "timestamp": perf.timestamp.isoformat(),
                     }
                     for perf in agent_state.performance_history
                 ],
                 "knowledge_base": agent_state.knowledge_base,
                 "created_at": agent_state.created_at.isoformat(),
-                "last_updated": agent_state.last_updated.isoformat()
+                "last_updated": agent_state.last_updated.isoformat(),
             }
 
             # Save to file
             state_file = self.data_dir / f"{agent_state.id}.json"
-            with open(state_file, 'w') as f:
+            with open(state_file, "w") as f:
                 json.dump(state_data, f, indent=2)
 
             # Update in-memory cache
@@ -267,7 +269,7 @@ class AgentStatePersistence:
                 self.logger.warning(f"⚠️ Agent state file not found: {agent_id}")
                 return None
 
-            with open(state_file, 'r') as f:
+            with open(state_file, "r") as f:
                 state_data = json.load(f)
 
             # Reconstruct performance history
@@ -283,12 +285,14 @@ class AgentStatePersistence:
                     fitness=perf_data["fitness"],
                     significance=StatisticalSignificance(
                         p_value=perf_data["significance"]["p_value"],
-                        confidence_interval=tuple(perf_data["significance"]["confidence_interval"]),
+                        confidence_interval=tuple(
+                            perf_data["significance"]["confidence_interval"]
+                        ),
                         effect_size=perf_data["significance"]["effect_size"],
                         power=perf_data["significance"]["power"],
-                        sample_size=perf_data["significance"]["sample_size"]
+                        sample_size=perf_data["significance"]["sample_size"],
                     ),
-                    timestamp=datetime.fromisoformat(perf_data["timestamp"])
+                    timestamp=datetime.fromisoformat(perf_data["timestamp"]),
                 )
                 performance_history.append(performance)
 
@@ -306,7 +310,7 @@ class AgentStatePersistence:
                 performance_history=performance_history,
                 knowledge_base=state_data["knowledge_base"],
                 created_at=datetime.fromisoformat(state_data["created_at"]),
-                last_updated=datetime.fromisoformat(state_data["last_updated"])
+                last_updated=datetime.fromisoformat(state_data["last_updated"]),
             )
 
             # Cache the loaded state
@@ -367,7 +371,9 @@ class AgentStatePersistence:
             self.logger.error(f"❌ Failed to delete agent state {agent_id}: {e}")
             return False
 
-    async def backup_agent_states(self, backup_dir: str = "backups/agent_states") -> bool:
+    async def backup_agent_states(
+        self, backup_dir: str = "backups/agent_states"
+    ) -> bool:
         """
         Create backup of all agent states.
 
@@ -396,16 +402,20 @@ class AgentStatePersistence:
                         "style": agent_state.style.value,
                         "generation": agent_state.generation,
                         "fitness": agent_state.get_fitness_score(),
-                        "last_updated": agent_state.last_updated.isoformat()
+                        "last_updated": agent_state.last_updated.isoformat(),
                     }
 
             # Save backup
-            with open(backup_file, 'w') as f:
-                json.dump({
-                    "backup_timestamp": timestamp,
-                    "agent_count": len(all_states),
-                    "agent_states": all_states
-                }, f, indent=2)
+            with open(backup_file, "w") as f:
+                json.dump(
+                    {
+                        "backup_timestamp": timestamp,
+                        "agent_count": len(all_states),
+                        "agent_states": all_states,
+                    },
+                    f,
+                    indent=2,
+                )
 
             self.logger.info(f"💾 Agent states backed up to {backup_file}")
             return True
@@ -428,7 +438,7 @@ class AgentStatePersistence:
             "is_valid": True,
             "errors": [],
             "warnings": [],
-            "checks": {}
+            "checks": {},
         }
 
         # Check required fields
@@ -443,15 +453,21 @@ class AgentStatePersistence:
         # Check trait ranges
         for trait_name, value in agent_state.personality_traits.items():
             if not 0.0 <= value <= 1.0:
-                validation_results["warnings"].append(f"Personality trait {trait_name} out of range: {value}")
+                validation_results["warnings"].append(
+                    f"Personality trait {trait_name} out of range: {value}"
+                )
 
         for trait_name, value in agent_state.physical_traits.items():
             if not 0.0 <= value <= 1.0:
-                validation_results["warnings"].append(f"Physical trait {trait_name} out of range: {value}")
+                validation_results["warnings"].append(
+                    f"Physical trait {trait_name} out of range: {value}"
+                )
 
         for trait_name, value in agent_state.ability_traits.items():
             if not 0.0 <= value <= 1.0:
-                validation_results["warnings"].append(f"Ability trait {trait_name} out of range: {value}")
+                validation_results["warnings"].append(
+                    f"Ability trait {trait_name} out of range: {value}"
+                )
 
         # Check performance history
         if not agent_state.performance_history:
@@ -459,7 +475,9 @@ class AgentStatePersistence:
         else:
             for i, perf in enumerate(agent_state.performance_history):
                 if not 0.0 <= perf.fitness <= 1.0:
-                    validation_results["warnings"].append(f"Performance {i} fitness out of range: {perf.fitness}")
+                    validation_results["warnings"].append(
+                        f"Performance {i} fitness out of range: {perf.fitness}"
+                    )
 
         # Check knowledge base
         if not agent_state.knowledge_base:
@@ -468,10 +486,16 @@ class AgentStatePersistence:
         validation_results["checks"] = {
             "has_id": bool(agent_state.id),
             "has_name": bool(agent_state.name),
-            "has_traits": bool(agent_state.personality_traits or agent_state.physical_traits or agent_state.ability_traits),
+            "has_traits": bool(
+                agent_state.personality_traits
+                or agent_state.physical_traits
+                or agent_state.ability_traits
+            ),
             "has_performance": bool(agent_state.performance_history),
             "has_knowledge": bool(agent_state.knowledge_base),
-            "trait_count": len(agent_state.personality_traits) + len(agent_state.physical_traits) + len(agent_state.ability_traits)
+            "trait_count": len(agent_state.personality_traits)
+            + len(agent_state.physical_traits)
+            + len(agent_state.ability_traits),
         }
 
         return validation_results
@@ -491,7 +515,7 @@ class AgentStatePersistence:
                 "spirits": {},
                 "styles": {},
                 "generations": {},
-                "fitness_stats": {}
+                "fitness_stats": {},
             }
 
         spirits = {}
@@ -524,7 +548,7 @@ class AgentStatePersistence:
                 "mean": sum(fitness_scores) / len(fitness_scores),
                 "min": min(fitness_scores),
                 "max": max(fitness_scores),
-                "count": len(fitness_scores)
+                "count": len(fitness_scores),
             }
 
         return {
@@ -532,5 +556,5 @@ class AgentStatePersistence:
             "spirits": spirits,
             "styles": styles,
             "generations": generations,
-            "fitness_stats": fitness_stats
+            "fitness_stats": fitness_stats,
         }

@@ -44,7 +44,7 @@ export class ArchitectureOverviewGenerator implements DiagramGenerator {
     return analysis.packages.length > 0;
   }
 
-  private generateMermaidContent(analysis: CodebaseAnalysis, config: DiagramGenerationConfig): string {
+  private generateMermaidContent(analysis: CodebaseAnalysis, _config: DiagramGenerationConfig): string {
     const lines = [
       "%%{init: {'theme': 'neutral'}}%%",
       "graph TB",

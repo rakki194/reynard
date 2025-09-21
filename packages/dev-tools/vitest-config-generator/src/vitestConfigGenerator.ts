@@ -10,60 +10,71 @@ import { join } from "path";
 // Scan for all directories with package.json files
 function getTestableDirectories(): string[] {
   const testableDirs: string[] = [];
-  
+
   // Find the project root (go up from packages/dev-tools/vitest-config-generator to the root)
   const projectRoot = join(process.cwd(), "../../");
-  
+
   // Scan packages directory
   const packagesDir = join(projectRoot, "packages");
   if (existsSync(packagesDir)) {
     scanDirectory(packagesDir, "packages", testableDirs);
   }
-  
+
   // Scan examples directory
   const examplesDir = join(projectRoot, "examples");
   if (existsSync(examplesDir)) {
     scanDirectory(examplesDir, "examples", testableDirs);
   }
-  
+
   // Scan templates directory
   const templatesDir = join(projectRoot, "templates");
   if (existsSync(templatesDir)) {
     scanDirectory(templatesDir, "templates", testableDirs);
   }
-  
+
   // Scan scripts directory for testable scripts
   const scriptsDir = join(projectRoot, "scripts");
   if (existsSync(scriptsDir)) {
     scanDirectory(scriptsDir, "scripts", testableDirs);
   }
-  
+
   return testableDirs;
 }
 
 function scanDirectory(dirPath: string, prefix: string, testableDirs: string[]): void {
   try {
     const entries = readdirSync(dirPath);
-    
+
     for (const entry of entries) {
       // Skip node_modules and other build artifacts
-      if (entry === "node_modules" || entry === "dist" || entry === "build" || entry === "coverage" || entry.startsWith(".")) {
+      if (
+        entry === "node_modules" ||
+        entry === "dist" ||
+        entry === "build" ||
+        entry === "coverage" ||
+        entry.startsWith(".")
+      ) {
         continue;
       }
-      
+
       const fullPath = join(dirPath, entry);
       const stat = statSync(fullPath);
-      
+
       if (stat.isDirectory()) {
         const packageJsonPath = join(fullPath, "package.json");
         if (existsSync(packageJsonPath)) {
-          const relativePath = prefix.startsWith("packages") ? prefix === "packages" ? `packages/${entry}` : `${prefix}/${entry}` :
-                              prefix === "examples" ? `examples/${entry}` :
-                              prefix === "templates" ? `templates/${entry}` :
-                              `scripts/${entry}`;
+          const relativePath = prefix.startsWith("packages")
+            ? prefix === "packages"
+              ? `packages/${entry}`
+              : `${prefix}/${entry}`
+            : prefix === "examples"
+              ? `examples/${entry}`
+              : prefix === "templates"
+                ? `templates/${entry}`
+                : `scripts/${entry}`;
           testableDirs.push(relativePath);
         }
-        
+
         // Recursively scan subdirectories for packages (packages have nested structure)
         if (prefix === "packages") {
           scanDirectory(fullPath, `packages/${entry}`, testableDirs);
@@ -80,14 +91,22 @@ function scanDirectory(dirPath: string, prefix: string, testableDirs: string[]):
 
 function getDirectoryDefinition(name: string): DirectoryDefinition | undefined {
   // Create a basic directory definition based on the path
-  const category = name.startsWith("packages/") ? "source" : 
-                   name.startsWith("examples/") ? "examples" :
-                   name.startsWith("templates/") ? "templates" : "scripts";
-  
-  const importance = name.startsWith("packages/") ? "critical" : 
-                     name.startsWith("examples/") ? "important" :
-                     name.startsWith("templates/") ? "important" : "optional";
-  
+  const category = name.startsWith("packages/")
+    ? "source"
+    : name.startsWith("examples/")
+      ? "examples"
+      : name.startsWith("templates/")
+        ? "templates"
+        : "scripts";
+
+  const importance = name.startsWith("packages/")
+    ? "critical"
+    : name.startsWith("examples/")
+      ? "important"
+      : name.startsWith("templates/")
+        ? "important"
+        : "optional";
+
   return {
     name,
     path: name,
@@ -105,30 +124,25 @@ function getDirectoryDefinition(name: string): DirectoryDefinition | undefined {
     relationships: [],
     optional: importance === "optional",
     generated: false,
-    thirdParty: false
+    thirdParty: false,
   };
 }
 
 function getGlobalExcludePatterns(): string[] {
   return [
     "**/node_modules/**",
-    "**/dist/**", 
+    "**/dist/**",
     "**/build/**",
     "**/coverage/**",
     "**/.git/**",
     "**/third_party/**",
     "**/.vitest/**",
     "**/temp/**",
-    "**/tmp/**"
+    "**/tmp/**",
   ];
 }
 
-
-import type {
-  VitestGlobalConfig,
-  GeneratorConfig,
-  GeneratorResult,
-} from "./types.js";
+import type { VitestGlobalConfig, GeneratorConfig, GeneratorResult } from "./types.js";
 import { ProjectConfigGenerator } from "./projectConfigGenerator.js";
 import type { Logger } from "./logger.js";
 
@@ -189,10 +203,7 @@ export class VitestConfigGenerator {
     }
   }
 
-  private filterDirectories(
-    directories: string[],
-    config: GeneratorConfig
-  ): DirectoryDefinition[] {
+  private filterDirectories(directories: string[], config: GeneratorConfig): DirectoryDefinition[] {
     const filtered: DirectoryDefinition[] = [];
 
     for (const dirName of directories) {
@@ -253,10 +264,7 @@ export class VitestConfigGenerator {
     return projects;
   }
 
-  private generateGlobalConfig(
-    config: GeneratorConfig,
-    projects: any[]
-  ): VitestGlobalConfig {
+  private generateGlobalConfig(config: GeneratorConfig, projects: any[]): VitestGlobalConfig {
     const globalExcludePatterns = getGlobalExcludePatterns();
 
     return {

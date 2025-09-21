@@ -20,7 +20,7 @@ router = APIRouter(prefix="/mcp/naming-config", tags=["naming_config"])
 
 class NamingConfigResponse(BaseModel):
     """Response model for naming configuration."""
-    
+
     version: str = Field(..., description="Configuration version")
     last_updated: str = Field(..., description="Last update timestamp")
     default_scheme: str = Field(..., description="Default naming scheme")
@@ -38,7 +38,7 @@ class NamingConfigResponse(BaseModel):
 
 class SchemeConfigResponse(BaseModel):
     """Response model for scheme configuration."""
-    
+
     name: str = Field(..., description="Scheme name")
     enabled: bool = Field(..., description="Whether scheme is enabled")
     description: str = Field(..., description="Scheme description")
@@ -48,7 +48,7 @@ class SchemeConfigResponse(BaseModel):
 
 class StyleConfigResponse(BaseModel):
     """Response model for style configuration."""
-    
+
     name: str = Field(..., description="Style name")
     enabled: bool = Field(..., description="Whether style is enabled")
     description: str = Field(..., description="Style description")
@@ -58,7 +58,7 @@ class StyleConfigResponse(BaseModel):
 
 class SpiritConfigResponse(BaseModel):
     """Response model for spirit configuration."""
-    
+
     name: str = Field(..., description="Spirit name")
     enabled: bool = Field(..., description="Whether spirit is enabled")
     description: str = Field(..., description="Spirit description")
@@ -69,15 +69,17 @@ class SpiritConfigResponse(BaseModel):
 
 class ConfigUpdateRequest(BaseModel):
     """Request model for configuration updates."""
-    
+
     default_scheme: Optional[str] = Field(None, description="New default scheme")
     default_style: Optional[str] = Field(None, description="New default style")
-    weighted_distribution: Optional[bool] = Field(None, description="Weighted distribution setting")
+    weighted_distribution: Optional[bool] = Field(
+        None, description="Weighted distribution setting"
+    )
 
 
 class ConfigValidationResponse(BaseModel):
     """Response model for configuration validation."""
-    
+
     valid: bool = Field(..., description="Whether configuration is valid")
     issues: List[str] = Field(..., description="List of validation issues")
 
@@ -85,13 +87,16 @@ class ConfigValidationResponse(BaseModel):
 async def _get_config_manager():
     """Get the dynamic configuration manager."""
     try:
-        from reynard_agent_naming.agent_naming.dynamic_config import DynamicConfigManager
+        from reynard_agent_naming.agent_naming.dynamic_config import (
+            DynamicConfigManager,
+        )
+
         return DynamicConfigManager()
     except ImportError as e:
         logger.error(f"Failed to import DynamicConfigManager: {e}")
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="Agent naming configuration service not available"
+            detail="Agent naming configuration service not available",
         )
 
 
@@ -101,7 +106,7 @@ async def get_naming_config() -> NamingConfigResponse:
     try:
         config_manager = await _get_config_manager()
         config = config_manager.get_config()
-        
+
         return NamingConfigResponse(
             version=config.version,
             last_updated=config.last_updated,
@@ -115,13 +120,13 @@ async def get_naming_config() -> NamingConfigResponse:
             total_styles=len(config.styles),
             total_spirits=len(config.spirits),
             total_components=len(config.components),
-            total_generations=len(config.generations)
+            total_generations=len(config.generations),
         )
     except Exception as e:
         logger.exception("Failed to get naming configuration")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get naming configuration: {e}"
+            detail=f"Failed to get naming configuration: {e}",
         )
 
 
@@ -131,23 +136,25 @@ async def get_available_schemes() -> List[SchemeConfigResponse]:
     try:
         config_manager = await _get_config_manager()
         config = config_manager.get_config()
-        
+
         schemes = []
         for name, scheme_config in config.schemes.items():
-            schemes.append(SchemeConfigResponse(
-                name=scheme_config.name,
-                enabled=scheme_config.enabled,
-                description=scheme_config.description,
-                default_style=scheme_config.default_style,
-                supported_styles=scheme_config.supported_styles
-            ))
-        
+            schemes.append(
+                SchemeConfigResponse(
+                    name=scheme_config.name,
+                    enabled=scheme_config.enabled,
+                    description=scheme_config.description,
+                    default_style=scheme_config.default_style,
+                    supported_styles=scheme_config.supported_styles,
+                )
+            )
+
         return schemes
     except Exception as e:
         logger.exception("Failed to get available schemes")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get available schemes: {e}"
+            detail=f"Failed to get available schemes: {e}",
         )
 
 
@@ -157,23 +164,25 @@ async def get_available_styles() -> List[StyleConfigResponse]:
     try:
         config_manager = await _get_config_manager()
         config = config_manager.get_config()
-        
+
         styles = []
         for name, style_config in config.styles.items():
-            styles.append(StyleConfigResponse(
-                name=style_config.name,
-                enabled=style_config.enabled,
-                description=style_config.description,
-                format_template=style_config.format_template,
-                components=style_config.components
-            ))
-        
+            styles.append(
+                StyleConfigResponse(
+                    name=style_config.name,
+                    enabled=style_config.enabled,
+                    description=style_config.description,
+                    format_template=style_config.format_template,
+                    components=style_config.components,
+                )
+            )
+
         return styles
     except Exception as e:
         logger.exception("Failed to get available styles")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get available styles: {e}"
+            detail=f"Failed to get available styles: {e}",
         )
 
 
@@ -183,24 +192,26 @@ async def get_available_spirits() -> List[SpiritConfigResponse]:
     try:
         config_manager = await _get_config_manager()
         config = config_manager.get_config()
-        
+
         spirits = []
         for name, spirit_config in config.spirits.items():
-            spirits.append(SpiritConfigResponse(
-                name=spirit_config.name,
-                enabled=spirit_config.enabled,
-                description=spirit_config.description,
-                base_names=spirit_config.base_names,
-                generation_numbers=spirit_config.generation_numbers,
-                weight=spirit_config.weight
-            ))
-        
+            spirits.append(
+                SpiritConfigResponse(
+                    name=spirit_config.name,
+                    enabled=spirit_config.enabled,
+                    description=spirit_config.description,
+                    base_names=spirit_config.base_names,
+                    generation_numbers=spirit_config.generation_numbers,
+                    weight=spirit_config.weight,
+                )
+            )
+
         return spirits
     except Exception as e:
         logger.exception("Failed to get available spirits")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get available spirits: {e}"
+            detail=f"Failed to get available spirits: {e}",
         )
 
 
@@ -210,13 +221,13 @@ async def set_default_scheme(scheme_name: str) -> Dict[str, str]:
     try:
         config_manager = await _get_config_manager()
         success = config_manager.set_default_scheme(scheme_name)
-        
+
         if success:
             return {"message": f"Default scheme set to '{scheme_name}'"}
         else:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Scheme '{scheme_name}' not found"
+                detail=f"Scheme '{scheme_name}' not found",
             )
     except HTTPException:
         raise
@@ -224,7 +235,7 @@ async def set_default_scheme(scheme_name: str) -> Dict[str, str]:
         logger.exception("Failed to set default scheme")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to set default scheme: {e}"
+            detail=f"Failed to set default scheme: {e}",
         )
 
 
@@ -234,13 +245,13 @@ async def set_default_style(style_name: str) -> Dict[str, str]:
     try:
         config_manager = await _get_config_manager()
         success = config_manager.set_default_style(style_name)
-        
+
         if success:
             return {"message": f"Default style set to '{style_name}'"}
         else:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Style '{style_name}' not found"
+                detail=f"Style '{style_name}' not found",
             )
     except HTTPException:
         raise
@@ -248,7 +259,7 @@ async def set_default_style(style_name: str) -> Dict[str, str]:
         logger.exception("Failed to set default style")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to set default style: {e}"
+            detail=f"Failed to set default style: {e}",
         )
 
 
@@ -258,13 +269,13 @@ async def enable_scheme(scheme_name: str) -> Dict[str, str]:
     try:
         config_manager = await _get_config_manager()
         success = config_manager.enable_scheme(scheme_name)
-        
+
         if success:
             return {"message": f"Scheme '{scheme_name}' enabled"}
         else:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Scheme '{scheme_name}' not found"
+                detail=f"Scheme '{scheme_name}' not found",
             )
     except HTTPException:
         raise
@@ -272,7 +283,7 @@ async def enable_scheme(scheme_name: str) -> Dict[str, str]:
         logger.exception("Failed to enable scheme")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to enable scheme: {e}"
+            detail=f"Failed to enable scheme: {e}",
         )
 
 
@@ -282,13 +293,13 @@ async def disable_scheme(scheme_name: str) -> Dict[str, str]:
     try:
         config_manager = await _get_config_manager()
         success = config_manager.disable_scheme(scheme_name)
-        
+
         if success:
             return {"message": f"Scheme '{scheme_name}' disabled"}
         else:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Scheme '{scheme_name}' not found"
+                detail=f"Scheme '{scheme_name}' not found",
             )
     except HTTPException:
         raise
@@ -296,7 +307,7 @@ async def disable_scheme(scheme_name: str) -> Dict[str, str]:
         logger.exception("Failed to disable scheme")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to disable scheme: {e}"
+            detail=f"Failed to disable scheme: {e}",
         )
 
 
@@ -306,13 +317,13 @@ async def enable_style(style_name: str) -> Dict[str, str]:
     try:
         config_manager = await _get_config_manager()
         success = config_manager.enable_style(style_name)
-        
+
         if success:
             return {"message": f"Style '{style_name}' enabled"}
         else:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Style '{style_name}' not found"
+                detail=f"Style '{style_name}' not found",
             )
     except HTTPException:
         raise
@@ -320,7 +331,7 @@ async def enable_style(style_name: str) -> Dict[str, str]:
         logger.exception("Failed to enable style")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to enable style: {e}"
+            detail=f"Failed to enable style: {e}",
         )
 
 
@@ -330,13 +341,13 @@ async def disable_style(style_name: str) -> Dict[str, str]:
     try:
         config_manager = await _get_config_manager()
         success = config_manager.disable_style(style_name)
-        
+
         if success:
             return {"message": f"Style '{style_name}' disabled"}
         else:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Style '{style_name}' not found"
+                detail=f"Style '{style_name}' not found",
             )
     except HTTPException:
         raise
@@ -344,7 +355,7 @@ async def disable_style(style_name: str) -> Dict[str, str]:
         logger.exception("Failed to disable style")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to disable style: {e}"
+            detail=f"Failed to disable style: {e}",
         )
 
 
@@ -354,13 +365,13 @@ async def enable_spirit(spirit_name: str) -> Dict[str, str]:
     try:
         config_manager = await _get_config_manager()
         success = config_manager.enable_spirit(spirit_name)
-        
+
         if success:
             return {"message": f"Spirit '{spirit_name}' enabled"}
         else:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Spirit '{spirit_name}' not found"
+                detail=f"Spirit '{spirit_name}' not found",
             )
     except HTTPException:
         raise
@@ -368,7 +379,7 @@ async def enable_spirit(spirit_name: str) -> Dict[str, str]:
         logger.exception("Failed to enable spirit")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to enable spirit: {e}"
+            detail=f"Failed to enable spirit: {e}",
         )
 
 
@@ -378,13 +389,13 @@ async def disable_spirit(spirit_name: str) -> Dict[str, str]:
     try:
         config_manager = await _get_config_manager()
         success = config_manager.disable_spirit(spirit_name)
-        
+
         if success:
             return {"message": f"Spirit '{spirit_name}' disabled"}
         else:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Spirit '{spirit_name}' not found"
+                detail=f"Spirit '{spirit_name}' not found",
             )
     except HTTPException:
         raise
@@ -392,7 +403,7 @@ async def disable_spirit(spirit_name: str) -> Dict[str, str]:
         logger.exception("Failed to disable spirit")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to disable spirit: {e}"
+            detail=f"Failed to disable spirit: {e}",
         )
 
 
@@ -402,13 +413,13 @@ async def reload_config() -> Dict[str, str]:
     try:
         config_manager = await _get_config_manager()
         success = config_manager.reload_config()
-        
+
         if success:
             return {"message": "Configuration reloaded successfully"}
         else:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Failed to reload configuration"
+                detail="Failed to reload configuration",
             )
     except HTTPException:
         raise
@@ -416,7 +427,7 @@ async def reload_config() -> Dict[str, str]:
         logger.exception("Failed to reload configuration")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to reload configuration: {e}"
+            detail=f"Failed to reload configuration: {e}",
         )
 
 
@@ -426,16 +437,13 @@ async def validate_config() -> ConfigValidationResponse:
     try:
         config_manager = await _get_config_manager()
         issues = config_manager.validate_config()
-        
-        return ConfigValidationResponse(
-            valid=len(issues) == 0,
-            issues=issues
-        )
+
+        return ConfigValidationResponse(valid=len(issues) == 0, issues=issues)
     except Exception as e:
         logger.exception("Failed to validate configuration")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to validate configuration: {e}"
+            detail=f"Failed to validate configuration: {e}",
         )
 
 
@@ -444,7 +452,7 @@ async def update_config(request: ConfigUpdateRequest) -> Dict[str, str]:
     """Update naming configuration settings."""
     try:
         config_manager = await _get_config_manager()
-        
+
         updates = {}
         if request.default_scheme is not None:
             updates["default_scheme"] = request.default_scheme
@@ -452,15 +460,15 @@ async def update_config(request: ConfigUpdateRequest) -> Dict[str, str]:
             updates["default_style"] = request.default_style
         if request.weighted_distribution is not None:
             updates["weighted_distribution"] = request.weighted_distribution
-        
+
         success = config_manager.update_config(updates)
-        
+
         if success:
             return {"message": "Configuration updated successfully"}
         else:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Failed to update configuration"
+                detail="Failed to update configuration",
             )
     except HTTPException:
         raise
@@ -468,8 +476,5 @@ async def update_config(request: ConfigUpdateRequest) -> Dict[str, str]:
         logger.exception("Failed to update configuration")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to update configuration: {e}"
+            detail=f"Failed to update configuration: {e}",
         )
-
-
-

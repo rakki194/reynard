@@ -44,10 +44,12 @@ class ChangelogManager:
             "perf": r"^perf(\(.+\))?:",
             "test": r"^test(\(.+\))?:",
             "chore": r"^chore(\(.+\))?:",
-            "breaking": r"^feat(\(.+\))?!:|BREAKING CHANGE:"
+            "breaking": r"^feat(\(.+\))?!:|BREAKING CHANGE:",
         }
 
-        self.logger.info(f"Changelog manager initialized for {changelog_path}", "initialization")
+        self.logger.info(
+            f"Changelog manager initialized for {changelog_path}", "initialization"
+        )
 
     async def create_changelog(self) -> bool:
         """
@@ -64,7 +66,7 @@ class ChangelogManager:
             # Create default changelog content
             content = self._get_default_changelog_content()
 
-            with open(self.changelog_path, 'w') as f:
+            with open(self.changelog_path, "w") as f:
                 f.write(content)
 
             self.logger.success("Created new changelog file", "create")
@@ -104,7 +106,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 """
 
-    async def update_changelog(self, version: str, release_date: Optional[str] = None) -> bool:
+    async def update_changelog(
+        self, version: str, release_date: Optional[str] = None
+    ) -> bool:
         """
         Update changelog for a new release.
 
@@ -117,11 +121,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
         """
         try:
             if not self.changelog_path.exists():
-                self.logger.warning("Changelog file not found, creating new one", "update")
+                self.logger.warning(
+                    "Changelog file not found, creating new one", "update"
+                )
                 await self.create_changelog()
 
             # Read current content
-            with open(self.changelog_path, 'r') as f:
+            with open(self.changelog_path, "r") as f:
                 content = f.read()
 
             # Set release date
@@ -130,8 +136,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
             # Replace [Unreleased] with new version
             new_content = content.replace(
-                "## [Unreleased]",
-                f"## [{version}] - {release_date}"
+                "## [Unreleased]", f"## [{version}] - {release_date}"
             )
 
             # Add new [Unreleased] section
@@ -153,11 +158,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 """
             new_content = new_content.replace(
                 f"## [{version}] - {release_date}",
-                f"## [{version}] - {release_date}{unreleased_section}"
+                f"## [{version}] - {release_date}{unreleased_section}",
             )
 
             # Write updated content
-            with open(self.changelog_path, 'w') as f:
+            with open(self.changelog_path, "w") as f:
                 f.write(new_content)
 
             self.logger.success(f"Changelog updated for version {version}", "update")
@@ -167,7 +172,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
             self.logger.error(f"Failed to update changelog: {e}", "update")
             return False
 
-    async def add_entry(self, change_type: str, description: str, version: str = "Unreleased") -> bool:
+    async def add_entry(
+        self, change_type: str, description: str, version: str = "Unreleased"
+    ) -> bool:
         """
         Add a new entry to the changelog.
 
@@ -185,7 +192,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
                 return False
 
             # Read current content
-            with open(self.changelog_path, 'r') as f:
+            with open(self.changelog_path, "r") as f:
                 content = f.read()
 
             # Find the section for the specified version
@@ -197,14 +204,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
             # Find the subsection for the change type
             change_section = f"### {change_type}"
             if change_section not in content:
-                self.logger.error(f"Change type section '{change_type}' not found", "add_entry")
+                self.logger.error(
+                    f"Change type section '{change_type}' not found", "add_entry"
+                )
                 return False
 
             # Add the entry
             entry = f"- {description}\n"
 
             # Find the position to insert the entry
-            lines = content.split('\n')
+            lines = content.split("\n")
             new_lines = []
             in_target_section = False
             in_change_type = False
@@ -229,17 +238,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
                     in_change_type = False
 
             # Write updated content
-            with open(self.changelog_path, 'w') as f:
-                f.write('\n'.join(new_lines))
+            with open(self.changelog_path, "w") as f:
+                f.write("\n".join(new_lines))
 
-            self.logger.success(f"Added {change_type} entry: {description}", "add_entry")
+            self.logger.success(
+                f"Added {change_type} entry: {description}", "add_entry"
+            )
             return True
 
         except Exception as e:
             self.logger.error(f"Failed to add changelog entry: {e}", "add_entry")
             return False
 
-    async def generate_changelog_from_commits(self, from_version: Optional[str] = None) -> Dict[str, List[str]]:
+    async def generate_changelog_from_commits(
+        self, from_version: Optional[str] = None
+    ) -> Dict[str, List[str]]:
         """
         Generate changelog entries from git commits.
 
@@ -260,7 +273,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
                 result = subprocess.run(
                     ["git", "describe", "--tags", "--abbrev=0"],
                     capture_output=True,
-                    text=True
+                    text=True,
                 )
                 if result.returncode == 0:
                     latest_tag = result.stdout.strip()
@@ -273,10 +286,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
                 ["git", "log", "--pretty=format:%s", commit_range],
                 capture_output=True,
                 text=True,
-                check=True
+                check=True,
             )
 
-            commits = result.stdout.strip().split('\n') if result.stdout.strip() else []
+            commits = result.stdout.strip().split("\n") if result.stdout.strip() else []
 
             # Categorize commits
             changes = {
@@ -285,7 +298,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
                 "Fixed": [],
                 "Security": [],
                 "Deprecated": [],
-                "Removed": []
+                "Removed": [],
             }
 
             for commit in commits:
@@ -323,11 +336,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
                 if not categorized:
                     changes["Changed"].append(commit)
 
-            self.logger.info(f"Generated changelog from {len(commits)} commits", "generate")
+            self.logger.info(
+                f"Generated changelog from {len(commits)} commits", "generate"
+            )
             return changes
 
         except Exception as e:
-            self.logger.error(f"Failed to generate changelog from commits: {e}", "generate")
+            self.logger.error(
+                f"Failed to generate changelog from commits: {e}", "generate"
+            )
             return {}
 
     async def get_changelog_section(self, version: str) -> Optional[str]:
@@ -345,17 +362,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
                 self.logger.warning("Changelog file not found", "get_section")
                 return None
 
-            with open(self.changelog_path, 'r') as f:
+            with open(self.changelog_path, "r") as f:
                 content = f.read()
 
             # Find the version section
             version_section = f"## [{version}]"
             if version_section not in content:
-                self.logger.warning(f"Version section [{version}] not found", "get_section")
+                self.logger.warning(
+                    f"Version section [{version}] not found", "get_section"
+                )
                 return None
 
             # Extract section content
-            lines = content.split('\n')
+            lines = content.split("\n")
             section_lines = []
             in_section = False
 
@@ -368,8 +387,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
                 elif in_section:
                     section_lines.append(line)
 
-            section_content = '\n'.join(section_lines)
-            self.logger.info(f"Retrieved changelog section for version {version}", "get_section")
+            section_content = "\n".join(section_lines)
+            self.logger.info(
+                f"Retrieved changelog section for version {version}", "get_section"
+            )
             return section_content
 
         except Exception as e:
@@ -388,17 +409,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
                 return {
                     "valid": False,
                     "errors": ["Changelog file not found"],
-                    "warnings": []
+                    "warnings": [],
                 }
 
-            with open(self.changelog_path, 'r') as f:
+            with open(self.changelog_path, "r") as f:
                 content = f.read()
 
-            validation = {
-                "valid": True,
-                "errors": [],
-                "warnings": []
-            }
+            validation = {"valid": True, "errors": [], "warnings": []}
 
             # Check for required sections
             required_sections = ["## [Unreleased]"]
@@ -426,5 +443,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
             return {
                 "valid": False,
                 "errors": [f"Validation error: {e}"],
-                "warnings": []
+                "warnings": [],
             }

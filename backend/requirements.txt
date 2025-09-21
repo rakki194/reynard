@@ -26,3 +26,7 @@ transformers
 torch
 rank-bm25
 numpy
+
+# Redis dependencies
+redis[hiredis]
+aioredis

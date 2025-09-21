@@ -133,7 +133,10 @@ class ChangelogScanner:
                     "search_type": "hybrid",
                     "top_k": 15,
                     "file_types": [".py", ".ts", ".js"],
-                    "directories": ["../../packages/dev-tools/validation/", "../../packages/"],
+                    "directories": [
+                        "../../packages/dev-tools/validation/",
+                        "../../packages/",
+                    ],
                 },
             )
             validation_tools = result.get("results", [])

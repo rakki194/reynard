@@ -103,7 +103,7 @@ class ECSWorldService:
             "mature_agents": world_stats["total_agents"],  # Simplified for now
             "generation_distribution": world_stats["generation_distribution"],
             "spirit_distribution": world_stats["spirit_distribution"],
-            "current_time": world_stats["current_time"]
+            "current_time": world_stats["current_time"],
         }
 
 

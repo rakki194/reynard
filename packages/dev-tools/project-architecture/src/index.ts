@@ -56,9 +56,7 @@ export {
 } from "./vscode-generator.js";
 
 // Dependency analysis
-export {
-  DependencyAnalyzer,
-} from "./dependency-analyzer.js";
+export { DependencyAnalyzer } from "./dependency-analyzer.js";
 
 // Type definitions
 export type {

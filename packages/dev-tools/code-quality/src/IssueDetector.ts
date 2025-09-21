@@ -143,15 +143,13 @@ export class IssueDetector {
 
     try {
       // Filter for Python and TypeScript files
-      const docstringFiles = files.filter(
-        f => f.endsWith(".py") || f.endsWith(".ts") || f.endsWith(".tsx")
-      );
+      const docstringFiles = files.filter(f => f.endsWith(".py") || f.endsWith(".ts") || f.endsWith(".tsx"));
 
       if (docstringFiles.length > 0) {
         console.log(`🦦 Analyzing docstrings in ${docstringFiles.length} files...`);
-        
+
         const analyses = await this.docstringAnalyzer.analyzeFiles(docstringFiles);
-        
+
         // Extract all issues from the analyses
         for (const analysis of analyses) {
           issues.push(...analysis.issues);

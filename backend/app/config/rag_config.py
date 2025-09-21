@@ -111,8 +111,10 @@ class RAGConfig:
     def validate(self) -> None:
         """Validate configuration settings."""
         # Check if we're in development mode
-        is_development = os.getenv("ENVIRONMENT", "development").lower() == "development"
-        
+        is_development = (
+            os.getenv("ENVIRONMENT", "development").lower() == "development"
+        )
+
         # Only enforce secure password in production
         if not is_development:
             if not self.pg_dsn or "CHANGE_THIS_PASSWORD" in self.pg_dsn:
@@ -138,7 +140,7 @@ class RAGConfig:
             raise ValueError(
                 "RAG configuration error: RAG_CHUNK_OVERLAP_RATIO must be between 0 and 1"
             )
-        
+
         # Validate embedding backends configuration
         self.embedding_backends.validate()
 

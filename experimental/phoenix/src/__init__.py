@@ -20,7 +20,7 @@ from .utils.data_structures import (
     PhoenixConfig,
     PhoenixEvolutionState,
     PerformanceMetrics,
-    StatisticalSignificance
+    StatisticalSignificance,
 )
 
 __version__ = "1.0.0"
@@ -32,10 +32,8 @@ __all__ = [
     "EvolutionaryOperators",
     "KnowledgeDistillation",
     "StatisticalValidation",
-
     # Integration
     "AgentStatePersistence",
-
     # Data structures
     "AgentGeneticMaterial",
     "StructuredKnowledge",
@@ -43,5 +41,5 @@ __all__ = [
     "PhoenixConfig",
     "PhoenixEvolutionState",
     "PerformanceMetrics",
-    "StatisticalSignificance"
+    "StatisticalSignificance",
 ]

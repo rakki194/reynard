@@ -33,10 +33,10 @@ class PerformanceMonitor:
         self.logger = PhoenixLogger("performance_monitor")
         self.benchmarks = {
             "build_time": 300,  # 5 minutes
-            "test_time": 600,   # 10 minutes
+            "test_time": 600,  # 10 minutes
             "memory_usage": 2048,  # 2GB
-            "bundle_size": 1024,   # 1MB
-            "startup_time": 3      # 3 seconds
+            "bundle_size": 1024,  # 1MB
+            "startup_time": 3,  # 3 seconds
         }
 
         self.logger.info("Performance monitor initialized", "initialization")
@@ -48,7 +48,9 @@ class PerformanceMonitor:
         Returns:
             Performance analysis results
         """
-        self.logger.info("Running comprehensive performance analysis", "performance_analysis")
+        self.logger.info(
+            "Running comprehensive performance analysis", "performance_analysis"
+        )
 
         results = {
             "overall_status": "passed",
@@ -57,7 +59,7 @@ class PerformanceMonitor:
             "memory_usage": {},
             "bundle_analysis": {},
             "startup_performance": {},
-            "recommendations": []
+            "recommendations": [],
         }
 
         try:
@@ -88,17 +90,29 @@ class PerformanceMonitor:
             # Determine overall status
             if any(
                 result.get("status") == "failed"
-                for result in [build_results, test_results, memory_results, bundle_results, startup_results]
+                for result in [
+                    build_results,
+                    test_results,
+                    memory_results,
+                    bundle_results,
+                    startup_results,
+                ]
             ):
                 results["overall_status"] = "failed"
-                self.logger.error("Performance analysis found issues", "performance_analysis")
+                self.logger.error(
+                    "Performance analysis found issues", "performance_analysis"
+                )
             else:
-                self.logger.success("Performance analysis passed", "performance_analysis")
+                self.logger.success(
+                    "Performance analysis passed", "performance_analysis"
+                )
 
         except Exception as e:
             results["overall_status"] = "error"
             results["error"] = str(e)
-            self.logger.error(f"Performance analysis failed: {e}", "performance_analysis")
+            self.logger.error(
+                f"Performance analysis failed: {e}", "performance_analysis"
+            )
 
         return results
 
@@ -115,7 +129,8 @@ class PerformanceMonitor:
 
             # Check if build script exists
             import json
-            with open("package.json", 'r') as f:
+
+            with open("package.json", "r") as f:
                 package_data = json.load(f)
 
             if "scripts" not in package_data or "build" not in package_data["scripts"]:
@@ -128,27 +143,31 @@ class PerformanceMonitor:
                 ["npm", "run", "build"],
                 capture_output=True,
                 text=True,
-                timeout=self.benchmarks["build_time"] + 60  # Add 1 minute buffer
+                timeout=self.benchmarks["build_time"] + 60,  # Add 1 minute buffer
             )
 
             end_time = time.time()
             build_time = end_time - start_time
 
             if result.returncode == 0:
-                status = "passed" if build_time <= self.benchmarks["build_time"] else "warning"
+                status = (
+                    "passed"
+                    if build_time <= self.benchmarks["build_time"]
+                    else "warning"
+                )
                 return {
                     "status": status,
                     "build_time": round(build_time, 2),
                     "benchmark": self.benchmarks["build_time"],
                     "output": result.stdout[-500:],  # Last 500 characters
-                    "message": f"Build completed in {build_time:.2f}s"
+                    "message": f"Build completed in {build_time:.2f}s",
                 }
             else:
                 return {
                     "status": "failed",
                     "build_time": round(build_time, 2),
                     "error": result.stderr,
-                    "message": "Build failed"
+                    "message": "Build failed",
                 }
 
         except subprocess.TimeoutExpired:
@@ -156,7 +175,7 @@ class PerformanceMonitor:
                 "status": "failed",
                 "build_time": self.benchmarks["build_time"] + 60,
                 "error": "Build timed out",
-                "message": "Build exceeded time limit"
+                "message": "Build exceeded time limit",
             }
         except Exception as e:
             return {"status": "error", "error": str(e)}
@@ -174,7 +193,8 @@ class PerformanceMonitor:
 
             # Check if test script exists
             import json
-            with open("package.json", 'r') as f:
+
+            with open("package.json", "r") as f:
                 package_data = json.load(f)
 
             test_scripts = ["test", "test:unit", "test:integration", "test:e2e"]
@@ -195,21 +215,23 @@ class PerformanceMonitor:
                 ["npm", "run", test_script],
                 capture_output=True,
                 text=True,
-                timeout=self.benchmarks["test_time"] + 120  # Add 2 minute buffer
+                timeout=self.benchmarks["test_time"] + 120,  # Add 2 minute buffer
             )
 
             end_time = time.time()
             test_time = end_time - start_time
 
             if result.returncode == 0:
-                status = "passed" if test_time <= self.benchmarks["test_time"] else "warning"
+                status = (
+                    "passed" if test_time <= self.benchmarks["test_time"] else "warning"
+                )
                 return {
                     "status": status,
                     "test_time": round(test_time, 2),
                     "benchmark": self.benchmarks["test_time"],
                     "script": test_script,
                     "output": result.stdout[-500:],  # Last 500 characters
-                    "message": f"Tests completed in {test_time:.2f}s"
+                    "message": f"Tests completed in {test_time:.2f}s",
                 }
             else:
                 return {
@@ -217,7 +239,7 @@ class PerformanceMonitor:
                     "test_time": round(test_time, 2),
                     "script": test_script,
                     "error": result.stderr,
-                    "message": "Tests failed"
+                    "message": "Tests failed",
                 }
 
         except subprocess.TimeoutExpired:
@@ -225,7 +247,7 @@ class PerformanceMonitor:
                 "status": "failed",
                 "test_time": self.benchmarks["test_time"] + 120,
                 "error": "Tests timed out",
-                "message": "Tests exceeded time limit"
+                "message": "Tests exceeded time limit",
             }
         except Exception as e:
             return {"status": "error", "error": str(e)}
@@ -246,7 +268,9 @@ class PerformanceMonitor:
             # Get system memory info
             system_memory = psutil.virtual_memory()
 
-            status = "passed" if memory_mb <= self.benchmarks["memory_usage"] else "warning"
+            status = (
+                "passed" if memory_mb <= self.benchmarks["memory_usage"] else "warning"
+            )
 
             return {
                 "status": status,
@@ -255,7 +279,7 @@ class PerformanceMonitor:
                 "system_total_mb": round(system_memory.total / 1024 / 1024, 2),
                 "system_available_mb": round(system_memory.available / 1024 / 1024, 2),
                 "system_usage_percent": system_memory.percent,
-                "message": f"Current memory usage: {memory_mb:.2f}MB"
+                "message": f"Current memory usage: {memory_mb:.2f}MB",
             }
 
         except Exception as e:
@@ -292,13 +316,19 @@ class PerformanceMonitor:
             for file_path in bundle_files:
                 file_size = file_path.stat().st_size
                 total_size += file_size
-                file_sizes.append({
-                    "file": str(file_path),
-                    "size_mb": round(file_size / 1024 / 1024, 2)
-                })
+                file_sizes.append(
+                    {
+                        "file": str(file_path),
+                        "size_mb": round(file_size / 1024 / 1024, 2),
+                    }
+                )
 
             total_size_mb = total_size / 1024 / 1024
-            status = "passed" if total_size_mb <= self.benchmarks["bundle_size"] else "warning"
+            status = (
+                "passed"
+                if total_size_mb <= self.benchmarks["bundle_size"]
+                else "warning"
+            )
 
             return {
                 "status": status,
@@ -306,7 +336,7 @@ class PerformanceMonitor:
                 "benchmark_mb": self.benchmarks["bundle_size"],
                 "file_count": len(bundle_files),
                 "files": file_sizes,
-                "message": f"Total bundle size: {total_size_mb:.2f}MB"
+                "message": f"Total bundle size: {total_size_mb:.2f}MB",
             }
 
         except Exception as e:
@@ -325,19 +355,32 @@ class PerformanceMonitor:
 
             # For now, we'll simulate startup time based on project complexity
             project_files = list(Path(".").glob("**/*.{js,ts,tsx,jsx,py}"))
-            file_count = len([f for f in project_files if not any(skip in str(f) for skip in ["node_modules", ".git", "__pycache__"])])
+            file_count = len(
+                [
+                    f
+                    for f in project_files
+                    if not any(
+                        skip in str(f)
+                        for skip in ["node_modules", ".git", "__pycache__"]
+                    )
+                ]
+            )
 
             # Estimate startup time based on file count (very rough approximation)
             estimated_startup_time = min(file_count * 0.01, 10)  # Max 10 seconds
 
-            status = "passed" if estimated_startup_time <= self.benchmarks["startup_time"] else "warning"
+            status = (
+                "passed"
+                if estimated_startup_time <= self.benchmarks["startup_time"]
+                else "warning"
+            )
 
             return {
                 "status": status,
                 "estimated_startup_time": round(estimated_startup_time, 2),
                 "benchmark": self.benchmarks["startup_time"],
                 "file_count": file_count,
-                "message": f"Estimated startup time: {estimated_startup_time:.2f}s"
+                "message": f"Estimated startup time: {estimated_startup_time:.2f}s",
             }
 
         except Exception as e:
@@ -358,31 +401,43 @@ class PerformanceMonitor:
         # Build performance recommendations
         build_perf = results.get("build_performance", {})
         if build_perf.get("status") == "warning":
-            recommendations.append("Consider optimizing build process - build time exceeds benchmark")
+            recommendations.append(
+                "Consider optimizing build process - build time exceeds benchmark"
+            )
 
         # Test performance recommendations
         test_perf = results.get("test_performance", {})
         if test_perf.get("status") == "warning":
-            recommendations.append("Consider optimizing test suite - test execution time exceeds benchmark")
+            recommendations.append(
+                "Consider optimizing test suite - test execution time exceeds benchmark"
+            )
 
         # Memory usage recommendations
         memory_usage = results.get("memory_usage", {})
         if memory_usage.get("status") == "warning":
-            recommendations.append("Consider optimizing memory usage - current usage exceeds benchmark")
+            recommendations.append(
+                "Consider optimizing memory usage - current usage exceeds benchmark"
+            )
 
         # Bundle size recommendations
         bundle_analysis = results.get("bundle_analysis", {})
         if bundle_analysis.get("status") == "warning":
-            recommendations.append("Consider optimizing bundle size - current size exceeds benchmark")
+            recommendations.append(
+                "Consider optimizing bundle size - current size exceeds benchmark"
+            )
 
         # Startup performance recommendations
         startup_perf = results.get("startup_performance", {})
         if startup_perf.get("status") == "warning":
-            recommendations.append("Consider optimizing startup performance - estimated time exceeds benchmark")
+            recommendations.append(
+                "Consider optimizing startup performance - estimated time exceeds benchmark"
+            )
 
         # General recommendations
         if not recommendations:
-            recommendations.append("Performance analysis passed - no optimizations needed")
+            recommendations.append(
+                "Performance analysis passed - no optimizations needed"
+            )
 
         return recommendations
 
@@ -397,7 +452,10 @@ class PerformanceMonitor:
             Resource usage monitoring results
         """
         try:
-            self.logger.info(f"Monitoring resource usage for {duration} seconds", "resource_monitoring")
+            self.logger.info(
+                f"Monitoring resource usage for {duration} seconds",
+                "resource_monitoring",
+            )
 
             start_time = time.time()
             samples = []
@@ -416,7 +474,7 @@ class PerformanceMonitor:
                     "process_memory_mb": round(memory_info.rss / 1024 / 1024, 2),
                     "process_cpu_percent": cpu_percent,
                     "system_memory_percent": system_memory.percent,
-                    "system_cpu_percent": system_cpu
+                    "system_cpu_percent": system_cpu,
                 }
 
                 samples.append(sample)
@@ -435,14 +493,14 @@ class PerformanceMonitor:
                     "memory_stats": {
                         "min": min(memory_values),
                         "max": max(memory_values),
-                        "avg": sum(memory_values) / len(memory_values)
+                        "avg": sum(memory_values) / len(memory_values),
                     },
                     "cpu_stats": {
                         "min": min(cpu_values),
                         "max": max(cpu_values),
-                        "avg": sum(cpu_values) / len(cpu_values)
+                        "avg": sum(cpu_values) / len(cpu_values),
                     },
-                    "samples": samples
+                    "samples": samples,
                 }
             else:
                 return {"error": "No samples collected"}
@@ -490,9 +548,13 @@ class PerformanceMonitor:
         memory_usage = results.get("memory_usage", {})
         report.append("## 💾 Memory Usage")
         report.append(f"- **Status:** {memory_usage.get('status', 'unknown')}")
-        report.append(f"- **Current Memory:** {memory_usage.get('current_memory_mb', 'N/A')}MB")
+        report.append(
+            f"- **Current Memory:** {memory_usage.get('current_memory_mb', 'N/A')}MB"
+        )
         report.append(f"- **Benchmark:** {memory_usage.get('benchmark_mb', 'N/A')}MB")
-        report.append(f"- **System Usage:** {memory_usage.get('system_usage_percent', 'N/A')}%")
+        report.append(
+            f"- **System Usage:** {memory_usage.get('system_usage_percent', 'N/A')}%"
+        )
         report.append("")
 
         # Bundle analysis section
@@ -500,16 +562,24 @@ class PerformanceMonitor:
         if bundle_analysis.get("status") != "skipped":
             report.append("## 📦 Bundle Analysis")
             report.append(f"- **Status:** {bundle_analysis.get('status', 'unknown')}")
-            report.append(f"- **Total Size:** {bundle_analysis.get('total_size_mb', 'N/A')}MB")
-            report.append(f"- **Benchmark:** {bundle_analysis.get('benchmark_mb', 'N/A')}MB")
-            report.append(f"- **File Count:** {bundle_analysis.get('file_count', 'N/A')}")
+            report.append(
+                f"- **Total Size:** {bundle_analysis.get('total_size_mb', 'N/A')}MB"
+            )
+            report.append(
+                f"- **Benchmark:** {bundle_analysis.get('benchmark_mb', 'N/A')}MB"
+            )
+            report.append(
+                f"- **File Count:** {bundle_analysis.get('file_count', 'N/A')}"
+            )
             report.append("")
 
         # Startup performance section
         startup_perf = results.get("startup_performance", {})
         report.append("## 🚀 Startup Performance")
         report.append(f"- **Status:** {startup_perf.get('status', 'unknown')}")
-        report.append(f"- **Estimated Time:** {startup_perf.get('estimated_startup_time', 'N/A')}s")
+        report.append(
+            f"- **Estimated Time:** {startup_perf.get('estimated_startup_time', 'N/A')}s"
+        )
         report.append(f"- **Benchmark:** {startup_perf.get('benchmark', 'N/A')}s")
         report.append("")
 

@@ -31,7 +31,9 @@ class SyntaxSearchHandler:
             # Check cache first
             cached_result = await self.search_service._get_cached_result(cache_key)
             if cached_result:
-                self.search_service._metrics.record_search(time.time() - start_time, cache_hit=True)
+                self.search_service._metrics.record_search(
+                    time.time() - start_time, cache_hit=True
+                )
                 logger.debug(f"Cache hit for syntax search: {request.query[:50]}...")
                 return cached_result
 
@@ -52,10 +54,14 @@ class SyntaxSearchHandler:
                 search_time=time.time() - start_time,
                 search_strategies=["ripgrep"],
             )
-            
+
             # Cache the result
-            await self.search_service._cache_result(cache_key, search_response, ttl=1800)  # 30 minutes for syntax search
-            self.search_service._metrics.record_search(time.time() - start_time, cache_hit=False)
+            await self.search_service._cache_result(
+                cache_key, search_response, ttl=1800
+            )  # 30 minutes for syntax search
+            self.search_service._metrics.record_search(
+                time.time() - start_time, cache_hit=False
+            )
             return search_response
 
         except Exception as e:
@@ -68,7 +74,9 @@ class SyntaxSearchHandler:
                 search_time=time.time() - start_time,
                 error=str(e),
             )
-            self.search_service._metrics.record_search(time.time() - start_time, cache_hit=False)
+            self.search_service._metrics.record_search(
+                time.time() - start_time, cache_hit=False
+            )
             return error_result
 
     def _build_ripgrep_command(self, request: SyntaxSearchRequest) -> List[str]:

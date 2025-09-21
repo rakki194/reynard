@@ -11,10 +11,10 @@ from .models import HumilityFinding, SeverityLevel, ConfidenceLevel, DetectionCa
 from .config import HumilityConfig
 
 __all__ = [
-    'HumilityDetector',
-    'HumilityFinding', 
-    'SeverityLevel',
-    'ConfidenceLevel',
-    'DetectionCategory',
-    'HumilityConfig'
+    "HumilityDetector",
+    "HumilityFinding",
+    "SeverityLevel",
+    "ConfidenceLevel",
+    "DetectionCategory",
+    "HumilityConfig",
 ]

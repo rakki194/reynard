@@ -388,65 +388,65 @@ echo "*.orig" >> .gitignore
 cleanup_tracked_junk_files() {
     local junk_files=0
     local cleanup_report="junk-file-cleanup-$(date +%Y%m%d-%H%M%S).txt"
-    
+
     echo "🧹 Starting automated junk file cleanup..." > "$cleanup_report"
     echo "Timestamp: $(date)" >> "$cleanup_report"
     echo "=====================================" >> "$cleanup_report"
-    
+
     # Get list of tracked files that match junk patterns
     local tracked_junk=$(git ls-files | grep -E "\.(pyc|pyo|js\.map|d\.ts\.map|tsbuildinfo|log|tmp|temp|backup|bak|orig)$|__pycache__/|\.vitest-coverage/|coverage/|\.nyc_output/|\.eslintcache|\.stylelintcache|\.vite/|\.rollup\.cache/|\.turbo/")
-    
+
     if [ -n "$tracked_junk" ]; then
         echo "🔍 Found tracked junk files:" >> "$cleanup_report"
         echo "$tracked_junk" >> "$cleanup_report"
-        
+
         # Remove from tracking
         echo "$tracked_junk" | xargs -I {} git rm --cached {}
         junk_files=$(echo "$tracked_junk" | wc -l)
-        
+
         echo "✅ Removed $junk_files junk files from Git tracking" >> "$cleanup_report"
         echo "📝 Files removed from tracking but preserved locally" >> "$cleanup_report"
     else
         echo "✅ No tracked junk files found" >> "$cleanup_report"
     fi
-    
+
     echo "📊 Cleanup completed: $junk_files files processed" >> "$cleanup_report"
     echo "📄 Full report saved to: $cleanup_report"
-    
+
     return $junk_files
 }
 ```
 
 **3. Pre-Commit Junk File Validation:**
 
-```bash
+````bash
 # Enhanced junk file validation using Reynard's sophisticated detector
 validate_no_junk_files() {
     echo "🔍 Validating staged changes for junk files using Reynard's enterprise-grade analyzer..."
-    
+
     # Check if the code quality tool is available
     if [ -f "packages/dev-tools/code-quality/package.json" ]; then
         cd packages/dev-tools/code-quality
-        
+
         # Run junk detection on staged files specifically
         local staged_files=$(git diff --cached --name-only | tr '\n' ' ')
-        
+
         if [ -n "$staged_files" ]; then
             echo "📋 Checking staged files: $staged_files"
-            
+
             # Run detection and check for critical/high issues
             npm run analyze junk-detection -- --project "$(pwd)/../.." --format json --output "../../staged-junk-analysis.json" 2>/dev/null
-            
+
             cd ../..
-            
+
             if [ -f "staged-junk-analysis.json" ]; then
                 local critical_issues=$(node -p "const report = require('./staged-junk-analysis.json'); report.criticalIssues || 0" 2>/dev/null || echo "0")
                 local high_issues=$(node -p "const report = require('./staged-junk-analysis.json'); report.highIssues || 0" 2>/dev/null || echo "0")
                 local quality_score=$(node -p "const report = require('./staged-junk-analysis.json'); report.qualityScore || 0" 2>/dev/null || echo "0")
-                
+
                 # Clean up temporary file
                 rm -f staged-junk-analysis.json
-                
+
                 if [ "$critical_issues" -gt 0 ] || [ "$high_issues" -gt 0 ]; then
                     echo "❌ CRITICAL OR HIGH-PRIORITY JUNK FILES DETECTED IN STAGED CHANGES:"
                     echo "   Critical: $critical_issues files"
@@ -471,13 +471,13 @@ validate_no_junk_files() {
         fi
     else
         echo "⚠️  Reynard's junk file detector not available, using basic validation..."
-        
+
         # Fallback to basic validation
         local staged_files=$(git diff --cached --name-only)
         local junk_patterns="\.(pyc|pyo|js\.map|d\.ts\.map|tsbuildinfo|log|tmp|temp|backup|bak|orig)$|__pycache__/|\.vitest-coverage/|coverage/|\.nyc_output/|\.eslintcache|\.stylelintcache|\.vite/|\.rollup\.cache/|\.turbo/"
-        
+
         local junk_in_staged=$(echo "$staged_files" | grep -E "$junk_patterns" || true)
-        
+
         if [ -n "$junk_in_staged" ]; then
             echo "❌ JUNK FILES DETECTED IN STAGED CHANGES:"
             echo "$junk_in_staged"
@@ -505,7 +505,7 @@ validate_no_junk_files() {
    📋 Total tracked junk files: 0 files
 
 ✅ No tracked junk files detected! Git repository is clean.
-```
+````
 
 **When Junk Files Are Detected:**
 The script will provide detailed recommendations for cleanup:
@@ -1049,29 +1049,29 @@ echo "   Release Date: $TODAY"
 manage_large_commit() {
     local staged_files=$(git diff --cached --name-only | wc -l)
     local max_files=100  # Threshold for large commits
-    
+
     if [ "$staged_files" -gt "$max_files" ]; then
         echo "⚠️  Large commit detected: $staged_files files"
         echo "📊 Commit size analysis:"
-        
+
         # Analyze commit by file type
         local ts_files=$(git diff --cached --name-only | grep -E "\.(ts|tsx)$" | wc -l)
         local py_files=$(git diff --cached --name-only | grep -E "\.py$" | wc -l)
         local md_files=$(git diff --cached --name-only | grep -E "\.md$" | wc -l)
         local json_files=$(git diff --cached --name-only | grep -E "\.json$" | wc -l)
-        
+
         echo "   TypeScript files: $ts_files"
         echo "   Python files: $py_files"
         echo "   Markdown files: $md_files"
         echo "   JSON files: $json_files"
-        
+
         # Check for potential issues
         local large_files=$(git diff --cached --name-only | xargs -I {} sh -c 'if [ -f "{}" ]; then wc -l < "{}"; else echo 0; fi' | awk '$1 > 1000' | wc -l)
-        
+
         if [ "$large_files" -gt 0 ]; then
             echo "⚠️  Warning: $large_files files exceed 1000 lines"
         fi
-        
+
         # Ask for confirmation
         echo "❓ Proceed with large commit? (y/N)"
         read -r confirm
@@ -1080,7 +1080,7 @@ manage_large_commit() {
             return 1
         fi
     fi
-    
+
     return 0
 }
 ```
@@ -1097,11 +1097,11 @@ setup_error_recovery() {
     # Create backup of current state
     local backup_dir="backups/pre-commit-$(date +%Y%m%d-%H%M%S)"
     mkdir -p "$backup_dir"
-    
+
     # Backup current branch and staged changes
     git branch "backup-$(date +%Y%m%d-%H%M%S)" 2>/dev/null || true
     git stash push -m "pre-commit-backup-$(date +%Y%m%d-%H%M%S)" 2>/dev/null || true
-    
+
     echo "✅ Error recovery setup complete"
     echo "📁 Backup created: $backup_dir"
 }
@@ -1110,11 +1110,11 @@ setup_error_recovery() {
 rollback_failed_operation() {
     local error_code=$1
     echo "🔄 Rolling back failed operation (exit code: $error_code)"
-    
+
     # Restore from backup
     git stash pop 2>/dev/null || true
     git reset --hard HEAD 2>/dev/null || true
-    
+
     echo "✅ Rollback completed"
     exit $error_code
 }
@@ -1122,16 +1122,16 @@ rollback_failed_operation() {
 # Enhanced commit with error recovery
 safe_commit() {
     local commit_message="$1"
-    
+
     # Setup error recovery
     setup_error_recovery
-    
+
     # Attempt commit with error handling
     if ! git commit --no-verify -m "$commit_message"; then
         echo "❌ Commit failed, initiating rollback"
         rollback_failed_operation $?
     fi
-    
+
     echo "✅ Commit successful"
 }
 ```
@@ -1146,21 +1146,21 @@ safe_commit() {
 # Comprehensive pre-commit validation pipeline
 pre_commit_validation() {
     local validation_errors=0
-    
+
     echo "🔍 Running pre-commit validation pipeline..."
-    
+
     # 1. Junk file validation
     if ! validate_no_junk_files; then
         echo "❌ Junk file validation failed"
         validation_errors=$((validation_errors + 1))
     fi
-    
+
     # 2. Large commit validation
     if ! manage_large_commit; then
         echo "❌ Large commit validation failed"
         validation_errors=$((validation_errors + 1))
     fi
-    
+
     # 3. Syntax validation (if applicable)
     if command -v node >/dev/null 2>&1; then
         echo "🔍 Validating package.json syntax..."
@@ -1169,7 +1169,7 @@ pre_commit_validation() {
             validation_errors=$((validation_errors + 1))
         fi
     fi
-    
+
     # 4. Git status validation
     if ! git diff --cached --quiet; then
         echo "✅ Changes are staged and ready for commit"
@@ -1177,7 +1177,7 @@ pre_commit_validation() {
         echo "❌ No changes staged for commit"
         validation_errors=$((validation_errors + 1))
     fi
-    
+
     if [ $validation_errors -eq 0 ]; then
         echo "✅ All pre-commit validations passed"
         return 0
@@ -1258,24 +1258,24 @@ echo "🔍 Performing comprehensive junk file detection using Reynard's enterpri
 # Check if the code quality tool is available
 if [ -f "packages/dev-tools/code-quality/package.json" ]; then
     echo "🦊 Using Reynard's sophisticated junk file detector..."
-    
+
     # Run the advanced junk file detection
     cd packages/dev-tools/code-quality
-    
+
     # Run comprehensive junk file analysis with JSON output
     echo "📊 Running comprehensive junk file analysis..."
     npm run analyze junk-detection -- --project "$(pwd)/../.." --format json --output "../../junk-analysis-report.json" 2>/dev/null
-    
+
     cd ../..
-    
+
     # Check if any critical or high-priority issues were found
     if [ -f "junk-analysis-report.json" ]; then
         CRITICAL_ISSUES=$(node -p "const report = require('./junk-analysis-report.json'); report.criticalIssues || 0" 2>/dev/null || echo "0")
         HIGH_ISSUES=$(node -p "const report = require('./junk-analysis-report.json'); report.highIssues || 0" 2>/dev/null || echo "0")
         QUALITY_SCORE=$(node -p "const report = require('./junk-analysis-report.json'); report.qualityScore || 0" 2>/dev/null || echo "0")
-        
+
         echo "📈 Repository Quality Score: $QUALITY_SCORE/100"
-        
+
         if [ "$CRITICAL_ISSUES" -gt 0 ] || [ "$HIGH_ISSUES" -gt 0 ]; then
             echo "❌ Critical or high-priority junk files detected:"
             echo "   Critical: $CRITICAL_ISSUES files"
@@ -1298,7 +1298,7 @@ if [ -f "packages/dev-tools/code-quality/package.json" ]; then
         echo "❌ Failed to generate junk file analysis report"
         exit 1
     fi
-    
+
     echo "✅ Repository junk file analysis completed successfully"
 else
     echo "⚠️  Reynard's junk file detector not found, falling back to basic detection..."

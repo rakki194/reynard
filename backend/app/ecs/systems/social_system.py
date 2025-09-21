@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 class SocialSystem(System):
     """
     System for managing social networks, group dynamics, and social influence.
-    
+
     Handles group formation, social status updates, influence calculations,
     and community building among agents.
     """
@@ -34,7 +34,7 @@ class SocialSystem(System):
     def __init__(self, world: Any) -> None:
         """
         Initialize the social system.
-        
+
         Args:
             world: The ECS world this system belongs to
         """
@@ -49,7 +49,7 @@ class SocialSystem(System):
     def update(self, delta_time: float) -> None:
         """
         Process social dynamics for all agents.
-        
+
         Args:
             delta_time: Time elapsed since last update
         """
@@ -93,12 +93,16 @@ class SocialSystem(System):
             if not social_comp:
                 continue
 
-            if (social_comp.social_energy > 0.7 and 
-                social_comp.group_activity_preference > 0.6 and
-                social_comp.leadership_ability > 0.5):
+            if (
+                social_comp.social_energy > 0.7
+                and social_comp.group_activity_preference > 0.6
+                and social_comp.leadership_ability > 0.5
+            ):
                 potential_leaders.append(entity)
-            elif (social_comp.social_energy > 0.5 and 
-                  social_comp.group_activity_preference > 0.4):
+            elif (
+                social_comp.social_energy > 0.5
+                and social_comp.group_activity_preference > 0.4
+            ):
                 potential_members.append(entity)
 
         # Attempt to form new groups
@@ -106,7 +110,9 @@ class SocialSystem(System):
             if random.random() < 0.1:  # 10% chance per update
                 self._attempt_group_formation(leader, potential_members)
 
-    def _attempt_group_formation(self, leader: Any, potential_members: List[Any]) -> None:
+    def _attempt_group_formation(
+        self, leader: Any, potential_members: List[Any]
+    ) -> None:
         """Attempt to form a new group with a leader and potential members."""
         social_comp = leader.get_component(SocialComponent)
         if not social_comp:
@@ -121,7 +127,7 @@ class SocialSystem(System):
         for member in potential_members:
             if member.id == leader.id:
                 continue
-            
+
             member_social_comp = member.get_component(SocialComponent)
             if not member_social_comp:
                 continue
@@ -152,7 +158,10 @@ class SocialSystem(System):
             return False
 
         # Check group activity preference compatibility
-        activity_diff = abs(social_comp1.group_activity_preference - social_comp2.group_activity_preference)
+        activity_diff = abs(
+            social_comp1.group_activity_preference
+            - social_comp2.group_activity_preference
+        )
         if activity_diff > 0.4:
             return False
 
@@ -161,7 +170,7 @@ class SocialSystem(System):
     def _create_social_group(self, leader: Any, members: List[Any]) -> None:
         """Create a new social group."""
         group_id = f"group_{self.total_groups_created}_{leader.id}"
-        
+
         # Determine group type based on leader's preferences
         leader_social_comp = leader.get_component(SocialComponent)
         group_type = self._determine_group_type(leader_social_comp)
@@ -176,7 +185,7 @@ class SocialSystem(System):
             created_at=leader_social_comp.last_update,
             activity_level=0.5,
             cohesion=0.5,
-            influence=0.3
+            influence=0.3,
         )
 
         # Add group to system
@@ -187,7 +196,10 @@ class SocialSystem(System):
         for member in all_members:
             member_social_comp = member.get_component(SocialComponent)
             if member_social_comp:
-                member_social_comp.join_group(group_id, SocialRole.LEADER if member.id == leader.id else SocialRole.MEMBER)
+                member_social_comp.join_group(
+                    group_id,
+                    SocialRole.LEADER if member.id == leader.id else SocialRole.MEMBER,
+                )
 
         self.total_groups_created += 1
         logger.debug(f"Created social group {group_id} with {len(all_members)} members")
@@ -225,7 +237,9 @@ class SocialSystem(System):
             return
 
         # Calculate average social energy
-        avg_social_energy = sum(comp.social_energy for comp in member_components) / len(member_components)
+        avg_social_energy = sum(comp.social_energy for comp in member_components) / len(
+            member_components
+        )
 
         # Update cohesion based on social energy and interactions
         cohesion_change = (avg_social_energy - 0.5) * 0.01
@@ -237,7 +251,7 @@ class SocialSystem(System):
         size_factor = min(1.0, len(group.member_ids) / 10.0)  # Normalize to 10 members
         cohesion_factor = group.cohesion
 
-        group.influence = (size_factor * 0.6 + cohesion_factor * 0.4)
+        group.influence = size_factor * 0.6 + cohesion_factor * 0.4
 
     def _process_leadership_changes(self, group: SocialGroup) -> None:
         """Process potential leadership changes within groups."""
@@ -251,9 +265,11 @@ class SocialSystem(System):
             return
 
         # Check if leader is still suitable
-        if (leader_social_comp.social_energy < 0.3 or 
-            leader_social_comp.leadership_ability < 0.4):
-            
+        if (
+            leader_social_comp.social_energy < 0.3
+            or leader_social_comp.leadership_ability < 0.4
+        ):
+
             # Find a new leader
             new_leader = self._find_new_leader(group)
             if new_leader:
@@ -277,9 +293,11 @@ class SocialSystem(System):
                 continue
 
             # Calculate leadership score
-            score = (social_comp.leadership_ability * 0.4 + 
-                    social_comp.social_energy * 0.3 + 
-                    social_comp.influence * 0.3)
+            score = (
+                social_comp.leadership_ability * 0.4
+                + social_comp.social_energy * 0.3
+                + social_comp.influence * 0.3
+            )
 
             if score > best_score:
                 best_score = score
@@ -307,7 +325,9 @@ class SocialSystem(System):
             new_leader_social_comp.update_group_role(group.id, SocialRole.LEADER)
 
         self.total_leadership_changes += 1
-        logger.debug(f"Changed leader of group {group.id} from {old_leader_id} to {new_leader_id}")
+        logger.debug(
+            f"Changed leader of group {group.id} from {old_leader_id} to {new_leader_id}"
+        )
 
     def _process_network_updates(self, entities: List[Any]) -> None:
         """Process social network updates and connections."""
@@ -319,7 +339,9 @@ class SocialSystem(System):
             # Update social connections
             self._update_social_connections(entity, social_comp)
 
-    def _update_social_connections(self, entity: Any, social_comp: SocialComponent) -> None:
+    def _update_social_connections(
+        self, entity: Any, social_comp: SocialComponent
+    ) -> None:
         """Update social connections for an agent."""
         # Find nearby agents for potential connections
         nearby_entities = self._find_nearby_agents(entity)
@@ -334,7 +356,9 @@ class SocialSystem(System):
 
             # Check if connection should be formed
             if self._should_form_connection(social_comp, nearby_social_comp):
-                self._form_social_connection(entity, nearby_entity, social_comp, nearby_social_comp)
+                self._form_social_connection(
+                    entity, nearby_entity, social_comp, nearby_social_comp
+                )
 
     def _find_nearby_agents(self, entity: Any) -> List[Any]:
         """Find nearby agents for social interaction."""
@@ -343,7 +367,9 @@ class SocialSystem(System):
         all_entities = self.get_entities_with_components(SocialComponent)
         return [e for e in all_entities if e.id != entity.id]
 
-    def _should_form_connection(self, social_comp1: SocialComponent, social_comp2: SocialComponent) -> bool:
+    def _should_form_connection(
+        self, social_comp1: SocialComponent, social_comp2: SocialComponent
+    ) -> bool:
         """Check if two agents should form a social connection."""
         # Check if they're already connected
         if social_comp1.has_connection(social_comp2.entity_id):
@@ -355,10 +381,18 @@ class SocialSystem(System):
             return False
 
         # Random chance based on social energy
-        connection_chance = (social_comp1.social_energy + social_comp2.social_energy) / 2.0 * 0.05
+        connection_chance = (
+            (social_comp1.social_energy + social_comp2.social_energy) / 2.0 * 0.05
+        )
         return random.random() < connection_chance
 
-    def _form_social_connection(self, entity1: Any, entity2: Any, social_comp1: SocialComponent, social_comp2: SocialComponent) -> None:
+    def _form_social_connection(
+        self,
+        entity1: Any,
+        entity2: Any,
+        social_comp1: SocialComponent,
+        social_comp2: SocialComponent,
+    ) -> None:
         """Form a social connection between two agents."""
         # Add connection to both agents
         social_comp1.add_connection(entity2.id, 0.1)  # Initial connection strength
@@ -380,14 +414,14 @@ class SocialSystem(System):
         """Get comprehensive system statistics."""
         total_agents = len(self.get_entities_with_components(SocialComponent))
         total_groups = len(self.social_groups)
-        
+
         return {
             "total_agents_with_social": total_agents,
             "total_groups": total_groups,
             "total_groups_created": self.total_groups_created,
             "total_connections_formed": self.total_connections_formed,
             "total_leadership_changes": self.total_leadership_changes,
-            "processing_interval": self.processing_interval
+            "processing_interval": self.processing_interval,
         }
 
     def create_group(
@@ -395,17 +429,17 @@ class SocialSystem(System):
         leader_id: str,
         group_name: str,
         group_type: GroupType,
-        member_ids: List[str] | None = None
+        member_ids: List[str] | None = None,
     ) -> str | None:
         """
         Create a new social group.
-        
+
         Args:
             leader_id: ID of the group leader
             group_name: Name of the group
             group_type: Type of group
             member_ids: List of member IDs (optional)
-            
+
         Returns:
             Group ID if successful, None otherwise
         """
@@ -423,7 +457,7 @@ class SocialSystem(System):
 
         # Create group
         group_id = f"group_{self.total_groups_created}_{leader_id}"
-        
+
         if member_ids is None:
             member_ids = [leader_id]
         elif leader_id not in member_ids:
@@ -438,7 +472,7 @@ class SocialSystem(System):
             created_at=leader_social_comp.last_update,
             activity_level=0.5,
             cohesion=0.5,
-            influence=0.3
+            influence=0.3,
         )
 
         # Add group to system
@@ -450,7 +484,11 @@ class SocialSystem(System):
             if member_entity:
                 member_social_comp = member_entity.get_component(SocialComponent)
                 if member_social_comp:
-                    role = SocialRole.LEADER if member_id == leader_id else SocialRole.MEMBER
+                    role = (
+                        SocialRole.LEADER
+                        if member_id == leader_id
+                        else SocialRole.MEMBER
+                    )
                     member_social_comp.join_group(group_id, role)
 
         self.total_groups_created += 1
@@ -459,10 +497,10 @@ class SocialSystem(System):
     def disband_group(self, group_id: str) -> bool:
         """
         Disband a social group.
-        
+
         Args:
             group_id: ID of the group to disband
-            
+
         Returns:
             True if successful, False otherwise
         """
@@ -499,5 +537,5 @@ class SocialSystem(System):
             "activity_level": group.activity_level,
             "cohesion": group.cohesion,
             "influence": group.influence,
-            "created_at": group.created_at.isoformat()
+            "created_at": group.created_at.isoformat(),
         }

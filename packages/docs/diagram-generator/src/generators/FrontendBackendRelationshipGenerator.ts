@@ -640,7 +640,7 @@ export class FrontendBackendRelationshipGenerator implements DiagramGenerator {
 
   private determineDataDirection(
     frontend: FrontendPackageAnalysis,
-    backend: BackendServiceAnalysis
+    _backend: BackendServiceAnalysis
   ): APIConnectionAnalysis["direction"] {
     if (frontend.realtimeFeatures.length > 0) {
       return "bidirectional";
@@ -666,7 +666,7 @@ export class FrontendBackendRelationshipGenerator implements DiagramGenerator {
 
   private determineDataFrequency(
     frontend: FrontendPackageAnalysis,
-    backend: BackendServiceAnalysis
+    _backend: BackendServiceAnalysis
   ): DataFlowAnalysis["frequency"] {
     if (frontend.realtimeFeatures.length > 0) {
       return "continuous";

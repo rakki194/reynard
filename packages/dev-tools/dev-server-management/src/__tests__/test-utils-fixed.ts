@@ -20,7 +20,7 @@ export const createMockFileSystem = () => {
           port: 3000,
           healthCheck: {
             type: "http",
-            path: "/health",
+            path: "/api/health",
           },
         },
       },
@@ -89,7 +89,7 @@ export const createMockProjectConfig = (overrides = {}) => ({
   port: 3000,
   healthCheck: {
     type: "http",
-    path: "/health",
+    path: "/api/health",
   },
   ...overrides,
 });

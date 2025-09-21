@@ -23,19 +23,19 @@ from app.services.multi_account_service import EmailAccount, AccountSummary
 
 class TestAdvancedEmailRoutes:
     """Test cases for advanced email API routes."""
-    
+
     @pytest.fixture
     def app(self):
         """Create test FastAPI app."""
         app = FastAPI()
         app.include_router(router)
         return app
-    
+
     @pytest.fixture
     def client(self, app):
         """Create test client."""
         return TestClient(app)
-    
+
     @pytest.fixture
     def mock_user(self):
         """Mock authenticated user."""
@@ -43,25 +43,32 @@ class TestAdvancedEmailRoutes:
             "id": "test_user_id",
             "username": "test_user",
             "email": "test@example.com",
-            "full_name": "Test User"
+            "full_name": "Test User",
         }
-    
+
     @pytest.fixture
     def mock_auth_dependency(self, mock_user):
         """Mock authentication dependency."""
+
         def mock_get_current_user():
             return mock_user
+
         return mock_get_current_user
-    
+
     # Email Analytics Tests
-    
+
     @pytest.mark.asyncio
-    async def test_get_email_analytics_metrics_success(self, app, client, mock_auth_dependency):
+    async def test_get_email_analytics_metrics_success(
+        self, app, client, mock_auth_dependency
+    ):
         """Test successful email analytics metrics retrieval."""
         from app.auth.user_service import get_current_active_user
+
         app.dependency_overrides[get_current_active_user] = mock_auth_dependency
         try:
-            with patch('app.api.email_routes.email_analytics_service.get_email_metrics') as mock_get_metrics:
+            with patch(
+                "app.api.email_routes.email_analytics_service.get_email_metrics"
+            ) as mock_get_metrics:
                 # Mock metrics response
                 mock_metrics = EmailMetrics(
                     total_emails=100,
@@ -79,13 +86,15 @@ class TestAdvancedEmailRoutes:
                     top_recipients=[{"email": "recipient@example.com", "count": 15}],
                     email_volume_trend=[{"date": "2023-01-01", "count": 5}],
                     agent_activity={"agent1": {"sent": 10, "received": 5}},
-                    content_analysis={"common_subjects": [{"phrase": "test", "count": 3}]},
-                    performance_metrics={"response_rate": 75.0}
+                    content_analysis={
+                        "common_subjects": [{"phrase": "test", "count": 3}]
+                    },
+                    performance_metrics={"response_rate": 75.0},
                 )
                 mock_get_metrics.return_value = mock_metrics
-                
+
                 response = client.get("/api/email/analytics/metrics")
-                
+
                 assert response.status_code == 200
                 data = response.json()
                 assert data["total_emails"] == 100
@@ -107,14 +116,19 @@ class TestAdvancedEmailRoutes:
                 assert "response_rate" in data["performance_metrics"]
         finally:
             app.dependency_overrides.clear()
-    
+
     @pytest.mark.asyncio
-    async def test_get_email_analytics_metrics_with_filters(self, app, client, mock_auth_dependency):
+    async def test_get_email_analytics_metrics_with_filters(
+        self, app, client, mock_auth_dependency
+    ):
         """Test email analytics metrics with filters."""
         from app.auth.user_service import get_current_active_user
+
         app.dependency_overrides[get_current_active_user] = mock_auth_dependency
         try:
-            with patch('app.api.email_routes.email_analytics_service.get_email_metrics') as mock_get_metrics:
+            with patch(
+                "app.api.email_routes.email_analytics_service.get_email_metrics"
+            ) as mock_get_metrics:
                 mock_metrics = EmailMetrics(
                     total_emails=50,
                     sent_emails=25,
@@ -132,10 +146,10 @@ class TestAdvancedEmailRoutes:
                     email_volume_trend=[],
                     agent_activity={},
                     content_analysis={},
-                    performance_metrics={}
+                    performance_metrics={},
                 )
                 mock_get_metrics.return_value = mock_metrics
-                
+
                 # Test with period filters
                 response = client.get(
                     "/api/email/analytics/metrics",
@@ -143,14 +157,14 @@ class TestAdvancedEmailRoutes:
                         "period_start": "2023-01-01T00:00:00",
                         "period_end": "2023-01-31T23:59:59",
                         "agent_id": "agent1",
-                        "use_cache": False
-                    }
+                        "use_cache": False,
+                    },
                 )
-                
+
                 assert response.status_code == 200
                 data = response.json()
                 assert data["total_emails"] == 50
-                
+
                 # Verify service was called with correct parameters
                 mock_get_metrics.assert_called_once()
                 call_args = mock_get_metrics.call_args
@@ -158,14 +172,19 @@ class TestAdvancedEmailRoutes:
                 assert call_args[1]["use_cache"] is False
         finally:
             app.dependency_overrides.clear()
-    
+
     @pytest.mark.asyncio
-    async def test_get_email_analytics_insights_success(self, app, client, mock_auth_dependency):
+    async def test_get_email_analytics_insights_success(
+        self, app, client, mock_auth_dependency
+    ):
         """Test successful email analytics insights retrieval."""
         from app.auth.user_service import get_current_active_user
+
         app.dependency_overrides[get_current_active_user] = mock_auth_dependency
         try:
-            with patch('app.api.email_routes.email_analytics_service.generate_insights') as mock_generate_insights:
+            with patch(
+                "app.api.email_routes.email_analytics_service.generate_insights"
+            ) as mock_generate_insights:
                 # Mock insights response
                 mock_insights = [
                     EmailInsight(
@@ -177,7 +196,7 @@ class TestAdvancedEmailRoutes:
                         data={"increase_percentage": 20.0},
                         timestamp=datetime.now(),
                         actionable=True,
-                        suggested_actions=["Monitor capacity", "Scale resources"]
+                        suggested_actions=["Monitor capacity", "Scale resources"],
                     ),
                     EmailInsight(
                         insight_type="anomaly",
@@ -188,17 +207,17 @@ class TestAdvancedEmailRoutes:
                         data={"anomaly_score": 0.85},
                         timestamp=datetime.now(),
                         actionable=True,
-                        suggested_actions=["Investigate", "Review logs"]
-                    )
+                        suggested_actions=["Investigate", "Review logs"],
+                    ),
                 ]
                 mock_generate_insights.return_value = mock_insights
-                
+
                 response = client.get("/api/email/analytics/insights")
-                
+
                 assert response.status_code == 200
                 data = response.json()
                 assert len(data) == 2
-                
+
                 # Check first insight
                 insight1 = data[0]
                 assert insight1["insight_type"] == "trend"
@@ -209,7 +228,7 @@ class TestAdvancedEmailRoutes:
                 assert insight1["data"]["increase_percentage"] == 20.0
                 assert insight1["actionable"] is True
                 assert len(insight1["suggested_actions"]) == 2
-                
+
                 # Check second insight
                 insight2 = data[1]
                 assert insight2["insight_type"] == "anomaly"
@@ -218,16 +237,25 @@ class TestAdvancedEmailRoutes:
                 assert insight2["confidence"] == 0.9
         finally:
             app.dependency_overrides.clear()
-    
+
     @pytest.mark.asyncio
-    async def test_get_analytics_dashboard_success(self, app, client, mock_auth_dependency):
+    async def test_get_analytics_dashboard_success(
+        self, app, client, mock_auth_dependency
+    ):
         """Test successful analytics dashboard retrieval."""
         from app.auth.user_service import get_current_active_user
+
         app.dependency_overrides[get_current_active_user] = mock_auth_dependency
         try:
-            with patch('app.api.email_routes.email_analytics_service.get_email_metrics') as mock_get_metrics:
-                with patch('app.api.email_routes.email_analytics_service.generate_insights') as mock_generate_insights:
-                    with patch('app.api.email_routes.email_analytics_service.get_email_trends') as mock_get_trends:
+            with patch(
+                "app.api.email_routes.email_analytics_service.get_email_metrics"
+            ) as mock_get_metrics:
+                with patch(
+                    "app.api.email_routes.email_analytics_service.generate_insights"
+                ) as mock_generate_insights:
+                    with patch(
+                        "app.api.email_routes.email_analytics_service.get_email_trends"
+                    ) as mock_get_trends:
                         # Mock responses
                         mock_metrics = EmailMetrics(
                             total_emails=100,
@@ -246,7 +274,7 @@ class TestAdvancedEmailRoutes:
                             email_volume_trend=[],
                             agent_activity={},
                             content_analysis={},
-                            performance_metrics={}
+                            performance_metrics={},
                         )
                         mock_insights = [
                             EmailInsight(
@@ -258,20 +286,22 @@ class TestAdvancedEmailRoutes:
                                 data={},
                                 timestamp=datetime.now(),
                                 actionable=False,
-                                suggested_actions=[]
+                                suggested_actions=[],
                             )
                         ]
                         mock_trends = [
                             {"date": "2023-01-01", "value": 10, "emails_count": 10},
-                            {"date": "2023-01-02", "value": 15, "emails_count": 15}
+                            {"date": "2023-01-02", "value": 15, "emails_count": 15},
                         ]
-                        
+
                         mock_get_metrics.return_value = mock_metrics
                         mock_generate_insights.return_value = mock_insights
                         mock_get_trends.return_value = mock_trends
-                        
-                        response = client.get("/api/email/analytics/dashboard?period_days=7")
-                        
+
+                        response = client.get(
+                            "/api/email/analytics/dashboard?period_days=7"
+                        )
+
                         assert response.status_code == 200
                         data = response.json()
                         assert "period_start" in data
@@ -281,30 +311,35 @@ class TestAdvancedEmailRoutes:
                         assert "insights" in data
                         assert "trends" in data
                         assert "generated_at" in data
-                        
+
                         # Check metrics
                         assert data["metrics"]["total_emails"] == 100
                         assert data["metrics"]["sent_emails"] == 50
-                        
+
                         # Check insights
                         assert len(data["insights"]) == 1
                         assert data["insights"][0]["insight_type"] == "trend"
-                        
+
                         # Check trends
                         assert "volume" in data["trends"]
                         assert len(data["trends"]["volume"]) == 2
         finally:
             app.dependency_overrides.clear()
-    
+
     # Email Encryption Tests
-    
+
     @pytest.mark.asyncio
-    async def test_generate_encryption_key_success(self, app, client, mock_auth_dependency):
+    async def test_generate_encryption_key_success(
+        self, app, client, mock_auth_dependency
+    ):
         """Test successful encryption key generation."""
         from app.auth.user_service import get_current_active_user
+
         app.dependency_overrides[get_current_active_user] = mock_auth_dependency
         try:
-            with patch('app.api.email_routes.email_encryption_service.generate_pgp_key') as mock_generate_key:
+            with patch(
+                "app.api.email_routes.email_encryption_service.generate_pgp_key"
+            ) as mock_generate_key:
                 # Mock key response
                 mock_key = EncryptionKey(
                     key_id="test_key_id",
@@ -314,38 +349,46 @@ class TestAdvancedEmailRoutes:
                     private_key="-----BEGIN PGP PRIVATE KEY BLOCK-----\nTest Private Key Data\n-----END PGP PRIVATE KEY BLOCK-----",
                     user_id="Test User <test@example.com>",
                     email="test@example.com",
-                    created_at=datetime.now()
+                    created_at=datetime.now(),
                 )
                 mock_generate_key.return_value = mock_key
-                
+
                 response = client.post(
                     "/api/email/encryption/generate-key",
                     params={
                         "name": "Test User",
                         "email": "test@example.com",
                         "passphrase": "testpass",
-                        "key_length": 2048
-                    }
+                        "key_length": 2048,
+                    },
                 )
-                
+
                 assert response.status_code == 200
                 data = response.json()
                 assert data["key_id"] == "test_key_id"
                 assert data["fingerprint"] == "ABCD1234EFGH5678IJKL9012MNOP3456QRST7890"
-                assert data["public_key"] == "-----BEGIN PGP PUBLIC KEY BLOCK-----\nTest Key Data\n-----END PGP PUBLIC KEY BLOCK-----"
+                assert (
+                    data["public_key"]
+                    == "-----BEGIN PGP PUBLIC KEY BLOCK-----\nTest Key Data\n-----END PGP PUBLIC KEY BLOCK-----"
+                )
                 assert data["user_id"] == "Test User <test@example.com>"
                 assert data["email"] == "test@example.com"
                 assert "created_at" in data
         finally:
             app.dependency_overrides.clear()
-    
+
     @pytest.mark.asyncio
-    async def test_encrypt_email_content_success(self, app, client, mock_auth_dependency):
+    async def test_encrypt_email_content_success(
+        self, app, client, mock_auth_dependency
+    ):
         """Test successful email content encryption."""
         from app.auth.user_service import get_current_active_user
+
         app.dependency_overrides[get_current_active_user] = mock_auth_dependency
         try:
-            with patch('app.api.email_routes.email_encryption_service.encrypt_email') as mock_encrypt:
+            with patch(
+                "app.api.email_routes.email_encryption_service.encrypt_email"
+            ) as mock_encrypt:
                 # Mock encrypted email response
                 mock_encrypted = EncryptedEmail(
                     original_content="Test email content",
@@ -354,23 +397,26 @@ class TestAdvancedEmailRoutes:
                     key_id="test_key_id",
                     signature="Digital signature",
                     is_signed=True,
-                    encrypted_at=datetime.now()
+                    encrypted_at=datetime.now(),
                 )
                 mock_encrypt.return_value = mock_encrypted
-                
+
                 response = client.post(
                     "/api/email/encryption/encrypt",
                     params={
                         "content": "Test email content",
                         "recipient_email": "recipient@example.com",
                         "encryption_method": "pgp",
-                        "sign_with": "signing_key_id"
-                    }
+                        "sign_with": "signing_key_id",
+                    },
                 )
-                
+
                 assert response.status_code == 200
                 data = response.json()
-                assert data["encrypted_content"] == "-----BEGIN PGP MESSAGE-----\nEncrypted Content\n-----END PGP MESSAGE-----"
+                assert (
+                    data["encrypted_content"]
+                    == "-----BEGIN PGP MESSAGE-----\nEncrypted Content\n-----END PGP MESSAGE-----"
+                )
                 assert data["encryption_method"] == "pgp"
                 assert data["key_id"] == "test_key_id"
                 assert data["signature"] == "Digital signature"
@@ -378,14 +424,19 @@ class TestAdvancedEmailRoutes:
                 assert "encrypted_at" in data
         finally:
             app.dependency_overrides.clear()
-    
+
     @pytest.mark.asyncio
-    async def test_list_encryption_keys_success(self, app, client, mock_auth_dependency):
+    async def test_list_encryption_keys_success(
+        self, app, client, mock_auth_dependency
+    ):
         """Test successful encryption keys listing."""
         from app.auth.user_service import get_current_active_user
+
         app.dependency_overrides[get_current_active_user] = mock_auth_dependency
         try:
-            with patch('app.api.email_routes.email_encryption_service.list_keys') as mock_list_keys:
+            with patch(
+                "app.api.email_routes.email_encryption_service.list_keys"
+            ) as mock_list_keys:
                 # Mock keys response
                 mock_keys = [
                     EncryptionKey(
@@ -398,7 +449,7 @@ class TestAdvancedEmailRoutes:
                         created_at=datetime.now(),
                         expires_at=datetime.now() + timedelta(days=365),
                         is_revoked=False,
-                        trust_level=5
+                        trust_level=5,
                     ),
                     EncryptionKey(
                         key_id="key2",
@@ -410,17 +461,17 @@ class TestAdvancedEmailRoutes:
                         created_at=datetime.now(),
                         expires_at=None,
                         is_revoked=False,
-                        trust_level=3
-                    )
+                        trust_level=3,
+                    ),
                 ]
                 mock_list_keys.return_value = mock_keys
-                
+
                 response = client.get("/api/email/encryption/keys?key_type=pgp")
-                
+
                 assert response.status_code == 200
                 data = response.json()
                 assert len(data) == 2
-                
+
                 # Check first key
                 key1 = data[0]
                 assert key1["key_id"] == "key1"
@@ -429,7 +480,7 @@ class TestAdvancedEmailRoutes:
                 assert key1["email"] == "user1@example.com"
                 assert key1["is_revoked"] is False
                 assert key1["trust_level"] == 5
-                
+
                 # Check second key
                 key2 = data[1]
                 assert key2["key_id"] == "key2"
@@ -440,16 +491,21 @@ class TestAdvancedEmailRoutes:
                 assert key2["trust_level"] == 3
         finally:
             app.dependency_overrides.clear()
-    
+
     # Calendar Integration Tests
-    
+
     @pytest.mark.asyncio
-    async def test_extract_meeting_requests_success(self, app, client, mock_auth_dependency):
+    async def test_extract_meeting_requests_success(
+        self, app, client, mock_auth_dependency
+    ):
         """Test successful meeting request extraction."""
         from app.auth.user_service import get_current_active_user
+
         app.dependency_overrides[get_current_active_user] = mock_auth_dependency
         try:
-            with patch('app.api.email_routes.calendar_integration_service.extract_meeting_requests_from_email') as mock_extract:
+            with patch(
+                "app.api.email_routes.calendar_integration_service.extract_meeting_requests_from_email"
+            ) as mock_extract:
                 # Mock meeting requests response
                 mock_requests = [
                     MeetingRequest(
@@ -463,25 +519,25 @@ class TestAdvancedEmailRoutes:
                         description="Project discussion meeting",
                         priority="normal",
                         meeting_type="meeting",
-                        status="pending"
+                        status="pending",
                     )
                 ]
                 mock_extract.return_value = mock_requests
-                
+
                 response = client.post(
                     "/api/email/calendar/extract-meetings",
                     params={
                         "email_subject": "Meeting Request",
                         "email_body": "Let's schedule a meeting for tomorrow at 2 PM",
                         "email_message_id": "msg1",
-                        "sender_email": "sender@example.com"
-                    }
+                        "sender_email": "sender@example.com",
+                    },
                 )
-                
+
                 assert response.status_code == 200
                 data = response.json()
                 assert len(data) == 1
-                
+
                 request = data[0]
                 assert request["request_id"] == "req1"
                 assert request["email_message_id"] == "msg1"
@@ -496,14 +552,17 @@ class TestAdvancedEmailRoutes:
                 assert request["status"] == "pending"
         finally:
             app.dependency_overrides.clear()
-    
+
     @pytest.mark.asyncio
     async def test_schedule_meeting_success(self, app, client, mock_auth_dependency):
         """Test successful meeting scheduling."""
         from app.auth.user_service import get_current_active_user
+
         app.dependency_overrides[get_current_active_user] = mock_auth_dependency
         try:
-            with patch('app.api.email_routes.calendar_integration_service.schedule_meeting') as mock_schedule:
+            with patch(
+                "app.api.email_routes.calendar_integration_service.schedule_meeting"
+            ) as mock_schedule:
                 # Mock calendar event response
                 start_time = datetime.now() + timedelta(hours=1)
                 end_time = start_time + timedelta(hours=1)
@@ -518,19 +577,19 @@ class TestAdvancedEmailRoutes:
                     organizer="user1@example.com",
                     status="confirmed",
                     calendar_id="primary",
-                    meeting_link="https://meet.example.com/room123"
+                    meeting_link="https://meet.example.com/room123",
                 )
                 mock_schedule.return_value = mock_event
-                
+
                 response = client.post(
                     "/api/email/calendar/schedule-meeting",
                     params={
                         "meeting_request_id": "req1",
                         "selected_time": start_time.isoformat(),
-                        "calendar_id": "primary"
-                    }
+                        "calendar_id": "primary",
+                    },
                 )
-                
+
                 assert response.status_code == 200
                 data = response.json()
                 assert data["event_id"] == "event1"
@@ -546,14 +605,19 @@ class TestAdvancedEmailRoutes:
                 assert data["meeting_link"] == "https://meet.example.com/room123"
         finally:
             app.dependency_overrides.clear()
-    
+
     @pytest.mark.asyncio
-    async def test_get_upcoming_meetings_success(self, app, client, mock_auth_dependency):
+    async def test_get_upcoming_meetings_success(
+        self, app, client, mock_auth_dependency
+    ):
         """Test successful upcoming meetings retrieval."""
         from app.auth.user_service import get_current_active_user
+
         app.dependency_overrides[get_current_active_user] = mock_auth_dependency
         try:
-            with patch('app.api.email_routes.calendar_integration_service.get_upcoming_meetings') as mock_get_meetings:
+            with patch(
+                "app.api.email_routes.calendar_integration_service.get_upcoming_meetings"
+            ) as mock_get_meetings:
                 # Mock meetings response
                 start_time = datetime.now() + timedelta(hours=1)
                 end_time = start_time + timedelta(hours=1)
@@ -568,23 +632,20 @@ class TestAdvancedEmailRoutes:
                         attendees=["user1@example.com"],
                         organizer="user1@example.com",
                         status="confirmed",
-                        meeting_link="https://meet.example.com/room456"
+                        meeting_link="https://meet.example.com/room456",
                     )
                 ]
                 mock_get_meetings.return_value = mock_meetings
-                
+
                 response = client.get(
                     "/api/email/calendar/upcoming",
-                    params={
-                        "user_email": "user1@example.com",
-                        "days_ahead": 7
-                    }
+                    params={"user_email": "user1@example.com", "days_ahead": 7},
                 )
-                
+
                 assert response.status_code == 200
                 data = response.json()
                 assert len(data) == 1
-                
+
                 meeting = data[0]
                 assert meeting["event_id"] == "event1"
                 assert meeting["title"] == "Upcoming Meeting"
@@ -598,19 +659,24 @@ class TestAdvancedEmailRoutes:
                 assert meeting["meeting_link"] == "https://meet.example.com/room456"
         finally:
             app.dependency_overrides.clear()
-    
+
     # AI-Powered Response Tests
-    
+
     @pytest.mark.asyncio
-    async def test_analyze_email_context_success(self, app, client, mock_auth_dependency):
+    async def test_analyze_email_context_success(
+        self, app, client, mock_auth_dependency
+    ):
         """Test successful email context analysis."""
         from app.auth.user_service import get_current_active_user
+
         app.dependency_overrides[get_current_active_user] = mock_auth_dependency
         try:
-            with patch('app.api.email_routes.get_ai_email_response_service') as mock_get_service:
+            with patch(
+                "app.api.email_routes.get_ai_email_response_service"
+            ) as mock_get_service:
                 mock_service = Mock()
                 mock_get_service.return_value = mock_service
-                
+
                 # Mock context response
                 mock_context = EmailContext(
                     context_id="context1",
@@ -625,22 +691,19 @@ class TestAdvancedEmailRoutes:
                     sentiment="neutral",
                     language="en",
                     agent_personality={"tone": "professional", "style": "concise"},
-                    extracted_at=datetime.now()
+                    extracted_at=datetime.now(),
                 )
                 mock_service.analyze_email_context.return_value = mock_context
-                
+
                 email_data = {
                     "subject": "Question about project",
                     "body": "What is the status of the project?",
                     "sender_email": "sender@example.com",
-                    "recipient_email": "recipient@example.com"
+                    "recipient_email": "recipient@example.com",
                 }
-                
-                response = client.post(
-                    "/api/email/ai/analyze-context",
-                    json=email_data
-                )
-                
+
+                response = client.post("/api/email/ai/analyze-context", json=email_data)
+
                 assert response.status_code == 200
                 data = response.json()
                 assert data["original_subject"] == "Question about project"
@@ -656,17 +719,22 @@ class TestAdvancedEmailRoutes:
                 assert data["agent_personality"]["tone"] == "professional"
         finally:
             app.dependency_overrides.clear()
-    
+
     @pytest.mark.asyncio
-    async def test_generate_ai_response_success(self, app, client, mock_auth_dependency):
+    async def test_generate_ai_response_success(
+        self, app, client, mock_auth_dependency
+    ):
         """Test successful AI response generation."""
         from app.auth.user_service import get_current_active_user
+
         app.dependency_overrides[get_current_active_user] = mock_auth_dependency
         try:
-            with patch('app.api.email_routes.get_ai_email_response_service') as mock_get_service:
+            with patch(
+                "app.api.email_routes.get_ai_email_response_service"
+            ) as mock_get_service:
                 mock_service = Mock()
                 mock_get_service.return_value = mock_service
-                
+
                 # Mock AI response
                 mock_response = AIResponse(
                     response_id="response1",
@@ -680,10 +748,10 @@ class TestAdvancedEmailRoutes:
                     suggested_actions=["Send status report", "Schedule follow-up"],
                     generated_at=datetime.now(),
                     model_used="gpt-3.5-turbo",
-                    processing_time_ms=1200
+                    processing_time_ms=1200,
                 )
                 mock_service.generate_response.return_value = mock_response
-                
+
                 email_context = {
                     "context_id": "context1",
                     "original_subject": "Question about project",
@@ -694,19 +762,19 @@ class TestAdvancedEmailRoutes:
                     "priority": "normal",
                     "sentiment": "neutral",
                     "language": "en",
-                    "agent_personality": {"tone": "professional"}
+                    "agent_personality": {"tone": "professional"},
                 }
-                
+
                 response = client.post(
                     "/api/email/ai/generate-response",
                     params={
                         "response_type": "reply",
                         "custom_instructions": "Be helpful and professional",
-                        "model": "gpt-3.5-turbo"
+                        "model": "gpt-3.5-turbo",
                     },
-                    json=email_context
+                    json=email_context,
                 )
-                
+
                 assert response.status_code == 200
                 data = response.json()
                 assert data["response_id"] == "response1"
@@ -721,17 +789,22 @@ class TestAdvancedEmailRoutes:
                 assert data["processing_time_ms"] == 1200
         finally:
             app.dependency_overrides.clear()
-    
+
     @pytest.mark.asyncio
-    async def test_get_ai_response_history_success(self, app, client, mock_auth_dependency):
+    async def test_get_ai_response_history_success(
+        self, app, client, mock_auth_dependency
+    ):
         """Test successful AI response history retrieval."""
         from app.auth.user_service import get_current_active_user
+
         app.dependency_overrides[get_current_active_user] = mock_auth_dependency
         try:
-            with patch('app.api.email_routes.get_ai_email_response_service') as mock_get_service:
+            with patch(
+                "app.api.email_routes.get_ai_email_response_service"
+            ) as mock_get_service:
                 mock_service = Mock()
                 mock_get_service.return_value = mock_service
-                
+
                 # Mock response history
                 mock_responses = [
                     AIResponse(
@@ -743,7 +816,7 @@ class TestAdvancedEmailRoutes:
                         confidence_score=0.8,
                         response_type="reply",
                         generated_at=datetime.now(),
-                        model_used="gpt-3.5-turbo"
+                        model_used="gpt-3.5-turbo",
                     ),
                     AIResponse(
                         response_id="response2",
@@ -754,23 +827,20 @@ class TestAdvancedEmailRoutes:
                         confidence_score=0.9,
                         response_type="reply",
                         generated_at=datetime.now(),
-                        model_used="gpt-3.5-turbo"
-                    )
+                        model_used="gpt-3.5-turbo",
+                    ),
                 ]
                 mock_service.get_response_history.return_value = mock_responses
-                
+
                 response = client.get(
                     "/api/email/ai/response-history",
-                    params={
-                        "email_address": "user@example.com",
-                        "limit": 10
-                    }
+                    params={"email_address": "user@example.com", "limit": 10},
                 )
-                
+
                 assert response.status_code == 200
                 data = response.json()
                 assert len(data) == 2
-                
+
                 # Check first response
                 response1 = data[0]
                 assert response1["response_id"] == "response1"
@@ -780,7 +850,7 @@ class TestAdvancedEmailRoutes:
                 assert response1["confidence_score"] == 0.8
                 assert response1["response_type"] == "reply"
                 assert response1["model_used"] == "gpt-3.5-turbo"
-                
+
                 # Check second response
                 response2 = data[1]
                 assert response2["response_id"] == "response2"
@@ -790,16 +860,21 @@ class TestAdvancedEmailRoutes:
                 assert response2["confidence_score"] == 0.9
         finally:
             app.dependency_overrides.clear()
-    
+
     # Multi-Account Support Tests
-    
+
     @pytest.mark.asyncio
-    async def test_create_email_account_success(self, app, client, mock_auth_dependency):
+    async def test_create_email_account_success(
+        self, app, client, mock_auth_dependency
+    ):
         """Test successful email account creation."""
         from app.auth.user_service import get_current_active_user
+
         app.dependency_overrides[get_current_active_user] = mock_auth_dependency
         try:
-            with patch('app.api.email_routes.multi_account_service.create_account') as mock_create:
+            with patch(
+                "app.api.email_routes.multi_account_service.create_account"
+            ) as mock_create:
                 # Mock account response
                 mock_account = EmailAccount(
                     account_id="account1",
@@ -813,27 +888,27 @@ class TestAdvancedEmailRoutes:
                     ai_config={"auto_reply_enabled": True},
                     is_primary=False,
                     is_active=True,
-                    created_at=datetime.now()
+                    created_at=datetime.now(),
                 )
                 mock_create.return_value = mock_account
-                
+
                 response = client.post(
                     "/api/email/accounts/create",
                     params={
                         "account_type": "user",
                         "email_address": "test@example.com",
                         "display_name": "Test User",
-                        "is_primary": False
+                        "is_primary": False,
                     },
                     json={
                         "smtp_config": {"smtp_server": "smtp.example.com"},
                         "imap_config": {"imap_server": "imap.example.com"},
                         "encryption_config": {"pgp_enabled": True},
                         "calendar_config": {"google_calendar_enabled": True},
-                        "ai_config": {"auto_reply_enabled": True}
-                    }
+                        "ai_config": {"auto_reply_enabled": True},
+                    },
                 )
-                
+
                 assert response.status_code == 200
                 data = response.json()
                 assert data["account_id"] == "account1"
@@ -845,14 +920,17 @@ class TestAdvancedEmailRoutes:
                 assert "created_at" in data
         finally:
             app.dependency_overrides.clear()
-    
+
     @pytest.mark.asyncio
     async def test_list_email_accounts_success(self, app, client, mock_auth_dependency):
         """Test successful email accounts listing."""
         from app.auth.user_service import get_current_active_user
+
         app.dependency_overrides[get_current_active_user] = mock_auth_dependency
         try:
-            with patch('app.api.email_routes.multi_account_service.list_accounts') as mock_list:
+            with patch(
+                "app.api.email_routes.multi_account_service.list_accounts"
+            ) as mock_list:
                 # Mock accounts response
                 mock_accounts = [
                     EmailAccount(
@@ -868,7 +946,7 @@ class TestAdvancedEmailRoutes:
                         is_primary=True,
                         is_active=True,
                         created_at=datetime.now(),
-                        last_used=datetime.now()
+                        last_used=datetime.now(),
                     ),
                     EmailAccount(
                         account_id="account2",
@@ -883,17 +961,19 @@ class TestAdvancedEmailRoutes:
                         is_primary=False,
                         is_active=True,
                         created_at=datetime.now(),
-                        last_used=None
-                    )
+                        last_used=None,
+                    ),
                 ]
                 mock_list.return_value = mock_accounts
-                
-                response = client.get("/api/email/accounts?account_type=user&active_only=true")
-                
+
+                response = client.get(
+                    "/api/email/accounts?account_type=user&active_only=true"
+                )
+
                 assert response.status_code == 200
                 data = response.json()
                 assert len(data) == 2
-                
+
                 # Check first account
                 account1 = data[0]
                 assert account1["account_id"] == "account1"
@@ -904,7 +984,7 @@ class TestAdvancedEmailRoutes:
                 assert account1["is_active"] is True
                 assert "created_at" in account1
                 assert "last_used" in account1
-                
+
                 # Check second account
                 account2 = data[1]
                 assert account2["account_id"] == "account2"
@@ -917,14 +997,17 @@ class TestAdvancedEmailRoutes:
                 assert account2["last_used"] is None
         finally:
             app.dependency_overrides.clear()
-    
+
     @pytest.mark.asyncio
     async def test_get_account_details_success(self, app, client, mock_auth_dependency):
         """Test successful account details retrieval."""
         from app.auth.user_service import get_current_active_user
+
         app.dependency_overrides[get_current_active_user] = mock_auth_dependency
         try:
-            with patch('app.api.email_routes.multi_account_service.get_account_summary') as mock_get_summary:
+            with patch(
+                "app.api.email_routes.multi_account_service.get_account_summary"
+            ) as mock_get_summary:
                 # Mock account summary response
                 mock_summary = AccountSummary(
                     account_id="account1",
@@ -943,12 +1026,12 @@ class TestAdvancedEmailRoutes:
                     last_activity=datetime.now(),
                     usage_limits={"emails_per_hour": 100},
                     current_usage={"emails_sent": 50},
-                    performance_metrics={"response_rate": 95.0}
+                    performance_metrics={"response_rate": 95.0},
                 )
                 mock_get_summary.return_value = mock_summary
-                
+
                 response = client.get("/api/email/accounts/account1")
-                
+
                 assert response.status_code == 200
                 data = response.json()
                 assert data["account_id"] == "account1"
@@ -967,14 +1050,17 @@ class TestAdvancedEmailRoutes:
                 assert data["performance_metrics"]["response_rate"] == 95.0
         finally:
             app.dependency_overrides.clear()
-    
+
     @pytest.mark.asyncio
     async def test_get_system_overview_success(self, app, client, mock_auth_dependency):
         """Test successful system overview retrieval."""
         from app.auth.user_service import get_current_active_user
+
         app.dependency_overrides[get_current_active_user] = mock_auth_dependency
         try:
-            with patch('app.api.email_routes.multi_account_service.get_system_overview') as mock_get_overview:
+            with patch(
+                "app.api.email_routes.multi_account_service.get_system_overview"
+            ) as mock_get_overview:
                 # Mock system overview response
                 mock_overview = {
                     "total_accounts": 10,
@@ -983,15 +1069,18 @@ class TestAdvancedEmailRoutes:
                     "accounts_by_type": {"user": 6, "agent": 4},
                     "accounts_by_status": {"active": 8, "inactive": 2},
                     "storage_usage": {"total_mb": 1000, "average_mb": 100},
-                    "performance_metrics": {"avg_response_time": 2.5, "success_rate": 95.0},
+                    "performance_metrics": {
+                        "avg_response_time": 2.5,
+                        "success_rate": 95.0,
+                    },
                     "usage_statistics": {"total_emails": 1000, "emails_today": 50},
                     "system_health": {"status": "healthy", "uptime": 99.9},
-                    "last_updated": datetime.now()
+                    "last_updated": datetime.now(),
                 }
                 mock_get_overview.return_value = mock_overview
-                
+
                 response = client.get("/api/email/accounts/system/overview")
-                
+
                 assert response.status_code == 200
                 data = response.json()
                 assert data["total_accounts"] == 10
@@ -1011,118 +1100,139 @@ class TestAdvancedEmailRoutes:
                 assert data["system_health"]["uptime"] == 99.9
         finally:
             app.dependency_overrides.clear()
-    
+
     # Error Handling Tests
-    
+
     @pytest.mark.asyncio
-    async def test_analytics_metrics_service_error(self, app, client, mock_auth_dependency):
+    async def test_analytics_metrics_service_error(
+        self, app, client, mock_auth_dependency
+    ):
         """Test analytics metrics endpoint with service error."""
         from app.auth.user_service import get_current_active_user
+
         app.dependency_overrides[get_current_active_user] = mock_auth_dependency
         try:
-            with patch('app.api.email_routes.email_analytics_service.get_email_metrics') as mock_get_metrics:
+            with patch(
+                "app.api.email_routes.email_analytics_service.get_email_metrics"
+            ) as mock_get_metrics:
                 mock_get_metrics.side_effect = Exception("Service error")
-                
+
                 response = client.get("/api/email/analytics/metrics")
-                
+
                 assert response.status_code == 500
                 data = response.json()
                 assert "Failed to get email metrics" in data["detail"]
         finally:
             app.dependency_overrides.clear()
-    
+
     @pytest.mark.asyncio
-    async def test_encryption_generate_key_service_error(self, app, client, mock_auth_dependency):
+    async def test_encryption_generate_key_service_error(
+        self, app, client, mock_auth_dependency
+    ):
         """Test encryption key generation endpoint with service error."""
         from app.auth.user_service import get_current_active_user
+
         app.dependency_overrides[get_current_active_user] = mock_auth_dependency
         try:
-            with patch('app.api.email_routes.email_encryption_service.generate_pgp_key') as mock_generate_key:
+            with patch(
+                "app.api.email_routes.email_encryption_service.generate_pgp_key"
+            ) as mock_generate_key:
                 mock_generate_key.side_effect = Exception("Service error")
-                
+
                 response = client.post(
                     "/api/email/encryption/generate-key",
-                    params={
-                        "name": "Test User",
-                        "email": "test@example.com"
-                    }
+                    params={"name": "Test User", "email": "test@example.com"},
                 )
-                
+
                 assert response.status_code == 500
                 data = response.json()
                 assert "Failed to generate encryption key" in data["detail"]
         finally:
             app.dependency_overrides.clear()
-    
+
     @pytest.mark.asyncio
-    async def test_calendar_extract_meetings_service_error(self, app, client, mock_auth_dependency):
+    async def test_calendar_extract_meetings_service_error(
+        self, app, client, mock_auth_dependency
+    ):
         """Test meeting extraction endpoint with service error."""
         from app.auth.user_service import get_current_active_user
+
         app.dependency_overrides[get_current_active_user] = mock_auth_dependency
         try:
-            with patch('app.api.email_routes.calendar_integration_service.extract_meeting_requests_from_email') as mock_extract:
+            with patch(
+                "app.api.email_routes.calendar_integration_service.extract_meeting_requests_from_email"
+            ) as mock_extract:
                 mock_extract.side_effect = Exception("Service error")
-                
+
                 response = client.post(
                     "/api/email/calendar/extract-meetings",
                     params={
                         "email_subject": "Meeting Request",
                         "email_body": "Let's schedule a meeting",
                         "email_message_id": "msg1",
-                        "sender_email": "sender@example.com"
-                    }
+                        "sender_email": "sender@example.com",
+                    },
                 )
-                
+
                 assert response.status_code == 500
                 data = response.json()
                 assert "Failed to extract meeting requests" in data["detail"]
         finally:
             app.dependency_overrides.clear()
-    
+
     @pytest.mark.asyncio
-    async def test_ai_analyze_context_service_error(self, app, client, mock_auth_dependency):
+    async def test_ai_analyze_context_service_error(
+        self, app, client, mock_auth_dependency
+    ):
         """Test AI context analysis endpoint with service error."""
         from app.auth.user_service import get_current_active_user
+
         app.dependency_overrides[get_current_active_user] = mock_auth_dependency
         try:
-            with patch('app.api.email_routes.get_ai_email_response_service') as mock_get_service:
+            with patch(
+                "app.api.email_routes.get_ai_email_response_service"
+            ) as mock_get_service:
                 mock_service = Mock()
                 mock_get_service.return_value = mock_service
-                mock_service.analyze_email_context.side_effect = Exception("Service error")
-                
+                mock_service.analyze_email_context.side_effect = Exception(
+                    "Service error"
+                )
+
                 response = client.post(
                     "/api/email/ai/analyze-context",
-                    json={"subject": "Test", "body": "Test body"}
+                    json={"subject": "Test", "body": "Test body"},
                 )
-                
+
                 assert response.status_code == 500
                 data = response.json()
                 assert "Failed to analyze email context" in data["detail"]
         finally:
             app.dependency_overrides.clear()
-    
+
     @pytest.mark.asyncio
-    async def test_multi_account_create_service_error(self, app, client, mock_auth_dependency):
+    async def test_multi_account_create_service_error(
+        self, app, client, mock_auth_dependency
+    ):
         """Test multi-account creation endpoint with service error."""
         from app.auth.user_service import get_current_active_user
+
         app.dependency_overrides[get_current_active_user] = mock_auth_dependency
         try:
-            with patch('app.api.email_routes.multi_account_service.create_account') as mock_create:
+            with patch(
+                "app.api.email_routes.multi_account_service.create_account"
+            ) as mock_create:
                 mock_create.side_effect = Exception("Service error")
-                
+
                 response = client.post(
                     "/api/email/accounts/create",
                     params={
                         "account_type": "user",
                         "email_address": "test@example.com",
-                        "display_name": "Test User"
+                        "display_name": "Test User",
                     },
-                    json={
-                        "smtp_config": {},
-                        "imap_config": {}
-                    }
+                    json={"smtp_config": {}, "imap_config": {}},
                 )
-                
+
                 assert response.status_code == 500
                 data = response.json()
                 assert "Failed to create account" in data["detail"]

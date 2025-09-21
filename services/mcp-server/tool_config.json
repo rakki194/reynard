@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "last_updated": "2025-09-21T12:09:09.619263",
+  "last_updated": "2025-09-21T16:25:27.972421",
   "tools": {
     "generate_agent_name": {
       "name": "generate_agent_name",
@@ -410,99 +410,67 @@
       "dependencies": [],
       "config": {}
     },
-    "disable_tool": {
-      "name": "disable_tool",
-      "category": "management",
+    "git_add": {
+      "name": "git_add",
+      "category": "git",
       "enabled": true,
-      "description": "Disable a specific tool",
+      "description": "Add files to Git staging area",
       "dependencies": [],
       "config": {}
     },
-    "enable_tool": {
-      "name": "enable_tool",
-      "category": "management",
+    "git_branch_info": {
+      "name": "git_branch_info",
+      "category": "git",
       "enabled": true,
-      "description": "Enable a specific tool",
+      "description": "Get current branch information",
       "dependencies": [],
       "config": {}
     },
-    "get_tool_configs": {
-      "name": "get_tool_configs",
-      "category": "management",
+    "git_commit": {
+      "name": "git_commit",
+      "category": "git",
       "enabled": true,
-      "description": "Get all tool configurations and statistics",
+      "description": "Create a new commit",
       "dependencies": [],
       "config": {}
     },
-    "get_tool_metadata": {
-      "name": "get_tool_metadata",
-      "category": "management",
+    "git_commit_history": {
+      "name": "git_commit_history",
+      "category": "git",
       "enabled": true,
-      "description": "Get metadata for a specific tool",
+      "description": "Get recent commit history",
       "dependencies": [],
       "config": {}
     },
-    "get_tool_status": {
-      "name": "get_tool_status",
-      "category": "management",
+    "git_diff": {
+      "name": "git_diff",
+      "category": "git",
       "enabled": true,
-      "description": "Get status of a specific tool or all tools",
+      "description": "Get diff of current changes",
       "dependencies": [],
       "config": {}
     },
-    "list_tools_by_category": {
-      "name": "list_tools_by_category",
-      "category": "management",
+    "git_pull": {
+      "name": "git_pull",
+      "category": "git",
       "enabled": true,
-      "description": "List tools grouped by category",
+      "description": "Pull latest changes from remote repository",
       "dependencies": [],
       "config": {}
     },
-    "create_agent_email_template": {
-      "name": "create_agent_email_template",
-      "category": "email",
+    "git_push": {
+      "name": "git_push",
+      "category": "git",
       "enabled": true,
-      "description": "Create an email template for an agent",
+      "description": "Push commits to remote repository",
       "dependencies": [],
       "config": {}
     },
-    "get_agent_email_config": {
-      "name": "get_agent_email_config",
-      "category": "email",
+    "git_status": {
+      "name": "git_status",
+      "category": "git",
       "enabled": true,
-      "description": "Get email configuration for an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_agent_email_stats": {
-      "name": "get_agent_email_stats",
-      "category": "email",
-      "enabled": true,
-      "description": "Get email statistics for an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "send_agent_email": {
-      "name": "send_agent_email",
-      "category": "email",
-      "enabled": true,
-      "description": "Send email from one agent to another",
-      "dependencies": [],
-      "config": {}
-    },
-    "setup_agent_email": {
-      "name": "setup_agent_email",
-      "category": "email",
-      "enabled": true,
-      "description": "Setup email configuration for an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "trigger_agent_automated_email": {
-      "name": "trigger_agent_automated_email",
-      "category": "email",
-      "enabled": true,
-      "description": "Trigger automated email for an agent based on events",
+      "description": "Get current Git repository status",
       "dependencies": [],
       "config": {}
     },
@@ -570,94 +538,6 @@
       "dependencies": [],
       "config": {}
     },
-    "get_mermaid_diagram_stats": {
-      "name": "get_mermaid_diagram_stats",
-      "category": "visualization",
-      "enabled": true,
-      "description": "Get statistics and analysis of a mermaid diagram",
-      "dependencies": [],
-      "config": {}
-    },
-    "render_mermaid_to_png": {
-      "name": "render_mermaid_to_png",
-      "category": "visualization",
-      "enabled": true,
-      "description": "Render mermaid diagram to PNG format",
-      "dependencies": [],
-      "config": {}
-    },
-    "test_mermaid_render": {
-      "name": "test_mermaid_render",
-      "category": "visualization",
-      "enabled": true,
-      "description": "Test mermaid diagram rendering with a simple example",
-      "dependencies": [],
-      "config": {}
-    },
-    "git_add": {
-      "name": "git_add",
-      "category": "git",
-      "enabled": true,
-      "description": "Add files to Git staging area",
-      "dependencies": [],
-      "config": {}
-    },
-    "git_branch_info": {
-      "name": "git_branch_info",
-      "category": "git",
-      "enabled": true,
-      "description": "Get current branch information",
-      "dependencies": [],
-      "config": {}
-    },
-    "git_commit": {
-      "name": "git_commit",
-      "category": "git",
-      "enabled": true,
-      "description": "Create a new commit",
-      "dependencies": [],
-      "config": {}
-    },
-    "git_commit_history": {
-      "name": "git_commit_history",
-      "category": "git",
-      "enabled": true,
-      "description": "Get recent commit history",
-      "dependencies": [],
-      "config": {}
-    },
-    "git_diff": {
-      "name": "git_diff",
-      "category": "git",
-      "enabled": true,
-      "description": "Get diff of current changes",
-      "dependencies": [],
-      "config": {}
-    },
-    "git_pull": {
-      "name": "git_pull",
-      "category": "git",
-      "enabled": true,
-      "description": "Pull latest changes from remote repository",
-      "dependencies": [],
-      "config": {}
-    },
-    "git_push": {
-      "name": "git_push",
-      "category": "git",
-      "enabled": true,
-      "description": "Push commits to remote repository",
-      "dependencies": [],
-      "config": {}
-    },
-    "git_status": {
-      "name": "git_status",
-      "category": "git",
-      "enabled": true,
-      "description": "Get current Git repository status",
-      "dependencies": [],
-      "config": {}
-    },
     "check_secret": {
       "name": "check_secret",
       "category": "secrets",
@@ -690,6 +570,78 @@
       "dependencies": [],
       "config": {}
     },
+    "create_agent_email_template": {
+      "name": "create_agent_email_template",
+      "category": "email",
+      "enabled": true,
+      "description": "Create an email template for an agent",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_agent_email_config": {
+      "name": "get_agent_email_config",
+      "category": "email",
+      "enabled": true,
+      "description": "Get email configuration for an agent",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_agent_email_stats": {
+      "name": "get_agent_email_stats",
+      "category": "email",
+      "enabled": true,
+      "description": "Get email statistics for an agent",
+      "dependencies": [],
+      "config": {}
+    },
+    "send_agent_email": {
+      "name": "send_agent_email",
+      "category": "email",
+      "enabled": true,
+      "description": "Send email from one agent to another",
+      "dependencies": [],
+      "config": {}
+    },
+    "setup_agent_email": {
+      "name": "setup_agent_email",
+      "category": "email",
+      "enabled": true,
+      "description": "Setup email configuration for an agent",
+      "dependencies": [],
+      "config": {}
+    },
+    "trigger_agent_automated_email": {
+      "name": "trigger_agent_automated_email",
+      "category": "email",
+      "enabled": true,
+      "description": "Trigger automated email for an agent based on events",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_mermaid_diagram_stats": {
+      "name": "get_mermaid_diagram_stats",
+      "category": "visualization",
+      "enabled": true,
+      "description": "Get statistics and analysis of a mermaid diagram",
+      "dependencies": [],
+      "config": {}
+    },
+    "render_mermaid_to_png": {
+      "name": "render_mermaid_to_png",
+      "category": "visualization",
+      "enabled": true,
+      "description": "Render mermaid diagram to PNG format",
+      "dependencies": [],
+      "config": {}
+    },
+    "test_mermaid_render": {
+      "name": "test_mermaid_render",
+      "category": "visualization",
+      "enabled": true,
+      "description": "Test mermaid diagram rendering with a simple example",
+      "dependencies": [],
+      "config": {}
+    },
     "execute_vscode_task": {
       "name": "execute_vscode_task",
       "category": "vscode",
@@ -711,6 +663,54 @@
       "category": "vscode",
       "enabled": true,
       "description": "Validate that a VS Code task exists and is executable",
+      "dependencies": [],
+      "config": {}
+    },
+    "disable_tool": {
+      "name": "disable_tool",
+      "category": "management",
+      "enabled": true,
+      "description": "Disable a specific tool",
+      "dependencies": [],
+      "config": {}
+    },
+    "enable_tool": {
+      "name": "enable_tool",
+      "category": "management",
+      "enabled": true,
+      "description": "Enable a specific tool",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_tool_configs": {
+      "name": "get_tool_configs",
+      "category": "management",
+      "enabled": true,
+      "description": "Get all tool configurations and statistics",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_tool_metadata": {
+      "name": "get_tool_metadata",
+      "category": "management",
+      "enabled": true,
+      "description": "Get metadata for a specific tool",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_tool_status": {
+      "name": "get_tool_status",
+      "category": "management",
+      "enabled": true,
+      "description": "Get status of a specific tool or all tools",
+      "dependencies": [],
+      "config": {}
+    },
+    "list_tools_by_category": {
+      "name": "list_tools_by_category",
+      "category": "management",
+      "enabled": true,
+      "description": "List tools grouped by category",
       "dependencies": [],
       "config": {}
     },

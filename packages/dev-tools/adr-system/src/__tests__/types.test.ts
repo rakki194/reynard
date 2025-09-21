@@ -3,25 +3,12 @@
  */
 
 import { describe, it, expect } from "vitest";
-import type {
-  ADRStatus,
-  ADRCategory,
-  ADRDocument,
-  ADRTemplate,
-  ADRValidationResult,
-  ADRRelationship,
-} from "../types";
+import type { ADRStatus, ADRCategory, ADRDocument, ADRTemplate, ADRValidationResult, ADRRelationship } from "../types";
 
 describe("Type Definitions", () => {
   describe("ADRStatus", () => {
     it("should accept valid status values", () => {
-      const validStatuses: ADRStatus[] = [
-        "proposed",
-        "accepted",
-        "rejected",
-        "superseded",
-        "deprecated",
-      ];
+      const validStatuses: ADRStatus[] = ["proposed", "accepted", "rejected", "superseded", "deprecated"];
 
       validStatuses.forEach(status => {
         expect(typeof status).toBe("string");
@@ -43,14 +30,9 @@ describe("Type Definitions", () => {
 
       validCategories.forEach(category => {
         expect(typeof category).toBe("string");
-        expect([
-          "security",
-          "performance",
-          "scalability",
-          "integration",
-          "maintainability",
-          "general",
-        ]).toContain(category);
+        expect(["security", "performance", "scalability", "integration", "maintainability", "general"]).toContain(
+          category
+        );
       });
     });
   });
@@ -290,7 +272,14 @@ describe("Type Definitions", () => {
 
     it("should ensure enum values are consistent", () => {
       const statusValues: ADRStatus[] = ["proposed", "accepted", "rejected", "superseded", "deprecated"];
-      const categoryValues: ADRCategory[] = ["security", "performance", "scalability", "integration", "maintainability", "general"];
+      const categoryValues: ADRCategory[] = [
+        "security",
+        "performance",
+        "scalability",
+        "integration",
+        "maintainability",
+        "general",
+      ];
 
       // All status values should be valid strings
       statusValues.forEach(status => {

@@ -1,6 +1,6 @@
 /**
  * Auto Refresh Composable
- * 
+ *
  * Manages auto-refresh functionality for the dashboard
  */
 

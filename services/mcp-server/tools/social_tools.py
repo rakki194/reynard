@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
     execution_type="async",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 async def initiate_interaction(arguments: dict[str, Any]) -> dict[str, Any]:
     """
@@ -103,7 +103,7 @@ async def initiate_interaction(arguments: dict[str, Any]) -> dict[str, Any]:
     execution_type="async",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 async def send_chat_message(arguments: dict[str, Any]) -> dict[str, Any]:
     """
@@ -139,14 +139,18 @@ async def send_chat_message(arguments: dict[str, Any]) -> dict[str, Any]:
         receiver_id = receiver
         try:
             # Try to find agent by name if receiver doesn't look like an ID
-            if not receiver.startswith(('agent-', 'success-advisor-', 'permanent-release-manager-')):
+            if not receiver.startswith(
+                ("agent-", "success-advisor-", "permanent-release-manager-")
+            ):
                 # Search for agent by name
                 search_result = await ecs_client.find_agent_by_name(receiver)
                 if search_result and search_result.get("success"):
                     matches = search_result.get("matches", [])
                     if matches:
                         receiver_id = matches[0].get("agent_id", receiver)
-                        logger.info(f"Resolved agent name '{receiver}' to ID '{receiver_id}'")
+                        logger.info(
+                            f"Resolved agent name '{receiver}' to ID '{receiver_id}'"
+                        )
                     else:
                         return {
                             "content": [
@@ -208,7 +212,7 @@ async def send_chat_message(arguments: dict[str, Any]) -> dict[str, Any]:
     execution_type="async",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 async def get_interaction_history(arguments: dict[str, Any]) -> dict[str, Any]:
     """
@@ -289,7 +293,7 @@ async def get_interaction_history(arguments: dict[str, Any]) -> dict[str, Any]:
     execution_type="async",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 async def find_ecs_agent(arguments: dict[str, Any]) -> dict[str, Any]:
     """
@@ -328,13 +332,17 @@ async def find_ecs_agent(arguments: dict[str, Any]) -> dict[str, Any]:
         # Format response
         if result.get("success", False):
             matches = result.get("matches", [])
-            response_text = f"🔍 Found {len(matches)} matching agents for '{query}':\n\n"
-            
+            response_text = (
+                f"🔍 Found {len(matches)} matching agents for '{query}':\n\n"
+            )
+
             for i, match in enumerate(matches, 1):
                 response_text += f"{i}. **{match.get('name', 'Unknown')}**\n"
                 response_text += f"   ID: {match.get('agent_id', 'Unknown')}\n"
                 response_text += f"   Spirit: {match.get('spirit', 'Unknown')}\n"
-                response_text += f"   Generation: {match.get('generation', 'Unknown')}\n"
+                response_text += (
+                    f"   Generation: {match.get('generation', 'Unknown')}\n"
+                )
                 response_text += f"   Active: {match.get('active', 'Unknown')}\n\n"
         else:
             response_text = f"❌ {result.get('message', 'Failed to search for agents')}"
@@ -367,7 +375,7 @@ async def find_ecs_agent(arguments: dict[str, Any]) -> dict[str, Any]:
     execution_type="async",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 async def get_ecs_world_status(arguments: dict[str, Any]) -> dict[str, Any]:
     """
@@ -394,8 +402,12 @@ async def get_ecs_world_status(arguments: dict[str, Any]) -> dict[str, Any]:
             response_text += f"Status: {status.get('status', 'Unknown')}\n"
             response_text += f"Total Agents: {status.get('agent_count', 'Unknown')}\n"
             response_text += f"Active Agents: {status.get('agent_count', 'Unknown')}\n"
-            response_text += f"Total Interactions: {status.get('total_interactions', 'Unknown')}\n"
-            response_text += f"Database Type: {status.get('database_type', 'Unknown')}\n"
+            response_text += (
+                f"Total Interactions: {status.get('total_interactions', 'Unknown')}\n"
+            )
+            response_text += (
+                f"Database Type: {status.get('database_type', 'Unknown')}\n"
+            )
             response_text += f"Initialized: {status.get('initialized', 'Unknown')}"
         else:
             response_text = f"❌ {result.get('message', 'Failed to get world status')}"
@@ -428,7 +440,7 @@ async def get_ecs_world_status(arguments: dict[str, Any]) -> dict[str, Any]:
     execution_type="async",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 async def get_agent_relationships(arguments: dict[str, Any]) -> dict[str, Any]:
     """
@@ -510,7 +522,7 @@ async def get_agent_relationships(arguments: dict[str, Any]) -> dict[str, Any]:
     execution_type="async",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 async def get_agent_social_stats(arguments: dict[str, Any]) -> dict[str, Any]:
     """
@@ -600,7 +612,7 @@ async def get_agent_social_stats(arguments: dict[str, Any]) -> dict[str, Any]:
     execution_type="async",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 async def get_nearby_agents(arguments: dict[str, Any]) -> dict[str, Any]:
     """

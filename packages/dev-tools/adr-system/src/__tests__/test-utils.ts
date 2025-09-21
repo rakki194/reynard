@@ -111,25 +111,33 @@ describe("CodebaseAnalyzer", () => {
   // Create package.json
   await writeFile(
     join(rootPath, "package.json"),
-    JSON.stringify({
-      name: "test-project",
-      version: "1.0.0",
-      dependencies: {
-        typescript: "5.9.2",
-        "fs-extra": "11.3.1",
+    JSON.stringify(
+      {
+        name: "test-project",
+        version: "1.0.0",
+        dependencies: {
+          typescript: "5.9.2",
+          "fs-extra": "11.3.1",
+        },
       },
-    }, null, 2)
+      null,
+      2
+    )
   );
 
   // Create tsconfig.json
   await writeFile(
     join(rootPath, "tsconfig.json"),
-    JSON.stringify({
-      compilerOptions: {
-        target: "ES2020",
-        module: "commonjs",
+    JSON.stringify(
+      {
+        compilerOptions: {
+          target: "ES2020",
+          module: "commonjs",
+        },
       },
-    }, null, 2)
+      null,
+      2
+    )
   );
 }
 
@@ -139,7 +147,7 @@ describe("CodebaseAnalyzer", () => {
 export async function createSampleADRFiles(adrDirectory: string): Promise<void> {
   // Ensure all parent directories exist
   await mkdir(adrDirectory, { recursive: true });
-  
+
   await writeFile(
     join(adrDirectory, "001-sample-adr.md"),
     `# ADR-001: Sample Architecture Decision
@@ -386,6 +394,6 @@ export async function createEmptyTestEnvironment(): Promise<TestEnvironment> {
     rootPath,
     adrDirectory,
     templateDirectory,
-    cleanup
+    cleanup,
   };
 }

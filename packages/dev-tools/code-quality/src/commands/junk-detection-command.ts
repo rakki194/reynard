@@ -26,7 +26,7 @@ export async function handleJunkDetectionCommand(options: JunkDetectionOptions):
   const category = options.category || "all";
 
   console.log("🦊 Reynard Junk File Detection");
-  console.log("=" .repeat(40));
+  console.log("=".repeat(40));
 
   try {
     // Initialize detector
@@ -72,7 +72,6 @@ export async function handleJunkDetectionCommand(options: JunkDetectionOptions):
       console.log("\n✅ No junk files detected! Repository is clean.");
       process.exit(0);
     }
-
   } catch (error) {
     console.error("❌ Junk file detection failed:", error);
     process.exit(1);
@@ -108,7 +107,10 @@ function filterAnalysis(analysis: JunkFileAnalysis, severity: string, category: 
 
   // Recalculate quality score
   const totalIssues = filteredFiles.length;
-  const qualityScore = totalIssues === 0 ? 100 : Math.max(0, 100 - (criticalIssues * 20 + highIssues * 10 + mediumIssues * 5 + lowIssues * 2));
+  const qualityScore =
+    totalIssues === 0
+      ? 100
+      : Math.max(0, 100 - (criticalIssues * 20 + highIssues * 10 + mediumIssues * 5 + lowIssues * 2));
 
   return {
     ...analysis,
@@ -122,7 +124,7 @@ function filterAnalysis(analysis: JunkFileAnalysis, severity: string, category: 
     mediumIssues,
     lowIssues,
     files: filteredFiles,
-    qualityScore: Math.round(qualityScore)
+    qualityScore: Math.round(qualityScore),
   };
 }
 
@@ -145,7 +147,7 @@ async function handleJsonOutput(analysis: JunkFileAnalysis, outputFile?: string)
  */
 function handleTableOutput(analysis: JunkFileAnalysis): void {
   console.log("\n📊 Junk File Detection Results:");
-  console.log("=" .repeat(60));
+  console.log("=".repeat(60));
 
   // Summary table
   console.log("\n📈 Summary:");
@@ -175,29 +177,39 @@ function handleTableOutput(analysis: JunkFileAnalysis): void {
   // Files table (if any)
   if (analysis.files.length > 0) {
     console.log("\n📁 Detected Files:");
-    console.log("┌─────────────────────────────────────────────────────────────┬─────────────┬─────────────┬─────────────────────┐");
-    console.log("│ File Path                                                  │ Category    │ Severity   │ Reason              │");
-    console.log("├─────────────────────────────────────────────────────────────┼─────────────┼─────────────┼─────────────────────┤");
+    console.log(
+      "┌─────────────────────────────────────────────────────────────┬─────────────┬─────────────┬─────────────────────┐"
+    );
+    console.log(
+      "│ File Path                                                  │ Category    │ Severity   │ Reason              │"
+    );
+    console.log(
+      "├─────────────────────────────────────────────────────────────┼─────────────┼─────────────┼─────────────────────┤"
+    );
 
     analysis.files.slice(0, 20).forEach(file => {
       const severityEmoji = {
         critical: "🔴",
         high: "🟠",
         medium: "🟡",
-        low: "🟢"
+        low: "🟢",
       }[file.severity];
 
       const truncatedPath = file.file.length > 60 ? file.file.substring(0, 57) + "..." : file.file;
       const truncatedReason = file.reason.length > 18 ? file.reason.substring(0, 15) + "..." : file.reason;
 
-      console.log(`│ ${truncatedPath.padEnd(59)} │ ${file.category.padEnd(11)} │ ${(severityEmoji + " " + file.severity).padEnd(11)} │ ${truncatedReason.padEnd(19)} │`);
+      console.log(
+        `│ ${truncatedPath.padEnd(59)} │ ${file.category.padEnd(11)} │ ${(severityEmoji + " " + file.severity).padEnd(11)} │ ${truncatedReason.padEnd(19)} │`
+      );
     });
 
     if (analysis.files.length > 20) {
       console.log(`│ ... and ${analysis.files.length - 20} more files`.padEnd(119) + "│");
     }
 
-    console.log("└─────────────────────────────────────────────────────────────┴─────────────┴─────────────┴─────────────────────┘");
+    console.log(
+      "└─────────────────────────────────────────────────────────────┴─────────────┴─────────────┴─────────────────────┘"
+    );
   }
 }
 
@@ -235,7 +247,7 @@ function handleSummaryOutput(analysis: JunkFileAnalysis): void {
         critical: "🔴",
         high: "🟠",
         medium: "🟡",
-        low: "🟢"
+        low: "🟢",
       }[file.severity];
       console.log(`   ${severityEmoji} ${file.file} (${file.category}: ${file.reason})`);
     });
@@ -258,7 +270,7 @@ function handleSummaryOutput(analysis: JunkFileAnalysis): void {
  */
 async function handleFixOption(analysis: JunkFileAnalysis, _projectRoot: string): Promise<void> {
   console.log("\n🔧 Fix Commands:");
-  console.log("=" .repeat(40));
+  console.log("=".repeat(40));
 
   const criticalFiles = analysis.files.filter(f => f.severity === "critical");
   const highFiles = analysis.files.filter(f => f.severity === "high");

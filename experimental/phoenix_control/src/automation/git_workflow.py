@@ -15,7 +15,11 @@ from typing import Dict, Any, Optional, List
 from datetime import datetime
 from pathlib import Path
 
-from ..utils.data_structures import ReleaseConfig, ReleaseResult, create_default_release_config
+from ..utils.data_structures import (
+    ReleaseConfig,
+    ReleaseResult,
+    create_default_release_config,
+)
 from ..utils.logging import PhoenixLogger
 
 
@@ -43,7 +47,7 @@ class ReleaseAutomation:
         self,
         version_type: Optional[str] = None,
         create_tag: Optional[bool] = None,
-        push_remote: Optional[bool] = None
+        push_remote: Optional[bool] = None,
     ) -> ReleaseResult:
         """
         Run the complete release workflow.
@@ -64,7 +68,7 @@ class ReleaseAutomation:
             commit_hash="",
             tag_name="",
             changelog_updated=False,
-            agent_state_updated=False
+            agent_state_updated=False,
         )
 
         try:
@@ -128,7 +132,10 @@ class ReleaseAutomation:
             result.agent_state_updated = agent_updated
 
             result.success = True
-            self.logger.success(f"Release workflow completed successfully - Version: {new_version}", "workflow")
+            self.logger.success(
+                f"Release workflow completed successfully - Version: {new_version}",
+                "workflow",
+            )
 
         except Exception as e:
             result.errors.append(f"Release workflow failed: {e}")
@@ -148,12 +155,14 @@ class ReleaseAutomation:
                 ["git", "status", "--porcelain"],
                 capture_output=True,
                 text=True,
-                check=True
+                check=True,
             )
 
             # Check for untracked files or uncommitted changes
             if result.stdout.strip():
-                self.logger.warning("Git repository has uncommitted changes", "git_status")
+                self.logger.warning(
+                    "Git repository has uncommitted changes", "git_status"
+                )
                 return False
 
             self.logger.info("Git repository is clean", "git_status")
@@ -173,10 +182,7 @@ class ReleaseAutomation:
         try:
             # Get diff statistics
             result = subprocess.run(
-                ["git", "diff", "--stat"],
-                capture_output=True,
-                text=True,
-                check=True
+                ["git", "diff", "--stat"], capture_output=True, text=True, check=True
             )
 
             # Get changed files
@@ -184,10 +190,14 @@ class ReleaseAutomation:
                 ["git", "diff", "--name-only"],
                 capture_output=True,
                 text=True,
-                check=True
+                check=True,
             )
 
-            changed_files = files_result.stdout.strip().split('\n') if files_result.stdout.strip() else []
+            changed_files = (
+                files_result.stdout.strip().split("\n")
+                if files_result.stdout.strip()
+                else []
+            )
 
             # Analyze change types
             changes = {
@@ -196,19 +206,23 @@ class ReleaseAutomation:
                 "file_count": len(changed_files),
                 "has_breaking_changes": False,
                 "has_new_features": False,
-                "has_bug_fixes": False
+                "has_bug_fixes": False,
             }
 
             # Check for conventional commit types
             for file_path in changed_files:
-                if any(keyword in file_path.lower() for keyword in ["breaking", "major"]):
+                if any(
+                    keyword in file_path.lower() for keyword in ["breaking", "major"]
+                ):
                     changes["has_breaking_changes"] = True
                 if any(keyword in file_path.lower() for keyword in ["feature", "feat"]):
                     changes["has_new_features"] = True
                 if any(keyword in file_path.lower() for keyword in ["fix", "bug"]):
                     changes["has_bug_fixes"] = True
 
-            self.logger.info(f"Analyzed {len(changed_files)} changed files", "change_analysis")
+            self.logger.info(
+                f"Analyzed {len(changed_files)} changed files", "change_analysis"
+            )
             return changes
 
         except subprocess.CalledProcessError as e:
@@ -226,13 +240,21 @@ class ReleaseAutomation:
             Version type (major, minor, patch)
         """
         if changes.get("has_breaking_changes", False):
-            self.logger.info("Detected breaking changes - major version bump", "version_determination")
+            self.logger.info(
+                "Detected breaking changes - major version bump",
+                "version_determination",
+            )
             return "major"
         elif changes.get("has_new_features", False):
-            self.logger.info("Detected new features - minor version bump", "version_determination")
+            self.logger.info(
+                "Detected new features - minor version bump", "version_determination"
+            )
             return "minor"
         else:
-            self.logger.info("Detected bug fixes/improvements - patch version bump", "version_determination")
+            self.logger.info(
+                "Detected bug fixes/improvements - patch version bump",
+                "version_determination",
+            )
             return "patch"
 
     async def _update_version(self, version_type: str) -> Optional[str]:
@@ -249,7 +271,9 @@ class ReleaseAutomation:
             # Check if package.json exists
             package_json = Path("package.json")
             if not package_json.exists():
-                self.logger.warning("package.json not found, skipping version update", "version_update")
+                self.logger.warning(
+                    "package.json not found, skipping version update", "version_update"
+                )
                 return "0.0.0"
 
             # Get current version
@@ -257,14 +281,13 @@ class ReleaseAutomation:
                 ["node", "-p", "require('./package.json').version"],
                 capture_output=True,
                 text=True,
-                check=True
+                check=True,
             )
             current_version = result.stdout.strip().strip('"')
 
             # Update version
             subprocess.run(
-                ["npm", "version", version_type, "--no-git-tag-version"],
-                check=True
+                ["npm", "version", version_type, "--no-git-tag-version"], check=True
             )
 
             # Get new version
@@ -272,11 +295,13 @@ class ReleaseAutomation:
                 ["node", "-p", "require('./package.json').version"],
                 capture_output=True,
                 text=True,
-                check=True
+                check=True,
             )
             new_version = result.stdout.strip().strip('"')
 
-            self.logger.success(f"Version updated: {current_version} -> {new_version}", "version_update")
+            self.logger.success(
+                f"Version updated: {current_version} -> {new_version}", "version_update"
+            )
             return new_version
 
         except subprocess.CalledProcessError as e:
@@ -296,18 +321,20 @@ class ReleaseAutomation:
         try:
             changelog_path = Path("CHANGELOG.md")
             if not changelog_path.exists():
-                self.logger.warning("CHANGELOG.md not found, skipping changelog update", "changelog_update")
+                self.logger.warning(
+                    "CHANGELOG.md not found, skipping changelog update",
+                    "changelog_update",
+                )
                 return False
 
             # Read current changelog
-            with open(changelog_path, 'r') as f:
+            with open(changelog_path, "r") as f:
                 content = f.read()
 
             # Replace [Unreleased] with new version
             today = datetime.now().strftime("%Y-%m-%d")
             new_content = content.replace(
-                "## [Unreleased]",
-                f"## [{version}] - {today}"
+                "## [Unreleased]", f"## [{version}] - {today}"
             )
 
             # Add new [Unreleased] section
@@ -329,21 +356,25 @@ class ReleaseAutomation:
 """
             new_content = new_content.replace(
                 f"## [{version}] - {today}",
-                f"## [{version}] - {today}{unreleased_section}"
+                f"## [{version}] - {today}{unreleased_section}",
             )
 
             # Write updated changelog
-            with open(changelog_path, 'w') as f:
+            with open(changelog_path, "w") as f:
                 f.write(new_content)
 
-            self.logger.success(f"CHANGELOG.md updated for version {version}", "changelog_update")
+            self.logger.success(
+                f"CHANGELOG.md updated for version {version}", "changelog_update"
+            )
             return True
 
         except Exception as e:
             self.logger.error(f"Failed to update changelog: {e}", "changelog_update")
             return False
 
-    async def _commit_changes(self, version: str, changes: Dict[str, Any]) -> Optional[str]:
+    async def _commit_changes(
+        self, version: str, changes: Dict[str, Any]
+    ) -> Optional[str]:
         """
         Stage and commit changes.
 
@@ -363,26 +394,27 @@ class ReleaseAutomation:
             commit_message += f"- Version bump to {version}\n"
             commit_message += f"- Updated CHANGELOG.md\n"
             commit_message += f"- {changes.get('file_count', 0)} files changed\n"
-            commit_message += f"\nRelease managed by: Success-Advisor-8 (Permanent Release Manager)"
+            commit_message += (
+                f"\nRelease managed by: Success-Advisor-8 (Permanent Release Manager)"
+            )
 
             # Commit changes
             result = subprocess.run(
                 ["git", "commit", "-m", commit_message],
                 capture_output=True,
                 text=True,
-                check=True
+                check=True,
             )
 
             # Get commit hash
             hash_result = subprocess.run(
-                ["git", "rev-parse", "HEAD"],
-                capture_output=True,
-                text=True,
-                check=True
+                ["git", "rev-parse", "HEAD"], capture_output=True, text=True, check=True
             )
             commit_hash = hash_result.stdout.strip()
 
-            self.logger.success(f"Changes committed with hash: {commit_hash[:8]}", "commit")
+            self.logger.success(
+                f"Changes committed with hash: {commit_hash[:8]}", "commit"
+            )
             return commit_hash
 
         except subprocess.CalledProcessError as e:
@@ -405,11 +437,12 @@ class ReleaseAutomation:
             # Create annotated tag
             tag_message = f"Release {tag_name}\n\n"
             tag_message += f"Version {version} of the Reynard framework.\n"
-            tag_message += f"\nRelease managed by: Success-Advisor-8 (Permanent Release Manager)"
+            tag_message += (
+                f"\nRelease managed by: Success-Advisor-8 (Permanent Release Manager)"
+            )
 
             subprocess.run(
-                ["git", "tag", "-a", tag_name, "-m", tag_message],
-                check=True
+                ["git", "tag", "-a", tag_name, "-m", tag_message], check=True
             )
 
             self.logger.success(f"Created tag: {tag_name}", "tag")
@@ -453,11 +486,15 @@ class ReleaseAutomation:
         try:
             # This would integrate with the agent state management system
             # For now, just log the update
-            self.logger.info(f"Agent state updated with release {version}", "agent_state_update")
+            self.logger.info(
+                f"Agent state updated with release {version}", "agent_state_update"
+            )
             return True
 
         except Exception as e:
-            self.logger.error(f"Failed to update agent state: {e}", "agent_state_update")
+            self.logger.error(
+                f"Failed to update agent state: {e}", "agent_state_update"
+            )
             return False
 
     async def get_release_history(self, limit: int = 10) -> List[Dict[str, Any]]:
@@ -476,10 +513,10 @@ class ReleaseAutomation:
                 ["git", "tag", "--sort=-version:refname"],
                 capture_output=True,
                 text=True,
-                check=True
+                check=True,
             )
 
-            tags = result.stdout.strip().split('\n')[:limit]
+            tags = result.stdout.strip().split("\n")[:limit]
             releases = []
 
             for tag in tags:
@@ -489,20 +526,24 @@ class ReleaseAutomation:
                         ["git", "show", tag, "--no-patch", "--format=%H|%ci|%s"],
                         capture_output=True,
                         text=True,
-                        check=True
+                        check=True,
                     )
 
                     if tag_info.stdout:
-                        parts = tag_info.stdout.strip().split('|', 2)
+                        parts = tag_info.stdout.strip().split("|", 2)
                         if len(parts) >= 3:
-                            releases.append({
-                                "tag": tag,
-                                "commit_hash": parts[0],
-                                "date": parts[1],
-                                "message": parts[2]
-                            })
+                            releases.append(
+                                {
+                                    "tag": tag,
+                                    "commit_hash": parts[0],
+                                    "date": parts[1],
+                                    "message": parts[2],
+                                }
+                            )
 
-            self.logger.info(f"Retrieved {len(releases)} releases from history", "release_history")
+            self.logger.info(
+                f"Retrieved {len(releases)} releases from history", "release_history"
+            )
             return releases
 
         except subprocess.CalledProcessError as e:

@@ -20,6 +20,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [0.12.1] - 2025-09-21
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+- **Queue Watcher File System Error**: Fixed ENOENT error when watching temporary directories that no longer exist by replacing built-in fs.watch with chokidar for robust file watching (Sage-Sage-62)
+
+### Security
+
 ## [0.12.0] - 2025-09-21
 
 ### Added
@@ -36,12 +52,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Validation Migration**: Moved validation scripts from `./scripts/validation` to `packages/dev-tools/validation` and updated all references throughout the project (Swift-Sage-45)
 - **Vitest Config Generator Migration**: Moved vitest-config-generator from `./scripts/vitest-config-generator` to `packages/dev-tools/vitest-config-generator` and updated all references throughout the project (Swift-Sage-45)
 - **Markdown Validation Modernization**: Migrated from JavaScript to TypeScript for all markdown validation tools with improved CLI interface and comprehensive testing (Playful-Prime-79)
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ### Security
 

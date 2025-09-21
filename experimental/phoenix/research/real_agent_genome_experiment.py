@@ -30,8 +30,11 @@ except ImportError as e:
     # Use the standalone implementation which has all classes embedded
     import subprocess
     import sys
-    result = subprocess.run([sys.executable, "standalone_genome_experiment.py"] + sys.argv[1:],
-                          cwd=Path(__file__).parent)
+
+    result = subprocess.run(
+        [sys.executable, "standalone_genome_experiment.py"] + sys.argv[1:],
+        cwd=Path(__file__).parent,
+    )
     sys.exit(result.returncode)
 
 
@@ -52,21 +55,17 @@ async def create_test_agents() -> list[AgentState]:
             "intelligence": 0.9,
             "adaptability": 0.85,
             "cunning": 0.9,
-            "strategic_thinking": 0.95
+            "strategic_thinking": 0.95,
         },
-        physical_traits={
-            "agility": 0.9,
-            "speed": 0.85,
-            "grace": 0.8
-        },
+        physical_traits={"agility": 0.9, "speed": 0.85, "grace": 0.8},
         ability_traits={
             "strategist": 0.95,
             "analyzer": 0.9,
             "problem_solver": 0.85,
-            "innovator": 0.8
+            "innovator": 0.8,
         },
         performance_history=[],
-        knowledge_base={}
+        knowledge_base={},
     )
     agents.append(fox_agent)
 
@@ -83,21 +82,17 @@ async def create_test_agents() -> list[AgentState]:
             "protectiveness": 0.9,
             "leadership": 0.85,
             "teamwork": 0.9,
-            "reliability": 0.9
+            "reliability": 0.9,
         },
-        physical_traits={
-            "strength": 0.9,
-            "endurance": 0.85,
-            "size": 0.8
-        },
+        physical_traits={"strength": 0.9, "endurance": 0.85, "size": 0.8},
         ability_traits={
             "leader": 0.9,
             "protector": 0.95,
             "coordinator": 0.85,
-            "communicator": 0.8
+            "communicator": 0.8,
         },
         performance_history=[],
-        knowledge_base={}
+        knowledge_base={},
     )
     agents.append(wolf_agent)
 
@@ -114,21 +109,17 @@ async def create_test_agents() -> list[AgentState]:
             "enthusiasm": 0.95,
             "curiosity": 0.9,
             "thoroughness": 0.85,
-            "joy": 0.9
+            "joy": 0.9,
         },
-        physical_traits={
-            "agility": 0.9,
-            "grace": 0.85,
-            "flexibility": 0.9
-        },
+        physical_traits={"agility": 0.9, "grace": 0.85, "flexibility": 0.9},
         ability_traits={
             "teacher": 0.85,
             "explorer": 0.9,
             "quality_assurance": 0.85,
-            "tester": 0.9
+            "tester": 0.9,
         },
         performance_history=[],
-        knowledge_base={}
+        knowledge_base={},
     )
     agents.append(otter_agent)
 
@@ -145,21 +136,17 @@ async def create_test_agents() -> list[AgentState]:
             "leadership": 0.9,
             "authority": 0.9,
             "boldness": 0.85,
-            "charisma": 0.9
+            "charisma": 0.9,
         },
-        physical_traits={
-            "strength": 0.9,
-            "size": 0.85,
-            "grace": 0.8
-        },
+        physical_traits={"strength": 0.9, "size": 0.85, "grace": 0.8},
         ability_traits={
             "leader": 0.95,
             "inspirer": 0.9,
             "decision_maker": 0.85,
-            "coordinator": 0.8
+            "coordinator": 0.8,
         },
         performance_history=[],
-        knowledge_base={}
+        knowledge_base={},
     )
     agents.append(lion_agent)
 
@@ -171,14 +158,18 @@ async def check_ollama_availability(ollama_interface: OllamaInterface) -> bool:
     print("🔍 Checking Ollama availability...")
 
     if not await ollama_interface.is_available():
-        print("❌ Ollama is not available. Please ensure Ollama is running on localhost:11434")
+        print(
+            "❌ Ollama is not available. Please ensure Ollama is running on localhost:11434"
+        )
         return False
 
     print("✅ Ollama is available")
 
     # Test a simple generation
     print("🧪 Testing model generation...")
-    test_response = await ollama_interface.generate_response("Hello, can you respond with just 'OK'?")
+    test_response = await ollama_interface.generate_response(
+        "Hello, can you respond with just 'OK'?"
+    )
 
     if not test_response:
         print("❌ Model generation failed. Please check if the model is available.")
@@ -211,9 +202,9 @@ async def run_experiment(num_trials: int = 10, model: str = "qwen2.5:7b"):
     results = await agent_interface.run_comparison_experiment(agents, num_trials)
 
     # Display results
-    print("\n" + "="*80)
+    print("\n" + "=" * 80)
     print("📈 EXPERIMENT RESULTS")
-    print("="*80)
+    print("=" * 80)
 
     comparison = results["comparison_analysis"]
 
@@ -228,7 +219,9 @@ async def run_experiment(num_trials: int = 10, model: str = "qwen2.5:7b"):
         without_val = comparison["without_genome_averages"][metric]
         improvement = comparison["improvements_percent"][metric]
 
-        print(f"{metric.replace('_', ' ').title():<25}: {with_val:.3f} vs {without_val:.3f} ({improvement:+.1f}%)")
+        print(
+            f"{metric.replace('_', ' ').title():<25}: {with_val:.3f} vs {without_val:.3f} ({improvement:+.1f}%)"
+        )
 
     # Identify key findings
     print(f"\n🎯 KEY FINDINGS:")
@@ -238,18 +231,27 @@ async def run_experiment(num_trials: int = 10, model: str = "qwen2.5:7b"):
     spirit_improvement = comparison["improvements_percent"]["spirit_alignment"]
 
     if quality_improvement > 0:
-        print(f"✅ Quality Score: {quality_improvement:+.1f}% improvement with genome data")
+        print(
+            f"✅ Quality Score: {quality_improvement:+.1f}% improvement with genome data"
+        )
     else:
         print(f"❌ Quality Score: {quality_improvement:+.1f}% change with genome data")
 
     if spirit_improvement > 0:
-        print(f"✅ Spirit Alignment: {spirit_improvement:+.1f}% improvement with genome data")
+        print(
+            f"✅ Spirit Alignment: {spirit_improvement:+.1f}% improvement with genome data"
+        )
     else:
-        print(f"❌ Spirit Alignment: {spirit_improvement:+.1f}% change with genome data")
+        print(
+            f"❌ Spirit Alignment: {spirit_improvement:+.1f}% change with genome data"
+        )
 
     # Check for significant improvements
-    significant_improvements = [metric for metric, improvement in comparison["improvements_percent"].items()
-                              if improvement > 10]
+    significant_improvements = [
+        metric
+        for metric, improvement in comparison["improvements_percent"].items()
+        if improvement > 10
+    ]
 
     if significant_improvements:
         print(f"\n🌟 Significant Improvements (>10%):")
@@ -265,8 +267,12 @@ async def run_experiment(num_trials: int = 10, model: str = "qwen2.5:7b"):
 async def main():
     """Main function."""
     parser = argparse.ArgumentParser(description="Run Real Agent Genome Experiment")
-    parser.add_argument("--trials", type=int, default=10, help="Number of trials to run")
-    parser.add_argument("--model", type=str, default="qwen2.5:7b", help="Ollama model to use")
+    parser.add_argument(
+        "--trials", type=int, default=10, help="Number of trials to run"
+    )
+    parser.add_argument(
+        "--model", type=str, default="qwen2.5:7b", help="Ollama model to use"
+    )
     parser.add_argument("--verbose", action="store_true", help="Enable verbose logging")
 
     args = parser.parse_args()
@@ -274,8 +280,7 @@ async def main():
     # Setup logging
     log_level = logging.DEBUG if args.verbose else logging.INFO
     logging.basicConfig(
-        level=log_level,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        level=log_level, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     )
 
     try:
@@ -286,6 +291,7 @@ async def main():
         print(f"\n❌ Experiment failed: {e}")
         if args.verbose:
             import traceback
+
             traceback.print_exc()
 
 

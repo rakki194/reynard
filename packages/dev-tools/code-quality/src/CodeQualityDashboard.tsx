@@ -35,7 +35,7 @@ interface DashboardProps {
  */
 export const CodeQualityDashboard: Component<DashboardProps> = props => {
   const [activeTab, setActiveTab] = createSignal("overview");
-  
+
   // Use composables for state management and utilities
   const { state, runAnalysis, startAutoRefresh, stopAutoRefresh } = useDashboardState(props);
   const { getRatingColor, getQualityGateColor, getMetricsChartData, getTrendChartData } = useDashboardUtils();
@@ -53,7 +53,7 @@ export const CodeQualityDashboard: Component<DashboardProps> = props => {
           isLoading={state().isLoading}
           onRefresh={runAnalysis}
           autoRefresh={props.autoRefresh || false}
-          onToggleAutoRefresh={() => props.autoRefresh ? stopAutoRefresh() : startAutoRefresh()}
+          onToggleAutoRefresh={() => (props.autoRefresh ? stopAutoRefresh() : startAutoRefresh())}
         />
       }
       header={<DashboardHeader lastUpdated={state().lastUpdated} />}
@@ -80,17 +80,11 @@ export const CodeQualityDashboard: Component<DashboardProps> = props => {
         </Show>
 
         <Show when={activeTab() === "security" && props.showSecurity}>
-          <SecurityTab
-            securityAnalysis={state().securityAnalysis}
-            getRatingColor={getRatingColor}
-          />
+          <SecurityTab securityAnalysis={state().securityAnalysis} getRatingColor={getRatingColor} />
         </Show>
 
         <Show when={activeTab() === "quality-gates" && props.showQualityGates}>
-          <QualityGatesTab
-            qualityGateResults={state().qualityGateResults}
-            getQualityGateColor={getQualityGateColor}
-          />
+          <QualityGatesTab qualityGateResults={state().qualityGateResults} getQualityGateColor={getQualityGateColor} />
         </Show>
 
         <Show when={activeTab() === "trends" && props.showTrends}>

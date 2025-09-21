@@ -39,8 +39,11 @@ class ReynardGatekeeperConfig:
             SecurityLevel, security_level_str.upper(), SecurityLevel.MEDIUM
         )
 
-        # Database configuration - PostgreSQL is the default
-        self.database_url = os.getenv("DATABASE_URL", "postgresql://postgres:password@localhost:5432/reynard")
+        # Database configuration - Use dedicated auth database
+        self.database_url = os.getenv(
+            "AUTH_DATABASE_URL",
+            "postgresql://postgres:password@localhost:5432/reynard_auth",
+        )
         self.use_memory_backend = (
             os.getenv("GATEKEEPER_USE_MEMORY_BACKEND", "false").lower() == "true"
         )

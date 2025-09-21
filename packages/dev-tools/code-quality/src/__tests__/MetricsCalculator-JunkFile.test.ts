@@ -2,19 +2,19 @@
  * Tests for MetricsCalculator JunkFile integration
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { MetricsCalculator } from '../MetricsCalculator';
-import { CodeQualityMetrics } from '../types';
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import { MetricsCalculator } from "../MetricsCalculator";
+import { CodeQualityMetrics } from "../types";
 
-describe('MetricsCalculator - JunkFile Integration', () => {
+describe("MetricsCalculator - JunkFile Integration", () => {
   let calculator: MetricsCalculator;
 
   beforeEach(() => {
     calculator = new MetricsCalculator();
   });
 
-  describe('updateMetricsWithJunkFiles', () => {
-    it('should update metrics with junk file data', () => {
+  describe("updateMetricsWithJunkFiles", () => {
+    it("should update metrics with junk file data", () => {
       const baseMetrics: CodeQualityMetrics = {
         linesOfCode: 1000,
         linesOfComments: 100,
@@ -38,16 +38,16 @@ describe('MetricsCalculator - JunkFile Integration', () => {
         documentedModules: 2,
         totalModules: 3,
         technicalDebt: 120,
-        reliabilityRating: 'A',
-        securityRating: 'B',
-        maintainabilityRating: 'A'
+        reliabilityRating: "A",
+        securityRating: "B",
+        maintainabilityRating: "A",
       };
 
       const junkFileMetrics = {
         totalJunkFiles: 5,
         criticalJunkFiles: 1,
         highJunkFiles: 2,
-        qualityScore: 75
+        qualityScore: 75,
       };
 
       const result = calculator.updateMetricsWithJunkFiles(baseMetrics, junkFileMetrics);
@@ -58,11 +58,11 @@ describe('MetricsCalculator - JunkFile Integration', () => {
         junkFiles: 5,
         criticalJunkFiles: 1,
         highJunkFiles: 2,
-        junkFileQualityScore: 75
+        junkFileQualityScore: 75,
       });
     });
 
-    it('should handle zero junk files', () => {
+    it("should handle zero junk files", () => {
       const baseMetrics: CodeQualityMetrics = {
         linesOfCode: 1000,
         linesOfComments: 100,
@@ -86,16 +86,16 @@ describe('MetricsCalculator - JunkFile Integration', () => {
         documentedModules: 2,
         totalModules: 3,
         technicalDebt: 120,
-        reliabilityRating: 'A',
-        securityRating: 'B',
-        maintainabilityRating: 'A'
+        reliabilityRating: "A",
+        securityRating: "B",
+        maintainabilityRating: "A",
       };
 
       const junkFileMetrics = {
         totalJunkFiles: 0,
         criticalJunkFiles: 0,
         highJunkFiles: 0,
-        qualityScore: 100
+        qualityScore: 100,
       };
 
       const result = calculator.updateMetricsWithJunkFiles(baseMetrics, junkFileMetrics);
@@ -105,11 +105,11 @@ describe('MetricsCalculator - JunkFile Integration', () => {
         junkFiles: 0,
         criticalJunkFiles: 0,
         highJunkFiles: 0,
-        junkFileQualityScore: 100
+        junkFileQualityScore: 100,
       });
     });
 
-    it('should handle high junk file counts', () => {
+    it("should handle high junk file counts", () => {
       const baseMetrics: CodeQualityMetrics = {
         linesOfCode: 1000,
         linesOfComments: 100,
@@ -133,16 +133,16 @@ describe('MetricsCalculator - JunkFile Integration', () => {
         documentedModules: 2,
         totalModules: 3,
         technicalDebt: 120,
-        reliabilityRating: 'A',
-        securityRating: 'B',
-        maintainabilityRating: 'A'
+        reliabilityRating: "A",
+        securityRating: "B",
+        maintainabilityRating: "A",
       };
 
       const junkFileMetrics = {
         totalJunkFiles: 50,
         criticalJunkFiles: 10,
         highJunkFiles: 20,
-        qualityScore: 25
+        qualityScore: 25,
       };
 
       const result = calculator.updateMetricsWithJunkFiles(baseMetrics, junkFileMetrics);
@@ -152,11 +152,11 @@ describe('MetricsCalculator - JunkFile Integration', () => {
         junkFiles: 50,
         criticalJunkFiles: 10,
         highJunkFiles: 20,
-        junkFileQualityScore: 25
+        junkFileQualityScore: 25,
       });
     });
 
-    it('should preserve existing metrics properties', () => {
+    it("should preserve existing metrics properties", () => {
       const baseMetrics: CodeQualityMetrics = {
         linesOfCode: 2000,
         linesOfComments: 200,
@@ -180,16 +180,16 @@ describe('MetricsCalculator - JunkFile Integration', () => {
         documentedModules: 5,
         totalModules: 8,
         technicalDebt: 300,
-        reliabilityRating: 'B',
-        securityRating: 'C',
-        maintainabilityRating: 'B'
+        reliabilityRating: "B",
+        securityRating: "C",
+        maintainabilityRating: "B",
       };
 
       const junkFileMetrics = {
         totalJunkFiles: 3,
         criticalJunkFiles: 0,
         highJunkFiles: 1,
-        qualityScore: 90
+        qualityScore: 90,
       };
 
       const result = calculator.updateMetricsWithJunkFiles(baseMetrics, junkFileMetrics);
@@ -217,9 +217,9 @@ describe('MetricsCalculator - JunkFile Integration', () => {
       expect(result.documentedModules).toBe(5);
       expect(result.totalModules).toBe(8);
       expect(result.technicalDebt).toBe(300);
-      expect(result.reliabilityRating).toBe('B');
-      expect(result.securityRating).toBe('C');
-      expect(result.maintainabilityRating).toBe('B');
+      expect(result.reliabilityRating).toBe("B");
+      expect(result.securityRating).toBe("C");
+      expect(result.maintainabilityRating).toBe("B");
 
       // Verify junk file properties are added
       expect(result.junkFiles).toBe(3);
@@ -228,7 +228,7 @@ describe('MetricsCalculator - JunkFile Integration', () => {
       expect(result.junkFileQualityScore).toBe(90);
     });
 
-    it('should handle undefined junk file metrics', () => {
+    it("should handle undefined junk file metrics", () => {
       const baseMetrics: CodeQualityMetrics = {
         linesOfCode: 1000,
         linesOfComments: 100,
@@ -252,16 +252,16 @@ describe('MetricsCalculator - JunkFile Integration', () => {
         documentedModules: 2,
         totalModules: 3,
         technicalDebt: 120,
-        reliabilityRating: 'A',
-        securityRating: 'B',
-        maintainabilityRating: 'A'
+        reliabilityRating: "A",
+        securityRating: "B",
+        maintainabilityRating: "A",
       };
 
       const junkFileMetrics = {
         totalJunkFiles: undefined as any,
         criticalJunkFiles: undefined as any,
         highJunkFiles: undefined as any,
-        qualityScore: undefined as any
+        qualityScore: undefined as any,
       };
 
       const result = calculator.updateMetricsWithJunkFiles(baseMetrics, junkFileMetrics);
@@ -271,11 +271,11 @@ describe('MetricsCalculator - JunkFile Integration', () => {
         junkFiles: undefined,
         criticalJunkFiles: undefined,
         highJunkFiles: undefined,
-        junkFileQualityScore: undefined
+        junkFileQualityScore: undefined,
       });
     });
 
-    it('should handle negative junk file counts', () => {
+    it("should handle negative junk file counts", () => {
       const baseMetrics: CodeQualityMetrics = {
         linesOfCode: 1000,
         linesOfComments: 100,
@@ -299,16 +299,16 @@ describe('MetricsCalculator - JunkFile Integration', () => {
         documentedModules: 2,
         totalModules: 3,
         technicalDebt: 120,
-        reliabilityRating: 'A',
-        securityRating: 'B',
-        maintainabilityRating: 'A'
+        reliabilityRating: "A",
+        securityRating: "B",
+        maintainabilityRating: "A",
       };
 
       const junkFileMetrics = {
         totalJunkFiles: -1,
         criticalJunkFiles: -2,
         highJunkFiles: -3,
-        qualityScore: -10
+        qualityScore: -10,
       };
 
       const result = calculator.updateMetricsWithJunkFiles(baseMetrics, junkFileMetrics);
@@ -318,11 +318,11 @@ describe('MetricsCalculator - JunkFile Integration', () => {
         junkFiles: -1,
         criticalJunkFiles: -2,
         highJunkFiles: -3,
-        junkFileQualityScore: -10
+        junkFileQualityScore: -10,
       });
     });
 
-    it('should handle very high quality scores', () => {
+    it("should handle very high quality scores", () => {
       const baseMetrics: CodeQualityMetrics = {
         linesOfCode: 1000,
         linesOfComments: 100,
@@ -346,16 +346,16 @@ describe('MetricsCalculator - JunkFile Integration', () => {
         documentedModules: 2,
         totalModules: 3,
         technicalDebt: 120,
-        reliabilityRating: 'A',
-        securityRating: 'B',
-        maintainabilityRating: 'A'
+        reliabilityRating: "A",
+        securityRating: "B",
+        maintainabilityRating: "A",
       };
 
       const junkFileMetrics = {
         totalJunkFiles: 0,
         criticalJunkFiles: 0,
         highJunkFiles: 0,
-        qualityScore: 100
+        qualityScore: 100,
       };
 
       const result = calculator.updateMetricsWithJunkFiles(baseMetrics, junkFileMetrics);
@@ -363,7 +363,7 @@ describe('MetricsCalculator - JunkFile Integration', () => {
       expect(result.junkFileQualityScore).toBe(100);
     });
 
-    it('should handle very low quality scores', () => {
+    it("should handle very low quality scores", () => {
       const baseMetrics: CodeQualityMetrics = {
         linesOfCode: 1000,
         linesOfComments: 100,
@@ -387,16 +387,16 @@ describe('MetricsCalculator - JunkFile Integration', () => {
         documentedModules: 2,
         totalModules: 3,
         technicalDebt: 120,
-        reliabilityRating: 'A',
-        securityRating: 'B',
-        maintainabilityRating: 'A'
+        reliabilityRating: "A",
+        securityRating: "B",
+        maintainabilityRating: "A",
       };
 
       const junkFileMetrics = {
         totalJunkFiles: 100,
         criticalJunkFiles: 50,
         highJunkFiles: 30,
-        qualityScore: 0
+        qualityScore: 0,
       };
 
       const result = calculator.updateMetricsWithJunkFiles(baseMetrics, junkFileMetrics);
@@ -405,14 +405,14 @@ describe('MetricsCalculator - JunkFile Integration', () => {
     });
   });
 
-  describe('edge cases', () => {
-    it('should handle empty base metrics', () => {
+  describe("edge cases", () => {
+    it("should handle empty base metrics", () => {
       const baseMetrics = {} as CodeQualityMetrics;
       const junkFileMetrics = {
         totalJunkFiles: 1,
         criticalJunkFiles: 0,
         highJunkFiles: 1,
-        qualityScore: 50
+        qualityScore: 50,
       };
 
       const result = calculator.updateMetricsWithJunkFiles(baseMetrics, junkFileMetrics);
@@ -422,17 +422,17 @@ describe('MetricsCalculator - JunkFile Integration', () => {
         junkFiles: 1,
         criticalJunkFiles: 0,
         highJunkFiles: 1,
-        junkFileQualityScore: 50
+        junkFileQualityScore: 50,
       });
     });
 
-    it('should handle null base metrics', () => {
+    it("should handle null base metrics", () => {
       const baseMetrics = null as any;
       const junkFileMetrics = {
         totalJunkFiles: 1,
         criticalJunkFiles: 0,
         highJunkFiles: 1,
-        qualityScore: 50
+        qualityScore: 50,
       };
 
       const result = calculator.updateMetricsWithJunkFiles(baseMetrics, junkFileMetrics);
@@ -441,11 +441,11 @@ describe('MetricsCalculator - JunkFile Integration', () => {
         junkFiles: 1,
         criticalJunkFiles: 0,
         highJunkFiles: 1,
-        junkFileQualityScore: 50
+        junkFileQualityScore: 50,
       });
     });
 
-    it('should handle null junk file metrics', () => {
+    it("should handle null junk file metrics", () => {
       const baseMetrics: CodeQualityMetrics = {
         linesOfCode: 1000,
         linesOfComments: 100,
@@ -469,9 +469,9 @@ describe('MetricsCalculator - JunkFile Integration', () => {
         documentedModules: 2,
         totalModules: 3,
         technicalDebt: 120,
-        reliabilityRating: 'A',
-        securityRating: 'B',
-        maintainabilityRating: 'A'
+        reliabilityRating: "A",
+        securityRating: "B",
+        maintainabilityRating: "A",
       };
 
       const junkFileMetrics = null as any;

@@ -20,6 +20,9 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from app.core.config import get_config
 from app.services.rag import RAGService
+from app.services.rag.core.vector_store import VectorDBService
+from app.services.rag.core.embeddings import EmbeddingService
+from app.services.rag.core.indexing import CodebaseIndexer
 
 # Set up logging
 logging.basicConfig(

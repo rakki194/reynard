@@ -35,15 +35,23 @@ async def main():
     print("   Frontend Code Quality:")
     frontend_result = await quality_validator.validate_frontend()
     print(f"     Linting: {'✅' if frontend_result['linting']['passed'] else '❌'}")
-    print(f"     Formatting: {'✅' if frontend_result['formatting']['passed'] else '❌'}")
-    print(f"     Type Safety: {'✅' if frontend_result['type_safety']['passed'] else '❌'}")
+    print(
+        f"     Formatting: {'✅' if frontend_result['formatting']['passed'] else '❌'}"
+    )
+    print(
+        f"     Type Safety: {'✅' if frontend_result['type_safety']['passed'] else '❌'}"
+    )
 
     # Backend validation
     print("   Backend Code Quality:")
     backend_result = await quality_validator.validate_backend()
     print(f"     Linting: {'✅' if backend_result['linting']['passed'] else '❌'}")
-    print(f"     Formatting: {'✅' if backend_result['formatting']['passed'] else '❌'}")
-    print(f"     Type Safety: {'✅' if backend_result['type_safety']['passed'] else '❌'}")
+    print(
+        f"     Formatting: {'✅' if backend_result['formatting']['passed'] else '❌'}"
+    )
+    print(
+        f"     Type Safety: {'✅' if backend_result['type_safety']['passed'] else '❌'}"
+    )
 
     # Example 2: Security Quality Assurance
     print("\n2. Security Quality Assurance...")
@@ -53,28 +61,28 @@ async def main():
     print("   Dependency Vulnerability Scanning:")
     dep_result = await security_qa.scan_dependency_vulnerabilities()
     print(f"     Status: {'✅' if dep_result['passed'] else '❌'}")
-    if not dep_result['passed']:
+    if not dep_result["passed"]:
         print(f"     Vulnerabilities: {dep_result['vulnerabilities']}")
 
     # Python security scanning
     print("   Python Security Scanning:")
     python_result = await security_qa.scan_python_security()
     print(f"     Status: {'✅' if python_result['passed'] else '❌'}")
-    if not python_result['passed']:
+    if not python_result["passed"]:
         print(f"     Issues: {python_result['issues']}")
 
     # Secret scanning
     print("   Secret Scanning:")
     secret_result = await security_qa.scan_secrets()
     print(f"     Status: {'✅' if secret_result['passed'] else '❌'}")
-    if not secret_result['passed']:
+    if not secret_result["passed"]:
         print(f"     Secrets Found: {secret_result['secrets']}")
 
     # Configuration security validation
     print("   Configuration Security:")
     config_result = await security_qa.validate_configuration_security()
     print(f"     Status: {'✅' if config_result['passed'] else '❌'}")
-    if not config_result['passed']:
+    if not config_result["passed"]:
         print(f"     Issues: {config_result['issues']}")
 
     # Example 3: Performance Quality Assurance
@@ -85,7 +93,7 @@ async def main():
     print("   Build Performance Testing:")
     build_result = await performance_qa.test_build_performance()
     print(f"     Status: {'✅' if build_result['passed'] else '❌'}")
-    if build_result['passed']:
+    if build_result["passed"]:
         print(f"     Build Time: {build_result['build_time']:.2f}s")
         print(f"     Memory Usage: {build_result['memory_usage']:.2f}MB")
 
@@ -93,7 +101,7 @@ async def main():
     print("   Test Execution Performance:")
     test_result = await performance_qa.test_execution_performance()
     print(f"     Status: {'✅' if test_result['passed'] else '❌'}")
-    if test_result['passed']:
+    if test_result["passed"]:
         print(f"     Test Time: {test_result['test_time']:.2f}s")
         print(f"     Test Count: {test_result['test_count']}")
 
@@ -101,7 +109,7 @@ async def main():
     print("   Memory Usage Analysis:")
     memory_result = await performance_qa.analyze_memory_usage()
     print(f"     Status: {'✅' if memory_result['passed'] else '❌'}")
-    if memory_result['passed']:
+    if memory_result["passed"]:
         print(f"     Peak Memory: {memory_result['peak_memory']:.2f}MB")
         print(f"     Average Memory: {memory_result['average_memory']:.2f}MB")
 
@@ -109,7 +117,7 @@ async def main():
     print("   Bundle Size Analysis:")
     bundle_result = await performance_qa.analyze_bundle_size()
     print(f"     Status: {'✅' if bundle_result['passed'] else '❌'}")
-    if bundle_result['passed']:
+    if bundle_result["passed"]:
         print(f"     Total Size: {bundle_result['total_size']:.2f}KB")
         print(f"     Gzipped Size: {bundle_result['gzipped_size']:.2f}KB")
 
@@ -123,15 +131,21 @@ async def main():
         enable_performance_testing=True,
         enable_documentation_validation=True,
         strict_mode=True,
-        auto_fix=True
+        auto_fix=True,
     )
 
     print(f"   Linting: {'✅' if quality_config.enable_linting else '❌'}")
     print(f"   Formatting: {'✅' if quality_config.enable_formatting else '❌'}")
     print(f"   Type Checking: {'✅' if quality_config.enable_type_checking else '❌'}")
-    print(f"   Security Scanning: {'✅' if quality_config.enable_security_scanning else '❌'}")
-    print(f"   Performance Testing: {'✅' if quality_config.enable_performance_testing else '❌'}")
-    print(f"   Documentation Validation: {'✅' if quality_config.enable_documentation_validation else '❌'}")
+    print(
+        f"   Security Scanning: {'✅' if quality_config.enable_security_scanning else '❌'}"
+    )
+    print(
+        f"   Performance Testing: {'✅' if quality_config.enable_performance_testing else '❌'}"
+    )
+    print(
+        f"   Documentation Validation: {'✅' if quality_config.enable_documentation_validation else '❌'}"
+    )
     print(f"   Strict Mode: {'✅' if quality_config.strict_mode else '❌'}")
     print(f"   Auto Fix: {'✅' if quality_config.auto_fix else '❌'}")
 
@@ -143,29 +157,29 @@ async def main():
     passed_checks = 0
 
     # Count passed checks (simulated)
-    if frontend_result['linting']['passed']:
+    if frontend_result["linting"]["passed"]:
         passed_checks += 1
-    if frontend_result['formatting']['passed']:
+    if frontend_result["formatting"]["passed"]:
         passed_checks += 1
-    if frontend_result['type_safety']['passed']:
+    if frontend_result["type_safety"]["passed"]:
         passed_checks += 1
-    if backend_result['linting']['passed']:
+    if backend_result["linting"]["passed"]:
         passed_checks += 1
-    if backend_result['formatting']['passed']:
+    if backend_result["formatting"]["passed"]:
         passed_checks += 1
-    if backend_result['type_safety']['passed']:
+    if backend_result["type_safety"]["passed"]:
         passed_checks += 1
-    if dep_result['passed']:
+    if dep_result["passed"]:
         passed_checks += 1
-    if python_result['passed']:
+    if python_result["passed"]:
         passed_checks += 1
-    if secret_result['passed']:
+    if secret_result["passed"]:
         passed_checks += 1
-    if config_result['passed']:
+    if config_result["passed"]:
         passed_checks += 1
-    if build_result['passed']:
+    if build_result["passed"]:
         passed_checks += 1
-    if test_result['passed']:
+    if test_result["passed"]:
         passed_checks += 1
 
     quality_score = (passed_checks / total_checks) * 100

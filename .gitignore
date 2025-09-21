@@ -79,6 +79,7 @@ out/
 src/**/*.js
 src/**/*.d.ts
 src/**/*.d.ts.map
+!src/**/svg.d.ts
 
 # Vite generated type files
 **/vite-env.d.ts
@@ -162,6 +163,7 @@ dist/
 *.d.ts
 *.js.map
 *.d.ts.map
+!**/svg.d.ts
 __pycache__/
 *.pyc
 *.pyo

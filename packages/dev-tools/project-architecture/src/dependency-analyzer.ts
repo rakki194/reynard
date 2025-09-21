@@ -2,11 +2,11 @@
 
 /**
  * 🦊 Reynard Dependency Analyzer
- * 
+ *
  * Comprehensive dependency analysis tool for the Reynard project architecture.
  * Analyzes package relationships, detects circular dependencies, and generates
  * visual diagrams and detailed reports.
- * 
+ *
  * Features:
  * - Dependency graph construction and analysis
  * - Circular dependency detection
@@ -14,7 +14,7 @@
  * - Detailed dependency reports
  * - Validation and health checks
  * - Export to multiple formats
- * 
+ *
  * @fileoverview Dependency analysis and visualization for Reynard project
  * @author Reynard Development Team
  * @version 1.0.0
@@ -66,10 +66,10 @@ interface DependencyGraph {
 
 /**
  * Dependency Analyzer for Reynard Project Architecture
- * 
+ *
  * Analyzes the Reynard project structure to understand package dependencies,
  * detect potential issues, and generate comprehensive reports and visualizations.
- * 
+ *
  * The analyzer processes the project architecture definition to build a complete
  * dependency graph, then provides various analysis capabilities including:
  * - Circular dependency detection
@@ -78,7 +78,7 @@ interface DependencyGraph {
  * - Relationship validation
  * - Mermaid diagram generation
  * - Detailed reporting
- * 
+ *
  * @example
  * ```typescript
  * const analyzer = new DependencyAnalyzer();
@@ -93,7 +93,7 @@ class DependencyAnalyzer {
 
   /**
    * Creates a new DependencyAnalyzer instance.
-   * 
+   *
    * Initializes the analyzer with the Reynard project architecture and builds
    * the complete dependency graph from the architecture definition.
    */
@@ -101,22 +101,22 @@ class DependencyAnalyzer {
     this.architecture = REYNARD_ARCHITECTURE.directories;
     this.graph = {
       nodes: new Map(),
-      edges: []
+      edges: [],
     };
     this.buildGraph();
   }
 
   /**
    * Builds the complete dependency graph from the architecture definition.
-   * 
+   *
    * This method processes all directories in the architecture to:
    * 1. Create nodes for each directory with metadata
    * 2. Establish dependency relationships between directories
    * 3. Track relationship types and descriptions
    * 4. Build bidirectional dependency tracking (dependencies and dependents)
-   * 
+   *
    * The graph construction is the foundation for all subsequent analysis operations.
-   * 
+   *
    * @private
    */
   private buildGraph(): void {
@@ -129,7 +129,7 @@ class DependencyAnalyzer {
         importance: dir.importance,
         dependencies: [],
         dependents: [],
-        relationshipTypes: new Map()
+        relationshipTypes: new Map(),
       });
     });
 
@@ -139,12 +139,12 @@ class DependencyAnalyzer {
         if (this.graph.nodes.has(rel.directory)) {
           const fromNode = this.graph.nodes.get(dir.name)!;
           const toNode = this.graph.nodes.get(rel.directory)!;
-          
+
           // Add dependency
           if (!fromNode.dependencies.includes(rel.directory)) {
             fromNode.dependencies.push(rel.directory);
           }
-          
+
           // Add dependent
           if (!toNode.dependents.includes(dir.name)) {
             toNode.dependents.push(dir.name);
@@ -161,7 +161,7 @@ class DependencyAnalyzer {
             from: dir.name,
             to: rel.directory,
             type: rel.type,
-            description: rel.description
+            description: rel.description,
           });
         }
       });
@@ -170,10 +170,10 @@ class DependencyAnalyzer {
 
   /**
    * Generates a short, human-readable name from a full directory path.
-   * 
+   *
    * Converts full directory paths like "packages/ai/rag" to shorter display names
    * like "ai/rag" for better readability in diagrams and reports.
-   * 
+   *
    * @param fullName - The full directory path
    * @returns Shortened name for display purposes
    * @private
@@ -188,16 +188,16 @@ class DependencyAnalyzer {
 
   /**
    * Generates a Mermaid diagram representation of the dependency graph.
-   * 
+   *
    * Creates a comprehensive Mermaid diagram showing:
    * - All packages as nodes with category emojis
    * - Dependency relationships as directed edges
    * - Visual styling based on importance levels
    * - Relationship type indicators
-   * 
+   *
    * The diagram can be rendered in any Mermaid-compatible viewer and provides
    * a visual overview of the entire project dependency structure.
-   * 
+   *
    * @returns Mermaid diagram syntax as a string
    * @example
    * ```typescript
@@ -208,7 +208,7 @@ class DependencyAnalyzer {
    */
   public generateMermaidDiagram(): string {
     let mermaid = "graph TD\n";
-    
+
     // Add nodes with styling
     this.graph.nodes.forEach((node, id) => {
       const category = this.getCategoryEmoji(node.category);
@@ -242,18 +242,18 @@ class DependencyAnalyzer {
 
   private getCategoryEmoji(category: string): string {
     const emojis: Record<string, string> = {
-      "source": "📦",
-      "tools": "🛠️",
-      "documentation": "📚",
-      "services": "🔧",
-      "configuration": "⚙️",
-      "testing": "🧪",
-      "scripts": "📜",
-      "data": "💾",
-      "templates": "📋",
+      source: "📦",
+      tools: "🛠️",
+      documentation: "📚",
+      services: "🔧",
+      configuration: "⚙️",
+      testing: "🧪",
+      scripts: "📜",
+      data: "💾",
+      templates: "📋",
       "third-party": "🔗",
-      "cache": "💨",
-      "excluded": "🚫"
+      cache: "💨",
+      excluded: "🚫",
     };
     return emojis[category] || "📁";
   }
@@ -264,18 +264,18 @@ class DependencyAnalyzer {
 
   private getRelationshipEmoji(type: RelationshipType): string {
     const emojis: Record<RelationshipType, string> = {
-      "parent": "👆",
-      "child": "👇",
-      "sibling": "👈👉",
-      "dependency": "🔗",
-      "generated": "⚡",
-      "configures": "⚙️",
-      "tests": "🧪",
-      "documents": "📚",
-      "builds": "🔨",
-      "deploys": "🚀",
-      "monitors": "👁️",
-      "caches": "💨"
+      parent: "👆",
+      child: "👇",
+      sibling: "👈👉",
+      dependency: "🔗",
+      generated: "⚡",
+      configures: "⚙️",
+      tests: "🧪",
+      documents: "📚",
+      builds: "🔨",
+      deploys: "🚀",
+      monitors: "👁️",
+      caches: "💨",
     };
     return emojis[type] || "🔗";
   }
@@ -300,7 +300,7 @@ class DependencyAnalyzer {
 
     // Most connected packages
     const mostConnected = Array.from(this.graph.nodes.values())
-      .sort((a, b) => (b.dependencies.length + b.dependents.length) - (a.dependencies.length + a.dependents.length))
+      .sort((a, b) => b.dependencies.length + b.dependents.length - (a.dependencies.length + a.dependents.length))
       .slice(0, 10);
 
     report += "\n## 🔗 Most Connected Packages\n\n";
@@ -319,8 +319,9 @@ class DependencyAnalyzer {
     });
 
     // Orphaned packages (no dependencies or dependents)
-    const orphaned = Array.from(this.graph.nodes.values())
-      .filter(node => node.dependencies.length === 0 && node.dependents.length === 0);
+    const orphaned = Array.from(this.graph.nodes.values()).filter(
+      node => node.dependencies.length === 0 && node.dependents.length === 0
+    );
 
     if (orphaned.length > 0) {
       report += "\n## 🏝️ Orphaned Packages (No Dependencies)\n\n";
@@ -352,7 +353,7 @@ class DependencyAnalyzer {
 
       const newChain = [...currentChain, nodeId];
       const node = this.graph.nodes.get(nodeId);
-      
+
       if (!node || node.dependencies.length === 0) {
         if (newChain.length > 1) {
           chains.push(newChain);
@@ -432,11 +433,14 @@ class DependencyAnalyzer {
     });
 
     // Check for packages with no relationships
-    const isolatedPackages = Array.from(this.graph.nodes.values())
-      .filter(node => node.dependencies.length === 0 && node.dependents.length === 0);
+    const isolatedPackages = Array.from(this.graph.nodes.values()).filter(
+      node => node.dependencies.length === 0 && node.dependents.length === 0
+    );
 
     if (isolatedPackages.length > 0) {
-      warnings.push(`Found ${isolatedPackages.length} isolated packages with no dependencies: ${isolatedPackages.map(n => n.label).join(", ")}`);
+      warnings.push(
+        `Found ${isolatedPackages.length} isolated packages with no dependencies: ${isolatedPackages.map(n => n.label).join(", ")}`
+      );
     }
 
     // Check for potential circular dependencies
@@ -446,17 +450,18 @@ class DependencyAnalyzer {
     }
 
     // Check for packages with too many dependencies
-    const highDependencyPackages = Array.from(this.graph.nodes.values())
-      .filter(node => node.dependencies.length > 10);
+    const highDependencyPackages = Array.from(this.graph.nodes.values()).filter(node => node.dependencies.length > 10);
 
     if (highDependencyPackages.length > 0) {
-      warnings.push(`Found ${highDependencyPackages.length} packages with >10 dependencies: ${highDependencyPackages.map(n => n.label).join(", ")}`);
+      warnings.push(
+        `Found ${highDependencyPackages.length} packages with >10 dependencies: ${highDependencyPackages.map(n => n.label).join(", ")}`
+      );
     }
 
     return {
       valid: errors.length === 0,
       errors,
-      warnings
+      warnings,
     };
   }
 
@@ -502,31 +507,31 @@ ${validation.warnings.length === 0 ? "None" : validation.warnings.map(w => `- ${
 // CLI interface - only run when called directly, not during tests
 if (import.meta.url === `file://${process.argv[1]}` && !process.env.VITEST) {
   const analyzer = new DependencyAnalyzer();
-  
+
   console.log("🦊 Reynard Dependency Analyzer");
   console.log("==============================");
-  
+
   // Generate validation
   const validation = analyzer.validateRelationships();
   console.log(`\n🔍 Validation Status: ${validation.valid ? "✅ Valid" : "❌ Invalid"}`);
-  
+
   if (validation.errors.length > 0) {
     console.log("\n❌ Errors:");
     validation.errors.forEach(error => console.log(`   - ${error}`));
   }
-  
+
   if (validation.warnings.length > 0) {
     console.log("\n⚠️  Warnings:");
     validation.warnings.forEach(warning => console.log(`   - ${warning}`));
   }
-  
+
   // Export files
   analyzer.exportToFiles();
-  
+
   // Show summary
   console.log(`\n📊 Summary:`);
-  console.log(`   - Total Packages: ${analyzer['graph'].nodes.size}`);
-  console.log(`   - Total Dependencies: ${analyzer['graph'].edges.length}`);
+  console.log(`   - Total Packages: ${analyzer["graph"].nodes.size}`);
+  console.log(`   - Total Dependencies: ${analyzer["graph"].edges.length}`);
   console.log(`   - Validation: ${validation.valid ? "PASS" : "FAIL"}`);
 }
 

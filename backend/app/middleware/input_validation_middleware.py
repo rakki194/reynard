@@ -35,6 +35,7 @@ class InputValidationMiddleware(BaseHTTPMiddleware):
             "/api/openapi.json",
             "/favicon.ico",
             "/health",
+            "/api/health",
             "/",
         ]
 

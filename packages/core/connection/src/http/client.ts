@@ -466,7 +466,7 @@ export class HTTPConnection extends BaseConnection {
 
   async healthCheck(): Promise<HealthCheckResult> {
     try {
-      const response = await this.client.get("/health", { timeout: 5000 });
+      const response = await this.client.get("/api/health", { timeout: 5000 });
       return {
         connectionId: this.connectionId,
         timestamp: Date.now(),

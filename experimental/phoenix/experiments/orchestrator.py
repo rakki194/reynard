@@ -54,8 +54,12 @@ class ExperimentOrchestrator:
         """
         try:
             if self.config.use_postgresql:
-                self.logger.info(f"Loading target agent {self.config.target_agent_id} from PostgreSQL")
-                target_data = await self.data_loader.load_agent_data(self.config.target_agent_id)
+                self.logger.info(
+                    f"Loading target agent {self.config.target_agent_id} from PostgreSQL"
+                )
+                target_data = await self.data_loader.load_agent_data(
+                    self.config.target_agent_id
+                )
                 if target_data:
                     self.logger.info("✅ Target agent loaded from PostgreSQL")
                     return target_data
@@ -76,11 +80,8 @@ class ExperimentOrchestrator:
 
         logging.basicConfig(
             level=getattr(logging, self.config.log_level),
-            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-            handlers=[
-                logging.FileHandler(log_file),
-                logging.StreamHandler()
-            ]
+            format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+            handlers=[logging.FileHandler(log_file), logging.StreamHandler()],
         )
 
     async def run_experiment(self) -> Dict[str, Any]:
@@ -90,11 +91,11 @@ class ExperimentOrchestrator:
 
         # Initialize results structure
         self.results = {
-            'experiment_config': self.config.__dict__,
-            'target_agent': self.target.__dict__,
-            'start_time': datetime.now().isoformat(),
-            'trials': [],
-            'summary': {}
+            "experiment_config": self.config.__dict__,
+            "target_agent": self.target.__dict__,
+            "start_time": datetime.now().isoformat(),
+            "trials": [],
+            "summary": {},
         }
 
         # Run multiple trials
@@ -102,14 +103,16 @@ class ExperimentOrchestrator:
             self.logger.info(f"Running trial {trial + 1}/{self.config.num_trials}")
 
             trial_result = await self._run_single_trial(trial)
-            self.results['trials'].append(trial_result)
+            self.results["trials"].append(trial_result)
 
             if self.config.save_intermediate:
                 await self._save_intermediate_results()
 
         # Analyze results
-        self.results['summary'] = await self.analyzer.analyze_results(self.results['trials'])
-        self.results['end_time'] = datetime.now().isoformat()
+        self.results["summary"] = await self.analyzer.analyze_results(
+            self.results["trials"]
+        )
+        self.results["end_time"] = datetime.now().isoformat()
 
         # Save final results
         await self._save_final_results()
@@ -121,24 +124,29 @@ class ExperimentOrchestrator:
         """Run a single experimental trial."""
 
         trial_result = {
-            'trial_number': trial_number,
-            'start_time': datetime.now().isoformat(),
-            'methods': {}
+            "trial_number": trial_number,
+            "start_time": datetime.now().isoformat(),
+            "methods": {},
         }
 
         # Run baseline methods
-        if self.config.experiment_type in [ExperimentType.BASELINE, ExperimentType.COMPARATIVE]:
+        if self.config.experiment_type in [
+            ExperimentType.BASELINE,
+            ExperimentType.COMPARATIVE,
+        ]:
             baseline_results = await self._run_baseline_methods()
-            trial_result['methods']['baseline'] = baseline_results
+            trial_result["methods"]["baseline"] = baseline_results
 
         # Run PHOENIX methods
-        if self.config.experiment_type in [ExperimentType.PHOENIX_EVOLUTIONARY,
-                                          ExperimentType.PHOENIX_DIRECT,
-                                          ExperimentType.COMPARATIVE]:
+        if self.config.experiment_type in [
+            ExperimentType.PHOENIX_EVOLUTIONARY,
+            ExperimentType.PHOENIX_DIRECT,
+            ExperimentType.COMPARATIVE,
+        ]:
             phoenix_results = await self._run_phoenix_methods()
-            trial_result['methods']['phoenix'] = phoenix_results
+            trial_result["methods"]["phoenix"] = phoenix_results
 
-        trial_result['end_time'] = datetime.now().isoformat()
+        trial_result["end_time"] = datetime.now().isoformat()
         return trial_result
 
     async def _run_baseline_methods(self) -> Dict[str, Any]:
@@ -149,36 +157,38 @@ class ExperimentOrchestrator:
         # Random baseline
         random_agent = self.baseline_reconstruction.reconstruct_random()
         random_metrics = self.baseline_reconstruction.evaluate_reconstruction()
-        baseline_results['random'] = {
-            'agent': random_agent.__dict__,
-            'metrics': random_metrics.to_dict()
+        baseline_results["random"] = {
+            "agent": random_agent.__dict__,
+            "metrics": random_metrics.to_dict(),
         }
 
         # Average baseline
         average_agent = self.baseline_reconstruction.reconstruct_average()
         average_metrics = self.baseline_reconstruction.evaluate_reconstruction()
-        baseline_results['average'] = {
-            'agent': average_agent.__dict__,
-            'metrics': average_metrics.to_dict()
+        baseline_results["average"] = {
+            "agent": average_agent.__dict__,
+            "metrics": average_metrics.to_dict(),
         }
 
         # Documentation baseline
         doc_data = {
-            'personality_traits': self.target.personality_traits,
-            'physical_traits': self.target.physical_traits,
-            'ability_traits': self.target.ability_traits,
-            'knowledge_base': {
-                'domain_expertise': self.target.domain_expertise,
-                'specializations': self.target.specializations,
-                'achievements': self.target.achievements
-            }
+            "personality_traits": self.target.personality_traits,
+            "physical_traits": self.target.physical_traits,
+            "ability_traits": self.target.ability_traits,
+            "knowledge_base": {
+                "domain_expertise": self.target.domain_expertise,
+                "specializations": self.target.specializations,
+                "achievements": self.target.achievements,
+            },
         }
 
-        doc_agent = self.baseline_reconstruction.reconstruct_documentation_based(doc_data)
+        doc_agent = self.baseline_reconstruction.reconstruct_documentation_based(
+            doc_data
+        )
         doc_metrics = self.baseline_reconstruction.evaluate_reconstruction()
-        baseline_results['documentation'] = {
-            'agent': doc_agent.__dict__,
-            'metrics': doc_metrics.to_dict()
+        baseline_results["documentation"] = {
+            "agent": doc_agent.__dict__,
+            "metrics": doc_metrics.to_dict(),
         }
 
         return baseline_results
@@ -189,25 +199,35 @@ class ExperimentOrchestrator:
         phoenix_results = {}
 
         # Evolutionary reconstruction
-        if self.config.experiment_type in [ExperimentType.PHOENIX_EVOLUTIONARY,
-                                          ExperimentType.COMPARATIVE]:
-            evolutionary_agent = await self.phoenix_reconstruction.reconstruct_evolutionary()
-            evolutionary_metrics = await self.phoenix_reconstruction.evaluate_reconstruction()
-            phoenix_results['evolutionary'] = {
-                'agent': evolutionary_agent.__dict__,
-                'metrics': evolutionary_metrics.to_dict()
+        if self.config.experiment_type in [
+            ExperimentType.PHOENIX_EVOLUTIONARY,
+            ExperimentType.COMPARATIVE,
+        ]:
+            evolutionary_agent = (
+                await self.phoenix_reconstruction.reconstruct_evolutionary()
+            )
+            evolutionary_metrics = (
+                await self.phoenix_reconstruction.evaluate_reconstruction()
+            )
+            phoenix_results["evolutionary"] = {
+                "agent": evolutionary_agent.__dict__,
+                "metrics": evolutionary_metrics.to_dict(),
             }
 
         # Direct reconstruction
-        if self.config.experiment_type in [ExperimentType.PHOENIX_DIRECT,
-                                          ExperimentType.COMPARATIVE]:
+        if self.config.experiment_type in [
+            ExperimentType.PHOENIX_DIRECT,
+            ExperimentType.COMPARATIVE,
+        ]:
             # Generate synthetic training data
             training_data = await self._generate_training_data()
-            direct_agent = await self.phoenix_reconstruction.reconstruct_direct(training_data)
+            direct_agent = await self.phoenix_reconstruction.reconstruct_direct(
+                training_data
+            )
             direct_metrics = await self.phoenix_reconstruction.evaluate_reconstruction()
-            phoenix_results['direct'] = {
-                'agent': direct_agent.__dict__,
-                'metrics': direct_metrics.to_dict()
+            phoenix_results["direct"] = {
+                "agent": direct_agent.__dict__,
+                "metrics": direct_metrics.to_dict(),
             }
 
         return phoenix_results
@@ -220,11 +240,15 @@ class ExperimentOrchestrator:
 
         # Add domain-specific content
         for domain in self.target.domain_expertise:
-            training_data.append(f"Expertise in {domain} with high proficiency and deep understanding.")
+            training_data.append(
+                f"Expertise in {domain} with high proficiency and deep understanding."
+            )
 
         # Add specialization content
         for spec in self.target.specializations:
-            training_data.append(f"Specialized in {spec} with proven track record and expertise.")
+            training_data.append(
+                f"Specialized in {spec} with proven track record and expertise."
+            )
 
         # Add achievement content
         for achievement in self.target.achievements:
@@ -233,7 +257,9 @@ class ExperimentOrchestrator:
         # Add trait-based content
         for trait, value in self.target.personality_traits.items():
             if value > 0.8:
-                training_data.append(f"Demonstrates high {trait} in all interactions and decisions.")
+                training_data.append(
+                    f"Demonstrates high {trait} in all interactions and decisions."
+                )
 
         return training_data
 
@@ -241,25 +267,25 @@ class ExperimentOrchestrator:
         """Save intermediate results."""
 
         results_file = Path(self.config.results_dir) / "intermediate_results.json"
-        with open(results_file, 'w') as f:
+        with open(results_file, "w") as f:
             json.dump(self.results, f, indent=2, default=str)
 
     async def _save_final_results(self):
         """Save final results."""
 
         results_file = Path(self.config.results_dir) / "final_results.json"
-        with open(results_file, 'w') as f:
+        with open(results_file, "w") as f:
             json.dump(self.results, f, indent=2, default=str)
 
         # Save summary report
         summary_file = Path(self.config.results_dir) / "summary_report.txt"
-        with open(summary_file, 'w') as f:
+        with open(summary_file, "w") as f:
             f.write(self._generate_summary_report())
 
     def _generate_summary_report(self) -> str:
         """Generate summary report."""
 
-        summary = self.results.get('summary', {})
+        summary = self.results.get("summary", {})
 
         report = f"""
 PHOENIX Agent Reconstruction Experiment Summary

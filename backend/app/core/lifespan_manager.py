@@ -131,11 +131,11 @@ async def _setup_secure_routers(app: FastAPI, registry) -> None:
 async def lifespan(app: FastAPI):
     """
     Sophisticated service lifecycle management with parallel initialization and dependency resolution.
-    
+
     This context manager orchestrates the complete lifecycle of all backend services within
     the Reynard ecosystem, implementing enterprise-grade lifecycle management with priority-based
     startup sequencing, parallel initialization optimization, and comprehensive error handling.
-    
+
     The lifespan manager provides:
     - Priority-based service initialization with dependency resolution
     - Parallel execution within priority groups for optimal startup performance
@@ -143,7 +143,7 @@ async def lifespan(app: FastAPI):
     - Graceful shutdown procedures with timeout handling and resource cleanup
     - Error handling and recovery mechanisms with detailed logging
     - Service registry integration for centralized lifecycle management
-    
+
     Initialization Process:
     1. Configuration Loading: Load service configurations and environment settings
     2. Service Registration: Register all services with their priorities and dependencies
@@ -152,18 +152,18 @@ async def lifespan(app: FastAPI):
     5. Health Monitoring: Perform health checks and validate service initialization
     6. Router Setup: Configure secure routers and API endpoints
     7. Service Registry: Provide initialized services to the FastAPI application
-    
+
     Shutdown Process:
     1. Graceful Shutdown: Stop services in reverse priority order
     2. Resource Cleanup: Clean up connections, caches, and temporary resources
     3. Timeout Handling: Ensure shutdown completes within configured timeouts
     4. Error Recovery: Handle shutdown failures gracefully with proper logging
-    
+
     Args:
         app (FastAPI): The FastAPI application instance requiring service orchestration.
             The application will receive the initialized service registry and all
             configured services will be available through dependency injection.
-    
+
     Yields:
         Dict[str, Any]: A dictionary containing the initialized service registry.
 
@@ -397,13 +397,13 @@ async def _health_check_search_service() -> bool:
     """Health check for the search service."""
     try:
         from app.core.service_registry import get_service_registry
-        
+
         registry = get_service_registry()
         search_service = registry.get_service_instance("search")
-        
+
         if search_service is None:
             return False
-            
+
         # Test basic search functionality
         try:
             await search_service.get_search_stats()
@@ -419,7 +419,9 @@ async def _health_check_search_service() -> bool:
 async def _init_ai_email_response_service(config: dict[str, Any]) -> bool:
     """Initialize the AI email response service."""
     try:
-        from app.services.ai_email_response_service import initialize_ai_email_response_service
+        from app.services.ai_email_response_service import (
+            initialize_ai_email_response_service,
+        )
 
         success = await initialize_ai_email_response_service()
         if success:
@@ -435,7 +437,9 @@ async def _init_ai_email_response_service(config: dict[str, Any]) -> bool:
 async def _shutdown_ai_email_response_service() -> None:
     """Shutdown the AI email response service."""
     try:
-        from app.services.ai_email_response_service import shutdown_ai_email_response_service
+        from app.services.ai_email_response_service import (
+            shutdown_ai_email_response_service,
+        )
 
         await shutdown_ai_email_response_service()
         logger.info("✅ AI email response service shutdown successfully")
@@ -446,7 +450,9 @@ async def _shutdown_ai_email_response_service() -> None:
 async def _health_check_ai_email_response_service() -> bool:
     """Health check for the AI email response service."""
     try:
-        from app.services.ai_email_response_service import health_check_ai_email_response_service
+        from app.services.ai_email_response_service import (
+            health_check_ai_email_response_service,
+        )
 
         return await health_check_ai_email_response_service()
     except Exception as e:

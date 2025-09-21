@@ -11,6 +11,7 @@ import logging
 from typing import Any, Dict
 
 from protocol.tool_registry import get_tool_registry, register_tool
+from config.tool_config import get_tool_configs
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +23,7 @@ logger = logging.getLogger(__name__)
     execution_type="sync",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 def get_tool_configs(**kwargs) -> dict[str, Any]:
     """Get all tool configurations."""
@@ -36,8 +37,8 @@ def get_tool_configs(**kwargs) -> dict[str, Any]:
                 {
                     "type": "text",
                     "text": f"📊 Tool Configurations ({len(configs)} tools):\n\n"
-                           f"Statistics: {stats}\n\n"
-                           f"Tools: {configs}"
+                    f"Statistics: {stats}\n\n"
+                    f"Tools: {configs}",
                 }
             ]
         }
@@ -47,7 +48,7 @@ def get_tool_configs(**kwargs) -> dict[str, Any]:
             "content": [
                 {
                     "type": "text",
-                    "text": f"❌ Failed to retrieve tool configurations: {e!s}"
+                    "text": f"❌ Failed to retrieve tool configurations: {e!s}",
                 }
             ]
         }
@@ -60,7 +61,7 @@ def get_tool_configs(**kwargs) -> dict[str, Any]:
     execution_type="sync",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 def get_tool_status(**kwargs) -> dict[str, Any]:
     """Get status of a specific tool or all tools."""
@@ -78,55 +79,48 @@ def get_tool_status(**kwargs) -> dict[str, Any]:
             status_text = f"🔧 Tool Status: {tool_name}\n"
             status_text += f"Registered: {'✅' if is_registered else '❌'}\n"
             status_text += f"Enabled: {'✅' if is_enabled else '❌'}\n"
-            
+
             if metadata:
                 status_text += f"Category: {metadata.category}\n"
                 status_text += f"Description: {metadata.description}\n"
                 status_text += f"Execution Type: {metadata.execution_type.value}\n"
 
-            return {
-                "content": [
-                    {
-                        "type": "text",
-                        "text": status_text
-                    }
-                ]
-            }
+            return {"content": [{"type": "text", "text": status_text}]}
         else:
             # Get all tools status
             registry = get_tool_registry()
             all_tools = registry.get_all_tools()
-            enabled_tools = [name for name in all_tools if registry.is_tool_enabled(name)]
-            disabled_tools = [name for name in all_tools if not registry.is_tool_enabled(name)]
+            enabled_tools = [
+                name for name in all_tools if registry.is_tool_enabled(name)
+            ]
+            disabled_tools = [
+                name for name in all_tools if not registry.is_tool_enabled(name)
+            ]
 
             status_text = f"📊 All Tools Status:\n\n"
             status_text += f"Total Tools: {len(all_tools)}\n"
             status_text += f"Enabled: {len(enabled_tools)}\n"
             status_text += f"Disabled: {len(disabled_tools)}\n\n"
-            
-            if enabled_tools:
-                status_text += f"✅ Enabled Tools:\n" + "\n".join(f"• {name}" for name in enabled_tools) + "\n\n"
-            
-            if disabled_tools:
-                status_text += f"❌ Disabled Tools:\n" + "\n".join(f"• {name}" for name in disabled_tools)
 
-            return {
-                "content": [
-                    {
-                        "type": "text",
-                        "text": status_text
-                    }
-                ]
-            }
+            if enabled_tools:
+                status_text += (
+                    f"✅ Enabled Tools:\n"
+                    + "\n".join(f"• {name}" for name in enabled_tools)
+                    + "\n\n"
+                )
+
+            if disabled_tools:
+                status_text += f"❌ Disabled Tools:\n" + "\n".join(
+                    f"• {name}" for name in disabled_tools
+                )
+
+            return {"content": [{"type": "text", "text": status_text}]}
 
     except Exception as e:
         logger.error(f"Failed to get tool status: {e}")
         return {
             "content": [
-                {
-                    "type": "text",
-                    "text": f"❌ Failed to get tool status: {e!s}"
-                }
+                {"type": "text", "text": f"❌ Failed to get tool status: {e!s}"}
             ]
         }
 
@@ -138,7 +132,7 @@ def get_tool_status(**kwargs) -> dict[str, Any]:
     execution_type="sync",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 def enable_tool(**kwargs) -> dict[str, Any]:
     """Enable a specific tool."""
@@ -147,57 +141,39 @@ def enable_tool(**kwargs) -> dict[str, Any]:
         tool_name = arguments.get("tool_name")
 
         if not tool_name:
-            return {
-                "content": [
-                    {
-                        "type": "text",
-                        "text": "❌ Tool name is required"
-                    }
-                ]
-            }
+            return {"content": [{"type": "text", "text": "❌ Tool name is required"}]}
 
         registry = get_tool_registry()
         if not registry.is_tool_registered(tool_name):
             return {
                 "content": [
-                    {
-                        "type": "text",
-                        "text": f"❌ Tool '{tool_name}' is not registered"
-                    }
+                    {"type": "text", "text": f"❌ Tool '{tool_name}' is not registered"}
                 ]
             }
 
         registry = get_tool_registry()
         success = registry.enable_tool(tool_name)
-        
+
         if success:
             return {
                 "content": [
                     {
                         "type": "text",
-                        "text": f"✅ Tool '{tool_name}' enabled successfully"
+                        "text": f"✅ Tool '{tool_name}' enabled successfully",
                     }
                 ]
             }
         else:
             return {
                 "content": [
-                    {
-                        "type": "text",
-                        "text": f"❌ Failed to enable tool '{tool_name}'"
-                    }
+                    {"type": "text", "text": f"❌ Failed to enable tool '{tool_name}'"}
                 ]
             }
 
     except Exception as e:
         logger.error(f"Failed to enable tool: {e}")
         return {
-            "content": [
-                {
-                    "type": "text",
-                    "text": f"❌ Failed to enable tool: {e!s}"
-                }
-            ]
+            "content": [{"type": "text", "text": f"❌ Failed to enable tool: {e!s}"}]
         }
 
 
@@ -208,7 +184,7 @@ def enable_tool(**kwargs) -> dict[str, Any]:
     execution_type="sync",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 def disable_tool(**kwargs) -> dict[str, Any]:
     """Disable a specific tool."""
@@ -217,57 +193,39 @@ def disable_tool(**kwargs) -> dict[str, Any]:
         tool_name = arguments.get("tool_name")
 
         if not tool_name:
-            return {
-                "content": [
-                    {
-                        "type": "text",
-                        "text": "❌ Tool name is required"
-                    }
-                ]
-            }
+            return {"content": [{"type": "text", "text": "❌ Tool name is required"}]}
 
         registry = get_tool_registry()
         if not registry.is_tool_registered(tool_name):
             return {
                 "content": [
-                    {
-                        "type": "text",
-                        "text": f"❌ Tool '{tool_name}' is not registered"
-                    }
+                    {"type": "text", "text": f"❌ Tool '{tool_name}' is not registered"}
                 ]
             }
 
         registry = get_tool_registry()
         success = registry.disable_tool(tool_name)
-        
+
         if success:
             return {
                 "content": [
                     {
                         "type": "text",
-                        "text": f"✅ Tool '{tool_name}' disabled successfully"
+                        "text": f"✅ Tool '{tool_name}' disabled successfully",
                     }
                 ]
             }
         else:
             return {
                 "content": [
-                    {
-                        "type": "text",
-                        "text": f"❌ Failed to disable tool '{tool_name}'"
-                    }
+                    {"type": "text", "text": f"❌ Failed to disable tool '{tool_name}'"}
                 ]
             }
 
     except Exception as e:
         logger.error(f"Failed to disable tool: {e}")
         return {
-            "content": [
-                {
-                    "type": "text",
-                    "text": f"❌ Failed to disable tool: {e!s}"
-                }
-            ]
+            "content": [{"type": "text", "text": f"❌ Failed to disable tool: {e!s}"}]
         }
 
 
@@ -278,7 +236,7 @@ def disable_tool(**kwargs) -> dict[str, Any]:
     execution_type="sync",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 def get_tool_metadata(**kwargs) -> dict[str, Any]:
     """Get metadata for a specific tool."""
@@ -287,25 +245,19 @@ def get_tool_metadata(**kwargs) -> dict[str, Any]:
         tool_name = arguments.get("tool_name")
 
         if not tool_name:
-            return {
-                "content": [
-                    {
-                        "type": "text",
-                        "text": "❌ Tool name is required"
-                    }
-                ]
-            }
+            return {"content": [{"type": "text", "text": "❌ Tool name is required"}]}
 
         registry = get_tool_registry()
         metadata = registry.get_tool_metadata(tool_name)
-        
+
         if metadata:
             import json
+
             return {
                 "content": [
                     {
                         "type": "text",
-                        "text": f"📋 Tool Metadata for '{tool_name}':\n\n{json.dumps(metadata.to_dict(), indent=2)}"
+                        "text": f"📋 Tool Metadata for '{tool_name}':\n\n{json.dumps(metadata.to_dict(), indent=2)}",
                     }
                 ]
             }
@@ -314,7 +266,7 @@ def get_tool_metadata(**kwargs) -> dict[str, Any]:
                 "content": [
                     {
                         "type": "text",
-                        "text": f"❌ Tool '{tool_name}' not found or has no metadata"
+                        "text": f"❌ Tool '{tool_name}' not found or has no metadata",
                     }
                 ]
             }
@@ -323,10 +275,7 @@ def get_tool_metadata(**kwargs) -> dict[str, Any]:
         logger.error(f"Failed to get tool metadata: {e}")
         return {
             "content": [
-                {
-                    "type": "text",
-                    "text": f"❌ Failed to get tool metadata: {e!s}"
-                }
+                {"type": "text", "text": f"❌ Failed to get tool metadata: {e!s}"}
             ]
         }
 
@@ -338,7 +287,7 @@ def get_tool_metadata(**kwargs) -> dict[str, Any]:
     execution_type="sync",
     enabled=True,
     dependencies=[],
-    config={}
+    config={},
 )
 def list_tools_by_category(**kwargs) -> dict[str, Any]:
     """List tools grouped by category."""
@@ -354,7 +303,7 @@ def list_tools_by_category(**kwargs) -> dict[str, Any]:
                 if category not in categories:
                     categories[category] = []
                 categories[category].append(tool_name)
-        
+
         result_text = "📊 Tools by Category:\n\n"
         for category, tools in categories.items():
             result_text += f"🔧 {category} ({len(tools)} tools):\n"
@@ -362,23 +311,13 @@ def list_tools_by_category(**kwargs) -> dict[str, Any]:
                 enabled = "✅" if registry.is_tool_enabled(tool) else "❌"
                 result_text += f"  {enabled} {tool}\n"
             result_text += "\n"
-        
-        return {
-            "content": [
-                {
-                    "type": "text",
-                    "text": result_text
-                }
-            ]
-        }
+
+        return {"content": [{"type": "text", "text": result_text}]}
 
     except Exception as e:
         logger.error(f"Failed to list tools by category: {e}")
         return {
             "content": [
-                {
-                    "type": "text",
-                    "text": f"❌ Failed to list tools by category: {e!s}"
-                }
+                {"type": "text", "text": f"❌ Failed to list tools by category: {e!s}"}
             ]
         }

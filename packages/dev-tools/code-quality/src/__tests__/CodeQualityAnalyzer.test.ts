@@ -58,7 +58,7 @@ describe("CodeQualityAnalyzer", () => {
   beforeEach(() => {
     analyzer = new CodeQualityAnalyzer(".");
     tempDir = join(process.cwd(), "temp-test-files");
-    
+
     // Reset all mocks
     vi.clearAllMocks();
   });
@@ -74,10 +74,7 @@ describe("CodeQualityAnalyzer", () => {
       const mockFileAnalyzer = analyzer["fileAnalyzer"];
 
       // Setup mock implementations
-      mockFileDiscovery.discoverFiles.mockResolvedValue([
-        "test1.py",
-        "test2.ts",
-      ]);
+      mockFileDiscovery.discoverFiles.mockResolvedValue(["test1.py", "test2.ts"]);
 
       mockLanguageAnalyzer.analyzeLanguages.mockResolvedValue([
         {
@@ -220,23 +217,15 @@ describe("CodeQualityAnalyzer", () => {
       expect(result.metrics.totalModules).toBe(2);
 
       // Verify that docstring issues are included
-      const docstringIssues = result.issues.filter(issue => 
-        issue.tags.includes("docstring")
-      );
+      const docstringIssues = result.issues.filter(issue => issue.tags.includes("docstring"));
       expect(docstringIssues.length).toBeGreaterThan(0);
       expect(docstringIssues[0].rule).toBe("docstring-missing");
 
       // Verify that IssueDetector was called with the discovered files
-      expect(mockIssueDetector.detectIssues).toHaveBeenCalledWith([
-        "test1.py",
-        "test2.ts",
-      ]);
+      expect(mockIssueDetector.detectIssues).toHaveBeenCalledWith(["test1.py", "test2.ts"]);
 
       // Verify that MetricsCalculator was called with the discovered files
-      expect(mockMetricsCalculator.calculateMetrics).toHaveBeenCalledWith(
-        ["test1.py", "test2.ts"],
-        expect.any(Array)
-      );
+      expect(mockMetricsCalculator.calculateMetrics).toHaveBeenCalledWith(["test1.py", "test2.ts"], expect.any(Array));
     });
 
     it("should handle analysis errors gracefully", async () => {
@@ -332,7 +321,7 @@ describe("CodeQualityAnalyzer", () => {
   describe("Quality Gate Management", () => {
     it("should allow adding and removing quality gates", () => {
       const mockQualityGateEvaluator = analyzer["qualityGateEvaluator"];
-      
+
       const testGate = {
         id: "test-gate",
         name: "Test Gate",

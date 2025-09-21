@@ -2,7 +2,7 @@
 
 /**
  * Test runner script for ADR System
- * 
+ *
  * This script provides a comprehensive test runner that can execute
  * all tests, generate coverage reports, and provide detailed output.
  */
@@ -35,7 +35,7 @@ class ADRTestRunner {
    */
   async runTests(options: TestOptions = {}): Promise<void> {
     console.log("🦊 Starting ADR System test suite...");
-    
+
     // Ensure coverage directory exists
     if (options.coverage && !existsSync(this.coverageDir)) {
       mkdirSync(this.coverageDir, { recursive: true });
@@ -46,18 +46,17 @@ class ADRTestRunner {
 
     try {
       console.log(`Running: ${command}`);
-      execSync(command, { 
+      execSync(command, {
         stdio: "inherit",
         cwd: this.projectRoot,
-        env: { ...process.env, NODE_ENV: "test" }
+        env: { ...process.env, NODE_ENV: "test" },
       });
-      
+
       console.log("✅ All tests completed successfully!");
-      
+
       if (options.coverage) {
         this.displayCoverageSummary();
       }
-      
     } catch (error) {
       console.error("❌ Tests failed:", error);
       process.exit(1);
@@ -100,18 +99,18 @@ class ADRTestRunner {
   private displayCoverageSummary(): void {
     console.log("\n📊 Coverage Summary:");
     console.log("===================");
-    
+
     try {
       const coverageReport = join(this.coverageDir, "coverage-summary.json");
       if (existsSync(coverageReport)) {
         const coverage = require(coverageReport);
-        
+
         console.log(`Total Coverage: ${coverage.total.lines.pct}%`);
         console.log(`Statements: ${coverage.total.statements.pct}%`);
         console.log(`Branches: ${coverage.total.branches.pct}%`);
         console.log(`Functions: ${coverage.total.functions.pct}%`);
         console.log(`Lines: ${coverage.total.lines.pct}%`);
-        
+
         console.log("\n📁 File Coverage:");
         Object.entries(coverage).forEach(([file, data]: [string, any]) => {
           if (file !== "total" && data.lines) {
@@ -129,21 +128,21 @@ class ADRTestRunner {
    */
   async runTestFile(testFile: string): Promise<void> {
     const filePath = join(this.testDir, testFile);
-    
+
     if (!existsSync(filePath)) {
       console.error(`❌ Test file not found: ${filePath}`);
       process.exit(1);
     }
 
     console.log(`🦊 Running test file: ${testFile}`);
-    
+
     try {
       execSync(`npx vitest run ${filePath}`, {
         stdio: "inherit",
         cwd: this.projectRoot,
-        env: { ...process.env, NODE_ENV: "test" }
+        env: { ...process.env, NODE_ENV: "test" },
       });
-      
+
       console.log("✅ Test file completed successfully!");
     } catch (error) {
       console.error("❌ Test file failed:", error);

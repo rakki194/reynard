@@ -21,36 +21,36 @@ def get_enhanced_search_tool_definitions() -> List[ToolDefinition]:
                 "properties": {
                     "query": {
                         "type": "string",
-                        "description": "Natural language search query (e.g., 'find authentication function', 'show error handling code')"
+                        "description": "Natural language search query (e.g., 'find authentication function', 'show error handling code')",
                     },
                     "max_results": {
                         "type": "integer",
                         "description": "Maximum number of results to return",
-                        "default": 20
+                        "default": 20,
                     },
                     "file_types": {
                         "type": "array",
                         "items": {"type": "string"},
-                        "description": "File extensions to search in (e.g., ['py', 'ts', 'js'])"
+                        "description": "File extensions to search in (e.g., ['py', 'ts', 'js'])",
                     },
                     "directories": {
                         "type": "array",
                         "items": {"type": "string"},
-                        "description": "Directories to search in (e.g., ['backend', 'packages'])"
+                        "description": "Directories to search in (e.g., ['backend', 'packages'])",
                     },
                     "enable_expansion": {
                         "type": "boolean",
                         "description": "Enable query expansion with synonyms and related terms",
-                        "default": True
+                        "default": True,
                     },
                     "confidence_threshold": {
                         "type": "number",
                         "description": "Minimum confidence threshold for results (0.0-1.0)",
-                        "default": 0.6
-                    }
+                        "default": 0.6,
+                    },
                 },
-                "required": ["query"]
-            }
+                "required": ["query"],
+            },
         ),
         ToolDefinition(
             name="intelligent_search",
@@ -60,31 +60,31 @@ def get_enhanced_search_tool_definitions() -> List[ToolDefinition]:
                 "properties": {
                     "query": {
                         "type": "string",
-                        "description": "Search query (natural language or structured)"
+                        "description": "Search query (natural language or structured)",
                     },
                     "max_results": {
                         "type": "integer",
                         "description": "Maximum number of results to return",
-                        "default": 20
+                        "default": 20,
                     },
                     "file_types": {
                         "type": "array",
                         "items": {"type": "string"},
-                        "description": "File extensions to search in"
+                        "description": "File extensions to search in",
                     },
                     "directories": {
                         "type": "array",
                         "items": {"type": "string"},
-                        "description": "Directories to search in"
+                        "description": "Directories to search in",
                     },
                     "search_modes": {
                         "type": "array",
                         "items": {"type": "string"},
-                        "description": "Specific search modes to use (semantic, syntax, hybrid)"
-                    }
+                        "description": "Specific search modes to use (semantic, syntax, hybrid)",
+                    },
                 },
-                "required": ["query"]
-            }
+                "required": ["query"],
+            },
         ),
         ToolDefinition(
             name="contextual_search",
@@ -92,28 +92,37 @@ def get_enhanced_search_tool_definitions() -> List[ToolDefinition]:
             inputSchema={
                 "type": "object",
                 "properties": {
-                    "query": {
-                        "type": "string",
-                        "description": "Search query"
-                    },
+                    "query": {"type": "string", "description": "Search query"},
                     "context": {
                         "type": "object",
                         "description": "Additional context information",
                         "properties": {
-                            "file_path": {"type": "string", "description": "Current file path"},
-                            "function_name": {"type": "string", "description": "Current function name"},
-                            "class_name": {"type": "string", "description": "Current class name"},
-                            "line_number": {"type": "integer", "description": "Current line number"}
-                        }
+                            "file_path": {
+                                "type": "string",
+                                "description": "Current file path",
+                            },
+                            "function_name": {
+                                "type": "string",
+                                "description": "Current function name",
+                            },
+                            "class_name": {
+                                "type": "string",
+                                "description": "Current class name",
+                            },
+                            "line_number": {
+                                "type": "integer",
+                                "description": "Current line number",
+                            },
+                        },
                     },
                     "max_results": {
                         "type": "integer",
                         "description": "Maximum number of results to return",
-                        "default": 20
-                    }
+                        "default": 20,
+                    },
                 },
-                "required": ["query"]
-            }
+                "required": ["query"],
+            },
         ),
         ToolDefinition(
             name="analyze_query",
@@ -121,13 +130,10 @@ def get_enhanced_search_tool_definitions() -> List[ToolDefinition]:
             inputSchema={
                 "type": "object",
                 "properties": {
-                    "query": {
-                        "type": "string",
-                        "description": "Query to analyze"
-                    }
+                    "query": {"type": "string", "description": "Query to analyze"}
                 },
-                "required": ["query"]
-            }
+                "required": ["query"],
+            },
         ),
         ToolDefinition(
             name="get_intelligent_suggestions",
@@ -137,16 +143,16 @@ def get_enhanced_search_tool_definitions() -> List[ToolDefinition]:
                 "properties": {
                     "query": {
                         "type": "string",
-                        "description": "Query to get suggestions for"
+                        "description": "Query to get suggestions for",
                     },
                     "max_suggestions": {
                         "type": "integer",
                         "description": "Maximum number of suggestions to return",
-                        "default": 5
-                    }
+                        "default": 5,
+                    },
                 },
-                "required": ["query"]
-            }
+                "required": ["query"],
+            },
         ),
         ToolDefinition(
             name="search_with_examples",
@@ -154,27 +160,19 @@ def get_enhanced_search_tool_definitions() -> List[ToolDefinition]:
             inputSchema={
                 "type": "object",
                 "properties": {
-                    "query": {
-                        "type": "string",
-                        "description": "Search query"
-                    },
+                    "query": {"type": "string", "description": "Search query"},
                     "max_results": {
                         "type": "integer",
                         "description": "Maximum number of results to return",
-                        "default": 10
-                    }
+                        "default": 10,
+                    },
                 },
-                "required": ["query"]
-            }
+                "required": ["query"],
+            },
         ),
         ToolDefinition(
             name="enhanced_search_health_check",
             description="Check the health of the enhanced semantic search service. Verifies that natural language processing is working correctly.",
-            inputSchema={
-                "type": "object",
-                "properties": {}
-            }
-        )
+            inputSchema={"type": "object", "properties": {}},
+        ),
     ]
-
-

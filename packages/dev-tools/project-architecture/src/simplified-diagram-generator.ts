@@ -10,7 +10,7 @@ class SimplifiedDiagramGenerator {
 
   public generateCategoryDiagram(): string {
     let mermaid = "graph TD\n";
-    
+
     // Main categories
     const categories = [
       { name: "packages", emoji: "📦", importance: "critical" },
@@ -88,7 +88,7 @@ class SimplifiedDiagramGenerator {
 
   public generateCoreDependenciesDiagram(): string {
     let mermaid = "graph TD\n";
-    
+
     // Core packages that most others depend on
     const corePackages = [
       { name: "packages/core/core", emoji: "⚙️", importance: "critical" },

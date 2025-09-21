@@ -22,16 +22,16 @@ def get_secrets_tool_definitions() -> dict[str, dict[str, Any]]:
                     "secret_name": {
                         "type": "string",
                         "description": "Name of the secret to retrieve (e.g., 'GH_TOKEN')",
-                        "enum": ["GH_TOKEN"]
+                        "enum": ["GH_TOKEN"],
                     },
                     "mask_output": {
                         "type": "boolean",
                         "description": "Whether to mask the secret value in output (default: true)",
-                        "default": True
-                    }
+                        "default": True,
+                    },
                 },
-                "required": ["secret_name"]
-            }
+                "required": ["secret_name"],
+            },
         },
         "list_available_secrets": {
             "name": "list_available_secrets",
@@ -42,11 +42,11 @@ def get_secrets_tool_definitions() -> dict[str, dict[str, Any]]:
                     "include_descriptions": {
                         "type": "boolean",
                         "description": "Whether to include descriptions of what each secret is used for",
-                        "default": True
+                        "default": True,
                     }
                 },
-                "required": []
-            }
+                "required": [],
+            },
         },
         "validate_secret": {
             "name": "validate_secret",
@@ -57,10 +57,10 @@ def get_secrets_tool_definitions() -> dict[str, dict[str, Any]]:
                     "secret_name": {
                         "type": "string",
                         "description": "Name of the secret to validate",
-                        "enum": ["GH_TOKEN"]
+                        "enum": ["GH_TOKEN"],
                     }
                 },
-                "required": ["secret_name"]
-            }
-        }
+                "required": ["secret_name"],
+            },
+        },
     }

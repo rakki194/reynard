@@ -25,7 +25,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "critical",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Main source code packages - all TypeScript/JavaScript packages organized by semantic categories (77 total packages)",
+      description:
+        "Main source code packages - all TypeScript/JavaScript packages organized by semantic categories (77 total packages)",
       watchable: true,
       buildable: true,
       testable: true,
@@ -77,7 +78,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "critical",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "AI and machine learning packages (17 packages): Shared AI utilities, annotation tools (Florence2, Joy, JTP2, WDV3), caption systems (core, multimodal, UI), ComfyUI integration, model management, multimodal processing, natural language web, RAG (Retrieval-Augmented Generation), and tool calling",
+      description:
+        "AI and machine learning packages (17 packages): Shared AI utilities, annotation tools (Florence2, Joy, JTP2, WDV3), caption systems (core, multimodal, UI), ComfyUI integration, model management, multimodal processing, natural language web, RAG (Retrieval-Augmented Generation), and tool calling",
       watchable: true,
       buildable: true,
       testable: true,
@@ -100,15 +102,14 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Algorithm implementations and data structures (1 package): Core algorithmic utilities, data structures, and computational algorithms for performance-critical operations",
+      description:
+        "Algorithm implementations and data structures (1 package): Core algorithmic utilities, data structures, and computational algorithms for performance-critical operations",
       watchable: true,
       buildable: true,
       testable: true,
       lintable: true,
       documentable: true,
-      relationships: [
-        { directory: "packages/core", type: "dependency", description: "Uses core utilities" },
-      ],
+      relationships: [{ directory: "packages/core", type: "dependency", description: "Uses core utilities" }],
       excludePatterns: ["**/node_modules/**", "**/dist/**", "**/build/**"],
       includePatterns: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json", "**/*.md"],
       optional: false,
@@ -122,7 +123,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "critical",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Core framework packages (9 packages): Composables (reusable logic), config (environment and settings), connection (HTTP/WebSocket pools), core utilities (base framework), features (feature flags), i18n (internationalization), settings (user preferences), testing (test utilities), and validation (data validation)",
+      description:
+        "Core framework packages (9 packages): Composables (reusable logic), config (environment and settings), connection (HTTP/WebSocket pools), core utilities (base framework), features (feature flags), i18n (internationalization), settings (user preferences), testing (test utilities), and validation (data validation)",
       watchable: true,
       buildable: true,
       testable: true,
@@ -145,7 +147,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Data processing and repository packages (7 packages): File processing (upload, conversion, metadata), repository systems (core, multimodal, search, storage), web scraping utilities, and unified repository abstraction layer",
+      description:
+        "Data processing and repository packages (7 packages): File processing (upload, conversion, metadata), repository systems (core, multimodal, search, storage), web scraping utilities, and unified repository abstraction layer",
       watchable: true,
       buildable: true,
       testable: true,
@@ -168,7 +171,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "tools",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Development tools and utilities (7 packages): ADR system (Architecture Decision Records), code quality (linting, formatting), dev server management, git automation, humility parser (documentation parsing), project architecture (structure definitions), and queue watcher (build queue monitoring)",
+      description:
+        "Development tools and utilities (7 packages): ADR system (Architecture Decision Records), code quality (linting, formatting), dev server management, git automation, humility parser (documentation parsing), project architecture (structure definitions), and queue watcher (build queue monitoring)",
       watchable: true,
       buildable: true,
       testable: true,
@@ -191,7 +195,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "documentation",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Documentation generation packages (5 packages): Diagram generator (Mermaid, flowcharts), docs components (UI components for docs), docs core (documentation engine), docs generator (content generation), and docs site (static site generation)",
+      description:
+        "Documentation generation packages (5 packages): Diagram generator (Mermaid, flowcharts), docs components (UI components for docs), docs core (documentation engine), docs generator (content generation), and docs site (static site generation)",
       watchable: true,
       buildable: true,
       testable: true,
@@ -215,7 +220,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown", "css"],
-      description: "Media processing and visualization packages (9 packages): 3D rendering and visualization, audio processing and playback, bounding box annotation, gallery systems (AI-powered, download), image processing and display, segmentation tools, and video processing",
+      description:
+        "Media processing and visualization packages (9 packages): 3D rendering and visualization, audio processing and playback, bounding box annotation, gallery systems (AI-powered, download), image processing and display, segmentation tools, and video processing",
       watchable: true,
       buildable: true,
       testable: true,
@@ -239,7 +245,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Service layer packages (5 packages): API client (HTTP client utilities), auth (authentication and authorization), chat (messaging and communication), email (email service integration), and service manager (service orchestration)",
+      description:
+        "Service layer packages (5 packages): API client (HTTP client utilities), auth (authentication and authorization), chat (messaging and communication), email (email service integration), and service manager (service orchestration)",
       watchable: true,
       buildable: true,
       testable: true,
@@ -263,7 +270,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "critical",
       fileTypes: ["typescript", "javascript", "json", "markdown", "css"],
-      description: "User interface packages (17 packages): Animation (transitions and effects), charts (data visualization), colors (color system and palettes), components (core primitives, charts, dashboard, themes, utils), dashboard (admin interface), error boundaries (error handling), floating panel (overlay UI), fluent icons (Microsoft Fluent icons), games (game engine and ECS), monaco (code editor), themes (design system), and UI utilities",
+      description:
+        "User interface packages (17 packages): Animation (transitions and effects), charts (data visualization), colors (color system and palettes), components (core primitives, charts, dashboard, themes, utils), dashboard (admin interface), error boundaries (error handling), floating panel (overlay UI), fluent icons (Microsoft Fluent icons), games (game engine and ECS), monaco (code editor), themes (design system), and UI utilities",
       watchable: true,
       buildable: true,
       testable: true,
@@ -282,7 +290,7 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
     },
 
     // === INDIVIDUAL PACKAGE DEFINITIONS ===
-    
+
     // AI Packages
     {
       name: "packages/ai/ai-shared",
@@ -290,7 +298,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "critical",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Shared AI/ML utilities and base classes - provides common interfaces, types, and utilities for all AI/ML packages in the Reynard ecosystem",
+      description:
+        "Shared AI/ML utilities and base classes - provides common interfaces, types, and utilities for all AI/ML packages in the Reynard ecosystem",
       watchable: true,
       buildable: true,
       testable: true,
@@ -314,7 +323,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "critical",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Retrieval-Augmented Generation (RAG) system - provides semantic search, vector embeddings, and document indexing capabilities for AI applications",
+      description:
+        "Retrieval-Augmented Generation (RAG) system - provides semantic search, vector embeddings, and document indexing capabilities for AI applications",
       watchable: true,
       buildable: true,
       testable: true,
@@ -339,7 +349,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "critical",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Core utilities and modules for Reynard framework - provides base classes, utilities, security, image processing, and fundamental framework capabilities",
+      description:
+        "Core utilities and modules for Reynard framework - provides base classes, utilities, security, image processing, and fundamental framework capabilities",
       watchable: true,
       buildable: true,
       testable: true,
@@ -363,7 +374,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "critical",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Testing utilities and shared test infrastructure - provides test helpers, mocks, utilities, and testing patterns used across all Reynard packages",
+      description:
+        "Testing utilities and shared test infrastructure - provides test helpers, mocks, utilities, and testing patterns used across all Reynard packages",
       watchable: true,
       buildable: true,
       testable: true,
@@ -387,7 +399,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "critical",
       fileTypes: ["typescript", "javascript", "json", "markdown", "css"],
-      description: "Core UI primitives, navigation, and layout components - provides fundamental UI building blocks including buttons, inputs, navigation, and layout systems",
+      description:
+        "Core UI primitives, navigation, and layout components - provides fundamental UI building blocks including buttons, inputs, navigation, and layout systems",
       watchable: true,
       buildable: true,
       testable: true,
@@ -411,7 +424,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Game engine and ECS (Entity Component System) - provides game development utilities, spatial hash, collision detection, geometry, performance monitoring, and roguelike game systems",
+      description:
+        "Game engine and ECS (Entity Component System) - provides game development utilities, spatial hash, collision detection, geometry, performance monitoring, and roguelike game systems",
       watchable: true,
       buildable: true,
       testable: true,
@@ -435,7 +449,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Image processing and display components - provides image upload, processing, metadata extraction, gallery display, and image manipulation capabilities",
+      description:
+        "Image processing and display components - provides image upload, processing, metadata extraction, gallery display, and image manipulation capabilities",
       watchable: true,
       buildable: true,
       testable: true,
@@ -460,7 +475,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Repository core system - provides data persistence, 3D data handling, chart data management, and unified repository abstraction layer",
+      description:
+        "Repository core system - provides data persistence, 3D data handling, chart data management, and unified repository abstraction layer",
       watchable: true,
       buildable: true,
       testable: true,
@@ -469,7 +485,11 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       relationships: [
         { directory: "packages/core/core", type: "dependency", description: "Uses core utilities" },
         { directory: "packages/ai/rag", type: "dependency", description: "Used by RAG system" },
-        { directory: "packages/data/unified-repository", type: "dependency", description: "Used by unified repository" },
+        {
+          directory: "packages/data/unified-repository",
+          type: "dependency",
+          description: "Used by unified repository",
+        },
       ],
       excludePatterns: ["**/node_modules/**", "**/dist/**", "**/build/**"],
       includePatterns: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json", "**/*.md"],
@@ -485,7 +505,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "tools",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Project architecture definition system - provides centralized project structure definitions, VS Code task generation, health monitoring, and development workflow automation",
+      description:
+        "Project architecture definition system - provides centralized project structure definitions, VS Code task generation, health monitoring, and development workflow automation",
       watchable: true,
       buildable: true,
       testable: true,
@@ -509,7 +530,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Florence2 model integration for image annotation - provides specialized annotation capabilities using Microsoft's Florence2 vision-language model for detailed image understanding and annotation",
+      description:
+        "Florence2 model integration for image annotation - provides specialized annotation capabilities using Microsoft's Florence2 vision-language model for detailed image understanding and annotation",
       watchable: true,
       buildable: true,
       testable: true,
@@ -532,7 +554,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Joy model integration for document annotation - provides document annotation capabilities using the Joy model for text and document understanding and annotation",
+      description:
+        "Joy model integration for document annotation - provides document annotation capabilities using the Joy model for text and document understanding and annotation",
       watchable: true,
       buildable: true,
       testable: true,
@@ -555,7 +578,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "JTP2 model integration for specialized annotation tasks - provides specialized annotation capabilities using the JTP2 model for advanced annotation workflows",
+      description:
+        "JTP2 model integration for specialized annotation tasks - provides specialized annotation capabilities using the JTP2 model for advanced annotation workflows",
       watchable: true,
       buildable: true,
       testable: true,
@@ -578,7 +602,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "User interface components for annotation tools - provides UI components, interfaces, and user experience elements for all annotation tools and workflows",
+      description:
+        "User interface components for annotation tools - provides UI components, interfaces, and user experience elements for all annotation tools and workflows",
       watchable: true,
       buildable: true,
       testable: true,
@@ -602,7 +627,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "WDV3 model integration for advanced annotation workflows - provides advanced annotation capabilities using the WDV3 model for complex annotation tasks and workflows",
+      description:
+        "WDV3 model integration for advanced annotation workflows - provides advanced annotation capabilities using the WDV3 model for complex annotation tasks and workflows",
       watchable: true,
       buildable: true,
       testable: true,
@@ -625,7 +651,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Main caption generation package - provides unified caption generation capabilities, combining core functionality with multimodal and UI components",
+      description:
+        "Main caption generation package - provides unified caption generation capabilities, combining core functionality with multimodal and UI components",
       watchable: true,
       buildable: true,
       testable: true,
@@ -650,7 +677,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Multimodal caption generation for images and videos - provides caption generation capabilities that work across multiple media types including images, videos, and audio",
+      description:
+        "Multimodal caption generation for images and videos - provides caption generation capabilities that work across multiple media types including images, videos, and audio",
       watchable: true,
       buildable: true,
       testable: true,
@@ -675,7 +703,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "User interface components for caption systems - provides UI components, interfaces, and user experience elements for caption generation and management",
+      description:
+        "User interface components for caption systems - provides UI components, interfaces, and user experience elements for caption generation and management",
       watchable: true,
       buildable: true,
       testable: true,
@@ -699,7 +728,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "ComfyUI integration for AI workflow automation - provides integration with ComfyUI for visual AI workflow creation, execution, and management",
+      description:
+        "ComfyUI integration for AI workflow automation - provides integration with ComfyUI for visual AI workflow creation, execution, and management",
       watchable: true,
       buildable: true,
       testable: true,
@@ -722,7 +752,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "AI model lifecycle management and deployment - provides model versioning, deployment, monitoring, and lifecycle management capabilities for AI models",
+      description:
+        "AI model lifecycle management and deployment - provides model versioning, deployment, monitoring, and lifecycle management capabilities for AI models",
       watchable: true,
       buildable: true,
       testable: true,
@@ -731,7 +762,11 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       relationships: [
         { directory: "packages/ai/ai-shared", type: "dependency", description: "Uses AI shared utilities" },
         { directory: "packages/core/core", type: "dependency", description: "Uses core utilities" },
-        { directory: "packages/data/repository-core", type: "dependency", description: "Uses repository for model storage" },
+        {
+          directory: "packages/data/repository-core",
+          type: "dependency",
+          description: "Uses repository for model storage",
+        },
       ],
       excludePatterns: ["**/node_modules/**", "**/dist/**", "**/build/**"],
       includePatterns: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json", "**/*.md"],
@@ -746,7 +781,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Multimodal AI processing capabilities - provides unified processing for multiple data types including text, images, audio, and video in AI workflows",
+      description:
+        "Multimodal AI processing capabilities - provides unified processing for multiple data types including text, images, audio, and video in AI workflows",
       watchable: true,
       buildable: true,
       testable: true,
@@ -772,7 +808,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Natural language web processing and analysis - provides natural language processing capabilities for web content, text analysis, and language understanding",
+      description:
+        "Natural language web processing and analysis - provides natural language processing capabilities for web content, text analysis, and language understanding",
       watchable: true,
       buildable: true,
       testable: true,
@@ -796,7 +833,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "AI tool calling and function execution framework - provides capabilities for AI models to call external tools, execute functions, and interact with external systems",
+      description:
+        "AI tool calling and function execution framework - provides capabilities for AI models to call external tools, execute functions, and interact with external systems",
       watchable: true,
       buildable: true,
       testable: true,
@@ -821,15 +859,14 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Algorithm implementations and data structures - provides core algorithmic utilities, data structures, and computational algorithms for performance-critical operations",
+      description:
+        "Algorithm implementations and data structures - provides core algorithmic utilities, data structures, and computational algorithms for performance-critical operations",
       watchable: true,
       buildable: true,
       testable: true,
       lintable: true,
       documentable: true,
-      relationships: [
-        { directory: "packages/core/core", type: "dependency", description: "Uses core utilities" },
-      ],
+      relationships: [{ directory: "packages/core/core", type: "dependency", description: "Uses core utilities" }],
       excludePatterns: ["**/node_modules/**", "**/dist/**", "**/build/**"],
       includePatterns: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json", "**/*.md"],
       optional: false,
@@ -844,7 +881,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Reusable logic and state management - provides composable functions, state management utilities, and reusable logic patterns for consistent application behavior",
+      description:
+        "Reusable logic and state management - provides composable functions, state management utilities, and reusable logic patterns for consistent application behavior",
       watchable: true,
       buildable: true,
       testable: true,
@@ -867,7 +905,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Environment configuration and settings management - provides configuration utilities, environment management, and settings validation for application configuration",
+      description:
+        "Environment configuration and settings management - provides configuration utilities, environment management, and settings validation for application configuration",
       watchable: true,
       buildable: true,
       testable: true,
@@ -890,7 +929,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "HTTP/WebSocket connection pooling and management - provides connection utilities, pooling, retry logic, and communication management for network operations",
+      description:
+        "HTTP/WebSocket connection pooling and management - provides connection utilities, pooling, retry logic, and communication management for network operations",
       watchable: true,
       buildable: true,
       testable: true,
@@ -914,7 +954,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Feature flags and conditional functionality - provides feature flag management, conditional feature activation, and feature toggling capabilities",
+      description:
+        "Feature flags and conditional functionality - provides feature flag management, conditional feature activation, and feature toggling capabilities",
       watchable: true,
       buildable: true,
       testable: true,
@@ -937,7 +978,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Internationalization and localization - provides multi-language support, translation management, and localization utilities for global applications",
+      description:
+        "Internationalization and localization - provides multi-language support, translation management, and localization utilities for global applications",
       watchable: true,
       buildable: true,
       testable: true,
@@ -960,7 +1002,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "User preferences and application settings - provides user settings management, preferences storage, and application configuration management",
+      description:
+        "User preferences and application settings - provides user settings management, preferences storage, and application configuration management",
       watchable: true,
       buildable: true,
       testable: true,
@@ -984,15 +1027,14 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Data validation utilities and schemas - provides validation frameworks, schema validation, data validation utilities, and type checking capabilities",
+      description:
+        "Data validation utilities and schemas - provides validation frameworks, schema validation, data validation utilities, and type checking capabilities",
       watchable: true,
       buildable: true,
       testable: true,
       lintable: true,
       documentable: true,
-      relationships: [
-        { directory: "packages/core/core", type: "dependency", description: "Uses core utilities" },
-      ],
+      relationships: [{ directory: "packages/core/core", type: "dependency", description: "Uses core utilities" }],
       excludePatterns: ["**/node_modules/**", "**/dist/**", "**/build/**"],
       includePatterns: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json", "**/*.md"],
       optional: false,
@@ -1007,7 +1049,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Multimodal data repository for complex data types - provides repository capabilities for handling complex multimodal data including images, videos, audio, and text combinations",
+      description:
+        "Multimodal data repository for complex data types - provides repository capabilities for handling complex multimodal data including images, videos, audio, and text combinations",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1030,7 +1073,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Search and indexing capabilities for data repositories - provides search functionality, indexing, query processing, and search optimization for repository data",
+      description:
+        "Search and indexing capabilities for data repositories - provides search functionality, indexing, query processing, and search optimization for repository data",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1053,7 +1097,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Storage abstraction layer and data persistence - provides storage abstraction, data persistence, caching, and storage optimization for repository systems",
+      description:
+        "Storage abstraction layer and data persistence - provides storage abstraction, data persistence, caching, and storage optimization for repository systems",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1076,7 +1121,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Web scraping utilities and data extraction tools - provides web scraping capabilities, data extraction, content parsing, and web data collection utilities",
+      description:
+        "Web scraping utilities and data extraction tools - provides web scraping capabilities, data extraction, content parsing, and web data collection utilities",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1099,7 +1145,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Unified repository abstraction layer - provides unified interface for all repository types, abstracting differences between storage systems and data types",
+      description:
+        "Unified repository abstraction layer - provides unified interface for all repository types, abstracting differences between storage systems and data types",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1107,7 +1154,11 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       documentable: true,
       relationships: [
         { directory: "packages/data/repository-core", type: "dependency", description: "Uses core repository system" },
-        { directory: "packages/data/repository-multimodal", type: "dependency", description: "Uses multimodal repository" },
+        {
+          directory: "packages/data/repository-multimodal",
+          type: "dependency",
+          description: "Uses multimodal repository",
+        },
         { directory: "packages/data/repository-search", type: "dependency", description: "Uses search repository" },
         { directory: "packages/data/repository-storage", type: "dependency", description: "Uses storage repository" },
       ],
@@ -1125,7 +1176,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "tools",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Architecture Decision Records management and documentation - provides ADR creation, management, tracking, and documentation for architectural decisions",
+      description:
+        "Architecture Decision Records management and documentation - provides ADR creation, management, tracking, and documentation for architectural decisions",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1148,15 +1200,14 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "tools",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Linting, formatting, and code quality tools - provides comprehensive code quality tools including linting, formatting, static analysis, and code quality metrics",
+      description:
+        "Linting, formatting, and code quality tools - provides comprehensive code quality tools including linting, formatting, static analysis, and code quality metrics",
       watchable: true,
       buildable: true,
       testable: true,
       lintable: true,
       documentable: true,
-      relationships: [
-        { directory: "packages/core/core", type: "dependency", description: "Uses core utilities" },
-      ],
+      relationships: [{ directory: "packages/core/core", type: "dependency", description: "Uses core utilities" }],
       excludePatterns: ["**/node_modules/**", "**/dist/**", "**/build/**"],
       includePatterns: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json", "**/*.md"],
       optional: false,
@@ -1170,7 +1221,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "tools",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Development server orchestration and management - provides development server management, orchestration, configuration, and monitoring for development workflows",
+      description:
+        "Development server orchestration and management - provides development server management, orchestration, configuration, and monitoring for development workflows",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1193,15 +1245,14 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "tools",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Git workflow automation and repository management - provides Git automation, workflow management, repository operations, and version control utilities",
+      description:
+        "Git workflow automation and repository management - provides Git automation, workflow management, repository operations, and version control utilities",
       watchable: true,
       buildable: true,
       testable: true,
       lintable: true,
       documentable: true,
-      relationships: [
-        { directory: "packages/core/core", type: "dependency", description: "Uses core utilities" },
-      ],
+      relationships: [{ directory: "packages/core/core", type: "dependency", description: "Uses core utilities" }],
       excludePatterns: ["**/node_modules/**", "**/dist/**", "**/build/**"],
       includePatterns: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json", "**/*.md"],
       optional: false,
@@ -1215,7 +1266,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "tools",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Documentation parsing utilities and content processing - provides documentation parsing, content analysis, and documentation processing utilities",
+      description:
+        "Documentation parsing utilities and content processing - provides documentation parsing, content analysis, and documentation processing utilities",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1238,7 +1290,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "tools",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Build queue monitoring, management, and optimization - provides build queue monitoring, task management, performance optimization, and queue analytics",
+      description:
+        "Build queue monitoring, management, and optimization - provides build queue monitoring, task management, performance optimization, and queue analytics",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1262,7 +1315,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "documentation",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Mermaid and flowchart generation for technical documentation - provides diagram generation, flowchart creation, and visual documentation tools",
+      description:
+        "Mermaid and flowchart generation for technical documentation - provides diagram generation, flowchart creation, and visual documentation tools",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1285,7 +1339,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "documentation",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "UI components specifically designed for documentation - provides documentation-specific UI components, layouts, and interactive elements",
+      description:
+        "UI components specifically designed for documentation - provides documentation-specific UI components, layouts, and interactive elements",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1309,7 +1364,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "documentation",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Documentation engine, processing, and content management - provides core documentation processing, content management, and documentation engine capabilities",
+      description:
+        "Documentation engine, processing, and content management - provides core documentation processing, content management, and documentation engine capabilities",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1332,7 +1388,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "documentation",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Static site generation for documentation websites - provides static site generation, documentation website creation, and site deployment capabilities",
+      description:
+        "Static site generation for documentation websites - provides static site generation, documentation website creation, and site deployment capabilities",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1357,7 +1414,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Audio processing, playback, and audio manipulation - provides audio processing capabilities, playback controls, audio manipulation, and audio analysis",
+      description:
+        "Audio processing, playback, and audio manipulation - provides audio processing capabilities, playback controls, audio manipulation, and audio analysis",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1381,7 +1439,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Bounding box annotation, processing, and manipulation - provides bounding box annotation tools, processing capabilities, and manipulation utilities for computer vision tasks",
+      description:
+        "Bounding box annotation, processing, and manipulation - provides bounding box annotation tools, processing capabilities, and manipulation utilities for computer vision tasks",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1405,7 +1464,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Gallery systems with AI-powered features and download capabilities - provides gallery management, AI-powered organization, and download functionality",
+      description:
+        "Gallery systems with AI-powered features and download capabilities - provides gallery management, AI-powered organization, and download functionality",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1429,7 +1489,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "AI-powered gallery features and intelligent organization - provides AI-powered gallery organization, intelligent categorization, and smart gallery features",
+      description:
+        "AI-powered gallery features and intelligent organization - provides AI-powered gallery organization, intelligent categorization, and smart gallery features",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1453,7 +1514,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Download capabilities and gallery management - provides download functionality, gallery management, and content acquisition capabilities",
+      description:
+        "Download capabilities and gallery management - provides download functionality, gallery management, and content acquisition capabilities",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1477,7 +1539,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Image and video segmentation tools and processing - provides segmentation capabilities, image/video segmentation, and computer vision processing tools",
+      description:
+        "Image and video segmentation tools and processing - provides segmentation capabilities, image/video segmentation, and computer vision processing tools",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1502,7 +1565,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Video processing, playback, and manipulation capabilities - provides video processing, playback controls, video manipulation, and video analysis",
+      description:
+        "Video processing, playback, and manipulation capabilities - provides video processing, playback controls, video manipulation, and video analysis",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1527,7 +1591,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Authentication and authorization services - provides authentication, authorization, user management, and security services for applications",
+      description:
+        "Authentication and authorization services - provides authentication, authorization, user management, and security services for applications",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1551,7 +1616,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Chat functionality and real-time communication - provides chat services, real-time messaging, communication protocols, and chat management",
+      description:
+        "Chat functionality and real-time communication - provides chat services, real-time messaging, communication protocols, and chat management",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1575,7 +1641,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Email services and communication utilities - provides email sending, email processing, email templates, and email communication services",
+      description:
+        "Email services and communication utilities - provides email sending, email processing, email templates, and email communication services",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1599,7 +1666,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Service orchestration and management utilities - provides service management, orchestration, service discovery, and service coordination capabilities",
+      description:
+        "Service orchestration and management utilities - provides service management, orchestration, service discovery, and service coordination capabilities",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1624,7 +1692,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Animation utilities and motion design - provides animation utilities, motion design, transition effects, and animation management for UI components",
+      description:
+        "Animation utilities and motion design - provides animation utilities, motion design, transition effects, and animation management for UI components",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1647,7 +1716,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Color system and theme management - provides color utilities, theme management, color palettes, and design system color management",
+      description:
+        "Color system and theme management - provides color utilities, theme management, color palettes, and design system color management",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1670,7 +1740,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Chart and data visualization components - provides chart components, data visualization, graphing utilities, and interactive chart components",
+      description:
+        "Chart and data visualization components - provides chart components, data visualization, graphing utilities, and interactive chart components",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1694,7 +1765,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Dashboard-specific UI components and layouts - provides dashboard components, layout utilities, dashboard-specific UI elements, and dashboard management",
+      description:
+        "Dashboard-specific UI components and layouts - provides dashboard components, layout utilities, dashboard-specific UI elements, and dashboard management",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1718,7 +1790,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Theme-aware UI components and styling - provides theme-aware components, styling utilities, theme integration, and design system components",
+      description:
+        "Theme-aware UI components and styling - provides theme-aware components, styling utilities, theme integration, and design system components",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1743,7 +1816,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Utility components and helper functions - provides utility components, helper functions, common UI utilities, and reusable UI patterns",
+      description:
+        "Utility components and helper functions - provides utility components, helper functions, common UI utilities, and reusable UI patterns",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1766,7 +1840,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Dashboard layout and functionality - provides dashboard layouts, dashboard management, dashboard utilities, and dashboard-specific functionality",
+      description:
+        "Dashboard layout and functionality - provides dashboard layouts, dashboard management, dashboard utilities, and dashboard-specific functionality",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1790,7 +1865,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Error handling and boundary components - provides error boundary components, error handling, error recovery, and error management utilities",
+      description:
+        "Error handling and boundary components - provides error boundary components, error handling, error recovery, and error management utilities",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1813,7 +1889,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Floating panel and overlay components - provides floating panel components, overlay management, modal systems, and floating UI elements",
+      description:
+        "Floating panel and overlay components - provides floating panel components, overlay management, modal systems, and floating UI elements",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1837,7 +1914,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Monaco editor integration and code editing - provides Monaco editor integration, code editing capabilities, syntax highlighting, and code editor utilities",
+      description:
+        "Monaco editor integration and code editing - provides Monaco editor integration, code editing capabilities, syntax highlighting, and code editor utilities",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1860,7 +1938,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Theme system and styling management - provides theme management, styling systems, design tokens, and theme switching capabilities",
+      description:
+        "Theme system and styling management - provides theme management, styling systems, design tokens, and theme switching capabilities",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1884,7 +1963,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "UI utilities and layout management - provides UI utilities, layout management, responsive design, and UI helper functions",
+      description:
+        "UI utilities and layout management - provides UI utilities, layout management, responsive design, and UI helper functions",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1908,7 +1988,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Core annotation system - provides base annotation functionality, data structures, and interfaces for image and document annotation tools",
+      description:
+        "Core annotation system - provides base annotation functionality, data structures, and interfaces for image and document annotation tools",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1916,7 +1997,11 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       documentable: true,
       relationships: [
         { directory: "packages/ai/ai-shared", type: "dependency", description: "Uses AI shared utilities" },
-        { directory: "packages/ai/annotating-florence2", type: "dependency", description: "Used by Florence2 annotator" },
+        {
+          directory: "packages/ai/annotating-florence2",
+          type: "dependency",
+          description: "Used by Florence2 annotator",
+        },
         { directory: "packages/ai/annotating-joy", type: "dependency", description: "Used by Joy annotator" },
       ],
       excludePatterns: ["**/node_modules/**", "**/dist/**", "**/build/**"],
@@ -1932,7 +2017,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Core caption generation system - provides base caption functionality, models, and interfaces for image and video caption generation",
+      description:
+        "Core caption generation system - provides base caption functionality, models, and interfaces for image and video caption generation",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1956,7 +2042,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Chart and data visualization components - provides comprehensive charting capabilities, data visualization tools, and interactive chart components",
+      description:
+        "Chart and data visualization components - provides comprehensive charting capabilities, data visualization tools, and interactive chart components",
       watchable: true,
       buildable: true,
       testable: true,
@@ -1965,7 +2052,11 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       relationships: [
         { directory: "packages/core/core", type: "dependency", description: "Uses core utilities" },
         { directory: "packages/ui/components-core", type: "dependency", description: "Uses UI components" },
-        { directory: "packages/data/repository-core", type: "dependency", description: "Uses repository for chart data" },
+        {
+          directory: "packages/data/repository-core",
+          type: "dependency",
+          description: "Uses repository for chart data",
+        },
       ],
       excludePatterns: ["**/node_modules/**", "**/dist/**", "**/build/**"],
       includePatterns: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json", "**/*.md"],
@@ -1980,7 +2071,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Microsoft Fluent Icons integration - provides comprehensive icon system with Fluent Design icons, icon components, and icon utilities",
+      description:
+        "Microsoft Fluent Icons integration - provides comprehensive icon system with Fluent Design icons, icon components, and icon utilities",
       watchable: true,
       buildable: true,
       testable: true,
@@ -2003,7 +2095,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "3D rendering and visualization - provides Three.js integration, 3D scene management, rendering utilities, and 3D visualization components",
+      description:
+        "3D rendering and visualization - provides Three.js integration, 3D scene management, rendering utilities, and 3D visualization components",
       watchable: true,
       buildable: true,
       testable: true,
@@ -2027,7 +2120,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "File processing and management - provides file upload, conversion, metadata extraction, format detection, and file manipulation utilities",
+      description:
+        "File processing and management - provides file upload, conversion, metadata extraction, format detection, and file manipulation utilities",
       watchable: true,
       buildable: true,
       testable: true,
@@ -2051,7 +2145,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "API client utilities - provides HTTP client, request/response handling, authentication, error handling, and API communication utilities",
+      description:
+        "API client utilities - provides HTTP client, request/response handling, authentication, error handling, and API communication utilities",
       watchable: true,
       buildable: true,
       testable: true,
@@ -2075,7 +2170,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "documentation",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description: "Documentation generator - provides automated documentation generation, content processing, and documentation site building capabilities",
+      description:
+        "Documentation generator - provides automated documentation generation, content processing, and documentation site building capabilities",
       watchable: true,
       buildable: true,
       testable: true,
@@ -2099,7 +2195,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "services",
       importance: "critical",
       fileTypes: ["python", "json", "yaml", "markdown", "toml"],
-      description: "Root-level microservices and standalone service components (3 packages): Agent naming system, gatekeeper authentication, and MCP server with comprehensive development tools",
+      description:
+        "Root-level microservices and standalone service components (3 packages): Agent naming system, gatekeeper authentication, and MCP server with comprehensive development tools",
       watchable: true,
       buildable: true,
       testable: true,
@@ -2110,7 +2207,14 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
         { directory: "scripts", type: "sibling", description: "Service automation scripts" },
         { directory: "packages/services", type: "sibling", description: "Frontend service packages" },
       ],
-      excludePatterns: ["**/__pycache__/**", "**/venv/**", "**/dist/**", "**/build/**", "**/htmlcov/**", "**/*.egg-info/**"],
+      excludePatterns: [
+        "**/__pycache__/**",
+        "**/venv/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/htmlcov/**",
+        "**/*.egg-info/**",
+      ],
       includePatterns: ["**/*.py", "**/*.json", "**/*.yaml", "**/*.yml", "**/*.md", "**/*.toml", "**/*.sh"],
       optional: false,
       generated: false,
@@ -2151,7 +2255,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "services",
       importance: "important",
       fileTypes: ["python", "json", "markdown", "toml"],
-      description: "Agent naming system with animal spirit themes - generates and manages agent names with 105+ spirit types and multiple naming styles",
+      description:
+        "Agent naming system with animal spirit themes - generates and manages agent names with 105+ spirit types and multiple naming styles",
       watchable: true,
       buildable: true,
       testable: true,
@@ -2235,7 +2340,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "services",
       importance: "critical",
       fileTypes: ["python", "json", "markdown", "toml", "sh"],
-      description: "MCP server with comprehensive development tools - provides 47+ tools across 8 categories for development workflow automation",
+      description:
+        "MCP server with comprehensive development tools - provides 47+ tools across 8 categories for development workflow automation",
       watchable: true,
       buildable: true,
       testable: true,
@@ -2365,7 +2471,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "templates",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown", "css", "html"],
-      description: "Example applications and usage demonstrations (22 packages): 3D demo, algorithm bench, auth app, basic app, clock, comfy demo, comprehensive dashboard, ECS agent tracker, email app, embedding visualization, error demo, features app, file test, hue shifting, i18n demo, icons demo, image caption, multi-theme, prompt note, RAG demo, test app, tutorial app",
+      description:
+        "Example applications and usage demonstrations (22 packages): 3D demo, algorithm bench, auth app, basic app, clock, comfy demo, comprehensive dashboard, ECS agent tracker, email app, embedding visualization, error demo, features app, file test, hue shifting, i18n demo, icons demo, image caption, multi-theme, prompt note, RAG demo, test app, tutorial app",
       watchable: true,
       buildable: true,
       testable: true,
@@ -2442,7 +2549,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       category: "scripts",
       importance: "important",
       fileTypes: ["python", "shell", "javascript", "json", "markdown"],
-      description: "Automation scripts, utilities, and development tools (2 packages): CSS validation and workflow validation tools",
+      description:
+        "Automation scripts, utilities, and development tools (2 packages): CSS validation and workflow validation tools",
       watchable: true,
       buildable: false,
       testable: true,
@@ -2580,9 +2688,7 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       testable: true,
       lintable: true,
       documentable: true,
-      relationships: [
-        { directory: "backend", type: "sibling", description: "Experimental backend features" },
-      ],
+      relationships: [{ directory: "backend", type: "sibling", description: "Experimental backend features" }],
       excludePatterns: ["**/__pycache__/**", "**/venv/**", "**/dist/**", "**/build/**"],
       includePatterns: ["**/*.py", "**/*.js", "**/*.ts", "**/*.json", "**/*.md"],
       optional: true,

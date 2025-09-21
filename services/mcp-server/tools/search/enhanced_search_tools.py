@@ -42,7 +42,7 @@ class EnhancedSearchTools:
                 enable_expansion=enable_expansion,
                 confidence_threshold=confidence_threshold,
             )
-            
+
             # Format the result for MCP response
             if result.get("success"):
                 return {
@@ -50,11 +50,12 @@ class EnhancedSearchTools:
                         {
                             "type": "text",
                             "text": f"🔍 **Natural Language Search Results**\n\n"
-                                   f"**Query:** {query}\n"
-                                   f"**Total Results:** {result['total_results']}\n"
-                                   f"**Search Time:** {result.get('search_time', 0):.3f}s\n"
-                                   f"**Strategies:** {', '.join(result.get('search_strategies', []))}\n\n"
-                                   f"**Results:**\n" + self._format_search_results(result['results'])
+                            f"**Query:** {query}\n"
+                            f"**Total Results:** {result['total_results']}\n"
+                            f"**Search Time:** {result.get('search_time', 0):.3f}s\n"
+                            f"**Strategies:** {', '.join(result.get('search_strategies', []))}\n\n"
+                            f"**Results:**\n"
+                            + self._format_search_results(result["results"]),
                         }
                     ]
                 }
@@ -64,12 +65,12 @@ class EnhancedSearchTools:
                         {
                             "type": "text",
                             "text": f"❌ **Natural Language Search Failed**\n\n"
-                                   f"**Query:** {query}\n"
-                                   f"**Error:** {result.get('error', 'Unknown error')}"
+                            f"**Query:** {query}\n"
+                            f"**Error:** {result.get('error', 'Unknown error')}",
                         }
                     ]
                 }
-                
+
         except Exception as e:
             logger.exception("Natural language search tool failed")
             return {
@@ -77,8 +78,8 @@ class EnhancedSearchTools:
                     {
                         "type": "text",
                         "text": f"❌ **Natural Language Search Error**\n\n"
-                               f"**Query:** {query}\n"
-                               f"**Error:** {str(e)}"
+                        f"**Query:** {query}\n"
+                        f"**Error:** {str(e)}",
                     }
                 ]
             }
@@ -100,7 +101,7 @@ class EnhancedSearchTools:
                 directories=directories,
                 search_modes=search_modes,
             )
-            
+
             # Format the result for MCP response
             if result.get("success"):
                 return {
@@ -108,11 +109,12 @@ class EnhancedSearchTools:
                         {
                             "type": "text",
                             "text": f"🧠 **Intelligent Search Results**\n\n"
-                                   f"**Query:** {query}\n"
-                                   f"**Total Results:** {result['total_results']}\n"
-                                   f"**Search Time:** {result.get('search_time', 0):.3f}s\n"
-                                   f"**Strategies:** {', '.join(result.get('search_strategies', []))}\n\n"
-                                   f"**Results:**\n" + self._format_search_results(result['results'])
+                            f"**Query:** {query}\n"
+                            f"**Total Results:** {result['total_results']}\n"
+                            f"**Search Time:** {result.get('search_time', 0):.3f}s\n"
+                            f"**Strategies:** {', '.join(result.get('search_strategies', []))}\n\n"
+                            f"**Results:**\n"
+                            + self._format_search_results(result["results"]),
                         }
                     ]
                 }
@@ -122,12 +124,12 @@ class EnhancedSearchTools:
                         {
                             "type": "text",
                             "text": f"❌ **Intelligent Search Failed**\n\n"
-                                   f"**Query:** {query}\n"
-                                   f"**Error:** {result.get('error', 'Unknown error')}"
+                            f"**Query:** {query}\n"
+                            f"**Error:** {result.get('error', 'Unknown error')}",
                         }
                     ]
                 }
-                
+
         except Exception as e:
             logger.exception("Intelligent search tool failed")
             return {
@@ -135,8 +137,8 @@ class EnhancedSearchTools:
                     {
                         "type": "text",
                         "text": f"❌ **Intelligent Search Error**\n\n"
-                               f"**Query:** {query}\n"
-                               f"**Error:** {str(e)}"
+                        f"**Query:** {query}\n"
+                        f"**Error:** {str(e)}",
                     }
                 ]
             }
@@ -154,24 +156,25 @@ class EnhancedSearchTools:
                 context=context,
                 max_results=max_results,
             )
-            
+
             # Format the result for MCP response
             if result.get("success"):
                 context_info = ""
                 if context:
                     context_info = f"**Context:** {context}\n"
-                
+
                 return {
                     "content": [
                         {
                             "type": "text",
                             "text": f"🎯 **Contextual Search Results**\n\n"
-                                   f"**Query:** {query}\n"
-                                   f"{context_info}"
-                                   f"**Total Results:** {result['total_results']}\n"
-                                   f"**Search Time:** {result.get('search_time', 0):.3f}s\n"
-                                   f"**Strategies:** {', '.join(result.get('search_strategies', []))}\n\n"
-                                   f"**Results:**\n" + self._format_search_results(result['results'])
+                            f"**Query:** {query}\n"
+                            f"{context_info}"
+                            f"**Total Results:** {result['total_results']}\n"
+                            f"**Search Time:** {result.get('search_time', 0):.3f}s\n"
+                            f"**Strategies:** {', '.join(result.get('search_strategies', []))}\n\n"
+                            f"**Results:**\n"
+                            + self._format_search_results(result["results"]),
                         }
                     ]
                 }
@@ -181,12 +184,12 @@ class EnhancedSearchTools:
                         {
                             "type": "text",
                             "text": f"❌ **Contextual Search Failed**\n\n"
-                                   f"**Query:** {query}\n"
-                                   f"**Error:** {result.get('error', 'Unknown error')}"
+                            f"**Query:** {query}\n"
+                            f"**Error:** {result.get('error', 'Unknown error')}",
                         }
                     ]
                 }
-                
+
         except Exception as e:
             logger.exception("Contextual search tool failed")
             return {
@@ -194,8 +197,8 @@ class EnhancedSearchTools:
                     {
                         "type": "text",
                         "text": f"❌ **Contextual Search Error**\n\n"
-                               f"**Query:** {query}\n"
-                               f"**Error:** {str(e)}"
+                        f"**Query:** {query}\n"
+                        f"**Error:** {str(e)}",
                     }
                 ]
             }
@@ -204,44 +207,46 @@ class EnhancedSearchTools:
         """Analyze a query to understand its intent and structure."""
         try:
             result = await self.search_engine.analyze_query(query)
-            
+
             # Format the result for MCP response
             if result.get("success"):
                 analysis = result["analysis"]
-                
+
                 # Format entities
                 entities_text = ""
                 if analysis.get("entities"):
                     entities_text = "\n**Entities:**\n"
                     for entity in analysis["entities"]:
                         entities_text += f"- {entity['type']}: {entity['value']} (confidence: {entity['confidence']})\n"
-                
+
                 # Format expanded terms
                 expanded_text = ""
                 if analysis.get("expanded_terms"):
                     expanded_text = f"\n**Expanded Terms:** {', '.join(analysis['expanded_terms'])}\n"
-                
+
                 # Format code patterns
                 patterns_text = ""
                 if analysis.get("code_patterns"):
-                    patterns_text = f"\n**Code Patterns:** {', '.join(analysis['code_patterns'])}\n"
-                
+                    patterns_text = (
+                        f"\n**Code Patterns:** {', '.join(analysis['code_patterns'])}\n"
+                    )
+
                 return {
                     "content": [
                         {
                             "type": "text",
                             "text": f"🔍 **Query Analysis**\n\n"
-                                   f"**Original Query:** {analysis['original_query']}\n"
-                                   f"**Normalized Query:** {analysis['normalized_query']}\n"
-                                   f"**Intent:** {analysis['intent']}\n"
-                                   f"**Search Strategy:** {analysis['search_strategy']}\n"
-                                   f"**Confidence:** {analysis['confidence']:.2f}\n"
-                                   f"{entities_text}"
-                                   f"{expanded_text}"
-                                   f"{patterns_text}"
-                                   f"\n**File Filters:**\n"
-                                   f"- File Types: {analysis['file_filters']['file_types'] or 'All'}\n"
-                                   f"- Directories: {analysis['file_filters']['directories'] or 'All'}"
+                            f"**Original Query:** {analysis['original_query']}\n"
+                            f"**Normalized Query:** {analysis['normalized_query']}\n"
+                            f"**Intent:** {analysis['intent']}\n"
+                            f"**Search Strategy:** {analysis['search_strategy']}\n"
+                            f"**Confidence:** {analysis['confidence']:.2f}\n"
+                            f"{entities_text}"
+                            f"{expanded_text}"
+                            f"{patterns_text}"
+                            f"\n**File Filters:**\n"
+                            f"- File Types: {analysis['file_filters']['file_types'] or 'All'}\n"
+                            f"- Directories: {analysis['file_filters']['directories'] or 'All'}",
                         }
                     ]
                 }
@@ -251,12 +256,12 @@ class EnhancedSearchTools:
                         {
                             "type": "text",
                             "text": f"❌ **Query Analysis Failed**\n\n"
-                                   f"**Query:** {query}\n"
-                                   f"**Error:** {result.get('error', 'Unknown error')}"
+                            f"**Query:** {query}\n"
+                            f"**Error:** {result.get('error', 'Unknown error')}",
                         }
                     ]
                 }
-                
+
         except Exception as e:
             logger.exception("Query analysis tool failed")
             return {
@@ -264,8 +269,8 @@ class EnhancedSearchTools:
                     {
                         "type": "text",
                         "text": f"❌ **Query Analysis Error**\n\n"
-                               f"**Query:** {query}\n"
-                               f"**Error:** {str(e)}"
+                        f"**Query:** {query}\n"
+                        f"**Error:** {str(e)}",
                     }
                 ]
             }
@@ -279,23 +284,29 @@ class EnhancedSearchTools:
                 query=query,
                 max_suggestions=max_suggestions,
             )
-            
+
             # Format the result for MCP response
             if result.get("success"):
                 suggestions_text = ""
                 for i, suggestion in enumerate(result.get("suggestions", []), 1):
                     suggestions_text += f"{i}. **{suggestion['suggestion']}**\n"
-                    suggestions_text += f"   - Type: {suggestion.get('type', 'unknown')}\n"
-                    suggestions_text += f"   - Confidence: {suggestion.get('confidence', 0):.2f}\n"
-                    suggestions_text += f"   - Source: {suggestion.get('source', 'unknown')}\n\n"
-                
+                    suggestions_text += (
+                        f"   - Type: {suggestion.get('type', 'unknown')}\n"
+                    )
+                    suggestions_text += (
+                        f"   - Confidence: {suggestion.get('confidence', 0):.2f}\n"
+                    )
+                    suggestions_text += (
+                        f"   - Source: {suggestion.get('source', 'unknown')}\n\n"
+                    )
+
                 return {
                     "content": [
                         {
                             "type": "text",
                             "text": f"💡 **Intelligent Query Suggestions**\n\n"
-                                   f"**Query:** {query}\n\n"
-                                   f"**Suggestions:**\n{suggestions_text}"
+                            f"**Query:** {query}\n\n"
+                            f"**Suggestions:**\n{suggestions_text}",
                         }
                     ]
                 }
@@ -305,12 +316,12 @@ class EnhancedSearchTools:
                         {
                             "type": "text",
                             "text": f"❌ **Intelligent Suggestions Failed**\n\n"
-                                   f"**Query:** {query}\n"
-                                   f"**Error:** {result.get('error', 'Unknown error')}"
+                            f"**Query:** {query}\n"
+                            f"**Error:** {result.get('error', 'Unknown error')}",
                         }
                     ]
                 }
-                
+
         except Exception as e:
             logger.exception("Intelligent suggestions tool failed")
             return {
@@ -318,8 +329,8 @@ class EnhancedSearchTools:
                     {
                         "type": "text",
                         "text": f"❌ **Intelligent Suggestions Error**\n\n"
-                               f"**Query:** {query}\n"
-                               f"**Error:** {str(e)}"
+                        f"**Query:** {query}\n"
+                        f"**Error:** {str(e)}",
                     }
                 ]
             }
@@ -333,24 +344,25 @@ class EnhancedSearchTools:
                 query=query,
                 max_results=max_results,
             )
-            
+
             # Format the result for MCP response
             if result.get("success"):
                 examples_text = ""
                 for example in result.get("example_queries", []):
                     examples_text += f"- {example}\n"
-                
+
                 return {
                     "content": [
                         {
                             "type": "text",
                             "text": f"📚 **Search with Examples**\n\n"
-                                   f"**Query:** {query}\n"
-                                   f"**Query Type:** {result.get('query_type', 'unknown')}\n"
-                                   f"**Total Results:** {result['total_results']}\n"
-                                   f"**Search Time:** {result.get('search_time', 0):.3f}s\n\n"
-                                   f"**Example Natural Language Queries:**\n{examples_text}\n"
-                                   f"**Results:**\n" + self._format_search_results(result['results'])
+                            f"**Query:** {query}\n"
+                            f"**Query Type:** {result.get('query_type', 'unknown')}\n"
+                            f"**Total Results:** {result['total_results']}\n"
+                            f"**Search Time:** {result.get('search_time', 0):.3f}s\n\n"
+                            f"**Example Natural Language Queries:**\n{examples_text}\n"
+                            f"**Results:**\n"
+                            + self._format_search_results(result["results"]),
                         }
                     ]
                 }
@@ -360,12 +372,12 @@ class EnhancedSearchTools:
                         {
                             "type": "text",
                             "text": f"❌ **Search with Examples Failed**\n\n"
-                                   f"**Query:** {query}\n"
-                                   f"**Error:** {result.get('error', 'Unknown error')}"
+                            f"**Query:** {query}\n"
+                            f"**Error:** {result.get('error', 'Unknown error')}",
                         }
                     ]
                 }
-                
+
         except Exception as e:
             logger.exception("Search with examples tool failed")
             return {
@@ -373,8 +385,8 @@ class EnhancedSearchTools:
                     {
                         "type": "text",
                         "text": f"❌ **Search with Examples Error**\n\n"
-                               f"**Query:** {query}\n"
-                               f"**Error:** {str(e)}"
+                        f"**Query:** {query}\n"
+                        f"**Error:** {str(e)}",
                     }
                 ]
             }
@@ -383,7 +395,7 @@ class EnhancedSearchTools:
         """Check the health of the enhanced semantic search service."""
         try:
             result = await self.search_engine.health_check()
-            
+
             # Format the result for MCP response
             if result.get("success"):
                 nlp_info = result.get("nlp_processor", {})
@@ -392,14 +404,14 @@ class EnhancedSearchTools:
                         {
                             "type": "text",
                             "text": f"🏥 **Enhanced Search Health Check**\n\n"
-                                   f"**Status:** {result.get('status', 'unknown')}\n"
-                                   f"**Service:** {result.get('service', 'unknown')}\n"
-                                   f"**Timestamp:** {result.get('timestamp', 'unknown')}\n\n"
-                                   f"**NLP Processor:**\n"
-                                   f"- Enabled: {nlp_info.get('enabled', False)}\n"
-                                   f"- Query Expansion: {nlp_info.get('query_expansion', False)}\n"
-                                   f"- Intent Detection: {nlp_info.get('intent_detection', False)}\n"
-                                   f"- Test Query Processed: {nlp_info.get('test_query_processed', False)}"
+                            f"**Status:** {result.get('status', 'unknown')}\n"
+                            f"**Service:** {result.get('service', 'unknown')}\n"
+                            f"**Timestamp:** {result.get('timestamp', 'unknown')}\n\n"
+                            f"**NLP Processor:**\n"
+                            f"- Enabled: {nlp_info.get('enabled', False)}\n"
+                            f"- Query Expansion: {nlp_info.get('query_expansion', False)}\n"
+                            f"- Intent Detection: {nlp_info.get('intent_detection', False)}\n"
+                            f"- Test Query Processed: {nlp_info.get('test_query_processed', False)}",
                         }
                     ]
                 }
@@ -409,12 +421,12 @@ class EnhancedSearchTools:
                         {
                             "type": "text",
                             "text": f"❌ **Enhanced Search Health Check Failed**\n\n"
-                                   f"**Status:** {result.get('status', 'unknown')}\n"
-                                   f"**Error:** {result.get('error', 'Unknown error')}"
+                            f"**Status:** {result.get('status', 'unknown')}\n"
+                            f"**Error:** {result.get('error', 'Unknown error')}",
                         }
                     ]
                 }
-                
+
         except Exception as e:
             logger.exception("Enhanced search health check tool failed")
             return {
@@ -422,7 +434,7 @@ class EnhancedSearchTools:
                     {
                         "type": "text",
                         "text": f"❌ **Enhanced Search Health Check Error**\n\n"
-                               f"**Error:** {str(e)}"
+                        f"**Error:** {str(e)}",
                     }
                 ]
             }
@@ -431,21 +443,19 @@ class EnhancedSearchTools:
         """Format search results for display."""
         if not results:
             return "No results found."
-        
+
         formatted_results = ""
         for i, result in enumerate(results, 1):
             formatted_results += f"{i}. **{result.get('file_path', 'Unknown file')}**\n"
             formatted_results += f"   - Line: {result.get('line_number', 0)}\n"
             formatted_results += f"   - Score: {result.get('score', 0):.3f}\n"
             formatted_results += f"   - Type: {result.get('match_type', 'unknown')}\n"
-            
+
             # Add snippet if available
-            snippet = result.get('snippet', '')
+            snippet = result.get("snippet", "")
             if snippet:
                 formatted_results += f"   - Snippet: {snippet[:100]}{'...' if len(snippet) > 100 else ''}\n"
-            
+
             formatted_results += "\n"
-        
+
         return formatted_results
-
-

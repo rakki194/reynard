@@ -24,13 +24,15 @@ try:
         search_with_examples_tool,
     )
     from scripts.mcp.tools.search.enhanced_search_tools import EnhancedSearchTools
+
     MCP_TOOLS_AVAILABLE = True
 except ImportError:
     MCP_TOOLS_AVAILABLE = False
+
     # Create mock classes for testing
     class EnhancedSearchTools:
         pass
-    
+
     natural_language_search_tool = {}
     intelligent_search_tool = {}
     contextual_search_tool = {}
@@ -54,7 +56,9 @@ class TestEnhancedSearchTools:
     @pytest.mark.asyncio
     async def test_natural_language_search_tool(self):
         """Test natural language search tool."""
-        with patch('scripts.mcp.tools.search.enhanced_search_tools.requests.post') as mock_post:
+        with patch(
+            "scripts.mcp.tools.search.enhanced_search_tools.requests.post"
+        ) as mock_post:
             # Mock successful API response
             mock_response = MagicMock()
             mock_response.status_code = 200
@@ -62,21 +66,23 @@ class TestEnhancedSearchTools:
                 "success": True,
                 "query": "find authentication function",
                 "total_results": 1,
-                "results": [{
-                    "file_path": "test.py",
-                    "line_number": 10,
-                    "content": "def authenticate_user():",
-                    "score": 0.95,
-                    "context": "Authentication function"
-                }],
-                "search_time": 0.1
+                "results": [
+                    {
+                        "file_path": "test.py",
+                        "line_number": 10,
+                        "content": "def authenticate_user():",
+                        "score": 0.95,
+                        "context": "Authentication function",
+                    }
+                ],
+                "search_time": 0.1,
             }
             mock_post.return_value = mock_response
 
             result = await self.tools.natural_language_search(
                 query="find authentication function",
                 max_results=10,
-                similarity_threshold=0.7
+                similarity_threshold=0.7,
             )
 
             assert result["success"] is True
@@ -87,7 +93,9 @@ class TestEnhancedSearchTools:
     @pytest.mark.asyncio
     async def test_intelligent_search_tool(self):
         """Test intelligent search tool."""
-        with patch('scripts.mcp.tools.search.enhanced_search_tools.requests.post') as mock_post:
+        with patch(
+            "scripts.mcp.tools.search.enhanced_search_tools.requests.post"
+        ) as mock_post:
             mock_response = MagicMock()
             mock_response.status_code = 200
             mock_response.json.return_value = {
@@ -95,13 +103,12 @@ class TestEnhancedSearchTools:
                 "query": "test query",
                 "total_results": 0,
                 "results": [],
-                "search_time": 0.1
+                "search_time": 0.1,
             }
             mock_post.return_value = mock_response
 
             result = await self.tools.intelligent_search(
-                query="test query",
-                max_results=10
+                query="test query", max_results=10
             )
 
             assert result["success"] is True
@@ -109,7 +116,9 @@ class TestEnhancedSearchTools:
     @pytest.mark.asyncio
     async def test_contextual_search_tool(self):
         """Test contextual search tool."""
-        with patch('scripts.mcp.tools.search.enhanced_search_tools.requests.post') as mock_post:
+        with patch(
+            "scripts.mcp.tools.search.enhanced_search_tools.requests.post"
+        ) as mock_post:
             mock_response = MagicMock()
             mock_response.status_code = 200
             mock_response.json.return_value = {
@@ -117,14 +126,12 @@ class TestEnhancedSearchTools:
                 "query": "test query",
                 "total_results": 0,
                 "results": [],
-                "search_time": 0.1
+                "search_time": 0.1,
             }
             mock_post.return_value = mock_response
 
             result = await self.tools.contextual_search(
-                query="test query",
-                context="test context",
-                max_results=10
+                query="test query", context="test context", max_results=10
             )
 
             assert result["success"] is True
@@ -132,14 +139,16 @@ class TestEnhancedSearchTools:
     @pytest.mark.asyncio
     async def test_analyze_query_tool(self):
         """Test analyze query tool."""
-        with patch('scripts.mcp.tools.search.enhanced_search_tools.requests.post') as mock_post:
+        with patch(
+            "scripts.mcp.tools.search.enhanced_search_tools.requests.post"
+        ) as mock_post:
             mock_response = MagicMock()
             mock_response.status_code = 200
             mock_response.json.return_value = {
                 "intent": "function_search",
                 "entities": ["function"],
                 "expanded_terms": ["function", "method"],
-                "confidence": 0.8
+                "confidence": 0.8,
             }
             mock_post.return_value = mock_response
 
@@ -151,13 +160,15 @@ class TestEnhancedSearchTools:
     @pytest.mark.asyncio
     async def test_get_intelligent_suggestions_tool(self):
         """Test get intelligent suggestions tool."""
-        with patch('scripts.mcp.tools.search.enhanced_search_tools.requests.post') as mock_post:
+        with patch(
+            "scripts.mcp.tools.search.enhanced_search_tools.requests.post"
+        ) as mock_post:
             mock_response = MagicMock()
             mock_response.status_code = 200
             mock_response.json.return_value = {
                 "suggestions": [
                     {"query": "find function", "confidence": 0.9},
-                    {"query": "locate method", "confidence": 0.8}
+                    {"query": "locate method", "confidence": 0.8},
                 ]
             }
             mock_post.return_value = mock_response
@@ -170,7 +181,9 @@ class TestEnhancedSearchTools:
     @pytest.mark.asyncio
     async def test_search_with_examples_tool(self):
         """Test search with examples tool."""
-        with patch('scripts.mcp.tools.search.enhanced_search_tools.requests.post') as mock_post:
+        with patch(
+            "scripts.mcp.tools.search.enhanced_search_tools.requests.post"
+        ) as mock_post:
             mock_response = MagicMock()
             mock_response.status_code = 200
             mock_response.json.return_value = {
@@ -178,14 +191,12 @@ class TestEnhancedSearchTools:
                 "query": "test query",
                 "total_results": 0,
                 "results": [],
-                "search_time": 0.1
+                "search_time": 0.1,
             }
             mock_post.return_value = mock_response
 
             result = await self.tools.search_with_examples(
-                query="test query",
-                examples=["example1", "example2"],
-                max_results=10
+                query="test query", examples=["example1", "example2"], max_results=10
             )
 
             assert result["success"] is True
@@ -193,14 +204,16 @@ class TestEnhancedSearchTools:
     @pytest.mark.asyncio
     async def test_enhanced_search_health_check_tool(self):
         """Test enhanced search health check tool."""
-        with patch('scripts.mcp.tools.search.enhanced_search_tools.requests.get') as mock_get:
+        with patch(
+            "scripts.mcp.tools.search.enhanced_search_tools.requests.get"
+        ) as mock_get:
             mock_response = MagicMock()
             mock_response.status_code = 200
             mock_response.json.return_value = {
                 "nlp_enabled": True,
                 "query_expansion_enabled": True,
                 "intent_detection_enabled": True,
-                "status": "healthy"
+                "status": "healthy",
             }
             mock_get.return_value = mock_response
 
@@ -212,7 +225,9 @@ class TestEnhancedSearchTools:
     @pytest.mark.asyncio
     async def test_tool_error_handling(self):
         """Test tool error handling."""
-        with patch('scripts.mcp.tools.search.enhanced_search_tools.requests.post') as mock_post:
+        with patch(
+            "scripts.mcp.tools.search.enhanced_search_tools.requests.post"
+        ) as mock_post:
             # Mock API error
             mock_response = MagicMock()
             mock_response.status_code = 500
@@ -220,8 +235,7 @@ class TestEnhancedSearchTools:
             mock_post.return_value = mock_response
 
             result = await self.tools.natural_language_search(
-                query="test query",
-                max_results=10
+                query="test query", max_results=10
             )
 
             assert result["success"] is False
@@ -230,13 +244,14 @@ class TestEnhancedSearchTools:
     @pytest.mark.asyncio
     async def test_tool_network_error(self):
         """Test tool network error handling."""
-        with patch('scripts.mcp.tools.search.enhanced_search_tools.requests.post') as mock_post:
+        with patch(
+            "scripts.mcp.tools.search.enhanced_search_tools.requests.post"
+        ) as mock_post:
             # Mock network error
             mock_post.side_effect = Exception("Network error")
 
             result = await self.tools.natural_language_search(
-                query="test query",
-                max_results=10
+                query="test query", max_results=10
             )
 
             assert result["success"] is False
@@ -249,7 +264,7 @@ class TestToolDefinitions:
     def test_natural_language_search_tool_definition(self):
         """Test natural language search tool definition."""
         tool_def = natural_language_search_tool
-        
+
         assert tool_def["name"] == "natural_language_search"
         assert "description" in tool_def
         assert "inputSchema" in tool_def
@@ -260,7 +275,7 @@ class TestToolDefinitions:
     def test_intelligent_search_tool_definition(self):
         """Test intelligent search tool definition."""
         tool_def = intelligent_search_tool
-        
+
         assert tool_def["name"] == "intelligent_search"
         assert "description" in tool_def
         assert "inputSchema" in tool_def
@@ -268,7 +283,7 @@ class TestToolDefinitions:
     def test_contextual_search_tool_definition(self):
         """Test contextual search tool definition."""
         tool_def = contextual_search_tool
-        
+
         assert tool_def["name"] == "contextual_search"
         assert "description" in tool_def
         assert "inputSchema" in tool_def
@@ -277,7 +292,7 @@ class TestToolDefinitions:
     def test_analyze_query_tool_definition(self):
         """Test analyze query tool definition."""
         tool_def = analyze_query_tool
-        
+
         assert tool_def["name"] == "analyze_query"
         assert "description" in tool_def
         assert "inputSchema" in tool_def
@@ -285,7 +300,7 @@ class TestToolDefinitions:
     def test_get_intelligent_suggestions_tool_definition(self):
         """Test get intelligent suggestions tool definition."""
         tool_def = get_intelligent_suggestions_tool
-        
+
         assert tool_def["name"] == "get_intelligent_suggestions"
         assert "description" in tool_def
         assert "inputSchema" in tool_def
@@ -293,7 +308,7 @@ class TestToolDefinitions:
     def test_search_with_examples_tool_definition(self):
         """Test search with examples tool definition."""
         tool_def = search_with_examples_tool
-        
+
         assert tool_def["name"] == "search_with_examples"
         assert "description" in tool_def
         assert "inputSchema" in tool_def
@@ -302,7 +317,7 @@ class TestToolDefinitions:
     def test_enhanced_search_health_check_tool_definition(self):
         """Test enhanced search health check tool definition."""
         tool_def = enhanced_search_health_check_tool
-        
+
         assert tool_def["name"] == "enhanced_search_health_check"
         assert "description" in tool_def
         assert "inputSchema" in tool_def
@@ -322,9 +337,9 @@ class TestMCPToolIntegration:
             analyze_query_tool,
             get_intelligent_suggestions_tool,
             search_with_examples_tool,
-            enhanced_search_health_check_tool
+            enhanced_search_health_check_tool,
         ]
-        
+
         for tool in tools:
             assert "name" in tool
             assert "description" in tool
@@ -337,9 +352,9 @@ class TestMCPToolIntegration:
         # Test required parameters
         tool_def = natural_language_search_tool
         required_params = tool_def["inputSchema"].get("required", [])
-        
+
         assert "query" in required_params
-        
+
         # Test parameter types
         properties = tool_def["inputSchema"]["properties"]
         assert properties["query"]["type"] == "string"
@@ -355,9 +370,9 @@ class TestMCPToolIntegration:
             "query",
             "total_results",
             "results",
-            "search_time"
+            "search_time",
         ]
-        
+
         # This would be tested with actual tool execution
         # but we can verify the structure is expected
         assert isinstance(expected_response_keys, list)

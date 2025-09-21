@@ -19,7 +19,7 @@ from ..utils.data_structures import (
     PerformanceMetrics,
     StatisticalSignificance,
     SpiritType,
-    NamingStyle
+    NamingStyle,
 )
 from ..utils.logging import PhoenixLogger
 
@@ -45,7 +45,9 @@ class AgentPersistence:
         self.logger = PhoenixLogger("agent_persistence")
         self.agent_states: Dict[str, AgentState] = {}
 
-        self.logger.info(f"Agent persistence initialized at {self.data_dir}", "initialization")
+        self.logger.info(
+            f"Agent persistence initialized at {self.data_dir}", "initialization"
+        )
 
     async def save_agent_state(self, agent_state: AgentState) -> bool:
         """
@@ -83,20 +85,20 @@ class AgentPersistence:
                             "confidence_interval": perf.significance.confidence_interval,
                             "effect_size": perf.significance.effect_size,
                             "power": perf.significance.power,
-                            "sample_size": perf.significance.sample_size
+                            "sample_size": perf.significance.sample_size,
                         },
-                        "timestamp": perf.timestamp.isoformat()
+                        "timestamp": perf.timestamp.isoformat(),
                     }
                     for perf in agent_state.performance_history
                 ],
                 "knowledge_base": agent_state.knowledge_base,
                 "created_at": agent_state.created_at.isoformat(),
-                "last_updated": agent_state.last_updated.isoformat()
+                "last_updated": agent_state.last_updated.isoformat(),
             }
 
             # Save to file
             state_file = self.data_dir / f"{agent_state.id}.json"
-            with open(state_file, 'w') as f:
+            with open(state_file, "w") as f:
                 json.dump(state_data, f, indent=2)
 
             # Update in-memory cache
@@ -106,7 +108,9 @@ class AgentPersistence:
             return True
 
         except Exception as e:
-            self.logger.error(f"Failed to save agent state {agent_state.id}: {e}", "save")
+            self.logger.error(
+                f"Failed to save agent state {agent_state.id}: {e}", "save"
+            )
             return False
 
     async def load_agent_state(self, agent_id: str) -> Optional[AgentState]:
@@ -131,7 +135,7 @@ class AgentPersistence:
                 self.logger.warning(f"Agent state file not found: {agent_id}", "load")
                 return None
 
-            with open(state_file, 'r') as f:
+            with open(state_file, "r") as f:
                 state_data = json.load(f)
 
             # Reconstruct performance history
@@ -147,12 +151,14 @@ class AgentPersistence:
                     fitness=perf_data["fitness"],
                     significance=StatisticalSignificance(
                         p_value=perf_data["significance"]["p_value"],
-                        confidence_interval=tuple(perf_data["significance"]["confidence_interval"]),
+                        confidence_interval=tuple(
+                            perf_data["significance"]["confidence_interval"]
+                        ),
                         effect_size=perf_data["significance"]["effect_size"],
                         power=perf_data["significance"]["power"],
-                        sample_size=perf_data["significance"]["sample_size"]
+                        sample_size=perf_data["significance"]["sample_size"],
                     ),
-                    timestamp=datetime.fromisoformat(perf_data["timestamp"])
+                    timestamp=datetime.fromisoformat(perf_data["timestamp"]),
                 )
                 performance_history.append(performance)
 
@@ -170,7 +176,7 @@ class AgentPersistence:
                 performance_history=performance_history,
                 knowledge_base=state_data["knowledge_base"],
                 created_at=datetime.fromisoformat(state_data["created_at"]),
-                last_updated=datetime.fromisoformat(state_data["last_updated"])
+                last_updated=datetime.fromisoformat(state_data["last_updated"]),
             )
 
             # Cache the loaded state
@@ -232,7 +238,9 @@ class AgentPersistence:
             self.logger.error(f"Failed to delete agent state {agent_id}: {e}", "delete")
             return False
 
-    async def backup_agent_states(self, backup_dir: str = "backups/agent_states") -> bool:
+    async def backup_agent_states(
+        self, backup_dir: str = "backups/agent_states"
+    ) -> bool:
         """
         Create backup of all agent states.
 
@@ -261,16 +269,20 @@ class AgentPersistence:
                         "style": agent_state.style.value,
                         "generation": agent_state.generation,
                         "fitness": agent_state.get_fitness_score(),
-                        "last_updated": agent_state.last_updated.isoformat()
+                        "last_updated": agent_state.last_updated.isoformat(),
                     }
 
             # Save backup
-            with open(backup_file, 'w') as f:
-                json.dump({
-                    "backup_timestamp": timestamp,
-                    "agent_count": len(all_states),
-                    "agent_states": all_states
-                }, f, indent=2)
+            with open(backup_file, "w") as f:
+                json.dump(
+                    {
+                        "backup_timestamp": timestamp,
+                        "agent_count": len(all_states),
+                        "agent_states": all_states,
+                    },
+                    f,
+                    indent=2,
+                )
 
             self.logger.success(f"Agent states backed up to {backup_file}", "backup")
             return True
@@ -295,7 +307,7 @@ class AgentPersistence:
                 self.logger.error(f"Backup file not found: {backup_file}", "restore")
                 return False
 
-            with open(backup_path, 'r') as f:
+            with open(backup_path, "r") as f:
                 backup_data = json.load(f)
 
             # Clear existing states
@@ -309,7 +321,9 @@ class AgentPersistence:
                 self.logger.info(f"Restored agent: {agent_data['name']}", "restore")
                 restored_count += 1
 
-            self.logger.success(f"Restored {restored_count} agent states from backup", "restore")
+            self.logger.success(
+                f"Restored {restored_count} agent states from backup", "restore"
+            )
             return True
 
         except Exception as e:
@@ -352,7 +366,7 @@ class AgentPersistence:
                 "total_agents": 0,
                 "storage_size": 0,
                 "oldest_state": None,
-                "newest_state": None
+                "newest_state": None,
             }
 
         # Calculate storage size
@@ -377,5 +391,5 @@ class AgentPersistence:
             "storage_size": total_size,
             "storage_size_mb": round(total_size / (1024 * 1024), 2),
             "oldest_state": oldest_time.isoformat() if oldest_time else None,
-            "newest_state": newest_time.isoformat() if newest_time else None
+            "newest_state": newest_time.isoformat() if newest_time else None,
         }

@@ -9,6 +9,4 @@ Version: 1.0.0
 
 from .agent_persistence import AgentStatePersistence
 
-__all__ = [
-    "AgentStatePersistence"
-]
+__all__ = ["AgentStatePersistence"]

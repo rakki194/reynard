@@ -1,6 +1,6 @@
 /**
  * Dashboard Utils Composable
- * 
+ *
  * Utility functions for the Code Quality Dashboard
  */
 

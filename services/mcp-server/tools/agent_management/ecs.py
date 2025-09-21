@@ -23,7 +23,9 @@ from .behavior import BehaviorAgentTools
 class ECSAgentTools:
     """Handles ECS world simulation integration for agents."""
 
-    def __init__(self, agent_manager: BackendAgentManager, ecs_agent_tools: Any = None) -> None:
+    def __init__(
+        self, agent_manager: BackendAgentManager, ecs_agent_tools: Any = None
+    ) -> None:
         self.agent_manager = agent_manager
         self.ecs_agent_tools = ecs_agent_tools
         self.behavior_tools = BehaviorAgentTools()
@@ -59,6 +61,7 @@ class ECSAgentTools:
         if not preferred_style:
             available_styles = await dynamic_enum_service.get_available_styles()
             import random
+
             preferred_style = random.choice(list(available_styles))
         else:
             preferred_style = await dynamic_enum_service.validate_style(preferred_style)
@@ -71,22 +74,24 @@ class ECSAgentTools:
         # Generate enhanced persona for detailed roleplay
         try:
             from services.enhanced_persona_service import enhanced_persona_service
-            
+
             enhanced_persona = enhanced_persona_service.generate_enhanced_persona(
                 name=agent_data.get("name", "Unknown"),
                 spirit=spirit_str,
                 style=preferred_style,
-                agent_id=agent_id
+                agent_id=agent_id,
             )
-            
+
             # Add enhanced persona to agent data
             agent_data["enhanced_persona"] = enhanced_persona
-            
+
         except Exception as e:
             print(f"Warning: Could not generate enhanced persona: {e}")
             # Continue without enhanced persona
 
-        startup_text = self._format_startup_response(agent_data, spirit_str, preferred_style)
+        startup_text = self._format_startup_response(
+            agent_data, spirit_str, preferred_style
+        )
 
         return {
             "content": [
@@ -100,28 +105,28 @@ class ECSAgentTools:
     async def get_simulation_status(self, arguments: dict[str, Any]) -> dict[str, Any]:
         """Get comprehensive simulation status from FastAPI ECS backend."""
         _ = arguments  # Unused but required for interface consistency
-        
+
         try:
             from services.ecs_client import get_ecs_client
-            
+
             # Get ECS client
             ecs_client = get_ecs_client()
             await ecs_client.start()
-            
+
             # Get world status from FastAPI backend
             world_status = await ecs_client.get_world_status()
-            
+
             # Get all agents from FastAPI backend
             agents = await ecs_client.get_agents()
-            
+
             # Close ECS client
             await ecs_client.close()
-            
+
             # Format status text
             status_text = self._format_fastapi_ecs_status(world_status, agents)
-            
+
             return {"content": [{"type": "text", "text": status_text}]}
-            
+
         except Exception as e:
             return {
                 "content": [
@@ -135,7 +140,7 @@ class ECSAgentTools:
     async def accelerate_time(self, arguments: dict[str, Any]) -> dict[str, Any]:
         """Adjust time acceleration factor (FastAPI backend doesn't support this yet)."""
         factor = arguments.get("factor", 10.0)
-        
+
         return {
             "content": [
                 {
@@ -148,7 +153,7 @@ class ECSAgentTools:
     async def nudge_time(self, arguments: dict[str, Any]) -> dict[str, Any]:
         """Nudge simulation time forward (FastAPI backend doesn't support this yet)."""
         amount = arguments.get("amount", 0.1)
-        
+
         return {
             "content": [
                 {
@@ -164,11 +169,11 @@ class ECSAgentTools:
         """Create agent using ECS client or connect to existing agent."""
         try:
             from services.ecs_client import get_ecs_client
-            
+
             # Get ECS client
             ecs_client = get_ecs_client()
             await ecs_client.start()
-            
+
             # Check if agent already exists in ECS world
             existing_agents = await ecs_client.get_agents()
             existing_agent = None
@@ -176,14 +181,14 @@ class ECSAgentTools:
                 if agent.get("agent_id") == agent_id:
                     existing_agent = agent
                     break
-            
+
             if existing_agent:
                 # Agent already exists, use existing data
                 name = existing_agent.get("name", "Unknown")
                 self.agent_manager.assign_name(agent_id, name)
-                
+
                 await ecs_client.close()
-                
+
                 return {
                     "agent_id": agent_id,
                     "name": name,
@@ -196,17 +201,15 @@ class ECSAgentTools:
             else:
                 # Create new agent in ECS world
                 ecs_result = await ecs_client.create_agent(
-                    agent_id=agent_id,
-                    spirit=spirit,
-                    style=style
+                    agent_id=agent_id, spirit=spirit, style=style
                 )
-                
+
                 # Generate name using agent manager
                 name = await self.agent_manager.generate_name(spirit, style)
                 self.agent_manager.assign_name(agent_id, name)
-                
+
                 await ecs_client.close()
-                
+
                 return {
                     "agent_id": agent_id,
                     "name": name,
@@ -216,7 +219,7 @@ class ECSAgentTools:
                     "persona": None,  # Could be enhanced with ECS persona data
                     "lora_config": None,  # Could be enhanced with ECS LoRA data
                 }
-            
+
         except Exception as e:
             # Fallback to basic creation
             name = await self.agent_manager.generate_name(spirit, style)
@@ -238,6 +241,7 @@ class ECSAgentTools:
     def _get_spirit_emoji(self, spirit: str) -> str:
         """Get the emoji for a specific animal spirit type using centralized service."""
         from services.spirit_emoji_service import spirit_emoji_service
+
         return spirit_emoji_service.get_spirit_emoji(spirit)
 
     def _format_startup_response(
@@ -246,7 +250,7 @@ class ECSAgentTools:
         """Format the enhanced startup response text with detailed information."""
         # Get the correct emoji for the spirit
         spirit_emoji = self._get_spirit_emoji(spirit)
-        
+
         # Enhanced startup header with more details
         startup_text = (
             f"🎯 Agent Startup Complete!\n"
@@ -259,16 +263,16 @@ class ECSAgentTools:
 
         # Add ECS information if available
         if agent_data.get("ecs_available", False):
-            startup_text += "\n" + "="*50 + "\n"
+            startup_text += "\n" + "=" * 50 + "\n"
             startup_text += "🌍 ECS WORLD SIMULATION\n"
-            startup_text += "="*50 + "\n"
+            startup_text += "=" * 50 + "\n"
             startup_text += self._format_ecs_startup_info(agent_data)
         else:
             startup_text += "\n⚠️  ECS World Simulation: Not Available\n"
 
-        startup_text += "\n" + "="*50 + "\n"
+        startup_text += "\n" + "=" * 50 + "\n"
         startup_text += "🔧 Development Environment\n"
-        startup_text += "="*50 + "\n"
+        startup_text += "=" * 50 + "\n"
         startup_text += self._format_version_info()
 
         return startup_text
@@ -276,7 +280,7 @@ class ECSAgentTools:
     def _format_ecs_startup_info(self, agent_data: dict) -> str:
         """Format ECS-specific startup information with enhanced details."""
         ecs_text = ""
-        
+
         # Show ECS connection status
         ecs_status = agent_data.get("ecs_status", "unknown")
         if ecs_status == "existing":
@@ -303,7 +307,9 @@ class ECSAgentTools:
                     description = trait_descriptions.get(trait, "Unique characteristic")
                     trait_value = getattr(enhanced_persona, trait, 0.5)
                     value_indicator = self._get_trait_value_indicator(trait_value)
-                    ecs_text += f"     • {trait.title()}: {description} {value_indicator}\n"
+                    ecs_text += (
+                        f"     • {trait.title()}: {description} {value_indicator}\n"
+                    )
 
             # Display communication style
             ecs_text += f"   💬 Communication: {enhanced_persona.communication_style}\n"
@@ -326,7 +332,9 @@ class ECSAgentTools:
 
             # Display backstory elements
             if enhanced_persona.backstory_elements:
-                ecs_text += f"   📖 Backstory: {enhanced_persona.backstory_elements[0]}\n"
+                ecs_text += (
+                    f"   📖 Backstory: {enhanced_persona.backstory_elements[0]}\n"
+                )
 
             # Display favorite activities
             if enhanced_persona.favorite_activities:
@@ -334,7 +342,9 @@ class ECSAgentTools:
 
             # Display goals and aspirations
             if enhanced_persona.goals_and_aspirations:
-                ecs_text += f"   🎯 Goals: {enhanced_persona.goals_and_aspirations[0]}\n"
+                ecs_text += (
+                    f"   🎯 Goals: {enhanced_persona.goals_and_aspirations[0]}\n"
+                )
 
             # Display relationships style
             ecs_text += f"   💕 Relationships: {enhanced_persona.relationships_style}\n"
@@ -348,7 +358,9 @@ class ECSAgentTools:
             # Fallback to basic persona if enhanced persona not available
             persona = agent_data.get("persona", {})
             if persona:
-                personality_summary = persona.get('personality_summary', 'Generated personality')
+                personality_summary = persona.get(
+                    "personality_summary", "Generated personality"
+                )
                 ecs_text += f"🎭 Persona: {personality_summary}\n"
             else:
                 ecs_text += "🎭 Persona: Generated\n"
@@ -360,16 +372,20 @@ class ECSAgentTools:
             ecs_text += f"   Base Model: {lora_config.get('base_model', 'Unknown')}\n"
             ecs_text += f"   Rank: {lora_config.get('lora_rank', 'N/A')} | Alpha: {lora_config.get('lora_alpha', 'N/A')}\n"
             ecs_text += f"   Target Modules: {', '.join(lora_config.get('target_modules', []))}\n"
-            
+
             # Display trait weight summary
-            personality_weights = lora_config.get('personality_weights', {})
-            physical_weights = lora_config.get('physical_weights', {})
-            ability_weights = lora_config.get('ability_weights', {})
-            
+            personality_weights = lora_config.get("personality_weights", {})
+            physical_weights = lora_config.get("physical_weights", {})
+            ability_weights = lora_config.get("ability_weights", {})
+
             if personality_weights:
-                ecs_text += f"   🎭 Personality Traits: {len(personality_weights)} configured\n"
+                ecs_text += (
+                    f"   🎭 Personality Traits: {len(personality_weights)} configured\n"
+                )
             if physical_weights:
-                ecs_text += f"   💪 Physical Traits: {len(physical_weights)} configured\n"
+                ecs_text += (
+                    f"   💪 Physical Traits: {len(physical_weights)} configured\n"
+                )
             if ability_weights:
                 ecs_text += f"   ⚡ Abilities: {len(ability_weights)} configured\n"
         else:
@@ -414,10 +430,10 @@ class ECSAgentTools:
     def _get_trait_value(self, agent_data: dict, trait: str) -> float:
         """Get trait value from LoRA configuration."""
         lora_config = agent_data.get("lora_config", {})
-        personality_weights = lora_config.get('personality_weights', {})
-        physical_weights = lora_config.get('physical_weights', {})
-        ability_weights = lora_config.get('ability_weights', {})
-        
+        personality_weights = lora_config.get("personality_weights", {})
+        physical_weights = lora_config.get("physical_weights", {})
+        ability_weights = lora_config.get("ability_weights", {})
+
         # Check all trait categories
         if trait in personality_weights:
             return float(personality_weights[trait])
@@ -425,7 +441,7 @@ class ECSAgentTools:
             return float(physical_weights[trait])
         elif trait in ability_weights:
             return float(ability_weights[trait])
-        
+
         return 0.5  # Default neutral value
 
     def _get_trait_value_indicator(self, value: float) -> str:
@@ -446,11 +462,11 @@ class ECSAgentTools:
         # This would integrate with the ECS memory interaction system
         # For now, return a placeholder that could be enhanced
         import random
-        
+
         # Simulate gender identity generation based on ECS memory system proposal
         gender_identities = [
             "Male (he/him/his)",
-            "Female (she/her/hers)", 
+            "Female (she/her/hers)",
             "Non-binary (they/them/theirs)",
             "Genderfluid (they/them/theirs)",
             "Agender (they/them/theirs)",
@@ -460,13 +476,26 @@ class ECSAgentTools:
             "Genderqueer (they/them/theirs)",
             "Two-spirit (they/them/theirs)",
             "Prefer not to say (they/them/theirs)",
-            "Self-describe (they/them/theirs)"
+            "Self-describe (they/them/theirs)",
         ]
-        
+
         # Weighted distribution favoring common identities
-        weights = [0.25, 0.25, 0.15, 0.08, 0.06, 0.05, 0.04, 0.04, 0.03, 0.02, 0.02, 0.01]
+        weights = [
+            0.25,
+            0.25,
+            0.15,
+            0.08,
+            0.06,
+            0.05,
+            0.04,
+            0.04,
+            0.03,
+            0.02,
+            0.02,
+            0.01,
+        ]
         selected_identity = random.choices(gender_identities, weights=weights, k=1)[0]
-        
+
         return selected_identity
 
     def _format_version_info(self) -> str:
@@ -496,19 +525,19 @@ class ECSAgentTools:
         status_text += f"System Count: {world_status.get('system_count', 0)}\n"
         status_text += f"Agent Count: {world_status.get('agent_count', 0)}\n"
         status_text += f"Mature Agents: {world_status.get('mature_agents', 0)}\n"
-        
+
         if agents:
             status_text += "\n🦁 Active Agents:\n"
             for agent in agents:
                 status_text += f"  • {agent.get('name', 'Unknown')} ({agent.get('agent_id', 'Unknown')}) - {agent.get('spirit', 'Unknown')}\n"
-        
+
         return status_text
-    
+
     def _get_dominant_traits_from_persona(self, persona: Any) -> List[str]:
         """Get dominant traits from enhanced persona object."""
         if not persona:
             return []
-        
+
         # Get all personality traits and sort by value
         personality_traits = {
             "dominance": getattr(persona, "dominance", 0.0),
@@ -526,9 +555,11 @@ class ECSAgentTools:
             "curiosity": getattr(persona, "curiosity", 0.0),
             "courage": getattr(persona, "courage", 0.0),
             "determination": getattr(persona, "determination", 0.0),
-            "spontaneity": getattr(persona, "spontaneity", 0.0)
+            "spontaneity": getattr(persona, "spontaneity", 0.0),
         }
-        
+
         # Sort by value and return top 3
-        sorted_traits = sorted(personality_traits.items(), key=lambda x: x[1], reverse=True)
+        sorted_traits = sorted(
+            personality_traits.items(), key=lambda x: x[1], reverse=True
+        )
         return [trait for trait, value in sorted_traits[:3]]

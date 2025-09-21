@@ -72,7 +72,7 @@ export abstract class ApiClient {
     try {
       const response = await this.httpClient.request<Record<string, unknown>>({
         method: "GET",
-        endpoint: "/health",
+        endpoint: "/api/health",
       });
 
       this.lastHealthCheck = Date.now();

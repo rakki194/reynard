@@ -45,7 +45,7 @@ describe("ConfigManager", () => {
             port: 3000,
             healthCheck: {
               type: "http",
-              path: "/health",
+              path: "/api/health",
             },
           },
         },

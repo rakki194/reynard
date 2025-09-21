@@ -18,7 +18,7 @@ from .data_structures import (
     AgentState,
     SpiritType,
     NamingStyle,
-    TraitCategory
+    TraitCategory,
 )
 
 __all__ = [
@@ -32,5 +32,5 @@ __all__ = [
     "AgentState",
     "SpiritType",
     "NamingStyle",
-    "TraitCategory"
+    "TraitCategory",
 ]

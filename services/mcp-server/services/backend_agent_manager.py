@@ -28,12 +28,16 @@ class BackendAgentManager:
 
     # JSON file methods removed - agent names are now stored in PostgreSQL ECS database
 
-    async def generate_name(self, spirit: Optional[str] = None, style: Optional[str] = None) -> str:
+    async def generate_name(
+        self, spirit: Optional[str] = None, style: Optional[str] = None
+    ) -> str:
         """Generate a new agent name using backend data."""
         try:
             # Get spirit names
             if spirit:
-                spirit_names = await backend_data_service.get_animal_spirit_names(spirit)
+                spirit_names = await backend_data_service.get_animal_spirit_names(
+                    spirit
+                )
             else:
                 # Get all spirits and pick one randomly
                 all_spirits = await backend_data_service.get_animal_spirits()
@@ -47,56 +51,100 @@ class BackendAgentManager:
 
             # Get naming components
             components = await backend_data_service.get_naming_components()
-            
+
             # Get generation numbers for the spirit
-            generation_numbers = await backend_data_service.get_spirit_generation_numbers(spirit)
-            
+            generation_numbers = (
+                await backend_data_service.get_spirit_generation_numbers(spirit)
+            )
+
             # Select components based on style
             if style == "foundation":
-                suffixes = components.get("foundation_suffixes", ["Prime", "Sage", "Oracle"])
+                suffixes = components.get(
+                    "foundation_suffixes", ["Prime", "Sage", "Oracle"]
+                )
             elif style == "exo":
-                suffixes = components.get("exo_suffixes", ["Strike", "Guard", "Sentinel"])
+                suffixes = components.get(
+                    "exo_suffixes", ["Strike", "Guard", "Sentinel"]
+                )
             elif style == "cyberpunk":
-                prefixes = components.get("cyberpunk_prefixes", ["Cyber", "Neo", "Mega"])
-                suffixes = components.get("cyberpunk_suffixes", ["Nexus", "Grid", "Web"])
+                prefixes = components.get(
+                    "cyberpunk_prefixes", ["Cyber", "Neo", "Mega"]
+                )
+                suffixes = components.get(
+                    "cyberpunk_suffixes", ["Nexus", "Grid", "Web"]
+                )
                 prefix = random.choice(prefixes)
                 spirit_name = random.choice(spirit_names)
                 suffix = random.choice(suffixes)
-                generation = random.choice(generation_numbers) if generation_numbers else random.randint(1, 100)
+                generation = (
+                    random.choice(generation_numbers)
+                    if generation_numbers
+                    else random.randint(1, 100)
+                )
                 return f"{prefix}-{spirit_name}-{suffix}"
             elif style == "mythological":
-                mythological_refs = components.get("mythological_references", ["Atlas", "Prometheus", "Vulcan"])
-                mythological_suffixes = components.get("mythological_suffixes", ["Divine", "Sacred", "Holy"])
+                mythological_refs = components.get(
+                    "mythological_references", ["Atlas", "Prometheus", "Vulcan"]
+                )
+                mythological_suffixes = components.get(
+                    "mythological_suffixes", ["Divine", "Sacred", "Holy"]
+                )
                 myth_ref = random.choice(mythological_refs)
                 spirit_name = random.choice(spirit_names)
                 suffix = random.choice(mythological_suffixes)
-                generation = random.choice(generation_numbers) if generation_numbers else random.randint(1, 100)
+                generation = (
+                    random.choice(generation_numbers)
+                    if generation_numbers
+                    else random.randint(1, 100)
+                )
                 return f"{myth_ref}-{spirit_name}-{suffix}"
             elif style == "scientific":
-                scientific_prefixes = components.get("scientific_prefixes", ["Panthera", "Canis", "Felis"])
-                scientific_suffixes = components.get("scientific_suffixes", ["Leo", "Tigris", "Pardus"])
+                scientific_prefixes = components.get(
+                    "scientific_prefixes", ["Panthera", "Canis", "Felis"]
+                )
+                scientific_suffixes = components.get(
+                    "scientific_suffixes", ["Leo", "Tigris", "Pardus"]
+                )
                 prefix = random.choice(scientific_prefixes)
                 spirit_name = random.choice(spirit_names)
                 suffix = random.choice(scientific_suffixes)
-                generation = random.choice(generation_numbers) if generation_numbers else random.randint(1, 100)
+                generation = (
+                    random.choice(generation_numbers)
+                    if generation_numbers
+                    else random.randint(1, 100)
+                )
                 return f"{prefix}-{spirit_name}-{suffix}"
             elif style == "hybrid":
-                hybrid_refs = components.get("hybrid_references", ["Atlas", "Prometheus", "Nexus"])
-                special_designations = components.get("special_designations", ["Alpha", "Beta", "Prime"])
+                hybrid_refs = components.get(
+                    "hybrid_references", ["Atlas", "Prometheus", "Nexus"]
+                )
+                special_designations = components.get(
+                    "special_designations", ["Alpha", "Beta", "Prime"]
+                )
                 hybrid_ref = random.choice(hybrid_refs)
                 spirit_name = random.choice(spirit_names)
                 designation = random.choice(special_designations)
-                generation = random.choice(generation_numbers) if generation_numbers else random.randint(1, 100)
+                generation = (
+                    random.choice(generation_numbers)
+                    if generation_numbers
+                    else random.randint(1, 100)
+                )
                 return f"{spirit_name}-{hybrid_ref}-{designation}"
             else:
                 # Default foundation style
-                suffixes = components.get("foundation_suffixes", ["Prime", "Sage", "Oracle"])
+                suffixes = components.get(
+                    "foundation_suffixes", ["Prime", "Sage", "Oracle"]
+                )
 
             # Generate name in format: {spirit_name}-{suffix}-{generation}
             spirit_name = random.choice(spirit_names)
             suffix = random.choice(suffixes)
-            generation = random.choice(generation_numbers) if generation_numbers else random.randint(1, 100)
-            
+            generation = (
+                random.choice(generation_numbers)
+                if generation_numbers
+                else random.randint(1, 100)
+            )
+
             return f"{spirit_name}-{suffix}-{generation}"
 
         except Exception as e:
@@ -126,6 +174,7 @@ class BackendAgentManager:
         """Randomly select an animal spirit using dynamic enum service."""
         try:
             from .dynamic_enum_service import dynamic_enum_service
+
             return await dynamic_enum_service.get_random_spirit(weighted=weighted)
         except Exception as e:
             logger.error(f"Error rolling agent spirit: {e}")
@@ -135,6 +184,7 @@ class BackendAgentManager:
         """Get emoji for a spirit using dynamic enum service."""
         try:
             from .dynamic_enum_service import dynamic_enum_service
+
             return await dynamic_enum_service.get_spirit_emoji(spirit)
         except Exception as e:
             logger.error(f"Error getting spirit emoji: {e}")

@@ -2,29 +2,29 @@
  * Tests for CodeQualityAnalyzer JunkFileDetector integration
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi, Mock } from 'vitest';
-import { CodeQualityAnalyzer } from '../CodeQualityAnalyzer';
-import { JunkFileAnalysis } from '../JunkFileDetector';
-import { execSync } from 'child_process';
+import { describe, it, expect, beforeEach, afterEach, vi, Mock } from "vitest";
+import { CodeQualityAnalyzer } from "../CodeQualityAnalyzer";
+import { JunkFileAnalysis } from "../JunkFileDetector";
+import { execSync } from "child_process";
 
 // Using global mock from test-setup.ts
 
 // Mock the JunkFileDetector
-vi.mock('../JunkFileDetector', () => ({
+vi.mock("../JunkFileDetector", () => ({
   JunkFileDetector: vi.fn().mockImplementation(() => ({
     detectJunkFiles: vi.fn(),
-    generateReport: vi.fn()
-  }))
+    generateReport: vi.fn(),
+  })),
 }));
 
 // Mock MetricsCalculator
-vi.mock('../MetricsCalculator', () => ({
+vi.mock("../MetricsCalculator", () => ({
   MetricsCalculator: vi.fn().mockImplementation(() => ({
-    updateMetricsWithJunkFiles: vi.fn()
-  }))
+    updateMetricsWithJunkFiles: vi.fn(),
+  })),
 }));
 
-describe('CodeQualityAnalyzer - JunkFileDetector Integration', () => {
+describe("CodeQualityAnalyzer - JunkFileDetector Integration", () => {
   let analyzer: CodeQualityAnalyzer;
   let mockJunkFileDetector: any;
   let mockMetricsCalculator: any;
@@ -33,10 +33,10 @@ describe('CodeQualityAnalyzer - JunkFileDetector Integration', () => {
   beforeEach(() => {
     // Reset all mocks
     vi.clearAllMocks();
-    
+
     // Create analyzer instance
-    analyzer = new CodeQualityAnalyzer('/test/project');
-    
+    analyzer = new CodeQualityAnalyzer("/test/project");
+
     // Get the mocked instances
     mockJunkFileDetector = (analyzer as any).junkFileDetector;
     mockMetricsCalculator = (analyzer as any).metricsCalculator;
@@ -47,8 +47,8 @@ describe('CodeQualityAnalyzer - JunkFileDetector Integration', () => {
     vi.clearAllMocks();
   });
 
-  describe('detectJunkFiles', () => {
-    it('should call JunkFileDetector.detectJunkFiles', async () => {
+  describe("detectJunkFiles", () => {
+    it("should call JunkFileDetector.detectJunkFiles", async () => {
       const mockAnalysis: JunkFileAnalysis = {
         totalFiles: 2,
         pythonArtifacts: 1,
@@ -61,20 +61,20 @@ describe('CodeQualityAnalyzer - JunkFileDetector Integration', () => {
         lowIssues: 0,
         files: [
           {
-            file: 'test.pyc',
-            category: 'python',
-            reason: 'Python bytecode file',
-            severity: 'high'
+            file: "test.pyc",
+            category: "python",
+            reason: "Python bytecode file",
+            severity: "high",
           },
           {
-            file: 'app.js.map',
-            category: 'typescript',
-            reason: 'Source map file',
-            severity: 'high'
-          }
+            file: "app.js.map",
+            category: "typescript",
+            reason: "Source map file",
+            severity: "high",
+          },
         ],
-        recommendations: ['Add *.pyc to .gitignore'],
-        qualityScore: 80
+        recommendations: ["Add *.pyc to .gitignore"],
+        qualityScore: 80,
       };
 
       mockJunkFileDetector.detectJunkFiles.mockResolvedValue(mockAnalysis);
@@ -85,16 +85,16 @@ describe('CodeQualityAnalyzer - JunkFileDetector Integration', () => {
       expect(result).toEqual(mockAnalysis);
     });
 
-    it('should handle JunkFileDetector errors gracefully', async () => {
-      const error = new Error('Junk file detection failed');
+    it("should handle JunkFileDetector errors gracefully", async () => {
+      const error = new Error("Junk file detection failed");
       mockJunkFileDetector.detectJunkFiles.mockRejectedValue(error);
 
-      await expect(analyzer.detectJunkFiles()).rejects.toThrow('Junk file detection failed');
+      await expect(analyzer.detectJunkFiles()).rejects.toThrow("Junk file detection failed");
     });
   });
 
-  describe('generateJunkFileReport', () => {
-    it('should generate report using JunkFileDetector', async () => {
+  describe("generateJunkFileReport", () => {
+    it("should generate report using JunkFileDetector", async () => {
       const mockAnalysis: JunkFileAnalysis = {
         totalFiles: 1,
         pythonArtifacts: 1,
@@ -107,17 +107,17 @@ describe('CodeQualityAnalyzer - JunkFileDetector Integration', () => {
         lowIssues: 0,
         files: [
           {
-            file: 'test.pyc',
-            category: 'python',
-            reason: 'Python bytecode file',
-            severity: 'high'
-          }
+            file: "test.pyc",
+            category: "python",
+            reason: "Python bytecode file",
+            severity: "high",
+          },
         ],
-        recommendations: ['Add *.pyc to .gitignore'],
-        qualityScore: 90
+        recommendations: ["Add *.pyc to .gitignore"],
+        qualityScore: 90,
       };
 
-      const mockReport = '# Junk File Detection Report\n\n## Summary\n- Total Files: 1\n- Quality Score: 90';
+      const mockReport = "# Junk File Detection Report\n\n## Summary\n- Total Files: 1\n- Quality Score: 90";
 
       mockJunkFileDetector.detectJunkFiles.mockResolvedValue(mockAnalysis);
       mockJunkFileDetector.generateReport.mockReturnValue(mockReport);
@@ -129,16 +129,16 @@ describe('CodeQualityAnalyzer - JunkFileDetector Integration', () => {
       expect(result).toBe(mockReport);
     });
 
-    it('should handle report generation errors', async () => {
-      const error = new Error('Report generation failed');
+    it("should handle report generation errors", async () => {
+      const error = new Error("Report generation failed");
       mockJunkFileDetector.detectJunkFiles.mockRejectedValue(error);
 
-      await expect(analyzer.generateJunkFileReport()).rejects.toThrow('Report generation failed');
+      await expect(analyzer.generateJunkFileReport()).rejects.toThrow("Report generation failed");
     });
   });
 
-  describe('getJunkFileMetrics', () => {
-    it('should return correct metrics structure', async () => {
+  describe("getJunkFileMetrics", () => {
+    it("should return correct metrics structure", async () => {
       const mockAnalysis: JunkFileAnalysis = {
         totalFiles: 3,
         pythonArtifacts: 1,
@@ -151,7 +151,7 @@ describe('CodeQualityAnalyzer - JunkFileDetector Integration', () => {
         lowIssues: 0,
         files: [],
         recommendations: [],
-        qualityScore: 75
+        qualityScore: 75,
       };
 
       mockJunkFileDetector.detectJunkFiles.mockResolvedValue(mockAnalysis);
@@ -162,11 +162,11 @@ describe('CodeQualityAnalyzer - JunkFileDetector Integration', () => {
         totalJunkFiles: 3,
         criticalJunkFiles: 1,
         highJunkFiles: 2,
-        qualityScore: 75
+        qualityScore: 75,
       });
     });
 
-    it('should handle zero junk files', async () => {
+    it("should handle zero junk files", async () => {
       const mockAnalysis: JunkFileAnalysis = {
         totalFiles: 0,
         pythonArtifacts: 0,
@@ -179,7 +179,7 @@ describe('CodeQualityAnalyzer - JunkFileDetector Integration', () => {
         lowIssues: 0,
         files: [],
         recommendations: [],
-        qualityScore: 100
+        qualityScore: 100,
       };
 
       mockJunkFileDetector.detectJunkFiles.mockResolvedValue(mockAnalysis);
@@ -190,13 +190,13 @@ describe('CodeQualityAnalyzer - JunkFileDetector Integration', () => {
         totalJunkFiles: 0,
         criticalJunkFiles: 0,
         highJunkFiles: 0,
-        qualityScore: 100
+        qualityScore: 100,
       });
     });
   });
 
-  describe('analyzeProject integration', () => {
-    it('should integrate junk file metrics into analysis', async () => {
+  describe("analyzeProject integration", () => {
+    it("should integrate junk file metrics into analysis", async () => {
       // Mock all the dependencies
       const mockJunkAnalysis: JunkFileAnalysis = {
         totalFiles: 2,
@@ -210,51 +210,51 @@ describe('CodeQualityAnalyzer - JunkFileDetector Integration', () => {
         lowIssues: 0,
         files: [],
         recommendations: [],
-        qualityScore: 80
+        qualityScore: 80,
       };
 
       const mockUpdatedMetrics = {
         linesOfCode: 1000,
         bugs: 0,
         vulnerabilities: 0,
-        codeSmells: 5
+        codeSmells: 5,
       };
 
       const mockFinalMetrics = {
         ...mockUpdatedMetrics,
         junkFiles: 2,
-        junkFileQualityScore: 80
+        junkFileQualityScore: 80,
       };
 
       mockJunkFileDetector.detectJunkFiles.mockResolvedValue(mockJunkAnalysis);
       mockMetricsCalculator.updateMetricsWithJunkFiles.mockReturnValue(mockFinalMetrics);
 
       // Mock other dependencies to prevent actual execution
-      vi.spyOn(analyzer as any, 'fileDiscovery', 'get').mockReturnValue({
-        discoverFiles: vi.fn().mockResolvedValue(['file1.py', 'file2.ts'])
+      vi.spyOn(analyzer as any, "fileDiscovery", "get").mockReturnValue({
+        discoverFiles: vi.fn().mockResolvedValue(["file1.py", "file2.ts"]),
       });
 
-      vi.spyOn(analyzer as any, 'languageAnalyzer', 'get').mockReturnValue({
-        analyzeLanguages: vi.fn().mockResolvedValue([])
+      vi.spyOn(analyzer as any, "languageAnalyzer", "get").mockReturnValue({
+        analyzeLanguages: vi.fn().mockResolvedValue([]),
       });
 
-      vi.spyOn(analyzer as any, 'metricsCalculator', 'get').mockReturnValue({
+      vi.spyOn(analyzer as any, "metricsCalculator", "get").mockReturnValue({
         calculateMetrics: vi.fn().mockResolvedValue(mockUpdatedMetrics),
         updateMetricsWithIssues: vi.fn().mockReturnValue(mockUpdatedMetrics),
-        updateMetricsWithJunkFiles: vi.fn().mockReturnValue(mockFinalMetrics)
+        updateMetricsWithJunkFiles: vi.fn().mockReturnValue(mockFinalMetrics),
       });
 
-      vi.spyOn(analyzer as any, 'issueDetector', 'get').mockReturnValue({
-        detectIssues: vi.fn().mockResolvedValue([])
+      vi.spyOn(analyzer as any, "issueDetector", "get").mockReturnValue({
+        detectIssues: vi.fn().mockResolvedValue([]),
       });
 
-      vi.spyOn(analyzer as any, 'qualityGateEvaluator', 'get').mockReturnValue({
+      vi.spyOn(analyzer as any, "qualityGateEvaluator", "get").mockReturnValue({
         evaluateQualityGates: vi.fn().mockReturnValue([]),
-        determineQualityGateStatus: vi.fn().mockReturnValue('PASSED')
+        determineQualityGateStatus: vi.fn().mockReturnValue("PASSED"),
       });
 
-      vi.spyOn(analyzer as any, 'fileAnalyzer', 'get').mockReturnValue({
-        analyzeFiles: vi.fn().mockResolvedValue([])
+      vi.spyOn(analyzer as any, "fileAnalyzer", "get").mockReturnValue({
+        analyzeFiles: vi.fn().mockResolvedValue([]),
       });
 
       const result = await analyzer.analyzeProject();
@@ -265,44 +265,44 @@ describe('CodeQualityAnalyzer - JunkFileDetector Integration', () => {
       expect(result).toBeDefined();
     });
 
-    it('should handle junk file detection errors in analyzeProject', async () => {
-      const error = new Error('Junk file detection failed');
+    it("should handle junk file detection errors in analyzeProject", async () => {
+      const error = new Error("Junk file detection failed");
       mockJunkFileDetector.detectJunkFiles.mockRejectedValue(error);
 
       // Mock other dependencies to prevent actual execution
-      vi.spyOn(analyzer as any, 'fileDiscovery', 'get').mockReturnValue({
-        discoverFiles: vi.fn().mockResolvedValue(['file1.py'])
+      vi.spyOn(analyzer as any, "fileDiscovery", "get").mockReturnValue({
+        discoverFiles: vi.fn().mockResolvedValue(["file1.py"]),
       });
 
-      vi.spyOn(analyzer as any, 'languageAnalyzer', 'get').mockReturnValue({
-        analyzeLanguages: vi.fn().mockResolvedValue([])
+      vi.spyOn(analyzer as any, "languageAnalyzer", "get").mockReturnValue({
+        analyzeLanguages: vi.fn().mockResolvedValue([]),
       });
 
-      vi.spyOn(analyzer as any, 'metricsCalculator', 'get').mockReturnValue({
+      vi.spyOn(analyzer as any, "metricsCalculator", "get").mockReturnValue({
         calculateMetrics: vi.fn().mockResolvedValue({}),
         updateMetricsWithIssues: vi.fn().mockReturnValue({}),
-        updateMetricsWithJunkFiles: vi.fn().mockReturnValue({})
+        updateMetricsWithJunkFiles: vi.fn().mockReturnValue({}),
       });
 
-      vi.spyOn(analyzer as any, 'issueDetector', 'get').mockReturnValue({
-        detectIssues: vi.fn().mockResolvedValue([])
+      vi.spyOn(analyzer as any, "issueDetector", "get").mockReturnValue({
+        detectIssues: vi.fn().mockResolvedValue([]),
       });
 
-      vi.spyOn(analyzer as any, 'qualityGateEvaluator', 'get').mockReturnValue({
+      vi.spyOn(analyzer as any, "qualityGateEvaluator", "get").mockReturnValue({
         evaluateQualityGates: vi.fn().mockReturnValue([]),
-        determineQualityGateStatus: vi.fn().mockReturnValue('PASSED')
+        determineQualityGateStatus: vi.fn().mockReturnValue("PASSED"),
       });
 
-      vi.spyOn(analyzer as any, 'fileAnalyzer', 'get').mockReturnValue({
-        analyzeFiles: vi.fn().mockResolvedValue([])
+      vi.spyOn(analyzer as any, "fileAnalyzer", "get").mockReturnValue({
+        analyzeFiles: vi.fn().mockResolvedValue([]),
       });
 
-      await expect(analyzer.analyzeProject()).rejects.toThrow('Junk file detection failed');
+      await expect(analyzer.analyzeProject()).rejects.toThrow("Junk file detection failed");
     });
   });
 
-  describe('metrics integration', () => {
-    it('should pass correct junk file metrics to MetricsCalculator', async () => {
+  describe("metrics integration", () => {
+    it("should pass correct junk file metrics to MetricsCalculator", async () => {
       const mockJunkAnalysis: JunkFileAnalysis = {
         totalFiles: 5,
         pythonArtifacts: 2,
@@ -315,7 +315,7 @@ describe('CodeQualityAnalyzer - JunkFileDetector Integration', () => {
         lowIssues: 0,
         files: [],
         recommendations: [],
-        qualityScore: 60
+        qualityScore: 60,
       };
 
       mockJunkFileDetector.detectJunkFiles.mockResolvedValue(mockJunkAnalysis);
@@ -326,11 +326,11 @@ describe('CodeQualityAnalyzer - JunkFileDetector Integration', () => {
         totalJunkFiles: 5,
         criticalJunkFiles: 1,
         highJunkFiles: 3,
-        qualityScore: 60
+        qualityScore: 60,
       });
     });
 
-    it('should handle edge case with no critical or high issues', async () => {
+    it("should handle edge case with no critical or high issues", async () => {
       const mockJunkAnalysis: JunkFileAnalysis = {
         totalFiles: 2,
         pythonArtifacts: 0,
@@ -343,7 +343,7 @@ describe('CodeQualityAnalyzer - JunkFileDetector Integration', () => {
         lowIssues: 1,
         files: [],
         recommendations: [],
-        qualityScore: 95
+        qualityScore: 95,
       };
 
       mockJunkFileDetector.detectJunkFiles.mockResolvedValue(mockJunkAnalysis);
@@ -354,17 +354,17 @@ describe('CodeQualityAnalyzer - JunkFileDetector Integration', () => {
         totalJunkFiles: 2,
         criticalJunkFiles: 0,
         highJunkFiles: 0,
-        qualityScore: 95
+        qualityScore: 95,
       });
     });
   });
 
-  describe('error handling', () => {
-    it('should handle partial failures in getJunkFileMetrics', async () => {
-      const error = new Error('Partial failure');
+  describe("error handling", () => {
+    it("should handle partial failures in getJunkFileMetrics", async () => {
+      const error = new Error("Partial failure");
       mockJunkFileDetector.detectJunkFiles.mockRejectedValue(error);
 
-      await expect(analyzer.getJunkFileMetrics()).rejects.toThrow('Partial failure');
+      await expect(analyzer.getJunkFileMetrics()).rejects.toThrow("Partial failure");
     });
   });
 });

@@ -23,8 +23,10 @@ from services.tool_config_service import ToolConfigService
 
 logger = logging.getLogger(__name__)
 
+
 def log_timing(func_name: str):
     """Decorator to log timing of function execution."""
+
     def decorator(func):
         def wrapper(*args, **kwargs):
             start_time = time.time()
@@ -38,7 +40,9 @@ def log_timing(func_name: str):
                 elapsed = time.time() - start_time
                 logger.error(f"❌ Failed {func_name} after {elapsed:.3f}s: {e}")
                 raise
+
         return wrapper
+
     return decorator
 
 
@@ -75,26 +79,30 @@ class ToolRegistry:
     ) -> None:
         logger.debug("🕐 Starting ToolRegistry.__init__")
         start_time = time.time()
-        
+
         self._tools: Dict[str, ToolMetadata] = {}
         self._categories: Dict[str, set[str]] = {}
         self._auto_sync_enabled = False  # Disable auto-sync to prevent hangs
-        
+
         logger.debug("🕐 Initializing ToolConfigManager...")
         config_start = time.time()
         self._config_manager = config_manager or ToolConfigManager()
-        logger.debug(f"✅ ToolConfigManager initialized in {time.time() - config_start:.3f}s")
-        
+        logger.debug(
+            f"✅ ToolConfigManager initialized in {time.time() - config_start:.3f}s"
+        )
+
         logger.debug("🕐 Initializing ToolConfigService...")
         service_start = time.time()
         self._tool_config_service = tool_config_service or ToolConfigService()
-        logger.debug(f"✅ ToolConfigService initialized in {time.time() - service_start:.3f}s")
-        
+        logger.debug(
+            f"✅ ToolConfigService initialized in {time.time() - service_start:.3f}s"
+        )
+
         logger.debug("🕐 Loading config...")
         config_load_start = time.time()
         self._config = self._config_manager.load_config()
         logger.debug(f"✅ Config loaded in {time.time() - config_load_start:.3f}s")
-        
+
         total_time = time.time() - start_time
         logger.debug(f"✅ ToolRegistry.__init__ completed in {total_time:.3f}s")
 
@@ -106,9 +114,10 @@ class ToolRegistry:
         execution_type: str = "sync",
         enabled: bool = True,
         dependencies: list[str] = None,
-        config: dict[str, Any] = None
+        config: dict[str, Any] = None,
     ):
         """Decorator for automatic tool registration."""
+
         def decorator(func):
             # Get source file and line number
             source_file = inspect.getfile(func)
@@ -125,7 +134,7 @@ class ToolRegistry:
                 config=config or {},
                 handler_method=func,
                 source_file=source_file,
-                line_number=line_number
+                line_number=line_number,
             )
 
             # Register the tool
@@ -136,6 +145,7 @@ class ToolRegistry:
                 self._auto_sync_tool(tool_metadata)
 
             return func
+
         return decorator
 
     def _register_tool_metadata(self, metadata: ToolMetadata):
@@ -219,16 +229,13 @@ class ToolRegistry:
         """Check if a tool is enabled."""
         if tool_name not in self._tools:
             return False
-        
+
         metadata = self._tools[tool_name]
         # If the tool is not in the config service yet, use the metadata enabled state
         if not self._tool_config_service.get_tool_config(tool_name):
             return metadata.enabled
-        
-        return (
-            metadata.enabled and 
-            self._tool_config_service.is_tool_enabled(tool_name)
-        )
+
+        return metadata.enabled and self._tool_config_service.is_tool_enabled(tool_name)
 
     def get_handler(self, tool_name: str) -> ToolMetadata:
         """Get handler for a tool."""
@@ -301,6 +308,7 @@ class ToolRegistry:
 # Global registry instance (lazy initialization)
 _tool_registry = None
 
+
 def get_tool_registry() -> ToolRegistry:
     """Get the global tool registry instance (lazy initialization)."""
     global _tool_registry
@@ -315,6 +323,7 @@ def get_tool_registry() -> ToolRegistry:
         logger.debug("✅ Returning existing ToolRegistry instance")
     return _tool_registry
 
+
 def register_tool(
     name: str,
     category: str,
@@ -322,20 +331,21 @@ def register_tool(
     execution_type: str = "sync",
     enabled: bool = True,
     dependencies: list[str] = None,
-    config: dict[str, Any] = None
+    config: dict[str, Any] = None,
 ):
     """Tool registration decorator - the legendary single-step registration."""
+
     def decorator(func):
         # Store the registration parameters for lazy registration
         func._tool_registration = {
-            'name': name,
-            'category': category,
-            'description': description,
-            'execution_type': execution_type,
-            'enabled': enabled,
-            'dependencies': dependencies or [],
-            'config': config or {}
+            "name": name,
+            "category": category,
+            "description": description,
+            "execution_type": execution_type,
+            "enabled": enabled,
+            "dependencies": dependencies or [],
+            "config": config or {},
         }
         return func
-    
+
     return decorator

@@ -12,8 +12,8 @@ from .gender_system import GenderSystem
 
 __all__ = [
     "MemorySystem",
-    "LearningSystem", 
+    "LearningSystem",
     "InteractionSystem",
     "SocialSystem",
-    "GenderSystem"
+    "GenderSystem",
 ]

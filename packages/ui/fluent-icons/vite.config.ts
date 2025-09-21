@@ -33,4 +33,9 @@ export default defineConfig({
   optimizeDeps: {
     include: ["@fluentui/svg-icons"],
   },
+  resolve: {
+    alias: {
+      "@fluentui/svg-icons": "@fluentui/svg-icons",
+    },
+  },
 });

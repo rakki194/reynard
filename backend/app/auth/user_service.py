@@ -139,7 +139,7 @@ def refresh_user_token(refresh_token: str) -> RefreshResponse:
         HTTPException: If refresh fails
     """
     # Verify refresh token
-    payload = verify_token(refresh_token, "refresh")
+    payload = verify_token_sync(refresh_token, "refresh")
     if not payload:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token"
@@ -186,7 +186,7 @@ def logout_user(refresh_token: str) -> dict[str, str]:
         HTTPException: If logout fails
     """
     # Verify refresh token
-    payload = verify_token(refresh_token, "refresh")
+    payload = verify_token_sync(refresh_token, "refresh")
     if not payload:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token"
@@ -206,7 +206,10 @@ def logout_user(refresh_token: str) -> dict[str, str]:
 
 security = HTTPBearer()
 
-def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)) -> dict[str, str]:
+
+def get_current_user(
+    credentials: HTTPAuthorizationCredentials = Depends(security),
+) -> dict[str, str]:
     """
     Get current user from token.
 
@@ -243,7 +246,9 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
     }
 
 
-def get_current_active_user(current_user: dict[str, str] = Depends(get_current_user)) -> dict[str, str]:
+def get_current_active_user(
+    current_user: dict[str, str] = Depends(get_current_user),
+) -> dict[str, str]:
     """
     Get current active user.
 

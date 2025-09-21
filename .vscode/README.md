@@ -15,15 +15,55 @@ The VSCode configuration provides:
 - **🐺 Adversarial Validation**: Security scanning and quality checks
 - **🧪 Integrated Testing**: Debug configurations for all test types
 - **📚 Documentation Support**: Markdown validation and formatting
+- **🐍 Smart Python Management**: Conditional venv/system Python interpreter selection
+
+## 🐍 Python Interpreter Management
+
+The workspace is configured to **conditionally use `~/venv` or fall back to system Python**:
+
+### Automatic Detection
+
+- **Primary**: Uses `~/venv/bin/python` if the virtual environment exists
+- **Fallback**: Automatically falls back to system Python (`/usr/bin/python3`) if venv is not available
+- **Smart Configuration**: VS Code settings use `${env:HOME}/venv/bin/python` which handles the conditional logic
+
+### Setup Script
+
+Run the Python interpreter setup script to verify your configuration:
+
+```bash
+# From the project root
+bash .vscode/setup-python-interpreter.sh
+```
+
+Or use the VS Code task:
+
+- Press `Ctrl+Shift+P` → "Tasks: Run Task" → "🐍 Setup Python Interpreter"
+
+### Creating a Virtual Environment
+
+If you want to use a virtual environment:
+
+```bash
+# Create virtual environment
+python3 -m venv ~/venv
+
+# Activate it
+source ~/venv/bin/activate
+
+# Install dependencies (if requirements.txt exists)
+pip install -r requirements.txt
+```
 
 ## 📁 Configuration Files
 
 ### Core Configuration
 
-- **`settings.json`** - Main VSCode settings with auto-formatting rules
+- **`settings.json`** - Main VSCode settings with auto-formatting rules and conditional Python interpreter
 - **`extensions.json`** - Recommended extensions for Reynard development
-- **`tasks.json`** - Build and validation tasks
-- **`launch.json`** - Debug configurations
+- **`tasks.json`** - Build and validation tasks with conditional Python support
+- **`launch.json`** - Debug configurations with conditional Python interpreter
+- **`setup-python-interpreter.sh`** - Python interpreter detection and setup script
 - **`README.md`** - This documentation
 
 ### Workspace Configuration

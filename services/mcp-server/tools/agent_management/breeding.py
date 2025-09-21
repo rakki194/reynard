@@ -290,7 +290,9 @@ class BreedingAgentTools:
     ) -> str:
         """Format genetic compatibility response text."""
         result_text = "Genetic Compatibility Analysis:\n"
-        result_text += f"Compatibility Score: {compatibility:.2f} ({compatibility * 100:.0f}%)\n"
+        result_text += (
+            f"Compatibility Score: {compatibility:.2f} ({compatibility * 100:.0f}%)\n"
+        )
         result_text += f"Analysis: {analysis}\n"
         result_text += f"Recommended for breeding: {'Yes' if recommended else 'No'}\n"
 
@@ -303,6 +305,8 @@ class BreedingAgentTools:
             mate_id = mate_data.get("agent_id", "Unknown")
             mate_name = mate_data.get("name", mate_id)
             compatibility = mate_data.get("compatibility", 0.0)
-            mates_text += f"{i}. {mate_name} ({mate_id}) - {compatibility:.2f} compatibility\n"
+            mates_text += (
+                f"{i}. {mate_name} ({mate_id}) - {compatibility:.2f} compatibility\n"
+            )
 
         return mates_text

@@ -57,18 +57,10 @@ class BatchExecutor:
             List of results
         """
         limit = limit or self._executor._config.max_workers
-        results = []
-        executing = []
+        semaphore = asyncio.Semaphore(limit)
+        
+        async def execute_with_semaphore(task):
+            async with semaphore:
+                return await self._executor.execute(task)
 
-        for i, task in enumerate(tasks):
-            promise = self._executor.execute(task).then(
-                lambda result, idx=i: results.insert(idx, result)
-            )
-            executing.append(promise)
-
-            if len(executing) >= limit:
-                await Promise.race(executing)
-                executing = [p for p in executing if not p.done()]
-
-        await asyncio.gather(*executing)
-        return results
+        return await asyncio.gather(*[execute_with_semaphore(task) for task in tasks])

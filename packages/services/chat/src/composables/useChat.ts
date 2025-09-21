@@ -117,7 +117,7 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     () => endpoint,
     async url => {
       try {
-        const response = await fetchFn(`${url}/health`, {
+        const response = await fetchFn(`${url}/api/health`, {
           headers: authHeaders,
         });
         return response.ok;

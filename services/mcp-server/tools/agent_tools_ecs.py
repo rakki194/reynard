@@ -23,7 +23,9 @@ from .agent_management.behavior import BehaviorAgentTools
 class ECSAgentTools:
     """Handles ECS world simulation integration for agents."""
 
-    def __init__(self, agent_manager: BackendAgentManager, ecs_agent_tools: Any = None) -> None:
+    def __init__(
+        self, agent_manager: BackendAgentManager, ecs_agent_tools: Any = None
+    ) -> None:
         self.agent_manager = agent_manager
         self.ecs_agent_tools = ecs_agent_tools
         self.behavior_tools = BehaviorAgentTools()
@@ -59,7 +61,12 @@ class ECSAgentTools:
         if not preferred_style:
             available_styles = await dynamic_enum_service.get_available_styles()
             import random
-            preferred_style = random.choice(list(available_styles)) if available_styles else "foundation"
+
+            preferred_style = (
+                random.choice(list(available_styles))
+                if available_styles
+                else "foundation"
+            )
         else:
             preferred_style = await dynamic_enum_service.validate_style(preferred_style)
 
@@ -68,7 +75,9 @@ class ECSAgentTools:
             agent_id, spirit, preferred_style
         )
 
-        startup_text = await self._format_startup_response(agent_data, spirit, preferred_style)
+        startup_text = await self._format_startup_response(
+            agent_data, spirit, preferred_style
+        )
 
         return {
             "content": [
@@ -172,57 +181,61 @@ class ECSAgentTools:
         try:
             # Import ECS client
             from services.ecs_client import get_ecs_client
-            
+
             # Get ECS client and create agent
             ecs_client = get_ecs_client()
             await ecs_client.start()
-            
-            # Create agent in FastAPI backend ECS
-            result = await ecs_client.create_agent(
-                agent_id=agent_id,
-                spirit=spirit,
-                style=style
-            )
-            
+
+            try:
+                # Create agent in FastAPI backend ECS
+                result = await ecs_client.create_agent(
+                    agent_id=agent_id, spirit=spirit, style=style
+                )
+            finally:
+                # Always close the client session
+                await ecs_client.close()
+
             if result.get("success"):
                 # Get agent name from result or generate one
-                agent_name = result.get("name") or self.agent_manager.generate_name(spirit, style)
-                
+                agent_name = result.get(
+                    "name"
+                ) or await self.agent_manager.generate_name(spirit, style)
+
                 # Assign name in agent manager for persistence
                 self.agent_manager.assign_name(agent_id, agent_name)
-                
+
                 return {
                     "agent_id": agent_id,
                     "name": agent_name,
                     "ecs_available": True,
                     "fastapi_ecs": True,
                     "persona": result.get("persona", {}),
-                    "lora_config": result.get("lora_config", {})
+                    "lora_config": result.get("lora_config", {}),
                 }
             else:
                 # Fallback to basic creation
-                agent_name = self.agent_manager.generate_name(spirit, style)
+                agent_name = await self.agent_manager.generate_name(spirit, style)
                 self.agent_manager.assign_name(agent_id, agent_name)
-                
+
                 return {
                     "agent_id": agent_id,
                     "name": agent_name,
                     "ecs_available": False,
                     "fastapi_ecs": False,
-                    "error": result.get("error", "Unknown error")
+                    "error": result.get("error", "Unknown error"),
                 }
-                
+
         except Exception as e:
             # Fallback to basic creation
-            agent_name = self.agent_manager.generate_name(spirit, style)
+            agent_name = await self.agent_manager.generate_name(spirit, style)
             self.agent_manager.assign_name(agent_id, agent_name)
-            
+
             return {
                 "agent_id": agent_id,
                 "name": agent_name,
                 "ecs_available": False,
                 "fastapi_ecs": False,
-                "error": str(e)
+                "error": str(e),
             }
 
     def _get_spirit_emoji(self, spirit: str) -> str:
@@ -234,7 +247,7 @@ class ECSAgentTools:
             "eagle": "🦅",
             "lion": "🦁",
             "tiger": "🐅",
-            "dragon": "🐉"
+            "dragon": "🐉",
         }
         return spirit_emojis.get(spirit, "🦊")  # Default to fox emoji
 
@@ -256,9 +269,13 @@ class ECSAgentTools:
         if agent_data.get("ecs_available", False):
             startup_text += self._format_ecs_startup_info(agent_data)
             # Add location and nearby agents information
-            startup_text += await self._format_agent_location_info(agent_data['agent_id'])
+            startup_text += await self._format_agent_location_info(
+                agent_data["agent_id"]
+            )
             # Add social interactions information
-            startup_text += await self._format_social_interactions_info(agent_data['agent_id'])
+            startup_text += await self._format_social_interactions_info(
+                agent_data["agent_id"]
+            )
 
         startup_text += "\n🔧 Development Environment:\n"
         startup_text += self._format_version_info()
@@ -295,8 +312,12 @@ class ECSAgentTools:
             ecs_text += "     • Loves to show off new skills\n"
             ecs_text += "     • Has a habit of grooming others' fur\n"
             ecs_text += "     • Has a collection of smooth stones\n"
-            ecs_text += "   📖 Backstory: Spent their childhood exploring rivers and streams\n"
-            ecs_text += "   🎮 Favorite Activities: Playing games, Exploring, Playing games\n"
+            ecs_text += (
+                "   📖 Backstory: Spent their childhood exploring rivers and streams\n"
+            )
+            ecs_text += (
+                "   🎮 Favorite Activities: Playing games, Exploring, Playing games\n"
+            )
             ecs_text += "   🎯 Goals: Teach and learn\n"
             ecs_text += "   💕 Relationships: Prefers close, meaningful relationships with a few trusted individuals. Values personal space.\n"
             ecs_text += "   💼 Work Style: Makes work fun and engaging. Brings energy and enthusiasm to any task.\n"
@@ -367,13 +388,19 @@ class ECSAgentTools:
     ) -> str:
         """Format ECS status information."""
         status_text = "ECS World Simulation Status:\n"
-        status_text += f"Simulation Time: {agent_status.get('simulation_time', 0):.2f}\n"
-        status_text += f"Time Acceleration: {agent_status.get('time_acceleration', 1):.1f}x\n"
+        status_text += (
+            f"Simulation Time: {agent_status.get('simulation_time', 0):.2f}\n"
+        )
+        status_text += (
+            f"Time Acceleration: {agent_status.get('time_acceleration', 1):.1f}x\n"
+        )
         status_text += f"Total Agents: {total_agents}\n"
         status_text += f"Mature Agents: {mature_agents}\n"
         status_text += f"Agent Personas: {agent_status.get('agent_personas', 0)}\n"
         status_text += f"LoRA Configs: {agent_status.get('lora_configs', 0)}\n"
-        status_text += f"Real Time Elapsed: {agent_status.get('real_time_elapsed', 0):.2f}s\n"
+        status_text += (
+            f"Real Time Elapsed: {agent_status.get('real_time_elapsed', 0):.2f}s\n"
+        )
 
         return status_text
 
@@ -393,84 +420,109 @@ class ECSAgentTools:
     async def _format_agent_location_info(self, agent_id: str) -> str:
         """Format agent location and nearby agents information."""
         location_text = "\n==================================================\n🌍 ECS WORLD SIMULATION\n==================================================\n"
-        
+
         try:
             # Get agent location from FastAPI backend ECS
             from services.ecs_client import get_ecs_client
-            
+
             ecs_client = get_ecs_client()
             await ecs_client.start()
-            
-            # Get agent position
-            position_result = await ecs_client.get_agent_position(agent_id)
-            if position_result:
-                location_text += f"📍 Current Location: ({position_result['x']:.1f}, {position_result['y']:.1f})\n"
-                location_text += f"🎯 Target: ({position_result['target_x']:.1f}, {position_result['target_y']:.1f})\n"
-                location_text += f"⚡ Movement Speed: {position_result['movement_speed']:.1f}\n"
-                
-                # Get nearby agents
-                nearby_result = await ecs_client.get_nearby_agents(agent_id, radius=200.0)
-                nearby_agents = nearby_result.get("nearby_agents", [])
-                
-                if nearby_agents:
-                    # Sort by distance and take top 3
-                    nearby_agents.sort(key=lambda x: x['distance'])
-                    top_3 = nearby_agents[:3]
-                    
-                    location_text += f"\n👥 Nearby Agents ({len(top_3)}):\n"
-                    for i, agent in enumerate(top_3, 1):
-                        location_text += f"   {i}. {agent['name']} ({agent['agent_id'][:8]}...)\n"
-                        location_text += f"      Distance: {agent['distance']:.1f} units\n"
-                        location_text += f"      Location: ({agent['x']:.1f}, {agent['y']:.1f})\n"
-                        location_text += f"      Spirit: {agent['spirit']}\n"
+
+            try:
+                # Get agent position
+                position_result = await ecs_client.get_agent_position(agent_id)
+                if position_result:
+                    location_text += f"📍 Current Location: ({position_result['x']:.1f}, {position_result['y']:.1f})\n"
+                    location_text += f"🎯 Target: ({position_result['target_x']:.1f}, {position_result['target_y']:.1f})\n"
+                    location_text += (
+                        f"⚡ Movement Speed: {position_result['movement_speed']:.1f}\n"
+                    )
+
+                    # Get nearby agents
+                    nearby_result = await ecs_client.get_nearby_agents(
+                        agent_id, radius=200.0
+                    )
+                    nearby_agents = nearby_result.get("nearby_agents", [])
+
+                    if nearby_agents:
+                        # Sort by distance and take top 3
+                        nearby_agents.sort(key=lambda x: x["distance"])
+                        top_3 = nearby_agents[:3]
+
+                        location_text += f"\n👥 Nearby Agents ({len(top_3)}):\n"
+                        for i, agent in enumerate(top_3, 1):
+                            location_text += f"   {i}. {agent['name']} ({agent['agent_id'][:8]}...)\n"
+                            location_text += (
+                                f"      Distance: {agent['distance']:.1f} units\n"
+                            )
+                            location_text += f"      Location: ({agent['x']:.1f}, {agent['y']:.1f})\n"
+                            location_text += f"      Spirit: {agent['spirit']}\n"
+                    else:
+                        location_text += "\n👥 Nearby Agents: None found\n"
                 else:
-                    location_text += "\n👥 Nearby Agents: None found\n"
-            else:
-                location_text += "📍 Current Location: Agent not found in ECS world\n"
-                
+                    location_text += (
+                        "📍 Current Location: Agent not found in ECS world\n"
+                    )
+            finally:
+                # Always close the client session
+                await ecs_client.close()
+
         except Exception as e:
-            location_text += f"📍 Current Location: Error retrieving location - {str(e)}\n"
-            
+            location_text += (
+                f"📍 Current Location: Error retrieving location - {str(e)}\n"
+            )
+
         return location_text
 
     async def _format_social_interactions_info(self, agent_id: str) -> str:
         """Format social interactions and communications information."""
         social_text = ""
-        
+
         try:
             # Get social interactions from FastAPI backend ECS
             from services.ecs_client import get_ecs_client
-            
+
             ecs_client = get_ecs_client()
             await ecs_client.start()
-            
-            # Get recent interactions
-            interactions_result = await ecs_client.get_interaction_history(agent_id, limit=5)
-            recent_interactions = interactions_result.get("interactions", [])
-            
-            if recent_interactions:
-                social_text += f"\n💬 Recent Communications ({len(recent_interactions)}):\n"
-                for interaction in recent_interactions:
-                    social_text += f"   • {interaction.get('type', 'communication')} with {interaction.get('participant', 'Unknown')}\n"
-                    social_text += f"     Outcome: {interaction.get('outcome', 'neutral')} | Impact: {interaction.get('impact', 0.0):+.2f}\n"
-                    social_text += f"     Time: {interaction.get('timestamp', 'Unknown')}\n"
-            else:
-                social_text += "\n💬 Recent Communications: None\n"
-            
-            # Get social stats
-            social_stats_result = await ecs_client.get_agent_social_stats(agent_id)
-            if social_stats_result:
-                social_text += "\n🤝 Social Network:\n"
-                social_text += f"   Total Relationships: {social_stats_result.get('total_relationships', 0)}\n"
-                social_text += f"   Positive: {social_stats_result.get('positive_relationships', 0)} | Negative: {social_stats_result.get('negative_relationships', 0)}\n"
-                social_text += f"   Social Energy: {social_stats_result.get('social_energy', 0.0):.1f}/{social_stats_result.get('max_social_energy', 1.0):.1f}\n"
-                social_text += f"   Active Interactions: {social_stats_result.get('active_interactions', 0)}\n"
-                social_text += f"   Communication Style: {social_stats_result.get('communication_style', 'casual')}\n"
-            else:
-                social_text += "\n🤝 Social Network: No data available\n"
-                
-        except Exception as e:
-            social_text += f"\n💬 Social Information: Error retrieving data - {str(e)}\n"
-            
-        return social_text
 
+            try:
+                # Get recent interactions
+                interactions_result = await ecs_client.get_interaction_history(
+                    agent_id, limit=5
+                )
+                recent_interactions = interactions_result.get("interactions", [])
+
+                if recent_interactions:
+                    social_text += (
+                        f"\n💬 Recent Communications ({len(recent_interactions)}):\n"
+                    )
+                    for interaction in recent_interactions:
+                        social_text += f"   • {interaction.get('type', 'communication')} with {interaction.get('participant', 'Unknown')}\n"
+                        social_text += f"     Outcome: {interaction.get('outcome', 'neutral')} | Impact: {interaction.get('impact', 0.0):+.2f}\n"
+                        social_text += (
+                            f"     Time: {interaction.get('timestamp', 'Unknown')}\n"
+                        )
+                else:
+                    social_text += "\n💬 Recent Communications: None\n"
+
+                # Get social stats
+                social_stats_result = await ecs_client.get_agent_social_stats(agent_id)
+                if social_stats_result:
+                    social_text += "\n🤝 Social Network:\n"
+                    social_text += f"   Total Relationships: {social_stats_result.get('total_relationships', 0)}\n"
+                    social_text += f"   Positive: {social_stats_result.get('positive_relationships', 0)} | Negative: {social_stats_result.get('negative_relationships', 0)}\n"
+                    social_text += f"   Social Energy: {social_stats_result.get('social_energy', 0.0):.1f}/{social_stats_result.get('max_social_energy', 1.0):.1f}\n"
+                    social_text += f"   Active Interactions: {social_stats_result.get('active_interactions', 0)}\n"
+                    social_text += f"   Communication Style: {social_stats_result.get('communication_style', 'casual')}\n"
+                else:
+                    social_text += "\n🤝 Social Network: No data available\n"
+            finally:
+                # Always close the client session
+                await ecs_client.close()
+
+        except Exception as e:
+            social_text += (
+                f"\n💬 Social Information: Error retrieving data - {str(e)}\n"
+            )
+
+        return social_text

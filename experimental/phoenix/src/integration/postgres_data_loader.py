@@ -77,11 +77,14 @@ class PostgresDataLoader:
 
             # Filter for Phoenix test agents
             phoenix_agents = [
-                agent for agent in all_agents
-                if 'generation' in agent.get('agent_id', '')
+                agent
+                for agent in all_agents
+                if "generation" in agent.get("agent_id", "")
             ]
 
-            logger.info(f"✅ Loaded {len(phoenix_agents)} Phoenix test agents from PostgreSQL")
+            logger.info(
+                f"✅ Loaded {len(phoenix_agents)} Phoenix test agents from PostgreSQL"
+            )
             return phoenix_agents
 
         except Exception as e:
@@ -105,21 +108,23 @@ class PostgresDataLoader:
 
             # Create agent in PostgreSQL
             result = await self.ecs_service.create_agent(
-                agent_id=agent_data.get('agent_id'),
-                name=agent_data.get('name'),
-                spirit=agent_data.get('spirit'),
-                style=agent_data.get('style'),
-                generation=agent_data.get('generation', 1),
-                personality_traits=agent_data.get('personality_traits', {}),
-                physical_traits=agent_data.get('physical_traits', {}),
-                ability_traits=agent_data.get('ability_traits', {}),
-                specializations=agent_data.get('specializations', []),
-                domain_expertise=agent_data.get('domain_expertise', []),
-                achievements=agent_data.get('achievements', []),
-                workflow_preferences=agent_data.get('workflow_preferences', {})
+                agent_id=agent_data.get("agent_id"),
+                name=agent_data.get("name"),
+                spirit=agent_data.get("spirit"),
+                style=agent_data.get("style"),
+                generation=agent_data.get("generation", 1),
+                personality_traits=agent_data.get("personality_traits", {}),
+                physical_traits=agent_data.get("physical_traits", {}),
+                ability_traits=agent_data.get("ability_traits", {}),
+                specializations=agent_data.get("specializations", []),
+                domain_expertise=agent_data.get("domain_expertise", []),
+                achievements=agent_data.get("achievements", []),
+                workflow_preferences=agent_data.get("workflow_preferences", {}),
             )
 
-            logger.info(f"✅ Saved agent data for {agent_data.get('agent_id')} to PostgreSQL")
+            logger.info(
+                f"✅ Saved agent data for {agent_data.get('agent_id')} to PostgreSQL"
+            )
             return True
 
         except Exception as e:
@@ -142,16 +147,18 @@ class PostgresDataLoader:
                 return {}
 
             return {
-                'personality_traits': agent_data.get('personality_traits', {}),
-                'physical_traits': agent_data.get('physical_traits', {}),
-                'ability_traits': agent_data.get('ability_traits', {})
+                "personality_traits": agent_data.get("personality_traits", {}),
+                "physical_traits": agent_data.get("physical_traits", {}),
+                "ability_traits": agent_data.get("ability_traits", {}),
             }
 
         except Exception as e:
             logger.error(f"❌ Failed to get traits for {agent_id}: {e}")
             return {}
 
-    async def get_agent_performance_metrics(self, agent_id: str) -> List[Dict[str, Any]]:
+    async def get_agent_performance_metrics(
+        self, agent_id: str
+    ) -> List[Dict[str, Any]]:
         """
         Get agent performance metrics from PostgreSQL.
 
@@ -168,7 +175,7 @@ class PostgresDataLoader:
 
             # Extract performance metrics from agent data
             # This would need to be implemented based on the actual data structure
-            return agent_data.get('performance_metrics', [])
+            return agent_data.get("performance_metrics", [])
 
         except Exception as e:
             logger.error(f"❌ Failed to get performance metrics for {agent_id}: {e}")
@@ -194,20 +201,20 @@ class PostgresDataLoader:
 
             # Perform comparison
             comparison = {
-                'agent1': agent1_id,
-                'agent2': agent2_id,
-                'personality_similarity': self._calculate_trait_similarity(
-                    agent1_data.get('personality_traits', {}),
-                    agent2_data.get('personality_traits', {})
+                "agent1": agent1_id,
+                "agent2": agent2_id,
+                "personality_similarity": self._calculate_trait_similarity(
+                    agent1_data.get("personality_traits", {}),
+                    agent2_data.get("personality_traits", {}),
                 ),
-                'physical_similarity': self._calculate_trait_similarity(
-                    agent1_data.get('physical_traits', {}),
-                    agent2_data.get('physical_traits', {})
+                "physical_similarity": self._calculate_trait_similarity(
+                    agent1_data.get("physical_traits", {}),
+                    agent2_data.get("physical_traits", {}),
                 ),
-                'ability_similarity': self._calculate_trait_similarity(
-                    agent1_data.get('ability_traits', {}),
-                    agent2_data.get('ability_traits', {})
-                )
+                "ability_similarity": self._calculate_trait_similarity(
+                    agent1_data.get("ability_traits", {}),
+                    agent2_data.get("ability_traits", {}),
+                ),
             }
 
             logger.info(f"✅ Compared agents {agent1_id} and {agent2_id}")
@@ -217,7 +224,9 @@ class PostgresDataLoader:
             logger.error(f"❌ Failed to compare agents: {e}")
             return {}
 
-    def _calculate_trait_similarity(self, traits1: Dict[str, float], traits2: Dict[str, float]) -> float:
+    def _calculate_trait_similarity(
+        self, traits1: Dict[str, float], traits2: Dict[str, float]
+    ) -> float:
         """
         Calculate similarity between two trait dictionaries.
 
@@ -237,7 +246,9 @@ class PostgresDataLoader:
             return 0.0
 
         # Calculate average absolute difference
-        total_diff = sum(abs(traits1[trait] - traits2[trait]) for trait in common_traits)
+        total_diff = sum(
+            abs(traits1[trait] - traits2[trait]) for trait in common_traits
+        )
         avg_diff = total_diff / len(common_traits)
 
         # Convert to similarity (1.0 - avg_diff)

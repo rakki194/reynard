@@ -10,11 +10,10 @@ from .liwc_analyzer import LiwcAnalyzer
 from .transformer_analyzer import TransformerAnalyzer
 
 __all__ = [
-    'PatternAnalyzer',
-    'SentimentAnalyzer', 
-    'HexacoAnalyzer',
-    'EpistemicHumilityAnalyzer',
-    'LiwcAnalyzer',
-    'TransformerAnalyzer'
+    "PatternAnalyzer",
+    "SentimentAnalyzer",
+    "HexacoAnalyzer",
+    "EpistemicHumilityAnalyzer",
+    "LiwcAnalyzer",
+    "TransformerAnalyzer",
 ]
-

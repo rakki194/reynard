@@ -41,19 +41,19 @@ describe("Main exports and factory functions", () => {
     mockAnalyzer = {
       analyzeProject: vi.fn(),
     };
-    
+
     mockQualityGateManager = {
       evaluateQualityGates: vi.fn(),
     };
-    
+
     mockSecurityIntegration = {
       runSecurityAnalysis: vi.fn(),
     };
-    
+
     mockAIEngine = {};
     mockBehavioralEngine = {};
     mockEnhancedSecurityEngine = {};
-    
+
     mockOrchestrator = {
       runCompleteAnalysis: vi.fn(),
       runEnhancedAnalysis: vi.fn(),
@@ -346,10 +346,7 @@ describe("Main exports and factory functions", () => {
         includeQualityGates: true,
       });
 
-      expect(mockSecurityIntegration.runSecurityAnalysis).toHaveBeenCalledWith([
-        "/test/file1.ts",
-        "/test/file2.py",
-      ]);
+      expect(mockSecurityIntegration.runSecurityAnalysis).toHaveBeenCalledWith(["/test/file1.ts", "/test/file2.py"]);
     });
   });
 

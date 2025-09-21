@@ -61,8 +61,12 @@ class NaturalLanguageSearchRequest(BaseModel):
 
     query: str = Field(..., description="Natural language search query")
     max_results: int = Field(20, description="Maximum number of results to return")
-    file_types: Optional[List[str]] = Field(None, description="File extensions to search in")
-    directories: Optional[List[str]] = Field(None, description="Directories to search in")
+    file_types: Optional[List[str]] = Field(
+        None, description="File extensions to search in"
+    )
+    directories: Optional[List[str]] = Field(
+        None, description="Directories to search in"
+    )
     enable_expansion: bool = Field(True, description="Enable query expansion")
     confidence_threshold: float = Field(0.6, description="Minimum confidence threshold")
 
@@ -72,30 +76,38 @@ class IntelligentSearchRequest(BaseModel):
 
     query: str = Field(..., description="Search query (natural language or structured)")
     max_results: int = Field(20, description="Maximum number of results to return")
-    file_types: Optional[List[str]] = Field(None, description="File extensions to search in")
-    directories: Optional[List[str]] = Field(None, description="Directories to search in")
-    search_modes: Optional[List[str]] = Field(None, description="Specific search modes to use")
+    file_types: Optional[List[str]] = Field(
+        None, description="File extensions to search in"
+    )
+    directories: Optional[List[str]] = Field(
+        None, description="Directories to search in"
+    )
+    search_modes: Optional[List[str]] = Field(
+        None, description="Specific search modes to use"
+    )
 
 
 class ContextualSearchRequest(BaseModel):
     """Request model for contextual search."""
 
     query: str = Field(..., description="Search query")
-    context: Optional[Dict[str, Any]] = Field(None, description="Additional context information")
+    context: Optional[Dict[str, Any]] = Field(
+        None, description="Additional context information"
+    )
     max_results: int = Field(20, description="Maximum number of results to return")
 
 
 def get_search_service() -> SearchService:
     """
     Get the search service instance from the service registry.
-    
+
     Retrieves the initialized search service from the global service registry.
     This function ensures that the search service is properly initialized and
     available before processing search requests.
-    
+
     Returns:
         SearchService: The initialized search service instance
-        
+
     Raises:
         HTTPException: If the search service is not available or not initialized
     """
@@ -114,15 +126,17 @@ def get_search_service() -> SearchService:
 
 
 @router.post("/semantic", response_model=dict[str, Any])
-async def semantic_search(request: SemanticSearchRequest, http_request: Request) -> JSONResponse:
+async def semantic_search(
+    request: SemanticSearchRequest, http_request: Request
+) -> JSONResponse:
     """
     Perform semantic search using vector embeddings with intelligent caching.
-    
+
     This endpoint provides advanced code search capabilities that understand the
     semantic meaning and context of queries, not just exact text matches. It uses
     vector embeddings and machine learning models to find conceptually related
     code, functions, and documentation.
-    
+
     Features:
     - Vector-based similarity search using sentence transformers
     - Integration with RAG backend for enhanced results
@@ -130,17 +144,17 @@ async def semantic_search(request: SemanticSearchRequest, http_request: Request)
     - Support for file type and directory filtering
     - Configurable similarity thresholds
     - Performance monitoring and metrics
-    
+
     Args:
         request: SemanticSearchRequest containing query parameters
         http_request: FastAPI Request object for metadata extraction
-        
+
     Returns:
         JSONResponse: Search results with performance metadata
-        
+
     Raises:
         HTTPException: If search fails or service is unavailable
-        
+
     Example:
         ```json
         {
@@ -153,19 +167,19 @@ async def semantic_search(request: SemanticSearchRequest, http_request: Request)
         ```
     """
     start_time = time.time()
-    
+
     try:
         search_service = get_search_service()
         result = await search_service.semantic_search(request)
-        
+
         # Add performance metadata
         response_data = result.dict()
         response_data["performance"] = {
             "endpoint_time_ms": (time.time() - start_time) * 1000,
             "client_ip": http_request.client.host if http_request.client else "unknown",
-            "user_agent": http_request.headers.get("user-agent", "unknown")
+            "user_agent": http_request.headers.get("user-agent", "unknown"),
         }
-        
+
         return JSONResponse(content=response_data)
     except Exception as e:
         logger.exception("Semantic search failed")
@@ -208,7 +222,9 @@ async def hybrid_search(request: HybridSearchRequest) -> JSONResponse:
 
 
 @router.post("/natural-language", response_model=dict[str, Any])
-async def natural_language_search(request: NaturalLanguageSearchRequest) -> JSONResponse:
+async def natural_language_search(
+    request: NaturalLanguageSearchRequest,
+) -> JSONResponse:
     """Perform natural language search with intelligent query processing."""
     try:
         search_service = get_search_service()
@@ -421,10 +437,10 @@ async def health_check() -> dict[str, str]:
             "status": "healthy",
             "service": "search",
             "indexed_files": "0",  # Not tracked in current implementation
-            "total_chunks": "0",   # Not tracked in current implementation
+            "total_chunks": "0",  # Not tracked in current implementation
             "search_count": str(stats.get("search_count", 0)),
             "avg_search_time": f"{stats.get('avg_search_time', 0):.2f}ms",
-            "cache_hit_rate": f"{stats.get('cache_hit_rate', 0):.1f}%"
+            "cache_hit_rate": f"{stats.get('cache_hit_rate', 0):.1f}%",
         }
     except Exception as e:
         logger.exception("Health check failed")
@@ -435,15 +451,15 @@ async def health_check() -> dict[str, str]:
 async def get_performance_metrics() -> Dict[str, Any]:
     """
     Get detailed performance metrics for the search service.
-    
+
     Returns comprehensive performance data including cache statistics,
     search metrics, and optimization status.
     """
     try:
         search_service = get_search_service()
-        
+
         # Get performance metrics if available
-        if hasattr(search_service, 'get_performance_metrics'):
+        if hasattr(search_service, "get_performance_metrics"):
             metrics = search_service.get_performance_metrics()
         else:
             # Fallback for non-optimized service
@@ -452,50 +468,43 @@ async def get_performance_metrics() -> Dict[str, Any]:
                 "search_metrics": {
                     "total_searches": stats.search_count,
                     "avg_search_time_ms": stats.avg_search_time,
-                    "cache_hit_rate": stats.cache_hit_rate
+                    "cache_hit_rate": stats.cache_hit_rate,
                 },
-                "cache_status": {
-                    "redis_available": False,
-                    "legacy_cache_size": 0
-                },
-                "optimization_status": {
-                    "optimization_available": False
-                }
+                "cache_status": {"redis_available": False, "legacy_cache_size": 0},
+                "optimization_status": {"optimization_available": False},
             }
-        
-        return {
-            "status": "success",
-            "timestamp": time.time(),
-            "metrics": metrics
-        }
-        
+
+        return {"status": "success", "timestamp": time.time(), "metrics": metrics}
+
     except Exception as e:
         logger.exception("Failed to get performance metrics")
         raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.post("/cache/clear")
-async def clear_search_cache(namespace: str = Query("search_results", description="Cache namespace to clear")) -> Dict[str, Any]:
+async def clear_search_cache(
+    namespace: str = Query("search_results", description="Cache namespace to clear")
+) -> Dict[str, Any]:
     """
     Clear search cache.
-    
+
     Allows clearing of cached search results to force fresh searches.
     """
     try:
         search_service = get_search_service()
-        
-        if hasattr(search_service, 'clear_cache'):
+
+        if hasattr(search_service, "clear_cache"):
             result = await search_service.clear_cache()
             return {
                 "status": "success" if result.get("success", False) else "failed",
-                "message": result.get("message", "Cache cleared successfully")
+                "message": result.get("message", "Cache cleared successfully"),
             }
         else:
             return {
                 "status": "not_supported",
-                "message": "Cache clearing not supported by this service version"
+                "message": "Cache clearing not supported by this service version",
             }
-            
+
     except Exception as e:
         logger.exception("Failed to clear cache")
         raise HTTPException(status_code=500, detail=str(e)) from e
@@ -508,10 +517,10 @@ async def analyze_query(
     """Analyze a query to understand its intent and structure."""
     try:
         search_service = get_search_service()
-        
+
         # Process the query using the NLP processor
         processed_query = search_service.nlp_processor.process_query(query)
-        
+
         return {
             "success": True,
             "query": query,

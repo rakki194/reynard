@@ -14,6 +14,7 @@ from enum import Enum
 
 class ExperimentType(Enum):
     """Types of reconstruction experiments."""
+
     BASELINE = "baseline"
     PHOENIX_EVOLUTIONARY = "phoenix_evolutionary"
     PHOENIX_DIRECT = "phoenix_direct"
@@ -22,6 +23,7 @@ class ExperimentType(Enum):
 
 class EvaluationMetric(Enum):
     """Evaluation metrics for reconstruction success."""
+
     TRAIT_ACCURACY = "trait_accuracy"
     PERFORMANCE_MATCH = "performance_match"
     BEHAVIORAL_SIMILARITY = "behavioral_similarity"
@@ -35,7 +37,9 @@ class ExperimentConfig:
 
     # Experiment parameters
     experiment_type: ExperimentType
-    target_agent_id: str = "permanent-release-manager-success-advisor-8"  # Updated for PostgreSQL
+    target_agent_id: str = (
+        "permanent-release-manager-success-advisor-8"  # Updated for PostgreSQL
+    )
     population_size: int = 50
     max_generations: int = 20
     num_trials: int = 10
@@ -48,7 +52,9 @@ class ExperimentConfig:
 
     # Data source configuration
     use_postgresql: bool = True  # Use PostgreSQL instead of JSON files
-    postgres_connection_url: str = "postgresql://postgres:password@localhost:5432/reynard_ecs"
+    postgres_connection_url: str = (
+        "postgresql://postgres:password@localhost:5432/reynard_ecs"
+    )
 
     # Evaluation parameters
     evaluation_metrics: List[EvaluationMetric] = None
@@ -72,7 +78,7 @@ class ExperimentConfig:
             self.evaluation_metrics = [
                 EvaluationMetric.TRAIT_ACCURACY,
                 EvaluationMetric.PERFORMANCE_MATCH,
-                EvaluationMetric.BEHAVIORAL_SIMILARITY
+                EvaluationMetric.BEHAVIORAL_SIMILARITY,
             ]
 
 
@@ -108,7 +114,6 @@ def create_success_advisor_target() -> AgentReconstructionTarget:
         name="Success-Advisor-8",
         spirit="lion",
         style="foundation",
-
         personality_traits={
             "determination": 0.95,
             "protectiveness": 0.88,
@@ -117,50 +122,44 @@ def create_success_advisor_target() -> AgentReconstructionTarget:
             "confidence": 0.94,
             "strategic_thinking": 0.89,
             "reliability": 0.93,
-            "excellence": 0.91
+            "excellence": 0.91,
         },
-
         physical_traits={
             "size": 0.85,
             "strength": 0.90,
             "agility": 0.75,
             "endurance": 0.88,
             "appearance": 0.87,
-            "grace": 0.82
+            "grace": 0.82,
         },
-
         ability_traits={
             "strategist": 0.95,
             "leader": 0.92,
             "protector": 0.90,
             "coordinator": 0.88,
             "analyzer": 0.85,
-            "communicator": 0.87
+            "communicator": 0.87,
         },
-
         expected_accuracy=0.95,
         expected_response_time=1.2,
         expected_consistency=0.94,
-
         domain_expertise=[
             "release_management",
             "quality_assurance",
             "automation",
             "phoenix_framework",
-            "reynard_ecosystem"
+            "reynard_ecosystem",
         ],
-
         specializations=[
             "Release Management",
             "Quality Assurance",
             "Automation",
-            "Agent Development"
+            "Agent Development",
         ],
-
         achievements=[
             "Successfully released v0.8.7",
             "Implemented PHOENIX framework",
             "Created comprehensive documentation",
-            "Established agent state persistence"
-        ]
+            "Established agent state persistence",
+        ],
     )
