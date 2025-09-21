@@ -6,23 +6,23 @@ Migrates Success-Advisor-8's complete genomic information to PostgreSQL database
 
 import json
 import logging
-from pathlib import Path
-from typing import Dict, Any, List
 from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Dict, List
 
 from .database import (
-    ecs_db,
-    Agent,
-    PersonalityTrait,
-    PhysicalTrait,
     AbilityTrait,
-    AgentPosition,
+    Agent,
     AgentAchievement,
-    AgentSpecialization,
     AgentDomainExpertise,
+    AgentPosition,
+    AgentSpecialization,
     AgentWorkflowPreference,
     KnowledgeBaseEntry,
     PerformanceMetric,
+    PersonalityTrait,
+    PhysicalTrait,
+    ecs_db,
 )
 
 logger = logging.getLogger(__name__)

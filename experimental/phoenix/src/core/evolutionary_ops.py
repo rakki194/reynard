@@ -8,19 +8,20 @@ Author: Success-Advisor-8 (Permanent Release Manager)
 Version: 1.0.0
 """
 
-import random
 import logging
-from typing import List, Tuple, Dict, Any
-import numpy as np
+import random
 from datetime import datetime
+from typing import Any, Dict, List, Tuple
+
+import numpy as np
 
 from ..utils.data_structures import (
-    PhoenixConfig,
     AgentState,
-    SpiritType,
     NamingStyle,
-    create_offspring_traits,
+    PhoenixConfig,
+    SpiritType,
     calculate_genetic_compatibility,
+    create_offspring_traits,
 )
 
 

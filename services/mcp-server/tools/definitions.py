@@ -30,7 +30,8 @@ from .image_viewer_definitions import get_image_viewer_tool_definitions
 from .linting_definitions import get_linting_tool_definitions
 from .mermaid_definitions import get_mermaid_tool_definitions
 from .monolith_detection.definitions import get_monolith_detection_tool_definitions
-from .search.search_definitions import SEARCH_TOOL_DEFINITIONS
+
+# Search tools now use @register_tool decorators, no separate definitions needed
 from .secrets_definitions import get_secrets_tool_definitions
 from .social_definitions import get_social_tool_definitions
 from .version_vscode_definitions import get_version_vscode_tool_definitions
@@ -53,7 +54,7 @@ def get_tool_definitions() -> dict[str, dict[str, Any]]:
     # Get all tool definitions
     linting_tools = get_linting_tool_definitions()
     version_vscode_tools = get_version_vscode_tool_definitions()
-    search_tools = {tool["name"]: tool for tool in SEARCH_TOOL_DEFINITIONS}
+    # Search tools now use @register_tool decorators, no separate definitions needed
     image_viewer_tools = get_image_viewer_tool_definitions()
     mermaid_tools = get_mermaid_tool_definitions()
     monolith_detection_tools = get_monolith_detection_tool_definitions()
@@ -67,7 +68,6 @@ def get_tool_definitions() -> dict[str, dict[str, Any]]:
         **agent_tools,
         **linting_tools,
         **version_vscode_tools,
-        **search_tools,
         **image_viewer_tools,
         **mermaid_tools,
         **monolith_detection_tools,

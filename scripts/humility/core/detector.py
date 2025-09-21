@@ -2,33 +2,34 @@
 Enhanced Humility Detector - Core Detection Engine
 """
 
-import re
-import json
 import asyncio
-from pathlib import Path
-from typing import List, Dict, Optional, Any, Tuple
-from concurrent.futures import ThreadPoolExecutor, as_completed
+import json
 import logging
+import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
 
-from .models import (
-    HumilityFinding,
-    HumilityProfile,
-    DetectionMetrics,
-    CulturalContext,
-    SeverityLevel,
-    ConfidenceLevel,
-    DetectionCategory,
-)
-from .config import HumilityConfig
 from analyzers import (
+    EpistemicHumilityAnalyzer,
+    HexacoAnalyzer,
+    LiwcAnalyzer,
     PatternAnalyzer,
     SentimentAnalyzer,
-    HexacoAnalyzer,
-    EpistemicHumilityAnalyzer,
-    LiwcAnalyzer,
     TransformerAnalyzer,
 )
-from utils import TextProcessor, CulturalAdapter, MetricsCalculator
+from utils import CulturalAdapter, MetricsCalculator, TextProcessor
+
+from .config import HumilityConfig
+from .models import (
+    ConfidenceLevel,
+    CulturalContext,
+    DetectionCategory,
+    DetectionMetrics,
+    HumilityFinding,
+    HumilityProfile,
+    SeverityLevel,
+)
 
 
 class HumilityDetector:

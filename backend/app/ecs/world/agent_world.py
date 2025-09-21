@@ -7,6 +7,7 @@ Specialized ECS world for agent management with breeding and trait inheritance.
 import logging
 import random
 from pathlib import Path
+
 from ..components import (
     AgentComponent,
     GenderComponent,
@@ -145,7 +146,7 @@ class AgentWorld(ECSWorld):
         entity.add_component(KnowledgeComponent())
 
         # Add gender component
-        from ..components.gender import GenderProfile, GenderIdentity, GenderExpression
+        from ..components.gender import GenderExpression, GenderIdentity, GenderProfile
 
         gender_profile = GenderProfile(
             primary_identity=GenderIdentity.NON_BINARY,

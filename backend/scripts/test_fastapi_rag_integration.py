@@ -14,8 +14,8 @@ from pathlib import Path
 # Add the backend directory to the Python path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from app.core.service_initializers import init_rag_service
 from app.core.config import get_config
+from app.core.service_initializers import init_rag_service
 
 # Set up logging
 logging.basicConfig(

@@ -11,11 +11,11 @@ Follows the 140-line axiom and modular architecture principles.
 
 from typing import Any
 
+from protocol.tool_registry import register_tool
 from services.formatting_service import FormattingService
 from services.linting_service import LintingService
 from services.security_service import SecurityService
 from services.validation_service import ValidationService
-from protocol.tool_registry import register_tool
 
 # Initialize services
 linting_service = LintingService()
@@ -31,8 +31,15 @@ def _format_result(result: dict[str, Any], operation: str) -> dict[str, Any]:
     # Format output text
     output_lines = [f"{status} - {operation}"]
 
+    # Handle summary from linting service
     if "summary" in result:
         output_lines.append(f"\n📊 {result['summary']}")
+    elif "error_count" in result:
+        error_count = result["error_count"]
+        if error_count > 0:
+            output_lines.append(f"\n📊 Found {error_count} linting issues")
+        else:
+            output_lines.append("\n📊 No linting issues found")
 
     if result.get("stdout"):
         output_lines.append(f"\n📝 Output:\n{result['stdout']}")
@@ -64,7 +71,7 @@ async def lint_frontend(**kwargs) -> dict[str, Any]:
 @register_tool(
     name="lint_python",
     category="linting",
-    description="Flake8, Pylint for Python (with auto-fix)",
+    description="Flake8, Pylint for Python (with auto-fix and error limiting)",
     execution_type="async",
     enabled=True,
     dependencies=[],
@@ -74,7 +81,8 @@ async def lint_python(**kwargs) -> dict[str, Any]:
     """Lint Python code with Flake8 and Pylint."""
     arguments = kwargs.get("arguments", {})
     fix = arguments.get("fix", False)
-    result = await linting_service.lint_python(fix)
+    max_errors = arguments.get("max_errors", 50)
+    result = await linting_service.lint_python(fix, max_errors)
     action = "Python Linting (with fixes)" if fix else "Python Linting"
     return _format_result(result, action)
 

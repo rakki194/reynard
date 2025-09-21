@@ -32,13 +32,13 @@ except ImportError:
 try:
     from app.core.cache_optimizer import IntelligentCacheManager
     from app.core.database_optimizer import (
-        OptimizedDatabaseConnection,
         DatabasePerformanceMonitor,
+        OptimizedDatabaseConnection,
     )
     from app.core.optimization_config import (
-        get_optimization_config,
         get_cache_config,
         get_http_config,
+        get_optimization_config,
     )
 
     OPTIMIZATION_AVAILABLE = True

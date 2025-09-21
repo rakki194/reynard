@@ -30,14 +30,10 @@ BM25_SEARCH_TOOLS: set[str] = {
     "search_needle_in_haystack",
 }
 
-ENHANCED_BM25_SEARCH_TOOLS: set[str] = {
-    "search_enhanced",
-    "get_query_suggestions",
-    "get_search_analytics",
-    "clear_search_cache",
-    "reindex_project",
-    "search_by_file_type",
-    "search_in_directory",
+RAG_SEARCH_TOOLS: set[str] = {
+    "search_codebase",
+    "search_semantic",
+    "search_keyword",
 }
 
 UTILITY_TOOLS: set[str] = {

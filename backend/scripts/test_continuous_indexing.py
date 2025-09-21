@@ -15,8 +15,8 @@ from pathlib import Path
 # Add the backend directory to the Python path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from app.services.rag import RAGService
 from app.config.continuous_indexing_config import continuous_indexing_config
+from app.services.rag import RAGService
 
 # Set up logging
 logging.basicConfig(

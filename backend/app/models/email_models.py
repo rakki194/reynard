@@ -5,7 +5,8 @@ This module provides Pydantic models for email-related data structures.
 """
 
 from datetime import datetime
-from typing import List, Optional, Dict, Any
+from typing import Any, Dict, List, Optional
+
 from pydantic import BaseModel, EmailStr, Field, field_validator
 
 

@@ -5,14 +5,14 @@ This module provides AI-powered email response generation using LLM integration.
 """
 
 import asyncio
-import logging
 import json
+import logging
 import re
-from typing import Dict, List, Any, Optional, Tuple
-from datetime import datetime
-from dataclasses import dataclass, asdict
-from pathlib import Path
 import uuid
+from dataclasses import asdict, dataclass
+from datetime import datetime
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
 
 # AI/LLM imports
 try:
@@ -891,8 +891,9 @@ class AIEmailResponseService:
     ) -> Dict[str, Any]:
         """Generate response using Ollama."""
         try:
-            import requests
             import json
+
+            import requests
 
             # Build the prompt
             prompt = self._build_ollama_prompt(

@@ -9,13 +9,14 @@ Replaces the pseudo-code semantic_search() functions with actual implementations
 """
 
 import asyncio
+import json
 import logging
-import numpy as np
-from typing import Dict, List, Any, Optional, Tuple
+import time
 from dataclasses import dataclass
 from pathlib import Path
-import json
-import time
+from typing import Any, Dict, List, Optional, Tuple
+
+import numpy as np
 
 # Optional imports with fallbacks
 try:

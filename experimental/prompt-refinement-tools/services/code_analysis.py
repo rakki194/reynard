@@ -11,9 +11,9 @@ Replaces the pseudo-code code analysis functions with actual implementations.
 import asyncio
 import logging
 import re
-from typing import Dict, List, Any, Optional
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 # Optional imports with fallbacks
 try:

@@ -18,7 +18,7 @@ from enum import Enum
 from functools import wraps
 from typing import Any, Awaitable, Callable, Dict, Optional
 
-from config.tool_config import ToolConfigManager, ToolCategory
+from config.tool_config import ToolCategory, ToolConfigManager
 from services.tool_config_service import ToolConfigService
 
 logger = logging.getLogger(__name__)

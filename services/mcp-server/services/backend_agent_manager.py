@@ -10,8 +10,8 @@ Replaces the local agent-naming service with centralized backend access.
 import json
 import logging
 import random
-from typing import Any, Dict, List, Optional
 from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 from .backend_data_service import backend_data_service
 

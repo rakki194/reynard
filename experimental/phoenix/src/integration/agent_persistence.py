@@ -10,15 +10,15 @@ Version: 1.0.0
 
 import json
 import logging
-from typing import Dict, Any, Optional, List
 from datetime import datetime
 from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 from ..utils.data_structures import (
     AgentState,
-    SpiritType,
     NamingStyle,
     PerformanceMetrics,
+    SpiritType,
     StatisticalSignificance,
 )
 

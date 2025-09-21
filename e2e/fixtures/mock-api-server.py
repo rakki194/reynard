@@ -8,14 +8,14 @@ spammed to test infinite loop detection.
 """
 
 import json
-import time
-import threading
+import logging
 import os
 import sys
-from http.server import HTTPServer, BaseHTTPRequestHandler
-from urllib.parse import urlparse, parse_qs
-import logging
+import threading
+import time
 from datetime import datetime
+from http.server import BaseHTTPRequestHandler, HTTPServer
+from urllib.parse import parse_qs, urlparse
 
 
 # Configure detailed logging

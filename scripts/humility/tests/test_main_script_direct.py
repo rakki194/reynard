@@ -2,12 +2,13 @@
 Direct tests for the main humility detector script functionality.
 """
 
-import pytest
+import os
 import subprocess
 import sys
 import tempfile
-import os
 from pathlib import Path
+
+import pytest
 
 
 class TestMainScriptDirect:

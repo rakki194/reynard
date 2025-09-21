@@ -44,16 +44,16 @@ Version: 1.0.0
 
 import asyncio
 import logging
+import os
 import smtplib
+from datetime import datetime
+from email import encoders
+from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from email.mime.base import MIMEBase
-from email import encoders
 from email.utils import formatdate, make_msgid
-from typing import List, Optional, Dict, Any
 from pathlib import Path
-import os
-from datetime import datetime
+from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 

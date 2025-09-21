@@ -13,10 +13,9 @@ import logging
 from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
-
-from protocol.tool_registry import get_tool_registry, ToolMetadata, tool_registry
 from protocol.tool_discovery import ToolDiscovery
+from protocol.tool_registry import ToolMetadata, get_tool_registry, tool_registry
+from pydantic import BaseModel
 from services.tool_config_service import ToolConfigService
 
 logger = logging.getLogger(__name__)

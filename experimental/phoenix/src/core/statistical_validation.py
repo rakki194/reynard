@@ -8,19 +8,20 @@ Author: Success-Advisor-8 (Permanent Release Manager)
 Version: 1.0.0
 """
 
+import json
 import logging
-from typing import List, Dict, Any, Tuple, Optional
+from datetime import datetime
+from typing import Any, Dict, List, Optional, Tuple
+
 import numpy as np
 from scipy import stats
-from datetime import datetime
-import json
 
 from ..utils.data_structures import (
-    PhoenixConfig,
     EvolutionStatistics,
     PerformanceMetrics,
-    StatisticalSignificance,
+    PhoenixConfig,
     StatisticalAnalysisResult,
+    StatisticalSignificance,
 )
 from .real_fitness_analyzer import RealFitnessAnalyzer
 

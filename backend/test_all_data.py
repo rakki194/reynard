@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Test script to verify all data is loaded correctly."""
 
-import requests
 import json
+
+import requests
 
 
 def test_api_endpoints():

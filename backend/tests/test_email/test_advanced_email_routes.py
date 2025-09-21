@@ -4,21 +4,22 @@ Tests for Advanced Email API Routes.
 This module contains comprehensive tests for the advanced email API endpoints.
 """
 
-import pytest
-import pytest_asyncio
 import asyncio
 import json
 from datetime import datetime, timedelta
-from unittest.mock import Mock, patch, AsyncMock, MagicMock
-from fastapi.testclient import TestClient
+from unittest.mock import AsyncMock, MagicMock, Mock, patch
+
+import pytest
+import pytest_asyncio
 from fastapi import FastAPI
+from fastapi.testclient import TestClient
 
 from app.api.email_routes import router
-from app.services.email_analytics_service import EmailMetrics, EmailInsight
-from app.services.email_encryption_service import EncryptionKey, EncryptedEmail
+from app.services.ai_email_response_service import AIResponse, EmailContext
 from app.services.calendar_integration_service import CalendarEvent, MeetingRequest
-from app.services.ai_email_response_service import EmailContext, AIResponse
-from app.services.multi_account_service import EmailAccount, AccountSummary
+from app.services.email_analytics_service import EmailInsight, EmailMetrics
+from app.services.email_encryption_service import EncryptedEmail, EncryptionKey
+from app.services.multi_account_service import AccountSummary, EmailAccount
 
 
 class TestAdvancedEmailRoutes:

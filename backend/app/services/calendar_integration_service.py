@@ -5,20 +5,20 @@ This module provides calendar integration functionality for meeting scheduling f
 """
 
 import asyncio
+import json
 import logging
 import re
-from typing import Dict, List, Any, Optional, Tuple
-from datetime import datetime, timedelta, timezone
-from dataclasses import dataclass, asdict
-from pathlib import Path
-import json
 import uuid
+from dataclasses import asdict, dataclass
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
 
 # Calendar API imports
 try:
+    from google.auth.transport.requests import Request
     from google.oauth2.credentials import Credentials
     from google_auth_oauthlib.flow import Flow
-    from google.auth.transport.requests import Request
     from googleapiclient.discovery import build
     from googleapiclient.errors import HttpError
 

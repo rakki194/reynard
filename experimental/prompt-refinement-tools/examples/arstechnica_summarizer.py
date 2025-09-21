@@ -13,20 +13,20 @@ the last 10 articles from Ars Technica. This showcases:
 """
 
 import asyncio
+import json
 import logging
 import sys
-from pathlib import Path
-from typing import List, Dict, Any
-import json
 from datetime import datetime
+from pathlib import Path
+from typing import Any, Dict, List
 
 # Add the services directory to the path
 sys.path.append(str(Path(__file__).parent.parent))
 
-from services.web_scraping import WebScrapingService
 from services.nlp_processing import NLPProcessingService
-from services.semantic_search import SemanticSearchService
 from services.refinement_service import PromptRefinementService
+from services.semantic_search import SemanticSearchService
+from services.web_scraping import WebScrapingService
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"

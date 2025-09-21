@@ -4,13 +4,14 @@ Test ECS Core Components
 Tests for Entity, Component, System, and World classes.
 """
 
-import pytest
-import sys
 import os
+import sys
+
+import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
 
-from backend.app.ecs.core import Entity, Component, System, ECSWorld
+from backend.app.ecs.core import Component, ECSWorld, Entity, System
 
 
 class TestComponent(Component):

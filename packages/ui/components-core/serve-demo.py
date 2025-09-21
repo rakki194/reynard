@@ -4,10 +4,10 @@ Simple HTTP server to serve the Badge component demo
 """
 
 import http.server
-import socketserver
-import webbrowser
 import os
+import socketserver
 import sys
+import webbrowser
 from pathlib import Path
 
 

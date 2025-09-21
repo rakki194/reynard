@@ -12,7 +12,7 @@ This system manages:
 import logging
 import random
 from datetime import datetime
-from typing import Dict, List, Set, TYPE_CHECKING
+from typing import TYPE_CHECKING, Dict, List, Set
 
 from ..components.gender import (
     GenderComponent,

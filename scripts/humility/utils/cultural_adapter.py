@@ -2,9 +2,10 @@
 Cultural adaptation module for humility detection.
 """
 
-from typing import List, Dict, Any
-from core.models import HumilityFinding, CulturalContext
+from typing import Any, Dict, List
+
 from core.config import HumilityConfig
+from core.models import CulturalContext, HumilityFinding
 
 
 class CulturalAdapter:

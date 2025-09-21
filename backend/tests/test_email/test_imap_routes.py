@@ -2,10 +2,11 @@
 Tests for IMAP API Routes
 """
 
-import pytest
-from unittest.mock import Mock, patch, AsyncMock
-from fastapi.testclient import TestClient
 from datetime import datetime
+from unittest.mock import AsyncMock, Mock, patch
+
+import pytest
+from fastapi.testclient import TestClient
 
 from app.core.app_factory import create_app
 from app.services.imap_service import EmailMessage

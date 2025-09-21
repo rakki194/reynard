@@ -12,12 +12,13 @@ Usage:
 import argparse
 import asyncio
 import logging
-import time
 import sys
+import time
 from pathlib import Path
-from typing import Dict, Set, Any
-from watchdog.observers import Observer
+from typing import Any, Dict, Set
+
 from watchdog.events import FileSystemEventHandler
+from watchdog.observers import Observer
 
 # Add the backend directory to the Python path
 sys.path.insert(0, str(Path(__file__).parent.parent))

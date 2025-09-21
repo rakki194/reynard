@@ -4,27 +4,28 @@ Test ECS Systems
 Tests for all ECS systems including Social, Gender, Interaction, etc.
 """
 
-import pytest
-import sys
 import os
+import sys
+
+import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
 
-from backend.app.ecs.core import ECSWorld, Entity
 from backend.app.ecs.components import (
     AgentComponent,
-    SocialComponent,
     GenderComponent,
     InteractionComponent,
-    MemoryComponent,
     KnowledgeComponent,
+    MemoryComponent,
+    SocialComponent,
 )
+from backend.app.ecs.core import ECSWorld, Entity
 from backend.app.ecs.systems import (
-    SocialSystem,
     GenderSystem,
     InteractionSystem,
-    MemorySystem,
     LearningSystem,
+    MemorySystem,
+    SocialSystem,
 )
 
 

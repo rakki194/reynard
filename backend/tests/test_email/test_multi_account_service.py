@@ -4,24 +4,25 @@ Tests for Multi-Account Service.
 This module contains comprehensive tests for the multi-account email functionality.
 """
 
-import pytest
-import pytest_asyncio
 import asyncio
 import json
 import tempfile
 import uuid
 from datetime import datetime
 from pathlib import Path
-from unittest.mock import Mock, patch, AsyncMock, MagicMock
+from unittest.mock import AsyncMock, MagicMock, Mock, patch
+
+import pytest
+import pytest_asyncio
 
 from app.services.multi_account_service import (
-    MultiAccountService,
     AccountConfig,
+    AccountPermissions,
+    AccountSummary,
     AccountUsage,
     EmailAccount,
-    AccountSummary,
     MultiAccountConfig,
-    AccountPermissions,
+    MultiAccountService,
     multi_account_service,
 )
 

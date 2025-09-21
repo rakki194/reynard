@@ -15,19 +15,19 @@ Usage:
 
 import argparse
 import asyncio
+import json
 import logging
 import os
 import sys
 import time
 from pathlib import Path
-from typing import Dict, List, Any, Optional
-import json
+from typing import Any, Dict, List, Optional
 
 # Add the backend directory to the Python path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from app.services.rag import RAGService
 from app.core.config import get_config
+from app.services.rag import RAGService
 
 # Set up logging
 logging.basicConfig(

@@ -10,12 +10,12 @@ import asyncio
 import logging
 import sys
 from pathlib import Path
-from typing import Dict, List, Any
+from typing import Any, Dict, List
 
 # Add the backend directory to the Python path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from app.services.rag.core import EmbeddingService, VectorStoreService, DocumentIndexer
+from app.services.rag.core import DocumentIndexer, EmbeddingService, VectorStoreService
 
 # Set up logging
 logging.basicConfig(

@@ -4,17 +4,18 @@ Test suite for RAG Core Services.
 Tests the core RAG functionality including embeddings, vector store, indexing, and search.
 """
 
-import pytest
 import asyncio
 import time
+from typing import Any, Dict, List
 from unittest.mock import AsyncMock, MagicMock, patch
-from typing import List, Dict, Any
+
+import pytest
 
 from app.services.rag.core import (
-    EmbeddingService,
-    VectorStoreService,
     DocumentIndexer,
+    EmbeddingService,
     SearchEngine,
+    VectorStoreService,
 )
 
 

@@ -4,25 +4,26 @@ Email API routes for Reynard Backend.
 This module provides REST API endpoints for email functionality.
 """
 
-from typing import Dict, Any, List, Optional
-from datetime import datetime, timedelta
 from dataclasses import asdict
-from fastapi import APIRouter, HTTPException, status, Depends, Query
+from datetime import datetime, timedelta
+from typing import Any, Dict, List, Optional
+
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 
 from ..auth.user_service import get_current_active_user
-from ..services.email_service import email_service, EmailMessage, EmailAttachment
-from ..services.email_analytics_service import email_analytics_service
-from ..services.email_encryption_service import email_encryption_service
-from ..services.calendar_integration_service import calendar_integration_service
-from ..services.ai_email_response_service import get_ai_email_response_service
-from ..services.multi_account_service import multi_account_service
 from ..models.email_models import (
-    EmailSendRequest,
-    EmailSendResponse,
     EmailBulkRequest,
     EmailBulkResponse,
+    EmailSendRequest,
+    EmailSendResponse,
     EmailStatusModel,
 )
+from ..services.ai_email_response_service import get_ai_email_response_service
+from ..services.calendar_integration_service import calendar_integration_service
+from ..services.email_analytics_service import email_analytics_service
+from ..services.email_encryption_service import email_encryption_service
+from ..services.email_service import EmailAttachment, EmailMessage, email_service
+from ..services.multi_account_service import multi_account_service
 
 router = APIRouter(prefix="/api/email", tags=["email"])
 

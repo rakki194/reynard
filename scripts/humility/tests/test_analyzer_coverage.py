@@ -2,23 +2,24 @@
 Additional tests to improve analyzer coverage.
 """
 
-import pytest
 import asyncio
-from pathlib import Path
 import sys
+from pathlib import Path
+
+import pytest
 
 # Add the parent directory to the path so we can import the modules
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from core import HumilityConfig, SeverityLevel, ConfidenceLevel, DetectionCategory
 from analyzers import (
+    EpistemicHumilityAnalyzer,
+    HexacoAnalyzer,
+    LiwcAnalyzer,
     PatternAnalyzer,
     SentimentAnalyzer,
-    HexacoAnalyzer,
-    EpistemicHumilityAnalyzer,
-    LiwcAnalyzer,
     TransformerAnalyzer,
 )
+from core import ConfidenceLevel, DetectionCategory, HumilityConfig, SeverityLevel
 
 
 class TestPatternAnalyzerCoverage:

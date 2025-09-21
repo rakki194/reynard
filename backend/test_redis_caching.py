@@ -3,12 +3,13 @@
 
 import asyncio
 import time
-import requests
-from typing import Dict, Any
+from typing import Any, Dict
 
+import requests
+
+from app.core.alembic_cache import get_alembic_cache_manager, initialize_alembic_cache
 from app.core.cache_config import CacheConfig
-from app.ecs.cache_decorators import initialize_ecs_cache, get_ecs_cache_manager
-from app.core.alembic_cache import initialize_alembic_cache, get_alembic_cache_manager
+from app.ecs.cache_decorators import get_ecs_cache_manager, initialize_ecs_cache
 
 
 async def test_cache_initialization():

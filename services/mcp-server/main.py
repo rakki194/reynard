@@ -16,13 +16,14 @@ import time
 from pathlib import Path
 from typing import Any, Optional
 
+from protocol.mcp_handler import MCPHandler
+from protocol.tool_discovery import ToolDiscovery
+
 # Import local modules
 # pylint: disable=wrong-import-position
 from protocol.tool_registry import get_tool_registry
-from protocol.tool_discovery import ToolDiscovery
-from protocol.mcp_handler import MCPHandler
-from services.tool_config_service import ToolConfigService
 from services.backend_agent_manager import BackendAgentManager
+from services.tool_config_service import ToolConfigService
 from utils.logging_config import setup_logging
 
 # pylint: enable=wrong-import-position

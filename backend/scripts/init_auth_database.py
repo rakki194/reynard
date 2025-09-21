@@ -6,9 +6,9 @@ This script verifies that the Gatekeeper authentication system can connect
 to the dedicated auth database. Gatekeeper manages its own table creation.
 """
 
+import logging
 import os
 import sys
-import logging
 from pathlib import Path
 
 # Add backend to Python path
@@ -58,8 +58,9 @@ def verify_gatekeeper_setup():
 
         try:
             # Import and initialize Gatekeeper
-            from app.gatekeeper_config import initialize_gatekeeper
             import asyncio
+
+            from app.gatekeeper_config import initialize_gatekeeper
 
             # Run the async initialization
             auth_manager = asyncio.run(initialize_gatekeeper())

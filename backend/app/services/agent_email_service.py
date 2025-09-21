@@ -7,25 +7,25 @@ integration with the ECS world simulation.
 """
 
 import asyncio
-import logging
 import json
+import logging
+import os
 import uuid
 from datetime import datetime, timedelta
-from typing import Dict, Any, List, Optional, Tuple
 from pathlib import Path
-import os
+from typing import Any, Dict, List, Optional, Tuple
 
 from ..models.agent_email_models import (
     AgentEmailConfig,
-    AgentEmailStats,
-    AgentEmailTemplate,
     AgentEmailInteraction,
     AgentEmailMessage,
     AgentEmailNotification,
     AgentEmailSettings,
+    AgentEmailStats,
+    AgentEmailTemplate,
     EventType,
 )
-from ..services.email_service import email_service, EmailMessage, EmailAttachment
+from ..services.email_service import EmailAttachment, EmailMessage, email_service
 
 logger = logging.getLogger(__name__)
 

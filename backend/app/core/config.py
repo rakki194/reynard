@@ -49,6 +49,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from dotenv import load_dotenv
+
 from app.config.rag_config import RAGConfig as NewRAGConfig
 
 # Load environment variables

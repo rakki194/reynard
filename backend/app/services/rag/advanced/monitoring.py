@@ -30,7 +30,7 @@ except ImportError:
     psutil = None
 
 try:
-    from prometheus_client import Counter, Histogram, Gauge, CollectorRegistry
+    from prometheus_client import CollectorRegistry, Counter, Gauge, Histogram
 
     PROMETHEUS_AVAILABLE = True
 except ImportError:
@@ -691,7 +691,7 @@ class PerformanceMonitor:
             return "# Prometheus metrics not available\n"
 
         try:
-            from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
+            from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
 
             return generate_latest(self.prometheus_registry).decode("utf-8")
         except Exception as e:

@@ -16,7 +16,7 @@ from pathlib import Path
 # Add the src directory to the Python path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from phoenix_control import SuccessAdvisor8, ReleaseAutomation, QualityAssurance
+from phoenix_control import QualityAssurance, ReleaseAutomation, SuccessAdvisor8
 
 
 async def main():

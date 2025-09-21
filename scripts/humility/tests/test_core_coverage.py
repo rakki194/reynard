@@ -2,24 +2,25 @@
 Additional tests to improve core module coverage.
 """
 
-import pytest
 import asyncio
-import tempfile
 import os
-from pathlib import Path
 import sys
+import tempfile
+from pathlib import Path
+
+import pytest
 
 # Add the parent directory to the path so we can import the modules
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from core import HumilityConfig, SeverityLevel, ConfidenceLevel, DetectionCategory
+from core import ConfidenceLevel, DetectionCategory, HumilityConfig, SeverityLevel
+from core.detector import HumilityDetector
 from core.models import (
+    CulturalContext,
+    DetectionMetrics,
     HumilityFinding,
     HumilityProfile,
-    DetectionMetrics,
-    CulturalContext,
 )
-from core.detector import HumilityDetector
 
 
 class TestHumilityConfigCoverage:

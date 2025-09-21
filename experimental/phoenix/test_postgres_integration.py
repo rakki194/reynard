@@ -6,8 +6,8 @@ Tests the integration between Phoenix experiments and PostgreSQL ECS system.
 """
 
 import asyncio
-import sys
 import logging
+import sys
 from pathlib import Path
 
 # Add the backend to the path for ECS service access

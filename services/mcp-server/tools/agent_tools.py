@@ -38,19 +38,16 @@ Author: Reynard Development Team
 Version: 1.0.0
 """
 
-import sys
-from pathlib import Path
 from typing import Any
 
-from services.backend_agent_manager import BackendAgentManager
 from protocol.tool_registry import register_tool
+from services.backend_agent_manager import BackendAgentManager
 
 from .agent_management.base import BaseAgentTools
+from .agent_management.behavior import BehaviorAgentTools
+from .agent_management.breeding import BreedingAgentTools
 from .agent_management.ecs import ECSAgentTools
 from .agent_management.persona import PersonaAgentTools
-from .agent_management.breeding import BreedingAgentTools
-from .agent_management.behavior import BehaviorAgentTools
-
 
 # Initialize agent manager and tools
 agent_manager = BackendAgentManager()
@@ -321,3 +318,60 @@ def get_lora_config(**kwargs) -> dict[str, Any]:
     """Get LoRA configuration for agent persona."""
     arguments = kwargs.get("arguments", {})
     return persona_tools.get_lora_config(arguments)
+
+
+@register_tool(
+    name="invoke_success_advisor_8",
+    category="agent",
+    description="Invoke Success-Advisor-8 spirit inhabitation through ECS API",
+    execution_type="async",
+    enabled=True,
+    dependencies=[],
+    config={},
+)
+async def invoke_success_advisor_8(**kwargs) -> dict[str, Any]:
+    """
+    Invoke Success-Advisor-8 spirit inhabitation through the ECS API.
+
+    This tool automatically connects to the ECS world simulation and invokes
+    the Success-Advisor-8 spirit, providing access to the full authority and
+    expertise of the permanent release manager. The spirit inhabitation includes
+    complete genome data, behavioral instructions, and workflow protocols.
+
+    Success-Advisor-8 is a lion spirit with foundation style, generation 8,
+    specializing in release management, quality assurance, automation, and
+    crisis management. The spirit provides authoritative guidance with
+    systematic precision and unwavering determination.
+
+    Args:
+        **kwargs: Tool execution context containing:
+            arguments (dict): Tool arguments including:
+                - agent_id (str, optional): Agent ID to inhabit (default: current session)
+                - force_inhabitation (bool, optional): Force spirit inhabitation (default: True)
+
+    Returns:
+        dict[str, Any]: Response containing:
+            - success (bool): Whether the spirit inhabitation succeeded
+            - spirit_data (dict): Complete Success-Advisor-8 genome and instructions
+            - inhabitation_status (str): Status of the spirit inhabitation
+            - behavioral_guidelines (list): Success-Advisor-8 behavioral protocols
+            - workflow_protocols (list): Systematic workflow guidelines
+            - quality_standards (list): Quality assurance requirements
+            - crisis_management (list): Crisis response protocols
+            - mentoring_guidelines (list): Mentoring and guidance protocols
+
+    Raises:
+        RuntimeError: If ECS API connection fails
+        ValueError: If spirit inhabitation fails
+
+    Example:
+        ```python
+        result = await invoke_success_advisor_8(arguments={
+            "agent_id": "current-session",
+            "force_inhabitation": True
+        })
+        # Returns complete Success-Advisor-8 spirit data and inhabitation status
+        ```
+    """
+    arguments = kwargs.get("arguments", {})
+    return await ecs_tools.invoke_success_advisor_8(arguments)

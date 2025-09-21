@@ -375,10 +375,20 @@ class ToolConfigManager:
                 category=ToolCategory.SEARCH,
                 description="Perform semantic search using vector embeddings",
             ),
-            "search_enhanced": ToolConfig(
-                name="search_enhanced",
+            "search_codebase": ToolConfig(
+                name="search_codebase",
                 category=ToolCategory.SEARCH,
-                description="Enhanced BM25 search with query expansion",
+                description="Search the Reynard codebase using RAG backend with BM25 fallback",
+            ),
+            "search_semantic": ToolConfig(
+                name="search_semantic",
+                category=ToolCategory.SEARCH,
+                description="Perform semantic search using RAG backend with Ollama embeddings",
+            ),
+            "search_keyword": ToolConfig(
+                name="search_keyword",
+                category=ToolCategory.SEARCH,
+                description="Perform keyword search using BM25 fallback",
             ),
             # Visualization Tools
             "validate_mermaid_diagram": ToolConfig(

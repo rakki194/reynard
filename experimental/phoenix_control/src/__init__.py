@@ -8,8 +8,8 @@ Author: Champion-Designer-32 (Wolf Specialist)
 Version: 1.0.0
 """
 
-from .core.success_advisor import SuccessAdvisor8
 from .automation.git_workflow import ReleaseAutomation
+from .core.success_advisor import SuccessAdvisor8
 from .quality.validation import QualityAssurance
 
 __version__ = "1.0.0"

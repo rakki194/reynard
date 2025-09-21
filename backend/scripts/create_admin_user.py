@@ -6,11 +6,11 @@ This script creates a new admin user in the Gatekeeper authentication system
 and saves the credentials securely.
 """
 
-import os
-import sys
 import logging
+import os
 import secrets
 import string
+import sys
 from pathlib import Path
 
 # Add backend to Python path
@@ -18,7 +18,8 @@ backend_path = Path(__file__).parent.parent
 sys.path.insert(0, str(backend_path))
 
 import asyncio
-from app.gatekeeper_config import get_config, get_auth_manager
+
+from app.gatekeeper_config import get_auth_manager, get_config
 
 # Configure logging
 logging.basicConfig(
@@ -81,7 +82,7 @@ async def create_admin_user():
                 # Try to get existing user and update role
                 existing_user = await auth_manager.get_user_by_username(username)
                 if existing_user:
-                    from gatekeeper.models.user import UserUpdate, UserRole
+                    from gatekeeper.models.user import UserRole, UserUpdate
 
                     update_data = UserUpdate(role=UserRole.ADMIN)
                     updated_user = await auth_manager.update_user(

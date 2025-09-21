@@ -70,19 +70,71 @@ class LintingService:
         command = ["pnpm", "lint:fix" if fix else "lint"]
         return await self.run_command(command)
 
-    async def lint_python(self, fix: bool = False) -> dict[str, Any]:
-        """Run Python linting tools."""
+    async def lint_python(
+        self, fix: bool = False, max_errors: int = 50
+    ) -> dict[str, Any]:
+        """Run Python linting tools with improved error handling."""
         if fix:
             # Run formatters first, then linters
             format_result = await self.run_command(["pnpm", "run", "python:format"])
-            lint_result = await self.run_command(["pnpm", "run", "python:lint"])
+            lint_result = await self._run_python_lint_with_limits(max_errors)
 
             return {
                 "success": format_result["success"] and lint_result["success"],
                 "format": format_result,
                 "lint": lint_result,
             }
-        return await self.run_command(["pnpm", "run", "python:lint"])
+        return await self._run_python_lint_with_limits(max_errors)
+
+    async def _run_python_lint_with_limits(
+        self, max_errors: int = 50
+    ) -> dict[str, Any]:
+        """Run Python linting with error output limiting."""
+        # Create a more targeted flake8 command that excludes problematic directories
+        exclude_dirs = [
+            "third_party",
+            "node_modules",
+            ".git",
+            "venv",
+            "backend/venv",
+            "__pycache__",
+            ".pytest_cache",
+            "dist",
+            "build",
+        ]
+
+        exclude_pattern = ",".join(exclude_dirs)
+
+        # Use flake8 directly with exclusions and error limits
+        command = [
+            "bash",
+            "-c",
+            f"if [ -f ~/venv/bin/activate ]; then "
+            f"source ~/venv/bin/activate && "
+            f"flake8 --exclude={exclude_pattern} --max-line-length=100 --count --statistics . | head -n {max_errors}; "
+            f"else "
+            f"echo 'Virtual environment not found, using system Python...' && "
+            f"flake8 --exclude={exclude_pattern} --max-line-length=100 --count --statistics . | head -n {max_errors}; "
+            f"fi",
+        ]
+
+        result = await self.run_command(command)
+
+        # Add summary information
+        if result["stdout"]:
+            lines = result["stdout"].split("\n")
+            error_count = len(
+                [line for line in lines if ":" in line and not line.startswith("Total")]
+            )
+            result["error_count"] = error_count
+            result["summary"] = (
+                f"Found {error_count} linting issues (showing first {max_errors})"
+            )
+        else:
+            result["error_count"] = 0
+            result["summary"] = "No linting issues found"
+
+        return result
 
     async def lint_markdown(self, fix: bool = False) -> dict[str, Any]:
         """Run markdown linting tools."""

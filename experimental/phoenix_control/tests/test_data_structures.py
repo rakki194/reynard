@@ -8,21 +8,22 @@ Author: Champion-Designer-32 (Wolf Specialist)
 Version: 1.0.0
 """
 
-import pytest
 import sys
 from pathlib import Path
+
+import pytest
 
 # Add the src directory to the Python path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from phoenix_control.src.utils.data_structures import (
-    SpiritType,
-    NamingStyle,
     AgentState,
+    NamingStyle,
     PerformanceMetrics,
-    StatisticalSignificance,
-    ReleaseConfig,
     QualityConfig,
+    ReleaseConfig,
+    SpiritType,
+    StatisticalSignificance,
 )
 
 

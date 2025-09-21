@@ -63,8 +63,8 @@ from app.core.service_initializers import (
     init_ollama_service,
     init_rag_service,
     init_search_service,
-    shutdown_search_service,
     init_tts_service,
+    shutdown_search_service,
 )
 from app.core.service_registry import get_service_registry
 

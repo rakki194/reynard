@@ -11,8 +11,8 @@ Follows the 140-line axiom and modular architecture principles.
 
 from typing import Any
 
-from services.vscode_tasks_service import VSCodeTasksService
 from protocol.tool_registry import register_tool
+from services.vscode_tasks_service import VSCodeTasksService
 
 # Initialize service
 tasks_service = VSCodeTasksService()

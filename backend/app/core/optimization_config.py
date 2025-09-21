@@ -43,7 +43,7 @@ Version: 1.0.0
 """
 
 import os
-from typing import Dict, Any
+from typing import Any, Dict
 
 # Default optimization settings
 # This configuration provides comprehensive performance optimizations for the Reynard backend

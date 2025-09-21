@@ -19,11 +19,11 @@ mcp_dir = Path(__file__).parent.parent.parent
 if str(mcp_dir) not in sys.path:
     sys.path.insert(0, str(mcp_dir))
 
+from protocol.tool_registry import register_tool
 from services.file_analysis_service import FileAnalysisService
 from services.file_discovery_service import FileDiscoveryService
 from services.metrics_aggregation_service import MetricsAggregationService
 from services.monolith_analysis_service import MonolithAnalysisService
-from protocol.tool_registry import register_tool
 
 # Initialize services
 file_analysis = FileAnalysisService()

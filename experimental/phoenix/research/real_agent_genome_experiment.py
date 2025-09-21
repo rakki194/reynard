@@ -9,21 +9,21 @@ Author: Reynard-Director-36
 Version: 1.0.0
 """
 
+import argparse
 import asyncio
 import json
 import logging
 import sys
-from pathlib import Path
 from datetime import datetime
-import argparse
+from pathlib import Path
 
 # Add the src directory to the path
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
 # Import with absolute path to avoid relative import issues
 try:
-    from integration.real_agent_interface import RealAgentInterface, OllamaInterface
-    from utils.data_structures import AgentState, SpiritType, NamingStyle
+    from integration.real_agent_interface import OllamaInterface, RealAgentInterface
+    from utils.data_structures import AgentState, NamingStyle, SpiritType
 except ImportError as e:
     print(f"Import error: {e}")
     print("Using standalone implementation instead...")

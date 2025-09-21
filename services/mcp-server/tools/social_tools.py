@@ -329,23 +329,26 @@ async def find_ecs_agent(arguments: dict[str, Any]) -> dict[str, Any]:
         # Close ECS client
         await ecs_client.close()
 
-        # Format response
-        if result.get("success", False):
+        # Format response - ECS API returns data directly
+        if result and isinstance(result, dict):
             matches = result.get("matches", [])
-            response_text = (
-                f"🔍 Found {len(matches)} matching agents for '{query}':\n\n"
-            )
-
-            for i, match in enumerate(matches, 1):
-                response_text += f"{i}. **{match.get('name', 'Unknown')}**\n"
-                response_text += f"   ID: {match.get('agent_id', 'Unknown')}\n"
-                response_text += f"   Spirit: {match.get('spirit', 'Unknown')}\n"
-                response_text += (
-                    f"   Generation: {match.get('generation', 'Unknown')}\n"
+            if matches:
+                response_text = (
+                    f"🔍 Found {len(matches)} matching agents for '{query}':\n\n"
                 )
-                response_text += f"   Active: {match.get('active', 'Unknown')}\n\n"
+
+                for i, match in enumerate(matches, 1):
+                    response_text += f"{i}. **{match.get('name', 'Unknown')}**\n"
+                    response_text += f"   ID: {match.get('agent_id', 'Unknown')}\n"
+                    response_text += f"   Spirit: {match.get('spirit', 'Unknown')}\n"
+                    response_text += (
+                        f"   Generation: {match.get('generation', 'Unknown')}\n"
+                    )
+                    response_text += f"   Active: {match.get('active', 'Unknown')}\n\n"
+            else:
+                response_text = f"🔍 No agents found matching '{query}'"
         else:
-            response_text = f"❌ {result.get('message', 'Failed to search for agents')}"
+            response_text = f"❌ Failed to search for agents: {result}"
 
         return {
             "content": [
@@ -395,22 +398,17 @@ async def get_ecs_world_status(arguments: dict[str, Any]) -> dict[str, Any]:
         # Close ECS client
         await ecs_client.close()
 
-        # Format response
-        if result.get("success", False):
-            status = result.get("status", {})
+        # Format response - ECS API returns data directly without success field
+        if result and isinstance(result, dict):
             response_text = f"🌍 **ECS World Status**\n\n"
-            response_text += f"Status: {status.get('status', 'Unknown')}\n"
-            response_text += f"Total Agents: {status.get('agent_count', 'Unknown')}\n"
-            response_text += f"Active Agents: {status.get('agent_count', 'Unknown')}\n"
-            response_text += (
-                f"Total Interactions: {status.get('total_interactions', 'Unknown')}\n"
-            )
-            response_text += (
-                f"Database Type: {status.get('database_type', 'Unknown')}\n"
-            )
-            response_text += f"Initialized: {status.get('initialized', 'Unknown')}"
+            response_text += f"Status: {result.get('status', 'Unknown')}\n"
+            response_text += f"Total Agents: {result.get('agent_count', 'Unknown')}\n"
+            response_text += f"Active Agents: {result.get('agent_count', 'Unknown')}\n"
+            response_text += f"Entity Count: {result.get('entity_count', 'Unknown')}\n"
+            response_text += f"System Count: {result.get('system_count', 'Unknown')}\n"
+            response_text += f"Mature Agents: {result.get('mature_agents', 'Unknown')}"
         else:
-            response_text = f"❌ {result.get('message', 'Failed to get world status')}"
+            response_text = f"❌ Failed to get world status: {result}"
 
         return {
             "content": [

@@ -2,15 +2,16 @@
 Tests for IMAP Service with Agent Integration
 """
 
-import pytest
 import asyncio
-from unittest.mock import Mock, patch, AsyncMock
+import json
+import tempfile
 from datetime import datetime
 from pathlib import Path
-import tempfile
-import json
+from unittest.mock import AsyncMock, Mock, patch
 
-from app.services.imap_service import IMAPService, IMAPConfig, EmailMessage
+import pytest
+
+from app.services.imap_service import EmailMessage, IMAPConfig, IMAPService
 
 
 class TestIMAPService:

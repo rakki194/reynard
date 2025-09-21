@@ -33,16 +33,16 @@ async def create_character(**kwargs) -> dict[str, Any]:
         # Import the character manager
         from reynard_agent_naming.agent_naming.character_manager import CharacterManager
         from reynard_agent_naming.agent_naming.character_schema import (
-            CharacterCreationRequest,
-            CharacterType,
-            CharacterTraits,
+            AbilityTrait,
             CharacterAppearance,
             CharacterBackground,
-            CharacterSkills,
+            CharacterCreationRequest,
             CharacterPreferences,
+            CharacterSkills,
+            CharacterTraits,
+            CharacterType,
             PersonalityTrait,
             PhysicalTrait,
-            AbilityTrait,
         )
         from reynard_agent_naming.agent_naming.types import (
             AnimalSpirit,

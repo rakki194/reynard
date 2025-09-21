@@ -18,7 +18,6 @@ from datetime import datetime
 from typing import Any
 
 import requests
-
 from protocol.tool_registry import register_tool
 
 logger = logging.getLogger(__name__)

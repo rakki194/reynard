@@ -9,19 +9,19 @@ This script sets up all databases with their appropriate schemas:
 - ECS E2E database (reynard_ecs_e2e): Testing mirror of ECS database
 """
 
+import logging
 import os
 import sys
-import logging
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 # Add backend to Python path
 backend_path = Path(__file__).parent.parent
 sys.path.insert(0, str(backend_path))
 
-from sqlalchemy import create_engine, text
 from alembic import command
 from alembic.config import Config
+from sqlalchemy import create_engine, text
 
 # Configure logging
 logging.basicConfig(

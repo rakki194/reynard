@@ -4,24 +4,25 @@ Test ECS Components
 Tests for all ECS components including Agent, Social, Gender, etc.
 """
 
-import pytest
-import sys
 import os
+import sys
+
+import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
 
 from backend.app.ecs.components import (
     AgentComponent,
-    PositionComponent,
+    GenderComponent,
+    InteractionComponent,
+    KnowledgeComponent,
     LifecycleComponent,
     LineageComponent,
-    ReproductionComponent,
-    TraitComponent,
-    SocialComponent,
-    GenderComponent,
     MemoryComponent,
-    KnowledgeComponent,
-    InteractionComponent,
+    PositionComponent,
+    ReproductionComponent,
+    SocialComponent,
+    TraitComponent,
 )
 
 

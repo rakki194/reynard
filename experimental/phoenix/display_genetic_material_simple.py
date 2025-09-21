@@ -10,17 +10,17 @@ Version: 1.0.0
 
 import json
 import sys
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 
 # Add src to path
 sys.path.append(str(Path(__file__).parent / "src"))
 
 from src.utils.data_structures import (
     AgentGeneticMaterial,
-    SubliminalTrait,
-    StructuredKnowledge,
     GenerationContext,
+    StructuredKnowledge,
+    SubliminalTrait,
     TraitCategory,
 )
 

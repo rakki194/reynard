@@ -8,8 +8,8 @@ Version: 1.0.0
 """
 
 from dataclasses import dataclass
-from typing import Dict, Any, List, Optional
 from enum import Enum
+from typing import Any, Dict, List, Optional
 
 
 class ExperimentType(Enum):

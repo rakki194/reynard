@@ -6,10 +6,10 @@ This script provides a unified interface for managing all database migrations
 across the different database configurations.
 """
 
-import os
-import sys
 import argparse
 import logging
+import os
+import sys
 from pathlib import Path
 
 # Add backend to Python path

@@ -18,15 +18,15 @@ import tempfile
 import time
 from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock, patch
-from watchdog.events import FileSystemEvent
 
 import pytest
+from watchdog.events import FileSystemEvent
 
+from app.config.continuous_indexing_config import continuous_indexing_config
 from app.services.continuous_indexing import (
     CodebaseChangeHandler,
     ContinuousIndexingService,
 )
-from app.config.continuous_indexing_config import continuous_indexing_config
 
 
 class TestContinuousIndexingService:
@@ -153,7 +153,9 @@ class TestContinuousIndexingService:
         test_file2.write_text("def test(): pass")
 
         # Patch the watch root to match our test directory
-        with patch.object(continuous_indexing_config, "watch_root", "/home/kade/test_project"):
+        with patch.object(
+            continuous_indexing_config, "watch_root", "/home/kade/test_project"
+        ):
             # Test indexing
             await indexing_service.index_files([test_file1, test_file2])
 
@@ -185,7 +187,9 @@ class TestContinuousIndexingService:
         test_file.write_text("print('hello world')")
 
         # Patch the watch root to match our test directory
-        with patch.object(continuous_indexing_config, "watch_root", "/home/kade/test_project"):
+        with patch.object(
+            continuous_indexing_config, "watch_root", "/home/kade/test_project"
+        ):
             doc = await indexing_service._create_document_from_file(test_file)
 
             assert doc is not None
@@ -450,7 +454,9 @@ class TestContinuousIndexingIntegration:
             "rag_continuous_indexing_auto_start": False,
         }
 
-        with patch.object(continuous_indexing_config, "watch_root", "/home/kade/test_project"):
+        with patch.object(
+            continuous_indexing_config, "watch_root", "/home/kade/test_project"
+        ):
             with patch.object(continuous_indexing_config, "enabled", True):
                 service = ContinuousIndexingService(service_config)
                 service.set_rag_service(mock_rag_service)

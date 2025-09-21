@@ -11,8 +11,8 @@ Replaces the pseudo-code NLP functions with actual implementations.
 import asyncio
 import logging
 import re
-from typing import Dict, List, Any, Optional
 from dataclasses import dataclass
+from typing import Any, Dict, List, Optional
 
 # Optional imports with fallbacks
 try:
@@ -26,8 +26,8 @@ except ImportError:
 try:
     import nltk
     from nltk.corpus import stopwords
-    from nltk.tokenize import word_tokenize, sent_tokenize
     from nltk.stem import WordNetLemmatizer
+    from nltk.tokenize import sent_tokenize, word_tokenize
 
     NLTK_AVAILABLE = True
 except ImportError:

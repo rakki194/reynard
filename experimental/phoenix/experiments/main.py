@@ -7,8 +7,8 @@ Author: Recognition-Grandmaster-27 (Tiger Specialist)
 Version: 1.0.0
 """
 
-import asyncio
 import argparse
+import asyncio
 import sys
 from pathlib import Path
 

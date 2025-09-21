@@ -15,7 +15,7 @@ from typing import Any
 
 class ContextFilter(logging.Filter):
     """Filter to add context data to log records."""
-    
+
     def __init__(self, context_data):
         super().__init__()
         self.context_data = context_data

@@ -8,11 +8,11 @@ Author: Success-Advisor-8 (Permanent Release Manager)
 Version: 1.0.0
 """
 
-from dataclasses import dataclass, field
-from typing import Dict, List, Any, Optional, Tuple, Union
-from datetime import datetime
 import json
+from dataclasses import dataclass, field
+from datetime import datetime
 from enum import Enum
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 
 class TraitCategory(Enum):

@@ -8,8 +8,8 @@ Eliminates hardcoded enums and uses PostgreSQL database as single source of trut
 """
 
 import logging
-from typing import Any, Dict, List, Optional, Set
 from enum import Enum
+from typing import Any, Dict, List, Optional, Set
 
 from .backend_data_service import backend_data_service
 

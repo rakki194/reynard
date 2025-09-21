@@ -6,7 +6,7 @@ Configuration settings for Redis caching and fallback mechanisms.
 """
 
 import os
-from typing import Dict, Any
+from typing import Any, Dict
 
 
 class CacheConfig:

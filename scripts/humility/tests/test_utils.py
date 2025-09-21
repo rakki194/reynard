@@ -2,22 +2,23 @@
 Tests for utility modules.
 """
 
-import pytest
-from pathlib import Path
 import sys
+from pathlib import Path
+
+import pytest
 
 # Add the parent directory to the path so we can import the modules
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from core import HumilityConfig
-from utils import TextProcessor, CulturalAdapter, MetricsCalculator, ReportGenerator
 from core.models import (
+    ConfidenceLevel,
+    DetectionCategory,
     HumilityFinding,
     HumilityProfile,
-    DetectionCategory,
     SeverityLevel,
-    ConfidenceLevel,
 )
+from utils import CulturalAdapter, MetricsCalculator, ReportGenerator, TextProcessor
 
 
 class TestTextProcessor:

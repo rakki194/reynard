@@ -4,19 +4,20 @@ Tests for Email Analytics Service.
 This module contains comprehensive tests for the email analytics functionality.
 """
 
-import pytest
-import pytest_asyncio
 import asyncio
 import json
 import tempfile
 from datetime import datetime, timedelta
 from pathlib import Path
-from unittest.mock import Mock, patch, AsyncMock
+from unittest.mock import AsyncMock, Mock, patch
+
+import pytest
+import pytest_asyncio
 
 from app.services.email_analytics_service import (
     EmailAnalyticsService,
-    EmailMetrics,
     EmailInsight,
+    EmailMetrics,
     EmailReport,
     email_analytics_service,
 )

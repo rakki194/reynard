@@ -5,16 +5,17 @@ This module provides comprehensive email analytics and reporting functionality.
 """
 
 import asyncio
-import logging
-from typing import Dict, List, Any, Optional, Tuple
-from datetime import datetime, timedelta
-from dataclasses import dataclass, asdict
-from pathlib import Path
 import json
+import logging
 import statistics
-from collections import defaultdict, Counter
-import pandas as pd
+from collections import Counter, defaultdict
+from dataclasses import asdict, dataclass
+from datetime import datetime, timedelta
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
+
 import numpy as np
+import pandas as pd
 
 logger = logging.getLogger(__name__)
 

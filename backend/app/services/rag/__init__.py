@@ -21,20 +21,20 @@ Main Entry Point:
 - RAGService: Unified orchestrator for all RAG capabilities
 """
 
-# Main service orchestrator
-from .rag_service import RAGService
-
-# Core services
-from .core import EmbeddingService, VectorStoreService, DocumentIndexer, SearchEngine
-
 # Advanced services
 from .advanced import (
-    PerformanceMonitor,
-    SecurityService,
     ContinuousImprovement,
     DocumentationService,
     ModelEvaluator,
+    PerformanceMonitor,
+    SecurityService,
 )
+
+# Core services
+from .core import DocumentIndexer, EmbeddingService, SearchEngine, VectorStoreService
+
+# Main service orchestrator
+from .rag_service import RAGService
 
 __all__ = [
     # Main service

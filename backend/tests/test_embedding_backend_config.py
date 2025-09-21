@@ -7,8 +7,9 @@ Transformers, OpenAI, and Hugging Face.
 """
 
 import os
+from unittest.mock import MagicMock, patch
+
 import pytest
-from unittest.mock import patch, MagicMock
 
 from app.config.embedding_backend_config import (
     EmbeddingBackendConfig,

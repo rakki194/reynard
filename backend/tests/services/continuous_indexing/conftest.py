@@ -65,6 +65,7 @@ def service_config():
 def indexing_service(service_config, temp_directory):
     """🐼 Create a ContinuousIndexingService instance for testing."""
     from unittest.mock import patch
+
     from app.config.continuous_indexing_config import continuous_indexing_config
 
     with patch.object(continuous_indexing_config, "watch_root", str(temp_directory)):
@@ -295,6 +296,7 @@ class PandaTestHelpers:
 async def async_indexing_service(service_config, temp_directory):
     """🐼 Create and initialize an async indexing service for testing."""
     from unittest.mock import patch
+
     from app.config.continuous_indexing_config import continuous_indexing_config
 
     with patch.object(continuous_indexing_config, "watch_root", str(temp_directory)):

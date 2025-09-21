@@ -4,19 +4,20 @@ Test suite for RAG Advanced Services.
 Tests the advanced RAG functionality including monitoring, security, improvement, documentation, and evaluation.
 """
 
-import pytest
 import asyncio
 import time
-from unittest.mock import AsyncMock, MagicMock, patch
-from typing import List, Dict, Any
 from datetime import datetime, timedelta
+from typing import Any, Dict, List
+from unittest.mock import AsyncMock, MagicMock, patch
+
+import pytest
 
 from app.services.rag.advanced import (
-    PerformanceMonitor,
-    SecurityService,
     ContinuousImprovement,
     DocumentationService,
     ModelEvaluator,
+    PerformanceMonitor,
+    SecurityService,
 )
 
 

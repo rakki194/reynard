@@ -400,8 +400,8 @@ class DatabaseEncryptionManager:
                         {
                             "table_name": table_name,
                             "batch_size": batch_size,
-                            "offset": offset
-                        }
+                            "offset": offset,
+                        },
                     )
                     batch_records = batch_result.fetchall()
 
@@ -430,7 +430,9 @@ class DatabaseEncryptionManager:
                             if update_values:
                                 # Build parameterized query safely - column names are validated against whitelist
                                 # This is safe because sensitive_columns comes from get_sensitive_columns_for_table()
-                                set_clauses = [f"{col} = :{col}" for col in update_values]
+                                set_clauses = [
+                                    f"{col} = :{col}" for col in update_values
+                                ]
                                 update_query = text(
                                     f"""
                                     UPDATE :table_name
@@ -446,13 +448,18 @@ class DatabaseEncryptionManager:
 
                         except Exception as e:
                             error_msg = f"Failed to encrypt record {record_dict.get('id', 'unknown')}: {e}"
-                            logger.exception("Failed to encrypt record %s", record_dict.get('id', 'unknown'))
+                            logger.exception(
+                                "Failed to encrypt record %s",
+                                record_dict.get("id", "unknown"),
+                            )
                             results["errors"].append(error_msg)
 
                     offset += batch_size
                     logger.info(
                         "Processed %d/%d records for table %s",
-                        offset, results['total_records'], table_name
+                        offset,
+                        results["total_records"],
+                        table_name,
                     )
 
                 conn.commit()
@@ -469,7 +476,9 @@ class DatabaseEncryptionManager:
 
         logger.info(
             "Completed encryption migration for table %s: %d/%d records encrypted",
-            table_name, results['encrypted_records'], results['total_records']
+            table_name,
+            results["encrypted_records"],
+            results["total_records"],
         )
 
         return results
@@ -557,8 +566,8 @@ class DatabaseEncryptionManager:
                         {
                             "table_name": table_name,
                             "batch_size": batch_size,
-                            "offset": offset
-                        }
+                            "offset": offset,
+                        },
                     )
                     batch_records = batch_result.fetchall()
 
@@ -614,13 +623,18 @@ class DatabaseEncryptionManager:
 
                         except Exception as e:
                             error_msg = f"Failed to rotate key for record {record_dict.get('id', 'unknown')}: {e}"
-                            logger.exception("Failed to rotate key for record %s", record_dict.get('id', 'unknown'))
+                            logger.exception(
+                                "Failed to rotate key for record %s",
+                                record_dict.get("id", "unknown"),
+                            )
                             results["errors"].append(error_msg)
 
                     offset += batch_size
                     logger.info(
                         "Processed %d/%d records for table %s",
-                        offset, results['total_records'], table_name
+                        offset,
+                        results["total_records"],
+                        table_name,
                     )
 
                 conn.commit()
@@ -640,7 +654,9 @@ class DatabaseEncryptionManager:
 
         logger.info(
             "Completed key rotation for table %s: %d/%d records rotated",
-            table_name, results['rotated_records'], results['total_records']
+            table_name,
+            results["rotated_records"],
+            results["total_records"],
         )
 
         return results

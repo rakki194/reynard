@@ -6,21 +6,21 @@ Migrates existing JSON agent data to PostgreSQL database.
 
 import json
 import logging
-from pathlib import Path
-from typing import Dict, Any, List
 from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Dict, List
 
 from .database import (
-    ecs_db,
+    AbilityTrait,
     Agent,
+    AgentAchievement,
+    AgentDomainExpertise,
+    AgentPosition,
+    AgentSpecialization,
+    AgentWorkflowPreference,
     PersonalityTrait,
     PhysicalTrait,
-    AbilityTrait,
-    AgentPosition,
-    AgentAchievement,
-    AgentSpecialization,
-    AgentDomainExpertise,
-    AgentWorkflowPreference,
+    ecs_db,
 )
 
 logger = logging.getLogger(__name__)

@@ -8,6 +8,7 @@ This ensures all systems use the same emoji definitions from a single source of 
 
 import asyncio
 from typing import Dict
+
 from .backend_data_service import BackendDataService
 
 

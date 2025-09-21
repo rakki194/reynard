@@ -220,19 +220,21 @@ class TestContinuousIndexingConfig:
         # Test file size limit by mocking the should_include_file method
         # to simulate a large file scenario
         original_should_include = config.should_include_file
-        
+
         def mock_should_include_file(file_path):
             # For the large file test, return False to simulate size limit
             if "large.py" in str(file_path):
                 return False
             return original_should_include(file_path)
-        
+
         # Create a large file
         large_file = test_base / "large.py"
         large_file.write_text("print('hello')")
 
         # Test with mocked method
-        with patch.object(config, "should_include_file", side_effect=mock_should_include_file):
+        with patch.object(
+            config, "should_include_file", side_effect=mock_should_include_file
+        ):
             assert config.should_include_file(large_file) is False
 
     def test_get_watch_root_path(self, temp_dir):

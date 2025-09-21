@@ -10,8 +10,8 @@ Now uses the new @register_tool decorator system for automatic registration.
 import logging
 from typing import Any, Dict
 
-from protocol.tool_registry import get_tool_registry, register_tool
 from config.tool_config import get_tool_configs
+from protocol.tool_registry import get_tool_registry, register_tool
 
 logger = logging.getLogger(__name__)
 

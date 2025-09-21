@@ -2,8 +2,8 @@
 Wrapper to test the main script functions directly.
 """
 
-import sys
 import os
+import sys
 from pathlib import Path
 
 # Add the current directory to the path
@@ -30,7 +30,7 @@ def test_setup_logging():
 def test_main_function():
     """Test the main function with mocked arguments."""
     import asyncio
-    from unittest.mock import patch, MagicMock
+    from unittest.mock import MagicMock, patch
 
     # Mock the argument parser
     with patch("argparse.ArgumentParser") as mock_parser:

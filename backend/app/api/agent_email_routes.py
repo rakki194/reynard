@@ -5,28 +5,29 @@ This module provides REST API endpoints for agent-to-agent email communication
 and automated email generation based on agent interactions.
 """
 
-from typing import Dict, Any, List, Optional
-from fastapi import APIRouter, HTTPException, status, Depends, BackgroundTasks
-from datetime import datetime
 import logging
+from datetime import datetime
+from typing import Any, Dict, List, Optional
+
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 
 from ..auth.user_service import get_current_active_user
-from ..services.email_service import email_service, EmailMessage, EmailAttachment
-from ..models.email_models import (
-    EmailSendRequest,
-    EmailSendResponse,
-    EmailBulkRequest,
-    EmailBulkResponse,
-)
-from ..services.agent_email_service import AgentEmailService
 from ..models.agent_email_models import (
+    AgentEmailBulkRequest,
     AgentEmailConfig,
+    AgentEmailSendRequest,
     AgentEmailStats,
     AgentEmailTemplate,
-    AgentEmailSendRequest,
-    AgentEmailBulkRequest,
     AgentEmailTriggerRequest,
 )
+from ..models.email_models import (
+    EmailBulkRequest,
+    EmailBulkResponse,
+    EmailSendRequest,
+    EmailSendResponse,
+)
+from ..services.agent_email_service import AgentEmailService
+from ..services.email_service import EmailAttachment, EmailMessage, email_service
 
 logger = logging.getLogger(__name__)
 

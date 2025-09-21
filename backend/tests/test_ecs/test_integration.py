@@ -4,21 +4,22 @@ Test ECS Integration
 Integration tests for the complete ECS system.
 """
 
-import pytest
-import sys
 import os
+import sys
+
+import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
 
-from backend.app.ecs.world import AgentWorld
 from backend.app.ecs.components import (
     AgentComponent,
-    PositionComponent,
-    LifecycleComponent,
-    SocialComponent,
     GenderComponent,
+    LifecycleComponent,
+    PositionComponent,
+    SocialComponent,
     TraitComponent,
 )
+from backend.app.ecs.world import AgentWorld
 
 
 class TestECSIntegration:

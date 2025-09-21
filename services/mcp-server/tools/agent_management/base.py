@@ -7,10 +7,9 @@ Core agent management functionality.
 Follows the 140-line axiom and modular architecture principles.
 """
 
-from typing import Any
-
 import sys
 from pathlib import Path
+from typing import Any
 
 # Add the services path
 services_path = Path(__file__).parent.parent.parent.parent / "services"

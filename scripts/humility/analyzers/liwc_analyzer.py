@@ -3,14 +3,15 @@ LIWC (Linguistic Inquiry and Word Count) analysis module.
 """
 
 import asyncio
-from typing import List, Dict, Any
+from typing import Any, Dict, List
+
+from core.config import HumilityConfig
 from core.models import (
-    HumilityFinding,
-    SeverityLevel,
     ConfidenceLevel,
     DetectionCategory,
+    HumilityFinding,
+    SeverityLevel,
 )
-from core.config import HumilityConfig
 
 
 class LiwcAnalyzer:

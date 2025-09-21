@@ -58,7 +58,7 @@ class BatchExecutor:
         """
         limit = limit or self._executor._config.max_workers
         semaphore = asyncio.Semaphore(limit)
-        
+
         async def execute_with_semaphore(task):
             async with semaphore:
                 return await self._executor.execute(task)

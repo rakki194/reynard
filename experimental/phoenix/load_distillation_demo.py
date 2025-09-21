@@ -10,30 +10,30 @@ Version: 1.0.0
 
 import asyncio
 import json
-import sys
 import logging
-from pathlib import Path
+import sys
 from datetime import datetime
-from typing import List, Dict, Any, Optional
+from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 # Add src to path
 sys.path.append(str(Path(__file__).parent / "src"))
 
+from src.core.knowledge_distillation import KnowledgeDistillation
+from src.core.phoenix_framework import PhoenixFramework
+from src.integration.agent_persistence import AgentStatePersistence
 from src.utils.data_structures import (
     AgentGeneticMaterial,
-    SubliminalTrait,
-    StructuredKnowledge,
-    GenerationContext,
-    TraitCategory,
     AgentState,
-    SpiritType,
+    GenerationContext,
     NamingStyle,
     PerformanceMetrics,
+    PhoenixConfig,
+    SpiritType,
+    StructuredKnowledge,
+    SubliminalTrait,
+    TraitCategory,
 )
-from src.core.knowledge_distillation import KnowledgeDistillation
-from src.integration.agent_persistence import AgentStatePersistence
-from src.core.phoenix_framework import PhoenixFramework
-from src.utils.data_structures import PhoenixConfig
 
 
 class DistillationLoader:

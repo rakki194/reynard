@@ -11,10 +11,10 @@ Follows the 140-line axiom and modular architecture principles.
 
 from typing import Any
 
+from protocol.tool_registry import register_tool
 from services.security_service import SecurityService
 from services.version_service import VersionService
 from services.vscode_service import VSCodeService
-from protocol.tool_registry import register_tool
 
 # Initialize services
 version_service = VersionService()

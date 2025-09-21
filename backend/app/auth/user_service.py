@@ -6,7 +6,7 @@ This module provides user management functionality using the Gatekeeper library.
 
 from datetime import datetime
 
-from fastapi import HTTPException, status, Depends
+from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from .jwt_utils import create_access_token, create_refresh_token, verify_token_sync

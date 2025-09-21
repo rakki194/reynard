@@ -6,10 +6,11 @@ This script runs the database migrations in the correct order to set up
 the unified repository schema and ensure compatibility with the RAG service.
 """
 
+import logging
 import os
 import sys
-import logging
 from pathlib import Path
+
 from sqlalchemy import create_engine, text
 from sqlalchemy.exc import SQLAlchemyError
 

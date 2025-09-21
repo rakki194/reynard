@@ -9,8 +9,8 @@ This module contains the fundamental RAG services:
 """
 
 from .embeddings import EmbeddingService
-from .vector_store import VectorStoreService
 from .indexing import DocumentIndexer
 from .search import SearchEngine
+from .vector_store import VectorStoreService
 
 __all__ = ["EmbeddingService", "VectorStoreService", "DocumentIndexer", "SearchEngine"]

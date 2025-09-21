@@ -11,8 +11,8 @@ Provides intelligent tokenization for programming languages with:
 
 import logging
 import re
-from typing import List, Dict, Any
 from pathlib import Path
+from typing import Any, Dict, List
 
 # Optional imports for tree-sitter
 try:

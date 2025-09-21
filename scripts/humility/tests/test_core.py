@@ -2,23 +2,24 @@
 Tests for core humility detector functionality.
 """
 
-import pytest
 import asyncio
-from pathlib import Path
-import tempfile
 import os
 
 # Add the parent directory to the path so we can import the modules
 import sys
+import tempfile
+from pathlib import Path
+
+import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from core import (
-    HumilityDetector,
-    HumilityConfig,
-    SeverityLevel,
     ConfidenceLevel,
     DetectionCategory,
+    HumilityConfig,
+    HumilityDetector,
+    SeverityLevel,
 )
 from core.models import HumilityFinding, HumilityProfile
 

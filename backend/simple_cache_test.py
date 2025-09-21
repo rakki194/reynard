@@ -9,7 +9,7 @@ This script demonstrates cache hits, misses, and performance improvements.
 
 import asyncio
 import time
-from typing import Dict, Any
+from typing import Any, Dict
 
 try:
     import requests
@@ -23,8 +23,8 @@ async def test_search_service_cache() -> bool:
     print("=" * 40)
 
     try:
-        from app.api.search.service import OptimizedSearchService
         from app.api.search.models import SemanticSearchRequest
+        from app.api.search.service import OptimizedSearchService
 
         # Initialize service
         service = OptimizedSearchService()

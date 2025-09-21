@@ -6,9 +6,9 @@ This module provides the core components for advanced humility detection
 using state-of-the-art NLP, machine learning, and psychological research.
 """
 
-from .detector import HumilityDetector
-from .models import HumilityFinding, SeverityLevel, ConfidenceLevel, DetectionCategory
 from .config import HumilityConfig
+from .detector import HumilityDetector
+from .models import ConfidenceLevel, DetectionCategory, HumilityFinding, SeverityLevel
 
 __all__ = [
     "HumilityDetector",

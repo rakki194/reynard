@@ -5,13 +5,14 @@ Comprehensive Test Runner for Advanced Email Features.
 This script runs all email-related tests and provides detailed reporting.
 """
 
-import pytest
-import sys
-import os
-import time
-from pathlib import Path
-from datetime import datetime
 import json
+import os
+import sys
+import time
+from datetime import datetime
+from pathlib import Path
+
+import pytest
 
 
 def run_email_tests():

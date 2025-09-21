@@ -11,6 +11,8 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from .hybrid_search import HybridSearchHandler
+from .ignore_utils import create_ignore_parser
 from .models import (
     HybridSearchRequest,
     IndexRequest,
@@ -21,11 +23,9 @@ from .models import (
     SuggestionsResponse,
     SyntaxSearchRequest,
 )
+from .nlp_processor import NaturalLanguageProcessor
 from .semantic_search import SemanticSearchHandler
 from .syntax_search import SyntaxSearchHandler
-from .hybrid_search import HybridSearchHandler
-from .nlp_processor import NaturalLanguageProcessor
-from .ignore_utils import create_ignore_parser
 
 logger = logging.getLogger(__name__)
 

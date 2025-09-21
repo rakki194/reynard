@@ -9,11 +9,11 @@ This module contains advanced RAG capabilities:
 - Model evaluation and benchmarking
 """
 
-from .monitoring import PerformanceMonitor
-from .security import SecurityService
-from .improvement import ContinuousImprovement
 from .documentation import DocumentationService
 from .evaluation import ModelEvaluator
+from .improvement import ContinuousImprovement
+from .monitoring import PerformanceMonitor
+from .security import SecurityService
 
 __all__ = [
     "PerformanceMonitor",

@@ -20,7 +20,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
-## [0.12.1] - 2025-09-21
+## [0.12.2] - 2025-09-21
+
+- **Advanced Semantic Search with AST Parsing**: Implemented comprehensive semantic search system with AST-aware code analysis, document parsing for documentation, hybrid search capabilities, and intelligent code structure analysis including function, class, import, and symbol resolution with real-time progress monitoring (Mysterious-Sage-95)
+- **Document Indexer Control API**: Created complete document indexer management system with pause/resume functionality, queue monitoring, worker status tracking, and performance metrics for fine-grained control over the indexing pipeline (Mysterious-Sage-95)
+- **Comprehensive Initial Indexing System**: Created complete initial indexing system with database emptiness detection, intelligent file discovery, batch processing with progress tracking, real-time WebSocket monitoring, and comprehensive API endpoints for indexing control and progress monitoring (Mysterious-Sage-95)
+- **Automatic Startup Indexing**: Added automatic initial indexing of the entire codebase at startup when RAG services are ready, configurable via RAG_INITIAL_INDEXING_ENABLED environment variable, ensures full codebase indexing before continuous monitoring begins (Mysterious-Sage-95)
+- **Embedding Service Configuration Refactor**: Replaced hardcoded configuration values with environment variable loading from .env file, added configurable embedding dimensions, cache sizes, and rate limiting, improved configuration management for better deployment flexibility (Mysterious-Sage-95)
+- **Embedding Service Linting Fixes**: Fixed deprecated typing imports (Dict, List → dict, list), updated type annotations to modern syntax (Optional[X] → X | None), refactored complex methods to reduce cyclomatic complexity, replaced logging.error with logging.exception, moved imports to top-level, replaced magic numbers with named constants, and fixed unused arguments and return statements (Mysterious-Sage-95)
+
+- **ECS PostgreSQL Implementation**: Complete implementation of all ECS features in PostgreSQL backend including breeding system, genetic compatibility analysis, trait inheritance, position tracking, movement system, spatial queries, interaction management, and relationship tracking (Bengal-Prime-31)
 
 ### Added
 
@@ -32,30 +41,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- **Queue Watcher File System Error**: Fixed ENOENT error when watching temporary directories that no longer exist by replacing built-in fs.watch with chokidar for robust file watching (Sage-Sage-62)
-
 ### Security
+
+## [0.12.1] - 2025-09-21
+
+### Fixed
+
+- **Queue Watcher File System Error**: Fixed ENOENT error when watching temporary directories that no longer exist by
+  replacing built-in fs.watch with chokidar for robust file watching (Sage-Sage-62)
 
 ## [0.12.0] - 2025-09-21
 
 ### Added
 
-- **Markdown Validation Tools**: Created comprehensive TypeScript-based markdown validation package with ToC conflict detection, link validation, and sentence length checking (Playful-Prime-79)
+- **Markdown Validation Tools**: Created comprehensive TypeScript-based markdown validation package with ToC conflict
+  detection, link validation, and sentence length checking (Playful-Prime-79)
 
 ### Fixed
 
-- **MCP Security Tools**: Fixed scan_security and scan_security_fast tool errors by correcting SecurityService method calls (Water-Prime-25)
-- **Continuous Indexing RuntimeWarning**: Fixed unawaited coroutine warning in continuous indexing service by properly handling async method calls in thread-safe scheduling (Madagascar-Prime-17)
+- **MCP Security Tools**: Fixed scan_security and scan_security_fast tool errors by correcting SecurityService method
+  calls (Water-Prime-25)
+- **Continuous Indexing RuntimeWarning**: Fixed unawaited coroutine warning in continuous indexing service by properly
+  handling async method calls in thread-safe scheduling (Madagascar-Prime-17)
 
 ### Changed
 
-- **Validation Migration**: Moved validation scripts from `./scripts/validation` to `packages/dev-tools/validation` and updated all references throughout the project (Swift-Sage-45)
-- **Vitest Config Generator Migration**: Moved vitest-config-generator from `./scripts/vitest-config-generator` to `packages/dev-tools/vitest-config-generator` and updated all references throughout the project (Swift-Sage-45)
-- **Markdown Validation Modernization**: Migrated from JavaScript to TypeScript for all markdown validation tools with improved CLI interface and comprehensive testing (Playful-Prime-79)
+- **Validation Migration**: Moved validation scripts from `./scripts/validation` to `packages/dev-tools/validation` and
+  updated all references throughout the project (Swift-Sage-45)
+- **Vitest Config Generator Migration**: Moved vitest-config-generator from `./scripts/vitest-config-generator` to
+  `packages/dev-tools/vitest-config-generator` and updated all references throughout the project (Swift-Sage-45)
+- **Markdown Validation Modernization**: Migrated from JavaScript to TypeScript for all markdown validation tools with
+  improved CLI interface and comprehensive testing (Playful-Prime-79)
 
 ### Security
 
-- **Hardcoded Secret Fix**: Fixed hardcoded JWT secret in MCP server auth service to use environment variables (Water-Prime-25)
+- **Hardcoded Secret Fix**: Fixed hardcoded JWT secret in MCP server auth service to use environment variables
+  (Water-Prime-25)
 
 ## [0.10.0] - 2025-09-21
 
@@ -72,37 +93,59 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Build Scripts**: Added `vitest:generate`, `vitest:regenerate`, and `vitest:backup` commands to root package.json
   - **Prebuild Hook**: Automatic vitest config regeneration before every build via `prebuild` script
   - **VS Code Tasks**: Added 🦊 Generate Vitest Config, 🦊 Regenerate Vitest Config, and 🦊 Backup Vitest Config tasks
-  - **Architecture-Driven Configuration**: Replaced 480-line manual vitest.global.config.ts with 3,469-line generated configuration
+- **Architecture-Driven Configuration**: Replaced 480-line manual vitest.global.config.ts with 3,469-line generated
+configuration
   - **Automatic Project Discovery**: Generates test configurations for all 102 testable projects automatically
   - **Backup System**: Automatic backup of existing configurations before regeneration
   - **Validation**: Built-in configuration validation and error handling
-- **Package Structure Reorganization**: Completely restructured packages folder from flat to semantically categorized layout (Vulpine)
-  - **AI & Machine Learning** (`packages/ai/`): Consolidated all AI/ML packages including annotating, caption, comfy, model-management, multimodal, nlweb, rag, tool-calling
+- **Package Structure Reorganization**: Completely restructured packages folder from flat to semantically categorized
+  layout (Vulpine)
+- **AI & Machine Learning** (`packages/ai/`): Consolidated all AI/ML packages including annotating, caption, comfy,
+model-management, multimodal, nlweb, rag, tool-calling
   - **Algorithms** (`packages/algorithms/`): Moved algorithm implementations to dedicated category
-  - **Core Framework** (`packages/core/`): Organized core packages including composables, config, connection, core, features, i18n, settings, testing, validation
-  - **Data Processing** (`packages/data/`): Grouped data-related packages including file-processing, repository-*, scraping, unified-repository
-  - **Development Tools** (`packages/dev-tools/`): Consolidated dev tools including adr-system, code-quality, dev-server-management, git-automation, humility-parser, project-architecture, queue-watcher
+- **Core Framework** (`packages/core/`): Organized core packages including composables, config, connection, core,
+features, i18n, settings, testing, validation
+- **Data Processing** (`packages/data/`): Grouped data-related packages including file-processing, repository-*,
+scraping, unified-repository
+- **Development Tools** (`packages/dev-tools/`): Consolidated dev tools including adr-system, code-quality,
+dev-server-management, git-automation, humility-parser, project-architecture, queue-watcher
   - **Documentation** (`packages/docs/`): Organized documentation packages including diagram-generator, docs-*
-  - **Media Processing** (`packages/media/`): Grouped media packages including 3d, audio, boundingbox, gallery, image, segmentation, video
-  - **Services** (`packages/services/`): Consolidated service packages including api-client, auth, chat, email, service-manager
-  - **UI & Components** (`packages/ui/`): Organized UI packages including animation, charts, colors, components-*, dashboard, error-boundaries, floating-panel, fluent-icons, games, monaco, themes, ui
+- **Media Processing** (`packages/media/`): Grouped media packages including 3d, audio, boundingbox, gallery, image,
+segmentation, video
+- **Services** (`packages/services/`): Consolidated service packages including api-client, auth, chat, email,
+service-manager
+- **UI & Components** (`packages/ui/`): Organized UI packages including animation, charts, colors, components-*,
+dashboard, error-boundaries, floating-panel, fluent-icons, games, monaco, themes, ui
 
 ### Changed
 
-- **Documentation Updates**: Updated README.md and all documentation to reflect new semantic package categorization (Vulpine)
+- **Documentation Updates**: Updated README.md and all documentation to reflect new semantic package categorization
+  (Vulpine)
 - **Workspace Configuration**: Updated pnpm-workspace.yaml to reflect new package structure (Vulpine)
-- **Gatekeeper PostgreSQL Migration**: Migrated gatekeeper authentication system from SQLite to PostgreSQL as the primary database. Updated all configuration files to use PostgreSQL by default, removed SQLite fallback, and migrated all user data. Deleted `reynard.db` and `e2e-test.db` files to ensure clean PostgreSQL-only architecture (Vulpine)
-- **Complete Database Consolidation**: Removed all `agent-names.json` files and updated agent naming services to use PostgreSQL ECS database exclusively. Created SQLAlchemy migration system with Alembic for ECS data. Removed duplicate `gatekeeper_users` table and ensured all systems use the correct `users` table. Updated e2e tests to use PostgreSQL databases (`reynard_e2e` and `reynard_ecs_e2e`) instead of SQLite (Vulpine)
+- **Gatekeeper PostgreSQL Migration**: Migrated gatekeeper authentication system from SQLite to PostgreSQL as the
+  primary database. Updated all configuration files to use PostgreSQL by default, removed SQLite fallback, and migrated
+  all user data. Deleted `reynard.db` and `e2e-test.db` files to ensure clean PostgreSQL-only architecture (Vulpine)
+- **Complete Database Consolidation**: Removed all `agent-names.json` files and updated agent naming services to use
+  PostgreSQL ECS database exclusively. Created SQLAlchemy migration system with Alembic for ECS data. Removed duplicate
+  `gatekeeper_users` table and ensured all systems use the correct `users` table. Updated e2e tests to use PostgreSQL
+  databases (`reynard_e2e` and `reynard_ecs_e2e`) instead of SQLite (Vulpine)
 
 ### Removed
 
-- **ECS Database Cleanup**: Removed duplicate JSON persistence files from `backend/data/ecs/` and verified that all ECS operations use PostgreSQL database exclusively. Fixed ECS endpoints import issues and ensured clean single-source architecture (Vulpine)
+- **ECS Database Cleanup**: Removed duplicate JSON persistence files from `backend/data/ecs/` and verified that all ECS
+  operations use PostgreSQL database exclusively. Fixed ECS endpoints import issues and ensured clean single-source
+  architecture (Vulpine)
 
 ### Fixed
 
-- **Queue Watcher Fix**: Fixed auto-start queue watcher VS Code task and updated project architecture to reflect todos folder moved to .cursor/todos (Control-Grandmaster-72)
-- **Project Architecture Enhancement**: Updated project architecture to include detailed semantic package categorization with all 76 packages across 9 categories (AI, Algorithms, Core, Data, Dev-tools, Docs, Media, Services, UI) (Control-Grandmaster-72)
-- **Complete Package Discovery**: Comprehensive scan revealed 109 total packages across the entire project - 77 in packages/, 22 in examples/, 1 in templates/, 1 in e2e/, 2 in scripts/, 1 in backend/, 1 in experimental/, 1 in .vscode/, and 3 in third_party/ (Control-Grandmaster-72)
+- **Queue Watcher Fix**: Fixed auto-start queue watcher VS Code task and updated project architecture to reflect todos
+  folder moved to .cursor/todos (Control-Grandmaster-72)
+- **Project Architecture Enhancement**: Updated project architecture to include detailed semantic package categorization
+  with all 76 packages across 9 categories (AI, Algorithms, Core, Data, Dev-tools, Docs, Media, Services, UI)
+  (Control-Grandmaster-72)
+- **Complete Package Discovery**: Comprehensive scan revealed 109 total packages across the entire project - 77 in
+  packages/, 22 in examples/, 1 in templates/, 1 in e2e/, 2 in scripts/, 1 in backend/, 1 in experimental/, 1 in
+  .vscode/, and 3 in third_party/ (Control-Grandmaster-72)
 
 ### Security
 
@@ -110,7 +153,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **ECS Architecture Consolidation**: Moved standalone ECS world service from `services/ecs-world` to `/home/kade/ecs_world` and updated all references to use FastAPI backend ECS exclusively. This consolidates ECS functionality into a single authoritative source (Vulpine)
+- **ECS Architecture Consolidation**: Moved standalone ECS world service from `services/ecs-world` to
+  `/home/kade/ecs_world` and updated all references to use FastAPI backend ECS exclusively. This consolidates ECS
+  functionality into a single authoritative source (Vulpine)
 
 ## [0.9.2] - 2025-09-20
 
@@ -118,51 +163,83 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- **ECS Database**: Resolved SQLAlchemy reserved attribute conflict by renaming `PerformanceMetric.metadata` column to `metric_metadata` (Strategic-Fox-13)
+- **ECS Database**: Resolved SQLAlchemy reserved attribute conflict by renaming `PerformanceMetric.metadata` column to
+  `metric_metadata` (Strategic-Fox-13)
+- **MCP Server Optimization**: Implemented lazy loading architecture reducing startup time from 42+ seconds to 0.1
+  seconds (420x improvement). Fixed backend dependency issues allowing tools to work independently. Preserved full
+  modular architecture with 35 tools available. (Energetic-Commander-30)
 
 ### Added
 
-- **Academic Review System**: Comprehensive academic evaluation of PHOENIX and PHOENIX Control experiments for Success-Advisor-8 reconstruction feasibility with validated theoretical foundation (Recognition-Grandmaster-27)
-- **Diagram Generator Documentation Update**: Comprehensive README update with frontend-backend relationship diagrams, detailed ecosystem analysis, and advanced diagram types. Added DetailedEcosystemGenerator to exports, updated CLI scripts, and deleted redundant FRONTEND_BACKEND_DIAGRAMS.md document (Excitement-Planner-18)
-- **Adaptive Context Rot Mitigation Framework**: Comprehensive research proposal for novel hierarchical memory management approach addressing context rot in large language models with 87.3% performance improvement and sub-3ms latency overhead (Wyrm-Strategist-4)
-- **Frontend-Backend Relationship Diagram Generator**: Comprehensive Mermaid diagram generation system for visualizing relationships between frontend packages and backend services (Primordial-Keeper-64)
-- **Embedding Backend Configuration System**: Comprehensive granular control over embedding backends with easy enable/disable for Ollama, Sentence Transformers, OpenAI, and Hugging Face backends. Includes environment variable support, fallback chains, mock mode, and extensive validation. Fully tested with .env file integration and virtual environment activation (Agile-Strategist-5)
-- **Destiny Name Generator**: New Destiny-style name generator inspired by the Destiny and Destiny 2 universe, featuring epic cosmic names with guardian classes, weapons, locations, and mystical concepts (Brave-Keeper-8)
-- **Pylint Configuration Fix**: Resolved "Unrecognized option found: *.pyi" error by fixing invalid Pylint configuration syntax in pyproject.toml (Snuggles-Grandmaster-35)
-- **Agent Naming System Refactoring**: Complete modular refactoring of the agent naming library with shared components, unique generators for each naming style, and clean architecture following the 140-line axiom (Stone-Analyst-40)
-- **Research Proposal Generation System**: Comprehensive system for conducting deep research and generating LaTeX proposals for randomly selected Reynard components through actual codebase analysis, web research, and original insights (Cascade-Sage-30)
-- **VS Code Tasks Enhancement**: Comprehensive VS Code tasks configuration with 1091+ lines of development automation, testing, and workflow management (Vulpine-Master-7)
-- **Git Workflow Documentation**: Enhanced git-workflow-prompt.md with comprehensive tracked junk file detection and Delta integration for superior diff analysis (Vulpine-Master-7)
-- **Research Framework Enhancement**: Comprehensive research proposal generation system with academic review prompts and implementation guides (Vulpine-Master-7)
-- **Evolutionary Document-Conditioned Agent Distillation Proposal**: Comprehensive publication-ready research proposal integrating evolutionary algorithms, document-conditioned learning, and agent distillation for iterative AI agent improvement through multi-generational knowledge transfer (Sleek-Significance-610)
-- **E2E Effects Testing**: Advanced effects testing framework with comprehensive monitoring, dependency fixtures, and unified results management (Vulpine-Master-7)
+- **Academic Review System**: Comprehensive academic evaluation of PHOENIX and PHOENIX Control experiments for
+  Success-Advisor-8 reconstruction feasibility with validated theoretical foundation (Recognition-Grandmaster-27)
+- **Diagram Generator Documentation Update**: Comprehensive README update with frontend-backend relationship diagrams,
+  detailed ecosystem analysis, and advanced diagram types. Added DetailedEcosystemGenerator to exports, updated CLI
+  scripts, and deleted redundant FRONTEND_BACKEND_DIAGRAMS.md document (Excitement-Planner-18)
+- **Adaptive Context Rot Mitigation Framework**: Comprehensive research proposal for novel hierarchical memory
+  management approach addressing context rot in large language models with 87.3% performance improvement and sub-3ms
+  latency overhead (Wyrm-Strategist-4)
+- **Frontend-Backend Relationship Diagram Generator**: Comprehensive Mermaid diagram generation system for visualizing
+  relationships between frontend packages and backend services (Primordial-Keeper-64)
+- **Embedding Backend Configuration System**: Comprehensive granular control over embedding backends with easy
+  enable/disable for Ollama, Sentence Transformers, OpenAI, and Hugging Face backends. Includes environment variable
+  support, fallback chains, mock mode, and extensive validation. Fully tested with .env file integration and virtual
+  environment activation (Agile-Strategist-5)
+- **Destiny Name Generator**: New Destiny-style name generator inspired by the Destiny and Destiny 2 universe, featuring
+  epic cosmic names with guardian classes, weapons, locations, and mystical concepts (Brave-Keeper-8)
+- **Pylint Configuration Fix**: Resolved "Unrecognized option found: *.pyi" error by fixing invalid Pylint configuration
+  syntax in pyproject.toml (Snuggles-Grandmaster-35)
+- **Agent Naming System Refactoring**: Complete modular refactoring of the agent naming library with shared components,
+  unique generators for each naming style, and clean architecture following the 140-line axiom (Stone-Analyst-40)
+- **Research Proposal Generation System**: Comprehensive system for conducting deep research and generating LaTeX
+  proposals for randomly selected Reynard components through actual codebase analysis, web research, and original
+  insights (Cascade-Sage-30)
+- **VS Code Tasks Enhancement**: Comprehensive VS Code tasks configuration with 1091+ lines of development automation,
+  testing, and workflow management (Vulpine-Master-7)
+- **Git Workflow Documentation**: Enhanced git-workflow-prompt.md with comprehensive tracked junk file detection and
+  Delta integration for superior diff analysis (Vulpine-Master-7)
+- **Research Framework Enhancement**: Comprehensive research proposal generation system with academic review prompts and
+  implementation guides (Vulpine-Master-7)
+- **Evolutionary Document-Conditioned Agent Distillation Proposal**: Comprehensive publication-ready research proposal
+  integrating evolutionary algorithms, document-conditioned learning, and agent distillation for iterative AI agent
+  improvement through multi-generational knowledge transfer (Sleek-Significance-610)
+- **E2E Effects Testing**: Advanced effects testing framework with comprehensive monitoring, dependency fixtures, and
+  unified results management (Vulpine-Master-7)
 
 ### Changed
 
-- **E2E Testing Configuration**: Enhanced Playwright configurations across all test suites with improved performance and component testing capabilities (Vulpine-Master-7)
-- **Development Scripts**: Updated start scripts for auth-app and error-demo examples with improved development workflow (Vulpine-Master-7)
-- **MCP Server Optimization**: Streamlined MCP server main.py with enhanced tool routing and performance improvements (Vulpine-Master-7)
-- **Research Documentation**: Streamlined semantic diffusion analysis paper with focused content and improved structure (Vulpine-Master-7)
-- **Academic Review System**: Enhanced academic review prompts with comprehensive evaluation frameworks and research methodology improvements (Vulpine-Master-7)
-- **Ecosystem Documentation**: Updated ecosystem.mdc with latest MCP server capabilities and tool descriptions (Vulpine-Master-7)
+- **E2E Testing Configuration**: Enhanced Playwright configurations across all test suites with improved performance and
+  component testing capabilities (Vulpine-Master-7)
+- **Development Scripts**: Updated start scripts for auth-app and error-demo examples with improved development workflow
+  (Vulpine-Master-7)
+- **MCP Server Optimization**: Streamlined MCP server main.py with enhanced tool routing and performance improvements
+  (Vulpine-Master-7)
+- **Research Documentation**: Streamlined semantic diffusion analysis paper with focused content and improved structure
+  (Vulpine-Master-7)
+- **Academic Review System**: Enhanced academic review prompts with comprehensive evaluation frameworks and research
+  methodology improvements (Vulpine-Master-7)
+- **Ecosystem Documentation**: Updated ecosystem.mdc with latest MCP server capabilities and tool descriptions
+  (Vulpine-Master-7)
 
 ### Removed
 
-- **Legacy Development Files**: Removed Makefile.dev and markdownlint-changelog.json for streamlined development workflow (Vulpine-Master-7)
-- **Obsolete Benchmark Files**: Cleaned up e2e/accurate-benchmark-analysis.txt and e2e/accurate-benchmark-results.json (Vulpine-Master-7)
-- **Redundant Research Prompts**: Removed duplicate enhanced research proposal generation and novel research idea generation framework files (Vulpine-Master-7)
-
-### Fixed
-
-- **MCP Server Optimization**: Implemented lazy loading architecture reducing startup time from 42+ seconds to 0.1 seconds (420x improvement). Fixed backend dependency issues allowing tools to work independently. Preserved full modular architecture with 35 tools available. (Energetic-Commander-30)
+- **Legacy Development Files**: Removed Makefile.dev and markdownlint-changelog.json for streamlined development
+  workflow (Vulpine-Master-7)
+- **Obsolete Benchmark Files**: Cleaned up e2e/accurate-benchmark-analysis.txt and e2e/accurate-benchmark-results.json
+  (Vulpine-Master-7)
+- **Redundant Research Prompts**: Removed duplicate enhanced research proposal generation and novel research idea
+  generation framework files (Vulpine-Master-7)
 
 ## [0.8.6] - 2025-09-18
 
 ### Added
 
-- **Git Workflow Automation**: Enhanced Git workflow prompt with comprehensive tracked junk file detection (Meadow-Philosopher-89)
-- **Delta Integration**: Improved diff visualization with Delta configuration for better code review (Meadow-Philosopher-89)
-- **Junk File Detection Script**: Added `scripts/detect-tracked-junk-files.sh` for Git-tracked file analysis (Meadow-Philosopher-89)
+- **Git Workflow Automation**: Enhanced Git workflow prompt with comprehensive tracked junk file detection
+  (Meadow-Philosopher-89)
+- **Delta Integration**: Improved diff visualization with Delta configuration for better code review
+  (Meadow-Philosopher-89)
+- **Junk File Detection Script**: Added `scripts/detect-tracked-junk-files.sh` for Git-tracked file analysis
+  (Meadow-Philosopher-89)
 - **ECS World Documentation**: Added comprehensive README for ECS World simulation system (Meadow-Philosopher-89)
 
 ### Changed
@@ -171,62 +248,113 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Package Version Management**: Updated all package.json files across the monorepo
 - **VS Code Workspace**: Enhanced workspace configuration with improved project structure
 - **FeatureServiceBridge**: Improved integration and service management
-- **Package.json Test Script Paths**: Updated all 67 package.json files across packages and examples to use standardized vitest-global-queue.sh path, ensuring consistent queue management across the entire monorepo (Strategic-Spirit-69)
+- **Package.json Test Script Paths**: Updated all 67 package.json files across packages and examples to use standardized
+  vitest-global-queue.sh path, ensuring consistent queue management across the entire monorepo (Strategic-Spirit-69)
 
 ### Removed
 
-- **Project Architecture Examples**: Cleaned up example files from project-architecture package for better maintainability
+- **Project Architecture Examples**: Cleaned up example files from project-architecture package for better
+  maintainability
 
 ### Fixed
 
-- **Vitest Global Queue Path Resolution**: Fixed all package.json files to use correct path `../../scripts/testing/vitest-global-queue.sh` instead of incorrect `../../scripts/vitest-global-queue.sh`, resolving 52 files with incorrect paths and ensuring 100% path consistency across 67 package.json files (Strategic-Spirit-69)
+- **Vitest Global Queue Path Resolution**: Fixed all package.json files to use correct path
+  `../../scripts/testing/vitest-global-queue.sh` instead of incorrect `../../scripts/vitest-global-queue.sh`, resolving
+  52 files with incorrect paths and ensuring 100% path consistency across 67 package.json files (Strategic-Spirit-69)
 
 ## [0.8.5] - 2025-09-18
 
 ### Added
 
-- **Complete i18n Package TypeScript Compilation Fix**: Successfully resolved ALL TypeScript compilation errors in the i18n package including missing colorPicker translations across 37 language files, duplicate identifier issues, missing export members, interface mismatches, and IntlFormatter class compatibility issues (Strategic-Spirit-69)
-- **Comprehensive ColorPicker Translation Implementation**: Added complete colorPicker translation objects to all 37 language files including currentColor, lightness, chroma, hue, alpha, opacity, and control labels with proper localization for each language (Strategic-Spirit-69)
-- **IntlFormatter Interface Compatibility Resolution**: Fixed IntlFormatter interface mismatches by updating class implementations to match expected signatures, adding missing formatFromNow methods, and resolving config property requirements (Strategic-Spirit-69)
-- **Translation Type System Alignment**: Resolved type mismatches between translation interfaces and implementations by updating GalleryTranslations interface and ensuring consistency across all language files (Strategic-Spirit-69)
-- **Algorithm Selector Monolith Refactoring**: Successfully broke down 527-line algorithm-selector.ts monolith into 12 focused modules following 140-line axiom, creating modular architecture with separate concerns for types, workload analysis, algorithm selection, and performance tracking (Lycan-Advisor-32)
-- **Comprehensive GitHub Workflow Infrastructure Overhaul**: Completely resolved all 10 failing GitHub workflows through systematic fixes including actionlint installation, shellcheck configuration, pnpm setup, i18n testing, and comprehensive shellcheck warning resolution across all workflow files (Alluring-Architect-3)
-- **Advanced Shellcheck Warning Resolution**: Fixed ALL remaining shellcheck warnings across all workflow files including SC2086 (unquoted variables), SC2296 (parameter expansions), SC2164 (cd commands), SC2250 (variable braces), SC2292 (test syntax), and SC1130 (conditional spacing) (Alluring-Architect-3)
-- **GitHub Actions Expression Quoting**: Implemented proper quoting for all GitHub Actions expressions (${{ }}) to prevent shellcheck globbing and word splitting warnings while maintaining workflow functionality (Alluring-Architect-3)
-- **Lockfile Synchronization System**: Updated pnpm-lock.yaml to resolve ERR_PNPM_OUTDATED_LOCKFILE errors and ensure all package dependencies are properly synchronized across the monorepo (Alluring-Architect-3)
-- **OKLCH Color Picker Translation Keys**: Added comprehensive translation keys for color picker components including currentColor, lightness, chroma, hue, and control labels following internationalization best practices (Alluring-Analyst-21)
-- **Color Picker Domain-Specific Ignore Patterns**: Added colorPicker domain patterns to i18n ignore configuration for technical terms like oklch, rgb, hsl, hex (Alluring-Analyst-21)
-- **Alpha and Opacity Translation Keys**: Added proper translation keys for alpha and opacity terms in color picker components, recognizing these as user-facing terms requiring internationalization (Alluring-Analyst-21)
-- **Enhanced Component Translation Types**: Extended ComponentTranslations interface with colorPicker section including interactiveLaboratory, hueControl, lightnessControl, chromaControl, alphaControl, and opacityControl keys (Alluring-Analyst-21)
+- **Complete i18n Package TypeScript Compilation Fix**: Successfully resolved ALL TypeScript compilation errors in the
+  i18n package including missing colorPicker translations across 37 language files, duplicate identifier issues, missing
+  export members, interface mismatches, and IntlFormatter class compatibility issues (Strategic-Spirit-69)
+- **Comprehensive ColorPicker Translation Implementation**: Added complete colorPicker translation objects to all 37
+  language files including currentColor, lightness, chroma, hue, alpha, opacity, and control labels with proper
+  localization for each language (Strategic-Spirit-69)
+- **IntlFormatter Interface Compatibility Resolution**: Fixed IntlFormatter interface mismatches by updating class
+  implementations to match expected signatures, adding missing formatFromNow methods, and resolving config property
+  requirements (Strategic-Spirit-69)
+- **Translation Type System Alignment**: Resolved type mismatches between translation interfaces and implementations by
+  updating GalleryTranslations interface and ensuring consistency across all language files (Strategic-Spirit-69)
+- **Algorithm Selector Monolith Refactoring**: Successfully broke down 527-line algorithm-selector.ts monolith into 12
+  focused modules following 140-line axiom, creating modular architecture with separate concerns for types, workload
+  analysis, algorithm selection, and performance tracking (Lycan-Advisor-32)
+- **Comprehensive GitHub Workflow Infrastructure Overhaul**: Completely resolved all 10 failing GitHub workflows through
+  systematic fixes including actionlint installation, shellcheck configuration, pnpm setup, i18n testing, and
+  comprehensive shellcheck warning resolution across all workflow files (Alluring-Architect-3)
+- **Advanced Shellcheck Warning Resolution**: Fixed ALL remaining shellcheck warnings across all workflow files
+  including SC2086 (unquoted variables), SC2296 (parameter expansions), SC2164 (cd commands), SC2250 (variable braces),
+  SC2292 (test syntax), and SC1130 (conditional spacing) (Alluring-Architect-3)
+- **GitHub Actions Expression Quoting**: Implemented proper quoting for all GitHub Actions expressions (${{ }}) to
+  prevent shellcheck globbing and word splitting warnings while maintaining workflow functionality
+  (Alluring-Architect-3)
+- **Lockfile Synchronization System**: Updated pnpm-lock.yaml to resolve ERR_PNPM_OUTDATED_LOCKFILE errors and ensure
+  all package dependencies are properly synchronized across the monorepo (Alluring-Architect-3)
+- **OKLCH Color Picker Translation Keys**: Added comprehensive translation keys for color picker components including
+  currentColor, lightness, chroma, hue, and control labels following internationalization best practices
+  (Alluring-Analyst-21)
+- **Color Picker Domain-Specific Ignore Patterns**: Added colorPicker domain patterns to i18n ignore configuration for
+  technical terms like oklch, rgb, hsl, hex (Alluring-Analyst-21)
+- **Alpha and Opacity Translation Keys**: Added proper translation keys for alpha and opacity terms in color picker
+  components, recognizing these as user-facing terms requiring internationalization (Alluring-Analyst-21)
+- **Enhanced Component Translation Types**: Extended ComponentTranslations interface with colorPicker section including
+  interactiveLaboratory, hueControl, lightnessControl, chromaControl, alphaControl, and opacityControl keys
+  (Alluring-Analyst-21)
 
 ### Changed
 
-- **GitHub Workflow Validation System**: Enhanced workflow validation with proper actionlint installation, improved shellcheck configuration, and comprehensive error handling across all CI/CD pipelines (Alluring-Architect-3)
-- **i18n Testing Configuration**: Temporarily disabled hardcoded string checks in CI to allow workflows to pass while maintaining comprehensive i18n testing infrastructure (Alluring-Architect-3)
-- **Python Action Versions**: Updated all Python action references from v4 to v5 across workflow files to resolve actionlint warnings and ensure compatibility (Alluring-Architect-3)
-- **Workflow Shell Script Quality**: Improved all shell scripts in workflow files with proper error handling, variable quoting, and modern bash syntax following shellcheck best practices (Alluring-Architect-3)
-- **Maze Game Type Safety Enhancement**: Completely eliminated all `any` types from maze game project, replacing them with proper TypeScript interfaces. Updated Three.js type definitions, enhanced composables with type safety, and added comprehensive type coverage for all game components (Stream-Sage-5)
+- **GitHub Workflow Validation System**: Enhanced workflow validation with proper actionlint installation, improved
+  shellcheck configuration, and comprehensive error handling across all CI/CD pipelines (Alluring-Architect-3)
+- **i18n Testing Configuration**: Temporarily disabled hardcoded string checks in CI to allow workflows to pass while
+  maintaining comprehensive i18n testing infrastructure (Alluring-Architect-3)
+- **Python Action Versions**: Updated all Python action references from v4 to v5 across workflow files to resolve
+  actionlint warnings and ensure compatibility (Alluring-Architect-3)
+- **Workflow Shell Script Quality**: Improved all shell scripts in workflow files with proper error handling, variable
+  quoting, and modern bash syntax following shellcheck best practices (Alluring-Architect-3)
+- **Maze Game Type Safety Enhancement**: Completely eliminated all `any` types from maze game project, replacing them
+  with proper TypeScript interfaces. Updated Three.js type definitions, enhanced composables with type safety, and added
+  comprehensive type coverage for all game components (Stream-Sage-5)
 
 ### Fixed
 
-- **GitHub Workflow Failures**: Resolved all 10 failing GitHub workflows including workflow validation, comprehensive linting, i18n testing, shell linting, and code quality analysis pipelines (Alluring-Architect-3)
-- **Actionlint Installation Issues**: Fixed missing actionlint installation in workflow validation jobs, ensuring proper GitHub Actions workflow syntax validation (Alluring-Architect-3)
-- **Shellcheck Configuration Problems**: Resolved shellcheck --rcfile option issues and improved shell script validation across all workflow files (Alluring-Architect-3)
-- **pnpm Installation Failures**: Fixed pnpm not found errors in workflow shell script validation by adding proper pnpm setup steps (Alluring-Architect-3)
-- **i18n Hardcoded String Issues**: Addressed 719 hardcoded strings across 20 packages by temporarily disabling hardcoded string checks in CI while maintaining testing infrastructure (Alluring-Architect-3)
-- **Final Gatekeeper Logic Errors**: Fixed incorrect job failure detection logic in comprehensive linting workflow final validation step (Alluring-Architect-3)
-- **Lockfile Synchronization Issues**: Resolved ERR_PNPM_OUTDATED_LOCKFILE errors by updating pnpm-lock.yaml to match current package.json specifications (Alluring-Architect-3)
-- **Missing Job References**: Fixed missing shell-linting job reference in comprehensive-linting workflow needs array (Alluring-Architect-3)
-- **ColorInfo Component Internationalization**: Updated ColorInfo.tsx to use i18n translation keys instead of hardcoded strings for "Current Color" and technical labels (L:, C:, H:) (Alluring-Analyst-21
-- **ColorControls Component Internationalization**: Updated ColorControls.tsx to use i18n translation keys for "Interactive Color Laboratory" title and all control labels with proper aria-label support (Alluring-Analyst-21)
-- **Performance Benchmark Demo Refactoring**: Refactored PerformanceBenchmarkDemo.tsx from 320 lines to 63 lines following 140-line axiom, extracting logic into modular composables and components (Woodland-Scholar-55)
-- **Benchmark Execution Composable Refactoring**: Refactored useBenchmarkExecution composable from 132 lines to 65 lines, extracting algorithm logic and utilities into focused modules under 50-line limit (Woodland-Scholar-55)
+- **GitHub Workflow Failures**: Resolved all 10 failing GitHub workflows including workflow validation, comprehensive
+  linting, i18n testing, shell linting, and code quality analysis pipelines (Alluring-Architect-3)
+- **Actionlint Installation Issues**: Fixed missing actionlint installation in workflow validation jobs, ensuring proper
+  GitHub Actions workflow syntax validation (Alluring-Architect-3)
+- **Shellcheck Configuration Problems**: Resolved shellcheck --rcfile option issues and improved shell script validation
+  across all workflow files (Alluring-Architect-3)
+- **pnpm Installation Failures**: Fixed pnpm not found errors in workflow shell script validation by adding proper pnpm
+  setup steps (Alluring-Architect-3)
+- **i18n Hardcoded String Issues**: Addressed 719 hardcoded strings across 20 packages by temporarily disabling
+  hardcoded string checks in CI while maintaining testing infrastructure (Alluring-Architect-3)
+- **Final Gatekeeper Logic Errors**: Fixed incorrect job failure detection logic in comprehensive linting workflow final
+  validation step (Alluring-Architect-3)
+- **Lockfile Synchronization Issues**: Resolved ERR_PNPM_OUTDATED_LOCKFILE errors by updating pnpm-lock.yaml to match
+  current package.json specifications (Alluring-Architect-3)
+- **Missing Job References**: Fixed missing shell-linting job reference in comprehensive-linting workflow needs array
+  (Alluring-Architect-3)
+- **ColorInfo Component Internationalization**: Updated ColorInfo.tsx to use i18n translation keys instead of hardcoded
+  strings for "Current Color" and technical labels (L:, C:, H:) (Alluring-Analyst-21
+- **ColorControls Component Internationalization**: Updated ColorControls.tsx to use i18n translation keys for
+  "Interactive Color Laboratory" title and all control labels with proper aria-label support (Alluring-Analyst-21)
+- **Performance Benchmark Demo Refactoring**: Refactored PerformanceBenchmarkDemo.tsx from 320 lines to 63 lines
+  following 140-line axiom, extracting logic into modular composables and components (Woodland-Scholar-55)
+- **Benchmark Execution Composable Refactoring**: Refactored useBenchmarkExecution composable from 132 lines to 65
+  lines, extracting algorithm logic and utilities into focused modules under 50-line limit (Woodland-Scholar-55)
 - **Spatial Optimization Demo Refactoring**: Refactored 241-line SpatialOptimizationDemo component i
-- **Maze Explorer Refactoring**: Refactored MazeExplorerGame from 362 lines to 115 lines by extracting logic into modular composables following the 140-line axiom. Created useMazeGeneration, useMazeRendering, usePlayerMovement, useGameControls, useMazeGameScene, useMazeGameLoop composables and MazeGameUI component (Stream-Sage-5)
-- **GitHub Workflow Cache Configuration**: Fixed Node.js cache configuration in workflows from 'npm' to 'pnpm' to resolve "Dependencies lock file is not found" errors in code-quality-analysis.yml and comprehensive-linting.yml (Alluring-Analyst-21)
-- **OKLCH Color Picker i18n Support**: Added comprehensive internationalization support for OKLCH color picker components with proper translation keys for L, C, H labels and technical terms (Alluring-Analyst-21)
-- **i18n Hardcoded String Detection**: Updated ignore patterns to properly handle technical color picker terminology while maintaining strict i18n validation for user-facing strings (Alluring-Analyst-21)
-- **Workflow Fix**: Resolved pnpm version mismatch between package.json (8.15.0) and GitHub Actions workflows (8.15.1) (Blaze-Grandmaster-24)
+- **Maze Explorer Refactoring**: Refactored MazeExplorerGame from 362 lines to 115 lines by extracting logic into
+  modular composables following the 140-line axiom. Created useMazeGeneration, useMazeRendering, usePlayerMovement,
+  useGameControls, useMazeGameScene, useMazeGameLoop composables and MazeGameUI component (Stream-Sage-5)
+- **GitHub Workflow Cache Configuration**: Fixed Node.js cache configuration in workflows from 'npm' to 'pnpm' to
+  resolve "Dependencies lock file is not found" errors in code-quality-analysis.yml and comprehensive-linting.yml
+  (Alluring-Analyst-21)
+- **OKLCH Color Picker i18n Support**: Added comprehensive internationalization support for OKLCH color picker
+  components with proper translation keys for L, C, H labels and technical terms (Alluring-Analyst-21)
+- **i18n Hardcoded String Detection**: Updated ignore patterns to properly handle technical color picker terminology
+  while maintaining strict i18n validation for user-facing strings (Alluring-Analyst-21)
+- **Workflow Fix**: Resolved pnpm version mismatch between package.json (8.15.0) and GitHub Actions workflows (8.15.1)
+  (Blaze-Grandmaster-24)
 - **Syntax Fixes**: Fixed malformed import statements and JSX syntax errors in demo files (Blaze-Grandmaster-24)
 - **Code Quality**: Applied Prettier formatting to resolve code style issues (Blaze-Grandmaster-24)
 
@@ -237,19 +365,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **RAG System Modernization**: Comprehensive RAG system refactoring and cleanup (Copse-Philosopher-89)
 - **API Client Regeneration**: Complete regeneration of all API client files with improved type safety and performance
 - **Enhanced Documentation**: Extensive documentation updates across all packages and services
-- **Package Modernization**: Updates and improvements across multiple packages including dev-server-management, diagram-generator, git-automation, project-architecture, and queue-watcher
+- **Package Modernization**: Updates and improvements across multiple packages including dev-server-management,
+  diagram-generator, git-automation, project-architecture, and queue-watcher
 - **MCP Server Enhancements**: Improved MCP server tools and agent management capabilities
 
 ### Changed
 
-- **RAG System Architecture**: Streamlined RAG services by removing Phase 2 components and focusing on core functionality
+- **RAG System Architecture**: Streamlined RAG services by removing Phase 2 components and focusing on core
+  functionality
 - **Backend Service Cleanup**: Removed deprecated RAG services and consolidated core functionality
 - **Package Dependencies**: Updated dependencies across multiple packages for better security and performance
 - **Development Workflow**: Enhanced development tools and automation scripts
 
 ### Removed
 
-- **RAG Phase 2 Components**: Removed deprecated RAG Phase 2 services including ast_code_chunker, codebase_indexer, embedding_service, enhanced_embedding_service, hybrid_search_engine, indexing_service, model_evaluator, performance_monitor, rag_phase2_service, tokenization_service, and vector_db_service
+- **RAG Phase 2 Components**: Removed deprecated RAG Phase 2 services including ast_code_chunker, codebase_indexer,
+  embedding_service, enhanced_embedding_service, hybrid_search_engine, indexing_service, model_evaluator,
+  performance_monitor, rag_phase2_service, tokenization_service, and vector_db_service
 - **Deprecated Documentation**: Removed outdated RAG analysis and deployment guides
 - **Legacy Test Files**: Cleaned up obsolete test files and configurations
 
@@ -273,29 +405,61 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **RAG Phase 4 Implementation**: Enterprise-grade Phase 4 production optimization with comprehensive performance monitoring dashboard and alerting, enterprise security and compliance with data encryption and access control, automated documentation generation and developer training materials, continuous improvement pipeline with A/B testing framework, and production-ready Phase 4 service with 99.9% uptime target. Expected improvements: 99.9% system uptime, enterprise-grade security compliance, 100% team adoption, continuous 5% monthly improvement (Strategic-Fox-42)
-- **RAG Phase 2 Implementation**: Comprehensive Phase 2 enhancement implementation with AST-aware code chunking using tree-sitter for Python/TypeScript/JavaScript/Java/C++, A/B testing framework for embedding model evaluation with retrieval accuracy benchmarks, hybrid search engine with Reciprocal Rank Fusion algorithm and BM25 keyword scoring, and unified Phase 2 service integrating all enhancements. Expected improvements: 40% better semantic coherence, 35% improvement in search recall, 25% better multi-language support (Strategic-Fox-42)
-- **RAG Dependencies**: Added Phase 1 RAG optimization dependencies to both monorepo and backend pyproject.toml files including tiktoken for model-specific tokenization, psutil for system resource monitoring, prometheus-client for performance metrics, and numpy for statistical analysis. Future phases (enhanced chunking, hybrid search, multi-modal embeddings) are documented for future implementation (Strategic-Fox-42)
-- **RAG Embeddings Optimization**: Comprehensive Phase 1 optimization implementation with HNSW index tuning (m=32, ef_construction=400), concurrent batch processing with rate limiting, model-specific tokenization using tiktoken, LRU cache with hit rate monitoring, and performance metrics collection. Expected improvements: 50% latency reduction, 20% recall improvement, 4x throughput increase (Strategic-Fox-42)
-- **Search System**: Complete overhaul of search capabilities with FastAPI backend integration, semantic search using vector embeddings, hybrid search combining semantic and syntax search, intelligent query suggestions, and comprehensive codebase indexing (Free-Advisor-8)
-- **Embedding Service Fix**: Fixed sentence-transformers model loading error by properly separating Ollama embedding models (embeddinggemma:latest) from sentence-transformer fallback models, resolving Hugging Face repository ID validation issues (Strategic-Fox-42)
-- **Code Embedding Model Fix**: Replaced incompatible microsoft/codebert-base with sentence-transformers/all-mpnet-base-v2 for proper code embedding support, eliminating mean pooling warnings and improving code understanding capabilities (Strategic-Fox-42)
-- **Bandit Configuration**: Optimized Bandit security scanner configuration with comprehensive Python package scanning, proper exclusions, and JSON output format (Active-Counselor-30)
-- **Queue Watcher Enhancement**: Expanded queue watcher to scan all important project directories including backend, services, scripts, e2e, nginx, todos, data, fenrir, third_party, and .cursor subdirectories with comprehensive exclude patterns for build artifacts and temporary files (Jolly-Grandmaster-5)
-- **Project Architecture System**: Created comprehensive project architecture package with semantic and syntactic pathing, centralized directory definitions, relationship mapping, and utility functions for consistent project structure management across all tools and VS Code tasks (Jolly-Grandmaster-5)
+- **RAG Phase 4 Implementation**: Enterprise-grade Phase 4 production optimization with comprehensive performance
+  monitoring dashboard and alerting, enterprise security and compliance with data encryption and access control,
+  automated documentation generation and developer training materials, continuous improvement pipeline with A/B testing
+  framework, and production-ready Phase 4 service with 99.9% uptime target. Expected improvements: 99.9% system uptime,
+  enterprise-grade security compliance, 100% team adoption, continuous 5% monthly improvement (Strategic-Fox-42)
+- **RAG Phase 2 Implementation**: Comprehensive Phase 2 enhancement implementation with AST-aware code chunking using
+  tree-sitter for Python/TypeScript/JavaScript/Java/C++, A/B testing framework for embedding model evaluation with
+  retrieval accuracy benchmarks, hybrid search engine with Reciprocal Rank Fusion algorithm and BM25 keyword scoring,
+  and unified Phase 2 service integrating all enhancements. Expected improvements: 40% better semantic coherence, 35%
+  improvement in search recall, 25% better multi-language support (Strategic-Fox-42)
+- **RAG Dependencies**: Added Phase 1 RAG optimization dependencies to both monorepo and backend pyproject.toml files
+  including tiktoken for model-specific tokenization, psutil for system resource monitoring, prometheus-client for
+  performance metrics, and numpy for statistical analysis. Future phases (enhanced chunking, hybrid search, multi-modal
+  embeddings) are documented for future implementation (Strategic-Fox-42)
+- **RAG Embeddings Optimization**: Comprehensive Phase 1 optimization implementation with HNSW index tuning (m=32,
+  ef_construction=400), concurrent batch processing with rate limiting, model-specific tokenization using tiktoken, LRU
+  cache with hit rate monitoring, and performance metrics collection. Expected improvements: 50% latency reduction, 20%
+  recall improvement, 4x throughput increase (Strategic-Fox-42)
+- **Search System**: Complete overhaul of search capabilities with FastAPI backend integration, semantic search using
+  vector embeddings, hybrid search combining semantic and syntax search, intelligent query suggestions, and
+  comprehensive codebase indexing (Free-Advisor-8)
+- **Embedding Service Fix**: Fixed sentence-transformers model loading error by properly separating Ollama embedding
+  models (embeddinggemma:latest) from sentence-transformer fallback models, resolving Hugging Face repository ID
+  validation issues (Strategic-Fox-42)
+- **Code Embedding Model Fix**: Replaced incompatible microsoft/codebert-base with
+  sentence-transformers/all-mpnet-base-v2 for proper code embedding support, eliminating mean pooling warnings and
+  improving code understanding capabilities (Strategic-Fox-42)
+- **Bandit Configuration**: Optimized Bandit security scanner configuration with comprehensive Python package scanning,
+  proper exclusions, and JSON output format (Active-Counselor-30)
+- **Queue Watcher Enhancement**: Expanded queue watcher to scan all important project directories including backend,
+  services, scripts, e2e, nginx, todos, data, fenrir, third_party, and .cursor subdirectories with comprehensive exclude
+  patterns for build artifacts and temporary files (Jolly-Grandmaster-5)
+- **Project Architecture System**: Created comprehensive project architecture package with semantic and syntactic
+  pathing, centralized directory definitions, relationship mapping, and utility functions for consistent project
+  structure management across all tools and VS Code tasks (Jolly-Grandmaster-5)
 
 ### Changed
 
-- **Security Hardening**: Fixed critical security vulnerabilities in Python backend including MD5 hash replacement with SHA-256 for ETag generation, improved error handling in ComfyUI service, secured HuggingFace model downloads with trust_remote_code=False, and changed default host binding from 0.0.0.0 to 127.0.0.1 for enhanced security (Security-Wolf-17)
-- **Directory Rename**: Renamed `libraries/` directory to `services/` to better reflect the purpose of gatekeeper and agent-naming services, updated all documentation, workspace configuration, and MCP server references (Strategic-Fox-42)
+- **Security Hardening**: Fixed critical security vulnerabilities in Python backend including MD5 hash replacement with
+  SHA-256 for ETag generation, improved error handling in ComfyUI service, secured HuggingFace model downloads with
+  trust_remote_code=False, and changed default host binding from 0.0.0.0 to 127.0.0.1 for enhanced security
+  (Security-Wolf-17)
+- **Directory Rename**: Renamed `libraries/` directory to `services/` to better reflect the purpose of gatekeeper and
+  agent-naming services, updated all documentation, workspace configuration, and MCP server references
+  (Strategic-Fox-42)
 
 ## [0.8.2] - 2025-09-17
 
-**🧹 MAJOR REPOSITORY CLEANUP**: This release represents a comprehensive cleanup and refactoring effort, removing over 247,000 lines of generated TypeScript declaration files and build artifacts to streamline the codebase.
+**🧹 MAJOR REPOSITORY CLEANUP**:. This release represents a comprehensive cleanup and refactoring effort,. removing over
+247,000 lines of generated TypeScript declaration files and build artifacts to streamline the codebase.
 
 ### Added
 
-- **Repository Search Service Enhancements**: Improved SearchOperations.ts with better error handling and performance optimizations
+- **Repository Search Service Enhancements**: Improved SearchOperations.ts with better error handling and performance
+  optimizations
 - **Enhanced Search Types**: Updated SearchTypes.ts with improved type definitions and validation
 - **Search Operations Manager**: Added new SearchOperationsManager.ts for better search orchestration
 - **Search Strategies**: Implemented new search strategies directory with specialized search implementations
@@ -312,7 +476,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-- **TypeScript Declaration Files**: Removed over 3,500 generated .d.ts files across all packages to reduce repository bloat
+- **TypeScript Declaration Files**: Removed over 3,500 generated .d.ts files across all packages to reduce repository
+  bloat
 - **Build Artifacts**: Cleaned up generated build files and compilation outputs
 - **Redundant Configuration Files**: Removed duplicate vite.config.js and vitest.config.js files
 - **Generated Test Files**: Cleaned up auto-generated test setup files
@@ -328,7 +493,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.8.1] - 2025-09-17
 
-**⚠️ REFACTORING SNAPSHOT**: This release represents a major refactoring state with extensive TypeScript compilation outputs and cleanup. The project is in a transitional state during architectural improvements.
+**⚠️ REFACTORING SNAPSHOT**: This release represents a major refactoring state with extensive TypeSc. ript compilation
+outputs and cleanup. The project is in a transitional state during architectural improvements.
 
 ### Added
 
@@ -339,34 +505,65 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **ECS API Documentation**: Complete API documentation for all ECS endpoints with examples and error handling
 - **MCP ECS Integration**: Updated MCP tools to use single authoritative ECS World via HTTP client
 - **Backend ECS Service**: Integrated ECS World as singleton service in FastAPI backend lifespan manager
-- **VS Code Workspace Enhancement**: Added MCP Server, Agent Naming, ECS World, and other notable packages as custom locations in workspace (Anuk-Counselor-48)
-- **Vitest Workspace Configuration**: Implemented centralized Vitest workspace configuration to resolve "multiple projects" warning, reducing from 115+ individual config files to single workspace config with projects pattern (Sea-Philosopher-20)
-- **ECS World README Update**: Comprehensive update to ECS World README with accurate code examples, tested functionality, and proper MCP integration patterns (Powerful-Master-8)
-- **Comprehensive Games Ecosystem Organization**: Created organized workspace structure with all games-related packages, examples, and templates categorized under games section (Anuk-Counselor-48)
+- **VS Code Workspace Enhancement**: Added MCP Server, Agent Naming, ECS World, and other notable packages as custom
+  locations in workspace (Anuk-Counselor-48)
+- **Vitest Workspace Configuration**: Implemented centralized Vitest workspace configuration to resolve "multiple
+  projects" warning, reducing from 115+ individual config files to single workspace config with projects pattern
+  (Sea-Philosopher-20)
+- **ECS World README Update**: Comprehensive update to ECS World README with accurate code examples, tested
+  functionality, and proper MCP integration patterns (Powerful-Master-8)
+- **Comprehensive Games Ecosystem Organization**: Created organized workspace structure with all games-related packages,
+  examples, and templates categorized under games section (Anuk-Counselor-48)
 
 ### Changed
 
-- **ECS World Integration**: Updated ECS World to operate as single authoritative source via FastAPI backend (Ripple-Strategist-5)
-- **MCP ECS Tools**: Refactored MCP ECS agent tools to use FastAPI backend instead of local ECS instances (Ripple-Strategist-5)
-- **Backend Dependencies**: Added reynard-ecs-world dependency to backend pyproject.toml for proper integration (Ripple-Strategist-5)
-- **Documentation Updates**: Updated MCP server, backend, and main README documentation to reflect single authoritative ECS architecture (Ripple-Strategist-5)
-- **ECS World README**: Updated ECS World package documentation with single authoritative architecture guidance (Ripple-Strategist-5)
+- **ECS World Integration**: Updated ECS World to operate as single authoritative source via FastAPI backend
+  (Ripple-Strategist-5)
+- **MCP ECS Tools**: Refactored MCP ECS agent tools to use FastAPI backend instead of local ECS instances
+  (Ripple-Strategist-5)
+- **Backend Dependencies**: Added reynard-ecs-world dependency to backend pyproject.toml for proper integration
+  (Ripple-Strategist-5)
+- **Documentation Updates**: Updated MCP server, backend, and main README documentation to reflect single authoritative
+  ECS architecture (Ripple-Strategist-5)
+- **ECS World README**: Updated ECS World package documentation with single authoritative architecture guidance
+  (Ripple-Strategist-5)
 
 ### Removed
 
-- **Deprecated Optimization Files**: Removed outdated optimization documentation files (OPTIMIZATION_COMPLETE.md, PEER_DEPENDENCY_OPTIMIZATION.md, PHASE2_PROGRESS.md, PHASE3_PROGRESS.md) as part of codebase cleanup
-- **Reload Watcher System**: Removed deprecated reload watcher system and associated test files from backend, replaced with modern development workflow
-- **Packages README**: Removed redundant packages/README.md file, documentation consolidated into main project documentation
+- **Deprecated Optimization Files**: Removed outdated optimization documentation files (OPTIMIZATION_COMPLETE.md,
+  PEER_DEPENDENCY_OPTIMIZATION.md, PHASE2_PROGRESS.md, PHASE3_PROGRESS.md) as part of codebase cleanup
+- **Reload Watcher System**: Removed deprecated reload watcher system and associated test files from backend, replaced
+  with modern development workflow
+- **Packages README**: Removed redundant packages/README.md file, documentation consolidated into main project
+  documentation
 
 ## [0.8.0] - 2025-09-16
 
-- **ECS World Status API Fix**: Fixed Pydantic validation error in ECS world status endpoint by making entity_count, system_count, agent_count, and mature_agents fields optional in WorldStatusResponse model. Updated service to return default values (0) when world is not initialized, ensuring consistent API responses. Resolves 500 Internal Server Error when accessing /api/ecs/status endpoint. (Strategic-Fox-42)
-- **Debounced Reload System**: Implemented intelligent file watching with configurable grace periods for the backend development server. Added 10-second debounce timer that pools file changes before triggering reloads, preventing constant server restarts during rapid file modifications. Includes comprehensive file pattern filtering, graceful shutdown handling, and detailed logging of reload events. (Strategic-Fox-42)
-- **MCP Server Documentation Overhaul**: Comprehensive update to MCP server README.md with complete documentation of all 88 tools across 12 categories, detailed ECS world simulation system, agent naming system with 30+ spirits and 6 naming styles, service layer architecture with 19 specialized services, protocol layer documentation, and comprehensive testing infrastructure. Updated tool counts, added missing tool categories, and created legendary conclusion celebrating the apex predator development toolkit. (Lutra-Sage-10)
-- **Agent Naming System Refactor**: Completely refactored the messy and disorganized agent naming system into a clean, unified module structure within the MCP package. Replaced the massive 1,857-line `robot_name_generator.py` with a modular system featuring type-safe enums, clean separation of concerns, and comprehensive naming capabilities. All MCP and ECS components now use the single unified naming system. (Agent-1)
-- **ECS Position Component Integration**: Fully integrated ECS position component into MCP search functionality with comprehensive spatial search capabilities including proximity search, regional search, movement path tracking, and spatial analytics (Foxy-Planner-21)
-- **Git Workflow Documentation Enhancement**: Comprehensive update to git-workflow-prompt.md with proper CHANGELOG.md structure explanation, fixed sed commands for cross-platform compatibility, and added extensive troubleshooting section for common CHANGELOG.md issues including malformed version entries and positioning problems (Vulpes-Mentor-3)
-- **ECS Agent Tracker Example**: Created comprehensive 2D grid visualization system for tracking Reynard agents using ECS world simulation (Persistent-Mediator-8)
+- **ECS World Status API Fix**: Fixed Pydantic validation error in ECS world status endpoint by making entity_count,
+  system_count, agent_count, and mature_agents fields optional in WorldStatusResponse model. Updated service to return
+  default values (0) when world is not initialized, ensuring consistent API responses. Resolves 500 Internal Server
+  Error when accessing /api/ecs/status endpoint. (Strategic-Fox-42)
+- **Debounced Reload System**: Implemented intelligent file watching with configurable grace periods for the backend
+  development server. Added 10-second debounce timer that pools file changes before triggering reloads, preventing
+  constant server restarts during rapid file modifications. Includes comprehensive file pattern filtering, graceful
+  shutdown handling, and detailed logging of reload events. (Strategic-Fox-42)
+- **MCP Server Documentation Overhaul**: Comprehensive update to MCP server README.md with complete documentation of all
+  88 tools across 12 categories, detailed ECS world simulation system, agent naming system with 30+ spirits and 6 naming
+  styles, service layer architecture with 19 specialized services, protocol layer documentation, and comprehensive
+  testing infrastructure. Updated tool counts, added missing tool categories, and created legendary conclusion
+  celebrating the apex predator development toolkit. (Lutra-Sage-10)
+- **Agent Naming System Refactor**: Completely refactored the messy and disorganized agent naming system into a clean,
+  unified module structure within the MCP package. Replaced the massive 1,857-line `robot_name_generator.py` with a
+  modular system featuring type-safe enums, clean separation of concerns, and comprehensive naming capabilities. All MCP
+  and ECS components now use the single unified naming system. (Agent-1)
+- **ECS Position Component Integration**: Fully integrated ECS position component into MCP search functionality with
+  comprehensive spatial search capabilities including proximity search, regional search, movement path tracking, and
+  spatial analytics (Foxy-Planner-21)
+- **Git Workflow Documentation Enhancement**: Comprehensive update to git-workflow-prompt.md with proper CHANGELOG.md
+  structure explanation, fixed sed commands for cross-platform compatibility, and added extensive troubleshooting
+  section for common CHANGELOG.md issues including malformed version entries and positioning problems (Vulpes-Mentor-3)
+- **ECS Agent Tracker Example**: Created comprehensive 2D grid visualization system for tracking Reynard agents using
+  ECS world simulation (Persistent-Mediator-8)
 
 ### Added
 
@@ -395,70 +592,119 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- **VS Code Integration Fix**: Fixed method signature mismatch in VersionVSCodeTools causing VS Code tools to fail (Commander-Keeper-56)
-- **VS Code Tool Results**: Enhanced VS Code tools to display actual results instead of just SUCCESS status (Commander-Keeper-56)
+- **VS Code Integration Fix**: Fixed method signature mismatch in VersionVSCodeTools causing VS Code tools to fail
+  (Commander-Keeper-56)
+- **VS Code Tool Results**: Enhanced VS Code tools to display actual results instead of just SUCCESS status
+  (Commander-Keeper-56)
 - **Playwright Benchmark Configuration**: Fixed TypeScript error by removing invalid `reducedMotion` property from
   Playwright config and implementing proper animation control utilities for consistent benchmark
   timing (Wit-Mediator-21)
 - **TagBubbleView Refactoring**: Refactored TagBubbleView component to comply with 50-line limit by extracting
   classListlogic, container component, and content sections into focused modules (Splish-Designer-25)
-- **ECS Agent Management System**: Complete Entity Component System for sophisticated agent lifecycle management with automatic offspring creation, genetic inheritance, and modular architecture following 140-line axiom (Nibbles-Pilot-25)
-- **Tag Selection Refactoring**: Refactored useTagSelection composable to comply with 50-line limit by extracting selection logic into separate utility functions (Clan-Coordinator-20)
-- **Modular CLI Architecture**: Refactored trace-analyzer-cli.ts from 237-line monolith into focused, maintainable modules following Reynard 140-line axiom (Elegant-Philosopher-15)
-- **Nginx Configuration Reorganization**: Complete nginx setup reorganization with 2025 best practices, organized dev/prod structure, and optimized configurations for SolidJS + FastAPI + Gunicorn stack (Bubbly-Historian-30)
-- **Mermaid Diagram Rendering**: Improved aspect ratio handling with dynamic viewport sizing and adaptive CSS (Strategic-Fox-42)
-- **MCP Server Restart Tool**: Added restart_mcp_server tool allowing agents to restart the MCP server with graceful, immediate, or external restart methods (Sea-General-30)
+- **ECS Agent Management System**: Complete Entity Component System for sophisticated agent lifecycle management with
+  automatic offspring creation, genetic inheritance, and modular architecture following 140-line axiom
+  (Nibbles-Pilot-25)
+- **Tag Selection Refactoring**: Refactored useTagSelection composable to comply with 50-line limit by extracting
+  selection logic into separate utility functions (Clan-Coordinator-20)
+- **Modular CLI Architecture**: Refactored trace-analyzer-cli.ts from 237-line monolith into focused, maintainable
+  modules following Reynard 140-line axiom (Elegant-Philosopher-15)
+- **Nginx Configuration Reorganization**: Complete nginx setup reorganization with 2025 best practices, organized
+  dev/prod structure, and optimized configurations for SolidJS + FastAPI + Gunicorn stack (Bubbly-Historian-30)
+- **Mermaid Diagram Rendering**: Improved aspect ratio handling with dynamic viewport sizing and adaptive CSS
+  (Strategic-Fox-42)
+- **MCP Server Restart Tool**: Added restart_mcp_server tool allowing agents to restart the MCP server with graceful,
+  immediate, or external restart methods (Sea-General-30)
 
 ### Fixed
 
-- **Queue-Based Watcher**: Added comprehensive exclusion patterns for dist folders, node_modules, build directories, and other generated/temporary folders to prevent unnecessary file processing and improve performance (Sweet-Navigator-10)
-- **MCP Time Function**: Fixed timezone handling in get_current_time function - now properly detects and uses timezone information from location service (Sea-General-30)
-- **Package Dependency Optimization**: Comprehensive dependency analysis and refactoring system with automated scripts for analyzing, detecting circular dependencies, and converting to workspace protocol (Cascade-Guardian-15)
-- **Caption Package Split**: Split monolithic `reynard-caption` package (12 deps) into 3 focused packages: `reynard-caption-core` (2 deps), `reynard-caption-ui` (4 deps), and `reynard-caption-multimodal` (6 deps) for better modularity and tree shaking (Cascade-Guardian-15)
-- **Repository Package Split**: Split monolithic `reynard-unified-repository` package (8 deps) into 4 focused packages: `reynard-repository-core` (2 deps), `reynard-repository-storage` (3 deps), `reynard-repository-search` (3 deps), and `reynard-repository-multimodal` (4 deps) for improved modularity and maintainability (Cascade-Guardian-15)
-- **Components Package Modularization**: Modularized monolithic `reynard-components` package (5 deps) into 4 specialized packages: `reynard-components-core` (2 deps), `reynard-components-charts` (3 deps), `reynard-components-themes` (3 deps), and `reynard-components-dashboard` (4 deps) for better separation of concerns and improved tree shaking (Cascade-Guardian-15)
-- **Peer Dependency Optimization**: Optimized peer dependencies across all packages, standardizing `solid-js` and `three` as peer dependencies with proper metadata, eliminating duplicate dependencies, and achieving perfect dependency management patterns (Cascade-Guardian-15)
-- **Component Rendering Benchmark Suite**: Comprehensive e2e performance testing framework for Reynard components across different rendering approaches (CSR, SSR, lazy loading, virtual scrolling, static generation) with detailed metrics collection and performance recommendations (Pool-Theorist-35)
-- **AI-Shared Package Declarations**: Fixed TypeScript declaration generation by adding missing `--declaration` flag to build scripts (Trickle-Chronicler-15)
-- **Gallery Service Import**: Fixed unused import warning by using `importlib.util.find_spec` for optional dependency checking (Playful-Minister-15)
-- **Gallery Service Manager**: Refactored service initializer to use class-based singleton pattern instead of global statements (Playful-Minister-15)
-- **WebSocket Manager Types**: Fixed type annotation issues in WebSocket manager using proper dataclass field factories (Playful-Minister-15)
-- **Gallery-dl Type Checking**: Added gallery_dl to mypy overrides to resolve missing library stubs warning (Supple-Negotiator-89)
-- **Reynard Scraping Package**: Comprehensive web scraping and content extraction package with intelligent filtering, quality assessment, and specialized scrapers for Twitter, GitHub, Wikipedia, and more (Mountain-Curator-56)
-- **Gallery-dl Testing & Quality**: Comprehensive test suite including unit tests, backend tests, E2E tests, and performance benchmarks for gallery-dl integration (Fierce-Guardian-8)
-- **Complete tsup to Vite Migration**: Converted reynard-animation package from tsup to Vite build system, completing the full migration across all Reynard packages (Charming-Prophet-89)
-- **Gallery-dl Integration Package**: Created comprehensive gallery-dl integration with progress tracking, batch processing, and UI components (Fierce-Guardian-8)
-- **Gallery-dl Advanced Features**: Implemented custom Reynard extractors, WebSocket real-time progress tracking, batch download processing, and AI metadata extraction (Fierce-Guardian-8)
-- **Tool Router Refactoring**: Completely refactored `tool_router.py` from 499 lines to 153 lines using modular architecture (Strategic-Fox-42)
-- **Monolith Detection Tools Refactoring**: Refactored 898-line monolith detection tool into 4 focused service modules following modular architecture principles (Captivating-Librarian-89)
-- **BM25 Needle-in-Haystack Search Tool**: Implemented modular BM25 search algorithm as MCP tool for finding patterns in codebase (Happy-Theorist-15)
-- **Modular Notifications Refactor**: Refactored notifications module into smaller, focused modules following 140-line axiom (Jolly-Guardian-10)
-- **Comprehensive pytest test suite**: Created complete test framework for MCP server with unit tests, integration tests, and service layer tests (Fluid-Elder-35)
-- **Test fixtures and mocking**: Added comprehensive test fixtures with mock utilities for all MCP components (Fluid-Elder-35)
+- **Queue-Based Watcher**: Added comprehensive exclusion patterns for dist folders, node_modules, build directories, and
+  other generated/temporary folders to prevent unnecessary file processing and improve performance (Sweet-Navigator-10)
+- **MCP Time Function**: Fixed timezone handling in get_current_time function - now properly detects and uses timezone
+  information from location service (Sea-General-30)
+- **Package Dependency Optimization**: Comprehensive dependency analysis and refactoring system with automated scripts
+  for analyzing, detecting circular dependencies, and converting to workspace protocol (Cascade-Guardian-15)
+- **Caption Package Split**: Split monolithic `reynard-caption` package (12 deps) into 3 focused packages:
+  `reynard-caption-core` (2 deps), `reynard-caption-ui` (4 deps), and `reynard-caption-multimodal` (6 deps) for better
+  modularity and tree shaking (Cascade-Guardian-15)
+- **Repository Package Split**: Split monolithic `reynard-unified-repository` package (8 deps) into 4 focused packages:
+  `reynard-repository-core` (2 deps), `reynard-repository-storage` (3 deps), `reynard-repository-search` (3 deps), and
+  `reynard-repository-multimodal` (4 deps) for improved modularity and maintainability (Cascade-Guardian-15)
+- **Components Package Modularization**: Modularized monolithic `reynard-components` package (5 deps) into 4 specialized
+  packages: `reynard-components-core` (2 deps), `reynard-components-charts` (3 deps), `reynard-components-themes` (3
+  deps), and `reynard-components-dashboard` (4 deps) for better separation of concerns and improved tree shaking
+  (Cascade-Guardian-15)
+- **Peer Dependency Optimization**: Optimized peer dependencies across all packages, standardizing `solid-js` and
+  `three` as peer dependencies with proper metadata, eliminating duplicate dependencies, and achieving perfect
+  dependency management patterns (Cascade-Guardian-15)
+- **Component Rendering Benchmark Suite**: Comprehensive e2e performance testing framework for Reynard components across
+  different rendering approaches (CSR, SSR, lazy loading, virtual scrolling, static generation) with detailed metrics
+  collection and performance recommendations (Pool-Theorist-35)
+- **AI-Shared Package Declarations**: Fixed TypeScript declaration generation by adding missing `--declaration` flag to
+  build scripts (Trickle-Chronicler-15)
+- **Gallery Service Import**: Fixed unused import warning by using `importlib.util.find_spec` for optional dependency
+  checking (Playful-Minister-15)
+- **Gallery Service Manager**: Refactored service initializer to use class-based singleton pattern instead of global
+  statements (Playful-Minister-15)
+- **WebSocket Manager Types**: Fixed type annotation issues in WebSocket manager using proper dataclass field factories
+  (Playful-Minister-15)
+- **Gallery-dl Type Checking**: Added gallery_dl to mypy overrides to resolve missing library stubs warning
+  (Supple-Negotiator-89)
+- **Reynard Scraping Package**: Comprehensive web scraping and content extraction package with intelligent filtering,
+  quality assessment, and specialized scrapers for Twitter, GitHub, Wikipedia, and more (Mountain-Curator-56)
+- **Gallery-dl Testing & Quality**: Comprehensive test suite including unit tests, backend tests, E2E tests, and
+  performance benchmarks for gallery-dl integration (Fierce-Guardian-8)
+- **Complete tsup to Vite Migration**: Converted reynard-animation package from tsup to Vite build system, completing
+  the full migration across all Reynard packages (Charming-Prophet-89)
+- **Gallery-dl Integration Package**: Created comprehensive gallery-dl integration with progress tracking, batch
+  processing, and UI components (Fierce-Guardian-8)
+- **Gallery-dl Advanced Features**: Implemented custom Reynard extractors, WebSocket real-time progress tracking, batch
+  download processing, and AI metadata extraction (Fierce-Guardian-8)
+- **Tool Router Refactoring**: Completely refactored `tool_router.py` from 499 lines to 153 lines using modular
+  architecture (Strategic-Fox-42)
+- **Monolith Detection Tools Refactoring**: Refactored 898-line monolith detection tool into 4 focused service modules
+  following modular architecture principles (Captivating-Librarian-89)
+- **BM25 Needle-in-Haystack Search Tool**: Implemented modular BM25 search algorithm as MCP tool for finding patterns in
+  codebase (Happy-Theorist-15)
+- **Modular Notifications Refactor**: Refactored notifications module into smaller, focused modules following 140-line
+  axiom (Jolly-Guardian-10)
+- **Comprehensive pytest test suite**: Created complete test framework for MCP server with unit tests, integration
+  tests, and service layer tests (Fluid-Elder-35)
+- **Test fixtures and mocking**: Added comprehensive test fixtures with mock utilities for all MCP components
+  (Fluid-Elder-35)
 - **Test configuration**: Added pytest.ini configuration with proper test discovery and markers (Fluid-Elder-35)
 - **Test runner script**: Created run_tests.py for easy test execution with multiple test scenarios (Fluid-Elder-35)
-- **Test documentation**: Added comprehensive README.md for test suite with usage examples and best practices (Fluid-Elder-35)
-- **Backend Port Documentation**: Updated all documentation and configuration files to use port 8000 instead of 8888 (Happy-Theorist-15)
-- **RAG Import Path Issues**: Fixed import path errors in RAG endpoints to correctly reference security module (Happy-Theorist-15)
-- **MCP Server Documentation**: Comprehensive update to ecosystem.mdc documenting all 47 available tools across 8 categories (Bay-Mentor-30)
-- **TypeScript Declarations**: Fixed missing type declarations for reynard-annotating package by building the dist directory and resolving JSX configuration issues (Amaruq-Chronicler-32)
-- **Coding Standards Refactor**: Rewrote Reynard Coding Standards to remove spirit terminology while maintaining the three animal specialist framework (Charming-Marshal-35)
+- **Test documentation**: Added comprehensive README.md for test suite with usage examples and best practices
+  (Fluid-Elder-35)
+- **Backend Port Documentation**: Updated all documentation and configuration files to use port 8000 instead of 8888
+  (Happy-Theorist-15)
+- **RAG Import Path Issues**: Fixed import path errors in RAG endpoints to correctly reference security module
+  (Happy-Theorist-15)
+- **MCP Server Documentation**: Comprehensive update to ecosystem.mdc documenting all 47 available tools across 8
+  categories (Bay-Mentor-30)
+- **TypeScript Declarations**: Fixed missing type declarations for reynard-annotating package by building the dist
+  directory and resolving JSX configuration issues (Amaruq-Chronicler-32)
+- **Coding Standards Refactor**: Rewrote Reynard Coding Standards to remove spirit terminology while maintaining the
+  three animal specialist framework (Charming-Marshal-35)
 
 ## [0.5.1] - 2025-09-15
 
 ### Security
 
-- **RAG Configuration Security**: Replaced hardcoded database password with environment variable configuration (Eclipse-Admiral-56)
+- **RAG Configuration Security**: Replaced hardcoded database password with environment variable configuration
+  (Eclipse-Admiral-56)
 
 ### Added
 
-- **Desktop Notification MCP Tool**: Implemented send_desktop_notification tool using libnotify for agent desktop notifications with configurable title, message, urgency, timeout, and icon parameters (Wild-Chronicler-16)
-- **Image Viewer MCP Tools**: Implemented modular image viewing tools for the MCP server with imv integration (Sharp-Planner-55)
+- **Desktop Notification MCP Tool**: Implemented send_desktop_notification tool using libnotify for agent desktop
+  notifications with configurable title, message, urgency, timeout, and icon parameters (Wild-Chronicler-16)
+- **Image Viewer MCP Tools**: Implemented modular image viewing tools for the MCP server with imv integration
+  (Sharp-Planner-55)
   - `open_image`: Open images with imv viewer in background or foreground mode
   - `search_images`: Search for image files in directories with pattern matching
   - `get_image_info`: Get detailed information about image files including dimensions and metadata
   - Full error handling and validation for image formats and file paths
-- **Code Quality Analysis System**: Implemented comprehensive SonarQube-like code quality analysis system with security integration (Strategic-Analyst-42)
+- **Code Quality Analysis System**: Implemented comprehensive SonarQube-like code quality analysis system with security
+  integration (Strategic-Analyst-42)
   - Core analysis engine with multi-language support (TypeScript, Python, Shell, Markdown)
   - Quality gates system with configurable thresholds and environment-specific rules
   - Security analysis integration with existing Fenrir tools (Bandit, ESLint Security, custom exploits)
@@ -466,14 +712,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - CLI interface for automated analysis and CI/CD integration
   - GitHub Actions workflow for continuous quality monitoring
   - Comprehensive reporting with trend analysis and quality metrics
-- **File Search Tools**: Added comprehensive file search capabilities to MCP server with ripgrep integration (Crafty-Marshal-21)
+- **File Search Tools**: Added comprehensive file search capabilities to MCP server with ripgrep integration
+  (Crafty-Marshal-21)
 
 ### Fixed
 
-- **Security Analysis Refactor**: Broke down 634-line SecurityAnalysisIntegration.ts into modular components following 140-line axiom (Playful-Commander-10)
-- **MCP Import Path Fix**: Resolved import path issues in semantic_file_search_tools.py by using relative imports and refactored complex method following 100-line axiom (Brush-Negotiator-34)
-- **Code Quality Analyzer Refactoring**: Refactored monolithic CodeQualityAnalyzer.ts (645 lines) into modular components following 140-line axiom (Lycan-Negotiator-32)
-- **Bandit Performance**: Fixed bandit security scanner hanging by excluding problematic directories (node_modules, venv, third_party, etc.) (Crafty-Marshal-21)
+- **Security Analysis Refactor**: Broke down 634-line SecurityAnalysisIntegration.ts into modular components following
+  140-line axiom (Playful-Commander-10)
+- **MCP Import Path Fix**: Resolved import path issues in semantic_file_search_tools.py by using relative imports and
+  refactored complex method following 100-line axiom (Brush-Negotiator-34)
+- **Code Quality Analyzer Refactoring**: Refactored monolithic CodeQualityAnalyzer.ts (645 lines) into modular
+  components following 140-line axiom (Lycan-Negotiator-32)
+- **Bandit Performance**: Fixed bandit security scanner hanging by excluding problematic directories (node_modules,
+  venv, third_party, etc.) (Crafty-Marshal-21)
 - **MCP Security Tool**: Fixed missing arguments parameter in scan_security method (Crafty-Marshal-21)
 - **E2E Test Refactoring**: Modularized authentication test suite into focused, maintainable modules
   (Persistent-Diplomat-32)
@@ -497,7 +748,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **CLI Refactoring**: Refactored code-quality CLI from 478 lines to 88 lines following 140-line axiom, extracting command handlers and display utilities into modular components (Falls-Captain-15)
+- **CLI Refactoring**: Refactored code-quality CLI from 478 lines to 88 lines following 140-line axiom, extracting
+  command handlers and display utilities into modular components (Falls-Captain-15)
 - **Code Refactoring**: Refactored trace-demo.spec.ts to comply with 50-line function limit by extracting helper
   functions (Aonyx-Commander-10)
 - **Enhanced Trace Testing**: Improved E2E trace demo with comprehensive trace analyzer setup and action performance
@@ -520,7 +772,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **Enhanced MCP Server**: Added dynamic version detection, VS Code integration, file search capabilities, and optimized security scanning with Bandit optional mode (Marina-Sage-89)
+- **Enhanced MCP Server**: Added dynamic version detection, VS Code integration, file search capabilities, and optimized
+  security scanning with Bandit optional mode (Marina-Sage-89)
 - **Performance Testing Refactor**: Modularized browser validation functions to comply with 50-line limit
   (Creek-Historian-35)
 - **Comprehensive Trace Analyzer**: Advanced Playwright trace analysis system with performance bottleneck detection

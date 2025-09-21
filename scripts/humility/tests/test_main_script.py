@@ -2,19 +2,20 @@
 Tests for the main humility detector script.
 """
 
-import pytest
 import asyncio
+import os
 import subprocess
 import sys
 import tempfile
-import os
 from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
+
+import pytest
 
 # Add the parent directory to the path so we can import the modules
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from core import HumilityConfig, SeverityLevel, ConfidenceLevel, DetectionCategory
+from core import ConfidenceLevel, DetectionCategory, HumilityConfig, SeverityLevel
 from core.models import HumilityFinding, HumilityProfile
 
 

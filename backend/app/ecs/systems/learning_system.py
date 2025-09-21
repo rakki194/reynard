@@ -10,8 +10,8 @@ import random
 from typing import Any, Dict, List
 
 from ..components.knowledge import (
-    KnowledgeComponent,
     Knowledge,
+    KnowledgeComponent,
     LearningMethod,
 )
 from ..components.social import SocialComponent

@@ -16,9 +16,9 @@ from pathlib import Path
 # Add src to path
 sys.path.append(str(Path(__file__).parent / "src"))
 
-from src.utils.data_structures import PhoenixConfig
 from src.core.phoenix_framework import PhoenixFramework
 from src.integration.agent_persistence import AgentStatePersistence
+from src.utils.data_structures import PhoenixConfig
 
 
 async def test_phoenix_framework():

@@ -7,9 +7,9 @@ Author: Success-Advisor-8 (Permanent Release Manager)
 Version: 1.0.0
 """
 
-from .phoenix_framework import PhoenixFramework
 from .evolutionary_ops import EvolutionaryOperators
 from .knowledge_distillation import KnowledgeDistillation
+from .phoenix_framework import PhoenixFramework
 from .statistical_validation import StatisticalValidation
 
 __all__ = [

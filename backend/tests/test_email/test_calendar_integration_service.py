@@ -4,21 +4,22 @@ Tests for Calendar Integration Service.
 This module contains comprehensive tests for the calendar integration functionality.
 """
 
-import pytest
-import pytest_asyncio
 import asyncio
 import json
 import tempfile
 import uuid
 from datetime import datetime, timedelta
 from pathlib import Path
-from unittest.mock import Mock, patch, AsyncMock, MagicMock
+from unittest.mock import AsyncMock, MagicMock, Mock, patch
+
+import pytest
+import pytest_asyncio
 
 from app.services.calendar_integration_service import (
-    CalendarIntegrationService,
-    CalendarEvent,
-    MeetingRequest,
     CalendarConfig,
+    CalendarEvent,
+    CalendarIntegrationService,
+    MeetingRequest,
     calendar_integration_service,
 )
 

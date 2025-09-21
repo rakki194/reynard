@@ -14,11 +14,11 @@ from sqlalchemy import (
     Boolean,
     Column,
     DateTime,
+    Engine,
     Integer,
     String,
     create_engine,
     text,
-    Engine,
 )
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, declarative_base, sessionmaker

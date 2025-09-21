@@ -6,17 +6,16 @@ for the Success-Advisor-8 distillation system.
 """
 
 from .data_structures import (
+    AgentConfig,
     AgentState,
-    SpiritType,
     NamingStyle,
     PerformanceMetrics,
-    StatisticalSignificance,
-    AgentConfig,
-    ReleaseConfig,
     QualityConfig,
+    ReleaseConfig,
+    SpiritType,
+    StatisticalSignificance,
 )
-
-from .logging import setup_logging, get_logger
+from .logging import get_logger, setup_logging
 
 __all__ = [
     "AgentState",

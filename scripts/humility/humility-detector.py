@@ -14,17 +14,17 @@ This detector combines multiple analysis techniques:
 - Explainable AI features
 """
 
-import asyncio
 import argparse
+import asyncio
 import logging
-from pathlib import Path
 import sys
+from pathlib import Path
 
 # Add current directory to path
 current_dir = Path(__file__).parent
 sys.path.insert(0, str(current_dir))
 
-from core import HumilityDetector, HumilityConfig
+from core import HumilityConfig, HumilityDetector
 from utils.report_generator import ReportGenerator
 
 

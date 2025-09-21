@@ -10,8 +10,8 @@ This replaces the pseudo-code from the guide with actual working implementations
 
 import asyncio
 import logging
-from pathlib import Path
 import sys
+from pathlib import Path
 
 # Add the services directory to the path
 sys.path.append(str(Path(__file__).parent.parent))

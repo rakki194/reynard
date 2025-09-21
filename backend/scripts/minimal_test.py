@@ -72,8 +72,8 @@ async def test_document_indexer():
     try:
         from app.services.rag.core import (
             DocumentIndexer,
-            VectorStoreService,
             EmbeddingService,
+            VectorStoreService,
         )
 
         logger.info("Testing DocumentIndexer...")

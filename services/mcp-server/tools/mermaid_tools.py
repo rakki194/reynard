@@ -19,8 +19,8 @@ mcp_dir = Path(__file__).parent.parent
 if str(mcp_dir) not in sys.path:
     sys.path.insert(0, str(mcp_dir))
 
-from services.mermaid_service import MermaidService
 from protocol.tool_registry import register_tool
+from services.mermaid_service import MermaidService
 
 logger = logging.getLogger(__name__)
 

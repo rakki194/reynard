@@ -9,7 +9,7 @@ This script can be run immediately without external dependencies.
 
 import asyncio
 import time
-from typing import Dict, Any
+from typing import Any, Dict
 
 
 async def quick_cache_proof() -> None:
@@ -24,8 +24,8 @@ async def quick_cache_proof() -> None:
 
     try:
         # Import the search service
-        from app.api.search.service import OptimizedSearchService
         from app.api.search.models import SemanticSearchRequest
+        from app.api.search.service import OptimizedSearchService
 
         print("\n🔧 Initializing search service...")
         service = OptimizedSearchService()

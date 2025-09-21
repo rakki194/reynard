@@ -4,7 +4,8 @@ Text processing utilities for the Enhanced Humility Detector.
 
 import re
 import string
-from typing import List, Dict, Any, Tuple
+from typing import Any, Dict, List, Tuple
+
 from core.config import HumilityConfig
 
 

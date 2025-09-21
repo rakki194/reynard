@@ -11,12 +11,12 @@ This service provides:
 
 import asyncio
 import logging
+import statistics
 import time
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Dict, List, Optional, Tuple
-import statistics
 
 logger = logging.getLogger("uvicorn")
 

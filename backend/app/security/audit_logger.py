@@ -21,11 +21,11 @@ import logging
 import logging.handlers
 import os
 import sys
+from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
-from dataclasses import dataclass, asdict
 
 from app.security.security_config import get_audit_logging_config
 

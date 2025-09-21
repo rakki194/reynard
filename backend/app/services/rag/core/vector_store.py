@@ -9,6 +9,7 @@ This service provides:
 - Performance optimization and monitoring
 """
 
+import json
 import logging
 import time
 from collections.abc import Sequence
@@ -266,36 +267,77 @@ class VectorStoreService:
                 inserted_count = 0
 
                 for embedding_data in embeddings:
-                    # Insert embedding
-                    result = conn.execute(
+                    # First, insert or get the document
+                    file_path = embedding_data.get("file_id", "")
+                    chunk_text = embedding_data.get("chunk_text", "")
+                    metadata = embedding_data.get("metadata", {})
+
+                    # Insert document
+                    doc_result = conn.execute(
                         text(
                             """
-                        INSERT INTO embeddings (
-                            file_id, chunk_index, chunk_text, embedding, metadata
-                        ) VALUES (
-                            :file_id, :chunk_index, :chunk_text, :embedding, :metadata
-                        )
-                        ON CONFLICT (file_id, chunk_index) DO UPDATE SET
-                            chunk_text = EXCLUDED.chunk_text,
-                            embedding = EXCLUDED.embedding,
-                            metadata = EXCLUDED.metadata,
-                            updated_at = NOW()
+                        INSERT INTO rag_documents (source, content, metadata)
+                        VALUES (:source, :content, :metadata)
                         RETURNING id
                     """
                         ),
                         {
-                            "file_id": embedding_data.get("file_id"),
-                            "chunk_index": embedding_data.get("chunk_index", 0),
-                            "chunk_text": embedding_data.get("chunk_text", ""),
-                            "embedding": self.vector_literal(
-                                embedding_data.get("embedding", [])
-                            ),
-                            "metadata": embedding_data.get("metadata", {}),
+                            "source": file_path,
+                            "content": chunk_text,
+                            "metadata": json.dumps(metadata),
                         },
                     )
 
-                    if result.fetchone():
-                        inserted_count += 1
+                    doc_row = doc_result.fetchone()
+                    if not doc_row:
+                        continue
+                    doc_id = doc_row[0]
+
+                    # Insert document chunk
+                    chunk_result = conn.execute(
+                        text(
+                            """
+                        INSERT INTO rag_document_chunks (document_id, chunk_index, text, metadata)
+                        VALUES (:document_id, :chunk_index, :text, :metadata)
+                        RETURNING id
+                    """
+                        ),
+                        {
+                            "document_id": doc_id,
+                            "chunk_index": embedding_data.get("chunk_index", 0),
+                            "text": chunk_text,
+                            "metadata": json.dumps(metadata),
+                        },
+                    )
+
+                    chunk_row = chunk_result.fetchone()
+                    if not chunk_row:
+                        continue
+                    chunk_id = chunk_row[0]
+
+                    # Insert embedding
+                    embedding_vector = embedding_data.get("embedding", [])
+                    if embedding_vector:
+                        conn.execute(
+                            text(
+                                """
+                            INSERT INTO rag_document_embeddings (
+                                chunk_id, model_id, dim, embedding, metric
+                            ) VALUES (
+                                :chunk_id, :model_id, :dim, :embedding, :metric
+                            )
+                        """
+                            ),
+                            {
+                                "chunk_id": chunk_id,
+                                "model_id": "embeddinggemma:latest",
+                                "dim": len(embedding_vector),
+                                "embedding": self.vector_literal(embedding_vector),
+                                "metric": "cosine",
+                            },
+                        )
+
+                    inserted_count += 1
 
                 conn.commit()
 
@@ -326,23 +368,22 @@ class VectorStoreService:
             start_time = time.time()
 
             with self._engine.connect() as conn:
-                # Build query with optional dataset filter
+                # Build query using the correct RAG table structure
                 base_query = """
                     SELECT 
-                        e.id,
-                        e.chunk_text,
-                        e.metadata,
-                        f.path,
-                        f.title,
-                        f.file_type,
-                        f.metadata as file_metadata,
-                        1 - (e.embedding <=> :query_embedding) as similarity
-                    FROM embeddings e
-                    JOIN files f ON e.file_id = f.id
+                        de.id,
+                        dc.text as chunk_text,
+                        dc.metadata,
+                        d.source as path,
+                        d.metadata as file_metadata,
+                        1 - (de.embedding <=> :query_embedding) as similarity
+                    FROM rag_document_embeddings de
+                    JOIN rag_document_chunks dc ON de.chunk_id = dc.id
+                    JOIN rag_documents d ON dc.document_id = d.id
                 """
 
                 where_conditions = [
-                    "1 - (e.embedding <=> :query_embedding) > :threshold"
+                    "1 - (de.embedding <=> :query_embedding) > :threshold"
                 ]
                 params = {
                     "query_embedding": self.vector_literal(query_embedding),
@@ -351,13 +392,13 @@ class VectorStoreService:
                 }
 
                 if dataset_id:
-                    where_conditions.append("f.dataset_id = :dataset_id")
+                    where_conditions.append("d.metadata->>'dataset_id' = :dataset_id")
                     params["dataset_id"] = dataset_id
 
                 query = f"""
                     {base_query}
                     WHERE {' AND '.join(where_conditions)}
-                    ORDER BY e.embedding <=> :query_embedding
+                    ORDER BY de.embedding <=> :query_embedding
                     LIMIT :limit
                 """
 
@@ -371,10 +412,8 @@ class VectorStoreService:
                             "text": row[1],
                             "metadata": row[2] or {},
                             "path": row[3],
-                            "title": row[4],
-                            "file_type": row[5],
-                            "file_metadata": row[6] or {},
-                            "similarity": float(row[7]),
+                            "file_metadata": row[4] or {},
+                            "similarity": float(row[5]),
                         }
                     )
 
@@ -533,26 +572,28 @@ class VectorStoreService:
 
         try:
             with self._engine.connect() as conn:
-                # Get total counts
-                file_count_result = conn.execute(
-                    text("SELECT COUNT(*) FROM files")
+                # Get total counts using the correct RAG table structure
+                document_count_result = conn.execute(
+                    text("SELECT COUNT(*) FROM rag_documents")
                 ).fetchone()
                 embedding_count_result = conn.execute(
-                    text("SELECT COUNT(*) FROM embeddings")
+                    text("SELECT COUNT(*) FROM rag_document_embeddings")
                 ).fetchone()
-                dataset_count_result = conn.execute(
-                    text("SELECT COUNT(*) FROM datasets")
+                chunk_count_result = conn.execute(
+                    text("SELECT COUNT(*) FROM rag_document_chunks")
                 ).fetchone()
 
                 return {
                     "enabled": self._enabled,
                     "dsn_configured": self._dsn is not None,
-                    "total_files": file_count_result[0] if file_count_result else 0,
+                    "total_documents": (
+                        document_count_result[0] if document_count_result else 0
+                    ),
                     "total_embeddings": (
                         embedding_count_result[0] if embedding_count_result else 0
                     ),
-                    "total_datasets": (
-                        dataset_count_result[0] if dataset_count_result else 0
+                    "total_chunks": (
+                        chunk_count_result[0] if chunk_count_result else 0
                     ),
                     "metrics": self._metrics.copy(),
                     "engine_pool_size": self._engine.pool.size() if self._engine else 0,

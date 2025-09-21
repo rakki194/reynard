@@ -11,7 +11,7 @@ from collections.abc import AsyncGenerator
 from typing import Any
 
 from ...config.rag_config import get_rag_config
-from ...services.rag import EmbeddingService, VectorStoreService, DocumentIndexer
+from ...services.rag import DocumentIndexer, EmbeddingService, VectorStoreService
 from .models import RAGIngestItem
 
 logger = logging.getLogger("uvicorn")
@@ -142,6 +142,34 @@ class RAGService:
             }
         except Exception as e:
             logger.error(f"Failed to perform RAG query: {e}")
+            raise
+
+    async def index_documents(self, documents: list[dict[str, Any]]) -> dict[str, Any]:
+        """Index documents using the DocumentIndexer."""
+        if not self._initialized:
+            await self.initialize()
+
+        try:
+            # Use the indexing service to process documents
+            result = {"processed": 0, "total": len(documents), "failures": 0}
+
+            async for event in self._indexing_service.index_documents(documents):
+                if event["type"] == "progress":
+                    result["processed"] = event.get("processed", 0)
+                    result["failures"] = event.get("failures", 0)
+                elif event["type"] == "error":
+                    result["failures"] += 1
+                    logger.error(
+                        f"Indexing error: {event.get('error', 'Unknown error')}"
+                    )
+                elif event["type"] == "complete":
+                    result["processed"] = event.get("processed", 0)
+                    result["failures"] = event.get("failures", 0)
+                    break
+
+            return result
+        except Exception as e:
+            logger.error(f"Failed to index documents: {e}")
             raise
 
     async def ingest_documents(

@@ -3,14 +3,15 @@ Sentiment analysis module for humility detection.
 """
 
 import asyncio
-from typing import List, Dict, Any, Optional
+from typing import Any, Dict, List, Optional
+
+from core.config import HumilityConfig
 from core.models import (
-    HumilityFinding,
-    SeverityLevel,
     ConfidenceLevel,
     DetectionCategory,
+    HumilityFinding,
+    SeverityLevel,
 )
-from core.config import HumilityConfig
 
 
 class SentimentAnalyzer:

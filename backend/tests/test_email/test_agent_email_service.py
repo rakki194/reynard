@@ -2,20 +2,21 @@
 Tests for Agent Email Service
 """
 
-import pytest
 import asyncio
+import shutil
+import tempfile
 from datetime import datetime
 from pathlib import Path
-import tempfile
-import shutil
 
-from app.services.agent_email_service import AgentEmailService
+import pytest
+
 from app.models.agent_email_models import (
     AgentEmailConfig,
     AgentEmailStats,
     AgentEmailTemplate,
     EventType,
 )
+from app.services.agent_email_service import AgentEmailService
 
 
 @pytest.fixture

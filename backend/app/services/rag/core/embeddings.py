@@ -20,18 +20,28 @@ Features:
 import asyncio
 import hashlib
 import logging
+import os
 import time
 from collections import OrderedDict
-from typing import Any, Dict, List, Optional
+from typing import Any
 
+import aiohttp  # noqa: F401
 import psutil
 
 from app.config.embedding_backend_config import (
-    EmbeddingBackendsConfig,
     EmbeddingBackendConfig,
+    EmbeddingBackendsConfig,
 )
 
 logger = logging.getLogger("uvicorn")
+
+# Constants
+HTTP_OK = 200
+MAX_RETRY_ATTEMPTS = 3
+DEFAULT_EMBEDDING_DIM = int(os.getenv("EMBEDDING_DEFAULT_DIM", "1024"))
+DEFAULT_SENTENCE_TRANSFORMER_DIM = int(
+    os.getenv("EMBEDDING_SENTENCE_TRANSFORMER_DIM", "384")
+)
 
 # Optional imports
 try:
@@ -43,7 +53,7 @@ except ImportError:
     SentenceTransformer = None
 
 try:
-    import numpy as np
+    import numpy as np  # noqa: F401
 
     NUMPY_AVAILABLE = True
 except ImportError:
@@ -56,11 +66,11 @@ class LRUCache:
 
     def __init__(self, max_size: int = 1000):
         self.max_size = max_size
-        self.cache: OrderedDict[str, List[float]] = OrderedDict()
+        self.cache: OrderedDict[str, list[float]] = OrderedDict()
         self.hits = 0
         self.misses = 0
 
-    def get(self, key: str) -> Optional[List[float]]:
+    def get(self, key: str) -> list[float] | None:
         """Get value from cache, updating access order."""
         if key in self.cache:
             value = self.cache.pop(key)
@@ -70,7 +80,7 @@ class LRUCache:
         self.misses += 1
         return None
 
-    def put(self, key: str, value: List[float]) -> None:
+    def put(self, key: str, value: list[float]) -> None:
         """Put value in cache, evicting LRU if necessary."""
         if key in self.cache:
             self.cache.pop(key)
@@ -83,7 +93,7 @@ class LRUCache:
         total = self.hits + self.misses
         return self.hits / total if total > 0 else 0.0
 
-    def get_stats(self) -> Dict[str, Any]:
+    def get_stats(self) -> dict[str, Any]:
         """Get cache statistics."""
         return {
             "size": len(self.cache),
@@ -99,7 +109,7 @@ class EmbeddingService:
 
     def __init__(self) -> None:
         self._enabled = True
-        self._metrics: Dict[str, Any] = {
+        self._metrics: dict[str, Any] = {
             "requests": 0,
             "errors": 0,
             "last_ms": 0.0,
@@ -110,30 +120,34 @@ class EmbeddingService:
         }
 
         # LRU cache for performance
-        self.lru_cache = LRUCache(max_size=1000)
+        cache_max_size = int(os.getenv("EMBEDDING_CACHE_MAX_SIZE", "1000"))
+        self.lru_cache = LRUCache(max_size=cache_max_size)
 
         # Model registry with metadata
         self._model_registry = self._initialize_model_registry()
 
         # Backend configuration
-        self._backend_config: Optional[EmbeddingBackendsConfig] = None
+        self._backend_config: EmbeddingBackendsConfig | None = None
 
-        # Legacy configuration (for backward compatibility)
-        self._ollama_base_url = "http://localhost:11434"
-        self._timeout_seconds = 30
-        self._max_retries = 3
-        self._retry_delay = 1.0
-        self._batch_size = 16
-        self._max_concurrent_requests = 8
+        # Configuration from environment variables
+        self._ollama_base_url = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+        self._timeout_seconds = int(os.getenv("EMBEDDING_OLLAMA_TIMEOUT", "30"))
+        self._max_retries = int(os.getenv("EMBEDDING_OLLAMA_MAX_RETRIES", "3"))
+        self._retry_delay = float(os.getenv("EMBEDDING_OLLAMA_RETRY_DELAY", "1.0"))
+        self._batch_size = int(os.getenv("EMBEDDING_OLLAMA_BATCH_SIZE", "16"))
+        self._max_concurrent_requests = int(
+            os.getenv("EMBEDDING_OLLAMA_MAX_CONCURRENT", "8")
+        )
 
         # Sentence-transformer models
-        self._sentence_transformer_models: Dict[str, SentenceTransformer] = {}
+        self._sentence_transformer_models: dict[str, SentenceTransformer] = {}
 
         # Rate limiting and concurrency control
-        self._rate_limiter = asyncio.Semaphore(10)
+        rate_limiter_max = int(os.getenv("EMBEDDING_RATE_LIMITER_MAX", "10"))
+        self._rate_limiter = asyncio.Semaphore(rate_limiter_max)
         self._concurrency_limiter = asyncio.Semaphore(self._max_concurrent_requests)
 
-    def _initialize_model_registry(self) -> Dict[str, Dict[str, Any]]:
+    def _initialize_model_registry(self) -> dict[str, dict[str, Any]]:
         """Initialize the model registry with metadata."""
         return {
             # Ollama models (primary)
@@ -196,7 +210,7 @@ class EmbeddingService:
             },
         }
 
-    async def initialize(self, config: Dict[str, Any]) -> bool:
+    async def initialize(self, config: dict[str, Any]) -> bool:
         """Initialize the embedding service."""
         try:
             self._enabled = config.get("rag_enabled", False)
@@ -244,15 +258,19 @@ class EmbeddingService:
                             "batch_size", backend.batch_size
                         )
 
-            # Legacy configuration (for backward compatibility)
-            self._ollama_base_url = config.get(
-                "ollama_base_url", "http://localhost:11434"
+            # Override with config values if provided, otherwise use environment variables
+            self._ollama_base_url = config.get("ollama_base_url", self._ollama_base_url)
+            self._timeout_seconds = config.get(
+                "embedding_timeout_seconds", self._timeout_seconds
             )
-            self._timeout_seconds = config.get("embedding_timeout_seconds", 30)
-            self._max_retries = config.get("embedding_max_retries", 3)
-            self._retry_delay = config.get("embedding_retry_delay", 1.0)
-            self._batch_size = config.get("rag_ingest_batch_size_text", 16)
-            self._max_concurrent_requests = config.get("rag_max_concurrent_requests", 8)
+            self._max_retries = config.get("embedding_max_retries", self._max_retries)
+            self._retry_delay = config.get("embedding_retry_delay", self._retry_delay)
+            self._batch_size = config.get(
+                "rag_ingest_batch_size_text", self._batch_size
+            )
+            self._max_concurrent_requests = config.get(
+                "rag_max_concurrent_requests", self._max_concurrent_requests
+            )
 
             if not self._enabled:
                 logger.info("EmbeddingService disabled by config")
@@ -264,7 +282,8 @@ class EmbeddingService:
                 return True
 
             # Update limiters
-            self._rate_limiter = asyncio.Semaphore(10)
+            rate_limiter_max = int(os.getenv("EMBEDDING_RATE_LIMITER_MAX", "10"))
+            self._rate_limiter = asyncio.Semaphore(rate_limiter_max)
             self._concurrency_limiter = asyncio.Semaphore(self._max_concurrent_requests)
 
             # Test available backends
@@ -274,53 +293,66 @@ class EmbeddingService:
                 logger.warning("No embedding backends available, using mock embeddings")
             else:
                 logger.info(
-                    f"EmbeddingService initialized with backends: {', '.join(available_backends)}"
+                    "EmbeddingService initialized with backends: %s",
+                    ", ".join(available_backends),
                 )
 
             return True
 
-        except Exception as e:
-            logger.error(f"EmbeddingService initialization failed: {e}")
+        except Exception:
+            logger.exception("EmbeddingService initialization failed")
             return False
 
-    async def _test_available_backends(self) -> List[str]:
+    async def _test_available_backends(self) -> list[str]:
         """Test all available backends and return list of working ones."""
-        available_backends = []
-
         if not self._backend_config:
-            # Fallback to legacy testing
-            if await self._test_ollama_connection():
-                available_backends.append("ollama")
-            if await self._initialize_sentence_transformers():
-                available_backends.append("sentence_transformers")
-            return available_backends
+            return await self._test_legacy_backends()
 
-        # Test each enabled backend
+        return await self._test_configured_backends()
+
+    async def _test_legacy_backends(self) -> list[str]:
+        """Test legacy backends without configuration."""
+        available_backends = []
+        if await self._test_ollama_connection():
+            available_backends.append("ollama")
+        if await self._initialize_sentence_transformers():
+            available_backends.append("sentence_transformers")
+        return available_backends
+
+    async def _test_configured_backends(self) -> list[str]:
+        """Test configured backends."""
+        available_backends = []
         for backend_name, backend_config in self._backend_config.backends.items():
             if not backend_config.enabled:
                 continue
 
-            if backend_config.provider == "ollama":
-                if await self._test_ollama_connection(backend_config):
-                    available_backends.append(backend_name)
-            elif backend_config.provider == "sentence_transformers":
-                if await self._initialize_sentence_transformers(backend_config):
-                    available_backends.append(backend_name)
-            elif backend_config.provider == "openai":
-                if await self._test_openai_connection(backend_config):
-                    available_backends.append(backend_name)
-            elif backend_config.provider == "huggingface":
-                if await self._test_huggingface_connection(backend_config):
-                    available_backends.append(backend_name)
+            if await self._test_single_backend(backend_name, backend_config):
+                available_backends.append(backend_name)
 
         return available_backends
 
+    async def _test_single_backend(
+        self, _backend_name: str, backend_config: EmbeddingBackendConfig
+    ) -> bool:
+        """Test a single backend configuration."""
+        provider = backend_config.provider
+
+        if provider == "ollama":
+            return await self._test_ollama_connection(backend_config)
+        if provider == "sentence_transformers":
+            return await self._initialize_sentence_transformers(backend_config)
+        if provider == "openai":
+            return await self._test_openai_connection(backend_config)
+        if provider == "huggingface":
+            return await self._test_huggingface_connection(backend_config)
+
+        return False
+
     async def _test_ollama_connection(
-        self, backend_config: Optional[EmbeddingBackendConfig] = None
+        self, backend_config: EmbeddingBackendConfig | None = None
     ) -> bool:
         """Test connection to Ollama service."""
         try:
-            import aiohttp
 
             # Use backend config if provided, otherwise use legacy config
             base_url = (
@@ -328,22 +360,24 @@ class EmbeddingService:
             )
             timeout = backend_config.timeout_seconds if backend_config else 5
 
-            async with aiohttp.ClientSession() as session:
-                async with session.get(
+            async with (
+                aiohttp.ClientSession() as session,
+                session.get(
                     f"{base_url}/api/tags",
                     timeout=aiohttp.ClientTimeout(total=timeout),
-                ) as response:
-                    if response.status == 200:
-                        logger.info(f"Ollama connection test successful: {base_url}")
-                        return True
-                    logger.warning(f"Ollama connection test failed: {response.status}")
-                    return False
-        except Exception as e:
-            logger.warning(f"Ollama connection test failed: {e}")
+                ) as response,
+            ):
+                if response.status == HTTP_OK:
+                    logger.info("Ollama connection test successful: %s", base_url)
+                    return True
+                logger.warning("Ollama connection test failed: %s", response.status)
+                return False
+        except Exception:
+            logger.warning("Ollama connection test failed")
             return False
 
     async def _initialize_sentence_transformers(
-        self, backend_config: Optional[EmbeddingBackendConfig] = None
+        self, backend_config: EmbeddingBackendConfig | None = None
     ) -> bool:
         """Initialize sentence-transformer models."""
         if not SENTENCE_TRANSFORMERS_AVAILABLE:
@@ -355,15 +389,15 @@ class EmbeddingService:
             await asyncio.get_event_loop().run_in_executor(
                 None, self._load_sentence_transformer_models, backend_config
             )
-        except Exception as e:
-            logger.warning(f"Failed to load sentence-transformer models: {e}")
+        except Exception:
+            logger.warning("Failed to load sentence-transformer models")
             return False
         else:
             logger.info("Sentence-transformer models loaded successfully")
             return True
 
     def _load_sentence_transformer_models(
-        self, backend_config: Optional[EmbeddingBackendConfig] = None
+        self, backend_config: EmbeddingBackendConfig | None = None
     ) -> None:
         """Load sentence-transformer models (blocking operation)."""
         try:
@@ -381,16 +415,16 @@ class EmbeddingService:
                     self._sentence_transformer_models[model_name] = SentenceTransformer(
                         model_name
                     )
-                    logger.info(f"Loaded sentence-transformer model: {model_name}")
-                except Exception as e:
-                    logger.warning(f"Failed to load {model_name}: {e}")
+                    logger.info("Loaded sentence-transformer model: %s", model_name)
+                except Exception:
+                    logger.warning("Failed to load %s", model_name)
 
-        except Exception as e:
-            logger.error(f"Failed to load sentence-transformer models: {e}")
+        except Exception:
+            logger.exception("Failed to load sentence-transformer models")
             raise
 
     async def _test_openai_connection(
-        self, backend_config: EmbeddingBackendConfig
+        self, _backend_config: EmbeddingBackendConfig
     ) -> bool:
         """Test connection to OpenAI API (placeholder for future implementation)."""
         # TODO: Implement OpenAI connection testing
@@ -398,7 +432,7 @@ class EmbeddingService:
         return False
 
     async def _test_huggingface_connection(
-        self, backend_config: EmbeddingBackendConfig
+        self, _backend_config: EmbeddingBackendConfig
     ) -> bool:
         """Test connection to Hugging Face API (placeholder for future implementation)."""
         # TODO: Implement Hugging Face connection testing
@@ -412,15 +446,19 @@ class EmbeddingService:
 
     async def embed_text(
         self, text: str, model: str = "embeddinggemma:latest"
-    ) -> List[float]:
+    ) -> list[float]:
         """Generate embedding for a single text with caching and validation."""
         if not self._enabled:
             # Return mock embedding for testing
-            return [0.1] * self._model_registry.get(model, {}).get("dim", 1024)
+            return [0.1] * self._model_registry.get(model, {}).get(
+                "dim", DEFAULT_EMBEDDING_DIM
+            )
 
         # Check if we're in mock mode
         if self._backend_config and self._backend_config.mock_mode:
-            return [0.1] * self._model_registry.get(model, {}).get("dim", 1024)
+            return [0.1] * self._model_registry.get(model, {}).get(
+                "dim", DEFAULT_EMBEDDING_DIM
+            )
 
         # Check LRU cache first
         cache_key = self._generate_cache_key(text, model)
@@ -430,7 +468,7 @@ class EmbeddingService:
 
         # Validate token limits
         if not self._is_text_within_limits(text, model):
-            logger.warning(f"Text exceeds token limits for {model}, truncating")
+            logger.warning("Text exceeds token limits for %s, truncating", model)
             text = self._truncate_text_to_limit(text, model)
 
         try:
@@ -448,23 +486,23 @@ class EmbeddingService:
 
             return embedding
 
-        except Exception as e:
-            logger.error(f"Failed to generate embedding: {e}")
+        except Exception:
+            logger.exception("Failed to generate embedding")
             self._metrics["errors"] += 1
             raise
 
     async def embed_batch(
-        self, texts: List[str], model: str = "embeddinggemma:latest"
-    ) -> List[List[float]]:
+        self, texts: list[str], model: str = "embeddinggemma:latest"
+    ) -> list[list[float]]:
         """Generate embeddings for a batch of texts with concurrent processing."""
         if not self._enabled:
             # Return mock embeddings for testing
-            dim = self._model_registry.get(model, {}).get("dim", 1024)
+            dim = self._model_registry.get(model, {}).get("dim", DEFAULT_EMBEDDING_DIM)
             return [[0.1 + (i * 0.001) for i in range(dim)] for _ in texts]
 
         # Check if we're in mock mode
         if self._backend_config and self._backend_config.mock_mode:
-            dim = self._model_registry.get(model, {}).get("dim", 1024)
+            dim = self._model_registry.get(model, {}).get("dim", DEFAULT_EMBEDDING_DIM)
             return [[0.1 + (i * 0.001) for i in range(dim)] for _ in texts]
 
         try:
@@ -479,83 +517,98 @@ class EmbeddingService:
 
             return embeddings
 
-        except Exception as e:
-            logger.error(f"Failed to generate batch embeddings: {e}")
+        except Exception:
+            logger.exception("Failed to generate batch embeddings")
             self._metrics["errors"] += 1
             raise
 
     async def _embed_with_enhanced_processing(
         self, text: str, model: str
-    ) -> List[float]:
+    ) -> list[float]:
         """Generate embedding with rate limiting and concurrency control."""
-        async with self._concurrency_limiter:
-            async with self._rate_limiter:
-                # Use backend-aware embedding generation
-                embedding = await self._embed_with_backend_chain(text, model)
-                return embedding
+        async with self._concurrency_limiter, self._rate_limiter:
+            # Use backend-aware embedding generation
+            return await self._embed_with_backend_chain(text, model)
 
-    async def _embed_with_backend_chain(self, text: str, model: str) -> List[float]:
+    async def _embed_with_backend_chain(self, text: str, model: str) -> list[float]:
         """Generate embedding using backend chain with fallback support."""
         if not self._backend_config:
-            # Fallback to legacy behavior
-            embedding = await self._embed_with_ollama(text, model)
-            if embedding is None:
-                # Fallback to sentence-transformers
-                embeddings = await self._embed_with_sentence_transformers(
-                    [text], "sentence-transformers/all-MiniLM-L6-v2"
-                )
-                embedding = embeddings[0]
-                self._metrics["sentence_transformer_requests"] += 1
-            else:
-                self._metrics["ollama_requests"] += 1
+            return await self._embed_with_legacy_chain(text, model)
+
+        return await self._embed_with_configured_chain(text, model)
+
+    async def _embed_with_legacy_chain(self, text: str, model: str) -> list[float]:
+        """Generate embedding using legacy backend chain."""
+        embedding = await self._embed_with_ollama(text, model)
+        if embedding is not None:
+            self._metrics["ollama_requests"] += 1
             return embedding
 
-        # Get enabled backends sorted by priority
+        # Fallback to sentence-transformers
+        embeddings = await self._embed_with_sentence_transformers(
+            [text], "sentence-transformers/all-MiniLM-L6-v2"
+        )
+        self._metrics["sentence_transformer_requests"] += 1
+        return embeddings[0]
+
+    async def _embed_with_configured_chain(self, text: str, model: str) -> list[float]:
+        """Generate embedding using configured backend chain."""
         enabled_backends = self._backend_config.get_enabled_backends()
 
         if not enabled_backends:
-            # No backends available, return mock embedding
-            dim = self._model_registry.get(model, {}).get("dim", 1024)
-            return [0.1] * dim
+            return self._get_mock_embedding(model)
 
-        # Try each backend in priority order
         last_error = None
         for backend in enabled_backends:
             try:
-                if backend.provider == "ollama":
-                    embedding = await self._embed_with_ollama(text, model, backend)
-                    if embedding is not None:
-                        self._metrics["ollama_requests"] += 1
-                        return embedding
-                elif backend.provider == "sentence_transformers":
-                    embeddings = await self._embed_with_sentence_transformers(
-                        [text], model, backend
-                    )
-                    if embeddings and embeddings[0] is not None:
-                        self._metrics["sentence_transformer_requests"] += 1
-                        return embeddings[0]
-                elif backend.provider == "openai":
-                    # TODO: Implement OpenAI embedding
-                    logger.warning("OpenAI embedding not yet implemented")
-                    continue
-                elif backend.provider == "huggingface":
-                    # TODO: Implement Hugging Face embedding
-                    logger.warning("Hugging Face embedding not yet implemented")
-                    continue
+                embedding = await self._try_backend_embedding(text, model, backend)
+                if embedding is not None:
+                    return embedding
             except Exception as e:
                 last_error = e
-                logger.warning(f"Backend {backend.name} failed: {e}")
+                logger.warning("Backend %s failed: %s", backend.name, e)
                 continue
 
         # All backends failed, return mock embedding
         if last_error:
-            logger.error(f"All embedding backends failed, last error: {last_error}")
-        dim = self._model_registry.get(model, {}).get("dim", 1024)
+            logger.error("All embedding backends failed, last error: %s", last_error)
+        return self._get_mock_embedding(model)
+
+    async def _try_backend_embedding(
+        self, text: str, model: str, backend: EmbeddingBackendConfig
+    ) -> list[float] | None:
+        """Try to generate embedding with a specific backend."""
+        provider = backend.provider
+
+        if provider == "ollama":
+            embedding = await self._embed_with_ollama(text, model, backend)
+            if embedding is not None:
+                self._metrics["ollama_requests"] += 1
+                return embedding
+        elif provider == "sentence_transformers":
+            embeddings = await self._embed_with_sentence_transformers(
+                [text], model, backend
+            )
+            if embeddings and embeddings[0] is not None:
+                self._metrics["sentence_transformer_requests"] += 1
+                return embeddings[0]
+        elif provider == "openai":
+            # TODO: Implement OpenAI embedding
+            logger.warning("OpenAI embedding not yet implemented")
+        elif provider == "huggingface":
+            # TODO: Implement Hugging Face embedding
+            logger.warning("Hugging Face embedding not yet implemented")
+
+        return None
+
+    def _get_mock_embedding(self, model: str) -> list[float]:
+        """Get a mock embedding for the given model."""
+        dim = self._model_registry.get(model, {}).get("dim", DEFAULT_EMBEDDING_DIM)
         return [0.1] * dim
 
     async def _embed_batch_concurrent(
-        self, texts: List[str], model: str
-    ) -> List[List[float]]:
+        self, texts: list[str], model: str
+    ) -> list[list[float]]:
         """Generate batch embeddings using concurrent processing."""
         # Adaptive concurrency based on system resources
         max_concurrent = min(
@@ -563,23 +616,22 @@ class EmbeddingService:
         )
         semaphore = asyncio.Semaphore(max_concurrent)
 
-        async def embed_single_with_retry(text: str, attempt: int = 0) -> List[float]:
-            async with semaphore:
-                async with self._rate_limiter:
-                    try:
-                        # Validate token limits
-                        if not self._is_text_within_limits(text, model):
-                            text = self._truncate_text_to_limit(text, model)
+        async def embed_single_with_retry(text: str, attempt: int = 0) -> list[float]:
+            async with semaphore, self._rate_limiter:
+                try:
+                    # Validate token limits
+                    if not self._is_text_within_limits(text, model):
+                        text = self._truncate_text_to_limit(text, model)
 
-                        return await self._embed_with_retry(text, model)
-                    except Exception as e:
-                        if attempt < 3:
-                            await asyncio.sleep(2**attempt)  # Exponential backoff
-                            return await embed_single_with_retry(text, attempt + 1)
-                        raise e
+                    return await self._embed_with_retry(text, model)
+                except Exception:
+                    if attempt < MAX_RETRY_ATTEMPTS:
+                        await asyncio.sleep(2**attempt)  # Exponential backoff
+                        return await embed_single_with_retry(text, attempt + 1)
+                    raise
 
         # Process in batches to avoid overwhelming the system
-        results: List[List[float]] = []
+        results: list[list[float]] = []
         for i in range(0, len(texts), self._batch_size):
             batch = texts[i : i + self._batch_size]
             batch_tasks = [embed_single_with_retry(text) for text in batch]
@@ -588,9 +640,13 @@ class EmbeddingService:
             # Handle exceptions in batch results
             for j, result in enumerate(batch_results):
                 if isinstance(result, Exception):
-                    logger.error(f"Batch embedding failed for text {i + j}: {result}")
+                    logger.error(
+                        "Batch embedding failed for text %d: %s", i + j, result
+                    )
                     # Return mock embedding as fallback
-                    dim = self._model_registry.get(model, {}).get("dim", 1024)
+                    dim = self._model_registry.get(model, {}).get(
+                        "dim", DEFAULT_EMBEDDING_DIM
+                    )
                     results.append([0.1] * dim)
                 else:
                     results.append(result)
@@ -599,7 +655,7 @@ class EmbeddingService:
 
     async def _embed_with_retry(
         self, text: str, model: str, max_attempts: int = 3
-    ) -> List[float]:
+    ) -> list[float]:
         """Generate embedding with exponential backoff retry logic."""
         for attempt in range(max_attempts):
             try:
@@ -608,22 +664,25 @@ class EmbeddingService:
                 if attempt < max_attempts - 1:
                     delay = 2**attempt  # Exponential backoff
                     logger.warning(
-                        f"Embedding attempt {attempt + 1} failed: {e}, retrying in {delay}s"
+                        "Embedding attempt %d failed: %s, retrying in %ds",
+                        attempt + 1,
+                        e,
+                        delay,
                     )
                     await asyncio.sleep(delay)
                 else:
-                    logger.error(f"All embedding attempts failed for {model}: {e}")
+                    logger.exception("All embedding attempts failed for %s", model)
                     raise
+        return None  # This should never be reached
 
     async def _embed_with_ollama(
         self,
         text: str,
         model: str,
-        backend_config: Optional[EmbeddingBackendConfig] = None,
-    ) -> List[float] | None:
+        backend_config: EmbeddingBackendConfig | None = None,
+    ) -> list[float] | None:
         """Generate embedding using Ollama."""
         try:
-            import aiohttp
 
             # Use backend config if provided, otherwise use legacy config
             base_url = (
@@ -643,29 +702,30 @@ class EmbeddingService:
                     json=payload,
                     timeout=aiohttp.ClientTimeout(total=timeout),
                 ) as response:
-                    if response.status == 200:
+                    if response.status == HTTP_OK:
                         result = await response.json()
                         return result.get("embedding")
-                    else:
-                        logger.warning(f"Ollama embedding failed: {response.status}")
-                        return None
-        except Exception as e:
-            logger.warning(f"Ollama embedding error: {e}")
+                    logger.warning("Ollama embedding failed: %s", response.status)
+                    return None
+        except Exception:
+            logger.warning("Ollama embedding error")
             return None
 
     async def _embed_with_sentence_transformers(
         self,
-        texts: List[str],
+        texts: list[str],
         model: str,
-        backend_config: Optional[EmbeddingBackendConfig] = None,
-    ) -> List[List[float]]:
+        _backend_config: EmbeddingBackendConfig | None = None,
+    ) -> list[list[float]]:
         """Generate embeddings using sentence-transformers."""
         if (
             not SENTENCE_TRANSFORMERS_AVAILABLE
             or model not in self._sentence_transformer_models
         ):
             # Return mock embeddings
-            dim = self._model_registry.get(model, {}).get("dim", 384)
+            dim = self._model_registry.get(model, {}).get(
+                "dim", DEFAULT_SENTENCE_TRANSFORMER_DIM
+            )
             return [[0.1 + (i * 0.001) for i in range(dim)] for _ in texts]
 
         try:
@@ -677,10 +737,12 @@ class EmbeddingService:
 
             embeddings = await asyncio.get_event_loop().run_in_executor(None, _encode)
             return embeddings.tolist() if hasattr(embeddings, "tolist") else embeddings
-        except Exception as e:
-            logger.warning(f"Sentence-transformer embedding error: {e}")
+        except Exception:
+            logger.warning("Sentence-transformer embedding error")
             # Return mock embeddings as fallback
-            dim = self._model_registry.get(model, {}).get("dim", 384)
+            dim = self._model_registry.get(model, {}).get(
+                "dim", DEFAULT_SENTENCE_TRANSFORMER_DIM
+            )
             return [[0.1 + (i * 0.001) for i in range(dim)] for _ in texts]
 
     def _get_optimal_concurrency(self) -> int:
@@ -693,11 +755,9 @@ class EmbeddingService:
             optimal = min(8, max(2, int(memory_gb / 2)))
 
             # Adjust based on CPU cores
-            optimal = min(optimal, cpu_count)
-
-            return optimal
-        except Exception as e:
-            logger.warning(f"Failed to determine optimal concurrency: {e}")
+            return min(optimal, cpu_count)
+        except Exception:
+            logger.warning("Failed to determine optimal concurrency")
             return 4  # Safe default
 
     def _is_text_within_limits(self, text: str, model: str) -> bool:
@@ -724,15 +784,15 @@ class EmbeddingService:
         truncated_words = words[:max_words]
         return " ".join(truncated_words)
 
-    def get_model_info(self, model: str) -> Dict[str, Any] | None:
+    def get_model_info(self, model: str) -> dict[str, Any] | None:
         """Get information about a specific model."""
         return self._model_registry.get(model)
 
-    def get_available_models(self) -> List[str]:
+    def get_available_models(self) -> list[str]:
         """Get list of available models."""
         return list(self._model_registry.keys())
 
-    def get_best_model(self, model_type: str = "text") -> str:
+    def get_best_model(self) -> str:
         """Get the best available model based on priority and availability."""
         # Sort models by priority (lower number = higher priority)
         sorted_models = sorted(
@@ -764,11 +824,11 @@ class EmbeddingService:
 
         try:
             return await self._test_ollama_connection()
-        except Exception as e:
-            logger.warning(f"EmbeddingService health check failed: {e}")
+        except Exception:
+            logger.warning("EmbeddingService health check failed")
             return False
 
-    async def get_stats(self) -> Dict[str, Any]:
+    async def get_stats(self) -> dict[str, Any]:
         """Get embedding service statistics."""
         stats = {
             "enabled": self._enabled,
@@ -787,7 +847,7 @@ class EmbeddingService:
             "sentence_transformers_available": SENTENCE_TRANSFORMERS_AVAILABLE,
             "numpy_available": NUMPY_AVAILABLE,
             "loaded_models": list(self._sentence_transformer_models.keys()),
-            "best_model": self.get_best_model("text"),
+            "best_model": self.get_best_model(),
             "max_concurrent_requests": self._max_concurrent_requests,
             "batch_size": self._batch_size,
         }

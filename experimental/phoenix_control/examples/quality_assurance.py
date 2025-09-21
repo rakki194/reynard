@@ -16,9 +16,9 @@ from pathlib import Path
 # Add the src directory to the Python path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from phoenix_control.src.quality.validation import CodeQualityValidation
-from phoenix_control.src.quality.security import SecurityQualityAssurance
 from phoenix_control.src.quality.performance import PerformanceQualityAssurance
+from phoenix_control.src.quality.security import SecurityQualityAssurance
+from phoenix_control.src.quality.validation import CodeQualityValidation
 from phoenix_control.src.utils.data_structures import QualityConfig
 
 

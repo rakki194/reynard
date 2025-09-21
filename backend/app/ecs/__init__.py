@@ -4,34 +4,33 @@ ECS World Integration for FastAPI Backend
 Provides ECS world integration as a singleton service for the Reynard backend.
 """
 
-from .config import ECSConfig
-from .service import ECSWorldService, get_ecs_world
-
-# Core ECS components
-from .core import Component, Entity, System, ECSWorld
-
 # ECS Components
 from .components import (
     AgentComponent,
-    PositionComponent,
+    GenderComponent,
+    InteractionComponent,
+    KnowledgeComponent,
     LifecycleComponent,
     LineageComponent,
-    ReproductionComponent,
-    TraitComponent,
-    SocialComponent,
-    GenderComponent,
     MemoryComponent,
-    KnowledgeComponent,
-    InteractionComponent,
+    PositionComponent,
+    ReproductionComponent,
+    SocialComponent,
+    TraitComponent,
 )
+from .config import ECSConfig
+
+# Core ECS components
+from .core import Component, ECSWorld, Entity, System
+from .service import ECSWorldService, get_ecs_world
 
 # ECS Systems
 from .systems import (
-    MemorySystem,
-    LearningSystem,
-    InteractionSystem,
-    SocialSystem,
     GenderSystem,
+    InteractionSystem,
+    LearningSystem,
+    MemorySystem,
+    SocialSystem,
 )
 
 # ECS World

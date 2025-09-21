@@ -2,11 +2,11 @@
 Data models for the Enhanced Humility Detector.
 """
 
-from dataclasses import dataclass, field
-from enum import Enum
-from typing import List, Dict, Optional, Any
 import json
+from dataclasses import dataclass, field
 from datetime import datetime
+from enum import Enum
+from typing import Any, Dict, List, Optional
 
 
 class SeverityLevel(Enum):

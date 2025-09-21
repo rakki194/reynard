@@ -4,19 +4,20 @@ Test suite for RAG Phase 2 features: AST chunking, model evaluation, and hybrid 
 Tests the enhanced chunking system, model evaluation framework, and hybrid search engine.
 """
 
-import pytest
 import asyncio
 import time
+from typing import Any, Dict, List
 from unittest.mock import AsyncMock, MagicMock, patch
-from typing import List, Dict, Any
 
-from app.services.rag.core.indexing import ASTCodeChunker
+import pytest
+
 from app.services.rag.advanced.evaluation import (
+    EvaluationMetrics,
     ModelEvaluator,
     TestQuery,
-    EvaluationMetrics,
 )
-from app.services.rag.core.search import SearchEngine, HybridSearchEngine, KeywordIndex
+from app.services.rag.core.indexing import ASTCodeChunker
+from app.services.rag.core.search import HybridSearchEngine, KeywordIndex, SearchEngine
 
 
 class TestASTCodeChunker:

@@ -3,10 +3,11 @@
 import sys
 from pathlib import Path
 
-# Legacy agent-naming system removed - now using FastAPI ECS backend
-
 # Import social tools to register them
 from . import social_tools
+
+# Legacy agent-naming system removed - now using FastAPI ECS backend
+
 
 # Lazy imports to improve startup performance
 # Only import what's needed when it's actually used
@@ -43,14 +44,14 @@ def get_ecs_agent_tools():
 def get_social_tools():
     """Lazy import for social tools."""
     from .social_tools import (
-        initiate_interaction,
-        send_chat_message,
-        get_interaction_history,
+        find_ecs_agent,
         get_agent_relationships,
         get_agent_social_stats,
-        get_nearby_agents,
-        find_ecs_agent,
         get_ecs_world_status,
+        get_interaction_history,
+        get_nearby_agents,
+        initiate_interaction,
+        send_chat_message,
     )
 
     return {

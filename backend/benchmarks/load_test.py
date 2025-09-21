@@ -12,23 +12,23 @@ This script provides realistic load testing scenarios including:
 """
 
 import asyncio
-import time
 import json
+import logging
 import random
 import statistics
-from typing import Dict, List, Any, Optional
+import sys
+import time
 from dataclasses import dataclass, field
 from datetime import datetime
-import logging
 from pathlib import Path
-import sys
+from typing import Any, Dict, List, Optional
 
 import aiohttp
 import psutil
-from locust import HttpUser, task, between, events
+from locust import HttpUser, between, events, task
 from locust.env import Environment
-from locust.stats import stats_printer, stats_history
 from locust.log import setup_logging
+from locust.stats import stats_history, stats_printer
 
 # Add backend to path for imports
 sys.path.append(str(Path(__file__).parent.parent))

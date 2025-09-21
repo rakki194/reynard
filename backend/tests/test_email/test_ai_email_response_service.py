@@ -4,21 +4,22 @@ Tests for AI Email Response Service.
 This module contains comprehensive tests for the AI-powered email response functionality.
 """
 
-import pytest
-import pytest_asyncio
 import asyncio
 import json
 import tempfile
 import uuid
 from datetime import datetime
 from pathlib import Path
-from unittest.mock import Mock, patch, AsyncMock, MagicMock
+from unittest.mock import AsyncMock, MagicMock, Mock, patch
+
+import pytest
+import pytest_asyncio
 
 from app.services.ai_email_response_service import (
     AIEmailResponseService,
-    EmailContext,
     AIResponse,
     AIResponseConfig,
+    EmailContext,
     get_ai_email_response_service,
 )
 

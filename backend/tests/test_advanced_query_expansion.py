@@ -11,6 +11,7 @@ Tests cover:
 """
 
 import pytest
+
 from app.api.search.natural_language_processor import NaturalLanguageProcessor
 
 

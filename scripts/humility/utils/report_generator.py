@@ -3,9 +3,10 @@ Report generation utilities for humility detection.
 """
 
 import json
-from typing import Dict, Any, List
-from core.models import HumilityProfile
+from typing import Any, Dict, List
+
 from core.config import HumilityConfig
+from core.models import HumilityProfile
 
 
 class ReportGenerator:

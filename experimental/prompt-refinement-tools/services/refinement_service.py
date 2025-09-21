@@ -10,14 +10,14 @@ Replaces the pseudo-code functions from the guide with actual implementations.
 
 import asyncio
 import logging
-from typing import Dict, List, Any, Optional
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any, Dict, List, Optional
 
-from .web_scraping import WebScrapingService
-from .semantic_search import SemanticSearchService
-from .nlp_processing import NLPProcessingService
 from .code_analysis import CodeAnalysisService
+from .nlp_processing import NLPProcessingService
+from .semantic_search import SemanticSearchService
+from .web_scraping import WebScrapingService
 
 logger = logging.getLogger(__name__)
 

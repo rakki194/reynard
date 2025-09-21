@@ -16,15 +16,15 @@ from pathlib import Path
 # Add the src directory to the Python path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from phoenix_control.src.core.success_advisor import SuccessAdvisor8
-from phoenix_control.src.core.persistence import AgentStatePersistence
+from phoenix_control.src.automation.changelog import ChangelogManager
 from phoenix_control.src.automation.git_workflow import ReleaseAutomation
 from phoenix_control.src.automation.version_management import VersionManager
-from phoenix_control.src.automation.changelog import ChangelogManager
-from phoenix_control.src.quality.validation import CodeQualityValidation
-from phoenix_control.src.quality.security import SecurityQualityAssurance
+from phoenix_control.src.core.persistence import AgentStatePersistence
+from phoenix_control.src.core.success_advisor import SuccessAdvisor8
 from phoenix_control.src.quality.performance import PerformanceQualityAssurance
-from phoenix_control.src.utils.data_structures import ReleaseConfig, QualityConfig
+from phoenix_control.src.quality.security import SecurityQualityAssurance
+from phoenix_control.src.quality.validation import CodeQualityValidation
+from phoenix_control.src.utils.data_structures import QualityConfig, ReleaseConfig
 
 
 async def main():

@@ -20,8 +20,7 @@ HAS_PYTEST_COV = importlib.util.find_spec("pytest_cov") is not None
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
 
@@ -65,7 +64,7 @@ def run_tests(test_type: str = "all", verbose: bool = True):
     else:
         logger.warning("📊 Coverage not available (pytest-cov not installed)")
 
-    logger.info("🚀 Running command: %s", ' '.join(cmd))
+    logger.info("🚀 Running command: %s", " ".join(cmd))
     logger.info("=" * 60)
 
     # Run the tests

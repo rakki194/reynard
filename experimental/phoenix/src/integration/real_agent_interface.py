@@ -11,15 +11,16 @@ Version: 1.0.0
 import asyncio
 import json
 import logging
-import requests
-from typing import Dict, List, Any, Optional, Tuple
 from datetime import datetime
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
+
 import aiohttp
+import requests
 
 from ..utils.data_structures import (
-    AgentState,
     AgentGeneticMaterial,
+    AgentState,
     StructuredKnowledge,
 )
 

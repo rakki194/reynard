@@ -196,14 +196,17 @@ async def test_query_rag(request: RAGQueryRequest):
     """Test RAG query endpoint without authentication (development only)."""
     try:
         service = get_rag_service()
-        result = await service.query(
+        results = await service.search(
             query=request.q,
-            modality=request.modality,
-            top_k=request.top_k,
-            similarity_threshold=request.similarity_threshold,
-            enable_reranking=request.enable_reranking,
+            search_type=request.modality or "hybrid",
+            limit=request.top_k,
+            filters=(
+                {"similarity_threshold": request.similarity_threshold}
+                if request.similarity_threshold
+                else None
+            ),
         )
-        return RAGQueryResponse(**result)
+        return {"results": results, "query": request.q, "total": len(results)}
     except Exception as e:
         logger.error(f"Failed to perform RAG query: {e}")
         raise HTTPException(
@@ -222,8 +225,9 @@ async def health_check():
 async def get_test_token():
     """Generate a test token for benchmarking (development only)."""
     try:
-        import jwt
         import time
+
+        import jwt
 
         # Create a test token
         payload = {

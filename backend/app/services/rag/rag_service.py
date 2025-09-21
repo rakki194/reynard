@@ -48,17 +48,20 @@ Version: 1.0.0
 import asyncio
 import logging
 import time
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from .core import EmbeddingService, VectorStoreService, DocumentIndexer, SearchEngine
+from ..continuous_indexing import ContinuousIndexingService
 from .advanced import (
-    PerformanceMonitor,
-    SecurityService,
     ContinuousImprovement,
     DocumentationService,
     ModelEvaluator,
+    PerformanceMonitor,
+    SecurityService,
 )
-from ..continuous_indexing import ContinuousIndexingService
+from .core import DocumentIndexer, EmbeddingService, SearchEngine, VectorStoreService
+from .initial_indexing import InitialIndexingService
+from .progress_monitor import get_progress_monitor
 
 logger = logging.getLogger("uvicorn")
 
@@ -120,6 +123,7 @@ class RAGService:
         self.documentation_service: Optional[DocumentationService] = None
         self.model_evaluator: Optional[ModelEvaluator] = None
         self.continuous_indexing: Optional[ContinuousIndexingService] = None
+        self.initial_indexing_service: Optional[InitialIndexingService] = None
 
         # Service status
         self.initialized = False
@@ -232,13 +236,54 @@ class RAGService:
                 # Set the RAG service reference for indexing operations
                 self.continuous_indexing.set_rag_service(self)
                 logger.info("Continuous indexing service initialized")
+
+                # Initialize initial indexing service
+                self.initial_indexing_service = InitialIndexingService(self.config)
+                await self.initial_indexing_service.initialize(
+                    self.continuous_indexing, self.vector_store_service
+                )
+                logger.info("Initial indexing service initialized")
+
                 if self.config.get("rag_continuous_indexing_auto_start", True):
                     await self.continuous_indexing.start_watching()
                     logger.info("Continuous indexing started automatically")
+
+                    # Trigger initial indexing if enabled and database is empty
+                    if self.config.get("rag_initial_indexing_enabled", True):
+                        await self._trigger_initial_indexing()
             else:
                 logger.warning("Failed to initialize continuous indexing service")
 
         logger.info("Advanced services initialized successfully")
+
+    async def _trigger_initial_indexing(self) -> None:
+        """Trigger initial indexing of the entire codebase at startup."""
+        try:
+            if not self.initial_indexing_service:
+                logger.warning("Initial indexing service not available")
+                return
+
+            logger.info("🔄 Starting initial codebase indexing...")
+
+            # Check if database is empty
+            is_empty = await self.initial_indexing_service.is_database_empty()
+            if not is_empty:
+                logger.info("Database already has content, skipping initial indexing")
+                return
+
+            # Start progress monitoring
+            progress_monitor = get_progress_monitor()
+            await progress_monitor.start_monitoring(self.initial_indexing_service)
+
+            # Start initial indexing in background
+            import asyncio
+
+            asyncio.create_task(
+                self.initial_indexing_service.perform_initial_indexing(force=False)
+            )
+
+        except Exception as e:
+            logger.error(f"❌ Failed to trigger initial indexing: {e}")
 
     def _setup_service_dependencies(self) -> None:
         """Set up dependencies between services."""
@@ -370,15 +415,70 @@ class RAGService:
         except Exception as e:
             self.stats["errors_total"] += 1
             logger.error(f"Search failed: {e}")
-
-            if self.performance_monitor:
-                await self.performance_monitor.record_metric(
-                    "search_errors_total",
-                    1,
-                    tags={"search_type": search_type, "status": "error"},
-                )
-
             raise
+
+    async def semantic_search(
+        self,
+        query: str,
+        top_k: int = 10,
+        language_filter: Optional[str] = None,
+        file_type_filter: Optional[str] = None,
+    ) -> List[Dict[str, Any]]:
+        """Perform semantic search using vector embeddings."""
+        filters = {}
+        if language_filter:
+            filters["language"] = language_filter
+        if file_type_filter:
+            filters["file_type"] = file_type_filter
+        
+        return await self.search(
+            query=query,
+            search_type="semantic",
+            limit=top_k,
+            filters=filters
+        )
+
+    async def keyword_search(
+        self,
+        query: str,
+        top_k: int = 10,
+        language_filter: Optional[str] = None,
+        file_type_filter: Optional[str] = None,
+    ) -> List[Dict[str, Any]]:
+        """Perform keyword search using BM25."""
+        filters = {}
+        if language_filter:
+            filters["language"] = language_filter
+        if file_type_filter:
+            filters["file_type"] = file_type_filter
+        
+        return await self.search(
+            query=query,
+            search_type="keyword",
+            limit=top_k,
+            filters=filters
+        )
+
+    async def hybrid_search(
+        self,
+        query: str,
+        top_k: int = 10,
+        language_filter: Optional[str] = None,
+        file_type_filter: Optional[str] = None,
+    ) -> List[Dict[str, Any]]:
+        """Perform hybrid search combining semantic and keyword search."""
+        filters = {}
+        if language_filter:
+            filters["language"] = language_filter
+        if file_type_filter:
+            filters["file_type"] = file_type_filter
+        
+        return await self.search(
+            query=query,
+            search_type="hybrid",
+            limit=top_k,
+            filters=filters
+        )
 
     async def index_documents(self, documents: List[Dict[str, Any]]) -> Dict[str, Any]:
         """Index documents for search."""

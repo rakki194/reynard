@@ -10,9 +10,9 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from .models import SearchResponse, SearchResult, SemanticSearchRequest
-from .ignore_utils import create_ignore_parser
 from .code_tokenizer import get_code_tokenizer
+from .ignore_utils import create_ignore_parser
+from .models import SearchResponse, SearchResult, SemanticSearchRequest
 
 # Optional import for BM25
 try:

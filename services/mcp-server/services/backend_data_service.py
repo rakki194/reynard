@@ -9,8 +9,8 @@ Replaces local data loading with centralized backend data access.
 
 import json
 import logging
-from typing import Any, Dict, List, Optional
 from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 import httpx
 

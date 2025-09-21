@@ -11,8 +11,8 @@ import logging
 from functools import wraps
 from typing import Any, Callable, Dict, List, Optional, Union
 
-from app.core.cache_optimizer import IntelligentCacheManager, CacheStrategy
 from app.core.cache_config import CacheConfig
+from app.core.cache_optimizer import CacheStrategy, IntelligentCacheManager
 
 logger = logging.getLogger(__name__)
 

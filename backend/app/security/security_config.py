@@ -17,11 +17,11 @@ Author: Vulpine (Security-focused Fox Specialist)
 Version: 1.0.0
 """
 
-import os
 import logging
+import os
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Union
 from enum import Enum
+from typing import Any, Dict, List, Optional, Union
 
 logger = logging.getLogger(__name__)
 

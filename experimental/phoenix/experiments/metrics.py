@@ -7,11 +7,12 @@ Author: Recognition-Grandmaster-27 (Tiger Specialist)
 Version: 1.0.0
 """
 
+import math
 from dataclasses import dataclass
-from typing import Dict, Any, List, Tuple
+from typing import Any, Dict, List, Tuple
+
 import numpy as np
 from scipy import stats
-import math
 
 
 @dataclass

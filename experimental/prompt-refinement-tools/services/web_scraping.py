@@ -10,12 +10,13 @@ Replaces the pseudo-code web_search() functions with actual implementations.
 
 import asyncio
 import logging
-from typing import Dict, List, Any, Optional
 from dataclasses import dataclass
+from typing import Any, Dict, List, Optional
 from urllib.parse import urljoin, urlparse
+
 import aiohttp
+from playwright.async_api import Browser, Page, async_playwright
 from requests_html import AsyncHTMLSession
-from playwright.async_api import async_playwright, Browser, Page
 
 logger = logging.getLogger(__name__)
 

@@ -5,37 +5,38 @@ This module provides PGP and SMIME encryption functionality for secure email com
 """
 
 import asyncio
-import logging
-import os
-import tempfile
-import re
-from typing import Dict, List, Any, Optional, Tuple, Union
-from datetime import datetime
-from pathlib import Path
-from dataclasses import dataclass
-import json
 import base64
 import hashlib
+import json
+import logging
+import os
+import re
+import shutil
 
 # PGP imports - using subprocess instead of gnupg library
 import subprocess
-import shutil
+import tempfile
+from dataclasses import dataclass
+from datetime import datetime
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 # Check if gpg is available
 PGP_AVAILABLE = shutil.which("gpg") is not None
 
 # SMIME imports
 try:
-    from cryptography import x509
-    from cryptography.hazmat.primitives import hashes, serialization
-    from cryptography.hazmat.primitives.asymmetric import rsa, padding
-    from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-    from cryptography.hazmat.backends import default_backend
-    from cryptography.x509.oid import NameOID
     import smtplib
+    from email.mime.application import MIMEApplication
     from email.mime.multipart import MIMEMultipart
     from email.mime.text import MIMEText
-    from email.mime.application import MIMEApplication
+
+    from cryptography import x509
+    from cryptography.hazmat.backends import default_backend
+    from cryptography.hazmat.primitives import hashes, serialization
+    from cryptography.hazmat.primitives.asymmetric import padding, rsa
+    from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+    from cryptography.x509.oid import NameOID
 
     SMIME_AVAILABLE = True
 except ImportError:

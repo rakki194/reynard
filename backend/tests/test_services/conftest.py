@@ -2,10 +2,11 @@
 Test configuration and fixtures for RAG service tests.
 """
 
-import pytest
 import asyncio
+from typing import Any, Dict
 from unittest.mock import AsyncMock, MagicMock
-from typing import Dict, Any
+
+import pytest
 
 
 @pytest.fixture

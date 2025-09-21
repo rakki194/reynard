@@ -5,16 +5,16 @@ This module provides email receiving functionality using IMAP.
 """
 
 import asyncio
-import logging
-import imaplib
 import email
-from email.header import decode_header
-from typing import List, Optional, Dict, Any, Tuple, Union
-from datetime import datetime, timedelta
-import os
+import imaplib
 import json
-from pathlib import Path
+import logging
+import os
 from dataclasses import dataclass
+from datetime import datetime, timedelta
+from email.header import decode_header
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 logger = logging.getLogger(__name__)
 
@@ -204,8 +204,8 @@ class IMAPService:
     ) -> None:
         """Send auto-reply for agent email."""
         try:
-            from .email_service import email_service
             from .agent_email_service import agent_email_service
+            from .email_service import email_service
 
             # Get auto-reply template
             auto_reply_template = None

@@ -15,24 +15,26 @@ Features:
 """
 
 import asyncio
-import time
 import json
-import requests
 import statistics
-from typing import Dict, List, Any, Tuple
+import time
 from dataclasses import dataclass
 from datetime import datetime
-import matplotlib.pyplot as plt
-import seaborn as sns
 from pathlib import Path
+from typing import Any, Dict, List, Tuple
+
+import matplotlib.pyplot as plt
+import requests
+import seaborn as sns
+
+from app.api.search.models import (
+    HybridSearchRequest,
+    SemanticSearchRequest,
+    SyntaxSearchRequest,
+)
 
 # Import the search service
 from app.api.search.service import OptimizedSearchService
-from app.api.search.models import (
-    SemanticSearchRequest,
-    SyntaxSearchRequest,
-    HybridSearchRequest,
-)
 
 
 @dataclass

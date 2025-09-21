@@ -7,17 +7,15 @@ Handles agent-related MCP tool calls.
 Follows the 140-line axiom and modular architecture principles.
 """
 
-from typing import Any
-
 import sys
 from pathlib import Path
+from typing import Any
 
 # Add the services path
 services_path = Path(__file__).parent.parent.parent / "services"
 sys.path.insert(0, str(services_path))
 
 from services.backend_agent_manager import BackendAgentManager
-
 from tools.agent_management.base import BaseAgentTools
 from tools.agent_management.behavior import BehaviorAgentTools
 from tools.agent_management.breeding import BreedingAgentTools

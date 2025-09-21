@@ -2,8 +2,9 @@
 Metrics calculation utilities for humility detection.
 """
 
-from typing import List, Dict, Any
-from core.models import HumilityFinding, DetectionMetrics
+from typing import Any, Dict, List
+
+from core.models import DetectionMetrics, HumilityFinding
 
 
 class MetricsCalculator:

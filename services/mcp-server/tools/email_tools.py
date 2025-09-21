@@ -11,8 +11,8 @@ Follows the 140-line axiom and modular architecture principles.
 
 import asyncio
 import logging
-from typing import Any, Dict, List, Optional
 from datetime import datetime
+from typing import Any, Dict, List, Optional
 
 from protocol.tool_registry import register_tool
 
@@ -73,8 +73,8 @@ async def send_agent_email(**kwargs) -> dict[str, Any]:
 
         # Send email via agent email service
         from backend.app.models.agent_email_models import (
-            AgentEmailSendRequest,
             AgentEmailMessage,
+            AgentEmailSendRequest,
         )
 
         message = AgentEmailMessage(subject=subject, body=body, html_body=html_body)

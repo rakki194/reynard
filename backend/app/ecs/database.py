@@ -4,30 +4,30 @@ ECS Database Models and Connection
 PostgreSQL database models and connection management for the ECS world system.
 """
 
-import os
 import logging
-from typing import Optional, List, Dict, Any
+import os
 from datetime import datetime, timezone
+from typing import Any, Dict, List, Optional
 from uuid import UUID, uuid4
 
 import asyncpg
 from sqlalchemy import (
-    create_engine,
-    Column,
-    String,
-    Float,
-    Boolean,
-    DateTime,
-    Text,
-    Integer,
-    ForeignKey,
-    UniqueConstraint,
-    text,
     JSON,
+    Boolean,
+    Column,
+    DateTime,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+    UniqueConstraint,
+    create_engine,
+    text,
 )
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, relationship, Session
 from sqlalchemy.dialects.postgresql import UUID as PostgresUUID
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import Session, relationship, sessionmaker
 from sqlalchemy.sql import func
 
 logger = logging.getLogger(__name__)
@@ -602,6 +602,190 @@ class NamingConfig(Base):
 
     def __repr__(self) -> str:
         return f"<NamingConfig(key='{self.config_key}')>"
+
+
+class AgentRelationship(Base):
+    """Agent relationships and social connections."""
+
+    __tablename__ = "agent_relationships"
+
+    id = Column(PostgresUUID(as_uuid=True), primary_key=True, default=uuid4)
+    agent1_id = Column(
+        PostgresUUID(as_uuid=True),
+        ForeignKey("agents.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    agent2_id = Column(
+        PostgresUUID(as_uuid=True),
+        ForeignKey("agents.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    relationship_type = Column(String(100), nullable=False, default="acquaintance")
+    strength = Column(Float, default=0.0)
+    trust_level = Column(Float, default=0.0)
+    familiarity = Column(Float, default=0.0)
+    last_interaction = Column(DateTime(timezone=True))
+    interaction_count = Column(Integer, default=0)
+    positive_interactions = Column(Integer, default=0)
+    negative_interactions = Column(Integer, default=0)
+    total_time_together = Column(Float, default=0.0)
+    created_at = Column(
+        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP")
+    )
+    updated_at = Column(
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
+        onupdate=text("CURRENT_TIMESTAMP"),
+    )
+
+    agent1 = relationship("Agent", foreign_keys=[agent1_id])
+    agent2 = relationship("Agent", foreign_keys=[agent2_id])
+
+    __table_args__ = (
+        UniqueConstraint("agent1_id", "agent2_id", name="uq_agent_relationship"),
+    )
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary representation."""
+        return {
+            "id": str(self.id),
+            "agent1_id": str(self.agent1_id),
+            "agent2_id": str(self.agent2_id),
+            "relationship_type": self.relationship_type,
+            "strength": self.strength,
+            "trust_level": self.trust_level,
+            "familiarity": self.familiarity,
+            "last_interaction": (
+                self.last_interaction.isoformat() if self.last_interaction else None
+            ),
+            "interaction_count": self.interaction_count,
+            "positive_interactions": self.positive_interactions,
+            "negative_interactions": self.negative_interactions,
+            "total_time_together": self.total_time_together,
+            "created_at": self.created_at.isoformat(),
+            "updated_at": self.updated_at.isoformat(),
+        }
+
+
+class AgentLineage(Base):
+    """Agent lineage and family tree tracking."""
+
+    __tablename__ = "agent_lineage"
+
+    id = Column(PostgresUUID(as_uuid=True), primary_key=True, default=uuid4)
+    agent_id = Column(
+        PostgresUUID(as_uuid=True),
+        ForeignKey("agents.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    parent1_id = Column(
+        PostgresUUID(as_uuid=True),
+        ForeignKey("agents.id", ondelete="SET NULL"),
+        nullable=True,
+    )
+    parent2_id = Column(
+        PostgresUUID(as_uuid=True),
+        ForeignKey("agents.id", ondelete="SET NULL"),
+        nullable=True,
+    )
+    generation = Column(Integer, default=1)
+    lineage_path = Column(Text)  # JSON string of lineage path
+    genetic_markers = Column(JSON, default={})
+    created_at = Column(
+        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP")
+    )
+
+    agent = relationship("Agent", foreign_keys=[agent_id])
+    parent1 = relationship("Agent", foreign_keys=[parent1_id])
+    parent2 = relationship("Agent", foreign_keys=[parent2_id])
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary representation."""
+        return {
+            "id": str(self.id),
+            "agent_id": str(self.agent_id),
+            "parent1_id": str(self.parent1_id) if self.parent1_id else None,
+            "parent2_id": str(self.parent2_id) if self.parent2_id else None,
+            "generation": self.generation,
+            "lineage_path": self.lineage_path,
+            "genetic_markers": self.genetic_markers,
+            "created_at": self.created_at.isoformat(),
+        }
+
+
+class BreedingRecord(Base):
+    """Breeding records and genetic compatibility tracking."""
+
+    __tablename__ = "breeding_records"
+
+    id = Column(PostgresUUID(as_uuid=True), primary_key=True, default=uuid4)
+    parent1_id = Column(
+        PostgresUUID(as_uuid=True),
+        ForeignKey("agents.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    parent2_id = Column(
+        PostgresUUID(as_uuid=True),
+        ForeignKey("agents.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    offspring_id = Column(
+        PostgresUUID(as_uuid=True),
+        ForeignKey("agents.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    compatibility_score = Column(Float, nullable=False)
+    genetic_analysis = Column(JSON, default={})
+    breeding_success = Column(Boolean, default=True)
+    created_at = Column(
+        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP")
+    )
+
+    parent1 = relationship("Agent", foreign_keys=[parent1_id])
+    parent2 = relationship("Agent", foreign_keys=[parent2_id])
+    offspring = relationship("Agent", foreign_keys=[offspring_id])
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary representation."""
+        return {
+            "id": str(self.id),
+            "parent1_id": str(self.parent1_id),
+            "parent2_id": str(self.parent2_id),
+            "offspring_id": str(self.offspring_id),
+            "compatibility_score": self.compatibility_score,
+            "genetic_analysis": self.genetic_analysis,
+            "breeding_success": self.breeding_success,
+            "created_at": self.created_at.isoformat(),
+        }
+
+
+class WorldConfiguration(Base):
+    """World configuration and breeding settings."""
+
+    __tablename__ = "world_configuration"
+
+    id = Column(PostgresUUID(as_uuid=True), primary_key=True, default=uuid4)
+    config_key = Column(String(100), unique=True, nullable=False, index=True)
+    config_value = Column(JSON, nullable=False)
+    description = Column(Text)
+    enabled = Column(Boolean, default=True)
+    created_at = Column(
+        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP")
+    )
+    updated_at = Column(
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
+        onupdate=text("CURRENT_TIMESTAMP"),
+    )
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary representation."""
+        return {
+            "config_key": self.config_key,
+            "config_value": self.config_value,
+            "description": self.description,
+            "enabled": self.enabled,
+        }
 
 
 # Global database instance

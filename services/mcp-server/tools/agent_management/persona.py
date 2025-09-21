@@ -7,10 +7,9 @@ Persona and trait management for agents.
 Follows the 140-line axiom and modular architecture principles.
 """
 
-from typing import Any
-
 import sys
 from pathlib import Path
+from typing import Any
 
 # Legacy agent-naming system removed - now using FastAPI ECS backend
 from services.backend_agent_manager import BackendAgentManager

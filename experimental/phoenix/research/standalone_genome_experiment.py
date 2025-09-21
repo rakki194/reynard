@@ -9,17 +9,18 @@ Author: Reynard-Director-36
 Version: 1.0.0
 """
 
+import argparse
 import asyncio
 import json
 import logging
 import sys
-from pathlib import Path
-from datetime import datetime
-import argparse
-import aiohttp
-from typing import Dict, List, Any, Optional
 from dataclasses import dataclass
+from datetime import datetime
 from enum import Enum
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+import aiohttp
 
 
 class SpiritType(Enum):

@@ -4,13 +4,14 @@ Email Analytics API Routes for Reynard Backend.
 This module provides API endpoints for email analytics and reporting.
 """
 
-from fastapi import APIRouter, Depends, HTTPException, Query
-from typing import List, Dict, Any, Optional
-from datetime import datetime, timedelta
 import logging
+from datetime import datetime, timedelta
+from typing import Any, Dict, List, Optional
 
-from ..services.email_analytics_service import email_analytics_service
+from fastapi import APIRouter, Depends, HTTPException, Query
+
 from ..auth.user_service import get_current_active_user
+from ..services.email_analytics_service import email_analytics_service
 
 logger = logging.getLogger(__name__)
 

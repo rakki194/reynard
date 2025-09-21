@@ -11,18 +11,19 @@ Author: Vulpine (Fox Specialist)
 Version: 2.0.0
 """
 
-import re
-import logging
-import numpy as np
-from typing import List, Dict, Any, Optional, Tuple
-from datetime import datetime
 import json
-from collections import defaultdict
+import logging
 import math
+import re
+from collections import defaultdict
+from datetime import datetime
+from typing import Any, Dict, List, Optional, Tuple
+
+import numpy as np
 
 from ..utils.data_structures import (
-    AgentState,
     AgentGeneticMaterial,
+    AgentState,
     StructuredKnowledge,
 )
 

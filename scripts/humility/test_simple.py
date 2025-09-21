@@ -3,8 +3,8 @@
 Simple test script for the humility detector.
 """
 
-import sys
 import os
+import sys
 from pathlib import Path
 
 # Add the current directory to Python path
@@ -19,10 +19,10 @@ def test_basic_functionality():
     try:
         # Test importing core modules
         from core import (
-            HumilityConfig,
-            SeverityLevel,
             ConfidenceLevel,
             DetectionCategory,
+            HumilityConfig,
+            SeverityLevel,
         )
 
         print("✅ Core modules imported successfully")
@@ -66,8 +66,8 @@ def test_basic_functionality():
         print(f"✅ Text processing: '{processed}'")
 
         # Test report generator
-        from utils import ReportGenerator
         from core.models import HumilityFinding, HumilityProfile
+        from utils import ReportGenerator
 
         if findings:
             profile = HumilityProfile(

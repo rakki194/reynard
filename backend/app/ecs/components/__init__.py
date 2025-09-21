@@ -6,42 +6,42 @@ Each component represents a specific aspect of agent data.
 """
 
 from .agent import AgentComponent
+from .gender import (
+    GenderComponent,
+    GenderExpression,
+    GenderIdentity,
+    GenderProfile,
+    PronounSet,
+    PronounType,
+)
 from .interaction import (
-    InteractionComponent,
-    Interaction,
-    InteractionType,
-    InteractionOutcome,
     CommunicationStyle,
+    Interaction,
+    InteractionComponent,
+    InteractionOutcome,
+    InteractionType,
     Relationship,
 )
 from .knowledge import (
-    KnowledgeComponent,
     Knowledge,
+    KnowledgeComponent,
+    KnowledgeLevel,
     KnowledgeType,
     LearningMethod,
-    KnowledgeLevel,
     LearningOpportunity,
 )
 from .lifecycle import LifecycleComponent
 from .lineage import LineageComponent
-from .memory import MemoryComponent, Memory, MemoryType
+from .memory import Memory, MemoryComponent, MemoryType
 from .position import PositionComponent
 from .reproduction import ReproductionComponent
 from .social import (
+    GroupType,
     SocialComponent,
-    SocialGroup,
     SocialConnection,
+    SocialGroup,
     SocialRole,
     SocialStatus,
-    GroupType,
-)
-from .gender import (
-    GenderComponent,
-    GenderProfile,
-    PronounSet,
-    GenderIdentity,
-    GenderExpression,
-    PronounType,
 )
 from .traits import TraitComponent
 

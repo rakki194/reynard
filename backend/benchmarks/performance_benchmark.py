@@ -12,17 +12,18 @@ FastAPI ECS search system. This suite provides detailed analysis of:
 """
 
 import asyncio
-import time
-import statistics
-import psutil
-import aiohttp
 import json
-from typing import Dict, List, Any, Optional
+import logging
+import statistics
+import sys
+import time
 from dataclasses import dataclass, field
 from datetime import datetime
-import logging
 from pathlib import Path
-import sys
+from typing import Any, Dict, List, Optional
+
+import aiohttp
+import psutil
 
 # Add backend to path for imports
 sys.path.append(str(Path(__file__).parent.parent))

@@ -5,25 +5,26 @@ Tests the full RAG workflow from document indexing to search, including
 all core and advanced services working together.
 """
 
-import pytest
 import asyncio
 import time
+from typing import Any, Dict, List
 from unittest.mock import AsyncMock, MagicMock, patch
-from typing import List, Dict, Any
+
+import pytest
 
 from app.services.rag import RAGService
-from app.services.rag.core import (
-    EmbeddingService,
-    VectorStoreService,
-    DocumentIndexer,
-    SearchEngine,
-)
 from app.services.rag.advanced import (
-    PerformanceMonitor,
-    SecurityService,
     ContinuousImprovement,
     DocumentationService,
     ModelEvaluator,
+    PerformanceMonitor,
+    SecurityService,
+)
+from app.services.rag.core import (
+    DocumentIndexer,
+    EmbeddingService,
+    SearchEngine,
+    VectorStoreService,
 )
 
 

@@ -11,11 +11,11 @@ This service provides:
 
 import asyncio
 import logging
+import math
 import re
 import time
-from collections import defaultdict, Counter
+from collections import Counter, defaultdict
 from typing import Any, Dict, List, Optional, Tuple
-import math
 
 logger = logging.getLogger("uvicorn")
 

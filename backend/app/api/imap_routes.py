@@ -4,12 +4,13 @@ IMAP API Routes for Reynard Backend.
 This module provides API endpoints for email receiving functionality.
 """
 
-from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
-from typing import List, Dict, Any
 import logging
+from typing import Any, Dict, List
 
-from ..services.imap_service import imap_service
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
+
 from ..auth.user_service import get_current_active_user
+from ..services.imap_service import imap_service
 
 logger = logging.getLogger(__name__)
 

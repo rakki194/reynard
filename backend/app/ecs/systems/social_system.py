@@ -9,14 +9,14 @@ import logging
 import random
 from typing import Any, Dict, List, Set
 
+from ..components.interaction import InteractionComponent
 from ..components.social import (
+    GroupType,
     SocialComponent,
     SocialGroup,
     SocialRole,
     SocialStatus,
-    GroupType,
 )
-from ..components.interaction import InteractionComponent
 from ..components.traits import TraitComponent
 from ..core.system import System
 

@@ -4,20 +4,21 @@ Tests for Email Encryption Service.
 This module contains comprehensive tests for the email encryption functionality.
 """
 
-import pytest
-import pytest_asyncio
 import asyncio
 import json
 import tempfile
 from datetime import datetime
 from pathlib import Path
-from unittest.mock import Mock, patch, AsyncMock, MagicMock
+from unittest.mock import AsyncMock, MagicMock, Mock, patch
+
+import pytest
+import pytest_asyncio
 
 from app.services.email_encryption_service import (
     EmailEncryptionService,
-    EncryptionKey,
     EncryptedEmail,
     EncryptionConfig,
+    EncryptionKey,
     email_encryption_service,
 )
 

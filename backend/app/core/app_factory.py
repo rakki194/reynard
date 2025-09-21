@@ -21,11 +21,14 @@ from fastapi.middleware.trustedhost import TrustedHostMiddleware
 
 logger = logging.getLogger(__name__)
 
+from app.api.agent_email_routes import router as agent_email_router
 from app.api.caption import router as caption_router
 from app.api.comfy import router as comfy_router
+from app.api.email_routes import router as email_router
 from app.api.executor.executor import router as executor_router
 from app.api.hf_cache.hf_cache import router as hf_cache_router
 from app.api.image_utils.image_utils import router as image_utils_router
+from app.api.imap_routes import router as imap_router
 from app.api.lazy_loading import router as lazy_loading_router
 from app.api.mcp import endpoints as mcp_endpoints
 from app.api.mcp import tool_config_endpoints as mcp_tool_config_endpoints
@@ -36,9 +39,6 @@ from app.api.rag import router as rag_router
 from app.api.search import router as search_router
 from app.api.summarization import router as summarization_router
 from app.api.tts import router as tts_router
-from app.api.email_routes import router as email_router
-from app.api.agent_email_routes import router as agent_email_router
-from app.api.imap_routes import router as imap_router
 
 # Core API endpoints
 from app.core.api_endpoints import router as core_router

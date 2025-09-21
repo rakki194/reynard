@@ -6,10 +6,10 @@ This script tests that the authentication system works correctly
 with the created admin account.
 """
 
+import asyncio
+import logging
 import os
 import sys
-import logging
-import asyncio
 from pathlib import Path
 
 # Add backend to Python path

@@ -8,16 +8,17 @@ This provides live metrics, visualizations, and cache analysis.
 """
 
 import asyncio
-import time
 import json
-import requests
-from typing import Dict, Any, List
-from datetime import datetime, timedelta
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
-from collections import deque
-import threading
 import queue
+import threading
+import time
+from collections import deque
+from datetime import datetime, timedelta
+from typing import Any, Dict, List
+
+import matplotlib.animation as animation
+import matplotlib.pyplot as plt
+import requests
 
 
 class CacheMonitoringDashboard:

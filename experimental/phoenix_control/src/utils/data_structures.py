@@ -6,9 +6,9 @@ the Success-Advisor-8 distillation system.
 """
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Any, Tuple
 from datetime import datetime
 from enum import Enum
+from typing import Any, Dict, List, Optional, Tuple
 
 
 class SpiritType(Enum):

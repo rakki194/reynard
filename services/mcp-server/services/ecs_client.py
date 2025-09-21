@@ -471,6 +471,22 @@ class ECSClient:
         params = {"radius": radius}
         return await self._request("GET", f"/agents/{agent_id}/nearby", params=params)
 
+    async def find_agent_by_name(
+        self, query: str, exact_match: bool = False
+    ) -> Dict[str, Any]:
+        """
+        Find agents by name or ID with flexible matching.
+
+        Args:
+            query: Name or ID to search for
+            exact_match: Whether to require exact match
+
+        Returns:
+            Search results with matching agents
+        """
+        params = {"query": query, "exact_match": exact_match}
+        return await self._request("GET", "/agents/search", params=params)
+
 
 # Global ECS client instance
 _ecs_client: Optional[ECSClient] = None

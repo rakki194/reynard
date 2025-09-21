@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "last_updated": "2025-09-21T16:25:27.972421",
+  "last_updated": "2025-09-21T18:37:13.931594",
   "tools": {
     "generate_agent_name": {
       "name": "generate_agent_name",
@@ -294,15 +294,31 @@
       "name": "semantic_search",
       "category": "search",
       "enabled": true,
-      "description": "Perform semantic search using unified search service",
+      "description": "Perform semantic search using vector embeddings",
       "dependencies": [],
       "config": {}
     },
-    "search_enhanced": {
-      "name": "search_enhanced",
+    "search_codebase": {
+      "name": "search_codebase",
       "category": "search",
       "enabled": true,
-      "description": "Enhanced BM25 search with query expansion, filtering, and intelligent suggestions",
+      "description": "Search the Reynard codebase using RAG backend with BM25 fallback",
+      "dependencies": [],
+      "config": {}
+    },
+    "search_semantic": {
+      "name": "search_semantic",
+      "category": "search",
+      "enabled": true,
+      "description": "Perform semantic search using RAG backend with Ollama embeddings",
+      "dependencies": [],
+      "config": {}
+    },
+    "search_keyword": {
+      "name": "search_keyword",
+      "category": "search",
+      "enabled": true,
+      "description": "Perform keyword search using BM25 fallback",
       "dependencies": [],
       "config": {}
     },
@@ -666,123 +682,11 @@
       "dependencies": [],
       "config": {}
     },
-    "disable_tool": {
-      "name": "disable_tool",
-      "category": "management",
+    "invoke_success_advisor_8": {
+      "name": "invoke_success_advisor_8",
+      "category": "agent",
       "enabled": true,
-      "description": "Disable a specific tool",
-      "dependencies": [],
-      "config": {}
-    },
-    "enable_tool": {
-      "name": "enable_tool",
-      "category": "management",
-      "enabled": true,
-      "description": "Enable a specific tool",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_tool_configs": {
-      "name": "get_tool_configs",
-      "category": "management",
-      "enabled": true,
-      "description": "Get all tool configurations and statistics",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_tool_metadata": {
-      "name": "get_tool_metadata",
-      "category": "management",
-      "enabled": true,
-      "description": "Get metadata for a specific tool",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_tool_status": {
-      "name": "get_tool_status",
-      "category": "management",
-      "enabled": true,
-      "description": "Get status of a specific tool or all tools",
-      "dependencies": [],
-      "config": {}
-    },
-    "list_tools_by_category": {
-      "name": "list_tools_by_category",
-      "category": "management",
-      "enabled": true,
-      "description": "List tools grouped by category",
-      "dependencies": [],
-      "config": {}
-    },
-    "clear_search_cache": {
-      "name": "clear_search_cache",
-      "category": "search",
-      "enabled": true,
-      "description": "Clear search cache and temporary files",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_query_suggestions": {
-      "name": "get_query_suggestions",
-      "category": "search",
-      "enabled": true,
-      "description": "Get intelligent query suggestions based on project content",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_search_analytics": {
-      "name": "get_search_analytics",
-      "category": "search",
-      "enabled": true,
-      "description": "Get search analytics and statistics",
-      "dependencies": [],
-      "config": {}
-    },
-    "hybrid_search": {
-      "name": "hybrid_search",
-      "category": "search",
-      "enabled": true,
-      "description": "Perform hybrid search combining semantic and syntax search",
-      "dependencies": [],
-      "config": {}
-    },
-    "list_files": {
-      "name": "list_files",
-      "category": "search",
-      "enabled": true,
-      "description": "List files in a directory with optional filtering",
-      "dependencies": [],
-      "config": {}
-    },
-    "natural_language_search": {
-      "name": "natural_language_search",
-      "category": "search",
-      "enabled": true,
-      "description": "Perform natural language search with NLP processing",
-      "dependencies": [],
-      "config": {}
-    },
-    "reindex_project": {
-      "name": "reindex_project",
-      "category": "search",
-      "enabled": true,
-      "description": "Reindex the entire project for search",
-      "dependencies": [],
-      "config": {}
-    },
-    "search_code_patterns": {
-      "name": "search_code_patterns",
-      "category": "search",
-      "enabled": true,
-      "description": "Search for specific code patterns (functions, classes, imports, etc.)",
-      "dependencies": [],
-      "config": {}
-    },
-    "search_content": {
-      "name": "search_content",
-      "category": "search",
-      "enabled": true,
-      "description": "Search for content using unified search service",
+      "description": "Invoke Success-Advisor-8 spirit inhabitation through ECS API",
       "dependencies": [],
       "config": {}
     }

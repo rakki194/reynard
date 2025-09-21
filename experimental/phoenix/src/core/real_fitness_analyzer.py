@@ -7,13 +7,14 @@ Author: Reynard-Director-36
 Version: 1.0.0
 """
 
-import numpy as np
-import logging
-from typing import List, Dict, Any, Tuple
-from datetime import datetime
 import asyncio
+import logging
+from datetime import datetime
+from typing import Any, Dict, List, Tuple
 
-from ..utils.data_structures import AgentState, PerformanceMetrics, EvolutionStatistics
+import numpy as np
+
+from ..utils.data_structures import AgentState, EvolutionStatistics, PerformanceMetrics
 
 logger = logging.getLogger(__name__)
 

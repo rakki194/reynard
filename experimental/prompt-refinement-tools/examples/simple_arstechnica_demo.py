@@ -17,8 +17,8 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent))
 
 from services.nlp_processing import NLPProcessingService
-from services.semantic_search import SemanticSearchService
 from services.refinement_service import PromptRefinementService
+from services.semantic_search import SemanticSearchService
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

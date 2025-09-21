@@ -9,15 +9,15 @@ Version: 1.0.0
 
 from .data_structures import (
     AgentGeneticMaterial,
-    StructuredKnowledge,
-    SubliminalTrait,
+    AgentState,
+    NamingStyle,
+    PerformanceMetrics,
     PhoenixConfig,
     PhoenixEvolutionState,
-    PerformanceMetrics,
-    StatisticalSignificance,
-    AgentState,
     SpiritType,
-    NamingStyle,
+    StatisticalSignificance,
+    StructuredKnowledge,
+    SubliminalTrait,
     TraitCategory,
 )
 

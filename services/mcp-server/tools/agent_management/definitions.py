@@ -246,4 +246,24 @@ def get_agent_tool_definitions() -> dict[str, dict[str, Any]]:
                 "required": ["spirit"],
             },
         },
+        "invoke_success_advisor_8": {
+            "name": "invoke_success_advisor_8",
+            "description": "Invoke Success-Advisor-8 spirit inhabitation through ECS API",
+            "execution_type": "async",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "agent_id": {
+                        "type": "string",
+                        "description": "Agent ID to inhabit (default: current session)",
+                        "default": "current-session",
+                    },
+                    "force_inhabitation": {
+                        "type": "boolean",
+                        "description": "Force spirit inhabitation (default: True)",
+                        "default": True,
+                    },
+                },
+            },
+        },
     }

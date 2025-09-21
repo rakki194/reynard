@@ -8,19 +8,19 @@ Author: Success-Advisor-8 (Permanent Release Manager)
 Version: 1.0.0
 """
 
-from .core.phoenix_framework import PhoenixFramework
 from .core.evolutionary_ops import EvolutionaryOperators
 from .core.knowledge_distillation import KnowledgeDistillation
+from .core.phoenix_framework import PhoenixFramework
 from .core.statistical_validation import StatisticalValidation
 from .integration.agent_persistence import AgentStatePersistence
 from .utils.data_structures import (
     AgentGeneticMaterial,
-    StructuredKnowledge,
-    SubliminalTrait,
+    PerformanceMetrics,
     PhoenixConfig,
     PhoenixEvolutionState,
-    PerformanceMetrics,
     StatisticalSignificance,
+    StructuredKnowledge,
+    SubliminalTrait,
 )
 
 __version__ = "1.0.0"

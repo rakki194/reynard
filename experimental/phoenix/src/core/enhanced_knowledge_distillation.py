@@ -8,21 +8,20 @@ Author: Vulpine (Fox Specialist)
 Version: 1.0.0
 """
 
-import logging
-from typing import List, Dict, Any, Optional
-from datetime import datetime
 import json
+import logging
+from datetime import datetime
+from typing import Any, Dict, List, Optional
 
 from ..utils.data_structures import (
-    AgentState,
     AgentGeneticMaterial,
+    AgentState,
     KnowledgeDistillationResult,
     StructuredKnowledge,
 )
-
-from .subliminal_trait_extractor import SubliminalTraitExtractor
 from .domain_expertise_analyzer import DomainExpertiseAnalyzer
 from .specialization_accuracy_analyzer import SpecializationAccuracyAnalyzer
+from .subliminal_trait_extractor import SubliminalTraitExtractor
 
 
 class EnhancedKnowledgeDistillation:
