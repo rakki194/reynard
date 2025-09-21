@@ -1,8 +1,9 @@
 /**
- * 🦦 Reynard Docstring Validation Command
+ * Reynard Docstring Validation Command
  *
- * *splashes with thoroughness* CLI command for analyzing docstring
- * coverage and quality across the codebase.
+ * Comprehensive CLI command for analyzing docstring coverage and quality
+ * across the Reynard codebase. Provides detailed metrics, coverage analysis,
+ * and quality assessment for Python and TypeScript documentation standards.
  */
 
 import { Command } from "commander";
@@ -84,7 +85,7 @@ export function createDocstringCommand(): Command {
   return command;
 }
 
-function displaySummary(metrics: any, options: any): void {
+function displaySummary(metrics: any, _options: any): void {
   console.log("\n📊 Docstring Analysis Summary");
   console.log("=" .repeat(50));
   console.log(`📁 Total Files Analyzed: ${metrics.totalFunctions + metrics.totalClasses + metrics.totalModules}`);
@@ -102,7 +103,7 @@ function displaySummary(metrics: any, options: any): void {
   console.log(`🎯 Quality Grade: ${qualityGrade}`);
 }
 
-function displayTable(analyses: any[], overallMetrics: any, options: any): void {
+function displayTable(analyses: any[], overallMetrics: any, _options: any): void {
   console.log("\n📊 Docstring Analysis Results");
   console.log("=" .repeat(100));
   
@@ -115,9 +116,9 @@ function displayTable(analyses: any[], overallMetrics: any, options: any): void 
     const funcCoverage = analysis.metrics.totalFunctions > 0 
       ? ((analysis.metrics.documentedFunctions / analysis.metrics.totalFunctions) * 100).toFixed(1) + "%"
       : "N/A";
-    const classCoverage = analysis.metrics.totalClasses > 0
-      ? ((analysis.metrics.documentedClasses / analysis.metrics.totalClasses) * 100).toFixed(1) + "%"
-      : "N/A";
+    // const classCoverage = analysis.metrics.totalClasses > 0
+    //   ? ((analysis.metrics.documentedClasses / analysis.metrics.totalClasses) * 100).toFixed(1) + "%"
+    //   : "N/A";
     
     const fileName = analysis.file.split("/").pop() || analysis.file;
     const language = analysis.language.toUpperCase();

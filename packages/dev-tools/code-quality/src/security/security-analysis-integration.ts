@@ -1,8 +1,9 @@
 /**
- * 🐺 Reynard Security Analysis Integration
+ * Reynard Security Analysis Integration
  *
- * *snarls with predatory intelligence* Main orchestrator for security analysis
- * that coordinates multiple security tools and provides unified results.
+ * Main orchestrator for comprehensive security analysis that coordinates
+ * multiple security tools and provides unified, actionable results.
+ * Features advanced threat detection and vulnerability assessment capabilities.
  */
 
 import { EventEmitter } from "events";

@@ -15,7 +15,7 @@ export default defineConfig({
       fileName: (format, entryName) => `${entryName}.${format === "es" ? "js" : format}`,
     },
     rollupOptions: {
-      external: ["solid-js", "chokidar", "commander", "fs/promises", "path", "child_process", "events", "util"],
+      external: ["solid-js", "chokidar", "commander", "fs/promises", "fs", "path", "child_process", "events", "util"],
       output: {
         globals: {
           "solid-js": "SolidJS",

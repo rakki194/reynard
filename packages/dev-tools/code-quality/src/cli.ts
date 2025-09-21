@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 /**
- * 🦊 Reynard Code Quality CLI
+ * Reynard Code Quality CLI
  *
- * *whiskers twitch with intelligence* Command-line interface for running
- * comprehensive code quality analysis with SonarQube-like functionality.
+ * Command-line interface for running comprehensive code quality analysis with SonarQube-like functionality.
  */
 
 import { Command } from "commander";
@@ -13,12 +12,14 @@ import {
   handleQualityGateCommand,
   handleSecurityCommand,
   handleWatchCommand,
+  handleJunkDetectionCommand,
   createDocstringCommand,
+  createEmojiRoleplayCommand,
 } from "./commands";
 
 const program = new Command();
 
-program.name("reynard-code-quality").description("🦊 Comprehensive code quality analysis for Reynard").version("1.0.0");
+program.name("reynard-code-quality").description("Comprehensive code quality analysis for Reynard").version("1.0.0");
 
 // Analyze command
 program
@@ -27,7 +28,7 @@ program
   .option("-p, --project <path>", "Project root path", process.cwd())
   .option("-o, --output <file>", "Output file for results (JSON)")
   .option("-f, --format <format>", "Output format (json, table, summary)", "summary")
-  .option("--no-security", "Skip security analysis")
+  .option("--security", "Enable security analysis (includes bandit)")
   .option("--no-quality-gates", "Skip quality gate evaluation")
   .option("--environment <env>", "Environment for quality gates", "development")
   .option("--ai", "Enable AI-powered analysis")
@@ -73,8 +74,23 @@ program
   .option("-i, --interval <ms>", "Analysis interval in milliseconds", "5000")
   .action(handleWatchCommand);
 
+// Junk detection command
+program
+  .command("junk-detection")
+  .description("Detect Git-tracked junk files and development artifacts")
+  .option("-p, --project <path>", "Project root path", process.cwd())
+  .option("-o, --output <file>", "Output file for results (JSON)")
+  .option("-f, --format <format>", "Output format (json, table, summary, report)", "summary")
+  .option("-s, --severity <level>", "Filter by severity (all, critical, high, medium, low)", "all")
+  .option("-c, --category <type>", "Filter by category (all, python, typescript, reynard, general)", "all")
+  .option("--fix", "Generate git commands to fix detected issues")
+  .action(handleJunkDetectionCommand);
+
 // Docstring command
 program.addCommand(createDocstringCommand());
+
+// Emoji and roleplay scanning command
+program.addCommand(createEmojiRoleplayCommand());
 
 // Handle uncaught errors
 process.on("uncaughtException", error => {

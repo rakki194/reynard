@@ -1,0 +1,9 @@
+{
+  "gates": [],
+  "defaultGate": "",
+  "environments": {
+    "development": "reynard-development",
+    "staging": "reynard-development",
+    "production": "reynard-production"
+  }
+}

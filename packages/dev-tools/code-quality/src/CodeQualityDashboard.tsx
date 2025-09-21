@@ -1,9 +1,9 @@
 /**
- * 🦊 Reynard Code Quality Dashboard
+ * Reynard Code Quality Dashboard
  *
- * *red fur gleams with intelligence* A comprehensive SolidJS dashboard for
- * visualizing code quality metrics, security analysis, and quality gate status.
- * Built using Reynard's existing UI components and charts.
+ * A comprehensive SolidJS dashboard providing real-time visualization of code
+ * quality metrics, security analysis results, and quality gate status.
+ * Built using Reynard's modular UI components and advanced charting capabilities.
  */
 
 import { Chart, RealTimeChart } from "reynard-charts";
@@ -35,10 +35,11 @@ interface DashboardState {
 }
 
 /**
- * 🦊 Code Quality Dashboard Component
+ * Code Quality Dashboard Component
  *
- * *whiskers twitch with intelligence* A comprehensive SolidJS dashboard for
- * visualizing code quality metrics and security analysis results.
+ * A comprehensive SolidJS dashboard component providing real-time visualization
+ * of code quality metrics and security analysis results with interactive
+ * filtering and detailed reporting capabilities.
  */
 export const CodeQualityDashboard: Component<DashboardProps> = props => {
   const [state, setState] = createSignal<DashboardState>({

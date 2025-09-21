@@ -1,9 +1,9 @@
 /**
- * 🦊 Reynard Quality Gate Manager
+ * Reynard Quality Gate Manager
  *
- * *whiskers twitch with precision* Manages quality gates and thresholds
- * for the Reynard code quality analysis system. Provides configurable
- * quality standards that can be enforced across different environments.
+ * Manages quality gates and configurable thresholds for the Reynard code quality
+ * analysis system. Provides enterprise-grade quality standards enforcement
+ * across multiple environments with real-time monitoring and reporting.
  */
 
 import { EventEmitter } from "events";

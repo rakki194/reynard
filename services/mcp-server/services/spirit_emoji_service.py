@@ -23,11 +23,21 @@ class SpiritEmojiService:
     def _load_emojis(self) -> None:
         """Load emoji mappings from the FastAPI backend."""
         try:
-            # Use asyncio to run the async method
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            spirits_data = loop.run_until_complete(self._backend_service.get_naming_spirits())
-            loop.close()
+            # Try to get the current event loop, or create a new one if none exists
+            try:
+                loop = asyncio.get_event_loop()
+                if loop.is_running():
+                    # If we're already in an async context, we can't use run_until_complete
+                    # So we'll just use the fallback emojis for now
+                    spirits_data = None
+                else:
+                    spirits_data = loop.run_until_complete(self._backend_service.get_naming_spirits())
+            except RuntimeError:
+                # No event loop exists, create a new one
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                spirits_data = loop.run_until_complete(self._backend_service.get_naming_spirits())
+                loop.close()
             
             if spirits_data:
                 for spirit_name, spirit_config in spirits_data.items():

@@ -39,7 +39,7 @@ function displayQualityGateResult(result: any): void {
   }
 
   // Show failed conditions
-  const failedConditions = result.conditions.filter(c => c.status === "FAILED");
+  const failedConditions = result.conditions.filter((c: any) => c.status === "FAILED");
   if (failedConditions.length > 0) {
     console.log("   Failed Conditions:");
     for (const condition of failedConditions) {

@@ -58,7 +58,7 @@ export interface ModuleDocstring {
 }
 
 export class DocstringAnalyzer {
-  private readonly minDocstringLength = 20; // Minimum characters for a meaningful docstring
+  // private readonly minDocstringLength = 20; // Minimum characters for a meaningful docstring
   private readonly minFunctionDocstringLength = 10;
   private readonly minClassDocstringLength = 15;
   private readonly minModuleDocstringLength = 30;
@@ -273,8 +273,9 @@ export class DocstringAnalyzer {
         }
       }
 
-      // Class definition
-      if (line.startsWith("class ")) {
+      // Class definition (skip comment lines)
+      if ((line.startsWith("class ") || line.includes(" class ")) && 
+          !line.trim().startsWith("//") && !line.trim().startsWith("*") && !line.trim().startsWith("/*")) {
         const className = this.extractTypeScriptClassName(line);
         const classDocstring = this.extractTypeScriptClassDocstring(lines, i);
         classes.push(classDocstring);
@@ -329,8 +330,8 @@ export class DocstringAnalyzer {
           line: i + 1,
           hasDocstring: true,
           docstringLength: docstring.length,
-          quality: this.assessDocstringQuality(docstring, this.minModuleDocstringLength),
-          issues: this.identifyDocstringIssues(docstring, this.minModuleDocstringLength),
+          quality: this.assessDocstringQuality(docstring, this.minModuleDocstringLength, "module"),
+          issues: this.identifyDocstringIssues(docstring, this.minModuleDocstringLength, "module"),
         };
       }
       if (line && !line.startsWith("#") && !line.startsWith("import") && !line.startsWith("from")) {
@@ -365,8 +366,8 @@ export class DocstringAnalyzer {
           line: funcLine + 1,
           hasDocstring: true,
           docstringLength: docstring.length,
-          quality: this.assessDocstringQuality(docstring, this.minFunctionDocstringLength),
-          issues: this.identifyDocstringIssues(docstring, this.minFunctionDocstringLength),
+          quality: this.assessDocstringQuality(docstring, this.minFunctionDocstringLength, "function"),
+          issues: this.identifyDocstringIssues(docstring, this.minFunctionDocstringLength, "function"),
         };
       }
       
@@ -404,8 +405,8 @@ export class DocstringAnalyzer {
           line: classLine + 1,
           hasDocstring: true,
           docstringLength: docstring.length,
-          quality: this.assessDocstringQuality(docstring, this.minClassDocstringLength),
-          issues: this.identifyDocstringIssues(docstring, this.minClassDocstringLength),
+          quality: this.assessDocstringQuality(docstring, this.minClassDocstringLength, "class"),
+          issues: this.identifyDocstringIssues(docstring, this.minClassDocstringLength, "class"),
         };
       }
       
@@ -471,8 +472,8 @@ export class DocstringAnalyzer {
           line: i + 1,
           hasDocstring: true,
           docstringLength: docstring.length,
-          quality: this.assessDocstringQuality(docstring, this.minModuleDocstringLength),
-          issues: this.identifyDocstringIssues(docstring, this.minModuleDocstringLength),
+          quality: this.assessDocstringQuality(docstring, this.minModuleDocstringLength, "module"),
+          issues: this.identifyDocstringIssues(docstring, this.minModuleDocstringLength, "module"),
         };
       }
       if (line && !line.startsWith("//") && !line.startsWith("import") && !line.startsWith("export")) {
@@ -507,8 +508,8 @@ export class DocstringAnalyzer {
           line: funcLine + 1,
           hasDocstring: true,
           docstringLength: docstring.length,
-          quality: this.assessDocstringQuality(docstring, this.minFunctionDocstringLength),
-          issues: this.identifyDocstringIssues(docstring, this.minFunctionDocstringLength),
+          quality: this.assessDocstringQuality(docstring, this.minFunctionDocstringLength, "function"),
+          issues: this.identifyDocstringIssues(docstring, this.minFunctionDocstringLength, "function"),
         };
       }
       
@@ -546,8 +547,8 @@ export class DocstringAnalyzer {
           line: classLine + 1,
           hasDocstring: true,
           docstringLength: docstring.length,
-          quality: this.assessDocstringQuality(docstring, this.minClassDocstringLength),
-          issues: this.identifyDocstringIssues(docstring, this.minClassDocstringLength),
+          quality: this.assessDocstringQuality(docstring, this.minClassDocstringLength, "class"),
+          issues: this.identifyDocstringIssues(docstring, this.minClassDocstringLength, "class"),
         };
       }
       
@@ -588,11 +589,16 @@ export class DocstringAnalyzer {
   }
 
   private isTypeScriptFunction(line: string): boolean {
+    // Skip comment lines
+    if (line.trim().startsWith("//") || line.trim().startsWith("*") || line.trim().startsWith("/*")) {
+      return false;
+    }
+    
     return (
       line.includes("function ") ||
       line.includes("=>") ||
-      line.match(/^\s*(export\s+)?(async\s+)?(function|const|let|var)\s+\w+/) ||
-      line.match(/^\s*(export\s+)?(async\s+)?\w+\s*\(/)
+      !!line.match(/^\s*(export\s+)?(async\s+)?(function|const|let|var)\s+\w+/) ||
+      !!line.match(/^\s*(export\s+)?(async\s+)?\w+\s*\(/)
     );
   }
 
@@ -616,25 +622,37 @@ export class DocstringAnalyzer {
   }
 
   // Quality assessment methods
-  private assessDocstringQuality(docstring: string, minLength: number): "excellent" | "good" | "poor" | "missing" {
+  private assessDocstringQuality(docstring: string, minLength: number, context: "function" | "class" | "module" = "function"): "excellent" | "good" | "poor" | "missing" {
     if (!docstring) return "missing";
     
     if (docstring.length < minLength) return "poor";
     
     // Check for common quality indicators
     const hasDescription = docstring.length > minLength;
-    const hasParameters = docstring.includes("@param") || docstring.includes("Parameters:");
+    const hasParameters = docstring.includes("@param") || docstring.includes("Parameters:") || docstring.includes("Args:");
     const hasReturns = docstring.includes("@return") || docstring.includes("Returns:") || docstring.includes("@returns");
     const hasExamples = docstring.includes("@example") || docstring.includes("Example:");
     
-    const qualityScore = (hasDescription ? 1 : 0) + (hasParameters ? 1 : 0) + (hasReturns ? 1 : 0) + (hasExamples ? 1 : 0);
+    // For functions, use all quality indicators
+    if (context === "function") {
+      const qualityScore = (hasDescription ? 1 : 0) + (hasParameters ? 1 : 0) + (hasReturns ? 1 : 0) + (hasExamples ? 1 : 0);
+      
+      if (qualityScore >= 3) return "excellent";
+      if (qualityScore >= 2) return "good";
+      return "poor";
+    }
     
-    if (qualityScore >= 3) return "excellent";
-    if (qualityScore >= 2) return "good";
+    // For classes and modules, be more lenient - just need a good description
+    if (context === "class" || context === "module") {
+      if (hasDescription && docstring.length >= minLength * 1.5) return "excellent";
+      if (hasDescription) return "good";
+      return "poor";
+    }
+    
     return "poor";
   }
 
-  private identifyDocstringIssues(docstring: string, minLength: number): string[] {
+  private identifyDocstringIssues(docstring: string, minLength: number, context: "function" | "class" | "module" = "function"): string[] {
     const issues: string[] = [];
     
     if (!docstring) {
@@ -646,15 +664,18 @@ export class DocstringAnalyzer {
       issues.push(`Docstring too short (${docstring.length} chars, minimum ${minLength})`);
     }
     
-    if (!docstring.includes("@param") && !docstring.includes("Parameters:")) {
+    // Only check for parameter documentation for functions
+    if (context === "function" && !docstring.includes("@param") && !docstring.includes("Parameters:") && !docstring.includes("Args:")) {
       issues.push("Missing parameter documentation");
     }
     
-    if (!docstring.includes("@return") && !docstring.includes("Returns:") && !docstring.includes("@returns")) {
+    // Only check for return value documentation for functions
+    if (context === "function" && !docstring.includes("@return") && !docstring.includes("Returns:") && !docstring.includes("@returns")) {
       issues.push("Missing return value documentation");
     }
     
-    if (!docstring.includes("@example") && !docstring.includes("Example:")) {
+    // Only check for usage examples for functions
+    if (context === "function" && !docstring.includes("@example") && !docstring.includes("Example:")) {
       issues.push("Missing usage examples");
     }
     

@@ -17,13 +17,21 @@ export interface TestEnvironment {
  * Create a temporary test environment with directories and files
  */
 export async function createTestEnvironment(): Promise<TestEnvironment> {
-  const rootPath = join(tmpdir(), `adr-test-${Date.now()}`);
+  // Add a small delay to ensure unique timestamps
+  await new Promise(resolve => setTimeout(resolve, 1));
+  const rootPath = join(tmpdir(), `adr-test-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
   const adrDirectory = join(rootPath, "docs", "architecture", "decisions");
   const templateDirectory = join(rootPath, "templates");
 
-  // Create directories
-  await mkdir(adrDirectory, { recursive: true });
-  await mkdir(templateDirectory, { recursive: true });
+  // Create directories with error handling
+  try {
+    await mkdir(rootPath, { recursive: true });
+    await mkdir(adrDirectory, { recursive: true });
+    await mkdir(templateDirectory, { recursive: true });
+  } catch (error) {
+    console.error(`Failed to create test environment at ${rootPath}:`, error);
+    throw error;
+  }
 
   const cleanup = async () => {
     try {
@@ -40,6 +48,8 @@ export async function createTestEnvironment(): Promise<TestEnvironment> {
  * Create sample source files for testing
  */
 export async function createSampleSourceFiles(rootPath: string): Promise<void> {
+  // Ensure root path exists first
+  await mkdir(rootPath, { recursive: true });
   const srcDir = join(rootPath, "src");
   await mkdir(srcDir, { recursive: true });
 
@@ -127,6 +137,9 @@ describe("CodebaseAnalyzer", () => {
  * Create sample ADR files for testing
  */
 export async function createSampleADRFiles(adrDirectory: string): Promise<void> {
+  // Ensure all parent directories exist
+  await mkdir(adrDirectory, { recursive: true });
+  
   await writeFile(
     join(adrDirectory, "001-sample-adr.md"),
     `# ADR-001: Sample Architecture Decision
@@ -344,4 +357,35 @@ export class MockFileSystem {
     this.directories.clear();
     this.directories.add("/");
   }
+}
+
+/**
+ * Create a temporary test environment with directories but no sample files
+ */
+export async function createEmptyTestEnvironment(): Promise<TestEnvironment> {
+  // Add a small delay to ensure unique timestamps
+  await new Promise(resolve => setTimeout(resolve, 1));
+  const rootPath = join(tmpdir(), `adr-test-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
+  const adrDirectory = join(rootPath, "docs", "architecture", "decisions");
+  const templateDirectory = join(rootPath, "templates");
+
+  // Create directories
+  await mkdir(rootPath, { recursive: true });
+  await mkdir(adrDirectory, { recursive: true });
+  await mkdir(templateDirectory, { recursive: true });
+
+  const cleanup = async () => {
+    try {
+      await rm(rootPath, { recursive: true, force: true });
+    } catch (error) {
+      // Ignore cleanup errors
+    }
+  };
+
+  return {
+    rootPath,
+    adrDirectory,
+    templateDirectory,
+    cleanup
+  };
 }

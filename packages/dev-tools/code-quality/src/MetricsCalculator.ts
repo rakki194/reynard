@@ -60,6 +60,32 @@ export class MetricsCalculator {
       reliabilityRating: "A",
       securityRating: "A",
       maintainabilityRating: "A",
+      // Junk file metrics (will be updated by junk file detection)
+      junkFiles: 0,
+      criticalJunkFiles: 0,
+      highJunkFiles: 0,
+      junkFileQualityScore: 100,
+    };
+  }
+
+  /**
+   * 🦊 Update metrics with junk file data
+   */
+  updateMetricsWithJunkFiles(
+    metrics: CodeQualityMetrics,
+    junkFileMetrics: {
+      totalJunkFiles: number;
+      criticalJunkFiles: number;
+      highJunkFiles: number;
+      qualityScore: number;
+    }
+  ): CodeQualityMetrics {
+    return {
+      ...metrics,
+      junkFiles: junkFileMetrics.totalJunkFiles,
+      criticalJunkFiles: junkFileMetrics.criticalJunkFiles,
+      highJunkFiles: junkFileMetrics.highJunkFiles,
+      junkFileQualityScore: junkFileMetrics.qualityScore,
     };
   }
 

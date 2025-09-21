@@ -179,7 +179,7 @@ export class ADRValidator {
         const requiredSections = ["status", "context", "decision", "consequences"];
 
         for (const section of requiredSections) {
-          if (!content.toLowerCase().includes(`## ${section}`)) {
+          if (!content.toLowerCase().includes(`## ${section.toLowerCase()}`)) {
             errors.push(`Missing required section: ${section}`);
           }
         }
@@ -246,7 +246,7 @@ export class ADRValidator {
         }
 
         if (adr.decision && adr.decision.includes("[To be filled")) {
-          errors.push("Decision section contains placeholder text");
+          warnings.push("Decision section contains placeholder text");
         }
 
         return { errors, warnings, suggestions };

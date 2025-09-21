@@ -1,8 +1,9 @@
 /**
- * 🦊 Results Display Utilities
+ * Results Display Utilities
  *
- * *whiskers twitch with intelligence* Handles display formatting
- * for analysis results in various formats.
+ * Provides comprehensive display formatting and visualization capabilities
+ * for code quality analysis results across multiple output formats.
+ * Features intelligent formatting, status indicators, and structured reporting.
  */
 
 function getGateStatusIcon(status: string): string {

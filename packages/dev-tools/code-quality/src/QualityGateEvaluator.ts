@@ -126,6 +126,21 @@ export class QualityGateEvaluator {
             operator: "GT",
             threshold: 70,
           },
+          {
+            metric: "criticalJunkFiles",
+            operator: "EQ",
+            threshold: 0,
+          },
+          {
+            metric: "highJunkFiles",
+            operator: "LT",
+            threshold: 5,
+          },
+          {
+            metric: "junkFileQualityScore",
+            operator: "GT",
+            threshold: 80,
+          },
         ],
       },
     ];

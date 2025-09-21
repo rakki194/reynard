@@ -56,6 +56,9 @@ npx reynard-code-quality security --project . --format summary
 # Evaluate quality gates
 npx reynard-code-quality quality-gate --project . --environment production
 
+# Detect Git-tracked junk files
+npx reynard-code-quality junk-detection --project . --format report
+
 # Watch for file changes
 npx reynard-code-quality watch --project . --interval 5000
 ```
@@ -122,6 +125,53 @@ const results = manager.evaluateQualityGates(metrics, "production");
 - Multiple operators (GT, LT, EQ, NE, GTE, LTE)
 - JSON configuration persistence
 - Validation and error handling
+
+### Junk File Detection
+
+The `JunkFileDetector` identifies Git-tracked files that appear to be development artifacts:
+
+```typescript
+import { JunkFileDetector } from "reynard-code-quality";
+
+const detector = new JunkFileDetector("/path/to/project");
+const analysis = await detector.detectJunkFiles();
+
+console.log("Total junk files:", analysis.totalFiles);
+console.log("Quality score:", analysis.qualityScore);
+console.log("Critical issues:", analysis.criticalIssues);
+```
+
+**Features:**
+
+- **Python Artifacts**: pyc, pyo, **pycache**, virtual environments, build artifacts
+- **TypeScript/JavaScript Artifacts**: source maps, node_modules, build directories, cache files
+- **Reynard-Specific Artifacts**: generated files, MCP logs, ECS cache, agent files
+- **General Artifacts**: log files, temporary files, system files
+- **Severity Classification**: Critical, High, Medium, Low
+- **Quality Scoring**: 0-100 score based on detected issues
+- **Fix Generation**: Automatic git commands to remove tracked files
+
+**CLI Usage:**
+
+```bash
+# Basic detection
+npx reynard-code-quality junk-detection
+
+# Detailed report
+npx reynard-code-quality junk-detection --format report
+
+# Filter by severity
+npx reynard-code-quality junk-detection --severity critical
+
+# Filter by category
+npx reynard-code-quality junk-detection --category python
+
+# Generate fix commands
+npx reynard-code-quality junk-detection --fix
+
+# JSON output
+npx reynard-code-quality junk-detection --format json --output results.json
+```
 
 ### Security Analysis Integration
 
@@ -309,6 +359,8 @@ fi
 - **Security Hotspots**: Security-sensitive areas
 - **Duplications**: Code duplication percentage
 - **Coverage**: Test coverage metrics
+- **Junk Files**: Git-tracked development artifacts
+- **Repository Cleanliness**: Quality score based on tracked junk files
 
 ### Quality Ratings
 
@@ -513,6 +565,12 @@ pnpm build
 - `runSecurityAnalysis(files)`: Run security analysis
 - `configureSecurityTool(name, enabled)`: Configure tool
 - `getSecurityTools()`: Get available tools
+
+### JunkFileDetector
+
+- `detectJunkFiles()`: Run comprehensive junk file detection
+- `generateReport(analysis)`: Generate detailed report
+- `getJunkFileMetrics()`: Get metrics for quality gates
 
 ## 📄 License
 

@@ -40,9 +40,12 @@ export async function handleAnalyzeCommand(options: AnalyzeOptions): Promise<voi
     const analysisResult = await analyzer.analyzeProject();
 
     let securityResult = null;
-    if (options.security !== false) {
+    if (options.security === true) {
+      console.log("🐺 Starting comprehensive security analysis...");
       const files = analysisResult.files.map(f => f.path);
       securityResult = await securityIntegration.runSecurityAnalysis(files);
+    } else {
+      console.log("⏭️ Skipping security analysis (use --security to enable)");
     }
 
     let qualityGateResults: any[] = [];

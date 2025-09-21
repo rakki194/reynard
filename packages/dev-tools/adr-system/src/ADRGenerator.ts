@@ -38,6 +38,8 @@ export class ADRGenerator {
     const fileName = `${adrId.toString().padStart(3, "0")}-${this.sanitizeTitle(suggestion.title)}.md`;
     const filePath = join(this.adrDirectory, fileName);
 
+    // Ensure ADR directory exists
+    await require("fs/promises").mkdir(this.adrDirectory, { recursive: true });
     await writeFile(filePath, adrContent, "utf-8");
 
     console.log(`✅ ADR generated: ${fileName}`);

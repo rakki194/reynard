@@ -1,8 +1,7 @@
 /**
- * 🦊 Reynard Code Quality Package
+ * Reynard Code Quality Package
  *
- * *red fur gleams with intelligence* Main entry point for the Reynard
- * code quality analysis system. Provides SonarQube-like functionality
+ * Main entry point for the Reynard code quality analysis system. Provides SonarQube-like functionality
  * with comprehensive security integration.
  */
 
@@ -20,6 +19,9 @@ export type {
   QualityGateResult,
   QualityGateStatus,
   QualityIssue,
+  EmojiRoleplayMetrics,
+  EmojiRoleplayIssue,
+  EmojiRoleplayScanResult,
 } from "./types";
 
 // Component services
@@ -30,6 +32,9 @@ export { LanguageAnalyzer } from "./LanguageAnalyzer";
 export { MetricsCalculator } from "./MetricsCalculator";
 export { QualityGateEvaluator } from "./QualityGateEvaluator";
 export { DocstringAnalyzer } from "./DocstringAnalyzer";
+export { EmojiRoleplayScanner } from "./EmojiRoleplayScanner";
+export { JunkFileDetector } from "./JunkFileDetector";
+export type { JunkFileAnalysis, JunkFileResult } from "./JunkFileDetector";
 export type {
   DocstringAnalysis,
   DocstringMetrics,
@@ -77,10 +82,9 @@ export {
 } from "./quality-gates/docstring-gates";
 
 /**
- * 🦊 Create a complete code quality analysis system
+ * Create a complete code quality analysis system
  *
- * *whiskers twitch with anticipation* Factory function to create
- * a fully configured code quality analysis system with all components.
+ * Factory function to create a fully configured code quality analysis system with all components.
  */
 export function createCodeQualitySystem(projectRoot: string) {
   const analyzer = new CodeQualityAnalyzer(projectRoot);
@@ -111,10 +115,9 @@ export function createCodeQualitySystem(projectRoot: string) {
 }
 
 /**
- * 🐺 Quick analysis function for simple use cases
+ * Quick analysis function for simple use cases
  *
- * *snarls with efficiency* Provides a simple interface for running
- * code quality analysis without managing individual components.
+ * Provides a simple interface for running code quality analysis without managing individual components.
  */
 export async function quickAnalysis(
   projectRoot: string,
@@ -152,7 +155,7 @@ export async function quickAnalysis(
 }
 
 /**
- * 🦊 Default export for convenience
+ * Default export for convenience
  */
 export default {
   createCodeQualitySystem,

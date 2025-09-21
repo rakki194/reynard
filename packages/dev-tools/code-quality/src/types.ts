@@ -40,6 +40,12 @@ export interface CodeQualityMetrics {
   reliabilityRating: "A" | "B" | "C" | "D" | "E";
   securityRating: "A" | "B" | "C" | "D" | "E";
   maintainabilityRating: "A" | "B" | "C" | "D" | "E";
+
+  // Junk File Metrics
+  junkFiles: number;
+  criticalJunkFiles: number;
+  highJunkFiles: number;
+  junkFileQualityScore: number;
 }
 
 export type IssueType = "BUG" | "VULNERABILITY" | "CODE_SMELL" | "SECURITY_HOTSPOT";

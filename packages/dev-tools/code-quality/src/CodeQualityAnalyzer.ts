@@ -21,6 +21,7 @@ import { LanguageAnalyzer } from "./LanguageAnalyzer";
 import { MetricsCalculator } from "./MetricsCalculator";
 import { QualityGateEvaluator } from "./QualityGateEvaluator";
 import { EmojiRoleplayScanner } from "./EmojiRoleplayScanner";
+import { JunkFileDetector, JunkFileAnalysis } from "./JunkFileDetector";
 import { AnalysisResult, QualityGate, EmojiRoleplayMetrics, EmojiRoleplayScanResult } from "./types";
 
 export class CodeQualityAnalyzer extends EventEmitter {
@@ -35,6 +36,7 @@ export class CodeQualityAnalyzer extends EventEmitter {
   private readonly qualityGateEvaluator: QualityGateEvaluator;
   private readonly fileAnalyzer: FileAnalyzer;
   private readonly emojiRoleplayScanner: EmojiRoleplayScanner;
+  private readonly junkFileDetector: JunkFileDetector;
 
   constructor(projectRoot: string) {
     super();
@@ -48,6 +50,7 @@ export class CodeQualityAnalyzer extends EventEmitter {
     this.qualityGateEvaluator = new QualityGateEvaluator();
     this.fileAnalyzer = new FileAnalyzer();
     this.emojiRoleplayScanner = new EmojiRoleplayScanner();
+    this.junkFileDetector = new JunkFileDetector(projectRoot);
   }
 
   /**
@@ -75,8 +78,12 @@ export class CodeQualityAnalyzer extends EventEmitter {
       // Update metrics with issue data
       const updatedMetrics = this.metricsCalculator.updateMetricsWithIssues(metrics, issues);
 
+      // Update metrics with junk file data
+      const junkFileMetrics = await this.getJunkFileMetrics();
+      const finalMetrics = this.metricsCalculator.updateMetricsWithJunkFiles(updatedMetrics, junkFileMetrics);
+
       // Evaluate quality gates
-      const qualityGateResults = this.qualityGateEvaluator.evaluateQualityGates(updatedMetrics);
+      const qualityGateResults = this.qualityGateEvaluator.evaluateQualityGates(finalMetrics);
       const qualityGateStatus = this.qualityGateEvaluator.determineQualityGateStatus(qualityGateResults);
 
       // Create file analyses
@@ -85,7 +92,7 @@ export class CodeQualityAnalyzer extends EventEmitter {
       const result: AnalysisResult = {
         projectKey: "reynard",
         analysisDate,
-        metrics: updatedMetrics,
+        metrics: finalMetrics,
         issues,
         qualityGateStatus,
         qualityGateDetails: qualityGateResults,
@@ -192,5 +199,39 @@ export class CodeQualityAnalyzer extends EventEmitter {
    */
   scanFilesForEmojiRoleplay(filePaths: string[]): EmojiRoleplayScanResult[] {
     return this.emojiRoleplayScanner.scanFiles(filePaths);
+  }
+
+  /**
+   * Detect Git-tracked junk files and development artifacts
+   */
+  async detectJunkFiles(): Promise<JunkFileAnalysis> {
+    console.log("🔍 Detecting Git-tracked junk files...");
+    return await this.junkFileDetector.detectJunkFiles();
+  }
+
+  /**
+   * Generate junk file detection report
+   */
+  async generateJunkFileReport(): Promise<string> {
+    const analysis = await this.detectJunkFiles();
+    return this.junkFileDetector.generateReport(analysis);
+  }
+
+  /**
+   * Get junk file metrics for quality gates
+   */
+  async getJunkFileMetrics(): Promise<{
+    totalJunkFiles: number;
+    criticalJunkFiles: number;
+    highJunkFiles: number;
+    qualityScore: number;
+  }> {
+    const analysis = await this.detectJunkFiles();
+    return {
+      totalJunkFiles: analysis.totalFiles,
+      criticalJunkFiles: analysis.criticalIssues,
+      highJunkFiles: analysis.highIssues,
+      qualityScore: analysis.qualityScore
+    };
   }
 }

@@ -8,16 +8,25 @@
 import { vi } from "vitest";
 
 // Mock file system operations
-vi.mock("fs/promises", () => ({
-  readFile: vi.fn(),
-  readdir: vi.fn(),
-  writeFile: vi.fn(),
-}));
+vi.mock("fs/promises", async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...actual,
+    readFile: vi.fn(),
+    readdir: vi.fn(),
+    writeFile: vi.fn(),
+  };
+});
 
 // Mock child_process
-vi.mock("child_process", () => ({
-  exec: vi.fn(),
-}));
+vi.mock("child_process", async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...actual,
+    exec: vi.fn(),
+    execSync: vi.fn(),
+  };
+});
 
 // Mock chokidar
 vi.mock("chokidar", () => ({
@@ -26,6 +35,15 @@ vi.mock("chokidar", () => ({
     close: vi.fn(),
   })),
 }));
+
+// Mock util
+vi.mock("util", async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...actual,
+    promisify: vi.fn((fn) => fn),
+  };
+});
 
 // Mock commander
 vi.mock("commander", () => ({
@@ -39,6 +57,11 @@ vi.mock("commander", () => ({
     parse: vi.fn(),
   })),
 }));
+
+// Mock process.exit to prevent tests from actually exiting
+vi.spyOn(process, 'exit').mockImplementation((code?: number | undefined) => {
+  throw new Error(`process.exit(${code})`);
+});
 
 // Global test utilities
 global.console = {
