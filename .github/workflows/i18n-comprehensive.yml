@@ -77,17 +77,17 @@ jobs:
 
       - name: 🏗️ Build i18n package
         run: |
-          cd packages/i18n || exit
+          cd packages/core/i18n || exit
           pnpm build
 
       - name: 🏗️ Build testing package
         run: |
-          cd packages/testing || exit
+          cd packages/core/testing || exit
           pnpm build
 
       - name: ✅ Validate i18n setup
         run: |
-          cd packages/testing || exit
+          cd packages/core/testing || exit
           pnpm i18n:validate
 
   # 🦦 Comprehensive i18n Testing
@@ -133,18 +133,18 @@ jobs:
 
       - name: 🏗️ Build i18n package
         run: |
-          cd packages/i18n || exit
+          cd packages/core/i18n || exit
           pnpm build
 
       - name: 🏗️ Build testing package
         run: |
-          cd packages/testing || exit
+          cd packages/core/testing || exit
           pnpm build
 
       - name: 🧪 Run i18n tests ("${{ matrix.test-type }}")
         id: i18n-tests
         run: |
-          cd packages/testing || exit
+          cd packages/core/testing || exit
           case "${{ matrix.test-type }}" in
             "comprehensive")
               pnpm i18n:test --output ../../i18n-results-${{ matrix.node-version }}.json --report ../../i18n-report-${{ matrix.node-version }}.md
@@ -161,7 +161,7 @@ jobs:
       - name: 📊 Generate i18n report
         if: always() && matrix.test-type == 'comprehensive'
         run: |
-          cd packages/testing || exit
+          cd packages/core/testing || exit
           pnpm i18n:test --output ../../i18n-results-${{ matrix.node-version }}.json --report ../../i18n-report-${{ matrix.node-version }}.md
 
       - name: 📤 Upload i18n results
@@ -211,7 +211,7 @@ jobs:
 
       - name: 🔍 Run ESLint with i18n rules
         run: |
-          cd packages/testing || exit
+          cd packages/core/testing || exit
           pnpm i18n:eslint
         continue-on-error: true
 
@@ -274,20 +274,20 @@ jobs:
 
       - name: 🏗️ Build i18n package
         run: |
-          cd packages/i18n || exit
+          cd packages/core/i18n || exit
           pnpm build
 
       - name: 🏗️ Build testing package
         run: |
-          cd packages/testing || exit
+          cd packages/core/testing || exit
           pnpm build
 
       - name: 🌍 Validate i18next resources
         run: |
           echo "🔍 Validating i18next resources..."
-          if [ -d "./packages/i18n/src/translations" ]; then
+          if [ -d "./packages/core/i18n/src/translations" ]; then
             echo "✅ Translation directory found"
-            find ./packages/i18n/src/translations -name "*.json" -o -name "*.ts" | head -10
+            find ./packages/core/i18n/src/translations -name "*.json" -o -name "*.ts" | head -10
           else
             echo "❌ Translation directory not found"
             exit 1
@@ -298,13 +298,13 @@ jobs:
         uses: alexkiro/i18n-coverage@v1.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          translations-path: 'packages/i18n/src/translations/**/*.ts'
+          translations-path: 'packages/core/i18n/src/translations/**/*.ts'
           ignore-languages: 'en'
         continue-on-error: true
 
       - name: 🔍 Check for hardcoded strings
         run: |
-          cd packages/testing || exit
+          cd packages/core/testing || exit
           pnpm i18n:eslint --fail-on-hardcoded
         continue-on-error: true
 
