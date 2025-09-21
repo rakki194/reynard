@@ -1,18 +1,18 @@
-# 🦊 Reynard Auth Demo App
+# Reynard Auth Demo App
 
 A comprehensive authentication demonstration app built with the Reynard framework,
 featuring PostgreSQL backend integration with the Gatekeeper authentication library.
 
-## 🚀 Features
+## Features
 
-- **🔐 Complete Authentication**: Login, registration, and session management
-- **🗄️ PostgreSQL Backend**: Persistent user storage with Gatekeeper library
-- **🎨 Reynard UI**: Beautiful, responsive interface with Reynard components
-- **🛡️ JWT Security**: Secure token-based authentication with refresh tokens
-- **📱 Responsive Design**: Mobile-first design with modern UI/UX
-- **⚡ Real-time Updates**: Live authentication state management
+- **Complete Authentication**: Login, registration, and session management
+- **PostgreSQL Backend**: Persistent user storage with Gatekeeper library
+- **Reynard UI**: Beautiful, responsive interface with Reynard components
+- **JWT Security**: Secure token-based authentication with refresh tokens
+- **Responsive Design**: Mobile-first design with modern UI/UX
+- **Real-time Updates**: Live authentication state management
 
-## 🏗️ Architecture
+## Architecture
 
 ### Frontend (SolidJS + Reynard)
 
@@ -28,13 +28,13 @@ featuring PostgreSQL backend integration with the Gatekeeper authentication libr
 - **PostgreSQL**: Persistent database storage
 - **JWT**: Secure token management
 
-## 📋 Prerequisites
+## Prerequisites
 
 - **Node.js** 18+ and npm
 - **Python** 3.8+ with pip
 - **PostgreSQL** 12+ (running locally)
 
-## 🛠️ Installation
+## Installation
 
 ### 1. Clone and Setup
 

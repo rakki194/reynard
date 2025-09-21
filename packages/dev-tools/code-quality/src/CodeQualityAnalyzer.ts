@@ -1,8 +1,7 @@
 /**
- * 🦊 Reynard Code Quality Analyzer
+ * Reynard Code Quality Analyzer
  *
- * *red fur gleams with intelligence* A comprehensive code quality analysis engine
- * that unifies all Reynard's existing tools into a SonarQube-like system.
+ * A comprehensive code quality analysis engine that unifies all Reynard's existing tools into a SonarQube-like system.
  *
  * Features:
  * - Multi-language static analysis
@@ -11,6 +10,7 @@
  * - Technical debt tracking
  * - Quality gates enforcement
  * - Trend analysis and reporting
+ * - Emoji and roleplay language detection
  */
 
 import { EventEmitter } from "events";
@@ -20,7 +20,8 @@ import { IssueDetector } from "./IssueDetector";
 import { LanguageAnalyzer } from "./LanguageAnalyzer";
 import { MetricsCalculator } from "./MetricsCalculator";
 import { QualityGateEvaluator } from "./QualityGateEvaluator";
-import { AnalysisResult, QualityGate } from "./types";
+import { EmojiRoleplayScanner } from "./EmojiRoleplayScanner";
+import { AnalysisResult, QualityGate, EmojiRoleplayMetrics, EmojiRoleplayScanResult } from "./types";
 
 export class CodeQualityAnalyzer extends EventEmitter {
   private readonly projectRoot: string;
@@ -33,6 +34,7 @@ export class CodeQualityAnalyzer extends EventEmitter {
   private readonly issueDetector: IssueDetector;
   private readonly qualityGateEvaluator: QualityGateEvaluator;
   private readonly fileAnalyzer: FileAnalyzer;
+  private readonly emojiRoleplayScanner: EmojiRoleplayScanner;
 
   constructor(projectRoot: string) {
     super();
@@ -45,13 +47,14 @@ export class CodeQualityAnalyzer extends EventEmitter {
     this.issueDetector = new IssueDetector();
     this.qualityGateEvaluator = new QualityGateEvaluator();
     this.fileAnalyzer = new FileAnalyzer();
+    this.emojiRoleplayScanner = new EmojiRoleplayScanner();
   }
 
   /**
-   * 🦊 Perform comprehensive code quality analysis
+   * Perform comprehensive code quality analysis
    */
   async analyzeProject(): Promise<AnalysisResult> {
-    console.log("🦊 Starting comprehensive code quality analysis...");
+    console.log("Starting comprehensive code quality analysis...");
 
     const startTime = Date.now();
     const analysisDate = new Date();
@@ -123,5 +126,71 @@ export class CodeQualityAnalyzer extends EventEmitter {
 
   getQualityGates(): QualityGate[] {
     return this.qualityGateEvaluator.getQualityGates();
+  }
+
+  /**
+   * Scan project for emojis and roleplay language
+   */
+  async scanEmojiRoleplay(): Promise<EmojiRoleplayScanResult[]> {
+    console.log("Scanning for emojis and roleplay language...");
+    
+    const files = await this.fileDiscovery.discoverFiles(this.projectRoot);
+    const supportedFiles = files.filter(file => 
+      file.endsWith('.md') || 
+      file.endsWith('.py') || 
+      file.endsWith('.ts') || 
+      file.endsWith('.tsx') || 
+      file.endsWith('.js') || 
+      file.endsWith('.jsx') ||
+      file.endsWith('.txt')
+    );
+
+    const results = this.emojiRoleplayScanner.scanFiles(supportedFiles);
+    
+    console.log(`Scanned ${supportedFiles.length} files for emojis and roleplay language`);
+    return results;
+  }
+
+  /**
+   * Get emoji and roleplay metrics for the project
+   */
+  async getEmojiRoleplayMetrics(): Promise<EmojiRoleplayMetrics> {
+    const scanResults = await this.scanEmojiRoleplay();
+    const summary = this.emojiRoleplayScanner.getScanSummary(scanResults);
+    
+    const filesWithEmojis = scanResults.filter(r => r.emojiCount > 0).length;
+    const filesWithRoleplay = scanResults.filter(r => 
+      r.roleplayPatternCount > 0 || r.roleplayActionCount > 0
+    ).length;
+
+    // Calculate professional language score (0-100, higher is better)
+    const totalFiles = scanResults.length;
+    const professionalLanguageScore = totalFiles > 0 
+      ? Math.max(0, 100 - (summary.totalIssues / totalFiles) * 10)
+      : 100;
+
+    return {
+      totalEmojis: summary.totalEmojis,
+      totalRoleplayPatterns: summary.totalRoleplayPatterns,
+      totalRoleplayActions: summary.totalRoleplayActions,
+      filesWithEmojis,
+      filesWithRoleplay,
+      professionalLanguageScore: Math.round(professionalLanguageScore)
+    };
+  }
+
+  /**
+   * Generate emoji and roleplay scan report
+   */
+  async generateEmojiRoleplayReport(): Promise<string> {
+    const scanResults = await this.scanEmojiRoleplay();
+    return this.emojiRoleplayScanner.generateReport(scanResults);
+  }
+
+  /**
+   * Scan specific files for emojis and roleplay language
+   */
+  scanFilesForEmojiRoleplay(filePaths: string[]): EmojiRoleplayScanResult[] {
+    return this.emojiRoleplayScanner.scanFiles(filePaths);
   }
 }

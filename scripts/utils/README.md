@@ -1,6 +1,6 @@
 # Scripts Utils Directory
 
-_whiskers twitch with strategic intelligence_ This directory contains utility scripts organized by functionality for better maintainability and discoverability.
+This directory contains utility scripts organized by functionality for better maintainability and discoverability.
 
 ## Directory Structure
 
@@ -14,19 +14,19 @@ utils/
 
 ## Quick Reference
 
-### 🦊 Agent Naming (`agent-naming/`)
+### Agent Naming (`agent-naming/`)
 
 - Generate robot names with animal spirit themes
 - Manage agent name assignments
 - Comprehensive naming guide and conventions
 
-### 🛠️ Development Tools (`dev-tools/`)
+### Development Tools (`dev-tools/`)
 
 - Husky git hooks management
 - PNPM development wrapper
 - Development workflow automation
 
-### 🔌 MCP Integration (`mcp/`)
+### MCP Integration (`mcp/`)
 
 - Model Context Protocol server
 - Cursor IDE integration

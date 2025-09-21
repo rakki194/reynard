@@ -1,12 +1,48 @@
 """
-RAG Service: Unified orchestrator for all RAG capabilities.
+🦊 Reynard RAG (Retrieval-Augmented Generation) Service
+======================================================
 
-This is the main entry point for the RAG system, providing:
-- Clean, intuitive API for all RAG operations
-- Service orchestration and dependency management
-- Configuration management and initialization
-- Health monitoring and statistics
-- Graceful shutdown and error handling
+Unified orchestrator for all RAG capabilities within the Reynard ecosystem.
+This service provides a comprehensive, production-ready RAG system that combines
+advanced semantic search, document indexing, and intelligent information retrieval
+with enterprise-grade monitoring, security, and performance optimization.
+
+The RAG Service provides:
+- Advanced semantic search with vector embeddings and similarity matching
+- Intelligent document indexing and content management
+- Multi-modal search supporting text, image, and mixed content
+- Real-time performance monitoring and analytics
+- Comprehensive security scanning and threat detection
+- Continuous improvement through machine learning optimization
+- Enterprise-grade documentation and API management
+- Model evaluation and A/B testing capabilities
+
+Core Architecture:
+- EmbeddingService: Vector embedding generation and management
+- VectorStoreService: High-performance vector storage and retrieval
+- DocumentIndexer: Intelligent document processing and indexing
+- SearchEngine: Advanced search algorithms and ranking
+- PerformanceMonitor: Real-time metrics and performance tracking
+- SecurityService: Security scanning and threat detection
+- ContinuousImprovement: ML-based system optimization
+- DocumentationService: API documentation and management
+- ModelEvaluator: Model performance evaluation and testing
+
+Key Features:
+- Unified API for all RAG operations with consistent error handling
+- Service orchestration with dependency management and health monitoring
+- Configuration management with environment-specific settings
+- Graceful shutdown and resource cleanup
+- Comprehensive logging and audit trails
+- Performance optimization and caching strategies
+- Security-first design with threat detection and prevention
+
+The service integrates seamlessly with the Reynard backend architecture,
+providing scalable, secure, and high-performance RAG capabilities for
+the entire ecosystem.
+
+Author: Reynard Development Team
+Version: 1.0.0
 """
 
 import asyncio
@@ -21,7 +57,44 @@ logger = logging.getLogger("uvicorn")
 
 
 class RAGService:
-    """Unified RAG service orchestrator."""
+    """
+    Unified RAG service orchestrator with enterprise-grade capabilities.
+    
+    The RAGService serves as the central orchestrator for all RAG operations within
+    the Reynard ecosystem. It provides a comprehensive, production-ready RAG system
+    that combines advanced semantic search, document indexing, and intelligent
+    information retrieval with enterprise-grade monitoring, security, and performance
+    optimization.
+    
+    Key Responsibilities:
+    - Service orchestration and dependency management
+    - Configuration management and initialization
+    - Health monitoring and performance statistics
+    - Security scanning and threat detection
+    - Continuous improvement through ML optimization
+    - Graceful shutdown and resource cleanup
+    
+    Service Architecture:
+    - Core Services: Embedding, VectorStore, DocumentIndexer, SearchEngine
+    - Advanced Services: PerformanceMonitor, SecurityService, ContinuousImprovement
+    - Support Services: DocumentationService, ModelEvaluator
+    
+    The service maintains comprehensive statistics and monitoring capabilities,
+    providing real-time insights into system performance, security status, and
+    operational health.
+    
+    Example:
+        ```python
+        config = {
+            "rag_enabled": True,
+            "embedding_model": "mxbai-embed-large",
+            "vector_store": "chroma",
+            "security_enabled": True
+        }
+        rag_service = RAGService(config)
+        await rag_service.initialize()
+        ```
+    """
 
     def __init__(self, config: Dict[str, Any]):
         self.config = config

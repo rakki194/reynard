@@ -12,6 +12,7 @@ from typing import Any, Dict, List, Optional
 
 from .models import SearchResponse, SearchResult, SemanticSearchRequest
 from .ignore_utils import create_ignore_parser
+from .code_tokenizer import get_code_tokenizer
 
 # Optional import for BM25
 try:
@@ -157,14 +158,18 @@ class SemanticSearchHandler:
                     search_strategies=["local_bm25"],
                 )
 
-            # Prepare documents for BM25
+            # Prepare documents for BM25 with improved tokenization
             documents = []
             file_paths = []
+            tokenizer = get_code_tokenizer()
+            
             for file_path in files:
                 try:
                     content = await self._read_file_content(file_path)
                     if content:
-                        documents.append(content.split())
+                        # Use improved tokenization
+                        tokens = tokenizer.tokenize(content, str(file_path))
+                        documents.append(tokens)
                         file_paths.append(file_path)
                 except Exception:
                     continue
@@ -182,8 +187,8 @@ class SemanticSearchHandler:
             # Create BM25 index
             bm25 = BM25Okapi(documents)
 
-            # Search using BM25
-            query_tokens = request.query.lower().split()
+            # Search using BM25 with improved query tokenization
+            query_tokens = tokenizer.tokenize(request.query, "")
             scores = bm25.get_scores(query_tokens)
 
             # Create results

@@ -1,4 +1,4 @@
-# 🦊 FENRIR Modular Fuzzing Framework
+# FENRIR Modular Fuzzing Framework
 
 ## Framework for Exploitative Network Reconnaissance and Intrusion Research - Fuzzing Module
 
@@ -23,7 +23,7 @@ The fuzzing framework implements a clean, modular architecture with the followin
 
 ## Table of Contents
 
-- [🦊 FENRIR Modular Fuzzing Framework](#-fenrir-modular-fuzzing-framework)
+- [FENRIR Modular Fuzzing Framework](#fenrir-modular-fuzzing-framework)
   - [Framework for Exploitative Network Reconnaissance and Intrusion Research - Fuzzing Module](#framework-for-exploitative-network-reconnaissance-and-intrusion-research---fuzzing-module)
   - [Architecture Overview](#architecture-overview)
   - [Table of Contents](#table-of-contents)
@@ -57,12 +57,12 @@ The fuzzing framework implements a clean, modular architecture with the followin
       - [**🎨 Diffusion Fuzzer**](#-diffusion-fuzzer)
       - [**⚡ Lazy Loading Fuzzer**](#-lazy-loading-fuzzer)
       - [**📦 HuggingFace Cache Fuzzer**](#-huggingface-cache-fuzzer)
-      - [**🔐 Secure Authentication Fuzzer**](#-secure-authentication-fuzzer)
+      - [**Secure Authentication Fuzzer**](#secure-authentication-fuzzer)
       - [**🤖 Secure Ollama Fuzzer**](#-secure-ollama-fuzzer)
       - [**📝 Secure Summarization Fuzzer**](#-secure-summarization-fuzzer)
       - [**🌐 WebSocket Fuzzer**](#-websocket-fuzzer)
     - [**Individual Module Usage**](#individual-module-usage)
-  - [🐺 The Specialized Hunter: EndpointFuzzer](#-the-specialized-hunter-endpointfuzzer)
+  - [The Specialized Hunter: EndpointFuzzer](#the-specialized-hunter-endpointfuzzer)
     - [**Capabilities**](#capabilities)
     - [**Attack Types**](#attack-types)
       - [**1. Authentication Bypass (50 payloads)**](#1-authentication-bypass-50-payloads)
@@ -71,7 +71,7 @@ The fuzzing framework implements a clean, modular architecture with the followin
       - [**4. JSON Parsing (15 payloads)**](#4-json-parsing-15-payloads)
       - [**5. Header Injection (19 payloads)**](#5-header-injection-19-payloads)
     - [**Usage**](#usage-1)
-  - [🎯 Strategic Deployment](#-strategic-deployment)
+  - [Strategic Deployment](#strategic-deployment)
     - [**When to Use Fuzzy**](#when-to-use-fuzzy)
     - [**When to Use EndpointFuzzer**](#when-to-use-endpointfuzzer)
     - [**Combined Alpha Pack Strategy**](#combined-alpha-pack-strategy)
@@ -96,7 +96,7 @@ The fuzzing framework implements a clean, modular architecture with the followin
       - [**🚨 Secure Ollama Routes** (7 endpoints) - **NOT FUZZED**](#-secure-ollama-routes-7-endpoints---not-fuzzed)
       - [**🚨 Secure Summarization Routes** (10 endpoints) - **NOT FUZZED**](#-secure-summarization-routes-10-endpoints---not-fuzzed)
       - [**🚨 WebSocket Endpoints** (1 endpoint) - **NOT FUZZED**](#-websocket-endpoints-1-endpoint---not-fuzzed)
-  - [📊 Performance Metrics](#-performance-metrics)
+  - [Performance Metrics](#performance-metrics)
     - [**Fuzzy (Comprehensive Framework)**](#fuzzy-comprehensive-framework)
     - [**EndpointFuzzer (Specialized Framework)**](#endpointfuzzer-specialized-framework)
     - [**GrammarFuzzer (Learning Engine)**](#grammarfuzzer-learning-engine)
@@ -120,9 +120,9 @@ The fuzzing framework implements a clean, modular architecture with the followin
       - [**Impact Analysis**](#impact-analysis)
       - [**Router Registration Fix Required**](#router-registration-fix-required)
     - [**Dynamic Router Loading**](#dynamic-router-loading)
-  - [🛡️ Vulnerability Detection](#️-vulnerability-detection)
+  - [Vulnerability Detection](#vulnerability-detection)
   - [🚨 E2E Integration](#-e2e-integration)
-  - [🦊 Advanced Features \& Capabilities](#-advanced-features--capabilities)
+  - [Advanced Features \& Capabilities](#advanced-features--capabilities)
     - [**Enhanced Result Tracking**](#enhanced-result-tracking)
       - [**FuzzResult Enhancements**](#fuzzresult-enhancements)
       - [**WebSocketResult Specialization**](#websocketresult-specialization)

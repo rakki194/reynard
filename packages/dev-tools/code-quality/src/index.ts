@@ -29,6 +29,14 @@ export { IssueDetector } from "./IssueDetector";
 export { LanguageAnalyzer } from "./LanguageAnalyzer";
 export { MetricsCalculator } from "./MetricsCalculator";
 export { QualityGateEvaluator } from "./QualityGateEvaluator";
+export { DocstringAnalyzer } from "./DocstringAnalyzer";
+export type {
+  DocstringAnalysis,
+  DocstringMetrics,
+  FunctionDocstring,
+  ClassDocstring,
+  ModuleDocstring,
+} from "./DocstringAnalyzer";
 import { AIAnalysisEngine } from "./AIAnalysisEngine";
 import { AnalysisOrchestrator } from "./AnalysisOrchestrator";
 import { BehavioralAnalysisEngine } from "./BehavioralAnalysisEngine";
@@ -58,6 +66,15 @@ export type { BehavioralAnalysisResult, BehavioralInsight, CodeHotspot } from ".
 export { CodeQualityDashboard, createCodeQualityDashboard } from "./CodeQualityDashboard";
 export { EnhancedSecurityEngine, createEnhancedSecurityEngine } from "./EnhancedSecurityEngine";
 export type { SecurityAnalysisResult, SecurityHotspot, SecurityVulnerability } from "./EnhancedSecurityEngine";
+
+// Quality gates
+export {
+  DOCSTRING_QUALITY_GATES,
+  STRICT_DOCSTRING_QUALITY_GATES,
+  RELAXED_DOCSTRING_QUALITY_GATES,
+  getDocstringQualityGates,
+  createCustomDocstringGate,
+} from "./quality-gates/docstring-gates";
 
 /**
  * 🦊 Create a complete code quality analysis system

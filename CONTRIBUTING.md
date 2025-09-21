@@ -1,7 +1,7 @@
-# 🤝 Contributing to Reynard
+# Contributing to Reynard
 
 Thank you for your interest in contributing to Reynard! This guide will help you get started with contributing to
-our cunning SolidJS framework.
+our comprehensive SolidJS framework.
 
 ## Getting Started
 
@@ -29,7 +29,7 @@ npm run dev
 npm test
 ```
 
-## 📋 Development Workflow
+## Development Workflow
 
 ### 1. Create a Branch
 
@@ -224,7 +224,7 @@ ESLint counts lines using this logic:
 
 For detailed refactoring guidelines, see [Modularity Patterns](../docs/architecture/modularity-patterns.md).
 
-## 🎨 Code Style
+## Code Style
 
 ### TypeScript
 
@@ -275,7 +275,7 @@ For detailed refactoring guidelines, see [Modularity Patterns](../docs/architect
 - Use meaningful commit messages
 - Add proper documentation
 
-## 🧪 Testing
+## Testing
 
 ### Test Structure
 
@@ -324,7 +324,7 @@ describe('MyComponent', () => {
 });
 ```
 
-## 📝 Documentation
+## Documentation
 
 ### Code Documentation
 
@@ -340,7 +340,7 @@ describe('MyComponent', () => {
 - Include decision records for major changes
 - Maintain refactoring guidelines
 
-## 🚀 Pull Request Process
+## Pull Request Process
 
 ### Before Submitting
 
@@ -404,7 +404,7 @@ Brief description of changes
 4. **Documentation**: Ensure docs are updated
 5. **Approval**: Maintainer approves and merges
 
-## 🐛 Bug Reports
+## Bug Reports
 
 ### Before Reporting
 
@@ -444,7 +444,7 @@ What actually happens
 Any other relevant information
 ```
 
-## ✨ Feature Requests
+## Feature Requests
 
 ### Before Requesting
 
@@ -476,7 +476,7 @@ What other approaches were considered?
 Any other relevant information
 ```
 
-## 🏆 Recognition
+## Recognition
 
 Contributors are recognized in:
 
@@ -485,7 +485,7 @@ Contributors are recognized in:
 - Documentation acknowledgments
 - Community highlights
 
-## 🔧 ESLint Configuration
+## ESLint Configuration
 
 ### Understanding ESLint Rules
 
@@ -557,19 +557,19 @@ ESLint automatically ignores:
 - `**/debug-scan.js` - Debug scripts
 - `**/pkg/**/*.js` - Generated WebAssembly files
 
-## 📞 Getting Help
+## Getting Help
 
 - **Documentation**: [(TBD)](<https://(TBD)>)
 - **Issues**: [GitHub Issues](https://github.com/rakki194/reynard/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/rakki194/reynard/discussions)
 - **Discord**: [Join our Discord](https://discord.gg/reynard)
 
-## 📄 License
+## License
 
 By contributing to Reynard, you agree that your contributions will be licensed under the MIT License.
 
 ---
 
-_"The cunning fox knows that great software is built through collaboration and shared wisdom."_ 🦊
+_"Great software is built through collaboration and shared technical expertise."_
 
 Thank you for contributing to Reynard!

@@ -1,7 +1,43 @@
 """
-Service Registry for Reynard Backend.
+🦊 Reynard Backend Service Registry System
+==========================================
 
-Centralized service management with lifecycle control and health monitoring.
+Centralized service management system for the Reynard FastAPI backend, providing
+comprehensive lifecycle control, health monitoring, and dependency management.
+This registry implements enterprise-grade service orchestration with priority-based
+initialization, parallel execution, and graceful shutdown procedures.
+
+The Service Registry provides:
+- Centralized service lifecycle management with status tracking
+- Priority-based service initialization with dependency resolution
+- Parallel execution within priority groups for optimal performance
+- Comprehensive health monitoring and service status tracking
+- Graceful shutdown procedures with timeout handling
+- Error handling and recovery mechanisms with detailed logging
+- Service discovery and dependency injection support
+
+Key Features:
+- Service Lifecycle Management: Complete control over service initialization and shutdown
+- Priority-Based Initialization: Services start in dependency order with parallel execution
+- Health Monitoring: Continuous health checks and service status tracking
+- Error Recovery: Comprehensive error handling with service isolation
+- Performance Optimization: Startup time optimization through parallel execution
+- Service Discovery: Dynamic service lookup and dependency injection
+- Configuration Management: Centralized service configuration and environment handling
+
+Architecture Components:
+- ServiceInfo: Service metadata and lifecycle information
+- ServiceStatus: Service state enumeration and tracking
+- ServiceRegistry: Central registry for service management
+- Priority System: Dependency-based startup sequencing
+- Health Monitoring: Continuous service health validation
+
+The service registry ensures reliable service management while maintaining
+optimal performance and comprehensive error handling throughout the
+application lifecycle.
+
+Author: Reynard Development Team
+Version: 1.0.0
 """
 
 import asyncio
@@ -16,7 +52,21 @@ logger = logging.getLogger(__name__)
 
 
 class ServiceStatus(Enum):
-    """Service status enumeration."""
+    """
+    Service status enumeration for lifecycle state tracking.
+    
+    Defines the possible states a service can be in during its lifecycle,
+    enabling comprehensive status monitoring and state management throughout
+    the service initialization, running, and shutdown phases.
+    
+    States:
+        UNINITIALIZED: Service has not been initialized yet
+        INITIALIZING: Service is currently being initialized
+        RUNNING: Service is running and operational
+        STOPPING: Service is currently being shut down
+        STOPPED: Service has been stopped
+        ERROR: Service encountered an error during operation
+    """
 
     UNINITIALIZED = "uninitialized"
     INITIALIZING = "initializing"
@@ -28,7 +78,25 @@ class ServiceStatus(Enum):
 
 @dataclass
 class ServiceInfo:
-    """Service information container."""
+    """
+    Service information container for comprehensive service metadata management.
+    
+    Stores complete service metadata including lifecycle information, configuration,
+    function references, and operational status. This dataclass provides a structured
+    way to manage service information throughout the service lifecycle.
+    
+    Attributes:
+        name (str): Unique service identifier
+        status (ServiceStatus): Current service lifecycle status
+        config (dict[str, Any]): Service configuration parameters
+        instance (Any | None): Service instance reference
+        startup_func (Callable | None): Service initialization function
+        shutdown_func (Callable | None): Service shutdown function
+        health_check_func (Callable | None): Service health check function
+        error (Exception | None): Last error encountered by the service
+        startup_time (float | None): Service startup timestamp
+        last_health_check (float | None): Last health check timestamp
+    """
 
     name: str
     status: ServiceStatus = ServiceStatus.UNINITIALIZED

@@ -2,7 +2,35 @@
 Unified Search API Endpoints
 ===========================
 
-FastAPI endpoints for the unified search service with all search capabilities.
+FastAPI endpoints for the unified search service providing comprehensive search capabilities
+across the Reynard codebase. This module implements a sophisticated search API that supports
+multiple search strategies including semantic, syntax, hybrid, and intelligent search modes.
+
+The search service provides:
+- Semantic search using vector embeddings and RAG backend
+- Syntax search using ripgrep for exact pattern matching
+- Hybrid search combining multiple strategies
+- Intelligent search with automatic strategy selection
+- Natural language query processing
+- Query expansion and suggestion capabilities
+- Performance monitoring and caching
+- Comprehensive result formatting and ranking
+
+Architecture:
+- RESTful API design with FastAPI
+- Async/await support for high performance
+- Comprehensive error handling and validation
+- Request/response models with Pydantic
+- Integration with optimization and caching systems
+- Support for multiple file types and directory filtering
+
+Usage:
+    The search endpoints are automatically registered with the FastAPI application
+    and provide a unified interface for all search operations across the Reynard
+    project codebase.
+
+Author: Reynard Development Team
+Version: 1.0.0
 """
 
 import logging
@@ -58,7 +86,19 @@ class ContextualSearchRequest(BaseModel):
 
 
 def get_search_service() -> SearchService:
-    """Get the search service instance from the service registry."""
+    """
+    Get the search service instance from the service registry.
+    
+    Retrieves the initialized search service from the global service registry.
+    This function ensures that the search service is properly initialized and
+    available before processing search requests.
+    
+    Returns:
+        SearchService: The initialized search service instance
+        
+    Raises:
+        HTTPException: If the search service is not available or not initialized
+    """
     from app.core.service_registry import get_service_registry
 
     registry = get_service_registry()
@@ -76,10 +116,41 @@ def get_search_service() -> SearchService:
 @router.post("/semantic", response_model=dict[str, Any])
 async def semantic_search(request: SemanticSearchRequest, http_request: Request) -> JSONResponse:
     """
-    Perform semantic search using vector embeddings with caching.
-
-    This endpoint provides intelligent code search that understands the meaning
-    and context of your queries, not just exact text matches.
+    Perform semantic search using vector embeddings with intelligent caching.
+    
+    This endpoint provides advanced code search capabilities that understand the
+    semantic meaning and context of queries, not just exact text matches. It uses
+    vector embeddings and machine learning models to find conceptually related
+    code, functions, and documentation.
+    
+    Features:
+    - Vector-based similarity search using sentence transformers
+    - Integration with RAG backend for enhanced results
+    - Intelligent caching with configurable TTL
+    - Support for file type and directory filtering
+    - Configurable similarity thresholds
+    - Performance monitoring and metrics
+    
+    Args:
+        request: SemanticSearchRequest containing query parameters
+        http_request: FastAPI Request object for metadata extraction
+        
+    Returns:
+        JSONResponse: Search results with performance metadata
+        
+    Raises:
+        HTTPException: If search fails or service is unavailable
+        
+    Example:
+        ```json
+        {
+            "query": "authentication flow",
+            "max_results": 10,
+            "similarity_threshold": 0.7,
+            "file_types": [".py", ".ts"],
+            "directories": ["packages/auth", "backend"]
+        }
+        ```
     """
     start_time = time.time()
     
@@ -349,11 +420,11 @@ async def health_check() -> dict[str, str]:
         return {
             "status": "healthy",
             "service": "search",
-            "indexed_files": str(stats.total_files_indexed),
-            "total_chunks": str(stats.total_chunks),
-            "search_count": str(stats.search_count),
-            "avg_search_time": f"{stats.avg_search_time:.2f}ms",
-            "cache_hit_rate": f"{stats.cache_hit_rate:.1f}%"
+            "indexed_files": "0",  # Not tracked in current implementation
+            "total_chunks": "0",   # Not tracked in current implementation
+            "search_count": str(stats.get("search_count", 0)),
+            "avg_search_time": f"{stats.get('avg_search_time', 0):.2f}ms",
+            "cache_hit_rate": f"{stats.get('cache_hit_rate', 0):.1f}%"
         }
     except Exception as e:
         logger.exception("Health check failed")
@@ -414,11 +485,10 @@ async def clear_search_cache(namespace: str = Query("search_results", descriptio
         search_service = get_search_service()
         
         if hasattr(search_service, 'clear_cache'):
-            success = await search_service.clear_cache(namespace)
+            result = await search_service.clear_cache()
             return {
-                "status": "success" if success else "failed",
-                "namespace": namespace,
-                "message": f"Cache cleared for namespace: {namespace}" if success else "Failed to clear cache"
+                "status": "success" if result.get("success", False) else "failed",
+                "message": result.get("message", "Cache cleared successfully")
             }
         else:
             return {

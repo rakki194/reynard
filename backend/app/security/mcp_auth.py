@@ -1,11 +1,47 @@
 """
-MCP Authorization Service for Reynard Backend
+🦊 Reynard MCP Authorization Service
+====================================
 
-This module provides MCP (Model Context Protocol) specific authentication
-and authorization for secure access to RAG and other backend services.
+Comprehensive MCP (Model Context Protocol) authentication and authorization system
+for the Reynard backend, providing secure access control to RAG services, agent
+operations, and other protected backend resources. This module implements
+enterprise-grade security with JWT-based authentication and role-based access control.
+
+The MCP Authorization Service provides:
+- JWT-based authentication with configurable expiration and algorithms
+- Role-based access control with granular permission management
+- Client type validation (agent, tool, user) with appropriate access levels
+- Token validation and refresh mechanisms with security best practices
+- Permission-based endpoint protection with dependency injection
+- Comprehensive audit logging and security monitoring
+- Rate limiting and abuse prevention mechanisms
+
+Key Features:
+- JWT Authentication: Secure token-based authentication with configurable parameters
+- Role-Based Access Control: Granular permission system with hierarchical access
+- Client Type Validation: Different access levels for agents, tools, and users
+- Token Management: Issuance, validation, and refresh with security controls
+- Permission System: Fine-grained access control for specific operations
+- Security Monitoring: Comprehensive audit logging and threat detection
+- Rate Limiting: Abuse prevention and resource protection
+
+Security Components:
+- MCPTokenData: JWT payload structure with client and permission information
+- MCPClient: Client metadata and permission management
+- Token Validation: JWT signature verification and expiration checking
+- Permission Checks: Role-based access control for protected endpoints
+- Audit Logging: Security event tracking and monitoring
+
+The MCP authorization system ensures secure access to Reynard backend services
+while maintaining comprehensive audit trails and protection against unauthorized
+access and abuse.
+
+Author: Reynard Development Team
+Version: 1.0.0
 """
 
 import logging
+import os
 import time
 from datetime import UTC, datetime
 
@@ -20,9 +56,9 @@ logger = logging.getLogger(__name__)
 mcp_security = HTTPBearer(scheme_name="MCP-Auth")
 
 # MCP Token Configuration
-MCP_TOKEN_SECRET = "reynard-mcp-secret-key-2025"  # In production, use env var
-MCP_TOKEN_ALGORITHM = "HS256"
-MCP_TOKEN_EXPIRE_HOURS = 24
+MCP_TOKEN_SECRET = os.getenv("MCP_TOKEN_SECRET", "reynard-mcp-secret-key-2025")
+MCP_TOKEN_ALGORITHM = os.getenv("MCP_TOKEN_ALGORITHM", "HS256")
+MCP_TOKEN_EXPIRE_HOURS = int(os.getenv("MCP_TOKEN_EXPIRE_HOURS", "24"))
 
 
 class MCPTokenData(BaseModel):

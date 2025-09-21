@@ -169,3 +169,6 @@ __pycache__/
 # Generated files
 *.generated.*
 *.auto.*
+
+# Vitest coverage artifacts
+.vitest-coverage/

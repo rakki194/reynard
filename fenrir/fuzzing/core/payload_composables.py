@@ -1,10 +1,7 @@
 """
-🦊 Payload Composables - Strategic Attack Vectors
+Payload Composables - Strategic Attack Vectors
 
-*whiskers twitch with cunning intelligence* Reusable payload generation
-composables that provide specialized attack vectors for different types
-of endpoints. Like a fox's toolkit, each composable serves a specific
-purpose in the hunt for vulnerabilities.
+Reusable payload generation composables that provide specialized attack vectors for different types of endpoints. Each composable serves a specific purpose in systematic vulnerability testing.
 """
 
 from dataclasses import dataclass
@@ -22,12 +19,9 @@ class PayloadSet:
 
 class PayloadComposables:
     """
-    🦊 Payload Composables - Strategic Attack Vector Generator
+    Payload Composables - Strategic Attack Vector Generator
 
-    *red fur gleams with intelligence* This composable provides organized,
-    reusable payload sets for different types of attacks. Each method
-    returns a PayloadSet containing related attack vectors that can be
-    used across multiple fuzzer types.
+    This composable provides organized, reusable payload sets for different types of attacks. Each method returns a PayloadSet containing related attack vectors that can be used across multiple fuzzer types.
 
     Example:
         >>> composables = PayloadComposables()

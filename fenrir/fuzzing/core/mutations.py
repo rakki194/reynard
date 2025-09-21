@@ -1,5 +1,5 @@
 """
-🐺 Learning-Based Payload Mutation Engine
+Learning-Based Payload Mutation Engine
 
 Mutation engine that learns from successful attacks and evolves payloads
 to be even more effective. Uses machine learning principles to adapt attack
@@ -14,12 +14,9 @@ import random
 
 class LearningBasedMutations:
     """
-    🐺 Learning-Based Payload Mutation Engine
+    Learning-Based Payload Mutation Engine
 
-    *bares fangs with savage satisfaction* Learns from successful attacks
-    and evolves payloads to be even more effective! This engine uses pattern
-    recognition and adaptive mutation techniques to create increasingly
-    sophisticated attack vectors.
+    Learns from successful attacks and evolves payloads to be even more effective! This engine uses pattern recognition and adaptive mutation techniques to create increasingly sophisticated attack vectors.
 
     The mutation engine operates on several principles:
     1. **Pattern Learning**: Records successful payload patterns for reuse

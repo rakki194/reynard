@@ -1,8 +1,47 @@
 """
-Core configuration management for Reynard Backend.
+🦊 Reynard Backend Core Configuration Management
+===============================================
 
-Centralized configuration with environment-based feature toggles
-and service-specific settings.
+Centralized configuration management system for the Reynard FastAPI backend,
+providing comprehensive environment-based configuration with feature toggles,
+service-specific settings, and dynamic configuration loading. This module
+implements enterprise-grade configuration management with validation,
+type safety, and environment-specific overrides.
+
+The Core Configuration System provides:
+- Environment-based configuration loading with .env file support
+- Service-specific configuration classes with validation and defaults
+- Feature toggles and environment-specific settings
+- Type-safe configuration with dataclass-based structure
+- Dynamic configuration updates and hot-reloading capabilities
+- Configuration validation and error handling
+- Centralized configuration access throughout the application
+- Security-sensitive configuration management
+
+Key Features:
+- Environment Integration: Seamless integration with environment variables
+- Type Safety: Dataclass-based configuration with type validation
+- Service Configuration: Specialized configuration classes for each service
+- Feature Toggles: Environment-based feature enablement and configuration
+- Validation: Configuration validation with error reporting
+- Security: Secure handling of sensitive configuration values
+- Flexibility: Support for development, staging, and production environments
+- Documentation: Self-documenting configuration with clear defaults
+
+Configuration Categories:
+- ServiceConfig: Base configuration for all services
+- GatekeeperConfig: Authentication and authorization settings
+- ComfyConfig: ComfyUI integration configuration
+- RAGConfig: Retrieval-Augmented Generation settings
+- SearchConfig: Search service configuration
+- EmailConfig: Email service settings
+- DatabaseConfig: Database connection and pool settings
+
+The configuration system ensures consistent, secure, and maintainable
+configuration management across all components of the Reynard backend.
+
+Author: Reynard Development Team
+Version: 1.0.0
 """
 
 import os
@@ -18,7 +57,19 @@ load_dotenv()
 
 @dataclass
 class ServiceConfig:
-    """Base configuration for services."""
+    """
+    Base configuration class for all Reynard backend services.
+    
+    Provides common configuration parameters that are shared across all services,
+    including enablement toggles, timeout settings, and retry mechanisms. This
+    base class ensures consistent configuration patterns throughout the system.
+    
+    Attributes:
+        enabled (bool): Whether the service is enabled (default: True)
+        timeout (int): Service operation timeout in seconds (default: 30)
+        retry_attempts (int): Number of retry attempts for failed operations (default: 3)
+        retry_delay (float): Delay between retry attempts in seconds (default: 1.0)
+    """
 
     enabled: bool = True
     timeout: int = 30

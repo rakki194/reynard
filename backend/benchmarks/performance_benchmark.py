@@ -353,6 +353,7 @@ class FastAPIBenchmark:
                 "method": "POST",
                 "endpoint": "/api/ecs/agents",
                 "data": {
+                    "agent_id": "test-agent-benchmark",
                     "spirit": "fox",
                     "style": "foundation"
                 }
@@ -365,8 +366,8 @@ class FastAPIBenchmark:
                 "method": "POST",
                 "endpoint": "/api/ecs/interactions",
                 "data": {
-                    "agent1_id": "test-agent-1",
-                    "agent2_id": "test-agent-2",
+                    "agent1_id": "test-agent-benchmark",
+                    "agent2_id": "test-agent-123",
                     "interaction_type": "communication"
                 }
             }
@@ -406,9 +407,9 @@ class FastAPIBenchmark:
         test_cases = [
             {
                 "method": "POST",
-                "endpoint": "/api/rag/query",
+                "endpoint": "/api/rag/test-query",
                 "data": {
-                    "query": "machine learning algorithms",
+                    "q": "machine learning algorithms",
                     "top_k": 10,
                     "similarity_threshold": 0.7
                 }
@@ -441,7 +442,7 @@ class FastAPIBenchmark:
             all_results.append(result)
             
             # Load test for query endpoint
-            if test_case["endpoint"] == "/api/rag/query":
+            if test_case["endpoint"] == "/api/rag/test-query":
                 concurrent_results = await self.run_concurrent_requests(
                     test_case["method"],
                     test_case["endpoint"],

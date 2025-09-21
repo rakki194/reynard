@@ -1,19 +1,41 @@
 """
-Lifespan Management Module for Reynard Backend
+🦊 Reynard Backend Lifespan Management System
+=============================================
 
-This module implements sophisticated service lifecycle management with parallel
-initialization, priority-based startup sequencing, and comprehensive error handling.
+Sophisticated service lifecycle management system for the Reynard FastAPI backend,
+providing comprehensive orchestration of service initialization, health monitoring,
+and graceful shutdown procedures. This module implements enterprise-grade lifecycle
+management with dependency-aware startup sequencing and parallel execution optimization.
 
-The lifespan manager orchestrates the complete lifecycle of all backend services,
-implementing dependency-aware startup sequencing, parallel initialization within
-priority groups, and graceful shutdown procedures.
+The lifespan manager provides:
+- Priority-based service initialization with dependency resolution
+- Parallel execution within priority groups for optimal startup performance
+- Comprehensive health monitoring and service status tracking
+- Graceful shutdown procedures with timeout handling and resource cleanup
+- Error handling and recovery mechanisms with detailed logging
+- Service registry integration for centralized lifecycle management
 
-Architecture Features:
-- Service Registry Pattern: Centralized lifecycle management
-- Priority-Based Initialization: Dependency-aware startup sequencing
-- Parallel Execution: Services within same priority group start concurrently
-- Comprehensive Error Handling: Graceful failure handling with proper reporting
-- Graceful Shutdown: Proper resource cleanup with timeout handling
+Key Features:
+- Dependency-Aware Startup: Services start in correct order based on dependencies
+- Parallel Initialization: Services within same priority group start concurrently
+- Health Monitoring: Continuous health checks and service status tracking
+- Graceful Shutdown: Proper resource cleanup with configurable timeouts
+- Error Recovery: Comprehensive error handling with service isolation
+- Performance Optimization: Startup time optimization through parallel execution
+
+Architecture Components:
+- Service Registry: Centralized service lifecycle management
+- Priority System: Dependency-based startup sequencing
+- Health Monitoring: Continuous service health checks
+- Shutdown Orchestration: Graceful resource cleanup
+- Error Handling: Comprehensive error recovery and reporting
+
+The lifespan manager ensures reliable service startup and shutdown while
+maintaining optimal performance and comprehensive error handling throughout
+the service lifecycle.
+
+Author: Reynard Development Team
+Version: 1.0.0
 """
 
 import logging
@@ -108,22 +130,40 @@ async def _setup_secure_routers(app: FastAPI, registry) -> None:
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """
-    Sophisticated service lifecycle management with parallel initialization.
-
-    This context manager orchestrates the complete lifecycle of all backend services,
-    implementing priority-based startup sequencing, parallel initialization within
-    priority groups, comprehensive error handling, and graceful shutdown procedures.
-
-    The initialization process follows a dependency-aware approach:
-    1. Register all services with their respective priorities and configurations
-    2. Initialize services in parallel within priority groups (highest priority first)
-    3. Handle initialization failures gracefully with proper error reporting
-    4. Provide the service registry to the FastAPI application
-    5. Perform graceful shutdown of all services in reverse order on exit
-
+    Sophisticated service lifecycle management with parallel initialization and dependency resolution.
+    
+    This context manager orchestrates the complete lifecycle of all backend services within
+    the Reynard ecosystem, implementing enterprise-grade lifecycle management with priority-based
+    startup sequencing, parallel initialization optimization, and comprehensive error handling.
+    
+    The lifespan manager provides:
+    - Priority-based service initialization with dependency resolution
+    - Parallel execution within priority groups for optimal startup performance
+    - Comprehensive health monitoring and service status tracking
+    - Graceful shutdown procedures with timeout handling and resource cleanup
+    - Error handling and recovery mechanisms with detailed logging
+    - Service registry integration for centralized lifecycle management
+    
+    Initialization Process:
+    1. Configuration Loading: Load service configurations and environment settings
+    2. Service Registration: Register all services with their priorities and dependencies
+    3. Priority-Based Startup: Initialize services in dependency order (highest priority first)
+    4. Parallel Execution: Services within same priority group start concurrently
+    5. Health Monitoring: Perform health checks and validate service initialization
+    6. Router Setup: Configure secure routers and API endpoints
+    7. Service Registry: Provide initialized services to the FastAPI application
+    
+    Shutdown Process:
+    1. Graceful Shutdown: Stop services in reverse priority order
+    2. Resource Cleanup: Clean up connections, caches, and temporary resources
+    3. Timeout Handling: Ensure shutdown completes within configured timeouts
+    4. Error Recovery: Handle shutdown failures gracefully with proper logging
+    
     Args:
-        app: The FastAPI application instance requiring service orchestration.
-
+        app (FastAPI): The FastAPI application instance requiring service orchestration.
+            The application will receive the initialized service registry and all
+            configured services will be available through dependency injection.
+    
     Yields:
         Dict[str, Any]: A dictionary containing the initialized service registry.
 

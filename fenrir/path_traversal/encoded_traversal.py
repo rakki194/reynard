@@ -1,11 +1,9 @@
 """
-🐺 ENCODED PATH TRAVERSAL EXPLOIT
+ENCODED PATH TRAVERSAL EXPLOIT
 
-*snarls with predatory glee* Your simple `..` check is PATHETIC! URL encoding,
-double encoding, and Unicode tricks will bypass your weak validation!
+Systematically tests path traversal vulnerabilities using URL encoding, double encoding, and Unicode techniques to bypass weak validation mechanisms.
 
-*bares fangs with savage satisfaction* This exploit demonstrates how to access
-system files using encoded path traversal payloads.
+This exploit demonstrates how to access system files using encoded path traversal payloads.
 """
 
 import base64

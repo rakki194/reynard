@@ -1,8 +1,7 @@
 /**
- * 🐺 Fenrir Exploit Runner
+ * Fenrir Exploit Runner
  *
- * *snarls with predatory intelligence* Utility functions for executing
- * fenrir security exploits from the Reynard penetration testing suite.
+ * Utility functions for executing fenrir security exploits from the Reynard penetration testing suite.
  */
 
 import { exec } from "child_process";

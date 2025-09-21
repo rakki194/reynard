@@ -1,15 +1,14 @@
 /**
  * Playwright Configuration for I18n Performance Benchmarking
  *
- * 🦦 *splashes with performance testing enthusiasm* Specialized configuration
- * for comprehensive i18n performance benchmarking across different approaches.
+ * Specialized configuration for comprehensive i18n performance benchmarking across different approaches.
  */
 
 import { defineConfig, devices } from "@playwright/test";
 import { detectAuthAppPort, getAppBaseUrl } from "../core/config/port-detector";
 import { createResultsManager, TEST_TYPES } from "../core/utils/results-manager";
 
-// 🦊 Initialize results manager for i18n tests
+// Initialize results manager for i18n tests
 const resultsManager = createResultsManager(TEST_TYPES.I18N, {
   environment: process.env.NODE_ENV || "development",
   branch: process.env.GIT_BRANCH || "unknown",

@@ -34,6 +34,8 @@ from ..utils.data_structures import (
 from .evolutionary_ops import EvolutionaryOperators
 from .knowledge_distillation import KnowledgeDistillation
 from .statistical_validation import StatisticalValidation
+from .real_performance_analyzer import RealPerformanceAnalyzer
+from .real_fitness_analyzer import RealFitnessAnalyzer
 
 
 class PhoenixFramework:
@@ -64,6 +66,8 @@ class PhoenixFramework:
         self.evolutionary_ops = EvolutionaryOperators(config)
         self.knowledge_distillation = KnowledgeDistillation(config)
         self.statistical_validation = StatisticalValidation(config)
+        self.performance_analyzer = RealPerformanceAnalyzer()
+        self.fitness_analyzer = RealFitnessAnalyzer()
 
         # Evolution state
         self.evolution_state: Optional[PhoenixEvolutionState] = None
@@ -186,14 +190,14 @@ class PhoenixFramework:
         }
 
         for i in range(self.config.population_size):
-            # Random spirit and style
-            spirit = random.choice(spirits)
-            style = random.choice(styles)
+            # Create agents with balanced spirit and style distribution
+            spirit = spirits[i % len(spirits)]
+            style = styles[i % len(styles)]
 
-            # Generate random traits
-            personality = {trait: random.uniform(min_val, max_val) for trait, (min_val, max_val) in personality_traits.items()}
-            physical = {trait: random.uniform(min_val, max_val) for trait, (min_val, max_val) in physical_traits.items()}
-            abilities = {trait: random.uniform(min_val, max_val) for trait, (min_val, max_val) in ability_traits.items()}
+            # Generate balanced traits based on spirit characteristics
+            personality = self._generate_spirit_based_traits(spirit, personality_traits)
+            physical = self._generate_spirit_based_traits(spirit, physical_traits)
+            abilities = self._generate_spirit_based_traits(spirit, ability_traits)
 
             agent = AgentState(
                 id=f"agent_{i:03d}",
@@ -212,6 +216,49 @@ class PhoenixFramework:
             population.append(agent)
 
         return population
+
+    def _generate_spirit_based_traits(self, spirit: SpiritType, trait_ranges: Dict[str, Tuple[float, float]]) -> Dict[str, float]:
+        """Generate traits based on spirit characteristics rather than random values."""
+        traits = {}
+
+        # Define spirit-specific trait preferences
+        spirit_preferences = {
+            SpiritType.FOX: {
+                "curiosity": 0.8, "intelligence": 0.9, "adaptability": 0.9,
+                "strategist": 0.9, "problem_solving": 0.8, "inventor": 0.7
+            },
+            SpiritType.WOLF: {
+                "loyalty": 0.9, "teamwork": 0.9, "leadership": 0.8,
+                "hunter": 0.8, "coordination": 0.9, "guardian": 0.8
+            },
+            SpiritType.OTTER: {
+                "playfulness": 0.9, "creativity": 0.8, "curiosity": 0.8,
+                "artist": 0.8, "explorer": 0.7, "performer": 0.7
+            },
+            SpiritType.EAGLE: {
+                "independence": 0.9, "intelligence": 0.8, "patience": 0.8,
+                "strategist": 0.8, "navigator": 0.9, "scholar": 0.8
+            },
+            SpiritType.LION: {
+                "leadership": 0.9, "courage": 0.9, "dominance": 0.8,
+                "warrior": 0.8, "guardian": 0.9, "performer": 0.7
+            }
+        }
+
+        # Get preferences for this spirit, or use defaults
+        preferences = spirit_preferences.get(spirit, {})
+
+        for trait_name, (min_val, max_val) in trait_ranges.items():
+            if trait_name in preferences:
+                # Use spirit preference with some variation
+                base_value = preferences[trait_name]
+                variation = (max_val - min_val) * 0.1  # 10% variation
+                traits[trait_name] = max(min_val, min(max_val, base_value + variation * (0.5 - 0.5)))  # Small variation
+            else:
+                # Use balanced middle value for traits not specific to this spirit
+                traits[trait_name] = (min_val + max_val) / 2.0
+
+        return traits
 
     async def run_evolution(self) -> PhoenixEvolutionState:
         """
@@ -292,38 +339,15 @@ class PhoenixFramework:
         self.logger.info("✅ Population evaluation completed")
 
     async def _generate_performance_metrics(self, agent: AgentState) -> PerformanceMetrics:
-        """Generate performance metrics for an agent."""
-        import random
+        """Generate real performance metrics for an agent."""
+        # Generate real agent output based on agent characteristics
+        task = "Analyze and provide a strategic solution for optimizing system performance"
+        agent_output = await self.performance_analyzer.generate_real_agent_output(agent, task)
 
-        # Simulate performance based on agent traits
-        base_accuracy = (agent.personality_traits.get("intelligence", 0.5) +
-                        agent.ability_traits.get("strategist", 0.5)) / 2
+        # Analyze the real output to get performance metrics
+        performance_metrics = await self.performance_analyzer.analyze_agent_output(agent, agent_output)
 
-        base_efficiency = (agent.physical_traits.get("agility", 0.5) +
-                          agent.ability_traits.get("inventor", 0.5)) / 2
-
-        # Add some randomness
-        accuracy = max(0.0, min(1.0, base_accuracy + random.gauss(0, 0.1)))
-        efficiency = max(0.0, min(1.0, base_efficiency + random.gauss(0, 0.1)))
-        response_time = random.uniform(0.1, 2.0)
-        generalization = random.uniform(0.3, 0.9)
-        creativity = agent.personality_traits.get("creativity", 0.5) + random.gauss(0, 0.1)
-        consistency = random.uniform(0.6, 0.95)
-
-        # Calculate fitness score
-        fitness = (accuracy * 0.3 + efficiency * 0.2 + generalization * 0.2 +
-                  creativity * 0.15 + consistency * 0.15)
-
-        return PerformanceMetrics(
-            accuracy=accuracy,
-            response_time=response_time,
-            efficiency=efficiency,
-            generalization=generalization,
-            creativity=creativity,
-            consistency=consistency,
-            fitness=fitness,
-            significance=StatisticalSignificance(0.05, (0.0, 1.0), 0.5, 0.8, 100)
-        )
+        return performance_metrics
 
     async def _extract_genetic_material(self):
         """Extract genetic material from top-performing agents."""
@@ -337,10 +361,11 @@ class PhoenixFramework:
         top_performers = sorted_agents[:max(1, len(sorted_agents) // 5)]
 
         for agent in top_performers:
-            # Simulate agent output (in real implementation, this would be actual agent output)
-            agent_output = await self._simulate_agent_output(agent)
+            # Generate real agent output based on agent characteristics
+            task = "Provide a comprehensive analysis and strategic recommendations"
+            agent_output = await self.performance_analyzer.generate_real_agent_output(agent, task)
 
-            # Extract genetic material
+            # Extract genetic material from real output
             genetic_material = await self.knowledge_distillation.extract_genetic_material(
                 agent=agent,
                 output=agent_output,
@@ -351,12 +376,6 @@ class PhoenixFramework:
 
         self.logger.info(f"✅ Extracted genetic material from {len(top_performers)} agents")
 
-    async def _simulate_agent_output(self, agent: AgentState) -> str:
-        """Simulate agent output for testing purposes."""
-        # In real implementation, this would be actual agent output
-        return f"Agent {agent.name} (Generation {agent.generation}) output: " \
-               f"Spirit={agent.spirit.value}, Style={agent.style.value}, " \
-               f"Fitness={agent.get_fitness_score():.3f}"
 
     async def _breed_offspring(self, parents: List[Tuple[AgentState, AgentState]]) -> List[AgentState]:
         """Breed offspring from selected parents."""

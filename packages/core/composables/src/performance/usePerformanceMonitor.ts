@@ -1,41 +1,96 @@
+/**
+ * 🦊 Reynard Performance Monitor Composable
+ * ========================================
+ * 
+ * Comprehensive performance monitoring composable for SolidJS applications within
+ * the Reynard ecosystem. This composable provides sophisticated performance
+ * tracking, metrics collection, and optimization insights for web applications.
+ * 
+ * The Performance Monitor provides:
+ * - Real-time performance metrics collection and analysis
+ * - DOM and CSS performance monitoring with detailed insights
+ * - Memory usage tracking and optimization recommendations
+ * - Browser rendering performance analysis
+ * - System freeze detection and performance warnings
+ * - Comprehensive performance reporting and visualization
+ * - Integration with Reynard performance optimization systems
+ * 
+ * Key Features:
+ * - Operation Tracking: Detailed timing and throughput metrics
+ * - DOM Performance: Update count, duration, and efficiency analysis
+ * - CSS Performance: Style application timing and optimization insights
+ * - Memory Monitoring: Usage tracking and leak detection
+ * - Rendering Analysis: Frame timing and drop detection
+ * - System Monitoring: Browser freeze detection and analysis
+ * - Warning System: Performance threshold alerts and recommendations
+ * 
+ * @author Reynard Development Team
+ * @version 1.0.0
+ */
+
 import { createSignal, onCleanup, onMount } from "solid-js";
 
+/**
+ * Comprehensive performance metrics interface for detailed performance analysis.
+ * 
+ * Provides detailed metrics for operation performance, DOM updates, CSS processing,
+ * memory usage, browser rendering, and system performance. This interface enables
+ * comprehensive performance monitoring and optimization insights.
+ * 
+ * @interface PerformanceMetrics
+ */
 export interface PerformanceMetrics {
-  // Operation metrics
+  /** Operation start timestamp in milliseconds */
   operationStartTime: number;
+  /** Operation end timestamp in milliseconds */
   operationEndTime: number;
+  /** Total operation duration in milliseconds */
   operationDuration: number;
+  /** Number of items processed during the operation */
   itemsProcessed: number;
+  /** Processing throughput in items per second */
   itemsPerSecond: number;
 
-  // DOM performance metrics
+  /** Number of DOM updates performed */
   domUpdateCount: number;
+  /** Total time spent on DOM updates in milliseconds */
   domUpdateDuration: number;
+  /** Average time per DOM update in milliseconds */
   averageDomUpdateTime: number;
 
-  // CSS performance metrics
+  /** Number of CSS style applications */
   styleApplicationCount: number;
+  /** Total time spent on CSS style application in milliseconds */
   styleApplicationDuration: number;
+  /** Average time per CSS style application in milliseconds */
   averageStyleApplicationTime: number;
 
-  // Memory metrics
+  /** Memory usage before operation in bytes */
   memoryUsageBefore: number;
+  /** Memory usage after operation in bytes */
   memoryUsageAfter: number;
+  /** Memory usage change in bytes */
   memoryDelta: number;
 
-  // Browser rendering metrics
+  /** Number of dropped frames during rendering */
   frameDropCount: number;
+  /** Average frame rendering time in milliseconds */
   averageFrameTime: number;
+  /** Worst frame rendering time in milliseconds */
   worstFrameTime: number;
 
-  // System metrics
+  /** Browser freeze time in milliseconds */
   browserFreezeTime: number;
 
-  // Operation details
+  /** Type of operation being monitored */
   operationType: string;
+  /** Size of the dataset being processed */
   datasetSize: number;
+  /** Performance threshold for warnings */
   threshold: number;
+  /** Batch size for processing operations */
   batchSize: number;
+  /** Maximum time allowed per batch in milliseconds */
   maxBatchTime: number;
 }
 

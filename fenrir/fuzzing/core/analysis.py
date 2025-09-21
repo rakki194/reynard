@@ -1,10 +1,7 @@
 """
-🐺 Vulnerability Analysis Engine
+Vulnerability Analysis Engine
 
-*snarls with predatory intelligence* Advanced vulnerability detection and analysis
-engine that examines responses for security weaknesses. Uses pattern matching,
-behavioral analysis, and machine learning techniques to identify potential
-vulnerabilities in application responses.
+Advanced vulnerability detection and analysis engine that examines responses for security weaknesses. Uses pattern matching, behavioral analysis, and machine learning techniques to identify potential vulnerabilities in application responses.
 
 Classes:
     VulnerabilityAnalyzer: Core vulnerability detection and analysis engine
@@ -17,12 +14,9 @@ import httpx
 
 class VulnerabilityAnalyzer:
     """
-    🐺 Vulnerability Analysis Engine
+    Vulnerability Analysis Engine
 
-    *alpha wolf dominance radiates* Comprehensive vulnerability detection system
-    that analyzes HTTP responses, WebSocket messages, and ML model outputs for
-    security weaknesses. Uses multiple detection techniques including pattern
-    matching, behavioral analysis, and response timing analysis.
+    Comprehensive vulnerability detection system that analyzes HTTP responses, WebSocket messages, and ML model outputs for security weaknesses. Uses multiple detection techniques including pattern matching, behavioral analysis, and response timing analysis.
 
     The analyzer detects various vulnerability types:
     - SQL Injection: Database error indicators and successful injection patterns

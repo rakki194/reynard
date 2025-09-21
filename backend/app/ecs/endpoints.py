@@ -1,7 +1,45 @@
 """
-ECS World API Endpoints
+🦊 Reynard ECS World API Endpoints
+==================================
 
-FastAPI endpoints for ECS world management and agent operations.
+Comprehensive FastAPI endpoints for ECS (Entity Component System) world management
+and agent operations within the Reynard ecosystem. This module provides sophisticated
+API endpoints for agent lifecycle management, world simulation, and advanced agent
+interactions including breeding, trait inheritance, and social dynamics.
+
+The ECS World API provides:
+- Agent creation and lifecycle management with trait-based personalities
+- World simulation control with time acceleration and status monitoring
+- Agent breeding and genetic compatibility analysis
+- Trait inheritance and offspring creation with genetic algorithms
+- Social interaction tracking and relationship management
+- Position tracking and spatial awareness for agent movement
+- Comprehensive caching and performance optimization
+- Real-time world status and simulation metrics
+
+Key Features:
+- Agent Management: Complete agent lifecycle from creation to interaction
+- World Simulation: Time-accelerated virtual environment with configurable speed
+- Genetic System: Trait inheritance, compatibility analysis, and offspring creation
+- Social Dynamics: Interaction tracking, relationship management, and communication
+- Spatial Awareness: Position tracking and movement capabilities
+- Performance Optimization: Comprehensive caching and query optimization
+- Real-time Monitoring: World status, simulation metrics, and health checks
+
+API Endpoints:
+- Agent Operations: Create, retrieve, update, and manage agents
+- World Control: Start, stop, and configure world simulation
+- Breeding System: Genetic compatibility analysis and offspring creation
+- Social Features: Interaction tracking and relationship management
+- Spatial Features: Position tracking and movement operations
+- Monitoring: World status, metrics, and health information
+
+The ECS system integrates seamlessly with the Reynard backend architecture,
+providing a sophisticated virtual world for agent simulation and interaction
+with comprehensive API access and real-time monitoring capabilities.
+
+Author: Reynard Development Team
+Version: 1.0.0
 """
 
 import json
@@ -702,7 +740,7 @@ async def get_naming_styles() -> dict[str, Any]:
 async def get_naming_spirits() -> dict[str, Any]:
     """Get all available spirits with their configurations."""
     try:
-        races_data = _get_all_races_data_from_db()
+        races_data = await _get_all_races_data_from_db()
         spirits = {}
         
         for spirit_name, spirit_data in races_data["races"].items():
@@ -725,7 +763,7 @@ async def get_naming_spirits() -> dict[str, Any]:
 async def get_generation_numbers() -> dict[str, Any]:
     """Get generation numbers for all spirits."""
     try:
-        races_data = _get_all_races_data_from_db()
+        races_data = await _get_all_races_data_from_db()
         generation_numbers = {}
         
         for spirit_name, spirit_data in races_data["races"].items():
@@ -1008,6 +1046,44 @@ async def inhabit_success_advisor_spirit(
     except Exception as e:
         logger.error(f"❌ Error providing Success-Advisor-8 spirit inhabitation: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/interactions")
+async def create_interaction(request: Dict[str, Any]) -> Dict[str, Any]:
+    """Create an interaction between agents."""
+    try:
+        agent1_id = request.get("agent1_id")
+        agent2_id = request.get("agent2_id")
+        interaction_type = request.get("interaction_type", "communication")
+        
+        if not agent1_id or not agent2_id:
+            raise HTTPException(
+                status_code=400,
+                detail="agent1_id and agent2_id are required"
+            )
+        
+        # Get the ECS service
+        ecs_service = get_postgres_ecs_service()
+        
+        # Create interaction using the ECS service send_message method
+        interaction = await ecs_service.send_message(
+            sender_id=agent1_id,
+            receiver_id=agent2_id,
+            message=f"Interaction of type: {interaction_type}",
+            interaction_type=interaction_type
+        )
+        
+        return {
+            "success": True,
+            "interaction": interaction
+        }
+        
+    except Exception as e:
+        logger.error(f"Failed to create interaction: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to create interaction: {e!s}"
+        )
 
 
 @router.get("/spirit-inhabitation/success-advisor-8/genome")

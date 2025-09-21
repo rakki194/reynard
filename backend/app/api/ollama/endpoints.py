@@ -1,5 +1,45 @@
 """
-Core API endpoints for Ollama service.
+🦊 Reynard Ollama API Endpoints
+===============================
+
+Comprehensive FastAPI endpoints for Ollama integration within the Reynard ecosystem,
+providing sophisticated AI model interaction capabilities including chat, assistant
+functions, and streaming responses. This module implements enterprise-grade AI
+service integration with advanced features and comprehensive error handling.
+
+The Ollama API provides:
+- Advanced chat functionality with configurable AI models
+- Assistant-style interactions with system prompts and context
+- Streaming responses for real-time AI interactions
+- Tool calling capabilities for function execution
+- Model management and configuration options
+- Performance monitoring and metrics collection
+- Comprehensive error handling and validation
+- Security integration with authentication and authorization
+
+Key Features:
+- Chat Interface: Advanced conversational AI with multiple model support
+- Assistant Functions: Specialized AI assistant capabilities with context awareness
+- Streaming Responses: Real-time response streaming for interactive experiences
+- Tool Integration: Function calling and tool execution capabilities
+- Model Management: Dynamic model selection and configuration
+- Performance Monitoring: Response time tracking and token counting
+- Error Handling: Comprehensive error recovery and user feedback
+- Security: Authentication and authorization for protected endpoints
+
+API Endpoints:
+- POST /chat: Standard chat interface with AI models
+- POST /assistant: Assistant-style interactions with enhanced capabilities
+- GET /stream: Streaming chat responses for real-time interaction
+- GET /models: Model information and configuration details
+- POST /generate: Direct text generation with custom parameters
+
+The Ollama integration provides seamless AI capabilities throughout the Reynard
+ecosystem, enabling sophisticated conversational interfaces and AI-powered
+functionality with enterprise-grade reliability and performance.
+
+Author: Reynard Development Team
+Version: 1.0.0
 """
 
 import logging
@@ -22,7 +62,56 @@ router = APIRouter()
 
 @router.post("/chat", response_model=OllamaChatResponse)
 async def chat(request: OllamaChatRequest):
-    """Chat with Ollama model."""
+    """
+    Advanced chat interface with Ollama AI models.
+    
+    Provides sophisticated conversational AI capabilities using Ollama models with
+    configurable parameters, system prompts, and tool calling support. This endpoint
+    enables natural language interactions with AI models while maintaining context
+    and supporting advanced features like function calling and custom parameters.
+    
+    The chat process includes:
+    1. Request validation and parameter processing
+    2. Model selection and configuration
+    3. Context management and prompt preparation
+    4. AI model interaction with streaming support
+    5. Response processing and tool call handling
+    6. Performance metrics collection and logging
+    
+    Args:
+        request (OllamaChatRequest): Chat request containing:
+            - message (str): User message for AI interaction
+            - model (str, optional): AI model to use for generation
+            - system_prompt (str, optional): System prompt for context
+            - temperature (float, optional): Response creativity level (0.0-1.0)
+            - max_tokens (int, optional): Maximum tokens to generate
+            - tools (list, optional): Available tools for function calling
+            - context (dict, optional): Additional context for the conversation
+    
+    Returns:
+        OllamaChatResponse: Chat response containing:
+            - response (str): AI-generated response text
+            - model (str): Model used for generation
+            - tokens_generated (int): Number of tokens generated
+            - processing_time (float): Response generation time
+            - tool_calls (list): Function calls made during generation
+            - metadata (dict): Additional response metadata
+    
+    Raises:
+        HTTPException: If chat request fails or service is unavailable
+        ValidationError: If request parameters are invalid
+        
+    Example:
+        ```python
+        request = OllamaChatRequest(
+            message="Explain quantum computing",
+            model="llama3.1",
+            temperature=0.7,
+            max_tokens=500
+        )
+        response = await chat(request)
+        ```
+    """
     try:
         service = get_ollama_service()
 

@@ -241,10 +241,10 @@ async def init_search_service(service_config: dict[str, Any]) -> bool:
         Exception: Logged and returned as False for graceful error handling.
     """
     try:
-        from app.api.search.search import SearchService
+        from app.api.search.service import OptimizedSearchService
 
-        # Create and initialize the unified search service
-        search_service = SearchService()
+        # Create and initialize the optimized search service
+        search_service = OptimizedSearchService()
         success = await search_service.initialize()
         
         if success:

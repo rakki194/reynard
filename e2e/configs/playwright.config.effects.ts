@@ -1,16 +1,15 @@
 /**
- * 🦊 EFFECTS TEST CONFIGURATION
+ * EFFECTS TEST CONFIGURATION
  *
- * *whiskers twitch with strategic cunning* Playwright configuration specifically
- * for testing SolidJS createEffect patterns and preventing Cloudflare-style outages.
+ * Playwright configuration specifically for testing SolidJS createEffect patterns and preventing Cloudflare-style outages.
  *
- * 🦊 *whiskers twitch with unified precision* Now uses centralized results management.
+ * Now uses centralized results management.
  */
 
 import { defineConfig, devices } from "@playwright/test";
 import { createResultsManager, TEST_TYPES } from "../core/utils/results-manager";
 
-// 🦊 Initialize results manager for effects tests
+// Initialize results manager for effects tests
 const resultsManager = createResultsManager(TEST_TYPES.EFFECTS, {
   environment: process.env.NODE_ENV || "development",
   branch: process.env.GIT_BRANCH || "unknown",

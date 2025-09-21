@@ -1,0 +1,23 @@
+# Real Agent Genome Experiment Requirements
+
+# Core dependencies
+aiohttp
+asyncio
+requests
+
+# Data handling
+json
+pathlib
+datetime
+
+# Logging and utilities
+logging
+argparse
+
+# Optional: For enhanced analysis
+numpy
+pandas
+scipy
+
+# Optional: For statistical analysis
+statsmodels

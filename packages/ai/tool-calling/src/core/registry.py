@@ -1,8 +1,41 @@
 """
-Tool registry for managing and discovering available tools.
+🦊 Reynard AI Tool Registry System
+=================================
 
-This module provides the central registry for all tools, handling registration,
-discovery, and execution coordination.
+Comprehensive tool registry and management system for the Reynard AI tool-calling
+framework. This module provides the central registry for all AI tools, handling
+registration, discovery, execution coordination, and advanced validation.
+
+The tool registry system provides:
+- Centralized tool registration and lifecycle management
+- Advanced parameter validation with security scanning
+- Permission-based access control and audit logging
+- Tool discovery and categorization with tag-based filtering
+- Performance monitoring and execution metrics
+- Comprehensive error handling and graceful degradation
+- Support for both synchronous and asynchronous tool execution
+
+Architecture Features:
+- Registry Pattern: Centralized tool management with lazy loading
+- Validation Pipeline: Multi-level parameter validation with security checks
+- Permission System: Role-based access control with hierarchical permissions
+- Audit Trail: Comprehensive logging for security and compliance
+- Performance Monitoring: Execution metrics and performance tracking
+- Error Boundaries: Graceful failure handling with detailed error reporting
+
+Security Features:
+- Parameter validation with type checking and sanitization
+- Security risk assessment and threat detection
+- Sensitive data redaction for logging and error reporting
+- Admin-level tool execution auditing
+- Permission hierarchy enforcement
+
+The registry supports dynamic tool registration, enabling the Reynard ecosystem
+to discover and utilize tools from various sources while maintaining security
+and performance standards.
+
+Author: Reynard Development Team
+Version: 1.0.0
 """
 
 import logging
@@ -17,13 +50,65 @@ logger = logging.getLogger(__name__)
 
 class ToolRegistry:
     """
-    Central registry for managing tools.
-
-    The registry maintains a collection of available tools and provides
-    methods for registration, discovery, and execution.
+    Central registry for managing AI tools with advanced validation and security features.
+    
+    The ToolRegistry serves as the central hub for all AI tool operations within the
+    Reynard ecosystem. It provides comprehensive tool lifecycle management, including
+    registration, discovery, execution coordination, and advanced security validation.
+    
+    Key Features:
+    - Dynamic tool registration and unregistration
+    - Multi-level parameter validation with security scanning
+    - Permission-based access control with role hierarchy
+    - Comprehensive audit logging and performance monitoring
+    - Tool categorization and tag-based discovery
+    - Graceful error handling and security risk assessment
+    - Support for both sync and async tool execution
+    
+    Security Features:
+    - Parameter validation with type checking and sanitization
+    - Security risk assessment and threat detection
+    - Sensitive data redaction for logging and error reporting
+    - Admin-level tool execution auditing
+    - Permission hierarchy enforcement (guest < user < admin)
+    
+    The registry maintains multiple indexes for efficient tool discovery:
+    - Primary tool registry by name
+    - Category-based index for tool grouping
+    - Tag-based index for flexible filtering
+    - Permission-based filtering for access control
+    
+    Example:
+        ```python
+        registry = ToolRegistry(validation_level=ValidationLevel.STANDARD)
+        registry.register_tool(my_tool)
+        result = await registry.execute_tool("my_tool", context, parameters)
+        ```
     """
 
     def __init__(self, validation_level=None):
+        """
+        Initialize the ToolRegistry with optional validation level configuration.
+        
+        Creates a new tool registry instance with empty indexes and configurable
+        validation settings. The registry starts with no tools and builds its
+        indexes dynamically as tools are registered.
+        
+        Args:
+            validation_level (ValidationLevel, optional): Initial validation level
+                for parameter validation. If None, defaults to ValidationLevel.STANDARD.
+                Available levels:
+                - ValidationLevel.BASIC: Minimal validation
+                - ValidationLevel.STANDARD: Standard validation with security checks
+                - ValidationLevel.STRICT: Comprehensive validation with enhanced security
+        
+        Attributes:
+            _tools (dict[str, BaseTool]): Primary tool registry by name
+            _categories (dict[str, set[str]]): Category-based tool index
+            _tags (dict[str, set[str]]): Tag-based tool index
+            _validation_level (ValidationLevel): Current validation level
+            _validator (ToolValidator): Lazy-loaded validation engine
+        """
         self._tools: dict[str, BaseTool] = {}
         self._categories: dict[str, set[str]] = {}
         self._tags: dict[str, set[str]] = {}
@@ -32,13 +117,36 @@ class ToolRegistry:
 
     def register_tool(self, tool: BaseTool) -> None:
         """
-        Register a tool in the registry.
-
+        Register a tool in the registry with comprehensive indexing.
+        
+        Adds a new tool to the registry and updates all relevant indexes for
+        efficient discovery and filtering. The registration process includes
+        category indexing, tag indexing, and validation of tool metadata.
+        
+        The registration process:
+        1. Validates tool name uniqueness
+        2. Adds tool to primary registry
+        3. Updates category index for tool grouping
+        4. Updates tag index for flexible filtering
+        5. Logs successful registration
+        
         Args:
-            tool: Tool instance to register
-
+            tool (BaseTool): Tool instance to register. Must have:
+                - name (str): Unique tool identifier
+                - category (str): Tool category for grouping
+                - tags (list[str]): Tags for flexible filtering
+                - required_permission (str): Access permission level
+        
         Raises:
             ValueError: If tool name is already registered
+            TypeError: If tool is not a BaseTool instance
+            
+        Example:
+            ```python
+            my_tool = MyCustomTool(name="my_tool", category="utility")
+            registry.register_tool(my_tool)
+            # Tool is now available for discovery and execution
+            ```
         """
         if tool.name in self._tools:
             raise ValueError(f"Tool '{tool.name}' is already registered")

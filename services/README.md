@@ -1,10 +1,10 @@
 # Reynard Services Architecture
 
-🦊 **Enhanced Microservices Architecture with Proper Package Management**
+**Enhanced Microservices Architecture with Proper Package Management**
 
 This directory contains the refactored Reynard services, organized as proper Python packages with clean dependencies and no sys.path manipulation.
 
-## 🏗️ **Architecture Overview**
+## **Architecture Overview**
 
 ```text
 services/

@@ -13,6 +13,7 @@ import {
   handleQualityGateCommand,
   handleSecurityCommand,
   handleWatchCommand,
+  createDocstringCommand,
 } from "./commands";
 
 const program = new Command();
@@ -71,6 +72,9 @@ program
   .option("-p, --project <path>", "Project root path", process.cwd())
   .option("-i, --interval <ms>", "Analysis interval in milliseconds", "5000")
   .action(handleWatchCommand);
+
+// Docstring command
+program.addCommand(createDocstringCommand());
 
 // Handle uncaught errors
 process.on("uncaughtException", error => {

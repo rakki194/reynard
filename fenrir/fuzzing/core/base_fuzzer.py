@@ -1,9 +1,7 @@
 """
-🦊 Base Fuzzer - The Strategic Foundation
+Base Fuzzer - The Strategic Foundation
 
-*whiskers twitch with cunning intelligence* The foundational fuzzer class that
-provides all the common functionality needed by specialized fuzzers. This is
-the fox's den where all the escape hatches and strategic patterns are defined.
+The foundational fuzzer class that provides all the common functionality needed by specialized fuzzers. This is the core module where all the strategic patterns and utilities are defined.
 """
 
 import asyncio
@@ -22,12 +20,9 @@ console = Console()
 
 class BaseFuzzer(ABC):
     """
-    🦊 Base Fuzzer - Strategic Foundation for All Fuzzing Operations
+    Base Fuzzer - Strategic Foundation for All Fuzzing Operations
 
-    *red fur gleams with intelligence* This is the cunning foundation that
-    provides all the common patterns, escape hatches, and strategic utilities
-    that specialized fuzzers need. Like a fox's den with multiple entrances,
-    this class provides multiple ways to approach any fuzzing challenge.
+    This is the foundational class that provides all the common patterns, utilities, and strategic approaches that specialized fuzzers need. This class provides multiple ways to approach any fuzzing challenge.
 
     Attributes:
         base_url (str): Base URL for fuzzing targets

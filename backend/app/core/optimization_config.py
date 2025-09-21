@@ -1,26 +1,63 @@
 """
-Optimization Configuration
-=========================
+🦊 Reynard Optimization Configuration
+=====================================
 
-Default configuration for performance optimizations in the FastAPI ECS search system.
-This ensures all optimizations are enabled by default with optimal settings.
+Comprehensive performance optimization configuration for the Reynard FastAPI backend.
+This module provides centralized configuration management for all performance
+optimizations, caching strategies, and monitoring systems within the Reynard
+ecosystem.
+
+The optimization configuration provides:
+- Cache optimization with Redis integration and compression
+- Database connection pooling and query monitoring
+- HTTP connection management and DNS caching
+- Performance monitoring and metrics collection
+- Memory optimization and garbage collection tuning
+- Security optimization with rate limiting and validation
+- Logging optimization with structured logging and rotation
+
+Key Features:
+- Environment-based configuration with sensible defaults
+- Comprehensive caching strategies with Redis backend
+- Database connection pooling with health monitoring
+- HTTP connection optimization with DNS caching
+- Real-time performance monitoring and analytics
+- Memory management and garbage collection tuning
+- Security optimizations with rate limiting and validation
+- Structured logging with rotation and compression
+
+Configuration Categories:
+- Cache: Redis integration, compression, and metrics
+- Database: Connection pooling, monitoring, and health checks
+- HTTP: Connection limits, DNS caching, and timeouts
+- Monitoring: Metrics collection and performance tracking
+- Memory: Garbage collection and memory optimization
+- Security: Rate limiting, validation, and threat detection
+- Logging: Structured logging, rotation, and compression
+
+The configuration system ensures optimal performance across all components
+while maintaining security, reliability, and observability standards.
+
+Author: Reynard Development Team
+Version: 1.0.0
 """
 
 import os
 from typing import Dict, Any
 
 # Default optimization settings
+# This configuration provides comprehensive performance optimizations for the Reynard backend
 DEFAULT_OPTIMIZATION_CONFIG = {
     # Cache optimization settings
+    # Provides Redis-based caching with compression, metrics, and fallback support
     "cache": {
-        "enabled": True,
-        "redis_url": os.getenv("REDIS_URL", "redis://localhost:6379/1"),
-        "max_connections": int(os.getenv("REDIS_MAX_CONNECTIONS", "20")),
-        "default_ttl": int(os.getenv("CACHE_TTL", "3600")),  # 1 hour
-        "compression_threshold": int(os.getenv("CACHE_COMPRESSION_THRESHOLD", "1024")),  # 1KB
-        "enable_metrics": True,
-        "enable_namespacing": True,
-        "fallback_to_legacy": True,
+        "enabled": True,  # Enable/disable caching system
+        "redis_url": os.getenv("REDIS_URL", "redis://localhost:6379/1"),  # Redis connection URL
+        "max_connections": int(os.getenv("REDIS_MAX_CONNECTIONS", "20")),  # Max Redis connections
+        "default_ttl": int(os.getenv("CACHE_TTL", "3600")),  # Default cache TTL (1 hour)
+        "compression_threshold": int(os.getenv("CACHE_COMPRESSION_THRESHOLD", "1024")),  # Compression threshold (1KB)
+        "enable_metrics": True,  # Enable cache performance metrics
+        "fallback_to_legacy": True,  # Fallback to legacy cache if Redis fails
     },
     
     # Database optimization settings

@@ -1,7 +1,44 @@
 #!/bin/bash
 
-# Reynard Production Deployment Script
-# This script deploys the complete Reynard application stack to production
+# 🦊 Reynard Production Deployment Script
+# ======================================
+# 
+# Comprehensive production deployment script for the Reynard application stack.
+# This script provides enterprise-grade deployment capabilities with comprehensive
+# validation, error handling, and monitoring for production environments.
+# 
+# The Production Deployment Script provides:
+# - Complete application stack deployment with Docker Compose
+# - Environment variable validation and configuration management
+# - Database migration and initialization procedures
+# - Health checks and service validation
+# - Rollback capabilities and error recovery
+# - Comprehensive logging and monitoring setup
+# - Security validation and configuration verification
+# - Performance optimization and resource management
+# 
+# Key Features:
+# - Environment Validation: Comprehensive validation of production configuration
+# - Service Orchestration: Complete application stack deployment and management
+# - Database Management: Migration, initialization, and backup procedures
+# - Health Monitoring: Service health checks and validation
+# - Error Recovery: Rollback capabilities and error handling
+# - Security Validation: Configuration and security verification
+# - Performance Optimization: Resource management and optimization
+# - Monitoring Setup: Comprehensive logging and monitoring configuration
+# 
+# Prerequisites:
+# - Docker and Docker Compose installed and configured
+# - Production environment file (.env.production) configured
+# - Required environment variables set and validated
+# - Database credentials and connection strings configured
+# - SSL certificates and security configuration ready
+# 
+# Usage:
+#   ./deploy-production.sh
+# 
+# Author: Reynard Development Team
+# Version: 1.0.0
 
 set -e
 

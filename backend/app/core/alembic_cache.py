@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
 from .cache_optimizer import IntelligentCacheManager, CacheStrategy
+from .cache_config import CacheConfig
 
 logger = logging.getLogger(__name__)
 
@@ -22,22 +23,22 @@ logger = logging.getLogger(__name__)
 class AlembicCacheManager:
     """Cache manager specifically for Alembic operations."""
     
-    def __init__(self, redis_enabled: bool = True, fallback_cache: Optional[Dict] = None):
+    def __init__(self, redis_enabled: bool = None, fallback_cache: Optional[Dict] = None):
         """Initialize the Alembic cache manager.
         
         Args:
-            redis_enabled: Whether to use Redis caching
+            redis_enabled: Whether to use Redis caching (None for config default)
             fallback_cache: Fallback cache when Redis is unavailable
         """
-        self.redis_enabled = redis_enabled
+        self.redis_enabled = redis_enabled if redis_enabled is not None else CacheConfig.ALEMBIC_CACHE_ENABLED
         self.fallback_cache = fallback_cache or {}
         self.cache_manager: Optional[IntelligentCacheManager] = None
         
         # Cache configuration
         self.namespace = "alembic"
-        self.migration_metadata_ttl = 3600  # 1 hour
-        self.migration_data_ttl = 7200      # 2 hours
-        self.schema_cache_ttl = 1800        # 30 minutes
+        self.migration_metadata_ttl = CacheConfig.get_cache_ttl("migration_metadata")
+        self.migration_data_ttl = CacheConfig.get_cache_ttl("migration_data")
+        self.schema_cache_ttl = CacheConfig.get_cache_ttl("schema_info")
         
         # Initialize cache manager if Redis is enabled
         if self.redis_enabled:
@@ -47,9 +48,9 @@ class AlembicCacheManager:
         """Initialize the Redis cache manager."""
         try:
             self.cache_manager = IntelligentCacheManager(
-                redis_url="redis://localhost:6379/2",  # Use DB 2 for Alembic
-                max_connections=10,
-                cache_strategy=CacheStrategy.TTL
+                redis_url=CacheConfig.get_alembic_redis_url(),
+                max_connections=CacheConfig.REDIS_MAX_CONNECTIONS,
+                default_ttl=CacheConfig.ALEMBIC_CACHE_TTL
             )
             await self.cache_manager.initialize()
             logger.info("Alembic cache manager initialized with Redis")

@@ -1,9 +1,7 @@
 """
-🐺 Base Fuzzing Framework
+Base Fuzzing Framework
 
-*alpha wolf dominance radiates* Base classes and interfaces for the Reynard
-fuzzing framework. Provides common functionality and abstract interfaces
-that all fuzzing components inherit from.
+Base classes and interfaces for the Reynard fuzzing framework. Provides common functionality and abstract interfaces that all fuzzing components inherit from.
 
 Classes:
     BaseFuzzer: Abstract base class for all fuzzing engines
@@ -18,12 +16,9 @@ import httpx
 
 class BaseFuzzer(ABC):
     """
-    🐺 Base Fuzzing Framework
+    Base Fuzzing Framework
 
-    *snarls with predatory intelligence* Abstract base class that provides
-    common functionality and interfaces for all fuzzing engines in the
-    Reynard framework. Ensures consistent behavior and extensibility
-    across different fuzzing components.
+    Abstract base class that provides common functionality and interfaces for all fuzzing engines in the Reynard framework. Ensures consistent behavior and extensibility across different fuzzing components.
 
     This base class provides:
     - Common HTTP session management
@@ -51,8 +46,7 @@ class BaseFuzzer(ABC):
         """
         Initialize the base fuzzer.
 
-        *whiskers twitch with intelligence* Sets up common fuzzing
-        infrastructure and configuration.
+        Sets up common fuzzing infrastructure and configuration.
 
         Args:
             base_url (str): Base URL for fuzzing targets
@@ -79,8 +73,7 @@ class BaseFuzzer(ABC):
         """
         Async context manager exit.
 
-        *snarls with predatory intelligence* Ensures proper cleanup
-        of resources when exiting the context.
+        Ensures proper cleanup of resources when exiting the context.
         """
         await self.session.aclose()
 
@@ -212,8 +205,7 @@ class BaseFuzzer(ABC):
         """
         Generate summary statistics from collected results.
 
-        *snarls with predatory intelligence* Analyzes collected results
-        to provide comprehensive summary statistics.
+        Analyzes collected results to provide comprehensive summary statistics.
 
         Returns:
             Dict[str, Any]: Summary statistics

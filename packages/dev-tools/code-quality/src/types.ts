@@ -25,6 +25,16 @@ export interface CodeQualityMetrics {
   branchCoverage: number;
   functionCoverage: number;
 
+  // Documentation Metrics
+  docstringCoverage: number;
+  docstringQualityScore: number;
+  documentedFunctions: number;
+  totalFunctions: number;
+  documentedClasses: number;
+  totalClasses: number;
+  documentedModules: number;
+  totalModules: number;
+
   // Technical Debt
   technicalDebt: number; // in minutes
   reliabilityRating: "A" | "B" | "C" | "D" | "E";
@@ -100,4 +110,33 @@ export interface QualityGateResult {
   status: QualityGateStatus;
   actualValue: number | string;
   threshold: number | string;
+}
+
+// Emoji and Roleplay Scanning Types
+export interface EmojiRoleplayMetrics {
+  totalEmojis: number;
+  totalRoleplayPatterns: number;
+  totalRoleplayActions: number;
+  filesWithEmojis: number;
+  filesWithRoleplay: number;
+  professionalLanguageScore: number; // 0-100, higher is better
+}
+
+export interface EmojiRoleplayIssue {
+  type: 'EMOJI' | 'ROLEPLAY_PATTERN' | 'ROLEPLAY_ACTION';
+  severity: 'MAJOR' | 'MINOR' | 'INFO';
+  line: number;
+  column: number;
+  message: string;
+  pattern: string;
+  suggestion: string;
+}
+
+export interface EmojiRoleplayScanResult {
+  filePath: string;
+  issues: EmojiRoleplayIssue[];
+  totalIssues: number;
+  emojiCount: number;
+  roleplayPatternCount: number;
+  roleplayActionCount: number;
 }

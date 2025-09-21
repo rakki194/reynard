@@ -1,5 +1,43 @@
 """
-Pydantic models for Ollama API endpoints.
+🦊 Reynard Ollama API Data Models
+=================================
+
+Comprehensive Pydantic data models for Ollama API endpoints within the Reynard
+ecosystem. This module provides type-safe data structures for request and response
+handling, validation, and serialization for all Ollama-related API interactions.
+
+The Ollama Data Models provide:
+- Type-safe request and response models with comprehensive validation
+- Streaming event models for real-time AI interactions
+- Assistant request models with advanced configuration options
+- Tool calling models for function execution and integration
+- Performance metrics models for monitoring and optimization
+- Error handling models with detailed error information
+- Metadata models for additional context and configuration
+
+Key Features:
+- Type Safety: Comprehensive Pydantic models with strict validation
+- Request Validation: Input validation with length limits and type checking
+- Response Models: Structured response data with performance metrics
+- Streaming Support: Event-based models for real-time interactions
+- Tool Integration: Models for function calling and tool execution
+- Performance Tracking: Metrics collection and monitoring support
+- Error Handling: Comprehensive error models with detailed information
+- Documentation: Self-documenting models with field descriptions
+
+Model Categories:
+- Request Models: Input validation and parameter handling
+- Response Models: Structured output with performance metrics
+- Event Models: Streaming and real-time interaction support
+- Assistant Models: Advanced AI assistant configuration
+- Tool Models: Function calling and tool execution support
+- Error Models: Comprehensive error handling and reporting
+
+The data models ensure type safety, validation, and comprehensive documentation
+for all Ollama API interactions within the Reynard ecosystem.
+
+Author: Reynard Development Team
+Version: 1.0.0
 """
 
 from typing import Any
@@ -8,7 +46,23 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class OllamaChatRequest(BaseModel):
-    """Request model for Ollama chat."""
+    """
+    Request model for Ollama chat interactions with comprehensive validation.
+    
+    Provides type-safe request handling for chat interactions with Ollama AI models,
+    including message validation, model configuration, and advanced parameters for
+    controlling AI behavior and response generation.
+    
+    Attributes:
+        message (str): User message for AI interaction (1-10000 characters)
+        model (str): Ollama model to use for generation (default: "embeddinggemma:latest")
+        system_prompt (str | None): System prompt for context and behavior control
+        temperature (float): Sampling temperature for response creativity (0.1-2.0)
+        max_tokens (int): Maximum tokens to generate (1-8192)
+        stream (bool): Enable streaming response for real-time interaction
+        tools (list[dict] | None): Available tools for function calling
+        context (dict | None): Additional context for the conversation
+    """
 
     message: str = Field(
         ..., description="User message", min_length=1, max_length=10000

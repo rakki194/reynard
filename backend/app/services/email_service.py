@@ -1,7 +1,45 @@
 """
-Email Service for Reynard Backend.
+🦊 Reynard Email Service
+========================
 
-This module provides email sending functionality using SMTP.
+Comprehensive email service for the Reynard backend, providing sophisticated
+email sending capabilities with SMTP integration, attachment support, and
+advanced email management features. This service enables reliable email
+communication throughout the Reynard ecosystem with enterprise-grade
+functionality and security.
+
+The Email Service provides:
+- SMTP-based email sending with configurable server settings
+- Multi-format email support (HTML, plain text, and mixed content)
+- File attachment handling with automatic MIME type detection
+- Email templating and formatting with dynamic content support
+- Delivery status tracking and error handling
+- Security features including TLS encryption and authentication
+- Rate limiting and spam prevention mechanisms
+- Comprehensive logging and audit trails
+
+Key Features:
+- SMTP Integration: Configurable SMTP server support with authentication
+- Multi-Format Support: HTML, plain text, and mixed content emails
+- Attachment Handling: File attachments with automatic MIME type detection
+- Template System: Dynamic email templates with variable substitution
+- Security: TLS encryption, authentication, and spam prevention
+- Error Handling: Comprehensive error recovery and retry mechanisms
+- Logging: Detailed audit trails and delivery status tracking
+- Performance: Async email sending with connection pooling
+
+Service Components:
+- EmailConfig: Configuration management for SMTP settings
+- EmailAttachment: File attachment handling and validation
+- EmailMessage: Email content and metadata management
+- EmailService: Core email sending and management functionality
+
+The email service integrates seamlessly with the Reynard backend architecture,
+providing reliable email communication capabilities for notifications,
+alerts, and user communications throughout the ecosystem.
+
+Author: Reynard Development Team
+Version: 1.0.0
 """
 
 import asyncio
@@ -21,7 +59,22 @@ logger = logging.getLogger(__name__)
 
 
 class EmailConfig:
-    """Email configuration settings."""
+    """
+    Email configuration settings for SMTP server connection and authentication.
+    
+    Manages all email-related configuration including SMTP server settings,
+    authentication credentials, and security options. Configuration values
+    are loaded from environment variables with sensible defaults.
+    
+    Attributes:
+        smtp_server (str): SMTP server hostname or IP address
+        smtp_port (int): SMTP server port number
+        smtp_username (str): SMTP authentication username
+        smtp_password (str): SMTP authentication password
+        use_tls (bool): Whether to use TLS encryption
+        from_email (str): Default sender email address
+        from_name (str): Default sender display name
+    """
     
     def __init__(self) -> None:
         self.smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")

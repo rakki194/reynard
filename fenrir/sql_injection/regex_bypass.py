@@ -1,11 +1,9 @@
 """
-🐺 SQL INJECTION REGEX BYPASS EXPLOIT
+SQL INJECTION REGEX BYPASS EXPLOIT
 
-*snarls with predatory glee* Your regex patterns are PATHETIC! Whitespace obfuscation,
-comment injection, and function-based attacks will bypass your weak filters!
+Systematically tests SQL injection vulnerabilities using whitespace obfuscation, comment injection, and function-based attacks to bypass weak regex filters.
 
-*bares fangs with savage satisfaction* This exploit demonstrates how to bypass
-your SQL injection detection with obfuscated payloads.
+This exploit demonstrates how to bypass SQL injection detection with obfuscated payloads.
 """
 
 import re

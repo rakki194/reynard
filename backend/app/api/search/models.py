@@ -34,7 +34,7 @@ class SemanticSearchRequest(SearchRequest):
     """Semantic search request model."""
 
     similarity_threshold: float = Field(
-        default=0.7, ge=0.0, le=1.0, description="Minimum similarity score"
+        default=0.1, ge=0.0, le=1.0, description="Minimum similarity score"
     )
     model: str | None = Field(default=None, description="Embedding model to use")
     search_type: str = Field(

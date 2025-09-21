@@ -1,20 +1,75 @@
-"""Tests for the image_processing module."""
+"""
+🦊 Reynard Image Processing Test Suite
+=====================================
+
+Comprehensive test suite for the Reynard image processing utilities, providing
+thorough validation of image manipulation, format conversion, and processing
+capabilities. This test suite ensures reliability and correctness of all
+image processing operations within the Reynard ecosystem.
+
+The Image Processing Test Suite provides:
+- Comprehensive validation testing for image dimension handling
+- Aspect ratio calculation and validation testing
+- Image resize dimension calculation testing
+- Image transformation and manipulation testing
+- Format conversion and optimization testing
+- Error handling and edge case validation
+- Performance testing for image processing operations
+- Integration testing with Reynard backend services
+
+Key Test Categories:
+- Dimension Validation: Testing image dimension validation and constraints
+- Aspect Ratio Calculations: Testing aspect ratio computation and handling
+- Resize Operations: Testing image resize dimension calculations
+- Transform Operations: Testing image transformation and manipulation
+- Format Conversion: Testing image format conversion and optimization
+- Error Handling: Testing error conditions and edge cases
+- Performance Testing: Testing processing speed and memory usage
+- Integration Testing: Testing integration with backend services
+
+The test suite ensures comprehensive coverage of all image processing
+functionality while maintaining high code quality and reliability
+standards for the Reynard ecosystem.
+
+Author: Reynard Development Team
+Version: 1.0.0
+"""
 
 from app.utils.image_processing import ImageProcessing
 from app.utils.image_types import ImageTransform
 
 
 class TestImageProcessing:
-    """Test cases for ImageProcessing class."""
+    """
+    Comprehensive test cases for the ImageProcessing class.
+    
+    Provides thorough testing of all image processing functionality including
+    dimension validation, aspect ratio calculations, resize operations, and
+    transformation handling. This test class ensures reliability and correctness
+    of image processing operations.
+    """
 
     def test_validate_dimensions_valid(self):
-        """Test validate_dimensions with valid dimensions."""
+        """
+        Test dimension validation with valid input parameters.
+        
+        Validates that the ImageProcessing.validate_dimensions method correctly
+        identifies valid image dimensions within acceptable ranges. Tests various
+        valid dimension combinations including minimum, typical, and maximum values.
+        """
         assert ImageProcessing.validate_dimensions(100, 200) is True
         assert ImageProcessing.validate_dimensions(1, 1) is True
         assert ImageProcessing.validate_dimensions(9999, 9999) is True
 
     def test_validate_dimensions_invalid(self):
-        """Test validate_dimensions with invalid dimensions."""
+        """
+        Test dimension validation with invalid input parameters.
+        
+        Validates that the ImageProcessing.validate_dimensions method correctly
+        rejects invalid image dimensions including zero values, negative values,
+        and dimensions exceeding maximum limits. Ensures proper error handling
+        for edge cases and boundary conditions.
+        """
         assert ImageProcessing.validate_dimensions(0, 100) is False
         assert ImageProcessing.validate_dimensions(100, 0) is False
         assert ImageProcessing.validate_dimensions(-1, 100) is False

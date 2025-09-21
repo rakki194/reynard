@@ -1,8 +1,7 @@
 /**
- * 🐺 SECURITY ASSESSOR
+ * SECURITY ASSESSOR
  *
- * *snarls with predatory intelligence* Handles comprehensive security
- * assessments and generates detailed reports.
+ * Handles comprehensive security assessments and generates detailed reports.
  */
 
 import { exec } from "child_process";

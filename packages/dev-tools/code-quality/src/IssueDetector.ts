@@ -8,10 +8,17 @@
 import { exec } from "child_process";
 import { promisify } from "util";
 import { IssueSeverity, IssueType, QualityIssue } from "./types";
+import { DocstringAnalyzer } from "./DocstringAnalyzer";
 
 const execAsync = promisify(exec);
 
 export class IssueDetector {
+  private readonly docstringAnalyzer: DocstringAnalyzer;
+
+  constructor() {
+    this.docstringAnalyzer = new DocstringAnalyzer();
+  }
+
   /**
    * 🐺 Detect quality issues using existing tools
    */
@@ -25,6 +32,10 @@ export class IssueDetector {
     // Run security analysis
     const securityResults = await this.runSecurityAnalysis(files);
     issues.push(...securityResults);
+
+    // Run docstring analysis
+    const docstringResults = await this.runDocstringAnalysis(files);
+    issues.push(...docstringResults);
 
     return issues;
   }
@@ -123,6 +134,34 @@ export class IssueDetector {
 
     // Placeholder for security analysis integration
     // In a real implementation, this would call your Fenrir tools
+
+    return issues;
+  }
+
+  private async runDocstringAnalysis(files: string[]): Promise<QualityIssue[]> {
+    const issues: QualityIssue[] = [];
+
+    try {
+      // Filter for Python and TypeScript files
+      const docstringFiles = files.filter(
+        f => f.endsWith(".py") || f.endsWith(".ts") || f.endsWith(".tsx")
+      );
+
+      if (docstringFiles.length > 0) {
+        console.log(`🦦 Analyzing docstrings in ${docstringFiles.length} files...`);
+        
+        const analyses = await this.docstringAnalyzer.analyzeFiles(docstringFiles);
+        
+        // Extract all issues from the analyses
+        for (const analysis of analyses) {
+          issues.push(...analysis.issues);
+        }
+
+        console.log(`✅ Found ${issues.length} docstring issues`);
+      }
+    } catch (error) {
+      console.warn("⚠️ Docstring analysis failed:", error);
+    }
 
     return issues;
   }

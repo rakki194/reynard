@@ -1,8 +1,7 @@
 /**
  * I18n Testing Module - Barrel Export
  *
- * 🦦 *splashes with i18n testing enthusiasm* Clean exports for all
- * internationalization testing utilities in the Reynard e2e testing framework.
+ * Clean exports for all internationalization testing utilities in the Reynard e2e testing framework.
  */
 
 // Core i18n benchmark utilities

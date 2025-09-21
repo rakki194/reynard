@@ -44,9 +44,9 @@ class ECSCacheManager:
         """Initialize the Redis cache manager."""
         try:
             self.cache_manager = IntelligentCacheManager(
-                redis_url="redis://localhost:6379/3",  # Use DB 3 for ECS
-                max_connections=10,
-                cache_strategy=CacheStrategy.TTL
+                redis_url=CacheConfig.get_ecs_redis_url(),
+                max_connections=CacheConfig.REDIS_MAX_CONNECTIONS,
+                default_ttl=CacheConfig.ECS_CACHE_TTL
             )
             await self.cache_manager.initialize()
             logger.info("ECS cache manager initialized with Redis")
@@ -152,6 +152,25 @@ class ECSCacheManager:
                 self.fallback_cache.clear()
         except Exception as e:
             logger.error(f"Failed to clear cache namespace: {e}")
+    
+    async def get_cache_stats(self) -> Dict[str, Any]:
+        """Get cache statistics.
+        
+        Returns:
+            Cache statistics dictionary
+        """
+        try:
+            if self.cache_manager:
+                return await self.cache_manager.get_metrics()
+            else:
+                return {
+                    "cache_type": "fallback_memory",
+                    "fallback_cache_size": len(self.fallback_cache),
+                    "redis_enabled": False
+                }
+        except Exception as e:
+            logger.error(f"Failed to get cache stats: {e}")
+            return {"error": str(e)}
 
 
 # Global ECS cache manager instance

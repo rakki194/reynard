@@ -6,12 +6,19 @@
  */
 
 import { CodeQualityMetrics, LanguageAnalysis } from "./types";
+import { DocstringAnalyzer, DocstringMetrics } from "./DocstringAnalyzer";
 
 export class MetricsCalculator {
+  private readonly docstringAnalyzer: DocstringAnalyzer;
+
+  constructor() {
+    this.docstringAnalyzer = new DocstringAnalyzer();
+  }
+
   /**
    * 🦊 Calculate comprehensive metrics
    */
-  async calculateMetrics(_files: string[], languageAnalyses: LanguageAnalysis[]): Promise<CodeQualityMetrics> {
+  async calculateMetrics(files: string[], languageAnalyses: LanguageAnalysis[]): Promise<CodeQualityMetrics> {
     let totalLines = 0;
     let totalComments = 0;
     let totalComplexity = 0;
@@ -22,6 +29,9 @@ export class MetricsCalculator {
       totalComments += Math.floor(analysis.lines * 0.1); // Rough estimate
       totalComplexity += analysis.lines * 0.5; // Rough estimate
     }
+
+    // Calculate docstring metrics
+    const docstringMetrics = await this.calculateDocstringMetrics(files);
 
     return {
       linesOfCode: totalLines,
@@ -37,6 +47,15 @@ export class MetricsCalculator {
       lineCoverage: 0,
       branchCoverage: 0,
       functionCoverage: 0,
+      // Documentation metrics
+      docstringCoverage: docstringMetrics.coveragePercentage,
+      docstringQualityScore: docstringMetrics.qualityScore,
+      documentedFunctions: docstringMetrics.documentedFunctions,
+      totalFunctions: docstringMetrics.totalFunctions,
+      documentedClasses: docstringMetrics.documentedClasses,
+      totalClasses: docstringMetrics.totalClasses,
+      documentedModules: docstringMetrics.documentedModules,
+      totalModules: docstringMetrics.totalModules,
       technicalDebt: 0,
       reliabilityRating: "A",
       securityRating: "A",
@@ -120,5 +139,47 @@ export class MetricsCalculator {
     if (vulnerabilityDensity <= 0.5) return "C";
     if (vulnerabilityDensity <= 1.0) return "D";
     return "E";
+  }
+
+  /**
+   * 🦦 Calculate docstring metrics
+   */
+  private async calculateDocstringMetrics(files: string[]): Promise<DocstringMetrics> {
+    try {
+      // Filter for Python and TypeScript files
+      const docstringFiles = files.filter(
+        f => f.endsWith(".py") || f.endsWith(".ts") || f.endsWith(".tsx")
+      );
+
+      if (docstringFiles.length === 0) {
+        return {
+          totalFunctions: 0,
+          documentedFunctions: 0,
+          totalClasses: 0,
+          documentedClasses: 0,
+          totalModules: 0,
+          documentedModules: 0,
+          coveragePercentage: 100,
+          averageDocstringLength: 0,
+          qualityScore: 100,
+        };
+      }
+
+      const analyses = await this.docstringAnalyzer.analyzeFiles(docstringFiles);
+      return this.docstringAnalyzer.getOverallMetrics(analyses);
+    } catch (error) {
+      console.warn("⚠️ Failed to calculate docstring metrics:", error);
+      return {
+        totalFunctions: 0,
+        documentedFunctions: 0,
+        totalClasses: 0,
+        documentedClasses: 0,
+        totalModules: 0,
+        documentedModules: 0,
+        coveragePercentage: 0,
+        averageDocstringLength: 0,
+        qualityScore: 0,
+      };
+    }
   }
 }

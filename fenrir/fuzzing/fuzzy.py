@@ -1,10 +1,7 @@
 """
-🐺 Fuzzy V2 - The Modular Reynard Fuzzing Framework
+Fuzzy V2 - The Modular Reynard Fuzzing Framework
 
-*alpha wolf dominance radiates* The refactored fuzzing engine that leverages
-the new modular architecture for maximum efficiency and maintainability.
-This version eliminates code duplication while maintaining all the
-specialized attack capabilities.
+The refactored fuzzing engine that leverages the new modular architecture for maximum efficiency and maintainability. This version eliminates code duplication while maintaining all the specialized attack capabilities.
 """
 
 import asyncio
@@ -34,12 +31,9 @@ console = Console()
 
 class Fuzzy(BaseFuzzer):
     """
-    🦊 Fuzzy - The Modular Reynard Fuzzing Framework
+    Fuzzy - The Modular Reynard Fuzzing Framework
 
-    *snarls with predatory intelligence* The modular fuzzing engine that
-    leverages strategic architecture for maximum efficiency and
-    maintainability. This version eliminates code duplication while
-    maintaining all the specialized attack capabilities.
+    The modular fuzzing engine that leverages strategic architecture for maximum efficiency and maintainability. This version eliminates code duplication while maintaining all the specialized attack capabilities.
 
     Enhanced with:
     - Modular architecture with reusable composables
@@ -77,8 +71,7 @@ class Fuzzy(BaseFuzzer):
         """
         Initialize the modular fuzzing framework.
 
-        *whiskers twitch with intelligence* Sets up all specialized
-        fuzzing engines and the endpoint orchestrator for coordinated attacks.
+        Sets up all specialized fuzzing engines and the endpoint orchestrator for coordinated attacks.
 
         Args:
             base_url (str): Base URL for fuzzing targets
@@ -193,8 +186,7 @@ class Fuzzy(BaseFuzzer):
         """
         Fuzz ML model endpoint with specialized attacks.
 
-        *snarls with predatory intelligence* Performs ML model
-        fuzzing with AI-specific attack vectors.
+        Performs ML model fuzzing with AI-specific attack vectors.
         """
         if attack_types is None:
             attack_types = list(self.ml_fuzzer.ml_attack_vectors.keys())
@@ -236,8 +228,7 @@ class Fuzzy(BaseFuzzer):
         """
         Fuzz authentication-related endpoints.
 
-        *snarls with predatory intelligence* Targets authentication
-        endpoints with comprehensive attack coverage.
+        Targets authentication endpoints with comprehensive attack coverage.
         """
         self.print_fuzzing_header(
             "FUZZING AUTHENTICATION ENDPOINTS", "Time to break your login security!"
@@ -415,9 +406,7 @@ async def main():
     """
     Main execution function for the modular fuzzing framework.
 
-    *snarls with predatory intelligence* Orchestrates all fuzzing
-    engines in a coordinated attack against the target system using
-    the new modular architecture.
+    Orchestrates all fuzzing engines in a coordinated attack against the target system using the new modular architecture.
 
     This function demonstrates the complete modular fuzzing workflow:
     1. Traditional HTTP fuzzing for standard endpoints
@@ -499,8 +488,7 @@ async def main():
 
         console.print(
             Panel.fit(
-                "[bold green]🐺 MODULAR FUZZING COMPLETE![/bold green]\n"
-                "*howls with predatory satisfaction*\n"
+                "[bold green]MODULAR FUZZING COMPLETE![/bold green]\n"
                 "All attack vectors deployed with modular efficiency!",
                 border_style="green",
             )

@@ -1,12 +1,10 @@
 /**
- * 🦦 Vitest Workspace Configuration for Reynard Monorepo
+ * Vitest Workspace Configuration for Reynard Monorepo
  *
  * This centralized configuration uses the projects pattern to manage
  * all Vitest configurations across the entire monorepo efficiently.
  *
- * *splashes with enthusiasm* This eliminates the need for individual
- * vitest.config files in each package while maintaining full control
- * over testing configurations!
+ * This eliminates the need for individual vitest.config files in each package while maintaining full control over testing configurations!
  */
 
 // Simple array format for Vitest workspace

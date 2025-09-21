@@ -1,5 +1,5 @@
 """
-🐺 Fuzzing Result Data Structures
+Fuzzing Result Data Structures
 
 Result tracking for all fuzzing operations.
 These data structures capture every aspect of fuzzing attempts, from basic HTTP responses
@@ -19,11 +19,9 @@ from typing import Any
 @dataclass
 class FuzzResult:
     """
-    🐺 Standard HTTP Fuzzing Result
+    Standard HTTP Fuzzing Result
 
-    *snarls with predatory intelligence* Captures comprehensive information about
-    a single fuzzing attempt against an HTTP endpoint. Includes response analysis,
-    vulnerability detection, and performance metrics.
+    Captures comprehensive information about a single fuzzing attempt against an HTTP endpoint. Includes response analysis, vulnerability detection, and performance metrics.
 
     Attributes:
         url (str): Target URL that was fuzzed

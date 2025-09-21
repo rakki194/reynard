@@ -1,34 +1,102 @@
 #!/usr/bin/env node
 
+/**
+ * 🦊 Reynard Dependency Analyzer
+ * 
+ * Comprehensive dependency analysis tool for the Reynard project architecture.
+ * Analyzes package relationships, detects circular dependencies, and generates
+ * visual diagrams and detailed reports.
+ * 
+ * Features:
+ * - Dependency graph construction and analysis
+ * - Circular dependency detection
+ * - Mermaid diagram generation
+ * - Detailed dependency reports
+ * - Validation and health checks
+ * - Export to multiple formats
+ * 
+ * @fileoverview Dependency analysis and visualization for Reynard project
+ * @author Reynard Development Team
+ * @version 1.0.0
+ */
+
 import { REYNARD_ARCHITECTURE } from "./architecture.js";
 import { DirectoryDefinition, RelationshipType } from "./types.js";
 import { writeFileSync, mkdirSync } from "fs";
 import { join } from "path";
 
+/**
+ * Represents a node in the dependency graph with metadata and relationships.
+ */
 interface DependencyNode {
+  /** Unique identifier for the node */
   id: string;
+  /** Human-readable label for display */
   label: string;
+  /** Category classification (source, tools, documentation, etc.) */
   category: string;
+  /** Importance level (critical, important, optional, excluded) */
   importance: string;
+  /** List of package IDs this node depends on */
   dependencies: string[];
+  /** List of package IDs that depend on this node */
   dependents: string[];
+  /** Map of relationship types for each dependency */
   relationshipTypes: Map<string, RelationshipType[]>;
 }
 
+/**
+ * Complete dependency graph structure containing nodes and edges.
+ */
 interface DependencyGraph {
+  /** Map of all nodes in the graph keyed by package ID */
   nodes: Map<string, DependencyNode>;
+  /** Array of directed edges representing dependencies */
   edges: Array<{
+    /** Source package ID */
     from: string;
+    /** Target package ID */
     to: string;
+    /** Type of relationship */
     type: RelationshipType;
+    /** Human-readable description of the relationship */
     description: string;
   }>;
 }
 
+/**
+ * Dependency Analyzer for Reynard Project Architecture
+ * 
+ * Analyzes the Reynard project structure to understand package dependencies,
+ * detect potential issues, and generate comprehensive reports and visualizations.
+ * 
+ * The analyzer processes the project architecture definition to build a complete
+ * dependency graph, then provides various analysis capabilities including:
+ * - Circular dependency detection
+ * - Longest dependency chain identification
+ * - Orphaned package detection
+ * - Relationship validation
+ * - Mermaid diagram generation
+ * - Detailed reporting
+ * 
+ * @example
+ * ```typescript
+ * const analyzer = new DependencyAnalyzer();
+ * const validation = analyzer.validateRelationships();
+ * const mermaid = analyzer.generateMermaidDiagram();
+ * analyzer.exportToFiles('./analysis-output');
+ * ```
+ */
 class DependencyAnalyzer {
   private graph: DependencyGraph;
   private architecture: DirectoryDefinition[];
 
+  /**
+   * Creates a new DependencyAnalyzer instance.
+   * 
+   * Initializes the analyzer with the Reynard project architecture and builds
+   * the complete dependency graph from the architecture definition.
+   */
   constructor() {
     this.architecture = REYNARD_ARCHITECTURE.directories;
     this.graph = {
@@ -38,6 +106,19 @@ class DependencyAnalyzer {
     this.buildGraph();
   }
 
+  /**
+   * Builds the complete dependency graph from the architecture definition.
+   * 
+   * This method processes all directories in the architecture to:
+   * 1. Create nodes for each directory with metadata
+   * 2. Establish dependency relationships between directories
+   * 3. Track relationship types and descriptions
+   * 4. Build bidirectional dependency tracking (dependencies and dependents)
+   * 
+   * The graph construction is the foundation for all subsequent analysis operations.
+   * 
+   * @private
+   */
   private buildGraph(): void {
     // Initialize all nodes
     this.architecture.forEach(dir => {
@@ -87,6 +168,16 @@ class DependencyAnalyzer {
     });
   }
 
+  /**
+   * Generates a short, human-readable name from a full directory path.
+   * 
+   * Converts full directory paths like "packages/ai/rag" to shorter display names
+   * like "ai/rag" for better readability in diagrams and reports.
+   * 
+   * @param fullName - The full directory path
+   * @returns Shortened name for display purposes
+   * @private
+   */
   private getShortName(fullName: string): string {
     const parts = fullName.split("/");
     if (parts.length >= 3) {
@@ -95,6 +186,26 @@ class DependencyAnalyzer {
     return parts[parts.length - 1];
   }
 
+  /**
+   * Generates a Mermaid diagram representation of the dependency graph.
+   * 
+   * Creates a comprehensive Mermaid diagram showing:
+   * - All packages as nodes with category emojis
+   * - Dependency relationships as directed edges
+   * - Visual styling based on importance levels
+   * - Relationship type indicators
+   * 
+   * The diagram can be rendered in any Mermaid-compatible viewer and provides
+   * a visual overview of the entire project dependency structure.
+   * 
+   * @returns Mermaid diagram syntax as a string
+   * @example
+   * ```typescript
+   * const analyzer = new DependencyAnalyzer();
+   * const diagram = analyzer.generateMermaidDiagram();
+   * console.log(diagram); // Outputs Mermaid syntax
+   * ```
+   */
   public generateMermaidDiagram(): string {
     let mermaid = "graph TD\n";
     

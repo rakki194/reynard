@@ -1,9 +1,7 @@
 """
-🦊 Endpoint Orchestrator - Strategic Coordination
+Endpoint Orchestrator - Strategic Coordination
 
-*whiskers twitch with cunning intelligence* The orchestrator that coordinates
-all specialized endpoint fuzzers into a unified attack strategy. This is the
-fox's command center where all the specialized hunters are coordinated.
+The orchestrator that coordinates all specialized endpoint fuzzers into a unified attack strategy. This is the command center where all the specialized testing modules are coordinated.
 """
 
 from typing import Any
@@ -19,12 +17,9 @@ console = Console()
 
 class EndpointOrchestrator:
     """
-    🦊 Endpoint Orchestrator - Strategic Coordination Hub
+    Endpoint Orchestrator - Strategic Coordination Hub
 
-    *red fur gleams with intelligence* This orchestrator coordinates all
-    specialized endpoint fuzzers into a unified attack strategy. Like a
-    fox pack leader, it coordinates multiple specialized hunters to
-    achieve maximum coverage and effectiveness.
+    This orchestrator coordinates all specialized endpoint fuzzers into a unified attack strategy. It coordinates multiple specialized testing modules to achieve maximum coverage and effectiveness.
 
     Attributes:
         base_url (str): Base URL for fuzzing targets

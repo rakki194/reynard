@@ -1,14 +1,10 @@
 #!/usr/bin/env python3
 """
-🐺 HTTP Request Smuggling Exploits
+HTTP Request Smuggling Exploits
 
-*snarls with predatory glee* These exploits leverage HTTP/1.1 desynchronization
-attacks to bypass security controls and manipulate request/response isolation.
-Based on 2025 research showing persistent weaknesses in HTTP/1.1 implementations.
+These exploits leverage HTTP/1.1 desynchronization attacks to bypass security controls and manipulate request/response isolation. Based on 2025 research showing persistent weaknesses in HTTP/1.1 implementations.
 
-The wolf pack coordinates desync attacks using 'Expect' headers, Content-Length
-manipulation, and Transfer-Encoding confusion to slip past WAFs like shadows
-in the night!
+The system coordinates desync attacks using 'Expect' headers, Content-Length manipulation, and Transfer-Encoding confusion to systematically test for smuggling vulnerabilities.
 """
 
 import asyncio
@@ -25,9 +21,7 @@ logger = logging.getLogger(__name__)
 
 class HTTPRequestSmuggling:
     """
-    🐺 *pack hunting formation* HTTP Request Smuggling exploit class that hunts
-    for desync vulnerabilities in HTTP/1.1 implementations through coordinated
-    attack vectors.
+    HTTP Request Smuggling exploit class that systematically tests for desync vulnerabilities in HTTP/1.1 implementations through coordinated attack vectors.
     """
 
     def __init__(self, target_url: str = "http://localhost:8000"):

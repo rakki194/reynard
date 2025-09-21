@@ -10,3 +10,4 @@ export { handleEnhancedCommand, type EnhancedOptions } from "./enhanced-command"
 export { handleQualityGateCommand, type QualityGateOptions } from "./quality-gate-command";
 export { handleSecurityCommand, type SecurityOptions } from "./security-command";
 export { handleWatchCommand, type WatchOptions } from "./watch-command";
+export { createDocstringCommand } from "./docstring-command";
