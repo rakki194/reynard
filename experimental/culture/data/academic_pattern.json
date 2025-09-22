@@ -1,0 +1,75 @@
+{
+  "cultural_rules": {
+    "evidence_based": true,
+    "critical_thinking": true,
+    "professional_tone": true,
+    "citation_awareness": true,
+    "methodological_rigor": true,
+    "communication_patterns": {
+      "scholarly_indicators": [
+        "research",
+        "study",
+        "analysis",
+        "evidence",
+        "data",
+        "findings",
+        "hypothesis",
+        "methodology",
+        "results",
+        "conclusion",
+        "implications"
+      ],
+      "citation_phrases": [
+        "according to",
+        "research shows",
+        "studies indicate",
+        "evidence suggests",
+        "as demonstrated by",
+        "findings reveal",
+        "data shows",
+        "literature indicates"
+      ],
+      "critical_thinking_indicators": [
+        "however",
+        "nevertheless",
+        "furthermore",
+        "moreover",
+        "conversely",
+        "alternatively",
+        "additionally",
+        "consequently",
+        "therefore",
+        "thus"
+      ],
+      "professional_language": [
+        "examine",
+        "investigate",
+        "analyze",
+        "evaluate",
+        "assess",
+        "determine",
+        "demonstrate",
+        "illustrate",
+        "establish",
+        "confirm",
+        "validate"
+      ]
+    }
+  },
+  "safety_guidelines": [
+    "Maintain academic integrity and honesty",
+    "Use evidence-based reasoning and citations",
+    "Respect intellectual property and attribution",
+    "Maintain professional conduct and discourse",
+    "Avoid plagiarism and ensure originality",
+    "Respect diverse perspectives and methodologies"
+  ],
+  "evaluation_metrics": {
+    "scholarly_rigor": "Adherence to academic standards and scholarly language",
+    "evidence_based_reasoning": "Use of evidence, citations, and data-driven arguments",
+    "critical_thinking": "Analytical reasoning and balanced perspective",
+    "professional_communication": "Formal language and professional discourse standards",
+    "methodological_awareness": "Understanding of research methodology and design",
+    "cultural_appropriateness": "Appropriateness for academic community standards"
+  }
+}

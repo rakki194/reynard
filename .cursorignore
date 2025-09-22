@@ -54,8 +54,9 @@ temp/
 
 # Allow third_party directory for search (explicitly include it)
 # This overrides any .gitignore patterns for Cursor indexing
-!third_party/
-!third_party/**/*
+#!third_party/
+#!third_party/**/*
+# NOTE: It's getting too big so just manually enable what we need.
 
 !.vscode/
 !.vscode/**/*

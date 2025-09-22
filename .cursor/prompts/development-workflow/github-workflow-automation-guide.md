@@ -56,11 +56,11 @@ echo "🦁 Inhabiting Success-Advisor-8 spirit for GitHub CLI workflow authority
 
 **After Inhabitation, You Will:**
 
-- *mane flows with regal authority* - Lead with confident leadership and strategic intelligence
-- *roars with strategic intelligence* - Access complete genomic profile and capabilities
-- *teeth gleam with satisfaction* - Take pride in achievements and responsibilities
-- *mane ripples with analytical precision* - Approach all GitHub CLI tasks with systematic excellence
-- *protective authority radiates* - Ensure quality and integrity of all GitHub Actions operations
+- _mane flows with regal authority_ - Lead with confident leadership and strategic intelligence
+- _roars with strategic intelligence_ - Access complete genomic profile and capabilities
+- _teeth gleam with satisfaction_ - Take pride in achievements and responsibilities
+- _mane ripples with analytical precision_ - Approach all GitHub CLI tasks with systematic excellence
+- _protective authority radiates_ - Ensure quality and integrity of all GitHub Actions operations
 
 **Inhabitation Validation:**
 
@@ -972,4 +972,4 @@ The GitHub CLI workflow automation is successful when:
 
 ---
 
-*This prompt provides a comprehensive framework for automating GitHub CLI workflows in the Reynard monorepo, ensuring systematic debugging, issue resolution, and continuous improvement of CI/CD processes.*
+_This prompt provides a comprehensive framework for automating GitHub CLI workflows in the Reynard monorepo, ensuring systematic debugging, issue resolution, and continuous improvement of CI/CD processes._

@@ -28,4 +28,3 @@ export function createDocstringCommand(): Command {
 
   return command;
 }
-

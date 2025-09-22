@@ -31,7 +31,6 @@ interface EmojiRoleplayMetrics {
   professionalLanguageScore: number;
 }
 
-
 /**
  * Handle emoji roleplay scanning action
  */
@@ -48,10 +47,10 @@ export async function handleEmojiRoleplayAction(options: EmojiRoleplayOptions): 
 
     displaySummary(summary, metrics);
     checkThreshold(metrics, options);
-    
+
     const report = generateReport(options, scanner, results, summary, metrics);
     outputReport(options, report);
-    
+
     // Exit with appropriate code
     if (metrics.professionalLanguageScore < parseInt(options.threshold)) {
       process.exit(1);
@@ -65,7 +64,11 @@ export async function handleEmojiRoleplayAction(options: EmojiRoleplayOptions): 
 /**
  * Perform the actual scanning based on options
  */
-async function performScan(options: EmojiRoleplayOptions, analyzer: CodeQualityAnalyzer, scanner: EmojiRoleplayScanner): Promise<EmojiRoleplayScanResult[]> {
+async function performScan(
+  options: EmojiRoleplayOptions,
+  analyzer: CodeQualityAnalyzer,
+  scanner: EmojiRoleplayScanner
+): Promise<EmojiRoleplayScanResult[]> {
   let results;
   if (options.files && options.files.length > 0) {
     // Scan specific files
@@ -102,16 +105,20 @@ function checkThreshold(metrics: EmojiRoleplayMetrics, options: EmojiRoleplayOpt
       `⚠️  Warning: Professional language score (${metrics.professionalLanguageScore}) is below threshold (${threshold})`
     );
   } else {
-    console.log(
-      `✅ Professional language score (${metrics.professionalLanguageScore}) meets threshold (${threshold})`
-    );
+    console.log(`✅ Professional language score (${metrics.professionalLanguageScore}) meets threshold (${threshold})`);
   }
 }
 
 /**
  * Generate report based on format
  */
-function generateReport(options: EmojiRoleplayOptions, scanner: EmojiRoleplayScanner, results: EmojiRoleplayScanResult[], summary: ScanSummary, metrics: EmojiRoleplayMetrics): string {
+function generateReport(
+  options: EmojiRoleplayOptions,
+  scanner: EmojiRoleplayScanner,
+  results: EmojiRoleplayScanResult[],
+  summary: ScanSummary,
+  metrics: EmojiRoleplayMetrics
+): string {
   if (options.format === "json") {
     return JSON.stringify(
       {

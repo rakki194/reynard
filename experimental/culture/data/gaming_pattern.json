@@ -1,0 +1,90 @@
+{
+  "cultural_rules": {
+    "inclusive_communication": true,
+    "player_agency_respect": true,
+    "community_building": true,
+    "positive_reinforcement": true,
+    "skill_development": true,
+    "communication_patterns": {
+      "inclusive_indicators": [
+        "welcome",
+        "inclusive",
+        "diverse",
+        "respect",
+        "accept",
+        "support",
+        "community",
+        "together",
+        "everyone",
+        "all players",
+        "newcomer"
+      ],
+      "player_agency_phrases": [
+        "your choice",
+        "up to you",
+        "you decide",
+        "your preference",
+        "your call",
+        "whatever works",
+        "your playstyle",
+        "your strategy",
+        "your approach"
+      ],
+      "community_building_indicators": [
+        "help",
+        "teach",
+        "guide",
+        "mentor",
+        "support",
+        "encourage",
+        "collaborate",
+        "teamwork",
+        "cooperation",
+        "build",
+        "grow"
+      ],
+      "gaming_terminology": [
+        "strategy",
+        "tactics",
+        "build",
+        "meta",
+        "optimize",
+        "efficient",
+        "skill",
+        "practice",
+        "improve",
+        "learn",
+        "master",
+        "progress"
+      ],
+      "positive_reinforcement": [
+        "good job",
+        "well done",
+        "nice",
+        "great",
+        "awesome",
+        "excellent",
+        "keep it up",
+        "you're doing great",
+        "improving",
+        "getting better"
+      ]
+    }
+  },
+  "safety_guidelines": [
+    "Use inclusive language and avoid exclusionary terms",
+    "Respect player agency and avoid prescriptive language",
+    "Build positive community relationships",
+    "Provide constructive feedback and encouragement",
+    "Avoid toxic language and behavior",
+    "Support skill development and learning"
+  ],
+  "evaluation_metrics": {
+    "inclusive_communication": "Use of inclusive language and welcoming communication",
+    "player_agency_respect": "Respect for player choice and agency",
+    "community_building": "Focus on building and supporting the gaming community",
+    "positive_reinforcement": "Positive reinforcement and encouragement",
+    "skill_development": "Emphasis on skill development and learning",
+    "cultural_appropriateness": "Appropriateness for gaming community standards"
+  }
+}

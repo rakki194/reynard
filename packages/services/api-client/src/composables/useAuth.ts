@@ -2,14 +2,10 @@
  * Authentication composable for Reynard API
  */
 
-import { createSignal, createResource } from "solid-js";
+import { createSignal } from "solid-js";
 import type { SecureUserLogin, UserCreate, UserPublic } from "../generated/index";
 
-export interface UseAuthOptions {
-  basePath?: string;
-}
-
-export function useAuth(options: UseAuthOptions = {}) {
+export function useAuth() {
   const [user, setUser] = createSignal<UserPublic | null>(null);
   const [isAuthenticated, setIsAuthenticated] = createSignal(false);
 

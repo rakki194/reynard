@@ -77,7 +77,7 @@ Instead of direct imports, use the lazy loading system:
 ```python
 # Before (slow startup)
 import torch
-import torch.nn.functional as F
+import torch.nn.functional
 from transformers import AutoModel
 
 # After (fast startup)
@@ -338,7 +338,7 @@ Avoid lazy loading for:
 
 1. **Identify heavy imports**: Look for `import torch`, `import transformers`, etc.
 2. **Replace with lazy imports**: Use `from app.utils.lazy_loader import torch, transformers`
-3. **Update aliases**: Replace `import torch.nn.functional as F` with `from app.utils.lazy_loader import F`
+3. **Update aliases**: Replace `import torch.nn.functional` with `from app.utils.lazy_loader import F`
 4. **Test thoroughly**: Ensure all functionality works with lazy loading
 5. **Monitor performance**: Use the status endpoint to track load times
 

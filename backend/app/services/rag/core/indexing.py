@@ -551,6 +551,7 @@ class DocumentIndexer:
         # Dependencies
         self._vector_store_service = None
         self._embedding_service = None
+        self._file_indexing_service = None
 
         # Configuration
         self._enabled = False
@@ -560,7 +561,7 @@ class DocumentIndexer:
         self._chunk_overlap_ratio = 0.15
 
     async def initialize(
-        self, config: Dict[str, Any], vector_store_service=None, embedding_service=None
+        self, config: Dict[str, Any], vector_store_service=None, embedding_service=None, file_indexing_service=None
     ) -> bool:
         """Initialize the document indexer."""
         try:
@@ -580,6 +581,7 @@ class DocumentIndexer:
             # Set dependencies
             self._vector_store_service = vector_store_service
             self._embedding_service = embedding_service
+            self._file_indexing_service = file_indexing_service
 
             # Start workers
             await self._start_workers()

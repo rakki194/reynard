@@ -62,6 +62,7 @@ from .advanced import (
 from .core import DocumentIndexer, EmbeddingService, SearchEngine, VectorStoreService
 from .initial_indexing import InitialIndexingService
 from .progress_monitor import get_progress_monitor
+from .file_indexing_service import get_file_indexing_service
 
 logger = logging.getLogger("uvicorn")
 
@@ -115,6 +116,9 @@ class RAGService:
         self.vector_store_service: Optional[VectorStoreService] = None
         self.document_indexer: Optional[DocumentIndexer] = None
         self.search_engine: Optional[SearchEngine] = None
+        
+        # File indexing service dependency
+        self.file_indexing_service = get_file_indexing_service()
 
         # Advanced services
         self.performance_monitor: Optional[PerformanceMonitor] = None
@@ -174,6 +178,11 @@ class RAGService:
         """Initialize core RAG services."""
         logger.info("Initializing core services...")
 
+        # Initialize file indexing service first (dependency for other services)
+        if not await self.file_indexing_service.initialize(self.config):
+            raise RuntimeError("Failed to initialize file indexing service")
+        logger.info("✅ File indexing service initialized")
+
         # Initialize embedding service
         self.embedding_service = EmbeddingService()
         if not await self.embedding_service.initialize(self.config):
@@ -184,10 +193,10 @@ class RAGService:
         if not await self.vector_store_service.initialize(self.config):
             raise RuntimeError("Failed to initialize vector store service")
 
-        # Initialize document indexer
+        # Initialize document indexer with file indexing service dependency
         self.document_indexer = DocumentIndexer()
         if not await self.document_indexer.initialize(
-            self.config, self.vector_store_service, self.embedding_service
+            self.config, self.vector_store_service, self.embedding_service, self.file_indexing_service
         ):
             raise RuntimeError("Failed to initialize document indexer")
 

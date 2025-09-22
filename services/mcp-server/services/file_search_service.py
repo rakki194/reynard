@@ -132,11 +132,11 @@ class FileSearchService:
                 command.extend(["-name", f"*.{file_types[0]}"])
             else:
                 # Multiple file types - use OR conditions
-                command.append("\\(")
+                command.append("(")
                 command.extend(["-name", f"*.{file_types[0]}"])
                 for file_type in file_types[1:]:
                     command.extend(["-o", "-name", f"*.{file_type}"])
-                command.append("\\)")
+                command.append(")")
 
         # Add name pattern
         if pattern:

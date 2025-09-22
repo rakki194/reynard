@@ -6,7 +6,7 @@ Configuration settings for the ECS world system.
 
 from pathlib import Path
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class ECSConfig(BaseModel):
@@ -37,11 +37,10 @@ class ECSConfig(BaseModel):
     log_level: str = "INFO"
     log_ecs_events: bool = True
 
-    class Config:
-        """Pydantic configuration."""
-
-        env_prefix = "ECS_"
-        case_sensitive = False
+    model_config = ConfigDict(
+        env_prefix="ECS_",
+        case_sensitive=False
+    )
 
 
 def get_ecs_config() -> ECSConfig:

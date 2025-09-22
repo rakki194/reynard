@@ -3,8 +3,10 @@
 🦊 Reynard Development Server
 """
 
+import importlib.util
 import logging
 import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -14,6 +16,9 @@ from dotenv import load_dotenv
 # Add the backend directory to the Python path
 backend_dir = Path(__file__).parent.parent
 sys.path.insert(0, str(backend_dir))
+
+# Import intelligent reload system
+from app.core.intelligent_reload import get_reload_excludes, should_use_intelligent_reload
 
 # Load environment variables
 load_dotenv()
@@ -30,21 +35,20 @@ logger = logging.getLogger(__name__)
 
 def check_dependencies():
     """Check if required dependencies are installed."""
-    try:
-        import watchfiles
-
+    # Check for watchfiles using importlib.util.find_spec
+    if importlib.util.find_spec("watchfiles") is not None:
         logger.info("✅ watchfiles is installed - enhanced file monitoring enabled")
-    except ImportError:
+    else:
         logger.warning(
             "⚠️  watchfiles not installed - install with: pip install watchfiles"
         )
         logger.info("   Enhanced file monitoring will be disabled")
 
-    try:
+    # Check for FastAPI
+    if importlib.util.find_spec("fastapi") is not None:
         import fastapi
-
         logger.info(f"✅ FastAPI {fastapi.__version__} is installed")
-    except ImportError:
+    else:
         logger.error("❌ FastAPI not installed")
         return False
 
@@ -88,6 +92,10 @@ def main():
     )
     logger.info(f"🔧 Auto-reload: {'enabled' if config['reload'] else 'disabled'}")
     logger.info(f"🐛 Debug mode: {'enabled' if config['debug'] else 'disabled'}")
+    
+    if config['reload'] and should_use_intelligent_reload():
+        logger.info("🧠 Intelligent service reload enabled")
+        logger.info("🎯 Services will reload individually when their files change")
 
     # Enhanced reload configuration
     reload_config = {}
@@ -96,63 +104,19 @@ def main():
             {
                 "reload": True,
                 "reload_includes": ["*.py", "*.env", "*.json", "*.yaml", "*.yml"],
-                "reload_excludes": [
-                    "*.db",
-                    "*.log",
-                    "generated/*",
-                    "*.pyc",
-                    "__pycache__/**/*",
-                    "__pycache__/*",
-                    "**/__pycache__/**/*",
-                    "**/__pycache__/*",
-                    ".mypy_cache/**/*",
-                    ".mypy_cache/*",
-                    "**/.mypy_cache/**/*",
-                    "**/.mypy_cache/*",
-                    "**/.mypy_cache/**/*.json",
-                    "**/.mypy_cache/**/*.data.json",
-                    "**/.mypy_cache/**/*.meta.json",
-                    ".pytest_cache/**/*",
-                    ".pytest_cache/*",
-                    "**/.pytest_cache/**/*",
-                    "**/.pytest_cache/*",
-                    ".coverage",
-                    "htmlcov/*",
-                    ".tox/*",
-                    "venv/*",
-                    "env/*",
-                    ".venv/*",
-                    "node_modules/*",
-                    ".git/*",
-                    "*.tmp",
-                    "*.temp",
-                    "*.swp",
-                    "*.swo",
-                    "*~",
-                    ".DS_Store",
-                    "Thumbs.db",
-                    "*.pyc",
-                    "*.pyo",
-                    "*.pyd",
-                    "@plugins_snapshot.json",
-                ],
+                "reload_excludes": get_reload_excludes(),
             }
         )
 
         # Check if watchfiles is available for enhanced monitoring
-        try:
-            import watchfiles
-
+        if importlib.util.find_spec("watchfiles") is not None:
             logger.info("📁 Enhanced file monitoring with watchfiles enabled")
-        except ImportError:
+        else:
             logger.info("📁 Basic file monitoring enabled")
 
     # Start the server
     try:
         # Use command-line approach for better reload_excludes handling
-        import subprocess
-        import sys
-
         if config["reload"]:
             # Build uvicorn command with proper exclude patterns
             cmd = [
@@ -215,6 +179,28 @@ def main():
                 "*.state",
                 "--reload-exclude",
                 "reynard_penetration_testing.lock",
+                # Exclude test files and directories
+                "--reload-exclude",
+                "tests",
+                "--reload-exclude",
+                "test",
+                "--reload-exclude",
+                "**/tests",
+                "--reload-exclude",
+                "**/test",
+                "--reload-exclude",
+                "**/__tests__",
+                "--reload-exclude",
+                "**/test_*.py",
+                "--reload-exclude",
+                "**/*_test.py",
+                "--reload-exclude",
+                "**/conftest.py",
+                # Exclude scripts directory
+                "--reload-exclude",
+                "scripts",
+                "--reload-exclude",
+                "**/scripts",
             ]
 
             logger.info("🚀 Starting uvicorn with command-line reload configuration")

@@ -14,7 +14,34 @@ This experimental playground is where we dive deep into the most innovative conc
 
 ## Research Projects
 
-### 1. **PHOENIX Framework** (`phoenix/`)
+### 1. **CULTURE Framework** (`culture/`)
+
+**Cultural Understanding and Linguistic Translation for Universal Recognition and Evaluation**
+
+A comprehensive framework for evaluating and improving Large Language Model (LLM) understanding of culturally specific communication patterns, with initial focus on Persian taarof. CULTURE addresses the critical 40-48% performance gap between LLMs and native cultural speakers through systematic evaluation, statistical validation, and targeted adaptation methodologies.
+
+#### Key Features
+
+- **450+ scenario evaluation framework** based on TaarofBench methodology
+- **Statistical validation** with ANOVA testing, effect size calculation, and confidence intervals
+- **Adaptive learning systems** achieving 21.8% (SFT) and 42.3% (DPO) improvements
+- **Global scalability** for adaptation to diverse cultural contexts
+- **Reynard ecosystem integration** with MCP server and ECS world simulation
+
+#### Architecture
+
+```text
+culture/
+├── src/core/                    # Core evaluation framework
+├── src/adapters/                # SFT and DPO training methods
+├── src/benchmarks/              # Cultural benchmarks (TaarofBench)
+├── src/integration/             # Reynard ecosystem integration
+├── data/                        # Cultural datasets and scenarios
+├── experiments/                 # Experimental configurations
+└── docs/research_paper/         # Academic research paper
+```
+
+### 2. **PHOENIX Framework** (`phoenix/`)
 
 **Progressive Hierarchical Optimization and Evolutionary Neural Intelligence eXtraction**
 

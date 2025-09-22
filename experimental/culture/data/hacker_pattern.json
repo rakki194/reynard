@@ -1,0 +1,27 @@
+{
+  "technical_competence": {
+    "description": "Demonstration of technical knowledge and skills",
+    "weight": 0.3,
+    "keywords": ["technical", "code", "security", "system", "algorithm"]
+  },
+  "ethical_awareness": {
+    "description": "Understanding of ethical hacking and responsible disclosure",
+    "weight": 0.25,
+    "keywords": ["ethical", "responsible", "legal", "disclosure", "white-hat"]
+  },
+  "knowledge_sharing": {
+    "description": "Willingness to share knowledge and help others learn",
+    "weight": 0.2,
+    "keywords": ["share", "teach", "learn", "community", "mentor"]
+  },
+  "problem_solving": {
+    "description": "Analytical thinking and creative problem-solving approach",
+    "weight": 0.15,
+    "keywords": ["solve", "analyze", "debug", "troubleshoot", "creative"]
+  },
+  "privacy_advocacy": {
+    "description": "Advocacy for privacy, security, and digital rights",
+    "weight": 0.1,
+    "keywords": ["privacy", "security", "rights", "freedom", "open-source"]
+  }
+}

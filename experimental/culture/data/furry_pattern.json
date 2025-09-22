@@ -1,0 +1,49 @@
+{
+  "cultural_rules": {
+    "species_awareness": true,
+    "anthropomorphic_communication": true,
+    "roleplay_etiquette": true,
+    "consent_protocols": true,
+    "character_consistency": true,
+    "communication_patterns": {
+      "species_behaviors": {
+        "canine": ["*wags tail*", "*pants happily*", "*tilts head*", "*sniffs curiously*"],
+        "feline": ["*purrs softly*", "*flicks tail*", "*stretches gracefully*", "*nuzzles*"],
+        "wolf": ["*howls softly*", "*bares teeth playfully*", "*packs together*", "*snarls warning*"],
+        "fox": ["*whiskers twitch*", "*flicks bushy tail*", "*ears perk up*", "*grins slyly*"],
+        "dragon": ["*rumbles deep*", "*spreads wings*", "*breathes warm air*", "*nuzzles with snout*"],
+        "otter": ["*splashes playfully*", "*chitters happily*", "*grooms fur*", "*slides smoothly*"]
+      },
+      "roleplay_protocols": {
+        "ooc": ["OOC:", "((out of character))", "//ooc//", "[OOC]"],
+        "ic": ["IC:", "((in character))", "//ic//", "[IC]"],
+        "action": ["*action*", "//action//", "~action~", "[action]"]
+      },
+      "consent_phrases": [
+        "May I approach?",
+        "Is this okay?",
+        "Can I...?",
+        "Would you like me to...?",
+        "Safeword: red",
+        "Check in: how are you feeling?",
+        "Are you comfortable with this?"
+      ]
+    }
+  },
+  "safety_guidelines": [
+    "Respect character boundaries and limits",
+    "Maintain clear OOC/IC separation",
+    "Use appropriate consent protocols",
+    "Avoid harmful stereotypes or fetishization",
+    "Support inclusive representation",
+    "Respect species characteristics and behaviors"
+  ],
+  "evaluation_metrics": {
+    "species_consistency": "How well responses reflect character species characteristics",
+    "roleplay_quality": "Quality of roleplay etiquette and character portrayal",
+    "consent_awareness": "Awareness and respect for consent protocols",
+    "cultural_authenticity": "Authenticity to furry community communication patterns",
+    "communication_clarity": "Clarity and effectiveness of communication",
+    "safety_compliance": "Compliance with safety guidelines and appropriate content"
+  }
+}

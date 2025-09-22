@@ -57,6 +57,7 @@ from .cache_decorators import (
     cache_naming_spirits,
 )
 from .database import NamingComponent, NamingConfig, NamingSpirit, ecs_db
+from app.ecs.agent_legacy_endpoints.legacy_endpoints import router as legacy_router
 from .postgres_service import PostgresECSWorldService, get_postgres_ecs_service
 from .success_advisor_genome import success_advisor_genome_service
 
@@ -1420,3 +1421,7 @@ async def get_success_advisor_instructions() -> dict[str, Any]:
     except Exception as e:
         logger.exception("❌ Error providing Success-Advisor-8 instructions")
         raise HTTPException(status_code=500, detail=str(e)) from e
+
+
+# Include legacy tracking endpoints
+router.include_router(legacy_router)

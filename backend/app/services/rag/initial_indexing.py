@@ -27,6 +27,7 @@ from typing import Any
 
 from ...config.continuous_indexing_config import continuous_indexing_config
 from ..continuous_indexing import ContinuousIndexingService
+from .file_indexing_service import get_file_indexing_service
 
 logger = logging.getLogger(__name__)
 
@@ -39,6 +40,7 @@ class InitialIndexingService:
         self.config = config
         self.continuous_indexing: ContinuousIndexingService | None = None
         self.vector_store_service: Any | None = None
+        self.file_indexing_service = get_file_indexing_service()
         self.progress_callbacks: list[callable] = []
         self.is_running = False
         self.current_progress = {
@@ -115,7 +117,7 @@ class InitialIndexingService:
             return is_empty
 
     async def discover_files(self) -> list[Path]:
-        """Discover all files that should be indexed."""
+        """Discover all files that should be indexed using the file indexing service."""
         try:
             watch_root = Path(
                 self.config.get(
@@ -127,24 +129,34 @@ class InitialIndexingService:
                 logger.warning(f"Watch root does not exist: {watch_root}")
                 return []
 
-            logger.info(f"🔍 Discovering files in: {watch_root}")
+            logger.info(f"🔍 Discovering files using file indexing service: {watch_root}")
 
-            # Use the continuous indexing service's file filtering logic
-            files_to_index = [
-                file_path
-                for file_path in watch_root.rglob("*")
-                if (
-                    file_path.is_file()
-                    and continuous_indexing_config.should_watch_file(file_path)
-                )
-            ]
+            # Use file indexing service for fast file discovery
+            file_types = [".py", ".ts", ".tsx", ".js", ".jsx", ".md", ".txt"]
+            result = await self.file_indexing_service.index_files([str(watch_root)], file_types)
+            
+            if result.get("success"):
+                indexed_files = result.get("files", [])
+                files_to_index = [Path(file_path) for file_path in indexed_files]
+                logger.info(f"📁 Found {len(files_to_index)} files to index via file indexing service")
+                return files_to_index
+            else:
+                logger.warning("File indexing service failed, falling back to manual discovery")
+                # Fallback to manual discovery
+                files_to_index = [
+                    file_path
+                    for file_path in watch_root.rglob("*")
+                    if (
+                        file_path.is_file()
+                        and continuous_indexing_config.should_watch_file(file_path)
+                    )
+                ]
+                logger.info(f"📁 Found {len(files_to_index)} files to index via fallback")
+                return files_to_index
 
-            logger.info(f"📁 Found {len(files_to_index)} files to index")
         except Exception:
             logger.exception("Failed to discover files")
             return []
-        else:
-            return files_to_index
 
     def _initialize_progress(self) -> None:
         """Initialize progress tracking."""

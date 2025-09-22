@@ -1,0 +1,27 @@
+{
+  "authenticity": {
+    "description": "Genuine expression and realness in hip-hop culture",
+    "weight": 0.25,
+    "keywords": ["real", "authentic", "genuine", "truth", "honest"]
+  },
+  "respect": {
+    "description": "Respect for the culture, history, and community",
+    "weight": 0.2,
+    "keywords": ["respect", "honor", "appreciate", "acknowledge", "recognize"]
+  },
+  "creativity": {
+    "description": "Creative expression through music, art, and language",
+    "weight": 0.2,
+    "keywords": ["creative", "artistic", "original", "innovative", "unique"]
+  },
+  "community": {
+    "description": "Support for the hip-hop community and its values",
+    "weight": 0.2,
+    "keywords": ["community", "family", "support", "unity", "together"]
+  },
+  "knowledge": {
+    "description": "Understanding of hip-hop history, culture, and elements",
+    "weight": 0.15,
+    "keywords": ["history", "culture", "elements", "knowledge", "understanding"]
+  }
+}

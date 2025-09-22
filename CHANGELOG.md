@@ -5,8 +5,27 @@ All notable changes to the Reynard framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.13.0] - 2025-09-22
+
 ## [Unreleased]
 
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+
+- **FastAPI ECS Performance Monitoring System**: Created comprehensive performance monitoring and benchmarking system for FastAPI ECS backends. Features real-time request/response tracking, memory usage monitoring, database query profiling, async task performance tracking, and automatic bottleneck detection. Includes load testing CLI tools, performance analysis endpoints, and optimization recommendations. **VALIDATED**: 100% test success rate with <5% monitoring overhead, accurate bottleneck detection, and production-ready performance characteristics. Perfect for identifying performance issues and optimizing system performance (Mysterious-Prime-67)
+- **RAG Service Refactoring**: Refactored RAG service to depend on file indexing service instead of implementing its own file discovery and caching. Eliminated code duplication and created clean dependency hierarchy. RAG service now uses file indexing service for document discovery and initial indexing. Supports lightweight mode without heavy ML dependencies (Phoenix-Prime-94)
+- **File Indexing and Caching Services**: Created high-performance file indexing and caching system for fast file discovery and content caching. Features intelligent text-based indexing, content caching, and efficient file metadata storage. Perfect for development laptops and resource-constrained environments. Includes setup scripts and configuration management (Phoenix-Prime-94)
+- **File Indexing-Integrated Monolith Detection**: Transformed monolith analysis service with file indexing integration for blazing-fast performance. Features intelligent caching, async batch processing, and file index-based discovery. Performance improvements through intelligent caching and concurrent analysis (Phoenix-Prime-94)
 - **MCP Server Type Fixes**: Resolved all mypy type errors in MCP server configuration and tool files (Vulpine)
 - **GitHub Workflow Fixes**: Corrected workflow paths for i18n and testing packages (Rebirth-Oracle-10)
 

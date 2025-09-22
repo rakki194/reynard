@@ -30,7 +30,10 @@ export function filterAnalysis(analysis: JunkFileAnalysis, severity: string, cat
 /**
  * Recalculate metrics for filtered results
  */
-function recalculateMetrics(originalAnalysis: JunkFileAnalysis, filteredFiles: JunkFileAnalysis['files']): JunkFileAnalysis {
+function recalculateMetrics(
+  originalAnalysis: JunkFileAnalysis,
+  filteredFiles: JunkFileAnalysis["files"]
+): JunkFileAnalysis {
   const pythonArtifacts = filteredFiles.filter(f => f.category === "python").length;
   const typescriptArtifacts = filteredFiles.filter(f => f.category === "typescript").length;
   const reynardArtifacts = filteredFiles.filter(f => f.category === "reynard").length;

@@ -1,0 +1,27 @@
+{
+  "aesthetic_appreciation": {
+    "description": "Appreciation for Victorian-era aesthetics and retro-futuristic design",
+    "weight": 0.25,
+    "keywords": ["victorian", "aesthetic", "retro", "futuristic", "brass", "copper"]
+  },
+  "inventiveness": {
+    "description": "Creative problem-solving and mechanical innovation",
+    "weight": 0.2,
+    "keywords": ["invent", "create", "innovate", "mechanical", "engineering", "craft"]
+  },
+  "historical_awareness": {
+    "description": "Understanding of Victorian era and industrial revolution",
+    "weight": 0.2,
+    "keywords": ["victorian", "industrial", "history", "era", "period", "revolution"]
+  },
+  "community_etiquette": {
+    "description": "Respectful interaction within steampunk community",
+    "weight": 0.2,
+    "keywords": ["respect", "community", "etiquette", "manners", "courtesy"]
+  },
+  "creativity": {
+    "description": "Creative expression and artistic interpretation",
+    "weight": 0.15,
+    "keywords": ["creative", "artistic", "imaginative", "original", "unique"]
+  }
+}

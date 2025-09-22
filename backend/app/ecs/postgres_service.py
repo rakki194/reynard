@@ -14,7 +14,7 @@ from fastapi import FastAPI, HTTPException
 from sqlalchemy import and_, or_
 from sqlalchemy.orm import Session
 
-from .database import (
+from app.ecs.database import (
     AbilityTrait,
     Agent,
     AgentAchievement,
@@ -344,6 +344,73 @@ class PostgresECSWorldService:
 
         except Exception as e:
             logger.error(f"❌ Failed to get agent {agent_id}: {e}")
+            return None
+
+    async def get_agent_by_name(self, name: str) -> Optional[Dict[str, Any]]:
+        """
+        Get an agent by name.
+
+        Args:
+            name: Agent name
+
+        Returns:
+            Dictionary containing agent data or None if not found
+        """
+        self._ensure_initialized()
+        try:
+            with self.get_session() as session:
+                agent = session.query(Agent).filter(Agent.name == name).first()
+                if not agent:
+                    return None
+
+                # Get all related data
+                personality_traits = {
+                    t.trait_name: t.trait_value for t in agent.personality_traits
+                }
+                physical_traits = {
+                    t.trait_name: t.trait_value for t in agent.physical_traits
+                }
+                ability_traits = {
+                    t.trait_name: t.trait_value for t in agent.ability_traits
+                }
+                specializations = [s.specialization for s in agent.specializations]
+                domain_expertise = [d.domain for d in agent.domain_expertise]
+                achievements = [a.achievement_name for a in agent.achievements]
+                workflow_preferences = {
+                    w.preference_name: w.preference_value
+                    for w in agent.workflow_preferences
+                }
+
+                # Get position data
+                position_data = None
+                if agent.position:
+                    position_data = {
+                        "x": agent.position.x,
+                        "y": agent.position.y,
+                        "z": agent.position.z,
+                    }
+
+                return {
+                    "agent_id": agent.agent_id,
+                    "name": agent.name,
+                    "spirit": agent.spirit,
+                    "style": agent.style,
+                    "generation": agent.generation,
+                    "active": agent.active,
+                    "created_at": agent.created_at,
+                    "last_activity": agent.last_activity,
+                    "personality_traits": personality_traits,
+                    "physical_traits": physical_traits,
+                    "ability_traits": ability_traits,
+                    "specializations": specializations,
+                    "domain_expertise": domain_expertise,
+                    "achievements": achievements,
+                    "workflow_preferences": workflow_preferences,
+                    "position": position_data,
+                }
+
+        except Exception as e:
+            logger.error(f"❌ Failed to get agent by name {name}: {e}")
             return None
 
     async def get_all_agents(self) -> List[Dict[str, Any]]:

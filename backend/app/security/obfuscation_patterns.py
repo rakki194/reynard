@@ -35,8 +35,8 @@ HEX_OBFUSCATION_PATTERNS = [
 
 # Unicode obfuscation
 UNICODE_OBFUSCATION_PATTERNS = [
-    r"\\u[0-9a-f]{4}",
-    r"\\x[0-9a-f]{2}",
+    r"\\u[0-9a-fA-F]{4}",
+    r"\\x[0-9a-fA-F]{2}",
 ]
 
 # Whitespace obfuscation

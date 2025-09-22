@@ -8,10 +8,6 @@ This directory contains the refactored Reynard services, organized as proper Pyt
 
 ```text
 services/
-├── agent-naming/           # Agent naming system with animal spirit themes
-│   ├── reynard_agent_naming/
-│   ├── setup.py
-│   └── pyproject.toml
 ├── gatekeeper/            # Authentication and authorization
 │   ├── reynard_gatekeeper/
 │   ├── setup.py
@@ -21,6 +17,8 @@ services/
     ├── setup.py
     └── pyproject.toml
 ```
+
+**Note**: Agent naming functionality has been consolidated into the FastAPI ECS backend at `backend/app/ecs/` for unified agent state management.
 
 ## 🚀 **Quick Start**
 
@@ -58,20 +56,11 @@ make -f Makefile.dev lint
 source venv/bin/activate
 
 # Install each service in development mode
-cd services/agent-naming && pip install -e .
-# ECS functionality is now consolidated in the FastAPI backend
 cd services/gatekeeper && pip install -e .
 cd services/mcp-server && pip install -e .
 ```
 
 ## 📦 **Service Details**
-
-### 🦊 Agent Naming (`reynard-agent-naming`)
-
-- **Purpose**: Agent naming system with animal spirit themes
-- **Package**: `reynard_agent_naming`
-- **Dependencies**: None (pure Python)
-- **Usage**: `from reynard_agent_naming import AgentNameManager`
 
 ### 🛡️ Gatekeeper (`reynard-gatekeeper`)
 
@@ -131,7 +120,6 @@ Each service has its own test suite:
 make -f Makefile.dev test
 
 # Test specific service
-cd services/agent-naming && python -m pytest tests/
 cd services/gatekeeper && python -m pytest tests/
 cd services/mcp-server && python -m pytest tests/
 ```
@@ -145,7 +133,6 @@ cd services/mcp-server && python -m pytest tests/
 
 ### Service Dependencies
 
-- **agent-naming**: None (pure Python)
 - **gatekeeper**: fastapi, pydantic, python-jose, argon2-cffi
 - **mcp-server**: All other services + aiohttp, PyJWT
 
@@ -172,7 +159,7 @@ cd services/mcp-server && python -m pytest tests/
 make -f Makefile.dev services-install
 
 # Check installation
-python -c "from reynard_agent_naming import AgentNameManager; print('OK')"
+python -c "from reynard_gatekeeper import AuthManager; print('OK')"
 ```
 
 ### Virtual Environment Issues

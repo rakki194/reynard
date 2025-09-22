@@ -3,7 +3,6 @@
  */
 
 import type { ApiError } from "../types";
-import { useI18n } from "reynard-i18n";
 
 export class ReynardApiError extends Error implements ApiError {
   public status: number;

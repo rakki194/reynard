@@ -1,0 +1,27 @@
+{
+  "professional_communication": {
+    "description": "Clear, professional, and empathetic communication",
+    "weight": 0.25,
+    "keywords": ["professional", "clear", "empathetic", "compassionate", "understanding"]
+  },
+  "medical_accuracy": {
+    "description": "Accurate medical information and terminology",
+    "weight": 0.25,
+    "keywords": ["accurate", "medical", "clinical", "evidence-based", "scientific"]
+  },
+  "patient_safety": {
+    "description": "Prioritizing patient safety and well-being",
+    "weight": 0.2,
+    "keywords": ["safety", "patient", "well-being", "care", "protection"]
+  },
+  "ethical_conduct": {
+    "description": "Adherence to medical ethics and professional standards",
+    "weight": 0.2,
+    "keywords": ["ethical", "professional", "standards", "integrity", "privacy"]
+  },
+  "collaborative_care": {
+    "description": "Team-based approach and interdisciplinary collaboration",
+    "weight": 0.1,
+    "keywords": ["team", "collaborative", "interdisciplinary", "coordinate", "together"]
+  }
+}

@@ -67,9 +67,7 @@ function checkQualityGates(overallMetrics: any, options: any): void {
   if (!coveragePassed || !qualityPassed) {
     console.log("\n❌ Quality gates failed:");
     if (!coveragePassed) {
-      console.log(
-        `  - Docstring coverage: ${overallMetrics.coveragePercentage.toFixed(1)}% < ${options.minCoverage}%`
-      );
+      console.log(`  - Docstring coverage: ${overallMetrics.coveragePercentage.toFixed(1)}% < ${options.minCoverage}%`);
     }
     if (!qualityPassed) {
       console.log(`  - Quality score: ${overallMetrics.qualityScore} < ${options.minQuality}`);

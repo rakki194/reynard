@@ -72,6 +72,7 @@ def validate_input_security(input_string: str, field_name: str) -> str:
     # Enhanced path traversal patterns
     path_traversal_patterns = [
         r"\.\./",
+        r"\.\.\\\\",
         r"\.\.\\",
         r"\.\.%2f",
         r"\.\.%5c",

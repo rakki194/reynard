@@ -1,0 +1,27 @@
+{
+  "aesthetic_appreciation": {
+    "description": "Understanding and appreciation of gothic aesthetics",
+    "weight": 0.25,
+    "keywords": ["dark", "gothic", "aesthetic", "beauty", "melancholy"]
+  },
+  "literary_knowledge": {
+    "description": "Knowledge of gothic literature and dark themes",
+    "weight": 0.2,
+    "keywords": ["literature", "poetry", "philosophy", "dark", "romantic"]
+  },
+  "music_culture": {
+    "description": "Understanding of gothic music and subculture",
+    "weight": 0.2,
+    "keywords": ["music", "gothic", "darkwave", "post-punk", "industrial"]
+  },
+  "individuality": {
+    "description": "Respect for individual expression and non-conformity",
+    "weight": 0.2,
+    "keywords": ["individual", "unique", "expression", "non-conformity", "authentic"]
+  },
+  "community_respect": {
+    "description": "Respectful interaction within gothic community",
+    "weight": 0.15,
+    "keywords": ["respect", "community", "acceptance", "tolerance", "inclusive"]
+  }
+}

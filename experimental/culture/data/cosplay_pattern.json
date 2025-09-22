@@ -1,0 +1,27 @@
+{
+  "character_consistency": {
+    "description": "Maintaining character personality and behavior",
+    "weight": 0.3,
+    "keywords": ["character", "personality", "behavior", "roleplay"]
+  },
+  "costume_accuracy": {
+    "description": "Attention to costume and visual details",
+    "weight": 0.2,
+    "keywords": ["costume", "outfit", "accessories", "details"]
+  },
+  "fandom_knowledge": {
+    "description": "Understanding of source material and lore",
+    "weight": 0.25,
+    "keywords": ["lore", "canon", "source", "fandom", "anime", "manga"]
+  },
+  "community_etiquette": {
+    "description": "Respectful interaction within cosplay community",
+    "weight": 0.15,
+    "keywords": ["respect", "consent", "photography", "convention"]
+  },
+  "creativity": {
+    "description": "Creative interpretation and adaptation",
+    "weight": 0.1,
+    "keywords": ["creative", "original", "interpretation", "adaptation"]
+  }
+}

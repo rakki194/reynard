@@ -1,337 +1,321 @@
-#!/usr/bin/env python3
 """
-Mermaid Diagram Service
-=======================
+Mermaid Service
 
-Handles mermaid diagram generation, validation, and rendering.
-Uses the reusable PlaywrightBrowserService for rendering.
+Core service for rendering Mermaid diagrams using PlaywrightBrowserService.
+This service provides a clean interface for the MCP server to render diagrams.
 """
 
-import logging
-import re
-import tempfile
+import os
+import time
 from pathlib import Path
-from typing import Any
+from typing import Optional, Union, Dict, Any, Tuple
 
-from services.playwright_browser_service import PlaywrightBrowserService
-
-logger = logging.getLogger(__name__)
+from .playwright_browser_service import PlaywrightBrowserService
 
 
 class MermaidService:
-    """Service for mermaid diagram operations."""
+    """
+    Service for rendering Mermaid diagrams to SVG and PNG formats.
 
-    def __init__(self) -> None:
-        self.temp_dir = Path(tempfile.gettempdir()) / "reynard_mermaid"
-        self.temp_dir.mkdir(exist_ok=True)
-        self.browser_service = PlaywrightBrowserService()
+    This service uses PlaywrightBrowserService with mermaid.js to provide
+    reliable and fast conversion of Mermaid syntax to visual formats.
+    """
 
-    def validate_diagram(
-        self, diagram_content: str
-    ) -> tuple[bool, list[str], list[str]]:
-        """Validate mermaid diagram syntax."""
-        errors: list[str] = []
-        warnings: list[str] = []
-
-        try:
-            # Basic validation
-            if not diagram_content.strip():
-                errors.append("Diagram content is empty")
-                return False, errors, warnings
-
-            # Check for common syntax issues
-            lines = diagram_content.strip().split("\n")
-            for i, line in enumerate(lines, 1):
-                line = line.strip()
-                if not line or line.startswith("%%"):
-                    continue
-
-                # Check for unclosed brackets
-                if line.count("[") != line.count("]"):
-                    warnings.append(f"Line {i}: Possible unclosed brackets")
-
-                # Check for unclosed parentheses
-                if line.count("(") != line.count(")"):
-                    warnings.append(f"Line {i}: Possible unclosed parentheses")
-
-            return True, errors, warnings
-
-        except Exception as e:
-            errors.append(f"Validation error: {e!s}")
-            return False, errors, warnings
-
-    def render_diagram_to_svg(self, diagram_content: str) -> tuple[bool, str, str]:
-        """Render mermaid diagram to SVG using Playwright with adaptive sizing."""
-        try:
-            # Get diagram stats for optimal viewport
-            diagram_stats = self.get_diagram_stats(diagram_content)
-            optimal_viewport = self._calculate_optimal_viewport(diagram_stats)
-
-            html_content = self._create_mermaid_html(diagram_content, adaptive=True)
-            return self.browser_service.render_html_to_svg_sync(
-                html_content=html_content,
-                selector=".mermaid svg",
-                viewport_size=optimal_viewport,
-            )
-        except Exception as e:
-            return False, "", f"Rendering error: {e!s}"
-
-    def render_diagram_to_png(self, diagram_content: str) -> tuple[bool, str, str]:
-        """Render mermaid diagram to PNG using Playwright with adaptive sizing."""
-        try:
-            # First, get the diagram dimensions to calculate optimal viewport
-            diagram_stats = self.get_diagram_stats(diagram_content)
-            optimal_viewport = self._calculate_optimal_viewport(diagram_stats)
-
-            html_content = self._create_mermaid_html(diagram_content, adaptive=True)
-            return self.browser_service.render_html_to_png_adaptive_sync(
-                html_content=html_content,
-                viewport_size=optimal_viewport,
-                full_page=True,
-                content_selector=".mermaid svg",
-            )
-        except Exception as e:
-            return False, "", f"Rendering error: {e!s}"
-
-    def _clean_diagram_content(self, content: str) -> str:
-        """Clean mermaid diagram content."""
-        # Remove mermaid code block markers
-        content = re.sub(r"^```mermaid\n", "", content, flags=re.MULTILINE)
-        content = re.sub(r"^```\n", "", content, flags=re.MULTILINE)
-        content = re.sub(r"```$", "", content, flags=re.MULTILINE)
-
-        # Ensure neutral theme
-        if "%%{init:" not in content:
-            content = "%%{init: {'theme': 'neutral'}}%%\n" + content
-
-        return content.strip()
-
-    def _calculate_optimal_viewport(
-        self, diagram_stats: dict[str, Any]
-    ) -> dict[str, int]:
-        """Calculate optimal viewport size based on diagram complexity."""
-        complexity = diagram_stats.get("complexity_score", 1)
-        node_count = diagram_stats.get("node_count", 1)
-
-        # Base dimensions for simple diagrams
-        base_width = 1200
-        base_height = 800
-
-        # Scale based on complexity
-        if complexity <= 5:
-            # Simple diagrams - smaller viewport
-            width = max(800, base_width)
-            height = max(600, base_height)
-        elif complexity <= 15:
-            # Medium complexity - moderate viewport
-            width = max(1200, base_width + (node_count * 50))
-            height = max(800, base_height + (node_count * 30))
-        else:
-            # Complex diagrams - larger viewport
-            width = max(1600, base_width + (node_count * 80))
-            height = max(1200, base_height + (node_count * 50))
-
-        return {"width": min(width, 4000), "height": min(height, 3000)}
-
-    def _create_mermaid_html(self, diagram_content: str, adaptive: bool = False) -> str:
-        """Create HTML template with Mermaid diagram."""
-        clean_content = self._clean_diagram_content(diagram_content)
-
-        # Choose CSS based on adaptive mode
-        if adaptive:
-            css_styles = """
-                body {
-                    margin: 0;
-                    padding: 20px;
-                    background: white;
-                    font-family: Arial, sans-serif;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    min-height: 100vh;
-                }
-                .diagram-container {
-                    position: relative;
-                    width: 100%;
-                    max-width: 100%;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
-                .mermaid {
-                    text-align: center;
-                    width: 100%;
-                    height: auto;
-                    max-width: 100%;
-                }
-                .mermaid svg {
-                    max-width: 100% !important;
-                    width: auto !important;
-                    height: auto !important;
-                    display: block;
-                    margin: 0 auto;
-                }
-                .mermaid .node rect,
-                .mermaid .node circle,
-                .mermaid .node ellipse,
-                .mermaid .node polygon {
-                    stroke-width: 2px !important;
-                }
-                .mermaid .edgePath path {
-                    stroke-width: 1.5px !important;
-                }
-                .mermaid .edgeLabel {
-                    font-size: 14px !important;
-                    font-weight: bold !important;
-                }
-                .mermaid .nodeLabel {
-                    font-size: 12px !important;
-                    font-weight: bold !important;
-                }
-            """
-        else:
-            css_styles = """
-                body {
-                    margin: 0;
-                    padding: 160px;
-                    background: white;
-                    font-family: Arial, sans-serif;
-                    font-size: 24px;
-                }
-                .mermaid {
-                    text-align: center;
-                    width: 100%;
-                    height: 100%;
-                    min-height: 3200px;
-                    transform: scale(4);
-                    transform-origin: top left;
-                }
-                .mermaid svg {
-                    max-width: none !important;
-                    width: 100% !important;
-                    height: auto !important;
-                }
-                .mermaid .node rect,
-                .mermaid .node circle,
-                .mermaid .node ellipse,
-                .mermaid .node polygon {
-                    stroke-width: 8px !important;
-                }
-                .mermaid .edgePath path {
-                    stroke-width: 6px !important;
-                }
-                .mermaid .edgeLabel {
-                    font-size: 32px !important;
-                    font-weight: bold !important;
-                }
-                .mermaid .nodeLabel {
-                    font-size: 28px !important;
-                    font-weight: bold !important;
-                }
-            """
-
-        return f"""
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="UTF-8">
-            <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
-            <style>
-                {css_styles}
-            </style>
-        </head>
-        <body>
-            <div class="diagram-container">
-                <div class="mermaid">
-                    {clean_content}
-                </div>
-            </div>
-            <script>
-                // Initialize Mermaid with proper configuration
-                mermaid.initialize({{
-                    startOnLoad: true,
-                    theme: 'neutral',
-                    securityLevel: 'loose',
-                    fontFamily: 'Arial, sans-serif',
-                    themeVariables: {{
-                        primaryColor: '#ffffff',
-                        primaryTextColor: '#000000',
-                        primaryBorderColor: '#000000',
-                        lineColor: '#000000',
-                        sectionBkgColor: '#ffffff',
-                        altBackground: '#ffffff',
-                        gridColor: '#000000',
-                        textColor: '#000000',
-                        fontSize: '{"14px" if adaptive else "32px"}'
-                    }},
-                    flowchart: {{
-                        useMaxWidth: {adaptive},
-                        htmlLabels: true,
-                        nodeSpacing: {25 if adaptive else 100},
-                        rankSpacing: {25 if adaptive else 100},
-                        curve: 'basis'
-                    }},
-                    sequence: {{
-                        useMaxWidth: {adaptive}
-                    }},
-                    gantt: {{
-                        useMaxWidth: {adaptive}
-                    }}
-                }});
-
-                // Ensure content is loaded and rendered
-                document.addEventListener('DOMContentLoaded', function() {{
-                    // Force re-render if needed
-                    setTimeout(function() {{
-                        if (typeof mermaid !== 'undefined') {{
-                            mermaid.contentLoaded();
-                        }}
-                    }}, 500);
-                }});
-            </script>
-        </body>
-        </html>
+    def __init__(self):
         """
-
-    def get_diagram_stats(self, diagram_content: str) -> dict[str, Any]:
-        """Get statistics about a mermaid diagram."""
+        Initialize the Mermaid service.
+        """
         try:
-            lines = diagram_content.strip().split("\n")
+            self.browser_service = PlaywrightBrowserService()
+            self.mermaid_version = "11.0.2"  # Latest stable version
+            self.available = True
+        except Exception as e:
+            print(f"Warning: Failed to initialize mermaid service: {e}")
+            self.browser_service = None
+            self.available = False
 
-            # Remove code block markers
-            lines = [line for line in lines if not line.strip().startswith("```")]
+    def _create_mermaid_html(self, diagram: str, theme: str = "neutral",
+                           bg_color: Optional[str] = None,
+                           width: Optional[int] = None,
+                           height: Optional[int] = None) -> str:
+        """
+        Create HTML content for mermaid rendering.
 
-            # Count different elements
-            node_count = 0
-            edge_count = 0
-            subgraph_count = 0
+        Args:
+            diagram: The mermaid diagram content
+            theme: Mermaid theme (default, neutral, dark, forest)
+            bg_color: Background color (optional)
+            width: Custom width (optional)
+            height: Custom height (optional)
 
-            for line in lines:
-                line = line.strip()
-                if not line or line.startswith("%%"):
-                    continue
+        Returns:
+            HTML content string
+        """
+        # Clean the diagram content
+        clean_diagram = diagram.strip()
 
-                # Count nodes (basic patterns)
-                if "[" in line and "]" in line:
-                    node_count += 1
-                elif "(" in line and ")" in line:
-                    node_count += 1
+        # Create the HTML template
+        html_content = f"""
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Mermaid Diagram</title>
+    <style>
+        body {{
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: {bg_color or 'white'};
+        }}
+        .mermaid {{
+            text-align: center;
+            max-width: 100%;
+            height: auto;
+        }}
+    </style>
+</head>
+<body>
+    <div class="mermaid">
+{clean_diagram}
+    </div>
 
-                # Count edges
-                if "-->" in line or "---" in line or "->" in line:
-                    edge_count += 1
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@{self.mermaid_version}/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({{
+            startOnLoad: true,
+            theme: '{theme}',
+            securityLevel: 'loose',
+            fontFamily: 'Arial, sans-serif',
+            flowchart: {{
+                useMaxWidth: true,
+                htmlLabels: false,  // Use SVG text elements for proper text rendering
+                nodeSpacing: 50,
+                rankSpacing: 50,
+                curve: 'basis'
+            }},
+            sequence: {{
+                useMaxWidth: true
+            }},
+            gantt: {{
+                useMaxWidth: true
+            }}
+        }});
+    </script>
+</body>
+</html>
+"""
+        return html_content
 
-                # Count subgraphs
-                if line.startswith("subgraph"):
-                    subgraph_count += 1
+    def render_diagram_to_svg(self, diagram_content: str, theme: str = "neutral",
+                             bg_color: Optional[str] = None,
+                             width: Optional[int] = None,
+                             height: Optional[int] = None) -> Tuple[bool, str, str]:
+        """
+        Render a mermaid diagram to SVG format.
 
+        Args:
+            diagram_content: The mermaid diagram content
+            theme: Mermaid theme
+            bg_color: Background color
+            width: Custom width
+            height: Custom height
+
+        Returns:
+            Tuple of (success, svg_content, error_message)
+        """
+        if not self.available or not self.browser_service:
+            return False, "", "Mermaid service is not available"
+
+        try:
+            html_content = self._create_mermaid_html(diagram_content, theme, bg_color, width, height)
+
+            success, svg_content, error = self.browser_service.render_html_to_svg_sync(
+                html_content=html_content,
+                viewport_size={"width": 1920, "height": 1080},
+                selector=".mermaid"
+            )
+
+            if not success:
+                return False, "", f"SVG rendering failed: {error}"
+
+            return True, svg_content, ""
+
+        except Exception as e:
+            return False, "", f"SVG rendering error: {e}"
+
+    def render_diagram_to_png(self, diagram_content: str, theme: str = "neutral",
+                             bg_color: Optional[str] = None,
+                             width: Optional[int] = None,
+                             height: Optional[int] = None) -> Tuple[bool, bytes, str]:
+        """
+        Render a mermaid diagram to PNG format.
+
+        Args:
+            diagram_content: The mermaid diagram content
+            theme: Mermaid theme
+            bg_color: Background color
+            width: Custom width
+            height: Custom height
+
+        Returns:
+            Tuple of (success, png_data, error_message)
+        """
+        if not self.available or not self.browser_service:
+            return False, b"", "Mermaid service is not available"
+
+        try:
+            html_content = self._create_mermaid_html(diagram_content, theme, bg_color, width, height)
+
+            success, png_path, error = self.browser_service.render_html_to_png_adaptive_sync(
+                html_content=html_content,
+                viewport_size={"width": 1920, "height": 1080},
+                full_page=True
+            )
+
+            if not success:
+                return False, b"", f"PNG rendering failed: {error}"
+
+            # Read the PNG file
+            with open(png_path, "rb") as f:
+                png_data = f.read()
+
+            return True, png_data, ""
+
+        except Exception as e:
+            return False, b"", f"PNG rendering error: {e}"
+
+    def save_diagram_as_svg(self, diagram_content: str, output_path: str, theme: str = "neutral",
+                           bg_color: Optional[str] = None,
+                           width: Optional[int] = None,
+                           height: Optional[int] = None) -> Tuple[bool, str, str]:
+        """
+        Render and save a mermaid diagram as SVG.
+
+        Args:
+            diagram_content: The mermaid diagram content
+            output_path: Path to save the SVG file
+            theme: Mermaid theme
+            bg_color: Background color
+            width: Custom width
+            height: Custom height
+
+        Returns:
+            Tuple of (success, output_path, error_message)
+        """
+        try:
+            success, svg_content, error = self.render_diagram_to_svg(diagram_content, theme, bg_color, width, height)
+            if not success:
+                return False, "", error
+                
+            # Ensure directory exists
+            Path(output_path).parent.mkdir(parents=True, exist_ok=True)
+
+            # Save to file
+            with open(output_path, "w", encoding="utf-8") as f:
+                f.write(svg_content)
+
+            return True, output_path, ""
+
+        except Exception as e:
+            return False, "", f"SVG save error: {e}"
+
+    def save_diagram_as_png(self, diagram_content: str, output_path: str, theme: str = "neutral",
+                           bg_color: Optional[str] = None,
+                           width: Optional[int] = None,
+                           height: Optional[int] = None) -> Tuple[bool, str, str]:
+        """
+        Render and save a mermaid diagram as PNG.
+
+        Args:
+            diagram_content: The mermaid diagram content
+            output_path: Path to save the PNG file
+            theme: Mermaid theme
+            bg_color: Background color
+            width: Custom width
+            height: Custom height
+
+        Returns:
+            Tuple of (success, output_path, error_message)
+        """
+        try:
+            success, png_data, error = self.render_diagram_to_png(diagram_content, theme, bg_color, width, height)
+            if not success:
+                return False, "", error
+                
+            # Ensure directory exists
+            Path(output_path).parent.mkdir(parents=True, exist_ok=True)
+
+            # Save to file
+            with open(output_path, "wb") as f:
+                f.write(png_data)
+
+            return True, output_path, ""
+
+        except Exception as e:
+            return False, "", f"PNG save error: {e}"
+
+    def validate_diagram(self, diagram_content: str) -> Tuple[bool, list, list]:
+        """
+        Validate a mermaid diagram by attempting to render it.
+
+        Args:
+            diagram_content: The mermaid diagram content
+
+        Returns:
+            Tuple of (is_valid, errors, warnings)
+        """
+        if not self.available or not self.browser_service:
+            return False, ["Mermaid service is not available"], []
+
+        try:
+            success, _, error = self.render_diagram_to_svg(diagram_content)
+            if success:
+                return True, [], []
+            else:
+                return False, [error], []
+        except Exception as e:
+            return False, [str(e)], []
+
+    def get_diagram_stats(self, diagram_content: str) -> Dict[str, Any]:
+        """
+        Get statistics about a mermaid diagram.
+
+        Args:
+            diagram_content: The mermaid diagram content
+
+        Returns:
+            Dictionary with diagram statistics
+        """
+        if not self.available or not self.browser_service:
             return {
-                "total_lines": len(lines),
-                "node_count": node_count,
-                "edge_count": edge_count,
-                "subgraph_count": subgraph_count,
-                "complexity_score": node_count + edge_count + subgraph_count,
+                "valid": False,
+                "svg_size": 0,
+                "png_size": 0,
+                "diagram_length": len(diagram_content),
+                "lines": len(diagram_content.splitlines()),
+                "error": "Mermaid service is not available"
             }
 
+        try:
+            success, svg_content, svg_error = self.render_diagram_to_svg(diagram_content)
+            success_png, png_data, png_error = self.render_diagram_to_png(diagram_content)
+
+            return {
+                "valid": success,
+                "svg_size": len(svg_content) if success else 0,
+                "png_size": len(png_data) if success_png else 0,
+                "diagram_length": len(diagram_content),
+                "lines": len(diagram_content.splitlines()),
+                "svg_error": svg_error if not success else None,
+                "png_error": png_error if not success_png else None,
+            }
         except Exception as e:
-            return {"error": f"Stats calculation error: {e!s}"}
+            return {
+                "valid": False,
+                "svg_size": 0,
+                "png_size": 0,
+                "diagram_length": len(diagram_content),
+                "lines": len(diagram_content.splitlines()),
+                "error": str(e)
+            }

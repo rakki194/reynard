@@ -1,0 +1,41 @@
+# CULTURE: Cultural Understanding and Linguistic Translation for Universal Recognition and Evaluation
+# Requirements for cultural AI alignment framework
+
+# Core ML/AI libraries
+torch
+transformers
+accelerate
+datasets
+
+# Statistical analysis
+numpy
+scipy
+pandas
+statsmodels
+
+# Evaluation and metrics
+scikit-learn
+rouge-score
+sacrebleu
+
+# Data processing
+jsonlines
+tqdm
+rich
+
+# Configuration and utilities
+pydantic
+pyyaml
+click
+
+# Development and testing
+pytest
+pytest-asyncio
+black
+flake8
+mypy
+
+# Optional: Advanced training frameworks
+# peft  # For LoRA training
+# trl   # For DPO training
+# bitsandbytes  # For quantization

@@ -1,0 +1,496 @@
+{
+  "ecs_analysis_timestamp": 1758541098.9823718,
+  "ecs_bottlenecks": {
+    "agent_management": [
+      "BottleneckAnalysis(bottleneck_type='slow_endpoint', severity='high', description='Endpoint GET /agents/agent1/social_stats has slow average response time', impact='Average response time: 0.15s', recommendations=['Profile the endpoint code for performance issues', 'Check for inefficient database queries', 'Consider caching frequently accessed data', 'Optimize data serialization', 'Review external API calls'], affected_endpoints=['GET /agents/agent1/social_stats'], metrics={'avg_duration': 0.15037301182746887, 'max_duration': 0.15048670768737793, 'request_count': 8})",
+      "BottleneckAnalysis(bottleneck_type='high_error_rate', severity='high', description='Endpoint GET /agents/nonexistent/position has high error rate', impact='Error rate: 20.0%', recommendations=['Review error logs for common failure patterns', 'Add input validation and error handling', 'Check database connection stability', 'Implement retry mechanisms for external services', 'Add monitoring and alerting for this endpoint'], affected_endpoints=['GET /agents/nonexistent/position'], metrics={'error_rate': 20.0, 'error_count': 2, 'total_requests': 10})"
+    ],
+    "database_operations": [
+      "BottleneckAnalysis(bottleneck_type='high_error_rate', severity='critical', description='Endpoint GET /agents/invalid/mates has high error rate', impact='Error rate: 50.0%', recommendations=['Review error logs for common failure patterns', 'Add input validation and error handling', 'Check database connection stability', 'Implement retry mechanisms for external services', 'Add monitoring and alerting for this endpoint'], affected_endpoints=['GET /agents/invalid/mates'], metrics={'error_rate': 50.0, 'error_count': 5, 'total_requests': 10})",
+      "BottleneckAnalysis(bottleneck_type='slow_endpoint', severity='high', description='Endpoint GET /agents/agent1/mates has slow average response time', impact='Average response time: 0.20s', recommendations=['Profile the endpoint code for performance issues', 'Check for inefficient database queries', 'Consider caching frequently accessed data', 'Optimize data serialization', 'Review external API calls'], affected_endpoints=['GET /agents/agent1/mates'], metrics={'avg_duration': 0.20051725705464682, 'max_duration': 0.20066285133361816, 'request_count': 12})",
+      "BottleneckAnalysis(bottleneck_type='slow_endpoint', severity='high', description='Endpoint GET /naming/animal-spirits has slow average response time', impact='Average response time: 0.12s', recommendations=['Profile the endpoint code for performance issues', 'Check for inefficient database queries', 'Consider caching frequently accessed data', 'Optimize data serialization', 'Review external API calls'], affected_endpoints=['GET /naming/animal-spirits'], metrics={'avg_duration': 0.11654415130615234, 'max_duration': 0.12948298454284668, 'request_count': 5})",
+      "BottleneckAnalysis(bottleneck_type='slow_database_queries', severity='high', description='Found 113 slow database queries', impact='Average slow query duration: 0.11s', recommendations=['Add database indexes for frequently queried columns', 'Optimize query structure and joins', 'Consider query result caching', 'Review database connection pool settings', 'Use database query profiling tools'], affected_endpoints=[], metrics={'slow_query_count': 113, 'avg_slow_duration': 0.1084070796460177, 'total_queries': 199})",
+      "BottleneckAnalysis(bottleneck_type='frequent_database_queries', severity='medium', description='High frequency database queries detected', impact='Most frequent query executed 30 times', recommendations=['Implement query result caching', 'Consider database connection pooling', 'Review query optimization opportunities', 'Use prepared statements for repeated queries'], affected_endpoints=[], metrics={'frequent_queries': [('INSERT INTO agents (agent_id, name, spirit, style) VALUES (?, ?, ?, ?)', 20), ('INSERT INTO agent_traits (agent_id, trait_name, value) VALUES (?, ?, ?)', 20), ('SELECT * FROM agents WHERE active = true', 30), ('SELECT * FROM agent_traits WHERE agent_id IN (?, ?)', 15), ('SELECT * FROM agent_relationships WHERE agent1_id = ? OR agent2_id = ?', 15)], 'total_unique_queries': 17})"
+    ],
+    "genetic_calculations": [
+      "BottleneckAnalysis(bottleneck_type='slow_endpoint', severity='high', description='Endpoint GET /agents/agent1/compatibility/agent2 has slow average response time', impact='Average response time: 0.10s', recommendations=['Profile the endpoint code for performance issues', 'Check for inefficient database queries', 'Consider caching frequently accessed data', 'Optimize data serialization', 'Review external API calls'], affected_endpoints=['GET /agents/agent1/compatibility/agent2'], metrics={'avg_duration': 0.10033192634582519, 'max_duration': 0.10043907165527344, 'request_count': 15})"
+    ],
+    "memory_usage": [],
+    "error_handling": [
+      "BottleneckAnalysis(bottleneck_type='high_error_rate', severity='critical', description='Endpoint GET /naming/animal-spirits/invalid has high error rate', impact='Error rate: 30.0%', recommendations=['Review error logs for common failure patterns', 'Add input validation and error handling', 'Check database connection stability', 'Implement retry mechanisms for external services', 'Add monitoring and alerting for this endpoint'], affected_endpoints=['GET /naming/animal-spirits/invalid'], metrics={'error_rate': 30.0, 'error_count': 3, 'total_requests': 10})"
+    ]
+  },
+  "ecs_recommendations": [
+    "Optimize genetic compatibility calculations - consider caching results",
+    "Implement genetic trait indexing for faster lookups",
+    "Use batch processing for multiple compatibility checks",
+    "Add database indexes for agent relationships and lineage queries",
+    "Implement query result caching for frequently accessed data",
+    "Consider database connection pooling optimization",
+    "Improve input validation for agent endpoints",
+    "Add better error handling for invalid agent IDs",
+    "Implement graceful degradation for missing data"
+  ],
+  "ecs_metrics": {
+    "total_requests": 143,
+    "agent_management_requests": 115,
+    "database_intensive_requests": 28,
+    "avg_agent_request_time": 0.0683917584626571,
+    "avg_database_request_time": 0.04146728345326015,
+    "total_db_queries": 199,
+    "total_async_tasks": 0
+  },
+  "overall_bottlenecks": [
+    "BottleneckAnalysis(bottleneck_type='high_error_rate', severity='critical', description='Endpoint GET /agents/invalid/mates has high error rate', impact='Error rate: 50.0%', recommendations=['Review error logs for common failure patterns', 'Add input validation and error handling', 'Check database connection stability', 'Implement retry mechanisms for external services', 'Add monitoring and alerting for this endpoint'], affected_endpoints=['GET /agents/invalid/mates'], metrics={'error_rate': 50.0, 'error_count': 5, 'total_requests': 10})",
+    "BottleneckAnalysis(bottleneck_type='high_error_rate', severity='critical', description='Endpoint GET /naming/animal-spirits/invalid has high error rate', impact='Error rate: 30.0%', recommendations=['Review error logs for common failure patterns', 'Add input validation and error handling', 'Check database connection stability', 'Implement retry mechanisms for external services', 'Add monitoring and alerting for this endpoint'], affected_endpoints=['GET /naming/animal-spirits/invalid'], metrics={'error_rate': 30.0, 'error_count': 3, 'total_requests': 10})",
+    "BottleneckAnalysis(bottleneck_type='slow_endpoint', severity='high', description='Endpoint GET /agents/agent1/compatibility/agent2 has slow average response time', impact='Average response time: 0.10s', recommendations=['Profile the endpoint code for performance issues', 'Check for inefficient database queries', 'Consider caching frequently accessed data', 'Optimize data serialization', 'Review external API calls'], affected_endpoints=['GET /agents/agent1/compatibility/agent2'], metrics={'avg_duration': 0.10033192634582519, 'max_duration': 0.10043907165527344, 'request_count': 15})",
+    "BottleneckAnalysis(bottleneck_type='slow_endpoint', severity='high', description='Endpoint GET /agents/agent1/mates has slow average response time', impact='Average response time: 0.20s', recommendations=['Profile the endpoint code for performance issues', 'Check for inefficient database queries', 'Consider caching frequently accessed data', 'Optimize data serialization', 'Review external API calls'], affected_endpoints=['GET /agents/agent1/mates'], metrics={'avg_duration': 0.20051725705464682, 'max_duration': 0.20066285133361816, 'request_count': 12})",
+    "BottleneckAnalysis(bottleneck_type='slow_endpoint', severity='high', description='Endpoint GET /agents/agent1/social_stats has slow average response time', impact='Average response time: 0.15s', recommendations=['Profile the endpoint code for performance issues', 'Check for inefficient database queries', 'Consider caching frequently accessed data', 'Optimize data serialization', 'Review external API calls'], affected_endpoints=['GET /agents/agent1/social_stats'], metrics={'avg_duration': 0.15037301182746887, 'max_duration': 0.15048670768737793, 'request_count': 8})",
+    "BottleneckAnalysis(bottleneck_type='slow_endpoint', severity='high', description='Endpoint GET /naming/animal-spirits has slow average response time', impact='Average response time: 0.12s', recommendations=['Profile the endpoint code for performance issues', 'Check for inefficient database queries', 'Consider caching frequently accessed data', 'Optimize data serialization', 'Review external API calls'], affected_endpoints=['GET /naming/animal-spirits'], metrics={'avg_duration': 0.11654415130615234, 'max_duration': 0.12948298454284668, 'request_count': 5})",
+    "BottleneckAnalysis(bottleneck_type='high_error_rate', severity='high', description='Endpoint GET /agents/nonexistent/position has high error rate', impact='Error rate: 20.0%', recommendations=['Review error logs for common failure patterns', 'Add input validation and error handling', 'Check database connection stability', 'Implement retry mechanisms for external services', 'Add monitoring and alerting for this endpoint'], affected_endpoints=['GET /agents/nonexistent/position'], metrics={'error_rate': 20.0, 'error_count': 2, 'total_requests': 10})",
+    "BottleneckAnalysis(bottleneck_type='slow_database_queries', severity='high', description='Found 113 slow database queries', impact='Average slow query duration: 0.11s', recommendations=['Add database indexes for frequently queried columns', 'Optimize query structure and joins', 'Consider query result caching', 'Review database connection pool settings', 'Use database query profiling tools'], affected_endpoints=[], metrics={'slow_query_count': 113, 'avg_slow_duration': 0.1084070796460177, 'total_queries': 199})",
+    "BottleneckAnalysis(bottleneck_type='frequent_database_queries', severity='medium', description='High frequency database queries detected', impact='Most frequent query executed 30 times', recommendations=['Implement query result caching', 'Consider database connection pooling', 'Review query optimization opportunities', 'Use prepared statements for repeated queries'], affected_endpoints=[], metrics={'frequent_queries': [('INSERT INTO agents (agent_id, name, spirit, style) VALUES (?, ?, ?, ?)', 20), ('INSERT INTO agent_traits (agent_id, trait_name, value) VALUES (?, ?, ?)', 20), ('SELECT * FROM agents WHERE active = true', 30), ('SELECT * FROM agent_traits WHERE agent_id IN (?, ?)', 15), ('SELECT * FROM agent_relationships WHERE agent1_id = ? OR agent2_id = ?', 15)], 'total_unique_queries': 17})"
+  ],
+  "performance_trends": [
+    "PerformanceTrend(metric_name='response_time', trend_direction='stable', change_percentage=-66.79556868422387, time_period='24h', confidence=0.10765990335689246)",
+    "PerformanceTrend(metric_name='error_rate', trend_direction='degrading', change_percentage=0.0, time_period='24h', confidence=0.0)"
+  ],
+  "optimization_report": {
+    "report_timestamp": "2025-09-22T13:38:18.982212",
+    "performance_summary": {
+      "summary": {
+        "total_requests": 100,
+        "avg_duration_ms": 73.27,
+        "max_duration_ms": 200.66,
+        "min_duration_ms": 20.2,
+        "error_rate_percent": 10.0,
+        "avg_memory_mb": 70.26,
+        "total_db_queries": 136,
+        "total_db_time_ms": 11880.0,
+        "total_async_tasks": 0,
+        "total_async_time_ms": 0.0
+      },
+      "slowest_endpoints": [
+        [
+          "GET /agents/agent1/mates",
+          {
+            "requests": 12,
+            "avg_duration": 0.20051725705464682,
+            "max_duration": 0.20066285133361816,
+            "error_rate": 0.0,
+            "avg_memory": 63152128.0
+          }
+        ],
+        [
+          "GET /agents/agent1/social_stats",
+          {
+            "requests": 8,
+            "avg_duration": 0.15037301182746887,
+            "max_duration": 0.15048670768737793,
+            "error_rate": 0.0,
+            "avg_memory": 63152128.0
+          }
+        ],
+        [
+          "GET /naming/animal-spirits",
+          {
+            "requests": 5,
+            "avg_duration": 0.11654415130615234,
+            "max_duration": 0.12948298454284668,
+            "error_rate": 0.0,
+            "avg_memory": 103822950.4
+          }
+        ],
+        [
+          "GET /agents/agent1/compatibility/agent2",
+          {
+            "requests": 15,
+            "avg_duration": 0.10033192634582519,
+            "max_duration": 0.10043907165527344,
+            "error_rate": 0.0,
+            "avg_memory": 63308322.13333333
+          }
+        ],
+        [
+          "POST /agents",
+          {
+            "requests": 20,
+            "avg_duration": 0.06169744729995728,
+            "max_duration": 0.06619405746459961,
+            "error_rate": 0.0,
+            "avg_memory": 63300198.4
+          }
+        ],
+        [
+          "GET /traits/spirit/fox",
+          {
+            "requests": 3,
+            "avg_duration": 0.056457837422688804,
+            "max_duration": 0.05864381790161133,
+            "error_rate": 0.0,
+            "avg_memory": 142016512.0
+          }
+        ],
+        [
+          "GET /agents/agent1/lineage",
+          {
+            "requests": 10,
+            "avg_duration": 0.050339126586914064,
+            "max_duration": 0.05126190185546875,
+            "error_rate": 0.0,
+            "avg_memory": 63230361.6
+          }
+        ],
+        [
+          "GET /naming/animal-spirits/invalid",
+          {
+            "requests": 10,
+            "avg_duration": 0.02058558464050293,
+            "max_duration": 0.023171424865722656,
+            "error_rate": 30.0,
+            "avg_memory": 78352384.0
+          }
+        ],
+        [
+          "GET /breeding/stats",
+          {
+            "requests": 10,
+            "avg_duration": 0.020313382148742676,
+            "max_duration": 0.020436763763427734,
+            "error_rate": 0.0,
+            "avg_memory": 78352384.0
+          }
+        ],
+        [
+          "GET /agents/nonexistent/position",
+          {
+            "requests": 10,
+            "avg_duration": 0.0203096866607666,
+            "max_duration": 0.020390748977661133,
+            "error_rate": 20.0,
+            "avg_memory": 78352384.0
+          }
+        ]
+      ],
+      "endpoint_stats": {
+        "POST /agents": {
+          "requests": 20,
+          "avg_duration": 0.06169744729995728,
+          "max_duration": 0.06619405746459961,
+          "error_rate": 0.0,
+          "avg_memory": 63300198.4
+        },
+        "GET /agents": {
+          "requests": 30,
+          "avg_duration": 0.020249581336975096,
+          "max_duration": 0.020378828048706055,
+          "error_rate": 0.0,
+          "avg_memory": 63307776.0
+        },
+        "GET /agents/agent1/compatibility/agent2": {
+          "requests": 15,
+          "avg_duration": 0.10033192634582519,
+          "max_duration": 0.10043907165527344,
+          "error_rate": 0.0,
+          "avg_memory": 63308322.13333333
+        },
+        "GET /agents/agent1/lineage": {
+          "requests": 10,
+          "avg_duration": 0.050339126586914064,
+          "max_duration": 0.05126190185546875,
+          "error_rate": 0.0,
+          "avg_memory": 63230361.6
+        },
+        "GET /agents/agent1/mates": {
+          "requests": 12,
+          "avg_duration": 0.20051725705464682,
+          "max_duration": 0.20066285133361816,
+          "error_rate": 0.0,
+          "avg_memory": 63152128.0
+        },
+        "GET /agents/agent1/social_stats": {
+          "requests": 8,
+          "avg_duration": 0.15037301182746887,
+          "max_duration": 0.15048670768737793,
+          "error_rate": 0.0,
+          "avg_memory": 63152128.0
+        },
+        "GET /naming/animal-spirits": {
+          "requests": 5,
+          "avg_duration": 0.11654415130615234,
+          "max_duration": 0.12948298454284668,
+          "error_rate": 0.0,
+          "avg_memory": 103822950.4
+        },
+        "GET /traits/spirit/fox": {
+          "requests": 3,
+          "avg_duration": 0.056457837422688804,
+          "max_duration": 0.05864381790161133,
+          "error_rate": 0.0,
+          "avg_memory": 142016512.0
+        },
+        "GET /agents/nonexistent/position": {
+          "requests": 10,
+          "avg_duration": 0.0203096866607666,
+          "max_duration": 0.020390748977661133,
+          "error_rate": 20.0,
+          "avg_memory": 78352384.0
+        },
+        "GET /agents/invalid/mates": {
+          "requests": 10,
+          "avg_duration": 0.02029576301574707,
+          "max_duration": 0.020383596420288086,
+          "error_rate": 50.0,
+          "avg_memory": 78352384.0
+        },
+        "GET /breeding/stats": {
+          "requests": 10,
+          "avg_duration": 0.020313382148742676,
+          "max_duration": 0.020436763763427734,
+          "error_rate": 0.0,
+          "avg_memory": 78352384.0
+        },
+        "GET /naming/animal-spirits/invalid": {
+          "requests": 10,
+          "avg_duration": 0.02058558464050293,
+          "max_duration": 0.023171424865722656,
+          "error_rate": 30.0,
+          "avg_memory": 78352384.0
+        }
+      },
+      "timestamp": "2025-09-22T13:38:18.982198"
+    },
+    "memory_summary": {
+      "current_memory_mb": 74.72265625,
+      "avg_memory_mb": 67.29644097222223,
+      "max_memory_mb": 133.06640625,
+      "min_memory_mb": 60.2265625,
+      "avg_memory_percent": 0.8717918701841962,
+      "memory_trend": "increasing",
+      "snapshots_count": 18,
+      "timestamp": "2025-09-22T13:38:18.982206"
+    },
+    "bottlenecks": {
+      "critical": 2,
+      "high": 6,
+      "medium": 1,
+      "low": 0,
+      "total": 9
+    },
+    "bottleneck_details": [
+      {
+        "type": "high_error_rate",
+        "severity": "critical",
+        "description": "Endpoint GET /agents/invalid/mates has high error rate",
+        "impact": "Error rate: 50.0%",
+        "recommendations": [
+          "Review error logs for common failure patterns",
+          "Add input validation and error handling",
+          "Check database connection stability",
+          "Implement retry mechanisms for external services",
+          "Add monitoring and alerting for this endpoint"
+        ],
+        "affected_endpoints": ["GET /agents/invalid/mates"],
+        "metrics": {
+          "error_rate": 50.0,
+          "error_count": 5,
+          "total_requests": 10
+        }
+      },
+      {
+        "type": "high_error_rate",
+        "severity": "critical",
+        "description": "Endpoint GET /naming/animal-spirits/invalid has high error rate",
+        "impact": "Error rate: 30.0%",
+        "recommendations": [
+          "Review error logs for common failure patterns",
+          "Add input validation and error handling",
+          "Check database connection stability",
+          "Implement retry mechanisms for external services",
+          "Add monitoring and alerting for this endpoint"
+        ],
+        "affected_endpoints": ["GET /naming/animal-spirits/invalid"],
+        "metrics": {
+          "error_rate": 30.0,
+          "error_count": 3,
+          "total_requests": 10
+        }
+      },
+      {
+        "type": "slow_endpoint",
+        "severity": "high",
+        "description": "Endpoint GET /agents/agent1/compatibility/agent2 has slow average response time",
+        "impact": "Average response time: 0.10s",
+        "recommendations": [
+          "Profile the endpoint code for performance issues",
+          "Check for inefficient database queries",
+          "Consider caching frequently accessed data",
+          "Optimize data serialization",
+          "Review external API calls"
+        ],
+        "affected_endpoints": ["GET /agents/agent1/compatibility/agent2"],
+        "metrics": {
+          "avg_duration": 0.10033192634582519,
+          "max_duration": 0.10043907165527344,
+          "request_count": 15
+        }
+      },
+      {
+        "type": "slow_endpoint",
+        "severity": "high",
+        "description": "Endpoint GET /agents/agent1/mates has slow average response time",
+        "impact": "Average response time: 0.20s",
+        "recommendations": [
+          "Profile the endpoint code for performance issues",
+          "Check for inefficient database queries",
+          "Consider caching frequently accessed data",
+          "Optimize data serialization",
+          "Review external API calls"
+        ],
+        "affected_endpoints": ["GET /agents/agent1/mates"],
+        "metrics": {
+          "avg_duration": 0.20051725705464682,
+          "max_duration": 0.20066285133361816,
+          "request_count": 12
+        }
+      },
+      {
+        "type": "slow_endpoint",
+        "severity": "high",
+        "description": "Endpoint GET /agents/agent1/social_stats has slow average response time",
+        "impact": "Average response time: 0.15s",
+        "recommendations": [
+          "Profile the endpoint code for performance issues",
+          "Check for inefficient database queries",
+          "Consider caching frequently accessed data",
+          "Optimize data serialization",
+          "Review external API calls"
+        ],
+        "affected_endpoints": ["GET /agents/agent1/social_stats"],
+        "metrics": {
+          "avg_duration": 0.15037301182746887,
+          "max_duration": 0.15048670768737793,
+          "request_count": 8
+        }
+      },
+      {
+        "type": "slow_endpoint",
+        "severity": "high",
+        "description": "Endpoint GET /naming/animal-spirits has slow average response time",
+        "impact": "Average response time: 0.12s",
+        "recommendations": [
+          "Profile the endpoint code for performance issues",
+          "Check for inefficient database queries",
+          "Consider caching frequently accessed data",
+          "Optimize data serialization",
+          "Review external API calls"
+        ],
+        "affected_endpoints": ["GET /naming/animal-spirits"],
+        "metrics": {
+          "avg_duration": 0.11654415130615234,
+          "max_duration": 0.12948298454284668,
+          "request_count": 5
+        }
+      },
+      {
+        "type": "high_error_rate",
+        "severity": "high",
+        "description": "Endpoint GET /agents/nonexistent/position has high error rate",
+        "impact": "Error rate: 20.0%",
+        "recommendations": [
+          "Review error logs for common failure patterns",
+          "Add input validation and error handling",
+          "Check database connection stability",
+          "Implement retry mechanisms for external services",
+          "Add monitoring and alerting for this endpoint"
+        ],
+        "affected_endpoints": ["GET /agents/nonexistent/position"],
+        "metrics": {
+          "error_rate": 20.0,
+          "error_count": 2,
+          "total_requests": 10
+        }
+      },
+      {
+        "type": "slow_database_queries",
+        "severity": "high",
+        "description": "Found 113 slow database queries",
+        "impact": "Average slow query duration: 0.11s",
+        "recommendations": [
+          "Add database indexes for frequently queried columns",
+          "Optimize query structure and joins",
+          "Consider query result caching",
+          "Review database connection pool settings",
+          "Use database query profiling tools"
+        ],
+        "affected_endpoints": [],
+        "metrics": {
+          "slow_query_count": 113,
+          "avg_slow_duration": 0.1084070796460177,
+          "total_queries": 199
+        }
+      },
+      {
+        "type": "frequent_database_queries",
+        "severity": "medium",
+        "description": "High frequency database queries detected",
+        "impact": "Most frequent query executed 30 times",
+        "recommendations": [
+          "Implement query result caching",
+          "Consider database connection pooling",
+          "Review query optimization opportunities",
+          "Use prepared statements for repeated queries"
+        ],
+        "affected_endpoints": [],
+        "metrics": {
+          "frequent_queries": [
+            ["INSERT INTO agents (agent_id, name, spirit, style) VALUES (?, ?, ?, ?)", 20],
+            ["INSERT INTO agent_traits (agent_id, trait_name, value) VALUES (?, ?, ?)", 20],
+            ["SELECT * FROM agents WHERE active = true", 30],
+            ["SELECT * FROM agent_traits WHERE agent_id IN (?, ?)", 15],
+            ["SELECT * FROM agent_relationships WHERE agent1_id = ? OR agent2_id = ?", 15]
+          ],
+          "total_unique_queries": 17
+        }
+      }
+    ],
+    "performance_trends": [
+      {
+        "metric": "response_time",
+        "trend": "stable",
+        "change_percent": -66.79556868422387,
+        "confidence": 0.10765990335689246
+      },
+      {
+        "metric": "error_rate",
+        "trend": "degrading",
+        "change_percent": 0.0,
+        "confidence": 0.0
+      }
+    ],
+    "priority_recommendations": [
+      "Add input validation and error handling",
+      "Review error logs for common failure patterns",
+      "Optimize query structure and joins",
+      "Check for inefficient database queries",
+      "Add database indexes for frequently queried columns",
+      "Profile the endpoint code for performance issues"
+    ],
+    "optimization_score": {
+      "score": 0,
+      "grade": "F",
+      "description": "Performance score: 0/100 (Grade: F)",
+      "penalty_breakdown": {
+        "bottleneck_penalty": 148,
+        "trend_adjustment": 5
+      }
+    }
+  },
+  "summary": {
+    "total_bottlenecks": 9,
+    "critical_bottlenecks": 2,
+    "high_priority_bottlenecks": 6,
+    "ecs_components_affected": 4,
+    "optimization_score": 0
+  }
+}

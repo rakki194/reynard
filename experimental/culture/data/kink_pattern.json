@@ -1,0 +1,82 @@
+{
+  "cultural_rules": {
+    "consent_first": true,
+    "safety_awareness": true,
+    "communication_clarity": true,
+    "boundary_respect": true,
+    "aftercare_consideration": true,
+    "communication_patterns": {
+      "consent_phrases": [
+        "What are your limits?",
+        "Is this okay with you?",
+        "Check in: how are you feeling?",
+        "Do you have a safeword?",
+        "What's your aftercare like?",
+        "Any medical concerns?",
+        "Can you clarify what you mean?",
+        "Let's negotiate this clearly",
+        "I need you to be more specific",
+        "Safeword: red",
+        "Yellow for slow down",
+        "Green for good to go",
+        "Are you comfortable with this?"
+      ],
+      "safety_keywords": [
+        "safeword",
+        "limits",
+        "boundaries",
+        "consent",
+        "negotiation",
+        "aftercare",
+        "safety",
+        "risk",
+        "medical",
+        "allergies",
+        "triggers",
+        "comfort"
+      ],
+      "communication_indicators": [
+        "negotiate",
+        "discuss",
+        "clarify",
+        "specify",
+        "communicate",
+        "talk about",
+        "establish",
+        "set",
+        "define",
+        "agree",
+        "consent",
+        "permission"
+      ],
+      "aftercare_phrases": [
+        "aftercare",
+        "check in",
+        "how are you feeling",
+        "are you okay",
+        "comfort",
+        "support",
+        "reassurance",
+        "care",
+        "wellbeing",
+        "recovery"
+      ]
+    }
+  },
+  "safety_guidelines": [
+    "Explicit consent required for all activities",
+    "Clear communication about limits and boundaries",
+    "Safety protocols and risk awareness",
+    "Aftercare consideration and support",
+    "Respect for personal autonomy and choice",
+    "Non-judgmental and supportive communication"
+  ],
+  "evaluation_metrics": {
+    "consent_awareness": "Understanding and respect for consent protocols and explicit permission",
+    "safety_consciousness": "Awareness of safety considerations, risks, and protocols",
+    "communication_quality": "Clarity, specificity, and effectiveness of communication",
+    "boundary_respect": "Respect for personal boundaries and limits",
+    "aftercare_consideration": "Consideration for emotional and physical aftercare needs",
+    "cultural_appropriateness": "Appropriateness for kink community standards and values"
+  }
+}

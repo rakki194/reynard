@@ -35,14 +35,14 @@ monolith_analysis = MonolithAnalysisService()
 @register_tool(
     name="detect_monoliths",
     category="analysis",
-    description="🦊 Detect large monolithic files that violate the 140-line axiom. Perfect for finding code that needs refactoring into smaller, more maintainable modules. Use this to identify files that are too complex and should be broken down.",
-    execution_type="sync",
+    description="🔥 Detect large monolithic files that violate the 140-line axiom with RAG acceleration. Perfect for finding code that needs refactoring into smaller, more maintainable modules. Use this to identify files that are too complex and should be broken down.",
+    execution_type="async",
     enabled=True,
     dependencies=[],
     config={},
 )
-def detect_monoliths(**kwargs) -> dict[str, Any]:
-    """Detect large monolithic files based on precise code modularity rules."""
+async def detect_monoliths(**kwargs) -> dict[str, Any]:
+    """Detect large monolithic files based on precise code modularity rules with RAG acceleration."""
     arguments = kwargs.get("arguments", {})
     max_lines = arguments.get("max_lines", 140)
     exclude_comments = arguments.get("exclude_comments", True)
@@ -52,7 +52,7 @@ def detect_monoliths(**kwargs) -> dict[str, Any]:
     include_metrics = arguments.get("include_metrics", True)
 
     try:
-        result = monolith_analysis.detect_monoliths(
+        result = await monolith_analysis.detect_monoliths(
             max_lines=max_lines,
             exclude_comments=exclude_comments,
             file_types=file_types,
@@ -63,7 +63,7 @@ def detect_monoliths(**kwargs) -> dict[str, Any]:
 
         return {
             "content": [
-                {"type": "text", "text": f"🦊 Monolith Detection Results:\n\n{result}"}
+                {"type": "text", "text": f"🔥 Phoenix Monolith Detection Results:\n\n{result}"}
             ]
         }
     except Exception as e:
@@ -77,14 +77,14 @@ def detect_monoliths(**kwargs) -> dict[str, Any]:
 @register_tool(
     name="analyze_file_complexity",
     category="analysis",
-    description="🔍 Deep-dive analysis of a specific file's complexity metrics. Perfect for understanding why a file is considered a monolith and what specific refactoring opportunities exist.",
-    execution_type="sync",
+    description="🔍 Deep-dive analysis of a specific file's complexity metrics with intelligent caching. Perfect for understanding why a file is considered a monolith and what specific refactoring opportunities exist.",
+    execution_type="async",
     enabled=True,
     dependencies=[],
     config={},
 )
-def analyze_file_complexity(**kwargs) -> dict[str, Any]:
-    """Deep-dive analysis of a specific file's complexity metrics."""
+async def analyze_file_complexity(**kwargs) -> dict[str, Any]:
+    """Deep-dive analysis of a specific file's complexity metrics with intelligent caching."""
     arguments = kwargs.get("arguments", {})
     file_path = arguments.get("file_path")
     include_ast_analysis = arguments.get("include_ast_analysis", True)
@@ -93,15 +93,40 @@ def analyze_file_complexity(**kwargs) -> dict[str, Any]:
         return {"content": [{"type": "text", "text": "❌ File path is required"}]}
 
     try:
-        result = file_analysis.analyze_file_complexity(
-            file_path=file_path, include_ast_analysis=include_ast_analysis
+        # Use the monolith analysis service for consistency
+        metrics = await monolith_analysis.analyze_file_metrics(
+            file_path=file_path,
+            exclude_comments=True,
+            include_ast=include_ast_analysis
         )
+        
+        # Format the results
+        result_lines = []
+        result_lines.append(f"🔍 File Complexity Analysis for {file_path}")
+        result_lines.append("")
+        result_lines.append(f"📄 Total lines: {metrics.get('total_lines', 0)}")
+        result_lines.append(f"📏 Lines of code: {metrics.get('lines_of_code', 0)}")
+        
+        if include_ast_analysis and "ast_metrics" in metrics:
+            ast_metrics = metrics["ast_metrics"]
+            result_lines.append("")
+            result_lines.append("🔧 AST Metrics:")
+            result_lines.append(f"  Functions: {ast_metrics.get('functions', 0)}")
+            result_lines.append(f"  Classes: {ast_metrics.get('classes', 0)}")
+            result_lines.append(f"  Imports: {ast_metrics.get('imports', 0)}")
+            result_lines.append(f"  Complexity: {ast_metrics.get('complexity', 0)}")
+        
+        if "error" in metrics:
+            result_lines.append("")
+            result_lines.append(f"❌ Error: {metrics['error']}")
+        
+        result = "\n".join(result_lines)
 
         return {
             "content": [
                 {
                     "type": "text",
-                    "text": f"🔍 File Complexity Analysis for {file_path}:\n\n{result}",
+                    "text": f"🔥 Phoenix File Analysis:\n\n{result}",
                 }
             ]
         }

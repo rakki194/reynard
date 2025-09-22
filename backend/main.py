@@ -34,6 +34,10 @@ import uvicorn
 # Core application factory
 from app.core.app_factory import create_app
 from app.core.config import get_config
+from app.core.intelligent_reload import (
+    get_reload_excludes,
+    should_use_intelligent_reload,
+)
 
 # Configure logging
 logging.basicConfig(
@@ -54,7 +58,12 @@ if __name__ == "__main__":
     logger.info("📚 Documentation available at: %s", config.docs_url)
 
     if config.reload:
-        logger.info("🔧 Auto-reload enabled for development")
+        if should_use_intelligent_reload():
+            logger.info("🧠 Intelligent service reload enabled for development")
+            logger.info("🎯 Services will reload individually when their files change")
+        else:
+            logger.info("🔧 Standard auto-reload enabled for development")
+
         # Development mode with uvicorn's built-in reload
         uvicorn.run(
             "main:app",
@@ -63,45 +72,7 @@ if __name__ == "__main__":
             log_level="info",
             reload=True,
             reload_includes=["*.py", "*.env", "*.json"],
-            reload_excludes=[
-                "*.db",
-                "*.log",
-                "generated/*",
-                "__pycache__/**/*",
-                "__pycache__/*",
-                "**/__pycache__/**/*",
-                "**/__pycache__/*",
-                ".mypy_cache/**/*",
-                ".mypy_cache/*",
-                "**/.mypy_cache/**/*",
-                "**/.mypy_cache/*",
-                "**/.mypy_cache/**/*.json",
-                "**/.mypy_cache/**/*.data.json",
-                "**/.mypy_cache/**/*.meta.json",
-                "*.pyc",
-                "*.pyo",
-                "*.pyd",
-                ".pytest_cache/**/*",
-                ".pytest_cache/*",
-                "**/.pytest_cache/**/*",
-                "**/.pytest_cache/*",
-                ".coverage",
-                "htmlcov/*",
-                ".tox/*",
-                "venv/*",
-                "env/*",
-                ".venv/*",
-                "node_modules/*",
-                ".git/*",
-                "*.tmp",
-                "*.temp",
-                "*.swp",
-                "*.swo",
-                "*~",
-                ".DS_Store",
-                "Thumbs.db",
-                "@plugins_snapshot.json",
-            ],
+            reload_excludes=get_reload_excludes(),
         )
     else:
         logger.info("🔧 Reload disabled for production")

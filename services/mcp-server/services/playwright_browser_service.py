@@ -505,6 +505,91 @@ class PlaywrightBrowserService:
             self.scrape_webpage(url, selector, viewport_size, wait_for)
         )
 
+    async def render_html_to_svg_with_wait(
+        self,
+        html_content: str,
+        selector: str = "svg",
+        viewport_size: dict[str, int | None] = None,
+        wait_condition: str | None = None,
+        timeout: int = 30000,
+    ) -> tuple[bool, str, str]:
+        """
+        Extract SVG content from HTML with custom wait condition.
+        
+        Args:
+            html_content: HTML content containing SVG
+            selector: CSS selector for SVG element
+            viewport_size: Browser viewport size
+            wait_condition: Custom wait condition (e.g., "data-mermaid-ready")
+            timeout: Timeout in milliseconds
+            
+        Returns:
+            Tuple of (success, svg_content_or_error, error_message)
+        """
+        try:
+            if not self.playwright_available:
+                return (
+                    False,
+                    "",
+                    "Playwright not available. Install with: pip install playwright",
+                )
+
+            # Default viewport size
+            if viewport_size is None:
+                viewport_size = {"width": 1920, "height": 1080}
+
+            browser, page = await self._create_browser_page(viewport_size)
+
+            try:
+                # Load HTML content
+                await page.set_content(html_content)
+
+                # Wait for custom condition if provided
+                if wait_condition:
+                    await page.wait_for_function(
+                        f"document.body.getAttribute('{wait_condition}') === 'true'",
+                        timeout=timeout
+                    )
+                else:
+                    # Wait for SVG to render
+                    await page.wait_for_selector(selector, timeout=timeout)
+
+                # Get SVG content
+                svg_element = await page.query_selector(selector)
+                if svg_element:
+                    svg_content = await svg_element.inner_html()
+                    await browser.close()
+                    return True, svg_content, ""
+                else:
+                    await browser.close()
+                    return (
+                        False,
+                        "",
+                        f"Could not find SVG element with selector: {selector}",
+                    )
+
+            except Exception as e:
+                await browser.close()
+                return False, "", f"SVG extraction error: {e!s}"
+
+        except Exception as e:
+            return False, "", f"Browser service error: {e!s}"
+
+    def render_html_to_svg_with_wait_sync(
+        self,
+        html_content: str,
+        selector: str = "svg",
+        viewport_size: dict[str, int | None] = None,
+        wait_condition: str | None = None,
+        timeout: int = 30000,
+    ) -> tuple[bool, str, str]:
+        """Synchronous wrapper for render_html_to_svg_with_wait."""
+        return self._run_async_operation(
+            self.render_html_to_svg_with_wait(
+                html_content, selector, viewport_size, wait_condition, timeout
+            )
+        )
+
     def take_screenshot_sync(
         self,
         url: str,
