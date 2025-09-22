@@ -15,7 +15,7 @@ import { generateSummary, generateGlobalReport } from "./i18n-orchestrator-summa
  */
 export async function runAllPackageI18nTests(): Promise<GlobalI18nTestResult> {
   const startTime = Date.now();
-  const enabledPackages = getEnabledPackages();
+  const enabledPackages = await getEnabledPackages();
   const packageResults: PackageI18nTestResult[] = [];
 
   console.log(`🦊 Starting i18n tests for ${enabledPackages.length} packages...\n`);

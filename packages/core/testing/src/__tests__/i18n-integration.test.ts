@@ -29,8 +29,8 @@ describe("i18n Integration Tests", () => {
       expect(defaultI18nTestingConfig.locales.length).toBeGreaterThan(0);
     });
 
-    it("should have enabled packages", () => {
-      const enabledPackages = getEnabledPackages();
+    it("should have enabled packages", async () => {
+      const enabledPackages = await getEnabledPackages();
       expect(enabledPackages.length).toBeGreaterThan(0);
 
       // Check that key packages are enabled
@@ -40,8 +40,8 @@ describe("i18n Integration Tests", () => {
       expect(packageNames).toContain("auth");
     });
 
-    it("should have valid package paths", () => {
-      const packagePaths = getEnabledPackagePaths();
+    it("should have valid package paths", async () => {
+      const packagePaths = await getEnabledPackagePaths();
       expect(packagePaths.length).toBeGreaterThan(0);
 
       // All paths should start with 'packages/'
@@ -50,8 +50,8 @@ describe("i18n Integration Tests", () => {
       });
     });
 
-    it("should have valid namespaces", () => {
-      const namespaces = getAllNamespaces();
+    it("should have valid namespaces", async () => {
+      const namespaces = await getAllNamespaces();
       expect(namespaces.length).toBeGreaterThan(0);
       expect(namespaces).toContain("common");
     });
@@ -124,11 +124,11 @@ describe("i18n Integration Tests", () => {
       expect(result.packageResults).toBeDefined();
     });
 
-    it("should handle configuration errors gracefully", () => {
+    it("should handle configuration errors gracefully", async () => {
       // Test that configuration functions handle edge cases
-      expect(() => getEnabledPackages()).not.toThrow();
-      expect(() => getEnabledPackagePaths()).not.toThrow();
-      expect(() => getAllNamespaces()).not.toThrow();
+      expect(async () => await getEnabledPackages()).not.toThrow();
+      expect(async () => await getEnabledPackagePaths()).not.toThrow();
+      expect(async () => await getAllNamespaces()).not.toThrow();
     });
   });
 

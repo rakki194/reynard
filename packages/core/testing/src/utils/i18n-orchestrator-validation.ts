@@ -14,7 +14,7 @@ export async function validatePackageI18nSetup(): Promise<{
 }> {
   const issues: string[] = [];
   const { getEnabledPackages } = await import("../config/i18n-testing-config");
-  const enabledPackages = getEnabledPackages();
+  const enabledPackages = await getEnabledPackages();
 
   for (const pkg of enabledPackages) {
     // Check if package directory exists

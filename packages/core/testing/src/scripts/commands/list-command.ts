@@ -16,10 +16,10 @@ export const createListCommand = (): Command => {
   command
     .description("List all packages and their i18n configuration")
     .option("--enabled-only", "Show only enabled packages")
-    .action((options: ListCommandOptions) => {
+    .action(async (options: ListCommandOptions) => {
       console.log("🦊 Reynard Package i18n Configuration\n");
 
-      const packages = options.enabledOnly ? getEnabledPackages() : getEnabledPackages();
+      const packages = options.enabledOnly ? await getEnabledPackages() : await getEnabledPackages();
 
       packages.forEach(pkg => {
         const status = pkg.enabled ? "✅" : "❌";

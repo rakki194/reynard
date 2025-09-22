@@ -11,7 +11,7 @@ import type { PackageI18nConfig } from "../config/i18n-testing-config";
  */
 export async function createPackageI18nTestFiles(): Promise<void> {
   const { getEnabledPackages } = await import("../config/i18n-testing-config");
-  const enabledPackages = getEnabledPackages();
+  const enabledPackages = await getEnabledPackages();
 
   for (const pkg of enabledPackages) {
     const testFilePath = join(pkg.path, "src/__tests__/i18n.test.ts");
@@ -47,7 +47,7 @@ import { getPackageI18nConfig } from 'reynard-testing/config/i18n-testing-config
 
 describe('${pkg.name} i18n Tests', () => {
   it('should pass all i18n validation checks', async () => {
-    const config = getPackageI18nConfig('${pkg.name}');
+    const config = await getPackageI18nConfig('${pkg.name}');
     expect(config).toBeDefined();
     
     if (config?.enabled) {
@@ -70,7 +70,7 @@ describe('${pkg.name} i18n Tests', () => {
   });
   
   it('should have proper translation namespaces', () => {
-    const config = getPackageI18nConfig('${pkg.name}');
+    const config = await getPackageI18nConfig('${pkg.name}');
     expect(config).toBeDefined();
     
     if (config?.enabled) {
@@ -80,7 +80,7 @@ describe('${pkg.name} i18n Tests', () => {
   });
   
   it('should have appropriate ignore patterns', () => {
-    const config = getPackageI18nConfig('${pkg.name}');
+    const config = await getPackageI18nConfig('${pkg.name}');
     expect(config).toBeDefined();
     
     if (config?.enabled) {

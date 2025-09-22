@@ -15,7 +15,7 @@
     {
       "name": "👽 Third Party",
       "path": "./third_party",
-    }
+    },
     {
       "name": "🎯 Examples",
       "path": "./examples",
@@ -62,15 +62,15 @@
     },
     {
       "name": "🧠 AI Shared",
-      "path": "./packages/ai-shared",
+      "path": "./packages/ai/ai-shared",
     },
     {
       "name": "🎨 Components Core",
-      "path": "./packages/components-core",
+      "path": "./packages/ui/components-core",
     },
     {
       "name": "📊 Charts",
-      "path": "./packages/charts",
+      "path": "./packages/ui/charts",
     },
     {
       "name": "🌐 I18n",
@@ -78,43 +78,43 @@
     },
     {
       "name": "🔍 RAG",
-      "path": "./packages/rag",
+      "path": "./packages/ai/rag",
     },
     {
       "name": "🧪 Testing",
-      "path": "./packages/testing",
+      "path": "./packages/core/testing",
     },
     {
       "name": "🎮 Games - Core Package",
-      "path": "./packages/games",
+      "path": "./packages/ui/games",
     },
     {
       "name": "🎮 ECS System",
-      "path": "./packages/games/src/ecs",
+      "path": "./packages/ui/games/src/ecs",
     },
     {
       "name": "🎮 Collision Detection",
-      "path": "./packages/games/src/collision",
+      "path": "./packages/ui/games/src/collision",
     },
     {
       "name": "🎮 Roguelike Engine",
-      "path": "./packages/games/src/roguelike",
+      "path": "./packages/ui/games/src/roguelike",
     },
     {
       "name": "🎮 Geometry Demos",
-      "path": "./packages/games/src/geometry",
+      "path": "./packages/ui/games/src/geometry",
     },
     {
       "name": "🎮 Spatial Hash",
-      "path": "./packages/games/src/spatial-hash",
+      "path": "./packages/ui/games/src/spatial-hash",
     },
     {
       "name": "🎮 Union Find",
-      "path": "./packages/games/src/union-find",
+      "path": "./packages/ui/games/src/union-find",
     },
     {
       "name": "🎮 Performance Tools",
-      "path": "./packages/games/src/performance",
+      "path": "./packages/ui/games/src/performance",
     },
     {
       "name": "🎮 Examples - 3D Demo",
@@ -134,7 +134,7 @@
     },
     {
       "name": "🔒 Fenrir Security",
-      "path": "./packages/code-quality/src/security",
+      "path": "./packages/dev-tools/code-quality/src/security",
     },
     {
       "name": "🔒 E2E Security Tests",
@@ -142,11 +142,11 @@
     },
     {
       "name": "📊 3D Graphics",
-      "path": "./packages/3d",
+      "path": "./packages/media/3d",
     },
     {
       "name": "👾 ADR Generation",
-      "path": "./packages/adr-system",
+      "path": "./packages/dev-tools/adr-system",
     },
     {
       "name": "🧮 Algorithms",
@@ -154,107 +154,107 @@
     },
     {
       "name": "🎬 Animation",
-      "path": "./packages/animation",
+      "path": "./packages/ui/animation",
     },
     {
       "name": "📝 Annotating",
-      "path": "./packages/annotating",
+      "path": "./packages/ai/annotating",
     },
     {
       "name": "📝 Annotating Core",
-      "path": "./packages/annotating-core",
+      "path": "./packages/ai/annotating-core",
     },
     {
       "name": "📝 Annotating Florence2",
-      "path": "./packages/annotating-florence2",
+      "path": "./packages/ai/annotating-florence2",
     },
     {
       "name": "📝 Annotating Joy",
-      "path": "./packages/annotating-joy",
+      "path": "./packages/ai/annotating-joy",
     },
     {
       "name": "📝 Annotating JTP2",
-      "path": "./packages/annotating-jtp2",
+      "path": "./packages/ai/annotating-jtp2",
     },
     {
       "name": "📝 Annotating WDV3",
-      "path": "./packages/annotating-wdv3",
+      "path": "./packages/ai/annotating-wdv3",
     },
     {
       "name": "🌐 API Client",
-      "path": "./packages/api-client",
+      "path": "./packages/services/api-client",
     },
     {
       "name": "🎵 Audio",
-      "path": "./packages/audio",
+      "path": "./packages/media/audio",
     },
     {
       "name": "🔐 Auth",
-      "path": "./packages/auth",
+      "path": "./packages/services/auth",
     },
     {
       "name": "📦 Bounding Box",
-      "path": "./packages/boundingbox",
+      "path": "./packages/media/boundingbox",
     },
     {
       "name": "📸 Caption",
-      "path": "./packages/caption",
+      "path": "./packages/ai/caption",
     },
     {
       "name": "📸 Caption Core",
-      "path": "./packages/caption-core",
+      "path": "./packages/ai/caption-core",
     },
     {
       "name": "📸 Caption Multimodal",
-      "path": "./packages/caption-multimodal",
+      "path": "./packages/ai/caption-multimodal",
     },
     {
       "name": "📸 Caption UI",
-      "path": "./packages/caption-ui",
+      "path": "./packages/ai/caption-ui",
     },
     {
       "name": "💬 Chat",
-      "path": "./packages/chat",
+      "path": "./packages/services/chat",
     },
     {
       "name": "🔍 Code Quality",
-      "path": "./packages/code-quality",
+      "path": "./packages/dev-tools/code-quality",
     },
     {
       "name": "🎨 Colors",
-      "path": "./packages/colors",
+      "path": "./packages/ui/colors",
     },
     {
       "name": "🎨 ComfyUI",
-      "path": "./packages/comfy",
+      "path": "./packages/ai/comfy",
     },
     {
       "name": "🧩 Components",
-      "path": "./packages/components",
+      "path": "./packages/ui/components",
     },
     {
       "name": "📊 Components Charts",
-      "path": "./packages/components-charts",
+      "path": "./packages/ui/components-charts",
     },
     {
       "name": "🧩 Components Dashboard",
-      "path": "./packages/components-dashboard",
+      "path": "./packages/ui/components-dashboard",
     },
     {
       "name": "🎨 Components Themes",
-      "path": "./packages/components-themes",
+      "path": "./packages/ui/components-themes",
     },
     {
       "name": "🔧 Composables",
-      "path": "./packages/composables",
+      "path": "./packages/core/composables",
     },
     {
       "name": "⚙️ Config",
-      "path": "./packages/config",
+      "path": "./packages/core/config",
     },
     {
       "name": "🔗 Connection",
-      "path": "./packages/connection",
+      "path": "./packages/core/connection",
     },
     {
       "name": "🏗️ Core",
@@ -262,135 +262,135 @@
     },
     {
       "name": "📊 Dashboard",
-      "path": "./packages/dashboard",
+      "path": "./packages/ui/dashboard",
     },
     {
       "name": "🖥️ Dev Server Management",
-      "path": "./packages/dev-server-management",
+      "path": "./packages/dev-tools/dev-server-management",
     },
     {
       "name": "📊 Diagram Generator",
-      "path": "./packages/diagram-generator",
+      "path": "./packages/docs/diagram-generator",
     },
     {
       "name": "📚 Docs Components",
-      "path": "./packages/docs-components",
+      "path": "./packages/docs/docs-components",
     },
     {
       "name": "📚 Docs Core",
-      "path": "./packages/docs-core",
+      "path": "./packages/docs/docs-core",
     },
     {
       "name": "📚 Docs Generator",
-      "path": "./packages/docs-generator",
+      "path": "./packages/docs/docs-generator",
     },
     {
       "name": "📚 Docs Site",
-      "path": "./packages/docs-site",
+      "path": "./packages/docs/docs-site",
     },
     {
       "name": "⚠️ Error Boundaries",
-      "path": "./packages/error-boundaries",
+      "path": "./packages/ui/error-boundaries",
     },
     {
       "name": "✨ Features",
-      "path": "./packages/features",
+      "path": "./packages/core/features",
     },
     {
       "name": "📁 File Processing",
-      "path": "./packages/file-processing",
+      "path": "./packages/data/file-processing",
     },
     {
       "name": "🪟 Floating Panel",
-      "path": "./packages/floating-panel",
+      "path": "./packages/ui/floating-panel",
     },
     {
       "name": "🎯 Fluent Icons",
-      "path": "./packages/fluent-icons",
+      "path": "./packages/ui/fluent-icons",
     },
     {
       "name": "🖼️ Gallery",
-      "path": "./packages/gallery",
+      "path": "./packages/media/gallery",
     },
     {
       "name": "🤖 Gallery AI",
-      "path": "./packages/gallery-ai",
+      "path": "./packages/media/gallery-ai",
     },
     {
       "name": "📥 Gallery DL",
-      "path": "./packages/gallery-dl",
+      "path": "./packages/media/gallery-dl",
     },
     {
       "name": "🔧 Git Automation",
-      "path": "./packages/git-automation",
+      "path": "./packages/dev-tools/git-automation",
     },
     {
       "name": "🖼️ Image",
-      "path": "./packages/image",
+      "path": "./packages/media/image",
     },
     {
       "name": "🤖 Model Management",
-      "path": "./packages/model-management",
+      "path": "./packages/ai/model-management",
     },
     {
       "name": "📝 Monaco",
-      "path": "./packages/monaco",
+      "path": "./packages/ui/monaco",
     },
     {
       "name": "🎭 Multimodal",
-      "path": "./packages/multimodal",
+      "path": "./packages/ai/multimodal",
     },
     {
       "name": "🌐 NLWeb",
-      "path": "./packages/nlweb",
+      "path": "./packages/ai/nlweb",
     },
     {
       "name": "🏗️ Project Architecture",
-      "path": "./packages/project-architecture",
+      "path": "./packages/dev-tools/project-architecture",
     },
     {
       "name": "⏳ Queue Watcher",
-      "path": "./packages/queue-watcher",
+      "path": "./packages/dev-tools/queue-watcher",
     },
     {
       "name": "🗄️ Repository Core",
-      "path": "./packages/repository-core",
+      "path": "./packages/data/repository-core",
     },
     {
       "name": "🗄️ Repository Multimodal",
-      "path": "./packages/repository-multimodal",
+      "path": "./packages/data/repository-multimodal",
     },
     {
       "name": "🔍 Repository Search",
-      "path": "./packages/repository-search",
+      "path": "./packages/data/repository-search",
     },
     {
       "name": "💾 Repository Storage",
-      "path": "./packages/repository-storage",
+      "path": "./packages/data/repository-storage",
     },
     {
       "name": "🕷️ Scraping",
-      "path": "./packages/scraping",
+      "path": "./packages/data/scraping",
     },
     {
       "name": "✂️ Segmentation",
-      "path": "./packages/segmentation",
+      "path": "./packages/media/segmentation",
     },
     {
       "name": "⚙️ Service Manager",
-      "path": "./packages/service-manager",
+      "path": "./packages/services/service-manager",
     },
     {
       "name": "⚙️ Settings",
-      "path": "./packages/settings",
+      "path": "./packages/core/settings",
     },
     {
       "name": "🛠️ Tools",
-      "path": "./packages/tools",
+      "path": "./packages/dev-tools/tools",
     },
     {
       "name": "🎨 Themes",
-      "path": "./packages/themes",
+      "path": "./packages/ui/themes",
     },
     {
       "name": "🖥️ UI",
@@ -398,15 +398,15 @@
     },
     {
       "name": "🗄️ Unified Repository",
-      "path": "./packages/unified-repository",
+      "path": "./packages/data/unified-repository",
     },
     {
       "name": "✅ Validation",
-      "path": "./packages/validation",
+      "path": "./packages/core/validation",
     },
     {
       "name": "🎥 Video",
-      "path": "./packages/video",
+      "path": "./packages/media/video",
     },
     {
       "name": "🤖 MCP Server Service",

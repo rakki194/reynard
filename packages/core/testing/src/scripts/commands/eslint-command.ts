@@ -23,7 +23,7 @@ export const createESLintCommand = (): Command => {
         console.log("🦊 Running ESLint with i18n rules...\n");
 
         const { execSync } = await import("child_process");
-        const packagePaths = getEnabledPackagePaths();
+        const packagePaths = await getEnabledPackagePaths();
 
         const command = [
           "npx eslint",
