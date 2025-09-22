@@ -2257,6 +2257,43 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)(jsdom@26.1.0)
 
+  packages/core/dynamic-enum:
+    dependencies:
+      reynard-api-client:
+        specifier: workspace:*
+        version: link:../../services/api-client
+      solid-js:
+        specifier: 1.9.9
+        version: 1.9.9
+    devDependencies:
+      '@types/node':
+        specifier: 24.5.2
+        version: 24.5.2
+      '@vitest/coverage-v8':
+        specifier: 3.2.4
+        version: 3.2.4(vitest@3.2.4)
+      '@vitest/ui':
+        specifier: 3.2.4
+        version: 3.2.4(vitest@3.2.4)
+      eslint:
+        specifier: 9.36.0
+        version: 9.36.0
+      happy-dom:
+        specifier: 18.0.1
+        version: 18.0.1
+      reynard-testing:
+        specifier: workspace:*
+        version: link:../testing
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
+      vite:
+        specifier: 7.1.6
+        version: 7.1.6(@types/node@24.5.2)(yaml@2.8.1)
+      vitest:
+        specifier: 3.2.4
+        version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)(jsdom@26.1.0)
+
   packages/core/features:
     dependencies:
       reynard-composables:

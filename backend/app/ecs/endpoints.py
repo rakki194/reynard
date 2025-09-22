@@ -58,6 +58,7 @@ from .cache_decorators import (
 )
 from .database import NamingComponent, NamingConfig, NamingSpirit, ecs_db
 from app.ecs.agent_legacy_endpoints.legacy_endpoints import router as legacy_router
+from .endpoints.modular_legacy_endpoints import router as modular_legacy_router
 from .postgres_service import PostgresECSWorldService, get_postgres_ecs_service
 from .success_advisor_genome import success_advisor_genome_service
 
@@ -1425,3 +1426,6 @@ async def get_success_advisor_instructions() -> dict[str, Any]:
 
 # Include legacy tracking endpoints
 router.include_router(legacy_router)
+
+# Include modular legacy tracking endpoints
+router.include_router(modular_legacy_router)

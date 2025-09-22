@@ -27,7 +27,7 @@
   },
 
   "mypy-type-checker.args": ["--config-file=${workspaceFolder}/pyproject.toml"],
-  "mypy-type-checker.interpreter": "/home/kade/venv/bin/python3",
+  "mypy-type-checker.interpreter": ["/home/kade/venv/bin/python3", "/usr/bin/python3"],
 
   // Pylint Configuration
   "pylint.importStrategy": "fromEnvironment",

@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.13.0] - 2025-09-22
 
+## [0.14.0] - 2025-09-22
+
+### Added
+
+- **Dynamic Enum System**: New comprehensive dynamic enum management system in `packages/core/dynamic-enum/`
+- **ECS Legacy Tracking**: Enhanced genome tracking and legacy project management in ECS system
+- **Modular Endpoints**: New modular legacy endpoints architecture for better code organization
+- **Phoenix Project Tracker**: Specialized tracking for Phoenix project integration
+- **Composite Data Adapters**: Advanced data adapter system for enum providers
+- **Cache Management**: Intelligent caching system for dynamic enum operations
+- **Validation Utils**: Comprehensive validation utilities for enum data integrity
+
+### Changed
+
+- **ECS Genome Tracker**: Refactored and enhanced genome tracking functionality
+- **Legacy Tracking Architecture**: Improved modular structure for better maintainability
+- **VS Code Settings**: Updated development environment configuration
+- **Package Dependencies**: Updated pnpm lock file with latest dependencies
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
 ## [Unreleased]
 
 ### Added

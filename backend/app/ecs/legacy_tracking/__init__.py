@@ -11,6 +11,18 @@ from .success_advisor_8_tracker import (
     LegacyReport,
     SuccessAdvisor8LegacyTracker
 )
+from .genome_tracker import (
+    GenomeActivity,
+    BehavioralPattern,
+    CapabilityProfile,
+    SuccessAdvisor8GenomeTracker
+)
+from .phoenix_project_tracker import (
+    PhoenixProjectActivity,
+    ResearchInitiative,
+    ExperimentResult,
+    PhoenixProjectTracker
+)
 
 from .unified_parser import (
     UnifiedChangelogParser
@@ -27,6 +39,14 @@ __all__ = [
     'CodeMovement', 
     'LegacyReport',
     'SuccessAdvisor8LegacyTracker',
+    'GenomeActivity',
+    'BehavioralPattern',
+    'CapabilityProfile',
+    'SuccessAdvisor8GenomeTracker',
+    'PhoenixProjectActivity',
+    'ResearchInitiative',
+    'ExperimentResult',
+    'PhoenixProjectTracker',
     'UnifiedChangelogParser',
     'GitTag',
     'SuccessAdvisor8Release',
