@@ -903,7 +903,7 @@ export class InterfaceConsistencyValidator {
   ): ConsistencyReport["patterns"] {
     const detected: string[] = [];
     const recommended: string[] = [];
-    const violations: string[] = [];
+    const violationStrings: string[] = [];
 
     // Detect common patterns
     const interfaceCount = interfaces.filter(i => i.type === "interface").length;
@@ -918,12 +918,12 @@ export class InterfaceConsistencyValidator {
     // Detect anti-patterns
     const emptyInterfaces = interfaces.filter(i => i.properties.length === 0 && i.methods.length === 0);
     if (emptyInterfaces.length > 0) {
-      violations.push("Empty interfaces detected");
+      violationStrings.push("Empty interfaces detected");
     }
 
     const largeInterfaces = interfaces.filter(i => i.properties.length > 10 || i.methods.length > 15);
     if (largeInterfaces.length > 0) {
-      violations.push("God interfaces detected");
+      violationStrings.push("God interfaces detected");
     }
 
     // Recommended patterns
@@ -932,7 +932,7 @@ export class InterfaceConsistencyValidator {
     recommended.push("Consistent naming conventions");
     recommended.push("Comprehensive documentation");
 
-    return { detected, recommended, violations };
+    return { detected, recommended, violations: violationStrings };
   }
 
   // Helper methods

@@ -324,7 +324,9 @@ export class ImpactAnalyzer {
 
   private async watchFile(filePath: string): Promise<void> {
     try {
-      const watcher = watch(filePath, async eventType => {
+      const watcher = watch(filePath);
+      
+      watcher.on('change', async (eventType) => {
         if (eventType === "change") {
           await this.handleFileChange(filePath);
         }

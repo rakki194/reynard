@@ -280,7 +280,7 @@ export class PerformancePatternMonitor extends EventEmitter {
     } catch (error) {
       console.error("Failed to perform initial performance analysis:", error);
       this.emit("analysis-error", {
-        error: error.message,
+        error: error instanceof Error ? error.message : String(error),
         timestamp: new Date().toISOString(),
       });
     }
@@ -307,7 +307,7 @@ export class PerformancePatternMonitor extends EventEmitter {
     } catch (error) {
       console.error("Failed to perform periodic performance analysis:", error);
       this.emit("analysis-error", {
-        error: error.message,
+        error: error instanceof Error ? error.message : String(error),
         timestamp: new Date().toISOString(),
       });
     }

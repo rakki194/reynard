@@ -55,3 +55,43 @@ export interface ADRRelationship {
   strength: number; // 0-1
   description: string;
 }
+
+export interface ComplianceViolation {
+  type: string;
+  severity: "low" | "medium" | "high" | "critical";
+  description: string;
+  file?: string;
+  line?: number;
+  location?: string;
+  suggestion?: string;
+}
+
+export interface ConsistencyViolation {
+  type: string;
+  severity: "low" | "medium" | "high" | "critical";
+  description: string;
+  file?: string;
+  line?: number;
+  suggestion?: string;
+}
+
+export interface CircularDependency {
+  path: string[];
+  severity: "low" | "medium" | "high" | "critical";
+  description: string;
+  files: string[];
+}
+
+export interface DependencyHealthScore {
+  dependency: string;
+  overallScore: number;
+  categoryScores: {
+    critical: number;
+    high: number;
+    medium: number;
+    low: number;
+  };
+  issues: string[];
+  lastUpdated: string;
+}
+

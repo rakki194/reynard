@@ -610,7 +610,7 @@ export class ModularityComplianceChecker {
     const functions = this.findFunctions(content);
     const classes = this.countClasses(content);
 
-    if (functions.length === 0 && classes.length === 0) return 1.0;
+    if (functions.length === 0 && classes === 0) return 1.0;
 
     // Calculate based on naming patterns and related functionality
     const relatedFunctions = this.findRelatedFunctions(content);

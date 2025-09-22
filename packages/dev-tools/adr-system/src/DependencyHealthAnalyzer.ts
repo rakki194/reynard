@@ -99,7 +99,7 @@ export class DependencyHealthAnalyzer {
 
     // Analyze each dependency
     for (const dependency of dependencies) {
-      const healthScore = await this.analyzeDependencyHealth(dependency);
+      const healthScore = await this.analyzeSingleDependencyHealth(dependency);
       healthScores.push(healthScore);
       this.healthCache.set(dependency.name, healthScore);
     }
@@ -114,7 +114,7 @@ export class DependencyHealthAnalyzer {
   /**
    * Analyze health of a specific dependency
    */
-  async analyzeDependencyHealth(dependency: DependencyInfo): Promise<DependencyHealthScore> {
+  async analyzeSingleDependencyHealth(dependency: DependencyInfo): Promise<DependencyHealthScore> {
     const issues: DependencyHealthIssue[] = [];
     const recommendations: string[] = [];
 

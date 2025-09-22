@@ -25,10 +25,10 @@ export const createESLintCommand = (): Command => {
         const { execSync } = await import("child_process");
         const packagePaths = await getEnabledPackagePaths();
 
-        const command = [
-          "npx eslint",
-          packagePaths.map(path => `${path}/src/**/*.{ts,tsx,js,jsx}`).join(" "),
-          "--config packages/testing/src/eslint/i18n-eslint-config.js",
+               const command = [
+                 "pnpm exec eslint",
+          packagePaths.map(path => `${path}/src/**/*.{ts,tsx}`).join(" "),
+                 "--config eslint.config.js",
           `--format ${options.format}`,
           options.fix ? "--fix" : "",
         ]
@@ -41,7 +41,7 @@ export const createESLintCommand = (): Command => {
           execSync(command, {
             encoding: "utf8",
             stdio: "inherit",
-            cwd: "../../",
+            cwd: "../../../",
           });
           console.log("\n✅ ESLint completed successfully!");
         } catch (error) {

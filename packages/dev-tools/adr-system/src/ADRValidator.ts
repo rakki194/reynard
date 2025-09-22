@@ -154,7 +154,12 @@ export class ADRValidator {
   private parseConsequences(content: string): {
     positive: string[];
     negative: string[];
-    risks: string[];
+    risks: Array<{
+      risk: string;
+      impact: "low" | "medium" | "high";
+      probability: "low" | "medium" | "high";
+      mitigation: string;
+    }>;
   } {
     // Simplified parsing - in a real implementation, this would be more sophisticated
     return {

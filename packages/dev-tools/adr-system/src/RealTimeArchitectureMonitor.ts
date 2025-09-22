@@ -107,7 +107,7 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
 
     // Initialize compliance analyzers
     this.modularityChecker = new ModularityComplianceChecker(codebasePath);
-    this.dependencyAnalyzer = new DependencyHealthAnalyzer(codebasePath, "");
+    this.dependencyAnalyzer = new DependencyHealthAnalyzer(codebasePath);
     this.interfaceValidator = new InterfaceConsistencyValidator(codebasePath);
     this.typeSafetyCompliance = new TypeSafetyCompliance(codebasePath, "");
     this.performanceDetector = new PerformancePatternDetector(codebasePath);
@@ -246,7 +246,9 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
 
     for (const file of files) {
       try {
-        const watcher = watch(file, async eventType => {
+        const watcher = watch(file);
+        
+        watcher.on('change', async (eventType) => {
           if (eventType === "change") {
             await this.handleFileChange(file);
           }
@@ -291,7 +293,7 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
     } catch (error) {
       console.error("Failed to perform initial analysis:", error);
       this.emit("analysis-error", {
-        error: error.message,
+        error: error instanceof Error ? error.message : String(error),
         timestamp: new Date().toISOString(),
       });
     }
@@ -315,7 +317,7 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
     } catch (error) {
       console.error("Failed to perform periodic analysis:", error);
       this.emit("analysis-error", {
-        error: error.message,
+        error: error instanceof Error ? error.message : String(error),
         timestamp: new Date().toISOString(),
       });
     }

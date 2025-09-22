@@ -5,7 +5,7 @@
  * codebase analysis and architectural patterns.
  */
 
-import { readFile, writeFile, readdir } from "fs/promises";
+import { readFile, writeFile, readdir, mkdir } from "fs/promises";
 import { join, basename } from "path";
 import { ADRSuggestion, CodebaseAnalyzer } from "./CodebaseAnalyzer";
 import { ADRDocument, ADRStatus, ADRCategory, ADRTemplate } from "./types";
@@ -39,7 +39,7 @@ export class ADRGenerator {
     const filePath = join(this.adrDirectory, fileName);
 
     // Ensure ADR directory exists
-    await require("fs/promises").mkdir(this.adrDirectory, { recursive: true });
+    await mkdir(this.adrDirectory, { recursive: true });
     await writeFile(filePath, adrContent, "utf-8");
 
     console.log(`✅ ADR generated: ${fileName}`);

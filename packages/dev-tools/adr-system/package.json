@@ -23,15 +23,16 @@
   "license": "MIT",
   "dependencies": {
     "typescript": "5.9.2",
-    "fs-extra": "11.3.1",
+    "fs-extra": "11.3.2",
     "glob": "11.0.3",
-    "yaml": "2.8.1"
+    "yaml": "2.8.1",
+    "commander": "14.0.1"
   },
   "devDependencies": {
     "@types/fs-extra": "11.0.4",
     "@types/node": "24.5.2",
     "@vitest/coverage-v8": "3.2.4",
-    "eslint": "9.35.0",
+    "eslint": "9.36.0",
     "vitest": "3.2.4",
     "reynard-testing": "workspace:*"
   },
