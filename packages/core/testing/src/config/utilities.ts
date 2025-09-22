@@ -48,9 +48,9 @@ function resolvePackagePath(relativePath: string): string {
   console.log(`🔍 Resolving path for: ${relativePath}`);
   console.log(`🔍 Current directory: ${currentDir}`);
   
-  // If we're in the testing package, go up four levels to get to the root
+  // If we're in the testing package, go up three levels to get to the root
   if (currentDir.includes("packages/core/testing")) {
-    const rootDir = resolve(currentDir, "../../../../..");
+    const rootDir = resolve(currentDir, "../../../..");
     const result = resolve(rootDir, relativePath);
     console.log(`🔍 Testing package detected, root: ${rootDir}, result: ${result}`);
     return result;
