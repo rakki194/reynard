@@ -60,7 +60,7 @@ function resolvePackagePath(relativePath: string): string {
       if (fs.existsSync(packageJsonPath)) {
         const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
         // Look for the main Reynard package.json (not the testing package)
-        if (packageJson.name && packageJson.name === "reynard" && !packageJson.name.includes("testing")) {
+        if (packageJson.name && packageJson.name === "reynard") {
           rootDir = searchDir;
           break;
         }
