@@ -21,15 +21,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.15.0] - 2025-09-22
 
-### Added
-
-### Changed
-
-
-### Deprecated
-
-### Removed
-
 ### Fixed
 
 - **RAG Database Schema Fix**: Fixed critical database schema issue where RAG system was trying to query non-existent `d.path` column, added missing RAG tables (rag_documents, rag_document_chunks, rag_document_embeddings) to migration code, updated SQL queries to use correct column names (source instead of path), and improved error handling for metadata parsing (Lynx-Prime-53)
@@ -198,6 +189,43 @@ dashboard, error-boundaries, floating-panel, fluent-icons, games, monaco, themes
   functionality into a single authoritative source (Vulpine)
 
 ## [0.9.2] - 2025-09-20
+
+### Added
+
+- **Complete Semantic Package Reorganization**: Massive architectural restructuring with comprehensive package categorization and documentation updates (Display-Sage-93)
+  - **AI & Machine Learning** (`packages/ai/`): Consolidated all AI/ML packages including annotating, caption, comfy, model-management, multimodal, nlweb, rag, tool-calling
+  - **Algorithms** (`packages/algorithms/`): Moved algorithm implementations to dedicated category
+  - **Core Framework** (`packages/core/`): Organized core packages including composables, config, connection, core, features, i18n, settings, testing, validation
+  - **Data Processing** (`packages/data/`): Grouped data-related packages including file-processing, repository-*, scraping, unified-repository
+  - **Development Tools** (`packages/dev-tools/`): Consolidated dev tools including adr-system, code-quality, dev-server-management, git-automation, humility-parser, project-architecture, queue-watcher
+  - **Documentation** (`packages/docs/`): Organized documentation packages including diagram-generator, docs-*
+  - **Media Processing** (`packages/media/`): Grouped media packages including 3d, audio, boundingbox, gallery, image, segmentation, video
+  - **Services** (`packages/services/`): Consolidated service packages including api-client, auth, chat, email, service-manager
+  - **UI & Components** (`packages/ui/`): Organized UI packages including animation, charts, colors, components-*, dashboard, error-boundaries, floating-panel, fluent-icons, games, monaco, themes, ui
+- **Enhanced Git Workflow with Selective Staging**: Comprehensive Git workflow automation with pre-staging junk file detection, selective staging to prevent build artifact commits, post-staging validation for repository integrity, crisis management and hotfix protocols, and repository integrity management framework (Display-Sage-93)
+- **Humility Analysis System Enhancement**: New humility parser package with comprehensive analysis tools, enhanced documentation and testing infrastructure, and improved MCP server tool configurations (Display-Sage-93)
+- **Email and IMAP Services**: Comprehensive API endpoints for email functionality with agent email management, bulk email operations, and email template system (Display-Sage-93)
+- **Success-Advisor-8 PostgreSQL Migration**: Complete migration to PostgreSQL with system prompt activation and enhanced agent management capabilities (Display-Sage-93)
+- **PHOENIX Experimental Framework**: Comprehensive experimental framework with ECS integration for advanced agent behavior research (Display-Sage-93)
+- **Comprehensive Humility Research Tools**: Advanced humility analysis system with enforcement mechanisms, cultural adapters, and comprehensive reporting (Display-Sage-93)
+
+### Changed
+
+- **Package Structure Reorganization**: Completely restructured packages folder from flat to semantically categorized layout with 76 packages across 9 categories
+- **Documentation Updates**: Updated README.md and all documentation to reflect new semantic package categorization
+- **Workspace Configuration**: Updated pnpm-workspace.yaml to reflect new package structure
+- **MCP Server Tool Configurations**: Enhanced tool configurations for better development workflow integration
+- **Backend Service Architecture**: Improved multi-account service and performance metrics panel functionality
+
+### Fixed
+
+- **Build Artifact Cleanup**: Removed accidentally committed JSX, JS, and D.TS files, cleaned up dist/ directories from repository, updated .gitignore to prevent future build artifact commits
+- **Documentation Component Index**: Updated docs-components code index for better organization and accessibility
+- **Repository Integrity**: Implemented comprehensive junk file prevention and selective staging to maintain clean repository state
+
+### Security
+
+- **Repository Integrity Management**: Enhanced security through comprehensive file validation and build artifact prevention
 
 ## [0.8.7] - 2025-09-20
 

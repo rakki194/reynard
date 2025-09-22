@@ -1,12 +1,12 @@
 import solid from "vite-plugin-solid";
 import { defineConfig } from "vitest/config";
-import type { Plugin } from "vite";
+import type { PluginOption } from "vite";
 
 // Types
 export interface VitestConfigOptions {
   packageName: string;
   setupFiles?: string[];
-  additionalPlugins?: Plugin[];
+  additionalPlugins?: PluginOption[];
   coverageThresholds?: {
     branches?: number;
     functions?: number;
@@ -106,7 +106,7 @@ export const createBaseVitestConfig = (options: VitestConfigOptions = { packageN
   const { additionalPlugins = [] } = options;
 
   return defineConfig({
-    plugins: [solid(), ...additionalPlugins],
+    plugins: [solid() as PluginOption, ...additionalPlugins],
     test: createTestConfig(options) as Record<string, unknown>,
   });
 };

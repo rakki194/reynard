@@ -244,7 +244,7 @@ describe("i18n CI checks", () => {
       expect(config).toContain("- npm ci");
       expect(config).toContain("script:");
       expect(config).toContain("npx i18n-lint");
-      expect(config).toContain("npx vitest run packages/i18n --coverage");
+      expect(config).toContain("npx vitest run packages/core/i18n --coverage");
       expect(config).toContain("artifacts:");
       expect(config).toContain("reports:");
       expect(config).toContain("coverage_report:");

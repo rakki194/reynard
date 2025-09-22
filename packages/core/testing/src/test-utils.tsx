@@ -5,14 +5,91 @@
  * duplication across Reynard packages and standardize common
  * testing patterns for components, APIs, validation, and performance.
  */
-import { cleanup, render, waitFor } from "@solidjs/testing-library";
-import { createComponent, createContext, createEffect, createSignal, useContext } from "solid-js";
+import { cleanup, render, waitFor, RenderResult } from "@solidjs/testing-library";
+import { createComponent, createContext, createEffect, createSignal, useContext, Component, JSX } from "solid-js";
 import { afterEach, beforeEach, expect, vi } from "vitest";
+
+// Type definitions
+interface TestOptions {
+  enableBrowserMocks?: boolean;
+  enableConsoleSuppression?: boolean;
+  enableCleanup?: boolean;
+  enableMockReset?: boolean;
+}
+
+interface ComponentTestOptions {
+  props?: Record<string, any>;
+  wrapper?: Component<any>;
+  providers?: Component<any>[];
+}
+
+interface SignalUpdate {
+  signal: () => any;
+  value: any;
+}
+
+interface ErrorTrigger {
+  action: () => void;
+  expectedError?: string;
+}
+
+interface ApiTestOptions {
+  baseURL?: string;
+  timeout?: number;
+  retries?: number;
+  mockResponse?: any;
+  mockError?: any;
+}
+
+interface ValidationTestOptions {
+  validValues?: any[];
+  invalidValues?: any[];
+  errorMessages?: string[];
+}
+
+interface PerformanceTestOptions {
+  iterations?: number;
+  timeout?: number;
+  threshold?: number;
+}
+
+interface MockOptions {
+  implementation?: (...args: any[]) => any;
+}
+
+interface MockMethods {
+  [key: string]: (...args: any[]) => any;
+}
+
+interface ConditionalTestOptions {
+  condition: () => boolean;
+  message?: string;
+}
+
+interface DataTestOptions {
+  defaultData?: any;
+}
+
+interface SignalTestOptions {
+  initialValue?: any;
+}
+
+interface FunctionTestOptions {
+  fn: () => any;
+}
+
+interface PropsTestOptions {
+  props: Record<string, any>;
+}
+
+interface RenderOptions {
+  [key: string]: any;
+}
 /**
  * Standard test setup that configures common testing patterns
  * including browser mocks, console suppression, and cleanup
  */
-export function setupStandardTest(options = {}) {
+export function setupStandardTest(options: TestOptions = {}) {
   const {
     enableBrowserMocks = true,
     enableConsoleSuppression = true,
@@ -106,7 +183,7 @@ function suppressConsoleWarnings() {
 /**
  * Test component rendering with standard setup and provider support
  */
-export async function testComponentRendering(Component, options = {}) {
+export async function testComponentRendering(Component: Component<any>, options: ComponentTestOptions = {}): Promise<RenderResult> {
   const { props = {}, wrapper, providers = [] } = options;
   // Render with providers
   let renderResult;
@@ -114,8 +191,8 @@ export async function testComponentRendering(Component, options = {}) {
     // Create a wrapper that nests all providers
     const Wrapper = () => {
       const componentElement = <Component {...props} />;
-      return providers.reduceRight((element, Provider) => {
-        return <Provider {...{}}>{element}</Provider>;
+      return providers.reduceRight((element: JSX.Element, Provider: Component<any>) => {
+        return <Provider>{element}</Provider>;
       }, componentElement);
     };
     renderResult = render(Wrapper);
@@ -142,7 +219,7 @@ export async function testComponentRendering(Component, options = {}) {
 /**
  * Test component with signal updates
  */
-export async function testComponentWithSignals(Component, signalUpdates, options = {}) {
+export async function testComponentWithSignals(Component: Component<any>, signalUpdates: SignalUpdate[], options: ComponentTestOptions = {}) {
   const renderResult = await testComponentRendering(Component, options);
   // Apply signal updates
   for (const update of signalUpdates) {
@@ -156,7 +233,7 @@ export async function testComponentWithSignals(Component, signalUpdates, options
 /**
  * Test component error handling
  */
-export async function testComponentErrorHandling(Component, errorTrigger, options = {}) {
+export async function testComponentErrorHandling(Component: Component<any>, errorTrigger: ErrorTrigger, options: ComponentTestOptions = {}) {
   const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
   try {
     const renderResult = await testComponentRendering(Component, options);
@@ -173,7 +250,7 @@ export async function testComponentErrorHandling(Component, errorTrigger, option
 /**
  * Test API client with standard setup and mock response handling
  */
-export async function testAPIClient(apiCall, options = {}) {
+export async function testAPIClient(apiCall: () => Promise<any>, options: ApiTestOptions = {}) {
   const {
     baseURL = "http://localhost:8000",
     timeout = 5000,
@@ -183,9 +260,9 @@ export async function testAPIClient(apiCall, options = {}) {
   } = options;
   // Mock fetch response
   if (mockError) {
-    global.fetch.mockRejectedValueOnce(mockError);
+    (global.fetch as any).mockRejectedValueOnce(mockError);
   } else {
-    global.fetch.mockResolvedValueOnce({
+    (global.fetch as any).mockResolvedValueOnce({
       ok: true,
       status: 200,
       json: () => Promise.resolve(mockResponse),
@@ -201,20 +278,20 @@ export async function testAPIClient(apiCall, options = {}) {
 /**
  * Test API error handling
  */
-export async function testAPIErrorHandling(apiCall, expectedError, options = {}) {
+export async function testAPIErrorHandling(apiCall: () => Promise<any>, expectedError: any, options: ApiTestOptions = {}) {
   const { mockError = new Error("Network error") } = options;
   // Mock fetch to reject
-  global.fetch.mockRejectedValueOnce(mockError);
+  (global.fetch as any).mockRejectedValueOnce(mockError);
   // Test API call should throw
   await expect(apiCall()).rejects.toThrow(expectedError);
 }
 /**
  * Test API retry logic
  */
-export async function testAPIRetry(apiCall, retryCount = 3, options = {}) {
+export async function testAPIRetry(apiCall: () => Promise<any>, retryCount = 3, options: ApiTestOptions = {}) {
   const { mockError = new Error("Network error") } = options;
   // Mock fetch to fail multiple times then succeed
-  global.fetch
+  (global.fetch as any)
     .mockRejectedValueOnce(mockError)
     .mockRejectedValueOnce(mockError)
     .mockRejectedValueOnce(mockError)
@@ -231,16 +308,16 @@ export async function testAPIRetry(apiCall, retryCount = 3, options = {}) {
 /**
  * Test validation function with comprehensive valid/invalid value testing
  */
-export function testValidation(validator, options = {}) {
+export function testValidation(validator: (value: any) => boolean, options: ValidationTestOptions = {}) {
   const { validValues = [], invalidValues = [], errorMessages = [] } = options;
   // Test valid values
-  validValues.forEach(value => {
+  validValues.forEach((value: any) => {
     const result = validator(value);
     expect(result.isValid).toBe(true);
     expect(result.error).toBeUndefined();
   });
   // Test invalid values
-  invalidValues.forEach((value, index) => {
+  invalidValues.forEach((value: any, index: number) => {
     const result = validator(value);
     expect(result.isValid).toBe(false);
     if (errorMessages[index]) {
@@ -251,8 +328,8 @@ export function testValidation(validator, options = {}) {
 /**
  * Test validation with error throwing
  */
-export function testValidationWithError(validator, invalidValues, expectedError) {
-  invalidValues.forEach(value => {
+export function testValidationWithError(validator: (value: any) => any, invalidValues: any[], expectedError: any) {
+  invalidValues.forEach((value: any) => {
     if (expectedError) {
       expect(() => validator(value)).toThrow(expectedError);
     } else {
@@ -263,7 +340,7 @@ export function testValidationWithError(validator, invalidValues, expectedError)
 /**
  * Test function performance
  */
-export async function testPerformance(fn, options = {}) {
+export async function testPerformance(fn: () => any, options: PerformanceTestOptions = {}) {
   const { iterations = 1000, timeout = 5000, threshold = 100 } = options;
   const start = performance.now();
   for (let i = 0; i < iterations; i++) {
@@ -281,13 +358,13 @@ export async function testPerformance(fn, options = {}) {
 /**
  * Test memory usage
  */
-export async function testMemoryUsage(fn, options = {}) {
+export async function testMemoryUsage(fn: () => any, options: PerformanceTestOptions = {}) {
   const { iterations = 100, timeout = 5000 } = options;
   // Force garbage collection if available
   if (global.gc) {
     global.gc();
   }
-  const initialMemory = performance.memory?.usedJSHeapSize || 0;
+  const initialMemory = (performance as any).memory?.usedJSHeapSize || 0;
   for (let i = 0; i < iterations; i++) {
     await fn();
   }
@@ -295,7 +372,7 @@ export async function testMemoryUsage(fn, options = {}) {
   if (global.gc) {
     global.gc();
   }
-  const finalMemory = performance.memory?.usedJSHeapSize || 0;
+  const finalMemory = (performance as any).memory?.usedJSHeapSize || 0;
   const memoryIncrease = finalMemory - initialMemory;
   return {
     initialMemory,
@@ -310,15 +387,15 @@ export async function testMemoryUsage(fn, options = {}) {
 /**
  * Create mock function with comprehensive mock methods
  */
-export function createMockFunction(implementation) {
+export function createMockFunction(implementation?: (...args: any[]) => any) {
   const mockFn = vi.fn(implementation);
-  mockFn.mockResolvedValue = value => {
+  (mockFn as any).mockResolvedValue = (value: any) => {
     mockFn.mockImplementation(() => Promise.resolve(value));
   };
-  mockFn.mockRejectedValue = error => {
+  (mockFn as any).mockRejectedValue = (error: any) => {
     mockFn.mockImplementation(() => Promise.reject(error));
   };
-  mockFn.mockReturnValue = value => {
+  (mockFn as any).mockReturnValue = (value: any) => {
     mockFn.mockImplementation(() => value);
   };
   return mockFn;
@@ -326,7 +403,7 @@ export function createMockFunction(implementation) {
 /**
  * Create a mock function with additional properties for testing
  */
-export function createMockFn(implementation) {
+export function createMockFn(implementation?: (...args: any[]) => any) {
   const mockFn = vi.fn(implementation);
   // vi.fn() already provides mockClear and mockReset methods
   return mockFn;
@@ -334,8 +411,8 @@ export function createMockFn(implementation) {
 /**
  * Create a mock object with all methods mocked
  */
-export function createMockObject(methods) {
-  const mockObject = {};
+export function createMockObject(methods: string[]) {
+  const mockObject: any = {};
   for (const method of methods) {
     mockObject[method] = createMockFn();
   }
@@ -347,7 +424,7 @@ export function createMockObject(methods) {
 /**
  * Wait for condition with timeout
  */
-export async function waitForCondition(condition, timeout = 5000, interval = 100) {
+export async function waitForCondition(condition: () => boolean, timeout = 5000, interval = 100) {
   const start = Date.now();
   while (Date.now() - start < timeout) {
     if (condition()) {
@@ -360,20 +437,20 @@ export async function waitForCondition(condition, timeout = 5000, interval = 100
 /**
  * Create test data factory
  */
-export function createTestDataFactory(defaultData, overrides = {}) {
+export function createTestDataFactory(defaultData: any, overrides: any = {}) {
   return { ...defaultData, ...overrides };
 }
 /**
  * Create test signal
  */
-export function createTestSignal(initialValue) {
+export function createTestSignal(initialValue: any) {
   const [signal, setSignal] = createSignal(initialValue);
   return { signal, setSignal };
 }
 /**
  * Create test effect
  */
-export function createTestEffect(fn) {
+export function createTestEffect(fn: () => void) {
   const cleanup = createEffect(fn);
   return cleanup;
 }
@@ -383,8 +460,8 @@ export function createTestEffect(fn) {
 /**
  * Test-specific app context that doesn't use router primitives
  */
-const TestAppContext = createContext();
-const TestAppProvider = props => {
+const TestAppContext = createContext<any>();
+const TestAppProvider = (props: any) => {
   // Create a mock app context that provides all the necessary properties
   const mockContext = {
     prevRoute: undefined,
@@ -458,8 +535,8 @@ export function useTestAppContext() {
 /**
  * Render with theme provider
  */
-export function renderWithTheme(ui, theme = { name: "light", colors: {} }, options) {
-  const ThemeProvider = props => {
+export function renderWithTheme(ui: () => JSX.Element, theme: any = { name: "light", colors: {} }, options: RenderOptions = {}) {
+  const ThemeProvider = (props: any) => {
     return createComponent(() => props.children, { theme });
   };
   return render(() => <ThemeProvider>{ui()}</ThemeProvider>, options);
@@ -467,8 +544,8 @@ export function renderWithTheme(ui, theme = { name: "light", colors: {} }, optio
 /**
  * Render with router context
  */
-export function renderWithRouter(ui, initialUrl = "/", options) {
-  const RouterProvider = props => {
+export function renderWithRouter(ui: () => JSX.Element, initialUrl = "/", options: RenderOptions = {}) {
+  const RouterProvider = (props: any) => {
     // Mock router context
     const routerContext = {
       location: {
@@ -494,15 +571,15 @@ export function renderWithRouter(ui, initialUrl = "/", options) {
 /**
  * Render with app context
  */
-export function renderWithAppContext(ui, options) {
+export function renderWithAppContext(ui: () => JSX.Element, options: RenderOptions = {}) {
   return render(() => <TestAppProvider>{ui()}</TestAppProvider>, options);
 }
 /**
  * Render with multiple providers
  */
-export function renderWithProviders(ui, providers = [], options) {
-  const Wrapper = props => {
-    return providers.reduceRight((element, Provider) => {
+export function renderWithProviders(ui: () => JSX.Element, providers: Component<any>[] = [], options: RenderOptions = {}) {
+  const Wrapper = (props: any) => {
+    return providers.reduceRight((element: JSX.Element, Provider: Component<any>) => {
       return <Provider>{element}</Provider>;
     }, props.children);
   };

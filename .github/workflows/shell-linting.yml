@@ -65,7 +65,7 @@ jobs:
           fi
 
           # Run ShellCheck with configuration
-          if shellcheck --rcfile=.shellcheckrc "${SHELL_FILES}"; then
+          if shellcheck "${SHELL_FILES}"; then
             echo "✅ All shell scripts passed ShellCheck validation!"
           else
             echo "❌ ShellCheck found issues in shell scripts"
@@ -120,7 +120,7 @@ jobs:
                 echo ""
               } >> shell-linting-report.md
 
-              if shellcheck --rcfile=.shellcheckrc "$script" > /dev/null 2>&1; then
+              if shellcheck "$script" > /dev/null 2>&1; then
                 echo "✅ **Status**: Valid" >> shell-linting-report.md
               else
                 {
@@ -128,7 +128,7 @@ jobs:
                   echo ""
                   echo "**Issues:**"
                   echo '```'
-                  shellcheck --rcfile=.shellcheckrc "$script" 2>&1 || true
+                  shellcheck "$script" 2>&1 || true
                   echo '```'
                 } >> shell-linting-report.md
               fi

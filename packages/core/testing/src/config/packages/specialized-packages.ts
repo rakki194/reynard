@@ -39,7 +39,7 @@ export const specializedPackages: PackageI18nConfig[] = [
   },
   {
     name: "i18n",
-    path: "packages/i18n",
+    path: "packages/core/i18n",
     enabled: true,
     ignorePatterns: createIgnorePatterns("i18n"),
     failOnHardcodedStrings: false, // Temporarily disabled for CI

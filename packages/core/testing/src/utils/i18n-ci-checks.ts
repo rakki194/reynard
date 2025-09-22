@@ -160,7 +160,7 @@ async function checkHardcodedStrings(packages: string[]): Promise<{ count: numbe
 async function validateTranslations(locales: string[]): Promise<{ missingCount: number; details: string[] }> {
   try {
     // This would integrate with the actual i18n validation
-    const command = `npx vitest run packages/i18n/src/__tests__/translation-validation.test.ts --reporter=json`;
+    const command = `npx vitest run packages/core/i18n/src/__tests__/translation-validation.test.ts --reporter=json`;
     const output = execSync(command, { encoding: "utf8", stdio: "pipe" });
 
     // Handle case where output is undefined (test environment)
@@ -191,7 +191,7 @@ async function checkRTLSupport(locales: string[]): Promise<{ issueCount: number;
   for (const locale of locales) {
     if (rtlLocales.includes(locale)) {
       // Check if RTL support is properly implemented
-      const rtlTestFile = `packages/i18n/src/__tests__/rtl-${locale}.test.ts`;
+      const rtlTestFile = `packages/core/i18n/src/__tests__/rtl-${locale}.test.ts`;
       if (!existsSync(rtlTestFile)) {
         rtlIssues.push(`Missing RTL test for ${locale}`);
       }
@@ -209,7 +209,7 @@ async function generateCoverageReport(): Promise<{
   details: string;
 }> {
   try {
-    const command = `npx vitest run packages/i18n --coverage --reporter=json`;
+    const command = `npx vitest run packages/core/i18n --coverage --reporter=json`;
     const output = execSync(command, { encoding: "utf8", stdio: "pipe" });
 
     // Handle case where output is undefined (test environment)

@@ -85,7 +85,7 @@ describe("Hardcoded String Detection Example", () => {
 describe("Translation Validation Example", () => {
   it("should validate translation completeness", async () => {
     const config: I18nTestConfig = {
-      packages: ["packages/i18n"],
+      packages: ["packages/core/i18n"],
       locales: ["en", "es", "fr"],
       checkHardcodedStrings: false,
       validateCompleteness: true,
@@ -110,7 +110,7 @@ describe("Translation Validation Example", () => {
 describe("Comprehensive i18n Testing Example", () => {
   it("should run all i18n tests and generate report", async () => {
     const config: I18nTestConfig = {
-      packages: ["packages/ui", "packages/i18n"],
+      packages: ["packages/ui", "packages/core/i18n"],
       locales: ["en", "es", "fr", "de", "ru", "ar"],
       checkHardcodedStrings: true,
       validateCompleteness: true,
@@ -211,7 +211,7 @@ describe("Integration with Existing Test Suites", () => {
 describe("Performance Testing Example", () => {
   it("should measure i18n performance", async () => {
     const config: I18nTestConfig = {
-      packages: ["packages/i18n"],
+      packages: ["packages/core/i18n"],
       locales: ["en", "es", "fr", "de", "ru", "ar"],
       checkHardcodedStrings: true,
       validateCompleteness: true,

@@ -50,7 +50,7 @@ export default {
     },
     {
       name: "i18n",
-      path: "/home/kade/runeset/reynard/packages/i18n",
+      path: "/home/kade/runeset/reynard/packages/core/i18n",
       category: "Internationalization",
       priority: 7,
     },

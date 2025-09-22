@@ -17,7 +17,7 @@ export default [
   "./packages/testing",
   "./packages/charts",
   "./packages/games",
-  "./packages/i18n",
+  "./packages/core/i18n",
   "./packages/rag",
   "./packages/ai-shared",
   "./packages/segmentation",
