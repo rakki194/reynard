@@ -48,22 +48,6 @@ function resolvePackagePath(relativePath: string): string {
   console.log(`🔍 Resolving path for: ${relativePath}`);
   console.log(`🔍 Current directory: ${currentDir}`);
   
-  // If we're in the testing package, go up three levels to get to the root
-  if (currentDir.includes("packages/core/testing")) {
-    const rootDir = resolve(currentDir, "../../../..");
-    const result = resolve(rootDir, relativePath);
-    console.log(`🔍 Testing package detected, root: ${rootDir}, result: ${result}`);
-    return result;
-  }
-  
-  // If we're in any packages subdirectory, go up to the root
-  if (currentDir.includes("packages/")) {
-    const rootDir = resolve(currentDir, "../../..");
-    const result = resolve(rootDir, relativePath);
-    console.log(`🔍 Packages subdirectory detected, root: ${rootDir}, result: ${result}`);
-    return result;
-  }
-
   // Try to find the Reynard root directory by looking for package.json with "reynard" in name
   let searchDir = currentDir;
   let rootDir = currentDir;
