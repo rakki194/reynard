@@ -12,8 +12,8 @@ export * from "./constants.js";
 // Type exports
 export * from "./types/index.js";
 
-// Constants
-export * from "./constants.js";
+// Base service classes
+export * from "./services/BaseRepositoryService.js";
 
 // Error classes
 export { FileNotFoundError, RepositoryError } from "./types/index.js";

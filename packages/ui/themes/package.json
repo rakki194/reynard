@@ -28,19 +28,26 @@
   },
   "dependencies": {
     "solid-js": "1.9.9",
-    "reynard-colors": "workspace:*"
+    "reynard-colors": "workspace:*",
+    "reynard-core": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "24.5.2",
     "@vitest/coverage-v8": "3.2.4",
     "@vitest/ui": "3.2.4",
-    "happy-dom": "^18.0.1",
+    "happy-dom": "18.0.1",
     "typescript": "5.9.2",
-    "vite": "7.1.6",
+    "vite": "7.1.7",
     "vite-plugin-solid": "2.11.8",
     "vitest": "3.2.4"
   },
   "peerDependencies": {
-    "solid-js": "1.9.9"
+    "solid-js": "1.9.9",
+    "reynard-animation": "workspace:*"
+  },
+  "peerDependenciesMeta": {
+    "reynard-animation": {
+      "optional": true
+    }
   }
 }

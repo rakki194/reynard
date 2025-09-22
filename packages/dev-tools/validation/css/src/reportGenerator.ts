@@ -6,12 +6,12 @@
 import fs from "fs";
 import path from "path";
 import type { ValidationResult, ReportOptions } from "./types.js";
-import { CSSLogger } from "./logger.js";
+import type { ReynardLogger } from "reynard-dev-tools-catalyst";
 
 export class ReportGenerator {
-  private logger: CSSLogger;
+  private logger: ReynardLogger;
 
-  constructor(logger: CSSLogger) {
+  constructor(logger: ReynardLogger) {
     this.logger = logger;
   }
 

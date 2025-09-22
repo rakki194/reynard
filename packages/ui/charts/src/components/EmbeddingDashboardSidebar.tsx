@@ -5,7 +5,22 @@
  */
 import { EmbeddingStatsPanel } from "./EmbeddingStatsPanel";
 import { EmbeddingMethodSelector } from "./EmbeddingMethodSelector";
-export const EmbeddingDashboardSidebar = props => {
+interface EmbeddingDashboardSidebarProps {
+  stats?: any;
+  availableMethods?: any;
+  reductionMethod?: string;
+  reductionParams?: any;
+  maxSamples?: number;
+  isLoading?: boolean;
+  onMethodChange?: (method: string) => void;
+  onParameterUpdate?: (params: any) => void;
+  onMaxSamplesChange?: (samples: number) => void;
+  onPerformReduction?: () => void;
+  class?: string;
+  [key: string]: any;
+}
+
+export const EmbeddingDashboardSidebar = (props: EmbeddingDashboardSidebarProps) => {
   return (
     <div class="dashboard-sidebar">
       <EmbeddingStatsPanel stats={props.stats} />

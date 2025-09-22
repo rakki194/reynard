@@ -5,8 +5,10 @@
  * Based on Yipyap's sophisticated overlay system.
  */
 import { createEffect, onCleanup } from "solid-js";
+import type { FloatingPanelOverlayProps } from "../types.js";
 import "./FloatingPanelOverlay.css";
-export const FloatingPanelOverlay = props => {
+
+export const FloatingPanelOverlay = (props: FloatingPanelOverlayProps) => {
   // Handle transition phase changes
   createEffect(() => {
     const phase = props.transitionPhase;
@@ -20,7 +22,7 @@ export const FloatingPanelOverlay = props => {
     }
   });
   // Handle escape key to close overlay
-  const handleKeyDown = event => {
+  const handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === "Escape" && props.isActive) {
       // Could emit close event here if needed
     }

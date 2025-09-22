@@ -10,6 +10,11 @@
 export { Processors } from "./processors.js";
 export { FileQueueManager, createQueueManager, queueManager } from "./queue-manager.js";
 
+// Export enhanced file utilities using catalyst
+export { shouldExcludeFile, wasRecentlyProcessed, getFileType } from "./queueFileUtils.js";
+// Legacy file-utils export for backward compatibility
+export * from "./file-utils.js";
+
 // Export types
 export type {
   FileProcessor,

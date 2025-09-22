@@ -1,0 +1,66 @@
+{
+  "name": "reynard-dev-tools-catalyst",
+  "version": "1.0.0",
+  "description": "⚗️ Catalyst - Shared utilities and base classes for Reynard dev-tools",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./cli": {
+      "types": "./dist/cli/index.d.ts",
+      "import": "./dist/cli/index.js"
+    },
+    "./logger": {
+      "types": "./dist/logger/index.d.ts",
+      "import": "./dist/logger/index.js"
+    },
+    "./file-utils": {
+      "types": "./dist/file-utils/index.d.ts",
+      "import": "./dist/file-utils/index.js"
+    },
+    "./types": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/types/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "test": "vitest",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "reynard",
+    "dev-tools",
+    "cli",
+    "logger",
+    "file-utils",
+    "catalyst",
+    "utilities",
+    "shared"
+  ],
+  "author": "Reynard Framework",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "14.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "24.5.2",
+    "@typescript-eslint/eslint-plugin": "8.44.0",
+    "@typescript-eslint/parser": "8.44.0",
+    "@vitest/coverage-v8": "3.2.4",
+    "eslint": "9.36.0",
+    "globals": "16.4.0",
+    "typescript": "5.9.2",
+    "vitest": "3.2.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

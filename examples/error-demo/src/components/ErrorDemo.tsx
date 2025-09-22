@@ -432,35 +432,35 @@ const ErrorDemo: Component = () => {
 
         <div class="error-demo-content-grid">
           <ErrorBoundary>
-            <NetworkErrorComponent />
+            {() => <NetworkErrorComponent />}
           </ErrorBoundary>
 
           <ErrorBoundary>
-            <TimeoutErrorComponent />
+            {() => <TimeoutErrorComponent />}
           </ErrorBoundary>
 
           <ErrorBoundary>
-            <ValidationErrorComponent />
+            {() => <ValidationErrorComponent />}
           </ErrorBoundary>
 
           <ErrorBoundary>
-            <AuthErrorComponent />
+            {() => <AuthErrorComponent />}
           </ErrorBoundary>
 
           <ErrorBoundary>
-            <PermissionErrorComponent />
+            {() => <PermissionErrorComponent />}
           </ErrorBoundary>
 
           <ErrorBoundary>
-            <ResourceErrorComponent />
+            {() => <ResourceErrorComponent />}
           </ErrorBoundary>
 
           <ErrorBoundary>
-            <CriticalErrorComponent />
+            {() => <CriticalErrorComponent />}
           </ErrorBoundary>
 
           <ErrorBoundary>
-            <RenderingErrorComponent />
+            {() => <RenderingErrorComponent />}
           </ErrorBoundary>
         </div>
       </div>

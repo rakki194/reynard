@@ -7,25 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [0.16.0] - 2025-09-22
+
 ### Fixed
 
 - **Queue Watcher Import**: Resolved import error for 'reynard-project-architecture' module by building the project architecture package and fixing TypeScript import syntax (Aye-Prime-11)
 - **Caption Package Path**: Fixed incorrect references to 'packages/media/caption' and 'packages/caption' - corrected to 'packages/ai/caption' in testing config, examples, docs, and diagram generator files (Aye-Prime-11)
 - **Package Path References**: Fixed incorrect references to 'packages/annotating-core' and 'packages/floating-panel' - corrected to 'packages/ai/annotating-core' and 'packages/ui/floating-panel' respectively (Aye-Prime-11)
 - **Fluent Icons SVG Types**: Added missing `svg.d.ts` type declarations file for SVG imports with `?raw` suffix in fluent-icons package (Aye-Prime-11)
-
-### Added
+- **ADR System TypeScript Fixes**: Fixed comprehensive TypeScript errors in ADR System package including type mismatches, missing exports, duplicate functions, watch API usage, error handling, and interface conflicts (Aye-Prime-11)
+- **Error Boundaries TypeScript Fixes**: Fixed TypeScript errors in error-boundaries package including implicit any types, missing type annotations, null handling issues, and component type conflicts (Aye-Prime-11)
 
 ### Changed
 
 - **Media Setup Refactoring**: Broke down media-setup.ts monolith (327 lines) into modular components: file-mocks.ts (100 lines), media-mocks.ts (73 lines), canvas-mocks.ts (116 lines), and streamlined main setup (19 lines) - now follows 140-line axiom (Lutra-Oracle-97)
 - **MCP Server Fix**: Added missing `analyze_file_complexity` method to `FileAnalysisService` class to resolve AttributeError and provide backward compatibility (Xeno-Prime-76)
-
-### Deprecated
-
-### Removed
-
-### Security
 
 ## [0.15.0] - 2025-09-22
 
@@ -37,8 +45,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **GitHub Workflow Fixes**: Corrected workflow paths for i18n and testing packages (Rebirth-Oracle-10)
 - **Search Service Type Fix**: Updated deprecated `typing.Dict` and `typing.List` to modern `dict` and `list` type annotations in optimized search service (Stealth-Oracle-58)
 - **Document Indexer API Refactor**: Abstracted repeated exception handling patterns into helper functions for better maintainability and reduced code duplication (Powerful-Oracle-35)
-
-### Security
 
 ## [0.14.0] - 2025-09-22
 

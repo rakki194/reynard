@@ -17,12 +17,13 @@ export default defineConfig({
       },
     },
     rollupOptions: {
-      external: ["fs", "path"],
+      external: ["fs", "path", "commander"],
       output: {
         exports: "named",
         globals: {
           fs: "fs",
           path: "path",
+          commander: "commander",
         },
       },
     },

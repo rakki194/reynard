@@ -16,6 +16,7 @@ import {
   getGlobalExcludePatterns,
   getGlobalIncludePatterns,
 } from "./architecture.js";
+import { FileTypeDetector, FileExclusionManager } from "reynard-dev-tools-catalyst";
 import type {
   DirectoryDefinition,
   DirectoryQueryResult,
@@ -250,9 +251,14 @@ export function getRelatedDirectories(directoryName: string, relationshipType?: 
 }
 
 /**
- * Check if a file path should be excluded
+ * Check if a file path should be excluded using catalyst FileExclusionManager
  */
 export function shouldExcludeFile(filePath: string, directoryName?: string): boolean {
+  // Use catalyst FileExclusionManager for standard exclusion patterns
+  if (FileExclusionManager.shouldExcludeFile(filePath)) {
+    return true;
+  }
+
   const globalPatterns = getGlobalExcludePatterns();
 
   // Check global patterns
@@ -402,44 +408,18 @@ function matchesPattern(filePath: string, pattern: string): boolean {
 }
 
 /**
- * Get file type from extension
+ * Get file type from extension using catalyst FileTypeDetector
  */
 export function getFileTypeFromExtension(filePath: string): string {
-  const ext = path.extname(filePath).toLowerCase();
-
-  switch (ext) {
-    case ".ts":
-    case ".tsx":
-      return "typescript";
-    case ".js":
-    case ".jsx":
-      return "javascript";
-    case ".py":
-      return "python";
-    case ".md":
-    case ".mdx":
-      return "markdown";
-    case ".json":
-      return "json";
-    case ".yaml":
-    case ".yml":
-      return "yaml";
-    case ".css":
-      return "css";
-    case ".html":
-    case ".htm":
-      return "html";
-    case ".sh":
-      return "sh";
-    case ".sql":
-      return "sql";
-    case ".conf":
-      return "config";
-    case ".toml":
-      return "toml";
-    default:
-      return "other";
+  // Use catalyst FileTypeDetector for consistent file type detection
+  const catalystType = FileTypeDetector.getFileType(filePath);
+  
+  if (catalystType) {
+    return catalystType;
   }
+  
+  // Return "other" for unknown file types
+  return "other";
 }
 
 /**

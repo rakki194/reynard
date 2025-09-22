@@ -6,82 +6,84 @@
 import { describe, it, expect, vi } from "vitest";
 
 // Mock all the complex dependencies
-const mockTrackUsage = vi.fn();
-vi.mock("../../features/analytics/analytics-i18n", () => ({
-  createAnalyticsI18nModule: vi.fn().mockReturnValue({
-    t: vi.fn().mockImplementation((key, params) => {
-      // Call analytics.trackUsage when t is called
-      mockTrackUsage(key, "en");
-      return "Hello";
-    }),
-    locale: vi.fn().mockReturnValue("en"),
-    setLocale: vi.fn(),
-    isRTL: false,
-    languages: vi.fn().mockReturnValue(["en", "es"]),
-    loadTranslations: vi.fn().mockResolvedValue({}),
-    templateTranslator: vi.fn().mockImplementation((template, ...values) => {
-      return template.reduce((result, string, i) => {
-        return result + string + (values[i] || "");
-      }, "");
-    }),
-    pluralTranslator: vi.fn().mockReturnValue("1 items"),
-    analytics: {
-      trackUsage: mockTrackUsage,
-      getUsageStats: vi.fn().mockReturnValue({
-        mostUsedKeys: [],
-        localeUsage: [],
-        totalUsage: 0,
-        totalTranslations: 0,
-        uniqueKeys: 0,
-        lastReset: new Date(),
+vi.mock("../../features/analytics/analytics-i18n", () => {
+  const mockTrackUsage = vi.fn();
+  return {
+    createAnalyticsI18nModule: vi.fn().mockReturnValue({
+      t: vi.fn().mockImplementation((key, params) => {
+        // Call analytics.trackUsage when t is called
+        mockTrackUsage(key, "en");
+        return "Hello";
       }),
-    },
-    debugger: {
-      getUsedKeys: vi.fn().mockReturnValue([]),
-      getMissingKeys: vi.fn().mockReturnValue([]),
-      getUnusedKeys: vi.fn().mockReturnValue([]),
-      exportDebugData: vi.fn().mockReturnValue({}),
-      getStats: vi.fn().mockReturnValue({
-        totalKeys: 0,
-        usedKeys: 0,
-        missingKeys: 0,
-        unusedKeys: 0,
+      locale: vi.fn().mockReturnValue("en"),
+      setLocale: vi.fn(),
+      isRTL: false,
+      languages: vi.fn().mockReturnValue(["en", "es"]),
+      loadTranslations: vi.fn().mockResolvedValue({}),
+      templateTranslator: vi.fn().mockImplementation((template, ...values) => {
+        return template.reduce((result, string, i) => {
+          return result + string + (values[i] || "");
+        }, "");
       }),
-    },
-    intlFormatter: {
-      number: {
-        format: vi.fn().mockReturnValue("$1234.56"),
-        formatCurrency: vi.fn().mockReturnValue("$1234.56"),
+      pluralTranslator: vi.fn().mockReturnValue("1 items"),
+      analytics: {
+        trackUsage: mockTrackUsage,
+        getUsageStats: vi.fn().mockReturnValue({
+          mostUsedKeys: [],
+          localeUsage: [],
+          totalUsage: 0,
+          totalTranslations: 0,
+          uniqueKeys: 0,
+          lastReset: new Date(),
+        }),
       },
-      date: {
-        formatLong: vi.fn().mockReturnValue("December 25, 2023"),
-        formatShort: vi.fn().mockReturnValue("12/25/2023"),
+      debugger: {
+        getUsedKeys: vi.fn().mockReturnValue([]),
+        getMissingKeys: vi.fn().mockReturnValue([]),
+        getUnusedKeys: vi.fn().mockReturnValue([]),
+        exportDebugData: vi.fn().mockReturnValue({}),
+        getStats: vi.fn().mockReturnValue({
+          totalKeys: 0,
+          usedKeys: 0,
+          missingKeys: 0,
+          unusedKeys: 0,
+        }),
       },
-      relativeTime: {
-        formatSmart: vi.fn().mockReturnValue("2 days ago"),
+      intlFormatter: {
+        number: {
+          format: vi.fn().mockReturnValue("$1234.56"),
+          formatCurrency: vi.fn().mockReturnValue("$1234.56"),
+        },
+        date: {
+          formatLong: vi.fn().mockReturnValue("December 25, 2023"),
+          formatShort: vi.fn().mockReturnValue("12/25/2023"),
+        },
+        relativeTime: {
+          formatSmart: vi.fn().mockReturnValue("2 days ago"),
+        },
       },
-    },
-    performanceMonitor: {
-      startTiming: vi.fn(),
-      endTiming: vi.fn(),
-      getMetrics: vi.fn().mockReturnValue({
-        translationCalls: 0,
-        cacheHits: 0,
-        averageLoadTime: 0,
+      performanceMonitor: {
+        startTiming: vi.fn(),
+        endTiming: vi.fn(),
+        getMetrics: vi.fn().mockReturnValue({
+          translationCalls: 0,
+          cacheHits: 0,
+          averageLoadTime: 0,
+        }),
+      },
+      loadNamespace: vi.fn().mockResolvedValue({ hello: "Hello" }),
+      getCacheStats: vi.fn().mockReturnValue({
+        fullTranslations: 1,
+        namespaces: [{ name: "common", locales: 1 }],
       }),
-    },
-    loadNamespace: vi.fn().mockResolvedValue({ hello: "Hello" }),
-    getCacheStats: vi.fn().mockReturnValue({
-      fullTranslations: 1,
-      namespaces: [{ name: "common", locales: 1 }],
+      clearCache: vi.fn(),
+      translationManager: {
+        setTranslation: vi.fn(),
+        getTranslation: vi.fn().mockReturnValue("Hello"),
+      },
     }),
-    clearCache: vi.fn(),
-    translationManager: {
-      setTranslation: vi.fn(),
-      getTranslation: vi.fn().mockReturnValue("Hello"),
-    },
-  }),
-}));
+  };
+});
 
 vi.mock("../loader", () => ({
   loadTranslationsWithCache: vi.fn().mockResolvedValue({

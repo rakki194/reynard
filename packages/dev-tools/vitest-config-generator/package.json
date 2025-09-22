@@ -20,15 +20,17 @@
   "author": "Reynard Framework",
   "license": "MIT",
   "dependencies": {
-    "commander": "^12.1.0"
+    "commander": "14.0.1",
+    "reynard-dev-tools-catalyst": "workspace:*",
+    "reynard-project-architecture": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "24.5.2",
     "@typescript-eslint/eslint-plugin": "8.44.0",
     "@typescript-eslint/parser": "8.44.0",
     "@vitest/coverage-v8": "3.2.4",
-    "eslint": "9.35.0",
-    "globals": "^16.4.0",
+    "eslint": "9.36.0",
+    "globals": "16.4.0",
     "typescript": "5.9.2",
     "vitest": "3.2.4"
   },

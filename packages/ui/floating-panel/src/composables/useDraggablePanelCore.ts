@@ -7,6 +7,9 @@
 import { createSignal, Accessor } from "solid-js";
 import type { PanelPosition, PanelConstraints, PanelSnapPoints } from "../types.js";
 
+// Export PanelPosition for other modules
+export type { PanelPosition } from "../types.js";
+
 export interface DraggablePanelCore {
   position: ReturnType<typeof createSignal<PanelPosition>>;
   dragState: ReturnType<

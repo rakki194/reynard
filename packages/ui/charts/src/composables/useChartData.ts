@@ -25,7 +25,7 @@ export interface ChartDataConfig {
 }
 
 export function useChartData(config: ChartDataConfig) {
-  const setupChartData = () => {
+  const setupChartData = (): { data: any; options: any } => {
     console.log("🦊 useChartData: setupChartData called with config", config);
 
     // Process datasets with enhanced color generation

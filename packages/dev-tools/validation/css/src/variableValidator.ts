@@ -15,15 +15,15 @@ import type {
   CSSVariableUsage,
   ValidatorConfig,
 } from "./types.js";
-import { CSSLogger } from "./logger.js";
+import type { ReynardLogger } from "reynard-dev-tools-catalyst";
 import { VariableExtractor } from "./variableExtractor.js";
 
 export class VariableValidator {
-  private logger: CSSLogger;
+  private logger: ReynardLogger;
   private config: ValidatorConfig;
   private extractor: VariableExtractor;
 
-  constructor(config: ValidatorConfig, logger: CSSLogger, extractor: VariableExtractor) {
+  constructor(config: ValidatorConfig, logger: ReynardLogger, extractor: VariableExtractor) {
     this.config = config;
     this.logger = logger;
     this.extractor = extractor;

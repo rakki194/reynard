@@ -63,6 +63,7 @@ export interface ComplianceViolation {
   file?: string;
   line?: number;
   location?: string;
+  rule?: string;
   suggestion?: string;
 }
 

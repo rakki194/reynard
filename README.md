@@ -1,11 +1,31 @@
 # 🦊 Reynard: The Universal AI Development Ecosystem
 
-> _From dataset editor to digital universe: The evolution of intelligent application development_
-
 **Reynard is a comprehensive AI-powered development ecosystem that aims to bridge the gap between traditional frameworks**
 **and modern AI development needs.** Evolved from YipYap's multi-modal content management system, Reynard represents an
 attempt to create a unified platform where developers, researchers, enterprises, and creators can build, experiment, and
 deploy intelligent applications with greater ease.
+
+## ⚠️ **Implementation Status Warning**
+
+> **🚧 This README describes the intended architecture and feature set. Many features are currently in early development or planning stages.**
+
+**Current Status:**
+
+- **✅ Fully Implemented**: Core framework, basic components, authentication, theming system
+- **🚧 In Development**: Advanced AI features, comprehensive backend services, real-time collaboration
+- **📋 Planned**: Enterprise features, advanced analytics, distributed processing
+
+**Package Versions:**
+
+- Most packages are at version 0.1.0-0.2.0 (early development)
+- Features described may be partially implemented or stubs
+- API stability is not guaranteed until v1.0.0
+
+**For Production Use:**
+
+- Review actual package implementations before integration
+- Check individual package READMEs for current capabilities
+- Consider this a development preview, not production-ready software
 
 ## What Reynard Offers
 
@@ -38,6 +58,7 @@ application development—where different tools and services work together to re
 ## Table of Contents
 
 - [🦊 Reynard: The Universal AI Development Ecosystem](#-reynard-the-universal-ai-development-ecosystem)
+  - [⚠️ **Implementation Status Warning**](#️-implementation-status-warning)
   - [What Reynard Offers](#what-reynard-offers)
   - [Table of Contents](#table-of-contents)
   - [🚀 Quick Start](#-quick-start)
@@ -46,7 +67,6 @@ application development—where different tools and services work together to re
   - [✨ Key Features](#-key-features)
   - [📦 Package Ecosystem](#-package-ecosystem)
     - [🤖 AI \& Machine Learning (`packages/ai/`)](#-ai--machine-learning-packagesai)
-    - [🧮 Algorithms (`packages/algorithms/`)](#-algorithms-packagesalgorithms)
     - [🏗️ Core Framework (`packages/core/`)](#️-core-framework-packagescore)
     - [📊 Data Processing (`packages/data/`)](#-data-processing-packagesdata)
     - [🛠️ Development Tools (`packages/dev-tools/`)](#️-development-tools-packagesdev-tools)
@@ -299,12 +319,9 @@ while other packages can be added as needed. All packages are published to npm a
 - **`rag`** - Retrieval-Augmented Generation
 - **`tool-calling`** - AI tool calling utilities
 
-### 🧮 Algorithms (`packages/algorithms/`)
-
-- **`algorithms`** - Algorithm implementations and data structures
-
 ### 🏗️ Core Framework (`packages/core/`)
 
+- **`algorithms`** - Algorithm implementations and data structures
 - **`composables`** - Reusable Vue composables for common patterns
 - **`config`** - Configuration management and environment handling
 - **`connection`** - WebSocket and real-time communication utilities

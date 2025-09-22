@@ -105,16 +105,18 @@ export default defineConfig(${JSON.stringify(config, null, 2)});
     // Check project configurations
     if (config.test.projects) {
       config.test.projects.forEach((project, index) => {
+        const projectIdentifier = project.name || `Project ${index}`;
+        
         if (!project.name) {
-          errors.push(`Project ${index}: missing name`);
+          errors.push(`${projectIdentifier}: missing name`);
         }
         if (!project.root) {
-          errors.push(`Project ${index}: missing root path`);
+          errors.push(`${projectIdentifier}: missing root path`);
         }
         if (!project.test) {
-          errors.push(`Project ${index}: missing test configuration`);
+          errors.push(`${projectIdentifier}: missing test configuration`);
         } else if (!project.test.include || project.test.include.length === 0) {
-          errors.push(`Project ${index}: missing test include patterns`);
+          errors.push(`${projectIdentifier}: missing test include patterns`);
         }
       });
     }

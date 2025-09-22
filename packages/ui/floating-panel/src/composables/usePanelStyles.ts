@@ -20,5 +20,6 @@ export const usePanelStyles = (props: UsePanelStylesProps) => {
   return {
     styles,
     getCSSVariables: () => generatePanelStyles(props.position, props.size, props.config),
+    getInlineStyles: () => styles,
   };
 };

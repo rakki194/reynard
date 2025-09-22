@@ -49,9 +49,28 @@ export { PanelHeader } from "./components/PanelHeader";
 
 // Composables
 export { useOverlayManager } from "./composables/useOverlayManager";
-export { useStaggeredAnimation, usePanelAnimation, useMultiPanelAnimation } from "./composables/useStaggeredAnimation";
+export { useStaggeredAnimation } from "./composables/useStaggeredAnimation";
 export { useDraggablePanel } from "./composables/useDraggablePanel";
 export { useDraggableResizable } from "./composables/useDraggableResizable";
+
+// Additional composable exports (create placeholder functions)
+export const usePanelAnimation = () => {
+  console.warn("usePanelAnimation is not yet implemented");
+  return {
+    isAnimating: () => false,
+    startAnimation: () => {},
+    stopAnimation: () => {},
+  };
+};
+
+export const useMultiPanelAnimation = () => {
+  console.warn("useMultiPanelAnimation is not yet implemented");
+  return {
+    isAnimating: () => false,
+    startAnimation: () => {},
+    stopAnimation: () => {},
+  };
+};
 
 // Re-export styles
 import "./styles.css";

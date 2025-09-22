@@ -13,6 +13,10 @@ export interface PanelEventHandlers {
   onPanelHide?: (panel: unknown) => void;
   onPanelDrag?: (panel: unknown, position: PanelPosition) => void;
   onPanelResize?: (panel: unknown, size: PanelSize) => void;
+  handlePanelShow?: (panel: unknown) => void;
+  handlePanelHide?: (panel: unknown) => void;
+  handlePanelDrag?: (panel: unknown, position: { top: number; left: number }) => void;
+  handlePanelResize?: (panel: unknown, size: { width: number; height: number }) => void;
 }
 
 export interface FloatingPanelProps {
@@ -27,5 +31,13 @@ export interface FloatingPanelProps {
   onHide?: () => void;
   onDrag?: (position: PanelPosition) => void;
   onResize?: (size: PanelSize) => void;
+  onReset?: () => void;
   title?: string;
+  panel?: {
+    handleMouseDown: (event: MouseEvent, type: string) => void;
+    handleMouseMove: (event: MouseEvent) => void;
+    handleMouseUp: (event: MouseEvent) => void;
+    toggleMinimized: () => void;
+    isMinimized: () => boolean;
+  };
 }

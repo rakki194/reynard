@@ -109,7 +109,7 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
     this.modularityChecker = new ModularityComplianceChecker(codebasePath);
     this.dependencyAnalyzer = new DependencyHealthAnalyzer(codebasePath);
     this.interfaceValidator = new InterfaceConsistencyValidator(codebasePath);
-    this.typeSafetyCompliance = new TypeSafetyCompliance(codebasePath, "");
+    this.typeSafetyCompliance = new TypeSafetyCompliance(codebasePath);
     this.performanceDetector = new PerformancePatternDetector(codebasePath);
 
     this.initializeAlertThresholds();
@@ -248,11 +248,14 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
       try {
         const watcher = watch(file);
         
-        watcher.on('change', async (eventType) => {
-          if (eventType === "change") {
-            await this.handleFileChange(file);
+        // Use async iterator for file watching
+        (async () => {
+          for await (const event of watcher) {
+            if (event.eventType === "change") {
+              await this.handleFileChange(file);
+            }
           }
-        });
+        })();
 
         this.watchers.set(file, watcher);
       } catch (error) {

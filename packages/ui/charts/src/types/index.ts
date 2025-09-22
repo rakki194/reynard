@@ -160,6 +160,45 @@ export interface ChartConfig extends ChartOptions {
 
 export type ChartType = "line" | "bar" | "doughnut" | "pie" | "radar" | "polarArea" | "scatter" | "bubble";
 
+export interface ChartProps {
+  /** Chart type */
+  type: ChartType;
+  /** Chart labels */
+  labels: string[];
+  /** Chart datasets */
+  datasets: Dataset[];
+  /** Whether to use OKLCH colors */
+  useOKLCH?: boolean;
+  /** Color theme */
+  colorTheme?: string;
+  /** Custom color generator function */
+  colorGenerator?: (theme: string, label: string) => string;
+  /** Whether to show legend */
+  showLegend?: boolean;
+  /** Whether to show grid */
+  showGrid?: boolean;
+  /** X-axis label */
+  xAxisLabel?: string;
+  /** Y-axis label */
+  yAxisLabel?: string;
+  /** Whether chart is real-time */
+  realTime?: boolean;
+  /** Update interval for real-time charts */
+  updateInterval?: number;
+  /** Whether chart is loading */
+  loading?: boolean;
+  /** Message to show when no data */
+  emptyMessage?: string;
+  /** Whether to enable performance monitoring */
+  enablePerformanceMonitoring?: boolean;
+  /** Chart width */
+  width?: number;
+  /** Chart height */
+  height?: number;
+  /** Chart title */
+  title?: string;
+}
+
 /** Reynard theme options */
 export type ReynardTheme = "light" | "dark" | "gray" | "banana" | "strawberry" | "peanut";
 

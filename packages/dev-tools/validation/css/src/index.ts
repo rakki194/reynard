@@ -4,8 +4,9 @@
  */
 
 export { CSSVariableValidator } from "./CSSVariableValidator.js";
-export { CSSLogger } from "./logger.js";
-export { FileManager } from "./fileManager.js";
+// CSSLogger removed - now using ReynardLogger from catalyst
+export { CSSFileManager } from "./cssFileManager.js";
+// Old FileManager removed - replaced with CSSFileManager that extends catalyst FileManager
 export { VariableExtractor } from "./variableExtractor.js";
 export { VariableValidator } from "./variableValidator.js";
 export { ReportGenerator } from "./reportGenerator.js";

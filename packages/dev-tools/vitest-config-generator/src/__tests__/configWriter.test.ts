@@ -263,7 +263,7 @@ describe("ConfigWriter", () => {
       const result = writer.validateConfig(invalidConfig);
 
       expect(result.valid).toBe(false);
-      expect(result.errors).toContain("Project 0: missing test include patterns");
+      expect(result.errors).toContain("test-project: missing test include patterns");
     });
   });
 });

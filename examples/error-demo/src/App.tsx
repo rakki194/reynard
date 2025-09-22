@@ -148,8 +148,10 @@ const DemoContent: Component = () => {
             });
           }}
         >
-          {/* Navigation */}
-          <div class="demo-actions" style={{ "margin-bottom": "2rem", "justify-content": "center" }}>
+          {() => (
+            <>
+              {/* Navigation */}
+              <div class="demo-actions" style={{ "margin-bottom": "2rem", "justify-content": "center" }}>
             <button
               class={`btn ${demoMode() === "overview" ? "btn-primary" : "btn-secondary"}`}
               onClick={() => setDemoMode("overview")}
@@ -366,6 +368,8 @@ const DemoContent: Component = () => {
               </div>
             </Show>
           </Show>
+            </>
+          )}
         </ErrorBoundary>
       </main>
     </div>

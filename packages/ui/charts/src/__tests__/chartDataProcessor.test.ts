@@ -9,6 +9,10 @@ import {
 import type { Dataset } from "../types";
 
 describe("Chart Data Processor", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   const mockDatasets: Dataset[] = [
     {
       label: "Dataset 1",

@@ -97,8 +97,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
     },
 
     {
-      name: "packages/algorithms",
-      path: "packages/algorithms",
+      name: "packages/core/algorithms",
+      path: "packages/core/algorithms",
       category: "source",
       importance: "important",
       fileTypes: ["typescript", "javascript", "json", "markdown"],
@@ -109,7 +109,7 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       testable: true,
       lintable: true,
       documentable: true,
-      relationships: [{ directory: "packages/core", type: "dependency", description: "Uses core utilities" }],
+      relationships: [{ directory: "packages/core/core", type: "dependency", description: "Uses core utilities" }],
       excludePatterns: ["**/node_modules/**", "**/dist/**", "**/build/**"],
       includePatterns: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json", "**/*.md"],
       optional: false,
@@ -829,27 +829,6 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       thirdParty: false,
     },
 
-    // Missing Algorithms Package
-    {
-      name: "packages/algorithms/algorithms",
-      path: "packages/algorithms/algorithms",
-      category: "source",
-      importance: "important",
-      fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description:
-        "Algorithm implementations and data structures - provides core algorithmic utilities, data structures, and computational algorithms for performance-critical operations",
-      watchable: true,
-      buildable: true,
-      testable: true,
-      lintable: true,
-      documentable: true,
-      relationships: [{ directory: "packages/core/core", type: "dependency", description: "Uses core utilities" }],
-      excludePatterns: ["**/node_modules/**", "**/dist/**", "**/build/**"],
-      includePatterns: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json", "**/*.md"],
-      optional: false,
-      generated: false,
-      thirdParty: false,
-    },
 
     // Missing Core Packages
     {

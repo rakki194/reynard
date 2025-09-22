@@ -20,5 +20,5 @@ export interface PanelConfig {
   hoverDelay?: number;
   persistent?: boolean;
   theme?: PanelTheme;
-  backdropOpacity?: number;
+  backdropOpacity: number;
 }

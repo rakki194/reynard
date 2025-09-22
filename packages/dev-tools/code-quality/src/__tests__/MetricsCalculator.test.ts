@@ -368,7 +368,7 @@ export function documentedFunction(): string {
     it("should handle docstring analysis errors gracefully", async () => {
       // Mock the DocstringAnalyzer to throw an error
       const mockAnalyzer = calculator["docstringAnalyzer"];
-      vi.mocked(mockAnalyzer.analyzeFiles).mockRejectedValue(new Error("Analysis failed"));
+      mockAnalyzer.analyzeFiles = vi.fn().mockRejectedValue(new Error("Analysis failed"));
 
       const languageAnalyses = [
         {

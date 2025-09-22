@@ -4,7 +4,14 @@
  */
 import { Show, createMemo } from "solid-js";
 import { useVisualizationEngine } from "../core/VisualizationEngine";
-export const PCAVarianceChart = props => {
+interface PCAVarianceChartProps {
+  data?: any;
+  isLoading?: boolean;
+  class?: string;
+  [key: string]: any;
+}
+
+export const PCAVarianceChart = (props: PCAVarianceChartProps) => {
   const visualizationEngine = useVisualizationEngine();
   // Prepare chart data using createMemo for better performance
   const chartData = createMemo(() => {

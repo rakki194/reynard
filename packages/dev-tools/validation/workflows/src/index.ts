@@ -4,11 +4,12 @@
  */
 
 export { WorkflowShellExtractor } from "./WorkflowShellExtractor.js";
-export { WorkflowLogger } from "./logger.js";
+// WorkflowLogger removed - now using ReynardLogger from catalyst
 export { ScriptExtractor } from "./scriptExtractor.js";
 export { ScriptValidator } from "./scriptValidator.js";
 export { ScriptFixer } from "./scriptFixer.js";
-export { FileManager } from "./fileManager.js";
+export { WorkflowFileManager } from "./workflowFileManager.js";
+// Old FileManager removed - replaced with WorkflowFileManager that extends catalyst FileManager
 export { ReportGenerator } from "./reportGenerator.js";
 export { WorkflowProcessor } from "./workflowProcessor.js";
 export { ExtractorFactory } from "./extractorFactory.js";

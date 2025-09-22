@@ -11,13 +11,15 @@ import { useChartData } from "../composables/useChartData";
 import { useChartInitialization } from "../composables/useChartInitialization";
 import { useChartConfiguration } from "../composables/useChartConfiguration";
 import { useChartRendering } from "../composables/useChartRendering";
-export const Chart = props => {
+import type { ChartProps } from "../types";
+
+export const Chart = (props: ChartProps) => {
   console.log("🦊 Chart: Component initialized with props", props);
   const [local, others] = splitProps(props, chartPropsToSplit);
   console.log("🦊 Chart: Split props", { local, others });
   // Initialize visualization engine
   const visualization = useVisualizationEngine({
-    theme: local.colorTheme,
+    theme: local.colorTheme as any,
     useOKLCH: local.useOKLCH,
   });
   // Get chart configuration

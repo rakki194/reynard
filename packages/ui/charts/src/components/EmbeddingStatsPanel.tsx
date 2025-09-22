@@ -3,7 +3,13 @@
  *
  * Displays embedding statistics and metrics.
  */
-export const EmbeddingStatsPanel = props => {
+interface EmbeddingStatsPanelProps {
+  stats?: any;
+  class?: string;
+  [key: string]: any;
+}
+
+export const EmbeddingStatsPanel = (props: EmbeddingStatsPanelProps) => {
   if (!props.stats) return null;
   return (
     <div class="stats-panel">

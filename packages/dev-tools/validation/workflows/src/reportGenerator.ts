@@ -3,10 +3,10 @@
  * Handles generation of summary reports and statistics
  */
 
-import type { Logger } from "./types.js";
+import type { ReynardLogger } from "reynard-dev-tools-catalyst";
 
 export class ReportGenerator {
-  constructor(private logger: Logger) {}
+  constructor(private logger: ReynardLogger) {}
 
   /**
    * Generate summary report

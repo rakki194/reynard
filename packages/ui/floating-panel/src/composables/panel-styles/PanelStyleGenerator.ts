@@ -5,7 +5,7 @@
  */
 
 import type { JSX } from "solid-js";
-import type { PanelPosition, PanelSize } from "../../types.js";
+import type { PanelPosition, PanelSize, PanelConfig } from "../../types.js";
 import { getCSSVariables } from "./PanelCSSVariables.js";
 
 /**
@@ -14,9 +14,9 @@ import { getCSSVariables } from "./PanelCSSVariables.js";
 export function generatePanelStyles(
   position: PanelPosition,
   size?: PanelSize,
-  config?: Record<string, unknown>
+  config?: PanelConfig
 ): JSX.CSSProperties {
-  const cssVariables = config ? getCSSVariables(config) : {};
+  const cssVariables = config ? getCSSVariables(config as Required<PanelConfig>) : {};
 
   return {
     position: "absolute",

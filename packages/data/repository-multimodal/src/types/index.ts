@@ -459,6 +459,19 @@ export interface FileFilters {
   sizeRange?: { min: number; max: number };
 }
 
+export interface ListOptions {
+  limit?: number;
+  offset?: number;
+  sortBy?: string;
+  sortOrder?: "asc" | "desc";
+}
+
+export interface UploadOptions {
+  overwrite?: boolean;
+  metadata?: Record<string, any>;
+  tags?: string[];
+}
+
 // ============================================================================
 // Error Types
 // ============================================================================

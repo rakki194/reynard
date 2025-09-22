@@ -13,7 +13,10 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist/**/*", "README.md"],
+  "files": [
+    "dist/**/*",
+    "README.md"
+  ],
   "scripts": {
     "build": "vite build && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
     "dev": "vite build --watch",
@@ -22,7 +25,14 @@
     "test:coverage": "vitest --coverage",
     "test:ui": "vitest --ui"
   },
-  "keywords": ["solidjs", "charts", "data-visualization", "chartjs", "graphs", "analytics"],
+  "keywords": [
+    "solidjs",
+    "charts",
+    "data-visualization",
+    "chartjs",
+    "graphs",
+    "analytics"
+  ],
   "peerDependencies": {
     "chart.js": "4.5.0",
     "solid-js": "1.9.9"
@@ -43,10 +53,10 @@
     "@vitest/ui": "3.2.4",
     "chart.js": "4.5.0",
     "happy-dom": "18.0.1",
-    "reynard-testing": "workspace:*",
+    "reynard-testing": "0.1.2",
     "solid-js": "1.9.9",
     "typescript": "5.9.2",
-    "vite": "7.1.6",
+    "vite": "7.1.7",
     "vite-plugin-solid": "2.11.8",
     "vitest": "3.2.4"
   }

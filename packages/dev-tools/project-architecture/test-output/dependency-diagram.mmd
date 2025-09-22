@@ -1,8 +1,7 @@
 graph TD
     packages["📦 packages"]:::critical
     packages_ai["📦 ai"]:::critical
-    packages_algorithms["📦 algorithms"]:::important
-    packages_core["📦 core"]:::critical
+    packages_core_algorithms["📦 core/algorithms"]:::important
     packages_data["📦 data"]:::important
     packages_dev_tools["🛠️ dev-tools"]:::important
     packages_docs["📚 docs"]:::important
@@ -31,7 +30,6 @@ graph TD
     packages_ai_multimodal["📦 ai/multimodal"]:::important
     packages_ai_nlweb["📦 ai/nlweb"]:::important
     packages_ai_tool_calling["📦 ai/tool-calling"]:::important
-    packages_algorithms_algorithms["📦 algorithms/algorithms"]:::important
     packages_core_composables["📦 core/composables"]:::important
     packages_core_config["📦 core/config"]:::important
     packages_core_connection["📦 core/connection"]:::important
@@ -109,32 +107,30 @@ graph TD
     packages -->|👈👉| examples
     packages -->|👈👉| templates
     packages -->|🧪| e2e
-    packages_ai -->|🔗| packages_core
-    packages_ai -->|🔗| packages_ui
-    packages_algorithms -->|🔗| packages_core
-    packages_core -->|🔗| packages_ui
-    packages_core -->|🔗| packages_ai
-    packages_data -->|🔗| packages_core
+    packages_ai -->|🔗| packages_core_core
+    packages_ai -->|🔗| packages_ui_ui
+    packages_core_algorithms -->|🔗| packages_core_core
+    packages_data -->|🔗| packages_core_core
     packages_data -->|🔗| packages_ai
-    packages_dev_tools -->|🔗| packages_core
+    packages_dev_tools -->|🔗| packages_core_core
     packages_dev_tools -->|👈👉| scripts
-    packages_docs -->|🔗| packages_core
-    packages_docs -->|🔗| packages_ui
+    packages_docs -->|🔗| packages_core_core
+    packages_docs -->|🔗| packages_ui_ui
     packages_docs -->|📚| docs
-    packages_media -->|🔗| packages_core
-    packages_media -->|🔗| packages_ui
+    packages_media -->|🔗| packages_core_core
+    packages_media -->|🔗| packages_ui_ui
     packages_media -->|🔗| packages_ai
-    packages_services -->|🔗| packages_core
-    packages_services -->|🔗| packages_ui
+    packages_services -->|🔗| packages_core_core
+    packages_services -->|🔗| packages_ui_ui
     packages_services -->|👈👉| backend
-    packages_ui -->|🔗| packages_core
+    packages_ui -->|🔗| packages_core_core
     packages_ui -->|🔗| packages_ai
     packages_ui -->|🔗| packages_media
-    packages_ai_ai_shared -->|🔗| packages_core
+    packages_ai_ai_shared -->|🔗| packages_core_core
     packages_ai_ai_shared -->|🔗| packages_ai_annotating_core
     packages_ai_ai_shared -->|🔗| packages_ai_caption_core
     packages_ai_rag -->|🔗| packages_ai_ai_shared
-    packages_ai_rag -->|🔗| packages_core
+    packages_ai_rag -->|🔗| packages_core_core
     packages_ai_rag -->|🔗| packages_data_repository_core
     packages_core_core -->|🔗| packages_core_validation
     packages_core_core -->|🔗| packages_ui_components_core
@@ -192,7 +188,6 @@ graph TD
     packages_ai_tool_calling -->|🔗| packages_ai_ai_shared
     packages_ai_tool_calling -->|🔗| packages_core_core
     packages_ai_tool_calling -->|🔗| packages_services_api_client
-    packages_algorithms_algorithms -->|🔗| packages_core_core
     packages_core_composables -->|🔗| packages_core_core
     packages_core_composables -->|🔗| packages_core_validation
     packages_core_config -->|🔗| packages_core_core

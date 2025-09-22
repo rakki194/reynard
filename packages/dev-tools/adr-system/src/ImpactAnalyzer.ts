@@ -326,11 +326,14 @@ export class ImpactAnalyzer {
     try {
       const watcher = watch(filePath);
       
-      watcher.on('change', async (eventType) => {
-        if (eventType === "change") {
-          await this.handleFileChange(filePath);
+      // Use async iterator for file watching
+      (async () => {
+        for await (const event of watcher) {
+          if (event.eventType === "change") {
+            await this.handleFileChange(filePath);
+          }
         }
-      });
+      })();
 
       this.watchers.set(filePath, watcher);
     } catch (error) {

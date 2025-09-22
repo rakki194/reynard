@@ -49,7 +49,8 @@
   "keywords": ["components", "primitives", "navigation", "layout", "core"],
   "dependencies": {
     "reynard-core": "workspace:*",
-    "reynard-fluent-icons": "workspace:*"
+    "reynard-fluent-icons": "workspace:*",
+    "reynard-themes": "workspace:*"
   },
   "devDependencies": {
     "@solidjs/testing-library": "0.8.10",

@@ -8,7 +8,39 @@ import { createSignal, createEffect, onMount, Show, splitProps } from "solid-js"
 import { Chart } from "./Chart";
 import { useVisualizationEngine } from "../core/VisualizationEngine";
 import { t } from "../utils/i18n";
-const defaultProps = {
+import type { ChartType } from "../types";
+
+interface EmbeddingQualityChartProps {
+  type: ChartType;
+  data: {
+    metrics: Array<{
+      name: string;
+      value: number;
+      threshold?: number;
+      status?: "good" | "warning" | "poor";
+    }>;
+    overallScore?: number;
+    assessment?: string;
+  };
+  showAssessment?: boolean;
+  colorScheme?: string;
+  class?: string;
+  loading?: boolean;
+  emptyMessage?: string;
+  theme?: string;
+  width?: number;
+  height?: number;
+  showGrid?: boolean;
+  showLegend?: boolean;
+  title?: string;
+  xAxisLabel?: string;
+  yAxisLabel?: string;
+  useOKLCH?: boolean;
+  colorTheme?: string;
+  [key: string]: any;
+}
+
+const defaultProps: Partial<EmbeddingQualityChartProps> = {
   width: 400,
   height: 300,
   showGrid: true,
@@ -18,7 +50,8 @@ const defaultProps = {
   loading: false,
   emptyMessage: "No embedding quality data available",
 };
-export const EmbeddingQualityChart = props => {
+
+export const EmbeddingQualityChart = (props: EmbeddingQualityChartProps) => {
   const [local, others] = splitProps(props, [
     "type",
     "data",
@@ -29,10 +62,10 @@ export const EmbeddingQualityChart = props => {
     "emptyMessage",
     "theme",
   ]);
-  const [chartData, setChartData] = createSignal(null);
+  const [chartData, setChartData] = createSignal<any>(null);
   // Initialize visualization engine
   const visualization = useVisualizationEngine({
-    theme: local.theme,
+    theme: local.theme as any,
     useOKLCH: true,
   });
   onMount(() => {
@@ -47,37 +80,37 @@ export const EmbeddingQualityChart = props => {
       return;
     }
     switch (local.type) {
-      case "quality-bar":
+      case "bar":
         setChartData(processQualityBarData(local.data));
         break;
-      case "quality-gauge":
+      case "doughnut":
         setChartData(processQualityGaugeData(local.data));
         break;
-      case "quality-radar":
+      case "radar":
         setChartData(processQualityRadarData(local.data));
         break;
       default:
         setChartData(null);
     }
   };
-  const processQualityBarData = data => {
-    const labels = data.metrics.map(m => m.name);
-    const values = data.metrics.map(m => m.value);
-    const colors = data.metrics.map(m => getMetricColor(m));
+  const processQualityBarData = (data: any) => {
+    const labels = data.metrics.map((m: any) => m.name);
+    const values = data.metrics.map((m: any) => m.value);
+    const colors = data.metrics.map((m: any) => getMetricColor(m));
     return {
       labels,
       datasets: [
         {
           label: "Quality Score",
           data: values,
-          backgroundColor: colors.map(c => c.replace("1)", "0.6)")),
+          backgroundColor: colors.map((c: any) => c.replace("1)", "0.6)")),
           borderColor: colors,
           borderWidth: 2,
         },
       ],
     };
   };
-  const processQualityGaugeData = data => {
+  const processQualityGaugeData = (data: any) => {
     const score = data.overall_score;
     const remaining = 100 - score;
     // Determine color based on score
@@ -100,9 +133,9 @@ export const EmbeddingQualityChart = props => {
       ],
     };
   };
-  const processQualityRadarData = data => {
-    const labels = data.metrics.map(m => m.name);
-    const values = data.metrics.map(m => m.value);
+  const processQualityRadarData = (data: any) => {
+    const labels = data.metrics.map((m: any) => m.name);
+    const values = data.metrics.map((m: any) => m.value);
     // Generate colors using visualization engine
     const colors = visualization.generateColors(1);
     const backgroundColor = colors[0]?.replace("1)", "0.3)") || "rgba(54, 162, 235, 0.3)";
@@ -125,7 +158,7 @@ export const EmbeddingQualityChart = props => {
       ],
     };
   };
-  const getMetricColor = metric => {
+  const getMetricColor = (metric: any) => {
     if (metric.color) return metric.color;
     if (metric.goodThreshold !== undefined && metric.warningThreshold !== undefined) {
       if (metric.higherIsBetter) {
@@ -142,7 +175,7 @@ export const EmbeddingQualityChart = props => {
   };
   const renderQualityAssessment = () => {
     if (!local.showAssessment || !local.data.assessment) return null;
-    const assessment = local.data.assessment;
+    const assessment = local.data.assessment as any;
     const statusColors = {
       excellent: "rgba(75, 192, 192, 1)",
       good: "rgba(54, 162, 235, 1)",
@@ -156,7 +189,7 @@ export const EmbeddingQualityChart = props => {
           <div
             class="status-badge"
             style={{
-              "background-color": statusColors[assessment.status],
+              "background-color": statusColors[assessment.status as keyof typeof statusColors],
               color: "white",
               padding: "4px 8px",
               "border-radius": "4px",
@@ -170,25 +203,25 @@ export const EmbeddingQualityChart = props => {
 
         <div class="overall-score">
           <div class="score-label">Overall Score:</div>
-          <div class="score-value">{local.data.overall_score.toFixed(1)}/100</div>
+          <div class="score-value">{(local.data.overallScore || 0).toFixed(1)}/100</div>
         </div>
 
-        <Show when={assessment.issues.length > 0}>
+        <Show when={assessment.issues && assessment.issues.length > 0}>
           <div class="issues-section">
             <h5>Issues Found:</h5>
             <ul>
-              {assessment.issues.map(issue => (
+              {assessment.issues.map((issue: any) => (
                 <li>{issue}</li>
               ))}
             </ul>
           </div>
         </Show>
 
-        <Show when={assessment.recommendations.length > 0}>
+        <Show when={assessment.recommendations && assessment.recommendations.length > 0}>
           <div class="recommendations-section">
             <h5>Recommendations:</h5>
             <ul>
-              {assessment.recommendations.map(rec => (
+              {assessment.recommendations.map((rec: any) => (
                 <li>{rec}</li>
               ))}
             </ul>
@@ -211,7 +244,7 @@ export const EmbeddingQualityChart = props => {
               <div class="metric-name">{metric.name}</div>
               <div class="metric-value">
                 {metric.value.toFixed(2)}
-                {metric.unit && <span class="metric-unit">{metric.unit}</span>}
+                {(metric as any).unit && <span class="metric-unit">{(metric as any).unit}</span>}
               </div>
               <div
                 class="metric-bar"
@@ -261,9 +294,9 @@ export const EmbeddingQualityChart = props => {
       <Show when={!local.loading && chartData()}>
         <div class="quality-chart-container">
           <Chart
-            type={local.type === "quality-gauge" ? "doughnut" : "bar"}
-            labels={chartData().labels}
-            datasets={chartData().datasets}
+            type={local.type === "doughnut" ? "doughnut" : "bar"}
+            labels={chartData()?.labels || []}
+            datasets={chartData()?.datasets || []}
             width={others.width}
             height={others.height}
             title={others.title}

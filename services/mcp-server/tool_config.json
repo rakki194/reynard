@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "last_updated": "2025-09-22T17:13:06.720642",
+  "last_updated": "2025-09-22T21:59:41.436267",
   "tools": {
     "generate_agent_name": {
       "name": "generate_agent_name",
@@ -412,17 +412,17 @@
     },
     "detect_monoliths": {
       "name": "detect_monoliths",
-      "category": "monolith",
+      "category": "analysis",
       "enabled": true,
-      "description": "Detect large monolithic files that violate the 140-line axiom",
+      "description": "🔥 Detect large monolithic files that violate the 140-line axiom with RAG acceleration. Perfect for finding code that needs refactoring into smaller, more maintainable modules. Use this to identify files that are too complex and should be broken down.",
       "dependencies": [],
       "config": {}
     },
     "analyze_file_complexity": {
       "name": "analyze_file_complexity",
-      "category": "monolith",
+      "category": "analysis",
       "enabled": true,
-      "description": "Deep-dive analysis of a specific file's complexity metrics",
+      "description": "🔍 Deep-dive analysis of a specific file's complexity metrics with intelligent caching. Perfect for understanding why a file is considered a monolith and what specific refactoring opportunities exist.",
       "dependencies": [],
       "config": {}
     },

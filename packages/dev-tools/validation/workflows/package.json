@@ -20,7 +20,8 @@
   "author": "Reynard Framework",
   "license": "MIT",
   "dependencies": {
-    "commander": "14.0.1"
+    "commander": "14.0.1",
+    "reynard-dev-tools-catalyst": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "24.5.2",

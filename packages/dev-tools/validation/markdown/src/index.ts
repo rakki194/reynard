@@ -17,5 +17,5 @@ export type {
   MarkdownFile,
 } from "./types.js";
 
-// Re-export CLI for programmatic access
-export { default as cli } from "./cli.js";
+// New catalyst-powered CLI
+export { MarkdownValidationCLI } from "./markdownCLI.js";

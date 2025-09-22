@@ -8,7 +8,16 @@ import { Embedding3DVisualization } from "./Embedding3DVisualization";
 import { EmbeddingDistributionChart } from "./EmbeddingDistributionChart";
 import { EmbeddingQualityChart } from "./EmbeddingQualityChart";
 import { PCAVarianceChart } from "./PCAVarianceChart";
-export const EmbeddingVisualizationContent = props => {
+interface EmbeddingVisualizationContentProps {
+  activeTab?: string;
+  data?: any;
+  reducedData?: any;
+  isLoading?: boolean;
+  class?: string;
+  [key: string]: any;
+}
+
+export const EmbeddingVisualizationContent = (props: EmbeddingVisualizationContentProps) => {
   return (
     <div class="dashboard-main">
       <Show when={props.error}>
@@ -27,7 +36,7 @@ export const EmbeddingVisualizationContent = props => {
               <div class="chart-grid">
                 <EmbeddingDistributionChart
                   title="Embedding Value Histogram"
-                  type="histogram"
+                  type="bar"
                   data={props.embeddingData}
                   width={props.width || 400}
                   height={props.height || 300}
@@ -38,7 +47,7 @@ export const EmbeddingVisualizationContent = props => {
                 />
                 <EmbeddingDistributionChart
                   title="Embedding Value Box Plot"
-                  type="boxplot"
+                  type="bar"
                   data={props.embeddingData}
                   width={props.width || 400}
                   height={props.height || 300}
@@ -73,7 +82,7 @@ export const EmbeddingVisualizationContent = props => {
               <div class="chart-grid">
                 <EmbeddingQualityChart
                   title="Quality Metrics"
-                  type="quality-bar"
+                  type="bar"
                   data={props.qualityData}
                   width={props.width || 400}
                   height={props.height || 300}
@@ -82,7 +91,7 @@ export const EmbeddingVisualizationContent = props => {
                 />
                 <EmbeddingQualityChart
                   title="Overall Quality Score"
-                  type="quality-gauge"
+                  type="doughnut"
                   data={props.qualityData}
                   width={props.width || 400}
                   height={props.height || 300}
@@ -105,10 +114,10 @@ export const EmbeddingVisualizationContent = props => {
                   enableHighlighting={true}
                   showSimilarityPaths={true}
                   theme={props.theme}
-                  onPointClick={(index, data) => {
+                  onPointClick={(index: any, data: any) => {
                     console.log("Point clicked:", index, data);
                   }}
-                  onPointHover={(index, data) => {
+                  onPointHover={(index: any, data: any) => {
                     console.log("Point hovered:", index, data);
                   }}
                 />

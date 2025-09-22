@@ -9,12 +9,21 @@ import { EmbeddingDashboardSidebar } from "./EmbeddingDashboardSidebar";
 import { EmbeddingVisualizationContent } from "./EmbeddingVisualizationContent";
 import { useEmbeddingDashboard } from "../composables/useEmbeddingDashboard";
 import { useEmbeddingVisualization } from "../composables/useEmbeddingVisualization";
-export const EmbeddingVisualizationDashboard = props => {
+
+interface EmbeddingVisualizationDashboardProps {
+  isVisible?: boolean;
+  class?: string;
+  data?: any;
+  onDataUpdate?: (data: any) => void;
+  [key: string]: any;
+}
+
+export const EmbeddingVisualizationDashboard = (props: EmbeddingVisualizationDashboardProps) => {
   const embeddingViz = useEmbeddingVisualization();
   const dashboard = useEmbeddingDashboard(() => props.isVisible ?? true);
   return (
     <div class={`reynard-embedding-visualization-dashboard ${props.class || ""}`}>
-      <EmbeddingDashboardHeader activeTab={dashboard.activeTab()} onTabChange={dashboard.setActiveTab} />
+      <EmbeddingDashboardHeader activeTab={dashboard.activeTab()} onTabChange={(tab: string) => dashboard.setActiveTab(tab as any)} />
 
       <div class="dashboard-content">
         <EmbeddingDashboardSidebar
@@ -24,8 +33,8 @@ export const EmbeddingVisualizationDashboard = props => {
           reductionParams={dashboard.reductionParams()}
           maxSamples={dashboard.maxSamples()}
           isLoading={dashboard.isLoading()}
-          onMethodChange={method => dashboard.setReductionMethod(method)}
-          onParameterUpdate={dashboard.updateReductionParams}
+          onMethodChange={(method: string) => dashboard.setReductionMethod(method as any)}
+          onParameterUpdate={(params: any) => dashboard.updateReductionParams(params)}
           onMaxSamplesChange={dashboard.setMaxSamples}
           onPerformReduction={dashboard.performReduction}
         />

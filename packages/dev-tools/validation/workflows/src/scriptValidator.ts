@@ -7,11 +7,11 @@ import fs from "fs";
 import path from "path";
 import { execSync } from "child_process";
 import type { WorkflowScript, ValidationResult } from "./types.js";
-import type { Logger } from "./types.js";
+import type { ReynardLogger } from "reynard-dev-tools-catalyst";
 
 export class ScriptValidator {
   constructor(
-    private logger: Logger,
+    private logger: ReynardLogger,
     private tempDir: string,
     private shellcheckRc: string
   ) {}

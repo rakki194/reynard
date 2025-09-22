@@ -8,10 +8,16 @@
 import fs from "fs";
 import path from "path";
 import type { ToCAnalysis, ToCValidationOptions, ValidationResult, MarkdownFile } from "./types.js";
+import type { ReynardLogger } from "reynard-dev-tools-catalyst";
 
 export class ToCValidator {
   private readonly defaultTocHeaderPattern = /^##\s+Table\s+of\s+Contents?$/i;
   private readonly tocEntryPattern = /^-\s+\[([^\]]+)\]\(#([^)]+)\)/;
+  private logger?: ReynardLogger;
+
+  constructor(logger?: ReynardLogger) {
+    this.logger = logger;
+  }
 
   /**
    * Analyze ToC structure in markdown content
@@ -251,6 +257,55 @@ Final content here.
         fs.unlinkSync(testFilePath);
         console.log(`\n🧹 Cleaned up test file: ${testFilePath}`);
       }
+    }
+  }
+
+  /**
+   * Test conflict detection functionality
+   */
+  testConflictDetection(): ValidationResult {
+    try {
+      // Create a test content with conflicts
+      const testContent = `# Test Document
+
+## Table of Contents
+- [Section 1](#section-1)
+- [Section 2](#section-2)
+
+## Table of Contents
+- [Section 1](#section-1)
+- [Section 3](#section-3)
+
+## Section 1
+Content here.
+
+## Section 2
+Content here.
+
+## Section 3
+Content here.`;
+
+      const analysis = this.analyzeToC(testContent);
+      
+      if (analysis.hasConflict) {
+        this.logger?.success("✅ Conflict detection test passed - conflicts detected as expected");
+        return {
+          success: true,
+          fixes: [`Detected ${analysis.tocCount} ToC sections and ${analysis.duplicates.length} duplicate entries`]
+        };
+      } else {
+        this.logger?.error("❌ Conflict detection test failed - no conflicts detected");
+        return {
+          success: false,
+          error: "Expected conflicts but none were detected"
+        };
+      }
+    } catch (error) {
+      this.logger?.error(`❌ Conflict detection test failed: ${error instanceof Error ? error.message : String(error)}`);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : String(error)
+      };
     }
   }
 }

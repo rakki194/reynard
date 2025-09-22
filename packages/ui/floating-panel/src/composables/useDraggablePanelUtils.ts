@@ -15,8 +15,8 @@ export function constrainPosition(position: PanelPosition, constraints?: PanelCo
   const { minX = 0, maxX = window.innerWidth, minY = 0, maxY = window.innerHeight } = constraints;
 
   return {
-    top: Math.max(minY, Math.min(maxY, position.top)),
-    left: Math.max(minX, Math.min(maxX, position.left)),
+    top: Math.max(minY, Math.min(maxY, position.top || 0)),
+    left: Math.max(minX, Math.min(maxX, position.left || 0)),
   };
 }
 
@@ -28,11 +28,11 @@ export function snapToPoint(position: PanelPosition, snapPoints?: PanelSnapPoint
 
   let closestPoint = snapPoints[0];
   let minDistance = Math.sqrt(
-    Math.pow(position.left - closestPoint.left, 2) + Math.pow(position.top - closestPoint.top, 2)
+    Math.pow((position.left || 0) - closestPoint.left, 2) + Math.pow((position.top || 0) - closestPoint.top, 2)
   );
 
   for (const point of snapPoints) {
-    const distance = Math.sqrt(Math.pow(position.left - point.left, 2) + Math.pow(position.top - point.top, 2));
+    const distance = Math.sqrt(Math.pow((position.left || 0) - point.left, 2) + Math.pow((position.top || 0) - point.top, 2));
     if (distance < minDistance) {
       minDistance = distance;
       closestPoint = point;
@@ -56,8 +56,8 @@ export function getDragState(isDragging: boolean, startPosition: PanelPosition, 
     startPosition,
     currentPosition,
     delta: {
-      x: currentPosition.left - startPosition.left,
-      y: currentPosition.top - startPosition.top,
+      x: (currentPosition.left || 0) - (startPosition.left || 0),
+      y: (currentPosition.top || 0) - (startPosition.top || 0),
     },
   };
 }

@@ -2,13 +2,15 @@
  * Debug version of FloatingPanel with console logging
  */
 import { createSignal } from "solid-js";
+import type { FloatingPanelProps } from "../types.js";
 import { useDraggablePanel } from "../composables/useDraggablePanel.js";
 import { createDebugConfig } from "./debug/FloatingPanelDebugConfig.js";
 import { createDebugLogging } from "./debug/FloatingPanelDebugLogging.js";
 import { createDebugHandlers } from "./debug/FloatingPanelDebugHandlers.js";
 import "./FloatingPanel.css";
-export const FloatingPanelDebug = props => {
-  const [panelRef, setPanelRef] = createSignal();
+
+export const FloatingPanelDebug = (props: FloatingPanelProps) => {
+  const [panelRef, setPanelRef] = createSignal<HTMLElement | undefined>();
   // Create configuration and handlers
   const config = createDebugConfig(props.config);
   const handlers = createDebugHandlers(props);

@@ -15,7 +15,15 @@ const defaultProps = {
   similarityThreshold: 0.8,
   loading: false,
 };
-export const Embedding3DVisualization = props => {
+interface Embedding3DVisualizationProps {
+  data?: any;
+  reducedData?: any;
+  isLoading?: boolean;
+  class?: string;
+  [key: string]: any;
+}
+
+export const Embedding3DVisualization = (props: Embedding3DVisualizationProps) => {
   const [local, others] = splitProps(props, [
     "data",
     "loading",
@@ -28,18 +36,18 @@ export const Embedding3DVisualization = props => {
     "onPointClick",
     "onPointHover",
   ]);
-  const [container, setContainer] = createSignal();
+  const [container, setContainer] = createSignal<HTMLElement | null>(null);
   const [isInitialized, setIsInitialized] = createSignal(false);
   const [error, setError] = createSignal("");
-  const [hoveredPoint, setHoveredPoint] = createSignal(null);
-  const [selectedPoint, setSelectedPoint] = createSignal(null);
+  const [hoveredPoint, setHoveredPoint] = createSignal<any>(null);
+  const [selectedPoint, setSelectedPoint] = createSignal<any>(null);
   // Three.js related state
-  let scene = null;
-  let camera = null;
-  let renderer = null;
-  let points = null;
-  let controls = null;
-  let animationId = null;
+  let scene: THREE.Scene | null = null;
+  let camera: THREE.PerspectiveCamera | null = null;
+  let renderer: THREE.WebGLRenderer | null = null;
+  let points: THREE.Points | null = null;
+  let controls: any = null;
+  let animationId: number | null = null;
   onMount(() => {
     initializeThreeJS();
   });
@@ -158,7 +166,7 @@ export const Embedding3DVisualization = props => {
       if (intersects.length > 0) {
         const pointIndex = intersects[0].index;
         if (pointIndex !== undefined) {
-          setHoveredPoint(pointIndex);
+          setHoveredPoint(pointIndex as any);
           if (local.onPointHover) {
             local.onPointHover(pointIndex, {
               position: intersects[0].point,
@@ -179,7 +187,7 @@ export const Embedding3DVisualization = props => {
       if (intersects.length > 0) {
         const pointIndex = intersects[0].index;
         if (pointIndex !== undefined) {
-          setSelectedPoint(pointIndex);
+          setSelectedPoint(pointIndex as any);
           if (local.onPointClick) {
             local.onPointClick(pointIndex, {
               position: intersects[0].point,
@@ -315,13 +323,13 @@ export const Embedding3DVisualization = props => {
 
           <Show when={hoveredPoint() !== null}>
             <div class="hover-info">
-              Point {hoveredPoint()}: {local.data?.original_embeddings?.[hoveredPoint()]?.id || "Unknown"}
+              Point {hoveredPoint()}: {local.data?.original_embeddings?.[hoveredPoint() as number]?.id || "Unknown"}
             </div>
           </Show>
 
           <Show when={selectedPoint() !== null}>
             <div class="selected-info">
-              Selected Point {selectedPoint()}: {local.data?.original_embeddings?.[selectedPoint()]?.id || "Unknown"}
+              Selected Point {selectedPoint()}: {local.data?.original_embeddings?.[selectedPoint() as number]?.id || "Unknown"}
             </div>
           </Show>
         </div>

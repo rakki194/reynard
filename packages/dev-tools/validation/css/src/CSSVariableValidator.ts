@@ -4,16 +4,16 @@
  */
 
 import type { ValidationResult, ValidatorConfig, ReportOptions } from "./types.js";
-import { CSSLogger } from "./logger.js";
-import { FileManager } from "./fileManager.js";
+import { ReynardLogger } from "reynard-dev-tools-catalyst";
+import { CSSFileManager } from "./cssFileManager.js";
 import { VariableExtractor } from "./variableExtractor.js";
 import { VariableValidator } from "./variableValidator.js";
 import { ReportGenerator } from "./reportGenerator.js";
 
 export class CSSVariableValidator {
   private config: ValidatorConfig;
-  private logger: CSSLogger;
-  private fileManager: FileManager;
+  private logger: ReynardLogger;
+  private fileManager: CSSFileManager;
   private extractor: VariableExtractor;
   private validator: VariableValidator;
   private reportGenerator: ReportGenerator;
@@ -52,8 +52,8 @@ export class CSSVariableValidator {
       ...config,
     };
 
-    this.logger = new CSSLogger(this.config.verbose);
-    this.fileManager = new FileManager(this.config, this.logger);
+        this.logger = new ReynardLogger({ verbose: this.config.verbose || false });
+    this.fileManager = new CSSFileManager(this.config, this.logger);
     this.extractor = new VariableExtractor(this.fileManager, this.logger);
     this.validator = new VariableValidator(this.config, this.logger, this.extractor);
     this.reportGenerator = new ReportGenerator(this.logger);
@@ -65,7 +65,7 @@ export class CSSVariableValidator {
   async validate(): Promise<ValidationResult> {
     const startTime = new Date();
 
-    this.logger.header("🦊 CSS Variable Validator");
+    this.logger.toolHeader("🦊 CSS Variable Validator");
     this.logger.info("Starting CSS variable validation...");
 
     try {
@@ -240,8 +240,8 @@ export class CSSVariableValidator {
    */
   updateConfig(newConfig: Partial<ValidatorConfig>): void {
     this.config = { ...this.config, ...newConfig };
-    this.logger = new CSSLogger(this.config.verbose);
-    this.fileManager = new FileManager(this.config, this.logger);
+        this.logger = new ReynardLogger({ verbose: this.config.verbose || false });
+    this.fileManager = new CSSFileManager(this.config, this.logger);
     this.extractor = new VariableExtractor(this.fileManager, this.logger);
     this.validator = new VariableValidator(this.config, this.logger, this.extractor);
   }
@@ -249,14 +249,14 @@ export class CSSVariableValidator {
   /**
    * Get logger instance
    */
-  getLogger(): CSSLogger {
+  getLogger(): ReynardLogger {
     return this.logger;
   }
 
   /**
    * Get file manager instance
    */
-  getFileManager(): FileManager {
+  getFileManager(): CSSFileManager {
     return this.fileManager;
   }
 

@@ -6,7 +6,7 @@
  */
 
 import { createEffect, onCleanup, batch } from "solid-js";
-import type { UseOverlayManagerOptions, UseOverlayManagerReturn } from "../types.js";
+import type { UseOverlayManagerOptions, UseOverlayManagerReturn, FloatingPanel, PanelPosition } from "../types.js";
 import { createOverlayConfig } from "./overlay-manager/OverlayConfig.js";
 import { createOverlayState } from "./overlay-manager/OverlayState.js";
 import { createOverlayHandlers } from "./overlay-manager/OverlayHandlers.js";
@@ -103,6 +103,18 @@ export function useOverlayManager(options: UseOverlayManagerOptions = {}): UseOv
           }))
         );
       }
+    },
+    handlePanelShow: (panel: FloatingPanel) => {
+      options.onPanelShow?.(panel);
+    },
+    handlePanelHide: (panel: FloatingPanel) => {
+      options.onPanelHide?.(panel);
+    },
+    handlePanelDrag: (panel: FloatingPanel, position: PanelPosition) => {
+      options.onPanelDrag?.(panel, position);
+    },
+    handlePanelResize: (panel: FloatingPanel, size: { width: number; height: number }) => {
+      options.onPanelResize?.(panel, size);
     },
   };
 }

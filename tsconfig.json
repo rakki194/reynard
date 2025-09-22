@@ -38,10 +38,8 @@
     { "path": "./packages/ai/rag" },
     { "path": "./packages/ai/tool-calling" },
 
-    // Algorithms packages
-    { "path": "./packages/algorithms/algorithms" },
-
     // Core packages
+    { "path": "./packages/core/algorithms" },
     { "path": "./packages/core/composables" },
     { "path": "./packages/core/config" },
     { "path": "./packages/core/connection" },
@@ -64,12 +62,14 @@
 
     // Dev tools packages
     { "path": "./packages/dev-tools/adr-system" },
+    { "path": "./packages/dev-tools/catalyst" },
     { "path": "./packages/dev-tools/code-quality" },
     { "path": "./packages/dev-tools/dev-server-management" },
     { "path": "./packages/dev-tools/git-automation" },
     { "path": "./packages/dev-tools/humility-parser" },
     { "path": "./packages/dev-tools/project-architecture" },
     { "path": "./packages/dev-tools/queue-watcher" },
+    { "path": "./packages/dev-tools/tsconfig-generator" },
     { "path": "./packages/dev-tools/validation/css" },
     { "path": "./packages/dev-tools/validation/markdown" },
     { "path": "./packages/dev-tools/validation/workflows" },

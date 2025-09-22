@@ -6,7 +6,13 @@ import { createSignal, onMount } from "solid-js";
 import { EmbeddingDistributionChart } from "./EmbeddingDistributionChart";
 import { ModelUsageChart } from "./ModelUsageChart";
 import { PCAVarianceChart } from "./PCAVarianceChart";
-export const AdvancedChartingDashboard = props => {
+interface AdvancedChartingDashboardProps {
+  showLoading?: boolean;
+  class?: string;
+  [key: string]: any;
+}
+
+export const AdvancedChartingDashboard = (props: AdvancedChartingDashboardProps) => {
   const [activeTab, setActiveTab] = createSignal("model-usage");
   const [isLoading, setIsLoading] = createSignal(props.showLoading || false);
   // Simulate data loading

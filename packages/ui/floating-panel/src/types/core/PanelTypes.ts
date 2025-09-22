@@ -16,10 +16,10 @@ export interface FloatingPanel {
 }
 
 export interface PanelPosition {
-  top?: number | string;
+  top: number;
+  left: number;
   right?: number | string;
   bottom?: number | string;
-  left?: number | string;
   zIndex?: number;
 }
 

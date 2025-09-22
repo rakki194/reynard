@@ -9,6 +9,17 @@ export interface ColorGenerator {
   generateColors: (count: number, alpha?: number) => string[];
 }
 
+export interface ChartInstance {
+  data: {
+    labels: string[];
+    datasets: Array<{
+      data: number[] | Array<{ x: number | string; y: number }> | any[];
+      label?: string;
+    }>;
+  };
+  update: (mode?: string) => void;
+}
+
 export interface DataProcessorConfig {
   datasets: Dataset[];
   useOKLCH: boolean;
@@ -18,38 +29,75 @@ export interface DataProcessorConfig {
 }
 
 /**
+ * Get default color palette
+ */
+function getDefaultColors(): string[] {
+  return [
+    "rgba(54, 162, 235, 1)",
+    "rgba(255, 99, 132, 1)",
+    "rgba(75, 192, 192, 1)",
+    "rgba(255, 205, 86, 1)",
+    "rgba(153, 102, 255, 1)",
+    "rgba(255, 159, 64, 1)",
+  ];
+}
+
+/**
+ * Generate colors for a dataset
+ */
+function generateDatasetColors(
+  index: number,
+  colorGenerator: ((theme: string, label: string) => string) | undefined,
+  colorTheme: string,
+  datasetLabel: string,
+  useOKLCH: boolean,
+  visualization: ColorGenerator,
+  datasetsLength: number
+): { backgroundColor: string; borderColor: string } {
+  if (colorGenerator) {
+    const color = colorGenerator(colorTheme, datasetLabel);
+    return { backgroundColor: color, borderColor: color };
+  }
+
+  if (useOKLCH) {
+    const colors = visualization.generateColors(datasetsLength);
+    if (colors && colors.length > index) {
+      return {
+        backgroundColor: colors[index]?.replace("1)", "0.6)") || "rgba(54, 162, 235, 0.6)",
+        borderColor: colors[index] || "rgba(54, 162, 235, 1)",
+      };
+    }
+    if (colors && colors.length > 0) {
+      return {
+        backgroundColor: colors[0]?.replace("1)", "0.6)") || "rgba(54, 162, 235, 0.6)",
+        borderColor: colors[0] || "rgba(54, 162, 235, 1)",
+      };
+    }
+  }
+
+  const defaultColors = getDefaultColors();
+  return {
+    backgroundColor: defaultColors[index]?.replace("1)", "0.6)") || "rgba(54, 162, 235, 0.6)",
+    borderColor: defaultColors[index] || "rgba(54, 162, 235, 1)",
+  };
+}
+
+/**
  * Process datasets with enhanced color generation
  */
 export function processDatasets(config: DataProcessorConfig): Dataset[] {
   const { datasets, useOKLCH, colorTheme, colorGenerator, visualization } = config;
 
   return datasets.map((dataset, index) => {
-    let backgroundColor: string;
-    let borderColor: string;
-
-    if (colorGenerator) {
-      // Use custom color generator
-      const color = colorGenerator(colorTheme, dataset.label);
-      backgroundColor = color;
-      borderColor = color;
-    } else if (useOKLCH) {
-      // Use OKLCH color generation from visualization engine
-      const colors = visualization.generateColors(datasets.length);
-      backgroundColor = colors[index]?.replace("1)", "0.6)") || `rgba(54, 162, 235, 0.6)`;
-      borderColor = colors[index] || "rgba(54, 162, 235, 1)";
-    } else {
-      // Use default colors
-      const defaultColors = [
-        "rgba(54, 162, 235, 1)",
-        "rgba(255, 99, 132, 1)",
-        "rgba(75, 192, 192, 1)",
-        "rgba(255, 205, 86, 1)",
-        "rgba(153, 102, 255, 1)",
-        "rgba(255, 159, 64, 1)",
-      ];
-      backgroundColor = defaultColors[index]?.replace("1)", "0.6)") || `rgba(54, 162, 235, 0.6)`;
-      borderColor = defaultColors[index] || "rgba(54, 162, 235, 1)";
-    }
+    const { backgroundColor, borderColor } = generateDatasetColors(
+      index,
+      colorGenerator,
+      colorTheme,
+      dataset.label,
+      useOKLCH,
+      visualization,
+      datasets.length
+    );
 
     return {
       ...dataset,
@@ -80,7 +128,7 @@ export function createChartData(labels: string[], datasets: Dataset[]) {
 /**
  * Update chart data incrementally for real-time updates
  */
-export function updateChartDataIncremental(chart: any, labels: string[], datasets: Dataset[]) {
+export function updateChartDataIncremental(chart: ChartInstance, labels: string[], datasets: Dataset[]) {
   // Update labels directly
   if (labels && labels.length > 0) {
     chart.data.labels = [...labels];

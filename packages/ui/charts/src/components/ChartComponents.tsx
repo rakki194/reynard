@@ -4,7 +4,9 @@
  */
 import { Show } from "solid-js";
 import { t } from "../utils/i18n";
-export const getTestId = type => {
+import type { ChartType } from "../types";
+
+export const getTestId = (type: ChartType): string => {
   switch (type) {
     case "line":
       return "line-chart-canvas";
@@ -18,12 +20,24 @@ export const getTestId = type => {
       return "chart-canvas";
   }
 };
-export const LoadingOverlay = props => (
+interface LoadingOverlayProps {
+  loading: boolean;
+}
+
+export const LoadingOverlay = (props: LoadingOverlayProps) => (
   <Show when={props.loading}>
     <div class="chart-loading-overlay">{t("loading")}</div>
   </Show>
 );
-export const EmptyState = props => {
+
+interface EmptyStateProps {
+  loading: boolean;
+  data: any;
+  height?: number;
+  emptyMessage?: string;
+}
+
+export const EmptyState = (props: EmptyStateProps) => {
   const isEmpty = () => {
     if (!props.data) return true;
     const dataObj = props.data;
@@ -36,14 +50,26 @@ export const EmptyState = props => {
     </Show>
   );
 };
-export const PerformanceOverlay = props => (
-  <Show
-    when={
-      props.enablePerformanceMonitoring && props.performanceStats && props.performanceStats.activeVisualizations > 0
-    }
-  >
-    <div class="chart-performance-overlay">
-      {t("performance.fps")}: {props.performanceStats?.fps} | Memory: {props.performanceStats?.memoryUsage.toFixed(1)}MB
-    </div>
-  </Show>
-);
+interface PerformanceOverlayProps {
+  enablePerformanceMonitoring?: boolean;
+  performanceStats?: () => {
+    activeVisualizations?: number;
+    fps?: number;
+    memoryUsage?: number;
+  };
+}
+
+export const PerformanceOverlay = (props: PerformanceOverlayProps) => {
+  const stats = props.performanceStats?.();
+  return (
+    <Show
+      when={
+        props.enablePerformanceMonitoring && stats && (stats.activeVisualizations || 0) > 0
+      }
+    >
+      <div class="chart-performance-overlay">
+        {t("performance.fps")}: {stats?.fps || 0} | Memory: {(stats?.memoryUsage || 0).toFixed(1)}MB
+      </div>
+    </Show>
+  );
+};

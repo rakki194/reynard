@@ -606,9 +606,9 @@ export class CircularDependencyDetector {
 
   private isEdgeInCycle(source: string, target: string): boolean {
     return this.dependencyGraph.cycles.some(cycle => {
-      for (let i = 0; i < cycle.path.length; i++) {
-        const current = cycle.path[i];
-        const next = cycle.path[(i + 1) % cycle.path.length];
+      for (let i = 0; i < cycle.cycle.length; i++) {
+        const current = cycle.cycle[i];
+        const next = cycle.cycle[(i + 1) % cycle.cycle.length];
         if (current === source && next === target) {
           return true;
         }

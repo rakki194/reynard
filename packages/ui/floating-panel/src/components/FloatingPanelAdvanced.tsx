@@ -2,6 +2,7 @@
  * FloatingPanelAdvanced Component
  */
 import { createEffect } from "solid-js";
+import type { FloatingPanelProps } from "../types.js";
 import { getIcon } from "reynard-fluent-icons";
 import { useDraggableResizable } from "../composables/useDraggableResizable.js";
 import { useI18n } from "reynard-i18n";
@@ -9,7 +10,8 @@ import { createAdvancedConfig } from "./advanced/FloatingPanelAdvancedConfig.js"
 import { createAdvancedState, createAdvancedConstraints } from "./advanced/FloatingPanelAdvancedState.js";
 import { createAdvancedHandlers } from "./advanced/FloatingPanelAdvancedHandlers.js";
 import "./FloatingPanelAdvanced.css";
-export const FloatingPanelAdvanced = props => {
+
+export const FloatingPanelAdvanced = (props: FloatingPanelProps) => {
   const { t } = useI18n();
   console.log("🦦> FloatingPanelAdvanced rendering for panel:", props.id);
   // Create configuration, state, constraints, and handlers

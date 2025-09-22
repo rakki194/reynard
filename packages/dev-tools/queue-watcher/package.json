@@ -51,6 +51,7 @@
   "dependencies": {
     "chokidar": "4.0.3",
     "commander": "14.0.1",
+    "reynard-dev-tools-catalyst": "workspace:*",
     "reynard-project-architecture": "workspace:*"
   },
   "devDependencies": {

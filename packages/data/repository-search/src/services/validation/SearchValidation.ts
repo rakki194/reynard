@@ -5,7 +5,8 @@
  * to ensure data integrity and prevent injection attacks.
  */
 
-import type { ModalityType, SearchOptions } from "../../types";
+import type { SearchOptions } from "../../types";
+import { ModalityType } from "../../types";
 import type { VectorSearchOptions, HybridSearchOptions } from "../types/SearchTypes";
 import { RepositoryError } from "../../types";
 
@@ -81,7 +82,7 @@ export class SearchValidator {
    * Validate modality type
    */
   static validateModality(modality: ModalityType): ModalityType {
-    const validModalities: ModalityType[] = ["text", "image", "audio", "video", "data", "code", "document"];
+    const validModalities: ModalityType[] = [ModalityType.TEXT, ModalityType.IMAGE, ModalityType.AUDIO, ModalityType.VIDEO, ModalityType.DATA, ModalityType.CODE, ModalityType.DOCUMENT];
 
     if (!validModalities.includes(modality)) {
       throw new SearchValidationError(`Invalid modality type: ${modality}`, "modality", modality);

@@ -5,10 +5,10 @@
 
 import fs from "fs";
 import type { WorkflowScript } from "./types.js";
-import type { Logger } from "./types.js";
+import type { ReynardLogger } from "reynard-dev-tools-catalyst";
 
 export class ScriptExtractor {
-  constructor(private logger: Logger) {}
+  constructor(private logger: ReynardLogger) {}
 
   /**
    * Extract shell scripts from a workflow file

@@ -1,0 +1,258 @@
+/**
+ * 🦊 Global Animation Control CSS
+ * 
+ * Provides CSS-based animation control for the Reynard ecosystem.
+ * Supports accessibility preferences, performance modes, and global animation disabling.
+ * 
+ * @author Agile-Prime-90 (Reynard Lizard Specialist)
+ * @since 1.0.0
+ */
+
+/* ==========================================================================
+   CSS Custom Properties for Animation Control
+   ========================================================================== */
+
+:root {
+  /* Animation timing properties */
+  --animation-duration: 0.3s;
+  --animation-timing: ease;
+  --animation-delay: 0s;
+  
+  /* Transition properties */
+  --transition-duration: 0.3s;
+  --transition-timing: ease;
+  --transition-delay: 0s;
+  
+  /* Performance mode properties */
+  --performance-animation-duration: 0.1s;
+  --performance-transition-duration: 0.1s;
+  --performance-animation-timing: linear;
+  --performance-transition-timing: linear;
+}
+
+/* ==========================================================================
+   Accessibility Support - Respects prefers-reduced-motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --animation-duration: 0s;
+    --animation-delay: 0s;
+    --transition-duration: 0s;
+    --transition-delay: 0s;
+  }
+  
+  /* Disable all animations and transitions */
+  *, *::before, *::after {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+    scroll-behavior: auto !important;
+  }
+  
+  /* Disable specific animation properties */
+  [style*="animation"] {
+    animation: none !important;
+  }
+  
+  [style*="transition"] {
+    transition: none !important;
+  }
+  
+  /* Disable CSS animations */
+  @keyframes * {
+    from, to { transform: none; }
+  }
+  
+  /* Ensure no transform animations */
+  * {
+    transform: none !important;
+  }
+}
+
+/* ==========================================================================
+   Global Animation Disable Class
+   ========================================================================== */
+
+.animations-disabled {
+  --animation-duration: 0s;
+  --animation-delay: 0s;
+  --transition-duration: 0s;
+  --transition-delay: 0s;
+}
+
+.animations-disabled *, 
+.animations-disabled *::before, 
+.animations-disabled *::after {
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+  scroll-behavior: auto !important;
+}
+
+.animations-disabled [style*="animation"] {
+  animation: none !important;
+}
+
+.animations-disabled [style*="transition"] {
+  transition: none !important;
+}
+
+.animations-disabled @keyframes * {
+  from, to { transform: none; }
+}
+
+.animations-disabled * {
+  transform: none !important;
+}
+
+/* ==========================================================================
+   Performance Mode Class
+   ========================================================================== */
+
+.performance-mode {
+  --animation-duration: var(--performance-animation-duration);
+  --transition-duration: var(--performance-transition-duration);
+  --animation-timing: var(--performance-animation-timing);
+  --transition-timing: var(--performance-transition-timing);
+}
+
+.performance-mode *,
+.performance-mode *::before,
+.performance-mode *::after {
+  animation-duration: var(--performance-animation-duration) !important;
+  transition-duration: var(--performance-transition-duration) !important;
+  animation-timing-function: var(--performance-animation-timing) !important;
+  transition-timing-function: var(--performance-transition-timing) !important;
+}
+
+/* ==========================================================================
+   Accessibility Mode Class
+   ========================================================================== */
+
+.accessibility-mode {
+  --animation-duration: 0s;
+  --animation-delay: 0s;
+  --transition-duration: 0s;
+  --transition-delay: 0s;
+}
+
+.accessibility-mode *,
+.accessibility-mode *::before,
+.accessibility-mode *::after {
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+  scroll-behavior: auto !important;
+}
+
+/* ==========================================================================
+   Animation Control Utilities
+   ========================================================================== */
+
+/* Disable specific animation types */
+.no-animations {
+  animation: none !important;
+}
+
+.no-transitions {
+  transition: none !important;
+}
+
+.no-transforms {
+  transform: none !important;
+}
+
+/* Performance optimizations */
+.animation-optimized {
+  will-change: auto;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* ==========================================================================
+   Testing Utilities
+   ========================================================================== */
+
+/* For testing - completely disable all animations */
+.test-no-animations *,
+.test-no-animations *::before,
+.test-no-animations *::after {
+  animation: none !important;
+  transition: none !important;
+  transform: none !important;
+  scroll-behavior: auto !important;
+}
+
+/* For testing - force animations to be instant */
+.test-instant-animations *,
+.test-instant-animations *::before,
+.test-instant-animations *::after {
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+}
+
+/* ==========================================================================
+   Responsive Animation Control
+   ========================================================================== */
+
+/* Reduce animations on mobile for performance */
+@media (max-width: 768px) {
+  :root {
+    --animation-duration: 0.2s;
+    --transition-duration: 0.2s;
+  }
+}
+
+/* Further reduce on very small screens */
+@media (max-width: 480px) {
+  :root {
+    --animation-duration: 0.1s;
+    --transition-duration: 0.1s;
+  }
+}
+
+/* ==========================================================================
+   Print Styles - Disable animations for printing
+   ========================================================================== */
+
+@media print {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+/* ==========================================================================
+   High Contrast Mode Support
+   ========================================================================== */
+
+@media (prefers-contrast: high) {
+  :root {
+    --animation-duration: 0.2s;
+    --transition-duration: 0.2s;
+  }
+}
+
+/* ==========================================================================
+   Reduced Data Mode Support
+   ========================================================================== */
+
+@media (prefers-reduced-data: reduce) {
+  :root {
+    --animation-duration: 0s;
+    --transition-duration: 0s;
+  }
+  
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

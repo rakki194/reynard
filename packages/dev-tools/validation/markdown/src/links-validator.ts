@@ -7,11 +7,17 @@
 import fs from "fs";
 import path from "path";
 import type { LinkValidationOptions, ValidationResult, MarkdownFile } from "./types.js";
+import type { ReynardLogger } from "reynard-dev-tools-catalyst";
 
 export class LinksValidator {
   private readonly internalLinkPattern = /\[([^\]]+)\]\(([^)]+)\)/g;
   private readonly externalLinkPattern = /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g;
   private readonly anchorLinkPattern = /\[([^\]]+)\]\(#([^)]+)\)/g;
+  private logger?: ReynardLogger;
+
+  constructor(logger?: ReynardLogger) {
+    this.logger = logger;
+  }
 
   /**
    * Validate links in markdown content

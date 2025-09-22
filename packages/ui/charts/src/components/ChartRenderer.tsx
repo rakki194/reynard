@@ -3,12 +3,23 @@
  * Handles the actual rendering of different chart types with Chart.js integration
  */
 import { onCleanup, createEffect, createSignal } from "solid-js";
-import { createChartIntegration } from "../utils/chartIntegration";
+import { createChartIntegration, type ChartIntegrationResult } from "../utils/chartIntegration";
 import { getTestId, LoadingOverlay, EmptyState, PerformanceOverlay } from "./ChartComponents";
+import type { ChartType } from "../types";
 import "./ChartRenderer.css";
-const ChartCanvas = props => {
-  const [chartIntegration, setChartIntegration] = createSignal(null);
-  const [canvasElement, setCanvasElement] = createSignal(null);
+
+interface ChartCanvasProps {
+  type: ChartType;
+  data: any;
+  options: any;
+  width?: number;
+  height?: number;
+  onChartRef?: (chart: any) => void;
+}
+
+const ChartCanvas = (props: ChartCanvasProps) => {
+  const [chartIntegration, setChartIntegration] = createSignal<ChartIntegrationResult | null>(null);
+  const [canvasElement, setCanvasElement] = createSignal<HTMLCanvasElement | null>(null);
   // Create Chart.js integration reactively
   createEffect(() => {
     console.log("🦊 ChartRenderer: Creating chart integration", {
@@ -78,7 +89,21 @@ const ChartCanvas = props => {
     />
   );
 };
-export const ChartRenderer = props => {
+interface ChartRendererProps {
+  type: ChartType;
+  data: any;
+  options: any;
+  width?: number;
+  height?: number;
+  loading?: boolean;
+  emptyMessage?: string;
+  enablePerformanceMonitoring?: boolean;
+  performanceStats?: () => any;
+  realTime?: boolean;
+  onChartRef?: (chart: any) => void;
+}
+
+export const ChartRenderer = (props: ChartRendererProps) => {
   return (
     <div class="reynard-chart">
       <LoadingOverlay loading={props.loading || false} />

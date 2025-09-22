@@ -24,6 +24,6 @@ export function createPanelState(initialState: PanelState) {
 /**
  * Update panel state
  */
-export function updatePanelState(setState: (state: PanelState) => void, updates: Partial<PanelState>) {
-  setState(prev => ({ ...prev, ...updates }));
+export function updatePanelState(setState: (updater: (prev: PanelState) => PanelState) => void, updates: Partial<PanelState>) {
+  setState((prev: PanelState) => ({ ...prev, ...updates }));
 }

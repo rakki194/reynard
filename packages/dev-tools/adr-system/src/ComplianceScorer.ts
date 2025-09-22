@@ -618,10 +618,11 @@ export class ComplianceScorer {
       byCategory[violation.type] = (byCategory[violation.type] || 0) + 1;
 
       // Group by file
-      if (!byFile.has(violation.location)) {
-        byFile.set(violation.location, []);
+      const location = violation.location || 'unknown';
+      if (!byFile.has(location)) {
+        byFile.set(location, []);
       }
-      byFile.get(violation.location)!.push(violation);
+      byFile.get(location)!.push(violation);
     }
 
     // Get top violations (most severe)

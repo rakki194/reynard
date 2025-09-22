@@ -40,7 +40,8 @@
   "dependencies": {
     "reynard-connection": "workspace:*",
     "reynard-validation": "workspace:*",
-    "reynard-gallery-dl": "workspace:*"
+    "reynard-gallery-dl": "workspace:*",
+    "reynard-repository-core": "workspace:*"
   },
   "optionalDependencies": {
     "reynard-i18n": "workspace:*"

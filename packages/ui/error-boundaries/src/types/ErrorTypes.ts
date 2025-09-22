@@ -113,4 +113,4 @@ export interface ErrorMetrics {
 import type { Component } from "solid-js";
 import type { RecoveryStrategy, RecoveryAction } from "./RecoveryTypes";
 
-export type { Component };
+export type { Component, RecoveryAction };

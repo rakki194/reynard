@@ -10,5 +10,9 @@ export * from "./ui";
 // Performance & Monitoring
 export * from "./performance";
 
+// Animation Control & Fallbacks
+export * from "./useAnimationControl";
+export * from "./useAnimationFallback";
+
 // File operation composables
 export * from "./file";

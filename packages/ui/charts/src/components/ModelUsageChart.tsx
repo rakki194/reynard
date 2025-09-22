@@ -13,7 +13,13 @@ const defaultColors = [
   "rgba(153, 102, 255, 0.8)",
   "rgba(255, 159, 64, 0.8)",
 ];
-export const ModelUsageChart = props => {
+interface ModelUsageChartProps {
+  data?: any;
+  class?: string;
+  [key: string]: any;
+}
+
+export const ModelUsageChart = (props: ModelUsageChartProps) => {
   const visualizationEngine = useVisualizationEngine();
   const chartData = createMemo(() => {
     const dataEntries = Object.entries(props.data);

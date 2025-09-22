@@ -6,6 +6,7 @@
 
 import fs from "fs";
 import type { SentenceLengthOptions, ValidationResult } from "./types.js";
+import type { ReynardLogger } from "reynard-dev-tools-catalyst";
 
 export class SentenceLengthValidator {
   private readonly defaultMaxLength = 100;
@@ -13,6 +14,11 @@ export class SentenceLengthValidator {
   private readonly markdownLinkPattern = /\[([^\]]+)\]\([^)]+\)/g;
   private readonly codeBlockPattern = /```[\s\S]*?```/g;
   private readonly inlineCodePattern = /`[^`]+`/g;
+  private logger?: ReynardLogger;
+
+  constructor(logger?: ReynardLogger) {
+    this.logger = logger;
+  }
 
   /**
    * Validate sentence length in markdown content

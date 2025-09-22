@@ -6,7 +6,7 @@
 export { VitestConfigGenerator } from "./vitestConfigGenerator.js";
 export { ProjectConfigGenerator } from "./projectConfigGenerator.js";
 export { ConfigWriter } from "./configWriter.js";
-export { VitestConfigLogger } from "./logger.js";
+// VitestConfigLogger removed - now using ReynardLogger from catalyst
 
 export type {
   VitestProjectConfig,

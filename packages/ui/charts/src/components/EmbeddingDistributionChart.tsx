@@ -4,11 +4,35 @@
  */
 import { Show, createMemo } from "solid-js";
 import { useVisualizationEngine } from "../core/VisualizationEngine";
-export const EmbeddingDistributionChart = props => {
+import type { ChartType } from "../types";
+
+interface EmbeddingDistributionChartProps {
+  type: ChartType;
+  data: {
+    values: number[];
+    labels?: string[];
+    metadata?: any;
+  };
+  numBins?: number;
+  useOKLCH?: boolean;
+  colorTheme?: string;
+  color?: string;
+  width?: number;
+  height?: number;
+  title?: string;
+  showStatistics?: boolean;
+  showAssessment?: boolean;
+  class?: string;
+  loading?: boolean;
+  emptyMessage?: string;
+  [key: string]: any;
+}
+
+export const EmbeddingDistributionChart = (props: EmbeddingDistributionChartProps) => {
   const visualizationEngine = useVisualizationEngine();
   // Calculate histogram bins and counts using createMemo
   const histogramData = createMemo(() => {
-    if (props.type !== "histogram" || !props.data.values.length) {
+    if (props.type !== "bar" || !props.data.values.length) {
       return { labels: [], datasets: [] };
     }
     const values = props.data.values;
@@ -17,8 +41,8 @@ export const EmbeddingDistributionChart = props => {
     const min = Math.min(...values);
     const max = Math.max(...values);
     const binWidth = (max - min) / numBins;
-    const bins = [];
-    const binCounts = [];
+    const bins: number[] = [];
+    const binCounts: number[] = [];
     for (let i = 0; i <= numBins; i++) {
       bins.push(min + i * binWidth);
     }
@@ -53,7 +77,7 @@ export const EmbeddingDistributionChart = props => {
   });
   // Calculate box plot data using createMemo
   const boxPlotData = createMemo(() => {
-    if (props.type !== "boxplot" || !props.data.values.length) {
+    if (props.type !== "bar" || !props.data.values.length) {
       return { labels: [], datasets: [] };
     }
     const values = props.data.values.sort((a, b) => a - b);
@@ -99,7 +123,7 @@ export const EmbeddingDistributionChart = props => {
   });
   // Chart options
   const chartOptions = () => {
-    const isHistogram = props.type === "histogram";
+    const isHistogram = props.type === "bar";
     return {
       responsive: true,
       maintainAspectRatio: false,
@@ -119,7 +143,7 @@ export const EmbeddingDistributionChart = props => {
           mode: "index",
           intersect: false,
           callbacks: {
-            label: context => {
+            label: (context: any) => {
               if (isHistogram) {
                 return `Frequency: ${context.parsed.y}`;
               } else {
@@ -161,9 +185,16 @@ export const EmbeddingDistributionChart = props => {
   };
   // Statistics overlay
   const statisticsOverlay = () => {
-    if (!props.showStatistics || !props.data.statistics) return null;
-    const stats = props.data.statistics;
-    const isBoxPlot = props.type === "boxplot";
+    if (!props.showStatistics) return null;
+    // Calculate statistics from the data
+    const values = props.data.values;
+    const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
+    const variance = values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / values.length;
+    const std = Math.sqrt(variance);
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const stats = { mean, std, min, max };
+    const isBoxPlot = false; // Boxplot type removed
     return (
       <div class="statistics-overlay">
         <div class="stat-item">
@@ -178,24 +209,7 @@ export const EmbeddingDistributionChart = props => {
           <span class="stat-label">Min:</span>
           <span class="stat-value">{stats.min.toFixed(4)}</span>
         </div>
-        {isBoxPlot && (
-          <div class="stat-item">
-            <span class="stat-label">Q1:</span>
-            <span class="stat-value">{stats.q1.toFixed(4)}</span>
-          </div>
-        )}
-        {isBoxPlot && (
-          <div class="stat-item">
-            <span class="stat-label">Median:</span>
-            <span class="stat-value">{stats.median.toFixed(4)}</span>
-          </div>
-        )}
-        {isBoxPlot && (
-          <div class="stat-item">
-            <span class="stat-label">Q3:</span>
-            <span class="stat-value">{stats.q3.toFixed(4)}</span>
-          </div>
-        )}
+        {/* Boxplot statistics removed since boxplot type is no longer supported */}
         <div class="stat-item">
           <span class="stat-label">Max:</span>
           <span class="stat-value">{stats.max.toFixed(4)}</span>

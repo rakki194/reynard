@@ -4,7 +4,26 @@
  * Handles dimensionality reduction method selection and parameter configuration.
  */
 import { For, Show } from "solid-js";
-export const EmbeddingMethodSelector = props => {
+
+interface EmbeddingMethodSelectorProps {
+  availableMethods?: {
+    methods: Record<string, {
+      name: string;
+      description?: string;
+      parameters?: Record<string, any>;
+    }>;
+  };
+  reductionMethod?: string;
+  onMethodChange?: (method: string) => void;
+  maxSamples?: number;
+  onMaxSamplesChange?: (samples: number) => void;
+  parameters?: Record<string, any>;
+  onParameterChange?: (param: string, value: any) => void;
+  class?: string;
+  [key: string]: any;
+}
+
+export const EmbeddingMethodSelector = (props: EmbeddingMethodSelectorProps) => {
   if (!props.availableMethods) return null;
   return (
     <div class="method-selector">

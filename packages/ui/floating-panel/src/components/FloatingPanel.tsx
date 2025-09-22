@@ -5,14 +5,16 @@
  * Based on Yipyap's sophisticated panel system.
  */
 import { createSignal, createEffect } from "solid-js";
+import type { FloatingPanelProps } from "../types.js";
 import { useDraggablePanel } from "../composables/useDraggablePanel";
 import { usePanelConfig } from "../composables/usePanelConfig";
 import { usePanelStyles } from "../composables/usePanelStyles";
 import { usePanelKeyboard } from "../composables/usePanelKeyboard";
 import { FloatingPanelHeader } from "./FloatingPanelHeader";
 import "./FloatingPanel.css";
-const FloatingPanelContent = props => {
-  const [panelRef, setPanelRef] = createSignal();
+
+const FloatingPanelContent = (props: FloatingPanelProps) => {
+  const [panelRef, setPanelRef] = createSignal<HTMLElement | undefined>();
   const config = usePanelConfig(props.config);
   const { isVisible, isDragging } = useDraggablePanel(panelRef, {
     initialPosition: props.position,
@@ -49,7 +51,7 @@ const FloatingPanelContent = props => {
     >
       <div class="floating-panel-content">
         {(config.draggable || config.closable) && (
-          <FloatingPanelHeader id={props.id} config={config} onHide={props.onHide} />
+          <FloatingPanelHeader id={props.id} position={props.position} config={config} onHide={props.onHide} />
         )}
         <div class="floating-panel-body">{props.children}</div>
       </div>
@@ -57,6 +59,6 @@ const FloatingPanelContent = props => {
     </div>
   );
 };
-export const FloatingPanel = props => {
+export const FloatingPanel = (props: FloatingPanelProps) => {
   return <FloatingPanelContent {...props} />;
 };

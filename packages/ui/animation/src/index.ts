@@ -15,6 +15,8 @@ export * from "./composables";
 export * from "./core";
 export * from "./easing/easing";
 export * from "./engines";
+export * from "./smart-imports";
+export * from "./state";
 // Note: utils exports are included in composables to avoid conflicts
 
 // Main types
@@ -28,3 +30,59 @@ export { Easing, applyEasing, interpolate } from "./easing/easing";
 export { createAdaptiveAnimationEngine } from "./engines/AdaptiveAnimation";
 export { StroboscopicEngine } from "./engines/StroboscopicEngine";
 export { createThrottledAnimationEngine } from "./engines/ThrottledAnimation";
+export { 
+  NoOpAnimationEngine, 
+  getNoOpAnimationEngine, 
+  createNoOpAnimationEngine, 
+  cleanupNoOpAnimationEngine 
+} from "./engines/NoOpAnimationEngine";
+export { 
+  NoOpTestingUtilities, 
+  createNoOpTestingUtilities 
+} from "./engines/NoOpTestingUtilities";
+
+// Smart animation system exports
+export { 
+  SmartAnimationCore, 
+  getSmartAnimationCore, 
+  createSmartAnimationCore,
+  cleanupSmartAnimationCore 
+} from "./engines/SmartAnimationCore";
+export { 
+  useSmartAnimation, 
+  useAnimationEngineType, 
+  useAnimationPackageAvailability, 
+  useAnimationPerformanceMode, 
+  useAnimationAccessibilityMode 
+} from "./composables/useSmartAnimation";
+export { 
+  useAnimationState 
+} from "./composables/useAnimationState";
+export { 
+  useGlobalAnimationState, 
+  usePerformanceModeState, 
+  useAccessibilityCompliance, 
+  useAnimationPackageState, 
+  useImmediateCompletionState 
+} from "./composables/useAnimationStateHooks";
+
+// Animation state management exports
+export { 
+  AnimationStateManager, 
+  getAnimationStateManager, 
+  createAnimationStateManager,
+  cleanupAnimationStateManager 
+} from "./state/AnimationStateManager";
+
+// Smart import system exports
+export { 
+  SmartImportSystem, 
+  getSmartImportSystem, 
+  createSmartImportSystem,
+  cleanupSmartImportSystem 
+} from "./smart-imports/SmartImportSystem";
+export { 
+  useSmartImport, 
+  usePackageAvailability, 
+  useMultiplePackageAvailability 
+} from "./smart-imports/useSmartImport";

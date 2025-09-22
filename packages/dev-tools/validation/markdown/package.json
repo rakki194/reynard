@@ -32,11 +32,13 @@
   "keywords": ["markdown", "validation", "toc", "table-of-contents", "reynard", "dev-tools"],
   "author": "Reynard Development Team",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "reynard-dev-tools-catalyst": "workspace:*"
+  },
   "devDependencies": {
     "@types/node": "24.5.2",
-    "@typescript-eslint/eslint-plugin": "8.44.0",
-    "@typescript-eslint/parser": "8.44.0",
+    "@typescript-eslint/eslint-plugin": "8.44.1",
+    "@typescript-eslint/parser": "8.44.1",
     "@vitest/coverage-v8": "3.2.4",
     "eslint": "9.36.0",
     "prettier": "3.6.2",

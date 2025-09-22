@@ -3,7 +3,14 @@
  *
  * Handles the dashboard header with tab navigation.
  */
-export const EmbeddingDashboardHeader = props => {
+interface EmbeddingDashboardHeaderProps {
+  activeTab?: string;
+  onTabChange?: (tab: string) => void;
+  class?: string;
+  [key: string]: any;
+}
+
+export const EmbeddingDashboardHeader = (props: EmbeddingDashboardHeaderProps) => {
   return (
     <div class="dashboard-header">
       <h2>Embedding Visualization Dashboard</h2>

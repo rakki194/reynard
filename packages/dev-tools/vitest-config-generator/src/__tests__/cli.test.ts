@@ -46,7 +46,7 @@ describe("CLI Interface", () => {
   describe("basic functionality", () => {
     it("should run without errors with default options", () => {
       expect(() => {
-        execSync(`node ${cliPath} --output /tmp/test-config.ts`, {
+        execSync(`node ${cliPath} generate --output /tmp/test-config.ts`, {
           encoding: "utf8",
           cwd: process.cwd(),
         });
@@ -55,7 +55,7 @@ describe("CLI Interface", () => {
 
     it("should run with verbose output", () => {
       expect(() => {
-        execSync(`node ${cliPath} --verbose --output /tmp/test-config-verbose.ts`, {
+        execSync(`node ${cliPath} generate --verbose --output /tmp/test-config-verbose.ts`, {
           encoding: "utf8",
           cwd: process.cwd(),
         });
@@ -65,7 +65,7 @@ describe("CLI Interface", () => {
     it("should run with custom coverage thresholds", () => {
       expect(() => {
         execSync(
-          `node ${cliPath} --branches 90 --functions 95 --lines 95 --statements 95 --output /tmp/test-config-thresholds.ts`,
+          `node ${cliPath} generate --branches 90 --functions 95 --lines 95 --statements 95 --output /tmp/test-config-thresholds.ts`,
           {
             encoding: "utf8",
             cwd: process.cwd(),
@@ -76,7 +76,7 @@ describe("CLI Interface", () => {
 
     it("should run with custom environment and workers", () => {
       expect(() => {
-        execSync(`node ${cliPath} --environment node --max-workers 4 --output /tmp/test-config-env.ts`, {
+        execSync(`node ${cliPath} generate --environment node --max-workers 4 --output /tmp/test-config-env.ts`, {
           encoding: "utf8",
           cwd: process.cwd(),
         });
@@ -86,7 +86,7 @@ describe("CLI Interface", () => {
     it("should run with include/exclude options", () => {
       expect(() => {
         execSync(
-          `node ${cliPath} --include-examples false --include-templates false --include-scripts true --output /tmp/test-config-filter.ts`,
+          `node ${cliPath} generate --include-scripts --output /tmp/test-config-filter.ts`,
           {
             encoding: "utf8",
             cwd: process.cwd(),
@@ -101,7 +101,7 @@ describe("CLI Interface", () => {
       // This should not crash the application
       expect(() => {
         try {
-          execSync(`node ${cliPath} --max-workers invalid --output /tmp/test-config-invalid.ts`, {
+          execSync(`node ${cliPath} generate --max-workers invalid --output /tmp/test-config-invalid.ts`, {
             encoding: "utf8",
             cwd: process.cwd(),
           });
@@ -117,7 +117,7 @@ describe("CLI Interface", () => {
     it("should generate a valid TypeScript configuration file", () => {
       const outputPath = "/tmp/test-config-output.ts";
 
-      execSync(`node ${cliPath} --output ${outputPath}`, {
+      execSync(`node ${cliPath} generate --output ${outputPath}`, {
         encoding: "utf8",
         cwd: process.cwd(),
       });
@@ -140,13 +140,13 @@ describe("CLI Interface", () => {
       const outputPath2 = "/tmp/test-config-2.ts";
 
       // Generate with default options
-      execSync(`node ${cliPath} --output ${outputPath1}`, {
+      execSync(`node ${cliPath} generate --output ${outputPath1}`, {
         encoding: "utf8",
         cwd: process.cwd(),
       });
 
       // Generate with custom options
-      execSync(`node ${cliPath} --max-workers 4 --branches 90 --output ${outputPath2}`, {
+      execSync(`node ${cliPath} generate --max-workers 4 --branches 90 --output ${outputPath2}`, {
         encoding: "utf8",
         cwd: process.cwd(),
       });

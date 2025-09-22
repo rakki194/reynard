@@ -253,3 +253,4 @@ export interface FeatureContext {
   /** Refresh feature statuses */
   refreshFeatureStatuses: () => void;
 }
+

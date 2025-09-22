@@ -68,7 +68,7 @@ describe("VitestConfigGenerator", () => {
       expect(result.success).toBe(true);
 
       const projectNames = result.config.test.projects?.map(p => p.name) || [];
-      expect(projectNames.some(name => name.startsWith("examples/"))).toBe(true);
+      expect(projectNames.some(name => name === "examples")).toBe(true);
     });
 
     it("should include templates when requested", () => {
@@ -83,7 +83,7 @@ describe("VitestConfigGenerator", () => {
       expect(result.success).toBe(true);
 
       const projectNames = result.config.test.projects?.map(p => p.name) || [];
-      expect(projectNames.some(name => name.startsWith("templates/"))).toBe(true);
+      expect(projectNames.some(name => name === "templates")).toBe(true);
     });
 
     it("should include scripts when requested", () => {
@@ -98,7 +98,7 @@ describe("VitestConfigGenerator", () => {
       expect(result.success).toBe(true);
 
       const projectNames = result.config.test.projects?.map(p => p.name) || [];
-      expect(projectNames.some(name => name.startsWith("scripts/"))).toBe(true);
+      expect(projectNames.some(name => name === "scripts")).toBe(true);
     });
 
     it("should apply custom thresholds", () => {

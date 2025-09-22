@@ -3,10 +3,12 @@
  *
  * Extracted header logic from FloatingPanel to maintain 140-line axiom.
  */
-export const FloatingPanelHeader = props => {
+import type { FloatingPanelProps } from "../types.js";
+
+export const FloatingPanelHeader = (props: FloatingPanelProps) => {
   return (
     <div class="floating-panel-header">
-      {props.config.draggable ? (
+      {props.config?.draggable ? (
         <div class="floating-panel-drag-handle">
           <svg viewBox="0 0 16 16" fill="currentColor">
             <path d="M4 6h8v1H4V6zm0 2h8v1H4V8z" />
@@ -21,7 +23,7 @@ export const FloatingPanelHeader = props => {
         </h3>
       )}
 
-      {props.config.closable && (
+      {props.config?.closable && (
         <div class="floating-panel-controls">
           <button class="floating-panel-control-btn" onClick={() => props.onHide?.()} aria-label="Close panel">
             <svg viewBox="0 0 16 16" fill="currentColor">

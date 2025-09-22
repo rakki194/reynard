@@ -17,7 +17,6 @@ export function createPointerDownHandler(
   core: DraggablePanelCore,
   onDragStart?: (position: PanelPosition) => void
 ): PointerDownHandler {
-  let _dragStartPos = { x: 0, y: 0 };
   let initialPanelPos = { top: 0, left: 0 };
 
   const handlePointerDown = (event: globalThis.PointerEvent) => {
@@ -39,7 +38,6 @@ export function createPointerDownHandler(
     }
 
     event.preventDefault();
-    _dragStartPos = { x: event.clientX, y: event.clientY };
     initialPanelPos = { ...core.position[0]() };
 
     const [, setDragState] = core.dragState;

@@ -2,8 +2,10 @@
  * Error Fallback Component
  * Default error UI with recovery options and reporting
  */
-import { Show, For, createSignal } from "solid-js";
-export const ErrorFallback = props => {
+import { Show, For, createSignal, Component } from "solid-js";
+import type { ErrorFallbackProps, RecoveryAction } from "../types/ErrorTypes";
+
+export const ErrorFallback: Component<ErrorFallbackProps> = (props) => {
   const [userReport, setUserReport] = createSignal("");
   const handleRetry = () => {
     props.retry();
@@ -11,7 +13,7 @@ export const ErrorFallback = props => {
   const handleReset = () => {
     props.reset();
   };
-  const handleRecovery = action => {
+  const handleRecovery = (action: RecoveryAction) => {
     props.onRecovery?.(action);
   };
   const handleReport = () => {
@@ -61,7 +63,7 @@ export const ErrorFallback = props => {
             <h3 class="reynard-error-fallback__recovery-title">Recovery Options</h3>
             <div class="reynard-error-fallback__recovery-actions">
               <For each={props.recoveryActions}>
-                {action => (
+                {(action: RecoveryAction) => (
                   <button
                     class="reynard-error-fallback__recovery-button"
                     onClick={() => handleRecovery(action)}
@@ -86,7 +88,7 @@ export const ErrorFallback = props => {
             class="reynard-error-fallback__report-textarea"
             placeholder="Describe what you were doing when this error occurred..."
             value={userReport()}
-            onInput={e => setUserReport(e.target.value)}
+            onInput={(e: Event) => setUserReport((e.target as HTMLTextAreaElement).value)}
           />
           <button class="reynard-error-fallback__report-button" onClick={handleReport} disabled={!userReport().trim()}>
             Send Report

@@ -4,14 +4,14 @@
  */
 
 import type { CSSFileVariables, CSSVariableDefinition, CSSVariableUsage, CSSImport } from "./types.js";
-import { FileManager } from "./fileManager.js";
-import { CSSLogger } from "./logger.js";
+import { CSSFileManager } from "./cssFileManager.js";
+import type { ReynardLogger } from "reynard-dev-tools-catalyst";
 
 export class VariableExtractor {
-  private fileManager: FileManager;
-  private logger: CSSLogger;
+  private fileManager: CSSFileManager;
+  private logger: ReynardLogger;
 
-  constructor(fileManager: FileManager, logger: CSSLogger) {
+  constructor(fileManager: CSSFileManager, logger: ReynardLogger) {
     this.fileManager = fileManager;
     this.logger = logger;
   }

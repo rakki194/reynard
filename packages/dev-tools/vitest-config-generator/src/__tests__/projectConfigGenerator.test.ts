@@ -109,7 +109,7 @@ describe("ProjectConfigGenerator", () => {
 
       const config = generator.generateProjectConfig(options);
 
-      expect(config.test.include).toEqual(["src/**/*.{test,spec}.{js,ts,tsx}", "src/**/*.{test,spec}.{js,ts,tsx}"]);
+      expect(config.test.include).toEqual(["src/**/*.test.ts", "src/**/*.spec.ts"]);
     });
 
     it("should use default include patterns when directory has none", () => {
@@ -124,7 +124,12 @@ describe("ProjectConfigGenerator", () => {
 
       const config = generator.generateProjectConfig(options);
 
-      expect(config.test.include).toEqual(["src/**/*.{test,spec}.{js,ts,tsx}"]);
+      expect(config.test.include).toEqual([
+        "packages/packages/components/**/*.{test,spec}.{js,ts,tsx}",
+        "packages/packages/components/**/__tests__/**/*.{js,ts,tsx}",
+        "packages/packages/components/src/**/*.{test,spec}.{js,ts,tsx}",
+        "packages/packages/components/src/__tests__/**/*.{js,ts,tsx}"
+      ]);
     });
 
     it("should include directory exclude patterns", () => {

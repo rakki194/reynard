@@ -5,7 +5,50 @@
 import { createSignal, createEffect, onMount, onCleanup, Show, splitProps } from "solid-js";
 import { Chart } from "./Chart";
 import { useVisualizationEngine } from "../core/VisualizationEngine";
-const defaultProps = {
+import type { ChartType } from "../types";
+
+export interface RealTimeDataPoint {
+  timestamp: number;
+  value: number;
+  label: string;
+}
+
+interface RealTimeChartProps {
+  type: ChartType;
+  data: RealTimeDataPoint[];
+  maxDataPoints?: number;
+  updateInterval?: number;
+  autoScroll?: boolean;
+  timeRange?: number;
+  aggregationInterval?: number;
+  stepped?: boolean;
+  tension?: number;
+  fill?: boolean;
+  pointColors?: string[];
+  valueFormatter?: (value: number) => string;
+  class?: string;
+  loading?: boolean;
+  emptyMessage?: string;
+  enablePerformanceMonitoring?: boolean;
+  width?: number;
+  height?: number;
+  showGrid?: boolean;
+  showLegend?: boolean;
+  title?: string;
+  xAxisLabel?: string;
+  yAxisLabel?: string;
+  useOKLCH?: boolean;
+  colorTheme?: string;
+  streaming?: {
+    enabled: boolean;
+    url?: string;
+    websocket?: WebSocket;
+    parser?: (data: any) => RealTimeDataPoint;
+  };
+  [key: string]: any;
+}
+
+const defaultProps: Partial<RealTimeChartProps> = {
   width: 400,
   height: 300,
   showGrid: true,
@@ -22,7 +65,8 @@ const defaultProps = {
   emptyMessage: "No data available",
   enablePerformanceMonitoring: true,
 };
-export const RealTimeChart = props => {
+
+export const RealTimeChart = (props: RealTimeChartProps) => {
   const [local, others] = splitProps(props, [
     "type",
     "data",
@@ -45,8 +89,8 @@ export const RealTimeChart = props => {
     "streaming",
   ]);
   const [processedData, setProcessedData] = createSignal(null);
-  const [updateTimer, setUpdateTimer] = createSignal(null);
-  const [websocket, setWebsocket] = createSignal(null);
+  const [updateTimer, setUpdateTimer] = createSignal<NodeJS.Timeout | null>(null);
+  const [websocket, setWebsocket] = createSignal<WebSocket | null>(null);
   // Initialize visualization engine
   const visualization = useVisualizationEngine({
     theme: local.theme,

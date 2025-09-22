@@ -1,0 +1,40 @@
+{
+  "name": "tsconfig-generator",
+  "version": "1.0.0",
+  "description": "🦊 TypeScript Configuration Generator - Generates TSConfig files from project architecture",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "generate-tsconfig": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/cli.js",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "test": "vitest",
+    "clean": "rm -rf dist"
+  },
+  "keywords": ["typescript", "config", "generator", "reynard", "architecture", "build"],
+  "author": "Reynard Framework",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "14.0.1",
+    "reynard-dev-tools-catalyst": "workspace:*",
+    "reynard-project-architecture": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "24.5.2",
+    "@typescript-eslint/eslint-plugin": "8.44.1",
+    "@typescript-eslint/parser": "8.44.1",
+    "@vitest/coverage-v8": "3.2.4",
+    "eslint": "9.36.0",
+    "globals": "16.4.0",
+    "typescript": "5.9.2",
+    "vitest": "3.2.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

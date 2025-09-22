@@ -4,11 +4,11 @@
  */
 
 import type { ExtractorOptions } from "./types.js";
-import { WorkflowLogger } from "./logger.js";
+import { ReynardLogger } from "reynard-dev-tools-catalyst";
 import { ScriptExtractor } from "./scriptExtractor.js";
 import { ScriptValidator } from "./scriptValidator.js";
 import { ScriptFixer } from "./scriptFixer.js";
-import { FileManager } from "./fileManager.js";
+import { WorkflowFileManager } from "./workflowFileManager.js";
 import { ReportGenerator } from "./reportGenerator.js";
 import { WorkflowProcessor } from "./workflowProcessor.js";
 
@@ -22,11 +22,11 @@ export class ExtractorFactory {
     const includePatterns = options.includePatterns || ["*.yml", "*.yaml"];
     const excludePatterns = options.excludePatterns || ["*.test.yml", "*.test.yaml"];
 
-    const logger = new WorkflowLogger(verbose);
+    const logger = new ReynardLogger({ verbose });
     const scriptExtractor = new ScriptExtractor(logger);
     const scriptValidator = new ScriptValidator(logger, tempDir, shellcheckRc);
     const scriptFixer = new ScriptFixer(logger, fixMode);
-    const fileManager = new FileManager(logger, workflowDir, tempDir, includePatterns, excludePatterns);
+    const fileManager = new WorkflowFileManager(workflowDir, tempDir, includePatterns, excludePatterns, logger);
     const reportGenerator = new ReportGenerator(logger);
     const workflowProcessor = new WorkflowProcessor(logger, scriptExtractor, scriptValidator, scriptFixer);
 

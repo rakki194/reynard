@@ -15,6 +15,16 @@ export default defineConfig({
       provider: "v8",
       reporter: ["text", "json", "html"],
       reportsDirectory: ".vitest-coverage",
+      include: ["src/**/*.ts"],
+      exclude: [
+        "src/**/*.test.ts",
+        "src/**/*.spec.ts",
+        "src/__tests__/**/*",
+        "dist/**/*",
+        "node_modules/**/*",
+        "vitest.generated.config.ts",
+        "**/*.generated.config.ts",
+      ],
       thresholds: {
         global: {
           branches: 80,

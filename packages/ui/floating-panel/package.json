@@ -50,6 +50,12 @@
     "@vitest/ui": "3.2.4"
   },
   "peerDependencies": {
-    "solid-js": "1.9.9"
+    "solid-js": "1.9.9",
+    "reynard-animation": "workspace:*"
+  },
+  "peerDependenciesMeta": {
+    "reynard-animation": {
+      "optional": true
+    }
   }
 }

@@ -5,12 +5,12 @@
 
 import fs from "fs";
 import type { WorkflowScript, ValidationResult, ScriptFix, FixApplicationResult } from "./types.js";
-import type { Logger } from "./types.js";
+import type { ReynardLogger } from "reynard-dev-tools-catalyst";
 import { FixGenerator } from "./fixGenerator.js";
 
 export class ScriptFixer {
   constructor(
-    private logger: Logger,
+    private logger: ReynardLogger,
     private fixMode: boolean
   ) {}
 

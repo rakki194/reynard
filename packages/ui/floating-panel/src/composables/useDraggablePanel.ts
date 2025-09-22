@@ -23,6 +23,8 @@ export interface UseDraggablePanelOptions {
 }
 
 export interface UseDraggablePanelReturn extends UseFloatingPanelReturn {
+  isVisible: () => boolean;
+  isDragging: () => boolean;
   dragState: () => {
     isDragging: boolean;
     startPosition: PanelPosition;
@@ -34,6 +36,7 @@ export interface UseDraggablePanelReturn extends UseFloatingPanelReturn {
   endDrag: () => void;
   snapToPoint: (position: PanelPosition) => PanelPosition;
   constrainPosition: (position: PanelPosition) => PanelPosition;
+  getInlineStyles: () => Record<string, string>;
 }
 
 export function useDraggablePanel(
@@ -84,6 +87,11 @@ export function useDraggablePanel(
   return {
     position: core.position[0],
     setPosition: core.position[1],
+    isVisible: () => true, // Default to visible
+    isDragging: () => {
+      const [dragState] = core.dragState;
+      return dragState().isDragging;
+    },
     dragState: () => {
       const [dragState] = core.dragState;
       return dragState();
@@ -93,5 +101,6 @@ export function useDraggablePanel(
     endDrag: handlers.handlePointerUp,
     snapToPoint: (position: PanelPosition) => snapToPoint(position, snapPoints),
     constrainPosition: (position: PanelPosition) => constrainPosition(position, constraints),
+    getInlineStyles: () => ({}), // Default empty styles
   };
 }

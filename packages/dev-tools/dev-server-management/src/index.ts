@@ -63,9 +63,9 @@ export type {
 } from "./types/index.js";
 
 // Re-export key types for convenience
-export type { ServiceStatus, ServiceHealth } from "reynard-service-manager";
-
-export type { QueueStatus, ProcessingResult } from "reynard-queue-watcher";
+// TODO: Fix dependency issues
+// export type { ServiceStatus, ServiceHealth } from "reynard-service-manager";
+// export type { QueueStatus, ProcessingResult } from "reynard-queue-watcher";
 
 // Default export
 export { DevServerManager as default } from "./core/DevServerManager.js";

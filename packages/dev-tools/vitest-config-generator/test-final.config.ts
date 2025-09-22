@@ -429,8 +429,8 @@ export default defineConfig({
         },
       },
       {
-        name: "packages/algorithms/algorithms",
-        root: "./packages/algorithms/algorithms",
+        name: "packages/core/algorithms",
+        root: "./packages/core/algorithms",
         test: {
           setupFiles: ["./src/__tests__/setup.ts"],
           include: ["src/**/*.{test,spec}.{js,ts,tsx}"],

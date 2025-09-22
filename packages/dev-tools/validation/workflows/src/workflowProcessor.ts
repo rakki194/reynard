@@ -4,14 +4,14 @@
  */
 
 import type { WorkflowScript, ValidationResult, WorkflowFile } from "./types.js";
-import type { Logger } from "./types.js";
+import type { ReynardLogger } from "reynard-dev-tools-catalyst";
 import { ScriptExtractor } from "./scriptExtractor.js";
 import { ScriptValidator } from "./scriptValidator.js";
 import { ScriptFixer } from "./scriptFixer.js";
 
 export class WorkflowProcessor {
   constructor(
-    private logger: Logger,
+    private logger: ReynardLogger,
     private scriptExtractor: ScriptExtractor,
     private scriptValidator: ScriptValidator,
     private scriptFixer: ScriptFixer

@@ -21,6 +21,7 @@ export const usePanelConfig = (userConfig?: PanelConfig): Required<PanelConfig> 
     hoverDelay: 500,
     persistent: true,
     theme: "default",
+    backdropOpacity: 0.5,
     ...userConfig,
   };
 };
