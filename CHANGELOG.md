@@ -5,7 +5,19 @@ All notable changes to the Reynard framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.13.0] - 2025-09-22
+## [Unreleased] - ????-??-??
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
 
 ## [0.14.0] - 2025-09-22
 
@@ -18,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Composite Data Adapters**: Advanced data adapter system for enum providers
 - **Cache Management**: Intelligent caching system for dynamic enum operations
 - **Validation Utils**: Comprehensive validation utilities for enum data integrity
+- **FastAPI ECS Performance Monitoring System**: Created comprehensive performance monitoring and benchmarking system for FastAPI ECS backends. Features real-time request/response tracking, memory usage monitoring, database query profiling, async task performance tracking, and automatic bottleneck detection. Includes load testing CLI tools, performance analysis endpoints, and optimization recommendations. **VALIDATED**: 100% test success rate with <5% monitoring overhead, accurate bottleneck detection, and production-ready performance characteristics. Perfect for identifying performance issues and optimizing system performance (Mysterious-Prime-67)
 
 ### Changed
 
@@ -25,47 +38,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Legacy Tracking Architecture**: Improved modular structure for better maintainability
 - **VS Code Settings**: Updated development environment configuration
 - **Package Dependencies**: Updated pnpm lock file with latest dependencies
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
-
-## [Unreleased]
-
-### Added
-
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
-
-
-- **FastAPI ECS Performance Monitoring System**: Created comprehensive performance monitoring and benchmarking system for FastAPI ECS backends. Features real-time request/response tracking, memory usage monitoring, database query profiling, async task performance tracking, and automatic bottleneck detection. Includes load testing CLI tools, performance analysis endpoints, and optimization recommendations. **VALIDATED**: 100% test success rate with <5% monitoring overhead, accurate bottleneck detection, and production-ready performance characteristics. Perfect for identifying performance issues and optimizing system performance (Mysterious-Prime-67)
 - **RAG Service Refactoring**: Refactored RAG service to depend on file indexing service instead of implementing its own file discovery and caching. Eliminated code duplication and created clean dependency hierarchy. RAG service now uses file indexing service for document discovery and initial indexing. Supports lightweight mode without heavy ML dependencies (Phoenix-Prime-94)
 - **File Indexing and Caching Services**: Created high-performance file indexing and caching system for fast file discovery and content caching. Features intelligent text-based indexing, content caching, and efficient file metadata storage. Perfect for development laptops and resource-constrained environments. Includes setup scripts and configuration management (Phoenix-Prime-94)
 - **File Indexing-Integrated Monolith Detection**: Transformed monolith analysis service with file indexing integration for blazing-fast performance. Features intelligent caching, async batch processing, and file index-based discovery. Performance improvements through intelligent caching and concurrent analysis (Phoenix-Prime-94)
 - **MCP Server Type Fixes**: Resolved all mypy type errors in MCP server configuration and tool files (Vulpine)
 - **GitHub Workflow Fixes**: Corrected workflow paths for i18n and testing packages (Rebirth-Oracle-10)
-
-### Added
-
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
 - **Ollama Embedding API Integration**: Fixed critical issues with Ollama embedding generation including incorrect API endpoint (/api/embed → /api/embeddings), response parsing (embeddings[] → embedding[]), and database schema dimension mismatch (1024 → 768 dimensions for embeddinggemma compatibility) (Mysterious-Sage-95)
 - **EmbeddingGemma Model Integration**: Successfully integrated EmbeddingGemma model with proper prompt formatting ("task: search result | query: {text}") and resolved dimension compatibility issues between model output (768 dimensions) and database schema (Mysterious-Sage-95)
 - **Database Schema Migration**: Updated RAG embedding tables (rag_document_embeddings, rag_code_embeddings, rag_caption_embeddings) from VECTOR(1024) to VECTOR(768) to match EmbeddingGemma model output dimensions (Mysterious-Sage-95)
@@ -83,18 +60,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Embedding Service Linting Fixes**: Fixed deprecated typing imports (Dict, List → dict, list), updated type annotations to modern syntax (Optional[X] → X | None), refactored complex methods to reduce cyclomatic complexity, replaced logging.error with logging.exception, moved imports to top-level, replaced magic numbers with named constants, and fixed unused arguments and return statements (Mysterious-Sage-95)
 
 - **ECS PostgreSQL Implementation**: Complete implementation of all ECS features in PostgreSQL backend including breeding system, genetic compatibility analysis, trait inheritance, position tracking, movement system, spatial queries, interaction management, and relationship tracking (Bengal-Prime-31)
-
-### Added
-
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
 
 ## [0.12.1] - 2025-09-21
 
