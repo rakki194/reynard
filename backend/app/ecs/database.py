@@ -7,10 +7,9 @@ PostgreSQL database models and connection management for the ECS world system.
 import logging
 import os
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
-from uuid import UUID, uuid4
+from typing import Any, Dict
+from uuid import uuid4
 
-import asyncpg
 from sqlalchemy import (
     JSON,
     Boolean,
@@ -28,7 +27,6 @@ from sqlalchemy import (
 from sqlalchemy.dialects.postgresql import UUID as PostgresUUID
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session, relationship, sessionmaker
-from sqlalchemy.sql import func
 
 logger = logging.getLogger(__name__)
 

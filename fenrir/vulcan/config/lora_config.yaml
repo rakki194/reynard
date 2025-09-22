@@ -1,0 +1,103 @@
+# VULCAN LoRA Configuration
+# Low-Rank Adaptation settings for efficient fine-tuning
+
+# LoRA Base Configuration
+lora:
+  # Core LoRA parameters
+  rank: 8
+  alpha: 16
+  dropout: 0.1
+
+  # Target modules for LoRA adaptation
+  target_modules:
+    - 'q_proj' # Query projection
+    - 'v_proj' # Value projection
+    - 'k_proj' # Key projection
+    - 'o_proj' # Output projection
+    - 'gate_proj' # Gate projection (for MLP)
+    - 'up_proj' # Up projection (for MLP)
+    - 'down_proj' # Down projection (for MLP)
+    - 'lm_head' # Language modeling head
+
+# LoRA Variants
+variants:
+  # Conservative LoRA (lower rank, more stable)
+  conservative:
+    rank: 4
+    alpha: 8
+    dropout: 0.05
+    target_modules:
+      - 'q_proj'
+      - 'v_proj'
+      - 'k_proj'
+      - 'o_proj'
+
+  # Aggressive LoRA (higher rank, more capacity)
+  aggressive:
+    rank: 16
+    alpha: 32
+    dropout: 0.15
+    target_modules:
+      - 'q_proj'
+      - 'v_proj'
+      - 'k_proj'
+      - 'o_proj'
+      - 'gate_proj'
+      - 'up_proj'
+      - 'down_proj'
+      - 'lm_head'
+
+  # Minimal LoRA (only attention layers)
+  minimal:
+    rank: 8
+    alpha: 16
+    dropout: 0.1
+    target_modules:
+      - 'q_proj'
+      - 'v_proj'
+      - 'k_proj'
+      - 'o_proj'
+
+# LoRA Training Configuration
+training:
+  # Learning rate for LoRA parameters
+  lora_lr: 1e-4
+
+  # Learning rate for base model (usually frozen)
+  base_lr: 0.0
+
+  # LoRA-specific optimizations
+  use_rslora: true # Use Rank-Stabilized LoRA
+  use_dora: false # Use DoRA (Weight-Decomposed Low-Rank Adaptation)
+
+  # LoRA initialization
+  init_lora_weights: 'gaussian' # gaussian, zeros, or default
+
+  # LoRA scaling
+  lora_scale: 1.0
+
+# Memory Optimization
+memory:
+  # Use 8-bit quantization for base model
+  use_8bit: false
+
+  # Use 4-bit quantization for base model
+  use_4bit: false
+
+  # LoRA-specific memory optimizations
+  lora_plus: false # Use LoRA+ for better performance
+
+  # Gradient checkpointing for LoRA
+  gradient_checkpointing: true
+
+# Evaluation Configuration
+evaluation:
+  # Merge LoRA weights for evaluation
+  merge_lora: true
+
+  # Save merged model
+  save_merged: true
+
+  # LoRA-specific metrics
+  track_lora_norm: true
+  track_lora_rank: true

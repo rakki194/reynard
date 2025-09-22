@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 class DynamicEnumService:
     """Service that provides dynamic enums from FastAPI ECS backend."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._spirits_cache: Optional[Set[str]] = None
         self._styles_cache: Optional[Set[str]] = None
         self._enums_cache: Optional[Dict[str, Any]] = None
@@ -39,6 +39,7 @@ class DynamicEnumService:
                         spirits_dict = spirits_data
                     self._spirits_cache = set(spirits_dict.keys())
                 else:
+                    # Fallback if spirits_data is not a dict
                     self._spirits_cache = set()
                 logger.debug(f"Loaded {len(self._spirits_cache)} spirits from backend")
             except Exception as e:
@@ -172,13 +173,15 @@ class DynamicEnumService:
                     spirits_dict = spirits_data
 
                 spirit_data = spirits_dict.get(spirit, {})
-                return spirit_data.get("emoji", "🦊")  # Default fox emoji
-            return "🦊"  # Fallback
+                emoji = spirit_data.get("emoji", "🦊")  # Default fox emoji
+                return str(emoji) if emoji is not None else "🦊"
+            else:
+                return "🦊"  # Fallback
         except Exception as e:
             logger.error(f"Error getting spirit emoji: {e}")
             return "🦊"  # Fallback
 
-    def clear_cache(self):
+    def clear_cache(self) -> None:
         """Clear all cached data to force refresh from backend."""
         self._spirits_cache = None
         self._styles_cache = None

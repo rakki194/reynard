@@ -34,36 +34,30 @@ async def resume_document_indexer() -> JSONResponse:
     try:
         registry = get_service_registry()
         rag_service = registry.get_service_instance("rag")
-        
+
         if not rag_service:
-            raise HTTPException(
-                status_code=503,
-                detail="RAG service not available"
-            )
-        
+            raise HTTPException(status_code=503, detail="RAG service not available")
+
         # Get the document indexer
-        document_indexer = getattr(rag_service, 'document_indexer', None)
+        document_indexer = getattr(rag_service, "document_indexer", None)
         if not document_indexer:
             raise HTTPException(
-                status_code=503,
-                detail="Document indexer not available"
+                status_code=503, detail="Document indexer not available"
             )
-        
+
         # Resume the indexer
         await document_indexer.resume()
-        
-        return JSONResponse({
-            "status": "success",
-            "message": "Document indexer resumed successfully"
-        })
-    
+
+        return JSONResponse(
+            {"status": "success", "message": "Document indexer resumed successfully"}
+        )
+
     except HTTPException:
         raise
     except Exception as e:
         logger.error(f"Failed to resume document indexer: {e}")
         raise HTTPException(
-            status_code=500,
-            detail=f"Failed to resume document indexer: {str(e)}"
+            status_code=500, detail=f"Failed to resume document indexer: {str(e)}"
         )
 
 
@@ -73,36 +67,30 @@ async def pause_document_indexer() -> JSONResponse:
     try:
         registry = get_service_registry()
         rag_service = registry.get_service_instance("rag")
-        
+
         if not rag_service:
-            raise HTTPException(
-                status_code=503,
-                detail="RAG service not available"
-            )
-        
+            raise HTTPException(status_code=503, detail="RAG service not available")
+
         # Get the document indexer
-        document_indexer = getattr(rag_service, 'document_indexer', None)
+        document_indexer = getattr(rag_service, "document_indexer", None)
         if not document_indexer:
             raise HTTPException(
-                status_code=503,
-                detail="Document indexer not available"
+                status_code=503, detail="Document indexer not available"
             )
-        
+
         # Pause the indexer
         await document_indexer.pause()
-        
-        return JSONResponse({
-            "status": "success",
-            "message": "Document indexer paused successfully"
-        })
-    
+
+        return JSONResponse(
+            {"status": "success", "message": "Document indexer paused successfully"}
+        )
+
     except HTTPException:
         raise
     except Exception as e:
         logger.error(f"Failed to pause document indexer: {e}")
         raise HTTPException(
-            status_code=500,
-            detail=f"Failed to pause document indexer: {str(e)}"
+            status_code=500, detail=f"Failed to pause document indexer: {str(e)}"
         )
 
 
@@ -112,36 +100,28 @@ async def get_document_indexer_status() -> JSONResponse:
     try:
         registry = get_service_registry()
         rag_service = registry.get_service_instance("rag")
-        
+
         if not rag_service:
-            raise HTTPException(
-                status_code=503,
-                detail="RAG service not available"
-            )
-        
+            raise HTTPException(status_code=503, detail="RAG service not available")
+
         # Get the document indexer
-        document_indexer = getattr(rag_service, 'document_indexer', None)
+        document_indexer = getattr(rag_service, "document_indexer", None)
         if not document_indexer:
             raise HTTPException(
-                status_code=503,
-                detail="Document indexer not available"
+                status_code=503, detail="Document indexer not available"
             )
-        
+
         # Get status
         stats = await document_indexer.get_stats()
-        
-        return JSONResponse({
-            "status": "success",
-            "data": stats
-        })
-    
+
+        return JSONResponse({"status": "success", "data": stats})
+
     except HTTPException:
         raise
     except Exception as e:
         logger.error(f"Failed to get document indexer status: {e}")
         raise HTTPException(
-            status_code=500,
-            detail=f"Failed to get document indexer status: {str(e)}"
+            status_code=500, detail=f"Failed to get document indexer status: {str(e)}"
         )
 
 
@@ -151,21 +131,17 @@ async def get_queue_status() -> JSONResponse:
     try:
         registry = get_service_registry()
         rag_service = registry.get_service_instance("rag")
-        
+
         if not rag_service:
-            raise HTTPException(
-                status_code=503,
-                detail="RAG service not available"
-            )
-        
+            raise HTTPException(status_code=503, detail="RAG service not available")
+
         # Get the document indexer
-        document_indexer = getattr(rag_service, 'document_indexer', None)
+        document_indexer = getattr(rag_service, "document_indexer", None)
         if not document_indexer:
             raise HTTPException(
-                status_code=503,
-                detail="Document indexer not available"
+                status_code=503, detail="Document indexer not available"
             )
-        
+
         # Get queue status
         stats = await document_indexer.get_stats()
         queue_info = {
@@ -174,19 +150,15 @@ async def get_queue_status() -> JSONResponse:
             "paused": stats.get("paused", True),
             "workers": stats.get("workers", 0),
             "concurrency": stats.get("concurrency", 0),
-            "metrics": stats.get("metrics", {})
+            "metrics": stats.get("metrics", {}),
         }
-        
-        return JSONResponse({
-            "status": "success",
-            "data": queue_info
-        })
-    
+
+        return JSONResponse({"status": "success", "data": queue_info})
+
     except HTTPException:
         raise
     except Exception as e:
         logger.error(f"Failed to get queue status: {e}")
         raise HTTPException(
-            status_code=500,
-            detail=f"Failed to get queue status: {str(e)}"
+            status_code=500, detail=f"Failed to get queue status: {str(e)}"
         )

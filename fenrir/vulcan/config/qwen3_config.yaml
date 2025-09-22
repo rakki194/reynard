@@ -1,0 +1,75 @@
+# VULCAN Qwen3-8B Specific Configuration
+# Extends base_config.yaml with Qwen3-specific settings
+
+# Import base configuration
+defaults:
+  - base_config
+
+# Model Configuration (Qwen3-specific)
+model:
+  name: 'Qwen/Qwen3-8B'
+  max_length: 32768 # Qwen3's native context length
+  max_new_tokens: 32768
+  enable_thinking: true
+
+  # Qwen3-specific generation parameters
+  generation_config:
+    temperature: 0.6 # For thinking mode
+    top_p: 0.95
+    top_k: 20
+    min_p: 0
+    repetition_penalty: 1.1
+    do_sample: true
+
+# Rope Scaling for extended context
+rope_scaling:
+  rope_type: 'yarn'
+  factor: 4.0
+  original_max_position_embeddings: 32768
+
+# Training Configuration (optimized for Qwen3)
+training:
+  learning_rate: 1e-4 # Lower LR for stability
+  batch_size: 2 # Smaller batch size for memory efficiency
+  gradient_accumulation_steps: 16 # Compensate with gradient accumulation
+  num_epochs: 2 # Fewer epochs for fine-tuning
+  warmup_steps: 200
+  weight_decay: 0.01
+  max_grad_norm: 0.5 # Lower gradient clipping
+
+# LoRA Configuration (optimized for Qwen3)
+lora:
+  rank: 8
+  alpha: 16
+  dropout: 0.05 # Lower dropout for stability
+  target_modules:
+    - 'q_proj'
+    - 'v_proj'
+    - 'k_proj'
+    - 'o_proj'
+    - 'gate_proj'
+    - 'up_proj'
+    - 'down_proj'
+    - 'lm_head' # Include output layer
+
+# Hardware Configuration (optimized for RTX 4090)
+hardware:
+  device: 'auto'
+  mixed_precision: 'bf16' # Qwen3 supports bf16, RTX 4090 optimized
+  dataloader_num_workers: 4 # RTX 4090 can handle more workers
+  dataloader_pin_memory: true
+  gradient_checkpointing: true # Essential for memory efficiency
+
+# RTX 4090 specific optimizations
+rtx4090_optimizations:
+  use_torch_compile: true # PyTorch 2.8.0 torch.compile for speed
+  attention_implementation: 'sdpa' # Use PyTorch's built-in scaled_dot_product_attention
+  use_bettertransformer: true # Optimum BetterTransformer for acceleration
+  memory_efficient_attention: true # Enable memory-efficient attention kernels
+
+# Advanced Configuration
+advanced:
+  ddp_find_unused_parameters: false
+  remove_unused_columns: false
+  dataloader_drop_last: true
+  save_safetensors: true # Use SafeTensors for model saving

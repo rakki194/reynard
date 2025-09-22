@@ -1,13 +1,13 @@
 # Changelog
 
-All notable changes to
-the Reynard framework will be documented in this file.
+All notable changes to the Reynard framework will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+- **MCP Server Type Fixes**: Resolved all mypy type errors in MCP server configuration and tool files (Vulpine)
 - **GitHub Workflow Fixes**: Corrected workflow paths for i18n and testing packages (Rebirth-Oracle-10)
 
 ### Added

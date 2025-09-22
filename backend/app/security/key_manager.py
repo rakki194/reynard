@@ -25,11 +25,12 @@ Author: Vulpine (Security-focused Fox Specialist)
 Version: 1.0.0
 """
 
+import base64
 import json
 import logging
 import secrets
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -39,6 +40,9 @@ from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+
+from .key_storage_models import KeyStorage, KeyAccessLog, get_key_storage_session
+from .key_cache_service import get_key_cache_service
 
 logger = logging.getLogger(__name__)
 
@@ -56,6 +60,10 @@ class KeyType(Enum):
     SESSION_ENCRYPTION = "session_encryption"
     API_KEY_ENCRYPTION = "api_key_encryption"
     AUDIT_LOG_ENCRYPTION = "audit_log_encryption"
+
+    # itsdangerous integration keys
+    TOKEN_SIGNING = "token_signing"
+    SESSION_SIGNING = "session_signing"
 
     # System keys
     SYSTEM_MASTER = "system_master"
@@ -90,7 +98,7 @@ class KeyMetadata:
         self.key_id = key_id
         self.key_type = key_type
         self.status = status
-        self.created_at = created_at or datetime.utcnow()
+        self.created_at = created_at or datetime.now(UTC)
         self.expires_at = expires_at
         self.last_used = last_used
         self.usage_count = usage_count
@@ -153,38 +161,35 @@ class KeyManager:
 
     def __init__(
         self,
-        keys_directory: Optional[str] = None,
         master_password: Optional[str] = None,
+        use_database: bool = True,
     ):
         """
         Initialize the key manager.
 
         Args:
-            keys_directory: Directory to store key files (default: backend/.keys)
             master_password: Master password for key encryption (default: from env)
+            use_database: Whether to use database storage (default: True)
         """
-        if keys_directory is None:
-            backend_dir = Path(__file__).parent.parent.parent
-            keys_directory = backend_dir / ".keys"
-
-        self.keys_directory = Path(keys_directory)
-        self.keys_directory.mkdir(parents=True, exist_ok=True)
-
-        # Set secure permissions on keys directory
-        self.keys_directory.chmod(0o700)
-
         # Master password for key encryption
         self.master_password = master_password or self._get_master_password()
-
-        # Key metadata storage
-        self.metadata_file = self.keys_directory / "key_metadata.json"
+        
+        # Storage configuration
+        self.use_database = use_database
+        
+        # Key cache service for performance
+        self.key_cache_service = get_key_cache_service()
+        
+        # Key metadata storage (in-memory cache)
         self._metadata: Dict[str, KeyMetadata] = {}
-
-        # Key cache for performance
-        self._key_cache: Dict[str, bytes] = {}
-
-        # Load existing metadata
-        self._load_metadata()
+        
+        # Load existing metadata from database
+        if self.use_database:
+            self._load_metadata_from_database()
+        else:
+            # Fallback to file-based storage for backward compatibility
+            self._setup_file_storage()
+            self._load_metadata_from_files()
 
         # Initialize system master key if needed
         self._ensure_system_master_key()
@@ -203,8 +208,43 @@ class KeyManager:
             )
         return master_password
 
-    def _load_metadata(self) -> None:
-        """Load key metadata from storage."""
+    def _setup_file_storage(self) -> None:
+        """Setup file-based storage for backward compatibility."""
+        backend_dir = Path(__file__).parent.parent.parent
+        self.keys_directory = backend_dir / ".keys"
+        self.keys_directory.mkdir(parents=True, exist_ok=True)
+        self.keys_directory.chmod(0o700)
+        self.metadata_file = self.keys_directory / "key_metadata.json"
+
+    def _load_metadata_from_database(self) -> None:
+        """Load key metadata from database."""
+        try:
+            with get_key_storage_session() as session:
+                key_storage_records = session.query(KeyStorage).filter(
+                    KeyStorage.is_active == True
+                ).all()
+                
+                for record in key_storage_records:
+                    metadata = KeyMetadata(
+                        key_id=record.key_id,
+                        key_type=KeyType(record.key_type),
+                        status=KeyStatus(record.status),
+                        created_at=record.created_at,
+                        expires_at=record.expires_at,
+                        last_used=record.last_used,
+                        usage_count=record.usage_count,
+                        rotation_schedule_days=record.rotation_schedule_days,
+                        metadata=json.loads(record.key_metadata) if record.key_metadata else {}
+                    )
+                    self._metadata[record.key_id] = metadata
+                
+                logger.info(f"Loaded metadata for {len(self._metadata)} keys from database")
+        except Exception as e:
+            logger.error(f"Failed to load key metadata from database: {e}")
+            self._metadata = {}
+
+    def _load_metadata_from_files(self) -> None:
+        """Load key metadata from files (backward compatibility)."""
         if self.metadata_file.exists():
             try:
                 with open(self.metadata_file, "r") as f:
@@ -213,15 +253,55 @@ class KeyManager:
                 for key_id, metadata_dict in data.items():
                     self._metadata[key_id] = KeyMetadata.from_dict(metadata_dict)
 
-                logger.info(f"Loaded metadata for {len(self._metadata)} keys")
+                logger.info(f"Loaded metadata for {len(self._metadata)} keys from files")
             except Exception as e:
-                logger.error(f"Failed to load key metadata: {e}")
+                logger.error(f"Failed to load key metadata from files: {e}")
                 self._metadata = {}
         else:
             self._metadata = {}
 
-    def _save_metadata(self) -> None:
-        """Save key metadata to storage."""
+    def _save_metadata_to_database(self, key_id: str, metadata: KeyMetadata) -> None:
+        """Save key metadata to database."""
+        try:
+            with get_key_storage_session() as session:
+                # Check if key exists
+                existing_key = session.query(KeyStorage).filter(
+                    KeyStorage.key_id == key_id
+                ).first()
+                
+                if existing_key:
+                    # Update existing key
+                    existing_key.status = metadata.status.value
+                    existing_key.expires_at = metadata.expires_at
+                    existing_key.last_used = metadata.last_used
+                    existing_key.usage_count = metadata.usage_count
+                    existing_key.rotation_schedule_days = metadata.rotation_schedule_days
+                    existing_key.key_metadata = json.dumps(metadata.metadata)
+                    existing_key.updated_at = datetime.now(timezone.utc)
+                else:
+                    # Create new key record
+                    new_key = KeyStorage(
+                        key_id=key_id,
+                        key_type=metadata.key_type.value,
+                        status=metadata.status.value,
+                        created_at=metadata.created_at,
+                        expires_at=metadata.expires_at,
+                        last_used=metadata.last_used,
+                        usage_count=metadata.usage_count,
+                        rotation_schedule_days=metadata.rotation_schedule_days,
+                        key_metadata=json.dumps(metadata.metadata),
+                        is_active=True
+                    )
+                    session.add(new_key)
+                
+                session.commit()
+                logger.debug(f"Saved metadata for key {key_id} to database")
+                
+        except Exception as e:
+            logger.error(f"Failed to save key metadata to database: {e}")
+
+    def _save_metadata_to_files(self) -> None:
+        """Save key metadata to files (backward compatibility)."""
         try:
             data = {
                 key_id: metadata.to_dict()
@@ -235,7 +315,7 @@ class KeyManager:
             self.metadata_file.chmod(0o600)
 
         except Exception as e:
-            logger.error(f"Failed to save key metadata: {e}")
+            logger.error(f"Failed to save key metadata to files: {e}")
 
     def _ensure_system_master_key(self) -> None:
         """Ensure system master key exists."""
@@ -294,6 +374,96 @@ class KeyManager:
 
         # Return IV + encrypted data
         return iv + encrypted_data
+
+    def _save_key_to_database(self, key_id: str, key_data: bytes) -> None:
+        """Save encrypted key data to database."""
+        try:
+            with get_key_storage_session() as session:
+                # Get metadata for this key
+                metadata = self._metadata.get(key_id)
+                if not metadata:
+                    logger.error(f"No metadata found for key {key_id}")
+                    return
+                
+                # Check if key exists
+                existing_key = session.query(KeyStorage).filter(
+                    KeyStorage.key_id == key_id
+                ).first()
+                
+                if existing_key:
+                    # Update existing key data
+                    existing_key.encrypted_key_data = base64.b64encode(key_data).decode()
+                    existing_key.updated_at = datetime.now(timezone.utc)
+                else:
+                    # Create new key record
+                    new_key = KeyStorage(
+                        key_id=key_id,
+                        key_type=metadata.key_type.value,
+                        encrypted_key_data=base64.b64encode(key_data).decode(),
+                        status=metadata.status.value,
+                        created_at=metadata.created_at,
+                        expires_at=metadata.expires_at,
+                        last_used=metadata.last_used,
+                        usage_count=metadata.usage_count,
+                        rotation_schedule_days=metadata.rotation_schedule_days,
+                        key_metadata=json.dumps(metadata.metadata),
+                        is_active=True
+                    )
+                    session.add(new_key)
+                
+                session.commit()
+                logger.debug(f"Saved key {key_id} to database")
+                
+        except Exception as e:
+            logger.error(f"Failed to save key {key_id} to database: {e}")
+
+    def _load_key_from_database(self, key_id: str) -> Optional[bytes]:
+        """Load encrypted key data from database."""
+        try:
+            with get_key_storage_session() as session:
+                key_record = session.query(KeyStorage).filter(
+                    KeyStorage.key_id == key_id,
+                    KeyStorage.is_active == True
+                ).first()
+                
+                if key_record:
+                    encrypted_data = base64.b64decode(key_record.encrypted_key_data)
+                    return self._decrypt_key(encrypted_data, key_id)
+                
+                return None
+                
+        except Exception as e:
+            logger.error(f"Failed to load key {key_id} from database: {e}")
+            return None
+
+    def _save_key_to_file(self, key_id: str, key_data: bytes) -> None:
+        """Save encrypted key data to file (backward compatibility)."""
+        try:
+            key_file = self.keys_directory / f"{key_id}.key"
+            with open(key_file, "wb") as f:
+                f.write(key_data)
+
+            # Set secure permissions
+            key_file.chmod(0o600)
+            
+        except Exception as e:
+            logger.error(f"Failed to save key {key_id} to file: {e}")
+
+    def _load_key_from_file(self, key_id: str) -> Optional[bytes]:
+        """Load encrypted key data from file (backward compatibility)."""
+        try:
+            key_file = self.keys_directory / f"{key_id}.key"
+            if not key_file.exists():
+                return None
+                
+            with open(key_file, "rb") as f:
+                encrypted_data = f.read()
+                
+            return self._decrypt_key(encrypted_data, key_id)
+            
+        except Exception as e:
+            logger.error(f"Failed to load key {key_id} from file: {e}")
+            return None
 
     def _decrypt_key(self, encrypted_data: bytes, key_id: str) -> bytes:
         """Decrypt key data from storage."""
@@ -367,9 +537,9 @@ class KeyManager:
         # Calculate expiration date
         expires_at = None
         if expires_in_days:
-            expires_at = datetime.utcnow() + timedelta(days=expires_in_days)
+            expires_at = datetime.now(UTC) + timedelta(days=expires_in_days)
         elif rotation_schedule_days:
-            expires_at = datetime.utcnow() + timedelta(days=rotation_schedule_days * 2)
+            expires_at = datetime.now(UTC) + timedelta(days=rotation_schedule_days * 2)
 
         # Create metadata
         key_metadata = KeyMetadata(
@@ -380,24 +550,41 @@ class KeyManager:
             metadata=metadata or {},
         )
 
-        # Store key and metadata
-        self._store_key(key_id, key_data)
+        # Store metadata first, then key data
         self._metadata[key_id] = key_metadata
-        self._save_metadata()
+        
+        if self.use_database:
+            self._save_metadata_to_database(key_id, key_metadata)
+        else:
+            self._save_metadata_to_files()
+        
+        # Store key data
+        self._store_key(key_id, key_data)
 
         logger.info(f"Generated new {key_type.value} key: {key_id}")
         return key_data
 
     def _store_key(self, key_id: str, key_data: bytes) -> None:
         """Store encrypted key data."""
-        key_file = self.keys_directory / f"{key_id}.key"
         encrypted_data = self._encrypt_key(key_data, key_id)
-
-        with open(key_file, "wb") as f:
-            f.write(encrypted_data)
-
-        # Set secure permissions
-        key_file.chmod(0o600)
+        
+        if self.use_database:
+            # Save to database
+            self._save_key_to_database(key_id, encrypted_data)
+            # Cache the key for performance
+            self.key_cache_service.cache_key(
+                key_id, 
+                key_data, 
+                self._metadata[key_id].to_dict(),
+                ttl_seconds=3600  # 1 hour cache TTL
+            )
+        else:
+            # Save to file (backward compatibility)
+            key_file = self.keys_directory / f"{key_id}.key"
+            with open(key_file, "wb") as f:
+                f.write(encrypted_data)
+            # Set secure permissions
+            key_file.chmod(0o600)
 
     def get_key(self, key_id: str, update_usage: bool = True) -> Optional[bytes]:
         """
@@ -410,13 +597,16 @@ class KeyManager:
         Returns:
             Key bytes or None if not found
         """
-        # Check cache first
-        if key_id in self._key_cache:
-            if update_usage:
-                self._update_key_usage(key_id)
-            return self._key_cache[key_id]
+        # Check Redis cache first
+        if self.use_database:
+            cached_result = self.key_cache_service.get_cached_key(key_id)
+            if cached_result:
+                key_data, metadata = cached_result
+                if update_usage:
+                    self._update_key_usage(key_id)
+                return key_data
 
-        # Check if key exists
+        # Check if key exists in metadata
         if key_id not in self._metadata:
             logger.warning(f"Key not found: {key_id}")
             return None
@@ -428,37 +618,43 @@ class KeyManager:
             return None
 
         # Load key from storage
-        key_file = self.keys_directory / f"{key_id}.key"
-        if not key_file.exists():
-            logger.error(f"Key file not found: {key_file}")
-            return None
-
         try:
-            with open(key_file, "rb") as f:
-                encrypted_data = f.read()
-
-            key_data = self._decrypt_key(encrypted_data, key_id)
-
-            # Cache the key
-            self._key_cache[key_id] = key_data
+            if self.use_database:
+                key_data = self._load_key_from_database(key_id)
+            else:
+                key_data = self._load_key_from_file(key_id)
+            
+            if key_data is None:
+                logger.error(f"Key data not found: {key_id}")
+                return None
 
             # Update usage statistics
             if update_usage:
                 self._update_key_usage(key_id)
 
+            # Log successful access
+            self._log_key_access(key_id, "read", True)
             return key_data
 
         except Exception as e:
             logger.error(f"Failed to load key {key_id}: {e}")
+            # Log failed access
+            self._log_key_access(key_id, "read", False, error_message=str(e))
             return None
 
     def _update_key_usage(self, key_id: str) -> None:
         """Update key usage statistics."""
         if key_id in self._metadata:
             metadata = self._metadata[key_id]
-            metadata.last_used = datetime.utcnow()
+            metadata.last_used = datetime.now(timezone.utc)
             metadata.usage_count += 1
-            self._save_metadata()
+            
+            if self.use_database:
+                self._save_metadata_to_database(key_id, metadata)
+                # Update cache
+                self.key_cache_service.update_key_usage(key_id, metadata.usage_count)
+            else:
+                self._save_metadata_to_files()
 
     def rotate_key(self, key_id: str) -> bytes:
         """
@@ -524,7 +720,7 @@ class KeyManager:
 
     def cleanup_expired_keys(self) -> int:
         """Remove expired keys and return count of cleaned keys."""
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         expired_keys = []
 
         for key_id, metadata in self._metadata.items():
@@ -533,13 +729,48 @@ class KeyManager:
 
         for key_id in expired_keys:
             self.revoke_key(key_id)
-            # Remove key file
-            key_file = self.keys_directory / f"{key_id}.key"
-            if key_file.exists():
-                key_file.unlink()
+            
+            if self.use_database:
+                # Invalidate cache
+                self.key_cache_service.invalidate_key(key_id)
+            else:
+                # Remove key file
+                key_file = self.keys_directory / f"{key_id}.key"
+                if key_file.exists():
+                    key_file.unlink()
 
         logger.info(f"Cleaned up {len(expired_keys)} expired keys")
         return len(expired_keys)
+
+    def _log_key_access(
+        self, 
+        key_id: str, 
+        operation: str, 
+        success: bool, 
+        user_id: Optional[str] = None,
+        ip_address: Optional[str] = None,
+        user_agent: Optional[str] = None,
+        error_message: Optional[str] = None
+    ) -> None:
+        """Log key access for audit purposes."""
+        if not self.use_database:
+            return
+            
+        try:
+            with get_key_storage_session() as session:
+                access_log = KeyAccessLog(
+                    key_id=key_id,
+                    operation=operation,
+                    user_id=user_id,
+                    ip_address=ip_address,
+                    user_agent=user_agent,
+                    success=success,
+                    error_message=error_message
+                )
+                session.add(access_log)
+                session.commit()
+        except Exception as e:
+            logger.error(f"Failed to log key access: {e}")
 
     def backup_keys(self, backup_path: str) -> None:
         """Create a backup of all keys."""

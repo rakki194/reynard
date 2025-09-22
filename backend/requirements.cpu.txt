@@ -12,6 +12,7 @@ email-validator
 pydantic[email]
 slowapi
 limits
+itsdangerous
 
 # CPU-only PyTorch ecosystem (2025 latest stable)
 # Using PyTorch with CPU-only support

@@ -97,6 +97,14 @@ class SessionSecurityConfig:
 
     # Session storage
     use_redis_for_sessions: bool = True
+
+    # itsdangerous integration settings
+    enable_hybrid_sessions: bool = True
+    use_itsdangerous_for_tokens: bool = True
+    itsdangerous_token_expiry_hours: int = 24
+    itsdangerous_password_reset_expiry_hours: int = 1
+    itsdangerous_email_verification_expiry_hours: int = 24
+    itsdangerous_api_key_expiry_days: int = 30
     redis_encryption_enabled: bool = True
     session_cleanup_interval_minutes: int = 15
 

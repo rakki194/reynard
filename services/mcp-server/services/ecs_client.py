@@ -487,6 +487,151 @@ class ECSClient:
         params = {"query": query, "exact_match": exact_match}
         return await self._request("GET", "/agents/search", params=params)
 
+    async def invoke_spirit_inhabitation(
+        self, spirit_name: str, agent_id: str, force_inhabitation: bool = True
+    ) -> Dict[str, Any]:
+        """
+        Invoke spirit inhabitation for a specific agent.
+
+        Args:
+            spirit_name: Name of the spirit to invoke (e.g., "success-advisor-8")
+            agent_id: ID of the agent to inhabit
+            force_inhabitation: Whether to force inhabitation if already inhabited
+
+        Returns:
+            Inhabitation result with status and details
+        """
+        try:
+            response = await self._request(
+                "POST",
+                f"/spirit-inhabitation/{spirit_name}",
+                data={
+                    "agent_id": agent_id,
+                    "force_inhabitation": force_inhabitation,
+                },
+            )
+            return response
+        except Exception as e:
+            logger.error(f"Failed to invoke spirit inhabitation: {e}")
+            return {"error": str(e), "status": "error"}
+
+    async def get_spirit_genome(self, spirit_name: str) -> Dict[str, Any]:
+        """
+        Get the genome data for a specific spirit.
+
+        Args:
+            spirit_name: Name of the spirit (e.g., "success-advisor-8")
+
+        Returns:
+            Genome data including traits, abilities, and characteristics
+        """
+        try:
+            response = await self._request(
+                "GET", f"/spirit-inhabitation/{spirit_name}/genome"
+            )
+            return response
+        except Exception as e:
+            logger.error(f"Failed to get spirit genome: {e}")
+            return {"error": str(e), "status": "error"}
+
+    async def get_spirit_instructions(self, spirit_name: str) -> Dict[str, Any]:
+        """
+        Get the behavioral instructions for a specific spirit.
+
+        Args:
+            spirit_name: Name of the spirit (e.g., "success-advisor-8")
+
+        Returns:
+            Instructions including workflow protocols and quality standards
+        """
+        try:
+            response = await self._request(
+                "GET", f"/spirit-inhabitation/{spirit_name}/instructions"
+            )
+            return response
+        except Exception as e:
+            logger.error(f"Failed to get spirit instructions: {e}")
+            return {"error": str(e), "status": "error"}
+
+    async def get_spirit_status(self, spirit_name: str, agent_id: str) -> Dict[str, Any]:
+        """
+        Get the current status of spirit inhabitation for an agent.
+
+        Args:
+            spirit_name: Name of the spirit
+            agent_id: ID of the agent
+
+        Returns:
+            Status information including inhabitation state and effects
+        """
+        try:
+            response = await self._request(
+                "GET",
+                f"/spirit-inhabitation/{spirit_name}/status",
+                params={"agent_id": agent_id},
+            )
+            return response
+        except Exception as e:
+            logger.error(f"Failed to get spirit status: {e}")
+            return {"error": str(e), "status": "error"}
+
+    async def release_spirit_inhabitation(
+        self, spirit_name: str, agent_id: str
+    ) -> Dict[str, Any]:
+        """
+        Release spirit inhabitation from an agent.
+
+        Args:
+            spirit_name: Name of the spirit to release
+            agent_id: ID of the agent
+
+        Returns:
+            Release result with status and details
+        """
+        try:
+            response = await self._request(
+                "DELETE",
+                f"/spirit-inhabitation/{spirit_name}",
+                data={"agent_id": agent_id},
+            )
+            return response
+        except Exception as e:
+            logger.error(f"Failed to release spirit inhabitation: {e}")
+            return {"error": str(e), "status": "error"}
+
+    async def invoke_success_advisor_8(
+        self, agent_id: str, force_inhabitation: bool = True
+    ) -> Dict[str, Any]:
+        """
+        Convenience method to invoke Success-Advisor-8 spirit inhabitation.
+
+        Args:
+            agent_id: ID of the agent to inhabit
+            force_inhabitation: Whether to force inhabitation if already inhabited
+
+        Returns:
+            Complete Success-Advisor-8 inhabitation data including genome and instructions
+        """
+        try:
+            # Invoke the spirit inhabitation
+            inhabitation_result = await self.invoke_spirit_inhabitation(
+                "success-advisor-8", agent_id, force_inhabitation
+            )
+            
+            # Get genome and instructions
+            genome_result = await self.get_spirit_genome("success-advisor-8")
+            instructions_result = await self.get_spirit_instructions("success-advisor-8")
+            
+            return {
+                "inhabitation": inhabitation_result,
+                "genome": genome_result,
+                "instructions": instructions_result,
+                "status": "success"
+            }
+        except Exception as e:
+            logger.error(f"Failed to invoke Success-Advisor-8: {e}")
+            return {"error": str(e), "status": "error"}
+
 
 # Global ECS client instance
 _ecs_client: Optional[ECSClient] = None

@@ -8,7 +8,9 @@ using the Gatekeeper library.
 from datetime import timedelta
 from typing import Any
 
+from app.security.itsdangerous_utils import get_itsdangerous_utils
 from app.security.jwt_secret_manager import get_jwt_secret_key
+from app.security.security_config import get_session_security_config
 from gatekeeper.api.dependencies import get_auth_manager  # type: ignore[import-untyped]
 
 
@@ -249,6 +251,105 @@ def verify_token_sync(token: str, kind: str = "access") -> dict[str, Any] | None
     return None
 
 
+# itsdangerous-based token functions (recommended for new code)
+async def create_secure_token(
+    data: dict[str, Any], expires_delta: timedelta | None = None
+) -> str:
+    """
+    Create a secure token using itsdangerous (recommended approach).
+
+    Args:
+        data: The data to encode into the token
+        expires_delta: Optional custom expiration time
+
+    Returns:
+        str: The encoded secure token
+    """
+    config = get_session_security_config()
+    if not config.use_itsdangerous_for_tokens:
+        # Fallback to JWT if itsdangerous is disabled
+        return await create_access_token(data, expires_delta)
+
+    itsdangerous_utils = get_itsdangerous_utils()
+
+    # Use itsdangerous for token creation
+    if expires_delta is None:
+        expires_delta = timedelta(hours=config.itsdangerous_token_expiry_hours)
+
+    return itsdangerous_utils.create_timestamped_token(data, expires_delta)
+
+
+async def verify_secure_token(token: str) -> dict[str, Any] | None:
+    """
+    Verify a secure token created with itsdangerous.
+
+    Args:
+        token: The token to verify
+
+    Returns:
+        Optional[Dict[str, Any]]: Token payload if valid, None otherwise
+    """
+    config = get_session_security_config()
+    if not config.use_itsdangerous_for_tokens:
+        # Fallback to JWT if itsdangerous is disabled
+        return await verify_token(token)
+
+    itsdangerous_utils = get_itsdangerous_utils()
+
+    # Use itsdangerous for token verification
+    max_age = config.itsdangerous_token_expiry_hours * 3600  # Convert to seconds
+    return itsdangerous_utils.verify_timestamped_token(token, max_age)
+
+
+def create_secure_token_sync(
+    data: dict[str, Any], expires_delta: timedelta | None = None
+) -> str:
+    """
+    Synchronous version of create_secure_token.
+
+    Args:
+        data: The data to encode into the token
+        expires_delta: Optional custom expiration time
+
+    Returns:
+        str: The encoded secure token
+    """
+    config = get_session_security_config()
+    if not config.use_itsdangerous_for_tokens:
+        # Fallback to JWT if itsdangerous is disabled
+        return create_access_token_sync(data, expires_delta)
+
+    itsdangerous_utils = get_itsdangerous_utils()
+
+    # Use itsdangerous for token creation
+    if expires_delta is None:
+        expires_delta = timedelta(hours=config.itsdangerous_token_expiry_hours)
+
+    return itsdangerous_utils.create_timestamped_token(data, expires_delta)
+
+
+def verify_secure_token_sync(token: str) -> dict[str, Any] | None:
+    """
+    Synchronous version of verify_secure_token.
+
+    Args:
+        token: The token to verify
+
+    Returns:
+        Optional[Dict[str, Any]]: Token payload if valid, None otherwise
+    """
+    config = get_session_security_config()
+    if not config.use_itsdangerous_for_tokens:
+        # Fallback to JWT if itsdangerous is disabled
+        return verify_token_sync(token)
+
+    itsdangerous_utils = get_itsdangerous_utils()
+
+    # Use itsdangerous for token verification
+    max_age = config.itsdangerous_token_expiry_hours * 3600  # Convert to seconds
+    return itsdangerous_utils.verify_timestamped_token(token, max_age)
+
+
 # Export both async and sync versions
 __all__ = [
     "create_access_token",
@@ -257,4 +358,9 @@ __all__ = [
     "create_refresh_token_sync",
     "verify_token",
     "verify_token_sync",
+    # New itsdangerous-based functions (recommended)
+    "create_secure_token",
+    "create_secure_token_sync",
+    "verify_secure_token",
+    "verify_secure_token_sync",
 ]

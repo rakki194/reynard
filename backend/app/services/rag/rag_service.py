@@ -430,12 +430,9 @@ class RAGService:
             filters["language"] = language_filter
         if file_type_filter:
             filters["file_type"] = file_type_filter
-        
+
         return await self.search(
-            query=query,
-            search_type="semantic",
-            limit=top_k,
-            filters=filters
+            query=query, search_type="semantic", limit=top_k, filters=filters
         )
 
     async def keyword_search(
@@ -451,12 +448,9 @@ class RAGService:
             filters["language"] = language_filter
         if file_type_filter:
             filters["file_type"] = file_type_filter
-        
+
         return await self.search(
-            query=query,
-            search_type="keyword",
-            limit=top_k,
-            filters=filters
+            query=query, search_type="keyword", limit=top_k, filters=filters
         )
 
     async def hybrid_search(
@@ -472,12 +466,9 @@ class RAGService:
             filters["language"] = language_filter
         if file_type_filter:
             filters["file_type"] = file_type_filter
-        
+
         return await self.search(
-            query=query,
-            search_type="hybrid",
-            limit=top_k,
-            filters=filters
+            query=query, search_type="hybrid", limit=top_k, filters=filters
         )
 
     async def index_documents(self, documents: List[Dict[str, Any]]) -> Dict[str, Any]:

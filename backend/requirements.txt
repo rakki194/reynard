@@ -26,6 +26,7 @@ transformers
 torch
 rank-bm25
 numpy
+itsdangerous
 
 # Redis dependencies
 redis[hiredis]

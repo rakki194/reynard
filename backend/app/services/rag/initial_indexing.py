@@ -25,8 +25,8 @@ import time
 from pathlib import Path
 from typing import Any
 
-from ..continuous_indexing import ContinuousIndexingService
 from ...config.continuous_indexing_config import continuous_indexing_config
+from ..continuous_indexing import ContinuousIndexingService
 
 logger = logging.getLogger(__name__)
 
@@ -211,21 +211,23 @@ class InitialIndexingService:
             logger.info(
                 f"📝 Indexing batch {batch_num}/{total_batches} ({len(batch)} files)"
             )
-            
+
             # Ensure document indexer is resumed before processing
-            if (hasattr(self.continuous_indexing, 'rag_service') and 
-                self.continuous_indexing.rag_service and
-                hasattr(self.continuous_indexing.rag_service, 'document_indexer')):
+            if (
+                hasattr(self.continuous_indexing, "rag_service")
+                and self.continuous_indexing.rag_service
+                and hasattr(self.continuous_indexing.rag_service, "document_indexer")
+            ):
                 await self.continuous_indexing.rag_service.document_indexer.resume()
                 if batch_num == 1:  # Only log once
                     logger.info("📋 Document indexer resumed for processing")
-            
+
             # Process files through continuous indexing service
             await self.continuous_indexing.index_files(batch)
-            
+
             # Wait for processing to complete
             await asyncio.sleep(1.0)  # Give time for processing
-            
+
             self.current_progress["processed_files"] += len(batch)
             logger.info(f"✅ Successfully indexed batch {batch_num}")
 

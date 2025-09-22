@@ -43,6 +43,7 @@ dependencies = [
     "pgvector",
     "argon2-cffi",
     "cryptography",
+    "itsdangerous",
     "reynard-gatekeeper @ file:///home/kade/runeset/reynard/services/gatekeeper",
 ]
 

@@ -4,7 +4,7 @@ _Comprehensive research paper on evolutionary knowledge distillation with adapti
 
 ## Overview
 
-This directory contains the complete LaTeX research paper for **PHOENIX (Progressive Hierarchical Optimization and Evolutionary Neural Intelligence eXtraction)**, a groundbreaking methodology that formalizes multi-generational AI agent improvement through evolutionary knowledge distillation with adaptive document conditioning.
+This directory contains the complete LaTeX research paper for **PHOENIX (Progressive Hierarchical Optimization and Evolutionary Neural Intelligence eXtraction)**, a methodology that formalizes multi-generational AI agent improvement through evolutionary knowledge distillation with adaptive document conditioning.
 
 ## Paper Structure
 

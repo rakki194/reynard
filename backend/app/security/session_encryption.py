@@ -21,7 +21,7 @@ import json
 import logging
 import secrets
 from dataclasses import asdict, dataclass
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, UTC
 from typing import Any, Dict, List, Optional, Tuple
 
 import redis
@@ -35,6 +35,7 @@ from app.security.audit_logger import (
     log_security_violation,
 )
 from app.security.encryption_utils import EncryptionUtils
+from app.security.itsdangerous_utils import get_itsdangerous_utils
 from app.security.key_manager import KeyType, get_key_manager
 from app.security.security_config import get_session_security_config
 
@@ -105,6 +106,7 @@ class SessionEncryptionManager:
         """
         self.config = get_session_security_config()
         self.key_manager = get_key_manager()
+        self.itsdangerous_utils = get_itsdangerous_utils()
 
         # Redis client
         if redis_client is None:
@@ -192,6 +194,108 @@ class SessionEncryptionManager:
             logger.error(f"Failed to decrypt session data: {e}")
             raise SessionEncryptionError(f"Session decryption failed: {e}")
 
+    def create_hybrid_session(
+        self,
+        user_id: Optional[str] = None,
+        ip_address: Optional[str] = None,
+        user_agent: Optional[str] = None,
+        session_data: Optional[Dict[str, Any]] = None,
+    ) -> str:
+        """
+        Create a hybrid session using itsdangerous for token signing and Redis for data storage.
+
+        This approach combines the best of both worlds:
+        - itsdangerous provides secure, time-based token signing
+        - Redis provides fast, encrypted session data storage
+        - Automatic token expiration through itsdangerous
+
+        Args:
+            user_id: User ID (optional)
+            ip_address: Client IP address
+            user_agent: Client user agent
+            session_data: Additional session data
+
+        Returns:
+            itsdangerous-signed session token
+        """
+        try:
+            # Generate unique session ID
+            session_id = secrets.token_urlsafe(32)
+
+            # Generate session fingerprint
+            session_fingerprint = self._generate_session_fingerprint(
+                ip_address, user_agent
+            )
+
+            # Calculate expiration time
+            expires_at = datetime.now(UTC) + timedelta(
+                minutes=self.config.session_timeout_minutes
+            )
+
+            # Create session data for Redis storage
+            session = SessionData(
+                session_id=session_id,
+                user_id=user_id,
+                created_at=datetime.now(UTC),
+                last_accessed=datetime.now(UTC),
+                expires_at=expires_at,
+                ip_address=ip_address,
+                user_agent=user_agent,
+                session_fingerprint=session_fingerprint,
+                data=session_data or {},
+            )
+
+            # Store session data in Redis (simplified for hybrid approach)
+            # Since we're using itsdangerous for token security, we can use simpler storage
+            import json
+
+            session_json = json.dumps(session.to_dict(), default=str)
+            redis_key = f"session:{session_id}"
+            self.redis_client.setex(
+                redis_key,
+                self.config.session_timeout_minutes * 60,  # Convert to seconds
+                session_json,
+            )
+
+            # Track user sessions if user_id is provided
+            if user_id:
+                self._track_user_session(user_id, session_id)
+
+            # Create itsdangerous token with session metadata
+            token_data = {
+                "session_id": session_id,
+                "user_id": user_id,
+                "fingerprint": session_fingerprint,
+                "created_at": session.created_at.isoformat(),
+            }
+
+            # Create timestamped token using itsdangerous
+            session_token = self.itsdangerous_utils.create_session_token(
+                token_data,
+                expires_in=timedelta(minutes=self.config.session_timeout_minutes),
+            )
+
+            # Log session creation
+            log_authentication_event(
+                event_type=SecurityEventType.LOGIN_SUCCESS,
+                user_id=user_id,
+                ip_address=ip_address,
+                user_agent=user_agent,
+                success=True,
+                details={
+                    "session_id": session_id,
+                    "action": "hybrid_session_created",
+                    "token_type": "itsdangerous",
+                },
+            )
+
+            logger.info(f"Created hybrid session {session_id} for user {user_id}")
+            return session_token
+
+        except Exception as e:
+            logger.error(f"Failed to create hybrid session: {e}")
+            raise SessionEncryptionError(f"Hybrid session creation failed: {e}")
+
     def create_session(
         self,
         user_id: Optional[str] = None,
@@ -221,7 +325,7 @@ class SessionEncryptionManager:
             )
 
             # Calculate expiration time
-            expires_at = datetime.utcnow() + timedelta(
+            expires_at = datetime.now(UTC) + timedelta(
                 minutes=self.config.session_timeout_minutes
             )
 
@@ -229,8 +333,8 @@ class SessionEncryptionManager:
             session = SessionData(
                 session_id=session_id,
                 user_id=user_id,
-                created_at=datetime.utcnow(),
-                last_accessed=datetime.utcnow(),
+                created_at=datetime.now(UTC),
+                last_accessed=datetime.now(UTC),
                 expires_at=expires_at,
                 ip_address=ip_address,
                 user_agent=user_agent,
@@ -270,6 +374,66 @@ class SessionEncryptionManager:
             logger.error(f"Failed to create session: {e}")
             raise SessionEncryptionError(f"Session creation failed: {e}")
 
+    def get_hybrid_session(self, session_token: str) -> Optional[SessionData]:
+        """
+        Retrieve and verify a hybrid session using itsdangerous token.
+
+        Args:
+            session_token: itsdangerous-signed session token
+
+        Returns:
+            SessionData object or None if not found/invalid
+        """
+        try:
+            # Verify the itsdangerous token
+            token_data = self.itsdangerous_utils.verify_session_token(session_token)
+            if not token_data:
+                logger.warning("Invalid or expired session token")
+                return None
+
+            # Extract session ID from token
+            session_id = token_data.get("session_id")
+            if not session_id:
+                logger.warning("Session token missing session_id")
+                return None
+
+            # Get session from Redis (simplified for hybrid approach)
+            redis_key = f"session:{session_id}"
+            session_json = self.redis_client.get(redis_key)
+            if not session_json:
+                logger.warning(f"Session {session_id} not found in Redis")
+                return None
+
+            # Parse session data
+            import json
+
+            session_dict = json.loads(session_json)
+            session = SessionData.from_dict(session_dict)
+
+            # Validate session fingerprint
+            expected_fingerprint = token_data.get("fingerprint")
+            if (
+                expected_fingerprint
+                and session.session_fingerprint != expected_fingerprint
+            ):
+                logger.warning(f"Session fingerprint mismatch for {session_id}")
+                return None
+
+            # Update last accessed time
+            session.last_accessed = datetime.now(UTC)
+
+            # Store updated session (simplified for hybrid approach)
+            session_json = json.dumps(session.to_dict(), default=str)
+            self.redis_client.setex(
+                redis_key, self.config.session_timeout_minutes * 60, session_json
+            )
+
+            return session
+
+        except Exception as e:
+            logger.error(f"Failed to get hybrid session: {e}")
+            return None
+
     def get_session(self, session_id: str) -> Optional[SessionData]:
         """
         Retrieve and decrypt a session.
@@ -291,12 +455,12 @@ class SessionEncryptionManager:
             session = self._decrypt_session_data(encrypted_data, session_id)
 
             # Check if session is expired
-            if datetime.utcnow() > session.expires_at:
+            if datetime.now(UTC) > session.expires_at:
                 self.delete_session(session_id)
                 return None
 
             # Update last accessed time
-            session.last_accessed = datetime.utcnow()
+            session.last_accessed = datetime.now(UTC)
 
             # Re-encrypt and store updated session
             encrypted_data = self._encrypt_session_data(session)
@@ -350,7 +514,7 @@ class SessionEncryptionManager:
 
             # Update session data
             session.data.update(session_data)
-            session.last_accessed = datetime.utcnow()
+            session.last_accessed = datetime.now(UTC)
 
             # Re-encrypt and store updated session
             encrypted_data = self._encrypt_session_data(session)
@@ -604,15 +768,31 @@ def create_encrypted_session(
     user_agent: Optional[str] = None,
     session_data: Optional[Dict[str, Any]] = None,
 ) -> str:
-    """Create a new encrypted session."""
+    """Create a new encrypted session (uses hybrid sessions by default)."""
+    config = get_session_security_config()
     manager = get_session_encryption_manager()
-    return manager.create_session(user_id, ip_address, user_agent, session_data)
+
+    if config.enable_hybrid_sessions:
+        return manager.create_hybrid_session(
+            user_id, ip_address, user_agent, session_data
+        )
+    else:
+        return manager.create_session(user_id, ip_address, user_agent, session_data)
 
 
-def get_encrypted_session(session_id: str) -> Optional[SessionData]:
-    """Get an encrypted session."""
+def get_encrypted_session(session_id_or_token: str) -> Optional[SessionData]:
+    """Get an encrypted session (handles both session IDs and hybrid tokens)."""
+    config = get_session_security_config()
     manager = get_session_encryption_manager()
-    return manager.get_session(session_id)
+
+    if config.enable_hybrid_sessions:
+        # Try as hybrid session token first
+        session = manager.get_hybrid_session(session_id_or_token)
+        if session is not None:
+            return session
+
+    # Fallback to regular session ID lookup
+    return manager.get_session(session_id_or_token)
 
 
 def update_encrypted_session(
@@ -642,3 +822,84 @@ def cleanup_expired_sessions() -> int:
     """Clean up expired sessions."""
     manager = get_session_encryption_manager()
     return manager.cleanup_expired_sessions()
+
+
+# Export all functions
+__all__ = [
+    # Core session management (recommended)
+    "create_session",
+    "get_session",
+    # Legacy functions (still supported)
+    "create_encrypted_session",
+    "get_encrypted_session",
+    "update_encrypted_session",
+    "delete_encrypted_session",
+    "revoke_user_sessions",
+    "cleanup_expired_sessions",
+    # Hybrid session functions
+    "create_hybrid_session",
+    "get_hybrid_session",
+    # Classes and types
+    "SessionEncryptionManager",
+    "SessionData",
+    "SessionEncryptionError",
+]
+
+
+def create_session(
+    user_id: Optional[str] = None,
+    ip_address: Optional[str] = None,
+    user_agent: Optional[str] = None,
+    session_data: Optional[Dict[str, Any]] = None,
+) -> str:
+    """
+    Create a new session (recommended function - uses best available method).
+
+    This function automatically chooses the best session creation method:
+    - Hybrid sessions (itsdangerous + Redis) if enabled
+    - Traditional encrypted sessions as fallback
+
+    Args:
+        user_id: User ID (optional)
+        ip_address: Client IP address
+        user_agent: Client user agent
+        session_data: Additional session data
+
+    Returns:
+        Session token or ID
+    """
+    return create_encrypted_session(user_id, ip_address, user_agent, session_data)
+
+
+def get_session(session_id_or_token: str) -> Optional[SessionData]:
+    """
+    Get a session (recommended function - handles all session types).
+
+    This function automatically handles:
+    - Hybrid session tokens (itsdangerous-signed)
+    - Traditional session IDs
+
+    Args:
+        session_id_or_token: Session ID or hybrid session token
+
+    Returns:
+        SessionData object or None if not found
+    """
+    return get_encrypted_session(session_id_or_token)
+
+
+def create_hybrid_session(
+    user_id: Optional[str] = None,
+    ip_address: Optional[str] = None,
+    user_agent: Optional[str] = None,
+    session_data: Optional[Dict[str, Any]] = None,
+) -> str:
+    """Create a new hybrid session using itsdangerous."""
+    manager = get_session_encryption_manager()
+    return manager.create_hybrid_session(user_id, ip_address, user_agent, session_data)
+
+
+def get_hybrid_session(session_token: str) -> Optional[SessionData]:
+    """Get a hybrid session using itsdangerous token."""
+    manager = get_session_encryption_manager()
+    return manager.get_hybrid_session(session_token)

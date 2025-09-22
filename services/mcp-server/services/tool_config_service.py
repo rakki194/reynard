@@ -24,7 +24,9 @@ logger = logging.getLogger(__name__)
 class ToolConfigService:
     """Enhanced service for managing tool configurations with auto-sync capabilities."""
 
-    def __init__(self, config_file_path: str = "tool_config.json", tool_registry=None):
+    def __init__(
+        self, config_file_path: str = "tool_config.json", tool_registry: Any = None
+    ) -> None:
         """Initialize the enhanced tool configuration service."""
         logger.debug("🕐 Starting ToolConfigService.__init__")
         start_time = time.time()
@@ -79,7 +81,7 @@ class ToolConfigService:
             logger.error(f"Failed to save tool configuration: {e}")
             raise
 
-    def sync_tool_with_services(self, tool_metadata):
+    def sync_tool_with_services(self, tool_metadata: Any) -> None:
         """Sync a single tool with all configuration services."""
         # Sync with ToolConfigService
         self._sync_with_config_service(tool_metadata)
@@ -87,7 +89,7 @@ class ToolConfigService:
         # Update configuration file
         self._update_configuration_file()
 
-    def _sync_with_config_service(self, tool_metadata):
+    def _sync_with_config_service(self, tool_metadata: Any) -> None:
         """Sync tool with ToolConfigService."""
         tool_config = {
             "name": tool_metadata.name,
@@ -101,11 +103,11 @@ class ToolConfigService:
         # Update or create tool config
         self.update_tool_config(tool_metadata.name, tool_config)
 
-    def _update_configuration_file(self):
+    def _update_configuration_file(self) -> None:
         """Update the configuration file with current state."""
         self._save_config()
 
-    def auto_sync_all_tools(self):
+    def auto_sync_all_tools(self) -> None:
         """Auto-sync all tools from the registry."""
         if self.tool_registry:
             for tool_metadata in self.tool_registry.list_all_tools().values():
@@ -185,7 +187,7 @@ class ToolConfigService:
         disabled_tools = total_tools - enabled_tools
 
         # Count by category
-        categories = {}
+        categories: dict[str, int] = {}
         for tool in tools.values():
             category = tool.get("category", "unknown")
             categories[category] = categories.get(category, 0) + 1

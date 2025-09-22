@@ -172,5 +172,13 @@ __pycache__/
 *.generated.*
 *.auto.*
 
+# Cryptographic keys
+.keys/
+*.key
+*.pem
+*.crt
+*.p12
+*.pfx
+
 # Vitest coverage artifacts
 .vitest-coverage/

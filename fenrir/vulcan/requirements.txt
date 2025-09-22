@@ -1,0 +1,39 @@
+# VULCAN: Versatile Unified Learning Capability And Neural Training
+# Core dependencies for Qwen3-8B training with LoRA
+
+# Core ML frameworks
+torch
+transformers
+accelerate
+peft
+trl
+optimum
+
+# Training and optimization
+datasets
+tokenizers
+safetensors
+bitsandbytes
+
+# Monitoring and logging
+wandb
+tensorboard
+tqdm
+
+# Data processing
+numpy
+pandas
+scikit-learn
+
+# Configuration and utilities
+pyyaml
+hydra-core
+omegaconf
+rich
+
+# Development and testing
+pytest
+pytest-asyncio
+black
+flake8
+mypy

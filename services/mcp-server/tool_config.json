@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "last_updated": "2025-09-21T18:37:13.931594",
+  "last_updated": "2025-09-22T09:47:24.700369",
   "tools": {
     "generate_agent_name": {
       "name": "generate_agent_name",
@@ -246,7 +246,7 @@
       "name": "lint_python",
       "category": "linting",
       "enabled": true,
-      "description": "Flake8, Pylint for Python (with auto-fix)",
+      "description": "Flake8, Pylint for Python (with auto-fix and error limiting)",
       "dependencies": [],
       "config": {}
     },
@@ -426,67 +426,59 @@
       "dependencies": [],
       "config": {}
     },
-    "git_add": {
-      "name": "git_add",
-      "category": "git",
+    "create_agent_email_template": {
+      "name": "create_agent_email_template",
+      "category": "email",
       "enabled": true,
-      "description": "Add files to Git staging area",
+      "description": "Create an email template for an agent",
       "dependencies": [],
       "config": {}
     },
-    "git_branch_info": {
-      "name": "git_branch_info",
-      "category": "git",
+    "get_agent_email_config": {
+      "name": "get_agent_email_config",
+      "category": "email",
       "enabled": true,
-      "description": "Get current branch information",
+      "description": "Get email configuration for an agent",
       "dependencies": [],
       "config": {}
     },
-    "git_commit": {
-      "name": "git_commit",
-      "category": "git",
+    "get_agent_email_stats": {
+      "name": "get_agent_email_stats",
+      "category": "email",
       "enabled": true,
-      "description": "Create a new commit",
+      "description": "Get email statistics for an agent",
       "dependencies": [],
       "config": {}
     },
-    "git_commit_history": {
-      "name": "git_commit_history",
-      "category": "git",
+    "send_agent_email": {
+      "name": "send_agent_email",
+      "category": "email",
       "enabled": true,
-      "description": "Get recent commit history",
+      "description": "Send email from one agent to another",
       "dependencies": [],
       "config": {}
     },
-    "git_diff": {
-      "name": "git_diff",
-      "category": "git",
+    "setup_agent_email": {
+      "name": "setup_agent_email",
+      "category": "email",
       "enabled": true,
-      "description": "Get diff of current changes",
+      "description": "Setup email configuration for an agent",
       "dependencies": [],
       "config": {}
     },
-    "git_pull": {
-      "name": "git_pull",
-      "category": "git",
+    "trigger_agent_automated_email": {
+      "name": "trigger_agent_automated_email",
+      "category": "email",
       "enabled": true,
-      "description": "Pull latest changes from remote repository",
+      "description": "Trigger automated email for an agent based on events",
       "dependencies": [],
       "config": {}
     },
-    "git_push": {
-      "name": "git_push",
-      "category": "git",
+    "invoke_success_advisor_8": {
+      "name": "invoke_success_advisor_8",
+      "category": "agent",
       "enabled": true,
-      "description": "Push commits to remote repository",
-      "dependencies": [],
-      "config": {}
-    },
-    "git_status": {
-      "name": "git_status",
-      "category": "git",
-      "enabled": true,
-      "description": "Get current Git repository status",
+      "description": "Invoke Success-Advisor-8 spirit inhabitation through ECS API",
       "dependencies": [],
       "config": {}
     },
@@ -554,6 +546,94 @@
       "dependencies": [],
       "config": {}
     },
+    "get_mermaid_diagram_stats": {
+      "name": "get_mermaid_diagram_stats",
+      "category": "visualization",
+      "enabled": true,
+      "description": "Get statistics and analysis of a mermaid diagram",
+      "dependencies": [],
+      "config": {}
+    },
+    "render_mermaid_to_png": {
+      "name": "render_mermaid_to_png",
+      "category": "visualization",
+      "enabled": true,
+      "description": "Render mermaid diagram to PNG format",
+      "dependencies": [],
+      "config": {}
+    },
+    "test_mermaid_render": {
+      "name": "test_mermaid_render",
+      "category": "visualization",
+      "enabled": true,
+      "description": "Test mermaid diagram rendering with a simple example",
+      "dependencies": [],
+      "config": {}
+    },
+    "git_add": {
+      "name": "git_add",
+      "category": "git",
+      "enabled": true,
+      "description": "Add files to Git staging area",
+      "dependencies": [],
+      "config": {}
+    },
+    "git_branch_info": {
+      "name": "git_branch_info",
+      "category": "git",
+      "enabled": true,
+      "description": "Get current branch information",
+      "dependencies": [],
+      "config": {}
+    },
+    "git_commit": {
+      "name": "git_commit",
+      "category": "git",
+      "enabled": true,
+      "description": "Create a new commit",
+      "dependencies": [],
+      "config": {}
+    },
+    "git_commit_history": {
+      "name": "git_commit_history",
+      "category": "git",
+      "enabled": true,
+      "description": "Get recent commit history",
+      "dependencies": [],
+      "config": {}
+    },
+    "git_diff": {
+      "name": "git_diff",
+      "category": "git",
+      "enabled": true,
+      "description": "Get diff of current changes",
+      "dependencies": [],
+      "config": {}
+    },
+    "git_pull": {
+      "name": "git_pull",
+      "category": "git",
+      "enabled": true,
+      "description": "Pull latest changes from remote repository",
+      "dependencies": [],
+      "config": {}
+    },
+    "git_push": {
+      "name": "git_push",
+      "category": "git",
+      "enabled": true,
+      "description": "Push commits to remote repository",
+      "dependencies": [],
+      "config": {}
+    },
+    "git_status": {
+      "name": "git_status",
+      "category": "git",
+      "enabled": true,
+      "description": "Get current Git repository status",
+      "dependencies": [],
+      "config": {}
+    },
     "check_secret": {
       "name": "check_secret",
       "category": "secrets",
@@ -586,78 +666,6 @@
       "dependencies": [],
       "config": {}
     },
-    "create_agent_email_template": {
-      "name": "create_agent_email_template",
-      "category": "email",
-      "enabled": true,
-      "description": "Create an email template for an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_agent_email_config": {
-      "name": "get_agent_email_config",
-      "category": "email",
-      "enabled": true,
-      "description": "Get email configuration for an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_agent_email_stats": {
-      "name": "get_agent_email_stats",
-      "category": "email",
-      "enabled": true,
-      "description": "Get email statistics for an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "send_agent_email": {
-      "name": "send_agent_email",
-      "category": "email",
-      "enabled": true,
-      "description": "Send email from one agent to another",
-      "dependencies": [],
-      "config": {}
-    },
-    "setup_agent_email": {
-      "name": "setup_agent_email",
-      "category": "email",
-      "enabled": true,
-      "description": "Setup email configuration for an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "trigger_agent_automated_email": {
-      "name": "trigger_agent_automated_email",
-      "category": "email",
-      "enabled": true,
-      "description": "Trigger automated email for an agent based on events",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_mermaid_diagram_stats": {
-      "name": "get_mermaid_diagram_stats",
-      "category": "visualization",
-      "enabled": true,
-      "description": "Get statistics and analysis of a mermaid diagram",
-      "dependencies": [],
-      "config": {}
-    },
-    "render_mermaid_to_png": {
-      "name": "render_mermaid_to_png",
-      "category": "visualization",
-      "enabled": true,
-      "description": "Render mermaid diagram to PNG format",
-      "dependencies": [],
-      "config": {}
-    },
-    "test_mermaid_render": {
-      "name": "test_mermaid_render",
-      "category": "visualization",
-      "enabled": true,
-      "description": "Test mermaid diagram rendering with a simple example",
-      "dependencies": [],
-      "config": {}
-    },
     "execute_vscode_task": {
       "name": "execute_vscode_task",
       "category": "vscode",
@@ -679,14 +687,6 @@
       "category": "vscode",
       "enabled": true,
       "description": "Validate that a VS Code task exists and is executable",
-      "dependencies": [],
-      "config": {}
-    },
-    "invoke_success_advisor_8": {
-      "name": "invoke_success_advisor_8",
-      "category": "agent",
-      "enabled": true,
-      "description": "Invoke Success-Advisor-8 spirit inhabitation through ECS API",
       "dependencies": [],
       "config": {}
     }

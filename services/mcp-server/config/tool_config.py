@@ -46,14 +46,14 @@ class ToolConfig:
     category: ToolCategory
     enabled: bool = True
     description: str = ""
-    dependencies: list[str] = None
-    config: dict[str, Any] = None
+    dependencies: list[str] | None = None
+    config: dict[str, Any] | None = None
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         if self.dependencies is None:
-            self.dependencies = []
+            object.__setattr__(self, "dependencies", [])
         if self.config is None:
-            self.config = {}
+            object.__setattr__(self, "config", {})
 
 
 @dataclass
@@ -168,8 +168,9 @@ class ToolConfigManager:
             }
 
             for name, tool_config in self._config.tools.items():
-                data["tools"][name] = asdict(tool_config)
-                data["tools"][name]["category"] = tool_config.category.value
+                tool_dict = asdict(tool_config)
+                tool_dict["category"] = tool_config.category.value
+                data["tools"][name] = tool_dict
 
             with open(self.config_path, "w") as f:
                 json.dump(data, f, indent=2)
