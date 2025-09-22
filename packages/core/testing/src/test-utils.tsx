@@ -5,7 +5,7 @@
  * duplication across Reynard packages and standardize common
  * testing patterns for components, APIs, validation, and performance.
  */
-import { cleanup, render, waitFor, RenderResult } from "@solidjs/testing-library";
+import { cleanup, render, waitFor } from "@solidjs/testing-library";
 import { createComponent, createContext, createEffect, createSignal, useContext, Component, JSX } from "solid-js";
 import { afterEach, beforeEach, expect, vi } from "vitest";
 
@@ -183,7 +183,7 @@ function suppressConsoleWarnings() {
 /**
  * Test component rendering with standard setup and provider support
  */
-export async function testComponentRendering(Component: Component<any>, options: ComponentTestOptions = {}): Promise<RenderResult> {
+export async function testComponentRendering(Component: Component<any>, options: ComponentTestOptions = {}) {
   const { props = {}, wrapper, providers = [] } = options;
   // Render with providers
   let renderResult;
@@ -237,7 +237,7 @@ export async function testComponentErrorHandling(Component: Component<any>, erro
   const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
   try {
     const renderResult = await testComponentRendering(Component, options);
-    errorTrigger();
+    errorTrigger.action();
     // Wait for error to be handled
     await waitFor(() => {
       expect(consoleSpy).toHaveBeenCalled();
@@ -308,20 +308,28 @@ export async function testAPIRetry(apiCall: () => Promise<any>, retryCount = 3, 
 /**
  * Test validation function with comprehensive valid/invalid value testing
  */
-export function testValidation(validator: (value: any) => boolean, options: ValidationTestOptions = {}) {
+export function testValidation(validator: (value: any) => any, options: ValidationTestOptions = {}) {
   const { validValues = [], invalidValues = [], errorMessages = [] } = options;
   // Test valid values
   validValues.forEach((value: any) => {
     const result = validator(value);
-    expect(result.isValid).toBe(true);
-    expect(result.error).toBeUndefined();
+    if (typeof result === 'object' && result !== null) {
+      expect(result.isValid).toBe(true);
+      expect(result.error).toBeUndefined();
+    } else {
+      expect(result).toBe(true);
+    }
   });
   // Test invalid values
   invalidValues.forEach((value: any, index: number) => {
     const result = validator(value);
-    expect(result.isValid).toBe(false);
-    if (errorMessages[index]) {
-      expect(result.error).toContain(errorMessages[index]);
+    if (typeof result === 'object' && result !== null) {
+      expect(result.isValid).toBe(false);
+      if (errorMessages[index]) {
+        expect(result.error).toContain(errorMessages[index]);
+      }
+    } else {
+      expect(result).toBe(false);
     }
   });
 }
@@ -535,7 +543,7 @@ export function useTestAppContext() {
 /**
  * Render with theme provider
  */
-export function renderWithTheme(ui: () => JSX.Element, theme: any = { name: "light", colors: {} }, options: RenderOptions = {}) {
+export function renderWithTheme(ui: () => JSX.Element, theme: any = { name: "light", colors: {} }, options: RenderOptions = {}): any {
   const ThemeProvider = (props: any) => {
     return createComponent(() => props.children, { theme });
   };
@@ -544,7 +552,7 @@ export function renderWithTheme(ui: () => JSX.Element, theme: any = { name: "lig
 /**
  * Render with router context
  */
-export function renderWithRouter(ui: () => JSX.Element, initialUrl = "/", options: RenderOptions = {}) {
+export function renderWithRouter(ui: () => JSX.Element, initialUrl = "/", options: RenderOptions = {}): any {
   const RouterProvider = (props: any) => {
     // Mock router context
     const routerContext = {
@@ -571,13 +579,13 @@ export function renderWithRouter(ui: () => JSX.Element, initialUrl = "/", option
 /**
  * Render with app context
  */
-export function renderWithAppContext(ui: () => JSX.Element, options: RenderOptions = {}) {
+export function renderWithAppContext(ui: () => JSX.Element, options: RenderOptions = {}): any {
   return render(() => <TestAppProvider>{ui()}</TestAppProvider>, options);
 }
 /**
  * Render with multiple providers
  */
-export function renderWithProviders(ui: () => JSX.Element, providers: Component<any>[] = [], options: RenderOptions = {}) {
+export function renderWithProviders(ui: () => JSX.Element, providers: Component<any>[] = [], options: RenderOptions = {}): any {
   const Wrapper = (props: any) => {
     return providers.reduceRight((element: JSX.Element, Provider: Component<any>) => {
       return <Provider>{element}</Provider>;

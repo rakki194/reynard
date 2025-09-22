@@ -126,7 +126,7 @@ Options:
 
 Examples:
   i18n-lint                                    # Run with default settings
-  i18n-lint --packages packages/i18n,packages/ui  # Check specific packages
+  i18n-lint --packages packages/core/i18n,packages/ui  # Check specific packages
   i18n-lint --locales en,es                    # Check specific locales
   i18n-lint --no-hardcoded-strings             # Skip hardcoded string detection
 `);

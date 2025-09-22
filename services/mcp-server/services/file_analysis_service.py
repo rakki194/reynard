@@ -12,6 +12,7 @@ an otter explores a stream - every metric is a treasure to discover!
 
 import os
 from pathlib import Path
+from typing import Any
 
 
 class FileAnalysisService:
@@ -160,3 +161,32 @@ class FileAnalysisService:
             pass
 
         return stats
+
+    async def analyze_file_complexity(
+        self, file_path: str, include_ast_analysis: bool = True
+    ) -> dict[str, Any]:
+        """
+        Analyze file complexity metrics.
+
+        This method provides backward compatibility for any code that might
+        be calling file_analysis.analyze_file_complexity() directly.
+
+        Args:
+            file_path: Path to the file to analyze
+            include_ast_analysis: Whether to include AST analysis
+
+        Returns:
+            Dictionary containing file complexity metrics
+        """
+        # Import here to avoid circular imports
+        from services.monolith_analysis_service import MonolithAnalysisService
+
+        # Create a monolith analysis service instance
+        monolith_analysis = MonolithAnalysisService()
+
+        # Delegate to the monolith analysis service for consistency
+        return await monolith_analysis.analyze_file_metrics(
+            file_path=file_path,
+            exclude_comments=True,
+            include_ast=include_ast_analysis
+        )

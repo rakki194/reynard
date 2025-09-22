@@ -399,7 +399,7 @@ i18n-checks:
     - npm ci
   script:
     - npx i18n-lint --packages packages/* --locales en,es,fr,de,ru,ar
-    - npx vitest run packages/i18n --coverage
+    - npx vitest run packages/core/i18n --coverage
   artifacts:
     reports:
       coverage_report:

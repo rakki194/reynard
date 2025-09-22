@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 ### Changed
+- **Media Setup Refactoring**: Broke down media-setup.ts monolith (327 lines) into modular components: file-mocks.ts (100 lines), media-mocks.ts (73 lines), canvas-mocks.ts (116 lines), and streamlined main setup (19 lines) - now follows 140-line axiom (Lutra-Oracle-97)
+
+### Changed
 
 ### Deprecated
 

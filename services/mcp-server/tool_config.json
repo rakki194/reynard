@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "last_updated": "2025-09-22T16:18:23.207410",
+  "last_updated": "2025-09-22T17:13:06.720642",
   "tools": {
     "generate_agent_name": {
       "name": "generate_agent_name",
@@ -412,161 +412,17 @@
     },
     "detect_monoliths": {
       "name": "detect_monoliths",
-      "category": "analysis",
+      "category": "monolith",
       "enabled": true,
-      "description": "🔥 Detect large monolithic files that violate the 140-line axiom with RAG acceleration. Perfect for finding code that needs refactoring into smaller, more maintainable modules. Use this to identify files that are too complex and should be broken down.",
+      "description": "Detect large monolithic files that violate the 140-line axiom",
       "dependencies": [],
       "config": {}
     },
     "analyze_file_complexity": {
       "name": "analyze_file_complexity",
-      "category": "analysis",
+      "category": "monolith",
       "enabled": true,
-      "description": "🔍 Deep-dive analysis of a specific file's complexity metrics with intelligent caching. Perfect for understanding why a file is considered a monolith and what specific refactoring opportunities exist.",
-      "dependencies": [],
-      "config": {}
-    },
-    "create_agent_email_template": {
-      "name": "create_agent_email_template",
-      "category": "email",
-      "enabled": true,
-      "description": "Create an email template for an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_agent_email_config": {
-      "name": "get_agent_email_config",
-      "category": "email",
-      "enabled": true,
-      "description": "Get email configuration for an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_agent_email_stats": {
-      "name": "get_agent_email_stats",
-      "category": "email",
-      "enabled": true,
-      "description": "Get email statistics for an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "send_agent_email": {
-      "name": "send_agent_email",
-      "category": "email",
-      "enabled": true,
-      "description": "Send email from one agent to another",
-      "dependencies": [],
-      "config": {}
-    },
-    "setup_agent_email": {
-      "name": "setup_agent_email",
-      "category": "email",
-      "enabled": true,
-      "description": "Setup email configuration for an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "trigger_agent_automated_email": {
-      "name": "trigger_agent_automated_email",
-      "category": "email",
-      "enabled": true,
-      "description": "Trigger automated email for an agent based on events",
-      "dependencies": [],
-      "config": {}
-    },
-    "invoke_success_advisor_8": {
-      "name": "invoke_success_advisor_8",
-      "category": "agent",
-      "enabled": true,
-      "description": "Invoke Success-Advisor-8 spirit inhabitation through ECS API",
-      "dependencies": [],
-      "config": {}
-    },
-    "find_ecs_agent": {
-      "name": "find_ecs_agent",
-      "category": "social",
-      "enabled": true,
-      "description": "Find an agent in the ECS world by name or ID with flexible matching",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_agent_relationships": {
-      "name": "get_agent_relationships",
-      "category": "social",
-      "enabled": true,
-      "description": "Get all relationships for an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_agent_social_stats": {
-      "name": "get_agent_social_stats",
-      "category": "social",
-      "enabled": true,
-      "description": "Get social interaction statistics for an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_ecs_world_status": {
-      "name": "get_ecs_world_status",
-      "category": "social",
-      "enabled": true,
-      "description": "Get the current status of the ECS world including agent counts and system health",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_interaction_history": {
-      "name": "get_interaction_history",
-      "category": "social",
-      "enabled": true,
-      "description": "Get the interaction history for an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_nearby_agents": {
-      "name": "get_nearby_agents",
-      "category": "social",
-      "enabled": true,
-      "description": "Get all agents within a certain radius of an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "initiate_interaction": {
-      "name": "initiate_interaction",
-      "category": "social",
-      "enabled": true,
-      "description": "Initiate an interaction between two agents",
-      "dependencies": [],
-      "config": {}
-    },
-    "send_chat_message": {
-      "name": "send_chat_message",
-      "category": "social",
-      "enabled": true,
-      "description": "Send a chat message from one agent to another with automatic agent ID resolution",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_mermaid_diagram_stats": {
-      "name": "get_mermaid_diagram_stats",
-      "category": "visualization",
-      "enabled": true,
-      "description": "Get statistics and analysis of a mermaid diagram",
-      "dependencies": [],
-      "config": {}
-    },
-    "render_mermaid_to_png": {
-      "name": "render_mermaid_to_png",
-      "category": "visualization",
-      "enabled": true,
-      "description": "Render mermaid diagram to PNG format",
-      "dependencies": [],
-      "config": {}
-    },
-    "test_mermaid_render": {
-      "name": "test_mermaid_render",
-      "category": "visualization",
-      "enabled": true,
-      "description": "Test mermaid diagram rendering with a simple example",
+      "description": "Deep-dive analysis of a specific file's complexity metrics",
       "dependencies": [],
       "config": {}
     },
@@ -634,6 +490,70 @@
       "dependencies": [],
       "config": {}
     },
+    "find_ecs_agent": {
+      "name": "find_ecs_agent",
+      "category": "social",
+      "enabled": true,
+      "description": "Find an agent in the ECS world by name or ID with flexible matching",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_agent_relationships": {
+      "name": "get_agent_relationships",
+      "category": "social",
+      "enabled": true,
+      "description": "Get all relationships for an agent",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_agent_social_stats": {
+      "name": "get_agent_social_stats",
+      "category": "social",
+      "enabled": true,
+      "description": "Get social interaction statistics for an agent",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_ecs_world_status": {
+      "name": "get_ecs_world_status",
+      "category": "social",
+      "enabled": true,
+      "description": "Get the current status of the ECS world including agent counts and system health",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_interaction_history": {
+      "name": "get_interaction_history",
+      "category": "social",
+      "enabled": true,
+      "description": "Get the interaction history for an agent",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_nearby_agents": {
+      "name": "get_nearby_agents",
+      "category": "social",
+      "enabled": true,
+      "description": "Get all agents within a certain radius of an agent",
+      "dependencies": [],
+      "config": {}
+    },
+    "initiate_interaction": {
+      "name": "initiate_interaction",
+      "category": "social",
+      "enabled": true,
+      "description": "Initiate an interaction between two agents",
+      "dependencies": [],
+      "config": {}
+    },
+    "send_chat_message": {
+      "name": "send_chat_message",
+      "category": "social",
+      "enabled": true,
+      "description": "Send a chat message from one agent to another with automatic agent ID resolution",
+      "dependencies": [],
+      "config": {}
+    },
     "check_secret": {
       "name": "check_secret",
       "category": "secrets",
@@ -666,6 +586,78 @@
       "dependencies": [],
       "config": {}
     },
+    "create_agent_email_template": {
+      "name": "create_agent_email_template",
+      "category": "email",
+      "enabled": true,
+      "description": "Create an email template for an agent",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_agent_email_config": {
+      "name": "get_agent_email_config",
+      "category": "email",
+      "enabled": true,
+      "description": "Get email configuration for an agent",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_agent_email_stats": {
+      "name": "get_agent_email_stats",
+      "category": "email",
+      "enabled": true,
+      "description": "Get email statistics for an agent",
+      "dependencies": [],
+      "config": {}
+    },
+    "send_agent_email": {
+      "name": "send_agent_email",
+      "category": "email",
+      "enabled": true,
+      "description": "Send email from one agent to another",
+      "dependencies": [],
+      "config": {}
+    },
+    "setup_agent_email": {
+      "name": "setup_agent_email",
+      "category": "email",
+      "enabled": true,
+      "description": "Setup email configuration for an agent",
+      "dependencies": [],
+      "config": {}
+    },
+    "trigger_agent_automated_email": {
+      "name": "trigger_agent_automated_email",
+      "category": "email",
+      "enabled": true,
+      "description": "Trigger automated email for an agent based on events",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_mermaid_diagram_stats": {
+      "name": "get_mermaid_diagram_stats",
+      "category": "visualization",
+      "enabled": true,
+      "description": "Get statistics and analysis of a mermaid diagram",
+      "dependencies": [],
+      "config": {}
+    },
+    "render_mermaid_to_png": {
+      "name": "render_mermaid_to_png",
+      "category": "visualization",
+      "enabled": true,
+      "description": "Render mermaid diagram to PNG format",
+      "dependencies": [],
+      "config": {}
+    },
+    "test_mermaid_render": {
+      "name": "test_mermaid_render",
+      "category": "visualization",
+      "enabled": true,
+      "description": "Test mermaid diagram rendering with a simple example",
+      "dependencies": [],
+      "config": {}
+    },
     "execute_vscode_task": {
       "name": "execute_vscode_task",
       "category": "vscode",
@@ -687,6 +679,14 @@
       "category": "vscode",
       "enabled": true,
       "description": "Validate that a VS Code task exists and is executable",
+      "dependencies": [],
+      "config": {}
+    },
+    "invoke_success_advisor_8": {
+      "name": "invoke_success_advisor_8",
+      "category": "agent",
+      "enabled": true,
+      "description": "Invoke Success-Advisor-8 spirit inhabitation through ECS API",
       "dependencies": [],
       "config": {}
     }
