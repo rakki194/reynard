@@ -44,6 +44,18 @@ export function getEnabledPackagePaths(): string[] {
  * Resolve package path relative to the Reynard root directory
  */
 function resolvePackagePath(relativePath: string): string {
+  // If we're in the testing package, go up two levels to get to the root
+  if (process.cwd().includes("packages/core/testing")) {
+    const rootDir = resolve(process.cwd(), "../../../..");
+    return resolve(rootDir, relativePath);
+  }
+  
+  // If we're in any packages subdirectory, go up to the root
+  if (process.cwd().includes("packages/")) {
+    const rootDir = resolve(process.cwd(), "../../..");
+    return resolve(rootDir, relativePath);
+  }
+
   // Try to find the Reynard root directory by looking for package.json with "reynard" in name
   let currentDir = process.cwd();
   let rootDir = currentDir;
@@ -56,7 +68,7 @@ function resolvePackagePath(relativePath: string): string {
       if (fs.existsSync(packageJsonPath)) {
         const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
         // Look for the main Reynard package.json (not the testing package)
-        if (packageJson.name && packageJson.name.includes("reynard") && !packageJson.name.includes("testing")) {
+        if (packageJson.name && packageJson.name === "reynard") {
           rootDir = currentDir;
           break;
         }
@@ -65,11 +77,6 @@ function resolvePackagePath(relativePath: string): string {
       // Continue searching
     }
     currentDir = resolve(currentDir, "..");
-  }
-
-  // If we're in the testing package, go up two levels to get to the root
-  if (process.cwd().includes("packages/testing")) {
-    rootDir = resolve(process.cwd(), "../..");
   }
 
   return resolve(rootDir, relativePath);
