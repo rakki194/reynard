@@ -44,42 +44,52 @@ export function getEnabledPackagePaths(): string[] {
  * Resolve package path relative to the Reynard root directory
  */
 function resolvePackagePath(relativePath: string): string {
-  // If we're in the testing package, go up two levels to get to the root
-  if (process.cwd().includes("packages/core/testing")) {
-    const rootDir = resolve(process.cwd(), "../../../..");
-    return resolve(rootDir, relativePath);
+  const currentDir = process.cwd();
+  console.log(`🔍 Resolving path for: ${relativePath}`);
+  console.log(`🔍 Current directory: ${currentDir}`);
+  
+  // If we're in the testing package, go up four levels to get to the root
+  if (currentDir.includes("packages/core/testing")) {
+    const rootDir = resolve(currentDir, "../../../../..");
+    const result = resolve(rootDir, relativePath);
+    console.log(`🔍 Testing package detected, root: ${rootDir}, result: ${result}`);
+    return result;
   }
   
   // If we're in any packages subdirectory, go up to the root
-  if (process.cwd().includes("packages/")) {
-    const rootDir = resolve(process.cwd(), "../../..");
-    return resolve(rootDir, relativePath);
+  if (currentDir.includes("packages/")) {
+    const rootDir = resolve(currentDir, "../../..");
+    const result = resolve(rootDir, relativePath);
+    console.log(`🔍 Packages subdirectory detected, root: ${rootDir}, result: ${result}`);
+    return result;
   }
 
   // Try to find the Reynard root directory by looking for package.json with "reynard" in name
-  let currentDir = process.cwd();
+  let searchDir = currentDir;
   let rootDir = currentDir;
 
   // Walk up the directory tree to find the root
-  while (currentDir !== "/") {
+  while (searchDir !== "/") {
     try {
-      const packageJsonPath = resolve(currentDir, "package.json");
+      const packageJsonPath = resolve(searchDir, "package.json");
       const fs = require("fs");
       if (fs.existsSync(packageJsonPath)) {
         const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
         // Look for the main Reynard package.json (not the testing package)
         if (packageJson.name && packageJson.name === "reynard") {
-          rootDir = currentDir;
+          rootDir = searchDir;
           break;
         }
       }
     } catch (error) {
       // Continue searching
     }
-    currentDir = resolve(currentDir, "..");
+    searchDir = resolve(searchDir, "..");
   }
 
-  return resolve(rootDir, relativePath);
+  const result = resolve(rootDir, relativePath);
+  console.log(`🔍 Found root: ${rootDir}, result: ${result}`);
+  return result;
 }
 
 /**
