@@ -363,7 +363,7 @@ if gh run view $LATEST_FAILED_RUN --log-failed | grep -q "Missing i18n test file
     # Create missing i18n test files
     mkdir -p packages/components/src/__tests__
     mkdir -p packages/core/src/__tests__
-    mkdir -p packages/i18n/src/__tests__
+    mkdir -p packages/core/i18n/src/__tests__
 
     # Create basic i18n test files
     cat > packages/components/src/__tests__/i18n.test.ts << 'EOF'
@@ -386,7 +386,7 @@ describe("Core i18n", () => {
 });
 EOF
 
-    cat > packages/i18n/src/__tests__/i18n.test.ts << 'EOF'
+    cat > packages/core/i18n/src/__tests__/i18n.test.ts << 'EOF'
 import { describe, it, expect } from "vitest";
 
 describe("i18n Package", () => {

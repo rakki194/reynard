@@ -100,7 +100,7 @@ reynard/                          # Monorepo root (NO src/ here)
    `packages/testing/src/__tests__/test-utils.test.tsx`).
 
 4. **Internationalization Tests**: Tests for translation and localization
-   features are in `packages/i18n/src/__tests__/` (e.g., `packages/i18n/src/__tests__/i18n.test.ts`).
+   features are in `packages/core/i18n/src/__tests__/` (e.g., `packages/core/i18n/src/__tests__/i18n.test.ts`).
 
 When writing tests, place them in the appropriate package's `src/__tests__/` directory with descriptive
 names that indicate what they're testing. Use the shared helpers from the

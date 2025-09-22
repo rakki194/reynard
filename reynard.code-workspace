@@ -74,7 +74,7 @@
     },
     {
       "name": "🌐 I18n",
-      "path": "./packages/i18n",
+      "path": "./packages/core/i18n",
     },
     {
       "name": "🔍 RAG",

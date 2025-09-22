@@ -157,7 +157,7 @@ _Target: Major Violators - 300-500 line files_
 
 #### Quest 4: Split the i18n Test Suite ✅ **COMPLETED**
 
-**Target**: `packages/i18n/src/__tests__/i18n-core.test.ts` (775 → 150 lines)
+**Target**: `packages/core/i18n/src/__tests__/i18n-core.test.ts` (775 → 150 lines)
 **Difficulty**: ⭐⭐⭐ (Rare)
 
 > _Reward**: 300 XP + "Test Splitter" Badge ✅ **CLAIMED_
@@ -293,7 +293,7 @@ _Target: Remaining 200-300 line files_
 
 #### Quest 8: i18n Types Refactoring ✅ **COMPLETED**
 
-**Target**: `packages/i18n/src/types.ts` (657 → 103 lines)
+**Target**: `packages/core/i18n/src/types.ts` (657 → 103 lines)
 **Difficulty**: ⭐⭐⭐ (Rare)
 
 > _Reward**: 300 XP + "Type Master" Badge ✅ **CLAIMED_

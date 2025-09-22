@@ -183,7 +183,7 @@ function suppressConsoleWarnings() {
 /**
  * Test component rendering with standard setup and provider support
  */
-export async function testComponentRendering(Component: Component<any>, options: ComponentTestOptions = {}) {
+export async function testComponentRendering(Component: Component<any>, options: ComponentTestOptions = {}): Promise<any> {
   const { props = {}, wrapper, providers = [] } = options;
   // Render with providers
   let renderResult;
@@ -219,7 +219,7 @@ export async function testComponentRendering(Component: Component<any>, options:
 /**
  * Test component with signal updates
  */
-export async function testComponentWithSignals(Component: Component<any>, signalUpdates: SignalUpdate[], options: ComponentTestOptions = {}) {
+export async function testComponentWithSignals(Component: Component<any>, signalUpdates: SignalUpdate[], options: ComponentTestOptions = {}): Promise<any> {
   const renderResult = await testComponentRendering(Component, options);
   // Apply signal updates
   for (const update of signalUpdates) {
@@ -233,7 +233,7 @@ export async function testComponentWithSignals(Component: Component<any>, signal
 /**
  * Test component error handling
  */
-export async function testComponentErrorHandling(Component: Component<any>, errorTrigger: ErrorTrigger, options: ComponentTestOptions = {}) {
+export async function testComponentErrorHandling(Component: Component<any>, errorTrigger: ErrorTrigger, options: ComponentTestOptions = {}): Promise<any> {
   const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
   try {
     const renderResult = await testComponentRendering(Component, options);

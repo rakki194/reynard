@@ -25,7 +25,7 @@ project.
 import { runI18nTests, generateI18nReport } from "reynard-testing";
 
 const config = {
-  packages: ["packages/ui", "packages/i18n"],
+  packages: ["packages/ui", "packages/core/i18n"],
   locales: ["en", "es", "fr", "de", "ru", "ar"],
   checkHardcodedStrings: true,
   validateCompleteness: true,
@@ -61,7 +61,7 @@ module.exports = {
 npx i18n-lint
 
 # Check specific packages
-npx i18n-lint --packages packages/ui,packages/i18n
+npx i18n-lint --packages packages/ui,packages/core/i18n
 
 # Check specific locales
 npx i18n-lint --locales en,es,fr
@@ -259,7 +259,7 @@ jobs:
       - name: Run i18n linting
         run: npx i18n-lint --packages packages/* --locales en,es,fr,de,ru,ar
       - name: Run i18n tests
-        run: npx vitest run packages/i18n --coverage
+        run: npx vitest run packages/core/i18n --coverage
 ```
 
 ### GitLab CI
@@ -275,7 +275,7 @@ i18n-checks:
     - npm ci
   script:
     - npx i18n-lint --packages packages/* --locales en,es,fr,de,ru,ar
-    - npx vitest run packages/i18n --coverage
+    - npx vitest run packages/core/i18n --coverage
   artifacts:
     reports:
       coverage_report:

@@ -36,7 +36,7 @@ ensure no more than 4 vitest processes run concurrently.
 
 - `packages/themes/package.json` - Agent: `themes-package`
 - `packages/fluent-icons/package.json` - Agent: `fluent-icons-package`
-- `packages/i18n/package.json` - Agent: `i18n-package`
+- `packages/core/i18n/package.json` - Agent: `i18n-package`
 - `packages/auth/package.json` - Agent: `auth-package`
 - `packages/chat/package.json` - Agent: `chat-package`
 
