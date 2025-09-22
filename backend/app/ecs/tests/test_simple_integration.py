@@ -2,19 +2,19 @@
 Simple integration test to verify basic functionality without file system operations.
 """
 
-import pytest
+import sys
 import tempfile
 from datetime import datetime
 from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock, patch
 
-import sys
-from pathlib import Path
+import pytest
+
 sys.path.append(str(Path(__file__).parent.parent))
 
-from services.unified_agent_manager import UnifiedAgentStateManager, AgentState
-from services.legacy_tracking_service import LegacyTrackingService
 from postgres_service import PostgresECSWorldService
+from services.legacy_tracking_service import LegacyTrackingService
+from services.unified_agent_manager import AgentState, UnifiedAgentStateManager
 
 
 class TestSimpleIntegration:
@@ -69,10 +69,10 @@ class TestSimpleIntegration:
     @pytest.mark.asyncio
     async def test_basic_agent_state_retrieval(self, agent_manager, mock_ecs_service):
         """Test basic agent state retrieval without file system operations."""
-        
+
         # Get Success-Advisor-8 agent state
         state = await agent_manager.get_agent_state("success-advisor-8")
-        
+
         assert state is not None
         assert state.agent_id == "success-advisor-8"
         assert state.name == "Success-Advisor-8"
@@ -83,12 +83,12 @@ class TestSimpleIntegration:
     @pytest.mark.asyncio
     async def test_agent_activity_tracking(self, agent_manager, mock_ecs_service):
         """Test agent activity tracking."""
-        
+
         # Track Success-Advisor-8 activity
         await agent_manager.track_agent_activity(
             "success-advisor-8",
             "Test activity",
-            {"test": "integration", "timestamp": datetime.now().isoformat()}
+            {"test": "integration", "timestamp": datetime.now().isoformat()},
         )
 
         # Verify ECS service was called
@@ -97,8 +97,8 @@ class TestSimpleIntegration:
     @pytest.mark.asyncio
     async def test_agent_not_found(self, agent_manager, mock_ecs_service):
         """Test handling of non-existent agent."""
-        
+
         # Try to get non-existent agent
         state = await agent_manager.get_agent_state("non-existent-agent")
-        
+
         assert state is None

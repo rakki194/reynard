@@ -16,9 +16,9 @@ Version: 1.0.0
 """
 
 import logging
-from typing import Any, Dict
+from typing import NoReturn
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 
 from app.core.service_registry import get_service_registry
@@ -28,24 +28,31 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/document-indexer", tags=["document-indexer"])
 
 
+def _raise_service_unavailable(detail: str) -> NoReturn:
+    """Raise HTTPException for service unavailable."""
+    raise HTTPException(status_code=503, detail=detail)
+
+
+def _get_document_indexer():
+    """Get the document indexer from the RAG service."""
+    registry = get_service_registry()
+    rag_service = registry.get_service_instance("rag")
+
+    if not rag_service:
+        _raise_service_unavailable("RAG service not available")
+
+    document_indexer = getattr(rag_service, "document_indexer", None)
+    if not document_indexer:
+        _raise_service_unavailable("Document indexer not available")
+
+    return document_indexer
+
+
 @router.post("/resume")
 async def resume_document_indexer() -> JSONResponse:
     """Resume the document indexer."""
     try:
-        registry = get_service_registry()
-        rag_service = registry.get_service_instance("rag")
-
-        if not rag_service:
-            raise HTTPException(status_code=503, detail="RAG service not available")
-
-        # Get the document indexer
-        document_indexer = getattr(rag_service, "document_indexer", None)
-        if not document_indexer:
-            raise HTTPException(
-                status_code=503, detail="Document indexer not available"
-            )
-
-        # Resume the indexer
+        document_indexer = _get_document_indexer()
         await document_indexer.resume()
 
         return JSONResponse(
@@ -55,30 +62,18 @@ async def resume_document_indexer() -> JSONResponse:
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Failed to resume document indexer: {e}")
+        logger.exception("Failed to resume document indexer")
         raise HTTPException(
-            status_code=500, detail=f"Failed to resume document indexer: {str(e)}"
-        )
+            status_code=500,
+            detail=f"Failed to resume document indexer: {e!s}",
+        ) from e
 
 
 @router.post("/pause")
 async def pause_document_indexer() -> JSONResponse:
     """Pause the document indexer."""
     try:
-        registry = get_service_registry()
-        rag_service = registry.get_service_instance("rag")
-
-        if not rag_service:
-            raise HTTPException(status_code=503, detail="RAG service not available")
-
-        # Get the document indexer
-        document_indexer = getattr(rag_service, "document_indexer", None)
-        if not document_indexer:
-            raise HTTPException(
-                status_code=503, detail="Document indexer not available"
-            )
-
-        # Pause the indexer
+        document_indexer = _get_document_indexer()
         await document_indexer.pause()
 
         return JSONResponse(
@@ -88,30 +83,18 @@ async def pause_document_indexer() -> JSONResponse:
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Failed to pause document indexer: {e}")
+        logger.exception("Failed to pause document indexer")
         raise HTTPException(
-            status_code=500, detail=f"Failed to pause document indexer: {str(e)}"
-        )
+            status_code=500,
+            detail=f"Failed to pause document indexer: {e!s}",
+        ) from e
 
 
 @router.get("/status")
 async def get_document_indexer_status() -> JSONResponse:
     """Get document indexer status and metrics."""
     try:
-        registry = get_service_registry()
-        rag_service = registry.get_service_instance("rag")
-
-        if not rag_service:
-            raise HTTPException(status_code=503, detail="RAG service not available")
-
-        # Get the document indexer
-        document_indexer = getattr(rag_service, "document_indexer", None)
-        if not document_indexer:
-            raise HTTPException(
-                status_code=503, detail="Document indexer not available"
-            )
-
-        # Get status
+        document_indexer = _get_document_indexer()
         stats = await document_indexer.get_stats()
 
         return JSONResponse({"status": "success", "data": stats})
@@ -119,31 +102,20 @@ async def get_document_indexer_status() -> JSONResponse:
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Failed to get document indexer status: {e}")
+        logger.exception("Failed to get document indexer status")
         raise HTTPException(
-            status_code=500, detail=f"Failed to get document indexer status: {str(e)}"
-        )
+            status_code=500,
+            detail=f"Failed to get document indexer status: {e!s}",
+        ) from e
 
 
 @router.get("/queue")
 async def get_queue_status() -> JSONResponse:
     """Get queue status and metrics."""
     try:
-        registry = get_service_registry()
-        rag_service = registry.get_service_instance("rag")
-
-        if not rag_service:
-            raise HTTPException(status_code=503, detail="RAG service not available")
-
-        # Get the document indexer
-        document_indexer = getattr(rag_service, "document_indexer", None)
-        if not document_indexer:
-            raise HTTPException(
-                status_code=503, detail="Document indexer not available"
-            )
-
-        # Get queue status
+        document_indexer = _get_document_indexer()
         stats = await document_indexer.get_stats()
+
         queue_info = {
             "queue_size": stats.get("queue_size", 0),
             "dead_letter_size": stats.get("dead_letter_size", 0),
@@ -158,7 +130,7 @@ async def get_queue_status() -> JSONResponse:
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Failed to get queue status: {e}")
+        logger.exception("Failed to get queue status")
         raise HTTPException(
-            status_code=500, detail=f"Failed to get queue status: {str(e)}"
-        )
+            status_code=500, detail=f"Failed to get queue status: {e!s}"
+        ) from e

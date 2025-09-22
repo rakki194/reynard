@@ -154,7 +154,7 @@ class EmbeddingService:
             "embeddinggemma:latest": {
                 "dim": 1024,
                 "metric": "cosine",
-                "max_tokens": 512,
+                "max_tokens": 2048,
                 "provider": "ollama",
                 "priority": 1,
                 "description": "Google's EmbeddingGemma model via Ollama",
@@ -695,16 +695,22 @@ class EmbeddingService:
             )
 
             async with aiohttp.ClientSession() as session:
-                payload = {"model": model, "prompt": text}
+                # Format prompt for EmbeddingGemma
+                if "embeddinggemma" in model.lower():
+                    formatted_text = f"task: search result | query: {text}"
+                else:
+                    formatted_text = text
+                payload = {"model": model, "prompt": formatted_text}
 
                 async with session.post(
-                    f"{base_url}/api/embed",
+                    f"{base_url}/api/embeddings",
                     json=payload,
                     timeout=aiohttp.ClientTimeout(total=timeout),
                 ) as response:
                     if response.status == HTTP_OK:
                         result = await response.json()
-                        return result.get("embedding")
+                        embedding = result.get("embedding", [])
+                        return embedding if embedding else None
                     logger.warning("Ollama embedding failed: %s", response.status)
                     return None
         except Exception:
@@ -765,24 +771,49 @@ class EmbeddingService:
         model_config = self._model_registry.get(model, {})
         max_tokens = model_config.get("max_tokens", 512)
 
-        # Simple token estimation (words * 1.3)
-        estimated_tokens = len(text.split()) * 1.3
-        return estimated_tokens <= max_tokens
+        # Conservative character-based estimation (approximately 3.5 chars per token)
+        max_chars = int(max_tokens * 3.5)
+        return len(text) <= max_chars
 
     def _truncate_text_to_limit(self, text: str, model: str) -> str:
-        """Truncate text to fit within model token limits."""
+        """Smart truncate text to fit within model token limits."""
         model_config = self._model_registry.get(model, {})
         max_tokens = model_config.get("max_tokens", 512)
 
-        # Simple truncation by words
-        words = text.split()
-        max_words = int(max_tokens / 1.3)  # Convert tokens to words
+        # Conservative character limit (approximately 3.5 chars per token)
+        max_chars = int(max_tokens * 3.5)
 
-        if len(words) <= max_words:
+        if len(text) <= max_chars:
             return text
 
-        truncated_words = words[:max_words]
-        return " ".join(truncated_words)
+        # Smart truncation at natural boundaries
+        truncated = text[:max_chars]
+
+        # Try to find good break points in order of preference
+        # 1. Try to break at double newlines (paragraphs)
+        last_paragraph = truncated.rfind("\n\n")
+        if last_paragraph > max_chars * 0.7:  # Don't truncate too much
+            truncated = truncated[:last_paragraph]
+
+        # 2. Try to break at single newlines (lines)
+        elif "\n" in truncated:
+            last_newline = truncated.rfind("\n")
+            if last_newline > max_chars * 0.8:
+                truncated = truncated[:last_newline]
+
+        # 3. Try to break at sentence endings
+        elif ". " in truncated:
+            last_sentence = truncated.rfind(". ")
+            if last_sentence > max_chars * 0.8:
+                truncated = truncated[: last_sentence + 1]
+
+        # 4. Try to break at word boundaries
+        elif " " in truncated:
+            last_space = truncated.rfind(" ")
+            if last_space > max_chars * 0.9:
+                truncated = truncated[:last_space]
+
+        return truncated.strip()
 
     def get_model_info(self, model: str) -> dict[str, Any] | None:
         """Get information about a specific model."""
@@ -881,3 +912,7 @@ class EmbeddingService:
         self.lru_cache.cache.clear()
         self._sentence_transformer_models.clear()
         logger.info("EmbeddingService shutdown complete")
+
+    async def close(self) -> None:
+        """Close the service (alias for shutdown for compatibility)."""
+        await self.shutdown()

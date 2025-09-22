@@ -15,7 +15,7 @@ from unittest.mock import AsyncMock, MagicMock, Mock, patch
 import pytest
 import pytest_asyncio
 
-from app.services.multi_account_service import (
+from app.services.email.core.multi_account_service import (
     AccountConfig,
     AccountPermissions,
     AccountSummary,

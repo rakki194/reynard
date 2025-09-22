@@ -553,7 +553,9 @@ class ECSClient:
             logger.error(f"Failed to get spirit instructions: {e}")
             return {"error": str(e), "status": "error"}
 
-    async def get_spirit_status(self, spirit_name: str, agent_id: str) -> Dict[str, Any]:
+    async def get_spirit_status(
+        self, spirit_name: str, agent_id: str
+    ) -> Dict[str, Any]:
         """
         Get the current status of spirit inhabitation for an agent.
 
@@ -617,16 +619,18 @@ class ECSClient:
             inhabitation_result = await self.invoke_spirit_inhabitation(
                 "success-advisor-8", agent_id, force_inhabitation
             )
-            
+
             # Get genome and instructions
             genome_result = await self.get_spirit_genome("success-advisor-8")
-            instructions_result = await self.get_spirit_instructions("success-advisor-8")
-            
+            instructions_result = await self.get_spirit_instructions(
+                "success-advisor-8"
+            )
+
             return {
                 "inhabitation": inhabitation_result,
                 "genome": genome_result,
                 "instructions": instructions_result,
-                "status": "success"
+                "status": "success",
             }
         except Exception as e:
             logger.error(f"Failed to invoke Success-Advisor-8: {e}")

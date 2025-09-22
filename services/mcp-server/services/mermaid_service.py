@@ -8,7 +8,7 @@ This service provides a clean interface for the MCP server to render diagrams.
 import os
 import time
 from pathlib import Path
-from typing import Optional, Union, Dict, Any, Tuple
+from typing import Any, Dict, Optional, Tuple, Union
 
 from .playwright_browser_service import PlaywrightBrowserService
 
@@ -34,10 +34,14 @@ class MermaidService:
             self.browser_service = None
             self.available = False
 
-    def _create_mermaid_html(self, diagram: str, theme: str = "neutral",
-                           bg_color: Optional[str] = None,
-                           width: Optional[int] = None,
-                           height: Optional[int] = None) -> str:
+    def _create_mermaid_html(
+        self,
+        diagram: str,
+        theme: str = "neutral",
+        bg_color: Optional[str] = None,
+        width: Optional[int] = None,
+        height: Optional[int] = None,
+    ) -> str:
         """
         Create HTML content for mermaid rendering.
 
@@ -107,10 +111,14 @@ class MermaidService:
 """
         return html_content
 
-    def render_diagram_to_svg(self, diagram_content: str, theme: str = "neutral",
-                             bg_color: Optional[str] = None,
-                             width: Optional[int] = None,
-                             height: Optional[int] = None) -> Tuple[bool, str, str]:
+    def render_diagram_to_svg(
+        self,
+        diagram_content: str,
+        theme: str = "neutral",
+        bg_color: Optional[str] = None,
+        width: Optional[int] = None,
+        height: Optional[int] = None,
+    ) -> Tuple[bool, str, str]:
         """
         Render a mermaid diagram to SVG format.
 
@@ -128,12 +136,14 @@ class MermaidService:
             return False, "", "Mermaid service is not available"
 
         try:
-            html_content = self._create_mermaid_html(diagram_content, theme, bg_color, width, height)
+            html_content = self._create_mermaid_html(
+                diagram_content, theme, bg_color, width, height
+            )
 
             success, svg_content, error = self.browser_service.render_html_to_svg_sync(
                 html_content=html_content,
                 viewport_size={"width": 1920, "height": 1080},
-                selector=".mermaid"
+                selector=".mermaid",
             )
 
             if not success:
@@ -144,10 +154,14 @@ class MermaidService:
         except Exception as e:
             return False, "", f"SVG rendering error: {e}"
 
-    def render_diagram_to_png(self, diagram_content: str, theme: str = "neutral",
-                             bg_color: Optional[str] = None,
-                             width: Optional[int] = None,
-                             height: Optional[int] = None) -> Tuple[bool, bytes, str]:
+    def render_diagram_to_png(
+        self,
+        diagram_content: str,
+        theme: str = "neutral",
+        bg_color: Optional[str] = None,
+        width: Optional[int] = None,
+        height: Optional[int] = None,
+    ) -> Tuple[bool, bytes, str]:
         """
         Render a mermaid diagram to PNG format.
 
@@ -165,12 +179,16 @@ class MermaidService:
             return False, b"", "Mermaid service is not available"
 
         try:
-            html_content = self._create_mermaid_html(diagram_content, theme, bg_color, width, height)
+            html_content = self._create_mermaid_html(
+                diagram_content, theme, bg_color, width, height
+            )
 
-            success, png_path, error = self.browser_service.render_html_to_png_adaptive_sync(
-                html_content=html_content,
-                viewport_size={"width": 1920, "height": 1080},
-                full_page=True
+            success, png_path, error = (
+                self.browser_service.render_html_to_png_adaptive_sync(
+                    html_content=html_content,
+                    viewport_size={"width": 1920, "height": 1080},
+                    full_page=True,
+                )
             )
 
             if not success:
@@ -185,10 +203,15 @@ class MermaidService:
         except Exception as e:
             return False, b"", f"PNG rendering error: {e}"
 
-    def save_diagram_as_svg(self, diagram_content: str, output_path: str, theme: str = "neutral",
-                           bg_color: Optional[str] = None,
-                           width: Optional[int] = None,
-                           height: Optional[int] = None) -> Tuple[bool, str, str]:
+    def save_diagram_as_svg(
+        self,
+        diagram_content: str,
+        output_path: str,
+        theme: str = "neutral",
+        bg_color: Optional[str] = None,
+        width: Optional[int] = None,
+        height: Optional[int] = None,
+    ) -> Tuple[bool, str, str]:
         """
         Render and save a mermaid diagram as SVG.
 
@@ -204,10 +227,12 @@ class MermaidService:
             Tuple of (success, output_path, error_message)
         """
         try:
-            success, svg_content, error = self.render_diagram_to_svg(diagram_content, theme, bg_color, width, height)
+            success, svg_content, error = self.render_diagram_to_svg(
+                diagram_content, theme, bg_color, width, height
+            )
             if not success:
                 return False, "", error
-                
+
             # Ensure directory exists
             Path(output_path).parent.mkdir(parents=True, exist_ok=True)
 
@@ -220,10 +245,15 @@ class MermaidService:
         except Exception as e:
             return False, "", f"SVG save error: {e}"
 
-    def save_diagram_as_png(self, diagram_content: str, output_path: str, theme: str = "neutral",
-                           bg_color: Optional[str] = None,
-                           width: Optional[int] = None,
-                           height: Optional[int] = None) -> Tuple[bool, str, str]:
+    def save_diagram_as_png(
+        self,
+        diagram_content: str,
+        output_path: str,
+        theme: str = "neutral",
+        bg_color: Optional[str] = None,
+        width: Optional[int] = None,
+        height: Optional[int] = None,
+    ) -> Tuple[bool, str, str]:
         """
         Render and save a mermaid diagram as PNG.
 
@@ -239,10 +269,12 @@ class MermaidService:
             Tuple of (success, output_path, error_message)
         """
         try:
-            success, png_data, error = self.render_diagram_to_png(diagram_content, theme, bg_color, width, height)
+            success, png_data, error = self.render_diagram_to_png(
+                diagram_content, theme, bg_color, width, height
+            )
             if not success:
                 return False, "", error
-                
+
             # Ensure directory exists
             Path(output_path).parent.mkdir(parents=True, exist_ok=True)
 
@@ -294,12 +326,16 @@ class MermaidService:
                 "png_size": 0,
                 "diagram_length": len(diagram_content),
                 "lines": len(diagram_content.splitlines()),
-                "error": "Mermaid service is not available"
+                "error": "Mermaid service is not available",
             }
 
         try:
-            success, svg_content, svg_error = self.render_diagram_to_svg(diagram_content)
-            success_png, png_data, png_error = self.render_diagram_to_png(diagram_content)
+            success, svg_content, svg_error = self.render_diagram_to_svg(
+                diagram_content
+            )
+            success_png, png_data, png_error = self.render_diagram_to_png(
+                diagram_content
+            )
 
             return {
                 "valid": success,
@@ -317,5 +353,5 @@ class MermaidService:
                 "png_size": 0,
                 "diagram_length": len(diagram_content),
                 "lines": len(diagram_content.splitlines()),
-                "error": str(e)
+                "error": str(e),
             }

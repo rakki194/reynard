@@ -15,11 +15,20 @@ from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 from app.api.email_routes import router
-from app.services.ai_email_response_service import AIResponse, EmailContext
-from app.services.calendar_integration_service import CalendarEvent, MeetingRequest
-from app.services.email_analytics_service import EmailInsight, EmailMetrics
-from app.services.email_encryption_service import EncryptedEmail, EncryptionKey
-from app.services.multi_account_service import AccountSummary, EmailAccount
+from app.services.email.ai.ai_email_response_service import AIResponse, EmailContext
+from app.services.email.analytics.email_analytics_service import (
+    EmailInsight,
+    EmailMetrics,
+)
+from app.services.email.core.multi_account_service import AccountSummary, EmailAccount
+from app.services.email.integration.calendar_integration_service import (
+    CalendarEvent,
+    MeetingRequest,
+)
+from app.services.email.integration.email_encryption_service import (
+    EncryptedEmail,
+    EncryptionKey,
+)
 
 
 class TestAdvancedEmailRoutes:

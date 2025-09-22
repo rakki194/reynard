@@ -16,7 +16,7 @@ from app.models.agent_email_models import (
     AgentEmailTemplate,
     EventType,
 )
-from app.services.agent_email_service import AgentEmailService
+from app.services.email.ai.agent_email_service import AgentEmailService
 
 
 @pytest.fixture

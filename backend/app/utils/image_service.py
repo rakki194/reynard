@@ -24,7 +24,7 @@ class ImageProcessingService:
     async def _get_enhanced_service(self):
         """Get the enhanced image processing service."""
         if self._enhanced_service is None:
-            from app.services.image_processing_service import (
+            from app.services.processing.image_processing_service import (
                 get_image_processing_service,
             )
 

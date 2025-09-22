@@ -19,9 +19,10 @@ mcp_dir = Path(__file__).parent.parent
 if str(mcp_dir) not in sys.path:
     sys.path.insert(0, str(mcp_dir))
 
-from protocol.tool_registry import register_tool
 import sys
 from pathlib import Path
+
+from protocol.tool_registry import register_tool
 
 # Add the services directory to Python path for imports
 services_dir = Path(__file__).parent.parent / "services"
@@ -58,7 +59,7 @@ def validate_mermaid_diagram(**kwargs) -> dict[str, Any]:
         }
 
     is_valid, errors, warnings = mermaid_service.validate_diagram(diagram_content)
-    
+
     if is_valid:
         result_text = "✅ Mermaid diagram is valid!"
     else:
@@ -91,24 +92,36 @@ def render_mermaid_to_svg(**kwargs) -> dict[str, Any]:
 
     try:
         if output_path:
-            success, saved_path, error = mermaid_service.save_diagram_as_svg(diagram_content, output_path)
+            success, saved_path, error = mermaid_service.save_diagram_as_svg(
+                diagram_content, output_path
+            )
             if not success:
                 return {
                     "content": [
-                        {"type": "text", "text": f"❌ Error rendering mermaid diagram: {error}"}
+                        {
+                            "type": "text",
+                            "text": f"❌ Error rendering mermaid diagram: {error}",
+                        }
                     ]
                 }
-            result_text = f"✅ Mermaid diagram rendered to SVG and saved to: {saved_path}"
+            result_text = (
+                f"✅ Mermaid diagram rendered to SVG and saved to: {saved_path}"
+            )
         else:
-            success, svg_content, error = mermaid_service.render_diagram_to_svg(diagram_content)
+            success, svg_content, error = mermaid_service.render_diagram_to_svg(
+                diagram_content
+            )
             if not success:
                 return {
                     "content": [
-                        {"type": "text", "text": f"❌ Error rendering mermaid diagram: {error}"}
+                        {
+                            "type": "text",
+                            "text": f"❌ Error rendering mermaid diagram: {error}",
+                        }
                     ]
                 }
             result_text = f"✅ Mermaid diagram rendered to SVG successfully! ({len(svg_content)} chars)"
-        
+
         return {
             "content": [
                 {
@@ -153,24 +166,36 @@ def render_mermaid_to_png(**kwargs) -> dict[str, Any]:
 
     try:
         if output_path:
-            success, saved_path, error = mermaid_service.save_diagram_as_png(diagram_content, output_path)
+            success, saved_path, error = mermaid_service.save_diagram_as_png(
+                diagram_content, output_path
+            )
             if not success:
                 return {
                     "content": [
-                        {"type": "text", "text": f"❌ Error rendering mermaid diagram to PNG: {error}"}
+                        {
+                            "type": "text",
+                            "text": f"❌ Error rendering mermaid diagram to PNG: {error}",
+                        }
                     ]
                 }
-            result_text = f"✅ Mermaid diagram rendered to PNG and saved to: {saved_path}"
+            result_text = (
+                f"✅ Mermaid diagram rendered to PNG and saved to: {saved_path}"
+            )
         else:
-            success, png_data, error = mermaid_service.render_diagram_to_png(diagram_content)
+            success, png_data, error = mermaid_service.render_diagram_to_png(
+                diagram_content
+            )
             if not success:
                 return {
                     "content": [
-                        {"type": "text", "text": f"❌ Error rendering mermaid diagram to PNG: {error}"}
+                        {
+                            "type": "text",
+                            "text": f"❌ Error rendering mermaid diagram to PNG: {error}",
+                        }
                     ]
                 }
             result_text = f"✅ Mermaid diagram rendered to PNG successfully! ({len(png_data)} bytes)"
-        
+
         return {
             "content": [
                 {
@@ -256,23 +281,27 @@ graph TD
 
     try:
         # Test SVG rendering
-        svg_success, svg_content, svg_error = mermaid_service.render_diagram_to_svg(test_diagram)
-        
+        svg_success, svg_content, svg_error = mermaid_service.render_diagram_to_svg(
+            test_diagram
+        )
+
         # Test PNG rendering
-        png_success, png_data, png_error = mermaid_service.render_diagram_to_png(test_diagram)
-        
+        png_success, png_data, png_error = mermaid_service.render_diagram_to_png(
+            test_diagram
+        )
+
         result_text = "🧪 Mermaid Rendering Test:\n\n"
-        
+
         if svg_success and png_success:
             result_text += "✅ All tests PASSED!\n\n"
         else:
             result_text += "❌ Some tests FAILED!\n\n"
-            
+
         if svg_success:
             result_text += f"✅ SVG Rendering: PASSED - {len(svg_content)} chars\n"
         else:
             result_text += f"❌ SVG Rendering: FAILED - {svg_error}\n"
-            
+
         if png_success:
             result_text += f"✅ PNG Rendering: PASSED - {len(png_data)} bytes\n"
         else:

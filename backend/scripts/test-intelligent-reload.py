@@ -13,21 +13,22 @@ from pathlib import Path
 backend_dir = Path(__file__).parent.parent
 sys.path.insert(0, str(backend_dir))
 
-from app.core.intelligent_reload import ServiceReloadManager
 from fastapi import FastAPI
+
+from app.core.intelligent_reload import ServiceReloadManager
 
 
 def test_file_change_detection():
     """Test the file change detection system."""
     print("🦊 Testing Intelligent Service Reload System")
     print("=" * 60)
-    
+
     # Create a mock FastAPI app
     app = FastAPI()
-    
+
     # Create the reload manager
     reload_manager = ServiceReloadManager(app)
-    
+
     # Test files that should trigger different services
     test_files = [
         "app/ecs/world.py",
@@ -57,13 +58,13 @@ def test_file_change_detection():
         "app/core/config.py",  # Should not trigger any service
         "main.py",  # Should not trigger any service
     ]
-    
+
     print("📁 Testing file change detection:")
     print()
-    
+
     for file_path in test_files:
         affected_services = reload_manager.get_affected_services(file_path)
-        
+
         if affected_services:
             print(f"📝 {file_path}")
             print(f"   → Affects services: {', '.join(affected_services)}")
@@ -71,7 +72,7 @@ def test_file_change_detection():
             print(f"📝 {file_path}")
             print(f"   → No service-specific reload needed")
         print()
-    
+
     print("=" * 60)
     print("🎯 Summary:")
     print("   • ECS files trigger ECS world service reload")
@@ -85,26 +86,26 @@ def test_service_mappings():
     """Test the service file mappings."""
     print("\n🗺️  Service File Mappings:")
     print("=" * 60)
-    
+
     # Create a mock FastAPI app
     app = FastAPI()
-    
+
     # Create the reload manager
     reload_manager = ServiceReloadManager(app)
-    
+
     for service_name, patterns in reload_manager.service_file_mappings.items():
         print(f"🔧 {service_name}:")
         for pattern in patterns:
             print(f"   • {pattern}")
         print()
-    
+
     print("=" * 60)
 
 
 if __name__ == "__main__":
     test_file_change_detection()
     test_service_mappings()
-    
+
     print("\n🚀 To enable intelligent reload:")
     print("   export INTELLIGENT_RELOAD=true")
     print("   python main.py")

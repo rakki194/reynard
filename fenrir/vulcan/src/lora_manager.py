@@ -65,7 +65,9 @@ class LoRAManager:
             return
 
         # Get trainable parameters
-        trainable_params = sum(p.numel() for p in self.peft_model.parameters() if p.requires_grad)
+        trainable_params = sum(
+            p.numel() for p in self.peft_model.parameters() if p.requires_grad
+        )
         total_params = sum(p.numel() for p in self.peft_model.parameters())
 
         # Calculate memory efficiency
@@ -90,7 +92,9 @@ class LoRAManager:
         logger.info(f"🔥 VULCAN: Saving LoRA adapters to {output_dir}")
         self.peft_model.save_pretrained(output_dir)
 
-    def load_lora_adapters(self, model: torch.nn.Module, adapter_path: str) -> PeftModel:
+    def load_lora_adapters(
+        self, model: torch.nn.Module, adapter_path: str
+    ) -> PeftModel:
         """Load LoRA adapters from disk."""
         logger.info(f"🔥 VULCAN: Loading LoRA adapters from {adapter_path}")
 
@@ -113,7 +117,9 @@ class LoRAManager:
         if self.peft_model is None:
             raise RuntimeError("LoRA not applied to model")
 
-        trainable_params = sum(p.numel() for p in self.peft_model.parameters() if p.requires_grad)
+        trainable_params = sum(
+            p.numel() for p in self.peft_model.parameters() if p.requires_grad
+        )
         total_params = sum(p.numel() for p in self.peft_model.parameters())
 
         return {

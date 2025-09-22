@@ -10,7 +10,7 @@ from typing import Any, Dict, List
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 
 from ..auth.user_service import get_current_active_user
-from ..services.imap_service import imap_service
+from ..services.email.core.imap_service import imap_service
 
 logger = logging.getLogger(__name__)
 

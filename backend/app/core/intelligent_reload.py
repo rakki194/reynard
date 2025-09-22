@@ -18,25 +18,25 @@ logger = logging.getLogger(__name__)
 class ServiceReloadManager:
     """
     Service reload manager that provides intelligent service-specific reloading.
-    
+
     This version focuses on file change detection and service mapping with
     comprehensive test file exclusions.
     """
-    
+
     def __init__(self, app: FastAPI):
         """
         Initialize the service reload manager.
-        
+
         Args:
             app: The FastAPI application instance
         """
         self.app = app
         self.service_file_mappings = self._build_service_file_mappings()
-        
+
     def _build_service_file_mappings(self) -> Dict[str, List[str]]:
         """
         Build mappings of file patterns to services.
-        
+
         Returns:
             Dictionary mapping service names to file patterns they should watch
         """
@@ -87,65 +87,71 @@ class ServiceReloadManager:
                 "app/api/agent_email_routes.py",
             ],
         }
-    
+
     def should_reload_service(self, file_path: str, service_name: str) -> bool:
         """
         Check if a file change should trigger a service reload.
-        
+
         Args:
             file_path: The path of the changed file
             service_name: The name of the service to check
-            
+
         Returns:
             True if the service should be reloaded
         """
         if service_name not in self.service_file_mappings:
             return False
-            
+
         patterns = self.service_file_mappings[service_name]
         file_path_obj = Path(file_path)
-        
+
         for pattern in patterns:
             # Convert glob pattern to path matching
             if pattern.endswith("**/*.py"):
                 base_path = pattern.replace("/**/*.py", "")
-                if str(file_path_obj).startswith(base_path) and file_path.endswith(".py"):
+                if str(file_path_obj).startswith(base_path) and file_path.endswith(
+                    ".py"
+                ):
                     return True
             elif pattern.endswith("**/*.json"):
                 base_path = pattern.replace("/**/*.json", "")
-                if str(file_path_obj).startswith(base_path) and file_path.endswith(".json"):
+                if str(file_path_obj).startswith(base_path) and file_path.endswith(
+                    ".json"
+                ):
                     return True
             elif pattern.endswith("**/*.yaml") or pattern.endswith("**/*.yml"):
                 base_path = pattern.replace("/**/*.yaml", "").replace("/**/*.yml", "")
-                if str(file_path_obj).startswith(base_path) and (file_path.endswith(".yaml") or file_path.endswith(".yml")):
+                if str(file_path_obj).startswith(base_path) and (
+                    file_path.endswith(".yaml") or file_path.endswith(".yml")
+                ):
                     return True
             elif file_path == pattern:
                 return True
-                
+
         return False
-    
+
     def get_affected_services(self, file_path: str) -> List[str]:
         """
         Get list of services that should be reloaded for a file change.
-        
+
         Args:
             file_path: The path of the changed file
-            
+
         Returns:
             List of service names that should be reloaded
         """
         affected_services = []
-        
+
         for service_name in self.service_file_mappings:
             if self.should_reload_service(file_path, service_name):
                 affected_services.append(service_name)
-                
+
         return affected_services
-    
+
     def log_reload_attempt(self, service_name: str) -> None:
         """
         Log a reload attempt for a service.
-        
+
         Args:
             service_name: The name of the service to reload
         """
@@ -159,10 +165,10 @@ _reload_manager: ServiceReloadManager | None = None
 def get_reload_manager(app: FastAPI) -> ServiceReloadManager:
     """
     Get the global service reload manager instance.
-    
+
     Args:
         app: The FastAPI application instance
-        
+
     Returns:
         The ServiceReloadManager instance
     """
@@ -175,7 +181,7 @@ def get_reload_manager(app: FastAPI) -> ServiceReloadManager:
 def should_use_intelligent_reload() -> bool:
     """
     Check if intelligent reload should be used.
-    
+
     Returns:
         True if intelligent reload is enabled
     """
@@ -185,7 +191,7 @@ def should_use_intelligent_reload() -> bool:
 def get_reload_excludes() -> List[str]:
     """
     Get the list of file patterns to exclude from reload.
-    
+
     Returns:
         List of file patterns to exclude
     """

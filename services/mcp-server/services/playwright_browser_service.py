@@ -515,14 +515,14 @@ class PlaywrightBrowserService:
     ) -> tuple[bool, str, str]:
         """
         Extract SVG content from HTML with custom wait condition.
-        
+
         Args:
             html_content: HTML content containing SVG
             selector: CSS selector for SVG element
             viewport_size: Browser viewport size
             wait_condition: Custom wait condition (e.g., "data-mermaid-ready")
             timeout: Timeout in milliseconds
-            
+
         Returns:
             Tuple of (success, svg_content_or_error, error_message)
         """
@@ -548,7 +548,7 @@ class PlaywrightBrowserService:
                 if wait_condition:
                     await page.wait_for_function(
                         f"document.body.getAttribute('{wait_condition}') === 'true'",
-                        timeout=timeout
+                        timeout=timeout,
                     )
                 else:
                     # Wait for SVG to render

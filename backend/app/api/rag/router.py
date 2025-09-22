@@ -25,3 +25,7 @@ router.include_router(initial_indexing_router)
 router.include_router(progress_router)
 router.include_router(document_indexer_router)
 router.include_router(semantic_search_router)
+
+router.include_router(progress_router)
+router.include_router(document_indexer_router)
+router.include_router(semantic_search_router)

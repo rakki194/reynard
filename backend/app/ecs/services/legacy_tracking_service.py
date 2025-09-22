@@ -11,9 +11,9 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from app.ecs.postgres_service import PostgresECSWorldService
 from app.ecs.legacy_tracking import SuccessAdvisor8LegacyTracker, UnifiedChangelogParser
 from app.ecs.legacy_tracking.git_tag_tracker import GitTagTracker
+from app.ecs.postgres_service import PostgresECSWorldService
 
 logger = logging.getLogger(__name__)
 

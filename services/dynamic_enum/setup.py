@@ -6,7 +6,7 @@ Setup script for Dynamic Enum Service
 A modular service for managing dynamic enums based on FastAPI ECS backend data.
 """
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 setup(
     name="reynard-dynamic-enum",

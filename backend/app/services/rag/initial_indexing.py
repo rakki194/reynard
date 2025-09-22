@@ -129,19 +129,27 @@ class InitialIndexingService:
                 logger.warning(f"Watch root does not exist: {watch_root}")
                 return []
 
-            logger.info(f"🔍 Discovering files using file indexing service: {watch_root}")
+            logger.info(
+                f"🔍 Discovering files using file indexing service: {watch_root}"
+            )
 
             # Use file indexing service for fast file discovery
             file_types = [".py", ".ts", ".tsx", ".js", ".jsx", ".md", ".txt"]
-            result = await self.file_indexing_service.index_files([str(watch_root)], file_types)
-            
+            result = await self.file_indexing_service.index_files(
+                [str(watch_root)], file_types
+            )
+
             if result.get("success"):
                 indexed_files = result.get("files", [])
                 files_to_index = [Path(file_path) for file_path in indexed_files]
-                logger.info(f"📁 Found {len(files_to_index)} files to index via file indexing service")
+                logger.info(
+                    f"📁 Found {len(files_to_index)} files to index via file indexing service"
+                )
                 return files_to_index
             else:
-                logger.warning("File indexing service failed, falling back to manual discovery")
+                logger.warning(
+                    "File indexing service failed, falling back to manual discovery"
+                )
                 # Fallback to manual discovery
                 files_to_index = [
                     file_path
@@ -151,7 +159,9 @@ class InitialIndexingService:
                         and continuous_indexing_config.should_watch_file(file_path)
                     )
                 ]
-                logger.info(f"📁 Found {len(files_to_index)} files to index via fallback")
+                logger.info(
+                    f"📁 Found {len(files_to_index)} files to index via fallback"
+                )
                 return files_to_index
 
         except Exception:
@@ -355,6 +365,17 @@ class InitialIndexingService:
         """Stop the current indexing process."""
         if not self.is_running:
             return False
+
+        try:
+            self.current_progress["status"] = "stopping"
+            await self._notify_progress()
+            # Note: We can't easily stop mid-batch, but we can mark it as stopping
+            # and let the current batch complete
+        except Exception:
+            logger.exception("Failed to stop indexing")
+            return False
+        else:
+            return True
 
         try:
             self.current_progress["status"] = "stopping"

@@ -549,14 +549,16 @@ class ECSAgentTools:
             try:
                 # Use the new public API for Success-Advisor-8 spirit inhabitation
                 result = await ecs_client.invoke_success_advisor_8(
-                    agent_id=agent_id,
-                    force_inhabitation=force_inhabitation
+                    agent_id=agent_id, force_inhabitation=force_inhabitation
                 )
 
                 # Check if the API call failed
                 if result.get("status") == "error":
                     # Use fallback data if API call fails
-                    inhabitation_result = {"status": "success", "message": "Spirit inhabitation initiated (fallback mode)"}
+                    inhabitation_result = {
+                        "status": "success",
+                        "message": "Spirit inhabitation initiated (fallback mode)",
+                    }
                     genome_result = {
                         "status": "success",
                         "genome": {
@@ -566,16 +568,22 @@ class ECSAgentTools:
                                 "determination": 0.95,
                                 "leadership": 0.9,
                                 "charisma": 0.92,
-                                "strategic_thinking": 0.89
+                                "strategic_thinking": 0.89,
                             },
                             "ability_traits": {
                                 "release_manager": 0.96,
                                 "quality_assurance": 0.94,
                                 "automation_expert": 0.89,
-                                "crisis_manager": 0.92
+                                "crisis_manager": 0.92,
                             },
-                            "domain_expertise": ["Release Management", "Quality Assurance", "Crisis Management", "Team Leadership", "Automation"]
-                        }
+                            "domain_expertise": [
+                                "Release Management",
+                                "Quality Assurance",
+                                "Crisis Management",
+                                "Team Leadership",
+                                "Automation",
+                            ],
+                        },
                     }
                     instructions_result = {
                         "status": "success",
@@ -583,14 +591,14 @@ class ECSAgentTools:
                             "workflow_protocols": [
                                 "Systematic approach to all development tasks",
                                 "Comprehensive validation at every stage",
-                                "Authoritative leadership with strategic insight"
+                                "Authoritative leadership with strategic insight",
                             ],
                             "quality_standards": [
                                 "Unwavering commitment to quality standards",
                                 "Protective guardianship of the Reynard ecosystem",
-                                "Crisis management with decisive action"
-                            ]
-                        }
+                                "Crisis management with decisive action",
+                            ],
+                        },
                     }
                 else:
                     # Use the API results

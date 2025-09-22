@@ -60,9 +60,9 @@ from .advanced import (
     SecurityService,
 )
 from .core import DocumentIndexer, EmbeddingService, SearchEngine, VectorStoreService
+from .file_indexing_service import get_file_indexing_service
 from .initial_indexing import InitialIndexingService
 from .progress_monitor import get_progress_monitor
-from .file_indexing_service import get_file_indexing_service
 
 logger = logging.getLogger("uvicorn")
 
@@ -116,7 +116,7 @@ class RAGService:
         self.vector_store_service: Optional[VectorStoreService] = None
         self.document_indexer: Optional[DocumentIndexer] = None
         self.search_engine: Optional[SearchEngine] = None
-        
+
         # File indexing service dependency
         self.file_indexing_service = get_file_indexing_service()
 
@@ -196,7 +196,10 @@ class RAGService:
         # Initialize document indexer with file indexing service dependency
         self.document_indexer = DocumentIndexer()
         if not await self.document_indexer.initialize(
-            self.config, self.vector_store_service, self.embedding_service, self.file_indexing_service
+            self.config,
+            self.vector_store_service,
+            self.embedding_service,
+            self.file_indexing_service,
         ):
             raise RuntimeError("Failed to initialize document indexer")
 
@@ -204,6 +207,13 @@ class RAGService:
         self.search_engine = SearchEngine(
             self.embedding_service, self.vector_store_service
         )
+
+        # Populate search engine with existing documents
+        try:
+            await self.search_engine.populate_from_vector_store()
+            logger.info("Search engine populated with existing documents")
+        except Exception as e:
+            logger.warning(f"Failed to populate search engine: {e}")
 
         logger.info("Core services initialized successfully")
 
@@ -677,6 +687,66 @@ class RAGService:
         except Exception as e:
             logger.error(f"Model evaluation failed: {e}")
             return {"error": str(e)}
+
+    async def get_optimization_recommendations(self) -> List[Dict[str, Any]]:
+        """Get optimization recommendations."""
+        if not self.initialized or not self.continuous_improvement:
+            return []
+
+        try:
+            return await self.continuous_improvement.get_optimization_recommendations()
+        except Exception as e:
+            logger.error(f"Failed to get optimization recommendations: {e}")
+            return []
+
+    async def shutdown(self) -> None:
+        """Gracefully shutdown all services."""
+        logger.info("Shutting down RAG service...")
+
+        try:
+            # Shutdown services in reverse order
+            if self.continuous_indexing:
+                await self.continuous_indexing.shutdown()
+
+            if self.document_indexer:
+                await self.document_indexer.shutdown()
+
+            if self.vector_store_service:
+                await self.vector_store_service.shutdown()
+
+            if self.embedding_service:
+                await self.embedding_service.shutdown()
+
+            # Advanced services don't need explicit shutdown for now
+            # but we could add cleanup logic here if needed
+
+            self.initialized = False
+            logger.info("RAG service shutdown complete")
+
+        except Exception as e:
+            logger.error(f"Error during shutdown: {e}")
+
+    # Utility Methods
+
+    def is_initialized(self) -> bool:
+        """Check if the service is initialized."""
+        return self.initialized
+
+    def is_enabled(self) -> bool:
+        """Check if the service is enabled."""
+        return self.enabled
+
+    def get_available_models(self) -> List[str]:
+        """Get list of available embedding models."""
+        if not self.embedding_service:
+            return []
+        return self.embedding_service.get_available_models()
+
+    def get_best_model(self, model_type: str = "text") -> str:
+        """Get the best available model for the specified type."""
+        if not self.embedding_service:
+            return "embeddinggemma:latest"
+        return self.embedding_service.get_best_model(model_type)
 
     async def get_optimization_recommendations(self) -> List[Dict[str, Any]]:
         """Get optimization recommendations."""

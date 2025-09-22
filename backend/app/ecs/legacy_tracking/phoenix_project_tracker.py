@@ -22,10 +22,14 @@ logger = logging.getLogger(__name__)
 @dataclass
 class PhoenixProjectActivity:
     """Represents a PHEONIX project activity."""
-    
+
     activity_id: str
-    project_type: str  # 'phoenix_framework', 'phoenix_control', 'research', 'experiment'
-    activity_category: str  # 'development', 'research', 'experiment', 'documentation', 'integration'
+    project_type: (
+        str  # 'phoenix_framework', 'phoenix_control', 'research', 'experiment'
+    )
+    activity_category: (
+        str  # 'development', 'research', 'experiment', 'documentation', 'integration'
+    )
     description: str
     timestamp: datetime
     impact_level: str  # 'high', 'medium', 'low'
@@ -44,7 +48,7 @@ class PhoenixProjectActivity:
 @dataclass
 class ResearchInitiative:
     """Represents a research initiative within PHEONIX projects."""
-    
+
     initiative_id: str
     name: str
     description: str
@@ -68,10 +72,12 @@ class ResearchInitiative:
 @dataclass
 class ExperimentResult:
     """Represents results from PHEONIX experiments."""
-    
+
     experiment_id: str
     experiment_name: str
-    experiment_type: str  # 'agent_reconstruction', 'genetic_compatibility', 'knowledge_distillation'
+    experiment_type: (
+        str  # 'agent_reconstruction', 'genetic_compatibility', 'knowledge_distillation'
+    )
     success_rate: float
     performance_metrics: Dict[str, float]
     statistical_significance: float
@@ -88,15 +94,15 @@ class ExperimentResult:
 class PhoenixProjectTracker:
     """
     Dedicated tracker for PHEONIX project activities and research initiatives.
-    
+
     Monitors evolutionary knowledge distillation, agent breeding experiments,
     and related research activities separate from Success-Advisor-8's genome.
     """
-    
+
     def __init__(self, codebase_path: str, changelog_path: str = "CHANGELOG.md"):
         """
         Initialize the PHEONIX project tracker.
-        
+
         Args:
             codebase_path: Path to the codebase root
             changelog_path: Path to CHANGELOG.md file
@@ -106,11 +112,11 @@ class PhoenixProjectTracker:
             self.changelog_path = Path(changelog_path)
         else:
             self.changelog_path = self.codebase_path / changelog_path
-        
+
         self.phoenix_activities: List[PhoenixProjectActivity] = []
         self.research_initiatives: List[ResearchInitiative] = []
         self.experiment_results: List[ExperimentResult] = []
-        
+
         # PHEONIX project patterns
         self.phoenix_patterns = {
             "phoenix_framework": [
@@ -151,9 +157,9 @@ class PhoenixProjectTracker:
                 r"integration.*testing",
                 r"performance.*optimization",
                 r"documentation.*update",
-            ]
+            ],
         }
-        
+
         # Research areas
         self.research_areas = {
             "evolutionary_knowledge_distillation": [
@@ -179,13 +185,13 @@ class PhoenixProjectTracker:
                 r"baseline.*comparison",
                 r"control.*group",
                 r"randomized.*trial",
-            ]
+            ],
         }
 
     async def collect_phoenix_activities(self) -> List[PhoenixProjectActivity]:
         """
         Collect PHEONIX project activities from CHANGELOG.
-        
+
         Returns:
             List of PHEONIX project activities
         """
@@ -219,15 +225,13 @@ class PhoenixProjectTracker:
                     activities.append(activity)
 
         self.phoenix_activities.extend(activities)
-        logger.info(
-            "Found %d PHEONIX project activities in CHANGELOG", len(activities)
-        )
+        logger.info("Found %d PHEONIX project activities in CHANGELOG", len(activities))
         return activities
 
     def _is_phoenix_activity(self, line: str) -> bool:
         """Check if line contains PHEONIX project activity."""
         line_lower = line.lower()
-        
+
         # Check for any PHEONIX-related patterns
         for pattern_group in self.phoenix_patterns.values():
             if any(
@@ -235,7 +239,7 @@ class PhoenixProjectTracker:
                 for pattern in pattern_group
             ):
                 return True
-        
+
         return False
 
     async def _extract_phoenix_activity(
@@ -245,22 +249,22 @@ class PhoenixProjectTracker:
         try:
             # Determine project type and category
             project_type, activity_category = self._classify_phoenix_activity(line)
-            
+
             # Determine research area and experiment type
             research_area = self._identify_research_area(line)
             experiment_type = self._identify_experiment_type(line)
-            
+
             # Determine impact level
             impact_level = self._assess_impact_level(line)
-            
+
             # Generate activity ID
             activity_id = (
                 f"phoenix-{version or 'unreleased'}-{line_number}-{hash(line) % 10000}"
             )
-            
+
             # Extract description
             description = line.strip("- ").strip()
-            
+
             return PhoenixProjectActivity(
                 activity_id=activity_id,
                 project_type=project_type,
@@ -275,77 +279,105 @@ class PhoenixProjectTracker:
                 line_number=line_number,
                 context={"source": "changelog", "raw_line": line},
             )
-            
+
         except Exception:
-            logger.exception("Failed to extract PHEONIX activity from line %d", line_number)
+            logger.exception(
+                "Failed to extract PHEONIX activity from line %d", line_number
+            )
             return None
 
     def _classify_phoenix_activity(self, line: str) -> tuple[str, str]:
         """Classify the PHEONIX project type and activity category."""
         line_lower = line.lower()
-        
+
         # Determine project type
-        if any(re.search(pattern, line_lower, re.IGNORECASE) for pattern in self.phoenix_patterns["phoenix_framework"]):
+        if any(
+            re.search(pattern, line_lower, re.IGNORECASE)
+            for pattern in self.phoenix_patterns["phoenix_framework"]
+        ):
             project_type = "phoenix_framework"
-        elif any(re.search(pattern, line_lower, re.IGNORECASE) for pattern in self.phoenix_patterns["phoenix_control"]):
+        elif any(
+            re.search(pattern, line_lower, re.IGNORECASE)
+            for pattern in self.phoenix_patterns["phoenix_control"]
+        ):
             project_type = "phoenix_control"
         else:
             project_type = "research"
-        
+
         # Determine activity category
-        if any(re.search(pattern, line_lower, re.IGNORECASE) for pattern in self.phoenix_patterns["research_activities"]):
+        if any(
+            re.search(pattern, line_lower, re.IGNORECASE)
+            for pattern in self.phoenix_patterns["research_activities"]
+        ):
             activity_category = "research"
-        elif any(re.search(pattern, line_lower, re.IGNORECASE) for pattern in self.phoenix_patterns["experiment_types"]):
+        elif any(
+            re.search(pattern, line_lower, re.IGNORECASE)
+            for pattern in self.phoenix_patterns["experiment_types"]
+        ):
             activity_category = "experiment"
-        elif any(re.search(pattern, line_lower, re.IGNORECASE) for pattern in self.phoenix_patterns["development_activities"]):
+        elif any(
+            re.search(pattern, line_lower, re.IGNORECASE)
+            for pattern in self.phoenix_patterns["development_activities"]
+        ):
             activity_category = "development"
         else:
             activity_category = "documentation"
-        
+
         return project_type, activity_category
 
     def _identify_research_area(self, line: str) -> str | None:
         """Identify the research area for this activity."""
         line_lower = line.lower()
-        
+
         for research_area, patterns in self.research_areas.items():
-            if any(re.search(pattern, line_lower, re.IGNORECASE) for pattern in patterns):
+            if any(
+                re.search(pattern, line_lower, re.IGNORECASE) for pattern in patterns
+            ):
                 return research_area
-        
+
         return None
 
     def _identify_experiment_type(self, line: str) -> str | None:
         """Identify the experiment type if applicable."""
         line_lower = line.lower()
-        
+
         for experiment_type in self.phoenix_patterns["experiment_types"]:
             if re.search(experiment_type, line_lower, re.IGNORECASE):
                 return experiment_type
-        
+
         return None
 
     def _assess_impact_level(self, line: str) -> str:
         """Assess the impact level of this PHEONIX activity."""
         line_lower = line.lower()
-        
+
         # High impact indicators
-        if any(keyword in line_lower for keyword in ["framework", "implementation", "major", "comprehensive"]):
+        if any(
+            keyword in line_lower
+            for keyword in ["framework", "implementation", "major", "comprehensive"]
+        ):
             return "high"
-        
+
         # Medium impact indicators
-        if any(keyword in line_lower for keyword in ["experiment", "research", "analysis", "validation"]):
+        if any(
+            keyword in line_lower
+            for keyword in ["experiment", "research", "analysis", "validation"]
+        ):
             return "medium"
-        
+
         # Low impact indicators
-        if any(keyword in line_lower for keyword in ["documentation", "update", "fix", "minor"]):
+        if any(
+            keyword in line_lower
+            for keyword in ["documentation", "update", "fix", "minor"]
+        ):
             return "low"
-        
+
         return "medium"
 
     async def analyze_research_initiatives(self) -> List[ResearchInitiative]:
         """Analyze research initiatives from collected activities."""
         initiatives = []
-        
+
         # Group activities by research area
         research_groups = {}
         for activity in self.phoenix_activities:
@@ -353,7 +385,7 @@ class PhoenixProjectTracker:
                 if activity.research_area not in research_groups:
                     research_groups[activity.research_area] = []
                 research_groups[activity.research_area].append(activity)
-        
+
         # Create research initiatives
         for research_area, activities in research_groups.items():
             if activities:
@@ -362,21 +394,34 @@ class PhoenixProjectTracker:
                     name=f"{research_area.replace('_', ' ').title()} Research",
                     description=f"Research initiative focused on {research_area.replace('_', ' ')}",
                     research_type=research_area,
-                    status="active" if any(a.timestamp > datetime.now().replace(day=1) for a in activities) else "completed",
+                    status=(
+                        "active"
+                        if any(
+                            a.timestamp > datetime.now().replace(day=1)
+                            for a in activities
+                        )
+                        else "completed"
+                    ),
                     start_date=min(a.timestamp for a in activities),
-                    end_date=max(a.timestamp for a in activities) if len(activities) > 1 else None,
+                    end_date=(
+                        max(a.timestamp for a in activities)
+                        if len(activities) > 1
+                        else None
+                    ),
                     related_activities=[a.activity_id for a in activities],
                     key_findings=self._extract_key_findings(activities),
                 )
                 initiatives.append(initiative)
-        
+
         self.research_initiatives.extend(initiatives)
         return initiatives
 
-    def _extract_key_findings(self, activities: List[PhoenixProjectActivity]) -> List[str]:
+    def _extract_key_findings(
+        self, activities: List[PhoenixProjectActivity]
+    ) -> List[str]:
         """Extract key findings from activities."""
         findings = []
-        
+
         for activity in activities:
             # Look for specific achievement indicators
             if "validation" in activity.description.lower():
@@ -387,34 +432,52 @@ class PhoenixProjectTracker:
                 findings.append("Performance metrics established")
             if "convergence" in activity.description.lower():
                 findings.append("Convergence analysis performed")
-        
+
         return list(set(findings))  # Remove duplicates
 
     async def generate_phoenix_summary(self) -> Dict[str, Any]:
         """Generate comprehensive PHEONIX project summary."""
         await self.collect_phoenix_activities()
         await self.analyze_research_initiatives()
-        
+
         # Calculate project metrics
         total_activities = len(self.phoenix_activities)
-        framework_activities = len([a for a in self.phoenix_activities if a.project_type == "phoenix_framework"])
-        control_activities = len([a for a in self.phoenix_activities if a.project_type == "phoenix_control"])
-        research_activities = len([a for a in self.phoenix_activities if a.activity_category == "research"])
-        experiment_activities = len([a for a in self.phoenix_activities if a.activity_category == "experiment"])
-        
+        framework_activities = len(
+            [
+                a
+                for a in self.phoenix_activities
+                if a.project_type == "phoenix_framework"
+            ]
+        )
+        control_activities = len(
+            [a for a in self.phoenix_activities if a.project_type == "phoenix_control"]
+        )
+        research_activities = len(
+            [a for a in self.phoenix_activities if a.activity_category == "research"]
+        )
+        experiment_activities = len(
+            [a for a in self.phoenix_activities if a.activity_category == "experiment"]
+        )
+
         # Analyze research areas
         research_areas = {}
         for activity in self.phoenix_activities:
             if activity.research_area:
-                research_areas[activity.research_area] = research_areas.get(activity.research_area, 0) + 1
-        
+                research_areas[activity.research_area] = (
+                    research_areas.get(activity.research_area, 0) + 1
+                )
+
         # Analyze impact distribution
         impact_distribution = {
-            "high": len([a for a in self.phoenix_activities if a.impact_level == "high"]),
-            "medium": len([a for a in self.phoenix_activities if a.impact_level == "medium"]),
+            "high": len(
+                [a for a in self.phoenix_activities if a.impact_level == "high"]
+            ),
+            "medium": len(
+                [a for a in self.phoenix_activities if a.impact_level == "medium"]
+            ),
             "low": len([a for a in self.phoenix_activities if a.impact_level == "low"]),
         }
-        
+
         return {
             "project_metrics": {
                 "total_phoenix_activities": total_activities,
@@ -426,20 +489,28 @@ class PhoenixProjectTracker:
             },
             "research_analysis": {
                 "research_areas": research_areas,
-                "research_initiatives": [asdict(initiative) for initiative in self.research_initiatives],
+                "research_initiatives": [
+                    asdict(initiative) for initiative in self.research_initiatives
+                ],
                 "key_research_findings": self._compile_research_findings(),
             },
-            "project_activities": [asdict(activity) for activity in self.phoenix_activities],
+            "project_activities": [
+                asdict(activity) for activity in self.phoenix_activities
+            ],
             "impact_analysis": {
                 "impact_distribution": impact_distribution,
-                "high_impact_activities": [asdict(a) for a in self.phoenix_activities if a.impact_level == "high"],
+                "high_impact_activities": [
+                    asdict(a)
+                    for a in self.phoenix_activities
+                    if a.impact_level == "high"
+                ],
                 "research_momentum": self._assess_research_momentum(),
             },
             "project_insights": {
                 "primary_focus_areas": self._identify_primary_focus_areas(),
                 "research_maturity": self._assess_research_maturity(),
                 "experimental_progress": self._assess_experimental_progress(),
-            }
+            },
         }
 
     def _compile_research_findings(self) -> List[str]:
@@ -452,10 +523,11 @@ class PhoenixProjectTracker:
     def _assess_research_momentum(self) -> str:
         """Assess the current research momentum."""
         recent_activities = [
-            a for a in self.phoenix_activities 
+            a
+            for a in self.phoenix_activities
             if a.timestamp > datetime.now().replace(month=datetime.now().month - 1)
         ]
-        
+
         if len(recent_activities) > 5:
             return "high"
         elif len(recent_activities) > 2:
@@ -468,8 +540,10 @@ class PhoenixProjectTracker:
         area_frequency = {}
         for activity in self.phoenix_activities:
             if activity.research_area:
-                area_frequency[activity.research_area] = area_frequency.get(activity.research_area, 0) + 1
-        
+                area_frequency[activity.research_area] = (
+                    area_frequency.get(activity.research_area, 0) + 1
+                )
+
         sorted_areas = sorted(area_frequency.items(), key=lambda x: x[1], reverse=True)
         return [area for area, freq in sorted_areas[:3]]
 
@@ -477,24 +551,38 @@ class PhoenixProjectTracker:
         """Assess overall research maturity."""
         if not self.research_initiatives:
             return 0.0
-        
-        completed_initiatives = len([i for i in self.research_initiatives if i.status == "completed"])
+
+        completed_initiatives = len(
+            [i for i in self.research_initiatives if i.status == "completed"]
+        )
         return completed_initiatives / len(self.research_initiatives)
 
     def _assess_experimental_progress(self) -> Dict[str, Any]:
         """Assess experimental progress across different areas."""
-        experiment_activities = [a for a in self.phoenix_activities if a.activity_category == "experiment"]
-        
+        experiment_activities = [
+            a for a in self.phoenix_activities if a.activity_category == "experiment"
+        ]
+
         if not experiment_activities:
-            return {"total_experiments": 0, "experiment_types": {}, "progress_level": "none"}
-        
+            return {
+                "total_experiments": 0,
+                "experiment_types": {},
+                "progress_level": "none",
+            }
+
         experiment_types = {}
         for activity in experiment_activities:
             if activity.experiment_type:
-                experiment_types[activity.experiment_type] = experiment_types.get(activity.experiment_type, 0) + 1
-        
+                experiment_types[activity.experiment_type] = (
+                    experiment_types.get(activity.experiment_type, 0) + 1
+                )
+
         return {
             "total_experiments": len(experiment_activities),
             "experiment_types": experiment_types,
-            "progress_level": "high" if len(experiment_activities) > 10 else "medium" if len(experiment_activities) > 5 else "low"
+            "progress_level": (
+                "high"
+                if len(experiment_activities) > 10
+                else "medium" if len(experiment_activities) > 5 else "low"
+            ),
         }

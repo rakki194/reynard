@@ -75,10 +75,10 @@ def test_database_connection(database_url: str, database_name: str) -> bool:
         engine = create_engine(database_url)
         with engine.connect() as conn:
             conn.execute(text("SELECT 1"))
-        logger.info(f"✅ {database_name} connection successful")
+        logger.info("✅ %s connection successful", database_name)
         return True
     except Exception as e:
-        logger.error(f"❌ {database_name} connection failed: {e}")
+        logger.error("❌ %s connection failed: %s", database_name, e)
         return False
 
 
@@ -90,10 +90,10 @@ def enable_pgvector_extension(database_url: str, database_name: str) -> bool:
             # Enable pgvector extension
             conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
             conn.commit()
-        logger.info(f"✅ pgvector extension enabled in {database_name}")
+        logger.info("✅ pgvector extension enabled in %s", database_name)
         return True
     except Exception as e:
-        logger.error(f"❌ Failed to enable pgvector in {database_name}: {e}")
+        logger.error("❌ Failed to enable pgvector in %s: %s", database_name, e)
         return False
 
 
@@ -101,7 +101,7 @@ def run_sql_migrations(database_url: str, database_name: str) -> bool:
     """Run SQL migrations for main/E2E databases."""
     try:
         # Import and run the SQL migration script
-        from scripts.run_migrations import main as run_migrations
+        from run_migrations import main as run_migrations
 
         # Temporarily set the database URL
         original_url = os.environ.get("DATABASE_URL")
@@ -109,7 +109,7 @@ def run_sql_migrations(database_url: str, database_name: str) -> bool:
 
         try:
             run_migrations()
-            logger.info(f"✅ SQL migrations completed for {database_name}")
+            logger.info("✅ SQL migrations completed for %s", database_name)
             return True
         finally:
             # Restore original URL
@@ -119,7 +119,7 @@ def run_sql_migrations(database_url: str, database_name: str) -> bool:
                 os.environ.pop("DATABASE_URL", None)
 
     except Exception as e:
-        logger.error(f"❌ SQL migrations failed for {database_name}: {e}")
+        logger.error("❌ SQL migrations failed for %s: %s", database_name, e)
         return False
 
 
@@ -132,7 +132,7 @@ def initialize_gatekeeper(database_url: str, database_name: str) -> bool:
 
         try:
             # Import and run the auth database verification script
-            from scripts.init_auth_database import (
+            from init_auth_database import (
                 verify_database_connection,
                 verify_gatekeeper_setup,
             )
@@ -140,17 +140,17 @@ def initialize_gatekeeper(database_url: str, database_name: str) -> bool:
             # Verify database connection
             if not verify_database_connection():
                 logger.error(
-                    f"❌ Failed to connect to auth database for {database_name}"
+                    "❌ Failed to connect to auth database for %s", database_name
                 )
                 return False
 
             # Verify Gatekeeper setup (Gatekeeper manages its own table creation)
             if not verify_gatekeeper_setup():
-                logger.error(f"❌ Gatekeeper verification failed for {database_name}")
+                logger.error("❌ Gatekeeper verification failed for %s", database_name)
                 return False
 
-            logger.info(f"✅ Gatekeeper initialized for {database_name}")
-            logger.info(f"ℹ️ Gatekeeper manages its own table creation automatically")
+            logger.info("✅ Gatekeeper initialized for %s", database_name)
+            logger.info("ℹ️ Gatekeeper manages its own table creation automatically")
             return True
         finally:
             # Restore original URL
@@ -160,7 +160,7 @@ def initialize_gatekeeper(database_url: str, database_name: str) -> bool:
                 os.environ.pop("AUTH_DATABASE_URL", None)
 
     except Exception as e:
-        logger.error(f"❌ Gatekeeper initialization failed for {database_name}: {e}")
+        logger.error("❌ Gatekeeper initialization failed for %s: %s", database_name, e)
         return False
 
 
@@ -169,15 +169,15 @@ def run_alembic_migrations(alembic_config_path: str, database_name: str) -> bool
     try:
         config_path = backend_path / alembic_config_path
         if not config_path.exists():
-            logger.error(f"❌ Alembic config not found: {config_path}")
+            logger.error("❌ Alembic config not found: %s", config_path)
             return False
 
         alembic_cfg = Config(str(config_path))
         command.upgrade(alembic_cfg, "head")
-        logger.info(f"✅ Alembic migrations completed for {database_name}")
+        logger.info("✅ Alembic migrations completed for %s", database_name)
         return True
     except Exception as e:
-        logger.error(f"❌ Alembic migrations failed for {database_name}: {e}")
+        logger.error("❌ Alembic migrations failed for %s: %s", database_name, e)
         return False
 
 
@@ -189,7 +189,7 @@ def setup_database(db_key: str, db_config: Dict[str, Any]) -> bool:
     migration_type = db_config["migration_type"]
     alembic_config = db_config["alembic_config"]
 
-    logger.info(f"🔧 Setting up {database_name}: {description}")
+    logger.info("🔧 Setting up %s: %s", database_name, description)
 
     # Test connection
     if not test_database_connection(database_url, database_name):
@@ -211,7 +211,7 @@ def setup_database(db_key: str, db_config: Dict[str, Any]) -> bool:
         if not initialize_gatekeeper(database_url, database_name):
             return False
 
-    logger.info(f"✅ {database_name} setup completed successfully")
+    logger.info("✅ %s setup completed successfully", database_name)
     return True
 
 
@@ -226,10 +226,12 @@ def main():
         if setup_database(db_key, db_config):
             success_count += 1
         else:
-            logger.error(f"❌ Failed to setup {db_config['name']}")
+            logger.error("❌ Failed to setup %s", db_config["name"])
 
     logger.info(
-        f"📊 Setup Summary: {success_count}/{total_count} databases configured successfully"
+        "📊 Setup Summary: %d/%d databases configured successfully",
+        success_count,
+        total_count,
     )
 
     if success_count == total_count:

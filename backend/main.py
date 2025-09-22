@@ -27,22 +27,84 @@ This implementation follows modern FastAPI best practices with async/await patte
 proper error handling, structured logging, and production-ready configuration management.
 """
 
+import contextlib
+import io
 import logging
+import os
+import sys
+import warnings
 
 import uvicorn
 
-# Core application factory
-from app.core.app_factory import create_app
-from app.core.config import get_config
-from app.core.intelligent_reload import (
-    get_reload_excludes,
-    should_use_intelligent_reload,
+# Suppress ML library warnings before any imports
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"  # Suppress TensorFlow warnings
+os.environ["TOKENIZERS_PARALLELISM"] = "false"  # Suppress tokenizer warnings
+os.environ["PYTORCH_CUDA_ALLOC_CONF"] = (
+    "max_split_size_mb:128"  # Reduce CUDA memory warnings
 )
+os.environ["CUDA_LAUNCH_BLOCKING"] = "0"  # Disable CUDA blocking for cleaner output
+os.environ["PYTHONWARNINGS"] = "ignore"  # Suppress all Python warnings
+warnings.filterwarnings("ignore", category=UserWarning, module="torch")
+warnings.filterwarnings("ignore", category=UserWarning, module="transformers")
+warnings.filterwarnings("ignore", category=UserWarning, module="sentence_transformers")
+warnings.filterwarnings(
+    "ignore", message=".*SymmetricMemory.*"
+)  # Suppress SymmetricMemory warnings
+warnings.filterwarnings(
+    "ignore", message=".*InitGoogleLogging.*"
+)  # Suppress Google Logging warnings
+
+# Suppress Google Logging warnings
+logging.getLogger("google").setLevel(logging.ERROR)
+logging.getLogger("tensorflow").setLevel(logging.ERROR)
+logging.getLogger("torch").setLevel(logging.ERROR)
+logging.getLogger("transformers").setLevel(logging.ERROR)
+
+# Core application factory - import with stderr suppression
+
+
+# Temporarily redirect stderr during imports to suppress ML library warnings
+stderr_buffer = io.StringIO()
+with contextlib.redirect_stderr(stderr_buffer):
+    from app.core.app_factory import create_app
+    from app.core.config import get_config
+    from app.core.intelligent_reload import (
+        get_reload_excludes,
+        should_use_intelligent_reload,
+    )
+
+
+# Configure logging with custom handler to filter warnings
+class WarningFilter(logging.Filter):
+    """Filter to suppress ML library warnings."""
+
+    def filter(self, record):
+        # Suppress specific warning messages
+        if record.levelno == logging.WARNING:
+            message = record.getMessage()
+            if any(
+                pattern in message
+                for pattern in [
+                    "Logging before InitGoogleLogging",
+                    "SymmetricMemory",
+                    "Destroying Symmetric Memory Allocators",
+                ]
+            ):
+                return False
+        return True
+
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    stream=sys.stdout,  # Ensure logs go to stdout, not stderr
 )
+
+# Add the warning filter to the root logger
+root_logger = logging.getLogger()
+root_logger.addFilter(WarningFilter())
+
 logger = logging.getLogger(__name__)
 
 # Get configuration

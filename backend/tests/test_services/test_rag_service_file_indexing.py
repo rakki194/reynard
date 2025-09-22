@@ -11,14 +11,15 @@ Version: 1.0.0
 """
 
 import asyncio
-import pytest
 import tempfile
 from pathlib import Path
 from unittest.mock import AsyncMock, patch
 
-from app.services.rag.rag_service import RAGService
-from app.services.rag.file_indexing_service import get_file_indexing_service
+import pytest
+
 from app.config.file_indexing_config import get_file_indexing_config
+from app.services.rag.file_indexing_service import get_file_indexing_service
+from app.services.rag.rag_service import RAGService
 
 
 class TestRAGServiceFileIndexingIntegration:
@@ -478,8 +479,9 @@ class Class{i}:
     @pytest.mark.asyncio
     async def test_memory_usage(self):
         """Test memory usage of file indexing service."""
-        import psutil
         import os
+
+        import psutil
 
         process = psutil.Process(os.getpid())
         initial_memory = process.memory_info().rss

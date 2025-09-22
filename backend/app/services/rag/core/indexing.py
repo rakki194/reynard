@@ -561,7 +561,11 @@ class DocumentIndexer:
         self._chunk_overlap_ratio = 0.15
 
     async def initialize(
-        self, config: Dict[str, Any], vector_store_service=None, embedding_service=None, file_indexing_service=None
+        self,
+        config: Dict[str, Any],
+        vector_store_service=None,
+        embedding_service=None,
+        file_indexing_service=None,
     ) -> bool:
         """Initialize the document indexer."""
         try:

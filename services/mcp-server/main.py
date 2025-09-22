@@ -13,7 +13,6 @@ import asyncio
 import json
 import sys
 import time
-from pathlib import Path
 from typing import Any, Optional
 
 from protocol.mcp_handler import MCPHandler
@@ -120,6 +119,67 @@ class MCPServer:
             total_elapsed,
         )
 
+    def _ensure_tools_initialized(self) -> None:
+        """Ensure tools are initialized (lazy loading)."""
+        if not self._tools_initialized:
+            self._lazy_init_tools()
+
+    def _validate_mcp_handler(self, request_id: str) -> dict[str, Any] | None:
+        """Validate that MCP handler is initialized."""
+        if self.mcp_handler is None:
+            return {
+                "jsonrpc": "2.0",
+                "id": request_id,
+                "error": {
+                    "code": -32603,
+                    "message": "Internal error: MCP handler not initialized",
+                },
+            }
+        return None
+
+    async def _route_request(
+        self,
+        method: str,
+        params: dict[str, Any],
+        request_id: str,
+        request: dict[str, Any],
+    ) -> dict[str, Any] | None:
+        """Route the request to the appropriate handler."""
+        if method == "initialize":
+            return self.mcp_handler.handle_initialize(request_id)
+
+        if method == "tools/list":
+            return self.mcp_handler.handle_tools_list(request_id)
+
+        if method == "tools/call":
+            tool_name = params.get("name")
+            arguments = params.get("arguments", {})
+            call_result = await self.mcp_handler.handle_tool_call(
+                tool_name, arguments, request_id, request
+            )
+
+            # Nudge ECS time forward for every MCP action (if agent manager is available)
+            if self.agent_manager:
+                self.agent_manager.nudge_time(0.05)  # Small nudge for each action
+
+            return call_result
+
+        if method and method.startswith("notifications/"):
+            return self.mcp_handler.handle_notification(method)
+
+        return self.mcp_handler.handle_unknown_method(method or "unknown", request_id)
+
+    def _handle_error(self, error: Exception, request_id: str) -> dict[str, Any]:
+        """Handle errors with appropriate error response."""
+        if self.mcp_handler is not None:
+            return self.mcp_handler.handle_error(error, request_id)
+        else:
+            return {
+                "jsonrpc": "2.0",
+                "id": request_id,
+                "error": {"code": -32603, "message": f"Internal error: {str(error)}"},
+            }
+
     async def handle_request(self, request: dict[str, Any]) -> dict[str, Any] | None:
         """Handle incoming MCP requests with automatic tool discovery."""
         try:
@@ -128,71 +188,18 @@ class MCPServer:
             request_id = request.get("id")
 
             # Initialize tools on first request (lazy loading)
-            if not self._tools_initialized:
-                self._lazy_init_tools()
+            self._ensure_tools_initialized()
 
             # Ensure mcp_handler is initialized
-            if self.mcp_handler is None:
-                error_result: dict[str, Any] = {
-                    "jsonrpc": "2.0",
-                    "id": request_id,
-                    "error": {
-                        "code": -32603,
-                        "message": "Internal error: MCP handler not initialized",
-                    },
-                }
-                return error_result
+            validation_error = self._validate_mcp_handler(request_id)
+            if validation_error:
+                return validation_error
 
             # Route requests to appropriate handlers
-            if method == "initialize":
-                init_result: dict[str, Any] = self.mcp_handler.handle_initialize(
-                    request_id
-                )
-                return init_result
-
-            if method == "tools/list":
-                list_result: dict[str, Any] = self.mcp_handler.handle_tools_list(
-                    request_id
-                )
-                return list_result
-
-            if method == "tools/call":
-                tool_name = params.get("name")
-                arguments = params.get("arguments", {})
-                call_result: dict[str, Any] = await self.mcp_handler.handle_tool_call(
-                    tool_name, arguments, request_id, request
-                )
-
-                # Nudge ECS time forward for every MCP action (if agent manager is available)
-                if self.agent_manager:
-                    self.agent_manager.nudge_time(0.05)  # Small nudge for each action
-
-                return call_result
-
-            if method and method.startswith("notifications/"):
-                notification_result: dict[str, Any] | None = (
-                    self.mcp_handler.handle_notification(method)
-                )
-                return notification_result
-
-            unknown_result: dict[str, Any] = self.mcp_handler.handle_unknown_method(
-                method or "unknown", request_id
-            )
-            return unknown_result
+            return await self._route_request(method, params, request_id, request)
 
         except Exception as e:  # noqa: BLE001  # pylint: disable=broad-exception-caught
-            if self.mcp_handler is not None:
-                error_result: dict[str, Any] = self.mcp_handler.handle_error(
-                    e, request.get("id")
-                )
-                return error_result
-            else:
-                error_result: dict[str, Any] = {
-                    "jsonrpc": "2.0",
-                    "id": request.get("id"),
-                    "error": {"code": -32603, "message": f"Internal error: {str(e)}"},
-                }
-                return error_result
+            return self._handle_error(e, request.get("id"))
 
     async def run(self, show_banner: bool = False) -> None:
         """Run the MCP server."""

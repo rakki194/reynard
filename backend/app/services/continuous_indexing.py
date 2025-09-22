@@ -44,12 +44,12 @@ class CodebaseChangeHandler(FileSystemEventHandler):
 
         # Debounce rapid changes
         current_time = time.time()
-        if file_path in self.last_modified:
-            if (
-                current_time - self.last_modified[file_path]
-                < self.config.debounce_seconds
-            ):
-                return
+        if (
+            file_path in self.last_modified
+            and current_time - self.last_modified[file_path]
+            < self.config.debounce_seconds
+        ):
+            return
 
         self.last_modified[file_path] = current_time
         self.pending_files.add(file_path)
@@ -58,9 +58,9 @@ class CodebaseChangeHandler(FileSystemEventHandler):
 
         # Schedule re-indexing (thread-safe)
         try:
-            future = self.indexer._schedule_task_thread_safe(
-                self.indexer.schedule_reindex(file_path)
-            )
+            # Create the coroutine and schedule it properly
+            coro = self.indexer.schedule_reindex(file_path)
+            future = self.indexer._schedule_task_thread_safe(coro)
             if future:
                 # Don't wait for the result, just schedule it
                 # The future will be handled by the event loop
@@ -87,9 +87,9 @@ class CodebaseChangeHandler(FileSystemEventHandler):
 
         # Schedule indexing (thread-safe)
         try:
-            future = self.indexer._schedule_task_thread_safe(
-                self.indexer.schedule_reindex(file_path)
-            )
+            # Create the coroutine and schedule it properly
+            coro = self.indexer.schedule_reindex(file_path)
+            future = self.indexer._schedule_task_thread_safe(coro)
             if future:
                 # Don't wait for the result, just schedule it
                 pass
@@ -114,9 +114,9 @@ class CodebaseChangeHandler(FileSystemEventHandler):
 
         # Schedule removal from index (thread-safe)
         try:
-            future = self.indexer._schedule_task_thread_safe(
-                self.indexer.schedule_removal(file_path)
-            )
+            # Create the coroutine and schedule it properly
+            coro = self.indexer.schedule_removal(file_path)
+            future = self.indexer._schedule_task_thread_safe(coro)
             if future:
                 # Don't wait for the result, just schedule it
                 pass

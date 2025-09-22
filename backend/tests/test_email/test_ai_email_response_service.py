@@ -15,7 +15,7 @@ from unittest.mock import AsyncMock, MagicMock, Mock, patch
 import pytest
 import pytest_asyncio
 
-from app.services.ai_email_response_service import (
+from app.services.email.ai.ai_email_response_service import (
     AIEmailResponseService,
     AIResponse,
     AIResponseConfig,

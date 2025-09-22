@@ -16,7 +16,7 @@ from pydantic import BaseModel, Field
 from gatekeeper.api.dependencies import require_active_user
 from gatekeeper.models.user import User
 
-from ..services.embedding_visualization_service import (
+from ..services.processing.embedding_visualization_service import (
     EmbeddingVisualizationService,
 )
 from ..utils.dimensionality_reduction import get_available_methods, validate_parameters

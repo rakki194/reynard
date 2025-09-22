@@ -14,7 +14,7 @@ from unittest.mock import AsyncMock, MagicMock, Mock, patch
 import pytest
 import pytest_asyncio
 
-from app.services.email_encryption_service import (
+from app.services.email.integration.email_encryption_service import (
     EmailEncryptionService,
     EncryptedEmail,
     EncryptionConfig,

@@ -18,12 +18,20 @@ from ..models.email_models import (
     EmailSendResponse,
     EmailStatusModel,
 )
-from ..services.ai_email_response_service import get_ai_email_response_service
-from ..services.calendar_integration_service import calendar_integration_service
-from ..services.email_analytics_service import email_analytics_service
-from ..services.email_encryption_service import email_encryption_service
-from ..services.email_service import EmailAttachment, EmailMessage, email_service
-from ..services.multi_account_service import multi_account_service
+from ..services.email.ai.ai_email_response_service import get_ai_email_response_service
+from ..services.email.analytics.email_analytics_service import email_analytics_service
+from ..services.email.core.email_service import (
+    EmailAttachment,
+    EmailMessage,
+    email_service,
+)
+from ..services.email.core.multi_account_service import multi_account_service
+from ..services.email.integration.calendar_integration_service import (
+    calendar_integration_service,
+)
+from ..services.email.integration.email_encryption_service import (
+    email_encryption_service,
+)
 
 router = APIRouter(prefix="/api/email", tags=["email"])
 
@@ -643,7 +651,9 @@ async def schedule_meeting_from_request(
     try:
         # Get meeting request (simplified - would need proper lookup)
         # For now, create a placeholder request
-        from ..services.calendar_integration_service import MeetingRequest
+        from ..services.email.integration.calendar_integration_service import (
+            MeetingRequest,
+        )
 
         meeting_request = MeetingRequest(
             request_id=meeting_request_id,
@@ -755,7 +765,7 @@ async def generate_ai_response(
 ) -> Dict[str, Any]:
     """Generate AI-powered email response."""
     try:
-        from ..services.ai_email_response_service import EmailContext
+        from ..services.email.ai.ai_email_response_service import EmailContext
 
         # Convert dict to EmailContext object
         context = EmailContext(**email_context)

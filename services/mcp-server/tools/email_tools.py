@@ -51,7 +51,9 @@ async def send_agent_email(**kwargs) -> dict[str, Any]:
 
         # Get agent email service
         try:
-            from backend.app.services.agent_email_service import agent_email_service
+            from backend.app.services.email.ai.agent_email_service import (
+                agent_email_service,
+            )
         except ImportError:
             return {"success": False, "error": "Agent email service not available"}
 
@@ -118,7 +120,9 @@ async def get_agent_email_stats(**kwargs) -> dict[str, Any]:
 
         # Get agent email service
         try:
-            from backend.app.services.agent_email_service import agent_email_service
+            from backend.app.services.email.ai.agent_email_service import (
+                agent_email_service,
+            )
         except ImportError:
             return {"success": False, "error": "Agent email service not available"}
 
@@ -176,7 +180,9 @@ async def create_agent_email_template(**kwargs) -> dict[str, Any]:
 
         # Get agent email service
         try:
-            from backend.app.services.agent_email_service import agent_email_service
+            from backend.app.services.email.ai.agent_email_service import (
+                agent_email_service,
+            )
         except ImportError:
             return {"success": False, "error": "Agent email service not available"}
 
@@ -233,7 +239,9 @@ async def trigger_agent_automated_email(**kwargs) -> dict[str, Any]:
 
         # Get agent email service
         try:
-            from backend.app.services.agent_email_service import agent_email_service
+            from backend.app.services.email.ai.agent_email_service import (
+                agent_email_service,
+            )
         except ImportError:
             return {"success": False, "error": "Agent email service not available"}
 
@@ -276,7 +284,9 @@ async def get_agent_email_config(**kwargs) -> dict[str, Any]:
 
         # Get agent email service
         try:
-            from backend.app.services.agent_email_service import agent_email_service
+            from backend.app.services.email.ai.agent_email_service import (
+                agent_email_service,
+            )
         except ImportError:
             return {"success": False, "error": "Agent email service not available"}
 
@@ -329,7 +339,9 @@ async def setup_agent_email(**kwargs) -> dict[str, Any]:
 
         # Get agent email service
         try:
-            from backend.app.services.agent_email_service import agent_email_service
+            from backend.app.services.email.ai.agent_email_service import (
+                agent_email_service,
+            )
         except ImportError:
             return {"success": False, "error": "Agent email service not available"}
 

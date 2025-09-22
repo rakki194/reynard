@@ -21,6 +21,7 @@ from fastapi.middleware.trustedhost import TrustedHostMiddleware
 
 logger = logging.getLogger(__name__)
 
+from app.api.admin.hot_reload import router as hot_reload_router
 from app.api.agent_email_routes import router as agent_email_router
 from app.api.caption import router as caption_router
 from app.api.comfy import router as comfy_router
@@ -52,7 +53,7 @@ from app.core.penetration_testing import (
     check_penetration_testing_state,
     setup_penetration_testing_middleware,
 )
-from app.ecs.endpoints import router as ecs_router
+from app.ecs.api.main import router as ecs_router
 
 # ECS World integration
 from app.ecs.postgres_service import register_postgres_ecs_service
@@ -187,6 +188,9 @@ def _setup_routers(app: FastAPI) -> None:
     app.include_router(mcp_tools_endpoints.router, prefix="/api")
     app.include_router(mcp_tool_config_endpoints.router, prefix="/api")
 
+    # Admin Routers
+    app.include_router(hot_reload_router)
+
     # Ollama Router (use original for now, secure version will be added after service initialization)
     app.include_router(ollama_router)
 
@@ -205,6 +209,9 @@ def _setup_routers(app: FastAPI) -> None:
 
     # Agent Email Router
     app.include_router(agent_email_router)
+
+    # IMAP Router
+    app.include_router(imap_router)
 
     # IMAP Router
     app.include_router(imap_router)

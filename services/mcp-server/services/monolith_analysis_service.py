@@ -60,8 +60,8 @@ class MonolithAnalysisService:
         """Initialize RAG service integration for fast file discovery and caching."""
         try:
             # Try to get RAG service from service registry
-            import sys
             import os
+            import sys
 
             # Add backend path to sys.path for imports
             backend_path = os.path.join(
@@ -91,7 +91,10 @@ class MonolithAnalysisService:
                 logger.info("🔥 RAG integration not available (backend not accessible)")
                 # Try file indexing service as fallback
                 try:
-                    from app.services.rag.file_indexing_service import get_file_indexing_service
+                    from app.services.rag.file_indexing_service import (
+                        get_file_indexing_service,
+                    )
+
                     self._rag_service = get_file_indexing_service()
                     logger.info("🔥 File indexing service initialized as fallback")
                 except ImportError:
@@ -147,27 +150,34 @@ class MonolithAnalysisService:
         indexed_files = await self._try_file_indexing_service(directories, file_types)
         if indexed_files:
             return indexed_files
-        
+
         # Fallback to search service if available
         return await self._try_search_service_indexing(directories, file_types)
-    
-    async def _try_file_indexing_service(self, directories: List[str], file_types: List[str]) -> List[str]:
+
+    async def _try_file_indexing_service(
+        self, directories: List[str], file_types: List[str]
+    ) -> List[str]:
         """Try to get files from file indexing service."""
-        if not (self._rag_service and hasattr(self._rag_service, 'index_files')):
+        if not (self._rag_service and hasattr(self._rag_service, "index_files")):
             return []
-        
+
         try:
             result = await self._rag_service.index_files(directories, file_types)
             if result.get("success"):
                 indexed_files = result.get("files", [])
-                logger.info("🔥 Retrieved %d files from file indexing service", len(indexed_files))
+                logger.info(
+                    "🔥 Retrieved %d files from file indexing service",
+                    len(indexed_files),
+                )
                 return indexed_files
         except Exception as e:
             logger.warning("Failed to get files from file indexing service: %s", e)
-        
+
         return []
-    
-    async def _try_search_service_indexing(self, directories: List[str], file_types: List[str]) -> List[str]:
+
+    async def _try_search_service_indexing(
+        self, directories: List[str], file_types: List[str]
+    ) -> List[str]:
         """Try to get files from search service."""
         if not self._search_service:
             return []
@@ -175,24 +185,30 @@ class MonolithAnalysisService:
         try:
             indexed_files = []
             for directory in directories:
-                directory_files = await self._get_files_from_directory(directory, file_types)
+                directory_files = await self._get_files_from_directory(
+                    directory, file_types
+                )
                 indexed_files.extend(directory_files)
-            
+
             logger.info("🔥 Retrieved %d files from RAG index", len(indexed_files))
             return indexed_files
 
         except Exception as e:
             logger.warning("Failed to get indexed files from RAG: %s", e)
             return []
-    
-    async def _get_files_from_directory(self, directory: str, file_types: List[str]) -> List[str]:
+
+    async def _get_files_from_directory(
+        self, directory: str, file_types: List[str]
+    ) -> List[str]:
         """Get files from a specific directory using search service."""
         try:
             extension_pattern = "|".join(file_types)
             pattern = f"\\.({extension_pattern})$"
 
             class SimpleRequest:
-                def __init__(self, query, max_results, file_types, directories, case_sensitive):
+                def __init__(
+                    self, query, max_results, file_types, directories, case_sensitive
+                ):
                     self.query = query
                     self.max_results = max_results
                     self.file_types = file_types
@@ -210,10 +226,10 @@ class MonolithAnalysisService:
             result = await self._search_service.syntax_search(request)
             if result.success:
                 return [search_result.file_path for search_result in result.results]
-            
+
         except Exception as e:
             logger.warning("Failed to get indexed files for %s: %s", directory, e)
-        
+
         return []
 
     def _cleanup_cache(self) -> None:

@@ -18,7 +18,10 @@ backend_dir = Path(__file__).parent.parent
 sys.path.insert(0, str(backend_dir))
 
 # Import intelligent reload system
-from app.core.intelligent_reload import get_reload_excludes, should_use_intelligent_reload
+from app.core.intelligent_reload import (
+    get_reload_excludes,
+    should_use_intelligent_reload,
+)
 
 # Load environment variables
 load_dotenv()
@@ -47,6 +50,7 @@ def check_dependencies():
     # Check for FastAPI
     if importlib.util.find_spec("fastapi") is not None:
         import fastapi
+
         logger.info(f"✅ FastAPI {fastapi.__version__} is installed")
     else:
         logger.error("❌ FastAPI not installed")
@@ -92,8 +96,8 @@ def main():
     )
     logger.info(f"🔧 Auto-reload: {'enabled' if config['reload'] else 'disabled'}")
     logger.info(f"🐛 Debug mode: {'enabled' if config['debug'] else 'disabled'}")
-    
-    if config['reload'] and should_use_intelligent_reload():
+
+    if config["reload"] and should_use_intelligent_reload():
         logger.info("🧠 Intelligent service reload enabled")
         logger.info("🎯 Services will reload individually when their files change")
 

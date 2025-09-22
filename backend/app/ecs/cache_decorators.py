@@ -8,11 +8,12 @@ Cache decorators for ECS database queries to improve performance and reduce data
 import asyncio
 import hashlib
 import logging
+from collections.abc import Callable
 from functools import wraps
-from typing import Any, Callable, Dict, List, Optional, Union
+from typing import Any, Optional
 
 from app.core.cache_config import CacheConfig
-from app.core.cache_optimizer import CacheStrategy, IntelligentCacheManager
+from app.core.cache_optimizer import IntelligentCacheManager
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +33,7 @@ class ECSCacheManager:
             else CacheConfig.ECS_CACHE_ENABLED
         )
         self.cache_manager: Optional[IntelligentCacheManager] = None
-        self.fallback_cache: Dict[str, Dict[str, Any]] = {}
+        self.fallback_cache: dict[str, dict[str, Any]] = {}
 
         # Cache configuration
         self.namespace = "ecs"
@@ -122,7 +123,7 @@ class ECSCacheManager:
         except Exception as e:
             logger.error(f"Failed to set cache: {e}")
 
-    def _is_expired(self, cached_item: Dict[str, Any]) -> bool:
+    def _is_expired(self, cached_item: dict[str, Any]) -> bool:
         """Check if a cached item is expired.
 
         Args:
@@ -157,7 +158,7 @@ class ECSCacheManager:
         except Exception as e:
             logger.error(f"Failed to clear cache namespace: {e}")
 
-    async def get_cache_stats(self) -> Dict[str, Any]:
+    async def get_cache_stats(self) -> dict[str, Any]:
         """Get cache statistics.
 
         Returns:

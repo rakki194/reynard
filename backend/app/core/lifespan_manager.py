@@ -309,7 +309,7 @@ async def lifespan(app: FastAPI):
 async def _init_image_processing_service(config: dict[str, Any]) -> bool:
     """Initialize the image processing service."""
     try:
-        from app.services.image_processing_service import (
+        from app.services.processing.image_processing_service import (
             initialize_image_processing_service,
         )
 
@@ -327,7 +327,7 @@ async def _init_image_processing_service(config: dict[str, Any]) -> bool:
 async def _shutdown_image_processing_service() -> None:
     """Shutdown the image processing service."""
     try:
-        from app.services.image_processing_service import (
+        from app.services.processing.image_processing_service import (
             shutdown_image_processing_service,
         )
 
@@ -340,7 +340,9 @@ async def _shutdown_image_processing_service() -> None:
 async def _health_check_image_processing_service() -> bool:
     """Health check for the image processing service."""
     try:
-        from app.services.image_processing_service import get_image_processing_service
+        from app.services.processing.image_processing_service import (
+            get_image_processing_service,
+        )
 
         service = await get_image_processing_service()
         return await service.health_check()
@@ -419,7 +421,7 @@ async def _health_check_search_service() -> bool:
 async def _init_ai_email_response_service(config: dict[str, Any]) -> bool:
     """Initialize the AI email response service."""
     try:
-        from app.services.ai_email_response_service import (
+        from app.services.email.ai.ai_email_response_service import (
             initialize_ai_email_response_service,
         )
 
@@ -437,7 +439,7 @@ async def _init_ai_email_response_service(config: dict[str, Any]) -> bool:
 async def _shutdown_ai_email_response_service() -> None:
     """Shutdown the AI email response service."""
     try:
-        from app.services.ai_email_response_service import (
+        from app.services.email.ai.ai_email_response_service import (
             shutdown_ai_email_response_service,
         )
 
@@ -450,7 +452,7 @@ async def _shutdown_ai_email_response_service() -> None:
 async def _health_check_ai_email_response_service() -> bool:
     """Health check for the AI email response service."""
     try:
-        from app.services.ai_email_response_service import (
+        from app.services.email.ai.ai_email_response_service import (
             health_check_ai_email_response_service,
         )
 

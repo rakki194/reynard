@@ -11,7 +11,7 @@ from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
 
-from app.services.imap_service import EmailMessage, IMAPConfig, IMAPService
+from app.services.email.core.imap_service import EmailMessage, IMAPConfig, IMAPService
 
 
 class TestIMAPService:

@@ -11,7 +11,7 @@ from unittest.mock import MagicMock, patch
 import numpy as np
 import pytest
 
-from app.services.embedding_visualization_service import (
+from app.services.processing.embedding_visualization_service import (
     EmbeddingQualityMetrics,
     EmbeddingReductionResult,
     EmbeddingStats,

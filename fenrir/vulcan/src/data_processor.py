@@ -56,7 +56,9 @@ class DataProcessor:
         # Split into train/validation
         train_dataset, eval_dataset = self._split_dataset(processed_data)
 
-        logger.info(f"🔥 VULCAN: Loaded {len(train_dataset)} training samples, {len(eval_dataset)} validation samples")
+        logger.info(
+            f"🔥 VULCAN: Loaded {len(train_dataset)} training samples, {len(eval_dataset)} validation samples"
+        )
         return train_dataset, eval_dataset
 
     def _load_from_file(self, data_path: str) -> List[Dict[str, Any]]:
@@ -73,14 +75,14 @@ class DataProcessor:
     def _load_jsonl(self, file_path: Path) -> List[Dict[str, Any]]:
         """Load JSONL file."""
         data = []
-        with open(file_path, 'r', encoding='utf-8') as f:
+        with open(file_path, "r", encoding="utf-8") as f:
             for line in f:
                 data.append(json.loads(line.strip()))
         return data
 
     def _load_json(self, file_path: Path) -> List[Dict[str, Any]]:
         """Load JSON file."""
-        with open(file_path, 'r', encoding='utf-8') as f:
+        with open(file_path, "r", encoding="utf-8") as f:
             return json.load(f)
 
     def _load_default_dataset(self) -> List[Dict[str, Any]]:
@@ -89,13 +91,13 @@ class DataProcessor:
             {
                 "instruction": "Explain the concept of machine learning",
                 "input": "",
-                "output": "Machine learning is a subset of artificial intelligence that enables computers to learn and make decisions from data without being explicitly programmed for every task."
+                "output": "Machine learning is a subset of artificial intelligence that enables computers to learn and make decisions from data without being explicitly programmed for every task.",
             },
             {
                 "instruction": "Write a Python function to calculate fibonacci numbers",
                 "input": "",
-                "output": "def fibonacci(n):\n    if n <= 1:\n        return n\n    return fibonacci(n-1) + fibonacci(n-2)"
-            }
+                "output": "def fibonacci(n):\n    if n <= 1:\n        return n\n    return fibonacci(n-1) + fibonacci(n-2)",
+            },
         ]
 
     def _process_dataset(self, raw_data: List[Dict[str, Any]]) -> Dataset:
@@ -176,7 +178,7 @@ class DataProcessor:
         split_dataset = dataset.train_test_split(
             test_size=val_split,
             seed=data_config["seed"],
-            shuffle=data_config["shuffle"]
+            shuffle=data_config["shuffle"],
         )
 
         return split_dataset["train"], split_dataset["test"]

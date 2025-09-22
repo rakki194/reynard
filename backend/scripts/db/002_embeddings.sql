@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS rag_document_embeddings (
     chunk_id INTEGER REFERENCES rag_document_chunks(id) ON DELETE CASCADE,
     model_id TEXT NOT NULL,
     dim INTEGER NOT NULL,
-    embedding VECTOR(1024),  -- Default to 1024 dimensions
+    embedding VECTOR(768),  -- Default to 768 dimensions for embeddinggemma
     metric TEXT DEFAULT 'cosine',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS rag_code_embeddings (
     chunk_id INTEGER REFERENCES rag_document_chunks(id) ON DELETE CASCADE,
     model_id TEXT NOT NULL,
     dim INTEGER NOT NULL,
-    embedding VECTOR(1024),
+    embedding VECTOR(768),
     metric TEXT DEFAULT 'cosine',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS rag_caption_embeddings (
     chunk_id INTEGER REFERENCES rag_document_chunks(id) ON DELETE CASCADE,
     model_id TEXT NOT NULL,
     dim INTEGER NOT NULL,
-    embedding VECTOR(1024),
+    embedding VECTOR(768),
     metric TEXT DEFAULT 'cosine',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );

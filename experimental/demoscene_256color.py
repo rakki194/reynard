@@ -204,11 +204,7 @@ def plasma_effect():
                 char = (
                     "█"
                     if plasma > 0.5
-                    else "▓"
-                    if plasma > 0
-                    else "▒"
-                    if plasma > -0.5
-                    else "░"
+                    else "▓" if plasma > 0 else "▒" if plasma > -0.5 else "░"
                 )
                 line += color + char + Colors256.RESET
 

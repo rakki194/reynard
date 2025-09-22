@@ -33,15 +33,14 @@ from sqlalchemy import (
     text,
 )
 from sqlalchemy.dialects.postgresql import UUID as PostgresUUID
-from sqlalchemy.orm import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 logger = logging.getLogger(__name__)
 
 # Key storage database configuration
 KEY_STORAGE_DATABASE_URL = os.getenv(
-    "KEY_STORAGE_DATABASE_URL", 
-    "postgresql://postgres:password@localhost:5432/reynard_ecs"  # Use existing ECS database
+    "KEY_STORAGE_DATABASE_URL",
+    "postgresql://postgres:password@localhost:5432/reynard_ecs",  # Use existing ECS database
 )
 
 # SQLAlchemy setup for key storage
@@ -52,18 +51,18 @@ KeyBase = declarative_base()
 
 class KeyStorage(KeyBase):
     """Database model for storing encrypted cryptographic keys."""
-    
+
     __tablename__ = "key_storage"
-    
+
     id = Column(PostgresUUID(as_uuid=True), primary_key=True, default=uuid4)
     key_id = Column(String(255), unique=True, nullable=False, index=True)
     key_type = Column(String(100), nullable=False, index=True)
     encrypted_key_data = Column(Text, nullable=True)  # Base64 encoded encrypted key
     status = Column(String(50), nullable=False, default="active", index=True)
     created_at = Column(
-        DateTime(timezone=True), 
+        DateTime(timezone=True),
         server_default=text("CURRENT_TIMESTAMP"),
-        nullable=False
+        nullable=False,
     )
     expires_at = Column(DateTime(timezone=True), nullable=True)
     last_used = Column(DateTime(timezone=True), nullable=True)
@@ -83,21 +82,23 @@ class KeyStorage(KeyBase):
 
 class KeyAccessLog(KeyBase):
     """Database model for logging key access for audit purposes."""
-    
+
     __tablename__ = "key_access_logs"
-    
+
     id = Column(PostgresUUID(as_uuid=True), primary_key=True, default=uuid4)
     key_id = Column(String(255), nullable=False, index=True)
-    operation = Column(String(100), nullable=False)  # 'read', 'write', 'rotate', 'revoke'
+    operation = Column(
+        String(100), nullable=False
+    )  # 'read', 'write', 'rotate', 'revoke'
     user_id = Column(String(255), nullable=True)  # Optional user context
     ip_address = Column(String(45), nullable=True)  # IPv4 or IPv6
     user_agent = Column(Text, nullable=True)
     success = Column(Boolean, nullable=False)
     error_message = Column(Text, nullable=True)
     created_at = Column(
-        DateTime(timezone=True), 
+        DateTime(timezone=True),
         server_default=text("CURRENT_TIMESTAMP"),
-        nullable=False
+        nullable=False,
     )
 
     def __repr__(self):

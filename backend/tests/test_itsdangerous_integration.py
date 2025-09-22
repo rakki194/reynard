@@ -12,7 +12,7 @@ Author: Smiling-Sage-9 (Strategic Quokka Specialist)
 """
 
 import json
-from datetime import datetime, timedelta, UTC
+from datetime import UTC, datetime, timedelta
 from unittest.mock import Mock, patch
 
 import pytest
@@ -85,12 +85,11 @@ class TestItsDangerousUtils:
         """Test that expired tokens are rejected."""
         test_data = "test_data_123"
         # Create token with very short expiry (1 second)
-        token = utils.create_simple_token(
-            test_data, expires_in=timedelta(seconds=1)
-        )
+        token = utils.create_simple_token(test_data, expires_in=timedelta(seconds=1))
 
         # Wait for token to expire
         import time
+
         time.sleep(1.1)  # Wait slightly longer than expiry
 
         # Test with very short max_age to simulate expiration
@@ -637,7 +636,9 @@ class TestIntegration:
             # Check if key exists in metadata but not loaded
             metadata = key_manager.get_key_metadata("itsdangerous_session_key")
             if not metadata:
-                key_manager.generate_key("itsdangerous_session_key", KeyType.SESSION_SIGNING)
+                key_manager.generate_key(
+                    "itsdangerous_session_key", KeyType.SESSION_SIGNING
+                )
 
         # Step 4: Ensure the session manager's itsdangerous_utils uses the same key manager
         # by regenerating the session key if needed

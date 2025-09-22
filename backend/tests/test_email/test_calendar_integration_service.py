@@ -15,7 +15,7 @@ from unittest.mock import AsyncMock, MagicMock, Mock, patch
 import pytest
 import pytest_asyncio
 
-from app.services.calendar_integration_service import (
+from app.services.email.integration.calendar_integration_service import (
     CalendarConfig,
     CalendarEvent,
     CalendarIntegrationService,

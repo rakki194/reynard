@@ -334,6 +334,56 @@ class ServiceRegistry:
 
         return results
 
+    async def reload_service(self, service_name: str) -> bool:
+        """Hot-reload a specific service without restarting the entire server."""
+        logger.info(f"🔄 Hot-reloading service: {service_name}")
+
+        if service_name not in self._services:
+            logger.error(f"Service {service_name} not found in registry")
+            return False
+
+        service_info = self._services[service_name]
+
+        try:
+            # 1. Shutdown the service
+            if service_info.status == ServiceStatus.RUNNING:
+                await self._shutdown_service(service_name)
+
+            # 2. Clear the service from registry
+            del self._services[service_name]
+
+            # 3. Re-register the service (this will re-import the module)
+            await self._register_service(
+                service_name,
+                service_info.initializer,
+                service_info.priority,
+                service_info.dependencies,
+            )
+
+            # 4. Initialize the service
+            await self._initialize_service(service_name)
+
+            logger.info(f"✅ Service {service_name} hot-reloaded successfully")
+            return True
+
+        except Exception as e:
+            logger.error(f"❌ Failed to hot-reload service {service_name}: {e}")
+            return False
+
+    async def reload_services_by_pattern(self, pattern: str) -> dict[str, bool]:
+        """Hot-reload multiple services matching a pattern."""
+        import fnmatch
+
+        matching_services = [
+            name for name in self._services.keys() if fnmatch.fnmatch(name, pattern)
+        ]
+
+        results = {}
+        for service_name in matching_services:
+            results[service_name] = await self.reload_service(service_name)
+
+        return results
+
     def get_service_status(self, name: str) -> ServiceStatus | None:
         """Get the status of a specific service."""
         if name in self._services:
@@ -371,6 +421,36 @@ class ServiceRegistry:
             ]:
                 return False
         return True
+
+
+# Global service registry instance
+_service_registry: ServiceRegistry | None = None
+
+
+def get_service_registry() -> ServiceRegistry:
+    """Get the global service registry instance."""
+    global _service_registry
+    if _service_registry is None:
+        _service_registry = ServiceRegistry()
+    return _service_registry
+
+
+@asynccontextmanager
+async def service_lifespan():
+    """Context manager for service lifecycle management."""
+    registry = get_service_registry()
+
+    try:
+        # Initialize all services
+        success = await registry.initialize_all()
+        if not success:
+            raise RuntimeError("Service initialization failed")
+
+        yield registry
+
+    finally:
+        # Shutdown all services
+        await registry.shutdown_all()
 
 
 # Global service registry instance

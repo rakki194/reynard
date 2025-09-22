@@ -11,13 +11,13 @@ with efficient, intelligent file indexing and caching!
 """
 
 import os
-from typing import Dict, Any
+from typing import Any, Dict
 
 
 def get_file_indexing_config() -> Dict[str, Any]:
     """
     Get file indexing and caching configuration for high-performance file operations.
-    
+
     This configuration enables:
     - Fast file discovery and indexing
     - Intelligent content caching
@@ -28,7 +28,6 @@ def get_file_indexing_config() -> Dict[str, Any]:
         # Core file indexing settings
         "file_indexing_enabled": True,
         "caching_enabled": True,
-        
         # File indexing configuration
         "file_indexing": {
             "enabled": True,
@@ -37,7 +36,6 @@ def get_file_indexing_config() -> Dict[str, Any]:
             "chunk_size": 1000,
             "max_file_size_mb": 10,  # Skip files larger than 10MB
         },
-        
         # Content caching configuration
         "content_caching": {
             "enabled": True,
@@ -46,7 +44,6 @@ def get_file_indexing_config() -> Dict[str, Any]:
             "max_cache_size_mb": 100,  # Maximum cache size
             "cache_ttl_seconds": 3600,  # Cache time-to-live
         },
-        
         # Text search configuration
         "text_search": {
             "enabled": True,
@@ -54,7 +51,6 @@ def get_file_indexing_config() -> Dict[str, Any]:
             "max_results": 100,
             "min_word_length": 2,
         },
-        
         # Performance configuration
         "performance": {
             "batch_size": 50,
@@ -62,20 +58,19 @@ def get_file_indexing_config() -> Dict[str, Any]:
             "timeout_seconds": 30,
             "memory_limit_mb": 512,
         },
-        
         # Monitoring and logging
         "monitoring": {
             "enabled": True,
             "log_level": "INFO",
             "performance_metrics": True,
-        }
+        },
     }
 
 
 def get_file_indexing_environment_vars() -> Dict[str, str]:
     """
     Get environment variables for file indexing and caching operation.
-    
+
     These can be set in your .env file or environment to enable
     file indexing mode automatically.
     """
@@ -83,21 +78,17 @@ def get_file_indexing_environment_vars() -> Dict[str, str]:
         # Enable file indexing
         "FILE_INDEXING_ENABLED": "true",
         "CACHING_ENABLED": "true",
-        
         # File indexing settings
         "FILE_INDEXING_BATCH_SIZE": "50",
         "FILE_INDEXING_MAX_CONCURRENT": "10",
         "FILE_INDEXING_TIMEOUT": "30",
-        
         # Caching settings
         "CONTENT_CACHE_MAX_SIZE": "1000",
         "CONTENT_CACHE_TTL": "3600",
         "CONTENT_CACHE_MEMORY_LIMIT_MB": "512",
-        
         # Performance settings
         "MAX_FILE_SIZE_MB": "10",
         "TEXT_SEARCH_MAX_RESULTS": "100",
-        
         # Logging
         "FILE_INDEXING_LOG_LEVEL": "INFO",
     }
@@ -106,7 +97,7 @@ def get_file_indexing_environment_vars() -> Dict[str, str]:
 def apply_file_indexing_config() -> None:
     """
     Apply file indexing configuration to environment variables.
-    
+
     Call this function to automatically set up file indexing mode.
     """
     env_vars = get_file_indexing_environment_vars()
@@ -114,10 +105,10 @@ def apply_file_indexing_config() -> None:
         if key not in os.environ:
             os.environ[key] = value
             print(f"🔥 Set {key}={value}")
-    
+
     print(f"\n🔥 File indexing mode configured!")
     print(f"📊 Total variables set: {len(env_vars)}")
-    
+
     return env_vars
 
 
@@ -130,7 +121,7 @@ if __name__ == "__main__":
     print(f"  File Indexing: {config['file_indexing']['enabled']}")
     print(f"  Content Caching: {config['content_caching']['enabled']}")
     print(f"  Text Search: {config['text_search']['enabled']}")
-    
+
     print("\n🔥 Environment Variables:")
     env_vars = get_file_indexing_environment_vars()
     for key, value in env_vars.items():

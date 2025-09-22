@@ -310,9 +310,7 @@ class SuccessAdvisor8LegacyTracker:
             for keyword in ["refactor", "restructure", "reorganize"]
         ):
             return "refactor"
-        if any(
-            keyword in line_lower for keyword in ["doc", "documentation", "guide"]
-        ):
+        if any(keyword in line_lower for keyword in ["doc", "documentation", "guide"]):
             return "documentation"
         return "other"
 
@@ -565,9 +563,7 @@ class SuccessAdvisor8LegacyTracker:
             "movement_types": movement_types,
             "file_types": file_types,
             "versions": versions,
-            "total_files_scanned": len(
-                {movement.file_path for movement in movements}
-            ),
+            "total_files_scanned": len({movement.file_path for movement in movements}),
             "date_range": {
                 "earliest": min(
                     (activity.timestamp for activity in activities), default=None

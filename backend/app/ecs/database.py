@@ -7,7 +7,7 @@ PostgreSQL database models and connection management for the ECS world system.
 import logging
 import os
 from datetime import datetime, timezone
-from typing import Any, Dict
+from typing import Any
 from uuid import uuid4
 
 from sqlalchemy import (
@@ -25,8 +25,7 @@ from sqlalchemy import (
     text,
 )
 from sqlalchemy.dialects.postgresql import UUID as PostgresUUID
-from sqlalchemy.orm import declarative_base
-from sqlalchemy.orm import Session, relationship, sessionmaker
+from sqlalchemy.orm import Session, declarative_base, relationship, sessionmaker
 
 logger = logging.getLogger(__name__)
 
@@ -357,11 +356,11 @@ class ECSDatabase:
     def __init__(self):
         """Initialize the database connection."""
         self.engine = engine
-        self.SessionLocal = SessionLocal
+        self.session_local = SessionLocal
 
     def get_session(self) -> Session:
         """Get a database session."""
-        return self.SessionLocal()
+        return self.session_local()
 
     async def create_tables(self):
         """Create all database tables."""
@@ -429,7 +428,7 @@ class KnowledgeBaseEntry(Base):
 
     agent = relationship("Agent", back_populates="knowledge_base_entries")
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "id": str(self.id),
             "agent_id": str(self.agent_id),
@@ -469,7 +468,7 @@ class PerformanceMetric(Base):
 
     agent = relationship("Agent", back_populates="performance_metrics")
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "id": str(self.id),
             "agent_id": str(self.agent_id),
@@ -511,7 +510,7 @@ class NamingSpirit(Base):
         onupdate=text("CURRENT_TIMESTAMP"),
     )
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary representation."""
         return {
             "name": self.name,
@@ -555,7 +554,7 @@ class NamingComponent(Base):
         ),
     )
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary representation."""
         return {
             "component_type": self.component_type,
@@ -589,7 +588,7 @@ class NamingConfig(Base):
         onupdate=text("CURRENT_TIMESTAMP"),
     )
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary representation."""
         return {
             "config_key": self.config_key,
@@ -643,7 +642,7 @@ class AgentRelationship(Base):
         UniqueConstraint("agent1_id", "agent2_id", name="uq_agent_relationship"),
     )
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary representation."""
         return {
             "id": str(self.id),
@@ -697,7 +696,7 @@ class AgentLineage(Base):
     parent1 = relationship("Agent", foreign_keys=[parent1_id])
     parent2 = relationship("Agent", foreign_keys=[parent2_id])
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary representation."""
         return {
             "id": str(self.id),
@@ -743,7 +742,7 @@ class BreedingRecord(Base):
     parent2 = relationship("Agent", foreign_keys=[parent2_id])
     offspring = relationship("Agent", foreign_keys=[offspring_id])
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary representation."""
         return {
             "id": str(self.id),
@@ -776,7 +775,7 @@ class WorldConfiguration(Base):
         onupdate=text("CURRENT_TIMESTAMP"),
     )
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary representation."""
         return {
             "config_key": self.config_key,

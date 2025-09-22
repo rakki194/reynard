@@ -5,7 +5,7 @@ All notable changes to the Reynard framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - ????-??-??
+## [Unreleased]
 
 ### Added
 
@@ -16,6 +16,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 ### Fixed
+
+### Security
+
+## [0.15.0] - 2025-09-22
+
+### Added
+
+### Changed
+
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+- **RAG Database Schema Fix**: Fixed critical database schema issue where RAG system was trying to query non-existent `d.path` column, added missing RAG tables (rag_documents, rag_document_chunks, rag_document_embeddings) to migration code, updated SQL queries to use correct column names (source instead of path), and improved error handling for metadata parsing (Lynx-Prime-53)
+- **Type Annotation Fix**: Updated deprecated `typing.Dict` and `typing.List` to modern `dict` and `list` type annotations in semantic search module, fixed unnecessary `elif` after `return` statement (Forest-Prime-70)
+- **Continuous Indexing Fix**: Fixed RuntimeWarning about unawaited coroutine in continuous_indexing.py (Imperial-Sage-41)
+- **GitHub Workflow Fixes**: Corrected workflow paths for i18n and testing packages (Rebirth-Oracle-10)
+- **Search Service Type Fix**: Updated deprecated `typing.Dict` and `typing.List` to modern `dict` and `list` type annotations in optimized search service (Stealth-Oracle-58)
+- **Document Indexer API Refactor**: Abstracted repeated exception handling patterns into helper functions for better maintainability and reduced code duplication (Powerful-Oracle-35)
 
 ### Security
 

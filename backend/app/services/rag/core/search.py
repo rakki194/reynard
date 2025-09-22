@@ -17,6 +17,8 @@ import time
 from collections import Counter, defaultdict
 from typing import Any, Dict, List, Optional, Tuple
 
+from sqlalchemy import text
+
 logger = logging.getLogger("uvicorn")
 
 # Optional imports for advanced search
@@ -235,8 +237,9 @@ class SearchEngine:
         try:
             start_time = time.time()
 
-            # Generate query embedding
-            query_embedding = await self.embedding_service.embed_text(query)
+            # Generate query embedding using the best available model
+            best_model = self.embedding_service.get_best_model()
+            query_embedding = await self.embedding_service.embed_text(query, best_model)
 
             # Perform vector similarity search
             results = await self.vector_store_service.similarity_search(
@@ -449,6 +452,89 @@ class SearchEngine:
 
         logger.info(f"Indexed {len(documents)} documents for keyword search")
 
+    async def populate_from_vector_store(self) -> None:
+        """Populate the keyword index with documents from the vector store."""
+        try:
+            # Get all document chunks from the vector store
+            if not self.vector_store_service or not self.vector_store_service._enabled:
+                logger.warning(
+                    "Vector store service not available for keyword index population"
+                )
+                return
+
+            # Query all document chunks
+            documents = await self._get_all_document_chunks()
+
+            if documents:
+                self.index_documents(documents)
+                logger.info(
+                    f"Populated keyword index with {len(documents)} documents from vector store"
+                )
+            else:
+                logger.info(
+                    "No documents found in vector store for keyword index population"
+                )
+
+        except Exception as e:
+            logger.error(f"Failed to populate keyword index from vector store: {e}")
+
+    async def _get_all_document_chunks(self) -> List[Dict[str, Any]]:
+        """Get all document chunks from the vector store."""
+        try:
+            if not self.vector_store_service._engine:
+                return []
+
+            with self.vector_store_service._engine.connect() as conn:
+                # Query all document chunks with their text content
+                # Use the correct column names: source instead of path, and handle missing columns gracefully
+                result = conn.execute(
+                    text(
+                        """
+                        SELECT
+                            dc.id,
+                            dc.text,
+                            dc.metadata,
+                            d.source,
+                            d.metadata as doc_metadata
+                        FROM rag_document_chunks dc
+                        JOIN rag_documents d ON dc.document_id = d.id
+                        WHERE dc.text IS NOT NULL AND dc.text != ''
+                        ORDER BY dc.id
+                    """
+                    )
+                )
+
+                documents = []
+                for row in result:
+                    # Parse document metadata to extract title and file_type if available
+                    doc_metadata = row[4] or {}
+                    if isinstance(doc_metadata, str):
+                        try:
+                            import json
+
+                            doc_metadata = json.loads(doc_metadata)
+                        except (json.JSONDecodeError, ValueError):
+                            doc_metadata = {}
+
+                    doc = {
+                        "id": f"chunk_{row[0]}",
+                        "text": row[1] or "",
+                        "metadata": {
+                            "chunk_id": row[0],
+                            "path": row[3] or "",  # source column maps to path
+                            "title": doc_metadata.get("title", ""),
+                            "file_type": doc_metadata.get("file_type", ""),
+                            **(row[2] or {}),  # Merge additional metadata
+                        },
+                    }
+                    documents.append(doc)
+
+                return documents
+
+        except Exception as e:
+            logger.error(f"Failed to get document chunks from vector store: {e}")
+            return []
+
     async def search_with_filters(
         self,
         query: str,
@@ -478,9 +564,13 @@ class SearchEngine:
 
         # Apply post-search filters
         if file_types:
+            if isinstance(file_types, str):
+                file_types = [file_types]
             results = [r for r in results if r.get("file_type") in file_types]
 
         if languages:
+            if isinstance(languages, str):
+                languages = [languages]
             results = [
                 r for r in results if r.get("metadata", {}).get("language") in languages
             ]
@@ -493,11 +583,11 @@ class SearchEngine:
             **self.search_stats,
             "documents_indexed": len(self.keyword_index.documents),
             "unique_keywords": len(self.keyword_index.index),
-            "bm25_available": self.keyword_index.bm25_index is not None,
+            "bm25_index_built": self.keyword_index.bm25_index is not None,
+            "bm25_available": BM25_AVAILABLE,
             "default_semantic_weight": self.default_semantic_weight,
             "default_keyword_weight": self.default_keyword_weight,
             "rrf_k": self.rrf_k,
-            "bm25_available": BM25_AVAILABLE,
             "sklearn_available": SKLEARN_AVAILABLE,
         }
 

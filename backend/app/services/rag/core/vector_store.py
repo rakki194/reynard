@@ -241,6 +241,69 @@ class VectorStoreService:
                         )
                     )
 
+                    # Create RAG-specific tables for backward compatibility
+                    conn.execute(
+                        text(
+                            """
+                        CREATE TABLE IF NOT EXISTS rag_documents (
+                            id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                            source VARCHAR(1000) NOT NULL,
+                            content TEXT,
+                            metadata JSONB,
+                            created_at TIMESTAMP DEFAULT NOW(),
+                            updated_at TIMESTAMP DEFAULT NOW()
+                        )
+                    """
+                        )
+                    )
+
+                    conn.execute(
+                        text(
+                            """
+                        CREATE TABLE IF NOT EXISTS rag_document_chunks (
+                            id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                            document_id UUID REFERENCES rag_documents(id) ON DELETE CASCADE,
+                            chunk_index INTEGER,
+                            text TEXT,
+                            metadata JSONB,
+                            created_at TIMESTAMP DEFAULT NOW(),
+                            updated_at TIMESTAMP DEFAULT NOW()
+                        )
+                    """
+                        )
+                    )
+
+                    conn.execute(
+                        text(
+                            """
+                        CREATE TABLE IF NOT EXISTS rag_document_embeddings (
+                            id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                            chunk_id UUID REFERENCES rag_document_chunks(id) ON DELETE CASCADE,
+                            model_id VARCHAR(100),
+                            dim INTEGER,
+                            embedding VECTOR(1024),
+                            metric VARCHAR(50),
+                            created_at TIMESTAMP DEFAULT NOW(),
+                            updated_at TIMESTAMP DEFAULT NOW()
+                        )
+                    """
+                        )
+                    )
+
+                    # Create indexes for RAG tables
+                    conn.execute(
+                        text(
+                            """
+                        CREATE INDEX IF NOT EXISTS rag_documents_source_idx ON rag_documents(source);
+                        CREATE INDEX IF NOT EXISTS rag_document_chunks_document_id_idx ON rag_document_chunks(document_id);
+                        CREATE INDEX IF NOT EXISTS rag_document_embeddings_chunk_id_idx ON rag_document_embeddings(chunk_id);
+                        CREATE INDEX IF NOT EXISTS rag_document_embeddings_embedding_hnsw_idx 
+                        ON rag_document_embeddings USING hnsw (embedding vector_cosine_ops)
+                        WITH (m = 16, ef_construction = 64);
+                    """
+                        )
+                    )
+
                     conn.commit()
                     logger.info("Legacy database migrations completed successfully")
                     return True

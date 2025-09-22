@@ -6,14 +6,15 @@ focusing on file change detection and service mapping.
 """
 
 import os
+
 import pytest
 from fastapi import FastAPI
 
 from app.core.intelligent_reload import (
     ServiceReloadManager,
+    get_reload_excludes,
     get_reload_manager,
     should_use_intelligent_reload,
-    get_reload_excludes,
 )
 
 

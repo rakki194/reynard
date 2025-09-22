@@ -54,7 +54,10 @@ class TestSuccessAdvisor8Activity:
             version="1.2.3",
             file_path="/path/to/file.py",
             line_number=42,
-            context={"source": "changelog", "raw_line": "- Fix bug in Success-Advisor-8"},
+            context={
+                "source": "changelog",
+                "raw_line": "- Fix bug in Success-Advisor-8",
+            },
         )
 
         assert activity.version == "1.2.3"
@@ -206,7 +209,7 @@ class TestSuccessAdvisor8LegacyTracker:
         """Create a temporary codebase for testing."""
         with tempfile.TemporaryDirectory() as temp_dir:
             temp_path = Path(temp_dir)
-            
+
             # Create a sample CHANGELOG.md
             changelog_content = """# Changelog
 
@@ -230,10 +233,10 @@ class TestSuccessAdvisor8LegacyTracker:
 - Initial Success-Advisor-8 implementation
 - success_advisor_8 tracking capabilities
 """
-            
+
             changelog_path = temp_path / "CHANGELOG.md"
             changelog_path.write_text(changelog_content, encoding="utf-8")
-            
+
             # Create sample Python file
             python_content = '''"""
 Success-Advisor-8 Legacy Tracker Module
@@ -254,12 +257,12 @@ class SuccessAdvisor8Tracker:
         """Find all SuccessAdvisor8 references in codebase."""
         return ["Success-Advisor-8", "success_advisor_8"]
 '''
-            
+
             python_path = temp_path / "success_advisor_tracker.py"
             python_path.write_text(python_content, encoding="utf-8")
-            
+
             # Create sample TypeScript file
-            ts_content = '''/**
+            ts_content = """/**
  * Success-Advisor-8 Legacy Tracking System
  * 
  * Tracks Success-Advisor-8 movements and activities.
@@ -282,13 +285,13 @@ class SuccessAdvisor8LegacyTracker {
 }
 
 export { SuccessAdvisor8LegacyTracker };
-'''
-            
+"""
+
             ts_path = temp_path / "legacy_tracker.ts"
             ts_path.write_text(ts_content, encoding="utf-8")
-            
+
             # Create sample Markdown file
-            md_content = '''# Success-Advisor-8 Documentation
+            md_content = """# Success-Advisor-8 Documentation
 
 ## Overview
 
@@ -308,11 +311,11 @@ from success_advisor_8_tracker import SuccessAdvisor8LegacyTracker
 tracker = SuccessAdvisor8LegacyTracker()
 tracker.scan_codebase_movements()
 ```
-'''
-            
+"""
+
             md_path = temp_path / "README.md"
             md_path.write_text(md_content, encoding="utf-8")
-            
+
             yield temp_path
 
     @pytest.fixture
@@ -323,12 +326,12 @@ tracker.scan_codebase_movements()
     def test_tracker_initialization(self, temp_codebase):
         """Test tracker initialization."""
         tracker = SuccessAdvisor8LegacyTracker(str(temp_codebase))
-        
+
         assert tracker.codebase_path == temp_codebase
         assert tracker.changelog_path == temp_codebase / "CHANGELOG.md"
         assert tracker.activities == []
         assert tracker.code_movements == []
-        
+
         # Check patterns are properly initialized
         assert "success_advisor_8" in tracker.patterns
         assert "lion_spirit" in tracker.patterns
@@ -337,63 +340,136 @@ tracker.scan_codebase_movements()
     def test_contains_success_advisor_8_reference(self, tracker):
         """Test Success-Advisor-8 reference detection."""
         # Test various patterns
-        assert tracker._contains_success_advisor_8_reference("Success-Advisor-8 implementation")
-        assert tracker._contains_success_advisor_8_reference("SUCCESS-ADVISOR-8 tracking")
-        assert tracker._contains_success_advisor_8_reference("success_advisor_8 reference")
+        assert tracker._contains_success_advisor_8_reference(
+            "Success-Advisor-8 implementation"
+        )
+        assert tracker._contains_success_advisor_8_reference(
+            "SUCCESS-ADVISOR-8 tracking"
+        )
+        assert tracker._contains_success_advisor_8_reference(
+            "success_advisor_8 reference"
+        )
         assert tracker._contains_success_advisor_8_reference("SuccessAdvisor8 class")
-        assert tracker._contains_success_advisor_8_reference("success_advisor8 function")
-        
+        assert tracker._contains_success_advisor_8_reference(
+            "success_advisor8 function"
+        )
+
         # Test lion spirit patterns
-        assert tracker._contains_success_advisor_8_reference("🦁 mane flows with strategic wisdom")
-        assert tracker._contains_success_advisor_8_reference("🦁 roars strategic commands")
-        
+        assert tracker._contains_success_advisor_8_reference(
+            "🦁 mane flows with strategic wisdom"
+        )
+        assert tracker._contains_success_advisor_8_reference(
+            "🦁 roars strategic commands"
+        )
+
         # Test release management patterns
-        assert tracker._contains_success_advisor_8_reference("release management system")
+        assert tracker._contains_success_advisor_8_reference(
+            "release management system"
+        )
         assert tracker._contains_success_advisor_8_reference("version bump process")
-        
+
         # Test negative cases
-        assert not tracker._contains_success_advisor_8_reference("Regular code without patterns")
-        assert not tracker._contains_success_advisor_8_reference("Some other functionality")
+        assert not tracker._contains_success_advisor_8_reference(
+            "Regular code without patterns"
+        )
+        assert not tracker._contains_success_advisor_8_reference(
+            "Some other functionality"
+        )
 
     def test_classify_activity_type(self, tracker):
         """Test activity type classification."""
         assert tracker._classify_activity_type("Release version 1.2.3") == "release"
         assert tracker._classify_activity_type("Version bump to 2.0.0") == "release"
         assert tracker._classify_activity_type("Add new feature") == "feature"
-        assert tracker._classify_activity_type("Implement Success-Advisor-8") == "feature"
+        assert (
+            tracker._classify_activity_type("Implement Success-Advisor-8") == "feature"
+        )
         assert tracker._classify_activity_type("Fix bug in Success-Advisor-8") == "fix"
         assert tracker._classify_activity_type("Error handling improvement") == "fix"
-        assert tracker._classify_activity_type("Refactor Success-Advisor-8 code") == "refactor"
-        assert tracker._classify_activity_type("Restructure legacy tracking") == "refactor"
-        assert tracker._classify_activity_type("Document Success-Advisor-8") == "documentation"
-        assert tracker._classify_activity_type("Guide for legacy tracking") == "documentation"
+        assert (
+            tracker._classify_activity_type("Refactor Success-Advisor-8 code")
+            == "refactor"
+        )
+        assert (
+            tracker._classify_activity_type("Restructure legacy tracking") == "refactor"
+        )
+        assert (
+            tracker._classify_activity_type("Document Success-Advisor-8")
+            == "documentation"
+        )
+        assert (
+            tracker._classify_activity_type("Guide for legacy tracking")
+            == "documentation"
+        )
         assert tracker._classify_activity_type("Some other change") == "other"
 
     def test_classify_python_movement(self, tracker):
         """Test Python code movement classification."""
         assert tracker._classify_python_movement("import success_advisor_8") == "import"
-        assert tracker._classify_python_movement("from success_advisor_8 import tracker") == "import"
-        assert tracker._classify_python_movement("class SuccessAdvisor8Tracker:") == "definition"
-        assert tracker._classify_python_movement("def success_advisor_8_function():") == "definition"
+        assert (
+            tracker._classify_python_movement("from success_advisor_8 import tracker")
+            == "import"
+        )
+        assert (
+            tracker._classify_python_movement("class SuccessAdvisor8Tracker:")
+            == "definition"
+        )
+        assert (
+            tracker._classify_python_movement("def success_advisor_8_function():")
+            == "definition"
+        )
         assert tracker._classify_python_movement("success_advisor_8.track()") == "usage"
-        assert tracker._classify_python_movement("Success-Advisor-8 reference") == "usage"
+        assert (
+            tracker._classify_python_movement("Success-Advisor-8 reference") == "usage"
+        )
 
     def test_classify_js_movement(self, tracker):
         """Test JavaScript/TypeScript code movement classification."""
-        assert tracker._classify_js_movement("import { SuccessAdvisor8 } from './tracker'") == "import"
-        assert tracker._classify_js_movement("const tracker = require('success_advisor_8')") == "import"
-        assert tracker._classify_js_movement("class SuccessAdvisor8Tracker {") == "definition"
-        assert tracker._classify_js_movement("function success_advisor_8_function() {") == "definition"
+        assert (
+            tracker._classify_js_movement("import { SuccessAdvisor8 } from './tracker'")
+            == "import"
+        )
+        assert (
+            tracker._classify_js_movement(
+                "const tracker = require('success_advisor_8')"
+            )
+            == "import"
+        )
+        assert (
+            tracker._classify_js_movement("class SuccessAdvisor8Tracker {")
+            == "definition"
+        )
+        assert (
+            tracker._classify_js_movement("function success_advisor_8_function() {")
+            == "definition"
+        )
         assert tracker._classify_js_movement("success_advisor_8.track()") == "usage"
         assert tracker._classify_js_movement("Success-Advisor-8 reference") == "usage"
 
     def test_classify_markdown_movement(self, tracker):
         """Test Markdown movement classification."""
-        assert tracker._classify_markdown_movement("# Success-Advisor-8 Documentation") == "heading"
-        assert tracker._classify_markdown_movement("- Success-Advisor-8 feature") == "list_item"
-        assert tracker._classify_markdown_movement("* Success-Advisor-8 item") == "list_item"
-        assert tracker._classify_markdown_movement("```python\nSuccess-Advisor-8 code\n```") == "code_block"
-        assert tracker._classify_markdown_movement("Success-Advisor-8 text reference") == "text_reference"
+        assert (
+            tracker._classify_markdown_movement("# Success-Advisor-8 Documentation")
+            == "heading"
+        )
+        assert (
+            tracker._classify_markdown_movement("- Success-Advisor-8 feature")
+            == "list_item"
+        )
+        assert (
+            tracker._classify_markdown_movement("* Success-Advisor-8 item")
+            == "list_item"
+        )
+        assert (
+            tracker._classify_markdown_movement(
+                "```python\nSuccess-Advisor-8 code\n```"
+            )
+            == "code_block"
+        )
+        assert (
+            tracker._classify_markdown_movement("Success-Advisor-8 text reference")
+            == "text_reference"
+        )
 
     def test_should_scan_file(self, tracker):
         """Test file scanning eligibility."""
@@ -402,7 +478,7 @@ tracker.scan_codebase_movements()
         assert tracker._should_scan_file(Path("/path/to/file.ts"))
         assert tracker._should_scan_file(Path("/path/to/file.js"))
         assert tracker._should_scan_file(Path("/path/to/file.md"))
-        
+
         # Test files that should be skipped
         assert not tracker._should_scan_file(Path("/path/to/node_modules/file.py"))
         assert not tracker._should_scan_file(Path("/path/to/.git/file.py"))
@@ -414,17 +490,25 @@ tracker.scan_codebase_movements()
     async def test_parse_changelog_entries(self, tracker):
         """Test CHANGELOG parsing functionality."""
         activities = await tracker.parse_changelog_entries()
-        
+
         assert len(activities) > 0
-        
+
         # Check that we found Success-Advisor-8 activities
-        success_activities = [a for a in activities if "Success-Advisor-8" in a.description]
+        success_activities = [
+            a for a in activities if "Success-Advisor-8" in a.description
+        ]
         assert len(success_activities) > 0
-        
+
         # Verify activity structure
         for activity in success_activities:
             assert activity.activity_id is not None
-            assert activity.activity_type in ["feature", "fix", "refactor", "documentation", "other"]
+            assert activity.activity_type in [
+                "feature",
+                "fix",
+                "refactor",
+                "documentation",
+                "other",
+            ]
             assert activity.description is not None
             assert activity.timestamp is not None
             assert activity.version in ["1.2.0", "1.1.0"]  # From our test CHANGELOG
@@ -437,45 +521,54 @@ tracker.scan_codebase_movements()
         # Remove the CHANGELOG file
         changelog_path = temp_codebase / "CHANGELOG.md"
         changelog_path.unlink()
-        
+
         tracker = SuccessAdvisor8LegacyTracker(str(temp_codebase))
         activities = await tracker.parse_changelog_entries()
-        
+
         assert activities == []
 
     @pytest.mark.asyncio
     async def test_scan_codebase_movements(self, tracker):
         """Test codebase movement scanning."""
         movements = await tracker.scan_codebase_movements()
-        
+
         assert len(movements) > 0
-        
+
         # Check that we found movements in different file types
         file_types = {movement.context.get("file_type") for movement in movements}
         assert "python" in file_types
         assert "javascript" in file_types
         assert "markdown" in file_types
-        
+
         # Verify movement structure
         for movement in movements:
             assert movement.file_path is not None
             assert movement.line_number > 0
             assert movement.content is not None
-            assert movement.movement_type in ["import", "definition", "usage", "reference", "heading", "list_item", "code_block", "text_reference"]
+            assert movement.movement_type in [
+                "import",
+                "definition",
+                "usage",
+                "reference",
+                "heading",
+                "list_item",
+                "code_block",
+                "text_reference",
+            ]
             assert "file_type" in movement.context
 
     @pytest.mark.asyncio
     async def test_generate_legacy_report(self, tracker):
         """Test legacy report generation."""
         report = await tracker.generate_legacy_report()
-        
+
         assert isinstance(report, LegacyReport)
         assert report.total_activities > 0
         assert report.total_code_movements > 0
         assert len(report.changelog_entries) > 0
         assert len(report.codebase_movements) > 0
         assert report.last_updated is not None
-        
+
         # Check summary structure
         assert "activity_types" in report.summary
         assert "movement_types" in report.summary
@@ -487,31 +580,33 @@ tracker.scan_codebase_movements()
     @pytest.mark.asyncio
     async def test_export_legacy_data(self, tracker):
         """Test legacy data export functionality."""
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as temp_file:
+        with tempfile.NamedTemporaryFile(
+            mode="w", suffix=".json", delete=False
+        ) as temp_file:
             temp_path = temp_file.name
-        
+
         try:
             success = await tracker.export_legacy_data(temp_path)
             assert success
-            
+
             # Verify the exported file exists and contains valid JSON
             assert Path(temp_path).exists()
-            
-            with open(temp_path, 'r', encoding='utf-8') as f:
+
+            with open(temp_path, "r", encoding="utf-8") as f:
                 export_data = json.load(f)
-            
+
             assert "report" in export_data
             assert "export_timestamp" in export_data
             assert "codebase_path" in export_data
             assert "changelog_path" in export_data
-            
+
             # Verify report structure
             report_data = export_data["report"]
             assert "total_activities" in report_data
             assert "total_code_movements" in report_data
             assert "changelog_entries" in report_data
             assert "codebase_movements" in report_data
-            
+
         finally:
             # Clean up
             Path(temp_path).unlink(missing_ok=True)
@@ -521,7 +616,7 @@ tracker.scan_codebase_movements()
         """Test legacy data export failure handling."""
         # Try to export to an invalid path (directory that doesn't exist)
         invalid_path = "/nonexistent/directory/export.json"
-        
+
         success = await tracker.export_legacy_data(invalid_path)
         assert not success
 
@@ -557,8 +652,10 @@ tracker.scan_codebase_movements()
             "## Sub Heading",
             "Success-Advisor-8 reference",
         ]
-        
-        context = tracker._get_heading_context(lines, 4)  # Line 4 contains the reference
+
+        context = tracker._get_heading_context(
+            lines, 4
+        )  # Line 4 contains the reference
         assert context == "## Sub Heading"
 
     def test_generate_summary(self, tracker):
@@ -579,7 +676,7 @@ tracker.scan_codebase_movements()
                 version="1.0.0",
             ),
         ]
-        
+
         movements = [
             CodeMovement(
                 file_path="/path/to/file1.py",
@@ -596,9 +693,9 @@ tracker.scan_codebase_movements()
                 context={"file_type": "javascript"},
             ),
         ]
-        
+
         summary = tracker._generate_summary(activities, movements)
-        
+
         assert summary["activity_types"]["feature"] == 1
         assert summary["activity_types"]["fix"] == 1
         assert summary["movement_types"]["usage"] == 1
@@ -618,17 +715,17 @@ class TestIntegration:
         """Create a complex temporary codebase for integration testing."""
         with tempfile.TemporaryDirectory() as temp_dir:
             temp_path = Path(temp_dir)
-            
+
             # Create nested directory structure
             src_path = temp_path / "src"
             src_path.mkdir()
-            
+
             tests_path = temp_path / "tests"
             tests_path.mkdir()
-            
+
             docs_path = temp_path / "docs"
             docs_path.mkdir()
-            
+
             # Create complex CHANGELOG
             changelog_content = """# Changelog
 
@@ -668,10 +765,10 @@ All notable changes to this project will be documented in this file.
 - Release management system
 - Version bump process
 """
-            
+
             changelog_path = temp_path / "CHANGELOG.md"
             changelog_path.write_text(changelog_content, encoding="utf-8")
-            
+
             # Create main module
             main_content = '''"""
 Success-Advisor-8 Legacy Tracking System
@@ -721,10 +818,10 @@ class SuccessAdvisor8LegacyTracker:
             "last_updated": datetime.now().isoformat()
         }
 '''
-            
+
             main_path = src_path / "success_advisor_8_tracker.py"
             main_path.write_text(main_content, encoding="utf-8")
-            
+
             # Create test file
             test_content = '''"""
 Tests for Success-Advisor-8 Legacy Tracker.
@@ -753,12 +850,12 @@ class TestSuccessAdvisor8LegacyTracker:
         assert activities["total_references"] == 3
         assert "last_updated" in activities
 '''
-            
+
             test_path = tests_path / "test_success_advisor_8_tracker.py"
             test_path.write_text(test_content, encoding="utf-8")
-            
+
             # Create TypeScript file
-            ts_content = '''/**
+            ts_content = """/**
  * Success-Advisor-8 Legacy Tracking System
  * 
  * Comprehensive tracking and analysis of Success-Advisor-8 activities.
@@ -805,13 +902,13 @@ export class SuccessAdvisor8LegacyTracker {
         };
     }
 }
-'''
-            
+"""
+
             ts_path = src_path / "legacy_tracker.ts"
             ts_path.write_text(ts_content, encoding="utf-8")
-            
+
             # Create documentation
-            doc_content = '''# Success-Advisor-8 Legacy Tracking System
+            doc_content = """# Success-Advisor-8 Legacy Tracking System
 
 ## Overview
 
@@ -882,74 +979,87 @@ Integration with release management systems:
 - CHANGELOG update automation
 - Git tag management
 - Semantic versioning support
-'''
-            
+"""
+
             doc_path = docs_path / "README.md"
             doc_path.write_text(doc_content, encoding="utf-8")
-            
+
             yield temp_path
 
     @pytest.mark.asyncio
-    async def test_complete_legacy_tracking_workflow(self, temp_codebase_with_complex_structure):
+    async def test_complete_legacy_tracking_workflow(
+        self, temp_codebase_with_complex_structure
+    ):
         """Test the complete legacy tracking workflow."""
-        tracker = SuccessAdvisor8LegacyTracker(str(temp_codebase_with_complex_structure))
-        
+        tracker = SuccessAdvisor8LegacyTracker(
+            str(temp_codebase_with_complex_structure)
+        )
+
         # Step 1: Parse CHANGELOG entries
         activities = await tracker.parse_changelog_entries()
         assert len(activities) > 0
-        
+
         # Verify we found activities from different versions
         versions = {activity.version for activity in activities if activity.version}
         assert "2.1.0" in versions
         assert "2.0.0" in versions
         assert "1.0.0" in versions
-        
+
         # Step 2: Scan codebase movements
         movements = await tracker.scan_codebase_movements()
         assert len(movements) > 0
-        
+
         # Verify we found movements in different file types
         file_types = {movement.context.get("file_type") for movement in movements}
         assert "python" in file_types
         assert "javascript" in file_types
         assert "markdown" in file_types
-        
+
         # Step 3: Generate comprehensive report
         report = await tracker.generate_legacy_report()
         assert report.total_activities > 0
         assert report.total_code_movements > 0
-        
+
         # Verify summary statistics
         assert report.summary["total_files_scanned"] > 0
         assert len(report.summary["activity_types"]) > 0
         assert len(report.summary["movement_types"]) > 0
         assert len(report.summary["file_types"]) > 0
-        
+
         # Step 4: Export legacy data
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as temp_file:
+        with tempfile.NamedTemporaryFile(
+            mode="w", suffix=".json", delete=False
+        ) as temp_file:
             temp_path = temp_file.name
-        
+
         try:
             success = await tracker.export_legacy_data(temp_path)
             assert success
-            
+
             # Verify export contains all expected data
-            with open(temp_path, 'r', encoding='utf-8') as f:
+            with open(temp_path, "r", encoding="utf-8") as f:
                 export_data = json.load(f)
-            
+
             assert export_data["report"]["total_activities"] == report.total_activities
-            assert export_data["report"]["total_code_movements"] == report.total_code_movements
+            assert (
+                export_data["report"]["total_code_movements"]
+                == report.total_code_movements
+            )
             assert len(export_data["report"]["changelog_entries"]) == len(activities)
             assert len(export_data["report"]["codebase_movements"]) == len(movements)
-            
+
         finally:
             Path(temp_path).unlink(missing_ok=True)
 
     @pytest.mark.asyncio
-    async def test_pattern_matching_comprehensive(self, temp_codebase_with_complex_structure):
+    async def test_pattern_matching_comprehensive(
+        self, temp_codebase_with_complex_structure
+    ):
         """Test comprehensive pattern matching across all file types."""
-        tracker = SuccessAdvisor8LegacyTracker(str(temp_codebase_with_complex_structure))
-        
+        tracker = SuccessAdvisor8LegacyTracker(
+            str(temp_codebase_with_complex_structure)
+        )
+
         # Test all pattern types
         test_cases = [
             # Success-Advisor-8 patterns
@@ -958,35 +1068,36 @@ Integration with release management systems:
             ("success_advisor_8 reference", True),
             ("SuccessAdvisor8 class definition", True),
             ("success_advisor8 function call", True),
-            
             # Lion spirit patterns
             ("🦁 mane flows with strategic wisdom", True),
             ("🦁 roars strategic commands", True),
             ("🦁 teeth gleam with precision", True),
             ("🦁 mane ripples with authority", True),
-            
             # Release management patterns
             ("release management system", True),
             ("version bump process", True),
             ("changelog update automation", True),
             ("git tag management", True),
             ("semantic versioning support", True),
-            
             # Negative cases
             ("Regular code without patterns", False),
             ("Some other functionality", False),
             ("Unrelated system", False),
         ]
-        
+
         for text, expected in test_cases:
             result = tracker._contains_success_advisor_8_reference(text)
             assert result == expected, f"Failed for text: '{text}'"
 
     @pytest.mark.asyncio
-    async def test_movement_classification_comprehensive(self, temp_codebase_with_complex_structure):
+    async def test_movement_classification_comprehensive(
+        self, temp_codebase_with_complex_structure
+    ):
         """Test comprehensive movement classification."""
-        tracker = SuccessAdvisor8LegacyTracker(str(temp_codebase_with_complex_structure))
-        
+        tracker = SuccessAdvisor8LegacyTracker(
+            str(temp_codebase_with_complex_structure)
+        )
+
         # Test Python movement classification
         python_cases = [
             ("import success_advisor_8", "import"),
@@ -996,11 +1107,11 @@ Integration with release management systems:
             ("success_advisor_8.track()", "usage"),
             ("Success-Advisor-8 reference", "usage"),
         ]
-        
+
         for text, expected in python_cases:
             result = tracker._classify_python_movement(text)
             assert result == expected, f"Failed for Python text: '{text}'"
-        
+
         # Test JavaScript movement classification
         js_cases = [
             ("import { SuccessAdvisor8 } from './tracker'", "import"),
@@ -1010,11 +1121,11 @@ Integration with release management systems:
             ("success_advisor_8.track()", "usage"),
             ("Success-Advisor-8 reference", "usage"),
         ]
-        
+
         for text, expected in js_cases:
             result = tracker._classify_js_movement(text)
             assert result == expected, f"Failed for JS text: '{text}'"
-        
+
         # Test Markdown movement classification
         md_cases = [
             ("# Success-Advisor-8 Documentation", "heading"),
@@ -1023,7 +1134,7 @@ Integration with release management systems:
             ("```python\nSuccess-Advisor-8 code\n```", "code_block"),
             ("Success-Advisor-8 text reference", "text_reference"),
         ]
-        
+
         for text, expected in md_cases:
             result = tracker._classify_markdown_movement(text)
             assert result == expected, f"Failed for Markdown text: '{text}'"

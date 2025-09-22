@@ -68,7 +68,9 @@ class ModelManager:
         quantization_config = self._get_quantization_config()
 
         # Use PyTorch 2.8.0's built-in attention implementation
-        attention_impl = self.config.get("rtx4090_optimizations", {}).get("attention_implementation", "sdpa")
+        attention_impl = self.config.get("rtx4090_optimizations", {}).get(
+            "attention_implementation", "sdpa"
+        )
 
         # Load model with modern optimizations
         model = AutoModelForCausalLM.from_pretrained(
@@ -81,7 +83,9 @@ class ModelManager:
         )
 
         # Apply BetterTransformer optimization if enabled
-        if self.config.get("rtx4090_optimizations", {}).get("use_bettertransformer", False):
+        if self.config.get("rtx4090_optimizations", {}).get(
+            "use_bettertransformer", False
+        ):
             model = self._apply_bettertransformer(model)
 
         # Apply torch.compile for PyTorch 2.8.0 speedup
@@ -110,6 +114,7 @@ class ModelManager:
         """Apply BetterTransformer optimization for RTX 4090."""
         try:
             from optimum.bettertransformer import BetterTransformer
+
             logger.info("🔥 VULCAN: Applying BetterTransformer optimization...")
             model = BetterTransformer.transform(model)
             return model
@@ -138,7 +143,9 @@ class ModelManager:
             raise RuntimeError("Model not loaded")
 
         total_params = sum(p.numel() for p in self.model.parameters())
-        trainable_params = sum(p.numel() for p in self.model.parameters() if p.requires_grad)
+        trainable_params = sum(
+            p.numel() for p in self.model.parameters() if p.requires_grad
+        )
 
         return {
             "model_name": self.config["model"]["name"],

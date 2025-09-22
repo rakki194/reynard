@@ -39,7 +39,9 @@ Version: 1.0.0
 """
 
 import logging
+import time
 
+import jwt
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from ...security.mcp_auth import MCPTokenData, require_rag_config, require_rag_query
@@ -58,7 +60,7 @@ router = APIRouter(tags=["rag"])
 
 @router.post("/query", response_model=RAGQueryResponse)
 async def query_rag(
-    request: RAGQueryRequest, mcp_client: MCPTokenData = Depends(require_rag_query)
+    request: RAGQueryRequest, _: MCPTokenData = Depends(require_rag_query)
 ):
     """
     Perform advanced semantic search using the RAG (Retrieval-Augmented Generation) system.
@@ -83,7 +85,7 @@ async def query_rag(
             - top_k (int, optional): Maximum number of results to return
             - similarity_threshold (float, optional): Minimum similarity score
             - enable_reranking (bool, optional): Enable intelligent reranking
-        mcp_client (MCPTokenData): Authenticated MCP client data
+        _ (MCPTokenData): Authenticated MCP client data
 
     Returns:
         RAGQueryResponse: Search results containing:
@@ -104,7 +106,7 @@ async def query_rag(
             top_k=10,
             similarity_threshold=0.7
         )
-        response = await query_rag(request, mcp_client)
+        response = await query_rag(request, mcp_token_data)
         ```
     """
     try:
@@ -118,11 +120,11 @@ async def query_rag(
         )
         return RAGQueryResponse(**result)
     except Exception as e:
-        logger.error(f"Failed to perform RAG query: {e}")
+        logger.exception("Failed to perform RAG query")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to perform RAG query: {e!s}",
-        )
+        ) from e
 
 
 @router.post("/embed")
@@ -175,20 +177,29 @@ async def embed_texts(request: dict):
         texts = request.get("texts", [])
         model = request.get("model", "mxbai-embed-large")
 
-        # Generate embeddings
+        # Generate embeddings using the actual embedding service
         embeddings = []
         for text in texts:
-            # This is a placeholder - implement actual embedding generation
-            embedding = [0.1] * 384  # Placeholder embedding
-            embeddings.append(embedding)
+            try:
+                embedding = await service.embedding_service.embed_text(text, model)
+                if embedding:
+                    embeddings.append(embedding)
+                else:
+                    logger.warning(
+                        "Failed to generate embedding for text: %s...", text[:50]
+                    )
+                    embeddings.append([])
+            except Exception:
+                logger.exception("Error generating embedding for text")
+                embeddings.append([])
 
         return {"embeddings": embeddings, "model": model, "count": len(embeddings)}
     except Exception as e:
-        logger.error(f"Failed to generate embeddings: {e}")
+        logger.exception("Failed to generate embeddings")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to generate embeddings: {e!s}",
-        )
+        ) from e
 
 
 @router.post("/test-query")
@@ -208,11 +219,11 @@ async def test_query_rag(request: RAGQueryRequest):
         )
         return {"results": results, "query": request.q, "total": len(results)}
     except Exception as e:
-        logger.error(f"Failed to perform RAG query: {e}")
+        logger.exception("Failed to perform RAG query")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to perform RAG query: {e!s}",
-        )
+        ) from e
 
 
 @router.get("/health")
@@ -225,10 +236,6 @@ async def health_check():
 async def get_test_token():
     """Generate a test token for benchmarking (development only)."""
     try:
-        import time
-
-        import jwt
-
         # Create a test token
         payload = {
             "client_id": "test-benchmark",
@@ -247,31 +254,31 @@ async def get_test_token():
             "permissions": payload["permissions"],
         }
     except Exception as e:
-        logger.error(f"Failed to generate test token: {e}")
+        logger.exception("Failed to generate test token")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to generate test token: {e!s}",
-        )
+        ) from e
 
 
 @router.get("/config", response_model=RAGConfigResponse)
-async def get_rag_config(mcp_client: MCPTokenData = Depends(require_rag_config)):
+async def get_rag_config(_: MCPTokenData = Depends(require_rag_config)):
     """Get current RAG configuration."""
     try:
         service = get_rag_service()
         config = await service.get_config()
         return RAGConfigResponse(config=config, updated=False)
     except Exception as e:
-        logger.error(f"Failed to get RAG config: {e}")
+        logger.exception("Failed to get RAG config")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to get RAG config: {e!s}",
-        )
+        ) from e
 
 
 @router.post("/config", response_model=RAGConfigResponse)
 async def update_rag_config(
-    request: RAGConfigRequest, mcp_client: MCPTokenData = Depends(require_rag_config)
+    request: RAGConfigRequest, _: MCPTokenData = Depends(require_rag_config)
 ):
     """Update RAG configuration."""
     try:
@@ -280,8 +287,8 @@ async def update_rag_config(
         updated_config = await service.get_config()
         return RAGConfigResponse(config=updated_config, updated=True)
     except Exception as e:
-        logger.error(f"Failed to update RAG config: {e}")
+        logger.exception("Failed to update RAG config")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to update RAG config: {e!s}",
-        )
+        ) from e

@@ -4,16 +4,13 @@ ECS World Configuration
 Configuration settings for the ECS world system.
 """
 
-from pathlib import Path
-
 from pydantic import BaseModel, ConfigDict
 
 
 class ECSConfig(BaseModel):
     """Configuration for the ECS world system."""
 
-    # Data persistence - using PostgreSQL database
-    # data_dir: Path = Path("data/ecs")  # Deprecated: using PostgreSQL instead
+    # Data persistence is through PostgreSQL database
 
     # Time management
     time_acceleration: float = 10.0
@@ -37,10 +34,7 @@ class ECSConfig(BaseModel):
     log_level: str = "INFO"
     log_ecs_events: bool = True
 
-    model_config = ConfigDict(
-        env_prefix="ECS_",
-        case_sensitive=False
-    )
+    model_config = ConfigDict(env_prefix="ECS_", case_sensitive=False)
 
 
 def get_ecs_config() -> ECSConfig:

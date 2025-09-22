@@ -25,8 +25,7 @@ from evaluator import ModelEvaluator
 
 # Setup logging
 logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
 console = Console()
@@ -34,7 +33,7 @@ console = Console()
 
 def load_config(config_path: str) -> dict:
     """Load configuration from YAML file."""
-    with open(config_path, 'r') as f:
+    with open(config_path, "r") as f:
         config = yaml.safe_load(f)
     return config
 
@@ -62,42 +61,33 @@ def main():
     parser = argparse.ArgumentParser(description="VULCAN Model Evaluation")
 
     parser.add_argument(
-        "--model_path",
-        type=str,
-        required=True,
-        help="Path to trained model"
+        "--model_path", type=str, required=True, help="Path to trained model"
     )
 
-    parser.add_argument(
-        "--eval_data",
-        type=str,
-        help="Path to evaluation data file"
-    )
+    parser.add_argument("--eval_data", type=str, help="Path to evaluation data file")
 
     parser.add_argument(
         "--config",
         type=str,
         default="config/qwen3_config.yaml",
-        help="Path to configuration file"
+        help="Path to configuration file",
     )
 
     parser.add_argument(
-        "--output_file",
-        type=str,
-        help="Output file for evaluation results"
+        "--output_file", type=str, help="Output file for evaluation results"
     )
 
     parser.add_argument(
         "--generate_samples",
         action="store_true",
-        help="Generate sample responses for evaluation"
+        help="Generate sample responses for evaluation",
     )
 
     parser.add_argument(
         "--num_samples",
         type=int,
         default=5,
-        help="Number of sample responses to generate"
+        help="Number of sample responses to generate",
     )
 
     args = parser.parse_args()
@@ -156,7 +146,8 @@ def main():
             # Save results if output file specified
             if args.output_file:
                 import json
-                with open(args.output_file, 'w') as f:
+
+                with open(args.output_file, "w") as f:
                     json.dump(results, f, indent=2)
                 logger.info(f"🔥 VULCAN: Results saved to {args.output_file}")
 
@@ -173,7 +164,7 @@ def main():
             ]
 
             # Limit to requested number
-            sample_prompts = sample_prompts[:args.num_samples]
+            sample_prompts = sample_prompts[: args.num_samples]
 
             responses = evaluator.generate_sample_responses(sample_prompts)
 
@@ -197,8 +188,7 @@ def main():
         logger.error(f"🔥 VULCAN: Evaluation failed - {e}")
         console.print(
             Panel.fit(
-                f"🔥 VULCAN Evaluation Failed!\n"
-                f"❌ Error: {str(e)}",
+                f"🔥 VULCAN Evaluation Failed!\n" f"❌ Error: {str(e)}",
                 title="VULCAN Evaluation Failed",
                 border_style="red",
             )

@@ -11,7 +11,7 @@ from typing import Any, Dict, List, Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 
 from ..auth.user_service import get_current_active_user
-from ..services.email_analytics_service import email_analytics_service
+from ..services.email.analytics.email_analytics_service import email_analytics_service
 
 logger = logging.getLogger(__name__)
 

@@ -5,9 +5,9 @@ This script demonstrates and tests the performance monitoring functionality.
 """
 
 import asyncio
-import time
-import sys
 import os
+import sys
+import time
 from pathlib import Path
 
 # Add the backend directory to Python path
@@ -15,9 +15,9 @@ backend_dir = Path(__file__).parent.parent.parent.parent
 sys.path.insert(0, str(backend_dir))
 
 from app.ecs.performance import (
-    PerformanceTracker,
     MemoryProfiler,
     PerformanceAnalyzer,
+    PerformanceTracker,
     track_async_task,
     track_db_query,
 )

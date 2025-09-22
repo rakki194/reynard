@@ -5,7 +5,7 @@
   // 🦊 Conditional Python Interpreter Configuration
   // Uses ~/venv/bin/python if available, falls back to system python3
   // VSCode will automatically fall back to system Python if venv doesn't exist
-  "python.defaultInterpreterPath": "/home/kade/venv/bin/python3",
+  "python.defaultInterpreterPath": "/usr/bin/python3",
   "python.terminal.activateEnvironment": true,
   "python.terminal.activateEnvInCurrentTerminal": true,
 

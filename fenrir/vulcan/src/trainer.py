@@ -47,7 +47,7 @@ class VulcanTrainer:
 
         # Training state
         self.training_start_time = None
-        self.best_metric = float('inf')
+        self.best_metric = float("inf")
 
     def setup_training(self) -> None:
         """Setup the complete training environment."""
@@ -118,7 +118,9 @@ class VulcanTrainer:
             num_train_epochs=self.config["training"]["num_epochs"],
             per_device_train_batch_size=self.config["training"]["batch_size"],
             per_device_eval_batch_size=self.config["training"]["batch_size"],
-            gradient_accumulation_steps=self.config["training"]["gradient_accumulation_steps"],
+            gradient_accumulation_steps=self.config["training"][
+                "gradient_accumulation_steps"
+            ],
             learning_rate=self.config["training"]["learning_rate"],
             weight_decay=self.config["training"]["weight_decay"],
             max_grad_norm=self.config["training"]["max_grad_norm"],
@@ -137,7 +139,9 @@ class VulcanTrainer:
             remove_unused_columns=self.config["advanced"]["remove_unused_columns"],
             dataloader_drop_last=self.config["advanced"]["dataloader_drop_last"],
             gradient_checkpointing=self.config["advanced"]["gradient_checkpointing"],
-            ddp_find_unused_parameters=self.config["advanced"]["ddp_find_unused_parameters"],
+            ddp_find_unused_parameters=self.config["advanced"][
+                "ddp_find_unused_parameters"
+            ],
             bf16=self.config["hardware"]["mixed_precision"] == "bf16",
             fp16=self.config["hardware"]["mixed_precision"] == "fp16",
             report_to="tensorboard",
@@ -169,7 +173,9 @@ class VulcanTrainer:
             "total_steps": training_result.global_step,
             "epochs_completed": training_result.epoch,
             "model_size": sum(p.numel() for p in self.model.parameters()),
-            "trainable_parameters": sum(p.numel() for p in self.model.parameters() if p.requires_grad),
+            "trainable_parameters": sum(
+                p.numel() for p in self.model.parameters() if p.requires_grad
+            ),
             "config": self.config,
         }
 

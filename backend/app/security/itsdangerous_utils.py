@@ -25,7 +25,7 @@ Version: 1.0.0
 """
 
 import logging
-from datetime import datetime, timedelta, UTC
+from datetime import UTC, datetime, timedelta
 from typing import Any, Dict, Optional, Union
 
 import itsdangerous
@@ -94,7 +94,8 @@ class ItsDangerousUtils:
         # Convert bytes to base64 string for itsdangerous
         if isinstance(key, bytes):
             import base64
-            return base64.b64encode(key).decode('utf-8')
+
+            return base64.b64encode(key).decode("utf-8")
         return str(key)
 
     def create_timestamped_token(

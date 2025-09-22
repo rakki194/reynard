@@ -9,7 +9,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.core.app_factory import create_app
-from app.services.imap_service import EmailMessage
+from app.services.email.core.imap_service import EmailMessage
 
 
 class TestIMAPRoutes:

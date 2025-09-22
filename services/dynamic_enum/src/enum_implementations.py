@@ -8,6 +8,7 @@ Specific implementations of enum providers for different data types.
 
 import logging
 from typing import Any
+
 from enum_provider import MetadataEnumProvider
 
 logger = logging.getLogger(__name__)

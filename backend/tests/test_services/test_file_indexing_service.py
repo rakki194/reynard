@@ -11,14 +11,15 @@ Version: 1.0.0
 """
 
 import asyncio
-import pytest
-import pytest_asyncio
 import tempfile
 from pathlib import Path
 from unittest.mock import AsyncMock, patch
 
-from app.services.rag.file_indexing_service import get_file_indexing_service
+import pytest
+import pytest_asyncio
+
 from app.config.file_indexing_config import get_file_indexing_config
+from app.services.rag.file_indexing_service import get_file_indexing_service
 
 
 class TestFileIndexingService:
@@ -352,7 +353,8 @@ class TestFileIndexingServiceIntegration:
     async def test_monolith_detection_integration(self):
         """Test integration with monolith detection service."""
         import sys
-        sys.path.append('../../services/mcp-server')
+
+        sys.path.append("../../services/mcp-server")
         from services.monolith_analysis_service import MonolithAnalysisService
 
         service = MonolithAnalysisService()

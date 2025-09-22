@@ -14,7 +14,7 @@ from unittest.mock import AsyncMock, Mock, patch
 import pytest
 import pytest_asyncio
 
-from app.services.email_analytics_service import (
+from app.services.email.analytics.email_analytics_service import (
     EmailAnalyticsService,
     EmailInsight,
     EmailMetrics,

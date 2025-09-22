@@ -15,7 +15,7 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
-from app.services.continuous_indexing import ContinuousIndexingService
+from app.services.infrastructure.continuous_indexing import ContinuousIndexingService
 
 
 @pytest.fixture(scope="session")

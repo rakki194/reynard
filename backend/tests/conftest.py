@@ -7,9 +7,9 @@ the intelligent reload system.
 
 import asyncio
 import os
-import pytest
 from unittest.mock import MagicMock
 
+import pytest
 from fastapi import FastAPI
 
 
@@ -27,14 +27,14 @@ def clean_environment():
     # Store original values
     original_values = {}
     env_vars = ["INTELLIGENT_RELOAD", "ENVIRONMENT", "DEBUG"]
-    
+
     for var in env_vars:
         if var in os.environ:
             original_values[var] = os.environ[var]
             del os.environ[var]
-    
+
     yield
-    
+
     # Restore original values
     for var, value in original_values.items():
         os.environ[var] = value
@@ -157,16 +157,16 @@ def expected_service_mappings():
 def expected_priority_order():
     """Provide expected service priority order for testing."""
     return [
-        "gatekeeper",      # 100
-        "ecs_world",       # 90
-        "image_processing", # 75
-        "comfy",           # 50
-        "nlweb",           # 50
-        "rag",             # 25
-        "ollama",          # 25
-        "search",          # 20
-        "ai_email_response", # 15
-        "tts",             # 10
+        "gatekeeper",  # 100
+        "ecs_world",  # 90
+        "image_processing",  # 75
+        "comfy",  # 50
+        "nlweb",  # 50
+        "rag",  # 25
+        "ollama",  # 25
+        "search",  # 20
+        "ai_email_response",  # 15
+        "tts",  # 10
     ]
 
 
@@ -179,15 +179,9 @@ def async_mock():
 # Pytest configuration
 def pytest_configure(config):
     """Configure pytest with custom markers."""
-    config.addinivalue_line(
-        "markers", "asyncio: mark test as async"
-    )
-    config.addinivalue_line(
-        "markers", "integration: mark test as integration test"
-    )
-    config.addinivalue_line(
-        "markers", "unit: mark test as unit test"
-    )
+    config.addinivalue_line("markers", "asyncio: mark test as async")
+    config.addinivalue_line("markers", "integration: mark test as integration test")
+    config.addinivalue_line("markers", "unit: mark test as unit test")
 
 
 def pytest_collection_modifyitems(config, items):
@@ -196,7 +190,7 @@ def pytest_collection_modifyitems(config, items):
         # Add asyncio marker to async tests
         if asyncio.iscoroutinefunction(item.function):
             item.add_marker(pytest.mark.asyncio)
-        
+
         # Add unit marker to non-integration tests
         if "integration" not in item.name:
             item.add_marker(pytest.mark.unit)

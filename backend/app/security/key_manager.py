@@ -41,8 +41,8 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
-from .key_storage_models import KeyStorage, KeyAccessLog, get_key_storage_session
 from .key_cache_service import get_key_cache_service
+from .key_storage_models import KeyAccessLog, KeyStorage, get_key_storage_session
 
 logger = logging.getLogger(__name__)
 
@@ -173,16 +173,16 @@ class KeyManager:
         """
         # Master password for key encryption
         self.master_password = master_password or self._get_master_password()
-        
+
         # Storage configuration
         self.use_database = use_database
-        
+
         # Key cache service for performance
         self.key_cache_service = get_key_cache_service()
-        
+
         # Key metadata storage (in-memory cache)
         self._metadata: Dict[str, KeyMetadata] = {}
-        
+
         # Load existing metadata from database
         if self.use_database:
             self._load_metadata_from_database()
@@ -220,10 +220,10 @@ class KeyManager:
         """Load key metadata from database."""
         try:
             with get_key_storage_session() as session:
-                key_storage_records = session.query(KeyStorage).filter(
-                    KeyStorage.is_active == True
-                ).all()
-                
+                key_storage_records = (
+                    session.query(KeyStorage).filter(KeyStorage.is_active == True).all()
+                )
+
                 for record in key_storage_records:
                     metadata = KeyMetadata(
                         key_id=record.key_id,
@@ -234,11 +234,17 @@ class KeyManager:
                         last_used=record.last_used,
                         usage_count=record.usage_count,
                         rotation_schedule_days=record.rotation_schedule_days,
-                        metadata=json.loads(record.key_metadata) if record.key_metadata else {}
+                        metadata=(
+                            json.loads(record.key_metadata)
+                            if record.key_metadata
+                            else {}
+                        ),
                     )
                     self._metadata[record.key_id] = metadata
-                
-                logger.info(f"Loaded metadata for {len(self._metadata)} keys from database")
+
+                logger.info(
+                    f"Loaded metadata for {len(self._metadata)} keys from database"
+                )
         except Exception as e:
             logger.error(f"Failed to load key metadata from database: {e}")
             self._metadata = {}
@@ -253,7 +259,9 @@ class KeyManager:
                 for key_id, metadata_dict in data.items():
                     self._metadata[key_id] = KeyMetadata.from_dict(metadata_dict)
 
-                logger.info(f"Loaded metadata for {len(self._metadata)} keys from files")
+                logger.info(
+                    f"Loaded metadata for {len(self._metadata)} keys from files"
+                )
             except Exception as e:
                 logger.error(f"Failed to load key metadata from files: {e}")
                 self._metadata = {}
@@ -265,17 +273,21 @@ class KeyManager:
         try:
             with get_key_storage_session() as session:
                 # Check if key exists
-                existing_key = session.query(KeyStorage).filter(
-                    KeyStorage.key_id == key_id
-                ).first()
-                
+                existing_key = (
+                    session.query(KeyStorage)
+                    .filter(KeyStorage.key_id == key_id)
+                    .first()
+                )
+
                 if existing_key:
                     # Update existing key
                     existing_key.status = metadata.status.value
                     existing_key.expires_at = metadata.expires_at
                     existing_key.last_used = metadata.last_used
                     existing_key.usage_count = metadata.usage_count
-                    existing_key.rotation_schedule_days = metadata.rotation_schedule_days
+                    existing_key.rotation_schedule_days = (
+                        metadata.rotation_schedule_days
+                    )
                     existing_key.key_metadata = json.dumps(metadata.metadata)
                     existing_key.updated_at = datetime.now(timezone.utc)
                 else:
@@ -290,13 +302,13 @@ class KeyManager:
                         usage_count=metadata.usage_count,
                         rotation_schedule_days=metadata.rotation_schedule_days,
                         key_metadata=json.dumps(metadata.metadata),
-                        is_active=True
+                        is_active=True,
                     )
                     session.add(new_key)
-                
+
                 session.commit()
                 logger.debug(f"Saved metadata for key {key_id} to database")
-                
+
         except Exception as e:
             logger.error(f"Failed to save key metadata to database: {e}")
 
@@ -384,15 +396,19 @@ class KeyManager:
                 if not metadata:
                     logger.error(f"No metadata found for key {key_id}")
                     return
-                
+
                 # Check if key exists
-                existing_key = session.query(KeyStorage).filter(
-                    KeyStorage.key_id == key_id
-                ).first()
-                
+                existing_key = (
+                    session.query(KeyStorage)
+                    .filter(KeyStorage.key_id == key_id)
+                    .first()
+                )
+
                 if existing_key:
                     # Update existing key data
-                    existing_key.encrypted_key_data = base64.b64encode(key_data).decode()
+                    existing_key.encrypted_key_data = base64.b64encode(
+                        key_data
+                    ).decode()
                     existing_key.updated_at = datetime.now(timezone.utc)
                 else:
                     # Create new key record
@@ -407,13 +423,13 @@ class KeyManager:
                         usage_count=metadata.usage_count,
                         rotation_schedule_days=metadata.rotation_schedule_days,
                         key_metadata=json.dumps(metadata.metadata),
-                        is_active=True
+                        is_active=True,
                     )
                     session.add(new_key)
-                
+
                 session.commit()
                 logger.debug(f"Saved key {key_id} to database")
-                
+
         except Exception as e:
             logger.error(f"Failed to save key {key_id} to database: {e}")
 
@@ -421,17 +437,18 @@ class KeyManager:
         """Load encrypted key data from database."""
         try:
             with get_key_storage_session() as session:
-                key_record = session.query(KeyStorage).filter(
-                    KeyStorage.key_id == key_id,
-                    KeyStorage.is_active == True
-                ).first()
-                
+                key_record = (
+                    session.query(KeyStorage)
+                    .filter(KeyStorage.key_id == key_id, KeyStorage.is_active == True)
+                    .first()
+                )
+
                 if key_record:
                     encrypted_data = base64.b64decode(key_record.encrypted_key_data)
                     return self._decrypt_key(encrypted_data, key_id)
-                
+
                 return None
-                
+
         except Exception as e:
             logger.error(f"Failed to load key {key_id} from database: {e}")
             return None
@@ -445,7 +462,7 @@ class KeyManager:
 
             # Set secure permissions
             key_file.chmod(0o600)
-            
+
         except Exception as e:
             logger.error(f"Failed to save key {key_id} to file: {e}")
 
@@ -455,12 +472,12 @@ class KeyManager:
             key_file = self.keys_directory / f"{key_id}.key"
             if not key_file.exists():
                 return None
-                
+
             with open(key_file, "rb") as f:
                 encrypted_data = f.read()
-                
+
             return self._decrypt_key(encrypted_data, key_id)
-            
+
         except Exception as e:
             logger.error(f"Failed to load key {key_id} from file: {e}")
             return None
@@ -552,12 +569,12 @@ class KeyManager:
 
         # Store metadata first, then key data
         self._metadata[key_id] = key_metadata
-        
+
         if self.use_database:
             self._save_metadata_to_database(key_id, key_metadata)
         else:
             self._save_metadata_to_files()
-        
+
         # Store key data
         self._store_key(key_id, key_data)
 
@@ -567,16 +584,16 @@ class KeyManager:
     def _store_key(self, key_id: str, key_data: bytes) -> None:
         """Store encrypted key data."""
         encrypted_data = self._encrypt_key(key_data, key_id)
-        
+
         if self.use_database:
             # Save to database
             self._save_key_to_database(key_id, encrypted_data)
             # Cache the key for performance
             self.key_cache_service.cache_key(
-                key_id, 
-                key_data, 
+                key_id,
+                key_data,
                 self._metadata[key_id].to_dict(),
-                ttl_seconds=3600  # 1 hour cache TTL
+                ttl_seconds=3600,  # 1 hour cache TTL
             )
         else:
             # Save to file (backward compatibility)
@@ -623,7 +640,7 @@ class KeyManager:
                 key_data = self._load_key_from_database(key_id)
             else:
                 key_data = self._load_key_from_file(key_id)
-            
+
             if key_data is None:
                 logger.error(f"Key data not found: {key_id}")
                 return None
@@ -648,7 +665,7 @@ class KeyManager:
             metadata = self._metadata[key_id]
             metadata.last_used = datetime.now(timezone.utc)
             metadata.usage_count += 1
-            
+
             if self.use_database:
                 self._save_metadata_to_database(key_id, metadata)
                 # Update cache
@@ -729,7 +746,7 @@ class KeyManager:
 
         for key_id in expired_keys:
             self.revoke_key(key_id)
-            
+
             if self.use_database:
                 # Invalidate cache
                 self.key_cache_service.invalidate_key(key_id)
@@ -743,19 +760,19 @@ class KeyManager:
         return len(expired_keys)
 
     def _log_key_access(
-        self, 
-        key_id: str, 
-        operation: str, 
-        success: bool, 
+        self,
+        key_id: str,
+        operation: str,
+        success: bool,
         user_id: Optional[str] = None,
         ip_address: Optional[str] = None,
         user_agent: Optional[str] = None,
-        error_message: Optional[str] = None
+        error_message: Optional[str] = None,
     ) -> None:
         """Log key access for audit purposes."""
         if not self.use_database:
             return
-            
+
         try:
             with get_key_storage_session() as session:
                 access_log = KeyAccessLog(
@@ -765,7 +782,7 @@ class KeyManager:
                     ip_address=ip_address,
                     user_agent=user_agent,
                     success=success,
-                    error_message=error_message
+                    error_message=error_message,
                 )
                 session.add(access_log)
                 session.commit()

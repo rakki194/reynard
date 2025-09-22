@@ -13,7 +13,7 @@ logger = logging.getLogger("uvicorn")
 
 # Import the global service for plugin support checking
 try:
-    from app.services.image_processing_service import _global_image_service
+    from app.services.processing.image_processing_service import _global_image_service
 except ImportError:
     _global_image_service = None
 

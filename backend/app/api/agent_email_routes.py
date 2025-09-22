@@ -26,8 +26,12 @@ from ..models.email_models import (
     EmailSendRequest,
     EmailSendResponse,
 )
-from ..services.agent_email_service import AgentEmailService
-from ..services.email_service import EmailAttachment, EmailMessage, email_service
+from ..services.email.ai.agent_email_service import AgentEmailService
+from ..services.email.core.email_service import (
+    EmailAttachment,
+    EmailMessage,
+    email_service,
+)
 
 logger = logging.getLogger(__name__)
 

@@ -5,6 +5,7 @@ Specialized ECS world for agent management with breeding and trait inheritance.
 """
 
 import logging
+import os
 import random
 from pathlib import Path
 
@@ -55,8 +56,6 @@ class AgentWorld(ECSWorld):
         super().__init__()
         if data_dir is None:
             # Use absolute path from current working directory
-            import os
-
             self.data_dir = Path(os.getcwd()) / "data" / "ecs"
         else:
             # Ensure data_dir is a Path object

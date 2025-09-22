@@ -76,7 +76,9 @@ class ModelEvaluator:
         with torch.no_grad():
             for item in eval_dataset:
                 input_ids = torch.tensor([item["input_ids"]]).to(self.model.device)
-                attention_mask = torch.tensor([item["attention_mask"]]).to(self.model.device)
+                attention_mask = torch.tensor([item["attention_mask"]]).to(
+                    self.model.device
+                )
 
                 # Forward pass
                 outputs = self.model(
@@ -160,7 +162,9 @@ class ModelEvaluator:
             f"🧠 Coherence Score: {results['coherence_score']:.4f}"
         )
 
-    def generate_sample_responses(self, prompts: List[str], max_length: int = 100) -> List[str]:
+    def generate_sample_responses(
+        self, prompts: List[str], max_length: int = 100
+    ) -> List[str]:
         """Generate sample responses for evaluation."""
         if self.model is None or self.tokenizer is None:
             raise RuntimeError("Model and tokenizer not set. Call set_model() first.")
@@ -191,15 +195,16 @@ class ModelEvaluator:
 
                 # Decode response
                 response = self.tokenizer.decode(
-                    outputs[0][inputs["input_ids"].shape[1]:],
-                    skip_special_tokens=True
+                    outputs[0][inputs["input_ids"].shape[1] :], skip_special_tokens=True
                 )
 
                 responses.append(response)
 
         return responses
 
-    def compare_models(self, model_paths: List[str], eval_dataset: Dataset) -> Dict[str, Dict[str, float]]:
+    def compare_models(
+        self, model_paths: List[str], eval_dataset: Dataset
+    ) -> Dict[str, Dict[str, float]]:
         """Compare multiple models on the same evaluation dataset."""
         results = {}
 

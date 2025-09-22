@@ -8,7 +8,7 @@ Handles semantic search functionality using vector embeddings and RAG backend.
 import logging
 import time
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from .code_tokenizer import get_code_tokenizer
 from .ignore_utils import create_ignore_parser
@@ -52,15 +52,20 @@ class SemanticSearchHandler:
                 result = self._format_rag_response(
                     rag_result, request.query, start_time
                 )
-                await self.search_service._cache_result(cache_key, result)
+                # Only cache successful results, not errors
+                if result.success:
+                    await self.search_service._cache_result(cache_key, result)
                 self.search_service._metrics.record_search(time.time() - start_time, cache_hit=False)  # type: ignore[attr-defined]
                 return result
-            elif "RAG service not available" in str(rag_result.get("error", "")):
+
+            if "RAG service not available" in str(rag_result.get("error", "")):
                 logger.info("RAG service not available, using local search")
 
             # Fallback to local semantic search
             result = await self._local_semantic_search(request, start_time)
-            await self.search_service._cache_result(cache_key, result)
+            # Only cache successful results, not errors
+            if result.success:
+                await self.search_service._cache_result(cache_key, result)
             self.search_service._metrics.record_search(
                 time.time() - start_time, cache_hit=False
             )
@@ -265,7 +270,7 @@ class SemanticSearchHandler:
 
         return snippet
 
-    async def _get_relevant_files(self, request: SemanticSearchRequest) -> List[Path]:
+    async def _get_relevant_files(self, request: SemanticSearchRequest) -> list[Path]:
         """Get relevant files based on file types and directories, respecting ignore files."""
         files = []
 
@@ -328,7 +333,7 @@ class SemanticSearchHandler:
         except Exception:
             return None
 
-    def _find_best_matching_line(self, content: str, query: str) -> Dict[str, Any]:
+    def _find_best_matching_line(self, content: str, query: str) -> dict[str, Any]:
         """Find the best matching line in content for the query."""
         lines = content.split("\n")
         query_lower = query.lower()

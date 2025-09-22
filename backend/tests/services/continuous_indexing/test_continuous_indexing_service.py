@@ -23,7 +23,7 @@ import pytest
 from watchdog.events import FileSystemEvent
 
 from app.config.continuous_indexing_config import continuous_indexing_config
-from app.services.continuous_indexing import (
+from app.services.infrastructure.continuous_indexing import (
     CodebaseChangeHandler,
     ContinuousIndexingService,
 )

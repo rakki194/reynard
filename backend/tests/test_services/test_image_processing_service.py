@@ -11,7 +11,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 import pytest_asyncio
 
-from app.services.image_processing_service import (
+from app.services.processing.image_processing_service import (
     ImageProcessingService,
     get_image_processing_service,
     initialize_image_processing_service,

@@ -41,7 +41,9 @@ class ImageFormatSupport:
         """Update plugin support based on runtime detection."""
         try:
             # Try to get the global service instance directly
-            from app.services.image_processing_service import _global_image_service
+            from app.services.processing.image_processing_service import (
+                _global_image_service,
+            )
 
             if _global_image_service is None:
                 logger.debug("No global service instance available, using fallback")

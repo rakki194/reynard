@@ -63,7 +63,10 @@ async def detect_monoliths(**kwargs) -> dict[str, Any]:
 
         return {
             "content": [
-                {"type": "text", "text": f"🔥 Phoenix Monolith Detection Results:\n\n{result}"}
+                {
+                    "type": "text",
+                    "text": f"🔥 Phoenix Monolith Detection Results:\n\n{result}",
+                }
             ]
         }
     except Exception as e:
@@ -95,18 +98,16 @@ async def analyze_file_complexity(**kwargs) -> dict[str, Any]:
     try:
         # Use the monolith analysis service for consistency
         metrics = await monolith_analysis.analyze_file_metrics(
-            file_path=file_path,
-            exclude_comments=True,
-            include_ast=include_ast_analysis
+            file_path=file_path, exclude_comments=True, include_ast=include_ast_analysis
         )
-        
+
         # Format the results
         result_lines = []
         result_lines.append(f"🔍 File Complexity Analysis for {file_path}")
         result_lines.append("")
         result_lines.append(f"📄 Total lines: {metrics.get('total_lines', 0)}")
         result_lines.append(f"📏 Lines of code: {metrics.get('lines_of_code', 0)}")
-        
+
         if include_ast_analysis and "ast_metrics" in metrics:
             ast_metrics = metrics["ast_metrics"]
             result_lines.append("")
@@ -115,11 +116,11 @@ async def analyze_file_complexity(**kwargs) -> dict[str, Any]:
             result_lines.append(f"  Classes: {ast_metrics.get('classes', 0)}")
             result_lines.append(f"  Imports: {ast_metrics.get('imports', 0)}")
             result_lines.append(f"  Complexity: {ast_metrics.get('complexity', 0)}")
-        
+
         if "error" in metrics:
             result_lines.append("")
             result_lines.append(f"❌ Error: {metrics['error']}")
-        
+
         result = "\n".join(result_lines)
 
         return {

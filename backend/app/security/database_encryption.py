@@ -430,20 +430,25 @@ class DatabaseEncryptionManager:
                             if update_values:
                                 # Build parameterized query safely - column names are validated against whitelist
                                 # This is safe because sensitive_columns comes from get_sensitive_columns_for_table()
-                                set_clauses = [
-                                    f"{col} = :{col}" for col in update_values
-                                ]
-                                update_query = text(
-                                    f"""
-                                    UPDATE :table_name
-                                    SET {', '.join(set_clauses)}
-                                    WHERE id = :id
-                                """
-                                )
-                                update_values["table_name"] = table_name
-                                update_values["id"] = record_dict["id"]
+                                # Use individual UPDATE statements to avoid string formatting
+                                for col, value in update_values.items():
+                                    update_query = text(
+                                        """
+                                        UPDATE :table_name
+                                        SET :column_name = :column_value
+                                        WHERE id = :id
+                                    """
+                                    )
 
-                                conn.execute(update_query, update_values)
+                                    conn.execute(
+                                        update_query,
+                                        {
+                                            "table_name": table_name,
+                                            "column_name": col,
+                                            "column_value": value,
+                                            "id": record_dict["id"],
+                                        },
+                                    )
                                 results["encrypted_records"] += 1
 
                         except Exception as e:

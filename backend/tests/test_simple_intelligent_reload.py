@@ -6,16 +6,16 @@ focusing on file change detection and service mapping.
 """
 
 import os
-import pytest
 from unittest.mock import MagicMock
 
+import pytest
 from fastapi import FastAPI
 
 from app.core.intelligent_reload import (
     ServiceReloadManager,
+    get_reload_excludes,
     get_reload_manager,
     should_use_intelligent_reload,
-    get_reload_excludes,
 )
 
 
@@ -35,7 +35,7 @@ class TestServiceReloadManager:
     def test_init(self, app):
         """Test ServiceReloadManager initialization."""
         manager = ServiceReloadManager(app)
-        
+
         assert manager.app == app
         assert isinstance(manager.service_file_mappings, dict)
         assert "ecs_world" in manager.service_file_mappings
@@ -45,18 +45,18 @@ class TestServiceReloadManager:
     def test_service_file_mappings(self, reload_manager):
         """Test that service file mappings are correctly configured."""
         mappings = reload_manager.service_file_mappings
-        
+
         # Test ECS world mapping
         assert "ecs_world" in mappings
         assert "app/ecs/**/*.py" in mappings["ecs_world"]
         assert "app/ecs/**/*.json" in mappings["ecs_world"]
-        
+
         # Test gatekeeper mapping
         assert "gatekeeper" in mappings
         assert "gatekeeper/**/*.py" in mappings["gatekeeper"]
         assert "app/auth/**/*.py" in mappings["gatekeeper"]
         assert "app/security/**/*.py" in mappings["gatekeeper"]
-        
+
         # Test other services
         assert "comfy" in mappings
         assert "nlweb" in mappings
@@ -70,53 +70,133 @@ class TestServiceReloadManager:
     def test_should_reload_service_ecs(self, reload_manager):
         """Test ECS service reload detection."""
         # Test ECS Python files
-        assert reload_manager.should_reload_service("app/ecs/world.py", "ecs_world") is True
-        assert reload_manager.should_reload_service("app/ecs/service.py", "ecs_world") is True
-        assert reload_manager.should_reload_service("app/ecs/endpoints/agents.py", "ecs_world") is True
-        assert reload_manager.should_reload_service("app/ecs/database.py", "ecs_world") is True
-        
+        assert (
+            reload_manager.should_reload_service("app/ecs/world.py", "ecs_world")
+            is True
+        )
+        assert (
+            reload_manager.should_reload_service("app/ecs/service.py", "ecs_world")
+            is True
+        )
+        assert (
+            reload_manager.should_reload_service(
+                "app/ecs/endpoints/agents.py", "ecs_world"
+            )
+            is True
+        )
+        assert (
+            reload_manager.should_reload_service("app/ecs/database.py", "ecs_world")
+            is True
+        )
+
         # Test ECS JSON files
-        assert reload_manager.should_reload_service("app/ecs/config.json", "ecs_world") is True
-        assert reload_manager.should_reload_service("app/ecs/data/agents.json", "ecs_world") is True
-        
+        assert (
+            reload_manager.should_reload_service("app/ecs/config.json", "ecs_world")
+            is True
+        )
+        assert (
+            reload_manager.should_reload_service(
+                "app/ecs/data/agents.json", "ecs_world"
+            )
+            is True
+        )
+
         # Test ECS YAML files
-        assert reload_manager.should_reload_service("app/ecs/config.yaml", "ecs_world") is True
-        assert reload_manager.should_reload_service("app/ecs/data/agents.yml", "ecs_world") is True
-        
+        assert (
+            reload_manager.should_reload_service("app/ecs/config.yaml", "ecs_world")
+            is True
+        )
+        assert (
+            reload_manager.should_reload_service("app/ecs/data/agents.yml", "ecs_world")
+            is True
+        )
+
         # Test non-ECS files
-        assert reload_manager.should_reload_service("app/ecs/world.py", "gatekeeper") is False
+        assert (
+            reload_manager.should_reload_service("app/ecs/world.py", "gatekeeper")
+            is False
+        )
         assert reload_manager.should_reload_service("main.py", "ecs_world") is False
 
     def test_should_reload_service_gatekeeper(self, reload_manager):
         """Test gatekeeper service reload detection."""
         # Test gatekeeper files
-        assert reload_manager.should_reload_service("gatekeeper/api/routes.py", "gatekeeper") is True
-        assert reload_manager.should_reload_service("gatekeeper/auth/jwt.py", "gatekeeper") is True
-        
+        assert (
+            reload_manager.should_reload_service(
+                "gatekeeper/api/routes.py", "gatekeeper"
+            )
+            is True
+        )
+        assert (
+            reload_manager.should_reload_service("gatekeeper/auth/jwt.py", "gatekeeper")
+            is True
+        )
+
         # Test auth files
-        assert reload_manager.should_reload_service("app/auth/user_service.py", "gatekeeper") is True
-        assert reload_manager.should_reload_service("app/auth/password_utils.py", "gatekeeper") is True
-        
+        assert (
+            reload_manager.should_reload_service(
+                "app/auth/user_service.py", "gatekeeper"
+            )
+            is True
+        )
+        assert (
+            reload_manager.should_reload_service(
+                "app/auth/password_utils.py", "gatekeeper"
+            )
+            is True
+        )
+
         # Test security files
-        assert reload_manager.should_reload_service("app/security/input_validator.py", "gatekeeper") is True
-        assert reload_manager.should_reload_service("app/security/security_config.py", "gatekeeper") is True
-        
+        assert (
+            reload_manager.should_reload_service(
+                "app/security/input_validator.py", "gatekeeper"
+            )
+            is True
+        )
+        assert (
+            reload_manager.should_reload_service(
+                "app/security/security_config.py", "gatekeeper"
+            )
+            is True
+        )
+
         # Test non-gatekeeper files
-        assert reload_manager.should_reload_service("app/ecs/world.py", "gatekeeper") is False
+        assert (
+            reload_manager.should_reload_service("app/ecs/world.py", "gatekeeper")
+            is False
+        )
         assert reload_manager.should_reload_service("main.py", "gatekeeper") is False
 
     def test_should_reload_service_comfy(self, reload_manager):
         """Test ComfyUI service reload detection."""
         # Test ComfyUI API files
-        assert reload_manager.should_reload_service("app/api/comfy/generate.py", "comfy") is True
-        assert reload_manager.should_reload_service("app/api/comfy/models.py", "comfy") is True
-        
+        assert (
+            reload_manager.should_reload_service("app/api/comfy/generate.py", "comfy")
+            is True
+        )
+        assert (
+            reload_manager.should_reload_service("app/api/comfy/models.py", "comfy")
+            is True
+        )
+
         # Test ComfyUI service files
-        assert reload_manager.should_reload_service("app/services/comfy/comfy_service.py", "comfy") is True
-        assert reload_manager.should_reload_service("app/services/comfy/workflow.py", "comfy") is True
-        
+        assert (
+            reload_manager.should_reload_service(
+                "app/services/comfy/comfy_service.py", "comfy"
+            )
+            is True
+        )
+        assert (
+            reload_manager.should_reload_service(
+                "app/services/comfy/workflow.py", "comfy"
+            )
+            is True
+        )
+
         # Test non-ComfyUI files
-        assert reload_manager.should_reload_service("app/ecs/world.py", "comfy") is False
+        assert (
+            reload_manager.should_reload_service("app/ecs/world.py", "comfy") is False
+        )
         assert reload_manager.should_reload_service("main.py", "comfy") is False
 
     def test_get_affected_services_single(self, reload_manager):
@@ -125,12 +205,12 @@ class TestServiceReloadManager:
         affected = reload_manager.get_affected_services("app/ecs/world.py")
         assert "ecs_world" in affected
         assert len(affected) == 1
-        
+
         # Test gatekeeper changes
         affected = reload_manager.get_affected_services("gatekeeper/api/routes.py")
         assert "gatekeeper" in affected
         assert len(affected) == 1
-        
+
         # Test ComfyUI changes
         affected = reload_manager.get_affected_services("app/api/comfy/generate.py")
         assert "comfy" in affected
@@ -139,11 +219,15 @@ class TestServiceReloadManager:
     def test_get_affected_services_multiple(self, reload_manager):
         """Test getting affected services for files that might affect multiple services."""
         # Test RAG service files
-        affected = reload_manager.get_affected_services("app/services/initial_indexing.py")
+        affected = reload_manager.get_affected_services(
+            "app/services/initial_indexing.py"
+        )
         assert "rag" in affected
-        
+
         # Test AI email response files
-        affected = reload_manager.get_affected_services("app/services/ai_email_response_service.py")
+        affected = reload_manager.get_affected_services(
+            "app/services/ai_email_response_service.py"
+        )
         assert "ai_email_response" in affected
 
     def test_get_affected_services_none(self, reload_manager):
@@ -151,10 +235,10 @@ class TestServiceReloadManager:
         # Test core files
         affected = reload_manager.get_affected_services("main.py")
         assert len(affected) == 0
-        
+
         affected = reload_manager.get_affected_services("app/core/config.py")
         assert len(affected) == 0
-        
+
         affected = reload_manager.get_affected_services("app/core/app_factory.py")
         assert len(affected) == 0
 
@@ -162,7 +246,7 @@ class TestServiceReloadManager:
         """Test logging reload attempts."""
         with caplog.at_level("INFO"):
             reload_manager.log_reload_attempt("ecs_world")
-        
+
         assert "Would reload service: ecs_world" in caplog.text
 
 
@@ -173,10 +257,10 @@ class TestUtilityFunctions:
         """Test that get_reload_manager returns a singleton."""
         app1 = FastAPI()
         app2 = FastAPI()
-        
+
         manager1 = get_reload_manager(app1)
         manager2 = get_reload_manager(app2)
-        
+
         # Should return the same instance
         assert manager1 is manager2
 
@@ -185,7 +269,7 @@ class TestUtilityFunctions:
         # Clear environment variable
         if "INTELLIGENT_RELOAD" in os.environ:
             del os.environ["INTELLIGENT_RELOAD"]
-        
+
         # Should default to True
         assert should_use_intelligent_reload() is True
 
@@ -193,10 +277,10 @@ class TestUtilityFunctions:
         """Test intelligent reload enabled."""
         os.environ["INTELLIGENT_RELOAD"] = "true"
         assert should_use_intelligent_reload() is True
-        
+
         os.environ["INTELLIGENT_RELOAD"] = "True"
         assert should_use_intelligent_reload() is True
-        
+
         os.environ["INTELLIGENT_RELOAD"] = "TRUE"
         assert should_use_intelligent_reload() is True
 
@@ -204,24 +288,24 @@ class TestUtilityFunctions:
         """Test intelligent reload disabled."""
         os.environ["INTELLIGENT_RELOAD"] = "false"
         assert should_use_intelligent_reload() is False
-        
+
         os.environ["INTELLIGENT_RELOAD"] = "False"
         assert should_use_intelligent_reload() is False
-        
+
         os.environ["INTELLIGENT_RELOAD"] = "FALSE"
         assert should_use_intelligent_reload() is False
 
     def test_get_reload_excludes_intelligent_enabled(self):
         """Test reload excludes with intelligent reload enabled."""
         os.environ["INTELLIGENT_RELOAD"] = "true"
-        
+
         excludes = get_reload_excludes()
-        
+
         # Should not exclude ECS files when intelligent reload is enabled
         assert "app/ecs/**/*.py" not in excludes
         assert "*.pyc" in excludes
         assert "__pycache__/**/*" in excludes
-        
+
         # Should exclude test files and directories
         assert "tests/**/*" in excludes
         assert "test/**/*" in excludes
@@ -235,14 +319,14 @@ class TestUtilityFunctions:
     def test_get_reload_excludes_intelligent_disabled(self):
         """Test reload excludes with intelligent reload disabled."""
         os.environ["INTELLIGENT_RELOAD"] = "false"
-        
+
         excludes = get_reload_excludes()
-        
+
         # Should exclude ECS files when intelligent reload is disabled
         assert "app/ecs/**/*.py" in excludes
         assert "*.pyc" in excludes
         assert "__pycache__/**/*" in excludes
-        
+
         # Should exclude test files and directories
         assert "tests/**/*" in excludes
         assert "test/**/*" in excludes
@@ -273,7 +357,7 @@ class TestFilePatternMatching:
             "app/ecs/database/models.py",
             "app/ecs/services/agent_manager.py",
         ]
-        
+
         for file_path in test_files:
             assert reload_manager.should_reload_service(file_path, "ecs_world") is True
 
@@ -285,7 +369,7 @@ class TestFilePatternMatching:
             "app/ecs/data/agents.json",
             "app/ecs/schemas/agent_schema.json",
         ]
-        
+
         for file_path in test_files:
             assert reload_manager.should_reload_service(file_path, "ecs_world") is True
 
@@ -297,7 +381,7 @@ class TestFilePatternMatching:
             "app/ecs/data/agents.yml",
             "app/ecs/schemas/agent_schema.yaml",
         ]
-        
+
         for file_path in test_files:
             assert reload_manager.should_reload_service(file_path, "ecs_world") is True
 
@@ -310,7 +394,7 @@ class TestFilePatternMatching:
             "app/ecs/database/migrations/001_create_agents.py",
             "app/ecs/utils/helpers/validation.py",
         ]
-        
+
         for file_path in test_files:
             assert reload_manager.should_reload_service(file_path, "ecs_world") is True
 
@@ -325,7 +409,7 @@ class TestFilePatternMatching:
             "app/api/comfy/generate.py",
             "app/services/rag/rag_service.py",
         ]
-        
+
         for file_path in test_files:
             assert reload_manager.should_reload_service(file_path, "ecs_world") is False
 
@@ -343,11 +427,11 @@ class TestIntegration:
         """Test complete ECS file change workflow."""
         # Simulate ECS file change
         file_path = "app/ecs/world.py"
-        
+
         # Check if service should reload
         should_reload = reload_manager.should_reload_service(file_path, "ecs_world")
         assert should_reload is True
-        
+
         # Get affected services
         affected_services = reload_manager.get_affected_services(file_path)
         assert "ecs_world" in affected_services
@@ -357,11 +441,11 @@ class TestIntegration:
         """Test complete gatekeeper file change workflow."""
         # Simulate gatekeeper file change
         file_path = "gatekeeper/api/routes.py"
-        
+
         # Check if service should reload
         should_reload = reload_manager.should_reload_service(file_path, "gatekeeper")
         assert should_reload is True
-        
+
         # Get affected services
         affected_services = reload_manager.get_affected_services(file_path)
         assert "gatekeeper" in affected_services
@@ -375,12 +459,12 @@ class TestIntegration:
             "gatekeeper/api/routes.py",
             "app/api/comfy/generate.py",
         ]
-        
+
         all_affected = set()
         for file_path in file_changes:
             affected = reload_manager.get_affected_services(file_path)
             all_affected.update(affected)
-        
+
         # Should affect multiple services
         assert "ecs_world" in all_affected
         assert "gatekeeper" in all_affected
@@ -395,7 +479,7 @@ class TestIntegration:
             "app/core/config.py",
             "app/core/app_factory.py",
         ]
-        
+
         for file_path in file_changes:
             affected = reload_manager.get_affected_services(file_path)
             assert len(affected) == 0
@@ -414,7 +498,7 @@ class TestIntegration:
             "image_processing",
             "ai_email_response",
         ]
-        
+
         # Check that all services are in file mappings
         for service in expected_services:
             assert service in reload_manager.service_file_mappings
@@ -430,10 +514,12 @@ class TestIntegration:
             "app/ecs/models/agents/personality.py",
             "app/ecs/systems/breeding/genetics.py",
         ]
-        
+
         for file_path in nested_files:
             affected_services = reload_manager.get_affected_services(file_path)
-            assert "ecs_world" in affected_services, f"File {file_path} should affect ECS world service"
+            assert (
+                "ecs_world" in affected_services
+            ), f"File {file_path} should affect ECS world service"
 
     def test_mixed_file_types(self, reload_manager):
         """Test file pattern matching for different file types."""
@@ -444,7 +530,9 @@ class TestIntegration:
             "app/ecs/config.yaml",
             "app/ecs/config.yml",
         ]
-        
+
         for file_path in file_types:
             affected_services = reload_manager.get_affected_services(file_path)
-            assert "ecs_world" in affected_services, f"File {file_path} should affect ECS world service"
+            assert (
+                "ecs_world" in affected_services
+            ), f"File {file_path} should affect ECS world service"

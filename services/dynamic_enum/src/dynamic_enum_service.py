@@ -12,13 +12,13 @@ This service is designed to be completely modular and reusable across different 
 import logging
 from typing import Any
 
-from enum_provider import EnumDataProvider, EnumProvider
 from enum_implementations import (
+    CustomEnumProvider,
     SpiritEnumProvider,
     StyleEnumProvider,
     TraitEnumProvider,
-    CustomEnumProvider,
 )
+from enum_provider import EnumDataProvider, EnumProvider
 
 logger = logging.getLogger(__name__)
 

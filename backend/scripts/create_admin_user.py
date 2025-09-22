@@ -53,7 +53,7 @@ async def create_admin_user():
         # Import from the Gatekeeper library
         import sys
 
-        sys.path.append("/home/kade/runeset/reynard/third_party/pawprint/src/backend")
+        sys.path.append("/home/kade/runeset/reynard/services/gatekeeper")
         from gatekeeper.models.user import UserCreate, UserRole
 
         user_data = UserCreate(
