@@ -59,14 +59,16 @@ function resolvePackagePath(relativePath: string): string {
       const fs = require("fs");
       if (fs.existsSync(packageJsonPath)) {
         const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
+        console.log(`🔍 Checking package.json at ${searchDir}: name="${packageJson.name}"`);
         // Look for the main Reynard package.json (not the testing package)
         if (packageJson.name && packageJson.name === "reynard") {
+          console.log(`🔍 Found root package.json at ${searchDir}`);
           rootDir = searchDir;
           break;
         }
       }
     } catch (error) {
-      // Continue searching
+      console.log(`🔍 Error reading package.json at ${searchDir}: ${error}`);
     }
     searchDir = resolve(searchDir, "..");
   }
