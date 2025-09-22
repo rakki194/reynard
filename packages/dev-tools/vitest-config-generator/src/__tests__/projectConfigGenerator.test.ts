@@ -176,8 +176,8 @@ describe("ProjectConfigGenerator", () => {
   describe("coverage thresholds", () => {
     it("should use high thresholds for critical packages", () => {
       const criticalDirectory: DirectoryDefinition = {
-        name: "packages/core",
-        path: "packages/core",
+        name: "packages/core/core",
+        path: "packages/core/core",
         category: "source",
         importance: "critical",
         testable: true,

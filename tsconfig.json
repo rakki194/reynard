@@ -19,16 +19,105 @@
     "composite": true
   },
   "references": [
-    { "path": "./packages/core" },
-    { "path": "./packages/ui" },
-    { "path": "./packages/components" },
-    { "path": "./packages/auth" },
-    { "path": "./packages/settings" },
-    { "path": "./packages/gallery" },
-    { "path": "./packages/themes" },
-    { "path": "./packages/colors" },
+    // AI packages
+    { "path": "./packages/ai/ai-shared" },
+    { "path": "./packages/ai/annotating-core" },
+    { "path": "./packages/ai/annotating-florence2" },
+    { "path": "./packages/ai/annotating-joy" },
+    { "path": "./packages/ai/annotating-jtp2" },
+    { "path": "./packages/ai/annotating-ui" },
+    { "path": "./packages/ai/annotating-wdv3" },
+    { "path": "./packages/ai/caption" },
+    { "path": "./packages/ai/caption-core" },
+    { "path": "./packages/ai/caption-multimodal" },
+    { "path": "./packages/ai/caption-ui" },
+    { "path": "./packages/ai/comfy" },
+    { "path": "./packages/ai/model-management" },
+    { "path": "./packages/ai/multimodal" },
+    { "path": "./packages/ai/nlweb" },
+    { "path": "./packages/ai/rag" },
+    { "path": "./packages/ai/tool-calling" },
+
+    // Algorithms packages
+    { "path": "./packages/algorithms/algorithms" },
+
+    // Core packages
+    { "path": "./packages/core/composables" },
+    { "path": "./packages/core/config" },
+    { "path": "./packages/core/connection" },
+    { "path": "./packages/core/core" },
+    { "path": "./packages/core/dynamic-enum" },
+    { "path": "./packages/core/features" },
     { "path": "./packages/core/i18n" },
-    { "path": "./packages/unified-repository" }
+    { "path": "./packages/core/settings" },
+    { "path": "./packages/core/testing" },
+    { "path": "./packages/core/validation" },
+
+    // Data packages
+    { "path": "./packages/data/file-processing" },
+    { "path": "./packages/data/repository-core" },
+    { "path": "./packages/data/repository-multimodal" },
+    { "path": "./packages/data/repository-search" },
+    { "path": "./packages/data/repository-storage" },
+    { "path": "./packages/data/scraping" },
+    { "path": "./packages/data/unified-repository" },
+
+    // Dev tools packages
+    { "path": "./packages/dev-tools/adr-system" },
+    { "path": "./packages/dev-tools/code-quality" },
+    { "path": "./packages/dev-tools/dev-server-management" },
+    { "path": "./packages/dev-tools/git-automation" },
+    { "path": "./packages/dev-tools/humility-parser" },
+    { "path": "./packages/dev-tools/project-architecture" },
+    { "path": "./packages/dev-tools/queue-watcher" },
+    { "path": "./packages/dev-tools/validation/css" },
+    { "path": "./packages/dev-tools/validation/markdown" },
+    { "path": "./packages/dev-tools/validation/workflows" },
+    { "path": "./packages/dev-tools/vitest-config-generator" },
+
+    // Docs packages
+    { "path": "./packages/docs/diagram-generator" },
+    { "path": "./packages/docs/docs-components" },
+    { "path": "./packages/docs/docs-core" },
+    { "path": "./packages/docs/docs-generator" },
+    { "path": "./packages/docs/docs-site" },
+
+    // Media packages
+    { "path": "./packages/media/3d" },
+    { "path": "./packages/media/audio" },
+    { "path": "./packages/media/boundingbox" },
+    { "path": "./packages/media/gallery" },
+    { "path": "./packages/media/gallery-ai" },
+    { "path": "./packages/media/gallery-dl" },
+    { "path": "./packages/media/image" },
+    { "path": "./packages/media/segmentation" },
+    { "path": "./packages/media/video" },
+
+    // Services packages
+    { "path": "./packages/services/api-client" },
+    { "path": "./packages/services/api-client/src/generated" },
+    { "path": "./packages/services/auth" },
+    { "path": "./packages/services/chat" },
+    { "path": "./packages/services/service-manager" },
+
+    // UI packages
+    { "path": "./packages/ui/animation" },
+    { "path": "./packages/ui/charts" },
+    { "path": "./packages/ui/colors" },
+    { "path": "./packages/ui/components-charts" },
+    { "path": "./packages/ui/components-core" },
+    { "path": "./packages/ui/components-dashboard" },
+    { "path": "./packages/ui/components-themes" },
+    { "path": "./packages/ui/components-utils" },
+    { "path": "./packages/ui/dashboard" },
+    { "path": "./packages/ui/error-boundaries" },
+    { "path": "./packages/ui/floating-panel" },
+    { "path": "./packages/ui/fluent-icons" },
+    { "path": "./packages/ui/games" },
+    { "path": "./packages/ui/games/src/ecs/experiments/simd" },
+    { "path": "./packages/ui/monaco" },
+    { "path": "./packages/ui/themes" },
+    { "path": "./packages/ui/ui" }
   ],
   "include": ["packages/**/*"],
   "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"]

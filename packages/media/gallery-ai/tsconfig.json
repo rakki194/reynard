@@ -16,10 +16,10 @@
   "exclude": ["dist", "node_modules", "**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "**/*.spec.tsx"],
   "references": [
     { "path": "../../core/core" },
-    { "path": "../../ui/components" },
+    { "path": "../../ui/components-core" },
     { "path": "../gallery" },
-    { "path": "../annotating-core" },
-    { "path": "../caption" },
-    { "path": "../ai-shared" }
+    { "path": "../../ai/annotating-core" },
+    { "path": "../../ai/caption" },
+    { "path": "../../ai/ai-shared" }
   ]
 }

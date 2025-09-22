@@ -22,7 +22,7 @@
       "reynard-components": ["../../packages/components/src"],
       "reynard-gallery": ["../../packages/gallery/src"],
       "reynard-annotating": ["../../packages/annotating/src"],
-      "reynard-caption": ["../../packages/caption/src"]
+      "reynard-caption": ["../../packages/ai/caption/src"]
     }
   },
   "include": ["src"]

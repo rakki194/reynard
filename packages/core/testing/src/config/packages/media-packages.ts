@@ -8,18 +8,8 @@ import { createIgnorePatterns } from "../ignore-patterns.js";
 
 export const mediaPackages: PackageI18nConfig[] = [
   {
-    name: "charts",
-    path: "packages/charts",
-    enabled: true,
-    ignorePatterns: createIgnorePatterns("charts"),
-    failOnHardcodedStrings: false, // Temporarily disabled for CI
-    validateCompleteness: true,
-    testRTL: true,
-    namespaces: ["charts", "common"],
-  },
-  {
     name: "caption",
-    path: "packages/caption",
+    path: "packages/ai/caption",
     enabled: true,
     ignorePatterns: createIgnorePatterns("caption"),
     failOnHardcodedStrings: false, // Temporarily disabled for CI
@@ -29,7 +19,7 @@ export const mediaPackages: PackageI18nConfig[] = [
   },
   {
     name: "boundingbox",
-    path: "packages/boundingbox",
+    path: "packages/media/boundingbox",
     enabled: true,
     ignorePatterns: createIgnorePatterns("boundingBox"),
     failOnHardcodedStrings: false, // Temporarily disabled for CI
@@ -39,7 +29,7 @@ export const mediaPackages: PackageI18nConfig[] = [
   },
   {
     name: "audio",
-    path: "packages/audio",
+    path: "packages/media/audio",
     enabled: true,
     ignorePatterns: createIgnorePatterns("audio"),
     failOnHardcodedStrings: false, // Temporarily disabled for CI
@@ -49,7 +39,7 @@ export const mediaPackages: PackageI18nConfig[] = [
   },
   {
     name: "video",
-    path: "packages/video",
+    path: "packages/media/video",
     enabled: true,
     ignorePatterns: createIgnorePatterns("video"),
     failOnHardcodedStrings: false, // Temporarily disabled for CI
@@ -59,7 +49,7 @@ export const mediaPackages: PackageI18nConfig[] = [
   },
   {
     name: "image",
-    path: "packages/image",
+    path: "packages/media/image",
     enabled: true,
     ignorePatterns: createIgnorePatterns("image"),
     failOnHardcodedStrings: false, // Temporarily disabled for CI
@@ -69,7 +59,7 @@ export const mediaPackages: PackageI18nConfig[] = [
   },
   {
     name: "multimodal",
-    path: "packages/multimodal",
+    path: "packages/ai/multimodal",
     enabled: true,
     ignorePatterns: createIgnorePatterns("multimodal"),
     failOnHardcodedStrings: false, // Temporarily disabled for CI

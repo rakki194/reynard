@@ -21,8 +21,8 @@
       "reynard-core": ["../../packages/core/src"],
       "reynard-components": ["../../packages/components/src"],
       "reynard-annotating": ["../../packages/annotating/src"],
-      "reynard-annotating-core": ["../../packages/annotating-core/src"],
-      "reynard-caption": ["../../packages/caption/src"]
+      "reynard-annotating-core": ["../../packages/ai/annotating-core/src"],
+      "reynard-caption": ["../../packages/ai/caption/src"]
     }
   },
   "include": ["src"]

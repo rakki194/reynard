@@ -6,22 +6,22 @@
  */
 
 import { getWatchableDirectories, getGlobalExcludePatterns } from "reynard-project-architecture";
-import path from "path";
+import * as path from "path";
 
 // Get watchable directories from project architecture and convert to relative paths
 // from the queue watcher's location (packages/dev-tools/queue-watcher)
 const projectRootDirectories = getWatchableDirectories();
-export const WATCH_DIRECTORIES: string[] = projectRootDirectories.map(dir => {
+export const WATCH_DIRECTORIES: string[] = projectRootDirectories.map((dir: string) => {
   // Convert from project root relative paths to queue watcher relative paths
   // queue watcher is at packages/dev-tools/queue-watcher, so we need to go up 3 levels
   return path.join("../../..", dir);
 });
 
 // Convert string patterns to RegExp patterns
-export const EXCLUDE_PATTERNS: RegExp[] = getGlobalExcludePatterns().map(pattern => {
+export const EXCLUDE_PATTERNS: RegExp[] = getGlobalExcludePatterns().map((pattern: string) => {
   // Convert glob pattern to regex
   // Use a more sophisticated approach to handle ** and * correctly
-  let regexPattern = pattern
+  const regexPattern = pattern
     .replace(/\./g, "\\.") // Escape dots first
     .replace(/\*\*/g, "DOUBLE_STAR_PLACEHOLDER") // Temporarily replace **
     .replace(/\*/g, "[^/]*") // Replace single * with non-slash matcher

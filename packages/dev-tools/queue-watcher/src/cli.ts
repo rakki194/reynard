@@ -84,16 +84,18 @@ function processFile(filePath: string, excludePatterns: RegExp[], cooldown: numb
  */
 function setupFileWatchers(watchDirectories: string[], excludePatterns: RegExp[], cooldown: number): void {
   watchDirectories.forEach(dir => {
-    if (fs.existsSync(dir)) {
-      console.log(`👀 Watching directory: ${dir}`);
+    // Convert relative paths to absolute paths
+    const absoluteDir = path.resolve(dir);
+    
+    if (fs.existsSync(absoluteDir)) {
+      console.log(`👀 Watching directory: ${absoluteDir}`);
 
       try {
-        const watcher = chokidar.watch(dir, {
+        const watcher = chokidar.watch(absoluteDir, {
           ignored: /(^|[/\\])\../, // ignore dotfiles
           persistent: true,
           ignoreInitial: true,
           followSymlinks: false,
-          cwd: ".",
         });
 
         watcher
@@ -111,17 +113,17 @@ function setupFileWatchers(watchDirectories: string[], excludePatterns: RegExp[]
           })
           .on("error", error => {
             const errorMessage = error instanceof Error ? error.message : String(error);
-            console.error(`❌ Watcher error for directory ${dir}:`, errorMessage);
+            console.error(`❌ Watcher error for directory ${absoluteDir}:`, errorMessage);
           })
           .on("ready", () => {
-            console.log(`✅ Watcher ready for directory: ${dir}`);
+            console.log(`✅ Watcher ready for directory: ${absoluteDir}`);
           });
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
-        console.error(`❌ Failed to watch directory ${dir}:`, errorMessage);
+        console.error(`❌ Failed to watch directory ${absoluteDir}:`, errorMessage);
       }
     } else {
-      console.log(`⚠️  Directory not found: ${dir}`);
+      console.log(`⚠️  Directory not found: ${absoluteDir}`);
     }
   });
 }

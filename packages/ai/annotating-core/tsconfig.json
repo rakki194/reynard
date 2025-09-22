@@ -15,7 +15,7 @@
       "path": "../../core/core"
     },
     {
-      "path": "../service-manager"
+      "path": "../../services/service-manager"
     }
   ]
 }

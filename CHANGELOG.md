@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- **Queue Watcher Import**: Resolved import error for 'reynard-project-architecture' module by building the project architecture package and fixing TypeScript import syntax (Aye-Prime-11)
+- **Caption Package Path**: Fixed incorrect references to 'packages/media/caption' and 'packages/caption' - corrected to 'packages/ai/caption' in testing config, examples, docs, and diagram generator files (Aye-Prime-11)
+
 ### Added
 
 ### Changed

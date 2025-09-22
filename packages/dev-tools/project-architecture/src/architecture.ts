@@ -86,8 +86,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       lintable: true,
       documentable: true,
       relationships: [
-        { directory: "packages/core", type: "dependency", description: "Uses core utilities" },
-        { directory: "packages/ui", type: "dependency", description: "Uses UI components" },
+        { directory: "packages/core/core", type: "dependency", description: "Uses core utilities" },
+        { directory: "packages/ui/ui", type: "dependency", description: "Uses UI components" },
       ],
       excludePatterns: ["**/node_modules/**", "**/dist/**", "**/build/**"],
       includePatterns: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json", "**/*.md"],
@@ -117,29 +117,6 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       thirdParty: false,
     },
 
-    {
-      name: "packages/core",
-      path: "packages/core",
-      category: "source",
-      importance: "critical",
-      fileTypes: ["typescript", "javascript", "json", "markdown"],
-      description:
-        "Core framework packages (9 packages): Composables (reusable logic), config (environment and settings), connection (HTTP/WebSocket pools), core utilities (base framework), features (feature flags), i18n (internationalization), settings (user preferences), testing (test utilities), and validation (data validation)",
-      watchable: true,
-      buildable: true,
-      testable: true,
-      lintable: true,
-      documentable: true,
-      relationships: [
-        { directory: "packages/ui", type: "dependency", description: "Used by UI packages" },
-        { directory: "packages/ai", type: "dependency", description: "Used by AI packages" },
-      ],
-      excludePatterns: ["**/node_modules/**", "**/dist/**", "**/build/**"],
-      includePatterns: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json", "**/*.md"],
-      optional: false,
-      generated: false,
-      thirdParty: false,
-    },
 
     {
       name: "packages/data",
@@ -155,7 +132,7 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       lintable: true,
       documentable: true,
       relationships: [
-        { directory: "packages/core", type: "dependency", description: "Uses core utilities" },
+        { directory: "packages/core/core", type: "dependency", description: "Uses core utilities" },
         { directory: "packages/ai", type: "dependency", description: "Used by AI packages" },
       ],
       excludePatterns: ["**/node_modules/**", "**/dist/**", "**/build/**"],
@@ -179,7 +156,7 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       lintable: true,
       documentable: true,
       relationships: [
-        { directory: "packages/core", type: "dependency", description: "Uses core utilities" },
+        { directory: "packages/core/core", type: "dependency", description: "Uses core utilities" },
         { directory: "scripts", type: "sibling", description: "Related automation scripts" },
       ],
       excludePatterns: ["**/node_modules/**", "**/dist/**", "**/build/**"],
@@ -203,8 +180,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       lintable: true,
       documentable: true,
       relationships: [
-        { directory: "packages/core", type: "dependency", description: "Uses core utilities" },
-        { directory: "packages/ui", type: "dependency", description: "Uses UI components" },
+        { directory: "packages/core/core", type: "dependency", description: "Uses core utilities" },
+        { directory: "packages/ui/ui", type: "dependency", description: "Uses UI components" },
         { directory: "docs", type: "documents", description: "Generates documentation" },
       ],
       excludePatterns: ["**/node_modules/**", "**/dist/**", "**/build/**"],
@@ -228,8 +205,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       lintable: true,
       documentable: true,
       relationships: [
-        { directory: "packages/core", type: "dependency", description: "Uses core utilities" },
-        { directory: "packages/ui", type: "dependency", description: "Uses UI components" },
+        { directory: "packages/core/core", type: "dependency", description: "Uses core utilities" },
+        { directory: "packages/ui/ui", type: "dependency", description: "Uses UI components" },
         { directory: "packages/ai", type: "dependency", description: "Used by AI packages" },
       ],
       excludePatterns: ["**/node_modules/**", "**/dist/**", "**/build/**"],
@@ -253,8 +230,8 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       lintable: true,
       documentable: true,
       relationships: [
-        { directory: "packages/core", type: "dependency", description: "Uses core utilities" },
-        { directory: "packages/ui", type: "dependency", description: "Uses UI components" },
+        { directory: "packages/core/core", type: "dependency", description: "Uses core utilities" },
+        { directory: "packages/ui/ui", type: "dependency", description: "Uses UI components" },
         { directory: "backend", type: "sibling", description: "Related backend services" },
       ],
       excludePatterns: ["**/node_modules/**", "**/dist/**", "**/build/**"],
@@ -278,7 +255,7 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       lintable: true,
       documentable: true,
       relationships: [
-        { directory: "packages/core", type: "dependency", description: "Uses core utilities" },
+        { directory: "packages/core/core", type: "dependency", description: "Uses core utilities" },
         { directory: "packages/ai", type: "dependency", description: "Used by AI packages" },
         { directory: "packages/media", type: "dependency", description: "Used by media packages" },
       ],
@@ -306,7 +283,7 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       lintable: true,
       documentable: true,
       relationships: [
-        { directory: "packages/core", type: "dependency", description: "Uses core utilities" },
+        { directory: "packages/core/core", type: "dependency", description: "Uses core utilities" },
         { directory: "packages/ai/annotating-core", type: "dependency", description: "Used by annotation tools" },
         { directory: "packages/ai/caption-core", type: "dependency", description: "Used by caption systems" },
       ],
@@ -332,7 +309,7 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       documentable: true,
       relationships: [
         { directory: "packages/ai/ai-shared", type: "dependency", description: "Uses AI shared utilities" },
-        { directory: "packages/core", type: "dependency", description: "Uses core utilities" },
+        { directory: "packages/core/core", type: "dependency", description: "Uses core utilities" },
         { directory: "packages/data/repository-core", type: "dependency", description: "Uses repository system" },
       ],
       excludePatterns: ["**/node_modules/**", "**/dist/**", "**/build/**"],

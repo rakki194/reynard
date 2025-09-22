@@ -19,26 +19,26 @@ export interface PackageConfig {
 export const PACKAGES: PackageConfig[] = [
   {
     name: "reynard-core",
-    path: "packages/core",
-    docPath: "packages/core/README.md",
+    path: "packages/core/core",
+    docPath: "packages/core/core/README.md",
     setup: `
       import { NotificationsProvider, createNotifications } from 'reynard-core';
     `,
   },
   {
-    name: "reynard-components",
-    path: "packages/components",
-    docPath: "packages/components/README.md",
+    name: "reynard-components-core",
+    path: "packages/ui/components-core",
+    docPath: "packages/ui/components-core/README.md",
     setup: `
-      import { Button, Card, TextField, Modal, Tabs } from 'reynard-components';
+      import { Button, Card, TextField, Modal, Tabs } from 'reynard-components-core';
       import { ReynardProvider } from 'reynard-themes';
       import 'reynard-themes/themes.css';
     `,
   },
   {
     name: "reynard-auth",
-    path: "packages/auth",
-    docPath: "packages/auth/README.md",
+    path: "packages/services/auth",
+    docPath: "packages/services/auth/README.md",
     setup: `
       import { AuthProvider, LoginForm, RegisterForm, useAuth } from 'reynard-auth';
       import { ReynardProvider } from 'reynard-themes';
@@ -47,8 +47,8 @@ export const PACKAGES: PackageConfig[] = [
   },
   {
     name: "reynard-chat",
-    path: "packages/chat",
-    docPath: "packages/chat/README.md",
+    path: "packages/services/chat",
+    docPath: "packages/services/chat/README.md",
     setup: `
       import { ChatContainer, useChat, useStreamingChat, useP2PChat } from 'reynard-chat';
       import { ReynardProvider } from 'reynard-themes';
@@ -57,8 +57,8 @@ export const PACKAGES: PackageConfig[] = [
   },
   {
     name: "reynard-testing",
-    path: "packages/testing",
-    docPath: "packages/testing/README.md",
+    path: "packages/core/testing",
+    docPath: "packages/core/testing/README.md",
     setup: `
       import { renderWithProviders, mockFetch, createMockUser } from 'reynard-testing';
       import { render, screen, fireEvent, waitFor } from '@solidjs/testing-library';

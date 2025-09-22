@@ -8642,7 +8642,7 @@
       "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:04.413961"
     },
-    "/home/kade/runeset/reynard/packages/core/tsconfig.declarations.json": {
+    "/home/kade/runeset/reynard/packages/core/core/tsconfig.declarations.json": {
       "overall_score": 100.0,
       "hexaco_honesty_humility": 50.0,
       "epistemic_humility": 0,
@@ -8833,7 +8833,7 @@
       "strengths": [],
       "timestamp": "2025-09-20T18:17:04.454684"
     },
-    "/home/kade/runeset/reynard/packages/core/tsconfig.json": {
+    "/home/kade/runeset/reynard/packages/core/core/tsconfig.json": {
       "overall_score": 100.0,
       "hexaco_honesty_humility": 50.0,
       "epistemic_humility": 0,
@@ -8846,7 +8846,7 @@
       "strengths": ["Maintains good balance of confidence and humility"],
       "timestamp": "2025-09-20T18:17:04.458356"
     },
-    "/home/kade/runeset/reynard/packages/core/tsconfig.build.json": {
+    "/home/kade/runeset/reynard/packages/core/core/tsconfig.build.json": {
       "overall_score": 100.0,
       "hexaco_honesty_humility": 50.0,
       "epistemic_humility": 0,

@@ -33,7 +33,7 @@ const mockAnalysis = {
     },
     {
       name: "reynard-caption",
-      path: "packages/caption",
+      path: "packages/ai/caption",
       type: "source" as const,
       importance: "important" as const,
       dependencies: ["reynard-api-client", "reynard-components-core"],
@@ -108,7 +108,7 @@ const mockAnalysis = {
       type: "external" as const,
       version: "1.9.9",
       usageCount: 8,
-      packages: ["packages/api-client", "packages/connection", "packages/caption"],
+      packages: ["packages/api-client", "packages/connection", "packages/ai/caption"],
     },
     {
       name: "typescript",

@@ -9,7 +9,7 @@ import { createIgnorePatterns } from "../ignore-patterns.js";
 export const featurePackages: PackageI18nConfig[] = [
   {
     name: "auth",
-    path: "packages/auth",
+    path: "packages/services/auth",
     enabled: true,
     ignorePatterns: createIgnorePatterns("auth"),
     failOnHardcodedStrings: false, // Temporarily disabled for CI
@@ -19,7 +19,7 @@ export const featurePackages: PackageI18nConfig[] = [
   },
   {
     name: "chat",
-    path: "packages/chat",
+    path: "packages/services/chat",
     enabled: true,
     ignorePatterns: createIgnorePatterns("chat"),
     failOnHardcodedStrings: false, // Temporarily disabled for CI
@@ -29,7 +29,7 @@ export const featurePackages: PackageI18nConfig[] = [
   },
   {
     name: "gallery",
-    path: "packages/gallery",
+    path: "packages/media/gallery",
     enabled: true,
     ignorePatterns: createIgnorePatterns("gallery"),
     failOnHardcodedStrings: false, // Temporarily disabled for CI
@@ -39,7 +39,7 @@ export const featurePackages: PackageI18nConfig[] = [
   },
   {
     name: "settings",
-    path: "packages/settings",
+    path: "packages/core/settings",
     enabled: true,
     ignorePatterns: createIgnorePatterns("settings"),
     failOnHardcodedStrings: false, // Temporarily disabled for CI
@@ -49,7 +49,7 @@ export const featurePackages: PackageI18nConfig[] = [
   },
   {
     name: "rag",
-    path: "packages/rag",
+    path: "packages/ai/rag",
     enabled: true,
     ignorePatterns: createIgnorePatterns("rag"),
     failOnHardcodedStrings: false, // Temporarily disabled for CI

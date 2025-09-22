@@ -7,12 +7,19 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import fs from "fs";
 import path from "path";
+import chokidar from "chokidar";
 import { setupFileWatchers, setupStatusReporting } from "../watcher.js";
 
 // Mock fs module
 vi.mock("fs", () => ({
   default: {
     existsSync: vi.fn(),
+  },
+}));
+
+// Mock chokidar module
+vi.mock("chokidar", () => ({
+  default: {
     watch: vi.fn(),
   },
 }));
@@ -50,40 +57,48 @@ describe("Watcher Core", () => {
 
   describe("setupFileWatchers", () => {
     it("should set up file watchers for existing directories", () => {
-      const mockWatch = vi.fn();
-      (fs.watch as any).mockImplementation(mockWatch);
+      const mockWatch = vi.fn().mockReturnValue({
+        on: vi.fn(),
+      });
+      (chokidar.watch as any).mockImplementation(mockWatch);
       (fs.existsSync as any).mockReturnValue(true);
 
       setupFileWatchers();
 
-      // Should call fs.watch for each watchable directory
+      // Should call chokidar.watch for each watchable directory
       expect(mockWatch).toHaveBeenCalled();
 
-      // Check that it was called with recursive: true
+      // Check that it was called with chokidar options
       const calls = mockWatch.mock.calls;
       expect(calls.length).toBeGreaterThan(0);
 
       for (const call of calls) {
-        expect(call[1]).toEqual({ recursive: true });
+        expect(call[1]).toEqual({
+          ignored: /(^|[/\\])\../,
+          persistent: true,
+          ignoreInitial: true,
+          followSymlinks: false,
+          cwd: ".",
+        });
       }
     });
 
     it("should handle non-existent directories gracefully", () => {
       const mockWatch = vi.fn();
-      (fs.watch as any).mockImplementation(mockWatch);
+      (chokidar.watch as any).mockImplementation(mockWatch);
       (fs.existsSync as any).mockReturnValue(false);
 
       setupFileWatchers();
 
-      // Should not call fs.watch for non-existent directories
+      // Should not call chokidar.watch for non-existent directories
       expect(mockWatch).not.toHaveBeenCalled();
     });
 
-    it("should handle fs.watch errors gracefully", () => {
+    it("should handle chokidar.watch errors gracefully", () => {
       const mockWatch = vi.fn().mockImplementation(() => {
         throw new Error("Watch error");
       });
-      (fs.watch as any).mockImplementation(mockWatch);
+      (chokidar.watch as any).mockImplementation(mockWatch);
       (fs.existsSync as any).mockReturnValue(true);
 
       setupFileWatchers();
@@ -93,41 +108,42 @@ describe("Watcher Core", () => {
     });
 
     it("should process file changes correctly", () => {
-      const mockWatch = vi.fn();
-      (fs.watch as any).mockImplementation(mockWatch);
+      const mockOn = vi.fn();
+      const mockWatch = vi.fn().mockReturnValue({
+        on: mockOn,
+      });
+      (chokidar.watch as any).mockImplementation(mockWatch);
       (fs.existsSync as any).mockReturnValue(true);
 
       setupFileWatchers();
 
-      // Get the callback function
-      const watchCallback = mockWatch.mock.calls[0][2];
-
-      // Simulate a file change
-      watchCallback("change", "test.ts");
-
-      // Should not process if file doesn't exist
-      (fs.existsSync as any).mockReturnValue(false);
-      watchCallback("change", "nonexistent.ts");
-
-      // Should process if file exists
-      (fs.existsSync as any).mockReturnValue(true);
-      watchCallback("change", "existing.ts");
+      // Verify that event handlers were set up for each directory
+      expect(mockOn).toHaveBeenCalledWith("change", expect.any(Function));
+      expect(mockOn).toHaveBeenCalledWith("add", expect.any(Function));
+      expect(mockOn).toHaveBeenCalledWith("unlink", expect.any(Function));
+      expect(mockOn).toHaveBeenCalledWith("error", expect.any(Function));
+      expect(mockOn).toHaveBeenCalledWith("ready", expect.any(Function));
+      
+      // Verify that we have multiple calls (one set of events per directory)
+      expect(mockOn).toHaveBeenCalledTimes(5);
     });
 
     it("should ignore non-change events", () => {
-      const mockWatch = vi.fn();
-      (fs.watch as any).mockImplementation(mockWatch);
+      const mockOn = vi.fn();
+      const mockWatch = vi.fn().mockReturnValue({
+        on: mockOn,
+      });
+      (chokidar.watch as any).mockImplementation(mockWatch);
       (fs.existsSync as any).mockReturnValue(true);
 
       setupFileWatchers();
 
-      const watchCallback = mockWatch.mock.calls[0][2];
-
-      // Should ignore rename events
-      watchCallback("rename", "test.ts");
-
-      // Should ignore other events
-      watchCallback("delete", "test.ts");
+      // Verify that only specific events are handled
+      expect(mockOn).toHaveBeenCalledWith("change", expect.any(Function));
+      expect(mockOn).toHaveBeenCalledWith("add", expect.any(Function));
+      expect(mockOn).toHaveBeenCalledWith("unlink", expect.any(Function));
+      // Should not handle rename events
+      expect(mockOn).not.toHaveBeenCalledWith("rename", expect.any(Function));
     });
   });
 

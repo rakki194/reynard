@@ -80,7 +80,7 @@ export default {
     },
     {
       name: "caption",
-      path: "/home/kade/runeset/reynard/packages/caption",
+      path: "/home/kade/runeset/reynard/packages/ai/caption",
       category: "Computer Vision",
       priority: 12,
     },

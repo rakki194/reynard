@@ -9,7 +9,7 @@ import { createIgnorePatterns } from "../ignore-patterns.js";
 export const specializedPackages: PackageI18nConfig[] = [
   {
     name: "monaco",
-    path: "packages/monaco",
+    path: "packages/ui/monaco",
     enabled: true,
     ignorePatterns: createIgnorePatterns("monaco"),
     failOnHardcodedStrings: false, // Temporarily disabled for CI
@@ -19,7 +19,7 @@ export const specializedPackages: PackageI18nConfig[] = [
   },
   {
     name: "3d",
-    path: "packages/3d",
+    path: "packages/media/3d",
     enabled: true,
     ignorePatterns: createIgnorePatterns("threeD"),
     failOnHardcodedStrings: false, // Temporarily disabled for CI
@@ -29,7 +29,7 @@ export const specializedPackages: PackageI18nConfig[] = [
   },
   {
     name: "games",
-    path: "packages/games",
+    path: "packages/ui/games",
     enabled: true,
     ignorePatterns: createIgnorePatterns("games"),
     failOnHardcodedStrings: false, // Temporarily disabled for CI
@@ -49,7 +49,7 @@ export const specializedPackages: PackageI18nConfig[] = [
   },
   {
     name: "core",
-    path: "packages/core",
+    path: "packages/core/core",
     enabled: true,
     ignorePatterns: createIgnorePatterns("core"),
     failOnHardcodedStrings: false, // Temporarily disabled for CI

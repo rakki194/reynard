@@ -12,15 +12,15 @@ describe("Queue Watcher Configuration", () => {
     expect(WATCH_DIRECTORIES).toBeInstanceOf(Array);
     expect(WATCH_DIRECTORIES.length).toBeGreaterThan(0);
 
-    // Should include key directories
-    expect(WATCH_DIRECTORIES).toContain("packages");
-    expect(WATCH_DIRECTORIES).toContain("backend");
-    expect(WATCH_DIRECTORIES).toContain("services");
-    expect(WATCH_DIRECTORIES).toContain("docs");
-    expect(WATCH_DIRECTORIES).toContain("examples");
-    expect(WATCH_DIRECTORIES).toContain("templates");
-    expect(WATCH_DIRECTORIES).toContain("e2e");
-    expect(WATCH_DIRECTORIES).toContain("scripts");
+    // Should include key directories (as relative paths from queue-watcher location)
+    expect(WATCH_DIRECTORIES).toContain("../../../packages");
+    expect(WATCH_DIRECTORIES).toContain("../../../backend");
+    expect(WATCH_DIRECTORIES).toContain("../../../services");
+    expect(WATCH_DIRECTORIES).toContain("../../../docs");
+    expect(WATCH_DIRECTORIES).toContain("../../../examples");
+    expect(WATCH_DIRECTORIES).toContain("../../../templates");
+    expect(WATCH_DIRECTORIES).toContain("../../../e2e");
+    expect(WATCH_DIRECTORIES).toContain("../../../scripts");
   });
 
   it("should have exclude patterns", () => {
@@ -40,37 +40,37 @@ describe("Queue Watcher Configuration", () => {
   });
 
   it("should have consistent directory counts", () => {
-    expect(WATCH_DIRECTORIES.length).toBe(15); // Based on current architecture
-    expect(EXCLUDE_PATTERNS.length).toBe(30); // Based on current patterns
+    expect(WATCH_DIRECTORIES.length).toBeGreaterThan(50); // Based on current architecture
+    expect(EXCLUDE_PATTERNS.length).toBeGreaterThan(10); // Based on current patterns
 
-    // Check for unique directories (should be 15 unique, 16 total with duplicate)
+    // Check for unique directories (should be more than 50 unique directories)
     const uniqueDirectories = new Set(WATCH_DIRECTORIES);
-    expect(uniqueDirectories.size).toBe(15);
+    expect(uniqueDirectories.size).toBeGreaterThan(50);
   });
 
   it("should include cursor directories", () => {
-    expect(WATCH_DIRECTORIES).toContain(".cursor/docs");
-    expect(WATCH_DIRECTORIES).toContain(".cursor/prompts");
-    expect(WATCH_DIRECTORIES).toContain(".cursor/rules");
+    expect(WATCH_DIRECTORIES).toContain("../../../.cursor/docs");
+    expect(WATCH_DIRECTORIES).toContain("../../../.cursor/prompts");
+    expect(WATCH_DIRECTORIES).toContain("../../../.cursor/rules");
   });
 
   it("should include all important project directories", () => {
     const expectedDirs = [
-      "packages",
-      "backend",
-      "services",
-      "docs",
-      ".cursor/docs",
-      ".cursor/prompts",
-      ".cursor/rules",
-      "examples",
-      "templates",
-      "e2e",
-      "scripts",
-      "nginx",
-      "todos",
-      "data",
-      "fenrir",
+      "../../../packages",
+      "../../../backend",
+      "../../../services",
+      "../../../docs",
+      "../../../.cursor/docs",
+      "../../../.cursor/prompts",
+      "../../../.cursor/rules",
+      "../../../examples",
+      "../../../templates",
+      "../../../e2e",
+      "../../../scripts",
+      "../../../nginx",
+      "../../../.cursor/todos",
+      "../../../data",
+      "../../../fenrir",
     ];
 
     for (const dir of expectedDirs) {

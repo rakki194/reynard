@@ -14,19 +14,19 @@
   "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"],
   "references": [
     {
-      "path": "../ai-shared"
+      "path": "../../ai/ai-shared"
     },
     {
-      "path": "../algorithms"
+      "path": "../../algorithms/algorithms"
     },
     {
-      "path": "../annotating-core"
+      "path": "../../ai/annotating-core"
     },
     {
-      "path": "../floating-panel"
+      "path": "../../ui/floating-panel"
     },
     {
-      "path": "../caption"
+      "path": "../../ai/caption"
     },
     {
       "path": "../boundingbox"

@@ -33,7 +33,7 @@ describe("FrontendBackendRelationshipGenerator", () => {
       },
       {
         name: "reynard-caption",
-        path: "packages/caption",
+        path: "packages/ai/caption",
         type: "source",
         importance: "important",
         dependencies: ["reynard-api-client", "reynard-components-core"],
