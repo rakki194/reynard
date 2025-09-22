@@ -5,7 +5,7 @@
  * This package consolidates all animation functionality from across the codebase:
  * - Core animation engines from test-app
  * - 3D animations from packages/3d
- * - Staggered animations from packages/floating-panel
+ * - Staggered animations from packages/ui/floating-panel
  * - Easing functions from packages/colors and packages/3d
  * - Performance monitoring and optimization
  */

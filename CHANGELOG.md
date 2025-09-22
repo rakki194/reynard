@@ -8,8 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+
 - **Queue Watcher Import**: Resolved import error for 'reynard-project-architecture' module by building the project architecture package and fixing TypeScript import syntax (Aye-Prime-11)
 - **Caption Package Path**: Fixed incorrect references to 'packages/media/caption' and 'packages/caption' - corrected to 'packages/ai/caption' in testing config, examples, docs, and diagram generator files (Aye-Prime-11)
+- **Package Path References**: Fixed incorrect references to 'packages/annotating-core' and 'packages/floating-panel' - corrected to 'packages/ai/annotating-core' and 'packages/ui/floating-panel' respectively (Aye-Prime-11)
+- **Fluent Icons SVG Types**: Added missing `svg.d.ts` type declarations file for SVG imports with `?raw` suffix in fluent-icons package (Aye-Prime-11)
 
 ### Added
 
@@ -18,13 +21,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Media Setup Refactoring**: Broke down media-setup.ts monolith (327 lines) into modular components: file-mocks.ts (100 lines), media-mocks.ts (73 lines), canvas-mocks.ts (116 lines), and streamlined main setup (19 lines) - now follows 140-line axiom (Lutra-Oracle-97)
 - **MCP Server Fix**: Added missing `analyze_file_complexity` method to `FileAnalysisService` class to resolve AttributeError and provide backward compatibility (Xeno-Prime-76)
 
-### Changed
-
 ### Deprecated
 
 ### Removed
-
-### Fixed
 
 ### Security
 

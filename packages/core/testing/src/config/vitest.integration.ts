@@ -1,13 +1,13 @@
 import { defineConfig } from "vitest/config";
 import solid from "vite-plugin-solid";
-import type { PluginOption } from "vite";
+import type { Plugin } from "vite";
 
 /**
  * Vitest configuration for integration testing
  * Includes setup for testing multiple components together
  */
 export default defineConfig({
-  plugins: [solid() as PluginOption],
+    plugins: [solid() as any],
   test: {
     environment: "happy-dom",
     globals: true,

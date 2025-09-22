@@ -8014,7 +8014,7 @@ packages:
       std-env: 3.9.0
       test-exclude: 7.0.1
       tinyrainbow: 2.0.0
-      vitest: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)(jsdom@26.1.0)
+      vitest: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)(tsx@4.20.5)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -8069,7 +8069,7 @@ packages:
       '@vitest/spy': 3.2.4
       estree-walker: 3.0.3
       magic-string: 0.30.19
-      vite: 7.1.6(@types/node@24.5.2)(yaml@2.8.1)
+      vite: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
     dev: true
 
   /@vitest/pretty-format@2.1.9:
@@ -8139,7 +8139,7 @@ packages:
       sirv: 3.0.2
       tinyglobby: 0.2.15
       tinyrainbow: 2.0.0
-      vitest: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)(jsdom@26.1.0)
+      vitest: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)(tsx@4.20.5)
     dev: true
 
   /@vitest/utils@2.1.9:
@@ -14403,7 +14403,7 @@ packages:
       merge-anything: 5.1.7
       solid-js: 1.9.9
       solid-refresh: 0.6.3(solid-js@1.9.9)
-      vite: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
+      vite: 7.1.7(@types/node@24.5.2)(tsx@4.20.5)
       vitefu: 1.1.1(vite@7.1.7)
     transitivePeerDependencies:
       - supports-color
@@ -14675,7 +14675,7 @@ packages:
       vite:
         optional: true
     dependencies:
-      vite: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
+      vite: 7.1.7(@types/node@24.5.2)(tsx@4.20.5)
     dev: true
 
   /vitest@2.1.9(@types/node@24.5.2):
