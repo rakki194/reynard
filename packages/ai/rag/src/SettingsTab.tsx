@@ -5,7 +5,7 @@
  * using modular components following Reynard architecture.
  */
 import { SearchSettings, SystemStats } from "./components";
-export function SettingsTab(props) {
+export function SettingsTab(props: any) {
   return (
     <div class="settings-tab-content">
       <SearchSettings

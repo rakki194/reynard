@@ -451,33 +451,3 @@ async def service_lifespan():
     finally:
         # Shutdown all services
         await registry.shutdown_all()
-
-
-# Global service registry instance
-_service_registry: ServiceRegistry | None = None
-
-
-def get_service_registry() -> ServiceRegistry:
-    """Get the global service registry instance."""
-    global _service_registry
-    if _service_registry is None:
-        _service_registry = ServiceRegistry()
-    return _service_registry
-
-
-@asynccontextmanager
-async def service_lifespan():
-    """Context manager for service lifecycle management."""
-    registry = get_service_registry()
-
-    try:
-        # Initialize all services
-        success = await registry.initialize_all()
-        if not success:
-            raise RuntimeError("Service initialization failed")
-
-        yield registry
-
-    finally:
-        # Shutdown all services
-        await registry.shutdown_all()

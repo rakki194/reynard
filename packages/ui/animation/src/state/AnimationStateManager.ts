@@ -169,7 +169,7 @@ export class AnimationStateManager {
   private async setupGlobalControlIntegration(): Promise<void> {
     try {
       // Try to import the global animation control system
-      const globalControl = await import("reynard-core/composables");
+      const globalControl = await import("reynard-composables");
       
       if (globalControl && globalControl.useAnimationControl) {
         this.globalControlIntegration = globalControl.useAnimationControl();

@@ -5,7 +5,7 @@
  * including query time, embedding time, and search time.
  */
 import { Icon } from "reynard-components-core";
-export const QueryStats = props => {
+export const QueryStats = (props: any) => {
   return (
     <div class="query-stats">
       <div class="stat-item">

@@ -6,7 +6,7 @@
 import { For, Show } from "solid-js";
 import { SearchHistoryItem as HistoryItem } from "./SearchHistoryItem";
 import { SearchHistoryEmpty } from "./SearchHistoryEmpty";
-export const SearchHistoryList = props => {
+export const SearchHistoryList = (props: any) => {
   return (
     <div class="history-list">
       <Show

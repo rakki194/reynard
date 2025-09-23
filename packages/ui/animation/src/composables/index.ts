@@ -20,14 +20,6 @@ export {
   useAnimationPerformanceMode, 
   useAnimationAccessibilityMode 
 } from "./useSmartAnimation";
-export { 
-  useEnhancedAnimationState, 
-  useGlobalAnimationState, 
-  usePerformanceModeState, 
-  useAccessibilityCompliance, 
-  useAnimationPackageState, 
-  useImmediateCompletionState 
-} from "./useEnhancedAnimationState";
 
 // Re-export types
 export type {

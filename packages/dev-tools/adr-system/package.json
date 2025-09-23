@@ -31,7 +31,8 @@
     "reynard-components-core": "workspace:*",
     "reynard-charts": "workspace:*",
     "reynard-fluent-icons": "workspace:*",
-    "reynard-project-architecture": "workspace:*"
+    "reynard-project-architecture": "workspace:*",
+    "reynard-3d": "workspace:*"
   },
   "devDependencies": {
     "@types/fs-extra": "11.0.4",

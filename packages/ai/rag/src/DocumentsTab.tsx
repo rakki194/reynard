@@ -6,7 +6,7 @@
  */
 import { For } from "solid-js";
 import { Button, Card, Icon } from "reynard-components-core";
-export function DocumentsTab(props) {
+export function DocumentsTab(props: any) {
   return (
     <div class="documents-tab-content">
       <Card variant="elevated" padding="lg">

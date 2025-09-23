@@ -6,9 +6,37 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { PortManager } from "../core/PortManager.js";
 import { createMockPortInfo, setupTestEnvironment, cleanupTestEnvironment } from "./test-utils.js";
 import type { PortInfo, PortAllocation, ProjectCategory } from "../types/index.js";
+
+// Mock node:child_process at the top level
+vi.mock("node:child_process", () => ({
+  exec: vi.fn(),
+  spawn: vi.fn(),
+  execSync: vi.fn().mockReturnValue("output"),
+}));
+
+// Mock node:util to ensure promisify works with our exec mock
+vi.mock("node:util", () => ({
+  promisify: vi.fn().mockImplementation((fn) => {
+    if (fn.name === 'exec') {
+      return vi.fn().mockImplementation(async (command: string) => {
+        return new Promise((resolve, reject) => {
+          // Use the mocked exec function
+          const { exec } = require("node:child_process");
+          exec(command, (error: any, stdout: string, stderr: string) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve({ stdout, stderr });
+            }
+          });
+        });
+      });
+    }
+    return fn;
+  }),
+}));
 
 describe("PortManager", () => {
   let portManager: PortManager;
@@ -22,7 +50,7 @@ describe("PortManager", () => {
     const { createServer } = await import("node:net");
     vi.mocked(createServer).mockImplementation(mockNetwork.createServer);
 
-    // Mock the exec function used by PortManager
+    // Configure the hoisted exec mock
     const { exec } = await import("node:child_process");
     vi.mocked(exec).mockImplementation((command, callback) => {
       // Mock lsof command responses
@@ -32,7 +60,10 @@ describe("PortManager", () => {
         if (inUse) {
           callback?.(null, "12345\n", ""); // Return a PID if port is in use
         } else {
-          callback?.(new Error("Port not in use"), "", ""); // Error if port is free
+          // lsof returns non-zero exit code when port is not in use
+          const error = new Error("Port not in use");
+          (error as any).code = 1;
+          callback?.(error, "", "");
         }
       } else if (command.includes("ps -p")) {
         // Mock ps command for process info
@@ -42,6 +73,8 @@ describe("PortManager", () => {
       }
     });
 
+    // Import PortManager after mocks are set up
+    const { PortManager } = await import("../core/PortManager.js");
     portManager = new PortManager();
   });
 
@@ -264,6 +297,9 @@ describe("PortManager", () => {
 
     it("should check if port is in use", async () => {
       mockNetwork.setPortInUse(3000, true);
+      
+      // Debug: Check if the mock network is working
+      expect(mockNetwork.isPortInUse(3000)).toBe(true);
 
       const isInUse = await portManager.isPortInUse(3000);
       expect(isInUse).toBe(true);
@@ -292,32 +328,44 @@ describe("PortManager", () => {
   describe("Port Range Validation", () => {
     it("should validate port ranges", () => {
       const validRange = { start: 3000, end: 3009 };
-      expect(portManager.validatePortRange(validRange)).toBe(true);
+      const result = portManager.validatePortRange(validRange);
+      expect(result.isValid).toBe(true);
+      expect(result.errors).toEqual([]);
     });
 
     it("should reject invalid port ranges", () => {
       const invalidRange = { start: 3000, end: 2000 }; // end < start
-      expect(portManager.validatePortRange(invalidRange)).toBe(false);
+      const result = portManager.validatePortRange(invalidRange);
+      expect(result.isValid).toBe(false);
+      expect(result.errors.length).toBeGreaterThan(0);
     });
 
     it("should reject negative port numbers", () => {
       const invalidRange = { start: -1, end: 3000 };
-      expect(portManager.validatePortRange(invalidRange)).toBe(false);
+      const result = portManager.validatePortRange(invalidRange);
+      expect(result.isValid).toBe(false);
+      expect(result.errors.length).toBeGreaterThan(0);
     });
 
     it("should reject ports above 65535", () => {
       const invalidRange = { start: 3000, end: 70000 };
-      expect(portManager.validatePortRange(invalidRange)).toBe(false);
+      const result = portManager.validatePortRange(invalidRange);
+      expect(result.isValid).toBe(false);
+      expect(result.errors.length).toBeGreaterThan(0);
     });
 
     it("should validate reserved ports within range", () => {
       const rangeWithReserved = { start: 3000, end: 3009, reserved: [3005, 3007] };
-      expect(portManager.validatePortRange(rangeWithReserved)).toBe(true);
+      const result = portManager.validatePortRange(rangeWithReserved);
+      expect(result.isValid).toBe(true);
+      expect(result.errors).toEqual([]);
     });
 
     it("should reject reserved ports outside range", () => {
       const rangeWithInvalidReserved = { start: 3000, end: 3009, reserved: [3010] };
-      expect(portManager.validatePortRange(rangeWithInvalidReserved)).toBe(false);
+      const result = portManager.validatePortRange(rangeWithInvalidReserved);
+      expect(result.isValid).toBe(false);
+      expect(result.errors.length).toBeGreaterThan(0);
     });
   });
 

@@ -79,12 +79,18 @@ export function batchHueShift(colors: OKLCHColor[], deltaH: number): OKLCHColor[
  */
 export const ColorEasingFunctions = {
   linear: Easing.linear,
-  easeInOut: Easing.easeInOutQuad,
-  easeIn: Easing.easeInQuad,
-  easeOut: Easing.easeOutQuad,
-  bounce: Easing.easeOutBounce,
-  elastic: Easing.easeOutElastic,
-  cubic: Easing.easeOutCubic,
+  easeInQuad: Easing.easeInQuad,
+  easeOutQuad: Easing.easeOutQuad,
+  easeInOutQuad: Easing.easeInOutQuad,
+  easeInCubic: Easing.easeInCubic,
+  easeOutCubic: Easing.easeOutCubic,
+  easeInOutCubic: Easing.easeInOutCubic,
+  easeInElastic: Easing.easeInElastic,
+  easeOutElastic: Easing.easeOutElastic,
+  easeInOutElastic: Easing.easeInOutElastic,
+  easeInBounce: Easing.easeInBounce,
+  easeOutBounce: Easing.easeOutBounce,
+  easeInOutBounce: Easing.easeInOutBounce,
 } as const;
 
 /**

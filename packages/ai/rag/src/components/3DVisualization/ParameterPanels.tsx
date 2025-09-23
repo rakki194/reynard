@@ -5,7 +5,7 @@
  */
 import { Show } from "solid-js";
 import { Slider } from "reynard-components-core";
-export const ParameterPanels = props => {
+export const ParameterPanels = (props: any) => {
   return (
     <div class="rag-3d-parameters">
       <Show when={props.reductionMethod === "tsne"}>
@@ -15,7 +15,7 @@ export const ParameterPanels = props => {
             <label>Perplexity</label>
             <Slider
               value={props.tsneParams.perplexity}
-              onChange={value => props.setTsneParams(prev => ({ ...prev, perplexity: value }))}
+              onChange={value => props.setTsneParams((prev: any) => ({ ...prev, perplexity: value }))}
               min={5}
               max={50}
               step={1}
@@ -26,7 +26,7 @@ export const ParameterPanels = props => {
             <Slider
               value={props.tsneParams.learning_rate}
               onChange={value =>
-                props.setTsneParams(prev => ({
+                props.setTsneParams((prev: any) => ({
                   ...prev,
                   learning_rate: value,
                 }))
@@ -46,7 +46,7 @@ export const ParameterPanels = props => {
             <label>N Neighbors</label>
             <Slider
               value={props.umapParams.n_neighbors}
-              onChange={value => props.setUmapParams(prev => ({ ...prev, n_neighbors: value }))}
+              onChange={value => props.setUmapParams((prev: any) => ({ ...prev, n_neighbors: value }))}
               min={2}
               max={100}
               step={1}
@@ -56,7 +56,7 @@ export const ParameterPanels = props => {
             <label>Min Distance</label>
             <Slider
               value={props.umapParams.min_dist}
-              onChange={value => props.setUmapParams(prev => ({ ...prev, min_dist: value }))}
+              onChange={value => props.setUmapParams((prev: any) => ({ ...prev, min_dist: value }))}
               min={0.01}
               max={1.0}
               step={0.01}
@@ -72,7 +72,7 @@ export const ParameterPanels = props => {
             <label>Components</label>
             <Slider
               value={props.pcaParams.n_components}
-              onChange={value => props.setPcaParams(prev => ({ ...prev, n_components: value }))}
+              onChange={value => props.setPcaParams((prev: any) => ({ ...prev, n_components: value }))}
               min={2}
               max={10}
               step={1}

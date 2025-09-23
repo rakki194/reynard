@@ -171,13 +171,14 @@ class ReynardUserExtractor(Extractor):
             logger.error(f"Failed to get content for user {username}: {e}")
             return []
 
-    def metadata(self):
+    @classmethod
+    def metadata(cls):
         """Get extractor metadata"""
         return {
-            "category": self.category,
-            "subcategory": self.subcategory,
-            "pattern": self.pattern,
-            "example": self.example,
+            "category": cls.category,
+            "subcategory": cls.subcategory,
+            "pattern": cls.pattern,
+            "example": cls.example,
             "description": "Extract media from Reynard user profiles",
             "features": ["metadata", "tags", "user-stats", "reynard-integration"],
         }

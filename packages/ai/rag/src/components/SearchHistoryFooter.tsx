@@ -4,7 +4,7 @@
  * Footer section with statistics and limits.
  */
 import { Show } from "solid-js";
-export const SearchHistoryFooter = props => {
+export const SearchHistoryFooter = (props: any) => {
   return (
     <div class="history-footer">
       <div class="history-stats">

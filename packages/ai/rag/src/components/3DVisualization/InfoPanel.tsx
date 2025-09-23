@@ -3,7 +3,7 @@
  *
  * Displays metadata about the current visualization state
  */
-export const InfoPanel = props => {
+export const InfoPanel = (props: any) => {
   return (
     <div class="rag-3d-info">
       <div class="info-item">

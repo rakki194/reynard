@@ -1,11 +1,33 @@
 // Cluster animation composable for SolidJS
 // Orchestrates modular cluster animation functionality
+// Migrated to use unified animation system
 
 import { createSignal, createMemo } from "solid-js";
 import type { ClusterAnimation, EasingType, EmbeddingPoint } from "../types";
 import { executeClusterAnimation } from "../utils/clusterAnimationExecutor";
 import { getInterpolatedClusterPoints } from "../utils/clusterPointInterpolator";
 import { createClusterAnimationInstance } from "../utils/clusterAnimationFactory";
+
+// Smart import for unified animation system
+let animationPackage: unknown = null;
+let isPackageAvailable = false;
+
+const checkAnimationPackageAvailability = async () => {
+  try {
+    const packageCheck = await import("reynard-animation");
+    if (packageCheck && packageCheck.useClusterAnimations) {
+      animationPackage = packageCheck;
+      isPackageAvailable = true;
+      return true;
+    }
+  } catch (error) {
+    console.warn("🦊 3D: reynard-animation package not available, using fallback cluster animations");
+  }
+  return false;
+};
+
+// Initialize package availability
+checkAnimationPackageAvailability();
 
 export function useClusterAnimations() {
   const [clusterAnimations, setClusterAnimations] = createSignal<ClusterAnimation[]>([]);

@@ -51,6 +51,11 @@
     "test:coverage": "vitest run --coverage",
     "test:coverage:check": "vitest run --coverage --reporter=verbose",
     "test:docs": "vitest run --config vitest.docs.config.ts",
+    "test:performance": "tsx scripts/run-performance-tests.ts",
+    "test:performance:bench": "vitest run src/__tests__/performance-benchmarks.bench.ts",
+    "test:performance:bundle": "vitest run src/__tests__/bundle-size-analysis.bench.ts",
+    "test:performance:monitor": "vitest run src/__tests__/performance-monitoring-core.bench.ts src/__tests__/performance-monitoring-dashboard.bench.ts src/__tests__/performance-monitoring-alerts.bench.ts",
+    "test:performance:suite": "vitest run src/__tests__/performance-test-suite.test.ts",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
@@ -62,13 +67,14 @@
     "@vitest/ui": "3.2.4",
     "happy-dom": "18.0.1",
     "reynard-testing": "workspace:*",
+    "tsx": "4.20.5",
     "typescript": "5.9.2",
     "vite": "7.1.7",
     "vite-plugin-solid": "2.11.8",
     "vitest": "3.2.4"
   },
   "peerDependencies": {
-    "solid-js": ">=1.9.0"
+    "solid-js": "1.9.9"
   },
   "peerDependenciesMeta": {
     "solid-js": {

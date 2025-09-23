@@ -9,7 +9,7 @@ import { Card } from "reynard-components-core";
 import { SearchForm } from "./components/SearchForm";
 import { QueryStats } from "./components/QueryStats";
 import { ResultsList } from "./components/ResultsList";
-export function SearchTab(props) {
+export function SearchTab(props: any) {
   const hasResults = () => props.results.length > 0;
   return (
     <div class="search-tab-content">

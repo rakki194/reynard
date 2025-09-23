@@ -5,7 +5,7 @@
  */
 import { Show } from "solid-js";
 import { getLanguageFromExtension, getFileExtension } from "../utils/file-utils";
-export const FileModalFooter = props => {
+export const FileModalFooter = (props: any) => {
   return (
     <div class="rag-file-footer">
       <div class="file-metadata">

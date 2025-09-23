@@ -5,12 +5,12 @@
  */
 import { Card, Badge } from "reynard-components-core";
 import { getScoreColor, getScoreLabel } from "../utils/image-modal-utils";
-export const SimilarityScore = props => {
+export const SimilarityScore = (props: any) => {
   return (
-    <Card className="score-card">
+    <Card class="score-card">
       <div class="score-header">
         <h4>Similarity Score</h4>
-        <Badge variant={getScoreColor(props.score)}>{getScoreLabel(props.score)}</Badge>
+        <Badge variant="secondary">{getScoreLabel(props.score)}</Badge>
       </div>
       <div class="score-value">{(props.score * 100).toFixed(1)}%</div>
       <div class="score-bar">

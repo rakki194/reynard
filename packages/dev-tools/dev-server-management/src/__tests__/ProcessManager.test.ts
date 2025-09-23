@@ -6,7 +6,6 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { ProcessManager } from "../core/ProcessManager.js";
 import {
   createMockProcessInfo,
   createMockProjectConfig,
@@ -17,18 +16,163 @@ import {
 import type { ProcessInfo, ProcessOptions, ServerStatus } from "../types/index.js";
 
 describe("ProcessManager", () => {
-  let processManager: ProcessManager;
+  let processManager: any;
   let mockProcess: ReturnType<typeof setupTestEnvironment>["mockProcess"];
 
   beforeEach(async () => {
     const testEnv = setupTestEnvironment();
     mockProcess = testEnv.mockProcess;
 
-    // Configure the mocks
-    const { spawn, exec } = await import("node:child_process");
-    vi.mocked(spawn).mockImplementation(mockProcess.spawn);
-    vi.mocked(exec).mockImplementation(mockProcess.exec);
+    // Set up the child_process mock using vi.doMock
+    vi.doMock("node:child_process", () => ({
+      spawn: vi.fn().mockImplementation((command, args, options) => {
+        // Simple mock that just returns the essential properties
+        const mockProcess = {
+          pid: 12345,
+          _spawnCallback: null,
+          _exitCallback: null,
+          _errorCallback: null,
+          kill: vi.fn(),
+          on: vi.fn(),
+          once: vi.fn(),
+          removeListener: vi.fn(),
+          removeAllListeners: vi.fn(),
+          addListener: vi.fn(),
+          stdout: { 
+            on: vi.fn(),
+            pipe: vi.fn(),
+            unpipe: vi.fn(),
+            read: vi.fn(),
+            setEncoding: vi.fn(),
+            pause: vi.fn(),
+            resume: vi.fn(),
+            isPaused: vi.fn().mockReturnValue(false),
+            destroy: vi.fn(),
+            destroyed: false,
+            readable: true,
+            readableEncoding: null,
+            readableEnded: false,
+            readableFlowing: true,
+            readableHighWaterMark: 16384,
+            readableLength: 0,
+            readableObjectMode: false,
+            _read: vi.fn(),
+            _readableState: {},
+            once: vi.fn(),
+            emit: vi.fn(),
+            addListener: vi.fn(),
+            removeListener: vi.fn(),
+            removeAllListeners: vi.fn(),
+            setMaxListeners: vi.fn(),
+            getMaxListeners: vi.fn().mockReturnValue(10),
+            listeners: vi.fn().mockReturnValue([]),
+            rawListeners: vi.fn().mockReturnValue([]),
+            listenerCount: vi.fn().mockReturnValue(0),
+            eventNames: vi.fn().mockReturnValue([]),
+            prependListener: vi.fn(),
+            prependOnceListener: vi.fn(),
+          },
+          stderr: { 
+            on: vi.fn(),
+            pipe: vi.fn(),
+            unpipe: vi.fn(),
+            read: vi.fn(),
+            setEncoding: vi.fn(),
+            pause: vi.fn(),
+            resume: vi.fn(),
+            isPaused: vi.fn().mockReturnValue(false),
+            destroy: vi.fn(),
+            destroyed: false,
+            readable: true,
+            readableEncoding: null,
+            readableEnded: false,
+            readableFlowing: true,
+            readableHighWaterMark: 16384,
+            readableLength: 0,
+            readableObjectMode: false,
+            _read: vi.fn(),
+            _readableState: {},
+            once: vi.fn(),
+            emit: vi.fn(),
+            addListener: vi.fn(),
+            removeListener: vi.fn(),
+            removeAllListeners: vi.fn(),
+            setMaxListeners: vi.fn(),
+            getMaxListeners: vi.fn().mockReturnValue(10),
+            listeners: vi.fn().mockReturnValue([]),
+            rawListeners: vi.fn().mockReturnValue([]),
+            listenerCount: vi.fn().mockReturnValue(0),
+            eventNames: vi.fn().mockReturnValue([]),
+            prependListener: vi.fn(),
+            prependOnceListener: vi.fn(),
+          },
+          exitCode: null,
+          signalCode: null,
+          spawnfile: command,
+          spawnargs: args,
+          connected: true,
+          disconnect: vi.fn(),
+          unref: vi.fn(),
+          ref: vi.fn(),
+        };
 
+        // Set up method implementations
+        mockProcess.on.mockImplementation((event, callback) => {
+          if (event === 'spawn') {
+            mockProcess._spawnCallback = callback;
+          } else if (event === 'exit') {
+            mockProcess._exitCallback = callback;
+          } else if (event === 'error') {
+            mockProcess._errorCallback = callback;
+          }
+          return mockProcess;
+        });
+
+        mockProcess.once.mockImplementation((event, callback) => {
+          if (event === 'spawn') {
+            mockProcess._spawnCallback = callback;
+          } else if (event === 'exit') {
+            mockProcess._exitCallback = callback;
+          } else if (event === 'error') {
+            mockProcess._errorCallback = callback;
+          }
+          return mockProcess;
+        });
+
+        mockProcess.addListener.mockImplementation((event, callback) => {
+          if (event === 'spawn') {
+            mockProcess._spawnCallback = callback;
+          } else if (event === 'exit') {
+            mockProcess._exitCallback = callback;
+          } else if (event === 'error') {
+            mockProcess._errorCallback = callback;
+          }
+          return mockProcess;
+        });
+
+        mockProcess.kill.mockImplementation((signal) => {
+          if (mockProcess._exitCallback) {
+            mockProcess._exitCallback(0, signal);
+          }
+        });
+
+        // Emit spawn event immediately to simulate process starting
+        setTimeout(() => {
+          if (mockProcess._spawnCallback) {
+            mockProcess._spawnCallback();
+          }
+        }, 0);
+
+        return mockProcess;
+      }),
+      exec: vi.fn().mockImplementation((command, callback) => {
+        callback?.(null, "output", "");
+      }),
+      execSync: vi.fn().mockReturnValue("output"),
+    }));
+
+    // Import ProcessManager after mocks are set up
+    const { ProcessManager } = await import("../core/ProcessManager.js");
     processManager = new ProcessManager();
   });
 

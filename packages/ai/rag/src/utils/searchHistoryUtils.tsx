@@ -3,18 +3,8 @@
  *
  * Utility functions for formatting, colors, and icons in search history.
  */
-import { getIcon as getIconFromRegistry } from "reynard-fluent-icons";
-// Helper function to get icon as JSX element
-export const getIcon = name => {
-  const icon = getIconFromRegistry(name);
-  if (icon) {
-    // Use the proper Reynard pattern for rendering SVG icons
-    // eslint-disable-next-line solid/no-innerhtml
-    return <div class="icon-wrapper" innerHTML={icon.outerHTML} />;
-  }
-  return null;
-};
-export const formatTimestamp = timestamp => {
+import { Icon } from "reynard-components-core";
+export const formatTimestamp = (timestamp: Date) => {
   const now = new Date();
   const diff = now.getTime() - timestamp.getTime();
   const minutes = Math.floor(diff / 60000);
@@ -26,25 +16,25 @@ export const formatTimestamp = timestamp => {
   if (days < 7) return `${days}d ago`;
   return timestamp.toLocaleDateString();
 };
-export const getModalityIcon = modality => {
-  const iconMap = {
+export const getModalityIcon = (modality: any) => {
+  const iconMap: Record<string, string> = {
     docs: "document",
     images: "image",
     code: "code",
     captions: "text",
   };
-  return getIcon(iconMap[modality]);
+  return <Icon name={iconMap[modality] || "document"} />;
 };
-export const getModalityColor = modality => {
-  const colorMap = {
+export const getModalityColor = (modality: any) => {
+  const colorMap: Record<string, string> = {
     docs: "blue",
     images: "green",
     code: "purple",
     captions: "orange",
   };
-  return colorMap[modality];
+  return colorMap[modality] || "blue";
 };
-export const getScoreColor = score => {
+export const getScoreColor = (score: number) => {
   if (score >= 0.8) return "success";
   if (score >= 0.6) return "warning";
   return "error";

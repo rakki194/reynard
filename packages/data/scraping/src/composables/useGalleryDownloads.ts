@@ -51,7 +51,7 @@ export function useGalleryDownloads(options: UseGalleryDownloadsOptions = {}): U
 
   const connectWebSocket = () => {
     try {
-      ws = new WebSocket(`ws://localhost:8000/api/gallery/events`);
+      ws = new WebSocket(`ws://localhost:8000/api/gallerydl/events`);
 
       ws.onmessage = event => {
         try {
@@ -105,7 +105,7 @@ export function useGalleryDownloads(options: UseGalleryDownloadsOptions = {}): U
       setIsLoading(true);
       setError(null);
 
-      const response = await fetch("/api/gallery/downloads");
+      const response = await fetch("/api/gallerydl/downloads");
       const result = await response.json();
 
       if (result.success && result.data) {
@@ -125,7 +125,7 @@ export function useGalleryDownloads(options: UseGalleryDownloadsOptions = {}): U
       setIsLoading(true);
       setError(null);
 
-      const response = await fetch("/api/gallery/downloads", {
+      const response = await fetch("/api/gallerydl/downloads", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -155,7 +155,7 @@ export function useGalleryDownloads(options: UseGalleryDownloadsOptions = {}): U
 
   const cancelDownload = async (jobId: string): Promise<void> => {
     try {
-      const response = await fetch(`/api/gallery/downloads/${jobId}/cancel`, {
+      const response = await fetch(`/api/gallerydl/downloads/${jobId}/cancel`, {
         method: "POST",
       });
 
@@ -173,7 +173,7 @@ export function useGalleryDownloads(options: UseGalleryDownloadsOptions = {}): U
 
   const pauseDownload = async (jobId: string): Promise<void> => {
     try {
-      const response = await fetch(`/api/gallery/downloads/${jobId}/pause`, {
+      const response = await fetch(`/api/gallerydl/downloads/${jobId}/pause`, {
         method: "POST",
       });
 
@@ -191,7 +191,7 @@ export function useGalleryDownloads(options: UseGalleryDownloadsOptions = {}): U
 
   const resumeDownload = async (jobId: string): Promise<void> => {
     try {
-      const response = await fetch(`/api/gallery/downloads/${jobId}/resume`, {
+      const response = await fetch(`/api/gallerydl/downloads/${jobId}/resume`, {
         method: "POST",
       });
 
@@ -209,7 +209,7 @@ export function useGalleryDownloads(options: UseGalleryDownloadsOptions = {}): U
 
   const deleteDownload = async (jobId: string): Promise<void> => {
     try {
-      const response = await fetch(`/api/gallery/downloads/${jobId}`, {
+      const response = await fetch(`/api/gallerydl/downloads/${jobId}`, {
         method: "DELETE",
       });
 

@@ -105,12 +105,11 @@ class ReynardExtractorRegistry:
             subcategory = getattr(extractor_class, "subcategory", "custom")
 
             # Register with gallery-dl
-            if category not in extractor.extractors:
-                extractor.extractors[category] = {}
-
-            extractor.extractors[category][subcategory] = extractor_class
-
-            logger.debug(f"Registered {category}.{subcategory} with gallery-dl")
+            # Note: gallery-dl uses a different registration mechanism
+            # We'll store our extractors in our own registry instead
+            logger.debug(
+                f"Prepared {category}.{subcategory} for gallery-dl integration"
+            )
 
         except Exception as e:
             logger.error(f"Failed to register with gallery-dl: {e}")
@@ -136,35 +135,8 @@ class ReynardExtractorRegistry:
                 }
             )
 
-        # Add standard gallery-dl extractors
-        for category, extractors_dict in extractor.extractors.items():
-            for subcategory, extractor_class in extractors_dict.items():
-                try:
-                    # Skip Reynard extractors (already added)
-                    if category == "reynard":
-                        continue
-
-                    # Get extractor info
-                    pattern = getattr(extractor_class, "pattern", [])
-                    if isinstance(pattern, str):
-                        pattern = [pattern]
-
-                    extractors.append(
-                        {
-                            "name": f"{category}.{subcategory}",
-                            "category": category,
-                            "subcategory": subcategory,
-                            "pattern": pattern,
-                            "description": getattr(extractor_class, "__doc__", ""),
-                            "reynard_enabled": False,
-                            "type": "standard",
-                        }
-                    )
-
-                except Exception as e:
-                    logger.warning(
-                        f"Failed to get extractor info for {category}.{subcategory}: {e}"
-                    )
+        # Note: Standard gallery-dl extractors are handled by gallery-dl itself
+        # We only manage our custom Reynard extractors here
 
         return extractors
 
@@ -203,23 +175,8 @@ class ReynardExtractorRegistry:
                         "type": "custom",
                     }
 
-            # Check standard gallery-dl extractors
-            for category, extractors_dict in extractor.extractors.items():
-                for subcategory, extractor_class in extractors_dict.items():
-                    pattern = getattr(extractor_class, "pattern", [])
-                    if isinstance(pattern, str):
-                        pattern = [pattern]
-
-                    if self._url_matches_pattern(url, pattern):
-                        return {
-                            "name": f"{category}.{subcategory}",
-                            "category": category,
-                            "subcategory": subcategory,
-                            "pattern": pattern,
-                            "description": getattr(extractor_class, "__doc__", ""),
-                            "reynard_enabled": False,
-                            "type": "standard",
-                        }
+            # Note: Standard gallery-dl extractors are handled by gallery-dl itself
+            # We only check our custom Reynard extractors here
 
             return None
 
@@ -247,18 +204,14 @@ class ReynardExtractorRegistry:
 
     def get_extractor_stats(self) -> dict[str, Any]:
         """Get statistics about registered extractors"""
-        total_extractors = len(extractor.extractors)
         reynard_extractors = len(self.custom_extractors)
-        standard_extractors = total_extractors - reynard_extractors
 
         return {
-            "total_extractors": total_extractors,
             "reynard_extractors": reynard_extractors,
-            "standard_extractors": standard_extractors,
-            "categories": list(extractor.extractors.keys()),
             "reynard_categories": list(
                 set(info.category for info in self.custom_extractors.values())
             ),
+            "note": "Standard gallery-dl extractors are managed by gallery-dl itself",
         }
 
 

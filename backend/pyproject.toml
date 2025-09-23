@@ -44,6 +44,7 @@ dependencies = [
     "argon2-cffi",
     "cryptography",
     "itsdangerous",
+    "gallery-dl>=1.30.7",
     "reynard-gatekeeper @ file:///home/kade/runeset/reynard/services/gatekeeper",
 ]
 

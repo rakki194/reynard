@@ -10,7 +10,7 @@ import { SearchHistoryFilters } from "./SearchHistoryFilters";
 import { SearchHistoryList } from "./SearchHistoryList";
 import { SearchHistoryHeader } from "./SearchHistoryHeader";
 import { SearchHistoryFooter } from "./SearchHistoryFooter";
-const renderSearchHistory = props => {
+const renderSearchHistory = (props: any) => {
   const {
     searchQuery,
     selectedModality,
@@ -55,6 +55,6 @@ const renderSearchHistory = props => {
     </div>
   );
 };
-export const RAGSearchHistory = props => {
+export const RAGSearchHistory = (props: any) => {
   return renderSearchHistory(props);
 };

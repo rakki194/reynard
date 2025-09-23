@@ -453,7 +453,7 @@ export class FrontendBackendRelationshipGenerator implements DiagramGenerator {
     }
 
     if (pkg.name.includes("gallery")) {
-      endpoints.push("/api/gallery");
+      endpoints.push("/api/gallerydl");
     }
 
     return endpoints;
@@ -539,7 +539,7 @@ export class FrontendBackendRelationshipGenerator implements DiagramGenerator {
           frontendUsers: ["reynard-rag", "reynard-api-client"],
         },
         { path: "/api/search", method: "GET", purpose: "Semantic search", frontendUsers: ["reynard-rag"] },
-        { path: "/api/gallery", method: "GET", purpose: "Gallery management", frontendUsers: ["reynard-gallery"] },
+        { path: "/api/gallerydl", method: "GET", purpose: "Gallery-dl management", frontendUsers: ["reynard-gallery-dl"] },
         {
           path: "/api/auth",
           method: "POST",

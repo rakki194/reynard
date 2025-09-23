@@ -3,6 +3,7 @@
  * 
  * Provides centralized control over all animations in the Reynard ecosystem.
  * Supports accessibility preferences, performance modes, and optional animation package.
+ * Migrated to use unified animation system.
  * 
  * @author Agile-Prime-90 (Reynard Lizard Specialist)
  * @since 1.0.0

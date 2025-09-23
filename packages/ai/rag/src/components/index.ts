@@ -14,9 +14,4 @@ export { SearchSettings } from "./SearchSettings";
 export { SystemStats } from "./SystemStats";
 
 // Re-export types
-export type { RAGImageModalProps } from "./RAGImageModal";
-export type { ImageDisplayProps } from "./ImageDisplay";
-export type { ImageModalHeaderProps } from "./ImageModalHeader";
-export type { SimilarityScoreProps } from "./SimilarityScore";
-export type { ImageMetadataProps } from "./ImageMetadata";
-export type { EmbeddingInfoProps } from "./EmbeddingInfo";
+// Component props types are defined inline in components

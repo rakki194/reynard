@@ -4,7 +4,7 @@
  * Header section with file info and controls for the RAG file modal.
  */
 import { FileControls } from "./FileControls";
-export const FileModalHeader = props => {
+export const FileModalHeader = (props: any) => {
   return (
     <div class="rag-file-header">
       <div class="file-info">

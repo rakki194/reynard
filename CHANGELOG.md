@@ -5,6 +5,52 @@ All notable changes to the Reynard framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.17.0] - 2025-09-23
+
+### Added
+
+- **Enhanced Security Configuration**: Comprehensive security middleware and configuration updates with improved authentication and authorization
+- **Advanced Health Checks**: Enhanced health check system with detailed monitoring and diagnostics
+- **Gallery-DL Integration**: Complete gallery download service with AI metadata extraction and batch processing
+- **Animation System Improvements**: Enhanced 3D animation system with improved performance and new animation types
+- **RAG System Enhancements**: Improved RAG search interface with better visualization and document management
+- **Floating Panel System**: Enhanced floating panel components with improved animation and interaction handling
+
+### Changed
+
+- **Major Codebase Refactoring**: Comprehensive refactoring across 162 files with 8,027 insertions and 13,934 deletions
+- **Security Middleware**: Updated security configuration and middleware with enhanced protection mechanisms
+- **Test Infrastructure**: Improved test coverage and refactored test utilities across multiple packages
+- **Package Configurations**: Updated TypeScript configurations, Vite configs, and package.json files across the monorepo
+- **API Endpoints**: Enhanced caption, ComfyUI, embedding visualization, and RAG API endpoints
+- **Component Architecture**: Refactored UI components with improved modularity and maintainability
+
+### Deprecated
+
+- **Legacy Test Files**: Removed outdated debug and test files that are no longer needed
+- **Old Documentation**: Cleaned up obsolete documentation files and guides
+
+### Removed
+
+- **Debug and Test Files**: Removed 15+ debug and test files including cache proofs, continuous indexing tests, and integration tests
+- **Obsolete Documentation**: Removed outdated backend documentation files and setup guides
+- **Legacy Gallery API**: Removed old gallery API endpoints in favor of new gallery-dl integration
+- **Unused Test Utilities**: Cleaned up unused test files and utilities across the codebase
+
+### Fixed
+
+- **Security Vulnerabilities**: Fixed security configuration issues and improved middleware protection
+- **TypeScript Errors**: Resolved TypeScript compilation errors across multiple packages
+- **Test Coverage**: Improved test coverage and fixed failing tests
+- **Import Path Issues**: Fixed incorrect import paths and module references
+- **Configuration Issues**: Resolved package configuration and build issues
+
+### Security
+
+- **Enhanced Security Middleware**: Improved security middleware with better input validation and rate limiting
+- **Security Configuration**: Updated security configuration with enhanced protection mechanisms
+- **Authentication Improvements**: Enhanced authentication and authorization systems
+
 ## [Unreleased]
 
 ### Added

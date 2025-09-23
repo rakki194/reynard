@@ -3,14 +3,13 @@
  *
  * Header section with title and clear action.
  */
-import { Button } from "reynard-components-core";
-import { getIcon } from "../utils/searchHistoryUtils";
-export const SearchHistoryHeader = props => {
+import { Button, Icon } from "reynard-components-core";
+export const SearchHistoryHeader = (props: any) => {
   return (
     <div class="history-header">
       <h3>Search History</h3>
       <div class="history-actions">
-        <Button variant="secondary" size="sm" onClick={props.onClearHistory} leftIcon={getIcon("delete")}>
+        <Button variant="secondary" size="sm" onClick={props.onClearHistory} leftIcon={<Icon name="delete" />}>
           Clear All
         </Button>
       </div>

@@ -6,18 +6,8 @@
  */
 import { Show } from "solid-js";
 import { Card } from "reynard-components-core";
-import { getIcon as getIconFromRegistry } from "reynard-fluent-icons";
-// Helper function to get icon as JSX element
-const getIcon = name => {
-  const icon = getIconFromRegistry(name);
-  if (icon) {
-    // Use the proper Reynard pattern for rendering SVG icons
-    // eslint-disable-next-line solid/no-innerhtml
-    return <div class="icon-wrapper" innerHTML={icon.outerHTML} />;
-  }
-  return null;
-};
-export function UploadTab(props) {
+import { Icon } from "reynard-components-core";
+export function UploadTab(props: any) {
   return (
     <div class="upload-tab-content">
       <Card variant="elevated" padding="lg">
@@ -33,7 +23,7 @@ export function UploadTab(props) {
             class="hidden"
           />
           <label for="file-upload" class="upload-label">
-            <div class="upload-icon">{getIcon("upload")}</div>
+            <div class="upload-icon"><Icon name="upload" /></div>
             <span>Click to upload or drag and drop</span>
             <small>Supports: .txt, .md, .py, .js, .ts, .json, .yaml, .html</small>
           </label>

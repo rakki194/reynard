@@ -10,7 +10,11 @@ describe("GalleryService", () => {
   let service: GalleryService;
 
   beforeEach(() => {
-    service = new GalleryService();
+    service = new GalleryService({
+      name: "test-gallery-service",
+      baseUrl: "http://localhost:8000",
+      timeout: 30000,
+    });
     vi.clearAllMocks();
   });
 
@@ -67,7 +71,7 @@ describe("GalleryService", () => {
 
       expect(result).toEqual(mockResult);
       expect(mockFetch).toHaveBeenCalledWith(
-        "/api/gallery/download",
+        "/api/gallerydl/download",
         expect.objectContaining({
           method: "POST",
           headers: {
@@ -150,7 +154,7 @@ describe("GalleryService", () => {
 
       expect(result).toEqual(mockValidation);
       expect(mockFetch).toHaveBeenCalledWith(
-        "/api/gallery/validate",
+        "/api/gallerydl/validate",
         expect.objectContaining({
           method: "POST",
           headers: {
@@ -220,7 +224,7 @@ describe("GalleryService", () => {
       const result = await service.getExtractors();
 
       expect(result).toEqual(mockExtractors);
-      expect(mockFetch).toHaveBeenCalledWith("/api/gallery/extractors");
+      expect(mockFetch).toHaveBeenCalledWith("/api/gallerydl/extractors");
     });
 
     it("should handle extractor fetch errors", async () => {
@@ -265,7 +269,7 @@ describe("GalleryService", () => {
       const result = await service.getDownloadHistory();
 
       expect(result).toEqual(mockHistory);
-      expect(mockFetch).toHaveBeenCalledWith("/api/gallery/history");
+      expect(mockFetch).toHaveBeenCalledWith("/api/gallerydl/history");
     });
   });
 
@@ -280,7 +284,7 @@ describe("GalleryService", () => {
 
       expect(result.success).toBe(true);
       expect(mockFetch).toHaveBeenCalledWith(
-        "/api/gallery/download/test-download-123/cancel",
+        "/api/gallerydl/download/test-download-123/cancel",
         expect.objectContaining({
           method: "POST",
         })
@@ -325,7 +329,7 @@ describe("GalleryService", () => {
       const result = await service.getDownloadProgress("test-download-123");
 
       expect(result).toEqual(mockProgress);
-      expect(mockFetch).toHaveBeenCalledWith("/api/gallery/download/test-download-123/progress");
+      expect(mockFetch).toHaveBeenCalledWith("/api/gallerydl/download/test-download-123/progress");
     });
   });
 
@@ -358,7 +362,7 @@ describe("GalleryService", () => {
 
       expect(result).toEqual(mockBatch);
       expect(mockFetch).toHaveBeenCalledWith(
-        "/api/gallery/batch",
+        "/api/gallerydl/batch",
         expect.objectContaining({
           method: "POST",
           body: JSON.stringify(request),
@@ -396,7 +400,7 @@ describe("GalleryService", () => {
       const result = await service.getBatchDownloads();
 
       expect(result).toEqual(mockBatches);
-      expect(mockFetch).toHaveBeenCalledWith("/api/gallery/batch");
+      expect(mockFetch).toHaveBeenCalledWith("/api/gallerydl/batch");
     });
 
     it("should cancel batch download", async () => {
@@ -409,7 +413,7 @@ describe("GalleryService", () => {
 
       expect(result.success).toBe(true);
       expect(mockFetch).toHaveBeenCalledWith(
-        "/api/gallery/batch/batch-123/cancel",
+        "/api/gallerydl/batch/batch-123/cancel",
         expect.objectContaining({
           method: "POST",
         })
@@ -426,7 +430,7 @@ describe("GalleryService", () => {
 
       expect(result.success).toBe(true);
       expect(mockFetch).toHaveBeenCalledWith(
-        "/api/gallery/batch/batch-123/retry",
+        "/api/gallerydl/batch/batch-123/retry",
         expect.objectContaining({
           method: "POST",
         })
@@ -465,7 +469,7 @@ describe("GalleryService", () => {
 
       expect(result).toEqual(mockJob);
       expect(mockFetch).toHaveBeenCalledWith(
-        "/api/gallery/metadata/extract",
+        "/api/gallerydl/metadata/extract",
         expect.objectContaining({
           method: "POST",
           body: JSON.stringify(request),
@@ -500,7 +504,7 @@ describe("GalleryService", () => {
       const result = await service.getMetadataExtractionJobs();
 
       expect(result).toEqual(mockJobs);
-      expect(mockFetch).toHaveBeenCalledWith("/api/gallery/metadata/jobs");
+      expect(mockFetch).toHaveBeenCalledWith("/api/gallerydl/metadata/jobs");
     });
 
     it("should get metadata results", async () => {
@@ -529,7 +533,7 @@ describe("GalleryService", () => {
       const result = await service.getMetadataResults();
 
       expect(result).toEqual(mockResults);
-      expect(mockFetch).toHaveBeenCalledWith("/api/gallery/metadata/results");
+      expect(mockFetch).toHaveBeenCalledWith("/api/gallerydl/metadata/results");
     });
 
     it("should export metadata results", async () => {
@@ -542,7 +546,7 @@ describe("GalleryService", () => {
 
       expect(result.success).toBe(true);
       expect(mockFetch).toHaveBeenCalledWith(
-        "/api/gallery/metadata/export/download-123",
+        "/api/gallerydl/metadata/export/download-123",
         expect.objectContaining({
           method: "POST",
         })

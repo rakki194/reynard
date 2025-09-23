@@ -19,6 +19,38 @@ export class RAGApiService {
   }
 
   /**
+   * Get all documents
+   */
+  async getDocuments(): Promise<RAGDocument[]> {
+    const response = await this.apiCall("/documents");
+    return response.data || [];
+  }
+
+  /**
+   * Upload a document
+   */
+  async uploadDocument(file: File): Promise<RAGDocument> {
+    const formData = new FormData();
+    formData.append("file", file);
+    const response = await this.apiCall("/documents/upload", {
+      method: "POST",
+      body: formData,
+    });
+    return response.data;
+  }
+
+  /**
+   * Search documents
+   */
+  async search(query: string, options: any = {}): Promise<any> {
+    const response = await this.apiCall("/search", {
+      method: "POST",
+      body: JSON.stringify({ query, ...options }),
+    });
+    return response.data;
+  }
+
+  /**
    * Legacy API call method for backward compatibility
    * Will be replaced with generated client methods
    */

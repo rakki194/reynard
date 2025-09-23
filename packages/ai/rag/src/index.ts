@@ -7,6 +7,7 @@
 
 // Core components
 export { RAGSearch } from "./RAGSearch";
+export { RAGSearchContainer } from "./RAGSearchContainer";
 
 // Tab components
 export { SearchTab } from "./SearchTab";
@@ -27,6 +28,12 @@ export { RAGApiService } from "./api-service";
 export { useRAGSearchState } from "./useRAGSearchState";
 export { useRAGSearchHandlers } from "./useRAGSearchHandlers";
 
+// New modular composables
+export { useRAGDocuments } from "./composables/useRAGDocuments";
+export { useRAGSearch } from "./composables/useRAGSearch";
+export { useRAGSettings } from "./composables/useRAGSettings";
+export { useRAGHistory } from "./composables/useRAGHistory";
+
 // Types and interfaces
 export type {
   RAGResult,
@@ -36,8 +43,6 @@ export type {
   RAGQueryResponse,
   TabItem,
   // Advanced types
-  RAGModality,
-  RAGQueryHit,
   FileModalState,
   ImageModalState,
   ThreeDModalState,

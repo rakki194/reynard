@@ -3,6 +3,7 @@ Input Validation Middleware
 
 This middleware applies comprehensive input validation to all incoming requests
 to prevent SQL injection, XSS, path traversal, and other security attacks.
+Now integrated with centralized security error handling and analytics.
 """
 
 import json
@@ -14,6 +15,9 @@ from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 
 from app.security.input_validator import validate_input_security
+from app.security.security_error_handler import SecurityEventType, SecurityThreatLevel, security_error_handler
+from app.security.security_analytics import security_analytics, SecurityEvent
+from app.security.security_config import get_security_config
 
 
 class InputValidationMiddleware(BaseHTTPMiddleware):
@@ -29,15 +33,16 @@ class InputValidationMiddleware(BaseHTTPMiddleware):
 
     def __init__(self, app, skip_paths: list = None):
         super().__init__(app)
-        self.skip_paths = skip_paths or [
-            "/api/docs",
-            "/api/redoc",
-            "/api/openapi.json",
-            "/favicon.ico",
-            "/health",
-            "/api/health",
-            "/",
-        ]
+        
+        # Load security configuration
+        self.config = get_security_config()
+        
+        # Initialize security components
+        self.security_error_handler = security_error_handler
+        self.analytics = security_analytics
+        
+        # Use configuration-based skip paths
+        self.skip_paths = skip_paths or self.config.excluded_paths
 
     async def dispatch(self, request: Request, call_next):
         """Process the request and validate input data."""
@@ -57,22 +62,38 @@ class InputValidationMiddleware(BaseHTTPMiddleware):
             await self._validate_headers(request)
 
         except HTTPException as e:
-            return JSONResponse(
-                status_code=400,
-                content={
-                    "error": "Input validation failed",
-                    "detail": str(e.detail),
-                    "type": "validation_error",
-                },
+            # Log validation error as security event
+            self.analytics.log_event(SecurityEvent(
+                event_type=SecurityEventType.SUSPICIOUS_ACTIVITY,
+                threat_level=SecurityThreatLevel.MEDIUM,
+                request=request,
+                details={"error": str(e.detail), "type": "validation_error"},
+                action_taken="blocked"
+            ))
+            
+            return self.security_error_handler.handle_security_error(
+                event_type=SecurityEventType.SUSPICIOUS_ACTIVITY,
+                request=request,
+                threat_level=SecurityThreatLevel.MEDIUM,
+                details={"error": str(e.detail), "type": "validation_error"},
+                response_action="block"
             )
-        except Exception:
-            return JSONResponse(
-                status_code=400,
-                content={
-                    "error": "Input validation error",
-                    "detail": "Invalid input data",
-                    "type": "validation_error",
-                },
+        except Exception as e:
+            # Log unexpected validation error
+            self.analytics.log_event(SecurityEvent(
+                event_type=SecurityEventType.SUSPICIOUS_ACTIVITY,
+                threat_level=SecurityThreatLevel.HIGH,
+                request=request,
+                details={"error": str(e), "type": "validation_exception"},
+                action_taken="blocked"
+            ))
+            
+            return self.security_error_handler.handle_security_error(
+                event_type=SecurityEventType.SUSPICIOUS_ACTIVITY,
+                request=request,
+                threat_level=SecurityThreatLevel.HIGH,
+                details={"error": str(e), "type": "validation_exception"},
+                response_action="block"
             )
 
         # Continue with the request

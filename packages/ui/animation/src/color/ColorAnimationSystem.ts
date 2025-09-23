@@ -6,7 +6,18 @@
  */
 
 import type { OKLCHColor } from "reynard-colors";
-import { ColorAnimations, type ColorAnimationOptions, type HueShiftOptions } from "./ColorAnimations.js";
+import { 
+  easedHueShift,
+  pureHueShift,
+  batchHueShift,
+  interpolateColor,
+  generateEasedColorRamp,
+  generateEasedHueRamp,
+  animateColorTransition,
+  ColorEasingFunctions,
+  type ColorAnimationOptions, 
+  type HueShiftOptions 
+} from "./ColorAnimations.js";
 
 /**
  * Smart import system for color animation package
@@ -28,7 +39,7 @@ async function importColorAnimationPackage(): Promise<unknown | null> {
 async function importFallbackSystem(): Promise<unknown | null> {
   try {
     // Dynamic import with type assertion for optional dependency
-    const fallbackModule = await import("reynard-core/composables" as string);
+    const fallbackModule = await import("reynard-composables" as string);
     return (fallbackModule as Record<string, unknown>).useAnimationFallback;
   } catch (error) {
     console.warn("🦊 ColorAnimation: Fallback system not available");
@@ -42,7 +53,7 @@ async function importFallbackSystem(): Promise<unknown | null> {
 async function importGlobalControl(): Promise<unknown | null> {
   try {
     // Dynamic import with type assertion for optional dependency
-    const controlModule = await import("reynard-core/composables" as string);
+    const controlModule = await import("reynard-composables" as string);
     return (controlModule as Record<string, unknown>).useAnimationControl;
   } catch (error) {
     console.warn("🦊 ColorAnimation: Global animation control not available");
@@ -65,13 +76,13 @@ export interface ColorAnimationSystemState {
 export function createColorAnimationSystem(): {
   state: ColorAnimationSystemState;
   functions: {
-    easedHueShift: typeof ColorAnimations.easedHueShift;
-    pureHueShift: typeof ColorAnimations.pureHueShift;
-    batchHueShift: typeof ColorAnimations.batchHueShift;
-    interpolateColor: typeof ColorAnimations.interpolateColor;
-    generateEasedColorRamp: typeof ColorAnimations.generateEasedColorRamp;
-    generateEasedHueRamp: typeof ColorAnimations.generateEasedHueRamp;
-    animateColorTransition: typeof ColorAnimations.animateColorTransition;
+    easedHueShift: typeof easedHueShift;
+    pureHueShift: typeof pureHueShift;
+    batchHueShift: typeof batchHueShift;
+    interpolateColor: typeof interpolateColor;
+    generateEasedColorRamp: typeof generateEasedColorRamp;
+    generateEasedHueRamp: typeof generateEasedHueRamp;
+    animateColorTransition: typeof animateColorTransition;
   };
 } {
   let animationEngine: "full" | "fallback" | "disabled" = "full";
@@ -140,7 +151,7 @@ export function createColorAnimationSystem(): {
       return baseColor; // No animation when disabled
     }
 
-    return ColorAnimations.easedHueShift(baseColor, deltaH, progress, easingFunction);
+    return easedHueShift(baseColor, deltaH, progress, easingFunction);
   };
 
   const enhancedPureHueShift = (baseColor: OKLCHColor, deltaH: number): OKLCHColor => {
@@ -148,7 +159,7 @@ export function createColorAnimationSystem(): {
       return baseColor; // No animation when disabled
     }
 
-    return ColorAnimations.pureHueShift(baseColor, deltaH);
+    return pureHueShift(baseColor, deltaH);
   };
 
   const enhancedBatchHueShift = (colors: OKLCHColor[], deltaH: number): OKLCHColor[] => {
@@ -156,7 +167,7 @@ export function createColorAnimationSystem(): {
       return colors; // No animation when disabled
     }
 
-    return ColorAnimations.batchHueShift(colors, deltaH);
+    return batchHueShift(colors, deltaH);
   };
 
   const enhancedInterpolateColor = (
@@ -169,7 +180,7 @@ export function createColorAnimationSystem(): {
       return endColor; // Immediate completion when disabled
     }
 
-    return ColorAnimations.interpolateColor(startColor, endColor, progress, easingFunction);
+    return interpolateColor(startColor, endColor, progress, easingFunction);
   };
 
   const enhancedGenerateEasedColorRamp = (
@@ -182,7 +193,7 @@ export function createColorAnimationSystem(): {
       return [targetColor]; // Single color when disabled
     }
 
-    return ColorAnimations.generateEasedColorRamp(baseColor, targetColor, stops, easingFunction);
+    return generateEasedColorRamp(baseColor, targetColor, stops, easingFunction);
   };
 
   const enhancedGenerateEasedHueRamp = (
@@ -195,7 +206,7 @@ export function createColorAnimationSystem(): {
       return [baseColor]; // Single color when disabled
     }
 
-    return ColorAnimations.generateEasedHueRamp(baseColor, stops, maxShift, easingFunction);
+    return generateEasedHueRamp(baseColor, stops, maxShift, easingFunction);
   };
 
   const enhancedAnimateColorTransition = async (
@@ -207,7 +218,7 @@ export function createColorAnimationSystem(): {
       return [endColor]; // Immediate completion when disabled
     }
 
-    return ColorAnimations.animateColorTransition(startColor, endColor, options);
+    return animateColorTransition(startColor, endColor, options);
   };
 
   const state: ColorAnimationSystemState = {

@@ -20,11 +20,10 @@ export default defineConfig({
         /^reynard-/,
       ],
       output: {
-        manualChunks: {
-          "gallery-dl-core": ["reynard-core"],
-          "gallery-dl-ai": ["reynard-ai-shared"],
-          "gallery-dl-service": ["reynard-service-manager"],
-          "gallery-dl-connection": ["reynard-connection"],
+        globals: {
+          "solid-js": "Solid",
+          "solid-js/web": "SolidWeb",
+          "solid-js/store": "SolidStore",
         },
       },
     },

@@ -4,7 +4,7 @@
  * Contains the main content layout for the 3D visualization modal
  */
 import { VisualizationControls, VisualizationDisplay, InfoPanel } from "./index";
-export const ModalContent = props => {
+export const ModalContent = (props: any) => {
   const createVisualizationSettings = () => ({
     pointSize: props.params.pointSize(),
     enableHighlighting: props.params.enableHighlighting(),

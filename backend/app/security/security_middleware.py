@@ -3,16 +3,24 @@ Comprehensive Security Middleware for Reynard Backend
 
 This module provides advanced security middleware to protect against
 SQL injection, XSS, command injection, and other common vulnerabilities.
+Now integrated with centralized security error handling, adaptive rate limiting,
+and comprehensive analytics.
 """
 
 import logging
 import re
+import time
 from typing import Any
 
 from fastapi import Request, status
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.types import ASGIApp
+
+from .security_error_handler import SecurityEventType, SecurityThreatLevel, security_error_handler
+from .adaptive_rate_limiter import adaptive_rate_limiter
+from .security_analytics import security_analytics, SecurityEvent
+from .security_config import get_security_config
 
 logger = logging.getLogger(__name__)
 
@@ -31,9 +39,15 @@ class SecurityMiddleware(BaseHTTPMiddleware):
     """
 
     def __init__(self, app: ASGIApp):
-        # Add search, RAG, and AI email endpoints to exceptions
-        self.excluded_paths = ["/api/search", "/api/rag", "/api/email/ai"]
         super().__init__(app)
+        
+        # Load security configuration
+        self.config = get_security_config()
+        
+        # Initialize security components
+        self.security_error_handler = security_error_handler
+        self.rate_limiter = adaptive_rate_limiter
+        self.analytics = security_analytics
 
         # SQL injection patterns
         self.sql_patterns = [
@@ -192,41 +206,53 @@ class SecurityMiddleware(BaseHTTPMiddleware):
         ]
 
     async def dispatch(self, request: Request, call_next):
-        """Process the request through security validation."""
-        # Skip security checks for search endpoints
-        if any(request.url.path.startswith(path) for path in self.excluded_paths):
+        """Process the request through comprehensive security validation."""
+        # Check if security is enabled
+        if not self.config.enabled:
             return await call_next(request)
+        
+        # Skip security checks for excluded paths
+        if self.config.should_bypass_security(request.url.path):
+            return await call_next(request)
+        
         try:
-            # Allow basic API paths to bypass most validation
-            if request.url.path in [
-                "/",
-                "/health",
-                "/api/health",
-                "/docs",
-                "/redoc",
-                "/openapi.json",
-                "/api/docs",
-            ]:
-                response = await call_next(request)
-                return self._sanitize_response_headers(response)
-
-            # Allow ECS API endpoints to bypass security validation (they have their own validation)
-            if request.url.path.startswith("/api/ecs/"):
-                response = await call_next(request)
-                return self._sanitize_response_headers(response)
+            # Check adaptive rate limiting
+            if self.config.rate_limiting_enabled:
+                should_limit, _, limit_details = self.rate_limiter.should_rate_limit(request)
+                if should_limit:
+                    # Record rate limit event
+                    self.analytics.log_event(SecurityEvent(
+                        event_type=SecurityEventType.RATE_LIMIT_EXCEEDED,
+                        threat_level=SecurityThreatLevel.MEDIUM,
+                        request=request,
+                        details=limit_details,
+                        action_taken="rate_limited"
+                    ))
+                    
+                    return self.security_error_handler.handle_security_error(
+                        event_type=SecurityEventType.RATE_LIMIT_EXCEEDED,
+                        request=request,
+                        threat_level=SecurityThreatLevel.MEDIUM,
+                        details=limit_details,
+                        response_action="rate_limit"
+                    )
 
             # Validate request path
             if not self._validate_path(request.url.path):
-                logger.warning("Path validation failed for: %s", request.url.path)
-                return self._security_error(
-                    "Invalid path detected", status.HTTP_400_BAD_REQUEST
+                return self._handle_security_violation(
+                    SecurityEventType.PATH_TRAVERSAL,
+                    SecurityThreatLevel.HIGH,
+                    request,
+                    {"path": request.url.path, "reason": "Invalid path detected"}
                 )
 
             # Validate request headers
             if not self._validate_headers(request.headers):
-                logger.warning("Header validation failed for: %s", request.url.path)
-                return self._security_error(
-                    "Invalid headers detected", status.HTTP_400_BAD_REQUEST
+                return self._handle_security_violation(
+                    SecurityEventType.SUSPICIOUS_ACTIVITY,
+                    SecurityThreatLevel.MEDIUM,
+                    request,
+                    {"headers": dict(request.headers), "reason": "Invalid headers detected"}
                 )
 
             # Get request body for validation
@@ -234,21 +260,34 @@ class SecurityMiddleware(BaseHTTPMiddleware):
 
             # Validate request body
             if body and not self._validate_body(body, request.url.path):
-                logger.warning("Body validation failed for: %s", request.url.path)
-                return self._security_error(
-                    "Malicious content detected", status.HTTP_400_BAD_REQUEST
+                return self._handle_security_violation(
+                    SecurityEventType.SQL_INJECTION,  # Will be refined by threat detection
+                    SecurityThreatLevel.HIGH,
+                    request,
+                    {"body_sample": body[:200], "reason": "Malicious content detected"}
                 )
 
             # Process the request
             response = await call_next(request)
 
+            # Record successful request
+            self.rate_limiter.get_client_profile(self._get_client_identifier(request)).add_request()
+
             # Sanitize response headers
             return self._sanitize_response_headers(response)
 
-        except Exception:
+        except Exception as e:
             logger.exception("Security middleware error")
-            return self._security_error(
-                "Internal security error", status.HTTP_500_INTERNAL_SERVER_ERROR
+            
+            # Record error
+            self.rate_limiter.record_error(request, "security_middleware_error")
+            
+            return self.security_error_handler.handle_security_error(
+                event_type=SecurityEventType.SUSPICIOUS_ACTIVITY,
+                request=request,
+                threat_level=SecurityThreatLevel.HIGH,
+                details={"error": str(e), "reason": "Internal security error"},
+                response_action="block"
             )
 
     def _validate_path(self, path: str) -> bool:
@@ -450,8 +489,52 @@ class SecurityMiddleware(BaseHTTPMiddleware):
 
         return response
 
+    def _handle_security_violation(
+        self,
+        event_type: SecurityEventType,
+        threat_level: SecurityThreatLevel,
+        request: Request,
+        details: dict,
+    ) -> JSONResponse:
+        """Handle security violations with centralized error handling and analytics."""
+        # Log security event
+        self.analytics.log_event(SecurityEvent(
+            event_type=event_type,
+            threat_level=threat_level,
+            request=request,
+            details=details,
+            action_taken="blocked"
+        ))
+        
+        # Record security violation in rate limiter
+        self.rate_limiter.record_security_violation(request, threat_level, event_type.value)
+        
+        # Use centralized security error handler
+        return self.security_error_handler.handle_security_error(
+            event_type=event_type,
+            request=request,
+            threat_level=threat_level,
+            details=details,
+            response_action="block"
+        )
+
+    def _get_client_identifier(self, request: Request) -> str:
+        """Get a unique identifier for the client."""
+        # Try to get real IP from headers (for reverse proxy setups)
+        forwarded_for = request.headers.get("X-Forwarded-For")
+        if forwarded_for:
+            client_ip = forwarded_for.split(",")[0].strip()
+        else:
+            client_ip = request.client.host if request.client else "unknown"
+        
+        # Add user agent hash for additional uniqueness
+        user_agent = request.headers.get("User-Agent", "")
+        user_agent_hash = str(hash(user_agent))[:8]
+        
+        return f"{client_ip}:{user_agent_hash}"
+
     def _security_error(self, message: str, status_code: int) -> JSONResponse:
-        """Return a standardized security error response."""
+        """Return a standardized security error response (legacy method)."""
         logger.warning("Security violation: %s", message)
         return JSONResponse(
             status_code=status_code,

@@ -232,7 +232,7 @@ export class DetailedEcosystemGenerator implements DiagramGenerator {
           "/api/caption",
           "/api/chat",
           "/api/rag",
-          "/api/gallery",
+          "/api/gallerydl",
           "/api/auth",
           "/api/health",
           "/api/ecs",

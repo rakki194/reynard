@@ -3,25 +3,15 @@
  *
  * Controls for file display options like line numbers, wrapping, font size, etc.
  */
-import { Button, Select } from "reynard-components-core";
-import { getIcon as getIconFromRegistry } from "reynard-fluent-icons";
-// Helper function to get icon as JSX element
-const getIcon = name => {
-  const icon = getIconFromRegistry(name);
-  if (icon) {
-    const clonedIcon = icon.cloneNode(true);
-    return <div>{clonedIcon}</div>;
-  }
-  return null;
-};
-export const FileControls = props => {
+import { Button, Select, Icon } from "reynard-components-core";
+export const FileControls = (props: any) => {
   return (
     <div class="file-controls">
-      <Button variant="secondary" size="small" onClick={props.onToggleLineNumbers} icon={getIcon("list")}>
+      <Button variant="secondary" size="sm" onClick={props.onToggleLineNumbers} leftIcon={<Icon name="list" />}>
         {props.showLineNumbers ? "Hide" : "Show"} Line Numbers
       </Button>
 
-      <Button variant="secondary" size="small" onClick={props.onToggleWrapLines} icon={getIcon("text-wrap")}>
+      <Button variant="secondary" size="sm" onClick={props.onToggleWrapLines} leftIcon={<Icon name="text-wrap" />}>
         {props.wrapLines ? "Unwrap" : "Wrap"} Lines
       </Button>
 
@@ -35,14 +25,14 @@ export const FileControls = props => {
           { value: 18, label: "18px" },
           { value: 20, label: "20px" },
         ]}
-        size="small"
+        size="sm"
       />
 
-      <Button variant="secondary" size="small" onClick={props.onCopy} icon={getIcon("copy")}>
+      <Button variant="secondary" size="sm" onClick={props.onCopy} leftIcon={<Icon name="copy" />}>
         Copy
       </Button>
 
-      <Button variant="secondary" size="small" onClick={props.onDownload} icon={getIcon("download")}>
+      <Button variant="secondary" size="sm" onClick={props.onDownload} leftIcon={<Icon name="download" />}>
         Download
       </Button>
     </div>

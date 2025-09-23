@@ -59,10 +59,10 @@ class GalleryIntegration:
 
             # Configure gallery-dl options
             options = {
-                "output": job.galleryDlConfig.get("outputDirectory", "./downloads"),
+                "output_directory": job.galleryDlConfig.get("outputDirectory", "./downloads"),
                 "filename": job.galleryDlConfig.get("filename", "{title}_{id}"),
-                "max-concurrent": job.galleryDlConfig.get("maxConcurrent", 5),
-                **job.galleryDlConfig.get("extractorOptions", {}),
+                "max_concurrent": job.galleryDlConfig.get("maxConcurrent", 5),
+                "extractor_options": job.galleryDlConfig.get("extractorOptions", {}),
             }
 
             # Start download with progress tracking

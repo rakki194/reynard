@@ -4,12 +4,49 @@
  * Main orchestrator component for gallery downloads with comprehensive
  * state management, progress tracking, and batch processing capabilities.
  */
-import { ProgressTracker } from "reynard-ai-shared";
+import { createSignal, createEffect, onMount, onCleanup, Show, For } from "solid-js";
 import { Button, Card, TextField } from "reynard-components-core";
 import { Icon } from "reynard-fluent-icons";
-import { createEffect, createSignal, onCleanup, onMount, Show, For } from "solid-js";
 import { GalleryService } from "../services/GalleryService";
-export const DownloadManager = props => {
+
+export interface DownloadManagerProps {
+  serviceConfig?: {
+    baseUrl?: string;
+    timeout?: number;
+    token?: string;
+  };
+  defaultOptions?: Record<string, any>;
+  onDownloadComplete?: (result: any) => void;
+  onDownloadError?: (error: any) => void;
+}
+
+export interface Download {
+  id: string;
+  url: string;
+  status: 'pending' | 'downloading' | 'completed' | 'error' | 'cancelled';
+  progress: number;
+  totalFiles?: number;
+  downloadedFiles?: number;
+  downloadedBytes?: number;
+  totalBytes?: number;
+  speed?: number;
+  eta?: number;
+  result?: any;
+  error?: string;
+  startTime?: Date;
+  endTime?: Date;
+}
+
+export interface DownloadQueue {
+  id: string;
+  downloads: Download[];
+  status: 'idle' | 'running' | 'paused' | 'completed' | 'error';
+  totalDownloads: number;
+  completedDownloads: number;
+  failedDownloads: number;
+}
+
+export const DownloadManager = (props: DownloadManagerProps) => {
   // Service instance
   const [service] = createSignal(
     new GalleryService({
@@ -19,31 +56,31 @@ export const DownloadManager = props => {
       token: props.serviceConfig?.token,
     })
   );
+
   // State management
   const [url, setUrl] = createSignal("");
   const [downloadOptions, setDownloadOptions] = createSignal(props.defaultOptions || {});
-  const [downloads, setDownloads] = createSignal([]);
-  const [queue, setQueue] = createSignal(null);
-  const [extractors, setExtractors] = createSignal([]);
+  const [downloads, setDownloads] = createSignal<Download[]>([]);
   const [isValidating, setIsValidating] = createSignal(false);
-  const [validationResult, setValidationResult] = createSignal(null);
+  const [validationResult, setValidationResult] = createSignal<any>(null);
   const [isDownloading, setIsDownloading] = createSignal(false);
   const [showAdvanced, setShowAdvanced] = createSignal(false);
-  // Progress tracking
-  const [progressTracker] = createSignal(new ProgressTracker());
+  
   // Initialize service
   onMount(async () => {
     try {
       const extractorsResult = await service().getExtractors();
       if (extractorsResult.success) {
-        setExtractors(extractorsResult.data);
+        // Extractors loaded successfully
+        console.log("Extractors loaded:", extractorsResult.data);
       }
     } catch (error) {
       console.error("Failed to load extractors:", error);
     }
   });
+
   // URL validation
-  const validateUrl = async urlToValidate => {
+  const validateUrl = async (urlToValidate: string) => {
     if (!urlToValidate.trim()) {
       setValidationResult(null);
       return;
@@ -65,6 +102,7 @@ export const DownloadManager = props => {
       setIsValidating(false);
     }
   };
+
   // Auto-validate URL on change
   createEffect(() => {
     const currentUrl = url();
@@ -75,344 +113,238 @@ export const DownloadManager = props => {
       setValidationResult(null);
     }
   });
+
   // Start download
   const startDownload = async () => {
     const currentUrl = url().trim();
     if (!currentUrl || !validationResult()?.isValid) {
       return;
     }
+
     setIsDownloading(true);
     const downloadId = `download_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    
     // Create download entry
-    const download = {
+    const download: Download = {
       id: downloadId,
       url: currentUrl,
-      options: downloadOptions(),
-      status: "pending",
-      progress: {
-        percentage: 0,
-        status: "pending",
-        message: "Starting download...",
-      },
-      createdAt: new Date(),
+      status: 'pending',
+      progress: 0,
+      startTime: new Date(),
     };
+
     setDownloads(prev => [...prev, download]);
+
     try {
-      // Start download
       const result = await service().downloadGallery(currentUrl, downloadOptions());
+      
       if (result.success) {
-        // Update download with success
-        setDownloads(prev =>
-          prev.map(d =>
-            d.id === downloadId
-              ? {
-                  ...d,
-                  status: "completed",
-                  result: result.data,
-                  completedAt: new Date(),
-                  progress: {
-                    ...d.progress,
-                    percentage: 100,
-                    status: "completed",
-                    message: "Download completed successfully",
-                  },
-                }
-              : d
-          )
-        );
-        // Call completion callback
+        setDownloads(prev => prev.map(d => 
+          d.id === downloadId 
+            ? { ...d, status: 'completed', progress: 100, result: result.data, endTime: new Date() }
+            : d
+        ));
         props.onDownloadComplete?.(result.data);
       } else {
-        // Update download with error
-        setDownloads(prev =>
-          prev.map(d =>
-            d.id === downloadId
-              ? {
-                  ...d,
-                  status: "error",
-                  error: result.error?.message || "Download failed",
-                  completedAt: new Date(),
-                  progress: {
-                    ...d.progress,
-                    status: "error",
-                    message: result.error?.message || "Download failed",
-                  },
-                }
-              : d
-          )
-        );
+        setDownloads(prev => prev.map(d => 
+          d.id === downloadId 
+            ? { ...d, status: 'error', error: result.error, endTime: new Date() }
+            : d
+        ));
+        props.onDownloadError?.(result.error);
       }
     } catch (error) {
-      // Update download with error
-      setDownloads(prev =>
-        prev.map(d =>
-          d.id === downloadId
-            ? {
-                ...d,
-                status: "error",
-                error: error instanceof Error ? error.message : "Download failed",
-                completedAt: new Date(),
-                progress: {
-                  ...d.progress,
-                  status: "error",
-                  message: error instanceof Error ? error.message : "Download failed",
-                },
-              }
-            : d
-        )
-      );
+      setDownloads(prev => prev.map(d => 
+        d.id === downloadId 
+          ? { ...d, status: 'error', error: error instanceof Error ? error.message : 'Download failed', endTime: new Date() }
+          : d
+      ));
+      props.onDownloadError?.(error);
     } finally {
       setIsDownloading(false);
     }
   };
-  // Start batch download
-  const startBatchDownload = async (urls, options = {}) => {
-    const batchResult = await service().startBatchDownload(urls, options);
-    if (batchResult.success) {
-      setQueue({
-        id: batchResult.data.id,
-        downloads: [],
-        status: "active",
-        maxConcurrent: options.maxConcurrent || 3,
-        createdAt: new Date(),
-      });
-      props.onBatchComplete?.(batchResult.data);
-    }
-  };
+
   // Cancel download
-  const cancelDownload = downloadId => {
-    setDownloads(prev =>
-      prev.map(d =>
-        d.id === downloadId
-          ? {
-              ...d,
-              status: "cancelled",
-              completedAt: new Date(),
-              progress: {
-                ...d.progress,
-                status: "cancelled",
-                message: "Download cancelled",
-              },
-            }
-          : d
-      )
-    );
+  const cancelDownload = (downloadId: string) => {
+    setDownloads(prev => prev.map(d => 
+      d.id === downloadId 
+        ? { ...d, status: 'cancelled', endTime: new Date() }
+        : d
+    ));
   };
+
   // Clear completed downloads
   const clearCompleted = () => {
-    setDownloads(prev => prev.filter(d => d.status === "downloading" || d.status === "pending"));
+    setDownloads(prev => prev.filter(d => d.status !== 'completed'));
   };
-  // Get active downloads
-  const activeDownloads = () => downloads().filter(d => d.status === "downloading" || d.status === "pending");
-  const completedDownloads = () => downloads().filter(d => d.status === "completed");
-  const failedDownloads = () => downloads().filter(d => d.status === "error");
+
+  // Clear all downloads
+  const clearAll = () => {
+    setDownloads([]);
+  };
+
   return (
-    <div class={`reynard-download-manager ${props.class || ""}`}>
-      {/* Header */}
-      <div class="reynard-download-manager__header">
-        <h2>Gallery Download Manager</h2>
-        <p>Download galleries from supported websites with progress tracking</p>
-      </div>
-
-      {/* Download Form */}
-      <Card variant="elevated" padding="lg" class="reynard-download-manager__form">
-        <div class="reynard-download-form">
-          <div class="reynard-download-form__url">
-            <TextField
-              label="Gallery URL"
-              placeholder="Enter gallery URL (e.g., https://example.com/gallery)"
-              value={url()}
-              onInput={e => setUrl(e.currentTarget.value)}
-              fullWidth
-              required
-              error={validationResult()?.isValid === false}
-              errorMessage={validationResult()?.error}
-              rightIcon={
-                isValidating() ? (
-                  <Icon name="loading" size="sm" />
-                ) : validationResult()?.isValid ? (
-                  <Icon name="checkmark" size="sm" variant="success" />
-                ) : validationResult()?.isValid === false ? (
-                  <Icon name="error" size="sm" variant="error" />
-                ) : null
-              }
-            />
-          </div>
-
-          {/* Extractor Info */}
-          <Show when={validationResult()?.extractor}>
-            <div class="reynard-download-form__extractor">
-              <div class="reynard-extractor-info">
-                <Icon name="info" size="sm" variant="info" />
-                <span>
-                  Detected: {validationResult()?.extractor?.name}({validationResult()?.extractor?.category})
-                </span>
-              </div>
-            </div>
-          </Show>
-
-          {/* Advanced Options Toggle */}
-          <div class="reynard-download-form__advanced">
-            <Button
-              variant="tertiary"
-              size="sm"
-              onClick={() => setShowAdvanced(!showAdvanced())}
-              rightIcon={<Icon name={showAdvanced() ? "chevron-up" : "chevron-down"} size="sm" />}
-            >
-              Advanced Options
-            </Button>
-          </div>
-
-          {/* Advanced Options */}
-          <Show when={showAdvanced()}>
-            <div class="reynard-download-form__advanced-options">
-              <div class="reynard-form-row">
-                <TextField
-                  label="Output Directory"
-                  placeholder="Leave empty for default"
-                  value={downloadOptions().outputDirectory || ""}
-                  onInput={e =>
-                    setDownloadOptions(prev => ({
-                      ...prev,
-                      outputDirectory: e.currentTarget.value || undefined,
-                    }))
-                  }
-                />
-                <TextField
-                  label="Filename Pattern"
-                  placeholder="Leave empty for default"
-                  value={downloadOptions().filename || ""}
-                  onInput={e =>
-                    setDownloadOptions(prev => ({
-                      ...prev,
-                      filename: e.currentTarget.value || undefined,
-                    }))
-                  }
-                />
-              </div>
-              <div class="reynard-form-row">
-                <TextField
-                  label="Max Concurrent Downloads"
-                  type="number"
-                  value={downloadOptions().maxConcurrent?.toString() || "3"}
-                  onInput={e =>
-                    setDownloadOptions(prev => ({
-                      ...prev,
-                      maxConcurrent: parseInt(e.currentTarget.value) || 3,
-                    }))
-                  }
-                />
-              </div>
-            </div>
-          </Show>
-
-          {/* Download Button */}
-          <div class="reynard-download-form__actions">
-            <Button
-              variant="primary"
-              size="lg"
-              fullWidth
-              onClick={startDownload}
-              disabled={!validationResult()?.isValid || isDownloading()}
-              loading={isDownloading()}
-              leftIcon={<Icon name="download" size="sm" />}
-            >
-              {isDownloading() ? "Downloading..." : "Start Download"}
-            </Button>
-          </div>
+    <div class="download-manager">
+      <Card class="download-input-card">
+        <div class="download-input-header">
+          <Icon name="Download" class="header-icon" />
+          <h2>Gallery Download Manager</h2>
         </div>
+        
+        <div class="download-input-section">
+          <TextField
+            value={url()}
+            onInput={(e) => setUrl(e.currentTarget.value)}
+            placeholder="Enter gallery URL (e.g., https://twitter.com/user/status/123)"
+            class="url-input"
+            disabled={isDownloading()}
+          />
+          
+          <Show when={isValidating()}>
+            <div class="validation-indicator">
+              <Icon name="Clock" class="loading-icon" />
+              <span>Validating URL...</span>
+            </div>
+          </Show>
+          
+          <Show when={validationResult()}>
+            <div class={`validation-result ${validationResult()?.isValid ? 'valid' : 'invalid'}`}>
+              <Icon 
+                name={validationResult()?.isValid ? "CheckCircle" : "AlertCircle"} 
+                class="validation-icon"
+              />
+              <span>
+                {validationResult()?.isValid 
+                  ? `Valid - ${validationResult()?.extractor?.name || 'Unknown extractor'}`
+                  : validationResult()?.error
+                }
+              </span>
+            </div>
+          </Show>
+        </div>
+
+        <div class="download-actions">
+          <Button
+            onClick={startDownload}
+            disabled={!url().trim() || !validationResult()?.isValid || isDownloading()}
+            class="start-download-btn"
+          >
+            <Icon name={isDownloading() ? "Pause" : "Play"} />
+            {isDownloading() ? "Downloading..." : "Start Download"}
+          </Button>
+          
+          <Button
+            onClick={() => setShowAdvanced(!showAdvanced())}
+            variant="secondary"
+            class="advanced-toggle-btn"
+          >
+            <Icon name="Settings" />
+            Advanced Options
+          </Button>
+        </div>
+
+        <Show when={showAdvanced()}>
+          <div class="advanced-options">
+            <h3>Download Options</h3>
+            <div class="options-grid">
+              <div class="option-group">
+                <label>Output Directory</label>
+                <TextField
+                  value={downloadOptions().outputDirectory || ""}
+                  onInput={(e) => setDownloadOptions(prev => ({ ...prev, outputDirectory: e.currentTarget.value }))}
+                  placeholder="./downloads"
+                />
+              </div>
+              
+              <div class="option-group">
+                <label>Filename Format</label>
+                <TextField
+                  value={downloadOptions().filename || ""}
+                  onInput={(e) => setDownloadOptions(prev => ({ ...prev, filename: e.currentTarget.value }))}
+                  placeholder="{title}_{id}"
+                />
+              </div>
+              
+              <div class="option-group">
+                <label>Max Concurrent Downloads</label>
+                <TextField
+                  type="number"
+                  value={downloadOptions().maxConcurrent || ""}
+                  onInput={(e) => setDownloadOptions(prev => ({ ...prev, maxConcurrent: parseInt(e.currentTarget.value) }))}
+                  placeholder="5"
+                />
+              </div>
+            </div>
+          </div>
+        </Show>
       </Card>
 
-      {/* Active Downloads */}
-      <Show when={activeDownloads().length > 0}>
-        <Card variant="elevated" padding="lg" class="reynard-download-manager__active">
-          <div class="reynard-download-manager__active-header">
-            <h3>Active Downloads</h3>
-            <span class="reynard-download-count">{activeDownloads().length}</span>
-          </div>
-          <div class="reynard-download-list">
-            <For each={activeDownloads()}>
-              {download => (
-                <div class="reynard-download-item">
-                  <div class="reynard-download-item__info">
-                    <div class="reynard-download-item__url">{download.url}</div>
-                    <div class="reynard-download-item__status">
-                      <Icon name={download.status === "downloading" ? "loading" : "clock"} size="sm" />
-                      <span>{download.progress.message}</span>
-                    </div>
-                  </div>
-                  <div class="reynard-download-item__progress">
-                    <div class="reynard-progress-bar">
-                      <div class="reynard-progress-bar__fill" style={`width: ${download.progress.percentage}%`} />
-                    </div>
-                    <span class="reynard-progress-text">{download.progress.percentage.toFixed(1)}%</span>
-                  </div>
-                  <div class="reynard-download-item__actions">
-                    <Button variant="tertiary" size="sm" iconOnly onClick={() => cancelDownload(download.id)}>
-                      <Icon name="cancel" size="sm" />
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </For>
-          </div>
-        </Card>
-      </Show>
-
-      {/* Download History */}
       <Show when={downloads().length > 0}>
-        <Card variant="elevated" padding="lg" class="reynard-download-manager__history">
-          <div class="reynard-download-manager__history-header">
+        <Card class="downloads-list-card">
+          <div class="downloads-header">
             <h3>Download History</h3>
-            <div class="reynard-download-stats">
-              <span class="reynard-stat">
-                <Icon name="checkmark" size="sm" variant="success" />
-                {completedDownloads().length} completed
-              </span>
-              <span class="reynard-stat">
-                <Icon name="error" size="sm" variant="error" />
-                {failedDownloads().length} failed
-              </span>
+            <div class="downloads-actions">
+              <Button onClick={clearCompleted} variant="secondary" size="sm">
+                Clear Completed
+              </Button>
+              <Button onClick={clearAll} variant="secondary" size="sm">
+                Clear All
+              </Button>
             </div>
-            <Button variant="tertiary" size="sm" onClick={clearCompleted}>
-              Clear Completed
-            </Button>
           </div>
-          <div class="reynard-download-list">
-            <For each={downloads().slice(-10)}>
-              {" "}
-              {/* Show last 10 downloads */}
-              {download => (
-                <div class={`reynard-download-item reynard-download-item--${download.status}`}>
-                  <div class="reynard-download-item__info">
-                    <div class="reynard-download-item__url">{download.url}</div>
-                    <div class="reynard-download-item__status">
-                      <Icon
+          
+          <div class="downloads-list">
+            <For each={downloads()}>
+              {(download) => (
+                <div class={`download-item ${download.status}`}>
+                  <div class="download-info">
+                    <div class="download-url">{download.url}</div>
+                    <div class="download-status">
+                      <Icon 
                         name={
-                          download.status === "completed"
-                            ? "checkmark"
-                            : download.status === "error"
-                              ? "error"
-                              : download.status === "cancelled"
-                                ? "cancel"
-                                : "clock"
+                          download.status === 'completed' ? 'CheckCircle' :
+                          download.status === 'error' ? 'AlertCircle' :
+                          download.status === 'downloading' ? 'Clock' :
+                          'Square'
                         }
-                        size="sm"
-                        variant={
-                          download.status === "completed" ? "success" : download.status === "error" ? "error" : "muted"
-                        }
+                        class="status-icon"
                       />
-                      <span>{download.progress.message}</span>
+                      <span class="status-text">{download.status}</span>
                     </div>
                   </div>
-                  <div class="reynard-download-item__result">
-                    <Show when={download.result}>
-                      <span class="reynard-download-files">{download.result?.files.length || 0} files</span>
-                    </Show>
-                    <Show when={download.error}>
-                      <span class="reynard-download-error">{download.error}</span>
-                    </Show>
-                  </div>
+                  
+                  <Show when={download.status === 'downloading'}>
+                    <div class="download-progress">
+                      <div class="progress-bar">
+                        <div 
+                          class="progress-fill" 
+                          style={{ width: `${download.progress}%` }}
+                        />
+                      </div>
+                      <span class="progress-text">
+                        {download.progress}% ({download.downloadedFiles || 0}/{download.totalFiles || 0} files)
+                      </span>
+                    </div>
+                  </Show>
+                  
+                  <Show when={download.status === 'error'}>
+                    <div class="download-error">
+                      <span class="error-text">{download.error}</span>
+                    </div>
+                  </Show>
+                  
+                  <Show when={download.status === 'downloading'}>
+                    <Button
+                      onClick={() => cancelDownload(download.id)}
+                      variant="secondary"
+                      size="sm"
+                      class="cancel-btn"
+                    >
+                      <Icon name="Square" />
+                      Cancel
+                    </Button>
+                  </Show>
                 </div>
               )}
             </For>

@@ -1,346 +1,210 @@
 /**
  * Gallery WebSocket Composable
  *
- * Provides real-time WebSocket connection for gallery download progress updates.
- * Handles connection management, subscription to downloads, and message processing.
+ * Provides real-time communication with the gallery service backend
+ * for progress updates, status changes, and live notifications.
  */
-
-import { createSignal, onCleanup, onMount } from "solid-js";
-import { createStore } from "solid-js/store";
-
-export interface WebSocketMessage {
-  type: string;
-  data: any;
-}
-
-export interface ProgressUpdate {
-  download_id: string;
-  url: string;
-  status: string;
-  percentage: number;
-  current_file?: string;
-  total_files: number;
-  downloaded_files: number;
-  total_bytes: number;
-  downloaded_bytes: number;
-  speed: number;
-  estimated_time?: number;
-  message?: string;
-  error?: string;
-  timestamp: string;
-}
+import { createSignal, createEffect, onCleanup } from "solid-js";
+import { ConnectionManager } from "reynard-connection";
 
 export interface DownloadEvent {
-  download_id: string;
+  type: 'progress' | 'status' | 'error' | 'complete';
+  downloadId: string;
+  data: any;
+  timestamp: Date;
+}
+
+export interface WebSocketConfig {
   url: string;
-  timestamp: string;
-  result?: any;
-  error?: string;
+  reconnectInterval?: number;
+  maxReconnectAttempts?: number;
+  heartbeatInterval?: number;
 }
 
-export interface WebSocketState {
-  connected: boolean;
-  connecting: boolean;
-  error: string | null;
-  subscribedDownloads: Set<string>;
-}
-
-export interface WebSocketActions {
-  connect: () => Promise<void>;
-  disconnect: () => void;
+export interface UseGalleryWebSocketReturn {
+  isConnected: () => boolean;
+  isConnecting: () => boolean;
+  error: () => string | null;
+  events: () => DownloadEvent[];
+  sendMessage: (message: any) => void;
   subscribe: (downloadId: string) => void;
   unsubscribe: (downloadId: string) => void;
-  sendMessage: (message: any) => void;
-  ping: () => void;
+  clearEvents: () => void;
+  reconnect: () => void;
 }
 
-export function useGalleryWebSocket(baseUrl: string = "") {
-  const [state, setState] = createStore<WebSocketState>({
-    connected: false,
-    connecting: false,
-    error: null,
-    subscribedDownloads: new Set(),
-  });
+export const useGalleryWebSocket = (
+  config: WebSocketConfig
+): UseGalleryWebSocketReturn => {
+  const [isConnected, setIsConnected] = createSignal(false);
+  const [isConnecting, setIsConnecting] = createSignal(false);
+  const [error, setError] = createSignal<string | null>(null);
+  const [events, setEvents] = createSignal<DownloadEvent[]>([]);
+  
+  let connectionRef: ConnectionManager | null = null;
+  const subscriptionsRef = new Set<string>();
+  let reconnectTimeoutRef: NodeJS.Timeout | null = null;
+  let heartbeatTimeoutRef: NodeJS.Timeout | null = null;
+  let reconnectAttemptsRef = 0;
 
-  const [progressUpdates, setProgressUpdates] = createSignal<Map<string, ProgressUpdate>>(new Map());
-  const [downloadEvents, setDownloadEvents] = createSignal<Map<string, DownloadEvent[]>>(new Map());
-
-  let ws: WebSocket | null = null;
-  let reconnectTimeout: number | null = null;
-  let pingInterval: number | null = null;
-  let reconnectAttempts = 0;
-  const maxReconnectAttempts = 5;
-  const reconnectDelay = 1000; // Start with 1 second
-
-  const connect = async (): Promise<void> => {
-    if (ws?.readyState === WebSocket.OPEN || state.connecting) {
-      return;
+  const clearReconnectTimeout = () => {
+    if (reconnectTimeoutRef) {
+      clearTimeout(reconnectTimeoutRef);
+      reconnectTimeoutRef = null;
     }
+  };
 
-    setState("connecting", true);
-    setState("error", null);
+  const clearHeartbeatTimeout = () => {
+    if (heartbeatTimeoutRef) {
+      clearTimeout(heartbeatTimeoutRef);
+      heartbeatTimeoutRef = null;
+    }
+  };
+
+  const startHeartbeat = () => {
+    clearHeartbeatTimeout();
+    heartbeatTimeoutRef = setTimeout(() => {
+      if (connectionRef && isConnected()) {
+        connectionRef.send({ type: 'ping' });
+        startHeartbeat();
+      }
+    }, config.heartbeatInterval || 30000);
+  };
+
+  const handleMessage = (message: any) => {
+    try {
+      const event: DownloadEvent = {
+        type: message.type,
+        downloadId: message.downloadId,
+        data: message.data,
+        timestamp: new Date(message.timestamp || Date.now())
+      };
+
+      setEvents(prev => [event, ...prev.slice(0, 99)]); // Keep last 100 events
+    } catch (err) {
+      console.error('Failed to parse WebSocket message:', err);
+    }
+  };
+
+  const connect = async () => {
+    if (isConnecting() || isConnected()) return;
+
+    setIsConnecting(true);
+    setError(null);
 
     try {
-      const wsUrl = `${baseUrl.replace(/^http/, "ws")}/api/gallery/ws`;
-      ws = new WebSocket(wsUrl);
-
-      ws.onopen = () => {
-        console.log("Gallery WebSocket connected");
-        setState("connected", true);
-        setState("connecting", false);
-        setState("error", null);
-        reconnectAttempts = 0;
-
-        // Start ping interval
-        pingInterval = setInterval(() => {
-          if (ws?.readyState === WebSocket.OPEN) {
-            sendMessage({ type: "ping" });
+      const connection = new ConnectionManager({
+        url: config.url,
+        protocols: ['gallery-dl'],
+        onMessage: handleMessage,
+        onOpen: () => {
+          setIsConnected(true);
+          setIsConnecting(false);
+          setError(null);
+          reconnectAttemptsRef = 0;
+          startHeartbeat();
+        },
+        onClose: () => {
+          setIsConnected(false);
+          setIsConnecting(false);
+          clearHeartbeatTimeout();
+          
+          // Attempt to reconnect
+          if (reconnectAttemptsRef < (config.maxReconnectAttempts || 5)) {
+            reconnectAttemptsRef++;
+            reconnectTimeoutRef = setTimeout(() => {
+              connect();
+            }, config.reconnectInterval || 5000);
+          } else {
+            setError('Max reconnection attempts reached');
           }
-        }, 30000); // Ping every 30 seconds
-
-        // Re-subscribe to downloads
-        state.subscribedDownloads.forEach(downloadId => {
-          sendMessage({ type: "subscribe", download_id: downloadId });
-        });
-      };
-
-      ws.onmessage = event => {
-        try {
-          const message: WebSocketMessage = JSON.parse(event.data);
-          handleMessage(message);
-        } catch (error) {
-          console.error("Failed to parse WebSocket message:", error);
+        },
+        onError: (err: any) => {
+          setError(err.message || 'WebSocket connection error');
+          setIsConnecting(false);
         }
-      };
-
-      ws.onclose = event => {
-        console.log("Gallery WebSocket disconnected:", event.code, event.reason);
-        setState("connected", false);
-        setState("connecting", false);
-
-        // Clear ping interval
-        if (pingInterval) {
-          clearInterval(pingInterval);
-          pingInterval = null;
-        }
-
-        // Attempt to reconnect if not a clean close
-        if (event.code !== 1000 && reconnectAttempts < maxReconnectAttempts) {
-          scheduleReconnect();
-        }
-      };
-
-      ws.onerror = error => {
-        console.error("Gallery WebSocket error:", error);
-        setState("error", "WebSocket connection error");
-        setState("connecting", false);
-      };
-    } catch (error) {
-      console.error("Failed to create WebSocket connection:", error);
-      setState("error", "Failed to create WebSocket connection");
-      setState("connecting", false);
-    }
-  };
-
-  const disconnect = (): void => {
-    if (reconnectTimeout) {
-      clearTimeout(reconnectTimeout);
-      reconnectTimeout = null;
-    }
-
-    if (pingInterval) {
-      clearInterval(pingInterval);
-      pingInterval = null;
-    }
-
-    if (ws) {
-      ws.close(1000, "User disconnect");
-      ws = null;
-    }
-
-    setState("connected", false);
-    setState("connecting", false);
-    setState("subscribedDownloads", new Set());
-  };
-
-  const scheduleReconnect = (): void => {
-    if (reconnectTimeout) {
-      return;
-    }
-
-    const delay = reconnectDelay * Math.pow(2, reconnectAttempts); // Exponential backoff
-    reconnectAttempts++;
-
-    console.log(`Scheduling WebSocket reconnect in ${delay}ms (attempt ${reconnectAttempts})`);
-
-    reconnectTimeout = setTimeout(() => {
-      reconnectTimeout = null;
-      connect();
-    }, delay);
-  };
-
-  const handleMessage = (message: WebSocketMessage): void => {
-    switch (message.type) {
-      case "progress_update":
-        handleProgressUpdate(message.data);
-        break;
-      case "download_started":
-        handleDownloadStarted(message.data);
-        break;
-      case "download_completed":
-        handleDownloadCompleted(message.data);
-        break;
-      case "download_error":
-        handleDownloadError(message.data);
-        break;
-      case "download_cancelled":
-        handleDownloadCancelled(message.data);
-        break;
-      case "subscribed":
-        console.log(`Subscribed to download: ${message.data.download_id}`);
-        break;
-      case "unsubscribed":
-        console.log(`Unsubscribed from download: ${message.data.download_id}`);
-        break;
-      case "pong":
-        // Handle pong response
-        break;
-      case "error":
-        console.error("WebSocket error message:", message.data.message);
-        setState("error", message.data.message);
-        break;
-      default:
-        console.log("Unknown WebSocket message type:", message.type);
-    }
-  };
-
-  const handleProgressUpdate = (data: ProgressUpdate): void => {
-    setProgressUpdates(prev => {
-      const newMap = new Map(prev);
-      newMap.set(data.download_id, data);
-      return newMap;
-    });
-  };
-
-  const handleDownloadStarted = (data: DownloadEvent): void => {
-    setDownloadEvents(prev => {
-      const newMap = new Map(prev);
-      const events = newMap.get(data.download_id) || [];
-      events.push({ ...data, type: "started" });
-      newMap.set(data.download_id, events);
-      return newMap;
-    });
-  };
-
-  const handleDownloadCompleted = (data: DownloadEvent): void => {
-    setDownloadEvents(prev => {
-      const newMap = new Map(prev);
-      const events = newMap.get(data.download_id) || [];
-      events.push({ ...data, type: "completed" });
-      newMap.set(data.download_id, events);
-      return newMap;
-    });
-  };
-
-  const handleDownloadError = (data: DownloadEvent): void => {
-    setDownloadEvents(prev => {
-      const newMap = new Map(prev);
-      const events = newMap.get(data.download_id) || [];
-      events.push({ ...data, type: "error" });
-      newMap.set(data.download_id, events);
-      return newMap;
-    });
-  };
-
-  const handleDownloadCancelled = (data: DownloadEvent): void => {
-    setDownloadEvents(prev => {
-      const newMap = new Map(prev);
-      const events = newMap.get(data.download_id) || [];
-      events.push({ ...data, type: "cancelled" });
-      newMap.set(data.download_id, events);
-      return newMap;
-    });
-  };
-
-  const subscribe = (downloadId: string): void => {
-    if (!state.subscribedDownloads.has(downloadId)) {
-      setState("subscribedDownloads", prev => new Set(prev).add(downloadId));
-      sendMessage({ type: "subscribe", download_id: downloadId });
-    }
-  };
-
-  const unsubscribe = (downloadId: string): void => {
-    if (state.subscribedDownloads.has(downloadId)) {
-      setState("subscribedDownloads", prev => {
-        const newSet = new Set(prev);
-        newSet.delete(downloadId);
-        return newSet;
       });
-      sendMessage({ type: "unsubscribe", download_id: downloadId });
+
+      connectionRef = connection;
+      await connection.connect();
+    } catch (err: any) {
+      setError(err instanceof Error ? err.message : 'Connection failed');
+      setIsConnecting(false);
     }
   };
 
-  const sendMessage = (message: any): void => {
-    if (ws?.readyState === WebSocket.OPEN) {
-      ws.send(JSON.stringify(message));
+  const disconnect = () => {
+    clearReconnectTimeout();
+    clearHeartbeatTimeout();
+    
+    if (connectionRef) {
+      connectionRef.disconnect();
+      connectionRef = null;
+    }
+    
+    setIsConnected(false);
+    setIsConnecting(false);
+    setError(null);
+  };
+
+  const sendMessage = (message: any) => {
+    if (connectionRef && isConnected()) {
+      connectionRef.send(message);
     } else {
-      console.warn("WebSocket not connected, cannot send message:", message);
+      console.warn('WebSocket not connected, cannot send message');
     }
   };
 
-  const ping = (): void => {
-    sendMessage({ type: "ping" });
+  const subscribe = (downloadId: string) => {
+    subscriptionsRef.add(downloadId);
+    sendMessage({
+      type: 'subscribe',
+      downloadId
+    });
+  };
+
+  const unsubscribe = (downloadId: string) => {
+    subscriptionsRef.delete(downloadId);
+    sendMessage({
+      type: 'unsubscribe',
+      downloadId
+    });
+  };
+
+  const clearEvents = () => {
+    setEvents([]);
+  };
+
+  const reconnect = () => {
+    disconnect();
+    reconnectAttemptsRef = 0;
+    connect();
   };
 
   // Auto-connect on mount
-  onMount(() => {
+  createEffect(() => {
     connect();
+    
+    onCleanup(() => {
+      disconnect();
+    });
   });
 
   // Cleanup on unmount
   onCleanup(() => {
-    disconnect();
+    clearReconnectTimeout();
+    clearHeartbeatTimeout();
   });
 
-  // Get progress for a specific download
-  const getProgress = (downloadId: string): ProgressUpdate | undefined => {
-    return progressUpdates().get(downloadId);
-  };
-
-  // Get events for a specific download
-  const getEvents = (downloadId: string): DownloadEvent[] => {
-    return downloadEvents().get(downloadId) || [];
-  };
-
-  // Get all active downloads
-  const getActiveDownloads = (): ProgressUpdate[] => {
-    return Array.from(progressUpdates().values()).filter(
-      progress => progress.status === "downloading" || progress.status === "queued"
-    );
-  };
-
   return {
-    // State
-    connected: () => state.connected,
-    connecting: () => state.connecting,
-    error: () => state.error,
-    subscribedDownloads: () => state.subscribedDownloads,
-
-    // Data
-    progressUpdates,
-    downloadEvents,
-
-    // Actions
-    connect,
-    disconnect,
+    isConnected,
+    isConnecting,
+    error,
+    events,
+    sendMessage,
     subscribe,
     unsubscribe,
-    sendMessage,
-    ping,
-
-    // Utilities
-    getProgress,
-    getEvents,
-    getActiveDownloads,
+    clearEvents,
+    reconnect
   };
-}
+};

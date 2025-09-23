@@ -5,7 +5,7 @@
  */
 import { Show, For } from "solid-js";
 import { getLanguageFromExtension } from "../utils/file-utils";
-export const FileContentDisplay = props => {
+export const FileContentDisplay = (props: any) => {
   const getFileExtension = () => {
     return props.fileName.split(".").pop()?.toLowerCase() || "txt";
   };

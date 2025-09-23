@@ -7,6 +7,7 @@
 
 import { createSignal, createMemo, onCleanup } from "solid-js";
 import type { OKLCHColor } from "reynard-colors";
+import type { EasingType } from "../types/index.js";
 import { getColorAnimationSystem } from "./ColorAnimationSystem.js";
 import { ColorEasingFunctions } from "./ColorAnimations.js";
 
@@ -16,7 +17,7 @@ export interface UseColorAnimationOptions {
   /** Default duration for animations */
   duration?: number;
   /** Default easing function */
-  easing?: keyof typeof ColorEasingFunctions;
+  easing?: EasingType;
   /** Whether to use fallback animations when package unavailable */
   useFallback?: boolean;
   /** Whether to respect global animation control */

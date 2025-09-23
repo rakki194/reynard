@@ -4,18 +4,9 @@
  * Header with image info and control buttons
  */
 import { Button } from "reynard-components-core";
-import { getIcon as getIconFromRegistry } from "reynard-fluent-icons";
+import { Icon } from "reynard-components-core";
 import { formatDimensions, formatFileSize } from "../utils/image-modal-utils";
-// Helper function to get icon as JSX element
-const getIcon = name => {
-  const icon = getIconFromRegistry(name);
-  if (icon) {
-    // eslint-disable-next-line solid/no-innerhtml
-    return <div class="icon-wrapper" innerHTML={icon.outerHTML} />;
-  }
-  return null;
-};
-export const ImageModalHeader = props => {
+export const ImageModalHeader = (props: any) => {
   return (
     <div class="rag-image-header">
       <div class="image-info">
@@ -27,19 +18,19 @@ export const ImageModalHeader = props => {
       </div>
 
       <div class="image-controls">
-        <Button variant="secondary" size="small" onClick={props.onToggleMetadata} icon={getIcon("info")}>
+        <Button variant="secondary" size="sm" onClick={props.onToggleMetadata} leftIcon={<Icon name="info" />}>
           {props.showMetadata ? "Hide" : "Show"} Metadata
         </Button>
 
-        <Button variant="secondary" size="small" onClick={props.onToggleEmbeddingInfo} icon={getIcon("brain")}>
+        <Button variant="secondary" size="sm" onClick={props.onToggleEmbeddingInfo} leftIcon={<Icon name="brain" />}>
           {props.showEmbeddingInfo ? "Hide" : "Show"} Embedding
         </Button>
 
-        <Button variant="secondary" size="small" onClick={props.onCopyPath} icon={getIcon("copy")}>
+        <Button variant="secondary" size="sm" onClick={props.onCopyPath} leftIcon={<Icon name="copy" />}>
           Copy Path
         </Button>
 
-        <Button variant="secondary" size="small" onClick={props.onDownload} icon={getIcon("download")}>
+        <Button variant="secondary" size="sm" onClick={props.onDownload} leftIcon={<Icon name="download" />}>
           Download
         </Button>
       </div>

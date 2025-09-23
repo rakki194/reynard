@@ -32,6 +32,12 @@ export interface AnimationCallbacks {
   onFrameEnd?: (frameTime: number, frameCount: number) => void;
 }
 
+export interface AnimationResult {
+  success: boolean;
+  duration: number;
+  error?: string;
+}
+
 export interface PerformanceStats {
   currentFPS: number;
   averageFPS: number;

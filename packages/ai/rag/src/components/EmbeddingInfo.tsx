@@ -5,26 +5,17 @@
  */
 import { Show } from "solid-js";
 import { Card, Button } from "reynard-components-core";
-import { getIcon as getIconFromRegistry } from "reynard-fluent-icons";
-// Helper function to get icon as JSX element
-const getIcon = name => {
-  const icon = getIconFromRegistry(name);
-  if (icon) {
-    // eslint-disable-next-line solid/no-innerhtml
-    return <div class="icon-wrapper" innerHTML={icon.outerHTML} />;
-  }
-  return null;
-};
-export const EmbeddingInfo = props => {
-  const calculateMagnitude = vector => {
-    return Math.sqrt(vector.reduce((sum, val) => sum + val * val, 0));
+import { Icon } from "reynard-components-core";
+export const EmbeddingInfo = (props: any) => {
+  const calculateMagnitude = (vector: any) => {
+    return Math.sqrt(vector.reduce((sum: any, val: any) => sum + val * val, 0));
   };
   return (
     <Show when={props.isVisible && props.embeddingVector}>
-      <Card className="embedding-card">
+      <Card class="embedding-card">
         <div class="card-header">
           <h4>Embedding Vector</h4>
-          <Button variant="ghost" size="small" onClick={props.onToggle} icon={getIcon("close")} />
+          <Button variant="ghost" size="sm" onClick={props.onToggle} leftIcon={<Icon name="close" />} />
         </div>
         <div class="embedding-content">
           <div class="embedding-stats">
@@ -43,7 +34,7 @@ export const EmbeddingInfo = props => {
           <div class="embedding-preview">
             <div class="preview-label">First 10 dimensions:</div>
             <div class="preview-values">
-              {props.embeddingVector?.slice(0, 10).map((val, index) => (
+              {props.embeddingVector?.slice(0, 10).map((val: any, index: any) => (
                 <span class="dimension-value" title={`Dimension ${index + 1}: ${val.toFixed(6)}`}>
                   {val.toFixed(3)}
                 </span>
@@ -51,7 +42,7 @@ export const EmbeddingInfo = props => {
             </div>
           </div>
 
-          <Button variant="secondary" size="small" onClick={props.onCopyVector} icon={getIcon("copy")} fullWidth>
+          <Button variant="secondary" size="sm" onClick={props.onCopyVector} leftIcon={<Icon name="copy" />} fullWidth>
             Copy Vector
           </Button>
         </div>

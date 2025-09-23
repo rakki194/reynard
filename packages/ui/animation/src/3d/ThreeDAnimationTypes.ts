@@ -142,5 +142,6 @@ export interface UseThreeDAnimationReturn {
   isAnimationsDisabled: () => boolean;
 }
 
-// Re-export easing types from the main animation package
-export type { EasingType } from "../easing/easing.js";
+// Import and re-export easing types from the main animation package
+import type { EasingType } from "../easing/easing.js";
+export type { EasingType };

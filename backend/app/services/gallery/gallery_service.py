@@ -14,13 +14,14 @@ from typing import Any
 # Reynard imports
 from app.extractors.registry import extractor_registry
 
-# Check if gallery-dl is available
-GALLERY_DL_AVAILABLE = importlib.util.find_spec("gallery_dl") is not None
-
-if GALLERY_DL_AVAILABLE:
-    from gallery_dl import config, job
-else:
-    logging.warning("gallery-dl not available. Install with: pip install gallery-dl")
+# Import gallery-dl library
+try:
+    from gallery_dl import config, job, extractor, option, output, util
+    from gallery_dl.extractor.common import Extractor, Message
+    GALLERY_DL_AVAILABLE = True
+except ImportError as e:
+    logging.error(f"Failed to import gallery-dl: {e}")
+    GALLERY_DL_AVAILABLE = False
 
 logger = logging.getLogger(__name__)
 
@@ -93,8 +94,9 @@ class ReynardGalleryService:
             "format": self.config.get("filename_format", "{filename}"),
         }
 
-        # Apply configuration
-        config.set(self.gallery_config)
+        # Apply configuration using the correct API
+        for key, value in self.gallery_config.items():
+            config.set((), key, value)
         logger.info("Gallery-dl configuration applied")
 
     async def initialize(self) -> bool:
@@ -145,8 +147,31 @@ class ReynardGalleryService:
         if not self.gallery_dl_available:
             return []
 
-        # Get all extractors from registry (includes Reynard custom extractors)
-        return extractor_registry.get_available_extractors()
+        extractors = []
+        
+        # Get standard gallery-dl extractors
+        try:
+            standard_extractors = extractor.extractors()
+            for extr in standard_extractors:
+                extractors.append({
+                    "name": extr.__name__,
+                    "category": getattr(extr, "category", "unknown"),
+                    "subcategory": getattr(extr, "subcategory", "unknown"),
+                    "pattern": getattr(extr, "pattern", ""),
+                    "example": getattr(extr, "example", ""),
+                    "description": extr.__doc__ or "",
+                    "features": [],
+                    "reynard_enabled": False,
+                    "type": "standard",
+                })
+        except Exception as e:
+            logger.warning(f"Failed to get standard extractors: {e}")
+
+        # Add Reynard custom extractors
+        reynard_extractors = extractor_registry.get_available_extractors()
+        extractors.extend(reynard_extractors)
+
+        return extractors
 
     async def get_extractors(self) -> list[dict[str, Any]]:
         """Get available extractors"""
@@ -172,28 +197,50 @@ class ReynardGalleryService:
             return {"is_valid": False, "error": "Gallery-dl not available"}
 
         try:
-            # Use registry to find extractor
-            extractor_info = extractor_registry.find_extractor_for_url(url)
-
-            if extractor_info:
+            # First check Reynard custom extractors
+            reynard_extractor = extractor_registry.find_extractor_for_url(url)
+            if reynard_extractor:
                 return {
                     "is_valid": True,
                     "extractor": {
-                        "name": extractor_info["name"],
-                        "category": extractor_info["category"],
-                        "subcategory": extractor_info["subcategory"],
-                        "patterns": extractor_info["pattern"],
-                        "description": extractor_info["description"],
-                        "features": extractor_info["features"],
-                        "reynard_enabled": extractor_info["reynard_enabled"],
-                        "type": extractor_info["type"],
+                        "name": reynard_extractor["name"],
+                        "category": reynard_extractor["category"],
+                        "subcategory": reynard_extractor["subcategory"],
+                        "patterns": reynard_extractor["pattern"],
+                        "description": reynard_extractor["description"],
+                        "features": reynard_extractor["features"],
+                        "reynard_enabled": reynard_extractor["reynard_enabled"],
+                        "type": reynard_extractor["type"],
                     },
-                    "pattern": extractor_info["pattern"],
+                    "pattern": reynard_extractor["pattern"],
                 }
+
+            # Then check standard gallery-dl extractors
+            try:
+                # Use gallery-dl's built-in extractor detection
+                extr = extractor.find(url)
+                if extr:
+                    return {
+                        "is_valid": True,
+                        "extractor": {
+                            "name": extr.__name__,
+                            "category": getattr(extr, "category", "unknown"),
+                            "subcategory": getattr(extr, "subcategory", "unknown"),
+                            "patterns": getattr(extr, "pattern", ""),
+                            "description": extr.__doc__ or "",
+                            "features": [],
+                            "reynard_enabled": False,
+                            "type": "standard",
+                        },
+                        "pattern": getattr(extr, "pattern", ""),
+                    }
+            except Exception as e:
+                logger.debug(f"Standard extractor detection failed: {e}")
+
+            return {"is_valid": False, "error": "No matching extractor found"}
+
         except Exception as e:
             return {"is_valid": False, "error": f"Validation failed: {e!s}"}
-        else:
-            return {"is_valid": False, "error": "No matching extractor found"}
 
     async def download_gallery(
         self, url: str, options: dict[str, Any] | None = None
@@ -229,7 +276,7 @@ class ReynardGalleryService:
             progress.message = "Extracting gallery information..."
             progress.percentage = 10.0
 
-            # Create download job
+            # Create download job with proper configuration
             job_config = self._create_job_config(options or {})
             download_job = job.DownloadJob(url, job_config)
 
@@ -245,20 +292,24 @@ class ReynardGalleryService:
             progress.message = "Downloading files..."
             progress.percentage = 20.0
 
-            # Execute download
+            # Execute download using gallery-dl's job system
             for msg in download_job.run():
-                if msg[0] == job.Message.Directory:
-                    # Directory message
-                    total_files = len(msg[1].get("files", []))
+                if msg[0] == Message.Directory:
+                    # Directory message - contains metadata about the gallery
+                    directory_info = msg[1]
+                    total_files = directory_info.get("count", 0)
                     progress.total_files = total_files
                     progress.message = f"Found {total_files} files"
+                    logger.info(f"Gallery info: {directory_info}")
 
-                elif msg[0] == job.Message.Url:
+                elif msg[0] == Message.Url:
                     # File download message
                     file_info = msg[1]
+                    file_url = msg[2]
+                    
                     files.append(
                         {
-                            "url": msg[2],
+                            "url": file_url,
                             "filename": file_info.get("filename", ""),
                             "extension": file_info.get("extension", ""),
                             "size": file_info.get("filesize", 0),
@@ -280,6 +331,17 @@ class ReynardGalleryService:
                     progress.message = (
                         f"Downloaded {downloaded_files}/{total_files} files"
                     )
+
+                elif msg[0] == Message.Complete:
+                    # Download completed
+                    progress.message = "Download completed"
+                    logger.info("Download job completed successfully")
+
+                elif msg[0] == Message.Error:
+                    # Download error
+                    error_info = msg[1]
+                    logger.error(f"Download error: {error_info}")
+                    progress.message = f"Error: {error_info}"
 
             # Complete download
             progress.status = "completed"
@@ -360,7 +422,8 @@ class ReynardGalleryService:
         return self.download_history[-limit:]
 
     def _create_job_config(self, options: dict[str, Any]) -> dict[str, Any]:
-        """Create job configuration"""
+        """Create job configuration using gallery-dl's configuration system"""
+        # Start with base configuration
         job_config = self.gallery_config.copy()
 
         # Apply custom options
@@ -370,8 +433,27 @@ class ReynardGalleryService:
         if "filename" in options:
             job_config["format"] = options["filename"]
 
+        if "max_concurrent" in options:
+            job_config["concurrent"] = options["max_concurrent"]
+
+        if "retries" in options:
+            job_config["retries"] = options["retries"]
+
+        if "timeout" in options:
+            job_config["timeout"] = options["timeout"]
+
+        # Apply extractor-specific options
         if "extractor_options" in options:
-            job_config.update(options["extractor_options"])
+            for key, value in options["extractor_options"].items():
+                job_config[key] = value
+
+        # Apply post-processor options
+        if "postprocessors" in options:
+            job_config["postprocessors"] = options["postprocessors"]
+
+        # Set configuration in gallery-dl using the correct API
+        for key, value in job_config.items():
+            config.set((), key, value)
 
         return job_config
 

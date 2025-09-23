@@ -32,8 +32,20 @@ export { ArchitectureMappingTools } from "./ArchitectureMappingTools";
 export { Architecture3DViewer, Architecture3DViewerDemo } from "./Architecture3DViewer";
 export { CollaborativeEditingInterface, CollaborativeEditingInterfaceDemo } from "./CollaborativeEditingInterface";
 
+// AI-Powered Architecture Analysis components
+export { AIPatternRecognition } from "./AIPatternRecognition";
+export { AnomalyDetectionSystem } from "./AnomalyDetectionSystem";
+export { OptimizationSuggestionEngine } from "./OptimizationSuggestionEngine";
+export { ImpactPredictionModels } from "./ImpactPredictionModels";
+export { ArchitecturalHealthScoring } from "./ArchitecturalHealthScoring";
+
 // Re-export types for convenience
 export type { ADRDocument, ADRStatus, ADRCategory } from "./types";
 export type { DependencyGraph, DependencyNode, DependencyEdge } from "./DependencyGraphGenerator";
 export type { ArchitectureMap, ArchitectureComponent, ArchitectureRelationship } from "./ArchitectureMappingTools";
 export type { CollaborativeSession, CollaborativeUser, CollaborativeComment } from "./CollaborativeEditingInterface";
+export type { DetectedPattern, PatternRecognitionModel } from "./AIPatternRecognition";
+export type { ArchitecturalAnomaly } from "./AnomalyDetectionSystem";
+export type { OptimizationSuggestion } from "./OptimizationSuggestionEngine";
+export type { ImpactPrediction } from "./ImpactPredictionModels";
+export type { ArchitecturalHealthScore } from "./ArchitecturalHealthScoring";

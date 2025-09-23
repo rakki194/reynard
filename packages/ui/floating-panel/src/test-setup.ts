@@ -19,9 +19,17 @@ global.localStorage = localStorageMock as globalThis.Storage;
 
 // Mock document.documentElement for theme tests
 // Fix happy-dom document.body issue
-if (typeof document !== "undefined" && !document.body) {
-  const body = document.createElement("body");
-  document.appendChild(body);
+if (typeof document !== "undefined") {
+  if (!document.body) {
+    const body = document.createElement("body");
+    document.appendChild(body);
+  }
+  // Ensure document.body is properly accessible
+  Object.defineProperty(document, "body", {
+    value: document.body,
+    writable: true,
+    configurable: true,
+  });
 }
 Object.defineProperty(document, "documentElement", {
   value: {
@@ -48,6 +56,13 @@ Object.defineProperty(window, "matchMedia", {
 
 // Clean up SolidJS components after each test
 afterEach(() => {
-  cleanup();
+  try {
+    cleanup();
+  } catch (error) {
+    // Ignore happy-dom cleanup errors
+    if (!error.message?.includes("elementByTagName")) {
+      throw error;
+    }
+  }
   vi.clearAllMocks();
 });

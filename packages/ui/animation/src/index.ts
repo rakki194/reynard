@@ -1,209 +1,25 @@
 /**
- * 🦊 Reynard Animation Package
- * Unified animation system for Reynard
- *
- * This package consolidates all animation functionality from across the codebase:
- * - Core animation engines from test-app
- * - 3D animations from packages/3d
- * - Staggered animations from packages/ui/floating-panel
- * - Easing functions from packages/colors and packages/3d
- * - Performance monitoring and optimization
+ * 🎭 Reynard Animation System
+ * 
+ * Comprehensive animation system for the Reynard ecosystem
  */
 
-// Core exports
-export * from "./composables";
-export * from "./core";
-export * from "./easing/easing";
-export * from "./engines";
-export * from "./smart-imports";
-export * from "./state";
-export * from "./color";
-export * from "./3d";
-export * from "./global";
-// Note: utils exports are included in composables to avoid conflicts
+// Main animation composables (the ones that actually work)
+export { useStaggeredAnimation } from "./composables/useStaggeredAnimation";
+export { useStrikeoutAnimation } from "./composables/useStrikeoutAnimation";
+export { useAnimationState } from "./composables/useAnimationState";
+export { useThreeDAnimation } from "./3d/useThreeDAnimation";
+
+// Easing system
+export { Easing, applyEasing, getEasingFunction, isValidEasingType } from "./easing/easing";
+export type { EasingType } from "./easing/easing";
 
 // Main types
 export type * from "./types";
 
-// Convenience exports for common use cases
-export { useAnimationState, useStaggeredAnimation, useStrikeoutAnimation } from "./composables";
+// Animation engines
+export { NoOpAnimationEngine } from "./engines/NoOpAnimationEngine";
+
+// Core functionality
 export { createAnimationCore } from "./core/AnimationCore";
 export { PerformanceMonitor } from "./core/PerformanceMonitor";
-export { Easing, applyEasing, interpolate } from "./easing/easing";
-export { createAdaptiveAnimationEngine } from "./engines/AdaptiveAnimation";
-export { StroboscopicEngine } from "./engines/StroboscopicEngine";
-export { createThrottledAnimationEngine } from "./engines/ThrottledAnimation";
-export { 
-  NoOpAnimationEngine, 
-  getNoOpAnimationEngine, 
-  createNoOpAnimationEngine, 
-  cleanupNoOpAnimationEngine 
-} from "./engines/NoOpAnimationEngine";
-export { 
-  NoOpTestingUtilities, 
-  createNoOpTestingUtilities 
-} from "./engines/NoOpTestingUtilities";
-
-// Smart animation system exports
-export { 
-  SmartAnimationCore, 
-  getSmartAnimationCore, 
-  createSmartAnimationCore,
-  cleanupSmartAnimationCore 
-} from "./engines/SmartAnimationCore";
-export { 
-  useSmartAnimation, 
-  useAnimationEngineType, 
-  useAnimationPackageAvailability, 
-  useAnimationPerformanceMode, 
-  useAnimationAccessibilityMode 
-} from "./composables/useSmartAnimation";
-export { 
-  useAnimationState 
-} from "./composables/useAnimationState";
-export { 
-  useGlobalAnimationState, 
-  usePerformanceModeState, 
-  useAccessibilityCompliance, 
-  useAnimationPackageState, 
-  useImmediateCompletionState 
-} from "./composables/useAnimationStateHooks";
-
-// Animation state management exports
-export { 
-  AnimationStateManager, 
-  getAnimationStateManager, 
-  createAnimationStateManager,
-  cleanupAnimationStateManager 
-} from "./state/AnimationStateManager";
-
-// Smart import system exports
-export { 
-  SmartImportSystem, 
-  getSmartImportSystem, 
-  createSmartImportSystem,
-  cleanupSmartImportSystem 
-} from "./smart-imports/SmartImportSystem";
-export { 
-  useSmartImport, 
-  usePackageAvailability, 
-  useMultiplePackageAvailability 
-} from "./smart-imports/useSmartImport";
-
-// Color animation exports
-export { 
-  easedHueShift,
-  pureHueShift,
-  batchHueShift,
-  interpolateColor,
-  generateEasedColorRamp,
-  generateEasedHueRamp,
-  animateColorTransition,
-  ColorEasingFunctions
-} from "./color/ColorAnimations";
-export { 
-  createColorAnimationSystem,
-  getColorAnimationSystem,
-  resetColorAnimationSystem
-} from "./color/ColorAnimationSystem";
-export { 
-  useColorAnimation,
-  useColorAnimationWithBase,
-  useHueShiftAnimation
-} from "./color/useColorAnimation";
-export { 
-  applyColorFallbackTransition,
-  applyHueFallbackShift,
-  applyColorRampFallback,
-  applyStaggeredColorFallback,
-  applyImmediateColorChange,
-  applyImmediateColorRamp,
-  createColorAnimationCSS,
-  applyColorAnimationCSS,
-  removeColorAnimationClasses,
-  cleanupColorAnimationStyles
-} from "./color/ColorFallbackUtils";
-
-// 3D animation exports
-export { 
-  interpolateVector3,
-  interpolateEmbeddingPoint,
-  getInterpolatedClusterPoints,
-  getInterpolatedPointPositions,
-  executeClusterAnimation,
-  executePointAnimation,
-  executeCameraAnimation,
-  createClusterAnimationInstance,
-  createPointAnimationInstance,
-  createCameraAnimationInstance,
-  calculateDistance3D,
-  normalizeVector3,
-  calculateCenterPoint
-} from "./3d/ThreeDAnimationUtils";
-export { 
-  createThreeDAnimationSystem,
-  getThreeDAnimationSystem,
-  resetThreeDAnimationSystem
-} from "./3d/ThreeDAnimationSystem";
-export { 
-  useThreeDAnimation,
-  useClusterAnimation,
-  usePointAnimation,
-  useCameraAnimation,
-  useThreeDVisualization
-} from "./3d/useThreeDAnimation";
-export { 
-  apply3DPointFallback,
-  apply3DClusterFallback,
-  apply3DCameraFallback,
-  apply3DRotationFallback,
-  apply3DScaleFallback,
-  apply3DTranslationFallback,
-  applyImmediate3DTransform,
-  create3DAnimationCSS,
-  apply3DAnimationCSS,
-  remove3DAnimationClasses,
-  cleanup3DAnimationStyles
-} from "./3d/ThreeDFallbackUtils";
-
-// Global animation exports
-export { 
-  DEFAULT_GLOBAL_ANIMATION_CONFIG,
-  PERFORMANCE_ANIMATION_CONFIG,
-  ACCESSIBILITY_ANIMATION_CONFIG,
-  DISABLED_ANIMATION_CONFIG,
-  detectSystemPreferences,
-  createConfigFromPreferences,
-  validateConfig,
-  mergeConfigs,
-  createPersistence,
-  shouldDisableAnimations,
-  getAnimationEngine,
-  CONFIG_PRESETS,
-  getConfigPreset
-} from "./global/GlobalAnimationConfig";
-export { 
-  GlobalAnimationProvider,
-  useGlobalAnimationContext,
-  useGlobalAnimationState,
-  useGlobalAnimationControls,
-  useShouldDisableAnimations,
-  useAnimationEngine,
-  usePackageAvailability
-} from "./global/useGlobalAnimationContext";
-export { 
-  GlobalAnimationControlSystem,
-  GlobalAnimationUtils
-} from "./global/GlobalAnimationControls";
-export { 
-  GlobalAnimationDisableUtils,
-  getGlobalAnimationDisableUtils,
-  resetGlobalAnimationDisableUtils,
-  GlobalAnimationDisableFunctions,
-  AnimationDisableTesting
-} from "./global/GlobalAnimationDisableUtils";
-export { 
-  GlobalAnimationIntegration,
-  GlobalAnimationIntegrationUtils,
-  useGlobalAnimationIntegration
-} from "./global/GlobalAnimationIntegration";

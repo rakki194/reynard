@@ -8,7 +8,7 @@
  * @since 1.0.0
  */
 
-import { AnimationEngine, AnimationConfig, AnimationResult, AnimationState } from "../types";
+import { AnimationEngine, AnimationConfig, AnimationResult, AnimationState, AnimationCallbacks, PerformanceStats } from "../types/index.js";
 
 export interface NoOpAnimationConfig extends AnimationConfig {
   /** Whether to enable performance monitoring */
@@ -19,6 +19,8 @@ export interface NoOpAnimationConfig extends AnimationConfig {
   enableLogging: boolean;
   /** Custom completion delay in milliseconds (default: 0) */
   completionDelay: number;
+  /** Animation duration for immediate completion */
+  duration: number;
 }
 
 export interface NoOpPerformanceMetrics {
@@ -36,11 +38,29 @@ export interface NoOpPerformanceMetrics {
   lastCompletionTime: number;
 }
 
-export interface NoOpAnimationState extends AnimationState {
+export interface NoOpAnimationState {
+  /** Whether the engine is running */
+  isRunning: boolean;
+  /** Frame count */
+  frameCount: number;
+  /** Last frame time */
+  lastFrameTime: number;
+  /** Delta time */
+  deltaTime: number;
+  /** FPS */
+  fps: number;
+  /** Average FPS */
+  averageFPS: number;
+  /** Performance metrics */
+  performanceMetrics: {
+    frameTime: number;
+    renderTime: number;
+    updateTime: number;
+  };
   /** Whether the engine is active */
   isActive: boolean;
-  /** Current performance metrics */
-  performanceMetrics: NoOpPerformanceMetrics;
+  /** No-Op specific performance metrics */
+  noOpPerformanceMetrics: NoOpPerformanceMetrics;
   /** Memory usage in bytes */
   memoryUsage: number;
 }
@@ -58,19 +78,18 @@ export class NoOpAnimationEngine implements AnimationEngine {
   private memoryUsage: number = 0;
   private completionTimes: number[] = [];
   private isActive: boolean = false;
+  private callbacks: AnimationCallbacks = {};
 
   constructor(config: Partial<NoOpAnimationConfig> = {}) {
     this.config = {
-      duration: 0,
-      easing: "linear",
-      delay: 0,
-      iterations: 1,
-      direction: "normal",
-      fillMode: "both",
+      frameRate: 60,
+      maxFPS: 60,
+      enableVSync: false,
       enablePerformanceMonitoring: true,
       enableMemoryTracking: true,
       enableLogging: false,
       completionDelay: 0,
+      duration: 0,
       ...config,
     };
 
@@ -84,11 +103,19 @@ export class NoOpAnimationEngine implements AnimationEngine {
     };
 
     this.state = {
-      isAnimating: false,
-      progress: 0,
-      currentTime: 0,
+      isRunning: false,
+      frameCount: 0,
+      lastFrameTime: 0,
+      deltaTime: 0,
+      fps: 0,
+      averageFPS: 0,
+      performanceMetrics: {
+        frameTime: 0,
+        renderTime: 0,
+        updateTime: 0,
+      },
       isActive: false,
-      performanceMetrics: this.performanceMetrics,
+      noOpPerformanceMetrics: this.performanceMetrics,
       memoryUsage: 0,
     };
 
@@ -109,102 +136,97 @@ export class NoOpAnimationEngine implements AnimationEngine {
   }
 
   /**
-   * Start an animation with immediate completion
+   * Start the animation engine
    */
-  async start(
-    element: HTMLElement,
-    properties: Record<string, any>,
-    config?: Partial<NoOpAnimationConfig>
-  ): Promise<AnimationResult> {
-    const startTime = performance.now();
-    const mergedConfig = { ...this.config, ...config };
-
+  start(callbacks: AnimationCallbacks): void {
+    this.state.isRunning = true;
+    this.callbacks = callbacks;
+    
     if (this.config.enableLogging) {
-      console.log("NoOpAnimationEngine: Starting immediate completion animation", { properties, config: mergedConfig });
+      console.log("NoOpAnimationEngine: Started with immediate completion");
     }
 
-    // Update state
-    this.state.isAnimating = true;
-    this.state.progress = 0;
-    this.state.currentTime = 0;
-
-    // Apply properties immediately
-    this.applyProperties(element, properties);
-
-    // Wait for completion delay if specified
-    if (mergedConfig.completionDelay > 0) {
-      await this.delay(mergedConfig.completionDelay);
-    }
-
+    // Call frame start callback
+    callbacks.onFrameStart?.(performance.now());
+    
     // Complete immediately
-    const completionTime = performance.now();
-    const duration = completionTime - startTime;
-
-    // Update performance metrics
-    this.updatePerformanceMetrics(duration);
-
-    // Update state
-    this.state.isAnimating = false;
-    this.state.progress = 1;
-    this.state.currentTime = mergedConfig.duration || 0;
-
-    const result: AnimationResult = {
-      success: true,
-      duration,
-      progress: 1,
-      completed: true,
-      cancelled: false,
-      error: null,
-      performanceMetrics: {
-        startTime,
-        endTime: completionTime,
-        duration,
-        memoryUsage: this.memoryUsage,
-        frameCount: 1,
-        averageFrameTime: duration,
-      },
-    };
-
-    if (this.config.enableLogging) {
-      console.log("NoOpAnimationEngine: Animation completed immediately", result);
-    }
-
-    return result;
+    const frameTime = performance.now();
+    this.state.frameCount++;
+    this.state.lastFrameTime = frameTime;
+    this.state.deltaTime = 0;
+    this.state.fps = 60; // Simulate 60 FPS
+    
+    // Call update and render callbacks
+    callbacks.onUpdate?.(0, this.state.frameCount);
+    callbacks.onRender?.(0, this.state.frameCount);
+    callbacks.onFrameEnd?.(0, this.state.frameCount);
+    
+    // Stop immediately
+    this.stop();
   }
 
   /**
    * Stop an animation (immediate completion)
    */
-  async stop(): Promise<AnimationResult> {
-    const stopTime = performance.now();
-
+  stop(): void {
+    this.state.isRunning = false;
+    
     if (this.config.enableLogging) {
-      console.log("NoOpAnimationEngine: Stopping animation with immediate completion");
+      console.log("NoOpAnimationEngine: Stopped");
     }
+  }
 
-    // Update state
-    this.state.isAnimating = false;
-    this.state.progress = 1;
-    this.state.currentTime = this.config.duration || 0;
+  /**
+   * Reset the animation engine
+   */
+  reset(): void {
+    this.state.isRunning = false;
+    this.state.frameCount = 0;
+    this.state.lastFrameTime = 0;
+    this.state.deltaTime = 0;
+    this.state.fps = 0;
+    this.state.averageFPS = 0;
+    
+    if (this.config.enableLogging) {
+      console.log("NoOpAnimationEngine: Reset");
+    }
+  }
 
-    const result: AnimationResult = {
-      success: true,
-      duration: 0,
-      progress: 1,
-      completed: true,
-      cancelled: false,
-      error: null,
-      performanceMetrics: {
-        startTime: stopTime,
-        endTime: stopTime,
-        duration: 0,
-        memoryUsage: this.memoryUsage,
-        frameCount: 1,
-        averageFrameTime: 0,
-      },
+  /**
+   * Get performance statistics
+   */
+  getPerformanceStats(): PerformanceStats {
+    return {
+      currentFPS: this.state.fps,
+      averageFPS: this.state.averageFPS,
+      frameCount: this.state.frameCount,
+      frameTime: this.state.performanceMetrics.frameTime,
+      renderTime: this.state.performanceMetrics.renderTime,
+      updateTime: this.state.performanceMetrics.updateTime,
+      isRunning: this.state.isRunning,
     };
+  }
 
-    return result;
+  /**
+   * Update configuration
+   */
+  updateConfig(config: Partial<AnimationConfig>): void {
+    this.config = { ...this.config, ...config };
+    
+    if (this.config.enableLogging) {
+      console.log("NoOpAnimationEngine: Configuration updated", config);
+    }
+  }
+
+  /**
+   * Update callbacks
+   */
+  updateCallbacks(callbacks: AnimationCallbacks): void {
+    this.callbacks = { ...this.callbacks, ...callbacks };
+    
+    if (this.config.enableLogging) {
+      console.log("NoOpAnimationEngine: Callbacks updated");
+    }
   }
 
   /**
@@ -218,10 +240,10 @@ export class NoOpAnimationEngine implements AnimationEngine {
     return {
       success: true,
       duration: 0,
-      progress: this.state.progress,
+      progress: 1,
       completed: true,
       cancelled: false,
-      error: null,
+      error: undefined,
       performanceMetrics: {
         startTime: performance.now(),
         endTime: performance.now(),
@@ -244,10 +266,10 @@ export class NoOpAnimationEngine implements AnimationEngine {
     return {
       success: true,
       duration: 0,
-      progress: this.state.progress,
+      progress: 1,
       completed: true,
       cancelled: false,
-      error: null,
+      error: undefined,
       performanceMetrics: {
         startTime: performance.now(),
         endTime: performance.now(),
@@ -265,21 +287,11 @@ export class NoOpAnimationEngine implements AnimationEngine {
   getState(): NoOpAnimationState {
     return {
       ...this.state,
-      performanceMetrics: { ...this.performanceMetrics },
+      noOpPerformanceMetrics: { ...this.performanceMetrics },
       memoryUsage: this.memoryUsage,
     };
   }
 
-  /**
-   * Update configuration
-   */
-  updateConfig(newConfig: Partial<NoOpAnimationConfig>): void {
-    this.config = { ...this.config, ...newConfig };
-
-    if (this.config.enableLogging) {
-      console.log("NoOpAnimationEngine: Configuration updated", this.config);
-    }
-  }
 
   /**
    * Get performance metrics

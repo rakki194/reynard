@@ -26,6 +26,7 @@ from app.api.agent_email_routes import router as agent_email_router
 from app.api.caption import router as caption_router
 from app.api.comfy import router as comfy_router
 from app.api.email_routes import router as email_router
+from app.api.gallerydl import router as gallerydl_router
 from app.api.executor.executor import router as executor_router
 from app.api.hf_cache.hf_cache import router as hf_cache_router
 from app.api.image_utils.image_utils import router as image_utils_router
@@ -177,6 +178,7 @@ def _setup_routers(app: FastAPI) -> None:
 
     # Core API Routers
     app.include_router(caption_router, prefix="/api")
+    app.include_router(gallerydl_router, prefix="/api")
     app.include_router(lazy_loading_router)
     app.include_router(hf_cache_router)
     app.include_router(executor_router)

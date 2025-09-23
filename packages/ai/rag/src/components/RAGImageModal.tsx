@@ -12,7 +12,7 @@ import { SimilarityScore } from "./SimilarityScore";
 import { ImageMetadata } from "./ImageMetadata";
 import { EmbeddingInfo } from "./EmbeddingInfo";
 import { downloadImage, copyToClipboard } from "../utils/image-modal-utils";
-const createImageModalHandlers = props => {
+const createImageModalHandlers = (props: any) => {
   const handleDownload = () => {
     downloadImage(props.imagePath, props.imageId);
   };
@@ -40,12 +40,12 @@ const createImageModalHandlers = props => {
   };
 };
 const createImageModalContent = (
-  props,
-  showMetadata,
-  showEmbeddingInfo,
-  setShowMetadata,
-  setShowEmbeddingInfo,
-  handlers
+  props: any,
+  showMetadata: any,
+  showEmbeddingInfo: any,
+  setShowMetadata: any,
+  setShowEmbeddingInfo: any,
+  handlers: any
 ) => (
   <div class="rag-image-modal-container">
     <ImageModalHeader
@@ -84,7 +84,7 @@ const createImageModalContent = (
     </div>
   </div>
 );
-export const RAGImageModal = props => {
+export const RAGImageModal = (props: any) => {
   const [showEmbeddingInfo, setShowEmbeddingInfo] = createSignal(false);
   const [showMetadata, setShowMetadata] = createSignal(true);
   const handlers = createImageModalHandlers(props);

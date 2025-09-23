@@ -5,23 +5,14 @@
  */
 import { For, Show } from "solid-js";
 import { Card, Button } from "reynard-components-core";
-import { getIcon as getIconFromRegistry } from "reynard-fluent-icons";
-// Helper function to get icon as JSX element
-const getIcon = name => {
-  const icon = getIconFromRegistry(name);
-  if (icon) {
-    // eslint-disable-next-line solid/no-innerhtml
-    return <div class="icon-wrapper" innerHTML={icon.outerHTML} />;
-  }
-  return null;
-};
-export const ImageMetadata = props => {
+import { Icon } from "reynard-components-core";
+export const ImageMetadata = (props: any) => {
   return (
     <Show when={props.isVisible && props.metadata}>
-      <Card className="metadata-card">
+      <Card class="metadata-card">
         <div class="card-header">
           <h4>Image Metadata</h4>
-          <Button variant="ghost" size="small" onClick={props.onToggle} icon={getIcon("close")} />
+          <Button variant="ghost" size="sm" onClick={props.onToggle} leftIcon={<Icon name="close" />} />
         </div>
         <div class="metadata-content">
           <For each={Object.entries(props.metadata || {})}>

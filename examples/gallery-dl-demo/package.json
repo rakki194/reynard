@@ -1,0 +1,31 @@
+{
+  "name": "reynard-gallery-dl-demo",
+  "version": "0.1.0",
+  "description": "Gallery-dl Demo App - Showcase gallery-dl integration with Reynard",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "solid-js": "1.9.9",
+    "reynard-core": "workspace:*",
+    "reynard-themes": "workspace:*",
+    "reynard-fluent-icons": "workspace:*",
+    "reynard-components-core": "workspace:*",
+    "reynard-components-charts": "workspace:*",
+    "reynard-components-dashboard": "workspace:*",
+    "reynard-components-themes": "workspace:*",
+    "reynard-components-utils": "workspace:*",
+    "reynard-gallery-dl": "workspace:*",
+    "reynard-connection": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "24.5.2",
+    "typescript": "5.9.2",
+    "vite": "7.1.6",
+    "vite-plugin-solid": "2.11.8"
+  }
+}

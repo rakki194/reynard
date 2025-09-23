@@ -3,7 +3,7 @@
  * Consolidated easing functions from across the Reynard codebase
  */
 
-import type { EasingType } from "../types";
+import type { EasingType } from "../types/index.js";
 
 /**
  * Comprehensive easing functions collection
@@ -156,3 +156,6 @@ export function getEasingFunction(easing: EasingType): (t: number) => number {
 export function isValidEasingType(easing: string): easing is EasingType {
   return easing in Easing;
 }
+
+// Re-export the EasingType for convenience
+export type { EasingType } from "../types/index.js";

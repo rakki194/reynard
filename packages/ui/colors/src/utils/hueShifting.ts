@@ -1,10 +1,32 @@
 /**
  * Proper Hue Shifting Algorithms
  * Implements true OKLCH hue shifting that preserves lightness and chroma
+ * Migrated to use unified animation system
  */
 
 import type { OKLCHColor } from "../types";
 import { clampToGamut, handleEdgeCases } from "./colorConversion";
+
+// Smart import for unified animation system
+let animationPackage: unknown = null;
+let isPackageAvailable = false;
+
+const checkAnimationPackageAvailability = async () => {
+  try {
+    const packageCheck = await import("reynard-animation");
+    if (packageCheck && packageCheck.useColorAnimation) {
+      animationPackage = packageCheck;
+      isPackageAvailable = true;
+      return true;
+    }
+  } catch (error) {
+    console.warn("🦊 Colors: reynard-animation package not available, using fallback color animations");
+  }
+  return false;
+};
+
+// Initialize package availability
+checkAnimationPackageAvailability();
 
 /**
  * Pure hue shift that preserves lightness and chroma

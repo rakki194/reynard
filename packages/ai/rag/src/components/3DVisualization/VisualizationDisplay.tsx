@@ -5,7 +5,7 @@
  */
 import { Show } from "solid-js";
 import { Button } from "reynard-components-core";
-export const VisualizationDisplay = props => {
+export const VisualizationDisplay = (props: any) => {
   return (
     <div class="rag-3d-visualization">
       <Show when={props.isLoading}>

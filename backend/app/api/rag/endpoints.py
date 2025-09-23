@@ -248,9 +248,12 @@ class RAGServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
                 "detect_query_intent", self._handle_detect_intent_request, request
             )
 
-        @self.router.post("/semantic/enhance-query", response_model=SemanticEnhancementResponse)
+        @self.router.post(
+            "/semantic/enhance-query", response_model=SemanticEnhancementResponse
+        )
         async def enhance_query(
-            request: SemanticEnhancementRequest, _: MCPTokenData = Depends(require_rag_query)
+            request: SemanticEnhancementRequest,
+            _: MCPTokenData = Depends(require_rag_query),
         ):
             """Enhance query with semantic processing and expansion."""
             return await self._standard_async_operation(
@@ -274,7 +277,9 @@ class RAGServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
                 "record_user_feedback", self._handle_user_feedback_request, request
             )
 
-        @self.router.get("/analytics/performance", response_model=PerformanceStatsResponse)
+        @self.router.get(
+            "/analytics/performance", response_model=PerformanceStatsResponse
+        )
         async def get_performance_stats(
             time_window_hours: int = 24, _: MCPTokenData = Depends(require_rag_query)
         ):
@@ -296,11 +301,14 @@ class RAGServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
 
         @self.router.post("/analytics/report", response_model=AnalyticsReportResponse)
         async def generate_analytics_report(
-            request: AnalyticsReportRequest, _: MCPTokenData = Depends(require_rag_query)
+            request: AnalyticsReportRequest,
+            _: MCPTokenData = Depends(require_rag_query),
         ):
             """Generate comprehensive analytics report."""
             return await self._standard_async_operation(
-                "generate_analytics_report", self._handle_analytics_report_request, request
+                "generate_analytics_report",
+                self._handle_analytics_report_request,
+                request,
             )
 
         @self.router.get("/analytics/realtime", response_model=RealTimeMetricsResponse)
@@ -312,7 +320,8 @@ class RAGServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
 
         @self.router.post("/analytics/export", response_model=AnalyticsExportResponse)
         async def export_analytics_data(
-            request: AnalyticsExportRequest, _: MCPTokenData = Depends(require_rag_query)
+            request: AnalyticsExportRequest,
+            _: MCPTokenData = Depends(require_rag_query),
         ):
             """Export analytics data in specified format."""
             return await self._standard_async_operation(
@@ -459,18 +468,15 @@ class RAGServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
         cache_key = f"rag_query:{hash(request.q)}:{request.top_k}:{request.similarity_threshold}"
         logger.debug(f"Caching query result with key: {cache_key}")
 
-
-# Create router instance
-
-
-rag_router = RAGServiceRouter()
-router = rag_router.get_router()
-    async def _handle_detect_intent_request(self, request: QueryIntentRequest) -> QueryIntentResponse:
+    # Enhanced Semantic Search Handler Methods
+    async def _handle_detect_intent_request(
+        self, request: QueryIntentRequest
+    ) -> QueryIntentResponse:
         """Handle query intent detection request."""
         try:
             semantic_enhancer = get_semantic_enhancer()
             intent = await semantic_enhancer._detect_query_intent(request.query)
-            
+
             return QueryIntentResponse(
                 intent_type=intent.intent_type,
                 confidence=intent.confidence,
@@ -480,21 +486,26 @@ router = rag_router.get_router()
             )
         except Exception as e:
             logger.error(f"Intent detection failed: {e}")
-            raise HTTPException(status_code=500, detail=f"Intent detection failed: {str(e)}")
+            raise HTTPException(
+                status_code=500, detail=f"Intent detection failed: {str(e)}"
+            )
 
-    async def _handle_enhance_query_request(self, request: SemanticEnhancementRequest) -> SemanticEnhancementResponse:
+    async def _handle_enhance_query_request(
+        self, request: SemanticEnhancementRequest
+    ) -> SemanticEnhancementResponse:
         """Handle semantic query enhancement request."""
         try:
             semantic_enhancer = get_semantic_enhancer()
-            
+
             # Create search context if provided
             from .semantic_search import SearchContext
+
             context = SearchContext() if request.context else None
-            
+
             enhanced_query, intent, metadata = await semantic_enhancer.enhance_query(
                 request.query, context
             )
-            
+
             return SemanticEnhancementResponse(
                 original_query=request.query,
                 enhanced_query=enhanced_query,
@@ -503,14 +514,16 @@ router = rag_router.get_router()
             )
         except Exception as e:
             logger.error(f"Query enhancement failed: {e}")
-            raise HTTPException(status_code=500, detail=f"Query enhancement failed: {str(e)}")
+            raise HTTPException(
+                status_code=500, detail=f"Query enhancement failed: {str(e)}"
+            )
 
     # Query Analytics Handler Methods
     async def _handle_record_metrics_request(self, request: dict) -> dict:
         """Handle query metrics recording request."""
         try:
             analytics_collector = get_analytics_collector()
-            
+
             await analytics_collector.record_query_metrics(
                 query_id=request.get("query_id", str(uuid.uuid4())),
                 query_text=request.get("query_text", ""),
@@ -523,7 +536,7 @@ router = rag_router.get_router()
                 session_id=request.get("session_id"),
                 user_id=request.get("user_id"),
             )
-            
+
             return {
                 "recorded": True,
                 "query_id": request.get("query_id"),
@@ -531,13 +544,17 @@ router = rag_router.get_router()
             }
         except Exception as e:
             logger.error(f"Metrics recording failed: {e}")
-            raise HTTPException(status_code=500, detail=f"Metrics recording failed: {str(e)}")
+            raise HTTPException(
+                status_code=500, detail=f"Metrics recording failed: {str(e)}"
+            )
 
-    async def _handle_user_feedback_request(self, request: UserFeedbackRequest) -> UserFeedbackResponse:
+    async def _handle_user_feedback_request(
+        self, request: UserFeedbackRequest
+    ) -> UserFeedbackResponse:
         """Handle user feedback recording request."""
         try:
             analytics_collector = get_analytics_collector()
-            
+
             await analytics_collector.record_user_feedback(
                 query_id=request.query_id,
                 feedback_type=request.feedback_type,
@@ -545,7 +562,7 @@ router = rag_router.get_router()
                 comments=request.comments,
                 clicked_results=request.clicked_results,
             )
-            
+
             return UserFeedbackResponse(
                 recorded=True,
                 query_id=request.query_id,
@@ -554,14 +571,20 @@ router = rag_router.get_router()
             )
         except Exception as e:
             logger.error(f"User feedback recording failed: {e}")
-            raise HTTPException(status_code=500, detail=f"User feedback recording failed: {str(e)}")
+            raise HTTPException(
+                status_code=500, detail=f"User feedback recording failed: {str(e)}"
+            )
 
-    async def _handle_performance_stats_request(self, request: PerformanceStatsRequest) -> PerformanceStatsResponse:
+    async def _handle_performance_stats_request(
+        self, request: PerformanceStatsRequest
+    ) -> PerformanceStatsResponse:
         """Handle performance statistics request."""
         try:
             analytics_collector = get_analytics_collector()
-            stats = await analytics_collector.get_performance_stats(request.time_window_hours)
-            
+            stats = await analytics_collector.get_performance_stats(
+                request.time_window_hours
+            )
+
             return PerformanceStatsResponse(
                 total_queries=stats.total_queries,
                 avg_processing_time=stats.avg_processing_time,
@@ -579,14 +602,20 @@ router = rag_router.get_router()
             )
         except Exception as e:
             logger.error(f"Performance stats retrieval failed: {e}")
-            raise HTTPException(status_code=500, detail=f"Performance stats retrieval failed: {str(e)}")
+            raise HTTPException(
+                status_code=500, detail=f"Performance stats retrieval failed: {str(e)}"
+            )
 
-    async def _handle_usage_insights_request(self, request: UsageInsightsRequest) -> UsageInsightsResponse:
+    async def _handle_usage_insights_request(
+        self, request: UsageInsightsRequest
+    ) -> UsageInsightsResponse:
         """Handle usage insights request."""
         try:
             analytics_collector = get_analytics_collector()
-            insights = await analytics_collector.get_usage_insights(request.time_window_hours)
-            
+            insights = await analytics_collector.get_usage_insights(
+                request.time_window_hours
+            )
+
             return UsageInsightsResponse(
                 popular_queries=insights.popular_queries,
                 query_trends=insights.query_trends,
@@ -598,14 +627,20 @@ router = rag_router.get_router()
             )
         except Exception as e:
             logger.error(f"Usage insights retrieval failed: {e}")
-            raise HTTPException(status_code=500, detail=f"Usage insights retrieval failed: {str(e)}")
+            raise HTTPException(
+                status_code=500, detail=f"Usage insights retrieval failed: {str(e)}"
+            )
 
-    async def _handle_analytics_report_request(self, request: AnalyticsReportRequest) -> AnalyticsReportResponse:
+    async def _handle_analytics_report_request(
+        self, request: AnalyticsReportRequest
+    ) -> AnalyticsReportResponse:
         """Handle analytics report generation request."""
         try:
             analytics_collector = get_analytics_collector()
-            report = await analytics_collector.generate_analytics_report(request.time_period)
-            
+            report = await analytics_collector.generate_analytics_report(
+                request.time_period
+            )
+
             # Convert to response format
             performance_stats = PerformanceStatsResponse(
                 total_queries=report.performance_stats.total_queries,
@@ -622,7 +657,7 @@ router = rag_router.get_router()
                 error_rate=report.performance_stats.error_rate,
                 time_window_hours=24,  # Default
             )
-            
+
             usage_insights = UsageInsightsResponse(
                 popular_queries=report.usage_insights.popular_queries,
                 query_trends=report.usage_insights.query_trends,
@@ -632,7 +667,7 @@ router = rag_router.get_router()
                 optimization_opportunities=report.usage_insights.optimization_opportunities,
                 time_window_hours=24,  # Default
             )
-            
+
             return AnalyticsReportResponse(
                 report_id=report.report_id,
                 generated_at=report.generated_at,
@@ -644,14 +679,16 @@ router = rag_router.get_router()
             )
         except Exception as e:
             logger.error(f"Analytics report generation failed: {e}")
-            raise HTTPException(status_code=500, detail=f"Analytics report generation failed: {str(e)}")
+            raise HTTPException(
+                status_code=500, detail=f"Analytics report generation failed: {str(e)}"
+            )
 
     async def _handle_real_time_metrics_request(self) -> RealTimeMetricsResponse:
         """Handle real-time metrics request."""
         try:
             analytics_collector = get_analytics_collector()
             metrics = await analytics_collector.get_real_time_metrics()
-            
+
             return RealTimeMetricsResponse(
                 queries_per_minute=metrics["queries_per_minute"],
                 avg_response_time=metrics["avg_response_time"],
@@ -661,24 +698,37 @@ router = rag_router.get_router()
             )
         except Exception as e:
             logger.error(f"Real-time metrics retrieval failed: {e}")
-            raise HTTPException(status_code=500, detail=f"Real-time metrics retrieval failed: {str(e)}")
+            raise HTTPException(
+                status_code=500, detail=f"Real-time metrics retrieval failed: {str(e)}"
+            )
 
-    async def _handle_export_analytics_request(self, request: AnalyticsExportRequest) -> AnalyticsExportResponse:
+    async def _handle_export_analytics_request(
+        self, request: AnalyticsExportRequest
+    ) -> AnalyticsExportResponse:
         """Handle analytics data export request."""
         try:
             analytics_collector = get_analytics_collector()
-            export_data = await analytics_collector.export_analytics_data(request.format)
-            
+            export_data = await analytics_collector.export_analytics_data(
+                request.format
+            )
+
             return AnalyticsExportResponse(
                 exported=True,
                 format=request.format,
-                data_size=len(str(export_data)) if isinstance(export_data, str) else None,
+                data_size=(
+                    len(str(export_data)) if isinstance(export_data, str) else None
+                ),
                 download_url=None,  # Would be implemented with file storage
                 expires_at=time.time() + 3600,  # 1 hour expiration
             )
         except Exception as e:
             logger.error(f"Analytics export failed: {e}")
-            raise HTTPException(status_code=500, detail=f"Analytics export failed: {str(e)}")
+            raise HTTPException(
+                status_code=500, detail=f"Analytics export failed: {str(e)}"
+            )
+
+
+# Create router instance
 
 
 rag_router = RAGServiceRouter()

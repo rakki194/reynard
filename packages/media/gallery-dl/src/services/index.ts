@@ -1,8 +1,16 @@
 /**
- * Gallery Services
+ * Gallery-dl Services Export
  *
- * Service layer exports for the gallery-dl package.
+ * Central export point for all gallery-dl services.
  */
 
-export type { GalleryServiceConfig } from "../types";
-export { GalleryService } from "./GalleryService";
+export { GalleryService } from './GalleryService';
+export type { 
+  GalleryServiceConfig,
+  DownloadRequest,
+  DownloadResponse,
+  ExtractorInfo,
+  ValidationResponse,
+  BatchDownloadRequest,
+  BatchDownloadResponse
+} from './GalleryService';

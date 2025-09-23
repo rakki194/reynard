@@ -31,3 +31,6 @@ itsdangerous
 # Redis dependencies
 redis[hiredis]
 aioredis
+
+# Gallery-dl integration
+gallery-dl>=1.30.7

@@ -10,7 +10,7 @@ import { FileModalHeader } from "./FileModalHeader";
 import { ChunkNavigation } from "./ChunkNavigation";
 import { FileContentDisplay } from "./FileContentDisplay";
 import { FileModalFooter } from "./FileModalFooter";
-export const RAGFileModal = props => {
+export const RAGFileModal = (props: any) => {
   const modalState = useFileModal(props);
   const { showLineNumbers, wrapLines, fontSize, contentChunks, selectedChunk } = modalState;
   return (

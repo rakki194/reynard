@@ -21,7 +21,7 @@ const EMBEDDING_MODELS = [
   { value: "nomic-embed-text", label: "Nomic Embed Text" },
   { value: "all-minilm", label: "All-MiniLM" },
 ];
-export function SearchSettings(props) {
+export function SearchSettings(props: any) {
   return (
     <Card variant="elevated" padding="lg">
       <h3>Search Settings</h3>
@@ -43,9 +43,8 @@ export function SearchSettings(props) {
             min={1}
             max={50}
             value={props.maxResults}
-            onChange={e => props.onMaxResultsChange(parseInt(e.currentTarget.value))}
+            onChange={(e: any) => props.onMaxResultsChange(parseInt(e.currentTarget.value))}
             class="range-slider"
-            title="Maximum number of search results"
             aria-label="Maximum number of search results"
           />
         </div>
@@ -57,9 +56,8 @@ export function SearchSettings(props) {
             max={1.0}
             step={0.05}
             value={props.similarityThreshold}
-            onChange={e => props.onSimilarityThresholdChange(parseFloat(e.currentTarget.value))}
+            onChange={(e: any) => props.onSimilarityThresholdChange(parseFloat(e.currentTarget.value))}
             class="range-slider"
-            title="Similarity threshold for search results"
             aria-label="Similarity threshold for search results"
           />
         </div>
@@ -69,7 +67,7 @@ export function SearchSettings(props) {
             <Toggle
               size="sm"
               checked={props.enableReranking}
-              onChange={e => props.onEnableRerankingChange(e.currentTarget.checked)}
+              onChange={(e: any) => props.onEnableRerankingChange(e.currentTarget.checked)}
             />
             Enable Reranking
           </label>

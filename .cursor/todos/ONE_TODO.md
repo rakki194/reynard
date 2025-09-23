@@ -215,26 +215,6 @@ _Transform code duplication into a strategic hunt with points, achievements, and
 
 ### 🎨 **LOW PRIORITY HUNTS** (500 points total)
 
-#### 6. **Animation & Effect Consolidation** - 250 points
-
-**Difficulty**: ⭐⭐ (Quick)
-**Status**: 🎯 Ready to Hunt
-
-**Tasks**:
-
-- [ ] **Enhance `reynard-animation` package** (100 points)
-  - [ ] Consolidate animation utilities (50 points)
-  - [ ] Consolidate effect patterns (50 points)
-
-- [ ] **Create animation composables** (75 points)
-  - [ ] `useAnimationState` composable (25 points)
-  - [ ] `useAnimationEffects` composable (25 points)
-  - [ ] `useAnimationTiming` composable (25 points)
-
-- [ ] **Migration & Testing** (75 points)
-  - [ ] Migrate existing animations (50 points)
-  - [ ] Write animation tests (25 points)
-
 #### 7. **Documentation & Examples** - 250 points
 
 **Difficulty**: ⭐⭐ (Quick)

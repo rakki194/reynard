@@ -5,19 +5,9 @@
  */
 import { Show } from "solid-js";
 import { Button, Select, Slider, Toggle } from "reynard-components-core";
-import { getIcon as getIconFromRegistry } from "reynard-fluent-icons";
+import { Icon } from "reynard-components-core";
 import { ParameterPanels } from "./ParameterPanels";
-// Helper function to get icon as JSX element
-const getIcon = name => {
-  const icon = getIconFromRegistry(name);
-  if (icon) {
-    // Use the proper Reynard pattern for rendering SVG icons
-    // eslint-disable-next-line solid/no-innerhtml
-    return <div class="icon-wrapper" innerHTML={icon.outerHTML} />;
-  }
-  return null;
-};
-export const VisualizationControls = props => {
+export const VisualizationControls = (props: any) => {
   return (
     <>
       {/* Main Controls Panel */}
@@ -45,7 +35,7 @@ export const VisualizationControls = props => {
             <Toggle
               size="sm"
               checked={props.settings.enableHighlighting}
-              onChange={e => props.setEnableHighlighting(e.target.checked)}
+              onChange={(e: any) => props.setEnableHighlighting(e.target.checked)}
             />
             Enable Highlighting
           </label>
@@ -56,7 +46,7 @@ export const VisualizationControls = props => {
             <Toggle
               size="sm"
               checked={props.settings.showSimilarityPaths}
-              onChange={e => props.setShowSimilarityPaths(e.target.checked)}
+              onChange={(e: any) => props.setShowSimilarityPaths(e.target.checked)}
             />
             Show Similarity Paths
           </label>
@@ -67,7 +57,7 @@ export const VisualizationControls = props => {
             <Toggle
               size="sm"
               checked={props.settings.showSimilarityRadius}
-              onChange={e => props.setShowSimilarityRadius(e.target.checked)}
+              onChange={(e: any) => props.setShowSimilarityRadius(e.target.checked)}
             />
             Show Similarity Radius
           </label>
@@ -87,12 +77,12 @@ export const VisualizationControls = props => {
         <Button
           variant="secondary"
           onClick={() => props.setShowParameterControls(!props.showParameterControls)}
-          icon={getIcon("settings")}
+          leftIcon={<Icon name="settings" />}
         >
           Advanced Parameters
         </Button>
 
-        <Button variant="primary" onClick={props.onRefresh} disabled={props.isLoading} icon={getIcon("refresh")}>
+        <Button variant="primary" onClick={props.onRefresh} disabled={props.isLoading} leftIcon={<Icon name="refresh" />}>
           {props.isLoading ? "Loading..." : "Refresh"}
         </Button>
       </div>

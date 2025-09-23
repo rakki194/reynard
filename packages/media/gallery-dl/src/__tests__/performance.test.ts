@@ -10,7 +10,11 @@ describe("Gallery-dl Performance Tests", () => {
   let service: GalleryService;
 
   beforeEach(() => {
-    service = new GalleryService();
+    service = new GalleryService({
+      name: "test-gallery-service",
+      baseUrl: "http://localhost:8000",
+      timeout: 30000,
+    });
     vi.clearAllMocks();
   });
 
@@ -446,7 +450,7 @@ describe("Gallery-dl Performance Tests", () => {
       const startTime = performance.now();
 
       // Simulate WebSocket operations
-      const ws = new WebSocket("ws://localhost:8000/api/gallery/ws");
+      const ws = new WebSocket("ws://localhost:8000/api/gallerydl/ws");
       ws.send(JSON.stringify({ type: "ping" }));
       ws.close();
 
@@ -473,7 +477,7 @@ describe("Gallery-dl Performance Tests", () => {
       const startTime = performance.now();
 
       // Simulate multiple subscriptions
-      const ws = new WebSocket("ws://localhost:8000/api/gallery/ws");
+      const ws = new WebSocket("ws://localhost:8000/api/gallerydl/ws");
       for (let i = 0; i < 100; i++) {
         ws.send(JSON.stringify({ type: "subscribe", download_id: `download-${i}` }));
       }

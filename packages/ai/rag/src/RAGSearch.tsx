@@ -6,7 +6,7 @@
  */
 import { createSignal, createEffect, Show } from "solid-js";
 import { Tabs, Button, Select, TextField } from "reynard-components-core";
-import { getIcon as getIconFromRegistry } from "reynard-fluent-icons";
+import { Icon } from "reynard-components-core";
 import { RAGTabPanels } from "./RAGTabPanels";
 import { useRAGSearchComponent } from "./useRAGSearchComponent";
 import { createRAGTabConfig } from "./tab-config";
@@ -14,50 +14,51 @@ import { RAG3DVisualizationModal } from "./components/RAG3DVisualizationModal";
 import { RAGFileModal } from "./components/RAGFileModal";
 import { RAGImageModal } from "./components/RAGImageModal";
 import { RAGSearchHistory } from "./components/RAGSearchHistory";
+import type { RAGSearchProps, RAGModality, FileModalState, ImageModalState, ThreeDModalState, SearchHistoryItem, RAGQueryHit } from "./types";
 import "./styles.css";
-// Helper function to get icon as JSX element
-const getIcon = name => {
-  const icon = getIconFromRegistry(name);
-  if (icon) {
-    // Use the proper Reynard pattern for rendering SVG icons
-    // eslint-disable-next-line solid/no-innerhtml
-    return <div class="icon-wrapper" innerHTML={icon.outerHTML} />;
-  }
-  return null;
-};
-export function RAGSearch(props) {
+export function RAGSearch(props: any) {
   // Use component composable for initialization and state management
   const { ragState, handlers, activeTab, setActiveTab } = useRAGSearchComponent({ props });
   // Advanced features state
   const [modality, setModality] = createSignal("docs");
   const [topK, setTopK] = createSignal(20);
   // Modal states
-  const [fileModalState, setFileModalState] = createSignal({
+  const [fileModalState, setFileModalState] = createSignal<FileModalState>({
     isOpen: false,
     filePath: "",
     fileName: "",
     fileContent: "",
+    chunkIndex: 0,
+    chunkText: "",
   });
-  const [imageModalState, setImageModalState] = createSignal({
+  const [imageModalState, setImageModalState] = createSignal<ImageModalState>({
     isOpen: false,
     imagePath: "",
     imageId: "",
     score: 0,
+    thumbnailPath: "",
+    previewPath: "",
+    imageMetadata: {},
+    imageDimensions: { width: 0, height: 0 },
+    imageSize: 0,
+    imageFormat: "unknown",
+    embeddingVector: [],
   });
-  const [threeDModalState, setThreeDModalState] = createSignal({
+  const [threeDModalState, setThreeDModalState] = createSignal<ThreeDModalState>({
     isOpen: false,
     searchQuery: "",
     searchResults: [],
+    queryEmbedding: [],
   });
   // Search history state
-  const [searchHistory, setSearchHistory] = createSignal([]);
+  const [searchHistory, setSearchHistory] = createSignal<SearchHistoryItem[]>([]);
   // Enhanced search results with advanced features
-  const [enhancedResults, setEnhancedResults] = createSignal([]);
-  const [queryEmbedding, setQueryEmbedding] = createSignal();
+  const [enhancedResults, setEnhancedResults] = createSignal<RAGQueryHit[]>([]);
+  const [queryEmbedding, setQueryEmbedding] = createSignal<number[]>([]);
   // Get tab configuration
   const tabItems = createRAGTabConfig(!!props.showSearchHistory);
   // Enhanced search handler
-  const handleAdvancedSearch = async query => {
+  const handleAdvancedSearch = async (query: any) => {
     if (!query.trim()) return;
     try {
       // Perform search with current modality
@@ -67,7 +68,7 @@ export function RAGSearch(props) {
       const historyItem = {
         id: Date.now().toString(),
         query,
-        modality: modality(),
+        modality: modality() as RAGModality,
         timestamp: new Date(),
         resultCount: results.length,
         topScore: results.length > 0 ? results[0].score : 0,
@@ -82,7 +83,7 @@ export function RAGSearch(props) {
     }
   };
   // Mock search function (replace with actual API call)
-  const performRAGSearch = async (query, modality, topK) => {
+  const performRAGSearch = async (query: any, modality: any, topK: any) => {
     // This would be replaced with actual API call
     return Array.from({ length: Math.min(topK, 10) }, (_, i) => ({
       id: `result-${i}`,
@@ -98,7 +99,7 @@ export function RAGSearch(props) {
     }));
   };
   // Modal handlers
-  const handleOpenFileModal = (filePath, fileName, fileContent, chunkIndex, chunkText) => {
+  const handleOpenFileModal = (filePath: any, fileName: any, fileContent: any, chunkIndex: any, chunkText: any) => {
     setFileModalState({
       isOpen: true,
       filePath,
@@ -111,7 +112,7 @@ export function RAGSearch(props) {
   const handleCloseFileModal = () => {
     setFileModalState(prev => ({ ...prev, isOpen: false }));
   };
-  const handleOpenImageModal = (imagePath, imageId, score, metadata) => {
+  const handleOpenImageModal = (imagePath: any, imageId: any, score: any, metadata: any) => {
     setImageModalState({
       isOpen: true,
       imagePath,
@@ -135,7 +136,7 @@ export function RAGSearch(props) {
     setThreeDModalState(prev => ({ ...prev, isOpen: false }));
   };
   // Search history handlers
-  const handleSearchAgain = (query, modality) => {
+  const handleSearchAgain = (query: any, modality: any) => {
     setModality(modality);
     ragState.setQuery(query);
     handleAdvancedSearch(query);
@@ -143,7 +144,7 @@ export function RAGSearch(props) {
   const handleClearHistory = () => {
     setSearchHistory([]);
   };
-  const handleRemoveHistoryItem = id => {
+  const handleRemoveHistoryItem = (id: any) => {
     setSearchHistory(prev => prev.filter(item => item.id !== id));
   };
   // Sync search query with suggestions
@@ -181,7 +182,7 @@ export function RAGSearch(props) {
         <div class="search-options">
           <Select
             value={modality()}
-            onChange={value => setModality(value)}
+            onChange={(value: any) => setModality(value)}
             options={[
               { value: "docs", label: "Documents" },
               { value: "images", label: "Images" },
@@ -231,7 +232,7 @@ export function RAGSearch(props) {
             handleOpenFileModal,
             handleOpenImageModal,
             enhancedResults: enhancedResults(),
-            modality: modality(),
+            modality: modality() as RAGModality,
           }}
         />
 

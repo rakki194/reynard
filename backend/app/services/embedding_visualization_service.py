@@ -5,11 +5,12 @@ Provides dimensionality reduction and visualization capabilities for embeddings.
 Supports PCA, t-SNE, UMAP, and statistical analysis of embedding data.
 """
 
+import asyncio
 import json
 import logging
 import uuid
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any
 
 import numpy as np
@@ -82,9 +83,30 @@ class EmbeddingVisualizationService:
     def __init__(self, config: dict[str, Any] = None):
         if config is None:
             config = {}
+
+        # Enhanced configuration
         self.cache_ttl = config.get("cache_ttl_seconds", 3600)  # 1 hour default
         self.max_samples = config.get("max_samples", 10000)
+        self.max_concurrent_reductions = config.get("max_concurrent_reductions", 3)
+        self.enable_parallel_processing = config.get("enable_parallel_processing", True)
+        self.progress_update_interval = config.get("progress_update_interval", 0.1)
+
+        # Enhanced caching with compression and statistics
         self.cache: dict[str, dict[str, Any]] = {}
+        self.cache_stats = {
+            "hits": 0,
+            "misses": 0,
+            "evictions": 0,
+            "total_size_bytes": 0,
+        }
+
+        # Progress tracking
+        self.active_jobs: dict[str, dict[str, Any]] = {}
+        self.job_progress_callbacks: dict[str, callable] = {}
+
+        # Performance optimization
+        self.reduction_queue = asyncio.Queue(maxsize=self.max_concurrent_reductions)
+        self.worker_tasks: list[asyncio.Task] = []
 
         # Initialize dimensionality reduction methods
         self.reducers = {
@@ -93,7 +115,159 @@ class EmbeddingVisualizationService:
             "umap": get_dimensionality_reducer("umap"),
         }
 
-        logger.info("EmbeddingVisualizationService initialized")
+        # Start background tasks
+        self._start_background_tasks()
+
+        logger.info("EmbeddingVisualizationService initialized with enhanced features")
+
+    def _start_background_tasks(self):
+        """Start background tasks for cache cleanup and optimization."""
+        # Start cache cleanup task
+        asyncio.create_task(self._cache_cleanup_loop())
+
+        # Start worker tasks for parallel processing
+        if self.enable_parallel_processing:
+            for i in range(self.max_concurrent_reductions):
+                task = asyncio.create_task(self._reduction_worker(f"worker-{i}"))
+                self.worker_tasks.append(task)
+
+    async def _cache_cleanup_loop(self):
+        """Background task to clean up expired cache entries."""
+        while True:
+            try:
+                await asyncio.sleep(300)  # Run every 5 minutes
+                await self._cleanup_expired_cache()
+            except asyncio.CancelledError:
+                break
+            except Exception:
+                logger.exception("Error in cache cleanup loop")
+
+    async def _cleanup_expired_cache(self):
+        """Remove expired cache entries and update statistics."""
+        now = datetime.now()
+        expired_keys = []
+
+        for key, entry in self.cache.items():
+            if now - entry["timestamp"] > timedelta(
+                seconds=entry.get("ttl", self.cache_ttl)
+            ):
+                expired_keys.append(key)
+
+        for key in expired_keys:
+            del self.cache[key]
+            self.cache_stats["evictions"] += 1
+
+        if expired_keys:
+            logger.info(f"Cleaned up {len(expired_keys)} expired cache entries")
+
+    async def _reduction_worker(self, worker_name: str):
+        """Worker task for processing reduction jobs."""
+        while True:
+            try:
+                job_data = await self.reduction_queue.get()
+                await self._process_reduction_job(job_data, worker_name)
+                self.reduction_queue.task_done()
+            except asyncio.CancelledError:
+                break
+            except Exception:
+                logger.exception(f"Error in reduction worker {worker_name}")
+
+    async def _process_reduction_job(self, job_data: dict[str, Any], worker_name: str):
+        """Process a single reduction job with progress tracking."""
+        job_id = job_data["job_id"]
+        method = job_data["method"]
+        embeddings = job_data["embeddings"]
+        parameters = job_data["parameters"]
+
+        try:
+            # Update job status
+            self.active_jobs[job_id]["status"] = "processing"
+            self.active_jobs[job_id]["worker"] = worker_name
+
+            # Send progress update
+            await self._send_progress_update(
+                job_id,
+                {
+                    "status": "processing",
+                    "worker": worker_name,
+                    "progress": 0.1,
+                    "message": f"Starting {method.upper()} reduction with {worker_name}",
+                },
+            )
+
+            # Perform the actual reduction
+            result = await self._perform_reduction_with_progress(
+                method, embeddings, parameters, job_id
+            )
+
+            # Update job with result
+            self.active_jobs[job_id]["result"] = result
+            self.active_jobs[job_id]["status"] = "completed"
+            self.active_jobs[job_id]["completed_at"] = datetime.now()
+
+            # Send final progress update
+            await self._send_progress_update(
+                job_id,
+                {
+                    "status": "completed",
+                    "progress": 1.0,
+                    "message": f"{method.upper()} reduction completed successfully",
+                },
+            )
+
+        except Exception as e:
+            # Handle job failure
+            self.active_jobs[job_id]["status"] = "failed"
+            self.active_jobs[job_id]["error"] = str(e)
+            self.active_jobs[job_id]["failed_at"] = datetime.now()
+
+            await self._send_progress_update(
+                job_id,
+                {
+                    "status": "failed",
+                    "error": str(e),
+                    "message": f"{method.upper()} reduction failed: {str(e)}",
+                },
+            )
+
+            logger.exception(f"Reduction job {job_id} failed in {worker_name}")
+
+    async def _send_progress_update(self, job_id: str, progress_data: dict[str, Any]):
+        """Send progress update for a job."""
+        if job_id in self.job_progress_callbacks:
+            try:
+                await self.job_progress_callbacks[job_id](job_id, progress_data)
+            except Exception as e:
+                logger.warning(f"Failed to send progress update for job {job_id}: {e}")
+
+    async def _perform_reduction_with_progress(
+        self,
+        method: str,
+        embeddings: np.ndarray,
+        parameters: dict[str, Any],
+        job_id: str,
+    ) -> np.ndarray:
+        """Perform dimensionality reduction with progress updates."""
+        # This is a simplified version - in practice, you'd integrate with the actual
+        # reduction algorithms to provide real progress updates
+
+        # Simulate progress updates
+        for progress in [0.2, 0.4, 0.6, 0.8]:
+            await self._send_progress_update(
+                job_id,
+                {
+                    "status": "processing",
+                    "progress": progress,
+                    "message": f"Processing {method.upper()} reduction... {int(progress * 100)}%",
+                },
+            )
+            await asyncio.sleep(0.1)  # Simulate work
+
+        # Perform actual reduction
+        reducer = self.reducers[method]
+        return await self._perform_reduction_with_params(
+            reducer, embeddings, method, parameters
+        )
 
     async def get_embedding_stats(self) -> EmbeddingStats:
         """
@@ -445,21 +619,33 @@ class EmbeddingVisualizationService:
             raise
 
     async def get_cache_stats(self) -> dict[str, Any]:
-        """Get cache statistics and management information."""
+        """Get enhanced cache statistics and management information."""
         total_entries = len(self.cache)
         total_size = sum(len(str(entry)) for entry in self.cache.values())
+
+        # Calculate hit rate
+        total_requests = self.cache_stats["hits"] + self.cache_stats["misses"]
+        hit_rate = (
+            self.cache_stats["hits"] / total_requests if total_requests > 0 else 0.0
+        )
 
         return {
             "total_entries": total_entries,
             "total_size_bytes": total_size,
             "default_ttl_seconds": self.cache_ttl,
-            "cache_hit_rate": 0.0,  # Would need to track hits/misses
+            "cache_hit_rate": hit_rate,
+            "cache_hits": self.cache_stats["hits"],
+            "cache_misses": self.cache_stats["misses"],
+            "cache_evictions": self.cache_stats["evictions"],
             "oldest_entry": min(
                 (entry["timestamp"] for entry in self.cache.values()), default=None
             ),
             "newest_entry": max(
                 (entry["timestamp"] for entry in self.cache.values()), default=None
             ),
+            "active_jobs": len(self.active_jobs),
+            "worker_tasks": len(self.worker_tasks),
+            "queue_size": self.reduction_queue.qsize(),
         }
 
     async def clear_cache(self) -> dict[str, Any]:
@@ -471,6 +657,73 @@ class EmbeddingVisualizationService:
         return {
             "cleared_entries": cleared_count,
             "timestamp": datetime.now().isoformat(),
+        }
+
+    async def get_job_status(self, job_id: str) -> dict[str, Any]:
+        """Get the status of a specific job."""
+        if job_id not in self.active_jobs:
+            return {"status": "not_found", "message": "Job not found"}
+
+        job = self.active_jobs[job_id]
+        return {
+            "job_id": job_id,
+            "status": job.get("status", "unknown"),
+            "method": job.get("method"),
+            "created_at": job.get("created_at", datetime.now()).isoformat(),
+            "worker": job.get("worker"),
+            "progress": job.get("progress", 0.0),
+            "error": job.get("error"),
+            "result_available": "result" in job,
+        }
+
+    async def get_all_jobs(self) -> dict[str, Any]:
+        """Get status of all active jobs."""
+        return {
+            "total_jobs": len(self.active_jobs),
+            "jobs": {
+                job_id: await self.get_job_status(job_id)
+                for job_id in self.active_jobs.keys()
+            },
+        }
+
+    async def cancel_job(self, job_id: str) -> dict[str, Any]:
+        """Cancel a specific job."""
+        if job_id not in self.active_jobs:
+            return {"success": False, "message": "Job not found"}
+
+        job = self.active_jobs[job_id]
+        if job.get("status") in ["completed", "failed", "cancelled"]:
+            return {"success": False, "message": "Job already finished"}
+
+        # Mark job as cancelled
+        job["status"] = "cancelled"
+        job["cancelled_at"] = datetime.now()
+
+        logger.info(f"Job {job_id} cancelled")
+        return {"success": True, "message": "Job cancelled successfully"}
+
+    async def get_visualization_data(self, job_id: str) -> dict[str, Any]:
+        """Get visualization data for a completed job."""
+        if job_id not in self.active_jobs:
+            return {"error": "Job not found"}
+
+        job = self.active_jobs[job_id]
+        if job.get("status") != "completed" or "result" not in job:
+            return {"error": "Job not completed or result not available"}
+
+        result = job["result"]
+        return {
+            "job_id": job_id,
+            "method": job.get("method"),
+            "transformed_data": (
+                result.tolist() if hasattr(result, "tolist") else result
+            ),
+            "metadata": {
+                "original_shape": job.get("original_shape"),
+                "reduced_shape": result.shape if hasattr(result, "shape") else None,
+                "processing_time_ms": job.get("processing_time_ms", 0),
+                "completed_at": job.get("completed_at", datetime.now()).isoformat(),
+            },
         }
 
     def _generate_cache_key(

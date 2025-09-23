@@ -3,21 +3,20 @@
  *
  * Individual search history item display component.
  */
-import { Button, Card, Badge } from "reynard-components-core";
+import { Button, Card, Badge, Icon } from "reynard-components-core";
 import {
-  getIcon,
   formatTimestamp,
   getModalityIcon,
   getModalityColor,
   getScoreColor,
 } from "../utils/searchHistoryUtils";
-export const SearchHistoryItem = props => {
+export const SearchHistoryItem = (props: any) => {
   return (
-    <Card className="history-item">
+    <Card class="history-item">
       <div class="item-header">
         <div class="item-query">
           <span class="query-text">{props.item.query}</span>
-          <Badge variant={getModalityColor(props.item.modality)}>
+          <Badge variant="secondary">
             {getModalityIcon(props.item.modality)}
             {props.item.modality}
           </Badge>
@@ -28,7 +27,7 @@ export const SearchHistoryItem = props => {
             variant="ghost"
             size="sm"
             onClick={() => props.onSearchAgain(props.item.query, props.item.modality)}
-            leftIcon={getIcon("search")}
+            leftIcon={<Icon name="search" />}
           >
             Search Again
           </Button>
@@ -37,7 +36,7 @@ export const SearchHistoryItem = props => {
             variant="ghost"
             size="sm"
             onClick={() => props.onRemoveItem(props.item.id)}
-            leftIcon={getIcon("delete")}
+            leftIcon={<Icon name="delete" />}
           >
             Remove
           </Button>
@@ -57,7 +56,7 @@ export const SearchHistoryItem = props => {
 
         <div class="meta-item">
           <span class="meta-label">Top Score:</span>
-          <Badge variant={getScoreColor(props.item.topScore)}>{(props.item.topScore * 100).toFixed(1)}%</Badge>
+          <Badge variant="secondary">{(props.item.topScore * 100).toFixed(1)}%</Badge>
         </div>
       </div>
     </Card>

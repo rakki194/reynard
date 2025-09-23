@@ -30,6 +30,7 @@ from .image_viewer_definitions import get_image_viewer_tool_definitions
 from .linting_definitions import get_linting_tool_definitions
 from .mermaid_definitions import get_mermaid_tool_definitions
 from .monolith_detection.definitions import get_monolith_detection_tool_definitions
+from .playwright_definitions import get_playwright_tool_definitions
 
 # Search tools now use @register_tool decorators, no separate definitions needed
 from .secrets_definitions import get_secrets_tool_definitions
@@ -58,6 +59,7 @@ def get_tool_definitions() -> dict[str, dict[str, Any]]:
     image_viewer_tools = get_image_viewer_tool_definitions()
     mermaid_tools = get_mermaid_tool_definitions()
     monolith_detection_tools = get_monolith_detection_tool_definitions()
+    playwright_tools = get_playwright_tool_definitions()
     secrets_tools = get_secrets_tool_definitions()
     social_tools = get_social_tool_definitions()
     vscode_tasks_tools = get_vscode_tasks_tool_definitions()
@@ -71,6 +73,7 @@ def get_tool_definitions() -> dict[str, dict[str, Any]]:
         **image_viewer_tools,
         **mermaid_tools,
         **monolith_detection_tools,
+        **playwright_tools,
         **secrets_tools,
         **social_tools,
         **vscode_tasks_tools,

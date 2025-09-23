@@ -5,17 +5,8 @@
  */
 import { createSignal, Show } from "solid-js";
 import { Button } from "reynard-components-core";
-import { getIcon as getIconFromRegistry } from "reynard-fluent-icons";
-// Helper function to get icon as JSX element
-const getIcon = name => {
-  const icon = getIconFromRegistry(name);
-  if (icon) {
-    // eslint-disable-next-line solid/no-innerhtml
-    return <div class="icon-wrapper" innerHTML={icon.outerHTML} />;
-  }
-  return null;
-};
-export const ImageDisplay = props => {
+import { Icon } from "reynard-components-core";
+export const ImageDisplay = (props: any) => {
   const [imageError, setImageError] = createSignal(false);
   const [imageLoading, setImageLoading] = createSignal(true);
   const [imageScale, setImageScale] = createSignal(1);
@@ -43,7 +34,7 @@ export const ImageDisplay = props => {
 
         <Show when={imageError()}>
           <div class="image-error">
-            <div class="error-icon">{getIcon("image-error")}</div>
+            <div class="error-icon"><Icon name="image-error" /></div>
             <span>Failed to load image</span>
             <Button onClick={handleRetry}>Retry</Button>
           </div>
@@ -67,9 +58,9 @@ export const ImageDisplay = props => {
       <div class="image-zoom-controls">
         <Button
           variant="secondary"
-          size="small"
+          size="sm"
           onClick={() => setImageScale(Math.max(0.25, imageScale() - 0.25))}
-          icon={getIcon("zoom-out")}
+          leftIcon={<Icon name="zoom-out" />}
         >
           Zoom Out
         </Button>
@@ -78,14 +69,14 @@ export const ImageDisplay = props => {
 
         <Button
           variant="secondary"
-          size="small"
+          size="sm"
           onClick={() => setImageScale(Math.min(3, imageScale() + 0.25))}
-          icon={getIcon("zoom-in")}
+          leftIcon={<Icon name="zoom-in" />}
         >
           Zoom In
         </Button>
 
-        <Button variant="secondary" size="small" onClick={() => setImageScale(1)} icon={getIcon("zoom-reset")}>
+        <Button variant="secondary" size="sm" onClick={() => setImageScale(1)} leftIcon={<Icon name="zoom-reset" />}>
           Reset
         </Button>
       </div>

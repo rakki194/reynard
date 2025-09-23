@@ -8,7 +8,7 @@ import { createEffect } from "solid-js";
 import { Modal } from "reynard-components-core";
 import { use3DVisualizationParams, use3DVisualizationData } from "../composables";
 import { ModalContent } from "./3DVisualization";
-export const RAG3DVisualizationModal = props => {
+export const RAG3DVisualizationModal = (props: any) => {
   // Use parameter management composable
   const params = use3DVisualizationParams();
   // Use visualization data composable

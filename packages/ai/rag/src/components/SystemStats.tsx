@@ -6,7 +6,7 @@
  */
 import { Show } from "solid-js";
 import { Card } from "reynard-components-core";
-export function SystemStats(props) {
+export function SystemStats(props: any) {
   return (
     <Show when={props.stats}>
       <Card variant="elevated" padding="lg">

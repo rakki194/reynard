@@ -39,6 +39,17 @@ export class PortManager {
    * Set port range for a category
    */
   setPortRange(category: ProjectCategory, range: PortRange): void {
+    // Validate port range
+    if (range.start < 1 || range.start > 65535) {
+      throw new Error(`Invalid start port: ${range.start}. Must be between 1 and 65535.`);
+    }
+    if (range.end < 1 || range.end > 65535) {
+      throw new Error(`Invalid end port: ${range.end}. Must be between 1 and 65535.`);
+    }
+    if (range.end < range.start) {
+      throw new Error(`Invalid port range: end port ${range.end} must be greater than or equal to start port ${range.start}.`);
+    }
+    
     this.portRanges.set(category, range);
   }
 

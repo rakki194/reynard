@@ -52,7 +52,7 @@ async function import3DAnimationPackage(): Promise<unknown | null> {
 async function importFallbackSystem(): Promise<unknown | null> {
   try {
     // Dynamic import with type assertion for optional dependency
-    const fallbackModule = await import("reynard-core/composables" as string);
+    const fallbackModule = await import("reynard-composables" as string);
     return (fallbackModule as Record<string, unknown>).useAnimationFallback;
   } catch (error) {
     console.warn("🦊 ThreeDAnimation: Fallback system not available");
@@ -66,7 +66,7 @@ async function importFallbackSystem(): Promise<unknown | null> {
 async function importGlobalControl(): Promise<unknown | null> {
   try {
     // Dynamic import with type assertion for optional dependency
-    const controlModule = await import("reynard-core/composables" as string);
+    const controlModule = await import("reynard-composables" as string);
     return (controlModule as Record<string, unknown>).useAnimationControl;
   } catch (error) {
     console.warn("🦊 ThreeDAnimation: Global animation control not available");

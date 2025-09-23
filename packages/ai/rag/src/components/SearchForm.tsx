@@ -5,7 +5,7 @@
  * for RAG queries.
  */
 import { Button, TextField, Icon } from "reynard-components-core";
-export const SearchForm = props => {
+export const SearchForm = (props: any) => {
   return (
     <div class="search-form">
       <div class="search-input-group">

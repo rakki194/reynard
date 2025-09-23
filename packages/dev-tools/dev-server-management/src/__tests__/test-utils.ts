@@ -5,20 +5,161 @@ import { Command } from "commander";
 // Global Mocks (must be at top level for hoisting)
 // ============================================================================
 
-// Mock Node.js modules
+// Mock Node.js modules with proper implementation
+const mockFiles = new Map<string, string>();
+
+// Set up default config content
+const defaultConfig = JSON.stringify({
+  projects: {
+    "test-project": {
+      name: "Test Project",
+      type: "package",
+      command: "npm run dev",
+      port: 3000,
+      healthCheck: {
+        type: "http",
+        path: "/api/health",
+        timeout: 5000,
+      },
+    },
+  },
+  portRanges: {
+    package: { start: 3000, end: 3009 },
+    example: { start: 3010, end: 3019 },
+    backend: { start: 8000, end: 8009 },
+  },
+  logging: {
+    level: "info",
+    format: "json",
+  },
+});
+
+// Set up default files for all possible paths
+const paths = [
+  "/config.json",
+  "/home/user/.dev-server/config.json", 
+  "config.json",
+  "dev-server-config.json",
+  ".dev-server/config.json"
+];
+
+paths.forEach(path => {
+  mockFiles.set(path, defaultConfig);
+});
+
 vi.mock("node:fs/promises", () => ({
-  readFile: vi.fn(),
-  writeFile: vi.fn(),
-  access: vi.fn(),
+  readFile: vi.fn().mockImplementation(async (path: string) => {
+    const content = mockFiles.get(path);
+    if (content === undefined) {
+      // Throw an error for missing files (simulating file not found)
+      const error = new Error(`ENOENT: no such file or directory, open '${path}'`);
+      (error as any).code = 'ENOENT';
+      throw error;
+    }
+    return content;
+  }),
+  writeFile: vi.fn().mockImplementation(async (path: string, content: string) => {
+    mockFiles.set(path, content);
+  }),
+  access: vi.fn().mockResolvedValue(undefined),
 }));
 
 vi.mock("node:child_process", () => ({
-  spawn: vi.fn().mockReturnValue({
-    pid: 12345,
-    kill: vi.fn(),
-    on: vi.fn(),
-    stdout: { on: vi.fn() },
-    stderr: { on: vi.fn() },
+  spawn: vi.fn().mockImplementation((command, args, options) => {
+    const mockProcess = {
+      pid: 12345,
+      kill: vi.fn().mockImplementation((signal) => {
+        // Simulate process exit
+        if (mockProcess._exitCallback) {
+          mockProcess._exitCallback(0, signal);
+        }
+      }),
+      on: vi.fn().mockImplementation((event, callback) => {
+        // Store the callback for later use
+        if (event === 'exit') {
+          mockProcess._exitCallback = callback;
+        }
+        return mockProcess;
+      }),
+      stdout: { 
+        on: vi.fn(),
+        pipe: vi.fn(),
+        unpipe: vi.fn(),
+        read: vi.fn(),
+        setEncoding: vi.fn(),
+        pause: vi.fn(),
+        resume: vi.fn(),
+        isPaused: vi.fn().mockReturnValue(false),
+        destroy: vi.fn(),
+        destroyed: false,
+        readable: true,
+        readableEncoding: null,
+        readableEnded: false,
+        readableFlowing: true,
+        readableHighWaterMark: 16384,
+        readableLength: 0,
+        readableObjectMode: false,
+        _read: vi.fn(),
+        _readableState: {},
+        once: vi.fn(),
+        emit: vi.fn(),
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        removeAllListeners: vi.fn(),
+        setMaxListeners: vi.fn(),
+        getMaxListeners: vi.fn().mockReturnValue(10),
+        listeners: vi.fn().mockReturnValue([]),
+        rawListeners: vi.fn().mockReturnValue([]),
+        listenerCount: vi.fn().mockReturnValue(0),
+        eventNames: vi.fn().mockReturnValue([]),
+        prependListener: vi.fn(),
+        prependOnceListener: vi.fn(),
+      },
+      stderr: { 
+        on: vi.fn(),
+        pipe: vi.fn(),
+        unpipe: vi.fn(),
+        read: vi.fn(),
+        setEncoding: vi.fn(),
+        pause: vi.fn(),
+        resume: vi.fn(),
+        isPaused: vi.fn().mockReturnValue(false),
+        destroy: vi.fn(),
+        destroyed: false,
+        readable: true,
+        readableEncoding: null,
+        readableEnded: false,
+        readableFlowing: true,
+        readableHighWaterMark: 16384,
+        readableLength: 0,
+        readableObjectMode: false,
+        _read: vi.fn(),
+        _readableState: {},
+        once: vi.fn(),
+        emit: vi.fn(),
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        removeAllListeners: vi.fn(),
+        setMaxListeners: vi.fn(),
+        getMaxListeners: vi.fn().mockReturnValue(10),
+        listeners: vi.fn().mockReturnValue([]),
+        rawListeners: vi.fn().mockReturnValue([]),
+        listenerCount: vi.fn().mockReturnValue(0),
+        eventNames: vi.fn().mockReturnValue([]),
+        prependListener: vi.fn(),
+        prependOnceListener: vi.fn(),
+      },
+      exitCode: null,
+      signalCode: null,
+      spawnfile: command,
+      spawnargs: args || [],
+      connected: true,
+      disconnect: vi.fn(),
+      unref: vi.fn(),
+      ref: vi.fn(),
+      _exitCallback: null,
+    };
+    return mockProcess;
   }),
   exec: vi.fn().mockImplementation((command, callback) => {
     callback?.(null, "output", "");

@@ -5,7 +5,7 @@
  */
 import { Show } from "solid-js";
 import { Select } from "reynard-components-core";
-export const ChunkNavigation = props => {
+export const ChunkNavigation = (props: any) => {
   return (
     <>
       {/* Chunk navigation */}
@@ -15,11 +15,11 @@ export const ChunkNavigation = props => {
           <Select
             value={props.selectedChunk || 0}
             onChange={value => props.onChunkChange(Number(value))}
-            options={props.chunks.map((_, index) => ({
+            options={props.chunks.map((_: any, index: any) => ({
               value: index,
               label: `Chunk ${index + 1}`,
             }))}
-            size="small"
+            size="sm"
           />
           <span class="chunk-info">{props.chunks.length} chunks total</span>
         </div>

@@ -46,23 +46,14 @@ class TwitterScraper(BaseScraper):
     def _check_gallery_dl_available(self) -> bool:
         """Check if gallery-dl is available."""
         try:
-            result = subprocess.run(
-                ["gallery-dl", "--version"],
-                capture_output=True,
-                text=True,
-                timeout=10,
-                check=False,
+            import gallery_dl
+            self.logger.info(f"gallery-dl library available: {gallery_dl.__version__}")
+            return True
+        except ImportError:
+            self.logger.warning(
+                "gallery-dl library not found. Install with: pip install gallery-dl"
             )
-            if result.returncode == 0:
-                self.logger.info(f"gallery-dl version: {result.stdout.strip()}")
-                return True
-        except (subprocess.TimeoutExpired, FileNotFoundError):
-            pass
-
-        self.logger.warning(
-            "gallery-dl not found. Install with: pip install gallery-dl"
-        )
-        return False
+            return False
 
     async def can_handle_url(self, url: str) -> bool:
         """Check if this scraper can handle the given URL."""
@@ -477,35 +468,33 @@ class TwitterScraper(BaseScraper):
             # Create output directory
             os.makedirs(output_dir, exist_ok=True)
 
-            # Run gallery-dl
-            result = subprocess.run(
-                ["gallery-dl", "--directory", output_dir, url],
-                capture_output=True,
-                text=True,
-                timeout=300,
-                check=False,  # 5 minute timeout
-            )
+            # Import gallery-dl library
+            from gallery_dl import job, config
+            
+            # Configure gallery-dl
+            config.set((), "base-directory", output_dir)
+            config.set((), "skip", True)  # Skip existing files
+            config.set((), "retries", 3)
+            config.set((), "timeout", 30)
 
-            if result.returncode == 0:
-                # Find downloaded files
-                downloaded_files = []
-                for root, dirs, files in os.walk(output_dir):
-                    for file in files:
-                        if file.lower().endswith(
-                            (".jpg", ".jpeg", ".png", ".gif", ".mp4", ".webm")
-                        ):
-                            downloaded_files.append(os.path.join(root, file))
+            # Create download job
+            download_job = job.DownloadJob(url)
+            downloaded_files = []
 
-                self.logger.info(
-                    f"Downloaded {len(downloaded_files)} media files from {url}"
-                )
-                return downloaded_files
-            self.logger.error(f"gallery-dl failed: {result.stderr}")
-            return []
+            # Execute download
+            for msg in download_job.run():
+                if msg[0] == job.Message.Url:
+                    # File download message
+                    file_info = msg[1]
+                    filename = file_info.get("filename", "")
+                    if filename:
+                        filepath = os.path.join(output_dir, filename)
+                        if os.path.exists(filepath):
+                            downloaded_files.append(filepath)
 
-        except subprocess.TimeoutExpired:
-            self.logger.error("gallery-dl timeout")
-            return []
+            self.logger.info(f"Downloaded {len(downloaded_files)} media files from {url}")
+            return downloaded_files
+
         except Exception as e:
             self.logger.error(f"Media download failed: {e}")
             return []

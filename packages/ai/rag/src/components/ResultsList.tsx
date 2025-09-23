@@ -6,7 +6,7 @@
  */
 import { For } from "solid-js";
 import { Card } from "reynard-components-core";
-export const ResultsList = props => {
+export const ResultsList = (props: any) => {
   return (
     <div class="results-list">
       <For each={props.results}>

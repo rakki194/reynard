@@ -141,7 +141,10 @@ class TestECSIntegration:
 
         # Test distance calculation using manual calculation
         import math
-        initial_distance = math.sqrt((position.x - 100.0) ** 2 + (position.y - 100.0) ** 2)
+
+        initial_distance = math.sqrt(
+            (position.x - 100.0) ** 2 + (position.y - 100.0) ** 2
+        )
         assert initial_distance > 0
 
         # Run simulation (position won't move without a movement system)

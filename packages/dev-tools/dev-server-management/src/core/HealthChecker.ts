@@ -46,6 +46,40 @@ export class HealthChecker extends EventEmitter {
   }
 
   /**
+   * Start monitoring a project (alias for startHealthCheck)
+   */
+  async startMonitoring(project: string, config: ProjectConfig): Promise<void> {
+    return this.startHealthCheck(project, config);
+  }
+
+  /**
+   * Listen for health status changes
+   */
+  onHealthStatusChange(callback: (project: string, status: HealthStatus) => void): void {
+    this.on("healthStatusChange", callback);
+  }
+
+  /**
+   * Validate health check configuration
+   */
+  validateHealthCheckConfig(config: HealthCheckConfig): boolean {
+    if (!config) return false;
+    if (config.timeout && (config.timeout < 1000 || config.timeout > 60000)) return false;
+    if (config.interval && (config.interval < 5000 || config.interval > 300000)) return false;
+    if (config.type && !["http", "command"].includes(config.type)) return false;
+    if (config.type === "http" && !config.path) return false;
+    if (config.type === "command" && !config.command) return false;
+    return true;
+  }
+
+  /**
+   * Listen for health check events
+   */
+  onHealthCheckEvent(callback: (event: string, data: any) => void): void {
+    this.on("healthCheckEvent", callback);
+  }
+
+  /**
    * Start health checking for a project
    */
   startHealthCheck(project: string, config: ProjectConfig): void {

@@ -3,6 +3,7 @@ Rate Limiting Configuration
 
 This module provides comprehensive rate limiting setup for the FastAPI application
 with specific rules for authentication endpoints and general API usage.
+Now integrated with adaptive rate limiting and centralized security management.
 """
 
 from fastapi import FastAPI, Request
@@ -10,6 +11,9 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 from slowapi.util import get_remote_address
+
+from app.security.adaptive_rate_limiter import adaptive_rate_limiter
+from app.security.security_config import get_security_config
 
 # Rate limiting constants
 DEFAULT_RATE_LIMIT = "100/minute"
@@ -46,6 +50,22 @@ def get_client_identifier(request: Request) -> str:
     return f"{client_ip}:{user_agent_hash}"
 
 
+def get_adaptive_client_identifier(request: Request) -> str:
+    """
+    Get a unique identifier for the client using adaptive rate limiting.
+    Uses the same logic as the adaptive rate limiter for consistency.
+    """
+    # Check for development bypass flag
+    if (
+        hasattr(request.state, "bypass_rate_limiting")
+        and request.state.bypass_rate_limiting
+    ):
+        return "dev-bypass-fenrir-testing"
+    
+    # Use adaptive rate limiter's client identifier
+    return adaptive_rate_limiter._get_client_identifier(request)
+
+
 def setup_rate_limiting(app: FastAPI) -> Limiter:
     """
     Setup comprehensive rate limiting for the FastAPI application.
@@ -56,12 +76,24 @@ def setup_rate_limiting(app: FastAPI) -> Limiter:
     - Registration endpoints: 3 requests per minute
     - Password reset: 2 requests per minute
     - Development bypass: Unlimited (for fenrir testing suite)
+    - Adaptive rate limiting: Based on client behavior and threat levels
     """
-    limiter = Limiter(
-        key_func=get_client_identifier,
-        default_limits=[DEFAULT_RATE_LIMIT],  # General API rate limit
-        storage_uri="memory://",  # Use in-memory storage for simplicity
-    )
+    # Load security configuration
+    config = get_security_config()
+    
+    # Use adaptive rate limiting if enabled
+    if config.adaptive_rate_limiting:
+        limiter = Limiter(
+            key_func=get_adaptive_client_identifier,
+            default_limits=[config.default_rate_limit],
+            storage_uri="memory://",
+        )
+    else:
+        limiter = Limiter(
+            key_func=get_client_identifier,
+            default_limits=[DEFAULT_RATE_LIMIT],
+            storage_uri="memory://",
+        )
 
     # Add special rate limit for development bypass
     # This gives unlimited access to the fenrir testing suite in dev mode

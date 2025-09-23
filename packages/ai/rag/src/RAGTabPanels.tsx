@@ -15,7 +15,7 @@ import { SettingsTab } from "./SettingsTab";
  * @param props Component props
  * @returns JSX element with tab panels
  */
-export function RAGTabPanels(props) {
+export function RAGTabPanels(props: any) {
   return (
     <>
       {/* Search Tab */}

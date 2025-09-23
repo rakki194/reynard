@@ -1,18 +1,55 @@
 /**
- * Gallery-dl Components
+ * Gallery-dl Components Export
  *
- * UI components for gallery download management and progress tracking.
+ * Central export point for all gallery-dl SolidJS components.
  */
 
-export { AIMetadataExtractor } from "./AIMetadataExtractor";
-export { BatchDownloadManager } from "./BatchDownloadManager";
-export { DownloadManager } from "./DownloadManager";
-export { ProgressTracker } from "./ProgressTracker";
-export { UrlValidator } from "./UrlValidator";
+// Main Components
+export { DownloadManager } from './DownloadManager';
+export type { DownloadManagerProps, Download, DownloadQueue } from './DownloadManager';
 
-// Re-export types
-export type { AIMetadataRequest, AIMetadataResult, MetadataExtractionJob } from "./AIMetadataExtractor";
-export type { BatchDownload, BatchDownloadItem, BatchDownloadRequest } from "./BatchDownloadManager";
-export type { Download, DownloadManagerProps, DownloadQueue } from "./DownloadManager";
-export type { ProgressTrackerProps } from "./ProgressTracker";
-export type { UrlValidatorProps } from "./UrlValidator";
+export { ProgressTracker } from './ProgressTracker';
+export type { ProgressTrackerProps } from './ProgressTracker';
+
+export { UrlValidator } from './UrlValidator';
+export type { UrlValidatorProps, ValidationResult } from './UrlValidator';
+
+export { FileList } from './FileList';
+export type { FileListProps, FileItem } from './FileList';
+
+export { ConfigurationPanel } from './ConfigurationPanel';
+export type { ConfigurationPanelProps, GalleryConfig } from './ConfigurationPanel';
+
+export { AIMetadataExtractor } from './AIMetadataExtractor';
+export type { AIMetadataExtractorProps, MetadataJob, MetadataResult } from './AIMetadataExtractor';
+
+export { BatchDownloadManager } from './BatchDownloadManager';
+export type { BatchDownloadManagerProps, BatchItem, BatchDownload, BatchResult } from './BatchDownloadManager';
+
+export { ResultsDisplay } from './ResultsDisplay';
+export type { ResultsDisplayProps, DownloadResult, DownloadedFile } from './ResultsDisplay';
+
+// Composables
+export { useGalleryWebSocket } from '../composables/useGalleryWebSocket';
+export type { UseGalleryWebSocketReturn, DownloadEvent, WebSocketConfig } from '../composables/useGalleryWebSocket';
+
+// Services
+export { GalleryService } from '../services/GalleryService';
+export type { 
+  GalleryServiceConfig,
+  DownloadRequest,
+  DownloadResponse,
+  ExtractorInfo,
+  ValidationResponse,
+  BatchDownloadRequest,
+  BatchDownloadResponse
+} from '../services/GalleryService';
+
+// Types
+export type {
+  DownloadStatus,
+  ExtractorCategory,
+  PostProcessorType,
+  FileType,
+  DownloadOptions
+} from '../types';

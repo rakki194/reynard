@@ -3,16 +3,15 @@
  *
  * Filter and sort controls for search history.
  */
-import { Button, TextField, Select } from "reynard-components-core";
-import { getIcon } from "../utils/searchHistoryUtils";
-export const SearchHistoryFilters = props => {
+import { Button, TextField, Select, Icon } from "reynard-components-core";
+export const SearchHistoryFilters = (props: any) => {
   return (
     <div class="history-filters">
       <TextField
         placeholder="Search history..."
         value={props.searchQuery}
         onChange={props.onSearchQueryChange}
-        leftIcon={getIcon("search")}
+        leftIcon={<Icon name="search" />}
         size="sm"
       />
 
@@ -44,7 +43,7 @@ export const SearchHistoryFilters = props => {
         variant="ghost"
         size="sm"
         onClick={() => props.onSortOrderChange(props.sortOrder === "asc" ? "desc" : "asc")}
-        leftIcon={getIcon(props.sortOrder === "asc" ? "arrow-up" : "arrow-down")}
+        leftIcon={<Icon name={props.sortOrder === "asc" ? "arrow-up" : "arrow-down"} />}
       >
         {props.sortOrder === "asc" ? "Ascending" : "Descending"}
       </Button>
