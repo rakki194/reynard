@@ -103,6 +103,13 @@ export class ProcessManager extends EventEmitter {
   }
 
   /**
+   * Get process information (alias for getProcess)
+   */
+  getProcessInfo(project: string): ProcessInfo | undefined {
+    return this.processes.get(project);
+  }
+
+  /**
    * Get all processes
    */
   getAllProcesses(): Map<string, ProcessInfo> {
@@ -123,6 +130,27 @@ export class ProcessManager extends EventEmitter {
   getProcessStatus(project: string): ServerStatus | undefined {
     const processInfo = this.processes.get(project);
     return processInfo?.status;
+  }
+
+  /**
+   * Listen for process status changes
+   */
+  onProcessStatusChange(callback: (project: string, status: ServerStatus) => void): void {
+    this.on("processStatusChange", callback);
+  }
+
+  /**
+   * Listen for process output
+   */
+  onProcessOutput(callback: (project: string, output: string, type: "stdout" | "stderr") => void): void {
+    this.on("processOutput", callback);
+  }
+
+  /**
+   * Listen for process errors
+   */
+  onProcessError(callback: (project: string, error: Error) => void): void {
+    this.on("processError", callback);
   }
 
   /**

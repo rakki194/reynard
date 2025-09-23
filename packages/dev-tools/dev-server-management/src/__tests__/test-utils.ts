@@ -13,8 +13,17 @@ vi.mock("node:fs/promises", () => ({
 }));
 
 vi.mock("node:child_process", () => ({
-  spawn: vi.fn(),
-  exec: vi.fn(),
+  spawn: vi.fn().mockReturnValue({
+    pid: 12345,
+    kill: vi.fn(),
+    on: vi.fn(),
+    stdout: { on: vi.fn() },
+    stderr: { on: vi.fn() },
+  }),
+  exec: vi.fn().mockImplementation((command, callback) => {
+    callback?.(null, "output", "");
+  }),
+  execSync: vi.fn().mockReturnValue("output"),
 }));
 
 vi.mock("node:net", () => ({
@@ -52,10 +61,37 @@ export const createMockFileSystem = () => {
     setFile: (path: string, content: string) => {
       files.set(path, content);
     },
+    setFileContent: (path: string, content: string) => {
+      files.set(path, content);
+    },
     readFile: vi.fn().mockImplementation(async (path: string) => {
       const content = files.get(path);
       if (content === undefined) {
-        throw new Error(`File not found: ${path}`);
+        // Return default config for missing files
+        return JSON.stringify({
+          projects: {
+            "test-project": {
+              name: "Test Project",
+              type: "package",
+              command: "npm run dev",
+              port: 3000,
+              healthCheck: {
+                type: "http",
+                path: "/api/health",
+                timeout: 5000,
+              },
+            },
+          },
+          portRanges: {
+            package: { start: 3000, end: 3009 },
+            example: { start: 3010, end: 3019 },
+            backend: { start: 8000, end: 8009 },
+          },
+          logging: {
+            level: "info",
+            format: "json",
+          },
+        });
       }
       return content;
     }),
@@ -84,17 +120,34 @@ export const createMockProcess = () => ({
   }),
 });
 
-export const createMockNetwork = () => ({
-  createServer: vi.fn().mockImplementation(callback => ({
-    listen: vi.fn().mockImplementation((port, callback) => {
-      callback?.();
-      return { close: vi.fn() };
+export const createMockNetwork = () => {
+  const portStatus = new Map<number, boolean>();
+  
+  return {
+    createServer: vi.fn().mockImplementation(callback => ({
+      listen: vi.fn().mockImplementation((port, callback) => {
+        callback?.();
+        return { close: vi.fn() };
+      }),
+      close: vi.fn(),
+    })),
+    setPortInUse: (port: number, inUse: boolean) => {
+      portStatus.set(port, inUse);
+    },
+    isPortInUse: vi.fn().mockImplementation((port: number) => {
+      return portStatus.get(port) ?? false;
     }),
-    close: vi.fn(),
-  })),
-  setPortInUse: vi.fn(),
-  isPortInUse: vi.fn().mockReturnValue(false),
-});
+    clearPortStatus: () => {
+      portStatus.clear();
+    },
+    fetch: vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      text: () => Promise.resolve("OK"),
+      json: () => Promise.resolve({ status: "healthy" }),
+    }),
+  };
+};
 
 export const createMockLogger = () => ({
   info: vi.fn(),

@@ -16,6 +16,9 @@ import {
 } from "./test-utils.js";
 import type { HealthCheckConfig, HealthCheckResult, ServerHealth } from "../types/index.js";
 
+// Mock global fetch
+global.fetch = vi.fn();
+
 describe("HealthChecker", () => {
   let healthChecker: HealthChecker;
   let mockNetwork: ReturnType<typeof setupTestEnvironment>["mockNetwork"];
@@ -28,6 +31,14 @@ describe("HealthChecker", () => {
     const { spawn, exec } = await import("node:child_process");
     vi.mocked(spawn).mockImplementation(testEnv.mockProcess.spawn);
     vi.mocked(exec).mockImplementation(testEnv.mockProcess.exec);
+    
+    // Set up fetch mock
+    vi.mocked(global.fetch).mockResolvedValue({
+      ok: true,
+      status: 200,
+      text: () => Promise.resolve("OK"),
+      json: () => Promise.resolve({ status: "healthy" }),
+    } as Response);
 
     healthChecker = new HealthChecker();
   });

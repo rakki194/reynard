@@ -8,6 +8,18 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { Command } from "commander";
 import {
+  createStartCommand,
+  createStopCommand,
+  createRestartCommand,
+  createStatusCommand,
+  createListCommand,
+  createHealthCommand,
+  createConfigCommand,
+  createStatsCommand,
+  createStartMultipleCommand,
+  createStopAllCommand,
+} from "../cli/command-factory.js";
+import {
   handleStart,
   handleStop,
   handleRestart,
@@ -43,7 +55,7 @@ const mockDevServerManager = {
   cleanup: vi.fn(),
 };
 
-vi.mock("../core/DevServerManager.js", () => ({
+vi.mock("../../core/DevServerManager.js", () => ({
   DevServerManager: vi.fn().mockImplementation(() => mockDevServerManager),
 }));
 

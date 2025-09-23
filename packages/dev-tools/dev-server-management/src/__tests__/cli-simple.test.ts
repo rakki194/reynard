@@ -35,7 +35,7 @@ const mockDevServerManager = {
   cleanup: vi.fn(),
 };
 
-vi.mock("../core/DevServerManager.js", () => ({
+vi.mock("../../core/DevServerManager.js", () => ({
   DevServerManager: vi.fn().mockImplementation(() => mockDevServerManager),
 }));
 

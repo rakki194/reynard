@@ -11,6 +11,10 @@ export const handleConfig = async (options: { validate?: boolean; migrate?: stri
     console.log(JSON.stringify(config, null, 2));
   } catch (error) {
     console.error(`Failed to get config:`, error);
+    // In test environment, throw instead of exiting
+    if (process.env.NODE_ENV === 'test' || process.env.VITEST === 'true') {
+      throw error;
+    }
     process.exit(1);
   }
 };

@@ -10,6 +10,10 @@ export const handleStartMultiple = async (globalOptions: GlobalOptions) => {
     // Implementation for interactive selection would go here
   } catch (error) {
     console.error(`Failed to start projects:`, error);
+    // In test environment, throw instead of exiting
+    if (process.env.NODE_ENV === 'test' || process.env.VITEST === 'true') {
+      throw error;
+    }
     process.exit(1);
   }
 };

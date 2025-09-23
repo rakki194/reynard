@@ -13,6 +13,10 @@ export const handleStats = async (options: { json?: boolean }, globalOptions: Gl
     console.log(`Stopped projects: ${stats.totalProjects - stats.runningProjects}`);
   } catch (error) {
     console.error(`Failed to get stats:`, error);
+    // In test environment, throw instead of exiting
+    if (process.env.NODE_ENV === 'test' || process.env.VITEST === 'true') {
+      throw error;
+    }
     process.exit(1);
   }
 };

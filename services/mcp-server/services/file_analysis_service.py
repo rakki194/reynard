@@ -186,7 +186,5 @@ class FileAnalysisService:
 
         # Delegate to the monolith analysis service for consistency
         return await monolith_analysis.analyze_file_metrics(
-            file_path=file_path,
-            exclude_comments=True,
-            include_ast=include_ast_analysis
+            file_path=file_path, exclude_comments=True, include_ast=include_ast_analysis
         )

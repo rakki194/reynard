@@ -64,8 +64,9 @@ class TestLifecycleComponent:
 
         assert lifecycle.age == 0.0
         assert lifecycle.maturity_age == 18.0
-        assert lifecycle.is_mature is False
-        assert lifecycle.is_alive is True
+        assert lifecycle.is_mature() is False
+        assert lifecycle.life_stage == "infant"
+        assert lifecycle.max_age == 100.0
 
 
 class TestLineageComponent:
@@ -75,10 +76,11 @@ class TestLineageComponent:
         """Test lineage component creation."""
         lineage = LineageComponent()
 
-        assert lineage.parent1_id is None
-        assert lineage.parent2_id is None
-        assert len(lineage.children_ids) == 0
-        assert lineage.generation == 0
+        assert len(lineage.parents) == 0
+        assert len(lineage.children) == 0
+        assert len(lineage.ancestors) == 0
+        assert len(lineage.descendants) == 0
+        assert lineage.generation == 1
 
 
 class TestReproductionComponent:
@@ -88,10 +90,11 @@ class TestReproductionComponent:
         """Test reproduction component creation."""
         reproduction = ReproductionComponent()
 
-        assert reproduction.is_ready_to_breed is False
-        assert reproduction.last_breeding_time == 0.0
-        assert reproduction.breeding_cooldown == 24.0
+        assert reproduction.can_reproduce is False
+        assert reproduction.reproduction_cooldown == 0.0
+        assert reproduction.max_cooldown == 30.0
         assert reproduction.offspring_count == 0
+        assert reproduction.max_offspring == 5
 
 
 class TestTraitComponent:
@@ -101,13 +104,11 @@ class TestTraitComponent:
         """Test trait component creation."""
         traits = TraitComponent()
 
-        assert len(traits.personality_traits) == 16
-        assert len(traits.physical_traits) == 12
-        assert len(traits.ability_traits) == 16
-
-        # Check that all traits are initialized with default values
-        for trait in traits.personality_traits.values():
-            assert 0.0 <= trait <= 1.0
+        assert isinstance(traits.personality, dict)
+        assert isinstance(traits.physical, dict)
+        assert isinstance(traits.abilities, dict)
+        assert traits.spirit == "fox"
+        assert traits.style == "foundation"
 
 
 class TestSocialComponent:
@@ -117,11 +118,10 @@ class TestSocialComponent:
         """Test social component creation."""
         social = SocialComponent()
 
-        assert social.social_level == 0.5
-        assert social.charisma == 0.5
-        assert social.leadership == 0.5
-        assert len(social.relationships) == 0
-        assert social.group_id is None
+        assert len(social.social_network) == 0
+        assert len(social.group_memberships) == 0
+        assert len(social.leadership_roles) == 0
+        assert social.social_influence == 0.0
 
 
 class TestGenderComponent:
@@ -129,13 +129,15 @@ class TestGenderComponent:
 
     def test_gender_component_creation(self):
         """Test gender component creation."""
-        gender = GenderComponent()
+        from backend.app.ecs.components.gender import GenderIdentity, GenderProfile
 
-        assert gender.identity is not None
-        assert gender.expression is not None
-        assert gender.attraction is not None
-        assert gender.pronouns is not None
-        assert gender.preferences is not None
+        profile = GenderProfile(primary_identity=GenderIdentity.NON_BINARY)
+        gender = GenderComponent(profile)
+
+        assert gender.profile is not None
+        assert gender.profile.primary_identity == GenderIdentity.NON_BINARY
+        assert gender.gender_energy == 1.0
+        assert gender.expression_confidence == 1.0
 
 
 class TestMemoryComponent:
@@ -147,7 +149,9 @@ class TestMemoryComponent:
 
         assert len(memory.memories) == 0
         assert memory.memory_capacity == 1000
-        assert memory.retention_rate == 0.95
+        assert memory.memory_decay_rate == 0.01
+        assert memory.importance_threshold == 0.5
+        assert memory.consolidation_threshold == 0.8
 
 
 class TestKnowledgeComponent:
@@ -158,9 +162,9 @@ class TestKnowledgeComponent:
         knowledge = KnowledgeComponent()
 
         assert len(knowledge.knowledge) == 0
-        assert knowledge.learning_rate == 0.1
-        assert knowledge.retention_rate == 0.9
-        assert len(knowledge.learning_opportunities) == 0
+        assert knowledge.learning_rate == 1.0
+        assert knowledge.teaching_effectiveness == 1.0
+        assert knowledge.knowledge_capacity == 500
 
 
 class TestInteractionComponent:
@@ -172,5 +176,6 @@ class TestInteractionComponent:
 
         assert len(interaction.interactions) == 0
         assert len(interaction.relationships) == 0
-        assert interaction.communication_style == "neutral"
-        assert interaction.social_preference == "balanced"
+        assert interaction.preferred_communication_style.value == "casual"
+        assert interaction.social_energy == 1.0
+        assert interaction.max_social_energy == 1.0

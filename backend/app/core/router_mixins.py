@@ -15,6 +15,7 @@ from sse_starlette import EventSourceResponse
 
 from .error_handler import service_error_handler
 from .exceptions import ValidationError
+from .streaming_mixin import StreamingResponseMixin as EnhancedStreamingResponseMixin
 
 logger = logging.getLogger(__name__)
 
@@ -85,63 +86,8 @@ class ConfigEndpointMixin:
                 )
 
 
-class StreamingResponseMixin:
-    """
-    Mixin that provides streaming response capabilities.
-    """
-
-    def setup_streaming_endpoints(self) -> None:
-        """Setup streaming response endpoints."""
-
-        @self.router.get("/stream")
-        async def stream_data():
-            """Stream data from the service."""
-            try:
-                service = self.get_service()
-                if hasattr(service, "stream_data"):
-                    return EventSourceResponse(service.stream_data())
-                raise HTTPException(
-                    status_code=501, detail="Streaming not supported by this service"
-                )
-            except Exception as e:
-                logger.error(f"Streaming failed for {self.service_name}: {e}")
-                return service_error_handler.handle_service_error(
-                    operation="stream_data", error=e, service_name=self.service_name
-                )
-
-    def create_streaming_response(
-        self, data_generator, content_type: str = "text/plain"
-    ) -> StreamingResponse:
-        """
-        Create a streaming response.
-
-        Args:
-            data_generator: Generator that yields data
-            content_type: Content type for the response
-
-        Returns:
-            StreamingResponse: The streaming response
-        """
-        return StreamingResponse(
-            data_generator,
-            media_type=content_type,
-            headers={
-                "Cache-Control": "no-cache",
-                "Connection": "keep-alive",
-            },
-        )
-
-    def create_sse_response(self, event_generator) -> EventSourceResponse:
-        """
-        Create a Server-Sent Events response.
-
-        Args:
-            event_generator: Generator that yields SSE events
-
-        Returns:
-            EventSourceResponse: The SSE response
-        """
-        return EventSourceResponse(event_generator)
+# Use the enhanced streaming mixin
+StreamingResponseMixin = EnhancedStreamingResponseMixin
 
 
 class FileUploadMixin:

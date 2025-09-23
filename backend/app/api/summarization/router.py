@@ -1,12 +1,11 @@
 """
-Main router for summarization API endpoints.
+🦊 Reynard Summarization Router
+==============================
+
+Main router for summarization API endpoints with enterprise-grade patterns.
 """
 
-from fastapi import APIRouter
+from .endpoints import summarization_router
 
-from .endpoints import router as endpoints_router
-
-router = APIRouter(prefix="/api/summarization", tags=["summarization"])
-
-# Include endpoint routers
-router.include_router(endpoints_router)
+# Export the enhanced router
+router = summarization_router.get_router()

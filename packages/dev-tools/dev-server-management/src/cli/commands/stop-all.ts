@@ -11,6 +11,10 @@ export const handleStopAll = async (options: { force?: boolean }, globalOptions:
     console.log("All projects stopped successfully");
   } catch (error) {
     console.error(`Failed to stop all projects:`, error);
+    // In test environment, throw instead of exiting
+    if (process.env.NODE_ENV === 'test' || process.env.VITEST === 'true') {
+      throw error;
+    }
     process.exit(1);
   }
 };

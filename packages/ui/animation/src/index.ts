@@ -18,6 +18,8 @@ export * from "./engines";
 export * from "./smart-imports";
 export * from "./state";
 export * from "./color";
+export * from "./3d";
+export * from "./global";
 // Note: utils exports are included in composables to avoid conflicts
 
 // Main types
@@ -121,3 +123,87 @@ export {
   removeColorAnimationClasses,
   cleanupColorAnimationStyles
 } from "./color/ColorFallbackUtils";
+
+// 3D animation exports
+export { 
+  interpolateVector3,
+  interpolateEmbeddingPoint,
+  getInterpolatedClusterPoints,
+  getInterpolatedPointPositions,
+  executeClusterAnimation,
+  executePointAnimation,
+  executeCameraAnimation,
+  createClusterAnimationInstance,
+  createPointAnimationInstance,
+  createCameraAnimationInstance,
+  calculateDistance3D,
+  normalizeVector3,
+  calculateCenterPoint
+} from "./3d/ThreeDAnimationUtils";
+export { 
+  createThreeDAnimationSystem,
+  getThreeDAnimationSystem,
+  resetThreeDAnimationSystem
+} from "./3d/ThreeDAnimationSystem";
+export { 
+  useThreeDAnimation,
+  useClusterAnimation,
+  usePointAnimation,
+  useCameraAnimation,
+  useThreeDVisualization
+} from "./3d/useThreeDAnimation";
+export { 
+  apply3DPointFallback,
+  apply3DClusterFallback,
+  apply3DCameraFallback,
+  apply3DRotationFallback,
+  apply3DScaleFallback,
+  apply3DTranslationFallback,
+  applyImmediate3DTransform,
+  create3DAnimationCSS,
+  apply3DAnimationCSS,
+  remove3DAnimationClasses,
+  cleanup3DAnimationStyles
+} from "./3d/ThreeDFallbackUtils";
+
+// Global animation exports
+export { 
+  DEFAULT_GLOBAL_ANIMATION_CONFIG,
+  PERFORMANCE_ANIMATION_CONFIG,
+  ACCESSIBILITY_ANIMATION_CONFIG,
+  DISABLED_ANIMATION_CONFIG,
+  detectSystemPreferences,
+  createConfigFromPreferences,
+  validateConfig,
+  mergeConfigs,
+  createPersistence,
+  shouldDisableAnimations,
+  getAnimationEngine,
+  CONFIG_PRESETS,
+  getConfigPreset
+} from "./global/GlobalAnimationConfig";
+export { 
+  GlobalAnimationProvider,
+  useGlobalAnimationContext,
+  useGlobalAnimationState,
+  useGlobalAnimationControls,
+  useShouldDisableAnimations,
+  useAnimationEngine,
+  usePackageAvailability
+} from "./global/useGlobalAnimationContext";
+export { 
+  GlobalAnimationControlSystem,
+  GlobalAnimationUtils
+} from "./global/GlobalAnimationControls";
+export { 
+  GlobalAnimationDisableUtils,
+  getGlobalAnimationDisableUtils,
+  resetGlobalAnimationDisableUtils,
+  GlobalAnimationDisableFunctions,
+  AnimationDisableTesting
+} from "./global/GlobalAnimationDisableUtils";
+export { 
+  GlobalAnimationIntegration,
+  GlobalAnimationIntegrationUtils,
+  useGlobalAnimationIntegration
+} from "./global/GlobalAnimationIntegration";

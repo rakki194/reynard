@@ -25,12 +25,11 @@ class TestComponent(Component):
 class TestSystem(System):
     """Test system for testing purposes."""
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, world: ECSWorld):
+        super().__init__(world)
         self.update_count = 0
-        self.enabled = True
 
-    def update(self, world: ECSWorld, delta_time: float) -> None:
+    def update(self, delta_time: float) -> None:
         """Update the system."""
         self.update_count += 1
 
@@ -76,7 +75,7 @@ class TestEntity:
         assert entity.has_component(TestComponent)
 
 
-class TestComponent:
+class TestComponentClass:
     """Test Component class."""
 
     def test_component_creation(self):
@@ -90,23 +89,24 @@ class TestComponent:
         assert isinstance(component, Component)
 
 
-class TestSystem:
+class TestSystemClass:
     """Test System class."""
 
     def test_system_creation(self):
         """Test system creation."""
-        system = TestSystem()
+        world = ECSWorld()
+        system = TestSystem(world)
         assert system.update_count == 0
 
     def test_system_update(self):
         """Test system update."""
-        system = TestSystem()
         world = ECSWorld()
+        system = TestSystem(world)
 
-        system.update(world, 1.0)
+        system.update(1.0)
         assert system.update_count == 1
 
-        system.update(world, 1.0)
+        system.update(1.0)
         assert system.update_count == 2
 
 
@@ -141,7 +141,7 @@ class TestECSWorld:
     def test_world_add_system(self):
         """Test adding systems to world."""
         world = ECSWorld()
-        system = TestSystem()
+        system = TestSystem(world)
 
         world.add_system(system)
         assert len(world.systems) == 1
@@ -150,7 +150,7 @@ class TestECSWorld:
     def test_world_remove_system(self):
         """Test removing systems from world."""
         world = ECSWorld()
-        system = TestSystem()
+        system = TestSystem(world)
 
         world.add_system(system)
         assert len(world.systems) == 1
@@ -161,7 +161,7 @@ class TestECSWorld:
     def test_world_update(self):
         """Test world update."""
         world = ECSWorld()
-        system = TestSystem()
+        system = TestSystem(world)
 
         world.add_system(system)
         world.update(1.0)

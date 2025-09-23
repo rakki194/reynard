@@ -22,6 +22,10 @@ export const handleStatus = async (
     }
   } catch (error) {
     console.error(`Failed to get status:`, error);
+    // In test environment, throw instead of exiting
+    if (process.env.NODE_ENV === 'test' || process.env.VITEST === 'true') {
+      throw error;
+    }
     process.exit(1);
   }
 };

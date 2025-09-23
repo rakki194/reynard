@@ -65,8 +65,8 @@ class TestAgentWorld:
 
         lineage = offspring.get_component(LineageComponent)
         assert lineage is not None
-        assert lineage.parent1_id == "parent1"
-        assert lineage.parent2_id == "parent2"
+        assert "parent1" in lineage.parents
+        assert "parent2" in lineage.parents
 
     def test_agent_world_find_compatible_mates(self):
         """Test finding compatible mates for an agent."""
@@ -95,11 +95,13 @@ class TestAgentWorld:
         compatibility = world.analyze_genetic_compatibility("agent1", "agent2")
 
         assert compatibility is not None
-        assert "compatibility_score" in compatibility
-        assert "analysis" in compatibility
+        assert "overall_compatibility" in compatibility
+        assert "personality_similarity" in compatibility
+        assert "physical_similarity" in compatibility
+        assert "ability_similarity" in compatibility
         assert "recommendation" in compatibility
 
-        score = compatibility["compatibility_score"]
+        score = compatibility["overall_compatibility"]
         assert 0.0 <= score <= 1.0
 
     def test_agent_world_get_agent_lineage(self):
@@ -139,7 +141,7 @@ class TestAgentWorld:
 
         # Check that the agent still exists and systems have run
         assert len(world.entities) == 1
-        assert agent in world.entities
+        assert agent.id in world.entities
 
     def test_agent_world_get_world_stats(self):
         """Test getting world statistics."""
@@ -154,8 +156,9 @@ class TestAgentWorld:
 
         assert stats is not None
         assert "total_agents" in stats
-        assert "mature_agents" in stats
-        assert "breeding_pairs" in stats
-        assert "total_offspring" in stats
+        assert "generation_distribution" in stats
+        assert "spirit_distribution" in stats
+        assert "systems_active" in stats
+        assert "current_time" in stats
 
         assert stats["total_agents"] == 2

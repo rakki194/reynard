@@ -39,6 +39,13 @@ export class HealthChecker extends EventEmitter {
   }
 
   /**
+   * Check health for a project (alias for performHealthCheck)
+   */
+  async checkHealth(project: string, config: ProjectConfig): Promise<HealthCheckResult> {
+    return this.performHealthCheck(project, config);
+  }
+
+  /**
    * Start health checking for a project
    */
   startHealthCheck(project: string, config: ProjectConfig): void {

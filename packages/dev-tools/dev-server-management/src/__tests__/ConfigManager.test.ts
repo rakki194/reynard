@@ -18,11 +18,62 @@ import {
 } from "./test-utils.js";
 import type { DevServerConfig, ProjectConfig } from "../types/index.js";
 
-// Mock the file system module
+// Mock the file system module with hoisted setup
+vi.hoisted(() => {
+  // Create a mock file system that will be used by all tests
+  const mockFiles = new Map<string, string>();
+  
+  // Set up default config content
+  const defaultConfig = JSON.stringify({
+    projects: {
+      "test-project": {
+        name: "Test Project",
+        type: "package",
+        command: "npm run dev",
+        port: 3000,
+        healthCheck: {
+          type: "http",
+          path: "/api/health",
+          timeout: 5000,
+        },
+      },
+    },
+    portRanges: {
+      package: { start: 3000, end: 3009 },
+      example: { start: 3010, end: 3019 },
+      backend: { start: 8000, end: 8009 },
+    },
+    logging: {
+      level: "info",
+      format: "json",
+    },
+  });
+  
+  // Set up default files
+  mockFiles.set("/config.json", defaultConfig);
+  mockFiles.set("/home/user/.dev-server/config.json", defaultConfig);
+  mockFiles.set("test-config.json", defaultConfig);
+  mockFiles.set("config.json", defaultConfig);
+  
+  // Store the mock files globally for access in tests
+  (global as any).__mockFiles = mockFiles;
+});
+
 vi.mock("node:fs/promises", () => ({
-  readFile: vi.fn(),
-  writeFile: vi.fn(),
-  access: vi.fn(),
+  readFile: vi.fn().mockImplementation(async (path: string) => {
+    const mockFiles = (global as any).__mockFiles;
+    return mockFiles?.get(path) || JSON.stringify({
+      projects: {},
+      portRanges: {
+        package: { start: 3000, end: 3009 },
+        example: { start: 3010, end: 3019 },
+        backend: { start: 8000, end: 8009 },
+      },
+      logging: { level: "info", format: "json" },
+    });
+  }),
+  writeFile: vi.fn().mockResolvedValue(undefined),
+  access: vi.fn().mockResolvedValue(undefined),
 }));
 
 describe("ConfigManager", () => {
@@ -32,6 +83,19 @@ describe("ConfigManager", () => {
   beforeEach(async () => {
     // Create mock file system
     mockFS = createMockFileSystem();
+    
+    // Set up default config file content for all possible paths
+    const defaultConfig = JSON.stringify(createMockProjectConfig());
+    mockFS.setFileContent("/config.json", defaultConfig);
+    mockFS.setFileContent("/home/user/.dev-server/config.json", defaultConfig);
+    mockFS.setFileContent("test-config.json", defaultConfig);
+    mockFS.setFileContent("config.json", defaultConfig);
+    
+    // Connect the mock to the actual module with a simple direct mock
+    const fsPromises = await import("node:fs/promises");
+    vi.mocked(fsPromises.readFile).mockResolvedValue(defaultConfig);
+    vi.mocked(fsPromises.writeFile).mockResolvedValue();
+    vi.mocked(fsPromises.access).mockResolvedValue();
 
     // Set up default config file
     mockFS.setFile(

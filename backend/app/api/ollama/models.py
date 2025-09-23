@@ -40,9 +40,10 @@ Author: Reynard Development Team
 Version: 1.0.0
 """
 
+import re
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
 class OllamaChatRequest(BaseModel):
@@ -78,6 +79,165 @@ class OllamaChatRequest(BaseModel):
         None, description="Available tools for the assistant"
     )
     context: dict[str, Any] | None = Field(None, description="Additional context")
+
+    @field_validator("message")
+    @classmethod
+    def validate_message(cls, v: str) -> str:
+        """Validate message content for security and quality."""
+        if not v or not v.strip():
+            raise ValueError("Message cannot be empty or whitespace only")
+
+        # Check for potential injection attempts
+        dangerous_patterns = [
+            r"<script[^>]*>.*?</script>",  # Script tags
+            r"javascript:",  # JavaScript protocol
+            r"data:text/html",  # Data URLs
+            r"vbscript:",  # VBScript protocol
+            r"on\w+\s*=",  # Event handlers
+        ]
+
+        for pattern in dangerous_patterns:
+            if re.search(pattern, v, re.IGNORECASE):
+                raise ValueError(
+                    f"Message contains potentially dangerous content: {pattern}"
+                )
+
+        # Check for excessive repetition (potential spam)
+        words = v.split()
+        if len(words) > 10:
+            word_counts = {}
+            for word in words:
+                word_counts[word] = word_counts.get(word, 0) + 1
+
+            # Check if any word appears more than 30% of the time
+            max_repetition = max(word_counts.values()) if word_counts else 0
+            if max_repetition > len(words) * 0.3:
+                raise ValueError("Message contains excessive repetition")
+
+        return v.strip()
+
+    @field_validator("model")
+    @classmethod
+    def validate_model(cls, v: str) -> str:
+        """Validate model name format and safety."""
+        if not v or not v.strip():
+            raise ValueError("Model name cannot be empty")
+
+        # Check for valid model name format (alphanumeric, colon, dash, underscore, dot)
+        if not re.match(r"^[a-zA-Z0-9:._-]+$", v):
+            raise ValueError("Model name contains invalid characters")
+
+        # Check for reasonable length
+        if len(v) > 100:
+            raise ValueError("Model name is too long")
+
+        return v.strip()
+
+    @field_validator("system_prompt")
+    @classmethod
+    def validate_system_prompt(cls, v: str | None) -> str | None:
+        """Validate system prompt content."""
+        if v is None:
+            return v
+
+        if not v.strip():
+            raise ValueError("System prompt cannot be empty or whitespace only")
+
+        # Check for reasonable length
+        if len(v) > 50000:  # 50KB limit
+            raise ValueError("System prompt is too long")
+
+        # Check for dangerous patterns
+        dangerous_patterns = [
+            r"<script[^>]*>.*?</script>",
+            r"javascript:",
+            r"data:text/html",
+            r"vbscript:",
+        ]
+
+        for pattern in dangerous_patterns:
+            if re.search(pattern, v, re.IGNORECASE):
+                raise ValueError(
+                    f"System prompt contains potentially dangerous content: {pattern}"
+                )
+
+        return v.strip()
+
+    @field_validator("tools")
+    @classmethod
+    def validate_tools(
+        cls, v: list[dict[str, Any]] | None
+    ) -> list[dict[str, Any]] | None:
+        """Validate tools configuration."""
+        if v is None:
+            return v
+
+        if len(v) > 50:  # Reasonable limit on number of tools
+            raise ValueError("Too many tools provided (max 50)")
+
+        for i, tool in enumerate(v):
+            if not isinstance(tool, dict):
+                raise ValueError(f"Tool {i} must be a dictionary")
+
+            # Check required tool fields
+            if "name" not in tool:
+                raise ValueError(f"Tool {i} missing required 'name' field")
+
+            if not isinstance(tool["name"], str) or not tool["name"].strip():
+                raise ValueError(f"Tool {i} name must be a non-empty string")
+
+            # Validate tool name format
+            if not re.match(r"^[a-zA-Z0-9_-]+$", tool["name"]):
+                raise ValueError(f"Tool {i} name contains invalid characters")
+
+            # Check for reasonable tool size
+            tool_str = str(tool)
+            if len(tool_str) > 10000:  # 10KB per tool
+                raise ValueError(f"Tool {i} is too large")
+
+        return v
+
+    @field_validator("context")
+    @classmethod
+    def validate_context(cls, v: dict[str, Any] | None) -> dict[str, Any] | None:
+        """Validate context data."""
+        if v is None:
+            return v
+
+        # Check for reasonable context size
+        context_str = str(v)
+        if len(context_str) > 100000:  # 100KB limit
+            raise ValueError("Context data is too large")
+
+        # Check for reasonable number of keys
+        if len(v) > 100:
+            raise ValueError("Too many context keys (max 100)")
+
+        # Validate key names
+        for key in v.keys():
+            if not isinstance(key, str):
+                raise ValueError("Context keys must be strings")
+            if not re.match(r"^[a-zA-Z0-9_-]+$", key):
+                raise ValueError(f"Context key '{key}' contains invalid characters")
+
+        return v
+
+    @model_validator(mode="after")
+    def validate_request_consistency(self) -> "OllamaChatRequest":
+        """Validate overall request consistency."""
+        # Check if max_tokens is reasonable for the message length
+        message_text = getattr(self, "message", "")
+        if message_text:
+            estimated_tokens = len(message_text.split()) * 1.3  # Rough estimation
+            if self.max_tokens < estimated_tokens * 0.5:
+                raise ValueError("max_tokens may be too low for the message length")
+
+        # Check if temperature and max_tokens combination makes sense
+        if self.temperature > 1.5 and self.max_tokens > 4000:
+            # High temperature with high token count might be inefficient
+            pass  # Just a warning, not an error
+
+        return self
 
 
 class OllamaChatResponse(BaseModel):
@@ -125,7 +285,7 @@ class OllamaModelInfo(BaseModel):
 
 
 class OllamaAssistantRequest(BaseModel):
-    """Request model for ReynardAssistant."""
+    """Request model for ReynardAssistant with comprehensive validation."""
 
     message: str = Field(
         ..., description="User message", min_length=1, max_length=10000
@@ -141,6 +301,105 @@ class OllamaAssistantRequest(BaseModel):
     stream: bool = Field(True, description="Enable streaming response")
     context: dict[str, Any] | None = Field(None, description="Additional context")
     tools_enabled: bool = Field(True, description="Enable tool calling")
+
+    @field_validator("message")
+    @classmethod
+    def validate_message(cls, v: str) -> str:
+        """Validate message content for security and quality."""
+        if not v or not v.strip():
+            raise ValueError("Message cannot be empty or whitespace only")
+
+        # Check for potential injection attempts
+        dangerous_patterns = [
+            r"<script[^>]*>.*?</script>",  # Script tags
+            r"javascript:",  # JavaScript protocol
+            r"data:text/html",  # Data URLs
+            r"vbscript:",  # VBScript protocol
+            r"on\w+\s*=",  # Event handlers
+        ]
+
+        for pattern in dangerous_patterns:
+            if re.search(pattern, v, re.IGNORECASE):
+                raise ValueError(
+                    f"Message contains potentially dangerous content: {pattern}"
+                )
+
+        # Check for excessive repetition (potential spam)
+        words = v.split()
+        if len(words) > 10:
+            word_counts = {}
+            for word in words:
+                word_counts[word] = word_counts.get(word, 0) + 1
+
+            # Check if any word appears more than 30% of the time
+            max_repetition = max(word_counts.values()) if word_counts else 0
+            if max_repetition > len(words) * 0.3:
+                raise ValueError("Message contains excessive repetition")
+
+        return v.strip()
+
+    @field_validator("assistant_type")
+    @classmethod
+    def validate_assistant_type(cls, v: str) -> str:
+        """Validate assistant type."""
+        valid_types = ["reynard", "codewolf", "general", "creative", "analytical"]
+        if v not in valid_types:
+            raise ValueError(f"Invalid assistant type. Must be one of: {valid_types}")
+        return v
+
+    @field_validator("model")
+    @classmethod
+    def validate_model(cls, v: str) -> str:
+        """Validate model name format and safety."""
+        if not v or not v.strip():
+            raise ValueError("Model name cannot be empty")
+
+        # Check for valid model name format (alphanumeric, colon, dash, underscore, dot)
+        if not re.match(r"^[a-zA-Z0-9:._-]+$", v):
+            raise ValueError("Model name contains invalid characters")
+
+        # Check for reasonable length
+        if len(v) > 100:
+            raise ValueError("Model name is too long")
+
+        return v.strip()
+
+    @field_validator("context")
+    @classmethod
+    def validate_context(cls, v: dict[str, Any] | None) -> dict[str, Any] | None:
+        """Validate context data."""
+        if v is None:
+            return v
+
+        # Check for reasonable context size
+        context_str = str(v)
+        if len(context_str) > 100000:  # 100KB limit
+            raise ValueError("Context data is too large")
+
+        # Check for reasonable number of keys
+        if len(v) > 100:
+            raise ValueError("Too many context keys (max 100)")
+
+        # Validate key names
+        for key in v.keys():
+            if not isinstance(key, str):
+                raise ValueError("Context keys must be strings")
+            if not re.match(r"^[a-zA-Z0-9_-]+$", key):
+                raise ValueError(f"Context key '{key}' contains invalid characters")
+
+        return v
+
+    @model_validator(mode="after")
+    def validate_request_consistency(self) -> "OllamaAssistantRequest":
+        """Validate overall request consistency."""
+        # Check if max_tokens is reasonable for the message length
+        message_text = getattr(self, "message", "")
+        if message_text:
+            estimated_tokens = len(message_text.split()) * 1.3  # Rough estimation
+            if self.max_tokens < estimated_tokens * 0.5:
+                raise ValueError("max_tokens may be too low for the message length")
+
+        return self
 
 
 class OllamaAssistantResponse(BaseModel):

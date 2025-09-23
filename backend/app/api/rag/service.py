@@ -2,22 +2,21 @@
 RAG Service for Reynard Backend
 
 Business logic for RAG operations including search, ingestion, and administration.
+
+Refactored to use standardized logging and service patterns with proper dependency injection.
 """
 
 import asyncio
-import logging
 import time
 from collections.abc import AsyncGenerator
 from typing import Any
 
 from ...config.rag_config import get_rag_config
+from ...core.logging_config import get_service_logger
 from ...services.rag import DocumentIndexer, EmbeddingService, VectorStoreService
 from .models import RAGIngestItem
 
-logger = logging.getLogger("uvicorn")
-
-# Global service instance
-_rag_service = None
+logger = get_service_logger("rag")
 
 
 class RAGService:
@@ -358,18 +357,83 @@ class RAGService:
         return {"status": "cleared", "message": "Cache cleared successfully"}
 
 
+class RAGServiceManager:
+    """
+    Service manager for RAG API with proper dependency injection.
+
+    This class manages the RAG service instance without using globals,
+    providing better testability and cleaner architecture.
+    """
+
+    def __init__(self):
+        self._service: RAGService | None = None
+        self._initialized: bool = False
+
+    def get_service(self) -> RAGService:
+        """Get the RAG service instance."""
+        if self._service is None:
+            self._service = RAGService()
+            logger.info("RAG service instance created")
+        return self._service
+
+    async def initialize_service(self, config: dict[str, Any]) -> bool:
+        """Initialize the RAG service with configuration."""
+        try:
+            service = self.get_service()
+            await service.initialize()
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - We want to catch all initialization errors
+            logger.exception(
+                "Failed to initialize RAG service",
+                extra={
+                    "error": str(e),
+                    "error_type": type(e).__name__,
+                    "config_provided": bool(config),
+                },
+            )
+            return False
+        else:
+            self._initialized = True
+            logger.info(
+                "RAG service initialized successfully",
+                extra={
+                    "config_keys": list(config.keys()) if config else [],
+                    "service_initialized": True,
+                },
+            )
+            return True
+
+    def is_initialized(self) -> bool:
+        """Check if the service is initialized."""
+        return self._initialized
+
+    def reset_service(self) -> None:
+        """Reset the service instance (useful for testing)."""
+        self._service = None
+        self._initialized = False
+        logger.info("RAG service instance reset")
+
+
+# Create a singleton instance of the service manager
+_service_manager = RAGServiceManager()
+
+
 def get_rag_service() -> RAGService:
-    """Get the RAG service instance from the service registry."""
-    from app.core.service_registry import get_service_registry
+    """Get the RAG service instance."""
+    return _service_manager.get_service()
 
-    registry = get_service_registry()
-    rag_service = registry.get_service_instance("rag")
 
-    if rag_service is None:
-        # Fallback to creating a new instance if not in registry
-        global _rag_service
-        if _rag_service is None:
-            _rag_service = RAGService()
-        return _rag_service
+async def initialize_rag_service(config: dict[str, Any]) -> bool:
+    """Initialize the RAG service with configuration."""
+    return await _service_manager.initialize_service(config)
 
-    return rag_service
+
+def is_rag_service_initialized() -> bool:
+    """Check if the RAG service is initialized."""
+    return _service_manager.is_initialized()
+
+
+def reset_rag_service() -> None:
+    """Reset the RAG service instance (useful for testing)."""
+    _service_manager.reset_service()

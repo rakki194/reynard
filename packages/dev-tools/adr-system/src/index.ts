@@ -25,5 +25,15 @@ export { RealTimeArchitectureMonitor } from "./RealTimeArchitectureMonitor";
 export { ComplianceScorer } from "./ComplianceScorer";
 export { TeamPerformanceTracker } from "./TeamPerformanceTracker";
 
+// Visualization components
+export { DependencyGraphGenerator } from "./DependencyGraphGenerator";
+export { InteractiveDiagramSystem, InteractiveDiagramSystemDemo } from "./InteractiveDiagramSystem";
+export { ArchitectureMappingTools } from "./ArchitectureMappingTools";
+export { Architecture3DViewer, Architecture3DViewerDemo } from "./Architecture3DViewer";
+export { CollaborativeEditingInterface, CollaborativeEditingInterfaceDemo } from "./CollaborativeEditingInterface";
+
 // Re-export types for convenience
 export type { ADRDocument, ADRStatus, ADRCategory } from "./types";
+export type { DependencyGraph, DependencyNode, DependencyEdge } from "./DependencyGraphGenerator";
+export type { ArchitectureMap, ArchitectureComponent, ArchitectureRelationship } from "./ArchitectureMappingTools";
+export type { CollaborativeSession, CollaborativeUser, CollaborativeComment } from "./CollaborativeEditingInterface";

@@ -18,9 +18,9 @@ export default defineConfig({
     include: ["src/**/*.{test,spec}.{js,ts}"],
     exclude: ["node_modules/**", "dist/**", "**/*.d.ts", "src/__tests__/setup.ts", "src/__tests__/test-utils.ts"],
 
-    // Test timeout
-    testTimeout: 10000,
-    hookTimeout: 10000,
+    // Test timeout - reduced for faster feedback
+    testTimeout: 2000,
+    hookTimeout: 2000,
 
     // Coverage configuration
     coverage: {

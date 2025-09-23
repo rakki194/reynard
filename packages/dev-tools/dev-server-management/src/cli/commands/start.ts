@@ -13,6 +13,10 @@ export const handleStart = async (
     console.log(`Starting project: ${project}`);
   } catch (error) {
     console.error(`Failed to start project ${project}:`, error);
+    // In test environment, throw instead of exiting
+    if (process.env.NODE_ENV === 'test' || process.env.VITEST === 'true') {
+      throw error;
+    }
     process.exit(1);
   }
 };

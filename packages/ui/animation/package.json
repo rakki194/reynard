@@ -36,7 +36,9 @@
       "types": "./dist/color/index.d.ts",
       "import": "./dist/color/index.js"
     },
-    "./color-fallback-animations": "./dist/color/ColorFallbackAnimations.css"
+    "./color-fallback-animations": "./dist/color/ColorFallbackAnimations.css",
+    "./3d-fallback-animations": "./dist/3d/ThreeDFallbackAnimations.css",
+    "./global-animation-styles": "./dist/global/GlobalAnimationStyles.css"
   },
   "files": [
     "dist"

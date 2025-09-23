@@ -151,7 +151,7 @@ def setup_logging(
     """
 
     # Convert log level string to logging constant
-    getattr(logging, log_level.upper(), logging.INFO)
+    numeric_level = getattr(logging, log_level.upper(), logging.INFO)
 
     # Configure formatters
     formatters = {
@@ -174,7 +174,7 @@ def setup_logging(
     if enable_console:
         handlers["console"] = {
             "class": "logging.StreamHandler",
-            "level": log_level,
+            "level": numeric_level,
             "formatter": log_format,
             "stream": "ext://sys.stdout",
         }
@@ -187,7 +187,7 @@ def setup_logging(
 
         handlers["file"] = {
             "class": "logging.handlers.RotatingFileHandler",
-            "level": log_level,
+            "level": numeric_level,
             "formatter": log_format,
             "filename": log_file,
             "maxBytes": 10485760,  # 10MB
@@ -197,29 +197,29 @@ def setup_logging(
     # Configure loggers
     loggers = {
         "reynard": {
-            "level": log_level,
+            "level": numeric_level,
             "handlers": list(handlers.keys()),
             "propagate": False,
         },
         "reynard.api": {
-            "level": log_level,
+            "level": numeric_level,
             "handlers": list(handlers.keys()),
             "propagate": False,
         },
         "reynard.services": {
-            "level": log_level,
+            "level": numeric_level,
             "handlers": list(handlers.keys()),
             "propagate": False,
         },
         "reynard.core": {
-            "level": log_level,
+            "level": numeric_level,
             "handlers": list(handlers.keys()),
             "propagate": False,
         },
     }
 
     # Configure root logger
-    root_logger = {"level": log_level, "handlers": list(handlers.keys())}
+    root_logger = {"level": numeric_level, "handlers": list(handlers.keys())}
 
     # Create logging configuration
     logging_config = {

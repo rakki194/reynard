@@ -22,6 +22,26 @@ describe("PortManager", () => {
     const { createServer } = await import("node:net");
     vi.mocked(createServer).mockImplementation(mockNetwork.createServer);
 
+    // Mock the exec function used by PortManager
+    const { exec } = await import("node:child_process");
+    vi.mocked(exec).mockImplementation((command, callback) => {
+      // Mock lsof command responses
+      if (command.includes("lsof -ti :")) {
+        const port = parseInt(command.match(/:(\d+)/)?.[1] || "0");
+        const inUse = mockNetwork.isPortInUse(port);
+        if (inUse) {
+          callback?.(null, "12345\n", ""); // Return a PID if port is in use
+        } else {
+          callback?.(new Error("Port not in use"), "", ""); // Error if port is free
+        }
+      } else if (command.includes("ps -p")) {
+        // Mock ps command for process info
+        callback?.(null, "node test-server.js", "");
+      } else {
+        callback?.(null, "output", "");
+      }
+    });
+
     portManager = new PortManager();
   });
 

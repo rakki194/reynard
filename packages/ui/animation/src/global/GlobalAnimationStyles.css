@@ -1,0 +1,465 @@
+/**
+ * 🦊 Global Animation Styles
+ * 
+ * Global CSS animation control system with accessibility and performance support.
+ * Provides centralized animation control across the entire Reynard ecosystem.
+ */
+
+/* ==========================================================================
+   CSS Custom Properties (Variables)
+   ========================================================================== */
+
+:root {
+  /* Animation Control Variables */
+  --animation-enabled: 1;
+  --animation-disabled: 0;
+  --performance-mode: 0;
+  --accessibility-mode: 0;
+  --reduced-motion: 0;
+  --high-contrast: 0;
+  
+  /* Animation Engine Variables */
+  --animation-engine: "full";
+  --fallback-mode: 0;
+  --immediate-completion: 0;
+  
+  /* Performance Variables */
+  --animation-duration: 300ms;
+  --animation-duration-fast: 150ms;
+  --animation-duration-slow: 600ms;
+  --animation-delay: 0ms;
+  --animation-iteration-count: 1;
+  --animation-fill-mode: both;
+  --animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  
+  /* Accessibility Variables */
+  --animation-reduced-duration: 0ms;
+  --animation-reduced-delay: 0ms;
+  --animation-high-contrast-duration: 200ms;
+  --animation-high-contrast-delay: 0ms;
+  
+  /* Global Animation Classes */
+  --animation-class-prefix: "reynard-animation";
+  --animation-disabled-class: "animations-disabled";
+  --animation-performance-class: "performance-mode";
+  --animation-accessibility-class: "accessibility-mode";
+}
+
+/* ==========================================================================
+   Reduced Motion Support
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --animation-enabled: 0;
+    --reduced-motion: 1;
+    --animation-duration: 0ms;
+    --animation-duration-fast: 0ms;
+    --animation-duration-slow: 0ms;
+    --animation-delay: 0ms;
+    --animation-iteration-count: 1;
+    --immediate-completion: 1;
+  }
+  
+  /* Disable all animations when reduced motion is preferred */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ==========================================================================
+   High Contrast Support
+   ========================================================================== */
+
+@media (prefers-contrast: high) {
+  :root {
+    --high-contrast: 1;
+    --animation-duration: var(--animation-high-contrast-duration);
+    --animation-duration-fast: 100ms;
+    --animation-duration-slow: 300ms;
+  }
+}
+
+/* ==========================================================================
+   Forced Colors Support
+   ========================================================================== */
+
+@media (forced-colors: active) {
+  :root {
+    --high-contrast: 1;
+    --animation-duration: var(--animation-high-contrast-duration);
+    --animation-duration-fast: 100ms;
+    --animation-duration-slow: 300ms;
+  }
+  
+  /* Simplify animations in forced colors mode */
+  *,
+  *::before,
+  *::after {
+    animation-timing-function: ease !important;
+    transition-timing-function: ease !important;
+  }
+}
+
+/* ==========================================================================
+   Global Animation Control Classes
+   ========================================================================== */
+
+/* Animations Disabled Globally */
+.animations-disabled {
+  --animation-enabled: 0;
+  --animation-disabled: 1;
+  --animation-duration: 0ms;
+  --animation-duration-fast: 0ms;
+  --animation-duration-slow: 0ms;
+  --animation-delay: 0ms;
+  --immediate-completion: 1;
+}
+
+.animations-disabled *,
+.animations-disabled *::before,
+.animations-disabled *::after {
+  animation-duration: 0ms !important;
+  animation-delay: 0ms !important;
+  transition-duration: 0ms !important;
+  transition-delay: 0ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Performance Mode */
+.performance-mode {
+  --performance-mode: 1;
+  --animation-duration: 150ms;
+  --animation-duration-fast: 75ms;
+  --animation-duration-slow: 300ms;
+  --animation-delay: 0ms;
+}
+
+.performance-mode *,
+.performance-mode *::before,
+.performance-mode *::after {
+  animation-timing-function: ease !important;
+  transition-timing-function: ease !important;
+  will-change: auto !important;
+}
+
+/* Accessibility Mode */
+.accessibility-mode {
+  --accessibility-mode: 1;
+  --animation-duration: var(--animation-high-contrast-duration);
+  --animation-duration-fast: 100ms;
+  --animation-duration-slow: 300ms;
+  --high-contrast: 1;
+}
+
+.accessibility-mode *,
+.accessibility-mode *::before,
+.accessibility-mode *::after {
+  animation-timing-function: ease !important;
+  transition-timing-function: ease !important;
+}
+
+/* Reduced Motion Class */
+.reduced-motion {
+  --reduced-motion: 1;
+  --animation-enabled: 0;
+  --animation-duration: 0ms;
+  --animation-duration-fast: 0ms;
+  --animation-duration-slow: 0ms;
+  --animation-delay: 0ms;
+  --immediate-completion: 1;
+}
+
+.reduced-motion *,
+.reduced-motion *::before,
+.reduced-motion *::after {
+  animation-duration: 0ms !important;
+  animation-delay: 0ms !important;
+  transition-duration: 0ms !important;
+  transition-delay: 0ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* High Contrast Class */
+.high-contrast {
+  --high-contrast: 1;
+  --animation-duration: var(--animation-high-contrast-duration);
+  --animation-duration-fast: 100ms;
+  --animation-duration-slow: 300ms;
+}
+
+.high-contrast *,
+.high-contrast *::before,
+.high-contrast *::after {
+  animation-timing-function: ease !important;
+  transition-timing-function: ease !important;
+}
+
+/* ==========================================================================
+   Animation Engine Classes
+   ========================================================================== */
+
+/* Full Animation Engine */
+.animation-engine-full {
+  --animation-engine: "full";
+  --fallback-mode: 0;
+}
+
+/* Fallback Animation Engine */
+.animation-engine-fallback {
+  --animation-engine: "fallback";
+  --fallback-mode: 1;
+}
+
+/* Disabled Animation Engine */
+.animation-engine-disabled {
+  --animation-engine: "disabled";
+  --fallback-mode: 0;
+  --animation-enabled: 0;
+  --animation-duration: 0ms;
+  --animation-duration-fast: 0ms;
+  --animation-duration-slow: 0ms;
+  --animation-delay: 0ms;
+  --immediate-completion: 1;
+}
+
+.animation-engine-disabled *,
+.animation-engine-disabled *::before,
+.animation-engine-disabled *::after {
+  animation-duration: 0ms !important;
+  animation-delay: 0ms !important;
+  transition-duration: 0ms !important;
+  transition-delay: 0ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* ==========================================================================
+   Global Animation Utilities
+   ========================================================================== */
+
+/* Immediate Completion Utility */
+.immediate-completion {
+  --immediate-completion: 1;
+}
+
+.immediate-completion *,
+.immediate-completion *::before,
+.immediate-completion *::after {
+  animation-duration: 0ms !important;
+  animation-delay: 0ms !important;
+  transition-duration: 0ms !important;
+  transition-delay: 0ms !important;
+}
+
+/* Fast Animations */
+.fast-animations {
+  --animation-duration: var(--animation-duration-fast);
+}
+
+/* Slow Animations */
+.slow-animations {
+  --animation-duration: var(--animation-duration-slow);
+}
+
+/* No Animations */
+.no-animations {
+  --animation-enabled: 0;
+  --animation-duration: 0ms;
+  --animation-duration-fast: 0ms;
+  --animation-duration-slow: 0ms;
+  --animation-delay: 0ms;
+}
+
+.no-animations *,
+.no-animations *::before,
+.no-animations *::after {
+  animation-duration: 0ms !important;
+  animation-delay: 0ms !important;
+  transition-duration: 0ms !important;
+  transition-delay: 0ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* ==========================================================================
+   Animation State Classes
+   ========================================================================== */
+
+/* Animation Loading State */
+.animation-loading {
+  pointer-events: none;
+  user-select: none;
+}
+
+.animation-loading * {
+  cursor: wait !important;
+}
+
+/* Animation Error State */
+.animation-error {
+  --animation-enabled: 0;
+  --animation-duration: 0ms;
+}
+
+.animation-error *,
+.animation-error *::before,
+.animation-error *::after {
+  animation-duration: 0ms !important;
+  animation-delay: 0ms !important;
+  transition-duration: 0ms !important;
+  transition-delay: 0ms !important;
+}
+
+/* Animation Success State */
+.animation-success {
+  --animation-duration: var(--animation-duration-fast);
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+  :root {
+    --animation-enabled: 0;
+    --animation-duration: 0ms;
+    --animation-duration-fast: 0ms;
+    --animation-duration-slow: 0ms;
+    --animation-delay: 0ms;
+    --immediate-completion: 1;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ==========================================================================
+   Debug Styles (Development Only)
+   ========================================================================== */
+
+.animation-debug {
+  outline: 2px solid red;
+  outline-offset: 2px;
+}
+
+.animation-debug::before {
+  content: "ANIMATION DEBUG";
+  position: absolute;
+  top: -20px;
+  left: 0;
+  background: red;
+  color: white;
+  font-size: 10px;
+  padding: 2px 4px;
+  z-index: 9999;
+}
+
+/* ==========================================================================
+   Animation Performance Optimizations
+   ========================================================================== */
+
+/* Hardware Acceleration */
+.animation-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Will Change Optimization */
+.animation-will-change {
+  will-change: transform, opacity;
+}
+
+.animation-will-change-transform {
+  will-change: transform;
+}
+
+.animation-will-change-opacity {
+  will-change: opacity;
+}
+
+/* Containment */
+.animation-contain {
+  contain: layout style paint;
+}
+
+.animation-contain-strict {
+  contain: strict;
+}
+
+/* ==========================================================================
+   Animation Accessibility Enhancements
+   ========================================================================== */
+
+/* Focus Management */
+.animation-focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* Screen Reader Support */
+.animation-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Motion Preferences */
+.animation-respect-motion {
+  animation-duration: var(--animation-duration);
+  animation-delay: var(--animation-delay);
+  transition-duration: var(--animation-duration);
+  transition-delay: var(--animation-delay);
+}
+
+/* ==========================================================================
+   Animation Timing Functions
+   ========================================================================== */
+
+.animation-ease {
+  animation-timing-function: ease;
+  transition-timing-function: ease;
+}
+
+.animation-ease-in {
+  animation-timing-function: ease-in;
+  transition-timing-function: ease-in;
+}
+
+.animation-ease-out {
+  animation-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+
+.animation-ease-in-out {
+  animation-timing-function: ease-in-out;
+  transition-timing-function: ease-in-out;
+}
+
+.animation-linear {
+  animation-timing-function: linear;
+  transition-timing-function: linear;
+}
+
+.animation-cubic-bezier {
+  animation-timing-function: var(--animation-timing-function);
+  transition-timing-function: var(--animation-timing-function);
+}

@@ -1,15 +1,30 @@
 """
-Main summarization service for Reynard.
+🦊 Reynard Summarization Service
+===============================
+
+Main summarization service for Reynard with enterprise-grade patterns.
 
 This service integrates with the existing Ollama service and provides
 a unified interface for text summarization with multiple content types
-and specialized summarizers.
+and specialized summarizers, following standardized service patterns.
+
+Key Features:
+- Enterprise-grade service management with proper dependency injection
+- Advanced content type detection and optimization
+- Performance statistics collection and monitoring
+- Comprehensive error handling and recovery
+- Standardized logging and configuration management
+- Streaming support for batch operations
+
+Author: Reynard Development Team
+Version: 2.0.0 - Enterprise patterns
 """
 
 import logging
 from collections.abc import AsyncGenerator
 from typing import Any
 
+from ...core.logging_config import get_service_logger
 from .article_summarizer import ArticleSummarizer
 from .base import ContentType, SummarizationOptions, SummaryLevel
 from .code_summarizer import CodeSummarizer
@@ -18,7 +33,7 @@ from .manager import SummarizationManager
 from .ollama_summarizer import OllamaSummarizer
 from .technical_summarizer import TechnicalSummarizer
 
-logger = logging.getLogger(__name__)
+logger = get_service_logger("summarization")
 
 
 class SummarizationService:
@@ -422,13 +437,83 @@ class SummarizationService:
             logger.error(f"Failed to cleanup SummarizationService: {e}")
 
 
-# Global service instance
-_summarization_service: SummarizationService | None = None
+class SummarizationServiceManager:
+    """
+    Service manager for Summarization API with proper dependency injection.
+
+    This class manages the Summarization service instance without using globals,
+    providing better testability and cleaner architecture.
+    """
+
+    def __init__(self):
+        self._service: SummarizationService | None = None
+        self._initialized: bool = False
+
+    def get_service(self) -> SummarizationService:
+        """Get the Summarization service instance."""
+        if self._service is None:
+            self._service = SummarizationService()
+            logger.info("Summarization service instance created")
+        return self._service
+
+    async def initialize_service(self, config: dict[str, Any]) -> bool:
+        """Initialize the Summarization service with configuration."""
+        try:
+            service = self.get_service()
+            await service.initialize()
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - We want to catch all initialization errors
+            logger.exception(
+                "Failed to initialize Summarization service",
+                extra={
+                    "error": str(e),
+                    "error_type": type(e).__name__,
+                    "config_provided": bool(config),
+                },
+            )
+            return False
+        else:
+            self._initialized = True
+            logger.info(
+                "Summarization service initialized successfully",
+                extra={
+                    "config_keys": list(config.keys()) if config else [],
+                    "service_initialized": True,
+                },
+            )
+            return True
+
+    def is_initialized(self) -> bool:
+        """Check if the service is initialized."""
+        return self._initialized
+
+    def reset_service(self) -> None:
+        """Reset the service instance (useful for testing)."""
+        self._service = None
+        self._initialized = False
+        logger.info("Summarization service instance reset")
+
+
+# Create a singleton instance of the service manager
+_service_manager = SummarizationServiceManager()
 
 
 def get_summarization_service() -> SummarizationService:
-    """Get the global summarization service instance."""
-    global _summarization_service
-    if _summarization_service is None:
-        _summarization_service = SummarizationService()
-    return _summarization_service
+    """Get the Summarization service instance."""
+    return _service_manager.get_service()
+
+
+async def initialize_summarization_service(config: dict[str, Any]) -> bool:
+    """Initialize the Summarization service with configuration."""
+    return await _service_manager.initialize_service(config)
+
+
+def is_summarization_service_initialized() -> bool:
+    """Check if the Summarization service is initialized."""
+    return _service_manager.is_initialized()
+
+
+def reset_summarization_service() -> None:
+    """Reset the Summarization service instance (useful for testing)."""
+    _service_manager.reset_service()

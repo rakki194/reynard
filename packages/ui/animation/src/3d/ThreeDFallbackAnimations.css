@@ -1,0 +1,281 @@
+/**
+ * 🦊 3D Fallback Animation Styles
+ * 
+ * CSS-based fallback animations for 3D transitions when the animation package is unavailable.
+ * Includes accessibility compliance and performance optimizations.
+ */
+
+/* Base 3D animation variables */
+:root {
+  --3d-animation-duration: 800ms;
+  --3d-animation-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --3d-animation-delay: 0ms;
+  --3d-perspective: 1000px;
+  --3d-transform-origin: center center;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --3d-animation-duration: 0ms;
+    --3d-animation-delay: 0ms;
+  }
+}
+
+/* Performance mode - disable all 3D animations */
+.performance-mode {
+  --3d-animation-duration: 0ms;
+  --3d-animation-delay: 0ms;
+}
+
+/* Animations disabled globally */
+.animations-disabled {
+  --3d-animation-duration: 0ms;
+  --3d-animation-delay: 0ms;
+}
+
+/* 3D container setup */
+.three-d-fallback-container {
+  perspective: var(--3d-perspective);
+  transform-style: preserve-3d;
+}
+
+/* 3D point animations */
+.three-d-point-fallback {
+  transition: transform var(--3d-animation-duration) var(--3d-animation-easing),
+              opacity var(--3d-animation-duration) var(--3d-animation-easing);
+  transform-style: preserve-3d;
+}
+
+.three-d-point-fallback.animate {
+  transform: translate3d(var(--point-x, 0), var(--point-y, 0), var(--point-z, 0));
+  opacity: var(--point-opacity, 1);
+}
+
+/* 3D cluster animations */
+.three-d-cluster-fallback {
+  transition: transform var(--3d-animation-duration) var(--3d-animation-easing),
+              scale var(--3d-animation-duration) var(--3d-animation-easing);
+  transform-style: preserve-3d;
+}
+
+.three-d-cluster-fallback.animate {
+  transform: translate3d(var(--cluster-x, 0), var(--cluster-y, 0), var(--cluster-z, 0))
+             scale(var(--cluster-scale, 1));
+}
+
+/* 3D camera animations */
+.three-d-camera-fallback {
+  transition: transform var(--3d-animation-duration) var(--3d-animation-easing);
+  transform-style: preserve-3d;
+}
+
+.three-d-camera-fallback.animate {
+  transform: translate3d(var(--camera-x, 0), var(--camera-y, 0), var(--camera-z, 0))
+             rotateX(var(--camera-rotate-x, 0deg))
+             rotateY(var(--camera-rotate-y, 0deg))
+             rotateZ(var(--camera-rotate-z, 0deg));
+}
+
+/* 3D rotation animations */
+.three-d-rotation-fallback {
+  transition: transform var(--3d-animation-duration) var(--3d-animation-easing);
+  transform-style: preserve-3d;
+}
+
+.three-d-rotation-fallback.animate {
+  transform: rotateX(var(--rotation-x, 0deg))
+             rotateY(var(--rotation-y, 0deg))
+             rotateZ(var(--rotation-z, 0deg));
+}
+
+/* 3D scale animations */
+.three-d-scale-fallback {
+  transition: transform var(--3d-animation-duration) var(--3d-animation-easing);
+  transform-style: preserve-3d;
+}
+
+.three-d-scale-fallback.animate {
+  transform: scale3d(var(--scale-x, 1), var(--scale-y, 1), var(--scale-z, 1));
+}
+
+/* 3D translation animations */
+.three-d-translation-fallback {
+  transition: transform var(--3d-animation-duration) var(--3d-animation-easing);
+  transform-style: preserve-3d;
+}
+
+.three-d-translation-fallback.animate {
+  transform: translate3d(var(--translation-x, 0), var(--translation-y, 0), var(--translation-z, 0));
+}
+
+/* 3D orbit animations */
+.three-d-orbit-fallback {
+  transition: transform var(--3d-animation-duration) var(--3d-animation-easing);
+  transform-style: preserve-3d;
+  transform-origin: var(--3d-transform-origin);
+}
+
+.three-d-orbit-fallback.animate {
+  transform: rotateX(var(--orbit-x, 0deg))
+             rotateY(var(--orbit-y, 0deg))
+             translateZ(var(--orbit-radius, 0));
+}
+
+/* 3D zoom animations */
+.three-d-zoom-fallback {
+  transition: transform var(--3d-animation-duration) var(--3d-animation-easing);
+  transform-style: preserve-3d;
+  transform-origin: var(--3d-transform-origin);
+}
+
+.three-d-zoom-fallback.animate {
+  transform: scale3d(var(--zoom-scale, 1), var(--zoom-scale, 1), var(--zoom-scale, 1));
+}
+
+/* 3D fade animations */
+.three-d-fade-fallback {
+  transition: opacity var(--3d-animation-duration) var(--3d-animation-easing);
+}
+
+.three-d-fade-fallback.animate {
+  opacity: var(--fade-opacity, 1);
+}
+
+/* 3D color animations */
+.three-d-color-fallback {
+  transition: color var(--3d-animation-duration) var(--3d-animation-easing),
+              background-color var(--3d-animation-duration) var(--3d-animation-easing),
+              border-color var(--3d-animation-duration) var(--3d-animation-easing);
+}
+
+.three-d-color-fallback.animate {
+  color: var(--color-rgb, inherit);
+  background-color: var(--background-rgb, inherit);
+  border-color: var(--border-rgb, inherit);
+}
+
+/* 3D staggered animations */
+.three-d-staggered-fallback .three-d-item:nth-child(1) { transition-delay: calc(var(--3d-animation-delay) + 0 * 50ms); }
+.three-d-staggered-fallback .three-d-item:nth-child(2) { transition-delay: calc(var(--3d-animation-delay) + 1 * 50ms); }
+.three-d-staggered-fallback .three-d-item:nth-child(3) { transition-delay: calc(var(--3d-animation-delay) + 2 * 50ms); }
+.three-d-staggered-fallback .three-d-item:nth-child(4) { transition-delay: calc(var(--3d-animation-delay) + 3 * 50ms); }
+.three-d-staggered-fallback .three-d-item:nth-child(5) { transition-delay: calc(var(--3d-animation-delay) + 4 * 50ms); }
+.three-d-staggered-fallback .three-d-item:nth-child(6) { transition-delay: calc(var(--3d-animation-delay) + 5 * 50ms); }
+.three-d-staggered-fallback .three-d-item:nth-child(7) { transition-delay: calc(var(--3d-animation-delay) + 6 * 50ms); }
+.three-d-staggered-fallback .three-d-item:nth-child(8) { transition-delay: calc(var(--3d-animation-delay) + 7 * 50ms); }
+.three-d-staggered-fallback .three-d-item:nth-child(9) { transition-delay: calc(var(--3d-animation-delay) + 8 * 50ms); }
+.three-d-staggered-fallback .three-d-item:nth-child(10) { transition-delay: calc(var(--3d-animation-delay) + 9 * 50ms); }
+
+/* 3D performance optimizations */
+.performance-mode .three-d-point-fallback,
+.performance-mode .three-d-cluster-fallback,
+.performance-mode .three-d-camera-fallback,
+.performance-mode .three-d-rotation-fallback,
+.performance-mode .three-d-scale-fallback,
+.performance-mode .three-d-translation-fallback,
+.performance-mode .three-d-orbit-fallback,
+.performance-mode .three-d-zoom-fallback,
+.performance-mode .three-d-fade-fallback,
+.performance-mode .three-d-color-fallback,
+.performance-mode .three-d-staggered-fallback {
+  transition: none !important;
+  transform: none !important;
+  opacity: 1 !important;
+}
+
+/* Accessibility mode */
+.accessibility-mode {
+  --3d-animation-duration: 400ms;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .three-d-point-fallback,
+  .three-d-cluster-fallback,
+  .three-d-camera-fallback,
+  .three-d-rotation-fallback,
+  .three-d-scale-fallback,
+  .three-d-translation-fallback,
+  .three-d-orbit-fallback,
+  .three-d-zoom-fallback,
+  .three-d-fade-fallback,
+  .three-d-color-fallback,
+  .three-d-staggered-fallback {
+    transition-duration: 200ms;
+  }
+}
+
+/* Print styles - disable 3D animations */
+@media print {
+  .three-d-point-fallback,
+  .three-d-cluster-fallback,
+  .three-d-camera-fallback,
+  .three-d-rotation-fallback,
+  .three-d-scale-fallback,
+  .three-d-translation-fallback,
+  .three-d-orbit-fallback,
+  .three-d-zoom-fallback,
+  .three-d-fade-fallback,
+  .three-d-color-fallback,
+  .three-d-staggered-fallback {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* 3D animation utilities */
+.three-d-animation-enter {
+  opacity: 0;
+  transform: translate3d(0, 0, -100px) scale(0.8);
+  transition: opacity var(--3d-animation-duration) var(--3d-animation-easing),
+              transform var(--3d-animation-duration) var(--3d-animation-easing);
+}
+
+.three-d-animation-enter.animate {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+.three-d-animation-exit {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition: opacity var(--3d-animation-duration) var(--3d-animation-easing),
+              transform var(--3d-animation-duration) var(--3d-animation-easing);
+}
+
+.three-d-animation-exit.animate {
+  opacity: 0;
+  transform: translate3d(0, 0, -100px) scale(0.8);
+}
+
+/* 3D animation delays for staggered effects */
+.three-d-animation-delay-1 { transition-delay: calc(var(--3d-animation-delay) + 50ms); }
+.three-d-animation-delay-2 { transition-delay: calc(var(--3d-animation-delay) + 100ms); }
+.three-d-animation-delay-3 { transition-delay: calc(var(--3d-animation-delay) + 150ms); }
+.three-d-animation-delay-4 { transition-delay: calc(var(--3d-animation-delay) + 200ms); }
+.three-d-animation-delay-5 { transition-delay: calc(var(--3d-animation-delay) + 250ms); }
+.three-d-animation-delay-6 { transition-delay: calc(var(--3d-animation-delay) + 300ms); }
+.three-d-animation-delay-7 { transition-delay: calc(var(--3d-animation-delay) + 350ms); }
+.three-d-animation-delay-8 { transition-delay: calc(var(--3d-animation-delay) + 400ms); }
+.three-d-animation-delay-9 { transition-delay: calc(var(--3d-animation-delay) + 450ms); }
+.three-d-animation-delay-10 { transition-delay: calc(var(--3d-animation-delay) + 500ms); }
+
+/* 3D perspective utilities */
+.three-d-perspective-100 { perspective: 100px; }
+.three-d-perspective-200 { perspective: 200px; }
+.three-d-perspective-500 { perspective: 500px; }
+.three-d-perspective-1000 { perspective: 1000px; }
+.three-d-perspective-2000 { perspective: 2000px; }
+
+/* 3D transform origin utilities */
+.three-d-origin-center { transform-origin: center center; }
+.three-d-origin-top { transform-origin: center top; }
+.three-d-origin-bottom { transform-origin: center bottom; }
+.three-d-origin-left { transform-origin: left center; }
+.three-d-origin-right { transform-origin: right center; }
+.three-d-origin-top-left { transform-origin: left top; }
+.three-d-origin-top-right { transform-origin: right top; }
+.three-d-origin-bottom-left { transform-origin: left bottom; }
+.three-d-origin-bottom-right { transform-origin: right bottom; }
