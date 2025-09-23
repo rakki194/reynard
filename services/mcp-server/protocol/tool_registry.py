@@ -328,19 +328,52 @@ def register_tool(
     name: str,
     category: str,
     description: str,
+    input_schema: dict[str, Any] = None,
     execution_type: str = "sync",
     enabled: bool = True,
     dependencies: list[str] = None,
     config: dict[str, Any] = None,
 ):
-    """Tool registration decorator - the legendary single-step registration."""
+    """Enhanced tool registration decorator with schema validation."""
 
     def decorator(func):
+        # Import validator here to avoid circular imports
+        from validation.schema_validator import MCPSchemaValidator
+        
+        # Use the input_schema parameter from the outer scope
+        schema_to_use = input_schema
+        
+        # Generate default schema if not provided
+        if schema_to_use is None:
+            schema_to_use = {
+                "type": "object",
+                "properties": {
+                    "arguments": {
+                        "type": "object",
+                        "description": "Tool arguments"
+                    }
+                },
+                "required": []
+            }
+        
+        # Validate the schema before registration
+        validator = MCPSchemaValidator()
+        tool_def = {
+            "name": name,
+            "description": description,
+            "inputSchema": schema_to_use
+        }
+        
+        validation_result = validator.validate_tool_schema(tool_def)
+        if not validation_result.is_valid:
+            raise ValueError(f"Invalid tool schema for '{name}': {validation_result.errors}")
+        
         # Store the registration parameters for lazy registration
         func._tool_registration = {
             "name": name,
             "category": category,
             "description": description,
+            "inputSchema": schema_to_use,
             "execution_type": execution_type,
             "enabled": enabled,
             "dependencies": dependencies or [],

@@ -24,7 +24,7 @@ export interface AnimationControls {
 export function createAnimationControls(
   config: AnimationConfig,
   animationEngine: () => "full" | "fallback" | "disabled",
-  fallbackSystem: () => unknown,
+  // fallbackSystem: () => unknown,
   shouldDisableAnimations: () => boolean,
   setTotalItems: (count: number) => void,
   setIsAnimating: (animating: boolean) => void,

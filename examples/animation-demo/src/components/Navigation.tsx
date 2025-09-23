@@ -44,6 +44,12 @@ const navItems: NavItem[] = [
     description: "Color transitions and effects"
   },
   {
+    id: "gradients",
+    label: "Gradient Animations",
+    icon: "🌈",
+    description: "Animated gradients and color flows"
+  },
+  {
     id: "3d",
     label: "3D Animations",
     icon: "🎪",
@@ -54,6 +60,12 @@ const navItems: NavItem[] = [
     label: "Performance",
     icon: "⚡",
     description: "Performance monitoring and metrics"
+  },
+  {
+    id: "transformer-dance-club",
+    label: "Transformer Dance Club",
+    icon: "🕺",
+    description: "Interactive transformer architecture visualization"
   }
 ];
 

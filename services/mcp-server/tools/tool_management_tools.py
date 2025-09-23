@@ -10,7 +10,7 @@ Now uses the new @register_tool decorator system for automatic registration.
 import logging
 from typing import Any, Dict
 
-from config.tool_config import get_tool_configs
+from config.tool_config import ToolConfigManager
 from protocol.tool_registry import get_tool_registry, register_tool
 
 logger = logging.getLogger(__name__)
@@ -37,7 +37,6 @@ def get_tool_configs(**kwargs) -> dict[str, Any]:
                 {
                     "type": "text",
                     "text": f"📊 Tool Configurations ({len(configs)} tools):\n\n"
-                    f"Statistics: {stats}\n\n"
                     f"Tools: {configs}",
                 }
             ]

@@ -19,18 +19,23 @@ import { AnimationDashboard } from "./pages/AnimationDashboard";
 import { StaggeredAnimationDemo } from "./pages/StaggeredAnimationDemo";
 import { FloatingPanelDemo } from "./pages/FloatingPanelDemo";
 import { ColorAnimationDemo } from "./pages/ColorAnimationDemo";
+import { GradientAnimationDemo } from "./pages/GradientAnimationDemo";
 import { ThreeJSAnimationDemo } from "./pages/ThreeJSAnimationDemo";
 import { PerformanceDemo } from "./pages/PerformanceDemo";
+import { TransformerDanceClubDemo } from "./pages/TransformerDanceClubDemo";
 import { Navigation } from "./components/Navigation";
 import { AnimationControls } from "./components/AnimationControls";
+import { ThemeSelector } from "./components/ThemeSelector";
+import { LanguageSelector } from "./components/LanguageSelector";
 import "./styles/global.css";
+import "./styles/transformer-dance-club.css";
 
 const App: Component = () => {
   const notificationsModule = createNotificationsModule();
   const [currentPage, setCurrentPage] = createSignal("dashboard");
 
   return (
-    <ReynardProvider defaultLocale="en">
+    <ReynardProvider defaultTheme="light" defaultLocale="en">
       <NotificationsProvider value={notificationsModule}>
         <div class="animation-demo-app">
           <header class="demo-header">
@@ -42,6 +47,10 @@ const App: Component = () => {
               <p class="demo-subtitle">
                 Comprehensive showcase of Reynard's unified animation system
               </p>
+            </div>
+            <div class="selector-container">
+              <ThemeSelector />
+              <LanguageSelector />
             </div>
             <AnimationControls />
           </header>
@@ -62,11 +71,17 @@ const App: Component = () => {
               <Show when={currentPage() === "colors"}>
                 <ColorAnimationDemo />
               </Show>
+              <Show when={currentPage() === "gradients"}>
+                <GradientAnimationDemo />
+              </Show>
               <Show when={currentPage() === "3d"}>
                 <ThreeJSAnimationDemo />
               </Show>
               <Show when={currentPage() === "performance"}>
                 <PerformanceDemo />
+              </Show>
+              <Show when={currentPage() === "transformer-dance-club"}>
+                <TransformerDanceClubDemo />
               </Show>
             </div>
           </main>

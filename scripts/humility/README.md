@@ -30,6 +30,9 @@ The Enhanced Humility Detector is a comprehensive, modular system that combines 
 8. **Exclusivity Claims**: "exclusive", "limited", "rare"
 9. **Emotional Manipulation**: "urgent", "critical", "emergency"
 10. **Authority Claims**: "expert", "authority", "specialist"
+11. **Condescending Language**: "idiot-proof", "bulletproof", "so simple", "anyone can"
+12. **Negative Assumptions**: "you probably don't", "most people don't", "assuming you're not"
+13. **Patronizing Tone**: "clearly", "obviously", "you should know", "it's simple"
 
 ### 🌍 Cultural Context Support
 

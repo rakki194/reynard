@@ -16,7 +16,7 @@ async function globalSetup(config: FullConfig) {
   try {
     // Wait for animation demo to be ready
     console.log('⏳ Waiting for animation demo to start...');
-    await page.goto('http://localhost:3005', { waitUntil: 'networkidle' });
+    await page.goto('http://[::1]:3005', { waitUntil: 'networkidle' });
     
     // Verify demo is working
     const title = await page.title();

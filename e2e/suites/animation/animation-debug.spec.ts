@@ -10,7 +10,7 @@ import { createAnimationTester, AnimationConfigs } from './animation-helpers';
 test.describe('Animation Debug Tests', () => {
   let page: Page;
   let animationTester: ReturnType<typeof createAnimationTester>;
-  const DEMO_URL = 'http://localhost:3005';
+  const DEMO_URL = 'http://[::1]:3005';
 
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage();

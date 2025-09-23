@@ -21,7 +21,7 @@ from typing import Any, Dict, List, Optional
 import aiohttp
 from pydantic import BaseModel, Field
 
-from ..definitions import register_tool
+from protocol.tool_registry import register_tool
 
 logger = logging.getLogger(__name__)
 
@@ -246,7 +246,15 @@ async def get_search_engine() -> RAGSearchEngine:
     return _search_engine
 
 
-@register_tool
+@register_tool(
+    name="search_codebase",
+    category="search",
+    description="Search the Reynard codebase using RAG backend with BM25 fallback",
+    execution_type="async",
+    enabled=True,
+    dependencies=[],
+    config={},
+)
 async def search_codebase(
     query: str,
     top_k: int = 10,
@@ -306,7 +314,15 @@ async def search_codebase(
         }
 
 
-@register_tool
+@register_tool(
+    name="search_semantic",
+    category="search",
+    description="Perform semantic search using vector embeddings",
+    execution_type="async",
+    enabled=True,
+    dependencies=[],
+    config={},
+)
 async def search_semantic(
     query: str, top_k: int = 10, similarity_threshold: Optional[float] = None
 ) -> Dict[str, Any]:
@@ -332,7 +348,15 @@ async def search_semantic(
     )
 
 
-@register_tool
+@register_tool(
+    name="search_keyword",
+    category="search",
+    description="Perform keyword search using BM25 fallback",
+    execution_type="async",
+    enabled=True,
+    dependencies=[],
+    config={},
+)
 async def search_keyword(query: str, top_k: int = 10) -> Dict[str, Any]:
     """
     Perform keyword search using BM25 fallback.

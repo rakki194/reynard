@@ -9,14 +9,16 @@ Follows the 100-line axiom and modular architecture principles.
 
 from typing import Any
 
+from .definitions import ToolDefinition
+
 
 def get_playwright_tool_definitions() -> dict[str, dict[str, Any]]:
     """Get Playwright MCP tool definitions."""
     return {
-        "take_webpage_screenshot": {
-            "name": "take_webpage_screenshot",
-            "description": "Take screenshots of webpages using Playwright browser automation",
-            "inputSchema": {
+        "take_webpage_screenshot": ToolDefinition(
+            name="take_webpage_screenshot",
+            description="Take screenshots of webpages using Playwright browser automation",
+            input_schema={
                 "type": "object",
                 "properties": {
                     "url": {
@@ -54,11 +56,11 @@ def get_playwright_tool_definitions() -> dict[str, dict[str, Any]]:
                 },
                 "required": ["url"]
             }
-        },
-        "scrape_webpage_content": {
-            "name": "scrape_webpage_content",
-            "description": "Scrape content from webpages using Playwright browser automation",
-            "inputSchema": {
+        ).to_dict(),
+        "scrape_webpage_content": ToolDefinition(
+            name="scrape_webpage_content",
+            description="Scrape content from webpages using Playwright browser automation",
+            input_schema={
                 "type": "object",
                 "properties": {
                     "url": {
@@ -86,14 +88,14 @@ def get_playwright_tool_definitions() -> dict[str, dict[str, Any]]:
                 },
                 "required": ["url"]
             }
-        },
-        "test_playwright_connection": {
-            "name": "test_playwright_connection",
-            "description": "Test Playwright browser connection and capabilities",
-            "inputSchema": {
+        ).to_dict(),
+        "test_playwright_connection": ToolDefinition(
+            name="test_playwright_connection",
+            description="Test Playwright browser connection and capabilities",
+            input_schema={
                 "type": "object",
                 "properties": {},
                 "required": []
             }
-        }
+        ).to_dict()
     }

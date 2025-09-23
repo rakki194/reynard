@@ -1,0 +1,559 @@
+/**
+ * 🕺 Transformer Dance Club Styles
+ * 
+ * Dedicated stylesheet for the transformer architecture dance club visualization
+ * Includes all animations, effects, and responsive design
+ */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+/* Transformer Dance Club Demo Container */
+.transformer-dance-club-demo {
+  min-height: 100vh;
+  background: var(--color-background);
+  color: var(--color-text);
+}
+
+/* Demo Header - Scoped to transformer dance club only */
+.transformer-dance-club-demo .demo-header {
+  text-align: center;
+  padding: 2rem 0;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Force center the transformer dance club title */
+.transformer-dance-club-demo .demo-header h1.page-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin: 0;
+  text-align: center;
+  width: 100%;
+  display: block;
+  background: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff, #06ffa5);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 2s infinite, bounce 1s infinite;
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+  /* Force centering */
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.transformer-dance-club-demo .page-description {
+  font-size: 1.1rem;
+  color: var(--color-text-secondary);
+  max-width: 600px;
+  margin: 0;
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* Transformer Visualization Container */
+.transformer-visualization {
+  position: relative;
+  min-height: 600px;
+  background: linear-gradient(45deg, #000011, #001122, #000033);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  font-family: 'Orbitron', monospace;
+}
+
+/* Strobe Effect */
+.strobe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1000;
+  animation: strobe 0.3s infinite;
+}
+
+@keyframes strobe {
+  0%, 90% { background: transparent; }
+  95% { background: rgba(255, 255, 255, 0.1); }
+}
+
+/* Dance Floor Grid */
+.dance-floor {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 0, 255, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: danceFloor 2s infinite;
+  z-index: -1;
+}
+
+@keyframes danceFloor {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+}
+
+/* Transformer Container */
+.transformer-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
+  padding: 20px;
+  position: relative;
+  z-index: 10;
+}
+
+/* Encoder and Decoder Sections */
+.encoder-section,
+.decoder-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  position: relative;
+}
+
+/* Component Styles */
+.component {
+  padding: 15px 25px;
+  border-radius: 15px;
+  text-align: center;
+  font-weight: bold;
+  position: relative;
+  min-width: 180px;
+  box-shadow: 0 0 20px currentColor;
+  animation: pulse 1.5s infinite;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+
+.component:hover {
+  transform: scale(1.1) rotate(2deg);
+  box-shadow: 0 0 30px currentColor;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px currentColor;
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 40px currentColor;
+    transform: scale(1.05);
+  }
+}
+
+/* Component Type Styles */
+.input-embedding,
+.output-embedding {
+  background: linear-gradient(45deg, #ff006e, #8338ec);
+  color: white;
+  animation-delay: 0s;
+}
+
+.positional-encoding {
+  background: linear-gradient(45deg, #06ffa5, #00d9ff);
+  color: black;
+  animation-delay: 0.2s;
+}
+
+.attention {
+  background: linear-gradient(45deg, #ffbe0b, #fb8500);
+  color: black;
+  animation-delay: 0.3s;
+  animation: dance 0.8s infinite;
+}
+
+.masked-attention {
+  background: linear-gradient(45deg, #ffbe0b, #fb8500);
+  color: black;
+  animation-delay: 0.4s;
+  animation: dance 0.8s infinite;
+  filter: hue-rotate(45deg);
+}
+
+@keyframes dance {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  25% { transform: translateY(-5px) rotate(2deg); }
+  50% { transform: translateY(0px) rotate(0deg); }
+  75% { transform: translateY(-3px) rotate(-2deg); }
+}
+
+.add-norm {
+  background: linear-gradient(45deg, #3a86ff, #06ffa5);
+  color: white;
+  animation-delay: 0.5s;
+}
+
+.feed-forward {
+  background: linear-gradient(45deg, #9d4edd, #c77dff);
+  color: white;
+  animation-delay: 0.6s;
+}
+
+.linear {
+  background: linear-gradient(45deg, #f72585, #b5179e);
+  color: white;
+  animation-delay: 0.7s;
+}
+
+.softmax {
+  background: linear-gradient(45deg, #06ffa5, #00d9ff);
+  color: black;
+  animation-delay: 0.8s;
+  animation: rainbow 2s infinite;
+}
+
+@keyframes rainbow {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+/* Block Containers */
+.encoder-block,
+.decoder-block {
+  border: 2px solid #00d9ff;
+  border-radius: 20px;
+  padding: 20px;
+  position: relative;
+  background: rgba(0, 217, 255, 0.1);
+  backdrop-filter: blur(10px);
+  animation: blockGlow 2s infinite;
+}
+
+@keyframes blockGlow {
+  0%, 100% {
+    border-color: #00d9ff;
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+  }
+  50% {
+    border-color: #06ffa5;
+    box-shadow: 0 0 30px rgba(6, 255, 165, 0.5);
+  }
+}
+
+/* Nx Labels */
+.nx-label {
+  position: absolute;
+  right: -40px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(45deg, #ff006e, #8338ec);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  animation: spin 3s infinite;
+}
+
+@keyframes spin {
+  0%, 100% { transform: translateY(-50%) rotate(0deg); }
+  50% { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* Transformer Title */
+.transformer-title {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+  font-weight: 900;
+  background: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff, #06ffa5);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 2s infinite, bounce 1s infinite;
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+  z-index: 100;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0px); }
+  50% { transform: translateX(-50%) translateY(-10px); }
+}
+
+/* Disco Ball */
+.disco-ball {
+  position: absolute;
+  top: 80px;
+  right: 100px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(45deg, #silver, #gold);
+  border-radius: 50%;
+  animation: discoBall 3s infinite;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+  z-index: 50;
+}
+
+@keyframes discoBall {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.1); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+/* Speaker */
+.speaker {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 40px;
+  height: 60px;
+  background: linear-gradient(45deg, #333, #666);
+  border-radius: 10px;
+  animation: bass 0.6s infinite;
+  z-index: 50;
+}
+
+@keyframes bass {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); box-shadow: 0 0 20px #ff006e; }
+}
+
+/* Party Lights */
+.light {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  animation: partyLight 1s infinite;
+  z-index: 30;
+}
+
+@keyframes partyLight {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+    box-shadow: 0 0 10px currentColor;
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5);
+    box-shadow: 0 0 30px currentColor;
+  }
+}
+
+/* Sparkle Animation */
+@keyframes sparkle {
+  0% {
+    opacity: 1;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) translateY(-20px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0) translateY(-40px);
+  }
+}
+
+/* Connection Lines and Data Flow */
+.connection {
+  position: absolute;
+  height: 3px;
+  background: linear-gradient(90deg, #00d9ff, #06ffa5);
+  animation: flowData 1.5s infinite;
+  box-shadow: 0 0 10px #00d9ff;
+  z-index: 5;
+}
+
+.data-flow {
+  position: fixed;
+  height: 3px;
+  background: linear-gradient(90deg, #00d9ff, #06ffa5);
+  box-shadow: 0 0 10px #00d9ff;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+@keyframes flowData {
+  0% {
+    opacity: 0.3;
+    box-shadow: 0 0 5px #00d9ff;
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 20px #00d9ff;
+  }
+  100% {
+    opacity: 0.3;
+    box-shadow: 0 0 5px #00d9ff;
+  }
+}
+
+@keyframes dataFlow {
+  0% {
+    opacity: 0;
+    transform: scaleX(0);
+    box-shadow: 0 0 5px #00d9ff;
+  }
+  20% {
+    opacity: 1;
+    transform: scaleX(1);
+    box-shadow: 0 0 20px #00d9ff;
+  }
+  80% {
+    opacity: 1;
+    transform: scaleX(1);
+    box-shadow: 0 0 20px #00d9ff;
+  }
+  100% {
+    opacity: 0;
+    transform: scaleX(0);
+    box-shadow: 0 0 5px #00d9ff;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .transformer-container {
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1rem;
+  }
+  
+  .encoder-section,
+  .decoder-section {
+    width: 100%;
+  }
+  
+  .component {
+    min-width: 150px;
+    padding: 12px 20px;
+    font-size: 0.8rem;
+  }
+  
+  .transformer-title {
+    font-size: 18px;
+    top: 10px;
+  }
+  
+  .disco-ball {
+    width: 40px;
+    height: 40px;
+    top: 60px;
+    right: 60px;
+  }
+  
+  .speaker {
+    width: 30px;
+    height: 45px;
+    bottom: 15px;
+    right: 15px;
+  }
+  
+  .light {
+    width: 15px;
+    height: 15px;
+  }
+  
+  .nx-label {
+    right: -30px;
+    font-size: 12px;
+    padding: 3px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .transformer-dance-club-demo .page-title {
+    font-size: 2rem;
+  }
+  
+  .transformer-visualization {
+    min-height: 500px;
+  }
+  
+  .component {
+    min-width: 120px;
+    padding: 10px 15px;
+    font-size: 0.7rem;
+  }
+  
+  .encoder-block,
+  .decoder-block {
+    padding: 15px;
+  }
+  
+  .transformer-title {
+    font-size: 16px;
+  }
+}
+
+/* Accessibility Improvements */
+@media (prefers-reduced-motion: reduce) {
+  .strobe,
+  .dance-floor,
+  .component,
+  .disco-ball,
+  .speaker,
+  .light,
+  .nx-label,
+  .transformer-title {
+    animation: none;
+  }
+  
+  .component:hover {
+    transform: none;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .component {
+    border: 2px solid currentColor;
+  }
+  
+  .encoder-block,
+  .decoder-block {
+    border-width: 3px;
+  }
+  
+  .transformer-title {
+    -webkit-text-fill-color: initial;
+    color: white;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .transformer-visualization {
+    background: white;
+    color: black;
+  }
+  
+  .strobe,
+  .dance-floor,
+  .disco-ball,
+  .speaker,
+  .light {
+    display: none;
+  }
+  
+  .component {
+    box-shadow: none;
+    border: 1px solid black;
+  }
+}

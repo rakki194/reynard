@@ -10,7 +10,7 @@ GIT_AUTOMATION_TOOL_DEFINITIONS = [
     ToolDefinition(
         name="detect_junk_files",
         description="Detect and optionally clean up junk files in the repository",
-        parameters={
+        input_schema={
             "type": "object",
             "properties": {
                 "cleanup": {
@@ -34,12 +34,12 @@ GIT_AUTOMATION_TOOL_DEFINITIONS = [
     ToolDefinition(
         name="analyze_git_changes",
         description="Analyze Git changes and determine their impact and categorization",
-        parameters={"type": "object", "properties": {}},
+        input_schema={"type": "object", "properties": {}},
     ),
     ToolDefinition(
         name="generate_commit_message",
         description="Generate a conventional commit message from analyzed changes",
-        parameters={
+        input_schema={
             "type": "object",
             "properties": {
                 "include_body": {
@@ -58,7 +58,7 @@ GIT_AUTOMATION_TOOL_DEFINITIONS = [
     ToolDefinition(
         name="manage_changelog",
         description="Manage CHANGELOG.md file with validation and version promotion",
-        parameters={
+        input_schema={
             "type": "object",
             "properties": {
                 "action": {
@@ -81,7 +81,7 @@ GIT_AUTOMATION_TOOL_DEFINITIONS = [
     ToolDefinition(
         name="manage_version",
         description="Manage package versions and Git tags with semantic versioning",
-        parameters={
+        input_schema={
             "type": "object",
             "properties": {
                 "action": {
@@ -111,7 +111,7 @@ GIT_AUTOMATION_TOOL_DEFINITIONS = [
     ToolDefinition(
         name="execute_git_workflow",
         description="Execute the complete Git workflow automation with all steps",
-        parameters={
+        input_schema={
             "type": "object",
             "properties": {
                 "skip_junk": {
@@ -169,11 +169,11 @@ GIT_AUTOMATION_TOOL_DEFINITIONS = [
     ToolDefinition(
         name="quick_git_workflow",
         description="Execute quick Git workflow with minimal prompts and auto-confirm",
-        parameters={"type": "object", "properties": {}},
+        input_schema={"type": "object", "properties": {}},
     ),
     ToolDefinition(
         name="get_git_workflow_status",
         description="Get current Git workflow status including changes, version, and tags",
-        parameters={"type": "object", "properties": {}},
+        input_schema={"type": "object", "properties": {}},
     ),
 ]

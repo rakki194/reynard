@@ -16,6 +16,7 @@
     "@solidjs/router": "0.15.3",
     "reynard-core": "workspace:*",
     "reynard-themes": "workspace:*",
+    "reynard-i18n": "workspace:*",
     "reynard-fluent-icons": "workspace:*",
     "reynard-3d": "workspace:*",
     "reynard-algorithms": "workspace:*",

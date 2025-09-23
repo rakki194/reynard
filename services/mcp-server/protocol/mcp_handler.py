@@ -11,8 +11,6 @@ import logging
 from typing import Any, Optional
 
 from middleware.auth_middleware import mcp_auth_middleware
-from tools.config_definitions import get_config_tool_definitions
-from tools.definitions import get_tool_definitions
 
 from .tool_registry import ToolRegistry
 from .tool_router import ToolRouter
@@ -45,17 +43,17 @@ class MCPHandler:
         }
 
     def handle_tools_list(self, request_id: Any) -> dict[str, Any]:
-        """Handle tools list request - only return enabled tools."""
-        # Get all tool definitions
-        all_tools = get_tool_definitions()
-        config_tools = get_config_tool_definitions()
-
-        # Combine all tools
-        combined_tools = {**all_tools, **config_tools}
+        """Handle tools list request - generate definitions dynamically from registry."""
+        # Import here to avoid circular imports
+        from generation.tool_definition_generator import ToolDefinitionGenerator
+        
+        # Generate tool definitions from registry
+        tool_generator = ToolDefinitionGenerator()
+        tool_definitions = tool_generator.generate_from_registry(self.tool_registry)
 
         # Filter to only enabled tools
         enabled_tools = {}
-        for tool_name, tool_def in combined_tools.items():
+        for tool_name, tool_def in tool_definitions.items():
             if self.tool_registry.is_tool_enabled(tool_name):
                 enabled_tools[tool_name] = tool_def
 

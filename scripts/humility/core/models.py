@@ -2,7 +2,6 @@
 Data models for the Enhanced Humility Detector.
 """
 
-import json
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
@@ -40,6 +39,9 @@ class DetectionCategory(Enum):
     EXCLUSIVITY_CLAIMS = "exclusivity_claims"
     EMOTIONAL_MANIPULATION = "emotional_manipulation"
     AUTHORITY_CLAIMS = "authority_claims"
+    CONDESCENDING_LANGUAGE = "condescending_language"
+    NEGATIVE_ASSUMPTIONS = "negative_assumptions"
+    PATRONIZING_TONE = "patronizing_tone"
 
 
 @dataclass

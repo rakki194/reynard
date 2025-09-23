@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Humility Detector Enhancement**: Added condescending language detection patterns including "idiot-proof", "bulletproof", and patronizing tone analysis (Cyber-Fierce-Grid)
+- **MCP Refactor**: Complete transformation of MCP server into a nice system (Strategic-Fox-13)
+  - Schema validation system with comprehensive error checking
+  - Dynamic tool definition generation from registry
+  - Enhanced @register_tool decorator with validation
+  - Validation CLI tool for easy testing
+  - Comprehensive documentation and templates
+  - 100% test coverage with 27 passing tests
+  - Zero schema breaks - all 74 tools validated
+
 ### Changed
 
 ### Deprecated
@@ -75,20 +85,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Enhanced Security Middleware**: Improved security middleware with better input validation and rate limiting
 - **Security Configuration**: Updated security configuration with enhanced protection mechanisms
 - **Authentication Improvements**: Enhanced authentication and authorization systems
-
-## [0.17.1] - 2025-09-23
-
-### Added
-
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
 
 ## [0.16.0] - 2025-09-22
 

@@ -12,16 +12,16 @@ from typing import Any
 
 # Simple ToolDefinition class
 class ToolDefinition:
-    def __init__(self, name: str, description: str, parameters: dict[str, Any]):
+    def __init__(self, name: str, description: str, input_schema: dict[str, Any]):
         self.name = name
         self.description = description
-        self.parameters = parameters
+        self.input_schema = input_schema
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "name": self.name,
             "description": self.description,
-            "parameters": self.parameters,
+            "inputSchema": self.input_schema,
         }
 
 

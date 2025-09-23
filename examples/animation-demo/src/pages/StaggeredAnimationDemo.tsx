@@ -199,25 +199,29 @@ export const StaggeredAnimationDemo: Component = () => {
         <div class="animation-showcase">
           <For each={items()}>
             {(item, index) => {
-              const animationItem = staggeredAnimation.items()[index()];
+              // Create a reactive computation for animation state
+              const animationItem = () => {
+                const animationItems = staggeredAnimation.items();
+                return animationItems[index()];
+              };
               return (
                 <div
                   class="showcase-item"
                   style={{
                     "background-color": item.color,
-                    "animation-delay": `${animationItem?.delay || 0}ms`,
-                    "opacity": animationItem?.isAnimating ? "1" : "0.7",
-                    "transform": `scale(${Math.max(animationItem?.progress || 0.1, 0.1)})`,
+                    "animation-delay": `${animationItem()?.delay || 0}ms`,
+                    "opacity": animationItem()?.isAnimating ? "1" : "0.7",
+                    "transform": `scale(${Math.max(animationItem()?.progress || 0.1, 0.1)})`,
                     "transition": "all 0.3s ease"
                   }}
                 >
                   <div class="item-content">
                     <div class="item-text">{item.text}</div>
                     <div class="item-delay">
-                      Delay: {animationItem?.delay || 0}ms
+                      Delay: {animationItem()?.delay || 0}ms
                     </div>
                     <div class="item-progress">
-                      Progress: {Math.round((animationItem?.progress || 0) * 100)}%
+                      Progress: {Math.round((animationItem()?.progress || 0) * 100)}%
                     </div>
                   </div>
                 </div>

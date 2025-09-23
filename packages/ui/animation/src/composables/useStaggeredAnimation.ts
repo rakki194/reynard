@@ -58,8 +58,6 @@ export function useStaggeredAnimation(options: UseStaggeredAnimationOptions = {}
   };
 
   const start = async (itemCount: number): Promise<void> => {
-    console.log("🦊 StaggeredAnimation: Starting animation with", itemCount, "items");
-    
     if (isAnimating()) {
       console.warn("🦊 StaggeredAnimation: Already animating, ignoring start request");
       return;
@@ -81,10 +79,7 @@ export function useStaggeredAnimation(options: UseStaggeredAnimationOptions = {}
     // Start animations for each item
     const animationPromises = newItems.map(item => {
       return new Promise<void>(resolve => {
-        console.log("🦊 StaggeredAnimation: Setting up animation for item", item.index, "with delay", item.delay);
-        
         setTimeout(() => {
-          console.log("🦊 StaggeredAnimation: Starting animation for item", item.index);
           setItems(prev => prev.map(i => (i.index === item.index ? { ...i, isAnimating: true } : i)));
 
           config.onItemStart?.(item.index);
@@ -93,11 +88,9 @@ export function useStaggeredAnimation(options: UseStaggeredAnimationOptions = {}
             config.duration,
             config.easing,
             progress => {
-              console.log("🦊 StaggeredAnimation: Item", item.index, "progress:", progress);
               setItems(prev => prev.map(i => (i.index === item.index ? { ...i, progress } : i)));
             },
             () => {
-              console.log("🦊 StaggeredAnimation: Item", item.index, "completed");
               setItems(prev => prev.map(i => (i.index === item.index ? { ...i, isAnimating: false, progress: 1 } : i)));
 
               config.onItemComplete?.(item.index);
