@@ -16,7 +16,7 @@ def get_playwright_tool_definitions() -> dict[str, dict[str, Any]]:
         "take_webpage_screenshot": {
             "name": "take_webpage_screenshot",
             "description": "Take screenshots of webpages using Playwright browser automation",
-            "parameters": {
+            "inputSchema": {
                 "type": "object",
                 "properties": {
                     "url": {
@@ -58,7 +58,7 @@ def get_playwright_tool_definitions() -> dict[str, dict[str, Any]]:
         "scrape_webpage_content": {
             "name": "scrape_webpage_content",
             "description": "Scrape content from webpages using Playwright browser automation",
-            "parameters": {
+            "inputSchema": {
                 "type": "object",
                 "properties": {
                     "url": {
@@ -90,7 +90,7 @@ def get_playwright_tool_definitions() -> dict[str, dict[str, Any]]:
         "test_playwright_connection": {
             "name": "test_playwright_connection",
             "description": "Test Playwright browser connection and capabilities",
-            "parameters": {
+            "inputSchema": {
                 "type": "object",
                 "properties": {},
                 "required": []

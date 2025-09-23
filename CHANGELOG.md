@@ -5,6 +5,31 @@ All notable changes to the Reynard framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [0.17.1] - 2025-09-23
+
+### Fixed
+
+- **E2E Animation Tests**: Fixed animation debug test navigation handling with improved page routing and timeout management
+- **MCP Playwright Tools**: Fixed Playwright tool definitions schema by correcting parameter structure (parameters → inputSchema) for proper MCP protocol compliance
+
+### Added
+
+- **MCP Documentation**: Added comprehensive MCP TODO documentation for development tracking
+
 ## [0.17.0] - 2025-09-23
 
 ### Added
@@ -51,7 +76,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Security Configuration**: Updated security configuration with enhanced protection mechanisms
 - **Authentication Improvements**: Enhanced authentication and authorization systems
 
-## [Unreleased]
+## [0.17.1] - 2025-09-23
 
 ### Added
 

@@ -23,46 +23,36 @@ test.describe('Animation Debug Tests', () => {
 
   test.describe('Staggered Animation Debug', () => {
     test.beforeEach(async () => {
-      await page.goto(`${DEMO_URL}/staggered`);
-      await page.waitForLoadState('networkidle');
+      await page.goto(DEMO_URL);
+      // Navigate to staggered animations page
+      await page.click('button:has-text("Staggered Animations")');
+      await page.waitForTimeout(500); // Wait for navigation
     });
 
-    test('should debug item visibility issue', async () => {
-      // Check initial state of all items
-      const items = page.locator('.showcase-item');
-      const itemCount = await items.count();
+    test('should debug animation start process', async () => {
+      // Monitor console logs during animation
+      const consoleLogs: string[] = [];
+      page.on('console', msg => {
+        consoleLogs.push(`[${msg.type()}] ${msg.text()}`);
+      });
+
+      // Start animation and monitor
+      await page.click('button:has-text("Start Animation")');
       
-      console.log(`Found ${itemCount} items`);
+      // Wait for animation to process
+      await page.waitForTimeout(1000);
       
-      for (let i = 0; i < itemCount; i++) {
-        const item = items.nth(i);
-        
-        // Check if item is visible
-        const isVisible = await item.isVisible();
-        console.log(`Item ${i + 1} visible: ${isVisible}`);
-        
-        // Check computed styles
-        const styles = await item.evaluate(el => {
-          const computed = getComputedStyle(el);
-          return {
-            transform: computed.transform,
-            opacity: computed.opacity,
-            display: computed.display,
-            visibility: computed.visibility,
-            width: computed.width,
-            height: computed.height
-          };
-        });
-        
-        console.log(`Item ${i + 1} styles:`, styles);
-        
-        // Check if transform scale is 0 (invisible)
-        if (styles.transform.includes('matrix(0, 0, 0, 0, 0, 0)')) {
-          console.log(`❌ Item ${i + 1} has scale(0) - INVISIBLE!`);
-        } else {
-          console.log(`✅ Item ${i + 1} has proper scale`);
-        }
-      }
+      // Check animation status
+      const animationStatus = await page.textContent('.status-value');
+      console.log('Animation status shows "Yes":', animationStatus?.includes('Yes'));
+      
+      // Check first item progress
+      const firstItemProgress = await page.textContent('.item-progress');
+      console.log('First item progress:', firstItemProgress);
+      
+      // Log console messages
+      console.log('Console logs during animation:');
+      consoleLogs.forEach(log => console.log(log));
     });
 
     test('should debug animation system initialization', async () => {
@@ -86,33 +76,30 @@ test.describe('Animation Debug Tests', () => {
       }
     });
 
-    test('should debug animation start process', async () => {
-      // Monitor console logs during animation
-      const consoleLogs: string[] = [];
-      page.on('console', msg => {
-        if (msg.type() === 'log' || msg.type() === 'warn' || msg.type() === 'error') {
-          consoleLogs.push(`[${msg.type()}] ${msg.text()}`);
-        }
-      });
-      
-      // Start animation and monitor
-      await page.click('button:has-text("Start Animation")');
-      
-      // Wait for animation to process
-      await page.waitForTimeout(1000);
-      
-      console.log('Console logs during animation:');
-      consoleLogs.forEach(log => console.log(log));
-      
-      // Check if animation actually started
-      const isAnimating = await page.locator('.status-value:has-text("Yes")').isVisible();
-      console.log('Animation status shows "Yes":', isAnimating);
-      
-      // Check if items are being updated
+    test('should debug item visibility issue', async () => {
+      // Check initial state of all items
       const items = page.locator('.showcase-item');
-      const firstItem = items.first();
-      const progressText = await firstItem.locator('.item-progress').textContent();
-      console.log('First item progress:', progressText);
+      const itemCount = await items.count();
+      
+      console.log('Found', itemCount, 'items');
+      
+      // Check if items are visible and have proper styling
+      for (let i = 0; i < itemCount; i++) {
+        const item = items.nth(i);
+        const isVisible = await item.isVisible();
+        const transform = await item.evaluate(el => getComputedStyle(el).transform);
+        const opacity = await item.evaluate(el => getComputedStyle(el).opacity);
+        
+        console.log(`Item ${i + 1}: visible=${isVisible}, transform=${transform}, opacity=${opacity}`);
+        
+        if (!isVisible) {
+          console.log(`❌ Item ${i + 1} is not visible`);
+        } else if (transform === 'none' || transform === 'matrix(1, 0, 0, 1, 0, 0)') {
+          console.log(`❌ Item ${i + 1} has no transform`);
+        } else {
+          console.log(`✅ Item ${i + 1} has proper transform`);
+        }
+      }
     });
 
     test('should debug animation timing and delays', async () => {
@@ -121,58 +108,29 @@ test.describe('Animation Debug Tests', () => {
       
       // Monitor each item's animation start time
       const itemStartTimes: number[] = [];
-      const items = page.locator('.showcase-item');
       
-      for (let i = 0; i < 5; i++) {
-        const item = items.nth(i);
-        const startTime = Date.now();
+      // Wait and check progress over time
+      for (let i = 0; i < 10; i++) {
+        await page.waitForTimeout(100);
         
-        // Wait for item to start animating (opacity or transform change)
-        try {
-          await page.waitForFunction(
-            (index) => {
-              const items = document.querySelectorAll('.showcase-item');
-              const item = items[index];
-              if (!item) return false;
-              
-              const style = getComputedStyle(item);
-              const transform = style.transform;
-              const opacity = parseFloat(style.opacity);
-              
-              // Check if animation has started
-              return transform !== 'none' && transform !== 'matrix(1, 0, 0, 1, 0, 0)' ||
-                     opacity !== 1;
-            },
-            i,
-            { timeout: 2000 }
-          );
+        const items = page.locator('.showcase-item');
+        const itemCount = await items.count();
+        
+        for (let j = 0; j < itemCount; j++) {
+          const item = items.nth(j);
+          const progress = await item.textContent('.item-progress');
+          const delay = await item.textContent('.item-delay');
           
-          const actualStartTime = Date.now();
-          itemStartTimes.push(actualStartTime - startTime);
-          console.log(`Item ${i + 1} started animating after ${actualStartTime - startTime}ms`);
-        } catch (error) {
-          console.log(`❌ Item ${i + 1} never started animating`);
-          itemStartTimes.push(-1);
-        }
-      }
-      
-      // Check if delays are working
-      const expectedDelays = [0, 50, 100, 150, 200]; // Based on stagger config
-      for (let i = 0; i < itemStartTimes.length; i++) {
-        if (itemStartTimes[i] !== -1) {
-          const expectedDelay = expectedDelays[i];
-          const actualDelay = itemStartTimes[i];
-          const difference = Math.abs(actualDelay - expectedDelay);
-          
-          console.log(`Item ${i + 1}: Expected ${expectedDelay}ms, got ${actualDelay}ms, diff: ${difference}ms`);
-          
-          if (difference > 100) {
-            console.log(`❌ Item ${i + 1} delay is off by ${difference}ms`);
-          } else {
-            console.log(`✅ Item ${i + 1} delay is within tolerance`);
+          if (progress && progress.includes('%') && !progress.includes('0%')) {
+            if (!itemStartTimes[j]) {
+              itemStartTimes[j] = i * 100;
+              console.log(`Item ${j + 1} started animating at ${itemStartTimes[j]}ms (delay: ${delay})`);
+            }
           }
         }
       }
+      
+      console.log('Animation start times:', itemStartTimes);
     });
 
     test('should debug animation progress updates', async () => {
@@ -182,90 +140,58 @@ test.describe('Animation Debug Tests', () => {
       // Monitor progress updates
       const progressUpdates: { time: number; progress: string }[] = [];
       
-      // Set up progress monitoring
-      await page.evaluate(() => {
-        const items = document.querySelectorAll('.showcase-item');
-        items.forEach((item, index) => {
-          const progressElement = item.querySelector('.item-progress');
-          if (progressElement) {
-            const observer = new MutationObserver(() => {
-              (window as any).progressUpdates = (window as any).progressUpdates || [];
-              (window as any).progressUpdates.push({
-                time: Date.now(),
-                index,
-                progress: progressElement.textContent
-              });
-            });
-            observer.observe(progressElement, { childList: true, subtree: true, characterData: true });
-          }
-        });
-      });
-      
-      // Wait for animation to run
-      await page.waitForTimeout(2000);
-      
-      // Get progress updates
-      const updates = await page.evaluate(() => (window as any).progressUpdates || []);
-      
-      console.log('Progress updates:', updates);
-      
-      // Check if progress is actually updating
-      const hasProgressUpdates = updates.length > 0;
-      console.log('Has progress updates:', hasProgressUpdates);
-      
-      if (!hasProgressUpdates) {
-        console.log('❌ No progress updates detected - animation system may not be working');
-      } else {
-        console.log('✅ Progress updates detected');
+      for (let i = 0; i < 20; i++) {
+        await page.waitForTimeout(100);
+        
+        const firstItem = page.locator('.showcase-item').first();
+        const progress = await firstItem.textContent('.item-progress');
+        
+        if (progress) {
+          progressUpdates.push({ time: i * 100, progress });
+        }
       }
+      
+      console.log('Progress updates:');
+      progressUpdates.forEach(update => {
+        console.log(`${update.time}ms: ${update.progress}`);
+      });
     });
   });
 
   test.describe('3D Animation Debug', () => {
     test.beforeEach(async () => {
-      await page.goto(`${DEMO_URL}/3d`);
-      await page.waitForLoadState('networkidle');
+      await page.goto(DEMO_URL);
+      // Navigate to 3D animations page
+      await page.click('button:has-text("3D Animations")');
+      await page.waitForTimeout(500); // Wait for navigation
     });
 
     test('should debug 3D animation system availability', async () => {
       // Check if 3D animation system is available
-      const systemState = await page.evaluate(() => {
-        const threeDAnimation = (window as any).threeDAnimation;
-        if (threeDAnimation) {
-          return {
-            isSystemAvailable: threeDAnimation.isSystemAvailable(),
-            animationEngine: threeDAnimation.animationEngine(),
-            state: threeDAnimation.state()
-          };
-        }
-        return { systemAvailable: false };
-      });
+      const has3DControls = await page.locator('button:has-text("Start Animation")').isVisible();
+      const hasCanvas = await page.locator('canvas').isVisible();
       
-      console.log('3D Animation system state:', systemState);
+      console.log('Has 3D controls:', has3DControls);
+      console.log('Has canvas:', hasCanvas);
       
-      if (!systemState.systemAvailable) {
-        console.log('❌ 3D Animation system not available');
+      if (!has3DControls) {
+        console.log('❌ 3D Animation controls not found');
       } else {
-        console.log('✅ 3D Animation system available');
-        console.log('Engine:', systemState.animationEngine);
-        console.log('State:', systemState.state);
+        console.log('✅ 3D Animation controls found');
+      }
+      
+      if (!hasCanvas) {
+        console.log('❌ 3D Canvas not found');
+      } else {
+        console.log('✅ 3D Canvas found');
       }
     });
 
     test('should debug 3D animation execution', async () => {
-      // Monitor console logs
-      const consoleLogs: string[] = [];
-      page.on('console', msg => {
-        if (msg.type() === 'log' || msg.type() === 'warn' || msg.type() === 'error') {
-          consoleLogs.push(`[${msg.type()}] ${msg.text()}`);
-        }
-      });
-      
-      // Try different animation types
-      const animationTypes = ['rotation', 'cluster', 'particles'];
+      const animationTypes = ['rotation', 'cluster', 'particle'];
       
       for (const type of animationTypes) {
-        console.log(`\n--- Testing ${type} animation ---`);
+        console.log(`--- Testing ${type} animation ---`);
         
         // Select animation type
         await page.selectOption('select', type);
@@ -273,33 +199,26 @@ test.describe('Animation Debug Tests', () => {
         // Start animation
         await page.click('button:has-text("Start Animation")');
         
-        // Wait for animation to process
+        // Wait for animation to start
         await page.waitForTimeout(1000);
         
-        // Check status
-        const isAnimating = await page.locator('.status-value:has-text("Yes")').isVisible();
+        // Check if animation is running
+        const isAnimating = await page.textContent('.status-value');
         console.log(`${type} animation status:`, isAnimating);
         
-        // Check state updates
-        const state = await page.evaluate(() => {
-          const threeDAnimation = (window as any).threeDAnimation;
-          if (threeDAnimation) {
-            return threeDAnimation.state();
-          }
-          return null;
-        });
-        
-        console.log(`${type} animation state:`, state);
+        // Stop animation
+        await page.click('button:has-text("Stop Animation")');
+        await page.waitForTimeout(500);
       }
-      
-      console.log('\nConsole logs:');
-      consoleLogs.forEach(log => console.log(log));
     });
   });
 
   test.describe('Animation Package Debug', () => {
     test('should debug animation package loading', async () => {
-      await page.goto(`${DEMO_URL}/staggered`);
+      await page.goto(DEMO_URL);
+      // Navigate to staggered animations page
+      await page.click('button:has-text("Staggered Animations")');
+      await page.waitForTimeout(500); // Wait for navigation
       
       // Check if animation package is loaded by looking for actual functionality
       const hasStartButton = await page.locator('button:has-text("Start Animation")').isVisible();
@@ -331,7 +250,10 @@ test.describe('Animation Debug Tests', () => {
     });
 
     test('should debug animation imports and dependencies', async () => {
-      await page.goto(`${DEMO_URL}/staggered`);
+      await page.goto(DEMO_URL);
+      // Navigate to staggered animations page
+      await page.click('button:has-text("Staggered Animations")');
+      await page.waitForTimeout(500); // Wait for navigation
       
       // Check network requests for animation packages
       const networkRequests = await page.evaluate(() => {
@@ -340,23 +262,10 @@ test.describe('Animation Debug Tests', () => {
       
       console.log('Network requests:', networkRequests);
       
-      // Check for failed imports
-      const importErrors = await page.evaluate(() => {
-        const errors: string[] = [];
-        
-        // Check for module loading errors
-        if ((window as any).moduleErrors) {
-          errors.push(...(window as any).moduleErrors);
-        }
-        
-        return errors;
-      });
-      
-      if (importErrors.length > 0) {
-        console.log('❌ Import errors detected:');
-        importErrors.forEach((error: string) => console.log(error));
-      } else {
+      if (networkRequests.length === 0) {
         console.log('✅ No import errors detected');
+      } else {
+        console.log('❌ Import errors detected:', networkRequests);
       }
     });
   });

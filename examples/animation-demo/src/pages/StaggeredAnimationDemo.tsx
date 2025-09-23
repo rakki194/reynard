@@ -23,7 +23,12 @@ export const StaggeredAnimationDemo: Component = () => {
     direction: "forward" as "forward" | "reverse" | "center" | "random"
   });
 
-  const staggeredAnimation = useStaggeredAnimation(animationConfig());
+  const staggeredAnimation = useStaggeredAnimation({
+    duration: animationConfig().duration,
+    delay: animationConfig().delay,
+    stagger: animationConfig().stagger,
+    direction: animationConfig().direction
+  });
 
   const startAnimation = () => {
     staggeredAnimation.start(items().length);
