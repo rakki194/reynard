@@ -17,6 +17,7 @@ export * from "./easing/easing";
 export * from "./engines";
 export * from "./smart-imports";
 export * from "./state";
+export * from "./color";
 // Note: utils exports are included in composables to avoid conflicts
 
 // Main types
@@ -86,3 +87,37 @@ export {
   usePackageAvailability, 
   useMultiplePackageAvailability 
 } from "./smart-imports/useSmartImport";
+
+// Color animation exports
+export { 
+  easedHueShift,
+  pureHueShift,
+  batchHueShift,
+  interpolateColor,
+  generateEasedColorRamp,
+  generateEasedHueRamp,
+  animateColorTransition,
+  ColorEasingFunctions
+} from "./color/ColorAnimations";
+export { 
+  createColorAnimationSystem,
+  getColorAnimationSystem,
+  resetColorAnimationSystem
+} from "./color/ColorAnimationSystem";
+export { 
+  useColorAnimation,
+  useColorAnimationWithBase,
+  useHueShiftAnimation
+} from "./color/useColorAnimation";
+export { 
+  applyColorFallbackTransition,
+  applyHueFallbackShift,
+  applyColorRampFallback,
+  applyStaggeredColorFallback,
+  applyImmediateColorChange,
+  applyImmediateColorRamp,
+  createColorAnimationCSS,
+  applyColorAnimationCSS,
+  removeColorAnimationClasses,
+  cleanupColorAnimationStyles
+} from "./color/ColorFallbackUtils";

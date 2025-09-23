@@ -31,7 +31,12 @@
     "./utils": {
       "types": "./dist/utils/index.d.ts",
       "import": "./dist/utils/index.js"
-    }
+    },
+    "./color": {
+      "types": "./dist/color/index.d.ts",
+      "import": "./dist/color/index.js"
+    },
+    "./color-fallback-animations": "./dist/color/ColorFallbackAnimations.css"
   },
   "files": [
     "dist"

@@ -214,8 +214,12 @@ export interface UseStaggeredAnimationReturn {
   isAnimating: () => boolean;
   currentIndex: () => number;
   totalItems: () => number;
-  startAnimation: (items: unknown[]) => void;
+  startAnimation: (items: unknown[]) => Promise<void>;
   stopAnimation: () => void;
   getDelayForIndex: (index: number) => number;
   config: Record<string, unknown>;
+  /** Current animation engine being used */
+  animationEngine: () => "full" | "fallback" | "disabled";
+  /** Whether animations are currently disabled */
+  isAnimationsDisabled: () => boolean;
 }

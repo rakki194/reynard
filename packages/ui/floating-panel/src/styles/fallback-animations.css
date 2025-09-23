@@ -1,0 +1,192 @@
+/**
+ * 🦊 Fallback Animation Styles
+ * 
+ * CSS-based fallback animations for when the animation package is unavailable.
+ * Includes accessibility compliance and performance optimizations.
+ */
+
+/* Base animation variables */
+:root {
+  --fallback-animation-duration: 300ms;
+  --fallback-animation-stagger: 100ms;
+  --fallback-animation-easing: ease;
+  --fallback-animation-delay: 0ms;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --fallback-animation-duration: 0ms;
+    --fallback-animation-stagger: 0ms;
+    --fallback-animation-delay: 0ms;
+  }
+}
+
+/* Performance mode - disable all animations */
+.performance-mode {
+  --fallback-animation-duration: 0ms;
+  --fallback-animation-stagger: 0ms;
+  --fallback-animation-delay: 0ms;
+}
+
+/* Animations disabled globally */
+.animations-disabled {
+  --fallback-animation-duration: 0ms;
+  --fallback-animation-stagger: 0ms;
+  --fallback-animation-delay: 0ms;
+}
+
+/* Staggered entrance animations */
+.fallback-staggered-entrance {
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  transition: opacity var(--fallback-animation-duration) var(--fallback-animation-easing),
+              transform var(--fallback-animation-duration) var(--fallback-animation-easing);
+}
+
+.fallback-staggered-entrance.animate {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Staggered exit animations */
+.fallback-staggered-exit {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: opacity var(--fallback-animation-duration) var(--fallback-animation-easing),
+              transform var(--fallback-animation-duration) var(--fallback-animation-easing);
+}
+
+.fallback-staggered-exit.animate {
+  opacity: 0;
+  transform: translateY(-20px) scale(0.95);
+}
+
+/* Direction-specific animations */
+.fallback-staggered-forward .fallback-staggered-item:nth-child(1) { transition-delay: calc(var(--fallback-animation-delay) + 0 * var(--fallback-animation-stagger)); }
+.fallback-staggered-forward .fallback-staggered-item:nth-child(2) { transition-delay: calc(var(--fallback-animation-delay) + 1 * var(--fallback-animation-stagger)); }
+.fallback-staggered-forward .fallback-staggered-item:nth-child(3) { transition-delay: calc(var(--fallback-animation-delay) + 2 * var(--fallback-animation-stagger)); }
+.fallback-staggered-forward .fallback-staggered-item:nth-child(4) { transition-delay: calc(var(--fallback-animation-delay) + 3 * var(--fallback-animation-stagger)); }
+.fallback-staggered-forward .fallback-staggered-item:nth-child(5) { transition-delay: calc(var(--fallback-animation-delay) + 4 * var(--fallback-animation-stagger)); }
+.fallback-staggered-forward .fallback-staggered-item:nth-child(6) { transition-delay: calc(var(--fallback-animation-delay) + 5 * var(--fallback-animation-stagger)); }
+.fallback-staggered-forward .fallback-staggered-item:nth-child(7) { transition-delay: calc(var(--fallback-animation-delay) + 6 * var(--fallback-animation-stagger)); }
+.fallback-staggered-forward .fallback-staggered-item:nth-child(8) { transition-delay: calc(var(--fallback-animation-delay) + 7 * var(--fallback-animation-stagger)); }
+.fallback-staggered-forward .fallback-staggered-item:nth-child(9) { transition-delay: calc(var(--fallback-animation-delay) + 8 * var(--fallback-animation-stagger)); }
+.fallback-staggered-forward .fallback-staggered-item:nth-child(10) { transition-delay: calc(var(--fallback-animation-delay) + 9 * var(--fallback-animation-stagger)); }
+
+/* Reverse direction */
+.fallback-staggered-reverse .fallback-staggered-item:nth-child(1) { transition-delay: calc(var(--fallback-animation-delay) + 9 * var(--fallback-animation-stagger)); }
+.fallback-staggered-reverse .fallback-staggered-item:nth-child(2) { transition-delay: calc(var(--fallback-animation-delay) + 8 * var(--fallback-animation-stagger)); }
+.fallback-staggered-reverse .fallback-staggered-item:nth-child(3) { transition-delay: calc(var(--fallback-animation-delay) + 7 * var(--fallback-animation-stagger)); }
+.fallback-staggered-reverse .fallback-staggered-item:nth-child(4) { transition-delay: calc(var(--fallback-animation-delay) + 6 * var(--fallback-animation-stagger)); }
+.fallback-staggered-reverse .fallback-staggered-item:nth-child(5) { transition-delay: calc(var(--fallback-animation-delay) + 5 * var(--fallback-animation-stagger)); }
+.fallback-staggered-reverse .fallback-staggered-item:nth-child(6) { transition-delay: calc(var(--fallback-animation-delay) + 4 * var(--fallback-animation-stagger)); }
+.fallback-staggered-reverse .fallback-staggered-item:nth-child(7) { transition-delay: calc(var(--fallback-animation-delay) + 3 * var(--fallback-animation-stagger)); }
+.fallback-staggered-reverse .fallback-staggered-item:nth-child(8) { transition-delay: calc(var(--fallback-animation-delay) + 2 * var(--fallback-animation-stagger)); }
+.fallback-staggered-reverse .fallback-staggered-item:nth-child(9) { transition-delay: calc(var(--fallback-animation-delay) + 1 * var(--fallback-animation-stagger)); }
+.fallback-staggered-reverse .fallback-staggered-item:nth-child(10) { transition-delay: calc(var(--fallback-animation-delay) + 0 * var(--fallback-animation-stagger)); }
+
+/* Center-out direction */
+.fallback-staggered-center .fallback-staggered-item:nth-child(1) { transition-delay: calc(var(--fallback-animation-delay) + 4 * var(--fallback-animation-stagger)); }
+.fallback-staggered-center .fallback-staggered-item:nth-child(2) { transition-delay: calc(var(--fallback-animation-delay) + 3 * var(--fallback-animation-stagger)); }
+.fallback-staggered-center .fallback-staggered-item:nth-child(3) { transition-delay: calc(var(--fallback-animation-delay) + 2 * var(--fallback-animation-stagger)); }
+.fallback-staggered-center .fallback-staggered-item:nth-child(4) { transition-delay: calc(var(--fallback-animation-delay) + 1 * var(--fallback-animation-stagger)); }
+.fallback-staggered-center .fallback-staggered-item:nth-child(5) { transition-delay: calc(var(--fallback-animation-delay) + 0 * var(--fallback-animation-stagger)); }
+.fallback-staggered-center .fallback-staggered-item:nth-child(6) { transition-delay: calc(var(--fallback-animation-delay) + 1 * var(--fallback-animation-stagger)); }
+.fallback-staggered-center .fallback-staggered-item:nth-child(7) { transition-delay: calc(var(--fallback-animation-delay) + 2 * var(--fallback-animation-stagger)); }
+.fallback-staggered-center .fallback-staggered-item:nth-child(8) { transition-delay: calc(var(--fallback-animation-delay) + 3 * var(--fallback-animation-stagger)); }
+.fallback-staggered-center .fallback-staggered-item:nth-child(9) { transition-delay: calc(var(--fallback-animation-delay) + 4 * var(--fallback-animation-stagger)); }
+.fallback-staggered-center .fallback-staggered-item:nth-child(10) { transition-delay: calc(var(--fallback-animation-delay) + 5 * var(--fallback-animation-stagger)); }
+
+/* Floating panel specific animations */
+.floating-panel-fallback-entrance {
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  transition: opacity var(--fallback-animation-duration) var(--fallback-animation-easing),
+              transform var(--fallback-animation-duration) var(--fallback-animation-easing);
+}
+
+.floating-panel-fallback-entrance.animate {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.floating-panel-fallback-exit {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: opacity var(--fallback-animation-duration) var(--fallback-animation-easing),
+              transform var(--fallback-animation-duration) var(--fallback-animation-easing);
+}
+
+.floating-panel-fallback-exit.animate {
+  opacity: 0;
+  transform: translateY(-20px) scale(0.95);
+}
+
+/* Panel content animations */
+.floating-panel-content-fallback {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity var(--fallback-animation-duration) var(--fallback-animation-easing),
+              transform var(--fallback-animation-duration) var(--fallback-animation-easing);
+}
+
+.floating-panel-content-fallback.animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Button animations */
+.floating-panel-button-fallback {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity var(--fallback-animation-duration) var(--fallback-animation-easing),
+              transform var(--fallback-animation-duration) var(--fallback-animation-easing);
+}
+
+.floating-panel-button-fallback.animate {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Performance optimizations */
+.performance-mode .fallback-staggered-entrance,
+.performance-mode .fallback-staggered-exit,
+.performance-mode .floating-panel-fallback-entrance,
+.performance-mode .floating-panel-fallback-exit,
+.performance-mode .floating-panel-content-fallback,
+.performance-mode .floating-panel-button-fallback {
+  transition: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Accessibility mode */
+.accessibility-mode {
+  --fallback-animation-duration: 200ms;
+  --fallback-animation-stagger: 50ms;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .fallback-staggered-entrance,
+  .fallback-staggered-exit,
+  .floating-panel-fallback-entrance,
+  .floating-panel-fallback-exit {
+    transition-duration: 150ms;
+  }
+}
+
+/* Print styles - disable animations */
+@media print {
+  .fallback-staggered-entrance,
+  .fallback-staggered-exit,
+  .floating-panel-fallback-entrance,
+  .floating-panel-fallback-exit,
+  .floating-panel-content-fallback,
+  .floating-panel-button-fallback {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

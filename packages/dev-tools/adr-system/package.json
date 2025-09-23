@@ -26,7 +26,12 @@
     "fs-extra": "11.3.2",
     "glob": "11.0.3",
     "yaml": "2.8.1",
-    "commander": "14.0.1"
+    "commander": "14.0.1",
+    "solid-js": "1.9.9",
+    "reynard-components-core": "workspace:*",
+    "reynard-charts": "workspace:*",
+    "reynard-fluent-icons": "workspace:*",
+    "reynard-project-architecture": "workspace:*"
   },
   "devDependencies": {
     "@types/fs-extra": "11.0.4",

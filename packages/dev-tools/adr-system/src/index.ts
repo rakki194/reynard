@@ -18,5 +18,12 @@ export { ADRGenerator } from "./ADRGenerator";
 export { ADRValidator } from "./ADRValidator";
 export { ADRRelationshipMapper } from "./ADRRelationshipMapper";
 
+// Dashboard components
+export { ComplianceDashboard } from "./ComplianceDashboard";
+export { ComplianceDashboardDemo } from "./ComplianceDashboardDemo";
+export { RealTimeArchitectureMonitor } from "./RealTimeArchitectureMonitor";
+export { ComplianceScorer } from "./ComplianceScorer";
+export { TeamPerformanceTracker } from "./TeamPerformanceTracker";
+
 // Re-export types for convenience
 export type { ADRDocument, ADRStatus, ADRCategory } from "./types";

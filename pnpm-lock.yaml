@@ -2876,6 +2876,21 @@ importers:
       glob:
         specifier: 11.0.3
         version: 11.0.3
+      reynard-charts:
+        specifier: workspace:*
+        version: link:../../ui/charts
+      reynard-components-core:
+        specifier: workspace:*
+        version: link:../../ui/components-core
+      reynard-fluent-icons:
+        specifier: workspace:*
+        version: link:../../ui/fluent-icons
+      reynard-project-architecture:
+        specifier: workspace:*
+        version: link:../project-architecture
+      solid-js:
+        specifier: 1.9.9
+        version: 1.9.9
       typescript:
         specifier: 5.9.2
         version: 5.9.2
