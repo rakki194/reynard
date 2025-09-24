@@ -302,5 +302,13 @@ class EmailService:
         return await self.send_email(message)
 
 
-# Global email service instance
-email_service = EmailService()
+# Global email service instance - lazy initialization
+email_service = None
+
+
+def get_email_service() -> EmailService:
+    """Get the global email service instance with lazy initialization."""
+    global email_service
+    if email_service is None:
+        email_service = EmailService()
+    return email_service

@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { HTTP_PRESETS } from "../types";
+import { HTTP_PRESETS } from "../presets";
 
 describe("HTTP Types", () => {
   describe("HTTP_PRESETS", () => {
@@ -21,15 +21,15 @@ describe("HTTP Types", () => {
     it("should have api preset", () => {
       expect(HTTP_PRESETS.api).toBeDefined();
       expect(HTTP_PRESETS.api.config).toBeDefined();
-      expect(HTTP_PRESETS.api.config.timeout).toBe(10000);
-      expect(HTTP_PRESETS.api.config.retries).toBe(2);
+      expect(HTTP_PRESETS.api.config.timeout).toBe(30000);
+      expect(HTTP_PRESETS.api.config.retries).toBe(3);
     });
 
     it("should have upload preset", () => {
       expect(HTTP_PRESETS.upload).toBeDefined();
       expect(HTTP_PRESETS.upload.config).toBeDefined();
       expect(HTTP_PRESETS.upload.config.timeout).toBe(300000);
-      expect(HTTP_PRESETS.upload.config.retries).toBe(1);
+      expect(HTTP_PRESETS.upload.config.retries).toBe(2);
     });
 
     it("should have download preset", () => {

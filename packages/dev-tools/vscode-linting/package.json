@@ -1,0 +1,179 @@
+{
+  "name": "reynard-vscode-linting",
+  "displayName": "Reynard Incremental Linting",
+  "version": "0.1.0",
+  "description": "🦊 VS Code extension for Reynard incremental linting system",
+  "publisher": "reynard",
+  "engines": {
+    "vscode": "^1.104.0",
+    "node": ">=18.0.0"
+  },
+  "categories": [
+    "Linters",
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:reynard-linting.toggle",
+    "onCommand:reynard-linting.lintFile",
+    "onCommand:reynard-linting.lintWorkspace",
+    "onCommand:reynard-linting.clearIssues",
+    "onCommand:reynard-linting.showConfig",
+    "workspaceContains:**/.reynard-linting.json"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "reynard-linting.toggle",
+        "title": "Toggle Reynard Linting",
+        "category": "Reynard Linting"
+      },
+      {
+        "command": "reynard-linting.lintFile",
+        "title": "Lint Current File",
+        "category": "Reynard Linting"
+      },
+      {
+        "command": "reynard-linting.lintWorkspace",
+        "title": "Lint Workspace",
+        "category": "Reynard Linting"
+      },
+      {
+        "command": "reynard-linting.clearIssues",
+        "title": "Clear All Issues",
+        "category": "Reynard Linting"
+      },
+      {
+        "command": "reynard-linting.showConfig",
+        "title": "Show Configuration",
+        "category": "Reynard Linting"
+      },
+      {
+        "command": "reynard-linting.reloadConfig",
+        "title": "Reload Configuration",
+        "category": "Reynard Linting"
+      }
+    ],
+    "configuration": {
+      "title": "Reynard Linting",
+      "properties": {
+        "reynard-linting.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable Reynard incremental linting"
+        },
+        "reynard-linting.lintOnSave": {
+          "type": "boolean",
+          "default": true,
+          "description": "Run linting when files are saved"
+        },
+        "reynard-linting.lintOnChange": {
+          "type": "boolean",
+          "default": false,
+          "description": "Run linting when files are changed"
+        },
+        "reynard-linting.maxConcurrency": {
+          "type": "number",
+          "default": 4,
+          "description": "Maximum number of concurrent linting processes"
+        },
+        "reynard-linting.debounceDelay": {
+          "type": "number",
+          "default": 1000,
+          "description": "Debounce delay for file change events (ms)"
+        }
+      }
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "reynard-linting.toggle",
+          "when": "workspaceFolderCount > 0"
+        },
+        {
+          "command": "reynard-linting.lintFile",
+          "when": "editorTextFocus"
+        },
+        {
+          "command": "reynard-linting.lintWorkspace",
+          "when": "workspaceFolderCount > 0"
+        },
+        {
+          "command": "reynard-linting.clearIssues",
+          "when": "workspaceFolderCount > 0"
+        },
+        {
+          "command": "reynard-linting.showConfig",
+          "when": "workspaceFolderCount > 0"
+        },
+        {
+          "command": "reynard-linting.reloadConfig",
+          "when": "workspaceFolderCount > 0"
+        }
+      ]
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "pnpm clean && vite build && tsc -p tsconfig.build.json --declaration --emitDeclarationOnly",
+    "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly",
+    "build:watch": "vite build --watch",
+                "package": "vsce package --no-dependencies",
+                "package:pre-release": "vsce package --no-dependencies --pre-release",
+    "publish": "vsce publish",
+    "publish:pre-release": "vsce publish --pre-release",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:coverage:check": "vitest run --coverage --reporter=verbose",
+    "test:ui": "vitest --ui",
+    "typecheck": "tsc --noEmit",
+    "clean": "pnpm clean:all",
+    "clean:all": "rm -rf dist && rm -f *.tsbuildinfo && rm -f *.vsix && find . -name '*.js' -not -path './node_modules/*' -not -path './dist/*' -delete && find . -name '*.d.ts' -not -path './node_modules/*' -not -path './dist/*' -delete && find . -name '*.js.map' -not -path './node_modules/*' -not -path './dist/*' -delete && find . -name '*.d.ts.map' -not -path './node_modules/*' -not -path './dist/*' -delete",
+    "clean:build": "rm -rf dist && rm -f tsconfig.tsbuildinfo",
+    "prebuild": "pnpm clean:build"
+  },
+  "dependencies": {
+    "reynard-incremental-linting": "workspace:*",
+    "vscode-languageclient": "9.0.1",
+    "vscode-languageserver": "9.0.1",
+    "vscode-languageserver-textdocument": "1.0.12"
+  },
+  "devDependencies": {
+    "@types/node": "24.5.2",
+    "@types/vscode": "1.104.0",
+    "@vitest/coverage-v8": "3.2.4",
+    "@vitest/ui": "3.2.4",
+    "@vscode/vsce": "3.6.1",
+    "happy-dom": "18.0.1",
+    "reynard-testing": "workspace:*",
+    "typescript": "5.9.2",
+    "vite": "7.1.7",
+    "vitest": "3.2.4"
+  },
+  "keywords": [
+    "vscode",
+    "extension",
+    "linting",
+    "incremental",
+    "language-server",
+    "development",
+    "typescript",
+    "reynard",
+    "monorepo"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/runeset/reynard",
+    "directory": "packages/dev-tools/vscode-linting"
+  },
+  "license": "MIT"
+}
+
+
+

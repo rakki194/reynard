@@ -19,7 +19,7 @@ from app.config.embedding_backend_config import (
     get_embedding_backends_config,
     reset_embedding_backends_config,
 )
-from app.services.rag.core.embeddings import EmbeddingService
+from app.services.rag.services.core.embedding import EmbeddingService
 
 
 async def demo_backend_configuration():

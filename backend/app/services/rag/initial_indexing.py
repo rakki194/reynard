@@ -25,7 +25,7 @@ from pathlib import Path
 from typing import Any
 
 from ...config.continuous_indexing_config import continuous_indexing_config
-from ..continuous_indexing import ContinuousIndexingService
+from ..email.infrastructure.continuous_indexing import ContinuousIndexingService
 from .file_indexing_service import get_file_indexing_service
 
 logger = logging.getLogger(__name__)

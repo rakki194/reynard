@@ -1,10 +1,9 @@
 /**
  * Authentication Test Suite Index for Reynard
  *
- * Imports all modular authentication test suites
+ * This file serves as the main entry point for authentication tests.
+ * Individual test files are run separately by Playwright.
  */
 
-// Import all authentication test modules
-import "./auth-accessibility.spec";
-import "./auth-form.spec";
-import "./auth-validation.spec";
+// This file is intentionally empty - Playwright will discover and run
+// individual test files automatically based on the testMatch pattern

@@ -16,7 +16,7 @@
     "noEmit": false,
     "declaration": true,
     "declarationMap": true,
-    "composite": false,
+    "composite": true,
     "outDir": "./dist",
     "rootDir": "./src",
     "jsx": "preserve",

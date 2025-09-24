@@ -1,24 +1,32 @@
-"""Email services package.
+"""Email Services Package for Reynard Backend.
 
-This package contains all email-related services organized by functionality:
-- core: Basic email functionality (SMTP, IMAP, multi-account)
-- ai: AI-powered email services (AI responses, agent emails)
-- analytics: Email analytics and reporting
-- integration: External service integrations (calendar, encryption)
+This package provides comprehensive email functionality including:
+- Core email operations (sending, receiving, multi-account)
+- AI-powered email features (agent emails, AI responses)
+- External integrations (calendar, encryption)
+- Analytics and reporting
+- Infrastructure services (continuous indexing)
 """
 
+from .core import get_email_service, get_imap_service, multi_account_service
 from .ai import agent_email_service, ai_email_response_service
-from .analytics import email_analytics_service
-from .core import email_service, imap_service, multi_account_service
 from .integration import calendar_integration_service, email_encryption_service
+from .analytics import email_analytics_service
+from .infrastructure import continuous_indexing
 
 __all__ = [
+    # Core services
+    "get_email_service",
+    "get_imap_service", 
+    "multi_account_service",
+    # AI services
     "agent_email_service",
     "ai_email_response_service",
+    # Integration services
     "calendar_integration_service",
-    "email_analytics_service",
     "email_encryption_service",
-    "email_service",
-    "imap_service",
-    "multi_account_service",
+    # Analytics services
+    "email_analytics_service",
+    # Infrastructure services
+    "continuous_indexing",
 ]

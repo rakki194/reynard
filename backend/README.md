@@ -153,7 +153,7 @@ ECS_E2E_DATABASE_URL=postgresql://postgres:password@localhost:5432/reynard_ecs_e
 
 # RAG Configuration
 RAG_ENABLED=true
-PG_DSN=postgresql://reynard_rag:YOUR_SECURE_PASSWORD_HERE@localhost:5432/reynard_rag
+RAG_DATABASE_URL=postgresql://reynard_rag:YOUR_SECURE_PASSWORD_HERE@localhost:5432/reynard_rag
 OLLAMA_BASE_URL=http://localhost:11434
 
 # RAG Models
@@ -169,7 +169,6 @@ RAG_CONTINUOUS_INDEXING_AUTO_START=true
 
 # Embedding Backend Configuration
 EMBEDDING_BACKENDS_ENABLED=true
-EMBEDDING_MOCK_MODE=false
 EMBEDDING_ALLOW_FALLBACK=true
 EMBEDDING_DEFAULT_BACKEND=ollama
 

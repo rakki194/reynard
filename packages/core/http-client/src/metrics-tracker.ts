@@ -73,7 +73,7 @@ export class MetricsTracker {
   /**
    * Update circuit breaker state in metrics
    */
-  updateCircuitBreakerState(state: string): void {
+  updateCircuitBreakerState(state: "closed" | "open" | "half-open"): void {
     if (!this.config.enabled) return;
     this.metrics.circuitBreakerState = state;
   }

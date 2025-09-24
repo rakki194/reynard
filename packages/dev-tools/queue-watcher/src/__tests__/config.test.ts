@@ -49,9 +49,7 @@ describe("Queue Watcher Configuration", () => {
   });
 
   it("should include cursor directories", () => {
-    expect(WATCH_DIRECTORIES).toContain("../../../.cursor/docs");
-    expect(WATCH_DIRECTORIES).toContain("../../../.cursor/prompts");
-    expect(WATCH_DIRECTORIES).toContain("../../../.cursor/rules");
+    expect(WATCH_DIRECTORIES).toContain("../../../.cursor");
   });
 
   it("should include all important project directories", () => {
@@ -60,15 +58,12 @@ describe("Queue Watcher Configuration", () => {
       "../../../backend",
       "../../../services",
       "../../../docs",
-      "../../../.cursor/docs",
-      "../../../.cursor/prompts",
-      "../../../.cursor/rules",
+      "../../../.cursor",
       "../../../examples",
       "../../../templates",
       "../../../e2e",
       "../../../scripts",
       "../../../nginx",
-      "../../../.cursor/todos",
       "../../../data",
       "../../../fenrir",
     ];

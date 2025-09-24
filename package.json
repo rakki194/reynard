@@ -1,6 +1,6 @@
 {
   "name": "reynard",
-  "version": "0.17.2",
+  "version": "0.18.0",
   "private": false,
   "type": "module",
   "description": "Reynard - A cunning SolidJS framework and UI library",
@@ -132,7 +132,23 @@
     "husky:toolkit": "node .husky/husky-toolkit-manager.js",
     "husky:toolkit:list": "node .husky/husky-toolkit-manager.js list",
     "husky:toolkit:run-all": "node .husky/husky-toolkit-manager.js run-all",
-    "husky:toolkit:install-deps": "node .husky/husky-toolkit-manager.js install-deps"
+    "husky:toolkit:install-deps": "node .husky/husky-toolkit-manager.js install-deps",
+    "test:incremental-linting": "pnpm --filter reynard-incremental-linting test",
+    "test:vscode-linting": "pnpm --filter reynard-vscode-linting test",
+    "test:coverage:incremental-linting": "pnpm --filter reynard-incremental-linting test:coverage",
+    "test:coverage:vscode-linting": "pnpm --filter reynard-vscode-linting test:coverage",
+    "typecheck:incremental-linting": "pnpm --filter reynard-incremental-linting typecheck",
+    "typecheck:vscode-linting": "pnpm --filter reynard-vscode-linting typecheck",
+    "build:incremental-linting": "pnpm --filter reynard-incremental-linting build",
+    "build:vscode-linting": "pnpm --filter reynard-vscode-linting build",
+    "test:linting": "pnpm test:incremental-linting && pnpm test:vscode-linting",
+    "test:coverage:linting": "pnpm test:coverage:incremental-linting && pnpm test:coverage:vscode-linting",
+    "typecheck:linting": "pnpm typecheck:incremental-linting && pnpm typecheck:vscode-linting",
+    "build:linting": "pnpm build:incremental-linting && pnpm build:vscode-linting",
+    "package:vscode-linting": "cd packages/dev-tools/vscode-linting && npx vsce package --no-dependencies",
+    "package:vscode-linting:pre-release": "cd packages/dev-tools/vscode-linting && npx vsce package --no-dependencies --pre-release",
+    "publish:vscode-linting": "pnpm --filter reynard-vscode-linting publish",
+    "publish:vscode-linting:pre-release": "pnpm --filter reynard-vscode-linting publish:pre-release"
   },
   "devDependencies": {
     "@changesets/cli": "2.29.7",

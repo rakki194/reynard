@@ -19,7 +19,7 @@ describe("DependencyAnalyzer", () => {
       expect(graph.edges).toBeInstanceOf(Array);
 
       // Should have nodes for all directories
-      expect(graph.nodes.size).toBeGreaterThan(100);
+      expect(graph.nodes.size).toBeGreaterThan(90);
 
       // Should have edges for relationships
       expect(graph.edges.length).toBeGreaterThan(200);

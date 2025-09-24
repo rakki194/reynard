@@ -22,7 +22,7 @@ from ..services.email.analytics.email_analytics_service import email_analytics_s
 from ..services.email.core.email_service import (
     EmailAttachment,
     EmailMessage,
-    email_service,
+    get_email_service,
 )
 from ..services.email.core.multi_account_service import multi_account_service
 from ..services.email.integration.calendar_integration_service import (
@@ -72,6 +72,7 @@ async def send_email(
         )
 
         # Send email
+        email_service = get_email_service()
         result = await email_service.send_email(message)
 
         return EmailSendResponse(
@@ -114,6 +115,7 @@ async def send_simple_email(
         # Log the simple email send attempt by the authenticated user
         # user_id = current_user.get("id", "unknown")  # Available for future logging
 
+        email_service = get_email_service()
         result = await email_service.send_simple_email(
             to_email=to_email, subject=subject, body=body, html_body=html_body,
         )
@@ -310,6 +312,7 @@ Best regards,
 Reynard System
         """.strip()
 
+        email_service = get_email_service()
         result = await email_service.send_simple_email(
             to_email=current_user["email"], subject=test_subject, body=test_body,
         )

@@ -1,4 +1,6 @@
 # My junk
+*.vsix
+private/
 private.mdc
 coverage.json
 agent-names.json

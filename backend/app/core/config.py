@@ -313,7 +313,7 @@ def get_service_configs() -> dict[str, dict[str, Any]]:
         },
         "rag": {
             "rag_enabled": config.rag.enabled,
-            "pg_dsn": config.rag.pg_dsn,
+            "rag_database_url": config.rag.rag_database_url,
             "ollama_base_url": config.rag.ollama_base_url,
             "rag_text_model": config.rag.text_model,
             "rag_code_model": config.rag.code_model,

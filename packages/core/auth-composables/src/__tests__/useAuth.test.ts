@@ -1,134 +1,90 @@
 /**
- * useAuth Tests
- * Tests for the useAuth composable
+ * useAuth Hook Tests
+ * Tests for the useAuth SolidJS composable
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderHook, waitFor } from "@solidjs/testing-library";
+import { renderHook } from "@solidjs/testing-library";
 import { useAuth } from "../useAuth";
+import { HTTPClient } from "reynard-http-client";
 
 // Mock the auth-core package
 vi.mock("reynard-auth-core", () => ({
   createAuthOrchestrator: vi.fn(() => ({
-    initializeAuth: vi.fn(),
     login: vi.fn(),
     register: vi.fn(),
     logout: vi.fn(),
-    refreshAccessToken: vi.fn(),
+    refreshTokens: vi.fn(),
     changePassword: vi.fn(),
-    fetchUserProfile: vi.fn(),
-    setupTokenRefreshTimer: vi.fn(),
-    clearTokenRefreshTimer: vi.fn(),
-    authClient: {
-      httpClient: {},
+    initialize: vi.fn(),
+    user: vi.fn(() => null),
+    authState: vi.fn(() => ({
+      isAuthenticated: false,
+      isLoading: false,
+      error: null,
+      isRefreshing: false,
+    })),
+    tokenManager: {
+      getAccessToken: vi.fn(() => null),
+      getRefreshToken: vi.fn(() => null),
     },
-    tokenManager: {},
   })),
   DEFAULT_AUTH_CONFIG: {
-    apiBaseUrl: "http://localhost:8000",
-    tokenStorageKey: "access_token",
+    apiBaseUrl: "/api",
+    loginEndpoint: "/auth/login",
+    registerEndpoint: "/auth/register",
+    refreshEndpoint: "/auth/refresh",
+    profileEndpoint: "/auth/profile",
+    tokenStorageKey: "auth_token",
     refreshTokenStorageKey: "refresh_token",
     autoRefresh: true,
     refreshThresholdMinutes: 10,
+    loginRedirectPath: "/dashboard",
+    logoutRedirectPath: "/login",
+    enableRememberMe: true,
+    sessionTimeoutMinutes: 30,
   },
 }));
 
 describe("useAuth", () => {
+  let mockHttpClient: HTTPClient;
+
   beforeEach(() => {
-    vi.clearAllMocks();
+    mockHttpClient = new HTTPClient({ baseUrl: "/api" });
   });
 
-  describe("initialization", () => {
-    it("should initialize with default config", () => {
-      const { result } = renderHook(() => useAuth());
+  it("should return auth state and actions", () => {
+    const { result } = renderHook(() => useAuth({ 
+      config: { apiBaseUrl: "/api" },
+      autoInit: false 
+    }));
 
-      expect(result.authState).toBeDefined();
-      expect(result.user).toBeDefined();
-      expect(result.isAuthenticated).toBeDefined();
-      expect(result.isLoading).toBeDefined();
-      expect(result.error).toBeDefined();
-      expect(result.isRefreshing).toBeDefined();
-    });
-
-    it("should initialize with custom config", () => {
-      const customConfig = {
-        apiBaseUrl: "https://custom-api.com",
-        autoRefresh: false,
-      };
-
-      const { result } = renderHook(() => useAuth({ config: customConfig }));
-
-      expect(result.authState).toBeDefined();
-    });
-
-    it("should initialize with custom callbacks", () => {
-      const callbacks = {
-        onLoginSuccess: vi.fn(),
-        onLoginError: vi.fn(),
-        onLogout: vi.fn(),
-      };
-
-      const { result } = renderHook(() => useAuth({ callbacks }));
-
-      expect(result.authState).toBeDefined();
-    });
+    expect(result).toBeDefined();
+    expect(result.authState).toBeDefined();
+    expect(result.user).toBeDefined();
+    expect(result.isAuthenticated).toBeDefined();
+    expect(result.isLoading).toBeDefined();
+    expect(result.error).toBeDefined();
+    expect(result.isRefreshing).toBeDefined();
+    expect(result.login).toBeDefined();
+    expect(result.register).toBeDefined();
+    expect(result.logout).toBeDefined();
+    expect(result.refreshTokens).toBeDefined();
+    expect(result.changePassword).toBeDefined();
+    expect(result.initialize).toBeDefined();
+    expect(result.tokenManager).toBeDefined();
   });
 
-  describe("auth methods", () => {
-    it("should provide login method", () => {
-      const { result } = renderHook(() => useAuth());
+  it("should initialize with default state", () => {
+    const { result } = renderHook(() => useAuth({ 
+      config: { apiBaseUrl: "/api" },
+      autoInit: false 
+    }));
 
-      expect(result.login).toBeDefined();
-      expect(typeof result.login).toBe("function");
-    });
-
-    it("should provide register method", () => {
-      const { result } = renderHook(() => useAuth());
-
-      expect(result.register).toBeDefined();
-      expect(typeof result.register).toBe("function");
-    });
-
-    it("should provide logout method", () => {
-      const { result } = renderHook(() => useAuth());
-
-      expect(result.logout).toBeDefined();
-      expect(typeof result.logout).toBe("function");
-    });
-
-    it("should provide refreshTokens method", () => {
-      const { result } = renderHook(() => useAuth());
-
-      expect(result.refreshTokens).toBeDefined();
-      expect(typeof result.refreshTokens).toBe("function");
-    });
-
-    it("should provide changePassword method", () => {
-      const { result } = renderHook(() => useAuth());
-
-      expect(result.changePassword).toBeDefined();
-      expect(typeof result.changePassword).toBe("function");
-    });
-
-    it("should provide fetchUserProfile method", () => {
-      const { result } = renderHook(() => useAuth());
-
-      expect(result.fetchUserProfile).toBeDefined();
-      expect(typeof result.fetchUserProfile).toBe("function");
-    });
-  });
-
-  describe("utilities", () => {
-    it("should provide authClient", () => {
-      const { result } = renderHook(() => useAuth());
-
-      expect(result.authClient).toBeDefined();
-    });
-
-    it("should provide tokenManager", () => {
-      const { result } = renderHook(() => useAuth());
-
-      expect(result.tokenManager).toBeDefined();
-    });
+    expect(result.isAuthenticated()).toBe(false);
+    expect(result.isLoading()).toBe(false);
+    expect(result.error()).toBe(null);
+    expect(result.isRefreshing()).toBe(false);
+    expect(result.user()).toBe(null);
   });
 });

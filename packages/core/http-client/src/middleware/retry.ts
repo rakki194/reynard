@@ -5,7 +5,8 @@
  * The actual retry logic is implemented in the HTTP client.
  */
 
-import { HTTPMiddleware, RetryConfig, CircuitBreakerConfig } from "../types";
+import { HTTPMiddleware } from "../middleware-types";
+import { RetryConfig, CircuitBreakerConfig } from "../types";
 
 /**
  * Create retry middleware with custom retry logic

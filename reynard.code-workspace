@@ -521,7 +521,6 @@
       "davidanson.vscode-markdownlint",
       "yzhang.markdown-all-in-one",
       "tamasfe.even-better-toml",
-      "ms-vscode.hexeditor",
       "ms-vscode.vscode-json",
     ],
   },

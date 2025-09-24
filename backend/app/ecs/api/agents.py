@@ -112,6 +112,42 @@ async def get_agents() -> list[AgentResponse]:
         raise HTTPException(status_code=500, detail="Failed to get agents") from e
 
 
+@router.get("/search")
+async def search_agents(
+    query: str,
+    exact_match: bool = False,
+    service: PostgresECSWorldService = Depends(get_postgres_ecs_service),
+) -> dict[str, Any]:
+    """Search for agents by name or ID with flexible matching."""
+    try:
+        agents_data = await service.get_all_agents()
+        
+        # Filter agents based on query
+        if exact_match:
+            matching_agents = [
+                agent for agent in agents_data
+                if agent["agent_id"] == query or agent["name"] == query
+            ]
+        else:
+            query_lower = query.lower()
+            matching_agents = [
+                agent for agent in agents_data
+                if (query_lower in agent["agent_id"].lower() or 
+                    query_lower in agent["name"].lower() or
+                    query_lower in agent["spirit"].lower())
+            ]
+        
+        return {
+            "query": query,
+            "exact_match": exact_match,
+            "results": matching_agents,
+            "count": len(matching_agents)
+        }
+    except Exception as e:
+        logger.exception("Error searching agents")
+        raise HTTPException(status_code=500, detail="Failed to search agents") from e
+
+
 @router.post("", response_model=AgentResponse)
 async def create_agent(request: AgentCreateRequest) -> AgentResponse:
     """Create a new agent."""

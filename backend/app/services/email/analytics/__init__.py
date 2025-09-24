@@ -1,11 +1,12 @@
-"""Email analytics services.
+"""Email Analytics Services.
 
-Services for email analytics, reporting, and insights generation.
+This module provides email analytics and reporting functionality:
+- Email metrics and statistics
+- Performance insights and recommendations
 """
 
-from .email_analytics_service import EmailAnalyticsService, email_analytics_service
+from .email_analytics_service import email_analytics_service
 
 __all__ = [
-    "EmailAnalyticsService",
     "email_analytics_service",
 ]

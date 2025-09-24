@@ -169,9 +169,6 @@ class ServiceConfigManager:
             },
             "search": {
                 "enabled": True,
-                "rag_backend_url": os.getenv(
-                    "RAG_BACKEND_URL", "http://localhost:8002",
-                ),
                 "cache_enabled": True,
                 "cache_ttl": 300,
                 "max_results": 100,

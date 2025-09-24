@@ -58,6 +58,23 @@ export {
 // Dependency analysis
 export { DependencyAnalyzer } from "./dependency-analyzer.js";
 
+// Architecture validation
+export {
+  validateDirectoryDefinition,
+  validateProjectArchitecture,
+  isValidDirectoryDefinition,
+  isValidProjectArchitecture,
+} from "./validators/architecture-validator.js";
+
+export {
+  checkCircularDependencies,
+  checkMissingDirectoryReferences,
+  checkOrphanedDirectories,
+  checkInconsistentImportanceLevels,
+  checkMissingCoreDependencies,
+  runAllConsistencyChecks,
+} from "./validators/consistency-checker.js";
+
 // Type definitions
 export type {
   DirectoryCategory,

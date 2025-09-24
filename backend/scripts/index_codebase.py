@@ -18,9 +18,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from app.core.config import get_config
-from app.services.rag.core.embeddings import EmbeddingService
-from app.services.rag.core.indexing import CodebaseIndexer
-from app.services.rag.core.vector_store import VectorDBService
+from app.services.rag.services.core.embedding import OllamaEmbeddingService
+from app.services.rag.services.core.document_processor import ASTDocumentProcessor
+from app.services.rag.services.core.vector_store import PostgreSQLVectorStore
 
 # Set up logging
 logging.basicConfig(
@@ -51,7 +51,7 @@ async def main():
         # Create rag config manually
         rag_config = {
             "rag_enabled": True,
-            "pg_dsn": "postgresql://postgres@localhost:5432/reynard_rag",
+            "rag_database_url": "postgresql://postgres@localhost:5432/reynard_rag",
             "ollama_base_url": "http://localhost:11434",
             "rag_text_model": "sentence-transformers/all-MiniLM-L6-v2",
             "rag_code_model": "microsoft/codebert-base",
@@ -70,35 +70,39 @@ async def main():
         logger.info("Initializing services...")
 
         # Vector DB Service
-        vector_db = VectorDBService()
-        vector_success = await vector_db.initialize(rag_config)
+        vector_db = PostgreSQLVectorStore(rag_config)
+        vector_success = await vector_db.initialize()
         if not vector_success:
             logger.error("Failed to initialize VectorDB service")
             return 1
 
         # Embedding Service
-        embedding_service = EmbeddingService()
-        embedding_success = await embedding_service.initialize(rag_config)
+        embedding_service = OllamaEmbeddingService(rag_config)
+        embedding_success = await embedding_service.initialize()
         if not embedding_success:
             logger.error("Failed to initialize Embedding service")
             return 1
 
-        # Codebase Indexer
-        codebase_indexer = CodebaseIndexer()
-        indexer_success = await codebase_indexer.initialize(rag_config)
-        if not indexer_success:
-            logger.error("Failed to initialize Codebase Indexer")
+        # Document Processor
+        document_processor = ASTDocumentProcessor(rag_config)
+        processor_success = await document_processor.initialize()
+        if not processor_success:
+            logger.error("Failed to initialize Document Processor")
             return 1
+
+        # Codebase Scanner
+        from app.services.rag.services.core.codebase_scanner import CodebaseScanner
+        codebase_scanner = CodebaseScanner(rag_config)
 
         logger.info("✅ All services initialized successfully")
 
         # Get current stats
-        stats = await codebase_indexer.get_stats()
+        stats = await document_processor.get_stats()
         logger.info(f"Current database stats: {stats}")
 
         if args.scan_only:
             logger.info("🔍 Scanning codebase (scan-only mode)...")
-            async for item in codebase_indexer.scan_codebase():
+            async for item in codebase_scanner.scan_codebase():
                 if item["type"] == "file":
                     logger.info(
                         f"Found: {item['data']['path']} ({item['data']['file_type']})",
@@ -115,7 +119,11 @@ async def main():
             indexed_count = 0
             failed_count = 0
 
-            async for item in codebase_indexer.index_codebase():
+            async for item in codebase_scanner.scan_and_index(
+                document_processor=document_processor,
+                vector_store=vector_store,
+                embedding_service=embedding_service
+            ):
                 if item["type"] == "progress":
                     indexed_count = item.get("indexed", 0)
                     failed_count = item.get("failed", 0)
@@ -133,7 +141,7 @@ async def main():
             )
 
         # Get final stats
-        final_stats = await codebase_indexer.get_stats()
+        final_stats = await document_processor.get_stats()
         logger.info(f"Final database stats: {final_stats}")
 
         # Test embedding generation
@@ -171,8 +179,8 @@ async def main():
                 await vector_db.shutdown()
             if "embedding_service" in locals():
                 await embedding_service.shutdown()
-            if "codebase_indexer" in locals():
-                await codebase_indexer.shutdown()
+            if "document_processor" in locals():
+                await document_processor.shutdown()
         except Exception as e:
             logger.warning(f"Cleanup error: {e}")
 

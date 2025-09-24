@@ -117,6 +117,9 @@ describe("AuthClient", () => {
       const mockClient = new (HTTPClient as any)();
       mockClient.post.mockResolvedValue(mockResponse);
 
+      // Set up the mock to return our mock client
+      (HTTPClient as any).mockImplementation(() => mockClient);
+
       const authClient = createAuthClient(
         DEFAULT_AUTH_CONFIG,
         tokenManager,
@@ -124,8 +127,6 @@ describe("AuthClient", () => {
         mockUpdateAuthState,
         mockCallbacks
       );
-
-      (authClient as any).httpClient = mockClient;
 
       await expect(
         authClient.login({ username: "testuser", password: "wrong" })

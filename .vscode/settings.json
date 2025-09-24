@@ -12,42 +12,61 @@
   // Note: python.analysis.extraPaths is deprecated - use mypy, pylint, ruff configuration instead
   // Note: python-interpreter.sh script available for manual testing and future use
 
+  // 🦊 OPTIMIZED Python Configuration for Monorepo
+  // Using Ruff as single linter/formatter to prevent subprocess explosion
+
   // Python Auto-Formatting with Ruff (Primary linter/formatter)
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
       "source.fixAll.ruff": "explicit",
-      "source.organizeImports.ruff": "explicit",
-      "source.fixAll": "explicit"
+      "source.organizeImports.ruff": "explicit"
     },
     "editor.rulers": [88],
     "editor.tabSize": 4,
     "editor.insertSpaces": true
   },
 
+  // Ruff Configuration - Single tool for linting and formatting
   "ruff.path": ["${workspaceFolder}/pyproject.toml"],
+  "ruff.importStrategy": "fromEnvironment",
+  "ruff.args": ["--config=${workspaceFolder}/pyproject.toml"],
 
-  // MyPy Configuration
+  // MyPy Configuration - Type checking only
+  "mypy-type-checker.enabled": true,
   "mypy-type-checker.args": ["--config-file=${workspaceFolder}/pyproject.toml"],
   "mypy-type-checker.interpreter": ["/home/kade/venv/bin/python3", "/usr/bin/python3"],
 
-  // Pylint Configuration
-  "pylint.enabled": true,
+  // 🚫 DISABLED: Multiple linters to prevent subprocess explosion
+  // Pylint Configuration - DISABLED
+  "pylint.enabled": false,
   "pylint.importStrategy": "fromEnvironment",
   "pylint.args": ["--rcfile=${workspaceFolder}/pyproject.toml"],
-  "pylint.path": [
-    "${workspaceFolder}/scripts",
-    "${workspaceFolder}/services/agent-naming",
-    "${workspaceFolder}/services/gatekeeper",
-    "${workspaceFolder}/services/mcp-server",
-    "${workspaceFolder}/backend/app",
-    "${workspaceFolder}/fenrir"
-  ],
 
-  // Flake8 Configuration
-  "flake8.enabled": true,
+  // Flake8 Configuration - DISABLED
+  "flake8.enabled": false,
   "flake8.args": ["--config=${workspaceFolder}/pyproject.toml"],
+
+  // Black Configuration - DISABLED (Ruff handles formatting)
+  "black-formatter.enabled": false,
+
+  // isort Configuration - DISABLED (Ruff handles imports)
+  "isort.enabled": false,
+
+  // 🦊 REYNARD INCREMENTAL LINTING CONFIGURATION
+  // Custom incremental linting system with queue management
+  "reynard-linting.enabled": true,
+  "reynard-linting.lintOnSave": true,
+  "reynard-linting.lintOnChange": false,
+  "reynard-linting.maxConcurrency": 4,
+  "reynard-linting.debounceDelay": 1000,
+  "reynard-linting.incremental": true,
+  "reynard-linting.persistCache": true,
+  "reynard-linting.verbose": false,
+  "reynard-linting.autoFix": false,
+  "reynard-linting.outputFormat": "vscode",
+  "reynard-linting.configPath": ".reynard-linting.json",
 
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -278,5 +297,65 @@
 
   "typescript.preferences.importModuleSpecifier": "relative",
   "typescript.suggest.autoImports": true,
-  "typescript.updateImportsOnFileMove.enabled": "always"
+  "typescript.updateImportsOnFileMove.enabled": "always",
+
+  // ESLint Optimization for TypeScript/JavaScript
+  "eslint.workingDirectories": [
+    "${workspaceFolder}/packages",
+    "${workspaceFolder}/examples",
+    "${workspaceFolder}/templates"
+  ],
+  "eslint.options": {
+    "extensions": [".js", ".jsx", ".ts", ".tsx", ".vue", ".svelte"]
+  },
+
+  // File watching optimization
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/build/**": true,
+    "**/.git/**": true,
+    "**/third_party/**": true,
+    "**/__pycache__/**": true,
+    "**/.pytest_cache/**": true,
+    "**/.mypy_cache/**": true,
+    "**/venv/**": true,
+    "**/.venv/**": true,
+    "**/coverage/**": true,
+    "**/htmlcov/**": true
+  },
+
+  // Search optimization
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/coverage": true,
+    "**/htmlcov": true,
+    "**/third_party": true,
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/.pytest_cache": true,
+    "**/.mypy_cache": true,
+    "**/venv": true,
+    "**/.venv": true
+  },
+
+  // Performance optimizations
+  "editor.semanticHighlighting.enabled": true,
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": true,
+  "editor.suggest.maxVisibleSuggestions": 10,
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": false
+  },
+
+  // Disable unnecessary features for large repos
+  "git.enabled": true,
+  "git.ignoreSubmodules": true,
+
+  // Terminal optimization
+  "terminal.integrated.cwd": "${workspaceFolder}"
 }

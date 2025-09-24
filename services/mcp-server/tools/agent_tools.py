@@ -286,7 +286,13 @@ async def agent_startup_sequence(**kwargs) -> dict[str, Any]:
         # Returns complete agent initialization data with persona and ECS integration
         ```
     """
+    import logging
+    logger = logging.getLogger(__name__)
+    logger.debug(f"agent_startup_sequence called with kwargs: {kwargs}")
+    
     arguments = kwargs.get("arguments", {})
+    logger.debug(f"Extracted arguments: {arguments}")
+    
     return await ecs_tools.agent_startup_sequence(arguments)
 
 

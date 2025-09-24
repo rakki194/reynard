@@ -11,7 +11,7 @@
     "grepInvert": null,
     "maxFailures": 0,
     "metadata": {
-      "actualWorkers": 2
+      "actualWorkers": 4
     },
     "preserveOutput": "always",
     "reporter": [
@@ -39,13 +39,17 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 2
+          "actualWorkers": 4
         },
         "id": "chromium",
         "name": "chromium",
         "testDir": "/home/kade/runeset/reynard/e2e/suites",
         "testIgnore": [],
-        "testMatch": ["dom/*.spec.ts", "auth/*.spec.ts", "tracing/*.spec.ts"],
+        "testMatch": [
+          "dom/*.spec.ts",
+          "auth/*.spec.ts",
+          "tracing/*.spec.ts"
+        ],
         "timeout": 30000
       }
     ],
@@ -58,85 +62,1101 @@
   },
   "suites": [
     {
-      "title": "dom/dom-content.spec.ts",
-      "file": "dom/dom-content.spec.ts",
+      "title": "auth/auth-enhanced.spec.ts",
+      "file": "auth/auth-enhanced.spec.ts",
       "column": 0,
       "line": 0,
       "specs": [],
       "suites": [
         {
-          "title": "Element Text Content",
-          "file": "dom/dom-content.spec.ts",
-          "line": 12,
+          "title": "Enhanced Authentication Tests",
+          "file": "auth/auth-enhanced.spec.ts",
+          "line": 10,
           "column": 6,
-          "specs": [
+          "specs": [],
+          "suites": [
             {
-              "title": "should detect text content",
-              "ok": true,
-              "tags": [],
-              "tests": [
+              "title": "Login Flow",
+              "file": "auth/auth-enhanced.spec.ts",
+              "line": 17,
+              "column": 8,
+              "specs": [
                 {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
+                  "title": "should display login form",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
                     {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 1315,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-09-17T10:33:04.830Z",
+                      "timeout": 30000,
                       "annotations": [],
-                      "attachments": []
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 13215,
+                          "error": {
+                            "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n",
+                            "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16",
+                            "location": {
+                              "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                              "column": 16,
+                              "line": 13
+                            },
+                            "snippet": "  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                                "column": 16,
+                                "line": 13
+                              },
+                              "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n\n  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-09-24T12:37:01.006Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-a8375-w-should-display-login-form-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-a8375-w-should-display-login-form-chromium/video.webm"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                            "column": 16,
+                            "line": 13
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
                     }
                   ],
-                  "status": "expected"
+                  "id": "25ece6e62ca1a30db99b-c497ef38b38be7a39ccd",
+                  "file": "auth/auth-enhanced.spec.ts",
+                  "line": 18,
+                  "column": 5
+                },
+                {
+                  "title": "should handle login form interaction",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 1,
+                          "parallelIndex": 1,
+                          "status": "failed",
+                          "duration": 10863,
+                          "error": {
+                            "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n",
+                            "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16",
+                            "location": {
+                              "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                              "column": 16,
+                              "line": 13
+                            },
+                            "snippet": "  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                                "column": 16,
+                                "line": 13
+                              },
+                              "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n\n  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-09-24T12:37:01.394Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-b6f37-ndle-login-form-interaction-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-b6f37-ndle-login-form-interaction-chromium/video.webm"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                            "column": 16,
+                            "line": 13
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "25ece6e62ca1a30db99b-d8be161e423db221fe0d",
+                  "file": "auth/auth-enhanced.spec.ts",
+                  "line": 25,
+                  "column": 5
+                },
+                {
+                  "title": "should validate required fields",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 2,
+                          "status": "failed",
+                          "duration": 1776,
+                          "error": {
+                            "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n",
+                            "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16",
+                            "location": {
+                              "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                              "column": 16,
+                              "line": 13
+                            },
+                            "snippet": "  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                                "column": 16,
+                                "line": 13
+                              },
+                              "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n\n  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-09-24T12:37:01.456Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-3c30b-ld-validate-required-fields-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-3c30b-ld-validate-required-fields-chromium/video.webm"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                            "column": 16,
+                            "line": 13
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "25ece6e62ca1a30db99b-95c1c5aa39bea42d03eb",
+                  "file": "auth/auth-enhanced.spec.ts",
+                  "line": 45,
+                  "column": 5
                 }
-              ],
-              "id": "39ee849a0ba7c6174d8f-b384ee4ccb1575db7db7",
-              "file": "dom/dom-content.spec.ts",
-              "line": 20,
-              "column": 3
+              ]
             },
             {
-              "title": "should detect partial text content",
-              "ok": true,
-              "tags": [],
-              "tests": [
+              "title": "Registration Flow",
+              "file": "auth/auth-enhanced.spec.ts",
+              "line": 67,
+              "column": 8,
+              "specs": [
                 {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
+                  "title": "should toggle to registration form",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
                     {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 1354,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-09-17T10:33:04.818Z",
+                      "timeout": 30000,
                       "annotations": [],
-                      "attachments": []
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 3,
+                          "status": "failed",
+                          "duration": 11067,
+                          "error": {
+                            "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n",
+                            "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16",
+                            "location": {
+                              "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                              "column": 16,
+                              "line": 13
+                            },
+                            "snippet": "  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                                "column": 16,
+                                "line": 13
+                              },
+                              "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n\n  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-09-24T12:37:01.269Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-bf812-toggle-to-registration-form-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-bf812-toggle-to-registration-form-chromium/video.webm"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                            "column": 16,
+                            "line": 13
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
                     }
                   ],
-                  "status": "expected"
+                  "id": "25ece6e62ca1a30db99b-6a5c0084816312e1dd9f",
+                  "file": "auth/auth-enhanced.spec.ts",
+                  "line": 68,
+                  "column": 5
+                },
+                {
+                  "title": "should validate registration form fields",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 4,
+                          "parallelIndex": 1,
+                          "status": "failed",
+                          "duration": 347,
+                          "error": {
+                            "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n",
+                            "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16",
+                            "location": {
+                              "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                              "column": 16,
+                              "line": 13
+                            },
+                            "snippet": "  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                                "column": 16,
+                                "line": 13
+                              },
+                              "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n\n  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-09-24T12:37:24.217Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-fae12-te-registration-form-fields-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-fae12-te-registration-form-fields-chromium/video.webm"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                            "column": 16,
+                            "line": 13
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "25ece6e62ca1a30db99b-c5086dce60208aae9932",
+                  "file": "auth/auth-enhanced.spec.ts",
+                  "line": 88,
+                  "column": 5
                 }
-              ],
-              "id": "39ee849a0ba7c6174d8f-33404b2cefffa1d8c0b7",
-              "file": "dom/dom-content.spec.ts",
-              "line": 24,
-              "column": 3
+              ]
+            },
+            {
+              "title": "Accessibility and UX",
+              "file": "auth/auth-enhanced.spec.ts",
+              "line": 123,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should support keyboard navigation",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 5,
+                          "parallelIndex": 3,
+                          "status": "failed",
+                          "duration": 360,
+                          "error": {
+                            "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n",
+                            "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16",
+                            "location": {
+                              "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                              "column": 16,
+                              "line": 13
+                            },
+                            "snippet": "  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                                "column": 16,
+                                "line": 13
+                              },
+                              "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n\n  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-09-24T12:37:24.361Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-34313-support-keyboard-navigation-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-34313-support-keyboard-navigation-chromium/video.webm"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                            "column": 16,
+                            "line": 13
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "25ece6e62ca1a30db99b-363e0948cc8feffef0e5",
+                  "file": "auth/auth-enhanced.spec.ts",
+                  "line": 124,
+                  "column": 5
+                },
+                {
+                  "title": "should have proper form labels",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 6,
+                          "parallelIndex": 2,
+                          "status": "failed",
+                          "duration": 377,
+                          "error": {
+                            "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n",
+                            "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16",
+                            "location": {
+                              "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                              "column": 16,
+                              "line": 13
+                            },
+                            "snippet": "  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                                "column": 16,
+                                "line": 13
+                              },
+                              "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n\n  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-09-24T12:37:24.543Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-2e3aa-uld-have-proper-form-labels-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-2e3aa-uld-have-proper-form-labels-chromium/video.webm"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                            "column": 16,
+                            "line": 13
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "25ece6e62ca1a30db99b-96a9b5bb30c8e9f200f8",
+                  "file": "auth/auth-enhanced.spec.ts",
+                  "line": 136,
+                  "column": 5
+                },
+                {
+                  "title": "should be responsive on mobile",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 7,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 353,
+                          "error": {
+                            "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n",
+                            "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16",
+                            "location": {
+                              "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                              "column": 16,
+                              "line": 13
+                            },
+                            "snippet": "  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                                "column": 16,
+                                "line": 13
+                              },
+                              "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n\n  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-09-24T12:37:24.454Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-0a9e4-uld-be-responsive-on-mobile-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-0a9e4-uld-be-responsive-on-mobile-chromium/video.webm"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                            "column": 16,
+                            "line": 13
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "25ece6e62ca1a30db99b-b26bb7e0e4a659dfda43",
+                  "file": "auth/auth-enhanced.spec.ts",
+                  "line": 159,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Security Features",
+              "file": "auth/auth-enhanced.spec.ts",
+              "line": 183,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should mask password input",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 8,
+                          "parallelIndex": 1,
+                          "status": "failed",
+                          "duration": 3740,
+                          "error": {
+                            "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n",
+                            "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16",
+                            "location": {
+                              "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                              "column": 16,
+                              "line": 13
+                            },
+                            "snippet": "  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                                "column": 16,
+                                "line": 13
+                              },
+                              "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n\n  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-09-24T12:37:25.954Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-20d92--should-mask-password-input-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-20d92--should-mask-password-input-chromium/video.webm"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                            "column": 16,
+                            "line": 13
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "25ece6e62ca1a30db99b-c4ad51dc768ffdcf8978",
+                  "file": "auth/auth-enhanced.spec.ts",
+                  "line": 184,
+                  "column": 5
+                },
+                {
+                  "title": "should prevent form submission without proper data",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 9,
+                          "parallelIndex": 3,
+                          "status": "failed",
+                          "duration": 3398,
+                          "error": {
+                            "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n",
+                            "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16",
+                            "location": {
+                              "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                              "column": 16,
+                              "line": 13
+                            },
+                            "snippet": "  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                                "column": 16,
+                                "line": 13
+                              },
+                              "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n\n  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-09-24T12:37:25.985Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-5c841-mission-without-proper-data-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-5c841-mission-without-proper-data-chromium/video.webm"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                            "column": 16,
+                            "line": 13
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "25ece6e62ca1a30db99b-c147fa8d8ad8123ab816",
+                  "file": "auth/auth-enhanced.spec.ts",
+                  "line": 193,
+                  "column": 5
+                },
+                {
+                  "title": "should sanitize inputs",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 10,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 3461,
+                          "error": {
+                            "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n",
+                            "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16",
+                            "location": {
+                              "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                              "column": 16,
+                              "line": 13
+                            },
+                            "snippet": "  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                                "column": 16,
+                                "line": 13
+                              },
+                              "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n\n  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-09-24T12:37:26.162Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-26aef-ures-should-sanitize-inputs-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-26aef-ures-should-sanitize-inputs-chromium/video.webm"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                            "column": 16,
+                            "line": 13
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "25ece6e62ca1a30db99b-99af032838082a602fbe",
+                  "file": "auth/auth-enhanced.spec.ts",
+                  "line": 212,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Performance and Loading",
+              "file": "auth/auth-enhanced.spec.ts",
+              "line": 227,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should load authentication page quickly",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 11,
+                          "parallelIndex": 2,
+                          "status": "failed",
+                          "duration": 3606,
+                          "error": {
+                            "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n",
+                            "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16",
+                            "location": {
+                              "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                              "column": 16,
+                              "line": 13
+                            },
+                            "snippet": "  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                                "column": 16,
+                                "line": 13
+                              },
+                              "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n\n  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-09-24T12:37:26.247Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-e54af-authentication-page-quickly-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-e54af-authentication-page-quickly-chromium/video.webm"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                            "column": 16,
+                            "line": 13
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "25ece6e62ca1a30db99b-e771e0000c218868cf34",
+                  "file": "auth/auth-enhanced.spec.ts",
+                  "line": 228,
+                  "column": 5
+                },
+                {
+                  "title": "should have working form elements",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 12,
+                          "parallelIndex": 3,
+                          "status": "failed",
+                          "duration": 1133,
+                          "error": {
+                            "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n",
+                            "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16",
+                            "location": {
+                              "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                              "column": 16,
+                              "line": 13
+                            },
+                            "snippet": "  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                                "column": 16,
+                                "line": 13
+                              },
+                              "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n\n  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-09-24T12:37:30.877Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-01222--have-working-form-elements-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-01222--have-working-form-elements-chromium/video.webm"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                            "column": 16,
+                            "line": 13
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "25ece6e62ca1a30db99b-380f28cf8b82ea6a4af7",
+                  "file": "auth/auth-enhanced.spec.ts",
+                  "line": 239,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Integration Tests",
+              "file": "auth/auth-enhanced.spec.ts",
+              "line": 262,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should handle authentication flow",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 13,
+                          "parallelIndex": 1,
+                          "status": "failed",
+                          "duration": 719,
+                          "error": {
+                            "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n",
+                            "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16",
+                            "location": {
+                              "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                              "column": 16,
+                              "line": 13
+                            },
+                            "snippet": "  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                                "column": 16,
+                                "line": 13
+                              },
+                              "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n\n  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-09-24T12:37:31.041Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-ea996--handle-authentication-flow-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-ea996--handle-authentication-flow-chromium/video.webm"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                            "column": 16,
+                            "line": 13
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "25ece6e62ca1a30db99b-7fc439f10f3150442108",
+                  "file": "auth/auth-enhanced.spec.ts",
+                  "line": 263,
+                  "column": 5
+                },
+                {
+                  "title": "should preserve form state during interaction",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 14,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 615,
+                          "error": {
+                            "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n",
+                            "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16",
+                            "location": {
+                              "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                              "column": 16,
+                              "line": 13
+                            },
+                            "snippet": "  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                                "column": 16,
+                                "line": 13
+                              },
+                              "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/\", waiting until \"load\"\u001b[22m\n\n\n  11 |   test.beforeEach(async ({ page }) => {\n  12 |     // Navigate to auth app\n> 13 |     await page.goto(\"/\");\n     |                ^\n  14 |     await page.waitForLoadState(\"networkidle\");\n  15 |   });\n  16 |\n    at /home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts:13:16"
+                            }
+                          ],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-09-24T12:37:31.087Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-0232d-rm-state-during-interaction-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/auth-auth-enhanced-Enhance-0232d-rm-state-during-interaction-chromium/video.webm"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/home/kade/runeset/reynard/e2e/suites/auth/auth-enhanced.spec.ts",
+                            "column": 16,
+                            "line": 13
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "25ece6e62ca1a30db99b-2a6d81ea6507e7ac2d93",
+                  "file": "auth/auth-enhanced.spec.ts",
+                  "line": 286,
+                  "column": 5
+                }
+              ]
             }
           ]
         }
@@ -145,11 +1165,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-09-17T10:33:03.611Z",
-    "duration": 3301.8280000000004,
-    "expected": 2,
+    "startTime": "2025-09-24T12:36:58.696Z",
+    "duration": 34320.074,
+    "expected": 0,
     "skipped": 0,
-    "unexpected": 0,
+    "unexpected": 15,
     "flaky": 0
   }
 }

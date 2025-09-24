@@ -17,7 +17,7 @@
       "path": "../../ai/ai-shared"
     },
     {
-      "path": "../../algorithms/algorithms"
+      "path": "../../core/algorithms"
     },
     {
       "path": "../../ai/annotating-core"

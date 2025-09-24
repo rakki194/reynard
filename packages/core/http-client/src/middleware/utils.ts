@@ -5,7 +5,8 @@
  * error handling, request ID generation, and user agent setting.
  */
 
-import { HTTPRequestOptions, HTTPResponse, HTTPError, HTTPMiddleware } from "../types";
+import { HTTPRequestOptions, HTTPResponse, HTTPError } from "../types";
+import { HTTPMiddleware } from "../middleware-types";
 
 /**
  * Create request transformation middleware

@@ -1,0 +1,339 @@
+graph TD
+    packages["📦 packages"]:::critical
+    services["🔧 services"]:::critical
+    docs["📚 docs"]:::important
+    _cursor["⚙️ .cursor"]:::important
+    backend["📦 backend"]:::critical
+    packages_core_core["📦 core/core"]:::critical
+    packages_core_testing["📦 core/testing"]:::critical
+    packages_core_http_client["📦 core/http-client"]:::critical
+    packages_core_composables["📦 core/composables"]:::critical
+    packages_core_config["📦 core/config"]:::critical
+    packages_core_connection["📦 core/connection"]:::critical
+    packages_core_features["📦 core/features"]:::critical
+    packages_core_i18n["📦 core/i18n"]:::critical
+    packages_core_settings["📦 core/settings"]:::critical
+    packages_core_validation["📦 core/validation"]:::critical
+    packages_core_auth_core["📦 core/auth-core"]:::critical
+    packages_core_auth_composables["📦 core/auth-composables"]:::critical
+    packages_ai_ai_shared["📦 ai/ai-shared"]:::critical
+    packages_ai_rag["📦 ai/rag"]:::critical
+    packages_ai_annotating_core["📦 ai/annotating-core"]:::important
+    packages_ai_annotating_florence2["📦 ai/annotating-florence2"]:::important
+    packages_ai_annotating_joy["📦 ai/annotating-joy"]:::important
+    packages_ai_annotating_jtp2["📦 ai/annotating-jtp2"]:::important
+    packages_ai_annotating_ui["📦 ai/annotating-ui"]:::important
+    packages_ai_annotating_wdv3["📦 ai/annotating-wdv3"]:::important
+    packages_ai_caption["📦 ai/caption"]:::important
+    packages_ai_caption_core["📦 ai/caption-core"]:::important
+    packages_ai_caption_multimodal["📦 ai/caption-multimodal"]:::important
+    packages_ai_caption_ui["📦 ai/caption-ui"]:::important
+    packages_ai_comfy["📦 ai/comfy"]:::important
+    packages_ai_model_management["📦 ai/model-management"]:::important
+    packages_ai_multimodal["📦 ai/multimodal"]:::important
+    packages_ai_nlweb["📦 ai/nlweb"]:::important
+    packages_ai_tool_calling["📦 ai/tool-calling"]:::important
+    packages_ui_components_core["📦 ui/components-core"]:::critical
+    packages_ui_games["📦 ui/games"]:::important
+    packages_ui_animation["📦 ui/animation"]:::important
+    packages_ui_colors["📦 ui/colors"]:::important
+    packages_ui_components_charts["📦 ui/components-charts"]:::important
+    packages_ui_components_dashboard["📦 ui/components-dashboard"]:::important
+    packages_ui_components_themes["📦 ui/components-themes"]:::important
+    packages_ui_components_utils["📦 ui/components-utils"]:::important
+    packages_ui_dashboard["📦 ui/dashboard"]:::important
+    packages_ui_error_boundaries["📦 ui/error-boundaries"]:::important
+    packages_ui_floating_panel["📦 ui/floating-panel"]:::important
+    packages_ui_monaco["📦 ui/monaco"]:::important
+    packages_ui_themes["📦 ui/themes"]:::important
+    packages_ui_ui["📦 ui/ui"]:::important
+    packages_ui_charts["📦 ui/charts"]:::important
+    packages_ui_fluent_icons["📦 ui/fluent-icons"]:::important
+    packages_services_auth["📦 services/auth"]:::important
+    packages_services_chat["📦 services/chat"]:::important
+    packages_services_email["📦 services/email"]:::important
+    packages_services_service_manager["📦 services/service-manager"]:::important
+    packages_services_api_client["📦 services/api-client"]:::important
+    packages_data_repository_core["📦 data/repository-core"]:::important
+    packages_data_repository_multimodal["📦 data/repository-multimodal"]:::important
+    packages_data_repository_search["📦 data/repository-search"]:::important
+    packages_data_repository_storage["📦 data/repository-storage"]:::important
+    packages_data_scraping["📦 data/scraping"]:::important
+    packages_data_unified_repository["📦 data/unified-repository"]:::important
+    packages_data_file_processing["📦 data/file-processing"]:::important
+    packages_media_image["📦 media/image"]:::important
+    packages_media_audio["📦 media/audio"]:::important
+    packages_media_boundingbox["📦 media/boundingbox"]:::important
+    packages_media_gallery["📦 media/gallery"]:::important
+    packages_media_gallery_ai["📦 media/gallery-ai"]:::important
+    packages_media_gallery_dl["📦 media/gallery-dl"]:::important
+    packages_media_segmentation["📦 media/segmentation"]:::important
+    packages_media_video["📦 media/video"]:::important
+    packages_media_3d["📦 media/3d"]:::important
+    packages_dev_tools_project_architecture["🛠️ dev-tools/project-architecture"]:::important
+    packages_dev_tools_adr_system["🛠️ dev-tools/adr-system"]:::important
+    packages_dev_tools_code_quality["🛠️ dev-tools/code-quality"]:::important
+    packages_dev_tools_dev_server_management["🛠️ dev-tools/dev-server-management"]:::important
+    packages_dev_tools_git_automation["🛠️ dev-tools/git-automation"]:::important
+    packages_dev_tools_humility_parser["🛠️ dev-tools/humility-parser"]:::important
+    packages_dev_tools_queue_watcher["🛠️ dev-tools/queue-watcher"]:::important
+    packages_docs_diagram_generator["📚 docs/diagram-generator"]:::important
+    packages_docs_docs_components["📚 docs/docs-components"]:::important
+    packages_docs_docs_core["📚 docs/docs-core"]:::important
+    packages_docs_docs_site["📚 docs/docs-site"]:::important
+    packages_docs_docs_generator["📚 docs/docs-generator"]:::important
+    examples["📋 examples"]:::important
+    templates["📋 templates"]:::important
+    e2e["🧪 e2e"]:::important
+    scripts["📜 scripts"]:::important
+    data["💾 data"]:::optional
+    nginx["⚙️ nginx"]:::optional
+    fenrir["🛠️ fenrir"]:::optional
+    experimental["🛠️ experimental"]:::optional
+    _vscode["⚙️ .vscode"]:::optional
+    third_party["🔗 third_party"]:::excluded
+    services_agent_naming["🔧 agent-naming"]:::important
+    services_gatekeeper["🔧 gatekeeper"]:::important
+    services_mcp_server["🔧 mcp-server"]:::critical
+
+    packages -->|👈👉| backend
+    packages -->|👈👉| examples
+    packages -->|👈👉| templates
+    services -->|👈👉| backend
+    services -->|👈👉| scripts
+    services -->|👈👉| packages
+    docs -->|🔗| packages
+    docs -->|📚| packages
+    _cursor -->|🔗| packages
+    backend -->|👈👉| scripts
+    backend -->|👈👉| scripts
+    packages_core_core -->|🔗| packages_core_validation
+    packages_core_core -->|🔗| packages_ui_components_core
+    packages_core_core -->|🔗| packages_ai_ai_shared
+    packages_core_testing -->|🔗| packages_core_core
+    packages_core_testing -->|🔗| packages_core_validation
+    packages_core_http_client -->|🔗| packages_core_core
+    packages_core_http_client -->|🔗| packages_core_validation
+    packages_core_composables -->|🔗| packages_core_core
+    packages_core_composables -->|🔗| packages_core_validation
+    packages_core_config -->|🔗| packages_core_core
+    packages_core_config -->|🔗| packages_core_validation
+    packages_core_connection -->|🔗| packages_core_core
+    packages_core_connection -->|🔗| packages_core_validation
+    packages_core_connection -->|🔗| packages_core_http_client
+    packages_core_connection -->|🔗| packages_services_api_client
+    packages_core_features -->|🔗| packages_core_core
+    packages_core_features -->|🔗| packages_core_config
+    packages_core_i18n -->|🔗| packages_core_core
+    packages_core_i18n -->|🔗| packages_core_config
+    packages_core_settings -->|🔗| packages_core_core
+    packages_core_settings -->|🔗| packages_core_config
+    packages_core_settings -->|🔗| packages_core_validation
+    packages_core_validation -->|🔗| packages_core_core
+    packages_core_auth_core -->|🔗| packages_core_core
+    packages_core_auth_core -->|🔗| packages_core_validation
+    packages_core_auth_core -->|🔗| packages_core_http_client
+    packages_core_auth_composables -->|🔗| packages_core_core
+    packages_core_auth_composables -->|🔗| packages_core_auth_core
+    packages_core_auth_composables -->|🔗| packages_ui_components_core
+    packages_ai_ai_shared -->|🔗| packages_core_core
+    packages_ai_ai_shared -->|🔗| packages_ai_annotating_core
+    packages_ai_ai_shared -->|🔗| packages_ai_caption_core
+    packages_ai_rag -->|🔗| packages_ai_ai_shared
+    packages_ai_rag -->|🔗| packages_core_core
+    packages_ai_rag -->|🔗| packages_data_repository_core
+    packages_ai_annotating_core -->|🔗| packages_ai_ai_shared
+    packages_ai_annotating_core -->|🔗| packages_ai_annotating_florence2
+    packages_ai_annotating_core -->|🔗| packages_ai_annotating_joy
+    packages_ai_annotating_florence2 -->|🔗| packages_ai_ai_shared
+    packages_ai_annotating_florence2 -->|🔗| packages_ai_annotating_core
+    packages_ai_annotating_joy -->|🔗| packages_ai_ai_shared
+    packages_ai_annotating_joy -->|🔗| packages_ai_annotating_core
+    packages_ai_annotating_jtp2 -->|🔗| packages_ai_ai_shared
+    packages_ai_annotating_jtp2 -->|🔗| packages_ai_annotating_core
+    packages_ai_annotating_ui -->|🔗| packages_ai_ai_shared
+    packages_ai_annotating_ui -->|🔗| packages_ai_annotating_core
+    packages_ai_annotating_ui -->|🔗| packages_ui_components_core
+    packages_ai_annotating_wdv3 -->|🔗| packages_ai_ai_shared
+    packages_ai_annotating_wdv3 -->|🔗| packages_ai_annotating_core
+    packages_ai_caption -->|🔗| packages_ai_ai_shared
+    packages_ai_caption -->|🔗| packages_ai_caption_core
+    packages_ai_caption -->|🔗| packages_ai_caption_multimodal
+    packages_ai_caption -->|🔗| packages_ai_caption_ui
+    packages_ai_caption_core -->|🔗| packages_ai_ai_shared
+    packages_ai_caption_core -->|🔗| packages_ai_caption_multimodal
+    packages_ai_caption_core -->|🔗| packages_ai_caption_ui
+    packages_ai_caption_multimodal -->|🔗| packages_ai_ai_shared
+    packages_ai_caption_multimodal -->|🔗| packages_ai_caption_core
+    packages_ai_caption_multimodal -->|🔗| packages_media_image
+    packages_ai_caption_multimodal -->|🔗| packages_media_video
+    packages_ai_caption_ui -->|🔗| packages_ai_ai_shared
+    packages_ai_caption_ui -->|🔗| packages_ai_caption_core
+    packages_ai_caption_ui -->|🔗| packages_ui_components_core
+    packages_ai_comfy -->|🔗| packages_ai_ai_shared
+    packages_ai_comfy -->|🔗| packages_core_core
+    packages_ai_model_management -->|🔗| packages_ai_ai_shared
+    packages_ai_model_management -->|🔗| packages_core_core
+    packages_ai_model_management -->|🔗| packages_data_repository_core
+    packages_ai_multimodal -->|🔗| packages_ai_ai_shared
+    packages_ai_multimodal -->|🔗| packages_core_core
+    packages_ai_multimodal -->|🔗| packages_media_image
+    packages_ai_multimodal -->|🔗| packages_media_video
+    packages_ai_multimodal -->|🔗| packages_media_audio
+    packages_ai_nlweb -->|🔗| packages_ai_ai_shared
+    packages_ai_nlweb -->|🔗| packages_core_core
+    packages_ai_nlweb -->|🔗| packages_data_scraping
+    packages_ai_tool_calling -->|🔗| packages_ai_ai_shared
+    packages_ai_tool_calling -->|🔗| packages_core_core
+    packages_ai_tool_calling -->|🔗| packages_services_api_client
+    packages_ui_components_core -->|🔗| packages_core_core
+    packages_ui_components_core -->|🔗| packages_ui_fluent_icons
+    packages_ui_components_core -->|🔗| packages_ui_components_charts
+    packages_ui_games -->|🔗| packages_core_core
+    packages_ui_games -->|🔗| packages_ui_components_core
+    packages_ui_animation -->|🔗| packages_core_core
+    packages_ui_animation -->|🔗| packages_ui_components_core
+    packages_ui_colors -->|🔗| packages_core_core
+    packages_ui_colors -->|🔗| packages_ui_themes
+    packages_ui_components_charts -->|🔗| packages_core_core
+    packages_ui_components_charts -->|🔗| packages_ui_components_core
+    packages_ui_components_charts -->|🔗| packages_ui_charts
+    packages_ui_components_dashboard -->|🔗| packages_core_core
+    packages_ui_components_dashboard -->|🔗| packages_ui_components_core
+    packages_ui_components_dashboard -->|🔗| packages_ui_dashboard
+    packages_ui_components_themes -->|🔗| packages_core_core
+    packages_ui_components_themes -->|🔗| packages_ui_components_core
+    packages_ui_components_themes -->|🔗| packages_ui_themes
+    packages_ui_components_themes -->|🔗| packages_ui_colors
+    packages_ui_components_utils -->|🔗| packages_core_core
+    packages_ui_components_utils -->|🔗| packages_ui_components_core
+    packages_ui_dashboard -->|🔗| packages_core_core
+    packages_ui_dashboard -->|🔗| packages_ui_components_core
+    packages_ui_dashboard -->|🔗| packages_ui_components_dashboard
+    packages_ui_error_boundaries -->|🔗| packages_core_core
+    packages_ui_error_boundaries -->|🔗| packages_ui_components_core
+    packages_ui_floating_panel -->|🔗| packages_core_core
+    packages_ui_floating_panel -->|🔗| packages_ui_components_core
+    packages_ui_floating_panel -->|🔗| packages_ui_animation
+    packages_ui_monaco -->|🔗| packages_core_core
+    packages_ui_monaco -->|🔗| packages_ui_components_core
+    packages_ui_themes -->|🔗| packages_core_core
+    packages_ui_themes -->|🔗| packages_ui_colors
+    packages_ui_themes -->|🔗| packages_ui_components_themes
+    packages_ui_ui -->|🔗| packages_core_core
+    packages_ui_ui -->|🔗| packages_ui_components_core
+    packages_ui_charts -->|🔗| packages_core_core
+    packages_ui_charts -->|🔗| packages_ui_components_core
+    packages_ui_charts -->|🔗| packages_data_repository_core
+    packages_ui_fluent_icons -->|🔗| packages_core_core
+    packages_ui_fluent_icons -->|🔗| packages_ui_components_core
+    packages_services_auth -->|🔗| packages_core_core
+    packages_services_auth -->|🔗| packages_core_validation
+    packages_services_auth -->|🔗| packages_core_http_client
+    packages_services_auth -->|🔗| packages_core_auth_core
+    packages_services_auth -->|🔗| packages_core_auth_composables
+    packages_services_auth -->|🔗| packages_services_api_client
+    packages_services_chat -->|🔗| packages_core_core
+    packages_services_chat -->|🔗| packages_core_connection
+    packages_services_chat -->|🔗| packages_services_api_client
+    packages_services_email -->|🔗| packages_core_core
+    packages_services_email -->|🔗| packages_core_connection
+    packages_services_email -->|🔗| packages_services_api_client
+    packages_services_service_manager -->|🔗| packages_core_core
+    packages_services_service_manager -->|🔗| packages_core_connection
+    packages_services_service_manager -->|🔗| packages_services_api_client
+    packages_services_api_client -->|🔗| packages_core_core
+    packages_services_api_client -->|🔗| packages_core_connection
+    packages_services_api_client -->|🔗| packages_services_auth
+    packages_data_repository_core -->|🔗| packages_core_core
+    packages_data_repository_core -->|🔗| packages_ai_rag
+    packages_data_repository_core -->|🔗| packages_data_unified_repository
+    packages_data_repository_multimodal -->|🔗| packages_data_repository_core
+    packages_data_repository_multimodal -->|🔗| packages_ai_multimodal
+    packages_data_repository_search -->|🔗| packages_data_repository_core
+    packages_data_repository_search -->|🔗| packages_ai_rag
+    packages_data_repository_storage -->|🔗| packages_data_repository_core
+    packages_data_repository_storage -->|🔗| packages_core_core
+    packages_data_scraping -->|🔗| packages_core_core
+    packages_data_scraping -->|🔗| packages_ai_nlweb
+    packages_data_unified_repository -->|🔗| packages_data_repository_core
+    packages_data_unified_repository -->|🔗| packages_data_repository_multimodal
+    packages_data_unified_repository -->|🔗| packages_data_repository_search
+    packages_data_unified_repository -->|🔗| packages_data_repository_storage
+    packages_data_file_processing -->|🔗| packages_core_core
+    packages_data_file_processing -->|🔗| packages_media_image
+    packages_data_file_processing -->|🔗| packages_data_repository_core
+    packages_media_image -->|🔗| packages_core_core
+    packages_media_image -->|🔗| packages_ui_components_core
+    packages_media_image -->|🔗| packages_data_file_processing
+    packages_media_audio -->|🔗| packages_core_core
+    packages_media_audio -->|🔗| packages_ui_components_core
+    packages_media_audio -->|🔗| packages_ai_multimodal
+    packages_media_boundingbox -->|🔗| packages_core_core
+    packages_media_boundingbox -->|🔗| packages_ui_components_core
+    packages_media_boundingbox -->|🔗| packages_ai_annotating_core
+    packages_media_gallery -->|🔗| packages_core_core
+    packages_media_gallery -->|🔗| packages_ui_components_core
+    packages_media_gallery -->|🔗| packages_media_image
+    packages_media_gallery_ai -->|🔗| packages_core_core
+    packages_media_gallery_ai -->|🔗| packages_media_gallery
+    packages_media_gallery_ai -->|🔗| packages_ai_ai_shared
+    packages_media_gallery_dl -->|🔗| packages_core_core
+    packages_media_gallery_dl -->|🔗| packages_media_gallery
+    packages_media_gallery_dl -->|🔗| packages_data_file_processing
+    packages_media_segmentation -->|🔗| packages_core_core
+    packages_media_segmentation -->|🔗| packages_ui_components_core
+    packages_media_segmentation -->|🔗| packages_media_image
+    packages_media_segmentation -->|🔗| packages_media_video
+    packages_media_video -->|🔗| packages_core_core
+    packages_media_video -->|🔗| packages_ui_components_core
+    packages_media_video -->|🔗| packages_ai_multimodal
+    packages_media_3d -->|🔗| packages_core_core
+    packages_media_3d -->|🔗| packages_ui_components_core
+    packages_media_3d -->|🔗| packages_data_repository_core
+    packages_dev_tools_project_architecture -->|🔗| packages_core_core
+    packages_dev_tools_project_architecture -->|👈👉| scripts
+    packages_dev_tools_adr_system -->|🔗| packages_core_core
+    packages_dev_tools_adr_system -->|🔗| packages_docs_docs_generator
+    packages_dev_tools_code_quality -->|🔗| packages_core_core
+    packages_dev_tools_dev_server_management -->|🔗| packages_core_core
+    packages_dev_tools_dev_server_management -->|🔗| packages_core_connection
+    packages_dev_tools_git_automation -->|🔗| packages_core_core
+    packages_dev_tools_humility_parser -->|🔗| packages_core_core
+    packages_dev_tools_humility_parser -->|🔗| packages_docs_docs_generator
+    packages_dev_tools_queue_watcher -->|🔗| packages_core_core
+    packages_dev_tools_queue_watcher -->|🔗| packages_core_connection
+    packages_docs_diagram_generator -->|🔗| packages_core_core
+    packages_docs_diagram_generator -->|🔗| packages_docs_docs_generator
+    packages_docs_docs_components -->|🔗| packages_core_core
+    packages_docs_docs_components -->|🔗| packages_ui_components_core
+    packages_docs_docs_components -->|🔗| packages_docs_docs_core
+    packages_docs_docs_core -->|🔗| packages_core_core
+    packages_docs_docs_core -->|🔗| packages_docs_docs_generator
+    packages_docs_docs_site -->|🔗| packages_core_core
+    packages_docs_docs_site -->|🔗| packages_docs_docs_generator
+    packages_docs_docs_site -->|🔗| packages_docs_docs_components
+    packages_docs_docs_generator -->|🔗| packages_core_core
+    packages_docs_docs_generator -->|🔗| packages_docs_docs_core
+    packages_docs_docs_generator -->|🔗| packages_docs_docs_site
+    examples -->|🔗| packages
+    examples -->|👈👉| templates
+    templates -->|🔗| packages
+    templates -->|👈👉| examples
+    e2e -->|🧪| packages
+    e2e -->|🧪| examples
+    scripts -->|👈👉| backend
+    data -->|🔗| backend
+    nginx -->|⚙️| backend
+    fenrir -->|👈👉| scripts
+    experimental -->|👈👉| backend
+    services_agent_naming -->|🔗| services_mcp_server
+    services_gatekeeper -->|🔗| services_mcp_server
+    services_mcp_server -->|🔗| services_agent_naming
+    services_mcp_server -->|🔗| services_gatekeeper
+    services_mcp_server -->|🔗| packages
+
+    classDef critical fill:#ff6b6b,stroke:#d63031,stroke-width:3px,color:#fff
+    classDef important fill:#74b9ff,stroke:#0984e3,stroke-width:2px,color:#fff
+    classDef optional fill:#a29bfe,stroke:#6c5ce7,stroke-width:1px,color:#fff
+    classDef excluded fill:#ddd,stroke:#999,stroke-width:1px,color:#666

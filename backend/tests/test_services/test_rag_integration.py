@@ -22,7 +22,7 @@ class TestRAGServiceIntegration:
         return {
             "rag_enabled": True,
             "ollama_base_url": "http://localhost:11434",
-            "pg_dsn": "postgresql://test:test@localhost:5432/test_db",
+            "rag_database_url": "postgresql://test:test@localhost:5432/test_db",
             "embedding_model": "embeddinggemma:latest",
             "rag_indexing_enabled": True,
             "rag_search_enabled": True,
@@ -91,7 +91,7 @@ class TestCompleteRAGWorkflow:
         return {
             "rag_enabled": True,
             "ollama_base_url": "http://localhost:11434",
-            "pg_dsn": "postgresql://test:test@localhost:5432/test_db",
+            "rag_database_url": "postgresql://test:test@localhost:5432/test_db",
             "embedding_model": "embeddinggemma:latest",
             "rag_indexing_enabled": True,
             "rag_search_enabled": True,
@@ -435,7 +435,7 @@ class TestRAGServiceErrorHandling:
         return {
             "rag_enabled": True,
             "ollama_base_url": "http://localhost:11434",
-            "pg_dsn": "postgresql://test:test@localhost:5432/test_db",
+            "rag_database_url": "postgresql://test:test@localhost:5432/test_db",
             "embedding_model": "embeddinggemma:latest",
             "rag_indexing_enabled": True,
             "rag_search_enabled": True,
@@ -528,7 +528,7 @@ class TestRAGServiceConcurrency:
         return {
             "rag_enabled": True,
             "ollama_base_url": "http://localhost:11434",
-            "pg_dsn": "postgresql://test:test@localhost:5432/test_db",
+            "rag_database_url": "postgresql://test:test@localhost:5432/test_db",
             "embedding_model": "embeddinggemma:latest",
             "rag_indexing_enabled": True,
             "rag_search_enabled": True,

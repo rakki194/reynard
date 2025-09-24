@@ -26,7 +26,7 @@ from ..models.email_models import (
 from ..services.email.ai.agent_email_service import AgentEmailService
 from ..services.email.core.email_service import (
     EmailMessage,
-    email_service,
+    get_email_service,
 )
 
 logger = logging.getLogger(__name__)
@@ -256,6 +256,7 @@ async def send_agent_email(
         )
 
         # Send email
+        email_service = get_email_service()
         result = await email_service.send_email(message)
 
         # Update agent stats

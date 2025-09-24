@@ -5,7 +5,8 @@
  * basic auth, API keys, and token refresh functionality.
  */
 
-import { HTTPRequestOptions, HTTPMiddleware, AuthConfig, TokenRefreshConfig } from "../types";
+import { HTTPRequestOptions, AuthConfig, TokenRefreshConfig } from "../types";
+import { HTTPMiddleware } from "../middleware-types";
 
 /**
  * Create authentication middleware

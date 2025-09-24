@@ -31,11 +31,13 @@ describe("Architecture Consistency", () => {
     const names = REYNARD_ARCHITECTURE.directories.map(dir => dir.name);
     const uniqueNames = new Set(names);
     expect(names.length).toBe(uniqueNames.size);
+    expect(names.length).toBe(96); // Current architecture has 96 directories
   });
 
   it("should have unique directory paths", () => {
     const paths = REYNARD_ARCHITECTURE.directories.map(dir => dir.path);
     const uniquePaths = new Set(paths);
     expect(paths.length).toBe(uniquePaths.size);
+    expect(paths.length).toBe(96); // Current architecture has 96 directories
   });
 });

@@ -4,7 +4,8 @@
  * Provides HTTP response caching with configurable TTL and size limits.
  */
 
-import { HTTPRequestOptions, HTTPResponse, HTTPMiddleware } from "../types";
+import { HTTPRequestOptions, HTTPResponse } from "../types";
+import { HTTPMiddleware } from "../middleware-types";
 
 export interface CacheConfig {
   ttl?: number; // Time to live in milliseconds

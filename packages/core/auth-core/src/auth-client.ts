@@ -79,7 +79,7 @@ export const createAuthClient = (
         credentials
       );
 
-      if (response.data) {
+      if (response.status >= 200 && response.status < 300 && response.data) {
         const { user, accessToken, refreshToken } = response.data;
 
         // Store tokens
@@ -96,7 +96,8 @@ export const createAuthClient = (
         // Trigger callbacks
         callbacks.onLoginSuccess?.(user, { accessToken, refreshToken });
       } else {
-        throw new Error("Login failed");
+        const errorMessage = response.data?.message || `Login failed with status ${response.status}`;
+        throw new Error(errorMessage);
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Login failed";
@@ -118,7 +119,7 @@ export const createAuthClient = (
         data
       );
 
-      if (response.data) {
+      if (response.status >= 200 && response.status < 300 && response.data) {
         updateAuthState({
           isLoading: false,
           error: null,
@@ -132,7 +133,8 @@ export const createAuthClient = (
           });
         }
       } else {
-        throw new Error("Registration failed");
+        const errorMessage = response.data?.message || `Registration failed with status ${response.status}`;
+        throw new Error(errorMessage);
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Registration failed";

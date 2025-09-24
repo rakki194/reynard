@@ -48,15 +48,15 @@ import logging
 import time
 from typing import Any
 
-from ..continuous_indexing import ContinuousIndexingService
-from .advanced import (
-    ContinuousImprovement,
-    DocumentationService,
-    ModelEvaluator,
-    PerformanceMonitor,
-    SecurityService,
-)
-from .core import DocumentIndexer, EmbeddingService, SearchEngine, VectorStoreService
+from app.core.debug_logging import log_rag_operation, debug_log
+
+from ..email.infrastructure.continuous_indexing import ContinuousIndexingService
+from .services.core import EmbeddingService, VectorStoreService, DocumentIndexer, SearchEngine
+from .services.monitoring.prometheus_monitoring import PrometheusMonitoringService
+from .services.security.access_control_security import AccessControlSecurityService
+from .services.evaluation.model_evaluation import ModelEvaluationService
+from .services.improvement.continuous_improvement import ContinuousImprovementService
+from .services.documentation.auto_documentation import AutoDocumentationService
 from .file_indexing_service import get_file_indexing_service
 from .initial_indexing import InitialIndexingService
 from .progress_monitor import get_progress_monitor
@@ -118,11 +118,11 @@ class RAGService:
         self.file_indexing_service = get_file_indexing_service()
 
         # Advanced services
-        self.performance_monitor: PerformanceMonitor | None = None
-        self.security_service: SecurityService | None = None
-        self.continuous_improvement: ContinuousImprovement | None = None
-        self.documentation_service: DocumentationService | None = None
-        self.model_evaluator: ModelEvaluator | None = None
+        self.performance_monitor: PrometheusMonitoringService | None = None
+        self.security_service: AccessControlSecurityService | None = None
+        self.continuous_improvement: ContinuousImprovementService | None = None
+        self.documentation_service: AutoDocumentationService | None = None
+        self.model_evaluator: ModelEvaluationService | None = None
         self.continuous_indexing: ContinuousIndexingService | None = None
         self.initial_indexing_service: InitialIndexingService | None = None
 
@@ -181,28 +181,28 @@ class RAGService:
         logger.info("✅ File indexing service initialized")
 
         # Initialize embedding service
-        self.embedding_service = EmbeddingService()
-        if not await self.embedding_service.initialize(self.config):
+        self.embedding_service = EmbeddingService(self.config)
+        if not await self.embedding_service.initialize():
             raise RuntimeError("Failed to initialize embedding service")
 
         # Initialize vector store service
-        self.vector_store_service = VectorStoreService()
-        if not await self.vector_store_service.initialize(self.config):
+        self.vector_store_service = VectorStoreService(self.config)
+        if not await self.vector_store_service.initialize():
             raise RuntimeError("Failed to initialize vector store service")
 
         # Initialize document indexer with file indexing service dependency
-        self.document_indexer = DocumentIndexer()
-        if not await self.document_indexer.initialize(
-            self.config,
-            self.vector_store_service,
-            self.embedding_service,
-            self.file_indexing_service,
-        ):
+        self.document_indexer = DocumentIndexer(self.config)
+        if not await self.document_indexer.initialize():
             raise RuntimeError("Failed to initialize document indexer")
 
         # Initialize search engine
-        self.search_engine = SearchEngine(
-            self.embedding_service, self.vector_store_service,
+        self.search_engine = SearchEngine(self.config)
+        if not await self.search_engine.initialize():
+            raise RuntimeError("Failed to initialize search engine")
+
+        # Set dependencies for search engine
+        self.search_engine.set_dependencies(
+            self.embedding_service, self.vector_store_service
         )
 
         # Populate search engine with existing documents
@@ -220,30 +220,47 @@ class RAGService:
 
         # Initialize performance monitor
         if self.config.get("rag_monitoring_enabled", True):
-            self.performance_monitor = PerformanceMonitor(self.config)
-            logger.info("Performance monitor initialized")
+            self.performance_monitor = PrometheusMonitoringService(self.config)
+            if not await self.performance_monitor.initialize():
+                logger.warning("Failed to initialize performance monitor")
+            else:
+                logger.info("Performance monitor initialized")
 
         # Initialize security service
         if self.config.get("rag_security_enabled", True):
-            self.security_service = SecurityService(self.config)
-            logger.info("Security service initialized")
+            self.security_service = AccessControlSecurityService(self.config)
+            if not await self.security_service.initialize():
+                logger.warning("Failed to initialize security service")
+            else:
+                logger.info("Security service initialized")
 
         # Initialize continuous improvement
         if self.config.get("rag_continuous_improvement_enabled", True):
-            self.continuous_improvement = ContinuousImprovement(self.config)
-            logger.info("Continuous improvement service initialized")
+            self.continuous_improvement = ContinuousImprovementService(self.config)
+            if not await self.continuous_improvement.initialize():
+                logger.warning("Failed to initialize continuous improvement service")
+            else:
+                logger.info("Continuous improvement service initialized")
 
         # Initialize documentation service
         if self.config.get("rag_documentation_enabled", True):
-            self.documentation_service = DocumentationService(self.config)
-            logger.info("Documentation service initialized")
+            self.documentation_service = AutoDocumentationService(self.config)
+            if not await self.documentation_service.initialize():
+                logger.warning("Failed to initialize documentation service")
+            else:
+                logger.info("Documentation service initialized")
 
         # Initialize model evaluator
         if self.config.get("rag_model_evaluation_enabled", True):
-            self.model_evaluator = ModelEvaluator(
-                self.embedding_service, self.vector_store_service,
-            )
-            logger.info("Model evaluator initialized")
+            self.model_evaluator = ModelEvaluationService(self.config)
+            if not await self.model_evaluator.initialize():
+                logger.warning("Failed to initialize model evaluator")
+            else:
+                # Set dependencies for model evaluator
+                self.model_evaluator.set_dependencies(
+                    self.embedding_service, self.vector_store_service
+                )
+                logger.info("Model evaluator initialized")
 
         # Initialize continuous indexing
         if self.config.get("rag_continuous_indexing_enabled", True):
@@ -392,6 +409,7 @@ class RAGService:
 
             raise
 
+    @debug_log("rag_search", logger)
     async def search(
         self,
         query: str,
@@ -486,6 +504,7 @@ class RAGService:
             query=query, search_type="hybrid", limit=top_k, filters=filters,
         )
 
+    @debug_log("rag_index_documents", logger)
     async def index_documents(self, documents: list[dict[str, Any]]) -> dict[str, Any]:
         """Index documents for search."""
         if not self.initialized:
@@ -561,12 +580,8 @@ class RAGService:
 
             # Check advanced services
             if self.performance_monitor:
-                system_health = await self.performance_monitor.get_system_health()
-                health_status["performance"] = {
-                    "overall_status": system_health.overall_status,
-                    "performance_score": system_health.performance_score,
-                    "alerts": system_health.alerts,
-                }
+                system_health = await self.performance_monitor.get_health_status()
+                health_status["performance"] = system_health
 
             # Determine overall health
             all_services_healthy = all(health_status["services"].values())
@@ -623,33 +638,33 @@ class RAGService:
             if self.search_engine:
                 stats["core_services"][
                     "search_engine"
-                ] = self.search_engine.get_search_stats()
+                ] = await self.search_engine.get_stats()
 
             # Get advanced service stats
             if self.performance_monitor:
                 stats["advanced_services"][
                     "performance_monitor"
-                ] = self.performance_monitor.get_monitor_stats()
+                ] = await self.performance_monitor.get_monitoring_stats()
 
             if self.security_service:
                 stats["advanced_services"][
                     "security_service"
-                ] = self.security_service.get_security_stats()
+                ] = await self.security_service.get_security_stats()
 
             if self.continuous_improvement:
                 stats["advanced_services"][
                     "continuous_improvement"
-                ] = self.continuous_improvement.get_continuous_improvement_stats()
+                ] = await self.continuous_improvement.get_improvement_stats()
 
             if self.documentation_service:
                 stats["advanced_services"][
                     "documentation_service"
-                ] = self.documentation_service.get_documentation_stats()
+                ] = await self.documentation_service.get_documentation_stats()
 
             if self.model_evaluator:
                 stats["advanced_services"][
                     "model_evaluator"
-                ] = self.model_evaluator.get_evaluation_stats()
+                ] = await self.model_evaluator.get_evaluation_stats()
 
             if self.continuous_indexing:
                 stats["advanced_services"][
@@ -668,7 +683,7 @@ class RAGService:
             return "Performance monitoring not available"
 
         try:
-            return await self.performance_monitor.generate_performance_report(hours)
+            return await self.performance_monitor.generate_report("performance", hours=hours)
         except Exception as e:
             logger.error(f"Failed to generate performance report: {e}")
             return f"Error generating report: {e}"
@@ -690,7 +705,7 @@ class RAGService:
             return []
 
         try:
-            return await self.continuous_improvement.get_optimization_recommendations()
+            return await self.continuous_improvement.generate_optimization_recommendations()
         except Exception as e:
             logger.error(f"Failed to get optimization recommendations: {e}")
             return []
@@ -713,8 +728,21 @@ class RAGService:
             if self.embedding_service:
                 await self.embedding_service.shutdown()
 
-            # Advanced services don't need explicit shutdown for now
-            # but we could add cleanup logic here if needed
+            # Shutdown advanced services
+            if self.performance_monitor:
+                await self.performance_monitor.shutdown()
+
+            if self.security_service:
+                await self.security_service.shutdown()
+
+            if self.continuous_improvement:
+                await self.continuous_improvement.shutdown()
+
+            if self.documentation_service:
+                await self.documentation_service.shutdown()
+
+            if self.model_evaluator:
+                await self.model_evaluator.shutdown()
 
             self.initialized = False
             logger.info("RAG service shutdown complete")
@@ -742,64 +770,4 @@ class RAGService:
         """Get the best available model for the specified type."""
         if not self.embedding_service:
             return "embeddinggemma:latest"
-        return self.embedding_service.get_best_model(model_type)
-
-    async def get_optimization_recommendations(self) -> list[dict[str, Any]]:
-        """Get optimization recommendations."""
-        if not self.initialized or not self.continuous_improvement:
-            return []
-
-        try:
-            return await self.continuous_improvement.get_optimization_recommendations()
-        except Exception as e:
-            logger.error(f"Failed to get optimization recommendations: {e}")
-            return []
-
-    async def shutdown(self) -> None:
-        """Gracefully shutdown all services."""
-        logger.info("Shutting down RAG service...")
-
-        try:
-            # Shutdown services in reverse order
-            if self.continuous_indexing:
-                await self.continuous_indexing.shutdown()
-
-            if self.document_indexer:
-                await self.document_indexer.shutdown()
-
-            if self.vector_store_service:
-                await self.vector_store_service.shutdown()
-
-            if self.embedding_service:
-                await self.embedding_service.shutdown()
-
-            # Advanced services don't need explicit shutdown for now
-            # but we could add cleanup logic here if needed
-
-            self.initialized = False
-            logger.info("RAG service shutdown complete")
-
-        except Exception as e:
-            logger.error(f"Error during shutdown: {e}")
-
-    # Utility Methods
-
-    def is_initialized(self) -> bool:
-        """Check if the service is initialized."""
-        return self.initialized
-
-    def is_enabled(self) -> bool:
-        """Check if the service is enabled."""
-        return self.enabled
-
-    def get_available_models(self) -> list[str]:
-        """Get list of available embedding models."""
-        if not self.embedding_service:
-            return []
-        return self.embedding_service.get_available_models()
-
-    def get_best_model(self, model_type: str = "text") -> str:
-        """Get the best available model for the specified type."""
-        if not self.embedding_service:
-            return "embeddinggemma:latest"
-        return self.embedding_service.get_best_model(model_type)
+        return self.embedding_service.get_best_model()

@@ -42,6 +42,14 @@ from .social import (
     SocialRole,
     SocialStatus,
 )
+from .task_components import (
+    TaskPriority,
+    TaskQueueComponent,
+    TaskRequestComponent,
+    TaskResultComponent,
+    TaskStatus,
+    TaskType,
+)
 from .traits import TraitComponent
 
 __all__ = [
@@ -77,5 +85,11 @@ __all__ = [
     "SocialGroup",
     "SocialRole",
     "SocialStatus",
+    "TaskPriority",
+    "TaskQueueComponent",
+    "TaskRequestComponent",
+    "TaskResultComponent",
+    "TaskStatus",
+    "TaskType",
     "TraitComponent",
 ]

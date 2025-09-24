@@ -13,7 +13,7 @@ def rag_config():
     return {
         "rag_enabled": True,
         "ollama_base_url": "http://localhost:11434",
-        "pg_dsn": "postgresql://test:test@localhost:5432/test_db",
+        "rag_database_url": "postgresql://test:test@localhost:5432/test_db",
         "embedding_model": "embeddinggemma:latest",
         "embedding_batch_size": 10,
         "embedding_cache_size": 1000,

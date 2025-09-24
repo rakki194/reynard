@@ -97,7 +97,7 @@ Reynard consists of 40+ specialized packages, each with a specific purpose:
 | ------------------------ | -------------------- | -------------------------------------- |
 | `reynard-chat`           | Chat system          | Real-time messaging, message history   |
 | `reynard-rag`            | RAG system           | Vector search, embeddings, retrieval   |
-| `reynard-auth`           | Authentication       | User management, JWT, OAuth            |
+| `reynard-auth`           | Authentication       | Modular auth system, JWT, user management |
 | `reynard-gallery`        | Media management     | File uploads, thumbnails, galleries    |
 | `reynard-annotating`     | AI captioning        | Multiple AI models, batch processing   |
 | `reynard-floating-panel` | Floating panels      | Staggered animations, state management |

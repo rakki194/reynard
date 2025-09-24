@@ -13,31 +13,51 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-# Image processing imports
-try:
-    import PIL.ExifTags
-    from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageOps
+# Conditional image processing imports
+from app.core.service_conditional_loading import (
+    is_pillow_enabled, is_opencv_enabled, is_numpy_enabled,
+    can_load_service, load_service
+)
 
-    PIL_AVAILABLE = True
-except ImportError:
+# Pillow import
+if is_pillow_enabled() and can_load_service("pillow"):
+    try:
+        import PIL.ExifTags
+        from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageOps
+        PIL_AVAILABLE = True
+        load_service("pillow")
+    except ImportError:
+        PIL_AVAILABLE = False
+else:
     PIL_AVAILABLE = False
 
-try:
-    import cv2
-    import numpy as np
-
-    OPENCV_AVAILABLE = True
-except ImportError:
+# OpenCV and numpy imports
+if is_opencv_enabled() and is_numpy_enabled() and can_load_service("opencv") and can_load_service("numpy"):
+    try:
+        import cv2
+        import numpy as np
+        OPENCV_AVAILABLE = True
+        load_service("opencv")
+        load_service("numpy")
+    except ImportError:
+        OPENCV_AVAILABLE = False
+        np = None
+else:
     OPENCV_AVAILABLE = False
+    np = None
 
-try:
-    import skimage
-    from skimage import color, exposure, filters, measure, morphology, segmentation
-    from skimage.feature import hog, local_binary_pattern
-    from skimage.metrics import structural_similarity as ssim
-
-    SKIMAGE_AVAILABLE = True
-except ImportError:
+# Scikit-image import (conditional)
+if is_numpy_enabled() and can_load_service("scikit_learn"):
+    try:
+        import skimage
+        from skimage import color, exposure, filters, measure, morphology, segmentation
+        from skimage.feature import hog, local_binary_pattern
+        from skimage.metrics import structural_similarity as ssim
+        SKIMAGE_AVAILABLE = True
+        load_service("scikit_learn")
+    except ImportError:
+        SKIMAGE_AVAILABLE = False
+else:
     SKIMAGE_AVAILABLE = False
 
 logger = logging.getLogger(__name__)

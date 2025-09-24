@@ -1,0 +1,47 @@
+# Customer Modeling Microservice Requirements
+
+# FastAPI and web framework
+fastapi
+uvicorn[standard]
+pydantic[email]
+pydantic-settings
+
+# Database
+sqlalchemy
+alembic
+psycopg2-binary
+
+# Redis
+redis
+aioredis
+
+# Data processing and analytics
+pandas
+numpy
+scikit-learn
+
+# Machine learning
+torch
+transformers
+
+# Utilities
+python-multipart
+python-jose[cryptography]
+passlib[bcrypt]
+python-dotenv
+
+# Monitoring and logging
+structlog
+prometheus-client
+
+# Testing
+pytest
+pytest-asyncio
+httpx
+pytest-cov
+
+# Development
+black
+isort
+flake8
+mypy

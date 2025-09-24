@@ -6,7 +6,8 @@
  */
 
 // Re-export types
-export type { HTTPMiddleware, AuthConfig, TokenRefreshConfig } from "./types";
+export type { HTTPMiddleware } from "./middleware-types";
+export type { AuthConfig, TokenRefreshConfig } from "./types";
 
 // Re-export authentication middleware
 export { createAuthMiddleware, createTokenRefreshMiddleware } from "./middleware/auth";

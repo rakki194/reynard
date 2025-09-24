@@ -119,7 +119,7 @@ class TestVectorStoreService:
         """Test configuration."""
         return {
             "rag_enabled": True,
-            "pg_dsn": "postgresql://test:test@localhost:5432/test_db",
+            "rag_database_url": "postgresql://test:test@localhost:5432/test_db",
             "rag_migrations_enabled": False,
         }
 
@@ -429,7 +429,7 @@ class TestRAGCoreIntegration:
         return {
             "rag_enabled": True,
             "ollama_base_url": "http://localhost:11434",
-            "pg_dsn": "postgresql://test:test@localhost:5432/test_db",
+            "rag_database_url": "postgresql://test:test@localhost:5432/test_db",
             "rag_indexing_enabled": True,
             "rag_search_enabled": True,
         }

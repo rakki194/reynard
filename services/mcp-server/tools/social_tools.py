@@ -37,9 +37,10 @@ async def initiate_interaction(arguments: dict[str, Any]) -> dict[str, Any]:
         Interaction initiation result
     """
     try:
-        agent1_id = arguments.get("agent1_id")
-        agent2_id = arguments.get("agent2_id")
-        interaction_type = arguments.get("interaction_type", "communication")
+        actual_args = arguments.get("arguments", arguments)
+        agent1_id = actual_args.get("agent1_id")
+        agent2_id = actual_args.get("agent2_id")
+        interaction_type = actual_args.get("interaction_type", "communication")
 
         if not agent1_id or not agent2_id:
             return {
@@ -116,10 +117,11 @@ async def send_chat_message(arguments: dict[str, Any]) -> dict[str, Any]:
         Chat message result
     """
     try:
-        sender_id = arguments.get("sender_id")
-        receiver = arguments.get("receiver")  # Can be ID or name
-        message = arguments.get("message")
-        interaction_type = arguments.get("interaction_type", "communication")
+        actual_args = arguments.get("arguments", arguments)
+        sender_id = actual_args.get("sender_id")
+        receiver = actual_args.get("receiver")  # Can be ID or name
+        message = actual_args.get("message")
+        interaction_type = actual_args.get("interaction_type", "communication")
 
         if not sender_id or not receiver or not message:
             return {
@@ -219,13 +221,17 @@ async def get_interaction_history(arguments: dict[str, Any]) -> dict[str, Any]:
     Get the interaction history for an agent.
 
     Args:
-        arguments: Dictionary containing agent_id and limit
+        **kwargs: Tool execution context containing:
+            arguments (dict): Tool arguments including:
+                - agent_id (str): Agent to get history for
+                - limit (int, optional): Maximum number of interactions to return
 
     Returns:
         Interaction history
     """
     try:
-        agent_id = arguments.get("agent_id")
+        actual_args = arguments.get("arguments", arguments)
+        agent_id = actual_args.get("agent_id")
         limit = arguments.get("limit", 10)
 
         if not agent_id:
@@ -300,21 +306,27 @@ async def find_ecs_agent(arguments: dict[str, Any]) -> dict[str, Any]:
     Find an agent in the ECS world by name or ID with flexible matching.
 
     Args:
-        arguments: Dictionary containing query and exact_match
+        **kwargs: Tool execution context containing:
+            arguments (dict): Tool arguments including:
+                - query (str): Name or ID to search for
+                - exact_match (bool, optional): Whether to require exact match
 
     Returns:
         Agent search results
     """
     try:
-        query = arguments.get("query")
-        exact_match = arguments.get("exact_match", False)
+        # Extract the actual arguments from the wrapped structure
+        actual_args = arguments.get("arguments", arguments)
+        
+        query = actual_args.get("query")
+        exact_match = actual_args.get("exact_match", False)
 
         if not query:
             return {
                 "content": [
                     {
                         "type": "text",
-                        "text": "❌ Error: query parameter is required",
+                        "text": f"❌ Error: query parameter is required. Received: {arguments}",
                     }
                 ]
             }
@@ -323,8 +335,8 @@ async def find_ecs_agent(arguments: dict[str, Any]) -> dict[str, Any]:
         ecs_client = get_ecs_client()
         await ecs_client.start()
 
-        # Search for agents
-        result = await ecs_client.find_agent_by_name(query, exact_match)
+        # Search for agents (convert boolean to string for API compatibility)
+        result = await ecs_client.find_agent_by_name(query, str(exact_match).lower())
 
         # Close ECS client
         await ecs_client.close()
@@ -451,7 +463,8 @@ async def get_agent_relationships(arguments: dict[str, Any]) -> dict[str, Any]:
         Agent relationships
     """
     try:
-        agent_id = arguments.get("agent_id")
+        actual_args = arguments.get("arguments", arguments)
+        agent_id = actual_args.get("agent_id")
 
         if not agent_id:
             return {
@@ -533,7 +546,8 @@ async def get_agent_social_stats(arguments: dict[str, Any]) -> dict[str, Any]:
         Social interaction statistics
     """
     try:
-        agent_id = arguments.get("agent_id")
+        actual_args = arguments.get("arguments", arguments)
+        agent_id = actual_args.get("agent_id")
 
         if not agent_id:
             return {
@@ -623,8 +637,9 @@ async def get_nearby_agents(arguments: dict[str, Any]) -> dict[str, Any]:
         List of nearby agents
     """
     try:
-        agent_id = arguments.get("agent_id")
-        radius = arguments.get("radius", 100.0)
+        actual_args = arguments.get("arguments", arguments)
+        agent_id = actual_args.get("agent_id")
+        radius = actual_args.get("radius", 100.0)
 
         if not agent_id:
             return {

@@ -4,7 +4,7 @@
  * Provides configurable logging for HTTP requests, responses, and errors.
  */
 
-import { HTTPMiddleware } from "../types";
+import { HTTPMiddleware } from "../middleware-types";
 
 export interface LoggingConfig {
   logRequests?: boolean;

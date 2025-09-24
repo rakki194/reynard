@@ -160,7 +160,7 @@ reynard/                                       # Monorepo root (NO src/ here)
 
 - **`reynard-chat`**: Real-time chat system with streaming and tool integration
 - **`reynard-rag`**: RAG system with EmbeddingGemma integration
-- **`reynard-auth`**: Complete authentication system with JWT and security features
+- **`reynard-auth`**: Modular authentication system with JWT and security features (auth-core, auth-composables, http-client)
 - **`reynard-charts`**: Data visualization components built on Chart.js
 - **`reynard-gallery`**: Advanced file management with drag-and-drop
 - **`reynard-annotating`**: AI-powered caption generation with multiple models

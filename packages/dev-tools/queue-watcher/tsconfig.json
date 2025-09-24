@@ -26,7 +26,10 @@
     "isolatedModules": true,
     "verbatimModuleSyntax": false,
     "removeComments": false,
-    "preserveConstEnums": true
+    "preserveConstEnums": true,
+    "composite": true,
+    "incremental": true,
+    "tsBuildInfoFile": "./tsconfig.tsbuildinfo"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]

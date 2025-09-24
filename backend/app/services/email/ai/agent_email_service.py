@@ -12,142 +12,18 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from ....models.agent_email_models import (
+    AgentEmailConfig,
+    AgentEmailInteraction,
+    AgentEmailMessage,
+    AgentEmailNotification,
+    AgentEmailSettings,
+    AgentEmailStats,
+    AgentEmailTemplate,
+)
 from ..core.email_service import EmailMessage, email_service
 
 logger = logging.getLogger(__name__)
-
-
-class AgentEmailConfig:
-    """Agent email configuration."""
-
-    def __init__(self, agent_id: str, agent_email: str, agent_name: str):
-        self.agent_id = agent_id
-        self.agent_email = agent_email
-        self.agent_name = agent_name
-        self.auto_reply_enabled = True
-        self.auto_reply_message = (
-            f"Thank you for your email. {agent_name} will respond shortly."
-        )
-        self.encryption_enabled = False
-        self.calendar_integration_enabled = True
-        self.ai_responses_enabled = True
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
-
-
-class AgentEmailStats:
-    """Agent email statistics."""
-
-    def __init__(self, agent_id: str):
-        self.agent_id = agent_id
-        self.total_sent = 0
-        self.total_received = 0
-        self.unread_count = 0
-        self.active_conversations = 0
-        self.last_activity = datetime.now()
-        self.updated_at = datetime.now()
-
-
-class AgentEmailTemplate:
-    """Agent email template."""
-
-    def __init__(
-        self, template_id: str, agent_id: str, name: str, subject: str, body: str,
-    ):
-        self.id = template_id
-        self.agent_id = agent_id
-        self.name = name
-        self.subject = subject
-        self.body = body
-        self.html_body = None
-        self.trigger_conditions = {}
-        self.is_active = True
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
-
-
-class AgentEmailInteraction:
-    """Agent email interaction record."""
-
-    def __init__(
-        self,
-        interaction_id: str,
-        sender_agent_id: str,
-        receiver_agent_id: str,
-        interaction_type: str,
-    ):
-        self.id = interaction_id
-        self.sender_agent_id = sender_agent_id
-        self.receiver_agent_id = receiver_agent_id
-        self.interaction_type = interaction_type
-        self.metadata = {}
-        self.created_at = datetime.now()
-
-
-class AgentEmailMessage:
-    """Agent email message."""
-
-    def __init__(self, message_id: str, agent_id: str, subject: str, body: str):
-        self.id = message_id
-        self.agent_id = agent_id
-        self.subject = subject
-        self.body = body
-        self.html_body = None
-        self.recipients = []
-        self.sender_email = None
-        self.status = "draft"  # draft, sent, delivered, failed
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
-
-
-class AgentEmailNotification:
-    """Agent email notification."""
-
-    def __init__(
-        self,
-        notification_id: str,
-        agent_id: str,
-        notification_type: str,
-        title: str,
-        message: str,
-    ):
-        self.id = notification_id
-        self.agent_id = agent_id
-        self.notification_type = notification_type
-        self.title = title
-        self.message = message
-        self.metadata = {}
-        self.read = False
-        self.created_at = datetime.now()
-
-
-class AgentEmailSettings:
-    """Agent email settings."""
-
-    def __init__(self, agent_id: str):
-        self.agent_id = agent_id
-        self.email_frequency = "normal"  # low, normal, high
-        self.auto_reply_enabled = True
-        self.encryption_enabled = False
-        self.calendar_integration_enabled = True
-        self.ai_responses_enabled = True
-        self.notification_preferences = {
-            "email_received": True,
-            "email_sent": False,
-            "calendar_events": True,
-            "system_alerts": True,
-        }
-        self.updated_at = datetime.now()
-
-
-class EventType:
-    """Event types for automated emails."""
-
-    AGENT_INTERACTION = "agent_interaction"
-    SYSTEM_ALERT = "system_alert"
-    SCHEDULED = "scheduled"
-    CALENDAR_EVENT = "calendar_event"
-    EMAIL_RECEIVED = "email_received"
 
 
 class AgentEmailService:

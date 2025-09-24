@@ -250,7 +250,14 @@ function RAGApp() {
 ### reynard-auth
 
 Complete authentication and user management system with JWT tokens, password strength analysis, and
-comprehensive security features.
+comprehensive security features. Built on a modular architecture with clear separation of concerns.
+
+#### Modular Architecture
+
+- **`reynard-auth-core`** - Framework-agnostic core authentication logic and token management
+- **`reynard-auth-composables`** - SolidJS-specific reactive authentication state and UI components
+- **`reynard-http-client`** - Robust HTTP client with middleware support for authentication
+- **`reynard-auth`** - Unified interface that re-exports from the modular packages
 
 #### Auth Features
 
@@ -259,6 +266,8 @@ comprehensive security features.
 - **Password Security** - Advanced password strength analysis using zxcvbn
 - **User Management** - Profile management, password changes, and user preferences
 - **Security** - Automatic token refresh, secure storage, and CSRF protection
+- **Framework Agnostic Core** - Core logic that works with any framework
+- **Modular Dependencies** - Use only what you need
 
 #### Auth Components
 

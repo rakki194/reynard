@@ -28,12 +28,31 @@ class ToolRouter:
         try:
             # Get the tool handler from registry
             handler = self.tool_registry.get_handler(tool_name)
+            
+            logger.debug(f"Routing tool call {tool_name} with arguments: {arguments}")
+            logger.debug(f"Handler method: {handler.handler_method}")
+            logger.debug(f"Execution type: {handler.execution_type}")
 
             # Execute the tool based on its execution type
-            if handler.execution_type == ToolExecutionType.ASYNC:
-                result = await handler.handler_method(arguments=arguments)
+            # Check if the function expects **kwargs or direct arguments
+            import inspect
+            sig = inspect.signature(handler.handler_method)
+            logger.debug(f"Function signature: {sig}")
+            
+            if any(param.kind == param.VAR_KEYWORD for param in sig.parameters.values()):
+                # Function expects **kwargs, pass arguments as keyword argument
+                logger.debug("Function expects **kwargs, passing arguments=arguments")
+                if handler.execution_type == ToolExecutionType.ASYNC:
+                    result = await handler.handler_method(arguments=arguments)
+                else:
+                    result = handler.handler_method(arguments=arguments)
             else:
-                result = handler.handler_method(arguments=arguments)
+                # Function expects direct arguments
+                logger.debug("Function expects direct arguments, passing arguments directly")
+                if handler.execution_type == ToolExecutionType.ASYNC:
+                    result = await handler.handler_method(arguments)
+                else:
+                    result = handler.handler_method(arguments)
 
             return result
 

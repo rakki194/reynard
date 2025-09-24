@@ -12,7 +12,17 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from typing import Any
 
-import numpy as np
+# Conditional numpy import
+from app.core.service_conditional_loading import is_numpy_enabled, can_load_service, load_service
+
+if is_numpy_enabled() and can_load_service("numpy"):
+    try:
+        import numpy as np
+        load_service("numpy")
+    except ImportError:
+        np = None
+else:
+    np = None
 
 # BaseService import removed - not available
 from ..utils.dimensionality_reduction import (
@@ -456,7 +466,7 @@ class EmbeddingVisualizationService:
             if method not in self.reducers:
                 raise ValueError(f"Unsupported reduction method: {method}")
 
-            # Get embeddings (mock data for now)
+            # Get embeddings from vector database
             embeddings, original_indices = await self._get_embeddings(
                 filters, max_samples,
             )
@@ -755,33 +765,106 @@ class EmbeddingVisualizationService:
         filters: dict[str, Any] | None = None,
         max_samples: int | None = None,
     ) -> tuple[list[list[float]], list[int]]:
-        """Get embeddings from the vector database.
-
-        This is a mock implementation that generates sample embeddings.
-        In a real implementation, this would query the actual vector database.
-        """
-        # Mock implementation - generate sample embeddings
-        num_embeddings = min(max_samples or 1000, 1000)
-        embedding_dim = 768
-
-        # Generate random embeddings with some structure
-        np.random.seed(42)
-        embeddings = []
-        original_indices = []
-
-        for i in range(num_embeddings):
-            # Create embeddings with some clustering structure
-            cluster_id = i // 100
-            base_embedding = np.random.normal(0, 1, embedding_dim)
-
-            # Add cluster-specific bias
-            cluster_center = np.random.normal(0, 2, embedding_dim)
-            embedding = base_embedding + cluster_center * 0.3
-
-            embeddings.append(embedding.tolist())
-            original_indices.append(i)
-
-        return embeddings, original_indices
+        """Get embeddings from the vector database using pgvector."""
+        try:
+            # Get database connection from the vector store service
+            if not hasattr(self, '_vector_store_service') or not self._vector_store_service:
+                # Try to get the vector store service from the RAG service
+                from app.services.rag.rag_service import RAGService
+                rag_service = RAGService()
+                await rag_service.initialize()
+                self._vector_store_service = rag_service.vector_store_service
+            
+            if not self._vector_store_service or not self._vector_store_service._engine:
+                raise RuntimeError("Vector store service not available")
+            
+            # Build the query with filters
+            base_query = """
+                SELECT 
+                    e.id,
+                    e.embedding,
+                    e.modality,
+                    e.model_id,
+                    e.quality_score,
+                    e.metadata,
+                    f.file_type,
+                    f.path,
+                    d.name as dataset_name
+                FROM embeddings e
+                JOIN files f ON e.file_id = f.id
+                JOIN datasets d ON f.dataset_id = d.id
+            """
+            
+            where_conditions = []
+            params = {}
+            
+            # Apply filters
+            if filters:
+                if 'dataset_id' in filters:
+                    where_conditions.append("d.id = :dataset_id")
+                    params['dataset_id'] = filters['dataset_id']
+                
+                if 'modality' in filters:
+                    where_conditions.append("e.modality = :modality")
+                    params['modality'] = filters['modality']
+                
+                if 'model_id' in filters:
+                    where_conditions.append("e.model_id = :model_id")
+                    params['model_id'] = filters['model_id']
+                
+                if 'file_type' in filters:
+                    where_conditions.append("f.file_type = :file_type")
+                    params['file_type'] = filters['file_type']
+                
+                if 'min_quality' in filters:
+                    where_conditions.append("e.quality_score >= :min_quality")
+                    params['min_quality'] = filters['min_quality']
+                
+                if 'created_after' in filters:
+                    where_conditions.append("e.created_at >= :created_after")
+                    params['created_after'] = filters['created_after']
+                
+                if 'created_before' in filters:
+                    where_conditions.append("e.created_at <= :created_before")
+                    params['created_before'] = filters['created_before']
+            
+            # Add WHERE clause if we have conditions
+            if where_conditions:
+                base_query += " WHERE " + " AND ".join(where_conditions)
+            
+            # Add ordering and limit
+            base_query += " ORDER BY e.created_at DESC"
+            
+            if max_samples:
+                base_query += " LIMIT :max_samples"
+                params['max_samples'] = max_samples
+            
+            # Execute the query
+            with self._vector_store_service._engine.connect() as conn:
+                from sqlalchemy import text
+                result = conn.execute(text(base_query), params)
+                
+                embeddings = []
+                original_indices = []
+                
+                for idx, row in enumerate(result):
+                    # Convert vector to list of floats
+                    embedding_vector = row[1]  # This is the VECTOR column
+                    if hasattr(embedding_vector, 'tolist'):
+                        embedding_list = embedding_vector.tolist()
+                    else:
+                        # Handle different vector representations
+                        embedding_list = list(embedding_vector)
+                    
+                    embeddings.append(embedding_list)
+                    original_indices.append(idx)
+                
+                logger.info(f"Retrieved {len(embeddings)} embeddings from vector database")
+                return embeddings, original_indices
+                
+        except Exception as e:
+            logger.error(f"Failed to get embeddings from vector database: {e}")
+            raise RuntimeError(f"Vector database query failed: {e}")
 
     async def _perform_reduction_with_params(
         self,

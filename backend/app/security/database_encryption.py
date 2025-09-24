@@ -24,6 +24,11 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.engine import Engine
 from sqlalchemy.pool import StaticPool
 
+from app.core.debug_logging import (
+    setup_sqlalchemy_debug_logging,
+    setup_connection_pool_logging,
+    debug_log
+)
 from app.security.audit_logger import log_data_access_event
 from app.security.encryption_utils import EncryptionUtils
 from app.security.key_manager import KeyType, get_key_manager
@@ -129,6 +134,10 @@ class DatabaseEncryptionManager:
             engine_kwargs["connect_args"]["sslmode"] = self.config.ssl_verify_mode
 
         engine = create_engine(self.database_url, **engine_kwargs)
+        
+        # Setup debug logging for encrypted database
+        setup_sqlalchemy_debug_logging(engine, f"{self.database_name}_encrypted")
+        setup_connection_pool_logging(engine, f"{self.database_name}_encrypted")
 
         # Enable pgcrypto extension if not already enabled
         self._ensure_pgcrypto_extension(engine)
@@ -146,7 +155,13 @@ class DatabaseEncryptionManager:
             },
         }
 
-        return create_engine(self.database_url, **engine_kwargs)
+        engine = create_engine(self.database_url, **engine_kwargs)
+        
+        # Setup debug logging for unencrypted database
+        setup_sqlalchemy_debug_logging(engine, f"{self.database_name}_unencrypted")
+        setup_connection_pool_logging(engine, f"{self.database_name}_unencrypted")
+        
+        return engine
 
     def _ensure_pgcrypto_extension(self, engine: Engine) -> None:
         """Ensure pgcrypto extension is enabled."""

@@ -21,9 +21,9 @@ class RAGConfig:
     )
 
     # Database configuration
-    pg_dsn: str = field(
+    rag_database_url: str = field(
         default_factory=lambda: os.getenv(
-            "PG_DSN",
+            "RAG_DATABASE_URL",
             "postgresql://reynard_rag:CHANGE_THIS_PASSWORD@localhost:5432/reynard_rag",
         ),
     )
@@ -89,7 +89,7 @@ class RAGConfig:
         """Convert configuration to dictionary format expected by services."""
         return {
             "rag_enabled": self.enabled,
-            "pg_dsn": self.pg_dsn,
+            "rag_database_url": self.rag_database_url,
             "ollama_base_url": self.ollama_base_url,
             "rag_text_model": self.text_model,
             "rag_code_model": self.code_model,
@@ -116,10 +116,10 @@ class RAGConfig:
 
         # Only enforce secure password in production
         if not is_development:
-            if not self.pg_dsn or "CHANGE_THIS_PASSWORD" in self.pg_dsn:
+            if not self.rag_database_url or "CHANGE_THIS_PASSWORD" in self.rag_database_url:
                 raise ValueError(
-                    "RAG configuration error: PG_DSN must be set with a secure password. "
-                    "Please set the PG_DSN environment variable with your actual database credentials.",
+                    "RAG configuration error: RAG_DATABASE_URL must be set with a secure password. "
+                    "Please set the RAG_DATABASE_URL environment variable with your actual database credentials.",
                 )
 
         if not self.ollama_base_url:

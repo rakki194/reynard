@@ -7,6 +7,54 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.17.2] - 2025-09-24
 
+## [Unreleased]
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+
+## [0.18.0] - 2025-09-24
+
+### Added
+- **Major Service Architecture Refactoring**: Complete restructuring of backend services with modular organization
+- **Enhanced ECS World Simulation**: New ECS components and systems for agent task management and customer modeling
+- **Advanced Email Service Architecture**: Modular email service with AI integration, analytics, and encryption
+- **Comprehensive Testing Infrastructure**: Enhanced E2E testing with coverage integration and comprehensive auth testing
+- **New Development Tools**: Incremental linting, VSCode linting integration, and enhanced project architecture tools
+- **Customer Modeling System**: New ECS-based customer modeling and task queue systems
+- **Enhanced MCP Server**: Improved tool routing and social interaction capabilities
+- **Browser Automation Service**: New service for automated browser interactions
+- **Codebase Scanner Service**: Advanced codebase analysis and scanning capabilities
+
+### Changed
+- **Backend Service Organization**: Restructured services into modular, maintainable architecture
+- **RAG System Simplification**: Streamlined RAG implementation with improved performance
+- **Email Service Modularization**: Reorganized email services into core, AI, analytics, and integration modules
+- **Testing Framework Enhancement**: Improved test coverage and E2E testing capabilities
+- **Development Workflow**: Enhanced linting, validation, and development tooling
+
+### Removed
+- **Legacy Service Files**: Removed outdated service implementations and redundant code
+- **Deprecated Examples**: Cleaned up old example files and configurations
+- **Unused Documentation**: Removed outdated documentation and validation files
+- **Legacy RAG Components**: Removed complex RAG advanced components in favor of streamlined implementation
+
+### Fixed
+- **Service Dependencies**: Resolved circular dependencies and import issues
+- **Configuration Management**: Improved configuration handling and validation
+- **Database Optimization**: Enhanced database performance and connection management
+- **Security Enhancements**: Improved database encryption and security measures
+
+
 
 ### Added
 

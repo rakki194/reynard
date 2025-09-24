@@ -235,7 +235,7 @@ async def health_check_legacy_service() -> bool:
 # Before: Scattered configuration
 import os
 
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///app.db")
+RAG_DATABASE_URL = os.getenv("RAG_DATABASE_URL", "sqlite:///app.db")
 API_TIMEOUT = int(os.getenv("API_TIMEOUT", "30"))
 MAX_RETRIES = int(os.getenv("MAX_RETRIES", "3"))
 ENABLE_CACHING = os.getenv("ENABLE_CACHING", "true").lower() == "true"
@@ -250,17 +250,17 @@ from app.core.service_config_manager import ServiceConfigSchema
 
 # Define configuration schema
 LegacyServiceConfigSchema = ServiceConfigSchema(
-    required_fields=["database_url", "api_timeout"],
+    required_fields=["rag_database_url", "api_timeout"],
     optional_fields=["max_retries", "enable_caching", "log_level"],
     field_types={
-        "database_url": str,
+        "rag_database_url": str,
         "api_timeout": int,
         "max_retries": int,
         "enable_caching": bool,
         "log_level": str
     },
     field_defaults={
-        "database_url": "sqlite:///app.db",
+        "rag_database_url": "sqlite:///app.db",
         "api_timeout": 30,
         "max_retries": 3,
         "enable_caching": True,
@@ -287,7 +287,7 @@ config_manager = get_service_config_manager()
 config_manager.register_service_config(
     "legacy-service",
     default_config={
-        "database_url": "sqlite:///app.db",
+        "rag_database_url": "sqlite:///app.db",
         "api_timeout": 30,
         "max_retries": 3,
         "enable_caching": True,
@@ -310,7 +310,7 @@ config_manager = get_service_config_manager()
 config = config_manager.get_config("legacy-service")
 
 # Use configuration
-database_url = config["database_url"]
+rag_database_url = config["rag_database_url"]
 api_timeout = config["api_timeout"]
 max_retries = config["max_retries"]
 enable_caching = config["enable_caching"]
@@ -686,7 +686,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgresql://user:pass@db:5432/dbname
+      - RAG_DATABASE_URL=postgresql://user:pass@db:5432/dbname
 
 # After
 version: '3.8'
@@ -696,7 +696,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgresql://user:pass@db:5432/dbname
+      - RAG_DATABASE_URL=postgresql://user:pass@db:5432/dbname
       - SERVICE_CONFIG_VALIDATION_LEVEL=strict
       - HEALTH_CHECK_INTERVAL=30
       - ENABLE_HEALTH_AUTOMATION=true

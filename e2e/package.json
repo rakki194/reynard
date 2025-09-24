@@ -78,7 +78,18 @@
     "test:games:mobile": "playwright test --config=configs/playwright.config.games.ts --project='Mobile Chrome'",
     "test:games:runner": "./scripts/run-games-tests.sh",
     "test:games:install": "./scripts/run-games-tests.sh --install",
-    "test:games:clean": "./scripts/run-games-tests.sh --clean"
+    "test:games:clean": "./scripts/run-games-tests.sh --clean",
+    "test:auth:coverage": "playwright test --config=configs/playwright.config.coverage.ts",
+    "test:auth:coverage:headed": "playwright test --config=configs/playwright.config.coverage.ts --headed",
+    "test:auth:coverage:debug": "playwright test --config=configs/playwright.config.coverage.ts --debug",
+    "test:auth:coverage:ui": "playwright test --config=configs/playwright.config.coverage.ts --ui",
+    "test:auth:coverage:report": "playwright show-report --config=configs/playwright.config.coverage.ts",
+    "coverage:collect": "playwright test --config=configs/playwright.config.coverage.ts --reporter=json",
+    "coverage:process": "tsx scripts/process-coverage.ts",
+    "coverage:merge": "tsx scripts/merge-coverage.ts",
+    "coverage:report": "tsx scripts/generate-coverage-report.ts",
+    "coverage:vitest": "cd .. && npx vitest run --coverage --reporter=json",
+    "coverage:comprehensive": "npm run coverage:vitest && npm run coverage:collect && npm run coverage:merge && npm run coverage:report"
   },
   "devDependencies": {
     "@playwright/test": "1.55.0",

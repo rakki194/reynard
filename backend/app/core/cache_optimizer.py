@@ -22,6 +22,8 @@ from typing import Any
 
 from redis.asyncio import ConnectionPool, Redis
 
+from .debug_logging import log_cache_operation, debug_log
+
 logger = logging.getLogger(__name__)
 
 
@@ -218,6 +220,7 @@ class IntelligentCacheManager:
                 strategy=self.strategies.get(namespace, CacheStrategy.TTL),
             )
 
+    @debug_log("cache_get", logger)
     async def get(
         self, key: str, namespace: str = "default", default: Any = None,
     ) -> Any:
@@ -231,16 +234,36 @@ class IntelligentCacheManager:
         try:
             # Get value from Redis
             value = await self.redis.get(full_key)
+            duration_ms = (time.time() - start_time) * 1000
 
             if value is None:
                 # Cache miss
                 self.metrics.misses += 1
                 self.metrics.total_requests += 1
+                
+                # Log cache operation
+                log_cache_operation(
+                    operation="get",
+                    key=full_key,
+                    hit=False,
+                    duration_ms=duration_ms,
+                    namespace=namespace
+                )
+                
                 return default
 
             # Cache hit
             self.metrics.hits += 1
             self.metrics.total_requests += 1
+
+            # Log cache operation
+            log_cache_operation(
+                operation="get",
+                key=full_key,
+                hit=True,
+                duration_ms=duration_ms,
+                namespace=namespace
+            )
 
             # Update metadata
             self._update_cache_key_metadata(full_key, namespace)
@@ -249,7 +272,7 @@ class IntelligentCacheManager:
             deserialized_value = CacheSerializer.deserialize(value)
 
             # Update metrics
-            operation_time = (time.time() - start_time) * 1000
+            operation_time = duration_ms
             self.operation_times.append(operation_time)
             self.metrics.average_get_time_ms = sum(self.operation_times[-100:]) / min(
                 len(self.operation_times), 100,
@@ -258,11 +281,24 @@ class IntelligentCacheManager:
             return deserialized_value
 
         except Exception as e:
+            duration_ms = (time.time() - start_time) * 1000
             logger.error(f"Cache get failed for key {full_key}: {e}")
             self.metrics.misses += 1
             self.metrics.total_requests += 1
+            
+            # Log cache operation
+            log_cache_operation(
+                operation="get",
+                key=full_key,
+                hit=False,
+                duration_ms=duration_ms,
+                namespace=namespace,
+                error=str(e)
+            )
+            
             return default
 
+    @debug_log("cache_set", logger)
     async def set(
         self,
         key: str,
@@ -310,6 +346,7 @@ class IntelligentCacheManager:
             logger.error(f"Cache set failed for key {full_key}: {e}")
             return False
 
+    @debug_log("cache_delete", logger)
     async def delete(self, key: str, namespace: str = "default") -> bool:
         """Delete a value from cache."""
         if not self.redis:

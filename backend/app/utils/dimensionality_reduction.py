@@ -8,7 +8,17 @@ import logging
 from dataclasses import dataclass
 from typing import Any, Protocol
 
-import numpy as np
+# Conditional numpy import
+from app.core.service_conditional_loading import is_numpy_enabled, can_load_service, load_service
+
+if is_numpy_enabled() and can_load_service("numpy"):
+    try:
+        import numpy as np
+        load_service("numpy")
+    except ImportError:
+        np = None
+else:
+    np = None
 
 logger = logging.getLogger(__name__)
 

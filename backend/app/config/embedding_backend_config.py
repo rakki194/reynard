@@ -88,11 +88,6 @@ class EmbeddingBackendsConfig:
         default_factory=lambda: os.getenv("EMBEDDING_DEFAULT_BACKEND", "ollama"),
     )
 
-    # Mock mode for testing
-    mock_mode: bool = field(
-        default_factory=lambda: os.getenv("EMBEDDING_MOCK_MODE", "false").lower()
-        == "true",
-    )
 
     def __post_init__(self) -> None:
         """Initialize default backend configurations if not provided."""
@@ -270,7 +265,6 @@ class EmbeddingBackendsConfig:
             "enabled": self.enabled,
             "allow_fallback": self.allow_fallback,
             "default_backend": self.default_backend,
-            "mock_mode": self.mock_mode,
             "backends": {
                 name: backend.to_dict() for name, backend in self.backends.items()
             },
@@ -283,10 +277,10 @@ class EmbeddingBackendsConfig:
 
         # Check if at least one backend is enabled
         enabled_backends = self.get_enabled_backends()
-        if not enabled_backends and not self.mock_mode:
+        if not enabled_backends:
             raise ValueError(
                 "EmbeddingBackendsConfig validation error: "
-                "At least one backend must be enabled or mock_mode must be true",
+                "At least one backend must be enabled",
             )
 
         # Validate individual backend configurations

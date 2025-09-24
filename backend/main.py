@@ -35,17 +35,25 @@ import warnings
 
 import uvicorn
 
-# Suppress ML library warnings before any imports
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"  # Suppress TensorFlow warnings
-os.environ["TOKENIZERS_PARALLELISM"] = "false"  # Suppress tokenizer warnings
-os.environ["PYTORCH_CUDA_ALLOC_CONF"] = (
-    "max_split_size_mb:128"  # Reduce CUDA memory warnings
-)
-os.environ["CUDA_LAUNCH_BLOCKING"] = "0"  # Disable CUDA blocking for cleaner output
+# Suppress ML library warnings only if services are enabled
 os.environ["PYTHONWARNINGS"] = "ignore"  # Suppress all Python warnings
-warnings.filterwarnings("ignore", category=UserWarning, module="torch")
-warnings.filterwarnings("ignore", category=UserWarning, module="transformers")
-warnings.filterwarnings("ignore", category=UserWarning, module="sentence_transformers")
+
+# Only set ML-specific environment variables if services are enabled
+if os.getenv("PYTORCH_ENABLED", "false").lower() == "true":
+    os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:128"
+    os.environ["CUDA_LAUNCH_BLOCKING"] = "0"
+    warnings.filterwarnings("ignore", category=UserWarning, module="torch")
+
+if os.getenv("TRANSFORMERS_ENABLED", "false").lower() == "true":
+    os.environ["TOKENIZERS_PARALLELISM"] = "false"
+    warnings.filterwarnings("ignore", category=UserWarning, module="transformers")
+
+if os.getenv("EMBEDDING_SENTENCE_TRANSFORMERS_ENABLED", "false").lower() == "true":
+    warnings.filterwarnings("ignore", category=UserWarning, module="sentence_transformers")
+
+# TensorFlow warnings (if used)
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+
 warnings.filterwarnings(
     "ignore",
     message=".*SymmetricMemory.*",

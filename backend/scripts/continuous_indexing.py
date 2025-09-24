@@ -188,7 +188,7 @@ class ContinuousIndexer:
             # RAG configuration
             rag_config = {
                 "rag_enabled": True,
-                "pg_dsn": "postgresql://postgres@localhost:5432/reynard_rag",
+                "rag_database_url": "postgresql://postgres@localhost:5432/reynard_rag",
                 "ollama_base_url": "http://localhost:11434",
                 "rag_text_model": "embeddinggemma:latest",
                 "rag_ingest_batch_size_text": 16,

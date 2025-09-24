@@ -2,11 +2,11 @@
  * Test setup for Reynard API Client
  */
 
-import { vi } from "vitest";
-import { setupTestEnvironment } from "reynard-testing";
+import { vi, afterEach } from "vitest";
+import { setupBaseTest } from "reynard-testing";
 
 // Setup the test environment
-setupTestEnvironment();
+setupBaseTest();
 
 // Mock fetch globally for API client tests
 global.fetch = vi.fn();

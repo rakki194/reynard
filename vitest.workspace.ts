@@ -110,4 +110,7 @@ export default [
   "./examples/test-app",
   "./templates/starter",
   "./scripts/testing",
+
+  // E2E testing framework (for coverage integration)
+  "./e2e",
 ];

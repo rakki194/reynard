@@ -14,7 +14,7 @@ export * from "./utility-types";
 export * from "./middleware-types";
 
 // Re-export middleware with specific exports to avoid conflicts
-export { HTTPMiddleware } from "./middleware-types";
+export type { HTTPMiddleware } from "./middleware-types";
 export * from "./middleware";
 
 // Re-export specific classes to avoid naming conflicts

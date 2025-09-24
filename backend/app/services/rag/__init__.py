@@ -10,30 +10,71 @@ Core Services:
 - SearchEngine: Advanced search with semantic and keyword matching
 
 Advanced Features:
-- PerformanceMonitor: Comprehensive performance monitoring
-- SecurityService: Enterprise-grade security and compliance
-- ContinuousImprovement: A/B testing and optimization
-- DocumentationService: Automated documentation generation
-- ModelEvaluator: Model evaluation and benchmarking
+- PrometheusMonitoringService: Comprehensive performance monitoring
+- AccessControlSecurityService: Enterprise-grade security and compliance
+- ContinuousImprovementService: A/B testing and optimization
+- AutoDocumentationService: Automated documentation generation
+- ModelEvaluationService: Model evaluation and benchmarking
 
 Main Entry Point:
 - RAGService: Unified orchestrator for all RAG capabilities
 """
 
-# Advanced services
-from .advanced import (
-    ContinuousImprovement,
-    DocumentationService,
-    ModelEvaluator,
-    PerformanceMonitor,
-    SecurityService,
-)
+# Conditional imports based on environment configuration
+import os
 
-# Core services
-from .core import DocumentIndexer, EmbeddingService, SearchEngine, VectorStoreService
+# Only import RAG services if RAG is enabled
+RAG_ENABLED = os.getenv("RAG_ENABLED", "true").lower() == "true"
 
-# Main service orchestrator
-from .rag_service import RAGService
+if RAG_ENABLED:
+    # Core services
+    from .services.core import EmbeddingService, VectorStoreService, DocumentIndexer, SearchEngine
+
+    # Advanced services
+    from .services.monitoring.prometheus_monitoring import PrometheusMonitoringService
+    from .services.security.access_control_security import AccessControlSecurityService
+    from .services.evaluation.model_evaluation import ModelEvaluationService
+    from .services.improvement.continuous_improvement import ContinuousImprovementService
+    from .services.documentation.auto_documentation import AutoDocumentationService
+
+    # Main service orchestrator
+    from .rag_service import RAGService
+
+    # Legacy aliases for backward compatibility
+    PerformanceMonitor = PrometheusMonitoringService
+    SecurityService = AccessControlSecurityService
+    ContinuousImprovement = ContinuousImprovementService
+    DocumentationService = AutoDocumentationService
+    ModelEvaluator = ModelEvaluationService
+else:
+    # Create placeholder classes when RAG is disabled
+    class EmbeddingService:
+        pass
+    class VectorStoreService:
+        pass
+    class DocumentIndexer:
+        pass
+    class SearchEngine:
+        pass
+    class PrometheusMonitoringService:
+        pass
+    class AccessControlSecurityService:
+        pass
+    class ModelEvaluationService:
+        pass
+    class ContinuousImprovementService:
+        pass
+    class AutoDocumentationService:
+        pass
+    class RAGService:
+        pass
+
+    # Legacy aliases
+    PerformanceMonitor = PrometheusMonitoringService
+    SecurityService = AccessControlSecurityService
+    ContinuousImprovement = ContinuousImprovementService
+    DocumentationService = AutoDocumentationService
+    ModelEvaluator = ModelEvaluationService
 
 __all__ = [
     # Main service
@@ -44,6 +85,12 @@ __all__ = [
     "DocumentIndexer",
     "SearchEngine",
     # Advanced services
+    "PrometheusMonitoringService",
+    "AccessControlSecurityService",
+    "ModelEvaluationService",
+    "ContinuousImprovementService",
+    "AutoDocumentationService",
+    # Legacy aliases for backward compatibility
     "PerformanceMonitor",
     "SecurityService",
     "ContinuousImprovement",

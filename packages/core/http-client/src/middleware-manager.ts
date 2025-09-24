@@ -5,7 +5,8 @@
  * error handling, and completion callbacks.
  */
 
-import { HTTPMiddleware, HTTPRequestOptions, HTTPResponse, HTTPError } from "./types";
+import { HTTPMiddleware } from "./middleware-types";
+import { HTTPRequestOptions, HTTPResponse, HTTPError } from "./types";
 
 export class MiddlewareManager {
   private middleware: HTTPMiddleware[] = [];

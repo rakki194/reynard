@@ -12,7 +12,7 @@ import time
 from collections import defaultdict
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any
+from typing import Any, Callable
 
 from .service_registry import ServiceRegistry, ServiceStatus
 
@@ -112,9 +112,9 @@ class EnhancedServiceRegistry(ServiceRegistry):
         self,
         name: str,
         config: dict[str, Any],
-        startup_func: callable | None = None,
-        shutdown_func: callable | None = None,
-        health_check_func: callable | None = None,
+        startup_func: Callable | None = None,
+        shutdown_func: Callable | None = None,
+        health_check_func: Callable | None = None,
         startup_priority: int = 0,
         dependencies: list[ServiceDependency] | None = None,
         health_check_interval: float = 30.0,

@@ -5,7 +5,7 @@
  * and burst limit protection.
  */
 
-import { HTTPMiddleware } from "../types";
+import { HTTPMiddleware } from "../middleware-types";
 
 export interface RateLimitConfig {
   requestsPerMinute: number;

@@ -15,6 +15,12 @@ from .components import (
     PositionComponent,
     ReproductionComponent,
     SocialComponent,
+    TaskPriority,
+    TaskQueueComponent,
+    TaskRequestComponent,
+    TaskResultComponent,
+    TaskStatus,
+    TaskType,
     TraitComponent,
 )
 from .config import ECSConfig
@@ -31,6 +37,7 @@ from .systems import (
     MemorySystem,
     SocialSystem,
 )
+from .systems.task_queue_system import TaskQueueSystem
 
 # ECS World
 from .world import AgentWorld
@@ -58,6 +65,13 @@ __all__ = [
     "SocialComponent",
     "SocialSystem",
     "System",
+    "TaskPriority",
+    "TaskQueueComponent",
+    "TaskQueueSystem",
+    "TaskRequestComponent",
+    "TaskResultComponent",
+    "TaskStatus",
+    "TaskType",
     "TraitComponent",
     "get_ecs_world",
 ]

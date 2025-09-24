@@ -39,7 +39,7 @@ export interface HTTPRequestOptions {
   headers?: Record<string, string>;
   timeout?: number;
   retries?: number;
-  signal?: AbortSignal;
+  signal?: globalThis.AbortSignal;
   params?: Record<string, string | number | boolean>;
 }
 

@@ -4,7 +4,8 @@
  * Pre-configured middleware combinations for common use cases.
  */
 
-import { HTTPMiddleware, AuthConfig } from "../types";
+import { AuthConfig } from "../types";
+import { HTTPMiddleware } from "../middleware-types";
 import { createAuthMiddleware } from "./auth";
 import { createLoggingMiddleware, LoggingConfig } from "./logging";
 import { createRateLimitMiddleware, RateLimitConfig } from "./rate-limiting";

@@ -2,15 +2,10 @@
   "recommendations": [
     // 🦊 Core Reynard Development Extensions
 
-    // Python Development
+    // Python Development - OPTIMIZED for Monorepo
     "charliermarsh.ruff",
     "ms-python.python",
     "ms-python.mypy-type-checker",
-    "ms-python.pylint",
-    "ms-python.black-formatter",
-    "ms-python.isort",
-    "ms-python.flake8",
-    "ms-python.bandit",
 
     // TypeScript/JavaScript Development
     "esbenp.prettier-vscode",
@@ -31,18 +26,8 @@
     "ms-vscode.vscode-json",
 
     // Git and Version Control
-    "eamodio.gitlens",
-    "github.vscode-pull-request-github",
-
-    // Development Tools
-    "christian-kohler.path-intellisense",
     "ms-vscode.vscode-typescript-next",
 
-    // Testing
-    //"vitest.explorer",
-
-    // Code Quality
-    //"sonarsource.sonarlint-vscode",
     "ms-vscode.vscode-eslint",
 
     // Utilities
@@ -50,7 +35,12 @@
     "catppuccin.catppuccin-vsc-icons"
   ],
   "unwantedRecommendations": [
-    // Extensions that might conflict with our setup
-    "ms-python.autopep8"
+    // Extensions that cause subprocess explosion in monorepos
+    "ms-python.autopep8",
+    "ms-python.pylint",
+    "ms-python.black-formatter",
+    "ms-python.isort",
+    "ms-python.flake8",
+    "ms-python.bandit"
   ]
 }

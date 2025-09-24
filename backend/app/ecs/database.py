@@ -26,7 +26,17 @@ from sqlalchemy import (
 from sqlalchemy.dialects.postgresql import UUID as PostgresUUID
 from sqlalchemy.orm import Session, relationship, sessionmaker
 
-from app.models.base import Base
+from sqlalchemy.ext.declarative import declarative_base
+
+from app.core.debug_logging import (
+    setup_sqlalchemy_debug_logging,
+    setup_connection_pool_logging,
+    log_db_connection_event,
+    debug_log
+)
+
+# Create separate ECS Base class to avoid conflicts with main database models
+Base = declarative_base()
 
 logger = logging.getLogger(__name__)
 
@@ -38,6 +48,10 @@ ECS_DATABASE_URL = os.getenv(
 # SQLAlchemy setup
 engine = create_engine(ECS_DATABASE_URL, echo=False)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+# Setup debug logging for ECS database
+setup_sqlalchemy_debug_logging(engine, "reynard_ecs")
+setup_connection_pool_logging(engine, "reynard_ecs")
 
 
 class Agent(Base):
@@ -358,9 +372,12 @@ class ECSDatabase:
         self.engine = engine
         self.session_local = SessionLocal
 
+    @debug_log("get_ecs_session", logger)
     def get_session(self) -> Session:
         """Get a database session."""
-        return self.session_local()
+        session = self.session_local()
+        log_db_connection_event("session_created", "reynard_ecs", str(id(session)))
+        return session
 
     async def create_tables(self):
         """Create all database tables."""
@@ -785,40 +802,7 @@ class WorldConfiguration(Base):
         }
 
 
-# Import notes and todos models after all ECS models are defined
-# This avoids circular imports while still allowing relationships
-try:
-    from app.models.notes_todos import (  # noqa: F401
-        AIMetadata,
-        Note,
-        NoteAttachment,
-        Notebook,
-        NoteCollaboration,
-        NoteVersion,
-        Tag,
-        Todo,
-    )
-
-    # Add the relationships to Agent model
-    Agent.notebooks = relationship(
-        "Notebook", back_populates="agent", cascade="all, delete-orphan",
-    )
-    Agent.notes = relationship(
-        "Note", back_populates="agent", cascade="all, delete-orphan",
-    )
-    Agent.todos = relationship(
-        "Todo", back_populates="agent", cascade="all, delete-orphan",
-    )
-    Agent.tags = relationship(
-        "Tag", back_populates="agent", cascade="all, delete-orphan",
-    )
-    Agent.ai_metadata = relationship(
-        "AIMetadata", back_populates="agent", cascade="all, delete-orphan",
-    )
-
-except ImportError:
-    # Notes models not available, relationships will be added later
-    pass
+# ECS models are self-contained and don't need relationships to main database models
 
 # Global database instance
 ecs_db = ECSDatabase()

@@ -18,7 +18,7 @@ import aiohttp
 import numpy as np
 
 # Import embedding service instead of direct sentence transformers
-from app.services.rag.core.embeddings import EmbeddingService
+from app.services.rag.services.core.embedding import EmbeddingService
 
 # Import optimization modules - enabled by default
 try:

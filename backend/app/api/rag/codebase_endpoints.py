@@ -272,71 +272,10 @@ async def scan_codebase(rag_service=Depends(get_rag_service)) -> StreamingRespon
 
         async def generate():
             import json
-            import os
-            from collections import defaultdict
-            from pathlib import Path
+            from app.services.rag.services.core.codebase_scanner import CodebaseScanner
 
-            # Get configuration from environment
-            reynard_root = Path(
-                os.getenv(
-                    "RAG_CONTINUOUS_INDEXING_WATCH_ROOT", "/home/kade/runeset/reynard",
-                ),
-            )
-            batch_size = int(os.getenv("RAG_CONTINUOUS_INDEXING_BATCH_SIZE", "50"))
-            max_file_size_mb = int(
-                os.getenv("RAG_CONTINUOUS_INDEXING_MAX_FILE_SIZE_MB", "2"),
-            )
-
-            # Directories to skip
-            skip_dirs = {
-                "node_modules",
-                "__pycache__",
-                ".git",
-                ".vscode",
-                ".idea",
-                "dist",
-                "build",
-                "target",
-                "coverage",
-                ".nyc_output",
-                "venv",
-                "env",
-                ".env",
-                "logs",
-                "tmp",
-                "temp",
-                ".pytest_cache",
-                ".mypy_cache",
-                ".tox",
-                "htmlcov",
-                "reynard_backend.egg-info",
-                "alembic/versions",
-            }
-
-            # File patterns to skip
-            skip_files = {
-                "*.pyc",
-                "*.pyo",
-                "*.pyd",
-                "*.so",
-                "*.dll",
-                "*.exe",
-                "*.log",
-                "*.tmp",
-                "*.temp",
-                "*.swp",
-                "*.swo",
-                "*~",
-                "*.min.js",
-                "*.min.css",
-                "*.map",
-                "*.lock",
-                "package-lock.json",
-                "yarn.lock",
-                "pnpm-lock.yaml",
-                "*.sqlite",
-                "*.db",
-            }
+            # Use the modular codebase scanner
+            scanner = CodebaseScanner()
 
             # File types to include
             include_extensions = {
