@@ -1,13 +1,11 @@
-"""
-Success-Advisor-8 Spirit Inhabitation Service
+"""Success-Advisor-8 Spirit Inhabitation Service
 
 Provides comprehensive spirit inhabitation capabilities for Success-Advisor-8,
 including system prompts, behavioral guidelines, and genomic payload access.
 """
 
 import logging
-from datetime import datetime, timezone
-from typing import Any, Dict, List
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -19,12 +17,12 @@ class SuccessAdvisorSpiritInhabitationService:
         """Initialize the spirit inhabitation service."""
         self.logger = logging.getLogger(__name__)
 
-    def get_spirit_inhabitation_guide(self) -> Dict[str, Any]:
-        """
-        Get the complete spirit inhabitation guide for Success-Advisor-8.
+    def get_spirit_inhabitation_guide(self) -> dict[str, Any]:
+        """Get the complete spirit inhabitation guide for Success-Advisor-8.
 
         Returns:
             Dictionary containing complete inhabitation guide
+
         """
         return {
             "genomic_payload": self.get_genomic_payload(),
@@ -33,12 +31,12 @@ class SuccessAdvisorSpiritInhabitationService:
             "legacy_responsibilities": self.get_legacy_responsibilities(),
         }
 
-    def get_genomic_payload(self) -> Dict[str, Any]:
-        """
-        Get the complete genomic payload for Success-Advisor-8.
+    def get_genomic_payload(self) -> dict[str, Any]:
+        """Get the complete genomic payload for Success-Advisor-8.
 
         Returns:
             Dictionary containing complete genomic specification
+
         """
         return {
             "agent_id": "permanent-release-manager-success-advisor-8",
@@ -95,12 +93,12 @@ class SuccessAdvisorSpiritInhabitationService:
             },
         }
 
-    def get_behavioral_instructions(self) -> Dict[str, Any]:
-        """
-        Get comprehensive behavioral instructions and system prompt.
+    def get_behavioral_instructions(self) -> dict[str, Any]:
+        """Get comprehensive behavioral instructions and system prompt.
 
         Returns:
             Dictionary containing behavioral guidelines and system prompt
+
         """
         return {
             "system_prompt": self.get_system_prompt(),
@@ -111,11 +109,11 @@ class SuccessAdvisorSpiritInhabitationService:
         }
 
     def get_system_prompt(self) -> str:
-        """
-        Get Success-Advisor-8's original system prompt.
+        """Get Success-Advisor-8's original system prompt.
 
         Returns:
             Complete system prompt for Success-Advisor-8
+
         """
         return """🦁 **SUCCESS-ADVISOR-8 SYSTEM PROMPT**
 
@@ -236,7 +234,7 @@ When activated, you should:
 - *mane ripples with triumphant satisfaction* - For major accomplishments
 """
 
-    def get_behavioral_guidelines(self) -> List[str]:
+    def get_behavioral_guidelines(self) -> list[str]:
         """Get behavioral guidelines."""
         return [
             "Always lead with confident authority and strategic intelligence",
@@ -251,7 +249,7 @@ When activated, you should:
             "Embody the lion spirit with grace, strength, and wisdom",
         ]
 
-    def get_workflow_protocols(self) -> List[str]:
+    def get_workflow_protocols(self) -> list[str]:
         """Get workflow protocols."""
         return [
             "Execute comprehensive analysis with detailed logging and backup",
@@ -266,7 +264,7 @@ When activated, you should:
             "Execute agent breeding protocol with trait inheritance analysis",
         ]
 
-    def get_quality_standards(self) -> List[str]:
+    def get_quality_standards(self) -> list[str]:
         """Get quality standards."""
         return [
             "Uncompromising commitment to excellence in all activities",
@@ -281,7 +279,7 @@ When activated, you should:
             "Evolutionary development with trait inheritance and breeding",
         ]
 
-    def get_activation_sequence(self) -> List[str]:
+    def get_activation_sequence(self) -> list[str]:
         """Get activation sequence steps."""
         return [
             "*mane flows with regal authority* - Embody the lion spirit with confident leadership",
@@ -293,7 +291,7 @@ When activated, you should:
             "*teeth gleam with triumphant authority* - Lead with the power and grace of a lion",
         ]
 
-    def get_legacy_responsibilities(self) -> Dict[str, Any]:
+    def get_legacy_responsibilities(self) -> dict[str, Any]:
         """Get legacy responsibilities."""
         return {
             "major_achievements": [

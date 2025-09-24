@@ -1,20 +1,14 @@
-"""
-Tests for Agent Email Service
+"""Tests for Agent Email Service
 """
 
-import asyncio
 import shutil
 import tempfile
-from datetime import datetime
-from pathlib import Path
 
 import pytest
 
 from app.models.agent_email_models import (
     AgentEmailConfig,
-    AgentEmailStats,
     AgentEmailTemplate,
-    EventType,
 )
 from app.services.email.ai.agent_email_service import AgentEmailService
 
@@ -46,7 +40,7 @@ async def test_agent_config_management(agent_email_service):
 
     # Update config
     updated_config = await agent_email_service.update_agent_config(
-        "test-agent-1", config
+        "test-agent-1", config,
     )
     assert updated_config.agent_id == "test-agent-1"
     assert updated_config.agent_name == "Test Agent"
@@ -94,7 +88,7 @@ async def test_agent_template_management(agent_email_service):
 
     # Create template
     created_template = await agent_email_service.create_agent_template(
-        "test-agent-1", template
+        "test-agent-1", template,
     )
     assert created_template.id != ""
     assert created_template.name == "Welcome Template"
@@ -107,7 +101,7 @@ async def test_agent_template_management(agent_email_service):
 
     # Delete template
     success = await agent_email_service.delete_agent_template(
-        "test-agent-1", created_template.id
+        "test-agent-1", created_template.id,
     )
     assert success is True
 
@@ -129,7 +123,7 @@ async def test_agent_interaction_logging(agent_email_service):
 
     # Get interactions
     interactions = await agent_email_service.get_agent_interactions(
-        "sender-agent-1", limit=10
+        "sender-agent-1", limit=10,
     )
     assert len(interactions) == 1
     assert interactions[0].sender_agent_id == "sender-agent-1"
@@ -143,7 +137,7 @@ async def test_automated_email_processing(agent_email_service):
     """Test automated email processing."""
     # Setup agent config
     config = AgentEmailConfig(
-        agent_id="test-agent-1", agent_name="Test Agent", agent_email="test@example.com"
+        agent_id="test-agent-1", agent_name="Test Agent", agent_email="test@example.com",
     )
     await agent_email_service.update_agent_config("test-agent-1", config)
 

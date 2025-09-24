@@ -1,5 +1,4 @@
-"""
-SQLite backend implementation for the Gatekeeper authentication library.
+"""SQLite backend implementation for the Gatekeeper authentication library.
 
 This module provides a SQLite-based user storage backend using SQLAlchemy.
 """
@@ -58,8 +57,7 @@ class UserModel(Base):
 
 
 class SQLiteBackend(UserBackend):
-    """
-    SQLite backend implementation for user storage.
+    """SQLite backend implementation for user storage.
 
     This backend uses SQLAlchemy with SQLite to provide persistent user storage
     with full support for all user management operations.
@@ -72,14 +70,14 @@ class SQLiteBackend(UserBackend):
         max_overflow: int = 10,
         echo: bool = False,
     ):
-        """
-        Initialize the SQLite backend.
+        """Initialize the SQLite backend.
 
         Args:
             database_url: SQLite database URL
             pool_size: Connection pool size
             max_overflow: Maximum overflow connections
             echo: Enable SQLAlchemy echo for debugging
+
         """
         self.database_url = database_url
         self.pool_size = pool_size
@@ -89,7 +87,7 @@ class SQLiteBackend(UserBackend):
         # Convert SQLite URL to async format if needed
         if database_url.startswith("sqlite://"):
             self.async_database_url = database_url.replace(
-                "sqlite://", "sqlite+aiosqlite://"
+                "sqlite://", "sqlite+aiosqlite://",
             )
         else:
             self.async_database_url = database_url
@@ -115,7 +113,7 @@ class SQLiteBackend(UserBackend):
 
             # Create session factory
             self.session_factory = sessionmaker(
-                bind=self.engine, class_=Session, expire_on_commit=False
+                bind=self.engine, class_=Session, expire_on_commit=False,
             )
 
             # Create tables
@@ -179,7 +177,7 @@ class SQLiteBackend(UserBackend):
             )
             if existing_user:
                 raise UserAlreadyExistsError(
-                    f"Username '{user.username}' already exists"
+                    f"Username '{user.username}' already exists",
                 )
 
             # Check if email already exists (if provided)
@@ -219,7 +217,7 @@ class SQLiteBackend(UserBackend):
             if "UNIQUE constraint failed" in str(e):
                 if "username" in str(e):
                     raise UserAlreadyExistsError(
-                        f"Username '{user.username}' already exists"
+                        f"Username '{user.username}' already exists",
                     )
                 if "email" in str(e):
                     raise UserAlreadyExistsError(f"Email '{user.email}' already exists")
@@ -445,7 +443,7 @@ class SQLiteBackend(UserBackend):
             session.close()
 
     async def update_user_profile_picture(
-        self, username: str, profile_picture_url: str | None
+        self, username: str, profile_picture_url: str | None,
     ) -> bool:
         """Update a user's profile picture URL."""
         await self._initialize()
@@ -475,7 +473,7 @@ class SQLiteBackend(UserBackend):
             session.close()
 
     async def update_user_metadata(
-        self, username: str, metadata: dict[str, Any]
+        self, username: str, metadata: dict[str, Any],
     ) -> bool:
         """Update a user's metadata."""
         await self._initialize()
@@ -505,7 +503,7 @@ class SQLiteBackend(UserBackend):
             session.close()
 
     async def search_users(
-        self, query: str, skip: int = 0, limit: int = 100
+        self, query: str, skip: int = 0, limit: int = 100,
     ) -> list[UserPublic]:
         """Search for users by username or email."""
         await self._initialize()
@@ -516,7 +514,7 @@ class SQLiteBackend(UserBackend):
                 session.query(UserModel)
                 .filter(
                     (UserModel.username.ilike(f"%{query}%"))
-                    | (UserModel.email.ilike(f"%{query}%"))
+                    | (UserModel.email.ilike(f"%{query}%")),
                 )
                 .offset(skip)
                 .limit(limit)
@@ -532,7 +530,7 @@ class SQLiteBackend(UserBackend):
             session.close()
 
     async def get_users_by_role(
-        self, role: str, skip: int = 0, limit: int = 100
+        self, role: str, skip: int = 0, limit: int = 100,
     ) -> list[UserPublic]:
         """Get users by role."""
         await self._initialize()
@@ -615,7 +613,7 @@ class SQLiteBackend(UserBackend):
             session.close()
 
     async def update_user_settings(
-        self, username: str, settings: dict[str, Any]
+        self, username: str, settings: dict[str, Any],
     ) -> bool:
         """Update user settings."""
         await self._initialize()
@@ -679,7 +677,7 @@ class SQLiteBackend(UserBackend):
         except Exception as e:
             session.rollback()
             logger.error(
-                f"Failed to update username from {old_username} to {new_username}: {e}"
+                f"Failed to update username from {old_username} to {new_username}: {e}",
             )
             raise BackendError(f"Failed to update username: {e}")
         finally:

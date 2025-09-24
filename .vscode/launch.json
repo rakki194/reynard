@@ -5,32 +5,176 @@
       "name": "🦊 Debug Frontend (Vite Dev Server)",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/node_modules/.bin/vite",
+      "program": "${workspaceFolder}/templates/starter/node_modules/vite/bin/vite.js",
       "args": ["--mode", "development"],
-      "cwd": "${workspaceFolder}",
+      "cwd": "${workspaceFolder}/templates/starter",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "env": {
         "NODE_ENV": "development"
-      }
+      },
+      "skipFiles": ["<node_internals>/**"]
     },
     {
       "name": "🐍 Debug Python Backend",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/backend/app/main.py",
+      "program": "${workspaceFolder}/backend/main.py",
+      "cwd": "${workspaceFolder}/backend",
+      "console": "integratedTerminal",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/backend",
+        "LOG_LEVEL": "DEBUG",
+        "LOG_FORMAT": "structured",
+        "LOG_CONSOLE": "true"
+      },
+      "python": "/home/kade/venv/bin/python",
+      "justMyCode": false,
+      "subProcess": true,
+      "logToFile": true,
+      "showReturnValue": true,
+      "redirectOutput": true,
+      "args": []
+    },
+    {
+      "name": "🔧 Debug MCP Server",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/services/mcp-server/main.py",
+      "cwd": "${workspaceFolder}/services/mcp-server",
+      "console": "integratedTerminal",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/services/mcp-server",
+        "LOG_LEVEL": "DEBUG",
+        "LOG_FORMAT": "structured",
+        "LOG_CONSOLE": "true"
+      },
+      "python": "/home/kade/venv/bin/python",
+      "justMyCode": false,
+      "subProcess": true,
+      "logToFile": true,
+      "showReturnValue": true,
+      "redirectOutput": true,
+      "args": ["--banner"]
+    },
+    {
+      "name": "🐍 Debug Python Backend (System Python)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/backend/main.py",
       "cwd": "${workspaceFolder}/backend",
       "console": "integratedTerminal",
       "env": {
         "PYTHONPATH": "${workspaceFolder}/backend"
       },
-      "python": "${env:HOME}/venv/bin/python"
+      "python": "/usr/bin/python3"
+    },
+    {
+      "name": "🔧 Debug MCP Server (System Python)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/services/mcp-server/main.py",
+      "cwd": "${workspaceFolder}/services/mcp-server",
+      "console": "integratedTerminal",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/services/mcp-server"
+      },
+      "python": "/usr/bin/python3",
+      "args": ["--banner"]
+    },
+    {
+      "name": "🎭 Debug Playwright Tests (Firefox)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/e2e/node_modules/.bin/playwright",
+      "args": ["test", "--project=firefox", "--headed", "--debug"],
+      "cwd": "${workspaceFolder}/e2e",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "env": {
+        "NODE_ENV": "development",
+        "PWDEBUG": "1"
+      },
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "🎭 Debug Playwright Tests (Chrome)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/e2e/node_modules/.bin/playwright",
+      "args": ["test", "--project=chromium", "--headed", "--debug"],
+      "cwd": "${workspaceFolder}/e2e",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "env": {
+        "NODE_ENV": "development",
+        "PWDEBUG": "1"
+      },
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "🎭 Debug Playwright Auth Tests (Firefox)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/e2e/node_modules/.bin/playwright",
+      "args": ["test", "--config=configs/playwright.config.dom.ts", "--project=firefox", "--headed", "--debug"],
+      "cwd": "${workspaceFolder}/e2e",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "env": {
+        "NODE_ENV": "development",
+        "PWDEBUG": "1"
+      },
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "🎭 Debug Playwright UI Mode (Firefox)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/e2e/node_modules/.bin/playwright",
+      "args": ["test", "--project=firefox", "--ui"],
+      "cwd": "${workspaceFolder}/e2e",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "skipFiles": ["<node_internals>/**"]
     }
   ],
   "compounds": [
     {
       "name": "🦊 Debug Full Stack",
       "configurations": ["🦊 Debug Frontend (Vite Dev Server)", "🐍 Debug Python Backend"],
+      "stopAll": true
+    },
+    {
+      "name": "🔧 Debug Backend Services",
+      "configurations": ["🐍 Debug Python Backend", "🔧 Debug MCP Server"],
+      "stopAll": true
+    },
+    {
+      "name": "🔧 Debug Backend Services (System Python)",
+      "configurations": ["🐍 Debug Python Backend (System Python)", "🔧 Debug MCP Server (System Python)"],
+      "stopAll": true
+    },
+    {
+      "name": "🌍 Debug ECS Ecosystem",
+      "configurations": ["🐍 Debug Python Backend", "🔧 Debug MCP Server"],
+      "stopAll": true
+    },
+    {
+      "name": "🌍 Debug ECS Ecosystem (System Python)",
+      "configurations": ["🐍 Debug Python Backend (System Python)", "🔧 Debug MCP Server (System Python)"],
+      "stopAll": true
+    },
+    {
+      "name": "🎭 Debug Full Stack with E2E",
+      "configurations": [
+        "🦊 Debug Frontend (Vite Dev Server)",
+        "🐍 Debug Python Backend",
+        "🎭 Debug Playwright Tests (Firefox)"
+      ],
       "stopAll": true
     }
   ]

@@ -1,5 +1,4 @@
-"""
-Base classes and data models for the tool calling system.
+"""Base classes and data models for the tool calling system.
 
 This module defines the core abstractions that all tools must implement,
 along with supporting data structures for parameters, results, and execution context.
@@ -30,8 +29,7 @@ class ParameterType(Enum):
 
 @dataclass
 class ToolParameter:
-    """
-    Definition of a tool parameter with validation rules.
+    """Definition of a tool parameter with validation rules.
 
     Attributes:
         name: Parameter name
@@ -45,6 +43,7 @@ class ToolParameter:
         max_length: Maximum length for string/array types
         choices: List of allowed values
         pattern: Regex pattern for string validation
+
     """
 
     name: str
@@ -63,18 +62,18 @@ class ToolParameter:
         """Validate parameter definition."""
         if not self.required and self.default is None:
             raise ValueError(
-                f"Optional parameter '{self.name}' must have a default value"
+                f"Optional parameter '{self.name}' must have a default value",
             )
 
     def validate(self, value: Any) -> tuple[bool, str | None]:
-        """
-        Validate a parameter value against this parameter definition.
+        """Validate a parameter value against this parameter definition.
 
         Args:
             value: Value to validate
 
         Returns:
             Tuple of (is_valid, error_message)
+
         """
         if value is None:
             if self.required:
@@ -132,8 +131,7 @@ class ToolParameter:
 
 @dataclass
 class ToolResult:
-    """
-    Result of a tool execution.
+    """Result of a tool execution.
 
     Attributes:
         success: Whether the tool executed successfully
@@ -141,6 +139,7 @@ class ToolResult:
         error: Error message if execution failed
         metadata: Additional metadata about the execution
         execution_time: Time taken to execute in seconds
+
     """
 
     success: bool
@@ -196,8 +195,7 @@ class ToolResult:
 
 @dataclass
 class ToolExecutionContext:
-    """
-    Context information passed to tools during execution.
+    """Context information passed to tools during execution.
 
     Attributes:
         user_id: ID of the user executing the tool
@@ -208,6 +206,7 @@ class ToolExecutionContext:
         environment: Environment variables
         timeout: Execution timeout in seconds
         dry_run: Whether this is a dry run (don't actually execute)
+
     """
 
     user_id: str
@@ -233,8 +232,7 @@ class ToolExecutionContext:
 
 
 class BaseTool(ABC):
-    """
-    Abstract base class for all tools.
+    """Abstract base class for all tools.
 
     All tools must inherit from this class and implement the required methods.
     Tools can be either synchronous or asynchronous.
@@ -253,19 +251,16 @@ class BaseTool(ABC):
     @abstractmethod
     def name(self) -> str:
         """Tool name (must be unique)."""
-        pass
 
     @property
     @abstractmethod
     def description(self) -> str:
         """Tool description for the assistant."""
-        pass
 
     @property
     @abstractmethod
     def parameters(self) -> list[ToolParameter]:
         """List of tool parameters."""
-        pass
 
     @property
     def required_permission(self) -> str:
@@ -288,14 +283,14 @@ class BaseTool(ABC):
         return self._timeout
 
     def validate_parameters(self, params: dict[str, Any]) -> dict[str, str]:
-        """
-        Validate tool parameters.
+        """Validate tool parameters.
 
         Args:
             params: Parameters to validate
 
         Returns:
             Dictionary of validation errors (empty if valid)
+
         """
         errors = {}
 
@@ -340,7 +335,7 @@ class BaseTool(ABC):
 
             for param_name, param_value in params.items():
                 if param_name.lower() in path_like_names and isinstance(
-                    param_value, str
+                    param_value, str,
                 ):
                     try:
                         # Attempt to resolve path; will raise if outside ROOT_DIR
@@ -354,14 +349,14 @@ class BaseTool(ABC):
         return errors
 
     def prepare_parameters(self, params: dict[str, Any]) -> dict[str, Any]:
-        """
-        Prepare parameters by adding defaults for missing optional parameters.
+        """Prepare parameters by adding defaults for missing optional parameters.
 
         Args:
             params: Input parameters
 
         Returns:
             Parameters with defaults applied
+
         """
         result = params.copy()
 
@@ -373,8 +368,7 @@ class BaseTool(ABC):
 
     @abstractmethod
     async def execute(self, context: ToolExecutionContext, **params) -> ToolResult:
-        """
-        Execute the tool with given parameters.
+        """Execute the tool with given parameters.
 
         Args:
             context: Execution context
@@ -382,14 +376,13 @@ class BaseTool(ABC):
 
         Returns:
             Tool execution result
+
         """
-        pass
 
     async def execute_with_timeout(
-        self, context: ToolExecutionContext, **params
+        self, context: ToolExecutionContext, **params,
     ) -> ToolResult:
-        """
-        Execute tool with timeout handling.
+        """Execute tool with timeout handling.
 
         Args:
             context: Execution context
@@ -397,12 +390,13 @@ class BaseTool(ABC):
 
         Returns:
             Tool execution result
+
         """
         timeout = context.timeout if context.timeout > 0 else self.timeout
 
         try:
             return await asyncio.wait_for(
-                self.execute(context, **params), timeout=timeout
+                self.execute(context, **params), timeout=timeout,
             )
         except TimeoutError:
             from .exceptions import ToolTimeoutError

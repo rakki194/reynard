@@ -1,5 +1,4 @@
-"""
-🦊 Reynard Ollama API Endpoints
+"""🦊 Reynard Ollama API Endpoints
 ===============================
 
 Comprehensive FastAPI endpoints for Ollama integration within the Reynard ecosystem,
@@ -67,28 +66,27 @@ class OllamaConfigModel(BaseModel):
 
     default_model: str = Field(default="llama3.1", description="Default model to use")
     max_tokens: int = Field(
-        default=2048, ge=1, le=8192, description="Maximum tokens per request"
+        default=2048, ge=1, le=8192, description="Maximum tokens per request",
     )
     temperature: float = Field(
-        default=0.7, ge=0.0, le=2.0, description="Response creativity level"
+        default=0.7, ge=0.0, le=2.0, description="Response creativity level",
     )
     timeout: int = Field(
-        default=30, ge=5, le=300, description="Request timeout in seconds"
+        default=30, ge=5, le=300, description="Request timeout in seconds",
     )
     enable_streaming: bool = Field(
-        default=True, description="Enable streaming responses"
+        default=True, description="Enable streaming responses",
     )
     enable_tools: bool = Field(default=True, description="Enable tool calling")
     max_concurrent_requests: int = Field(
-        default=10, ge=1, le=100, description="Max concurrent requests"
+        default=10, ge=1, le=100, description="Max concurrent requests",
     )
 
 
 class OllamaServiceRouter(
-    BaseServiceRouter, ConfigEndpointMixin, StreamingResponseMixin, RateLimitingMixin
+    BaseServiceRouter, ConfigEndpointMixin, StreamingResponseMixin, RateLimitingMixin,
 ):
-    """
-    Ollama service router with enterprise-grade patterns.
+    """Ollama service router with enterprise-grade patterns.
 
     Provides standardized service patterns including:
     - Centralized error handling and recovery
@@ -101,7 +99,7 @@ class OllamaServiceRouter(
     def __init__(self):
         # Initialize all parent classes
         BaseServiceRouter.__init__(
-            self, service_name="ollama", prefix="/api/ollama", tags=["ollama"]
+            self, service_name="ollama", prefix="/api/ollama", tags=["ollama"],
         )
         ConfigEndpointMixin.__init__(self)
         StreamingResponseMixin.__init__(self)
@@ -188,7 +186,7 @@ class OllamaServiceRouter(
             self.check_rate_limit("/chat")
 
             return await self._standard_async_operation(
-                "chat", self._handle_chat_request, request
+                "chat", self._handle_chat_request, request,
             )
 
         @self.router.post("/chat/stream")
@@ -198,7 +196,7 @@ class OllamaServiceRouter(
             self.check_rate_limit("/chat/stream")
 
             return await self._standard_async_operation(
-                "chat_stream", self._handle_chat_stream_request, request
+                "chat_stream", self._handle_chat_stream_request, request,
             )
 
         @self.router.post("/assistant", response_model=OllamaAssistantResponse)
@@ -208,7 +206,7 @@ class OllamaServiceRouter(
             self.check_rate_limit("/assistant")
 
             return await self._standard_async_operation(
-                "assistant_chat", self._handle_assistant_request, request
+                "assistant_chat", self._handle_assistant_request, request,
             )
 
         @self.router.post("/assistant/stream")
@@ -218,7 +216,7 @@ class OllamaServiceRouter(
             self.check_rate_limit("/assistant/stream")
 
             return await self._standard_async_operation(
-                "assistant_chat_stream", self._handle_assistant_stream_request, request
+                "assistant_chat_stream", self._handle_assistant_stream_request, request,
             )
 
         @self.router.get("/models")
@@ -228,11 +226,11 @@ class OllamaServiceRouter(
             self.check_rate_limit("/models")
 
             return await self._standard_async_operation(
-                "get_models", self._handle_get_models_request
+                "get_models", self._handle_get_models_request,
             )
 
     async def _handle_chat_request(
-        self, request: OllamaChatRequest
+        self, request: OllamaChatRequest,
     ) -> OllamaChatResponse:
         """Handle chat request with standardized error handling."""
         service = self.get_service()
@@ -267,7 +265,7 @@ class OllamaServiceRouter(
                         "name": event.metadata.get("tool_name", "unknown"),
                         "args": event.metadata.get("tool_args", {}),
                         "id": event.metadata.get("tool_call_id", ""),
-                    }
+                    },
                 )
             elif event.type == "complete":
                 processing_time = event.metadata.get("processing_time", 0.0)
@@ -275,7 +273,7 @@ class OllamaServiceRouter(
                 from ...core.exceptions import InternalError
 
                 raise InternalError(
-                    message=f"Chat error: {event.data}", service_name=self.service_name
+                    message=f"Chat error: {event.data}", service_name=self.service_name,
                 )
 
         return OllamaChatResponse(
@@ -318,7 +316,7 @@ class OllamaServiceRouter(
         return self.create_sse_response(event_generator())
 
     async def _handle_assistant_request(
-        self, request: OllamaAssistantRequest
+        self, request: OllamaAssistantRequest,
     ) -> OllamaAssistantResponse:
         """Handle assistant request with standardized error handling."""
         service = self.get_service()
@@ -356,7 +354,7 @@ class OllamaServiceRouter(
                         "name": tool_name,
                         "args": event.metadata.get("tool_args", {}),
                         "id": event.metadata.get("tool_call_id", ""),
-                    }
+                    },
                 )
             elif event.type == "complete":
                 processing_time = event.metadata.get("processing_time", 0.0)

@@ -1,5 +1,4 @@
-"""
-Main Diffusion-LLM service orchestrator.
+"""Main Diffusion-LLM service orchestrator.
 
 This service manages diffusion-based text generation using DreamOn and LLaDA models
 with streaming support, device management, and automatic fallback.
@@ -65,7 +64,7 @@ class DiffusionLLMService:
             return False
 
     async def generate_stream(
-        self, params: DiffusionGenerationParams
+        self, params: DiffusionGenerationParams,
     ) -> AsyncIterable[DiffusionStreamEvent]:
         """Generate text with streaming support."""
         if not self._enabled:
@@ -129,7 +128,7 @@ class DiffusionLLMService:
             )
 
     async def infill_stream(
-        self, params: DiffusionInfillingParams
+        self, params: DiffusionInfillingParams,
     ) -> AsyncIterable[DiffusionStreamEvent]:
         """Infill text with streaming support."""
         if not self._enabled:
@@ -300,7 +299,6 @@ class DiffusionModelManager:
 
     async def initialize(self, config: DiffusionConfig) -> None:
         """Initialize the model manager."""
-        pass
 
     async def get_model(self, model_id: str):
         """Get a model by ID."""
@@ -312,7 +310,6 @@ class DiffusionModelManager:
 
     async def update_config(self, config: DiffusionConfig) -> None:
         """Update configuration."""
-        pass
 
     async def reload_model(self, model_id: str) -> bool:
         """Reload a model."""
@@ -320,7 +317,6 @@ class DiffusionModelManager:
 
     async def cleanup(self) -> None:
         """Cleanup resources."""
-        pass
 
 
 class DeviceManager:
@@ -328,12 +324,9 @@ class DeviceManager:
 
     async def initialize(self, config: DiffusionConfig) -> None:
         """Initialize the device manager."""
-        pass
 
     async def update_config(self, config: DiffusionConfig) -> None:
         """Update configuration."""
-        pass
 
     async def cleanup(self) -> None:
         """Cleanup resources."""
-        pass

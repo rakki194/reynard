@@ -1,9 +1,7 @@
-"""
-Sentiment analysis module for humility detection.
+"""Sentiment analysis module for humility detection.
 """
 
-import asyncio
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from core.config import HumilityConfig
 from core.models import (
@@ -47,7 +45,6 @@ class SentimentAnalyzer:
             "wonderful",
             "extraordinary",
             "exceptional",
-            "incredible",
             "mind-blowing",
             "jaw-dropping",
             "breathtaking",
@@ -75,7 +72,7 @@ class SentimentAnalyzer:
             "hateful",
         }
 
-    def _load_boastful_sentiment_patterns(self) -> List[Dict]:
+    def _load_boastful_sentiment_patterns(self) -> list[dict]:
         """Load patterns that indicate boastful sentiment."""
         return [
             {
@@ -95,7 +92,7 @@ class SentimentAnalyzer:
             },
         ]
 
-    async def analyze(self, text: str, file_path: str = "") -> List[HumilityFinding]:
+    async def analyze(self, text: str, file_path: str = "") -> list[HumilityFinding]:
         """Analyze text for boastful sentiment patterns."""
         findings = []
         lines = text.split("\n")
@@ -140,10 +137,10 @@ class SentimentAnalyzer:
                         linguistic_features={
                             "sentiment_analysis": True,
                             "positive_sentiment_words": self._extract_positive_words(
-                                line
+                                line,
                             ),
                             "negative_sentiment_words": self._extract_negative_words(
-                                line
+                                line,
                             ),
                             "sentiment_intensity": abs(sentiment_score),
                         },
@@ -152,7 +149,7 @@ class SentimentAnalyzer:
 
         return findings
 
-    async def get_metrics(self, text: str) -> Dict[str, Any]:
+    async def get_metrics(self, text: str) -> dict[str, Any]:
         """Get sentiment analysis metrics for the text."""
         lines = text.split("\n")
         total_sentiment = 0
@@ -188,7 +185,7 @@ class SentimentAnalyzer:
                     "negative": negative_lines / line_count if line_count > 0 else 0,
                     "neutral": neutral_lines / line_count if line_count > 0 else 0,
                 },
-            }
+            },
         }
 
     def _calculate_sentiment_score(self, text: str) -> float:
@@ -210,12 +207,12 @@ class SentimentAnalyzer:
         sentiment_score = (positive_count - negative_count) / total_sentiment_words
         return sentiment_score
 
-    def _extract_positive_words(self, text: str) -> List[str]:
+    def _extract_positive_words(self, text: str) -> list[str]:
         """Extract positive sentiment words from text."""
         words = text.lower().split()
         return [word for word in words if word in self.positive_sentiment_words]
 
-    def _extract_negative_words(self, text: str) -> List[str]:
+    def _extract_negative_words(self, text: str) -> list[str]:
         """Extract negative sentiment words from text."""
         words = text.lower().split()
         return [word for word in words if word in self.negative_sentiment_words]
@@ -224,12 +221,11 @@ class SentimentAnalyzer:
         """Convert confidence score to confidence level."""
         if confidence_score >= 0.9:
             return ConfidenceLevel.VERY_HIGH
-        elif confidence_score >= 0.7:
+        if confidence_score >= 0.7:
             return ConfidenceLevel.HIGH
-        elif confidence_score >= 0.5:
+        if confidence_score >= 0.5:
             return ConfidenceLevel.MEDIUM
-        else:
-            return ConfidenceLevel.LOW
+        return ConfidenceLevel.LOW
 
     def _generate_replacement(self, original_text: str) -> str:
         """Generate a more humble replacement for boastful sentiment."""

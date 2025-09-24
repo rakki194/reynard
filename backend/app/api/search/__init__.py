@@ -1,5 +1,4 @@
-"""
-Search API Module
+"""Search API Module
 ================
 
 Unified search API with semantic, syntax, hybrid, and natural language search capabilities.
@@ -20,15 +19,15 @@ from .models import (
 from .search import SearchService
 
 __all__ = [
-    "router",
-    "SearchService",
+    "HybridSearchRequest",
+    "IndexRequest",
     "SearchRequest",
     "SearchResponse",
     "SearchResult",
+    "SearchService",
     "SearchStats",
     "SemanticSearchRequest",
-    "SyntaxSearchRequest",
-    "HybridSearchRequest",
-    "IndexRequest",
     "SuggestionsResponse",
+    "SyntaxSearchRequest",
+    "router",
 ]

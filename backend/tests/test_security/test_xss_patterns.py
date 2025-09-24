@@ -1,5 +1,4 @@
-"""
-Tests for XSS detection patterns.
+"""Tests for XSS detection patterns.
 
 This module tests the regex patterns used for detecting
 Cross-Site Scripting (XSS) attack attempts.

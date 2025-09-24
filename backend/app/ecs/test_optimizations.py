@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Test ECS Optimizations
+"""Test ECS Optimizations
 
 Test script for all the ECS performance optimizations including:
 - Database indexes
@@ -12,7 +11,6 @@ Test script for all the ECS performance optimizations including:
 import asyncio
 import logging
 import time
-from typing import Any, Dict
 
 from .database_indexes import ECSDatabaseIndexes
 from .redis_cache import cache_naming_spirits, get_ecs_cache
@@ -21,7 +19,6 @@ from .redis_cache import cache_naming_spirits, get_ecs_cache
 from .validation import (
     AgentIDValidator,
     SpiritValidator,
-    StyleValidator,
     ValidatedAgentCreateRequest,
     validate_endpoint_inputs,
 )
@@ -86,15 +83,15 @@ async def test_input_validation():
 
     print(f"   Valid spirits: {valid_spirit_count}/{len(valid_spirits)} ✅")
     print(
-        f"   Invalid spirits rejected: {invalid_spirit_count}/{len(invalid_spirits)} ✅"
+        f"   Invalid spirits rejected: {invalid_spirit_count}/{len(invalid_spirits)} ✅",
     )
 
     # Test Pydantic models
     try:
         request = ValidatedAgentCreateRequest(
-            agent_id="test-agent-123", spirit="fox", style="foundation"
+            agent_id="test-agent-123", spirit="fox", style="foundation",
         )
-        print(f"   ✅ Pydantic validation working")
+        print("   ✅ Pydantic validation working")
     except Exception as e:
         print(f"   ❌ Pydantic validation failed: {e}")
 
@@ -118,9 +115,9 @@ async def test_redis_caching():
     # Test get
     retrieved_data = await cache.get("test", "agent_123")
     if retrieved_data == test_data:
-        print(f"   Get operation: ✅")
+        print("   Get operation: ✅")
     else:
-        print(f"   Get operation: ❌")
+        print("   Get operation: ❌")
 
     # Test performance
     start_time = time.time()
@@ -154,10 +151,10 @@ async def test_redis_caching():
     second_call_time = time.time() - start_time
 
     if result1 == result2:
-        print(f"   Cache decorator: ✅")
+        print("   Cache decorator: ✅")
         print(f"   Speedup: {first_call_time/second_call_time:.1f}x")
     else:
-        print(f"   Cache decorator: ❌")
+        print("   Cache decorator: ❌")
 
     # Get statistics
     stats = cache.get_stats()
@@ -180,7 +177,7 @@ async def test_performance_monitoring():
     start_time = time.time()
     for i in range(100):
         validate_endpoint_inputs(
-            "test_endpoint", agent_id=f"agent-{i}", spirit="fox", limit=10
+            "test_endpoint", agent_id=f"agent-{i}", spirit="fox", limit=10,
         )
     validation_time = time.time() - start_time
 
@@ -221,21 +218,21 @@ async def test_integration():
     try:
         # 1. Validate input
         validated = validate_endpoint_inputs(
-            "integration_test", agent_id="integration-agent-123", spirit="fox", limit=5
+            "integration_test", agent_id="integration-agent-123", spirit="fox", limit=5,
         )
         print(f"   ✅ Input validation: {validated}")
 
         # 2. Cache result
         test_result = {"agent_id": validated["agent_id"], "spirit": validated["spirit"]}
         await cache.set("integration", "test_result", test_result, ttl=60)
-        print(f"   ✅ Caching: Result cached")
+        print("   ✅ Caching: Result cached")
 
         # 3. Retrieve from cache
         cached_result = await cache.get("integration", "test_result")
         if cached_result == test_result:
-            print(f"   ✅ Cache retrieval: Data matches")
+            print("   ✅ Cache retrieval: Data matches")
         else:
-            print(f"   ❌ Cache retrieval: Data mismatch")
+            print("   ❌ Cache retrieval: Data mismatch")
 
         # 4. Performance metrics
         stats = cache.get_stats()
@@ -276,25 +273,25 @@ async def main():
     )
     max_score = 22 + 8 + 100 + 100 + 4  # Maximum possible scores
 
-    print(f"\n📊 Overall Test Results:")
+    print("\n📊 Overall Test Results:")
     print(f"   Database Indexes: {index_score}/22")
     print(f"   Input Validation: {validation_score}/8")
     print(f"   Redis Caching: {cache_score}/100")
     print(f"   Performance Monitoring: {monitoring_score}/100")
     print(f"   Integration: {integration_score}/4")
     print(
-        f"   Total Score: {total_score}/{max_score} ({total_score/max_score*100:.1f}%)"
+        f"   Total Score: {total_score}/{max_score} ({total_score/max_score*100:.1f}%)",
     )
 
     if total_score >= max_score * 0.8:
-        print(f"\n🎉 Excellent! All optimizations are working correctly!")
-        print(f"✅ Phase 1 Critical Fixes: COMPLETED")
-        print(f"✅ Phase 2 Performance Optimizations: COMPLETED")
+        print("\n🎉 Excellent! All optimizations are working correctly!")
+        print("✅ Phase 1 Critical Fixes: COMPLETED")
+        print("✅ Phase 2 Performance Optimizations: COMPLETED")
     elif total_score >= max_score * 0.6:
-        print(f"\n✅ Good! Most optimizations are working correctly!")
-        print(f"⚠️  Some minor issues to address")
+        print("\n✅ Good! Most optimizations are working correctly!")
+        print("⚠️  Some minor issues to address")
     else:
-        print(f"\n❌ Issues detected! Please review the failed tests")
+        print("\n❌ Issues detected! Please review the failed tests")
 
     return total_score >= max_score * 0.8
 

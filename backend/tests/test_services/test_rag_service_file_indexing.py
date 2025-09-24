@@ -1,5 +1,4 @@
-"""
-🔥 RAG Service with File Indexing Tests
+"""🔥 RAG Service with File Indexing Tests
 =======================================
 
 Comprehensive pytest tests for RAG service integration with file indexing service.
@@ -36,7 +35,7 @@ class TestRAGServiceFileIndexingIntegration:
                 "caching_enabled": True,
                 "rag_monitoring_enabled": False,  # Disable for testing
                 "rag_security_enabled": False,  # Disable for testing
-            }
+            },
         )
         return config
 
@@ -47,10 +46,10 @@ class TestRAGServiceFileIndexingIntegration:
         with (
             patch("app.services.rag.rag_service.EmbeddingService") as mock_embedding,
             patch(
-                "app.services.rag.rag_service.VectorStoreService"
+                "app.services.rag.rag_service.VectorStoreService",
             ) as mock_vector_store,
             patch(
-                "app.services.rag.rag_service.DocumentIndexer"
+                "app.services.rag.rag_service.DocumentIndexer",
             ) as mock_document_indexer,
             patch("app.services.rag.rag_service.SearchEngine") as mock_search_engine,
         ):
@@ -91,7 +90,7 @@ def function_one():
 class ClassOne:
     def method_one(self):
         return "Method from class one"
-"""
+""",
             )
 
             (temp_path / "module2.py").write_text(
@@ -106,7 +105,7 @@ def function_two():
 class ClassTwo:
     def __init__(self):
         self.value = 42
-"""
+""",
             )
 
             (temp_path / "documentation.md").write_text(
@@ -115,7 +114,7 @@ class ClassTwo:
 
 This is test documentation for the RAG service.
 It contains information about the test modules.
-"""
+""",
             )
 
             yield temp_path
@@ -127,10 +126,10 @@ It contains information about the test modules.
         with (
             patch("app.services.rag.rag_service.EmbeddingService") as mock_embedding,
             patch(
-                "app.services.rag.rag_service.VectorStoreService"
+                "app.services.rag.rag_service.VectorStoreService",
             ) as mock_vector_store,
             patch(
-                "app.services.rag.rag_service.DocumentIndexer"
+                "app.services.rag.rag_service.DocumentIndexer",
             ) as mock_document_indexer,
             patch("app.services.rag.rag_service.SearchEngine") as mock_search_engine,
         ):
@@ -174,7 +173,7 @@ It contains information about the test modules.
         # Verify file indexing service dependency
         assert service.file_indexing_service is not None
         assert isinstance(
-            service.file_indexing_service, type(get_file_indexing_service())
+            service.file_indexing_service, type(get_file_indexing_service()),
         )
 
         # Test file indexing service functionality
@@ -194,7 +193,7 @@ It contains information about the test modules.
                 "rag_enabled": False,
                 "file_indexing_enabled": True,
                 "caching_enabled": True,
-            }
+            },
         )
 
         service = RAGService(rag_config)
@@ -213,7 +212,7 @@ It contains information about the test modules.
             (temp_path / "test.py").write_text("def test(): pass")
 
             result = await service.file_indexing_service.index_files(
-                [str(temp_path)], [".py"]
+                [str(temp_path)], [".py"],
             )
             assert result["success"] is True
             assert result["indexed_files"] == 1
@@ -225,7 +224,7 @@ It contains information about the test modules.
         with (
             patch("app.services.rag.rag_service.EmbeddingService") as mock_embedding,
             patch(
-                "app.services.rag.rag_service.VectorStoreService"
+                "app.services.rag.rag_service.VectorStoreService",
             ) as mock_vector_store,
             patch("app.services.rag.rag_service.SearchEngine") as mock_search_engine,
         ):
@@ -265,7 +264,7 @@ It contains information about the test modules.
 
     @pytest.mark.asyncio
     async def test_rag_service_file_discovery_performance(
-        self, rag_service_lightweight, temp_directory_with_files
+        self, rag_service_lightweight, temp_directory_with_files,
     ):
         """Test RAG service file discovery performance using file indexing."""
         service = rag_service_lightweight
@@ -283,7 +282,7 @@ It contains information about the test modules.
 
         start_time = time.time()
         result = await service.file_indexing_service.index_files(
-            directories, file_types
+            directories, file_types,
         )
         end_time = time.time()
 
@@ -293,7 +292,7 @@ It contains information about the test modules.
 
         # Test file search
         search_results = await service.file_indexing_service.search_files(
-            "function", max_results=10
+            "function", max_results=10,
         )
         assert len(search_results) > 0
 
@@ -309,10 +308,10 @@ It contains information about the test modules.
         with (
             patch("app.services.rag.rag_service.EmbeddingService") as mock_embedding,
             patch(
-                "app.services.rag.rag_service.VectorStoreService"
+                "app.services.rag.rag_service.VectorStoreService",
             ) as mock_vector_store,
             patch(
-                "app.services.rag.rag_service.DocumentIndexer"
+                "app.services.rag.rag_service.DocumentIndexer",
             ) as mock_document_indexer,
             patch("app.services.rag.rag_service.SearchEngine") as mock_search_engine,
         ):
@@ -365,7 +364,7 @@ It contains information about the test modules.
 
     @pytest.mark.asyncio
     async def test_rag_service_concurrent_operations(
-        self, rag_service_lightweight, temp_directory_with_files
+        self, rag_service_lightweight, temp_directory_with_files,
     ):
         """Test RAG service concurrent operations with file indexing."""
         service = rag_service_lightweight
@@ -454,7 +453,7 @@ def function_{i}():
 class Class{i}:
     def method_{i}(self):
         return "Method from class {i}"
-"""
+""",
                 )
 
             # Benchmark indexing

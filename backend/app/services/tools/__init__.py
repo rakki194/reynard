@@ -1,5 +1,4 @@
-"""
-Unified Tool Service
+"""Unified Tool Service
 ===================
 
 Shared tool registry and configuration system for both MCP server and backend API.

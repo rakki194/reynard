@@ -1,5 +1,4 @@
-"""
-Performance analysis tools for identifying bottlenecks and optimization opportunities.
+"""Performance analysis tools for identifying bottlenecks and optimization opportunities.
 
 This module provides comprehensive analysis of performance data including:
 - Bottleneck identification
@@ -9,14 +8,11 @@ This module provides comprehensive analysis of performance data including:
 - Memory leak detection
 """
 
-import json
 import logging
-import statistics
-import time
-from collections import Counter, defaultdict
+from collections import Counter
 from dataclasses import dataclass
-from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional, Tuple
+from datetime import datetime
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -29,9 +25,9 @@ class BottleneckAnalysis:
     severity: str  # 'low', 'medium', 'high', 'critical'
     description: str
     impact: str
-    recommendations: List[str]
-    affected_endpoints: List[str]
-    metrics: Dict[str, Any]
+    recommendations: list[str]
+    affected_endpoints: list[str]
+    metrics: dict[str, Any]
 
 
 @dataclass
@@ -52,7 +48,7 @@ class PerformanceAnalyzer:
         self.performance_tracker = performance_tracker
         self.memory_profiler = memory_profiler
 
-    def analyze_bottlenecks(self) -> List[BottleneckAnalysis]:
+    def analyze_bottlenecks(self) -> list[BottleneckAnalysis]:
         """Identify performance bottlenecks."""
         bottlenecks = []
 
@@ -73,10 +69,10 @@ class PerformanceAnalyzer:
         bottlenecks.extend(async_bottlenecks)
 
         return sorted(
-            bottlenecks, key=lambda x: self._severity_score(x.severity), reverse=True
+            bottlenecks, key=lambda x: self._severity_score(x.severity), reverse=True,
         )
 
-    def _analyze_endpoint_bottlenecks(self) -> List[BottleneckAnalysis]:
+    def _analyze_endpoint_bottlenecks(self) -> list[BottleneckAnalysis]:
         """Analyze endpoint performance bottlenecks."""
         bottlenecks = []
 
@@ -108,7 +104,7 @@ class PerformanceAnalyzer:
                             "max_duration": stats["max_duration"],
                             "request_count": stats["total_requests"],
                         },
-                    )
+                    ),
                 )
 
             # Check for high error rates
@@ -134,7 +130,7 @@ class PerformanceAnalyzer:
                             "error_count": stats["error_count"],
                             "total_requests": stats["total_requests"],
                         },
-                    )
+                    ),
                 )
 
             # Check for memory usage spikes
@@ -162,12 +158,12 @@ class PerformanceAnalyzer:
                                 "avg_memory_mb": avg_memory / 1024 / 1024,
                                 "memory_spike_ratio": max_memory / avg_memory,
                             },
-                        )
+                        ),
                     )
 
         return bottlenecks
 
-    def _analyze_database_bottlenecks(self) -> List[BottleneckAnalysis]:
+    def _analyze_database_bottlenecks(self) -> list[BottleneckAnalysis]:
         """Analyze database performance bottlenecks."""
         bottlenecks = []
 
@@ -180,7 +176,7 @@ class PerformanceAnalyzer:
         ]  # 50ms threshold
         if slow_queries:
             avg_slow_duration = sum(q.duration for q in slow_queries) / len(
-                slow_queries
+                slow_queries,
             )
             severity = "critical" if avg_slow_duration > 1.0 else "high"
 
@@ -203,7 +199,7 @@ class PerformanceAnalyzer:
                         "avg_slow_duration": avg_slow_duration,
                         "total_queries": len(self.performance_tracker.db_queries),
                     },
-                )
+                ),
             )
 
         # Analyze query frequency
@@ -230,12 +226,12 @@ class PerformanceAnalyzer:
                         "frequent_queries": frequent_queries[:5],  # Top 5
                         "total_unique_queries": len(query_counts),
                     },
-                )
+                ),
             )
 
         return bottlenecks
 
-    def _analyze_memory_bottlenecks(self) -> List[BottleneckAnalysis]:
+    def _analyze_memory_bottlenecks(self) -> list[BottleneckAnalysis]:
         """Analyze memory usage bottlenecks."""
         bottlenecks = []
 
@@ -270,7 +266,7 @@ class PerformanceAnalyzer:
                         "avg_memory_mb": avg_memory,
                         "max_memory_mb": max_memory,
                     },
-                )
+                ),
             )
 
         # Check for memory leaks
@@ -295,12 +291,12 @@ class PerformanceAnalyzer:
                         "avg_memory_mb": avg_memory,
                         "memory_growth_ratio": current_memory / avg_memory,
                     },
-                )
+                ),
             )
 
         return bottlenecks
 
-    def _analyze_async_bottlenecks(self) -> List[BottleneckAnalysis]:
+    def _analyze_async_bottlenecks(self) -> list[BottleneckAnalysis]:
         """Analyze async task performance bottlenecks."""
         bottlenecks = []
 
@@ -335,7 +331,7 @@ class PerformanceAnalyzer:
                         "avg_slow_duration": avg_slow_duration,
                         "slow_tasks_by_name": dict(task_counts.most_common(5)),
                     },
-                )
+                ),
             )
 
         # Analyze task failure rates
@@ -366,17 +362,17 @@ class PerformanceAnalyzer:
                             "failure_rate": failure_rate,
                             "failed_task_count": len(failed_tasks),
                             "total_task_count": len(
-                                self.performance_tracker.async_tasks
+                                self.performance_tracker.async_tasks,
                             ),
                         },
-                    )
+                    ),
                 )
 
         return bottlenecks
 
     def analyze_performance_trends(
-        self, time_period_hours: int = 24
-    ) -> List[PerformanceTrend]:
+        self, time_period_hours: int = 24,
+    ) -> list[PerformanceTrend]:
         """Analyze performance trends over time."""
         trends = []
 
@@ -398,7 +394,7 @@ class PerformanceAnalyzer:
                     change_percentage=change_percentage,
                     time_period=f"{time_period_hours}h",
                     confidence=self._calculate_confidence(response_times),
-                )
+                ),
             )
 
         # Analyze error rate trend
@@ -421,12 +417,12 @@ class PerformanceAnalyzer:
                     change_percentage=change_percentage,
                     time_period=f"{time_period_hours}h",
                     confidence=self._calculate_confidence(error_rates),
-                )
+                ),
             )
 
         return trends
 
-    def _calculate_trend_direction(self, values: List[float]) -> str:
+    def _calculate_trend_direction(self, values: list[float]) -> str:
         """Calculate trend direction from a list of values."""
         if len(values) < 2:
             return "stable"
@@ -446,12 +442,11 @@ class PerformanceAnalyzer:
 
         if slope > 0.01:  # More sensitive threshold
             return "degrading"
-        elif slope < -0.01:
+        if slope < -0.01:
             return "improving"
-        else:
-            return "stable"
+        return "stable"
 
-    def _calculate_change_percentage(self, values: List[float]) -> float:
+    def _calculate_change_percentage(self, values: list[float]) -> float:
         """Calculate percentage change from first to last value."""
         if len(values) < 2:
             return 0.0
@@ -464,7 +459,7 @@ class PerformanceAnalyzer:
 
         return ((last_value - first_value) / first_value) * 100
 
-    def _calculate_confidence(self, values: List[float]) -> float:
+    def _calculate_confidence(self, values: list[float]) -> float:
         """Calculate confidence in trend analysis."""
         if len(values) < 3:
             return 0.0
@@ -488,7 +483,7 @@ class PerformanceAnalyzer:
         severity_scores = {"low": 1, "medium": 2, "high": 3, "critical": 4}
         return severity_scores.get(severity, 0)
 
-    def generate_optimization_report(self) -> Dict[str, Any]:
+    def generate_optimization_report(self) -> dict[str, Any]:
         """Generate comprehensive optimization report."""
         bottlenecks = self.analyze_bottlenecks()
         trends = self.analyze_performance_trends()
@@ -505,7 +500,7 @@ class PerformanceAnalyzer:
         priority_recommendations = []
         for bottleneck in critical_bottlenecks + high_bottlenecks:
             priority_recommendations.extend(
-                bottleneck.recommendations[:2]
+                bottleneck.recommendations[:2],
             )  # Top 2 recommendations
 
         return {
@@ -541,16 +536,16 @@ class PerformanceAnalyzer:
                 for t in trends
             ],
             "priority_recommendations": list(
-                set(priority_recommendations)
+                set(priority_recommendations),
             ),  # Remove duplicates
             "optimization_score": self._calculate_optimization_score(
-                bottlenecks, trends
+                bottlenecks, trends,
             ),
         }
 
     def _calculate_optimization_score(
-        self, bottlenecks: List[BottleneckAnalysis], trends: List[PerformanceTrend]
-    ) -> Dict[str, Any]:
+        self, bottlenecks: list[BottleneckAnalysis], trends: list[PerformanceTrend],
+    ) -> dict[str, Any]:
         """Calculate overall optimization score."""
         if not bottlenecks:
             return {

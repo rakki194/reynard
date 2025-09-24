@@ -1,8 +1,6 @@
-"""
-Metrics calculation utilities for humility detection.
+"""Metrics calculation utilities for humility detection.
 """
 
-from typing import Any, Dict, List
 
 from core.models import DetectionMetrics, HumilityFinding
 
@@ -15,8 +13,8 @@ class MetricsCalculator:
 
     def calculate_detection_metrics(
         self,
-        true_findings: List[HumilityFinding],
-        predicted_findings: List[HumilityFinding],
+        true_findings: list[HumilityFinding],
+        predicted_findings: list[HumilityFinding],
     ) -> DetectionMetrics:
         """Calculate detection performance metrics."""
         # This would be used for model evaluation
@@ -32,7 +30,7 @@ class MetricsCalculator:
             true_negative_rate=0.0,
         )
 
-    def calculate_humility_score(self, findings: List[HumilityFinding]) -> float:
+    def calculate_humility_score(self, findings: list[HumilityFinding]) -> float:
         """Calculate overall humility score."""
         if not findings:
             return 100.0

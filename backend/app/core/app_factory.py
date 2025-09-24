@@ -1,5 +1,4 @@
-"""
-Application Factory Module for Reynard Backend
+"""Application Factory Module for Reynard Backend
 
 This module implements the FastAPI application factory pattern, creating and
 configuring the main FastAPI application with all necessary middleware,
@@ -26,8 +25,8 @@ from app.api.agent_email_routes import router as agent_email_router
 from app.api.caption import router as caption_router
 from app.api.comfy import router as comfy_router
 from app.api.email_routes import router as email_router
-from app.api.gallerydl import router as gallerydl_router
 from app.api.executor.executor import router as executor_router
+from app.api.gallerydl import router as gallerydl_router
 from app.api.hf_cache.hf_cache import router as hf_cache_router
 from app.api.image_utils.image_utils import router as image_utils_router
 from app.api.imap_routes import router as imap_router
@@ -36,10 +35,13 @@ from app.api.mcp import endpoints as mcp_endpoints
 from app.api.mcp import tool_config_endpoints as mcp_tool_config_endpoints
 from app.api.mcp import tools_endpoints as mcp_tools_endpoints
 from app.api.nlweb import router as nlweb_router
+from app.api.notebooks import endpoints as notebooks_endpoints
+from app.api.notes import endpoints as notes_endpoints
 from app.api.ollama import router as ollama_router
 from app.api.rag import router as rag_router
 from app.api.search import router as search_router
 from app.api.summarization import router as summarization_router
+from app.api.todos import endpoints as todos_endpoints
 from app.api.tts import router as tts_router
 
 # Core API endpoints
@@ -75,8 +77,7 @@ from gatekeeper.api.routes import create_auth_router
 
 
 def create_app() -> FastAPI:
-    """
-    Create and configure the FastAPI application.
+    """Create and configure the FastAPI application.
 
     This function implements the application factory pattern, creating a fully
     configured FastAPI application with all necessary middleware, routers,
@@ -84,6 +85,7 @@ def create_app() -> FastAPI:
 
     Returns:
         FastAPI: The configured FastAPI application instance.
+
     """
     config = get_config()
 
@@ -118,8 +120,7 @@ def create_app() -> FastAPI:
 
 
 def _setup_middleware(app: FastAPI, config: AppConfig) -> FastAPI:
-    """
-    Configure all middleware for the FastAPI application.
+    """Configure all middleware for the FastAPI application.
 
     This function sets up the complete middleware stack including CORS,
     rate limiting, security headers, input validation, and trusted host validation.
@@ -130,6 +131,7 @@ def _setup_middleware(app: FastAPI, config: AppConfig) -> FastAPI:
 
     Returns:
         FastAPI: The configured application with all middleware.
+
     """
     # Penetration testing middleware (first to handle session control)
     setup_penetration_testing_middleware(app)
@@ -160,14 +162,14 @@ def _setup_middleware(app: FastAPI, config: AppConfig) -> FastAPI:
 
 
 def _setup_routers(app: FastAPI) -> None:
-    """
-    Configure all API routers for the FastAPI application.
+    """Configure all API routers for the FastAPI application.
 
     This function sets up all API routers with proper prefix configuration
     and organizes them by functional area for maintainable endpoint management.
 
     Args:
         app: The FastAPI application instance.
+
     """
     # Core API endpoints (root, health, etc.)
     app.include_router(core_router)
@@ -202,6 +204,11 @@ def _setup_routers(app: FastAPI) -> None:
     app.include_router(summarization_router)
 
     app.include_router(nlweb_router)
+
+    # Notes & Todos API Routers
+    app.include_router(notes_endpoints.router)
+    app.include_router(notebooks_endpoints.router)
+    app.include_router(todos_endpoints.router)
 
     # ECS World Router
     app.include_router(ecs_router, prefix="/api/ecs")

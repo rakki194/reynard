@@ -1,12 +1,11 @@
-"""
-Email Analytics API Routes for Reynard Backend.
+"""Email Analytics API Routes for Reynard Backend.
 
 This module provides API endpoints for email analytics and reporting.
 """
 
 import logging
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 
@@ -20,19 +19,19 @@ router = APIRouter(prefix="/api/email/analytics", tags=["email-analytics"])
 
 @router.get("/metrics")
 async def get_email_metrics(
-    period_start: Optional[datetime] = Query(
-        None, description="Start of analysis period"
+    period_start: datetime | None = Query(
+        None, description="Start of analysis period",
     ),
-    period_end: Optional[datetime] = Query(None, description="End of analysis period"),
-    agent_id: Optional[str] = Query(None, description="Specific agent to analyze"),
+    period_end: datetime | None = Query(None, description="End of analysis period"),
+    agent_id: str | None = Query(None, description="Specific agent to analyze"),
     use_cache: bool = Query(True, description="Use cached results"),
     current_user: dict = Depends(get_current_active_user),
-) -> Dict[str, Any]:
-    """
-    Get comprehensive email metrics for a given period.
+) -> dict[str, Any]:
+    """Get comprehensive email metrics for a given period.
 
     Returns:
         Dictionary containing email metrics and statistics
+
     """
     try:
         metrics = await email_analytics_service.get_email_metrics(
@@ -66,28 +65,28 @@ async def get_email_metrics(
     except Exception as e:
         logger.error(f"Failed to get email metrics: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to get email metrics: {str(e)}"
+            status_code=500, detail=f"Failed to get email metrics: {e!s}",
         )
 
 
 @router.get("/insights")
 async def get_email_insights(
-    period_start: Optional[datetime] = Query(
-        None, description="Start of analysis period"
+    period_start: datetime | None = Query(
+        None, description="Start of analysis period",
     ),
-    period_end: Optional[datetime] = Query(None, description="End of analysis period"),
-    agent_id: Optional[str] = Query(None, description="Specific agent to analyze"),
+    period_end: datetime | None = Query(None, description="End of analysis period"),
+    agent_id: str | None = Query(None, description="Specific agent to analyze"),
     current_user: dict = Depends(get_current_active_user),
-) -> List[Dict[str, Any]]:
-    """
-    Generate insights from email data.
+) -> list[dict[str, Any]]:
+    """Generate insights from email data.
 
     Returns:
         List of insight objects with analysis and recommendations
+
     """
     try:
         insights = await email_analytics_service.generate_insights(
-            period_start=period_start, period_end=period_end, agent_id=agent_id
+            period_start=period_start, period_end=period_end, agent_id=agent_id,
         )
 
         # Convert dataclass to dictionary
@@ -109,28 +108,28 @@ async def get_email_insights(
     except Exception as e:
         logger.error(f"Failed to generate insights: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to generate insights: {str(e)}"
+            status_code=500, detail=f"Failed to generate insights: {e!s}",
         )
 
 
 @router.get("/reports/{report_type}")
 async def generate_email_report(
     report_type: str,
-    period_start: Optional[datetime] = Query(
-        None, description="Start of analysis period"
+    period_start: datetime | None = Query(
+        None, description="Start of analysis period",
     ),
-    period_end: Optional[datetime] = Query(None, description="End of analysis period"),
-    agent_id: Optional[str] = Query(None, description="Specific agent to analyze"),
+    period_end: datetime | None = Query(None, description="End of analysis period"),
+    agent_id: str | None = Query(None, description="Specific agent to analyze"),
     current_user: dict = Depends(get_current_active_user),
-) -> Dict[str, Any]:
-    """
-    Generate a comprehensive email report.
+) -> dict[str, Any]:
+    """Generate a comprehensive email report.
 
     Args:
         report_type: Type of report ('daily', 'weekly', 'monthly', 'custom')
 
     Returns:
         Dictionary containing complete email report
+
     """
     try:
         if report_type not in ["daily", "weekly", "monthly", "custom"]:
@@ -190,31 +189,31 @@ async def generate_email_report(
     except Exception as e:
         logger.error(f"Failed to generate report: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to generate report: {str(e)}"
+            status_code=500, detail=f"Failed to generate report: {e!s}",
         )
 
 
 @router.get("/agent/{agent_id}/performance")
 async def get_agent_performance(
     agent_id: str,
-    period_start: Optional[datetime] = Query(
-        None, description="Start of analysis period"
+    period_start: datetime | None = Query(
+        None, description="Start of analysis period",
     ),
-    period_end: Optional[datetime] = Query(None, description="End of analysis period"),
+    period_end: datetime | None = Query(None, description="End of analysis period"),
     current_user: dict = Depends(get_current_active_user),
-) -> Dict[str, Any]:
-    """
-    Get performance metrics for a specific agent.
+) -> dict[str, Any]:
+    """Get performance metrics for a specific agent.
 
     Args:
         agent_id: Agent ID to analyze
 
     Returns:
         Dictionary with agent performance metrics
+
     """
     try:
         performance = await email_analytics_service.get_agent_performance(
-            agent_id=agent_id, period_start=period_start, period_end=period_end
+            agent_id=agent_id, period_start=period_start, period_end=period_end,
         )
 
         return performance
@@ -222,7 +221,7 @@ async def get_agent_performance(
     except Exception as e:
         logger.error(f"Failed to get agent performance: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to get agent performance: {str(e)}"
+            status_code=500, detail=f"Failed to get agent performance: {e!s}",
         )
 
 
@@ -233,11 +232,10 @@ async def get_email_trends(
         description="Metric to analyze ('volume', 'response_time', 'agent_activity')",
     ),
     period_days: int = Query(30, description="Number of days to analyze"),
-    agent_id: Optional[str] = Query(None, description="Specific agent to analyze"),
+    agent_id: str | None = Query(None, description="Specific agent to analyze"),
     current_user: dict = Depends(get_current_active_user),
-) -> List[Dict[str, Any]]:
-    """
-    Get email trends over time.
+) -> list[dict[str, Any]]:
+    """Get email trends over time.
 
     Args:
         metric: Metric to analyze
@@ -246,13 +244,14 @@ async def get_email_trends(
 
     Returns:
         List of trend data points
+
     """
     try:
         if metric not in ["volume", "response_time", "agent_activity"]:
             raise HTTPException(status_code=400, detail="Invalid metric type")
 
         trends = await email_analytics_service.get_email_trends(
-            metric=metric, period_days=period_days, agent_id=agent_id
+            metric=metric, period_days=period_days, agent_id=agent_id,
         )
 
         return trends
@@ -260,7 +259,7 @@ async def get_email_trends(
     except Exception as e:
         logger.error(f"Failed to get email trends: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to get email trends: {str(e)}"
+            status_code=500, detail=f"Failed to get email trends: {e!s}",
         )
 
 
@@ -268,12 +267,12 @@ async def get_email_trends(
 async def get_analytics_dashboard(
     period_days: int = Query(7, description="Number of days for dashboard data"),
     current_user: dict = Depends(get_current_active_user),
-) -> Dict[str, Any]:
-    """
-    Get comprehensive analytics dashboard data.
+) -> dict[str, Any]:
+    """Get comprehensive analytics dashboard data.
 
     Returns:
         Dictionary containing all dashboard data
+
     """
     try:
         end_date = datetime.now()
@@ -281,19 +280,19 @@ async def get_analytics_dashboard(
 
         # Get all dashboard data in parallel
         metrics_task = email_analytics_service.get_email_metrics(
-            period_start=start_date, period_end=end_date
+            period_start=start_date, period_end=end_date,
         )
         insights_task = email_analytics_service.generate_insights(
-            period_start=start_date, period_end=end_date
+            period_start=start_date, period_end=end_date,
         )
         volume_trends_task = email_analytics_service.get_email_trends(
-            metric="volume", period_days=period_days
+            metric="volume", period_days=period_days,
         )
         response_trends_task = email_analytics_service.get_email_trends(
-            metric="response_time", period_days=period_days
+            metric="response_time", period_days=period_days,
         )
         agent_trends_task = email_analytics_service.get_email_trends(
-            metric="agent_activity", period_days=period_days
+            metric="agent_activity", period_days=period_days,
         )
 
         # Wait for all tasks to complete
@@ -363,19 +362,19 @@ async def get_analytics_dashboard(
     except Exception as e:
         logger.error(f"Failed to get analytics dashboard: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to get analytics dashboard: {str(e)}"
+            status_code=500, detail=f"Failed to get analytics dashboard: {e!s}",
         )
 
 
 @router.get("/health")
 async def get_analytics_health(
     current_user: dict = Depends(get_current_active_user),
-) -> Dict[str, Any]:
-    """
-    Get analytics service health status.
+) -> dict[str, Any]:
+    """Get analytics service health status.
 
     Returns:
         Dictionary containing service health information
+
     """
     try:
         # Test basic functionality

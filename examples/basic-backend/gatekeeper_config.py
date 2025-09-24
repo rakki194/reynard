@@ -1,5 +1,4 @@
-"""
-Gatekeeper configuration for Reynard Basic Backend
+"""Gatekeeper configuration for Reynard Basic Backend
 Configures the authentication system using the Reynard standard gatekeeper library
 """
 
@@ -26,10 +25,10 @@ class GatekeeperConfig:
         )
         self.algorithm = os.getenv("GATEKEEPER_ALGORITHM", "HS256")
         self.access_token_expire_minutes = int(
-            os.getenv("GATEKEEPER_ACCESS_TOKEN_EXPIRE_MINUTES", "30")
+            os.getenv("GATEKEEPER_ACCESS_TOKEN_EXPIRE_MINUTES", "30"),
         )
         self.refresh_token_expire_days = int(
-            os.getenv("GATEKEEPER_REFRESH_TOKEN_EXPIRE_DAYS", "7")
+            os.getenv("GATEKEEPER_REFRESH_TOKEN_EXPIRE_DAYS", "7"),
         )
         self.issuer = os.getenv("GATEKEEPER_ISSUER", "reynard-basic-backend")
         self.audience = os.getenv("GATEKEEPER_AUDIENCE", "reynard-users")
@@ -37,7 +36,7 @@ class GatekeeperConfig:
         # Password security level
         security_level_str = os.getenv("GATEKEEPER_PASSWORD_SECURITY_LEVEL", "MEDIUM")
         self.password_security_level = getattr(
-            SecurityLevel, security_level_str.upper(), SecurityLevel.MEDIUM
+            SecurityLevel, security_level_str.upper(), SecurityLevel.MEDIUM,
         )
 
         # Database configuration
@@ -49,7 +48,7 @@ class GatekeeperConfig:
         # Backend configuration
         self.backend_pool_size = int(os.getenv("GATEKEEPER_BACKEND_POOL_SIZE", "5"))
         self.backend_max_overflow = int(
-            os.getenv("GATEKEEPER_BACKEND_MAX_OVERFLOW", "10")
+            os.getenv("GATEKEEPER_BACKEND_MAX_OVERFLOW", "10"),
         )
 
     def get_token_config(self) -> TokenConfig:

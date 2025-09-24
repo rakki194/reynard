@@ -1,5 +1,4 @@
-"""
-ComfyUI Integration Service
+"""ComfyUI Integration Service
 
 Provides workflow automation, queue management, and image generation
 capabilities through ComfyUI integration.
@@ -84,16 +83,16 @@ class ComfyService:
             self._api_url = config.get("comfy_api_url", "http://127.0.0.1:8188")
             self._timeout = config.get("comfy_timeout", 60)
             self._image_dir = Path(
-                config.get("comfy_image_dir", "generated/comfy")
+                config.get("comfy_image_dir", "generated/comfy"),
             ).resolve()
 
             # Apply reconnection settings
             self._reconnect_max_attempts = config.get("comfy_reconnect_max_attempts", 5)
             self._reconnect_base_delay_s = config.get(
-                "comfy_reconnect_base_delay_s", 0.5
+                "comfy_reconnect_base_delay_s", 0.5,
             )
             self._reconnect_max_delay_s = config.get(
-                "comfy_reconnect_max_delay_s", 30.0
+                "comfy_reconnect_max_delay_s", 30.0,
             )
 
             if self._enabled:
@@ -181,7 +180,7 @@ class ComfyService:
                 async with session.get(f"{self._api_url}/") as resp:
                     if resp.status == 200:
                         logger.info(
-                            f"ComfyUI reconnected after {self._connection_attempts} attempts"
+                            f"ComfyUI reconnected after {self._connection_attempts} attempts",
                         )
                         self._connection_state = ConnectionState.CONNECTED
                         self._last_ok_ts = time.time()
@@ -196,7 +195,7 @@ class ComfyService:
                 self._reconnect_max_delay_s,
             )
             logger.info(
-                f"ComfyUI reconnection attempt {self._connection_attempts}, retrying in {effective_delay:.1f}s"
+                f"ComfyUI reconnection attempt {self._connection_attempts}, retrying in {effective_delay:.1f}s",
             )
 
             await asyncio.sleep(effective_delay)
@@ -206,7 +205,7 @@ class ComfyService:
         self._connection_state = ConnectionState.DISCONNECTED
 
     async def queue_prompt(
-        self, workflow: dict[str, Any], client_id: str | None = None
+        self, workflow: dict[str, Any], client_id: str | None = None,
     ) -> QueueResult:
         """Queue a workflow for execution."""
         if not self._enabled:
@@ -314,7 +313,7 @@ class ComfyService:
             raise RuntimeError(f"Failed to check status: {e}")
 
     async def get_image(
-        self, filename: str, subfolder: str = "", type_: str = "output"
+        self, filename: str, subfolder: str = "", type_: str = "output",
     ) -> bytes:
         """Retrieve a generated image."""
         if not self._enabled:
@@ -424,7 +423,7 @@ class ComfyService:
                         "filename": img.get("filename"),
                         "subfolder": img.get("subfolder", ""),
                         "type": img.get("type", "output"),
-                    }
+                    },
                 )
 
         return images

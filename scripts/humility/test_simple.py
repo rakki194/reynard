@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
-"""
-Simple test script for the humility detector.
+"""Simple test script for the humility detector.
 """
 
-import os
 import sys
 from pathlib import Path
 
@@ -30,7 +28,7 @@ def test_basic_functionality():
         # Test configuration
         config = HumilityConfig()
         print(
-            f"✅ Configuration created: min_confidence={config.min_confidence_threshold}"
+            f"✅ Configuration created: min_confidence={config.min_confidence_threshold}",
         )
 
         # Test enum values
@@ -53,7 +51,7 @@ def test_basic_functionality():
         if findings:
             finding = findings[0]
             print(
-                f"   - Found: '{finding.original_text}' → '{finding.suggested_replacement}'"
+                f"   - Found: '{finding.original_text}' → '{finding.suggested_replacement}'",
             )
             print(f"   - Category: {finding.category.value}")
             print(f"   - Severity: {finding.severity.value}")
@@ -66,7 +64,7 @@ def test_basic_functionality():
         print(f"✅ Text processing: '{processed}'")
 
         # Test report generator
-        from core.models import HumilityFinding, HumilityProfile
+        from core.models import HumilityProfile
         from utils import ReportGenerator
 
         if findings:
@@ -111,7 +109,7 @@ def test_command_line_interface():
             [sys.executable, "humility-detector.py", "--help"],
             capture_output=True,
             text=True,
-            cwd=current_dir,
+            cwd=current_dir, check=False,
         )
 
         if result.returncode == 0:
@@ -130,7 +128,7 @@ def test_command_line_interface():
                 [sys.executable, "humility-detector.py", str(test_file)],
                 capture_output=True,
                 text=True,
-                cwd=current_dir,
+                cwd=current_dir, check=False,
             )
 
             if result.returncode == 1:  # Should find issues
@@ -173,9 +171,8 @@ def main():
     if success:
         print("🎉 All tests passed! The humility detector is working correctly.")
         return 0
-    else:
-        print("❌ Some tests failed. Please check the output above.")
-        return 1
+    print("❌ Some tests failed. Please check the output above.")
+    return 1
 
 
 if __name__ == "__main__":

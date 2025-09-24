@@ -1,5 +1,4 @@
-"""
-Local Mermaid Service
+"""Local Mermaid Service
 
 A service that runs a local mermaid.ink server for reliable diagram rendering.
 This eliminates dependency on external services and provides better control.
@@ -11,26 +10,25 @@ import os
 import subprocess
 import time
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any
 
 import requests
 
 
 class LocalMermaidService:
-    """
-    Local mermaid service that runs a mermaid.ink server instance.
+    """Local mermaid service that runs a mermaid.ink server instance.
 
     This service provides reliable diagram rendering without depending on
     external services by running a local mermaid.ink server.
     """
 
-    def __init__(self, port: int = 3001, mermaid_ink_path: Optional[str] = None):
-        """
-        Initialize the local mermaid service.
+    def __init__(self, port: int = 3001, mermaid_ink_path: str | None = None):
+        """Initialize the local mermaid service.
 
         Args:
             port: Port to run the mermaid.ink server on
             mermaid_ink_path: Path to the mermaid.ink directory
+
         """
         self.port = port
         self.base_url = f"http://localhost:{port}"
@@ -47,7 +45,7 @@ class LocalMermaidService:
             # Check if mermaid.ink directory exists
             if not Path(self.mermaid_ink_path).exists():
                 raise FileNotFoundError(
-                    f"Mermaid.ink directory not found: {self.mermaid_ink_path}"
+                    f"Mermaid.ink directory not found: {self.mermaid_ink_path}",
                 )
 
             # Start the server
@@ -85,14 +83,14 @@ class LocalMermaidService:
         raise RuntimeError(f"Server failed to start within {timeout} seconds")
 
     def _encode_diagram(self, diagram: str) -> str:
-        """
-        Encode a mermaid diagram for the API.
+        """Encode a mermaid diagram for the API.
 
         Args:
             diagram: The mermaid diagram content
 
         Returns:
             Base64 encoded diagram
+
         """
         # Create the state object that mermaid.ink expects
         state = {"code": diagram, "mermaid": json.dumps({"theme": "default"})}
@@ -103,8 +101,7 @@ class LocalMermaidService:
         return encoded
 
     def render_to_svg(self, diagram: str) -> str:
-        """
-        Render a mermaid diagram to SVG format.
+        """Render a mermaid diagram to SVG format.
 
         Args:
             diagram: The mermaid diagram script
@@ -114,6 +111,7 @@ class LocalMermaidService:
 
         Raises:
             RuntimeError: If rendering fails
+
         """
         if not self.server_ready:
             raise RuntimeError("Mermaid server is not ready")
@@ -129,8 +127,7 @@ class LocalMermaidService:
             raise RuntimeError(f"Failed to render diagram to SVG: {e}") from e
 
     def render_to_png(self, diagram: str) -> bytes:
-        """
-        Render a mermaid diagram to PNG format.
+        """Render a mermaid diagram to PNG format.
 
         Args:
             diagram: The mermaid diagram script
@@ -140,6 +137,7 @@ class LocalMermaidService:
 
         Raises:
             RuntimeError: If rendering fails
+
         """
         if not self.server_ready:
             raise RuntimeError("Mermaid server is not ready")
@@ -155,8 +153,7 @@ class LocalMermaidService:
             raise RuntimeError(f"Failed to render diagram to PNG: {e}") from e
 
     def save_svg(self, diagram: str, output_path: str) -> str:
-        """
-        Render and save a mermaid diagram as SVG.
+        """Render and save a mermaid diagram as SVG.
 
         Args:
             diagram: The mermaid diagram script
@@ -164,6 +161,7 @@ class LocalMermaidService:
 
         Returns:
             Path to the saved file
+
         """
         svg_content = self.render_to_svg(diagram)
 
@@ -176,8 +174,7 @@ class LocalMermaidService:
         return output_path
 
     def save_png(self, diagram: str, output_path: str) -> str:
-        """
-        Render and save a mermaid diagram as PNG.
+        """Render and save a mermaid diagram as PNG.
 
         Args:
             diagram: The mermaid diagram script
@@ -185,6 +182,7 @@ class LocalMermaidService:
 
         Returns:
             Path to the saved file
+
         """
         png_content = self.render_to_png(diagram)
 
@@ -197,14 +195,14 @@ class LocalMermaidService:
         return output_path
 
     def validate_diagram(self, diagram: str) -> tuple[bool, str]:
-        """
-        Validate a mermaid diagram by attempting to render it.
+        """Validate a mermaid diagram by attempting to render it.
 
         Args:
             diagram: The mermaid diagram script
 
         Returns:
             Tuple of (is_valid, error_message)
+
         """
         try:
             self.render_to_svg(diagram)
@@ -212,15 +210,15 @@ class LocalMermaidService:
         except Exception as e:
             return False, str(e)
 
-    def get_diagram_stats(self, diagram: str) -> Dict[str, Any]:
-        """
-        Get statistics about a mermaid diagram.
+    def get_diagram_stats(self, diagram: str) -> dict[str, Any]:
+        """Get statistics about a mermaid diagram.
 
         Args:
             diagram: The mermaid diagram script
 
         Returns:
             Dictionary with diagram statistics
+
         """
         try:
             svg_content = self.render_to_svg(diagram)

@@ -13,6 +13,11 @@ export const Easing = {
   // Linear
   linear: (t: number) => t,
 
+  // CSS-like easing
+  easeIn: (t: number) => t * t,
+  easeOut: (t: number) => t * (2 - t),
+  easeInOut: (t: number) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t),
+
   // Quadratic
   easeInQuad: (t: number) => t * t,
   easeOutQuad: (t: number) => t * (2 - t),

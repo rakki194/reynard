@@ -1,5 +1,4 @@
-"""
-Tests for PostgreSQL backend functionality in the Gatekeeper library.
+"""Tests for PostgreSQL backend functionality in the Gatekeeper library.
 """
 
 from datetime import UTC, datetime

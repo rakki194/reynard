@@ -1,5 +1,4 @@
-"""
-Tests for password utilities and security functions.
+"""Tests for password utilities and security functions.
 
 This module tests password hashing, verification, and security measures.
 """

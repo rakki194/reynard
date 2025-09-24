@@ -1,5 +1,4 @@
-"""
-Centralized Error Handler for Reynard Backend Services
+"""Centralized Error Handler for Reynard Backend Services
 
 This module provides a unified error handling system that standardizes
 error responses across all services, implements error recovery strategies,
@@ -29,8 +28,7 @@ class ErrorSeverity(Enum):
 
 
 class ServiceErrorHandler:
-    """
-    Centralized error handler that provides standardized error responses,
+    """Centralized error handler that provides standardized error responses,
     error recovery strategies, and comprehensive error metrics collection.
     """
 
@@ -90,8 +88,7 @@ class ServiceErrorHandler:
         request: Request | None = None,
         context: dict[str, Any] | None = None,
     ) -> JSONResponse:
-        """
-        Handle service errors with standardized responses and recovery strategies.
+        """Handle service errors with standardized responses and recovery strategies.
 
         Args:
             operation: The operation that failed
@@ -103,6 +100,7 @@ class ServiceErrorHandler:
 
         Returns:
             JSONResponse: Standardized error response
+
         """
         # Determine error type and code
         error_code = self._classify_error(error)
@@ -119,18 +117,18 @@ class ServiceErrorHandler:
             recovery_attempted = True
             try:
                 recovery_successful = self.recovery_strategies[error_code](
-                    operation, error, context
+                    operation, error, context,
                 )
                 if recovery_successful:
                     logger.info(
-                        f"Error recovery successful for {operation} in {service_name}"
+                        f"Error recovery successful for {operation} in {service_name}",
                     )
                     return self._create_success_response(
-                        "Operation recovered successfully"
+                        "Operation recovered successfully",
                     )
             except Exception as recovery_error:
                 logger.warning(
-                    f"Error recovery failed for {operation}: {recovery_error}"
+                    f"Error recovery failed for {operation}: {recovery_error}",
                 )
 
         # Create error response
@@ -159,8 +157,7 @@ class ServiceErrorHandler:
         retry_after: int = 30,
         request: Request | None = None,
     ) -> JSONResponse:
-        """
-        Handle service unavailable errors with retry information.
+        """Handle service unavailable errors with retry information.
 
         Args:
             service_name: Name of the unavailable service
@@ -170,6 +167,7 @@ class ServiceErrorHandler:
 
         Returns:
             JSONResponse: Service unavailable response with retry info
+
         """
         error_code = "SYSTEM_SERVICE_UNAVAILABLE"
         severity = ErrorSeverity.HIGH
@@ -187,7 +185,7 @@ class ServiceErrorHandler:
                 "operation": operation,
                 "retry_after": retry_after,
                 "timestamp": time.time(),
-            }
+            },
         }
 
         # Add request ID if available
@@ -297,7 +295,7 @@ class ServiceErrorHandler:
                 "severity": severity.value,
                 "operation": operation,
                 "timestamp": time.time(),
-            }
+            },
         }
 
         # Add service information
@@ -361,7 +359,7 @@ class ServiceErrorHandler:
 
         # Remove email addresses
         text = re.sub(
-            r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b", "[EMAIL]", text
+            r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b", "[EMAIL]", text,
         )
 
         # Remove tokens and keys
@@ -403,7 +401,7 @@ class ServiceErrorHandler:
 
     # Error recovery strategies
     def _retry_with_backoff(
-        self, operation: str, error: Exception, context: dict[str, Any] | None
+        self, operation: str, error: Exception, context: dict[str, Any] | None,
     ) -> bool:
         """Retry operation with exponential backoff."""
         self.error_metrics["recovery_attempts"] += 1
@@ -415,7 +413,7 @@ class ServiceErrorHandler:
         if retry_count < max_retries:
             # In a real implementation, this would actually retry the operation
             logger.info(
-                f"Retrying {operation} (attempt {retry_count + 1}/{max_retries})"
+                f"Retrying {operation} (attempt {retry_count + 1}/{max_retries})",
             )
             self.error_metrics["recovery_successes"] += 1
             return True
@@ -423,7 +421,7 @@ class ServiceErrorHandler:
         return False
 
     def _retry_database_operation(
-        self, operation: str, error: Exception, context: dict[str, Any] | None
+        self, operation: str, error: Exception, context: dict[str, Any] | None,
     ) -> bool:
         """Retry database operations with connection reset."""
         self.error_metrics["recovery_attempts"] += 1

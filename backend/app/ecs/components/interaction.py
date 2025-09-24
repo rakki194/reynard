@@ -1,5 +1,4 @@
-"""
-Interaction Component
+"""Interaction Component
 
 Agent interaction and communication capabilities with social energy management,
 relationship tracking, and interaction history.
@@ -8,7 +7,7 @@ relationship tracking, and interaction history.
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List
+from typing import Any
 
 from ..core.component import Component
 
@@ -48,7 +47,7 @@ class Interaction:
     """Record of an interaction between agents."""
 
     id: str
-    participants: List[str]
+    participants: list[str]
     interaction_type: InteractionType
     content: str
     outcome: InteractionOutcome
@@ -56,8 +55,8 @@ class Interaction:
     timestamp: datetime = field(default_factory=datetime.now)
     duration: float = 0.0  # Duration in seconds
     energy_cost: float = 0.1  # Social energy consumed
-    success_factors: Dict[str, float] = field(
-        default_factory=dict
+    success_factors: dict[str, float] = field(
+        default_factory=dict,
     )  # Factors that influenced success
 
     def __post_init__(self) -> None:
@@ -105,13 +104,13 @@ class Relationship:
 
         # Update relationship metrics based on interaction impact
         self.strength = max(
-            0.0, min(1.0, self.strength + interaction.relationship_impact * 0.1)
+            0.0, min(1.0, self.strength + interaction.relationship_impact * 0.1),
         )
         self.trust_level = max(
-            0.0, min(1.0, self.trust_level + interaction.relationship_impact * 0.05)
+            0.0, min(1.0, self.trust_level + interaction.relationship_impact * 0.05),
         )
         self.familiarity = max(
-            0.0, min(1.0, self.familiarity + 0.01)
+            0.0, min(1.0, self.familiarity + 0.01),
         )  # Always increase familiarity
 
     def get_relationship_quality(self) -> float:
@@ -128,24 +127,23 @@ class Relationship:
 
 
 class InteractionComponent(Component):
-    """
-    Agent interaction and communication capabilities component.
+    """Agent interaction and communication capabilities component.
 
     Manages social interactions, relationships, communication styles,
     and social energy with comprehensive tracking and analysis.
     """
 
     def __init__(self, max_relationships: int = 100, max_interactions: int = 1000):
-        """
-        Initialize the interaction component.
+        """Initialize the interaction component.
 
         Args:
             max_relationships: Maximum number of relationships to track
             max_interactions: Maximum number of interactions to store
+
         """
         super().__init__()
-        self.relationships: Dict[str, Relationship] = {}
-        self.interactions: List[Interaction] = []
+        self.relationships: dict[str, Relationship] = {}
+        self.interactions: list[Interaction] = []
         self.max_relationships = max_relationships
         self.max_interactions = max_interactions
 
@@ -175,8 +173,7 @@ class InteractionComponent(Component):
         content: str,
         duration: float = 0.0,
     ) -> Interaction | None:
-        """
-        Initiate an interaction with another agent.
+        """Initiate an interaction with another agent.
 
         Args:
             target_agent_id: ID of agent to interact with
@@ -186,6 +183,7 @@ class InteractionComponent(Component):
 
         Returns:
             Interaction object if successful, None if insufficient energy
+
         """
         # Check social energy
         if self.social_energy < self.energy_drain_rate:
@@ -221,22 +219,22 @@ class InteractionComponent(Component):
         return interaction
 
     def get_relationship(self, agent_id: str) -> Relationship | None:
-        """
-        Get relationship with a specific agent.
+        """Get relationship with a specific agent.
 
         Args:
             agent_id: ID of agent to get relationship with
 
         Returns:
             Relationship object or None if no relationship exists
+
         """
         return self.relationships.get(agent_id)
 
-    def get_all_relationships(self) -> Dict[str, Relationship]:
+    def get_all_relationships(self) -> dict[str, Relationship]:
         """Get all relationships."""
         return self.relationships.copy()
 
-    def get_positive_relationships(self) -> Dict[str, Relationship]:
+    def get_positive_relationships(self) -> dict[str, Relationship]:
         """Get all positive relationships."""
         return {
             agent_id: rel
@@ -244,7 +242,7 @@ class InteractionComponent(Component):
             if rel.is_positive_relationship()
         }
 
-    def get_close_relationships(self) -> Dict[str, Relationship]:
+    def get_close_relationships(self) -> dict[str, Relationship]:
         """Get all close relationships."""
         return {
             agent_id: rel
@@ -252,7 +250,7 @@ class InteractionComponent(Component):
             if rel.is_close_relationship()
         }
 
-    def get_relationship_stats(self) -> Dict[str, Any]:
+    def get_relationship_stats(self) -> dict[str, Any]:
         """Get comprehensive relationship statistics."""
         if not self.relationships:
             return {
@@ -265,7 +263,7 @@ class InteractionComponent(Component):
                 "close_relationships": 0,
             }
 
-        relationship_types: Dict[str, int] = {}
+        relationship_types: dict[str, int] = {}
         total_strength = 0.0
         total_trust = 0.0
         total_familiarity = 0.0
@@ -299,7 +297,7 @@ class InteractionComponent(Component):
             "close_relationships": close_count,
         }
 
-    def get_interaction_stats(self) -> Dict[str, Any]:
+    def get_interaction_stats(self) -> dict[str, Any]:
         """Get comprehensive interaction statistics."""
         if not self.interactions:
             return {
@@ -315,7 +313,7 @@ class InteractionComponent(Component):
                 "max_social_energy": self.max_social_energy,
                 "energy_percentage": self.social_energy / self.max_social_energy,
                 "active_interactions": len(
-                    [i for i in self.interactions if i.duration > 0]
+                    [i for i in self.interactions if i.duration > 0],
                 ),
                 "total_relationships": len(self.relationships),
                 "positive_relationships": len(self.get_positive_relationships()),
@@ -324,8 +322,8 @@ class InteractionComponent(Component):
                 "communication_style": self.preferred_communication_style.value,
             }
 
-        interaction_types: Dict[str, int] = {}
-        interaction_outcomes: Dict[str, int] = {}
+        interaction_types: dict[str, int] = {}
+        interaction_outcomes: dict[str, int] = {}
         total_duration = 0.0
 
         for interaction in self.interactions:
@@ -361,7 +359,7 @@ class InteractionComponent(Component):
             "max_social_energy": self.max_social_energy,
             "energy_percentage": self.social_energy / self.max_social_energy,
             "active_interactions": len(
-                [i for i in self.interactions if i.duration > 0]
+                [i for i in self.interactions if i.duration > 0],
             ),
             "total_relationships": len(self.relationships),
             "positive_relationships": len(self.get_positive_relationships()),
@@ -371,22 +369,22 @@ class InteractionComponent(Component):
         }
 
     def recover_social_energy(self, delta_time: float) -> None:
-        """
-        Recover social energy over time.
+        """Recover social energy over time.
 
         Args:
             delta_time: Time elapsed in hours
+
         """
         energy_recovery = self.energy_recovery_rate * delta_time
         self.social_energy = min(
-            self.max_social_energy, self.social_energy + energy_recovery
+            self.max_social_energy, self.social_energy + energy_recovery,
         )
 
     def can_interact(self) -> bool:
         """Check if the agent has enough social energy to interact."""
         return self.social_energy >= self.energy_drain_rate
 
-    def get_social_energy_status(self) -> Dict[str, float]:
+    def get_social_energy_status(self) -> dict[str, float]:
         """Get social energy status."""
         return {
             "current_energy": self.social_energy,
@@ -397,34 +395,34 @@ class InteractionComponent(Component):
         }
 
     def update_communication_style(self, style: CommunicationStyle) -> None:
-        """
-        Update preferred communication style.
+        """Update preferred communication style.
 
         Args:
             style: New communication style
+
         """
         self.preferred_communication_style = style
 
     def update_communication_effectiveness(self, effectiveness: float) -> None:
-        """
-        Update communication effectiveness.
+        """Update communication effectiveness.
 
         Args:
             effectiveness: New effectiveness value (0.0 to 1.0)
+
         """
         self.communication_effectiveness = max(0.0, min(1.0, effectiveness))
 
     def update_social_confidence(self, confidence: float) -> None:
-        """
-        Update social confidence.
+        """Update social confidence.
 
         Args:
             confidence: New confidence value (0.0 to 1.0)
+
         """
         self.social_confidence = max(0.0, min(1.0, confidence))
 
     def _update_relationship_from_interaction(
-        self, agent_id: str, interaction: Interaction
+        self, agent_id: str, interaction: Interaction,
     ) -> None:
         """Update relationship based on interaction."""
         if agent_id not in self.relationships:
@@ -449,13 +447,13 @@ class InteractionComponent(Component):
             )
             del self.relationships[worst_relationship[0]]
 
-    def get_recent_interactions(self, limit: int = 10) -> List[Interaction]:
+    def get_recent_interactions(self, limit: int = 10) -> list[Interaction]:
         """Get recent interactions."""
         return self.interactions[-limit:] if self.interactions else []
 
     def get_interactions_with_agent(
-        self, agent_id: str, limit: int = 10
-    ) -> List[Interaction]:
+        self, agent_id: str, limit: int = 10,
+    ) -> list[Interaction]:
         """Get interactions with a specific agent."""
         agent_interactions = [
             interaction
@@ -465,8 +463,8 @@ class InteractionComponent(Component):
         return agent_interactions[-limit:] if agent_interactions else []
 
     def get_interactions_by_type(
-        self, interaction_type: InteractionType, limit: int = 10
-    ) -> List[Interaction]:
+        self, interaction_type: InteractionType, limit: int = 10,
+    ) -> list[Interaction]:
         """Get interactions of a specific type."""
         type_interactions = [
             interaction
@@ -476,11 +474,11 @@ class InteractionComponent(Component):
         return type_interactions[-limit:] if type_interactions else []
 
     @property
-    def interaction_history(self) -> List[Interaction]:
+    def interaction_history(self) -> list[Interaction]:
         """Get the interaction history (alias for interactions)."""
         return self.interactions
 
     @property
-    def relationship_map(self) -> Dict[str, Relationship]:
+    def relationship_map(self) -> dict[str, Relationship]:
         """Get the relationship map (alias for relationships)."""
         return self.relationships

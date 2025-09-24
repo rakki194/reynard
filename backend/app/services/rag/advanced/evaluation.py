@@ -1,5 +1,4 @@
-"""
-Model Evaluator: A/B testing framework for embedding models with retrieval accuracy benchmarks.
+"""Model Evaluator: A/B testing framework for embedding models with retrieval accuracy benchmarks.
 
 This service provides:
 - Evaluate different embedding models on code search benchmarks
@@ -9,11 +8,10 @@ This service provides:
 - Automated model comparison and ranking
 """
 
-import asyncio
 import logging
 import time
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 logger = logging.getLogger("uvicorn")
 
@@ -37,7 +35,7 @@ class TestQuery:
     """Test query for evaluation."""
 
     query: str
-    expected_results: List[str]
+    expected_results: list[str]
     query_type: str  # 'function', 'class', 'concept', 'bug_fix'
     difficulty: str  # 'easy', 'medium', 'hard'
 
@@ -48,8 +46,8 @@ class ModelEvaluator:
     def __init__(self, embedding_service, vector_store_service):
         self.embedding_service = embedding_service
         self.vector_store_service = vector_store_service
-        self.test_queries: List[TestQuery] = []
-        self.evaluation_results: List[EvaluationMetrics] = []
+        self.test_queries: list[TestQuery] = []
+        self.evaluation_results: list[EvaluationMetrics] = []
 
         # Models to evaluate
         self.models_to_test = [
@@ -140,7 +138,7 @@ class ModelEvaluator:
             ),
         ]
 
-    async def evaluate_models(self) -> Dict[str, EvaluationMetrics]:
+    async def evaluate_models(self) -> dict[str, EvaluationMetrics]:
         """Evaluate all models and return results."""
         results = {}
 
@@ -184,12 +182,12 @@ class ModelEvaluator:
 
                 # Generate embedding for query
                 query_embedding = await self.embedding_service.embed_text(
-                    test_query.query, model
+                    test_query.query, model,
                 )
 
                 # Perform similarity search
                 results = await self.vector_store_service.similarity_search(
-                    query_embedding, limit=10
+                    query_embedding, limit=10,
                 )
 
                 query_latency = (time.time() - query_start) * 1000
@@ -197,7 +195,7 @@ class ModelEvaluator:
 
                 # Calculate accuracy
                 accuracy = self._calculate_retrieval_accuracy(
-                    results, test_query.expected_results
+                    results, test_query.expected_results,
                 )
                 total_accuracy += accuracy
                 total_queries += 1
@@ -232,7 +230,7 @@ class ModelEvaluator:
         )
 
     def _calculate_retrieval_accuracy(
-        self, results: List[Dict], expected: List[str]
+        self, results: list[dict], expected: list[str],
     ) -> float:
         """Calculate retrieval accuracy based on expected results."""
         if not results or not expected:
@@ -280,8 +278,8 @@ class ModelEvaluator:
         return min(1.0, base_specificity + accuracy_bonus)
 
     def rank_models(
-        self, results: Dict[str, EvaluationMetrics]
-    ) -> List[Tuple[str, float]]:
+        self, results: dict[str, EvaluationMetrics],
+    ) -> list[tuple[str, float]]:
         """Rank models by overall performance score."""
         model_scores = []
 
@@ -300,7 +298,7 @@ class ModelEvaluator:
         # Sort by score (descending)
         return sorted(model_scores, key=lambda x: x[1], reverse=True)
 
-    def generate_evaluation_report(self, results: Dict[str, EvaluationMetrics]) -> str:
+    def generate_evaluation_report(self, results: dict[str, EvaluationMetrics]) -> str:
         """Generate a comprehensive evaluation report."""
         report = []
         report.append("# Embedding Model Evaluation Report")
@@ -319,10 +317,10 @@ class ModelEvaluator:
         report.append("## Detailed Metrics")
         report.append("")
         report.append(
-            "| Model | Accuracy | Latency (ms) | Memory (MB) | Code Specificity | Throughput | Error Rate |"
+            "| Model | Accuracy | Latency (ms) | Memory (MB) | Code Specificity | Throughput | Error Rate |",
         )
         report.append(
-            "|-------|----------|--------------|-------------|------------------|------------|------------|"
+            "|-------|----------|--------------|-------------|------------------|------------|------------|",
         )
 
         for model, metrics in results.items():
@@ -330,7 +328,7 @@ class ModelEvaluator:
                 f"| {model} | {metrics.retrieval_accuracy:.3f} | "
                 f"{metrics.latency_ms:.1f} | {metrics.memory_usage_mb:.1f} | "
                 f"{metrics.code_specificity:.3f} | {metrics.throughput_per_second:.1f} | "
-                f"{metrics.error_rate:.3f} |"
+                f"{metrics.error_rate:.3f} |",
             )
 
         report.append("")
@@ -349,13 +347,13 @@ class ModelEvaluator:
         best_memory = min(results.items(), key=lambda x: x[1].memory_usage_mb)
 
         report.append(
-            f"**Best Accuracy**: {best_accuracy[0]} ({best_accuracy[1].retrieval_accuracy:.3f})"
+            f"**Best Accuracy**: {best_accuracy[0]} ({best_accuracy[1].retrieval_accuracy:.3f})",
         )
         report.append(
-            f"**Best Speed**: {best_speed[0]} ({best_speed[1].latency_ms:.1f}ms)"
+            f"**Best Speed**: {best_speed[0]} ({best_speed[1].latency_ms:.1f}ms)",
         )
         report.append(
-            f"**Best Memory Efficiency**: {best_memory[0]} ({best_memory[1].memory_usage_mb:.1f}MB)"
+            f"**Best Memory Efficiency**: {best_memory[0]} ({best_memory[1].memory_usage_mb:.1f}MB)",
         )
         report.append("")
 
@@ -364,7 +362,7 @@ class ModelEvaluator:
         report.append("")
 
         avg_accuracy = sum(m.retrieval_accuracy for m in results.values()) / len(
-            results
+            results,
         )
         avg_latency = sum(m.latency_ms for m in results.values()) / len(results)
 
@@ -375,7 +373,7 @@ class ModelEvaluator:
 
         return "\n".join(report)
 
-    def get_evaluation_stats(self) -> Dict[str, Any]:
+    def get_evaluation_stats(self) -> dict[str, Any]:
         """Get evaluation statistics."""
         return {
             "models_to_test": len(self.models_to_test),

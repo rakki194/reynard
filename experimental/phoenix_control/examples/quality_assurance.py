@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Quality Assurance Example for PHOENIX Control
+"""Quality Assurance Example for PHOENIX Control
 
 Demonstrates the comprehensive quality assurance framework including
 code quality validation, security scanning, and performance testing.
@@ -36,10 +35,10 @@ async def main():
     frontend_result = await quality_validator.validate_frontend()
     print(f"     Linting: {'✅' if frontend_result['linting']['passed'] else '❌'}")
     print(
-        f"     Formatting: {'✅' if frontend_result['formatting']['passed'] else '❌'}"
+        f"     Formatting: {'✅' if frontend_result['formatting']['passed'] else '❌'}",
     )
     print(
-        f"     Type Safety: {'✅' if frontend_result['type_safety']['passed'] else '❌'}"
+        f"     Type Safety: {'✅' if frontend_result['type_safety']['passed'] else '❌'}",
     )
 
     # Backend validation
@@ -47,10 +46,10 @@ async def main():
     backend_result = await quality_validator.validate_backend()
     print(f"     Linting: {'✅' if backend_result['linting']['passed'] else '❌'}")
     print(
-        f"     Formatting: {'✅' if backend_result['formatting']['passed'] else '❌'}"
+        f"     Formatting: {'✅' if backend_result['formatting']['passed'] else '❌'}",
     )
     print(
-        f"     Type Safety: {'✅' if backend_result['type_safety']['passed'] else '❌'}"
+        f"     Type Safety: {'✅' if backend_result['type_safety']['passed'] else '❌'}",
     )
 
     # Example 2: Security Quality Assurance
@@ -138,13 +137,13 @@ async def main():
     print(f"   Formatting: {'✅' if quality_config.enable_formatting else '❌'}")
     print(f"   Type Checking: {'✅' if quality_config.enable_type_checking else '❌'}")
     print(
-        f"   Security Scanning: {'✅' if quality_config.enable_security_scanning else '❌'}"
+        f"   Security Scanning: {'✅' if quality_config.enable_security_scanning else '❌'}",
     )
     print(
-        f"   Performance Testing: {'✅' if quality_config.enable_performance_testing else '❌'}"
+        f"   Performance Testing: {'✅' if quality_config.enable_performance_testing else '❌'}",
     )
     print(
-        f"   Documentation Validation: {'✅' if quality_config.enable_documentation_validation else '❌'}"
+        f"   Documentation Validation: {'✅' if quality_config.enable_documentation_validation else '❌'}",
     )
     print(f"   Strict Mode: {'✅' if quality_config.strict_mode else '❌'}")
     print(f"   Auto Fix: {'✅' if quality_config.auto_fix else '❌'}")

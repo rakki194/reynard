@@ -1,5 +1,4 @@
-"""
-HuggingFace Cache API Models for Reynard Backend
+"""HuggingFace Cache API Models for Reynard Backend
 
 Pydantic models for HF cache API endpoints.
 """

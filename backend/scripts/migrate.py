@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Comprehensive migration management script for Reynard Backend.
+"""Comprehensive migration management script for Reynard Backend.
 
 This script provides a unified interface for managing all database migrations
 across the different database configurations.
@@ -21,7 +20,7 @@ from alembic.config import Config
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -94,7 +93,7 @@ def run_alembic_migrations(database_name: str, target: str = "head") -> bool:
         alembic_cfg = Config(str(config_path))
         command.upgrade(alembic_cfg, target)
         logger.info(
-            f"✅ Alembic migrations completed for {db_config['name']} to {target}"
+            f"✅ Alembic migrations completed for {db_config['name']} to {target}",
         )
         return True
 
@@ -162,10 +161,10 @@ def main():
         help="Action to perform",
     )
     parser.add_argument(
-        "database", choices=list(DATABASES.keys()), help="Database to operate on"
+        "database", choices=list(DATABASES.keys()), help="Database to operate on",
     )
     parser.add_argument(
-        "--target", default="head", help="Target revision for upgrade (default: head)"
+        "--target", default="head", help="Target revision for upgrade (default: head)",
     )
     parser.add_argument("--message", help="Message for new migration")
 
@@ -208,9 +207,8 @@ def main():
     if success:
         logger.info("✅ Operation completed successfully")
         return 0
-    else:
-        logger.error("❌ Operation failed")
-        return 1
+    logger.error("❌ Operation failed")
+    return 1
 
 
 if __name__ == "__main__":

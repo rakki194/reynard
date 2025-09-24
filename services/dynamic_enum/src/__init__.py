@@ -1,5 +1,4 @@
-"""
-Dynamic Enum Service Source Package
+"""Dynamic Enum Service Source Package
 ===================================
 
 Core implementation of the dynamic enum service.

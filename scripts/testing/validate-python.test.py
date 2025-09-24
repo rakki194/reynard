@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Test suite for validate-python.py
+"""Test suite for validate-python.py
 
 Tests the Python validation functionality including
 file discovery, line counting, and validation logic.
@@ -342,7 +341,7 @@ class TestCheckFileLengths:
         content = "def test():\n    pass\n" * 150  # ~300 lines
 
         with tempfile.NamedTemporaryFile(
-            mode="w", suffix="test_.py", delete=False
+            mode="w", suffix="test_.py", delete=False,
         ) as f:
             f.write(content)
             temp_file = f.name
@@ -358,7 +357,7 @@ class TestCheckFileLengths:
         content = "def test():\n    pass\n" * 200  # ~400 lines
 
         with tempfile.NamedTemporaryFile(
-            mode="w", suffix="test_.py", delete=False
+            mode="w", suffix="test_.py", delete=False,
         ) as f:
             f.write(content)
             temp_file = f.name
@@ -421,7 +420,7 @@ class TestValidatePythonFiles:
     @patch("validate_python._check_linting")
     @patch("validate_python._check_file_lengths")
     def test_validate_python_files_all_passes(
-        self, mock_lengths, mock_linting, mock_imports, mock_formatting
+        self, mock_lengths, mock_linting, mock_imports, mock_formatting,
     ):
         """Test validation when all checks pass."""
         mock_formatting.return_value = True
@@ -437,7 +436,7 @@ class TestValidatePythonFiles:
     @patch("validate_python._check_linting")
     @patch("validate_python._check_file_lengths")
     def test_validate_python_files_formatting_fails(
-        self, mock_lengths, mock_linting, mock_imports, mock_formatting
+        self, mock_lengths, mock_linting, mock_imports, mock_formatting,
     ):
         """Test validation when formatting check fails."""
         mock_formatting.return_value = False
@@ -453,7 +452,7 @@ class TestValidatePythonFiles:
     @patch("validate_python._check_linting")
     @patch("validate_python._check_file_lengths")
     def test_validate_python_files_imports_fail(
-        self, mock_lengths, mock_linting, mock_imports, mock_formatting
+        self, mock_lengths, mock_linting, mock_imports, mock_formatting,
     ):
         """Test validation when import sorting check fails."""
         mock_formatting.return_value = True
@@ -469,7 +468,7 @@ class TestValidatePythonFiles:
     @patch("validate_python._check_linting")
     @patch("validate_python._check_file_lengths")
     def test_validate_python_files_linting_fails(
-        self, mock_lengths, mock_linting, mock_imports, mock_formatting
+        self, mock_lengths, mock_linting, mock_imports, mock_formatting,
     ):
         """Test validation when linting check fails."""
         mock_formatting.return_value = True
@@ -485,7 +484,7 @@ class TestValidatePythonFiles:
     @patch("validate_python._check_linting")
     @patch("validate_python._check_file_lengths")
     def test_validate_python_files_lengths_fail(
-        self, mock_lengths, mock_linting, mock_imports, mock_formatting
+        self, mock_lengths, mock_linting, mock_imports, mock_formatting,
     ):
         """Test validation when file length check fails."""
         mock_formatting.return_value = True
@@ -560,7 +559,7 @@ class TestClass:
     def get_value(self):
         """Get the value."""
         return self.value
-'''
+''',
             )
             temp_file = f.name
 

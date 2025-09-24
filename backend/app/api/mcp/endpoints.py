@@ -1,5 +1,4 @@
-"""
-MCP Management Endpoints for Reynard Backend
+"""MCP Management Endpoints for Reynard Backend
 
 Endpoints for MCP client management and token generation.
 """
@@ -27,7 +26,7 @@ MCP_ADMIN_PERMISSION = "mcp:admin"
 def _raise_client_not_found() -> None:
     """Raise HTTP 404 for client not found."""
     raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND, detail="Client not found"
+        status_code=status.HTTP_404_NOT_FOUND, detail="Client not found",
     )
 
 
@@ -36,7 +35,7 @@ class MCPTokenRequest(BaseModel):
 
     client_id: str = Field(..., description="MCP client identifier")
     additional_permissions: list[str] = Field(
-        default_factory=list, description="Additional permissions"
+        default_factory=list, description="Additional permissions",
     )
 
 
@@ -74,11 +73,10 @@ class MCPStatsResponse(BaseModel):
 async def generate_mcp_token(
     request: MCPTokenRequest,
     _current_client: MCPTokenData = Depends(
-        require_mcp_permission(MCP_ADMIN_PERMISSION)
+        require_mcp_permission(MCP_ADMIN_PERMISSION),
     ),
 ) -> MCPTokenResponse:
-    """
-    Generate a new MCP token for a client.
+    """Generate a new MCP token for a client.
 
     Requires mcp:admin permission.
     """
@@ -116,11 +114,10 @@ async def generate_mcp_token(
 @router.get("/clients", response_model=list[MCPClientResponse])
 async def list_mcp_clients(
     current_client: MCPTokenData = Depends(
-        require_mcp_permission(MCP_ADMIN_PERMISSION)
+        require_mcp_permission(MCP_ADMIN_PERMISSION),
     ),
 ):
-    """
-    List all MCP clients.
+    """List all MCP clients.
 
     Requires mcp:admin permission.
     """
@@ -152,11 +149,10 @@ async def list_mcp_clients(
 async def get_mcp_client_info(
     client_id: str,
     current_client: MCPTokenData = Depends(
-        require_mcp_permission(MCP_ADMIN_PERMISSION)
+        require_mcp_permission(MCP_ADMIN_PERMISSION),
     ),
 ):
-    """
-    Get information about a specific MCP client.
+    """Get information about a specific MCP client.
 
     Requires mcp:admin permission.
     """
@@ -188,11 +184,10 @@ async def get_mcp_client_info(
 @router.get("/stats", response_model=MCPStatsResponse)
 async def get_mcp_stats(
     current_client: MCPTokenData = Depends(
-        require_mcp_permission(MCP_ADMIN_PERMISSION)
+        require_mcp_permission(MCP_ADMIN_PERMISSION),
     ),
 ):
-    """
-    Get MCP system statistics.
+    """Get MCP system statistics.
 
     Requires mcp:admin permission.
     """
@@ -232,8 +227,7 @@ async def get_mcp_stats(
 
 @router.get("/validate")
 async def validate_mcp_token(current_client: MCPTokenData = Depends(get_mcp_client)):
-    """
-    Validate current MCP token and return client information.
+    """Validate current MCP token and return client information.
 
     No special permissions required - just valid token.
     """

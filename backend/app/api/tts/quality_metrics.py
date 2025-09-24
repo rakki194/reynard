@@ -1,5 +1,4 @@
-"""
-🦊 Reynard TTS Audio Quality Metrics
+"""🦊 Reynard TTS Audio Quality Metrics
 ====================================
 
 Advanced audio quality metrics and analysis for TTS service with comprehensive
@@ -17,11 +16,10 @@ Author: Reynard Development Team
 Version: 1.0.0
 """
 
-import asyncio
 import time
 from collections import defaultdict, deque
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 from ...core.logging_config import get_service_logger
 
@@ -63,8 +61,8 @@ class AudioQualityMetrics:
     timestamp: float = field(default_factory=time.time)
 
     # Issues and recommendations
-    issues: List[str] = field(default_factory=list)
-    recommendations: List[str] = field(default_factory=list)
+    issues: list[str] = field(default_factory=list)
+    recommendations: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -80,8 +78,7 @@ class QualityTrend:
 
 
 class AudioQualityAnalyzer:
-    """
-    Advanced audio quality analysis and metrics collection.
+    """Advanced audio quality analysis and metrics collection.
 
     Provides comprehensive quality assessment, trend analysis,
     and optimization recommendations for TTS service.
@@ -90,9 +87,9 @@ class AudioQualityAnalyzer:
     def __init__(self, max_history_size: int = 10000):
         self.max_history_size = max_history_size
         self.quality_history: deque = deque(maxlen=max_history_size)
-        self.backend_metrics: Dict[str, List[AudioQualityMetrics]] = defaultdict(list)
-        self.voice_metrics: Dict[str, List[AudioQualityMetrics]] = defaultdict(list)
-        self.language_metrics: Dict[str, List[AudioQualityMetrics]] = defaultdict(list)
+        self.backend_metrics: dict[str, list[AudioQualityMetrics]] = defaultdict(list)
+        self.voice_metrics: dict[str, list[AudioQualityMetrics]] = defaultdict(list)
+        self.language_metrics: dict[str, list[AudioQualityMetrics]] = defaultdict(list)
 
         # Quality thresholds
         self.quality_thresholds = {
@@ -104,14 +101,13 @@ class AudioQualityAnalyzer:
 
     async def analyze_audio_quality(
         self,
-        audio_metadata: Dict[str, Any],
-        processing_metrics: Dict[str, Any],
+        audio_metadata: dict[str, Any],
+        processing_metrics: dict[str, Any],
         backend: str = "",
         voice: str = "",
         language: str = "",
     ) -> AudioQualityMetrics:
-        """
-        Analyze audio quality and create comprehensive metrics.
+        """Analyze audio quality and create comprehensive metrics.
 
         Args:
             audio_metadata: Audio file metadata
@@ -122,6 +118,7 @@ class AudioQualityAnalyzer:
 
         Returns:
             Comprehensive audio quality metrics
+
         """
         try:
             # Create base metrics
@@ -144,14 +141,14 @@ class AudioQualityAnalyzer:
             metrics.clarity_score = await self._calculate_clarity_score(metrics)
             metrics.naturalness_score = await self._calculate_naturalness_score(metrics)
             metrics.intelligibility_score = await self._calculate_intelligibility_score(
-                metrics
+                metrics,
             )
 
             # Calculate technical metrics
             metrics.signal_to_noise_ratio = await self._calculate_snr(metrics)
             metrics.dynamic_range = await self._calculate_dynamic_range(metrics)
             metrics.frequency_response_score = await self._calculate_frequency_response(
-                metrics
+                metrics,
             )
             metrics.distortion_level = await self._calculate_distortion(metrics)
 
@@ -283,7 +280,7 @@ class AudioQualityAnalyzer:
 
         # Backend-specific naturalness (most important factor)
         backend_naturalness = await self._get_backend_naturalness_score(
-            metrics.backend_used
+            metrics.backend_used,
         )
         score += backend_naturalness * 0.6
 
@@ -293,14 +290,14 @@ class AudioQualityAnalyzer:
 
         # Language-specific naturalness
         language_naturalness = await self._get_language_naturalness_score(
-            metrics.language
+            metrics.language,
         )
         score += language_naturalness * 0.1
 
         return min(score, 1.0)
 
     async def _calculate_intelligibility_score(
-        self, metrics: AudioQualityMetrics
+        self, metrics: AudioQualityMetrics,
     ) -> float:
         """Calculate speech intelligibility score."""
         score = 0.0
@@ -319,7 +316,7 @@ class AudioQualityAnalyzer:
 
         # Backend-specific intelligibility
         backend_intelligibility = await self._get_backend_intelligibility_score(
-            metrics.backend_used
+            metrics.backend_used,
         )
         score += backend_intelligibility * 0.3
 
@@ -349,14 +346,14 @@ class AudioQualityAnalyzer:
         # Simplified calculation based on bit depth
         if metrics.bits_per_sample >= 24:
             return 144.0  # 24-bit theoretical maximum
-        elif metrics.bits_per_sample >= 16:
+        if metrics.bits_per_sample >= 16:
             return 96.0  # 16-bit theoretical maximum
-        elif metrics.bits_per_sample >= 8:
+        if metrics.bits_per_sample >= 8:
             return 48.0  # 8-bit theoretical maximum
         return 0.0
 
     async def _calculate_frequency_response_score(
-        self, metrics: AudioQualityMetrics
+        self, metrics: AudioQualityMetrics,
     ) -> float:
         """Calculate frequency response quality score."""
         score = 0.0
@@ -373,7 +370,7 @@ class AudioQualityAnalyzer:
 
         # Backend-specific frequency response
         backend_response = await self._get_backend_frequency_response(
-            metrics.backend_used
+            metrics.backend_used,
         )
         score += backend_response * 0.5
 
@@ -441,7 +438,7 @@ class AudioQualityAnalyzer:
             "default": 0.8,
         }
         return intelligibility_scores.get(
-            backend.lower(), intelligibility_scores["default"]
+            backend.lower(), intelligibility_scores["default"],
         )
 
     async def _get_backend_frequency_response(self, backend: str) -> float:
@@ -486,7 +483,7 @@ class AudioQualityAnalyzer:
         }
         return language_scores.get(language.lower(), language_scores["default"])
 
-    async def _identify_issues(self, metrics: AudioQualityMetrics) -> List[str]:
+    async def _identify_issues(self, metrics: AudioQualityMetrics) -> list[str]:
         """Identify quality issues in the audio."""
         issues = []
 
@@ -523,20 +520,20 @@ class AudioQualityAnalyzer:
         return issues
 
     async def _generate_recommendations(
-        self, metrics: AudioQualityMetrics
-    ) -> List[str]:
+        self, metrics: AudioQualityMetrics,
+    ) -> list[str]:
         """Generate optimization recommendations."""
         recommendations = []
 
         # Quality improvement recommendations
         if metrics.overall_quality < 0.7:
             recommendations.append(
-                "Consider using a higher quality TTS backend (e.g., XTTS)"
+                "Consider using a higher quality TTS backend (e.g., XTTS)",
             )
 
         if metrics.sample_rate < 22050:
             recommendations.append(
-                "Increase sample rate to 22050Hz or higher for better quality"
+                "Increase sample rate to 22050Hz or higher for better quality",
             )
 
         if metrics.bits_per_sample < 16:
@@ -544,13 +541,13 @@ class AudioQualityAnalyzer:
 
         if metrics.naturalness_score < 0.7:
             recommendations.append(
-                "Try a different voice or backend for more natural speech"
+                "Try a different voice or backend for more natural speech",
             )
 
         # Performance optimization recommendations
         if metrics.processing_time > 5.0:
             recommendations.append(
-                "Consider optimizing text length or using faster backend"
+                "Consider optimizing text length or using faster backend",
             )
 
         if metrics.memory_usage > 500:
@@ -559,7 +556,7 @@ class AudioQualityAnalyzer:
         # Backend-specific recommendations
         if metrics.backend_used == "espeak" and metrics.naturalness_score < 0.6:
             recommendations.append(
-                "Consider upgrading to neural TTS backend for better naturalness"
+                "Consider upgrading to neural TTS backend for better naturalness",
             )
 
         return recommendations
@@ -582,8 +579,8 @@ class AudioQualityAnalyzer:
                     collection[key] = values[-self.max_history_size :]
 
     async def get_quality_trends(
-        self, time_window: str = "24h"
-    ) -> Dict[str, QualityTrend]:
+        self, time_window: str = "24h",
+    ) -> dict[str, QualityTrend]:
         """Get quality trends for different categories."""
         trends = {}
 
@@ -629,7 +626,7 @@ class AudioQualityAnalyzer:
 
         return trends
 
-    def _calculate_variance(self, values: List[float]) -> float:
+    def _calculate_variance(self, values: list[float]) -> float:
         """Calculate variance of a list of values."""
         if len(values) < 2:
             return 0.0
@@ -638,7 +635,7 @@ class AudioQualityAnalyzer:
         variance = sum((x - mean) ** 2 for x in values) / len(values)
         return variance
 
-    def _calculate_trend_direction(self, values: List[float]) -> str:
+    def _calculate_trend_direction(self, values: list[float]) -> str:
         """Calculate trend direction from a list of values."""
         if len(values) < 2:
             return "stable"
@@ -652,12 +649,11 @@ class AudioQualityAnalyzer:
 
         if second_avg > first_avg * 1.05:  # 5% improvement
             return "improving"
-        elif second_avg < first_avg * 0.95:  # 5% decline
+        if second_avg < first_avg * 0.95:  # 5% decline
             return "declining"
-        else:
-            return "stable"
+        return "stable"
 
-    async def get_quality_summary(self) -> Dict[str, Any]:
+    async def get_quality_summary(self) -> dict[str, Any]:
         """Get comprehensive quality summary."""
         if not self.quality_history:
             return {"message": "No quality data available"}
@@ -666,11 +662,11 @@ class AudioQualityAnalyzer:
 
         # Calculate averages
         avg_quality = sum(m.overall_quality for m in recent_metrics) / len(
-            recent_metrics
+            recent_metrics,
         )
         avg_clarity = sum(m.clarity_score for m in recent_metrics) / len(recent_metrics)
         avg_naturalness = sum(m.naturalness_score for m in recent_metrics) / len(
-            recent_metrics
+            recent_metrics,
         )
         avg_intelligibility = sum(
             m.intelligibility_score for m in recent_metrics
@@ -702,8 +698,8 @@ class AudioQualityAnalyzer:
         }
 
     def _get_quality_distribution(
-        self, metrics: List[AudioQualityMetrics]
-    ) -> Dict[str, int]:
+        self, metrics: list[AudioQualityMetrics],
+    ) -> dict[str, int]:
         """Get distribution of quality levels."""
         distribution = {"excellent": 0, "good": 0, "acceptable": 0, "poor": 0}
 
@@ -722,7 +718,7 @@ class AudioQualityAnalyzer:
 
 
 # Global quality analyzer instance
-_quality_analyzer: Optional[AudioQualityAnalyzer] = None
+_quality_analyzer: AudioQualityAnalyzer | None = None
 
 
 def get_quality_analyzer() -> AudioQualityAnalyzer:

@@ -1,5 +1,4 @@
-"""
-Reynard Extractor Registry
+"""Reynard Extractor Registry
 
 Manages custom Reynard extractors and integrates them with gallery-dl.
 Provides registration, discovery, and management of custom extractors.
@@ -8,8 +7,6 @@ Provides registration, discovery, and management of custom extractors.
 import logging
 from dataclasses import dataclass
 from typing import Any
-
-from gallery_dl import extractor
 
 from .reynard_content import ReynardContentExtractor
 from .reynard_gallery import ReynardGalleryExtractor
@@ -59,7 +56,7 @@ class ReynardExtractorRegistry:
 
         for extractor_info in default_extractors:
             self.register_reynard_extractor(
-                extractor_info["name"], extractor_info["extractor_class"]
+                extractor_info["name"], extractor_info["extractor_class"],
             )
 
     def register_reynard_extractor(self, name: str, extractor_class: type):
@@ -108,7 +105,7 @@ class ReynardExtractorRegistry:
             # Note: gallery-dl uses a different registration mechanism
             # We'll store our extractors in our own registry instead
             logger.debug(
-                f"Prepared {category}.{subcategory} for gallery-dl integration"
+                f"Prepared {category}.{subcategory} for gallery-dl integration",
             )
 
         except Exception as e:
@@ -132,7 +129,7 @@ class ReynardExtractorRegistry:
                     "features": info.features,
                     "reynard_enabled": True,
                     "type": "custom",
-                }
+                },
             )
 
         # Note: Standard gallery-dl extractors are handled by gallery-dl itself
@@ -209,7 +206,7 @@ class ReynardExtractorRegistry:
         return {
             "reynard_extractors": reynard_extractors,
             "reynard_categories": list(
-                set(info.category for info in self.custom_extractors.values())
+                set(info.category for info in self.custom_extractors.values()),
             ),
             "note": "Standard gallery-dl extractors are managed by gallery-dl itself",
         }

@@ -1,5 +1,4 @@
-"""
-PHOENIX Utils Module
+"""PHOENIX Utils Module
 
 Utility functions and data structures for the PHOENIX framework.
 
@@ -23,14 +22,14 @@ from .data_structures import (
 
 __all__ = [
     "AgentGeneticMaterial",
-    "StructuredKnowledge",
-    "SubliminalTrait",
+    "AgentState",
+    "NamingStyle",
+    "PerformanceMetrics",
     "PhoenixConfig",
     "PhoenixEvolutionState",
-    "PerformanceMetrics",
-    "StatisticalSignificance",
-    "AgentState",
     "SpiritType",
-    "NamingStyle",
+    "StatisticalSignificance",
+    "StructuredKnowledge",
+    "SubliminalTrait",
     "TraitCategory",
 ]

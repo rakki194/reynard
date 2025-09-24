@@ -1,5 +1,4 @@
-"""
-Agent World
+"""Agent World
 
 Specialized ECS world for agent management with breeding and trait inheritance.
 """
@@ -39,19 +38,18 @@ logger = logging.getLogger(__name__)
 
 
 class AgentWorld(ECSWorld):
-    """
-    ECS world specialized for agent management.
+    """ECS world specialized for agent management.
 
     Provides high-level interface for agent creation, breeding,
     trait inheritance, and world simulation.
     """
 
     def __init__(self, data_dir: Path | None = None):
-        """
-        Initialize the agent world.
+        """Initialize the agent world.
 
         Args:
             data_dir: Directory for persistent data storage
+
         """
         super().__init__()
         if data_dir is None:
@@ -82,8 +80,7 @@ class AgentWorld(ECSWorld):
         style: str | None = None,
         name: str | None = None,
     ) -> Entity:
-        """
-        Create a new agent entity with comprehensive traits.
+        """Create a new agent entity with comprehensive traits.
 
         Args:
             agent_id: Unique identifier for the agent
@@ -93,6 +90,7 @@ class AgentWorld(ECSWorld):
 
         Returns:
             The created agent entity
+
         """
         entity = self.create_entity(agent_id)
 
@@ -118,7 +116,7 @@ class AgentWorld(ECSWorld):
 
         # Add position component
         entity.add_component(
-            PositionComponent(x=random.uniform(-100, 100), y=random.uniform(-100, 100))
+            PositionComponent(x=random.uniform(-100, 100), y=random.uniform(-100, 100)),
         )
 
         # Add trait component with generated traits
@@ -162,8 +160,7 @@ class AgentWorld(ECSWorld):
         parent2_id: str,
         offspring_id: str | None = None,
     ) -> Entity | None:
-        """
-        Create offspring from two parent agents.
+        """Create offspring from two parent agents.
 
         Args:
             parent1_id: ID of first parent
@@ -172,6 +169,7 @@ class AgentWorld(ECSWorld):
 
         Returns:
             The created offspring entity or None if creation failed
+
         """
         parent1 = self.get_entity(parent1_id)
         parent2 = self.get_entity(parent2_id)
@@ -228,7 +226,7 @@ class AgentWorld(ECSWorld):
                 PositionComponent(
                     x=(pos1.x + pos2.x) / 2 + random.uniform(-10, 10),
                     y=(pos1.y + pos2.y) / 2 + random.uniform(-10, 10),
-                )
+                ),
             )
         else:
             offspring.add_component(PositionComponent())
@@ -282,12 +280,12 @@ class AgentWorld(ECSWorld):
         repro2.offspring_count += 1
 
         logger.info(
-            f"Created offspring {offspring_id} from parents {parent1_id} and {parent2_id}"
+            f"Created offspring {offspring_id} from parents {parent1_id} and {parent2_id}",
         )
         return offspring
 
     def _inherit_traits(
-        self, traits1: TraitComponent, traits2: TraitComponent
+        self, traits1: TraitComponent, traits2: TraitComponent,
     ) -> TraitComponent:
         """Create offspring traits by inheriting from parents."""
         offspring_traits = TraitComponent()
@@ -331,8 +329,7 @@ class AgentWorld(ECSWorld):
         return offspring_traits
 
     def find_compatible_mates(self, agent_id: str, max_results: int = 10) -> list[dict]:
-        """
-        Find compatible mates for an agent.
+        """Find compatible mates for an agent.
 
         Args:
             agent_id: ID of the agent to find mates for
@@ -340,6 +337,7 @@ class AgentWorld(ECSWorld):
 
         Returns:
             List of compatible mate information
+
         """
         agent = self.get_entity(agent_id)
         if not agent:
@@ -387,7 +385,7 @@ class AgentWorld(ECSWorld):
                             if entity.get_component(AgentComponent)
                             else "Unknown"
                         ),
-                    }
+                    },
                 )
 
         # Sort by compatibility and return top results
@@ -402,8 +400,7 @@ class AgentWorld(ECSWorld):
         return compatible_mates[:max_results]
 
     def analyze_genetic_compatibility(self, agent1_id: str, agent2_id: str) -> dict:
-        """
-        Analyze genetic compatibility between two agents.
+        """Analyze genetic compatibility between two agents.
 
         Args:
             agent1_id: ID of first agent
@@ -411,6 +408,7 @@ class AgentWorld(ECSWorld):
 
         Returns:
             Compatibility analysis dictionary
+
         """
         agent1 = self.get_entity(agent1_id)
         agent2 = self.get_entity(agent2_id)
@@ -428,13 +426,13 @@ class AgentWorld(ECSWorld):
 
         # Analyze trait similarities
         personality_similarity = self._calculate_trait_similarity(
-            traits1.personality, traits2.personality
+            traits1.personality, traits2.personality,
         )
         physical_similarity = self._calculate_trait_similarity(
-            traits1.physical, traits2.physical
+            traits1.physical, traits2.physical,
         )
         ability_similarity = self._calculate_trait_similarity(
-            traits1.abilities, traits2.abilities
+            traits1.abilities, traits2.abilities,
         )
 
         return {
@@ -472,14 +470,14 @@ class AgentWorld(ECSWorld):
         return 1.0 - average_diff  # Convert difference to similarity
 
     def get_agent_lineage(self, agent_id: str) -> dict:
-        """
-        Get lineage information for an agent.
+        """Get lineage information for an agent.
 
         Args:
             agent_id: ID of the agent
 
         Returns:
             Lineage information dictionary
+
         """
         agent = self.get_entity(agent_id)
         if not agent:
@@ -504,7 +502,7 @@ class AgentWorld(ECSWorld):
                             if ancestor.get_component(LineageComponent)
                             else 0
                         ),
-                    }
+                    },
                 )
 
         # Get descendant information
@@ -524,7 +522,7 @@ class AgentWorld(ECSWorld):
                             if descendant.get_component(LineageComponent)
                             else 0
                         ),
-                    }
+                    },
                 )
 
         return {
@@ -550,11 +548,11 @@ class AgentWorld(ECSWorld):
         logger.info("Saving all agents to persistent storage")
 
     def get_agent_entities(self) -> list[Entity]:
-        """
-        Get all entities that have AgentComponent.
+        """Get all entities that have AgentComponent.
 
         Returns:
             List of entities that are agents
+
         """
         return self.get_entities_with_components(AgentComponent)
 

@@ -1,29 +1,23 @@
-"""
-Mermaid Service
+"""Mermaid Service
 
 Core service for rendering Mermaid diagrams using a Python-based renderer.
 This service provides a clean interface for the MCP server to render diagrams.
 """
 
-import os
-import time
-from pathlib import Path
-from typing import Any, Dict, Optional, Union
+from typing import Any
 
 from .mermaid_renderer import MermaidRenderer
 
 
 class MermaidService:
-    """
-    Service for rendering Mermaid diagrams to SVG and PNG formats.
+    """Service for rendering Mermaid diagrams to SVG and PNG formats.
 
     This service uses a Python-based mermaid renderer with Playwright to provide
     reliable and fast conversion of Mermaid syntax to visual formats.
     """
 
     def __init__(self):
-        """
-        Initialize the Mermaid service.
+        """Initialize the Mermaid service.
         """
         try:
             self.renderer = MermaidRenderer()
@@ -34,8 +28,7 @@ class MermaidService:
             self.available = False
 
     def render_to_svg(self, diagram: str) -> str:
-        """
-        Render a Mermaid diagram to SVG format.
+        """Render a Mermaid diagram to SVG format.
 
         Args:
             diagram: The Mermaid diagram script
@@ -45,6 +38,7 @@ class MermaidService:
 
         Raises:
             RuntimeError: If rendering fails
+
         """
         if not self.available or not self.renderer:
             raise RuntimeError("Mermaid renderer is not available")
@@ -56,8 +50,7 @@ class MermaidService:
         return svg_content
 
     def render_to_png(self, diagram: str) -> bytes:
-        """
-        Render a Mermaid diagram to PNG format.
+        """Render a Mermaid diagram to PNG format.
 
         Args:
             diagram: The Mermaid diagram script
@@ -67,6 +60,7 @@ class MermaidService:
 
         Raises:
             RuntimeError: If rendering fails
+
         """
         if not self.available or not self.renderer:
             raise RuntimeError("Mermaid renderer is not available")
@@ -78,8 +72,7 @@ class MermaidService:
         return png_data
 
     def save_svg(self, diagram: str, output_path: str) -> str:
-        """
-        Render and save a Mermaid diagram as SVG.
+        """Render and save a Mermaid diagram as SVG.
 
         Args:
             diagram: The Mermaid diagram script
@@ -90,6 +83,7 @@ class MermaidService:
 
         Raises:
             RuntimeError: If rendering or saving fails
+
         """
         if not self.available or not self.renderer:
             raise RuntimeError("Mermaid renderer is not available")
@@ -101,8 +95,7 @@ class MermaidService:
         return saved_path
 
     def save_png(self, diagram: str, output_path: str) -> str:
-        """
-        Render and save a Mermaid diagram as PNG.
+        """Render and save a Mermaid diagram as PNG.
 
         Args:
             diagram: The Mermaid diagram script
@@ -113,6 +106,7 @@ class MermaidService:
 
         Raises:
             RuntimeError: If rendering or saving fails
+
         """
         if not self.available or not self.renderer:
             raise RuntimeError("Mermaid renderer is not available")
@@ -124,29 +118,29 @@ class MermaidService:
         return saved_path
 
     def validate_diagram(self, diagram: str) -> tuple[bool, str]:
-        """
-        Validate a Mermaid diagram by attempting to render it.
+        """Validate a Mermaid diagram by attempting to render it.
 
         Args:
             diagram: The Mermaid diagram script
 
         Returns:
             Tuple of (is_valid, error_message)
+
         """
         if not self.available or not self.renderer:
             return False, "Mermaid renderer is not available"
 
         return self.renderer.validate_diagram(diagram)
 
-    def get_diagram_stats(self, diagram: str) -> Dict[str, Any]:
-        """
-        Get statistics about a Mermaid diagram.
+    def get_diagram_stats(self, diagram: str) -> dict[str, Any]:
+        """Get statistics about a Mermaid diagram.
 
         Args:
             diagram: The Mermaid diagram script
 
         Returns:
             Dictionary with diagram statistics
+
         """
         if not self.available or not self.renderer:
             return {

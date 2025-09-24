@@ -1,5 +1,4 @@
-"""
-Configuration Manager for Lazy Loading
+"""Configuration Manager for Lazy Loading
 
 This module handles configuration management for the lazy loading system.
 """

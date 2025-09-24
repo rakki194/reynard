@@ -1,5 +1,4 @@
-"""
-Tests for NLWeb API endpoints.
+"""Tests for NLWeb API endpoints.
 
 This module tests all NLWeb endpoints including tool suggestions,
 health monitoring, performance stats, and integration with Ollama.
@@ -49,7 +48,7 @@ class TestNLWebToolSuggestions:
                         "parameters": {"path": "/current/directory"},
                         "reasoning": "User wants to list files in current directory",
                         "parameter_hints": {"path": "Current working directory"},
-                    }
+                    },
                 ],
                 query="list files in current directory",
                 processing_time_ms=150.0,
@@ -173,7 +172,7 @@ class TestNLWebHealthMonitoring:
             mock_service.return_value = mock_nlweb_service
 
             response = client.get(
-                "/api/nlweb/health", headers={"Authorization": f"Bearer {access_token}"}
+                "/api/nlweb/health", headers={"Authorization": f"Bearer {access_token}"},
             )
 
             assert response.status_code == 200
@@ -193,12 +192,12 @@ class TestNLWebHealthMonitoring:
         with patch("app.api.nlweb.endpoints.get_nlweb_service") as mock_service:
             mock_nlweb_service = MagicMock()
             mock_nlweb_service.get_health_status.side_effect = Exception(
-                "Health check failed"
+                "Health check failed",
             )
             mock_service.return_value = mock_nlweb_service
 
             response = client.get(
-                "/api/nlweb/health", headers={"Authorization": f"Bearer {access_token}"}
+                "/api/nlweb/health", headers={"Authorization": f"Bearer {access_token}"},
             )
 
             assert response.status_code == 500
@@ -233,7 +232,7 @@ class TestNLWebPerformanceStats:
             mock_service.return_value = mock_nlweb_service
 
             response = client.get(
-                "/api/nlweb/stats", headers={"Authorization": f"Bearer {access_token}"}
+                "/api/nlweb/stats", headers={"Authorization": f"Bearer {access_token}"},
             )
 
             assert response.status_code == 200
@@ -250,18 +249,18 @@ class TestNLWebPerformanceStats:
         assert response.status_code == 401
 
     def test_get_performance_stats_service_error(
-        self, client: TestClient, access_token
+        self, client: TestClient, access_token,
     ):
         """Test performance stats when service throws an error."""
         with patch("app.api.nlweb.endpoints.get_nlweb_service") as mock_service:
             mock_nlweb_service = MagicMock()
             mock_nlweb_service.get_performance_stats.side_effect = Exception(
-                "Stats error"
+                "Stats error",
             )
             mock_service.return_value = mock_nlweb_service
 
             response = client.get(
-                "/api/nlweb/stats", headers={"Authorization": f"Bearer {access_token}"}
+                "/api/nlweb/stats", headers={"Authorization": f"Bearer {access_token}"},
             )
 
             assert response.status_code == 500
@@ -410,13 +409,13 @@ class TestNLWebVerification:
         assert response.status_code == 401
 
     def test_get_verification_checklist_service_error(
-        self, client: TestClient, access_token
+        self, client: TestClient, access_token,
     ):
         """Test verification checklist when service throws an error."""
         with patch("app.api.nlweb.endpoints.get_nlweb_service") as mock_service:
             mock_nlweb_service = MagicMock()
             mock_nlweb_service.get_verification_checklist.side_effect = Exception(
-                "Verification failed"
+                "Verification failed",
             )
             mock_service.return_value = mock_nlweb_service
 

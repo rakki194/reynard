@@ -1,5 +1,4 @@
-"""
-Social Component
+"""Social Component
 
 Agent social behavior, group dynamics, social networks, and influence systems.
 """
@@ -7,7 +6,7 @@ Agent social behavior, group dynamics, social networks, and influence systems.
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Set
+from typing import Any
 
 from ..core.component import Component
 
@@ -56,15 +55,15 @@ class SocialGroup:
     id: str
     name: str
     group_type: GroupType
-    members: List[str] = field(default_factory=list)
-    leaders: List[str] = field(default_factory=list)
+    members: list[str] = field(default_factory=list)
+    leaders: list[str] = field(default_factory=list)
     created_at: datetime = field(default_factory=datetime.now)
     cohesion: float = 0.5  # 0.0 to 1.0
     influence: float = 0.0  # Group's collective influence
     activity_level: float = 0.5  # How active the group is
     stability: float = 0.5  # How stable the group is
-    goals: List[str] = field(default_factory=list)
-    rules: List[str] = field(default_factory=list)
+    goals: list[str] = field(default_factory=list)
+    rules: list[str] = field(default_factory=list)
 
     def __post_init__(self) -> None:
         """Validate group data after initialization."""
@@ -165,7 +164,7 @@ class SocialConnection:
     def update_connection(self, interaction_impact: float) -> None:
         """Update connection based on interaction."""
         self.connection_strength = max(
-            0.0, min(1.0, self.connection_strength + interaction_impact * 0.1)
+            0.0, min(1.0, self.connection_strength + interaction_impact * 0.1),
         )
         self.last_interaction = datetime.now()
 
@@ -175,8 +174,7 @@ class SocialConnection:
 
 
 class SocialComponent(Component):
-    """
-    Agent social behavior and group dynamics.
+    """Agent social behavior and group dynamics.
 
     Manages social networks, group memberships, social status,
     influence systems, and community participation.
@@ -185,9 +183,9 @@ class SocialComponent(Component):
     def __init__(self) -> None:
         """Initialize the social component."""
         super().__init__()
-        self.social_network: Dict[str, SocialConnection] = {}
-        self.group_memberships: Set[str] = set()
-        self.leadership_roles: Set[str] = set()
+        self.social_network: dict[str, SocialConnection] = {}
+        self.group_memberships: set[str] = set()
+        self.leadership_roles: set[str] = set()
         self.social_status: SocialStatus = SocialStatus.ACCEPTED
         self.social_influence: float = 0.0  # Overall social influence
         self.charisma: float = 0.5  # Natural charisma level
@@ -207,10 +205,9 @@ class SocialComponent(Component):
         self._agent_id: str = "unknown"
 
     def add_social_connection(
-        self, target_agent: str, connection_type: str = "neutral"
+        self, target_agent: str, connection_type: str = "neutral",
     ) -> bool:
-        """
-        Add a social connection to another agent.
+        """Add a social connection to another agent.
 
         Args:
             target_agent: ID of the agent to connect with
@@ -218,6 +215,7 @@ class SocialComponent(Component):
 
         Returns:
             True if connection was added successfully
+
         """
         if target_agent not in self.social_network:
             connection = SocialConnection(
@@ -247,7 +245,7 @@ class SocialComponent(Component):
         """Get social connection with a specific agent."""
         return self.social_network.get(target_agent)
 
-    def get_connections_by_type(self, connection_type: str) -> List[SocialConnection]:
+    def get_connections_by_type(self, connection_type: str) -> list[SocialConnection]:
         """Get all connections of a specific type."""
         return [
             conn
@@ -256,8 +254,8 @@ class SocialComponent(Component):
         ]
 
     def get_strong_connections(
-        self, min_strength: float = 0.7
-    ) -> List[SocialConnection]:
+        self, min_strength: float = 0.7,
+    ) -> list[SocialConnection]:
         """Get connections with strength above threshold."""
         return [
             conn
@@ -265,7 +263,7 @@ class SocialComponent(Component):
             if conn.connection_strength >= min_strength
         ]
 
-    def get_weak_connections(self, max_strength: float = 0.3) -> List[SocialConnection]:
+    def get_weak_connections(self, max_strength: float = 0.3) -> list[SocialConnection]:
         """Get connections with strength below threshold."""
         return [
             conn
@@ -357,7 +355,7 @@ class SocialComponent(Component):
         if self.social_energy < self.max_social_energy:
             recovery_amount = self.energy_recovery_rate * delta_time
             self.social_energy = min(
-                self.max_social_energy, self.social_energy + recovery_amount
+                self.max_social_energy, self.social_energy + recovery_amount,
             )
 
     def consume_social_energy(self, amount: float) -> bool:
@@ -367,7 +365,7 @@ class SocialComponent(Component):
             return True
         return False
 
-    def get_social_stats(self) -> Dict[str, Any]:
+    def get_social_stats(self) -> dict[str, Any]:
         """Get comprehensive social statistics."""
         strong_connections = len(self.get_strong_connections())
         weak_connections = len(self.get_weak_connections())

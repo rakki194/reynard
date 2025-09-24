@@ -1,5 +1,4 @@
-"""
-Reynard FastAPI Backend - Production-Ready Service Orchestration Platform
+"""Reynard FastAPI Backend - Production-Ready Service Orchestration Platform
 
 A comprehensive FastAPI application implementing advanced service orchestration
 patterns with parallel initialization, priority-based startup sequencing, and
@@ -48,10 +47,12 @@ warnings.filterwarnings("ignore", category=UserWarning, module="torch")
 warnings.filterwarnings("ignore", category=UserWarning, module="transformers")
 warnings.filterwarnings("ignore", category=UserWarning, module="sentence_transformers")
 warnings.filterwarnings(
-    "ignore", message=".*SymmetricMemory.*"
+    "ignore",
+    message=".*SymmetricMemory.*",
 )  # Suppress SymmetricMemory warnings
 warnings.filterwarnings(
-    "ignore", message=".*InitGoogleLogging.*"
+    "ignore",
+    message=".*InitGoogleLogging.*",
 )  # Suppress Google Logging warnings
 
 # Suppress Google Logging warnings

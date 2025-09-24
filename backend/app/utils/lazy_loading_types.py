@@ -1,5 +1,4 @@
-"""
-Lazy Loading Types for Reynard Backend
+"""Lazy Loading Types for Reynard Backend
 
 Type definitions and enums for the lazy loading system.
 """
@@ -70,7 +69,7 @@ class ExportValidationError(Exception):
     """Exception raised when export validation fails."""
 
     def __init__(
-        self, message: str, package_name: str, validation_level: ExportValidationLevel
+        self, message: str, package_name: str, validation_level: ExportValidationLevel,
     ):
         super().__init__(message)
         self.package_name = package_name

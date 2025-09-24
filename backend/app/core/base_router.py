@@ -1,5 +1,4 @@
-"""
-Base Router Infrastructure for Reynard Backend Services
+"""Base Router Infrastructure for Reynard Backend Services
 
 This module provides a reusable base router class that standardizes
 service availability checking, error handling, and common patterns
@@ -30,8 +29,7 @@ class ServiceStatus(BaseModel):
 
 
 class BaseServiceRouter(ABC):
-    """
-    Abstract base class for all service routers.
+    """Abstract base class for all service routers.
 
     Provides standardized patterns for:
     - Service availability checking
@@ -55,38 +53,35 @@ class BaseServiceRouter(ABC):
 
     @abstractmethod
     def get_service(self) -> Any:
-        """
-        Get the service instance for this router.
+        """Get the service instance for this router.
 
         Returns:
             The service instance
+
         """
-        pass
 
     @abstractmethod
     def check_service_health(self) -> ServiceStatus:
-        """
-        Check the health of the service.
+        """Check the health of the service.
 
         Returns:
             ServiceStatus: Current service health status
+
         """
-        pass
 
     def add_service_dependency(self, name: str, dependency: Any) -> None:
-        """
-        Add a service dependency.
+        """Add a service dependency.
 
         Args:
             name: Name of the dependency
             dependency: The dependency instance
+
         """
         self._service_dependencies[name] = dependency
         logger.info(f"Added service dependency '{name}' to {self.service_name}")
 
     def get_service_dependency(self, name: str) -> Any:
-        """
-        Get a service dependency by name.
+        """Get a service dependency by name.
 
         Args:
             name: Name of the dependency
@@ -96,10 +91,11 @@ class BaseServiceRouter(ABC):
 
         Raises:
             KeyError: If dependency not found
+
         """
         if name not in self._service_dependencies:
             raise KeyError(
-                f"Service dependency '{name}' not found for {self.service_name}"
+                f"Service dependency '{name}' not found for {self.service_name}",
             )
         return self._service_dependencies[name]
 
@@ -115,7 +111,7 @@ class BaseServiceRouter(ABC):
             except Exception as e:
                 logger.error(f"Health check failed for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="health_check", error=e, service_name=self.service_name
+                    operation="health_check", error=e, service_name=self.service_name,
                 )
 
         @self.router.get("/status")
@@ -133,14 +129,13 @@ class BaseServiceRouter(ABC):
             except Exception as e:
                 logger.error(f"Status check failed for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="status_check", error=e, service_name=self.service_name
+                    operation="status_check", error=e, service_name=self.service_name,
                 )
 
     def _standard_operation(
-        self, operation_name: str, operation_func, *args, **kwargs
+        self, operation_name: str, operation_func, *args, **kwargs,
     ) -> Any:
-        """
-        Execute a standard operation with error handling and logging.
+        """Execute a standard operation with error handling and logging.
 
         Args:
             operation_name: Name of the operation for logging
@@ -153,6 +148,7 @@ class BaseServiceRouter(ABC):
 
         Raises:
             HTTPException: If operation fails
+
         """
         try:
             logger.info(f"Starting {operation_name} for {self.service_name}")
@@ -162,17 +158,16 @@ class BaseServiceRouter(ABC):
 
         except Exception as e:
             logger.error(
-                f"Operation {operation_name} failed for {self.service_name}: {e}"
+                f"Operation {operation_name} failed for {self.service_name}: {e}",
             )
             raise service_error_handler.handle_service_error(
-                operation=operation_name, error=e, service_name=self.service_name
+                operation=operation_name, error=e, service_name=self.service_name,
             )
 
     async def _standard_async_operation(
-        self, operation_name: str, operation_func, *args, **kwargs
+        self, operation_name: str, operation_func, *args, **kwargs,
     ) -> Any:
-        """
-        Execute a standard async operation with error handling and logging.
+        """Execute a standard async operation with error handling and logging.
 
         Args:
             operation_name: Name of the operation for logging
@@ -185,6 +180,7 @@ class BaseServiceRouter(ABC):
 
         Raises:
             HTTPException: If operation fails
+
         """
         try:
             logger.info(f"Starting async {operation_name} for {self.service_name}")
@@ -194,18 +190,18 @@ class BaseServiceRouter(ABC):
 
         except Exception as e:
             logger.error(
-                f"Async operation {operation_name} failed for {self.service_name}: {e}"
+                f"Async operation {operation_name} failed for {self.service_name}: {e}",
             )
             raise service_error_handler.handle_service_error(
-                operation=operation_name, error=e, service_name=self.service_name
+                operation=operation_name, error=e, service_name=self.service_name,
             )
 
     def ensure_service_available(self) -> None:
-        """
-        Ensure the service is available before operations.
+        """Ensure the service is available before operations.
 
         Raises:
             ServiceUnavailableError: If service is not available
+
         """
         try:
             status = self.check_service_health()
@@ -223,50 +219,49 @@ class BaseServiceRouter(ABC):
             )
 
     def get_router(self) -> APIRouter:
-        """
-        Get the FastAPI router instance.
+        """Get the FastAPI router instance.
 
         Returns:
             APIRouter: The configured router
+
         """
         return self.router
 
     def include_router(self, router: APIRouter, prefix: str = None, **kwargs) -> None:
-        """
-        Include another router in this router.
+        """Include another router in this router.
 
         Args:
             router: Router to include
             prefix: Optional prefix for the included router
             **kwargs: Additional arguments for include_router
+
         """
         self.router.include_router(router, prefix=prefix, **kwargs)
 
     def add_endpoint(self, method: str, path: str, endpoint_func, **kwargs) -> None:
-        """
-        Add an endpoint to the router.
+        """Add an endpoint to the router.
 
         Args:
             method: HTTP method (get, post, put, delete, etc.)
             path: URL path for the endpoint
             endpoint_func: Function to handle the endpoint
             **kwargs: Additional arguments for the endpoint
+
         """
         getattr(self.router, method.lower())(path, **kwargs)(endpoint_func)
 
     def add_middleware(self, middleware_class, **kwargs) -> None:
-        """
-        Add middleware to the router.
+        """Add middleware to the router.
 
         Args:
             middleware_class: Middleware class to add
             **kwargs: Arguments for the middleware
+
         """
         self.router.add_middleware(middleware_class, **kwargs)
 
     def initialize_service(self) -> None:
-        """
-        Initialize the service and its dependencies.
+        """Initialize the service and its dependencies.
         """
         try:
             logger.info(f"Initializing service {self.service_name}")
@@ -289,8 +284,7 @@ class BaseServiceRouter(ABC):
             )
 
     def shutdown_service(self) -> None:
-        """
-        Shutdown the service and its dependencies.
+        """Shutdown the service and its dependencies.
         """
         try:
             logger.info(f"Shutting down service {self.service_name}")
@@ -309,11 +303,11 @@ class BaseServiceRouter(ABC):
             logger.error(f"Failed to shutdown service {self.service_name}: {e}")
 
     def get_service_info(self) -> dict[str, Any]:
-        """
-        Get information about the service.
+        """Get information about the service.
 
         Returns:
             Dict containing service information
+
         """
         return {
             "service_name": self.service_name,

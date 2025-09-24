@@ -1,5 +1,4 @@
-"""
-Reynard Caption Generation System
+"""Reynard Caption Generation System
 
 A modular, independent reimplementation of Yipyap's sophisticated caption generation
 system as part of the Reynard framework. This system provides:

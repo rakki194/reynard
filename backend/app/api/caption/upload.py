@@ -1,5 +1,4 @@
-"""
-Caption upload endpoints for Reynard Backend.
+"""Caption upload endpoints for Reynard Backend.
 
 This module provides file upload functionality for caption generation
 with proper file handling and cleanup.

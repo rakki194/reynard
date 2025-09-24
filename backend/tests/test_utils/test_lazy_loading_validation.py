@@ -20,14 +20,14 @@ class TestLazyLoadingValidator:
         """Test validate_export with NONE validation level."""
         # Should not raise any exceptions
         LazyLoadingValidator.validate_export(
-            None, "test_package", ExportType.MODULE, ExportValidationLevel.NONE
+            None, "test_package", ExportType.MODULE, ExportValidationLevel.NONE,
         )
 
     def test_validate_export_none_export_basic_validation(self):
         """Test validate_export with None export and BASIC validation level."""
         with pytest.raises(ExportValidationError) as exc_info:
             LazyLoadingValidator.validate_export(
-                None, "test_package", ExportType.MODULE, ExportValidationLevel.BASIC
+                None, "test_package", ExportType.MODULE, ExportValidationLevel.BASIC,
             )
 
         assert exc_info.value.package_name == "test_package"
@@ -38,7 +38,7 @@ class TestLazyLoadingValidator:
         """Test validate_export with None export and STRICT validation level."""
         with pytest.raises(ExportValidationError) as exc_info:
             LazyLoadingValidator.validate_export(
-                None, "test_package", ExportType.MODULE, ExportValidationLevel.STRICT
+                None, "test_package", ExportType.MODULE, ExportValidationLevel.STRICT,
             )
 
         assert exc_info.value.package_name == "test_package"
@@ -65,7 +65,7 @@ class TestLazyLoadingValidator:
 
         # Should not raise any exceptions
         LazyLoadingValidator.validate_export(
-            mock_module, "test_package", ExportType.MODULE, ExportValidationLevel.BASIC
+            mock_module, "test_package", ExportType.MODULE, ExportValidationLevel.BASIC,
         )
 
     def test_validate_export_valid_module_strict_validation(self):
@@ -74,7 +74,7 @@ class TestLazyLoadingValidator:
 
         # Should not raise any exceptions
         LazyLoadingValidator.validate_export(
-            mock_module, "test_package", ExportType.MODULE, ExportValidationLevel.STRICT
+            mock_module, "test_package", ExportType.MODULE, ExportValidationLevel.STRICT,
         )
 
     def test_validate_export_invalid_type_strict_validation(self):
@@ -153,7 +153,7 @@ class TestLazyLoadingValidator:
         mock_export = MagicMock()
         # Make hasattr raise an exception
         mock_export.__class__.__getattribute__ = MagicMock(
-            side_effect=Exception("Test exception")
+            side_effect=Exception("Test exception"),
         )
 
         with patch("app.utils.lazy_loading_validation.logger") as mock_logger:
@@ -188,7 +188,7 @@ class TestLazyLoadingValidator:
         # Test with different export types - should not raise for valid module
         for export_type in ExportType:
             LazyLoadingValidator.validate_export(
-                mock_module, "test_package", export_type, ExportValidationLevel.STRICT
+                mock_module, "test_package", export_type, ExportValidationLevel.STRICT,
             )
 
     def test_comprehensive_validation_private_method(self):

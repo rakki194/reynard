@@ -1,5 +1,4 @@
-"""
-Tests for scraping models
+"""Tests for scraping models
 """
 
 from datetime import datetime

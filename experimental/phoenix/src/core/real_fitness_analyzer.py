@@ -1,5 +1,4 @@
-"""
-Real Fitness Analyzer
+"""Real Fitness Analyzer
 
 Replaces simulated fitness distributions with real fitness data analysis.
 
@@ -7,21 +6,19 @@ Author: Reynard-Director-36
 Version: 1.0.0
 """
 
-import asyncio
 import logging
 from datetime import datetime
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 import numpy as np
 
-from ..utils.data_structures import AgentState, EvolutionStatistics, PerformanceMetrics
+from ..utils.data_structures import AgentState, EvolutionStatistics
 
 logger = logging.getLogger(__name__)
 
 
 class RealFitnessAnalyzer:
-    """
-    Real fitness analyzer that processes actual agent performance data.
+    """Real fitness analyzer that processes actual agent performance data.
     """
 
     def __init__(self):
@@ -45,10 +42,9 @@ class RealFitnessAnalyzer:
         }
 
     async def analyze_generation_fitness(
-        self, agents: List[AgentState]
+        self, agents: list[AgentState],
     ) -> EvolutionStatistics:
-        """
-        Analyze real fitness data for a generation of agents.
+        """Analyze real fitness data for a generation of agents.
         """
         self.logger.info(f"📊 Analyzing fitness for {len(agents)} agents")
 
@@ -85,7 +81,7 @@ class RealFitnessAnalyzer:
 
         # Calculate performance distribution
         performance_distribution = self._calculate_performance_distribution(
-            fitness_array
+            fitness_array,
         )
 
         # Calculate diversity metrics
@@ -169,8 +165,8 @@ class RealFitnessAnalyzer:
         return min(total_fitness, 1.0)
 
     def _calculate_performance_distribution(
-        self, fitness_scores: np.ndarray
-    ) -> Dict[str, int]:
+        self, fitness_scores: np.ndarray,
+    ) -> dict[str, int]:
         """Calculate performance distribution across quality levels."""
         distribution = {"excellent": 0, "good": 0, "average": 0, "poor": 0}
 
@@ -186,7 +182,7 @@ class RealFitnessAnalyzer:
 
         return distribution
 
-    def _calculate_diversity_score(self, agents: List[AgentState]) -> float:
+    def _calculate_diversity_score(self, agents: list[AgentState]) -> float:
         """Calculate diversity score based on agent characteristics."""
         if len(agents) <= 1:
             return 0.0
@@ -249,8 +245,8 @@ class RealFitnessAnalyzer:
         return min(total_diversity, 1.0)
 
     def _calculate_convergence_metrics(
-        self, fitness_scores: np.ndarray
-    ) -> Dict[str, float]:
+        self, fitness_scores: np.ndarray,
+    ) -> dict[str, float]:
         """Calculate convergence metrics for the population."""
         if len(fitness_scores) <= 1:
             return {"convergence_rate": 0.0, "stability": 0.0}
@@ -267,10 +263,9 @@ class RealFitnessAnalyzer:
         return {"convergence_rate": convergence_rate, "stability": max(stability, 0.0)}
 
     async def get_real_fitness_distribution(
-        self, agents: List[AgentState], n_samples: int = 100
+        self, agents: list[AgentState], n_samples: int = 100,
     ) -> np.ndarray:
-        """
-        Get real fitness distribution from actual agent data.
+        """Get real fitness distribution from actual agent data.
         Replaces the simulated fitness distribution.
         """
         if not agents:
@@ -301,16 +296,15 @@ class RealFitnessAnalyzer:
         # Use systematic sampling instead of random bootstrap
         step = len(fitness_array) / n_samples
         bootstrap_samples = np.array(
-            [fitness_array[int(i * step)] for i in range(n_samples)]
+            [fitness_array[int(i * step)] for i in range(n_samples)],
         )
 
         return bootstrap_samples
 
     async def compare_generations(
-        self, generation1: List[AgentState], generation2: List[AgentState]
-    ) -> Dict[str, Any]:
-        """
-        Compare fitness between two generations using real data.
+        self, generation1: list[AgentState], generation2: list[AgentState],
+    ) -> dict[str, Any]:
+        """Compare fitness between two generations using real data.
         """
         self.logger.info("📈 Comparing fitness between generations")
 

@@ -1,5 +1,4 @@
-"""
-🦊 Secure Authentication Service with itsdangerous Integration
+"""🦊 Secure Authentication Service with itsdangerous Integration
 
 This module provides a modern authentication service that uses itsdangerous
 for secure token operations by default, with fallback to traditional JWT
@@ -19,13 +18,11 @@ Version: 1.0.0
 
 import logging
 from datetime import datetime, timedelta
-from typing import Any, Dict, Optional, Tuple
+from typing import Any
 
 from app.auth.jwt_utils import (
     create_secure_token,
-    create_secure_token_sync,
     verify_secure_token,
-    verify_secure_token_sync,
 )
 from app.security.itsdangerous_utils import (
     create_api_key_token,
@@ -42,8 +39,7 @@ logger = logging.getLogger(__name__)
 
 
 class SecureAuthService:
-    """
-    Modern authentication service using itsdangerous for secure operations.
+    """Modern authentication service using itsdangerous for secure operations.
 
     This service provides:
     - Secure token creation and verification
@@ -60,12 +56,11 @@ class SecureAuthService:
     async def create_user_session(
         self,
         user_id: str,
-        user_data: Dict[str, Any],
-        ip_address: Optional[str] = None,
-        user_agent: Optional[str] = None,
-    ) -> Tuple[str, str]:
-        """
-        Create a user session with both access token and session token.
+        user_data: dict[str, Any],
+        ip_address: str | None = None,
+        user_agent: str | None = None,
+    ) -> tuple[str, str]:
+        """Create a user session with both access token and session token.
 
         Args:
             user_id: User ID
@@ -75,13 +70,14 @@ class SecureAuthService:
 
         Returns:
             Tuple of (access_token, session_token)
+
         """
         try:
             # Create access token using itsdangerous
             access_token = await create_secure_token(
                 {"user_id": user_id, "type": "access", **user_data},
                 expires_delta=timedelta(
-                    hours=self.config.itsdangerous_token_expiry_hours
+                    hours=self.config.itsdangerous_token_expiry_hours,
                 ),
             )
 
@@ -106,10 +102,9 @@ class SecureAuthService:
     async def verify_user_session(
         self,
         access_token: str,
-        session_token: Optional[str] = None,
-    ) -> Optional[Dict[str, Any]]:
-        """
-        Verify a user session using access token and optional session token.
+        session_token: str | None = None,
+    ) -> dict[str, Any] | None:
+        """Verify a user session using access token and optional session token.
 
         Args:
             access_token: Access token to verify
@@ -117,6 +112,7 @@ class SecureAuthService:
 
         Returns:
             User data if valid, None otherwise
+
         """
         try:
             # Verify access token
@@ -149,8 +145,7 @@ class SecureAuthService:
         user_id: str,
         email: str,
     ) -> str:
-        """
-        Create a password reset request token.
+        """Create a password reset request token.
 
         Args:
             user_id: User ID
@@ -158,12 +153,13 @@ class SecureAuthService:
 
         Returns:
             Password reset token
+
         """
         try:
             token = create_password_reset_token(
                 user_id,
                 expires_in=timedelta(
-                    hours=self.config.itsdangerous_password_reset_expiry_hours
+                    hours=self.config.itsdangerous_password_reset_expiry_hours,
                 ),
             )
 
@@ -177,21 +173,21 @@ class SecureAuthService:
     def verify_password_reset_request(
         self,
         token: str,
-    ) -> Optional[Dict[str, Any]]:
-        """
-        Verify a password reset request token.
+    ) -> dict[str, Any] | None:
+        """Verify a password reset request token.
 
         Args:
             token: Password reset token
 
         Returns:
             Token data if valid, None otherwise
+
         """
         try:
             data = verify_password_reset_token(token)
             if data:
                 logger.info(
-                    f"Verified password reset token for user {data.get('user_id')}"
+                    f"Verified password reset token for user {data.get('user_id')}",
                 )
             else:
                 logger.warning("Invalid password reset token provided")
@@ -206,8 +202,7 @@ class SecureAuthService:
         user_id: str,
         email: str,
     ) -> str:
-        """
-        Create an email verification request token.
+        """Create an email verification request token.
 
         Args:
             user_id: User ID
@@ -215,13 +210,14 @@ class SecureAuthService:
 
         Returns:
             Email verification token
+
         """
         try:
             token = create_email_verification_token(
                 user_id,
                 email,
                 expires_in=timedelta(
-                    hours=self.config.itsdangerous_email_verification_expiry_hours
+                    hours=self.config.itsdangerous_email_verification_expiry_hours,
                 ),
             )
 
@@ -230,28 +226,28 @@ class SecureAuthService:
 
         except Exception as e:
             logger.error(
-                f"Failed to create email verification token for {user_id}: {e}"
+                f"Failed to create email verification token for {user_id}: {e}",
             )
             raise
 
     def verify_email_verification_request(
         self,
         token: str,
-    ) -> Optional[Dict[str, Any]]:
-        """
-        Verify an email verification request token.
+    ) -> dict[str, Any] | None:
+        """Verify an email verification request token.
 
         Args:
             token: Email verification token
 
         Returns:
             Token data if valid, None otherwise
+
         """
         try:
             data = verify_email_verification_token(token)
             if data:
                 logger.info(
-                    f"Verified email verification token for user {data.get('user_id')}"
+                    f"Verified email verification token for user {data.get('user_id')}",
                 )
             else:
                 logger.warning("Invalid email verification token provided")
@@ -265,10 +261,9 @@ class SecureAuthService:
         self,
         user_id: str,
         permissions: list[str],
-        description: Optional[str] = None,
+        description: str | None = None,
     ) -> str:
-        """
-        Create an API key for a user.
+        """Create an API key for a user.
 
         Args:
             user_id: User ID
@@ -277,6 +272,7 @@ class SecureAuthService:
 
         Returns:
             API key token
+
         """
         try:
             token = create_api_key_token(
@@ -286,7 +282,7 @@ class SecureAuthService:
             )
 
             logger.info(
-                f"Created API key for user {user_id} with permissions: {permissions}"
+                f"Created API key for user {user_id} with permissions: {permissions}",
             )
             return token
 
@@ -297,10 +293,9 @@ class SecureAuthService:
     def verify_api_key(
         self,
         token: str,
-        required_permission: Optional[str] = None,
-    ) -> Optional[Dict[str, Any]]:
-        """
-        Verify an API key and check permissions.
+        required_permission: str | None = None,
+    ) -> dict[str, Any] | None:
+        """Verify an API key and check permissions.
 
         Args:
             token: API key token
@@ -308,6 +303,7 @@ class SecureAuthService:
 
         Returns:
             API key data if valid, None otherwise
+
         """
         try:
             data = verify_api_key_token(token)
@@ -320,7 +316,7 @@ class SecureAuthService:
                 permissions = data.get("permissions", [])
                 if required_permission not in permissions:
                     logger.warning(
-                        f"API key missing required permission: {required_permission}"
+                        f"API key missing required permission: {required_permission}",
                     )
                     return None
 
@@ -335,14 +331,14 @@ class SecureAuthService:
         self,
         user_id: str,
     ) -> int:
-        """
-        Revoke all sessions for a user.
+        """Revoke all sessions for a user.
 
         Args:
             user_id: User ID
 
         Returns:
             Number of sessions revoked
+
         """
         try:
             from app.security.session_encryption import revoke_user_sessions
@@ -358,15 +354,15 @@ class SecureAuthService:
     def get_user_sessions(
         self,
         user_id: str,
-    ) -> list[Dict[str, Any]]:
-        """
-        Get all active sessions for a user.
+    ) -> list[dict[str, Any]]:
+        """Get all active sessions for a user.
 
         Args:
             user_id: User ID
 
         Returns:
             List of session data
+
         """
         try:
             from app.security.session_encryption import get_session_encryption_manager
@@ -386,7 +382,7 @@ class SecureAuthService:
                         "ip_address": session.ip_address,
                         "user_agent": session.user_agent,
                         "data": session.data,
-                    }
+                    },
                 )
 
             logger.info(f"Retrieved {len(session_data)} sessions for user {user_id}")
@@ -398,7 +394,7 @@ class SecureAuthService:
 
 
 # Global instance
-_secure_auth_service: Optional[SecureAuthService] = None
+_secure_auth_service: SecureAuthService | None = None
 
 
 def get_secure_auth_service() -> SecureAuthService:
@@ -412,10 +408,10 @@ def get_secure_auth_service() -> SecureAuthService:
 # Convenience functions
 async def create_user_session(
     user_id: str,
-    user_data: Dict[str, Any],
-    ip_address: Optional[str] = None,
-    user_agent: Optional[str] = None,
-) -> Tuple[str, str]:
+    user_data: dict[str, Any],
+    ip_address: str | None = None,
+    user_agent: str | None = None,
+) -> tuple[str, str]:
     """Create a user session with secure tokens."""
     service = get_secure_auth_service()
     return await service.create_user_session(user_id, user_data, ip_address, user_agent)
@@ -423,8 +419,8 @@ async def create_user_session(
 
 async def verify_user_session(
     access_token: str,
-    session_token: Optional[str] = None,
-) -> Optional[Dict[str, Any]]:
+    session_token: str | None = None,
+) -> dict[str, Any] | None:
     """Verify a user session."""
     service = get_secure_auth_service()
     return await service.verify_user_session(access_token, session_token)
@@ -441,7 +437,7 @@ def create_password_reset_request(
 
 def verify_password_reset_request(
     token: str,
-) -> Optional[Dict[str, Any]]:
+) -> dict[str, Any] | None:
     """Verify a password reset request."""
     service = get_secure_auth_service()
     return service.verify_password_reset_request(token)
@@ -458,7 +454,7 @@ def create_email_verification_request(
 
 def verify_email_verification_request(
     token: str,
-) -> Optional[Dict[str, Any]]:
+) -> dict[str, Any] | None:
     """Verify an email verification request."""
     service = get_secure_auth_service()
     return service.verify_email_verification_request(token)
@@ -467,7 +463,7 @@ def verify_email_verification_request(
 def create_api_key(
     user_id: str,
     permissions: list[str],
-    description: Optional[str] = None,
+    description: str | None = None,
 ) -> str:
     """Create an API key."""
     service = get_secure_auth_service()
@@ -476,8 +472,8 @@ def create_api_key(
 
 def verify_api_key(
     token: str,
-    required_permission: Optional[str] = None,
-) -> Optional[Dict[str, Any]]:
+    required_permission: str | None = None,
+) -> dict[str, Any] | None:
     """Verify an API key."""
     service = get_secure_auth_service()
     return service.verify_api_key(token, required_permission)
@@ -486,13 +482,13 @@ def verify_api_key(
 # Export all functions
 __all__ = [
     "SecureAuthService",
-    "get_secure_auth_service",
-    "create_user_session",
-    "verify_user_session",
-    "create_password_reset_request",
-    "verify_password_reset_request",
-    "create_email_verification_request",
-    "verify_email_verification_request",
     "create_api_key",
+    "create_email_verification_request",
+    "create_password_reset_request",
+    "create_user_session",
+    "get_secure_auth_service",
     "verify_api_key",
+    "verify_email_verification_request",
+    "verify_password_reset_request",
+    "verify_user_session",
 ]

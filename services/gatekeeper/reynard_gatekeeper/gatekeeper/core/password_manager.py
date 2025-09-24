@@ -1,5 +1,4 @@
-"""
-Password management for the Gatekeeper authentication library.
+"""Password management for the Gatekeeper authentication library.
 
 This module provides a centralized interface for password hashing operations,
 supporting modern Argon2 hashing with optimal security parameters.
@@ -16,7 +15,7 @@ try:
 except ImportError as exc:
     raise ImportError(
         "argon2-cffi is required for password hashing. "
-        "Install with: pip install argon2-cffi"
+        "Install with: pip install argon2-cffi",
     ) from exc
 
 logger = logging.getLogger(__name__)
@@ -82,50 +81,49 @@ SECURITY_PARAMS = {
 
 
 class PasswordManager:
-    """
-    Password management class for secure password operations.
+    """Password management class for secure password operations.
 
     Provides methods for hashing, verifying, and validating passwords using
     modern Argon2 cryptographic algorithms.
     """
 
     def __init__(self, security_level: SecurityLevel = SecurityLevel.MEDIUM):
-        """
-        Initialize the password manager.
+        """Initialize the password manager.
 
         Args:
             security_level: The security level to use for password hashing
+
         """
         self.security_level = security_level
         self._password_hasher: PasswordHasher | None = None
 
     def get_security_level(self) -> SecurityLevel:
-        """
-        Get the current security level.
+        """Get the current security level.
 
         Returns:
             SecurityLevel: The configured security level
+
         """
         return self.security_level
 
     def get_argon2_params(self) -> dict[str, Any]:
-        """
-        Get Argon2 parameters based on the current security level.
+        """Get Argon2 parameters based on the current security level.
 
         Returns:
             dict[str, Any]: Argon2 parameters dictionary
+
         """
         return SECURITY_PARAMS[self.security_level].copy()
 
     def get_password_hasher(self) -> PasswordHasher:
-        """
-        Get the password hasher instance.
+        """Get the password hasher instance.
 
         Creates a password hasher with optimal Argon2 parameters based on
         the configured security level.
 
         Returns:
             PasswordHasher: Configured password hasher instance
+
         """
         if self._password_hasher is None:
             params = self.get_argon2_params()
@@ -149,8 +147,7 @@ class PasswordManager:
         return self._password_hasher
 
     def hash_password(self, password: str) -> str:
-        """
-        Hash a password using Argon2 with optimal security parameters.
+        """Hash a password using Argon2 with optimal security parameters.
 
         Args:
             password: Plain text password to hash
@@ -160,6 +157,7 @@ class PasswordManager:
 
         Raises:
             ValueError: If password is empty
+
         """
         if not password:
             raise ValueError("Password cannot be empty")
@@ -168,8 +166,7 @@ class PasswordManager:
         return password_hasher.hash(password)
 
     def verify_password(self, password: str, hashed_password: str) -> bool:
-        """
-        Verify a password against a hash.
+        """Verify a password against a hash.
 
         Supports Argon2 hashes only.
 
@@ -179,6 +176,7 @@ class PasswordManager:
 
         Returns:
             bool: True if password matches, False otherwise
+
         """
         if not password or not hashed_password:
             return False
@@ -200,10 +198,9 @@ class PasswordManager:
         return False
 
     def verify_and_update_password(
-        self, password: str, hashed_password: str
+        self, password: str, hashed_password: str,
     ) -> tuple[bool, str | None]:
-        """
-        Verify a password and return updated hash if needed.
+        """Verify a password and return updated hash if needed.
 
         This method will:
         1. Verify the password against the current hash
@@ -215,6 +212,7 @@ class PasswordManager:
 
         Returns:
             tuple[bool, str | None]: (is_valid, new_hash_if_needed)
+
         """
         if not password or not hashed_password:
             return False, None
@@ -244,14 +242,14 @@ class PasswordManager:
         return False, None
 
     def _needs_argon2_update(self, hashed_password: str) -> bool:
-        """
-        Check if an Argon2 hash needs updating due to parameter changes.
+        """Check if an Argon2 hash needs updating due to parameter changes.
 
         Args:
             hashed_password: Argon2 hash to check
 
         Returns:
             bool: True if hash should be updated
+
         """
         try:
             # Parse the hash to extract parameters
@@ -281,7 +279,7 @@ class PasswordManager:
             return bool(
                 memory_cost != current_params["memory_cost"]
                 or time_cost != current_params["time_cost"]
-                or parallelism != current_params["parallelism"]
+                or parallelism != current_params["parallelism"],
             )
 
         except Exception as e:
@@ -289,40 +287,40 @@ class PasswordManager:
             return True
 
     def is_argon2_hash(self, hashed_password: str) -> bool:
-        """
-        Check if a hash is in Argon2 format.
+        """Check if a hash is in Argon2 format.
 
         Args:
             hashed_password: Password hash to check
 
         Returns:
             bool: True if the hash is in Argon2 format
+
         """
         return hashed_password.startswith("$argon2")
 
     def get_hash_algorithm(self, hashed_password: str) -> str:
-        """
-        Determine the algorithm used for a password hash.
+        """Determine the algorithm used for a password hash.
 
         Args:
             hashed_password: Password hash to analyze
 
         Returns:
             str: Algorithm name ('argon2' or 'unknown')
+
         """
         if self.is_argon2_hash(hashed_password):
             return "argon2"
         return "unknown"
 
     def get_hash_variant(self, hashed_password: str) -> str | None:
-        """
-        Get the specific Argon2 variant used in a hash.
+        """Get the specific Argon2 variant used in a hash.
 
         Args:
             hashed_password: Argon2 hash to analyze
 
         Returns:
             Optional[str]: Variant name ('argon2id', 'argon2i', 'argon2d') or None
+
         """
         if not self.is_argon2_hash(hashed_password):
             return None
@@ -337,22 +335,21 @@ class PasswordManager:
         return None
 
     def generate_secure_salt(self, length: int = 16) -> bytes:
-        """
-        Generate a cryptographically secure salt.
+        """Generate a cryptographically secure salt.
 
         Args:
             length: Length of the salt in bytes
 
         Returns:
             bytes: Random salt
+
         """
         return secrets.token_bytes(length)
 
     def benchmark_hash_time(
-        self, password: str, iterations: int = 10
+        self, password: str, iterations: int = 10,
     ) -> dict[str, float]:
-        """
-        Benchmark hash performance for different security levels.
+        """Benchmark hash performance for different security levels.
 
         Args:
             password: Password to hash for benchmarking
@@ -360,6 +357,7 @@ class PasswordManager:
 
         Returns:
             dict[str, float]: Average time per hash for each security level
+
         """
         results = {}
 
@@ -387,14 +385,14 @@ class PasswordManager:
         return results
 
     def validate_password_strength(self, password: str) -> tuple[bool, str]:
-        """
-        Validate password strength according to modern security standards.
+        """Validate password strength according to modern security standards.
 
         Args:
             password: Password to validate
 
         Returns:
             tuple[bool, str]: (is_strong, reason)
+
         """
         if not password:
             return False, "Password cannot be empty"
@@ -442,14 +440,14 @@ class PasswordManager:
         return True, "Password meets strength requirements"
 
     def get_hash_info(self, hashed_password: str) -> dict[str, Any]:
-        """
-        Get detailed information about a password hash.
+        """Get detailed information about a password hash.
 
         Args:
             hashed_password: Password hash to analyze
 
         Returns:
             dict[str, Any]: Hash information including algorithm, parameters, etc.
+
         """
         info: dict[str, Any] = {
             "algorithm": self.get_hash_algorithm(hashed_password),

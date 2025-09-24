@@ -1,5 +1,4 @@
-"""
-Tests for NLWeb service layer.
+"""Tests for NLWeb service layer.
 
 This module tests the NLWeb service, router, and tool registry components
 in isolation to ensure proper functionality and error handling.
@@ -229,7 +228,7 @@ class TestNLWebService:
 
         request = NLWebRollbackRequest(enable=False, reason="Rollback no longer needed")
         result = await service.enable_rollback(
-            request
+            request,
         )  # Use enable_rollback with enable=False
 
         assert result.success is True
@@ -297,7 +296,7 @@ class TestNLWebRouter:
                     type="string",
                     description="Test parameter",
                     required=True,
-                )
+                ),
             ],
             examples=["test example", "run test tool"],
         )

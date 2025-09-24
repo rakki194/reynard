@@ -1,5 +1,4 @@
-"""
-Enhanced Error Handling System for Reynard Backend
+"""Enhanced Error Handling System for Reynard Backend
 
 This module provides comprehensive error handling and security-aware
 error responses to prevent information disclosure and improve reliability.
@@ -18,8 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 class SecurityErrorHandler:
-    """
-    Enhanced error handler that provides secure error responses
+    """Enhanced error handler that provides secure error responses
     and prevents information disclosure.
     """
 
@@ -66,13 +64,12 @@ class SecurityErrorHandler:
         request_id: str | None = None,
     ) -> JSONResponse:
         """Generate a standardized error response."""
-
         # Get user-friendly message
         message = self.error_codes.get(error_code, "An error occurred")
 
         # Build response
         response_data = {
-            "error": {"code": error_code, "message": message, "status": status_code}
+            "error": {"code": error_code, "message": message, "status": status_code},
         }
 
         # Add request ID if provided
@@ -89,10 +86,9 @@ class SecurityErrorHandler:
         return JSONResponse(status_code=status_code, content=response_data)
 
     def handle_validation_error(
-        self, error: RequestValidationError, request: Request
+        self, error: RequestValidationError, request: Request,
     ) -> JSONResponse:
         """Handle Pydantic validation errors."""
-
         # Extract validation errors
         errors = []
         for err in error.errors():
@@ -108,10 +104,9 @@ class SecurityErrorHandler:
         )
 
     def handle_http_exception(
-        self, error: HTTPException, request: Request
+        self, error: HTTPException, request: Request,
     ) -> JSONResponse:
         """Handle HTTP exceptions."""
-
         # Map status codes to error codes
         status_code_mapping = {
             400: "VALIDATION_INVALID_INPUT",
@@ -135,10 +130,9 @@ class SecurityErrorHandler:
         )
 
     def handle_starlette_exception(
-        self, error: StarletteHTTPException, request: Request
+        self, error: StarletteHTTPException, request: Request,
     ) -> JSONResponse:
         """Handle Starlette HTTP exceptions."""
-
         # Map status codes to error codes
         status_code_mapping = {
             400: "VALIDATION_INVALID_INPUT",
@@ -162,10 +156,9 @@ class SecurityErrorHandler:
         )
 
     def handle_generic_exception(
-        self, error: Exception, request: Request
+        self, error: Exception, request: Request,
     ) -> JSONResponse:
         """Handle generic exceptions."""
-
         # Log the full error for debugging
         logger.error(f"Unhandled exception: {error}", exc_info=True)
 
@@ -229,7 +222,7 @@ class SecurityErrorHandler:
 
         # Remove email addresses
         text = re.sub(
-            r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b", "[EMAIL]", text
+            r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b", "[EMAIL]", text,
         )
 
         # Remove tokens and keys
@@ -262,7 +255,7 @@ error_handler = SecurityErrorHandler()
 
 
 async def validation_exception_handler(
-    request: Request, exc: RequestValidationError
+    request: Request, exc: RequestValidationError,
 ) -> JSONResponse:
     """Handle Pydantic validation errors."""
     return error_handler.handle_validation_error(exc, request)
@@ -274,7 +267,7 @@ async def http_exception_handler(request: Request, exc: HTTPException) -> JSONRe
 
 
 async def starlette_exception_handler(
-    request: Request, exc: StarletteHTTPException
+    request: Request, exc: StarletteHTTPException,
 ) -> JSONResponse:
     """Handle Starlette HTTP exceptions."""
     return error_handler.handle_starlette_exception(exc, request)

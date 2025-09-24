@@ -1,5 +1,4 @@
-"""
-PHEONIX Project Tracker
+"""PHEONIX Project Tracker
 
 Dedicated tracker for monitoring PHEONIX and PHEONIX Control project activities,
 evolutionary knowledge distillation experiments, and related research initiatives.
@@ -8,13 +7,12 @@ This module tracks broader project activities separate from Success-Advisor-8's
 direct genome information collection.
 """
 
-import json
 import logging
 import re
 from dataclasses import asdict, dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +36,7 @@ class PhoenixProjectActivity:
     version: str | None = None
     file_path: str | None = None
     line_number: int | None = None
-    context: Dict[str, Any] = None
+    context: dict[str, Any] = None
 
     def __post_init__(self):
         if self.context is None:
@@ -56,9 +54,9 @@ class ResearchInitiative:
     status: str  # 'active', 'completed', 'paused', 'planning'
     start_date: datetime
     end_date: datetime | None = None
-    related_activities: List[str] = None
-    key_findings: List[str] = None
-    publications: List[str] = None
+    related_activities: list[str] = None
+    key_findings: list[str] = None
+    publications: list[str] = None
 
     def __post_init__(self):
         if self.related_activities is None:
@@ -79,12 +77,12 @@ class ExperimentResult:
         str  # 'agent_reconstruction', 'genetic_compatibility', 'knowledge_distillation'
     )
     success_rate: float
-    performance_metrics: Dict[str, float]
+    performance_metrics: dict[str, float]
     statistical_significance: float
     sample_size: int
     conducted_date: datetime
     results_summary: str
-    key_insights: List[str] = None
+    key_insights: list[str] = None
 
     def __post_init__(self):
         if self.key_insights is None:
@@ -92,20 +90,19 @@ class ExperimentResult:
 
 
 class PhoenixProjectTracker:
-    """
-    Dedicated tracker for PHEONIX project activities and research initiatives.
+    """Dedicated tracker for PHEONIX project activities and research initiatives.
 
     Monitors evolutionary knowledge distillation, agent breeding experiments,
     and related research activities separate from Success-Advisor-8's genome.
     """
 
     def __init__(self, codebase_path: str, changelog_path: str = "CHANGELOG.md"):
-        """
-        Initialize the PHEONIX project tracker.
+        """Initialize the PHEONIX project tracker.
 
         Args:
             codebase_path: Path to the codebase root
             changelog_path: Path to CHANGELOG.md file
+
         """
         self.codebase_path = Path(codebase_path)
         if Path(changelog_path).is_absolute():
@@ -113,9 +110,9 @@ class PhoenixProjectTracker:
         else:
             self.changelog_path = self.codebase_path / changelog_path
 
-        self.phoenix_activities: List[PhoenixProjectActivity] = []
-        self.research_initiatives: List[ResearchInitiative] = []
-        self.experiment_results: List[ExperimentResult] = []
+        self.phoenix_activities: list[PhoenixProjectActivity] = []
+        self.research_initiatives: list[ResearchInitiative] = []
+        self.experiment_results: list[ExperimentResult] = []
 
         # PHEONIX project patterns
         self.phoenix_patterns = {
@@ -188,12 +185,12 @@ class PhoenixProjectTracker:
             ],
         }
 
-    async def collect_phoenix_activities(self) -> List[PhoenixProjectActivity]:
-        """
-        Collect PHEONIX project activities from CHANGELOG.
+    async def collect_phoenix_activities(self) -> list[PhoenixProjectActivity]:
+        """Collect PHEONIX project activities from CHANGELOG.
 
         Returns:
             List of PHEONIX project activities
+
         """
         if not self.changelog_path.exists():
             logger.warning("CHANGELOG not found at %s", self.changelog_path)
@@ -219,7 +216,7 @@ class PhoenixProjectTracker:
             # Check for PHEONIX project activities
             if self._is_phoenix_activity(line):
                 activity = await self._extract_phoenix_activity(
-                    line, i, current_version, current_date
+                    line, i, current_version, current_date,
                 )
                 if activity:
                     activities.append(activity)
@@ -243,7 +240,7 @@ class PhoenixProjectTracker:
         return False
 
     async def _extract_phoenix_activity(
-        self, line: str, line_number: int, version: str | None, date: datetime | None
+        self, line: str, line_number: int, version: str | None, date: datetime | None,
     ) -> PhoenixProjectActivity | None:
         """Extract PHEONIX activity from changelog line."""
         try:
@@ -282,7 +279,7 @@ class PhoenixProjectTracker:
 
         except Exception:
             logger.exception(
-                "Failed to extract PHEONIX activity from line %d", line_number
+                "Failed to extract PHEONIX activity from line %d", line_number,
             )
             return None
 
@@ -374,7 +371,7 @@ class PhoenixProjectTracker:
 
         return "medium"
 
-    async def analyze_research_initiatives(self) -> List[ResearchInitiative]:
+    async def analyze_research_initiatives(self) -> list[ResearchInitiative]:
         """Analyze research initiatives from collected activities."""
         initiatives = []
 
@@ -417,8 +414,8 @@ class PhoenixProjectTracker:
         return initiatives
 
     def _extract_key_findings(
-        self, activities: List[PhoenixProjectActivity]
-    ) -> List[str]:
+        self, activities: list[PhoenixProjectActivity],
+    ) -> list[str]:
         """Extract key findings from activities."""
         findings = []
 
@@ -435,7 +432,7 @@ class PhoenixProjectTracker:
 
         return list(set(findings))  # Remove duplicates
 
-    async def generate_phoenix_summary(self) -> Dict[str, Any]:
+    async def generate_phoenix_summary(self) -> dict[str, Any]:
         """Generate comprehensive PHEONIX project summary."""
         await self.collect_phoenix_activities()
         await self.analyze_research_initiatives()
@@ -447,16 +444,16 @@ class PhoenixProjectTracker:
                 a
                 for a in self.phoenix_activities
                 if a.project_type == "phoenix_framework"
-            ]
+            ],
         )
         control_activities = len(
-            [a for a in self.phoenix_activities if a.project_type == "phoenix_control"]
+            [a for a in self.phoenix_activities if a.project_type == "phoenix_control"],
         )
         research_activities = len(
-            [a for a in self.phoenix_activities if a.activity_category == "research"]
+            [a for a in self.phoenix_activities if a.activity_category == "research"],
         )
         experiment_activities = len(
-            [a for a in self.phoenix_activities if a.activity_category == "experiment"]
+            [a for a in self.phoenix_activities if a.activity_category == "experiment"],
         )
 
         # Analyze research areas
@@ -470,10 +467,10 @@ class PhoenixProjectTracker:
         # Analyze impact distribution
         impact_distribution = {
             "high": len(
-                [a for a in self.phoenix_activities if a.impact_level == "high"]
+                [a for a in self.phoenix_activities if a.impact_level == "high"],
             ),
             "medium": len(
-                [a for a in self.phoenix_activities if a.impact_level == "medium"]
+                [a for a in self.phoenix_activities if a.impact_level == "medium"],
             ),
             "low": len([a for a in self.phoenix_activities if a.impact_level == "low"]),
         }
@@ -513,7 +510,7 @@ class PhoenixProjectTracker:
             },
         }
 
-    def _compile_research_findings(self) -> List[str]:
+    def _compile_research_findings(self) -> list[str]:
         """Compile key research findings from all initiatives."""
         all_findings = []
         for initiative in self.research_initiatives:
@@ -530,12 +527,11 @@ class PhoenixProjectTracker:
 
         if len(recent_activities) > 5:
             return "high"
-        elif len(recent_activities) > 2:
+        if len(recent_activities) > 2:
             return "medium"
-        else:
-            return "low"
+        return "low"
 
-    def _identify_primary_focus_areas(self) -> List[str]:
+    def _identify_primary_focus_areas(self) -> list[str]:
         """Identify primary focus areas based on activity frequency."""
         area_frequency = {}
         for activity in self.phoenix_activities:
@@ -553,11 +549,11 @@ class PhoenixProjectTracker:
             return 0.0
 
         completed_initiatives = len(
-            [i for i in self.research_initiatives if i.status == "completed"]
+            [i for i in self.research_initiatives if i.status == "completed"],
         )
         return completed_initiatives / len(self.research_initiatives)
 
-    def _assess_experimental_progress(self) -> Dict[str, Any]:
+    def _assess_experimental_progress(self) -> dict[str, Any]:
         """Assess experimental progress across different areas."""
         experiment_activities = [
             a for a in self.phoenix_activities if a.activity_category == "experiment"

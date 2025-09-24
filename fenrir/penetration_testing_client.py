@@ -1,5 +1,4 @@
-"""
-Penetration Testing Client for Fenrir Suite
+"""Penetration Testing Client for Fenrir Suite
 
 This client coordinates with the Reynard backend to manage penetration testing
 sessions, ensuring that auto-reloading is disabled during security testing.
@@ -21,8 +20,7 @@ import requests
 
 
 class PenetrationTestingClient:
-    """
-    Client for coordinating penetration testing sessions with the backend.
+    """Client for coordinating penetration testing sessions with the backend.
 
     This client manages the penetration testing mode state and ensures
     that the backend doesn't auto-reload during security testing sessions.
@@ -37,21 +35,21 @@ class PenetrationTestingClient:
 
         # Set fenrir user agent for bypass detection
         self.session.headers.update(
-            {"User-Agent": "BlackHat Exploit Suite", "Content-Type": "application/json"}
+            {"User-Agent": "BlackHat Exploit Suite", "Content-Type": "application/json"},
         )
 
         # Register cleanup on exit
         atexit.register(self.cleanup)
 
     def activate_penetration_testing(self, timeout_minutes: int = 30) -> bool:
-        """
-        Activate penetration testing mode on the backend.
+        """Activate penetration testing mode on the backend.
 
         Args:
             timeout_minutes: Maximum duration for the session
 
         Returns:
             bool: True if successfully activated
+
         """
         if self.is_active:
             print("🦊 Penetration testing mode already active")
@@ -89,11 +87,11 @@ class PenetrationTestingClient:
             return False
 
     def deactivate_penetration_testing(self) -> bool:
-        """
-        Deactivate penetration testing mode on the backend.
+        """Deactivate penetration testing mode on the backend.
 
         Returns:
             bool: True if successfully deactivated
+
         """
         if not self.is_active or not self.session_id:
             return True
@@ -119,15 +117,15 @@ class PenetrationTestingClient:
             return False
 
     def get_status(self) -> dict[str, Any] | None:
-        """
-        Get current penetration testing status from the backend.
+        """Get current penetration testing status from the backend.
 
         Returns:
             dict: Status information or None if error
+
         """
         try:
             response = self.session.get(
-                f"{self.base_url}/api/penetration-testing/status", timeout=10
+                f"{self.base_url}/api/penetration-testing/status", timeout=10,
             )
 
             if response.status_code == 200:
@@ -140,11 +138,11 @@ class PenetrationTestingClient:
             return None
 
     def is_backend_ready(self) -> bool:
-        """
-        Check if the backend is ready and responsive.
+        """Check if the backend is ready and responsive.
 
         Returns:
             bool: True if backend is ready
+
         """
         try:
             response = self.session.get(f"{self.base_url}/", timeout=5)
@@ -153,14 +151,14 @@ class PenetrationTestingClient:
             return False
 
     def wait_for_backend(self, max_wait_seconds: int = 30) -> bool:
-        """
-        Wait for the backend to become ready.
+        """Wait for the backend to become ready.
 
         Args:
             max_wait_seconds: Maximum time to wait
 
         Returns:
             bool: True if backend becomes ready
+
         """
         print("🦊 Waiting for backend to be ready...")
 
@@ -184,14 +182,14 @@ class PenetrationTestingClient:
 
     @contextmanager
     def penetration_testing_session(self, timeout_minutes: int = 30):
-        """
-        Context manager for penetration testing sessions.
+        """Context manager for penetration testing sessions.
 
         Args:
             timeout_minutes: Maximum duration for the session
 
         Yields:
             PenetrationTestingClient: The client instance
+
         """
         try:
             # Wait for backend to be ready
@@ -222,25 +220,25 @@ def get_penetration_client() -> PenetrationTestingClient:
 
 
 def activate_penetration_testing(timeout_minutes: int = 30) -> bool:
-    """
-    Activate penetration testing mode.
+    """Activate penetration testing mode.
 
     Args:
         timeout_minutes: Maximum duration for the session
 
     Returns:
         bool: True if successfully activated
+
     """
     client = get_penetration_client()
     return client.activate_penetration_testing(timeout_minutes)
 
 
 def deactivate_penetration_testing() -> bool:
-    """
-    Deactivate penetration testing mode.
+    """Deactivate penetration testing mode.
 
     Returns:
         bool: True if successfully deactivated
+
     """
     client = get_penetration_client()
     return client.deactivate_penetration_testing()
@@ -248,14 +246,14 @@ def deactivate_penetration_testing() -> bool:
 
 @contextmanager
 def penetration_testing_session(timeout_minutes: int = 30):
-    """
-    Context manager for penetration testing sessions.
+    """Context manager for penetration testing sessions.
 
     Args:
         timeout_minutes: Maximum duration for the session
 
     Yields:
         PenetrationTestingClient: The client instance
+
     """
     client = get_penetration_client()
     with client.penetration_testing_session(timeout_minutes) as session:

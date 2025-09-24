@@ -1,5 +1,4 @@
-"""
-Tests for embedding visualization service.
+"""Tests for embedding visualization service.
 
 This module tests the EmbeddingVisualizationService class and its methods
 for dimensionality reduction, quality analysis, and caching functionality.
@@ -74,7 +73,7 @@ class TestEmbeddingVisualizationService:
         """Test successful PCA reduction."""
         with patch.object(service, "_load_embeddings", return_value=sample_embeddings):
             with patch(
-                "app.services.embedding_visualization_service.get_dimensionality_reducer"
+                "app.services.embedding_visualization_service.get_dimensionality_reducer",
             ) as mock_get_reducer:
                 mock_reducer = MagicMock()
                 mock_reducer.reduce.return_value = (
@@ -85,7 +84,7 @@ class TestEmbeddingVisualizationService:
                 mock_get_reducer.return_value = mock_reducer
 
                 result = await service.perform_reduction(
-                    method="pca", parameters={"n_components": 2}
+                    method="pca", parameters={"n_components": 2},
                 )
 
                 assert isinstance(result, EmbeddingReductionResult)
@@ -101,7 +100,7 @@ class TestEmbeddingVisualizationService:
         """Test reduction with invalid method."""
         with patch.object(service, "_load_embeddings", return_value=sample_embeddings):
             result = await service.perform_reduction(
-                method="invalid_method", parameters={}
+                method="invalid_method", parameters={},
             )
 
             assert isinstance(result, EmbeddingReductionResult)
@@ -114,7 +113,7 @@ class TestEmbeddingVisualizationService:
         """Test reduction with no embeddings."""
         with patch.object(service, "_load_embeddings", return_value=np.array([])):
             result = await service.perform_reduction(
-                method="pca", parameters={"n_components": 2}
+                method="pca", parameters={"n_components": 2},
             )
 
             assert isinstance(result, EmbeddingReductionResult)
@@ -278,13 +277,13 @@ class TestEmbeddingVisualizationService:
     def test_cache_key_generation(self, service):
         """Test cache key generation."""
         key1 = service._generate_cache_key(
-            "pca", {"category": "text"}, {"n_components": 2}, 1000, 42
+            "pca", {"category": "text"}, {"n_components": 2}, 1000, 42,
         )
         key2 = service._generate_cache_key(
-            "pca", {"category": "text"}, {"n_components": 2}, 1000, 42
+            "pca", {"category": "text"}, {"n_components": 2}, 1000, 42,
         )
         key3 = service._generate_cache_key(
-            "tsne", {"category": "text"}, {"n_components": 2}, 1000, 42
+            "tsne", {"category": "text"}, {"n_components": 2}, 1000, 42,
         )
 
         # Same parameters should generate same key
@@ -298,14 +297,14 @@ class TestEmbeddingVisualizationService:
         """Test error handling in perform_reduction."""
         with patch.object(service, "_load_embeddings", return_value=sample_embeddings):
             with patch(
-                "app.services.embedding_visualization_service.get_dimensionality_reducer"
+                "app.services.embedding_visualization_service.get_dimensionality_reducer",
             ) as mock_get_reducer:
                 mock_reducer = MagicMock()
                 mock_reducer.reduce.side_effect = Exception("Test error")
                 mock_get_reducer.return_value = mock_reducer
 
                 result = await service.perform_reduction(
-                    method="pca", parameters={"n_components": 2}
+                    method="pca", parameters={"n_components": 2},
                 )
 
                 assert isinstance(result, EmbeddingReductionResult)

@@ -1,5 +1,4 @@
-"""
-ECS World Package
+"""ECS World Package
 
 World simulation and management for the ECS system.
 """

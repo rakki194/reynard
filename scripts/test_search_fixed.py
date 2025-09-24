@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""
-Fixed Search System Test
+"""Fixed Search System Test
 =======================
 
 Test script with proper timeout handling to prevent hanging.
 """
 
 import asyncio
+import builtins
 import signal
 import sys
 from pathlib import Path
@@ -27,7 +27,6 @@ sys.path.insert(0, str(agent_naming_dir))
 class TimeoutError(Exception):
     """Custom timeout error."""
 
-    pass
 
 
 def timeout_handler(signum, frame):
@@ -39,7 +38,7 @@ async def test_with_timeout(coro, timeout_seconds=10):
     """Run a coroutine with timeout."""
     try:
         return await asyncio.wait_for(coro, timeout=timeout_seconds)
-    except asyncio.TimeoutError:
+    except builtins.TimeoutError:
         print(f"   ⏰ Test timed out after {timeout_seconds} seconds")
         return None
 
@@ -72,7 +71,7 @@ async def test_search_service():
         # Test 3: Query suggestions with timeout
         print("\n3. Testing query suggestions...")
         suggestions = await test_with_timeout(
-            service.get_query_suggestions("authentication", max_suggestions=3), 10
+            service.get_query_suggestions("authentication", max_suggestions=3), 10,
         )
         if suggestions:
             print(f"   Suggestions success: {suggestions.get('success', False)}")
@@ -82,7 +81,7 @@ async def test_search_service():
         # Test 4: Smart search with timeout
         print("\n4. Testing smart search...")
         search_result = await test_with_timeout(
-            service.smart_search("authentication", max_results=5), 15
+            service.smart_search("authentication", max_results=5), 15,
         )
         if search_result:
             print(f"   Smart search success: {search_result.get('success', False)}")
@@ -104,7 +103,6 @@ async def test_mcp_imports():
     try:
         # Test agent naming import
         print("\n1. Testing agent naming import...")
-        from reynard_agent_naming.agent_naming import AgentNameManager
 
         print("   ✅ Agent naming import successful")
 
@@ -170,7 +168,7 @@ async def main():
 
         overall_success = search_success and mcp_success
         print(
-            f"\nOverall: {'✅ ALL TESTS PASSED' if overall_success else '❌ SOME TESTS FAILED'}"
+            f"\nOverall: {'✅ ALL TESTS PASSED' if overall_success else '❌ SOME TESTS FAILED'}",
         )
 
         return overall_success

@@ -3,7 +3,7 @@
 import re
 
 # Read the test file
-with open("test_advanced_email_routes.py", "r") as f:
+with open("test_advanced_email_routes.py") as f:
     content = f.read()
 
 # First, update all function signatures that still use the old pattern
@@ -28,5 +28,5 @@ with open("test_advanced_email_routes.py", "w") as f:
 
 print("Updated all authentication patterns in test file")
 print(
-    "Note: You still need to manually add 'finally: app.dependency_overrides.clear()' blocks"
+    "Note: You still need to manually add 'finally: app.dependency_overrides.clear()' blocks",
 )

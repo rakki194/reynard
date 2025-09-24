@@ -1,16 +1,11 @@
-"""
-Tests for AI Email Response Service.
+"""Tests for AI Email Response Service.
 
 This module contains comprehensive tests for the AI-powered email response functionality.
 """
 
-import asyncio
-import json
 import tempfile
-import uuid
 from datetime import datetime
-from pathlib import Path
-from unittest.mock import AsyncMock, MagicMock, Mock, patch
+from unittest.mock import AsyncMock, patch
 
 import pytest
 import pytest_asyncio
@@ -65,9 +60,9 @@ class TestAIEmailResponseService:
             "choices": [
                 {
                     "message": {
-                        "content": "Thank you for your inquiry. The project is currently on track and expected to be completed by the end of next week. I'll provide you with a detailed status report shortly."
-                    }
-                }
+                        "content": "Thank you for your inquiry. The project is currently on track and expected to be completed by the end of next week. I'll provide you with a detailed status report shortly.",
+                    },
+                },
             ],
             "usage": {
                 "total_tokens": 150,
@@ -82,8 +77,8 @@ class TestAIEmailResponseService:
         return {
             "content": [
                 {
-                    "text": "Thank you for reaching out. The project is progressing well and should be completed within the expected timeframe. I'll send you a comprehensive update by tomorrow."
-                }
+                    "text": "Thank you for reaching out. The project is progressing well and should be completed within the expected timeframe. I'll send you a comprehensive update by tomorrow.",
+                },
             ],
             "usage": {"input_tokens": 120, "output_tokens": 45},
         }
@@ -108,7 +103,7 @@ class TestAIEmailResponseService:
         """Test AI service initialization without API access."""
         with tempfile.TemporaryDirectory() as temp_dir:
             config = AIResponseConfig(
-                default_model="gpt-3.5-turbo", auto_generate_responses=False
+                default_model="gpt-3.5-turbo", auto_generate_responses=False,
             )
             service = AIEmailResponseService(config=config, data_dir=temp_dir)
 
@@ -277,7 +272,7 @@ class TestAIEmailResponseService:
 
     @pytest.mark.asyncio
     async def test_generate_response_openai_success(
-        self, ai_service, sample_email_data, mock_openai_response
+        self, ai_service, sample_email_data, mock_openai_response,
     ):
         """Test successful response generation with OpenAI."""
         # Create email context
@@ -289,7 +284,7 @@ class TestAIEmailResponseService:
         ai_service.openai_client = mock_client
 
         response = await ai_service.generate_response(
-            email_context=context, response_type="reply", model="gpt-3.5-turbo"
+            email_context=context, response_type="reply", model="gpt-3.5-turbo",
         )
 
         assert isinstance(response, AIResponse)
@@ -312,7 +307,7 @@ class TestAIEmailResponseService:
 
     @pytest.mark.asyncio
     async def test_generate_response_anthropic_success(
-        self, ai_service, sample_email_data, mock_anthropic_response
+        self, ai_service, sample_email_data, mock_anthropic_response,
     ):
         """Test successful response generation with Anthropic."""
         # Create email context
@@ -359,16 +354,16 @@ class TestAIEmailResponseService:
             "choices": [
                 {
                     "message": {
-                        "content": "Thank you for your email. I'll get back to you soon."
-                    }
-                }
+                        "content": "Thank you for your email. I'll get back to you soon.",
+                    },
+                },
             ],
             "usage": {"total_tokens": 50, "prompt_tokens": 30, "completion_tokens": 20},
         }
         ai_service.openai_client = mock_client
 
         response = await ai_service.generate_response(
-            email_context=context, response_type="auto_reply"
+            email_context=context, response_type="auto_reply",
         )
 
         assert response.response_type == "auto_reply"
@@ -384,14 +379,14 @@ class TestAIEmailResponseService:
         mock_client = AsyncMock()
         mock_client.chat.completions.create.return_value = {
             "choices": [
-                {"message": {"content": "Following up on our previous conversation..."}}
+                {"message": {"content": "Following up on our previous conversation..."}},
             ],
             "usage": {"total_tokens": 60, "prompt_tokens": 40, "completion_tokens": 20},
         }
         ai_service.openai_client = mock_client
 
         response = await ai_service.generate_response(
-            email_context=context, response_type="follow_up"
+            email_context=context, response_type="follow_up",
         )
 
         assert response.response_type == "follow_up"
@@ -399,7 +394,7 @@ class TestAIEmailResponseService:
 
     @pytest.mark.asyncio
     async def test_generate_response_custom_instructions(
-        self, ai_service, sample_email_data
+        self, ai_service, sample_email_data,
     ):
         """Test response generation with custom instructions."""
         # Create email context
@@ -409,7 +404,7 @@ class TestAIEmailResponseService:
         mock_client = AsyncMock()
         mock_client.chat.completions.create.return_value = {
             "choices": [
-                {"message": {"content": "Custom response based on instructions"}}
+                {"message": {"content": "Custom response based on instructions"}},
             ],
             "usage": {"total_tokens": 70, "prompt_tokens": 50, "completion_tokens": 20},
         }
@@ -432,7 +427,7 @@ class TestAIEmailResponseService:
 
     @pytest.mark.asyncio
     async def test_generate_response_no_api_available(
-        self, ai_service, sample_email_data
+        self, ai_service, sample_email_data,
     ):
         """Test response generation when no API is available."""
         # Create email context
@@ -444,7 +439,7 @@ class TestAIEmailResponseService:
 
         with pytest.raises(ValueError, match="No AI service available"):
             await ai_service.generate_response(
-                email_context=context, response_type="reply"
+                email_context=context, response_type="reply",
             )
 
     @pytest.mark.asyncio
@@ -460,7 +455,7 @@ class TestAIEmailResponseService:
 
         with pytest.raises(Exception, match="API Error"):
             await ai_service.generate_response(
-                email_context=context, response_type="reply"
+                email_context=context, response_type="reply",
             )
 
     @pytest.mark.asyncio
@@ -479,12 +474,12 @@ class TestAIEmailResponseService:
 
         # Generate first response
         response1 = await ai_service.generate_response(
-            email_context=context, response_type="reply"
+            email_context=context, response_type="reply",
         )
 
         # Generate second response (should use cache)
         response2 = await ai_service.generate_response(
-            email_context=context, response_type="reply"
+            email_context=context, response_type="reply",
         )
 
         # Should be the same response due to caching
@@ -510,12 +505,12 @@ class TestAIEmailResponseService:
 
         # Generate a response
         response = await ai_service.generate_response(
-            email_context=context, response_type="reply"
+            email_context=context, response_type="reply",
         )
 
         # Get response history
         history = await ai_service.get_response_history(
-            email_address=sample_email_data["sender_email"], limit=10
+            email_address=sample_email_data["sender_email"], limit=10,
         )
 
         assert isinstance(history, list)
@@ -540,12 +535,12 @@ class TestAIEmailResponseService:
             email_data["message_id"] = f"msg_{i}"
             context = await ai_service.analyze_email_context(email_data)
             await ai_service.generate_response(
-                email_context=context, response_type="reply"
+                email_context=context, response_type="reply",
             )
 
         # Get limited history
         history = await ai_service.get_response_history(
-            email_address=sample_email_data["sender_email"], limit=3
+            email_address=sample_email_data["sender_email"], limit=3,
         )
 
         assert len(history) == 3
@@ -554,7 +549,7 @@ class TestAIEmailResponseService:
     async def test_get_response_history_no_responses(self, ai_service):
         """Test getting response history when no responses exist."""
         history = await ai_service.get_response_history(
-            email_address="nonexistent@example.com", limit=10
+            email_address="nonexistent@example.com", limit=10,
         )
 
         assert history == []
@@ -799,7 +794,7 @@ class TestAIEmailResponseService:
 
         # Create new service instance to test loading
         new_service = AIEmailResponseService(
-            config=ai_service.config, data_dir=ai_service.data_dir
+            config=ai_service.config, data_dir=ai_service.data_dir,
         )
 
         # Verify response was loaded
@@ -836,7 +831,7 @@ class TestAIEmailResponseService:
 
         # Create new service instance to test loading
         new_service = AIEmailResponseService(
-            config=ai_service.config, data_dir=ai_service.data_dir
+            config=ai_service.config, data_dir=ai_service.data_dir,
         )
 
         # Verify context was loaded
@@ -853,26 +848,26 @@ class TestAIEmailResponseService:
         """Test error handling in various methods."""
         # Test with invalid data
         with patch.object(
-            ai_service, "_save_responses", side_effect=Exception("Save error")
+            ai_service, "_save_responses", side_effect=Exception("Save error"),
         ):
             # Should not raise exception
             ai_service._save_responses()
 
         with patch.object(
-            ai_service, "_save_contexts", side_effect=Exception("Save error")
+            ai_service, "_save_contexts", side_effect=Exception("Save error"),
         ):
             # Should not raise exception
             ai_service._save_contexts()
 
         with patch.object(
-            ai_service, "_load_responses", side_effect=Exception("Load error")
+            ai_service, "_load_responses", side_effect=Exception("Load error"),
         ):
             # Should handle gracefully
             ai_service._load_responses()
             assert ai_service.responses == {}
 
         with patch.object(
-            ai_service, "_load_contexts", side_effect=Exception("Load error")
+            ai_service, "_load_contexts", side_effect=Exception("Load error"),
         ):
             # Should handle gracefully
             ai_service._load_contexts()

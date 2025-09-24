@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Comprehensive Test Runner for Advanced Email Features.
+"""Comprehensive Test Runner for Advanced Email Features.
 
 This script runs all email-related tests and provides detailed reporting.
 """
@@ -17,7 +16,6 @@ import pytest
 
 def run_email_tests():
     """Run all email-related tests with comprehensive reporting."""
-
     print("🦊 Reynard Advanced Email Features Test Suite")
     print("=" * 60)
     print(f"Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
@@ -91,7 +89,6 @@ def run_email_tests():
 
 def generate_summary_report(test_dir, duration, exit_code):
     """Generate a summary report of test execution."""
-
     report_data = {
         "test_suite": "Reynard Advanced Email Features",
         "execution_time": datetime.now().isoformat(),
@@ -136,7 +133,6 @@ def generate_summary_report(test_dir, duration, exit_code):
 
 def main():
     """Main entry point for the test runner."""
-
     # Change to the test directory
     test_dir = Path(__file__).parent
     os.chdir(test_dir)

@@ -1,5 +1,4 @@
-"""
-Service Initialization Module for Reynard Backend
+"""Service Initialization Module for Reynard Backend
 
 This module contains all service initialization functions for the Reynard backend,
 implementing the service-oriented architecture pattern with proper error handling
@@ -37,8 +36,7 @@ logger = logging.getLogger(__name__)
 
 
 async def init_gatekeeper_service(service_config: dict[str, Any]) -> bool:
-    """
-    Initialize the Gatekeeper authentication service.
+    """Initialize the Gatekeeper authentication service.
 
     This function sets up the JWT-based authentication system, including token
     validation, user management, and authorization middleware. The service is
@@ -53,6 +51,7 @@ async def init_gatekeeper_service(service_config: dict[str, Any]) -> bool:
 
     Raises:
         Exception: Logged and returned as False for graceful error handling.
+
     """
     try:
         auth_manager = await initialize_gatekeeper()
@@ -65,8 +64,7 @@ async def init_gatekeeper_service(service_config: dict[str, Any]) -> bool:
 
 
 async def init_comfy_service(service_config: dict[str, Any]) -> bool:
-    """
-    Initialize the ComfyUI service for image generation and processing.
+    """Initialize the ComfyUI service for image generation and processing.
 
     This function establishes the connection to the ComfyUI backend service,
     configures image generation workflows, and sets up the necessary API
@@ -82,6 +80,7 @@ async def init_comfy_service(service_config: dict[str, Any]) -> bool:
 
     Raises:
         Exception: Logged and returned as False for graceful error handling.
+
     """
     try:
         initialize_comfy_service(service_config)
@@ -93,8 +92,7 @@ async def init_comfy_service(service_config: dict[str, Any]) -> bool:
 
 
 async def init_nlweb_service(service_config: dict[str, Any]) -> bool:
-    """
-    Initialize the NLWeb service for natural language web processing.
+    """Initialize the NLWeb service for natural language web processing.
 
     This function sets up the NLWeb service which provides advanced natural
     language processing capabilities for web content, including text analysis,
@@ -110,6 +108,7 @@ async def init_nlweb_service(service_config: dict[str, Any]) -> bool:
 
     Raises:
         Exception: Logged and returned as False for graceful error handling.
+
     """
     try:
         initialize_nlweb_service(service_config)
@@ -121,8 +120,7 @@ async def init_nlweb_service(service_config: dict[str, Any]) -> bool:
 
 
 async def init_rag_service(service_config: dict[str, Any]) -> bool:
-    """
-    Initialize the RAG (Retrieval-Augmented Generation) service.
+    """Initialize the RAG (Retrieval-Augmented Generation) service.
 
     This function sets up the RAG service which combines document retrieval
     with language model generation to provide contextually aware responses.
@@ -139,6 +137,7 @@ async def init_rag_service(service_config: dict[str, Any]) -> bool:
 
     Raises:
         Exception: Logged and returned as False for graceful error handling.
+
     """
     try:
         from app.services.rag.rag_service import RAGService
@@ -161,8 +160,7 @@ async def init_rag_service(service_config: dict[str, Any]) -> bool:
 
 
 async def init_ollama_service(service_config: dict[str, Any]) -> bool:
-    """
-    Initialize the Ollama service for local LLM inference.
+    """Initialize the Ollama service for local LLM inference.
 
     This function sets up the Ollama service which provides local language
     model inference capabilities, enabling offline AI processing and
@@ -178,6 +176,7 @@ async def init_ollama_service(service_config: dict[str, Any]) -> bool:
 
     Raises:
         Exception: Logged and returned as False for graceful error handling.
+
     """
     try:
         from app.api.ollama.service import initialize_ollama_service
@@ -195,8 +194,7 @@ async def init_ollama_service(service_config: dict[str, Any]) -> bool:
 
 
 async def init_tts_service(service_config: dict[str, Any]) -> bool:
-    """
-    Initialize the TTS (Text-to-Speech) service.
+    """Initialize the TTS (Text-to-Speech) service.
 
     This function sets up the TTS service which converts text input into
     high-quality audio output using configurable voice models and synthesis
@@ -212,6 +210,7 @@ async def init_tts_service(service_config: dict[str, Any]) -> bool:
 
     Raises:
         Exception: Logged and returned as False for graceful error handling.
+
     """
     try:
         # TTS service initialization would go here
@@ -223,8 +222,7 @@ async def init_tts_service(service_config: dict[str, Any]) -> bool:
 
 
 async def init_search_service(service_config: dict[str, Any]) -> bool:
-    """
-    Initialize the Optimized Search service with dependency management.
+    """Initialize the Optimized Search service with dependency management.
 
     This function sets up the Optimized Search service which provides advanced search
     capabilities including semantic search, syntax search, and hybrid search with
@@ -240,6 +238,7 @@ async def init_search_service(service_config: dict[str, Any]) -> bool:
 
     Raises:
         Exception: Logged and returned as False for graceful error handling.
+
     """
     try:
         from app.api.search.service import OptimizedSearchService
@@ -265,8 +264,7 @@ async def init_search_service(service_config: dict[str, Any]) -> bool:
 
 
 async def shutdown_search_service() -> None:
-    """
-    Shutdown the Search service and cleanup resources.
+    """Shutdown the Search service and cleanup resources.
 
     Properly closes HTTP sessions, cache connections, and database connections.
     """

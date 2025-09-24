@@ -1,5 +1,4 @@
-"""
-Security Scanner
+"""Security Scanner
 
 Provides comprehensive security scanning including dependency vulnerability
 analysis and secret detection for the Success-Advisor-8 distillation system.
@@ -8,18 +7,16 @@ Author: Champion-Designer-32 (Wolf Specialist)
 Version: 1.0.0
 """
 
-import asyncio
 import re
 import subprocess
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from ..utils.logging import PhoenixLogger
 
 
 class SecurityScanner:
-    """
-    Security scanning system.
+    """Security scanning system.
 
     Provides comprehensive security validation including dependency
     vulnerability scanning, secret detection, and security best practices.
@@ -42,12 +39,12 @@ class SecurityScanner:
 
         self.logger.info("Security scanner initialized", "initialization")
 
-    async def run_security_scan(self) -> Dict[str, Any]:
-        """
-        Run comprehensive security scan.
+    async def run_security_scan(self) -> dict[str, Any]:
+        """Run comprehensive security scan.
 
         Returns:
             Security scan results
+
         """
         self.logger.info("Running comprehensive security scan", "security_scan")
 
@@ -83,7 +80,7 @@ class SecurityScanner:
                 self.logger.error("Security scan found issues", "security_scan")
             else:
                 self.logger.success(
-                    "Security scan passed - no issues found", "security_scan"
+                    "Security scan passed - no issues found", "security_scan",
                 )
 
         except Exception as e:
@@ -93,12 +90,12 @@ class SecurityScanner:
 
         return results
 
-    async def _scan_dependencies(self) -> Dict[str, Any]:
-        """
-        Scan for dependency vulnerabilities.
+    async def _scan_dependencies(self) -> dict[str, Any]:
+        """Scan for dependency vulnerabilities.
 
         Returns:
             Dependency scan results
+
         """
         try:
             vulnerabilities = []
@@ -122,19 +119,19 @@ class SecurityScanner:
             self.logger.error(f"Dependency scan failed: {e}", "dependency_scan")
             return {"vulnerabilities": [], "error": str(e)}
 
-    async def _scan_npm_dependencies(self) -> Dict[str, Any]:
-        """
-        Scan npm dependencies for vulnerabilities.
+    async def _scan_npm_dependencies(self) -> dict[str, Any]:
+        """Scan npm dependencies for vulnerabilities.
 
         Returns:
             NPM scan results
+
         """
         try:
             # Run npm audit
             result = subprocess.run(
                 ["npm", "audit", "--audit-level=moderate", "--json"],
                 capture_output=True,
-                text=True,
+                text=True, check=False,
             )
 
             vulnerabilities = []
@@ -152,12 +149,12 @@ class SecurityScanner:
                                     "id": vuln_id,
                                     "severity": vuln_data.get("severity", "unknown"),
                                     "title": vuln_data.get(
-                                        "title", "Unknown vulnerability"
+                                        "title", "Unknown vulnerability",
                                     ),
                                     "description": vuln_data.get("description", ""),
                                     "package": vuln_data.get("name", "unknown"),
                                     "version": vuln_data.get("version", "unknown"),
-                                }
+                                },
                             )
                 except json.JSONDecodeError:
                     # Fallback to text parsing
@@ -169,7 +166,7 @@ class SecurityScanner:
                             "description": "Could not parse npm audit results",
                             "package": "unknown",
                             "version": "unknown",
-                        }
+                        },
                     )
 
             return {"vulnerabilities": vulnerabilities}
@@ -177,65 +174,64 @@ class SecurityScanner:
         except Exception as e:
             return {"vulnerabilities": [], "error": str(e)}
 
-    async def _scan_python_dependencies(self) -> Dict[str, Any]:
-        """
-        Scan Python dependencies for vulnerabilities.
+    async def _scan_python_dependencies(self) -> dict[str, Any]:
+        """Scan Python dependencies for vulnerabilities.
 
         Returns:
             Python scan results
+
         """
         try:
             vulnerabilities = []
 
             # Try to run safety check
             result = subprocess.run(
-                ["safety", "check", "--json"], capture_output=True, text=True
+                ["safety", "check", "--json"], capture_output=True, text=True, check=False,
             )
 
             if result.returncode == 0:
                 # No vulnerabilities found
                 return {"vulnerabilities": []}
-            else:
-                try:
-                    import json
+            try:
+                import json
 
-                    safety_data = json.loads(result.stdout)
+                safety_data = json.loads(result.stdout)
 
-                    for vuln in safety_data:
-                        vulnerabilities.append(
-                            {
-                                "id": vuln.get("id", "unknown"),
-                                "severity": "high",  # Safety typically reports high-severity issues
-                                "title": vuln.get("advisory", "Unknown vulnerability"),
-                                "description": vuln.get("description", ""),
-                                "package": vuln.get("package", "unknown"),
-                                "version": vuln.get("installed_version", "unknown"),
-                            }
-                        )
-                except json.JSONDecodeError:
-                    # Fallback to text parsing
+                for vuln in safety_data:
                     vulnerabilities.append(
                         {
-                            "id": "safety_check_failed",
-                            "severity": "medium",
-                            "title": "Safety check failed",
-                            "description": "Could not parse safety check results",
-                            "package": "unknown",
-                            "version": "unknown",
-                        }
+                            "id": vuln.get("id", "unknown"),
+                            "severity": "high",  # Safety typically reports high-severity issues
+                            "title": vuln.get("advisory", "Unknown vulnerability"),
+                            "description": vuln.get("description", ""),
+                            "package": vuln.get("package", "unknown"),
+                            "version": vuln.get("installed_version", "unknown"),
+                        },
                     )
+            except json.JSONDecodeError:
+                # Fallback to text parsing
+                vulnerabilities.append(
+                    {
+                        "id": "safety_check_failed",
+                        "severity": "medium",
+                        "title": "Safety check failed",
+                        "description": "Could not parse safety check results",
+                        "package": "unknown",
+                        "version": "unknown",
+                    },
+                )
 
             return {"vulnerabilities": vulnerabilities}
 
         except Exception as e:
             return {"vulnerabilities": [], "error": str(e)}
 
-    async def _scan_secrets(self) -> Dict[str, Any]:
-        """
-        Scan for hardcoded secrets and credentials.
+    async def _scan_secrets(self) -> dict[str, Any]:
+        """Scan for hardcoded secrets and credentials.
 
         Returns:
             Secret scan results
+
         """
         try:
             secrets_found = []
@@ -254,7 +250,7 @@ class SecurityScanner:
             ]
 
             for pattern in file_patterns:
-                for file_path in Path(".").glob(f"**/{pattern}"):
+                for file_path in Path().glob(f"**/{pattern}"):
                     # Skip certain directories
                     if any(
                         skip_dir in str(file_path)
@@ -264,7 +260,7 @@ class SecurityScanner:
 
                     try:
                         with open(
-                            file_path, "r", encoding="utf-8", errors="ignore"
+                            file_path, encoding="utf-8", errors="ignore",
                         ) as f:
                             content = f.read()
 
@@ -291,10 +287,10 @@ class SecurityScanner:
                                             if secret_type in ["private_key", "aws_key"]
                                             else "medium"
                                         ),
-                                    }
+                                    },
                                 )
 
-                    except Exception as e:
+                    except Exception:
                         # Skip files that can't be read
                         continue
 
@@ -303,12 +299,12 @@ class SecurityScanner:
         except Exception as e:
             return {"secrets": [], "error": str(e)}
 
-    async def _check_security_practices(self) -> Dict[str, Any]:
-        """
-        Check security best practices.
+    async def _check_security_practices(self) -> dict[str, Any]:
+        """Check security best practices.
 
         Returns:
             Security practices check results
+
         """
         try:
             issues = []
@@ -322,12 +318,12 @@ class SecurityScanner:
                         "severity": "medium",
                         "description": ".gitignore file not found",
                         "recommendation": "Create a .gitignore file to exclude sensitive files",
-                    }
+                    },
                 )
                 recommendations.append("Create a comprehensive .gitignore file")
 
             # Check for environment files
-            env_files = list(Path(".").glob(".env*"))
+            env_files = list(Path().glob(".env*"))
             if env_files:
                 for env_file in env_files:
                     if env_file.name == ".env":
@@ -337,10 +333,10 @@ class SecurityScanner:
                                 "severity": "high",
                                 "description": f"{env_file} should not be committed to version control",
                                 "recommendation": "Add .env to .gitignore and use .env.example instead",
-                            }
+                            },
                         )
                         recommendations.append(
-                            "Use .env.example for template and add .env to .gitignore"
+                            "Use .env.example for template and add .env to .gitignore",
                         )
 
             # Check for hardcoded URLs
@@ -352,7 +348,7 @@ class SecurityScanner:
                         "severity": "low",
                         "description": f"Found {len(hardcoded_urls)} hardcoded URLs",
                         "recommendation": "Use environment variables for URLs",
-                    }
+                    },
                 )
                 recommendations.append("Use environment variables for configuration")
 
@@ -365,10 +361,10 @@ class SecurityScanner:
                         "severity": "low",
                         "description": f"Found {len(console_logs)} console.log statements",
                         "recommendation": "Remove or replace console.log statements in production code",
-                    }
+                    },
                 )
                 recommendations.append(
-                    "Remove debug console.log statements from production code"
+                    "Remove debug console.log statements from production code",
                 )
 
             return {"issues": issues, "recommendations": recommendations}
@@ -376,18 +372,18 @@ class SecurityScanner:
         except Exception as e:
             return {"issues": [], "recommendations": [], "error": str(e)}
 
-    async def _check_hardcoded_urls(self) -> List[str]:
-        """
-        Check for hardcoded URLs in code.
+    async def _check_hardcoded_urls(self) -> list[str]:
+        """Check for hardcoded URLs in code.
 
         Returns:
             List of hardcoded URLs found
+
         """
         try:
             urls_found = []
             url_pattern = r'https?://[^\s\'"]+'
 
-            for file_path in Path(".").glob("**/*.{py,js,ts,tsx,jsx}"):
+            for file_path in Path().glob("**/*.{py,js,ts,tsx,jsx}"):
                 if any(
                     skip_dir in str(file_path)
                     for skip_dir in ["node_modules", ".git", "__pycache__"]
@@ -395,7 +391,7 @@ class SecurityScanner:
                     continue
 
                 try:
-                    with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+                    with open(file_path, encoding="utf-8", errors="ignore") as f:
                         content = f.read()
 
                     matches = re.findall(url_pattern, content)
@@ -407,28 +403,28 @@ class SecurityScanner:
 
             return urls_found
 
-        except Exception as e:
+        except Exception:
             return []
 
-    async def _check_console_logs(self) -> List[str]:
-        """
-        Check for console.log statements in JavaScript/TypeScript files.
+    async def _check_console_logs(self) -> list[str]:
+        """Check for console.log statements in JavaScript/TypeScript files.
 
         Returns:
             List of console.log statements found
+
         """
         try:
             console_logs = []
             console_pattern = r"console\.(log|warn|error|info|debug)\s*\("
 
-            for file_path in Path(".").glob("**/*.{js,ts,tsx,jsx}"):
+            for file_path in Path().glob("**/*.{js,ts,tsx,jsx}"):
                 if any(
                     skip_dir in str(file_path) for skip_dir in ["node_modules", ".git"]
                 ):
                     continue
 
                 try:
-                    with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+                    with open(file_path, encoding="utf-8", errors="ignore") as f:
                         content = f.read()
 
                     matches = re.finditer(console_pattern, content)
@@ -441,18 +437,18 @@ class SecurityScanner:
 
             return console_logs
 
-        except Exception as e:
+        except Exception:
             return []
 
-    async def generate_security_report(self, results: Dict[str, Any]) -> str:
-        """
-        Generate a human-readable security report.
+    async def generate_security_report(self, results: dict[str, Any]) -> str:
+        """Generate a human-readable security report.
 
         Args:
             results: Security scan results
 
         Returns:
             Formatted security report
+
         """
         report = []
         report.append("# Security Scan Report")
@@ -469,7 +465,7 @@ class SecurityScanner:
                 report.append(f"- **Package:** {vuln.get('package', 'unknown')}")
                 report.append(f"- **Version:** {vuln.get('version', 'unknown')}")
                 report.append(
-                    f"- **Description:** {vuln.get('description', 'No description')}"
+                    f"- **Description:** {vuln.get('description', 'No description')}",
                 )
                 report.append("")
         else:
@@ -482,7 +478,7 @@ class SecurityScanner:
             report.append("## 🔐 Secrets Found")
             for secret in secrets:
                 report.append(
-                    f"### {secret.get('type', 'Unknown')} in {secret.get('file', 'unknown')}"
+                    f"### {secret.get('type', 'Unknown')} in {secret.get('file', 'unknown')}",
                 )
                 report.append(f"- **Line:** {secret.get('line', 'unknown')}")
                 report.append(f"- **Severity:** {secret.get('severity', 'unknown')}")
@@ -500,7 +496,7 @@ class SecurityScanner:
                 report.append(f"### {issue.get('description', 'Unknown issue')}")
                 report.append(f"- **Severity:** {issue.get('severity', 'unknown')}")
                 report.append(
-                    f"- **Recommendation:** {issue.get('recommendation', 'No recommendation')}"
+                    f"- **Recommendation:** {issue.get('recommendation', 'No recommendation')}",
                 )
                 report.append("")
         else:

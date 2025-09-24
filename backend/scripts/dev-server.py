@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-🦊 Reynard Development Server
+"""🦊 Reynard Development Server
 """
 
 import importlib.util
@@ -43,7 +42,7 @@ def check_dependencies():
         logger.info("✅ watchfiles is installed - enhanced file monitoring enabled")
     else:
         logger.warning(
-            "⚠️  watchfiles not installed - install with: pip install watchfiles"
+            "⚠️  watchfiles not installed - install with: pip install watchfiles",
         )
         logger.info("   Enhanced file monitoring will be disabled")
 
@@ -78,7 +77,6 @@ def get_environment_config():
 
 def main():
     """Main development server function."""
-
     # Check dependencies
     if not check_dependencies():
         logger.error("❌ Missing required dependencies")
@@ -89,10 +87,10 @@ def main():
 
     logger.info(f"🚀 Starting Reynard API in {config['environment']} mode")
     logger.info(
-        f"🌐 Server will be available at: http://{config['host']}:{config['port']}"
+        f"🌐 Server will be available at: http://{config['host']}:{config['port']}",
     )
     logger.info(
-        f"📚 API Documentation: http://{config['host']}:{config['port']}/api/docs"
+        f"📚 API Documentation: http://{config['host']}:{config['port']}/api/docs",
     )
     logger.info(f"🔧 Auto-reload: {'enabled' if config['reload'] else 'disabled'}")
     logger.info(f"🐛 Debug mode: {'enabled' if config['debug'] else 'disabled'}")
@@ -109,7 +107,7 @@ def main():
                 "reload": True,
                 "reload_includes": ["*.py", "*.env", "*.json", "*.yaml", "*.yml"],
                 "reload_excludes": get_reload_excludes(),
-            }
+            },
         )
 
         # Check if watchfiles is available for enhanced monitoring

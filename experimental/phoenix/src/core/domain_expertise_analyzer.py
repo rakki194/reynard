@@ -1,5 +1,4 @@
-"""
-PHOENIX Domain Expertise Analyzer
+"""PHOENIX Domain Expertise Analyzer
 
 Advanced domain expertise detection and analysis module for the PHOENIX knowledge distillation system.
 Implements domain-specific knowledge extraction and expertise scoring algorithms.
@@ -8,25 +7,18 @@ Author: Vulpine (Fox Specialist)
 Version: 1.0.0
 """
 
-import json
 import logging
 import re
 from collections import defaultdict
-from datetime import datetime
-from typing import Any, Dict, List, Optional, Tuple
-
-import numpy as np
+from typing import Any
 
 from ..utils.data_structures import (
-    AgentGeneticMaterial,
     AgentState,
-    StructuredKnowledge,
 )
 
 
 class DomainExpertiseAnalyzer:
-    """
-    Domain expertise analysis system for PHOENIX framework.
+    """Domain expertise analysis system for PHOENIX framework.
 
     Implements:
     - Multi-domain knowledge detection
@@ -52,7 +44,7 @@ class DomainExpertiseAnalyzer:
 
         self.logger.info("🎯 Domain expertise analyzer initialized")
 
-    def _initialize_domain_patterns(self) -> Dict[str, Dict[str, Any]]:
+    def _initialize_domain_patterns(self) -> dict[str, dict[str, Any]]:
         """Initialize domain-specific expertise patterns."""
         return {
             "software_engineering": {
@@ -218,10 +210,9 @@ class DomainExpertiseAnalyzer:
         }
 
     def analyze_domain_expertise(
-        self, agent_output: str, agent_state: AgentState
-    ) -> Dict[str, Dict[str, Any]]:
-        """
-        Analyze domain expertise from agent output.
+        self, agent_output: str, agent_state: AgentState,
+    ) -> dict[str, dict[str, Any]]:
+        """Analyze domain expertise from agent output.
 
         Args:
             agent_output: The agent's output text
@@ -229,9 +220,10 @@ class DomainExpertiseAnalyzer:
 
         Returns:
             Dictionary of domain expertise analysis results
+
         """
         self.logger.debug(
-            f"Analyzing domain expertise from output of length {len(agent_output)}"
+            f"Analyzing domain expertise from output of length {len(agent_output)}",
         )
 
         domain_expertise = {}
@@ -243,26 +235,26 @@ class DomainExpertiseAnalyzer:
                 domain_expertise[domain] = {
                     "expertise_score": expertise_score,
                     "expertise_level": self._determine_expertise_level(
-                        agent_output, patterns
+                        agent_output, patterns,
                     ),
                     "confidence": self._calculate_domain_confidence(
-                        agent_output, patterns, expertise_score
+                        agent_output, patterns, expertise_score,
                     ),
                     "indicators": self._extract_domain_indicators(
-                        agent_output, patterns
+                        agent_output, patterns,
                     ),
                     "terminology_usage": self._analyze_terminology_usage(
-                        agent_output, patterns
+                        agent_output, patterns,
                     ),
                     "concept_depth": self._analyze_concept_depth(
-                        agent_output, patterns
+                        agent_output, patterns,
                     ),
                 }
 
         self.logger.info(f"Detected expertise in {len(domain_expertise)} domains")
         return domain_expertise
 
-    def _calculate_domain_expertise(self, text: str, patterns: Dict[str, Any]) -> float:
+    def _calculate_domain_expertise(self, text: str, patterns: dict[str, Any]) -> float:
         """Calculate domain expertise score."""
         scores = {}
 
@@ -280,7 +272,7 @@ class DomainExpertiseAnalyzer:
 
         # Analyze contextual relevance
         context_score = self._analyze_contextual_relevance(
-            text, patterns["context_indicators"]
+            text, patterns["context_indicators"],
         )
         scores["context"] = context_score
 
@@ -291,7 +283,7 @@ class DomainExpertiseAnalyzer:
 
         return min(1.0, total_score)
 
-    def _analyze_pattern_matches(self, text: str, patterns: List[str]) -> float:
+    def _analyze_pattern_matches(self, text: str, patterns: list[str]) -> float:
         """Analyze pattern matches in text."""
         matches = 0
         total_patterns = len(patterns)
@@ -302,13 +294,13 @@ class DomainExpertiseAnalyzer:
 
         return matches / total_patterns if total_patterns > 0 else 0.0
 
-    def _analyze_contextual_relevance(self, text: str, indicators: List[str]) -> float:
+    def _analyze_contextual_relevance(self, text: str, indicators: list[str]) -> float:
         """Analyze contextual relevance of domain indicators."""
         text_lower = text.lower()
         matches = sum(1 for indicator in indicators if indicator in text_lower)
         return matches / len(indicators) if indicators else 0.0
 
-    def _determine_expertise_level(self, text: str, patterns: Dict[str, Any]) -> str:
+    def _determine_expertise_level(self, text: str, patterns: dict[str, Any]) -> str:
         """Determine expertise level based on language complexity and depth."""
         expertise_levels = patterns["expertise_levels"]
 
@@ -322,15 +314,14 @@ class DomainExpertiseAnalyzer:
         # Determine level based on highest score
         if level_scores["expert"] > 0:
             return "expert"
-        elif level_scores["intermediate"] > 0:
+        if level_scores["intermediate"] > 0:
             return "intermediate"
-        elif level_scores["beginner"] > 0:
+        if level_scores["beginner"] > 0:
             return "beginner"
-        else:
-            return "unknown"
+        return "unknown"
 
     def _calculate_domain_confidence(
-        self, text: str, patterns: Dict[str, Any], expertise_score: float
+        self, text: str, patterns: dict[str, Any], expertise_score: float,
     ) -> float:
         """Calculate confidence in domain expertise assessment."""
         base_confidence = expertise_score
@@ -343,7 +334,7 @@ class DomainExpertiseAnalyzer:
 
         # Boost confidence for contextual coherence
         contextual_matches = self._analyze_contextual_relevance(
-            text, patterns["context_indicators"]
+            text, patterns["context_indicators"],
         )
 
         confidence_boost = (pattern_type_matches * 0.1) + (contextual_matches * 0.2)
@@ -351,8 +342,8 @@ class DomainExpertiseAnalyzer:
         return min(1.0, base_confidence + confidence_boost)
 
     def _extract_domain_indicators(
-        self, text: str, patterns: Dict[str, Any]
-    ) -> List[str]:
+        self, text: str, patterns: dict[str, Any],
+    ) -> list[str]:
         """Extract specific domain indicators from text."""
         indicators = []
 
@@ -369,8 +360,8 @@ class DomainExpertiseAnalyzer:
         return indicators[:5]  # Limit to 5 total indicators
 
     def _analyze_terminology_usage(
-        self, text: str, patterns: Dict[str, Any]
-    ) -> Dict[str, Any]:
+        self, text: str, patterns: dict[str, Any],
+    ) -> dict[str, Any]:
         """Analyze terminology usage patterns."""
         terminology_analysis = {
             "total_terms": 0,
@@ -396,8 +387,8 @@ class DomainExpertiseAnalyzer:
         return terminology_analysis
 
     def _analyze_concept_depth(
-        self, text: str, patterns: Dict[str, Any]
-    ) -> Dict[str, Any]:
+        self, text: str, patterns: dict[str, Any],
+    ) -> dict[str, Any]:
         """Analyze depth of concept understanding."""
         concept_analysis = {
             "concept_count": 0,
@@ -438,8 +429,8 @@ class DomainExpertiseAnalyzer:
         return concept_analysis
 
     def calculate_cross_domain_transfer(
-        self, domain_expertise: Dict[str, Dict[str, Any]]
-    ) -> Dict[str, float]:
+        self, domain_expertise: dict[str, dict[str, Any]],
+    ) -> dict[str, float]:
         """Calculate potential for cross-domain knowledge transfer."""
         if len(domain_expertise) < 2:
             return {}

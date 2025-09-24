@@ -240,7 +240,7 @@ class TestLazyLoadingPerformanceMonitor:
                     assert monitor_data.successful_loads == 2
                     assert monitor_data.failed_loads == 1
                     assert monitor_data.total_load_time == pytest.approx(
-                        0.8
+                        0.8,
                     )  # 0.5 + 0.2 + 0.1
                     # Average is calculated only from successful loads: (0.5 + 0.2) / 2 = 0.35
                     assert monitor_data.average_load_time == pytest.approx(0.35)

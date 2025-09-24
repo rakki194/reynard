@@ -1,5 +1,4 @@
-"""
-Florence2 Plugin for Reynard
+"""Florence2 Plugin for Reynard
 
 This plugin provides the Microsoft Florence2 caption generation model, which is
 a general-purpose image captioning model with support for various captioning tasks.

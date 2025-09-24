@@ -4,7 +4,7 @@
  */
 
 import { Component } from "solid-js";
-import { ChartsDemo, AppFooter } from "reynard-components";
+import { ChartsDemo, AppFooter } from "reynard-components-core";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import "../styles/app.css";
 import "../styles/charts-showcase.css";

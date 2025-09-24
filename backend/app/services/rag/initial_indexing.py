@@ -1,5 +1,4 @@
-"""
-🦊 Reynard Initial Indexing Service
+"""🦊 Reynard Initial Indexing Service
 ===================================
 
 Comprehensive initial indexing system for the Reynard codebase.
@@ -108,7 +107,7 @@ class InitialIndexingService:
 
             is_empty = total_documents == 0 and total_embeddings == 0
             logger.info(
-                f"Database check: {total_documents} documents, {total_embeddings} embeddings"
+                f"Database check: {total_documents} documents, {total_embeddings} embeddings",
             )
         except Exception:
             logger.exception("Failed to check database status")
@@ -121,8 +120,8 @@ class InitialIndexingService:
         try:
             watch_root = Path(
                 self.config.get(
-                    "rag_continuous_indexing_watch_root", "/home/kade/runeset/reynard"
-                )
+                    "rag_continuous_indexing_watch_root", "/home/kade/runeset/reynard",
+                ),
             )
 
             if not watch_root.exists():
@@ -130,39 +129,38 @@ class InitialIndexingService:
                 return []
 
             logger.info(
-                f"🔍 Discovering files using file indexing service: {watch_root}"
+                f"🔍 Discovering files using file indexing service: {watch_root}",
             )
 
             # Use file indexing service for fast file discovery
             file_types = [".py", ".ts", ".tsx", ".js", ".jsx", ".md", ".txt"]
             result = await self.file_indexing_service.index_files(
-                [str(watch_root)], file_types
+                [str(watch_root)], file_types,
             )
 
             if result.get("success"):
                 indexed_files = result.get("files", [])
                 files_to_index = [Path(file_path) for file_path in indexed_files]
                 logger.info(
-                    f"📁 Found {len(files_to_index)} files to index via file indexing service"
+                    f"📁 Found {len(files_to_index)} files to index via file indexing service",
                 )
                 return files_to_index
-            else:
-                logger.warning(
-                    "File indexing service failed, falling back to manual discovery"
+            logger.warning(
+                "File indexing service failed, falling back to manual discovery",
+            )
+            # Fallback to manual discovery
+            files_to_index = [
+                file_path
+                for file_path in watch_root.rglob("*")
+                if (
+                    file_path.is_file()
+                    and continuous_indexing_config.should_watch_file(file_path)
                 )
-                # Fallback to manual discovery
-                files_to_index = [
-                    file_path
-                    for file_path in watch_root.rglob("*")
-                    if (
-                        file_path.is_file()
-                        and continuous_indexing_config.should_watch_file(file_path)
-                    )
-                ]
-                logger.info(
-                    f"📁 Found {len(files_to_index)} files to index via fallback"
-                )
-                return files_to_index
+            ]
+            logger.info(
+                f"📁 Found {len(files_to_index)} files to index via fallback",
+            )
+            return files_to_index
 
         except Exception:
             logger.exception("Failed to discover files")
@@ -184,7 +182,7 @@ class InitialIndexingService:
         }
 
     async def _check_database_and_skip_if_needed(
-        self, force: bool
+        self, force: bool,
     ) -> dict[str, Any] | None:
         """Check if database is empty and skip if not forced."""
         if not force:
@@ -218,20 +216,20 @@ class InitialIndexingService:
         return files_to_index
 
     async def _process_batch(
-        self, batch: list[Path], batch_num: int, total_batches: int
+        self, batch: list[Path], batch_num: int, total_batches: int,
     ) -> None:
         """Process a single batch of files."""
         self.current_progress.update(
             {
                 "current_batch": batch_num,
                 "current_file": f"Processing batch {batch_num}/{total_batches}",
-            }
+            },
         )
         await self._notify_progress()
 
         try:
             logger.info(
-                f"📝 Indexing batch {batch_num}/{total_batches} ({len(batch)} files)"
+                f"📝 Indexing batch {batch_num}/{total_batches} ({len(batch)} files)",
             )
 
             # Ensure document indexer is resumed before processing
@@ -297,7 +295,7 @@ class InitialIndexingService:
                     "status": "indexing",
                     "total_files": len(files_to_index),
                     "current_file": "Starting batch processing...",
-                }
+                },
             )
             await self._notify_progress()
 
@@ -307,7 +305,7 @@ class InitialIndexingService:
             self.current_progress["total_batches"] = total_batches
 
             logger.info(
-                f"🚀 Starting initial indexing: {len(files_to_index)} files in {total_batches} batches"
+                f"🚀 Starting initial indexing: {len(files_to_index)} files in {total_batches} batches",
             )
 
             for i in range(0, len(files_to_index), batch_size):
@@ -345,7 +343,7 @@ class InitialIndexingService:
                 {
                     "status": "failed",
                     "errors": self.current_progress["errors"] + [error_msg],
-                }
+                },
             )
             await self._notify_progress()
             return {

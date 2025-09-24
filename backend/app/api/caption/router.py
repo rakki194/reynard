@@ -1,5 +1,4 @@
-"""
-Caption API router for Reynard Backend.
+"""Caption API router for Reynard Backend.
 
 This module combines all caption-related endpoints into a single router
 for clean organization and easy maintenance.

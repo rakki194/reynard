@@ -1,5 +1,4 @@
-"""
-Enhanced content processing pipeline with multiple stages and quality assessment.
+"""Enhanced content processing pipeline with multiple stages and quality assessment.
 
 This module provides a comprehensive pipeline for processing scraped content
 through multiple stages including cleaning, deduplication, quality scoring,
@@ -16,8 +15,7 @@ from ..models import ScrapingResult
 
 
 class EnhancedContentPipeline:
-    """
-    Enhanced content processing pipeline with multiple stages.
+    """Enhanced content processing pipeline with multiple stages.
 
     Pipeline stages:
     1. Content Cleaning - Remove unwanted elements and normalize formatting
@@ -39,14 +37,14 @@ class EnhancedContentPipeline:
         }
 
     async def process_content(self, result: ScrapingResult) -> ScrapingResult:
-        """
-        Process content through the complete pipeline.
+        """Process content through the complete pipeline.
 
         Args:
             result: ScrapingResult to process
 
         Returns:
             Processed ScrapingResult
+
         """
         try:
             self.logger.info(f"Processing content from {result.url}")
@@ -410,7 +408,7 @@ class EnhancedContentPipeline:
                 "max_quality": max(quality_scores),
                 "high_quality_count": len([s for s in quality_scores if s >= 0.8]),
                 "medium_quality_count": len(
-                    [s for s in quality_scores if 0.6 <= s < 0.8]
+                    [s for s in quality_scores if 0.6 <= s < 0.8],
                 ),
                 "low_quality_count": len([s for s in quality_scores if s < 0.6]),
             }

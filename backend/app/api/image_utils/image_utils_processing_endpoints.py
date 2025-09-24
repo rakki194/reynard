@@ -1,5 +1,4 @@
-"""
-Image Utils Processing Endpoints for Reynard Backend
+"""Image Utils Processing Endpoints for Reynard Backend
 
 Processing-specific endpoint implementations.
 """

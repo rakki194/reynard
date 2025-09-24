@@ -1,5 +1,4 @@
-"""
-Validation utilities for the Gatekeeper library.
+"""Validation utilities for the Gatekeeper library.
 
 This module provides validation utilities for passwords, emails, and other data.
 """
@@ -17,14 +16,14 @@ class PasswordValidator:
 
     @staticmethod
     def validate_password_strength(password: str) -> tuple[bool, str]:
-        """
-        Validate password strength.
+        """Validate password strength.
 
         Args:
             password: Password to validate
 
         Returns:
             Tuple of (is_strong, reason)
+
         """
         if len(password) < PasswordValidator.MIN_PASSWORD_LENGTH:
             return False, "Password must be at least 8 characters long"
@@ -45,14 +44,14 @@ class PasswordValidator:
 
     @staticmethod
     def validate_email(email: str) -> tuple[bool, str]:
-        """
-        Validate email format.
+        """Validate email format.
 
         Args:
             email: Email to validate
 
         Returns:
             Tuple of (is_valid, reason)
+
         """
         if not email:
             return False, "Email cannot be empty"
@@ -67,14 +66,14 @@ class PasswordValidator:
 
     @staticmethod
     def validate_username(username: str) -> tuple[bool, str]:
-        """
-        Validate username format.
+        """Validate username format.
 
         Args:
             username: Username to validate
 
         Returns:
             Tuple of (is_valid, reason)
+
         """
         if not username:
             return False, "Username cannot be empty"

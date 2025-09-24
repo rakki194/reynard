@@ -1,5 +1,4 @@
-"""
-Core API Endpoints Module for Reynard Backend
+"""Core API Endpoints Module for Reynard Backend
 
 This module contains the core API endpoints for the Reynard backend,
 including system information, health checks, and configuration endpoints.
@@ -35,8 +34,7 @@ router = APIRouter()
 
 @router.get("/", tags=["Core"])
 async def root() -> dict[str, Any]:
-    """
-    Root endpoint providing system information and API status.
+    """Root endpoint providing system information and API status.
 
     This endpoint serves as the primary entry point for the Reynard API,
     providing essential system information including version details,
@@ -49,6 +47,7 @@ async def root() -> dict[str, Any]:
             - environment: Deployment environment (development/production)
             - timestamp: Current UTC timestamp
             - docs_url: API documentation URL (if available)
+
     """
     config = get_config()
 
@@ -63,8 +62,7 @@ async def root() -> dict[str, Any]:
 
 @router.get("/api/health", tags=["Health"])
 async def health_check() -> JSONResponse:
-    """
-    Comprehensive health check endpoint for system monitoring.
+    """Comprehensive health check endpoint for system monitoring.
 
     This endpoint provides real-time health status for all registered services,
     including individual service health checks, overall system status, and
@@ -81,6 +79,7 @@ async def health_check() -> JSONResponse:
     Status Codes:
         200: All services are healthy and operational
         503: One or more critical services are unhealthy or unavailable
+
     """
     config = get_config()
     registry = get_service_registry()
@@ -112,8 +111,7 @@ async def health_check() -> JSONResponse:
 
 @router.get("/api/health/detailed", tags=["Health"])
 async def detailed_health_check() -> dict[str, Any]:
-    """
-    Detailed health check endpoint with comprehensive service diagnostics.
+    """Detailed health check endpoint with comprehensive service diagnostics.
 
     This endpoint provides in-depth health information for all registered services,
     including startup times, last health check timestamps, error details, and
@@ -128,6 +126,7 @@ async def detailed_health_check() -> dict[str, Any]:
                 - startup_time: Service initialization duration
                 - last_health_check: Timestamp of last health check
                 - error: Any error messages or exceptions
+
     """
     config = get_config()
     registry = get_service_registry()
@@ -154,8 +153,7 @@ async def detailed_health_check() -> dict[str, Any]:
 async def protected_route(
     current_user: User = Depends(require_active_user()),
 ) -> dict[str, Any]:
-    """
-    Protected route demonstrating authentication and authorization.
+    """Protected route demonstrating authentication and authorization.
 
     This endpoint requires valid JWT authentication and demonstrates the
     integration with the Gatekeeper authentication service. It serves as
@@ -176,6 +174,7 @@ async def protected_route(
     Raises:
         HTTPException: 401 Unauthorized if authentication fails or token is invalid.
         HTTPException: 403 Forbidden if user account is inactive or disabled.
+
     """
     return {
         "message": f"🦊 Hello {current_user.username}!",
@@ -187,8 +186,7 @@ async def protected_route(
 
 @router.get("/api/config", tags=["System"])
 async def get_configuration() -> dict[str, Any]:
-    """
-    Retrieve current application configuration (development environment only).
+    """Retrieve current application configuration (development environment only).
 
     This endpoint provides access to the current application configuration
     including environment settings, debug flags, and service-specific
@@ -205,6 +203,7 @@ async def get_configuration() -> dict[str, Any]:
 
     Raises:
         HTTPException: 404 Not Found if accessed in production environment.
+
     """
     config = get_config()
     service_configs = get_service_configs()

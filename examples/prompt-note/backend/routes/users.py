@@ -1,5 +1,4 @@
-"""
-User management routes for Reynard Basic Backend
+"""User management routes for Reynard Basic Backend
 Provides user CRUD operations and management endpoints
 """
 
@@ -85,7 +84,6 @@ async def list_users(
     cache_service: CacheService = Depends(get_cache_service),
 ):
     """List users with pagination"""
-
     # Check cache first
     cache_key = f"users:list:{skip}:{limit}"
     cached_users = await cache_service.get(cache_key)
@@ -107,7 +105,7 @@ async def list_users(
                 full_name=user.full_name,
                 created_at=user.created_at.timestamp(),
                 last_login=user.last_login.timestamp() if user.last_login else None,
-            )
+            ),
         )
 
     # Cache the result
@@ -123,7 +121,6 @@ async def get_user(
     cache_service: CacheService = Depends(get_cache_service),
 ):
     """Get user by ID"""
-
     # Check cache first
     cache_key = f"user:{user_id}"
     cached_user = await cache_service.get(cache_key)
@@ -136,7 +133,7 @@ async def get_user(
 
     if not user:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not found",
         )
 
     user_response = UserResponse(
@@ -161,16 +158,15 @@ async def create_user(
     cache_service: CacheService = Depends(get_cache_service),
 ):
     """Create a new user"""
-
     # Check if username already exists
     query = "SELECT id FROM users WHERE username = ?"
     existing_users = await db_service.execute_query(
-        query, {"username": user_data.username}
+        query, {"username": user_data.username},
     )
 
     if existing_users:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Username already exists"
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Username already exists",
         )
 
     # Check if email already exists
@@ -179,7 +175,7 @@ async def create_user(
 
     if existing_users:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Email already exists"
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Email already exists",
         )
 
     # Create user
@@ -220,7 +216,6 @@ async def update_user(
     cache_service: CacheService = Depends(get_cache_service),
 ):
     """Update user information"""
-
     # Get current user ID (for authorization check)
     current_user_id = get_current_user_id(authorization)
 
@@ -230,7 +225,7 @@ async def update_user(
 
     if not users_data:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not found",
         )
 
     existing_user = users_data[0]
@@ -248,12 +243,12 @@ async def update_user(
         # Check if email already exists for another user
         query = "SELECT id FROM users WHERE email = ? AND id != ?"
         existing_users = await db_service.execute_query(
-            query, {"email": user_data.email, "id": user_id}
+            query, {"email": user_data.email, "id": user_id},
         )
 
         if existing_users:
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST, detail="Email already exists"
+                status_code=status.HTTP_400_BAD_REQUEST, detail="Email already exists",
             )
 
         update_fields.append("email = ?")
@@ -265,7 +260,7 @@ async def update_user(
 
     if not update_fields:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="No fields to update"
+            status_code=status.HTTP_400_BAD_REQUEST, detail="No fields to update",
         )
 
     # In a real app, you'd execute the update query
@@ -296,7 +291,6 @@ async def delete_user(
     cache_service: CacheService = Depends(get_cache_service),
 ):
     """Delete user"""
-
     # Get current user ID (for authorization check)
     current_user_id = get_current_user_id(authorization)
 
@@ -306,7 +300,7 @@ async def delete_user(
 
     if not users_data:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not found",
         )
 
     # Check if user is deleting their own account or is admin
@@ -332,7 +326,6 @@ async def get_user_stats(
     cache_service: CacheService = Depends(get_cache_service),
 ):
     """Get user statistics overview"""
-
     # Check cache first
     cache_key = "users:stats"
     cached_stats = await cache_service.get(cache_key)
@@ -378,7 +371,6 @@ async def search_users(
     cache_service: CacheService = Depends(get_cache_service),
 ):
     """Search users by username or email"""
-
     if len(query) < 2:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -411,7 +403,7 @@ async def search_users(
             "full_name": "John Doe",
             "created_at": time.time() - 86400,
             "last_login": time.time() - 3600,
-        }
+        },
     ]
 
     # Convert to response models
@@ -425,7 +417,7 @@ async def search_users(
                 full_name=user_data.get("full_name"),
                 created_at=user_data["created_at"],
                 last_login=user_data.get("last_login"),
-            )
+            ),
         )
 
     # Cache the result

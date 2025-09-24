@@ -1,5 +1,4 @@
-"""
-🦊 Reynard Email Service
+"""🦊 Reynard Email Service
 ========================
 
 Comprehensive email service for the Reynard backend, providing sophisticated
@@ -53,14 +52,13 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.utils import formatdate, make_msgid
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
 
 class EmailConfig:
-    """
-    Email configuration settings for SMTP server connection and authentication.
+    """Email configuration settings for SMTP server connection and authentication.
 
     Manages all email-related configuration including SMTP server settings,
     authentication credentials, and security options. Configuration values
@@ -74,6 +72,7 @@ class EmailConfig:
         use_tls (bool): Whether to use TLS encryption
         from_email (str): Default sender email address
         from_name (str): Default sender display name
+
     """
 
     def __init__(self) -> None:
@@ -89,7 +88,7 @@ class EmailConfig:
 class EmailAttachment:
     """Email attachment model."""
 
-    def __init__(self, file_path: str, filename: Optional[str] = None):
+    def __init__(self, file_path: str, filename: str | None = None):
         self.file_path = Path(file_path)
         self.filename = filename or self.file_path.name
 
@@ -102,14 +101,14 @@ class EmailMessage:
 
     def __init__(
         self,
-        to_emails: List[str],
+        to_emails: list[str],
         subject: str,
         body: str,
-        html_body: Optional[str] = None,
-        cc_emails: Optional[List[str]] = None,
-        bcc_emails: Optional[List[str]] = None,
-        attachments: Optional[List[EmailAttachment]] = None,
-        reply_to: Optional[str] = None,
+        html_body: str | None = None,
+        cc_emails: list[str] | None = None,
+        bcc_emails: list[str] | None = None,
+        attachments: list[EmailAttachment] | None = None,
+        reply_to: str | None = None,
     ):
         self.to_emails = to_emails
         self.subject = subject
@@ -119,14 +118,14 @@ class EmailMessage:
         self.bcc_emails = bcc_emails or []
         self.attachments = attachments or []
         self.reply_to = reply_to
-        self.sent_at: Optional[datetime] = None
-        self.message_id: Optional[str] = None
+        self.sent_at: datetime | None = None
+        self.message_id: str | None = None
 
 
 class EmailService:
     """Email service for sending emails via SMTP."""
 
-    def __init__(self, config: Optional[EmailConfig] = None):
+    def __init__(self, config: EmailConfig | None = None):
         self.config = config or EmailConfig()
         self._validate_config()
 
@@ -139,9 +138,8 @@ class EmailService:
         if not self.config.from_email:
             raise ValueError("From email is required")
 
-    async def send_email(self, message: EmailMessage) -> Dict[str, Any]:
-        """
-        Send an email message.
+    async def send_email(self, message: EmailMessage) -> dict[str, Any]:
+        """Send an email message.
 
         Args:
             message: Email message to send
@@ -151,6 +149,7 @@ class EmailService:
 
         Raises:
             Exception: If email sending fails
+
         """
         try:
             # Create message with improved headers
@@ -227,7 +226,7 @@ class EmailService:
         server = None
         try:
             logger.info(
-                "Connecting to %s:%s", self.config.smtp_server, self.config.smtp_port
+                "Connecting to %s:%s", self.config.smtp_server, self.config.smtp_port,
             )
 
             # Connect to server
@@ -237,7 +236,7 @@ class EmailService:
                 server.starttls()
             else:
                 server = smtplib.SMTP_SSL(
-                    self.config.smtp_server, self.config.smtp_port
+                    self.config.smtp_server, self.config.smtp_port,
                 )
                 server.set_debuglevel(0)
 
@@ -259,10 +258,9 @@ class EmailService:
                 server.quit()
 
     async def send_simple_email(
-        self, to_email: str, subject: str, body: str, html_body: Optional[str] = None
-    ) -> Dict[str, Any]:
-        """
-        Send a simple email.
+        self, to_email: str, subject: str, body: str, html_body: str | None = None,
+    ) -> dict[str, Any]:
+        """Send a simple email.
 
         Args:
             to_email: Recipient email address
@@ -272,21 +270,21 @@ class EmailService:
 
         Returns:
             Dict containing send result
+
         """
         message = EmailMessage(
-            to_emails=[to_email], subject=subject, body=body, html_body=html_body
+            to_emails=[to_email], subject=subject, body=body, html_body=html_body,
         )
         return await self.send_email(message)
 
     async def send_bulk_email(
         self,
-        to_emails: List[str],
+        to_emails: list[str],
         subject: str,
         body: str,
-        html_body: Optional[str] = None,
-    ) -> Dict[str, Any]:
-        """
-        Send bulk email to multiple recipients.
+        html_body: str | None = None,
+    ) -> dict[str, Any]:
+        """Send bulk email to multiple recipients.
 
         Args:
             to_emails: List of recipient email addresses
@@ -296,9 +294,10 @@ class EmailService:
 
         Returns:
             Dict containing send result
+
         """
         message = EmailMessage(
-            to_emails=to_emails, subject=subject, body=body, html_body=html_body
+            to_emails=to_emails, subject=subject, body=body, html_body=html_body,
         )
         return await self.send_email(message)
 

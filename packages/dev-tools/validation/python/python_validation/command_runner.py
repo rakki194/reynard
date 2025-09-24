@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Command execution utilities for Reynard validation scripts.
+"""Command execution utilities for Reynard validation scripts.
 """
 
 import subprocess
@@ -9,8 +8,7 @@ from .colors import BLUE, GREEN, RED, print_colored
 
 
 def run_command(cmd: list[str], description: str) -> tuple[bool, str]:
-    """
-    Run a command and return success status and output.
+    """Run a command and return success status and output.
 
     Args:
         cmd: Command to run as list of strings
@@ -18,6 +16,7 @@ def run_command(cmd: list[str], description: str) -> tuple[bool, str]:
 
     Returns:
         Tuple of (success: bool, output: str)
+
     """
     try:
         print_colored(f"🦊 Running {description}...", BLUE)

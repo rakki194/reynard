@@ -1,5 +1,4 @@
-"""
-JWT configuration for Reynard Backend.
+"""JWT configuration for Reynard Backend.
 
 This module provides JWT configuration constants.
 """

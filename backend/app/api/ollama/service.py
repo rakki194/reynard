@@ -1,5 +1,4 @@
-"""
-Service layer integration for Ollama API.
+"""Service layer integration for Ollama API.
 
 Refactored to use standardized logging and service patterns with proper dependency injection.
 """
@@ -13,8 +12,7 @@ logger = get_service_logger("ollama")
 
 
 class OllamaServiceManager:
-    """
-    Service manager for Ollama API with proper dependency injection.
+    """Service manager for Ollama API with proper dependency injection.
 
     This class manages the Ollama service instance without using globals,
     providing better testability and cleaner architecture.

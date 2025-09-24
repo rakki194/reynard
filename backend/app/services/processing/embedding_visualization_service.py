@@ -1,10 +1,8 @@
-"""
-Embedding Visualization Service for Reynard Backend.
+"""Embedding Visualization Service for Reynard Backend.
 
 This module provides embedding visualization functionality for high-dimensional data.
 """
 
-import asyncio
 import json
 import logging
 import math
@@ -12,13 +10,13 @@ import uuid
 from dataclasses import asdict, dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any
 
 # Visualization imports
 try:
-    import matplotlib.patches as patches
     import matplotlib.pyplot as plt
     import seaborn as sns
+    from matplotlib import patches
     from matplotlib.colors import to_hex
 
     MATPLOTLIB_AVAILABLE = True
@@ -61,11 +59,11 @@ class EmbeddingPoint:
     """Individual embedding point data structure."""
 
     point_id: str
-    coordinates: List[float]
-    label: Optional[str] = None
-    metadata: Dict[str, Any] = None
-    cluster_id: Optional[int] = None
-    color: Optional[str] = None
+    coordinates: list[float]
+    label: str | None = None
+    metadata: dict[str, Any] = None
+    cluster_id: int | None = None
+    color: str | None = None
     size: float = 1.0
     opacity: float = 1.0
 
@@ -81,13 +79,13 @@ class EmbeddingDataset:
     dataset_id: str
     name: str
     description: str
-    points: List[EmbeddingPoint]
+    points: list[EmbeddingPoint]
     original_dimensions: int
     reduced_dimensions: int
     reduction_method: str
     created_at: datetime = None
     updated_at: datetime = None
-    metadata: Dict[str, Any] = None
+    metadata: dict[str, Any] = None
 
     def __post_init__(self):
         if self.created_at is None:
@@ -111,10 +109,10 @@ class VisualizationConfig:
     show_legend: bool = True
     show_grid: bool = True
     show_axes: bool = True
-    title: Optional[str] = None
-    x_label: Optional[str] = None
-    y_label: Optional[str] = None
-    z_label: Optional[str] = None
+    title: str | None = None
+    x_label: str | None = None
+    y_label: str | None = None
+    z_label: str | None = None
     interactive: bool = True
     save_format: str = "png"  # png, svg, pdf, html
     dpi: int = 300
@@ -126,11 +124,11 @@ class ClusteringResult:
 
     method: str
     n_clusters: int
-    cluster_labels: List[int]
+    cluster_labels: list[int]
     silhouette_score: float
     calinski_harabasz_score: float
-    inertia: Optional[float] = None
-    cluster_centers: Optional[List[List[float]]] = None
+    inertia: float | None = None
+    cluster_centers: list[list[float]] | None = None
 
 
 class EmbeddingVisualizationService:
@@ -165,7 +163,7 @@ class EmbeddingVisualizationService:
         try:
             datasets_file = self.data_dir / "datasets.json"
             if datasets_file.exists():
-                with open(datasets_file, "r", encoding="utf-8") as f:
+                with open(datasets_file, encoding="utf-8") as f:
                     datasets_data = json.load(f)
                     self.datasets = {
                         dataset_id: EmbeddingDataset(**dataset_data)
@@ -202,12 +200,11 @@ class EmbeddingVisualizationService:
         self,
         name: str,
         description: str,
-        embeddings: List[List[float]],
-        labels: Optional[List[str]] = None,
-        metadata: Optional[List[Dict[str, Any]]] = None,
+        embeddings: list[list[float]],
+        labels: list[str] | None = None,
+        metadata: list[dict[str, Any]] | None = None,
     ) -> EmbeddingDataset:
-        """
-        Create a new embedding dataset.
+        """Create a new embedding dataset.
 
         Args:
             name: Dataset name
@@ -218,6 +215,7 @@ class EmbeddingVisualizationService:
 
         Returns:
             EmbeddingDataset object
+
         """
         try:
             if not embeddings:
@@ -228,7 +226,7 @@ class EmbeddingVisualizationService:
             for i, embedding in enumerate(embeddings):
                 if len(embedding) != original_dimensions:
                     raise ValueError(
-                        f"Embedding {i} has {len(embedding)} dimensions, expected {original_dimensions}"
+                        f"Embedding {i} has {len(embedding)} dimensions, expected {original_dimensions}",
                     )
 
             # Create embedding points
@@ -271,8 +269,7 @@ class EmbeddingVisualizationService:
         method: str = "tsne",
         **kwargs,
     ) -> EmbeddingDataset:
-        """
-        Reduce dimensions of an embedding dataset.
+        """Reduce dimensions of an embedding dataset.
 
         Args:
             dataset_id: Dataset ID
@@ -282,6 +279,7 @@ class EmbeddingVisualizationService:
 
         Returns:
             Updated EmbeddingDataset object
+
         """
         try:
             if dataset_id not in self.datasets:
@@ -291,7 +289,7 @@ class EmbeddingVisualizationService:
 
             if not SKLEARN_AVAILABLE:
                 raise RuntimeError(
-                    "scikit-learn not available for dimensionality reduction"
+                    "scikit-learn not available for dimensionality reduction",
                 )
 
             # Extract coordinates
@@ -351,11 +349,10 @@ class EmbeddingVisualizationService:
         self,
         dataset_id: str,
         method: str = "kmeans",
-        n_clusters: Optional[int] = None,
+        n_clusters: int | None = None,
         **kwargs,
     ) -> ClusteringResult:
-        """
-        Perform clustering analysis on an embedding dataset.
+        """Perform clustering analysis on an embedding dataset.
 
         Args:
             dataset_id: Dataset ID
@@ -365,6 +362,7 @@ class EmbeddingVisualizationService:
 
         Returns:
             ClusteringResult object
+
         """
         try:
             if dataset_id not in self.datasets:
@@ -442,11 +440,10 @@ class EmbeddingVisualizationService:
     async def create_visualization(
         self,
         dataset_id: str,
-        config: Optional[VisualizationConfig] = None,
+        config: VisualizationConfig | None = None,
         backend: str = "matplotlib",
     ) -> str:
-        """
-        Create a visualization of an embedding dataset.
+        """Create a visualization of an embedding dataset.
 
         Args:
             dataset_id: Dataset ID
@@ -455,6 +452,7 @@ class EmbeddingVisualizationService:
 
         Returns:
             Path to saved visualization file
+
         """
         try:
             if dataset_id not in self.datasets:
@@ -472,16 +470,15 @@ class EmbeddingVisualizationService:
                 if not MATPLOTLIB_AVAILABLE:
                     raise RuntimeError("matplotlib not available")
                 return await self._create_matplotlib_visualization(
-                    dataset, coordinates, labels, cluster_ids, config
+                    dataset, coordinates, labels, cluster_ids, config,
                 )
-            elif backend == "plotly":
+            if backend == "plotly":
                 if not PLOTLY_AVAILABLE:
                     raise RuntimeError("plotly not available")
                 return await self._create_plotly_visualization(
-                    dataset, coordinates, labels, cluster_ids, config
+                    dataset, coordinates, labels, cluster_ids, config,
                 )
-            else:
-                raise ValueError(f"Unknown visualization backend: {backend}")
+            raise ValueError(f"Unknown visualization backend: {backend}")
 
         except Exception as e:
             logger.error(f"Failed to create visualization: {e}")
@@ -490,9 +487,9 @@ class EmbeddingVisualizationService:
     async def _create_matplotlib_visualization(
         self,
         dataset: EmbeddingDataset,
-        coordinates: List[List[float]],
-        labels: List[Optional[str]],
-        cluster_ids: List[Optional[int]],
+        coordinates: list[list[float]],
+        labels: list[str | None],
+        cluster_ids: list[int | None],
         config: VisualizationConfig,
     ) -> str:
         """Create matplotlib visualization."""
@@ -505,10 +502,10 @@ class EmbeddingVisualizationService:
             if any(cluster_ids):
                 # Use cluster colors
                 unique_clusters = list(
-                    set(cid for cid in cluster_ids if cid is not None)
+                    set(cid for cid in cluster_ids if cid is not None),
                 )
                 colors = plt.cm.get_cmap(config.color_scheme)(
-                    range(len(unique_clusters))
+                    range(len(unique_clusters)),
                 )
                 point_colors = [
                     colors[unique_clusters.index(cid)] if cid is not None else "gray"
@@ -517,7 +514,7 @@ class EmbeddingVisualizationService:
             elif any(labels):
                 # Use label colors
                 unique_labels = list(
-                    set(label for label in labels if label is not None)
+                    set(label for label in labels if label is not None),
                 )
                 colors = plt.cm.get_cmap(config.color_scheme)(range(len(unique_labels)))
                 point_colors = [
@@ -595,7 +592,7 @@ class EmbeddingVisualizationService:
             if config.show_legend and (any(labels) or any(cluster_ids)):
                 if any(cluster_ids):
                     unique_clusters = list(
-                        set(cid for cid in cluster_ids if cid is not None)
+                        set(cid for cid in cluster_ids if cid is not None),
                     )
                     legend_elements = [
                         plt.Line2D(
@@ -611,7 +608,7 @@ class EmbeddingVisualizationService:
                     ]
                 else:
                     unique_labels = list(
-                        set(label for label in labels if label is not None)
+                        set(label for label in labels if label is not None),
                     )
                     legend_elements = [
                         plt.Line2D(
@@ -648,9 +645,9 @@ class EmbeddingVisualizationService:
     async def _create_plotly_visualization(
         self,
         dataset: EmbeddingDataset,
-        coordinates: List[List[float]],
-        labels: List[Optional[str]],
-        cluster_ids: List[Optional[int]],
+        coordinates: list[list[float]],
+        labels: list[str | None],
+        cluster_ids: list[int | None],
         config: VisualizationConfig,
     ) -> str:
         """Create plotly visualization."""
@@ -659,7 +656,7 @@ class EmbeddingVisualizationService:
             if any(cluster_ids):
                 # Use cluster colors
                 unique_clusters = list(
-                    set(cid for cid in cluster_ids if cid is not None)
+                    set(cid for cid in cluster_ids if cid is not None),
                 )
                 colors = px.colors.qualitative.Set1[: len(unique_clusters)]
                 point_colors = [
@@ -673,7 +670,7 @@ class EmbeddingVisualizationService:
             elif any(labels):
                 # Use label colors
                 unique_labels = list(
-                    set(label for label in labels if label is not None)
+                    set(label for label in labels if label is not None),
                 )
                 colors = px.colors.qualitative.Set1[: len(unique_labels)]
                 point_colors = [
@@ -707,7 +704,7 @@ class EmbeddingVisualizationService:
                         text=color_labels,
                         hovertemplate="<b>%{text}</b><br>X: %{x}<br>Y: %{y}<extra></extra>",
                         name="Embeddings",
-                    )
+                    ),
                 )
 
                 # Update layout
@@ -741,7 +738,7 @@ class EmbeddingVisualizationService:
                         text=color_labels,
                         hovertemplate="<b>%{text}</b><br>X: %{x}<br>Y: %{y}<br>Z: %{z}<extra></extra>",
                         name="Embeddings",
-                    )
+                    ),
                 )
 
                 # Update layout
@@ -775,15 +772,15 @@ class EmbeddingVisualizationService:
             logger.error(f"Failed to create plotly visualization: {e}")
             raise
 
-    async def get_dataset_statistics(self, dataset_id: str) -> Dict[str, Any]:
-        """
-        Get statistics for an embedding dataset.
+    async def get_dataset_statistics(self, dataset_id: str) -> dict[str, Any]:
+        """Get statistics for an embedding dataset.
 
         Args:
             dataset_id: Dataset ID
 
         Returns:
             Dictionary containing dataset statistics
+
         """
         try:
             if dataset_id not in self.datasets:
@@ -795,7 +792,7 @@ class EmbeddingVisualizationService:
             n_points = len(dataset.points)
             n_labels = len(set(point.label for point in dataset.points if point.label))
             n_clusters = len(
-                set(point.cluster_id for point in dataset.points if point.cluster_id)
+                set(point.cluster_id for point in dataset.points if point.cluster_id),
             )
 
             # Coordinate statistics
@@ -815,8 +812,8 @@ class EmbeddingVisualizationService:
                         dist = math.sqrt(
                             sum(
                                 (a - b) ** 2
-                                for a, b in zip(coordinates[i], coordinates[j])
-                            )
+                                for a, b in zip(coordinates[i], coordinates[j], strict=False)
+                            ),
                         )
                         distances.append(dist)
 
@@ -856,8 +853,7 @@ class EmbeddingVisualizationService:
             raise
 
     async def export_dataset(self, dataset_id: str, format: str = "json") -> str:
-        """
-        Export a dataset to a file.
+        """Export a dataset to a file.
 
         Args:
             dataset_id: Dataset ID
@@ -865,6 +861,7 @@ class EmbeddingVisualizationService:
 
         Returns:
             Path to exported file
+
         """
         try:
             if dataset_id not in self.datasets:
@@ -920,14 +917,14 @@ class EmbeddingVisualizationService:
             raise
 
     async def delete_dataset(self, dataset_id: str) -> bool:
-        """
-        Delete an embedding dataset.
+        """Delete an embedding dataset.
 
         Args:
             dataset_id: Dataset ID
 
         Returns:
             True if successful
+
         """
         try:
             if dataset_id not in self.datasets:

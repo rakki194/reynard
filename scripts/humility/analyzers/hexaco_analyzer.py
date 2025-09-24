@@ -1,9 +1,7 @@
-"""
-HEXACO personality analysis module for humility detection.
+"""HEXACO personality analysis module for humility detection.
 """
 
-import asyncio
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from core.config import HumilityConfig
 from core.models import (
@@ -22,7 +20,7 @@ class HexacoAnalyzer:
         self.hexaco_patterns = self._load_hexaco_patterns()
         self.honesty_humility_indicators = self._load_honesty_humility_indicators()
 
-    def _load_hexaco_patterns(self) -> Dict[str, List[Dict]]:
+    def _load_hexaco_patterns(self) -> dict[str, list[dict]]:
         """Load HEXACO personality patterns."""
         return {
             "honesty_humility": [
@@ -45,7 +43,7 @@ class HexacoAnalyzer:
                     "severity": SeverityLevel.LOW,
                     "confidence": 0.6,
                     "trait": "neutral",
-                }
+                },
             ],
             "extraversion": [
                 {
@@ -53,7 +51,7 @@ class HexacoAnalyzer:
                     "severity": SeverityLevel.MEDIUM,
                     "confidence": 0.7,
                     "trait": "neutral",
-                }
+                },
             ],
             "agreeableness": [
                 {
@@ -75,7 +73,7 @@ class HexacoAnalyzer:
                     "severity": SeverityLevel.LOW,
                     "confidence": 0.6,
                     "trait": "positive",
-                }
+                },
             ],
             "openness": [
                 {
@@ -83,11 +81,11 @@ class HexacoAnalyzer:
                     "severity": SeverityLevel.LOW,
                     "confidence": 0.6,
                     "trait": "positive",
-                }
+                },
             ],
         }
 
-    def _load_honesty_humility_indicators(self) -> Dict[str, List[str]]:
+    def _load_honesty_humility_indicators(self) -> dict[str, list[str]]:
         """Load specific honesty-humility indicators."""
         return {
             "positive_indicators": [
@@ -120,7 +118,7 @@ class HexacoAnalyzer:
             ],
         }
 
-    async def analyze(self, text: str, file_path: str = "") -> List[HumilityFinding]:
+    async def analyze(self, text: str, file_path: str = "") -> list[HumilityFinding]:
         """Analyze text for HEXACO personality traits related to humility."""
         findings = []
         lines = text.split("\n")
@@ -144,12 +142,12 @@ class HexacoAnalyzer:
                         ):
                             # Determine confidence level
                             confidence_level = self._get_confidence_level(
-                                confidence_score
+                                confidence_score,
                             )
 
                             # Generate replacement suggestion
                             replacement = self._generate_replacement(
-                                original_text, trait_type
+                                original_text, trait_type,
                             )
 
                             # Calculate context
@@ -181,7 +179,7 @@ class HexacoAnalyzer:
 
         return findings
 
-    async def get_metrics(self, text: str) -> Dict[str, Any]:
+    async def get_metrics(self, text: str) -> dict[str, Any]:
         """Get HEXACO personality metrics for the text."""
         lines = text.split("\n")
         trait_scores = {
@@ -193,7 +191,7 @@ class HexacoAnalyzer:
             "openness": 0.0,
         }
 
-        trait_counts = {trait: 0 for trait in trait_scores.keys()}
+        trait_counts = dict.fromkeys(trait_scores.keys(), 0)
 
         for line in lines:
             for trait, patterns in self.hexaco_patterns.items():
@@ -221,7 +219,7 @@ class HexacoAnalyzer:
 
         # Calculate overall honesty-humility score
         honesty_humility_score = max(
-            0, min(100, (trait_scores["honesty_humility"] + 1) * 50)
+            0, min(100, (trait_scores["honesty_humility"] + 1) * 50),
         )
 
         return {
@@ -266,12 +264,11 @@ class HexacoAnalyzer:
         """Convert confidence score to confidence level."""
         if confidence_score >= 0.9:
             return ConfidenceLevel.VERY_HIGH
-        elif confidence_score >= 0.7:
+        if confidence_score >= 0.7:
             return ConfidenceLevel.HIGH
-        elif confidence_score >= 0.5:
+        if confidence_score >= 0.5:
             return ConfidenceLevel.MEDIUM
-        else:
-            return ConfidenceLevel.LOW
+        return ConfidenceLevel.LOW
 
     def _generate_replacement(self, original_text: str, trait_type: str) -> str:
         """Generate replacement based on trait type."""

@@ -1,5 +1,4 @@
-"""
-Reynard Content Extractor
+"""Reynard Content Extractor
 
 Custom gallery-dl extractor for Reynard internal content.
 Extracts media from Reynard's internal content management system.
@@ -41,7 +40,7 @@ class ReynardContentExtractor(Extractor):
                 Message.Directory,
                 {
                     "title": content_data.get(
-                        "title", f"Reynard Content {self.content_id}"
+                        "title", f"Reynard Content {self.content_id}",
                     ),
                     "author": content_data.get("author", "Unknown"),
                     "category": content_data.get("category", "content"),

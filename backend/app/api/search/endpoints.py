@@ -1,5 +1,4 @@
-"""
-Unified Search API Endpoints
+"""Unified Search API Endpoints
 ===========================
 
 FastAPI endpoints for the unified search service providing comprehensive search capabilities
@@ -35,7 +34,7 @@ Version: 1.0.0
 
 import logging
 import time
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from fastapi import APIRouter, HTTPException, Query, Request
 from fastapi.responses import JSONResponse
@@ -61,11 +60,11 @@ class NaturalLanguageSearchRequest(BaseModel):
 
     query: str = Field(..., description="Natural language search query")
     max_results: int = Field(20, description="Maximum number of results to return")
-    file_types: Optional[List[str]] = Field(
-        None, description="File extensions to search in"
+    file_types: list[str] | None = Field(
+        None, description="File extensions to search in",
     )
-    directories: Optional[List[str]] = Field(
-        None, description="Directories to search in"
+    directories: list[str] | None = Field(
+        None, description="Directories to search in",
     )
     enable_expansion: bool = Field(True, description="Enable query expansion")
     confidence_threshold: float = Field(0.6, description="Minimum confidence threshold")
@@ -76,14 +75,14 @@ class IntelligentSearchRequest(BaseModel):
 
     query: str = Field(..., description="Search query (natural language or structured)")
     max_results: int = Field(20, description="Maximum number of results to return")
-    file_types: Optional[List[str]] = Field(
-        None, description="File extensions to search in"
+    file_types: list[str] | None = Field(
+        None, description="File extensions to search in",
     )
-    directories: Optional[List[str]] = Field(
-        None, description="Directories to search in"
+    directories: list[str] | None = Field(
+        None, description="Directories to search in",
     )
-    search_modes: Optional[List[str]] = Field(
-        None, description="Specific search modes to use"
+    search_modes: list[str] | None = Field(
+        None, description="Specific search modes to use",
     )
 
 
@@ -91,15 +90,14 @@ class ContextualSearchRequest(BaseModel):
     """Request model for contextual search."""
 
     query: str = Field(..., description="Search query")
-    context: Optional[Dict[str, Any]] = Field(
-        None, description="Additional context information"
+    context: dict[str, Any] | None = Field(
+        None, description="Additional context information",
     )
     max_results: int = Field(20, description="Maximum number of results to return")
 
 
 def get_search_service() -> SearchService:
-    """
-    Get the search service instance from the service registry.
+    """Get the search service instance from the service registry.
 
     Retrieves the initialized search service from the global service registry.
     This function ensures that the search service is properly initialized and
@@ -110,6 +108,7 @@ def get_search_service() -> SearchService:
 
     Raises:
         HTTPException: If the search service is not available or not initialized
+
     """
     from app.core.service_registry import get_service_registry
 
@@ -127,10 +126,9 @@ def get_search_service() -> SearchService:
 
 @router.post("/semantic", response_model=dict[str, Any])
 async def semantic_search(
-    request: SemanticSearchRequest, http_request: Request
+    request: SemanticSearchRequest, http_request: Request,
 ) -> JSONResponse:
-    """
-    Perform semantic search using vector embeddings with intelligent caching.
+    """Perform semantic search using vector embeddings with intelligent caching.
 
     This endpoint provides advanced code search capabilities that understand the
     semantic meaning and context of queries, not just exact text matches. It uses
@@ -165,6 +163,7 @@ async def semantic_search(
             "directories": ["packages/auth", "backend"]
         }
         ```
+
     """
     start_time = time.time()
 
@@ -188,8 +187,7 @@ async def semantic_search(
 
 @router.post("/syntax", response_model=dict[str, Any])
 async def syntax_search(request: SyntaxSearchRequest) -> JSONResponse:
-    """
-    Perform syntax-based search using ripgrep.
+    """Perform syntax-based search using ripgrep.
 
     This endpoint provides fast, precise text search with support for regex
     patterns, file type filtering, and code-aware pattern matching.
@@ -205,8 +203,7 @@ async def syntax_search(request: SyntaxSearchRequest) -> JSONResponse:
 
 @router.post("/hybrid", response_model=dict[str, Any])
 async def hybrid_search(request: HybridSearchRequest) -> JSONResponse:
-    """
-    Perform hybrid search combining semantic and syntax search.
+    """Perform hybrid search combining semantic and syntax search.
 
     This endpoint provides the best of both worlds: semantic understanding
     for finding conceptually related code and precise syntax matching for
@@ -278,8 +275,7 @@ async def contextual_search(request: ContextualSearchRequest) -> JSONResponse:
 
 @router.post("/index", response_model=dict[str, Any])
 async def index_codebase(request: IndexRequest) -> JSONResponse:
-    """
-    Index the codebase for search.
+    """Index the codebase for search.
 
     This endpoint creates a searchable index of your codebase, including
     vector embeddings for semantic search and text indexing for fast retrieval.
@@ -295,8 +291,7 @@ async def index_codebase(request: IndexRequest) -> JSONResponse:
 
 @router.get("/stats", response_model=dict[str, Any])
 async def get_search_stats() -> JSONResponse:
-    """
-    Get search statistics and performance metrics.
+    """Get search statistics and performance metrics.
 
     Returns information about the search index, including file counts,
     index size, search performance, and cache hit rates.
@@ -314,11 +309,10 @@ async def get_search_stats() -> JSONResponse:
 async def get_query_suggestions(
     query: str = Query(..., description="Query to get suggestions for"),
     max_suggestions: int = Query(
-        default=5, ge=1, le=20, description="Maximum suggestions to return"
+        default=5, ge=1, le=20, description="Maximum suggestions to return",
     ),
 ) -> JSONResponse:
-    """
-    Get intelligent query suggestions.
+    """Get intelligent query suggestions.
 
     Provides smart suggestions to improve your search queries, including
     synonyms, code patterns, and completion suggestions.
@@ -352,8 +346,7 @@ async def get_intelligent_suggestions(
 
 @router.post("/search", response_model=dict[str, Any])
 async def smart_search(request: SearchRequest) -> JSONResponse:
-    """
-    Smart search that automatically chooses the best search strategy.
+    """Smart search that automatically chooses the best search strategy.
 
     This endpoint analyzes your query and automatically selects the most
     appropriate search method (semantic, syntax, or hybrid) for optimal results.
@@ -423,8 +416,7 @@ async def smart_search(request: SearchRequest) -> JSONResponse:
 
 @router.get("/health")
 async def health_check() -> dict[str, str]:
-    """
-    Health check endpoint for search service.
+    """Health check endpoint for search service.
 
     Returns the status of the search service and its dependencies.
     """
@@ -448,9 +440,8 @@ async def health_check() -> dict[str, str]:
 
 
 @router.get("/performance")
-async def get_performance_metrics() -> Dict[str, Any]:
-    """
-    Get detailed performance metrics for the search service.
+async def get_performance_metrics() -> dict[str, Any]:
+    """Get detailed performance metrics for the search service.
 
     Returns comprehensive performance data including cache statistics,
     search metrics, and optimization status.
@@ -483,10 +474,9 @@ async def get_performance_metrics() -> Dict[str, Any]:
 
 @router.post("/cache/clear")
 async def clear_search_cache(
-    namespace: str = Query("search_results", description="Cache namespace to clear")
-) -> Dict[str, Any]:
-    """
-    Clear search cache.
+    namespace: str = Query("search_results", description="Cache namespace to clear"),
+) -> dict[str, Any]:
+    """Clear search cache.
 
     Allows clearing of cached search results to force fresh searches.
     """
@@ -499,11 +489,10 @@ async def clear_search_cache(
                 "status": "success" if result.get("success", False) else "failed",
                 "message": result.get("message", "Cache cleared successfully"),
             }
-        else:
-            return {
-                "status": "not_supported",
-                "message": "Cache clearing not supported by this service version",
-            }
+        return {
+            "status": "not_supported",
+            "message": "Cache clearing not supported by this service version",
+        }
 
     except Exception as e:
         logger.exception("Failed to clear cache")
@@ -513,7 +502,7 @@ async def clear_search_cache(
 @router.get("/analyze-query")
 async def analyze_query(
     query: str = Query(..., description="Query to analyze"),
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Analyze a query to understand its intent and structure."""
     try:
         search_service = get_search_service()

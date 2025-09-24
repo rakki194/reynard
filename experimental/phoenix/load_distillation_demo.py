@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-PHOENIX Knowledge Distillation Loading Demo
+"""PHOENIX Knowledge Distillation Loading Demo
 
 Demonstrate how to load and reconstruct agent states from distilled genetic material.
 
@@ -9,18 +8,16 @@ Version: 1.0.0
 """
 
 import asyncio
-import json
 import logging
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 # Add src to path
 sys.path.append(str(Path(__file__).parent / "src"))
 
 from src.core.knowledge_distillation import KnowledgeDistillation
-from src.core.phoenix_framework import PhoenixFramework
 from src.integration.agent_persistence import AgentStatePersistence
 from src.utils.data_structures import (
     AgentGeneticMaterial,
@@ -37,8 +34,7 @@ from src.utils.data_structures import (
 
 
 class DistillationLoader:
-    """
-    Demonstrates how to load and reconstruct agent states from distilled genetic material.
+    """Demonstrates how to load and reconstruct agent states from distilled genetic material.
 
     This shows the complete process of:
     1. Loading stored genetic materials
@@ -54,9 +50,8 @@ class DistillationLoader:
         self.knowledge_distillation = KnowledgeDistillation(self.config)
         self.agent_persistence = AgentStatePersistence("data/agent_state")
 
-    async def load_stored_genetic_materials(self) -> List[AgentGeneticMaterial]:
-        """
-        Load genetic materials from storage.
+    async def load_stored_genetic_materials(self) -> list[AgentGeneticMaterial]:
+        """Load genetic materials from storage.
 
         In a real system, this would load from persistent storage.
         For demo purposes, we'll recreate the genetic materials.
@@ -218,10 +213,9 @@ class DistillationLoader:
         return genetic_materials
 
     async def reconstruct_agent_from_genetic_material(
-        self, genetic_material: AgentGeneticMaterial
+        self, genetic_material: AgentGeneticMaterial,
     ) -> AgentState:
-        """
-        Reconstruct an agent state from genetic material.
+        """Reconstruct an agent state from genetic material.
 
         This demonstrates how genetic material can be used to recreate an agent's
         personality, traits, and capabilities.
@@ -254,10 +248,10 @@ class DistillationLoader:
         physical_traits = {
             "intelligence": genetic_material.fitness_score,
             "endurance": genetic_material.generation_context.performance_metrics.get(
-                "efficiency", 0.8
+                "efficiency", 0.8,
             ),
             "precision": genetic_material.generation_context.performance_metrics.get(
-                "accuracy", 0.8
+                "accuracy", 0.8,
             ),
             "adaptability": 0.9,  # Inferred from high performance across domains
             "presence": 0.95,  # Inferred from leadership traits
@@ -267,18 +261,18 @@ class DistillationLoader:
         # Create performance metrics
         performance_metrics = PerformanceMetrics(
             accuracy=genetic_material.generation_context.performance_metrics.get(
-                "accuracy", 0.9
+                "accuracy", 0.9,
             ),
             response_time=1.0
             - genetic_material.generation_context.performance_metrics.get(
-                "efficiency", 0.8
+                "efficiency", 0.8,
             ),
             efficiency=genetic_material.generation_context.performance_metrics.get(
-                "efficiency", 0.8
+                "efficiency", 0.8,
             ),
             generalization=0.9,  # Inferred from multi-domain knowledge
             creativity=genetic_material.generation_context.performance_metrics.get(
-                "innovation", 0.9
+                "innovation", 0.9,
             ),
             consistency=0.95,  # Inferred from high fitness score
             fitness=genetic_material.fitness_score,
@@ -303,7 +297,7 @@ class DistillationLoader:
             last_updated=datetime.now(),
         )
 
-        print(f"✅ Agent reconstructed:")
+        print("✅ Agent reconstructed:")
         print(f"   ID: {reconstructed_agent.id}")
         print(f"   Name: {reconstructed_agent.name}")
         print(f"   Spirit: {reconstructed_agent.spirit.value}")
@@ -317,21 +311,20 @@ class DistillationLoader:
 
     async def apply_knowledge_distillation(
         self,
-        source_genetic_materials: List[AgentGeneticMaterial],
+        source_genetic_materials: list[AgentGeneticMaterial],
         target_agent: AgentState,
     ) -> AgentState:
-        """
-        Apply knowledge distillation from source genetic material to target agent.
+        """Apply knowledge distillation from source genetic material to target agent.
 
         This demonstrates how genetic material can be used to enhance another agent.
         """
         print(
-            f"🧠 Applying knowledge distillation from {len(source_genetic_materials)} genetic materials to {target_agent.id}"
+            f"🧠 Applying knowledge distillation from {len(source_genetic_materials)} genetic materials to {target_agent.id}",
         )
 
         # Extract knowledge from source genetic materials
         distillation_result = await self.knowledge_distillation.distill_knowledge(
-            source_genetic_materials
+            source_genetic_materials,
         )
 
         # Apply distilled knowledge to target agent (simplified for demo)
@@ -339,11 +332,11 @@ class DistillationLoader:
             target_agent  # In real implementation, this would modify the agent
         )
 
-        print(f"✅ Knowledge distillation applied:")
+        print("✅ Knowledge distillation applied:")
         print(f"   Original fitness: {target_agent.get_fitness_score():.3f}")
         print(f"   Distilled fitness: {distilled_agent.get_fitness_score():.3f}")
         print(
-            f"   Fitness improvement: {distilled_agent.get_fitness_score() - target_agent.get_fitness_score():.3f}"
+            f"   Fitness improvement: {distilled_agent.get_fitness_score() - target_agent.get_fitness_score():.3f}",
         )
 
         return distilled_agent
@@ -352,9 +345,8 @@ class DistillationLoader:
         self,
         original_genetic_material: AgentGeneticMaterial,
         reconstructed_agent: AgentState,
-    ) -> Dict[str, Any]:
-        """
-        Validate that the reconstructed agent accurately represents the original genetic material.
+    ) -> dict[str, Any]:
+        """Validate that the reconstructed agent accurately represents the original genetic material.
         """
         print("🔍 Validating reconstruction accuracy...")
 
@@ -389,7 +381,7 @@ class DistillationLoader:
 
         # Validate knowledge preservation
         original_domains = set(
-            original_genetic_material.structured_knowledge.domain_knowledge.keys()
+            original_genetic_material.structured_knowledge.domain_knowledge.keys(),
         )
         reconstructed_domains = set(reconstructed_agent.ability_traits.keys())
 
@@ -402,10 +394,10 @@ class DistillationLoader:
             "domain_preservation"
         ] = domain_preservation
         validation_results["knowledge_preservation"]["original_domains"] = list(
-            original_domains
+            original_domains,
         )
         validation_results["knowledge_preservation"]["reconstructed_domains"] = list(
-            reconstructed_domains
+            reconstructed_domains,
         )
 
         # Validate performance preservation
@@ -431,9 +423,9 @@ class DistillationLoader:
         )
         validation_results["overall_accuracy"] = overall_accuracy
 
-        print(f"✅ Validation completed:")
+        print("✅ Validation completed:")
         print(
-            f"   Trait preservation: {validation_results['trait_preservation']['match_rate']:.3f}"
+            f"   Trait preservation: {validation_results['trait_preservation']['match_rate']:.3f}",
         )
         print(f"   Knowledge preservation: {domain_preservation:.3f}")
         print(f"   Performance preservation: {fitness_similarity:.3f}")
@@ -442,13 +434,12 @@ class DistillationLoader:
         return validation_results
 
     async def demonstrate_distillation_loading(self):
-        """
-        Demonstrate the complete distillation loading process.
+        """Demonstrate the complete distillation loading process.
         """
         print("🦁 PHOENIX Knowledge Distillation Loading Demo")
         print("=" * 80)
         print(
-            "Demonstrating how to load and reconstruct agent states from genetic material"
+            "Demonstrating how to load and reconstruct agent states from genetic material",
         )
         print("=" * 80)
 
@@ -460,13 +451,13 @@ class DistillationLoader:
         print("\n🧬 Step 2: Reconstructing agent from genetic material...")
         source_genetic_material = genetic_materials[0]
         reconstructed_agent = await self.reconstruct_agent_from_genetic_material(
-            source_genetic_material
+            source_genetic_material,
         )
 
         # Step 3: Validate reconstruction
         print("\n🔍 Step 3: Validating reconstruction accuracy...")
         validation_results = await self.validate_reconstruction(
-            source_genetic_material, reconstructed_agent
+            source_genetic_material, reconstructed_agent,
         )
 
         # Step 4: Demonstrate knowledge distillation
@@ -490,12 +481,12 @@ class DistillationLoader:
         )
 
         print(
-            f"   Target agent before distillation: {target_agent.get_fitness_score():.3f}"
+            f"   Target agent before distillation: {target_agent.get_fitness_score():.3f}",
         )
 
         # Apply knowledge distillation
         distilled_agent = await self.apply_knowledge_distillation(
-            [source_genetic_material], target_agent
+            [source_genetic_material], target_agent,
         )
 
         # Step 5: Save reconstructed agent
@@ -510,14 +501,14 @@ class DistillationLoader:
         print("\n📊 Distillation Loading Summary:")
         print(f"   Source genetic materials: {len(genetic_materials)}")
         print(
-            f"   Reconstruction accuracy: {validation_results['overall_accuracy']:.3f}"
+            f"   Reconstruction accuracy: {validation_results['overall_accuracy']:.3f}",
         )
-        print(f"   Knowledge distillation applied: ✅")
-        print(f"   Agents saved: 2")
+        print("   Knowledge distillation applied: ✅")
+        print("   Agents saved: 2")
 
         print("\n🎉 Knowledge distillation loading demonstration completed!")
         print(
-            "🦁 Success-Advisor-8's genetic material has been successfully loaded and applied!"
+            "🦁 Success-Advisor-8's genetic material has been successfully loaded and applied!",
         )
 
 
@@ -527,7 +518,7 @@ async def main():
 
     # Setup logging
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+        level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s",
     )
 
     # Initialize and run demo

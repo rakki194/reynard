@@ -1,5 +1,4 @@
-"""
-Success-Advisor-8 Agent Implementation
+"""Success-Advisor-8 Agent Implementation
 
 Reconstructs and manages the Success-Advisor-8 agent state based on
 documentation and PHOENIX framework analysis.
@@ -8,16 +7,13 @@ Author: Champion-Designer-32 (Wolf Specialist)
 Version: 1.0.0
 """
 
-import asyncio
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from ..utils.data_structures import (
     AgentConfig,
     AgentState,
-    NamingStyle,
     PerformanceMetrics,
-    SpiritType,
     StatisticalSignificance,
     create_success_advisor_config,
 )
@@ -25,35 +21,34 @@ from ..utils.logging import PhoenixLogger
 
 
 class SuccessAdvisor8:
-    """
-    Success-Advisor-8 agent implementation.
+    """Success-Advisor-8 agent implementation.
 
     Reconstructs the permanent release manager agent from documentation
     and provides core agent management capabilities.
     """
 
-    def __init__(self, config: Optional[AgentConfig] = None):
-        """
-        Initialize Success-Advisor-8.
+    def __init__(self, config: AgentConfig | None = None):
+        """Initialize Success-Advisor-8.
 
         Args:
             config: Optional agent configuration
+
         """
         self.config = config or create_success_advisor_config()
         self.logger = PhoenixLogger("success_advisor")
-        self.agent_state: Optional[AgentState] = None
+        self.agent_state: AgentState | None = None
 
         self.logger.info("Success-Advisor-8 agent initialized", "initialization")
 
     async def initialize(self) -> AgentState:
-        """
-        Initialize the agent state from documentation.
+        """Initialize the agent state from documentation.
 
         Returns:
             Reconstructed agent state
+
         """
         self.logger.info(
-            "Initializing agent state from documentation", "initialization"
+            "Initializing agent state from documentation", "initialization",
         )
 
         # Reconstruct agent state
@@ -63,11 +58,11 @@ class SuccessAdvisor8:
         return self.agent_state
 
     async def _reconstruct_agent_state(self) -> AgentState:
-        """
-        Reconstruct agent state from documentation analysis.
+        """Reconstruct agent state from documentation analysis.
 
         Returns:
             Reconstructed agent state
+
         """
         # Agent identity from documentation
         agent_id = self.config.id
@@ -146,7 +141,7 @@ class SuccessAdvisor8:
                     power=0.9,
                     sample_size=100,
                 ),
-            )
+            ),
         ]
 
         # Knowledge base (from documentation and experience)
@@ -206,16 +201,16 @@ class SuccessAdvisor8:
         )
 
         self.logger.success(
-            "Agent state reconstructed from documentation", "reconstruction"
+            "Agent state reconstructed from documentation", "reconstruction",
         )
         return agent_state
 
-    async def get_agent_state(self) -> Optional[AgentState]:
-        """
-        Get the current agent state.
+    async def get_agent_state(self) -> AgentState | None:
+        """Get the current agent state.
 
         Returns:
             Current agent state or None if not initialized
+
         """
         if not self.agent_state:
             self.logger.warning("Agent state not initialized", "state_access")
@@ -224,14 +219,14 @@ class SuccessAdvisor8:
         return self.agent_state
 
     async def update_performance(self, metrics: PerformanceMetrics) -> bool:
-        """
-        Update agent performance metrics.
+        """Update agent performance metrics.
 
         Args:
             metrics: New performance metrics
 
         Returns:
             True if successful, False otherwise
+
         """
         if not self.agent_state:
             self.logger.error("Agent state not initialized", "performance_update")
@@ -251,15 +246,15 @@ class SuccessAdvisor8:
         )
         return True
 
-    async def get_dominant_traits(self, count: int = 3) -> List[tuple]:
-        """
-        Get the dominant personality traits.
+    async def get_dominant_traits(self, count: int = 3) -> list[tuple]:
+        """Get the dominant personality traits.
 
         Args:
             count: Number of traits to return
 
         Returns:
             List of (trait_name, value) tuples
+
         """
         if not self.agent_state:
             self.logger.warning("Agent state not initialized", "trait_analysis")
@@ -267,12 +262,12 @@ class SuccessAdvisor8:
 
         return self.agent_state.get_dominant_traits(count)
 
-    async def get_specializations(self) -> List[str]:
-        """
-        Get agent specializations.
+    async def get_specializations(self) -> list[str]:
+        """Get agent specializations.
 
         Returns:
             List of specializations
+
         """
         if not self.agent_state:
             self.logger.warning("Agent state not initialized", "specialization_access")
@@ -280,12 +275,12 @@ class SuccessAdvisor8:
 
         return self.agent_state.get_specializations()
 
-    async def get_achievements(self) -> List[str]:
-        """
-        Get agent achievements.
+    async def get_achievements(self) -> list[str]:
+        """Get agent achievements.
 
         Returns:
             List of achievements
+
         """
         if not self.agent_state:
             self.logger.warning("Agent state not initialized", "achievement_access")
@@ -294,11 +289,11 @@ class SuccessAdvisor8:
         return self.agent_state.get_achievements()
 
     async def get_fitness_score(self) -> float:
-        """
-        Get current fitness score.
+        """Get current fitness score.
 
         Returns:
             Current fitness score
+
         """
         if not self.agent_state:
             self.logger.warning("Agent state not initialized", "fitness_access")
@@ -306,12 +301,12 @@ class SuccessAdvisor8:
 
         return self.agent_state.get_fitness_score()
 
-    async def get_agent_summary(self) -> Dict[str, Any]:
-        """
-        Get a summary of the agent state.
+    async def get_agent_summary(self) -> dict[str, Any]:
+        """Get a summary of the agent state.
 
         Returns:
             Agent summary dictionary
+
         """
         if not self.agent_state:
             return {"error": "Agent state not initialized"}
@@ -327,7 +322,7 @@ class SuccessAdvisor8:
             "style": self.agent_state.style.value,
             "role": self.agent_state.knowledge_base.get("role", "unknown"),
             "authority_level": self.agent_state.knowledge_base.get(
-                "authority_level", "unknown"
+                "authority_level", "unknown",
             ),
             "generation": self.agent_state.generation,
             "fitness_score": self.agent_state.get_fitness_score(),
@@ -337,21 +332,21 @@ class SuccessAdvisor8:
             "specializations": specializations,
             "achievements": achievements,
             "total_operations": self.agent_state.knowledge_base.get(
-                "total_operations", 0
+                "total_operations", 0,
             ),
             "last_activity": self.agent_state.knowledge_base.get(
-                "last_activity", "unknown"
+                "last_activity", "unknown",
             ),
             "created_at": self.agent_state.created_at.isoformat(),
             "last_updated": self.agent_state.last_updated.isoformat(),
         }
 
-    async def validate_agent_state(self) -> Dict[str, Any]:
-        """
-        Validate the agent state integrity.
+    async def validate_agent_state(self) -> dict[str, Any]:
+        """Validate the agent state integrity.
 
         Returns:
             Validation results
+
         """
         if not self.agent_state:
             return {
@@ -381,19 +376,19 @@ class SuccessAdvisor8:
         for trait_name, value in self.agent_state.personality_traits.items():
             if not 0.0 <= value <= 1.0:
                 validation_results["warnings"].append(
-                    f"Personality trait {trait_name} out of range: {value}"
+                    f"Personality trait {trait_name} out of range: {value}",
                 )
 
         for trait_name, value in self.agent_state.physical_traits.items():
             if not 0.0 <= value <= 1.0:
                 validation_results["warnings"].append(
-                    f"Physical trait {trait_name} out of range: {value}"
+                    f"Physical trait {trait_name} out of range: {value}",
                 )
 
         for trait_name, value in self.agent_state.ability_traits.items():
             if not 0.0 <= value <= 1.0:
                 validation_results["warnings"].append(
-                    f"Ability trait {trait_name} out of range: {value}"
+                    f"Ability trait {trait_name} out of range: {value}",
                 )
 
         # Check performance history
@@ -410,7 +405,7 @@ class SuccessAdvisor8:
             "has_traits": bool(
                 self.agent_state.personality_traits
                 or self.agent_state.physical_traits
-                or self.agent_state.ability_traits
+                or self.agent_state.ability_traits,
             ),
             "has_performance": bool(self.agent_state.performance_history),
             "has_knowledge": bool(self.agent_state.knowledge_base),

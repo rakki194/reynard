@@ -1,5 +1,4 @@
-"""
-Image Processing Utilities for Reynard Backend
+"""Image Processing Utilities for Reynard Backend
 
 Core image processing operations and transformations.
 """
@@ -42,26 +41,26 @@ class ImageProcessing:
 
         # Both dimensions specified - choose the one that maintains aspect ratio better
         return cls._calculate_best_fit_dimensions(
-            target_width, target_height, aspect_ratio
+            target_width, target_height, aspect_ratio,
         )
 
     @classmethod
     def _calculate_best_fit_dimensions(
-        cls, target_width: int, target_height: int, aspect_ratio: float
+        cls, target_width: int, target_height: int, aspect_ratio: float,
     ) -> tuple[int, int]:
         """Calculate best fit dimensions when both target dimensions are specified."""
         width_based_height = int(target_width / aspect_ratio)
         height_based_width = int(target_height * aspect_ratio)
 
         if abs(width_based_height - target_height) < abs(
-            height_based_width - target_width
+            height_based_width - target_width,
         ):
             return target_width, width_based_height
         return height_based_width, target_height
 
     @classmethod
     def generate_filename(
-        cls, base_name: str, extension: str, suffix: str | None = None
+        cls, base_name: str, extension: str, suffix: str | None = None,
     ) -> str:
         """Generate image filename with proper extension."""
         normalized_ext = extension if extension.startswith(".") else f".{extension}"

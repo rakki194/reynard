@@ -55,6 +55,24 @@ dependencies = [
     # Security tools
     "bandit",
     "safety",
+    # Additional linting tools
+    "flake8",
+    "flake8-bugbear",
+    "flake8-comprehensions",
+    "flake8-docstrings",
+    "flake8-import-order",
+    "flake8-print",
+    "flake8-simplify",
+    "flake8-unused-arguments",
+    "flake8-use-pathlib",
+    "eradicate",
+    "pandas-vet",
+    "pygrep-hooks",
+    "tryceratops",
+    "flynt",
+    "numpy",
+    "perflint",
+    "refurb",
     # Documentation
     "sphinx",
     "sphinx-rtd-theme",
@@ -296,6 +314,8 @@ src = [
     "services/agent-naming",
     "services/gatekeeper",
     "services/mcp-server",
+    "backend/app",
+    "fenrir",
 ]
 select = [
     "E",    # pycodestyle errors
@@ -323,19 +343,30 @@ select = [
     "PERF", # perflint
     "FURB", # refurb
     "RUF",  # ruff-specific rules
+    "D",    # pydocstyle
+    "A",    # flake8-builtins
+    "COM",  # flake8-commas
+    "DTZ",  # flake8-datetimez
+    "EM",   # flake8-errmsg
+    "EXE",  # flake8-executable
+    "FA",   # flake8-future-annotations
+    "ISC",  # flake8-implicit-str-concat
+    "ICN",  # flake8-import-conventions
+    "G",    # flake8-logging-format
+    "INP",  # flake8-no-pep420
+    "PIE",  # flake8-pie
+    "TCH",  # flake8-type-checking
+    "INT",  # flake8-gettext
+    "Q",    # flake8-quotes
+    "RSE",  # flake8-raise
+    "SLF",  # flake8-self
+    "SLOT", # flake8-slots
+    "T10",  # flake8-debugger
+    "TID",  # flake8-tidy-imports
+    "PT",   # flake8-pytest-style
+    "YTT",  # flake8-2020
 ]
 ignore = [
-    "E501",    # line too long, handled by black
-    "B008",    # do not perform function calls in argument defaults
-    "C901",    # too complex
-    "S101",    # use of assert (allow in tests)
-    "S104",    # hardcoded bind all interfaces
-    "S603",    # subprocess call (allow in security tools)
-    "S607",    # subprocess call with shell (allow in security tools)
-    "PLR0913", # too many arguments
-    "PLR0912", # too many branches
-    "PLR0915", # too many statements
-    "TRY003",  # avoid specifying long messages outside exception class
 ]
 
 [tool.ruff.per-file-ignores]

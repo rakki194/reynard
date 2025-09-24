@@ -1,5 +1,4 @@
-"""
-JoyCaption Plugin for Reynard
+"""JoyCaption Plugin for Reynard
 
 This plugin provides the JoyCaption caption generation model, which is
 a large language model for image captioning with multilingual support.

@@ -1,5 +1,4 @@
-"""
-CORS Configuration
+"""CORS Configuration
 
 This module provides CORS middleware configuration for the FastAPI application.
 """

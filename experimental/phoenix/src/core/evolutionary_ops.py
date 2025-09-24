@@ -1,5 +1,4 @@
-"""
-PHOENIX Evolutionary Operators
+"""PHOENIX Evolutionary Operators
 
 Enhanced evolutionary operators for agent breeding, selection, and mutation.
 Implements sophisticated selection mechanisms and genetic operations.
@@ -11,9 +10,7 @@ Version: 1.0.0
 import logging
 import random
 from datetime import datetime
-from typing import Any, Dict, List, Tuple
-
-import numpy as np
+from typing import Any
 
 from ..utils.data_structures import (
     AgentState,
@@ -26,8 +23,7 @@ from ..utils.data_structures import (
 
 
 class EvolutionaryOperators:
-    """
-    Enhanced evolutionary operators for PHOENIX framework.
+    """Enhanced evolutionary operators for PHOENIX framework.
 
     Implements:
     - Multiple selection mechanisms (tournament, fitness-proportional, elite preservation)
@@ -37,11 +33,11 @@ class EvolutionaryOperators:
     """
 
     def __init__(self, config: PhoenixConfig):
-        """
-        Initialize evolutionary operators.
+        """Initialize evolutionary operators.
 
         Args:
             config: PHOENIX configuration parameters
+
         """
         self.config = config
         self.logger = logging.getLogger(__name__)
@@ -57,19 +53,19 @@ class EvolutionaryOperators:
         self.logger.info("🧬 Evolutionary operators initialized")
 
     async def select_parents(
-        self, population: List[AgentState]
-    ) -> List[Tuple[AgentState, AgentState]]:
-        """
-        Select parents for breeding using configured selection method.
+        self, population: list[AgentState],
+    ) -> list[tuple[AgentState, AgentState]]:
+        """Select parents for breeding using configured selection method.
 
         Args:
             population: Current population of agents
 
         Returns:
             List of parent pairs for breeding
+
         """
         self.logger.info(
-            f"👥 Selecting parents from population of {len(population)} agents"
+            f"👥 Selecting parents from population of {len(population)} agents",
         )
 
         # Calculate number of offspring needed
@@ -77,7 +73,7 @@ class EvolutionaryOperators:
 
         # Use tournament selection as default
         selection_method = self.selection_methods.get(
-            "tournament", self._tournament_selection
+            "tournament", self._tournament_selection,
         )
 
         parent_pairs = []
@@ -97,10 +93,9 @@ class EvolutionaryOperators:
         return parent_pairs
 
     def _tournament_selection(
-        self, population: List[AgentState], tournament_size: int = 3
+        self, population: list[AgentState], tournament_size: int = 3,
     ) -> AgentState:
-        """
-        Tournament selection mechanism.
+        """Tournament selection mechanism.
 
         Args:
             population: Population to select from
@@ -108,21 +103,22 @@ class EvolutionaryOperators:
 
         Returns:
             Selected agent
+
         """
         tournament = random.sample(population, min(tournament_size, len(population)))
         return max(tournament, key=lambda agent: agent.get_fitness_score())
 
     def _fitness_proportional_selection(
-        self, population: List[AgentState]
+        self, population: list[AgentState],
     ) -> AgentState:
-        """
-        Fitness-proportional (roulette wheel) selection.
+        """Fitness-proportional (roulette wheel) selection.
 
         Args:
             population: Population to select from
 
         Returns:
             Selected agent
+
         """
         fitness_scores = [agent.get_fitness_score() for agent in population]
 
@@ -149,19 +145,19 @@ class EvolutionaryOperators:
 
         return population[-1]  # Fallback
 
-    def _rank_selection(self, population: List[AgentState]) -> AgentState:
-        """
-        Rank-based selection mechanism.
+    def _rank_selection(self, population: list[AgentState]) -> AgentState:
+        """Rank-based selection mechanism.
 
         Args:
             population: Population to select from
 
         Returns:
             Selected agent
+
         """
         # Sort population by fitness
         sorted_population = sorted(
-            population, key=lambda agent: agent.get_fitness_score()
+            population, key=lambda agent: agent.get_fitness_score(),
         )
 
         # Assign ranks (higher fitness = higher rank)
@@ -182,19 +178,19 @@ class EvolutionaryOperators:
 
         return sorted_population[-1]  # Fallback
 
-    def _elite_preservation_selection(self, population: List[AgentState]) -> AgentState:
-        """
-        Elite preservation selection (always select from top performers).
+    def _elite_preservation_selection(self, population: list[AgentState]) -> AgentState:
+        """Elite preservation selection (always select from top performers).
 
         Args:
             population: Population to select from
 
         Returns:
             Selected agent from elite
+
         """
         # Sort by fitness and select from top 20%
         sorted_population = sorted(
-            population, key=lambda agent: agent.get_fitness_score(), reverse=True
+            population, key=lambda agent: agent.get_fitness_score(), reverse=True,
         )
         elite_size = max(1, len(sorted_population) // 5)
         elite = sorted_population[:elite_size]
@@ -202,10 +198,9 @@ class EvolutionaryOperators:
         return random.choice(elite)
 
     async def breed_agents(
-        self, parent1: AgentState, parent2: AgentState
+        self, parent1: AgentState, parent2: AgentState,
     ) -> AgentState:
-        """
-        Breed two agents to create offspring.
+        """Breed two agents to create offspring.
 
         Args:
             parent1: First parent agent
@@ -213,6 +208,7 @@ class EvolutionaryOperators:
 
         Returns:
             Offspring agent
+
         """
         self.logger.info(f"👶 Breeding agents {parent1.name} and {parent2.name}")
 
@@ -221,7 +217,7 @@ class EvolutionaryOperators:
 
         # Create offspring traits through inheritance
         offspring_traits = create_offspring_traits(
-            parent1, parent2, self.config.mutation_rate
+            parent1, parent2, self.config.mutation_rate,
         )
 
         # Determine offspring spirit and style (inherit from parent1 with some chance of parent2)
@@ -249,15 +245,14 @@ class EvolutionaryOperators:
         )
 
         self.logger.info(
-            f"✅ Created offspring {offspring.name} with compatibility {compatibility:.3f}"
+            f"✅ Created offspring {offspring.name} with compatibility {compatibility:.3f}",
         )
         return offspring
 
     def _inherit_knowledge_base(
-        self, parent1: AgentState, parent2: AgentState
-    ) -> Dict[str, Any]:
-        """
-        Inherit knowledge base from parents.
+        self, parent1: AgentState, parent2: AgentState,
+    ) -> dict[str, Any]:
+        """Inherit knowledge base from parents.
 
         Args:
             parent1: First parent
@@ -265,6 +260,7 @@ class EvolutionaryOperators:
 
         Returns:
             Inherited knowledge base
+
         """
         # Combine knowledge bases from both parents
         combined_knowledge = {}
@@ -287,15 +283,15 @@ class EvolutionaryOperators:
 
         return combined_knowledge
 
-    async def apply_mutations(self, offspring: List[AgentState]) -> List[AgentState]:
-        """
-        Apply mutations to offspring population.
+    async def apply_mutations(self, offspring: list[AgentState]) -> list[AgentState]:
+        """Apply mutations to offspring population.
 
         Args:
             offspring: List of offspring agents
 
         Returns:
             List of mutated offspring
+
         """
         self.logger.info(f"🧬 Applying mutations to {len(offspring)} offspring")
 
@@ -309,14 +305,14 @@ class EvolutionaryOperators:
         return mutated_offspring
 
     def _mutate_agent(self, agent: AgentState) -> AgentState:
-        """
-        Apply mutations to a single agent.
+        """Apply mutations to a single agent.
 
         Args:
             agent: Agent to mutate
 
         Returns:
             Mutated agent
+
         """
         # Create a copy of the agent
         mutated_agent = AgentState(
@@ -350,7 +346,7 @@ class EvolutionaryOperators:
             if random.random() < self.config.mutation_rate:
                 mutation = random.gauss(0, 0.1)
                 new_value = max(
-                    0.0, min(1.0, mutated_agent.physical_traits[trait_name] + mutation)
+                    0.0, min(1.0, mutated_agent.physical_traits[trait_name] + mutation),
                 )
                 mutated_agent.physical_traits[trait_name] = new_value
 
@@ -359,7 +355,7 @@ class EvolutionaryOperators:
             if random.random() < self.config.mutation_rate:
                 mutation = random.gauss(0, 0.1)
                 new_value = max(
-                    0.0, min(1.0, mutated_agent.ability_traits[trait_name] + mutation)
+                    0.0, min(1.0, mutated_agent.ability_traits[trait_name] + mutation),
                 )
                 mutated_agent.ability_traits[trait_name] = new_value
 
@@ -372,15 +368,15 @@ class EvolutionaryOperators:
 
         return mutated_agent
 
-    def calculate_population_diversity(self, population: List[AgentState]) -> float:
-        """
-        Calculate population diversity based on trait differences.
+    def calculate_population_diversity(self, population: list[AgentState]) -> float:
+        """Calculate population diversity based on trait differences.
 
         Args:
             population: Population to analyze
 
         Returns:
             Diversity score (0.0 to 1.0)
+
         """
         if len(population) < 2:
             return 0.0
@@ -397,10 +393,9 @@ class EvolutionaryOperators:
         return sum(distances) / len(distances) if distances else 0.0
 
     def _calculate_agent_distance(
-        self, agent1: AgentState, agent2: AgentState
+        self, agent1: AgentState, agent2: AgentState,
     ) -> float:
-        """
-        Calculate distance between two agents based on their traits.
+        """Calculate distance between two agents based on their traits.
 
         Args:
             agent1: First agent
@@ -408,6 +403,7 @@ class EvolutionaryOperators:
 
         Returns:
             Distance score (0.0 to 1.0)
+
         """
         # Combine all traits
         traits1 = {
@@ -435,10 +431,9 @@ class EvolutionaryOperators:
         return min(1.0, distance)  # Cap at 1.0
 
     def select_elite(
-        self, population: List[AgentState], elite_count: int
-    ) -> List[AgentState]:
-        """
-        Select elite agents from population.
+        self, population: list[AgentState], elite_count: int,
+    ) -> list[AgentState]:
+        """Select elite agents from population.
 
         Args:
             population: Population to select from
@@ -446,18 +441,18 @@ class EvolutionaryOperators:
 
         Returns:
             List of elite agents
+
         """
         # Sort by fitness and select top performers
         sorted_population = sorted(
-            population, key=lambda agent: agent.get_fitness_score(), reverse=True
+            population, key=lambda agent: agent.get_fitness_score(), reverse=True,
         )
         return sorted_population[:elite_count]
 
     def maintain_diversity(
-        self, population: List[AgentState], target_diversity: float = 0.5
-    ) -> List[AgentState]:
-        """
-        Maintain population diversity by removing similar agents.
+        self, population: list[AgentState], target_diversity: float = 0.5,
+    ) -> list[AgentState]:
+        """Maintain population diversity by removing similar agents.
 
         Args:
             population: Population to maintain diversity in
@@ -465,6 +460,7 @@ class EvolutionaryOperators:
 
         Returns:
             Population with maintained diversity
+
         """
         if len(population) <= 1:
             return population
@@ -481,7 +477,7 @@ class EvolutionaryOperators:
 
         # Start with the best agent
         sorted_population = sorted(
-            population, key=lambda agent: agent.get_fitness_score(), reverse=True
+            population, key=lambda agent: agent.get_fitness_score(), reverse=True,
         )
         diverse_population.append(sorted_population[0])
         used_agents.add(sorted_population[0].id)
@@ -502,6 +498,6 @@ class EvolutionaryOperators:
                 used_agents.add(agent.id)
 
         self.logger.info(
-            f"🔀 Diversity maintenance: {len(population)} -> {len(diverse_population)} agents"
+            f"🔀 Diversity maintenance: {len(population)} -> {len(diverse_population)} agents",
         )
         return diverse_population

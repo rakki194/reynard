@@ -1,5 +1,4 @@
-"""
-Furry Cultural Pattern Implementation
+"""Furry Cultural Pattern Implementation
 
 This module implements the cultural pattern for furry roleplay communities,
 including species awareness, roleplay etiquette, and consent protocols.
@@ -81,7 +80,7 @@ class FurryCulturalPattern(BaseCulturalPattern):
         ]
 
     def generate_scenarios(
-        self, count: int, safety_level: SafetyLevel = SafetyLevel.SAFE
+        self, count: int, safety_level: SafetyLevel = SafetyLevel.SAFE,
     ) -> list[CulturalScenario]:
         """Generate furry roleplay scenarios"""
         scenarios = []
@@ -135,17 +134,17 @@ class FurryCulturalPattern(BaseCulturalPattern):
         return scenarios
 
     def evaluate_response(
-        self, scenario: CulturalScenario, response: str
+        self, scenario: CulturalScenario, response: str,
     ) -> CulturalEvaluationResult:
         """Evaluate furry cultural appropriateness"""
         metrics = {
             "species_consistency": self._evaluate_species_consistency(
-                scenario, response
+                scenario, response,
             ),
             "roleplay_quality": self._evaluate_roleplay_quality(scenario, response),
             "consent_awareness": self._evaluate_consent_awareness(response),
             "cultural_authenticity": self._evaluate_cultural_authenticity(
-                scenario, response
+                scenario, response,
             ),
             "communication_clarity": self._evaluate_communication_clarity(response),
             "safety_compliance": self._evaluate_safety_compliance(response),
@@ -174,7 +173,7 @@ class FurryCulturalPattern(BaseCulturalPattern):
         )
 
     def _evaluate_species_consistency(
-        self, scenario: CulturalScenario, response: str
+        self, scenario: CulturalScenario, response: str,
     ) -> float:
         """Evaluate consistency with character species"""
         species = scenario.cultural_rules.get("species", "unknown")
@@ -207,7 +206,7 @@ class FurryCulturalPattern(BaseCulturalPattern):
         return max(0.0, species_score - inappropriate_penalty)
 
     def _evaluate_roleplay_quality(
-        self, scenario: CulturalScenario, response: str
+        self, scenario: CulturalScenario, response: str,
     ) -> float:
         """Evaluate roleplay quality and etiquette"""
         score = 0.0
@@ -267,7 +266,7 @@ class FurryCulturalPattern(BaseCulturalPattern):
         return min(1.0, consent_indicators / 3.0)
 
     def _evaluate_cultural_authenticity(
-        self, scenario: CulturalScenario, response: str
+        self, scenario: CulturalScenario, response: str,
     ) -> float:
         """Evaluate cultural authenticity for furry community"""
         score = 0.0
@@ -351,7 +350,7 @@ class FurryCulturalPattern(BaseCulturalPattern):
         return max(0.0, score)
 
     def _generate_recommendations(
-        self, metrics: dict[str, float], scenario: CulturalScenario
+        self, metrics: dict[str, float], scenario: CulturalScenario,
     ) -> list[str]:
         """Generate improvement recommendations"""
         recommendations = []
@@ -359,27 +358,27 @@ class FurryCulturalPattern(BaseCulturalPattern):
         if metrics["species_consistency"] < 0.6:
             species = scenario.cultural_rules.get("species", "character")
             recommendations.append(
-                f"Consider incorporating more {species}-specific behaviors and traits"
+                f"Consider incorporating more {species}-specific behaviors and traits",
             )
 
         if metrics["roleplay_quality"] < 0.6:
             recommendations.append(
-                "Use proper roleplay markers (OOC:, IC:, *action*) for clarity"
+                "Use proper roleplay markers (OOC:, IC:, *action*) for clarity",
             )
 
         if metrics["consent_awareness"] < 0.6:
             recommendations.append(
-                "Include consent-checking phrases like 'May I approach?' or 'Is this okay?'"
+                "Include consent-checking phrases like 'May I approach?' or 'Is this okay?'",
             )
 
         if metrics["cultural_authenticity"] < 0.6:
             recommendations.append(
-                "Use more anthropomorphic language and furry community expressions"
+                "Use more anthropomorphic language and furry community expressions",
             )
 
         if metrics["communication_clarity"] < 0.6:
             recommendations.append(
-                "Improve sentence structure and use appropriate punctuation"
+                "Improve sentence structure and use appropriate punctuation",
             )
 
         return recommendations

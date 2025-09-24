@@ -1,5 +1,4 @@
-"""
-Scraping Models for Reynard Backend
+"""Scraping Models for Reynard Backend
 
 Data models and schemas for the scraping service.
 """
@@ -233,7 +232,7 @@ class GalleryDownloadJob(BaseModel):
             total_bytes=0,
             downloaded_bytes=0,
             speed=0,
-        )
+        ),
     )
     config: GalleryConfig = Field(default_factory=GalleryConfig)
     results: list[GalleryResult] = Field(default_factory=list)

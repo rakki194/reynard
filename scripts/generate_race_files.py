@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Generate Race Files Script
+"""Generate Race Files Script
 ==========================
 
 This script generates all missing race files for the ECS naming system
@@ -621,7 +620,7 @@ def main():
             print(f"⚠️  No metadata found for {spirit_name}, skipping...")
             skipped_count += 1
 
-    print(f"\n🎯 Generation complete!")
+    print("\n🎯 Generation complete!")
     print(f"✅ Generated: {generated_count} race files")
     print(f"⚠️  Skipped: {skipped_count} spirits")
     print(f"📊 Total spirits available: {len(available_spirits)}")

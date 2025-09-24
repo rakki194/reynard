@@ -4,8 +4,7 @@ import requests
 
 
 def test_unauthenticated_access(url, method="GET", data=None):
-    """
-    Tests for unauthenticated access to a given URL.
+    """Tests for unauthenticated access to a given URL.
     :param url: The URL to test.
     :param method: The HTTP method to use ('GET' or 'POST').
     :param data: Dictionary of data to send with POST request.
@@ -23,11 +22,11 @@ def test_unauthenticated_access(url, method="GET", data=None):
 
         if response.status_code in [401, 403]:
             print(
-                f"    [OK] Access to {url} is restricted as expected (Status {response.status_code})."
+                f"    [OK] Access to {url} is restricted as expected (Status {response.status_code}).",
             )
             return True
         print(
-            f"    [FAIL] Unexpected status code {response.status_code}. Unauthenticated access might be possible."
+            f"    [FAIL] Unexpected status code {response.status_code}. Unauthenticated access might be possible.",
         )
         return False
     except requests.exceptions.RequestException as e:
@@ -37,10 +36,10 @@ def test_unauthenticated_access(url, method="GET", data=None):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Run security tests for API endpoints."
+        description="Run security tests for API endpoints.",
     )
     parser.add_argument(
-        "--url", type=str, required=True, help="The URL of the API endpoint to test."
+        "--url", type=str, required=True, help="The URL of the API endpoint to test.",
     )
     parser.add_argument(
         "--method",

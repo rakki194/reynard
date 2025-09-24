@@ -1,5 +1,4 @@
-"""
-Secure Ollama Routes for Reynard Backend
+"""Secure Ollama Routes for Reynard Backend
 
 This module provides secure wrappers around Ollama endpoints
 to prevent information disclosure and other security vulnerabilities.
@@ -30,8 +29,7 @@ async def secure_chat(
     current_user: dict[str, Any] = Depends(get_current_user_secure),
     ollama_service: SecureOllamaService = Depends(),
 ) -> dict[str, Any]:
-    """
-    Securely process a chat request with comprehensive input validation.
+    """Securely process a chat request with comprehensive input validation.
 
     This endpoint prevents command injection, information disclosure, and other
     security vulnerabilities through comprehensive input validation and response sanitization.
@@ -46,17 +44,18 @@ async def secure_chat(
 
     Raises:
         HTTPException: If chat processing fails or security violation detected
+
     """
     try:
         logger.info(
-            f"Secure chat request from user: {current_user.get('username', 'unknown')}"
+            f"Secure chat request from user: {current_user.get('username', 'unknown')}",
         )
 
         # Process chat through secure service
         result = await ollama_service.chat_secure(request)
 
         logger.info(
-            f"Chat processing successful for user: {current_user.get('username', 'unknown')}"
+            f"Chat processing successful for user: {current_user.get('username', 'unknown')}",
         )
         return result
 
@@ -76,8 +75,7 @@ async def secure_assistant_chat(
     current_user: dict[str, Any] = Depends(get_current_user_secure),
     ollama_service: SecureOllamaService = Depends(),
 ) -> dict[str, Any]:
-    """
-    Securely process an assistant chat request with comprehensive input validation.
+    """Securely process an assistant chat request with comprehensive input validation.
 
     This endpoint prevents command injection, information disclosure, and other
     security vulnerabilities through comprehensive input validation and response sanitization.
@@ -92,17 +90,18 @@ async def secure_assistant_chat(
 
     Raises:
         HTTPException: If assistant processing fails or security violation detected
+
     """
     try:
         logger.info(
-            f"Secure assistant chat request from user: {current_user.get('username', 'unknown')}"
+            f"Secure assistant chat request from user: {current_user.get('username', 'unknown')}",
         )
 
         # Process assistant chat through secure service
         result = await ollama_service.assistant_chat_secure(request)
 
         logger.info(
-            f"Assistant chat processing successful for user: {current_user.get('username', 'unknown')}"
+            f"Assistant chat processing successful for user: {current_user.get('username', 'unknown')}",
         )
         return result
 
@@ -121,8 +120,7 @@ async def secure_get_models(
     current_user: dict[str, Any] = Depends(get_current_user_secure),
     ollama_service: SecureOllamaService = Depends(),
 ) -> dict[str, Any]:
-    """
-    Securely get available Ollama models.
+    """Securely get available Ollama models.
 
     This endpoint provides model information without exposing sensitive system details.
 
@@ -135,10 +133,11 @@ async def secure_get_models(
 
     Raises:
         HTTPException: If model retrieval fails
+
     """
     try:
         logger.info(
-            f"Secure models request from user: {current_user.get('username', 'unknown')}"
+            f"Secure models request from user: {current_user.get('username', 'unknown')}",
         )
 
         # Get models through secure service
@@ -165,7 +164,7 @@ async def secure_get_models(
         }
 
         logger.info(
-            f"Models retrieval successful for user: {current_user.get('username', 'unknown')}"
+            f"Models retrieval successful for user: {current_user.get('username', 'unknown')}",
         )
         return result
 
@@ -181,8 +180,7 @@ async def secure_get_models(
 async def secure_get_config(
     current_user: dict[str, Any] = Depends(get_current_user_secure),
 ) -> dict[str, Any]:
-    """
-    Securely get Ollama configuration.
+    """Securely get Ollama configuration.
 
     This endpoint provides configuration information without exposing sensitive details.
 
@@ -194,10 +192,11 @@ async def secure_get_config(
 
     Raises:
         HTTPException: If configuration retrieval fails
+
     """
     try:
         logger.info(
-            f"Secure config request from user: {current_user.get('username', 'unknown')}"
+            f"Secure config request from user: {current_user.get('username', 'unknown')}",
         )
 
         # Return sanitized configuration
@@ -211,7 +210,7 @@ async def secure_get_config(
         }
 
         logger.info(
-            f"Config retrieval successful for user: {current_user.get('username', 'unknown')}"
+            f"Config retrieval successful for user: {current_user.get('username', 'unknown')}",
         )
         return result
 
@@ -224,14 +223,14 @@ async def secure_get_config(
 
 
 def create_secure_ollama_router(ollama_service) -> APIRouter:
-    """
-    Create a secure Ollama router.
+    """Create a secure Ollama router.
 
     Args:
         ollama_service: The Ollama service to wrap
 
     Returns:
         APIRouter: Configured secure Ollama router
+
     """
     # Create secure Ollama service
     secure_ollama_service = SecureOllamaService(ollama_service)
@@ -253,7 +252,7 @@ def create_secure_ollama_router(ollama_service) -> APIRouter:
 
             # Process the request
             response = await service.process_chat_request(
-                validated_request, current_user
+                validated_request, current_user,
             )
 
             return response

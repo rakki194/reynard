@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Integration Example for PHOENIX Control
+"""Integration Example for PHOENIX Control
 
 Demonstrates the complete integration of all PHOENIX Control components
 including agent management, release automation, and quality assurance.
@@ -102,7 +101,7 @@ async def main():
             frontend_result["linting"]["passed"],
             frontend_result["formatting"]["passed"],
             frontend_result["type_safety"]["passed"],
-        ]
+        ],
     )
 
     backend_passed = all(
@@ -110,7 +109,7 @@ async def main():
             backend_result["linting"]["passed"],
             backend_result["formatting"]["passed"],
             backend_result["type_safety"]["passed"],
-        ]
+        ],
     )
 
     print(f"   Frontend Quality: {'✅' if frontend_passed else '❌'}")
@@ -136,7 +135,7 @@ async def main():
             backend_passed,
             security_result["passed"],
             performance_result["passed"],
-        ]
+        ],
     )
 
     if quality_gates_passed:
@@ -147,7 +146,7 @@ async def main():
         current_version = await version_manager.get_current_version()
         if current_version:
             next_version = await version_manager.suggest_next_version(
-                current_version, "feature"
+                current_version, "feature",
             )
             print(f"   Current Version: {current_version}")
             print(f"   Next Version: {next_version}")
@@ -160,13 +159,13 @@ async def main():
 
         # Add release entry
         await changelog_manager.add_entry(
-            "Added", "New feature for automated release management"
+            "Added", "New feature for automated release management",
         )
         await changelog_manager.add_entry(
-            "Changed", "Improved version detection algorithm"
+            "Changed", "Improved version detection algorithm",
         )
         await changelog_manager.add_entry(
-            "Fixed", "Resolved issue with changelog formatting"
+            "Fixed", "Resolved issue with changelog formatting",
         )
         print("   ✅ Changelog updated")
 
@@ -194,7 +193,7 @@ async def main():
                 "action": "release_execution",
                 "success": True,
                 "details": "Successfully executed release workflow",
-            }
+            },
         )
 
         # Save updated state

@@ -1,5 +1,4 @@
-"""
-Thread Pool Executor Types for Reynard Backend
+"""Thread Pool Executor Types for Reynard Backend
 
 Type definitions and enums for the thread pool executor system.
 """

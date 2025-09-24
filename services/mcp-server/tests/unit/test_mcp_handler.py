@@ -6,6 +6,7 @@ Unit tests for MCP Handler.
 from unittest.mock import MagicMock, patch
 
 import pytest
+
 from protocol.mcp_handler import MCPHandler
 
 

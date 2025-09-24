@@ -1,17 +1,14 @@
 #!/usr/bin/env python3
-"""
-Quick Performance Fixes for ECS Backend
+"""Quick Performance Fixes for ECS Backend
 
 This script provides immediate implementations for the most critical
 performance bottlenecks identified in the ECS backend analysis.
 """
 
 import asyncio
-import json
 import logging
 import time
-from functools import lru_cache
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -53,7 +50,7 @@ class ECSQuickFixes:
         return spirit.lower() in valid_spirits
 
     # 2. HIGH PRIORITY: Query Result Caching
-    async def get_cached_agent_traits(self, agent_id: str) -> Dict[str, Any]:
+    async def get_cached_agent_traits(self, agent_id: str) -> dict[str, Any]:
         """Cache agent traits for 5 minutes."""
         cache_key = f"agent_traits:{agent_id}"
         current_time = time.time()
@@ -72,7 +69,7 @@ class ECSQuickFixes:
 
         return traits
 
-    async def get_cached_naming_spirits(self) -> Dict[str, Any]:
+    async def get_cached_naming_spirits(self) -> dict[str, Any]:
         """Cache naming spirits data for 30 minutes."""
         cache_key = "naming_spirits:all"
         current_time = time.time()
@@ -93,8 +90,8 @@ class ECSQuickFixes:
 
     # 3. HIGH PRIORITY: Batch Processing
     async def batch_agent_traits_fetch(
-        self, agent_ids: List[str]
-    ) -> Dict[str, Dict[str, Any]]:
+        self, agent_ids: list[str],
+    ) -> dict[str, dict[str, Any]]:
         """Fetch traits for multiple agents in a single query."""
         # Simulate batch database query (replace with actual implementation)
         traits_batch = {}
@@ -104,8 +101,8 @@ class ECSQuickFixes:
         return traits_batch
 
     async def batch_compatibility_analysis(
-        self, agent_pairs: List[tuple]
-    ) -> List[Dict[str, Any]]:
+        self, agent_pairs: list[tuple],
+    ) -> list[dict[str, Any]]:
         """Process multiple compatibility checks in batch."""
         # Get all unique agent IDs
         agent_ids = set()
@@ -120,18 +117,18 @@ class ECSQuickFixes:
         results = []
         for agent1, agent2 in agent_pairs:
             compatibility = self._calculate_compatibility(
-                traits_batch.get(agent1, {}), traits_batch.get(agent2, {})
+                traits_batch.get(agent1, {}), traits_batch.get(agent2, {}),
             )
             results.append(
-                {"agent1": agent1, "agent2": agent2, "compatibility": compatibility}
+                {"agent1": agent1, "agent2": agent2, "compatibility": compatibility},
             )
 
         return results
 
     # 4. MEDIUM PRIORITY: Optimized Lineage Query
     async def get_agent_lineage_optimized(
-        self, agent_id: str, max_depth: int = 3
-    ) -> Dict[str, Any]:
+        self, agent_id: str, max_depth: int = 3,
+    ) -> dict[str, Any]:
         """Optimized lineage query with depth limiting."""
         if not self.validate_agent_id(agent_id):
             return {"error": "Invalid agent ID"}
@@ -151,7 +148,7 @@ class ECSQuickFixes:
         return lineage
 
     # 5. Helper Methods (replace with actual database calls)
-    async def _fetch_agent_traits_from_db(self, agent_id: str) -> Dict[str, Any]:
+    async def _fetch_agent_traits_from_db(self, agent_id: str) -> dict[str, Any]:
         """Simulate database fetch for agent traits."""
         await asyncio.sleep(0.01)  # Simulate database latency
         return {
@@ -160,7 +157,7 @@ class ECSQuickFixes:
             "abilities": {"strategist": 0.8, "hunter": 0.7},
         }
 
-    async def _fetch_naming_spirits_from_db(self) -> Dict[str, Any]:
+    async def _fetch_naming_spirits_from_db(self) -> dict[str, Any]:
         """Simulate database fetch for naming spirits."""
         await asyncio.sleep(0.02)  # Simulate database latency
         return {
@@ -169,18 +166,18 @@ class ECSQuickFixes:
             "otter": ["River", "Marina", "Aqua"],
         }
 
-    async def _get_agent_parents(self, agent_id: str) -> List[Dict[str, Any]]:
+    async def _get_agent_parents(self, agent_id: str) -> list[dict[str, Any]]:
         """Get agent parents (simplified)."""
         await asyncio.sleep(0.01)
         return [{"agent_id": f"parent_{i}", "name": f"Parent {i}"} for i in range(2)]
 
-    async def _get_agent_children(self, agent_id: str) -> List[Dict[str, Any]]:
+    async def _get_agent_children(self, agent_id: str) -> list[dict[str, Any]]:
         """Get agent children (simplified)."""
         await asyncio.sleep(0.01)
         return [{"agent_id": f"child_{i}", "name": f"Child {i}"} for i in range(3)]
 
     def _calculate_compatibility(
-        self, traits1: Dict[str, Any], traits2: Dict[str, Any]
+        self, traits1: dict[str, Any], traits2: dict[str, Any],
     ) -> float:
         """Calculate compatibility between two agents."""
         if not traits1 or not traits2:
@@ -196,7 +193,7 @@ class ECSQuickFixes:
                     if trait_name in traits2[trait_type]:
                         diff = abs(
                             traits1[trait_type][trait_name]
-                            - traits2[trait_type][trait_name]
+                            - traits2[trait_type][trait_name],
                         )
                         compatibility += 1.0 - diff
                         total_traits += 1
@@ -204,7 +201,7 @@ class ECSQuickFixes:
         return compatibility / max(total_traits, 1)
 
     # 6. Performance Monitoring Integration
-    def get_performance_metrics(self) -> Dict[str, Any]:
+    def get_performance_metrics(self) -> dict[str, Any]:
         """Get current performance metrics."""
         return {
             "cache_size": len(self.cache),
@@ -218,7 +215,7 @@ class ECSQuickFixes:
         # Simplified calculation
         return 0.85  # 85% hit rate
 
-    def _get_memory_usage(self) -> Dict[str, Any]:
+    def _get_memory_usage(self) -> dict[str, Any]:
         """Get memory usage information."""
         import psutil
 
@@ -282,7 +279,7 @@ async def main():
 
     print(f"   Optimized lineage query: {lineage_time*1000:.1f}ms")
     print(
-        f"   Lineage depth: {len(lineage.get('parents', []))} parents, {len(lineage.get('children', []))} children"
+        f"   Lineage depth: {len(lineage.get('parents', []))} parents, {len(lineage.get('children', []))} children",
     )
 
     # Get performance metrics

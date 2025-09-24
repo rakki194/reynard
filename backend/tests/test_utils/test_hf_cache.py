@@ -43,7 +43,7 @@ class TestHFCache:
     def test_get_hf_cache_dir_priority_order(self):
         """Test that HF_HOME takes priority over HF_CACHE."""
         with patch.dict(
-            os.environ, {"HF_HOME": "/priority/home", "HF_CACHE": "/secondary/cache"}
+            os.environ, {"HF_HOME": "/priority/home", "HF_CACHE": "/secondary/cache"},
         ):
             result = get_hf_cache_dir()
             assert result == Path("/priority/home")
@@ -71,7 +71,7 @@ class TestHFCache:
             mock_get_hub.return_value = mock_hub_dir
 
             result = get_model_cache_path(
-                "fancyfeast/llama-joycaption-beta-one-hf-llava"
+                "fancyfeast/llama-joycaption-beta-one-hf-llava",
             )
 
             expected_cache_name = (

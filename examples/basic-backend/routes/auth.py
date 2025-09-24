@@ -1,5 +1,4 @@
-"""
-Authentication routes for Reynard Basic Backend
+"""Authentication routes for Reynard Basic Backend
 Provides authentication and authorization endpoints
 """
 
@@ -120,7 +119,6 @@ async def login(
     cache_service: CacheService = Depends(get_cache_service),
 ):
     """Authenticate user and return access token"""
-
     print(f"[INFO] Login attempt for user: {request.username}")
 
     # Get user from database
@@ -162,12 +160,11 @@ async def register(
     cache_service: CacheService = Depends(get_cache_service),
 ):
     """Register a new user"""
-
     # Check if username already exists
     existing_user = await db_service.get_user_by_username(request.username)
     if existing_user:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Username already exists"
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Username already exists",
         )
 
     # Check if email already exists
@@ -216,7 +213,6 @@ async def register(
 @router.post("/logout")
 async def logout(token: str, cache_service: CacheService = Depends(get_cache_service)):
     """Logout user by invalidating token"""
-
     # Remove session from cache
     await cache_service.delete(f"session:{token}")
 
@@ -230,7 +226,6 @@ async def get_current_user(
     cache_service: CacheService = Depends(get_cache_service),
 ):
     """Get current user information"""
-
     if not authorization:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -250,14 +245,14 @@ async def get_current_user(
     session = await db_service.get_session_by_token(token)
     if not session:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid or expired token"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid or expired token",
         )
 
     # Get user data
     user = await db_service.get_user_by_id(session.user_id)
     if not user:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found",
         )
 
     return UserResponse(
@@ -271,23 +266,22 @@ async def get_current_user(
 
 @router.post("/refresh", response_model=TokenResponse)
 async def refresh_token(
-    token: str, cache_service: CacheService = Depends(get_cache_service)
+    token: str, cache_service: CacheService = Depends(get_cache_service),
 ):
     """Refresh access token"""
-
     # Get session from cache
     session_data = await cache_service.get(f"session:{token}")
 
     if not session_data:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token",
         )
 
     # Check if session is expired
     if time.time() > session_data["expires_at"]:
         await cache_service.delete(f"session:{token}")
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Token expired"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Token expired",
         )
 
     # Generate new token
@@ -311,7 +305,6 @@ async def list_users(
     cache_service: CacheService = Depends(get_cache_service),
 ):
     """List all users (admin only - for demo purposes)"""
-
     # For demo purposes, return all users without auth check
     if not authorization:
         # Get all users from database
@@ -325,7 +318,7 @@ async def list_users(
                     email=user.email,
                     full_name=user.full_name,
                     created_at=user.created_at.timestamp(),
-                )
+                ),
             )
         return users
 
@@ -343,14 +336,14 @@ async def list_users(
 
     if not session_data:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid or expired token"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid or expired token",
         )
 
     # Check if session is expired
     if time.time() > session_data["expires_at"]:
         await cache_service.delete(f"session:{token}")
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Token expired"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Token expired",
         )
 
     # Return all users (in a real app, you'd check permissions)
@@ -363,7 +356,7 @@ async def list_users(
                 email=user_data["email"],
                 full_name=user_data["full_name"],
                 created_at=user_data["created_at"],
-            )
+            ),
         )
 
     return users

@@ -1,5 +1,4 @@
-"""
-Database service for Reynard Basic Backend
+"""Database service for Reynard Basic Backend
 SQLAlchemy-based database operations with async support
 """
 
@@ -8,10 +7,11 @@ from contextlib import asynccontextmanager
 from datetime import datetime, timedelta
 from typing import Any
 
-from config import database_config
-from models import BackgroundTask, Base, CacheEntry, Session, SystemMetric, User
 from sqlalchemy import delete, func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+
+from config import database_config
+from models import BackgroundTask, Base, CacheEntry, Session, SystemMetric, User
 
 # Detect reload mode
 IS_RELOAD_MODE = os.environ.get("UVICORN_RELOAD_PROCESS") == "1"
@@ -46,7 +46,7 @@ class DatabaseService:
 
         # Create session factory
         self.session_factory = async_sessionmaker(
-            self.engine, class_=AsyncSession, expire_on_commit=False
+            self.engine, class_=AsyncSession, expire_on_commit=False,
         )
 
         # Create tables
@@ -97,7 +97,7 @@ class DatabaseService:
         """Get user by username"""
         async with self.get_session_context() as session:
             result = await session.execute(
-                select(User).where(User.username == username)
+                select(User).where(User.username == username),
             )
             return result.scalar_one_or_none()
 
@@ -111,7 +111,7 @@ class DatabaseService:
         """Get all users with pagination"""
         async with self.get_session_context() as session:
             result = await session.execute(
-                select(User).order_by(User.created_at.desc()).offset(skip).limit(limit)
+                select(User).order_by(User.created_at.desc()).offset(skip).limit(limit),
             )
             return result.scalars().all()
 
@@ -121,13 +121,13 @@ class DatabaseService:
             await session.execute(
                 update(User)
                 .where(User.id == user_id)
-                .values(last_login=datetime.utcnow())
+                .values(last_login=datetime.utcnow()),
             )
             await session.commit()
 
     # Session operations
     async def create_session(
-        self, user_id: int, token: str, expires_at: datetime
+        self, user_id: int, token: str, expires_at: datetime,
     ) -> Session:
         """Create a new user session"""
         async with self.get_session_context() as session:
@@ -144,7 +144,7 @@ class DatabaseService:
                 select(Session)
                 .where(Session.token == token)
                 .where(Session.is_active == True)
-                .where(Session.expires_at > datetime.utcnow())
+                .where(Session.expires_at > datetime.utcnow()),
             )
             return result.scalar_one_or_none()
 
@@ -152,7 +152,7 @@ class DatabaseService:
         """Deactivate a session"""
         async with self.get_session_context() as session:
             await session.execute(
-                update(Session).where(Session.token == token).values(is_active=False)
+                update(Session).where(Session.token == token).values(is_active=False),
             )
             await session.commit()
 
@@ -162,7 +162,7 @@ class DatabaseService:
             await session.execute(
                 update(Session)
                 .where(Session.expires_at < datetime.utcnow())
-                .values(is_active=False)
+                .values(is_active=False),
             )
             await session.commit()
 
@@ -176,7 +176,7 @@ class DatabaseService:
 
             # Check if key exists
             result = await session.execute(
-                select(CacheEntry).where(CacheEntry.key == key)
+                select(CacheEntry).where(CacheEntry.key == key),
             )
             cache_entry = result.scalar_one_or_none()
 
@@ -198,8 +198,8 @@ class DatabaseService:
                 .where(CacheEntry.key == key)
                 .where(
                     (CacheEntry.expires_at.is_(None))
-                    | (CacheEntry.expires_at > datetime.utcnow())
-                )
+                    | (CacheEntry.expires_at > datetime.utcnow()),
+                ),
             )
             cache_entry = result.scalar_one_or_none()
             return cache_entry.value if cache_entry else None
@@ -214,13 +214,13 @@ class DatabaseService:
         """Clean up expired cache entries"""
         async with self.get_session_context() as session:
             await session.execute(
-                delete(CacheEntry).where(CacheEntry.expires_at < datetime.utcnow())
+                delete(CacheEntry).where(CacheEntry.expires_at < datetime.utcnow()),
             )
             await session.commit()
 
     # System metrics
     async def record_metric(
-        self, name: str, value: float, data: dict[str, Any] | None = None
+        self, name: str, value: float, data: dict[str, Any] | None = None,
     ):
         """Record a system metric"""
         async with self.get_session_context() as session:
@@ -241,20 +241,20 @@ class DatabaseService:
                 select(SystemMetric)
                 .where(SystemMetric.metric_name == name)
                 .order_by(SystemMetric.timestamp.desc())
-                .limit(limit)
+                .limit(limit),
             )
             return result.scalars().all()
 
     # Background tasks
     async def create_background_task(
-        self, name: str, data: dict[str, Any] | None = None
+        self, name: str, data: dict[str, Any] | None = None,
     ) -> BackgroundTask:
         """Create a background task record"""
         async with self.get_session_context() as session:
             import json
 
             task = BackgroundTask(
-                task_name=name, task_data=json.dumps(data) if data else None
+                task_name=name, task_data=json.dumps(data) if data else None,
             )
             session.add(task)
             await session.commit()
@@ -262,7 +262,7 @@ class DatabaseService:
             return task
 
     async def update_task_status(
-        self, task_id: int, status: str, error_message: str | None = None
+        self, task_id: int, status: str, error_message: str | None = None,
     ):
         """Update task status"""
         async with self.get_session_context() as session:
@@ -277,7 +277,7 @@ class DatabaseService:
             await session.execute(
                 update(BackgroundTask)
                 .where(BackgroundTask.id == task_id)
-                .values(**update_data)
+                .values(**update_data),
             )
             await session.commit()
 
@@ -307,7 +307,7 @@ class DatabaseService:
             active_sessions = await session.scalar(
                 select(func.count(Session.id))
                 .where(Session.is_active == True)
-                .where(Session.expires_at > datetime.utcnow())
+                .where(Session.expires_at > datetime.utcnow()),
             )
 
             # Count cache entries

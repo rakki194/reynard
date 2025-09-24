@@ -24,24 +24,24 @@ def test_rate_limiting(
                 json={"username": username, "password": password},
             )
             print(
-                f"Request {i}: Status Code: {response.status_code}, Response: {response.json()}"
+                f"Request {i}: Status Code: {response.status_code}, Response: {response.json()}",
             )
 
             if response.status_code == expected_status_code_on_block:
                 blocked_count += 1
                 print(
-                    "    [POSSIBLE BLOCK] Expected 401 for invalid credentials. If repeated for many requests, it might indicate a block."
+                    "    [POSSIBLE BLOCK] Expected 401 for invalid credentials. If repeated for many requests, it might indicate a block.",
                 )
                 # When rate limited, the response might still be 401, but the behavior changes (e.g., delay)
             if (
                 response.status_code == 429
             ):  # Explicitly check for Too Many Requests status code
                 print(
-                    f"    [BLOCKED] Rate limit hit at request {i} with 429 Too Many Requests."
+                    f"    [BLOCKED] Rate limit hit at request {i} with 429 Too Many Requests.",
                 )
                 blocked_count += 1
                 time.sleep(
-                    delay_between_requests * 5
+                    delay_between_requests * 5,
                 )  # Longer delay to potentially reset
 
             time.sleep(delay_between_requests)
@@ -53,7 +53,7 @@ def test_rate_limiting(
             break
 
     print(
-        f"--- Rate limiting test complete. Total requests: {num_requests}, Blocked: {blocked_count} ---"
+        f"--- Rate limiting test complete. Total requests: {num_requests}, Blocked: {blocked_count} ---",
     )
 
 

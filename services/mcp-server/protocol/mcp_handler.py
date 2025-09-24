@@ -46,7 +46,7 @@ class MCPHandler:
         """Handle tools list request - generate definitions dynamically from registry."""
         # Import here to avoid circular imports
         from generation.tool_definition_generator import ToolDefinitionGenerator
-        
+
         # Generate tool definitions from registry
         tool_generator = ToolDefinitionGenerator()
         tool_definitions = tool_generator.generate_from_registry(self.tool_registry)

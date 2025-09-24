@@ -1,5 +1,4 @@
-"""
-Secure Summarization Routes for Reynard Backend
+"""Secure Summarization Routes for Reynard Backend
 
 This module provides secure wrappers around summarization endpoints
 to prevent command injection and other security vulnerabilities.
@@ -21,7 +20,7 @@ security = HTTPBearer()
 
 # Create secure summarization router
 secure_summarization_router = APIRouter(
-    prefix="/summarization", tags=["secure-summarization"]
+    prefix="/summarization", tags=["secure-summarization"],
 )
 
 
@@ -30,8 +29,7 @@ async def secure_summarize(
     request: SecureSummarizationRequest,
     current_user: dict[str, Any] = Depends(get_current_user_secure),
 ) -> dict[str, Any]:
-    """
-    Securely process a summarization request with comprehensive input validation.
+    """Securely process a summarization request with comprehensive input validation.
 
     This endpoint prevents command injection, information disclosure, and other
     security vulnerabilities through comprehensive input validation and response sanitization.
@@ -45,10 +43,11 @@ async def secure_summarize(
 
     Raises:
         HTTPException: If summarization fails or security violation detected
+
     """
     try:
         logger.info(
-            f"Secure summarization request from user: {current_user.get('username', 'unknown')}"
+            f"Secure summarization request from user: {current_user.get('username', 'unknown')}",
         )
 
         # Additional security validation
@@ -72,7 +71,7 @@ async def secure_summarize(
         }
 
         logger.info(
-            f"Summarization successful for user: {current_user.get('username', 'unknown')}"
+            f"Summarization successful for user: {current_user.get('username', 'unknown')}",
         )
         return result
 
@@ -90,8 +89,7 @@ async def secure_summarize(
 async def secure_get_models(
     current_user: dict[str, Any] = Depends(get_current_user_secure),
 ) -> dict[str, Any]:
-    """
-    Securely get available summarization models.
+    """Securely get available summarization models.
 
     This endpoint provides model information without exposing sensitive system details.
 
@@ -103,10 +101,11 @@ async def secure_get_models(
 
     Raises:
         HTTPException: If model retrieval fails
+
     """
     try:
         logger.info(
-            f"Secure summarization models request from user: {current_user.get('username', 'unknown')}"
+            f"Secure summarization models request from user: {current_user.get('username', 'unknown')}",
         )
 
         # Return sanitized model information
@@ -137,7 +136,7 @@ async def secure_get_models(
         }
 
         logger.info(
-            f"Models retrieval successful for user: {current_user.get('username', 'unknown')}"
+            f"Models retrieval successful for user: {current_user.get('username', 'unknown')}",
         )
         return result
 
@@ -153,8 +152,7 @@ async def secure_get_models(
 async def secure_get_content_types(
     current_user: dict[str, Any] = Depends(get_current_user_secure),
 ) -> dict[str, Any]:
-    """
-    Securely get supported content types.
+    """Securely get supported content types.
 
     This endpoint provides content type information without exposing sensitive details.
 
@@ -166,10 +164,11 @@ async def secure_get_content_types(
 
     Raises:
         HTTPException: If content type retrieval fails
+
     """
     try:
         logger.info(
-            f"Secure content types request from user: {current_user.get('username', 'unknown')}"
+            f"Secure content types request from user: {current_user.get('username', 'unknown')}",
         )
 
         # Return supported content types
@@ -228,7 +227,7 @@ async def secure_get_content_types(
         }
 
         logger.info(
-            f"Content types retrieval successful for user: {current_user.get('username', 'unknown')}"
+            f"Content types retrieval successful for user: {current_user.get('username', 'unknown')}",
         )
         return result
 
@@ -241,14 +240,14 @@ async def secure_get_content_types(
 
 
 def _validate_summarization_security(request: SecureSummarizationRequest) -> bool:
-    """
-    Validate summarization request for security issues.
+    """Validate summarization request for security issues.
 
     Args:
         request: Summarization request to validate
 
     Returns:
         bool: True if validation passes, False otherwise
+
     """
     try:
         # Check for command injection patterns in text
@@ -256,21 +255,21 @@ def _validate_summarization_security(request: SecureSummarizationRequest) -> boo
 
         if not validate_command_input(request.text):
             logger.warning(
-                f"Command injection attempt in summarization text: {request.text[:100]}..."
+                f"Command injection attempt in summarization text: {request.text[:100]}...",
             )
             return False
 
         # Check for suspicious patterns
         if _contains_suspicious_patterns(request.text):
             logger.warning(
-                f"Suspicious pattern in summarization text: {request.text[:100]}..."
+                f"Suspicious pattern in summarization text: {request.text[:100]}...",
             )
             return False
 
         # Validate model name if provided
         if request.model and not _validate_model_name(request.model):
             logger.warning(
-                f"Invalid model name in summarization request: {request.model}"
+                f"Invalid model name in summarization request: {request.model}",
             )
             return False
 
@@ -374,10 +373,10 @@ def _validate_model_name(model_name: str) -> bool:
 
 
 def create_secure_summarization_router() -> APIRouter:
-    """
-    Create a secure summarization router.
+    """Create a secure summarization router.
 
     Returns:
         APIRouter: Configured secure summarization router
+
     """
     return secure_summarization_router

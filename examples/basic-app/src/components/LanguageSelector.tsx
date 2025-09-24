@@ -3,7 +3,7 @@
  * Allows users to switch between available languages
  */
 
-import { Select } from "reynard-components";
+import { Select } from "reynard-components-core";
 import { useI18n, type LanguageCode } from "reynard-themes";
 import { Component } from "solid-js";
 

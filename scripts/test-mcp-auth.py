@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Test script for MCP authorization system.
+"""Test script for MCP authorization system.
 
 This script tests the MCP token generation and RAG endpoint authorization.
 """
@@ -65,7 +64,7 @@ async def test_mcp_authorization():
         print("\n5. Generating token for 'reynard-semantic-search'...")
         try:
             search_token = mcp_auth_service.generate_mcp_token(
-                "reynard-semantic-search"
+                "reynard-semantic-search",
             )
             search_token_data = mcp_auth_service.validate_mcp_token(search_token)
             print("✅ Search tool token generated")
@@ -73,10 +72,10 @@ async def test_mcp_authorization():
 
             # Test permission for search tool
             has_rag_query = mcp_auth_service.check_permission(
-                search_token_data, "rag:query"
+                search_token_data, "rag:query",
             )
             has_rag_ingest = mcp_auth_service.check_permission(
-                search_token_data, "rag:ingest"
+                search_token_data, "rag:ingest",
             )
             print(f"  Can query RAG: {has_rag_query}")
             print(f"  Can ingest documents: {has_rag_ingest}")

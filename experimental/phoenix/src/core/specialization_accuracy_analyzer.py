@@ -1,5 +1,4 @@
-"""
-PHOENIX Specialization Accuracy Analyzer
+"""PHOENIX Specialization Accuracy Analyzer
 
 Advanced specialization accuracy detection and analysis module for the PHOENIX knowledge distillation system.
 Implements role-specific knowledge extraction and specialization scoring algorithms.
@@ -8,26 +7,17 @@ Author: Vulpine (Fox Specialist)
 Version: 1.0.0
 """
 
-import json
 import logging
 import re
-from collections import defaultdict
-from datetime import datetime
-from typing import Any, Dict, List, Optional, Tuple
-
-import numpy as np
+from typing import Any
 
 from ..utils.data_structures import (
-    AgentGeneticMaterial,
     AgentState,
-    NamingStyle,
-    SpiritType,
 )
 
 
 class SpecializationAccuracyAnalyzer:
-    """
-    Specialization accuracy analysis system for PHOENIX framework.
+    """Specialization accuracy analysis system for PHOENIX framework.
 
     Implements:
     - Role-specific knowledge detection
@@ -53,7 +43,7 @@ class SpecializationAccuracyAnalyzer:
 
         self.logger.info("🎭 Specialization accuracy analyzer initialized")
 
-    def _initialize_spirit_specializations(self) -> Dict[str, Dict[str, Any]]:
+    def _initialize_spirit_specializations(self) -> dict[str, dict[str, Any]]:
         """Initialize spirit-specific specialization patterns."""
         return {
             "fox": {
@@ -219,10 +209,9 @@ class SpecializationAccuracyAnalyzer:
         }
 
     def analyze_specialization_accuracy(
-        self, agent_output: str, agent_state: AgentState
-    ) -> Dict[str, Any]:
-        """
-        Analyze specialization accuracy for an agent.
+        self, agent_output: str, agent_state: AgentState,
+    ) -> dict[str, Any]:
+        """Analyze specialization accuracy for an agent.
 
         Args:
             agent_output: The agent's output text
@@ -230,9 +219,10 @@ class SpecializationAccuracyAnalyzer:
 
         Returns:
             Dictionary of specialization accuracy analysis results
+
         """
         self.logger.debug(
-            f"Analyzing specialization accuracy for {agent_state.spirit} agent"
+            f"Analyzing specialization accuracy for {agent_state.spirit} agent",
         )
 
         spirit = agent_state.spirit.lower()
@@ -250,12 +240,12 @@ class SpecializationAccuracyAnalyzer:
 
         # Analyze behavioral consistency
         behavioral_consistency = self._analyze_behavioral_consistency(
-            agent_output, spirit_spec
+            agent_output, spirit_spec,
         )
 
         # Analyze knowledge application
         knowledge_application = self._analyze_knowledge_application(
-            agent_output, spirit_spec
+            agent_output, spirit_spec,
         )
 
         # Calculate overall specialization accuracy
@@ -277,17 +267,17 @@ class SpecializationAccuracyAnalyzer:
             "knowledge_application": knowledge_application,
             "primary_specializations": spirit_spec["primary_specializations"],
             "specialization_scores": self._calculate_specialization_scores(
-                agent_output, spirit_spec
+                agent_output, spirit_spec,
             ),
             "behavioral_indicators": self._extract_behavioral_indicators(
-                agent_output, spirit_spec
+                agent_output, spirit_spec,
             ),
             "knowledge_domain_coverage": self._analyze_knowledge_domain_coverage(
-                agent_output, spirit_spec
+                agent_output, spirit_spec,
             ),
         }
 
-    def _analyze_role_alignment(self, text: str, spirit_spec: Dict[str, Any]) -> float:
+    def _analyze_role_alignment(self, text: str, spirit_spec: dict[str, Any]) -> float:
         """Analyze alignment with expected role patterns."""
         total_score = 0.0
         total_specializations = len(spirit_spec["primary_specializations"])
@@ -300,7 +290,7 @@ class SpecializationAccuracyAnalyzer:
 
         return total_score / total_specializations if total_specializations > 0 else 0.0
 
-    def _analyze_expertise_depth(self, text: str, spirit_spec: Dict[str, Any]) -> float:
+    def _analyze_expertise_depth(self, text: str, spirit_spec: dict[str, Any]) -> float:
         """Analyze depth of expertise in specializations."""
         expertise_scores = []
 
@@ -323,14 +313,14 @@ class SpecializationAccuracyAnalyzer:
         )
 
     def _analyze_behavioral_consistency(
-        self, text: str, spirit_spec: Dict[str, Any]
+        self, text: str, spirit_spec: dict[str, Any],
     ) -> float:
         """Analyze consistency with expected behavioral patterns."""
         behavioral_patterns = spirit_spec["behavioral_indicators"]
         return self._analyze_pattern_matches(text, behavioral_patterns)
 
     def _analyze_knowledge_application(
-        self, text: str, spirit_spec: Dict[str, Any]
+        self, text: str, spirit_spec: dict[str, Any],
     ) -> float:
         """Analyze application of knowledge in relevant domains."""
         knowledge_domains = spirit_spec["knowledge_domains"]
@@ -344,7 +334,7 @@ class SpecializationAccuracyAnalyzer:
 
         return sum(domain_scores) / len(domain_scores) if domain_scores else 0.0
 
-    def _analyze_pattern_matches(self, text: str, patterns: List[str]) -> float:
+    def _analyze_pattern_matches(self, text: str, patterns: list[str]) -> float:
         """Analyze pattern matches in text."""
         matches = 0
         total_patterns = len(patterns)
@@ -356,8 +346,8 @@ class SpecializationAccuracyAnalyzer:
         return matches / total_patterns if total_patterns > 0 else 0.0
 
     def _calculate_specialization_scores(
-        self, text: str, spirit_spec: Dict[str, Any]
-    ) -> Dict[str, float]:
+        self, text: str, spirit_spec: dict[str, Any],
+    ) -> dict[str, float]:
         """Calculate individual specialization scores."""
         specialization_scores = {}
 
@@ -370,8 +360,8 @@ class SpecializationAccuracyAnalyzer:
         return specialization_scores
 
     def _extract_behavioral_indicators(
-        self, text: str, spirit_spec: Dict[str, Any]
-    ) -> List[str]:
+        self, text: str, spirit_spec: dict[str, Any],
+    ) -> list[str]:
         """Extract specific behavioral indicators from text."""
         indicators = []
         behavioral_patterns = spirit_spec["behavioral_indicators"]
@@ -383,8 +373,8 @@ class SpecializationAccuracyAnalyzer:
         return indicators[:5]  # Limit to 5 total indicators
 
     def _analyze_knowledge_domain_coverage(
-        self, text: str, spirit_spec: Dict[str, Any]
-    ) -> Dict[str, float]:
+        self, text: str, spirit_spec: dict[str, Any],
+    ) -> dict[str, float]:
         """Analyze coverage of knowledge domains."""
         domain_coverage = {}
         knowledge_domains = spirit_spec["knowledge_domains"]
@@ -398,8 +388,8 @@ class SpecializationAccuracyAnalyzer:
         return domain_coverage
 
     def calculate_cross_specialization_transfer(
-        self, specialization_results: List[Dict[str, Any]]
-    ) -> Dict[str, float]:
+        self, specialization_results: list[dict[str, Any]],
+    ) -> dict[str, float]:
         """Calculate potential for cross-specialization knowledge transfer."""
         if len(specialization_results) < 2:
             return {}
@@ -446,7 +436,7 @@ class SpecializationAccuracyAnalyzer:
         return False
 
     def validate_specialization_consistency(
-        self, specialization_results: List[Dict[str, Any]]
+        self, specialization_results: list[dict[str, Any]],
     ) -> float:
         """Validate consistency of specialization results across agents."""
         if len(specialization_results) < 2:
@@ -458,7 +448,7 @@ class SpecializationAccuracyAnalyzer:
 
         # Calculate variance
         variance = sum((acc - mean_accuracy) ** 2 for acc in accuracies) / len(
-            accuracies
+            accuracies,
         )
 
         # Convert variance to consistency score (lower variance = higher consistency)

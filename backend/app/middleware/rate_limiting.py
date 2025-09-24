@@ -1,5 +1,4 @@
-"""
-Rate Limiting Configuration
+"""Rate Limiting Configuration
 
 This module provides comprehensive rate limiting setup for the FastAPI application
 with specific rules for authentication endpoints and general API usage.
@@ -20,8 +19,7 @@ DEFAULT_RATE_LIMIT = "100/minute"
 
 
 def get_client_identifier(request: Request) -> str:
-    """
-    Get a unique identifier for the client making the request.
+    """Get a unique identifier for the client making the request.
     Uses IP address as primary identifier with fallback to user agent.
 
     Special handling for development bypass:
@@ -51,8 +49,7 @@ def get_client_identifier(request: Request) -> str:
 
 
 def get_adaptive_client_identifier(request: Request) -> str:
-    """
-    Get a unique identifier for the client using adaptive rate limiting.
+    """Get a unique identifier for the client using adaptive rate limiting.
     Uses the same logic as the adaptive rate limiter for consistency.
     """
     # Check for development bypass flag
@@ -61,14 +58,13 @@ def get_adaptive_client_identifier(request: Request) -> str:
         and request.state.bypass_rate_limiting
     ):
         return "dev-bypass-fenrir-testing"
-    
+
     # Use adaptive rate limiter's client identifier
     return adaptive_rate_limiter._get_client_identifier(request)
 
 
 def setup_rate_limiting(app: FastAPI) -> Limiter:
-    """
-    Setup comprehensive rate limiting for the FastAPI application.
+    """Setup comprehensive rate limiting for the FastAPI application.
 
     Rate limiting rules:
     - General API: 100 requests per minute
@@ -80,7 +76,7 @@ def setup_rate_limiting(app: FastAPI) -> Limiter:
     """
     # Load security configuration
     config = get_security_config()
-    
+
     # Use adaptive rate limiting if enabled
     if config.adaptive_rate_limiting:
         limiter = Limiter(

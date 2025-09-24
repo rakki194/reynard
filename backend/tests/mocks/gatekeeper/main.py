@@ -1,5 +1,4 @@
-"""
-Comprehensive mock gatekeeper module for testing.
+"""Comprehensive mock gatekeeper module for testing.
 
 This mock provides a complete authentication system that works with
 the security middleware and properly handles malicious input validation.
@@ -101,19 +100,19 @@ class MockTokenManager:
         self.config = config
 
     def create_access_token(
-        self, data: dict[str, Any], expires_delta: timedelta | None = None
+        self, data: dict[str, Any], expires_delta: timedelta | None = None,
     ) -> str:
         """Create a mock access token."""
         return "mock_access_token"
 
     def create_refresh_token(
-        self, data: dict[str, Any], expires_delta: timedelta | None = None
+        self, data: dict[str, Any], expires_delta: timedelta | None = None,
     ) -> str:
         """Create a mock refresh token."""
         return "mock_refresh_token"
 
     def verify_token(
-        self, token: str, token_type: str = "access"
+        self, token: str, token_type: str = "access",
     ) -> TokenValidationResult:
         """Verify a mock token."""
         if token == "mock_access_token" and token_type == "access":
@@ -172,7 +171,7 @@ class MockAuthManager:
         self.token_manager = MockTokenManager(TokenConfig())
 
     async def authenticate(
-        self, username: str, password: str, client_ip: str | None = None
+        self, username: str, password: str, client_ip: str | None = None,
     ) -> MockTokenResponse:
         """Authenticate a user."""
         if username == "testuser" and password == "testpassword":
@@ -187,14 +186,14 @@ class MockAuthManager:
     async def create_user(self, user_data: MockUserCreate) -> MockUser:
         """Create a new user."""
         return MockUser(
-            id=1, username=user_data.username, email=user_data.email, is_active=True
+            id=1, username=user_data.username, email=user_data.email, is_active=True,
         )
 
     async def get_user_by_username(self, username: str) -> MockUser | None:
         """Get user by username."""
         if username == "testuser":
             return MockUser(
-                id=1, username="testuser", email="test@example.com", is_active=True
+                id=1, username="testuser", email="test@example.com", is_active=True,
             )
         return None
 
@@ -227,11 +226,11 @@ def require_role(required_role: str = "user"):
 
 
 def create_auth_router() -> APIRouter:
-    """
-    Create and return the authentication router.
+    """Create and return the authentication router.
 
     Returns:
         APIRouter: Configured authentication router
+
     """
     from .api.routes import auth_router
 

@@ -4,7 +4,7 @@
 
 import { Component, createSignal, For, Show } from "solid-js";
 import { useNavigate } from "@solidjs/router";
-import { Button, Card, Tabs, TabPanel } from "reynard-components";
+import { Button, Card, Tabs, TabPanel } from "reynard-components-core";
 import { useAuth } from "reynard-auth";
 import { useNotifications } from "reynard-core";
 import { NotebookCard } from "../components/NotebookCard";

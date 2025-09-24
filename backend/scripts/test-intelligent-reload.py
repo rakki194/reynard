@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-🦊 Test Script for Intelligent Service Reload System
+"""🦊 Test Script for Intelligent Service Reload System
 
 This script demonstrates how the intelligent reload system works by
 showing which services would be affected by different file changes.
@@ -70,7 +69,7 @@ def test_file_change_detection():
             print(f"   → Affects services: {', '.join(affected_services)}")
         else:
             print(f"📝 {file_path}")
-            print(f"   → No service-specific reload needed")
+            print("   → No service-specific reload needed")
         print()
 
     print("=" * 60)

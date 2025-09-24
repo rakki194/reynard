@@ -1,5 +1,4 @@
-"""
-ComfyUI API Router
+"""ComfyUI API Router
 
 Main router for ComfyUI API endpoints.
 """

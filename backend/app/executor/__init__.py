@@ -1,5 +1,4 @@
-"""
-Executor package for Reynard Backend
+"""Executor package for Reynard Backend
 
 This package re-exports the executor interfaces from `app.utils`
 to provide a stable module location under `app.executor`.

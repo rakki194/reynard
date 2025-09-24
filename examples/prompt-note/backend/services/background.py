@@ -1,5 +1,4 @@
-"""
-Background service for Reynard Basic Backend
+"""Background service for Reynard Basic Backend
 Handles background tasks with reload optimization
 """
 

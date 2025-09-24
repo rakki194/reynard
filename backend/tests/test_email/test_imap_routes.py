@@ -1,9 +1,8 @@
-"""
-Tests for IMAP API Routes
+"""Tests for IMAP API Routes
 """
 
 from datetime import datetime
-from unittest.mock import AsyncMock, Mock, patch
+from unittest.mock import AsyncMock, patch
 
 import pytest
 from fastapi.testclient import TestClient
@@ -51,7 +50,7 @@ class TestIMAPRoutes:
         with patch("app.api.imap_routes.imap_service") as mock_service:
             mock_service.connect = AsyncMock(return_value=True)
             mock_service.get_mailbox_info = AsyncMock(
-                return_value={"total_messages": 10, "unread_messages": 3}
+                return_value={"total_messages": 10, "unread_messages": 3},
             )
             mock_service.disconnect = AsyncMock()
 
@@ -123,7 +122,7 @@ class TestIMAPRoutes:
                     "replied_emails": 2,
                     "agent_breakdown": {"agent-123": 3, "agent-456": 2},
                     "last_updated": datetime.now().isoformat(),
-                }
+                },
             )
 
             response = client.get("/api/imap/emails/summary")
@@ -199,7 +198,7 @@ class TestIMAPRoutes:
         with patch("app.api.imap_routes.imap_service") as mock_service:
             mock_service.connect = AsyncMock(return_value=True)
             mock_service.get_mailbox_info = AsyncMock(
-                return_value={"total_messages": 10, "unread_messages": 3}
+                return_value={"total_messages": 10, "unread_messages": 3},
             )
             mock_service.get_unread_emails = AsyncMock(return_value=[])
             mock_service.disconnect = AsyncMock()

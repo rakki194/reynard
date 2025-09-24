@@ -3,6 +3,255 @@
 A comprehensive, production-ready chat messaging system for SolidJS applications with streaming capabilities,
 markdown parsing, thinking sections, and tool integration.
 
+## Architecture
+
+```mermaid
+graph TB
+    subgraph "💬 Reynard Chat System"
+        A[Chat Container] --> B[Chat Components]
+        A --> C[Chat Composables]
+        A --> D[Streaming System]
+        A --> E[P2P System]
+        
+        subgraph "🎯 Core Components"
+            B --> B1[ChatMessage]
+            B --> B2[MessageInput]
+            B --> B3[MarkdownRenderer]
+            B --> B4[ThinkingIndicator]
+            B --> B5[ToolCallDisplay]
+            B --> B6[P2PChatContainer]
+            B --> B7[RoomList]
+            B --> B8[UserList]
+        end
+        
+        subgraph "⚡ Chat Composables"
+            C --> C1[useChat]
+            C --> C2[useChatMessages]
+            C --> C3[useChatStreaming]
+            C --> C4[useChatTools]
+            C --> C5[useP2PChat]
+            C --> C6[useP2PConnection]
+            C --> C7[useP2PMessages]
+            C --> C8[useP2PRooms]
+        end
+        
+        subgraph "🌊 Streaming System"
+            D --> D1[StreamingMarkdownParser]
+            D --> D2[StreamingCoordinator]
+            D --> D3[ParserOrchestrator]
+            D --> D4[BlockParser]
+            D --> D5[InlineParser]
+            D --> D6[StreamingTextRenderer]
+            D1 --> D7[ThinkingSectionParser]
+            D1 --> D8[CodeBlockHandler]
+            D1 --> D9[TableParser]
+        end
+        
+        subgraph "🔗 P2P Features"
+            E --> E1[Real-time Messaging]
+            E --> E2[Room Management]
+            E --> E3[User Presence]
+            E --> E4[File Uploads]
+            E --> E5[Typing Indicators]
+            E --> E6[Read Receipts]
+            E --> E7[Message Reactions]
+            E --> E8[Message Threads]
+        end
+        
+        subgraph "🛠️ Markdown Processing"
+            F[Markdown Utils] --> F1[BaseMarkdownParser]
+            F --> F2[Block Handlers]
+            F --> F3[Inline Processors]
+            F --> F4[Streaming Helpers]
+            F2 --> F5[CodeBlockHandler]
+            F2 --> F6[ListHandler]
+            F2 --> F7[SectionCloser]
+            F3 --> F8[CodeProcessor]
+            F3 --> F9[FormattingProcessor]
+            F3 --> F10[LinkProcessor]
+            F3 --> F11[MathProcessor]
+            F3 --> F12[MediaProcessor]
+        end
+        
+        subgraph "🔧 Tool Integration"
+            G[Tool System] --> G1[Tool Definitions]
+            G --> G2[Tool Execution]
+            G --> G3[Tool Progress]
+            G --> G4[Tool Results]
+            G1 --> G5[Function Tools]
+            G1 --> G6[API Tools]
+            G1 --> G7[Custom Tools]
+        end
+        
+        subgraph "📊 State Management"
+            H[Chat State] --> H1[Message History]
+            H --> H2[Connection State]
+            H --> H3[Streaming State]
+            H --> H4[Tool State]
+            H --> H5[P2P State]
+            H --> H6[User State]
+        end
+    end
+    
+    subgraph "🌐 Backend Integration"
+        I[Chat Backend] --> I1[WebSocket Server]
+        I --> I2[Message API]
+        I --> I3[File Upload API]
+        I --> I4[User Management]
+        I --> I5[Room Management]
+    end
+    
+    A -->|Manages| J[Chat Interface]
+    C1 -->|Orchestrates| K[Chat Operations]
+    D1 -->|Processes| L[Streaming Content]
+    E1 -->|Enables| M[Real-time Communication]
+```
+
+## Chat Flow
+
+```mermaid
+sequenceDiagram
+    participant User as User
+    participant UI as Chat Interface
+    participant Composable as Chat Composables
+    participant Streaming as Streaming System
+    participant Backend as Chat Backend
+    participant Parser as Markdown Parser
+    
+    Note over User, Parser: Message Sending
+    User->>UI: Type Message
+    UI->>Composable: useChat.sendMessage()
+    Composable->>Backend: POST /api/chat
+    Backend-->>Composable: Start Streaming Response
+    
+    Note over User, Parser: Streaming Processing
+    Backend->>Streaming: Stream Chunks
+    Streaming->>Parser: Parse Markdown Chunks
+    Parser->>Parser: Process Blocks & Inlines
+    Parser-->>Streaming: Parsed Nodes
+    Streaming->>Composable: Update Message
+    Composable->>UI: Render Content
+    UI-->>User: Display Streaming Text
+    
+    Note over User, Parser: Tool Execution
+    Backend->>Streaming: Tool Call Event
+    Streaming->>Composable: useChatTools()
+    Composable->>UI: Show Tool Progress
+    UI-->>User: Tool Execution UI
+    
+    Note over User, Parser: Message Completion
+    Backend->>Streaming: End Stream
+    Streaming->>Parser: Finalize Parsing
+    Parser-->>Streaming: Complete AST
+    Streaming->>Composable: Final Message
+    Composable->>UI: Complete Rendering
+    UI-->>User: Final Message Display
+```
+
+## P2P Chat Flow
+
+```mermaid
+sequenceDiagram
+    participant User1 as User 1
+    participant User2 as User 2
+    participant UI1 as Chat UI 1
+    participant UI2 as Chat UI 2
+    participant WS as WebSocket Server
+    participant API as Chat API
+    
+    Note over User1, API: Connection Setup
+    User1->>UI1: Join Room
+    UI1->>WS: WebSocket Connect
+    WS->>API: Authenticate User
+    API-->>WS: User Authenticated
+    WS-->>UI1: Connection Established
+    
+    Note over User1, API: Message Exchange
+    User1->>UI1: Send Message
+    UI1->>WS: message_sent Event
+    WS->>WS: Broadcast to Room
+    WS-->>UI2: message_sent Event
+    UI2->>UI2: Add Message
+    UI2-->>User2: Display Message
+    
+    Note over User1, API: Real-time Features
+    User1->>UI1: Start Typing
+    UI1->>WS: typing_start Event
+    WS-->>UI2: typing_start Event
+    UI2-->>User2: Show Typing Indicator
+    
+    User1->>UI1: Stop Typing
+    UI1->>WS: typing_stop Event
+    WS-->>UI2: typing_stop Event
+    UI2-->>User2: Hide Typing Indicator
+    
+    Note over User1, API: File Sharing
+    User1->>UI1: Upload File
+    UI1->>API: POST /api/chat/upload
+    API-->>UI1: File URL
+    UI1->>WS: message_sent with File
+    WS-->>UI2: File Message
+    UI2-->>User2: Display File
+```
+
+## Streaming Markdown Processing
+
+```mermaid
+flowchart TD
+    A[Streaming Text] --> B[StreamingCoordinator]
+    B --> C[ParserOrchestrator]
+    C --> D{Content Type?}
+    
+    D -->|Block| E[BlockParser]
+    D -->|Inline| F[InlineParser]
+    D -->|Thinking| G[ThinkingSectionParser]
+    
+    E --> E1[CodeBlockHandler]
+    E --> E2[ListHandler]
+    E --> E3[TableParser]
+    E --> E4[SectionCloser]
+    
+    F --> F1[CodeProcessor]
+    F --> F2[FormattingProcessor]
+    F --> F3[LinkProcessor]
+    F --> F4[MathProcessor]
+    F --> F5[MediaProcessor]
+    
+    G --> G1[Thinking Validation]
+    G --> G2[Thinking Utils]
+    G --> G3[Thinking Core]
+    
+    E1 --> H[StreamingTextRenderer]
+    E2 --> H
+    E3 --> H
+    E4 --> H
+    F1 --> H
+    F2 --> H
+    F3 --> H
+    F4 --> H
+    F5 --> H
+    G1 --> H
+    G2 --> H
+    G3 --> H
+    
+    H --> I[Rendered Content]
+    I --> J[UI Update]
+    
+    subgraph "🔄 Streaming State"
+        K[Parser State] --> K1[Current Node]
+        K --> K2[Buffer]
+        K --> K3[Line Number]
+        K --> K4[Errors/Warnings]
+    end
+    
+    subgraph "📊 Processing Features"
+        L[Advanced Features] --> L1[Real-time Rendering]
+        L --> L2[Error Recovery]
+        L --> L3[Performance Optimization]
+        L --> L4[Memory Management]
+    end
+```
+
 ## ✨ Features
 
 ### 🚀 **Core Capabilities**

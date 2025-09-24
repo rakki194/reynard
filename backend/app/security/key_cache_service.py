@@ -1,5 +1,4 @@
-"""
-🔐 Key Cache Service with Redis
+"""🔐 Key Cache Service with Redis
 
 Redis-based caching service for cryptographic keys to improve performance
 and reduce database load. Provides secure key caching with expiration
@@ -20,9 +19,8 @@ import base64
 import json
 import logging
 import os
-import pickle
-from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, Optional, Tuple
+from datetime import UTC, datetime
+from typing import Any
 
 import redis
 from cryptography.fernet import Fernet
@@ -31,8 +29,7 @@ logger = logging.getLogger(__name__)
 
 
 class KeyCacheService:
-    """
-    Redis-based key caching service for improved performance.
+    """Redis-based key caching service for improved performance.
 
     Provides secure caching of cryptographic keys with automatic
     expiration and cache invalidation capabilities.
@@ -40,17 +37,17 @@ class KeyCacheService:
 
     def __init__(
         self,
-        redis_client: Optional[redis.Redis] = None,
+        redis_client: redis.Redis | None = None,
         cache_ttl_seconds: int = 3600,  # 1 hour default TTL
-        encryption_key: Optional[bytes] = None,
+        encryption_key: bytes | None = None,
     ):
-        """
-        Initialize the key cache service.
+        """Initialize the key cache service.
 
         Args:
             redis_client: Redis client instance (optional)
             cache_ttl_seconds: Cache TTL in seconds
             encryption_key: Key for encrypting cached data
+
         """
         self.redis_client = redis_client or self._get_redis_client()
         self.cache_ttl = cache_ttl_seconds
@@ -84,7 +81,6 @@ class KeyCacheService:
     def _get_encryption_key(self) -> bytes:
         """Get or generate encryption key for cached data."""
         import os
-        import secrets
 
         # Try to get from environment
         key_str = os.getenv("KEY_CACHE_ENCRYPTION_KEY")
@@ -99,7 +95,7 @@ class KeyCacheService:
         logger.warning(
             f"Generated new key cache encryption key. "
             f"Set KEY_CACHE_ENCRYPTION_KEY={base64.urlsafe_b64encode(key).decode()} "
-            f"for production use."
+            f"for production use.",
         )
         return key
 
@@ -121,11 +117,10 @@ class KeyCacheService:
         self,
         key_id: str,
         key_data: bytes,
-        metadata: Dict[str, Any],
-        ttl_seconds: Optional[int] = None,
+        metadata: dict[str, Any],
+        ttl_seconds: int | None = None,
     ) -> bool:
-        """
-        Cache a key in Redis.
+        """Cache a key in Redis.
 
         Args:
             key_id: Key identifier
@@ -135,6 +130,7 @@ class KeyCacheService:
 
         Returns:
             True if cached successfully, False otherwise
+
         """
         if not self.redis_client:
             return False
@@ -161,15 +157,15 @@ class KeyCacheService:
             logger.error(f"Failed to cache key {key_id}: {e}")
             return False
 
-    def get_cached_key(self, key_id: str) -> Optional[Tuple[bytes, Dict[str, Any]]]:
-        """
-        Get a cached key from Redis.
+    def get_cached_key(self, key_id: str) -> tuple[bytes, dict[str, Any]] | None:
+        """Get a cached key from Redis.
 
         Args:
             key_id: Key identifier
 
         Returns:
             Tuple of (key_data, metadata) if found, None otherwise
+
         """
         if not self.redis_client:
             return None
@@ -201,14 +197,14 @@ class KeyCacheService:
             return None
 
     def invalidate_key(self, key_id: str) -> bool:
-        """
-        Invalidate a cached key.
+        """Invalidate a cached key.
 
         Args:
             key_id: Key identifier
 
         Returns:
             True if invalidated successfully, False otherwise
+
         """
         if not self.redis_client:
             return False
@@ -229,8 +225,7 @@ class KeyCacheService:
             return False
 
     def update_key_usage(self, key_id: str, usage_count: int) -> bool:
-        """
-        Update key usage statistics in cache.
+        """Update key usage statistics in cache.
 
         Args:
             key_id: Key identifier
@@ -238,6 +233,7 @@ class KeyCacheService:
 
         Returns:
             True if updated successfully, False otherwise
+
         """
         if not self.redis_client:
             return False
@@ -246,11 +242,11 @@ class KeyCacheService:
             usage_cache_key = self._get_cache_key(key_id, self.USAGE_PREFIX)
             usage_data = {
                 "usage_count": usage_count,
-                "last_used": datetime.now(timezone.utc).isoformat(),
+                "last_used": datetime.now(UTC).isoformat(),
             }
 
             self.redis_client.setex(
-                usage_cache_key, self.cache_ttl, json.dumps(usage_data).encode()
+                usage_cache_key, self.cache_ttl, json.dumps(usage_data).encode(),
             )
 
             return True
@@ -259,12 +255,12 @@ class KeyCacheService:
             logger.error(f"Failed to update usage for key {key_id}: {e}")
             return False
 
-    def get_cache_stats(self) -> Dict[str, Any]:
-        """
-        Get cache statistics.
+    def get_cache_stats(self) -> dict[str, Any]:
+        """Get cache statistics.
 
         Returns:
             Dictionary with cache statistics
+
         """
         if not self.redis_client:
             return {"error": "Redis not available"}
@@ -290,11 +286,11 @@ class KeyCacheService:
             return {"error": str(e), "redis_connected": False}
 
     def clear_all_cache(self) -> bool:
-        """
-        Clear all cached keys.
+        """Clear all cached keys.
 
         Returns:
             True if cleared successfully, False otherwise
+
         """
         if not self.redis_client:
             return False
@@ -323,7 +319,7 @@ class KeyCacheService:
 
 
 # Global key cache service instance
-_key_cache_service: Optional[KeyCacheService] = None
+_key_cache_service: KeyCacheService | None = None
 
 
 def get_key_cache_service() -> KeyCacheService:

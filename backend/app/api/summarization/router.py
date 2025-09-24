@@ -1,5 +1,4 @@
-"""
-🦊 Reynard Summarization Router
+"""🦊 Reynard Summarization Router
 ==============================
 
 Main router for summarization API endpoints with enterprise-grade patterns.

@@ -1,5 +1,4 @@
-"""
-Performance tests for NLWeb endpoints.
+"""Performance tests for NLWeb endpoints.
 
 This module tests the performance characteristics of NLWeb endpoints
 including response times, throughput, and resource usage.
@@ -41,7 +40,7 @@ class TestNLWebPerformance:
                         "parameters": {"param1": "value1"},
                         "reasoning": "Test reasoning",
                         "parameter_hints": {"param1": "Test hint"},
-                    }
+                    },
                 ],
                 "query": "test query",
                 "processing_time_ms": 50.0,  # Fast response
@@ -115,7 +114,7 @@ class TestNLWebPerformance:
 
     @pytest.mark.asyncio
     async def test_ask_endpoint_streaming_performance(
-        self, async_client: AsyncClient, access_token
+        self, async_client: AsyncClient, access_token,
     ):
         """Test ask endpoint streaming performance."""
         with patch("app.api.nlweb.endpoints.get_nlweb_service") as mock_service:
@@ -226,7 +225,7 @@ class TestNLWebPerformance:
 
             start_time = time.time()
             response = client.get(
-                "/api/nlweb/stats", headers={"Authorization": f"Bearer {access_token}"}
+                "/api/nlweb/stats", headers={"Authorization": f"Bearer {access_token}"},
             )
             end_time = time.time()
 
@@ -298,7 +297,7 @@ class TestNLWebPerformance:
                         "parameters": {"param1": "value1"},
                         "reasoning": "Test reasoning",
                         "parameter_hints": {"param1": "Test hint"},
-                    }
+                    },
                 ],
                 "query": "test query",
                 "processing_time_ms": 100.0,

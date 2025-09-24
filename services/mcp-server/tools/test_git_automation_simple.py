@@ -6,7 +6,6 @@ Simple tests for Git automation tools functionality.
 import json
 import os
 import subprocess
-import sys
 import tempfile
 import unittest
 from unittest.mock import Mock, patch

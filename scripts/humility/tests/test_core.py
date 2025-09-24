@@ -1,8 +1,6 @@
-"""
-Tests for core humility detector functionality.
+"""Tests for core humility detector functionality.
 """
 
-import asyncio
 import os
 
 # Add the parent directory to the path so we can import the modules
@@ -229,7 +227,7 @@ class TestHumilityDetector:
                 suggested_replacement="good",
                 context="This is the best",
                 confidence_score=0.9,
-            )
+            ),
         ]
 
         scores = detector._calculate_comprehensive_scores(findings, {})
@@ -249,7 +247,7 @@ class TestHumilityDetector:
                 suggested_replacement="good",
                 context="This is the best",
                 confidence_score=0.9,
-            )
+            ),
         ]
 
         scores = {"overall": 60.0, "hexaco": 50.0, "epistemic": 40.0}
@@ -346,7 +344,7 @@ class TestHumilityProfile:
                 suggested_replacement="good",
                 context="This is the best",
                 confidence_score=0.9,
-            )
+            ),
         ]
 
         profile = HumilityProfile(

@@ -1,5 +1,4 @@
-"""
-🦊 Reynard Image Processing Utilities
+"""🦊 Reynard Image Processing Utilities
 =====================================
 
 Comprehensive image processing utilities for the Reynard backend, providing

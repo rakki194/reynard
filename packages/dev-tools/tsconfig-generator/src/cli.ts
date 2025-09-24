@@ -24,9 +24,19 @@ class TSConfigCLI extends BaseCLI {
       description: "Generate TypeScript configuration",
       options: {
         "-o, --output <path>": "Output file path",
-        "--include-packages": "Include source packages",
-        "--include-templates": "Include template projects", 
-        "--include-scripts": "Include scripts",
+        "--include-packages": "Include source packages (default: true)",
+        "--include-templates": "Include template projects (default: true)", 
+        "--include-scripts": "Include scripts (default: true)",
+        "--include-tools": "Include tools packages (default: true)",
+        "--include-documentation": "Include documentation packages (default: true)",
+        "--include-testing": "Include testing packages (default: true)",
+        "--include-non-buildable": "Include non-buildable directories (default: false)",
+        "--exclude-packages": "Exclude source packages",
+        "--exclude-templates": "Exclude template projects", 
+        "--exclude-scripts": "Exclude scripts",
+        "--exclude-tools": "Exclude tools packages",
+        "--exclude-documentation": "Exclude documentation packages",
+        "--exclude-testing": "Exclude testing packages",
         "--include-references": "Include package references",
         "--generate-individual": "Generate individual package tsconfigs"
       },
@@ -51,9 +61,13 @@ class TSConfigCLI extends BaseCLI {
       if (this.isVerbose()) {
         this.logger.info("Configuration Options:");
         this.logger.info(`  Output: ${options.output || "tsconfig.generated.json"}`);
-        this.logger.info(`  Include packages: ${options.includePackages}`);
-        this.logger.info(`  Include templates: ${options.includeTemplates}`);
-        this.logger.info(`  Include scripts: ${options.includeScripts}`);
+        this.logger.info(`  Include packages: ${options.includePackages !== false}`);
+        this.logger.info(`  Include templates: ${options.includeTemplates !== false}`);
+        this.logger.info(`  Include scripts: ${options.includeScripts !== false}`);
+        this.logger.info(`  Include tools: ${options.includeTools !== false}`);
+        this.logger.info(`  Include documentation: ${options.includeDocumentation !== false}`);
+        this.logger.info(`  Include testing: ${options.includeTesting !== false}`);
+        this.logger.info(`  Include non-buildable: ${options.includeNonBuildable || false}`);
         this.logger.info(`  Include references: ${options.includeReferences}`);
         this.logger.info(`  Generate individual: ${options.generateIndividual}`);
       }
@@ -67,9 +81,13 @@ class TSConfigCLI extends BaseCLI {
 
       // Generate configuration
       const result = generator.generateConfig({
-        includePackages: options.includePackages,
-        includeTemplates: options.includeTemplates,
-        includeScripts: options.includeScripts,
+        includePackages: options.excludePackages ? false : (options.includePackages !== false), // Default to true unless excluded
+        includeTemplates: options.excludeTemplates ? false : (options.includeTemplates !== false), // Default to true unless excluded
+        includeScripts: options.excludeScripts ? false : (options.includeScripts !== false), // Default to true unless excluded
+        includeTools: options.excludeTools ? false : (options.includeTools !== false), // Default to true unless excluded
+        includeDocumentation: options.excludeDocumentation ? false : (options.includeDocumentation !== false), // Default to true unless excluded
+        includeTesting: options.excludeTesting ? false : (options.includeTesting !== false), // Default to true unless excluded
+        includeNonBuildable: options.includeNonBuildable || false, // Default to false
         includeReferences: options.includeReferences,
         generateIndividual: options.generateIndividual,
         outputPath: outputPath,

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Display Extracted Genetic Material
+"""Display Extracted Genetic Material
 
 Show detailed genetic material extracted from Success-Advisor-8's outputs.
 
@@ -8,9 +7,7 @@ Author: Success-Advisor-8 (Permanent Release Manager)
 Version: 1.0.0
 """
 
-import json
 import sys
-from datetime import datetime
 from pathlib import Path
 
 # Add src to path
@@ -341,28 +338,28 @@ def display_genetic_material(gm_name, genetic_material):
     print(f"🧬 GENETIC MATERIAL: {gm_name}")
     print(f"{'='*80}")
 
-    print(f"📋 Basic Information:")
+    print("📋 Basic Information:")
     print(f"   Agent ID: {genetic_material.agent_id}")
     print(f"   Generation: {genetic_material.generation}")
     print(f"   Fitness Score: {genetic_material.fitness_score:.3f}")
     print(f"   Raw Output Hash: {genetic_material.raw_output_hash[:20]}...")
 
-    print(f"\n🧠 Traits:")
+    print("\n🧠 Traits:")
     for trait_type, traits in genetic_material.traits.items():
         if traits:
             print(f"   {trait_type.replace('_', ' ').title()}:")
             for trait_name, value in traits.items():
                 print(f"     • {trait_name}: {value:.3f}")
 
-    print(f"\n📚 Knowledge Domains:")
+    print("\n📚 Knowledge Domains:")
     for domain in genetic_material.knowledge_domains:
         print(f"   • {domain}")
 
-    print(f"\n🎭 Behavioral Patterns:")
+    print("\n🎭 Behavioral Patterns:")
     for pattern_name, pattern_value in genetic_material.behavioral_patterns.items():
         print(f"   • {pattern_name.replace('_', ' ').title()}: {pattern_value}")
 
-    print(f"\n📊 Performance Metrics:")
+    print("\n📊 Performance Metrics:")
     for metric_name, metric_value in genetic_material.performance_metrics.items():
         print(f"   • {metric_name.replace('_', ' ').title()}: {metric_value:.3f}")
 
@@ -370,7 +367,7 @@ def display_genetic_material(gm_name, genetic_material):
 def display_summary_statistics(genetic_materials):
     """Display summary statistics across all genetic materials."""
     print(f"\n{'='*80}")
-    print(f"📊 GENETIC MATERIAL SUMMARY STATISTICS")
+    print("📊 GENETIC MATERIAL SUMMARY STATISTICS")
     print(f"{'='*80}")
 
     # Collect all traits
@@ -398,31 +395,31 @@ def display_summary_statistics(genetic_materials):
                 all_patterns[pattern_name] = []
             all_patterns[pattern_name].append(pattern_value)
 
-    print(f"📈 Fitness Statistics:")
+    print("📈 Fitness Statistics:")
     print(f"   Average Fitness: {sum(fitness_scores)/len(fitness_scores):.3f}")
     print(f"   Highest Fitness: {max(fitness_scores):.3f}")
     print(f"   Lowest Fitness: {min(fitness_scores):.3f}")
     print(f"   Fitness Range: {max(fitness_scores) - min(fitness_scores):.3f}")
 
-    print(f"\n🧠 Trait Analysis:")
+    print("\n🧠 Trait Analysis:")
     for trait_name, values in all_traits.items():
         avg_value = sum(values) / len(values)
         max_value = max(values)
         min_value = min(values)
         print(
-            f"   • {trait_name}: avg={avg_value:.3f}, max={max_value:.3f}, min={min_value:.3f}, count={len(values)}"
+            f"   • {trait_name}: avg={avg_value:.3f}, max={max_value:.3f}, min={min_value:.3f}, count={len(values)}",
         )
 
-    print(f"\n📚 Knowledge Domain Coverage:")
+    print("\n📚 Knowledge Domain Coverage:")
     print(f"   Total Unique Domains: {len(all_domains)}")
     for domain in sorted(all_domains):
         print(f"   • {domain}")
 
-    print(f"\n🎭 Behavioral Pattern Analysis:")
+    print("\n🎭 Behavioral Pattern Analysis:")
     for pattern_name, values in all_patterns.items():
         unique_values = set(values)
         print(
-            f"   • {pattern_name.replace('_', ' ').title()}: {len(unique_values)} unique patterns"
+            f"   • {pattern_name.replace('_', ' ').title()}: {len(unique_values)} unique patterns",
         )
         for value in unique_values:
             count = values.count(value)

@@ -1,5 +1,4 @@
-"""
-Content Cleaner for Reynard Backend
+"""Content Cleaner for Reynard Backend
 
 Cleans and normalizes scraped content.
 """
@@ -12,8 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class ContentCleaner:
-    """
-    Cleans and normalizes scraped content.
+    """Cleans and normalizes scraped content.
 
     Removes unwanted elements, normalizes formatting,
     and prepares content for further processing.
@@ -49,10 +47,9 @@ class ContentCleaner:
             return False
 
     async def clean_content(
-        self, content: str, config: dict[str, Any] | None = None
+        self, content: str, config: dict[str, Any] | None = None,
     ) -> str:
-        """
-        Clean content by removing unwanted elements.
+        """Clean content by removing unwanted elements.
 
         Args:
             content: Content to clean
@@ -60,6 +57,7 @@ class ContentCleaner:
 
         Returns:
             Cleaned content
+
         """
         try:
             if not content:

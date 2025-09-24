@@ -1,5 +1,4 @@
-"""
-🦊 Reynard RAG (Retrieval-Augmented Generation) API Endpoints
+"""🦊 Reynard RAG (Retrieval-Augmented Generation) API Endpoints
 ============================================================
 
 Comprehensive RAG system endpoints for the Reynard backend, providing advanced
@@ -56,7 +55,7 @@ from pydantic import BaseModel, Field
 from ...core.base_router import BaseServiceRouter
 from ...core.config_mixin import ConfigEndpointMixin
 from ...core.logging_config import get_service_logger
-from ...security.mcp_auth import MCPTokenData, require_rag_config, require_rag_query
+from ...security.mcp_auth import MCPTokenData, require_rag_query
 from .models import (
     AnalyticsExportRequest,
     AnalyticsExportResponse,
@@ -66,8 +65,6 @@ from .models import (
     PerformanceStatsResponse,
     QueryIntentRequest,
     QueryIntentResponse,
-    RAGConfigRequest,
-    RAGConfigResponse,
     RAGQueryRequest,
     RAGQueryResponse,
     RealTimeMetricsResponse,
@@ -89,50 +86,49 @@ class RAGConfigModel(BaseModel):
     """Configuration model for RAG service."""
 
     rag_enabled: bool = Field(
-        default=True, description="Enable RAG system functionality"
+        default=True, description="Enable RAG system functionality",
     )
     rag_text_model: str = Field(
-        default="mxbai-embed-large", description="Default text embedding model"
+        default="mxbai-embed-large", description="Default text embedding model",
     )
     rag_code_model: str = Field(default="bge-m3", description="Code embedding model")
     rag_caption_model: str = Field(
-        default="nomic-embed-text", description="Caption embedding model"
+        default="nomic-embed-text", description="Caption embedding model",
     )
     rag_clip_model: str = Field(
-        default="ViT-L-14/openai", description="CLIP model for image embeddings"
+        default="ViT-L-14/openai", description="CLIP model for image embeddings",
     )
     rag_chunk_max_tokens: int = Field(
-        default=512, ge=100, le=2048, description="Maximum tokens per chunk"
+        default=512, ge=100, le=2048, description="Maximum tokens per chunk",
     )
     rag_chunk_min_tokens: int = Field(
-        default=100, ge=50, le=512, description="Minimum tokens per chunk"
+        default=100, ge=50, le=512, description="Minimum tokens per chunk",
     )
     rag_chunk_overlap_ratio: float = Field(
-        default=0.15, ge=0.0, le=0.5, description="Chunk overlap ratio"
+        default=0.15, ge=0.0, le=0.5, description="Chunk overlap ratio",
     )
     rag_query_rate_limit_per_minute: int = Field(
-        default=60, ge=1, le=1000, description="Query rate limit per minute"
+        default=60, ge=1, le=1000, description="Query rate limit per minute",
     )
     rag_ingest_rate_limit_per_minute: int = Field(
-        default=10, ge=1, le=100, description="Ingestion rate limit per minute"
+        default=10, ge=1, le=100, description="Ingestion rate limit per minute",
     )
     enable_query_caching: bool = Field(
-        default=True, description="Enable query result caching"
+        default=True, description="Enable query result caching",
     )
     cache_ttl_seconds: int = Field(
-        default=3600, ge=60, le=86400, description="Cache TTL in seconds"
+        default=3600, ge=60, le=86400, description="Cache TTL in seconds",
     )
     enable_query_optimization: bool = Field(
-        default=True, description="Enable query optimization"
+        default=True, description="Enable query optimization",
     )
     max_concurrent_queries: int = Field(
-        default=10, ge=1, le=50, description="Maximum concurrent queries"
+        default=10, ge=1, le=50, description="Maximum concurrent queries",
     )
 
 
 class RAGServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
-    """
-    RAG service router with enterprise-grade patterns.
+    """RAG service router with enterprise-grade patterns.
 
     Provides standardized service patterns including:
     - Centralized error handling and recovery
@@ -196,60 +192,60 @@ class RAGServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
 
         @self.router.post("/query", response_model=RAGQueryResponse)
         async def query_rag(
-            request: RAGQueryRequest, _: MCPTokenData = Depends(require_rag_query)
+            request: RAGQueryRequest, _: MCPTokenData = Depends(require_rag_query),
         ):
             """Perform advanced semantic search using the RAG system."""
             return await self._standard_async_operation(
-                "query_rag", self._handle_query_request, request
+                "query_rag", self._handle_query_request, request,
             )
 
         @self.router.post("/embed")
         async def embed_texts(request: dict):
             """Generate vector embeddings for text content."""
             return await self._standard_async_operation(
-                "embed_texts", self._handle_embed_request, request
+                "embed_texts", self._handle_embed_request, request,
             )
 
         @self.router.post("/test-query")
         async def test_query_rag(request: RAGQueryRequest):
             """Test RAG query endpoint without authentication (development only)."""
             return await self._standard_async_operation(
-                "test_query_rag", self._handle_test_query_request, request
+                "test_query_rag", self._handle_test_query_request, request,
             )
 
         @self.router.get("/health")
         async def health_check():
             """Simple health check for RAG service."""
             return await self._standard_async_operation(
-                "health_check", self._handle_health_check_request
+                "health_check", self._handle_health_check_request,
             )
 
         @self.router.post("/test-token")
         async def get_test_token():
             """Generate a test token for benchmarking (development only)."""
             return await self._standard_async_operation(
-                "get_test_token", self._handle_test_token_request
+                "get_test_token", self._handle_test_token_request,
             )
 
         @self.router.get("/stats")
         async def get_rag_stats():
             """Get RAG system statistics and performance metrics."""
             return await self._standard_async_operation(
-                "get_rag_stats", self._handle_stats_request
+                "get_rag_stats", self._handle_stats_request,
             )
 
         # Enhanced Semantic Search Endpoints
         @self.router.post("/semantic/detect-intent", response_model=QueryIntentResponse)
         async def detect_query_intent(
-            request: QueryIntentRequest, _: MCPTokenData = Depends(require_rag_query)
+            request: QueryIntentRequest, _: MCPTokenData = Depends(require_rag_query),
         ):
             """Detect query intent for semantic search optimization."""
             return await self._standard_async_operation(
-                "detect_query_intent", self._handle_detect_intent_request, request
+                "detect_query_intent", self._handle_detect_intent_request, request,
             )
 
         @self.router.post(
-            "/semantic/enhance-query", response_model=SemanticEnhancementResponse
+            "/semantic/enhance-query", response_model=SemanticEnhancementResponse,
         )
         async def enhance_query(
             request: SemanticEnhancementRequest,
@@ -257,7 +253,7 @@ class RAGServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
         ):
             """Enhance query with semantic processing and expansion."""
             return await self._standard_async_operation(
-                "enhance_query", self._handle_enhance_query_request, request
+                "enhance_query", self._handle_enhance_query_request, request,
             )
 
         # Query Analytics Endpoints
@@ -265,38 +261,38 @@ class RAGServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
         async def record_query_metrics(request: dict):
             """Record query performance metrics for analytics."""
             return await self._standard_async_operation(
-                "record_query_metrics", self._handle_record_metrics_request, request
+                "record_query_metrics", self._handle_record_metrics_request, request,
             )
 
         @self.router.post("/analytics/feedback")
         async def record_user_feedback(
-            request: UserFeedbackRequest, _: MCPTokenData = Depends(require_rag_query)
+            request: UserFeedbackRequest, _: MCPTokenData = Depends(require_rag_query),
         ):
             """Record user feedback for query analytics."""
             return await self._standard_async_operation(
-                "record_user_feedback", self._handle_user_feedback_request, request
+                "record_user_feedback", self._handle_user_feedback_request, request,
             )
 
         @self.router.get(
-            "/analytics/performance", response_model=PerformanceStatsResponse
+            "/analytics/performance", response_model=PerformanceStatsResponse,
         )
         async def get_performance_stats(
-            time_window_hours: int = 24, _: MCPTokenData = Depends(require_rag_query)
+            time_window_hours: int = 24, _: MCPTokenData = Depends(require_rag_query),
         ):
             """Get query performance statistics."""
             request = PerformanceStatsRequest(time_window_hours=time_window_hours)
             return await self._standard_async_operation(
-                "get_performance_stats", self._handle_performance_stats_request, request
+                "get_performance_stats", self._handle_performance_stats_request, request,
             )
 
         @self.router.get("/analytics/insights", response_model=UsageInsightsResponse)
         async def get_usage_insights(
-            time_window_hours: int = 24, _: MCPTokenData = Depends(require_rag_query)
+            time_window_hours: int = 24, _: MCPTokenData = Depends(require_rag_query),
         ):
             """Get usage insights and analytics."""
             request = UsageInsightsRequest(time_window_hours=time_window_hours)
             return await self._standard_async_operation(
-                "get_usage_insights", self._handle_usage_insights_request, request
+                "get_usage_insights", self._handle_usage_insights_request, request,
             )
 
         @self.router.post("/analytics/report", response_model=AnalyticsReportResponse)
@@ -315,7 +311,7 @@ class RAGServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
         async def get_real_time_metrics(_: MCPTokenData = Depends(require_rag_query)):
             """Get real-time analytics metrics."""
             return await self._standard_async_operation(
-                "get_real_time_metrics", self._handle_real_time_metrics_request
+                "get_real_time_metrics", self._handle_real_time_metrics_request,
             )
 
         @self.router.post("/analytics/export", response_model=AnalyticsExportResponse)
@@ -325,7 +321,7 @@ class RAGServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
         ):
             """Export analytics data in specified format."""
             return await self._standard_async_operation(
-                "export_analytics_data", self._handle_export_analytics_request, request
+                "export_analytics_data", self._handle_export_analytics_request, request,
             )
 
     async def _handle_query_request(self, request: RAGQueryRequest) -> RAGQueryResponse:
@@ -367,7 +363,7 @@ class RAGServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
                     embeddings.append(embedding)
                 else:
                     logger.warning(
-                        "Failed to generate embedding for text: %s...", text[:50]
+                        "Failed to generate embedding for text: %s...", text[:50],
                     )
                     embeddings.append([])
             except Exception:
@@ -470,7 +466,7 @@ class RAGServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
 
     # Enhanced Semantic Search Handler Methods
     async def _handle_detect_intent_request(
-        self, request: QueryIntentRequest
+        self, request: QueryIntentRequest,
     ) -> QueryIntentResponse:
         """Handle query intent detection request."""
         try:
@@ -487,11 +483,11 @@ class RAGServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
         except Exception as e:
             logger.error(f"Intent detection failed: {e}")
             raise HTTPException(
-                status_code=500, detail=f"Intent detection failed: {str(e)}"
+                status_code=500, detail=f"Intent detection failed: {e!s}",
             )
 
     async def _handle_enhance_query_request(
-        self, request: SemanticEnhancementRequest
+        self, request: SemanticEnhancementRequest,
     ) -> SemanticEnhancementResponse:
         """Handle semantic query enhancement request."""
         try:
@@ -503,7 +499,7 @@ class RAGServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
             context = SearchContext() if request.context else None
 
             enhanced_query, intent, metadata = await semantic_enhancer.enhance_query(
-                request.query, context
+                request.query, context,
             )
 
             return SemanticEnhancementResponse(
@@ -515,7 +511,7 @@ class RAGServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
         except Exception as e:
             logger.error(f"Query enhancement failed: {e}")
             raise HTTPException(
-                status_code=500, detail=f"Query enhancement failed: {str(e)}"
+                status_code=500, detail=f"Query enhancement failed: {e!s}",
             )
 
     # Query Analytics Handler Methods
@@ -545,11 +541,11 @@ class RAGServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
         except Exception as e:
             logger.error(f"Metrics recording failed: {e}")
             raise HTTPException(
-                status_code=500, detail=f"Metrics recording failed: {str(e)}"
+                status_code=500, detail=f"Metrics recording failed: {e!s}",
             )
 
     async def _handle_user_feedback_request(
-        self, request: UserFeedbackRequest
+        self, request: UserFeedbackRequest,
     ) -> UserFeedbackResponse:
         """Handle user feedback recording request."""
         try:
@@ -572,17 +568,17 @@ class RAGServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
         except Exception as e:
             logger.error(f"User feedback recording failed: {e}")
             raise HTTPException(
-                status_code=500, detail=f"User feedback recording failed: {str(e)}"
+                status_code=500, detail=f"User feedback recording failed: {e!s}",
             )
 
     async def _handle_performance_stats_request(
-        self, request: PerformanceStatsRequest
+        self, request: PerformanceStatsRequest,
     ) -> PerformanceStatsResponse:
         """Handle performance statistics request."""
         try:
             analytics_collector = get_analytics_collector()
             stats = await analytics_collector.get_performance_stats(
-                request.time_window_hours
+                request.time_window_hours,
             )
 
             return PerformanceStatsResponse(
@@ -603,17 +599,17 @@ class RAGServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
         except Exception as e:
             logger.error(f"Performance stats retrieval failed: {e}")
             raise HTTPException(
-                status_code=500, detail=f"Performance stats retrieval failed: {str(e)}"
+                status_code=500, detail=f"Performance stats retrieval failed: {e!s}",
             )
 
     async def _handle_usage_insights_request(
-        self, request: UsageInsightsRequest
+        self, request: UsageInsightsRequest,
     ) -> UsageInsightsResponse:
         """Handle usage insights request."""
         try:
             analytics_collector = get_analytics_collector()
             insights = await analytics_collector.get_usage_insights(
-                request.time_window_hours
+                request.time_window_hours,
             )
 
             return UsageInsightsResponse(
@@ -628,17 +624,17 @@ class RAGServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
         except Exception as e:
             logger.error(f"Usage insights retrieval failed: {e}")
             raise HTTPException(
-                status_code=500, detail=f"Usage insights retrieval failed: {str(e)}"
+                status_code=500, detail=f"Usage insights retrieval failed: {e!s}",
             )
 
     async def _handle_analytics_report_request(
-        self, request: AnalyticsReportRequest
+        self, request: AnalyticsReportRequest,
     ) -> AnalyticsReportResponse:
         """Handle analytics report generation request."""
         try:
             analytics_collector = get_analytics_collector()
             report = await analytics_collector.generate_analytics_report(
-                request.time_period
+                request.time_period,
             )
 
             # Convert to response format
@@ -680,7 +676,7 @@ class RAGServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
         except Exception as e:
             logger.error(f"Analytics report generation failed: {e}")
             raise HTTPException(
-                status_code=500, detail=f"Analytics report generation failed: {str(e)}"
+                status_code=500, detail=f"Analytics report generation failed: {e!s}",
             )
 
     async def _handle_real_time_metrics_request(self) -> RealTimeMetricsResponse:
@@ -699,17 +695,17 @@ class RAGServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
         except Exception as e:
             logger.error(f"Real-time metrics retrieval failed: {e}")
             raise HTTPException(
-                status_code=500, detail=f"Real-time metrics retrieval failed: {str(e)}"
+                status_code=500, detail=f"Real-time metrics retrieval failed: {e!s}",
             )
 
     async def _handle_export_analytics_request(
-        self, request: AnalyticsExportRequest
+        self, request: AnalyticsExportRequest,
     ) -> AnalyticsExportResponse:
         """Handle analytics data export request."""
         try:
             analytics_collector = get_analytics_collector()
             export_data = await analytics_collector.export_analytics_data(
-                request.format
+                request.format,
             )
 
             return AnalyticsExportResponse(
@@ -724,7 +720,7 @@ class RAGServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
         except Exception as e:
             logger.error(f"Analytics export failed: {e}")
             raise HTTPException(
-                status_code=500, detail=f"Analytics export failed: {str(e)}"
+                status_code=500, detail=f"Analytics export failed: {e!s}",
             )
 
 

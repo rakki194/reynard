@@ -1,13 +1,10 @@
-"""
-Test ECS Components
+"""Test ECS Components
 
 Tests for all ECS components including Agent, Social, Gender, etc.
 """
 
 import os
 import sys
-
-import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
 

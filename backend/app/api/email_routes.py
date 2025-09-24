@@ -1,12 +1,11 @@
-"""
-Email API routes for Reynard Backend.
+"""Email API routes for Reynard Backend.
 
 This module provides REST API endpoints for email functionality.
 """
 
 from dataclasses import asdict
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 
@@ -38,10 +37,9 @@ router = APIRouter(prefix="/api/email", tags=["email"])
 
 @router.post("/send", response_model=EmailSendResponse)
 async def send_email(
-    request: EmailSendRequest, current_user: dict = Depends(get_current_active_user)
+    request: EmailSendRequest, current_user: dict = Depends(get_current_active_user),
 ) -> EmailSendResponse:
-    """
-    Send an email.
+    """Send an email.
 
     Args:
         request: Email send request
@@ -49,6 +47,7 @@ async def send_email(
 
     Returns:
         EmailSendResponse: Send result
+
     """
     try:
         # Log the email send attempt by the authenticated user
@@ -86,7 +85,7 @@ async def send_email(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to send email: {str(e)}",
+            detail=f"Failed to send email: {e!s}",
         )
 
 
@@ -98,8 +97,7 @@ async def send_simple_email(
     html_body: str = None,
     current_user: dict = Depends(get_current_active_user),
 ) -> EmailSendResponse:
-    """
-    Send a simple email.
+    """Send a simple email.
 
     Args:
         to_email: Recipient email address
@@ -110,13 +108,14 @@ async def send_simple_email(
 
     Returns:
         EmailSendResponse: Send result
+
     """
     try:
         # Log the simple email send attempt by the authenticated user
         # user_id = current_user.get("id", "unknown")  # Available for future logging
 
         result = await email_service.send_simple_email(
-            to_email=to_email, subject=subject, body=body, html_body=html_body
+            to_email=to_email, subject=subject, body=body, html_body=html_body,
         )
 
         return EmailSendResponse(
@@ -130,16 +129,15 @@ async def send_simple_email(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to send email: {str(e)}",
+            detail=f"Failed to send email: {e!s}",
         )
 
 
 @router.post("/send-bulk", response_model=EmailBulkResponse)
 async def send_bulk_email(
-    request: EmailBulkRequest, current_user: dict = Depends(get_current_active_user)
+    request: EmailBulkRequest, current_user: dict = Depends(get_current_active_user),
 ) -> EmailBulkResponse:
-    """
-    Send bulk emails.
+    """Send bulk emails.
 
     Args:
         request: Bulk email request
@@ -147,6 +145,7 @@ async def send_bulk_email(
 
     Returns:
         EmailBulkResponse: Bulk send results
+
     """
     try:
         # Log the bulk email send attempt by the authenticated user
@@ -183,7 +182,7 @@ async def send_bulk_email(
                             message_id=None,
                             sent_at=None,
                             error=None,
-                        )
+                        ),
                     )
                 else:
                     failed_sends += len(batch)
@@ -194,7 +193,7 @@ async def send_bulk_email(
                             error="Bulk send failed",
                             message_id=None,
                             sent_at=None,
-                        )
+                        ),
                     )
 
             except Exception as e:
@@ -206,7 +205,7 @@ async def send_bulk_email(
                         error=str(e),
                         message_id=None,
                         sent_at=None,
-                    )
+                    ),
                 )
 
             # Delay between batches
@@ -229,7 +228,7 @@ async def send_bulk_email(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to send bulk emails: {str(e)}",
+            detail=f"Failed to send bulk emails: {e!s}",
         )
 
 
@@ -237,14 +236,14 @@ async def send_bulk_email(
 async def get_email_status(
     current_user: dict = Depends(get_current_active_user),
 ) -> EmailStatusModel:
-    """
-    Get email service status.
+    """Get email service status.
 
     Args:
         current_user: Current authenticated user
 
     Returns:
         EmailStatusModel: Email service status
+
     """
     try:
         # Log the status check by the authenticated user
@@ -257,7 +256,7 @@ async def get_email_status(
             import smtplib
 
             server = smtplib.SMTP(
-                email_service.config.smtp_server, email_service.config.smtp_port
+                email_service.config.smtp_server, email_service.config.smtp_port,
             )
             if email_service.config.use_tls:
                 server.starttls()
@@ -269,7 +268,7 @@ async def get_email_status(
         return EmailStatusModel(
             service_configured=bool(
                 email_service.config.smtp_username
-                and email_service.config.smtp_password
+                and email_service.config.smtp_password,
             ),
             smtp_server=email_service.config.smtp_server,
             from_email=email_service.config.from_email,
@@ -280,22 +279,22 @@ async def get_email_status(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get email status: {str(e)}",
+            detail=f"Failed to get email status: {e!s}",
         )
 
 
 @router.post("/test")
 async def test_email_connection(
     current_user: dict = Depends(get_current_active_user),
-) -> Dict[str, Any]:
-    """
-    Test email service connection.
+) -> dict[str, Any]:
+    """Test email service connection.
 
     Args:
         current_user: Current authenticated user
 
     Returns:
         Dict: Test result
+
     """
     try:
         # Send a test email to the current user
@@ -312,7 +311,7 @@ Reynard System
         """.strip()
 
         result = await email_service.send_simple_email(
-            to_email=current_user["email"], subject=test_subject, body=test_body
+            to_email=current_user["email"], subject=test_subject, body=test_body,
         )
 
         return {
@@ -328,7 +327,7 @@ Reynard System
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Email test failed: {str(e)}",
+            detail=f"Email test failed: {e!s}",
         )
 
 
@@ -340,14 +339,14 @@ Reynard System
 # Email Analytics Routes
 @router.get("/analytics/metrics")
 async def get_email_analytics_metrics(
-    period_start: Optional[datetime] = Query(
-        None, description="Start of analysis period"
+    period_start: datetime | None = Query(
+        None, description="Start of analysis period",
     ),
-    period_end: Optional[datetime] = Query(None, description="End of analysis period"),
-    agent_id: Optional[str] = Query(None, description="Specific agent to analyze"),
+    period_end: datetime | None = Query(None, description="End of analysis period"),
+    agent_id: str | None = Query(None, description="Specific agent to analyze"),
     use_cache: bool = Query(True, description="Use cached results"),
     current_user: dict = Depends(get_current_active_user),
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Get comprehensive email metrics for a given period."""
     try:
         metrics = await email_analytics_service.get_email_metrics(
@@ -379,23 +378,23 @@ async def get_email_analytics_metrics(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to get email metrics: {str(e)}"
+            status_code=500, detail=f"Failed to get email metrics: {e!s}",
         )
 
 
 @router.get("/analytics/insights")
 async def get_email_analytics_insights(
-    period_start: Optional[datetime] = Query(
-        None, description="Start of analysis period"
+    period_start: datetime | None = Query(
+        None, description="Start of analysis period",
     ),
-    period_end: Optional[datetime] = Query(None, description="End of analysis period"),
-    agent_id: Optional[str] = Query(None, description="Specific agent to analyze"),
+    period_end: datetime | None = Query(None, description="End of analysis period"),
+    agent_id: str | None = Query(None, description="Specific agent to analyze"),
     current_user: dict = Depends(get_current_active_user),
-) -> List[Dict[str, Any]]:
+) -> list[dict[str, Any]]:
     """Generate insights from email data."""
     try:
         insights = await email_analytics_service.generate_insights(
-            period_start=period_start, period_end=period_end, agent_id=agent_id
+            period_start=period_start, period_end=period_end, agent_id=agent_id,
         )
 
         return [
@@ -415,7 +414,7 @@ async def get_email_analytics_insights(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to generate insights: {str(e)}"
+            status_code=500, detail=f"Failed to generate insights: {e!s}",
         )
 
 
@@ -423,7 +422,7 @@ async def get_email_analytics_insights(
 async def get_analytics_dashboard(
     period_days: int = Query(7, description="Number of days for dashboard data"),
     current_user: dict = Depends(get_current_active_user),
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Get comprehensive analytics dashboard data."""
     try:
         end_date = datetime.now()
@@ -433,18 +432,18 @@ async def get_analytics_dashboard(
         import asyncio
 
         metrics_task = email_analytics_service.get_email_metrics(
-            period_start=start_date, period_end=end_date
+            period_start=start_date, period_end=end_date,
         )
         insights_task = email_analytics_service.generate_insights(
-            period_start=start_date, period_end=end_date
+            period_start=start_date, period_end=end_date,
         )
         volume_trends_task = email_analytics_service.get_email_trends(
-            metric="volume", period_days=period_days
+            metric="volume", period_days=period_days,
         )
 
         # Wait for all tasks to complete
         metrics, insights, volume_trends = await asyncio.gather(
-            metrics_task, insights_task, volume_trends_task
+            metrics_task, insights_task, volume_trends_task,
         )
 
         # Convert metrics to dictionary
@@ -498,7 +497,7 @@ async def get_analytics_dashboard(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to get analytics dashboard: {str(e)}"
+            status_code=500, detail=f"Failed to get analytics dashboard: {e!s}",
         )
 
 
@@ -507,14 +506,14 @@ async def get_analytics_dashboard(
 async def generate_encryption_key(
     name: str,
     email: str,
-    passphrase: Optional[str] = None,
+    passphrase: str | None = None,
     key_length: int = 2048,
     current_user: dict = Depends(get_current_active_user),
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Generate a new PGP encryption key."""
     try:
         key = await email_encryption_service.generate_pgp_key(
-            name=name, email=email, passphrase=passphrase, key_length=key_length
+            name=name, email=email, passphrase=passphrase, key_length=key_length,
         )
 
         return {
@@ -528,7 +527,7 @@ async def generate_encryption_key(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to generate encryption key: {str(e)}"
+            status_code=500, detail=f"Failed to generate encryption key: {e!s}",
         )
 
 
@@ -536,10 +535,10 @@ async def generate_encryption_key(
 async def encrypt_email_content(
     content: str,
     recipient_email: str,
-    encryption_method: Optional[str] = None,
-    sign_with: Optional[str] = None,
+    encryption_method: str | None = None,
+    sign_with: str | None = None,
     current_user: dict = Depends(get_current_active_user),
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Encrypt email content for a recipient."""
     try:
         encrypted_email = await email_encryption_service.encrypt_email(
@@ -560,17 +559,17 @@ async def encrypt_email_content(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to encrypt email: {str(e)}"
+            status_code=500, detail=f"Failed to encrypt email: {e!s}",
         )
 
 
 @router.get("/encryption/keys")
 async def list_encryption_keys(
-    key_type: Optional[str] = Query(
-        None, description="Filter by key type ('pgp' or 'smime')"
+    key_type: str | None = Query(
+        None, description="Filter by key type ('pgp' or 'smime')",
     ),
     current_user: dict = Depends(get_current_active_user),
-) -> List[Dict[str, Any]]:
+) -> list[dict[str, Any]]:
     """List all encryption keys."""
     try:
         keys = await email_encryption_service.list_keys(key_type=key_type)
@@ -592,7 +591,7 @@ async def list_encryption_keys(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to list encryption keys: {str(e)}"
+            status_code=500, detail=f"Failed to list encryption keys: {e!s}",
         )
 
 
@@ -604,7 +603,7 @@ async def extract_meeting_requests(
     email_message_id: str,
     sender_email: str,
     current_user: dict = Depends(get_current_active_user),
-) -> List[Dict[str, Any]]:
+) -> list[dict[str, Any]]:
     """Extract meeting requests from email content."""
     try:
         requests = (
@@ -636,17 +635,17 @@ async def extract_meeting_requests(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to extract meeting requests: {str(e)}"
+            status_code=500, detail=f"Failed to extract meeting requests: {e!s}",
         )
 
 
 @router.post("/calendar/schedule-meeting")
 async def schedule_meeting_from_request(
     meeting_request_id: str,
-    selected_time: Optional[datetime] = None,
+    selected_time: datetime | None = None,
     calendar_id: str = "primary",
     current_user: dict = Depends(get_current_active_user),
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Schedule a meeting from a meeting request."""
     try:
         # Get meeting request (simplified - would need proper lookup)
@@ -686,7 +685,7 @@ async def schedule_meeting_from_request(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to schedule meeting: {str(e)}"
+            status_code=500, detail=f"Failed to schedule meeting: {e!s}",
         )
 
 
@@ -695,11 +694,11 @@ async def get_upcoming_meetings(
     user_email: str,
     days_ahead: int = 7,
     current_user: dict = Depends(get_current_active_user),
-) -> List[Dict[str, Any]]:
+) -> list[dict[str, Any]]:
     """Get upcoming meetings for a user."""
     try:
         meetings = await calendar_integration_service.get_upcoming_meetings(
-            user_email=user_email, days_ahead=days_ahead
+            user_email=user_email, days_ahead=days_ahead,
         )
 
         return [
@@ -720,19 +719,19 @@ async def get_upcoming_meetings(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to get upcoming meetings: {str(e)}"
+            status_code=500, detail=f"Failed to get upcoming meetings: {e!s}",
         )
 
 
 # AI-Powered Response Routes
 @router.post("/ai/analyze-context")
 async def analyze_email_context(
-    email_data: Dict[str, Any], current_user: dict = Depends(get_current_active_user)
-) -> Dict[str, Any]:
+    email_data: dict[str, Any], current_user: dict = Depends(get_current_active_user),
+) -> dict[str, Any]:
     """Analyze email to extract context for AI response generation."""
     try:
         context = await get_ai_email_response_service().analyze_email_context(
-            email_data
+            email_data,
         )
 
         return {
@@ -751,18 +750,18 @@ async def analyze_email_context(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to analyze email context: {str(e)}"
+            status_code=500, detail=f"Failed to analyze email context: {e!s}",
         )
 
 
 @router.post("/ai/generate-response")
 async def generate_ai_response(
-    email_context: Dict[str, Any],
+    email_context: dict[str, Any],
     response_type: str = "reply",
-    custom_instructions: Optional[str] = None,
-    model: Optional[str] = None,
+    custom_instructions: str | None = None,
+    model: str | None = None,
     current_user: dict = Depends(get_current_active_user),
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Generate AI-powered email response."""
     try:
         from ..services.email.ai.ai_email_response_service import EmailContext
@@ -794,7 +793,7 @@ async def generate_ai_response(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to generate AI response: {str(e)}"
+            status_code=500, detail=f"Failed to generate AI response: {e!s}",
         )
 
 
@@ -803,11 +802,11 @@ async def get_ai_response_history(
     email_address: str,
     limit: int = 10,
     current_user: dict = Depends(get_current_active_user),
-) -> List[Dict[str, Any]]:
+) -> list[dict[str, Any]]:
     """Get AI response history for an email address."""
     try:
         responses = await get_ai_email_response_service().get_response_history(
-            email_address=email_address, limit=limit
+            email_address=email_address, limit=limit,
         )
 
         return [
@@ -827,7 +826,7 @@ async def get_ai_response_history(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to get response history: {str(e)}"
+            status_code=500, detail=f"Failed to get response history: {e!s}",
         )
 
 
@@ -837,14 +836,14 @@ async def create_email_account(
     account_type: str,
     email_address: str,
     display_name: str,
-    smtp_config: Dict[str, Any],
-    imap_config: Dict[str, Any],
-    encryption_config: Optional[Dict[str, Any]] = None,
-    calendar_config: Optional[Dict[str, Any]] = None,
-    ai_config: Optional[Dict[str, Any]] = None,
+    smtp_config: dict[str, Any],
+    imap_config: dict[str, Any],
+    encryption_config: dict[str, Any] | None = None,
+    calendar_config: dict[str, Any] | None = None,
+    ai_config: dict[str, Any] | None = None,
     is_primary: bool = False,
     current_user: dict = Depends(get_current_active_user),
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Create a new email account."""
     try:
         account = await multi_account_service.create_account(
@@ -871,20 +870,20 @@ async def create_email_account(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to create account: {str(e)}"
+            status_code=500, detail=f"Failed to create account: {e!s}",
         )
 
 
 @router.get("/accounts")
 async def list_email_accounts(
-    account_type: Optional[str] = Query(None, description="Filter by account type"),
+    account_type: str | None = Query(None, description="Filter by account type"),
     active_only: bool = Query(True, description="Only return active accounts"),
     current_user: dict = Depends(get_current_active_user),
-) -> List[Dict[str, Any]]:
+) -> list[dict[str, Any]]:
     """List all email accounts."""
     try:
         accounts = await multi_account_service.list_accounts(
-            account_type=account_type, active_only=active_only
+            account_type=account_type, active_only=active_only,
         )
 
         return [
@@ -903,14 +902,14 @@ async def list_email_accounts(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to list accounts: {str(e)}"
+            status_code=500, detail=f"Failed to list accounts: {e!s}",
         )
 
 
 @router.get("/accounts/{account_id}")
 async def get_account_details(
-    account_id: str, current_user: dict = Depends(get_current_active_user)
-) -> Dict[str, Any]:
+    account_id: str, current_user: dict = Depends(get_current_active_user),
+) -> dict[str, Any]:
     """Get detailed account information."""
     try:
         summary = await multi_account_service.get_account_summary(account_id)
@@ -918,14 +917,14 @@ async def get_account_details(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to get account details: {str(e)}"
+            status_code=500, detail=f"Failed to get account details: {e!s}",
         )
 
 
 @router.get("/accounts/system/overview")
 async def get_system_overview(
     current_user: dict = Depends(get_current_active_user),
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Get system-wide account overview."""
     try:
         overview = await multi_account_service.get_system_overview()
@@ -933,5 +932,5 @@ async def get_system_overview(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to get system overview: {str(e)}"
+            status_code=500, detail=f"Failed to get system overview: {e!s}",
         )

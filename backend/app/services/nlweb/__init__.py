@@ -1,5 +1,4 @@
-"""
-NLWeb Integration Service for Reynard
+"""NLWeb Integration Service for Reynard
 
 Provides intelligent tool suggestion, routing, and natural language processing
 capabilities through NLWeb integration. Ported from Yipyap's battle-tested implementation.

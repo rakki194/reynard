@@ -1,5 +1,4 @@
-"""
-Secure Authentication Wrapper for Reynard Backend
+"""Secure Authentication Wrapper for Reynard Backend
 
 This module provides a secure wrapper around the authentication system
 to prevent SQL injection and other security vulnerabilities.
@@ -26,8 +25,7 @@ security = HTTPBearer()
 
 
 class SecureAuthManager:
-    """
-    Secure wrapper around the authentication manager that validates
+    """Secure wrapper around the authentication manager that validates
     all inputs and prevents common security vulnerabilities.
     """
 
@@ -35,8 +33,7 @@ class SecureAuthManager:
         self.auth_manager = auth_manager
 
     async def create_user_secure(self, user_data: SecureUserCreate) -> dict[str, Any]:
-        """
-        Securely create a new user with comprehensive input validation.
+        """Securely create a new user with comprehensive input validation.
 
         Args:
             user_data: Validated user creation data
@@ -46,6 +43,7 @@ class SecureAuthManager:
 
         Raises:
             HTTPException: If user creation fails or security violation detected
+
         """
         try:
             # Additional security checks
@@ -64,12 +62,11 @@ class SecureAuthManager:
         except Exception as e:
             logger.error(f"Secure user creation failed: {e}")
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST, detail="User creation failed"
+                status_code=status.HTTP_400_BAD_REQUEST, detail="User creation failed",
             )
 
     async def authenticate_secure(self, login_data: SecureUserLogin) -> dict[str, Any]:
-        """
-        Securely authenticate a user with comprehensive input validation.
+        """Securely authenticate a user with comprehensive input validation.
 
         Args:
             login_data: Validated login data
@@ -79,6 +76,7 @@ class SecureAuthManager:
 
         Raises:
             HTTPException: If authentication fails or security violation detected
+
         """
         try:
             # Additional security checks
@@ -90,7 +88,7 @@ class SecureAuthManager:
 
             # Authenticate through the original auth manager
             tokens = await self.auth_manager.authenticate(
-                username=login_data.username, password=login_data.password
+                username=login_data.username, password=login_data.password,
             )
 
             if not tokens:
@@ -117,7 +115,7 @@ class SecureAuthManager:
             # Check for SQL injection patterns
             if not validate_sql_input(user_data.username):
                 logger.warning(
-                    f"SQL injection attempt in username: {user_data.username}"
+                    f"SQL injection attempt in username: {user_data.username}",
                 )
                 return False
 
@@ -127,14 +125,14 @@ class SecureAuthManager:
 
             if not validate_sql_input(user_data.full_name):
                 logger.warning(
-                    f"SQL injection attempt in full_name: {user_data.full_name}"
+                    f"SQL injection attempt in full_name: {user_data.full_name}",
                 )
                 return False
 
             # Check for command injection patterns
             if not validate_command_input(user_data.username):
                 logger.warning(
-                    f"Command injection attempt in username: {user_data.username}"
+                    f"Command injection attempt in username: {user_data.username}",
                 )
                 return False
 
@@ -144,7 +142,7 @@ class SecureAuthManager:
 
             if not validate_command_input(user_data.full_name):
                 logger.warning(
-                    f"Command injection attempt in full_name: {user_data.full_name}"
+                    f"Command injection attempt in full_name: {user_data.full_name}",
                 )
                 return False
 
@@ -165,21 +163,21 @@ class SecureAuthManager:
             # Check for SQL injection patterns
             if not validate_sql_input(login_data.username):
                 logger.warning(
-                    f"SQL injection attempt in login username: {login_data.username}"
+                    f"SQL injection attempt in login username: {login_data.username}",
                 )
                 return False
 
             # Check for command injection patterns
             if not validate_command_input(login_data.username):
                 logger.warning(
-                    f"Command injection attempt in login username: {login_data.username}"
+                    f"Command injection attempt in login username: {login_data.username}",
                 )
                 return False
 
             # Check for suspicious patterns
             if self._contains_suspicious_patterns(login_data.username):
                 logger.warning(
-                    f"Suspicious login username pattern: {login_data.username}"
+                    f"Suspicious login username pattern: {login_data.username}",
                 )
                 return False
 
@@ -307,8 +305,7 @@ class SecureAuthManager:
 async def get_current_user_secure(
     credentials: HTTPAuthorizationCredentials = Depends(security),
 ) -> dict[str, Any]:
-    """
-    Securely get the current user from JWT token.
+    """Securely get the current user from JWT token.
 
     Args:
         credentials: HTTP Bearer token credentials
@@ -318,6 +315,7 @@ async def get_current_user_secure(
 
     Raises:
         HTTPException: If token is invalid or user not found
+
     """
     try:
         # Validate token format
@@ -344,7 +342,7 @@ async def get_current_user_secure(
     except Exception as e:
         logger.error(f"Secure user authentication failed: {e}")
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Authentication failed"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Authentication failed",
         )
 
 

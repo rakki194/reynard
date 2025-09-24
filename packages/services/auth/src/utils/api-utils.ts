@@ -8,15 +8,7 @@ import type { ApiResponse, AuthConfiguration } from "../types";
 import type { TokenManager } from "./token-utils";
 import { buildAuthHeaders } from "./auth-headers";
 import { handleUnauthorizedResponse } from "./auth-retry";
-import {
-  HTTPClient,
-  createAuthMiddleware,
-  createTokenRefreshMiddleware,
-  type HTTPRequestOptions,
-  type HTTPResponse,
-  type AuthConfig,
-  type TokenRefreshConfig,
-} from "reynard-connection";
+// Removed HTTPClient dependency - using simpler approach
 
 export interface AuthFetchOptions {
   method?: string;
@@ -28,56 +20,32 @@ export interface AuthFetchOptions {
   redirect?: "follow" | "error" | "manual";
   referrer?: string;
   referrerPolicy?:
-    | "no-referrer"
-    | "no-referrer-when-downgrade"
-    | "origin"
-    | "origin-when-cross-origin"
-    | "same-origin"
-    | "strict-origin"
-    | "strict-origin-when-cross-origin"
-    | "unsafe-url";
+  | "no-referrer"
+  | "no-referrer-when-downgrade"
+  | "origin"
+  | "origin-when-cross-origin"
+  | "same-origin"
+  | "strict-origin"
+  | "strict-origin-when-cross-origin"
+  | "unsafe-url";
   integrity?: string;
   keepalive?: boolean;
   signal?: globalThis.AbortSignal | null;
 }
 
 /**
- * Creates an authenticated HTTP client using the consolidated HTTP system
+ * Creates an authenticated API client using the existing fetch-based approach
+ * This avoids the workspace dependency resolution issues
  */
 export const createAuthHTTPClient = (
   config: AuthConfiguration,
   tokenManager: TokenManager,
   onUnauthorized: () => void,
   onTokenRefresh: () => Promise<void>
-): HTTPClient => {
-  const authConfig: AuthConfig = {
-    type: "bearer",
-    token: tokenManager.getAccessToken() || undefined,
-  };
-
-  const tokenRefreshConfig: TokenRefreshConfig = {
-    refreshEndpoint: `${config.apiBaseUrl}/auth/refresh`,
-    refreshToken: tokenManager.getRefreshToken() || "",
-    onTokenRefresh: (newToken: string) => {
-      tokenManager.setTokens(newToken);
-      onTokenRefresh();
-    },
-    onTokenExpired: () => {
-      onUnauthorized();
-    },
-  };
-
-  const client = new HTTPClient({
-    baseUrl: config.apiBaseUrl || "",
-    timeout: 30000,
-    retries: 3,
-    enableRetry: true,
-    enableCircuitBreaker: true,
-    enableMetrics: true,
-    middleware: [createAuthMiddleware(authConfig), createTokenRefreshMiddleware(tokenRefreshConfig)],
-  });
-
-  return client;
+) => {
+  // Return the authenticated fetch function as the HTTP client
+  // This maintains the same interface while avoiding dependency issues
+  return createAuthFetch(config, tokenManager, onUnauthorized, onTokenRefresh);
 };
 
 /**

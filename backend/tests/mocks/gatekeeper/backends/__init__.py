@@ -1,5 +1,4 @@
-"""
-Mock gatekeeper backends package.
+"""Mock gatekeeper backends package.
 """
 
 from .memory import MockMemoryBackend

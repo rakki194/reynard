@@ -1,5 +1,4 @@
-"""
-Batch processing service for caption generation.
+"""Batch processing service for caption generation.
 
 This module handles batch caption generation with proper concurrency control,
 progress tracking, and error handling.
@@ -46,7 +45,7 @@ class BatchProcessor:
         loaded_models: dict[str, CaptionGenerator] = {}
         for generator_name, generator_tasks in tasks_by_generator.items():
             if self._model_coordinator.should_load_model(
-                generator_name, is_batch=True, batch_size=len(generator_tasks)
+                generator_name, is_batch=True, batch_size=len(generator_tasks),
             ):
                 model = await self._model_coordinator.get_or_load_model(generator_name)
                 if model:
@@ -60,7 +59,7 @@ class BatchProcessor:
                                     "type": "error",
                                     "message": f"Failed to load model: {generator_name}",
                                     "item": str(task.image_path),
-                                }
+                                },
                             )
 
         # Process tasks with concurrency control
@@ -72,9 +71,9 @@ class BatchProcessor:
             nonlocal completed
             async with semaphore:
                 model = loaded_models.get(
-                    task.generator_name
+                    task.generator_name,
                 ) or await self._model_coordinator.get_or_load_model(
-                    task.generator_name
+                    task.generator_name,
                 )
                 if not model:
                     result = CaptionResult(
@@ -102,13 +101,13 @@ class BatchProcessor:
                                 "success": result.success,
                                 "error": result.error,
                             },
-                        }
+                        },
                     )
                 return result
 
         # Execute all tasks
         results = await asyncio.gather(
-            *[process_task(task) for task in tasks], return_exceptions=True
+            *[process_task(task) for task in tasks], return_exceptions=True,
         )
 
         # Handle exceptions and return final results
@@ -124,7 +123,7 @@ class BatchProcessor:
                         error_type="task_failed",
                         retryable=True,
                         caption_type=None,
-                    )
+                    ),
                 )
             else:
                 final_results.append(result)
@@ -132,7 +131,7 @@ class BatchProcessor:
         return final_results
 
     async def _process_single_task(
-        self, model: CaptionGenerator, task: CaptionTask
+        self, model: CaptionGenerator, task: CaptionTask,
     ) -> CaptionResult:
         """Process a single caption generation task."""
         start_time = time.time()
@@ -141,7 +140,7 @@ class BatchProcessor:
             # Check if caption already exists
             if not task.force:
                 caption_path = task.image_path.with_suffix(
-                    f".{model.caption_type.value}"
+                    f".{model.caption_type.value}",
                 )
                 if caption_path.exists():
                     return CaptionResult(
@@ -156,7 +155,7 @@ class BatchProcessor:
 
             # Generate caption with retry logic
             caption = await self._generate_caption_with_retry(
-                model, task.image_path, task.config
+                model, task.image_path, task.config,
             )
 
             # Apply post-processing if requested
@@ -186,7 +185,7 @@ class BatchProcessor:
         except CaptionError as e:
             processing_time = time.time() - start_time
             logger.error(
-                f"Caption generation error for {task.image_path}: {e}", exc_info=True
+                f"Caption generation error for {task.image_path}: {e}", exc_info=True,
             )
             return CaptionResult(
                 image_path=task.image_path,
@@ -216,7 +215,7 @@ class BatchProcessor:
             )
 
     async def _generate_caption_with_retry(
-        self, model: CaptionGenerator, image_path, config: dict
+        self, model: CaptionGenerator, image_path, config: dict,
     ) -> str:
         """Generate caption with retry logic."""
 
@@ -242,5 +241,5 @@ class BatchProcessor:
                 raise CaptionGenerationError(model.name, str(e), retryable=retryable)
 
         return await retry_with_backoff(
-            _generate, "caption generation", config=self._retry_config
+            _generate, "caption generation", config=self._retry_config,
         )

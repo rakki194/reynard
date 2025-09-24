@@ -1,5 +1,4 @@
-"""
-Unified Agent State Manager
+"""Unified Agent State Manager
 
 Single source of truth for all agent state operations, integrating with
 the existing FastAPI ECS backend for comprehensive agent management.
@@ -7,17 +6,9 @@ the existing FastAPI ECS backend for comprehensive agent management.
 
 import logging
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
-from app.ecs.database import (
-    AbilityTrait,
-    Agent,
-    AgentInteraction,
-    PersonalityTrait,
-    PhysicalTrait,
-)
 from app.ecs.legacy_tracking import (
-    SuccessAdvisor8Activity,
     SuccessAdvisor8LegacyTracker,
 )
 from app.ecs.postgres_service import PostgresECSWorldService
@@ -35,13 +26,13 @@ class AgentState:
         spirit: str,
         style: str,
         generation: int,
-        traits: Dict[str, float],
-        memories: List[Dict],
-        relationships: Dict[str, Dict],
+        traits: dict[str, float],
+        memories: list[dict],
+        relationships: dict[str, dict],
         last_activity: datetime,
-        ecs_entity_id: Optional[str] = None,
-        specializations: Optional[List[str]] = None,
-        achievements: Optional[List[Dict]] = None,
+        ecs_entity_id: str | None = None,
+        specializations: list[str] | None = None,
+        achievements: list[dict] | None = None,
     ):
         self.agent_id = agent_id
         self.name = name
@@ -56,7 +47,7 @@ class AgentState:
         self.specializations = specializations or []
         self.achievements = achievements or []
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary representation."""
         return {
             "agent_id": self.agent_id,
@@ -75,8 +66,7 @@ class AgentState:
 
 
 class UnifiedAgentStateManager:
-    """
-    Single source of truth for all agent state operations.
+    """Single source of truth for all agent state operations.
 
     Integrates with the existing FastAPI ECS backend to provide
     comprehensive agent state management and Success-Advisor-8
@@ -84,28 +74,28 @@ class UnifiedAgentStateManager:
     """
 
     def __init__(self, ecs_service: PostgresECSWorldService, codebase_path: str = "."):
-        """
-        Initialize the unified agent state manager.
+        """Initialize the unified agent state manager.
 
         Args:
             ecs_service: Existing PostgreSQL ECS world service
             codebase_path: Path to the codebase for legacy tracking
+
         """
         self.ecs_service = ecs_service
         self.legacy_tracker = SuccessAdvisor8LegacyTracker(
-            codebase_path, "CHANGELOG.md"
+            codebase_path, "CHANGELOG.md",
         )
         logger.info("UnifiedAgentStateManager initialized with ECS integration")
 
-    async def get_agent_state(self, agent_id: str) -> Optional[AgentState]:
-        """
-        Get complete agent state from ECS world.
+    async def get_agent_state(self, agent_id: str) -> AgentState | None:
+        """Get complete agent state from ECS world.
 
         Args:
             agent_id: Unique identifier for the agent
 
         Returns:
             Complete agent state or None if not found
+
         """
         try:
             # Get agent from ECS database
@@ -149,8 +139,7 @@ class UnifiedAgentStateManager:
             return None
 
     async def update_agent_state(self, agent_id: str, state: AgentState) -> bool:
-        """
-        Update agent state in ECS world.
+        """Update agent state in ECS world.
 
         Args:
             agent_id: Unique identifier for the agent
@@ -158,6 +147,7 @@ class UnifiedAgentStateManager:
 
         Returns:
             True if update successful, False otherwise
+
         """
         try:
             # Update agent basic info
@@ -186,15 +176,15 @@ class UnifiedAgentStateManager:
             return False
 
     async def track_agent_activity(
-        self, agent_id: str, activity: str, context: Dict[str, Any]
+        self, agent_id: str, activity: str, context: dict[str, Any],
     ) -> None:
-        """
-        Track agent activity for legacy analysis.
+        """Track agent activity for legacy analysis.
 
         Args:
             agent_id: Unique identifier for the agent
             activity: Description of the activity
             context: Additional context about the activity
+
         """
         try:
             # Record interaction in ECS database
@@ -216,12 +206,12 @@ class UnifiedAgentStateManager:
         except Exception as e:
             logger.error(f"Error tracking activity for agent {agent_id}: {e}")
 
-    async def get_success_advisor_8_legacy_report(self) -> Dict[str, Any]:
-        """
-        Get comprehensive Success-Advisor-8 legacy report.
+    async def get_success_advisor_8_legacy_report(self) -> dict[str, Any]:
+        """Get comprehensive Success-Advisor-8 legacy report.
 
         Returns:
             Complete legacy tracking report
+
         """
         try:
             report = await self.legacy_tracker.generate_legacy_report()
@@ -231,7 +221,7 @@ class UnifiedAgentStateManager:
             logger.error(f"Error generating Success-Advisor-8 legacy report: {e}")
             return {"error": str(e)}
 
-    async def _get_agent_traits(self, agent_id: str) -> Dict[str, float]:
+    async def _get_agent_traits(self, agent_id: str) -> dict[str, float]:
         """Get agent traits from ECS database."""
         try:
             traits = {}
@@ -257,7 +247,7 @@ class UnifiedAgentStateManager:
             logger.error(f"Error getting traits for agent {agent_id}: {e}")
             return {}
 
-    async def _get_agent_memories(self, agent_id: str) -> List[Dict]:
+    async def _get_agent_memories(self, agent_id: str) -> list[dict]:
         """Get agent memories from interactions."""
         try:
             interactions = await self.ecs_service.get_agent_interactions(agent_id)
@@ -271,7 +261,7 @@ class UnifiedAgentStateManager:
                         "description": interaction.description,
                         "timestamp": interaction.timestamp.isoformat(),
                         "metadata": interaction.metadata or {},
-                    }
+                    },
                 )
 
             return memories
@@ -280,7 +270,7 @@ class UnifiedAgentStateManager:
             logger.error(f"Error getting memories for agent {agent_id}: {e}")
             return []
 
-    async def _get_agent_relationships(self, agent_id: str) -> Dict[str, Dict]:
+    async def _get_agent_relationships(self, agent_id: str) -> dict[str, dict]:
         """Get agent relationships."""
         try:
             relationships = await self.ecs_service.get_agent_relationships(agent_id)
@@ -304,7 +294,7 @@ class UnifiedAgentStateManager:
             logger.error(f"Error getting relationships for agent {agent_id}: {e}")
             return {}
 
-    async def _get_agent_specializations(self, agent_id: str) -> List[str]:
+    async def _get_agent_specializations(self, agent_id: str) -> list[str]:
         """Get agent specializations."""
         try:
             specializations = await self.ecs_service.get_agent_specializations(agent_id)
@@ -314,7 +304,7 @@ class UnifiedAgentStateManager:
             logger.error(f"Error getting specializations for agent {agent_id}: {e}")
             return []
 
-    async def _get_agent_achievements(self, agent_id: str) -> List[Dict]:
+    async def _get_agent_achievements(self, agent_id: str) -> list[dict]:
         """Get agent achievements."""
         try:
             achievements = await self.ecs_service.get_agent_achievements(agent_id)
@@ -328,7 +318,7 @@ class UnifiedAgentStateManager:
                         "description": achievement.description,
                         "earned_at": achievement.earned_at.isoformat(),
                         "metadata": achievement.metadata or {},
-                    }
+                    },
                 )
 
             return achievement_list
@@ -338,7 +328,7 @@ class UnifiedAgentStateManager:
             return []
 
     async def _update_agent_traits(
-        self, agent_id: str, traits: Dict[str, float]
+        self, agent_id: str, traits: dict[str, float],
     ) -> None:
         """Update agent traits in ECS database."""
         try:
@@ -348,7 +338,7 @@ class UnifiedAgentStateManager:
             }
             for trait_name, value in personality_traits.items():
                 await self.ecs_service.update_personality_trait(
-                    agent_id, trait_name.replace("personality_", ""), value
+                    agent_id, trait_name.replace("personality_", ""), value,
                 )
 
             # Update physical traits
@@ -357,7 +347,7 @@ class UnifiedAgentStateManager:
             }
             for trait_name, value in physical_traits.items():
                 await self.ecs_service.update_physical_trait(
-                    agent_id, trait_name.replace("physical_", ""), value
+                    agent_id, trait_name.replace("physical_", ""), value,
                 )
 
             # Update ability traits
@@ -366,25 +356,25 @@ class UnifiedAgentStateManager:
             }
             for trait_name, value in ability_traits.items():
                 await self.ecs_service.update_ability_trait(
-                    agent_id, trait_name.replace("ability_", ""), value
+                    agent_id, trait_name.replace("ability_", ""), value,
                 )
 
         except Exception as e:
             logger.error(f"Error updating traits for agent {agent_id}: {e}")
 
     async def _update_agent_specializations(
-        self, agent_id: str, specializations: List[str]
+        self, agent_id: str, specializations: list[str],
     ) -> None:
         """Update agent specializations in ECS database."""
         try:
             await self.ecs_service.update_agent_specializations(
-                agent_id, specializations
+                agent_id, specializations,
             )
         except Exception as e:
             logger.error(f"Error updating specializations for agent {agent_id}: {e}")
 
     async def _update_agent_achievements(
-        self, agent_id: str, achievements: List[Dict]
+        self, agent_id: str, achievements: list[dict],
     ) -> None:
         """Update agent achievements in ECS database."""
         try:

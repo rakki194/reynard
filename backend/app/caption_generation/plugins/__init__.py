@@ -1,5 +1,4 @@
-"""
-Reynard Caption Generation Plugins
+"""Reynard Caption Generation Plugins
 
 This package contains all the caption generation plugins for the Reynard system.
 Each plugin implements a specific caption generation model with its own

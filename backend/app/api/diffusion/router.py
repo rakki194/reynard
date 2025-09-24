@@ -1,5 +1,4 @@
-"""
-Main router for Diffusion-LLM API endpoints.
+"""Main router for Diffusion-LLM API endpoints.
 """
 
 from fastapi import APIRouter

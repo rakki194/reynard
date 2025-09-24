@@ -1,5 +1,4 @@
-"""
-Executor API Models for Reynard Backend
+"""Executor API Models for Reynard Backend
 
 Pydantic models for executor API endpoints.
 """

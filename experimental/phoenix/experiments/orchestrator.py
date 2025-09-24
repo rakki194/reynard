@@ -1,5 +1,4 @@
-"""
-Experiment Orchestrator
+"""Experiment Orchestrator
 
 Main orchestrator for agent reconstruction experiments.
 
@@ -7,19 +6,17 @@ Author: Recognition-Grandmaster-27 (Tiger Specialist)
 Version: 1.0.0
 """
 
-import asyncio
 import json
 import logging
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from ..src.integration.postgres_data_loader import get_postgres_data_loader
 from .analyzer import StatisticalAnalyzer
 from .baseline import BaselineReconstruction
 from .config import ExperimentConfig, ExperimentType, create_success_advisor_target
 from .evaluator import AgentEvaluator
-from .metrics import ReconstructionMetrics
 from .phoenix_reconstruction import PhoenixReconstruction
 
 
@@ -30,7 +27,7 @@ class ExperimentOrchestrator:
         """Initialize experiment orchestrator."""
         self.config = config
         self.logger = logging.getLogger(__name__)
-        self.results: Dict[str, Any] = {}
+        self.results: dict[str, Any] = {}
 
         # Initialize PostgreSQL data loader
         self.data_loader = get_postgres_data_loader()
@@ -45,30 +42,28 @@ class ExperimentOrchestrator:
         # Setup logging
         self._setup_logging()
 
-    async def load_target_agent_from_postgres(self) -> Optional[Dict[str, Any]]:
-        """
-        Load target agent data from PostgreSQL.
+    async def load_target_agent_from_postgres(self) -> dict[str, Any] | None:
+        """Load target agent data from PostgreSQL.
 
         Returns:
             Target agent data or None if not found
+
         """
         try:
             if self.config.use_postgresql:
                 self.logger.info(
-                    f"Loading target agent {self.config.target_agent_id} from PostgreSQL"
+                    f"Loading target agent {self.config.target_agent_id} from PostgreSQL",
                 )
                 target_data = await self.data_loader.load_agent_data(
-                    self.config.target_agent_id
+                    self.config.target_agent_id,
                 )
                 if target_data:
                     self.logger.info("✅ Target agent loaded from PostgreSQL")
                     return target_data
-                else:
-                    self.logger.warning("❌ Target agent not found in PostgreSQL")
-                    return None
-            else:
-                self.logger.info("Using JSON-based target agent data")
+                self.logger.warning("❌ Target agent not found in PostgreSQL")
                 return None
+            self.logger.info("Using JSON-based target agent data")
+            return None
         except Exception as e:
             self.logger.error(f"❌ Failed to load target agent from PostgreSQL: {e}")
             return None
@@ -84,9 +79,8 @@ class ExperimentOrchestrator:
             handlers=[logging.FileHandler(log_file), logging.StreamHandler()],
         )
 
-    async def run_experiment(self) -> Dict[str, Any]:
+    async def run_experiment(self) -> dict[str, Any]:
         """Run complete experiment."""
-
         self.logger.info(f"Starting experiment: {self.config.experiment_type.value}")
 
         # Initialize results structure
@@ -110,7 +104,7 @@ class ExperimentOrchestrator:
 
         # Analyze results
         self.results["summary"] = await self.analyzer.analyze_results(
-            self.results["trials"]
+            self.results["trials"],
         )
         self.results["end_time"] = datetime.now().isoformat()
 
@@ -120,9 +114,8 @@ class ExperimentOrchestrator:
         self.logger.info("Experiment completed successfully")
         return self.results
 
-    async def _run_single_trial(self, trial_number: int) -> Dict[str, Any]:
+    async def _run_single_trial(self, trial_number: int) -> dict[str, Any]:
         """Run a single experimental trial."""
-
         trial_result = {
             "trial_number": trial_number,
             "start_time": datetime.now().isoformat(),
@@ -149,9 +142,8 @@ class ExperimentOrchestrator:
         trial_result["end_time"] = datetime.now().isoformat()
         return trial_result
 
-    async def _run_baseline_methods(self) -> Dict[str, Any]:
+    async def _run_baseline_methods(self) -> dict[str, Any]:
         """Run baseline reconstruction methods."""
-
         baseline_results = {}
 
         # Random baseline
@@ -183,7 +175,7 @@ class ExperimentOrchestrator:
         }
 
         doc_agent = self.baseline_reconstruction.reconstruct_documentation_based(
-            doc_data
+            doc_data,
         )
         doc_metrics = self.baseline_reconstruction.evaluate_reconstruction()
         baseline_results["documentation"] = {
@@ -193,9 +185,8 @@ class ExperimentOrchestrator:
 
         return baseline_results
 
-    async def _run_phoenix_methods(self) -> Dict[str, Any]:
+    async def _run_phoenix_methods(self) -> dict[str, Any]:
         """Run PHOENIX reconstruction methods."""
-
         phoenix_results = {}
 
         # Evolutionary reconstruction
@@ -222,7 +213,7 @@ class ExperimentOrchestrator:
             # Generate synthetic training data
             training_data = await self._generate_training_data()
             direct_agent = await self.phoenix_reconstruction.reconstruct_direct(
-                training_data
+                training_data,
             )
             direct_metrics = await self.phoenix_reconstruction.evaluate_reconstruction()
             phoenix_results["direct"] = {
@@ -232,22 +223,21 @@ class ExperimentOrchestrator:
 
         return phoenix_results
 
-    async def _generate_training_data(self) -> List[str]:
+    async def _generate_training_data(self) -> list[str]:
         """Generate synthetic training data for reconstruction."""
-
         # Generate data based on target agent characteristics
         training_data = []
 
         # Add domain-specific content
         for domain in self.target.domain_expertise:
             training_data.append(
-                f"Expertise in {domain} with high proficiency and deep understanding."
+                f"Expertise in {domain} with high proficiency and deep understanding.",
             )
 
         # Add specialization content
         for spec in self.target.specializations:
             training_data.append(
-                f"Specialized in {spec} with proven track record and expertise."
+                f"Specialized in {spec} with proven track record and expertise.",
             )
 
         # Add achievement content
@@ -258,21 +248,19 @@ class ExperimentOrchestrator:
         for trait, value in self.target.personality_traits.items():
             if value > 0.8:
                 training_data.append(
-                    f"Demonstrates high {trait} in all interactions and decisions."
+                    f"Demonstrates high {trait} in all interactions and decisions.",
                 )
 
         return training_data
 
     async def _save_intermediate_results(self):
         """Save intermediate results."""
-
         results_file = Path(self.config.results_dir) / "intermediate_results.json"
         with open(results_file, "w") as f:
             json.dump(self.results, f, indent=2, default=str)
 
     async def _save_final_results(self):
         """Save final results."""
-
         results_file = Path(self.config.results_dir) / "final_results.json"
         with open(results_file, "w") as f:
             json.dump(self.results, f, indent=2, default=str)
@@ -284,7 +272,6 @@ class ExperimentOrchestrator:
 
     def _generate_summary_report(self) -> str:
         """Generate summary report."""
-
         summary = self.results.get("summary", {})
 
         report = f"""

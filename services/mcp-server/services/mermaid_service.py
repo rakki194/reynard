@@ -5,10 +5,8 @@ Core service for rendering Mermaid diagrams using PlaywrightBrowserService.
 This service provides a clean interface for the MCP server to render diagrams.
 """
 
-import os
-import time
 from pathlib import Path
-from typing import Any, Dict, Optional, Tuple, Union
+from typing import Any, Dict, Optional, Tuple
 
 from .playwright_browser_service import PlaywrightBrowserService
 

@@ -1,5 +1,4 @@
-"""
-Continuous Indexing Service Tests
+"""Continuous Indexing Service Tests
 
 Test suite for the continuous indexing service functionality.
 """

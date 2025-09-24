@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-FastAPI ECS Search Performance Benchmark Suite
+"""FastAPI ECS Search Performance Benchmark Suite
 
 Comprehensive performance testing and bottleneck identification for the Reynard
 FastAPI ECS search system. This suite provides detailed analysis of:
@@ -12,7 +11,6 @@ FastAPI ECS search system. This suite provides detailed analysis of:
 """
 
 import asyncio
-import json
 import logging
 import statistics
 import sys
@@ -20,7 +18,6 @@ import time
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
 
 import aiohttp
 import psutil
@@ -28,7 +25,6 @@ import psutil
 # Add backend to path for imports
 sys.path.append(str(Path(__file__).parent.parent))
 
-from app.core.config import get_config
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -47,7 +43,7 @@ class BenchmarkResult:
     response_size_bytes: int
     memory_usage_mb: float
     cpu_usage_percent: float
-    error_message: Optional[str] = None
+    error_message: str | None = None
     timestamp: datetime = field(default_factory=datetime.now)
 
 
@@ -66,7 +62,7 @@ class BenchmarkSuite:
     requests_per_second: float
     total_memory_usage_mb: float
     peak_cpu_usage_percent: float
-    results: List[BenchmarkResult] = field(default_factory=list)
+    results: list[BenchmarkResult] = field(default_factory=list)
     timestamp: datetime = field(default_factory=datetime.now)
 
 
@@ -78,7 +74,7 @@ class PerformanceMonitor:
         self.baseline_memory = self.process.memory_info().rss / 1024 / 1024
         self.baseline_cpu = self.process.cpu_percent()
 
-    def get_current_metrics(self) -> Dict[str, float]:
+    def get_current_metrics(self) -> dict[str, float]:
         """Get current system metrics."""
         memory_info = self.process.memory_info()
         return {
@@ -93,7 +89,7 @@ class FastAPIBenchmark:
     def __init__(self, base_url: str = "http://localhost:8000"):
         self.base_url = base_url
         self.monitor = PerformanceMonitor()
-        self.session: Optional[aiohttp.ClientSession] = None
+        self.session: aiohttp.ClientSession | None = None
 
     async def __aenter__(self):
         """Async context manager entry."""
@@ -112,8 +108,8 @@ class FastAPIBenchmark:
         self,
         method: str,
         endpoint: str,
-        data: Optional[Dict] = None,
-        params: Optional[Dict] = None,
+        data: dict | None = None,
+        params: dict | None = None,
     ) -> BenchmarkResult:
         """Make a single HTTP request and measure performance."""
         url = f"{self.base_url}{endpoint}"
@@ -173,14 +169,14 @@ class FastAPIBenchmark:
         self,
         method: str,
         endpoint: str,
-        data: Optional[Dict] = None,
-        params: Optional[Dict] = None,
+        data: dict | None = None,
+        params: dict | None = None,
         concurrency: int = 10,
         total_requests: int = 100,
-    ) -> List[BenchmarkResult]:
+    ) -> list[BenchmarkResult]:
         """Run concurrent requests to test load handling."""
         logger.info(
-            f"Running {total_requests} concurrent requests to {endpoint} with concurrency {concurrency}"
+            f"Running {total_requests} concurrent requests to {endpoint} with concurrency {concurrency}",
         )
 
         semaphore = asyncio.Semaphore(concurrency)
@@ -206,11 +202,11 @@ class FastAPIBenchmark:
                 valid_results.append(result)
 
         logger.info(
-            f"Completed {len(valid_results)}/{total_requests} requests in {total_time:.2f}s"
+            f"Completed {len(valid_results)}/{total_requests} requests in {total_time:.2f}s",
         )
         return valid_results
 
-    def analyze_results(self, results: List[BenchmarkResult]) -> BenchmarkSuite:
+    def analyze_results(self, results: list[BenchmarkResult]) -> BenchmarkSuite:
         """Analyze benchmark results and generate statistics."""
         if not results:
             raise ValueError("No results to analyze")
@@ -466,7 +462,7 @@ class FastAPIBenchmark:
 
         return self.analyze_results(all_results)
 
-    def generate_report(self, suites: List[BenchmarkSuite]) -> str:
+    def generate_report(self, suites: list[BenchmarkSuite]) -> str:
         """Generate a comprehensive performance report."""
         report = []
         report.append("=" * 80)
@@ -482,7 +478,7 @@ class FastAPIBenchmark:
             report.append(f"Successful: {suite.successful_tests}")
             report.append(f"Failed: {suite.failed_tests}")
             report.append(
-                f"Success Rate: {(suite.successful_tests/suite.total_tests)*100:.1f}%"
+                f"Success Rate: {(suite.successful_tests/suite.total_tests)*100:.1f}%",
             )
             report.append("")
 
@@ -507,15 +503,15 @@ class FastAPIBenchmark:
                 report.append("🎯 Performance Recommendations:")
                 if suite.average_response_time_ms > 1000:
                     report.append(
-                        "  ⚠️  High response times detected - consider caching optimization"
+                        "  ⚠️  High response times detected - consider caching optimization",
                     )
                 if suite.p95_response_time_ms > 2000:
                     report.append(
-                        "  ⚠️  High 95th percentile latency - investigate slow queries"
+                        "  ⚠️  High 95th percentile latency - investigate slow queries",
                     )
                 if suite.requests_per_second < 100:
                     report.append(
-                        "  ⚠️  Low throughput - consider connection pooling optimization"
+                        "  ⚠️  Low throughput - consider connection pooling optimization",
                     )
                 if suite.total_memory_usage_mb > 500:
                     report.append("  ⚠️  High memory usage - investigate memory leaks")
@@ -532,7 +528,7 @@ class FastAPIBenchmark:
                 report.append("❌ Failed Tests:")
                 for result in failed_results[:5]:  # Show first 5 failures
                     report.append(
-                        f"  {result.endpoint}: {result.error_message or f'Status {result.status_code}'}"
+                        f"  {result.endpoint}: {result.error_message or f'Status {result.status_code}'}",
                     )
                 if len(failed_results) > 5:
                     report.append(f"  ... and {len(failed_results) - 5} more failures")
@@ -550,7 +546,7 @@ async def main():
     try:
         async with aiohttp.ClientSession() as session:
             async with session.get(
-                "http://localhost:8000/api/search/health"
+                "http://localhost:8000/api/search/health",
             ) as response:
                 if response.status != 200:
                     logger.error("Server health check failed")

@@ -1,0 +1,95 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fenrir"
+version = "0.1.0"
+description = "Fenrir - Advanced penetration testing and security analysis framework"
+authors = [{ name = "Balazs Horvath", email = "acsipont@gmail.com" }]
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.13"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+    "Topic :: System :: Networking",
+]
+
+dependencies = [
+    "requests",
+    "aiohttp",
+    "websockets",
+    "cryptography",
+    "pyjwt",
+    "beautifulsoup4",
+    "lxml",
+    "faker",
+    "factory-boy",
+    "freezegun",
+    "responses",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-asyncio",
+    "pytest-cov",
+    "httpx",
+    "pytest-mock",
+    "pytest-xdist",
+    "factory-boy",
+    "faker",
+    "freezegun",
+    "responses",
+]
+
+dev = [
+    "fenrir[test]",
+    "black",
+    "isort",
+    "mypy",
+    "ruff",
+    "flake8",
+    "flake8-bugbear",
+    "flake8-comprehensions",
+    "flake8-docstrings",
+    "flake8-import-order",
+    "flake8-print",
+    "flake8-simplify",
+    "flake8-unused-arguments",
+    "flake8-use-pathlib",
+    "eradicate",
+    "pandas-vet",
+    "pygrep-hooks",
+    "tryceratops",
+    "flynt",
+    "perflint",
+    "refurb",
+    "bandit",
+    "safety",
+    "pre-commit",
+]
+
+[project.urls]
+Homepage = "https://github.com/rakki194/reynard"
+Documentation = "https://(TBD)"
+Repository = "https://github.com/rakki194/reynard.git"
+Issues = "https://github.com/rakki194/reynard/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["fenrir*"]
+
+# Fenrir package configuration
+# Tooling configuration is inherited from the monorepo root pyproject.toml
+# This file only contains fenrir-specific project metadata and dependencies
+
+# Note: All tooling configuration (black, isort, mypy, ruff, pytest, etc.)
+# is defined in the monorepo root pyproject.toml for consistency across packages

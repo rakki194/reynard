@@ -4,14 +4,14 @@
  */
 
 import { Component, createSignal, createResource, For } from "solid-js";
-import { Button, Card, Select } from "reynard-components";
+import { Button, Card, Select } from "reynard-components-core";
 import { useNotifications } from "reynard-core";
-import { BackendAnnotationManager } from "reynard-annotating-core";
+// import { BackendAnnotationManager } from "reynard-annotating-core";
 
 interface ModelSelectorProps {
   selectedModel: string;
   onModelChange: (model: string) => void;
-  annotationManager: BackendAnnotationManager;
+  annotationManager?: any; // Optional annotation manager
 }
 
 interface ModelInfo {
@@ -31,8 +31,8 @@ export const ModelSelector: Component<ModelSelectorProps> = props => {
   const loadModels = async () => {
     setIsLoading(true);
     try {
-      const generators = props.annotationManager.getAvailableGenerators();
-      const models: ModelInfo[] = generators.map(gen => ({
+      const generators = props.annotationManager?.getAvailableGenerators() || [];
+      const models: ModelInfo[] = generators.map((gen: any) => ({
         name: gen.name,
         description: gen.description,
         captionType: gen.captionType,
@@ -51,7 +51,7 @@ export const ModelSelector: Component<ModelSelectorProps> = props => {
   // Preload selected model
   const preloadModel = async (modelName: string) => {
     try {
-      await props.annotationManager.preloadModel(modelName);
+      await props.annotationManager?.preloadModel(modelName);
       notify(`Model ${modelName} preloaded successfully`, "success");
       loadModels(); // Refresh model status
     } catch (error) {
@@ -63,7 +63,7 @@ export const ModelSelector: Component<ModelSelectorProps> = props => {
   // Unload model
   const unloadModel = async (modelName: string) => {
     try {
-      await props.annotationManager.unloadModel(modelName);
+      await props.annotationManager?.unloadModel(modelName);
       notify(`Model ${modelName} unloaded`, "info");
       loadModels(); // Refresh model status
     } catch (error) {

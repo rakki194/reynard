@@ -5,10 +5,15 @@ All notable changes to the Reynard framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.17.2] - 2025-09-24
+
 
 ### Added
 
+### Fixed
+- **Dependency Restructuring**: Resolved auth ↔ connection package integration issues by restructuring dependencies to avoid workspace module resolution conflicts. Auth package now uses simplified fetch-based approach instead of direct HTTPClient dependency, maintaining functionality while ensuring clean builds across the ecosystem (Strategic-Prime-13)
+
+- **Circular Import Fix**: Resolved circular import between database.py and notes_todos.py by creating centralized base.py for SQLAlchemy models (Strategic-Fox-13)
 - **Humility Detector Enhancement**: Added condescending language detection patterns including "idiot-proof", "bulletproof", and patronizing tone analysis (Cyber-Fierce-Grid)
 - **MCP Refactor**: Complete transformation of MCP server into a nice system (Strategic-Fox-13)
   - Schema validation system with comprehensive error checking

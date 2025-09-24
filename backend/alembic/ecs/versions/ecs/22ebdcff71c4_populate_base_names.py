@@ -6,23 +6,23 @@ Create Date: 2025-09-21 09:33:55.024594
 
 """
 
-from typing import Sequence, Union
+from collections.abc import Sequence
 
 import sqlalchemy as sa
 from alembic import op
 
 # revision identifiers, used by Alembic.
 revision: str = "22ebdcff71c4"
-down_revision: Union[str, Sequence[str], None] = "9f94d908afb9"
-branch_labels: Union[str, Sequence[str], None] = None
-depends_on: Union[str, Sequence[str], None] = None
+down_revision: str | Sequence[str] | None = "9f94d908afb9"
+branch_labels: str | Sequence[str] | None = None
+depends_on: str | Sequence[str] | None = None
 
 
 def upgrade() -> None:
     """Populate base names for all naming spirits."""
     # Get table reference
     naming_spirits = sa.table(
-        "naming_spirits", sa.column("name", sa.String), sa.column("base_names", sa.JSON)
+        "naming_spirits", sa.column("name", sa.String), sa.column("base_names", sa.JSON),
     )
 
     # Define the spirit names from the agent naming service
@@ -119,7 +119,7 @@ def upgrade() -> None:
         op.execute(
             naming_spirits.update()
             .where(naming_spirits.c.name == spirit_name)
-            .values(base_names=names)
+            .values(base_names=names),
         )
 
 
@@ -127,7 +127,7 @@ def downgrade() -> None:
     """Clear base names for all naming spirits."""
     # Get table reference
     naming_spirits = sa.table(
-        "naming_spirits", sa.column("name", sa.String), sa.column("base_names", sa.JSON)
+        "naming_spirits", sa.column("name", sa.String), sa.column("base_names", sa.JSON),
     )
 
     # Clear all base names

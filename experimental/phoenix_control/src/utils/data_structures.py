@@ -1,5 +1,4 @@
-"""
-Core data structures for PHOENIX Control.
+"""Core data structures for PHOENIX Control.
 
 Defines the essential data types and configurations used throughout
 the Success-Advisor-8 distillation system.
@@ -8,7 +7,7 @@ the Success-Advisor-8 distillation system.
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 
 class SpiritType(Enum):
@@ -42,7 +41,7 @@ class StatisticalSignificance:
     """Statistical significance information."""
 
     p_value: float
-    confidence_interval: Tuple[float, float]
+    confidence_interval: tuple[float, float]
     effect_size: float
     power: float
     sample_size: int
@@ -72,12 +71,12 @@ class AgentState:
     spirit: SpiritType
     style: NamingStyle
     generation: int
-    parents: List[str]
-    personality_traits: Dict[str, float]
-    physical_traits: Dict[str, float]
-    ability_traits: Dict[str, float]
-    performance_history: List[PerformanceMetrics]
-    knowledge_base: Dict[str, Any]
+    parents: list[str]
+    personality_traits: dict[str, float]
+    physical_traits: dict[str, float]
+    ability_traits: dict[str, float]
+    performance_history: list[PerformanceMetrics]
+    knowledge_base: dict[str, Any]
     created_at: datetime = field(default_factory=datetime.now)
     last_updated: datetime = field(default_factory=datetime.now)
 
@@ -87,18 +86,18 @@ class AgentState:
             return 0.0
         return self.performance_history[-1].fitness
 
-    def get_dominant_traits(self, count: int = 3) -> List[Tuple[str, float]]:
+    def get_dominant_traits(self, count: int = 3) -> list[tuple[str, float]]:
         """Get the dominant personality traits."""
         sorted_traits = sorted(
-            self.personality_traits.items(), key=lambda x: x[1], reverse=True
+            self.personality_traits.items(), key=lambda x: x[1], reverse=True,
         )
         return sorted_traits[:count]
 
-    def get_specializations(self) -> List[str]:
+    def get_specializations(self) -> list[str]:
         """Get agent specializations from knowledge base."""
         return self.knowledge_base.get("specializations", [])
 
-    def get_achievements(self) -> List[str]:
+    def get_achievements(self) -> list[str]:
         """Get agent achievements from knowledge base."""
         return self.knowledge_base.get("achievements", [])
 
@@ -113,8 +112,8 @@ class AgentConfig:
     style: NamingStyle
     role: str
     authority_level: str
-    workflow_preferences: Dict[str, bool] = field(default_factory=dict)
-    specializations: List[str] = field(default_factory=list)
+    workflow_preferences: dict[str, bool] = field(default_factory=dict)
+    specializations: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -153,8 +152,8 @@ class ReleaseResult:
     tag_name: str
     changelog_updated: bool
     agent_state_updated: bool
-    errors: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
+    errors: list[str] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -165,9 +164,9 @@ class QualityResult:
     passed_checks: int
     failed_checks: int
     total_checks: int
-    results: Dict[str, Dict[str, Any]] = field(default_factory=dict)
-    errors: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
+    results: dict[str, dict[str, Any]] = field(default_factory=dict)
+    errors: list[str] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
 
 
 def create_success_advisor_config() -> AgentConfig:

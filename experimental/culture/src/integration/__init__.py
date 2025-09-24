@@ -1,5 +1,4 @@
-"""
-CULTURE Integration Module
+"""CULTURE Integration Module
 
 This module provides integration components for the CULTURE framework,
 including MCP server tools and ECS world simulation integration.

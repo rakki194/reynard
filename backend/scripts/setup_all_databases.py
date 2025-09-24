@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Comprehensive database setup script for Reynard Backend.
+"""Comprehensive database setup script for Reynard Backend.
 
 This script sets up all databases with their appropriate schemas:
 - Main database (reynard): RAG/Vector store + Gatekeeper auth
@@ -13,7 +12,7 @@ import logging
 import os
 import sys
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 # Add backend to Python path
 backend_path = Path(__file__).parent.parent
@@ -25,7 +24,7 @@ from sqlalchemy import create_engine, text
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -140,7 +139,7 @@ def initialize_gatekeeper(database_url: str, database_name: str) -> bool:
             # Verify database connection
             if not verify_database_connection():
                 logger.error(
-                    "❌ Failed to connect to auth database for %s", database_name
+                    "❌ Failed to connect to auth database for %s", database_name,
                 )
                 return False
 
@@ -181,7 +180,7 @@ def run_alembic_migrations(alembic_config_path: str, database_name: str) -> bool
         return False
 
 
-def setup_database(db_key: str, db_config: Dict[str, Any]) -> bool:
+def setup_database(db_key: str, db_config: dict[str, Any]) -> bool:
     """Set up a single database."""
     database_name = db_config["name"]
     database_url = db_config["url"]
@@ -237,9 +236,8 @@ def main():
     if success_count == total_count:
         logger.info("🎉 All databases configured successfully!")
         return 0
-    else:
-        logger.error("💥 Some databases failed to configure")
-        return 1
+    logger.error("💥 Some databases failed to configure")
+    return 1
 
 
 if __name__ == "__main__":

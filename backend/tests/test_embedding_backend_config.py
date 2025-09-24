@@ -1,5 +1,4 @@
-"""
-Tests for Embedding Backend Configuration System.
+"""Tests for Embedding Backend Configuration System.
 
 This module tests the granular backend configuration system that allows
 easy enable/disable of different embedding backends like Ollama, Sentence
@@ -7,7 +6,7 @@ Transformers, OpenAI, and Hugging Face.
 """
 
 import os
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 

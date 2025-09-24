@@ -1,5 +1,4 @@
-"""
-Security utilities for the Gatekeeper library.
+"""Security utilities for the Gatekeeper library.
 
 This module provides security-related utilities and helper functions.
 """
@@ -13,27 +12,27 @@ class SecurityUtils:
 
     @staticmethod
     def generate_secure_token(length: int = 32) -> str:
-        """
-        Generate a cryptographically secure random token.
+        """Generate a cryptographically secure random token.
 
         Args:
             length: Length of the token to generate
 
         Returns:
             A secure random token
+
         """
         return secrets.token_urlsafe(length)
 
     @staticmethod
     def generate_secure_password(length: int = 16) -> str:
-        """
-        Generate a cryptographically secure random password.
+        """Generate a cryptographically secure random password.
 
         Args:
             length: Length of the password to generate
 
         Returns:
             A secure random password
+
         """
         # Define character sets
         lowercase = string.ascii_lowercase
@@ -62,14 +61,14 @@ class SecurityUtils:
 
     @staticmethod
     def generate_api_key(prefix: str | None = None) -> str:
-        """
-        Generate a secure API key.
+        """Generate a secure API key.
 
         Args:
             prefix: Optional prefix for the API key
 
         Returns:
             A secure API key
+
         """
         key = secrets.token_urlsafe(32)
         if prefix:
@@ -78,8 +77,7 @@ class SecurityUtils:
 
     @staticmethod
     def constant_time_compare(a: str, b: str) -> bool:
-        """
-        Compare two strings in constant time to prevent timing attacks.
+        """Compare two strings in constant time to prevent timing attacks.
 
         Args:
             a: First string to compare
@@ -87,5 +85,6 @@ class SecurityUtils:
 
         Returns:
             True if strings are equal, False otherwise
+
         """
         return secrets.compare_digest(a, b)

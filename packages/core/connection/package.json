@@ -3,19 +3,20 @@
   "version": "0.2.0",
   "description": "Enterprise-grade networking for Reynard applications",
   "type": "module",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.cjs"
     }
   },
   "files": ["dist"],
   "scripts": {
     "dev": "vite build --watch",
-    "build": "tsc --build",
+    "build": "vite build && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
     "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
     "test": "source ../../../vitest.env.global && VITEST_AGENT_ID=connection-package ../../../scripts/testing/vitest-global-queue.sh run connection-package",
     "test:coverage": "vitest run --coverage",
@@ -27,6 +28,7 @@
   "license": "MIT",
   "dependencies": {
     "solid-js": "1.9.9",
+    "reynard-http-client": "workspace:*",
     "reynard-i18n": "workspace:*",
     "reynard-validation": "workspace:*"
   },

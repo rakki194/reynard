@@ -1,5 +1,4 @@
-"""
-CULTURE: Cultural Pattern System
+"""CULTURE: Cultural Pattern System
 
 This module provides the core cultural pattern system for evaluating and adapting
 AI responses across diverse cultural contexts, from academic research to fringe

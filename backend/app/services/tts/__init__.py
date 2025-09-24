@@ -1,5 +1,4 @@
-"""
-TTS Services for Reynard Backend
+"""TTS Services for Reynard Backend
 
 Core TTS services including backend management, synthesis orchestration, and audio processing.
 """

@@ -1,5 +1,4 @@
-"""
-ECS World Core Class
+"""ECS World Core Class
 
 Main ECS world that manages entities, components, and systems.
 """
@@ -14,8 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 class ECSWorld:
-    """
-    Main ECS world that manages entities, components, and systems.
+    """Main ECS world that manages entities, components, and systems.
 
     The world is the central container that holds all entities and systems,
     and provides methods to create, manage, and update them.
@@ -28,8 +26,7 @@ class ECSWorld:
         self._next_entity_id = 1
 
     def create_entity(self, entity_id: str | None = None) -> Entity:
-        """
-        Create a new entity.
+        """Create a new entity.
 
         Args:
             entity_id: Optional custom ID for the entity
@@ -39,6 +36,7 @@ class ECSWorld:
 
         Raises:
             ValueError: If entity_id already exists
+
         """
         if entity_id is None:
             entity_id = f"entity_{self._next_entity_id}"
@@ -53,23 +51,23 @@ class ECSWorld:
         return entity
 
     def get_entity(self, entity_id: str) -> Entity | None:
-        """
-        Get an entity by ID.
+        """Get an entity by ID.
 
         Args:
             entity_id: The ID of the entity to retrieve
 
         Returns:
             The entity if found, None otherwise
+
         """
         return self.entities.get(entity_id)
 
     def destroy_entity(self, entity_id: str) -> None:
-        """
-        Destroy an entity.
+        """Destroy an entity.
 
         Args:
             entity_id: The ID of the entity to destroy
+
         """
         if entity_id in self.entities:
             self.entities[entity_id].destroy()
@@ -77,35 +75,35 @@ class ECSWorld:
             logger.debug(f"Destroyed entity {entity_id}")
 
     def add_system(self, system: System) -> None:
-        """
-        Add a system to the world.
+        """Add a system to the world.
 
         Args:
             system: The system to add
+
         """
         self.systems.append(system)
         logger.debug(f"Added system {type(system).__name__}")
 
     def remove_system(self, system: System) -> None:
-        """
-        Remove a system from the world.
+        """Remove a system from the world.
 
         Args:
             system: The system to remove
+
         """
         if system in self.systems:
             self.systems.remove(system)
             logger.debug(f"Removed system {type(system).__name__}")
 
     def get_system(self, system_type: type[System]) -> System | None:
-        """
-        Get a system by type.
+        """Get a system by type.
 
         Args:
             system_type: The type of system to retrieve
 
         Returns:
             The system if found, None otherwise
+
         """
         for system in self.systems:
             if isinstance(system, system_type):
@@ -113,11 +111,11 @@ class ECSWorld:
         return None
 
     def update(self, delta_time: float) -> None:
-        """
-        Update all systems.
+        """Update all systems.
 
         Args:
             delta_time: Time elapsed since last update
+
         """
         for system in self.systems:
             if system.enabled:
@@ -127,16 +125,16 @@ class ECSWorld:
                     logger.error(f"Error updating system {type(system).__name__}: {e}")
 
     def get_entities_with_components(
-        self, *component_types: type[Component]
+        self, *component_types: type[Component],
     ) -> list[Entity]:
-        """
-        Get entities that have all specified components.
+        """Get entities that have all specified components.
 
         Args:
             *component_types: Component types to filter by
 
         Returns:
             List of entities that have all specified components
+
         """
         entities = []
         for entity in self.entities.values():
@@ -153,20 +151,20 @@ class ECSWorld:
             self.destroy_entity(entity_id)
 
     def get_entity_count(self) -> int:
-        """
-        Get the total number of entities.
+        """Get the total number of entities.
 
         Returns:
             Number of entities in the world
+
         """
         return len(self.entities)
 
     def get_system_count(self) -> int:
-        """
-        Get the total number of systems.
+        """Get the total number of systems.
 
         Returns:
             Number of systems in the world
+
         """
         return len(self.systems)
 

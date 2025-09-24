@@ -3,8 +3,7 @@ from collections import defaultdict
 
 
 class RateLimiter:
-    """
-    A class to implement a rate limiting mechanism.
+    """A class to implement a rate limiting mechanism.
 
     This rate limiter allows a maximum number of attempts within a specified time window.
     If the attempts exceed the limit, the key (e.g., user ID, IP address) is blocked
@@ -15,13 +14,14 @@ class RateLimiter:
         block_time_seconds (int): The duration (in seconds) for which a key is blocked.
         attempts (defaultdict): A dictionary to store the attempt history for each key,
                                 including count, last attempt time, and blocked until timestamp.
+
     """
 
     def __init__(self, max_attempts: int, block_time_seconds: int):
         self.max_attempts = max_attempts
         self.block_time_seconds = block_time_seconds
         self.attempts = defaultdict(
-            lambda: {"count": 0, "last_attempt_time": 0.0, "blocked_until": 0.0}
+            lambda: {"count": 0, "last_attempt_time": 0.0, "blocked_until": 0.0},
         )
 
     def is_allowed(self, key: str) -> bool:

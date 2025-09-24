@@ -1,5 +1,4 @@
-"""
-Email integration services.
+"""Email integration services.
 
 Services for integrating with external systems like calendars and encryption providers.
 """
@@ -14,8 +13,8 @@ from .email_encryption_service import (
 )
 
 __all__ = [
-    "calendar_integration_service",
     "CalendarIntegrationService",
-    "email_encryption_service",
     "EmailEncryptionService",
+    "calendar_integration_service",
+    "email_encryption_service",
 ]

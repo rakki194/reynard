@@ -1,5 +1,4 @@
-"""
-PHOENIX Agent Reconstruction Experiments
+"""PHOENIX Agent Reconstruction Experiments
 
 Modular experimental framework for validating agent reconstruction
 using PHOENIX evolutionary knowledge distillation.
@@ -17,11 +16,11 @@ from .orchestrator import ExperimentOrchestrator
 from .phoenix_reconstruction import PhoenixReconstruction
 
 __all__ = [
-    "ExperimentOrchestrator",
-    "ExperimentConfig",
-    "ReconstructionMetrics",
-    "BaselineReconstruction",
-    "PhoenixReconstruction",
     "AgentEvaluator",
+    "BaselineReconstruction",
+    "ExperimentConfig",
+    "ExperimentOrchestrator",
+    "PhoenixReconstruction",
+    "ReconstructionMetrics",
     "StatisticalAnalyzer",
 ]

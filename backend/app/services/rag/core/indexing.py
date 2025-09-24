@@ -1,5 +1,4 @@
-"""
-Document Indexer: Intelligent document processing and chunking.
+"""Document Indexer: Intelligent document processing and chunking.
 
 This service provides:
 - AST-aware code chunking for semantic boundaries
@@ -11,14 +10,13 @@ This service provides:
 """
 
 import asyncio
-import hashlib
 import logging
 import re
 import time
 from collections.abc import AsyncGenerator
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 logger = logging.getLogger("uvicorn")
 
@@ -45,9 +43,9 @@ class ChunkMetadata:
     start_line: int
     end_line: int
     language: str
-    name: Optional[str] = None
+    name: str | None = None
     tokens: int = 0
-    parent_chunk: Optional[str] = None
+    parent_chunk: str | None = None
 
 
 @dataclass
@@ -56,7 +54,7 @@ class DocumentChunk:
 
     text: str
     metadata: ChunkMetadata
-    embedding: Optional[List[float]] = None
+    embedding: list[float] | None = None
 
 
 @dataclass
@@ -64,18 +62,18 @@ class QueueItem:
     """Item in the processing queue."""
 
     kind: str  # "docs" | "images" | "captions"
-    payload: Dict[str, Any]
-    job_id: Optional[str] = None
+    payload: dict[str, Any]
+    job_id: str | None = None
     attempts: int = 0
     enqueued_ts: float = field(default_factory=lambda: time.time())
-    last_error: Optional[str] = None
+    last_error: str | None = None
 
 
 class ASTCodeChunker:
     """AST-aware code chunking using tree-sitter for semantic boundaries."""
 
     def __init__(self) -> None:
-        self.parsers: Dict[str, Any] = {}
+        self.parsers: dict[str, Any] = {}
         self._initialized = False
         self._initialize_parsers()
 
@@ -83,7 +81,7 @@ class ASTCodeChunker:
         """Initialize tree-sitter parsers for supported languages."""
         if not TREE_SITTER_AVAILABLE:
             logger.warning(
-                "tree-sitter not available, falling back to regex-based chunking"
+                "tree-sitter not available, falling back to regex-based chunking",
             )
             return
 
@@ -107,8 +105,8 @@ class ASTCodeChunker:
         self._initialized = True
 
     def chunk_code_ast_aware(
-        self, code: str, language: str
-    ) -> Tuple[List[DocumentChunk], Dict[str, Any]]:
+        self, code: str, language: str,
+    ) -> tuple[list[DocumentChunk], dict[str, Any]]:
         """Chunk code using AST boundaries for semantic coherence."""
         if (
             not self._initialized
@@ -126,23 +124,22 @@ class ASTCodeChunker:
             return self._fallback_chunking(code, language)
 
     def _fallback_chunking(
-        self, code: str, language: str
-    ) -> Tuple[List[DocumentChunk], Dict[str, Any]]:
+        self, code: str, language: str,
+    ) -> tuple[list[DocumentChunk], dict[str, Any]]:
         """Fallback to regex-based chunking if AST parsing fails."""
         if language == "python":
             return self._chunk_python_regex(code)
-        elif language in ["typescript", "javascript"]:
+        if language in ["typescript", "javascript"]:
             return self._chunk_js_regex(code)
-        elif language == "java":
+        if language == "java":
             return self._chunk_java_regex(code)
-        elif language == "cpp":
+        if language == "cpp":
             return self._chunk_cpp_regex(code)
-        else:
-            return self._chunk_generic_regex(code)
+        return self._chunk_generic_regex(code)
 
     def _chunk_python_regex(
-        self, code: str
-    ) -> Tuple[List[DocumentChunk], Dict[str, Any]]:
+        self, code: str,
+    ) -> tuple[list[DocumentChunk], dict[str, Any]]:
         """Python regex-based chunking for functions and classes."""
         chunks = []
         symbol_map = {}
@@ -152,7 +149,7 @@ class ASTCodeChunker:
         function_pattern = re.compile(r"^(\s*)def\s+(\w+)\s*\(", re.MULTILINE)
         class_pattern = re.compile(r"^(\s*)class\s+(\w+)\s*\(?", re.MULTILINE)
         import_pattern = re.compile(
-            r"^(import\s+\w+|from\s+\w+\s+import)", re.MULTILINE
+            r"^(import\s+\w+|from\s+\w+\s+import)", re.MULTILINE,
         )
 
         # Find all matches
@@ -237,7 +234,7 @@ class ASTCodeChunker:
 
         return chunks, symbol_map
 
-    def _chunk_js_regex(self, code: str) -> Tuple[List[DocumentChunk], Dict[str, Any]]:
+    def _chunk_js_regex(self, code: str) -> tuple[list[DocumentChunk], dict[str, Any]]:
         """JavaScript/TypeScript regex-based chunking."""
         chunks = []
         symbol_map = {}
@@ -245,10 +242,10 @@ class ASTCodeChunker:
 
         # Regex patterns for JavaScript/TypeScript
         function_pattern = re.compile(
-            r"^(export\s+)?(async\s+)?function\s+(\w+)\s*\(", re.MULTILINE
+            r"^(export\s+)?(async\s+)?function\s+(\w+)\s*\(", re.MULTILINE,
         )
         class_pattern = re.compile(
-            r"^(export\s+)?class\s+(\w+)\s*(extends\s+\w+)?\s*{", re.MULTILINE
+            r"^(export\s+)?class\s+(\w+)\s*(extends\s+\w+)?\s*{", re.MULTILINE,
         )
         arrow_function_pattern = re.compile(
             r"^(export\s+)?(const|let|var)\s+(\w+)\s*=\s*(async\s+)?\([^)]*\)\s*=>",
@@ -319,8 +316,8 @@ class ASTCodeChunker:
         return chunks, symbol_map
 
     def _chunk_java_regex(
-        self, code: str
-    ) -> Tuple[List[DocumentChunk], Dict[str, Any]]:
+        self, code: str,
+    ) -> tuple[list[DocumentChunk], dict[str, Any]]:
         """Java regex-based chunking."""
         chunks = []
         symbol_map = {}
@@ -369,7 +366,7 @@ class ASTCodeChunker:
 
         return chunks, symbol_map
 
-    def _chunk_cpp_regex(self, code: str) -> Tuple[List[DocumentChunk], Dict[str, Any]]:
+    def _chunk_cpp_regex(self, code: str) -> tuple[list[DocumentChunk], dict[str, Any]]:
         """C++ regex-based chunking."""
         chunks = []
         symbol_map = {}
@@ -378,7 +375,7 @@ class ASTCodeChunker:
         # C++ patterns
         class_pattern = re.compile(r"^(class|struct)\s+(\w+)", re.MULTILINE)
         function_pattern = re.compile(
-            r"^(\w+\s+)*(\w+)\s+(\w+)\s*\([^)]*\)\s*{", re.MULTILINE
+            r"^(\w+\s+)*(\w+)\s+(\w+)\s*\([^)]*\)\s*{", re.MULTILINE,
         )
 
         classes = list(class_pattern.finditer(code))
@@ -414,8 +411,8 @@ class ASTCodeChunker:
         return chunks, symbol_map
 
     def _chunk_generic_regex(
-        self, code: str
-    ) -> Tuple[List[DocumentChunk], Dict[str, Any]]:
+        self, code: str,
+    ) -> tuple[list[DocumentChunk], dict[str, Any]]:
         """Generic regex-based chunking for unsupported languages."""
         chunks = []
         symbol_map = {}
@@ -442,7 +439,7 @@ class ASTCodeChunker:
 
         return chunks, symbol_map
 
-    def _find_function_end(self, code: str, start_pos: int, lines: List[str]) -> int:
+    def _find_function_end(self, code: str, start_pos: int, lines: list[str]) -> int:
         """Find the end of a Python function."""
         current_line = code[:start_pos].count("\n") + 1
 
@@ -459,7 +456,7 @@ class ASTCodeChunker:
 
         return len(lines)
 
-    def _find_class_end(self, code: str, start_pos: int, lines: List[str]) -> int:
+    def _find_class_end(self, code: str, start_pos: int, lines: list[str]) -> int:
         """Find the end of a Python class."""
         current_line = code[:start_pos].count("\n") + 1
 
@@ -472,22 +469,22 @@ class ASTCodeChunker:
 
         return len(lines)
 
-    def _find_js_function_end(self, code: str, start_pos: int, lines: List[str]) -> int:
+    def _find_js_function_end(self, code: str, start_pos: int, lines: list[str]) -> int:
         """Find the end of a JavaScript function."""
         current_line = code[:start_pos].count("\n") + 1
         return min(current_line + 20, len(lines))  # Assume 20 lines max
 
-    def _find_js_class_end(self, code: str, start_pos: int, lines: List[str]) -> int:
+    def _find_js_class_end(self, code: str, start_pos: int, lines: list[str]) -> int:
         """Find the end of a JavaScript class."""
         current_line = code[:start_pos].count("\n") + 1
         return min(current_line + 50, len(lines))  # Assume 50 lines max
 
-    def _find_java_class_end(self, code: str, start_pos: int, lines: List[str]) -> int:
+    def _find_java_class_end(self, code: str, start_pos: int, lines: list[str]) -> int:
         """Find the end of a Java class."""
         current_line = code[:start_pos].count("\n") + 1
         return min(current_line + 100, len(lines))  # Assume 100 lines max
 
-    def _find_cpp_class_end(self, code: str, start_pos: int, lines: List[str]) -> int:
+    def _find_cpp_class_end(self, code: str, start_pos: int, lines: list[str]) -> int:
         """Find the end of a C++ class."""
         current_line = code[:start_pos].count("\n") + 1
         return min(current_line + 100, len(lines))  # Assume 100 lines max
@@ -496,7 +493,7 @@ class ASTCodeChunker:
         """Estimate token count for text."""
         return len(text.split()) * 1.3  # Rough estimation
 
-    def get_supported_languages(self) -> List[str]:
+    def get_supported_languages(self) -> list[str]:
         """Get list of supported languages."""
         return list(self.parsers.keys()) if self._initialized else []
 
@@ -504,7 +501,7 @@ class ASTCodeChunker:
         """Check if language is supported."""
         return language in self.parsers and self.parsers[language] is not None
 
-    def get_chunker_stats(self) -> Dict[str, Any]:
+    def get_chunker_stats(self) -> dict[str, Any]:
         """Get chunker statistics."""
         return {
             "tree_sitter_available": TREE_SITTER_AVAILABLE,
@@ -520,8 +517,8 @@ class DocumentIndexer:
     def __init__(self):
         # Queue & workers
         self._queue: asyncio.Queue[QueueItem] = asyncio.Queue(maxsize=1000)
-        self._dead_letter: List[QueueItem] = []
-        self._workers: List[asyncio.Task] = []
+        self._dead_letter: list[QueueItem] = []
+        self._workers: list[asyncio.Task] = []
         self._cancelled_jobs: set[str] = set()
         self._paused: asyncio.Event = asyncio.Event()
         self._shutdown_event: asyncio.Event = asyncio.Event()
@@ -533,7 +530,7 @@ class DocumentIndexer:
         self.ast_chunker = ASTCodeChunker()
 
         # Metrics
-        self._metrics: Dict[str, Any] = {
+        self._metrics: dict[str, Any] = {
             "enqueued": 0,
             "processed": 0,
             "failed": 0,
@@ -546,7 +543,7 @@ class DocumentIndexer:
         }
         self._latency_ema_ms: float = 0.0
         self._ema_alpha: float = 0.2
-        self._throughput_window: List[float] = []
+        self._throughput_window: list[float] = []
 
         # Dependencies
         self._vector_store_service = None
@@ -562,7 +559,7 @@ class DocumentIndexer:
 
     async def initialize(
         self,
-        config: Dict[str, Any],
+        config: dict[str, Any],
         vector_store_service=None,
         embedding_service=None,
         file_indexing_service=None,
@@ -676,7 +673,7 @@ class DocumentIndexer:
                 self._dead_letter.append(item)
                 self._metrics["dead_letter"] += 1
 
-    async def _process_document(self, payload: Dict[str, Any]):
+    async def _process_document(self, payload: dict[str, Any]):
         """Process a document payload."""
         # Extract document information
         file_path = payload.get("path")
@@ -693,7 +690,7 @@ class DocumentIndexer:
             embeddings = await self._embedding_service.embed_batch(chunk_texts)
 
             # Add embeddings to chunks
-            for chunk, embedding in zip(chunks, embeddings):
+            for chunk, embedding in zip(chunks, embeddings, strict=False):
                 chunk.embedding = embedding
 
         # Store in vector database
@@ -716,17 +713,17 @@ class DocumentIndexer:
                             "tokens": chunk.metadata.tokens,
                             "symbol_map": symbol_map,
                         },
-                    }
+                    },
                 )
 
             await self._vector_store_service.insert_document_embeddings(embedding_data)
 
-    async def _process_image(self, payload: Dict[str, Any]):
+    async def _process_image(self, payload: dict[str, Any]):
         """Process an image payload."""
         # TODO: Implement image processing
         logger.debug("Image processing not yet implemented")
 
-    async def _process_caption(self, payload: Dict[str, Any]):
+    async def _process_caption(self, payload: dict[str, Any]):
         """Process a caption payload."""
         # TODO: Implement caption processing
         logger.debug("Caption processing not yet implemented")
@@ -757,8 +754,8 @@ class DocumentIndexer:
         return language_map.get(suffix, "generic")
 
     async def index_documents(
-        self, documents: List[Dict[str, Any]]
-    ) -> AsyncGenerator[Dict[str, Any], None]:
+        self, documents: list[dict[str, Any]],
+    ) -> AsyncGenerator[dict[str, Any]]:
         """Index documents with streaming progress."""
         if not self._enabled:
             yield {"type": "error", "error": "DocumentIndexer not enabled"}
@@ -776,7 +773,7 @@ class DocumentIndexer:
                 # Queue batch items
                 for doc in batch:
                     queue_item = QueueItem(
-                        kind="docs", payload=doc, job_id=f"batch_{i}_{len(batch)}"
+                        kind="docs", payload=doc, job_id=f"batch_{i}_{len(batch)}",
                     )
                     await self._queue.put(queue_item)
                     self._metrics["enqueued"] += 1
@@ -815,7 +812,7 @@ class DocumentIndexer:
         self._paused.set()
         logger.info("DocumentIndexer resumed")
 
-    async def get_stats(self) -> Dict[str, Any]:
+    async def get_stats(self) -> dict[str, Any]:
         """Get document indexer statistics."""
         return {
             "enabled": self._enabled,

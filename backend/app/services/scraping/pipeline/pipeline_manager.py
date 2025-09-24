@@ -1,5 +1,4 @@
-"""
-Processing Pipeline Manager for Reynard Backend
+"""Processing Pipeline Manager for Reynard Backend
 
 Manages content processing pipelines for scraping results.
 """
@@ -14,8 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 class ProcessingPipelineManager:
-    """
-    Manages content processing pipelines.
+    """Manages content processing pipelines.
 
     Orchestrates the processing of scraped content through
     various stages like cleaning, categorization, and deduplication.
@@ -63,10 +61,9 @@ class ProcessingPipelineManager:
             return False
 
     async def create_pipeline(
-        self, name: str, config: PipelineConfig
+        self, name: str, config: PipelineConfig,
     ) -> ProcessingPipeline:
-        """
-        Create a new processing pipeline.
+        """Create a new processing pipeline.
 
         Args:
             name: Name of the pipeline
@@ -74,6 +71,7 @@ class ProcessingPipelineManager:
 
         Returns:
             Created pipeline
+
         """
         try:
             pipeline = ProcessingPipeline(
@@ -91,14 +89,14 @@ class ProcessingPipelineManager:
             raise
 
     async def start_pipeline(self, pipeline_id: UUID) -> bool:
-        """
-        Start a processing pipeline.
+        """Start a processing pipeline.
 
         Args:
             pipeline_id: ID of the pipeline to start
 
         Returns:
             True if pipeline started successfully
+
         """
         try:
             if pipeline_id not in self.pipelines:
@@ -116,14 +114,14 @@ class ProcessingPipelineManager:
             return False
 
     async def stop_pipeline(self, pipeline_id: UUID) -> bool:
-        """
-        Stop a processing pipeline.
+        """Stop a processing pipeline.
 
         Args:
             pipeline_id: ID of the pipeline to stop
 
         Returns:
             True if pipeline stopped successfully
+
         """
         try:
             if pipeline_id in self.active_pipelines:
@@ -141,14 +139,14 @@ class ProcessingPipelineManager:
             return False
 
     async def get_pipeline(self, pipeline_id: UUID) -> ProcessingPipeline | None:
-        """
-        Get a pipeline by ID.
+        """Get a pipeline by ID.
 
         Args:
             pipeline_id: ID of the pipeline
 
         Returns:
             Pipeline if found
+
         """
         return self.pipelines.get(pipeline_id)
 
@@ -161,14 +159,14 @@ class ProcessingPipelineManager:
         return list(self.active_pipelines.values())
 
     async def delete_pipeline(self, pipeline_id: UUID) -> bool:
-        """
-        Delete a pipeline.
+        """Delete a pipeline.
 
         Args:
             pipeline_id: ID of the pipeline to delete
 
         Returns:
             True if pipeline deleted successfully
+
         """
         try:
             # Stop pipeline if active
@@ -201,7 +199,7 @@ class ProcessingPipelineManager:
             )
 
             basic_pipeline = await self.create_pipeline(
-                "Basic Content Processing", basic_config
+                "Basic Content Processing", basic_config,
             )
 
             # Add default stages

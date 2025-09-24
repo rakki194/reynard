@@ -1,5 +1,4 @@
-"""
-IMAP Service for Reynard Backend.
+"""IMAP Service for Reynard Backend.
 
 This module provides email receiving functionality using IMAP.
 """
@@ -14,7 +13,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from email.header import decode_header
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -29,10 +28,10 @@ class EmailMessage:
     recipient: str
     date: datetime
     body: str
-    html_body: Optional[str] = None
-    attachments: Optional[List[Dict[str, Any]]] = None
-    from_agent: Optional[str] = None
-    to_agent: Optional[str] = None
+    html_body: str | None = None
+    attachments: list[dict[str, Any]] | None = None
+    from_agent: str | None = None
+    to_agent: str | None = None
     is_agent_email: bool = False
     status: str = "received"  # received, processed, replied
 
@@ -67,11 +66,11 @@ class IMAPService:
     """IMAP service for receiving emails with agent integration."""
 
     def __init__(
-        self, config: Optional[IMAPConfig] = None, data_dir: str = "data/imap_emails"
+        self, config: IMAPConfig | None = None, data_dir: str = "data/imap_emails",
     ):
         self.config = config or IMAPConfig()
         self._validate_config()
-        self._connection: Optional[Union[imaplib.IMAP4, imaplib.IMAP4_SSL]] = None
+        self._connection: imaplib.IMAP4 | imaplib.IMAP4_SSL | None = None
 
         # Agent integration
         self.data_dir = Path(data_dir)
@@ -91,7 +90,7 @@ class IMAPService:
         """Load received emails from storage."""
         try:
             if self.received_emails_file.exists():
-                with open(self.received_emails_file, "r") as f:
+                with open(self.received_emails_file) as f:
                     data = json.load(f)
                     self.received_emails = {
                         msg_id: EmailMessage(**msg_data)
@@ -136,7 +135,7 @@ class IMAPService:
 
             # Check if sender is an agent
             sender_config = await agent_email_service.get_agent_config_by_email(
-                email_msg.sender
+                email_msg.sender,
             )
             if sender_config:
                 email_msg.from_agent = sender_config.agent_id
@@ -144,7 +143,7 @@ class IMAPService:
 
             # Check if recipient is an agent
             recipient_config = await agent_email_service.get_agent_config_by_email(
-                email_msg.recipient
+                email_msg.recipient,
             )
             if recipient_config:
                 email_msg.to_agent = recipient_config.agent_id
@@ -169,7 +168,7 @@ class IMAPService:
             # Update agent stats
             if email_msg.to_agent:
                 await agent_email_service.update_agent_stats(
-                    email_msg.to_agent, "received"
+                    email_msg.to_agent, "received",
                 )
 
             # Log the interaction
@@ -188,7 +187,7 @@ class IMAPService:
             # Check for auto-reply
             if email_msg.to_agent:
                 target_config = await agent_email_service.get_agent_config(
-                    email_msg.to_agent
+                    email_msg.to_agent,
                 )
                 if target_config and target_config.auto_reply_enabled:
                     await self._send_auto_reply(email_msg, target_config)
@@ -200,7 +199,7 @@ class IMAPService:
             logger.error(f"Error processing agent email: {e}")
 
     async def _send_auto_reply(
-        self, original_email: EmailMessage, agent_config
+        self, original_email: EmailMessage, agent_config,
     ) -> None:
         """Send auto-reply for agent email."""
         try:
@@ -211,7 +210,7 @@ class IMAPService:
             auto_reply_template = None
             if agent_config.auto_reply_template:
                 templates = await agent_email_service.get_agent_templates(
-                    agent_config.agent_id
+                    agent_config.agent_id,
                 )
                 auto_reply_template = next(
                     (t for t in templates if t.id == agent_config.auto_reply_template),
@@ -221,14 +220,14 @@ class IMAPService:
             if auto_reply_template:
                 # Process template variables
                 subject = auto_reply_template.subject.replace(
-                    "{sender_name}", original_email.sender
+                    "{sender_name}", original_email.sender,
                 )
                 body = auto_reply_template.body.replace(
-                    "{sender_name}", original_email.sender
+                    "{sender_name}", original_email.sender,
                 )
                 html_body = (
                     auto_reply_template.html_body.replace(
-                        "{sender_name}", original_email.sender
+                        "{sender_name}", original_email.sender,
                     )
                     if auto_reply_template.html_body
                     else None
@@ -285,29 +284,29 @@ class IMAPService:
                 or "urgent" in email_msg.body.lower()
             ):
                 await agent_email_service.process_automated_email(
-                    email_msg.to_agent, "urgent_email_received", trigger_context
+                    email_msg.to_agent, "urgent_email_received", trigger_context,
                 )
             elif "question" in email_msg.subject.lower() or "?" in email_msg.body:
                 await agent_email_service.process_automated_email(
-                    email_msg.to_agent, "question_received", trigger_context
+                    email_msg.to_agent, "question_received", trigger_context,
                 )
             elif (
                 "meeting" in email_msg.subject.lower()
                 or "meeting" in email_msg.body.lower()
             ):
                 await agent_email_service.process_automated_email(
-                    email_msg.to_agent, "meeting_request", trigger_context
+                    email_msg.to_agent, "meeting_request", trigger_context,
                 )
 
         except Exception as e:
             logger.error(f"Error triggering automated responses: {e}")
 
     async def connect(self) -> bool:
-        """
-        Connect to IMAP server.
+        """Connect to IMAP server.
 
         Returns:
             bool: True if connection successful
+
         """
         try:
             # Run IMAP connection in thread pool
@@ -318,11 +317,11 @@ class IMAPService:
             logger.error(f"Failed to connect to IMAP server: {e}")
             return False
 
-    def _connect_sync(self) -> Union[imaplib.IMAP4, imaplib.IMAP4_SSL]:
+    def _connect_sync(self) -> imaplib.IMAP4 | imaplib.IMAP4_SSL:
         """Synchronous IMAP connection."""
         if self.config.use_ssl:
             connection = imaplib.IMAP4_SSL(
-                self.config.imap_server, self.config.imap_port
+                self.config.imap_server, self.config.imap_port,
             )
         else:
             connection = imaplib.IMAP4(self.config.imap_server, self.config.imap_port)
@@ -343,15 +342,15 @@ class IMAPService:
             finally:
                 self._connection = None
 
-    async def get_unread_emails(self, limit: int = 10) -> List[EmailMessage]:
-        """
-        Get unread emails with agent integration.
+    async def get_unread_emails(self, limit: int = 10) -> list[EmailMessage]:
+        """Get unread emails with agent integration.
 
         Args:
             limit: Maximum number of emails to retrieve
 
         Returns:
             List[EmailMessage]: List of unread emails
+
         """
         if not self._connection:
             await self.connect()
@@ -359,7 +358,7 @@ class IMAPService:
         try:
             loop = asyncio.get_event_loop()
             emails = await loop.run_in_executor(
-                None, self._get_unread_emails_sync, limit
+                None, self._get_unread_emails_sync, limit,
             )
 
             # Process each email for agent integration
@@ -385,7 +384,7 @@ class IMAPService:
             logger.error(f"Failed to get unread emails: {e}")
             return []
 
-    def _get_unread_emails_sync(self, limit: int) -> List[EmailMessage]:
+    def _get_unread_emails_sync(self, limit: int) -> list[EmailMessage]:
         """Synchronous method to get unread emails."""
         # Search for unread emails
         status, messages = self._connection.search(None, "UNSEEN")
@@ -419,10 +418,9 @@ class IMAPService:
         return emails
 
     async def get_recent_emails(
-        self, days: int = 7, limit: int = 10
-    ) -> List[EmailMessage]:
-        """
-        Get recent emails from the last N days.
+        self, days: int = 7, limit: int = 10,
+    ) -> list[EmailMessage]:
+        """Get recent emails from the last N days.
 
         Args:
             days: Number of days to look back
@@ -430,6 +428,7 @@ class IMAPService:
 
         Returns:
             List[EmailMessage]: List of recent emails
+
         """
         if not self._connection:
             await self.connect()
@@ -437,14 +436,14 @@ class IMAPService:
         try:
             loop = asyncio.get_event_loop()
             emails = await loop.run_in_executor(
-                None, self._get_recent_emails_sync, days, limit
+                None, self._get_recent_emails_sync, days, limit,
             )
             return emails
         except Exception as e:
             logger.error(f"Failed to get recent emails: {e}")
             return []
 
-    def _get_recent_emails_sync(self, days: int, limit: int) -> List[EmailMessage]:
+    def _get_recent_emails_sync(self, days: int, limit: int) -> list[EmailMessage]:
         """Synchronous method to get recent emails."""
         # Calculate date range
         since_date = (datetime.now() - timedelta(days=days)).strftime("%d-%b-%Y")
@@ -480,7 +479,7 @@ class IMAPService:
 
         return emails
 
-    def _parse_email(self, raw_email: bytes) -> Optional[EmailMessage]:
+    def _parse_email(self, raw_email: bytes) -> EmailMessage | None:
         """Parse raw email data into EmailMessage object."""
         try:
             # Parse email
@@ -537,8 +536,8 @@ class IMAPService:
             return header
 
     def _extract_body_and_attachments(
-        self, msg: email.message.Message
-    ) -> Tuple[str, Optional[str], List[Dict[str, Any]]]:
+        self, msg: email.message.Message,
+    ) -> tuple[str, str | None, list[dict[str, Any]]]:
         """Extract body and attachments from email message."""
         body = ""
         html_body = None
@@ -563,7 +562,7 @@ class IMAPService:
                                 "filename": filename,
                                 "content_type": content_type,
                                 "size": len(part.get_payload(decode=True) or b""),
-                            }
+                            },
                         )
 
                 # Handle text content
@@ -606,14 +605,14 @@ class IMAPService:
         return body, html_body, attachments
 
     async def mark_as_read(self, message_id: str) -> bool:
-        """
-        Mark an email as read.
+        """Mark an email as read.
 
         Args:
             message_id: Email message ID
 
         Returns:
             bool: True if successful
+
         """
         if not self._connection:
             await self.connect()
@@ -621,7 +620,7 @@ class IMAPService:
         try:
             loop = asyncio.get_event_loop()
             result = await loop.run_in_executor(
-                None, self._mark_as_read_sync, message_id
+                None, self._mark_as_read_sync, message_id,
             )
             return result
         except Exception as e:
@@ -633,7 +632,7 @@ class IMAPService:
         try:
             # Search for the specific message
             status, messages = self._connection.search(
-                None, f'HEADER Message-ID "{message_id}"'
+                None, f'HEADER Message-ID "{message_id}"',
             )
             if status != "OK" or not messages[0]:
                 return False
@@ -648,12 +647,12 @@ class IMAPService:
             logger.error(f"Error marking email as read: {e}")
             return False
 
-    async def get_mailbox_info(self) -> Dict[str, Any]:
-        """
-        Get mailbox information.
+    async def get_mailbox_info(self) -> dict[str, Any]:
+        """Get mailbox information.
 
         Returns:
             Dict containing mailbox statistics
+
         """
         if not self._connection:
             await self.connect()
@@ -666,12 +665,12 @@ class IMAPService:
             logger.error(f"Failed to get mailbox info: {e}")
             return {}
 
-    def _get_mailbox_info_sync(self) -> Dict[str, Any]:
+    def _get_mailbox_info_sync(self) -> dict[str, Any]:
         """Synchronous method to get mailbox info."""
         try:
             # Get mailbox status
             status, messages = self._connection.status(
-                self.config.mailbox, "(MESSAGES UNSEEN)"
+                self.config.mailbox, "(MESSAGES UNSEEN)",
             )
             if status != "OK":
                 return {}
@@ -691,10 +690,9 @@ class IMAPService:
             return {}
 
     async def get_agent_emails(
-        self, agent_id: str, limit: int = 50
-    ) -> List[EmailMessage]:
-        """
-        Get emails for a specific agent.
+        self, agent_id: str, limit: int = 50,
+    ) -> list[EmailMessage]:
+        """Get emails for a specific agent.
 
         Args:
             agent_id: Agent ID to get emails for
@@ -702,6 +700,7 @@ class IMAPService:
 
         Returns:
             List[EmailMessage]: List of agent emails
+
         """
         try:
             from .agent_email_service import agent_email_service
@@ -732,12 +731,12 @@ class IMAPService:
             logger.error(f"Failed to get agent emails for {agent_id}: {e}")
             return []
 
-    async def get_received_emails_summary(self) -> Dict[str, Any]:
-        """
-        Get summary of received emails.
+    async def get_received_emails_summary(self) -> dict[str, Any]:
+        """Get summary of received emails.
 
         Returns:
             Dict containing email statistics
+
         """
         try:
             total_emails = len(self.received_emails)
@@ -783,11 +782,11 @@ class IMAPService:
             return {}
 
     async def start_email_monitoring(self, interval: int = 60) -> None:
-        """
-        Start continuous email monitoring.
+        """Start continuous email monitoring.
 
         Args:
             interval: Check interval in seconds
+
         """
         logger.info(f"Starting email monitoring with {interval}s interval")
 
@@ -805,7 +804,7 @@ class IMAPService:
                             logger.info(f"Processing agent email: {email_msg.subject}")
                         else:
                             logger.info(
-                                f"Processing regular email: {email_msg.subject}"
+                                f"Processing regular email: {email_msg.subject}",
                             )
 
                 # Wait for next check
@@ -816,14 +815,14 @@ class IMAPService:
                 await asyncio.sleep(interval)
 
     async def mark_email_as_processed(self, message_id: str) -> bool:
-        """
-        Mark an email as processed.
+        """Mark an email as processed.
 
         Args:
             message_id: Email message ID
 
         Returns:
             bool: True if successful
+
         """
         try:
             if message_id in self.received_emails:

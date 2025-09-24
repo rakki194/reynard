@@ -1,5 +1,4 @@
-"""
-User models for the Gatekeeper authentication library.
+"""User models for the Gatekeeper authentication library.
 
 This module defines Pydantic models for user data structures used throughout
 the authentication system. These models ensure type safety and provide
@@ -15,8 +14,7 @@ from pydantic import BaseModel, Field, field_validator
 
 
 class UserRole(str, Enum):
-    """
-    User role options for access control.
+    """User role options for access control.
 
     Defines the different roles a user can have within the application:
     - admin: Full administrative privileges
@@ -30,8 +28,7 @@ class UserRole(str, Enum):
 
 
 class User(BaseModel):
-    """
-    User model for authentication and authorization.
+    """User model for authentication and authorization.
 
     Stores user credentials, role, and optional profile information.
 
@@ -47,6 +44,7 @@ class User(BaseModel):
         updated_at (Optional[datetime]): When the user was last updated
         metadata (Dict[str, Any]): Additional user metadata
         permissions (Dict[str, Any]): User permissions for backward compatibility
+
     """
 
     id: str | None = Field(default=None)
@@ -68,7 +66,7 @@ class User(BaseModel):
         """Validate username format."""
         if not re.match(r"^[a-zA-Z0-9_-]+$", value):
             raise ValueError(
-                "Username must contain only alphanumeric characters, underscores, and hyphens"
+                "Username must contain only alphanumeric characters, underscores, and hyphens",
             )
         return value
 
@@ -84,8 +82,7 @@ class User(BaseModel):
 
 
 class UserPublic(BaseModel):
-    """
-    Public User model, containing only non-sensitive information.
+    """Public User model, containing only non-sensitive information.
 
     Used for API responses where sensitive data like password_hash should not be exposed.
     """
@@ -103,14 +100,14 @@ class UserPublic(BaseModel):
 
     @classmethod
     def from_user(cls, user: "User") -> "UserPublic":
-        """
-        Create a UserPublic instance from a User instance.
+        """Create a UserPublic instance from a User instance.
 
         Args:
             user: User instance to convert
 
         Returns:
             UserPublic instance with public data only
+
         """
         return cls(
             id=user.id,
@@ -127,8 +124,7 @@ class UserPublic(BaseModel):
 
 
 class UserCreate(BaseModel):
-    """
-    User model for registration requests.
+    """User model for registration requests.
 
     Accepts a plain password which will be hashed by the server.
 
@@ -137,6 +133,7 @@ class UserCreate(BaseModel):
         password (str): Plain text password for registration
         email (Optional[str]): User's email address
         role (UserRole): The role of the user (admin, regular, guest). Defaults to regular.
+
     """
 
     username: str = Field(
@@ -157,8 +154,7 @@ class UserCreate(BaseModel):
     @field_validator("password")
     @classmethod
     def validate_password_complexity(cls, value: str) -> str:
-        """
-        Validate password complexity requirements.
+        """Validate password complexity requirements.
 
         Ensures password contains at least:
         - One uppercase letter
@@ -188,8 +184,7 @@ class UserCreate(BaseModel):
 
 
 class UserUpdate(BaseModel):
-    """
-    User model for update requests.
+    """User model for update requests.
 
     Allows updating user information without exposing sensitive data.
 
@@ -200,6 +195,7 @@ class UserUpdate(BaseModel):
         is_active (Optional[bool]): Whether the user account is active
         profile_picture_url (Optional[str]): New profile picture URL
         metadata (Optional[Dict[str, Any]]): Additional user metadata
+
     """
 
     username: str | None = Field(
@@ -220,7 +216,7 @@ class UserUpdate(BaseModel):
         """Validate username format if provided."""
         if value is not None and not re.match(r"^[a-zA-Z0-9_-]+$", value):
             raise ValueError(
-                "Username must contain only alphanumeric characters, underscores, and hyphens"
+                "Username must contain only alphanumeric characters, underscores, and hyphens",
             )
         return value
 
@@ -236,12 +232,12 @@ class UserUpdate(BaseModel):
 
 
 class UserLogin(BaseModel):
-    """
-    User login model for authentication requests.
+    """User login model for authentication requests.
 
     Attributes:
         username (str): Username for authentication
         password (str): Plain text password for authentication
+
     """
 
     username: str = Field(..., min_length=1, description="Username for authentication")
@@ -249,12 +245,12 @@ class UserLogin(BaseModel):
 
 
 class UserPasswordChange(BaseModel):
-    """
-    User password change model.
+    """User password change model.
 
     Attributes:
         current_password (str): Current password for verification
         new_password (str): New password
+
     """
 
     current_password: str = Field(..., min_length=1, description="Current password")
@@ -267,8 +263,7 @@ class UserPasswordChange(BaseModel):
     @field_validator("new_password")
     @classmethod
     def validate_password_complexity(cls, value: str) -> str:
-        """
-        Validate password complexity requirements.
+        """Validate password complexity requirements.
 
         Ensures password contains at least:
         - One uppercase letter
@@ -288,23 +283,23 @@ class UserPasswordChange(BaseModel):
 
 
 class PasswordResetRequest(BaseModel):
-    """
-    Password reset request model.
+    """Password reset request model.
 
     Attributes:
         email (str): Email address to send reset link to
+
     """
 
     email: str = Field(..., description="Email address for password reset")
 
 
 class PasswordResetToken(BaseModel):
-    """
-    Password reset token model.
+    """Password reset token model.
 
     Attributes:
         token (str): The reset token
         new_password (str): New password
+
     """
 
     token: str = Field(..., description="Password reset token")
@@ -317,8 +312,7 @@ class PasswordResetToken(BaseModel):
     @field_validator("new_password")
     @classmethod
     def validate_password_complexity(cls, value: str) -> str:
-        """
-        Validate password complexity requirements.
+        """Validate password complexity requirements.
 
         Ensures password contains at least:
         - One uppercase letter
@@ -338,12 +332,12 @@ class PasswordResetToken(BaseModel):
 
 
 class PasswordResetResponse(BaseModel):
-    """
-    Password reset response model.
+    """Password reset response model.
 
     Attributes:
         message (str): Success message
         token (Optional[str]): Reset token (for development/testing)
+
     """
 
     message: str = Field(..., description="Success message")

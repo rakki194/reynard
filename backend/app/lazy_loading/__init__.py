@@ -1,5 +1,4 @@
-"""
-Lazy Loading package for Reynard Backend
+"""Lazy Loading package for Reynard Backend
 
 This package re-exports the lazy loading interfaces from `app.utils`
 to provide a stable module location under `app.lazy_loading`.

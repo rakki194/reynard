@@ -1,5 +1,4 @@
-"""
-Lazy Loading Service - Refactored
+"""Lazy Loading Service - Refactored
 
 This module provides the main service interface for lazy loading operations.
 It orchestrates the various specialized managers for a clean, modular architecture.
@@ -25,7 +24,7 @@ class LazyLoadingService:
 
     # Package Management Operations
     def create_lazy_export(
-        self, package_name: str, validation_level: str
+        self, package_name: str, validation_level: str,
     ) -> dict[str, Any]:
         """Create a new lazy export for a package."""
         return self.package_manager.create_lazy_export(package_name, validation_level)

@@ -1,5 +1,4 @@
-"""
-PHOENIX Agent State Persistence
+"""PHOENIX Agent State Persistence
 
 Agent state persistence system for PHOENIX framework.
 Reconstructs and maintains agent state across sessions.
@@ -12,7 +11,7 @@ import json
 import logging
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from ..utils.data_structures import (
     AgentState,
@@ -24,8 +23,7 @@ from ..utils.data_structures import (
 
 
 class AgentStatePersistence:
-    """
-    Agent state persistence system for PHOENIX framework.
+    """Agent state persistence system for PHOENIX framework.
 
     Implements:
     - Agent state reconstruction from documentation
@@ -35,29 +33,29 @@ class AgentStatePersistence:
     """
 
     def __init__(self, data_dir: str = "data/agent_state"):
-        """
-        Initialize agent state persistence system.
+        """Initialize agent state persistence system.
 
         Args:
             data_dir: Directory for storing agent state data
+
         """
         self.data_dir = Path(data_dir)
         self.data_dir.mkdir(parents=True, exist_ok=True)
 
         self.logger = logging.getLogger(__name__)
-        self.agent_states: Dict[str, AgentState] = {}
+        self.agent_states: dict[str, AgentState] = {}
 
         self.logger.info(f"💾 Agent state persistence initialized at {self.data_dir}")
 
     async def reconstruct_success_advisor_8(self) -> AgentState:
-        """
-        Reconstruct Success-Advisor-8 agent state from documentation.
+        """Reconstruct Success-Advisor-8 agent state from documentation.
 
         Returns:
             Reconstructed agent state
+
         """
         self.logger.info(
-            "🦁 Reconstructing Success-Advisor-8 agent state from documentation"
+            "🦁 Reconstructing Success-Advisor-8 agent state from documentation",
         )
 
         # Agent identity from documentation
@@ -117,7 +115,7 @@ class AgentStatePersistence:
                     power=0.9,
                     sample_size=100,
                 ),
-            )
+            ),
         ]
 
         # Knowledge base (from documentation and experience)
@@ -183,18 +181,18 @@ class AgentStatePersistence:
         # Store the reconstructed agent state
         await self.save_agent_state(agent_state)
 
-        self.logger.info(f"✅ Success-Advisor-8 agent state reconstructed and saved")
+        self.logger.info("✅ Success-Advisor-8 agent state reconstructed and saved")
         return agent_state
 
     async def save_agent_state(self, agent_state: AgentState) -> bool:
-        """
-        Save agent state to persistent storage.
+        """Save agent state to persistent storage.
 
         Args:
             agent_state: Agent state to save
 
         Returns:
             True if successful, False otherwise
+
         """
         try:
             # Convert agent state to dictionary
@@ -248,15 +246,15 @@ class AgentStatePersistence:
             self.logger.error(f"❌ Failed to save agent state {agent_state.id}: {e}")
             return False
 
-    async def load_agent_state(self, agent_id: str) -> Optional[AgentState]:
-        """
-        Load agent state from persistent storage.
+    async def load_agent_state(self, agent_id: str) -> AgentState | None:
+        """Load agent state from persistent storage.
 
         Args:
             agent_id: Agent ID to load
 
         Returns:
             Agent state if found, None otherwise
+
         """
         try:
             # Check in-memory cache first
@@ -269,7 +267,7 @@ class AgentStatePersistence:
                 self.logger.warning(f"⚠️ Agent state file not found: {agent_id}")
                 return None
 
-            with open(state_file, "r") as f:
+            with open(state_file) as f:
                 state_data = json.load(f)
 
             # Reconstruct performance history
@@ -286,7 +284,7 @@ class AgentStatePersistence:
                     significance=StatisticalSignificance(
                         p_value=perf_data["significance"]["p_value"],
                         confidence_interval=tuple(
-                            perf_data["significance"]["confidence_interval"]
+                            perf_data["significance"]["confidence_interval"],
                         ),
                         effect_size=perf_data["significance"]["effect_size"],
                         power=perf_data["significance"]["power"],
@@ -323,12 +321,12 @@ class AgentStatePersistence:
             self.logger.error(f"❌ Failed to load agent state {agent_id}: {e}")
             return None
 
-    async def list_agent_states(self) -> List[str]:
-        """
-        List all available agent states.
+    async def list_agent_states(self) -> list[str]:
+        """List all available agent states.
 
         Returns:
             List of agent IDs
+
         """
         agent_ids = []
 
@@ -345,14 +343,14 @@ class AgentStatePersistence:
         return sorted(agent_ids)
 
     async def delete_agent_state(self, agent_id: str) -> bool:
-        """
-        Delete agent state from persistent storage.
+        """Delete agent state from persistent storage.
 
         Args:
             agent_id: Agent ID to delete
 
         Returns:
             True if successful, False otherwise
+
         """
         try:
             # Remove from cache
@@ -372,16 +370,16 @@ class AgentStatePersistence:
             return False
 
     async def backup_agent_states(
-        self, backup_dir: str = "backups/agent_states"
+        self, backup_dir: str = "backups/agent_states",
     ) -> bool:
-        """
-        Create backup of all agent states.
+        """Create backup of all agent states.
 
         Args:
             backup_dir: Backup directory
 
         Returns:
             True if successful, False otherwise
+
         """
         try:
             backup_path = Path(backup_dir)
@@ -424,15 +422,15 @@ class AgentStatePersistence:
             self.logger.error(f"❌ Failed to backup agent states: {e}")
             return False
 
-    async def validate_agent_state(self, agent_state: AgentState) -> Dict[str, Any]:
-        """
-        Validate agent state integrity.
+    async def validate_agent_state(self, agent_state: AgentState) -> dict[str, Any]:
+        """Validate agent state integrity.
 
         Args:
             agent_state: Agent state to validate
 
         Returns:
             Validation results
+
         """
         validation_results = {
             "is_valid": True,
@@ -454,19 +452,19 @@ class AgentStatePersistence:
         for trait_name, value in agent_state.personality_traits.items():
             if not 0.0 <= value <= 1.0:
                 validation_results["warnings"].append(
-                    f"Personality trait {trait_name} out of range: {value}"
+                    f"Personality trait {trait_name} out of range: {value}",
                 )
 
         for trait_name, value in agent_state.physical_traits.items():
             if not 0.0 <= value <= 1.0:
                 validation_results["warnings"].append(
-                    f"Physical trait {trait_name} out of range: {value}"
+                    f"Physical trait {trait_name} out of range: {value}",
                 )
 
         for trait_name, value in agent_state.ability_traits.items():
             if not 0.0 <= value <= 1.0:
                 validation_results["warnings"].append(
-                    f"Ability trait {trait_name} out of range: {value}"
+                    f"Ability trait {trait_name} out of range: {value}",
                 )
 
         # Check performance history
@@ -476,7 +474,7 @@ class AgentStatePersistence:
             for i, perf in enumerate(agent_state.performance_history):
                 if not 0.0 <= perf.fitness <= 1.0:
                     validation_results["warnings"].append(
-                        f"Performance {i} fitness out of range: {perf.fitness}"
+                        f"Performance {i} fitness out of range: {perf.fitness}",
                     )
 
         # Check knowledge base
@@ -489,7 +487,7 @@ class AgentStatePersistence:
             "has_traits": bool(
                 agent_state.personality_traits
                 or agent_state.physical_traits
-                or agent_state.ability_traits
+                or agent_state.ability_traits,
             ),
             "has_performance": bool(agent_state.performance_history),
             "has_knowledge": bool(agent_state.knowledge_base),
@@ -500,12 +498,12 @@ class AgentStatePersistence:
 
         return validation_results
 
-    async def get_agent_statistics(self) -> Dict[str, Any]:
-        """
-        Get statistics about stored agent states.
+    async def get_agent_statistics(self) -> dict[str, Any]:
+        """Get statistics about stored agent states.
 
         Returns:
             Agent statistics
+
         """
         agent_ids = await self.list_agent_states()
 

@@ -163,7 +163,9 @@ def scrape_webpage_content(arguments: dict[str, Any]) -> dict[str, Any]:
     category="playwright",
     description="Test Playwright browser connection and capabilities",
 )
-def test_playwright_connection(arguments: dict[str, Any]) -> dict[str, Any]:  # pylint: disable=unused-argument
+def test_playwright_connection(
+    arguments: dict[str, Any],
+) -> dict[str, Any]:  # pylint: disable=unused-argument
     """
     Test Playwright browser connection and capabilities.
 

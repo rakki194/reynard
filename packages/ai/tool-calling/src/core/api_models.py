@@ -1,5 +1,4 @@
-"""
-Pydantic models for tool API endpoints.
+"""Pydantic models for tool API endpoints.
 
 This module defines the request and response models used by the tool API
 to ensure proper validation and documentation.
@@ -76,11 +75,11 @@ class ToolExecutionRequest(BaseModel):
     """Request model for tool execution."""
 
     parameters: dict[str, Any] = Field(
-        default_factory=dict, description="Tool parameters"
+        default_factory=dict, description="Tool parameters",
     )
     dry_run: bool = Field(False, description="Whether to perform a dry run")
     timeout: int | None = Field(
-        None, description="Custom timeout in seconds", ge=1, le=300
+        None, description="Custom timeout in seconds", ge=1, le=300,
     )
 
 

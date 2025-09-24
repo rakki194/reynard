@@ -1,5 +1,4 @@
-"""
-FastAPI endpoints for performance monitoring and analysis.
+"""FastAPI endpoints for performance monitoring and analysis.
 
 This module provides REST API endpoints for:
 - Real-time performance metrics
@@ -9,10 +8,8 @@ This module provides REST API endpoints for:
 - System health monitoring
 """
 
-import json
 import logging
-from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional
+from datetime import datetime
 
 from fastapi import APIRouter, BackgroundTasks, HTTPException, Query
 from fastapi.responses import JSONResponse
@@ -69,7 +66,7 @@ async def get_bottlenecks():
                     "recommendations": bottleneck.recommendations,
                     "affected_endpoints": bottleneck.affected_endpoints,
                     "metrics": bottleneck.metrics,
-                }
+                },
             )
 
         return JSONResponse(
@@ -77,13 +74,13 @@ async def get_bottlenecks():
                 "bottlenecks": bottlenecks_data,
                 "total_count": len(bottlenecks),
                 "critical_count": len(
-                    [b for b in bottlenecks if b.severity == "critical"]
+                    [b for b in bottlenecks if b.severity == "critical"],
                 ),
                 "high_count": len([b for b in bottlenecks if b.severity == "high"]),
                 "medium_count": len([b for b in bottlenecks if b.severity == "medium"]),
                 "low_count": len([b for b in bottlenecks if b.severity == "low"]),
                 "timestamp": datetime.now().isoformat(),
-            }
+            },
         )
     except Exception as e:
         logger.error(f"Error analyzing bottlenecks: {e}")
@@ -92,7 +89,7 @@ async def get_bottlenecks():
 
 @router.get("/trends")
 async def get_performance_trends(
-    hours: int = Query(24, description="Time period in hours for trend analysis")
+    hours: int = Query(24, description="Time period in hours for trend analysis"),
 ):
     """Get performance trends analysis."""
     try:
@@ -107,7 +104,7 @@ async def get_performance_trends(
                     "change_percent": trend.change_percentage,
                     "confidence": trend.confidence,
                     "time_period": trend.time_period,
-                }
+                },
             )
 
         return JSONResponse(
@@ -115,7 +112,7 @@ async def get_performance_trends(
                 "trends": trends_data,
                 "analysis_period_hours": hours,
                 "timestamp": datetime.now().isoformat(),
-            }
+            },
         )
     except Exception as e:
         logger.error(f"Error analyzing trends: {e}")
@@ -153,7 +150,7 @@ async def get_endpoint_performance():
                 "endpoints": endpoint_stats,
                 "total_endpoints": len(endpoint_stats),
                 "timestamp": datetime.now().isoformat(),
-            }
+            },
         )
     except Exception as e:
         logger.error(f"Error getting endpoint performance: {e}")
@@ -173,7 +170,7 @@ async def get_endpoint_details(endpoint: str):
 
         if not endpoint_key:
             raise HTTPException(
-                status_code=404, detail=f"Endpoint '{endpoint}' not found"
+                status_code=404, detail=f"Endpoint '{endpoint}' not found",
             )
 
         stats = performance_tracker.endpoint_stats[endpoint_key]
@@ -286,7 +283,7 @@ async def get_performance_health():
 
         # Get key metrics
         avg_response_time = performance_summary.get("summary", {}).get(
-            "avg_duration_ms", 0
+            "avg_duration_ms", 0,
         )
         error_rate = performance_summary.get("summary", {}).get("error_rate_percent", 0)
         memory_usage = memory_summary.get("current_memory_mb", 0)
@@ -318,7 +315,7 @@ async def get_performance_health():
                     ]
                 ),
                 "timestamp": datetime.now().isoformat(),
-            }
+            },
         )
     except Exception as e:
         logger.error(f"Error getting performance health: {e}")
@@ -336,16 +333,15 @@ async def start_monitoring(background_tasks: BackgroundTasks):
                     "message": "Performance monitoring started",
                     "status": "active",
                     "timestamp": datetime.now().isoformat(),
-                }
+                },
             )
-        else:
-            return JSONResponse(
-                content={
-                    "message": "Performance monitoring already active",
-                    "status": "active",
-                    "timestamp": datetime.now().isoformat(),
-                }
-            )
+        return JSONResponse(
+            content={
+                "message": "Performance monitoring already active",
+                "status": "active",
+                "timestamp": datetime.now().isoformat(),
+            },
+        )
     except Exception as e:
         logger.error(f"Error starting monitoring: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -362,16 +358,15 @@ async def stop_monitoring():
                     "message": "Performance monitoring stopped",
                     "status": "inactive",
                     "timestamp": datetime.now().isoformat(),
-                }
+                },
             )
-        else:
-            return JSONResponse(
-                content={
-                    "message": "Performance monitoring already inactive",
-                    "status": "inactive",
-                    "timestamp": datetime.now().isoformat(),
-                }
-            )
+        return JSONResponse(
+            content={
+                "message": "Performance monitoring already inactive",
+                "status": "inactive",
+                "timestamp": datetime.now().isoformat(),
+            },
+        )
     except Exception as e:
         logger.error(f"Error stopping monitoring: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -393,7 +388,7 @@ async def get_monitoring_status():
                     "snapshots_count": len(memory_profiler.memory_snapshots),
                 },
                 "timestamp": datetime.now().isoformat(),
-            }
+            },
         )
     except Exception as e:
         logger.error(f"Error getting monitoring status: {e}")
@@ -418,7 +413,7 @@ async def clear_performance_data():
             content={
                 "message": "All performance data cleared",
                 "timestamp": datetime.now().isoformat(),
-            }
+            },
         )
     except Exception as e:
         logger.error(f"Error clearing performance data: {e}")

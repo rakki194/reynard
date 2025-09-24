@@ -8,6 +8,352 @@ featuring sophisticated pluralization rules, grammar helpers, advanced
 debugging tools, performance monitoring, and enterprise-grade translation
 management.
 
+## Architecture
+
+```mermaid
+graph TB
+    subgraph "🌐 Reynard I18n System"
+        A[I18n Core] --> B[Context System]
+        A --> C[Translation Engine]
+        A --> D[Loading System]
+        A --> E[Intl Integration]
+        A --> F[Features System]
+        
+        subgraph "🎯 Core Context"
+            B --> B1[I18nProvider]
+            B --> B2[I18nState]
+            B --> B3[I18nActions]
+            B --> B4[useI18n Hook]
+            B1 --> B5[Locale Management]
+            B1 --> B6[Translation Context]
+            B2 --> B7[Reactive State]
+            B2 --> B8[Locale Signals]
+            B3 --> B9[setLocale]
+            B3 --> B10[Translation Function]
+            B4 --> B11[Component Access]
+        end
+        
+        subgraph "🔄 Translation Engine"
+            C --> C1[Translation Core]
+            C --> C2[Translation Features]
+            C --> C3[Translation Namespace]
+            C --> C4[Module Factory]
+            C1 --> C5[loadTranslations]
+            C1 --> C6[createCoreTranslationFunction]
+            C2 --> C7[Advanced Features]
+            C2 --> C8[Enterprise Features]
+            C3 --> C9[Namespace Loading]
+            C3 --> C10[Namespace Management]
+            C4 --> C11[createBaseI18nModule]
+            C4 --> C12[createAnalyticsI18nModule]
+        end
+        
+        subgraph "📥 Loading System"
+            D --> D1[Core Loader]
+            D --> D2[Optimized Loader]
+            D --> D3[Cache System]
+            D --> D4[Namespace Loader]
+            D1 --> D5[Basic Loading]
+            D1 --> D6[Error Handling]
+            D2 --> D7[Performance Optimization]
+            D2 --> D8[Bundle Optimization]
+            D3 --> D9[Translation Cache]
+            D3 --> D10[Cache Management]
+            D4 --> D11[Namespace Loading]
+            D4 --> D12[Dynamic Imports]
+        end
+        
+        subgraph "🌍 Intl Integration"
+            E --> E1[Intl Formatter]
+            E --> E2[Date Formatting]
+            E --> E3[Number Formatting]
+            E --> E4[Relative Formatting]
+            E --> E5[Plural Rules]
+            E1 --> E6[Unified Formatting]
+            E1 --> E7[Locale-aware Formatting]
+            E2 --> E8[Date/Time Formats]
+            E3 --> E9[Number/Currency Formats]
+            E4 --> E10[Relative Time]
+            E5 --> E11[Language-specific Rules]
+        end
+        
+        subgraph "🚀 Features System"
+            F --> F1[Analytics]
+            F --> F2[Debug System]
+            F --> F3[Performance Monitoring]
+            F --> F4[Enterprise Features]
+            F --> F5[Migration Support]
+            F1 --> F6[Translation Analytics]
+            F1 --> F7[Usage Tracking]
+            F2 --> F8[I18n Debugger]
+            F2 --> F9[Debug Stats]
+            F2 --> F10[Validation]
+            F3 --> F11[Performance Monitor]
+            F3 --> F12[Bundle Optimization]
+            F4 --> F13[Translation Manager]
+            F4 --> F14[Enterprise Analytics]
+            F5 --> F15[i18next Migration]
+            F5 --> F16[solidI18n Migration]
+        end
+        
+        subgraph "🗣️ Language Support"
+            G[37 Languages] --> G1[European Languages]
+            G --> G2[Asian Languages]
+            G --> G3[Middle Eastern Languages]
+            G --> G4[RTL Languages]
+            G1 --> G5[English, German, French, Spanish, Italian, etc.]
+            G2 --> G6[Japanese, Korean, Chinese, Thai, Vietnamese, etc.]
+            G3 --> G7[Arabic, Hebrew, Turkish, etc.]
+            G4 --> G8[Arabic, Hebrew, Persian, etc.]
+        end
+        
+        subgraph "📚 Translation Data"
+            H[Translation Files] --> H1[37 Language Directories]
+            H --> H2[Namespace Structure]
+            H --> H3[Type Definitions]
+            H1 --> H4[ar/, bg/, cs/, da/, de/, el/, en/, es/, etc.]
+            H2 --> H5[Component Translations]
+            H2 --> H6[Feature Translations]
+            H2 --> H7[Settings Translations]
+            H3 --> H8[Type-safe Translations]
+            H3 --> H9[Translation Types]
+        end
+        
+        subgraph "🧠 Grammar & Pluralization"
+            I[Grammar System] --> I1[Pluralization Rules]
+            I --> I2[Grammar Helpers]
+            I --> I3[Language-specific Logic]
+            I1 --> I4[Russian: one/few/many]
+            I1 --> I5[Arabic: singular/dual/plural/large]
+            I1 --> I6[Polish: teen number handling]
+            I1 --> I7[Turkish: vowel harmony]
+            I2 --> I8[Hungarian: article selection]
+            I2 --> I9[Portuguese: complex plurals]
+            I3 --> I10[Language-specific Rules]
+        end
+        
+        subgraph "🛠️ Utilities"
+            J[Utility System] --> J1[Basic Utils]
+            J --> J2[Formatting Utils]
+            J --> J3[Grammar Utils]
+            J --> J4[Pluralization Utils]
+            J1 --> J5[Language Data]
+            J1 --> J6[Locale Utils]
+            J1 --> J7[Translation Utils]
+            J2 --> J8[Formatting Helpers]
+            J3 --> J9[Hungarian Grammar]
+            J4 --> J10[Arabic Plural]
+            J4 --> J11[Czech Plural]
+            J4 --> J12[Polish Plural]
+        end
+    end
+    
+    subgraph "🌐 External Integration"
+        K[SolidJS] --> K1[Reactive System]
+        K --> K2[Context API]
+        K --> K3[Component Integration]
+        L[Intl API] --> L1[Browser Intl]
+        L --> L2[Formatting APIs]
+        L --> L3[Plural Rules]
+    end
+    
+    A -->|Provides| M[Translation API]
+    B -->|Manages| N[Locale State]
+    C -->|Handles| O[Translation Logic]
+    D -->|Loads| P[Language Data]
+    E -->|Formats| Q[Localized Content]
+    F -->|Enhances| R[Enterprise Features]
+```
+
+## Translation Flow
+
+```mermaid
+sequenceDiagram
+    participant App as Application
+    participant Provider as I18nProvider
+    participant Context as I18nContext
+    participant Engine as Translation Engine
+    participant Loader as Loading System
+    participant Cache as Cache System
+    participant Intl as Intl API
+    
+    Note over App, Intl: Application Initialization
+    App->>Provider: Initialize I18n
+    Provider->>Context: Create I18n State
+    Context->>Engine: Setup Translation Engine
+    Engine->>Loader: Configure Loading System
+    Loader->>Cache: Initialize Cache
+    
+    Note over App, Intl: Translation Request
+    App->>Context: useI18n()
+    Context->>Engine: t(key, params)
+    Engine->>Cache: Check Cache
+    
+    alt Translation in Cache
+        Cache-->>Engine: Cached Translation
+    else Translation Not Cached
+        Engine->>Loader: Load Translation
+        Loader->>Loader: Dynamic Import
+        Loader-->>Engine: Translation Data
+        Engine->>Cache: Store in Cache
+    end
+    
+    Engine->>Intl: Format with Intl API
+    Intl-->>Engine: Formatted Content
+    Engine-->>Context: Final Translation
+    Context-->>App: Translated Text
+    
+    Note over App, Intl: Locale Change
+    App->>Context: setLocale(newLocale)
+    Context->>Engine: Update Locale
+    Engine->>Loader: Load New Locale
+    Loader->>Cache: Check/Update Cache
+    Cache-->>Loader: Translation Data
+    Loader-->>Engine: New Translations
+    Engine-->>Context: Updated State
+    Context-->>App: Locale Changed
+```
+
+## Language Support Matrix
+
+```mermaid
+graph TB
+    subgraph "🌍 37 Language Support"
+        A[Language Categories] --> B[European Languages]
+        A --> C[Asian Languages]
+        A --> D[Middle Eastern Languages]
+        A --> E[RTL Languages]
+        
+        subgraph "🇪🇺 European Languages (25)"
+            B --> B1[English - en]
+            B --> B2[German - de]
+            B --> B3[French - fr]
+            B --> B4[Spanish - es]
+            B --> B5[Italian - it]
+            B --> B6[Portuguese - pt]
+            B --> B7[Portuguese BR - pt-BR]
+            B --> B8[Russian - ru]
+            B --> B9[Polish - pl]
+            B --> B10[Czech - cs]
+            B --> B11[Hungarian - hu]
+            B --> B12[Romanian - ro]
+            B --> B13[Bulgarian - bg]
+            B --> B14[Croatian - hr]
+            B --> B15[Slovak - sk]
+            B --> B16[Slovenian - sl]
+            B --> B17[Lithuanian - lt]
+            B --> B18[Latvian - lv]
+            B --> B19[Estonian - et]
+            B --> B20[Finnish - fi]
+            B --> B21[Swedish - sv]
+            B --> B22[Norwegian - nb]
+            B --> B23[Danish - da]
+            B --> B24[Dutch - nl]
+            B --> B25[Greek - el]
+            B --> B26[Maltese - mt]
+        end
+        
+        subgraph "🇦🇸 Asian Languages (8)"
+            C --> C1[Japanese - ja]
+            C --> C2[Korean - ko]
+            C --> C3[Chinese - zh]
+            C --> C4[Thai - th]
+            C --> C5[Vietnamese - vi]
+            C --> C6[Hindi - hi]
+            C --> C7[Indonesian - id]
+            C --> C8[Turkish - tr]
+        end
+        
+        subgraph "🇦🇪 Middle Eastern Languages (3)"
+            D --> D1[Arabic - ar]
+            D --> D2[Hebrew - he]
+            D --> D3[Ukrainian - uk]
+        end
+        
+        subgraph "🔄 RTL Languages (4)"
+            E --> E1[Arabic - ar]
+            E --> E2[Hebrew - he]
+            E --> E3[Persian - fa]
+            E --> E4[Urdu - ur]
+        end
+    end
+    
+    subgraph "🧠 Advanced Features"
+        F[Language Features] --> F1[Pluralization Rules]
+        F --> F2[Grammar Helpers]
+        F --> F3[RTL Support]
+        F --> F4[Vowel Harmony]
+        
+        F1 --> F1A[Russian: one/few/many]
+        F1 --> F1B[Arabic: singular/dual/plural/large]
+        F1 --> F1C[Polish: teen numbers]
+        F1 --> F1D[Turkish: vowel harmony]
+        
+        F2 --> F2A[Hungarian: a/az articles]
+        F2 --> F2B[Portuguese: complex plurals]
+        F2 --> F2C[Slavic: case handling]
+        
+        F3 --> F3A[Text Direction]
+        F3 --> F3B[Layout Support]
+        F3 --> F3C[UI Adaptation]
+        
+        F4 --> F4A[Turkish Rules]
+        F4 --> F4B[Hungarian Rules]
+        F4 --> F4C[Finnish Rules]
+    end
+```
+
+## Performance & Caching Flow
+
+```mermaid
+flowchart TD
+    A[Translation Request] --> B{Cache Check}
+    
+    B -->|Hit| C[Return Cached]
+    B -->|Miss| D[Load Translation]
+    
+    D --> E[Dynamic Import]
+    E --> F[Load Language File]
+    F --> G[Parse Translation Data]
+    G --> H[Store in Cache]
+    H --> I[Return Translation]
+    
+    C --> J[Format Translation]
+    I --> J
+    
+    J --> K{Intl Formatting?}
+    K -->|Yes| L[Apply Intl Formatting]
+    K -->|No| M[Return Raw Translation]
+    
+    L --> N[Date/Number/Currency Format]
+    N --> O[Return Formatted]
+    M --> O
+    
+    O --> P[Update Analytics]
+    P --> Q[Performance Monitoring]
+    Q --> R[Return to Component]
+    
+    subgraph "Cache Management"
+        S[Cache System] --> S1[Translation Cache]
+        S --> S2[Namespace Cache]
+        S --> S3[Performance Cache]
+        S1 --> S4[LRU Eviction]
+        S2 --> S5[Namespace Isolation]
+        S3 --> S6[Bundle Optimization]
+    end
+    
+    subgraph "Performance Features"
+        T[Performance System] --> T1[Bundle Optimization]
+        T --> T2[Tree Shaking]
+        T --> T3[Lazy Loading]
+        T --> T4[Code Splitting]
+        T1 --> T5[Import.meta.glob]
+        T2 --> T6[Unused Code Elimination]
+        T3 --> T7[On-demand Loading]
+        T4 --> T8[Chunk Optimization]
+    end
+```
+
 ## ✨ Features
 
 ### 🌍 **37 Language Support**

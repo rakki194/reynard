@@ -1,5 +1,4 @@
-"""
-Integration test suite for the complete RAG system.
+"""Integration test suite for the complete RAG system.
 
 Tests the full RAG workflow from document indexing to search, including
 all core and advanced services working together.
@@ -7,25 +6,11 @@ all core and advanced services working together.
 
 import asyncio
 import time
-from typing import Any, Dict, List
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, patch
 
 import pytest
 
 from app.services.rag import RAGService
-from app.services.rag.advanced import (
-    ContinuousImprovement,
-    DocumentationService,
-    ModelEvaluator,
-    PerformanceMonitor,
-    SecurityService,
-)
-from app.services.rag.core import (
-    DocumentIndexer,
-    EmbeddingService,
-    SearchEngine,
-    VectorStoreService,
-)
 
 
 class TestRAGServiceIntegration:
@@ -133,7 +118,7 @@ class TestCompleteRAGWorkflow:
             # Mock embedding service
             mock_embedding_response = AsyncMock()
             mock_embedding_response.json.return_value = {
-                "embedding": [0.1, 0.2, 0.3] * 100
+                "embedding": [0.1, 0.2, 0.3] * 100,
             }
             mock_post.return_value.__aenter__.return_value = mock_embedding_response
 
@@ -141,7 +126,7 @@ class TestCompleteRAGWorkflow:
             mock_connection = AsyncMock()
             mock_connection.execute.return_value.rowcount = 1
             mock_connection.execute.return_value.fetchall.return_value = [
-                {"id": 1, "text": "def hello(): return 'world'", "similarity": 0.95}
+                {"id": 1, "text": "def hello(): return 'world'", "similarity": 0.95},
             ]
             mock_engine.return_value.connect.return_value.__enter__.return_value = (
                 mock_connection
@@ -240,7 +225,7 @@ class UserManager {
             # Mock embedding service
             mock_embedding_response = AsyncMock()
             mock_embedding_response.json.return_value = {
-                "embedding": [0.1, 0.2, 0.3] * 100
+                "embedding": [0.1, 0.2, 0.3] * 100,
             }
             mock_post.return_value.__aenter__.return_value = mock_embedding_response
 
@@ -263,7 +248,7 @@ class UserManager {
 
             # Test hybrid search
             search_results = await rag_service.search(
-                "hello function", search_type="hybrid", limit=10
+                "hello function", search_type="hybrid", limit=10,
             )
 
             assert isinstance(search_results, list)
@@ -283,14 +268,14 @@ class UserManager {
             # Mock embedding service
             mock_embedding_response = AsyncMock()
             mock_embedding_response.json.return_value = {
-                "embedding": [0.1, 0.2, 0.3] * 100
+                "embedding": [0.1, 0.2, 0.3] * 100,
             }
             mock_post.return_value.__aenter__.return_value = mock_embedding_response
 
             # Mock vector store
             mock_connection = AsyncMock()
             mock_connection.execute.return_value.fetchall.return_value = [
-                {"id": 1, "text": "sensitive data", "similarity": 0.95}
+                {"id": 1, "text": "sensitive data", "similarity": 0.95},
             ]
             mock_engine.return_value.connect.return_value.__enter__.return_value = (
                 mock_connection
@@ -325,14 +310,14 @@ class UserManager {
             # Mock embedding service
             mock_embedding_response = AsyncMock()
             mock_embedding_response.json.return_value = {
-                "embedding": [0.1, 0.2, 0.3] * 100
+                "embedding": [0.1, 0.2, 0.3] * 100,
             }
             mock_post.return_value.__aenter__.return_value = mock_embedding_response
 
             # Mock vector store
             mock_connection = AsyncMock()
             mock_connection.execute.return_value.fetchall.return_value = [
-                {"id": 1, "text": "test result", "similarity": 0.95}
+                {"id": 1, "text": "test result", "similarity": 0.95},
             ]
             mock_engine.return_value.connect.return_value.__enter__.return_value = (
                 mock_connection
@@ -413,7 +398,7 @@ class UserManager {
             # Mock embedding service
             mock_embedding_response = AsyncMock()
             mock_embedding_response.json.return_value = {
-                "embedding": [0.1, 0.2, 0.3] * 100
+                "embedding": [0.1, 0.2, 0.3] * 100,
             }
             mock_post.return_value.__aenter__.return_value = mock_embedding_response
 
@@ -424,7 +409,7 @@ class UserManager {
                     "id": 1,
                     "text": "function that calculates fibonacci",
                     "similarity": 0.95,
-                }
+                },
             ]
             mock_engine.return_value.connect.return_value.__enter__.return_value = (
                 mock_connection
@@ -486,7 +471,7 @@ class TestRAGServiceErrorHandling:
             # Mock embedding service success
             mock_embedding_response = AsyncMock()
             mock_embedding_response.json.return_value = {
-                "embedding": [0.1, 0.2, 0.3] * 100
+                "embedding": [0.1, 0.2, 0.3] * 100,
             }
             mock_post.return_value.__aenter__.return_value = mock_embedding_response
 
@@ -507,7 +492,7 @@ class TestRAGServiceErrorHandling:
                 "content": "def hello(): return 'world'",
                 "file_path": "test.py",
                 "language": "python",
-            }
+            },
         ]
 
         with (
@@ -519,7 +504,7 @@ class TestRAGServiceErrorHandling:
             # Mock embedding service
             mock_embedding_response = AsyncMock()
             mock_embedding_response.json.return_value = {
-                "embedding": [0.1, 0.2, 0.3] * 100
+                "embedding": [0.1, 0.2, 0.3] * 100,
             }
             mock_post.return_value.__aenter__.return_value = mock_embedding_response
 
@@ -567,14 +552,14 @@ class TestRAGServiceConcurrency:
             # Mock embedding service
             mock_embedding_response = AsyncMock()
             mock_embedding_response.json.return_value = {
-                "embedding": [0.1, 0.2, 0.3] * 100
+                "embedding": [0.1, 0.2, 0.3] * 100,
             }
             mock_post.return_value.__aenter__.return_value = mock_embedding_response
 
             # Mock vector store
             mock_connection = AsyncMock()
             mock_connection.execute.return_value.fetchall.return_value = [
-                {"id": 1, "text": "test result", "similarity": 0.95}
+                {"id": 1, "text": "test result", "similarity": 0.95},
             ]
             mock_engine.return_value.connect.return_value.__enter__.return_value = (
                 mock_connection
@@ -598,7 +583,7 @@ class TestRAGServiceConcurrency:
             # Mock embedding service
             mock_embedding_response = AsyncMock()
             mock_embedding_response.json.return_value = {
-                "embedding": [0.1, 0.2, 0.3] * 100
+                "embedding": [0.1, 0.2, 0.3] * 100,
             }
             mock_post.return_value.__aenter__.return_value = mock_embedding_response
 

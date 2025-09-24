@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Optimized ECS Endpoints
+"""Optimized ECS Endpoints
 
 Enhanced ECS endpoints with performance optimizations including:
 - Input validation
@@ -19,31 +18,20 @@ from fastapi import APIRouter, Depends, HTTPException, Path, Query
 from fastapi.responses import JSONResponse
 
 from .database import SessionLocal
-from .performance import track_async_task, track_db_query
+from .performance import track_async_task
 from .postgres_service import PostgresECSWorldService
 from .redis_cache import (
-    cache_agent_data,
-    cache_agent_interactions,
-    cache_agent_relationships,
-    cache_agent_traits,
     cache_naming_components,
     cache_naming_config,
     cache_naming_spirits,
     get_ecs_cache,
     invalidate_agent_cache,
-    invalidate_naming_cache,
 )
 from .validation import (
     AgentIDValidator,
     SpiritValidator,
-    StyleValidator,
     ValidatedAgentCreateRequest,
-    ValidatedChatRequest,
-    ValidatedInteractionRequest,
     ValidatedMoveRequest,
-    ValidatedMoveTowardsRequest,
-    ValidatedOffspringCreateRequest,
-    handle_validation_error,
     validate_endpoint_inputs,
 )
 
@@ -141,7 +129,7 @@ async def get_agents_optimized(
 @router.post("/agents", response_model=dict[str, Any])
 @track_async_task("create_agent")
 async def create_agent_optimized(
-    request: ValidatedAgentCreateRequest, cache: Any = Depends(get_cache)
+    request: ValidatedAgentCreateRequest, cache: Any = Depends(get_cache),
 ):
     """Create optimized agent with validation and cache invalidation."""
     try:
@@ -167,7 +155,7 @@ async def create_agent_optimized(
 @router.get("/agents/{agent_id}", response_model=dict[str, Any])
 @track_async_task("get_agent")
 async def get_agent_optimized(
-    agent_id: str = Path(..., description="Agent ID"), cache: Any = Depends(get_cache)
+    agent_id: str = Path(..., description="Agent ID"), cache: Any = Depends(get_cache),
 ):
     """Get optimized agent by ID with validation and caching."""
     try:
@@ -184,7 +172,7 @@ async def get_agent_optimized(
         agent = await postgres_service.get_agent_by_id(validated_id)
         if not agent:
             raise HTTPException(
-                status_code=404, detail=f"Agent {validated_id} not found"
+                status_code=404, detail=f"Agent {validated_id} not found",
             )
 
         # Cache for 5 minutes
@@ -210,7 +198,7 @@ async def get_naming_spirits_optimized():
     except Exception as e:
         logger.error(f"Failed to get naming spirits: {e}")
         raise HTTPException(
-            status_code=500, detail="Failed to get naming spirits"
+            status_code=500, detail="Failed to get naming spirits",
         ) from e
 
 
@@ -218,7 +206,7 @@ async def get_naming_spirits_optimized():
 @cache_naming_spirits(ttl=1800)  # 30 minutes
 @track_async_task("get_spirit_names")
 async def get_spirit_names_optimized(
-    spirit: str = Path(..., description="Spirit name")
+    spirit: str = Path(..., description="Spirit name"),
 ):
     """Get optimized spirit names with validation and caching."""
     try:
@@ -244,7 +232,7 @@ async def get_naming_components_optimized():
     except Exception as e:
         logger.error(f"Failed to get naming components: {e}")
         raise HTTPException(
-            status_code=500, detail="Failed to get naming components"
+            status_code=500, detail="Failed to get naming components",
         ) from e
 
 
@@ -258,7 +246,7 @@ async def get_naming_config_optimized():
     except Exception as e:
         logger.error(f"Failed to get naming config: {e}")
         raise HTTPException(
-            status_code=500, detail="Failed to get naming config"
+            status_code=500, detail="Failed to get naming config",
         ) from e
 
 
@@ -275,7 +263,7 @@ async def find_compatible_mates_optimized(
         # Validate inputs
         validated_id = AgentIDValidator.validate_and_raise(agent_id)
         validated = validate_endpoint_inputs(
-            "find_compatible_mates", max_results=max_results
+            "find_compatible_mates", max_results=max_results,
         )
 
         # Generate cache key
@@ -289,7 +277,7 @@ async def find_compatible_mates_optimized(
 
         # Get from database with optimized query
         mates = await postgres_service.find_compatible_mates_optimized(
-            agent_id=validated_id, max_results=validated["max_results"]
+            agent_id=validated_id, max_results=validated["max_results"],
         )
 
         # Cache for 10 minutes
@@ -302,12 +290,12 @@ async def find_compatible_mates_optimized(
     except Exception as e:
         logger.error(f"Failed to find mates for agent {agent_id}: {e}")
         raise HTTPException(
-            status_code=500, detail="Failed to find compatible mates"
+            status_code=500, detail="Failed to find compatible mates",
         ) from e
 
 
 @router.get(
-    "/agents/{agent1_id}/compatibility/{agent2_id}", response_model=dict[str, Any]
+    "/agents/{agent1_id}/compatibility/{agent2_id}", response_model=dict[str, Any],
 )
 @track_async_task("analyze_genetic_compatibility")
 async def analyze_genetic_compatibility_optimized(
@@ -332,7 +320,7 @@ async def analyze_genetic_compatibility_optimized(
 
         # Get from database with optimized query
         compatibility = await postgres_service.analyze_genetic_compatibility_optimized(
-            agent1_id=validated_id1, agent2_id=validated_id2
+            agent1_id=validated_id1, agent2_id=validated_id2,
         )
 
         # Cache for 1 hour (compatibility doesn't change often)
@@ -345,7 +333,7 @@ async def analyze_genetic_compatibility_optimized(
     except Exception as e:
         logger.error(f"Failed to analyze compatibility {agent1_id}:{agent2_id}: {e}")
         raise HTTPException(
-            status_code=500, detail="Failed to analyze genetic compatibility"
+            status_code=500, detail="Failed to analyze genetic compatibility",
         ) from e
 
 
@@ -373,7 +361,7 @@ async def get_agent_lineage_optimized(
 
         # Get from database with optimized query
         lineage = await postgres_service.get_agent_lineage_optimized(
-            agent_id=validated_id, max_depth=validated["max_depth"]
+            agent_id=validated_id, max_depth=validated["max_depth"],
         )
 
         # Cache for 30 minutes
@@ -386,14 +374,14 @@ async def get_agent_lineage_optimized(
     except Exception as e:
         logger.error(f"Failed to get lineage for agent {agent_id}: {e}")
         raise HTTPException(
-            status_code=500, detail="Failed to get agent lineage"
+            status_code=500, detail="Failed to get agent lineage",
         ) from e
 
 
 @router.get("/agents/{agent_id}/social_stats", response_model=dict[str, Any])
 @track_async_task("get_social_stats")
 async def get_social_stats_optimized(
-    agent_id: str = Path(..., description="Agent ID"), cache: Any = Depends(get_cache)
+    agent_id: str = Path(..., description="Agent ID"), cache: Any = Depends(get_cache),
 ):
     """Get optimized social stats with validation and caching."""
     try:
@@ -402,7 +390,7 @@ async def get_social_stats_optimized(
 
         # Try cache first
         cached_stats = await cache.get(
-            "agent_interactions", f"social_stats:{validated_id}"
+            "agent_interactions", f"social_stats:{validated_id}",
         )
         if cached_stats:
             logger.debug(f"Cache hit for social stats of agent {validated_id}")
@@ -413,7 +401,7 @@ async def get_social_stats_optimized(
 
         # Cache for 5 minutes
         await cache.set(
-            "agent_interactions", f"social_stats:{validated_id}", stats, ttl=300
+            "agent_interactions", f"social_stats:{validated_id}", stats, ttl=300,
         )
 
         return stats
@@ -429,7 +417,7 @@ async def get_social_stats_optimized(
 @router.get("/agents/{agent_id}/position", response_model=dict[str, Any])
 @track_async_task("get_agent_position")
 async def get_agent_position_optimized(
-    agent_id: str = Path(..., description="Agent ID"), cache: Any = Depends(get_cache)
+    agent_id: str = Path(..., description="Agent ID"), cache: Any = Depends(get_cache),
 ):
     """Get optimized agent position with validation and caching."""
     try:
@@ -446,7 +434,7 @@ async def get_agent_position_optimized(
         position = await postgres_service.get_agent_position(validated_id)
         if not position:
             raise HTTPException(
-                status_code=404, detail=f"Position not found for agent {validated_id}"
+                status_code=404, detail=f"Position not found for agent {validated_id}",
             )
 
         # Cache for 1 minute (positions change frequently)
@@ -459,7 +447,7 @@ async def get_agent_position_optimized(
     except Exception as e:
         logger.error(f"Failed to get position for agent {agent_id}: {e}")
         raise HTTPException(
-            status_code=500, detail="Failed to get agent position"
+            status_code=500, detail="Failed to get agent position",
         ) from e
 
 
@@ -477,7 +465,7 @@ async def move_agent_optimized(
 
         # Move agent
         new_position = await postgres_service.move_agent_optimized(
-            agent_id=validated_id, x=request.x, y=request.y
+            agent_id=validated_id, x=request.x, y=request.y,
         )
 
         # Invalidate position cache
@@ -591,7 +579,7 @@ async def get_performance_metrics_optimized():
     except Exception as e:
         logger.error(f"Failed to get performance metrics: {e}")
         raise HTTPException(
-            status_code=500, detail="Failed to get performance metrics"
+            status_code=500, detail="Failed to get performance metrics",
         ) from e
 
 
@@ -620,7 +608,7 @@ async def test_optimized_endpoints():
     print("\n✅ Testing Input Validation:")
     try:
         validated = validate_endpoint_inputs(
-            "test_endpoint", agent_id="test-agent-123", spirit="fox", limit=10
+            "test_endpoint", agent_id="test-agent-123", spirit="fox", limit=10,
         )
         print(f"   ✅ Validation working: {validated}")
     except Exception as e:

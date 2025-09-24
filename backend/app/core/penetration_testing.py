@@ -1,5 +1,4 @@
-"""
-Penetration Testing Mode Coordinator
+"""Penetration Testing Mode Coordinator
 
 This module provides coordination between the backend and fenrir testing suite
 to ensure that auto-reloading is disabled during penetration testing sessions.
@@ -25,8 +24,7 @@ from app.core.config import get_config
 
 
 class PenetrationTestingCoordinator:
-    """
-    Coordinates penetration testing sessions between backend and fenrir suite.
+    """Coordinates penetration testing sessions between backend and fenrir suite.
 
     This class manages the penetration testing mode state and provides
     methods to control auto-reloading during security testing sessions.
@@ -48,10 +46,9 @@ class PenetrationTestingCoordinator:
         self.uvicorn_server = None
 
     def activate_penetration_testing(
-        self, session_id: str, timeout_minutes: int = 30
+        self, session_id: str, timeout_minutes: int = 30,
     ) -> bool:
-        """
-        Activate penetration testing mode.
+        """Activate penetration testing mode.
 
         Args:
             session_id: Unique identifier for the testing session
@@ -59,6 +56,7 @@ class PenetrationTestingCoordinator:
 
         Returns:
             bool: True if successfully activated
+
         """
         with self.lock:
             if self.is_active:
@@ -79,14 +77,14 @@ class PenetrationTestingCoordinator:
             return True
 
     def deactivate_penetration_testing(self, session_id: str) -> bool:
-        """
-        Deactivate penetration testing mode.
+        """Deactivate penetration testing mode.
 
         Args:
             session_id: Session ID to deactivate
 
         Returns:
             bool: True if successfully deactivated
+
         """
         with self.lock:
             if not self.is_active or self.session_id != session_id:
@@ -106,11 +104,11 @@ class PenetrationTestingCoordinator:
             return True
 
     def is_penetration_testing_active(self) -> bool:
-        """
-        Check if penetration testing mode is currently active.
+        """Check if penetration testing mode is currently active.
 
         Returns:
             bool: True if penetration testing is active
+
         """
         with self.lock:
             # Check for timeout
@@ -123,11 +121,11 @@ class PenetrationTestingCoordinator:
             return self.is_active
 
     def get_session_info(self) -> dict[str, Any]:
-        """
-        Get current penetration testing session information.
+        """Get current penetration testing session information.
 
         Returns:
             dict: Session information
+
         """
         with self.lock:
             if not self.is_active:
@@ -162,7 +160,7 @@ class PenetrationTestingCoordinator:
                 f.write(f"REYNARD_PENETRATION_TESTING={self.is_active}\n")
                 f.write(f"SESSION_ID={self.session_id}\n")
                 f.write(
-                    f"START_TIME={self.start_time.isoformat() if self.start_time else ''}\n"
+                    f"START_TIME={self.start_time.isoformat() if self.start_time else ''}\n",
                 )
                 f.write(f"TIMEOUT_MINUTES={self.timeout_minutes}\n")
                 f.write(f"PID={os.getpid()}\n")
@@ -220,8 +218,7 @@ def get_penetration_coordinator() -> PenetrationTestingCoordinator:
 
 
 class PenetrationTestingMiddleware(BaseHTTPMiddleware):
-    """
-    Middleware to handle penetration testing mode coordination.
+    """Middleware to handle penetration testing mode coordination.
 
     This middleware provides HTTP endpoints for the fenrir suite to
     control penetration testing mode and checks for active sessions.
@@ -232,8 +229,7 @@ class PenetrationTestingMiddleware(BaseHTTPMiddleware):
         self.coordinator = get_penetration_coordinator()
 
     async def dispatch(self, request: Request, call_next) -> Response:
-        """
-        Process requests and handle penetration testing mode endpoints.
+        """Process requests and handle penetration testing mode endpoints.
 
         Args:
             request: The incoming HTTP request
@@ -241,6 +237,7 @@ class PenetrationTestingMiddleware(BaseHTTPMiddleware):
 
         Returns:
             Response: The HTTP response
+
         """
         # Handle penetration testing control endpoints
         if request.url.path == "/api/penetration-testing/activate":
@@ -258,7 +255,7 @@ class PenetrationTestingMiddleware(BaseHTTPMiddleware):
             session_info = self.coordinator.get_session_info()
             response.headers["X-PT-Session-ID"] = session_info.get("session_id", "")
             response.headers["X-PT-Remaining"] = str(
-                session_info.get("remaining_seconds", 0)
+                session_info.get("remaining_seconds", 0),
             )
 
         return response
@@ -274,7 +271,7 @@ class PenetrationTestingMiddleware(BaseHTTPMiddleware):
             timeout_minutes = data.get("timeout_minutes", 30)
 
             success = self.coordinator.activate_penetration_testing(
-                session_id, timeout_minutes
+                session_id, timeout_minutes,
             )
 
             if success:
@@ -287,7 +284,7 @@ class PenetrationTestingMiddleware(BaseHTTPMiddleware):
 
         except Exception as e:
             return Response(
-                f"Error activating penetration testing: {e!s}", status_code=500
+                f"Error activating penetration testing: {e!s}", status_code=500,
             )
 
     async def _handle_deactivate(self, request: Request) -> Response:
@@ -313,7 +310,7 @@ class PenetrationTestingMiddleware(BaseHTTPMiddleware):
 
         except Exception as e:
             return Response(
-                f"Error deactivating penetration testing: {e!s}", status_code=500
+                f"Error deactivating penetration testing: {e!s}", status_code=500,
             )
 
     async def _handle_status(self, request: Request) -> Response:
@@ -337,14 +334,14 @@ def setup_penetration_testing_middleware(app: FastAPI):
 
 
 def check_penetration_testing_state() -> bool:
-    """
-    Check if penetration testing mode should be active based on state file.
+    """Check if penetration testing mode should be active based on state file.
 
     This function is called during startup to restore penetration testing
     state if the server was restarted during an active session.
 
     Returns:
         bool: True if penetration testing should be active
+
     """
     state_file = Path("/tmp/reynard_penetration_testing.lock")
 

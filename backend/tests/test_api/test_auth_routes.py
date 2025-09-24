@@ -1,5 +1,4 @@
-"""
-Tests for authentication API routes.
+"""Tests for authentication API routes.
 
 This module tests all authentication endpoints including registration,
 login, logout, token refresh, and protected routes.
@@ -357,7 +356,7 @@ class TestProtectedRoutes:
         assert response.status_code == 401
 
     def test_protected_route_expired_token(
-        self, client: TestClient, clean_databases, expired_token
+        self, client: TestClient, clean_databases, expired_token,
     ):
         """Test protected route access with expired token."""
         headers = {"Authorization": f"Bearer {expired_token}"}

@@ -1,5 +1,4 @@
-"""
-🦊 Reynard Event Handlers
+"""🦊 Reynard Event Handlers
 =========================
 
 Advanced event processing and handling utilities for the Reynard backend services,
@@ -30,7 +29,8 @@ import json
 import time
 from abc import ABC, abstractmethod
 from collections import defaultdict, deque
-from typing import Any, Callable, Dict, List, Optional, Union
+from collections.abc import Callable
+from typing import Any
 
 from pydantic import BaseModel, Field
 
@@ -44,7 +44,7 @@ class EventFilter(BaseModel):
     """Event filter configuration."""
 
     name: str
-    criteria: Dict[str, Any] = Field(default_factory=dict)
+    criteria: dict[str, Any] = Field(default_factory=dict)
     enabled: bool = True
     priority: int = 0  # Higher priority filters run first
 
@@ -54,7 +54,7 @@ class EventTransformer(BaseModel):
 
     name: str
     transform_func: str  # Function name to call
-    parameters: Dict[str, Any] = Field(default_factory=dict)
+    parameters: dict[str, Any] = Field(default_factory=dict)
     enabled: bool = True
     priority: int = 0
 
@@ -63,14 +63,12 @@ class EventProcessor(ABC):
     """Abstract base class for event processors."""
 
     @abstractmethod
-    async def process(self, event: Dict[str, Any]) -> Dict[str, Any]:
+    async def process(self, event: dict[str, Any]) -> dict[str, Any]:
         """Process an event and return the result."""
-        pass
 
     @abstractmethod
-    def can_handle(self, event: Dict[str, Any]) -> bool:
+    def can_handle(self, event: dict[str, Any]) -> bool:
         """Check if this processor can handle the event."""
-        pass
 
 
 class EventRouter:
@@ -78,10 +76,10 @@ class EventRouter:
 
     def __init__(self, name: str = "default"):
         self.name = name
-        self.filters: List[EventFilter] = []
-        self.transformers: List[EventTransformer] = []
-        self.processors: List[EventProcessor] = []
-        self.routes: Dict[str, List[Callable]] = defaultdict(list)
+        self.filters: list[EventFilter] = []
+        self.transformers: list[EventTransformer] = []
+        self.processors: list[EventProcessor] = []
+        self.routes: dict[str, list[Callable]] = defaultdict(list)
         self.event_history: deque = deque(maxlen=10000)  # Keep last 10k events
         self.metrics = {
             "events_processed": 0,
@@ -113,14 +111,14 @@ class EventRouter:
         self.routes[event_type].append(handler)
         logger.info(f"Added route for event type: {event_type}")
 
-    async def process_event(self, event: Dict[str, Any]) -> Dict[str, Any]:
+    async def process_event(self, event: dict[str, Any]) -> dict[str, Any]:
         """Process an event through the router pipeline."""
         start_time = time.time()
 
         try:
             # Store event in history
             self.event_history.append(
-                {"event": event, "timestamp": time.time(), "router": self.name}
+                {"event": event, "timestamp": time.time(), "router": self.name},
             )
 
             # Apply filters
@@ -155,7 +153,7 @@ class EventRouter:
             logger.error(f"Error processing event: {e}")
             return {"status": "error", "error": str(e), "event": event}
 
-    async def _apply_filters(self, event: Dict[str, Any]) -> bool:
+    async def _apply_filters(self, event: dict[str, Any]) -> bool:
         """Apply all enabled filters to the event."""
         for filter_config in self.filters:
             if not filter_config.enabled:
@@ -168,7 +166,7 @@ class EventRouter:
         return True
 
     async def _evaluate_filter(
-        self, filter_config: EventFilter, event: Dict[str, Any]
+        self, filter_config: EventFilter, event: dict[str, Any],
     ) -> bool:
         """Evaluate a single filter against an event."""
         criteria = filter_config.criteria
@@ -203,7 +201,7 @@ class EventRouter:
 
         return True
 
-    async def _apply_transformers(self, event: Dict[str, Any]) -> Dict[str, Any]:
+    async def _apply_transformers(self, event: dict[str, Any]) -> dict[str, Any]:
         """Apply all enabled transformers to the event."""
         transformed_event = event.copy()
 
@@ -213,7 +211,7 @@ class EventRouter:
 
             try:
                 transformed_event = await self._apply_transformer(
-                    transformer_config, transformed_event
+                    transformer_config, transformed_event,
                 )
             except Exception as e:
                 logger.error(f"Error in transformer {transformer_config.name}: {e}")
@@ -222,8 +220,8 @@ class EventRouter:
         return transformed_event
 
     async def _apply_transformer(
-        self, transformer_config: EventTransformer, event: Dict[str, Any]
-    ) -> Dict[str, Any]:
+        self, transformer_config: EventTransformer, event: dict[str, Any],
+    ) -> dict[str, Any]:
         """Apply a single transformer to the event."""
         transform_func = transformer_config.transform_func
         parameters = transformer_config.parameters
@@ -258,7 +256,7 @@ class EventRouter:
 
         return event
 
-    async def _apply_processors(self, event: Dict[str, Any]) -> Dict[str, Any]:
+    async def _apply_processors(self, event: dict[str, Any]) -> dict[str, Any]:
         """Apply custom processors to the event."""
         processed_event = event.copy()
 
@@ -268,13 +266,13 @@ class EventRouter:
                     processed_event = await processor.process(processed_event)
                 except Exception as e:
                     logger.error(
-                        f"Error in processor {processor.__class__.__name__}: {e}"
+                        f"Error in processor {processor.__class__.__name__}: {e}",
                     )
                     # Continue with other processors
 
         return processed_event
 
-    async def _route_event(self, event: Dict[str, Any]):
+    async def _route_event(self, event: dict[str, Any]):
         """Route event to appropriate handlers."""
         event_type = event.get("type", "default")
 
@@ -290,7 +288,7 @@ class EventRouter:
                 except Exception as e:
                     logger.error(f"Error in event handler: {e}")
 
-    def get_metrics(self) -> Dict[str, Any]:
+    def get_metrics(self) -> dict[str, Any]:
         """Get router metrics."""
         return {
             "router_name": self.name,
@@ -302,7 +300,7 @@ class EventRouter:
             "history_size": len(self.event_history),
         }
 
-    def get_event_history(self, limit: int = 100) -> List[Dict[str, Any]]:
+    def get_event_history(self, limit: int = 100) -> list[dict[str, Any]]:
         """Get recent event history."""
         return list(self.event_history)[-limit:]
 
@@ -316,19 +314,19 @@ class EventValidator:
     """Event validation utilities."""
 
     @staticmethod
-    def validate_event_structure(event: Dict[str, Any]) -> bool:
+    def validate_event_structure(event: dict[str, Any]) -> bool:
         """Validate basic event structure."""
         required_fields = ["type", "data"]
         return all(field in event for field in required_fields)
 
     @staticmethod
-    def validate_event_type(event: Dict[str, Any], allowed_types: List[str]) -> bool:
+    def validate_event_type(event: dict[str, Any], allowed_types: list[str]) -> bool:
         """Validate event type against allowed types."""
         event_type = event.get("type")
         return event_type in allowed_types
 
     @staticmethod
-    def validate_event_data(event: Dict[str, Any], schema: Dict[str, Any]) -> bool:
+    def validate_event_data(event: dict[str, Any], schema: dict[str, Any]) -> bool:
         """Validate event data against a schema."""
         event_data = event.get("data", {})
 
@@ -346,12 +344,12 @@ class EventAnalytics:
     """Event analytics and monitoring."""
 
     def __init__(self):
-        self.event_counts: Dict[str, int] = defaultdict(int)
-        self.event_timestamps: List[float] = []
-        self.processing_times: List[float] = []
-        self.error_counts: Dict[str, int] = defaultdict(int)
+        self.event_counts: dict[str, int] = defaultdict(int)
+        self.event_timestamps: list[float] = []
+        self.processing_times: list[float] = []
+        self.error_counts: dict[str, int] = defaultdict(int)
 
-    def record_event(self, event: Dict[str, Any], processing_time: float = 0.0):
+    def record_event(self, event: dict[str, Any], processing_time: float = 0.0):
         """Record an event for analytics."""
         event_type = event.get("type", "unknown")
         self.event_counts[event_type] += 1
@@ -368,7 +366,7 @@ class EventAnalytics:
         """Record an error for analytics."""
         self.error_counts[error_type] += 1
 
-    def get_analytics(self) -> Dict[str, Any]:
+    def get_analytics(self) -> dict[str, Any]:
         """Get analytics data."""
         current_time = time.time()
 
@@ -399,9 +397,9 @@ class EventPersistence:
     def __init__(self, max_events: int = 10000):
         self.max_events = max_events
         self.persisted_events: deque = deque(maxlen=max_events)
-        self.event_index: Dict[str, List[int]] = defaultdict(list)
+        self.event_index: dict[str, list[int]] = defaultdict(list)
 
-    def persist_event(self, event: Dict[str, Any]):
+    def persist_event(self, event: dict[str, Any]):
         """Persist an event for later replay."""
         event_id = event.get("id", str(time.time()))
         event_with_id = {**event, "id": event_id}
@@ -413,8 +411,8 @@ class EventPersistence:
         self.event_index[event_type].append(len(self.persisted_events) - 1)
 
     def get_events_by_type(
-        self, event_type: str, limit: int = 100
-    ) -> List[Dict[str, Any]]:
+        self, event_type: str, limit: int = 100,
+    ) -> list[dict[str, Any]]:
         """Get events by type."""
         if event_type not in self.event_index:
             return []
@@ -424,22 +422,21 @@ class EventPersistence:
             self.persisted_events[i] for i in indices if i < len(self.persisted_events)
         ]
 
-    def get_recent_events(self, limit: int = 100) -> List[Dict[str, Any]]:
+    def get_recent_events(self, limit: int = 100) -> list[dict[str, Any]]:
         """Get recent events."""
         return list(self.persisted_events)[-limit:]
 
     def replay_events(
-        self, event_type: Optional[str] = None, limit: int = 100
-    ) -> List[Dict[str, Any]]:
+        self, event_type: str | None = None, limit: int = 100,
+    ) -> list[dict[str, Any]]:
         """Replay events for testing or analysis."""
         if event_type:
             return self.get_events_by_type(event_type, limit)
-        else:
-            return self.get_recent_events(limit)
+        return self.get_recent_events(limit)
 
 
 # Global event router instance
-_global_event_router: Optional[EventRouter] = None
+_global_event_router: EventRouter | None = None
 
 
 def get_global_event_router() -> EventRouter:
@@ -462,7 +459,7 @@ class LoggingEventProcessor(EventProcessor):
     def __init__(self, log_level: str = "info"):
         self.log_level = log_level
 
-    async def process(self, event: Dict[str, Any]) -> Dict[str, Any]:
+    async def process(self, event: dict[str, Any]) -> dict[str, Any]:
         """Log the event."""
         if self.log_level == "debug":
             logger.debug(f"Event processed: {event}")
@@ -475,7 +472,7 @@ class LoggingEventProcessor(EventProcessor):
 
         return event
 
-    def can_handle(self, event: Dict[str, Any]) -> bool:
+    def can_handle(self, event: dict[str, Any]) -> bool:
         """Can handle all events."""
         return True
 
@@ -486,12 +483,12 @@ class MetricsEventProcessor(EventProcessor):
     def __init__(self, analytics: EventAnalytics):
         self.analytics = analytics
 
-    async def process(self, event: Dict[str, Any]) -> Dict[str, Any]:
+    async def process(self, event: dict[str, Any]) -> dict[str, Any]:
         """Collect metrics for the event."""
         self.analytics.record_event(event)
         return event
 
-    def can_handle(self, event: Dict[str, Any]) -> bool:
+    def can_handle(self, event: dict[str, Any]) -> bool:
         """Can handle all events."""
         return True
 
@@ -500,12 +497,12 @@ class ValidationEventProcessor(EventProcessor):
     """Event processor that validates events."""
 
     def __init__(
-        self, allowed_types: List[str], schema: Optional[Dict[str, Any]] = None
+        self, allowed_types: list[str], schema: dict[str, Any] | None = None,
     ):
         self.allowed_types = allowed_types
         self.schema = schema or {}
 
-    async def process(self, event: Dict[str, Any]) -> Dict[str, Any]:
+    async def process(self, event: dict[str, Any]) -> dict[str, Any]:
         """Validate the event."""
         if not EventValidator.validate_event_structure(event):
             raise ValidationError("Invalid event structure")
@@ -518,6 +515,6 @@ class ValidationEventProcessor(EventProcessor):
 
         return event
 
-    def can_handle(self, event: Dict[str, Any]) -> bool:
+    def can_handle(self, event: dict[str, Any]) -> bool:
         """Can handle all events."""
         return True

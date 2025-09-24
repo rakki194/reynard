@@ -1,14 +1,12 @@
-"""
-Success-Advisor-8 Migration Script
+"""Success-Advisor-8 Migration Script
 
 Migrates Success-Advisor-8's complete genomic information to PostgreSQL database.
 """
 
 import json
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Dict, List
 
 from .database import (
     AbilityTrait,
@@ -36,17 +34,17 @@ class SuccessAdvisorMigration:
         self.db = ecs_db
 
     async def migrate_success_advisor_8(self, json_file_path: str) -> bool:
-        """
-        Migrate Success-Advisor-8's complete genomic data to PostgreSQL.
+        """Migrate Success-Advisor-8's complete genomic data to PostgreSQL.
 
         Args:
             json_file_path: Path to the Success-Advisor-8 JSON file
 
         Returns:
             True if migration successful, False otherwise
+
         """
         try:
-            with open(json_file_path, "r") as f:
+            with open(json_file_path) as f:
                 data = json.load(f)
 
             with self.db.get_session() as session:
@@ -57,13 +55,13 @@ class SuccessAdvisorMigration:
                     .first()
                 )
                 if existing_agent:
-                    logger.info(f"Success-Advisor-8 already exists, updating...")
+                    logger.info("Success-Advisor-8 already exists, updating...")
                     agent = existing_agent
                 else:
                     # Create the agent
                     agent = Agent(
                         agent_id=data.get(
-                            "id", "permanent-release-manager-success-advisor-8"
+                            "id", "permanent-release-manager-success-advisor-8",
                         ),
                         name=data.get("name", "Success-Advisor-8"),
                         spirit=data.get("spirit", "lion"),
@@ -72,41 +70,41 @@ class SuccessAdvisorMigration:
                         active=True,
                         created_at=datetime.fromisoformat(
                             data.get(
-                                "created_at", datetime.now(timezone.utc).isoformat()
-                            )
+                                "created_at", datetime.now(UTC).isoformat(),
+                            ),
                         ),
-                        last_activity=datetime.now(timezone.utc),
+                        last_activity=datetime.now(UTC),
                     )
                     session.add(agent)
                     session.flush()  # Get the agent ID
 
                 # Clear existing traits and data
                 session.query(PersonalityTrait).filter(
-                    PersonalityTrait.agent_id == agent.id
+                    PersonalityTrait.agent_id == agent.id,
                 ).delete()
                 session.query(PhysicalTrait).filter(
-                    PhysicalTrait.agent_id == agent.id
+                    PhysicalTrait.agent_id == agent.id,
                 ).delete()
                 session.query(AbilityTrait).filter(
-                    AbilityTrait.agent_id == agent.id
+                    AbilityTrait.agent_id == agent.id,
                 ).delete()
                 session.query(AgentSpecialization).filter(
-                    AgentSpecialization.agent_id == agent.id
+                    AgentSpecialization.agent_id == agent.id,
                 ).delete()
                 session.query(AgentDomainExpertise).filter(
-                    AgentDomainExpertise.agent_id == agent.id
+                    AgentDomainExpertise.agent_id == agent.id,
                 ).delete()
                 session.query(AgentAchievement).filter(
-                    AgentAchievement.agent_id == agent.id
+                    AgentAchievement.agent_id == agent.id,
                 ).delete()
                 session.query(AgentWorkflowPreference).filter(
-                    AgentWorkflowPreference.agent_id == agent.id
+                    AgentWorkflowPreference.agent_id == agent.id,
                 ).delete()
                 session.query(KnowledgeBaseEntry).filter(
-                    KnowledgeBaseEntry.agent_id == agent.id
+                    KnowledgeBaseEntry.agent_id == agent.id,
                 ).delete()
                 session.query(PerformanceMetric).filter(
-                    PerformanceMetric.agent_id == agent.id
+                    PerformanceMetric.agent_id == agent.id,
                 ).delete()
 
                 # Add personality traits
@@ -141,7 +139,7 @@ class SuccessAdvisorMigration:
 
                 # Add specializations
                 specializations = data.get("knowledge_base", {}).get(
-                    "specializations", []
+                    "specializations", [],
                 )
                 for specialization in specializations:
                     spec = AgentSpecialization(
@@ -158,7 +156,7 @@ class SuccessAdvisorMigration:
                         # Calculate average expertise level
                         if expertise_data:
                             avg_expertise = sum(expertise_data.values()) / len(
-                                expertise_data
+                                expertise_data,
                             )
                             expertise = AgentDomainExpertise(
                                 agent_id=agent.id,
@@ -179,7 +177,7 @@ class SuccessAdvisorMigration:
 
                 # Add workflow preferences
                 workflow_prefs = data.get("knowledge_base", {}).get(
-                    "workflow_preferences", {}
+                    "workflow_preferences", {},
                 )
                 for pref_name, pref_value in workflow_prefs.items():
                     pref = AgentWorkflowPreference(
@@ -198,7 +196,7 @@ class SuccessAdvisorMigration:
                                 domain=domain,
                                 skill=skill,
                                 proficiency_level=float(level),
-                                last_updated=datetime.now(timezone.utc),
+                                last_updated=datetime.now(UTC),
                             )
                             session.add(kb_entry)
 
@@ -211,8 +209,8 @@ class SuccessAdvisorMigration:
                         metric_value=float(perf_data.get("fitness", 0.0)),
                         timestamp=datetime.fromisoformat(
                             perf_data.get(
-                                "timestamp", datetime.now(timezone.utc).isoformat()
-                            )
+                                "timestamp", datetime.now(UTC).isoformat(),
+                            ),
                         ),
                         metadata={
                             "accuracy": perf_data.get("accuracy", 0.0),
@@ -246,19 +244,19 @@ class SuccessAdvisorMigration:
                     session.add(position)
 
                 session.commit()
-                logger.info(f"✅ Success-Advisor-8 genomic data migrated successfully")
+                logger.info("✅ Success-Advisor-8 genomic data migrated successfully")
                 return True
 
         except Exception as e:
             logger.error(f"❌ Failed to migrate Success-Advisor-8: {e}")
             return False
 
-    async def migrate_all_phoenix_data(self) -> Dict[str, bool]:
-        """
-        Migrate all Phoenix experiment data to PostgreSQL.
+    async def migrate_all_phoenix_data(self) -> dict[str, bool]:
+        """Migrate all Phoenix experiment data to PostgreSQL.
 
         Returns:
             Dictionary with migration results
+
         """
         results = {}
 
@@ -266,19 +264,19 @@ class SuccessAdvisorMigration:
         success_advisor_file = "/home/kade/runeset/reynard/experimental/phoenix/data/agent_state/permanent-release-manager-success-advisor-8.json"
         if Path(success_advisor_file).exists():
             results["success_advisor_8"] = await self.migrate_success_advisor_8(
-                success_advisor_file
+                success_advisor_file,
             )
 
         # New agent candidate data
         new_agent_file = "/home/kade/runeset/reynard/experimental/phoenix/data/agent_state/new_agent_candidate.json"
         if Path(new_agent_file).exists():
             results["new_agent_candidate"] = await self.migrate_phoenix_agent_data(
-                new_agent_file
+                new_agent_file,
             )
 
         # Phoenix test generations
         phoenix_test_dir = Path(
-            "/home/kade/runeset/reynard/experimental/phoenix/data/phoenix_test"
+            "/home/kade/runeset/reynard/experimental/phoenix/data/phoenix_test",
         )
         if phoenix_test_dir.exists():
             for gen_file in phoenix_test_dir.glob("generation_*.json"):
@@ -289,24 +287,24 @@ class SuccessAdvisorMigration:
         return results
 
     async def migrate_phoenix_agent_data(self, json_file_path: str) -> bool:
-        """
-        Migrate Phoenix agent data to PostgreSQL.
+        """Migrate Phoenix agent data to PostgreSQL.
 
         Args:
             json_file_path: Path to the Phoenix agent JSON file
 
         Returns:
             True if migration successful, False otherwise
+
         """
         try:
-            with open(json_file_path, "r") as f:
+            with open(json_file_path) as f:
                 data = json.load(f)
 
             with self.db.get_session() as session:
                 # Create agent
                 agent = Agent(
                     agent_id=data.get(
-                        "id", f"phoenix-agent-{Path(json_file_path).stem}"
+                        "id", f"phoenix-agent-{Path(json_file_path).stem}",
                     ),
                     name=data.get("name", "Phoenix Agent"),
                     spirit=data.get("spirit", "phoenix"),
@@ -314,9 +312,9 @@ class SuccessAdvisorMigration:
                     generation=data.get("generation", 1),
                     active=True,
                     created_at=datetime.fromisoformat(
-                        data.get("created_at", datetime.now(timezone.utc).isoformat())
+                        data.get("created_at", datetime.now(UTC).isoformat()),
                     ),
-                    last_activity=datetime.now(timezone.utc),
+                    last_activity=datetime.now(UTC),
                 )
                 session.add(agent)
                 session.flush()  # Get the agent ID

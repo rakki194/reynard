@@ -5,7 +5,7 @@
  * and expandable content viewing.
  */
 import { Show, createSignal } from "solid-js";
-export const ThinkingIndicator = props => {
+export const ThinkingIndicator = (props: any) => {
   const [isExpanded, setIsExpanded] = createSignal(props.showContent || false);
   const getVariantClass = () => {
     const base = "reynard-thinking-indicator";

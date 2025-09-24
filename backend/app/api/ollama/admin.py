@@ -1,5 +1,4 @@
-"""
-Administrative endpoints for Ollama service.
+"""Administrative endpoints for Ollama service.
 """
 
 import logging
@@ -66,7 +65,7 @@ async def pull_model(model_name: str):
 
         if not success:
             raise HTTPException(
-                status_code=400, detail=f"Failed to pull model {model_name}"
+                status_code=400, detail=f"Failed to pull model {model_name}",
             )
 
         return {"success": True, "message": f"Model {model_name} pulled successfully"}

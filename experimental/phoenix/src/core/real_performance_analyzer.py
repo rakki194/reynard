@@ -1,5 +1,4 @@
-"""
-Real Performance Analyzer
+"""Real Performance Analyzer
 
 Replaces simulated performance metrics with real algorithmic analysis of agent outputs.
 
@@ -7,11 +6,8 @@ Author: Reynard-Director-36
 Version: 1.0.0
 """
 
-import asyncio
 import logging
 import re
-from datetime import datetime
-from typing import Any, Dict, List, Optional
 
 from ..utils.data_structures import (
     AgentState,
@@ -23,8 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 class RealPerformanceAnalyzer:
-    """
-    Real performance analyzer that evaluates agent outputs using actual algorithmic analysis.
+    """Real performance analyzer that evaluates agent outputs using actual algorithmic analysis.
     """
 
     def __init__(self):
@@ -91,10 +86,9 @@ class RealPerformanceAnalyzer:
         }
 
     async def analyze_agent_output(
-        self, agent: AgentState, output: str
+        self, agent: AgentState, output: str,
     ) -> PerformanceMetrics:
-        """
-        Analyze real agent output to generate performance metrics.
+        """Analyze real agent output to generate performance metrics.
         """
         self.logger.info(f"🔍 Analyzing real output for agent {agent.name}")
 
@@ -299,8 +293,7 @@ class RealPerformanceAnalyzer:
         return trait_effect + quality_effect
 
     async def generate_real_agent_output(self, agent: AgentState, task: str) -> str:
-        """
-        Generate real agent output based on agent characteristics and task.
+        """Generate real agent output based on agent characteristics and task.
         This replaces the simulated agent output generation.
         """
         self.logger.info(f"🤖 Generating real output for agent {agent.name}")
@@ -324,40 +317,40 @@ class RealPerformanceAnalyzer:
 
         output_parts.append(
             spirit_intro.get(
-                agent.spirit.value, f"As a {agent.spirit.value}, I approach this task:"
-            )
+                agent.spirit.value, f"As a {agent.spirit.value}, I approach this task:",
+            ),
         )
 
         # Add content based on personality traits
         if agent.personality_traits.get("curiosity", 0) > 0.7:
             output_parts.append(
-                "I'm deeply curious about the underlying patterns and possibilities."
+                "I'm deeply curious about the underlying patterns and possibilities.",
             )
 
         if agent.personality_traits.get("strategic_thinking", 0) > 0.7:
             output_parts.append(
-                "Let me analyze this systematically and develop a strategic approach."
+                "Let me analyze this systematically and develop a strategic approach.",
             )
 
         if agent.personality_traits.get("adaptability", 0) > 0.7:
             output_parts.append(
-                "I'll adapt my approach based on the specific requirements and constraints."
+                "I'll adapt my approach based on the specific requirements and constraints.",
             )
 
         # Add content based on ability traits
         if agent.ability_traits.get("problem_solving", 0) > 0.7:
             output_parts.append(
-                "I'll break down the problem into manageable components and solve each systematically."
+                "I'll break down the problem into manageable components and solve each systematically.",
             )
 
         if agent.ability_traits.get("planning", 0) > 0.7:
             output_parts.append(
-                "I'll create a comprehensive plan with clear milestones and success criteria."
+                "I'll create a comprehensive plan with clear milestones and success criteria.",
             )
 
         if agent.ability_traits.get("communication", 0) > 0.7:
             output_parts.append(
-                "I'll ensure clear communication and alignment with all stakeholders."
+                "I'll ensure clear communication and alignment with all stakeholders.",
             )
 
         # Add task-specific content
@@ -389,7 +382,7 @@ class RealPerformanceAnalyzer:
             spirit_conclusion.get(
                 agent.spirit.value,
                 "I'm ready to tackle this challenge with determination.",
-            )
+            ),
         )
 
         return " ".join(output_parts)

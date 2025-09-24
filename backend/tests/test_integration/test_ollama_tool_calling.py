@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Test script to verify backend tool calling functionality with qwen3:latest.
+"""Test script to verify backend tool calling functionality with qwen3:latest.
 """
 
 import asyncio
@@ -92,7 +91,6 @@ def execute_tool_call(tool_call: dict[str, Any]) -> dict[str, Any]:
 @pytest.mark.asyncio
 async def test_backend_tool_calling():
     """Test the backend tool calling functionality."""
-
     # Test tools in correct format
     test_tools = [
         {
@@ -106,12 +104,12 @@ async def test_backend_tool_calling():
                         "input_num": {
                             "type": "number",
                             "description": "The number to be squared",
-                        }
+                        },
                     },
                     "required": ["input_num"],
                 },
             },
-        }
+        },
     ]
 
     # Test payload
@@ -129,7 +127,7 @@ async def test_backend_tool_calling():
     try:
         async with aiohttp.ClientSession() as session:
             async with session.post(
-                "http://localhost:8000/api/ollama/chat", json=payload
+                "http://localhost:8000/api/ollama/chat", json=payload,
             ) as response:
                 print(f"Response status: {response.status}")
 
@@ -146,7 +144,7 @@ async def test_backend_tool_calling():
                     # Check for tool calls in response text
                     tool_analysis = check_tool_calls(response_text)
                     print(
-                        f"   Tool calls in text: {'✅ Yes' if tool_analysis['has_tool_calls'] else '❌ No'}"
+                        f"   Tool calls in text: {'✅ Yes' if tool_analysis['has_tool_calls'] else '❌ No'}",
                     )
                     if tool_analysis["patterns_found"]:
                         print(f"   Patterns found: {tool_analysis['patterns_found']}")
@@ -155,7 +153,7 @@ async def test_backend_tool_calling():
                     tool_calls = data.get("tool_calls", [])
                     tools_used = data.get("tools_used", [])
                     print(
-                        f"   Tool calls in response: {'✅ Yes' if tool_calls else '❌ No'}"
+                        f"   Tool calls in response: {'✅ Yes' if tool_calls else '❌ No'}",
                     )
                     if tool_calls:
                         print(f"   Tool calls: {tool_calls}")
@@ -189,7 +187,7 @@ async def test_backend_tool_calling():
 
     except aiohttp.ClientConnectorError:
         print(
-            "❌ Cannot connect to backend server. Make sure it's running on port 8000."
+            "❌ Cannot connect to backend server. Make sure it's running on port 8000.",
         )
         return False
     except Exception as e:
@@ -200,7 +198,6 @@ async def test_backend_tool_calling():
 @pytest.mark.asyncio
 async def test_backend_assistant():
     """Test the backend assistant functionality."""
-
     payload = {
         "message": "Help me with a coding task - can you list files in the current directory?",
         "assistant_type": "reynard",
@@ -216,7 +213,7 @@ async def test_backend_assistant():
     try:
         async with aiohttp.ClientSession() as session:
             async with session.post(
-                "http://localhost:8000/api/ollama/assistant", json=payload
+                "http://localhost:8000/api/ollama/assistant", json=payload,
             ) as response:
                 print(f"Response status: {response.status}")
 
@@ -234,7 +231,7 @@ async def test_backend_assistant():
                     # Check for tool calls in response text
                     tool_analysis = check_tool_calls(response_text)
                     print(
-                        f"   Tool calls in text: {'✅ Yes' if tool_analysis['has_tool_calls'] else '❌ No'}"
+                        f"   Tool calls in text: {'✅ Yes' if tool_analysis['has_tool_calls'] else '❌ No'}",
                     )
                     if tool_analysis["patterns_found"]:
                         print(f"   Patterns found: {tool_analysis['patterns_found']}")
@@ -243,7 +240,7 @@ async def test_backend_assistant():
                     tool_calls = data.get("tool_calls", [])
                     tools_used = data.get("tools_used", [])
                     print(
-                        f"   Tool calls in response: {'✅ Yes' if tool_calls else '❌ No'}"
+                        f"   Tool calls in response: {'✅ Yes' if tool_calls else '❌ No'}",
                     )
                     if tool_calls:
                         print(f"   Tool calls: {tool_calls}")
@@ -277,7 +274,7 @@ async def test_backend_assistant():
 
     except aiohttp.ClientConnectorError:
         print(
-            "❌ Cannot connect to backend server. Make sure it's running on port 8000."
+            "❌ Cannot connect to backend server. Make sure it's running on port 8000.",
         )
         return False
     except Exception as e:
@@ -299,17 +296,17 @@ async def main():
     print("\n" + "=" * 60)
     print("📊 Tool Calling Analysis:")
     print(
-        f"   Chat endpoint tool calls: {'✅ Working' if chat_tool_calls else '❌ Not working'}"
+        f"   Chat endpoint tool calls: {'✅ Working' if chat_tool_calls else '❌ Not working'}",
     )
     print(
-        f"   Assistant endpoint tool calls: {'✅ Working' if assistant_tool_calls else '❌ Not working'}"
+        f"   Assistant endpoint tool calls: {'✅ Working' if assistant_tool_calls else '❌ Not working'}",
     )
 
     if chat_tool_calls or assistant_tool_calls:
         print("🎉 Tool calling is working! The model is successfully using tools.")
     else:
         print(
-            "⚠️  Tool calling may not be working properly. The model is showing thinking but not making tool calls."
+            "⚠️  Tool calling may not be working properly. The model is showing thinking but not making tool calls.",
         )
         print("   This could be due to:")
         print("   - Model not recognizing the tool format")

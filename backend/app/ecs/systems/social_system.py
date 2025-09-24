@@ -1,5 +1,4 @@
-"""
-Social System
+"""Social System
 
 Manages social networks, group dynamics, social influence, and community formation
 in the ECS world.
@@ -7,39 +6,35 @@ in the ECS world.
 
 import logging
 import random
-from typing import Any, Dict, List, Set
+from typing import Any
 
-from ..components.interaction import InteractionComponent
 from ..components.social import (
     GroupType,
     SocialComponent,
     SocialGroup,
     SocialRole,
-    SocialStatus,
 )
-from ..components.traits import TraitComponent
 from ..core.system import System
 
 logger = logging.getLogger(__name__)
 
 
 class SocialSystem(System):
-    """
-    System for managing social networks, group dynamics, and social influence.
+    """System for managing social networks, group dynamics, and social influence.
 
     Handles group formation, social status updates, influence calculations,
     and community building among agents.
     """
 
     def __init__(self, world: Any) -> None:
-        """
-        Initialize the social system.
+        """Initialize the social system.
 
         Args:
             world: The ECS world this system belongs to
+
         """
         super().__init__(world)
-        self.social_groups: Dict[str, SocialGroup] = {}
+        self.social_groups: dict[str, SocialGroup] = {}
         self.processing_interval = 2.0  # Process social dynamics every 2 seconds
         self.last_processing_time = 0.0
         self.total_groups_created = 0
@@ -47,11 +42,11 @@ class SocialSystem(System):
         self.total_leadership_changes = 0
 
     def update(self, delta_time: float) -> None:
-        """
-        Process social dynamics for all agents.
+        """Process social dynamics for all agents.
 
         Args:
             delta_time: Time elapsed since last update
+
         """
         self.last_processing_time += delta_time
 
@@ -82,7 +77,7 @@ class SocialSystem(System):
         # Process social network updates
         self._process_network_updates(entities)
 
-    def _process_group_formation(self, entities: List[Any]) -> None:
+    def _process_group_formation(self, entities: list[Any]) -> None:
         """Process opportunities for group formation."""
         # Find agents with high social energy and group activity preference
         potential_leaders = []
@@ -111,7 +106,7 @@ class SocialSystem(System):
                 self._attempt_group_formation(leader, potential_members)
 
     def _attempt_group_formation(
-        self, leader: Any, potential_members: List[Any]
+        self, leader: Any, potential_members: list[Any],
     ) -> None:
         """Attempt to form a new group with a leader and potential members."""
         social_comp = leader.get_component(SocialComponent)
@@ -160,14 +155,14 @@ class SocialSystem(System):
         # Check group activity preference compatibility
         activity_diff = abs(
             social_comp1.group_activity_preference
-            - social_comp2.group_activity_preference
+            - social_comp2.group_activity_preference,
         )
         if activity_diff > 0.4:
             return False
 
         return True
 
-    def _create_social_group(self, leader: Any, members: List[Any]) -> None:
+    def _create_social_group(self, leader: Any, members: list[Any]) -> None:
         """Create a new social group."""
         group_id = f"group_{self.total_groups_created}_{leader.id}"
 
@@ -210,10 +205,9 @@ class SocialSystem(System):
         # For now, randomly select based on preferences
         if social_comp.leadership_ability > 0.7:
             return GroupType.WORK
-        elif social_comp.social_energy > 0.8:
+        if social_comp.social_energy > 0.8:
             return GroupType.SOCIAL
-        else:
-            return GroupType.INTEREST
+        return GroupType.INTEREST
 
     def _process_group_dynamics(self) -> None:
         """Process dynamics within existing groups."""
@@ -238,7 +232,7 @@ class SocialSystem(System):
 
         # Calculate average social energy
         avg_social_energy = sum(comp.social_energy for comp in member_components) / len(
-            member_components
+            member_components,
         )
 
         # Update cohesion based on social energy and interactions
@@ -326,10 +320,10 @@ class SocialSystem(System):
 
         self.total_leadership_changes += 1
         logger.debug(
-            f"Changed leader of group {group.id} from {old_leader_id} to {new_leader_id}"
+            f"Changed leader of group {group.id} from {old_leader_id} to {new_leader_id}",
         )
 
-    def _process_network_updates(self, entities: List[Any]) -> None:
+    def _process_network_updates(self, entities: list[Any]) -> None:
         """Process social network updates and connections."""
         for entity in entities:
             social_comp = entity.get_component(SocialComponent)
@@ -340,7 +334,7 @@ class SocialSystem(System):
             self._update_social_connections(entity, social_comp)
 
     def _update_social_connections(
-        self, entity: Any, social_comp: SocialComponent
+        self, entity: Any, social_comp: SocialComponent,
     ) -> None:
         """Update social connections for an agent."""
         # Find nearby agents for potential connections
@@ -357,10 +351,10 @@ class SocialSystem(System):
             # Check if connection should be formed
             if self._should_form_connection(social_comp, nearby_social_comp):
                 self._form_social_connection(
-                    entity, nearby_entity, social_comp, nearby_social_comp
+                    entity, nearby_entity, social_comp, nearby_social_comp,
                 )
 
-    def _find_nearby_agents(self, entity: Any) -> List[Any]:
+    def _find_nearby_agents(self, entity: Any) -> list[Any]:
         """Find nearby agents for social interaction."""
         # This would typically use position components
         # For now, return all other entities with social components
@@ -368,7 +362,7 @@ class SocialSystem(System):
         return [e for e in all_entities if e.id != entity.id]
 
     def _should_form_connection(
-        self, social_comp1: SocialComponent, social_comp2: SocialComponent
+        self, social_comp1: SocialComponent, social_comp2: SocialComponent,
     ) -> bool:
         """Check if two agents should form a social connection."""
         # Check if they're already connected
@@ -410,7 +404,7 @@ class SocialSystem(System):
             if social_comp:
                 social_comp.recover_social_energy(delta_time)
 
-    def get_system_stats(self) -> Dict[str, Any]:
+    def get_system_stats(self) -> dict[str, Any]:
         """Get comprehensive system statistics."""
         total_agents = len(self.get_entities_with_components(SocialComponent))
         total_groups = len(self.social_groups)
@@ -429,10 +423,9 @@ class SocialSystem(System):
         leader_id: str,
         group_name: str,
         group_type: GroupType,
-        member_ids: List[str] | None = None,
+        member_ids: list[str] | None = None,
     ) -> str | None:
-        """
-        Create a new social group.
+        """Create a new social group.
 
         Args:
             leader_id: ID of the group leader
@@ -442,6 +435,7 @@ class SocialSystem(System):
 
         Returns:
             Group ID if successful, None otherwise
+
         """
         leader_entity = self.world.get_entity(leader_id)
         if not leader_entity:
@@ -495,14 +489,14 @@ class SocialSystem(System):
         return group_id
 
     def disband_group(self, group_id: str) -> bool:
-        """
-        Disband a social group.
+        """Disband a social group.
 
         Args:
             group_id: ID of the group to disband
 
         Returns:
             True if successful, False otherwise
+
         """
         if group_id not in self.social_groups:
             return False
@@ -521,7 +515,7 @@ class SocialSystem(System):
         del self.social_groups[group_id]
         return True
 
-    def get_group_info(self, group_id: str) -> Dict[str, Any] | None:
+    def get_group_info(self, group_id: str) -> dict[str, Any] | None:
         """Get information about a specific group."""
         if group_id not in self.social_groups:
             return None

@@ -1,3 +1,2 @@
-"""
-Test package for Reynard Backend.
+"""Test package for Reynard Backend.
 """

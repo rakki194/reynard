@@ -1,5 +1,4 @@
-"""
-Executor Core Endpoints for Reynard Backend
+"""Executor Core Endpoints for Reynard Backend
 
 Core endpoint implementations for executor operations.
 """

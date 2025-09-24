@@ -1,14 +1,9 @@
-"""
-Test suite for RAG Advanced Services.
+"""Test suite for RAG Advanced Services.
 
 Tests the advanced RAG functionality including monitoring, security, improvement, documentation, and evaluation.
 """
 
-import asyncio
-import time
-from datetime import datetime, timedelta
-from typing import Any, Dict, List
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock
 
 import pytest
 
@@ -53,7 +48,7 @@ class TestPerformanceMonitor:
     async def test_record_metric(self, performance_monitor):
         """Test recording performance metrics."""
         await performance_monitor.record_metric(
-            "latency", 150.0, {"operation": "search"}
+            "latency", 150.0, {"operation": "search"},
         )
 
         stats = performance_monitor.get_performance_stats()
@@ -65,7 +60,7 @@ class TestPerformanceMonitor:
         """Test alert generation when thresholds are exceeded."""
         # Record metric that exceeds threshold
         await performance_monitor.record_metric(
-            "latency", 3000.0, {"operation": "search"}
+            "latency", 3000.0, {"operation": "search"},
         )
 
         alerts = await performance_monitor.check_alerts()
@@ -78,13 +73,13 @@ class TestPerformanceMonitor:
         # Record baseline metrics
         for i in range(10):
             await performance_monitor.record_metric(
-                "latency", 100.0 + i, {"operation": "search"}
+                "latency", 100.0 + i, {"operation": "search"},
             )
 
         # Record degraded metrics
         for i in range(10):
             await performance_monitor.record_metric(
-                "latency", 200.0 + i, {"operation": "search"}
+                "latency", 200.0 + i, {"operation": "search"},
             )
 
         regressions = await performance_monitor.detect_regressions()
@@ -158,7 +153,7 @@ class TestSecurityService:
 
         # Test allowed access
         has_permission = await security_service.check_access_permission(
-            user_id, operation, resource_type, access_level
+            user_id, operation, resource_type, access_level,
         )
         assert has_permission is True
 
@@ -172,7 +167,7 @@ class TestSecurityService:
 
         # Perform operation that should be logged
         await security_service.check_access_permission(
-            user_id, operation, resource_type, access_level
+            user_id, operation, resource_type, access_level,
         )
 
         # Check audit logs
@@ -306,7 +301,7 @@ class TestContinuousImprovement:
 
         # Collect data
         success = await continuous_improvement.collect_experiment_data(
-            experiment_id, "user1", "control", {"accuracy": 0.85}
+            experiment_id, "user1", "control", {"accuracy": 0.85},
         )
         assert success is True
 
@@ -327,10 +322,10 @@ class TestContinuousImprovement:
 
         # Collect sample data
         await continuous_improvement.collect_experiment_data(
-            experiment_id, "user1", "control", {"accuracy": 0.80}
+            experiment_id, "user1", "control", {"accuracy": 0.80},
         )
         await continuous_improvement.collect_experiment_data(
-            experiment_id, "user2", "treatment", {"accuracy": 0.90}
+            experiment_id, "user2", "treatment", {"accuracy": 0.90},
         )
 
         # Analyze experiment
@@ -563,7 +558,7 @@ class TestModelEvaluator:
                 throughput_per_second=10.0,
                 error_rate=0.01,
                 timestamp="2024-01-01",
-            )
+            ),
         }
 
         report = model_evaluator.generate_evaluation_report(results)
@@ -607,7 +602,7 @@ class TestRAGAdvancedIntegration:
 
         # Test performance monitoring
         await performance_monitor.record_metric(
-            "latency", 150.0, {"operation": "search"}
+            "latency", 150.0, {"operation": "search"},
         )
         stats = performance_monitor.get_performance_stats()
         assert "metrics" in stats

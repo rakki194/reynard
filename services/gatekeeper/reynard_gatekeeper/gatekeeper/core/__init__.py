@@ -1,5 +1,4 @@
-"""
-Core package for the Gatekeeper authentication library.
+"""Core package for the Gatekeeper authentication library.
 
 This package contains the core authentication and authorization functionality.
 """

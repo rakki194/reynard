@@ -1,5 +1,4 @@
-"""
-Mock token manager.
+"""Mock token manager.
 """
 
 from ..main import MockTokenManager, TokenConfig, TokenData, TokenValidationResult

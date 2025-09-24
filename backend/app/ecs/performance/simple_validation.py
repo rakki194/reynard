@@ -1,20 +1,15 @@
 #!/usr/bin/env python3
-"""
-Simple validation test for performance monitoring core functionality.
+"""Simple validation test for performance monitoring core functionality.
 
 This script validates the core performance monitoring components without
 requiring FastAPI dependencies.
 """
 
 import asyncio
-import json
 import logging
-import os
-import statistics
 import sys
 import time
 from pathlib import Path
-from typing import Any, Dict, List
 
 # Add the backend directory to Python path
 backend_dir = Path(__file__).parent.parent.parent.parent
@@ -137,7 +132,7 @@ async def test_async_task_tracking():
     result = await test_task(0.1)
 
     print(f"   Task result: {result}")
-    print(f"   Task completed successfully")
+    print("   Task completed successfully")
 
     success = result == "completed"
     print(f"   Test result: {'✅ PASS' if success else '❌ FAIL'}")
@@ -157,7 +152,7 @@ def test_db_query_tracking():
     result = test_query()
 
     print(f"   Query result: {len(result)} rows")
-    print(f"   Query completed successfully")
+    print("   Query completed successfully")
 
     success = len(result) == 1 and result[0]["id"] == 1
     print(f"   Test result: {'✅ PASS' if success else '❌ FAIL'}")
@@ -227,7 +222,7 @@ async def test_performance_trends():
 
         # Simulate degrading performance (increasing response time)
         await asyncio.sleep(
-            0.01 + (i * 0.02)
+            0.01 + (i * 0.02),
         )  # 10ms + 20ms per request (more dramatic increase)
 
         tracker.end_request(request_id)
@@ -301,10 +296,9 @@ async def main():
         print("🎉 All validation tests passed!")
         print("✅ Performance monitoring system is working correctly")
         return 0
-    else:
-        print("⚠️  Some validation tests failed")
-        print("🔧 Review the failed tests and fix any issues")
-        return 1
+    print("⚠️  Some validation tests failed")
+    print("🔧 Review the failed tests and fix any issues")
+    return 1
 
 
 if __name__ == "__main__":

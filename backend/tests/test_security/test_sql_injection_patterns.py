@@ -1,5 +1,4 @@
-"""
-Tests for SQL injection detection patterns.
+"""Tests for SQL injection detection patterns.
 
 This module tests the regex patterns used for detecting
 SQL injection attack attempts across different attack vectors.

@@ -1,5 +1,4 @@
-"""
-Captioner plugin wrapper for Reynard caption generators.
+"""Captioner plugin wrapper for Reynard caption generators.
 
 This module provides the CaptionerPlugin class that manages the lifecycle
 of a captioner plugin, including lazy initialization, configuration management,
@@ -18,8 +17,7 @@ logger = logging.getLogger("uvicorn")
 
 
 class CaptionerPlugin:
-    """
-    Plugin wrapper for a Reynard caption generator.
+    """Plugin wrapper for a Reynard caption generator.
 
     This class manages the lifecycle of a captioner plugin, including:
     - Lazy initialization
@@ -31,10 +29,11 @@ class CaptionerPlugin:
         name (str): Unique identifier for this plugin
         module_path (str): Import path to the module containing the generator
         config (dict, optional): Configuration for the generator
+
     """
 
     def __init__(
-        self, name: str, module_path: str, config: dict[str, Any] | None = None
+        self, name: str, module_path: str, config: dict[str, Any] | None = None,
     ):
         self.name = name
         self.module_path = module_path
@@ -43,12 +42,11 @@ class CaptionerPlugin:
         self._available: bool | None = None
         self._loading_lock = asyncio.Lock()
         self._executor = ThreadPoolExecutor(
-            max_workers=1, thread_name_prefix=f"captioner-{name}"
+            max_workers=1, thread_name_prefix=f"captioner-{name}",
         )
 
     def get_instance(self) -> CaptionGenerator | None:
-        """
-        Get or create the captioner instance.
+        """Get or create the captioner instance.
 
         Returns:
             Optional[CaptionGenerator]: The captioner instance, or None if failed
@@ -57,6 +55,7 @@ class CaptionerPlugin:
             - Lazy-loads the instance on first call
             - Caches the instance for subsequent calls
             - Returns None if the plugin cannot be loaded
+
         """
         if self._instance is None:
             try:
@@ -76,7 +75,7 @@ class CaptionerPlugin:
                 if not isinstance(self._instance, CaptionGenerator):
                     logger.error(
                         f"Plugin {self.name} returned invalid generator type: "
-                        f"{type(self._instance).__name__}"
+                        f"{type(self._instance).__name__}",
                     )
                     self._instance = None
                     return None
@@ -96,8 +95,7 @@ class CaptionerPlugin:
         return self._instance
 
     def is_available(self) -> bool:
-        """
-        Check if the plugin is available and can be used.
+        """Check if the plugin is available and can be used.
 
         Returns:
             bool: True if the plugin can be used, False otherwise
@@ -105,6 +103,7 @@ class CaptionerPlugin:
         Notes:
             - Caches the result for performance
             - Checks both plugin loading and captioner availability
+
         """
         if self._available is None:
             instance = self.get_instance()
@@ -112,8 +111,7 @@ class CaptionerPlugin:
         return self._available
 
     async def load_model(self) -> bool:
-        """
-        Load the model into memory.
+        """Load the model into memory.
 
         Returns:
             bool: True if loading was successful, False otherwise
@@ -122,6 +120,7 @@ class CaptionerPlugin:
             - Thread-safe loading with coordination
             - Handles loading errors gracefully
             - Uses thread pool for CPU-bound operations
+
         """
         async with self._loading_lock:
             instance = self.get_instance()
@@ -135,7 +134,7 @@ class CaptionerPlugin:
                 # Run loading in thread pool to avoid blocking
                 loop = asyncio.get_event_loop()
                 await loop.run_in_executor(
-                    self._executor, lambda: asyncio.run(instance.load(self.config))
+                    self._executor, lambda: asyncio.run(instance.load(self.config)),
                 )
                 logger.info(f"Successfully loaded model for plugin: {self.name}")
                 return True
@@ -144,8 +143,7 @@ class CaptionerPlugin:
                 return False
 
     async def unload_model(self) -> bool:
-        """
-        Unload the model from memory.
+        """Unload the model from memory.
 
         Returns:
             bool: True if unloading was successful, False otherwise
@@ -153,6 +151,7 @@ class CaptionerPlugin:
         Notes:
             - Thread-safe unloading with coordination
             - Handles unloading errors gracefully
+
         """
         async with self._loading_lock:
             instance = self.get_instance()
@@ -166,7 +165,7 @@ class CaptionerPlugin:
                 # Run unloading in thread pool to avoid blocking
                 loop = asyncio.get_event_loop()
                 await loop.run_in_executor(
-                    self._executor, lambda: asyncio.run(instance.unload())
+                    self._executor, lambda: asyncio.run(instance.unload()),
                 )
                 logger.info(f"Successfully unloaded model for plugin: {self.name}")
                 return True
@@ -175,8 +174,7 @@ class CaptionerPlugin:
                 return False
 
     def get_model_category(self) -> ModelCategory:
-        """
-        Get the model category for resource management.
+        """Get the model category for resource management.
 
         Returns:
             ModelCategory: The category of this model
@@ -184,6 +182,7 @@ class CaptionerPlugin:
         Notes:
             - Used for determining loading strategies
             - Lightweight models are loaded more aggressively
+
         """
         instance = self.get_instance()
         if instance:
@@ -191,11 +190,11 @@ class CaptionerPlugin:
         return ModelCategory.HEAVY
 
     def get_info(self) -> dict[str, Any]:
-        """
-        Get comprehensive information about this plugin.
+        """Get comprehensive information about this plugin.
 
         Returns:
             Dict[str, Any]: Dictionary containing all plugin information
+
         """
         instance = self.get_instance()
         if instance:
@@ -214,8 +213,7 @@ class CaptionerPlugin:
         }
 
     def reset(self) -> None:
-        """
-        Reset the plugin state, forcing re-initialization.
+        """Reset the plugin state, forcing re-initialization.
 
         This is useful when configuration has changed or when testing.
         """
@@ -223,12 +221,12 @@ class CaptionerPlugin:
         self._available = None
 
     def cleanup(self) -> None:
-        """
-        Clean up resources used by this plugin.
+        """Clean up resources used by this plugin.
 
         Notes:
             - Should be called when the plugin is no longer needed
             - Shuts down the thread pool executor
+
         """
         if hasattr(self, "_executor"):
             self._executor.shutdown(wait=True)

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-ECS Redis Caching Implementation
+"""ECS Redis Caching Implementation
 
 High-performance Redis caching for ECS backend to address the bottlenecks
 identified in the performance analysis.
@@ -12,7 +11,7 @@ import json
 import logging
 import time
 from functools import wraps
-from typing import Any, Optional
+from typing import Any
 
 try:
     import redis.asyncio as redis
@@ -33,7 +32,7 @@ class ECSRedisCache:
         host: str = "localhost",
         port: int = 6379,
         db: int = 0,
-        password: Optional[str] = None,
+        password: str | None = None,
         max_connections: int = 20,
         socket_timeout: int = 5,
         socket_connect_timeout: int = 5,
@@ -50,6 +49,7 @@ class ECSRedisCache:
             socket_timeout: Socket timeout
             socket_connect_timeout: Socket connect timeout
             retry_on_timeout: Retry on timeout
+
         """
         self.host = host
         self.port = port
@@ -60,7 +60,7 @@ class ECSRedisCache:
         self.socket_connect_timeout = socket_connect_timeout
         self.retry_on_timeout = retry_on_timeout
 
-        self.redis_client: Optional[redis.Redis] = None
+        self.redis_client: redis.Redis | None = None
         self.connected = False
         self.fallback_cache: dict[str, dict[str, Any]] = {}
 
@@ -72,6 +72,7 @@ class ECSRedisCache:
 
         Returns:
             bool: True if connected successfully, False otherwise
+
         """
         if not REDIS_AVAILABLE:
             logger.warning("Redis not available, using fallback cache")
@@ -117,6 +118,7 @@ class ECSRedisCache:
 
         Returns:
             str: Generated cache key
+
         """
         return f"ecs:{namespace}:{key}"
 
@@ -128,6 +130,7 @@ class ECSRedisCache:
 
         Returns:
             str: Serialized data
+
         """
         try:
             return json.dumps(data, default=str)
@@ -143,6 +146,7 @@ class ECSRedisCache:
 
         Returns:
             Any: Deserialized data
+
         """
         try:
             return json.loads(data)
@@ -150,7 +154,7 @@ class ECSRedisCache:
             logger.error(f"Failed to deserialize data: {e}")
             raise
 
-    async def get(self, namespace: str, key: str) -> Optional[Any]:
+    async def get(self, namespace: str, key: str) -> Any | None:
         """Get a value from cache.
 
         Args:
@@ -159,6 +163,7 @@ class ECSRedisCache:
 
         Returns:
             Optional[Any]: Cached value or None if not found
+
         """
         cache_key = self._generate_key(namespace, key)
 
@@ -169,20 +174,17 @@ class ECSRedisCache:
                 if data is not None:
                     self.stats["hits"] += 1
                     return self._deserialize(data)
-                else:
-                    self.stats["misses"] += 1
-                    return None
-            else:
-                # Fallback to memory cache
-                cached_item = self.fallback_cache.get(cache_key)
-                if cached_item and not self._is_expired(cached_item):
-                    self.stats["hits"] += 1
-                    return cached_item["data"]
-                else:
-                    if cached_item:
-                        del self.fallback_cache[cache_key]
-                    self.stats["misses"] += 1
-                    return None
+                self.stats["misses"] += 1
+                return None
+            # Fallback to memory cache
+            cached_item = self.fallback_cache.get(cache_key)
+            if cached_item and not self._is_expired(cached_item):
+                self.stats["hits"] += 1
+                return cached_item["data"]
+            if cached_item:
+                del self.fallback_cache[cache_key]
+            self.stats["misses"] += 1
+            return None
 
         except Exception as e:
             logger.error(f"Failed to get from cache: {e}")
@@ -200,6 +202,7 @@ class ECSRedisCache:
 
         Returns:
             bool: True if successful, False otherwise
+
         """
         cache_key = self._generate_key(namespace, key)
 
@@ -211,14 +214,13 @@ class ECSRedisCache:
                 await self.redis_client.setex(cache_key, ttl, serialized_data)
                 self.stats["sets"] += 1
                 return True
-            else:
-                # Fallback to memory cache
-                self.fallback_cache[cache_key] = {
-                    "data": value,
-                    "expires": time.time() + ttl,
-                }
-                self.stats["sets"] += 1
-                return True
+            # Fallback to memory cache
+            self.fallback_cache[cache_key] = {
+                "data": value,
+                "expires": time.time() + ttl,
+            }
+            self.stats["sets"] += 1
+            return True
 
         except Exception as e:
             logger.error(f"Failed to set cache: {e}")
@@ -234,6 +236,7 @@ class ECSRedisCache:
 
         Returns:
             bool: True if successful, False otherwise
+
         """
         cache_key = self._generate_key(namespace, key)
 
@@ -243,13 +246,12 @@ class ECSRedisCache:
                 result = await self.redis_client.delete(cache_key)
                 self.stats["deletes"] += 1
                 return result > 0
-            else:
-                # Fallback to memory cache
-                if cache_key in self.fallback_cache:
-                    del self.fallback_cache[cache_key]
-                    self.stats["deletes"] += 1
-                    return True
-                return False
+            # Fallback to memory cache
+            if cache_key in self.fallback_cache:
+                del self.fallback_cache[cache_key]
+                self.stats["deletes"] += 1
+                return True
+            return False
 
         except Exception as e:
             logger.error(f"Failed to delete from cache: {e}")
@@ -264,6 +266,7 @@ class ECSRedisCache:
 
         Returns:
             bool: True if successful, False otherwise
+
         """
         try:
             if self.connected and self.redis_client:
@@ -273,15 +276,14 @@ class ECSRedisCache:
                 if keys:
                     await self.redis_client.delete(*keys)
                 return True
-            else:
-                # Fallback to memory cache
-                pattern = self._generate_key(namespace, "")
-                keys_to_delete = [
-                    key for key in self.fallback_cache.keys() if key.startswith(pattern)
-                ]
-                for key in keys_to_delete:
-                    del self.fallback_cache[key]
-                return True
+            # Fallback to memory cache
+            pattern = self._generate_key(namespace, "")
+            keys_to_delete = [
+                key for key in self.fallback_cache.keys() if key.startswith(pattern)
+            ]
+            for key in keys_to_delete:
+                del self.fallback_cache[key]
+            return True
 
         except Exception as e:
             logger.error(f"Failed to clear namespace: {e}")
@@ -296,6 +298,7 @@ class ECSRedisCache:
 
         Returns:
             bool: True if expired, False otherwise
+
         """
         return time.time() > cached_item["expires"]
 
@@ -304,6 +307,7 @@ class ECSRedisCache:
 
         Returns:
             dict[str, Any]: Cache statistics
+
         """
         total_requests = self.stats["hits"] + self.stats["misses"]
         hit_rate = (
@@ -325,7 +329,7 @@ class ECSRedisCache:
 
 
 # Global cache instance
-_ecs_cache: Optional[ECSRedisCache] = None
+_ecs_cache: ECSRedisCache | None = None
 
 
 def get_ecs_cache() -> ECSRedisCache:
@@ -333,6 +337,7 @@ def get_ecs_cache() -> ECSRedisCache:
 
     Returns:
         ECSRedisCache: Global cache instance
+
     """
     global _ecs_cache
     if _ecs_cache is None:
@@ -341,13 +346,14 @@ def get_ecs_cache() -> ECSRedisCache:
 
 
 # Cache decorators
-def cache_result(namespace: str, ttl: int = 3600, key_func: Optional[callable] = None):
+def cache_result(namespace: str, ttl: int = 3600, key_func: callable | None = None):
     """Decorator to cache function results.
 
     Args:
         namespace: Cache namespace
         ttl: Time to live in seconds
         key_func: Function to generate cache key from arguments
+
     """
 
     def decorator(func):
@@ -360,7 +366,7 @@ def cache_result(namespace: str, ttl: int = 3600, key_func: Optional[callable] =
                 cache_key = key_func(*args, **kwargs)
             else:
                 # Default key generation
-                key_data = f"{func.__name__}:{str(args)}:{str(sorted(kwargs.items()))}"
+                key_data = f"{func.__name__}:{args!s}:{sorted(kwargs.items())!s}"
                 cache_key = hashlib.md5(key_data.encode()).hexdigest()
 
             # Try to get from cache
@@ -383,8 +389,7 @@ def cache_result(namespace: str, ttl: int = 3600, key_func: Optional[callable] =
 
         if asyncio.iscoroutinefunction(func):
             return async_wrapper
-        else:
-            return sync_wrapper
+        return sync_wrapper
 
     return decorator
 
@@ -431,6 +436,7 @@ async def invalidate_agent_cache(agent_id: str):
 
     Args:
         agent_id: Agent ID to invalidate
+
     """
     cache = get_ecs_cache()
 
@@ -478,6 +484,7 @@ async def warm_agent_cache(agent_ids: list[str]):
 
     Args:
         agent_ids: list of agent IDs to warm
+
     """
     cache = get_ecs_cache()
 
@@ -522,7 +529,7 @@ async def test_redis_cache():
     # Test get
     retrieved_data = await cache.get("test", "agent_123")
     if retrieved_data == test_data:
-        print(f"   Get operation: ✅")
+        print("   Get operation: ✅")
     else:
         print(f"   Get operation: ❌ (expected {test_data}, got {retrieved_data})")
 
@@ -533,7 +540,7 @@ async def test_redis_cache():
     # Test get after delete
     retrieved_data = await cache.get("test", "agent_123")
     if retrieved_data is None:
-        print(f"   Get after delete: ✅")
+        print("   Get after delete: ✅")
     else:
         print(f"   Get after delete: ❌ (expected None, got {retrieved_data})")
 
@@ -576,12 +583,12 @@ async def test_redis_cache():
     second_call_time = time.time() - start_time
 
     if result1 == result2:
-        print(f"   Cache decorator: ✅")
+        print("   Cache decorator: ✅")
         print(f"   First call: {first_call_time*1000:.1f}ms")
         print(f"   Cached call: {second_call_time*1000:.1f}ms")
         print(f"   Speedup: {first_call_time/second_call_time:.1f}x")
     else:
-        print(f"   Cache decorator: ❌")
+        print("   Cache decorator: ❌")
 
     # Get statistics
     print("\n📊 Cache Statistics:")

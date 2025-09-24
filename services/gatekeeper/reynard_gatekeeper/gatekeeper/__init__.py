@@ -1,5 +1,4 @@
-"""
-Gatekeeper - Authentication and Authorization Library
+"""Gatekeeper - Authentication and Authorization Library
 
 A comprehensive authentication and authorization library for Python applications,
 providing secure user management, JWT token handling, role-based access control,

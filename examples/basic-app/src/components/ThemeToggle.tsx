@@ -3,7 +3,7 @@
  * Simple theme switching for the basic app
  */
 
-import { Button } from "reynard-components";
+import { Button } from "reynard-components-core";
 import { getAvailableThemes, useTheme, type ThemeName } from "reynard-themes";
 import { Component } from "solid-js";
 import { useCustomTranslation } from "../App";

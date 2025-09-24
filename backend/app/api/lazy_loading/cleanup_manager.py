@@ -1,5 +1,4 @@
-"""
-Cleanup Manager for Lazy Loading
+"""Cleanup Manager for Lazy Loading
 
 This module handles cleanup operations for the lazy loading system.
 """

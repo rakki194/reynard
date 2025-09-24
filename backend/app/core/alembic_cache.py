@@ -1,5 +1,4 @@
-"""
-Alembic Cache Manager
+"""Alembic Cache Manager
 ====================
 
 Cache manager specifically for Alembic operations to improve migration performance
@@ -7,15 +6,12 @@ and reduce database load during frequent migration operations.
 """
 
 import asyncio
-import hashlib
-import json
 import logging
 from datetime import datetime, timedelta
-from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 from .cache_config import CacheConfig
-from .cache_optimizer import CacheStrategy, IntelligentCacheManager
+from .cache_optimizer import IntelligentCacheManager
 
 logger = logging.getLogger(__name__)
 
@@ -24,13 +20,14 @@ class AlembicCacheManager:
     """Cache manager specifically for Alembic operations."""
 
     def __init__(
-        self, redis_enabled: bool = None, fallback_cache: Optional[Dict] = None
+        self, redis_enabled: bool = None, fallback_cache: dict | None = None,
     ):
         """Initialize the Alembic cache manager.
 
         Args:
             redis_enabled: Whether to use Redis caching (None for config default)
             fallback_cache: Fallback cache when Redis is unavailable
+
         """
         self.redis_enabled = (
             redis_enabled
@@ -38,7 +35,7 @@ class AlembicCacheManager:
             else CacheConfig.ALEMBIC_CACHE_ENABLED
         )
         self.fallback_cache = fallback_cache or {}
-        self.cache_manager: Optional[IntelligentCacheManager] = None
+        self.cache_manager: IntelligentCacheManager | None = None
 
         # Cache configuration
         self.namespace = "alembic"
@@ -74,24 +71,26 @@ class AlembicCacheManager:
 
         Returns:
             Cache key string
+
         """
         return f"{self.namespace}:{key_type}:{identifier}"
 
     async def cache_migration_metadata(
-        self, revision: str, metadata: Dict[str, Any]
+        self, revision: str, metadata: dict[str, Any],
     ) -> None:
         """Cache migration metadata.
 
         Args:
             revision: Migration revision ID
             metadata: Migration metadata to cache
+
         """
         cache_key = self._get_cache_key("migration_metadata", revision)
 
         try:
             if self.cache_manager:
                 await self.cache_manager.set(
-                    cache_key, metadata, self.namespace, self.migration_metadata_ttl
+                    cache_key, metadata, self.namespace, self.migration_metadata_ttl,
                 )
                 logger.debug(f"Cached migration metadata for revision {revision}")
             else:
@@ -105,8 +104,8 @@ class AlembicCacheManager:
             logger.error(f"Failed to cache migration metadata for {revision}: {e}")
 
     async def get_cached_migration_metadata(
-        self, revision: str
-    ) -> Optional[Dict[str, Any]]:
+        self, revision: str,
+    ) -> dict[str, Any] | None:
         """Get cached migration metadata.
 
         Args:
@@ -114,40 +113,41 @@ class AlembicCacheManager:
 
         Returns:
             Cached metadata or None if not found
+
         """
         cache_key = self._get_cache_key("migration_metadata", revision)
 
         try:
             if self.cache_manager:
                 return await self.cache_manager.get(cache_key, self.namespace)
-            else:
-                # Check fallback cache
-                cached_item = self.fallback_cache.get(cache_key)
-                if cached_item and datetime.now() < cached_item["expires"]:
-                    return cached_item["data"]
-                elif cached_item:
-                    # Expired, remove it
-                    del self.fallback_cache[cache_key]
-                return None
+            # Check fallback cache
+            cached_item = self.fallback_cache.get(cache_key)
+            if cached_item and datetime.now() < cached_item["expires"]:
+                return cached_item["data"]
+            if cached_item:
+                # Expired, remove it
+                del self.fallback_cache[cache_key]
+            return None
         except Exception as e:
             logger.error(f"Failed to get cached migration metadata for {revision}: {e}")
             return None
 
     async def cache_migration_data(
-        self, revision: str, data: List[Dict[str, Any]]
+        self, revision: str, data: list[dict[str, Any]],
     ) -> None:
         """Cache migration data to avoid re-parsing.
 
         Args:
             revision: Migration revision ID
             data: Migration data to cache
+
         """
         cache_key = self._get_cache_key("migration_data", revision)
 
         try:
             if self.cache_manager:
                 await self.cache_manager.set(
-                    cache_key, data, self.namespace, self.migration_data_ttl
+                    cache_key, data, self.namespace, self.migration_data_ttl,
                 )
                 logger.debug(f"Cached migration data for revision {revision}")
             else:
@@ -161,8 +161,8 @@ class AlembicCacheManager:
             logger.error(f"Failed to cache migration data for {revision}: {e}")
 
     async def get_cached_migration_data(
-        self, revision: str
-    ) -> Optional[List[Dict[str, Any]]]:
+        self, revision: str,
+    ) -> list[dict[str, Any]] | None:
         """Get cached migration data.
 
         Args:
@@ -170,40 +170,41 @@ class AlembicCacheManager:
 
         Returns:
             Cached data or None if not found
+
         """
         cache_key = self._get_cache_key("migration_data", revision)
 
         try:
             if self.cache_manager:
                 return await self.cache_manager.get(cache_key, self.namespace)
-            else:
-                # Check fallback cache
-                cached_item = self.fallback_cache.get(cache_key)
-                if cached_item and datetime.now() < cached_item["expires"]:
-                    return cached_item["data"]
-                elif cached_item:
-                    # Expired, remove it
-                    del self.fallback_cache[cache_key]
-                return None
+            # Check fallback cache
+            cached_item = self.fallback_cache.get(cache_key)
+            if cached_item and datetime.now() < cached_item["expires"]:
+                return cached_item["data"]
+            if cached_item:
+                # Expired, remove it
+                del self.fallback_cache[cache_key]
+            return None
         except Exception as e:
             logger.error(f"Failed to get cached migration data for {revision}: {e}")
             return None
 
     async def cache_schema_info(
-        self, table_name: str, schema_info: Dict[str, Any]
+        self, table_name: str, schema_info: dict[str, Any],
     ) -> None:
         """Cache database schema information.
 
         Args:
             table_name: Name of the database table
             schema_info: Schema information to cache
+
         """
         cache_key = self._get_cache_key("schema", table_name)
 
         try:
             if self.cache_manager:
                 await self.cache_manager.set(
-                    cache_key, schema_info, self.namespace, self.schema_cache_ttl
+                    cache_key, schema_info, self.namespace, self.schema_cache_ttl,
                 )
                 logger.debug(f"Cached schema info for table {table_name}")
             else:
@@ -216,7 +217,7 @@ class AlembicCacheManager:
         except Exception as e:
             logger.error(f"Failed to cache schema info for {table_name}: {e}")
 
-    async def get_cached_schema_info(self, table_name: str) -> Optional[Dict[str, Any]]:
+    async def get_cached_schema_info(self, table_name: str) -> dict[str, Any] | None:
         """Get cached schema information.
 
         Args:
@@ -224,21 +225,21 @@ class AlembicCacheManager:
 
         Returns:
             Cached schema info or None if not found
+
         """
         cache_key = self._get_cache_key("schema", table_name)
 
         try:
             if self.cache_manager:
                 return await self.cache_manager.get(cache_key, self.namespace)
-            else:
-                # Check fallback cache
-                cached_item = self.fallback_cache.get(cache_key)
-                if cached_item and datetime.now() < cached_item["expires"]:
-                    return cached_item["data"]
-                elif cached_item:
-                    # Expired, remove it
-                    del self.fallback_cache[cache_key]
-                return None
+            # Check fallback cache
+            cached_item = self.fallback_cache.get(cache_key)
+            if cached_item and datetime.now() < cached_item["expires"]:
+                return cached_item["data"]
+            if cached_item:
+                # Expired, remove it
+                del self.fallback_cache[cache_key]
+            return None
         except Exception as e:
             logger.error(f"Failed to get cached schema info for {table_name}: {e}")
             return None
@@ -248,6 +249,7 @@ class AlembicCacheManager:
 
         Args:
             revision: Migration revision ID to invalidate
+
         """
         try:
             if self.cache_manager:
@@ -281,21 +283,21 @@ class AlembicCacheManager:
         except Exception as e:
             logger.error(f"Failed to invalidate all cache: {e}")
 
-    async def get_cache_stats(self) -> Dict[str, Any]:
+    async def get_cache_stats(self) -> dict[str, Any]:
         """Get cache statistics.
 
         Returns:
             Cache statistics dictionary
+
         """
         try:
             if self.cache_manager:
                 return await self.cache_manager.get_metrics()
-            else:
-                return {
-                    "cache_type": "fallback_memory",
-                    "fallback_cache_size": len(self.fallback_cache),
-                    "redis_enabled": False,
-                }
+            return {
+                "cache_type": "fallback_memory",
+                "fallback_cache_size": len(self.fallback_cache),
+                "redis_enabled": False,
+            }
         except Exception as e:
             logger.error(f"Failed to get cache stats: {e}")
             return {"error": str(e)}
@@ -311,7 +313,7 @@ class AlembicCacheManager:
 
 
 # Global instance
-_alembic_cache_manager: Optional[AlembicCacheManager] = None
+_alembic_cache_manager: AlembicCacheManager | None = None
 
 
 def get_alembic_cache_manager() -> AlembicCacheManager:
@@ -319,6 +321,7 @@ def get_alembic_cache_manager() -> AlembicCacheManager:
 
     Returns:
         AlembicCacheManager instance
+
     """
     global _alembic_cache_manager
     if _alembic_cache_manager is None:
@@ -334,6 +337,7 @@ async def initialize_alembic_cache(redis_enabled: bool = True) -> AlembicCacheMa
 
     Returns:
         Initialized AlembicCacheManager instance
+
     """
     global _alembic_cache_manager
     _alembic_cache_manager = AlembicCacheManager(redis_enabled=redis_enabled)

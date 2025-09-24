@@ -1,5 +1,4 @@
-"""
-🧪 Test Configuration for Intelligent Reload System
+"""🧪 Test Configuration for Intelligent Reload System
 
 This module provides pytest fixtures and configuration for testing
 the intelligent reload system.

@@ -1,5 +1,4 @@
-"""
-Integration tests for complete authentication workflows.
+"""Integration tests for complete authentication workflows.
 
 This module tests end-to-end authentication scenarios including
 registration, login, token refresh, logout, and protected resource access.
@@ -86,7 +85,7 @@ class TestCompleteAuthWorkflow:
         assert refresh_after_logout.status_code == 401
 
     def test_multiple_user_registration_and_login(
-        self, client: TestClient, clean_databases
+        self, client: TestClient, clean_databases,
     ):
         """Test registration and login of multiple users."""
         users = [

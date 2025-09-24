@@ -1,5 +1,4 @@
-"""
-Input Validation Middleware
+"""Input Validation Middleware
 
 This middleware applies comprehensive input validation to all incoming requests
 to prevent SQL injection, XSS, path traversal, and other security attacks.
@@ -11,18 +10,20 @@ import re
 from typing import Any
 
 from fastapi import HTTPException, Request
-from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 
 from app.security.input_validator import validate_input_security
-from app.security.security_error_handler import SecurityEventType, SecurityThreatLevel, security_error_handler
-from app.security.security_analytics import security_analytics, SecurityEvent
+from app.security.security_analytics import SecurityEvent, security_analytics
 from app.security.security_config import get_security_config
+from app.security.security_error_handler import (
+    SecurityEventType,
+    SecurityThreatLevel,
+    security_error_handler,
+)
 
 
 class InputValidationMiddleware(BaseHTTPMiddleware):
-    """
-    Middleware that validates all input data for security threats.
+    """Middleware that validates all input data for security threats.
 
     This middleware intercepts all requests and validates:
     - Query parameters
@@ -33,20 +34,19 @@ class InputValidationMiddleware(BaseHTTPMiddleware):
 
     def __init__(self, app, skip_paths: list = None):
         super().__init__(app)
-        
+
         # Load security configuration
         self.config = get_security_config()
-        
+
         # Initialize security components
         self.security_error_handler = security_error_handler
         self.analytics = security_analytics
-        
+
         # Use configuration-based skip paths
         self.skip_paths = skip_paths or self.config.excluded_paths
 
     async def dispatch(self, request: Request, call_next):
         """Process the request and validate input data."""
-
         # Skip validation for certain paths
         if any(request.url.path.startswith(path) for path in self.skip_paths):
             return await call_next(request)
@@ -63,37 +63,41 @@ class InputValidationMiddleware(BaseHTTPMiddleware):
 
         except HTTPException as e:
             # Log validation error as security event
-            self.analytics.log_event(SecurityEvent(
-                event_type=SecurityEventType.SUSPICIOUS_ACTIVITY,
-                threat_level=SecurityThreatLevel.MEDIUM,
-                request=request,
-                details={"error": str(e.detail), "type": "validation_error"},
-                action_taken="blocked"
-            ))
-            
+            self.analytics.log_event(
+                SecurityEvent(
+                    event_type=SecurityEventType.SUSPICIOUS_ACTIVITY,
+                    threat_level=SecurityThreatLevel.MEDIUM,
+                    request=request,
+                    details={"error": str(e.detail), "type": "validation_error"},
+                    action_taken="blocked",
+                ),
+            )
+
             return self.security_error_handler.handle_security_error(
                 event_type=SecurityEventType.SUSPICIOUS_ACTIVITY,
                 request=request,
                 threat_level=SecurityThreatLevel.MEDIUM,
                 details={"error": str(e.detail), "type": "validation_error"},
-                response_action="block"
+                response_action="block",
             )
         except Exception as e:
             # Log unexpected validation error
-            self.analytics.log_event(SecurityEvent(
-                event_type=SecurityEventType.SUSPICIOUS_ACTIVITY,
-                threat_level=SecurityThreatLevel.HIGH,
-                request=request,
-                details={"error": str(e), "type": "validation_exception"},
-                action_taken="blocked"
-            ))
-            
+            self.analytics.log_event(
+                SecurityEvent(
+                    event_type=SecurityEventType.SUSPICIOUS_ACTIVITY,
+                    threat_level=SecurityThreatLevel.HIGH,
+                    request=request,
+                    details={"error": str(e), "type": "validation_exception"},
+                    action_taken="blocked",
+                ),
+            )
+
             return self.security_error_handler.handle_security_error(
                 event_type=SecurityEventType.SUSPICIOUS_ACTIVITY,
                 request=request,
                 threat_level=SecurityThreatLevel.HIGH,
                 details={"error": str(e), "type": "validation_exception"},
-                response_action="block"
+                response_action="block",
             )
 
         # Continue with the request
@@ -182,7 +186,7 @@ class InputValidationMiddleware(BaseHTTPMiddleware):
                     pass
 
     def _validate_dict_recursive(
-        self, data: dict | list | str | Any, field_prefix: str
+        self, data: dict | list | str | Any, field_prefix: str,
     ):
         """Recursively validate dictionary data."""
         if isinstance(data, dict):
@@ -227,7 +231,7 @@ class InputValidationMiddleware(BaseHTTPMiddleware):
         # Character validation (alphanumeric, underscore, hyphen only)
         if not re.match(r"^[a-zA-Z0-9_-]+$", username):
             raise ValueError(
-                "Username can only contain letters, numbers, underscores, and hyphens"
+                "Username can only contain letters, numbers, underscores, and hyphens",
             )
 
         # Check for reserved usernames

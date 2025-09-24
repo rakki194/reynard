@@ -1,5 +1,4 @@
-"""
-PostgreSQL backend implementation for the Gatekeeper authentication library.
+"""PostgreSQL backend implementation for the Gatekeeper authentication library.
 
 This module provides a PostgreSQL-based user storage backend using SQLAlchemy.
 """
@@ -58,24 +57,23 @@ class UserModel(Base):
 
 
 class PostgreSQLBackend(UserBackend):
-    """
-    PostgreSQL backend implementation for user storage.
+    """PostgreSQL backend implementation for user storage.
 
     Uses SQLAlchemy ORM to interact with a PostgreSQL database for user management.
     """
 
     def __init__(self, database_url: str, echo: bool = False):
-        """
-        Initialize the PostgreSQL backend.
+        """Initialize the PostgreSQL backend.
 
         Args:
             database_url: PostgreSQL connection URL
             echo: Whether to echo SQL statements (for debugging)
+
         """
         self.database_url = database_url
         self.engine = create_engine(database_url, echo=echo)
         self.SessionLocal = sessionmaker(
-            autocommit=False, autoflush=False, bind=self.engine
+            autocommit=False, autoflush=False, bind=self.engine,
         )
         self._initialized = False
 
@@ -104,7 +102,7 @@ class PostgreSQLBackend(UserBackend):
                 )
                 if existing_user:
                     raise UserAlreadyExistsError(
-                        f"Username '{user.username}' already exists"
+                        f"Username '{user.username}' already exists",
                     )
 
                 # Check if email already exists (if provided)
@@ -116,7 +114,7 @@ class PostgreSQLBackend(UserBackend):
                     )
                     if existing_email:
                         raise UserAlreadyExistsError(
-                            f"Email '{user.email}' already exists"
+                            f"Email '{user.email}' already exists",
                         )
 
                 # Create new user
@@ -152,7 +150,7 @@ class PostgreSQLBackend(UserBackend):
                 session.rollback()
                 if "username" in str(e).lower():
                     raise UserAlreadyExistsError(
-                        f"Username '{user.username}' already exists"
+                        f"Username '{user.username}' already exists",
                     )
                 if "email" in str(e).lower():
                     raise UserAlreadyExistsError(f"Email '{user.email}' already exists")
@@ -281,7 +279,7 @@ class PostgreSQLBackend(UserBackend):
                     )
                     if existing:
                         raise UserAlreadyExistsError(
-                            f"Username '{user_update.username}' already exists"
+                            f"Username '{user_update.username}' already exists",
                         )
                     db_user.username = user_update.username  # type: ignore[assignment]
 
@@ -298,7 +296,7 @@ class PostgreSQLBackend(UserBackend):
                         )
                         if existing:
                             raise UserAlreadyExistsError(
-                                f"Email '{user_update.email}' already exists"
+                                f"Email '{user_update.email}' already exists",
                             )
                     db_user.email = user_update.email  # type: ignore[assignment]
 
@@ -382,7 +380,7 @@ class PostgreSQLBackend(UserBackend):
                             created_at=db_user.created_at,
                             updated_at=db_user.updated_at,
                             metadata=db_user.user_metadata or {},
-                        )
+                        ),
                     )
                     for db_user in db_users
                 ]
@@ -449,7 +447,7 @@ class PostgreSQLBackend(UserBackend):
                 raise BackendError(f"Database error: {e}")
 
     async def update_user_profile_picture(
-        self, username: str, profile_picture_url: str | None
+        self, username: str, profile_picture_url: str | None,
     ) -> bool:
         """Update a user's profile picture URL."""
         self._initialize_database()
@@ -475,7 +473,7 @@ class PostgreSQLBackend(UserBackend):
                 raise BackendError(f"Database error: {e}")
 
     async def update_user_metadata(
-        self, username: str, metadata: dict[str, Any]
+        self, username: str, metadata: dict[str, Any],
     ) -> bool:
         """Update a user's metadata."""
         self._initialize_database()
@@ -501,7 +499,7 @@ class PostgreSQLBackend(UserBackend):
                 raise BackendError(f"Database error: {e}")
 
     async def search_users(
-        self, query: str, skip: int = 0, limit: int = 100
+        self, query: str, skip: int = 0, limit: int = 100,
     ) -> list[UserPublic]:
         """Search for users by username or email."""
         self._initialize_database()
@@ -512,7 +510,7 @@ class PostgreSQLBackend(UserBackend):
                     session.query(UserModel)
                     .filter(
                         (UserModel.username.ilike(f"%{query}%"))
-                        | (UserModel.email.ilike(f"%{query}%"))
+                        | (UserModel.email.ilike(f"%{query}%")),
                     )
                     .offset(skip)
                     .limit(limit)
@@ -533,7 +531,7 @@ class PostgreSQLBackend(UserBackend):
                             created_at=db_user.created_at,
                             updated_at=db_user.updated_at,
                             metadata=db_user.user_metadata or {},
-                        )
+                        ),
                     )
                     for db_user in db_users
                 ]
@@ -542,7 +540,7 @@ class PostgreSQLBackend(UserBackend):
                 raise BackendError(f"Database error: {e}")
 
     async def get_users_by_role(
-        self, role: str, skip: int = 0, limit: int = 100
+        self, role: str, skip: int = 0, limit: int = 100,
     ) -> list[UserPublic]:
         """Get users by role."""
         self._initialize_database()
@@ -571,7 +569,7 @@ class PostgreSQLBackend(UserBackend):
                             created_at=db_user.created_at,
                             updated_at=db_user.updated_at,
                             metadata=db_user.user_metadata or {},
-                        )
+                        ),
                     )
                     for db_user in db_users
                 ]
@@ -628,7 +626,7 @@ class PostgreSQLBackend(UserBackend):
                 raise BackendError(f"Database error: {e}")
 
     async def update_user_settings(
-        self, username: str, settings: dict[str, Any]
+        self, username: str, settings: dict[str, Any],
     ) -> bool:
         """Update user settings."""
         self._initialize_database()
@@ -708,7 +706,7 @@ class PostgreSQLBackend(UserBackend):
                             created_at=db_user.created_at,
                             updated_at=db_user.updated_at,
                             metadata=db_user.user_metadata or {},
-                        )
+                        ),
                     )
                     for db_user in db_users
                 ]

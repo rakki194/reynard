@@ -1,5 +1,4 @@
-"""
-Ollama API module for Reynard backend.
+"""Ollama API module for Reynard backend.
 
 This module provides API endpoints for Ollama local LLM integration
 with ReynardAssistant, tool calling, and streaming responses.

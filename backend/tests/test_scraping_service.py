@@ -1,5 +1,4 @@
-"""
-Tests for the scraping service
+"""Tests for the scraping service
 """
 
 from datetime import datetime
@@ -80,10 +79,10 @@ class TestScrapingService:
         await service.initialize()
 
         with patch.object(
-            service.scraping_manager, "create_job", return_value=sample_job
+            service.scraping_manager, "create_job", return_value=sample_job,
         ) as mock_create:
             result = await service.create_job(
-                url="https://example.com", scraping_type=ScrapingType.GENERAL
+                url="https://example.com", scraping_type=ScrapingType.GENERAL,
             )
 
             assert result == sample_job
@@ -95,7 +94,7 @@ class TestScrapingService:
         await service.initialize()
 
         with patch.object(
-            service.scraping_manager, "get_job", return_value=sample_job
+            service.scraping_manager, "get_job", return_value=sample_job,
         ) as mock_get:
             result = await service.get_job("test-job-1")
 
@@ -109,7 +108,7 @@ class TestScrapingService:
 
         jobs = [sample_job]
         with patch.object(
-            service.scraping_manager, "get_jobs", return_value=jobs
+            service.scraping_manager, "get_jobs", return_value=jobs,
         ) as mock_get:
             result = await service.get_jobs()
 
@@ -122,7 +121,7 @@ class TestScrapingService:
         await service.initialize()
 
         with patch.object(
-            service.scraping_manager, "cancel_job", return_value=True
+            service.scraping_manager, "cancel_job", return_value=True,
         ) as mock_cancel:
             result = await service.cancel_job("test-job-1")
 
@@ -135,7 +134,7 @@ class TestScrapingService:
         await service.initialize()
 
         with patch.object(
-            service.scraping_manager, "delete_job", return_value=True
+            service.scraping_manager, "delete_job", return_value=True,
         ) as mock_delete:
             result = await service.delete_job("test-job-1")
 
@@ -195,7 +194,7 @@ class TestScrapingService:
         }
 
         with patch.object(
-            service.scraping_manager, "get_statistics", return_value=expected_stats
+            service.scraping_manager, "get_statistics", return_value=expected_stats,
         ) as mock_stats:
             result = await service.get_statistics()
 
@@ -317,7 +316,7 @@ class TestScrapingManager:
     async def test_create_job(self, manager):
         """Test job creation in manager"""
         job = await manager.create_job(
-            url="https://example.com", scraping_type=ScrapingType.GENERAL
+            url="https://example.com", scraping_type=ScrapingType.GENERAL,
         )
 
         assert job is not None
@@ -329,7 +328,7 @@ class TestScrapingManager:
     async def test_get_job(self, manager):
         """Test job retrieval from manager"""
         job = await manager.create_job(
-            url="https://example.com", scraping_type=ScrapingType.GENERAL
+            url="https://example.com", scraping_type=ScrapingType.GENERAL,
         )
 
         retrieved_job = await manager.get_job(job.id)
@@ -339,10 +338,10 @@ class TestScrapingManager:
     async def test_get_jobs(self, manager):
         """Test job list retrieval from manager"""
         job1 = await manager.create_job(
-            url="https://example.com", scraping_type=ScrapingType.GENERAL
+            url="https://example.com", scraping_type=ScrapingType.GENERAL,
         )
         job2 = await manager.create_job(
-            url="https://test.com", scraping_type=ScrapingType.GENERAL
+            url="https://test.com", scraping_type=ScrapingType.GENERAL,
         )
 
         jobs = await manager.get_jobs()
@@ -354,7 +353,7 @@ class TestScrapingManager:
     async def test_cancel_job(self, manager):
         """Test job cancellation in manager"""
         job = await manager.create_job(
-            url="https://example.com", scraping_type=ScrapingType.GENERAL
+            url="https://example.com", scraping_type=ScrapingType.GENERAL,
         )
 
         result = await manager.cancel_job(job.id)
@@ -367,7 +366,7 @@ class TestScrapingManager:
     async def test_delete_job(self, manager):
         """Test job deletion in manager"""
         job = await manager.create_job(
-            url="https://example.com", scraping_type=ScrapingType.GENERAL
+            url="https://example.com", scraping_type=ScrapingType.GENERAL,
         )
 
         result = await manager.delete_job(job.id)
@@ -380,7 +379,7 @@ class TestScrapingManager:
     async def test_get_statistics(self, manager):
         """Test statistics retrieval from manager"""
         await manager.create_job(
-            url="https://example.com", scraping_type=ScrapingType.GENERAL
+            url="https://example.com", scraping_type=ScrapingType.GENERAL,
         )
 
         stats = await manager.get_statistics()

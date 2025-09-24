@@ -1,5 +1,4 @@
-"""
-Comprehensive tests for the enhanced image format converter.
+"""Comprehensive tests for the enhanced image format converter.
 
 This module tests the format conversion capabilities, optimization settings,
 and plugin-dependent format support.
@@ -124,31 +123,31 @@ class TestImageFormatConverter:
         """Test optimal format selection based on requirements."""
         # High quality, no special requirements
         optimal = converter.get_optimal_format(
-            {"quality_priority": "high", "size_priority": "large"}
+            {"quality_priority": "high", "size_priority": "large"},
         )
         assert optimal in ["png", "tiff"]
 
         # Small size, no special requirements
         optimal = converter.get_optimal_format(
-            {"quality_priority": "low", "size_priority": "small"}
+            {"quality_priority": "low", "size_priority": "small"},
         )
         assert optimal in ["jpeg", "webp"]
 
         # Needs alpha channel
         optimal = converter.get_optimal_format(
-            {"needs_alpha": True, "quality_priority": "medium"}
+            {"needs_alpha": True, "quality_priority": "medium"},
         )
         assert optimal in ["png", "webp"]
 
         # Needs animation
         optimal = converter.get_optimal_format(
-            {"needs_animation": True, "quality_priority": "medium"}
+            {"needs_animation": True, "quality_priority": "medium"},
         )
         assert optimal in ["gif", "webp"]
 
         # Needs both alpha and animation
         optimal = converter.get_optimal_format(
-            {"needs_alpha": True, "needs_animation": True, "quality_priority": "medium"}
+            {"needs_alpha": True, "needs_animation": True, "quality_priority": "medium"},
         )
         assert optimal == "webp"
 
@@ -201,7 +200,7 @@ class TestPluginFormatSupport:
             "supports_alpha": True,
             "default_quality": 90,
             "default_effort": 7,
-            "compression_levels": list(range(0, 10)),
+            "compression_levels": list(range(10)),
         }
 
         # Re-initialize converter to check plugin support
@@ -243,7 +242,7 @@ class TestPluginFormatSupport:
             "supports_animation": True,
             "supports_alpha": True,
             "default_quality": 80,
-            "compression_levels": list(range(0, 10)),
+            "compression_levels": list(range(10)),
         }
 
         # Re-initialize converter to check plugin support
@@ -310,7 +309,7 @@ class TestFormatConversionScenarios:
         """Test photo optimization scenario."""
         # High quality photo with alpha support
         optimal = converter.get_optimal_format(
-            {"needs_alpha": True, "quality_priority": "high", "size_priority": "medium"}
+            {"needs_alpha": True, "quality_priority": "high", "size_priority": "medium"},
         )
         assert optimal == "png"
 
@@ -320,7 +319,7 @@ class TestFormatConversionScenarios:
                 "needs_alpha": False,
                 "quality_priority": "high",
                 "size_priority": "medium",
-            }
+            },
         )
         assert optimal in ["jpeg", "png"]
 
@@ -332,7 +331,7 @@ class TestFormatConversionScenarios:
                 "needs_animation": True,
                 "quality_priority": "medium",
                 "size_priority": "small",
-            }
+            },
         )
         assert optimal == "webp"
 
@@ -342,7 +341,7 @@ class TestFormatConversionScenarios:
                 "needs_animation": False,
                 "quality_priority": "medium",
                 "size_priority": "small",
-            }
+            },
         )
         assert optimal in ["jpeg", "webp"]
 
@@ -350,7 +349,7 @@ class TestFormatConversionScenarios:
         """Test archive preservation scenario."""
         # Archive image with maximum quality
         optimal = converter.get_optimal_format(
-            {"quality_priority": "high", "size_priority": "large"}
+            {"quality_priority": "high", "size_priority": "large"},
         )
         assert optimal in ["png", "tiff"]
 

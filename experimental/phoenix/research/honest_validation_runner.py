@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-PHOENIX Honest Validation Runner
+"""PHOENIX Honest Validation Runner
 
 A simplified but comprehensive validation framework for conducting honest research
 on the Phoenix system. Focuses on real performance measurement and statistical analysis.
@@ -26,7 +25,7 @@ from scipy import stats
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -63,8 +62,7 @@ class HonestValidationResults:
 
 
 class HonestValidationRunner:
-    """
-    Honest validation runner for Phoenix system.
+    """Honest validation runner for Phoenix system.
 
     Implements:
     - Real performance measurement
@@ -88,7 +86,7 @@ class HonestValidationRunner:
         self._setup_logging()
 
         self.logger.info(
-            f"🦊 Honest validation runner initialized: {config.experiment_name}"
+            f"🦊 Honest validation runner initialized: {config.experiment_name}",
         )
 
     def _setup_logging(self):
@@ -100,7 +98,7 @@ class HonestValidationRunner:
         file_handler.setLevel(logging.INFO)
 
         formatter = logging.Formatter(
-            "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+            "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         )
         file_handler.setFormatter(formatter)
 
@@ -136,7 +134,7 @@ class HonestValidationRunner:
         """
 
     def _analyze_output_quality(
-        self, output: str, output_type: str
+        self, output: str, output_type: str,
     ) -> dict[str, float]:
         """Analyze the quality of agent output."""
         # Basic text analysis
@@ -319,7 +317,7 @@ class HonestValidationRunner:
             if re.search(rf"\b{re.escape(term)}\b", output, re.IGNORECASE)
         )
         traits["knowledge_fidelity"] = min(
-            technical_mentions / len(technical_terms), 1.0
+            technical_mentions / len(technical_terms), 1.0,
         )
 
         return traits
@@ -419,7 +417,7 @@ class HonestValidationRunner:
     async def run_honest_validation(self) -> HonestValidationResults:
         """Run honest validation with multiple trials."""
         self.logger.info(
-            f"🚀 Starting honest validation with {self.config.num_trials} trials..."
+            f"🚀 Starting honest validation with {self.config.num_trials} trials...",
         )
 
         # Run multiple trials
@@ -528,7 +526,7 @@ class HonestValidationRunner:
                         (len(baseline_values) - 1) * np.var(baseline_values)
                         + (len(phoenix_values) - 1) * np.var(phoenix_values)
                     )
-                    / (len(baseline_values) + len(phoenix_values) - 2)
+                    / (len(baseline_values) + len(phoenix_values) - 2),
                 )
                 effect_size = (
                     np.mean(phoenix_values) - np.mean(baseline_values)
@@ -574,7 +572,7 @@ class HonestValidationRunner:
         return analysis_results
 
     def _calculate_power(
-        self, effect_size: float, sample_size: int, alpha: float
+        self, effect_size: float, sample_size: int, alpha: float,
     ) -> float:
         """Calculate statistical power."""
         if effect_size >= self.config.min_effect_size and sample_size >= 30:
@@ -584,7 +582,7 @@ class HonestValidationRunner:
         return 0.4  # Low power
 
     def _generate_recommendations(
-        self, statistical_analysis: dict[str, Any]
+        self, statistical_analysis: dict[str, Any],
     ) -> list[str]:
         """Generate recommendations based on statistical analysis."""
         recommendations = []
@@ -597,11 +595,11 @@ class HonestValidationRunner:
 
         if significant_metrics:
             recommendations.append(
-                f"Phoenix shows significant improvements in: {', '.join(significant_metrics)}"
+                f"Phoenix shows significant improvements in: {', '.join(significant_metrics)}",
             )
         else:
             recommendations.append(
-                "No significant improvements detected - consider increasing sample size or effect size"
+                "No significant improvements detected - consider increasing sample size or effect size",
             )
 
         # Analyze effect sizes
@@ -612,7 +610,7 @@ class HonestValidationRunner:
 
         if large_effects:
             recommendations.append(
-                f"Large effect sizes observed in: {', '.join(large_effects)}"
+                f"Large effect sizes observed in: {', '.join(large_effects)}",
             )
 
         # Analyze power
@@ -623,7 +621,7 @@ class HonestValidationRunner:
 
         if low_power_metrics:
             recommendations.append(
-                f"Low statistical power in: {', '.join(low_power_metrics)} - consider increasing sample size"
+                f"Low statistical power in: {', '.join(low_power_metrics)} - consider increasing sample size",
             )
 
         # General recommendations
@@ -635,7 +633,7 @@ class HonestValidationRunner:
                 "Validate results across different agent types and scenarios",
                 "Focus on improving knowledge fidelity and trait accuracy",
                 "Implement actual Phoenix algorithms rather than simulations",
-            ]
+            ],
         )
 
         return recommendations

@@ -51,7 +51,7 @@ def test_path_traversal_upload(token: str) -> bool:
     }
 
     print(
-        f"[+] POST {url} with filename='{TRAVERSAL_FILENAME}' → expecting rejection if safe"
+        f"[+] POST {url} with filename='{TRAVERSAL_FILENAME}' → expecting rejection if safe",
     )
     try:
         resp = requests.post(url, files=files, headers=headers, timeout=20)
@@ -66,12 +66,12 @@ def test_path_traversal_upload(token: str) -> bool:
         exists_after = os.path.exists(POC_ABS_TARGET)
         if exists_after and not existed_before:
             print(
-                f"    [VULNERABLE] File was written outside ROOT_DIR at {POC_ABS_TARGET} via filename traversal."
+                f"    [VULNERABLE] File was written outside ROOT_DIR at {POC_ABS_TARGET} via filename traversal.",
             )
             return False
         if exists_after and existed_before:
             print(
-                "    [POTENTIALLY VULNERABLE] Target file exists; cannot confirm creation. Manually verify timestamps."
+                "    [POTENTIALLY VULNERABLE] Target file exists; cannot confirm creation. Manually verify timestamps.",
             )
             return False
         if resp.status_code in (400, 403):
@@ -86,7 +86,7 @@ def test_path_traversal_upload(token: str) -> bool:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Test upload path traversal via crafted filename"
+        description="Test upload path traversal via crafted filename",
     )
     parser.add_argument("--username", default=USERNAME)
     parser.add_argument("--password", default=PASSWORD)
@@ -94,7 +94,7 @@ def main():
 
     if not args.username or not args.password:
         print(
-            "[!] Provide credentials via --username/--password or YIPYAP_USERNAME/YIPYAP_PASSWORD env vars"
+            "[!] Provide credentials via --username/--password or YIPYAP_USERNAME/YIPYAP_PASSWORD env vars",
         )
         sys.exit(2)
 

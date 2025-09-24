@@ -5,7 +5,7 @@
  * and interactive controls.
  */
 import { Show, createMemo } from "solid-js";
-export const ToolCallDisplay = props => {
+export const ToolCallDisplay = (props: any) => {
   const getStatusIcon = () => {
     switch (props.toolCall.status) {
       case "pending":

@@ -1,5 +1,4 @@
-"""
-Comprehensive mock gatekeeper API routes for testing.
+"""Comprehensive mock gatekeeper API routes for testing.
 
 This mock provides a complete authentication system that works with
 the security middleware and properly handles malicious input validation.
@@ -35,8 +34,7 @@ async def register(
     request: Request = None,
     auth_manager: MockAuthManager = Depends(lambda: MockAuthManager()),
 ):
-    """
-    Register a new user.
+    """Register a new user.
 
     This endpoint should be protected by security middleware and should
     reject malicious inputs with appropriate error codes.
@@ -46,11 +44,11 @@ async def register(
 
     # Simulate user creation
     user = MockUser(
-        id=1, username=user_data.username, email=user_data.email, is_active=True
+        id=1, username=user_data.username, email=user_data.email, is_active=True,
     )
 
     return MockUserPublic(
-        id=user.id, username=user.username, email=user.email, is_active=user.is_active
+        id=user.id, username=user.username, email=user.email, is_active=user.is_active,
     )
 
 
@@ -60,8 +58,7 @@ async def login(
     request: Request = None,
     auth_manager: MockAuthManager = Depends(lambda: MockAuthManager()),
 ):
-    """
-    Authenticate user and return access/refresh tokens.
+    """Authenticate user and return access/refresh tokens.
     """
     # Simulate authentication
     if form_data.username == "testuser" and form_data.password == "testpassword":
@@ -72,7 +69,7 @@ async def login(
             expires_in=1800,
         )
     raise HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials"
+        status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials",
     )
 
 
@@ -81,8 +78,7 @@ async def refresh_token(
     refresh_token: str,
     auth_manager: MockAuthManager = Depends(lambda: MockAuthManager()),
 ):
-    """
-    Refresh access token using refresh token.
+    """Refresh access token using refresh token.
     """
     if refresh_token == "mock_refresh_token":
         return MockTokenResponse(
@@ -92,7 +88,7 @@ async def refresh_token(
             expires_in=1800,
         )
     raise HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token"
+        status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token",
     )
 
 
@@ -101,8 +97,7 @@ async def logout(
     request: Request = None,
     auth_manager: MockAuthManager = Depends(lambda: MockAuthManager()),
 ):
-    """
-    Logout user and invalidate tokens.
+    """Logout user and invalidate tokens.
     """
     return {"message": "Successfully logged out"}
 
@@ -111,12 +106,11 @@ async def logout(
 async def get_current_user_info(
     current_user: MockUser = Depends(
         lambda: MockUser(
-            id=1, username="testuser", email="test@example.com", is_active=True
-        )
-    )
+            id=1, username="testuser", email="test@example.com", is_active=True,
+        ),
+    ),
 ):
-    """
-    Get current user information.
+    """Get current user information.
     """
     return MockUserPublic(
         id=current_user.id,
@@ -127,10 +121,10 @@ async def get_current_user_info(
 
 
 def create_auth_router() -> APIRouter:
-    """
-    Create and return the authentication router.
+    """Create and return the authentication router.
 
     Returns:
         APIRouter: Configured authentication router
+
     """
     return auth_router

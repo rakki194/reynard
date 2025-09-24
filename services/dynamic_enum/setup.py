@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Setup script for Dynamic Enum Service
+"""Setup script for Dynamic Enum Service
 =====================================
 
 A modular service for managing dynamic enums based on FastAPI ECS backend data.
@@ -12,7 +11,7 @@ setup(
     name="reynard-dynamic-enum",
     version="1.0.0",
     description="A modular service for managing dynamic enums based on FastAPI ECS backend data",
-    long_description=open("README.md").read() if open("README.md", "r") else "",
+    long_description=open("README.md").read() if open("README.md") else "",
     long_description_content_type="text/markdown",
     author="Reynard Development Team",
     author_email="dev@reynard.ai",

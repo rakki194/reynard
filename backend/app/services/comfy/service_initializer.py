@@ -1,5 +1,4 @@
-"""
-ComfyUI Service Initializer
+"""ComfyUI Service Initializer
 
 Handles initialization and configuration of the ComfyUI service.
 """

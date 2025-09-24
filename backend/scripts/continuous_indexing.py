@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Continuous Indexing Monitor for Reynard Codebase
+"""Continuous Indexing Monitor for Reynard Codebase
 
 This script provides continuous monitoring and auto-refresh capabilities for the RAG indexing system.
 It monitors file changes and automatically re-indexes modified files to keep the search index up-to-date.
@@ -15,7 +14,6 @@ import logging
 import sys
 import time
 from pathlib import Path
-from typing import Any, Dict, Set
 
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
@@ -27,7 +25,7 @@ from app.services.rag import RAGService
 
 # Set up logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -37,8 +35,8 @@ class CodebaseChangeHandler(FileSystemEventHandler):
 
     def __init__(self, indexer: "ContinuousIndexer"):
         self.indexer = indexer
-        self.pending_files: Set[Path] = set()
-        self.last_modified: Dict[Path, float] = {}
+        self.pending_files: set[Path] = set()
+        self.last_modified: dict[Path, float] = {}
 
         # File patterns to watch
         self.watch_patterns = {
@@ -214,7 +212,7 @@ class ContinuousIndexer:
             self.change_handler = CodebaseChangeHandler(self)
             self.observer = Observer()
             self.observer.schedule(
-                self.change_handler, str(self.root_path), recursive=True
+                self.change_handler, str(self.root_path), recursive=True,
             )
 
             logger.info("✅ Continuous indexing system initialized successfully")
@@ -269,7 +267,7 @@ class ContinuousIndexer:
             try:
                 # Wait for files to index
                 file_path = await asyncio.wait_for(
-                    self.indexing_queue.get(), timeout=1.0
+                    self.indexing_queue.get(), timeout=1.0,
                 )
 
                 # Wait a bit to batch multiple changes
@@ -287,7 +285,7 @@ class ContinuousIndexer:
                 # Index the files
                 await self.index_files(files_to_index)
 
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 continue
             except Exception as e:
                 logger.error(f"Error processing indexing queue: {e}")
@@ -298,13 +296,13 @@ class ContinuousIndexer:
             try:
                 # Wait for files to remove
                 file_path = await asyncio.wait_for(
-                    self.removal_queue.get(), timeout=1.0
+                    self.removal_queue.get(), timeout=1.0,
                 )
 
                 # Remove from index
                 await self.remove_file_from_index(file_path)
 
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 continue
             except Exception as e:
                 logger.error(f"Error processing removal queue: {e}")
@@ -451,17 +449,17 @@ class ContinuousIndexer:
 async def main():
     """Main function."""
     parser = argparse.ArgumentParser(
-        description="Continuous indexing monitor for Reynard codebase"
+        description="Continuous indexing monitor for Reynard codebase",
     )
     parser.add_argument(
-        "--watch", action="store_true", help="Start watching for file changes"
+        "--watch", action="store_true", help="Start watching for file changes",
     )
     parser.add_argument(
-        "--interval", type=int, default=5, help="Stats report interval in minutes"
+        "--interval", type=int, default=5, help="Stats report interval in minutes",
     )
     parser.add_argument("--verbose", "-v", action="store_true", help="Verbose output")
     parser.add_argument(
-        "--root", default="/home/kade/runeset/reynard", help="Root path to watch"
+        "--root", default="/home/kade/runeset/reynard", help="Root path to watch",
     )
 
     args = parser.parse_args()

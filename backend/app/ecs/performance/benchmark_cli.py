@@ -1,5 +1,4 @@
-"""
-Command-line benchmarking and profiling tools for FastAPI ECS backend.
+"""Command-line benchmarking and profiling tools for FastAPI ECS backend.
 
 This module provides comprehensive CLI tools for:
 - Load testing endpoints
@@ -20,7 +19,7 @@ import time
 from dataclasses import asdict, dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import aiohttp
 
@@ -45,8 +44,8 @@ class LoadTestResult:
     requests_per_second: float
     total_duration: float
     error_rate: float
-    status_codes: Dict[int, int]
-    errors: List[str]
+    status_codes: dict[int, int]
+    errors: list[str]
 
 
 @dataclass
@@ -54,13 +53,13 @@ class BenchmarkConfig:
     """Configuration for benchmarking."""
 
     base_url: str
-    endpoints: List[Dict[str, Any]]
+    endpoints: list[dict[str, Any]]
     concurrent_users: int
     duration_seconds: int
     ramp_up_seconds: int
     timeout_seconds: int
-    headers: Dict[str, str]
-    output_file: Optional[str] = None
+    headers: dict[str, str]
+    output_file: str | None = None
     verbose: bool = False
 
 
@@ -69,17 +68,17 @@ class LoadTester:
 
     def __init__(self, config: BenchmarkConfig):
         self.config = config
-        self.results: List[Dict[str, Any]] = []
-        self.start_time: Optional[float] = None
-        self.end_time: Optional[float] = None
+        self.results: list[dict[str, Any]] = []
+        self.start_time: float | None = None
+        self.end_time: float | None = None
 
-    async def run_load_test(self) -> List[LoadTestResult]:
+    async def run_load_test(self) -> list[LoadTestResult]:
         """Run comprehensive load test."""
         print(
-            f"🚀 Starting load test with {self.config.concurrent_users} concurrent users"
+            f"🚀 Starting load test with {self.config.concurrent_users} concurrent users",
         )
         print(
-            f"⏱️  Duration: {self.config.duration_seconds}s, Ramp-up: {self.config.ramp_up_seconds}s"
+            f"⏱️  Duration: {self.config.duration_seconds}s, Ramp-up: {self.config.ramp_up_seconds}s",
         )
 
         self.start_time = time.time()
@@ -107,7 +106,7 @@ class LoadTester:
         return valid_results
 
     async def _test_endpoint(
-        self, endpoint_config: Dict[str, Any], semaphore: asyncio.Semaphore
+        self, endpoint_config: dict[str, Any], semaphore: asyncio.Semaphore,
     ) -> LoadTestResult:
         """Test a single endpoint."""
         endpoint = endpoint_config["endpoint"]
@@ -124,12 +123,12 @@ class LoadTester:
         failed_requests = 0
 
         async with aiohttp.ClientSession(
-            timeout=aiohttp.ClientTimeout(total=self.config.timeout_seconds)
+            timeout=aiohttp.ClientTimeout(total=self.config.timeout_seconds),
         ) as session:
             # Ramp-up phase
             if self.config.ramp_up_seconds > 0:
                 await self._ramp_up(
-                    semaphore, session, url, method, payload, headers, endpoint_config
+                    semaphore, session, url, method, payload, headers, endpoint_config,
                 )
 
             # Main test phase
@@ -145,12 +144,12 @@ class LoadTester:
                                 await response.text()  # Consume response
                         elif method.upper() == "POST":
                             async with session.post(
-                                url, json=payload, headers=headers
+                                url, json=payload, headers=headers,
                             ) as response:
                                 await response.text()
                         elif method.upper() == "PUT":
                             async with session.put(
-                                url, json=payload, headers=headers
+                                url, json=payload, headers=headers,
                             ) as response:
                                 await response.text()
                         elif method.upper() == "DELETE":
@@ -169,7 +168,7 @@ class LoadTester:
                             failed_requests += 1
                             errors.append(f"HTTP {status_code}")
 
-                    except asyncio.TimeoutError:
+                    except TimeoutError:
                         failed_requests += 1
                         errors.append("Timeout")
                     except Exception as e:
@@ -224,8 +223,8 @@ class LoadTester:
         url: str,
         method: str,
         payload: Any,
-        headers: Dict[str, str],
-        endpoint_config: Dict[str, Any],
+        headers: dict[str, str],
+        endpoint_config: dict[str, Any],
     ):
         """Gradually increase load during ramp-up phase."""
         ramp_up_duration = self.config.ramp_up_seconds
@@ -238,7 +237,7 @@ class LoadTester:
                 int(
                     (time.time() - ramp_up_start)
                     / ramp_up_duration
-                    * self.config.concurrent_users
+                    * self.config.concurrent_users,
                 ),
             )
 
@@ -251,7 +250,7 @@ class LoadTester:
                                 await response.text()
                         elif method.upper() == "POST":
                             async with session.post(
-                                url, json=payload, headers=headers
+                                url, json=payload, headers=headers,
                             ) as response:
                                 await response.text()
                     except Exception:
@@ -259,7 +258,7 @@ class LoadTester:
 
             await asyncio.sleep(0.1)  # Small delay between ramp-up requests
 
-    def _percentile(self, data: List[float], percentile: int) -> float:
+    def _percentile(self, data: list[float], percentile: int) -> float:
         """Calculate percentile of data."""
         if not data:
             return 0.0
@@ -268,7 +267,7 @@ class LoadTester:
         index = int((percentile / 100) * len(sorted_data))
         return sorted_data[min(index, len(sorted_data) - 1)]
 
-    def _save_results(self, results: List[LoadTestResult]):
+    def _save_results(self, results: list[LoadTestResult]):
         """Save results to file."""
         output_path = Path(self.config.output_file)
 
@@ -308,9 +307,9 @@ class PerformanceProfiler:
         self,
         endpoint: str,
         method: str = "GET",
-        payload: Optional[Dict] = None,
+        payload: dict | None = None,
         iterations: int = 100,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Profile a single endpoint."""
         print(f"🔍 Profiling {method} {endpoint} ({iterations} iterations)")
 
@@ -326,12 +325,12 @@ class PerformanceProfiler:
 
                     if method.upper() == "GET":
                         async with session.get(
-                            f"{self.base_url}{endpoint}"
+                            f"{self.base_url}{endpoint}",
                         ) as response:
                             await response.text()
                     elif method.upper() == "POST":
                         async with session.post(
-                            f"{self.base_url}{endpoint}", json=payload
+                            f"{self.base_url}{endpoint}", json=payload,
                         ) as response:
                             await response.text()
 
@@ -379,7 +378,7 @@ class PerformanceProfiler:
 
         return stats
 
-    def _percentile(self, data: List[float], percentile: int) -> float:
+    def _percentile(self, data: list[float], percentile: int) -> float:
         """Calculate percentile of data."""
         if not data:
             return 0.0
@@ -389,7 +388,7 @@ class PerformanceProfiler:
         return sorted_data[min(index, len(sorted_data) - 1)]
 
 
-def print_load_test_results(results: List[LoadTestResult]):
+def print_load_test_results(results: list[LoadTestResult]):
     """Print formatted load test results."""
     print("\n" + "=" * 80)
     print("📊 LOAD TEST RESULTS")
@@ -398,9 +397,9 @@ def print_load_test_results(results: List[LoadTestResult]):
     for result in results:
         print(f"\n🎯 Endpoint: {result.method} {result.endpoint}")
         print(
-            f"📈 Requests: {result.total_requests} total, {result.successful_requests} successful, {result.failed_requests} failed"
+            f"📈 Requests: {result.total_requests} total, {result.successful_requests} successful, {result.failed_requests} failed",
         )
-        print(f"⏱️  Response Times:")
+        print("⏱️  Response Times:")
         print(f"   • Average: {result.avg_response_time*1000:.1f}ms")
         print(f"   • Median (P50): {result.p50_response_time*1000:.1f}ms")
         print(f"   • P95: {result.p95_response_time*1000:.1f}ms")
@@ -417,7 +416,7 @@ def print_load_test_results(results: List[LoadTestResult]):
             print(f"⚠️  Errors: {result.errors[:3]}")  # Show first 3 errors
 
 
-def print_profiling_results(results: Dict[str, Any]):
+def print_profiling_results(results: dict[str, Any]):
     """Print formatted profiling results."""
     print("\n" + "=" * 80)
     print("🔍 PROFILING RESULTS")
@@ -429,7 +428,7 @@ def print_profiling_results(results: Dict[str, Any]):
 
     print(f"🎯 Endpoint: {results['method']} {results['endpoint']}")
     print(f"🔄 Iterations: {results['iterations']}")
-    print(f"⏱️  Response Times:")
+    print("⏱️  Response Times:")
     print(f"   • Average: {results['avg_response_time']*1000:.1f}ms")
     print(f"   • Median: {results['median_response_time']*1000:.1f}ms")
     print(f"   • Std Dev: {results['std_deviation']*1000:.1f}ms")
@@ -450,10 +449,10 @@ def print_profiling_results(results: Dict[str, Any]):
 async def main():
     """Main CLI entry point."""
     parser = argparse.ArgumentParser(
-        description="FastAPI ECS Performance Benchmarking Tool"
+        description="FastAPI ECS Performance Benchmarking Tool",
     )
     parser.add_argument(
-        "--base-url", default="http://localhost:8000", help="Base URL of the API"
+        "--base-url", default="http://localhost:8000", help="Base URL of the API",
     )
     parser.add_argument(
         "--mode",
@@ -469,21 +468,21 @@ async def main():
         help="Endpoints to test (e.g., /api/health /api/users)",
     )
     parser.add_argument(
-        "--concurrent-users", type=int, default=10, help="Number of concurrent users"
+        "--concurrent-users", type=int, default=10, help="Number of concurrent users",
     )
     parser.add_argument(
-        "--duration", type=int, default=60, help="Test duration in seconds"
+        "--duration", type=int, default=60, help="Test duration in seconds",
     )
     parser.add_argument(
-        "--ramp-up", type=int, default=10, help="Ramp-up duration in seconds"
+        "--ramp-up", type=int, default=10, help="Ramp-up duration in seconds",
     )
     parser.add_argument(
-        "--timeout", type=int, default=30, help="Request timeout in seconds"
+        "--timeout", type=int, default=30, help="Request timeout in seconds",
     )
 
     # Profiling arguments
     parser.add_argument(
-        "--iterations", type=int, default=100, help="Number of profiling iterations"
+        "--iterations", type=int, default=100, help="Number of profiling iterations",
     )
     parser.add_argument("--method", default="GET", help="HTTP method for profiling")
     parser.add_argument("--payload", help="JSON payload for POST/PUT requests")
@@ -531,7 +530,7 @@ async def main():
 
         profiler = PerformanceProfiler(args.base_url)
         result = await profiler.profile_endpoint(
-            endpoint, args.method, payload, args.iterations
+            endpoint, args.method, payload, args.iterations,
         )
         print_profiling_results(result)
 

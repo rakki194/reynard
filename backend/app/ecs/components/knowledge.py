@@ -1,14 +1,13 @@
-"""
-Knowledge Component
+"""Knowledge Component
 
 Agent knowledge, learning capabilities, and knowledge transfer systems.
 """
 
 import uuid
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Set
+from typing import Any
 
 from ..core.component import Component
 
@@ -65,9 +64,9 @@ class Knowledge:
     usage_count: int = 0
     learning_method: LearningMethod = LearningMethod.EXPERIENCE
     source_agent: str | None = None  # Agent who taught this knowledge
-    tags: List[str] = None
-    prerequisites: List[str] = None  # Required knowledge IDs
-    applications: List[str] = None  # How this knowledge can be applied
+    tags: list[str] = None
+    prerequisites: list[str] = None  # Required knowledge IDs
+    applications: list[str] = None  # How this knowledge can be applied
     difficulty: float = 0.5  # 0.0 (easy) to 1.0 (very difficult)
     importance: float = 0.5  # 0.0 (low) to 1.0 (high)
     transferability: float = 0.5  # 0.0 (hard to teach) to 1.0 (easy to teach)
@@ -95,16 +94,15 @@ class Knowledge:
         """Get the knowledge level based on proficiency."""
         if self.proficiency >= 0.95:
             return KnowledgeLevel.MASTER
-        elif self.proficiency >= 0.80:
+        if self.proficiency >= 0.80:
             return KnowledgeLevel.EXPERT
-        elif self.proficiency >= 0.60:
+        if self.proficiency >= 0.60:
             return KnowledgeLevel.ADVANCED
-        elif self.proficiency >= 0.40:
+        if self.proficiency >= 0.40:
             return KnowledgeLevel.INTERMEDIATE
-        elif self.proficiency >= 0.20:
+        if self.proficiency >= 0.20:
             return KnowledgeLevel.NOVICE
-        else:
-            return KnowledgeLevel.BEGINNER
+        return KnowledgeLevel.BEGINNER
 
     def use_knowledge(self) -> None:
         """Record usage of this knowledge."""
@@ -159,7 +157,7 @@ class LearningOpportunity:
         # Higher score for easier, shorter, more valuable opportunities
         difficulty_factor = 1.0 - self.estimated_difficulty
         duration_factor = max(
-            0.1, 1.0 - (self.estimated_duration / 3600.0)
+            0.1, 1.0 - (self.estimated_duration / 3600.0),
         )  # Normalize to hours
         potential_factor = self.learning_potential
 
@@ -167,30 +165,27 @@ class LearningOpportunity:
 
 
 class KnowledgeComponent(Component):
-    """
-    Agent knowledge and learning capabilities component.
+    """Agent knowledge and learning capabilities component.
 
     Manages knowledge acquisition, storage, transfer, and application
     with comprehensive learning tracking and skill development.
     """
 
     def __init__(self, knowledge_capacity: int = 500):
-        """
-        Initialize the knowledge component.
+        """Initialize the knowledge component.
 
         Args:
             knowledge_capacity: Maximum number of knowledge items to store
+
         """
         super().__init__()
-        self.knowledge: Dict[str, Knowledge] = {}
+        self.knowledge: dict[str, Knowledge] = {}
         self.knowledge_capacity = knowledge_capacity
         self.learning_rate = 1.0
         self.teaching_effectiveness = 1.0
         self.total_knowledge_acquired = 0
         self.total_knowledge_taught = 0
-        self.learning_preferences: Dict[LearningMethod, float] = {
-            method: 1.0 for method in LearningMethod
-        }
+        self.learning_preferences: dict[LearningMethod, float] = dict.fromkeys(LearningMethod, 1.0)
 
     def acquire_knowledge(
         self,
@@ -201,15 +196,14 @@ class KnowledgeComponent(Component):
         confidence: float = 0.5,
         learning_method: LearningMethod = LearningMethod.EXPERIENCE,
         source_agent: str | None = None,
-        tags: List[str] | None = None,
-        prerequisites: List[str] | None = None,
-        applications: List[str] | None = None,
+        tags: list[str] | None = None,
+        prerequisites: list[str] | None = None,
+        applications: list[str] | None = None,
         difficulty: float = 0.5,
         importance: float = 0.5,
         transferability: float = 0.5,
     ) -> str:
-        """
-        Acquire new knowledge.
+        """Acquire new knowledge.
 
         Args:
             title: Knowledge title
@@ -228,6 +222,7 @@ class KnowledgeComponent(Component):
 
         Returns:
             Knowledge ID
+
         """
         if tags is None:
             tags = []
@@ -264,14 +259,14 @@ class KnowledgeComponent(Component):
         return knowledge_id
 
     def get_knowledge(self, knowledge_id: str) -> Knowledge | None:
-        """
-        Get knowledge by ID.
+        """Get knowledge by ID.
 
         Args:
             knowledge_id: ID of knowledge to retrieve
 
         Returns:
             Knowledge object or None if not found
+
         """
         return self.knowledge.get(knowledge_id)
 
@@ -281,11 +276,10 @@ class KnowledgeComponent(Component):
         knowledge_type: KnowledgeType | None = None,
         min_proficiency: float = 0.0,
         max_proficiency: float = 1.0,
-        tags: List[str] | None = None,
+        tags: list[str] | None = None,
         limit: int = 10,
-    ) -> List[Knowledge]:
-        """
-        Search knowledge based on various criteria.
+    ) -> list[Knowledge]:
+        """Search knowledge based on various criteria.
 
         Args:
             query: Text query to search for
@@ -297,6 +291,7 @@ class KnowledgeComponent(Component):
 
         Returns:
             List of matching knowledge
+
         """
         if tags is None:
             tags = []
@@ -332,14 +327,14 @@ class KnowledgeComponent(Component):
         return results[:limit]
 
     def use_knowledge(self, knowledge_id: str) -> bool:
-        """
-        Use knowledge and update usage statistics.
+        """Use knowledge and update usage statistics.
 
         Args:
             knowledge_id: ID of knowledge to use
 
         Returns:
             True if knowledge was found and used
+
         """
         knowledge = self.knowledge.get(knowledge_id)
         if knowledge:
@@ -353,8 +348,7 @@ class KnowledgeComponent(Component):
         target_agent_id: str,
         teaching_effectiveness: float = 1.0,
     ) -> bool:
-        """
-        Teach knowledge to another agent.
+        """Teach knowledge to another agent.
 
         Args:
             knowledge_id: ID of knowledge to teach
@@ -363,6 +357,7 @@ class KnowledgeComponent(Component):
 
         Returns:
             True if knowledge was found and can be taught
+
         """
         knowledge = self.knowledge.get(knowledge_id)
         if knowledge and knowledge.can_teach():
@@ -377,8 +372,7 @@ class KnowledgeComponent(Component):
         knowledge_id: str,
         learning_effectiveness: float = 1.0,
     ) -> str | None:
-        """
-        Learn knowledge from another agent.
+        """Learn knowledge from another agent.
 
         Args:
             source_agent_id: ID of agent to learn from
@@ -387,12 +381,13 @@ class KnowledgeComponent(Component):
 
         Returns:
             New knowledge ID if successful, None otherwise
+
         """
         # This would typically involve getting knowledge from the source agent
         # For now, we'll return None as this requires inter-agent communication
         return None
 
-    def get_knowledge_stats(self) -> Dict[str, Any]:
+    def get_knowledge_stats(self) -> dict[str, Any]:
         """Get comprehensive knowledge statistics."""
         if not self.knowledge:
             return {
@@ -433,36 +428,36 @@ class KnowledgeComponent(Component):
         }
 
     def get_knowledge_by_type(
-        self, knowledge_type: KnowledgeType, limit: int = 10
-    ) -> List[Knowledge]:
+        self, knowledge_type: KnowledgeType, limit: int = 10,
+    ) -> list[Knowledge]:
         """Get knowledge of a specific type."""
         return self.search_knowledge(knowledge_type=knowledge_type, limit=limit)
 
     def get_expertise_areas(
-        self, min_proficiency: float = 0.7, limit: int = 10
-    ) -> List[Knowledge]:
+        self, min_proficiency: float = 0.7, limit: int = 10,
+    ) -> list[Knowledge]:
         """Get areas where the agent has high proficiency."""
         return self.search_knowledge(min_proficiency=min_proficiency, limit=limit)
 
     def get_learning_opportunities(
-        self, max_proficiency: float = 0.3, limit: int = 10
-    ) -> List[Knowledge]:
+        self, max_proficiency: float = 0.3, limit: int = 10,
+    ) -> list[Knowledge]:
         """Get knowledge areas that need improvement."""
         return self.search_knowledge(max_proficiency=max_proficiency, limit=limit)
 
     def update_learning_preference(
-        self, method: LearningMethod, preference: float
+        self, method: LearningMethod, preference: float,
     ) -> None:
-        """
-        Update learning preference for a specific method.
+        """Update learning preference for a specific method.
 
         Args:
             method: Learning method to update
             preference: Preference value (0.0 to 1.0)
+
         """
         self.learning_preferences[method] = max(0.0, min(1.0, preference))
 
-    def get_learning_preferences(self) -> Dict[LearningMethod, float]:
+    def get_learning_preferences(self) -> dict[LearningMethod, float]:
         """Get current learning preferences."""
         return self.learning_preferences.copy()
 
@@ -473,20 +468,20 @@ class KnowledgeComponent(Component):
 
         # Find knowledge with lowest importance and proficiency
         least_important = min(
-            self.knowledge.values(), key=lambda k: (k.importance, k.proficiency)
+            self.knowledge.values(), key=lambda k: (k.importance, k.proficiency),
         )
 
         del self.knowledge[least_important.id]
 
     def can_learn_knowledge(self, knowledge_id: str) -> bool:
-        """
-        Check if the agent can learn a specific knowledge.
+        """Check if the agent can learn a specific knowledge.
 
         Args:
             knowledge_id: ID of knowledge to check
 
         Returns:
             True if prerequisites are met
+
         """
         # This would check if prerequisites are met
         # For now, return True as we don't have access to other agents' knowledge

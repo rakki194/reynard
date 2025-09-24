@@ -1,5 +1,4 @@
-"""
-🦊 Reynard Initial Indexing API Endpoints
+"""🦊 Reynard Initial Indexing API Endpoints
 ==========================================
 
 API endpoints for triggering and managing initial codebase indexing.
@@ -17,9 +16,8 @@ Version: 1.0.0
 """
 
 import logging
-from typing import Any, Dict
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 
 from app.core.service_registry import get_service_registry
@@ -42,11 +40,11 @@ async def start_initial_indexing(force: bool = False) -> JSONResponse:
 
         # Get the initial indexing service
         initial_indexing_service = getattr(
-            rag_service, "initial_indexing_service", None
+            rag_service, "initial_indexing_service", None,
         )
         if not initial_indexing_service:
             raise HTTPException(
-                status_code=503, detail="Initial indexing service not available"
+                status_code=503, detail="Initial indexing service not available",
             )
 
         # Check if already running
@@ -56,7 +54,7 @@ async def start_initial_indexing(force: bool = False) -> JSONResponse:
                     "status": "already_running",
                     "message": "Initial indexing is already in progress",
                     "progress": await initial_indexing_service.get_progress(),
-                }
+                },
             )
 
         # Start progress monitoring
@@ -67,7 +65,7 @@ async def start_initial_indexing(force: bool = False) -> JSONResponse:
         import asyncio
 
         asyncio.create_task(
-            initial_indexing_service.perform_initial_indexing(force=force)
+            initial_indexing_service.perform_initial_indexing(force=force),
         )
 
         return JSONResponse(
@@ -79,7 +77,7 @@ async def start_initial_indexing(force: bool = False) -> JSONResponse:
                     "websocket_url": "/api/rag/progress/ws",
                     "progress_url": "/api/rag/progress/current",
                 },
-            }
+            },
         )
 
     except HTTPException:
@@ -87,7 +85,7 @@ async def start_initial_indexing(force: bool = False) -> JSONResponse:
     except Exception as e:
         logger.error(f"Failed to start initial indexing: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to start initial indexing: {str(e)}"
+            status_code=500, detail=f"Failed to start initial indexing: {e!s}",
         )
 
 
@@ -103,11 +101,11 @@ async def get_indexing_status() -> JSONResponse:
 
         # Get the initial indexing service
         initial_indexing_service = getattr(
-            rag_service, "initial_indexing_service", None
+            rag_service, "initial_indexing_service", None,
         )
         if not initial_indexing_service:
             raise HTTPException(
-                status_code=503, detail="Initial indexing service not available"
+                status_code=503, detail="Initial indexing service not available",
             )
 
         progress = await initial_indexing_service.get_progress()
@@ -121,7 +119,7 @@ async def get_indexing_status() -> JSONResponse:
                     "progress": progress,
                     "database_empty": await initial_indexing_service.is_database_empty(),
                 },
-            }
+            },
         )
 
     except HTTPException:
@@ -129,7 +127,7 @@ async def get_indexing_status() -> JSONResponse:
     except Exception as e:
         logger.error(f"Failed to get indexing status: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to get indexing status: {str(e)}"
+            status_code=500, detail=f"Failed to get indexing status: {e!s}",
         )
 
 
@@ -145,11 +143,11 @@ async def stop_indexing() -> JSONResponse:
 
         # Get the initial indexing service
         initial_indexing_service = getattr(
-            rag_service, "initial_indexing_service", None
+            rag_service, "initial_indexing_service", None,
         )
         if not initial_indexing_service:
             raise HTTPException(
-                status_code=503, detail="Initial indexing service not available"
+                status_code=503, detail="Initial indexing service not available",
             )
 
         if not initial_indexing_service.is_running:
@@ -157,7 +155,7 @@ async def stop_indexing() -> JSONResponse:
                 {
                     "status": "not_running",
                     "message": "No indexing process is currently running",
-                }
+                },
             )
 
         # Stop indexing
@@ -173,7 +171,7 @@ async def stop_indexing() -> JSONResponse:
                 "message": (
                     "Indexing process stopped" if success else "Failed to stop indexing"
                 ),
-            }
+            },
         )
 
     except HTTPException:
@@ -181,7 +179,7 @@ async def stop_indexing() -> JSONResponse:
     except Exception as e:
         logger.error(f"Failed to stop indexing: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to stop indexing: {str(e)}"
+            status_code=500, detail=f"Failed to stop indexing: {e!s}",
         )
 
 
@@ -197,11 +195,11 @@ async def get_database_status() -> JSONResponse:
 
         # Get the initial indexing service
         initial_indexing_service = getattr(
-            rag_service, "initial_indexing_service", None
+            rag_service, "initial_indexing_service", None,
         )
         if not initial_indexing_service:
             raise HTTPException(
-                status_code=503, detail="Initial indexing service not available"
+                status_code=503, detail="Initial indexing service not available",
             )
 
         is_empty = await initial_indexing_service.is_database_empty()
@@ -218,7 +216,7 @@ async def get_database_status() -> JSONResponse:
                         else "Database has content"
                     ),
                 },
-            }
+            },
         )
 
     except HTTPException:
@@ -226,7 +224,7 @@ async def get_database_status() -> JSONResponse:
     except Exception as e:
         logger.error(f"Failed to check database status: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to check database status: {str(e)}"
+            status_code=500, detail=f"Failed to check database status: {e!s}",
         )
 
 
@@ -242,11 +240,11 @@ async def discover_files() -> JSONResponse:
 
         # Get the initial indexing service
         initial_indexing_service = getattr(
-            rag_service, "initial_indexing_service", None
+            rag_service, "initial_indexing_service", None,
         )
         if not initial_indexing_service:
             raise HTTPException(
-                status_code=503, detail="Initial indexing service not available"
+                status_code=503, detail="Initial indexing service not available",
             )
 
         files = await initial_indexing_service.discover_files()
@@ -270,7 +268,7 @@ async def discover_files() -> JSONResponse:
                     ],  # Limit to first 100 files for response size
                     "truncated": len(files) > 100,
                 },
-            }
+            },
         )
 
     except HTTPException:
@@ -278,5 +276,5 @@ async def discover_files() -> JSONResponse:
     except Exception as e:
         logger.error(f"Failed to discover files: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to discover files: {str(e)}"
+            status_code=500, detail=f"Failed to discover files: {e!s}",
         )

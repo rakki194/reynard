@@ -1,5 +1,4 @@
-"""
-Tests for utility modules in the Gatekeeper library.
+"""Tests for utility modules in the Gatekeeper library.
 
 This module tests the security and validation utilities.
 """
@@ -68,7 +67,7 @@ class TestPasswordValidator:
     def test_validate_password_strength_strong(self):
         """Test strong password validation."""
         is_strong, reason = PasswordValidator.validate_password_strength(
-            "StrongPass123!"
+            "StrongPass123!",
         )
         assert is_strong is True
         assert "meets strength requirements" in reason

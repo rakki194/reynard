@@ -1,5 +1,4 @@
-"""
-Summarization services module for Reynard.
+"""Summarization services module for Reynard.
 
 This module provides a modular approach to text summarization with support for
 different content types, summarization strategies, and quality optimization.

@@ -1,5 +1,4 @@
-"""
-Agent State Persistence
+"""Agent State Persistence
 
 Provides persistent storage and retrieval of agent states for
 the Success-Advisor-8 distillation system.
@@ -8,11 +7,10 @@ Author: Champion-Designer-32 (Wolf Specialist)
 Version: 1.0.0
 """
 
-import asyncio
 import json
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from ..utils.data_structures import (
     AgentState,
@@ -25,39 +23,38 @@ from ..utils.logging import PhoenixLogger
 
 
 class AgentPersistence:
-    """
-    Agent state persistence system.
+    """Agent state persistence system.
 
     Provides JSON-based persistent storage and retrieval of agent states
     with backup and recovery capabilities.
     """
 
     def __init__(self, data_dir: str = "data/agent_persistence"):
-        """
-        Initialize agent persistence system.
+        """Initialize agent persistence system.
 
         Args:
             data_dir: Directory for storing agent state data
+
         """
         self.data_dir = Path(data_dir)
         self.data_dir.mkdir(parents=True, exist_ok=True)
 
         self.logger = PhoenixLogger("agent_persistence")
-        self.agent_states: Dict[str, AgentState] = {}
+        self.agent_states: dict[str, AgentState] = {}
 
         self.logger.info(
-            f"Agent persistence initialized at {self.data_dir}", "initialization"
+            f"Agent persistence initialized at {self.data_dir}", "initialization",
         )
 
     async def save_agent_state(self, agent_state: AgentState) -> bool:
-        """
-        Save agent state to persistent storage.
+        """Save agent state to persistent storage.
 
         Args:
             agent_state: Agent state to save
 
         Returns:
             True if successful, False otherwise
+
         """
         try:
             # Convert agent state to dictionary
@@ -109,19 +106,19 @@ class AgentPersistence:
 
         except Exception as e:
             self.logger.error(
-                f"Failed to save agent state {agent_state.id}: {e}", "save"
+                f"Failed to save agent state {agent_state.id}: {e}", "save",
             )
             return False
 
-    async def load_agent_state(self, agent_id: str) -> Optional[AgentState]:
-        """
-        Load agent state from persistent storage.
+    async def load_agent_state(self, agent_id: str) -> AgentState | None:
+        """Load agent state from persistent storage.
 
         Args:
             agent_id: Agent ID to load
 
         Returns:
             Agent state if found, None otherwise
+
         """
         try:
             # Check in-memory cache first
@@ -135,7 +132,7 @@ class AgentPersistence:
                 self.logger.warning(f"Agent state file not found: {agent_id}", "load")
                 return None
 
-            with open(state_file, "r") as f:
+            with open(state_file) as f:
                 state_data = json.load(f)
 
             # Reconstruct performance history
@@ -152,7 +149,7 @@ class AgentPersistence:
                     significance=StatisticalSignificance(
                         p_value=perf_data["significance"]["p_value"],
                         confidence_interval=tuple(
-                            perf_data["significance"]["confidence_interval"]
+                            perf_data["significance"]["confidence_interval"],
                         ),
                         effect_size=perf_data["significance"]["effect_size"],
                         power=perf_data["significance"]["power"],
@@ -189,12 +186,12 @@ class AgentPersistence:
             self.logger.error(f"Failed to load agent state {agent_id}: {e}", "load")
             return None
 
-    async def list_agent_states(self) -> List[str]:
-        """
-        List all available agent states.
+    async def list_agent_states(self) -> list[str]:
+        """List all available agent states.
 
         Returns:
             List of agent IDs
+
         """
         agent_ids = []
 
@@ -212,14 +209,14 @@ class AgentPersistence:
         return sorted(agent_ids)
 
     async def delete_agent_state(self, agent_id: str) -> bool:
-        """
-        Delete agent state from persistent storage.
+        """Delete agent state from persistent storage.
 
         Args:
             agent_id: Agent ID to delete
 
         Returns:
             True if successful, False otherwise
+
         """
         try:
             # Remove from cache
@@ -239,16 +236,16 @@ class AgentPersistence:
             return False
 
     async def backup_agent_states(
-        self, backup_dir: str = "backups/agent_states"
+        self, backup_dir: str = "backups/agent_states",
     ) -> bool:
-        """
-        Create backup of all agent states.
+        """Create backup of all agent states.
 
         Args:
             backup_dir: Backup directory
 
         Returns:
             True if successful, False otherwise
+
         """
         try:
             backup_path = Path(backup_dir)
@@ -292,14 +289,14 @@ class AgentPersistence:
             return False
 
     async def restore_agent_states(self, backup_file: str) -> bool:
-        """
-        Restore agent states from backup.
+        """Restore agent states from backup.
 
         Args:
             backup_file: Path to backup file
 
         Returns:
             True if successful, False otherwise
+
         """
         try:
             backup_path = Path(backup_file)
@@ -307,7 +304,7 @@ class AgentPersistence:
                 self.logger.error(f"Backup file not found: {backup_file}", "restore")
                 return False
 
-            with open(backup_path, "r") as f:
+            with open(backup_path) as f:
                 backup_data = json.load(f)
 
             # Clear existing states
@@ -322,7 +319,7 @@ class AgentPersistence:
                 restored_count += 1
 
             self.logger.success(
-                f"Restored {restored_count} agent states from backup", "restore"
+                f"Restored {restored_count} agent states from backup", "restore",
             )
             return True
 
@@ -331,11 +328,11 @@ class AgentPersistence:
             return False
 
     async def clear_all_states(self) -> bool:
-        """
-        Clear all agent states from storage.
+        """Clear all agent states from storage.
 
         Returns:
             True if successful, False otherwise
+
         """
         try:
             # Clear cache
@@ -352,12 +349,12 @@ class AgentPersistence:
             self.logger.error(f"Failed to clear agent states: {e}", "clear_all")
             return False
 
-    async def get_storage_statistics(self) -> Dict[str, Any]:
-        """
-        Get statistics about stored agent states.
+    async def get_storage_statistics(self) -> dict[str, Any]:
+        """Get statistics about stored agent states.
 
         Returns:
             Storage statistics
+
         """
         agent_ids = await self.list_agent_states()
 

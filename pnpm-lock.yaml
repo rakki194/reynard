@@ -29,6 +29,12 @@ importers:
       reynard-auth:
         specifier: workspace:*
         version: link:packages/services/auth
+      reynard-auth-composables:
+        specifier: workspace:*
+        version: link:packages/core/auth-composables
+      reynard-auth-core:
+        specifier: workspace:*
+        version: link:packages/core/auth-core
       reynard-boundingbox:
         specifier: workspace:*
         version: link:packages/media/boundingbox
@@ -104,6 +110,9 @@ importers:
       reynard-games:
         specifier: workspace:*
         version: link:packages/ui/games
+      reynard-http-client:
+        specifier: workspace:*
+        version: link:packages/core/http-client
       reynard-i18n:
         specifier: workspace:*
         version: link:packages/core/i18n
@@ -961,6 +970,88 @@ importers:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
 
+  examples/games-demo:
+    dependencies:
+      '@types/three':
+        specifier: 0.180.0
+        version: 0.180.0
+      reynard-3d:
+        specifier: workspace:*
+        version: link:../../packages/media/3d
+      reynard-algorithms:
+        specifier: workspace:*
+        version: link:../../packages/core/algorithms
+      reynard-charts:
+        specifier: workspace:*
+        version: link:../../packages/ui/charts
+      reynard-colors:
+        specifier: workspace:*
+        version: link:../../packages/ui/colors
+      reynard-components-charts:
+        specifier: workspace:*
+        version: link:../../packages/ui/components-charts
+      reynard-components-core:
+        specifier: workspace:*
+        version: link:../../packages/ui/components-core
+      reynard-components-dashboard:
+        specifier: workspace:*
+        version: link:../../packages/ui/components-dashboard
+      reynard-components-themes:
+        specifier: workspace:*
+        version: link:../../packages/ui/components-themes
+      reynard-components-utils:
+        specifier: workspace:*
+        version: link:../../packages/ui/components-utils
+      reynard-core:
+        specifier: workspace:*
+        version: link:../../packages/core/core
+      reynard-fluent-icons:
+        specifier: workspace:*
+        version: link:../../packages/ui/fluent-icons
+      reynard-games:
+        specifier: workspace:*
+        version: link:../../packages/ui/games
+      reynard-themes:
+        specifier: workspace:*
+        version: link:../../packages/ui/themes
+      solid-js:
+        specifier: 1.9.9
+        version: 1.9.9
+      three:
+        specifier: 0.180.0
+        version: 0.180.0
+    devDependencies:
+      '@solidjs/testing-library':
+        specifier: 0.8.10
+        version: 0.8.10(solid-js@1.9.9)
+      '@types/node':
+        specifier: 24.5.2
+        version: 24.5.2
+      '@vitest/coverage-v8':
+        specifier: 3.2.4
+        version: 3.2.4(vitest@3.2.4)
+      '@vitest/ui':
+        specifier: 3.2.4
+        version: 3.2.4(vitest@3.2.4)
+      happy-dom:
+        specifier: 18.0.1
+        version: 18.0.1
+      prettier:
+        specifier: 3.6.2
+        version: 3.6.2
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
+      vite:
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
+      vite-plugin-solid:
+        specifier: 2.11.8
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
+      vitest:
+        specifier: 3.2.4
+        version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+
   examples/hue-shifting-demo:
     dependencies:
       '@solidjs/router':
@@ -1235,6 +1326,18 @@ importers:
       reynard-algorithms:
         specifier: workspace:*
         version: link:../../packages/core/algorithms
+      reynard-annotating-core:
+        specifier: workspace:*
+        version: link:../../packages/ai/annotating-core
+      reynard-auth:
+        specifier: workspace:*
+        version: link:../../packages/services/auth
+      reynard-caption:
+        specifier: workspace:*
+        version: link:../../packages/ai/caption
+      reynard-chat:
+        specifier: workspace:*
+        version: link:../../packages/services/chat
       reynard-components-charts:
         specifier: workspace:*
         version: link:../../packages/ui/components-charts
@@ -1250,12 +1353,18 @@ importers:
       reynard-components-utils:
         specifier: workspace:*
         version: link:../../packages/ui/components-utils
+      reynard-composables:
+        specifier: workspace:*
+        version: link:../../packages/core/composables
       reynard-core:
         specifier: workspace:*
         version: link:../../packages/core/core
       reynard-fluent-icons:
         specifier: workspace:*
         version: link:../../packages/ui/fluent-icons
+      reynard-monaco:
+        specifier: workspace:*
+        version: link:../../packages/ui/monaco
       reynard-themes:
         specifier: workspace:*
         version: link:../../packages/ui/themes
@@ -1279,11 +1388,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
 
   examples/rag-demo:
     dependencies:
@@ -2230,6 +2339,89 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
+  packages/core/auth-composables:
+    dependencies:
+      reynard-auth-core:
+        specifier: workspace:*
+        version: link:../auth-core
+      reynard-validation:
+        specifier: workspace:*
+        version: link:../validation
+      solid-js:
+        specifier: 1.9.9
+        version: 1.9.9
+    devDependencies:
+      '@solidjs/testing-library':
+        specifier: 0.8.10
+        version: 0.8.10(solid-js@1.9.9)
+      '@types/node':
+        specifier: 24.5.2
+        version: 24.5.2
+      '@vitest/coverage-v8':
+        specifier: 3.2.4
+        version: 3.2.4(vitest@3.2.4)
+      '@vitest/ui':
+        specifier: 3.2.4
+        version: 3.2.4(vitest@3.2.4)
+      happy-dom:
+        specifier: ^18.0.1
+        version: 18.0.1
+      reynard-testing:
+        specifier: workspace:*
+        version: link:../testing
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
+      vite:
+        specifier: 7.1.6
+        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+      vite-plugin-solid:
+        specifier: 2.11.8
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+      vitest:
+        specifier: 3.2.4
+        version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+
+  packages/core/auth-core:
+    dependencies:
+      jwt-decode:
+        specifier: 4.0.0
+        version: 4.0.0
+      reynard-http-client:
+        specifier: workspace:*
+        version: link:../http-client
+      reynard-validation:
+        specifier: workspace:*
+        version: link:../validation
+    devDependencies:
+      '@types/node':
+        specifier: 24.5.2
+        version: 24.5.2
+      '@vitest/coverage-v8':
+        specifier: 3.2.4
+        version: 3.2.4(vitest@3.2.4)
+      '@vitest/ui':
+        specifier: 3.2.4
+        version: 3.2.4(vitest@3.2.4)
+      happy-dom:
+        specifier: ^18.0.1
+        version: 18.0.1
+      reynard-testing:
+        specifier: workspace:*
+        version: link:../testing
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
+      vite:
+        specifier: 7.1.6
+        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+      vite-plugin-solid:
+        specifier: 2.11.8
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+      vitest:
+        specifier: 3.2.4
+        version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+
   packages/core/composables:
     dependencies:
       reynard-animation:
@@ -2294,6 +2486,9 @@ importers:
 
   packages/core/connection:
     dependencies:
+      reynard-http-client:
+        specifier: workspace:*
+        version: link:../http-client
       reynard-i18n:
         specifier: workspace:*
         version: link:../i18n
@@ -2443,6 +2638,36 @@ importers:
       solid-js:
         specifier: 1.9.9
         version: 1.9.9
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
+      vite:
+        specifier: 7.1.6
+        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+      vite-plugin-solid:
+        specifier: 2.11.8
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+      vitest:
+        specifier: 3.2.4
+        version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+
+  packages/core/http-client:
+    devDependencies:
+      '@types/node':
+        specifier: 24.5.2
+        version: 24.5.2
+      '@vitest/coverage-v8':
+        specifier: 3.2.4
+        version: 3.2.4(vitest@3.2.4)
+      '@vitest/ui':
+        specifier: 3.2.4
+        version: 3.2.4(vitest@3.2.4)
+      happy-dom:
+        specifier: ^18.0.1
+        version: 18.0.1
+      reynard-testing:
+        specifier: workspace:*
+        version: link:../testing
       typescript:
         specifier: 5.9.2
         version: 5.9.2
@@ -4240,6 +4465,9 @@ importers:
 
   packages/services/api-client:
     dependencies:
+      reynard-http-client:
+        specifier: workspace:*
+        version: link:../../core/http-client
       reynard-i18n:
         specifier: workspace:*
         version: link:../../core/i18n
@@ -4280,21 +4508,15 @@ importers:
 
   packages/services/auth:
     dependencies:
-      '@zxcvbn-ts/core':
-        specifier: 3.0.4
-        version: 3.0.4
-      '@zxcvbn-ts/language-common':
-        specifier: 3.0.4
-        version: 3.0.4
-      '@zxcvbn-ts/language-en':
-        specifier: 3.0.2
-        version: 3.0.2
-      jwt-decode:
-        specifier: 4.0.0
-        version: 4.0.0
       reynard-api-client:
         specifier: workspace:*
         version: link:../api-client
+      reynard-auth-composables:
+        specifier: workspace:*
+        version: link:../../core/auth-composables
+      reynard-auth-core:
+        specifier: workspace:*
+        version: link:../../core/auth-core
       reynard-components-charts:
         specifier: workspace:*
         version: link:../../ui/components-charts
@@ -4313,12 +4535,21 @@ importers:
       reynard-composables:
         specifier: workspace:*
         version: link:../../core/composables
+      reynard-connection:
+        specifier: workspace:*
+        version: link:../../core/connection
       reynard-core:
         specifier: workspace:*
         version: link:../../core/core
+      reynard-http-client:
+        specifier: workspace:*
+        version: link:../../core/http-client
       reynard-validation:
         specifier: workspace:*
         version: link:../../core/validation
+      solid-js:
+        specifier: 1.9.9
+        version: 1.9.9
     devDependencies:
       '@solidjs/testing-library':
         specifier: 0.8.10
@@ -4338,18 +4569,15 @@ importers:
       reynard-testing:
         specifier: workspace:*
         version: link:../../core/testing
-      solid-js:
-        specifier: 1.9.9
-        version: 1.9.9
       typescript:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -5043,9 +5271,6 @@ importers:
 
   packages/ui/games:
     dependencies:
-      reynard-algorithms:
-        specifier: workspace:*
-        version: link:../../core/algorithms
       reynard-components-charts:
         specifier: workspace:*
         version: link:../components-charts
@@ -5087,20 +5312,20 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
       happy-dom:
-        specifier: ^18.0.1
+        specifier: 18.0.1
         version: 18.0.1
       reynard-testing:
-        specifier: workspace:*
-        version: link:../../core/testing
+        specifier: 0.1.2
+        version: 0.1.2(@testing-library/dom@10.4.1)(solid-js@1.9.9)(vitest@3.2.4)
       typescript:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -5295,7 +5520,7 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
       happy-dom:
-        specifier: ^18.0.1
+        specifier: 18.0.1
         version: 18.0.1
       prettier:
         specifier: 3.6.2
@@ -5304,11 +5529,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -8384,20 +8609,6 @@ packages:
   /@webgpu/types@0.1.65:
     resolution: {integrity: sha512-cYrHab4d6wuVvDW5tdsfI6/o6vcLMDe6w2Citd1oS51Xxu2ycLCnVo4fqwujfKWijrZMInTJIKcXxteoy21nVA==}
 
-  /@zxcvbn-ts/core@3.0.4:
-    resolution: {integrity: sha512-aQeiT0F09FuJaAqNrxynlAwZ2mW/1MdXakKWNmGM1Qp/VaY6CnB/GfnMS2T8gB2231Esp1/maCWd8vTG4OuShw==}
-    dependencies:
-      fastest-levenshtein: 1.0.16
-    dev: false
-
-  /@zxcvbn-ts/language-common@3.0.4:
-    resolution: {integrity: sha512-viSNNnRYtc7ULXzxrQIVUNwHAPSXRtoIwy/Tq4XQQdIknBzw4vz36lQLF6mvhMlTIlpjoN/Z1GFu/fwiAlUSsw==}
-    dev: false
-
-  /@zxcvbn-ts/language-en@3.0.2:
-    resolution: {integrity: sha512-Zp+zL+I6Un2Bj0tRXNs6VUBq3Djt+hwTwUz4dkt2qgsQz47U0/XthZ4ULrT/RxjwJRl5LwiaKOOZeOtmixHnjg==}
-    dev: false
-
   /JSONStream@1.3.5:
     resolution: {integrity: sha512-E+iruNOY8VV9s4JEbe1aNEm6MiszPRr/UfcHMz0TQh1BXSxHK+ASV1R6W4HpjBhSeS+54PIsAMCBmwD06LLsqQ==}
     hasBin: true
@@ -10395,11 +10606,6 @@ packages:
   /fast-uri@3.1.0:
     resolution: {integrity: sha512-iPeeDKJSWf4IEOasVVrknXpaBV0IApz/gp7S2bb7Z4Lljbl2MGJRqInZiUrQwV16cpzw/D3S5j5Julj/gT52AA==}
     dev: true
-
-  /fastest-levenshtein@1.0.16:
-    resolution: {integrity: sha512-eRnCtTTtGZFpQCwhJiUOuxPQWRXVKYDn0b2PeHfXL6/Zi53SLAzAHfVhVWK2AryC/WH05kGfxhFIPvTF0SXQzg==}
-    engines: {node: '>= 4.9.1'}
-    dev: false
 
   /fastq@1.19.1:
     resolution: {integrity: sha512-GwLTyxkCXjXbxqIhTsMI2Nui8huMPtnxg7krajPJAjnEG/iiOS7i+zCtWGZR9G0NBKbXKh6X9m9UIsYX/N6vvQ==}

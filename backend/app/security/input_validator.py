@@ -1,5 +1,4 @@
-"""
-Advanced Input Validation System for Reynard Backend
+"""Advanced Input Validation System for Reynard Backend
 
 This module provides comprehensive input validation and sanitization
 to prevent SQL injection, XSS, command injection, and other attacks.
@@ -126,7 +125,7 @@ def validate_input_security(input_string: str, field_name: str) -> str:
     max_length = field_limits.get(field_name.lower(), field_limits["default"])
     if len(input_string) > max_length:
         raise ValueError(
-            f"{field_name} exceeds maximum length of {max_length} characters"
+            f"{field_name} exceeds maximum length of {max_length} characters",
         )
 
     # Check for suspicious character sequences
@@ -176,7 +175,7 @@ class SecureUserCreate(SecureModel):
         """Validate username format and security."""
         if not re.match(r"^[a-zA-Z0-9_-]+$", v):
             raise ValueError(
-                "Username can only contain letters, numbers, underscores, and hyphens"
+                "Username can only contain letters, numbers, underscores, and hyphens",
             )
 
         # Prevent common attack patterns
@@ -254,7 +253,7 @@ class SecureUserLogin(SecureModel):
         """Validate username format."""
         if not re.match(r"^[a-zA-Z0-9_-]+$", v):
             raise ValueError(
-                "Username can only contain letters, numbers, underscores, and hyphens"
+                "Username can only contain letters, numbers, underscores, and hyphens",
             )
         return v
 
@@ -265,7 +264,7 @@ class SecureChatRequest(SecureModel):
     message: str = Field(..., max_length=100000, description="Chat message")
     model: str | None = Field(None, max_length=100, description="Model name")
     system_prompt: str | None = Field(
-        None, max_length=100000, description="System prompt"
+        None, max_length=100000, description="System prompt",
     )
     temperature: float = Field(0.7, ge=0.0, le=2.0, description="Temperature")
     max_tokens: int | None = Field(None, ge=1, le=4096, description="Max tokens")
@@ -308,7 +307,7 @@ class SecureSummarizationRequest(SecureModel):
         pattern="^(brief|executive|detailed|comprehensive|bullet|tts_optimized)$",
     )
     max_length: int | None = Field(
-        default=None, description="Maximum length of summary in words", ge=10, le=5000
+        default=None, description="Maximum length of summary in words", ge=10, le=5000,
     )
     model: str | None = Field(None, max_length=100, description="Model name")
 

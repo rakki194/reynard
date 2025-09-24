@@ -1,5 +1,4 @@
-"""
-NLWeb API Endpoints for Reynard Backend
+"""NLWeb API Endpoints for Reynard Backend
 
 REST API endpoints for NLWeb assistant tooling and routing system.
 Ported from Yipyap's battle-tested implementation with 2025 best practices.
@@ -52,10 +51,9 @@ def get_nlweb_service() -> NLWebService:
 
 @router.post("/suggest", response_model=NLWebSuggestionResponse)
 async def suggest_tools(
-    request: NLWebSuggestionRequest, current_user: User = Depends(require_active_user)
+    request: NLWebSuggestionRequest, current_user: User = Depends(require_active_user),
 ):
-    """
-    Suggest tools for a natural language query using the NLWeb router service.
+    """Suggest tools for a natural language query using the NLWeb router service.
 
     This endpoint analyzes the query and suggests appropriate tools with parameters
     based on context and tool relevance.
@@ -65,7 +63,7 @@ async def suggest_tools(
 
         if not service.is_available():
             raise HTTPException(
-                status_code=503, detail="NLWeb service is not available"
+                status_code=503, detail="NLWeb service is not available",
             )
 
         # Get tool suggestions
@@ -82,8 +80,7 @@ async def suggest_tools(
 
 @router.get("/status")
 async def get_status(current_user: User = Depends(require_active_user)):
-    """
-    Get NLWeb integration status and performance metrics.
+    """Get NLWeb integration status and performance metrics.
     """
     try:
         service = get_nlweb_service()
@@ -193,7 +190,7 @@ async def get_tools(
 
 @router.post("/tools")
 async def register_tool(
-    tool: NLWebTool, current_user: User = Depends(require_active_user)
+    tool: NLWebTool, current_user: User = Depends(require_active_user),
 ):
     """Register a new NLWeb tool."""
     try:
@@ -201,14 +198,14 @@ async def register_tool(
 
         if not service.is_available():
             raise HTTPException(
-                status_code=503, detail="NLWeb service is not available"
+                status_code=503, detail="NLWeb service is not available",
             )
 
         success = await service.register_tool(tool)
 
         if not success:
             raise HTTPException(
-                status_code=400, detail=f"Failed to register tool: {tool.name}"
+                status_code=400, detail=f"Failed to register tool: {tool.name}",
             )
 
         return {
@@ -226,7 +223,7 @@ async def register_tool(
 
 @router.delete("/tools/{tool_name}")
 async def unregister_tool(
-    tool_name: str, current_user: User = Depends(require_active_user)
+    tool_name: str, current_user: User = Depends(require_active_user),
 ):
     """Unregister an NLWeb tool."""
     try:
@@ -234,7 +231,7 @@ async def unregister_tool(
 
         if not service.is_available():
             raise HTTPException(
-                status_code=503, detail="NLWeb service is not available"
+                status_code=503, detail="NLWeb service is not available",
             )
 
         success = await service.unregister_tool(tool_name)
@@ -256,7 +253,7 @@ async def unregister_tool(
 
 @router.post("/tools/{tool_name}/enable")
 async def enable_tool(
-    tool_name: str, current_user: User = Depends(require_active_user)
+    tool_name: str, current_user: User = Depends(require_active_user),
 ):
     """Enable an NLWeb tool."""
     try:
@@ -264,7 +261,7 @@ async def enable_tool(
 
         if not service.is_available():
             raise HTTPException(
-                status_code=503, detail="NLWeb service is not available"
+                status_code=503, detail="NLWeb service is not available",
             )
 
         success = await service.enable_tool(tool_name)
@@ -283,7 +280,7 @@ async def enable_tool(
 
 @router.post("/tools/{tool_name}/disable")
 async def disable_tool(
-    tool_name: str, current_user: User = Depends(require_active_user)
+    tool_name: str, current_user: User = Depends(require_active_user),
 ):
     """Disable an NLWeb tool."""
     try:
@@ -291,7 +288,7 @@ async def disable_tool(
 
         if not service.is_available():
             raise HTTPException(
-                status_code=503, detail="NLWeb service is not available"
+                status_code=503, detail="NLWeb service is not available",
             )
 
         success = await service.disable_tool(tool_name)
@@ -310,10 +307,9 @@ async def disable_tool(
 
 @router.post("/rollback", response_model=NLWebRollbackResponse)
 async def enable_rollback(
-    request: NLWebRollbackRequest, current_user: User = Depends(require_active_user)
+    request: NLWebRollbackRequest, current_user: User = Depends(require_active_user),
 ):
-    """
-    Enable or disable emergency rollback for NLWeb integration.
+    """Enable or disable emergency rollback for NLWeb integration.
 
     This endpoint allows administrators to quickly disable NLWeb functionality
     in case of issues or performance problems.
@@ -344,8 +340,7 @@ async def enable_rollback(
 
 @router.get("/verification", response_model=NLWebVerificationResponse)
 async def get_verification_checklist(current_user: User = Depends(require_active_user)):
-    """
-    Get NLWeb integration verification checklist for rollout.
+    """Get NLWeb integration verification checklist for rollout.
 
     This endpoint provides a comprehensive checklist to verify that NLWeb
     is properly configured and performing well before full rollout.
@@ -366,8 +361,7 @@ async def proxy_ask(
     http_request: Request,
     current_user: User = Depends(require_active_user),
 ):
-    """
-    Proxy NLWeb /ask endpoint with SSE streaming support.
+    """Proxy NLWeb /ask endpoint with SSE streaming support.
 
     This endpoint forwards requests to an external NLWeb service and streams
     the response back to the client with proper event mapping.
@@ -377,13 +371,13 @@ async def proxy_ask(
 
         if not service.is_available():
             raise HTTPException(
-                status_code=503, detail="NLWeb service is not available"
+                status_code=503, detail="NLWeb service is not available",
             )
 
         # Check if external NLWeb service is configured
         if not service.configuration.base_url:
             raise HTTPException(
-                status_code=404, detail="External NLWeb service not configured"
+                status_code=404, detail="External NLWeb service not configured",
             )
 
         async def _stream_ask_response():
@@ -433,7 +427,7 @@ async def proxy_ask(
                                         if data_str:
                                             # Map NLWeb events to Reynard format
                                             mapped_event = _map_nlweb_event_to_reynard(
-                                                data_str
+                                                data_str,
                                             )
                                             yield f"data: {json.dumps(mapped_event)}\n\n"
                                 except Exception as e:
@@ -468,8 +462,7 @@ async def proxy_mcp(
     http_request: Request,
     current_user: User = Depends(require_active_user),
 ):
-    """
-    Proxy NLWeb MCP (Model Context Protocol) endpoint.
+    """Proxy NLWeb MCP (Model Context Protocol) endpoint.
 
     This endpoint forwards JSON-RPC requests to an external NLWeb MCP service.
     """
@@ -478,13 +471,13 @@ async def proxy_mcp(
 
         if not service.is_available():
             raise HTTPException(
-                status_code=503, detail="NLWeb service is not available"
+                status_code=503, detail="NLWeb service is not available",
             )
 
         # Check if external NLWeb service is configured
         if not service.configuration.base_url:
             raise HTTPException(
-                status_code=404, detail="External NLWeb service not configured"
+                status_code=404, detail="External NLWeb service not configured",
             )
 
         import aiohttp
@@ -528,7 +521,7 @@ async def proxy_mcp(
 
 @router.get("/sites", response_model=NLWebSitesResponse)
 async def proxy_sites(
-    http_request: Request, current_user: User = Depends(require_active_user)
+    http_request: Request, current_user: User = Depends(require_active_user),
 ):
     """Proxy NLWeb /sites endpoint to list available sites."""
     try:
@@ -536,13 +529,13 @@ async def proxy_sites(
 
         if not service.is_available():
             raise HTTPException(
-                status_code=503, detail="NLWeb service is not available"
+                status_code=503, detail="NLWeb service is not available",
             )
 
         # Check if external NLWeb service is configured
         if not service.configuration.base_url:
             raise HTTPException(
-                status_code=404, detail="External NLWeb service not configured"
+                status_code=404, detail="External NLWeb service not configured",
             )
 
         import aiohttp
@@ -596,7 +589,7 @@ async def clear_cache(current_user: User = Depends(require_active_user)):
 
         if not service.is_available():
             raise HTTPException(
-                status_code=503, detail="NLWeb service is not available"
+                status_code=503, detail="NLWeb service is not available",
             )
 
         success = await service.clear_cache()
@@ -618,8 +611,7 @@ async def clear_cache(current_user: User = Depends(require_active_user)):
 
 
 def _map_nlweb_event_to_reynard(event_data: str) -> dict[str, Any]:
-    """
-    Map NLWeb event data to Reynard format.
+    """Map NLWeb event data to Reynard format.
 
     This function converts NLWeb streaming events to a format compatible
     with Reynard's frontend expectations.

@@ -1,5 +1,4 @@
-"""
-Configuration module for Reynard Backend.
+"""Configuration module for Reynard Backend.
 
 This module provides centralized configuration management
 with environment variable support and secure defaults.

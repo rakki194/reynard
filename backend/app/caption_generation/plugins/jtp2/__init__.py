@@ -1,5 +1,4 @@
-"""
-JTP2 (Joint Tagger Project PILOT2) Plugin for Reynard
+"""JTP2 (Joint Tagger Project PILOT2) Plugin for Reynard
 
 This plugin provides the JTP2 caption generation model, which is specialized
 for furry artwork and provides high-quality tag generation with GPU acceleration.

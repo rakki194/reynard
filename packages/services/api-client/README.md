@@ -3,6 +3,93 @@
 Auto-generated TypeScript API client for Reynard backend. This package provides type-safe access to
 all backend endpoints with SolidJS composables and features an **evergreen automation system** that automatically keeps your client synchronized with backend changes.
 
+## Architecture
+
+```mermaid
+graph TB
+    subgraph "🌐 API Client Package"
+        A[Client Factory] --> B[Configuration]
+        A --> C[Generated APIs]
+        A --> D[Composables]
+        A --> E[Utilities]
+        
+        subgraph "Generated APIs"
+            C --> C1[HealthApi]
+            C --> C2[RagApi]
+            C --> C3[CaptionApi]
+            C --> C4[OllamaApi]
+            C --> C5[AuthApi]
+            C --> C6[EmailApi]
+            C --> C7[AgentEmailApi]
+            C --> C8[ImapApi]
+        end
+        
+        subgraph "SolidJS Composables"
+            D --> D1[useAuth]
+            D --> D2[useCaption]
+            D --> D3[useChat]
+            D --> D4[useRAG]
+            D --> D5[useEmail]
+            D --> D6[useECS]
+            D --> D7[useMCP]
+            D --> D8[useAgentInteractions]
+        end
+        
+        subgraph "Utilities"
+            E --> E1[Error Handling]
+            E --> E2[Fetch Utils]
+            E --> E3[Response Parsing]
+        end
+    end
+    
+    subgraph "🔄 Evergreen System"
+        F[OpenAPI Spec] --> G[Change Detection]
+        G --> H[Auto Generation]
+        H --> I[Type Updates]
+        I --> J[Client Rebuild]
+    end
+    
+    subgraph "🏗️ Backend Services"
+        K[FastAPI Backend] --> L[OpenAPI Schema]
+        K --> M[RAG Service]
+        K --> N[Caption Service]
+        K --> O[Chat Service]
+        K --> P[Auth Service]
+        K --> Q[Email Service]
+        K --> R[ECS World]
+        K --> S[MCP Management]
+    end
+    
+    F -.->|Monitors| L
+    A -->|Type-safe calls| K
+    D -->|Reactive state| A
+```
+
+## Data Flow
+
+```mermaid
+sequenceDiagram
+    participant App as Frontend App
+    participant Client as API Client
+    participant Composable as SolidJS Composable
+    participant Backend as FastAPI Backend
+    participant Evergreen as Evergreen System
+    
+    Note over App, Evergreen: Development Phase
+    Backend->>Evergreen: OpenAPI Schema Changes
+    Evergreen->>Evergreen: Detect Changes
+    Evergreen->>Client: Regenerate Types
+    Evergreen->>Client: Rebuild Client
+    
+    Note over App, Backend: Runtime Phase
+    App->>Composable: useAuth(), useRAG(), etc.
+    Composable->>Client: createReynardApiClient()
+    Client->>Backend: Type-safe API calls
+    Backend-->>Client: Typed responses
+    Client-->>Composable: Reactive state updates
+    Composable-->>App: UI updates
+```
+
 ## Features
 
 - **🌲 Evergreen System**: Automatically synchronizes with backend changes

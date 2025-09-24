@@ -28,7 +28,7 @@ def check_cors(url: str) -> None:
             print("    [VULNERABLE] Allow-Origin '*' with credentials true is unsafe.")
         elif acao == "*":
             print(
-                "    [WARNING] Allow-Origin '*' is permissive; restrict in production."
+                "    [WARNING] Allow-Origin '*' is permissive; restrict in production.",
             )
         else:
             print("    [OK] Allow-Origin is restricted.")
@@ -38,10 +38,10 @@ def check_cors(url: str) -> None:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Check CORS headers for permissiveness"
+        description="Check CORS headers for permissiveness",
     )
     parser.add_argument(
-        "--path", default="/api/ready", help="Path to send OPTIONS preflight against"
+        "--path", default="/api/ready", help="Path to send OPTIONS preflight against",
     )
     args = parser.parse_args()
 

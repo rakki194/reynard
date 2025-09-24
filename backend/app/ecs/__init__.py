@@ -1,5 +1,4 @@
-"""
-ECS World Integration for FastAPI Backend
+"""ECS World Integration for FastAPI Backend
 
 Provides ECS world integration as a singleton service for the Reynard backend.
 """
@@ -37,28 +36,28 @@ from .systems import (
 from .world import AgentWorld
 
 __all__ = [
-    "ECSConfig",
-    "ECSWorldService",
-    "get_ecs_world",
-    "Component",
-    "Entity",
-    "System",
-    "ECSWorld",
     "AgentComponent",
-    "PositionComponent",
+    "AgentWorld",
+    "Component",
+    "ECSConfig",
+    "ECSWorld",
+    "ECSWorldService",
+    "Entity",
+    "GenderComponent",
+    "GenderSystem",
+    "InteractionComponent",
+    "InteractionSystem",
+    "KnowledgeComponent",
+    "LearningSystem",
     "LifecycleComponent",
     "LineageComponent",
-    "ReproductionComponent",
-    "TraitComponent",
-    "SocialComponent",
-    "GenderComponent",
     "MemoryComponent",
-    "KnowledgeComponent",
-    "InteractionComponent",
     "MemorySystem",
-    "LearningSystem",
-    "InteractionSystem",
+    "PositionComponent",
+    "ReproductionComponent",
+    "SocialComponent",
     "SocialSystem",
-    "GenderSystem",
-    "AgentWorld",
+    "System",
+    "TraitComponent",
+    "get_ecs_world",
 ]

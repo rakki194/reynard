@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Basic Usage Example for PHOENIX Control
+"""Basic Usage Example for PHOENIX Control
 
 Demonstrates the basic usage of the Success-Advisor-8 distillation system
 including agent state reconstruction, release automation, and quality assurance.
@@ -101,12 +100,12 @@ async def main():
         memory_stats = resource_results["memory_stats"]
         cpu_stats = resource_results["cpu_stats"]
 
-        print(f"   Memory Usage:")
+        print("   Memory Usage:")
         print(f"   - Min: {memory_stats['min']:.2f}MB")
         print(f"   - Max: {memory_stats['max']:.2f}MB")
         print(f"   - Avg: {memory_stats['avg']:.2f}MB")
 
-        print(f"   CPU Usage:")
+        print("   CPU Usage:")
         print(f"   - Min: {cpu_stats['min']:.2f}%")
         print(f"   - Max: {cpu_stats['max']:.2f}%")
         print(f"   - Avg: {cpu_stats['avg']:.2f}%")

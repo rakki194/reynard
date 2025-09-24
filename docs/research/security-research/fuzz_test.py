@@ -79,10 +79,10 @@ async def register_and_login_user(username, password):
     register_data = {"username": username, "password": password}
     try:
         register_response = httpx.post(
-            f"{BASE_URL}/api/register", json=register_data, timeout=5
+            f"{BASE_URL}/api/register", json=register_data, timeout=5,
         )
         print(
-            f"Registration for {username}: Status Code: {register_response.status_code}, Response: {register_response.text.strip()[:100]}..."
+            f"Registration for {username}: Status Code: {register_response.status_code}, Response: {register_response.text.strip()[:100]}...",
         )
         if register_response.status_code not in [200, 201]:
             print(f"Failed to register user {username}. Skipping login.")
@@ -96,7 +96,7 @@ async def register_and_login_user(username, password):
     try:
         login_response = httpx.post(f"{BASE_URL}/api/login", json=login_data, timeout=5)
         print(
-            f"Login for {username}: Status Code: {login_response.status_code}, Response: {login_response.text.strip()[:100]}..."
+            f"Login for {username}: Status Code: {login_response.status_code}, Response: {login_response.text.strip()[:100]}...",
         )
         if login_response.status_code == 200:
             return login_response.json().get("access_token")
@@ -112,10 +112,10 @@ async def register_and_login_admin_user(username, password):
     register_data = {"username": username, "password": password}
     try:
         register_response = httpx.post(
-            f"{BASE_URL}/api/register", json=register_data, timeout=5
+            f"{BASE_URL}/api/register", json=register_data, timeout=5,
         )
         print(
-            f"Admin Registration for {username}: Status Code: {register_response.status_code}, Response: {register_response.text.strip()[:100]}..."
+            f"Admin Registration for {username}: Status Code: {register_response.status_code}, Response: {register_response.text.strip()[:100]}...",
         )
         if register_response.status_code not in [200, 201]:
             print(f"Failed to register admin user {username}. Skipping login.")
@@ -129,14 +129,14 @@ async def register_and_login_admin_user(username, password):
     try:
         login_response = httpx.post(f"{BASE_URL}/api/login", json=login_data, timeout=5)
         print(
-            f"Admin Login for {username}: Status Code: {login_response.status_code}, Response: {login_response.text.strip()[:100]}..."
+            f"Admin Login for {username}: Status Code: {login_response.status_code}, Response: {login_response.text.strip()[:100]}...",
         )
         if login_response.status_code == 200:
             return login_response.json().get("access_token"), login_response.json().get(
-                "refresh_token"
+                "refresh_token",
             )
         print(
-            f"Failed to login admin user {username}. Status: {login_response.status_code}"
+            f"Failed to login admin user {username}. Status: {login_response.status_code}",
         )
         return None, None
     except httpx.RequestError as e:
@@ -159,7 +159,7 @@ async def fuzz_engagement_record_endpoint():
                 {"nested": {"data": 123}},
                 "invalid_metadata_string",
                 [],
-            ]
+            ],
         )
 
         record_data = {
@@ -171,10 +171,10 @@ async def fuzz_engagement_record_endpoint():
 
         try:
             response = await httpx.AsyncClient().post(
-                f"{BASE_URL}/api/engagement/record", json=record_data, timeout=5
+                f"{BASE_URL}/api/engagement/record", json=record_data, timeout=5,
             )
             print(
-                f"Record Engagement (User: '{fuzzed_username}', Type: '{fuzzed_engagement_type}', Value: {fuzzed_value}, Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+                f"Record Engagement (User: '{fuzzed_username}', Type: '{fuzzed_engagement_type}', Value: {fuzzed_value}, Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
             )
         except httpx.RequestError as e:
             print(f"Record Engagement request failed: {e}")
@@ -204,7 +204,7 @@ async def fuzz_profile_picture_upload(headers):
             + random.choice(["png", "jpg", "webp", "gif", "txt"])
         )
         fuzzed_file_content = generate_random_bytes(
-            random.randint(10, 1024 * 10)
+            random.randint(10, 1024 * 10),
         )  # 10 bytes to 10KB
 
         files = {"file": (fuzzed_filename, fuzzed_file_content, fuzzed_content_type)}
@@ -216,7 +216,7 @@ async def fuzz_profile_picture_upload(headers):
                 timeout=10,
             )
             print(
-                f"Upload File: '{fuzzed_filename}', Type: '{fuzzed_content_type}', Size: {len(fuzzed_file_content)} bytes, Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+                f"Upload File: '{fuzzed_filename}', Type: '{fuzzed_content_type}', Size: {len(fuzzed_file_content)} bytes, Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
             )
         except httpx.RequestError as e:
             print(f"Upload request failed: {e}")
@@ -232,10 +232,10 @@ async def fuzz_get_profile_picture(headers):
         return
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/users/me/profile_picture", headers=headers, timeout=5
+            f"{BASE_URL}/api/users/me/profile_picture", headers=headers, timeout=5,
         )
         print(
-            f"GET Profile Picture: Status Code: {response.status_code}, Content Length: {len(response.content) if response.content else 0}, Response: {response.text.strip()[:100]}..."
+            f"GET Profile Picture: Status Code: {response.status_code}, Content Length: {len(response.content) if response.content else 0}, Response: {response.text.strip()[:100]}...",
         )
     except httpx.RequestError as e:
         print(f"GET Profile Picture request failed: {e}")
@@ -259,7 +259,7 @@ async def fuzz_update_user_profile(headers):
     ]
     for _ in range(10):
         fuzzed_username = random.choice(
-            common_fuzz_values + [generate_random_string(random.randint(1, 50))]
+            common_fuzz_values + [generate_random_string(random.randint(1, 50))],
         )
         profile_data = {"username": str(fuzzed_username)}
         try:
@@ -270,7 +270,7 @@ async def fuzz_update_user_profile(headers):
                 timeout=5,
             )
             print(
-                f"Update Profile Username: '{profile_data['username']}', Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+                f"Update Profile Username: '{profile_data['username']}', Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
             )
         except httpx.RequestError as e:
             print(f"Update profile request failed: {e}")
@@ -294,10 +294,10 @@ async def fuzz_change_user_password(headers):
     ]
     for _ in range(10):
         current_password_fuzz = random.choice(
-            common_fuzz_values + [generate_random_string(random.randint(1, 50))]
+            common_fuzz_values + [generate_random_string(random.randint(1, 50))],
         )
         new_password_fuzz = random.choice(
-            common_fuzz_values + [generate_random_string(random.randint(1, 50))]
+            common_fuzz_values + [generate_random_string(random.randint(1, 50))],
         )
         password_data = {
             "current_password": str(current_password_fuzz),
@@ -311,7 +311,7 @@ async def fuzz_change_user_password(headers):
                 timeout=5,
             )
             print(
-                f"Change Password (Current: '{password_data['current_password']}', New: '{password_data['new_password']}'): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+                f"Change Password (Current: '{password_data['current_password']}', New: '{password_data['new_password']}'): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
             )
         except httpx.RequestError as e:
             print(f"Change password request failed: {e}")
@@ -327,10 +327,10 @@ async def fuzz_get_user_settings(headers):
         return
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/users/me/settings", headers=headers, timeout=5
+            f"{BASE_URL}/api/users/me/settings", headers=headers, timeout=5,
         )
         print(
-            f"GET User Settings: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+            f"GET User Settings: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
         )
     except httpx.RequestError as e:
         print(f"GET User Settings request failed: {e}")
@@ -371,7 +371,7 @@ async def fuzz_update_user_settings(headers):
                 timeout=5,
             )
             print(
-                f"Update User Settings (Fuzzed Value: {str(fuzzed_setting)[:50]}): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+                f"Update User Settings (Fuzzed Value: {str(fuzzed_setting)[:50]}): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
             )
         except httpx.RequestError as e:
             print(f"Update User Settings request failed: {e}")
@@ -387,10 +387,10 @@ async def fuzz_get_my_yapcoins(headers):
         return
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/users/me/yapcoins", headers=headers, timeout=5
+            f"{BASE_URL}/api/users/me/yapcoins", headers=headers, timeout=5,
         )
         print(
-            f"GET My Yapcoins: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+            f"GET My Yapcoins: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
         )
     except httpx.RequestError as e:
         print(f"GET My Yapcoins request failed: {e}")
@@ -403,7 +403,7 @@ async def fuzz_admin_get_user_engagement_data(admin_headers):
     print("--- Fuzzing /api/engagement/users/{username} (GET) endpoint ---")
     if not admin_headers:
         print(
-            "Skipping fuzz_admin_get_user_engagement_data. No admin authentication headers."
+            "Skipping fuzz_admin_get_user_engagement_data. No admin authentication headers.",
         )
         return
     test_usernames = [
@@ -436,7 +436,7 @@ async def fuzz_admin_get_user_engagement_data(admin_headers):
                 timeout=5,
             )
             print(
-                f"Admin Get User Engagement (User: '{username}'): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+                f"Admin Get User Engagement (User: '{username}'): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
             )
         except httpx.RequestError as e:
             print(f"Admin Get User Engagement request failed for {username}: {e}")
@@ -449,15 +449,15 @@ async def fuzz_admin_get_all_user_engagement_data(admin_headers):
     print("--- Fuzzing /api/engagement/all (GET) endpoint ---")
     if not admin_headers:
         print(
-            "Skipping fuzz_admin_get_all_user_engagement_data. No admin authentication headers."
+            "Skipping fuzz_admin_get_all_user_engagement_data. No admin authentication headers.",
         )
         return
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/engagement/all", headers=admin_headers, timeout=5
+            f"{BASE_URL}/api/engagement/all", headers=admin_headers, timeout=5,
         )
         print(
-            f"Admin Get All User Engagement: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+            f"Admin Get All User Engagement: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
         )
     except httpx.RequestError as e:
         print(f"Admin Get All User Engagement request failed: {e}")
@@ -470,7 +470,7 @@ async def fuzz_admin_delete_user_engagement_data(admin_headers):
     print("--- Fuzzing /api/engagement/users/{username} (DELETE) endpoint ---")
     if not admin_headers:
         print(
-            "Skipping fuzz_admin_delete_user_engagement_data. No admin authentication headers."
+            "Skipping fuzz_admin_delete_user_engagement_data. No admin authentication headers.",
         )
         return
     test_usernames = [
@@ -502,16 +502,16 @@ async def fuzz_admin_delete_user_engagement_data(admin_headers):
                 timeout=5,
             )
             print(
-                f"Admin Delete User Engagement (User: '{username}'): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+                f"Admin Delete User Engagement (User: '{username}'): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
             )
         except httpx.RequestError as e:
             print(f"Admin Delete User Engagement request failed for {username}: {e}")
         except Exception as e:
             print(
-                f"An unexpected error occurred during admin delete user engagement: {e}"
+                f"An unexpected error occurred during admin delete user engagement: {e}",
             )
     print(
-        "--- Fuzzing /api/engagement/users/{username} (DELETE) endpoint complete ---\n"
+        "--- Fuzzing /api/engagement/users/{username} (DELETE) endpoint complete ---\n",
     )
 
 
@@ -519,7 +519,7 @@ async def fuzz_admin_delete_all_user_engagement_data(admin_headers):
     print("--- Fuzzing /api/engagement/all (DELETE) endpoint ---")
     if not admin_headers:
         print(
-            "Skipping fuzz_admin_delete_all_user_engagement_data. No admin authentication headers."
+            "Skipping fuzz_admin_delete_all_user_engagement_data. No admin authentication headers.",
         )
         return
     # Create some users and engagement data to be deleted
@@ -538,16 +538,16 @@ async def fuzz_admin_delete_all_user_engagement_data(admin_headers):
 
     try:
         response = await httpx.AsyncClient().delete(
-            f"{BASE_URL}/api/engagement/all", headers=admin_headers, timeout=5
+            f"{BASE_URL}/api/engagement/all", headers=admin_headers, timeout=5,
         )
         print(
-            f"Admin Delete All User Engagement: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+            f"Admin Delete All User Engagement: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
         )
     except httpx.RequestError as e:
         print(f"Admin Delete All User Engagement request failed: {e}")
     except Exception as e:
         print(
-            f"An unexpected error occurred during admin delete all user engagement: {e}"
+            f"An unexpected error occurred during admin delete all user engagement: {e}",
         )
     print("--- Fuzzing /api/engagement/all (DELETE) endpoint complete ---\n")
 
@@ -556,15 +556,15 @@ async def fuzz_admin_get_engagement_insights(admin_headers):
     print("--- Fuzzing /api/engagement/insights (GET) endpoint ---")
     if not admin_headers:
         print(
-            "Skipping fuzz_admin_get_engagement_insights. No admin authentication headers."
+            "Skipping fuzz_admin_get_engagement_insights. No admin authentication headers.",
         )
         return
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/engagement/insights", headers=admin_headers, timeout=10
+            f"{BASE_URL}/api/engagement/insights", headers=admin_headers, timeout=10,
         )
         print(
-            f"Admin Get Engagement Insights: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+            f"Admin Get Engagement Insights: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
         )
     except httpx.RequestError as e:
         print(f"Admin Get Engagement Insights request failed: {e}")
@@ -582,10 +582,10 @@ async def fuzz_refresh_token_endpoint(refresh_token):
     headers = {"Authorization": f"Bearer {refresh_token}"}
     try:
         response = await httpx.AsyncClient().post(
-            f"{BASE_URL}/api/refresh-token", headers=headers, timeout=5
+            f"{BASE_URL}/api/refresh-token", headers=headers, timeout=5,
         )
         print(
-            f"Refresh Token: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+            f"Refresh Token: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
         )
     except httpx.RequestError as e:
         print(f"Refresh Token request failed: {e}")
@@ -601,10 +601,10 @@ async def fuzz_admin_get_all_users(admin_headers):
         return
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/admin/users", headers=admin_headers, timeout=5
+            f"{BASE_URL}/api/admin/users", headers=admin_headers, timeout=5,
         )
         print(
-            f"Admin Get All Users: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+            f"Admin Get All Users: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
         )
     except httpx.RequestError as e:
         print(f"Admin Get All Users request failed: {e}")
@@ -624,7 +624,7 @@ async def fuzz_admin_update_user_role(admin_headers):
     # First, try to create a user to modify their role
     target_username = "user_to_change_role_" + generate_random_string(5)
     await register_and_login_user(
-        target_username, "password123"
+        target_username, "password123",
     )  # Register a user for role change
 
     for username in test_usernames + [target_username]:
@@ -638,15 +638,15 @@ async def fuzz_admin_update_user_role(admin_headers):
                     timeout=5,
                 )
                 print(
-                    f"Admin Update User Role (User: '{username}', Role: '{role}'): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+                    f"Admin Update User Role (User: '{username}', Role: '{role}'): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
                 )
             except httpx.RequestError as e:
                 print(
-                    f"Admin Update User Role request failed for {username} with role {role}: {e}"
+                    f"Admin Update User Role request failed for {username} with role {role}: {e}",
                 )
             except Exception as e:
                 print(
-                    f"An unexpected error occurred during admin update user role for {username} with role {role}: {e}"
+                    f"An unexpected error occurred during admin update user role for {username} with role {role}: {e}",
                 )
     print("--- Fuzzing /api/admin/users/{username}/role (PUT) endpoint complete ---\n")
 
@@ -662,7 +662,7 @@ async def fuzz_admin_manage_yapcoins(admin_headers):
     # First, try to create a user to modify their yapcoins
     target_username = "user_for_yapcoins_" + generate_random_string(5)
     await register_and_login_user(
-        target_username, "password123"
+        target_username, "password123",
     )  # Register a user for yapcoins
 
     for username in test_usernames + [target_username]:
@@ -676,15 +676,15 @@ async def fuzz_admin_manage_yapcoins(admin_headers):
                     timeout=5,
                 )
                 print(
-                    f"Admin Manage Yapcoins (User: '{username}', Amount: {amount}): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+                    f"Admin Manage Yapcoins (User: '{username}', Amount: {amount}): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
                 )
             except httpx.RequestError as e:
                 print(
-                    f"Admin Manage Yapcoins request failed for {username} with amount {amount}: {e}"
+                    f"Admin Manage Yapcoins request failed for {username} with amount {amount}: {e}",
                 )
             except Exception as e:
                 print(
-                    f"An unexpected error occurred during admin manage yapcoins for {username} with amount {amount}: {e}"
+                    f"An unexpected error occurred during admin manage yapcoins for {username} with amount {amount}: {e}",
                 )
     print("--- Fuzzing /api/admin/yapcoins (POST) endpoint complete ---\n")
 
@@ -696,10 +696,10 @@ async def fuzz_get_indexing_status(headers):
         return
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/index/status", headers=headers, timeout=5
+            f"{BASE_URL}/api/index/status", headers=headers, timeout=5,
         )
         print(
-            f"GET Indexing Status: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+            f"GET Indexing Status: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
         )
     except httpx.RequestError as e:
         print(f"GET Indexing Status request failed: {e}")
@@ -715,10 +715,10 @@ async def fuzz_start_indexing(admin_headers):
         return
     try:
         response = await httpx.AsyncClient().post(
-            f"{BASE_URL}/api/index/start", headers=admin_headers, timeout=5
+            f"{BASE_URL}/api/index/start", headers=admin_headers, timeout=5,
         )
         print(
-            f"Start Indexing: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+            f"Start Indexing: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
         )
     except httpx.RequestError as e:
         print(f"Start Indexing request failed: {e}")
@@ -734,10 +734,10 @@ async def fuzz_smart_start_indexing(admin_headers):
         return
     try:
         response = await httpx.AsyncClient().post(
-            f"{BASE_URL}/api/index/smart-start", headers=admin_headers, timeout=5
+            f"{BASE_URL}/api/index/smart-start", headers=admin_headers, timeout=5,
         )
         print(
-            f"Smart Start Indexing: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+            f"Smart Start Indexing: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
         )
     except httpx.RequestError as e:
         print(f"Smart Start Indexing request failed: {e}")
@@ -753,10 +753,10 @@ async def fuzz_stop_indexing(admin_headers):
         return
     try:
         response = await httpx.AsyncClient().post(
-            f"{BASE_URL}/api/index/stop", headers=admin_headers, timeout=5
+            f"{BASE_URL}/api/index/stop", headers=admin_headers, timeout=5,
         )
         print(
-            f"Stop Indexing: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+            f"Stop Indexing: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
         )
     except httpx.RequestError as e:
         print(f"Stop Indexing request failed: {e}")
@@ -772,10 +772,10 @@ async def fuzz_pause_indexing(admin_headers):
         return
     try:
         response = await httpx.AsyncClient().post(
-            f"{BASE_URL}/api/index/pause", headers=admin_headers, timeout=5
+            f"{BASE_URL}/api/index/pause", headers=admin_headers, timeout=5,
         )
         print(
-            f"Pause Indexing: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+            f"Pause Indexing: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
         )
     except httpx.RequestError as e:
         print(f"Pause Indexing request failed: {e}")
@@ -791,10 +791,10 @@ async def fuzz_resume_indexing(admin_headers):
         return
     try:
         response = await httpx.AsyncClient().post(
-            f"{BASE_URL}/api/index/resume", headers=admin_headers, timeout=5
+            f"{BASE_URL}/api/index/resume", headers=admin_headers, timeout=5,
         )
         print(
-            f"Resume Indexing: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+            f"Resume Indexing: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
         )
     except httpx.RequestError as e:
         print(f"Resume Indexing request failed: {e}")
@@ -810,10 +810,10 @@ async def fuzz_get_fast_indexing_mode(admin_headers):
         return
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/index/fast-mode", headers=admin_headers, timeout=5
+            f"{BASE_URL}/api/index/fast-mode", headers=admin_headers, timeout=5,
         )
         print(
-            f"GET Fast Indexing Mode: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+            f"GET Fast Indexing Mode: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
         )
     except httpx.RequestError as e:
         print(f"GET Fast Indexing Mode request failed: {e}")
@@ -838,13 +838,13 @@ async def fuzz_set_fast_indexing_mode(admin_headers):
                 timeout=5,
             )
             print(
-                f"Set Fast Indexing Mode (Value: {val}): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+                f"Set Fast Indexing Mode (Value: {val}): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
             )
         except httpx.RequestError as e:
             print(f"Set Fast Indexing Mode request failed for value {val}: {e}")
         except Exception as e:
             print(
-                f"An unexpected error occurred during set fast indexing mode for value {val}: {e}"
+                f"An unexpected error occurred during set fast indexing mode for value {val}: {e}",
             )
     print("--- Fuzzing /api/index/fast-mode (POST) endpoint complete ---\n")
 
@@ -856,10 +856,10 @@ async def fuzz_get_indexing_enabled(admin_headers):
         return
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/index/enabled", headers=admin_headers, timeout=5
+            f"{BASE_URL}/api/index/enabled", headers=admin_headers, timeout=5,
         )
         print(
-            f"GET Indexing Enabled: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+            f"GET Indexing Enabled: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
         )
     except httpx.RequestError as e:
         print(f"GET Indexing Enabled request failed: {e}")
@@ -884,13 +884,13 @@ async def fuzz_set_indexing_enabled(admin_headers):
                 timeout=5,
             )
             print(
-                f"Set Indexing Enabled (Value: {val}): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+                f"Set Indexing Enabled (Value: {val}): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
             )
         except httpx.RequestError as e:
             print(f"Set Indexing Enabled request failed for value {val}: {e}")
         except Exception as e:
             print(
-                f"An unexpected error occurred during set indexing enabled for value {val}: {e}"
+                f"An unexpected error occurred during set indexing enabled for value {val}: {e}",
             )
     print("--- Fuzzing /api/index/enabled (POST) endpoint complete ---\n")
 
@@ -919,14 +919,14 @@ async def create_test_memory(
     }
     try:
         response = await httpx.AsyncClient().post(
-            f"{BASE_URL}/api/memory", headers=headers, json=memory_data, timeout=5
+            f"{BASE_URL}/api/memory", headers=headers, json=memory_data, timeout=5,
         )
         if response.status_code == 200:
             memory_id = response.json().get("memory_id")
             print(f"Created test memory: {memory_id}")
             return memory_id
         print(
-            f"Failed to create test memory (Status: {response.status_code}, Response: {response.text.strip()[:100]})."
+            f"Failed to create test memory (Status: {response.status_code}, Response: {response.text.strip()[:100]}).",
         )
         return None
     except httpx.RequestError as e:
@@ -961,7 +961,7 @@ async def fuzz_create_memory_endpoint(headers):
                 [],
                 [generate_random_string(5), generate_random_string(7)],
                 ["<script>alert(1)</script>"] * 3,
-            ]
+            ],
         )
         fuzzed_expires_in_days = random.choice([None, 1, 30, -1, 366, "invalid"])
 
@@ -977,10 +977,10 @@ async def fuzz_create_memory_endpoint(headers):
 
         try:
             response = await httpx.AsyncClient().post(
-                f"{BASE_URL}/api/memory", headers=headers, json=memory_data, timeout=5
+                f"{BASE_URL}/api/memory", headers=headers, json=memory_data, timeout=5,
             )
             print(
-                f"Create Memory (Type: '{fuzzed_memory_type}', Title: '{fuzzed_title[:30]}...', Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+                f"Create Memory (Type: '{fuzzed_memory_type}', Title: '{fuzzed_title[:30]}...', Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
             )
         except httpx.RequestError as e:
             print(f"Create Memory request failed: {e}")
@@ -990,31 +990,31 @@ async def fuzz_create_memory_endpoint(headers):
 
 
 async def _test_memory_by_id_with_headers(
-    memory_id: str, headers: dict, user_type: str
+    memory_id: str, headers: dict, user_type: str,
 ) -> None:
     """Test getting memory by ID with specific headers."""
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/memory/{memory_id}", headers=headers, timeout=5
+            f"{BASE_URL}/api/memory/{memory_id}", headers=headers, timeout=5,
         )
         print(
-            f"GET Memory (ID: '{memory_id}', User: {user_type}): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+            f"GET Memory (ID: '{memory_id}', User: {user_type}): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
         )
     except httpx.RequestError as e:
         print(f"GET Memory request failed for ID '{memory_id}' ({user_type} User): {e}")
     except Exception as e:
         print(
-            f"An unexpected error occurred during GET memory for ID '{memory_id}' ({user_type} User): {e}"
+            f"An unexpected error occurred during GET memory for ID '{memory_id}' ({user_type} User): {e}",
         )
 
 
 async def fuzz_get_memory_by_id_endpoint(
-    headers, admin_headers, test_user_memory_id=None, admin_user_memory_id=None
+    headers, admin_headers, test_user_memory_id=None, admin_user_memory_id=None,
 ):
     print("--- Fuzzing /api/memory/{memory_id} (GET) endpoint ---")
     if not headers and not admin_headers:
         print(
-            "Skipping fuzz_get_memory_by_id_endpoint. No authentication headers for regular or admin user."
+            "Skipping fuzz_get_memory_by_id_endpoint. No authentication headers for regular or admin user.",
         )
         return
 
@@ -1044,7 +1044,7 @@ async def fuzz_list_memories_endpoint(headers, admin_headers):
     print("--- Fuzzing /api/memory/ (GET) endpoint ---")
     if not headers and not admin_headers:
         print(
-            "Skipping fuzz_list_memories_endpoint. No authentication headers for regular or admin user."
+            "Skipping fuzz_list_memories_endpoint. No authentication headers for regular or admin user.",
         )
         return
     memory_types = [
@@ -1078,13 +1078,13 @@ async def fuzz_list_memories_endpoint(headers, admin_headers):
                             timeout=5,
                         )
                         print(
-                            f"List Memories (Type: '{mem_type}', Limit: {limit}, Importance: {importance}, User: Regular): Status Code: {response.status_code}, Total: {response.json().get("total", "N/A")}, Response: {response.text.strip()[:100]}..."
+                            f"List Memories (Type: '{mem_type}', Limit: {limit}, Importance: {importance}, User: Regular): Status Code: {response.status_code}, Total: {response.json().get("total", "N/A")}, Response: {response.text.strip()[:100]}...",
                         )
                     except httpx.RequestError as e:
                         print(f"List Memories request failed (Regular User): {e}")
                     except Exception as e:
                         print(
-                            f"An unexpected error occurred during list memories (Regular User): {e}"
+                            f"An unexpected error occurred during list memories (Regular User): {e}",
                         )
 
                 # Test with admin headers
@@ -1097,13 +1097,13 @@ async def fuzz_list_memories_endpoint(headers, admin_headers):
                             timeout=5,
                         )
                         print(
-                            f"List Memories (Type: '{mem_type}', Limit: {limit}, Importance: {importance}, User: Admin): Status Code: {response.status_code}, Total: {response.json().get("total", "N/A")}, Response: {response.text.strip()[:100]}..."
+                            f"List Memories (Type: '{mem_type}', Limit: {limit}, Importance: {importance}, User: Admin): Status Code: {response.status_code}, Total: {response.json().get("total", "N/A")}, Response: {response.text.strip()[:100]}...",
                         )
                     except httpx.RequestError as e:
                         print(f"List Memories request failed (Admin User): {e}")
                     except Exception as e:
                         print(
-                            f"An unexpected error occurred during list memories (Admin User): {e}"
+                            f"An unexpected error occurred during list memories (Admin User): {e}",
                         )
     print("--- Fuzzing /api/memory/ (GET) endpoint complete ---\n")
 
@@ -1112,7 +1112,7 @@ async def fuzz_search_memories_endpoint(headers, admin_headers):
     print("--- Fuzzing /api/memory/search/ (GET) endpoint ---")
     if not headers and not admin_headers:
         print(
-            "Skipping fuzz_search_memories_endpoint. No authentication headers for regular or admin user."
+            "Skipping fuzz_search_memories_endpoint. No authentication headers for regular or admin user.",
         )
         return
     search_queries = [
@@ -1141,13 +1141,13 @@ async def fuzz_search_memories_endpoint(headers, admin_headers):
                             timeout=5,
                         )
                         print(
-                            f"Search Memories (Query: '{query[:30]}...', Type: '{mem_type}', Limit: {limit}, User: Regular): Status Code: {response.status_code}, Total: {response.json().get("total", "N/A")}, Response: {response.text.strip()[:100]}..."
+                            f"Search Memories (Query: '{query[:30]}...', Type: '{mem_type}', Limit: {limit}, User: Regular): Status Code: {response.status_code}, Total: {response.json().get("total", "N/A")}, Response: {response.text.strip()[:100]}...",
                         )
                     except httpx.RequestError as e:
                         print(f"Search Memories request failed (Regular User): {e}")
                     except Exception as e:
                         print(
-                            f"An unexpected error occurred during search memories (Regular User): {e}"
+                            f"An unexpected error occurred during search memories (Regular User): {e}",
                         )
 
                 # Test with admin headers
@@ -1160,24 +1160,24 @@ async def fuzz_search_memories_endpoint(headers, admin_headers):
                             timeout=5,
                         )
                         print(
-                            f"Search Memories (Query: '{query[:30]}...', Type: '{mem_type}', Limit: {limit}, User: Admin): Status Code: {response.status_code}, Total: {response.json().get("total", "N/A")}, Response: {response.text.strip()[:100]}..."
+                            f"Search Memories (Query: '{query[:30]}...', Type: '{mem_type}', Limit: {limit}, User: Admin): Status Code: {response.status_code}, Total: {response.json().get("total", "N/A")}, Response: {response.text.strip()[:100]}...",
                         )
                     except httpx.RequestError as e:
                         print(f"Search Memories request failed (Admin User): {e}")
                     except Exception as e:
                         print(
-                            f"An unexpected error occurred during search memories (Admin User): {e}"
+                            f"An unexpected error occurred during search memories (Admin User): {e}",
                         )
     print("--- Fuzzing /api/memory/search/ (GET) endpoint complete ---\n")
 
 
 async def fuzz_update_memory_endpoint(
-    headers, admin_headers, test_user_memory_id=None, admin_user_memory_id=None
+    headers, admin_headers, test_user_memory_id=None, admin_user_memory_id=None,
 ):
     print("--- Fuzzing /api/memory/{memory_id} (PUT) endpoint ---")
     if not headers and not admin_headers:
         print(
-            "Skipping fuzz_update_memory_endpoint. No authentication headers for regular or admin user."
+            "Skipping fuzz_update_memory_endpoint. No authentication headers for regular or admin user.",
         )
         return
     test_memory_ids = [
@@ -1218,15 +1218,15 @@ async def fuzz_update_memory_endpoint(
                         timeout=5,
                     )
                     print(
-                        f"Update Memory (ID: '{memory_id}', User: Regular, Data: {str(update_data)[:50]}): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+                        f"Update Memory (ID: '{memory_id}', User: Regular, Data: {str(update_data)[:50]}): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
                     )
                 except httpx.RequestError as e:
                     print(
-                        f"Update Memory request failed for ID '{memory_id}' (Regular User): {e}"
+                        f"Update Memory request failed for ID '{memory_id}' (Regular User): {e}",
                     )
                 except Exception as e:
                     print(
-                        f"An unexpected error occurred during update memory for ID '{memory_id}' (Regular User): {e}"
+                        f"An unexpected error occurred during update memory for ID '{memory_id}' (Regular User): {e}",
                     )
 
             # Test with admin headers
@@ -1239,38 +1239,38 @@ async def fuzz_update_memory_endpoint(
                         timeout=5,
                     )
                     print(
-                        f"Update Memory (ID: '{memory_id}', User: Admin, Data: {str(update_data)[:50]}): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+                        f"Update Memory (ID: '{memory_id}', User: Admin, Data: {str(update_data)[:50]}): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
                     )
                 except httpx.RequestError as e:
                     print(
-                        f"Update Memory request failed for ID '{memory_id}' (Admin User): {e}"
+                        f"Update Memory request failed for ID '{memory_id}' (Admin User): {e}",
                     )
                 except Exception as e:
                     print(
-                        f"An unexpected error occurred during update memory for ID '{memory_id}' (Admin User): {e}"
+                        f"An unexpected error occurred during update memory for ID '{memory_id}' (Admin User): {e}",
                     )
     print("--- Fuzzing /api/memory/{memory_id} (PUT) endpoint complete ---\n")
 
 
 async def fuzz_delete_memory_endpoint(
-    headers, admin_headers, test_user_memory_id=None, admin_user_memory_id=None
+    headers, admin_headers, test_user_memory_id=None, admin_user_memory_id=None,
 ):
     print("--- Fuzzing /api/memory/{memory_id} (DELETE) endpoint ---")
     if not headers and not admin_headers:
         print(
-            "Skipping fuzz_delete_memory_endpoint. No authentication headers for regular or admin user."
+            "Skipping fuzz_delete_memory_endpoint. No authentication headers for regular or admin user.",
         )
         return
     # Prepare some memories to be deleted
     memories_to_delete_regular = [
         await create_test_memory(
-            headers, "temp_user", title_prefix="delete_me_regular_"
+            headers, "temp_user", title_prefix="delete_me_regular_",
         )
         for _ in range(3)
     ]
     memories_to_delete_admin = [
         await create_test_memory(
-            admin_headers, "temp_admin", title_prefix="delete_me_admin_"
+            admin_headers, "temp_admin", title_prefix="delete_me_admin_",
         )
         for _ in range(3)
     ]
@@ -1298,18 +1298,18 @@ async def fuzz_delete_memory_endpoint(
         if headers:
             try:
                 response = await httpx.AsyncClient().delete(
-                    f"{BASE_URL}/api/memory/{memory_id}", headers=headers, timeout=5
+                    f"{BASE_URL}/api/memory/{memory_id}", headers=headers, timeout=5,
                 )
                 print(
-                    f"Delete Memory (ID: '{memory_id}', User: Regular): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+                    f"Delete Memory (ID: '{memory_id}', User: Regular): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
                 )
             except httpx.RequestError as e:
                 print(
-                    f"Delete Memory request failed for ID '{memory_id}' (Regular User): {e}"
+                    f"Delete Memory request failed for ID '{memory_id}' (Regular User): {e}",
                 )
             except Exception as e:
                 print(
-                    f"An unexpected error occurred during delete memory for ID '{memory_id}' (Regular User): {e}"
+                    f"An unexpected error occurred during delete memory for ID '{memory_id}' (Regular User): {e}",
                 )
 
         # Test with admin headers
@@ -1321,15 +1321,15 @@ async def fuzz_delete_memory_endpoint(
                     timeout=5,
                 )
                 print(
-                    f"Delete Memory (ID: '{memory_id}', User: Admin): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+                    f"Delete Memory (ID: '{memory_id}', User: Admin): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
                 )
             except httpx.RequestError as e:
                 print(
-                    f"Delete Memory request failed for ID '{memory_id}' (Admin User): {e}"
+                    f"Delete Memory request failed for ID '{memory_id}' (Admin User): {e}",
                 )
             except Exception as e:
                 print(
-                    f"An unexpected error occurred during delete memory for ID '{memory_id}' (Admin User): {e}"
+                    f"An unexpected error occurred during delete memory for ID '{memory_id}' (Admin User): {e}",
                 )
     print("--- Fuzzing /api/memory/{memory_id} (DELETE) endpoint complete ---\n")
 
@@ -1338,7 +1338,7 @@ async def fuzz_get_user_context_endpoint(headers, admin_headers):
     print("--- Fuzzing /api/memory/context/user (GET) endpoint ---")
     if not headers and not admin_headers:
         print(
-            "Skipping fuzz_get_user_context_endpoint. No authentication headers for regular or admin user."
+            "Skipping fuzz_get_user_context_endpoint. No authentication headers for regular or admin user.",
         )
         return
     # This endpoint primarily returns data based on the authenticated user, so fuzzing parameters isn't as relevant.
@@ -1346,31 +1346,31 @@ async def fuzz_get_user_context_endpoint(headers, admin_headers):
     if headers:
         try:
             response = await httpx.AsyncClient().get(
-                f"{BASE_URL}/api/memory/context/user", headers=headers, timeout=5
+                f"{BASE_URL}/api/memory/context/user", headers=headers, timeout=5,
             )
             print(
-                f"GET User Context (User: Regular): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+                f"GET User Context (User: Regular): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
             )
         except httpx.RequestError as e:
             print(f"GET User Context request failed (Regular User): {e}")
         except Exception as e:
             print(
-                f"An unexpected error occurred during GET user context (Regular User): {e}"
+                f"An unexpected error occurred during GET user context (Regular User): {e}",
             )
 
     if admin_headers:
         try:
             response = await httpx.AsyncClient().get(
-                f"{BASE_URL}/api/memory/context/user", headers=admin_headers, timeout=5
+                f"{BASE_URL}/api/memory/context/user", headers=admin_headers, timeout=5,
             )
             print(
-                f"GET User Context (User: Admin): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+                f"GET User Context (User: Admin): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
             )
         except httpx.RequestError as e:
             print(f"GET User Context request failed (Admin User): {e}")
         except Exception as e:
             print(
-                f"An unexpected error occurred during GET user context (Admin User): {e}"
+                f"An unexpected error occurred during GET user context (Admin User): {e}",
             )
 
     print("--- Fuzzing /api/memory/context/user (GET) endpoint complete ---\n")
@@ -1380,16 +1380,16 @@ async def fuzz_cleanup_memories_endpoint(admin_headers):
     print("--- Fuzzing /api/memory/cleanup (POST) endpoint ---")
     if not admin_headers:
         print(
-            "Skipping fuzz_cleanup_memories_endpoint. No admin authentication headers."
+            "Skipping fuzz_cleanup_memories_endpoint. No admin authentication headers.",
         )
         return
     # This is an admin-only endpoint without request body, so just test auth
     try:
         response = await httpx.AsyncClient().post(
-            f"{BASE_URL}/api/memory/cleanup", headers=admin_headers, timeout=5
+            f"{BASE_URL}/api/memory/cleanup", headers=admin_headers, timeout=5,
         )
         print(
-            f"Cleanup Memories: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+            f"Cleanup Memories: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
         )
     except httpx.RequestError as e:
         print(f"Cleanup Memories request failed: {e}")
@@ -1404,7 +1404,7 @@ async def fuzz_get_memory_types_endpoint():
     try:
         response = httpx.get(f"{BASE_URL}/api/memory/types/", timeout=5)
         print(
-            f"GET Memory Types: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+            f"GET Memory Types: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
         )
     except httpx.RequestError as e:
         print(f"GET Memory Types request failed: {e}")
@@ -1420,10 +1420,10 @@ async def fuzz_ollama_status(admin_headers):
         return
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/ollama/status", headers=admin_headers, timeout=5
+            f"{BASE_URL}/api/ollama/status", headers=admin_headers, timeout=5,
         )
         print(
-            f"Ollama Status: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+            f"Ollama Status: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
         )
     except httpx.RequestError as e:
         print(f"Ollama Status request failed: {e}")
@@ -1439,10 +1439,10 @@ async def fuzz_ollama_list_models(headers):
         return
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/ollama/models", headers=headers, timeout=10
+            f"{BASE_URL}/api/ollama/models", headers=headers, timeout=10,
         )
         print(
-            f"Ollama List Models: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+            f"Ollama List Models: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
         )
     except httpx.RequestError as e:
         print(f"Ollama List Models request failed: {e}")
@@ -1472,13 +1472,13 @@ async def fuzz_ollama_pull_model(headers):
                 async for chunk in response.aiter_bytes():
                     response_content += chunk
             print(
-                f"Ollama Pull Model ('{model_name}'): Status Code: {response.status_code}, Response: {response_content.decode()[:100]}..."
+                f"Ollama Pull Model ('{model_name}'): Status Code: {response.status_code}, Response: {response_content.decode()[:100]}...",
             )
         except httpx.RequestError as e:
             print(f"Ollama Pull Model request failed for '{model_name}': {e}")
         except Exception as e:
             print(
-                f"An unexpected error occurred during Ollama pull model for '{model_name}': {e}"
+                f"An unexpected error occurred during Ollama pull model for '{model_name}': {e}",
             )
     print("--- Fuzzing /api/ollama/models/pull (POST) endpoint complete ---\n")
 
@@ -1520,7 +1520,7 @@ async def fuzz_ollama_chat(headers):
                                 "location": {
                                     "type": "string",
                                     "description": "City name",
-                                }
+                                },
                             },
                         },
                         {
@@ -1543,7 +1543,7 @@ async def fuzz_ollama_chat(headers):
                         async for chunk in response.aiter_bytes():
                             response_content += chunk
                     print(
-                        f"Ollama Chat (Msg: '{msg[:30]}...', Model: {model}, Stream: {stream}): Status Code: {response.status_code}, Response: {response_content.decode()[:100]}..."
+                        f"Ollama Chat (Msg: '{msg[:30]}...', Model: {model}, Stream: {stream}): Status Code: {response.status_code}, Response: {response_content.decode()[:100]}...",
                     )
                 except httpx.RequestError as e:
                     print(f"Ollama Chat request failed: {e}")
@@ -1559,10 +1559,10 @@ async def fuzz_ollama_assistant_models(headers):
         return
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/ollama/assistant/models", headers=headers, timeout=5
+            f"{BASE_URL}/api/ollama/assistant/models", headers=headers, timeout=5,
         )
         print(
-            f"Ollama Assistant Models: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+            f"Ollama Assistant Models: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
         )
     except httpx.RequestError as e:
         print(f"Ollama Assistant Models request failed: {e}")
@@ -1578,10 +1578,10 @@ async def fuzz_ollama_assistant_tools(headers):
         return
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/ollama/assistant/tools", headers=headers, timeout=5
+            f"{BASE_URL}/api/ollama/assistant/tools", headers=headers, timeout=5,
         )
         print(
-            f"Ollama Assistant Tools: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+            f"Ollama Assistant Tools: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
         )
     except httpx.RequestError as e:
         print(f"Ollama Assistant Tools request failed: {e}")
@@ -1611,16 +1611,16 @@ async def fuzz_ollama_ensure_model(headers):
                 async for chunk in response.aiter_bytes():
                     response_content += chunk
             print(
-                f"Ollama Ensure Model ('{model_name}'): Status Code: {response.status_code}, Response: {response_content.decode()[:100]}..."
+                f"Ollama Ensure Model ('{model_name}'): Status Code: {response.status_code}, Response: {response_content.decode()[:100]}...",
             )
         except httpx.RequestError as e:
             print(f"Ollama Ensure Model request failed for '{model_name}': {e}")
         except Exception as e:
             print(
-                f"An unexpected error occurred during Ollama ensure model for '{model_name}': {e}"
+                f"An unexpected error occurred during Ollama ensure model for '{model_name}': {e}",
             )
     print(
-        "--- Fuzzing /api/ollama/assistant/ensure-model (POST) endpoint complete ---\n"
+        "--- Fuzzing /api/ollama/assistant/ensure-model (POST) endpoint complete ---\n",
     )
 
 
@@ -1648,16 +1648,16 @@ async def fuzz_ollama_assistant_context(headers):
                 timeout=5,
             )
             print(
-                f"Ollama Assistant Context (Path: '{path[:30]}...'): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+                f"Ollama Assistant Context (Path: '{path[:30]}...'): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
             )
         except httpx.RequestError as e:
             print(f"Ollama Assistant Context request failed for '{path}': {e}")
         except Exception as e:
             print(
-                f"An unexpected error occurred during Ollama assistant context for '{path}': {e}"
+                f"An unexpected error occurred during Ollama assistant context for '{path}': {e}",
             )
     print(
-        "--- Fuzzing /api/ollama/assistant/context/{path:path} (GET) endpoint complete ---\n"
+        "--- Fuzzing /api/ollama/assistant/context/{path:path} (GET) endpoint complete ---\n",
     )
 
 
@@ -1666,7 +1666,7 @@ async def fuzz_ollama_health_check():
     try:
         response = httpx.get(f"{BASE_URL}/api/ollama/health", timeout=5)
         print(
-            f"Ollama Health Check: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+            f"Ollama Health Check: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
         )
     except httpx.RequestError as e:
         print(f"Ollama Health Check request failed: {e}")
@@ -1683,7 +1683,7 @@ def fuzz_generate_caption():
         try:
             response = httpx.post(url, timeout=5)  # Use POST as per fenrir.tex
             print(
-                f"Path: '{fuzzed_path}', Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+                f"Path: '{fuzzed_path}', Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
             )
         except httpx.RequestError as e:
             print(f"Request failed for path '{fuzzed_path}': {e}")
@@ -1725,10 +1725,10 @@ def fuzz_login_endpoint():
 
     for _ in range(10):  # Send 10 fuzzed requests
         username_fuzz = random.choice(
-            common_fuzz_values + [generate_random_string(random.randint(1, 50))]
+            common_fuzz_values + [generate_random_string(random.randint(1, 50))],
         )
         password_fuzz = random.choice(
-            common_fuzz_values + [generate_random_string(random.randint(1, 50))]
+            common_fuzz_values + [generate_random_string(random.randint(1, 50))],
         )
 
         login_data = {"username": str(username_fuzz), "password": str(password_fuzz)}
@@ -1736,15 +1736,15 @@ def fuzz_login_endpoint():
         try:
             response = httpx.post(f"{BASE_URL}/api/login", json=login_data, timeout=5)
             print(
-                f"Username: '{login_data['username']}', Password: '{login_data['password']}', Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+                f"Username: '{login_data['username']}', Password: '{login_data['password']}', Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
             )
         except httpx.RequestError as e:
             print(
-                f"Request failed for username '{login_data['username']}' and password '{login_data['password']}': {e}"
+                f"Request failed for username '{login_data['username']}' and password '{login_data['password']}': {e}",
             )
         except Exception as e:
             print(
-                f"An unexpected error occurred for username '{login_data['username']}' and password '{login_data['password']}': {e}"
+                f"An unexpected error occurred for username '{login_data['username']}' and password '{login_data['password']}': {e}",
             )
     print("--- Fuzzing /api/login endpoint complete ---\n")
 
@@ -1767,26 +1767,26 @@ def fuzz_register_endpoint():
     ]
     for _ in range(10):
         username_fuzz = random.choice(
-            common_fuzz_values + [generate_random_string(random.randint(1, 50))]
+            common_fuzz_values + [generate_random_string(random.randint(1, 50))],
         )
         password_fuzz = random.choice(
-            common_fuzz_values + [generate_random_string(random.randint(1, 50))]
+            common_fuzz_values + [generate_random_string(random.randint(1, 50))],
         )
         register_data = {"username": str(username_fuzz), "password": str(password_fuzz)}
         try:
             response = httpx.post(
-                f"{BASE_URL}/api/register", json=register_data, timeout=5
+                f"{BASE_URL}/api/register", json=register_data, timeout=5,
             )
             print(
-                f"Register Username: '{register_data['username']}', Password: '{register_data['password']}', Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+                f"Register Username: '{register_data['username']}', Password: '{register_data['password']}', Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
             )
         except httpx.RequestError as e:
             print(
-                f"Register request failed for username '{register_data['username']}' and password '{register_data['password']}': {e}"
+                f"Register request failed for username '{register_data['username']}' and password '{register_data['password']}': {e}",
             )
         except Exception as e:
             print(
-                f"An unexpected error occurred for register username '{register_data['username']}' and password '{register_data['password']}': {e}"
+                f"An unexpected error occurred for register username '{register_data['username']}' and password '{register_data['password']}': {e}",
             )
     print("--- Fuzzing /api/register endpoint complete ---\n")
 
@@ -1797,13 +1797,13 @@ def fuzz_browse_endpoint():
         fuzzed_path = generate_malicious_path()
         fuzzed_page = generate_random_int(0, 5)  # Page can be 0 or negative for fuzzing
         fuzzed_page_size = generate_random_int(
-            0, 600
+            0, 600,
         )  # Page size can be 0, negative or very large
         url = f"{BASE_URL}/api/browse?path={fuzzed_path}&page={fuzzed_page}&page_size={fuzzed_page_size}"
         try:
             response = httpx.get(url, timeout=5)
             print(
-                f"Path: '{fuzzed_path}', Page: {fuzzed_page}, Page Size: {fuzzed_page_size}, Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
+                f"Path: '{fuzzed_path}', Page: {fuzzed_page}, Page Size: {fuzzed_page_size}, Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
             )
         except httpx.RequestError as e:
             print(f"Request failed for path '{fuzzed_path}': {e}")
@@ -1831,7 +1831,7 @@ if __name__ == "__main__":
         if auth_token:
             headers = {"Authorization": f"Bearer {auth_token}"}
             print(
-                f"Successfully obtained token for {test_username}: {auth_token[:30]}..."
+                f"Successfully obtained token for {test_username}: {auth_token[:30]}...",
             )
             await fuzz_profile_picture_upload(headers)
             await fuzz_get_profile_picture(headers)
@@ -1846,17 +1846,17 @@ if __name__ == "__main__":
             test_user_memory_id = await create_test_memory(headers, test_username)
             await fuzz_create_memory_endpoint(headers)
             await fuzz_list_memories_endpoint(
-                headers, {}
+                headers, {},
             )  # Pass empty dict for admin_headers as it's not needed for regular user test
             await fuzz_search_memories_endpoint(
-                headers, {}
+                headers, {},
             )  # Pass empty dict for admin_headers as it's not needed for regular user test
             await fuzz_get_user_context_endpoint(
-                headers, {}
+                headers, {},
             )  # Pass empty dict for admin_headers as it's not needed for regular user test
             await fuzz_ollama_list_models(headers)
             await fuzz_ollama_pull_model(
-                headers
+                headers,
             )  # This might require Ollama to be running and models to be available
             await fuzz_ollama_chat(headers)
             await fuzz_ollama_assistant_models(headers)
@@ -1866,13 +1866,13 @@ if __name__ == "__main__":
 
         else:
             print(
-                f"Could not obtain token for {test_username}. Skipping authenticated endpoint fuzzing."
+                f"Could not obtain token for {test_username}. Skipping authenticated endpoint fuzzing.",
             )
 
         admin_username = "admin_fuzz_user_" + generate_random_string(8)
         admin_password = "admin_fuzz_password_" + generate_random_string(8)
         admin_auth_token, admin_refresh_token = await register_and_login_admin_user(
-            admin_username, admin_password
+            admin_username, admin_password,
         )
         admin_user_memory_id = None
         admin_headers = {}  # Initialize admin_headers
@@ -1880,7 +1880,7 @@ if __name__ == "__main__":
         if admin_auth_token:
             admin_headers = {"Authorization": f"Bearer {admin_auth_token}"}
             print(
-                f"Successfully obtained admin token for {admin_username}: {admin_auth_token[:30]}..."
+                f"Successfully obtained admin token for {admin_username}: {admin_auth_token[:30]}...",
             )
             await fuzz_refresh_token_endpoint(admin_refresh_token)
             await fuzz_admin_get_all_users(admin_headers)
@@ -1905,32 +1905,32 @@ if __name__ == "__main__":
 
             # Create a memory for the admin user to test ID-specific endpoints
             admin_user_memory_id = await create_test_memory(
-                admin_headers, admin_username
+                admin_headers, admin_username,
             )
             await fuzz_create_memory_endpoint(admin_headers)
             await fuzz_list_memories_endpoint(
-                {}, admin_headers
+                {}, admin_headers,
             )  # Pass empty dict for regular user headers as it's not needed for admin user test
             await fuzz_search_memories_endpoint(
-                {}, admin_headers
+                {}, admin_headers,
             )  # Pass empty dict for regular user headers as it's not needed for admin user test
             await fuzz_cleanup_memories_endpoint(admin_headers)
             await fuzz_ollama_status(admin_headers)
 
         else:
             print(
-                f"Could not obtain admin token for {admin_username}. Skipping admin endpoint fuzzing."
+                f"Could not obtain admin token for {admin_username}. Skipping admin endpoint fuzzing.",
             )
 
         # Fuzzing memory endpoints requiring specific IDs (after creation)
         await fuzz_get_memory_by_id_endpoint(
-            headers, admin_headers, test_user_memory_id, admin_user_memory_id
+            headers, admin_headers, test_user_memory_id, admin_user_memory_id,
         )
         await fuzz_update_memory_endpoint(
-            headers, admin_headers, test_user_memory_id, admin_user_memory_id
+            headers, admin_headers, test_user_memory_id, admin_user_memory_id,
         )
         await fuzz_delete_memory_endpoint(
-            headers, admin_headers, test_user_memory_id, admin_user_memory_id
+            headers, admin_headers, test_user_memory_id, admin_user_memory_id,
         )
         await fuzz_get_memory_types_endpoint()
         await fuzz_ollama_health_check()

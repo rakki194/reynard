@@ -1,5 +1,4 @@
-"""
-Tests for RAG services.
+"""Tests for RAG services.
 
 This module tests the RAG service functionality for
 embedding, indexing, and vector database operations.
@@ -11,11 +10,9 @@ import numpy as np
 import pytest
 
 from app.services.rag import (
-    DocumentIndexer,
     EmbeddingIndexService,
     EmbeddingService,
     VectorDBService,
-    VectorStoreService,
 )
 
 
@@ -33,7 +30,7 @@ class TestEmbeddingService:
         assert hasattr(self.service, "get_embedding_model")
 
     @patch(
-        "app.services.rag.embedding_service.sentence_transformers.SentenceTransformer"
+        "app.services.rag.embedding_service.sentence_transformers.SentenceTransformer",
     )
     async def test_generate_embeddings_success(self, mock_transformer_class):
         """Test successful embedding generation."""
@@ -41,7 +38,7 @@ class TestEmbeddingService:
         mock_transformer = MagicMock()
         mock_transformer_class.return_value = mock_transformer
         mock_transformer.encode.return_value = np.array(
-            [[0.1, 0.2, 0.3], [0.4, 0.5, 0.6]]
+            [[0.1, 0.2, 0.3], [0.4, 0.5, 0.6]],
         )
 
         # Generate embeddings
@@ -55,7 +52,7 @@ class TestEmbeddingService:
         assert result[1][2] == 0.6
 
     @patch(
-        "app.services.rag.embedding_service.sentence_transformers.SentenceTransformer"
+        "app.services.rag.embedding_service.sentence_transformers.SentenceTransformer",
     )
     async def test_generate_embeddings_empty_input(self, mock_transformer_class):
         """Test embedding generation with empty input."""
@@ -71,7 +68,7 @@ class TestEmbeddingService:
         assert len(result) == 0
 
     @patch(
-        "app.services.rag.embedding_service.sentence_transformers.SentenceTransformer"
+        "app.services.rag.embedding_service.sentence_transformers.SentenceTransformer",
     )
     async def test_generate_embeddings_single_text(self, mock_transformer_class):
         """Test embedding generation with single text."""
@@ -90,7 +87,7 @@ class TestEmbeddingService:
         assert result[0][0] == 0.1
 
     @patch(
-        "app.services.rag.embedding_service.sentence_transformers.SentenceTransformer"
+        "app.services.rag.embedding_service.sentence_transformers.SentenceTransformer",
     )
     async def test_generate_embeddings_model_error(self, mock_transformer_class):
         """Test embedding generation with model error."""
@@ -105,7 +102,7 @@ class TestEmbeddingService:
             await self.service.generate_embeddings(texts)
 
     @patch(
-        "app.services.rag.embedding_service.sentence_transformers.SentenceTransformer"
+        "app.services.rag.embedding_service.sentence_transformers.SentenceTransformer",
     )
     async def test_generate_embeddings_invalid_input(self, mock_transformer_class):
         """Test embedding generation with invalid input."""
@@ -171,7 +168,7 @@ class TestIndexingService:
         """Test document indexing with error."""
         # Mock the embedding service to raise an exception
         mock_embedding_service.return_value.generate_embeddings.side_effect = Exception(
-            "Embedding error"
+            "Embedding error",
         )
 
         # Index documents
@@ -184,7 +181,7 @@ class TestIndexingService:
         """Test successful document search."""
         # Mock the embedding service
         mock_embedding_service.return_value.generate_embeddings.return_value = [
-            [0.1, 0.2, 0.3]
+            [0.1, 0.2, 0.3],
         ]
 
         # Search documents
@@ -201,7 +198,7 @@ class TestIndexingService:
         """Test document search with empty query."""
         # Mock the embedding service
         mock_embedding_service.return_value.generate_embeddings.return_value = [
-            [0.1, 0.2, 0.3]
+            [0.1, 0.2, 0.3],
         ]
 
         # Search documents
@@ -218,7 +215,7 @@ class TestIndexingService:
         """Test document search with error."""
         # Mock the embedding service to raise an exception
         mock_embedding_service.return_value.generate_embeddings.side_effect = Exception(
-            "Embedding error"
+            "Embedding error",
         )
 
         # Search documents
@@ -284,7 +281,7 @@ class TestVectorDBService:
 
         # Store vectors
         vectors = [
-            {"id": "vec1", "embedding": [0.1, 0.2, 0.3], "metadata": {"text": "Hello"}}
+            {"id": "vec1", "embedding": [0.1, 0.2, 0.3], "metadata": {"text": "Hello"}},
         ]
         with pytest.raises(Exception):
             await self.service.store_vectors(vectors)

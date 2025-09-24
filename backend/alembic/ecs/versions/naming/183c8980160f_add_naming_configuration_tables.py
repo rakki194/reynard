@@ -6,16 +6,16 @@ Create Date: 2025-09-20 21:08:54.963155
 
 """
 
-from typing import Sequence, Union
+from collections.abc import Sequence
 
 import sqlalchemy as sa
 from alembic import op
 
 # revision identifiers, used by Alembic.
 revision: str = "183c8980160f"
-down_revision: Union[str, Sequence[str], None] = None
-branch_labels: Union[str, Sequence[str], None] = None
-depends_on: Union[str, Sequence[str], None] = None
+down_revision: str | Sequence[str] | None = None
+branch_labels: str | Sequence[str] | None = None
+depends_on: str | Sequence[str] | None = None
 
 
 def upgrade() -> None:
@@ -44,7 +44,7 @@ def upgrade() -> None:
         ),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint(
-            "component_type", "component_name", name="uq_component_type_name"
+            "component_type", "component_name", name="uq_component_type_name",
         ),
     )
     op.create_index(
@@ -108,10 +108,10 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_index(
-        op.f("ix_naming_spirits_enabled"), "naming_spirits", ["enabled"], unique=False
+        op.f("ix_naming_spirits_enabled"), "naming_spirits", ["enabled"], unique=False,
     )
     op.create_index(
-        op.f("ix_naming_spirits_name"), "naming_spirits", ["name"], unique=True
+        op.f("ix_naming_spirits_name"), "naming_spirits", ["name"], unique=True,
     )
     # ### end Alembic commands ###
 
@@ -125,7 +125,7 @@ def downgrade() -> None:
     op.drop_index(op.f("ix_naming_config_config_key"), table_name="naming_config")
     op.drop_table("naming_config")
     op.drop_index(
-        op.f("ix_naming_components_component_type"), table_name="naming_components"
+        op.f("ix_naming_components_component_type"), table_name="naming_components",
     )
     op.drop_table("naming_components")
     # ### end Alembic commands ###

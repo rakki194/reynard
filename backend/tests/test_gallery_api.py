@@ -1,8 +1,7 @@
 from unittest.mock import Mock, patch
 
-from fastapi.testclient import TestClient
-
 from backend.app.api.gallery.endpoints import router
+from fastapi.testclient import TestClient
 
 
 class TestGalleryAPI:
@@ -67,7 +66,7 @@ class TestGalleryAPI:
         mock_get_service.return_value = mock_service
 
         response = self.client.post(
-            "/download", json={"url": "invalid-url", "options": {}}
+            "/download", json={"url": "invalid-url", "options": {}},
         )
 
         assert response.status_code == 400
@@ -97,7 +96,7 @@ class TestGalleryAPI:
         mock_get_service.return_value = mock_service
 
         response = self.client.post(
-            "/validate", json={"url": "https://example.com/gallery"}
+            "/validate", json={"url": "https://example.com/gallery"},
         )
 
         assert response.status_code == 200

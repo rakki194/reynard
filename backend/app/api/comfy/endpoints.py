@@ -1,5 +1,4 @@
-"""
-ComfyUI API Endpoints
+"""ComfyUI API Endpoints
 
 REST API endpoints for ComfyUI workflow automation and management.
 Refactored to use BaseServiceRouter infrastructure for consistency and maintainability.
@@ -47,18 +46,18 @@ class ComfyConfigModel(BaseModel):
 
     # Reconnection settings
     reconnect_max_attempts: int = Field(
-        5, ge=1, le=20, description="Maximum reconnection attempts"
+        5, ge=1, le=20, description="Maximum reconnection attempts",
     )
     reconnect_base_delay_s: float = Field(
-        0.5, ge=0.1, le=10.0, description="Base reconnection delay"
+        0.5, ge=0.1, le=10.0, description="Base reconnection delay",
     )
     reconnect_max_delay_s: float = Field(
-        30.0, ge=5.0, le=120.0, description="Maximum reconnection delay"
+        30.0, ge=5.0, le=120.0, description="Maximum reconnection delay",
     )
 
     # Image settings
     image_dir: str = Field(
-        "generated/comfy", description="Directory for generated images"
+        "generated/comfy", description="Directory for generated images",
     )
     max_file_size: int = Field(
         50 * 1024 * 1024,
@@ -73,7 +72,7 @@ class ComfyConfigModel(BaseModel):
 
     # Workflow settings
     default_checkpoint: str = Field(
-        "v1-5-pruned-emaonly.ckpt", description="Default checkpoint model"
+        "v1-5-pruned-emaonly.ckpt", description="Default checkpoint model",
     )
     default_sampler: str = Field("euler", description="Default sampler")
     default_scheduler: str = Field("normal", description="Default scheduler")
@@ -82,22 +81,22 @@ class ComfyConfigModel(BaseModel):
 
     # Caching settings
     object_info_ttl_seconds: int = Field(
-        86400, ge=3600, le=604800, description="Object info cache TTL"
+        86400, ge=3600, le=604800, description="Object info cache TTL",
     )
     enable_workflow_validation: bool = Field(
-        True, description="Enable workflow validation"
+        True, description="Enable workflow validation",
     )
     enable_deduplication: bool = Field(True, description="Enable image deduplication")
 
     # Rate limiting
     queue_rate_limit: int = Field(
-        30, ge=1, le=100, description="Queue requests per minute"
+        30, ge=1, le=100, description="Queue requests per minute",
     )
     stream_rate_limit: int = Field(
-        20, ge=1, le=50, description="Stream requests per minute"
+        20, ge=1, le=50, description="Stream requests per minute",
     )
     upload_rate_limit: int = Field(
-        10, ge=1, le=30, description="Upload requests per minute"
+        10, ge=1, le=30, description="Upload requests per minute",
     )
 
 
@@ -110,8 +109,7 @@ class ComfyUIServiceRouter(
     StreamingResponseMixin,
     ValidationMixin,
 ):
-    """
-    ComfyUI Service Router with comprehensive workflow automation and management.
+    """ComfyUI Service Router with comprehensive workflow automation and management.
 
     Provides standardized patterns for:
     - Workflow queueing and execution
@@ -190,7 +188,7 @@ class ComfyUIServiceRouter(
         async def force_health_check(current_user: User = Depends(require_active_user)):
             """Force a health check with detailed information."""
             return await self._standard_async_operation(
-                "force_health_check", self._force_health_check_impl, current_user
+                "force_health_check", self._force_health_check_impl, current_user,
             )
 
         @self.router.post("/queue")
@@ -200,25 +198,25 @@ class ComfyUIServiceRouter(
         ):
             """Queue a ComfyUI workflow for execution."""
             return await self._standard_async_operation(
-                "queue_prompt", self._queue_prompt_impl, request, current_user
+                "queue_prompt", self._queue_prompt_impl, request, current_user,
             )
 
         @self.router.get("/status/{prompt_id}")
         async def get_status(
-            prompt_id: str, current_user: User = Depends(require_active_user)
+            prompt_id: str, current_user: User = Depends(require_active_user),
         ):
             """Get the status of a queued prompt."""
             return await self._standard_async_operation(
-                "get_status", self._get_status_impl, prompt_id, current_user
+                "get_status", self._get_status_impl, prompt_id, current_user,
             )
 
         @self.router.get("/history/{prompt_id}")
         async def get_history(
-            prompt_id: str, current_user: User = Depends(require_active_user)
+            prompt_id: str, current_user: User = Depends(require_active_user),
         ):
             """Get the history for a prompt."""
             return await self._standard_async_operation(
-                "get_history", self._get_history_impl, prompt_id, current_user
+                "get_history", self._get_history_impl, prompt_id, current_user,
             )
 
         @self.router.get("/object-info")
@@ -260,7 +258,7 @@ class ComfyUIServiceRouter(
         ):
             """Generate an image from text using a simple workflow."""
             return await self._standard_async_operation(
-                "text2img", self._text2img_impl, request, current_user
+                "text2img", self._text2img_impl, request, current_user,
             )
 
         @self.router.post("/ingest")
@@ -284,11 +282,11 @@ class ComfyUIServiceRouter(
 
         @self.router.get("/stream/{prompt_id}")
         async def stream_status(
-            prompt_id: str, current_user: User = Depends(require_active_user)
+            prompt_id: str, current_user: User = Depends(require_active_user),
         ):
             """Stream status updates for a prompt."""
             return await self._standard_async_operation(
-                "stream_status", self._stream_status_impl, prompt_id, current_user
+                "stream_status", self._stream_status_impl, prompt_id, current_user,
             )
 
     def _setup_validation_endpoints(self):
@@ -296,7 +294,7 @@ class ComfyUIServiceRouter(
 
         @self.router.get("/validate/checkpoint/{checkpoint}")
         async def validate_checkpoint(
-            checkpoint: str, current_user: User = Depends(require_active_user)
+            checkpoint: str, current_user: User = Depends(require_active_user),
         ):
             """Validate checkpoint and suggest alternatives."""
             return await self._standard_async_operation(
@@ -308,25 +306,25 @@ class ComfyUIServiceRouter(
 
         @self.router.get("/validate/lora/{lora}")
         async def validate_lora(
-            lora: str, current_user: User = Depends(require_active_user)
+            lora: str, current_user: User = Depends(require_active_user),
         ):
             """Validate LoRA and suggest alternatives."""
             return await self._standard_async_operation(
-                "validate_lora", self._validate_lora_impl, lora, current_user
+                "validate_lora", self._validate_lora_impl, lora, current_user,
             )
 
         @self.router.get("/validate/sampler/{sampler}")
         async def validate_sampler(
-            sampler: str, current_user: User = Depends(require_active_user)
+            sampler: str, current_user: User = Depends(require_active_user),
         ):
             """Validate sampler and suggest alternatives."""
             return await self._standard_async_operation(
-                "validate_sampler", self._validate_sampler_impl, sampler, current_user
+                "validate_sampler", self._validate_sampler_impl, sampler, current_user,
             )
 
         @self.router.get("/validate/scheduler/{scheduler}")
         async def validate_scheduler(
-            scheduler: str, current_user: User = Depends(require_active_user)
+            scheduler: str, current_user: User = Depends(require_active_user),
         ):
             """Validate scheduler and suggest alternatives."""
             return await self._standard_async_operation(
@@ -396,7 +394,7 @@ class ComfyUIServiceRouter(
         }
 
     async def _get_object_info_impl(
-        self, refresh: bool, _current_user: User, request: Request
+        self, refresh: bool, _current_user: User, request: Request,
     ):
         """Implementation for getting object info with caching."""
         service = self.get_service()
@@ -420,7 +418,7 @@ class ComfyUIServiceRouter(
         return response
 
     async def _view_image_impl(
-        self, filename: str, subfolder: str, image_type: str, _current_user: User
+        self, filename: str, subfolder: str, image_type: str, _current_user: User,
     ):
         """Implementation for viewing an image."""
         service = self.get_service()
@@ -637,12 +635,12 @@ class ComfyUIServiceRouter(
         for node_id, node_data in workflow.items():
             if not isinstance(node_data, dict):
                 raise HTTPException(
-                    status_code=400, detail=f"Node {node_id} must be a dictionary"
+                    status_code=400, detail=f"Node {node_id} must be a dictionary",
                 )
 
             if "class_type" not in node_data:
                 raise HTTPException(
-                    status_code=400, detail=f"Node {node_id} missing 'class_type'"
+                    status_code=400, detail=f"Node {node_id} missing 'class_type'",
                 )
 
     def _validate_uploaded_file(self, file: UploadFile) -> None:

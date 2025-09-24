@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-E2E Test Backend for Reynard Authentication
+"""E2E Test Backend for Reynard Authentication
 Dedicated backend instance for end-to-end testing
 """
 
@@ -54,7 +53,7 @@ def main() -> None:
         import importlib.util
 
         spec = importlib.util.spec_from_file_location(
-            "backend_main", backend_path / "main.py"
+            "backend_main", backend_path / "main.py",
         )
         if spec is None or spec.loader is None:
             raise ImportError("Could not load backend main module")

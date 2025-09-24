@@ -1,5 +1,4 @@
-"""
-TTS Admin API for Reynard Backend
+"""TTS Admin API for Reynard Backend
 
 Administrative endpoints for TTS service management.
 """

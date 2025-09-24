@@ -1,5 +1,4 @@
-"""
-Full integration tests for NLWeb with complete app setup.
+"""Full integration tests for NLWeb with complete app setup.
 
 This module tests the complete NLWeb integration with proper app initialization,
 authentication, and all services running together.
@@ -29,14 +28,13 @@ sys.modules["gatekeeper.api.dependencies"] = sys.modules["gatekeeper"]
 sys.modules["gatekeeper.models"] = sys.modules["gatekeeper"]
 sys.modules["gatekeeper.models.user"] = sys.modules["gatekeeper"]
 
-from main import create_app  # noqa: E402
-
 # Import app modules after path setup
 # Note: These imports must come after sys.path.insert and sys.modules setup
 from app.services.ollama.models import (  # noqa: E402
     OllamaAssistantParams,
     OllamaChatParams,
 )
+from main import create_app  # noqa: E402
 
 
 class TestNLWebFullIntegration:
@@ -95,7 +93,7 @@ class TestNLWebFullIntegration:
         assert any("/api/nlweb/verification" in path for path in route_paths)
 
     def test_nlweb_health_endpoint(
-        self, client: TestClient, auth_headers: dict[str, str]
+        self, client: TestClient, auth_headers: dict[str, str],
     ) -> None:
         """Test NLWeb health endpoint with full app."""
         with patch("app.api.nlweb.endpoints.get_nlweb_service") as mock_service:
@@ -124,7 +122,7 @@ class TestNLWebFullIntegration:
             assert data["connection_state"] == "connected"
 
     def test_nlweb_suggest_endpoint(
-        self, client: TestClient, auth_headers: dict[str, str]
+        self, client: TestClient, auth_headers: dict[str, str],
     ) -> None:
         """Test NLWeb suggest endpoint with full app."""
         with patch("app.api.nlweb.endpoints.get_nlweb_service") as mock_service:
@@ -152,7 +150,7 @@ class TestNLWebFullIntegration:
                         "parameters": {"path": "/current/directory"},
                         "reasoning": "User wants to list files in current directory",
                         "parameter_hints": {"path": "Current working directory"},
-                    }
+                    },
                 ],
                 "query": "list files in current directory",
                 "processing_time_ms": 150.0,
@@ -180,7 +178,7 @@ class TestNLWebFullIntegration:
             }
 
             response = client.post(
-                "/api/nlweb/suggest", json=request_data, headers=auth_headers
+                "/api/nlweb/suggest", json=request_data, headers=auth_headers,
             )
 
             assert response.status_code == 200
@@ -193,7 +191,7 @@ class TestNLWebFullIntegration:
             assert data["processing_time_ms"] == 150.0
 
     def test_nlweb_stats_endpoint(
-        self, client: TestClient, auth_headers: dict[str, str]
+        self, client: TestClient, auth_headers: dict[str, str],
     ) -> None:
         """Test NLWeb stats endpoint with full app."""
         with patch("app.api.nlweb.endpoints.get_nlweb_service") as mock_service:
@@ -228,7 +226,7 @@ class TestNLWebFullIntegration:
             assert data["cache_hit_rate"] == 75.0
 
     def test_nlweb_verification_endpoint(
-        self, client: TestClient, auth_headers: dict[str, str]
+        self, client: TestClient, auth_headers: dict[str, str],
     ) -> None:
         """Test NLWeb verification endpoint with full app."""
         with patch("app.api.nlweb.endpoints.get_nlweb_service") as mock_service:
@@ -268,7 +266,7 @@ class TestNLWebFullIntegration:
 
     @pytest.mark.asyncio
     async def test_nlweb_ask_endpoint_streaming(
-        self, async_client: AsyncClient, auth_headers: dict[str, str]
+        self, async_client: AsyncClient, auth_headers: dict[str, str],
     ) -> None:
         """Test NLWeb ask endpoint with streaming."""
         with patch("app.api.nlweb.endpoints.get_nlweb_service") as mock_service:
@@ -315,13 +313,13 @@ class TestNLWebFullIntegration:
             }
 
             response = await async_client.post(
-                "/api/nlweb/ask", json=request_data, headers=auth_headers
+                "/api/nlweb/ask", json=request_data, headers=auth_headers,
             )
 
             assert response.status_code == 200
 
     def test_ollama_chat_endpoint(
-        self, client: TestClient, auth_headers: dict[str, str]
+        self, client: TestClient, auth_headers: dict[str, str],
     ) -> None:
         """Test Ollama chat endpoint with full app."""
         with patch("app.api.ollama.endpoints.get_ollama_service") as mock_service:
@@ -334,7 +332,7 @@ class TestNLWebFullIntegration:
                 _params: OllamaChatParams,
             ) -> AsyncGenerator[MagicMock]:
                 yield MagicMock(
-                    type="token", data="I can help", timestamp=1234567890, metadata={}
+                    type="token", data="I can help", timestamp=1234567890, metadata={},
                 )
                 yield MagicMock(
                     type="tool_call",
@@ -375,11 +373,11 @@ class TestNLWebFullIntegration:
                                 "path": {
                                     "type": "string",
                                     "description": "Directory path",
-                                }
+                                },
                             },
-                        }
+                        },
                     ],
-                )
+                ),
             )
             mock_service.return_value = mock_ollama_service
 
@@ -402,12 +400,12 @@ class TestNLWebFullIntegration:
                                     "path": {
                                         "type": "string",
                                         "description": "Directory path to list",
-                                    }
+                                    },
                                 },
                                 "required": ["path"],
                             },
                         },
-                    }
+                    },
                 ],
                 "context": {
                     "current_path": "/home/user/project",
@@ -416,7 +414,7 @@ class TestNLWebFullIntegration:
             }
 
             response = client.post(
-                "/api/ollama/chat", json=request_data, headers=auth_headers
+                "/api/ollama/chat", json=request_data, headers=auth_headers,
             )
 
             assert response.status_code == 200
@@ -427,7 +425,7 @@ class TestNLWebFullIntegration:
             assert data["processing_time"] == 1.5
 
     def test_ollama_assistant_endpoint(
-        self, client: TestClient, auth_headers: dict[str, str]
+        self, client: TestClient, auth_headers: dict[str, str],
     ) -> None:
         """Test Ollama assistant endpoint with full app."""
         with patch("app.api.ollama.endpoints.get_ollama_service") as mock_service:
@@ -440,7 +438,7 @@ class TestNLWebFullIntegration:
                 _params: OllamaAssistantParams,
             ) -> AsyncGenerator[MagicMock]:
                 yield MagicMock(
-                    type="token", data="I'll help", timestamp=1234567890, metadata={}
+                    type="token", data="I'll help", timestamp=1234567890, metadata={},
                 )
                 yield MagicMock(
                     type="tool_call",
@@ -475,7 +473,7 @@ class TestNLWebFullIntegration:
                         "user_preferences": {"organization_style": "by_type"},
                     },
                     tools_enabled=True,
-                )
+                ),
             )
             mock_service.return_value = mock_ollama_service
 
@@ -495,7 +493,7 @@ class TestNLWebFullIntegration:
             }
 
             response = client.post(
-                "/api/ollama/assistant", json=request_data, headers=auth_headers
+                "/api/ollama/assistant", json=request_data, headers=auth_headers,
             )
 
             assert response.status_code == 200
@@ -519,7 +517,7 @@ class TestNLWebFullIntegration:
         assert response.status_code == 401
 
     def test_error_handling(
-        self, client: TestClient, auth_headers: dict[str, str]
+        self, client: TestClient, auth_headers: dict[str, str],
     ) -> None:
         """Test error handling in the full app."""
         with patch("app.api.nlweb.endpoints.get_nlweb_service") as mock_service:
@@ -532,7 +530,7 @@ class TestNLWebFullIntegration:
             request_data = {"query": "test query"}
 
             response = client.post(
-                "/api/nlweb/suggest", json=request_data, headers=auth_headers
+                "/api/nlweb/suggest", json=request_data, headers=auth_headers,
             )
 
             assert response.status_code == 500
@@ -545,7 +543,7 @@ class TestNLWebFullIntegration:
         # CORS headers should be present (handled by middleware)
 
     def test_rate_limiting(
-        self, client: TestClient, auth_headers: dict[str, str]
+        self, client: TestClient, auth_headers: dict[str, str],
     ) -> None:
         """Test rate limiting functionality."""
         # Make multiple requests quickly
@@ -556,7 +554,7 @@ class TestNLWebFullIntegration:
 
     @pytest.mark.asyncio
     async def test_concurrent_requests(
-        self, async_client: AsyncClient, auth_headers: dict[str, str]
+        self, async_client: AsyncClient, auth_headers: dict[str, str],
     ) -> None:
         """Test handling of concurrent requests."""
         with patch("app.api.nlweb.endpoints.get_nlweb_service") as mock_service:

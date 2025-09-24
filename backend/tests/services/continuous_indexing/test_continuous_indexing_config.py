@@ -1,5 +1,4 @@
-"""
-🐼 pytest tests for Continuous Indexing Configuration
+"""🐼 pytest tests for Continuous Indexing Configuration
 
 This test suite covers the configuration management for continuous indexing:
 - Environment variable loading
@@ -233,14 +232,14 @@ class TestContinuousIndexingConfig:
 
         # Test with mocked method
         with patch.object(
-            config, "should_include_file", side_effect=mock_should_include_file
+            config, "should_include_file", side_effect=mock_should_include_file,
         ):
             assert config.should_include_file(large_file) is False
 
     def test_get_watch_root_path(self, temp_dir):
         """🐼 Test getting watch root as Path object."""
         with patch.dict(
-            os.environ, {"RAG_CONTINUOUS_INDEXING_WATCH_ROOT": str(temp_dir)}
+            os.environ, {"RAG_CONTINUOUS_INDEXING_WATCH_ROOT": str(temp_dir)},
         ):
             config = ContinuousIndexingConfig()
             watch_path = config.get_watch_root_path()
@@ -269,7 +268,7 @@ class TestContinuousIndexingConfig:
     def test_validate_configuration_valid(self, temp_dir):
         """🐼 Test configuration validation with valid config."""
         with patch.dict(
-            os.environ, {"RAG_CONTINUOUS_INDEXING_WATCH_ROOT": str(temp_dir)}
+            os.environ, {"RAG_CONTINUOUS_INDEXING_WATCH_ROOT": str(temp_dir)},
         ):
             config = ContinuousIndexingConfig()
             errors = config.validate()
@@ -279,7 +278,7 @@ class TestContinuousIndexingConfig:
     def test_validate_configuration_invalid_watch_root(self):
         """🐼 Test configuration validation with invalid watch root."""
         with patch.dict(
-            os.environ, {"RAG_CONTINUOUS_INDEXING_WATCH_ROOT": "/nonexistent/path"}
+            os.environ, {"RAG_CONTINUOUS_INDEXING_WATCH_ROOT": "/nonexistent/path"},
         ):
             config = ContinuousIndexingConfig()
             errors = config.validate()
@@ -319,7 +318,7 @@ class TestContinuousIndexingConfig:
     def test_validate_configuration_invalid_stats_interval(self):
         """🐼 Test configuration validation with invalid stats interval."""
         with patch.dict(
-            os.environ, {"RAG_CONTINUOUS_INDEXING_STATS_INTERVAL_MINUTES": "0"}
+            os.environ, {"RAG_CONTINUOUS_INDEXING_STATS_INTERVAL_MINUTES": "0"},
         ):
             config = ContinuousIndexingConfig()
             errors = config.validate()
@@ -474,7 +473,7 @@ class PandaConfigTestUtils:
 
     @staticmethod
     def assert_panda_config_valid(
-        config: ContinuousIndexingConfig, message: str = "Panda config not valid"
+        config: ContinuousIndexingConfig, message: str = "Panda config not valid",
     ):
         """Assert configuration validity with panda spirit."""
         errors = config.validate()

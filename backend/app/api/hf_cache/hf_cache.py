@@ -1,5 +1,4 @@
-"""
-HuggingFace Cache API for Reynard Backend
+"""HuggingFace Cache API for Reynard Backend
 
 Main API module that combines all HF cache endpoints.
 """

@@ -1,5 +1,4 @@
-"""
-Authentication manager for the Gatekeeper authentication library.
+"""Authentication manager for the Gatekeeper authentication library.
 
 This module provides the main authentication manager that orchestrates
 user authentication, authorization, and management operations.
@@ -20,8 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 class AuthManager:
-    """
-    Main authentication manager for the Gatekeeper library.
+    """Main authentication manager for the Gatekeeper library.
 
     This class orchestrates all authentication and authorization operations,
     including user management, password handling, and token management.
@@ -33,13 +31,13 @@ class AuthManager:
         token_config: TokenConfig,
         password_security_level: SecurityLevel = SecurityLevel.MEDIUM,
     ):
-        """
-        Initialize the authentication manager.
+        """Initialize the authentication manager.
 
         Args:
             backend: User data storage backend
             token_config: JWT token configuration
             password_security_level: Security level for password hashing
+
         """
         self.backend = backend
         self.token_config = token_config
@@ -47,8 +45,7 @@ class AuthManager:
         self.token_manager = TokenManager(token_config)
 
     async def create_user(self, user: UserCreate) -> User:
-        """
-        Create a new user with hashed password.
+        """Create a new user with hashed password.
 
         Args:
             user: User creation data
@@ -59,6 +56,7 @@ class AuthManager:
         Raises:
             UserAlreadyExistsError: If a user with the same username already exists
             BackendError: For other backend-specific errors
+
         """
         # Hash the password
         password_hash = self.password_manager.hash_password(user.password)
@@ -76,10 +74,9 @@ class AuthManager:
         return created_user
 
     async def authenticate(
-        self, username: str, password: str, client_ip: str | None = None
+        self, username: str, password: str, client_ip: str | None = None,
     ) -> TokenResponse | None:
-        """
-        Authenticate a user with username and password.
+        """Authenticate a user with username and password.
 
         Args:
             username: The username
@@ -88,6 +85,7 @@ class AuthManager:
 
         Returns:
             TokenResponse | None: Token response if authentication successful, None otherwise
+
         """
         # Rate limiting check
         if client_ip and not self.token_manager.check_rate_limit(client_ip):
@@ -107,12 +105,12 @@ class AuthManager:
 
         # Verify password
         is_valid, updated_hash = self.password_manager.verify_and_update_password(
-            password, user.password_hash
+            password, user.password_hash,
         )
 
         if not is_valid:
             logger.warning(
-                f"Authentication failed: invalid password for user '{username}'"
+                f"Authentication failed: invalid password for user '{username}'",
             )
             return None
 
@@ -137,10 +135,9 @@ class AuthManager:
         return tokens
 
     async def authenticate_by_email(
-        self, email: str, password: str
+        self, email: str, password: str,
     ) -> TokenResponse | None:
-        """
-        Authenticate a user with email and password.
+        """Authenticate a user with email and password.
 
         Args:
             email: The email address
@@ -148,31 +145,32 @@ class AuthManager:
 
         Returns:
             TokenResponse | None: Token response if authentication successful, None otherwise
+
         """
         try:
             # Get user from backend by email
             user = await self.backend.get_user_by_email(email)
             if not user:
                 logger.warning(
-                    f"Authentication failed: user with email '{email}' not found"
+                    f"Authentication failed: user with email '{email}' not found",
                 )
                 return None
 
             # Check if user is active
             if not user.is_active:
                 logger.warning(
-                    f"Authentication failed: user with email '{email}' is inactive"
+                    f"Authentication failed: user with email '{email}' is inactive",
                 )
                 return None
 
             # Verify password
             is_valid, updated_hash = self.password_manager.verify_and_update_password(
-                password, user.password_hash
+                password, user.password_hash,
             )
 
             if not is_valid:
                 logger.warning(
-                    f"Authentication failed: invalid password for user with email '{email}'"
+                    f"Authentication failed: invalid password for user with email '{email}'",
                 )
                 return None
 
@@ -198,10 +196,9 @@ class AuthManager:
             return None
 
     async def refresh_tokens(
-        self, refresh_token: str, client_ip: str | None = None
+        self, refresh_token: str, client_ip: str | None = None,
     ) -> TokenResponse | None:
-        """
-        Refresh access token using a valid refresh token.
+        """Refresh access token using a valid refresh token.
 
         Args:
             refresh_token: The refresh token
@@ -209,6 +206,7 @@ class AuthManager:
 
         Returns:
             TokenResponse | None: New tokens if refresh successful, None otherwise
+
         """
         # Rate limiting check
         if client_ip and not self.token_manager.check_rate_limit(client_ip):
@@ -231,7 +229,7 @@ class AuthManager:
         user = await self.backend.get_user_by_username(username)
         if not user or not user.is_active:
             logger.warning(
-                f"Token refresh failed: user '{username}' not found or inactive"
+                f"Token refresh failed: user '{username}' not found or inactive",
             )
             return None
 
@@ -250,20 +248,19 @@ class AuthManager:
 
     # Backward-compatible alias for tests
     async def refresh_token(self, refresh_token: str) -> TokenResponse | None:
-        """
-        Backward-compatible alias for refresh_tokens.
+        """Backward-compatible alias for refresh_tokens.
 
         Args:
             refresh_token: The refresh token
 
         Returns:
             TokenResponse | None: New tokens if refresh successful, None otherwise
+
         """
         return await self.refresh_tokens(refresh_token)
 
     async def revoke_tokens(self, username: str, token: str | None = None) -> bool:
-        """
-        Revoke tokens for a user.
+        """Revoke tokens for a user.
 
         Args:
             username: The username whose tokens should be revoked
@@ -271,6 +268,7 @@ class AuthManager:
 
         Returns:
             bool: True if tokens were revoked successfully
+
         """
         if token:
             # Revoke specific token
@@ -284,14 +282,14 @@ class AuthManager:
         return True
 
     async def logout(self, token: str) -> bool:
-        """
-        Logout a user by revoking their token.
+        """Logout a user by revoking their token.
 
         Args:
             token: The token to revoke
 
         Returns:
             bool: True if logout successful
+
         """
         # Get token info to log the logout
         token_info = self.token_manager.get_token_info(token)
@@ -304,14 +302,14 @@ class AuthManager:
         return True
 
     async def get_current_user(self, token: str) -> User | None:
-        """
-        Get the current user from a valid token.
+        """Get the current user from a valid token.
 
         Args:
             token: The JWT token
 
         Returns:
             User | None: The user if token is valid, None otherwise
+
         """
         # Verify the token
         result = self.token_manager.verify_token(token, "access")
@@ -329,17 +327,16 @@ class AuthManager:
         user = await self.backend.get_user_by_username(username)
         if not user or not user.is_active:
             logger.warning(
-                f"Failed to get current user: user '{username}' not found or inactive"
+                f"Failed to get current user: user '{username}' not found or inactive",
             )
             return None
 
         return user
 
     async def validate_token(
-        self, token: str, required_role: str | None = None
+        self, token: str, required_role: str | None = None,
     ) -> bool:
-        """
-        Validate a token and optionally check role requirements.
+        """Validate a token and optionally check role requirements.
 
         Args:
             token: The JWT token to validate
@@ -347,6 +344,7 @@ class AuthManager:
 
         Returns:
             bool: True if token is valid and meets role requirements
+
         """
         # Verify the token
         result = self.token_manager.verify_token(token, "access")
@@ -362,11 +360,11 @@ class AuthManager:
         return True
 
     async def get_token_stats(self) -> dict[str, Any]:
-        """
-        Get statistics about token usage and blacklist.
+        """Get statistics about token usage and blacklist.
 
         Returns:
             dict[str, Any]: Token statistics
+
         """
         return self.token_manager.get_blacklist_stats()
 
@@ -375,10 +373,9 @@ class AuthManager:
         self.token_manager.cleanup_expired_blacklist()
 
     async def change_password(
-        self, username: str, current_password: str, new_password: str
+        self, username: str, current_password: str, new_password: str,
     ) -> bool:
-        """
-        Change a user's password.
+        """Change a user's password.
 
         Args:
             username: The username
@@ -387,6 +384,7 @@ class AuthManager:
 
         Returns:
             bool: True if password was changed successfully, False otherwise
+
         """
         # Get user
         user = await self.backend.get_user_by_username(username)
@@ -395,7 +393,7 @@ class AuthManager:
 
         # Verify current password
         is_valid, _ = self.password_manager.verify_and_update_password(
-            current_password, user.password_hash
+            current_password, user.password_hash,
         )
 
         if not is_valid:
@@ -413,8 +411,7 @@ class AuthManager:
         return success
 
     async def update_user(self, username: str, user_update: UserUpdate) -> User | None:
-        """
-        Update user information.
+        """Update user information.
 
         Args:
             username: The username of the user to update
@@ -422,6 +419,7 @@ class AuthManager:
 
         Returns:
             User | None: The updated user if successful, None otherwise
+
         """
         try:
             updated_user = await self.backend.update_user(username, user_update)
@@ -432,14 +430,14 @@ class AuthManager:
             return None
 
     async def delete_user(self, username: str) -> bool:
-        """
-        Delete a user.
+        """Delete a user.
 
         Args:
             username: The username of the user to delete
 
         Returns:
             bool: True if user was deleted, False otherwise
+
         """
         success = await self.backend.delete_user(username)
 
@@ -449,8 +447,7 @@ class AuthManager:
         return success
 
     async def list_users(self, skip: int = 0, limit: int = 100) -> list[UserPublic]:
-        """
-        List users in the system.
+        """List users in the system.
 
         Args:
             skip: Number of users to skip (for pagination)
@@ -458,26 +455,26 @@ class AuthManager:
 
         Returns:
             list[UserPublic]: List of users (public data only)
+
         """
         return await self.backend.list_users(skip=skip, limit=limit)
 
     async def get_user_by_username(self, username: str) -> User | None:
-        """
-        Get a user by username.
+        """Get a user by username.
 
         Args:
             username: The username to search for
 
         Returns:
             User | None: The user if found, None otherwise
+
         """
         return await self.backend.get_user_by_username(username)
 
     async def search_users(
-        self, query: str, skip: int = 0, limit: int = 100
+        self, query: str, skip: int = 0, limit: int = 100,
     ) -> list[UserPublic]:
-        """
-        Search for users.
+        """Search for users.
 
         Args:
             query: Search query string
@@ -486,14 +483,14 @@ class AuthManager:
 
         Returns:
             list[UserPublic]: List of matching users
+
         """
         return await self.backend.search_users(query, skip=skip, limit=limit)
 
     async def get_users_by_role(
-        self, role: str, skip: int = 0, limit: int = 100
+        self, role: str, skip: int = 0, limit: int = 100,
     ) -> list[UserPublic]:
-        """
-        Get users by role.
+        """Get users by role.
 
         Args:
             role: The role to filter by
@@ -502,12 +499,12 @@ class AuthManager:
 
         Returns:
             list[UserPublic]: List of users with the specified role
+
         """
         return await self.backend.get_users_by_role(role, skip=skip, limit=limit)
 
     async def update_user_role(self, username: str, new_role: str) -> bool:
-        """
-        Update a user's role.
+        """Update a user's role.
 
         Args:
             username: The username of the user
@@ -515,6 +512,7 @@ class AuthManager:
 
         Returns:
             bool: True if role was updated, False otherwise
+
         """
         success = await self.backend.update_user_role(username, new_role)
 
@@ -524,10 +522,9 @@ class AuthManager:
         return success
 
     async def update_user_profile_picture(
-        self, username: str, profile_picture_url: str | None
+        self, username: str, profile_picture_url: str | None,
     ) -> bool:
-        """
-        Update a user's profile picture.
+        """Update a user's profile picture.
 
         Args:
             username: The username of the user
@@ -535,28 +532,28 @@ class AuthManager:
 
         Returns:
             bool: True if profile picture was updated, False otherwise
+
         """
         return await self.backend.update_user_profile_picture(
-            username, profile_picture_url
+            username, profile_picture_url,
         )
 
     async def get_user_settings(self, username: str) -> dict[str, Any]:
-        """
-        Get user settings.
+        """Get user settings.
 
         Args:
             username: The username of the user
 
         Returns:
             dict[str, Any]: User settings dictionary
+
         """
         return await self.backend.get_user_settings(username)
 
     async def update_user_settings(
-        self, username: str, settings: dict[str, Any]
+        self, username: str, settings: dict[str, Any],
     ) -> bool:
-        """
-        Update user settings.
+        """Update user settings.
 
         Args:
             username: The username of the user
@@ -564,12 +561,12 @@ class AuthManager:
 
         Returns:
             bool: True if settings were updated, False otherwise
+
         """
         return await self.backend.update_user_settings(username, settings)
 
     async def update_user_username(self, old_username: str, new_username: str) -> bool:
-        """
-        Update a user's username.
+        """Update a user's username.
 
         Args:
             old_username: The current username
@@ -577,6 +574,7 @@ class AuthManager:
 
         Returns:
             bool: True if username was updated, False otherwise
+
         """
         success = await self.backend.update_user_username(old_username, new_username)
 
@@ -586,17 +584,16 @@ class AuthManager:
         return success
 
     async def get_all_users(self) -> list[UserPublic]:
-        """
-        Get all users in the system.
+        """Get all users in the system.
 
         Returns:
             list[UserPublic]: List of all users (public data only)
+
         """
         return await self.backend.get_all_users()
 
     async def update_user_yapcoin_balance(self, username: str, amount: int) -> bool:
-        """
-        Update a user's YapCoin balance.
+        """Update a user's YapCoin balance.
 
         This method is optional and may not be supported by all backends.
 
@@ -606,17 +603,18 @@ class AuthManager:
 
         Returns:
             bool: True if balance was updated, False otherwise or if not supported
+
         """
         try:
             success = await self.backend.update_user_yapcoin_balance(username, amount)
 
             if success:
                 logger.info(
-                    f"Updated YapCoin balance for user '{username}' by {amount}"
+                    f"Updated YapCoin balance for user '{username}' by {amount}",
                 )
             else:
                 logger.warning(
-                    f"YapCoin balance update failed for user '{username}' or not supported by backend"
+                    f"YapCoin balance update failed for user '{username}' or not supported by backend",
                 )
 
             return success
@@ -625,66 +623,65 @@ class AuthManager:
             return False
 
     async def is_username_taken(self, username: str) -> bool:
-        """
-        Check if a username is already taken.
+        """Check if a username is already taken.
 
         Args:
             username: The username to check
 
         Returns:
             bool: True if the username is taken, False otherwise
+
         """
         return await self.backend.is_username_taken(username)
 
     async def is_email_taken(self, email: str) -> bool:
-        """
-        Check if an email is already taken.
+        """Check if an email is already taken.
 
         Args:
             email: The email to check
 
         Returns:
             bool: True if the email is taken, False otherwise
+
         """
         return await self.backend.is_email_taken(email)
 
     async def count_users(self) -> int:
-        """
-        Get the total number of users.
+        """Get the total number of users.
 
         Returns:
             int: Total number of users
+
         """
         return await self.backend.count_users()
 
     def validate_password_strength(self, password: str) -> tuple[bool, str]:
-        """
-        Validate password strength.
+        """Validate password strength.
 
         Args:
             password: The password to validate
 
         Returns:
             tuple[bool, str]: (is_strong, reason)
+
         """
         return self.password_manager.validate_password_strength(password)
 
     def verify_token(self, token: str) -> bool:
-        """
-        Verify if a token is valid.
+        """Verify if a token is valid.
 
         Args:
             token: The JWT token to verify
 
         Returns:
             bool: True if token is valid, False otherwise
+
         """
         result = self.token_manager.verify_token(token, "access")
         return result.is_valid
 
     async def request_password_reset(self, email: str) -> str | None:
-        """
-        Request a password reset for a user.
+        """Request a password reset for a user.
 
         This method generates a secure reset token and stores it temporarily.
         In a production environment, this token would be sent via email.
@@ -694,13 +691,14 @@ class AuthManager:
 
         Returns:
             str | None: Reset token if successful, None if user not found
+
         """
         try:
             # Find user by email
             user = await self.backend.get_user_by_email(email)
             if not user:
                 logger.warning(
-                    f"Password reset requested for non-existent email: {email}"
+                    f"Password reset requested for non-existent email: {email}",
                 )
                 return None
 
@@ -735,10 +733,9 @@ class AuthManager:
             return None
 
     async def reset_password_with_token(
-        self, reset_token: str, new_password: str
+        self, reset_token: str, new_password: str,
     ) -> bool:
-        """
-        Reset a user's password using a valid reset token.
+        """Reset a user's password using a valid reset token.
 
         Args:
             reset_token: The reset token from request_password_reset
@@ -746,6 +743,7 @@ class AuthManager:
 
         Returns:
             bool: True if password was reset successfully, False otherwise
+
         """
         try:
             # Verify the reset token format
@@ -776,7 +774,7 @@ class AuthManager:
 
             if not user.is_active:
                 logger.warning(
-                    f"Password reset attempted for inactive user: {user.username}"
+                    f"Password reset attempted for inactive user: {user.username}",
                 )
                 return False
 
@@ -799,7 +797,7 @@ class AuthManager:
 
             # Validate new password strength
             is_strong, reason = self.password_manager.validate_password_strength(
-                new_password
+                new_password,
             )
             if not is_strong:
                 logger.warning(f"Password reset failed - weak password: {reason}")
@@ -810,7 +808,7 @@ class AuthManager:
 
             # Update the password
             success = await self.backend.update_user_password(
-                user.username, new_password_hash
+                user.username, new_password_hash,
             )
             if not success:
                 logger.error(f"Failed to update password for user: {user.username}")
@@ -831,18 +829,17 @@ class AuthManager:
             return False
 
     async def close(self) -> None:
-        """
-        Close the authentication manager and clean up resources.
+        """Close the authentication manager and clean up resources.
         """
         await self.backend.close()
         logger.info("Authentication manager closed")
 
     async def health_check(self) -> bool:
-        """
-        Perform a health check on the authentication system.
+        """Perform a health check on the authentication system.
 
         Returns:
             bool: True if the system is healthy, False otherwise
+
         """
         try:
             return await self.backend.health_check()

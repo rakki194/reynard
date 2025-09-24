@@ -1,13 +1,10 @@
-"""
-Test ECS Core Components
+"""Test ECS Core Components
 
 Tests for Entity, Component, System, and World classes.
 """
 
 import os
 import sys
-
-import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
 

@@ -1,8 +1,6 @@
-"""
-Cultural adaptation module for humility detection.
+"""Cultural adaptation module for humility detection.
 """
 
-from typing import Any, Dict, List
 
 from core.config import HumilityConfig
 from core.models import CulturalContext, HumilityFinding
@@ -15,7 +13,7 @@ class CulturalAdapter:
         self.config = config
         self.cultural_contexts = self._load_cultural_contexts()
 
-    def _load_cultural_contexts(self) -> Dict[str, CulturalContext]:
+    def _load_cultural_contexts(self) -> dict[str, CulturalContext]:
         """Load cultural context definitions."""
         return {
             "western": CulturalContext(
@@ -94,8 +92,8 @@ class CulturalAdapter:
         }
 
     def adapt_findings(
-        self, findings: List[HumilityFinding], cultural_context: str
-    ) -> List[HumilityFinding]:
+        self, findings: list[HumilityFinding], cultural_context: str,
+    ) -> list[HumilityFinding]:
         """Adapt findings based on cultural context."""
         if cultural_context not in self.cultural_contexts:
             return findings
@@ -118,7 +116,7 @@ class CulturalAdapter:
         return adapted_findings
 
     def _adapt_finding_severity(
-        self, finding: HumilityFinding, context: CulturalContext
+        self, finding: HumilityFinding, context: CulturalContext,
     ) -> HumilityFinding:
         """Adapt finding severity based on cultural context."""
         # In cultures with higher modesty requirements, increase severity
@@ -134,7 +132,7 @@ class CulturalAdapter:
         return finding
 
     def _adapt_finding_confidence(
-        self, finding: HumilityFinding, context: CulturalContext
+        self, finding: HumilityFinding, context: CulturalContext,
     ) -> HumilityFinding:
         """Adapt finding confidence based on cultural context."""
         # Adjust confidence based on cultural norms

@@ -1,5 +1,4 @@
-"""
-NLWeb API Endpoints for Reynard Backend
+"""NLWeb API Endpoints for Reynard Backend
 
 REST API endpoints for NLWeb assistant tooling and routing system.
 """

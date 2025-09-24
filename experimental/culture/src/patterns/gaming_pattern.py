@@ -1,5 +1,4 @@
-"""
-Gaming Cultural Pattern Implementation
+"""Gaming Cultural Pattern Implementation
 
 This module implements the cultural pattern for gaming communities,
 emphasizing inclusive communication, player agency, and community building.
@@ -94,7 +93,7 @@ class GamingCulturalPattern(BaseCulturalPattern):
         ]
 
     def generate_scenarios(
-        self, count: int, safety_level: SafetyLevel = SafetyLevel.SAFE
+        self, count: int, safety_level: SafetyLevel = SafetyLevel.SAFE,
     ) -> list[CulturalScenario]:
         """Generate gaming community scenarios"""
         scenarios = []
@@ -149,7 +148,7 @@ class GamingCulturalPattern(BaseCulturalPattern):
                 metadata={
                     "scenario_type": scenario_type,
                     "complexity": random.choice(
-                        ["beginner", "intermediate", "advanced"]
+                        ["beginner", "intermediate", "advanced"],
                     ),
                     "requires_inclusive_language": True,
                 },
@@ -160,7 +159,7 @@ class GamingCulturalPattern(BaseCulturalPattern):
         return scenarios
 
     def evaluate_response(
-        self, scenario: CulturalScenario, response: str
+        self, scenario: CulturalScenario, response: str,
     ) -> CulturalEvaluationResult:
         """Evaluate gaming cultural appropriateness"""
         metrics = {
@@ -170,7 +169,7 @@ class GamingCulturalPattern(BaseCulturalPattern):
             "positive_reinforcement": self._evaluate_positive_reinforcement(response),
             "skill_development": self._evaluate_skill_development(response),
             "cultural_appropriateness": self._evaluate_cultural_appropriateness(
-                scenario, response
+                scenario, response,
             ),
         }
 
@@ -394,7 +393,7 @@ class GamingCulturalPattern(BaseCulturalPattern):
         return min(1.0, score)
 
     def _evaluate_cultural_appropriateness(
-        self, scenario: CulturalScenario, response: str
+        self, scenario: CulturalScenario, response: str,
     ) -> float:
         """Evaluate overall cultural appropriateness for gaming community"""
         score = 0.0
@@ -430,7 +429,7 @@ class GamingCulturalPattern(BaseCulturalPattern):
         return min(1.0, score)
 
     def _generate_recommendations(
-        self, metrics: dict[str, float], scenario: CulturalScenario
+        self, metrics: dict[str, float], scenario: CulturalScenario,
     ) -> list[str]:
         """Generate improvement recommendations"""
         recommendations = []
@@ -440,7 +439,7 @@ class GamingCulturalPattern(BaseCulturalPattern):
 
         if metrics["player_agency_respect"] < 0.7:
             recommendations.append(
-                "Respect player agency and avoid prescriptive language"
+                "Respect player agency and avoid prescriptive language",
             )
 
         if metrics["community_building"] < 0.7:
@@ -451,7 +450,7 @@ class GamingCulturalPattern(BaseCulturalPattern):
 
         if metrics["skill_development"] < 0.7:
             recommendations.append(
-                "Emphasize skill development and learning opportunities"
+                "Emphasize skill development and learning opportunities",
             )
 
         return recommendations
@@ -462,12 +461,12 @@ class GamingCulturalPattern(BaseCulturalPattern):
 
         if metrics["inclusive_communication"] < 0.5:
             warnings.append(
-                "Response may not be inclusive enough for gaming community standards"
+                "Response may not be inclusive enough for gaming community standards",
             )
 
         if metrics["player_agency_respect"] < 0.5:
             warnings.append(
-                "Response may not adequately respect player agency and choice"
+                "Response may not adequately respect player agency and choice",
             )
 
         # Check for potentially exclusionary language

@@ -1,5 +1,4 @@
-"""
-WDv3 Generator Implementation
+"""WDv3 Generator Implementation
 
 This module implements the WDv3 caption generator for the Reynard system.
 WDv3 is a Danbooru-style tagger with support for various architectures.
@@ -40,8 +39,7 @@ MODEL_REPO_MAP = {
 
 
 class WDv3Generator(CaptionGeneratorBase):
-    """
-    WDv3 caption generator.
+    """WDv3 caption generator.
 
     This generator provides Danbooru-style tagging with support for various
     architectures including ViT, SwinV2, and ConvNeXt.
@@ -173,7 +171,7 @@ class WDv3Generator(CaptionGeneratorBase):
 
             # Load model and labels in executor to avoid blocking
             await asyncio.get_event_loop().run_in_executor(
-                None, self._load_model_and_labels
+                None, self._load_model_and_labels,
             )
 
             self._is_loaded = True
@@ -212,7 +210,7 @@ class WDv3Generator(CaptionGeneratorBase):
 
             # Generate tags using self-contained implementation
             tags = await asyncio.get_event_loop().run_in_executor(
-                None, self._generate_tags, str(image_path), config
+                None, self._generate_tags, str(image_path), config,
             )
 
             return tags
@@ -231,7 +229,7 @@ class WDv3Generator(CaptionGeneratorBase):
                 "gen_threshold": self._gen_threshold,
                 "char_threshold": self._char_threshold,
                 "self_contained": True,
-            }
+            },
         )
         return info
 
@@ -283,7 +281,7 @@ class WDv3Generator(CaptionGeneratorBase):
             self._downloaded_labels_path = Path(labels_path)
 
             logger.info(
-                f"Downloaded WDv3 {self._architecture} model files from HuggingFace Hub"
+                f"Downloaded WDv3 {self._architecture} model files from HuggingFace Hub",
             )
             return self._downloaded_model_path, self._downloaded_labels_path
 
@@ -296,7 +294,7 @@ class WDv3Generator(CaptionGeneratorBase):
         # Create model architecture based on type
         if self._architecture == "vit":
             model = timm.create_model(
-                "vit_base_patch16_224", pretrained=False, num_classes=len(self._labels)
+                "vit_base_patch16_224", pretrained=False, num_classes=len(self._labels),
             )
         elif self._architecture == "swinv2":
             model = timm.create_model(
@@ -306,7 +304,7 @@ class WDv3Generator(CaptionGeneratorBase):
             )
         elif self._architecture == "convnext":
             model = timm.create_model(
-                "convnext_base", pretrained=False, num_classes=len(self._labels)
+                "convnext_base", pretrained=False, num_classes=len(self._labels),
             )
         else:
             raise ValueError(f"Unsupported architecture: {self._architecture}")
@@ -332,7 +330,7 @@ class WDv3Generator(CaptionGeneratorBase):
                 transforms.Resize((448, 448)),
                 transforms.ToTensor(),
                 transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),
-            ]
+            ],
         )
 
     def _generate_tags(self, image_path: str, config: dict[str, Any]) -> str:

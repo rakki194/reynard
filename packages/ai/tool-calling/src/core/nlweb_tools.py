@@ -1,5 +1,4 @@
-"""
-NLWeb tools for the yipyap assistant.
+"""NLWeb tools for the yipyap assistant.
 
 This module provides NLWeb-related tools that allow the assistant to interact
 with external NLWeb services through the bridge endpoints.
@@ -53,7 +52,7 @@ def get_service_manager():
     },
 )
 async def nlweb_ask_tool(
-    query: str, context: dict[str, Any] = None, site: str = ""
+    query: str, context: dict[str, Any] = None, site: str = "",
 ) -> dict[str, Any]:
     """Ask a question to an external NLWeb service."""
     try:
@@ -219,7 +218,7 @@ async def nlweb_list_sites_tool() -> dict[str, Any]:
     },
 )
 async def nlweb_mcp_tool(
-    method: str, params: dict[str, Any] = None, id: str = "1"
+    method: str, params: dict[str, Any] = None, id: str = "1",
 ) -> dict[str, Any]:
     """Execute a JSON-RPC call to the NLWeb MCP endpoint."""
     try:
@@ -294,7 +293,7 @@ async def nlweb_mcp_tool(
     },
 )
 async def nlweb_suggest_tool(
-    query: str, context: dict[str, Any] = None
+    query: str, context: dict[str, Any] = None,
 ) -> dict[str, Any]:
     """Get tool suggestions from the embedded NLWeb router."""
     try:
@@ -309,7 +308,7 @@ async def nlweb_suggest_tool(
 
         # Get suggestions from the router service
         suggestions = await nlweb_router.suggest_tools(
-            query=query, context=context or {}
+            query=query, context=context or {},
         )
 
         return {

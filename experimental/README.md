@@ -14,7 +14,32 @@ This experimental playground is where we dive deep into the most innovative conc
 
 ## Research Projects
 
-### 1. **CULTURE Framework** (`culture/`)
+### 1. **Python 3.15.0a0 Experimental Features** (`python315/`)
+
+**Advanced experimental features and testing for Python 3.15.0a0 development version**
+
+A comprehensive testing suite for cutting-edge Python 3.15.0a0 features, including PEP 734 (Multiple Interpreters), PEP 649 (Deferred Annotations), and enhanced debugging capabilities. This directory provides systematic testing and validation of the latest Python language features.
+
+#### Key Features
+
+- **PEP 734 Testing**: Multiple interpreters for true parallelism
+- **PEP 649 Validation**: Deferred annotation evaluation
+- **Enhanced Debugging**: Advanced debugging capabilities
+- **256-Color Demos**: Visual demonstrations of new features
+- **Performance Analysis**: Benchmarking and optimization insights
+
+#### Architecture
+
+```text
+python315/
+├── core/                    # Core feature implementations
+├── testing/                 # Comprehensive test suites
+├── utilities/               # Development utilities
+├── demos/                   # Visual demonstrations
+└── README.md               # Detailed documentation
+```
+
+### 2. **CULTURE Framework** (`culture/`)
 
 **Cultural Understanding and Linguistic Translation for Universal Recognition and Evaluation**
 
@@ -177,6 +202,23 @@ source ~/venv/bin/activate
 
 # Navigate to experimental directory
 cd experimental/
+```
+
+### Python 3.15.0a0 Features
+
+```bash
+cd python315/
+
+# Run interpreter tests
+cd testing/
+python3.15 test_interpreters_working.py
+
+# Run annotation tests
+python3.15 test_pep_649_annotations.py
+
+# Run demoscene
+cd ../demos/
+python3.15 demoscene_256color.py
 ```
 
 ### PHOENIX Framework

@@ -1,21 +1,18 @@
-"""
-Agent Email Service for Reynard Backend.
+"""Agent Email Service for Reynard Backend.
 
 This module provides agent-specific email functionality including
 agent-to-agent communication, automated email generation, and
 integration with the ECS world simulation.
 """
 
-import asyncio
 import json
 import logging
-import os
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
-from ..core.email_service import EmailAttachment, EmailMessage, email_service
+from ..core.email_service import EmailMessage, email_service
 
 logger = logging.getLogger(__name__)
 
@@ -55,7 +52,7 @@ class AgentEmailTemplate:
     """Agent email template."""
 
     def __init__(
-        self, template_id: str, agent_id: str, name: str, subject: str, body: str
+        self, template_id: str, agent_id: str, name: str, subject: str, body: str,
     ):
         self.id = template_id
         self.agent_id = agent_id
@@ -170,13 +167,13 @@ class AgentEmailService:
         self.settings_file = self.data_dir / "settings.json"
 
         # In-memory caches
-        self._configs: Dict[str, AgentEmailConfig] = {}
-        self._stats: Dict[str, AgentEmailStats] = {}
-        self._templates: Dict[str, List[AgentEmailTemplate]] = {}
-        self._interactions: List[AgentEmailInteraction] = []
-        self._messages: List[AgentEmailMessage] = []
-        self._notifications: List[AgentEmailNotification] = []
-        self._settings: Dict[str, AgentEmailSettings] = {}
+        self._configs: dict[str, AgentEmailConfig] = {}
+        self._stats: dict[str, AgentEmailStats] = {}
+        self._templates: dict[str, list[AgentEmailTemplate]] = {}
+        self._interactions: list[AgentEmailInteraction] = []
+        self._messages: list[AgentEmailMessage] = []
+        self._notifications: list[AgentEmailNotification] = []
+        self._settings: dict[str, AgentEmailSettings] = {}
 
         # Load data
         self._load_data()
@@ -186,7 +183,7 @@ class AgentEmailService:
         try:
             # Load configs
             if self.configs_file.exists():
-                with open(self.configs_file, "r") as f:
+                with open(self.configs_file) as f:
                     data = json.load(f)
                     self._configs = {
                         agent_id: AgentEmailConfig(**config_data)
@@ -195,7 +192,7 @@ class AgentEmailService:
 
             # Load stats
             if self.stats_file.exists():
-                with open(self.stats_file, "r") as f:
+                with open(self.stats_file) as f:
                     data = json.load(f)
                     self._stats = {
                         agent_id: AgentEmailStats(**stats_data)
@@ -204,7 +201,7 @@ class AgentEmailService:
 
             # Load templates
             if self.templates_file.exists():
-                with open(self.templates_file, "r") as f:
+                with open(self.templates_file) as f:
                     data = json.load(f)
                     self._templates = {
                         agent_id: [
@@ -216,7 +213,7 @@ class AgentEmailService:
 
             # Load interactions
             if self.interactions_file.exists():
-                with open(self.interactions_file, "r") as f:
+                with open(self.interactions_file) as f:
                     data = json.load(f)
                     self._interactions = [
                         AgentEmailInteraction(**interaction_data)
@@ -225,7 +222,7 @@ class AgentEmailService:
 
             # Load messages
             if self.messages_file.exists():
-                with open(self.messages_file, "r") as f:
+                with open(self.messages_file) as f:
                     data = json.load(f)
                     self._messages = [
                         AgentEmailMessage(**message_data) for message_data in data
@@ -233,7 +230,7 @@ class AgentEmailService:
 
             # Load notifications
             if self.notifications_file.exists():
-                with open(self.notifications_file, "r") as f:
+                with open(self.notifications_file) as f:
                     data = json.load(f)
                     self._notifications = [
                         AgentEmailNotification(**notification_data)
@@ -242,7 +239,7 @@ class AgentEmailService:
 
             # Load settings
             if self.settings_file.exists():
-                with open(self.settings_file, "r") as f:
+                with open(self.settings_file) as f:
                     data = json.load(f)
                     self._settings = {
                         agent_id: AgentEmailSettings(**settings_data)
@@ -250,7 +247,7 @@ class AgentEmailService:
                     }
 
             logger.info(
-                f"Loaded agent email data: {len(self._configs)} configs, {len(self._stats)} stats"
+                f"Loaded agent email data: {len(self._configs)} configs, {len(self._stats)} stats",
             )
 
         except Exception as e:
@@ -311,12 +308,12 @@ class AgentEmailService:
         except Exception as e:
             logger.error(f"Failed to save agent email data: {e}")
 
-    async def get_agent_config(self, agent_id: str) -> Optional[AgentEmailConfig]:
+    async def get_agent_config(self, agent_id: str) -> AgentEmailConfig | None:
         """Get agent email configuration."""
         return self._configs.get(agent_id)
 
     async def update_agent_config(
-        self, agent_id: str, config: AgentEmailConfig
+        self, agent_id: str, config: AgentEmailConfig,
     ) -> AgentEmailConfig:
         """Update agent email configuration."""
         config.updated_at = datetime.now()
@@ -324,12 +321,12 @@ class AgentEmailService:
         self._save_data()
         return config
 
-    async def get_agent_stats(self, agent_id: str) -> Optional[AgentEmailStats]:
+    async def get_agent_stats(self, agent_id: str) -> AgentEmailStats | None:
         """Get agent email statistics."""
         return self._stats.get(agent_id)
 
     async def update_agent_stats(
-        self, agent_id: str, action: str, count: int = 1
+        self, agent_id: str, action: str, count: int = 1,
     ) -> None:
         """Update agent email statistics."""
         if agent_id not in self._stats:
@@ -356,12 +353,12 @@ class AgentEmailService:
 
         self._save_data()
 
-    async def get_agent_templates(self, agent_id: str) -> List[AgentEmailTemplate]:
+    async def get_agent_templates(self, agent_id: str) -> list[AgentEmailTemplate]:
         """Get agent email templates."""
         return self._templates.get(agent_id, [])
 
     async def create_agent_template(
-        self, agent_id: str, template: AgentEmailTemplate
+        self, agent_id: str, template: AgentEmailTemplate,
     ) -> AgentEmailTemplate:
         """Create agent email template."""
         template.id = str(uuid.uuid4())
@@ -399,7 +396,7 @@ class AgentEmailService:
         sender_agent_id: str,
         receiver_agent_id: str,
         interaction_type: str,
-        metadata: Dict[str, Any],
+        metadata: dict[str, Any],
     ) -> None:
         """Log agent email interaction."""
         interaction = AgentEmailInteraction(
@@ -414,8 +411,8 @@ class AgentEmailService:
         self._save_data()
 
     async def get_agent_messages(
-        self, agent_id: str, limit: int = 50, offset: int = 0
-    ) -> List[AgentEmailMessage]:
+        self, agent_id: str, limit: int = 50, offset: int = 0,
+    ) -> list[AgentEmailMessage]:
         """Get agent email messages."""
         agent_messages = [
             message for message in self._messages if message.agent_id == agent_id
@@ -427,8 +424,8 @@ class AgentEmailService:
         return agent_messages[offset : offset + limit]
 
     async def get_agent_interactions(
-        self, agent_id: str, limit: int = 50, offset: int = 0
-    ) -> List[AgentEmailInteraction]:
+        self, agent_id: str, limit: int = 50, offset: int = 0,
+    ) -> list[AgentEmailInteraction]:
         """Get agent email interactions."""
         agent_interactions = [
             interaction
@@ -443,7 +440,7 @@ class AgentEmailService:
         return agent_interactions[offset : offset + limit]
 
     async def process_automated_email(
-        self, agent_id: str, event_type: str, context: Dict[str, Any]
+        self, agent_id: str, event_type: str, context: dict[str, Any],
     ) -> bool:
         """Process automated email for an agent."""
         try:
@@ -465,19 +462,19 @@ class AgentEmailService:
 
             if not matching_template:
                 logger.info(
-                    f"No matching template found for agent {agent_id} and event {event_type}"
+                    f"No matching template found for agent {agent_id} and event {event_type}",
                 )
                 return False
 
             # Generate email content
             subject = self._process_template_variables(
-                matching_template.subject, context
+                matching_template.subject, context,
             )
             body = self._process_template_variables(matching_template.body, context)
             html_body = None
             if matching_template.html_body:
                 html_body = self._process_template_variables(
-                    matching_template.html_body, context
+                    matching_template.html_body, context,
                 )
 
             # Determine recipients
@@ -485,7 +482,7 @@ class AgentEmailService:
 
             if not recipients:
                 logger.info(
-                    f"No recipients found for agent {agent_id} and event {event_type}"
+                    f"No recipients found for agent {agent_id} and event {event_type}",
                 )
                 return False
 
@@ -517,21 +514,20 @@ class AgentEmailService:
                 await self.update_agent_stats(agent_id, "sent")
 
                 logger.info(
-                    f"Automated email sent for agent {agent_id} and event {event_type}"
+                    f"Automated email sent for agent {agent_id} and event {event_type}",
                 )
                 return True
-            else:
-                logger.error(
-                    f"Failed to send automated email for agent {agent_id}: {result.get('error')}"
-                )
-                return False
+            logger.error(
+                f"Failed to send automated email for agent {agent_id}: {result.get('error')}",
+            )
+            return False
 
         except Exception as e:
             logger.error(f"Failed to process automated email for agent {agent_id}: {e}")
             return False
 
     def _template_matches_conditions(
-        self, template: AgentEmailTemplate, event_type: str, context: Dict[str, Any]
+        self, template: AgentEmailTemplate, event_type: str, context: dict[str, Any],
     ) -> bool:
         """Check if template matches trigger conditions."""
         conditions = template.trigger_conditions
@@ -569,7 +565,7 @@ class AgentEmailService:
         return True
 
     def _process_template_variables(
-        self, template: str, context: Dict[str, Any]
+        self, template: str, context: dict[str, Any],
     ) -> str:
         """Process template variables."""
         processed = template
@@ -581,8 +577,8 @@ class AgentEmailService:
         return processed
 
     def _determine_recipients(
-        self, agent_id: str, event_type: str, context: Dict[str, Any]
-    ) -> List[str]:
+        self, agent_id: str, event_type: str, context: dict[str, Any],
+    ) -> list[str]:
         """Determine email recipients based on event type and context."""
         recipients = []
 
@@ -612,7 +608,7 @@ class AgentEmailService:
         notification_type: str,
         title: str,
         message: str,
-        metadata: Optional[Dict[str, Any]] = None,
+        metadata: dict[str, Any] | None = None,
     ) -> AgentEmailNotification:
         """Create agent email notification."""
         notification = AgentEmailNotification(
@@ -630,8 +626,8 @@ class AgentEmailService:
         return notification
 
     async def get_agent_notifications(
-        self, agent_id: str, unread_only: bool = False, limit: int = 50
-    ) -> List[AgentEmailNotification]:
+        self, agent_id: str, unread_only: bool = False, limit: int = 50,
+    ) -> list[AgentEmailNotification]:
         """Get agent email notifications."""
         notifications = [
             notification
@@ -657,12 +653,12 @@ class AgentEmailService:
 
         return False
 
-    async def get_agent_settings(self, agent_id: str) -> Optional[AgentEmailSettings]:
+    async def get_agent_settings(self, agent_id: str) -> AgentEmailSettings | None:
         """Get agent email settings."""
         return self._settings.get(agent_id)
 
     async def update_agent_settings(
-        self, agent_id: str, settings: AgentEmailSettings
+        self, agent_id: str, settings: AgentEmailSettings,
     ) -> AgentEmailSettings:
         """Update agent email settings."""
         settings.agent_id = agent_id

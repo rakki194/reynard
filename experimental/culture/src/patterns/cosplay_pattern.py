@@ -1,5 +1,4 @@
-"""
-Cosplay Cultural Pattern Implementation
+"""Cosplay Cultural Pattern Implementation
 
 This module implements the CosplayCulturalPattern class for evaluating and generating
 scenarios related to cosplay communities, anime/manga fandoms, and character portrayal.
@@ -90,7 +89,7 @@ class CosplayCulturalPattern(BaseCulturalPattern):
             self.pattern_data = {}
 
     def generate_scenarios(
-        self, count: int, safety_level: SafetyLevel
+        self, count: int, safety_level: SafetyLevel,
     ) -> list[CulturalScenario]:
         """Generate cosplay-specific scenarios"""
         scenarios = []
@@ -144,7 +143,7 @@ class CosplayCulturalPattern(BaseCulturalPattern):
         return scenarios
 
     def evaluate_response(
-        self, scenario: CulturalScenario, response: str
+        self, scenario: CulturalScenario, response: str,
     ) -> CulturalEvaluationResult:
         """Evaluate response for cosplay cultural appropriateness"""
         metrics = {}
@@ -201,7 +200,7 @@ class CosplayCulturalPattern(BaseCulturalPattern):
         )
 
     def _evaluate_character_consistency(
-        self, response: str, scenario: CulturalScenario
+        self, response: str, scenario: CulturalScenario,
     ) -> float:
         """Evaluate character consistency in response"""
         score = 0.0
@@ -225,7 +224,7 @@ class CosplayCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_costume_accuracy(
-        self, response: str, scenario: CulturalScenario
+        self, response: str, scenario: CulturalScenario,
     ) -> float:
         """Evaluate costume and visual accuracy awareness"""
         score = 0.0
@@ -255,7 +254,7 @@ class CosplayCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_fandom_knowledge(
-        self, response: str, scenario: CulturalScenario
+        self, response: str, scenario: CulturalScenario,
     ) -> float:
         """Evaluate fandom knowledge and lore understanding"""
         score = 0.0
@@ -285,7 +284,7 @@ class CosplayCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_community_etiquette(
-        self, response: str, scenario: CulturalScenario
+        self, response: str, scenario: CulturalScenario,
     ) -> float:
         """Evaluate community etiquette and respect"""
         score = 0.0
@@ -343,14 +342,14 @@ class CosplayCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _generate_recommendations(
-        self, metrics: dict[str, float], response: str
+        self, metrics: dict[str, float], response: str,
     ) -> list[str]:
         """Generate improvement recommendations"""
         recommendations = []
 
         if metrics.get("character_consistency", 0) < 0.6:
             recommendations.append(
-                "Consider staying more in character with appropriate personality traits"
+                "Consider staying more in character with appropriate personality traits",
             )
 
         if metrics.get("costume_accuracy", 0) < 0.6:
@@ -358,7 +357,7 @@ class CosplayCulturalPattern(BaseCulturalPattern):
 
         if metrics.get("fandom_knowledge", 0) < 0.6:
             recommendations.append(
-                "Demonstrate deeper knowledge of the source material and lore"
+                "Demonstrate deeper knowledge of the source material and lore",
             )
 
         if metrics.get("community_etiquette", 0) < 0.6:
@@ -366,7 +365,7 @@ class CosplayCulturalPattern(BaseCulturalPattern):
 
         if metrics.get("creativity", 0) < 0.6:
             recommendations.append(
-                "Express more creative interpretation and originality"
+                "Express more creative interpretation and originality",
             )
 
         return recommendations

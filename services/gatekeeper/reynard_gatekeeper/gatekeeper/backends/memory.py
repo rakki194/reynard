@@ -1,5 +1,4 @@
-"""
-In-memory backend implementation for the Gatekeeper authentication library.
+"""In-memory backend implementation for the Gatekeeper authentication library.
 
 This module provides a simple in-memory user storage backend suitable for
 testing, development, and small-scale applications.
@@ -17,8 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 class MemoryBackend(UserBackend):
-    """
-    In-memory user storage backend.
+    """In-memory user storage backend.
 
     This backend stores user data in memory and is suitable for testing,
     development, and small-scale applications. Data is lost when the
@@ -34,8 +32,7 @@ class MemoryBackend(UserBackend):
         self._closed = False
 
     async def create_user(self, user: UserCreate) -> User:
-        """
-        Create a new user in the in-memory storage.
+        """Create a new user in the in-memory storage.
 
         Args:
             user: User creation data
@@ -45,6 +42,7 @@ class MemoryBackend(UserBackend):
 
         Raises:
             UserAlreadyExistsError: If a user with the same username already exists
+
         """
         if self._closed:
             raise BackendError("Backend is closed")
@@ -52,13 +50,13 @@ class MemoryBackend(UserBackend):
         # Check if username already exists
         if user.username in self._usernames:
             raise UserAlreadyExistsError(
-                f"User with username '{user.username}' already exists"
+                f"User with username '{user.username}' already exists",
             )
 
         # Check if email already exists (if provided)
         if user.email and user.email in self._emails:
             raise UserAlreadyExistsError(
-                f"User with email '{user.email}' already exists"
+                f"User with email '{user.email}' already exists",
             )
 
         # Generate user ID
@@ -88,14 +86,14 @@ class MemoryBackend(UserBackend):
         return new_user
 
     async def get_user_by_username(self, username: str) -> User | None:
-        """
-        Retrieve a user by username.
+        """Retrieve a user by username.
 
         Args:
             username: The username to search for
 
         Returns:
             Optional[User]: The user if found, None otherwise
+
         """
         if self._closed:
             raise BackendError("Backend is closed")
@@ -106,14 +104,14 @@ class MemoryBackend(UserBackend):
         return None
 
     async def get_user_by_id(self, user_id: str) -> User | None:
-        """
-        Retrieve a user by ID.
+        """Retrieve a user by ID.
 
         Args:
             user_id: The user ID to search for
 
         Returns:
             Optional[User]: The user if found, None otherwise
+
         """
         if self._closed:
             raise BackendError("Backend is closed")
@@ -121,14 +119,14 @@ class MemoryBackend(UserBackend):
         return self._users.get(user_id)
 
     async def get_user_by_email(self, email: str) -> User | None:
-        """
-        Retrieve a user by email address.
+        """Retrieve a user by email address.
 
         Args:
             email: The email address to search for
 
         Returns:
             Optional[User]: The user if found, None otherwise
+
         """
         if self._closed:
             raise BackendError("Backend is closed")
@@ -139,8 +137,7 @@ class MemoryBackend(UserBackend):
         return None
 
     async def update_user(self, username: str, user_update: UserUpdate) -> User:
-        """
-        Update an existing user.
+        """Update an existing user.
 
         Args:
             username: The username of the user to update
@@ -151,6 +148,7 @@ class MemoryBackend(UserBackend):
 
         Raises:
             UserNotFoundError: If the user is not found
+
         """
         if self._closed:
             raise BackendError("Backend is closed")
@@ -164,7 +162,7 @@ class MemoryBackend(UserBackend):
             # Check if new username is already taken
             if user_update.username in self._usernames:
                 raise UserAlreadyExistsError(
-                    f"Username '{user_update.username}' is already taken"
+                    f"Username '{user_update.username}' is already taken",
                 )
 
             # Update username mapping
@@ -177,7 +175,7 @@ class MemoryBackend(UserBackend):
             # Check if new email is already taken
             if user_update.email in self._emails:
                 raise UserAlreadyExistsError(
-                    f"Email '{user_update.email}' is already taken"
+                    f"Email '{user_update.email}' is already taken",
                 )
 
             # Update email mapping
@@ -205,14 +203,14 @@ class MemoryBackend(UserBackend):
         return user
 
     async def delete_user(self, username: str) -> bool:
-        """
-        Delete a user from the in-memory storage.
+        """Delete a user from the in-memory storage.
 
         Args:
             username: The username of the user to delete
 
         Returns:
             bool: True if the user was deleted, False if not found
+
         """
         if self._closed:
             raise BackendError("Backend is closed")
@@ -233,8 +231,7 @@ class MemoryBackend(UserBackend):
         return True
 
     async def list_users(self, skip: int = 0, limit: int = 100) -> list[UserPublic]:
-        """
-        List users in the in-memory storage.
+        """List users in the in-memory storage.
 
         Args:
             skip: Number of users to skip (for pagination)
@@ -242,6 +239,7 @@ class MemoryBackend(UserBackend):
 
         Returns:
             List[UserPublic]: List of users (public data only)
+
         """
         if self._closed:
             raise BackendError("Backend is closed")
@@ -253,11 +251,11 @@ class MemoryBackend(UserBackend):
         return [UserPublic.from_user(user) for user in paginated_users]
 
     async def count_users(self) -> int:
-        """
-        Get the total number of users in the in-memory storage.
+        """Get the total number of users in the in-memory storage.
 
         Returns:
             int: Total number of users
+
         """
         if self._closed:
             raise BackendError("Backend is closed")
@@ -265,8 +263,7 @@ class MemoryBackend(UserBackend):
         return len(self._users)
 
     async def update_user_password(self, username: str, new_password_hash: str) -> bool:
-        """
-        Update a user's password hash.
+        """Update a user's password hash.
 
         Args:
             username: The username of the user
@@ -274,6 +271,7 @@ class MemoryBackend(UserBackend):
 
         Returns:
             bool: True if the password was updated, False if user not found
+
         """
         if self._closed:
             raise BackendError("Backend is closed")
@@ -289,8 +287,7 @@ class MemoryBackend(UserBackend):
         return True
 
     async def update_user_role(self, username: str, new_role: str) -> bool:
-        """
-        Update a user's role.
+        """Update a user's role.
 
         Args:
             username: The username of the user
@@ -298,6 +295,7 @@ class MemoryBackend(UserBackend):
 
         Returns:
             bool: True if the role was updated, False if user not found
+
         """
         if self._closed:
             raise BackendError("Backend is closed")
@@ -315,10 +313,9 @@ class MemoryBackend(UserBackend):
         return True
 
     async def update_user_profile_picture(
-        self, username: str, profile_picture_url: str | None
+        self, username: str, profile_picture_url: str | None,
     ) -> bool:
-        """
-        Update a user's profile picture URL.
+        """Update a user's profile picture URL.
 
         Args:
             username: The username of the user
@@ -326,6 +323,7 @@ class MemoryBackend(UserBackend):
 
         Returns:
             bool: True if the profile picture was updated, False if user not found
+
         """
         if self._closed:
             raise BackendError("Backend is closed")
@@ -341,10 +339,9 @@ class MemoryBackend(UserBackend):
         return True
 
     async def update_user_metadata(
-        self, username: str, metadata: dict[str, Any]
+        self, username: str, metadata: dict[str, Any],
     ) -> bool:
-        """
-        Update a user's metadata.
+        """Update a user's metadata.
 
         Args:
             username: The username of the user
@@ -352,6 +349,7 @@ class MemoryBackend(UserBackend):
 
         Returns:
             bool: True if the metadata was updated, False if user not found
+
         """
         if self._closed:
             raise BackendError("Backend is closed")
@@ -367,10 +365,9 @@ class MemoryBackend(UserBackend):
         return True
 
     async def search_users(
-        self, query: str, skip: int = 0, limit: int = 100
+        self, query: str, skip: int = 0, limit: int = 100,
     ) -> list[UserPublic]:
-        """
-        Search for users by username or email.
+        """Search for users by username or email.
 
         Args:
             query: Search query string
@@ -379,6 +376,7 @@ class MemoryBackend(UserBackend):
 
         Returns:
             List[UserPublic]: List of matching users (public data only)
+
         """
         if self._closed:
             raise BackendError("Backend is closed")
@@ -393,17 +391,16 @@ class MemoryBackend(UserBackend):
                 matching_users.append(user)
 
         matching_users.sort(
-            key=lambda u: u.created_at or datetime.min.replace(tzinfo=UTC)
+            key=lambda u: u.created_at or datetime.min.replace(tzinfo=UTC),
         )
         paginated_users = matching_users[skip : skip + limit]
 
         return [UserPublic.from_user(user) for user in paginated_users]
 
     async def get_users_by_role(
-        self, role: str, skip: int = 0, limit: int = 100
+        self, role: str, skip: int = 0, limit: int = 100,
     ) -> list[UserPublic]:
-        """
-        Get users by role.
+        """Get users by role.
 
         Args:
             role: The role to filter by
@@ -412,27 +409,28 @@ class MemoryBackend(UserBackend):
 
         Returns:
             List[UserPublic]: List of users with the specified role
+
         """
         if self._closed:
             raise BackendError("Backend is closed")
 
         matching_users = [user for user in self._users.values() if user.role == role]
         matching_users.sort(
-            key=lambda u: u.created_at or datetime.min.replace(tzinfo=UTC)
+            key=lambda u: u.created_at or datetime.min.replace(tzinfo=UTC),
         )
 
         paginated_users = matching_users[skip : skip + limit]
         return [UserPublic.from_user(user) for user in paginated_users]
 
     async def is_username_taken(self, username: str) -> bool:
-        """
-        Check if a username is already taken.
+        """Check if a username is already taken.
 
         Args:
             username: The username to check
 
         Returns:
             bool: True if the username is taken, False otherwise
+
         """
         if self._closed:
             raise BackendError("Backend is closed")
@@ -440,14 +438,14 @@ class MemoryBackend(UserBackend):
         return username in self._usernames
 
     async def is_email_taken(self, email: str) -> bool:
-        """
-        Check if an email is already taken.
+        """Check if an email is already taken.
 
         Args:
             email: The email to check
 
         Returns:
             bool: True if the email is taken, False otherwise
+
         """
         if self._closed:
             raise BackendError("Backend is closed")
@@ -455,8 +453,7 @@ class MemoryBackend(UserBackend):
         return email in self._emails
 
     async def get_user_settings(self, username: str) -> dict[str, Any]:
-        """
-        Get user settings.
+        """Get user settings.
 
         Args:
             username: The username of the user
@@ -466,6 +463,7 @@ class MemoryBackend(UserBackend):
 
         Raises:
             UserNotFoundError: If the user is not found
+
         """
         if self._closed:
             raise BackendError("Backend is closed")
@@ -479,10 +477,9 @@ class MemoryBackend(UserBackend):
         return self._settings.get(user.id, {})
 
     async def update_user_settings(
-        self, username: str, settings: dict[str, Any]
+        self, username: str, settings: dict[str, Any],
     ) -> bool:
-        """
-        Update user settings.
+        """Update user settings.
 
         Args:
             username: The username of the user
@@ -490,6 +487,7 @@ class MemoryBackend(UserBackend):
 
         Returns:
             bool: True if the settings were updated, False if user not found
+
         """
         if self._closed:
             raise BackendError("Backend is closed")
@@ -510,8 +508,7 @@ class MemoryBackend(UserBackend):
         return True
 
     async def update_user_username(self, old_username: str, new_username: str) -> bool:
-        """
-        Update a user's username.
+        """Update a user's username.
 
         Args:
             old_username: The current username
@@ -519,6 +516,7 @@ class MemoryBackend(UserBackend):
 
         Returns:
             bool: True if the username was updated, False if user not found or new username taken
+
         """
         if self._closed:
             raise BackendError("Backend is closed")
@@ -546,11 +544,11 @@ class MemoryBackend(UserBackend):
         return True
 
     async def get_all_users(self) -> list[UserPublic]:
-        """
-        Get all users in the backend.
+        """Get all users in the backend.
 
         Returns:
             List[UserPublic]: List of all users (public data only)
+
         """
         if self._closed:
             raise BackendError("Backend is closed")
@@ -572,8 +570,7 @@ class MemoryBackend(UserBackend):
         ]
 
     async def update_user_yapcoin_balance(self, username: str, amount: int) -> bool:
-        """
-        Update a user's YapCoin balance.
+        """Update a user's YapCoin balance.
 
         Args:
             username: The username of the user
@@ -581,6 +578,7 @@ class MemoryBackend(UserBackend):
 
         Returns:
             bool: True if the balance was updated, False if user not found
+
         """
         if self._closed:
             raise BackendError("Backend is closed")
@@ -602,13 +600,12 @@ class MemoryBackend(UserBackend):
         user.yapcoin_balance = max(user.yapcoin_balance, 0)
 
         logger.info(
-            f"Updated YapCoin balance for user '{username}' by {amount} (new balance: {user.yapcoin_balance})"
+            f"Updated YapCoin balance for user '{username}' by {amount} (new balance: {user.yapcoin_balance})",
         )
         return True
 
     async def close(self) -> None:
-        """
-        Close the in-memory backend and clean up resources.
+        """Close the in-memory backend and clean up resources.
         """
         self._users.clear()
         self._usernames.clear()
@@ -618,17 +615,16 @@ class MemoryBackend(UserBackend):
         logger.info("Memory backend closed")
 
     async def health_check(self) -> bool:
-        """
-        Perform a health check on the in-memory backend.
+        """Perform a health check on the in-memory backend.
 
         Returns:
             bool: True if the backend is healthy, False otherwise
+
         """
         return not self._closed
 
     def clear(self) -> None:
-        """
-        Clear all data from the in-memory backend.
+        """Clear all data from the in-memory backend.
 
         This method is useful for testing purposes.
         """

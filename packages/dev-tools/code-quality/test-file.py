@@ -1,5 +1,4 @@
-"""
-Test Python file with emojis
+"""Test Python file with emojis
 """
 
 

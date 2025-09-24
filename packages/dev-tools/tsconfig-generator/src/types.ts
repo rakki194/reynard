@@ -9,6 +9,14 @@ export interface TSConfigGeneratorConfig {
   includeTemplates?: boolean;
   /** Include scripts */
   includeScripts?: boolean;
+  /** Include tools packages */
+  includeTools?: boolean;
+  /** Include documentation packages */
+  includeDocumentation?: boolean;
+  /** Include testing packages */
+  includeTesting?: boolean;
+  /** Include non-buildable directories */
+  includeNonBuildable?: boolean;
   /** Custom TypeScript compiler options */
   customCompilerOptions?: Record<string, any>;
   /** Output file path */

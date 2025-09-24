@@ -1,5 +1,4 @@
-"""
-ECS Naming System API
+"""ECS Naming System API
 =====================
 
 Name generation, spirit management, and naming configuration endpoints.
@@ -38,7 +37,7 @@ def _load_json_data(filename: str):
         file_path = _get_data_file_path(filename)
         if not file_path.exists():
             raise HTTPException(
-                status_code=404, detail=f"Data file {filename} not found"
+                status_code=404, detail=f"Data file {filename} not found",
             )
 
         with file_path.open(encoding="utf-8") as f:
@@ -46,7 +45,7 @@ def _load_json_data(filename: str):
     except json.JSONDecodeError as e:
         logger.exception("Error parsing JSON from %s", filename)
         raise HTTPException(
-            status_code=500, detail=f"Invalid JSON in {filename}"
+            status_code=500, detail=f"Invalid JSON in {filename}",
         ) from e
     except Exception as e:
         logger.exception("Error loading data from %s", filename)
@@ -63,7 +62,7 @@ def _get_race_data_from_db(spirit: str) -> dict[str, Any]:
 
             if not naming_spirit:
                 raise HTTPException(
-                    status_code=404, detail=f"Race data for spirit '{spirit}' not found"
+                    status_code=404, detail=f"Race data for spirit '{spirit}' not found",
                 )
 
             return {
@@ -80,7 +79,7 @@ def _get_race_data_from_db(spirit: str) -> dict[str, Any]:
     except Exception as e:
         logger.exception("Error loading race data for %s", spirit)
         raise HTTPException(
-            status_code=500, detail=f"Failed to load race data for {spirit}"
+            status_code=500, detail=f"Failed to load race data for {spirit}",
         ) from e
 
 
@@ -128,14 +127,14 @@ async def _get_naming_components_from_db() -> dict[str, Any]:
 
                 if component.enabled:
                     components_dict[component.component_type]["values"].append(
-                        component.component_value
+                        component.component_value,
                     )
 
             return components_dict
     except Exception as e:
         logger.exception("Error loading naming components")
         raise HTTPException(
-            status_code=500, detail="Failed to load naming components"
+            status_code=500, detail="Failed to load naming components",
         ) from e
 
 
@@ -154,7 +153,7 @@ async def _get_naming_config_from_db() -> dict[str, Any]:
     except Exception as e:
         logger.exception("Error loading naming config")
         raise HTTPException(
-            status_code=500, detail="Failed to load naming config"
+            status_code=500, detail="Failed to load naming config",
         ) from e
 
 
@@ -171,7 +170,7 @@ async def get_animal_spirits() -> dict[str, Any]:
     except Exception as e:
         logger.exception("Error getting animal spirits")
         raise HTTPException(
-            status_code=500, detail="Failed to get animal spirits"
+            status_code=500, detail="Failed to get animal spirits",
         ) from e
 
 
@@ -186,7 +185,7 @@ async def get_animal_spirit_names(spirit: str) -> dict[str, Any]:
     except Exception as e:
         logger.exception("Error getting names for spirit %s", spirit)
         raise HTTPException(
-            status_code=500, detail=f"Failed to get names for spirit {spirit}"
+            status_code=500, detail=f"Failed to get names for spirit {spirit}",
         ) from e
 
 
@@ -203,7 +202,7 @@ async def get_naming_components() -> dict[str, Any]:
     except Exception as e:
         logger.exception("Error getting naming components")
         raise HTTPException(
-            status_code=500, detail="Failed to get naming components"
+            status_code=500, detail="Failed to get naming components",
         ) from e
 
 
@@ -214,7 +213,7 @@ async def get_naming_component_type(component_type: str) -> dict[str, Any]:
         components = await _get_naming_components_from_db()
         if component_type not in components:
             raise HTTPException(
-                status_code=404, detail=f"Component type '{component_type}' not found"
+                status_code=404, detail=f"Component type '{component_type}' not found",
             )
         return components[component_type]
     except HTTPException:
@@ -222,7 +221,7 @@ async def get_naming_component_type(component_type: str) -> dict[str, Any]:
     except Exception as e:
         logger.exception("Error getting component type %s", component_type)
         raise HTTPException(
-            status_code=500, detail=f"Failed to get component type {component_type}"
+            status_code=500, detail=f"Failed to get component type {component_type}",
         ) from e
 
 
@@ -239,7 +238,7 @@ async def get_naming_config() -> dict[str, Any]:
     except Exception as e:
         logger.exception("Error getting naming config")
         raise HTTPException(
-            status_code=500, detail="Failed to get naming config"
+            status_code=500, detail="Failed to get naming config",
         ) from e
 
 
@@ -254,7 +253,7 @@ async def get_naming_schemes() -> dict[str, Any]:
     except Exception as e:
         logger.exception("Error getting naming schemes")
         raise HTTPException(
-            status_code=500, detail="Failed to get naming schemes"
+            status_code=500, detail="Failed to get naming schemes",
         ) from e
 
 
@@ -269,7 +268,7 @@ async def get_naming_styles() -> dict[str, Any]:
     except Exception as e:
         logger.exception("Error getting naming styles")
         raise HTTPException(
-            status_code=500, detail="Failed to get naming styles"
+            status_code=500, detail="Failed to get naming styles",
         ) from e
 
 
@@ -286,7 +285,7 @@ async def get_naming_spirits() -> dict[str, Any]:
     except Exception as e:
         logger.exception("Error getting naming spirits from database")
         raise HTTPException(
-            status_code=500, detail="Failed to get naming spirits from database"
+            status_code=500, detail="Failed to get naming spirits from database",
         ) from e
 
 
@@ -306,7 +305,7 @@ async def get_generation_numbers() -> dict[str, Any]:
     except Exception as e:
         logger.exception("Error getting generation numbers from database")
         raise HTTPException(
-            status_code=500, detail="Failed to get generation numbers from database"
+            status_code=500, detail="Failed to get generation numbers from database",
         ) from e
 
 
@@ -381,7 +380,7 @@ async def get_naming_enums() -> dict[str, Any]:
     except Exception as e:
         logger.exception("Error getting naming enums from database")
         raise HTTPException(
-            status_code=500, detail="Failed to get naming enums from database"
+            status_code=500, detail="Failed to get naming enums from database",
         ) from e
 
 
@@ -407,7 +406,7 @@ async def get_character(character_id: str) -> dict[str, Any]:
         data = _load_json_data("characters.json")
         if character_id not in data:
             raise HTTPException(
-                status_code=404, detail=f"Character '{character_id}' not found"
+                status_code=404, detail=f"Character '{character_id}' not found",
             )
         return {"character_id": character_id, "character": data[character_id]}
     except HTTPException:
@@ -415,5 +414,5 @@ async def get_character(character_id: str) -> dict[str, Any]:
     except Exception as e:
         logger.exception("Error getting character %s", character_id)
         raise HTTPException(
-            status_code=500, detail=f"Failed to get character {character_id}"
+            status_code=500, detail=f"Failed to get character {character_id}",
         ) from e

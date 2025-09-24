@@ -1,6 +1,6 @@
 {
   "name": "reynard",
-  "version": "0.17.1",
+  "version": "0.17.2",
   "private": false,
   "type": "module",
   "description": "Reynard - A cunning SolidJS framework and UI library",
@@ -185,6 +185,9 @@
     "reynard-composables": "workspace:*",
     "reynard-connection": "workspace:*",
     "reynard-core": "workspace:*",
+    "reynard-http-client": "workspace:*",
+    "reynard-auth-core": "workspace:*",
+    "reynard-auth-composables": "workspace:*",
     "reynard-docs-components": "workspace:*",
     "reynard-docs-core": "workspace:*",
     "reynard-docs-generator": "workspace:*",

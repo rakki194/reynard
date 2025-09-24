@@ -3,8 +3,7 @@ import sys
 
 
 def generate_mermaid_diagram(diagram_type, title, nodes):
-    """
-    Generates a simple Mermaid diagram string.
+    """Generates a simple Mermaid diagram string.
     :param diagram_type: Type of diagram (e.g., "graph TD", "sequenceDiagram")
     :param title: Title of the diagram
     :param nodes: List of nodes/steps for the diagram (e.g., ["A-->B", "B-->C"])
@@ -32,7 +31,7 @@ def main():
         help="List of diagram nodes/steps (e.g., 'A-->B' 'B-->C').",
     )
     parser.add_argument(
-        "--output", help="Output filename for the Mermaid definition (.mmd)."
+        "--output", help="Output filename for the Mermaid definition (.mmd).",
     )
 
     args = parser.parse_args()
@@ -52,10 +51,10 @@ def main():
                 f.write(diagram)
             print(f"Mermaid diagram definition saved to {args.output}")
             print(
-                "To convert to SVG, you'll need mermaid-cli (mmdc). Install with: npm install -g @mermaid-js/mermaid-cli"
+                "To convert to SVG, you'll need mermaid-cli (mmdc). Install with: npm install -g @mermaid-js/mermaid-cli",
             )
             print(
-                f"Then run: mmdc -i {args.output} -o {args.output.replace('.mmd', '.svg')}"
+                f"Then run: mmdc -i {args.output} -o {args.output.replace('.mmd', '.svg')}",
             )
         except OSError as e:
             print(f"Error saving file {args.output}: {e}", file=sys.stderr)

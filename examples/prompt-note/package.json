@@ -23,6 +23,12 @@
     "reynard-components-dashboard": "workspace:*",
     "reynard-components-themes": "workspace:*",
     "reynard-components-utils": "workspace:*",
+    "reynard-auth": "workspace:*",
+    "reynard-chat": "workspace:*",
+    "reynard-composables": "workspace:*",
+    "reynard-monaco": "workspace:*",
+    "reynard-caption": "workspace:*",
+    "reynard-annotating-core": "workspace:*",
     "solid-js": "1.9.9",
     "@solidjs/router": "0.15.3",
     "date-fns": "4.1.0",
@@ -32,7 +38,7 @@
     "@types/node": "24.5.2",
     "@types/uuid": "10.0.0",
     "typescript": "5.9.2",
-    "vite": "7.1.6",
+    "vite": "7.1.7",
     "vite-plugin-solid": "2.11.8",
     "concurrently": "9.2.1"
   }

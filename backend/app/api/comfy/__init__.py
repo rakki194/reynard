@@ -1,5 +1,4 @@
-"""
-ComfyUI API Module
+"""ComfyUI API Module
 
 Provides REST API endpoints for ComfyUI workflow automation,
 queue management, and image generation.

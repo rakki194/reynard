@@ -466,7 +466,7 @@ async def get_character_types(**kwargs) -> dict[str, Any]:
             "content": [
                 {
                     "type": "text",
-                    "text": f"📋 Available Character Types:\n\n"
+                    "text": "📋 Available Character Types:\n\n"
                     + "\n".join([f"• {ct}" for ct in character_types]),
                 }
             ]
@@ -511,7 +511,7 @@ async def get_personality_traits(**kwargs) -> dict[str, Any]:
             "content": [
                 {
                     "type": "text",
-                    "text": f"📋 Available Personality Traits:\n\n"
+                    "text": "📋 Available Personality Traits:\n\n"
                     + "\n".join([f"• {t}" for t in traits]),
                 }
             ]
@@ -556,7 +556,7 @@ async def get_ability_traits(**kwargs) -> dict[str, Any]:
             "content": [
                 {
                     "type": "text",
-                    "text": f"📋 Available Ability Traits:\n\n"
+                    "text": "📋 Available Ability Traits:\n\n"
                     + "\n".join([f"• {t}" for t in traits]),
                 }
             ]

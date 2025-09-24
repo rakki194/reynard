@@ -49,6 +49,85 @@ Whether you're a **startup founder** prototyping AI-powered products, a **univer
 ecosystems, an **enterprise architect** building AI infrastructure, or a **creative professional** exploring AI-assisted
 workflows, Reynard aims to provide the tools and infrastructure to support your work.
 
+## 🏗️ Core Infrastructure Architecture
+
+```mermaid
+graph TB
+    subgraph "🌐 API Client Package"
+        A1[Client Factory] --> A2[Generated APIs]
+        A1 --> A3[SolidJS Composables]
+        A1 --> A4[Evergreen System]
+        A2 --> A5[Type-safe Backend Calls]
+    end
+
+    subgraph "🧪 Testing Framework"
+        B1[Test Utils] --> B2[Vitest Configs]
+        B1 --> B3[Mock System]
+        B1 --> B4[Setup System]
+        B2 --> B5[95+ Package Coverage]
+    end
+
+    subgraph "⚙️ TSConfig Generator"
+        C1[CLI Interface] --> C2[Architecture Integration]
+        C1 --> C3[Config Generation]
+        C2 --> C4[95+ Package Discovery]
+        C3 --> C5[Automated TypeScript Config]
+    end
+
+    subgraph "🏗️ Project Architecture"
+        D1[Architecture Definition] --> D2[Package Discovery]
+        D1 --> D3[Build Configurations]
+        D1 --> D4[File Patterns]
+    end
+
+    subgraph "🔄 Development Workflow"
+        E1[Code Changes] --> E2[TSConfig Generation]
+        E2 --> E3[Type Safety]
+        E3 --> E4[Testing]
+        E4 --> E5[API Client Updates]
+        E5 --> E6[Deployment]
+    end
+
+    A4 -->|Monitors| E1
+    C2 -->|Reads| D1
+    B2 -->|Configures| E4
+    A5 -->|Validates| E3
+```
+
+## 🔄 Package Integration Flow
+
+```mermaid
+sequenceDiagram
+    participant Dev as Developer
+    participant TSGen as TSConfig Generator
+    participant Arch as Project Architecture
+    participant Test as Testing Framework
+    participant API as API Client
+    participant Backend as Backend Services
+
+    Note over Dev, Backend: Development Cycle
+
+    Dev->>TSGen: Generate TypeScript Config
+    TSGen->>Arch: Read Package Structure
+    Arch-->>TSGen: 95+ Package Metadata
+    TSGen-->>Dev: Generated tsconfig.json
+
+    Dev->>Test: Run Tests
+    Test->>Test: Configure Vitest Workspace
+    Test->>Test: Execute 95+ Package Tests
+    Test-->>Dev: Test Results & Coverage
+
+    Dev->>API: Use API Client
+    API->>Backend: Type-safe API Calls
+    Backend-->>API: Typed Responses
+    API-->>Dev: Reactive State Updates
+
+    Note over Dev, Backend: Backend Changes Detected
+    Backend->>API: OpenAPI Schema Changes
+    API->>API: Evergreen Auto-Update
+    API-->>Dev: Updated Types & Client
+```
+
 **Built on foundations** from YipYap's multi-modal CMS, enhanced with research in AI agent simulation, and designed with
 practical development needs in mind, Reynard represents an attempt to create a more integrated approach to intelligent
 application development—where different tools and services work together to reduce complexity and accelerate development.

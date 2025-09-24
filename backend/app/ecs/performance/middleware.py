@@ -1,5 +1,4 @@
-"""
-Performance monitoring middleware for FastAPI ECS backend.
+"""Performance monitoring middleware for FastAPI ECS backend.
 
 This module provides comprehensive performance tracking including:
 - Request/response timing
@@ -10,17 +9,16 @@ This module provides comprehensive performance tracking including:
 """
 
 import asyncio
-import json
 import logging
 import threading
 import time
 import tracemalloc
-import weakref
 from collections import defaultdict, deque
+from collections.abc import Callable
 from contextlib import asynccontextmanager
-from dataclasses import dataclass, field
-from datetime import datetime, timedelta
-from typing import Any, Callable, Dict, List, Optional
+from dataclasses import dataclass
+from datetime import datetime
+from typing import Any
 
 import psutil
 
@@ -57,7 +55,7 @@ class PerformanceMetrics:
     status_code: int = 200
     request_size: int = 0
     response_size: int = 0
-    error_message: Optional[str] = None
+    error_message: str | None = None
 
 
 @dataclass
@@ -67,8 +65,8 @@ class DatabaseQuery:
     query: str
     duration: float
     timestamp: float
-    parameters: Optional[Dict[str, Any]] = None
-    rows_affected: Optional[int] = None
+    parameters: dict[str, Any] | None = None
+    rows_affected: int | None = None
 
 
 @dataclass
@@ -79,7 +77,7 @@ class AsyncTask:
     duration: float
     timestamp: float
     success: bool = True
-    error_message: Optional[str] = None
+    error_message: str | None = None
 
 
 class PerformanceTracker:
@@ -88,9 +86,9 @@ class PerformanceTracker:
     def __init__(self, max_history: int = 1000):
         self.max_history = max_history
         self.metrics_history: deque = deque(maxlen=max_history)
-        self.db_queries: List[DatabaseQuery] = []
-        self.async_tasks: List[AsyncTask] = []
-        self.endpoint_stats: Dict[str, Dict[str, Any]] = defaultdict(
+        self.db_queries: list[DatabaseQuery] = []
+        self.async_tasks: list[AsyncTask] = []
+        self.endpoint_stats: dict[str, dict[str, Any]] = defaultdict(
             lambda: {
                 "total_requests": 0,
                 "total_duration": 0.0,
@@ -101,13 +99,13 @@ class PerformanceTracker:
                 "memory_usage": deque(maxlen=100),
                 "db_queries": deque(maxlen=100),
                 "async_tasks": deque(maxlen=100),
-            }
+            },
         )
         self._lock = threading.Lock()
-        self._active_requests: Dict[str, PerformanceMetrics] = {}
+        self._active_requests: dict[str, PerformanceMetrics] = {}
 
     def start_request(
-        self, request_id: str, endpoint: str, method: str
+        self, request_id: str, endpoint: str, method: str,
     ) -> PerformanceMetrics:
         """Start tracking a request."""
         with self._lock:
@@ -128,8 +126,8 @@ class PerformanceTracker:
         self,
         request_id: str,
         status_code: int = 200,
-        error_message: Optional[str] = None,
-    ) -> Optional[PerformanceMetrics]:
+        error_message: str | None = None,
+    ) -> PerformanceMetrics | None:
         """End tracking a request."""
         with self._lock:
             if request_id not in self._active_requests:
@@ -163,8 +161,8 @@ class PerformanceTracker:
         self,
         query: str,
         duration: float,
-        parameters: Optional[Dict[str, Any]] = None,
-        rows_affected: Optional[int] = None,
+        parameters: dict[str, Any] | None = None,
+        rows_affected: int | None = None,
     ):
         """Add database query performance data."""
         db_query = DatabaseQuery(
@@ -187,7 +185,7 @@ class PerformanceTracker:
         task_name: str,
         duration: float,
         success: bool = True,
-        error_message: Optional[str] = None,
+        error_message: str | None = None,
     ):
         """Add async task performance data."""
         async_task = AsyncTask(
@@ -205,7 +203,7 @@ class PerformanceTracker:
                 metrics.async_tasks += 1
                 metrics.async_task_time += duration
 
-    def get_performance_summary(self) -> Dict[str, Any]:
+    def get_performance_summary(self) -> dict[str, Any]:
         """Get comprehensive performance summary."""
         with self._lock:
             recent_metrics = list(self.metrics_history)[-100:]  # Last 100 requests
@@ -287,7 +285,7 @@ class PerformanceMiddleware(BaseHTTPMiddleware):
             tracemalloc.start()
 
     async def dispatch(
-        self, request: Request, call_next: RequestResponseEndpoint
+        self, request: Request, call_next: RequestResponseEndpoint,
     ) -> Response:
         """Process request with performance tracking."""
         request_id = f"{request.client.host}:{request.client.port}:{time.time()}"
@@ -318,7 +316,7 @@ class PerformanceMiddleware(BaseHTTPMiddleware):
         finally:
             # End tracking
             performance_tracker.end_request(
-                request_id, metrics.status_code, metrics.error_message
+                request_id, metrics.status_code, metrics.error_message,
             )
 
 
@@ -342,8 +340,8 @@ async def track_async_task(task_name: str):
 
 def track_db_query(
     query: str,
-    parameters: Optional[Dict[str, Any]] = None,
-    rows_affected: Optional[int] = None,
+    parameters: dict[str, Any] | None = None,
+    rows_affected: int | None = None,
 ):
     """Decorator for tracking database query performance."""
 
@@ -356,32 +354,31 @@ def track_db_query(
                     result = await func(*args, **kwargs)
                     duration = time.time() - start_time
                     performance_tracker.add_db_query(
-                        query, duration, parameters, rows_affected
+                        query, duration, parameters, rows_affected,
                     )
                     return result
-                except Exception as e:
+                except Exception:
                     duration = time.time() - start_time
                     performance_tracker.add_db_query(query, duration, parameters, None)
                     raise
 
             return async_wrapper
-        else:
 
-            def sync_wrapper(*args, **kwargs):
-                start_time = time.time()
-                try:
-                    result = func(*args, **kwargs)
-                    duration = time.time() - start_time
-                    performance_tracker.add_db_query(
-                        query, duration, parameters, rows_affected
-                    )
-                    return result
-                except Exception as e:
-                    duration = time.time() - start_time
-                    performance_tracker.add_db_query(query, duration, parameters, None)
-                    raise
+        def sync_wrapper(*args, **kwargs):
+            start_time = time.time()
+            try:
+                result = func(*args, **kwargs)
+                duration = time.time() - start_time
+                performance_tracker.add_db_query(
+                    query, duration, parameters, rows_affected,
+                )
+                return result
+            except Exception:
+                duration = time.time() - start_time
+                performance_tracker.add_db_query(query, duration, parameters, None)
+                raise
 
-            return sync_wrapper
+        return sync_wrapper
 
     return decorator
 
@@ -391,9 +388,9 @@ class MemoryProfiler:
 
     def __init__(self, check_interval: float = 5.0):
         self.check_interval = check_interval
-        self.memory_snapshots: List[Dict[str, Any]] = []
+        self.memory_snapshots: list[dict[str, Any]] = []
         self._running = False
-        self._thread: Optional[threading.Thread] = None
+        self._thread: threading.Thread | None = None
 
     def start(self):
         """Start memory profiling."""
@@ -441,7 +438,7 @@ class MemoryProfiler:
                 logger.error(f"Memory profiling error: {e}")
                 time.sleep(self.check_interval)
 
-    def get_memory_summary(self) -> Dict[str, Any]:
+    def get_memory_summary(self) -> dict[str, Any]:
         """Get memory usage summary."""
         if not self.memory_snapshots:
             return {"message": "No memory data available"}

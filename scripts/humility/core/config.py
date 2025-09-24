@@ -1,11 +1,10 @@
-"""
-Configuration management for the Enhanced Humility Detector.
+"""Configuration management for the Enhanced Humility Detector.
 """
 
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set
+from typing import Any
 
 
 @dataclass
@@ -25,7 +24,7 @@ class HumilityConfig:
     use_sentiment_analysis: bool = True
 
     # File processing
-    supported_extensions: List[str] = field(
+    supported_extensions: list[str] = field(
         default_factory=lambda: [
             ".md",
             ".txt",
@@ -42,11 +41,11 @@ class HumilityConfig:
             ".xml",
             ".yaml",
             ".yml",
-        ]
+        ],
     )
 
     # Directory exclusions
-    excluded_directories: Set[str] = field(
+    excluded_directories: set[str] = field(
         default_factory=lambda: {
             "node_modules",
             "dist",
@@ -98,7 +97,7 @@ class HumilityConfig:
             ".turbo",
             ".eslintcache",
             ".stylelintcache",
-        }
+        },
     )
 
     # Output settings
@@ -122,7 +121,7 @@ class HumilityConfig:
     cache_ttl_seconds: int = 3600
 
     # Cultural contexts
-    cultural_contexts: Dict[str, Dict[str, Any]] = field(
+    cultural_contexts: dict[str, dict[str, Any]] = field(
         default_factory=lambda: {
             "western": {
                 "directness_preference": 0.8,
@@ -139,11 +138,11 @@ class HumilityConfig:
                 "modesty_emphasis": 0.8,
                 "achievement_focus": 0.4,
             },
-        }
+        },
     )
 
     # HEXACO model weights
-    hexaco_weights: Dict[str, float] = field(
+    hexaco_weights: dict[str, float] = field(
         default_factory=lambda: {
             "honesty_humility": 0.3,
             "emotionality": 0.1,
@@ -151,24 +150,24 @@ class HumilityConfig:
             "agreeableness": 0.2,
             "conscientiousness": 0.1,
             "openness": 0.2,
-        }
+        },
     )
 
     # Epistemic humility factors
-    epistemic_factors: Dict[str, float] = field(
+    epistemic_factors: dict[str, float] = field(
         default_factory=lambda: {
             "intellectual_modesty": 0.25,
             "open_mindedness": 0.25,
             "corrigibility": 0.25,
             "engagement": 0.25,
-        }
+        },
     )
 
     @classmethod
     def from_file(cls, config_path: Path) -> "HumilityConfig":
         """Load configuration from JSON file."""
         try:
-            with open(config_path, "r", encoding="utf-8") as f:
+            with open(config_path, encoding="utf-8") as f:
                 config_data = json.load(f)
             return cls(**config_data)
         except Exception as e:
@@ -208,7 +207,7 @@ class HumilityConfig:
         with open(config_path, "w", encoding="utf-8") as f:
             json.dump(config_data, f, indent=2, ensure_ascii=False)
 
-    def validate(self) -> List[str]:
+    def validate(self) -> list[str]:
         """Validate configuration and return list of issues."""
         issues = []
 
@@ -217,7 +216,7 @@ class HumilityConfig:
 
         if self.min_severity_threshold not in ["low", "medium", "high", "critical"]:
             issues.append(
-                "min_severity_threshold must be one of: low, medium, high, critical"
+                "min_severity_threshold must be one of: low, medium, high, critical",
             )
 
         if self.max_findings_per_file <= 0:

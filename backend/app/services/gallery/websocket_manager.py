@@ -1,5 +1,4 @@
-"""
-Gallery WebSocket Manager
+"""Gallery WebSocket Manager
 
 Manages WebSocket connections for real-time gallery download progress updates.
 Provides real-time progress tracking, status updates, and error notifications.
@@ -71,7 +70,7 @@ class GalleryWebSocketManager:
             connection_index = len(self.active_connections) - 1
 
         logger.info(
-            f"Gallery WebSocket connected. Total connections: {len(self.active_connections)}"
+            f"Gallery WebSocket connected. Total connections: {len(self.active_connections)}",
         )
         return connection_index
 
@@ -92,11 +91,11 @@ class GalleryWebSocketManager:
                 connection_info.websocket = None
 
         logger.info(
-            f"Gallery WebSocket disconnected. Total connections: {len(self.active_connections)}"
+            f"Gallery WebSocket disconnected. Total connections: {len(self.active_connections)}",
         )
 
     async def subscribe_to_download(
-        self, connection_index: int, download_id: str
+        self, connection_index: int, download_id: str,
     ) -> None:
         """Subscribe connection to download progress updates"""
         async with self.connection_lock:
@@ -110,11 +109,11 @@ class GalleryWebSocketManager:
                     self.download_subscribers[download_id].add(connection_index)
 
                     logger.debug(
-                        f"Connection {connection_index} subscribed to download {download_id}"
+                        f"Connection {connection_index} subscribed to download {download_id}",
                     )
 
     async def unsubscribe_from_download(
-        self, connection_index: int, download_id: str
+        self, connection_index: int, download_id: str,
     ) -> None:
         """Unsubscribe connection from download progress updates"""
         async with self.connection_lock:
@@ -129,7 +128,7 @@ class GalleryWebSocketManager:
                             del self.download_subscribers[download_id]
 
                     logger.debug(
-                        f"Connection {connection_index} unsubscribed from download {download_id}"
+                        f"Connection {connection_index} unsubscribed from download {download_id}",
                     )
 
     async def send_progress_update(self, progress: ProgressUpdate) -> None:
@@ -152,7 +151,7 @@ class GalleryWebSocketManager:
                         await connection_info.websocket.send_text(json.dumps(message))
             except Exception as e:
                 logger.warning(
-                    f"Failed to send progress update to connection {connection_index}: {e}"
+                    f"Failed to send progress update to connection {connection_index}: {e}",
                 )
                 disconnected_indices.append(connection_index)
 
@@ -173,7 +172,7 @@ class GalleryWebSocketManager:
         await self._broadcast_to_download_subscribers(download_id, message)
 
     async def send_download_completed(
-        self, download_id: str, result: dict[str, Any]
+        self, download_id: str, result: dict[str, Any],
     ) -> None:
         """Send download completed notification"""
         message = {
@@ -210,7 +209,7 @@ class GalleryWebSocketManager:
         await self._broadcast_to_download_subscribers(download_id, message)
 
     async def _broadcast_to_download_subscribers(
-        self, download_id: str, message: dict[str, Any]
+        self, download_id: str, message: dict[str, Any],
     ) -> None:
         """Broadcast message to all subscribers of a download"""
         if download_id not in self.download_subscribers:
@@ -227,7 +226,7 @@ class GalleryWebSocketManager:
                         await connection_info.websocket.send_text(json.dumps(message))
             except Exception as e:
                 logger.warning(
-                    f"Failed to broadcast message to connection {connection_index}: {e}"
+                    f"Failed to broadcast message to connection {connection_index}: {e}",
                 )
                 disconnected_indices.append(connection_index)
 
@@ -239,7 +238,7 @@ class GalleryWebSocketManager:
         """Get WebSocket connection statistics"""
         async with self.connection_lock:
             active_connections = len(
-                [conn for conn in self.active_connections if conn is not None]
+                [conn for conn in self.active_connections if conn is not None],
             )
             total_subscriptions = sum(
                 len(subscribers) for subscribers in self.download_subscribers.values()

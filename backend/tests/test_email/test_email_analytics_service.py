@@ -1,15 +1,12 @@
-"""
-Tests for Email Analytics Service.
+"""Tests for Email Analytics Service.
 
 This module contains comprehensive tests for the email analytics functionality.
 """
 
-import asyncio
 import json
 import tempfile
 from datetime import datetime, timedelta
-from pathlib import Path
-from unittest.mock import AsyncMock, Mock, patch
+from unittest.mock import patch
 
 import pytest
 import pytest_asyncio
@@ -107,11 +104,11 @@ class TestEmailAnalyticsService:
 
     @pytest.mark.asyncio
     async def test_get_email_metrics_with_data(
-        self, analytics_service, sample_emails_data
+        self, analytics_service, sample_emails_data,
     ):
         """Test getting metrics with sample email data."""
         with patch.object(
-            analytics_service, "_get_emails_data", return_value=sample_emails_data
+            analytics_service, "_get_emails_data", return_value=sample_emails_data,
         ):
             metrics = await analytics_service.get_email_metrics()
 
@@ -132,28 +129,28 @@ class TestEmailAnalyticsService:
 
     @pytest.mark.asyncio
     async def test_get_email_metrics_with_period_filter(
-        self, analytics_service, sample_emails_data
+        self, analytics_service, sample_emails_data,
     ):
         """Test getting metrics with period filtering."""
         start_date = datetime.now() - timedelta(hours=4)
         end_date = datetime.now() - timedelta(minutes=30)
 
         with patch.object(
-            analytics_service, "_get_emails_data", return_value=sample_emails_data
+            analytics_service, "_get_emails_data", return_value=sample_emails_data,
         ):
             metrics = await analytics_service.get_email_metrics(
-                period_start=start_date, period_end=end_date
+                period_start=start_date, period_end=end_date,
             )
 
             assert metrics.total_emails == 3
 
     @pytest.mark.asyncio
     async def test_get_email_metrics_with_agent_filter(
-        self, analytics_service, sample_emails_data
+        self, analytics_service, sample_emails_data,
     ):
         """Test getting metrics with agent filtering."""
         with patch.object(
-            analytics_service, "_get_emails_data", return_value=sample_emails_data
+            analytics_service, "_get_emails_data", return_value=sample_emails_data,
         ):
             metrics = await analytics_service.get_email_metrics(agent_id="agent1")
 
@@ -161,11 +158,11 @@ class TestEmailAnalyticsService:
 
     @pytest.mark.asyncio
     async def test_get_email_metrics_caching(
-        self, analytics_service, sample_emails_data
+        self, analytics_service, sample_emails_data,
     ):
         """Test metrics caching functionality."""
         with patch.object(
-            analytics_service, "_get_emails_data", return_value=sample_emails_data
+            analytics_service, "_get_emails_data", return_value=sample_emails_data,
         ):
             # First call should cache the result
             metrics1 = await analytics_service.get_email_metrics(use_cache=True)
@@ -185,11 +182,11 @@ class TestEmailAnalyticsService:
 
     @pytest.mark.asyncio
     async def test_generate_insights_with_data(
-        self, analytics_service, sample_emails_data
+        self, analytics_service, sample_emails_data,
     ):
         """Test generating insights with sample email data."""
         with patch.object(
-            analytics_service, "_get_emails_data", return_value=sample_emails_data
+            analytics_service, "_get_emails_data", return_value=sample_emails_data,
         ):
             insights = await analytics_service.generate_insights()
 
@@ -217,7 +214,7 @@ class TestEmailAnalyticsService:
     async def test_generate_report(self, analytics_service, sample_emails_data):
         """Test generating a comprehensive email report."""
         with patch.object(
-            analytics_service, "_get_emails_data", return_value=sample_emails_data
+            analytics_service, "_get_emails_data", return_value=sample_emails_data,
         ):
             report = await analytics_service.generate_report(
                 report_type="weekly",
@@ -239,7 +236,7 @@ class TestEmailAnalyticsService:
     async def test_get_agent_performance(self, analytics_service, sample_emails_data):
         """Test getting agent performance metrics."""
         with patch.object(
-            analytics_service, "_get_emails_data", return_value=sample_emails_data
+            analytics_service, "_get_emails_data", return_value=sample_emails_data,
         ):
             performance = await analytics_service.get_agent_performance("agent1")
 
@@ -261,7 +258,7 @@ class TestEmailAnalyticsService:
         """Test getting agent performance with no data."""
         with patch.object(analytics_service, "_get_emails_data", return_value=[]):
             performance = await analytics_service.get_agent_performance(
-                "nonexistent_agent"
+                "nonexistent_agent",
             )
             assert performance == {}
 
@@ -269,10 +266,10 @@ class TestEmailAnalyticsService:
     async def test_get_email_trends_volume(self, analytics_service, sample_emails_data):
         """Test getting email volume trends."""
         with patch.object(
-            analytics_service, "_get_emails_data", return_value=sample_emails_data
+            analytics_service, "_get_emails_data", return_value=sample_emails_data,
         ):
             trends = await analytics_service.get_email_trends(
-                metric="volume", period_days=7
+                metric="volume", period_days=7,
             )
 
             assert isinstance(trends, list)
@@ -285,14 +282,14 @@ class TestEmailAnalyticsService:
 
     @pytest.mark.asyncio
     async def test_get_email_trends_response_time(
-        self, analytics_service, sample_emails_data
+        self, analytics_service, sample_emails_data,
     ):
         """Test getting email response time trends."""
         with patch.object(
-            analytics_service, "_get_emails_data", return_value=sample_emails_data
+            analytics_service, "_get_emails_data", return_value=sample_emails_data,
         ):
             trends = await analytics_service.get_email_trends(
-                metric="response_time", period_days=7
+                metric="response_time", period_days=7,
             )
 
             assert isinstance(trends, list)
@@ -304,14 +301,14 @@ class TestEmailAnalyticsService:
 
     @pytest.mark.asyncio
     async def test_get_email_trends_agent_activity(
-        self, analytics_service, sample_emails_data
+        self, analytics_service, sample_emails_data,
     ):
         """Test getting agent activity trends."""
         with patch.object(
-            analytics_service, "_get_emails_data", return_value=sample_emails_data
+            analytics_service, "_get_emails_data", return_value=sample_emails_data,
         ):
             trends = await analytics_service.get_email_trends(
-                metric="agent_activity", period_days=7
+                metric="agent_activity", period_days=7,
             )
 
             assert isinstance(trends, list)
@@ -323,14 +320,14 @@ class TestEmailAnalyticsService:
 
     @pytest.mark.asyncio
     async def test_get_email_trends_invalid_metric(
-        self, analytics_service, sample_emails_data
+        self, analytics_service, sample_emails_data,
     ):
         """Test getting trends with invalid metric."""
         with patch.object(
-            analytics_service, "_get_emails_data", return_value=sample_emails_data
+            analytics_service, "_get_emails_data", return_value=sample_emails_data,
         ):
             trends = await analytics_service.get_email_trends(
-                metric="invalid_metric", period_days=7
+                metric="invalid_metric", period_days=7,
             )
 
             assert isinstance(trends, list)
@@ -359,7 +356,7 @@ class TestEmailAnalyticsService:
 
     @pytest.mark.asyncio
     async def test_analyze_content_patterns(
-        self, analytics_service, sample_emails_data
+        self, analytics_service, sample_emails_data,
     ):
         """Test content pattern analysis."""
         insights = await analytics_service._analyze_content_patterns(sample_emails_data)
@@ -459,17 +456,17 @@ class TestEmailAnalyticsService:
 
     @pytest.mark.asyncio
     async def test_generate_recommendations(
-        self, analytics_service, sample_emails_data
+        self, analytics_service, sample_emails_data,
     ):
         """Test recommendation generation."""
         with patch.object(
-            analytics_service, "_get_emails_data", return_value=sample_emails_data
+            analytics_service, "_get_emails_data", return_value=sample_emails_data,
         ):
             metrics = await analytics_service.get_email_metrics()
             insights = await analytics_service.generate_insights()
 
             recommendations = await analytics_service._generate_recommendations(
-                metrics, insights
+                metrics, insights,
             )
 
             assert isinstance(recommendations, list)
@@ -481,10 +478,10 @@ class TestEmailAnalyticsService:
     async def test_generate_charts_data(self, analytics_service, sample_emails_data):
         """Test charts data generation."""
         with patch.object(
-            analytics_service, "_get_emails_data", return_value=sample_emails_data
+            analytics_service, "_get_emails_data", return_value=sample_emails_data,
         ):
             charts_data = await analytics_service._generate_charts_data(
-                datetime.now() - timedelta(days=7), datetime.now(), None
+                datetime.now() - timedelta(days=7), datetime.now(), None,
             )
 
             assert isinstance(charts_data, dict)
@@ -500,7 +497,7 @@ class TestEmailAnalyticsService:
     async def test_save_report(self, analytics_service, sample_emails_data):
         """Test report saving functionality."""
         with patch.object(
-            analytics_service, "_get_emails_data", return_value=sample_emails_data
+            analytics_service, "_get_emails_data", return_value=sample_emails_data,
         ):
             report = await analytics_service.generate_report("daily")
 
@@ -509,7 +506,7 @@ class TestEmailAnalyticsService:
             assert report_file.exists()
 
             # Verify file content
-            with open(report_file, "r") as f:
+            with open(report_file) as f:
                 saved_data = json.load(f)
                 assert saved_data["report_id"] == report.report_id
                 assert saved_data["report_type"] == report.report_type
@@ -522,13 +519,13 @@ class TestEmailAnalyticsService:
 
         # Test with expired cache
         analytics_service._cache_expiry["test_key"] = datetime.now() - timedelta(
-            minutes=20
+            minutes=20,
         )
         assert not analytics_service._is_cache_valid("test_key")
 
         # Test with valid cache
         analytics_service._cache_expiry["test_key"] = datetime.now() + timedelta(
-            minutes=10
+            minutes=10,
         )
         assert analytics_service._is_cache_valid("test_key")
 
@@ -537,7 +534,7 @@ class TestEmailAnalyticsService:
         """Test error handling in various methods."""
         # Test with invalid data
         with patch.object(
-            analytics_service, "_get_emails_data", side_effect=Exception("Test error")
+            analytics_service, "_get_emails_data", side_effect=Exception("Test error"),
         ):
             metrics = await analytics_service.get_email_metrics()
             assert metrics.total_emails == 0  # Should return empty metrics
@@ -662,7 +659,7 @@ class TestEmailReport:
                 timestamp=datetime.now(),
                 actionable=False,
                 suggested_actions=[],
-            )
+            ),
         ]
 
         report = EmailReport(

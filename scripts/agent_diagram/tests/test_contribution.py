@@ -1,5 +1,4 @@
-"""
-Tests for the AgentContribution data model.
+"""Tests for the AgentContribution data model.
 """
 
 import pytest
@@ -28,21 +27,21 @@ class TestAgentContribution:
         """Test that empty agent name raises ValueError."""
         with pytest.raises(ValueError, match="Agent name cannot be empty"):
             AgentContribution(
-                agent_name="", title="Test Title", description="Test description"
+                agent_name="", title="Test Title", description="Test description",
             )
 
     def test_empty_title_raises_error(self):
         """Test that empty title raises ValueError."""
         with pytest.raises(ValueError, match="Title cannot be empty"):
             AgentContribution(
-                agent_name="Test-Agent-123", title="", description="Test description"
+                agent_name="Test-Agent-123", title="", description="Test description",
             )
 
     def test_empty_description_raises_error(self):
         """Test that empty description raises ValueError."""
         with pytest.raises(ValueError, match="Description cannot be empty"):
             AgentContribution(
-                agent_name="Test-Agent-123", title="Test Title", description=""
+                agent_name="Test-Agent-123", title="Test Title", description="",
             )
 
     def test_to_dict(self):

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Reynard Integration Example
+"""Reynard Integration Example
 
 Shows how to integrate the prompt refinement tools with existing Reynard infrastructure.
 This demonstrates the strategic approach of leveraging existing tools rather than rebuilding.
@@ -20,14 +19,13 @@ from services.refinement_service import PromptRefinementService
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
 
 class ReynardIntegration:
-    """
-    Integration layer for existing Reynard tools.
+    """Integration layer for existing Reynard tools.
 
     This class shows how to leverage existing Reynard infrastructure
     instead of rebuilding everything from scratch.
@@ -68,7 +66,7 @@ class ReynardIntegration:
         try:
             # Try to import TextProcessor
             sys.path.append(
-                "/home/kade/runeset/reynard/third_party/yipyap/app/data_access"
+                "/home/kade/runeset/reynard/third_party/yipyap/app/data_access",
             )
             from text_processor import TextProcessor
 
@@ -93,7 +91,7 @@ class ReynardIntegration:
                         "title": f"PawPrint result for {query}",
                         "content": f"Content scraped by PawPrint for query: {query}",
                         "quality_score": 0.8,
-                    }
+                    },
                 ],
                 "source": "pawprint",
             }
@@ -115,7 +113,7 @@ class ReynardIntegration:
                         "content": f"RAG semantic search result for {query}",
                         "score": 0.85,
                         "metadata": {"source": "rag_backend"},
-                    }
+                    },
                 ],
                 "source": "rag_backend",
             }
@@ -150,13 +148,13 @@ async def demonstrate_reynard_integration():
     reynard_integration = ReynardIntegration()
 
     # Show available tools
-    print(f"📊 Available Reynard Tools:")
+    print("📊 Available Reynard Tools:")
     print(
-        f"   • PawPrint Scraper: {'✅' if reynard_integration.pawprint_available else '❌'}"
+        f"   • PawPrint Scraper: {'✅' if reynard_integration.pawprint_available else '❌'}",
     )
     print(f"   • RAG Backend: {'✅' if reynard_integration.rag_available else '❌'}")
     print(
-        f"   • TextProcessor: {'✅' if reynard_integration.text_processor_available else '❌'}"
+        f"   • TextProcessor: {'✅' if reynard_integration.text_processor_available else '❌'}",
     )
 
     # Test query
@@ -189,7 +187,7 @@ async def demonstrate_reynard_integration():
     print("\n📝 Testing TextProcessor Integration:")
     text_result = await reynard_integration.use_text_processor(test_query)
     if text_result.get("success"):
-        print(f"   ✅ TextProcessor analysis complete")
+        print("   ✅ TextProcessor analysis complete")
         print(f"      • Keywords: {', '.join(text_result['keywords'])}")
         print(f"      • Language: {text_result['language']}")
         print(f"      • Summary: {text_result['summary']}")
@@ -225,7 +223,7 @@ async def demonstrate_hybrid_approach():
     try:
         result = await refinement_service.refine_query(test_query)
         print(
-            f"   ✅ New tools refined query with score: {result.improvement_score:.2f}"
+            f"   ✅ New tools refined query with score: {result.improvement_score:.2f}",
         )
         print(f"   📝 Refined: {result.refined_query}")
     except Exception as e:
@@ -238,7 +236,7 @@ async def demonstrate_hybrid_approach():
     pawprint_result = await reynard_integration.use_pawprint_scraper(test_query)
     if pawprint_result.get("success"):
         print(
-            f"   ✅ PawPrint provided {len(pawprint_result['results'])} high-quality results"
+            f"   ✅ PawPrint provided {len(pawprint_result['results'])} high-quality results",
         )
 
     # RAG for semantic search
@@ -249,7 +247,7 @@ async def demonstrate_hybrid_approach():
     # TextProcessor for NLP
     text_result = await reynard_integration.use_text_processor(test_query)
     if text_result.get("success"):
-        print(f"   ✅ TextProcessor provided keyword analysis")
+        print("   ✅ TextProcessor provided keyword analysis")
 
     print("\n🎯 Hybrid Approach Benefits:")
     print("   • Best of both worlds: new capabilities + proven reliability")

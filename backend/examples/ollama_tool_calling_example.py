@@ -1,5 +1,4 @@
-"""
-Example of proper tool calling format for Ollama with qwen3:latest.
+"""Example of proper tool calling format for Ollama with qwen3:latest.
 
 This demonstrates the correct format for native Ollama tool calling as of 2025.
 """
@@ -14,7 +13,7 @@ EXAMPLE_TOOLS = [
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "path": {"type": "string", "description": "Directory path to list"}
+                    "path": {"type": "string", "description": "Directory path to list"},
                 },
                 "required": ["path"],
             },
@@ -31,7 +30,7 @@ EXAMPLE_TOOLS = [
                     "input_num": {
                         "type": "number",
                         "description": "The number to be squared",
-                    }
+                    },
                 },
                 "required": ["input_num"],
             },
@@ -53,14 +52,14 @@ EXAMPLE_CHAT_REQUEST = {
 
 # Example of how to handle tool calls in streaming response
 def handle_tool_call(tool_call_data):
-    """
-    Handle a tool call from Ollama streaming response.
+    """Handle a tool call from Ollama streaming response.
 
     Args:
         tool_call_data: The tool call data from Ollama response
 
     Returns:
         dict: Tool execution result
+
     """
     tool_name = tool_call_data.get("function", {}).get("name")
     tool_args = tool_call_data.get("function", {}).get("arguments", {})
@@ -93,11 +92,11 @@ def handle_tool_call(tool_call_data):
 
 # Example streaming response handling
 async def process_ollama_streaming_response(stream):
-    """
-    Process streaming response from Ollama with tool calling support.
+    """Process streaming response from Ollama with tool calling support.
 
     Args:
         stream: Async generator of Ollama response chunks
+
     """
     full_response = ""
     tool_calls = []
@@ -114,7 +113,7 @@ async def process_ollama_streaming_response(stream):
             for tool_call in chunk["message"]["tool_calls"]:
                 tool_calls.append(tool_call)
                 print(
-                    f"Tool call: {tool_call['function']['name']} with args {tool_call['function']['arguments']}"
+                    f"Tool call: {tool_call['function']['name']} with args {tool_call['function']['arguments']}",
                 )
 
                 # Execute the tool

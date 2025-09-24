@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Reynard Auth App Backend
+"""Reynard Auth App Backend
 FastAPI server with Gatekeeper authentication integration
 """
 
@@ -11,7 +10,7 @@ from pathlib import Path
 
 # Add the gatekeeper library to the path
 sys.path.insert(
-    0, str(Path(__file__).parent.parent.parent / "libraries" / "gatekeeper")
+    0, str(Path(__file__).parent.parent.parent / "libraries" / "gatekeeper"),
 )
 
 
@@ -31,7 +30,7 @@ from gatekeeper.backends.postgresql import PostgreSQLBackend
 
 # Database configuration
 DATABASE_URL = os.getenv(
-    "DATABASE_URL", "postgresql://yipyap:yipyap@localhost:5432/yipyap"
+    "DATABASE_URL", "postgresql://yipyap:yipyap@localhost:5432/yipyap",
 )
 
 # Token configuration
@@ -57,7 +56,7 @@ async def lifespan(app: FastAPI):
     # Initialize PostgreSQL backend
     print("🔧 Initializing PostgreSQL backend...")
     backend = PostgreSQLBackend(
-        database_url=DATABASE_URL, echo=False  # Set to True for SQL logging
+        database_url=DATABASE_URL, echo=False,  # Set to True for SQL logging
     )
 
     # Test database connection
@@ -147,7 +146,7 @@ async def login(
     """Authenticate user and return access/refresh tokens"""
     try:
         tokens = await auth_mgr.authenticate(
-            username=form_data.username, password=form_data.password
+            username=form_data.username, password=form_data.password,
         )
 
         if not tokens:
@@ -161,13 +160,13 @@ async def login(
     except Exception as e:
         print(f"Login error: {e}")
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Authentication failed"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Authentication failed",
         )
 
 
 @app.post("/auth/register")
 async def register(
-    user_data: RegisterRequest, auth_mgr: AuthManager = Depends(get_auth_manager)
+    user_data: RegisterRequest, auth_mgr: AuthManager = Depends(get_auth_manager),
 ):
     """Register a new user"""
     try:
@@ -193,7 +192,7 @@ async def register(
 
 @app.post("/auth/refresh")
 async def refresh_tokens(
-    request: RefreshRequest, auth_mgr: AuthManager = Depends(get_auth_manager)
+    request: RefreshRequest, auth_mgr: AuthManager = Depends(get_auth_manager),
 ):
     """Refresh access token using refresh token"""
     try:
@@ -201,20 +200,20 @@ async def refresh_tokens(
 
         if not tokens:
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token"
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token",
             )
 
         return tokens
     except Exception as e:
         print(f"Token refresh error: {e}")
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Token refresh failed"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Token refresh failed",
         )
 
 
 @app.post("/auth/logout")
 async def logout(
-    request: LogoutRequest, auth_mgr: AuthManager = Depends(get_auth_manager)
+    request: LogoutRequest, auth_mgr: AuthManager = Depends(get_auth_manager),
 ):
     """Logout user by revoking token"""
     try:
@@ -222,20 +221,20 @@ async def logout(
 
         if not success:
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to logout"
+                status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to logout",
             )
 
         return {"message": "Successfully logged out"}
     except Exception as e:
         print(f"Logout error: {e}")
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Logout failed"
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Logout failed",
         )
 
 
 @app.get("/auth/me")
 async def get_current_user(
-    authorization: str = None, auth_mgr: AuthManager = Depends(get_auth_manager)
+    authorization: str = None, auth_mgr: AuthManager = Depends(get_auth_manager),
 ):
     """Get current user information"""
     try:
@@ -250,20 +249,20 @@ async def get_current_user(
 
         if not user:
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token"
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token",
             )
 
         return UserPublic.from_user(user)
     except Exception as e:
         print(f"Get current user error: {e}")
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Authentication failed"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Authentication failed",
         )
 
 
 @app.get("/auth/users")
 async def list_users(
-    authorization: str = None, auth_mgr: AuthManager = Depends(get_auth_manager)
+    authorization: str = None, auth_mgr: AuthManager = Depends(get_auth_manager),
 ):
     """List all users (admin only)"""
     try:
@@ -278,7 +277,7 @@ async def list_users(
 
         if not current_user or current_user.role != UserRole.ADMIN:
             raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN, detail="Admin access required"
+                status_code=status.HTTP_403_FORBIDDEN, detail="Admin access required",
             )
 
         users = await auth_mgr.list_users()

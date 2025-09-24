@@ -5,7 +5,7 @@
  * and unread indicators.
  */
 import { Show, For, createSignal } from "solid-js";
-export const RoomList = props => {
+export const RoomList = (props: any) => {
   const [showCreateForm, setShowCreateForm] = createSignal(false);
   const [newRoomName, setNewRoomName] = createSignal("");
   // Format last message preview

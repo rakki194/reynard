@@ -1,5 +1,4 @@
-"""
-General Scraper for Reynard Backend
+"""General Scraper for Reynard Backend
 
 General-purpose web scraper that can handle most websites.
 """
@@ -19,8 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 class GeneralScraper(BaseScraper):
-    """
-    General-purpose web scraper.
+    """General-purpose web scraper.
 
     Can handle most websites by extracting text content, links, and images.
     Uses BeautifulSoup for HTML parsing and aiohttp for async requests.
@@ -73,14 +71,14 @@ class GeneralScraper(BaseScraper):
             return False
 
     def can_handle_url(self, url: str) -> bool:
-        """
-        Check if this scraper can handle the given URL.
+        """Check if this scraper can handle the given URL.
 
         Args:
             url: URL to check
 
         Returns:
             True if URL is valid
+
         """
         try:
             parsed = urlparse(url)
@@ -89,10 +87,9 @@ class GeneralScraper(BaseScraper):
             return False
 
     async def scrape_url(
-        self, url: str, config: ScrapingConfig | None = None
+        self, url: str, config: ScrapingConfig | None = None,
     ) -> list[dict[str, Any]]:
-        """
-        Scrape content from a URL.
+        """Scrape content from a URL.
 
         Args:
             url: URL to scrape
@@ -100,6 +97,7 @@ class GeneralScraper(BaseScraper):
 
         Returns:
             List of extracted content data
+
         """
         if not self.session:
             raise RuntimeError("Scraper not initialized")
@@ -141,10 +139,9 @@ class GeneralScraper(BaseScraper):
             raise
 
     async def _extract_content(
-        self, soup: BeautifulSoup, base_url: str, config: ScrapingConfig | None = None
+        self, soup: BeautifulSoup, base_url: str, config: ScrapingConfig | None = None,
     ) -> list[dict[str, Any]]:
-        """
-        Extract content from parsed HTML.
+        """Extract content from parsed HTML.
 
         Args:
             soup: BeautifulSoup parsed HTML
@@ -153,6 +150,7 @@ class GeneralScraper(BaseScraper):
 
         Returns:
             List of extracted content data
+
         """
         results = []
 
@@ -169,7 +167,7 @@ class GeneralScraper(BaseScraper):
                         "extracted_at": "now",  # Will be replaced with actual timestamp
                         "scraper": self.name,
                     },
-                }
+                },
             )
 
         # Extract images if configured
@@ -238,7 +236,7 @@ class GeneralScraper(BaseScraper):
         return ""
 
     async def _extract_images(
-        self, soup: BeautifulSoup, base_url: str
+        self, soup: BeautifulSoup, base_url: str,
     ) -> list[dict[str, Any]]:
         """Extract image information."""
         images = []
@@ -265,13 +263,13 @@ class GeneralScraper(BaseScraper):
                         "extracted_at": "now",
                         "scraper": self.name,
                     },
-                }
+                },
             )
 
         return images
 
     async def _extract_links(
-        self, soup: BeautifulSoup, base_url: str
+        self, soup: BeautifulSoup, base_url: str,
     ) -> list[dict[str, Any]]:
         """Extract link information."""
         links = []
@@ -286,7 +284,7 @@ class GeneralScraper(BaseScraper):
 
             # Skip external links for now (can be configured)
             if not link_url.startswith(
-                base_url.split("/")[0] + "//" + urlparse(base_url).netloc
+                base_url.split("/")[0] + "//" + urlparse(base_url).netloc,
             ):
                 continue
 
@@ -306,7 +304,7 @@ class GeneralScraper(BaseScraper):
                         "extracted_at": "now",
                         "scraper": self.name,
                     },
-                }
+                },
             )
 
         return links

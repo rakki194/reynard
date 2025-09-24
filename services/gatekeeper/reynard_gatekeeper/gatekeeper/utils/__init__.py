@@ -1,5 +1,4 @@
-"""
-Utility modules for the Gatekeeper library.
+"""Utility modules for the Gatekeeper library.
 
 This package contains security utilities, validators, and other helper functions.
 """

@@ -1,5 +1,4 @@
-"""
-Git Workflow Automation
+"""Git Workflow Automation
 
 Provides comprehensive git workflow automation for release management
 in the Success-Advisor-8 distillation system.
@@ -8,12 +7,10 @@ Author: Champion-Designer-32 (Wolf Specialist)
 Version: 1.0.0
 """
 
-import asyncio
-import os
 import subprocess
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from ..utils.data_structures import (
     ReleaseConfig,
@@ -24,19 +21,18 @@ from ..utils.logging import PhoenixLogger
 
 
 class ReleaseAutomation:
-    """
-    Git workflow automation system.
+    """Git workflow automation system.
 
     Provides automated git operations for release management including
     staging, committing, tagging, and pushing changes.
     """
 
-    def __init__(self, config: Optional[ReleaseConfig] = None):
-        """
-        Initialize release automation.
+    def __init__(self, config: ReleaseConfig | None = None):
+        """Initialize release automation.
 
         Args:
             config: Optional release configuration
+
         """
         self.config = config or create_default_release_config()
         self.logger = PhoenixLogger("release_automation")
@@ -45,12 +41,11 @@ class ReleaseAutomation:
 
     async def run_release_workflow(
         self,
-        version_type: Optional[str] = None,
-        create_tag: Optional[bool] = None,
-        push_remote: Optional[bool] = None,
+        version_type: str | None = None,
+        create_tag: bool | None = None,
+        push_remote: bool | None = None,
     ) -> ReleaseResult:
-        """
-        Run the complete release workflow.
+        """Run the complete release workflow.
 
         Args:
             version_type: Type of version bump (major, minor, patch, auto)
@@ -59,6 +54,7 @@ class ReleaseAutomation:
 
         Returns:
             Release result with success status and details
+
         """
         self.logger.info("Starting release workflow", "workflow")
 
@@ -144,11 +140,11 @@ class ReleaseAutomation:
         return result
 
     async def _check_git_status(self) -> bool:
-        """
-        Check if git repository is in a clean state.
+        """Check if git repository is in a clean state.
 
         Returns:
             True if clean, False otherwise
+
         """
         try:
             result = subprocess.run(
@@ -161,7 +157,7 @@ class ReleaseAutomation:
             # Check for untracked files or uncommitted changes
             if result.stdout.strip():
                 self.logger.warning(
-                    "Git repository has uncommitted changes", "git_status"
+                    "Git repository has uncommitted changes", "git_status",
                 )
                 return False
 
@@ -172,17 +168,17 @@ class ReleaseAutomation:
             self.logger.error(f"Failed to check git status: {e}", "git_status")
             return False
 
-    async def _analyze_changes(self) -> Dict[str, Any]:
-        """
-        Analyze changes in the repository.
+    async def _analyze_changes(self) -> dict[str, Any]:
+        """Analyze changes in the repository.
 
         Returns:
             Dictionary with change analysis
+
         """
         try:
             # Get diff statistics
             result = subprocess.run(
-                ["git", "diff", "--stat"], capture_output=True, text=True, check=True
+                ["git", "diff", "--stat"], capture_output=True, text=True, check=True,
             )
 
             # Get changed files
@@ -221,7 +217,7 @@ class ReleaseAutomation:
                     changes["has_bug_fixes"] = True
 
             self.logger.info(
-                f"Analyzed {len(changed_files)} changed files", "change_analysis"
+                f"Analyzed {len(changed_files)} changed files", "change_analysis",
             )
             return changes
 
@@ -229,15 +225,15 @@ class ReleaseAutomation:
             self.logger.error(f"Failed to analyze changes: {e}", "change_analysis")
             return {}
 
-    def _determine_version_type(self, changes: Dict[str, Any]) -> str:
-        """
-        Determine version bump type based on changes.
+    def _determine_version_type(self, changes: dict[str, Any]) -> str:
+        """Determine version bump type based on changes.
 
         Args:
             changes: Change analysis results
 
         Returns:
             Version type (major, minor, patch)
+
         """
         if changes.get("has_breaking_changes", False):
             self.logger.info(
@@ -245,34 +241,33 @@ class ReleaseAutomation:
                 "version_determination",
             )
             return "major"
-        elif changes.get("has_new_features", False):
+        if changes.get("has_new_features", False):
             self.logger.info(
-                "Detected new features - minor version bump", "version_determination"
+                "Detected new features - minor version bump", "version_determination",
             )
             return "minor"
-        else:
-            self.logger.info(
-                "Detected bug fixes/improvements - patch version bump",
-                "version_determination",
-            )
-            return "patch"
+        self.logger.info(
+            "Detected bug fixes/improvements - patch version bump",
+            "version_determination",
+        )
+        return "patch"
 
-    async def _update_version(self, version_type: str) -> Optional[str]:
-        """
-        Update package version.
+    async def _update_version(self, version_type: str) -> str | None:
+        """Update package version.
 
         Args:
             version_type: Type of version bump
 
         Returns:
             New version string or None if failed
+
         """
         try:
             # Check if package.json exists
             package_json = Path("package.json")
             if not package_json.exists():
                 self.logger.warning(
-                    "package.json not found, skipping version update", "version_update"
+                    "package.json not found, skipping version update", "version_update",
                 )
                 return "0.0.0"
 
@@ -287,7 +282,7 @@ class ReleaseAutomation:
 
             # Update version
             subprocess.run(
-                ["npm", "version", version_type, "--no-git-tag-version"], check=True
+                ["npm", "version", version_type, "--no-git-tag-version"], check=True,
             )
 
             # Get new version
@@ -300,7 +295,7 @@ class ReleaseAutomation:
             new_version = result.stdout.strip().strip('"')
 
             self.logger.success(
-                f"Version updated: {current_version} -> {new_version}", "version_update"
+                f"Version updated: {current_version} -> {new_version}", "version_update",
             )
             return new_version
 
@@ -309,14 +304,14 @@ class ReleaseAutomation:
             return None
 
     async def _update_changelog(self, version: str) -> bool:
-        """
-        Update CHANGELOG.md.
+        """Update CHANGELOG.md.
 
         Args:
             version: New version string
 
         Returns:
             True if successful, False otherwise
+
         """
         try:
             changelog_path = Path("CHANGELOG.md")
@@ -328,13 +323,13 @@ class ReleaseAutomation:
                 return False
 
             # Read current changelog
-            with open(changelog_path, "r") as f:
+            with open(changelog_path) as f:
                 content = f.read()
 
             # Replace [Unreleased] with new version
             today = datetime.now().strftime("%Y-%m-%d")
             new_content = content.replace(
-                "## [Unreleased]", f"## [{version}] - {today}"
+                "## [Unreleased]", f"## [{version}] - {today}",
             )
 
             # Add new [Unreleased] section
@@ -364,7 +359,7 @@ class ReleaseAutomation:
                 f.write(new_content)
 
             self.logger.success(
-                f"CHANGELOG.md updated for version {version}", "changelog_update"
+                f"CHANGELOG.md updated for version {version}", "changelog_update",
             )
             return True
 
@@ -373,10 +368,9 @@ class ReleaseAutomation:
             return False
 
     async def _commit_changes(
-        self, version: str, changes: Dict[str, Any]
-    ) -> Optional[str]:
-        """
-        Stage and commit changes.
+        self, version: str, changes: dict[str, Any],
+    ) -> str | None:
+        """Stage and commit changes.
 
         Args:
             version: New version string
@@ -384,6 +378,7 @@ class ReleaseAutomation:
 
         Returns:
             Commit hash or None if failed
+
         """
         try:
             # Stage all changes
@@ -392,10 +387,10 @@ class ReleaseAutomation:
             # Create commit message
             commit_message = f"feat: release v{version}\n\n"
             commit_message += f"- Version bump to {version}\n"
-            commit_message += f"- Updated CHANGELOG.md\n"
+            commit_message += "- Updated CHANGELOG.md\n"
             commit_message += f"- {changes.get('file_count', 0)} files changed\n"
             commit_message += (
-                f"\nRelease managed by: Success-Advisor-8 (Permanent Release Manager)"
+                "\nRelease managed by: Success-Advisor-8 (Permanent Release Manager)"
             )
 
             # Commit changes
@@ -408,12 +403,12 @@ class ReleaseAutomation:
 
             # Get commit hash
             hash_result = subprocess.run(
-                ["git", "rev-parse", "HEAD"], capture_output=True, text=True, check=True
+                ["git", "rev-parse", "HEAD"], capture_output=True, text=True, check=True,
             )
             commit_hash = hash_result.stdout.strip()
 
             self.logger.success(
-                f"Changes committed with hash: {commit_hash[:8]}", "commit"
+                f"Changes committed with hash: {commit_hash[:8]}", "commit",
             )
             return commit_hash
 
@@ -421,15 +416,15 @@ class ReleaseAutomation:
             self.logger.error(f"Failed to commit changes: {e}", "commit")
             return None
 
-    async def _create_tag(self, version: str) -> Optional[str]:
-        """
-        Create git tag for release.
+    async def _create_tag(self, version: str) -> str | None:
+        """Create git tag for release.
 
         Args:
             version: Version string
 
         Returns:
             Tag name or None if failed
+
         """
         try:
             tag_name = f"v{version}"
@@ -438,11 +433,11 @@ class ReleaseAutomation:
             tag_message = f"Release {tag_name}\n\n"
             tag_message += f"Version {version} of the Reynard framework.\n"
             tag_message += (
-                f"\nRelease managed by: Success-Advisor-8 (Permanent Release Manager)"
+                "\nRelease managed by: Success-Advisor-8 (Permanent Release Manager)"
             )
 
             subprocess.run(
-                ["git", "tag", "-a", tag_name, "-m", tag_message], check=True
+                ["git", "tag", "-a", tag_name, "-m", tag_message], check=True,
             )
 
             self.logger.success(f"Created tag: {tag_name}", "tag")
@@ -453,11 +448,11 @@ class ReleaseAutomation:
             return None
 
     async def _push_to_remote(self) -> bool:
-        """
-        Push changes and tags to remote repository.
+        """Push changes and tags to remote repository.
 
         Returns:
             True if successful, False otherwise
+
         """
         try:
             # Push commits
@@ -474,38 +469,38 @@ class ReleaseAutomation:
             return False
 
     async def _update_agent_state(self, version: str) -> bool:
-        """
-        Update agent state with release information.
+        """Update agent state with release information.
 
         Args:
             version: Released version string
 
         Returns:
             True if successful, False otherwise
+
         """
         try:
             # This would integrate with the agent state management system
             # For now, just log the update
             self.logger.info(
-                f"Agent state updated with release {version}", "agent_state_update"
+                f"Agent state updated with release {version}", "agent_state_update",
             )
             return True
 
         except Exception as e:
             self.logger.error(
-                f"Failed to update agent state: {e}", "agent_state_update"
+                f"Failed to update agent state: {e}", "agent_state_update",
             )
             return False
 
-    async def get_release_history(self, limit: int = 10) -> List[Dict[str, Any]]:
-        """
-        Get release history from git tags.
+    async def get_release_history(self, limit: int = 10) -> list[dict[str, Any]]:
+        """Get release history from git tags.
 
         Args:
             limit: Maximum number of releases to return
 
         Returns:
             List of release information
+
         """
         try:
             # Get all tags
@@ -538,11 +533,11 @@ class ReleaseAutomation:
                                     "commit_hash": parts[0],
                                     "date": parts[1],
                                     "message": parts[2],
-                                }
+                                },
                             )
 
             self.logger.info(
-                f"Retrieved {len(releases)} releases from history", "release_history"
+                f"Retrieved {len(releases)} releases from history", "release_history",
             )
             return releases
 

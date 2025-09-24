@@ -1,5 +1,4 @@
-"""
-RAG Configuration for Reynard Backend.
+"""RAG Configuration for Reynard Backend.
 
 This module provides centralized RAG configuration management with
 environment variable support and secure defaults.
@@ -18,7 +17,7 @@ class RAGConfig:
 
     # Core RAG settings
     enabled: bool = field(
-        default_factory=lambda: os.getenv("RAG_ENABLED", "true").lower() == "true"
+        default_factory=lambda: os.getenv("RAG_ENABLED", "true").lower() == "true",
     )
 
     # Database configuration
@@ -26,64 +25,64 @@ class RAGConfig:
         default_factory=lambda: os.getenv(
             "PG_DSN",
             "postgresql://reynard_rag:CHANGE_THIS_PASSWORD@localhost:5432/reynard_rag",
-        )
+        ),
     )
 
     # Ollama configuration
     ollama_base_url: str = field(
-        default_factory=lambda: os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+        default_factory=lambda: os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
     )
 
     # Model configuration - EmbeddingGemma as priority
     text_model: str = field(
-        default_factory=lambda: os.getenv("RAG_TEXT_MODEL", "embeddinggemma:latest")
+        default_factory=lambda: os.getenv("RAG_TEXT_MODEL", "embeddinggemma:latest"),
     )
     code_model: str = field(
-        default_factory=lambda: os.getenv("RAG_CODE_MODEL", "embeddinggemma:latest")
+        default_factory=lambda: os.getenv("RAG_CODE_MODEL", "embeddinggemma:latest"),
     )
     caption_model: str = field(
-        default_factory=lambda: os.getenv("RAG_CAPTION_MODEL", "nomic-embed-text")
+        default_factory=lambda: os.getenv("RAG_CAPTION_MODEL", "nomic-embed-text"),
     )
     clip_model: str = field(
-        default_factory=lambda: os.getenv("RAG_CLIP_MODEL", "ViT-L-14/openai")
+        default_factory=lambda: os.getenv("RAG_CLIP_MODEL", "ViT-L-14/openai"),
     )
 
     # Chunking configuration
     chunk_max_tokens: int = field(
-        default_factory=lambda: int(os.getenv("RAG_CHUNK_MAX_TOKENS", "512"))
+        default_factory=lambda: int(os.getenv("RAG_CHUNK_MAX_TOKENS", "512")),
     )
     chunk_min_tokens: int = field(
-        default_factory=lambda: int(os.getenv("RAG_CHUNK_MIN_TOKENS", "100"))
+        default_factory=lambda: int(os.getenv("RAG_CHUNK_MIN_TOKENS", "100")),
     )
     chunk_overlap_ratio: float = field(
-        default_factory=lambda: float(os.getenv("RAG_CHUNK_OVERLAP_RATIO", "0.15"))
+        default_factory=lambda: float(os.getenv("RAG_CHUNK_OVERLAP_RATIO", "0.15")),
     )
 
     # Ingestion configuration
     ingest_batch_size_text: int = field(
-        default_factory=lambda: int(os.getenv("RAG_INGEST_BATCH_SIZE_TEXT", "16"))
+        default_factory=lambda: int(os.getenv("RAG_INGEST_BATCH_SIZE_TEXT", "16")),
     )
     ingest_concurrency: int = field(
-        default_factory=lambda: int(os.getenv("RAG_INGEST_CONCURRENCY", "2"))
+        default_factory=lambda: int(os.getenv("RAG_INGEST_CONCURRENCY", "2")),
     )
     ingest_max_attempts: int = field(
-        default_factory=lambda: int(os.getenv("RAG_INGEST_MAX_ATTEMPTS", "5"))
+        default_factory=lambda: int(os.getenv("RAG_INGEST_MAX_ATTEMPTS", "5")),
     )
     ingest_backoff_base_s: float = field(
-        default_factory=lambda: float(os.getenv("RAG_INGEST_BACKOFF_BASE_S", "0.5"))
+        default_factory=lambda: float(os.getenv("RAG_INGEST_BACKOFF_BASE_S", "0.5")),
     )
 
     # Rate limiting
     query_rate_limit_per_minute: int = field(
-        default_factory=lambda: int(os.getenv("RAG_QUERY_RATE_LIMIT_PER_MINUTE", "60"))
+        default_factory=lambda: int(os.getenv("RAG_QUERY_RATE_LIMIT_PER_MINUTE", "60")),
     )
     ingest_rate_limit_per_minute: int = field(
-        default_factory=lambda: int(os.getenv("RAG_INGEST_RATE_LIMIT_PER_MINUTE", "10"))
+        default_factory=lambda: int(os.getenv("RAG_INGEST_RATE_LIMIT_PER_MINUTE", "10")),
     )
 
     # Embedding backend configuration
     embedding_backends: EmbeddingBackendsConfig = field(
-        default_factory=EmbeddingBackendsConfig
+        default_factory=EmbeddingBackendsConfig,
     )
 
     def to_dict(self) -> dict[str, Any]:
@@ -120,7 +119,7 @@ class RAGConfig:
             if not self.pg_dsn or "CHANGE_THIS_PASSWORD" in self.pg_dsn:
                 raise ValueError(
                     "RAG configuration error: PG_DSN must be set with a secure password. "
-                    "Please set the PG_DSN environment variable with your actual database credentials."
+                    "Please set the PG_DSN environment variable with your actual database credentials.",
                 )
 
         if not self.ollama_base_url:
@@ -128,17 +127,17 @@ class RAGConfig:
 
         if self.chunk_max_tokens <= 0:
             raise ValueError(
-                "RAG configuration error: RAG_CHUNK_MAX_TOKENS must be positive"
+                "RAG configuration error: RAG_CHUNK_MAX_TOKENS must be positive",
             )
 
         if self.chunk_min_tokens <= 0:
             raise ValueError(
-                "RAG configuration error: RAG_CHUNK_MIN_TOKENS must be positive"
+                "RAG configuration error: RAG_CHUNK_MIN_TOKENS must be positive",
             )
 
         if not 0 <= self.chunk_overlap_ratio <= 1:
             raise ValueError(
-                "RAG configuration error: RAG_CHUNK_OVERLAP_RATIO must be between 0 and 1"
+                "RAG configuration error: RAG_CHUNK_OVERLAP_RATIO must be between 0 and 1",
             )
 
         # Validate embedding backends configuration

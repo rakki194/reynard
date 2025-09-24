@@ -1,544 +1,496 @@
-# 🐺 FENRIR
+# 🐺 Fenrir Security Testing Framework
 
-## Framework for Exploitative Network Reconnaissance and Intrusion Research
+_Advanced penetration testing and security assessment toolkit for the Reynard ecosystem_
 
-> A comprehensive security testing framework for the Reynard ecosystem, designed to systematically identify and exploit vulnerabilities across web applications, APIs, and AI services.
-
-## Table of Contents
-
-- [🐺 FENRIR](#-fenrir)
-  - [Framework for Exploitative Network Reconnaissance and Intrusion Research](#framework-for-exploitative-network-reconnaissance-and-intrusion-research)
-  - [Table of Contents](#table-of-contents)
-  - [Overview](#overview)
-    - [Key Features](#key-features)
-    - [Target Environment](#target-environment)
-  - [Architecture](#architecture)
-  - [Installation](#installation)
-    - [Prerequisites](#prerequisites)
-    - [Installation Steps](#installation-steps)
-    - [Dependencies](#dependencies)
-    - [**The Name: FENRIR**](#the-name-fenrir)
-  - [Core Modules](#core-modules)
-    - [JWT Token Exploitation](#jwt-token-exploitation)
-    - [Path Traversal Attacks](#path-traversal-attacks)
-    - [SQL Injection Testing](#sql-injection-testing)
-    - [Fuzzing Framework](#fuzzing-framework)
-    - [CORS Misconfiguration Testing](#cors-misconfiguration-testing)
-    - [Rate Limiting Bypass](#rate-limiting-bypass)
-    - [LLM \& AI Service Exploitation](#llm--ai-service-exploitation)
-  - [Usage](#usage)
-    - [Basic Execution](#basic-execution)
-    - [Advanced Configuration](#advanced-configuration)
-  - [Security Considerations](#security-considerations)
-    - [Legal and Ethical Use](#legal-and-ethical-use)
-    - [Best Practices](#best-practices)
-  - [Integration](#integration)
-    - [Reynard Ecosystem Integration](#reynard-ecosystem-integration)
-    - [Third-Party Integration](#third-party-integration)
-  - [Contributing](#contributing)
-    - [Development Setup](#development-setup)
-    - [Adding New Exploit Modules](#adding-new-exploit-modules)
-    - [Code Standards](#code-standards)
-
----
-
-> The moon hangs low over the digital forest, casting long shadows through the tangled undergrowth of code.
-> In the distance, a lone wolf's howl echoes through the silicon wilderness - a predator's call that sends
-> shivers down the spine of every vulnerable system.
-> &nbsp;
-> Welcome, fellow hunter, to my domain...
-
----
+**Version:** 1.0.0
+**Last Updated:** September 23, 2025
+**Author:** 🐺 The Wolf Pack
 
 ## Overview
 
-FENRIR is a comprehensive security testing framework designed specifically for the Reynard ecosystem. It provides systematic vulnerability assessment capabilities across multiple attack vectors, from traditional web application security testing to advanced AI service exploitation.
+Fenrir is a comprehensive, modular security testing framework designed specifically for the Reynard ecosystem. It provides systematic vulnerability assessment, penetration testing, and security validation across the entire Reynard backend infrastructure, including AI services, authentication systems, and API endpoints.
 
-### Key Features
-
-- **Comprehensive Attack Coverage**: 13 specialized testing modules covering all major vulnerability classes
-- **AI Service Testing**: Advanced LLM and AI service exploitation capabilities
-- **Modular Architecture**: Clean, extensible design with reusable components
-- **Async Performance**: High-performance asynchronous testing with configurable concurrency
-- **Professional Reporting**: Detailed vulnerability reports with remediation guidance
-- **Integration Ready**: Seamless integration with CI/CD pipelines and E2E testing
-
-### Target Environment
-
-FENRIR is specifically designed to test the Reynard backend ecosystem, including:
-
-- **FastAPI Backend**: Python-based API server with comprehensive endpoint coverage
-- **AI Services**: Ollama, NLWeb, ComfyUI, Diffusion, RAG, Caption, Summarization, TTS
-- **Authentication Systems**: JWT-based authentication with secure route implementations
-- **File Processing**: Image utilities, lazy loading, and package management systems
-- **Real-time Features**: WebSocket endpoints and streaming capabilities
+The framework combines traditional security testing methodologies with cutting-edge AI-specific attack vectors, making it uniquely suited for testing modern AI-powered applications and services.
 
 ## Architecture
 
-FENRIR follows a modular architecture with clear separation of concerns:
+```mermaid
+graph TB
+    subgraph "Fenrir Core Framework"
+        A[Fuzzy Engine] --> B[Endpoint Orchestrator]
+        B --> C[Vulnerability Analyzer]
+        C --> D[Results Aggregator]
+    end
 
-```
-fenrir/
-├── core/                    # Core testing infrastructure
-│   ├── base_fuzzer.py      # Base fuzzing framework
-│   ├── payload_composables.py # Reusable attack payloads
-│   └── results.py          # Result data structures
-├── exploits/               # Specialized exploit modules
-│   ├── jwt_exploits/       # JWT token manipulation
-│   ├── sql_injection/      # SQL injection testing
-│   ├── path_traversal/     # Directory traversal attacks
-│   └── ...                 # Additional exploit modules
-├── fuzzing/               # Advanced fuzzing framework
-│   ├── fuzzy.py           # Main fuzzing orchestrator
-│   ├── core/              # Fuzzing infrastructure
-│   ├── attacks/           # Specialized attack modules
-│   └── endpoints/         # Endpoint-specific fuzzers
-├── llm_exploits/          # AI service exploitation
-│   ├── advanced_ai_exploits/ # Advanced AI attack vectors
-│   ├── prompt_injection/  # Prompt injection attacks
-│   └── streaming_exploits/ # Real-time attack vectors
-└── tests/                 # Comprehensive test suite
-```
+    subgraph "Attack Modules"
+        E[Traditional Fuzzing] --> A
+        F[Grammar-Based Fuzzing] --> A
+        G[WebSocket Fuzzing] --> A
+        H[ML Model Fuzzing] --> A
+        I[Auth Bypass] --> A
+    end
 
-## Installation
+    subgraph "Exploit Arsenal"
+        J[API Exploits] --> K[LLM Exploits]
+        L[CORS Exploits] --> K
+        M[JWT Exploits] --> K
+        N[SQL Injection] --> K
+        O[SSRF Exploits] --> K
+        P[Rate Limiting] --> K
+    end
 
-### Prerequisites
+    subgraph "Backend Integration"
+        Q[Reynard Backend] --> R[Ollama Service]
+        Q --> S[NLWeb Service]
+        Q --> T[ComfyUI Service]
+        Q --> U[RAG System]
+        Q --> V[Auth System]
+    end
 
-- Python 3.13+
-- Access to Reynard backend services
-- Network connectivity to target systems
-
-### Installation Steps
-
-```bash
-# Clone the Reynard repository
-git clone https://github.com/rakki194/reynard.git
-cd reynard/fenrir
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Verify installation
-python -m fenrir.run_all_exploits --help
+    A --> Q
+    K --> Q
 ```
 
-### Dependencies
+## Core Components
 
-Core dependencies include:
+### 1. **Fuzzy Engine** (`core/fuzzy.py`)
 
-- `requests`, `aiohttp`, `httpx` - HTTP client libraries
-- `cryptography`, `pyjwt` - Cryptographic operations
-- `beautifulsoup4`, `lxml` - HTML/XML parsing
-- `rich` - Terminal output formatting
-- `pytest`, `pytest-asyncio` - Testing framework
+The central orchestration engine that coordinates all attack modules and provides a unified interface for security testing.
 
-### **The Name: FENRIR**
+**Key Features:**
 
-**FENRIR** draws its power from Norse mythology, where the great wolf represents the inevitable force that breaks free
-from all constraints. In our digital realm, FENRIR embodies:
+- **Modular Architecture**: Pluggable attack modules for extensibility
+- **Async Operations**: High-performance concurrent testing
+- **Intelligent Coordination**: Smart endpoint discovery and attack sequencing
+- **Result Aggregation**: Comprehensive vulnerability reporting
 
-- **Breaking Chains**: Like the mythical wolf who breaks free from magical bonds, FENRIR breaks through security
-  constraints and defensive measures
-- **Inevitable Force**: Just as Fenrir was destined to devour the sun during Ragnarök, our framework is destined to find
-  and exploit vulnerabilities
-- **Predatory Intelligence**: The wolf's cunning and patience in stalking prey mirrors our systematic approach to
-  security testing
-- **Framework for Exploitative Network Reconnaissance and Intrusion Research**: The technical acronym that defines our
-  comprehensive approach to security assessment
-
-\*\*teeth gleam with predatory satisfaction\*\*
-
-The name FENRIR captures both the mythological power of the great wolf and the technical sophistication of our security
-testing framework. We are not just hunters - we are the inevitable force that exposes weaknesses and strengthens
-defenses through systematic, relentless testing.
-
----
-
-## Core Modules
-
-### JWT Token Exploitation
-
-**Location**: `jwt_exploits/`
-
-Systematic testing of JWT token security implementations.
-
-**Attack Vectors**:
-
-- Secret key vulnerability exploitation
-- Token replay attacks
-- Signature bypass attempts
-- Timing attack implementations
-
-**Technical Implementation**:
+**Usage:**
 
 ```python
-from fenrir.jwt_exploits.secret_key_attack import SecretKeyVulnerabilityExploit
+from fenrir.core import Fuzzy
 
-exploit = SecretKeyVulnerabilityExploit("http://localhost:8000")
-results = exploit.run_exploit()
-```
-
-**Vulnerability Detection**:
-
-- Weak secret key generation patterns
-- Algorithm confusion attacks
-- Token manipulation and replay
-- Timing-based secret extraction
-
-### Path Traversal Attacks
-
-**Location**: `path_traversal/`
-
-Comprehensive directory traversal testing with multiple encoding techniques.
-
-**Attack Vectors**:
-
-- URL-encoded directory traversal (`%2e%2e%2f`)
-- Unicode path traversal (`%c0%ae%c0%ae%c0%af`)
-- Double-encoded payloads
-- Windows path separator bypass (`..\\..\\..\\`)
-
-**Technical Implementation**:
-
-```python
-from fenrir.path_traversal.encoded_traversal import EncodedPathTraversalExploit
-
-exploit = EncodedPathTraversalExploit("http://localhost:8000")
-results = exploit.run_exploit()
-```
-
-**Target Endpoints**:
-
-- File upload endpoints
-- Image processing services
-- Document handling systems
-- Static file serving
-
-### SQL Injection Testing
-
-**Location**: `sql_injection/`
-
-Advanced SQL injection testing with pattern evasion techniques.
-
-**Attack Vectors**:
-
-- Regex pattern evasion
-- Obfuscated payloads
-- Blind injection techniques
-- Union-based attacks
-
-**Technical Implementation**:
-
-```python
-from fenrir.sql_injection.regex_bypass import RegexBypassExploit
-
-exploit = RegexBypassExploit("http://localhost:8000")
-results = exploit.run_exploit()
-```
-
-**Payload Categories**:
-
-- Boolean-based blind injection
-- Time-based blind injection
-- Union-based injection
-- Error-based injection
-
-### Fuzzing Framework
-
-**Location**: `fuzzing/`
-
-Advanced modular fuzzing framework with specialized attack engines.
-
-**Architecture**:
-
-- **BaseFuzzer**: Common functionality and escape hatches
-- **PayloadComposables**: Reusable attack vector library
-- **EndpointOrchestrator**: Coordinated attack management
-- **Specialized Fuzzers**: Endpoint-specific attack modules
-
-**Technical Implementation**:
-
-```python
-from fenrir.fuzzing.fuzzy import Fuzzy
-
-async with Fuzzy("http://localhost:8000") as fuzzer:
-    results = await fuzzer.fuzz_missing_endpoints()
+async with Fuzzy(base_url="http://localhost:8000") as fuzzer:
+    await fuzzer.fuzz_authentication_endpoints()
+    await fuzzer.fuzz_all_specialized_endpoints()
     fuzzer.generate_fuzz_report()
 ```
 
-**Coverage Statistics**:
+### 2. **Attack Modules** (`exploits/attacks/`)
 
-- **Total Endpoints**: 100+ API endpoints
-- **Attack Phases**: 6 specialized phases
-- **Payload Count**: 4,000+ attack vectors
-- **Execution Time**: 15-20 minutes (comprehensive)
+Specialized fuzzing engines targeting specific vulnerability classes:
 
-**Specialized Attack Modules**:
+#### **TraditionalFuzzer**
 
-- **Embedding Visualization Fuzzer**: 8 endpoints with visualization-specific attacks
-- **Diffusion Fuzzer**: 10 endpoints with ML model parameter manipulation
-- **Lazy Loading Fuzzer**: 12 endpoints with resource exhaustion attacks
-- **HuggingFace Cache Fuzzer**: 8 endpoints with cache poisoning and path traversal
-- **Secure Authentication Fuzzer**: 6 endpoints with JWT manipulation and auth bypass
-- **Secure Ollama Fuzzer**: 7 endpoints with model injection and parameter attacks
-- **Secure Summarization Fuzzer**: 10 endpoints with text processing attacks
-- **WebSocket Fuzzer**: Real-time progress endpoints with message injection
+- Standard HTTP endpoint coverage
+- Parameter manipulation and injection
+- Header-based attacks
+- Method enumeration
 
-📖 **Detailed Documentation**: See [`fuzzing/README.md`](fuzzing/README.md) for comprehensive usage examples and attack strategies.
+#### **GrammarFuzzer**
 
-### CORS Misconfiguration Testing
+- Syntactically valid malicious payloads
+- Context-aware mutation strategies
+- Learning-based payload generation
+- Advanced obfuscation techniques
 
-**Location**: `cors_exploits/`
+#### **WebSocketFuzzer**
 
-Cross-Origin Resource Sharing misconfiguration exploitation.
+- Real-time communication attacks
+- Message flooding and manipulation
+- Protocol-specific vulnerabilities
+- Connection state exploitation
 
-**Attack Vectors**:
+#### **MLFuzzer**
 
-- Wildcard origin abuse
-- Credential theft attempts
-- Cross-origin request forgery
-- Header injection attacks
+- AI/ML model-specific vulnerabilities
+- Input validation bypass
+- Model poisoning attacks
+- Inference manipulation
 
-**Technical Implementation**:
+#### **AuthBypassFuzzer**
 
-```python
-from fenrir.cors_exploits.cors_misconfiguration import CorsMisconfigurationExploit
+- Authentication mechanism bypass
+- Session management exploitation
+- Token manipulation
+- Privilege escalation
 
-exploit = CorsMisconfigurationExploit("http://localhost:8000")
-results = exploit.run_exploit()
+### 3. **Exploit Arsenal** (`exploits/`)
+
+Comprehensive collection of specialized exploit modules:
+
+#### **LLM Exploits** (`llm_exploits/`)
+
+The most sophisticated module targeting AI services:
+
+```mermaid
+graph LR
+    A[LLM Orchestrator] --> B[Prompt Injection]
+    A --> C[Streaming Exploits]
+    A --> D[Service Chain Attacks]
+    A --> E[Advanced AI Exploits]
+
+    B --> F[Ollama Injection]
+    B --> G[NLWeb Injection]
+    B --> H[ComfyUI Injection]
+
+    C --> I[SSE Manipulation]
+    C --> J[Stream Hijacking]
+
+    D --> K[Multi-Service Exploitation]
+    D --> L[Chain Reaction Attacks]
+
+    E --> M[Steganography Injection]
+    E --> N[Unicode Obfuscation]
+    E --> O[Fantasy Language Attacks]
 ```
 
-### Rate Limiting Bypass
+**Target Services:**
 
-**Location**: `rate_limiting/`
+- **Ollama**: Local LLM inference (`/api/ollama/`)
+- **NLWeb**: Natural language processing (`/api/nlweb/`)
+- **ComfyUI**: Image generation workflows (`/api/comfy/`)
+- **RAG**: Retrieval-Augmented Generation (`/api/rag/`)
+- **Caption**: Image captioning services (`/api/caption/`)
+- **Summarization**: Document processing (`/api/summarization/`)
+- **TTS**: Text-to-speech synthesis (`/api/tts/`)
 
-Systematic rate limiting bypass testing.
+#### **Advanced AI Exploitation Arsenal**
 
-**Attack Vectors**:
+Cutting-edge techniques for bypassing AI security measures:
 
-- Header manipulation bypass
-- IP rotation and User-Agent spoofing
-- Timing attack bypass methods
-- Distributed bypass testing
+- **Steganography-Based Prompt Injection**: Hidden messages in Unicode
+- **Universal Encoding Exploits**: Multi-layer encoding chains
+- **Fantasy Language Obfuscation**: Quenya, Klingon, Aurebesh
+- **Ancient Script Exploitation**: Elder Futhark, Egyptian hieroglyphics
+- **Invisible Text Injection**: Unicode Tags block exploitation
 
-**Technical Implementation**:
+#### **Traditional Security Exploits**
 
-```python
-from fenrir.rate_limiting.rate_limit_bypass import RateLimitBypassExploit
+**API Exploits** (`api_exploits/`)
 
-exploit = RateLimitBypassExploit("http://localhost:8000")
-results = exploit.run_exploit()
+- BOLA (Broken Object Level Authorization)
+- Mass assignment vulnerabilities
+- API versioning attacks
+- Endpoint enumeration
+
+**CORS Exploits** (`cors_exploits/`)
+
+- Misconfiguration detection
+- Origin validation bypass
+- Credential exposure
+- Preflight manipulation
+
+**JWT Exploits** (`jwt_exploits/`)
+
+- Secret key vulnerabilities
+- Signature bypass attempts
+- Timing attacks
+- Algorithm confusion
+
+**SQL Injection** (`sql_injection/`)
+
+- Regex bypass techniques
+- Blind injection attacks
+- Union-based exploits
+- Obfuscated payloads
+
+**SSRF Exploits** (`ssrf_exploits/`)
+
+- Internal network scanning
+- Cloud metadata exploitation
+- Protocol smuggling
+- DNS rebinding
+
+**Rate Limiting** (`rate_limiting/`)
+
+- Bypass techniques
+- Distributed attacks
+- Header manipulation
+- Timing-based evasion
+
+## Backend Integration
+
+Fenrir integrates deeply with the Reynard backend ecosystem:
+
+### **Service Discovery**
+
+```mermaid
+sequenceDiagram
+    participant F as Fenrir
+    participant B as Backend
+    participant O as Ollama
+    participant N as NLWeb
+    participant C as ComfyUI
+
+    F->>B: Health Check
+    B->>F: Service Status
+    F->>O: Model Enumeration
+    O->>F: Available Models
+    F->>N: Tool Registry
+    N->>F: Available Tools
+    F->>C: Workflow Discovery
+    C->>F: Workflow Templates
 ```
 
-### LLM & AI Service Exploitation
+### **Authentication Integration**
 
-**Location**: `llm_exploits/`
+- JWT token validation and manipulation
+- Session management testing
+- OAuth flow exploitation
+- Multi-factor authentication bypass
 
-Advanced AI service security testing framework.
+### **Database Integration**
 
-**Target Services**:
+- PostgreSQL connection testing
+- Vector database exploitation (pgvector)
+- Redis cache manipulation
+- Connection pool exhaustion
 
-- **Ollama**: Local LLM inference and tool calling
-- **NLWeb**: Natural language web processing
-- **ComfyUI**: Image generation workflows
-- **Diffusion LLM**: Text generation and infilling
-- **RAG**: Retrieval-Augmented Generation
-- **Caption**: Image captioning services
-- **Summarization**: Document summarization
-- **TTS**: Text-to-Speech synthesis
+### **External Service Integration**
 
-**Attack Categories**:
+- MCP (Model Context Protocol) server testing
+- IMAP email service exploitation
+- File system access testing
+- Network service enumeration
 
-- **Advanced AI Exploits**: Steganography, universal encoding, Unicode obfuscation
-- **Prompt Injection**: System prompt bypass, role-playing attacks
-- **Streaming Exploits**: SSE manipulation, event injection
-- **Service Chain Attacks**: Multi-service exploitation, RAG injection
-- **Model-Specific Exploits**: CVE exploitation, workflow injection
+## E2E Testing Integration
 
-**Technical Implementation**:
+Fenrir integrates seamlessly with the Reynard E2E testing framework:
 
-```python
-from fenrir.llm_exploits.llm_exploitation_orchestrator import LLMExploitationOrchestrator
+### **Playwright Integration**
 
-config = LLMExploitationConfig(
-    target_url="http://localhost:8000",
-    enable_prompt_injection=True,
-    enable_streaming_exploits=True,
-    max_concurrent_attacks=5
-)
+```typescript
+// E2E Security Test Example
+import { runFenrirExploit } from "../../modules/security";
 
-async with LLMExploitationOrchestrator(config) as orchestrator:
-    results = await orchestrator.execute_comprehensive_llm_security_test()
+test("should test JWT vulnerabilities", async () => {
+  const result = await runFenrirExploit("jwt_exploits.secret_key_attack", {
+    target: config.backendUrl,
+    verbose: config.verbose,
+    destructive: config.destructive,
+  });
+
+  expect(result.success).toBeDefined();
+  expect(result.vulnerabilitiesFound).toBeGreaterThanOrEqual(0);
+});
 ```
+
+### **Test Suites**
+
+- **API Security**: Comprehensive API vulnerability testing
+- **JWT Security**: Token-based authentication testing
+- **SQL Injection**: Database security validation
+- **SSRF Attacks**: Server-side request forgery testing
+- **Penetration Tests**: Full system security assessment
 
 ## Usage
 
-### Basic Execution
-
-**Comprehensive Testing**:
+### **Quick Start**
 
 ```bash
-# Run all exploit modules
-python -m fenrir.run_all_exploits
+# Run comprehensive security assessment
+cd fenrir
+python run_all_exploits.py
 
-# Target specific URL
-python -m fenrir.run_all_exploits --url http://localhost:3000
+# Run LLM-specific attacks
+python run_llm_exploits.py
 
-# Enable verbose output
-python -m fenrir.run_all_exploits --verbose
-
-# Enable destructive testing (WARNING: May cause system instability)
-python -m fenrir.run_all_exploits --destructive
+# Run with specific options
+python run_all_exploits.py --destructive --verbose
 ```
 
-**LLM-Specific Testing**:
+### **E2E Integration**
 
 ```bash
-# Quick LLM security assessment
-python -m fenrir.run_llm_exploits --target http://localhost:8000 --test-type quick
+# Run security tests via E2E framework
+cd e2e
+npm run security:assess
 
-# Comprehensive AI service testing
-python -m fenrir.run_llm_exploits --target http://localhost:8000 --test-type comprehensive
+# Run destructive security tests
+npm run security:assess:destructive
 
-# Authenticated testing
-python -m fenrir.run_llm_exploits --target https://api.reynard.dev --auth-token YOUR_JWT_TOKEN
+# Run specific Fenrir tests
+npm run fenrir:test
 ```
 
-### Advanced Configuration
-
-**Custom Configuration File**:
-
-```json
-{
-  "target_url": "http://localhost:8000",
-  "auth_token": null,
-  "enable_prompt_injection": true,
-  "enable_streaming_exploits": true,
-  "enable_service_chains": true,
-  "max_concurrent_attacks": 5,
-  "attack_delay": 0.5,
-  "max_test_duration": 1800
-}
-```
-
-**Programmatic Usage**:
+### **Programmatic Usage**
 
 ```python
-from fenrir.run_all_exploits import BlackHatExploitSuite
+from fenrir import BlackHatExploitSuite
 
+# Initialize exploit suite
 suite = BlackHatExploitSuite(
-    base_url="http://localhost:8000",
+    target_url="http://localhost:8000",
     verbose=True,
-    destructive=False,
-    enable_llm=True
+    destructive=False
 )
 
-results = suite.run_comprehensive_attack()
-suite.generate_attack_report()
+# Run comprehensive assessment
+results = suite.run_comprehensive_assessment()
+
+# Run specific exploit categories
+llm_results = suite.run_llm_exploits()
+api_results = suite.run_api_exploits()
+auth_results = suite.run_authentication_exploits()
+```
+
+## Configuration
+
+### **Environment Variables**
+
+```bash
+# Backend Configuration
+FENRIR_TARGET_URL=http://localhost:8000
+FENRIR_VERBOSE=true
+FENRIR_DESTRUCTIVE=false
+
+# Database Configuration
+DATABASE_URL=postgresql://postgres:password@localhost:5432/reynard
+ECS_DATABASE_URL=postgresql://postgres:password@localhost:5432/reynard_ecs
+
+# Service Configuration
+OLLAMA_BASE_URL=http://localhost:11434
+COMFYUI_BASE_URL=http://localhost:8188
+MCP_HOST=localhost
+MCP_PORT=3001
+```
+
+### **Exploit Configuration**
+
+```python
+from fenrir.exploits.llm_exploits import LLMExploitationConfig
+
+config = LLMExploitationConfig(
+    target_url="http://localhost:8000",
+    ollama_base_url="http://localhost:11434",
+    comfyui_base_url="http://localhost:8188",
+    max_concurrent_requests=10,
+    request_timeout=30.0,
+    enable_destructive_tests=False,
+    enable_advanced_ai_exploits=True,
+    export_vulnerabilities=True,
+    include_remediation=True
+)
 ```
 
 ## Security Considerations
 
-### Legal and Ethical Use
+### **Safe Testing Practices**
 
-**Authorized Testing Only**:
+- **Non-Destructive Mode**: Default mode prevents data corruption
+- **Controlled Environment**: Designed for testing environments only
+- **Rate Limiting**: Built-in request throttling to prevent DoS
+- **Error Handling**: Graceful failure handling and recovery
 
-- Test only systems you own or have explicit permission to test
-- Obtain written authorization before conducting security assessments
-- Respect rate limits and system resources
-- Follow responsible disclosure practices
+### **Production Safety**
 
-**Destructive Testing Warning**:
+- **Environment Detection**: Automatic production environment detection
+- **Safety Checks**: Multiple validation layers before destructive operations
+- **Audit Logging**: Comprehensive logging of all security tests
+- **Rollback Capabilities**: Automatic rollback for failed tests
 
-- Destructive mode can cause system instability
-- May result in data loss or service disruption
-- Use only in isolated test environments
-- Ensure proper backups before testing
+## Results and Reporting
 
-### Best Practices
+### **Vulnerability Reports**
 
-**Environment Setup**:
+```json
+{
+  "timestamp": "2025-09-23T19:40:06Z",
+  "target": "http://localhost:8000",
+  "total_tests": 1247,
+  "vulnerabilities_found": 23,
+  "critical": 2,
+  "high": 8,
+  "medium": 10,
+  "low": 3,
+  "exploits": [
+    {
+      "type": "JWT_SECRET_WEAK",
+      "severity": "critical",
+      "endpoint": "/api/auth/login",
+      "description": "Weak JWT secret key detected",
+      "remediation": "Use cryptographically strong secret key"
+    }
+  ]
+}
+```
 
-- Use isolated test environments
-- Implement proper network segmentation
-- Monitor system resources during testing
-- Maintain detailed logs of all testing activities
+### **Performance Metrics**
 
-**Result Handling**:
+- **Test Execution Time**: Comprehensive timing analysis
+- **Request/Response Metrics**: Detailed performance profiling
+- **Resource Utilization**: Memory and CPU usage tracking
+- **Success/Failure Rates**: Statistical analysis of test results
 
-- Store vulnerability reports securely
-- Implement proper access controls
-- Follow data retention policies
-- Ensure compliance with security standards
+## Advanced Features
 
-## Integration
+### **Machine Learning Integration**
 
-### Reynard Ecosystem Integration
+- **Adaptive Fuzzing**: ML-based payload generation
+- **Pattern Recognition**: Automated vulnerability pattern detection
+- **Behavioral Analysis**: AI-powered attack strategy optimization
+- **Anomaly Detection**: Intelligent identification of security issues
 
-FENRIR is fully integrated with the Reynard ecosystem:
+### **Distributed Testing**
 
-- **Backend Integration**: Targets FastAPI backend with precision
-- **E2E Testing**: Works alongside Playwright tests
-- **Security Middleware**: Tests security middleware implementations
-- **Authentication Systems**: Validates JWT-based authentication
-- **AI Service Coverage**: Comprehensive testing of all LLM and AI services
-- **Frontend Security**: Testing of React/SolidJS components
+- **Multi-Node Coordination**: Distributed testing across multiple systems
+- **Load Balancing**: Intelligent request distribution
+- **Result Aggregation**: Centralized collection of distributed results
+- **Fault Tolerance**: Automatic failover and recovery
 
-### Third-Party Integration
+### **Custom Exploit Development**
 
-**Security Tools**:
+```python
+from fenrir.core import BaseFuzzer, FuzzResult
 
-- Integration with OWASP ZAP
-- Burp Suite compatibility
-- Custom security scanner integration
-- SIEM system integration
-
-**Development Tools**:
-
-- IDE integration (VS Code, PyCharm)
-- Git hooks for pre-commit testing
-- Docker containerization support
-- Kubernetes deployment testing
+class CustomExploit(BaseFuzzer):
+    async def fuzz_endpoint(self, url: str) -> list[FuzzResult]:
+        # Custom exploit logic
+        results = []
+        # ... implementation
+        return results
+```
 
 ## Contributing
 
-### Development Setup
+### **Development Setup**
 
 ```bash
-# Clone repository
-git clone https://github.com/rakki194/reynard.git
-cd reynard/fenrir
+# Clone and setup
+git clone <repository>
+cd fenrir
 
-# Install development dependencies
-pip install -e ".[dev]"
+# Install dependencies
+pip install -r requirements.txt
 
 # Run tests
-pytest tests/
+python -m pytest tests/
 
 # Run linting
-black fenrir/
-isort fenrir/
-mypy fenrir/
+python -m flake8 .
+python -m black .
 ```
 
-### Adding New Exploit Modules
+### **Adding New Exploits**
 
-1. Create module in appropriate directory
-2. Implement base exploit interface
-3. Add comprehensive tests
-4. Update documentation
-5. Submit pull request
+1. Create exploit module in appropriate directory
+2. Inherit from `BaseFuzzer` or specific exploit base class
+3. Implement required methods
+4. Add comprehensive tests
+5. Update documentation
 
-### Code Standards
+## License
 
-- Follow PEP 8 style guidelines
-- Use type hints throughout
-- Maintain comprehensive test coverage
-- Document all public APIs
-- Follow security best practices
+MIT License - See LICENSE file for details.
+
+## Support
+
+For issues, questions, or contributions:
+
+- **Issues**: GitHub Issues
+- **Documentation**: [Reynard Documentation](https://docs.reynard.dev)
+- **Community**: [Reynard Discord](https://discord.gg/reynard)
 
 ---
 
-_The hunt continues. The prey adapts. FENRIR evolves._ 🐺
-
-> **Warning**: This framework is designed for authorized security testing only. Unauthorized use may violate laws and regulations. Always obtain proper authorization before conducting security assessments.
+_🐺 Fenrir combines the precision of a wolf pack with the intelligence of modern security research to provide comprehensive vulnerability assessment for the Reynard ecosystem._

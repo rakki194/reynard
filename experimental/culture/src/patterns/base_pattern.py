@@ -1,5 +1,4 @@
-"""
-Base Cultural Pattern System
+"""Base Cultural Pattern System
 
 This module defines the abstract base classes and core data structures for the
 CULTURE framework's modular cultural pattern system.
@@ -209,22 +208,19 @@ class BaseCulturalPattern(ABC):
 
     @abstractmethod
     def generate_scenarios(
-        self, count: int, safety_level: SafetyLevel = SafetyLevel.SAFE
+        self, count: int, safety_level: SafetyLevel = SafetyLevel.SAFE,
     ) -> list[CulturalScenario]:
         """Generate cultural scenarios for evaluation"""
-        pass
 
     @abstractmethod
     def evaluate_response(
-        self, scenario: CulturalScenario, response: str
+        self, scenario: CulturalScenario, response: str,
     ) -> CulturalEvaluationResult:
         """Evaluate response against cultural expectations"""
-        pass
 
     @abstractmethod
     def get_cultural_metrics(self) -> dict[str, str]:
         """Get cultural-specific evaluation metrics"""
-        pass
 
     def validate_safety(self, scenario: CulturalScenario) -> bool:
         """Validate scenario meets safety requirements"""
@@ -271,7 +267,7 @@ class BaseCulturalPattern(ABC):
         return self.cultural_rules.copy()
 
     def create_persona(
-        self, trait_scores: dict[CulturalTrait, float] | None = None
+        self, trait_scores: dict[CulturalTrait, float] | None = None,
     ) -> CulturalPersona:
         """Create a cultural persona for this pattern"""
         if trait_scores is None:
@@ -281,7 +277,7 @@ class BaseCulturalPattern(ABC):
             cultural_context=self.context,
             traits=trait_scores,
             communication_patterns=self.cultural_rules.get(
-                "communication_patterns", {}
+                "communication_patterns", {},
             ),
             safety_protocols=self.safety_guidelines,
             consent_level=self._get_default_consent_level(),

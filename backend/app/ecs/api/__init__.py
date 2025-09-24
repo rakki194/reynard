@@ -1,5 +1,4 @@
-"""
-ECS API Module
+"""ECS API Module
 ==============
 
 Organized API endpoints for the ECS World simulation system.
@@ -14,7 +13,7 @@ from .world import router as world_router
 __all__ = [
     "agents_router",
     "naming_router",
+    "spirits_router",
     "traits_router",
     "world_router",
-    "spirits_router",
 ]

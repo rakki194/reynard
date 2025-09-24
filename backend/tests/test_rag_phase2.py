@@ -1,13 +1,9 @@
-"""
-Test suite for RAG Phase 2 features: AST chunking, model evaluation, and hybrid search.
+"""Test suite for RAG Phase 2 features: AST chunking, model evaluation, and hybrid search.
 
 Tests the enhanced chunking system, model evaluation framework, and hybrid search engine.
 """
 
-import asyncio
-import time
-from typing import Any, Dict, List
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock
 
 import pytest
 
@@ -17,7 +13,7 @@ from app.services.rag.advanced.evaluation import (
     TestQuery,
 )
 from app.services.rag.core.indexing import ASTCodeChunker
-from app.services.rag.core.search import HybridSearchEngine, KeywordIndex, SearchEngine
+from app.services.rag.core.search import HybridSearchEngine, KeywordIndex
 
 
 class TestASTCodeChunker:
@@ -236,7 +232,7 @@ class TestModelEvaluator:
     def test_calculate_code_specificity(self, model_evaluator):
         """Test code specificity calculation."""
         specificity = model_evaluator._calculate_code_specificity(
-            "embeddinggemma:latest", 0.8
+            "embeddinggemma:latest", 0.8,
         )
         assert 0.0 <= specificity <= 1.0
 
@@ -283,7 +279,7 @@ class TestModelEvaluator:
                 throughput_per_second=10.0,
                 error_rate=0.05,
                 timestamp="2025-01-01 12:00:00",
-            )
+            ),
         }
 
         report = model_evaluator.generate_evaluation_report(results)
@@ -362,7 +358,7 @@ class TestHybridSearchEngine:
         """Test hybrid search functionality."""
         # Mock the embedding and vector DB services
         hybrid_search_engine.embedding_service.embed_text = AsyncMock(
-            return_value=[0.1] * 1024
+            return_value=[0.1] * 1024,
         )
         hybrid_search_engine.vector_db_service.similarity_search = AsyncMock(
             return_value=[
@@ -370,18 +366,18 @@ class TestHybridSearchEngine:
                     "text": "This is a fibonacci function",
                     "similarity": 0.9,
                     "metadata": {"id": "doc1"},
-                }
-            ]
+                },
+            ],
         )
 
         # Add documents to keyword index
         hybrid_search_engine.keyword_index.add_document(
-            "doc1", "This is a fibonacci function", {"id": "doc1"}
+            "doc1", "This is a fibonacci function", {"id": "doc1"},
         )
 
         # Perform hybrid search
         results = await hybrid_search_engine.hybrid_search(
-            "fibonacci function", limit=5
+            "fibonacci function", limit=5,
         )
 
         assert len(results) > 0
@@ -392,12 +388,12 @@ class TestHybridSearchEngine:
         """Test semantic search functionality."""
         # Mock the services
         hybrid_search_engine.embedding_service.embed_text = AsyncMock(
-            return_value=[0.1] * 1024
+            return_value=[0.1] * 1024,
         )
         hybrid_search_engine.vector_db_service.similarity_search = AsyncMock(
             return_value=[
-                {"text": "Test result", "similarity": 0.8, "metadata": {"id": "doc1"}}
-            ]
+                {"text": "Test result", "similarity": 0.8, "metadata": {"id": "doc1"}},
+            ],
         )
 
         results = await hybrid_search_engine._semantic_search("test query", limit=5)
@@ -410,7 +406,7 @@ class TestHybridSearchEngine:
         """Test keyword search functionality."""
         # Add test documents
         hybrid_search_engine.keyword_index.add_document(
-            "doc1", "This is a test document", {"id": "doc1"}
+            "doc1", "This is a test document", {"id": "doc1"},
         )
 
         results = await hybrid_search_engine._keyword_search("test document", limit=5)
@@ -451,7 +447,7 @@ class TestHybridSearchEngine:
         ]
 
         fused_results = hybrid_search_engine._reciprocal_rank_fusion(
-            semantic_results, keyword_results, 0.7, 0.3, limit=5
+            semantic_results, keyword_results, 0.7, 0.3, limit=5,
         )
 
         assert len(fused_results) > 0
@@ -459,10 +455,10 @@ class TestHybridSearchEngine:
 
         # Result 1 should have higher score since it appears in both
         doc1_score = next(
-            (r["score"] for r in fused_results if r["metadata"]["id"] == "doc1"), 0
+            (r["score"] for r in fused_results if r["metadata"]["id"] == "doc1"), 0,
         )
         doc3_score = next(
-            (r["score"] for r in fused_results if r["metadata"]["id"] == "doc3"), 0
+            (r["score"] for r in fused_results if r["metadata"]["id"] == "doc3"), 0,
         )
         assert doc1_score > doc3_score
 
@@ -503,16 +499,16 @@ class TestHybridSearchEngine:
         """Test search performance benchmarking."""
         # Mock the services
         hybrid_search_engine.embedding_service.embed_text = AsyncMock(
-            return_value=[0.1] * 1024
+            return_value=[0.1] * 1024,
         )
         hybrid_search_engine.vector_db_service.similarity_search = AsyncMock(
-            return_value=[]
+            return_value=[],
         )
 
         test_queries = ["test query 1", "test query 2"]
 
         benchmark_results = await hybrid_search_engine.benchmark_search_performance(
-            test_queries, iterations=2
+            test_queries, iterations=2,
         )
 
         assert "semantic_only" in benchmark_results
@@ -540,8 +536,8 @@ class TestIntegration:
         embedding_service.embed_text = AsyncMock(return_value=[0.1] * 1024)
         vector_db_service.similarity_search = AsyncMock(
             return_value=[
-                {"text": "Test result", "similarity": 0.8, "metadata": {"id": "doc1"}}
-            ]
+                {"text": "Test result", "similarity": 0.8, "metadata": {"id": "doc1"}},
+            ],
         )
 
         # Test AST chunking
@@ -563,7 +559,7 @@ def fibonacci(n):
         # Test hybrid search
         hybrid_engine = HybridSearchEngine(embedding_service, vector_db_service)
         hybrid_engine.keyword_index.add_document(
-            "doc1", "fibonacci function", {"id": "doc1"}
+            "doc1", "fibonacci function", {"id": "doc1"},
         )
 
         results = await hybrid_engine.hybrid_search("fibonacci", limit=5)

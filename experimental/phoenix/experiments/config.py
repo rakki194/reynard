@@ -1,5 +1,4 @@
-"""
-Experiment Configuration
+"""Experiment Configuration
 
 Configuration management for agent reconstruction experiments.
 
@@ -9,7 +8,6 @@ Version: 1.0.0
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Dict, List, Optional
 
 
 class ExperimentType(Enum):
@@ -57,7 +55,7 @@ class ExperimentConfig:
     )
 
     # Evaluation parameters
-    evaluation_metrics: List[EvaluationMetric] = None
+    evaluation_metrics: list[EvaluationMetric] = None
     significance_threshold: float = 0.05
     confidence_level: float = 0.95
     min_sample_size: int = 30
@@ -92,9 +90,9 @@ class AgentReconstructionTarget:
     style: str
 
     # Trait specifications
-    personality_traits: Dict[str, float]
-    physical_traits: Dict[str, float]
-    ability_traits: Dict[str, float]
+    personality_traits: dict[str, float]
+    physical_traits: dict[str, float]
+    ability_traits: dict[str, float]
 
     # Performance specifications
     expected_accuracy: float
@@ -102,9 +100,9 @@ class AgentReconstructionTarget:
     expected_consistency: float
 
     # Knowledge specifications
-    domain_expertise: List[str]
-    specializations: List[str]
-    achievements: List[str]
+    domain_expertise: list[str]
+    specializations: list[str]
+    achievements: list[str]
 
 
 def create_success_advisor_target() -> AgentReconstructionTarget:

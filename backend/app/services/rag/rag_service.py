@@ -1,5 +1,4 @@
-"""
-🦊 Reynard RAG (Retrieval-Augmented Generation) Service
+"""🦊 Reynard RAG (Retrieval-Augmented Generation) Service
 ======================================================
 
 Unified orchestrator for all RAG capabilities within the Reynard ecosystem.
@@ -45,11 +44,9 @@ Author: Reynard Development Team
 Version: 1.0.0
 """
 
-import asyncio
 import logging
 import time
-from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from ..continuous_indexing import ContinuousIndexingService
 from .advanced import (
@@ -68,8 +65,7 @@ logger = logging.getLogger("uvicorn")
 
 
 class RAGService:
-    """
-    Unified RAG service orchestrator with enterprise-grade capabilities.
+    """Unified RAG service orchestrator with enterprise-grade capabilities.
 
     The RAGService serves as the central orchestrator for all RAG operations within
     the Reynard ecosystem. It provides a comprehensive, production-ready RAG system
@@ -105,33 +101,34 @@ class RAGService:
         rag_service = RAGService(config)
         await rag_service.initialize()
         ```
+
     """
 
-    def __init__(self, config: Dict[str, Any]):
+    def __init__(self, config: dict[str, Any]):
         self.config = config
         self.enabled = config.get("rag_enabled", False)
 
         # Core services
-        self.embedding_service: Optional[EmbeddingService] = None
-        self.vector_store_service: Optional[VectorStoreService] = None
-        self.document_indexer: Optional[DocumentIndexer] = None
-        self.search_engine: Optional[SearchEngine] = None
+        self.embedding_service: EmbeddingService | None = None
+        self.vector_store_service: VectorStoreService | None = None
+        self.document_indexer: DocumentIndexer | None = None
+        self.search_engine: SearchEngine | None = None
 
         # File indexing service dependency
         self.file_indexing_service = get_file_indexing_service()
 
         # Advanced services
-        self.performance_monitor: Optional[PerformanceMonitor] = None
-        self.security_service: Optional[SecurityService] = None
-        self.continuous_improvement: Optional[ContinuousImprovement] = None
-        self.documentation_service: Optional[DocumentationService] = None
-        self.model_evaluator: Optional[ModelEvaluator] = None
-        self.continuous_indexing: Optional[ContinuousIndexingService] = None
-        self.initial_indexing_service: Optional[InitialIndexingService] = None
+        self.performance_monitor: PerformanceMonitor | None = None
+        self.security_service: SecurityService | None = None
+        self.continuous_improvement: ContinuousImprovement | None = None
+        self.documentation_service: DocumentationService | None = None
+        self.model_evaluator: ModelEvaluator | None = None
+        self.continuous_indexing: ContinuousIndexingService | None = None
+        self.initial_indexing_service: InitialIndexingService | None = None
 
         # Service status
         self.initialized = False
-        self.startup_time: Optional[float] = None
+        self.startup_time: float | None = None
 
         # Statistics
         self.stats = {
@@ -166,7 +163,7 @@ class RAGService:
             self.startup_time = time.time() - start_time
 
             logger.info(
-                f"RAG service initialized successfully in {self.startup_time:.2f}s"
+                f"RAG service initialized successfully in {self.startup_time:.2f}s",
             )
             return True
 
@@ -205,7 +202,7 @@ class RAGService:
 
         # Initialize search engine
         self.search_engine = SearchEngine(
-            self.embedding_service, self.vector_store_service
+            self.embedding_service, self.vector_store_service,
         )
 
         # Populate search engine with existing documents
@@ -244,7 +241,7 @@ class RAGService:
         # Initialize model evaluator
         if self.config.get("rag_model_evaluation_enabled", True):
             self.model_evaluator = ModelEvaluator(
-                self.embedding_service, self.vector_store_service
+                self.embedding_service, self.vector_store_service,
             )
             logger.info("Model evaluator initialized")
 
@@ -259,7 +256,7 @@ class RAGService:
                 # Initialize initial indexing service
                 self.initial_indexing_service = InitialIndexingService(self.config)
                 await self.initial_indexing_service.initialize(
-                    self.continuous_indexing, self.vector_store_service
+                    self.continuous_indexing, self.vector_store_service,
                 )
                 logger.info("Initial indexing service initialized")
 
@@ -298,7 +295,7 @@ class RAGService:
             import asyncio
 
             asyncio.create_task(
-                self.initial_indexing_service.perform_initial_indexing(force=False)
+                self.initial_indexing_service.perform_initial_indexing(force=False),
             )
 
         except Exception as e:
@@ -308,13 +305,12 @@ class RAGService:
         """Set up dependencies between services."""
         # This is where we would wire up service dependencies
         # For example, having the performance monitor track metrics from other services
-        pass
 
     # Core API Methods
 
     async def embed_text(
-        self, text: str, model: str = "embeddinggemma:latest"
-    ) -> List[float]:
+        self, text: str, model: str = "embeddinggemma:latest",
+    ) -> list[float]:
         """Generate embedding for text."""
         if not self.initialized:
             raise RuntimeError("RAG service not initialized")
@@ -353,8 +349,8 @@ class RAGService:
             raise
 
     async def embed_batch(
-        self, texts: List[str], model: str = "embeddinggemma:latest"
-    ) -> List[List[float]]:
+        self, texts: list[str], model: str = "embeddinggemma:latest",
+    ) -> list[list[float]]:
         """Generate embeddings for a batch of texts."""
         if not self.initialized:
             raise RuntimeError("RAG service not initialized")
@@ -401,8 +397,8 @@ class RAGService:
         query: str,
         search_type: str = "hybrid",
         limit: int = 10,
-        filters: Optional[Dict[str, Any]] = None,
-    ) -> List[Dict[str, Any]]:
+        filters: dict[str, Any] | None = None,
+    ) -> list[dict[str, Any]]:
         """Perform search using the specified method."""
         if not self.initialized:
             raise RuntimeError("RAG service not initialized")
@@ -415,7 +411,7 @@ class RAGService:
             if self.performance_monitor:
                 start_time = time.time()
                 results = await self.search_engine.search_with_filters(
-                    query, search_type, limit, filters
+                    query, search_type, limit, filters,
                 )
                 latency_ms = (time.time() - start_time) * 1000
 
@@ -426,7 +422,7 @@ class RAGService:
                 )
             else:
                 results = await self.search_engine.search_with_filters(
-                    query, search_type, limit, filters
+                    query, search_type, limit, filters,
                 )
 
             return results
@@ -440,9 +436,9 @@ class RAGService:
         self,
         query: str,
         top_k: int = 10,
-        language_filter: Optional[str] = None,
-        file_type_filter: Optional[str] = None,
-    ) -> List[Dict[str, Any]]:
+        language_filter: str | None = None,
+        file_type_filter: str | None = None,
+    ) -> list[dict[str, Any]]:
         """Perform semantic search using vector embeddings."""
         filters = {}
         if language_filter:
@@ -451,16 +447,16 @@ class RAGService:
             filters["file_type"] = file_type_filter
 
         return await self.search(
-            query=query, search_type="semantic", limit=top_k, filters=filters
+            query=query, search_type="semantic", limit=top_k, filters=filters,
         )
 
     async def keyword_search(
         self,
         query: str,
         top_k: int = 10,
-        language_filter: Optional[str] = None,
-        file_type_filter: Optional[str] = None,
-    ) -> List[Dict[str, Any]]:
+        language_filter: str | None = None,
+        file_type_filter: str | None = None,
+    ) -> list[dict[str, Any]]:
         """Perform keyword search using BM25."""
         filters = {}
         if language_filter:
@@ -469,16 +465,16 @@ class RAGService:
             filters["file_type"] = file_type_filter
 
         return await self.search(
-            query=query, search_type="keyword", limit=top_k, filters=filters
+            query=query, search_type="keyword", limit=top_k, filters=filters,
         )
 
     async def hybrid_search(
         self,
         query: str,
         top_k: int = 10,
-        language_filter: Optional[str] = None,
-        file_type_filter: Optional[str] = None,
-    ) -> List[Dict[str, Any]]:
+        language_filter: str | None = None,
+        file_type_filter: str | None = None,
+    ) -> list[dict[str, Any]]:
         """Perform hybrid search combining semantic and keyword search."""
         filters = {}
         if language_filter:
@@ -487,10 +483,10 @@ class RAGService:
             filters["file_type"] = file_type_filter
 
         return await self.search(
-            query=query, search_type="hybrid", limit=top_k, filters=filters
+            query=query, search_type="hybrid", limit=top_k, filters=filters,
         )
 
-    async def index_documents(self, documents: List[Dict[str, Any]]) -> Dict[str, Any]:
+    async def index_documents(self, documents: list[dict[str, Any]]) -> dict[str, Any]:
         """Index documents for search."""
         if not self.initialized:
             raise RuntimeError("RAG service not initialized")
@@ -538,7 +534,7 @@ class RAGService:
 
     # Advanced API Methods
 
-    async def get_system_health(self) -> Dict[str, Any]:
+    async def get_system_health(self) -> dict[str, Any]:
         """Get comprehensive system health status."""
         if not self.initialized:
             return {"status": "not_initialized", "healthy": False}
@@ -590,7 +586,7 @@ class RAGService:
                 "timestamp": time.time(),
             }
 
-    async def get_statistics(self) -> Dict[str, Any]:
+    async def get_statistics(self) -> dict[str, Any]:
         """Get comprehensive system statistics."""
         if not self.initialized:
             return {"error": "Service not initialized"}
@@ -677,7 +673,7 @@ class RAGService:
             logger.error(f"Failed to generate performance report: {e}")
             return f"Error generating report: {e}"
 
-    async def evaluate_models(self) -> Dict[str, Any]:
+    async def evaluate_models(self) -> dict[str, Any]:
         """Evaluate different embedding models."""
         if not self.initialized or not self.model_evaluator:
             return {"error": "Model evaluation not available"}
@@ -688,7 +684,7 @@ class RAGService:
             logger.error(f"Model evaluation failed: {e}")
             return {"error": str(e)}
 
-    async def get_optimization_recommendations(self) -> List[Dict[str, Any]]:
+    async def get_optimization_recommendations(self) -> list[dict[str, Any]]:
         """Get optimization recommendations."""
         if not self.initialized or not self.continuous_improvement:
             return []
@@ -736,7 +732,7 @@ class RAGService:
         """Check if the service is enabled."""
         return self.enabled
 
-    def get_available_models(self) -> List[str]:
+    def get_available_models(self) -> list[str]:
         """Get list of available embedding models."""
         if not self.embedding_service:
             return []
@@ -748,7 +744,7 @@ class RAGService:
             return "embeddinggemma:latest"
         return self.embedding_service.get_best_model(model_type)
 
-    async def get_optimization_recommendations(self) -> List[Dict[str, Any]]:
+    async def get_optimization_recommendations(self) -> list[dict[str, Any]]:
         """Get optimization recommendations."""
         if not self.initialized or not self.continuous_improvement:
             return []
@@ -796,7 +792,7 @@ class RAGService:
         """Check if the service is enabled."""
         return self.enabled
 
-    def get_available_models(self) -> List[str]:
+    def get_available_models(self) -> list[str]:
         """Get list of available embedding models."""
         if not self.embedding_service:
             return []

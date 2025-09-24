@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Test script for uvicorn reload functionality
+"""Test script for uvicorn reload functionality
 Demonstrates how to test reload behavior programmatically
 """
 
@@ -185,7 +184,7 @@ class ReloadTester:
                 os.remove(temp_file)
                 return True
             print(
-                f"  [FAIL] Server not responding after file change: HTTP {response.status_code}"
+                f"  [FAIL] Server not responding after file change: HTTP {response.status_code}",
             )
             return False
 
@@ -208,7 +207,7 @@ class ReloadTester:
             for i in range(total_requests):
                 try:
                     response = requests.get(
-                        f"{self.base_url}/api/health/simple", timeout=2
+                        f"{self.base_url}/api/health/simple", timeout=2,
                     )
                     if response.status_code == 200:
                         success_count += 1
@@ -220,7 +219,7 @@ class ReloadTester:
             success_rate = (success_count / total_requests) * 100
 
             print(
-                f"  [INFO] Results: {success_count}/{total_requests} requests successful"
+                f"  [INFO] Results: {success_count}/{total_requests} requests successful",
             )
             print(f"  [INFO] Duration: {duration:.2f}s")
             print(f"  [INFO] Success rate: {success_rate:.1f}%")
@@ -280,7 +279,7 @@ def main():
     # Check if we're in the right directory
     if not os.path.exists("main.py"):
         print(
-            "[FAIL] Error: main.py not found. Please run this script from the basic-backend directory."
+            "[FAIL] Error: main.py not found. Please run this script from the basic-backend directory.",
         )
         sys.exit(1)
 

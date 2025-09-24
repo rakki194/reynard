@@ -3,7 +3,7 @@
  */
 
 import { Component, For } from "solid-js";
-import { Card } from "reynard-components";
+import { Card } from "reynard-components-core";
 import "./RecentNotes.css";
 
 interface RecentNote {

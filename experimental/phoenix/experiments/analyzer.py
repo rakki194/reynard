@@ -1,5 +1,4 @@
-"""
-Statistical Analyzer
+"""Statistical Analyzer
 
 Statistical analysis for experiment results.
 
@@ -7,15 +6,12 @@ Author: Recognition-Grandmaster-27 (Tiger Specialist)
 Version: 1.0.0
 """
 
-import json
-from dataclasses import asdict
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 import numpy as np
 from scipy import stats
 
 from .config import ExperimentConfig
-from .metrics import ReconstructionMetrics
 
 
 class StatisticalAnalyzer:
@@ -28,10 +24,9 @@ class StatisticalAnalyzer:
         self.confidence_level = config.confidence_level
 
     async def analyze_results(
-        self, trial_results: List[Dict[str, Any]]
-    ) -> Dict[str, Any]:
+        self, trial_results: list[dict[str, Any]],
+    ) -> dict[str, Any]:
         """Analyze experiment results."""
-
         analysis = {
             "descriptive_statistics": {},
             "comparative_analysis": {},
@@ -46,17 +41,17 @@ class StatisticalAnalyzer:
 
         # Calculate descriptive statistics
         analysis["descriptive_statistics"] = self._calculate_descriptive_statistics(
-            method_metrics
+            method_metrics,
         )
 
         # Perform comparative analysis
         analysis["comparative_analysis"] = self._perform_comparative_analysis(
-            method_metrics
+            method_metrics,
         )
 
         # Perform significance testing
         analysis["significance_testing"] = self._perform_significance_testing(
-            method_metrics
+            method_metrics,
         )
 
         # Calculate effect sizes
@@ -64,7 +59,7 @@ class StatisticalAnalyzer:
 
         # Calculate confidence intervals
         analysis["confidence_intervals"] = self._calculate_confidence_intervals(
-            method_metrics
+            method_metrics,
         )
 
         # Generate recommendations
@@ -73,10 +68,9 @@ class StatisticalAnalyzer:
         return analysis
 
     def _extract_method_metrics(
-        self, trial_results: List[Dict[str, Any]]
-    ) -> Dict[str, List[Dict[str, float]]]:
+        self, trial_results: list[dict[str, Any]],
+    ) -> dict[str, list[dict[str, float]]]:
         """Extract metrics by method from trial results."""
-
         method_metrics = {}
 
         for trial in trial_results:
@@ -103,10 +97,9 @@ class StatisticalAnalyzer:
         return method_metrics
 
     def _calculate_descriptive_statistics(
-        self, method_metrics: Dict[str, List[Dict[str, float]]]
-    ) -> Dict[str, Any]:
+        self, method_metrics: dict[str, list[dict[str, float]]],
+    ) -> dict[str, Any]:
         """Calculate descriptive statistics for each method."""
-
         descriptive_stats = {}
 
         for method_name, metrics_list in method_metrics.items():
@@ -139,17 +132,16 @@ class StatisticalAnalyzer:
         return descriptive_stats
 
     def _perform_comparative_analysis(
-        self, method_metrics: Dict[str, List[Dict[str, float]]]
-    ) -> Dict[str, Any]:
+        self, method_metrics: dict[str, list[dict[str, float]]],
+    ) -> dict[str, Any]:
         """Perform comparative analysis between methods."""
-
         comparative_analysis = {}
 
         # Compare baseline vs PHOENIX methods
         baseline_methods = [
-            k for k in method_metrics.keys() if k.startswith("baseline_")
+            k for k in method_metrics if k.startswith("baseline_")
         ]
-        phoenix_methods = [k for k in method_metrics.keys() if k.startswith("phoenix_")]
+        phoenix_methods = [k for k in method_metrics if k.startswith("phoenix_")]
 
         if baseline_methods and phoenix_methods:
             # Compare best baseline vs best PHOENIX
@@ -179,15 +171,14 @@ class StatisticalAnalyzer:
         return comparative_analysis
 
     def _find_best_method(
-        self, method_metrics: Dict[str, List[Dict[str, float]]], method_names: List[str]
+        self, method_metrics: dict[str, list[dict[str, float]]], method_names: list[str],
     ) -> str:
         """Find the best method based on overall success."""
-
         best_method = None
         best_score = -1
 
         for method_name in method_names:
-            if method_name in method_metrics and method_metrics[method_name]:
+            if method_metrics.get(method_name):
                 # Calculate average overall success
                 overall_success_values = [
                     metrics.get("overall_success", 0)
@@ -203,13 +194,12 @@ class StatisticalAnalyzer:
 
     def _compare_methods(
         self,
-        method1_metrics: List[Dict[str, float]],
-        method2_metrics: List[Dict[str, float]],
+        method1_metrics: list[dict[str, float]],
+        method2_metrics: list[dict[str, float]],
         method1_name: str,
         method2_name: str,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Compare two methods."""
-
         comparison = {
             "method1": method1_name,
             "method2": method2_name,
@@ -219,7 +209,7 @@ class StatisticalAnalyzer:
         # Compare each metric
         if method1_metrics and method2_metrics:
             common_metrics = set(method1_metrics[0].keys()) & set(
-                method2_metrics[0].keys()
+                method2_metrics[0].keys(),
             )
 
             for metric_name in common_metrics:
@@ -242,17 +232,16 @@ class StatisticalAnalyzer:
         return comparison
 
     def _perform_significance_testing(
-        self, method_metrics: Dict[str, List[Dict[str, float]]]
-    ) -> Dict[str, Any]:
+        self, method_metrics: dict[str, list[dict[str, float]]],
+    ) -> dict[str, Any]:
         """Perform significance testing between methods."""
-
         significance_results = {}
 
         # Test baseline vs PHOENIX
         baseline_methods = [
-            k for k in method_metrics.keys() if k.startswith("baseline_")
+            k for k in method_metrics if k.startswith("baseline_")
         ]
-        phoenix_methods = [k for k in method_metrics.keys() if k.startswith("phoenix_")]
+        phoenix_methods = [k for k in method_metrics if k.startswith("phoenix_")]
 
         if baseline_methods and phoenix_methods:
             best_baseline = self._find_best_method(method_metrics, baseline_methods)
@@ -270,13 +259,12 @@ class StatisticalAnalyzer:
 
     def _test_significance(
         self,
-        method1_metrics: List[Dict[str, float]],
-        method2_metrics: List[Dict[str, float]],
+        method1_metrics: list[dict[str, float]],
+        method2_metrics: list[dict[str, float]],
         method1_name: str,
         method2_name: str,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Test significance between two methods."""
-
         significance_results = {
             "method1": method1_name,
             "method2": method2_name,
@@ -285,7 +273,7 @@ class StatisticalAnalyzer:
 
         if method1_metrics and method2_metrics:
             common_metrics = set(method1_metrics[0].keys()) & set(
-                method2_metrics[0].keys()
+                method2_metrics[0].keys(),
             )
 
             for metric_name in common_metrics:
@@ -311,17 +299,16 @@ class StatisticalAnalyzer:
         return significance_results
 
     def _calculate_effect_sizes(
-        self, method_metrics: Dict[str, List[Dict[str, float]]]
-    ) -> Dict[str, Any]:
+        self, method_metrics: dict[str, list[dict[str, float]]],
+    ) -> dict[str, Any]:
         """Calculate effect sizes for method comparisons."""
-
         effect_sizes = {}
 
         # Calculate Cohen's d for baseline vs PHOENIX
         baseline_methods = [
-            k for k in method_metrics.keys() if k.startswith("baseline_")
+            k for k in method_metrics if k.startswith("baseline_")
         ]
-        phoenix_methods = [k for k in method_metrics.keys() if k.startswith("phoenix_")]
+        phoenix_methods = [k for k in method_metrics if k.startswith("phoenix_")]
 
         if baseline_methods and phoenix_methods:
             best_baseline = self._find_best_method(method_metrics, baseline_methods)
@@ -329,23 +316,22 @@ class StatisticalAnalyzer:
 
             if best_baseline and best_phoenix:
                 effect_sizes["baseline_vs_phoenix"] = self._calculate_cohens_d(
-                    method_metrics[best_baseline], method_metrics[best_phoenix]
+                    method_metrics[best_baseline], method_metrics[best_phoenix],
                 )
 
         return effect_sizes
 
     def _calculate_cohens_d(
         self,
-        method1_metrics: List[Dict[str, float]],
-        method2_metrics: List[Dict[str, float]],
-    ) -> Dict[str, float]:
+        method1_metrics: list[dict[str, float]],
+        method2_metrics: list[dict[str, float]],
+    ) -> dict[str, float]:
         """Calculate Cohen's d effect size."""
-
         cohens_d = {}
 
         if method1_metrics and method2_metrics:
             common_metrics = set(method1_metrics[0].keys()) & set(
-                method2_metrics[0].keys()
+                method2_metrics[0].keys(),
             )
 
             for metric_name in common_metrics:
@@ -360,7 +346,7 @@ class StatisticalAnalyzer:
                     # Pooled standard deviation
                     pooled_std = np.sqrt(
                         ((len(values1) - 1) * std1**2 + (len(values2) - 1) * std2**2)
-                        / (len(values1) + len(values2) - 2)
+                        / (len(values1) + len(values2) - 2),
                     )
 
                     if pooled_std != 0:
@@ -370,10 +356,9 @@ class StatisticalAnalyzer:
         return cohens_d
 
     def _calculate_confidence_intervals(
-        self, method_metrics: Dict[str, List[Dict[str, float]]]
-    ) -> Dict[str, Any]:
+        self, method_metrics: dict[str, list[dict[str, float]]],
+    ) -> dict[str, Any]:
         """Calculate confidence intervals for method metrics."""
-
         confidence_intervals = {}
 
         for method_name, metrics_list in method_metrics.items():
@@ -404,9 +389,8 @@ class StatisticalAnalyzer:
 
         return confidence_intervals
 
-    def _generate_recommendations(self, analysis: Dict[str, Any]) -> List[str]:
+    def _generate_recommendations(self, analysis: dict[str, Any]) -> list[str]:
         """Generate recommendations based on analysis."""
-
         recommendations = []
 
         # Check significance results
@@ -425,11 +409,11 @@ class StatisticalAnalyzer:
 
             if significant_improvements:
                 recommendations.append(
-                    f"PHOENIX methods show significant improvements over baseline in: {', '.join(significant_improvements)}"
+                    f"PHOENIX methods show significant improvements over baseline in: {', '.join(significant_improvements)}",
                 )
             else:
                 recommendations.append(
-                    "No significant improvements found between PHOENIX and baseline methods"
+                    "No significant improvements found between PHOENIX and baseline methods",
                 )
 
         # Check effect sizes
@@ -439,7 +423,7 @@ class StatisticalAnalyzer:
             large_effects = [metric for metric, d in cohens_d.items() if abs(d) > 0.8]
             if large_effects:
                 recommendations.append(
-                    f"Large effect sizes observed for: {', '.join(large_effects)}"
+                    f"Large effect sizes observed for: {', '.join(large_effects)}",
                 )
 
         # Check descriptive statistics
@@ -455,7 +439,7 @@ class StatisticalAnalyzer:
                 descriptive_stats[best_method].get("overall_success", {}).get("mean", 0)
             )
             recommendations.append(
-                f"Best performing method: {best_method} (overall success: {best_score:.3f})"
+                f"Best performing method: {best_method} (overall success: {best_score:.3f})",
             )
 
         return recommendations

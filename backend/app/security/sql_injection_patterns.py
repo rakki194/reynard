@@ -1,5 +1,4 @@
-"""
-SQL Injection Detection Patterns
+"""SQL Injection Detection Patterns
 
 This module contains comprehensive regex patterns for detecting
 SQL injection attempts across different attack vectors.
@@ -7,14 +6,14 @@ SQL injection attempts across different attack vectors.
 
 
 def get_basic_sql_keywords() -> list[str]:
-    """
-    Core SQL keywords commonly used in injection attacks.
+    """Core SQL keywords commonly used in injection attacks.
 
     These patterns detect fundamental SQL operations that are typically
     the foundation of injection attempts across different database systems.
 
     Returns:
         list: Compiled regex patterns for basic SQL keywords
+
     """
     return [
         r"\b(select|insert|update|delete|drop|create|alter|exec|execute|union|script)\b",
@@ -22,14 +21,14 @@ def get_basic_sql_keywords() -> list[str]:
 
 
 def get_comment_patterns() -> list[str]:
-    """
-    SQL comment patterns used to terminate queries and inject malicious code.
+    """SQL comment patterns used to terminate queries and inject malicious code.
 
     Detects various comment syntaxes including single-line (--, #) and
     multi-line (/* */) comments that attackers use to bypass input validation.
 
     Returns:
         list: Compiled regex patterns for SQL comment syntax
+
     """
     return [
         r"(--|#|/\*|\*/)",
@@ -37,8 +36,7 @@ def get_comment_patterns() -> list[str]:
 
 
 def get_logic_operator_patterns() -> list[str]:
-    """
-    Logic operator patterns for boolean-based SQL injection attacks.
+    """Logic operator patterns for boolean-based SQL injection attacks.
 
     These patterns detect attempts to manipulate query logic using OR/AND
     operators combined with tautologies (1=1, '1'='1') to bypass
@@ -46,6 +44,7 @@ def get_logic_operator_patterns() -> list[str]:
 
     Returns:
         list: Compiled regex patterns for logic operator attacks
+
     """
     return [
         r"\b(or|and)\b.*=.*\b(or|and)\b",
@@ -61,8 +60,7 @@ def get_logic_operator_patterns() -> list[str]:
 
 
 def get_union_attack_patterns() -> list[str]:
-    """
-    UNION-based SQL injection attack patterns.
+    """UNION-based SQL injection attack patterns.
 
     Detects attempts to combine results from multiple SELECT statements
     to extract data from different tables or databases. UNION attacks
@@ -70,6 +68,7 @@ def get_union_attack_patterns() -> list[str]:
 
     Returns:
         list: Compiled regex patterns for UNION-based attacks
+
     """
     return [
         r"union.*select",
@@ -80,8 +79,7 @@ def get_union_attack_patterns() -> list[str]:
 
 
 def get_function_call_patterns() -> list[str]:
-    """
-    Database function call patterns used in SQL injection attacks.
+    """Database function call patterns used in SQL injection attacks.
 
     Detects various database functions including string manipulation,
     time-based delays, file operations, and information gathering
@@ -89,6 +87,7 @@ def get_function_call_patterns() -> list[str]:
 
     Returns:
         list: Compiled regex patterns for malicious function calls
+
     """
     return [
         r"\b(char|ascii|substring|concat|version|database|user|schema|length|count|sum|avg|max|min)\s*\(",
@@ -98,8 +97,7 @@ def get_function_call_patterns() -> list[str]:
 
 
 def get_information_schema_patterns() -> list[str]:
-    """
-    Information schema and system table access patterns.
+    """Information schema and system table access patterns.
 
     Detects attempts to access database metadata, system tables,
     and information schemas that contain sensitive information about
@@ -107,6 +105,7 @@ def get_information_schema_patterns() -> list[str]:
 
     Returns:
         list: Compiled regex patterns for information schema access
+
     """
     return [
         r"\binformation_schema\b",
@@ -118,8 +117,7 @@ def get_information_schema_patterns() -> list[str]:
 
 
 def get_time_based_attack_patterns() -> list[str]:
-    """
-    Time-based blind SQL injection attack patterns.
+    """Time-based blind SQL injection attack patterns.
 
     Detects attempts to cause intentional delays in query execution
     to infer information about database structure and data through
@@ -127,6 +125,7 @@ def get_time_based_attack_patterns() -> list[str]:
 
     Returns:
         list: Compiled regex patterns for time-based attacks
+
     """
     return [
         r"\bwaitfor\s+delay\b",
@@ -137,8 +136,7 @@ def get_time_based_attack_patterns() -> list[str]:
 
 
 def get_error_based_attack_patterns() -> list[str]:
-    """
-    Error-based SQL injection attack patterns.
+    """Error-based SQL injection attack patterns.
 
     Detects attempts to trigger database errors that reveal sensitive
     information through error messages. These attacks exploit functions
@@ -146,6 +144,7 @@ def get_error_based_attack_patterns() -> list[str]:
 
     Returns:
         list: Compiled regex patterns for error-based attacks
+
     """
     return [
         r"\bextractvalue\s*\(",
@@ -157,8 +156,7 @@ def get_error_based_attack_patterns() -> list[str]:
 
 
 def get_boolean_based_attack_patterns() -> list[str]:
-    """
-    Boolean-based blind SQL injection attack patterns.
+    """Boolean-based blind SQL injection attack patterns.
 
     Detects attempts to manipulate query conditions using IF statements,
     CASE expressions, and conditional logic to infer information
@@ -166,6 +164,7 @@ def get_boolean_based_attack_patterns() -> list[str]:
 
     Returns:
         list: Compiled regex patterns for boolean-based attacks
+
     """
     return [
         r"\bif\s*\(",
@@ -175,8 +174,7 @@ def get_boolean_based_attack_patterns() -> list[str]:
 
 
 def get_stacked_query_patterns() -> list[str]:
-    """
-    Stacked query SQL injection attack patterns.
+    """Stacked query SQL injection attack patterns.
 
     Detects attempts to execute multiple SQL statements in sequence
     by using semicolon separators. These attacks can perform
@@ -184,6 +182,7 @@ def get_stacked_query_patterns() -> list[str]:
 
     Returns:
         list: Compiled regex patterns for stacked query attacks
+
     """
     return [
         r";\s*(select|insert|update|delete|drop|create|alter|exec|execute)",
@@ -191,14 +190,14 @@ def get_stacked_query_patterns() -> list[str]:
 
 
 def get_hex_encoding_patterns() -> list[str]:
-    """
-    Hexadecimal encoding patterns used to bypass input filters.
+    """Hexadecimal encoding patterns used to bypass input filters.
 
     Detects attempts to encode SQL injection payloads in hexadecimal
     format to evade detection by security filters and input validation.
 
     Returns:
         list: Compiled regex patterns for hex-encoded attacks
+
     """
     return [
         r"0x[0-9a-f]+",
@@ -207,8 +206,7 @@ def get_hex_encoding_patterns() -> list[str]:
 
 
 def get_string_concatenation_patterns() -> list[str]:
-    """
-    String concatenation patterns used in SQL injection attacks.
+    """String concatenation patterns used in SQL injection attacks.
 
     Detects attempts to manipulate string values using concatenation
     operators and functions to construct malicious SQL statements
@@ -216,6 +214,7 @@ def get_string_concatenation_patterns() -> list[str]:
 
     Returns:
         list: Compiled regex patterns for string concatenation attacks
+
     """
     return [
         r'[\'"]\s*\+\s*[\'"]',
@@ -225,8 +224,7 @@ def get_string_concatenation_patterns() -> list[str]:
 
 
 def get_subquery_patterns() -> list[str]:
-    """
-    Subquery patterns used in advanced SQL injection attacks.
+    """Subquery patterns used in advanced SQL injection attacks.
 
     Detects attempts to embed additional SQL statements within
     parentheses to create nested queries for data extraction
@@ -234,6 +232,7 @@ def get_subquery_patterns() -> list[str]:
 
     Returns:
         list: Compiled regex patterns for subquery attacks
+
     """
     return [
         r"\(\s*select\s+",
@@ -244,8 +243,7 @@ def get_subquery_patterns() -> list[str]:
 
 
 def get_privilege_escalation_patterns() -> list[str]:
-    """
-    Privilege escalation patterns in SQL injection attacks.
+    """Privilege escalation patterns in SQL injection attacks.
 
     Detects attempts to manipulate database permissions, grant
     additional privileges, or access administrative functions
@@ -253,6 +251,7 @@ def get_privilege_escalation_patterns() -> list[str]:
 
     Returns:
         list: Compiled regex patterns for privilege escalation attacks
+
     """
     return [
         r"\bgrant\b",
@@ -264,8 +263,7 @@ def get_privilege_escalation_patterns() -> list[str]:
 
 
 def get_all_sql_injection_patterns() -> list[str]:
-    """
-    Comprehensive collection of all SQL injection attack patterns.
+    """Comprehensive collection of all SQL injection attack patterns.
 
     This function combines all individual pattern categories into a single
     collection for comprehensive SQL injection detection. It includes
@@ -273,6 +271,7 @@ def get_all_sql_injection_patterns() -> list[str]:
 
     Returns:
         list: Combined list of all SQL injection detection patterns
+
     """
     return (
         get_basic_sql_keywords()

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-🦊 Efficient CHANGELOG.md Codebase Scanner
+"""🦊 Efficient CHANGELOG.md Codebase Scanner
 =========================================
 
 Strategic fox specialist tool for comprehensive codebase scanning
@@ -80,7 +79,7 @@ class EfficientChangelogScanner:
                                         "file_path": str(relative_path),
                                         "line_count": line_count,
                                         "absolute_path": str(file_path),
-                                    }
+                                    },
                                 )
 
             # Sort by line count (descending)
@@ -130,7 +129,7 @@ class EfficientChangelogScanner:
                                     "file_path": str(relative_path),
                                     "absolute_path": str(file_path),
                                     "type": "development_tool",
-                                }
+                                },
                             )
 
             print(f"Found {len(tools)} tool-related files")
@@ -231,7 +230,7 @@ class EfficientChangelogScanner:
                                     "file_path": str(relative_path),
                                     "absolute_path": str(file_path),
                                     "type": "validation_tool",
-                                }
+                                },
                             )
 
             print(f"Found {len(validation_tools)} validation tool files")
@@ -261,7 +260,7 @@ class EfficientChangelogScanner:
                                 "file_path": str(relative_path),
                                 "absolute_path": str(file_path),
                                 "type": "vscode_config",
-                            }
+                            },
                         )
 
             print(f"Found {len(vscode_files)} VS Code configuration files")
@@ -295,17 +294,17 @@ class EfficientChangelogScanner:
                                     package_data = json.load(f)
 
                                 relative_path = package_json.relative_to(
-                                    self.project_root
+                                    self.project_root,
                                 )
                                 packages.append(
                                     {
                                         "file_path": str(relative_path),
                                         "name": package_data.get("name", "Unknown"),
                                         "version": package_data.get(
-                                            "version", "Unknown"
+                                            "version", "Unknown",
                                         ),
                                         "type": "package",
-                                    }
+                                    },
                                 )
                             except Exception:
                                 continue
@@ -324,7 +323,7 @@ class EfficientChangelogScanner:
                                     "name": package_data.get("name", "Unknown"),
                                     "version": package_data.get("version", "Unknown"),
                                     "type": "package",
-                                }
+                                },
                             )
                         except Exception:
                             continue
@@ -360,17 +359,17 @@ class EfficientChangelogScanner:
 
         print("\n📋 SUMMARY:")
         print(
-            f"  • Monolithic files: {self.results.get('monoliths', {}).get('count', 0)}"
+            f"  • Monolithic files: {self.results.get('monoliths', {}).get('count', 0)}",
         )
         print(
-            f"  • Development tools: {self.results.get('development_tools', {}).get('count', 0)}"
+            f"  • Development tools: {self.results.get('development_tools', {}).get('count', 0)}",
         )
         print(f"  • MCP tools: {self.results.get('mcp_tools', {}).get('count', 0)}")
         print(
-            f"  • Validation tools: {self.results.get('validation_tools', {}).get('count', 0)}"
+            f"  • Validation tools: {self.results.get('validation_tools', {}).get('count', 0)}",
         )
         print(
-            f"  • VS Code configs: {self.results.get('vscode_files', {}).get('count', 0)}"
+            f"  • VS Code configs: {self.results.get('vscode_files', {}).get('count', 0)}",
         )
         print(f"  • Packages: {self.results.get('packages', {}).get('count', 0)}")
 
@@ -380,7 +379,7 @@ class EfficientChangelogScanner:
             print(f"\n🏗️  TOP MONOLITHS (>{monoliths[0].get('line_count', 0)} lines):")
             for i, monolith in enumerate(monoliths[:5], 1):
                 print(
-                    f"  {i}. {monolith.get('file_path', 'Unknown')} ({monolith.get('line_count', 0)} lines)"
+                    f"  {i}. {monolith.get('file_path', 'Unknown')} ({monolith.get('line_count', 0)} lines)",
                 )
 
         # Show key tools
@@ -405,7 +404,7 @@ class EfficientChangelogScanner:
             print("\n📦 PACKAGES:")
             for i, package in enumerate(packages[:5], 1):
                 print(
-                    f"  {i}. {package.get('name', 'Unknown')} v{package.get('version', 'Unknown')}"
+                    f"  {i}. {package.get('name', 'Unknown')} v{package.get('version', 'Unknown')}",
                 )
 
         print("\n🦊 *whiskers twitch with satisfaction* Scan complete!")

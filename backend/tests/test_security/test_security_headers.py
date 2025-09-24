@@ -1,5 +1,4 @@
-"""
-Tests for security headers and middleware.
+"""Tests for security headers and middleware.
 
 This module tests that proper security headers are set and
 security middleware is functioning correctly.
@@ -81,7 +80,7 @@ class TestSecurityHeaders:
         """Test CORS origin validation."""
         # Test with allowed origin
         response = client.get(
-            "/api/health", headers={"Origin": "http://localhost:3000"}
+            "/api/health", headers={"Origin": "http://localhost:3000"},
         )
 
         assert response.status_code == 200
@@ -338,17 +337,17 @@ class TestSecurityHeaders:
 
             # Security headers should be consistent
             assert headers.get("x-frame-options") == first_headers.get(
-                "x-frame-options"
+                "x-frame-options",
             )
             assert headers.get("x-content-type-options") == first_headers.get(
-                "x-content-type-options"
+                "x-content-type-options",
             )
             assert headers.get("x-xss-protection") == first_headers.get(
-                "x-xss-protection"
+                "x-xss-protection",
             )
             assert headers.get("strict-transport-security") == first_headers.get(
-                "strict-transport-security"
+                "strict-transport-security",
             )
             assert headers.get("referrer-policy") == first_headers.get(
-                "referrer-policy"
+                "referrer-policy",
             )

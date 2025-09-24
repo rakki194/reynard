@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Test runner for RAG service tests.
+"""Test runner for RAG service tests.
 
 This script runs all the RAG-related tests with proper configuration and reporting.
 """

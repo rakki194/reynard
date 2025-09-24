@@ -1,5 +1,4 @@
-"""
-Tests for obfuscation detection patterns.
+"""Tests for obfuscation detection patterns.
 
 This module tests the regex patterns used for detecting
 various obfuscation techniques in security attacks.

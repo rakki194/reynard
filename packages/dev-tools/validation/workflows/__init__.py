@@ -1,3 +1,2 @@
-"""
-Workflow validation utilities.
+"""Workflow validation utilities.
 """

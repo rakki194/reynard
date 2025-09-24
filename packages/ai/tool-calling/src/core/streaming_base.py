@@ -1,5 +1,4 @@
-"""
-Base classes for streaming tool execution in yipyap.
+"""Base classes for streaming tool execution in yipyap.
 
 This module provides base classes for tools that can emit progress updates
 and intermediate results during execution.
@@ -62,7 +61,7 @@ class StreamingToolExecutionContext(ToolExecutionContext):
         if self._progress_callback:
             try:
                 await self._progress_callback(
-                    progress, status, message, intermediate_data
+                    progress, status, message, intermediate_data,
                 )
             except Exception as e:
                 logger.error(f"Error in progress callback: {e}")
@@ -91,8 +90,7 @@ class StreamingToolExecutionContext(ToolExecutionContext):
 
 
 class StreamingBaseTool(BaseTool, ABC):
-    """
-    Abstract base class for tools that support streaming execution progress.
+    """Abstract base class for tools that support streaming execution progress.
 
     Tools that inherit from this class can emit progress updates and
     intermediate results during execution.
@@ -109,10 +107,9 @@ class StreamingBaseTool(BaseTool, ABC):
 
     @abstractmethod
     async def execute_streaming(
-        self, context: StreamingToolExecutionContext, **params
+        self, context: StreamingToolExecutionContext, **params,
     ) -> AsyncGenerator[StreamingToolResult]:
-        """
-        Execute the tool with streaming progress updates.
+        """Execute the tool with streaming progress updates.
 
         Args:
             context: Streaming execution context
@@ -120,12 +117,11 @@ class StreamingBaseTool(BaseTool, ABC):
 
         Yields:
             StreamingToolResult objects with progress updates
+
         """
-        pass
 
     async def execute(self, context: ToolExecutionContext, **params) -> ToolResult:
-        """
-        Default implementation that executes the streaming version and returns final result.
+        """Default implementation that executes the streaming version and returns final result.
 
         Args:
             context: Execution context
@@ -133,6 +129,7 @@ class StreamingBaseTool(BaseTool, ABC):
 
         Returns:
             Final tool execution result
+
         """
         # Convert to streaming context if needed
         if isinstance(context, StreamingToolExecutionContext):
@@ -154,14 +151,13 @@ class StreamingBaseTool(BaseTool, ABC):
             final_result = result
 
         return final_result or StreamingToolResult(
-            success=False, error="No result generated"
+            success=False, error="No result generated",
         )
 
     async def execute_with_timeout(
-        self, context: ToolExecutionContext, **params
+        self, context: ToolExecutionContext, **params,
     ) -> ToolResult:
-        """
-        Execute tool with timeout handling, supporting streaming.
+        """Execute tool with timeout handling, supporting streaming.
 
         Args:
             context: Execution context
@@ -169,12 +165,13 @@ class StreamingBaseTool(BaseTool, ABC):
 
         Returns:
             Tool execution result
+
         """
         timeout = context.timeout if context.timeout > 0 else self.timeout
 
         try:
             return await asyncio.wait_for(
-                self.execute(context, **params), timeout=timeout
+                self.execute(context, **params), timeout=timeout,
             )
         except TimeoutError:
             from .exceptions import ToolTimeoutError
@@ -183,8 +180,7 @@ class StreamingBaseTool(BaseTool, ABC):
 
 
 class ProgressReportingMixin:
-    """
-    Mixin that provides progress reporting utilities for streaming tools.
+    """Mixin that provides progress reporting utilities for streaming tools.
     """
 
     async def report_initialization_progress(
@@ -206,7 +202,7 @@ class ProgressReportingMixin:
     ):
         """Report processing progress."""
         await context.report_progress(
-            progress, "processing", message, intermediate_data
+            progress, "processing", message, intermediate_data,
         )
 
     async def report_finalization_progress(

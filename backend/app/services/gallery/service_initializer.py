@@ -1,5 +1,4 @@
-"""
-Gallery Service Initializer
+"""Gallery Service Initializer
 
 Initializes the gallery service with proper configuration and error handling.
 """
@@ -19,8 +18,7 @@ class GalleryServiceManager:
 
     @classmethod
     def initialize(cls, service_config: dict[str, Any]) -> ReynardGalleryService:
-        """
-        Initialize the gallery service.
+        """Initialize the gallery service.
 
         Args:
             service_config: Service configuration dictionary
@@ -30,6 +28,7 @@ class GalleryServiceManager:
 
         Raises:
             RuntimeError: If service initialization fails
+
         """
         try:
             logger.info("Initializing gallery service...")
@@ -46,18 +45,17 @@ class GalleryServiceManager:
 
     @classmethod
     def get_instance(cls) -> ReynardGalleryService | None:
-        """
-        Get the current gallery service instance.
+        """Get the current gallery service instance.
 
         Returns:
             ReynardGalleryService instance or None if not initialized
+
         """
         return cls._instance
 
     @classmethod
     async def shutdown(cls) -> None:
-        """
-        Shutdown the gallery service.
+        """Shutdown the gallery service.
         """
         if cls._instance:
             try:

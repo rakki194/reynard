@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Dynamic Enum Service
+"""Dynamic Enum Service
 ====================
 
 Fully modular service that provides dynamic enums based on FastAPI ECS backend data.
@@ -32,6 +31,7 @@ class DynamicEnumService:
         Args:
             data_provider: Optional backend data provider. If None,
                           will use fallback implementations.
+
         """
         self.data_provider = data_provider
         self._providers: dict[str, EnumProvider] = {}
@@ -43,13 +43,13 @@ class DynamicEnumService:
         self._providers["spirits"] = SpiritEnumProvider(self.data_provider)
         self._providers["styles"] = StyleEnumProvider(self.data_provider)
         self._providers["personality_traits"] = TraitEnumProvider(
-            "personality", self.data_provider
+            "personality", self.data_provider,
         )
         self._providers["physical_traits"] = TraitEnumProvider(
-            "physical", self.data_provider
+            "physical", self.data_provider,
         )
         self._providers["ability_traits"] = TraitEnumProvider(
-            "ability", self.data_provider
+            "ability", self.data_provider,
         )
 
     def register_provider(self, enum_type: str, provider: EnumProvider) -> None:
@@ -58,12 +58,13 @@ class DynamicEnumService:
         Args:
             enum_type: The type of enum this provider handles
             provider: The enum provider instance
+
         """
         self._providers[enum_type] = provider
         logger.debug("Registered enum provider for type: %s", enum_type)
 
     def create_custom_provider(
-        self, enum_type: str, fallback_data: dict[str, Any], default_fallback: str
+        self, enum_type: str, fallback_data: dict[str, Any], default_fallback: str,
     ) -> CustomEnumProvider:
         """Create and register a custom enum provider.
 
@@ -74,9 +75,10 @@ class DynamicEnumService:
 
         Returns:
             The created custom provider
+
         """
         provider = CustomEnumProvider(
-            enum_type, fallback_data, default_fallback, self.data_provider
+            enum_type, fallback_data, default_fallback, self.data_provider,
         )
         self.register_provider(enum_type, provider)
         return provider
@@ -89,6 +91,7 @@ class DynamicEnumService:
 
         Returns:
             The enum provider or None if not found
+
         """
         return self._providers.get(enum_type)
 
@@ -100,6 +103,7 @@ class DynamicEnumService:
 
         Returns:
             Set of available values
+
         """
         provider = self.get_provider(enum_type)
         if provider:
@@ -117,6 +121,7 @@ class DynamicEnumService:
 
         Returns:
             The validated value or fallback
+
         """
         provider = self.get_provider(enum_type)
         if provider:
@@ -134,6 +139,7 @@ class DynamicEnumService:
 
         Returns:
             A random value from the enum type
+
         """
         provider = self.get_provider(enum_type)
         if provider:
@@ -143,7 +149,7 @@ class DynamicEnumService:
         return "unknown"
 
     async def get_metadata(
-        self, enum_type: str, value: str, key: str, default: Any = None
+        self, enum_type: str, value: str, key: str, default: Any = None,
     ) -> Any:
         """Get metadata for a value in an enum type.
 
@@ -155,6 +161,7 @@ class DynamicEnumService:
 
         Returns:
             The metadata value or default
+
         """
         provider = self.get_provider(enum_type)
         if provider and hasattr(provider, "get_metadata"):
@@ -172,6 +179,7 @@ class DynamicEnumService:
 
         Returns:
             The emoji for the value
+
         """
         return await self.get_metadata(enum_type, value, "emoji", "🦊")
 
@@ -184,9 +192,10 @@ class DynamicEnumService:
 
         Returns:
             The description for the value
+
         """
         return await self.get_metadata(
-            enum_type, value, "description", "No description available"
+            enum_type, value, "description", "No description available",
         )
 
     def is_valid_value(self, enum_type: str, value: str) -> bool:
@@ -198,6 +207,7 @@ class DynamicEnumService:
 
         Returns:
             True if the value is valid
+
         """
         provider = self.get_provider(enum_type)
         if provider:
@@ -210,6 +220,7 @@ class DynamicEnumService:
 
         Args:
             enum_type: Specific enum type to clear, or None to clear all
+
         """
         if enum_type:
             provider = self.get_provider(enum_type)
@@ -225,6 +236,7 @@ class DynamicEnumService:
 
         Returns:
             List of registered enum type names
+
         """
         return list(self._providers.keys())
 
@@ -276,6 +288,7 @@ def initialize_dynamic_enum_service(
 
     Returns:
         The initialized dynamic enum service.
+
     """
     # Use module-level assignment instead of global statement
     import sys
@@ -293,9 +306,10 @@ def get_dynamic_enum_service() -> DynamicEnumService:
 
     Raises:
         RuntimeError: If the service has not been initialized.
+
     """
     if dynamic_enum_service is None:
         raise RuntimeError(
-            "Dynamic enum service not initialized. Call initialize_dynamic_enum_service() first."
+            "Dynamic enum service not initialized. Call initialize_dynamic_enum_service() first.",
         )
     return dynamic_enum_service

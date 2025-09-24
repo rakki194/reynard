@@ -17,27 +17,37 @@
     "editor.defaultFormatter": "charliermarsh.ruff",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.fixAll": "explicit",
-      "source.organizeImports": "explicit",
-      "source.organizeImports.ruff": "explicit"
+      "source.fixAll.ruff": "explicit",
+      "source.organizeImports.ruff": "explicit",
+      "source.fixAll": "explicit"
     },
     "editor.rulers": [88],
     "editor.tabSize": 4,
     "editor.insertSpaces": true
   },
 
+  "ruff.path": ["${workspaceFolder}/pyproject.toml"],
+
+  // MyPy Configuration
   "mypy-type-checker.args": ["--config-file=${workspaceFolder}/pyproject.toml"],
   "mypy-type-checker.interpreter": ["/home/kade/venv/bin/python3", "/usr/bin/python3"],
 
   // Pylint Configuration
+  "pylint.enabled": true,
   "pylint.importStrategy": "fromEnvironment",
   "pylint.args": ["--rcfile=${workspaceFolder}/pyproject.toml"],
   "pylint.path": [
     "${workspaceFolder}/scripts",
     "${workspaceFolder}/services/agent-naming",
     "${workspaceFolder}/services/gatekeeper",
-    "${workspaceFolder}/services/mcp-server"
+    "${workspaceFolder}/services/mcp-server",
+    "${workspaceFolder}/backend/app",
+    "${workspaceFolder}/fenrir"
   ],
+
+  // Flake8 Configuration
+  "flake8.enabled": true,
+  "flake8.args": ["--config=${workspaceFolder}/pyproject.toml"],
 
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",

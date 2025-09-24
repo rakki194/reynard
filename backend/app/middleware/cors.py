@@ -1,5 +1,4 @@
-"""
-CORS middleware configuration for Reynard Backend.
+"""CORS middleware configuration for Reynard Backend.
 
 This module provides secure CORS configuration with proper
 origin validation and header management.

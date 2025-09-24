@@ -1,5 +1,4 @@
-"""
-Token models for the Gatekeeper authentication library.
+"""Token models for the Gatekeeper authentication library.
 
 This module defines Pydantic models for JWT token data structures used
 throughout the authentication system.
@@ -12,8 +11,7 @@ from pydantic import BaseModel, Field
 
 
 class TokenData(BaseModel):
-    """
-    Token data model for JWT payload.
+    """Token data model for JWT payload.
 
     Contains the data that will be encoded in JWT tokens.
 
@@ -25,6 +23,7 @@ class TokenData(BaseModel):
         iat (Optional[datetime]): Issued at time
         jti (Optional[str]): JWT ID for token uniqueness
         metadata (Dict[str, Any]): Additional token metadata
+
     """
 
     sub: str = Field(..., description="Subject (usually username)")
@@ -34,7 +33,7 @@ class TokenData(BaseModel):
     iat: datetime | None = Field(default=None, description="Issued at time")
     jti: str | None = Field(default=None, description="JWT ID for token uniqueness")
     metadata: dict[str, Any] = Field(
-        default_factory=dict, description="Additional metadata"
+        default_factory=dict, description="Additional metadata",
     )
 
     @property
@@ -48,8 +47,7 @@ class TokenData(BaseModel):
 
 
 class TokenResponse(BaseModel):
-    """
-    Token response model for authentication endpoints.
+    """Token response model for authentication endpoints.
 
     Contains the tokens returned after successful authentication.
 
@@ -59,6 +57,7 @@ class TokenResponse(BaseModel):
         token_type (str): Token type (usually "bearer")
         expires_in (int): Access token expiration time in seconds
         refresh_expires_in (int): Refresh token expiration time in seconds
+
     """
 
     access_token: str = Field(..., description="JWT access token")
@@ -66,24 +65,23 @@ class TokenResponse(BaseModel):
     token_type: str = Field(default="bearer", description="Token type")
     expires_in: int = Field(..., description="Access token expiration time in seconds")
     refresh_expires_in: int = Field(
-        ..., description="Refresh token expiration time in seconds"
+        ..., description="Refresh token expiration time in seconds",
     )
 
 
 class TokenRefreshRequest(BaseModel):
-    """
-    Token refresh request model.
+    """Token refresh request model.
 
     Attributes:
         refresh_token (str): The refresh token to use for getting a new access token
+
     """
 
     refresh_token: str = Field(..., description="Refresh token")
 
 
 class TokenRefreshResponse(BaseModel):
-    """
-    Token refresh response model.
+    """Token refresh response model.
 
     Contains the new access token after successful refresh.
 
@@ -91,6 +89,7 @@ class TokenRefreshResponse(BaseModel):
         access_token (str): New JWT access token
         token_type (str): Token type (usually "bearer")
         expires_in (int): Access token expiration time in seconds
+
     """
 
     access_token: str = Field(..., description="New JWT access token")
@@ -99,8 +98,7 @@ class TokenRefreshResponse(BaseModel):
 
 
 class TokenValidationResult(BaseModel):
-    """
-    Token validation result model.
+    """Token validation result model.
 
     Contains the result of token validation.
 
@@ -110,22 +108,22 @@ class TokenValidationResult(BaseModel):
         error (Optional[str]): Error message if invalid
         is_expired (bool): Whether the token is expired
         is_refresh_token (bool): Whether this is a refresh token
+
     """
 
     is_valid: bool = Field(..., description="Whether the token is valid")
     payload: TokenData | None = Field(
-        default=None, description="Token payload if valid"
+        default=None, description="Token payload if valid",
     )
     error: str | None = Field(default=None, description="Error message if invalid")
     is_expired: bool = Field(default=False, description="Whether the token is expired")
     is_refresh_token: bool = Field(
-        default=False, description="Whether this is a refresh token"
+        default=False, description="Whether this is a refresh token",
     )
 
 
 class TokenConfig(BaseModel):
-    """
-    Token configuration model.
+    """Token configuration model.
 
     Contains configuration for JWT token generation and validation.
 
@@ -136,15 +134,16 @@ class TokenConfig(BaseModel):
         refresh_token_expire_days (int): Refresh token expiration time in days
         issuer (Optional[str]): Token issuer
         audience (Optional[str]): Token audience
+
     """
 
     secret_key: str = Field(..., description="Secret key for JWT signing")
     algorithm: str = Field(default="HS256", description="JWT algorithm")
     access_token_expire_minutes: int = Field(
-        default=30, description="Access token expiration time in minutes"
+        default=30, description="Access token expiration time in minutes",
     )
     refresh_token_expire_days: int = Field(
-        default=7, description="Refresh token expiration time in days"
+        default=7, description="Refresh token expiration time in days",
     )
     issuer: str | None = Field(default=None, description="Token issuer")
     audience: str | None = Field(default=None, description="Token audience")

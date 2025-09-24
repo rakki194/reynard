@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-ECS Database Indexes
+"""ECS Database Indexes
 
 Critical database indexes for ECS backend performance optimization.
 These indexes address the bottlenecks identified in the performance analysis.
@@ -189,6 +188,7 @@ class ECSDatabaseIndexes:
 
         Returns:
             dict: Results of index creation
+
         """
         results = {
             "created": [],
@@ -203,7 +203,7 @@ class ECSDatabaseIndexes:
                     # Check if index already exists
                     if self._index_exists(session, index["name"]):
                         results["skipped"].append(
-                            {"name": index["name"], "reason": "Index already exists"}
+                            {"name": index["name"], "reason": "Index already exists"},
                         )
                         logger.info(f"Index {index['name']} already exists, skipping")
                         continue
@@ -218,11 +218,11 @@ class ECSDatabaseIndexes:
                             "table": index["table"],
                             "columns": index["columns"],
                             "description": index["description"],
-                        }
+                        },
                     )
 
                     logger.info(
-                        f"Created index {index['name']} on {index['table']}({', '.join(index['columns'])})"
+                        f"Created index {index['name']} on {index['table']}({', '.join(index['columns'])})",
                     )
 
                 except Exception as e:
@@ -241,6 +241,7 @@ class ECSDatabaseIndexes:
 
         Returns:
             bool: True if index exists, False otherwise
+
         """
         try:
             result = session.execute(
@@ -248,12 +249,12 @@ class ECSDatabaseIndexes:
                     """
                 SELECT 1 FROM pg_indexes
                 WHERE indexname = :index_name
-            """
+            """,
                 ),
                 {"index_name": index_name},
             )
             return result.fetchone() is not None
-        except Exception as e:
+        except Exception:
             logger.exception(f"Could not check if index {index_name} exists")
             return False
 
@@ -262,6 +263,7 @@ class ECSDatabaseIndexes:
 
         Returns:
             dict: Index status information
+
         """
         status = {
             "total_indexes": len(self.indexes),
@@ -286,6 +288,7 @@ class ECSDatabaseIndexes:
 
         Returns:
             bool: True if successful, False otherwise
+
         """
         try:
             with SessionLocal() as session:
@@ -293,7 +296,7 @@ class ECSDatabaseIndexes:
                 session.commit()
                 logger.info(f"Dropped index {index_name}")
                 return True
-        except Exception as e:
+        except Exception:
             logger.exception(f"Failed to drop index {index_name}")
             return False
 
@@ -302,6 +305,7 @@ class ECSDatabaseIndexes:
 
         Returns:
             dict: Optimization results
+
         """
         results = {"analyze_tables": [], "vacuum_tables": [], "errors": []}
 
@@ -371,7 +375,7 @@ def main():
             print("\n   Created indexes:")
             for index in results["created"]:
                 print(
-                    f"     • {index['name']} on {index['table']}({', '.join(index['columns'])})"
+                    f"     • {index['name']} on {index['table']}({', '.join(index['columns'])})",
                 )
 
         if results["failed"]:

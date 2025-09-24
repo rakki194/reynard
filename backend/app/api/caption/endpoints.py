@@ -1,5 +1,4 @@
-"""
-Caption Generation API Endpoints for Reynard Backend
+"""Caption Generation API Endpoints for Reynard Backend
 
 Refactored to use BaseServiceRouter infrastructure for consistency and maintainability.
 """
@@ -10,10 +9,9 @@ from pathlib import Path
 from fastapi import Depends, HTTPException, UploadFile
 from pydantic import BaseModel, Field
 
-from gatekeeper.api.dependencies import require_active_user
-from gatekeeper.models.user import User
-
+from app.caption_generation import CaptionTask, get_caption_service
 from app.core.base_router import BaseServiceRouter, ServiceStatus
+from app.core.logging_config import get_service_logger
 from app.core.router_mixins import (
     ConfigEndpointMixin,
     FileUploadMixin,
@@ -21,8 +19,8 @@ from app.core.router_mixins import (
     RateLimitingMixin,
     ValidationMixin,
 )
-from app.core.logging_config import get_service_logger
-from app.caption_generation import CaptionTask, get_caption_service
+from gatekeeper.api.dependencies import require_active_user
+from gatekeeper.models.user import User
 
 logger = get_service_logger("caption-generation")
 
@@ -37,10 +35,10 @@ class CaptionConfigModel(BaseModel):
     # Service configuration
     enabled: bool = Field(True, description="Enable caption generation service")
     max_batch_size: int = Field(
-        20, ge=1, le=100, description="Maximum batch size for caption generation"
+        20, ge=1, le=100, description="Maximum batch size for caption generation",
     )
     max_concurrent_operations: int = Field(
-        8, ge=1, le=20, description="Maximum concurrent operations"
+        8, ge=1, le=20, description="Maximum concurrent operations",
     )
     default_timeout: int = Field(
         300,
@@ -51,63 +49,63 @@ class CaptionConfigModel(BaseModel):
 
     # Model management
     enable_auto_loading: bool = Field(
-        True, description="Enable automatic model loading"
+        True, description="Enable automatic model loading",
     )
     enable_model_caching: bool = Field(True, description="Enable model caching")
     max_loaded_models: int = Field(
-        5, ge=1, le=20, description="Maximum number of loaded models"
+        5, ge=1, le=20, description="Maximum number of loaded models",
     )
     model_unload_timeout: int = Field(
-        1800, ge=300, le=7200, description="Model unload timeout in seconds"
+        1800, ge=300, le=7200, description="Model unload timeout in seconds",
     )
 
     # Quality settings
     enable_quality_validation: bool = Field(
-        True, description="Enable caption quality validation"
+        True, description="Enable caption quality validation",
     )
     min_caption_length: int = Field(
-        5, ge=1, le=50, description="Minimum caption length"
+        5, ge=1, le=50, description="Minimum caption length",
     )
     max_caption_length: int = Field(
-        500, ge=50, le=2000, description="Maximum caption length"
+        500, ge=50, le=2000, description="Maximum caption length",
     )
     quality_threshold: float = Field(
-        0.7, ge=0.0, le=1.0, description="Minimum quality threshold"
+        0.7, ge=0.0, le=1.0, description="Minimum quality threshold",
     )
 
     # Processing settings
     enable_post_processing: bool = Field(
-        True, description="Enable post-processing of captions"
+        True, description="Enable post-processing of captions",
     )
     enable_retry_logic: bool = Field(
-        True, description="Enable retry logic for failed operations"
+        True, description="Enable retry logic for failed operations",
     )
     max_retry_attempts: int = Field(
-        3, ge=1, le=10, description="Maximum retry attempts"
+        3, ge=1, le=10, description="Maximum retry attempts",
     )
     retry_backoff_factor: float = Field(
-        2.0, ge=1.0, le=5.0, description="Retry backoff factor"
+        2.0, ge=1.0, le=5.0, description="Retry backoff factor",
     )
 
     # Caching settings
     enable_result_caching: bool = Field(True, description="Enable result caching")
     cache_ttl_seconds: int = Field(
-        3600, ge=300, le=86400, description="Cache TTL in seconds"
+        3600, ge=300, le=86400, description="Cache TTL in seconds",
     )
     cache_compression: bool = Field(True, description="Enable cache compression")
     max_cache_size_mb: int = Field(
-        500, ge=50, le=2000, description="Maximum cache size in MB"
+        500, ge=50, le=2000, description="Maximum cache size in MB",
     )
 
     # Rate limiting
     generation_rate_limit: int = Field(
-        30, ge=1, le=100, description="Generation requests per minute"
+        30, ge=1, le=100, description="Generation requests per minute",
     )
     batch_rate_limit: int = Field(
-        10, ge=1, le=50, description="Batch requests per minute"
+        10, ge=1, le=50, description="Batch requests per minute",
     )
     model_management_rate_limit: int = Field(
-        20, ge=1, le=100, description="Model management requests per minute"
+        20, ge=1, le=100, description="Model management requests per minute",
     )
 
     # Security settings
@@ -124,10 +122,10 @@ class CaptionConfigModel(BaseModel):
         description="Allowed image formats",
     )
     max_file_size_mb: int = Field(
-        50, ge=1, le=500, description="Maximum file size in MB"
+        50, ge=1, le=500, description="Maximum file size in MB",
     )
     enable_content_filtering: bool = Field(
-        True, description="Enable content filtering for generated captions"
+        True, description="Enable content filtering for generated captions",
     )
 
 
@@ -180,7 +178,7 @@ class CaptionGenerationServiceRouter(
                     "available_generators": len(service.get_available_generators()),
                     "total_processed": health_status.get("total_processed", 0),
                     "average_processing_time": health_status.get(
-                        "average_processing_time", 0
+                        "average_processing_time", 0,
                     ),
                     "active_tasks": health_status.get("active_tasks", 0),
                 },
@@ -202,58 +200,58 @@ class CaptionGenerationServiceRouter(
         @api_router.get("/generators")
         async def get_available_generators():
             return await self._standard_async_operation(
-                "get_available_generators", self._get_available_generators_impl
+                "get_available_generators", self._get_available_generators_impl,
             )
 
         @api_router.get("/generators/{generator_name}")
         async def get_generator_info(generator_name: str):
             return await self._standard_async_operation(
-                "get_generator_info", self._get_generator_info_impl, generator_name
+                "get_generator_info", self._get_generator_info_impl, generator_name,
             )
 
         # Caption generation endpoints
         api_router.post("/generate")(
-            self._standard_async_operation(self._generate_caption_impl)
+            self._standard_async_operation(self._generate_caption_impl),
         )
 
         api_router.post("/batch")(
-            self._standard_async_operation(self._generate_batch_captions_impl)
+            self._standard_async_operation(self._generate_batch_captions_impl),
         )
 
         # File upload endpoints
         api_router.post("/upload")(
-            self._standard_async_operation(self._upload_and_generate_impl)
+            self._standard_async_operation(self._upload_and_generate_impl),
         )
 
         # Model management endpoints
         api_router.post("/models/{model_name}/load")(
-            self._standard_async_operation(self._load_model_impl)
+            self._standard_async_operation(self._load_model_impl),
         )
 
         api_router.post("/models/{model_name}/unload")(
-            self._standard_async_operation(self._unload_model_impl)
+            self._standard_async_operation(self._unload_model_impl),
         )
 
         api_router.get("/models/loaded")(
-            self._standard_async_operation(self._get_loaded_models_impl)
+            self._standard_async_operation(self._get_loaded_models_impl),
         )
 
         # Quality analysis endpoints
         api_router.post("/analyze-quality")(
-            self._standard_async_operation(self._analyze_caption_quality_impl)
+            self._standard_async_operation(self._analyze_caption_quality_impl),
         )
 
         # Statistics and monitoring endpoints
         api_router.get("/statistics")(
-            self._standard_async_operation(self._get_system_statistics_impl)
+            self._standard_async_operation(self._get_system_statistics_impl),
         )
 
         api_router.get("/health")(
-            self._standard_async_operation(self._health_check_impl)
+            self._standard_async_operation(self._health_check_impl),
         )
 
     async def _get_available_generators_impl(
-        self, _current_user: User = Depends(require_active_user)
+        self, _current_user: User = Depends(require_active_user),
     ):
         """Get information about all available caption generators."""
         service = self.get_service()
@@ -266,7 +264,7 @@ class CaptionGenerationServiceRouter(
         }
 
     async def _get_generator_info_impl(
-        self, generator_name: str, _current_user: User = Depends(require_active_user)
+        self, generator_name: str, _current_user: User = Depends(require_active_user),
     ):
         """Get information about a specific caption generator."""
         service = self.get_service()
@@ -284,7 +282,7 @@ class CaptionGenerationServiceRouter(
         }
 
     async def _generate_caption_impl(
-        self, request: dict, _current_user: User = Depends(require_active_user)
+        self, request: dict, _current_user: User = Depends(require_active_user),
     ):
         """Generate a caption for a single image."""
         # Validate request
@@ -296,21 +294,21 @@ class CaptionGenerationServiceRouter(
 
         if not image_path or not generator_name:
             raise HTTPException(
-                status_code=400, detail="image_path and generator_name are required"
+                status_code=400, detail="image_path and generator_name are required",
             )
 
         # Validate image path
         image_path_obj = Path(image_path)
         if not image_path_obj.exists():
             raise HTTPException(
-                status_code=404, detail=f"Image not found: {image_path}"
+                status_code=404, detail=f"Image not found: {image_path}",
             )
 
         # Check if generator is available
         service = self.get_service()
         if not service.is_generator_available(generator_name):
             raise HTTPException(
-                status_code=400, detail=f"Generator '{generator_name}' is not available"
+                status_code=400, detail=f"Generator '{generator_name}' is not available",
             )
 
         # Generate caption
@@ -340,7 +338,7 @@ class CaptionGenerationServiceRouter(
         }
 
     async def _generate_batch_captions_impl(
-        self, request: dict, _current_user: User = Depends(require_active_user)
+        self, request: dict, _current_user: User = Depends(require_active_user),
     ):
         """Generate captions for multiple images in batch."""
         tasks = request.get("tasks", [])
@@ -373,7 +371,7 @@ class CaptionGenerationServiceRouter(
             image_path_obj = Path(image_path)
             if not image_path_obj.exists():
                 raise HTTPException(
-                    status_code=404, detail=f"Image not found: {image_path}"
+                    status_code=404, detail=f"Image not found: {image_path}",
                 )
 
             # Check if generator is available
@@ -390,12 +388,12 @@ class CaptionGenerationServiceRouter(
                     config=task.get("config", {}),
                     force=task.get("force", False),
                     post_process=task.get("post_process", True),
-                )
+                ),
             )
 
         # Generate captions
         results = await service.generate_batch_captions(
-            tasks=validated_tasks, max_concurrent=max_concurrent
+            tasks=validated_tasks, max_concurrent=max_concurrent,
         )
 
         return {
@@ -443,7 +441,7 @@ class CaptionGenerationServiceRouter(
         service = self.get_service()
         if not service.is_generator_available(generator_name):
             raise HTTPException(
-                status_code=400, detail=f"Generator '{generator_name}' is not available"
+                status_code=400, detail=f"Generator '{generator_name}' is not available",
             )
 
         # Save uploaded file temporarily
@@ -491,7 +489,7 @@ class CaptionGenerationServiceRouter(
         service = self.get_service()
         if not service.is_generator_available(model_name):
             raise HTTPException(
-                status_code=404, detail=f"Generator '{model_name}' not found"
+                status_code=404, detail=f"Generator '{model_name}' not found",
             )
 
         success = await service.load_model(model_name)
@@ -504,11 +502,11 @@ class CaptionGenerationServiceRouter(
             }
 
         raise HTTPException(
-            status_code=500, detail=f"Failed to load model '{model_name}'"
+            status_code=500, detail=f"Failed to load model '{model_name}'",
         )
 
     async def _unload_model_impl(
-        self, model_name: str, _current_user: User = Depends(require_active_user)
+        self, model_name: str, _current_user: User = Depends(require_active_user),
     ):
         """Unload a specific caption model."""
         service = self.get_service()
@@ -522,11 +520,11 @@ class CaptionGenerationServiceRouter(
             }
 
         raise HTTPException(
-            status_code=500, detail=f"Failed to unload model '{model_name}'"
+            status_code=500, detail=f"Failed to unload model '{model_name}'",
         )
 
     async def _get_loaded_models_impl(
-        self, _current_user: User = Depends(require_active_user)
+        self, _current_user: User = Depends(require_active_user),
     ):
         """Get list of currently loaded models."""
         service = self.get_service()
@@ -539,7 +537,7 @@ class CaptionGenerationServiceRouter(
         }
 
     async def _analyze_caption_quality_impl(
-        self, request: dict, _current_user: User = Depends(require_active_user)
+        self, request: dict, _current_user: User = Depends(require_active_user),
     ):
         """Analyze caption quality metrics."""
         caption = request.get("caption")
@@ -574,7 +572,7 @@ class CaptionGenerationServiceRouter(
         }
 
     async def _get_system_statistics_impl(
-        self, _current_user: User = Depends(require_active_user)
+        self, _current_user: User = Depends(require_active_user),
     ):
         """Get comprehensive system statistics."""
         service = self.get_service()

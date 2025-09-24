@@ -1,5 +1,4 @@
-"""
-Core RAG Services
+"""Core RAG Services
 
 This module contains the fundamental RAG services:
 - Embedding generation and management
@@ -13,4 +12,4 @@ from .indexing import DocumentIndexer
 from .search import SearchEngine
 from .vector_store import VectorStoreService
 
-__all__ = ["EmbeddingService", "VectorStoreService", "DocumentIndexer", "SearchEngine"]
+__all__ = ["DocumentIndexer", "EmbeddingService", "SearchEngine", "VectorStoreService"]

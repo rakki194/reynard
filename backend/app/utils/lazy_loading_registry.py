@@ -1,5 +1,4 @@
-"""
-Lazy Loading Registry for Reynard Backend
+"""Lazy Loading Registry for Reynard Backend
 
 Registry and factory functions for the lazy loading system.
 """
@@ -22,8 +21,7 @@ def create_lazy_export(
     validation_level: ExportValidationLevel = ExportValidationLevel.BASIC,
     dependencies: list[str] | None = None,
 ) -> LazyPackageExport:
-    """
-    Create a new lazy export and register it.
+    """Create a new lazy export and register it.
 
     Args:
         package_name: Name of the package
@@ -34,10 +32,11 @@ def create_lazy_export(
 
     Returns:
         LazyPackageExport instance
+
     """
     if package_name in _export_registry:
         logger.warning(
-            f"Package {package_name} already registered, returning existing export"
+            f"Package {package_name} already registered, returning existing export",
         )
         return _export_registry[package_name]
 
@@ -56,14 +55,14 @@ def create_lazy_export(
 
 
 def get_lazy_export(package_name: str) -> LazyPackageExport | None:
-    """
-    Get a lazy export by package name.
+    """Get a lazy export by package name.
 
     Args:
         package_name: Name of the package
 
     Returns:
         LazyPackageExport instance or None if not found
+
     """
     return _export_registry.get(package_name)
 
@@ -94,7 +93,7 @@ def get_export_count() -> int:
 ml_packages = {
     "torch": create_lazy_export("torch", "torch", ExportType.MODULE),
     "transformers": create_lazy_export(
-        "transformers", "transformers", ExportType.MODULE
+        "transformers", "transformers", ExportType.MODULE,
     ),
     "numpy": create_lazy_export("numpy", "numpy", ExportType.MODULE),
     "pandas": create_lazy_export("pandas", "pandas", ExportType.MODULE),
@@ -113,8 +112,7 @@ ml_packages = {
 
 
 class LazyLoadingSystem:
-    """
-    Main lazy loading system that manages all exports.
+    """Main lazy loading system that manages all exports.
     """
 
     def __init__(self):
@@ -135,7 +133,7 @@ class LazyLoadingSystem:
     ) -> LazyPackageExport:
         """Create a new lazy export."""
         return create_lazy_export(
-            package_name, import_name, export_type, validation_level, dependencies
+            package_name, import_name, export_type, validation_level, dependencies,
         )
 
     def get_all_exports(self) -> dict[str, LazyPackageExport]:

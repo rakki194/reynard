@@ -1,5 +1,4 @@
-"""
-Reynard User Extractor
+"""Reynard User Extractor
 
 Custom gallery-dl extractor for Reynard user profiles.
 Extracts media from user profiles and their public content.

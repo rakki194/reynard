@@ -1,5 +1,4 @@
-"""
-Plugin discovery system for Reynard caption generators.
+"""Plugin discovery system for Reynard caption generators.
 
 This module provides utilities for discovering and registering caption generator
 plugins from the plugins directory. It implements a plugin registry pattern that
@@ -17,8 +16,7 @@ logger = logging.getLogger("uvicorn")
 
 
 def discover_plugins() -> dict[str, CaptionerPlugin]:
-    """
-    Discover all available captioner plugins.
+    """Discover all available captioner plugins.
 
     Returns:
         Dict[str, CaptionerPlugin]: Dictionary of plugin name to plugin instance
@@ -27,6 +25,7 @@ def discover_plugins() -> dict[str, CaptionerPlugin]:
         - Searches the plugins directory for plugin packages
         - Each plugin must have an __init__.py with a register_plugin function
         - Handles errors gracefully to prevent plugin issues from breaking the app
+
     """
     plugins = {}
     plugin_dir = Path(__file__).parent / "plugins"
@@ -54,7 +53,7 @@ def discover_plugins() -> dict[str, CaptionerPlugin]:
 
         except Exception as e:
             logger.warning(
-                f"Error loading plugin from {plugin_path}: {e}", exc_info=True
+                f"Error loading plugin from {plugin_path}: {e}", exc_info=True,
             )
             continue
 
@@ -62,8 +61,7 @@ def discover_plugins() -> dict[str, CaptionerPlugin]:
 
 
 def _load_plugin_from_path(plugin_path: Path) -> CaptionerPlugin:
-    """
-    Load a single plugin from a directory path.
+    """Load a single plugin from a directory path.
 
     Args:
         plugin_path: Path to the plugin directory
@@ -73,6 +71,7 @@ def _load_plugin_from_path(plugin_path: Path) -> CaptionerPlugin:
 
     Raises:
         Exception: If plugin loading fails
+
     """
     # Import the plugin module
     module_path = f"app.caption_generation.plugins.{plugin_path.name}"
@@ -94,7 +93,7 @@ def _load_plugin_from_path(plugin_path: Path) -> CaptionerPlugin:
 
     if "name" not in plugin_info or "module_path" not in plugin_info:
         logger.warning(
-            f"Plugin {plugin_path.name} missing required registration fields"
+            f"Plugin {plugin_path.name} missing required registration fields",
         )
         return None
 
@@ -107,8 +106,7 @@ def _load_plugin_from_path(plugin_path: Path) -> CaptionerPlugin:
 
 
 def validate_plugin_info(plugin_info: dict[str, Any], plugin_name: str) -> bool:
-    """
-    Validate plugin registration information.
+    """Validate plugin registration information.
 
     Args:
         plugin_info: Plugin registration information
@@ -116,6 +114,7 @@ def validate_plugin_info(plugin_info: dict[str, Any], plugin_name: str) -> bool:
 
     Returns:
         bool: True if valid, False otherwise
+
     """
     if not isinstance(plugin_info, dict):
         logger.warning(f"Plugin {plugin_name} returned invalid registration info")
@@ -131,24 +130,24 @@ def validate_plugin_info(plugin_info: dict[str, Any], plugin_name: str) -> bool:
 
 
 def get_plugin_directory() -> Path:
-    """
-    Get the plugins directory path.
+    """Get the plugins directory path.
 
     Returns:
         Path: Path to the plugins directory
+
     """
     return Path(__file__).parent / "plugins"
 
 
 def is_valid_plugin_directory(plugin_path: Path) -> bool:
-    """
-    Check if a directory is a valid plugin directory.
+    """Check if a directory is a valid plugin directory.
 
     Args:
         plugin_path: Path to check
 
     Returns:
         bool: True if valid plugin directory, False otherwise
+
     """
     if not plugin_path.is_dir():
         return False

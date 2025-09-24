@@ -1,5 +1,4 @@
-"""
-Tool Configuration Management Endpoints
+"""Tool Configuration Management Endpoints
 ======================================
 
 Endpoints for managing MCP tool configuration and enable/disable states.
@@ -58,10 +57,10 @@ class ToolConfigResponse(BaseModel):
     enabled: bool = Field(..., description="Whether tool is enabled")
     description: str = Field(..., description="Tool description")
     dependencies: list[str] = Field(
-        default_factory=list, description="Tool dependencies"
+        default_factory=list, description="Tool dependencies",
     )
     config: dict[str, Any] = Field(
-        default_factory=dict, description="Tool configuration"
+        default_factory=dict, description="Tool configuration",
     )
 
 
@@ -77,7 +76,7 @@ class ToolConfigListResponse(BaseModel):
     """Response model for tool configuration list."""
 
     tools: dict[str, ToolConfigResponse] = Field(
-        ..., description="All tool configurations"
+        ..., description="All tool configurations",
     )
     total_tools: int = Field(..., description="Total number of tools")
     enabled_tools: int = Field(..., description="Number of enabled tools")
@@ -160,7 +159,7 @@ async def _update_mcp_tool_config(
 
         if result and result.get("success"):
             logger.info(
-                f"Successfully updated tool {tool_name}: enabled={enabled}, config={config}"
+                f"Successfully updated tool {tool_name}: enabled={enabled}, config={config}",
             )
             return True
         logger.error(f"MCP server returned error for tool {tool_name}: {result}")
@@ -175,8 +174,7 @@ async def _update_mcp_tool_config(
 
 @router.get("/", response_model=ToolConfigListResponse)
 async def get_tool_configurations():
-    """
-    Get all tool configurations.
+    """Get all tool configurations.
 
     Returns the current state of all MCP tools including their enabled/disabled status.
     """
@@ -210,8 +208,7 @@ async def get_tool_configurations():
 
 @router.get("/{tool_name}", response_model=ToolConfigResponse)
 async def get_tool_configuration(tool_name: str):
-    """
-    Get configuration for a specific tool.
+    """Get configuration for a specific tool.
 
     Returns the configuration and status for the specified tool.
     """
@@ -239,8 +236,7 @@ async def get_tool_configuration(tool_name: str):
 
 @router.put("/{tool_name}", response_model=ToolConfigResponse)
 async def update_tool_configuration(tool_name: str, request: ToolConfigUpdateRequest):
-    """
-    Update configuration for a specific tool.
+    """Update configuration for a specific tool.
 
     Updates the enabled state and/or configuration for the specified tool.
     """
@@ -255,7 +251,7 @@ async def update_tool_configuration(tool_name: str, request: ToolConfigUpdateReq
 
         # Update the tool configuration
         success = await _update_mcp_tool_config(
-            tool_name=tool_name, enabled=request.enabled, config=request.config
+            tool_name=tool_name, enabled=request.enabled, config=request.config,
         )
 
         if not success:
@@ -282,8 +278,7 @@ async def update_tool_configuration(tool_name: str, request: ToolConfigUpdateReq
 
 @router.post("/{tool_name}/toggle", response_model=ToolConfigResponse)
 async def toggle_tool(tool_name: str):
-    """
-    Toggle the enabled state of a tool.
+    """Toggle the enabled state of a tool.
 
     Switches the enabled/disabled state of the specified tool.
     """
@@ -301,7 +296,7 @@ async def toggle_tool(tool_name: str):
 
         # Update the tool configuration
         success = await _update_mcp_tool_config(
-            tool_name=tool_name, enabled=new_enabled_state
+            tool_name=tool_name, enabled=new_enabled_state,
         )
 
         if not success:
@@ -328,8 +323,7 @@ async def toggle_tool(tool_name: str):
 
 @router.post("/{tool_name}/enable", response_model=ToolConfigResponse)
 async def enable_tool(tool_name: str):
-    """
-    Enable a specific tool.
+    """Enable a specific tool.
 
     Enables the specified tool if it's currently disabled.
     """
@@ -374,8 +368,7 @@ async def enable_tool(tool_name: str):
 
 @router.post("/{tool_name}/disable", response_model=ToolConfigResponse)
 async def disable_tool(tool_name: str):
-    """
-    Disable a specific tool.
+    """Disable a specific tool.
 
     Disables the specified tool if it's currently enabled.
     """
@@ -420,8 +413,7 @@ async def disable_tool(tool_name: str):
 
 @router.get("/category/{category}", response_model=dict[str, ToolConfigResponse])
 async def get_tools_by_category(category: str):
-    """
-    Get all tools in a specific category.
+    """Get all tools in a specific category.
 
     Returns all tools that belong to the specified category.
     """

@@ -1,5 +1,4 @@
-"""
-Kokoro TTS Backend for Reynard
+"""Kokoro TTS Backend for Reynard
 
 Kokoro TTS backend implementation with GPU acceleration and voice support.
 """
@@ -74,7 +73,7 @@ class KokoroBackend(TTSBackend):
                 return True
             except ImportError:
                 logger.warning(
-                    "Kokoro TTS not available - install with: pip install kokoro"
+                    "Kokoro TTS not available - install with: pip install kokoro",
                 )
                 self._initialized = False
                 return False
@@ -110,7 +109,7 @@ class KokoroBackend(TTSBackend):
             raise
 
     async def _create_mock_audio(
-        self, out_path: Path, text: str, voice: str, speed: float
+        self, out_path: Path, text: str, voice: str, speed: float,
     ):
         """Create a mock audio file for testing."""
         try:

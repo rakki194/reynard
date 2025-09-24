@@ -1,5 +1,4 @@
-"""
-AI-powered email services.
+"""AI-powered email services.
 
 Services that use AI for email response generation and agent-specific email functionality.
 """
@@ -12,9 +11,9 @@ from .ai_email_response_service import (
 )
 
 __all__ = [
-    "agent_email_service",
+    "AIEmailResponseService",
     "AgentEmailService",
+    "agent_email_service",
     "ai_email_response_service",
     "get_ai_email_response_service",
-    "AIEmailResponseService",
 ]

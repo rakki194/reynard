@@ -1,10 +1,8 @@
-"""
-Image Processing Service for Reynard Backend.
+"""Image Processing Service for Reynard Backend.
 
 This module provides image processing functionality for various image operations.
 """
 
-import asyncio
 import base64
 import io
 import json
@@ -13,7 +11,7 @@ import uuid
 from dataclasses import asdict, dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any
 
 # Image processing imports
 try:
@@ -54,9 +52,9 @@ class ImageMetadata:
     format: str
     mode: str
     size_bytes: int
-    exif_data: Dict[str, Any] = None
-    color_profile: Optional[str] = None
-    dpi: Tuple[int, int] = None
+    exif_data: dict[str, Any] = None
+    color_profile: str | None = None
+    dpi: tuple[int, int] = None
     has_transparency: bool = False
     created_at: datetime = None
 
@@ -75,10 +73,10 @@ class ProcessingResult:
     operation: str
     input_image_id: str
     output_image_id: str
-    parameters: Dict[str, Any]
+    parameters: dict[str, Any]
     processing_time_ms: float
     success: bool
-    error_message: Optional[str] = None
+    error_message: str | None = None
     created_at: datetime = None
 
     def __post_init__(self):
@@ -92,16 +90,16 @@ class ImageAnalysis:
 
     analysis_id: str
     image_id: str
-    dominant_colors: List[Tuple[int, int, int]]
+    dominant_colors: list[tuple[int, int, int]]
     brightness: float
     contrast: float
     sharpness: float
     blur_score: float
     edge_density: float
-    texture_features: Dict[str, float] = None
+    texture_features: dict[str, float] = None
     object_count: int = 0
     face_count: int = 0
-    text_regions: List[Dict[str, Any]] = None
+    text_regions: list[dict[str, Any]] = None
     created_at: datetime = None
 
     def __post_init__(self):
@@ -143,7 +141,7 @@ class ImageProcessingService:
         try:
             metadata_file = self.data_dir / "metadata.json"
             if metadata_file.exists():
-                with open(metadata_file, "r", encoding="utf-8") as f:
+                with open(metadata_file, encoding="utf-8") as f:
                     metadata_data = json.load(f)
                     self.metadata = {
                         image_id: ImageMetadata(**meta_data)
@@ -160,7 +158,7 @@ class ImageProcessingService:
         try:
             results_file = self.data_dir / "processing_results.json"
             if results_file.exists():
-                with open(results_file, "r", encoding="utf-8") as f:
+                with open(results_file, encoding="utf-8") as f:
                     results_data = json.load(f)
                     self.processing_results = {
                         result_id: ProcessingResult(**result_data)
@@ -215,11 +213,10 @@ class ImageProcessingService:
 
     async def load_image(
         self,
-        image_data: Union[str, bytes, Path],
-        image_id: Optional[str] = None,
-    ) -> Tuple[str, ImageMetadata]:
-        """
-        Load an image and extract metadata.
+        image_data: str | bytes | Path,
+        image_id: str | None = None,
+    ) -> tuple[str, ImageMetadata]:
+        """Load an image and extract metadata.
 
         Args:
             image_data: Image data (base64 string, bytes, or file path)
@@ -227,6 +224,7 @@ class ImageProcessingService:
 
         Returns:
             Tuple of (image_id, ImageMetadata)
+
         """
         try:
             if not PIL_AVAILABLE:
@@ -297,13 +295,12 @@ class ImageProcessingService:
     async def resize_image(
         self,
         image_id: str,
-        width: Optional[int] = None,
-        height: Optional[int] = None,
-        scale_factor: Optional[float] = None,
+        width: int | None = None,
+        height: int | None = None,
+        scale_factor: float | None = None,
         maintain_aspect_ratio: bool = True,
     ) -> ProcessingResult:
-        """
-        Resize an image.
+        """Resize an image.
 
         Args:
             image_id: Image ID
@@ -314,6 +311,7 @@ class ImageProcessingService:
 
         Returns:
             ProcessingResult object
+
         """
         try:
             if not PIL_AVAILABLE:
@@ -354,7 +352,7 @@ class ImageProcessingService:
 
             # Resize image
             resized_image = image.resize(
-                (new_width, new_height), Image.Resampling.LANCZOS
+                (new_width, new_height), Image.Resampling.LANCZOS,
             )
 
             # Save processed image
@@ -414,13 +412,12 @@ class ImageProcessingService:
     async def enhance_image(
         self,
         image_id: str,
-        brightness: Optional[float] = None,
-        contrast: Optional[float] = None,
-        sharpness: Optional[float] = None,
-        color: Optional[float] = None,
+        brightness: float | None = None,
+        contrast: float | None = None,
+        sharpness: float | None = None,
+        color: float | None = None,
     ) -> ProcessingResult:
-        """
-        Enhance image quality.
+        """Enhance image quality.
 
         Args:
             image_id: Image ID
@@ -431,6 +428,7 @@ class ImageProcessingService:
 
         Returns:
             ProcessingResult object
+
         """
         try:
             if not PIL_AVAILABLE:
@@ -526,8 +524,7 @@ class ImageProcessingService:
         filter_type: str,
         **kwargs,
     ) -> ProcessingResult:
-        """
-        Apply a filter to an image.
+        """Apply a filter to an image.
 
         Args:
             image_id: Image ID
@@ -536,6 +533,7 @@ class ImageProcessingService:
 
         Returns:
             ProcessingResult object
+
         """
         try:
             if not PIL_AVAILABLE:
@@ -614,11 +612,10 @@ class ImageProcessingService:
     async def create_thumbnail(
         self,
         image_id: str,
-        size: Tuple[int, int] = (128, 128),
+        size: tuple[int, int] = (128, 128),
         quality: int = 85,
     ) -> ProcessingResult:
-        """
-        Create a thumbnail of an image.
+        """Create a thumbnail of an image.
 
         Args:
             image_id: Image ID
@@ -627,6 +624,7 @@ class ImageProcessingService:
 
         Returns:
             ProcessingResult object
+
         """
         try:
             if not PIL_AVAILABLE:
@@ -689,14 +687,14 @@ class ImageProcessingService:
             return result
 
     async def analyze_image(self, image_id: str) -> ImageAnalysis:
-        """
-        Analyze an image and extract features.
+        """Analyze an image and extract features.
 
         Args:
             image_id: Image ID
 
         Returns:
             ImageAnalysis object
+
         """
         try:
             if not PIL_AVAILABLE:
@@ -766,8 +764,8 @@ class ImageProcessingService:
             raise
 
     def _extract_dominant_colors(
-        self, image_array: np.ndarray, n_colors: int = 5
-    ) -> List[Tuple[int, int, int]]:
+        self, image_array: np.ndarray, n_colors: int = 5,
+    ) -> list[tuple[int, int, int]]:
         """Extract dominant colors from image."""
         try:
             # Reshape image array
@@ -801,9 +799,8 @@ class ImageProcessingService:
             if OPENCV_AVAILABLE:
                 gray = cv2.cvtColor(image_array, cv2.COLOR_RGB2GRAY)
                 return cv2.Laplacian(gray, cv2.CV_64F).var()
-            else:
-                # Fallback using PIL
-                return 0.0
+            # Fallback using PIL
+            return 0.0
         except:
             return 0.0
 
@@ -814,12 +811,11 @@ class ImageProcessingService:
                 gray = color.rgb2gray(image_array)
                 edges = filters.sobel(gray)
                 return np.mean(edges > 0.1)
-            else:
-                return 0.0
+            return 0.0
         except:
             return 0.0
 
-    def _extract_texture_features(self, image_array: np.ndarray) -> Dict[str, float]:
+    def _extract_texture_features(self, image_array: np.ndarray) -> dict[str, float]:
         """Extract texture features from image."""
         try:
             if not SKIMAGE_AVAILABLE:
@@ -834,7 +830,7 @@ class ImageProcessingService:
 
             # HOG features
             hog_features = hog(
-                gray, orientations=9, pixels_per_cell=(8, 8), cells_per_block=(2, 2)
+                gray, orientations=9, pixels_per_cell=(8, 8), cells_per_block=(2, 2),
             )
 
             return {
@@ -847,15 +843,15 @@ class ImageProcessingService:
             logger.error(f"Failed to extract texture features: {e}")
             return {}
 
-    async def get_image_statistics(self, image_id: str) -> Dict[str, Any]:
-        """
-        Get statistics for an image.
+    async def get_image_statistics(self, image_id: str) -> dict[str, Any]:
+        """Get statistics for an image.
 
         Args:
             image_id: Image ID
 
         Returns:
             Dictionary containing image statistics
+
         """
         try:
             if image_id not in self.metadata:
@@ -875,10 +871,10 @@ class ImageProcessingService:
                 "metadata": asdict(metadata),
                 "processing_count": len(processing_results),
                 "successful_operations": len(
-                    [r for r in processing_results if r.success]
+                    [r for r in processing_results if r.success],
                 ),
                 "failed_operations": len(
-                    [r for r in processing_results if not r.success]
+                    [r for r in processing_results if not r.success],
                 ),
                 "average_processing_time": (
                     sum(r.processing_time_ms for r in processing_results)
@@ -896,14 +892,14 @@ class ImageProcessingService:
             raise
 
     async def delete_image(self, image_id: str) -> bool:
-        """
-        Delete an image and its associated data.
+        """Delete an image and its associated data.
 
         Args:
             image_id: Image ID
 
         Returns:
             True if successful
+
         """
         try:
             if image_id not in self.metadata:

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Backend Data Provider Adapter
+"""Backend Data Provider Adapter
 ============================
 
 Adapter that converts the MCP server's backend data service into the
@@ -23,6 +22,7 @@ class MCPBackendAdapter(EnumDataProvider):
 
         Args:
             backend_data_service: The MCP server's backend data service
+
         """
         self.backend_service = backend_data_service
 
@@ -34,21 +34,21 @@ class MCPBackendAdapter(EnumDataProvider):
 
         Returns:
             Dictionary of enum data
+
         """
         try:
             if enum_type == "spirits":
                 return await self._get_spirits_data()
-            elif enum_type == "styles":
+            if enum_type == "styles":
                 return await self._get_styles_data()
-            elif enum_type == "personality_traits":
+            if enum_type == "personality_traits":
                 return await self._get_personality_traits_data()
-            elif enum_type == "physical_traits":
+            if enum_type == "physical_traits":
                 return await self._get_physical_traits_data()
-            elif enum_type == "ability_traits":
+            if enum_type == "ability_traits":
                 return await self._get_ability_traits_data()
-            else:
-                logger.warning("Unknown enum type: %s", enum_type)
-                return {}
+            logger.warning("Unknown enum type: %s", enum_type)
+            return {}
 
         except Exception as e:
             logger.exception("Error getting data for enum type %s: %s", enum_type, e)
@@ -64,11 +64,9 @@ class MCPBackendAdapter(EnumDataProvider):
                 if "spirits" in spirits_data:
                     # Wrapped format
                     return spirits_data["spirits"]
-                else:
-                    # Direct format
-                    return spirits_data
-            else:
-                return {}
+                # Direct format
+                return spirits_data
+            return {}
 
         except Exception as e:
             logger.exception("Error getting spirits data: %s", e)
@@ -80,8 +78,7 @@ class MCPBackendAdapter(EnumDataProvider):
             enums_data = await self.backend_service.get_naming_enums()
             if "styles" in enums_data:
                 return enums_data["styles"]
-            else:
-                return {}
+            return {}
 
         except Exception as e:
             logger.exception("Error getting styles data: %s", e)
@@ -93,8 +90,7 @@ class MCPBackendAdapter(EnumDataProvider):
             traits_data = await self.backend_service.get_personality_traits()
             if isinstance(traits_data, dict):
                 return traits_data
-            else:
-                return {}
+            return {}
 
         except Exception as e:
             logger.exception("Error getting personality traits data: %s", e)
@@ -106,8 +102,7 @@ class MCPBackendAdapter(EnumDataProvider):
             traits_data = await self.backend_service.get_physical_traits()
             if isinstance(traits_data, dict):
                 return traits_data
-            else:
-                return {}
+            return {}
 
         except Exception as e:
             logger.exception("Error getting physical traits data: %s", e)
@@ -119,8 +114,7 @@ class MCPBackendAdapter(EnumDataProvider):
             traits_data = await self.backend_service.get_ability_traits()
             if isinstance(traits_data, dict):
                 return traits_data
-            else:
-                return {}
+            return {}
 
         except Exception as e:
             logger.exception("Error getting ability traits data: %s", e)

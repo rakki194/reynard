@@ -1,5 +1,4 @@
-"""
-🔐 Comprehensive Security Module for Reynard Backend
+"""🔐 Comprehensive Security Module for Reynard Backend
 
 This module provides enterprise-grade security infrastructure including
 key management, encryption utilities, security configuration, audit logging,

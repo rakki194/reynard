@@ -1,5 +1,4 @@
-"""
-Simple Test Runner
+"""Simple Test Runner
 
 Simplified test runner for the experimental framework without full PHOENIX dependencies.
 
@@ -12,11 +11,10 @@ import json
 import logging
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 from .baseline import BaselineReconstruction
 from .config import ExperimentConfig, ExperimentType, create_success_advisor_target
-from .metrics import MetricsCalculator, ReconstructionMetrics
 
 
 class SimpleTestRunner:
@@ -43,9 +41,8 @@ class SimpleTestRunner:
             handlers=[logging.FileHandler(log_file), logging.StreamHandler()],
         )
 
-    async def run_baseline_test(self) -> Dict[str, Any]:
+    async def run_baseline_test(self) -> dict[str, Any]:
         """Run baseline reconstruction test."""
-
         self.logger.info("Starting baseline reconstruction test")
 
         results = {
@@ -88,7 +85,7 @@ class SimpleTestRunner:
         }
 
         doc_agent = self.baseline_reconstruction.reconstruct_documentation_based(
-            doc_data
+            doc_data,
         )
         doc_metrics = self.baseline_reconstruction.evaluate_reconstruction()
         results["methods"]["documentation"] = {
@@ -106,9 +103,8 @@ class SimpleTestRunner:
         self.logger.info("Baseline test completed successfully")
         return results
 
-    def _calculate_summary(self, methods: Dict[str, Any]) -> Dict[str, Any]:
+    def _calculate_summary(self, methods: dict[str, Any]) -> dict[str, Any]:
         """Calculate summary statistics."""
-
         summary = {
             "method_comparison": {},
             "best_method": None,
@@ -140,9 +136,8 @@ class SimpleTestRunner:
 
         return summary
 
-    async def _save_results(self, results: Dict[str, Any]):
+    async def _save_results(self, results: dict[str, Any]):
         """Save test results."""
-
         results_file = Path(self.config.results_dir) / "simple_test_results.json"
         with open(results_file, "w") as f:
             json.dump(results, f, indent=2, default=str)
@@ -152,9 +147,8 @@ class SimpleTestRunner:
         with open(summary_file, "w") as f:
             f.write(self._generate_summary_report(results))
 
-    def _generate_summary_report(self, results: Dict[str, Any]) -> str:
+    def _generate_summary_report(self, results: dict[str, Any]) -> str:
         """Generate summary report."""
-
         summary = results.get("summary", {})
 
         report = f"""
@@ -192,7 +186,6 @@ Test completed at: {results.get('end_time', 'Unknown')}
 
 async def main():
     """Main test runner."""
-
     # Create test configuration
     config = ExperimentConfig(
         experiment_type=ExperimentType.BASELINE,

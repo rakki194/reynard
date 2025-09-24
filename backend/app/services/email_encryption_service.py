@@ -1,12 +1,8 @@
-"""
-Email Encryption Service for Reynard Backend.
+"""Email Encryption Service for Reynard Backend.
 
 This module provides PGP and SMIME encryption functionality for secure email communications.
 """
 
-import asyncio
-import base64
-import hashlib
 import json
 import logging
 import os
@@ -15,11 +11,10 @@ import shutil
 
 # PGP imports - using subprocess instead of gnupg library
 import subprocess
-import tempfile
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any
 
 # Check if gpg is available
 PGP_AVAILABLE = shutil.which("gpg") is not None
@@ -56,8 +51,8 @@ class EncryptionKey:
     user_id: str
     email: str
     created_at: datetime
-    private_key: Optional[str] = None
-    expires_at: Optional[datetime] = None
+    private_key: str | None = None
+    expires_at: datetime | None = None
     is_revoked: bool = False
     trust_level: int = 0  # 0-5 for PGP trust levels
 
@@ -71,7 +66,7 @@ class EncryptedEmail:
     encryption_method: str  # 'pgp' or 'smime'
     key_id: str
     encrypted_at: datetime
-    signature: Optional[str] = None
+    signature: str | None = None
     is_signed: bool = False
 
 
@@ -85,9 +80,9 @@ class EncryptionConfig:
     auto_encrypt: bool = False
     require_encryption: bool = False
     key_server_url: str = "https://keys.openpgp.org"
-    smime_ca_cert_path: Optional[str] = None
-    smime_cert_path: Optional[str] = None
-    smime_key_path: Optional[str] = None
+    smime_ca_cert_path: str | None = None
+    smime_cert_path: str | None = None
+    smime_key_path: str | None = None
 
 
 class EmailEncryptionService:
@@ -95,7 +90,7 @@ class EmailEncryptionService:
 
     def __init__(
         self,
-        config: Optional[EncryptionConfig] = None,
+        config: EncryptionConfig | None = None,
         data_dir: str = "data/email_encryption",
     ):
         self.config = config or EncryptionConfig()
@@ -113,7 +108,7 @@ class EmailEncryptionService:
             Path(self.gpg_homedir).mkdir(parents=True, exist_ok=True)
             self.gpg = "available"  # For compatibility with tests
             logger.info(
-                f"PGP encryption available - using gpg with homedir: {self.gpg_homedir}"
+                f"PGP encryption available - using gpg with homedir: {self.gpg_homedir}",
             )
         else:
             self.gpg_homedir = None
@@ -123,7 +118,7 @@ class EmailEncryptionService:
         # SMIME setup
         if not SMIME_AVAILABLE and self.config.smime_enabled:
             logger.warning(
-                "SMIME encryption not available - cryptography not installed"
+                "SMIME encryption not available - cryptography not installed",
             )
 
         # Load existing keys
@@ -134,7 +129,7 @@ class EmailEncryptionService:
         try:
             keys_file = self.data_dir / "keys.json"
             if keys_file.exists():
-                with open(keys_file, "r", encoding="utf-8") as f:
+                with open(keys_file, encoding="utf-8") as f:
                     keys_data = json.load(f)
                     self.keys = {
                         key_id: EncryptionKey(**key_data)
@@ -179,11 +174,10 @@ class EmailEncryptionService:
         self,
         name: str,
         email: str,
-        passphrase: Optional[str] = None,
+        passphrase: str | None = None,
         key_length: int = 2048,
     ) -> EncryptionKey:
-        """
-        Generate a new PGP key pair.
+        """Generate a new PGP key pair.
 
         Args:
             name: Name for the key
@@ -193,6 +187,7 @@ class EmailEncryptionService:
 
         Returns:
             EncryptionKey object
+
         """
         if not PGP_AVAILABLE or self.gpg is None:
             raise ValueError("PGP encryption not available")
@@ -209,7 +204,7 @@ Expire-Date: 0
 """
 
             result = self._run_gpg_command(
-                ["--gen-key", "--batch"], input_data=key_input.encode()
+                ["--gen-key", "--batch"], input_data=key_input.encode(),
             )
 
             # Get the fingerprint from the output
@@ -234,7 +229,7 @@ Expire-Date: 0
                 public_key = public_result.stdout.decode()
 
             private_result = self._run_gpg_command(
-                ["--armor", "--export-secret-keys", fingerprint]
+                ["--armor", "--export-secret-keys", fingerprint],
             )
             if private_result.returncode != 0:
                 private_key = f"-----BEGIN PGP PRIVATE KEY BLOCK-----\nMock private key for {email}\n-----END PGP PRIVATE KEY BLOCK-----"
@@ -266,14 +261,14 @@ Expire-Date: 0
             raise
 
     async def import_pgp_key(self, key_data: str) -> EncryptionKey:
-        """
-        Import a PGP key from string data.
+        """Import a PGP key from string data.
 
         Args:
             key_data: PGP key data as string
 
         Returns:
             EncryptionKey object
+
         """
         if not PGP_AVAILABLE or self.gpg is None:
             raise ValueError("PGP encryption not available")
@@ -339,11 +334,10 @@ Expire-Date: 0
         self,
         content: str,
         recipient_email: str,
-        encryption_method: Optional[str] = None,
-        sign_with: Optional[str] = None,
+        encryption_method: str | None = None,
+        sign_with: str | None = None,
     ) -> EncryptedEmail:
-        """
-        Encrypt email content for a recipient.
+        """Encrypt email content for a recipient.
 
         Args:
             content: Email content to encrypt
@@ -353,6 +347,7 @@ Expire-Date: 0
 
         Returns:
             EncryptedEmail object
+
         """
         try:
             # Determine encryption method
@@ -361,17 +356,16 @@ Expire-Date: 0
 
             # Find recipient's key
             recipient_key = await self._find_recipient_key(
-                recipient_email, encryption_method
+                recipient_email, encryption_method,
             )
             if not recipient_key:
                 raise ValueError(f"No encryption key found for {recipient_email}")
 
             if encryption_method == "pgp":
                 return await self._encrypt_with_pgp(content, recipient_key, sign_with)
-            elif encryption_method == "smime":
+            if encryption_method == "smime":
                 return await self._encrypt_with_smime(content, recipient_key, sign_with)
-            else:
-                raise ValueError(f"Unsupported encryption method: {encryption_method}")
+            raise ValueError(f"Unsupported encryption method: {encryption_method}")
 
         except Exception as e:
             logger.error(f"Failed to encrypt email: {e}")
@@ -381,10 +375,9 @@ Expire-Date: 0
         self,
         encrypted_content: str,
         encryption_method: str,
-        passphrase: Optional[str] = None,
+        passphrase: str | None = None,
     ) -> str:
-        """
-        Decrypt email content.
+        """Decrypt email content.
 
         Args:
             encrypted_content: Encrypted email content
@@ -393,24 +386,23 @@ Expire-Date: 0
 
         Returns:
             Decrypted email content
+
         """
         try:
             if encryption_method == "pgp":
                 return await self._decrypt_with_pgp(encrypted_content, passphrase)
-            elif encryption_method == "smime":
+            if encryption_method == "smime":
                 return await self._decrypt_with_smime(encrypted_content, passphrase)
-            else:
-                raise ValueError(f"Unsupported encryption method: {encryption_method}")
+            raise ValueError(f"Unsupported encryption method: {encryption_method}")
 
         except Exception as e:
             logger.error(f"Failed to decrypt email: {e}")
             raise
 
     async def sign_email(
-        self, content: str, signer_key_id: str, passphrase: Optional[str] = None
+        self, content: str, signer_key_id: str, passphrase: str | None = None,
     ) -> str:
-        """
-        Sign email content.
+        """Sign email content.
 
         Args:
             content: Email content to sign
@@ -419,6 +411,7 @@ Expire-Date: 0
 
         Returns:
             Signed email content
+
         """
         try:
             if signer_key_id not in self.keys:
@@ -428,22 +421,20 @@ Expire-Date: 0
 
             if signing_key.key_type == "pgp":
                 return await self._sign_with_pgp(content, signing_key, passphrase)
-            elif signing_key.key_type == "smime":
+            if signing_key.key_type == "smime":
                 return await self._sign_with_smime(content, signing_key, passphrase)
-            else:
-                raise ValueError(
-                    f"Unsupported key type for signing: {signing_key.key_type}"
-                )
+            raise ValueError(
+                f"Unsupported key type for signing: {signing_key.key_type}",
+            )
 
         except Exception as e:
             logger.error(f"Failed to sign email: {e}")
             raise
 
     async def verify_signature(
-        self, signed_content: str, encryption_method: str
-    ) -> Dict[str, Any]:
-        """
-        Verify email signature.
+        self, signed_content: str, encryption_method: str,
+    ) -> dict[str, Any]:
+        """Verify email signature.
 
         Args:
             signed_content: Signed email content
@@ -451,24 +442,23 @@ Expire-Date: 0
 
         Returns:
             Dictionary with verification results
+
         """
         try:
             if encryption_method == "pgp":
                 return await self._verify_pgp_signature(signed_content)
-            elif encryption_method == "smime":
+            if encryption_method == "smime":
                 return await self._verify_smime_signature(signed_content)
-            else:
-                raise ValueError(f"Unsupported encryption method: {encryption_method}")
+            raise ValueError(f"Unsupported encryption method: {encryption_method}")
 
         except Exception as e:
             logger.error(f"Failed to verify signature: {e}")
             raise
 
     async def get_public_key(
-        self, email: str, encryption_method: str = "pgp"
-    ) -> Optional[str]:
-        """
-        Get public key for an email address.
+        self, email: str, encryption_method: str = "pgp",
+    ) -> str | None:
+        """Get public key for an email address.
 
         Args:
             email: Email address
@@ -476,6 +466,7 @@ Expire-Date: 0
 
         Returns:
             Public key data or None if not found
+
         """
         try:
             key = await self._find_recipient_key(email, encryption_method)
@@ -484,15 +475,15 @@ Expire-Date: 0
             logger.error(f"Failed to get public key: {e}")
             return None
 
-    async def list_keys(self, key_type: Optional[str] = None) -> List[EncryptionKey]:
-        """
-        List all encryption keys.
+    async def list_keys(self, key_type: str | None = None) -> list[EncryptionKey]:
+        """List all encryption keys.
 
         Args:
             key_type: Filter by key type ('pgp' or 'smime')
 
         Returns:
             List of EncryptionKey objects
+
         """
         try:
             keys = list(self.keys.values())
@@ -507,14 +498,14 @@ Expire-Date: 0
             return []
 
     async def revoke_key(self, key_id: str) -> bool:
-        """
-        Revoke an encryption key.
+        """Revoke an encryption key.
 
         Args:
             key_id: Key ID to revoke
 
         Returns:
             True if successful
+
         """
         try:
             if key_id not in self.keys:
@@ -534,9 +525,9 @@ Expire-Date: 0
 
     def _run_gpg_command(
         self,
-        args: List[str],
-        input_data: Optional[bytes] = None,
-        passphrase: Optional[str] = None,
+        args: list[str],
+        input_data: bytes | None = None,
+        passphrase: str | None = None,
     ) -> subprocess.CompletedProcess:
         """Run a gpg command with proper environment and error handling."""
         if not PGP_AVAILABLE:
@@ -568,11 +559,11 @@ Expire-Date: 0
             return result
         except subprocess.CalledProcessError as e:
             logger.error(
-                f"GPG command failed: {e.stderr.decode() if e.stderr else 'Unknown error'}"
+                f"GPG command failed: {e.stderr.decode() if e.stderr else 'Unknown error'}",
             )
             raise
 
-    def _list_gpg_keys(self, secret: bool = False) -> List[Dict[str, Any]]:
+    def _list_gpg_keys(self, secret: bool = False) -> list[dict[str, Any]]:
         """List GPG keys using subprocess."""
         try:
             args = ["--list-secret-keys"] if secret else ["--list-keys"]
@@ -588,7 +579,7 @@ Expire-Date: 0
                     if current_key:
                         keys.append(current_key)
                     current_key = {
-                        "type": "secret" if line.startswith("sec:") else "public"
+                        "type": "secret" if line.startswith("sec:") else "public",
                     }
                 elif line.startswith("uid:"):
                     if current_key:
@@ -613,8 +604,8 @@ Expire-Date: 0
         return email_match.group(1) if email_match else "unknown@example.com"
 
     async def _find_recipient_key(
-        self, email: str, encryption_method: str
-    ) -> Optional[EncryptionKey]:
+        self, email: str, encryption_method: str,
+    ) -> EncryptionKey | None:
         """Find encryption key for recipient email."""
         for key in self.keys.values():
             if (
@@ -629,7 +620,7 @@ Expire-Date: 0
         self,
         content: str,
         recipient_key: EncryptionKey,
-        sign_with: Optional[str] = None,
+        sign_with: str | None = None,
     ) -> EncryptedEmail:
         """Encrypt content with PGP."""
         if not PGP_AVAILABLE or self.gpg is None:
@@ -672,7 +663,7 @@ Expire-Date: 0
         self,
         content: str,
         recipient_key: EncryptionKey,
-        sign_with: Optional[str] = None,
+        sign_with: str | None = None,
     ) -> EncryptedEmail:
         """Encrypt content with SMIME."""
         if not SMIME_AVAILABLE:
@@ -698,7 +689,7 @@ Expire-Date: 0
             raise
 
     async def _decrypt_with_pgp(
-        self, encrypted_content: str, passphrase: Optional[str] = None
+        self, encrypted_content: str, passphrase: str | None = None,
     ) -> str:
         """Decrypt content with PGP."""
         if not PGP_AVAILABLE or self.gpg is None:
@@ -717,7 +708,7 @@ Expire-Date: 0
             raise
 
     async def _decrypt_with_smime(
-        self, encrypted_content: str, passphrase: Optional[str] = None
+        self, encrypted_content: str, passphrase: str | None = None,
     ) -> str:
         """Decrypt content with SMIME."""
         if not SMIME_AVAILABLE:
@@ -729,18 +720,17 @@ Expire-Date: 0
 
             # For now, return a placeholder
             if encrypted_content.startswith(
-                "[SMIME-ENCRYPTED]"
+                "[SMIME-ENCRYPTED]",
             ) and encrypted_content.endswith("[/SMIME-ENCRYPTED]"):
                 return encrypted_content[17:-18]  # Remove markers
-            else:
-                raise ValueError("Invalid SMIME encrypted content")
+            raise ValueError("Invalid SMIME encrypted content")
 
         except Exception as e:
             logger.error(f"SMIME decryption failed: {e}")
             raise
 
     async def _sign_with_pgp(
-        self, content: str, signing_key: EncryptionKey, passphrase: Optional[str] = None
+        self, content: str, signing_key: EncryptionKey, passphrase: str | None = None,
     ) -> str:
         """Sign content with PGP."""
         if not PGP_AVAILABLE or self.gpg is None:
@@ -748,7 +738,7 @@ Expire-Date: 0
 
         try:
             signed_data = self.gpg.sign(
-                content, keyid=signing_key.fingerprint, passphrase=passphrase
+                content, keyid=signing_key.fingerprint, passphrase=passphrase,
             )
 
             if not signed_data:
@@ -761,7 +751,7 @@ Expire-Date: 0
             raise
 
     async def _sign_with_smime(
-        self, content: str, signing_key: EncryptionKey, passphrase: Optional[str] = None
+        self, content: str, signing_key: EncryptionKey, passphrase: str | None = None,
     ) -> str:
         """Sign content with SMIME."""
         if not SMIME_AVAILABLE:
@@ -778,7 +768,7 @@ Expire-Date: 0
             logger.error(f"SMIME signing failed: {e}")
             raise
 
-    async def _verify_pgp_signature(self, signed_content: str) -> Dict[str, Any]:
+    async def _verify_pgp_signature(self, signed_content: str) -> dict[str, Any]:
         """Verify PGP signature."""
         if not PGP_AVAILABLE or self.gpg is None:
             raise ValueError("PGP encryption not available")
@@ -798,7 +788,7 @@ Expire-Date: 0
             logger.error(f"PGP signature verification failed: {e}")
             return {"valid": False, "error": str(e)}
 
-    async def _verify_smime_signature(self, signed_content: str) -> Dict[str, Any]:
+    async def _verify_smime_signature(self, signed_content: str) -> dict[str, Any]:
         """Verify SMIME signature."""
         if not SMIME_AVAILABLE:
             raise ValueError("SMIME encryption not available")
@@ -809,7 +799,7 @@ Expire-Date: 0
 
             # For now, return a placeholder
             if signed_content.startswith("[SMIME-SIGNED]") and signed_content.endswith(
-                "[/SMIME-SIGNED]"
+                "[/SMIME-SIGNED]",
             ):
                 return {
                     "valid": True,
@@ -818,8 +808,7 @@ Expire-Date: 0
                     "trust_level": 0,
                     "status": "placeholder",
                 }
-            else:
-                return {"valid": False, "error": "Invalid SMIME signed content"}
+            return {"valid": False, "error": "Invalid SMIME signed content"}
 
         except Exception as e:
             logger.error(f"SMIME signature verification failed: {e}")

@@ -1,5 +1,4 @@
-"""
-ECS Spirit Inhabitation API
+"""ECS Spirit Inhabitation API
 ===========================
 
 Spirit inhabitation, Success-Advisor-8, and spirit management endpoints.
@@ -37,8 +36,7 @@ class SpiritInhabitationRequest(BaseModel):
 async def inhabit_success_advisor_spirit(
     request: SpiritInhabitationRequest,
 ) -> dict[str, Any]:
-    """
-    Inhabit Success-Advisor-8's spirit with specialized genomic payload and instructions.
+    """Inhabit Success-Advisor-8's spirit with specialized genomic payload and instructions.
 
     This endpoint provides agents with the complete genomic payload and behavioral
     instructions needed to inhabit Success-Advisor-8's spirit, including:
@@ -51,7 +49,7 @@ async def inhabit_success_advisor_spirit(
     """
     try:
         logger.info(
-            f"🦁 Agent {request.agent_id} requesting Success-Advisor-8 spirit inhabitation"
+            f"🦁 Agent {request.agent_id} requesting Success-Advisor-8 spirit inhabitation",
         )
 
         # Get the complete spirit inhabitation guide
@@ -119,7 +117,7 @@ async def inhabit_success_advisor_spirit(
         }
 
         logger.info(
-            f"✅ Success-Advisor-8 spirit inhabitation guide provided to agent {request.agent_id}"
+            f"✅ Success-Advisor-8 spirit inhabitation guide provided to agent {request.agent_id}",
         )
         return response
 
@@ -130,8 +128,7 @@ async def inhabit_success_advisor_spirit(
 
 @router.get("/success-advisor-8/genome")
 async def get_success_advisor_genome() -> dict[str, Any]:
-    """
-    Get the complete Success-Advisor-8 genomic payload.
+    """Get the complete Success-Advisor-8 genomic payload.
 
     Returns the full genomic specification including traits, abilities,
     domain expertise, and behavioral characteristics.
@@ -154,8 +151,7 @@ async def get_success_advisor_genome() -> dict[str, Any]:
 
 @router.get("/success-advisor-8/instructions")
 async def get_success_advisor_instructions() -> dict[str, Any]:
-    """
-    Get Success-Advisor-8 behavioral instructions and guidelines.
+    """Get Success-Advisor-8 behavioral instructions and guidelines.
 
     Returns comprehensive behavioral guidelines, communication style,
     workflow protocols, and quality standards.
@@ -195,7 +191,7 @@ async def create_interaction(request: dict[str, Any]) -> dict[str, Any]:
 
         if not agent1_id or not agent2_id:
             raise HTTPException(
-                status_code=400, detail="agent1_id and agent2_id are required"
+                status_code=400, detail="agent1_id and agent2_id are required",
             )
 
         # Get the ECS service
@@ -214,5 +210,5 @@ async def create_interaction(request: dict[str, Any]) -> dict[str, Any]:
     except Exception as e:
         logger.exception("Failed to create interaction")
         raise HTTPException(
-            status_code=500, detail=f"Failed to create interaction: {e!s}"
+            status_code=500, detail=f"Failed to create interaction: {e!s}",
         ) from e

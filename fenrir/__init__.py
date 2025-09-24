@@ -1,5 +1,4 @@
-"""
-🐺 FENRIR EXPLOIT TESTING SUITE
+"""🐺 FENRIR EXPLOIT TESTING SUITE
 
 *snarls with predatory glee* This is where I prove that your precious Reynard codebase
 has vulnerabilities that would make any attacker salivate with anticipation.
@@ -14,12 +13,14 @@ __description__ = (
     "Comprehensive exploit testing suite for Reynard security vulnerabilities"
 )
 
+# Import core modules
+from . import core
+
 # Import exploit modules
-from . import (
+from .exploits import (
     api_exploits,
     cors_exploits,
     csrf_exploits,
-    fuzzing,
     http_smuggling,
     jwt_exploits,
     llm_exploits,
@@ -33,9 +34,9 @@ from . import (
 
 __all__ = [
     "api_exploits",
+    "core",
     "cors_exploits",
     "csrf_exploits",
-    "fuzzing",
     "http_smuggling",
     "jwt_exploits",
     "llm_exploits",

@@ -1,5 +1,4 @@
-"""
-JWT Secret Key Management System
+"""JWT Secret Key Management System
 
 This module provides secure JWT secret key management with persistence
 to prevent token invalidation on server restarts.
@@ -34,12 +33,12 @@ class JWTSecretManager:
             stat = self.secret_file_path.stat()
             if stat.st_mode & 0o077:  # Check if others have read/write permissions
                 logger.warning(
-                    f"JWT secret file has insecure permissions: {self.secret_file_path}"
+                    f"JWT secret file has insecure permissions: {self.secret_file_path}",
                 )
                 # Fix permissions
                 self.secret_file_path.chmod(0o600)
                 logger.info(
-                    f"Fixed JWT secret file permissions: {self.secret_file_path}"
+                    f"Fixed JWT secret file permissions: {self.secret_file_path}",
                 )
 
     def _generate_and_save_secret(self) -> None:
@@ -64,7 +63,7 @@ class JWTSecretManager:
         self.secret_file_path.chmod(0o600)
 
         logger.info(
-            f"Generated new JWT secret key and saved to: {self.secret_file_path}"
+            f"Generated new JWT secret key and saved to: {self.secret_file_path}",
         )
 
     def get_secret_key(self) -> str:
@@ -96,7 +95,7 @@ class JWTSecretManager:
     def rotate_secret_key(self) -> str:
         """Rotate the JWT secret key (invalidates all existing tokens)."""
         logger.warning(
-            "Rotating JWT secret key - all existing tokens will be invalidated"
+            "Rotating JWT secret key - all existing tokens will be invalidated",
         )
         self._generate_and_save_secret()
         self._secret_key = None  # Force reload

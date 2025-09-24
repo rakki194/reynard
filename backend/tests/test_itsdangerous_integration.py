@@ -1,5 +1,4 @@
-"""
-🦊 Comprehensive pytest tests for itsdangerous integration
+"""🦊 Comprehensive pytest tests for itsdangerous integration
 
 This module provides thorough testing of the itsdangerous integration including:
 - ItsDangerousUtils functionality
@@ -20,26 +19,17 @@ import pytest
 from app.security.itsdangerous_utils import (
     ItsDangerousError,
     ItsDangerousUtils,
-    create_api_key_token,
-    create_email_verification_token,
-    create_password_reset_token,
     create_session_token,
     create_timestamped_token,
-    get_itsdangerous_utils,
-    verify_api_key_token,
-    verify_email_verification_token,
-    verify_password_reset_token,
     verify_session_token,
     verify_timestamped_token,
 )
 from app.security.key_manager import KeyType
 from app.security.security_config import get_session_security_config
 from app.security.session_encryption import (
-    SessionData,
     SessionEncryptionManager,
     create_hybrid_session,
     get_hybrid_session,
-    get_session_encryption_manager,
 )
 
 
@@ -50,7 +40,7 @@ class TestItsDangerousUtils:
     def utils(self):
         """Create a test instance of ItsDangerousUtils."""
         with patch(
-            "app.security.itsdangerous_utils.get_key_manager"
+            "app.security.itsdangerous_utils.get_key_manager",
         ) as mock_key_manager:
             mock_key_manager.return_value.get_key.return_value = "test_secret_key_12345"
             mock_key_manager.return_value.generate_key.return_value = None
@@ -108,7 +98,7 @@ class TestItsDangerousUtils:
         """Test password reset token creation."""
         user_id = "test_user_123"
         token = utils.create_password_reset_token(
-            user_id, expires_in=timedelta(hours=1)
+            user_id, expires_in=timedelta(hours=1),
         )
 
         assert token is not None
@@ -119,7 +109,7 @@ class TestItsDangerousUtils:
         """Test password reset token verification."""
         user_id = "test_user_123"
         token = utils.create_password_reset_token(
-            user_id, expires_in=timedelta(hours=1)
+            user_id, expires_in=timedelta(hours=1),
         )
 
         data = utils.verify_password_reset_token(token)
@@ -132,7 +122,7 @@ class TestItsDangerousUtils:
         user_id = "test_user_123"
         email = "test@example.com"
         token = utils.create_email_verification_token(
-            user_id, email, expires_in=timedelta(hours=24)
+            user_id, email, expires_in=timedelta(hours=24),
         )
 
         assert token is not None
@@ -144,7 +134,7 @@ class TestItsDangerousUtils:
         user_id = "test_user_123"
         email = "test@example.com"
         token = utils.create_email_verification_token(
-            user_id, email, expires_in=timedelta(hours=24)
+            user_id, email, expires_in=timedelta(hours=24),
         )
 
         data = utils.verify_email_verification_token(token)
@@ -158,7 +148,7 @@ class TestItsDangerousUtils:
         user_id = "test_user_123"
         permissions = ["read", "write", "admin"]
         token = utils.create_api_key_token(
-            user_id, permissions, expires_in=timedelta(days=30)
+            user_id, permissions, expires_in=timedelta(days=30),
         )
 
         assert token is not None
@@ -170,7 +160,7 @@ class TestItsDangerousUtils:
         user_id = "test_user_123"
         permissions = ["read", "write", "admin"]
         token = utils.create_api_key_token(
-            user_id, permissions, expires_in=timedelta(days=30)
+            user_id, permissions, expires_in=timedelta(days=30),
         )
 
         data = utils.verify_api_key_token(token)
@@ -248,7 +238,7 @@ class TestConvenienceFunctions:
     def mock_utils(self):
         """Mock the ItsDangerousUtils instance."""
         with patch(
-            "app.security.itsdangerous_utils.get_itsdangerous_utils"
+            "app.security.itsdangerous_utils.get_itsdangerous_utils",
         ) as mock_get_utils:
             mock_utils = Mock()
             mock_get_utils.return_value = mock_utils
@@ -307,7 +297,7 @@ class TestHybridSessions:
     def mock_itsdangerous_utils(self):
         """Mock ItsDangerousUtils."""
         with patch(
-            "app.security.session_encryption.get_itsdangerous_utils"
+            "app.security.session_encryption.get_itsdangerous_utils",
         ) as mock_get_utils:
             mock_utils = Mock()
             mock_get_utils.return_value = mock_utils
@@ -318,10 +308,10 @@ class TestHybridSessions:
         """Create a test session manager."""
         with (
             patch(
-                "app.security.session_encryption.get_session_security_config"
+                "app.security.session_encryption.get_session_security_config",
             ) as mock_config,
             patch(
-                "app.security.session_encryption.get_key_manager"
+                "app.security.session_encryption.get_key_manager",
             ) as mock_key_manager,
         ):
 
@@ -338,7 +328,7 @@ class TestHybridSessions:
             return SessionEncryptionManager(redis_client=mock_redis)
 
     def test_create_hybrid_session(
-        self, session_manager, mock_redis, mock_itsdangerous_utils
+        self, session_manager, mock_redis, mock_itsdangerous_utils,
     ):
         """Test hybrid session creation."""
         # Mock the itsdangerous token creation
@@ -380,7 +370,7 @@ class TestHybridSessions:
         assert "created_at" in token_data
 
     def test_get_hybrid_session(
-        self, session_manager, mock_redis, mock_itsdangerous_utils
+        self, session_manager, mock_redis, mock_itsdangerous_utils,
     ):
         """Test hybrid session retrieval."""
         # Mock the itsdangerous token verification
@@ -415,14 +405,14 @@ class TestHybridSessions:
 
         # Verify itsdangerous was called to verify token
         mock_itsdangerous_utils.verify_session_token.assert_called_once_with(
-            "hybrid_session_token"
+            "hybrid_session_token",
         )
 
         # Verify Redis was called to get session data
         mock_redis.get.assert_called_once_with("session:test_session_123")
 
     def test_get_hybrid_session_invalid_token(
-        self, session_manager, mock_itsdangerous_utils
+        self, session_manager, mock_itsdangerous_utils,
     ):
         """Test hybrid session retrieval with invalid token."""
         # Mock the itsdangerous token verification to return None (invalid)
@@ -432,11 +422,11 @@ class TestHybridSessions:
 
         assert session is None
         mock_itsdangerous_utils.verify_session_token.assert_called_once_with(
-            "invalid_token"
+            "invalid_token",
         )
 
     def test_get_hybrid_session_fingerprint_mismatch(
-        self, session_manager, mock_redis, mock_itsdangerous_utils
+        self, session_manager, mock_redis, mock_itsdangerous_utils,
     ):
         """Test hybrid session retrieval with fingerprint mismatch."""
         # Mock the itsdangerous token verification
@@ -468,7 +458,7 @@ class TestHybridSessions:
     def test_convenience_functions(self, mock_redis, mock_itsdangerous_utils):
         """Test the convenience functions for hybrid sessions."""
         with patch(
-            "app.security.session_encryption.get_session_encryption_manager"
+            "app.security.session_encryption.get_session_encryption_manager",
         ) as mock_get_manager:
             mock_manager = Mock()
             mock_get_manager.return_value = mock_manager
@@ -478,7 +468,7 @@ class TestHybridSessions:
             result = create_hybrid_session(user_id="test", ip_address="127.0.0.1")
             assert result == "test_token"
             mock_manager.create_hybrid_session.assert_called_once_with(
-                "test", "127.0.0.1", None, None
+                "test", "127.0.0.1", None, None,
             )
 
             # Test get_hybrid_session convenience function
@@ -525,11 +515,11 @@ class TestErrorHandling:
     def test_key_manager_failure(self):
         """Test behavior when key manager fails."""
         with patch(
-            "app.security.itsdangerous_utils.get_key_manager"
+            "app.security.itsdangerous_utils.get_key_manager",
         ) as mock_key_manager:
             mock_key_manager.return_value.get_key.return_value = None
             mock_key_manager.return_value.generate_key.side_effect = Exception(
-                "Key generation failed"
+                "Key generation failed",
             )
             mock_key_manager.return_value.get_key_metadata.return_value = None
 
@@ -549,7 +539,7 @@ class TestErrorHandling:
     def test_invalid_token_format(self):
         """Test handling of invalid token formats."""
         with patch(
-            "app.security.itsdangerous_utils.get_key_manager"
+            "app.security.itsdangerous_utils.get_key_manager",
         ) as mock_key_manager:
             mock_key_manager.return_value.get_key.return_value = "test_secret_key_12345"
             mock_key_manager.return_value.generate_key.return_value = None
@@ -579,11 +569,11 @@ class TestIntegration:
         """Set up a complete test system with mocked dependencies."""
         with (
             patch(
-                "app.security.itsdangerous_utils.get_key_manager"
+                "app.security.itsdangerous_utils.get_key_manager",
             ) as mock_key_manager,
             patch("app.security.session_encryption.redis.Redis") as mock_redis_class,
             patch(
-                "app.security.session_encryption.get_session_security_config"
+                "app.security.session_encryption.get_session_security_config",
             ) as mock_config,
         ):
 
@@ -637,7 +627,7 @@ class TestIntegration:
             metadata = key_manager.get_key_metadata("itsdangerous_session_key")
             if not metadata:
                 key_manager.generate_key(
-                    "itsdangerous_session_key", KeyType.SESSION_SIGNING
+                    "itsdangerous_session_key", KeyType.SESSION_SIGNING,
                 )
 
         # Step 4: Ensure the session manager's itsdangerous_utils uses the same key manager
@@ -710,5 +700,4 @@ def setup_test_environment():
     import os
 
     os.environ["REYNARD_MASTER_PASSWORD"] = "test_master_password_12345"
-    yield
     # Cleanup if needed

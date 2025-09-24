@@ -1,5 +1,4 @@
-"""
-Comprehensive Security Middleware for Reynard Backend
+"""Comprehensive Security Middleware for Reynard Backend
 
 This module provides advanced security middleware to protect against
 SQL injection, XSS, command injection, and other common vulnerabilities.
@@ -9,25 +8,27 @@ and comprehensive analytics.
 
 import logging
 import re
-import time
 from typing import Any
 
-from fastapi import Request, status
+from fastapi import Request
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.types import ASGIApp
 
-from .security_error_handler import SecurityEventType, SecurityThreatLevel, security_error_handler
 from .adaptive_rate_limiter import adaptive_rate_limiter
-from .security_analytics import security_analytics, SecurityEvent
+from .security_analytics import SecurityEvent, security_analytics
 from .security_config import get_security_config
+from .security_error_handler import (
+    SecurityEventType,
+    SecurityThreatLevel,
+    security_error_handler,
+)
 
 logger = logging.getLogger(__name__)
 
 
 class SecurityMiddleware(BaseHTTPMiddleware):
-    """
-    Comprehensive security middleware that validates and sanitizes all requests.
+    """Comprehensive security middleware that validates and sanitizes all requests.
 
     This middleware provides protection against:
     - SQL Injection attacks
@@ -40,10 +41,10 @@ class SecurityMiddleware(BaseHTTPMiddleware):
 
     def __init__(self, app: ASGIApp):
         super().__init__(app)
-        
+
         # Load security configuration
         self.config = get_security_config()
-        
+
         # Initialize security components
         self.security_error_handler = security_error_handler
         self.rate_limiter = adaptive_rate_limiter
@@ -210,31 +211,35 @@ class SecurityMiddleware(BaseHTTPMiddleware):
         # Check if security is enabled
         if not self.config.enabled:
             return await call_next(request)
-        
+
         # Skip security checks for excluded paths
         if self.config.should_bypass_security(request.url.path):
             return await call_next(request)
-        
+
         try:
             # Check adaptive rate limiting
             if self.config.rate_limiting_enabled:
-                should_limit, _, limit_details = self.rate_limiter.should_rate_limit(request)
+                should_limit, _, limit_details = self.rate_limiter.should_rate_limit(
+                    request,
+                )
                 if should_limit:
                     # Record rate limit event
-                    self.analytics.log_event(SecurityEvent(
-                        event_type=SecurityEventType.RATE_LIMIT_EXCEEDED,
-                        threat_level=SecurityThreatLevel.MEDIUM,
-                        request=request,
-                        details=limit_details,
-                        action_taken="rate_limited"
-                    ))
-                    
+                    self.analytics.log_event(
+                        SecurityEvent(
+                            event_type=SecurityEventType.RATE_LIMIT_EXCEEDED,
+                            threat_level=SecurityThreatLevel.MEDIUM,
+                            request=request,
+                            details=limit_details,
+                            action_taken="rate_limited",
+                        ),
+                    )
+
                     return self.security_error_handler.handle_security_error(
                         event_type=SecurityEventType.RATE_LIMIT_EXCEEDED,
                         request=request,
                         threat_level=SecurityThreatLevel.MEDIUM,
                         details=limit_details,
-                        response_action="rate_limit"
+                        response_action="rate_limit",
                     )
 
             # Validate request path
@@ -243,7 +248,7 @@ class SecurityMiddleware(BaseHTTPMiddleware):
                     SecurityEventType.PATH_TRAVERSAL,
                     SecurityThreatLevel.HIGH,
                     request,
-                    {"path": request.url.path, "reason": "Invalid path detected"}
+                    {"path": request.url.path, "reason": "Invalid path detected"},
                 )
 
             # Validate request headers
@@ -252,7 +257,10 @@ class SecurityMiddleware(BaseHTTPMiddleware):
                     SecurityEventType.SUSPICIOUS_ACTIVITY,
                     SecurityThreatLevel.MEDIUM,
                     request,
-                    {"headers": dict(request.headers), "reason": "Invalid headers detected"}
+                    {
+                        "headers": dict(request.headers),
+                        "reason": "Invalid headers detected",
+                    },
                 )
 
             # Get request body for validation
@@ -264,30 +272,32 @@ class SecurityMiddleware(BaseHTTPMiddleware):
                     SecurityEventType.SQL_INJECTION,  # Will be refined by threat detection
                     SecurityThreatLevel.HIGH,
                     request,
-                    {"body_sample": body[:200], "reason": "Malicious content detected"}
+                    {"body_sample": body[:200], "reason": "Malicious content detected"},
                 )
 
             # Process the request
             response = await call_next(request)
 
             # Record successful request
-            self.rate_limiter.get_client_profile(self._get_client_identifier(request)).add_request()
+            self.rate_limiter.get_client_profile(
+                self._get_client_identifier(request),
+            ).add_request()
 
             # Sanitize response headers
             return self._sanitize_response_headers(response)
 
         except Exception as e:
             logger.exception("Security middleware error")
-            
+
             # Record error
             self.rate_limiter.record_error(request, "security_middleware_error")
-            
+
             return self.security_error_handler.handle_security_error(
                 event_type=SecurityEventType.SUSPICIOUS_ACTIVITY,
                 request=request,
                 threat_level=SecurityThreatLevel.HIGH,
                 details={"error": str(e), "reason": "Internal security error"},
-                response_action="block"
+                response_action="block",
             )
 
     def _validate_path(self, path: str) -> bool:
@@ -312,7 +322,6 @@ class SecurityMiddleware(BaseHTTPMiddleware):
 
     def _validate_headers(self, headers: dict[str, str]) -> bool:
         """Validate request headers for security issues."""
-
         # Headers that should be excluded from SQL injection checks
         safe_headers = {
             "accept",
@@ -334,7 +343,7 @@ class SecurityMiddleware(BaseHTTPMiddleware):
 
             # Skip validation for user-agent header with legitimate tools
             if header_lower == "user-agent" and self._is_legitimate_user_agent(
-                header_value
+                header_value,
             ):
                 continue
 
@@ -415,7 +424,7 @@ class SecurityMiddleware(BaseHTTPMiddleware):
         for pattern in self.command_patterns[:10]:  # Only check most dangerous patterns
             if re.search(pattern, content, re.IGNORECASE):
                 logger.warning(
-                    "Command injection attempt in AI content: %s...", content[:100]
+                    "Command injection attempt in AI content: %s...", content[:100],
                 )
                 return False
 
@@ -498,24 +507,28 @@ class SecurityMiddleware(BaseHTTPMiddleware):
     ) -> JSONResponse:
         """Handle security violations with centralized error handling and analytics."""
         # Log security event
-        self.analytics.log_event(SecurityEvent(
-            event_type=event_type,
-            threat_level=threat_level,
-            request=request,
-            details=details,
-            action_taken="blocked"
-        ))
-        
+        self.analytics.log_event(
+            SecurityEvent(
+                event_type=event_type,
+                threat_level=threat_level,
+                request=request,
+                details=details,
+                action_taken="blocked",
+            ),
+        )
+
         # Record security violation in rate limiter
-        self.rate_limiter.record_security_violation(request, threat_level, event_type.value)
-        
+        self.rate_limiter.record_security_violation(
+            request, threat_level, event_type.value,
+        )
+
         # Use centralized security error handler
         return self.security_error_handler.handle_security_error(
             event_type=event_type,
             request=request,
             threat_level=threat_level,
             details=details,
-            response_action="block"
+            response_action="block",
         )
 
     def _get_client_identifier(self, request: Request) -> str:
@@ -526,11 +539,11 @@ class SecurityMiddleware(BaseHTTPMiddleware):
             client_ip = forwarded_for.split(",")[0].strip()
         else:
             client_ip = request.client.host if request.client else "unknown"
-        
+
         # Add user agent hash for additional uniqueness
         user_agent = request.headers.get("User-Agent", "")
         user_agent_hash = str(hash(user_agent))[:8]
-        
+
         return f"{client_ip}:{user_agent_hash}"
 
     def _security_error(self, message: str, status_code: int) -> JSONResponse:

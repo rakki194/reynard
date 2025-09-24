@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Test complete tool execution workflow with Ollama.
+"""Test complete tool execution workflow with Ollama.
 
 This test demonstrates the full tool calling workflow:
 1. Model makes tool call
@@ -99,12 +98,12 @@ async def test_complete_tool_execution_workflow() -> dict[str, Any]:
                             "input_num": {
                                 "type": "number",
                                 "description": "The number to be squared",
-                            }
+                            },
                         },
                         "required": ["input_num"],
                     },
                 },
-            }
+            },
         ]
 
         payload = {
@@ -116,7 +115,7 @@ async def test_complete_tool_execution_workflow() -> dict[str, Any]:
         }
 
         async with session.post(
-            "http://localhost:8000/api/ollama/chat", json=payload
+            "http://localhost:8000/api/ollama/chat", json=payload,
         ) as response:
             if response.status == 200:
                 data = await response.json()
@@ -159,7 +158,7 @@ async def test_complete_tool_execution_workflow() -> dict[str, Any]:
                     }
 
                     async with session.post(
-                        "http://localhost:8000/api/ollama/chat", json=follow_up_payload
+                        "http://localhost:8000/api/ollama/chat", json=follow_up_payload,
                     ) as follow_up_response:
                         if follow_up_response.status == 200:
                             follow_up_data = await follow_up_response.json()
@@ -173,7 +172,7 @@ async def test_complete_tool_execution_workflow() -> dict[str, Any]:
                             print("\n🎯 Final Answer:")
                             print("-" * 20)
                             formatted_final = format_response_with_thinking(
-                                final_response
+                                final_response,
                             )
                             print(formatted_final)
                             print("-" * 20)
@@ -220,7 +219,7 @@ async def test_assistant_complete_workflow() -> dict[str, Any]:
         }
 
         async with session.post(
-            "http://localhost:8000/api/ollama/assistant", json=payload
+            "http://localhost:8000/api/ollama/assistant", json=payload,
         ) as response:
             if response.status == 200:
                 data = await response.json()
@@ -284,7 +283,7 @@ async def test_assistant_complete_workflow() -> dict[str, Any]:
                             print("\n🎯 Final Assistant Answer:")
                             print("-" * 20)
                             formatted_final = format_response_with_thinking(
-                                final_response
+                                final_response,
                             )
                             print(formatted_final)
                             print("-" * 20)

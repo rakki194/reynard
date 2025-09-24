@@ -1,5 +1,4 @@
-"""
-Services module for Reynard Basic Backend
+"""Services module for Reynard Basic Backend
 Contains all service classes for database, cache, and background operations
 """
 

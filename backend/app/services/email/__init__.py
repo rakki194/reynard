@@ -1,5 +1,4 @@
-"""
-Email services package.
+"""Email services package.
 
 This package contains all email-related services organized by functionality:
 - core: Basic email functionality (SMTP, IMAP, multi-account)
@@ -14,12 +13,12 @@ from .core import email_service, imap_service, multi_account_service
 from .integration import calendar_integration_service, email_encryption_service
 
 __all__ = [
+    "agent_email_service",
+    "ai_email_response_service",
+    "calendar_integration_service",
+    "email_analytics_service",
+    "email_encryption_service",
     "email_service",
     "imap_service",
     "multi_account_service",
-    "agent_email_service",
-    "ai_email_response_service",
-    "email_analytics_service",
-    "calendar_integration_service",
-    "email_encryption_service",
 ]

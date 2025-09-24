@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Code Analysis Service
+"""Code Analysis Service
 
 Advanced code analysis using tree-sitter for prompt refinement.
 Replaces the pseudo-code code analysis functions with actual implementations.
@@ -13,7 +12,7 @@ import logging
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 # Optional imports with fallbacks
 try:
@@ -36,22 +35,21 @@ class CodeAnalysisResult:
 
     file_path: str
     language: str
-    functions: List[Dict[str, Any]]
-    classes: List[Dict[str, Any]]
-    imports: List[str]
+    functions: list[dict[str, Any]]
+    classes: list[dict[str, Any]]
+    imports: list[str]
     complexity_score: float
-    patterns: List[str]
+    patterns: list[str]
     analysis_time: float
 
 
 class CodeAnalysisService:
-    """
-    Advanced code analysis service using tree-sitter.
+    """Advanced code analysis service using tree-sitter.
 
     Provides comprehensive code analysis for prompt refinement.
     """
 
-    def __init__(self, config: Optional[Dict[str, Any]] = None):
+    def __init__(self, config: dict[str, Any] | None = None):
         """Initialize the code analysis service."""
         self.config = config or {}
 
@@ -65,8 +63,8 @@ class CodeAnalysisService:
         }
 
         # Initialize components
-        self.parsers: Dict[str, Any] = {}
-        self.languages: Dict[str, Any] = {}
+        self.parsers: dict[str, Any] = {}
+        self.languages: dict[str, Any] = {}
 
         self._initialized = False
 
@@ -81,14 +79,14 @@ class CodeAnalysisService:
                         # For now, we'll use fallback parsing
                         self.parsers[lang_name] = None
                         logger.info(
-                            f"Tree-sitter parser for {lang_name} would be initialized"
+                            f"Tree-sitter parser for {lang_name} would be initialized",
                         )
                     except Exception as e:
                         logger.warning(f"Failed to load {lang_name} parser: {e}")
                         self.parsers[lang_name] = None
             else:
                 logger.warning(
-                    "Tree-sitter not available, using fallback code analysis"
+                    "Tree-sitter not available, using fallback code analysis",
                 )
 
             self._initialized = True
@@ -100,10 +98,9 @@ class CodeAnalysisService:
             return False
 
     async def analyze_codebase_relevance(
-        self, query: str, research_findings: Dict[str, Any]
-    ) -> Dict[str, Any]:
-        """
-        Analyze codebase relevance for a query.
+        self, query: str, research_findings: dict[str, Any],
+    ) -> dict[str, Any]:
+        """Analyze codebase relevance for a query.
 
         Replaces the pseudo-code analyze_codebase_relevance() function.
         """
@@ -124,12 +121,12 @@ class CodeAnalysisService:
 
             # Identify architectural context needs
             architectural_context = self._identify_architectural_context(
-                query, code_concepts
+                query, code_concepts,
             )
 
             # Assess dependency awareness
             dependency_awareness = self._assess_dependency_awareness(
-                query, code_concepts
+                query, code_concepts,
             )
 
             # Evaluate coding standard alignment
@@ -149,7 +146,7 @@ class CodeAnalysisService:
             logger.error(f"Codebase relevance analysis failed: {e}")
             return {"relevant": False, "error": str(e)}
 
-    def _extract_code_concepts(self, query: str) -> List[str]:
+    def _extract_code_concepts(self, query: str) -> list[str]:
         """Extract code-related concepts from query."""
         code_indicators = [
             "function",
@@ -200,8 +197,8 @@ class CodeAnalysisService:
         return concepts
 
     def _identify_terminology_gaps(
-        self, query: str, research_findings: Dict[str, Any]
-    ) -> List[str]:
+        self, query: str, research_findings: dict[str, Any],
+    ) -> list[str]:
         """Identify terminology gaps in the query."""
         gaps = []
 
@@ -225,7 +222,7 @@ class CodeAnalysisService:
 
         return gaps
 
-    def _analyze_pattern_alignment(self, query: str, code_concepts: List[str]) -> str:
+    def _analyze_pattern_alignment(self, query: str, code_concepts: list[str]) -> str:
         """Analyze pattern alignment with common coding patterns."""
         alignment_score = 0.5
 
@@ -251,13 +248,12 @@ class CodeAnalysisService:
 
         if alignment_score > 0.7:
             return "high"
-        elif alignment_score > 0.5:
+        if alignment_score > 0.5:
             return "moderate"
-        else:
-            return "low"
+        return "low"
 
     def _identify_architectural_context(
-        self, query: str, code_concepts: List[str]
+        self, query: str, code_concepts: list[str],
     ) -> str:
         """Identify architectural context needs."""
         query_lower = query.lower()
@@ -286,7 +282,7 @@ class CodeAnalysisService:
 
         return "basic"
 
-    def _assess_dependency_awareness(self, query: str, code_concepts: List[str]) -> str:
+    def _assess_dependency_awareness(self, query: str, code_concepts: list[str]) -> str:
         """Assess dependency awareness in the query."""
         query_lower = query.lower()
 
@@ -346,8 +342,7 @@ class CodeAnalysisService:
         return "basic"
 
     async def analyze_file(self, file_path: str) -> CodeAnalysisResult:
-        """
-        Analyze a single code file.
+        """Analyze a single code file.
 
         Provides comprehensive analysis of code structure and patterns.
         """
@@ -362,7 +357,7 @@ class CodeAnalysisService:
             language = self._detect_language(file_path)
 
             # Read file content
-            with open(file_path, "r", encoding="utf-8") as f:
+            with open(file_path, encoding="utf-8") as f:
                 content = f.read()
 
             # Analyze code structure
@@ -372,7 +367,7 @@ class CodeAnalysisService:
 
             # Calculate complexity score
             complexity_score = self._calculate_complexity_score(
-                content, functions, classes
+                content, functions, classes,
             )
 
             # Identify patterns
@@ -415,7 +410,7 @@ class CodeAnalysisService:
 
         return "unknown"
 
-    def _extract_functions(self, content: str, language: str) -> List[Dict[str, Any]]:
+    def _extract_functions(self, content: str, language: str) -> list[dict[str, Any]]:
         """Extract function definitions from code."""
         functions = []
 
@@ -429,7 +424,7 @@ class CodeAnalysisService:
                         "name": match.group(1),
                         "line": content[: match.start()].count("\n") + 1,
                         "type": "function",
-                    }
+                    },
                 )
 
         elif language in ["typescript", "javascript"]:
@@ -448,12 +443,12 @@ class CodeAnalysisService:
                             "name": match.group(1),
                             "line": content[: match.start()].count("\n") + 1,
                             "type": "function",
-                        }
+                        },
                     )
 
         return functions
 
-    def _extract_classes(self, content: str, language: str) -> List[Dict[str, Any]]:
+    def _extract_classes(self, content: str, language: str) -> list[dict[str, Any]]:
         """Extract class definitions from code."""
         classes = []
 
@@ -467,7 +462,7 @@ class CodeAnalysisService:
                         "name": match.group(1),
                         "line": content[: match.start()].count("\n") + 1,
                         "type": "class",
-                    }
+                    },
                 )
 
         elif language in ["typescript", "javascript"]:
@@ -480,12 +475,12 @@ class CodeAnalysisService:
                         "name": match.group(1),
                         "line": content[: match.start()].count("\n") + 1,
                         "type": "class",
-                    }
+                    },
                 )
 
         return classes
 
-    def _extract_imports(self, content: str, language: str) -> List[str]:
+    def _extract_imports(self, content: str, language: str) -> list[str]:
         """Extract import statements from code."""
         imports = []
 
@@ -515,8 +510,8 @@ class CodeAnalysisService:
     def _calculate_complexity_score(
         self,
         content: str,
-        functions: List[Dict[str, Any]],
-        classes: List[Dict[str, Any]],
+        functions: list[dict[str, Any]],
+        classes: list[dict[str, Any]],
     ) -> float:
         """Calculate code complexity score."""
         score = 0.0
@@ -553,7 +548,7 @@ class CodeAnalysisService:
 
         return min(1.0, score)
 
-    def _identify_patterns(self, content: str, language: str) -> List[str]:
+    def _identify_patterns(self, content: str, language: str) -> list[str]:
         """Identify common design patterns in code."""
         patterns = []
         content_lower = content.lower()

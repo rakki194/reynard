@@ -8,9 +8,8 @@ Now uses the new @register_tool decorator system for automatic registration.
 """
 
 import logging
-from typing import Any, Dict
+from typing import Any
 
-from config.tool_config import ToolConfigManager
 from protocol.tool_registry import get_tool_registry, register_tool
 
 logger = logging.getLogger(__name__)
@@ -96,20 +95,20 @@ def get_tool_status(**kwargs) -> dict[str, Any]:
                 name for name in all_tools if not registry.is_tool_enabled(name)
             ]
 
-            status_text = f"📊 All Tools Status:\n\n"
+            status_text = "📊 All Tools Status:\n\n"
             status_text += f"Total Tools: {len(all_tools)}\n"
             status_text += f"Enabled: {len(enabled_tools)}\n"
             status_text += f"Disabled: {len(disabled_tools)}\n\n"
 
             if enabled_tools:
                 status_text += (
-                    f"✅ Enabled Tools:\n"
+                    "✅ Enabled Tools:\n"
                     + "\n".join(f"• {name}" for name in enabled_tools)
                     + "\n\n"
                 )
 
             if disabled_tools:
-                status_text += f"❌ Disabled Tools:\n" + "\n".join(
+                status_text += "❌ Disabled Tools:\n" + "\n".join(
                     f"• {name}" for name in disabled_tools
                 )
 

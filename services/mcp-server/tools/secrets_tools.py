@@ -113,7 +113,7 @@ def list_secrets(**kwargs) -> dict[str, Any]:
         "content": [
             {
                 "type": "text",
-                "text": f"Available Secrets:\n\n" + "\n\n".join(secrets_list),
+                "text": "Available Secrets:\n\n" + "\n\n".join(secrets_list),
             }
         ]
     }

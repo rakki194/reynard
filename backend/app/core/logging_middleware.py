@@ -1,5 +1,4 @@
-"""
-Logging Middleware for Reynard Backend Services
+"""Logging Middleware for Reynard Backend Services
 
 This module provides middleware for request tracking, logging,
 and monitoring across all services.
@@ -21,8 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 class RequestLoggingMiddleware(BaseHTTPMiddleware):
-    """
-    Middleware for logging HTTP requests and responses.
+    """Middleware for logging HTTP requests and responses.
     """
 
     def __init__(self, app: ASGIApp, service_name: str = "reynard"):
@@ -31,8 +29,7 @@ class RequestLoggingMiddleware(BaseHTTPMiddleware):
         self.service_logger = get_service_logger(service_name)
 
     async def dispatch(self, request: Request, call_next: Callable) -> Response:
-        """
-        Process request and response with logging.
+        """Process request and response with logging.
 
         Args:
             request: The incoming request
@@ -40,6 +37,7 @@ class RequestLoggingMiddleware(BaseHTTPMiddleware):
 
         Returns:
             Response: The response to send back
+
         """
         # Generate request ID
         request_id = str(uuid.uuid4())
@@ -94,7 +92,7 @@ class RequestLoggingMiddleware(BaseHTTPMiddleware):
         self.service_logger.info("Request received", extra=log_data)
 
     def _log_response(
-        self, request: Request, response: Response, request_id: str, process_time: float
+        self, request: Request, response: Response, request_id: str, process_time: float,
     ) -> None:
         """Log response details."""
         log_data = {
@@ -110,17 +108,17 @@ class RequestLoggingMiddleware(BaseHTTPMiddleware):
         # Log at appropriate level based on status code
         if response.status_code >= 500:
             self.service_logger.error(
-                "Request completed with server error", extra=log_data
+                "Request completed with server error", extra=log_data,
             )
         elif response.status_code >= 400:
             self.service_logger.warning(
-                "Request completed with client error", extra=log_data
+                "Request completed with client error", extra=log_data,
             )
         else:
             self.service_logger.info("Request completed successfully", extra=log_data)
 
     def _log_error(
-        self, request: Request, error: Exception, request_id: str, process_time: float
+        self, request: Request, error: Exception, request_id: str, process_time: float,
     ) -> None:
         """Log error details."""
         log_data = {
@@ -133,13 +131,12 @@ class RequestLoggingMiddleware(BaseHTTPMiddleware):
         }
 
         self.service_logger.error(
-            "Request failed with exception", extra=log_data, exc_info=True
+            "Request failed with exception", extra=log_data, exc_info=True,
         )
 
 
 class PerformanceLoggingMiddleware(BaseHTTPMiddleware):
-    """
-    Middleware for performance monitoring and logging.
+    """Middleware for performance monitoring and logging.
     """
 
     def __init__(self, app: ASGIApp, service_name: str = "reynard"):
@@ -155,8 +152,7 @@ class PerformanceLoggingMiddleware(BaseHTTPMiddleware):
         }
 
     async def dispatch(self, request: Request, call_next: Callable) -> Response:
-        """
-        Process request with performance monitoring.
+        """Process request with performance monitoring.
 
         Args:
             request: The incoming request
@@ -164,6 +160,7 @@ class PerformanceLoggingMiddleware(BaseHTTPMiddleware):
 
         Returns:
             Response: The response to send back
+
         """
         start_time = time.time()
 
@@ -227,8 +224,7 @@ class PerformanceLoggingMiddleware(BaseHTTPMiddleware):
 
 
 class SecurityLoggingMiddleware(BaseHTTPMiddleware):
-    """
-    Middleware for security event logging.
+    """Middleware for security event logging.
     """
 
     def __init__(self, app: ASGIApp, service_name: str = "reynard"):
@@ -237,8 +233,7 @@ class SecurityLoggingMiddleware(BaseHTTPMiddleware):
         self.service_logger = get_service_logger(service_name)
 
     async def dispatch(self, request: Request, call_next: Callable) -> Response:
-        """
-        Process request with security monitoring.
+        """Process request with security monitoring.
 
         Args:
             request: The incoming request
@@ -246,6 +241,7 @@ class SecurityLoggingMiddleware(BaseHTTPMiddleware):
 
         Returns:
             Response: The response to send back
+
         """
         # Check for suspicious patterns
         self._check_suspicious_patterns(request)
@@ -341,17 +337,17 @@ class SecurityLoggingMiddleware(BaseHTTPMiddleware):
         }
 
         self.service_logger.error(
-            "Security exception occurred", extra=log_data, exc_info=True
+            "Security exception occurred", extra=log_data, exc_info=True,
         )
 
 
 def setup_logging_middleware(app: ASGIApp, service_name: str = "reynard") -> None:
-    """
-    Setup all logging middleware for the application.
+    """Setup all logging middleware for the application.
 
     Args:
         app: FastAPI application instance
         service_name: Name of the service
+
     """
     # Add request logging middleware
     app.add_middleware(RequestLoggingMiddleware, service_name=service_name)

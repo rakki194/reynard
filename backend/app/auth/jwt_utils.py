@@ -1,5 +1,4 @@
-"""
-JWT token utilities for Reynard Backend.
+"""JWT token utilities for Reynard Backend.
 
 This module provides JWT token creation, verification, and management functionality
 using the Gatekeeper library.
@@ -15,10 +14,9 @@ from gatekeeper.api.dependencies import get_auth_manager  # type: ignore[import-
 
 
 async def create_access_token(
-    data: dict[str, Any], expires_delta: timedelta | None = None
+    data: dict[str, Any], expires_delta: timedelta | None = None,
 ) -> str:
-    """
-    Create a JWT access token.
+    """Create a JWT access token.
 
     Args:
         data: The data to encode into the token
@@ -26,6 +24,7 @@ async def create_access_token(
 
     Returns:
         str: The encoded JWT access token
+
     """
     auth_manager = await get_auth_manager()
     # Gatekeeper returns Any, but we know it's a string
@@ -34,10 +33,9 @@ async def create_access_token(
 
 
 async def create_refresh_token(
-    data: dict[str, Any], expires_delta: timedelta | None = None
+    data: dict[str, Any], expires_delta: timedelta | None = None,
 ) -> str:
-    """
-    Create a JWT refresh token.
+    """Create a JWT refresh token.
 
     Args:
         data: The data to encode into the token
@@ -45,6 +43,7 @@ async def create_refresh_token(
 
     Returns:
         str: The encoded JWT refresh token
+
     """
     auth_manager = await get_auth_manager()
     # Gatekeeper returns Any, but we know it's a string
@@ -53,8 +52,7 @@ async def create_refresh_token(
 
 
 async def verify_token(token: str, kind: str = "access") -> dict[str, Any] | None:
-    """
-    Verify and decode a JWT token.
+    """Verify and decode a JWT token.
 
     Args:
         token: The JWT token to verify
@@ -62,6 +60,7 @@ async def verify_token(token: str, kind: str = "access") -> dict[str, Any] | Non
 
     Returns:
         Optional[Dict[str, Any]]: Token payload if valid, None otherwise
+
     """
     auth_manager = await get_auth_manager()
     result = auth_manager.token_manager.verify_token(token, kind)
@@ -74,10 +73,9 @@ async def verify_token(token: str, kind: str = "access") -> dict[str, Any] | Non
 
 # Synchronous wrappers for backward compatibility with tests
 def create_access_token_sync(
-    data: dict[str, Any], expires_delta: timedelta | None = None
+    data: dict[str, Any], expires_delta: timedelta | None = None,
 ) -> str:
-    """
-    Synchronous wrapper for create_access_token.
+    """Synchronous wrapper for create_access_token.
 
     This is a simplified version that creates tokens directly using the token manager
     for testing purposes.
@@ -142,10 +140,9 @@ def create_access_token_sync(
 
 
 def create_refresh_token_sync(
-    data: dict[str, Any], expires_delta: timedelta | None = None
+    data: dict[str, Any], expires_delta: timedelta | None = None,
 ) -> str:
-    """
-    Synchronous wrapper for create_refresh_token.
+    """Synchronous wrapper for create_refresh_token.
 
     This is a simplified version that creates tokens directly using the token manager
     for testing purposes.
@@ -208,8 +205,7 @@ def create_refresh_token_sync(
 
 
 def verify_token_sync(token: str, kind: str = "access") -> dict[str, Any] | None:
-    """
-    Synchronous wrapper for verify_token.
+    """Synchronous wrapper for verify_token.
 
     This is a simplified version that verifies tokens directly using the token manager
     for testing purposes.
@@ -253,10 +249,9 @@ def verify_token_sync(token: str, kind: str = "access") -> dict[str, Any] | None
 
 # itsdangerous-based token functions (recommended for new code)
 async def create_secure_token(
-    data: dict[str, Any], expires_delta: timedelta | None = None
+    data: dict[str, Any], expires_delta: timedelta | None = None,
 ) -> str:
-    """
-    Create a secure token using itsdangerous (recommended approach).
+    """Create a secure token using itsdangerous (recommended approach).
 
     Args:
         data: The data to encode into the token
@@ -264,6 +259,7 @@ async def create_secure_token(
 
     Returns:
         str: The encoded secure token
+
     """
     config = get_session_security_config()
     if not config.use_itsdangerous_for_tokens:
@@ -280,14 +276,14 @@ async def create_secure_token(
 
 
 async def verify_secure_token(token: str) -> dict[str, Any] | None:
-    """
-    Verify a secure token created with itsdangerous.
+    """Verify a secure token created with itsdangerous.
 
     Args:
         token: The token to verify
 
     Returns:
         Optional[Dict[str, Any]]: Token payload if valid, None otherwise
+
     """
     config = get_session_security_config()
     if not config.use_itsdangerous_for_tokens:
@@ -302,10 +298,9 @@ async def verify_secure_token(token: str) -> dict[str, Any] | None:
 
 
 def create_secure_token_sync(
-    data: dict[str, Any], expires_delta: timedelta | None = None
+    data: dict[str, Any], expires_delta: timedelta | None = None,
 ) -> str:
-    """
-    Synchronous version of create_secure_token.
+    """Synchronous version of create_secure_token.
 
     Args:
         data: The data to encode into the token
@@ -313,6 +308,7 @@ def create_secure_token_sync(
 
     Returns:
         str: The encoded secure token
+
     """
     config = get_session_security_config()
     if not config.use_itsdangerous_for_tokens:
@@ -329,14 +325,14 @@ def create_secure_token_sync(
 
 
 def verify_secure_token_sync(token: str) -> dict[str, Any] | None:
-    """
-    Synchronous version of verify_secure_token.
+    """Synchronous version of verify_secure_token.
 
     Args:
         token: The token to verify
 
     Returns:
         Optional[Dict[str, Any]]: Token payload if valid, None otherwise
+
     """
     config = get_session_security_config()
     if not config.use_itsdangerous_for_tokens:

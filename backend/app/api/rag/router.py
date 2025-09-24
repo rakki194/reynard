@@ -1,5 +1,4 @@
-"""
-RAG API Router for Reynard Backend
+"""RAG API Router for Reynard Backend
 
 Main router that combines all RAG-related endpoints.
 """

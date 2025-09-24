@@ -1,5 +1,4 @@
-"""
-Authentication module for Reynard Backend.
+"""Authentication module for Reynard Backend.
 
 This module provides authentication functionality using the Gatekeeper library.
 It wraps the Gatekeeper functionality to provide a consistent interface

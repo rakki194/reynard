@@ -1,5 +1,4 @@
-"""
-Scraping Router for Reynard Backend
+"""Scraping Router for Reynard Backend
 
 Routes scraping requests to appropriate scrapers based on URL patterns.
 """
@@ -14,8 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 class ScrapingRouter:
-    """
-    Routes scraping requests to appropriate scrapers.
+    """Routes scraping requests to appropriate scrapers.
 
     Maintains a registry of scrapers and routes requests based on
     URL patterns and scraper capabilities.
@@ -63,10 +61,9 @@ class ScrapingRouter:
             return False
 
     async def register_scraper(
-        self, scraper_type: ScrapingType, scraper: BaseScraper
+        self, scraper_type: ScrapingType, scraper: BaseScraper,
     ) -> bool:
-        """
-        Register a scraper.
+        """Register a scraper.
 
         Args:
             scraper_type: Type of scraper
@@ -74,6 +71,7 @@ class ScrapingRouter:
 
         Returns:
             True if registration successful
+
         """
         try:
             # Initialize the scraper
@@ -90,14 +88,14 @@ class ScrapingRouter:
             return False
 
     async def unregister_scraper(self, scraper_type: ScrapingType) -> bool:
-        """
-        Unregister a scraper.
+        """Unregister a scraper.
 
         Args:
             scraper_type: Type of scraper to unregister
 
         Returns:
             True if unregistration successful
+
         """
         try:
             if scraper_type in self.scrapers:
@@ -114,26 +112,26 @@ class ScrapingRouter:
             return False
 
     async def get_scraper(self, scraper_type: ScrapingType) -> BaseScraper | None:
-        """
-        Get a scraper by type.
+        """Get a scraper by type.
 
         Args:
             scraper_type: Type of scraper
 
         Returns:
             Scraper instance if found
+
         """
         return self.scrapers.get(scraper_type)
 
     async def find_scraper_for_url(self, url: str) -> BaseScraper | None:
-        """
-        Find the best scraper for a URL.
+        """Find the best scraper for a URL.
 
         Args:
             url: URL to find scraper for
 
         Returns:
             Best scraper for the URL
+
         """
         try:
             # First, try to match URL patterns
@@ -169,7 +167,7 @@ class ScrapingRouter:
                     "name": scraper.name,
                     "enabled": scraper.enabled,
                     "info": scraper.get_info(),
-                }
+                },
             )
         return scrapers
 

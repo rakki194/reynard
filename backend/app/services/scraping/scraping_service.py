@@ -1,5 +1,4 @@
-"""
-Scraping Service for Reynard Backend
+"""Scraping Service for Reynard Backend
 
 Main service that orchestrates scraping operations, content extraction,
 and quality assessment. Ported from Pawprint with enhanced integration.
@@ -35,8 +34,7 @@ logger = logging.getLogger(__name__)
 
 
 class ScrapingService:
-    """
-    Main scraping service that orchestrates all scraping operations.
+    """Main scraping service that orchestrates all scraping operations.
 
     This service provides a unified interface for content scraping,
     integrating with gallery-dl and providing specialized scrapers
@@ -44,11 +42,11 @@ class ScrapingService:
     """
 
     def __init__(self, configuration: dict[str, Any] | None = None):
-        """
-        Initialize the scraping service.
+        """Initialize the scraping service.
 
         Args:
             configuration: Service configuration dictionary
+
         """
         self.configuration = configuration or {}
         self.manager = ScrapingManager()
@@ -113,7 +111,7 @@ class ScrapingService:
                 logger.info("Gallery integration initialized")
             except ImportError:
                 logger.warning(
-                    "Gallery service not available, gallery integration disabled"
+                    "Gallery service not available, gallery integration disabled",
                 )
 
             # Register default scrapers
@@ -315,7 +313,7 @@ class ScrapingService:
                         "count": len(scores),
                         "average_quality": avg_quality,
                         "percentage": percentage,
-                    }
+                    },
                 )
 
             # Sort by count
@@ -419,7 +417,7 @@ class ScrapingService:
             for result_data in results:
                 # Assess quality
                 quality = await self.quality_scorer.assess_quality(
-                    result_data.get("content", ""), result_data.get("metadata", {})
+                    result_data.get("content", ""), result_data.get("metadata", {}),
                 )
 
                 # Create result
@@ -477,7 +475,7 @@ class ScrapingService:
             )
 
             logger.info(
-                f"Completed scraping job {job.id} with {len(processed_results)} results"
+                f"Completed scraping job {job.id} with {len(processed_results)} results",
             )
 
         except Exception as e:
@@ -494,7 +492,7 @@ class ScrapingService:
 
             # Emit event
             await self._emit_event(
-                ScrapingEventType.JOB_FAILED, job.id, {"error": str(e)}
+                ScrapingEventType.JOB_FAILED, job.id, {"error": str(e)},
             )
 
             logger.error(f"Failed scraping job {job.id}: {e}")
@@ -527,12 +525,12 @@ class ScrapingService:
         return ScrapingType.GENERAL
 
     async def _get_scraper_config(
-        self, scraping_type: ScrapingType, config_override: dict[str, Any] | None = None
+        self, scraping_type: ScrapingType, config_override: dict[str, Any] | None = None,
     ) -> ScrapingConfig | None:
         """Get scraper configuration for a type."""
         # TODO: Load from configuration store
         default_config = ScrapingConfig(
-            name=f"{scraping_type.value}_scraper", type=scraping_type, enabled=True
+            name=f"{scraping_type.value}_scraper", type=scraping_type, enabled=True,
         )
 
         if config_override:
@@ -568,7 +566,7 @@ class ScrapingService:
             logger.error(f"Error setting up health monitoring: {e}")
 
     async def _emit_event(
-        self, event_type: ScrapingEventType, job_id: UUID, data: dict[str, Any]
+        self, event_type: ScrapingEventType, job_id: UUID, data: dict[str, Any],
     ) -> None:
         """Emit a scraping event."""
         try:
@@ -617,7 +615,7 @@ class ScrapingService:
     # Gallery Integration Methods
 
     async def start_gallery_download(
-        self, url: str, config: dict[str, Any] | None = None
+        self, url: str, config: dict[str, Any] | None = None,
     ):
         """Start a gallery download job"""
         if not self.gallery_integration:
@@ -684,14 +682,14 @@ class ScrapingService:
     # Enhanced Extraction Methods
 
     async def extract_content_enhanced(self, url: str) -> ScrapingResult:
-        """
-        Extract content using the enhanced extractor with multi-tier fallback.
+        """Extract content using the enhanced extractor with multi-tier fallback.
 
         Args:
             url: URL to extract content from
 
         Returns:
             ScrapingResult with extracted and processed content
+
         """
         try:
             # Extract content using enhanced extractor
@@ -726,26 +724,26 @@ class ScrapingService:
         return methods
 
     async def test_extraction_methods(self, url: str) -> dict[str, ScrapingResult]:
-        """
-        Test all available extraction methods on a URL.
+        """Test all available extraction methods on a URL.
 
         Args:
             url: URL to test
 
         Returns:
             Dictionary mapping method names to results
+
         """
         return await self.enhanced_extractor.test_extraction_methods(url)
 
     async def get_best_extraction_method(self, url: str) -> str:
-        """
-        Determine the best extraction method for a URL.
+        """Determine the best extraction method for a URL.
 
         Args:
             url: URL to analyze
 
         Returns:
             Name of the best extraction method
+
         """
         return await self.enhanced_extractor.get_best_method(url)
 

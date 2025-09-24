@@ -1,5 +1,4 @@
-"""
-Security Headers Middleware
+"""Security Headers Middleware
 
 This module provides comprehensive security headers middleware
 for the FastAPI application.

@@ -1,5 +1,4 @@
-"""
-Integration tests for NLWeb with Ollama backend.
+"""Integration tests for NLWeb with Ollama backend.
 
 This module tests the complete integration between NLWeb and Ollama,
 including tool suggestions, LLM interactions, and streaming responses.
@@ -19,7 +18,7 @@ class TestNLWebOllamaIntegration:
 
     @pytest.mark.asyncio
     async def test_nlweb_suggest_with_ollama_context(
-        self, async_client: AsyncClient, access_token
+        self, async_client: AsyncClient, access_token,
     ):
         """Test NLWeb tool suggestion with Ollama context."""
         with (
@@ -71,7 +70,7 @@ class TestNLWebOllamaIntegration:
                             "message": "The user's question about weather",
                             "model": "qwen3:latest for general questions",
                         },
-                    }
+                    },
                 ],
                 "query": "What is the weather like?",
                 "processing_time_ms": 200.0,
@@ -121,7 +120,7 @@ class TestNLWebOllamaIntegration:
 
     @pytest.mark.asyncio
     async def test_nlweb_ask_with_ollama_streaming(
-        self, async_client: AsyncClient, access_token
+        self, async_client: AsyncClient, access_token,
     ):
         """Test NLWeb ask endpoint with Ollama streaming integration."""
         with (
@@ -223,7 +222,7 @@ class TestNLWebOllamaIntegration:
             # Mock the chat_stream method to return our response
             async def mock_chat_stream(params):
                 yield MagicMock(
-                    type="token", data="I can help", timestamp=1234567890, metadata={}
+                    type="token", data="I can help", timestamp=1234567890, metadata={},
                 )
                 yield MagicMock(
                     type="tool_call",
@@ -256,11 +255,11 @@ class TestNLWebOllamaIntegration:
                                 "path": {
                                     "type": "string",
                                     "description": "Directory path",
-                                }
+                                },
                             },
-                        }
+                        },
                     ],
-                )
+                ),
             )
             mock_ollama_service.return_value = mock_ollama
 
@@ -288,12 +287,12 @@ class TestNLWebOllamaIntegration:
                                     "path": {
                                         "type": "string",
                                         "description": "Directory path to list",
-                                    }
+                                    },
                                 },
                                 "required": ["path"],
                             },
                         },
-                    }
+                    },
                 ],
                 "context": {
                     "current_path": "/home/user/project",
@@ -315,7 +314,7 @@ class TestNLWebOllamaIntegration:
             assert data["processing_time"] == 1.5
 
     def test_ollama_assistant_with_nlweb_integration(
-        self, client: TestClient, access_token
+        self, client: TestClient, access_token,
     ):
         """Test Ollama assistant endpoint with NLWeb integration."""
         with (
@@ -341,7 +340,7 @@ class TestNLWebOllamaIntegration:
             # Mock the assistant_stream method
             async def mock_assistant_stream(params):
                 yield MagicMock(
-                    type="token", data="I'll help", timestamp=1234567890, metadata={}
+                    type="token", data="I'll help", timestamp=1234567890, metadata={},
                 )
                 yield MagicMock(
                     type="tool_call",
@@ -368,7 +367,7 @@ class TestNLWebOllamaIntegration:
                     assistant_type="reynard",
                     model="qwen3:latest",
                     tools_enabled=True,
-                )
+                ),
             )
             mock_ollama_service.return_value = mock_ollama
 
@@ -408,7 +407,7 @@ class TestNLWebOllamaIntegration:
 
     @pytest.mark.asyncio
     async def test_nlweb_verification_with_ollama_check(
-        self, async_client: AsyncClient, access_token
+        self, async_client: AsyncClient, access_token,
     ):
         """Test NLWeb verification with Ollama connectivity check."""
         with (
@@ -564,7 +563,7 @@ class TestNLWebOllamaIntegration:
             mock_ollama_service.return_value = mock_ollama
 
             response = client.get(
-                "/api/nlweb/stats", headers={"Authorization": f"Bearer {access_token}"}
+                "/api/nlweb/stats", headers={"Authorization": f"Bearer {access_token}"},
             )
 
             assert response.status_code == 200

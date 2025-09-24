@@ -1,9 +1,7 @@
-"""
-Report generation utilities for humility detection.
+"""Report generation utilities for humility detection.
 """
 
 import json
-from typing import Any, Dict, List
 
 from core.config import HumilityConfig
 from core.models import HumilityProfile
@@ -15,18 +13,17 @@ class ReportGenerator:
     def __init__(self, config: HumilityConfig):
         self.config = config
 
-    def generate_report(self, profiles: Dict[str, HumilityProfile]) -> str:
+    def generate_report(self, profiles: dict[str, HumilityProfile]) -> str:
         """Generate report in the configured format."""
         if self.config.output_format == "json":
             return self._generate_json_report(profiles)
-        elif self.config.output_format == "html":
+        if self.config.output_format == "html":
             return self._generate_html_report(profiles)
-        elif self.config.output_format == "csv":
+        if self.config.output_format == "csv":
             return self._generate_csv_report(profiles)
-        else:
-            return self._generate_text_report(profiles)
+        return self._generate_text_report(profiles)
 
-    def _generate_text_report(self, profiles: Dict[str, HumilityProfile]) -> str:
+    def _generate_text_report(self, profiles: dict[str, HumilityProfile]) -> str:
         """Generate human-readable text report."""
         report = []
         report.append("🦊 Enhanced Humility Detector Report")
@@ -42,7 +39,7 @@ class ReportGenerator:
             else 0
         )
 
-        report.append(f"Summary:")
+        report.append("Summary:")
         report.append(f"  Files analyzed: {total_files}")
         report.append(f"  Total findings: {total_findings}")
         report.append(f"  Average humility score: {avg_score:.1f}/100")
@@ -58,20 +55,20 @@ class ReportGenerator:
 
                 if self.config.include_metrics:
                     report.append(
-                        f"  HEXACO Honesty-Humility: {profile.hexaco_honesty_humility:.1f}"
+                        f"  HEXACO Honesty-Humility: {profile.hexaco_honesty_humility:.1f}",
                     )
                     report.append(
-                        f"  Epistemic Humility: {profile.epistemic_humility:.1f}"
+                        f"  Epistemic Humility: {profile.epistemic_humility:.1f}",
                     )
                     report.append(
-                        f"  Linguistic Humility: {profile.linguistic_humility:.1f}"
+                        f"  Linguistic Humility: {profile.linguistic_humility:.1f}",
                     )
 
                 if profile.findings:
                     report.append("  Findings:")
                     for finding in profile.findings[:10]:  # Limit to first 10
                         report.append(
-                            f"    Line {finding.line_number}: {finding.original_text} → {finding.suggested_replacement}"
+                            f"    Line {finding.line_number}: {finding.original_text} → {finding.suggested_replacement}",
                         )
                         if self.config.include_context:
                             report.append(f"      Context: ...{finding.context}...")
@@ -85,7 +82,7 @@ class ReportGenerator:
 
         return "\n".join(report)
 
-    def _generate_json_report(self, profiles: Dict[str, HumilityProfile]) -> str:
+    def _generate_json_report(self, profiles: dict[str, HumilityProfile]) -> str:
         """Generate JSON report."""
         report_data = {
             "summary": {
@@ -108,7 +105,7 @@ class ReportGenerator:
 
         return json.dumps(report_data, indent=2, ensure_ascii=False)
 
-    def _generate_html_report(self, profiles: Dict[str, HumilityProfile]) -> str:
+    def _generate_html_report(self, profiles: dict[str, HumilityProfile]) -> str:
         """Generate HTML report."""
         html = []
         html.append("<!DOCTYPE html>")
@@ -124,7 +121,7 @@ class ReportGenerator:
             else 0
         )
 
-        html.append(f"<h2>Summary</h2>")
+        html.append("<h2>Summary</h2>")
         html.append(f"<p>Files analyzed: {total_files}</p>")
         html.append(f"<p>Total findings: {total_findings}</p>")
         html.append(f"<p>Average humility score: {avg_score:.1f}/100</p>")
@@ -139,24 +136,24 @@ class ReportGenerator:
                 html.append("<ul>")
                 for finding in profile.findings:
                     html.append(
-                        f"<li>Line {finding.line_number}: {finding.original_text} → {finding.suggested_replacement}</li>"
+                        f"<li>Line {finding.line_number}: {finding.original_text} → {finding.suggested_replacement}</li>",
                     )
                 html.append("</ul>")
 
         html.append("</body></html>")
         return "\n".join(html)
 
-    def _generate_csv_report(self, profiles: Dict[str, HumilityProfile]) -> str:
+    def _generate_csv_report(self, profiles: dict[str, HumilityProfile]) -> str:
         """Generate CSV report."""
         csv = []
         csv.append(
-            "file_path,line_number,category,severity,original_text,suggested_replacement,overall_score"
+            "file_path,line_number,category,severity,original_text,suggested_replacement,overall_score",
         )
 
         for file_path, profile in profiles.items():
             for finding in profile.findings:
                 csv.append(
-                    f'"{file_path}",{finding.line_number},{finding.category.value},{finding.severity.value},"{finding.original_text}","{finding.suggested_replacement}",{profile.overall_score}'
+                    f'"{file_path}",{finding.line_number},{finding.category.value},{finding.severity.value},"{finding.original_text}","{finding.suggested_replacement}",{profile.overall_score}',
                 )
 
         return "\n".join(csv)

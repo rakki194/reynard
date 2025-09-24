@@ -1,5 +1,4 @@
-"""
-🦊 Reynard Backend Lifespan Management System
+"""🦊 Reynard Backend Lifespan Management System
 =============================================
 
 Sophisticated service lifecycle management system for the Reynard FastAPI backend,
@@ -79,12 +78,12 @@ logger = logging.getLogger(__name__)
 
 
 async def _setup_secure_routers(app: FastAPI, registry) -> None:
-    """
-    Set up secure routers after services are initialized.
+    """Set up secure routers after services are initialized.
 
     Args:
         app: The FastAPI application instance
         registry: The service registry with initialized services
+
     """
     try:
         # Set up secure auth router
@@ -129,8 +128,7 @@ async def _setup_secure_routers(app: FastAPI, registry) -> None:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """
-    Sophisticated service lifecycle management with parallel initialization and dependency resolution.
+    """Sophisticated service lifecycle management with parallel initialization and dependency resolution.
 
     This context manager orchestrates the complete lifecycle of all backend services within
     the Reynard ecosystem, implementing enterprise-grade lifecycle management with priority-based
@@ -169,6 +167,7 @@ async def lifespan(app: FastAPI):
 
     Raises:
         RuntimeError: If critical service initialization fails and prevents application startup.
+
     """
     config = get_config()
     service_configs = get_service_configs()
@@ -299,7 +298,7 @@ async def lifespan(app: FastAPI):
             await registry.shutdown_all(timeout=config.shutdown_timeout)
             shutdown_time = time.time() - shutdown_start
             logger.info(
-                f"✅ All services shutdown successfully in {shutdown_time:.2f}s"
+                f"✅ All services shutdown successfully in {shutdown_time:.2f}s",
             )
         except Exception as e:
             logger.error(f"❌ Service shutdown failed: {e}")

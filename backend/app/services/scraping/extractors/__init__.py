@@ -1,5 +1,4 @@
-"""
-Scraping Extractors for Reynard Backend
+"""Scraping Extractors for Reynard Backend
 
 Base classes and implementations for content extraction from various sources.
 """

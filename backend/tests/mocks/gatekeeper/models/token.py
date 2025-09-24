@@ -1,5 +1,4 @@
-"""
-Mock token models.
+"""Mock token models.
 """
 
 from ..main import MockTokenResponse, TokenConfig, TokenData, TokenValidationResult

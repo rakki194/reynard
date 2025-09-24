@@ -1,12 +1,11 @@
-"""
-Continuous Indexing Configuration
+"""Continuous Indexing Configuration
 
 Configuration management for the continuous indexing system.
 """
 
 import os
 from pathlib import Path
-from typing import Any, Dict, List, Set
+from typing import Any
 
 
 class ContinuousIndexingConfig:
@@ -16,20 +15,20 @@ class ContinuousIndexingConfig:
         # Core settings
         self.enabled = self._get_bool_env("RAG_CONTINUOUS_INDEXING_ENABLED", True)
         self.watch_root = self._get_env(
-            "RAG_CONTINUOUS_INDEXING_WATCH_ROOT", "/home/kade/runeset/reynard"
+            "RAG_CONTINUOUS_INDEXING_WATCH_ROOT", "/home/kade/runeset/reynard",
         )
         self.auto_start = self._get_bool_env("RAG_CONTINUOUS_INDEXING_AUTO_START", True)
 
         # Performance settings
         self.debounce_seconds = self._get_float_env(
-            "RAG_CONTINUOUS_INDEXING_DEBOUNCE_SECONDS", 2.0
+            "RAG_CONTINUOUS_INDEXING_DEBOUNCE_SECONDS", 2.0,
         )
         self.batch_size = self._get_int_env("RAG_CONTINUOUS_INDEXING_BATCH_SIZE", 25)
         self.max_queue_size = self._get_int_env(
-            "RAG_CONTINUOUS_INDEXING_MAX_QUEUE_SIZE", 1000
+            "RAG_CONTINUOUS_INDEXING_MAX_QUEUE_SIZE", 1000,
         )
         self.stats_interval_minutes = self._get_int_env(
-            "RAG_CONTINUOUS_INDEXING_STATS_INTERVAL_MINUTES", 5
+            "RAG_CONTINUOUS_INDEXING_STATS_INTERVAL_MINUTES", 5,
         )
 
         # File filtering
@@ -114,7 +113,7 @@ class ContinuousIndexingConfig:
 
         # File size limits
         self.max_file_size_mb = self._get_int_env(
-            "RAG_CONTINUOUS_INDEXING_MAX_FILE_SIZE_MB", 2
+            "RAG_CONTINUOUS_INDEXING_MAX_FILE_SIZE_MB", 2,
         )
         self.max_file_size_bytes = self.max_file_size_mb * 1024 * 1024
 
@@ -141,14 +140,14 @@ class ContinuousIndexingConfig:
         except ValueError:
             return default
 
-    def _get_list_env(self, key: str, default: List[str]) -> List[str]:
+    def _get_list_env(self, key: str, default: list[str]) -> list[str]:
         """Get list environment variable (comma-separated)."""
         value = os.getenv(key)
         if value:
             return [item.strip() for item in value.split(",") if item.strip()]
         return default
 
-    def _get_set_env(self, key: str, default: Set[str]) -> Set[str]:
+    def _get_set_env(self, key: str, default: set[str]) -> set[str]:
         """Get set environment variable (comma-separated)."""
         value = os.getenv(key)
         if value:
@@ -196,7 +195,7 @@ class ContinuousIndexingConfig:
         """Get the watch root as a Path object."""
         return Path(self.watch_root)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert configuration to dictionary."""
         return {
             "enabled": self.enabled,
@@ -212,7 +211,7 @@ class ContinuousIndexingConfig:
             "max_file_size_mb": self.max_file_size_mb,
         }
 
-    def validate(self) -> List[str]:
+    def validate(self) -> list[str]:
         """Validate configuration and return any errors."""
         errors = []
 

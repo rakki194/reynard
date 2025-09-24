@@ -1,5 +1,4 @@
-"""
-Redis Cache Optimization for FastAPI ECS Search
+"""Redis Cache Optimization for FastAPI ECS Search
 
 This module provides comprehensive caching optimization including:
 - Redis connection pooling
@@ -11,19 +10,17 @@ This module provides comprehensive caching optimization including:
 
 import asyncio
 import gzip
-import hashlib
 import json
 import logging
 import pickle
 import time
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 from enum import Enum
-from typing import Any, Callable, Dict, List, Optional, Union
+from typing import Any
 
-import redis.asyncio as redis
 from redis.asyncio import ConnectionPool, Redis
-from redis.exceptions import ConnectionError, RedisError, TimeoutError
 
 logger = logging.getLogger(__name__)
 
@@ -64,7 +61,7 @@ class CacheKey:
 
     key: str
     namespace: str
-    ttl: Optional[int] = None
+    ttl: int | None = None
     strategy: CacheStrategy = CacheStrategy.TTL
     created_at: datetime = field(default_factory=datetime.now)
     access_count: int = 0
@@ -90,10 +87,8 @@ class CacheSerializer:
                 compressed = gzip.compress(serialized)
                 if len(compressed) < len(serialized):
                     return b"gzip:" + compressed
-                else:
-                    return b"json:" + serialized
-            else:
                 return b"json:" + serialized
+            return b"json:" + serialized
 
         except Exception as e:
             logger.error(f"Serialization failed: {e}")
@@ -107,16 +102,15 @@ class CacheSerializer:
             if data.startswith(b"gzip:"):
                 decompressed = gzip.decompress(data[5:])
                 return CacheSerializer.deserialize(decompressed)
-            elif data.startswith(b"json:"):
+            if data.startswith(b"json:"):
                 return json.loads(data[5:].decode("utf-8"))
-            elif data.startswith(b"pickle:"):
+            if data.startswith(b"pickle:"):
                 return pickle.loads(data[7:])
-            else:
-                # Try JSON first, then pickle
-                try:
-                    return json.loads(data.decode("utf-8"))
-                except:
-                    return pickle.loads(data)
+            # Try JSON first, then pickle
+            try:
+                return json.loads(data.decode("utf-8"))
+            except:
+                return pickle.loads(data)
         except Exception as e:
             logger.error(f"Deserialization failed: {e}")
             raise
@@ -154,22 +148,22 @@ class IntelligentCacheManager:
         )
 
         # Redis client
-        self.redis: Optional[Redis] = None
+        self.redis: Redis | None = None
 
         # Cache metadata
-        self.cache_keys: Dict[str, CacheKey] = {}
-        self.namespaces: Dict[str, Dict[str, Any]] = {}
+        self.cache_keys: dict[str, CacheKey] = {}
+        self.namespaces: dict[str, dict[str, Any]] = {}
 
         # Metrics
         self.metrics = CacheMetrics()
-        self.operation_times: List[float] = []
+        self.operation_times: list[float] = []
 
         # Cache strategies
-        self.strategies: Dict[str, CacheStrategy] = {}
+        self.strategies: dict[str, CacheStrategy] = {}
 
         # Background tasks
-        self.cleanup_task: Optional[asyncio.Task] = None
-        self.metrics_task: Optional[asyncio.Task] = None
+        self.cleanup_task: asyncio.Task | None = None
+        self.metrics_task: asyncio.Task | None = None
 
     async def initialize(self):
         """Initialize the cache manager."""
@@ -205,12 +199,12 @@ class IntelligentCacheManager:
         """Generate a namespaced cache key."""
         return f"{namespace}:{key}"
 
-    def _get_cache_key_metadata(self, full_key: str) -> Optional[CacheKey]:
+    def _get_cache_key_metadata(self, full_key: str) -> CacheKey | None:
         """Get cache key metadata."""
         return self.cache_keys.get(full_key)
 
     def _update_cache_key_metadata(
-        self, full_key: str, namespace: str, ttl: Optional[int] = None
+        self, full_key: str, namespace: str, ttl: int | None = None,
     ):
         """Update cache key metadata."""
         if full_key in self.cache_keys:
@@ -225,7 +219,7 @@ class IntelligentCacheManager:
             )
 
     async def get(
-        self, key: str, namespace: str = "default", default: Any = None
+        self, key: str, namespace: str = "default", default: Any = None,
     ) -> Any:
         """Get a value from cache."""
         if not self.redis:
@@ -258,7 +252,7 @@ class IntelligentCacheManager:
             operation_time = (time.time() - start_time) * 1000
             self.operation_times.append(operation_time)
             self.metrics.average_get_time_ms = sum(self.operation_times[-100:]) / min(
-                len(self.operation_times), 100
+                len(self.operation_times), 100,
             )
 
             return deserialized_value
@@ -274,8 +268,8 @@ class IntelligentCacheManager:
         key: str,
         value: Any,
         namespace: str = "default",
-        ttl: Optional[int] = None,
-        strategy: Optional[CacheStrategy] = None,
+        ttl: int | None = None,
+        strategy: CacheStrategy | None = None,
     ) -> bool:
         """Set a value in cache."""
         if not self.redis:
@@ -287,7 +281,7 @@ class IntelligentCacheManager:
         try:
             # Serialize value
             serialized_value = CacheSerializer.serialize(
-                value, compress=len(str(value)) > self.compression_threshold
+                value, compress=len(str(value)) > self.compression_threshold,
             )
 
             # Determine TTL
@@ -307,7 +301,7 @@ class IntelligentCacheManager:
             operation_time = (time.time() - start_time) * 1000
             self.operation_times.append(operation_time)
             self.metrics.average_set_time_ms = sum(self.operation_times[-100:]) / min(
-                len(self.operation_times), 100
+                len(self.operation_times), 100,
             )
 
             return True
@@ -382,7 +376,7 @@ class IntelligentCacheManager:
         key: str,
         factory: Callable[[], Any],
         namespace: str = "default",
-        ttl: Optional[int] = None,
+        ttl: int | None = None,
     ) -> Any:
         """Get value from cache or set it using factory function."""
         # Try to get from cache first
@@ -408,8 +402,8 @@ class IntelligentCacheManager:
             raise
 
     async def batch_get(
-        self, keys: List[str], namespace: str = "default"
-    ) -> Dict[str, Any]:
+        self, keys: list[str], namespace: str = "default",
+    ) -> dict[str, Any]:
         """Get multiple values from cache in batch."""
         if not self.redis or not keys:
             return {}
@@ -420,7 +414,7 @@ class IntelligentCacheManager:
             values = await self.redis.mget(full_keys)
             result = {}
 
-            for i, (key, value) in enumerate(zip(keys, values)):
+            for i, (key, value) in enumerate(zip(keys, values, strict=False)):
                 if value is not None:
                     try:
                         result[key] = CacheSerializer.deserialize(value)
@@ -440,9 +434,9 @@ class IntelligentCacheManager:
 
     async def batch_set(
         self,
-        items: Dict[str, Any],
+        items: dict[str, Any],
         namespace: str = "default",
-        ttl: Optional[int] = None,
+        ttl: int | None = None,
     ) -> int:
         """Set multiple values in cache in batch."""
         if not self.redis or not items:
@@ -454,7 +448,7 @@ class IntelligentCacheManager:
             for key, value in items.items():
                 full_key = self._generate_key(namespace, key)
                 serialized_value = CacheSerializer.serialize(
-                    value, compress=len(str(value)) > self.compression_threshold
+                    value, compress=len(str(value)) > self.compression_threshold,
                 )
 
                 if ttl:
@@ -517,7 +511,7 @@ class IntelligentCacheManager:
 
                 if expired_keys:
                     logger.info(
-                        f"Cleaned up {len(expired_keys)} expired cache keys from metadata"
+                        f"Cleaned up {len(expired_keys)} expired cache keys from metadata",
                     )
 
             except Exception as e:
@@ -539,7 +533,7 @@ class CacheOptimizationAnalyzer:
     def __init__(self, cache_manager: IntelligentCacheManager):
         self.cache_manager = cache_manager
 
-    async def analyze_cache_performance(self) -> Dict[str, Any]:
+    async def analyze_cache_performance(self) -> dict[str, Any]:
         """Analyze cache performance and generate recommendations."""
         metrics = await self.cache_manager.get_metrics()
 
@@ -589,22 +583,22 @@ class CacheOptimizationAnalyzer:
         # Generate recommendations
         if metrics.hit_rate < 80:
             analysis["recommendations"].append(
-                "Improve cache hit rate - consider longer TTL or better key strategies"
+                "Improve cache hit rate - consider longer TTL or better key strategies",
             )
 
         if metrics.average_get_time_ms > 5:
             analysis["recommendations"].append(
-                "Optimize cache response times - check Redis configuration"
+                "Optimize cache response times - check Redis configuration",
             )
 
         if metrics.memory_usage_bytes > 1024 * 1024 * 1024:  # > 1GB
             analysis["recommendations"].append(
-                "Reduce memory usage - implement cache eviction policies"
+                "Reduce memory usage - implement cache eviction policies",
             )
 
         if metrics.key_count > 100000:
             analysis["recommendations"].append(
-                "Too many cache keys - consider namespace cleanup"
+                "Too many cache keys - consider namespace cleanup",
             )
 
         return analysis
@@ -620,7 +614,7 @@ async def main():
 
         # Example usage
         await cache_manager.set(
-            "user:123", {"name": "John", "email": "john@example.com"}, ttl=3600
+            "user:123", {"name": "John", "email": "john@example.com"}, ttl=3600,
         )
         user = await cache_manager.get("user:123")
         print(f"Retrieved user: {user}")

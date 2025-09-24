@@ -1,5 +1,4 @@
-"""
-Logging utilities for PHOENIX Control.
+"""Logging utilities for PHOENIX Control.
 
 Provides consistent logging configuration and utilities for the
 Success-Advisor-8 distillation system.
@@ -7,18 +6,15 @@ Success-Advisor-8 distillation system.
 
 import logging
 import sys
-from datetime import datetime
 from pathlib import Path
-from typing import Optional
 
 
 def setup_logging(
     log_level: str = "INFO",
-    log_file: Optional[str] = None,
-    log_format: Optional[str] = None,
+    log_file: str | None = None,
+    log_format: str | None = None,
 ) -> logging.Logger:
-    """
-    Setup logging configuration for PHOENIX Control.
+    """Setup logging configuration for PHOENIX Control.
 
     Args:
         log_level: Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
@@ -27,6 +23,7 @@ def setup_logging(
 
     Returns:
         Configured logger instance
+
     """
     # Default log format
     if log_format is None:
@@ -62,14 +59,14 @@ def setup_logging(
 
 
 def get_logger(name: str) -> logging.Logger:
-    """
-    Get a logger instance for a specific module.
+    """Get a logger instance for a specific module.
 
     Args:
         name: Logger name (typically __name__)
 
     Returns:
         Logger instance
+
     """
     return logging.getLogger(f"phoenix_control.{name}")
 
@@ -82,7 +79,7 @@ class PhoenixLogger:
         self.agent_name = "Success-Advisor-8"
         self.spirit_emoji = "🦁"
 
-    def info(self, message: str, operation: Optional[str] = None):
+    def info(self, message: str, operation: str | None = None):
         """Log info message with agent context."""
         if operation:
             formatted_message = (
@@ -92,7 +89,7 @@ class PhoenixLogger:
             formatted_message = f"{self.spirit_emoji} {self.agent_name}: {message}"
         self.logger.info(formatted_message)
 
-    def success(self, message: str, operation: Optional[str] = None):
+    def success(self, message: str, operation: str | None = None):
         """Log success message."""
         if operation:
             formatted_message = f"✅ {self.agent_name} - {operation}: {message}"
@@ -100,7 +97,7 @@ class PhoenixLogger:
             formatted_message = f"✅ {self.agent_name}: {message}"
         self.logger.info(formatted_message)
 
-    def warning(self, message: str, operation: Optional[str] = None):
+    def warning(self, message: str, operation: str | None = None):
         """Log warning message."""
         if operation:
             formatted_message = f"⚠️ {self.agent_name} - {operation}: {message}"
@@ -108,7 +105,7 @@ class PhoenixLogger:
             formatted_message = f"⚠️ {self.agent_name}: {message}"
         self.logger.warning(formatted_message)
 
-    def error(self, message: str, operation: Optional[str] = None):
+    def error(self, message: str, operation: str | None = None):
         """Log error message."""
         if operation:
             formatted_message = f"❌ {self.agent_name} - {operation}: {message}"
@@ -116,7 +113,7 @@ class PhoenixLogger:
             formatted_message = f"❌ {self.agent_name}: {message}"
         self.logger.error(formatted_message)
 
-    def debug(self, message: str, operation: Optional[str] = None):
+    def debug(self, message: str, operation: str | None = None):
         """Log debug message."""
         if operation:
             formatted_message = f"🔍 {self.agent_name} - {operation}: {message}"
@@ -124,7 +121,7 @@ class PhoenixLogger:
             formatted_message = f"🔍 {self.agent_name}: {message}"
         self.logger.debug(formatted_message)
 
-    def release(self, message: str, version: Optional[str] = None):
+    def release(self, message: str, version: str | None = None):
         """Log release-specific message."""
         if version:
             formatted_message = f"🚀 {self.agent_name} - Release {version}: {message}"
@@ -132,7 +129,7 @@ class PhoenixLogger:
             formatted_message = f"🚀 {self.agent_name} - Release: {message}"
         self.logger.info(formatted_message)
 
-    def quality(self, message: str, check_type: Optional[str] = None):
+    def quality(self, message: str, check_type: str | None = None):
         """Log quality assurance message."""
         if check_type:
             formatted_message = f"🛡️ {self.agent_name} - {check_type}: {message}"
@@ -140,7 +137,7 @@ class PhoenixLogger:
             formatted_message = f"🛡️ {self.agent_name} - Quality: {message}"
         self.logger.info(formatted_message)
 
-    def agent_state(self, message: str, operation: Optional[str] = None):
+    def agent_state(self, message: str, operation: str | None = None):
         """Log agent state message."""
         if operation:
             formatted_message = f"💾 {self.agent_name} - {operation}: {message}"
@@ -150,13 +147,13 @@ class PhoenixLogger:
 
 
 def create_operation_logger(operation_name: str) -> PhoenixLogger:
-    """
-    Create a logger for a specific operation.
+    """Create a logger for a specific operation.
 
     Args:
         operation_name: Name of the operation
 
     Returns:
         PhoenixLogger instance
+
     """
     return PhoenixLogger(operation_name)

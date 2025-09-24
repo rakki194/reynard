@@ -1,5 +1,4 @@
-"""
-Core module for Reynard Backend.
+"""Core module for Reynard Backend.
 
 Provides configuration management and service registry functionality.
 """

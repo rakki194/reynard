@@ -1,5 +1,4 @@
-"""
-Documentation Service: Automated documentation generation and training materials.
+"""Documentation Service: Automated documentation generation and training materials.
 
 This service provides:
 - Comprehensive user documentation generation
@@ -10,9 +9,8 @@ This service provides:
 """
 
 import logging
-import time
 from datetime import datetime
-from typing import Any, Dict, List
+from typing import Any
 
 logger = logging.getLogger("uvicorn")
 
@@ -20,7 +18,7 @@ logger = logging.getLogger("uvicorn")
 class DocumentationService:
     """Comprehensive documentation and training service."""
 
-    def __init__(self, config: Dict[str, Any]):
+    def __init__(self, config: dict[str, Any]):
         self.config = config
         self.enabled = config.get("rag_documentation_enabled", True)
 
@@ -33,7 +31,7 @@ class DocumentationService:
         # Best practices
         self.best_practices = self._initialize_best_practices()
 
-    def _initialize_templates(self) -> Dict[str, str]:
+    def _initialize_templates(self) -> dict[str, str]:
         """Initialize documentation templates."""
         return {
             "user_guide": self._get_user_guide_template(),
@@ -108,7 +106,7 @@ Use pytest for unit and integration tests.
 - Monitor performance metrics
 """
 
-    def _initialize_api_examples(self) -> Dict[str, List[Dict[str, Any]]]:
+    def _initialize_api_examples(self) -> dict[str, list[dict[str, Any]]]:
         """Initialize API examples."""
         return {
             "embedding": [
@@ -160,7 +158,7 @@ for result in results:
             ],
         }
 
-    def _initialize_best_practices(self) -> Dict[str, List[str]]:
+    def _initialize_best_practices(self) -> dict[str, list[str]]:
         """Initialize best practices guidelines."""
         return {
             "embedding": [
@@ -207,7 +205,7 @@ for result in results:
         doc.append("## Overview")
         doc.append("")
         doc.append(
-            "The RAG (Retrieval-Augmented Generation) system provides advanced semantic search and embedding capabilities for code and documents."
+            "The RAG (Retrieval-Augmented Generation) system provides advanced semantic search and embedding capabilities for code and documents.",
         )
         doc.append("")
 
@@ -331,16 +329,16 @@ for result in results:
         doc.append("## System Architecture")
         doc.append("")
         doc.append(
-            "The RAG system follows a modular architecture with the following components:"
+            "The RAG system follows a modular architecture with the following components:",
         )
         doc.append("")
         doc.append("- **Embedding Service**: Generates vector embeddings using Ollama")
         doc.append("- **Vector Store**: PostgreSQL with pgvector for vector storage")
         doc.append(
-            "- **Document Indexer**: Intelligent document processing and chunking"
+            "- **Document Indexer**: Intelligent document processing and chunking",
         )
         doc.append(
-            "- **Search Engine**: Advanced search with semantic and keyword matching"
+            "- **Search Engine**: Advanced search with semantic and keyword matching",
         )
         doc.append("- **Performance Monitor**: Comprehensive performance monitoring")
         doc.append("- **Security Service**: Enterprise-grade security and compliance")
@@ -454,7 +452,7 @@ for result in results:
 
         return "\n".join(doc)
 
-    async def generate_training_materials(self) -> Dict[str, str]:
+    async def generate_training_materials(self) -> dict[str, str]:
         """Generate comprehensive training materials."""
         materials = {}
 
@@ -465,7 +463,7 @@ for result in results:
 
         return materials
 
-    async def save_documentation(self, output_dir: str = "docs/rag") -> Dict[str, str]:
+    async def save_documentation(self, output_dir: str = "docs/rag") -> dict[str, str]:
         """Save documentation to files."""
         from pathlib import Path
 
@@ -487,7 +485,7 @@ for result in results:
 
         return saved_files
 
-    def get_documentation_stats(self) -> Dict[str, Any]:
+    def get_documentation_stats(self) -> dict[str, Any]:
         """Get documentation statistics."""
         return {
             "enabled": self.enabled,

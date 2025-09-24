@@ -1,5 +1,4 @@
-"""
-Gender identity and expression components for the ECS world.
+"""Gender identity and expression components for the ECS world.
 
 This module provides comprehensive gender identity management including:
 - Gender identity profiles with multiple dimensions
@@ -12,7 +11,6 @@ This module provides comprehensive gender identity management including:
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Dict, List, Optional, Set
 
 from ..core.component import Component
 
@@ -79,20 +77,20 @@ class GenderProfile:
     """Comprehensive gender identity profile for an agent."""
 
     primary_identity: GenderIdentity
-    secondary_identities: List[GenderIdentity] = field(default_factory=list)
+    secondary_identities: list[GenderIdentity] = field(default_factory=list)
     expression_style: GenderExpression = GenderExpression.NEUTRAL
-    pronoun_sets: List[PronounSet] = field(default_factory=list)
-    preferred_pronouns: Optional[PronounSet] = None
-    custom_pronouns: Optional[str] = None
-    gender_description: Optional[str] = None
+    pronoun_sets: list[PronounSet] = field(default_factory=list)
+    preferred_pronouns: PronounSet | None = None
+    custom_pronouns: str | None = None
+    gender_description: str | None = None
     is_questioning: bool = False
     is_fluid: bool = False
     fluidity_rate: float = 0.0  # How often gender identity changes (0.0 to 1.0)
     confidence_level: float = 1.0  # Confidence in gender identity (0.0 to 1.0)
-    coming_out_status: Dict[str, bool] = field(
-        default_factory=dict
+    coming_out_status: dict[str, bool] = field(
+        default_factory=dict,
     )  # Who knows about identity
-    support_network: Set[str] = field(default_factory=set)  # Supportive agents
+    support_network: set[str] = field(default_factory=set)  # Supportive agents
     created_at: datetime = field(default_factory=datetime.now)
     last_updated: datetime = field(default_factory=datetime.now)
 
@@ -105,40 +103,40 @@ class GenderProfile:
         if not self.preferred_pronouns and self.pronoun_sets:
             self.preferred_pronouns = self.pronoun_sets[0]
 
-    def _get_default_pronouns(self) -> List[PronounSet]:
+    def _get_default_pronouns(self) -> list[PronounSet]:
         """Get default pronouns based on primary identity."""
         defaults = {
             GenderIdentity.MALE: PronounSet("he", "him", "his", "himself"),
             GenderIdentity.FEMALE: PronounSet("she", "her", "hers", "herself"),
             GenderIdentity.NON_BINARY: PronounSet(
-                "they", "them", "theirs", "themselves"
+                "they", "them", "theirs", "themselves",
             ),
             GenderIdentity.AGENDER: PronounSet("they", "them", "theirs", "themselves"),
             GenderIdentity.GENDERFLUID: PronounSet(
-                "they", "them", "theirs", "themselves"
+                "they", "them", "theirs", "themselves",
             ),
             GenderIdentity.DEMIGENDER: PronounSet(
-                "they", "them", "theirs", "themselves"
+                "they", "them", "theirs", "themselves",
             ),
             GenderIdentity.BIGENDER: PronounSet("they", "them", "theirs", "themselves"),
             GenderIdentity.TRIGENDER: PronounSet(
-                "they", "them", "theirs", "themselves"
+                "they", "them", "theirs", "themselves",
             ),
             GenderIdentity.PANGENDER: PronounSet(
-                "they", "them", "theirs", "themselves"
+                "they", "them", "theirs", "themselves",
             ),
             GenderIdentity.TWO_SPIRIT: PronounSet(
-                "they", "them", "theirs", "themselves"
+                "they", "them", "theirs", "themselves",
             ),
             GenderIdentity.GENDERQUEER: PronounSet(
-                "they", "them", "theirs", "themselves"
+                "they", "them", "theirs", "themselves",
             ),
             GenderIdentity.NEUTROIS: PronounSet("they", "them", "theirs", "themselves"),
             GenderIdentity.ANDROGYNE: PronounSet(
-                "they", "them", "theirs", "themselves"
+                "they", "them", "theirs", "themselves",
             ),
             GenderIdentity.QUESTIONING: PronounSet(
-                "they", "them", "theirs", "themselves"
+                "they", "them", "theirs", "themselves",
             ),
             GenderIdentity.OTHER: PronounSet("they", "them", "theirs", "themselves"),
         }
@@ -188,11 +186,11 @@ class GenderProfile:
         if self.preferred_pronouns:
             if pronoun_type == PronounType.SUBJECT:
                 return self.preferred_pronouns.subject
-            elif pronoun_type == PronounType.OBJECT:
+            if pronoun_type == PronounType.OBJECT:
                 return self.preferred_pronouns.object
-            elif pronoun_type == PronounType.POSSESSIVE:
+            if pronoun_type == PronounType.POSSESSIVE:
                 return self.preferred_pronouns.possessive
-            elif pronoun_type == PronounType.REFLEXIVE:
+            if pronoun_type == PronounType.REFLEXIVE:
                 return self.preferred_pronouns.reflexive
 
         return "they"  # Default fallback
@@ -222,19 +220,19 @@ class GenderComponent(Component):
         self.social_comfort: float = (
             1.0  # Comfort with gender expression in social settings (0.0 to 1.0)
         )
-        self.transition_stage: Optional[str] = (
+        self.transition_stage: str | None = (
             None  # Current transition stage if applicable
         )
-        self.transition_goals: List[str] = []  # Transition goals
-        self.support_needs: List[str] = []  # Support needs
+        self.transition_goals: list[str] = []  # Transition goals
+        self.support_needs: list[str] = []  # Support needs
         self.last_updated: datetime = datetime.now()
-        self._agent_id: Optional[str] = None
+        self._agent_id: str | None = None
 
     def set_agent_id(self, agent_id: str) -> None:
         """Set the agent ID for this component."""
         self._agent_id = agent_id
 
-    def get_agent_id(self) -> Optional[str]:
+    def get_agent_id(self) -> str | None:
         """Get the agent ID."""
         return self._agent_id
 
@@ -246,7 +244,7 @@ class GenderComponent(Component):
     def update_expression_confidence(self, delta: float) -> None:
         """Update confidence in gender expression."""
         self.expression_confidence = max(
-            0.0, min(1.0, self.expression_confidence + delta)
+            0.0, min(1.0, self.expression_confidence + delta),
         )
         self.last_updated = datetime.now()
 

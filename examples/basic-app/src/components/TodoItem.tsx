@@ -3,7 +3,7 @@
  * Individual todo item with modern checkbox and smooth strikeout animation
  */
 
-import { Button, Card, Checkbox } from "reynard-components";
+import { Button, Card, Checkbox } from "reynard-components-core";
 import { Component } from "solid-js";
 
 interface Todo {

@@ -1,5 +1,4 @@
-"""
-🔥 File Indexing Service Tests
+"""🔥 File Indexing Service Tests
 ==============================
 
 Comprehensive pytest tests for the file indexing and caching service.
@@ -13,7 +12,6 @@ Version: 1.0.0
 import asyncio
 import tempfile
 from pathlib import Path
-from unittest.mock import AsyncMock, patch
 
 import pytest
 import pytest_asyncio
@@ -36,7 +34,7 @@ class TestFileIndexingService:
                 "caching_enabled": True,
                 "file_indexing_batch_size": 10,
                 "content_cache_max_size": 100,
-            }
+            },
         )
 
         await service.initialize(config)
@@ -59,7 +57,7 @@ def hello_world():
 class TestClass:
     def __init__(self):
         self.value = 42
-"""
+""",
             )
 
             (temp_path / "test2.py").write_text(
@@ -70,7 +68,7 @@ import sys
 def complex_function():
     '''A more complex function with imports.'''
     return os.path.join(sys.path[0], "test")
-"""
+""",
             )
 
             (temp_path / "readme.md").write_text(
@@ -79,7 +77,7 @@ def complex_function():
 
 This is a test project for file indexing.
 It contains Python files and documentation.
-"""
+""",
             )
 
             (temp_path / "config.json").write_text('{"test": true, "value": 42}')
@@ -134,7 +132,7 @@ It contains Python files and documentation.
 
     @pytest.mark.asyncio
     async def test_file_indexing_with_filters(
-        self, file_indexing_service, temp_directory
+        self, file_indexing_service, temp_directory,
     ):
         """Test file indexing with file type filters."""
         directories = [str(temp_directory)]
@@ -247,7 +245,7 @@ It contains Python files and documentation.
         """Test error handling for invalid inputs."""
         # Test indexing non-existent directory
         result = await file_indexing_service.index_files(
-            ["/non/existent/path"], [".py"]
+            ["/non/existent/path"], [".py"],
         )
         assert result["success"] is False
         assert result["indexed_files"] == 0
@@ -258,7 +256,7 @@ It contains Python files and documentation.
 
         # Test getting cached content for non-cached file
         cached_content = await file_indexing_service.get_cached_content(
-            "/non/existent/file.py"
+            "/non/existent/file.py",
         )
         assert cached_content is None
 
@@ -338,7 +336,7 @@ It contains Python files and documentation.
 
         # Test searching for specific terms
         results = await file_indexing_service.search_files(
-            "hello_world", max_results=10
+            "hello_world", max_results=10,
         )
         assert len(results) > 0
 

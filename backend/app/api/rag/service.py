@@ -1,5 +1,4 @@
-"""
-RAG Service for Reynard Backend
+"""RAG Service for Reynard Backend
 
 Business logic for RAG operations including search, ingestion, and administration.
 
@@ -50,7 +49,7 @@ class RAGService:
             # Initialize indexing service
             self._indexing_service = DocumentIndexer()
             await self._indexing_service.initialize(
-                self._config, self._vector_db_service, self._embedding_service
+                self._config, self._vector_db_service, self._embedding_service,
             )
 
             self._initialized = True
@@ -96,14 +95,14 @@ class RAGService:
             # Generate query embedding
             embedding_start = time.time()
             query_embedding = await self._embedding_service.embed_text(
-                query, model=self._config.get("rag_text_model", "mxbai-embed-large")
+                query, model=self._config.get("rag_text_model", "mxbai-embed-large"),
             )
             embedding_time = time.time() - embedding_start
 
             # Perform vector search
             search_start = time.time()
             results = await self._vector_db_service.similar_document_chunks(
-                query_embedding, top_k
+                query_embedding, top_k,
             )
             search_time = time.time() - search_start
 
@@ -120,7 +119,7 @@ class RAGService:
                             "chunk_index": result["chunk_index"],
                             "chunk_metadata": result["chunk_metadata"],
                             "file_metadata": result["document_metadata"],
-                        }
+                        },
                     )
 
             query_time = time.time() - start_time
@@ -135,7 +134,7 @@ class RAGService:
                     "modality": modality or "docs",
                     "reranked": enable_reranking,
                     "embedding_model": self._config.get(
-                        "rag_text_model", "mxbai-embed-large"
+                        "rag_text_model", "mxbai-embed-large",
                     ),
                 },
             }
@@ -159,7 +158,7 @@ class RAGService:
                 elif event["type"] == "error":
                     result["failures"] += 1
                     logger.error(
-                        f"Indexing error: {event.get('error', 'Unknown error')}"
+                        f"Indexing error: {event.get('error', 'Unknown error')}",
                     )
                 elif event["type"] == "complete":
                     result["processed"] = event.get("processed", 0)
@@ -229,7 +228,7 @@ class RAGService:
 
             # Use indexing service for streaming ingestion
             async for event in self._indexing_service.ingest_documents(
-                items_dict, model, batch_size
+                items_dict, model, batch_size,
             ):
                 yield f'{{"type": "{event["type"]}", "processed": {event.get("processed", 0)}, "total": {event.get("total", 0)}, "failures": {event.get("failures", 0)}, "message": "{event.get("message", "")}"}}'
 
@@ -286,7 +285,7 @@ class RAGService:
                 "chunks_with_embeddings": vector_stats.get("chunks_with_embeddings", 0),
                 "embedding_coverage": vector_stats.get("embedding_coverage", 0.0),
                 "default_model": self._config.get(
-                    "rag_text_model", "embeddinggemma:latest"
+                    "rag_text_model", "embeddinggemma:latest",
                 ),
                 "vector_db_enabled": vector_stats.get("migrations_ok", False),
                 "cache_size": embedding_stats.get("cache_size", 0),
@@ -294,7 +293,7 @@ class RAGService:
                 "embedding_errors": embedding_stats.get("errors", 0),
                 "indexing_queue_size": indexing_stats.get("queue_size", 0),
                 "indexing_processed": indexing_stats.get("metrics", {}).get(
-                    "processed", 0
+                    "processed", 0,
                 ),
                 "indexing_failed": indexing_stats.get("metrics", {}).get("failed", 0),
             }
@@ -358,8 +357,7 @@ class RAGService:
 
 
 class RAGServiceManager:
-    """
-    Service manager for RAG API with proper dependency injection.
+    """Service manager for RAG API with proper dependency injection.
 
     This class manages the RAG service instance without using globals,
     providing better testability and cleaner architecture.
@@ -383,7 +381,7 @@ class RAGServiceManager:
             await service.initialize()
         except (
             Exception
-        ) as e:  # noqa: BLE001 - We want to catch all initialization errors
+        ) as e:
             logger.exception(
                 "Failed to initialize RAG service",
                 extra={

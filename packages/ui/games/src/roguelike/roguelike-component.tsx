@@ -1,9 +1,43 @@
 // SolidJS component for the rogue-like game
 import { createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { RoguelikeGame } from "./roguelike-game";
-import { useI18n } from "reynard-i18n";
+import { useI18n } from "reynard-themes";
+
+// Fallback translation function
+const fallbackT = (key: string) => {
+  const translations: Record<string, string> = {
+    "games.canvasElementNotFound": "Canvas element not found",
+    "games.errors.unknownError": "An unknown error occurred",
+    "games.howToPlay": "How to Play",
+    "games.useWASDOrArrowKeysToMove": "Use WASD or Arrow Keys to move",
+    "games.exploreProcedurallyGeneratedDungeon": "Explore procedurally generated dungeon",
+    "games.fightEnemiesByWalkingIntoThem": "Fight enemies by walking into them",
+    "games.collectItemsByWalkingOverThem": "Collect items by walking over them",
+    "games.pressRToRestartGame": "Press R to restart game",
+    "games.features": "Features",
+    "games.ecsArchitecture": "ECS Architecture",
+    "games.builtWithReynardsECS": "Built with Reynard's ECS system",
+    "games.proceduralGeneration": "Procedural Generation",
+    "games.eachDungeonUniquelyGenerated": "Each dungeon is uniquely generated",
+    "games.lineOfSight": "Line of Sight",
+    "games.realisticVisionAndExplorationMechanics": "Realistic vision and exploration mechanics",
+    "games.aiEnemies": "AI Enemies",
+    "games.differentEnemyTypesWithUniqueBehaviors": "Different enemy types with unique behaviors",
+    "games.pixelArt": "Pixel Art",
+    "games.retroStyleRenderingWithCrispPixels": "Retro-style rendering with crisp pixels"
+  };
+  return translations[key] || key;
+};
+
 export const RoguelikeGameComponent = props => {
-  const { t } = useI18n();
+  // Try to get the translation function, fallback to default if context is not available
+  let t = fallbackT;
+  try {
+    const { t: contextT } = useI18n();
+    t = contextT;
+  } catch (error) {
+    console.warn("RoguelikeGameComponent: useI18n context not available, using fallback translations");
+  }
   let canvasRef;
   let game = null;
   const [isLoading, setIsLoading] = createSignal(true);

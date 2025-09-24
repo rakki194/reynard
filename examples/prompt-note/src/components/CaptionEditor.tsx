@@ -4,9 +4,9 @@
  */
 
 import { Component, Show, For } from "solid-js";
-import { Button, Card } from "reynard-components";
-import { TagBubble, CaptionInput } from "reynard-caption";
-import { CaptionType } from "reynard-annotating-core";
+import { Button, Card } from "reynard-components-core";
+// import { TagBubble, CaptionInput } from "reynard-caption";
+// import { CaptionType } from "reynard-annotating-core";
 // Define ImageItem interface locally
 interface ImageItem {
   id: string;
@@ -64,14 +64,9 @@ export const CaptionEditor: Component<CaptionEditorProps> = props => {
                   <div class="tag-bubbles">
                     <For each={props.image.tags}>
                       {(tag, index) => (
-                        <TagBubble
-                          tag={tag}
-                          index={index()}
-                          editable={false}
-                          removable={false}
-                          onRemove={() => {}}
-                          onEdit={() => {}}
-                        />
+                        <div class="tag-bubble">
+                          {tag}
+                        </div>
                       )}
                     </For>
                   </div>

@@ -6,16 +6,16 @@ Create Date: 2025-09-20 21:50:24.442106
 
 """
 
-from typing import Sequence, Union
+from collections.abc import Sequence
 
 import sqlalchemy as sa
 from alembic import op
 
 # revision identifiers, used by Alembic.
 revision: str = "b16020be0286"
-down_revision: Union[str, Sequence[str], None] = "183c8980160f"
-branch_labels: Union[str, Sequence[str], None] = None
-depends_on: Union[str, Sequence[str], None] = None
+down_revision: str | Sequence[str] | None = "183c8980160f"
+branch_labels: str | Sequence[str] | None = None
+depends_on: str | Sequence[str] | None = None
 
 
 def upgrade() -> None:
@@ -166,7 +166,7 @@ def upgrade() -> None:
         sa.ForeignKeyConstraint(["agent_id"], ["agents.id"], ondelete="CASCADE"),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint(
-            "agent_id", "specialization", name="uq_agent_specialization"
+            "agent_id", "specialization", name="uq_agent_specialization",
         ),
     )
     op.create_table(
@@ -190,7 +190,7 @@ def upgrade() -> None:
         sa.ForeignKeyConstraint(["agent_id"], ["agents.id"], ondelete="CASCADE"),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint(
-            "agent_id", "preference_name", name="uq_agent_workflow_preference"
+            "agent_id", "preference_name", name="uq_agent_workflow_preference",
         ),
     )
     op.create_table(
@@ -238,7 +238,7 @@ def upgrade() -> None:
         sa.ForeignKeyConstraint(["agent_id"], ["agents.id"], ondelete="CASCADE"),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint(
-            "agent_id", "trait_name", name="uq_agent_personality_trait"
+            "agent_id", "trait_name", name="uq_agent_personality_trait",
         ),
     )
     op.create_table(

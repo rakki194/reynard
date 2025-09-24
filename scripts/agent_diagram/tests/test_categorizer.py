@@ -1,5 +1,4 @@
-"""
-Tests for the AgentCategorizer class.
+"""Tests for the AgentCategorizer class.
 """
 
 from ..core.categorizer import AgentCategorizer

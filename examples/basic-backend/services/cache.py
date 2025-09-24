@@ -1,5 +1,4 @@
-"""
-Cache service for Reynard Basic Backend
+"""Cache service for Reynard Basic Backend
 Handles caching operations with reload optimization
 """
 

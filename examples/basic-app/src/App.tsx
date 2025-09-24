@@ -3,8 +3,8 @@
  * Demonstrates core Reynard features in a simple, practical application
  */
 
-import { Card } from "reynard-components";
-import "reynard-components/styles";
+import { Card } from "reynard-components-core";
+import "reynard-components-core/styles";
 import { NotificationsProvider, createNotificationsModule, useNotifications } from "reynard-core";
 import { ReynardProvider, useI18n, useTheme, type LanguageCode } from "reynard-themes";
 import "reynard-themes/themes.css";

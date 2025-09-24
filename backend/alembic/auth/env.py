@@ -1,12 +1,10 @@
-"""
-Alembic environment configuration for Reynard Auth database.
+"""Alembic environment configuration for Reynard Auth database.
 
 This module configures Alembic for the authentication database.
 Note: Gatekeeper manages its own schema, so this is primarily for
 custom auth-related migrations if needed.
 """
 
-import asyncio
 import os
 from logging.config import fileConfig
 
@@ -85,7 +83,7 @@ async def run_async_migrations():
             config.get_section(config.config_ini_section, {}),
             prefix="sqlalchemy.",
             poolclass=pool.NullPool,
-        )
+        ),
     )
 
     async with connectable.connect() as connection:

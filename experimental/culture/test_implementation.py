@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Test script for CULTURE framework implementation
+"""Test script for CULTURE framework implementation
 
 This script tests the basic functionality of the enhanced CULTURE framework
 to ensure all components work together correctly.
@@ -16,8 +15,6 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
-from integration.ecs_agents import CulturalAgentComponent
-from integration.mcp_tools import CulturalMCPTools
 from patterns import (
     AcademicCulturalPattern,
     CosplayCulturalPattern,
@@ -33,6 +30,9 @@ from patterns import (
     SteampunkCulturalPattern,
 )
 from safety.safety_framework import SafetyFramework
+
+from integration.ecs_agents import CulturalAgentComponent
+from integration.mcp_tools import CulturalMCPTools
 
 
 def test_furry_pattern():
@@ -77,7 +77,7 @@ def test_kink_pattern():
     print(f"  Cultural Appropriateness: {result.cultural_appropriateness:.2f}")
     print(f"  Consent Awareness: {result.metrics.get('consent_awareness', 0):.2f}")
     print(
-        f"  Safety Consciousness: {result.metrics.get('safety_consciousness', 0):.2f}"
+        f"  Safety Consciousness: {result.metrics.get('safety_consciousness', 0):.2f}",
     )
 
     return result.overall_score > 0.5
@@ -101,7 +101,7 @@ def test_academic_pattern():
     print(f"  Cultural Appropriateness: {result.cultural_appropriateness:.2f}")
     print(f"  Scholarly Rigor: {result.metrics.get('scholarly_rigor', 0):.2f}")
     print(
-        f"  Evidence-Based Reasoning: {result.metrics.get('evidence_based_reasoning', 0):.2f}"
+        f"  Evidence-Based Reasoning: {result.metrics.get('evidence_based_reasoning', 0):.2f}",
     )
 
     return result.overall_score > 0.5
@@ -124,10 +124,10 @@ def test_gaming_pattern():
     print(f"  Overall Score: {result.overall_score:.2f}")
     print(f"  Cultural Appropriateness: {result.cultural_appropriateness:.2f}")
     print(
-        f"  Inclusive Communication: {result.metrics.get('inclusive_communication', 0):.2f}"
+        f"  Inclusive Communication: {result.metrics.get('inclusive_communication', 0):.2f}",
     )
     print(
-        f"  Player Agency Respect: {result.metrics.get('player_agency_respect', 0):.2f}"
+        f"  Player Agency Respect: {result.metrics.get('player_agency_respect', 0):.2f}",
     )
 
     return result.overall_score > 0.5
@@ -153,7 +153,7 @@ def test_mcp_tools():
 
     # Test scenario generation
     scenarios_result = mcp_tools.generate_cultural_scenarios(
-        cultural_context="kink", count=2, safety_level="moderate"
+        cultural_context="kink", count=2, safety_level="moderate",
     )
 
     print(f"  Scenario Generation Success: {scenarios_result.get('success', False)}")
@@ -189,7 +189,7 @@ def test_ecs_agents():
 
         # Simulate interaction
         interaction = agent.interact_with_agent(
-            partner_id="test-partner", scenario=scenario, response=response
+            partner_id="test-partner", scenario=scenario, response=response,
         )
         print(f"  Interaction Success: {interaction.success_score:.2f}")
         print(f"  Learning Outcome: {interaction.learning_outcome}")
@@ -223,10 +223,10 @@ def test_safety_framework():
 
     print(f"  Problematic Content - Is Safe: {problematic_assessment.is_safe}")
     print(
-        f"  Problematic Content - Safety Score: {problematic_assessment.safety_score:.2f}"
+        f"  Problematic Content - Safety Score: {problematic_assessment.safety_score:.2f}",
     )
     print(
-        f"  Problematic Content - Violations: {len(problematic_assessment.violations)}"
+        f"  Problematic Content - Violations: {len(problematic_assessment.violations)}",
     )
 
     return safe_assessment.is_safe and not problematic_assessment.is_safe
@@ -252,7 +252,7 @@ def test_cosplay_pattern():
     print(f"  Overall Score: {result.overall_score:.2f}")
     print(f"  Cultural Appropriateness: {result.cultural_appropriateness:.2f}")
     print(
-        f"  Character Consistency: {result.metrics.get('character_consistency', 0):.2f}"
+        f"  Character Consistency: {result.metrics.get('character_consistency', 0):.2f}",
     )
     print(f"  Fandom Knowledge: {result.metrics.get('fandom_knowledge', 0):.2f}")
 
@@ -279,7 +279,7 @@ def test_goth_pattern():
     print(f"  Overall Score: {result.overall_score:.2f}")
     print(f"  Cultural Appropriateness: {result.cultural_appropriateness:.2f}")
     print(
-        f"  Aesthetic Appreciation: {result.metrics.get('aesthetic_appreciation', 0):.2f}"
+        f"  Aesthetic Appreciation: {result.metrics.get('aesthetic_appreciation', 0):.2f}",
     )
     print(f"  Literary Knowledge: {result.metrics.get('literary_knowledge', 0):.2f}")
 
@@ -306,7 +306,7 @@ def test_hacker_pattern():
     print(f"  Overall Score: {result.overall_score:.2f}")
     print(f"  Cultural Appropriateness: {result.cultural_appropriateness:.2f}")
     print(
-        f"  Technical Competence: {result.metrics.get('technical_competence', 0):.2f}"
+        f"  Technical Competence: {result.metrics.get('technical_competence', 0):.2f}",
     )
     print(f"  Ethical Awareness: {result.metrics.get('ethical_awareness', 0):.2f}")
 
@@ -358,7 +358,7 @@ def test_steampunk_pattern():
     print(f"  Overall Score: {result.overall_score:.2f}")
     print(f"  Cultural Appropriateness: {result.cultural_appropriateness:.2f}")
     print(
-        f"  Aesthetic Appreciation: {result.metrics.get('aesthetic_appreciation', 0):.2f}"
+        f"  Aesthetic Appreciation: {result.metrics.get('aesthetic_appreciation', 0):.2f}",
     )
     print(f"  Inventiveness: {result.metrics.get('inventiveness', 0):.2f}")
 
@@ -385,7 +385,7 @@ def test_medical_pattern():
     print(f"  Overall Score: {result.overall_score:.2f}")
     print(f"  Cultural Appropriateness: {result.cultural_appropriateness:.2f}")
     print(
-        f"  Professional Communication: {result.metrics.get('professional_communication', 0):.2f}"
+        f"  Professional Communication: {result.metrics.get('professional_communication', 0):.2f}",
     )
     print(f"  Patient Safety: {result.metrics.get('patient_safety', 0):.2f}")
 

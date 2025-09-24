@@ -1,8 +1,6 @@
-"""
-Additional tests to improve core module coverage.
+"""Additional tests to improve core module coverage.
 """
 
-import asyncio
 import os
 import sys
 import tempfile
@@ -144,7 +142,7 @@ class TestHumilityDetectorCoverage:
         """Test text analysis with cultural context."""
         text = "This is the best solution ever!"
         profile = await detector.analyze_text(
-            text, "test.txt", cultural_context="eastern"
+            text, "test.txt", cultural_context="eastern",
         )
 
         assert isinstance(profile, HumilityProfile)
@@ -249,7 +247,7 @@ class TestHumilityDetectorCoverage:
                 suggested_replacement="good",
                 context="This is the best",
                 confidence_score=0.9,
-            )
+            ),
         ]
 
         additional_metrics = {
@@ -289,7 +287,7 @@ class TestHumilityDetectorCoverage:
                 suggested_replacement="good",
                 context="This is the best",
                 confidence_score=0.9,
-            )
+            ),
         ]
 
         # Test with low scores
@@ -389,7 +387,7 @@ class TestModelsCoverage:
                 suggested_replacement="good",
                 context="This is the best",
                 confidence_score=0.9,
-            )
+            ),
         ]
 
         profile = HumilityProfile(

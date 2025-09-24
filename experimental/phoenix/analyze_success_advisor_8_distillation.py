@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Success-Advisor-8 Knowledge Distillation Analysis
+"""Success-Advisor-8 Knowledge Distillation Analysis
 
 Analyze the knowledge distillation of Success-Advisor-8's generated documentation and code.
 Extract genetic material and perform comprehensive analysis.
@@ -10,7 +9,6 @@ Version: 1.0.0
 """
 
 import asyncio
-import json
 import logging
 import sys
 from datetime import datetime
@@ -22,18 +20,12 @@ sys.path.append(str(Path(__file__).parent / "src"))
 from src.core.knowledge_distillation import KnowledgeDistillation
 from src.integration.agent_persistence import AgentStatePersistence
 from src.utils.data_structures import (
-    AgentState,
-    NamingStyle,
-    PerformanceMetrics,
     PhoenixConfig,
-    SpiritType,
-    StatisticalSignificance,
 )
 
 
 class SuccessAdvisor8DistillationAnalyzer:
-    """
-    Analyzer for Success-Advisor-8's knowledge distillation.
+    """Analyzer for Success-Advisor-8's knowledge distillation.
 
     Extracts and analyzes genetic material from:
     - Generated documentation
@@ -55,7 +47,7 @@ class SuccessAdvisor8DistillationAnalyzer:
     async def load_agent_state(self):
         """Load Success-Advisor-8's agent state."""
         self.agent_state = await self.agent_persistence.load_agent_state(
-            "permanent-release-manager-success-advisor-8"
+            "permanent-release-manager-success-advisor-8",
         )
         if not self.agent_state:
             self.logger.error("Failed to load Success-Advisor-8 agent state")
@@ -506,7 +498,7 @@ class StatisticalValidation:
             # Extract genetic material
             genetic_material = (
                 await self.knowledge_distillation.extract_genetic_material(
-                    agent=self.agent_state, output=content_text, generation=1
+                    agent=self.agent_state, output=content_text, generation=1,
                 )
             )
 
@@ -515,13 +507,13 @@ class StatisticalValidation:
             self.logger.info(
                 f"✅ Extracted genetic material from {content_name}: "
                 f"{len(genetic_material.subliminal_traits)} traits, "
-                f"{len(genetic_material.relevance_scores)} domains"
+                f"{len(genetic_material.relevance_scores)} domains",
             )
 
         # Perform knowledge distillation
         self.logger.info("🧠 Performing knowledge distillation...")
         distillation_result = await self.knowledge_distillation.distill_knowledge(
-            genetic_materials
+            genetic_materials,
         )
 
         return {
@@ -599,7 +591,7 @@ class StatisticalValidation:
         # Calculate average strengths
         for trait_name in trait_strengths:
             trait_strengths[trait_name] = sum(trait_strengths[trait_name]) / len(
-                trait_strengths[trait_name]
+                trait_strengths[trait_name],
             )
 
         analysis["subliminal_traits"] = {
@@ -660,25 +652,25 @@ class StatisticalValidation:
         if trait_counts:
             most_common = max(trait_counts, key=trait_counts.get)
             insights.append(
-                f"Most frequently expressed trait: {most_common} ({trait_counts[most_common]} occurrences)"
+                f"Most frequently expressed trait: {most_common} ({trait_counts[most_common]} occurrences)",
             )
 
         if trait_strengths:
             strongest = max(trait_strengths, key=trait_strengths.get)
             insights.append(
-                f"Strongest trait expression: {strongest} (strength: {trait_strengths[strongest]:.3f})"
+                f"Strongest trait expression: {strongest} (strength: {trait_strengths[strongest]:.3f})",
             )
 
         # Domain insights
         if domain_averages:
             most_relevant = max(domain_averages, key=domain_averages.get)
             insights.append(
-                f"Most relevant knowledge domain: {most_relevant} (relevance: {domain_averages[most_relevant]:.3f})"
+                f"Most relevant knowledge domain: {most_relevant} (relevance: {domain_averages[most_relevant]:.3f})",
             )
 
         # Quality insights
         insights.append(
-            f"Knowledge distillation quality: {distillation_result.distillation_quality:.3f}"
+            f"Knowledge distillation quality: {distillation_result.distillation_quality:.3f}",
         )
         insights.append(f"Total genetic materials extracted: {len(genetic_materials)}")
         insights.append(f"Unique subliminal traits detected: {len(trait_counts)}")
@@ -777,7 +769,7 @@ async def main():
 
     # Setup logging
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+        level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s",
     )
 
     # Initialize analyzer
@@ -798,13 +790,13 @@ async def main():
     print("🧬 Performing knowledge distillation...")
     results = await analyzer.perform_knowledge_distillation()
 
-    print(f"✅ Knowledge distillation completed:")
+    print("✅ Knowledge distillation completed:")
     print(f"   Genetic materials: {len(results['genetic_materials'])}")
     print(
-        f"   Distillation quality: {results['distillation_result'].distillation_quality:.3f}"
+        f"   Distillation quality: {results['distillation_result'].distillation_quality:.3f}",
     )
     print(
-        f"   Content pieces analyzed: {results['content_analysis']['total_content_pieces']}"
+        f"   Content pieces analyzed: {results['content_analysis']['total_content_pieces']}",
     )
     print()
 

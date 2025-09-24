@@ -1,5 +1,4 @@
-"""
-TTS Service for Reynard Backend
+"""TTS Service for Reynard Backend
 
 Main TTS service orchestrator with multi-backend support (Kokoro, Coqui, XTTS).
 """
@@ -81,7 +80,7 @@ class TTSService:
             self._backend = config.get("tts_default_backend", "kokoro")
             self._kokoro_mode = config.get("tts_kokoro_mode", "powersave")
             self._audio_dir = Path(
-                config.get("tts_audio_dir", "generated/audio")
+                config.get("tts_audio_dir", "generated/audio"),
             ).resolve()
             self._rvc_enabled = config.get("tts_rvc_enabled", False)
 
@@ -90,16 +89,16 @@ class TTSService:
             self._max_chunk_length = config.get("tts_max_chunk_length", 2000)
             self._chunk_overlap_chars = config.get("tts_chunk_overlap_chars", 100)
             self._backend_health_check_interval = config.get(
-                "tts_backend_health_check_interval", 300
+                "tts_backend_health_check_interval", 300,
             )
             self._backend_timeout_seconds = config.get(
-                "tts_backend_timeout_seconds", 30
+                "tts_backend_timeout_seconds", 30,
             )
             self._enable_voice_compatibility_checks = config.get(
-                "tts_enable_voice_compatibility_checks", True
+                "tts_enable_voice_compatibility_checks", True,
             )
             self._enable_language_validation = config.get(
-                "tts_enable_language_validation", True
+                "tts_enable_language_validation", True,
             )
             self._rate_limit_per_minute = config.get("tts_rate_limit_per_minute", 60)
 
@@ -167,7 +166,7 @@ class TTSService:
 
         try:
             logger.debug(
-                f"Starting TTS synthesis: text_length={len(text)}, backend={backend}, voice={voice}"
+                f"Starting TTS synthesis: text_length={len(text)}, backend={backend}, voice={voice}",
             )
 
             # Validate inputs
@@ -208,7 +207,7 @@ class TTSService:
             # Process audio if needed
             if to_ogg or to_opus:
                 audio_path = await self._audio_processor.process_audio(
-                    audio_path, to_ogg=to_ogg, to_opus=to_opus
+                    audio_path, to_ogg=to_ogg, to_opus=to_opus,
                 )
 
             processing_time = time.time() - start_time
@@ -232,7 +231,7 @@ class TTSService:
 
             # Update metrics
             self._update_metrics(
-                backend or self._backend, voice, processing_time, False
+                backend or self._backend, voice, processing_time, False,
             )
 
             return {
@@ -295,7 +294,7 @@ class TTSService:
                             "processing_time": 0.0,
                             "error": str(result),
                             "index": i,
-                        }
+                        },
                     )
                 else:
                     processed_results.append(result)
@@ -351,7 +350,6 @@ class TTSService:
             return
 
         # TODO: Implement voice compatibility validation
-        pass
 
     async def _handle_kokoro_usage(self):
         """Handle Kokoro-specific usage patterns."""
@@ -400,7 +398,7 @@ class TTSService:
             return False
 
     def _update_metrics(
-        self, backend: str, voice: str, processing_time: float, success: bool
+        self, backend: str, voice: str, processing_time: float, success: bool,
     ):
         """Update service metrics."""
         self._metrics["total_requests"] += 1
@@ -464,7 +462,7 @@ class TTSService:
                         "voices": voices,
                         "supported_languages": languages,
                         "supported_formats": formats,
-                    }
+                    },
                 )
             except Exception as e:
                 logger.warning(f"Failed to get info for backend {name}: {e}")
@@ -476,7 +474,7 @@ class TTSService:
                         "voices": [],
                         "supported_languages": ["en"],
                         "supported_formats": ["wav"],
-                    }
+                    },
                 )
 
         return backends
@@ -557,7 +555,7 @@ class TTSService:
                 )
             # Fallback to regular synthesis
             return await xtts_backend.synthesize(
-                text=text, out_path=out_path, voice="clone", speed=speed, lang=lang
+                text=text, out_path=out_path, voice="clone", speed=speed, lang=lang,
             )
 
         except Exception as e:

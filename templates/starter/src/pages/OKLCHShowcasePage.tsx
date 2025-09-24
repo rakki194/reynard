@@ -4,7 +4,7 @@
  */
 
 import { Component } from "solid-js";
-import { OKLCHShowcase, AppFooter } from "reynard-components";
+import { OKLCHShowcase, AppFooter } from "reynard-components-core";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import "../styles/app.css";
 import "../styles/oklch-showcase.css";

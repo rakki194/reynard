@@ -56,7 +56,7 @@ async def test_large_file_upload(
     is_profile_picture: bool = False,
 ):
     print(
-        f"\n--- Testing large file upload to {target_endpoint} with {file_size_mb} MB file ---"
+        f"\n--- Testing large file upload to {target_endpoint} with {file_size_mb} MB file ---",
     )
     file_path = create_dummy_file(filename, file_size_mb)
     token = get_auth_token()
@@ -71,7 +71,7 @@ async def test_large_file_upload(
     try:
         with open(file_path, "rb") as f:
             files = {
-                "file" if is_profile_picture else "files": (filename, f, "image/jpeg")
+                "file" if is_profile_picture else "files": (filename, f, "image/jpeg"),
             }
             print(f"Uploading {filename}...")
             response = requests.post(
@@ -90,15 +90,15 @@ async def test_large_file_upload(
                 and "Unsupported image format" in response.text
             ):
                 print(
-                    "    [OK] Server rejected upload due to unsupported format (expected for large files)."
+                    "    [OK] Server rejected upload due to unsupported format (expected for large files).",
                 )
             elif response.status_code == 200:
                 print(
-                    "    [WARNING] Large file upload succeeded. Consider reinforcing server-side size limits."
+                    "    [WARNING] Large file upload succeeded. Consider reinforcing server-side size limits.",
                 )
             else:
                 print(
-                    f"    [UNEXPECTED] Unexpected status code or error: {response.status_code}"
+                    f"    [UNEXPECTED] Unexpected status code or error: {response.status_code}",
                 )
 
     except requests.exceptions.ConnectionError as e:
@@ -119,13 +119,13 @@ async def test_rapid_small_file_uploads(
     delay_between_uploads: float = 0.1,
 ):
     print(
-        f"\n--- Testing rapid small file uploads to {target_endpoint} ({num_files} files, {file_size_kb} KB each) ---"
+        f"\n--- Testing rapid small file uploads to {target_endpoint} ({num_files} files, {file_size_kb} KB each) ---",
     )
     token = get_auth_token()
 
     if not token:
         print(
-            "Authentication token not obtained. Cannot proceed with rapid upload test."
+            "Authentication token not obtained. Cannot proceed with rapid upload test.",
         )
         return
 
@@ -138,7 +138,7 @@ async def test_rapid_small_file_uploads(
         for i in range(num_files):
             filename = f"small_file_{i}_{random.randint(1000, 9999)}.jpg"
             file_path = create_dummy_file(
-                filename, file_size_kb / 1024
+                filename, file_size_kb / 1024,
             )  # Convert KB to MB
             file_paths.append(file_path)
 
@@ -152,7 +152,7 @@ async def test_rapid_small_file_uploads(
                         timeout=60,
                     )  # 1 min timeout
                     print(
-                        f"Upload {i + 1}: Status Code: {response.status_code}, Response: {response.json()}"
+                        f"Upload {i + 1}: Status Code: {response.status_code}, Response: {response.json()}",
                     )
                     if response.status_code == 200:
                         successful_uploads += 1
@@ -169,7 +169,7 @@ async def test_rapid_small_file_uploads(
         for fp in file_paths:
             delete_dummy_file(fp)
     print(
-        f"--- Rapid small file upload test complete. Successful: {successful_uploads}, Failed: {failed_uploads} ---"
+        f"--- Rapid small file upload test complete. Successful: {successful_uploads}, Failed: {failed_uploads} ---",
     )
 
 
@@ -179,7 +179,7 @@ if __name__ == "__main__":
     async def main_tests():
         # Test large general file upload (e.g., to /api/upload)
         await test_large_file_upload(
-            "/api/upload", 150, "very_large_image.jpg"
+            "/api/upload", 150, "very_large_image.jpg",
         )  # 150 MB, should be rejected by frontend MAX_FILE_SIZE (100MB)
 
         # Test large profile picture upload
@@ -192,7 +192,7 @@ if __name__ == "__main__":
 
         # Test rapid small file uploads (e.g., to /api/upload)
         await test_rapid_small_file_uploads(
-            "/api/upload", 50, 100
+            "/api/upload", 50, 100,
         )  # 50 files, 100 KB each
 
     asyncio.run(main_tests())

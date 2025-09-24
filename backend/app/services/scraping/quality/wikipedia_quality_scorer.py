@@ -1,5 +1,4 @@
-"""
-Wikipedia Quality Scorer for Reynard Backend
+"""Wikipedia Quality Scorer for Reynard Backend
 
 Specialized quality assessment for Wikipedia content.
 """
@@ -14,8 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 class WikipediaQualityScorer(ContentQualityScorer):
-    """
-    Specialized quality scorer for Wikipedia content.
+    """Specialized quality scorer for Wikipedia content.
 
     Extends the base quality scorer with Wikipedia-specific
     quality assessment criteria.
@@ -26,10 +24,9 @@ class WikipediaQualityScorer(ContentQualityScorer):
         super().__init__()
 
     async def assess_quality(
-        self, content: str, metadata: dict[str, Any] | None = None
+        self, content: str, metadata: dict[str, Any] | None = None,
     ) -> ContentQuality:
-        """
-        Assess the quality of Wikipedia content.
+        """Assess the quality of Wikipedia content.
 
         Args:
             content: Wikipedia content to assess
@@ -37,6 +34,7 @@ class WikipediaQualityScorer(ContentQualityScorer):
 
         Returns:
             Quality assessment result
+
         """
         try:
             # Get base quality assessment
@@ -59,10 +57,9 @@ class WikipediaQualityScorer(ContentQualityScorer):
             return await super().assess_quality(content, metadata)
 
     async def _calculate_wikipedia_score(
-        self, content: str, metadata: dict[str, Any] | None = None
+        self, content: str, metadata: dict[str, Any] | None = None,
     ) -> float:
-        """
-        Calculate Wikipedia-specific quality score.
+        """Calculate Wikipedia-specific quality score.
 
         Args:
             content: Wikipedia content
@@ -70,6 +67,7 @@ class WikipediaQualityScorer(ContentQualityScorer):
 
         Returns:
             Wikipedia-specific quality score
+
         """
         try:
             score = 50.0  # Base score

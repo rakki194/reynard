@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-File Indexing and Caching Configuration
+"""File Indexing and Caching Configuration
 ======================================
 
 Configuration for high-performance file indexing and caching services.
@@ -11,12 +10,11 @@ with efficient, intelligent file indexing and caching!
 """
 
 import os
-from typing import Any, Dict
+from typing import Any
 
 
-def get_file_indexing_config() -> Dict[str, Any]:
-    """
-    Get file indexing and caching configuration for high-performance file operations.
+def get_file_indexing_config() -> dict[str, Any]:
+    """Get file indexing and caching configuration for high-performance file operations.
 
     This configuration enables:
     - Fast file discovery and indexing
@@ -67,9 +65,8 @@ def get_file_indexing_config() -> Dict[str, Any]:
     }
 
 
-def get_file_indexing_environment_vars() -> Dict[str, str]:
-    """
-    Get environment variables for file indexing and caching operation.
+def get_file_indexing_environment_vars() -> dict[str, str]:
+    """Get environment variables for file indexing and caching operation.
 
     These can be set in your .env file or environment to enable
     file indexing mode automatically.
@@ -95,8 +92,7 @@ def get_file_indexing_environment_vars() -> Dict[str, str]:
 
 
 def apply_file_indexing_config() -> None:
-    """
-    Apply file indexing configuration to environment variables.
+    """Apply file indexing configuration to environment variables.
 
     Call this function to automatically set up file indexing mode.
     """
@@ -106,7 +102,7 @@ def apply_file_indexing_config() -> None:
             os.environ[key] = value
             print(f"🔥 Set {key}={value}")
 
-    print(f"\n🔥 File indexing mode configured!")
+    print("\n🔥 File indexing mode configured!")
     print(f"📊 Total variables set: {len(env_vars)}")
 
     return env_vars

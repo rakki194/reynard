@@ -1,12 +1,10 @@
-"""
-PostgreSQL Data Loader for Phoenix Experiments
+"""PostgreSQL Data Loader for Phoenix Experiments
 
 Provides PostgreSQL-based data loading for Phoenix agent reconstruction experiments.
 """
 
 import logging
-from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -15,23 +13,23 @@ class PostgresDataLoader:
     """PostgreSQL-based data loader for Phoenix experiments."""
 
     def __init__(self, ecs_service=None):
-        """
-        Initialize the PostgreSQL data loader.
+        """Initialize the PostgreSQL data loader.
 
         Args:
             ecs_service: ECS service instance for database access
+
         """
         self.ecs_service = ecs_service
 
-    async def load_agent_data(self, agent_id: str) -> Optional[Dict[str, Any]]:
-        """
-        Load agent data from PostgreSQL database.
+    async def load_agent_data(self, agent_id: str) -> dict[str, Any] | None:
+        """Load agent data from PostgreSQL database.
 
         Args:
             agent_id: Agent identifier
 
         Returns:
             Dictionary containing complete agent data or None if not found
+
         """
         try:
             if not self.ecs_service:
@@ -51,21 +49,21 @@ class PostgresDataLoader:
             logger.error(f"❌ Failed to load agent data for {agent_id}: {e}")
             return None
 
-    async def load_success_advisor_8(self) -> Optional[Dict[str, Any]]:
-        """
-        Load Success-Advisor-8's complete genomic data from PostgreSQL.
+    async def load_success_advisor_8(self) -> dict[str, Any] | None:
+        """Load Success-Advisor-8's complete genomic data from PostgreSQL.
 
         Returns:
             Dictionary containing Success-Advisor-8's complete data
+
         """
         return await self.load_agent_data("permanent-release-manager-success-advisor-8")
 
-    async def load_phoenix_test_agents(self) -> List[Dict[str, Any]]:
-        """
-        Load all Phoenix test agents from PostgreSQL.
+    async def load_phoenix_test_agents(self) -> list[dict[str, Any]]:
+        """Load all Phoenix test agents from PostgreSQL.
 
         Returns:
             List of Phoenix test agent data
+
         """
         try:
             if not self.ecs_service:
@@ -83,7 +81,7 @@ class PostgresDataLoader:
             ]
 
             logger.info(
-                f"✅ Loaded {len(phoenix_agents)} Phoenix test agents from PostgreSQL"
+                f"✅ Loaded {len(phoenix_agents)} Phoenix test agents from PostgreSQL",
             )
             return phoenix_agents
 
@@ -91,15 +89,15 @@ class PostgresDataLoader:
             logger.error(f"❌ Failed to load Phoenix test agents: {e}")
             return []
 
-    async def save_agent_data(self, agent_data: Dict[str, Any]) -> bool:
-        """
-        Save agent data to PostgreSQL database.
+    async def save_agent_data(self, agent_data: dict[str, Any]) -> bool:
+        """Save agent data to PostgreSQL database.
 
         Args:
             agent_data: Complete agent data dictionary
 
         Returns:
             True if save successful, False otherwise
+
         """
         try:
             if not self.ecs_service:
@@ -123,7 +121,7 @@ class PostgresDataLoader:
             )
 
             logger.info(
-                f"✅ Saved agent data for {agent_data.get('agent_id')} to PostgreSQL"
+                f"✅ Saved agent data for {agent_data.get('agent_id')} to PostgreSQL",
             )
             return True
 
@@ -131,15 +129,15 @@ class PostgresDataLoader:
             logger.error(f"❌ Failed to save agent data: {e}")
             return False
 
-    async def get_agent_traits(self, agent_id: str) -> Dict[str, Dict[str, float]]:
-        """
-        Get agent traits from PostgreSQL.
+    async def get_agent_traits(self, agent_id: str) -> dict[str, dict[str, float]]:
+        """Get agent traits from PostgreSQL.
 
         Args:
             agent_id: Agent identifier
 
         Returns:
             Dictionary containing personality, physical, and ability traits
+
         """
         try:
             agent_data = await self.load_agent_data(agent_id)
@@ -157,16 +155,16 @@ class PostgresDataLoader:
             return {}
 
     async def get_agent_performance_metrics(
-        self, agent_id: str
-    ) -> List[Dict[str, Any]]:
-        """
-        Get agent performance metrics from PostgreSQL.
+        self, agent_id: str,
+    ) -> list[dict[str, Any]]:
+        """Get agent performance metrics from PostgreSQL.
 
         Args:
             agent_id: Agent identifier
 
         Returns:
             List of performance metrics
+
         """
         try:
             agent_data = await self.load_agent_data(agent_id)
@@ -181,9 +179,8 @@ class PostgresDataLoader:
             logger.error(f"❌ Failed to get performance metrics for {agent_id}: {e}")
             return []
 
-    async def compare_agents(self, agent1_id: str, agent2_id: str) -> Dict[str, Any]:
-        """
-        Compare two agents from PostgreSQL.
+    async def compare_agents(self, agent1_id: str, agent2_id: str) -> dict[str, Any]:
+        """Compare two agents from PostgreSQL.
 
         Args:
             agent1_id: First agent identifier
@@ -191,6 +188,7 @@ class PostgresDataLoader:
 
         Returns:
             Dictionary containing comparison results
+
         """
         try:
             agent1_data = await self.load_agent_data(agent1_id)
@@ -225,10 +223,9 @@ class PostgresDataLoader:
             return {}
 
     def _calculate_trait_similarity(
-        self, traits1: Dict[str, float], traits2: Dict[str, float]
+        self, traits1: dict[str, float], traits2: dict[str, float],
     ) -> float:
-        """
-        Calculate similarity between two trait dictionaries.
+        """Calculate similarity between two trait dictionaries.
 
         Args:
             traits1: First trait dictionary
@@ -236,6 +233,7 @@ class PostgresDataLoader:
 
         Returns:
             Similarity score between 0.0 and 1.0
+
         """
         if not traits1 or not traits2:
             return 0.0

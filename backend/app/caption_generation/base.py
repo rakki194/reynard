@@ -1,5 +1,4 @@
-"""
-Base classes and interfaces for Reynard caption generation.
+"""Base classes and interfaces for Reynard caption generation.
 
 This module defines the abstract base class for caption generators, establishing
 a common interface that all caption generators must implement. This allows for
@@ -16,7 +15,6 @@ from .types import CaptionType, ModelCategory
 class CaptionGeneratorBase(CaptionGenerator, CaptionGeneratorMixin):
     """Base class combining the abstract interface with the mixin functionality."""
 
-    pass
 
 
 # Re-export for backward compatibility

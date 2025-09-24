@@ -1,5 +1,4 @@
-"""
-Tests for edge cases and additional coverage in the Gatekeeper library.
+"""Tests for edge cases and additional coverage in the Gatekeeper library.
 
 This module tests edge cases and scenarios that might not be covered by the main tests.
 """
@@ -128,14 +127,14 @@ class TestEdgeCases:
         # Test creating user with empty username
         with pytest.raises(ValueError):
             user_data = UserCreate(
-                username="", password="TestPass123!", email="test@example.com"
+                username="", password="TestPass123!", email="test@example.com",
             )
             await auth_manager.create_user(user_data)
 
         # Test creating user with None username
         with pytest.raises(ValueError):
             user_data = UserCreate(
-                username=None, password="TestPass123!", email="test@example.com"
+                username=None, password="TestPass123!", email="test@example.com",
             )
             await auth_manager.create_user(user_data)
 
@@ -306,7 +305,7 @@ class TestBackendEdgeCases:
                     email="test@example.com",
                     role=UserRole.REGULAR,
                     password_hash="hash",
-                )
+                ),
             )
 
         with pytest.raises(BackendError):

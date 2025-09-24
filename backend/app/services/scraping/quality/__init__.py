@@ -1,5 +1,4 @@
-"""
-Quality Assessment for Reynard Backend
+"""Quality Assessment for Reynard Backend
 
 Content quality scoring and assessment utilities.
 """

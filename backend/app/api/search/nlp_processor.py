@@ -1,5 +1,4 @@
-"""
-Natural Language Processing Module
+"""Natural Language Processing Module
 =================================
 
 Handles natural language query processing for intelligent search capabilities.
@@ -7,7 +6,7 @@ Handles natural language query processing for intelligent search capabilities.
 
 import logging
 import re
-from typing import Any, Dict, List
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -108,15 +107,15 @@ class NaturalLanguageProcessor:
             "rust": ["fn ", "struct ", "impl ", "use ", "mod "],
         }
 
-    def process_query(self, query: str) -> Dict[str, Any]:
-        """
-        Process a natural language query into structured search parameters.
+    def process_query(self, query: str) -> dict[str, Any]:
+        """Process a natural language query into structured search parameters.
 
         Args:
             query: Natural language search query
 
         Returns:
             Structured search parameters with intent, expanded terms, and filters
+
         """
         try:
             # Clean and normalize the query
@@ -217,7 +216,7 @@ class NaturalLanguageProcessor:
         # Default to general search
         return "general_search"
 
-    def _extract_entities(self, query: str) -> List[Dict[str, Any]]:
+    def _extract_entities(self, query: str) -> list[dict[str, Any]]:
         """Extract entities and concepts from the query."""
         entities = []
         query_lower = query.lower()
@@ -230,7 +229,7 @@ class NaturalLanguageProcessor:
                         "type": "programming_language",
                         "value": lang,
                         "confidence": 0.8,
-                    }
+                    },
                 )
 
         # Extract code concepts
@@ -241,7 +240,7 @@ class NaturalLanguageProcessor:
                         "type": "code_concept",
                         "value": concept,
                         "confidence": 0.7,
-                    }
+                    },
                 )
 
         # Extract potential function/class names (capitalized words)
@@ -252,12 +251,12 @@ class NaturalLanguageProcessor:
                     "type": "potential_identifier",
                     "value": name,
                     "confidence": 0.6,
-                }
+                },
             )
 
         return entities
 
-    def _expand_query(self, query: str) -> List[str]:
+    def _expand_query(self, query: str) -> list[str]:
         """Expand query with synonyms and related terms."""
         expanded = [query]
         query_lower = query.lower()
@@ -277,7 +276,7 @@ class NaturalLanguageProcessor:
                     query_lower + " def",
                     query_lower + " method",
                     "def " + query_lower,
-                ]
+                ],
             )
 
         if "class" in query_lower:
@@ -285,13 +284,13 @@ class NaturalLanguageProcessor:
                 [
                     query_lower + " class",
                     "class " + query_lower,
-                ]
+                ],
             )
 
         return expanded[:5]  # Limit to top 5 expansions
 
     def _determine_search_strategy(
-        self, intent: str, entities: List[Dict[str, Any]]
+        self, intent: str, entities: list[dict[str, Any]],
     ) -> str:
         """Determine the best search strategy based on intent and entities."""
         # If we have specific code patterns, use hybrid search
@@ -306,8 +305,8 @@ class NaturalLanguageProcessor:
         return "semantic"
 
     def _generate_code_patterns(
-        self, intent: str, entities: List[Dict[str, Any]]
-    ) -> List[str]:
+        self, intent: str, entities: list[dict[str, Any]],
+    ) -> list[str]:
         """Generate code patterns based on intent and entities."""
         patterns = []
 
@@ -318,7 +317,7 @@ class NaturalLanguageProcessor:
                     r"function\s+\w+",
                     r"const\s+\w+\s*=",
                     r"public\s+\w+\s+\w+\(",
-                ]
+                ],
             )
 
         elif intent == "class_search":
@@ -327,7 +326,7 @@ class NaturalLanguageProcessor:
                     r"class\s+\w+",
                     r"interface\s+\w+",
                     r"struct\s+\w+",
-                ]
+                ],
             )
 
         elif intent == "error_handling":
@@ -338,7 +337,7 @@ class NaturalLanguageProcessor:
                     r"except\s+",
                     r"throw\s+",
                     r"raise\s+",
-                ]
+                ],
             )
 
         # Add patterns based on entities
@@ -349,8 +348,8 @@ class NaturalLanguageProcessor:
         return patterns
 
     def _determine_file_filters(
-        self, intent: str, entities: List[Dict[str, Any]]
-    ) -> Dict[str, Any]:
+        self, intent: str, entities: list[dict[str, Any]],
+    ) -> dict[str, Any]:
         """Determine file type and directory filters."""
         file_types = self._get_file_types_from_entities(entities)
         directories = self._get_directories_from_intent(intent, entities)
@@ -361,34 +360,34 @@ class NaturalLanguageProcessor:
         }
 
     def _get_file_types_from_entities(
-        self, entities: List[Dict[str, Any]]
-    ) -> List[str] | None:
+        self, entities: list[dict[str, Any]],
+    ) -> list[str] | None:
         """Get file types based on programming language entities."""
         for entity in entities:
             if entity["type"] == "programming_language":
                 lang = entity["value"]
                 if lang == "python":
                     return ["py"]
-                elif lang in ["typescript", "javascript"]:
+                if lang in ["typescript", "javascript"]:
                     return ["ts", "tsx", "js", "jsx"]
-                elif lang == "java":
+                if lang == "java":
                     return ["java"]
-                elif lang == "go":
+                if lang == "go":
                     return ["go"]
-                elif lang == "rust":
+                if lang == "rust":
                     return ["rs"]
         return None
 
     def _get_directories_from_intent(
-        self, intent: str, entities: List[Dict[str, Any]]
-    ) -> List[str] | None:
+        self, intent: str, entities: list[dict[str, Any]],
+    ) -> list[str] | None:
         """Get directories based on intent and entities."""
         # Determine directories based on intent
         if intent == "api_endpoints":
             return ["backend/app/api"]
-        elif intent == "testing":
+        if intent == "testing":
             return ["tests", "**/__tests__"]
-        elif intent == "configuration":
+        if intent == "configuration":
             return None  # Will be determined by file types
 
         # Determine directories based on programming language entities
@@ -397,13 +396,13 @@ class NaturalLanguageProcessor:
                 lang = entity["value"]
                 if lang == "python":
                     return ["backend", "scripts"]
-                elif lang in ["typescript", "javascript"]:
+                if lang in ["typescript", "javascript"]:
                     return ["packages", "examples", "templates"]
 
         return None
 
     def _calculate_confidence(
-        self, intent: str, entities: List[Dict[str, Any]]
+        self, intent: str, entities: list[dict[str, Any]],
     ) -> float:
         """Calculate confidence score for the processed query."""
         confidence = 0.5  # Base confidence
@@ -421,7 +420,7 @@ class NaturalLanguageProcessor:
 
         return min(confidence, 1.0)
 
-    def generate_search_suggestions(self, query: str) -> List[Dict[str, Any]]:
+    def generate_search_suggestions(self, query: str) -> list[dict[str, Any]]:
         """Generate intelligent search suggestions based on the query."""
         suggestions = []
         processed = self.process_query(query)
@@ -440,7 +439,7 @@ class NaturalLanguageProcessor:
                         "type": "intent_refinement",
                         "confidence": 0.8,
                     },
-                ]
+                ],
             )
 
         # Suggest related concepts
@@ -454,7 +453,7 @@ class NaturalLanguageProcessor:
                                 "suggestion": query.replace(concept, synonym),
                                 "type": "synonym",
                                 "confidence": 0.6,
-                            }
+                            },
                         )
 
         return suggestions[:5]  # Limit to top 5 suggestions

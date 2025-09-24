@@ -2,6 +2,108 @@
 
 Unified testing framework for Reynard packages with comprehensive utilities, mocks, and configurations.
 
+## Architecture
+
+```mermaid
+graph TB
+    subgraph "🧪 Testing Framework"
+        A[Test Utils] --> B[Config System]
+        A --> C[Mock System]
+        A --> D[Setup System]
+        A --> E[Assertion Utils]
+        
+        subgraph "Configuration System"
+            B --> B1[Vitest Base Config]
+            B --> B2[Component Config]
+            B --> B3[Integration Config]
+            B --> B4[E2E Config]
+            B --> B5[Package Configs]
+        end
+        
+        subgraph "Mock System"
+            C --> C1[Browser Mocks]
+            C --> C2[SolidJS Mocks]
+            C --> C3[External Mocks]
+            C --> C4[Media Mocks]
+            C --> C5[Canvas Mocks]
+        end
+        
+        subgraph "Setup System"
+            D --> D1[Base Setup]
+            D --> D2[Component Setup]
+            D --> D3[AI Setup]
+            D --> D4[3D Setup]
+            D --> D5[Media Setup]
+            D --> D6[Gallery Setup]
+        end
+        
+        subgraph "Assertion Utils"
+            E --> E1[Component Assertions]
+            E --> E2[Async Assertions]
+            E --> E3[DOM Utils]
+            E --> E4[Mock Utils]
+        end
+    end
+    
+    subgraph "🌍 Monorepo Integration"
+        F[Vitest Workspace] --> G[95+ Packages]
+        F --> H[Global Queue System]
+        F --> I[Happy-DOM Environment]
+        F --> J[Coverage Reports]
+    end
+    
+    subgraph "🔧 i18n Testing"
+        K[i18n Testing] --> L[Package Orchestrator]
+        K --> M[ESLint Plugin]
+        K --> N[CI Checks]
+        K --> O[Validation]
+    end
+    
+    A -->|Configures| F
+    A -->|Supports| K
+```
+
+## Testing Workflow
+
+```mermaid
+flowchart TD
+    A[Package Test] --> B{Test Type?}
+    
+    B -->|Component| C[Component Config]
+    B -->|Integration| D[Integration Config]
+    B -->|E2E| E[E2E Config]
+    B -->|Base| F[Base Config]
+    
+    C --> G[Happy-DOM Setup]
+    D --> G
+    E --> G
+    F --> G
+    
+    G --> H[Mock System]
+    H --> I[Browser APIs]
+    H --> J[SolidJS]
+    H --> K[External Libs]
+    H --> L[Media APIs]
+    
+    I --> M[Test Execution]
+    J --> M
+    K --> M
+    L --> M
+    
+    M --> N[Assertion Utils]
+    N --> O[Component Checks]
+    N --> P[Async Validation]
+    N --> Q[DOM Queries]
+    
+    O --> R[Coverage Report]
+    P --> R
+    Q --> R
+    
+    R --> S[Global Queue]
+    S --> T[95+ Packages]
+    T --> U[Monorepo Results]
+```
+
 ## Features
 
 - **Unified Configuration**: Standardized Vitest configs for all package types

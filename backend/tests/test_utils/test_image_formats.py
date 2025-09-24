@@ -1,5 +1,4 @@
-"""
-Tests for image format support utilities.
+"""Tests for image format support utilities.
 
 This module tests the ImageFormatSupport class and its methods
 for format detection, validation, and information retrieval.
@@ -47,7 +46,7 @@ class TestImageFormatSupport:
         for ext in valid_extensions:
             assert ImageFormatSupport.is_supported_format(ext)
             assert ImageFormatSupport.is_supported_format(
-                ext.upper()
+                ext.upper(),
             )  # Case insensitive
 
     def test_is_supported_format_invalid_extensions(self):
@@ -184,7 +183,7 @@ class TestImageFormatSupport:
         for ext in transparent_formats:
             assert ImageFormatSupport.supports_transparency(ext)
             assert ImageFormatSupport.supports_transparency(
-                ext.upper()
+                ext.upper(),
             )  # Case insensitive
 
         # Formats that don't support transparency

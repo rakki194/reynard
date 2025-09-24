@@ -1,5 +1,4 @@
-"""
-Vector Store Service: PostgreSQL + pgvector management for embeddings.
+"""Vector Store Service: PostgreSQL + pgvector management for embeddings.
 
 This service provides:
 - Vector similarity search with HNSW indexing
@@ -13,7 +12,7 @@ import json
 import logging
 import time
 from collections.abc import Sequence
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from sqlalchemy import create_engine, text
 from sqlalchemy.engine import Engine
@@ -25,12 +24,12 @@ class VectorStoreService:
     """PostgreSQL + pgvector service for vector operations."""
 
     def __init__(self) -> None:
-        self._engine: Optional[Engine] = None
+        self._engine: Engine | None = None
         self._enabled: bool = False
-        self._dsn: Optional[str] = None
+        self._dsn: str | None = None
 
         # Performance metrics
-        self._metrics: Dict[str, Any] = {
+        self._metrics: dict[str, Any] = {
             "queries": 0,
             "inserts": 0,
             "errors": 0,
@@ -38,7 +37,7 @@ class VectorStoreService:
             "connection_retries": 0,
         }
 
-    async def initialize(self, config: Dict[str, Any]) -> bool:
+    async def initialize(self, config: dict[str, Any]) -> bool:
         """Initialize the vector store service."""
         try:
             self._enabled = config.get("rag_enabled", False)
@@ -91,19 +90,19 @@ class VectorStoreService:
                     SELECT EXISTS(
                         SELECT 1 FROM pg_extension WHERE extname = 'vector'
                     )
-                """
-                    )
+                """,
+                    ),
                 ).fetchone()
 
                 if not result[0]:
                     logger.error(
-                        "pgvector extension not found. Please install it first."
+                        "pgvector extension not found. Please install it first.",
                     )
                     return False
 
                 # Check version
                 version_result = conn.execute(
-                    text("SELECT extversion FROM pg_extension WHERE extname = 'vector'")
+                    text("SELECT extversion FROM pg_extension WHERE extname = 'vector'"),
                 ).fetchone()
                 if version_result:
                     logger.info(f"pgvector version: {version_result[0]}")
@@ -127,13 +126,13 @@ class VectorStoreService:
                         WHERE table_schema = 'public' 
                         AND table_name = 'datasets'
                     )
-                """
-                    )
+                """,
+                    ),
                 ).fetchone()
 
                 if result and result[0]:
                     logger.info(
-                        "Unified repository schema detected, skipping table creation"
+                        "Unified repository schema detected, skipping table creation",
                     )
                     # Just ensure the metadata index exists for compatibility
                     try:
@@ -141,15 +140,15 @@ class VectorStoreService:
                             text(
                                 """
                             CREATE INDEX IF NOT EXISTS embeddings_metadata_idx ON embeddings USING GIN(metadata);
-                        """
-                            )
+                        """,
+                            ),
                         )
                         conn.commit()
                         logger.info("Compatibility indexes created successfully")
                         return True
                     except Exception as idx_error:
                         logger.warning(
-                            f"Could not create compatibility index: {idx_error}"
+                            f"Could not create compatibility index: {idx_error}",
                         )
                         return True  # Continue anyway
                 else:
@@ -167,8 +166,8 @@ class VectorStoreService:
                             updated_at TIMESTAMP DEFAULT NOW(),
                             UNIQUE(name, version)
                         )
-                    """
-                        )
+                    """,
+                        ),
                     )
 
                     # Create files table
@@ -196,8 +195,8 @@ class VectorStoreService:
                             updated_at TIMESTAMP DEFAULT NOW(),
                             UNIQUE(dataset_id, path)
                         )
-                    """
-                        )
+                    """,
+                        ),
                     )
 
                     # Create embeddings table with vector column
@@ -214,8 +213,8 @@ class VectorStoreService:
                             created_at TIMESTAMP DEFAULT NOW(),
                             updated_at TIMESTAMP DEFAULT NOW()
                         )
-                    """
-                        )
+                    """,
+                        ),
                     )
 
                     # Create HNSW index for fast similarity search
@@ -225,8 +224,8 @@ class VectorStoreService:
                         CREATE INDEX IF NOT EXISTS embeddings_embedding_hnsw_idx 
                         ON embeddings USING hnsw (embedding vector_cosine_ops)
                         WITH (m = 16, ef_construction = 64)
-                    """
-                        )
+                    """,
+                        ),
                     )
 
                     # Create additional indexes for performance
@@ -237,8 +236,8 @@ class VectorStoreService:
                         CREATE INDEX IF NOT EXISTS files_path_idx ON files(path);
                         CREATE INDEX IF NOT EXISTS embeddings_file_id_idx ON embeddings(file_id);
                         CREATE INDEX IF NOT EXISTS embeddings_metadata_idx ON embeddings USING GIN(metadata);
-                    """
-                        )
+                    """,
+                        ),
                     )
 
                     # Create RAG-specific tables for backward compatibility
@@ -253,8 +252,8 @@ class VectorStoreService:
                             created_at TIMESTAMP DEFAULT NOW(),
                             updated_at TIMESTAMP DEFAULT NOW()
                         )
-                    """
-                        )
+                    """,
+                        ),
                     )
 
                     conn.execute(
@@ -269,8 +268,8 @@ class VectorStoreService:
                             created_at TIMESTAMP DEFAULT NOW(),
                             updated_at TIMESTAMP DEFAULT NOW()
                         )
-                    """
-                        )
+                    """,
+                        ),
                     )
 
                     conn.execute(
@@ -286,8 +285,8 @@ class VectorStoreService:
                             created_at TIMESTAMP DEFAULT NOW(),
                             updated_at TIMESTAMP DEFAULT NOW()
                         )
-                    """
-                        )
+                    """,
+                        ),
                     )
 
                     # Create indexes for RAG tables
@@ -300,8 +299,8 @@ class VectorStoreService:
                         CREATE INDEX IF NOT EXISTS rag_document_embeddings_embedding_hnsw_idx 
                         ON rag_document_embeddings USING hnsw (embedding vector_cosine_ops)
                         WITH (m = 16, ef_construction = 64);
-                    """
-                        )
+                    """,
+                        ),
                     )
 
                     conn.commit()
@@ -317,7 +316,7 @@ class VectorStoreService:
         return f"[{','.join(map(str, vector))}]"
 
     async def insert_document_embeddings(
-        self, embeddings: Sequence[Dict[str, Any]]
+        self, embeddings: Sequence[dict[str, Any]],
     ) -> int:
         """Insert document embeddings into the database."""
         if not self._enabled or not self._engine:
@@ -342,7 +341,7 @@ class VectorStoreService:
                         INSERT INTO rag_documents (source, content, metadata)
                         VALUES (:source, :content, :metadata)
                         RETURNING id
-                    """
+                    """,
                         ),
                         {
                             "source": file_path,
@@ -363,7 +362,7 @@ class VectorStoreService:
                         INSERT INTO rag_document_chunks (document_id, chunk_index, text, metadata)
                         VALUES (:document_id, :chunk_index, :text, :metadata)
                         RETURNING id
-                    """
+                    """,
                         ),
                         {
                             "document_id": doc_id,
@@ -389,7 +388,7 @@ class VectorStoreService:
                             ) VALUES (
                                 :chunk_id, :model_id, :dim, :embedding, :metric
                             )
-                        """
+                        """,
                             ),
                             {
                                 "chunk_id": chunk_id,
@@ -420,9 +419,9 @@ class VectorStoreService:
         self,
         query_embedding: Sequence[float],
         limit: int = 20,
-        dataset_id: Optional[str] = None,
+        dataset_id: str | None = None,
         similarity_threshold: float = 0.0,
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """Perform similarity search using vector cosine similarity."""
         if not self._enabled or not self._engine:
             return []
@@ -446,7 +445,7 @@ class VectorStoreService:
                 """
 
                 where_conditions = [
-                    "1 - (de.embedding <=> :query_embedding) > :threshold"
+                    "1 - (de.embedding <=> :query_embedding) > :threshold",
                 ]
                 params = {
                     "query_embedding": self.vector_literal(query_embedding),
@@ -477,7 +476,7 @@ class VectorStoreService:
                             "path": row[3],
                             "file_metadata": row[4] or {},
                             "similarity": float(row[5]),
-                        }
+                        },
                     )
 
                 # Update metrics
@@ -491,7 +490,7 @@ class VectorStoreService:
             self._metrics["errors"] += 1
             return []
 
-    async def get_document_chunks(self, file_id: str) -> List[Dict[str, Any]]:
+    async def get_document_chunks(self, file_id: str) -> list[dict[str, Any]]:
         """Get all chunks for a specific document."""
         if not self._enabled or not self._engine:
             return []
@@ -510,7 +509,7 @@ class VectorStoreService:
                     FROM embeddings e
                     WHERE e.file_id = :file_id
                     ORDER BY e.chunk_index
-                """
+                """,
                     ),
                     {"file_id": file_id},
                 )
@@ -524,7 +523,7 @@ class VectorStoreService:
                             "text": row[2],
                             "metadata": row[3] or {},
                             "created_at": row[4],
-                        }
+                        },
                     )
 
                 return chunks
@@ -548,7 +547,7 @@ class VectorStoreService:
 
                 # Delete file
                 result = conn.execute(
-                    text("DELETE FROM files WHERE id = :file_id"), {"file_id": file_id}
+                    text("DELETE FROM files WHERE id = :file_id"), {"file_id": file_id},
                 )
 
                 conn.commit()
@@ -559,7 +558,7 @@ class VectorStoreService:
             logger.error(f"Failed to delete document: {e}")
             return False
 
-    async def get_dataset_stats(self, dataset_id: str) -> Dict[str, Any]:
+    async def get_dataset_stats(self, dataset_id: str) -> dict[str, Any]:
         """Get statistics for a specific dataset."""
         if not self._enabled or not self._engine:
             return {}
@@ -571,7 +570,7 @@ class VectorStoreService:
                     text(
                         """
                     SELECT COUNT(*) FROM files WHERE dataset_id = :dataset_id
-                """
+                """,
                     ),
                     {"dataset_id": dataset_id},
                 ).fetchone()
@@ -583,7 +582,7 @@ class VectorStoreService:
                     SELECT COUNT(*) FROM embeddings e
                     JOIN files f ON e.file_id = f.id
                     WHERE f.dataset_id = :dataset_id
-                """
+                """,
                     ),
                     {"dataset_id": dataset_id},
                 ).fetchone()
@@ -593,7 +592,7 @@ class VectorStoreService:
                     text(
                         """
                     SELECT COALESCE(SUM(size), 0) FROM files WHERE dataset_id = :dataset_id
-                """
+                """,
                     ),
                     {"dataset_id": dataset_id},
                 ).fetchone()
@@ -628,7 +627,7 @@ class VectorStoreService:
             logger.warning(f"VectorStoreService health check failed: {e}")
             return False
 
-    async def get_stats(self) -> Dict[str, Any]:
+    async def get_stats(self) -> dict[str, Any]:
         """Get vector store statistics."""
         if not self._enabled or not self._engine:
             return {"enabled": False}
@@ -637,13 +636,13 @@ class VectorStoreService:
             with self._engine.connect() as conn:
                 # Get total counts using the correct RAG table structure
                 document_count_result = conn.execute(
-                    text("SELECT COUNT(*) FROM rag_documents")
+                    text("SELECT COUNT(*) FROM rag_documents"),
                 ).fetchone()
                 embedding_count_result = conn.execute(
-                    text("SELECT COUNT(*) FROM rag_document_embeddings")
+                    text("SELECT COUNT(*) FROM rag_document_embeddings"),
                 ).fetchone()
                 chunk_count_result = conn.execute(
-                    text("SELECT COUNT(*) FROM rag_document_chunks")
+                    text("SELECT COUNT(*) FROM rag_document_chunks"),
                 ).fetchone()
 
                 return {

@@ -1,5 +1,4 @@
-"""
-Simple tests for the Diffusion LLM Service.
+"""Simple tests for the Diffusion LLM Service.
 
 This module tests the basic functionality of the diffusion service
 with minimal mocking to achieve coverage.
@@ -41,9 +40,9 @@ class TestDiffusionLLMServiceSimple:
                         "path": "/models/dreamon-1b",
                         "type": "dreamon",
                         "max_tokens": 512,
-                    }
+                    },
                 },
-            }
+            },
         }
 
     @pytest.mark.asyncio
@@ -61,10 +60,10 @@ class TestDiffusionLLMServiceSimple:
         """Test successful service initialization."""
         with (
             patch(
-                "app.services.diffusion.diffusion_service.DiffusionModelManager"
+                "app.services.diffusion.diffusion_service.DiffusionModelManager",
             ) as mock_model_manager,
             patch(
-                "app.services.diffusion.diffusion_service.DeviceManager"
+                "app.services.diffusion.diffusion_service.DeviceManager",
             ) as mock_device_manager,
         ):
 
@@ -89,10 +88,10 @@ class TestDiffusionLLMServiceSimple:
         # Initialize service
         with (
             patch(
-                "app.services.diffusion.diffusion_service.DiffusionModelManager"
+                "app.services.diffusion.diffusion_service.DiffusionModelManager",
             ) as mock_model_manager,
             patch(
-                "app.services.diffusion.diffusion_service.DeviceManager"
+                "app.services.diffusion.diffusion_service.DeviceManager",
             ) as mock_device_manager,
         ):
 
@@ -102,13 +101,13 @@ class TestDiffusionLLMServiceSimple:
             # Mock streaming response
             async def mock_stream(params):
                 yield DiffusionStreamEvent(
-                    type="token", data="Hello", timestamp=1234567890
+                    type="token", data="Hello", timestamp=1234567890,
                 )
                 yield DiffusionStreamEvent(
-                    type="token", data=" world", timestamp=1234567891
+                    type="token", data=" world", timestamp=1234567891,
                 )
                 yield DiffusionStreamEvent(
-                    type="complete", data="", timestamp=1234567892
+                    type="complete", data="", timestamp=1234567892,
                 )
 
             # Create a mock model that has the generate_stream method
@@ -126,7 +125,7 @@ class TestDiffusionLLMServiceSimple:
             await service.initialize(mock_config)
 
             params = DiffusionGenerationParams(
-                text="Test prompt", max_length=100, temperature=0.7
+                text="Test prompt", max_length=100, temperature=0.7,
             )
 
             events = []
@@ -144,10 +143,10 @@ class TestDiffusionLLMServiceSimple:
         # Initialize service
         with (
             patch(
-                "app.services.diffusion.diffusion_service.DiffusionModelManager"
+                "app.services.diffusion.diffusion_service.DiffusionModelManager",
             ) as mock_model_manager,
             patch(
-                "app.services.diffusion.diffusion_service.DeviceManager"
+                "app.services.diffusion.diffusion_service.DeviceManager",
             ) as mock_device_manager,
         ):
 
@@ -157,10 +156,10 @@ class TestDiffusionLLMServiceSimple:
             # Mock streaming response
             async def mock_stream(params):
                 yield DiffusionStreamEvent(
-                    type="token", data="infilled", timestamp=1234567890
+                    type="token", data="infilled", timestamp=1234567890,
                 )
                 yield DiffusionStreamEvent(
-                    type="complete", data="", timestamp=1234567891
+                    type="complete", data="", timestamp=1234567891,
                 )
 
             # Create a mock model that has the infill_stream method
@@ -178,7 +177,7 @@ class TestDiffusionLLMServiceSimple:
             await service.initialize(mock_config)
 
             params = DiffusionInfillingParams(
-                prefix="Hello ", suffix=" world", max_length=50
+                prefix="Hello ", suffix=" world", max_length=50,
             )
 
             events = []
@@ -196,10 +195,10 @@ class TestDiffusionLLMServiceSimple:
         # Initialize service
         with (
             patch(
-                "app.services.diffusion.diffusion_service.DiffusionModelManager"
+                "app.services.diffusion.diffusion_service.DiffusionModelManager",
             ) as mock_model_manager,
             patch(
-                "app.services.diffusion.diffusion_service.DeviceManager"
+                "app.services.diffusion.diffusion_service.DeviceManager",
             ) as mock_device_manager,
         ):
 
@@ -213,7 +212,7 @@ class TestDiffusionLLMServiceSimple:
                     max_length=512,
                     is_available=True,
                     device="cuda",
-                )
+                ),
             ]
             mock_model_manager.return_value = mock_model_mgr
 
@@ -235,10 +234,10 @@ class TestDiffusionLLMServiceSimple:
         # Initialize service
         with (
             patch(
-                "app.services.diffusion.diffusion_service.DiffusionModelManager"
+                "app.services.diffusion.diffusion_service.DiffusionModelManager",
             ) as mock_model_manager,
             patch(
-                "app.services.diffusion.diffusion_service.DeviceManager"
+                "app.services.diffusion.diffusion_service.DeviceManager",
             ) as mock_device_manager,
         ):
 
@@ -264,10 +263,10 @@ class TestDiffusionLLMServiceSimple:
         # Initialize service
         with (
             patch(
-                "app.services.diffusion.diffusion_service.DiffusionModelManager"
+                "app.services.diffusion.diffusion_service.DiffusionModelManager",
             ) as mock_model_manager,
             patch(
-                "app.services.diffusion.diffusion_service.DeviceManager"
+                "app.services.diffusion.diffusion_service.DeviceManager",
             ) as mock_device_manager,
         ):
 
@@ -304,10 +303,10 @@ class TestDiffusionLLMServiceSimple:
         # Initialize service
         with (
             patch(
-                "app.services.diffusion.diffusion_service.DiffusionModelManager"
+                "app.services.diffusion.diffusion_service.DiffusionModelManager",
             ) as mock_model_manager,
             patch(
-                "app.services.diffusion.diffusion_service.DeviceManager"
+                "app.services.diffusion.diffusion_service.DeviceManager",
             ) as mock_device_manager,
         ):
 
@@ -321,7 +320,7 @@ class TestDiffusionLLMServiceSimple:
                     max_length=512,
                     is_available=True,
                     description="Test model",
-                )
+                ),
             ]
             mock_model_manager.return_value = mock_model_mgr
 
@@ -342,10 +341,10 @@ class TestDiffusionLLMServiceSimple:
         # Initialize service
         with (
             patch(
-                "app.services.diffusion.diffusion_service.DiffusionModelManager"
+                "app.services.diffusion.diffusion_service.DiffusionModelManager",
             ) as mock_model_manager,
             patch(
-                "app.services.diffusion.diffusion_service.DeviceManager"
+                "app.services.diffusion.diffusion_service.DeviceManager",
             ) as mock_device_manager,
         ):
 
@@ -370,10 +369,10 @@ class TestDiffusionLLMServiceSimple:
         # Initialize service
         with (
             patch(
-                "app.services.diffusion.diffusion_service.DiffusionModelManager"
+                "app.services.diffusion.diffusion_service.DiffusionModelManager",
             ) as mock_model_manager,
             patch(
-                "app.services.diffusion.diffusion_service.DeviceManager"
+                "app.services.diffusion.diffusion_service.DeviceManager",
             ) as mock_device_manager,
         ):
 
@@ -411,7 +410,7 @@ class TestDiffusionLLMServiceSimple:
     async def test_error_handling_initialization_failure(self, service, mock_config):
         """Test error handling during initialization failure."""
         with patch(
-            "app.services.diffusion.diffusion_service.DiffusionModelManager"
+            "app.services.diffusion.diffusion_service.DiffusionModelManager",
         ) as mock_model_manager:
             mock_model_mgr = AsyncMock()
             mock_model_mgr.initialize.return_value = False

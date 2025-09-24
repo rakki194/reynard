@@ -17,7 +17,7 @@ export interface QueryState<T extends Component[]> {
  * Query state manager for caching and optimization.
  */
 export class QueryStateManager {
-  private queryStates: Map<string, QueryState<any>> = new Map();
+  private queryStates: Map<string, QueryState<Component[]>> = new Map();
   private lastWorldUpdate: number = 0;
 
   /**

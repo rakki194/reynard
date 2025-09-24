@@ -1,11 +1,10 @@
-"""
-Security Configuration Management for Reynard Backend
+"""Security Configuration Management for Reynard Backend
 """
 
 import logging
 import os
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from pydantic import BaseModel, Field
 
@@ -14,6 +13,7 @@ logger = logging.getLogger(__name__)
 
 class SecurityLevel(Enum):
     """Security levels for different environments."""
+
     DEVELOPMENT = "development"
     STAGING = "staging"
     PRODUCTION = "production"
@@ -21,43 +21,53 @@ class SecurityLevel(Enum):
 
 class SecurityConfig(BaseModel):
     """Main security configuration model."""
-    
+
     security_level: SecurityLevel = SecurityLevel.DEVELOPMENT
     enabled: bool = True
-    
+
     # Threat detection settings
     threat_detection_enabled: bool = True
     sql_injection_detection: bool = True
     command_injection_detection: bool = True
     xss_detection: bool = True
     path_traversal_detection: bool = True
-    
+
     # Rate limiting settings
     rate_limiting_enabled: bool = True
     adaptive_rate_limiting: bool = True
     default_rate_limit: str = "100/minute"
     auth_rate_limit: str = "5/minute"
-    
+
     # Security headers
     security_headers_enabled: bool = True
     x_content_type_options: str = "nosniff"
     x_frame_options: str = "DENY"
     x_xss_protection: str = "1; mode=block"
-    
+
     # Logging settings
     security_logging_enabled: bool = True
     log_level: str = "INFO"
-    
+
     # Monitoring settings
     monitoring_enabled: bool = True
     collect_metrics: bool = True
-    
+
     # Environment-specific settings
-    excluded_paths: List[str] = Field(default=[
-        "/api/docs", "/api/redoc", "/api/openapi.json", "/favicon.ico",
-        "/health", "/api/health", "/", "/api/search", "/api/rag", "/api/email/ai"
-    ])
-    
+    excluded_paths: list[str] = Field(
+        default=[
+            "/api/docs",
+            "/api/redoc",
+            "/api/openapi.json",
+            "/favicon.ico",
+            "/health",
+            "/api/health",
+            "/",
+            "/api/search",
+            "/api/rag",
+            "/api/email/ai",
+        ],
+    )
+
     development_bypass: bool = False
     debug_mode: bool = False
 
@@ -75,11 +85,11 @@ class SecurityConfig(BaseModel):
             return True
         return any(path.startswith(excluded) for excluded in self.excluded_paths)
 
-    def get_security_headers(self) -> Dict[str, str]:
+    def get_security_headers(self) -> dict[str, str]:
         """Get security headers configuration."""
         if not self.security_headers_enabled:
             return {}
-        
+
         return {
             "X-Content-Type-Options": self.x_content_type_options,
             "X-Frame-Options": self.x_frame_options,
@@ -93,9 +103,9 @@ class SecurityConfigManager:
     """Security configuration manager with hot-reload capabilities."""
 
     def __init__(self):
-        self._config: Optional[SecurityConfig] = None
+        self._config: SecurityConfig | None = None
 
-    def load_config(self, environment: Optional[str] = None) -> SecurityConfig:
+    def load_config(self, environment: str | None = None) -> SecurityConfig:
         """Load security configuration from environment variables."""
         # Determine security level
         security_level = SecurityLevel.DEVELOPMENT
@@ -103,27 +113,42 @@ class SecurityConfigManager:
             try:
                 security_level = SecurityLevel(environment.lower())
             except ValueError:
-                logger.warning(f"Invalid environment '{environment}', using development")
+                logger.warning(
+                    f"Invalid environment '{environment}', using development",
+                )
         elif os.getenv("SECURITY_LEVEL"):
             try:
                 security_level = SecurityLevel(os.getenv("SECURITY_LEVEL").lower())
             except ValueError:
                 logger.warning("Invalid SECURITY_LEVEL, using development")
-        
+
         # Create configuration with environment overrides
         config_data = {
             "security_level": security_level,
             "enabled": os.getenv("SECURITY_ENABLED", "true").lower() == "true",
-            "threat_detection_enabled": os.getenv("SECURITY_THREAT_DETECTION", "true").lower() == "true",
-            "rate_limiting_enabled": os.getenv("SECURITY_RATE_LIMITING", "true").lower() == "true",
-            "adaptive_rate_limiting": os.getenv("SECURITY_ADAPTIVE_RATE_LIMITING", "true").lower() == "true",
-            "security_headers_enabled": os.getenv("SECURITY_HEADERS", "true").lower() == "true",
-            "security_logging_enabled": os.getenv("SECURITY_LOGGING", "true").lower() == "true",
-            "monitoring_enabled": os.getenv("SECURITY_MONITORING", "true").lower() == "true",
-            "development_bypass": os.getenv("SECURITY_DEVELOPMENT_BYPASS", "false").lower() == "true",
+            "threat_detection_enabled": os.getenv(
+                "SECURITY_THREAT_DETECTION", "true",
+            ).lower()
+            == "true",
+            "rate_limiting_enabled": os.getenv("SECURITY_RATE_LIMITING", "true").lower()
+            == "true",
+            "adaptive_rate_limiting": os.getenv(
+                "SECURITY_ADAPTIVE_RATE_LIMITING", "true",
+            ).lower()
+            == "true",
+            "security_headers_enabled": os.getenv("SECURITY_HEADERS", "true").lower()
+            == "true",
+            "security_logging_enabled": os.getenv("SECURITY_LOGGING", "true").lower()
+            == "true",
+            "monitoring_enabled": os.getenv("SECURITY_MONITORING", "true").lower()
+            == "true",
+            "development_bypass": os.getenv(
+                "SECURITY_DEVELOPMENT_BYPASS", "false",
+            ).lower()
+            == "true",
             "debug_mode": os.getenv("SECURITY_DEBUG_MODE", "false").lower() == "true",
         }
-        
+
         self._config = SecurityConfig(**config_data)
         logger.info("Security configuration loaded successfully")
         return self._config
@@ -134,14 +159,14 @@ class SecurityConfigManager:
             self._config = SecurityConfig()
         return self._config
 
-    def update_config(self, updates: Dict[str, Any]) -> SecurityConfig:
+    def update_config(self, updates: dict[str, Any]) -> SecurityConfig:
         """Update configuration with new values."""
         if self._config is None:
             self._config = SecurityConfig()
-        
+
         config_dict = self._config.dict()
         config_dict.update(updates)
-        
+
         self._config = SecurityConfig(**config_dict)
         logger.info("Security configuration updated successfully")
         return self._config
@@ -156,12 +181,12 @@ def get_security_config() -> SecurityConfig:
     return security_config_manager.get_config()
 
 
-def load_security_config(environment: Optional[str] = None) -> SecurityConfig:
+def load_security_config(environment: str | None = None) -> SecurityConfig:
     """Load security configuration."""
     return security_config_manager.load_config(environment)
 
 
-def get_audit_logging_config() -> Dict[str, Any]:
+def get_audit_logging_config() -> dict[str, Any]:
     """Get audit logging configuration."""
     config = get_security_config()
     return {
@@ -175,7 +200,7 @@ def get_audit_logging_config() -> Dict[str, Any]:
     }
 
 
-def get_api_security_config() -> Dict[str, Any]:
+def get_api_security_config() -> dict[str, Any]:
     """Get API security configuration."""
     config = get_security_config()
     return {
@@ -189,20 +214,21 @@ def get_api_security_config() -> Dict[str, Any]:
     }
 
 
-def get_database_security_config() -> Dict[str, Any]:
+def get_database_security_config() -> dict[str, Any]:
     """Get database security configuration."""
     config = get_security_config()
     return {
         "enabled": config.enabled,
         "security_level": config.security_level.value,
-        "encryption_enabled": getattr(config, 'encryption_enabled', True),
-        "audit_enabled": getattr(config, 'audit_enabled', True),
+        "encryption_enabled": getattr(config, "encryption_enabled", True),
+        "audit_enabled": getattr(config, "audit_enabled", True),
     }
 
 
 # Additional configuration classes
 class APISecurityConfig(BaseModel):
     """API security configuration."""
+
     enabled: bool = True
     rate_limiting_enabled: bool = True
     adaptive_rate_limiting: bool = True
@@ -212,6 +238,7 @@ class APISecurityConfig(BaseModel):
 
 class AuditLoggingConfig(BaseModel):
     """Audit logging configuration."""
+
     enabled: bool = True
     log_level: str = "INFO"
     log_file: str = "security_audit.log"
@@ -223,6 +250,7 @@ class AuditLoggingConfig(BaseModel):
 
 class DatabaseSecurityConfig(BaseModel):
     """Database security configuration."""
+
     enabled: bool = True
     encryption_enabled: bool = True
     audit_enabled: bool = True
@@ -230,6 +258,7 @@ class DatabaseSecurityConfig(BaseModel):
 
 class EncryptionConfig(BaseModel):
     """Encryption configuration."""
+
     algorithm: str = "AES-256-GCM"
     key_size: int = 32
     iv_size: int = 12
@@ -237,6 +266,7 @@ class EncryptionConfig(BaseModel):
 
 class SecurityHeadersConfig(BaseModel):
     """Security headers configuration."""
+
     enabled: bool = True
     x_content_type_options: str = "nosniff"
     x_frame_options: str = "DENY"
@@ -245,6 +275,7 @@ class SecurityHeadersConfig(BaseModel):
 
 class SessionSecurityConfig(BaseModel):
     """Session security configuration."""
+
     enabled: bool = True
     secure: bool = True
     httponly: bool = True
@@ -253,6 +284,7 @@ class SessionSecurityConfig(BaseModel):
 
 class EncryptionAlgorithm(Enum):
     """Encryption algorithms."""
+
     AES_256_GCM = "AES-256-GCM"
     AES_256_CBC = "AES-256-CBC"
     RSA_2048 = "RSA-2048"
@@ -261,13 +293,14 @@ class EncryptionAlgorithm(Enum):
 
 class HashAlgorithm(Enum):
     """Hash algorithms."""
+
     SHA256 = "SHA256"
     SHA512 = "SHA512"
     BLAKE2B = "BLAKE2B"
     ARGON2 = "ARGON2"
 
 
-def get_encryption_config() -> Dict[str, Any]:
+def get_encryption_config() -> dict[str, Any]:
     """Get encryption configuration."""
     return {
         "algorithm": "AES-256-GCM",
@@ -276,7 +309,7 @@ def get_encryption_config() -> Dict[str, Any]:
     }
 
 
-def get_security_headers_config() -> Dict[str, Any]:
+def get_security_headers_config() -> dict[str, Any]:
     """Get security headers configuration."""
     config = get_security_config()
     return {
@@ -287,7 +320,7 @@ def get_security_headers_config() -> Dict[str, Any]:
     }
 
 
-def get_session_security_config() -> Dict[str, Any]:
+def get_session_security_config() -> dict[str, Any]:
     """Get session security configuration."""
     return {
         "enabled": True,

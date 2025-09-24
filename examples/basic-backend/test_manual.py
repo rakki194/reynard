@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Manual test script for uvicorn reload functionality
+"""Manual test script for uvicorn reload functionality
 Provides interactive testing of reload behavior
 """
 
@@ -243,7 +242,7 @@ class ManualReloadTester:
             for i in range(total_requests):
                 try:
                     response = requests.get(
-                        f"{self.base_url}/api/health/simple", timeout=2
+                        f"{self.base_url}/api/health/simple", timeout=2,
                     )
                     if response.status_code == 200:
                         success_count += 1
@@ -273,7 +272,7 @@ def main():
     # Check if we're in the right directory
     if not os.path.exists("main.py"):
         print(
-            "[FAIL] Error: main.py not found. Please run this script from the basic-backend directory."
+            "[FAIL] Error: main.py not found. Please run this script from the basic-backend directory.",
         )
         sys.exit(1)
 

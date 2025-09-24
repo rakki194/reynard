@@ -4,7 +4,7 @@
 
 import { Component } from "solid-js";
 import { LoginForm, RegisterForm } from "reynard-auth";
-import { Card } from "reynard-components";
+import { Card } from "reynard-components-core";
 import { useTheme } from "reynard-themes";
 import "./LoginPage.css";
 

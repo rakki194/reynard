@@ -1,5 +1,4 @@
-"""
-Git Tag Release Tracking for Success-Advisor-8
+"""Git Tag Release Tracking for Success-Advisor-8
 
 Tracks git tags and releases related to Success-Advisor-8 activities.
 """
@@ -7,11 +6,9 @@ Tracks git tags and releases related to Success-Advisor-8 activities.
 import asyncio
 import logging
 import re
-import subprocess
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
 
 logger = logging.getLogger(__name__)
 
@@ -33,23 +30,22 @@ class SuccessAdvisor8Release:
     """Represents a Success-Advisor-8 related release."""
 
     tag: GitTag
-    changelog_entries: List[str]
-    success_advisor_activities: List[str]
+    changelog_entries: list[str]
+    success_advisor_activities: list[str]
     release_type: str  # 'major', 'minor', 'patch', 'other'
     version: str
 
 
 class GitTagTracker:
-    """
-    Tracks git tags and releases for Success-Advisor-8 legacy tracking.
+    """Tracks git tags and releases for Success-Advisor-8 legacy tracking.
     """
 
     def __init__(self, repo_path: str = "."):
-        """
-        Initialize the git tag tracker.
+        """Initialize the git tag tracker.
 
         Args:
             repo_path: Path to the git repository
+
         """
         self.repo_path = Path(repo_path).resolve()
         self.success_advisor_pattern = re.compile(
@@ -57,12 +53,12 @@ class GitTagTracker:
             re.IGNORECASE,
         )
 
-    async def get_all_tags(self) -> List[GitTag]:
-        """
-        Get all git tags with metadata.
+    async def get_all_tags(self) -> list[GitTag]:
+        """Get all git tags with metadata.
 
         Returns:
             List of GitTag objects
+
         """
         try:
             # Get all tags with metadata
@@ -71,7 +67,7 @@ class GitTagTracker:
                     "tag",
                     "-l",
                     "--format=%(refname:short)|%(objectname)|%(creatordate:iso)|%(contents:subject)|%(creator)|%(type)",
-                ]
+                ],
             )
 
             tags = []
@@ -95,7 +91,7 @@ class GitTagTracker:
                                 message=message or "",
                                 author=author,
                                 is_annotated=is_annotated,
-                            )
+                            ),
                         )
                     except ValueError as e:
                         logger.warning(f"Failed to parse date for tag {name}: {e}")
@@ -107,12 +103,12 @@ class GitTagTracker:
             logger.error(f"Failed to get git tags: {e}")
             return []
 
-    async def get_success_advisor_8_releases(self) -> List[SuccessAdvisor8Release]:
-        """
-        Get all releases that contain Success-Advisor-8 activities.
+    async def get_success_advisor_8_releases(self) -> list[SuccessAdvisor8Release]:
+        """Get all releases that contain Success-Advisor-8 activities.
 
         Returns:
             List of SuccessAdvisor8Release objects
+
         """
         tags = await self.get_all_tags()
         releases = []
@@ -135,25 +131,25 @@ class GitTagTracker:
                         success_advisor_activities=activities,
                         release_type=release_type,
                         version=tag.name,
-                    )
+                    ),
                 )
 
         return releases
 
-    async def _get_tag_success_advisor_activities(self, tag: GitTag) -> List[str]:
-        """
-        Get Success-Advisor-8 activities for a specific tag.
+    async def _get_tag_success_advisor_activities(self, tag: GitTag) -> list[str]:
+        """Get Success-Advisor-8 activities for a specific tag.
 
         Args:
             tag: GitTag object
 
         Returns:
             List of activity descriptions
+
         """
         try:
             # Get the commit message and diff for this tag
             commit_info = await self._run_git_command(
-                ["show", "--name-only", "--pretty=format:%s%n%b", tag.commit_hash]
+                ["show", "--name-only", "--pretty=format:%s%n%b", tag.commit_hash],
             )
 
             activities = []
@@ -169,20 +165,20 @@ class GitTagTracker:
             logger.warning(f"Failed to get activities for tag {tag.name}: {e}")
             return []
 
-    async def _get_tag_changelog_entries(self, tag: GitTag) -> List[str]:
-        """
-        Get changelog entries for a specific tag.
+    async def _get_tag_changelog_entries(self, tag: GitTag) -> list[str]:
+        """Get changelog entries for a specific tag.
 
         Args:
             tag: GitTag object
 
         Returns:
             List of changelog entry lines
+
         """
         try:
             # Get the changelog content at this tag
             changelog_content = await self._run_git_command(
-                ["show", f"{tag.commit_hash}:CHANGELOG.md"]
+                ["show", f"{tag.commit_hash}:CHANGELOG.md"],
             )
 
             entries = []
@@ -194,10 +190,10 @@ class GitTagTracker:
                 if f"[{tag.name}]" in line or f"## [{tag.name}]" in line:
                     in_version_section = True
                     continue
-                elif line.startswith("## [") and in_version_section:
+                if line.startswith("## [") and in_version_section:
                     # Hit next version, stop
                     break
-                elif in_version_section and line.strip():
+                if in_version_section and line.strip():
                     entries.append(line.strip())
 
             return entries
@@ -207,14 +203,14 @@ class GitTagTracker:
             return []
 
     def _determine_release_type(self, version: str) -> str:
-        """
-        Determine the release type from version string.
+        """Determine the release type from version string.
 
         Args:
             version: Version string (e.g., "v1.2.3")
 
         Returns:
             Release type: 'major', 'minor', 'patch', or 'other'
+
         """
         # Remove 'v' prefix if present
         version = version.lstrip("v")
@@ -228,10 +224,10 @@ class GitTagTracker:
                 if patch != "0":
                     return "patch"
                 # Check if it's a minor release (minor number changed)
-                elif minor != "0":
+                if minor != "0":
                     return "minor"
                 # Check if it's a major release (major number changed)
-                elif major != "0":
+                if major != "0":
                     return "major"
 
             return "other"
@@ -239,15 +235,15 @@ class GitTagTracker:
         except (ValueError, IndexError):
             return "other"
 
-    async def _run_git_command(self, command: List[str]) -> str:
-        """
-        Run a git command and return the output.
+    async def _run_git_command(self, command: list[str]) -> str:
+        """Run a git command and return the output.
 
         Args:
             command: Git command as list of strings
 
         Returns:
             Command output as string
+
         """
         try:
             process = await asyncio.create_subprocess_exec(
@@ -262,7 +258,7 @@ class GitTagTracker:
 
             if process.returncode != 0:
                 logger.warning(
-                    f"Git command failed: {' '.join(command)}, stderr: {stderr.decode()}"
+                    f"Git command failed: {' '.join(command)}, stderr: {stderr.decode()}",
                 )
                 return ""
 
@@ -272,12 +268,12 @@ class GitTagTracker:
             logger.error(f"Failed to run git command {' '.join(command)}: {e}")
             return ""
 
-    async def get_release_statistics(self) -> Dict[str, any]:
-        """
-        Get statistics about Success-Advisor-8 releases.
+    async def get_release_statistics(self) -> dict[str, any]:
+        """Get statistics about Success-Advisor-8 releases.
 
         Returns:
             Dictionary with release statistics
+
         """
         releases = await self.get_success_advisor_8_releases()
 

@@ -1,5 +1,4 @@
-"""
-Traits Component
+"""Traits Component
 
 Agent comprehensive traits including personality, physical, and abilities component.
 """
@@ -10,19 +9,18 @@ from ..core.component import Component
 
 
 class TraitComponent(Component):
-    """
-    Agent comprehensive traits including personality, physical, and abilities.
+    """Agent comprehensive traits including personality, physical, and abilities.
 
     Contains all the trait data for an agent including personality traits,
     physical characteristics, and special abilities.
     """
 
     def __init__(self, traits_data: dict[str, Any] | None = None) -> None:
-        """
-        Initialize the traits component.
+        """Initialize the traits component.
 
         Args:
             traits_data: Optional dictionary of trait data
+
         """
         super().__init__()
 
@@ -39,11 +37,11 @@ class TraitComponent(Component):
         self.mutation_count = traits_data.get("mutation_count", 0)
 
     def _generate_default_traits(self) -> dict[str, Any]:
-        """
-        Generate default traits for an agent.
+        """Generate default traits for an agent.
 
         Returns:
             Dictionary of default trait data
+
         """
         import random
 
@@ -75,29 +73,29 @@ class TraitComponent(Component):
         }
 
     def get_dominant_traits(self, count: int = 3) -> dict[str, float]:
-        """
-        Get the dominant personality traits.
+        """Get the dominant personality traits.
 
         Args:
             count: Number of dominant traits to return
 
         Returns:
             Dictionary of dominant traits and their values
+
         """
         sorted_traits = sorted(
-            self.personality.items(), key=lambda x: x[1], reverse=True
+            self.personality.items(), key=lambda x: x[1], reverse=True,
         )
         return dict(sorted_traits[:count])
 
     def calculate_compatibility(self, other: "TraitComponent") -> float:
-        """
-        Calculate compatibility with another agent's traits.
+        """Calculate compatibility with another agent's traits.
 
         Args:
             other: Another TraitComponent
 
         Returns:
             Compatibility score between 0.0 and 1.0
+
         """
         if not self.personality or not other.personality:
             return 0.0

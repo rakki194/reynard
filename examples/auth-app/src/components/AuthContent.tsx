@@ -6,7 +6,7 @@
 import { Component, createSignal, Show } from "solid-js";
 import { useAuth, LoginForm, RegisterForm } from "reynard-auth";
 import { useTheme } from "reynard-themes";
-import { Card, Button } from "reynard-components";
+import { Card, Button } from "reynard-components-core";
 import { Person, Shield, SignOut, Settings, CheckmarkCircle, Warning, Info } from "./Icons";
 import type { LoginCredentials, RegisterData } from "reynard-auth";
 

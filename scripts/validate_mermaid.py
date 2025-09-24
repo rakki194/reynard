@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Mermaid Diagram Validator
+"""Mermaid Diagram Validator
 
 This script validates mermaid diagrams for common syntax issues.
 """
@@ -17,7 +16,7 @@ class MermaidValidator:
         self.warnings: list[str] = []
 
     def validate_diagram(
-        self, diagram_content: str
+        self, diagram_content: str,
     ) -> tuple[bool, list[str], list[str]]:
         """Validate a mermaid diagram and return validation results."""
         self.errors = []
@@ -88,7 +87,7 @@ class MermaidValidator:
 
                     if not re.match(r"^[A-Za-z][A-Za-z0-9]*$", node_id):
                         self.warnings.append(
-                            f"Line {i}: Node ID '{node_id}' may cause issues (use alphanumeric only)"
+                            f"Line {i}: Node ID '{node_id}' may cause issues (use alphanumeric only)",
                         )
 
                     # Check right node ID
@@ -99,7 +98,7 @@ class MermaidValidator:
 
                     if not re.match(r"^[A-Za-z][A-Za-z0-9]*$", node_id):
                         self.warnings.append(
-                            f"Line {i}: Node ID '{node_id}' may cause issues (use alphanumeric only)"
+                            f"Line {i}: Node ID '{node_id}' may cause issues (use alphanumeric only)",
                         )
 
     def _check_node_naming(self, lines: list[str]):
@@ -124,7 +123,7 @@ class MermaidValidator:
                     if node_id and node_id not in ["graph", "TD", "LR", "RL", "BT"]:
                         if node_id in node_ids:
                             self.warnings.append(
-                                f"Line {i}: Duplicate node ID '{node_id}'"
+                                f"Line {i}: Duplicate node ID '{node_id}'",
                             )
                         node_ids.add(node_id)
 
@@ -159,7 +158,7 @@ class MermaidValidator:
                     styled_node = style_parts[1]
                     if styled_node not in node_ids:
                         self.warnings.append(
-                            f"Line {i}: Style references undefined node '{styled_node}'"
+                            f"Line {i}: Style references undefined node '{styled_node}'",
                         )
 
 

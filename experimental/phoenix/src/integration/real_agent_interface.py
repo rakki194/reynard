@@ -1,5 +1,4 @@
-"""
-Real Agent Interface for Phoenix Framework
+"""Real Agent Interface for Phoenix Framework
 
 This module provides integration with real agents through Ollama and other LLM interfaces,
 enabling actual agent data collection and genome-based conditioning.
@@ -8,20 +7,16 @@ Author: Reynard-Director-36
 Version: 1.0.0
 """
 
-import asyncio
 import json
 import logging
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 import aiohttp
-import requests
 
 from ..utils.data_structures import (
-    AgentGeneticMaterial,
     AgentState,
-    StructuredKnowledge,
 )
 
 
@@ -29,14 +24,14 @@ class OllamaInterface:
     """Interface for interacting with Ollama models."""
 
     def __init__(
-        self, base_url: str = "http://localhost:11434", model: str = "qwen2.5:7b"
+        self, base_url: str = "http://localhost:11434", model: str = "qwen2.5:7b",
     ):
         self.base_url = base_url
         self.model = model
         self.logger = logging.getLogger(__name__)
 
     async def generate_response(
-        self, prompt: str, system_prompt: Optional[str] = None
+        self, prompt: str, system_prompt: str | None = None,
     ) -> str:
         """Generate a response from the Ollama model."""
         try:
@@ -59,9 +54,8 @@ class OllamaInterface:
                     if response.status == 200:
                         result = await response.json()
                         return result.get("response", "")
-                    else:
-                        self.logger.error(f"Ollama API error: {response.status}")
-                        return ""
+                    self.logger.error(f"Ollama API error: {response.status}")
+                    return ""
         except Exception as e:
             self.logger.error(f"Error calling Ollama: {e}")
             return ""
@@ -71,7 +65,7 @@ class OllamaInterface:
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(
-                    f"{self.base_url}/api/tags", timeout=aiohttp.ClientTimeout(total=5)
+                    f"{self.base_url}/api/tags", timeout=aiohttp.ClientTimeout(total=5),
                 ) as response:
                     return response.status == 200
         except:
@@ -97,11 +91,11 @@ class RealAgentInterface:
         ]
 
     async def collect_agent_data(
-        self, agent: AgentState, task_prompt: str
-    ) -> Dict[str, Any]:
+        self, agent: AgentState, task_prompt: str,
+    ) -> dict[str, Any]:
         """Collect real data from an agent by having it perform a task."""
         self.logger.info(
-            f"Collecting data from agent {agent.name} for task: {task_prompt[:50]}..."
+            f"Collecting data from agent {agent.name} for task: {task_prompt[:50]}...",
         )
 
         # Create system prompt based on agent traits
@@ -142,7 +136,7 @@ class RealAgentInterface:
         }
 
         spirit_desc = spirit_descriptions.get(
-            agent.spirit.value, "You are a unique being with special characteristics."
+            agent.spirit.value, "You are a unique being with special characteristics.",
         )
 
         # Add trait-based characteristics
@@ -165,8 +159,8 @@ class RealAgentInterface:
         return f"{spirit_desc} You are {trait_desc}. Respond to tasks in a way that reflects your unique personality and abilities. Be authentic to your character while providing helpful and accurate information."
 
     async def _analyze_agent_response(
-        self, agent: AgentState, response: str, task_prompt: str
-    ) -> Dict[str, Any]:
+        self, agent: AgentState, response: str, task_prompt: str,
+    ) -> dict[str, Any]:
         """Analyze the agent's response for various characteristics."""
         analysis = {
             "word_count": len(response.split()),
@@ -294,8 +288,8 @@ class RealAgentInterface:
         return matches / len(keywords) if keywords else 0.0
 
     def _assess_trait_manifestation(
-        self, agent: AgentState, response: str
-    ) -> Dict[str, float]:
+        self, agent: AgentState, response: str,
+    ) -> dict[str, float]:
         """Assess how well the response manifests the agent's traits."""
         manifestations = {}
 
@@ -325,11 +319,11 @@ class RealAgentInterface:
 
         return manifestations
 
-    def _calculate_quality_score(self, analysis: Dict[str, Any]) -> float:
+    def _calculate_quality_score(self, analysis: dict[str, Any]) -> float:
         """Calculate an overall quality score for the response."""
         # Weighted combination of various factors
         word_count_score = min(
-            1.0, analysis["word_count"] / 200.0
+            1.0, analysis["word_count"] / 200.0,
         )  # Optimal around 200 words
         technical_score = min(1.0, analysis["technical_terms"] / 10.0)
         creativity_score = min(1.0, analysis["creativity_indicators"] / 5.0)
@@ -350,11 +344,11 @@ class RealAgentInterface:
         return min(1.0, quality)
 
     async def run_comparison_experiment(
-        self, agents: List[AgentState], num_trials: int = 10
-    ) -> Dict[str, Any]:
+        self, agents: list[AgentState], num_trials: int = 10,
+    ) -> dict[str, Any]:
         """Run a comparison experiment with and without genome data."""
         self.logger.info(
-            f"Running comparison experiment with {len(agents)} agents, {num_trials} trials each"
+            f"Running comparison experiment with {len(agents)} agents, {num_trials} trials each",
         )
 
         results = {
@@ -379,7 +373,7 @@ class RealAgentInterface:
 
             # Run without genome data (no system prompt)
             without_genome_data = await self.collect_agent_data_without_genome(
-                agent, task
+                agent, task,
             )
             results["without_genome"].append(without_genome_data)
 
@@ -395,13 +389,13 @@ class RealAgentInterface:
             json.dump(results, f, indent=2)
 
         self.logger.info(
-            f"Comparison experiment completed. Results saved to {results_file}"
+            f"Comparison experiment completed. Results saved to {results_file}",
         )
         return results
 
     async def collect_agent_data_without_genome(
-        self, agent: AgentState, task_prompt: str
-    ) -> Dict[str, Any]:
+        self, agent: AgentState, task_prompt: str,
+    ) -> dict[str, Any]:
         """Collect data from agent without genome-based conditioning."""
         self.logger.info(f"Collecting data from agent {agent.name} WITHOUT genome data")
 
@@ -425,8 +419,8 @@ class RealAgentInterface:
         }
 
     async def _analyze_comparison_results(
-        self, results: Dict[str, Any]
-    ) -> Dict[str, Any]:
+        self, results: dict[str, Any],
+    ) -> dict[str, Any]:
         """Analyze the comparison between with and without genome data."""
         with_genome = results["with_genome"]
         without_genome = results["without_genome"]

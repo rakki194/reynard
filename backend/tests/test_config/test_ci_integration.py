@@ -1,5 +1,4 @@
-"""
-CI/CD integration tests for Reynard Backend
+"""CI/CD integration tests for Reynard Backend
 
 This module contains tests specifically designed for CI/CD pipelines
 including performance tests, load tests, and deployment validation.
@@ -287,7 +286,7 @@ class TestCIIntegration:
 
         # Test authentication logging
         response = client.post(
-            "/api/auth/login", json={"username": "nonexistent", "password": "wrong"}
+            "/api/auth/login", json={"username": "nonexistent", "password": "wrong"},
         )
         assert response.status_code == 401
 

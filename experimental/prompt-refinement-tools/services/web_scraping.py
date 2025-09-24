@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Web Scraping Service
+"""Web Scraping Service
 
 Advanced web scraping using playwright and requests-html for prompt refinement research.
 Replaces the pseudo-code web_search() functions with actual implementations.
@@ -11,10 +10,9 @@ Replaces the pseudo-code web_search() functions with actual implementations.
 import asyncio
 import logging
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional
-from urllib.parse import urljoin, urlparse
+from typing import Any
+from urllib.parse import urlparse
 
-import aiohttp
 from playwright.async_api import Browser, Page, async_playwright
 from requests_html import AsyncHTMLSession
 
@@ -29,25 +27,24 @@ class ScrapingResult:
     title: str
     content: str
     summary: str
-    keywords: List[str]
+    keywords: list[str]
     quality_score: float
     source_type: str
     timestamp: float
 
 
 class WebScrapingService:
-    """
-    Advanced web scraping service using playwright and requests-html.
+    """Advanced web scraping service using playwright and requests-html.
 
     Provides intelligent content extraction for prompt refinement research.
     """
 
-    def __init__(self, config: Optional[Dict[str, Any]] = None):
+    def __init__(self, config: dict[str, Any] | None = None):
         """Initialize the web scraping service."""
         self.config = config or {}
-        self.session: Optional[AsyncHTMLSession] = None
-        self.browser: Optional[Browser] = None
-        self.page: Optional[Page] = None
+        self.session: AsyncHTMLSession | None = None
+        self.browser: Browser | None = None
+        self.page: Page | None = None
 
         # Configuration
         self.max_concurrent_requests = self.config.get("max_concurrent_requests", 5)
@@ -75,7 +72,7 @@ class WebScrapingService:
             # Initialize playwright browser
             playwright = await async_playwright().start()
             self.browser = await playwright.chromium.launch(
-                headless=True, args=["--no-sandbox", "--disable-dev-shm-usage"]
+                headless=True, args=["--no-sandbox", "--disable-dev-shm-usage"],
             )
             self.page = await self.browser.new_page()
             await self.page.set_extra_http_headers({"User-Agent": self.user_agent})
@@ -89,10 +86,9 @@ class WebScrapingService:
             return False
 
     async def research_query_topic(
-        self, query: str, key_concepts: List[str] = None
-    ) -> Dict[str, Any]:
-        """
-        Research a query topic using multiple sources and methods.
+        self, query: str, key_concepts: list[str] = None,
+    ) -> dict[str, Any]:
+        """Research a query topic using multiple sources and methods.
 
         Replaces the pseudo-code conduct_subject_research() function.
         """
@@ -125,8 +121,8 @@ class WebScrapingService:
         }
 
     def _generate_search_queries(
-        self, query: str, key_concepts: List[str]
-    ) -> List[str]:
+        self, query: str, key_concepts: list[str],
+    ) -> list[str]:
         """Generate diverse search queries for comprehensive research."""
         queries = [query]  # Original query
 
@@ -149,12 +145,12 @@ class WebScrapingService:
                 f"{query} guide",
                 f"{query} best practices",
                 f"{query} examples",
-            ]
+            ],
         )
 
         return list(set(queries))  # Remove duplicates
 
-    async def _conduct_searches(self, queries: List[str]) -> List[Dict[str, Any]]:
+    async def _conduct_searches(self, queries: list[str]) -> list[dict[str, Any]]:
         """Conduct searches across multiple search engines."""
         all_results = []
 
@@ -165,7 +161,7 @@ class WebScrapingService:
         for query in queries:
             for engine_name, engine_url in self.search_engines.items():
                 task = self._search_with_semaphore(
-                    semaphore, engine_name, engine_url, query
+                    semaphore, engine_name, engine_url, query,
                 )
                 tasks.append(task)
 
@@ -185,14 +181,14 @@ class WebScrapingService:
         engine_name: str,
         engine_url: str,
         query: str,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Search with semaphore for rate limiting."""
         async with semaphore:
             return await self._search_engine(engine_name, engine_url, query)
 
     async def _search_engine(
-        self, engine_name: str, engine_url: str, query: str
-    ) -> Dict[str, Any]:
+        self, engine_name: str, engine_url: str, query: str,
+    ) -> dict[str, Any]:
         """Search a specific search engine."""
         try:
             search_url = engine_url.format(query=query)
@@ -200,12 +196,11 @@ class WebScrapingService:
             # Use playwright for JavaScript-heavy sites
             if engine_name == "google":
                 return await self._search_with_playwright(
-                    engine_name, search_url, query
+                    engine_name, search_url, query,
                 )
-            else:
-                return await self._search_with_requests_html(
-                    engine_name, search_url, query
-                )
+            return await self._search_with_requests_html(
+                engine_name, search_url, query,
+            )
 
         except Exception as e:
             logger.warning(f"Search failed for {engine_name}: {e}")
@@ -217,8 +212,8 @@ class WebScrapingService:
             }
 
     async def _search_with_playwright(
-        self, engine_name: str, url: str, query: str
-    ) -> Dict[str, Any]:
+        self, engine_name: str, url: str, query: str,
+    ) -> dict[str, Any]:
         """Search using playwright for JavaScript-heavy sites."""
         try:
             await self.page.goto(url, timeout=self.request_timeout * 1000)
@@ -247,7 +242,7 @@ class WebScrapingService:
                     
                     return results;
                 }
-            """
+            """,
             )
 
             return {"engine": engine_name, "query": query, "results": results}
@@ -262,8 +257,8 @@ class WebScrapingService:
             }
 
     async def _search_with_requests_html(
-        self, engine_name: str, url: str, query: str
-    ) -> Dict[str, Any]:
+        self, engine_name: str, url: str, query: str,
+    ) -> dict[str, Any]:
         """Search using requests-html for simpler sites."""
         try:
             response = await self.session.get(url, timeout=self.request_timeout)
@@ -288,7 +283,7 @@ class WebScrapingService:
                 "error": str(e),
             }
 
-    def _extract_bing_results(self, html) -> List[Dict[str, str]]:
+    def _extract_bing_results(self, html) -> list[dict[str, str]]:
         """Extract search results from Bing."""
         results = []
 
@@ -306,7 +301,7 @@ class WebScrapingService:
                             "url": title_elem.attrs.get("href", ""),
                             "title": title_elem.text or "",
                             "snippet": snippet_elem.text if snippet_elem else "",
-                        }
+                        },
                     )
             except Exception as e:
                 logger.warning(f"Failed to extract Bing result: {e}")
@@ -314,7 +309,7 @@ class WebScrapingService:
 
         return results
 
-    def _extract_duckduckgo_results(self, html) -> List[Dict[str, str]]:
+    def _extract_duckduckgo_results(self, html) -> list[dict[str, str]]:
         """Extract search results from DuckDuckGo."""
         results = []
 
@@ -332,7 +327,7 @@ class WebScrapingService:
                             "url": title_elem.attrs.get("href", ""),
                             "title": title_elem.text or "",
                             "snippet": snippet_elem.text if snippet_elem else "",
-                        }
+                        },
                     )
             except Exception as e:
                 logger.warning(f"Failed to extract DuckDuckGo result: {e}")
@@ -341,8 +336,8 @@ class WebScrapingService:
         return results
 
     async def _extract_content(
-        self, search_results: List[Dict[str, Any]]
-    ) -> List[ScrapingResult]:
+        self, search_results: list[dict[str, Any]],
+    ) -> list[ScrapingResult]:
         """Extract content from search result URLs."""
         content_results = []
 
@@ -367,8 +362,8 @@ class WebScrapingService:
         return content_results
 
     async def _extract_url_content(
-        self, semaphore: asyncio.Semaphore, result: Dict[str, str]
-    ) -> Optional[ScrapingResult]:
+        self, semaphore: asyncio.Semaphore, result: dict[str, str],
+    ) -> ScrapingResult | None:
         """Extract content from a single URL."""
         async with semaphore:
             try:
@@ -398,7 +393,7 @@ class WebScrapingService:
 
             except Exception as e:
                 logger.warning(
-                    f"Failed to extract content from {result.get('url', 'unknown')}: {e}"
+                    f"Failed to extract content from {result.get('url', 'unknown')}: {e}",
                 )
                 return None
 
@@ -419,7 +414,7 @@ class WebScrapingService:
         domain = urlparse(url).netloc.lower()
         return any(js_domain in domain for js_domain in js_domains)
 
-    async def _extract_with_playwright(self, url: str) -> Optional[str]:
+    async def _extract_with_playwright(self, url: str) -> str | None:
         """Extract content using playwright."""
         try:
             await self.page.goto(url, timeout=self.request_timeout * 1000)
@@ -445,7 +440,7 @@ class WebScrapingService:
                     // Fallback to body
                     return document.body.innerText;
                 }
-            """
+            """,
             )
 
             return content.strip() if content else None
@@ -454,7 +449,7 @@ class WebScrapingService:
             logger.warning(f"Playwright extraction failed for {url}: {e}")
             return None
 
-    async def _extract_with_requests_html(self, url: str) -> Optional[str]:
+    async def _extract_with_requests_html(self, url: str) -> str | None:
         """Extract content using requests-html."""
         try:
             response = await self.session.get(url, timeout=self.request_timeout)
@@ -501,7 +496,7 @@ class WebScrapingService:
             return sentences[0].strip() + "."
         return content[:200] + "..." if len(content) > 200 else content
 
-    def _extract_keywords(self, content: str) -> List[str]:
+    def _extract_keywords(self, content: str) -> list[str]:
         """Extract keywords from content."""
         # Simple keyword extraction
         words = content.lower().split()
@@ -591,22 +586,21 @@ class WebScrapingService:
 
         if any(edu in domain for edu in ["edu", "university", "college"]):
             return "academic"
-        elif any(doc in domain for doc in ["docs", "documentation", "wiki"]):
+        if any(doc in domain for doc in ["docs", "documentation", "wiki"]):
             return "documentation"
-        elif any(blog in domain for blog in ["blog", "medium", "dev.to"]):
+        if any(blog in domain for blog in ["blog", "medium", "dev.to"]):
             return "blog"
-        elif any(news in domain for news in ["news", "reuters", "bbc"]):
+        if any(news in domain for news in ["news", "reuters", "bbc"]):
             return "news"
-        else:
-            return "general"
+        return "general"
 
     async def _analyze_content(
-        self, content_results: List[ScrapingResult]
-    ) -> List[ScrapingResult]:
+        self, content_results: list[ScrapingResult],
+    ) -> list[ScrapingResult]:
         """Analyze and score content results."""
         # Sort by quality score
         analyzed_results = sorted(
-            content_results, key=lambda x: x.quality_score, reverse=True
+            content_results, key=lambda x: x.quality_score, reverse=True,
         )
 
         # Filter out low-quality results
@@ -617,8 +611,8 @@ class WebScrapingService:
         return filtered_results[:20]  # Limit to top 20 results
 
     def _extract_sources(
-        self, analyzed_results: List[ScrapingResult]
-    ) -> List[Dict[str, Any]]:
+        self, analyzed_results: list[ScrapingResult],
+    ) -> list[dict[str, Any]]:
         """Extract source information from analyzed results."""
         sources = []
 
@@ -630,7 +624,7 @@ class WebScrapingService:
                     "quality_score": result.quality_score,
                     "source_type": result.source_type,
                     "authority_score": self._calculate_authority_score(result.url),
-                }
+                },
             )
 
         return sources
@@ -664,16 +658,13 @@ class WebScrapingService:
 
         if any(auth_domain in domain for auth_domain in high_authority):
             return 0.9
-        elif any(auth_domain in domain for auth_domain in medium_authority):
+        if any(auth_domain in domain for auth_domain in medium_authority):
             return 0.7
-        elif domain.endswith(".edu"):
+        if domain.endswith(".edu") or domain.endswith(".gov"):
             return 0.8
-        elif domain.endswith(".gov"):
-            return 0.8
-        else:
-            return 0.5
+        return 0.5
 
-    def _identify_trends(self, analyzed_results: List[ScrapingResult]) -> List[str]:
+    def _identify_trends(self, analyzed_results: list[ScrapingResult]) -> list[str]:
         """Identify trends from analyzed results."""
         trends = []
 
@@ -689,15 +680,15 @@ class WebScrapingService:
 
         # Get trending keywords
         trending_keywords = sorted(
-            keyword_freq.items(), key=lambda x: x[1], reverse=True
+            keyword_freq.items(), key=lambda x: x[1], reverse=True,
         )
         trends = [keyword for keyword, freq in trending_keywords[:5] if freq > 1]
 
         return trends
 
     def _identify_related_topics(
-        self, analyzed_results: List[ScrapingResult]
-    ) -> List[str]:
+        self, analyzed_results: list[ScrapingResult],
+    ) -> list[str]:
         """Identify related topics from analyzed results."""
         topics = set()
 
@@ -731,10 +722,9 @@ class WebScrapingService:
             return False
 
     async def research_query_topic_enhanced(
-        self, query: str, key_concepts: List[str] = None
-    ) -> Dict[str, Any]:
-        """
-        Research a query topic with key concepts.
+        self, query: str, key_concepts: list[str] = None,
+    ) -> dict[str, Any]:
+        """Research a query topic with key concepts.
 
         Enhanced version that accepts key concepts for better research.
         """

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-ECS Backend Bottleneck Analysis Tool
+"""ECS Backend Bottleneck Analysis Tool
 
 This script integrates the performance monitoring system with the existing
 ECS backend to identify real bottlenecks and performance issues.
@@ -9,11 +8,10 @@ ECS backend to identify real bottlenecks and performance issues.
 import asyncio
 import json
 import logging
-import os
 import sys
 import time
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 # Add the backend directory to Python path
 backend_dir = Path(__file__).parent.parent.parent.parent
@@ -24,7 +22,6 @@ from app.ecs.performance import (
     PerformanceAnalyzer,
     PerformanceTracker,
     track_async_task,
-    track_db_query,
 )
 
 logger = logging.getLogger(__name__)
@@ -39,7 +36,7 @@ class ECSBottleneckAnalyzer:
         self.analyzer = PerformanceAnalyzer(self.tracker, self.profiler)
         self.results = {}
 
-    async def analyze_ecs_endpoints(self) -> Dict[str, Any]:
+    async def analyze_ecs_endpoints(self) -> dict[str, Any]:
         """Analyze performance of ECS endpoints."""
         print("🐍 Mysterious-Prime-67 ECS Backend Bottleneck Analysis")
         print("=" * 60)
@@ -119,7 +116,7 @@ class ECSBottleneckAnalyzer:
         for i in range(15):
             request_id = f"compatibility-{i}"
             self.tracker.start_request(
-                request_id, "/agents/agent1/compatibility/agent2", "GET"
+                request_id, "/agents/agent1/compatibility/agent2", "GET",
             )
 
             # Simulate complex database queries
@@ -172,7 +169,7 @@ class ECSBottleneckAnalyzer:
 
             # Simulate database queries for mate finding
             self.tracker.add_db_query(
-                "SELECT agent_id, traits FROM agent_traits WHERE agent_id != ?", 0.06
+                "SELECT agent_id, traits FROM agent_traits WHERE agent_id != ?", 0.06,
             )
 
             self.tracker.end_request(request_id)
@@ -267,7 +264,7 @@ class ECSBottleneckAnalyzer:
 
                 # Simulate database query that might fail
                 self.tracker.add_db_query(
-                    f"SELECT * FROM {endpoint.split('/')[-1]} WHERE id = ?", 0.03
+                    f"SELECT * FROM {endpoint.split('/')[-1]} WHERE id = ?", 0.03,
                 )
 
                 # Determine if this request should fail
@@ -280,10 +277,9 @@ class ECSBottleneckAnalyzer:
         print("   ✅ Error-prone endpoints tested")
 
     def _generate_ecs_analysis(
-        self, bottlenecks: List, trends: List, report: Dict
-    ) -> Dict[str, Any]:
+        self, bottlenecks: list, trends: list, report: dict,
+    ) -> dict[str, Any]:
         """Generate ECS-specific performance analysis."""
-
         # Categorize bottlenecks by ECS component
         ecs_bottlenecks = {
             "agent_management": [],
@@ -324,7 +320,7 @@ class ECSBottleneckAnalyzer:
                     "Optimize genetic compatibility calculations - consider caching results",
                     "Implement genetic trait indexing for faster lookups",
                     "Use batch processing for multiple compatibility checks",
-                ]
+                ],
             )
 
         if ecs_bottlenecks["database_operations"]:
@@ -333,7 +329,7 @@ class ECSBottleneckAnalyzer:
                     "Add database indexes for agent relationships and lineage queries",
                     "Implement query result caching for frequently accessed data",
                     "Consider database connection pooling optimization",
-                ]
+                ],
             )
 
         if ecs_bottlenecks["memory_usage"]:
@@ -342,7 +338,7 @@ class ECSBottleneckAnalyzer:
                     "Implement pagination for large trait datasets",
                     "Use lazy loading for trait profiles",
                     "Consider data compression for large naming datasets",
-                ]
+                ],
             )
 
         if ecs_bottlenecks["error_handling"]:
@@ -351,20 +347,20 @@ class ECSBottleneckAnalyzer:
                     "Improve input validation for agent endpoints",
                     "Add better error handling for invalid agent IDs",
                     "Implement graceful degradation for missing data",
-                ]
+                ],
             )
 
         # Calculate ECS-specific metrics
         total_requests = len(self.tracker.metrics_history)
         agent_requests = len(
-            [m for m in self.tracker.metrics_history if "/agents" in m.endpoint]
+            [m for m in self.tracker.metrics_history if "/agents" in m.endpoint],
         )
         database_requests = len(
             [
                 m
                 for m in self.tracker.metrics_history
                 if any(db in m.endpoint for db in ["naming", "traits", "breeding"])
-            ]
+            ],
         )
 
         ecs_metrics = {
@@ -398,16 +394,16 @@ class ECSBottleneckAnalyzer:
             "summary": {
                 "total_bottlenecks": len(bottlenecks),
                 "critical_bottlenecks": len(
-                    [b for b in bottlenecks if b.severity == "critical"]
+                    [b for b in bottlenecks if b.severity == "critical"],
                 ),
                 "high_priority_bottlenecks": len(
-                    [b for b in bottlenecks if b.severity == "high"]
+                    [b for b in bottlenecks if b.severity == "high"],
                 ),
                 "ecs_components_affected": len(
-                    [k for k, v in ecs_bottlenecks.items() if v]
+                    [k for k, v in ecs_bottlenecks.items() if v],
                 ),
                 "optimization_score": report.get("optimization_score", {}).get(
-                    "score", 0
+                    "score", 0,
                 ),
             },
         }
@@ -439,7 +435,7 @@ async def main():
                 print(f"\n  {component.replace('_', ' ').title()}:")
                 for bottleneck in bottlenecks:
                     print(
-                        f"    • {bottleneck.severity.upper()}: {bottleneck.description}"
+                        f"    • {bottleneck.severity.upper()}: {bottleneck.description}",
                     )
 
         # Print recommendations
@@ -449,17 +445,17 @@ async def main():
 
         # Print metrics
         metrics = results["ecs_metrics"]
-        print(f"\n📈 ECS Performance Metrics:")
+        print("\n📈 ECS Performance Metrics:")
         print(f"  Total Requests: {metrics['total_requests']}")
         print(f"  Agent Management Requests: {metrics['agent_management_requests']}")
         print(
-            f"  Database-Intensive Requests: {metrics['database_intensive_requests']}"
+            f"  Database-Intensive Requests: {metrics['database_intensive_requests']}",
         )
         print(
-            f"  Avg Agent Request Time: {metrics['avg_agent_request_time']*1000:.1f}ms"
+            f"  Avg Agent Request Time: {metrics['avg_agent_request_time']*1000:.1f}ms",
         )
         print(
-            f"  Avg Database Request Time: {metrics['avg_database_request_time']*1000:.1f}ms"
+            f"  Avg Database Request Time: {metrics['avg_database_request_time']*1000:.1f}ms",
         )
         print(f"  Total DB Queries: {metrics['total_db_queries']}")
         print(f"  Total Async Tasks: {metrics['total_async_tasks']}")

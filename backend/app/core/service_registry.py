@@ -1,5 +1,4 @@
-"""
-🦊 Reynard Backend Service Registry System
+"""🦊 Reynard Backend Service Registry System
 ==========================================
 
 Centralized service management system for the Reynard FastAPI backend, providing
@@ -52,8 +51,7 @@ logger = logging.getLogger(__name__)
 
 
 class ServiceStatus(Enum):
-    """
-    Service status enumeration for lifecycle state tracking.
+    """Service status enumeration for lifecycle state tracking.
 
     Defines the possible states a service can be in during its lifecycle,
     enabling comprehensive status monitoring and state management throughout
@@ -78,8 +76,7 @@ class ServiceStatus(Enum):
 
 @dataclass
 class ServiceInfo:
-    """
-    Service information container for comprehensive service metadata management.
+    """Service information container for comprehensive service metadata management.
 
     Stores complete service metadata including lifecycle information, configuration,
     function references, and operational status. This dataclass provides a structured
@@ -96,6 +93,7 @@ class ServiceInfo:
         error (Exception | None): Last error encountered by the service
         startup_time (float | None): Service startup timestamp
         last_health_check (float | None): Last health check timestamp
+
     """
 
     name: str
@@ -131,7 +129,7 @@ class ServiceRegistry:
         """Register a service with the registry."""
         if name in self._services:
             logger.warning(
-                f"Service '{name}' already registered, updating configuration"
+                f"Service '{name}' already registered, updating configuration",
             )
 
         # Add startup priority to config for ordering
@@ -151,7 +149,7 @@ class ServiceRegistry:
         for i, existing_name in enumerate(self._startup_order):
             if existing_name in self._services:
                 existing_priority = self._services[existing_name].config.get(
-                    "startup_priority", 0
+                    "startup_priority", 0,
                 )
                 if startup_priority > existing_priority:
                     insert_index = i
@@ -189,7 +187,7 @@ class ServiceRegistry:
             for priority in sorted(priority_groups.keys(), reverse=True):
                 group_services = priority_groups[priority]
                 logger.info(
-                    f"Initializing services with priority {priority}: {group_services}"
+                    f"Initializing services with priority {priority}: {group_services}",
                 )
 
                 # Initialize services in this group in parallel
@@ -203,7 +201,7 @@ class ServiceRegistry:
 
                 if tasks:
                     await asyncio.wait_for(
-                        asyncio.gather(*tasks, return_exceptions=True), timeout=timeout
+                        asyncio.gather(*tasks, return_exceptions=True), timeout=timeout,
                     )
 
             self._initialized = True
@@ -243,7 +241,7 @@ class ServiceRegistry:
 
             if tasks:
                 await asyncio.wait_for(
-                    asyncio.gather(*tasks, return_exceptions=True), timeout=timeout
+                    asyncio.gather(*tasks, return_exceptions=True), timeout=timeout,
                 )
 
             self._initialized = False
@@ -274,12 +272,12 @@ class ServiceRegistry:
                         asyncio.get_event_loop().time() - start_time
                     )
                     logger.info(
-                        f"Service '{name}' initialized successfully in {service_info.startup_time:.2f}s"
+                        f"Service '{name}' initialized successfully in {service_info.startup_time:.2f}s",
                     )
                     return True
                 service_info.status = ServiceStatus.ERROR
                 service_info.error = Exception(
-                    f"Service '{name}' startup function returned False"
+                    f"Service '{name}' startup function returned False",
                 )
                 logger.error(f"Service '{name}' initialization failed")
                 return False

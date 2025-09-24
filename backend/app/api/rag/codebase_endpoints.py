@@ -1,5 +1,4 @@
-"""
-Codebase indexing API endpoints.
+"""Codebase indexing API endpoints.
 
 Provides endpoints for:
 - Indexing the Reynard codebase
@@ -8,12 +7,10 @@ Provides endpoints for:
 """
 
 import logging
-from typing import Any, Dict
+from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
-
-from app.core.config import get_config
 
 from .service import get_rag_service
 
@@ -30,7 +27,6 @@ async def index_codebase(rag_service=Depends(get_rag_service)) -> StreamingRespo
     try:
 
         async def generate():
-            import asyncio
             import json
             import os
             from pathlib import Path
@@ -38,12 +34,12 @@ async def index_codebase(rag_service=Depends(get_rag_service)) -> StreamingRespo
             # Get configuration from environment
             reynard_root = Path(
                 os.getenv(
-                    "RAG_CONTINUOUS_INDEXING_WATCH_ROOT", "/home/kade/runeset/reynard"
-                )
+                    "RAG_CONTINUOUS_INDEXING_WATCH_ROOT", "/home/kade/runeset/reynard",
+                ),
             )
             batch_size = int(os.getenv("RAG_CONTINUOUS_INDEXING_BATCH_SIZE", "50"))
             max_file_size_mb = int(
-                os.getenv("RAG_CONTINUOUS_INDEXING_MAX_FILE_SIZE_MB", "2")
+                os.getenv("RAG_CONTINUOUS_INDEXING_MAX_FILE_SIZE_MB", "2"),
             )
 
             # Directories to skip
@@ -240,7 +236,7 @@ async def index_codebase(rag_service=Depends(get_rag_service)) -> StreamingRespo
 
 
 @router.get("/stats")
-async def get_codebase_stats(rag_service=Depends(get_rag_service)) -> Dict[str, Any]:
+async def get_codebase_stats(rag_service=Depends(get_rag_service)) -> dict[str, Any]:
     """Get codebase indexing statistics."""
     try:
         stats = await rag_service.get_statistics()
@@ -252,18 +248,17 @@ async def get_codebase_stats(rag_service=Depends(get_rag_service)) -> Dict[str, 
 
 
 @router.get("/health")
-async def health_check(rag_service=Depends(get_rag_service)) -> Dict[str, Any]:
+async def health_check(rag_service=Depends(get_rag_service)) -> dict[str, Any]:
     """Check RAG service health."""
     try:
         # Simple health check - just verify the service is initialized
         if hasattr(rag_service, "_initialized") and rag_service._initialized:
             return {"healthy": True, "service": "rag_service", "status": "initialized"}
-        else:
-            return {
-                "healthy": False,
-                "service": "rag_service",
-                "status": "not_initialized",
-            }
+        return {
+            "healthy": False,
+            "service": "rag_service",
+            "status": "not_initialized",
+        }
 
     except Exception as e:
         logger.error(f"Health check failed: {e}")
@@ -284,12 +279,12 @@ async def scan_codebase(rag_service=Depends(get_rag_service)) -> StreamingRespon
             # Get configuration from environment
             reynard_root = Path(
                 os.getenv(
-                    "RAG_CONTINUOUS_INDEXING_WATCH_ROOT", "/home/kade/runeset/reynard"
-                )
+                    "RAG_CONTINUOUS_INDEXING_WATCH_ROOT", "/home/kade/runeset/reynard",
+                ),
             )
             batch_size = int(os.getenv("RAG_CONTINUOUS_INDEXING_BATCH_SIZE", "50"))
             max_file_size_mb = int(
-                os.getenv("RAG_CONTINUOUS_INDEXING_MAX_FILE_SIZE_MB", "2")
+                os.getenv("RAG_CONTINUOUS_INDEXING_MAX_FILE_SIZE_MB", "2"),
             )
 
             # Directories to skip
@@ -440,7 +435,7 @@ async def scan_codebase(rag_service=Depends(get_rag_service)) -> StreamingRespon
                     # Count lines
                     try:
                         with open(
-                            file_path, "r", encoding="utf-8", errors="ignore"
+                            file_path, encoding="utf-8", errors="ignore",
                         ) as f:
                             lines = sum(1 for _ in f)
                             total_lines += lines
@@ -470,7 +465,7 @@ async def scan_codebase(rag_service=Depends(get_rag_service)) -> StreamingRespon
                 "total_size_mb": round(total_size / (1024 * 1024), 2),
                 "total_lines": total_lines,
                 "file_types": dict(
-                    sorted(file_stats.items(), key=lambda x: x[1], reverse=True)
+                    sorted(file_stats.items(), key=lambda x: x[1], reverse=True),
                 ),
             }
 

@@ -1,5 +1,4 @@
-"""
-Thread Pool Executor API for Reynard Backend
+"""Thread Pool Executor API for Reynard Backend
 
 Main API module that combines all executor endpoints.
 """

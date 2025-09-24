@@ -1,5 +1,4 @@
-"""
-Coqui TTS Backend for Reynard
+"""Coqui TTS Backend for Reynard
 
 Coqui TTS backend implementation with multiple voice support.
 """
@@ -67,7 +66,7 @@ class CoquiBackend(TTSBackend):
                 return True
             except ImportError:
                 logger.warning(
-                    "Coqui TTS not available - install with: pip install TTS"
+                    "Coqui TTS not available - install with: pip install TTS",
                 )
                 self._initialized = False
                 return False
@@ -103,7 +102,7 @@ class CoquiBackend(TTSBackend):
             raise
 
     async def _create_mock_audio(
-        self, out_path: Path, text: str, voice: str, speed: float
+        self, out_path: Path, text: str, voice: str, speed: float,
     ):
         """Create a mock audio file for testing."""
         try:

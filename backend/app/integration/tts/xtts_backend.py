@@ -1,5 +1,4 @@
-"""
-XTTS Backend for Reynard
+"""XTTS Backend for Reynard
 
 XTTS (eXtreme Text-to-Speech) backend implementation with voice cloning support.
 """
@@ -126,7 +125,7 @@ class XTTSBackend(TTSBackend):
             raise
 
     async def _create_mock_audio(
-        self, out_path: Path, text: str, voice: str, speed: float
+        self, out_path: Path, text: str, voice: str, speed: float,
     ):
         """Create a mock audio file for testing."""
         try:

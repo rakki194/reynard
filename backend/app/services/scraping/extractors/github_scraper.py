@@ -1,5 +1,4 @@
-"""
-Specialized GitHub scraper for handling GitHub repositories, issues, and pull requests.
+"""Specialized GitHub scraper for handling GitHub repositories, issues, and pull requests.
 """
 
 import logging
@@ -11,8 +10,7 @@ from .base_scraper import BaseScraper
 
 
 class GitHubScraper(BaseScraper):
-    """
-    Specialized GitHub scraper for repositories, issues, and pull requests.
+    """Specialized GitHub scraper for repositories, issues, and pull requests.
 
     Features:
     - Repository information extraction
@@ -41,14 +39,14 @@ class GitHubScraper(BaseScraper):
         return any(domain in url.lower() for domain in self.supported_domains)
 
     async def scrape_content(self, url: str) -> ScrapingResult:
-        """
-        Scrape content from a GitHub URL.
+        """Scrape content from a GitHub URL.
 
         Args:
             url: GitHub URL to scrape
 
         Returns:
             ScrapingResult with extracted content
+
         """
         try:
             # Determine content type and extract identifiers
@@ -106,7 +104,7 @@ class GitHubScraper(BaseScraper):
         return None, None
 
     async def _scrape_with_api(
-        self, content_type: str, identifiers: dict[str, str], url: str
+        self, content_type: str, identifiers: dict[str, str], url: str,
     ) -> dict[str, Any] | None:
         """Scrape content using GitHub API."""
         try:
@@ -139,7 +137,7 @@ class GitHubScraper(BaseScraper):
                         self.logger.warning(f"GitHub API: Resource not found for {url}")
                     else:
                         self.logger.warning(
-                            f"GitHub API: Status {response.status} for {url}"
+                            f"GitHub API: Status {response.status} for {url}",
                         )
 
             return None
@@ -149,7 +147,7 @@ class GitHubScraper(BaseScraper):
             return None
 
     def _create_result_from_api_content(
-        self, url: str, content_type: str, content: dict[str, Any]
+        self, url: str, content_type: str, content: dict[str, Any],
     ) -> ScrapingResult:
         """Create ScrapingResult from API content."""
         if content_type == "repository":
@@ -163,7 +161,7 @@ class GitHubScraper(BaseScraper):
         return self._create_generic_result(url, content)
 
     def _create_repository_result(
-        self, url: str, content: dict[str, Any]
+        self, url: str, content: dict[str, Any],
     ) -> ScrapingResult:
         """Create result for repository content."""
         title = content.get("name", "GitHub Repository")
@@ -266,7 +264,7 @@ class GitHubScraper(BaseScraper):
         )
 
     def _create_pull_request_result(
-        self, url: str, content: dict[str, Any]
+        self, url: str, content: dict[str, Any],
     ) -> ScrapingResult:
         """Create result for pull request content."""
         title = content.get("title", "GitHub Pull Request")
@@ -357,7 +355,7 @@ class GitHubScraper(BaseScraper):
         )
 
     def _create_generic_result(
-        self, url: str, content: dict[str, Any]
+        self, url: str, content: dict[str, Any],
     ) -> ScrapingResult:
         """Create generic result for unknown content types."""
         return ScrapingResult(

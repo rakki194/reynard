@@ -1,13 +1,10 @@
-"""
-Test CHANGELOG parsing and deduplication for Success-Advisor-8 legacy tracking.
+"""Test CHANGELOG parsing and deduplication for Success-Advisor-8 legacy tracking.
 """
 
 # Add the parent directory to sys.path for imports
 import sys
 import tempfile
-from datetime import datetime
 from pathlib import Path
-from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -81,7 +78,7 @@ class TestChangelogParsing:
             # Check that activities have unique IDs
             activity_ids = [activity.activity_id for activity in activities]
             assert len(activity_ids) == len(
-                set(activity_ids)
+                set(activity_ids),
             ), "All activity IDs should be unique"
 
         finally:

@@ -13,7 +13,9 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite build --watch",
     "build": "vite build && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
@@ -24,12 +26,25 @@
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
-  "keywords": ["solidjs", "authentication", "auth", "jwt", "login", "user-management", "security"],
+  "keywords": [
+    "solidjs",
+    "authentication",
+    "auth",
+    "jwt",
+    "login",
+    "user-management",
+    "security"
+  ],
   "peerDependencies": {
     "solid-js": "1.9.9"
   },
   "dependencies": {
+    "solid-js": "1.9.9",
+    "reynard-http-client": "workspace:*",
+    "reynard-auth-core": "workspace:*",
+    "reynard-auth-composables": "workspace:*",
     "reynard-api-client": "workspace:*",
+    "reynard-connection": "workspace:*",
     "reynard-core": "workspace:*",
     "reynard-components-core": "workspace:*",
     "reynard-components-charts": "workspace:*",
@@ -37,11 +52,7 @@
     "reynard-components-themes": "workspace:*",
     "reynard-components-utils": "workspace:*",
     "reynard-composables": "workspace:*",
-    "reynard-validation": "workspace:*",
-    "jwt-decode": "4.0.0",
-    "@zxcvbn-ts/core": "3.0.4",
-    "@zxcvbn-ts/language-common": "3.0.4",
-    "@zxcvbn-ts/language-en": "3.0.2"
+    "reynard-validation": "workspace:*"
   },
   "devDependencies": {
     "@solidjs/testing-library": "0.8.10",
@@ -52,7 +63,7 @@
     "reynard-testing": "workspace:*",
     "solid-js": "1.9.9",
     "typescript": "5.9.2",
-    "vite": "7.1.6",
+    "vite": "7.1.7",
     "vite-plugin-solid": "2.11.8",
     "vitest": "3.2.4"
   }

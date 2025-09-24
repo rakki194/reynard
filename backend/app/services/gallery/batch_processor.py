@@ -1,5 +1,4 @@
-"""
-Gallery Batch Download Processor
+"""Gallery Batch Download Processor
 
 Handles batch downloads with priority queues, concurrency control, and progress tracking.
 Integrates with WebSocket manager for real-time updates.
@@ -202,7 +201,7 @@ class GalleryBatchProcessor:
             self.download_queue.sort(key=lambda x: x.priority.value, reverse=True)
 
             logger.info(
-                f"Retrying {len(retry_items)} failed items in batch '{batch.name}'"
+                f"Retrying {len(retry_items)} failed items in batch '{batch.name}'",
             )
 
         return len(retry_items) > 0

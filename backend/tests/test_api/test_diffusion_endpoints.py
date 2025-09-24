@@ -1,5 +1,4 @@
-"""
-Tests for diffusion API endpoints.
+"""Tests for diffusion API endpoints.
 
 This module tests the diffusion API endpoints for text generation
 and infilling functionality.
@@ -29,7 +28,7 @@ class TestDiffusionGenerationEndpoint:
     def test_generate_text_success(self):
         """Test successful text generation."""
         with patch(
-            "app.api.diffusion.endpoints.get_diffusion_service"
+            "app.api.diffusion.endpoints.get_diffusion_service",
         ) as mock_get_service:
             # Mock the service
             mock_service = AsyncMock()
@@ -69,7 +68,7 @@ class TestDiffusionGenerationEndpoint:
     def test_generate_text_streaming_success(self):
         """Test successful streaming text generation."""
         with patch(
-            "app.api.diffusion.endpoints.get_diffusion_service"
+            "app.api.diffusion.endpoints.get_diffusion_service",
         ) as mock_get_service:
             # Mock the service
             mock_service = AsyncMock()
@@ -106,7 +105,7 @@ class TestDiffusionGenerationEndpoint:
     def test_generate_text_service_error(self):
         """Test text generation with service error."""
         with patch(
-            "app.api.diffusion.endpoints.get_diffusion_service"
+            "app.api.diffusion.endpoints.get_diffusion_service",
         ) as mock_get_service:
             # Mock the service to raise an exception
             mock_get_service.side_effect = Exception("Service unavailable")
@@ -290,7 +289,7 @@ class TestDiffusionInfillingEndpoint:
     def test_infill_text_success(self):
         """Test successful text infilling."""
         with patch(
-            "app.api.diffusion.endpoints.get_diffusion_service"
+            "app.api.diffusion.endpoints.get_diffusion_service",
         ) as mock_get_service:
             # Mock the service
             mock_service = AsyncMock()
@@ -329,7 +328,7 @@ class TestDiffusionInfillingEndpoint:
     def test_infill_text_streaming_success(self):
         """Test successful streaming text infilling."""
         with patch(
-            "app.api.diffusion.endpoints.get_diffusion_service"
+            "app.api.diffusion.endpoints.get_diffusion_service",
         ) as mock_get_service:
             # Mock the service
             mock_service = AsyncMock()
@@ -364,7 +363,7 @@ class TestDiffusionInfillingEndpoint:
     def test_infill_text_service_error(self):
         """Test text infilling with service error."""
         with patch(
-            "app.api.diffusion.endpoints.get_diffusion_service"
+            "app.api.diffusion.endpoints.get_diffusion_service",
         ) as mock_get_service:
             # Mock the service to raise an exception
             mock_get_service.side_effect = Exception("Service unavailable")
@@ -588,7 +587,7 @@ class TestDiffusionModels:
     def test_diffusion_generation_response_defaults(self):
         """Test DiffusionGenerationResponse with default values."""
         response = DiffusionGenerationResponse(
-            success=True, model_id="dreamon", processing_time=1.5
+            success=True, model_id="dreamon", processing_time=1.5,
         )
 
         assert response.success is True
@@ -619,7 +618,7 @@ class TestDiffusionModels:
     def test_diffusion_infilling_response_defaults(self):
         """Test DiffusionInfillingResponse with default values."""
         response = DiffusionInfillingResponse(
-            success=True, model_id="dreamon", processing_time=1.0
+            success=True, model_id="dreamon", processing_time=1.0,
         )
 
         assert response.success is True

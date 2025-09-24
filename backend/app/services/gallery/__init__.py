@@ -1,5 +1,4 @@
-"""
-Gallery Service Package
+"""Gallery Service Package
 
 Gallery-dl integration service for Reynard backend.
 """

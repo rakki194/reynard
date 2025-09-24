@@ -1,5 +1,4 @@
-"""
-Main Experiment Runner
+"""Main Experiment Runner
 
 Main entry point for agent reconstruction experiments.
 
@@ -10,7 +9,6 @@ Version: 1.0.0
 import argparse
 import asyncio
 import sys
-from pathlib import Path
 
 from .config import ExperimentConfig, ExperimentType
 from .orchestrator import ExperimentOrchestrator
@@ -18,9 +16,8 @@ from .orchestrator import ExperimentOrchestrator
 
 async def main():
     """Main experiment runner."""
-
     parser = argparse.ArgumentParser(
-        description="PHOENIX Agent Reconstruction Experiments"
+        description="PHOENIX Agent Reconstruction Experiments",
     )
     parser.add_argument(
         "--experiment-type",
@@ -30,7 +27,7 @@ async def main():
         help="Type of experiment to run",
     )
     parser.add_argument(
-        "--trials", type=int, default=10, help="Number of trials to run"
+        "--trials", type=int, default=10, help="Number of trials to run",
     )
     parser.add_argument(
         "--population-size",
@@ -45,7 +42,7 @@ async def main():
         help="Maximum generations for evolutionary methods",
     )
     parser.add_argument(
-        "--results-dir", type=str, default="results", help="Directory to save results"
+        "--results-dir", type=str, default="results", help="Directory to save results",
     )
     parser.add_argument(
         "--log-level",

@@ -1,5 +1,4 @@
-"""
-Service Shutdown Module for Reynard Backend
+"""Service Shutdown Module for Reynard Backend
 
 This module contains all service shutdown functions for the Reynard backend,
 implementing graceful shutdown procedures with proper resource cleanup and
@@ -28,8 +27,7 @@ logger = logging.getLogger(__name__)
 
 
 async def shutdown_gatekeeper_service() -> None:
-    """
-    Gracefully shutdown the Gatekeeper authentication service.
+    """Gracefully shutdown the Gatekeeper authentication service.
 
     This function performs proper cleanup of the authentication service,
     including closing database connections, clearing cached tokens,
@@ -37,6 +35,7 @@ async def shutdown_gatekeeper_service() -> None:
 
     Raises:
         Exception: Logged for monitoring purposes but does not prevent shutdown.
+
     """
     try:
         await shutdown_gatekeeper()
@@ -46,8 +45,7 @@ async def shutdown_gatekeeper_service() -> None:
 
 
 async def shutdown_comfy_service_func() -> None:
-    """
-    Gracefully shutdown the ComfyUI service.
+    """Gracefully shutdown the ComfyUI service.
 
     This function performs proper cleanup of the ComfyUI service,
     including closing API connections, saving any pending workflows,
@@ -55,6 +53,7 @@ async def shutdown_comfy_service_func() -> None:
 
     Raises:
         Exception: Logged for monitoring purposes but does not prevent shutdown.
+
     """
     try:
         shutdown_comfy_service()
@@ -64,8 +63,7 @@ async def shutdown_comfy_service_func() -> None:
 
 
 async def shutdown_nlweb_service_func() -> None:
-    """
-    Gracefully shutdown the NLWeb service.
+    """Gracefully shutdown the NLWeb service.
 
     This function performs proper cleanup of the NLWeb service,
     including closing network connections, clearing cached data,
@@ -73,6 +71,7 @@ async def shutdown_nlweb_service_func() -> None:
 
     Raises:
         Exception: Logged for monitoring purposes but does not prevent shutdown.
+
     """
     try:
         await shutdown_nlweb_service()

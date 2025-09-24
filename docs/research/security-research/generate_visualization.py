@@ -9,8 +9,7 @@ def generate_vulnerability_chart(
     title="Vulnerability Distribution by Severity",
     filename="vulnerability_chart.png",
 ):
-    """
-    Generates a bar chart showing vulnerability distribution by severity.
+    """Generates a bar chart showing vulnerability distribution by severity.
     :param data: A dictionary where keys are severity levels (e.g., "High", "Medium") and values are counts.
     :param title: Title of the chart.
     :param filename: Name of the file to save the chart.
@@ -30,7 +29,7 @@ def generate_vulnerability_chart(
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Generate data visualizations for security assessments."
+        description="Generate data visualizations for security assessments.",
     )
     parser.add_argument(
         "--data",

@@ -1,5 +1,4 @@
-"""
-Configuration Management Mixin for Reynard Backend Services
+"""Configuration Management Mixin for Reynard Backend Services
 
 This module provides centralized configuration management with
 validation, change notifications, and hot-reload capabilities.
@@ -37,8 +36,7 @@ class ConfigChangeNotification:
 
 
 class ConfigEndpointMixin:
-    """
-    Mixin that provides configuration endpoints and management for services.
+    """Mixin that provides configuration endpoints and management for services.
     """
 
     def __init__(self):
@@ -50,11 +48,11 @@ class ConfigEndpointMixin:
         self._hot_reload_enabled: bool = False
 
     def setup_config_endpoints(self, config_model: type[BaseModel]) -> None:
-        """
-        Setup configuration endpoints for the service.
+        """Setup configuration endpoints for the service.
 
         Args:
             config_model: Pydantic model for configuration validation
+
         """
         self._config_schema = config_model
 
@@ -72,7 +70,7 @@ class ConfigEndpointMixin:
             except Exception as e:
                 logger.error(f"Failed to get config for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="get_config", error=e, service_name=self.service_name
+                    operation="get_config", error=e, service_name=self.service_name,
                 )
 
         @self.router.put("/config")
@@ -95,7 +93,7 @@ class ConfigEndpointMixin:
             except Exception as e:
                 logger.error(f"Failed to update config for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="update_config", error=e, service_name=self.service_name
+                    operation="update_config", error=e, service_name=self.service_name,
                 )
 
         @self.router.post("/config/validate")
@@ -123,7 +121,7 @@ class ConfigEndpointMixin:
             except Exception as e:
                 logger.error(f"Config validation failed for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="validate_config", error=e, service_name=self.service_name
+                    operation="validate_config", error=e, service_name=self.service_name,
                 )
 
         @self.router.get("/config/history")
@@ -137,7 +135,7 @@ class ConfigEndpointMixin:
                 }
             except Exception as e:
                 logger.error(
-                    f"Failed to get config history for {self.service_name}: {e}"
+                    f"Failed to get config history for {self.service_name}: {e}",
                 )
                 return service_error_handler.handle_service_error(
                     operation="get_config_history",
@@ -164,7 +162,7 @@ class ConfigEndpointMixin:
             except Exception as e:
                 logger.error(f"Failed to reset config for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="reset_config", error=e, service_name=self.service_name
+                    operation="reset_config", error=e, service_name=self.service_name,
                 )
 
         @self.router.post("/config/hot-reload")
@@ -179,7 +177,7 @@ class ConfigEndpointMixin:
                 }
             except Exception as e:
                 logger.error(
-                    f"Failed to toggle hot-reload for {self.service_name}: {e}"
+                    f"Failed to toggle hot-reload for {self.service_name}: {e}",
                 )
                 return service_error_handler.handle_service_error(
                     operation="toggle_hot_reload",
@@ -188,17 +186,16 @@ class ConfigEndpointMixin:
                 )
 
     def get_config_endpoint(self) -> dict[str, Any]:
-        """
-        Get current configuration.
+        """Get current configuration.
 
         Returns:
             Dict containing current configuration
+
         """
         return self._config.copy()
 
     def update_config_endpoint(self, config_data: dict[str, Any]) -> dict[str, Any]:
-        """
-        Update configuration programmatically.
+        """Update configuration programmatically.
 
         Args:
             config_data: New configuration data
@@ -208,6 +205,7 @@ class ConfigEndpointMixin:
 
         Raises:
             ReynardValidationError: If configuration is invalid
+
         """
         try:
             old_config = self._config.copy()
@@ -227,36 +225,35 @@ class ConfigEndpointMixin:
             )
 
     def add_config_change_listener(self, key: str, callback: Callable) -> None:
-        """
-        Add a listener for configuration changes.
+        """Add a listener for configuration changes.
 
         Args:
             key: Configuration key to monitor
             callback: Function to call when configuration changes
+
         """
         self._config_change_listeners[key] = callback
         logger.info(
-            f"Added config change listener for key '{key}' in {self.service_name}"
+            f"Added config change listener for key '{key}' in {self.service_name}",
         )
 
     def remove_config_change_listener(self, key: str) -> None:
-        """
-        Remove a configuration change listener.
+        """Remove a configuration change listener.
 
         Args:
             key: Configuration key to stop monitoring
+
         """
         if key in self._config_change_listeners:
             del self._config_change_listeners[key]
             logger.info(
-                f"Removed config change listener for key '{key}' in {self.service_name}"
+                f"Removed config change listener for key '{key}' in {self.service_name}",
             )
 
     def _validate_and_update_config(
-        self, config_data: dict[str, Any]
+        self, config_data: dict[str, Any],
     ) -> dict[str, Any]:
-        """
-        Validate and update configuration.
+        """Validate and update configuration.
 
         Args:
             config_data: Configuration data to validate and apply
@@ -266,6 +263,7 @@ class ConfigEndpointMixin:
 
         Raises:
             ReynardValidationError: If validation fails
+
         """
         try:
             # Validate against schema if available
@@ -286,7 +284,7 @@ class ConfigEndpointMixin:
                     "version": self._config_version,
                     "changes": config_data,
                     "service": self.service_name,
-                }
+                },
             )
 
             # Keep only last 100 history entries
@@ -294,7 +292,7 @@ class ConfigEndpointMixin:
                 self._config_history = self._config_history[-100:]
 
             logger.info(
-                f"Configuration updated for {self.service_name}, version: {self._config_version}"
+                f"Configuration updated for {self.service_name}, version: {self._config_version}",
             )
 
             return self._config.copy()
@@ -311,14 +309,14 @@ class ConfigEndpointMixin:
             )
 
     def _notify_config_changes(
-        self, old_config: dict[str, Any], new_config: dict[str, Any]
+        self, old_config: dict[str, Any], new_config: dict[str, Any],
     ) -> None:
-        """
-        Notify listeners of configuration changes.
+        """Notify listeners of configuration changes.
 
         Args:
             old_config: Previous configuration
             new_config: New configuration
+
         """
         for key, callback in self._config_change_listeners.items():
             try:
@@ -337,14 +335,13 @@ class ConfigEndpointMixin:
 
             except Exception as e:
                 logger.error(
-                    f"Failed to notify config change listener for key '{key}': {e}"
+                    f"Failed to notify config change listener for key '{key}': {e}",
                 )
 
     def _get_config_changes(
-        self, old_config: dict[str, Any], new_config: dict[str, Any]
+        self, old_config: dict[str, Any], new_config: dict[str, Any],
     ) -> dict[str, Any]:
-        """
-        Get configuration changes between old and new configs.
+        """Get configuration changes between old and new configs.
 
         Args:
             old_config: Previous configuration
@@ -352,6 +349,7 @@ class ConfigEndpointMixin:
 
         Returns:
             Dict containing changes
+
         """
         changes = {}
 
@@ -376,11 +374,11 @@ class ConfigEndpointMixin:
         return changes
 
     def _get_config_schema_info(self) -> dict[str, Any]:
-        """
-        Get configuration schema information.
+        """Get configuration schema information.
 
         Returns:
             Dict containing schema information
+
         """
         if not self._config_schema:
             return {"schema_defined": False}
@@ -406,13 +404,13 @@ class ConfigEndpointMixin:
         return self._hot_reload_enabled
 
     def get_config_history(self, limit: int = 50) -> list:
-        """
-        Get configuration history.
+        """Get configuration history.
 
         Args:
             limit: Maximum number of history entries to return
 
         Returns:
             List of configuration history entries
+
         """
         return self._config_history[-limit:] if limit else self._config_history.copy()

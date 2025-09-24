@@ -1,5 +1,4 @@
-"""
-Base summarization classes and interfaces for Reynard.
+"""Base summarization classes and interfaces for Reynard.
 
 This module defines the core abstractions for the summarization system,
 including the base summarizer class, result types, and configuration options.
@@ -127,20 +126,19 @@ class SummarizationResult:
 
 
 class BaseSummarizer(ABC):
-    """
-    Abstract base class for summarization implementations.
+    """Abstract base class for summarization implementations.
 
     This class defines the interface that all summarizers must implement,
     providing a consistent API for different summarization strategies.
     """
 
     def __init__(self, name: str, supported_content_types: list[ContentType]):
-        """
-        Initialize the base summarizer.
+        """Initialize the base summarizer.
 
         Args:
             name: Name of the summarizer
             supported_content_types: List of content types this summarizer supports
+
         """
         self.name = name
         self.supported_content_types = supported_content_types
@@ -148,20 +146,18 @@ class BaseSummarizer(ABC):
 
     @abstractmethod
     async def initialize(self) -> bool:
-        """
-        Initialize the summarizer.
+        """Initialize the summarizer.
 
         Returns:
             True if initialization was successful, False otherwise
+
         """
-        pass
 
     @abstractmethod
     async def summarize(
-        self, text: str, options: SummarizationOptions
+        self, text: str, options: SummarizationOptions,
     ) -> SummarizationResult:
-        """
-        Summarize the given text.
+        """Summarize the given text.
 
         Args:
             text: Text to summarize
@@ -173,15 +169,14 @@ class BaseSummarizer(ABC):
         Raises:
             ValueError: If text is empty or invalid
             RuntimeError: If summarizer is not available
+
         """
-        pass
 
     @abstractmethod
     async def summarize_stream(
-        self, text: str, options: SummarizationOptions
+        self, text: str, options: SummarizationOptions,
     ) -> AsyncGenerator[dict[str, Any]]:
-        """
-        Stream summarization progress and results.
+        """Stream summarization progress and results.
 
         Args:
             text: Text to summarize
@@ -189,54 +184,53 @@ class BaseSummarizer(ABC):
 
         Yields:
             Progress updates and final result as dictionaries
+
         """
-        pass
 
     @abstractmethod
     async def validate_text(self, text: str) -> bool:
-        """
-        Validate if the text is suitable for summarization.
+        """Validate if the text is suitable for summarization.
 
         Args:
             text: Text to validate
 
         Returns:
             True if text is valid, False otherwise
+
         """
-        pass
 
     def is_available(self) -> bool:
-        """
-        Check if the summarizer is available.
+        """Check if the summarizer is available.
 
         Returns:
             True if available, False otherwise
+
         """
         return self._is_available
 
     def supports_content_type(self, content_type: ContentType) -> bool:
-        """
-        Check if this summarizer supports the given content type.
+        """Check if this summarizer supports the given content type.
 
         Args:
             content_type: Content type to check
 
         Returns:
             True if supported, False otherwise
+
         """
         return content_type in self.supported_content_types
 
     async def get_quality_metrics(
-        self, result: SummarizationResult
+        self, result: SummarizationResult,
     ) -> dict[str, float]:
-        """
-        Calculate quality metrics for a summarization result.
+        """Calculate quality metrics for a summarization result.
 
         Args:
             result: Summarization result to evaluate
 
         Returns:
             Dictionary of quality metrics
+
         """
         # Default implementation with basic heuristics
         metrics = {
@@ -262,7 +256,7 @@ class BaseSummarizer(ABC):
             summary_words = set(result.summary.lower().split())
             if original_words:
                 overlap = len(original_words.intersection(summary_words)) / len(
-                    original_words
+                    original_words,
                 )
                 metrics["relevance"] = min(1.0, overlap * 2.0)
 
@@ -274,4 +268,3 @@ class BaseSummarizer(ABC):
 
     async def cleanup(self) -> None:
         """Clean up resources used by the summarizer."""
-        pass

@@ -1,11 +1,10 @@
-"""
-Data models for the Enhanced Humility Detector.
+"""Data models for the Enhanced Humility Detector.
 """
 
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 
 class SeverityLevel(Enum):
@@ -57,15 +56,15 @@ class HumilityFinding:
     suggested_replacement: str
     context: str
     confidence_score: float
-    hexaco_score: Optional[float] = None
-    epistemic_humility_score: Optional[float] = None
-    sentiment_score: Optional[float] = None
-    linguistic_features: Dict[str, Any] = field(default_factory=dict)
-    behavioral_indicators: List[str] = field(default_factory=list)
-    cultural_context: Optional[str] = None
+    hexaco_score: float | None = None
+    epistemic_humility_score: float | None = None
+    sentiment_score: float | None = None
+    linguistic_features: dict[str, Any] = field(default_factory=dict)
+    behavioral_indicators: list[str] = field(default_factory=list)
+    cultural_context: str | None = None
     timestamp: datetime = field(default_factory=datetime.now)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for JSON serialization."""
         return {
             "file_path": self.file_path,
@@ -97,13 +96,13 @@ class HumilityProfile:
     linguistic_humility: float
     behavioral_humility: float
     cultural_adaptation: float
-    findings: List[HumilityFinding]
-    recommendations: List[str]
-    improvement_areas: List[str]
-    strengths: List[str]
+    findings: list[HumilityFinding]
+    recommendations: list[str]
+    improvement_areas: list[str]
+    strengths: list[str]
     timestamp: datetime = field(default_factory=datetime.now)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for JSON serialization."""
         return {
             "overall_score": self.overall_score,
@@ -132,10 +131,10 @@ class DetectionMetrics:
     false_negative_rate: float
     true_positive_rate: float
     true_negative_rate: float
-    auc_score: Optional[float] = None
-    confusion_matrix: Optional[Dict[str, int]] = None
+    auc_score: float | None = None
+    confusion_matrix: dict[str, int] | None = None
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for JSON serialization."""
         return {
             "precision": self.precision,
@@ -157,12 +156,12 @@ class CulturalContext:
 
     region: str
     language: str
-    cultural_norms: Dict[str, Any]
-    humility_indicators: List[str]
-    boastful_indicators: List[str]
-    adaptation_factors: Dict[str, float]
+    cultural_norms: dict[str, Any]
+    humility_indicators: list[str]
+    boastful_indicators: list[str]
+    adaptation_factors: dict[str, float]
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for JSON serialization."""
         return {
             "region": self.region,

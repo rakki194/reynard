@@ -1,5 +1,4 @@
-"""
-Version Management
+"""Version Management
 
 Provides semantic versioning and version management capabilities for
 the Success-Advisor-8 distillation system.
@@ -11,14 +10,13 @@ Version: 1.0.0
 import re
 import subprocess
 from pathlib import Path
-from typing import Any, Dict, Optional, Tuple
+from typing import Any
 
 from ..utils.logging import PhoenixLogger
 
 
 class VersionManager:
-    """
-    Version management system.
+    """Version management system.
 
     Provides semantic versioning capabilities including version parsing,
     comparison, and bumping operations.
@@ -28,25 +26,25 @@ class VersionManager:
         """Initialize version manager."""
         self.logger = PhoenixLogger("version_manager")
         self.version_pattern = re.compile(
-            r"^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$"
+            r"^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$",
         )
 
         self.logger.info("Version manager initialized", "initialization")
 
-    def parse_version(self, version_string: str) -> Optional[Dict[str, Any]]:
-        """
-        Parse a semantic version string.
+    def parse_version(self, version_string: str) -> dict[str, Any] | None:
+        """Parse a semantic version string.
 
         Args:
             version_string: Version string to parse
 
         Returns:
             Parsed version dictionary or None if invalid
+
         """
         match = self.version_pattern.match(version_string)
         if not match:
             self.logger.warning(
-                f"Invalid version format: {version_string}", "version_parse"
+                f"Invalid version format: {version_string}", "version_parse",
             )
             return None
 
@@ -65,8 +63,7 @@ class VersionManager:
         return version_info
 
     def compare_versions(self, version1: str, version2: str) -> int:
-        """
-        Compare two semantic versions.
+        """Compare two semantic versions.
 
         Args:
             version1: First version string
@@ -74,13 +71,14 @@ class VersionManager:
 
         Returns:
             -1 if version1 < version2, 0 if equal, 1 if version1 > version2
+
         """
         v1_info = self.parse_version(version1)
         v2_info = self.parse_version(version2)
 
         if not v1_info or not v2_info:
             self.logger.error(
-                "Invalid version strings for comparison", "version_compare"
+                "Invalid version strings for comparison", "version_compare",
             )
             return 0
 
@@ -88,26 +86,25 @@ class VersionManager:
         for field in ["major", "minor", "patch"]:
             if v1_info[field] < v2_info[field]:
                 return -1
-            elif v1_info[field] > v2_info[field]:
+            if v1_info[field] > v2_info[field]:
                 return 1
 
         # Compare prerelease
         if v1_info["prerelease"] is None and v2_info["prerelease"] is not None:
             return 1  # version1 is release, version2 is prerelease
-        elif v1_info["prerelease"] is not None and v2_info["prerelease"] is None:
+        if v1_info["prerelease"] is not None and v2_info["prerelease"] is None:
             return -1  # version1 is prerelease, version2 is release
-        elif v1_info["prerelease"] is not None and v2_info["prerelease"] is not None:
+        if v1_info["prerelease"] is not None and v2_info["prerelease"] is not None:
             # Compare prerelease strings lexicographically
             if v1_info["prerelease"] < v2_info["prerelease"]:
                 return -1
-            elif v1_info["prerelease"] > v2_info["prerelease"]:
+            if v1_info["prerelease"] > v2_info["prerelease"]:
                 return 1
 
         return 0  # Versions are equal
 
-    def bump_version(self, current_version: str, bump_type: str) -> Optional[str]:
-        """
-        Bump a semantic version.
+    def bump_version(self, current_version: str, bump_type: str) -> str | None:
+        """Bump a semantic version.
 
         Args:
             current_version: Current version string
@@ -115,6 +112,7 @@ class VersionManager:
 
         Returns:
             New version string or None if invalid
+
         """
         version_info = self.parse_version(current_version)
         if not version_info:
@@ -148,15 +146,15 @@ class VersionManager:
         )
         return new_version
 
-    async def get_current_version(self, package_path: str = ".") -> Optional[str]:
-        """
-        Get current version from package.json.
+    async def get_current_version(self, package_path: str = ".") -> str | None:
+        """Get current version from package.json.
 
         Args:
             package_path: Path to package directory
 
         Returns:
             Current version string or None if not found
+
         """
         try:
             package_json = Path(package_path) / "package.json"
@@ -181,8 +179,7 @@ class VersionManager:
             return None
 
     async def set_version(self, version: str, package_path: str = ".") -> bool:
-        """
-        Set version in package.json.
+        """Set version in package.json.
 
         Args:
             version: Version string to set
@@ -190,6 +187,7 @@ class VersionManager:
 
         Returns:
             True if successful, False otherwise
+
         """
         try:
             # Validate version format
@@ -218,12 +216,12 @@ class VersionManager:
             self.logger.error(f"Failed to set version: {e}", "version_set")
             return False
 
-    async def get_latest_tag(self) -> Optional[str]:
-        """
-        Get the latest git tag.
+    async def get_latest_tag(self) -> str | None:
+        """Get the latest git tag.
 
         Returns:
             Latest tag string or None if no tags found
+
         """
         try:
             result = subprocess.run(
@@ -242,11 +240,11 @@ class VersionManager:
             return None
 
     async def get_all_tags(self) -> list[str]:
-        """
-        Get all git tags sorted by version.
+        """Get all git tags sorted by version.
 
         Returns:
             List of tag strings
+
         """
         try:
             result = subprocess.run(
@@ -267,26 +265,26 @@ class VersionManager:
             return []
 
     def is_valid_version(self, version: str) -> bool:
-        """
-        Check if a version string is valid semantic version.
+        """Check if a version string is valid semantic version.
 
         Args:
             version: Version string to validate
 
         Returns:
             True if valid, False otherwise
+
         """
         return self.parse_version(version) is not None
 
-    def get_version_info(self, version: str) -> Dict[str, Any]:
-        """
-        Get detailed version information.
+    def get_version_info(self, version: str) -> dict[str, Any]:
+        """Get detailed version information.
 
         Args:
             version: Version string
 
         Returns:
             Version information dictionary
+
         """
         version_info = self.parse_version(version)
         if not version_info:
@@ -305,10 +303,9 @@ class VersionManager:
         }
 
     async def suggest_next_version(
-        self, current_version: str, change_type: str
-    ) -> Optional[str]:
-        """
-        Suggest next version based on change type.
+        self, current_version: str, change_type: str,
+    ) -> str | None:
+        """Suggest next version based on change type.
 
         Args:
             current_version: Current version string
@@ -316,15 +313,15 @@ class VersionManager:
 
         Returns:
             Suggested next version or None if invalid
+
         """
         if change_type == "breaking":
             return self.bump_version(current_version, "major")
-        elif change_type == "feature":
+        if change_type == "feature":
             return self.bump_version(current_version, "minor")
-        elif change_type == "fix":
+        if change_type == "fix":
             return self.bump_version(current_version, "patch")
-        else:
-            self.logger.warning(
-                f"Unknown change type: {change_type}", "version_suggest"
-            )
-            return None
+        self.logger.warning(
+            f"Unknown change type: {change_type}", "version_suggest",
+        )
+        return None

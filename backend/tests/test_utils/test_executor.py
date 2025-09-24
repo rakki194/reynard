@@ -1,5 +1,4 @@
-"""
-Tests for the executor utility module.
+"""Tests for the executor utility module.
 
 This module tests the global executor functionality including
 thread pool management and task execution.
@@ -31,7 +30,7 @@ class TestGlobalExecutor:
         config = ExecutorConfig(max_workers=4)
 
         with patch(
-            "app.utils.executor.ThreadPoolExecutorManager"
+            "app.utils.executor.ThreadPoolExecutorManager",
         ) as mock_manager_class:
             mock_manager = AsyncMock()
             mock_manager_class.return_value = mock_manager
@@ -63,7 +62,7 @@ class TestGlobalExecutor:
         mock_executor.execute.return_value = "test_result"
 
         with patch(
-            "app.utils.executor.get_global_executor", return_value=mock_executor
+            "app.utils.executor.get_global_executor", return_value=mock_executor,
         ):
 
             def test_func(x, y):
@@ -81,7 +80,7 @@ class TestGlobalExecutor:
         mock_executor.execute.return_value = "test_result"
 
         with patch(
-            "app.utils.executor.get_global_executor", return_value=mock_executor
+            "app.utils.executor.get_global_executor", return_value=mock_executor,
         ):
 
             def test_func(x, y, z=None):
@@ -91,7 +90,7 @@ class TestGlobalExecutor:
 
             assert result == "test_result"
             mock_executor.execute.assert_called_once_with(
-                test_func, 1, 2, timeout=10.0, z=3
+                test_func, 1, 2, timeout=10.0, z=3,
             )
 
     @pytest.mark.asyncio
@@ -180,7 +179,7 @@ class TestGlobalExecutor:
         mock_executor.execute.return_value = "test_result"
 
         with patch(
-            "app.utils.executor.get_global_executor", return_value=mock_executor
+            "app.utils.executor.get_global_executor", return_value=mock_executor,
         ):
 
             def test_func():
@@ -219,7 +218,7 @@ class TestGlobalExecutor:
         config = ExecutorConfig(max_workers=4)
 
         with patch(
-            "app.utils.executor.ThreadPoolExecutorManager"
+            "app.utils.executor.ThreadPoolExecutorManager",
         ) as mock_manager_class:
             mock_manager = AsyncMock()
             mock_manager_class.return_value = mock_manager

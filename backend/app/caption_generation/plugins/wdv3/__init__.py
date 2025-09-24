@@ -1,5 +1,4 @@
-"""
-WDv3 Plugin for Reynard
+"""WDv3 Plugin for Reynard
 
 This plugin provides the WDv3 (WDv3) caption generation model, which is
 a Danbooru-style tagger with support for various architectures.

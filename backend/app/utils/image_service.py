@@ -1,5 +1,4 @@
-"""
-Legacy Image Processing Service for Reynard Backend
+"""Legacy Image Processing Service for Reynard Backend
 
 This module provides backward compatibility while redirecting to the new
 enhanced image processing service.
@@ -11,8 +10,7 @@ logger = logging.getLogger("uvicorn")
 
 
 class ImageProcessingService:
-    """
-    Legacy image processing service - redirects to enhanced service.
+    """Legacy image processing service - redirects to enhanced service.
 
     This class provides backward compatibility while using the new
     enhanced image processing service under the hood.

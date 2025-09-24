@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-ECS Input Validation
+"""ECS Input Validation
 
 Comprehensive input validation for ECS backend endpoints to prevent
 errors and improve performance by catching invalid inputs early.
@@ -8,7 +7,7 @@ errors and improve performance by catching invalid inputs early.
 
 import logging
 import re
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 from fastapi import HTTPException
 from pydantic import BaseModel, Field, validator
@@ -19,7 +18,6 @@ logger = logging.getLogger(__name__)
 class ECSValidationError(Exception):
     """Custom validation error for ECS endpoints."""
 
-    pass
 
 
 class AgentIDValidator:
@@ -41,6 +39,7 @@ class AgentIDValidator:
 
         Returns:
             bool: True if valid, False otherwise
+
         """
         if not agent_id or not isinstance(agent_id, str):
             return False
@@ -65,6 +64,7 @@ class AgentIDValidator:
 
         Raises:
             HTTPException: If agent ID is invalid
+
         """
         if not cls.validate(agent_id):
             raise HTTPException(
@@ -168,6 +168,7 @@ class SpiritValidator:
 
         Returns:
             bool: True if valid, False otherwise
+
         """
         if not spirit or not isinstance(spirit, str):
             return False
@@ -187,6 +188,7 @@ class SpiritValidator:
 
         Raises:
             HTTPException: If spirit name is invalid
+
         """
         if not cls.validate(spirit):
             valid_spirits = sorted(list(cls.VALID_SPIRITS))[:10]  # Show first 10
@@ -218,6 +220,7 @@ class StyleValidator:
 
         Returns:
             bool: True if valid, False otherwise
+
         """
         if not style or not isinstance(style, str):
             return False
@@ -237,6 +240,7 @@ class StyleValidator:
 
         Raises:
             HTTPException: If style name is invalid
+
         """
         if not cls.validate(style):
             raise HTTPException(
@@ -251,7 +255,7 @@ class CoordinateValidator:
 
     @classmethod
     def validate(
-        cls, value: Union[int, float], field_name: str = "coordinate"
+        cls, value: int | float, field_name: str = "coordinate",
     ) -> float:
         """Validate coordinate value.
 
@@ -264,6 +268,7 @@ class CoordinateValidator:
 
         Raises:
             HTTPException: If coordinate is invalid
+
         """
         try:
             coord = float(value)
@@ -303,6 +308,7 @@ class InteractionTypeValidator:
 
         Returns:
             bool: True if valid, False otherwise
+
         """
         if not interaction_type or not isinstance(interaction_type, str):
             return False
@@ -311,7 +317,7 @@ class InteractionTypeValidator:
 
     @classmethod
     def validate_and_raise(
-        cls, interaction_type: str, field_name: str = "interaction_type"
+        cls, interaction_type: str, field_name: str = "interaction_type",
     ) -> str:
         """Validate interaction type and raise exception if invalid.
 
@@ -324,6 +330,7 @@ class InteractionTypeValidator:
 
         Raises:
             HTTPException: If interaction type is invalid
+
         """
         if not cls.validate(interaction_type):
             raise HTTPException(
@@ -338,11 +345,11 @@ class ValidatedAgentCreateRequest(BaseModel):
     """Validated request model for creating a new agent."""
 
     agent_id: str = Field(
-        ..., min_length=3, max_length=50, description="Unique agent identifier"
+        ..., min_length=3, max_length=50, description="Unique agent identifier",
     )
-    spirit: Optional[str] = Field("fox", description="Agent spirit type")
-    style: Optional[str] = Field("foundation", description="Naming style")
-    name: Optional[str] = Field(None, max_length=100, description="Optional agent name")
+    spirit: str | None = Field("fox", description="Agent spirit type")
+    style: str | None = Field("foundation", description="Naming style")
+    name: str | None = Field(None, max_length=100, description="Optional agent name")
 
     @validator("agent_id")
     def validate_agent_id(cls, v):
@@ -427,7 +434,7 @@ class ValidatedChatRequest(BaseModel):
 
     receiver_id: str = Field(..., description="Receiver agent ID")
     message: str = Field(
-        ..., min_length=1, max_length=1000, description="Message content"
+        ..., min_length=1, max_length=1000, description="Message content",
     )
     interaction_type: str = Field("communication", description="Type of interaction")
 
@@ -455,7 +462,7 @@ class ValidatedSpiritInhabitationRequest(BaseModel):
 
 # Validation Functions
 def validate_agent_exists(
-    agent_id: str, agent_data: Optional[Dict[str, Any]] = None
+    agent_id: str, agent_data: dict[str, Any] | None = None,
 ) -> str:
     """Validate that an agent exists.
 
@@ -468,6 +475,7 @@ def validate_agent_exists(
 
     Raises:
         HTTPException: If agent doesn't exist
+
     """
     AgentIDValidator.validate_and_raise(agent_id)
 
@@ -490,15 +498,16 @@ def validate_spirit_exists(spirit: str) -> str:
 
     Raises:
         HTTPException: If spirit doesn't exist
+
     """
     return SpiritValidator.validate_and_raise(spirit)
 
 
 def validate_query_parameters(
-    limit: Optional[int] = None,
-    offset: Optional[int] = None,
-    max_results: Optional[int] = None,
-) -> Dict[str, int]:
+    limit: int | None = None,
+    offset: int | None = None,
+    max_results: int | None = None,
+) -> dict[str, int]:
     """Validate query parameters.
 
     Args:
@@ -511,13 +520,14 @@ def validate_query_parameters(
 
     Raises:
         HTTPException: If parameters are invalid
+
     """
     validated = {}
 
     if limit is not None:
         if not isinstance(limit, int) or limit < 1 or limit > 1000:
             raise HTTPException(
-                status_code=400, detail="Invalid limit: must be between 1 and 1000"
+                status_code=400, detail="Invalid limit: must be between 1 and 1000",
             )
         validated["limit"] = limit
 
@@ -529,7 +539,7 @@ def validate_query_parameters(
     if max_results is not None:
         if not isinstance(max_results, int) or max_results < 1 or max_results > 100:
             raise HTTPException(
-                status_code=400, detail="Invalid max_results: must be between 1 and 100"
+                status_code=400, detail="Invalid max_results: must be between 1 and 100",
             )
         validated["max_results"] = max_results
 
@@ -537,10 +547,10 @@ def validate_query_parameters(
 
 
 def validate_breeding_parameters(
-    enabled: Optional[bool] = None,
-    max_depth: Optional[int] = None,
-    radius: Optional[float] = None,
-) -> Dict[str, Any]:
+    enabled: bool | None = None,
+    max_depth: int | None = None,
+    radius: float | None = None,
+) -> dict[str, Any]:
     """Validate breeding-related parameters.
 
     Args:
@@ -553,27 +563,28 @@ def validate_breeding_parameters(
 
     Raises:
         HTTPException: If parameters are invalid
+
     """
     validated = {}
 
     if enabled is not None:
         if not isinstance(enabled, bool):
             raise HTTPException(
-                status_code=400, detail="Invalid enabled: must be boolean"
+                status_code=400, detail="Invalid enabled: must be boolean",
             )
         validated["enabled"] = enabled
 
     if max_depth is not None:
         if not isinstance(max_depth, int) or max_depth < 1 or max_depth > 10:
             raise HTTPException(
-                status_code=400, detail="Invalid max_depth: must be between 1 and 10"
+                status_code=400, detail="Invalid max_depth: must be between 1 and 10",
             )
         validated["max_depth"] = max_depth
 
     if radius is not None:
         if not isinstance(radius, (int, float)) or radius < 1.0 or radius > 1000.0:
             raise HTTPException(
-                status_code=400, detail="Invalid radius: must be between 1.0 and 1000.0"
+                status_code=400, detail="Invalid radius: must be between 1.0 and 1000.0",
             )
         validated["radius"] = float(radius)
 
@@ -590,6 +601,7 @@ def handle_validation_error(error: Exception, endpoint: str) -> HTTPException:
 
     Returns:
         HTTPException: Properly formatted HTTP exception
+
     """
     if isinstance(error, HTTPException):
         return error
@@ -601,11 +613,11 @@ def handle_validation_error(error: Exception, endpoint: str) -> HTTPException:
     logger.error(f"Unexpected validation error in {endpoint}: {error}")
 
     return HTTPException(
-        status_code=500, detail=f"Internal validation error in {endpoint}"
+        status_code=500, detail=f"Internal validation error in {endpoint}",
     )
 
 
-def validate_endpoint_inputs(endpoint: str, **kwargs) -> Dict[str, Any]:
+def validate_endpoint_inputs(endpoint: str, **kwargs) -> dict[str, Any]:
     """Validate inputs for a specific endpoint.
 
     Args:
@@ -617,6 +629,7 @@ def validate_endpoint_inputs(endpoint: str, **kwargs) -> Dict[str, Any]:
 
     Raises:
         HTTPException: If validation fails
+
     """
     validated = {}
 
@@ -624,25 +637,25 @@ def validate_endpoint_inputs(endpoint: str, **kwargs) -> Dict[str, Any]:
         # Agent ID validation
         if "agent_id" in kwargs:
             validated["agent_id"] = AgentIDValidator.validate_and_raise(
-                kwargs["agent_id"]
+                kwargs["agent_id"],
             )
 
         if "agent1_id" in kwargs:
             validated["agent1_id"] = AgentIDValidator.validate_and_raise(
-                kwargs["agent1_id"], "agent1_id"
+                kwargs["agent1_id"], "agent1_id",
             )
 
         if "agent2_id" in kwargs:
             validated["agent2_id"] = AgentIDValidator.validate_and_raise(
-                kwargs["agent2_id"], "agent2_id"
+                kwargs["agent2_id"], "agent2_id",
             )
 
         # Spirit validation
-        if "spirit" in kwargs and kwargs["spirit"]:
+        if kwargs.get("spirit"):
             validated["spirit"] = SpiritValidator.validate_and_raise(kwargs["spirit"])
 
         # Style validation
-        if "style" in kwargs and kwargs["style"]:
+        if kwargs.get("style"):
             validated["style"] = StyleValidator.validate_and_raise(kwargs["style"])
 
         # Coordinate validation
@@ -655,7 +668,7 @@ def validate_endpoint_inputs(endpoint: str, **kwargs) -> Dict[str, Any]:
         # Interaction type validation
         if "interaction_type" in kwargs:
             validated["interaction_type"] = InteractionTypeValidator.validate_and_raise(
-                kwargs["interaction_type"]
+                kwargs["interaction_type"],
             )
 
         # Query parameters validation
@@ -728,7 +741,7 @@ def test_validation():
     print("\n✅ Testing Pydantic Models:")
     try:
         request = ValidatedAgentCreateRequest(
-            agent_id="test-agent-123", spirit="fox", style="foundation"
+            agent_id="test-agent-123", spirit="fox", style="foundation",
         )
         print(f"   ✅ Valid request: {request}")
     except Exception as e:

@@ -1,5 +1,4 @@
-"""
-Obfuscation Detection Patterns
+"""Obfuscation Detection Patterns
 
 This module contains regex patterns for detecting various
 obfuscation techniques used in security attacks.

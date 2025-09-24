@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Codebase Indexing Script for Reynard RAG System
+"""Codebase Indexing Script for Reynard RAG System
 
 This script indexes the Reynard codebase into the PostgreSQL/pgvector database
 for semantic search and code intelligence.
@@ -19,14 +18,13 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from app.core.config import get_config
-from app.services.rag import RAGService
 from app.services.rag.core.embeddings import EmbeddingService
 from app.services.rag.core.indexing import CodebaseIndexer
 from app.services.rag.core.vector_store import VectorDBService
 
 # Set up logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -35,7 +33,7 @@ async def main():
     """Main indexing function."""
     parser = argparse.ArgumentParser(description="Index Reynard codebase for RAG")
     parser.add_argument(
-        "--scan-only", action="store_true", help="Only scan, don't index"
+        "--scan-only", action="store_true", help="Only scan, don't index",
     )
     parser.add_argument("--force", action="store_true", help="Force re-indexing")
     parser.add_argument("--verbose", "-v", action="store_true", help="Verbose output")
@@ -103,7 +101,7 @@ async def main():
             async for item in codebase_indexer.scan_codebase():
                 if item["type"] == "file":
                     logger.info(
-                        f"Found: {item['data']['path']} ({item['data']['file_type']})"
+                        f"Found: {item['data']['path']} ({item['data']['file_type']})",
                     )
                 elif item["type"] == "progress":
                     logger.info(item["message"])
@@ -131,7 +129,7 @@ async def main():
                     return 1
 
             logger.info(
-                f"🎉 Indexing complete! Indexed: {indexed_count}, Failed: {failed_count}"
+                f"🎉 Indexing complete! Indexed: {indexed_count}, Failed: {failed_count}",
             )
 
         # Get final stats
@@ -149,7 +147,7 @@ async def main():
         for i, text in enumerate(test_texts):
             try:
                 embedding = await embedding_service.embed_text(
-                    text, "sentence-transformers/all-MiniLM-L6-v2"
+                    text, "sentence-transformers/all-MiniLM-L6-v2",
                 )
                 logger.info(f"Generated embedding {i+1}: {len(embedding)} dimensions")
             except Exception as e:

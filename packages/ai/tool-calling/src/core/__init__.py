@@ -1,5 +1,4 @@
-"""
-Tool calling system for yipyap assistant.
+"""Tool calling system for yipyap assistant.
 
 This module provides a comprehensive tool calling framework that allows the assistant
 to execute various operations including git commands, file operations, dataset management,
@@ -31,6 +30,7 @@ Example:
     registry = ToolRegistry()
     result = await registry.execute_tool("list_files", {"path": "/home/user"})
     ```
+
 """
 
 from .base import BaseTool, ToolExecutionContext, ToolParameter, ToolResult

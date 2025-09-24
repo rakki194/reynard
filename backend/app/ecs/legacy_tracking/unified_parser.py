@@ -1,5 +1,4 @@
-"""
-Unified CHANGELOG Parser for Success-Advisor-8 Legacy Tracking
+"""Unified CHANGELOG Parser for Success-Advisor-8 Legacy Tracking
 
 Leverages existing CHANGELOG parsing implementations and extends them
 for comprehensive Success-Advisor-8 legacy tracking and analysis.
@@ -9,7 +8,7 @@ import re
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 # Add the scripts directory to the path to import existing parser
 sys.path.append(str(Path(__file__).parent.parent.parent.parent.parent / "scripts"))
@@ -25,8 +24,6 @@ except ImportError:
 import logging
 
 from .success_advisor_8_tracker import (
-    CodeMovement,
-    LegacyReport,
     SuccessAdvisor8Activity,
 )
 
@@ -34,17 +31,16 @@ logger = logging.getLogger(__name__)
 
 
 class UnifiedChangelogParser:
-    """
-    Unified CHANGELOG parser that leverages existing implementations
+    """Unified CHANGELOG parser that leverages existing implementations
     and extends them for Success-Advisor-8 legacy tracking.
     """
 
     def __init__(self, changelog_path: str = "CHANGELOG.md"):
-        """
-        Initialize the unified parser.
+        """Initialize the unified parser.
 
         Args:
             changelog_path: Path to the CHANGELOG.md file
+
         """
         self.changelog_path = Path(changelog_path)
         # More comprehensive pattern to catch all Success-Advisor-8 variations
@@ -67,22 +63,21 @@ class UnifiedChangelogParser:
             self.existing_parser = None
             self._existing_parser_available = False
             logger.warning(
-                "Existing ChangelogParser not available, using fallback implementation"
+                "Existing ChangelogParser not available, using fallback implementation",
             )
 
-    def parse_success_advisor_8_activities(self) -> List[SuccessAdvisor8Activity]:
-        """
-        Parse CHANGELOG for Success-Advisor-8 specific activities.
+    def parse_success_advisor_8_activities(self) -> list[SuccessAdvisor8Activity]:
+        """Parse CHANGELOG for Success-Advisor-8 specific activities.
 
         Returns:
             List of Success-Advisor-8 activities found in the changelog
+
         """
         if self.existing_parser:
             return self._parse_with_existing_parser()
-        else:
-            return self._parse_with_fallback()
+        return self._parse_with_fallback()
 
-    def _parse_with_existing_parser(self) -> List[SuccessAdvisor8Activity]:
+    def _parse_with_existing_parser(self) -> list[SuccessAdvisor8Activity]:
         """Parse using the existing agent diagram parser."""
         try:
             # Use existing parser to get all contributions
@@ -96,13 +91,13 @@ class UnifiedChangelogParser:
                     activities.append(activity)
 
             logger.info(
-                f"Found {len(activities)} Success-Advisor-8 activities using existing parser"
+                f"Found {len(activities)} Success-Advisor-8 activities using existing parser",
             )
 
             # If existing parser didn't find any Success-Advisor-8 activities, fall back
             if len(activities) == 0:
                 logger.info(
-                    "No Success-Advisor-8 activities found in existing parser, falling back to fallback parser"
+                    "No Success-Advisor-8 activities found in existing parser, falling back to fallback parser",
                 )
                 return self._parse_with_fallback()
 
@@ -112,7 +107,7 @@ class UnifiedChangelogParser:
             logger.error(f"Error using existing parser: {e}")
             return self._parse_with_fallback()
 
-    def _parse_with_fallback(self) -> List[SuccessAdvisor8Activity]:
+    def _parse_with_fallback(self) -> list[SuccessAdvisor8Activity]:
         """Fallback parser implementation."""
         if not self.changelog_path.exists():
             logger.warning(f"CHANGELOG not found at {self.changelog_path}")
@@ -139,18 +134,18 @@ class UnifiedChangelogParser:
             # Check for Success-Advisor-8 references
             if self.success_advisor_pattern.search(line):
                 activity = self._extract_activity_from_line(
-                    line, i, current_version, current_date
+                    line, i, current_version, current_date,
                 )
                 if activity:
                     activities.append(activity)
 
         logger.info(
-            f"Found {len(activities)} Success-Advisor-8 activities using fallback parser"
+            f"Found {len(activities)} Success-Advisor-8 activities using fallback parser",
         )
         return activities
 
     def _convert_contribution_to_activity(
-        self, contribution: AgentContribution
+        self, contribution: AgentContribution,
     ) -> SuccessAdvisor8Activity:
         """Convert existing AgentContribution to Success-Advisor-8 activity."""
         return SuccessAdvisor8Activity(
@@ -170,9 +165,9 @@ class UnifiedChangelogParser:
         self,
         line: str,
         line_number: int,
-        version: Optional[str],
-        date: Optional[datetime],
-    ) -> Optional[SuccessAdvisor8Activity]:
+        version: str | None,
+        date: datetime | None,
+    ) -> SuccessAdvisor8Activity | None:
         """Extract Success-Advisor-8 activity from changelog line."""
         try:
             # Determine activity type
@@ -207,23 +202,22 @@ class UnifiedChangelogParser:
 
         if any(keyword in line_lower for keyword in ["release", "version", "bump"]):
             return "release"
-        elif any(keyword in line_lower for keyword in ["add", "feature", "implement"]):
+        if any(keyword in line_lower for keyword in ["add", "feature", "implement"]):
             return "feature"
-        elif any(keyword in line_lower for keyword in ["fix", "bug", "error"]):
+        if any(keyword in line_lower for keyword in ["fix", "bug", "error"]):
             return "fix"
-        elif any(
+        if any(
             keyword in line_lower
             for keyword in ["refactor", "restructure", "reorganize"]
         ):
             return "refactor"
-        elif any(
+        if any(
             keyword in line_lower for keyword in ["doc", "documentation", "guide"]
         ):
             return "documentation"
-        else:
-            return "other"
+        return "other"
 
-    def analyze_activity_trends(self) -> Dict[str, Any]:
+    def analyze_activity_trends(self) -> dict[str, Any]:
         """Analyze activity trends and patterns."""
         activities = self.parse_success_advisor_8_activities()
         if not activities:
@@ -270,24 +264,24 @@ class UnifiedChangelogParser:
         if "error" in analysis:
             return f"❌ {analysis['error']}"
 
-        summary = f"🦁 Success-Advisor-8 Activity Summary\n\n"
+        summary = "🦁 Success-Advisor-8 Activity Summary\n\n"
         summary += f"📊 Total Activities: {analysis['total_activities']}\n"
 
         if analysis["time_range"]["earliest"]:
             summary += f"📅 Date Range: {analysis['time_range']['earliest'].strftime('%Y-%m-%d')} to {analysis['time_range']['latest'].strftime('%Y-%m-%d')}\n"
 
-        summary += f"\n🎯 Activity Types:\n"
+        summary += "\n🎯 Activity Types:\n"
         for activity_type, count in analysis["activity_types"].items():
             summary += f"  - {activity_type.title()}: {count}\n"
 
         if analysis["versions"]:
-            summary += f"\n📦 Versions:\n"
+            summary += "\n📦 Versions:\n"
             for version, count in analysis["versions"].items():
                 summary += f"  - {version}: {count} activities\n"
 
         return summary
 
-    def get_parser_info(self) -> Dict[str, Any]:
+    def get_parser_info(self) -> dict[str, Any]:
         """Get information about the parser implementation."""
         return {
             "parser_type": "unified",
@@ -297,7 +291,7 @@ class UnifiedChangelogParser:
             "success_advisor_pattern": self.success_advisor_pattern.pattern,
         }
 
-    def get_changelog_stats(self) -> Dict[str, Any]:
+    def get_changelog_stats(self) -> dict[str, Any]:
         """Get statistics about the CHANGELOG file."""
         if not self.changelog_path.exists():
             return {"error": "CHANGELOG file not found"}
@@ -317,13 +311,13 @@ class UnifiedChangelogParser:
                 "success_advisor_references": len(success_advisor_lines),
                 "file_size_bytes": self.changelog_path.stat().st_size,
                 "last_modified": datetime.fromtimestamp(
-                    self.changelog_path.stat().st_mtime
+                    self.changelog_path.stat().st_mtime,
                 ).isoformat(),
             }
         except Exception as e:
             return {"error": f"Failed to read CHANGELOG: {e}"}
 
-    def validate_changelog_format(self) -> Dict[str, Any]:
+    def validate_changelog_format(self) -> dict[str, Any]:
         """Validate CHANGELOG format and structure."""
         if not self.changelog_path.exists():
             return {"valid": False, "error": "CHANGELOG file not found"}
@@ -359,7 +353,7 @@ class UnifiedChangelogParser:
             ]
             if not success_advisor_lines:
                 validation_results["warnings"].append(
-                    "No Success-Advisor-8 references found in CHANGELOG"
+                    "No Success-Advisor-8 references found in CHANGELOG",
                 )
 
             # Check for proper date format in version headers
@@ -367,7 +361,7 @@ class UnifiedChangelogParser:
             date_matches = date_pattern.findall(content)
             if not date_matches:
                 validation_results["warnings"].append(
-                    "No properly formatted dates found in version headers"
+                    "No properly formatted dates found in version headers",
                 )
 
             return validation_results
@@ -376,7 +370,7 @@ class UnifiedChangelogParser:
             return {"valid": False, "error": f"Failed to validate CHANGELOG: {e}"}
 
     def _convert_to_success_advisor_activity(
-        self, contribution
+        self, contribution,
     ) -> SuccessAdvisor8Activity:
         """Convert an existing AgentContribution to a SuccessAdvisor8Activity."""
         activity_type = self._classify_activity_type(contribution.description)
@@ -395,20 +389,19 @@ class UnifiedChangelogParser:
 
 
 class SuccessAdvisor8ChangelogAnalyzer:
-    """
-    Advanced analyzer for Success-Advisor-8 changelog activities.
+    """Advanced analyzer for Success-Advisor-8 changelog activities.
     """
 
     def __init__(self, parser: UnifiedChangelogParser):
-        """
-        Initialize the analyzer.
+        """Initialize the analyzer.
 
         Args:
             parser: Unified changelog parser instance
+
         """
         self.parser = parser
 
-    def analyze_activity_trends(self) -> Dict[str, Any]:
+    def analyze_activity_trends(self) -> dict[str, Any]:
         """Analyze trends in Success-Advisor-8 activities."""
         activities = self.parser.parse_success_advisor_8_activities()
 
@@ -452,29 +445,29 @@ class SuccessAdvisor8ChangelogAnalyzer:
         if "error" in analysis:
             return f"❌ {analysis['error']}"
 
-        summary = f"🦁 Success-Advisor-8 Activity Summary\n\n"
+        summary = "🦁 Success-Advisor-8 Activity Summary\n\n"
         summary += f"📊 Total Activities: {analysis['total_activities']}\n"
 
         if analysis["time_range"]["earliest"]:
             summary += f"📅 Date Range: {analysis['time_range']['earliest'].strftime('%Y-%m-%d')} to {analysis['time_range']['latest'].strftime('%Y-%m-%d')}\n"
 
-        summary += f"\n🎯 Activity Types:\n"
+        summary += "\n🎯 Activity Types:\n"
         for activity_type, count in analysis["activity_types"].items():
             summary += f"  - {activity_type.title()}: {count}\n"
 
         if analysis["versions"]:
-            summary += f"\n📦 Versions:\n"
+            summary += "\n📦 Versions:\n"
             for version, count in analysis["versions"].items():
                 summary += f"  - {version}: {count} activities\n"
 
         return summary
 
-    def get_parser_info(self) -> Dict[str, Any]:
-        """
-        Get parser status and information.
+    def get_parser_info(self) -> dict[str, Any]:
+        """Get parser status and information.
 
         Returns:
             Dictionary containing parser information
+
         """
         return {
             "parser_type": "unified",
@@ -487,12 +480,12 @@ class SuccessAdvisor8ChangelogAnalyzer:
             "success_advisor_pattern": self.success_advisor_pattern.pattern,
         }
 
-    def get_changelog_stats(self) -> Dict[str, Any]:
-        """
-        Get statistics about the CHANGELOG file.
+    def get_changelog_stats(self) -> dict[str, Any]:
+        """Get statistics about the CHANGELOG file.
 
         Returns:
             Dictionary containing changelog statistics
+
         """
         if not self.changelog_path.exists():
             return {"error": "CHANGELOG file not found"}
@@ -512,18 +505,18 @@ class SuccessAdvisor8ChangelogAnalyzer:
                 "success_advisor_references": len(success_advisor_lines),
                 "file_size_bytes": self.changelog_path.stat().st_size,
                 "last_modified": datetime.fromtimestamp(
-                    self.changelog_path.stat().st_mtime
+                    self.changelog_path.stat().st_mtime,
                 ).isoformat(),
             }
         except Exception as e:
             return {"error": f"Failed to read CHANGELOG: {e}"}
 
-    def validate_changelog_format(self) -> Dict[str, Any]:
-        """
-        Validate CHANGELOG format and structure.
+    def validate_changelog_format(self) -> dict[str, Any]:
+        """Validate CHANGELOG format and structure.
 
         Returns:
             Dictionary containing validation results
+
         """
         if not self.changelog_path.exists():
             return {"valid": False, "error": "CHANGELOG file not found"}
@@ -559,7 +552,7 @@ class SuccessAdvisor8ChangelogAnalyzer:
             ]
             if not success_advisor_lines:
                 validation_results["warnings"].append(
-                    "No Success-Advisor-8 references found in CHANGELOG"
+                    "No Success-Advisor-8 references found in CHANGELOG",
                 )
 
             # Check for proper date format in version headers
@@ -567,7 +560,7 @@ class SuccessAdvisor8ChangelogAnalyzer:
             date_matches = date_pattern.findall(content)
             if not date_matches:
                 validation_results["warnings"].append(
-                    "No properly formatted dates found in version headers"
+                    "No properly formatted dates found in version headers",
                 )
 
             return validation_results

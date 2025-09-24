@@ -1,5 +1,4 @@
-"""
-ECS World Configuration
+"""ECS World Configuration
 
 Configuration settings for the ECS world system.
 """
@@ -38,10 +37,10 @@ class ECSConfig(BaseModel):
 
 
 def get_ecs_config() -> ECSConfig:
-    """
-    Get the ECS configuration.
+    """Get the ECS configuration.
 
     Returns:
         ECSConfig instance with current settings
+
     """
     return ECSConfig()

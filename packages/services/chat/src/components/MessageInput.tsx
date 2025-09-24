@@ -9,10 +9,10 @@
  * - Voice input (future)
  */
 import { createSignal, createEffect, onMount } from "solid-js";
-export const MessageInput = props => {
+export const MessageInput = (props: any) => {
   const [value, setValue] = createSignal("");
   const [isFocused, setIsFocused] = createSignal(false);
-  let textareaRef;
+  let textareaRef: HTMLTextAreaElement | undefined;
   // Auto-resize functionality
   const autoResize = () => {
     if (textareaRef && props.autoResize !== false) {
@@ -21,7 +21,7 @@ export const MessageInput = props => {
     }
   };
   // Handle input changes
-  const handleInput = event => {
+  const handleInput = (event: any) => {
     const target = event.target;
     const newValue = target.value;
     // Apply max length if specified
@@ -35,7 +35,7 @@ export const MessageInput = props => {
     }
   };
   // Handle key events
-  const handleKeyDown = event => {
+  const handleKeyDown = (event: any) => {
     if (event.key === "Enter") {
       if (props.multiline && !event.shiftKey) {
         // Submit on Enter (without Shift)
@@ -131,9 +131,9 @@ export const MessageInput = props => {
           <div class="reynard-message-input__meta">
             {props.showCounter && getCharacterInfo() && (
               <div
-                class={`reynard-message-input__counter ${getCharacterInfo().isNearLimit ? "reynard-message-input__counter--warning" : ""} ${getCharacterInfo().isOverLimit ? "reynard-message-input__counter--error" : ""}`}
+                class={`reynard-message-input__counter ${getCharacterInfo()?.isNearLimit ? "reynard-message-input__counter--warning" : ""} ${getCharacterInfo()?.isOverLimit ? "reynard-message-input__counter--error" : ""}`}
               >
-                {getCharacterInfo().current}
+                {getCharacterInfo()?.current}
                 {props.maxLength && ` / ${props.maxLength}`}
               </div>
             )}

@@ -1,5 +1,4 @@
-"""
-🦊 Reynard Document Indexer Control API Endpoints
+"""🦊 Reynard Document Indexer Control API Endpoints
 =================================================
 
 API endpoints for controlling the document indexer service.
@@ -56,7 +55,7 @@ async def resume_document_indexer() -> JSONResponse:
         await document_indexer.resume()
 
         return JSONResponse(
-            {"status": "success", "message": "Document indexer resumed successfully"}
+            {"status": "success", "message": "Document indexer resumed successfully"},
         )
 
     except HTTPException:
@@ -77,7 +76,7 @@ async def pause_document_indexer() -> JSONResponse:
         await document_indexer.pause()
 
         return JSONResponse(
-            {"status": "success", "message": "Document indexer paused successfully"}
+            {"status": "success", "message": "Document indexer paused successfully"},
         )
 
     except HTTPException:
@@ -132,5 +131,5 @@ async def get_queue_status() -> JSONResponse:
     except Exception as e:
         logger.exception("Failed to get queue status")
         raise HTTPException(
-            status_code=500, detail=f"Failed to get queue status: {e!s}"
+            status_code=500, detail=f"Failed to get queue status: {e!s}",
         ) from e

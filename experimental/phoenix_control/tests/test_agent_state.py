@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Test suite for AgentState class.
+"""Test suite for AgentState class.
 
 Tests the AgentState data structure and its functionality.
 

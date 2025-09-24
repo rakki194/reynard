@@ -23,39 +23,39 @@ def get_playwright_tool_definitions() -> dict[str, dict[str, Any]]:
                 "properties": {
                     "url": {
                         "type": "string",
-                        "description": "URL to screenshot (required)"
+                        "description": "URL to screenshot (required)",
                     },
                     "output_path": {
                         "type": "string",
-                        "description": "Optional output file path"
+                        "description": "Optional output file path",
                     },
                     "viewport_width": {
                         "type": "integer",
                         "description": "Browser width (default: 1920)",
-                        "default": 1920
+                        "default": 1920,
                     },
                     "viewport_height": {
                         "type": "integer",
                         "description": "Browser height (default: 1080)",
-                        "default": 1080
+                        "default": 1080,
                     },
                     "full_page": {
                         "type": "boolean",
                         "description": "Whether to capture full page (default: true)",
-                        "default": True
+                        "default": True,
                     },
                     "selector": {
                         "type": "string",
-                        "description": "Optional CSS selector for element screenshot"
+                        "description": "Optional CSS selector for element screenshot",
                     },
                     "open_with_imv": {
                         "type": "boolean",
                         "description": "Whether to open with imv (default: true)",
-                        "default": True
-                    }
+                        "default": True,
+                    },
                 },
-                "required": ["url"]
-            }
+                "required": ["url"],
+            },
         ).to_dict(),
         "scrape_webpage_content": ToolDefinition(
             name="scrape_webpage_content",
@@ -65,37 +65,33 @@ def get_playwright_tool_definitions() -> dict[str, dict[str, Any]]:
                 "properties": {
                     "url": {
                         "type": "string",
-                        "description": "URL to scrape (required)"
+                        "description": "URL to scrape (required)",
                     },
                     "selector": {
                         "type": "string",
-                        "description": "Optional CSS selector to extract specific content"
+                        "description": "Optional CSS selector to extract specific content",
                     },
                     "viewport_width": {
                         "type": "integer",
                         "description": "Browser width (default: 1920)",
-                        "default": 1920
+                        "default": 1920,
                     },
                     "viewport_height": {
                         "type": "integer",
                         "description": "Browser height (default: 1080)",
-                        "default": 1080
+                        "default": 1080,
                     },
                     "wait_for": {
                         "type": "string",
-                        "description": "Optional selector to wait for before scraping"
-                    }
+                        "description": "Optional selector to wait for before scraping",
+                    },
                 },
-                "required": ["url"]
-            }
+                "required": ["url"],
+            },
         ).to_dict(),
         "test_playwright_connection": ToolDefinition(
             name="test_playwright_connection",
             description="Test Playwright browser connection and capabilities",
-            input_schema={
-                "type": "object",
-                "properties": {},
-                "required": []
-            }
-        ).to_dict()
+            input_schema={"type": "object", "properties": {}, "required": []},
+        ).to_dict(),
     }

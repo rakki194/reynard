@@ -1,5 +1,4 @@
-"""
-TTS Service for Reynard Backend
+"""TTS Service for Reynard Backend
 
 Service layer for TTS operations.
 
@@ -15,8 +14,7 @@ logger = get_service_logger("tts")
 
 
 class TTSServiceManager:
-    """
-    Service manager for TTS API with proper dependency injection.
+    """Service manager for TTS API with proper dependency injection.
 
     This class manages the TTS service instance without using globals,
     providing better testability and cleaner architecture.
@@ -40,7 +38,7 @@ class TTSServiceManager:
             result = await service.initialize(config)
         except (
             Exception
-        ) as e:  # noqa: BLE001 - We want to catch all initialization errors
+        ) as e:
             logger.exception(
                 "Failed to initialize TTS service",
                 extra={

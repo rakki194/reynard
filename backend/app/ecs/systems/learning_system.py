@@ -1,5 +1,4 @@
-"""
-Learning System
+"""Learning System
 
 Manages knowledge acquisition, sharing, and transfer between agents
 in the ECS world.
@@ -7,7 +6,7 @@ in the ECS world.
 
 import logging
 import random
-from typing import Any, Dict, List
+from typing import Any
 
 from ..components.knowledge import (
     Knowledge,
@@ -21,19 +20,18 @@ logger = logging.getLogger(__name__)
 
 
 class LearningSystem(System):
-    """
-    System for managing knowledge acquisition, sharing, and transfer.
+    """System for managing knowledge acquisition, sharing, and transfer.
 
     Handles learning opportunities, knowledge transfer between agents,
     teaching sessions, and knowledge decay over time.
     """
 
     def __init__(self, world: Any) -> None:
-        """
-        Initialize the learning system.
+        """Initialize the learning system.
 
         Args:
             world: The ECS world this system belongs to
+
         """
         super().__init__(world)
         self.processing_interval = 3.0  # Process learning every 3 seconds
@@ -44,11 +42,11 @@ class LearningSystem(System):
         self.knowledge_sharing_radius = 50.0  # Distance for knowledge sharing
 
     def update(self, delta_time: float) -> None:
-        """
-        Process learning dynamics for all agents.
+        """Process learning dynamics for all agents.
 
         Args:
             delta_time: Time elapsed since last update
+
         """
         self.last_processing_time += delta_time
 
@@ -76,7 +74,7 @@ class LearningSystem(System):
         # Clean up expired learning opportunities
         self._cleanup_expired_opportunities(entities)
 
-    def _process_knowledge_sharing(self, entities: List[Any]) -> None:
+    def _process_knowledge_sharing(self, entities: list[Any]) -> None:
         """Process knowledge sharing between nearby agents."""
         for i, entity1 in enumerate(entities):
             knowledge_comp1 = entity1.get_component(KnowledgeComponent)
@@ -96,10 +94,10 @@ class LearningSystem(System):
                 # Check if agents are in proximity
                 if self._are_agents_in_proximity(entity1, entity2):
                     self._attempt_knowledge_sharing(
-                        entity1, entity2, knowledge_comp1, knowledge_comp2
+                        entity1, entity2, knowledge_comp1, knowledge_comp2,
                     )
 
-    def _process_teaching_sessions(self, entities: List[Any]) -> None:
+    def _process_teaching_sessions(self, entities: list[Any]) -> None:
         """Process formal teaching sessions between agents."""
         for entity in entities:
             knowledge_comp = entity.get_component(KnowledgeComponent)
@@ -112,7 +110,7 @@ class LearningSystem(System):
             if self._should_agent_teach(entity, knowledge_comp, social_comp):
                 self._initiate_teaching_session(entity, knowledge_comp, social_comp)
 
-    def _process_learning_opportunities(self, entities: List[Any]) -> None:
+    def _process_learning_opportunities(self, entities: list[Any]) -> None:
         """Process learning opportunities for agents."""
         for entity in entities:
             knowledge_comp = entity.get_component(KnowledgeComponent)
@@ -125,7 +123,7 @@ class LearningSystem(System):
             if self._should_agent_learn(entity, knowledge_comp, social_comp):
                 self._seek_learning_opportunities(entity, knowledge_comp, social_comp)
 
-    def _cleanup_expired_opportunities(self, entities: List[Any]) -> None:
+    def _cleanup_expired_opportunities(self, entities: list[Any]) -> None:
         """Clean up expired learning opportunities."""
         for entity in entities:
             knowledge_comp = entity.get_component(KnowledgeComponent)
@@ -158,13 +156,13 @@ class LearningSystem(System):
         """Attempt to share knowledge between two agents."""
         # Find knowledge that entity1 can share with entity2
         shareable_knowledge = self._find_shareable_knowledge(
-            knowledge_comp1, knowledge_comp2
+            knowledge_comp1, knowledge_comp2,
         )
 
         if shareable_knowledge:
             # Attempt to transfer knowledge
             success = self._transfer_knowledge(
-                entity1, entity2, shareable_knowledge, knowledge_comp1, knowledge_comp2
+                entity1, entity2, shareable_knowledge, knowledge_comp1, knowledge_comp2,
             )
 
             if success:
@@ -172,7 +170,7 @@ class LearningSystem(System):
                 logger.debug(f"Knowledge shared between {entity1.id} and {entity2.id}")
 
     def _find_shareable_knowledge(
-        self, source_comp: KnowledgeComponent, target_comp: KnowledgeComponent
+        self, source_comp: KnowledgeComponent, target_comp: KnowledgeComponent,
     ) -> Knowledge | None:
         """Find knowledge that can be shared from source to target."""
         for knowledge in source_comp.knowledge.values():
@@ -193,7 +191,7 @@ class LearningSystem(System):
         return None
 
     def _target_has_knowledge(
-        self, target_comp: KnowledgeComponent, knowledge: Knowledge
+        self, target_comp: KnowledgeComponent, knowledge: Knowledge,
     ) -> bool:
         """Check if target agent already has similar knowledge."""
         for existing_knowledge in target_comp.knowledge.values():
@@ -205,7 +203,7 @@ class LearningSystem(System):
         return False
 
     def _target_meets_prerequisites(
-        self, target_comp: KnowledgeComponent, knowledge: Knowledge
+        self, target_comp: KnowledgeComponent, knowledge: Knowledge,
     ) -> bool:
         """Check if target agent meets knowledge prerequisites."""
         if not knowledge.prerequisites:
@@ -241,7 +239,7 @@ class LearningSystem(System):
         # Calculate final proficiency
         base_proficiency = 0.1  # Minimum proficiency from learning
         max_proficiency = min(
-            0.8, knowledge.proficiency * 0.9
+            0.8, knowledge.proficiency * 0.9,
         )  # Can't exceed teacher's level
         final_proficiency = (
             base_proficiency
@@ -328,7 +326,7 @@ class LearningSystem(System):
 
             # Find knowledge to teach
             teachable_knowledge = self._find_shareable_knowledge(
-                knowledge_comp, target_knowledge_comp
+                knowledge_comp, target_knowledge_comp,
             )
             if teachable_knowledge:
                 success = self._transfer_knowledge(
@@ -361,7 +359,7 @@ class LearningSystem(System):
 
             # Find knowledge to learn
             learnable_knowledge = self._find_shareable_knowledge(
-                source_knowledge_comp, knowledge_comp
+                source_knowledge_comp, knowledge_comp,
             )
             if learnable_knowledge:
                 success = self._transfer_knowledge(
@@ -377,7 +375,7 @@ class LearningSystem(System):
                     logger.debug(f"Learning session initiated by {entity.id}")
                     break
 
-    def _find_nearby_agents(self, entity: Any) -> List[Any]:
+    def _find_nearby_agents(self, entity: Any) -> list[Any]:
         """Find nearby agents for interaction."""
         # This would typically use position components to find nearby agents
         # For now, return all other entities with knowledge components
@@ -403,7 +401,7 @@ class LearningSystem(System):
                 if knowledge.proficiency < 0.01:
                     del knowledge_comp.knowledge[knowledge.id]
 
-    def get_system_stats(self) -> Dict[str, Any]:
+    def get_system_stats(self) -> dict[str, Any]:
         """Get comprehensive system statistics."""
         total_agents = len(self.get_entities_with_components(KnowledgeComponent))
 
@@ -417,10 +415,9 @@ class LearningSystem(System):
         }
 
     def force_knowledge_transfer(
-        self, source_agent_id: str, target_agent_id: str, knowledge_id: str
+        self, source_agent_id: str, target_agent_id: str, knowledge_id: str,
     ) -> bool:
-        """
-        Force a knowledge transfer between two agents.
+        """Force a knowledge transfer between two agents.
 
         Args:
             source_agent_id: ID of source agent
@@ -429,6 +426,7 @@ class LearningSystem(System):
 
         Returns:
             True if transfer was successful
+
         """
         source_entity = self.world.get_entity(source_agent_id)
         target_entity = self.world.get_entity(target_agent_id)

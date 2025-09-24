@@ -1,5 +1,4 @@
-"""
-JTP2 (Joint Tagger Project PILOT2) Generator Implementation
+"""JTP2 (Joint Tagger Project PILOT2) Generator Implementation
 
 This module implements the JTP2 caption generator for the Reynard system.
 JTP2 is specialized for furry artwork and provides high-quality tag generation.
@@ -33,8 +32,7 @@ JTP2_AVAILABLE = True
 
 
 class JTP2Generator(CaptionGeneratorBase):
-    """
-    JTP2 (Joint Tagger Project PILOT2) caption generator.
+    """JTP2 (Joint Tagger Project PILOT2) caption generator.
 
     This generator is specialized for furry artwork and provides high-quality
     tag generation with GPU acceleration support.
@@ -52,7 +50,7 @@ class JTP2Generator(CaptionGeneratorBase):
             "RedRocket/JointTaggerProject/JTP_PILOT2/JTP_PILOT2-e3-vit_so400m_patch14_siglip_384.safetensors",
         )
         self._tags_path = self._config.get(
-            "tags_path", "RedRocket/JointTaggerProject/JTP_PILOT2/tags.json"
+            "tags_path", "RedRocket/JointTaggerProject/JTP_PILOT2/tags.json",
         )
         self._downloaded_model_path = None
         self._downloaded_tags_path = None
@@ -166,7 +164,7 @@ class JTP2Generator(CaptionGeneratorBase):
 
             # Load model and tags in executor to avoid blocking
             await asyncio.get_event_loop().run_in_executor(
-                None, self._load_model_and_tags
+                None, self._load_model_and_tags,
             )
 
             self._is_loaded = True
@@ -205,7 +203,7 @@ class JTP2Generator(CaptionGeneratorBase):
 
             # Generate tags using self-contained implementation
             tags = await asyncio.get_event_loop().run_in_executor(
-                None, self._generate_caption, str(image_path), config
+                None, self._generate_caption, str(image_path), config,
             )
 
             return tags
@@ -223,7 +221,7 @@ class JTP2Generator(CaptionGeneratorBase):
                 "model_path": self._model_path,
                 "tags_path": self._tags_path,
                 "self_contained": True,
-            }
+            },
         )
         return info
 
@@ -328,7 +326,7 @@ class JTP2Generator(CaptionGeneratorBase):
                 transforms.Resize((384, 384)),
                 transforms.ToTensor(),
                 transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),
-            ]
+            ],
         )
 
     def _generate_caption(self, image_path: str, config: dict[str, Any]) -> str:

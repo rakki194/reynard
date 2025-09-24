@@ -15,9 +15,9 @@ import logging
 import os
 import time
 from pathlib import Path
-from typing import List, Set
+from typing import List
 
-from .tool_registry import ToolRegistry, get_tool_registry
+from .tool_registry import ToolRegistry
 
 logger = logging.getLogger(__name__)
 
@@ -59,7 +59,7 @@ class ToolDiscovery:
     def _discover_tools_in_file(self, file_path: Path) -> int:
         """Discover tools in a single Python file."""
         try:
-            with open(file_path, "r", encoding="utf-8") as f:
+            with open(file_path, encoding="utf-8") as f:
                 content = f.read()
 
             # Parse the AST
@@ -104,7 +104,7 @@ class ToolDiscovery:
 
         try:
             # Convert file path to module path
-            logger.debug(f"🕐 Converting file path to module name...")
+            logger.debug("🕐 Converting file path to module name...")
             module_name = self._file_path_to_module_name(module_path)
             logger.debug(f"Module name: {module_name}")
 

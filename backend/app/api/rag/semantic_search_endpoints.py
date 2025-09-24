@@ -1,5 +1,4 @@
-"""
-🦊 Reynard Semantic Search API Endpoints
+"""🦊 Reynard Semantic Search API Endpoints
 ========================================
 
 Advanced semantic search with AST parsing for code and document parsing for documentation.
@@ -17,9 +16,8 @@ Version: 1.0.0
 """
 
 import logging
-from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import JSONResponse
 
 from app.core.service_registry import get_service_registry
@@ -33,13 +31,13 @@ router = APIRouter(prefix="/semantic-search", tags=["semantic-search"])
 async def semantic_search(
     query: str,
     search_type: str = Query(
-        "hybrid", description="Search type: semantic, keyword, or hybrid"
+        "hybrid", description="Search type: semantic, keyword, or hybrid",
     ),
     top_k: int = Query(10, description="Number of results to return"),
-    language_filter: Optional[str] = Query(
-        None, description="Filter by programming language"
+    language_filter: str | None = Query(
+        None, description="Filter by programming language",
     ),
-    file_type_filter: Optional[str] = Query(None, description="Filter by file type"),
+    file_type_filter: str | None = Query(None, description="Filter by file type"),
     include_metadata: bool = Query(True, description="Include metadata in results"),
 ) -> JSONResponse:
     """Perform semantic search with AST parsing capabilities."""
@@ -112,7 +110,7 @@ async def semantic_search(
                     "total_results": len(processed_results),
                     "results": processed_results,
                 },
-            }
+            },
         )
 
     except HTTPException:
@@ -120,7 +118,7 @@ async def semantic_search(
     except Exception as e:
         logger.error(f"Failed to perform semantic search: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to perform semantic search: {str(e)}"
+            status_code=500, detail=f"Failed to perform semantic search: {e!s}",
         )
 
 
@@ -143,7 +141,7 @@ async def analyze_code_structure(
 
         # Perform semantic search first
         results = await rag_service.semantic_search(
-            query=query, top_k=top_k * 2  # Get more results for analysis
+            query=query, top_k=top_k * 2,  # Get more results for analysis
         )
 
         # Analyze code structure
@@ -166,7 +164,7 @@ async def analyze_code_structure(
                         "language": metadata.get("language", "unknown"),
                         "parameters": symbol_map.get("parameters", []),
                         "return_type": symbol_map.get("return_type", "unknown"),
-                    }
+                    },
                 )
             elif analysis_type == "classes" and chunk_type in ["class", "interface"]:
                 analyzed_results.append(
@@ -180,7 +178,7 @@ async def analyze_code_structure(
                         "language": metadata.get("language", "unknown"),
                         "methods": symbol_map.get("methods", []),
                         "properties": symbol_map.get("properties", []),
-                    }
+                    },
                 )
             elif analysis_type == "imports" and chunk_type == "import":
                 analyzed_results.append(
@@ -192,7 +190,7 @@ async def analyze_code_structure(
                         "start_line": metadata.get("start_line", 0),
                         "language": metadata.get("language", "unknown"),
                         "imports": symbol_map.get("imports", []),
-                    }
+                    },
                 )
             elif analysis_type == "symbols":
                 analyzed_results.append(
@@ -206,7 +204,7 @@ async def analyze_code_structure(
                         "end_line": metadata.get("end_line", 0),
                         "language": metadata.get("language", "unknown"),
                         "scope": symbol_map.get("scope", "unknown"),
-                    }
+                    },
                 )
 
         # Limit results
@@ -221,7 +219,7 @@ async def analyze_code_structure(
                     "total_results": len(analyzed_results),
                     "results": analyzed_results,
                 },
-            }
+            },
         )
 
     except HTTPException:
@@ -229,7 +227,7 @@ async def analyze_code_structure(
     except Exception as e:
         logger.error(f"Failed to analyze code structure: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to analyze code structure: {str(e)}"
+            status_code=500, detail=f"Failed to analyze code structure: {e!s}",
         )
 
 
@@ -237,7 +235,7 @@ async def analyze_code_structure(
 async def search_documentation(
     query: str,
     doc_type: str = Query(
-        "all", description="Document type: markdown, comments, docstrings, or all"
+        "all", description="Document type: markdown, comments, docstrings, or all",
     ),
     top_k: int = Query(15, description="Number of results to return"),
 ) -> JSONResponse:
@@ -262,7 +260,7 @@ async def search_documentation(
 
         # Perform semantic search
         results = await rag_service.semantic_search(
-            query=query, top_k=top_k, file_type_filter=file_type_filter
+            query=query, top_k=top_k, file_type_filter=file_type_filter,
         )
 
         # Process documentation results
@@ -292,7 +290,7 @@ async def search_documentation(
                         "start_line": metadata.get("start_line", 0),
                         "end_line": metadata.get("end_line", 0),
                         "language": metadata.get("language", "unknown"),
-                    }
+                    },
                 )
 
         return JSONResponse(
@@ -304,7 +302,7 @@ async def search_documentation(
                     "total_results": len(doc_results),
                     "results": doc_results,
                 },
-            }
+            },
         )
 
     except HTTPException:
@@ -312,7 +310,7 @@ async def search_documentation(
     except Exception as e:
         logger.error(f"Failed to search documentation: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to search documentation: {str(e)}"
+            status_code=500, detail=f"Failed to search documentation: {e!s}",
         )
 
 
@@ -361,7 +359,7 @@ async def get_search_statistics() -> JSONResponse:
                         "symbol_resolution": True,
                     },
                 },
-            }
+            },
         )
 
     except HTTPException:
@@ -369,5 +367,5 @@ async def get_search_statistics() -> JSONResponse:
     except Exception as e:
         logger.error(f"Failed to get search statistics: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to get search statistics: {str(e)}"
+            status_code=500, detail=f"Failed to get search statistics: {e!s}",
         )

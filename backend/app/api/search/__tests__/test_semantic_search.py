@@ -1,5 +1,4 @@
-"""
-Test suite for semantic search functionality.
+"""Test suite for semantic search functionality.
 
 This module contains comprehensive tests for the semantic search system,
 including vectorized similarity calculations, batch processing, and

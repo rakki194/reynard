@@ -1,18 +1,15 @@
-"""
-Multi-Account Service for Reynard Backend.
+"""Multi-Account Service for Reynard Backend.
 
 This module provides multi-account support for agents and users with separate email configurations.
 """
 
-import asyncio
-import hashlib
 import json
 import logging
 import uuid
 from dataclasses import asdict, dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -25,16 +22,16 @@ class AccountConfig:
     account_type: str  # 'user' or 'agent'
     email_address: str
     display_name: str
-    smtp_config: Dict[str, Any]
-    imap_config: Dict[str, Any]
-    encryption_config: Dict[str, Any]
-    calendar_config: Dict[str, Any]
-    ai_config: Dict[str, Any]
+    smtp_config: dict[str, Any]
+    imap_config: dict[str, Any]
+    encryption_config: dict[str, Any]
+    calendar_config: dict[str, Any]
+    ai_config: dict[str, Any]
     is_active: bool = True
     is_primary: bool = False
     created_at: datetime = None
     updated_at: datetime = None
-    last_used: Optional[datetime] = None
+    last_used: datetime | None = None
 
     def __post_init__(self):
         if self.created_at is None:
@@ -76,12 +73,12 @@ class AccountUsage:
     account_id: str
     emails_sent: int = 0
     emails_received: int = 0
-    last_email_sent: Optional[datetime] = None
-    last_email_received: Optional[datetime] = None
+    last_email_sent: datetime | None = None
+    last_email_received: datetime | None = None
     total_storage_used_mb: float = 0.0
     api_calls_today: int = 0
     api_calls_this_month: int = 0
-    last_api_call: Optional[datetime] = None
+    last_api_call: datetime | None = None
 
 
 @dataclass
@@ -98,8 +95,8 @@ class AccountPermissions:
     can_manage_other_accounts: bool = False
     max_emails_per_day: int = 1000
     max_storage_mb: int = 1000
-    allowed_domains: List[str] = None
-    blocked_domains: List[str] = None
+    allowed_domains: list[str] = None
+    blocked_domains: list[str] = None
 
     def __post_init__(self):
         if self.allowed_domains is None:
@@ -118,17 +115,17 @@ class AccountSummary:
     account_type: str
     is_active: bool
     is_primary: bool
-    created_at: Optional[datetime] = None
-    last_used: Optional[datetime] = None
+    created_at: datetime | None = None
+    last_used: datetime | None = None
     total_emails_sent: int = 0
     total_emails_received: int = 0
     total_emails_processed: int = 0
     avg_response_time_hours: float = 0.0
     storage_used_mb: float = 0.0
-    last_activity: Optional[datetime] = None
-    usage_limits: Optional[Dict[str, Any]] = None
-    current_usage: Optional[Dict[str, Any]] = None
-    performance_metrics: Optional[Dict[str, Any]] = None
+    last_activity: datetime | None = None
+    usage_limits: dict[str, Any] | None = None
+    current_usage: dict[str, Any] | None = None
+    performance_metrics: dict[str, Any] | None = None
 
 
 class MultiAccountService:
@@ -136,7 +133,7 @@ class MultiAccountService:
 
     def __init__(
         self,
-        config: Optional[MultiAccountConfig] = None,
+        config: MultiAccountConfig | None = None,
         data_dir: str = "data/multi_account",
     ):
         self.config = config or MultiAccountConfig()
@@ -149,9 +146,9 @@ class MultiAccountService:
         self.permissions_file = self.data_dir / "permissions.json"
 
         # In-memory storage
-        self.accounts: Dict[str, AccountConfig] = {}
-        self.usage_stats: Dict[str, AccountUsage] = {}
-        self.permissions: Dict[str, AccountPermissions] = {}
+        self.accounts: dict[str, AccountConfig] = {}
+        self.usage_stats: dict[str, AccountUsage] = {}
+        self.permissions: dict[str, AccountPermissions] = {}
 
         # Load existing data
         self._load_accounts()
@@ -162,7 +159,7 @@ class MultiAccountService:
         """Load accounts from storage."""
         try:
             if self.accounts_file.exists():
-                with open(self.accounts_file, "r", encoding="utf-8") as f:
+                with open(self.accounts_file, encoding="utf-8") as f:
                     accounts_data = json.load(f)
                     self.accounts = {
                         account_id: AccountConfig(**account_data)
@@ -178,7 +175,7 @@ class MultiAccountService:
         """Load usage statistics from storage."""
         try:
             if self.usage_file.exists():
-                with open(self.usage_file, "r", encoding="utf-8") as f:
+                with open(self.usage_file, encoding="utf-8") as f:
                     usage_data = json.load(f)
                     self.usage_stats = {
                         account_id: AccountUsage(**stats_data)
@@ -194,7 +191,7 @@ class MultiAccountService:
         """Load permissions from storage."""
         try:
             if self.permissions_file.exists():
-                with open(self.permissions_file, "r", encoding="utf-8") as f:
+                with open(self.permissions_file, encoding="utf-8") as f:
                     permissions_data = json.load(f)
                     self.permissions = {
                         account_id: AccountPermissions(**perm_data)
@@ -265,15 +262,14 @@ class MultiAccountService:
         account_type: str,
         email_address: str,
         display_name: str,
-        smtp_config: Dict[str, Any],
-        imap_config: Dict[str, Any],
-        encryption_config: Optional[Dict[str, Any]] = None,
-        calendar_config: Optional[Dict[str, Any]] = None,
-        ai_config: Optional[Dict[str, Any]] = None,
+        smtp_config: dict[str, Any],
+        imap_config: dict[str, Any],
+        encryption_config: dict[str, Any] | None = None,
+        calendar_config: dict[str, Any] | None = None,
+        ai_config: dict[str, Any] | None = None,
         is_primary: bool = False,
     ) -> AccountConfig:
-        """
-        Create a new email account.
+        """Create a new email account.
 
         Args:
             account_type: Type of account ('user' or 'agent')
@@ -291,6 +287,7 @@ class MultiAccountService:
 
         Raises:
             ValueError: If account creation fails
+
         """
         try:
             # Validate inputs
@@ -314,7 +311,7 @@ class MultiAccountService:
 
             if len(existing_accounts) >= max_accounts:
                 raise ValueError(
-                    f"Maximum number of {account_type} accounts reached: {max_accounts}"
+                    f"Maximum number of {account_type} accounts reached: {max_accounts}",
                 )
 
             # Generate account ID
@@ -363,7 +360,7 @@ class MultiAccountService:
             self._save_permissions()
 
             logger.info(
-                f"Created {account_type} account: {email_address} ({account_id})"
+                f"Created {account_type} account: {email_address} ({account_id})",
             )
             return account
 
@@ -371,42 +368,42 @@ class MultiAccountService:
             logger.error(f"Failed to create account: {e}")
             raise
 
-    async def get_account(self, account_id: str) -> Optional[AccountConfig]:
-        """
-        Get account by ID.
+    async def get_account(self, account_id: str) -> AccountConfig | None:
+        """Get account by ID.
 
         Args:
             account_id: Account ID
 
         Returns:
             AccountConfig object or None if not found
+
         """
         return self.accounts.get(account_id)
 
-    async def get_account_by_email(self, email_address: str) -> Optional[AccountConfig]:
-        """
-        Get account by email address.
+    async def get_account_by_email(self, email_address: str) -> AccountConfig | None:
+        """Get account by email address.
 
         Args:
             email_address: Email address
 
         Returns:
             AccountConfig object or None if not found
+
         """
         for account in self.accounts.values():
             if account.email_address == email_address:
                 return account
         return None
 
-    async def get_primary_account(self, account_type: str) -> Optional[AccountConfig]:
-        """
-        Get primary account for account type.
+    async def get_primary_account(self, account_type: str) -> AccountConfig | None:
+        """Get primary account for account type.
 
         Args:
             account_type: Account type ('user' or 'agent')
 
         Returns:
             Primary AccountConfig object or None if not found
+
         """
         for account in self.accounts.values():
             if account.account_type == account_type and account.is_primary:
@@ -414,10 +411,9 @@ class MultiAccountService:
         return None
 
     async def list_accounts(
-        self, account_type: Optional[str] = None, active_only: bool = True
-    ) -> List[AccountConfig]:
-        """
-        List accounts with optional filtering.
+        self, account_type: str | None = None, active_only: bool = True,
+    ) -> list[AccountConfig]:
+        """List accounts with optional filtering.
 
         Args:
             account_type: Filter by account type (optional)
@@ -425,6 +421,7 @@ class MultiAccountService:
 
         Returns:
             List of AccountConfig objects
+
         """
         accounts = list(self.accounts.values())
 
@@ -439,9 +436,8 @@ class MultiAccountService:
 
         return accounts
 
-    async def update_account(self, account_id: str, updates: Dict[str, Any]) -> bool:
-        """
-        Update account configuration.
+    async def update_account(self, account_id: str, updates: dict[str, Any]) -> bool:
+        """Update account configuration.
 
         Args:
             account_id: Account ID
@@ -449,6 +445,7 @@ class MultiAccountService:
 
         Returns:
             True if successful
+
         """
         try:
             if account_id not in self.accounts:
@@ -462,9 +459,9 @@ class MultiAccountService:
                     setattr(account, key, value)
 
             # Handle primary account changes
-            if "is_primary" in updates and updates["is_primary"]:
+            if updates.get("is_primary"):
                 await self._unset_primary_accounts(
-                    account.account_type, exclude=account_id
+                    account.account_type, exclude=account_id,
                 )
 
             # Update timestamp
@@ -481,14 +478,14 @@ class MultiAccountService:
             return False
 
     async def delete_account(self, account_id: str) -> bool:
-        """
-        Delete an account.
+        """Delete an account.
 
         Args:
             account_id: Account ID
 
         Returns:
             True if successful
+
         """
         try:
             if account_id not in self.accounts:
@@ -513,15 +510,15 @@ class MultiAccountService:
             logger.error(f"Failed to delete account: {e}")
             return False
 
-    async def get_usage_stats(self, account_id: str) -> Optional[AccountUsage]:
-        """
-        Get usage statistics for an account.
+    async def get_usage_stats(self, account_id: str) -> AccountUsage | None:
+        """Get usage statistics for an account.
 
         Args:
             account_id: Account ID
 
         Returns:
             AccountUsage object or None if not found
+
         """
         return self.usage_stats.get(account_id)
 
@@ -529,10 +526,9 @@ class MultiAccountService:
         self,
         account_id: str,
         action: str,
-        additional_data: Optional[Dict[str, Any]] = None,
+        additional_data: dict[str, Any] | None = None,
     ) -> bool:
-        """
-        Update usage statistics for an account.
+        """Update usage statistics for an account.
 
         Args:
             account_id: Account ID
@@ -541,6 +537,7 @@ class MultiAccountService:
 
         Returns:
             True if successful
+
         """
         try:
             if account_id not in self.usage_stats:
@@ -574,23 +571,22 @@ class MultiAccountService:
             logger.error(f"Failed to update usage stats: {e}")
             return False
 
-    async def get_permissions(self, account_id: str) -> Optional[AccountPermissions]:
-        """
-        Get permissions for an account.
+    async def get_permissions(self, account_id: str) -> AccountPermissions | None:
+        """Get permissions for an account.
 
         Args:
             account_id: Account ID
 
         Returns:
             AccountPermissions object or None if not found
+
         """
         return self.permissions.get(account_id)
 
     async def update_permissions(
-        self, account_id: str, permissions: Dict[str, Any]
+        self, account_id: str, permissions: dict[str, Any],
     ) -> bool:
-        """
-        Update permissions for an account.
+        """Update permissions for an account.
 
         Args:
             account_id: Account ID
@@ -598,6 +594,7 @@ class MultiAccountService:
 
         Returns:
             True if successful
+
         """
         try:
             if account_id not in self.permissions:
@@ -621,10 +618,9 @@ class MultiAccountService:
             return False
 
     async def check_permission(
-        self, account_id: str, permission: str, context: Optional[Dict[str, Any]] = None
+        self, account_id: str, permission: str, context: dict[str, Any] | None = None,
     ) -> bool:
-        """
-        Check if account has a specific permission.
+        """Check if account has a specific permission.
 
         Args:
             account_id: Account ID
@@ -633,6 +629,7 @@ class MultiAccountService:
 
         Returns:
             True if permission is granted
+
         """
         try:
             if account_id not in self.permissions:
@@ -673,14 +670,14 @@ class MultiAccountService:
             return False
 
     async def get_account_summary(self, account_id: str) -> AccountSummary:
-        """
-        Get comprehensive account summary.
+        """Get comprehensive account summary.
 
         Args:
             account_id: Account ID
 
         Returns:
             AccountSummary object
+
         """
         try:
             account = await self.get_account(account_id)
@@ -746,23 +743,23 @@ class MultiAccountService:
             logger.error(f"Failed to get account summary: {e}")
             raise
 
-    async def get_system_overview(self) -> Dict[str, Any]:
-        """
-        Get system-wide overview of all accounts.
+    async def get_system_overview(self) -> dict[str, Any]:
+        """Get system-wide overview of all accounts.
 
         Returns:
             Dictionary with system statistics
+
         """
         try:
             total_accounts = len(self.accounts)
             active_accounts = len(
-                [acc for acc in self.accounts.values() if acc.is_active]
+                [acc for acc in self.accounts.values() if acc.is_active],
             )
             user_accounts = len(
-                [acc for acc in self.accounts.values() if acc.account_type == "user"]
+                [acc for acc in self.accounts.values() if acc.account_type == "user"],
             )
             agent_accounts = len(
-                [acc for acc in self.accounts.values() if acc.account_type == "agent"]
+                [acc for acc in self.accounts.values() if acc.account_type == "agent"],
             )
 
             # Calculate total usage
@@ -824,7 +821,7 @@ class MultiAccountService:
         return any(acc.email_address == email for acc in self.accounts.values())
 
     async def _unset_primary_accounts(
-        self, account_type: str, exclude: Optional[str] = None
+        self, account_type: str, exclude: str | None = None,
     ) -> None:
         """Unset primary flag for all accounts of a type except the excluded one."""
         for account in self.accounts.values():

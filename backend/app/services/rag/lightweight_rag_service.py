@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-File Indexing and Caching Service
+"""File Indexing and Caching Service
 =================================
 
 A high-performance file indexing and caching service that provides fast file discovery,
@@ -11,19 +10,17 @@ and resource-constrained systems.
 with efficient, intelligent file indexing and caching!
 """
 
-import asyncio
 import hashlib
 import logging
 import time
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
 
 class FileIndexingService:
-    """
-    High-performance file indexing and caching service.
+    """High-performance file indexing and caching service.
 
     Provides:
     - Fast file discovery and indexing
@@ -47,7 +44,7 @@ class FileIndexingService:
             "total_search_time": 0.0,
         }
 
-    async def initialize(self, config: Dict[str, Any]) -> bool:
+    async def initialize(self, config: dict[str, Any]) -> bool:
         """Initialize the file indexing service."""
         try:
             self.enabled = config.get("file_indexing_enabled", True)
@@ -63,10 +60,9 @@ class FileIndexingService:
             return False
 
     async def index_files(
-        self, directories: List[str], file_types: List[str]
-    ) -> Dict[str, Any]:
-        """
-        Index files in specified directories for fast discovery.
+        self, directories: list[str], file_types: list[str],
+    ) -> dict[str, Any]:
+        """Index files in specified directories for fast discovery.
 
         This replaces the need for heavy vector embeddings with efficient
         file indexing and text-based search capabilities.
@@ -83,7 +79,7 @@ class FileIndexingService:
                 if file_path.is_file() and file_path.suffix.lower() in file_types:
                     try:
                         # Read file content for indexing
-                        with open(file_path, "r", encoding="utf-8") as f:
+                        with open(file_path, encoding="utf-8") as f:
                             content = f.read()
 
                         # Create file index entry
@@ -111,7 +107,7 @@ class FileIndexingService:
         index_time = time.time() - start_time
 
         logger.info(
-            "🔥 Indexed %d files in %.2f seconds", len(indexed_files), index_time
+            "🔥 Indexed %d files in %.2f seconds", len(indexed_files), index_time,
         )
 
         return {
@@ -134,12 +130,11 @@ class FileIndexingService:
                         "file": file_path,
                         "line": line_num,
                         "content": line.strip(),
-                    }
+                    },
                 )
 
-    async def search_files(self, query: str, max_results: int = 20) -> List[str]:
-        """
-        Search for files using text-based search.
+    async def search_files(self, query: str, max_results: int = 20) -> list[str]:
+        """Search for files using text-based search.
 
         This provides fast file discovery without needing vector embeddings.
         """
@@ -167,18 +162,18 @@ class FileIndexingService:
         self._stats["total_search_time"] += search_time
 
         logger.debug(
-            "🔥 Text search found %d files in %.3f seconds", len(results), search_time
+            "🔥 Text search found %d files in %.3f seconds", len(results), search_time,
         )
 
         return results
 
-    async def get_file_content(self, file_path: str) -> Optional[str]:
+    async def get_file_content(self, file_path: str) -> str | None:
         """Get file content from the index."""
         if file_path in self._file_index:
             return self._file_index[file_path]["content"]
         return None
 
-    async def get_file_metadata(self, file_path: str) -> Optional[Dict[str, Any]]:
+    async def get_file_metadata(self, file_path: str) -> dict[str, Any] | None:
         """Get file metadata from the index."""
         if file_path in self._file_index:
             file_info = self._file_index[file_path].copy()
@@ -187,7 +182,7 @@ class FileIndexingService:
             return file_info
         return None
 
-    async def get_cached_content(self, file_path: str) -> Optional[str]:
+    async def get_cached_content(self, file_path: str) -> str | None:
         """Get cached file content if available."""
         if file_path in self._content_cache:
             self._stats["cache_hits"] += 1
@@ -200,7 +195,7 @@ class FileIndexingService:
         """Cache file content for fast access."""
         self._content_cache[file_path] = content
 
-    async def get_stats(self) -> Dict[str, Any]:
+    async def get_stats(self) -> dict[str, Any]:
         """Get service statistics."""
         avg_search_time = (
             self._stats["total_search_time"] / self._stats["searches_performed"]

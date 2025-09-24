@@ -21,7 +21,7 @@ class MCPToolCall(BaseModel):
 
     method: str = Field(..., description="Name of the MCP tool to call")
     params: dict[str, Any] = Field(
-        default_factory=dict, description="Arguments for the MCP tool"
+        default_factory=dict, description="Arguments for the MCP tool",
     )
 
 
@@ -38,7 +38,7 @@ async def _send_mcp_request(method: str, params: dict[str, Any]) -> Any:
     try:
         # Create a TCP connection to the MCP server
         reader, writer = await asyncio.wait_for(
-            asyncio.open_connection(MCP_HOST, MCP_PORT), timeout=MCP_TIMEOUT
+            asyncio.open_connection(MCP_HOST, MCP_PORT), timeout=MCP_TIMEOUT,
         )
 
         try:
@@ -52,7 +52,7 @@ async def _send_mcp_request(method: str, params: dict[str, Any]) -> Any:
 
             # Read the response
             response_data = await asyncio.wait_for(
-                reader.readline(), timeout=MCP_TIMEOUT
+                reader.readline(), timeout=MCP_TIMEOUT,
             )
 
             if not response_data:
@@ -89,13 +89,12 @@ async def _send_mcp_request(method: str, params: dict[str, Any]) -> Any:
 
 @router.post("/call", response_model=MCPToolResponse)
 async def call_mcp_tool(tool_call: MCPToolCall) -> MCPToolResponse:
-    """
-    Call an MCP tool and return its result.
+    """Call an MCP tool and return its result.
     This connects to an external MCP server running on localhost:8001.
     """
     try:
         logger.info(
-            f"Calling MCP tool: {tool_call.method} with params {tool_call.params}"
+            f"Calling MCP tool: {tool_call.method} with params {tool_call.params}",
         )
 
         # Map the tool call to the appropriate MCP method
@@ -106,7 +105,7 @@ async def call_mcp_tool(tool_call: MCPToolCall) -> MCPToolResponse:
         ]:
             # These are direct MCP tool calls
             result = await _send_mcp_request(
-                "tools/call", {"name": tool_call.method, "arguments": tool_call.params}
+                "tools/call", {"name": tool_call.method, "arguments": tool_call.params},
             )
         else:
             # For other methods, try direct call first

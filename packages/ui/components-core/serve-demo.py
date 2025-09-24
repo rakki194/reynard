@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Simple HTTP server to serve the Badge component demo
+"""Simple HTTP server to serve the Badge component demo
 """
 
 import http.server
@@ -22,14 +21,14 @@ def main():
     for port in range(8080, 8090):
         try:
             with socketserver.TCPServer(
-                ("", port), http.server.SimpleHTTPRequestHandler
+                ("", port), http.server.SimpleHTTPRequestHandler,
             ) as httpd:
-                print(f"🦊 Reynard Badge Demo Server")
+                print("🦊 Reynard Badge Demo Server")
                 print(f"📡 Serving at: http://localhost:{port}")
                 print(f"📄 Demo page: http://localhost:{port}/badge-demo.html")
                 print(f"📁 Serving from: {demo_dir}")
-                print(f"🚀 Opening browser...")
-                print(f"⏹️  Press Ctrl+C to stop the server")
+                print("🚀 Opening browser...")
+                print("⏹️  Press Ctrl+C to stop the server")
                 print("-" * 50)
 
                 # Open browser

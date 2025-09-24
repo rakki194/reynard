@@ -1,5 +1,4 @@
-"""
-Tests for Unified CHANGELOG Parser
+"""Tests for Unified CHANGELOG Parser
 
 Comprehensive tests for the unified CHANGELOG parser that leverages
 existing implementations and extends them for Success-Advisor-8 tracking.
@@ -7,7 +6,6 @@ existing implementations and extends them for Success-Advisor-8 tracking.
 
 import sys
 import tempfile
-from datetime import datetime
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
@@ -65,7 +63,7 @@ class TestUnifiedChangelogParser:
     def test_parser_initialization_with_existing_parser(self, temp_changelog):
         """Test parser initialization with existing ChangelogParser available."""
         with patch(
-            "legacy_tracking.unified_parser.ChangelogParser"
+            "legacy_tracking.unified_parser.ChangelogParser",
         ) as mock_parser_class:
             mock_parser = MagicMock()
             mock_parser_class.return_value = mock_parser
@@ -87,7 +85,7 @@ class TestUnifiedChangelogParser:
             assert parser._existing_parser_available is False
 
     def test_parse_success_advisor_8_activities_with_existing_parser(
-        self, temp_changelog
+        self, temp_changelog,
     ):
         """Test parsing Success-Advisor-8 activities with existing parser."""
         # Mock existing parser
@@ -98,7 +96,7 @@ class TestUnifiedChangelogParser:
         mock_contribution.category = "Added"
 
         with patch(
-            "legacy_tracking.unified_parser.ChangelogParser"
+            "legacy_tracking.unified_parser.ChangelogParser",
         ) as mock_parser_class:
             mock_parser = MagicMock()
             mock_parser.parse_changelog.return_value = [mock_contribution]
@@ -258,7 +256,7 @@ class TestUnifiedChangelogParser:
     def test_error_handling_in_parsing(self, temp_changelog):
         """Test error handling in parsing operations."""
         with patch(
-            "legacy_tracking.unified_parser.ChangelogParser"
+            "legacy_tracking.unified_parser.ChangelogParser",
         ) as mock_parser_class:
             mock_parser = MagicMock()
             mock_parser.parse_changelog.side_effect = Exception("Test error")

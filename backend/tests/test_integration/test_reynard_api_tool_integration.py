@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Reynard API Tool Integration Test
+"""Reynard API Tool Integration Test
 
 This script demonstrates elaborate tool calling patterns specifically designed
 for Reynard API endpoints, showcasing how NLWeb can intelligently route
@@ -82,7 +81,7 @@ class ReynardAPIToolIntegration:
                             "upscale",
                             "controlnet",
                             "custom",
-                        ]
+                        ],
                     },
                 ),
                 NLWebToolParameter(
@@ -211,7 +210,7 @@ class ReynardAPIToolIntegration:
                     required=False,
                     default="default",
                     constraints={
-                        "enum": ["default", "male", "female", "child", "elderly"]
+                        "enum": ["default", "male", "female", "child", "elderly"],
                     },
                 ),
                 NLWebToolParameter(
@@ -260,7 +259,7 @@ class ReynardAPIToolIntegration:
                     description="Image processing operation to perform",
                     required=True,
                     constraints={
-                        "enum": ["resize", "convert", "enhance", "analyze", "validate"]
+                        "enum": ["resize", "convert", "enhance", "analyze", "validate"],
                     },
                 ),
                 NLWebToolParameter(
@@ -269,7 +268,7 @@ class ReynardAPIToolIntegration:
                     description="Input image format",
                     required=True,
                     constraints={
-                        "enum": ["jpg", "png", "webp", "jxl", "avif", "bmp", "tiff"]
+                        "enum": ["jpg", "png", "webp", "jxl", "avif", "bmp", "tiff"],
                     },
                 ),
                 NLWebToolParameter(
@@ -374,7 +373,7 @@ class ReynardAPIToolIntegration:
                             "llama3:latest",
                             "mistral:latest",
                             "codellama:latest",
-                        ]
+                        ],
                     },
                 ),
                 NLWebToolParameter(
@@ -469,7 +468,7 @@ class ReynardAPIToolIntegration:
                 print(f"    {j}. {tool_name} (Score: {suggestion['score']:.1f})")
                 print(f"       📋 {suggestion['reasoning']}")
                 print(
-                    f"       ⚙️  Parameters: {json.dumps(suggestion['parameters'], indent=8)}"
+                    f"       ⚙️  Parameters: {json.dumps(suggestion['parameters'], indent=8)}",
                 )
 
     async def demo_multi_service_workflows(self):
@@ -557,7 +556,7 @@ class ReynardAPIToolIntegration:
                         "service": "caption_generation",
                         "action": "Generate SEO-friendly caption",
                         "parameters": {
-                            "caption_options": {"style": "seo", "include_objects": True}
+                            "caption_options": {"style": "seo", "include_objects": True},
                         },
                     },
                 ],
@@ -670,11 +669,11 @@ class ReynardAPIToolIntegration:
             await asyncio.sleep(0.2)
 
         print(
-            "\n  🎯 Reynard's intelligent fallback system ensures continuous service availability!"
+            "\n  🎯 Reynard's intelligent fallback system ensures continuous service availability!",
         )
 
     async def _mock_reynard_suggestions(
-        self, request: NLWebSuggestionRequest
+        self, request: NLWebSuggestionRequest,
     ) -> list[dict[str, Any]]:
         """Mock Reynard-specific tool suggestions for demo purposes."""
         suggestions = []
@@ -695,7 +694,7 @@ class ReynardAPIToolIntegration:
                         "parameters": {"width": 1024, "height": 1024, "steps": 20},
                     },
                     "reasoning": "Query mentions image generation - suggesting ComfyUI workflow",
-                }
+                },
             )
 
         # RAG suggestions
@@ -713,7 +712,7 @@ class ReynardAPIToolIntegration:
                         "search_options": {"top_k": 10, "enable_reranking": True},
                     },
                     "reasoning": "Query involves document search - suggesting RAG system",
-                }
+                },
             )
 
         # TTS suggestions
@@ -730,7 +729,7 @@ class ReynardAPIToolIntegration:
                         "backend": "kokoro",
                     },
                     "reasoning": "Query involves audio generation - suggesting TTS service",
-                }
+                },
             )
 
         # Ollama suggestions
@@ -748,7 +747,7 @@ class ReynardAPIToolIntegration:
                         "chat_options": {"temperature": 0.7, "max_tokens": 2048},
                     },
                     "reasoning": "Query involves conversation or analysis - suggesting Ollama chat",
-                }
+                },
             )
 
         return suggestions[: request.max_suggestions or 3]

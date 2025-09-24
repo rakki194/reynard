@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Phoenix Paper Updater
+"""Phoenix Paper Updater
 
 This script updates the Phoenix LaTeX paper with real experimental results
 collected from the research framework.
@@ -13,12 +12,11 @@ Version: 1.0.0
 import json
 import re
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 
 class PhoenixPaperUpdater:
-    """
-    Updates the Phoenix LaTeX paper with real experimental data.
+    """Updates the Phoenix LaTeX paper with real experimental data.
     """
 
     def __init__(self, paper_path: str, results_path: str):
@@ -30,7 +28,7 @@ class PhoenixPaperUpdater:
         self.experimental_results = self._load_experimental_results()
         self.analysis_results = self._load_analysis_results()
 
-    def _load_experimental_results(self) -> Dict[str, Any]:
+    def _load_experimental_results(self) -> dict[str, Any]:
         """Load experimental results from JSON files."""
         results = {}
 
@@ -41,7 +39,7 @@ class PhoenixPaperUpdater:
             / "comprehensive_experiment_results.json"
         )
         if comp_results_file.exists():
-            with open(comp_results_file, "r") as f:
+            with open(comp_results_file) as f:
                 results["comprehensive"] = json.load(f)
 
         # Load analysis results
@@ -49,22 +47,22 @@ class PhoenixPaperUpdater:
             self.results_path / "analysis_results" / "phoenix_analysis_results.json"
         )
         if analysis_file.exists():
-            with open(analysis_file, "r") as f:
+            with open(analysis_file) as f:
                 results["analysis"] = json.load(f)
 
         return results
 
-    def _load_analysis_results(self) -> Dict[str, Any]:
+    def _load_analysis_results(self) -> dict[str, Any]:
         """Load analysis results."""
         analysis_file = (
             self.results_path / "analysis_results" / "phoenix_analysis_results.json"
         )
         if analysis_file.exists():
-            with open(analysis_file, "r") as f:
+            with open(analysis_file) as f:
                 return json.load(f)
         return {}
 
-    def _extract_real_metrics(self) -> Dict[str, float]:
+    def _extract_real_metrics(self) -> dict[str, float]:
         """Extract real metrics from experimental results."""
         metrics = {}
 
@@ -87,7 +85,7 @@ class PhoenixPaperUpdater:
             )
             metrics["trait_accuracy"] = knowledge_dist.get("trait_accuracy", 0.0) * 100
             metrics["knowledge_transfer_rate"] = knowledge_dist.get(
-                "knowledge_transfer_rate", 0.0
+                "knowledge_transfer_rate", 0.0,
             )
 
             # Evolutionary operations metrics
@@ -191,7 +189,7 @@ Statistical analysis based on actual experimental data:
             return False
 
         # Read the current paper
-        with open(self.paper_path, "r") as f:
+        with open(self.paper_path) as f:
             paper_content = f.read()
 
         # Replace the results table
@@ -201,7 +199,7 @@ Statistical analysis based on actual experimental data:
         # Find and replace the table
         if re.search(table_pattern, paper_content, re.DOTALL):
             paper_content = re.sub(
-                table_pattern, new_table, paper_content, flags=re.DOTALL
+                table_pattern, new_table, paper_content, flags=re.DOTALL,
             )
             print("✅ Updated results table with real data")
         else:
@@ -213,7 +211,7 @@ Statistical analysis based on actual experimental data:
 
         if re.search(stats_pattern, paper_content, re.DOTALL):
             paper_content = re.sub(
-                stats_pattern, new_stats, paper_content, flags=re.DOTALL
+                stats_pattern, new_stats, paper_content, flags=re.DOTALL,
             )
             print("✅ Updated statistical analysis with real data")
         else:
@@ -240,7 +238,7 @@ This research paper has been updated to reflect actual experimental results rath
         results_pattern = r"(\\section\{Results and Analysis\})"
         if re.search(results_pattern, paper_content):
             paper_content = re.sub(
-                results_pattern, integrity_note + r"\1", paper_content
+                results_pattern, integrity_note + r"\1", paper_content,
             )
             print("✅ Added data integrity section")
 

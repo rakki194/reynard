@@ -4,7 +4,7 @@
  */
 
 import { Component, For, Show } from "solid-js";
-import { Button, Card } from "reynard-components";
+import { Button, Card } from "reynard-components-core";
 import { useNotifications } from "reynard-core";
 // Define ImageItem interface locally
 interface ImageItem {

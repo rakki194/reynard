@@ -1,5 +1,4 @@
-"""
-Routes module for Reynard Basic Backend
+"""Routes module for Reynard Basic Backend
 Contains all API route modules
 """
 

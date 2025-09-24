@@ -1,5 +1,4 @@
-"""
-Florence2 Generator Implementation
+"""Florence2 Generator Implementation
 
 This module implements the Florence2 caption generator for the Reynard system.
 Florence2 is a general-purpose image captioning model with support for various
@@ -31,8 +30,7 @@ FLORENCE2_AVAILABLE = True
 
 
 class Florence2Generator(CaptionGeneratorBase):
-    """
-    Florence2 caption generator.
+    """Florence2 caption generator.
 
     This generator provides general-purpose image captioning with support for
     various captioning tasks including standard captioning, dense captioning,
@@ -158,7 +156,7 @@ class Florence2Generator(CaptionGeneratorBase):
 
             # Load model and processor in executor to avoid blocking
             await asyncio.get_event_loop().run_in_executor(
-                None, self._load_model_and_processor
+                None, self._load_model_and_processor,
             )
 
             self._is_loaded = True
@@ -196,7 +194,7 @@ class Florence2Generator(CaptionGeneratorBase):
 
             # Generate caption using self-contained implementation
             caption = await asyncio.get_event_loop().run_in_executor(
-                None, self._generate_caption, str(image_path), config
+                None, self._generate_caption, str(image_path), config,
             )
 
             return caption
@@ -213,7 +211,7 @@ class Florence2Generator(CaptionGeneratorBase):
                 "device": str(self._device) if self._device else None,
                 "model_name": self._model_name,
                 "self_contained": True,
-            }
+            },
         )
         return info
 
@@ -279,7 +277,7 @@ class Florence2Generator(CaptionGeneratorBase):
 
         # Decode the generated text
         generated_text = self._processor.batch_decode(
-            generated_ids, skip_special_tokens=True
+            generated_ids, skip_special_tokens=True,
         )[0]
 
         # Extract caption from the generated text

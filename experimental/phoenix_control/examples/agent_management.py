@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Agent Management Example for PHOENIX Control
+"""Agent Management Example for PHOENIX Control
 
 Demonstrates the agent state persistence system including
 agent creation, state management, and backup/recovery.

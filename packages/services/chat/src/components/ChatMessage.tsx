@@ -13,11 +13,11 @@ import { Dynamic } from "solid-js/web";
 import { MarkdownRenderer } from "./MarkdownRenderer";
 import { ThinkingIndicator } from "./ThinkingIndicator";
 import { ToolCallDisplay } from "./ToolCallDisplay";
-export const ChatMessage = props => {
+export const ChatMessage = (props: any) => {
   const [showThinking, setShowThinking] = createSignal(false);
   const [showDetails, setShowDetails] = createSignal(false);
   // Format timestamp for display
-  const formatTimestamp = timestamp => {
+  const formatTimestamp = (timestamp: any) => {
     const date = new Date(timestamp);
     const now = new Date();
     const isToday = date.toDateString() === now.toDateString();

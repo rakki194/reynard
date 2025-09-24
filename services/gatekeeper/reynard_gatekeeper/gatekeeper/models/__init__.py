@@ -1,5 +1,4 @@
-"""
-Models package for the Gatekeeper authentication library.
+"""Models package for the Gatekeeper authentication library.
 
 This package contains all the data models used throughout the authentication system.
 """

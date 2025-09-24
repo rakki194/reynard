@@ -1,5 +1,4 @@
-"""
-ECS Cache Decorators
+"""ECS Cache Decorators
 ===================
 
 Cache decorators for ECS database queries to improve performance and reduce database load.
@@ -10,7 +9,7 @@ import hashlib
 import logging
 from collections.abc import Callable
 from functools import wraps
-from typing import Any, Optional
+from typing import Any
 
 from app.core.cache_config import CacheConfig
 from app.core.cache_optimizer import IntelligentCacheManager
@@ -26,13 +25,14 @@ class ECSCacheManager:
 
         Args:
             redis_enabled: Whether to use Redis caching (None for config default)
+
         """
         self.redis_enabled = (
             redis_enabled
             if redis_enabled is not None
             else CacheConfig.ECS_CACHE_ENABLED
         )
-        self.cache_manager: Optional[IntelligentCacheManager] = None
+        self.cache_manager: IntelligentCacheManager | None = None
         self.fallback_cache: dict[str, dict[str, Any]] = {}
 
         # Cache configuration
@@ -70,13 +70,14 @@ class ECSCacheManager:
 
         Returns:
             Cache key string
+
         """
         # Create a hash of the function name and arguments
-        key_data = f"{func_name}:{str(args)}:{str(sorted(kwargs.items()))}"
+        key_data = f"{func_name}:{args!s}:{sorted(kwargs.items())!s}"
         key_hash = hashlib.md5(key_data.encode()).hexdigest()
         return f"{self.namespace}:{func_name}:{key_hash}"
 
-    async def get(self, key: str) -> Optional[Any]:
+    async def get(self, key: str) -> Any | None:
         """Get a value from cache.
 
         Args:
@@ -84,19 +85,19 @@ class ECSCacheManager:
 
         Returns:
             Cached value or None if not found
+
         """
         try:
             if self.cache_manager:
                 return await self.cache_manager.get(key, self.namespace)
-            else:
-                # Check fallback cache
-                cached_item = self.fallback_cache.get(key)
-                if cached_item and not self._is_expired(cached_item):
-                    return cached_item["data"]
-                elif cached_item:
-                    # Expired, remove it
-                    del self.fallback_cache[key]
-                return None
+            # Check fallback cache
+            cached_item = self.fallback_cache.get(key)
+            if cached_item and not self._is_expired(cached_item):
+                return cached_item["data"]
+            if cached_item:
+                # Expired, remove it
+                del self.fallback_cache[key]
+            return None
         except Exception as e:
             logger.error(f"Failed to get from cache: {e}")
             return None
@@ -108,6 +109,7 @@ class ECSCacheManager:
             key: Cache key
             value: Value to cache
             ttl: Time to live in seconds
+
         """
         ttl = ttl or self.default_ttl
 
@@ -131,6 +133,7 @@ class ECSCacheManager:
 
         Returns:
             True if expired, False otherwise
+
         """
         return asyncio.get_event_loop().time() > cached_item["expires"]
 
@@ -139,6 +142,7 @@ class ECSCacheManager:
 
         Args:
             key: Cache key to delete
+
         """
         try:
             if self.cache_manager:
@@ -163,23 +167,23 @@ class ECSCacheManager:
 
         Returns:
             Cache statistics dictionary
+
         """
         try:
             if self.cache_manager:
                 return await self.cache_manager.get_metrics()
-            else:
-                return {
-                    "cache_type": "fallback_memory",
-                    "fallback_cache_size": len(self.fallback_cache),
-                    "redis_enabled": False,
-                }
+            return {
+                "cache_type": "fallback_memory",
+                "fallback_cache_size": len(self.fallback_cache),
+                "redis_enabled": False,
+            }
         except Exception as e:
             logger.error(f"Failed to get cache stats: {e}")
             return {"error": str(e)}
 
 
 # Global ECS cache manager instance
-_ecs_cache_manager: Optional[ECSCacheManager] = None
+_ecs_cache_manager: ECSCacheManager | None = None
 
 
 def get_ecs_cache_manager() -> ECSCacheManager:
@@ -187,6 +191,7 @@ def get_ecs_cache_manager() -> ECSCacheManager:
 
     Returns:
         ECSCacheManager instance
+
     """
     global _ecs_cache_manager
     if _ecs_cache_manager is None:
@@ -195,7 +200,7 @@ def get_ecs_cache_manager() -> ECSCacheManager:
 
 
 def cache_ecs_query(
-    namespace: str = "ecs", ttl: int = 1800, cache_key_prefix: str = None
+    namespace: str = "ecs", ttl: int = 1800, cache_key_prefix: str = None,
 ):
     """Decorator for caching ECS database queries.
 
@@ -206,6 +211,7 @@ def cache_ecs_query(
 
     Returns:
         Decorator function
+
     """
 
     def decorator(func: Callable) -> Callable:
@@ -252,9 +258,10 @@ def cache_naming_spirits(ttl: int = 1800):
 
     Returns:
         Decorator function
+
     """
     return cache_ecs_query(
-        namespace="naming_spirits", ttl=ttl, cache_key_prefix="spirits"
+        namespace="naming_spirits", ttl=ttl, cache_key_prefix="spirits",
     )
 
 
@@ -266,9 +273,10 @@ def cache_naming_components(ttl: int = 1800):
 
     Returns:
         Decorator function
+
     """
     return cache_ecs_query(
-        namespace="naming_components", ttl=ttl, cache_key_prefix="components"
+        namespace="naming_components", ttl=ttl, cache_key_prefix="components",
     )
 
 
@@ -280,9 +288,10 @@ def cache_naming_config(ttl: int = 3600):
 
     Returns:
         Decorator function
+
     """
     return cache_ecs_query(
-        namespace="naming_config", ttl=ttl, cache_key_prefix="config"
+        namespace="naming_config", ttl=ttl, cache_key_prefix="config",
     )
 
 
@@ -294,6 +303,7 @@ def cache_agent_data(ttl: int = 300):
 
     Returns:
         Decorator function
+
     """
     return cache_ecs_query(namespace="agent_data", ttl=ttl, cache_key_prefix="agents")
 
@@ -306,6 +316,7 @@ def invalidate_ecs_cache(pattern: str = None):
 
     Returns:
         Decorator function
+
     """
 
     def decorator(func: Callable) -> Callable:
@@ -321,7 +332,7 @@ def invalidate_ecs_cache(pattern: str = None):
                     # Invalidate specific pattern
                     if cache_manager.cache_manager:
                         keys = await cache_manager.cache_manager.get_keys(
-                            f"{cache_manager.namespace}:{pattern}"
+                            f"{cache_manager.namespace}:{pattern}",
                         )
                         for key in keys:
                             await cache_manager.delete(key)
@@ -357,6 +368,7 @@ async def initialize_ecs_cache(redis_enabled: bool = True) -> ECSCacheManager:
 
     Returns:
         Initialized ECSCacheManager instance
+
     """
     global _ecs_cache_manager
     _ecs_cache_manager = ECSCacheManager(redis_enabled=redis_enabled)

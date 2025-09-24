@@ -1,5 +1,4 @@
-"""
-Tests for Unified Agent State Manager
+"""Tests for Unified Agent State Manager
 
 Comprehensive tests for the unified agent state management system
 that integrates with the existing FastAPI ECS backend.
@@ -15,6 +14,7 @@ import pytest
 sys.path.append(str(Path(__file__).parent.parent))
 
 from postgres_service import PostgresECSWorldService
+
 from services.unified_agent_manager import AgentState, UnifiedAgentStateManager
 
 
@@ -164,7 +164,7 @@ class TestUnifiedAgentStateManager:
 
         # Test
         await agent_manager.track_agent_activity(
-            "test-agent-123", "Test activity", {"context": "test"}
+            "test-agent-123", "Test activity", {"context": "test"},
         )
 
         # Verify ECS service was called
@@ -177,7 +177,7 @@ class TestUnifiedAgentStateManager:
 
     @pytest.mark.asyncio
     async def test_track_success_advisor_8_activity(
-        self, agent_manager, mock_ecs_service
+        self, agent_manager, mock_ecs_service,
     ):
         """Test Success-Advisor-8 specific activity tracking."""
         # Mock ECS service
@@ -185,7 +185,7 @@ class TestUnifiedAgentStateManager:
 
         # Test
         await agent_manager.track_agent_activity(
-            "success-advisor-8", "Success-Advisor-8 test activity", {"context": "test"}
+            "success-advisor-8", "Success-Advisor-8 test activity", {"context": "test"},
         )
 
         # Verify ECS service was called
@@ -198,7 +198,7 @@ class TestUnifiedAgentStateManager:
 
     @pytest.mark.asyncio
     async def test_get_success_advisor_8_legacy_report(
-        self, agent_manager, mock_ecs_service
+        self, agent_manager, mock_ecs_service,
     ):
         """Test Success-Advisor-8 legacy report generation."""
         # Mock legacy tracker
@@ -245,7 +245,7 @@ class TestUnifiedAgentStateManager:
             last_activity=datetime.now(),
             specializations=["updated", "testing"],
             achievements=[
-                {"name": "Update Test", "description": "Successfully updated"}
+                {"name": "Update Test", "description": "Successfully updated"},
             ],
         )
 

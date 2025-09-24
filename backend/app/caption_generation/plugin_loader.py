@@ -1,5 +1,4 @@
-"""
-Plugin loading system for Reynard caption generators.
+"""Plugin loading system for Reynard caption generators.
 
 This module provides the infrastructure for dynamically discovering and loading
 caption generator plugins. It implements a plugin registry pattern that allows

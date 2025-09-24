@@ -1,5 +1,4 @@
-"""
-🦊 Reynard Backend Core Configuration Management
+"""🦊 Reynard Backend Core Configuration Management
 ===============================================
 
 Centralized configuration management system for the Reynard FastAPI backend,
@@ -58,8 +57,7 @@ load_dotenv()
 
 @dataclass
 class ServiceConfig:
-    """
-    Base configuration class for all Reynard backend services.
+    """Base configuration class for all Reynard backend services.
 
     Provides common configuration parameters that are shared across all services,
     including enablement toggles, timeout settings, and retry mechanisms. This
@@ -70,6 +68,7 @@ class ServiceConfig:
         timeout (int): Service operation timeout in seconds (default: 30)
         retry_attempts (int): Number of retry attempts for failed operations (default: 3)
         retry_delay (float): Delay between retry attempts in seconds (default: 1.0)
+
     """
 
     enabled: bool = True
@@ -83,7 +82,7 @@ class GatekeeperConfig(ServiceConfig):
     """Gatekeeper authentication configuration."""
 
     jwt_secret_key: str = field(
-        default_factory=lambda: os.getenv("JWT_SECRET_KEY", "your-secret-key")
+        default_factory=lambda: os.getenv("JWT_SECRET_KEY", "your-secret-key"),
     )
     jwt_algorithm: str = "HS256"
     access_token_expire_minutes: int = 30
@@ -157,17 +156,17 @@ class AppConfig:
 
     # Environment
     environment: str = field(
-        default_factory=lambda: os.getenv("ENVIRONMENT", "development")
+        default_factory=lambda: os.getenv("ENVIRONMENT", "development"),
     )
     debug: bool = field(
-        default_factory=lambda: os.getenv("DEBUG", "false").lower() == "true"
+        default_factory=lambda: os.getenv("DEBUG", "false").lower() == "true",
     )
 
     # Server settings
     host: str = field(default_factory=lambda: os.getenv("HOST", "127.0.0.1"))
     port: int = 8000
     reload: bool = field(
-        default_factory=lambda: os.getenv("ENVIRONMENT", "development") == "development"
+        default_factory=lambda: os.getenv("ENVIRONMENT", "development") == "development",
     )
 
     # API settings
@@ -179,14 +178,14 @@ class AppConfig:
             "/api/docs"
             if os.getenv("ENVIRONMENT", "development") == "development"
             else None
-        )
+        ),
     )
     redoc_url: str | None = field(
         default_factory=lambda: (
             "/api/redoc"
             if os.getenv("ENVIRONMENT", "development") == "development"
             else None
-        )
+        ),
     )
 
     # CORS settings
@@ -209,10 +208,10 @@ class AppConfig:
             "http://localhost:3014",
             "http://localhost:3015",
             "http://localhost:5173",
-        ]
+        ],
     )
     cors_methods: list[str] = field(
-        default_factory=lambda: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+        default_factory=lambda: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     )
     cors_headers: list[str] = field(
         default_factory=lambda: [
@@ -222,7 +221,7 @@ class AppConfig:
             "Content-Type",
             "Authorization",
             "X-Requested-With",
-        ]
+        ],
     )
     cors_expose_headers: list[str] = field(default_factory=lambda: ["X-Total-Count"])
     cors_max_age: int = 3600
@@ -234,7 +233,7 @@ class AppConfig:
             "127.0.0.1",
             "testserver",
             "*.yourdomain.com",
-        ]
+        ],
     )
 
     # Service configurations
@@ -310,7 +309,7 @@ def get_service_configs() -> dict[str, dict[str, Any]]:
                 "proxy_connect_timeout_ms": config.nlweb.proxy_connect_timeout_ms,
                 "proxy_read_timeout_ms": config.nlweb.proxy_read_timeout_ms,
                 "proxy_sse_idle_timeout_ms": config.nlweb.proxy_sse_idle_timeout_ms,
-            }
+            },
         },
         "rag": {
             "rag_enabled": config.rag.enabled,
@@ -339,7 +338,7 @@ def get_service_configs() -> dict[str, dict[str, Any]]:
                 "assistant_enabled": config.ollama.assistant_enabled,
                 "tool_calling_enabled": config.ollama.tool_calling_enabled,
                 "streaming_enabled": config.ollama.streaming_enabled,
-            }
+            },
         },
         "tts": {
             "tts_enabled": config.tts.enabled,

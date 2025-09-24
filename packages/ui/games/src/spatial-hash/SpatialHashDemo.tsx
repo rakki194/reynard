@@ -1,8 +1,65 @@
 import { createSignal, onMount } from "solid-js";
 import { Button } from "reynard-components-core";
-import { SpatialHash } from "reynard-algorithms";
+// import { SpatialHash } from "reynard-algorithms";
+
+// Temporary placeholder for SpatialHash until algorithms package is built
+class SpatialHash {
+  cellSize: number;
+  cells: Map<string, Set<string>>;
+  
+  constructor(cellSize: number) {
+    this.cellSize = cellSize;
+    this.cells = new Map();
+  }
+  
+  getCellKey(x: number, y: number): string {
+    const cellX = Math.floor(x / this.cellSize);
+    const cellY = Math.floor(y / this.cellSize);
+    return `${cellX},${cellY}`;
+  }
+  
+  insert(id: string, x: number, y: number): void {
+    const key = this.getCellKey(x, y);
+    if (!this.cells.has(key)) {
+      this.cells.set(key, new Set());
+    }
+    this.cells.get(key)!.add(id);
+  }
+  
+  query(x: number, y: number, radius: number = 0): string[] {
+    const results = new Set<string>();
+    const cellX = Math.floor(x / this.cellSize);
+    const cellY = Math.floor(y / this.cellSize);
+    
+    for (let dx = -1; dx <= 1; dx++) {
+      for (let dy = -1; dy <= 1; dy++) {
+        const key = `${cellX + dx},${cellY + dy}`;
+        if (this.cells.has(key)) {
+          this.cells.get(key)!.forEach(id => results.add(id));
+        }
+      }
+    }
+    
+    return Array.from(results);
+  }
+  
+  clear(): void {
+    this.cells.clear();
+  }
+  
+  getStats(): { cellCount: number; totalObjects: number } {
+    let totalObjects = 0;
+    this.cells.forEach(cell => {
+      totalObjects += cell.size;
+    });
+    return {
+      cellCount: this.cells.size,
+      totalObjects
+    };
+  }
+}
 import "./SpatialHashDemo.css";
-export function SpatialHashDemo(props = {}) {
+export function SpatialHashDemo(props: any = {}) {
   const [objects, setObjects] = createSignal([]);
   const [spatialHash, setSpatialHash] = createSignal(null);
   const [queryResults, setQueryResults] = createSignal([]);
@@ -33,9 +90,9 @@ export function SpatialHashDemo(props = {}) {
   const initializeDemo = () => {
     const newObjects = Array.from({ length: OBJECT_COUNT }, (_, i) => createObject(i));
     setObjects(newObjects);
-    const hash = new SpatialHash({ cellSize: 50 });
+    const hash = new SpatialHash(50);
     newObjects.forEach(obj => {
-      hash.insert({ ...obj, data: { name: `Object ${obj.id}` } });
+      hash.insert(obj.id, obj.x, obj.y);
     });
     setSpatialHash(hash);
     setStats(hash.getStats());

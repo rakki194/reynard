@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Database Migration Runner for Reynard Backend
+"""Database Migration Runner for Reynard Backend
 
 This script runs the database migrations in the correct order to set up
 the unified repository schema and ensure compatibility with the RAG service.
@@ -29,7 +28,7 @@ def run_migration_file(engine, file_path: Path) -> bool:
     try:
         logger.info(f"Running migration: {file_path.name}")
 
-        with open(file_path, "r") as f:
+        with open(file_path) as f:
             sql_content = f.read()
 
         with engine.connect() as conn:
@@ -49,7 +48,7 @@ def run_migration_file(engine, file_path: Path) -> bool:
                             or "duplicate" in str(e).lower()
                         ):
                             logger.debug(
-                                f"Statement already exists (skipping): {statement[:100]}..."
+                                f"Statement already exists (skipping): {statement[:100]}...",
                             )
                         else:
                             logger.warning(f"Statement failed: {e}")
@@ -72,7 +71,7 @@ def main():
 
         # Get database URL from environment or use default
         database_url = os.getenv(
-            "DATABASE_URL", "postgresql://postgres:password@localhost:5432/reynard"
+            "DATABASE_URL", "postgresql://postgres:password@localhost:5432/reynard",
         )
         logger.info(f"Using database URL: {database_url}")
 
@@ -102,13 +101,13 @@ def main():
                     success_count += 1
                 else:
                     logger.warning(
-                        f"Migration {migration_file} had issues, but continuing..."
+                        f"Migration {migration_file} had issues, but continuing...",
                     )
             else:
                 logger.warning(f"Migration file not found: {migration_file}")
 
         logger.info(
-            f"✅ Migrations completed: {success_count}/{len(migration_files)} successful"
+            f"✅ Migrations completed: {success_count}/{len(migration_files)} successful",
         )
         return success_count > 0
 

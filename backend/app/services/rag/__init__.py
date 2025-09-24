@@ -1,5 +1,4 @@
-"""
-RAG Services for Reynard Backend
+"""RAG Services for Reynard Backend
 
 This module provides a comprehensive RAG (Retrieval-Augmented Generation) system
 with clean, modular architecture and intuitive naming.

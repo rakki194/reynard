@@ -1,8 +1,6 @@
-"""
-Additional tests to improve analyzer coverage.
+"""Additional tests to improve analyzer coverage.
 """
 
-import asyncio
 import sys
 from pathlib import Path
 
@@ -19,7 +17,8 @@ from analyzers import (
     SentimentAnalyzer,
     TransformerAnalyzer,
 )
-from core import ConfidenceLevel, DetectionCategory, HumilityConfig, SeverityLevel
+
+from core import ConfidenceLevel, DetectionCategory, HumilityConfig
 
 
 class TestPatternAnalyzerCoverage:
@@ -105,19 +104,19 @@ class TestSentimentAnalyzerCoverage:
         """Test sentiment score calculation at boundaries."""
         # Test with very positive text
         positive_score = analyzer._calculate_sentiment_score(
-            "amazing wonderful fantastic incredible"
+            "amazing wonderful fantastic incredible",
         )
         assert positive_score > 0
 
         # Test with very negative text
         negative_score = analyzer._calculate_sentiment_score(
-            "terrible awful horrible disgusting"
+            "terrible awful horrible disgusting",
         )
         assert negative_score < 0
 
         # Test with neutral text
         neutral_score = analyzer._calculate_sentiment_score(
-            "okay fine decent acceptable"
+            "okay fine decent acceptable",
         )
         assert abs(neutral_score) < 0.5
 
@@ -152,7 +151,7 @@ class TestHexacoAnalyzerCoverage:
 
         humble_score = analyzer._calculate_hexaco_score(humble_text, "honesty_humility")
         arrogant_score = analyzer._calculate_hexaco_score(
-            arrogant_text, "honesty_humility"
+            arrogant_text, "honesty_humility",
         )
 
         assert humble_score > arrogant_score

@@ -1,5 +1,4 @@
-"""
-Summarization manager for Reynard.
+"""Summarization manager for Reynard.
 
 This module provides a centralized manager for handling different types of
 summarization requests and routing them to appropriate summarizers with
@@ -24,8 +23,7 @@ logger = logging.getLogger(__name__)
 
 
 class SummarizationManager:
-    """
-    Manager for orchestrating multiple summarization services.
+    """Manager for orchestrating multiple summarization services.
 
     This class provides a unified interface for summarization operations,
     automatically selecting the best summarizer for each request and
@@ -33,11 +31,11 @@ class SummarizationManager:
     """
 
     def __init__(self, cache_dir: Path | None = None):
-        """
-        Initialize the summarization manager.
+        """Initialize the summarization manager.
 
         Args:
             cache_dir: Directory for cache storage (optional)
+
         """
         self._summarizers: dict[str, BaseSummarizer] = {}
         self._default_summarizer: str | None = None
@@ -54,11 +52,11 @@ class SummarizationManager:
         }
 
     async def initialize(self) -> bool:
-        """
-        Initialize the summarization manager.
+        """Initialize the summarization manager.
 
         Returns:
             True if initialization was successful, False otherwise
+
         """
         try:
             # Initialize all registered summarizers
@@ -79,7 +77,7 @@ class SummarizationManager:
             if available_summarizers:
                 self._default_summarizer = available_summarizers[0]
                 logger.info(
-                    f"✅ SummarizationManager initialized with default: {self._default_summarizer}"
+                    f"✅ SummarizationManager initialized with default: {self._default_summarizer}",
                 )
                 self._initialized = True
                 return True
@@ -91,12 +89,12 @@ class SummarizationManager:
             return False
 
     def register_summarizer(self, name: str, summarizer: BaseSummarizer) -> None:
-        """
-        Register a summarizer with the manager.
+        """Register a summarizer with the manager.
 
         Args:
             name: Name of the summarizer
             summarizer: Summarizer instance
+
         """
         self._summarizers[name] = summarizer
 
@@ -107,15 +105,15 @@ class SummarizationManager:
             self._content_type_routing[content_type].append(name)
 
         logger.info(
-            f"Registered summarizer '{name}' with content types: {[ct.value for ct in summarizer.supported_content_types]}"
+            f"Registered summarizer '{name}' with content types: {[ct.value for ct in summarizer.supported_content_types]}",
         )
 
     def get_available_summarizers(self) -> list[str]:
-        """
-        Get list of available summarizer names.
+        """Get list of available summarizer names.
 
         Returns:
             List of available summarizer names
+
         """
         return [
             name
@@ -124,22 +122,21 @@ class SummarizationManager:
         ]
 
     def get_summarizer(self, name: str) -> BaseSummarizer | None:
-        """
-        Get a specific summarizer by name.
+        """Get a specific summarizer by name.
 
         Args:
             name: Name of the summarizer
 
         Returns:
             Summarizer instance or None if not found
+
         """
         return self._summarizers.get(name)
 
     def select_summarizer(
-        self, content_type: ContentType, preferred_summarizer: str | None = None
+        self, content_type: ContentType, preferred_summarizer: str | None = None,
     ) -> BaseSummarizer | None:
-        """
-        Select the best summarizer for a given content type.
+        """Select the best summarizer for a given content type.
 
         Args:
             content_type: Type of content to summarize
@@ -147,6 +144,7 @@ class SummarizationManager:
 
         Returns:
             Selected summarizer or None if none available
+
         """
         # Check if preferred summarizer is available and supports content type
         if preferred_summarizer:
@@ -182,10 +180,9 @@ class SummarizationManager:
         return None
 
     async def summarize(
-        self, text: str, options: SummarizationOptions
+        self, text: str, options: SummarizationOptions,
     ) -> SummarizationResult:
-        """
-        Summarize text using the best available summarizer.
+        """Summarize text using the best available summarizer.
 
         Args:
             text: Text to summarize
@@ -196,6 +193,7 @@ class SummarizationManager:
 
         Raises:
             RuntimeError: If no suitable summarizer is available
+
         """
         if not self._initialized:
             raise RuntimeError("SummarizationManager is not initialized")
@@ -208,11 +206,11 @@ class SummarizationManager:
             summarizer = self.select_summarizer(options.content_type)
             if not summarizer:
                 raise RuntimeError(
-                    f"No available summarizer for content type: {options.content_type.value}"
+                    f"No available summarizer for content type: {options.content_type.value}",
                 )
 
             logger.info(
-                f"Using summarizer '{summarizer.name}' for content type '{options.content_type.value}'"
+                f"Using summarizer '{summarizer.name}' for content type '{options.content_type.value}'",
             )
 
             # Perform summarization
@@ -230,10 +228,9 @@ class SummarizationManager:
             raise
 
     async def summarize_stream(
-        self, text: str, options: SummarizationOptions
+        self, text: str, options: SummarizationOptions,
     ) -> AsyncGenerator[dict[str, Any]]:
-        """
-        Stream summarization progress and results.
+        """Stream summarization progress and results.
 
         Args:
             text: Text to summarize
@@ -241,6 +238,7 @@ class SummarizationManager:
 
         Yields:
             Progress updates and final result
+
         """
         if not self._initialized:
             yield {
@@ -255,7 +253,7 @@ class SummarizationManager:
             yield {
                 "event": "error",
                 "data": {
-                    "message": f"No available summarizer for content type: {options.content_type.value}"
+                    "message": f"No available summarizer for content type: {options.content_type.value}",
                 },
             }
             return
@@ -267,14 +265,14 @@ class SummarizationManager:
             yield event
 
     async def detect_content_type(self, text: str) -> ContentType:
-        """
-        Automatically detect the content type of the text.
+        """Automatically detect the content type of the text.
 
         Args:
             text: Text to analyze
 
         Returns:
             Detected content type
+
         """
         # Simple heuristics for content type detection
         text_lower = text.lower()
@@ -345,16 +343,16 @@ class SummarizationManager:
         return ContentType.GENERAL
 
     async def get_summary_quality_metrics(
-        self, result: SummarizationResult
+        self, result: SummarizationResult,
     ) -> dict[str, float]:
-        """
-        Get quality metrics for a summarization result.
+        """Get quality metrics for a summarization result.
 
         Args:
             result: Summarization result to evaluate
 
         Returns:
             Dictionary of quality metrics
+
         """
         # Find the summarizer that created this result
         for summarizer in self._summarizers.values():
@@ -370,11 +368,11 @@ class SummarizationManager:
         }
 
     def get_supported_content_types(self) -> dict[ContentType, list[str]]:
-        """
-        Get mapping of content types to supporting summarizers.
+        """Get mapping of content types to supporting summarizers.
 
         Returns:
             Dictionary mapping content types to summarizer names
+
         """
         return {
             content_type: [
@@ -417,11 +415,11 @@ class SummarizationManager:
         return stats
 
     def is_available(self) -> bool:
-        """
-        Check if the manager is available.
+        """Check if the manager is available.
 
         Returns:
             True if available, False otherwise
+
         """
         return self._initialized and bool(self.get_available_summarizers())
 
@@ -430,8 +428,7 @@ class SummarizationManager:
         requests: list[dict[str, Any]],
         enable_streaming: bool = False,
     ) -> AsyncGenerator[dict[str, Any]]:
-        """
-        Process a batch of summarization requests.
+        """Process a batch of summarization requests.
 
         Args:
             requests: List of request dictionaries
@@ -439,6 +436,7 @@ class SummarizationManager:
 
         Yields:
             Progress updates and results
+
         """
         if not self._initialized:
             yield {
@@ -460,16 +458,16 @@ class SummarizationManager:
                 # Convert request to SummarizationOptions
                 options_dict = req["options"].copy()
                 if "content_type" in options_dict and isinstance(
-                    options_dict["content_type"], str
+                    options_dict["content_type"], str,
                 ):
                     options_dict["content_type"] = ContentType(
-                        options_dict["content_type"]
+                        options_dict["content_type"],
                     )
                 if "summary_level" in options_dict and isinstance(
-                    options_dict["summary_level"], str
+                    options_dict["summary_level"], str,
                 ):
                     options_dict["summary_level"] = SummaryLevel(
-                        options_dict["summary_level"]
+                        options_dict["summary_level"],
                     )
 
                 options = SummarizationOptions(**options_dict)

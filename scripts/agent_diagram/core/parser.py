@@ -1,5 +1,4 @@
-"""
-Changelog parser for extracting agent contributions.
+"""Changelog parser for extracting agent contributions.
 """
 
 import os
@@ -9,33 +8,32 @@ from .contribution import AgentContribution
 
 
 class ChangelogParser:
-    """
-    Parses the CHANGELOG.md file to extract agent contributions.
+    """Parses the CHANGELOG.md file to extract agent contributions.
 
     This parser uses regex patterns to identify agent contributions in the
     changelog format and extracts structured data for further processing.
     """
 
     def __init__(self, changelog_path: str = "CHANGELOG.md"):
-        """
-        Initialize the parser with a changelog file path.
+        """Initialize the parser with a changelog file path.
 
         Args:
             changelog_path: Path to the changelog file to parse
+
         """
         self.changelog_path = changelog_path
         self.agent_pattern = re.compile(r"\(([A-Za-z]+-[A-Za-z]+-\d+)\)")
         self.contributions: list[AgentContribution] = []
 
     def parse_changelog(self) -> list[AgentContribution]:
-        """
-        Parse the changelog and extract all agent contributions.
+        """Parse the changelog and extract all agent contributions.
 
         Returns:
             List of AgentContribution objects found in the changelog
 
         Raises:
             FileNotFoundError: If the changelog file doesn't exist
+
         """
         if not os.path.exists(self.changelog_path):
             raise FileNotFoundError(f"Changelog file not found: {self.changelog_path}")
@@ -90,7 +88,7 @@ class ChangelogParser:
                     )
                     if not existing:
                         contribution = AgentContribution(
-                            agent_name=agent_name, title=title, description=description
+                            agent_name=agent_name, title=title, description=description,
                         )
                         self.contributions.append(contribution)
 
@@ -117,12 +115,12 @@ class ChangelogParser:
                     )
                     if not existing:
                         contribution = AgentContribution(
-                            agent_name=agent_name, title=title, description=description
+                            agent_name=agent_name, title=title, description=description,
                         )
                         self.contributions.append(contribution)
 
     def _extract_title_and_description(
-        self, lines: list[str], current_index: int, current_line: str
+        self, lines: list[str], current_index: int, current_line: str,
     ) -> tuple[str | None, str]:
         """Extract title and description from a line with agent credit."""
         title = None

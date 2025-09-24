@@ -1,5 +1,4 @@
-"""
-Gatekeeper configuration for Reynard Backend.
+"""Gatekeeper configuration for Reynard Backend.
 
 This module configures the authentication system using the Gatekeeper library
 with SQLite backend for development and PostgreSQL for production.
@@ -25,10 +24,10 @@ class ReynardGatekeeperConfig:
         self.secret_key = get_jwt_secret_key()
         self.algorithm = get_jwt_algorithm()
         self.access_token_expire_minutes = int(
-            os.getenv("GATEKEEPER_ACCESS_TOKEN_EXPIRE_MINUTES", "30")
+            os.getenv("GATEKEEPER_ACCESS_TOKEN_EXPIRE_MINUTES", "30"),
         )
         self.refresh_token_expire_days = int(
-            os.getenv("GATEKEEPER_REFRESH_TOKEN_EXPIRE_DAYS", "7")
+            os.getenv("GATEKEEPER_REFRESH_TOKEN_EXPIRE_DAYS", "7"),
         )
         self.issuer = os.getenv("GATEKEEPER_ISSUER", "reynard-backend")
         self.audience = os.getenv("GATEKEEPER_AUDIENCE", "reynard-users")
@@ -36,7 +35,7 @@ class ReynardGatekeeperConfig:
         # Password security level
         security_level_str = os.getenv("GATEKEEPER_PASSWORD_SECURITY_LEVEL", "MEDIUM")
         self.password_security_level = getattr(
-            SecurityLevel, security_level_str.upper(), SecurityLevel.MEDIUM
+            SecurityLevel, security_level_str.upper(), SecurityLevel.MEDIUM,
         )
 
         # Database configuration - Use dedicated auth database
@@ -51,7 +50,7 @@ class ReynardGatekeeperConfig:
         # Backend configuration
         self.backend_pool_size = int(os.getenv("GATEKEEPER_BACKEND_POOL_SIZE", "5"))
         self.backend_max_overflow = int(
-            os.getenv("GATEKEEPER_BACKEND_MAX_OVERFLOW", "10")
+            os.getenv("GATEKEEPER_BACKEND_MAX_OVERFLOW", "10"),
         )
 
     def get_token_config(self) -> TokenConfig:
@@ -72,16 +71,15 @@ class ReynardGatekeeperConfig:
             return MemoryBackend()
 
         if self.database_url.startswith(
-            "postgresql://"
+            "postgresql://",
         ) or self.database_url.startswith("postgres://"):
             # PostgreSQL backend (preferred)
             return PostgreSQLBackend(database_url=self.database_url)
-        elif self.database_url.startswith("sqlite://"):
+        if self.database_url.startswith("sqlite://"):
             # SQLite backend (fallback only)
             return SQLiteBackend(database_url=self.database_url)
-        else:
-            # Default to PostgreSQL if URL format is unclear
-            return PostgreSQLBackend(database_url=self.database_url)
+        # Default to PostgreSQL if URL format is unclear
+        return PostgreSQLBackend(database_url=self.database_url)
 
     def create_auth_manager(self) -> AuthManager:
         """Create and configure the AuthManager instance."""

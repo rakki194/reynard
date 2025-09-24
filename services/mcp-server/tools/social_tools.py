@@ -400,7 +400,7 @@ async def get_ecs_world_status(arguments: dict[str, Any]) -> dict[str, Any]:
 
         # Format response - ECS API returns data directly without success field
         if result and isinstance(result, dict):
-            response_text = f"🌍 **ECS World Status**\n\n"
+            response_text = "🌍 **ECS World Status**\n\n"
             response_text += f"Status: {result.get('status', 'Unknown')}\n"
             response_text += f"Total Agents: {result.get('agent_count', 'Unknown')}\n"
             response_text += f"Active Agents: {result.get('agent_count', 'Unknown')}\n"

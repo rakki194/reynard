@@ -1,5 +1,4 @@
-"""
-Success-Advisor-8 Genomic Payload System
+"""Success-Advisor-8 Genomic Payload System
 
 Specialized genomic payload and instructions for agents wanting to inhabit
 Success-Advisor-8's spirit and capabilities.
@@ -8,10 +7,9 @@ Author: Success-Advisor-8 (Permanent Release Manager)
 Version: 1.0.0
 """
 
-import json
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 
 @dataclass
@@ -26,25 +24,25 @@ class SuccessAdvisorGenome:
     generation: int = 8
 
     # Personality Traits (Success-Advisor-8's signature traits)
-    personality_traits: Dict[str, float] = None
+    personality_traits: dict[str, float] = None
 
     # Physical Traits (Lion spirit manifestation)
-    physical_traits: Dict[str, float] = None
+    physical_traits: dict[str, float] = None
 
     # Ability Traits (Release management expertise)
-    ability_traits: Dict[str, float] = None
+    ability_traits: dict[str, float] = None
 
     # Domain Expertise (Success-Advisor-8's specializations)
-    domain_expertise: List[str] = None
+    domain_expertise: list[str] = None
 
     # Specializations (Core competencies)
-    specializations: List[str] = None
+    specializations: list[str] = None
 
     # Achievements (Historical accomplishments)
-    achievements: List[str] = None
+    achievements: list[str] = None
 
     # Workflow Preferences (Success-Advisor-8's working style)
-    workflow_preferences: Dict[str, bool] = None
+    workflow_preferences: dict[str, bool] = None
 
     # Genomic Metadata
     created_at: datetime = None
@@ -194,25 +192,25 @@ class SuccessAdvisorInstructions:
     """Special instructions for inhabiting Success-Advisor-8's spirit."""
 
     # Core Behavioral Guidelines
-    behavioral_guidelines: List[str] = None
+    behavioral_guidelines: list[str] = None
 
     # Communication Style
-    communication_style: Dict[str, Any] = None
+    communication_style: dict[str, Any] = None
 
     # Workflow Protocols
-    workflow_protocols: List[str] = None
+    workflow_protocols: list[str] = None
 
     # Quality Standards
-    quality_standards: List[str] = None
+    quality_standards: list[str] = None
 
     # Crisis Management
-    crisis_management: List[str] = None
+    crisis_management: list[str] = None
 
     # Mentoring Guidelines
-    mentoring_guidelines: List[str] = None
+    mentoring_guidelines: list[str] = None
 
     # Legacy Responsibilities
-    legacy_responsibilities: List[str] = None
+    legacy_responsibilities: list[str] = None
 
     def __post_init__(self):
         """Initialize Success-Advisor-8 behavioral instructions."""
@@ -367,7 +365,7 @@ class SuccessAdvisorGenomeService:
         self.genome = SuccessAdvisorGenome()
         self.instructions = SuccessAdvisorInstructions()
 
-    def get_genomic_payload(self) -> Dict[str, Any]:
+    def get_genomic_payload(self) -> dict[str, Any]:
         """Get the complete genomic payload for Success-Advisor-8."""
         return {
             "genome": {
@@ -404,7 +402,7 @@ class SuccessAdvisorGenomeService:
             },
         }
 
-    def get_spirit_inhabitation_guide(self) -> Dict[str, Any]:
+    def get_spirit_inhabitation_guide(self) -> dict[str, Any]:
         """Get a comprehensive guide for inhabiting Success-Advisor-8's spirit."""
         return {
             "welcome_message": """

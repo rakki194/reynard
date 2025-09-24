@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-NLP Processing Service
+"""NLP Processing Service
 
 Advanced NLP processing using spacy, nltk, and transformers for prompt refinement.
 Replaces the pseudo-code NLP functions with actual implementations.
@@ -12,7 +11,7 @@ import asyncio
 import logging
 import re
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 # Optional imports with fallbacks
 try:
@@ -50,36 +49,35 @@ class NLPResult:
     """Result of NLP processing operation."""
 
     text: str
-    keywords: List[str]
-    entities: List[Dict[str, Any]]
-    sentiment: Dict[str, Any]
+    keywords: list[str]
+    entities: list[dict[str, Any]]
+    sentiment: dict[str, Any]
     language: str
     summary: str
     processing_time: float
 
 
 class NLPProcessingService:
-    """
-    Advanced NLP processing service using spacy, nltk, and transformers.
+    """Advanced NLP processing service using spacy, nltk, and transformers.
 
     Provides comprehensive text analysis for prompt refinement.
     """
 
-    def __init__(self, config: Optional[Dict[str, Any]] = None):
+    def __init__(self, config: dict[str, Any] | None = None):
         """Initialize the NLP processing service."""
         self.config = config or {}
 
         # Configuration
         self.model_name = self.config.get("model_name", "en_core_web_sm")
         self.sentiment_model = self.config.get(
-            "sentiment_model", "distilbert-base-uncased-finetuned-sst-2-english"
+            "sentiment_model", "distilbert-base-uncased-finetuned-sst-2-english",
         )
 
         # Initialize components
-        self.nlp_model: Optional[spacy.Language] = None
-        self.lemmatizer: Optional[WordNetLemmatizer] = None
+        self.nlp_model: spacy.Language | None = None
+        self.lemmatizer: WordNetLemmatizer | None = None
         self.stop_words: set = set()
-        self.sentiment_pipeline: Optional[Any] = None
+        self.sentiment_pipeline: Any | None = None
 
         self._initialized = False
 
@@ -93,7 +91,7 @@ class NLPProcessingService:
                     logger.info(f"Loaded spaCy model: {self.model_name}")
                 except OSError:
                     logger.warning(
-                        f"spaCy model {self.model_name} not found, using fallback"
+                        f"spaCy model {self.model_name} not found, using fallback",
                     )
                     self.nlp_model = None
             else:
@@ -113,7 +111,6 @@ class NLPProcessingService:
                 except Exception as e:
                     logger.warning(f"NLTK initialization failed: {e}")
                     # Don't modify the global NLTK_AVAILABLE variable
-                    pass
             else:
                 logger.warning("NLTK not available, using fallback NLP")
 
@@ -140,9 +137,8 @@ class NLPProcessingService:
             logger.error(f"Failed to initialize NLP processing service: {e}")
             return False
 
-    async def extract_key_concepts(self, text: str) -> List[str]:
-        """
-        Extract key concepts from text.
+    async def extract_key_concepts(self, text: str) -> list[str]:
+        """Extract key concepts from text.
 
         Replaces the pseudo-code extract_key_concepts() function.
         """
@@ -181,15 +177,14 @@ class NLPProcessingService:
                 unique_concepts = list(set(concepts))
                 return unique_concepts[:10]  # Limit to 10 concepts
 
-            else:
-                # Fallback to simple extraction
-                return self._extract_key_concepts_fallback(text)
+            # Fallback to simple extraction
+            return self._extract_key_concepts_fallback(text)
 
         except Exception as e:
             logger.error(f"Key concept extraction failed: {e}")
             return self._extract_key_concepts_fallback(text)
 
-    def _extract_key_concepts_fallback(self, text: str) -> List[str]:
+    def _extract_key_concepts_fallback(self, text: str) -> list[str]:
         """Fallback key concept extraction."""
         words = re.findall(r"\b\w+\b", text.lower())
 
@@ -251,9 +246,8 @@ class NLPProcessingService:
         sorted_words = sorted(word_freq.items(), key=lambda x: x[1], reverse=True)
         return [word for word, freq in sorted_words[:10]]
 
-    async def assess_clarity_issues(self, text: str) -> List[str]:
-        """
-        Assess clarity issues in text.
+    async def assess_clarity_issues(self, text: str) -> list[str]:
+        """Assess clarity issues in text.
 
         Replaces the pseudo-code assess_clarity_issues() function.
         """
@@ -303,9 +297,8 @@ class NLPProcessingService:
             logger.error(f"Clarity assessment failed: {e}")
             return ["Assessment failed"]
 
-    async def evaluate_specificity_gaps(self, text: str) -> List[str]:
-        """
-        Evaluate specificity gaps in text.
+    async def evaluate_specificity_gaps(self, text: str) -> list[str]:
+        """Evaluate specificity gaps in text.
 
         Replaces the pseudo-code evaluate_specificity_gaps() function.
         """
@@ -317,7 +310,7 @@ class NLPProcessingService:
         try:
             # Check for missing details
             if not re.search(
-                r"\b(how|what|why|when|where|which|who)\b", text, re.IGNORECASE
+                r"\b(how|what|why|when|where|which|who)\b", text, re.IGNORECASE,
             ):
                 gaps.append("Missing specific question words")
 
@@ -355,8 +348,7 @@ class NLPProcessingService:
             return ["Evaluation failed"]
 
     async def predict_effectiveness(self, text: str) -> float:
-        """
-        Predict effectiveness of text.
+        """Predict effectiveness of text.
 
         Replaces the pseudo-code predict_effectiveness() function.
         """
@@ -415,9 +407,8 @@ class NLPProcessingService:
             logger.error(f"Effectiveness prediction failed: {e}")
             return 0.5
 
-    async def identify_ambiguities(self, text: str) -> List[str]:
-        """
-        Identify ambiguities in text.
+    async def identify_ambiguities(self, text: str) -> list[str]:
+        """Identify ambiguities in text.
 
         Replaces the pseudo-code identify_ambiguities() function.
         """
@@ -438,7 +429,7 @@ class NLPProcessingService:
 
             # Check for ambiguous comparisons
             if re.search(
-                r"\b(better|worse|more|less|most|least)\b", text, re.IGNORECASE
+                r"\b(better|worse|more|less|most|least)\b", text, re.IGNORECASE,
             ):
                 ambiguities.append("Ambiguous comparisons without context")
 
@@ -467,7 +458,7 @@ class NLPProcessingService:
         result = text
         for vague, specific in replacements.items():
             result = re.sub(
-                r"\b" + vague + r"\b", specific, result, flags=re.IGNORECASE
+                r"\b" + vague + r"\b", specific, result, flags=re.IGNORECASE,
             )
 
         return result
@@ -524,7 +515,7 @@ class NLPProcessingService:
 
         return text
 
-    async def integrate_concepts(self, text: str, concepts: List[str]) -> str:
+    async def integrate_concepts(self, text: str, concepts: list[str]) -> str:
         """Integrate key concepts into the text."""
         if not concepts:
             return text
@@ -534,11 +525,10 @@ class NLPProcessingService:
 
         if text.endswith("?"):
             return text[:-1] + concept_text + "?"
-        else:
-            return text + concept_text
+        return text + concept_text
 
     async def integrate_terminology(
-        self, text: str, terminology: Dict[str, Any]
+        self, text: str, terminology: dict[str, Any],
     ) -> str:
         """Integrate project-specific terminology."""
         # This would integrate terminology from the codebase analysis
@@ -546,8 +536,7 @@ class NLPProcessingService:
         return text
 
     async def analyze_text_comprehensive(self, text: str) -> NLPResult:
-        """
-        Perform comprehensive text analysis.
+        """Perform comprehensive text analysis.
 
         Returns detailed NLP analysis results.
         """
@@ -568,7 +557,7 @@ class NLPProcessingService:
                             "label": ent.label_,
                             "start": ent.start_char,
                             "end": ent.end_char,
-                        }
+                        },
                     )
 
             # Analyze sentiment

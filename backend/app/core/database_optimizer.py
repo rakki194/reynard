@@ -1,5 +1,4 @@
-"""
-Database Performance Optimizer for FastAPI ECS Search
+"""Database Performance Optimizer for FastAPI ECS Search
 
 This module provides comprehensive database optimization utilities including:
 - Connection pooling optimization
@@ -10,20 +9,16 @@ This module provides comprehensive database optimization utilities including:
 """
 
 import asyncio
-import json
 import logging
 import time
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
-import asyncpg
-import psycopg2
-from sqlalchemy import create_engine, inspect, text
+from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.pool import QueuePool, StaticPool
+from sqlalchemy.pool import QueuePool
 
 logger = logging.getLogger(__name__)
 
@@ -39,8 +34,8 @@ class QueryMetrics:
     rows_affected: int
     cache_hit: bool
     timestamp: datetime
-    connection_id: Optional[str] = None
-    error_message: Optional[str] = None
+    connection_id: str | None = None
+    error_message: str | None = None
 
 
 @dataclass
@@ -59,11 +54,11 @@ class ConnectionPoolMetrics:
 class DatabaseOptimizationReport:
     """Comprehensive database optimization report."""
 
-    slow_queries: List[QueryMetrics]
-    connection_pool_issues: List[str]
-    missing_indexes: List[str]
-    cache_recommendations: List[str]
-    performance_improvements: List[str]
+    slow_queries: list[QueryMetrics]
+    connection_pool_issues: list[str]
+    missing_indexes: list[str]
+    cache_recommendations: list[str]
+    performance_improvements: list[str]
     generated_at: datetime
 
 
@@ -72,8 +67,8 @@ class DatabasePerformanceMonitor:
 
     def __init__(self, database_url: str):
         self.database_url = database_url
-        self.query_metrics: List[QueryMetrics] = []
-        self.connection_metrics: List[ConnectionPoolMetrics] = []
+        self.query_metrics: list[QueryMetrics] = []
+        self.connection_metrics: list[ConnectionPoolMetrics] = []
         self.slow_query_threshold_ms = 1000  # 1 second
         self.monitoring_enabled = True
 
@@ -85,8 +80,8 @@ class DatabasePerformanceMonitor:
         rows_returned: int = 0,
         rows_affected: int = 0,
         cache_hit: bool = False,
-        connection_id: Optional[str] = None,
-        error_message: Optional[str] = None,
+        connection_id: str | None = None,
+        error_message: str | None = None,
     ):
         """Record query performance metrics."""
         if not self.monitoring_enabled:
@@ -109,7 +104,7 @@ class DatabasePerformanceMonitor:
         # Log slow queries
         if execution_time_ms > self.slow_query_threshold_ms:
             logger.warning(
-                f"Slow query detected: {query_id} took {execution_time_ms:.2f}ms - {query_text[:100]}..."
+                f"Slow query detected: {query_id} took {execution_time_ms:.2f}ms - {query_text[:100]}...",
             )
 
     async def record_connection_pool_metrics(
@@ -141,7 +136,7 @@ class DatabasePerformanceMonitor:
         if overflow > 0:
             logger.warning(f"Connection pool overflow: {overflow} connections")
 
-    def get_slow_queries(self, limit: int = 10) -> List[QueryMetrics]:
+    def get_slow_queries(self, limit: int = 10) -> list[QueryMetrics]:
         """Get the slowest queries."""
         return sorted(
             [
@@ -153,7 +148,7 @@ class DatabasePerformanceMonitor:
             reverse=True,
         )[:limit]
 
-    def get_query_statistics(self) -> Dict[str, Any]:
+    def get_query_statistics(self) -> dict[str, Any]:
         """Get comprehensive query statistics."""
         if not self.query_metrics:
             return {}
@@ -217,7 +212,7 @@ class OptimizedDatabaseConnection:
 
         # Create session factory
         self.async_session_factory = async_sessionmaker(
-            self.engine, class_=AsyncSession, expire_on_commit=False
+            self.engine, class_=AsyncSession, expire_on_commit=False,
         )
 
         # Initialize performance monitor
@@ -239,9 +234,9 @@ class OptimizedDatabaseConnection:
     async def execute_query(
         self,
         query: str,
-        params: Optional[Dict[str, Any]] = None,
-        query_id: Optional[str] = None,
-    ) -> Tuple[Any, QueryMetrics]:
+        params: dict[str, Any] | None = None,
+        query_id: str | None = None,
+    ) -> tuple[Any, QueryMetrics]:
         """Execute a query with performance monitoring."""
         query_id = query_id or f"query_{int(time.time() * 1000)}"
         start_time = time.time()
@@ -304,7 +299,7 @@ class OptimizedDatabaseConnection:
 
             raise e
 
-    async def get_connection_pool_status(self) -> Dict[str, Any]:
+    async def get_connection_pool_status(self) -> dict[str, Any]:
         """Get current connection pool status."""
         pool = self.engine.pool
 
@@ -318,7 +313,7 @@ class OptimizedDatabaseConnection:
             "active_connections": self.active_connections,
         }
 
-    async def optimize_connection_pool(self) -> Dict[str, Any]:
+    async def optimize_connection_pool(self) -> dict[str, Any]:
         """Optimize connection pool settings based on usage patterns."""
         pool_status = await self.get_connection_pool_status()
         recommendations = []
@@ -334,13 +329,13 @@ class OptimizedDatabaseConnection:
         # Check for overflow
         if pool_status["overflow"] > 0:
             recommendations.append(
-                "Increase max_overflow or pool_size - overflow detected"
+                "Increase max_overflow or pool_size - overflow detected",
             )
 
         # Check for invalid connections
         if pool_status["invalid"] > 0:
             recommendations.append(
-                "Investigate invalid connections - possible connection issues"
+                "Investigate invalid connections - possible connection issues",
             )
 
         return {
@@ -360,7 +355,7 @@ class DatabaseIndexAnalyzer:
     def __init__(self, connection: OptimizedDatabaseConnection):
         self.connection = connection
 
-    async def analyze_table_indexes(self, table_name: str) -> Dict[str, Any]:
+    async def analyze_table_indexes(self, table_name: str) -> dict[str, Any]:
         """Analyze indexes for a specific table."""
         # Get table information
         table_info_query = """
@@ -412,14 +407,14 @@ class DatabaseIndexAnalyzer:
             for stat in table_stats:
                 if stat["n_distinct"] > 1000 and stat["correlation"] < 0.1:
                     recommendations.append(
-                        f"Consider adding index on {stat['attname']} - high cardinality, low correlation"
+                        f"Consider adding index on {stat['attname']} - high cardinality, low correlation",
                     )
 
             # Check for unused indexes
             for index in index_stats:
                 if index["idx_scan"] == 0:
                     recommendations.append(
-                        f"Consider dropping unused index: {index['indexname']}"
+                        f"Consider dropping unused index: {index['indexname']}",
                     )
 
             return {
@@ -483,17 +478,17 @@ class DatabaseOptimizationSuite:
             stats = self.connection.monitor.get_query_statistics()
             if stats.get("cache_hit_rate", 0) < 80:
                 cache_recommendations.append(
-                    "Implement query result caching - low cache hit rate"
+                    "Implement query result caching - low cache hit rate",
                 )
             if stats.get("average_execution_time_ms", 0) > 500:
                 cache_recommendations.append(
-                    "Implement connection-level caching for slow queries"
+                    "Implement connection-level caching for slow queries",
                 )
 
         # Generate performance improvements
         if slow_queries:
             performance_improvements.append(
-                f"Optimize {len(slow_queries)} slow queries identified"
+                f"Optimize {len(slow_queries)} slow queries identified",
             )
 
         if connection_pool_issues:
@@ -501,7 +496,7 @@ class DatabaseOptimizationSuite:
 
         if missing_indexes:
             performance_improvements.append(
-                f"Add {len(missing_indexes)} recommended indexes"
+                f"Add {len(missing_indexes)} recommended indexes",
             )
 
         return DatabaseOptimizationReport(

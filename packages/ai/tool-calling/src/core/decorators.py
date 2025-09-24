@@ -1,5 +1,4 @@
-"""
-Decorators for creating tools from regular functions.
+"""Decorators for creating tools from regular functions.
 
 This module provides decorators that make it easy to convert regular functions
 into tools with proper parameter validation, permission checking, and automatic
@@ -31,8 +30,7 @@ def tool(
     parameters: dict[str, dict[str, Any]] | None = None,
     auto_register: bool = True,
 ):
-    """
-    Decorator to convert a function into a tool.
+    """Decorator to convert a function into a tool.
 
     Args:
         name: Tool name (defaults to function name)
@@ -68,6 +66,7 @@ def tool(
         async def list_files_tool(path: str, limit: int = 100) -> dict:
             # Implementation
             return {"files": [], "count": 0}
+
     """
 
     def decorator(func: Callable) -> "FunctionTool":
@@ -111,8 +110,7 @@ def tool(
 
 
 def requires_permission(permission: str):
-    """
-    Decorator to set permission requirements for a tool function.
+    """Decorator to set permission requirements for a tool function.
 
     Args:
         permission: Required permission level
@@ -123,6 +121,7 @@ def requires_permission(permission: str):
         async def delete_file_tool(path: str) -> dict:
             # Implementation
             return {"deleted": True}
+
     """
 
     def decorator(func_or_tool):
@@ -137,8 +136,7 @@ def requires_permission(permission: str):
 
 
 class FunctionTool(BaseTool):
-    """
-    Tool implementation that wraps a regular function.
+    """Tool implementation that wraps a regular function.
 
     This class allows regular functions to be used as tools with proper
     parameter validation and execution handling.
@@ -217,14 +215,14 @@ class FunctionTool(BaseTool):
 
 
 def _detect_function_parameters(func: Callable) -> list[ToolParameter]:
-    """
-    Auto-detect parameters from a function signature.
+    """Auto-detect parameters from a function signature.
 
     Args:
         func: Function to analyze
 
     Returns:
         List of detected tool parameters
+
     """
     signature = inspect.signature(func)
     type_hints = get_type_hints(func)
@@ -237,7 +235,7 @@ def _detect_function_parameters(func: Callable) -> list[ToolParameter]:
 
         # Get parameter type
         param_type = _python_type_to_parameter_type(
-            type_hints.get(param_name, param.annotation)
+            type_hints.get(param_name, param.annotation),
         )
 
         # Check if parameter is required
@@ -261,14 +259,14 @@ def _detect_function_parameters(func: Callable) -> list[ToolParameter]:
 def _convert_parameter_definitions(
     param_defs: dict[str, dict[str, Any]],
 ) -> list[ToolParameter]:
-    """
-    Convert parameter definitions from dict format to ToolParameter objects.
+    """Convert parameter definitions from dict format to ToolParameter objects.
 
     Args:
         param_defs: Parameter definitions dictionary
 
     Returns:
         List of ToolParameter objects
+
     """
     parameters = []
 
@@ -298,14 +296,14 @@ def _convert_parameter_definitions(
 
 
 def _python_type_to_parameter_type(python_type) -> ParameterType:
-    """
-    Convert Python type annotation to ParameterType.
+    """Convert Python type annotation to ParameterType.
 
     Args:
         python_type: Python type annotation
 
     Returns:
         Corresponding ParameterType
+
     """
     if python_type == str:
         return ParameterType.STRING
@@ -327,8 +325,7 @@ def _python_type_to_parameter_type(python_type) -> ParameterType:
 
 
 def simple_tool(func: Callable) -> FunctionTool:
-    """
-    Simple decorator that converts a function to a tool with minimal configuration.
+    """Simple decorator that converts a function to a tool with minimal configuration.
 
     Args:
         func: Function to convert
@@ -340,13 +337,13 @@ def simple_tool(func: Callable) -> FunctionTool:
         @simple_tool
         def get_current_time() -> str:
             return datetime.now().isoformat()
+
     """
     return tool()(func)
 
 
 def admin_tool(func: Callable) -> FunctionTool:
-    """
-    Decorator for tools that require admin permission.
+    """Decorator for tools that require admin permission.
 
     Args:
         func: Function to convert
@@ -359,13 +356,13 @@ def admin_tool(func: Callable) -> FunctionTool:
         def delete_all_files() -> dict:
             # Implementation
             return {"deleted_count": 100}
+
     """
     return tool(required_permission="admin")(func)
 
 
 def read_only_tool(func: Callable) -> FunctionTool:
-    """
-    Decorator for tools that only require read permission.
+    """Decorator for tools that only require read permission.
 
     Args:
         func: Function to convert
@@ -378,5 +375,6 @@ def read_only_tool(func: Callable) -> FunctionTool:
         def list_files(path: str) -> dict:
             # Implementation
             return {"files": []}
+
     """
     return tool(required_permission="read")(func)

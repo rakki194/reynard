@@ -1,5 +1,4 @@
-"""
-Pydantic models for Lazy Loading API.
+"""Pydantic models for Lazy Loading API.
 
 This module defines the request/response models for lazy loading operations
 with proper validation and documentation.
@@ -14,10 +13,10 @@ class LazyExportRequest(BaseModel):
     """Request model for creating a lazy export."""
 
     package_name: str = Field(
-        ..., description="Name of the package to create lazy export for"
+        ..., description="Name of the package to create lazy export for",
     )
     validation_level: str = Field(
-        default="basic", description="Validation level for the export"
+        default="basic", description="Validation level for the export",
     )
 
 

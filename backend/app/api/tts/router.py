@@ -1,5 +1,4 @@
-"""
-TTS API Router for Reynard Backend
+"""TTS API Router for Reynard Backend
 
 Main router for TTS API endpoints.
 """

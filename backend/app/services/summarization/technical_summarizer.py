@@ -1,5 +1,4 @@
-"""
-Technical-specific summarizer for Reynard.
+"""Technical-specific summarizer for Reynard.
 
 This module provides specialized summarization for technical content,
 documentation, and engineering materials with technical-specific prompts.
@@ -23,19 +22,18 @@ logger = logging.getLogger(__name__)
 
 
 class TechnicalSummarizer(BaseSummarizer):
-    """
-    Specialized summarizer for technical content and documentation.
+    """Specialized summarizer for technical content and documentation.
 
     This summarizer is optimized for technical documentation, engineering
     content, and specialized technical materials with technical-specific prompts.
     """
 
     def __init__(self, ollama_service):
-        """
-        Initialize the technical summarizer.
+        """Initialize the technical summarizer.
 
         Args:
             ollama_service: Instance of Reynard's OllamaService
+
         """
         super().__init__(
             name="technical_summarizer",
@@ -60,7 +58,7 @@ class TechnicalSummarizer(BaseSummarizer):
             return False
 
     async def summarize(
-        self, text: str, options: SummarizationOptions
+        self, text: str, options: SummarizationOptions,
     ) -> SummarizationResult:
         """Summarize technical text."""
         if not self._is_available:
@@ -77,7 +75,7 @@ class TechnicalSummarizer(BaseSummarizer):
 
             # Generate summary
             summary_text = await self._generate_technical_summary(
-                text, options, technical_analysis
+                text, options, technical_analysis,
             )
 
             processing_time = time.time() - start_time
@@ -110,17 +108,17 @@ class TechnicalSummarizer(BaseSummarizer):
             # Add optional fields
             if options.include_outline:
                 result.outline = await self._extract_technical_outline(
-                    summary_text, concepts
+                    summary_text, concepts,
                 )
 
             if options.include_highlights:
                 result.highlights = await self._extract_technical_highlights(
-                    text, specifications
+                    text, specifications,
                 )
 
             # Calculate quality score
             result.quality_score = await self._calculate_technical_quality(
-                text, summary_text, technical_analysis
+                text, summary_text, technical_analysis,
             )
 
             return result
@@ -130,7 +128,7 @@ class TechnicalSummarizer(BaseSummarizer):
             raise
 
     async def summarize_stream(
-        self, text: str, options: SummarizationOptions
+        self, text: str, options: SummarizationOptions,
     ) -> AsyncGenerator[dict[str, Any]]:
         """Stream technical summarization progress."""
         if not self._is_available:
@@ -156,7 +154,7 @@ class TechnicalSummarizer(BaseSummarizer):
             # Stream summary generation
             summary_text = ""
             async for chunk in self._generate_technical_summary_stream(
-                text, options, technical_analysis
+                text, options, technical_analysis,
             ):
                 if chunk.get("type") == "token":
                     summary_text += chunk.get("data", "")
@@ -203,13 +201,13 @@ class TechnicalSummarizer(BaseSummarizer):
             "has_specifications": bool(self._extract_specifications(text)),
             "has_diagrams": bool("diagram" in text.lower() or "figure" in text.lower()),
             "has_equations": bool(
-                "=" in text and any(char in text for char in ["+", "-", "*", "/", "^"])
+                "=" in text and any(char in text for char in ["+", "-", "*", "/", "^"]),
             ),
             "has_measurements": bool(
                 any(
                     unit in text.lower()
                     for unit in ["mm", "cm", "m", "kg", "hz", "mbps", "gb"]
-                )
+                ),
             ),
             "complexity_indicators": [],
         }
@@ -322,7 +320,7 @@ class TechnicalSummarizer(BaseSummarizer):
     ) -> str:
         """Generate technical summary using specialized prompts."""
         system_prompt, user_prompt = self._get_technical_prompts(
-            text, options, technical_analysis
+            text, options, technical_analysis,
         )
 
         model = options.model or self._default_model
@@ -352,7 +350,7 @@ class TechnicalSummarizer(BaseSummarizer):
     ) -> AsyncGenerator[dict[str, Any]]:
         """Generate technical summary with streaming."""
         system_prompt, user_prompt = self._get_technical_prompts(
-            text, options, technical_analysis
+            text, options, technical_analysis,
         )
 
         model = options.model or self._default_model
@@ -447,7 +445,7 @@ Guidelines:
         return system_prompt, user_prompt
 
     async def _extract_technical_outline(
-        self, summary: str, concepts: list[str]
+        self, summary: str, concepts: list[str],
     ) -> list[str]:
         """Extract outline points from technical summary."""
         outline = []
@@ -477,7 +475,7 @@ Guidelines:
         return outline[:6]  # Limit to 6 points
 
     async def _extract_technical_highlights(
-        self, text: str, specifications: list[str]
+        self, text: str, specifications: list[str],
     ) -> list[str]:
         """Extract highlights from technical text."""
         highlights = []
@@ -506,7 +504,7 @@ Guidelines:
         return highlights[:4]  # Limit to 4 highlights
 
     async def _calculate_technical_quality(
-        self, original_text: str, summary: str, technical_analysis: dict[str, Any]
+        self, original_text: str, summary: str, technical_analysis: dict[str, Any],
     ) -> float:
         """Calculate quality score for technical summary."""
         # Enhanced quality scoring for technical content

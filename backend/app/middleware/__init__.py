@@ -1,5 +1,4 @@
-"""
-Middleware module for Reynard Backend.
+"""Middleware module for Reynard Backend.
 
 This module provides middleware components for CORS, rate limiting,
 and other cross-cutting concerns.

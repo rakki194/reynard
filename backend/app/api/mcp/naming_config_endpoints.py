@@ -1,14 +1,11 @@
-"""
-Agent Naming Configuration API Endpoints
+"""Agent Naming Configuration API Endpoints
 =======================================
 
 Backend API endpoints for managing dynamic agent naming configuration.
 Provides REST API access to naming system configuration management.
 """
 
-import json
 import logging
-from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel, Field
@@ -26,9 +23,9 @@ class NamingConfigResponse(BaseModel):
     default_scheme: str = Field(..., description="Default naming scheme")
     default_style: str = Field(..., description="Default naming style")
     weighted_distribution: bool = Field(..., description="Use weighted distribution")
-    enabled_schemes: List[str] = Field(..., description="List of enabled schemes")
-    enabled_styles: List[str] = Field(..., description="List of enabled styles")
-    enabled_spirits: List[str] = Field(..., description="List of enabled spirits")
+    enabled_schemes: list[str] = Field(..., description="List of enabled schemes")
+    enabled_styles: list[str] = Field(..., description="List of enabled styles")
+    enabled_spirits: list[str] = Field(..., description="List of enabled spirits")
     total_schemes: int = Field(..., description="Total number of schemes")
     total_styles: int = Field(..., description="Total number of styles")
     total_spirits: int = Field(..., description="Total number of spirits")
@@ -42,8 +39,8 @@ class SchemeConfigResponse(BaseModel):
     name: str = Field(..., description="Scheme name")
     enabled: bool = Field(..., description="Whether scheme is enabled")
     description: str = Field(..., description="Scheme description")
-    default_style: Optional[str] = Field(None, description="Default style for scheme")
-    supported_styles: List[str] = Field(..., description="Supported styles")
+    default_style: str | None = Field(None, description="Default style for scheme")
+    supported_styles: list[str] = Field(..., description="Supported styles")
 
 
 class StyleConfigResponse(BaseModel):
@@ -53,7 +50,7 @@ class StyleConfigResponse(BaseModel):
     enabled: bool = Field(..., description="Whether style is enabled")
     description: str = Field(..., description="Style description")
     format_template: str = Field(..., description="Name format template")
-    components: List[str] = Field(..., description="Required components")
+    components: list[str] = Field(..., description="Required components")
 
 
 class SpiritConfigResponse(BaseModel):
@@ -62,18 +59,18 @@ class SpiritConfigResponse(BaseModel):
     name: str = Field(..., description="Spirit name")
     enabled: bool = Field(..., description="Whether spirit is enabled")
     description: str = Field(..., description="Spirit description")
-    base_names: List[str] = Field(..., description="Available base names")
-    generation_numbers: List[int] = Field(..., description="Generation numbers")
+    base_names: list[str] = Field(..., description="Available base names")
+    generation_numbers: list[int] = Field(..., description="Generation numbers")
     weight: float = Field(..., description="Selection weight")
 
 
 class ConfigUpdateRequest(BaseModel):
     """Request model for configuration updates."""
 
-    default_scheme: Optional[str] = Field(None, description="New default scheme")
-    default_style: Optional[str] = Field(None, description="New default style")
-    weighted_distribution: Optional[bool] = Field(
-        None, description="Weighted distribution setting"
+    default_scheme: str | None = Field(None, description="New default scheme")
+    default_style: str | None = Field(None, description="New default style")
+    weighted_distribution: bool | None = Field(
+        None, description="Weighted distribution setting",
     )
 
 
@@ -81,7 +78,7 @@ class ConfigValidationResponse(BaseModel):
     """Response model for configuration validation."""
 
     valid: bool = Field(..., description="Whether configuration is valid")
-    issues: List[str] = Field(..., description="List of validation issues")
+    issues: list[str] = Field(..., description="List of validation issues")
 
 
 async def _get_config_manager():
@@ -130,8 +127,8 @@ async def get_naming_config() -> NamingConfigResponse:
         )
 
 
-@router.get("/schemes", response_model=List[SchemeConfigResponse])
-async def get_available_schemes() -> List[SchemeConfigResponse]:
+@router.get("/schemes", response_model=list[SchemeConfigResponse])
+async def get_available_schemes() -> list[SchemeConfigResponse]:
     """Get list of available naming schemes."""
     try:
         config_manager = await _get_config_manager()
@@ -146,7 +143,7 @@ async def get_available_schemes() -> List[SchemeConfigResponse]:
                     description=scheme_config.description,
                     default_style=scheme_config.default_style,
                     supported_styles=scheme_config.supported_styles,
-                )
+                ),
             )
 
         return schemes
@@ -158,8 +155,8 @@ async def get_available_schemes() -> List[SchemeConfigResponse]:
         )
 
 
-@router.get("/styles", response_model=List[StyleConfigResponse])
-async def get_available_styles() -> List[StyleConfigResponse]:
+@router.get("/styles", response_model=list[StyleConfigResponse])
+async def get_available_styles() -> list[StyleConfigResponse]:
     """Get list of available naming styles."""
     try:
         config_manager = await _get_config_manager()
@@ -174,7 +171,7 @@ async def get_available_styles() -> List[StyleConfigResponse]:
                     description=style_config.description,
                     format_template=style_config.format_template,
                     components=style_config.components,
-                )
+                ),
             )
 
         return styles
@@ -186,8 +183,8 @@ async def get_available_styles() -> List[StyleConfigResponse]:
         )
 
 
-@router.get("/spirits", response_model=List[SpiritConfigResponse])
-async def get_available_spirits() -> List[SpiritConfigResponse]:
+@router.get("/spirits", response_model=list[SpiritConfigResponse])
+async def get_available_spirits() -> list[SpiritConfigResponse]:
     """Get list of available animal spirits."""
     try:
         config_manager = await _get_config_manager()
@@ -203,7 +200,7 @@ async def get_available_spirits() -> List[SpiritConfigResponse]:
                     base_names=spirit_config.base_names,
                     generation_numbers=spirit_config.generation_numbers,
                     weight=spirit_config.weight,
-                )
+                ),
             )
 
         return spirits
@@ -216,7 +213,7 @@ async def get_available_spirits() -> List[SpiritConfigResponse]:
 
 
 @router.put("/default-scheme/{scheme_name}")
-async def set_default_scheme(scheme_name: str) -> Dict[str, str]:
+async def set_default_scheme(scheme_name: str) -> dict[str, str]:
     """Set the default naming scheme."""
     try:
         config_manager = await _get_config_manager()
@@ -224,11 +221,10 @@ async def set_default_scheme(scheme_name: str) -> Dict[str, str]:
 
         if success:
             return {"message": f"Default scheme set to '{scheme_name}'"}
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Scheme '{scheme_name}' not found",
-            )
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Scheme '{scheme_name}' not found",
+        )
     except HTTPException:
         raise
     except Exception as e:
@@ -240,7 +236,7 @@ async def set_default_scheme(scheme_name: str) -> Dict[str, str]:
 
 
 @router.put("/default-style/{style_name}")
-async def set_default_style(style_name: str) -> Dict[str, str]:
+async def set_default_style(style_name: str) -> dict[str, str]:
     """Set the default naming style."""
     try:
         config_manager = await _get_config_manager()
@@ -248,11 +244,10 @@ async def set_default_style(style_name: str) -> Dict[str, str]:
 
         if success:
             return {"message": f"Default style set to '{style_name}'"}
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Style '{style_name}' not found",
-            )
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Style '{style_name}' not found",
+        )
     except HTTPException:
         raise
     except Exception as e:
@@ -264,7 +259,7 @@ async def set_default_style(style_name: str) -> Dict[str, str]:
 
 
 @router.put("/schemes/{scheme_name}/enable")
-async def enable_scheme(scheme_name: str) -> Dict[str, str]:
+async def enable_scheme(scheme_name: str) -> dict[str, str]:
     """Enable a naming scheme."""
     try:
         config_manager = await _get_config_manager()
@@ -272,11 +267,10 @@ async def enable_scheme(scheme_name: str) -> Dict[str, str]:
 
         if success:
             return {"message": f"Scheme '{scheme_name}' enabled"}
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Scheme '{scheme_name}' not found",
-            )
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Scheme '{scheme_name}' not found",
+        )
     except HTTPException:
         raise
     except Exception as e:
@@ -288,7 +282,7 @@ async def enable_scheme(scheme_name: str) -> Dict[str, str]:
 
 
 @router.put("/schemes/{scheme_name}/disable")
-async def disable_scheme(scheme_name: str) -> Dict[str, str]:
+async def disable_scheme(scheme_name: str) -> dict[str, str]:
     """Disable a naming scheme."""
     try:
         config_manager = await _get_config_manager()
@@ -296,11 +290,10 @@ async def disable_scheme(scheme_name: str) -> Dict[str, str]:
 
         if success:
             return {"message": f"Scheme '{scheme_name}' disabled"}
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Scheme '{scheme_name}' not found",
-            )
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Scheme '{scheme_name}' not found",
+        )
     except HTTPException:
         raise
     except Exception as e:
@@ -312,7 +305,7 @@ async def disable_scheme(scheme_name: str) -> Dict[str, str]:
 
 
 @router.put("/styles/{style_name}/enable")
-async def enable_style(style_name: str) -> Dict[str, str]:
+async def enable_style(style_name: str) -> dict[str, str]:
     """Enable a naming style."""
     try:
         config_manager = await _get_config_manager()
@@ -320,11 +313,10 @@ async def enable_style(style_name: str) -> Dict[str, str]:
 
         if success:
             return {"message": f"Style '{style_name}' enabled"}
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Style '{style_name}' not found",
-            )
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Style '{style_name}' not found",
+        )
     except HTTPException:
         raise
     except Exception as e:
@@ -336,7 +328,7 @@ async def enable_style(style_name: str) -> Dict[str, str]:
 
 
 @router.put("/styles/{style_name}/disable")
-async def disable_style(style_name: str) -> Dict[str, str]:
+async def disable_style(style_name: str) -> dict[str, str]:
     """Disable a naming style."""
     try:
         config_manager = await _get_config_manager()
@@ -344,11 +336,10 @@ async def disable_style(style_name: str) -> Dict[str, str]:
 
         if success:
             return {"message": f"Style '{style_name}' disabled"}
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Style '{style_name}' not found",
-            )
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Style '{style_name}' not found",
+        )
     except HTTPException:
         raise
     except Exception as e:
@@ -360,7 +351,7 @@ async def disable_style(style_name: str) -> Dict[str, str]:
 
 
 @router.put("/spirits/{spirit_name}/enable")
-async def enable_spirit(spirit_name: str) -> Dict[str, str]:
+async def enable_spirit(spirit_name: str) -> dict[str, str]:
     """Enable an animal spirit."""
     try:
         config_manager = await _get_config_manager()
@@ -368,11 +359,10 @@ async def enable_spirit(spirit_name: str) -> Dict[str, str]:
 
         if success:
             return {"message": f"Spirit '{spirit_name}' enabled"}
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Spirit '{spirit_name}' not found",
-            )
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Spirit '{spirit_name}' not found",
+        )
     except HTTPException:
         raise
     except Exception as e:
@@ -384,7 +374,7 @@ async def enable_spirit(spirit_name: str) -> Dict[str, str]:
 
 
 @router.put("/spirits/{spirit_name}/disable")
-async def disable_spirit(spirit_name: str) -> Dict[str, str]:
+async def disable_spirit(spirit_name: str) -> dict[str, str]:
     """Disable an animal spirit."""
     try:
         config_manager = await _get_config_manager()
@@ -392,11 +382,10 @@ async def disable_spirit(spirit_name: str) -> Dict[str, str]:
 
         if success:
             return {"message": f"Spirit '{spirit_name}' disabled"}
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Spirit '{spirit_name}' not found",
-            )
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Spirit '{spirit_name}' not found",
+        )
     except HTTPException:
         raise
     except Exception as e:
@@ -408,7 +397,7 @@ async def disable_spirit(spirit_name: str) -> Dict[str, str]:
 
 
 @router.post("/reload")
-async def reload_config() -> Dict[str, str]:
+async def reload_config() -> dict[str, str]:
     """Reload naming configuration from file."""
     try:
         config_manager = await _get_config_manager()
@@ -416,11 +405,10 @@ async def reload_config() -> Dict[str, str]:
 
         if success:
             return {"message": "Configuration reloaded successfully"}
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Failed to reload configuration",
-            )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to reload configuration",
+        )
     except HTTPException:
         raise
     except Exception as e:
@@ -448,7 +436,7 @@ async def validate_config() -> ConfigValidationResponse:
 
 
 @router.put("/update")
-async def update_config(request: ConfigUpdateRequest) -> Dict[str, str]:
+async def update_config(request: ConfigUpdateRequest) -> dict[str, str]:
     """Update naming configuration settings."""
     try:
         config_manager = await _get_config_manager()
@@ -465,11 +453,10 @@ async def update_config(request: ConfigUpdateRequest) -> Dict[str, str]:
 
         if success:
             return {"message": "Configuration updated successfully"}
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Failed to update configuration",
-            )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to update configuration",
+        )
     except HTTPException:
         raise
     except Exception as e:

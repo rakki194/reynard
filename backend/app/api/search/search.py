@@ -1,5 +1,4 @@
-"""
-Unified Search Service
+"""Unified Search Service
 =====================
 
 Main search service that integrates all search capabilities including semantic,
@@ -9,7 +8,7 @@ syntax, hybrid, and natural language search with intelligent caching.
 import logging
 import time
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from .hybrid_search import HybridSearchHandler
 from .ignore_utils import create_ignore_parser
@@ -47,7 +46,7 @@ class SearchService:
         self.semantic_handler = SemanticSearchHandler(self)
         self.syntax_handler = SyntaxSearchHandler(self)
         self.hybrid_handler = HybridSearchHandler(
-            self, self.semantic_handler, self.syntax_handler
+            self, self.semantic_handler, self.syntax_handler,
         )
 
         # Initialize NLP processor
@@ -100,15 +99,15 @@ class SearchService:
         request_str = str(sorted(request_data.items()))
         return hashlib.md5(request_str.encode()).hexdigest()
 
-    async def _get_cached_result(self, cache_key: str) -> Optional[SearchResponse]:
+    async def _get_cached_result(self, cache_key: str) -> SearchResponse | None:
         """Get cached search result."""
         return None  # Simplified for now
 
     async def _cache_result(
-        self, cache_key: str, result: SearchResponse, ttl: int = 3600
+        self, cache_key: str, result: SearchResponse, ttl: int = 3600,
     ):
         """Cache search result."""
-        pass  # Simplified for now
+        # Simplified for now
 
     @property
     def _metrics(self):
@@ -170,8 +169,8 @@ class SearchService:
         self,
         query: str,
         max_results: int = 20,
-        file_types: Optional[List[str]] = None,
-        directories: Optional[List[str]] = None,
+        file_types: list[str] | None = None,
+        directories: list[str] | None = None,
         enable_expansion: bool = True,
         confidence_threshold: float = 0.6,
     ) -> SearchResponse:
@@ -196,7 +195,7 @@ class SearchService:
             # Check confidence threshold
             if processed_query["confidence"] < confidence_threshold:
                 logger.warning(
-                    f"Low confidence query: {query} (confidence: {processed_query['confidence']})"
+                    f"Low confidence query: {query} (confidence: {processed_query['confidence']})",
                 )
 
             # Determine search strategy based on processed query
@@ -205,21 +204,20 @@ class SearchService:
             # Execute search based on strategy
             if search_strategy == "semantic":
                 return await self._execute_semantic_nlp_search(
-                    processed_query, max_results, start_time
+                    processed_query, max_results, start_time,
                 )
-            elif search_strategy == "syntax":
+            if search_strategy == "syntax":
                 return await self._execute_syntax_nlp_search(
-                    processed_query, max_results, start_time
+                    processed_query, max_results, start_time,
                 )
-            elif search_strategy == "hybrid":
+            if search_strategy == "hybrid":
                 return await self._execute_hybrid_nlp_search(
-                    processed_query, max_results, start_time
+                    processed_query, max_results, start_time,
                 )
-            else:
-                # Fallback to general search
-                return await self._execute_general_nlp_search(
-                    processed_query, max_results, start_time
-                )
+            # Fallback to general search
+            return await self._execute_general_nlp_search(
+                processed_query, max_results, start_time,
+            )
 
         except Exception as e:
             logger.exception("Natural language search failed")
@@ -236,9 +234,9 @@ class SearchService:
         self,
         query: str,
         max_results: int = 20,
-        file_types: Optional[List[str]] = None,
-        directories: Optional[List[str]] = None,
-        search_modes: Optional[List[str]] = None,
+        file_types: list[str] | None = None,
+        directories: list[str] | None = None,
+        search_modes: list[str] | None = None,
     ) -> SearchResponse:
         """Perform intelligent search that automatically chooses the best approach."""
         start_time = time.time()
@@ -249,7 +247,7 @@ class SearchService:
 
             # Determine if this is a natural language query
             is_natural_language = self._is_natural_language_query(
-                query, processed_query
+                query, processed_query,
             )
 
             if is_natural_language:
@@ -260,11 +258,10 @@ class SearchService:
                     file_types=file_types,
                     directories=directories,
                 )
-            else:
-                # Use traditional search with query expansion
-                return await self._execute_expanded_search(
-                    query, max_results, file_types, directories, start_time
-                )
+            # Use traditional search with query expansion
+            return await self._execute_expanded_search(
+                query, max_results, file_types, directories, start_time,
+            )
 
         except Exception as e:
             logger.exception("Intelligent search failed")
@@ -280,7 +277,7 @@ class SearchService:
     async def contextual_search(
         self,
         query: str,
-        context: Optional[Dict[str, Any]] = None,
+        context: dict[str, Any] | None = None,
         max_results: int = 20,
     ) -> SearchResponse:
         """Perform contextual search with additional context information."""
@@ -316,7 +313,7 @@ class SearchService:
             )
 
     async def get_intelligent_suggestions(
-        self, query: str, max_suggestions: int = 5
+        self, query: str, max_suggestions: int = 5,
     ) -> SuggestionsResponse:
         """Get intelligent query suggestions based on natural language processing."""
         try:
@@ -325,7 +322,7 @@ class SearchService:
 
             # Get traditional suggestions
             traditional_suggestions = await self.get_query_suggestions(
-                query, max_suggestions
+                query, max_suggestions,
             )
 
             # Convert QuerySuggestion objects to dictionaries
@@ -336,7 +333,7 @@ class SearchService:
 
             # Combine and rank suggestions
             combined_suggestions = self._combine_suggestions(
-                nlp_suggestions, traditional_suggestions_dict, max_suggestions
+                nlp_suggestions, traditional_suggestions_dict, max_suggestions,
             )
 
             # Convert to QuerySuggestion objects
@@ -436,7 +433,7 @@ class SearchService:
             )
 
     async def get_query_suggestions(
-        self, query: str, max_suggestions: int = 5
+        self, query: str, max_suggestions: int = 5,
     ) -> SuggestionsResponse:
         """Get intelligent query suggestions."""
         try:
@@ -449,23 +446,23 @@ class SearchService:
             # Synonym suggestions
             synonym_suggestions = self._generate_synonym_suggestions(query)
             suggestions.extend(
-                synonym_suggestions[: max_suggestions - len(suggestions)]
+                synonym_suggestions[: max_suggestions - len(suggestions)],
             )
 
             return SuggestionsResponse(
-                success=True, query=query, suggestions=suggestions
+                success=True, query=query, suggestions=suggestions,
             )
 
         except Exception as e:
             logger.exception("Failed to generate query suggestions")
             return SuggestionsResponse(
-                success=False, query=query, suggestions=[], error=str(e)
+                success=False, query=query, suggestions=[], error=str(e),
             )
 
     # Private helper methods
 
     async def _execute_semantic_nlp_search(
-        self, processed_query: Dict[str, Any], max_results: int, start_time: float
+        self, processed_query: dict[str, Any], max_results: int, start_time: float,
     ) -> SearchResponse:
         """Execute semantic search with NLP processing."""
         # Create semantic search request
@@ -487,7 +484,7 @@ class SearchService:
         return result
 
     async def _execute_syntax_nlp_search(
-        self, processed_query: Dict[str, Any], max_results: int, start_time: float
+        self, processed_query: dict[str, Any], max_results: int, start_time: float,
     ) -> SearchResponse:
         """Execute syntax search with NLP processing."""
         # Create syntax search request
@@ -510,7 +507,7 @@ class SearchService:
         return result
 
     async def _execute_hybrid_nlp_search(
-        self, processed_query: Dict[str, Any], max_results: int, start_time: float
+        self, processed_query: dict[str, Any], max_results: int, start_time: float,
     ) -> SearchResponse:
         """Execute hybrid search with NLP processing."""
         # Create hybrid search request
@@ -533,7 +530,7 @@ class SearchService:
         return result
 
     async def _execute_general_nlp_search(
-        self, processed_query: Dict[str, Any], max_results: int, start_time: float
+        self, processed_query: dict[str, Any], max_results: int, start_time: float,
     ) -> SearchResponse:
         """Execute general search with NLP processing."""
         # Try multiple search strategies and combine results
@@ -542,7 +539,7 @@ class SearchService:
         # Semantic search
         try:
             semantic_result = await self._execute_semantic_nlp_search(
-                processed_query, max_results // 2, start_time
+                processed_query, max_results // 2, start_time,
             )
             if semantic_result.success:
                 results.extend(semantic_result.results)
@@ -552,7 +549,7 @@ class SearchService:
         # Syntax search
         try:
             syntax_result = await self._execute_syntax_nlp_search(
-                processed_query, max_results // 2, start_time
+                processed_query, max_results // 2, start_time,
             )
             if syntax_result.success:
                 results.extend(syntax_result.results)
@@ -576,8 +573,8 @@ class SearchService:
         self,
         query: str,
         max_results: int,
-        file_types: Optional[List[str]],
-        directories: Optional[List[str]],
+        file_types: list[str] | None,
+        directories: list[str] | None,
         start_time: float,
     ) -> SearchResponse:
         """Execute search with query expansion."""
@@ -618,7 +615,7 @@ class SearchService:
         )
 
     def _is_natural_language_query(
-        self, query: str, processed_query: Dict[str, Any]
+        self, query: str, processed_query: dict[str, Any],
     ) -> bool:
         """Determine if a query is natural language."""
         # Check for natural language indicators
@@ -661,7 +658,7 @@ class SearchService:
         return False
 
     def _enhance_query_with_context(
-        self, query: str, context: Optional[Dict[str, Any]]
+        self, query: str, context: dict[str, Any] | None,
     ) -> str:
         """Enhance query with contextual information."""
         if not context:
@@ -690,8 +687,8 @@ class SearchService:
         return " ".join(enhanced_parts)
 
     def _determine_contextual_filters(
-        self, context: Optional[Dict[str, Any]]
-    ) -> Dict[str, Any]:
+        self, context: dict[str, Any] | None,
+    ) -> dict[str, Any]:
         """Determine file filters based on context."""
         if not context:
             return {"file_types": None, "directories": None}
@@ -718,10 +715,10 @@ class SearchService:
 
     def _combine_suggestions(
         self,
-        nlp_suggestions: List[Dict[str, Any]],
-        traditional_suggestions: List[Dict[str, Any]],
+        nlp_suggestions: list[dict[str, Any]],
+        traditional_suggestions: list[dict[str, Any]],
         max_suggestions: int,
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """Combine NLP and traditional suggestions."""
         combined = []
 
@@ -733,7 +730,7 @@ class SearchService:
                     "confidence": suggestion["confidence"],
                     "type": suggestion["type"],
                     "source": "nlp",
-                }
+                },
             )
 
         # Add traditional suggestions
@@ -744,14 +741,14 @@ class SearchService:
                     "confidence": suggestion.get("confidence", 0.5),
                     "type": suggestion.get("type", "traditional"),
                     "source": "traditional",
-                }
+                },
             )
 
         # Sort by confidence and limit
         combined.sort(key=lambda x: x["confidence"], reverse=True)
         return combined[:max_suggestions]
 
-    def _deduplicate_results(self, results: List[Any]) -> List[Any]:
+    def _deduplicate_results(self, results: list[Any]) -> list[Any]:
         """Remove duplicate results based on file path and line number."""
         seen = set()
         unique_results = []
@@ -764,7 +761,7 @@ class SearchService:
 
         return unique_results
 
-    def _generate_code_suggestions(self, query: str) -> List[Dict[str, Any]]:
+    def _generate_code_suggestions(self, query: str) -> list[dict[str, Any]]:
         """Generate code-specific query suggestions."""
         suggestions = []
         query_lower = query.lower()
@@ -776,7 +773,7 @@ class SearchService:
                     "suggestion": "def " + query.replace("function", "").strip(),
                     "confidence": 0.8,
                     "type": "pattern",
-                }
+                },
             )
 
         if "class" in query_lower:
@@ -785,12 +782,12 @@ class SearchService:
                     "suggestion": "class " + query.replace("class", "").strip(),
                     "confidence": 0.8,
                     "type": "pattern",
-                }
+                },
             )
 
         return suggestions
 
-    def _generate_synonym_suggestions(self, query: str) -> List[Dict[str, Any]]:
+    def _generate_synonym_suggestions(self, query: str) -> list[dict[str, Any]]:
         """Generate synonym-based query suggestions."""
         synonyms = {
             "function": ["def", "method", "procedure"],
@@ -811,12 +808,12 @@ class SearchService:
                             "suggestion": query.replace(word, syn),
                             "confidence": 0.6,
                             "type": "synonym",
-                        }
+                        },
                     )
 
         return suggestions
 
-    async def _index_via_rag(self, request: IndexRequest) -> Dict[str, Any]:
+    async def _index_via_rag(self, request: IndexRequest) -> dict[str, Any]:
         """Index via RAG service."""
         try:
             from app.core.service_registry import get_service_registry
@@ -840,7 +837,7 @@ class SearchService:
         except Exception as e:
             return {"success": False, "error": str(e)}
 
-    async def _get_rag_stats(self) -> Dict[str, Any]:
+    async def _get_rag_stats(self) -> dict[str, Any]:
         """Get stats from RAG service."""
         try:
             from app.core.service_registry import get_service_registry
@@ -859,7 +856,7 @@ class SearchService:
             return {"success": False, "error": str(e)}
 
     async def _local_index_codebase(
-        self, request: IndexRequest, start_time: float
+        self, request: IndexRequest, start_time: float,
     ) -> IndexResponse:
         """Fallback local codebase indexing with ignore file support."""
         try:
@@ -916,7 +913,7 @@ class SearchService:
                     if file_path.suffix.lstrip(".") in file_extensions:
                         try:
                             # Read file content to count chunks
-                            with open(file_path, "r", encoding="utf-8") as f:
+                            with open(file_path, encoding="utf-8") as f:
                                 content = f.read()
 
                             # Simple chunking: split by lines and group into chunks
@@ -935,7 +932,7 @@ class SearchService:
                             continue
 
             logger.info(
-                f"Indexing completed: {indexed_files} files indexed, {ignored_files} files ignored"
+                f"Indexing completed: {indexed_files} files indexed, {ignored_files} files ignored",
             )
 
             return IndexResponse(

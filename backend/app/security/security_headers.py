@@ -1,5 +1,4 @@
-"""
-Security headers middleware for Reynard Backend.
+"""Security headers middleware for Reynard Backend.
 
 This module provides comprehensive security headers middleware
 to protect against various web vulnerabilities.

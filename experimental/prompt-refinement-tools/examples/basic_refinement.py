@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Basic Prompt Refinement Example
+"""Basic Prompt Refinement Example
 
 Demonstrates how to use the prompt refinement tools to improve user queries.
 This replaces the pseudo-code from the guide with actual working implementations.
@@ -20,7 +19,7 @@ from services.refinement_service import PromptRefinementService
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -70,29 +69,29 @@ async def main():
 
             # Show refinement rationale
             if result.refinement_rationale:
-                print(f"💡 Refinement Rationale:")
+                print("💡 Refinement Rationale:")
                 for rationale in result.refinement_rationale:
                     print(f"   • {rationale}")
 
             # Show research findings
             if result.research_findings.get("key_concepts"):
                 print(
-                    f"🔍 Key Concepts: {', '.join(result.research_findings['key_concepts'][:5])}"
+                    f"🔍 Key Concepts: {', '.join(result.research_findings['key_concepts'][:5])}",
                 )
 
             # Show analysis results
             if result.analysis_results.get("clarity_issues"):
                 print(
-                    f"⚠️  Clarity Issues: {', '.join(result.analysis_results['clarity_issues'])}"
+                    f"⚠️  Clarity Issues: {', '.join(result.analysis_results['clarity_issues'])}",
                 )
 
             if result.analysis_results.get("specificity_gaps"):
                 print(
-                    f"📋 Specificity Gaps: {', '.join(result.analysis_results['specificity_gaps'])}"
+                    f"📋 Specificity Gaps: {', '.join(result.analysis_results['specificity_gaps'])}",
                 )
 
             if result.analysis_results.get("optimization_opportunities"):
-                print(f"🚀 Optimization Opportunities:")
+                print("🚀 Optimization Opportunities:")
                 for opportunity in result.analysis_results[
                     "optimization_opportunities"
                 ][:3]:

@@ -1,9 +1,7 @@
-"""
-Epistemic humility analysis module.
+"""Epistemic humility analysis module.
 """
 
-import asyncio
-from typing import Any, Dict, List
+from typing import Any
 
 from core.config import HumilityConfig
 from core.models import (
@@ -21,7 +19,7 @@ class EpistemicHumilityAnalyzer:
         self.config = config
         self.epistemic_patterns = self._load_epistemic_patterns()
 
-    def _load_epistemic_patterns(self) -> List[Dict]:
+    def _load_epistemic_patterns(self) -> list[dict]:
         """Load epistemic humility patterns."""
         return [
             {
@@ -44,7 +42,7 @@ class EpistemicHumilityAnalyzer:
             },
         ]
 
-    async def analyze(self, text: str, file_path: str = "") -> List[HumilityFinding]:
+    async def analyze(self, text: str, file_path: str = "") -> list[HumilityFinding]:
         """Analyze text for epistemic humility patterns."""
         findings = []
         lines = text.split("\n")
@@ -65,7 +63,7 @@ class EpistemicHumilityAnalyzer:
                     if pattern_type in ["overconfidence", "certainty_claims"]:
                         confidence_level = self._get_confidence_level(confidence_score)
                         replacement = self._generate_replacement(
-                            original_text, pattern_type
+                            original_text, pattern_type,
                         )
 
                         start = max(0, match.start() - 30)
@@ -94,7 +92,7 @@ class EpistemicHumilityAnalyzer:
 
         return findings
 
-    async def get_metrics(self, text: str) -> Dict[str, Any]:
+    async def get_metrics(self, text: str) -> dict[str, Any]:
         """Get epistemic humility metrics."""
         lines = text.split("\n")
         overconfidence_count = 0
@@ -116,7 +114,7 @@ class EpistemicHumilityAnalyzer:
             humility_ratio = humility_count / total_lines
             overconfidence_ratio = overconfidence_count / total_lines
             epistemic_humility_score = max(
-                0, (humility_ratio - overconfidence_ratio) * 100
+                0, (humility_ratio - overconfidence_ratio) * 100,
             )
 
         return {
@@ -164,12 +162,11 @@ class EpistemicHumilityAnalyzer:
         """Convert confidence score to confidence level."""
         if confidence_score >= 0.9:
             return ConfidenceLevel.VERY_HIGH
-        elif confidence_score >= 0.7:
+        if confidence_score >= 0.7:
             return ConfidenceLevel.HIGH
-        elif confidence_score >= 0.5:
+        if confidence_score >= 0.5:
             return ConfidenceLevel.MEDIUM
-        else:
-            return ConfidenceLevel.LOW
+        return ConfidenceLevel.LOW
 
     def _generate_replacement(self, original_text: str, pattern_type: str) -> str:
         """Generate replacement based on pattern type."""
@@ -179,7 +176,7 @@ class EpistemicHumilityAnalyzer:
                 .replace("guarantee", "aim to")
                 .replace("ensure", "attempt to")
             )
-        elif pattern_type == "certainty_claims":
+        if pattern_type == "certainty_claims":
             return (
                 original_text.lower()
                 .replace("obviously", "apparently")

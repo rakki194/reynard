@@ -1,5 +1,4 @@
-"""
-User service for Reynard Backend.
+"""User service for Reynard Backend.
 
 This module provides user management functionality using the Gatekeeper library.
 """
@@ -25,8 +24,7 @@ refresh_tokens_db: dict[str, str] = {}
 
 
 def create_user(user_data: UserCreate) -> UserResponse:
-    """
-    Create a new user.
+    """Create a new user.
 
     Args:
         user_data: User creation data
@@ -36,6 +34,7 @@ def create_user(user_data: UserCreate) -> UserResponse:
 
     Raises:
         HTTPException: If user already exists or validation fails
+
     """
     # Check if username already exists
     if user_data.username in users_db:
@@ -79,8 +78,7 @@ def create_user(user_data: UserCreate) -> UserResponse:
 
 
 def authenticate_user(login_data: UserLogin) -> AuthResponse:
-    """
-    Authenticate a user.
+    """Authenticate a user.
 
     Args:
         login_data: User login data
@@ -90,6 +88,7 @@ def authenticate_user(login_data: UserLogin) -> AuthResponse:
 
     Raises:
         HTTPException: If authentication fails
+
     """
     # Get user from database
     user = users_db.get(login_data.username)
@@ -102,7 +101,7 @@ def authenticate_user(login_data: UserLogin) -> AuthResponse:
     # Check if user is active
     if not user.get("is_active", True):
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Inactive user"
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Inactive user",
         )
 
     # Verify password
@@ -121,13 +120,12 @@ def authenticate_user(login_data: UserLogin) -> AuthResponse:
     refresh_tokens_db[user["username"]] = refresh_token
 
     return AuthResponse(
-        access_token=access_token, refresh_token=refresh_token, token_type="bearer"
+        access_token=access_token, refresh_token=refresh_token, token_type="bearer",
     )
 
 
 def refresh_user_token(refresh_token: str) -> RefreshResponse:
-    """
-    Refresh user tokens.
+    """Refresh user tokens.
 
     Args:
         refresh_token: The refresh token
@@ -137,24 +135,25 @@ def refresh_user_token(refresh_token: str) -> RefreshResponse:
 
     Raises:
         HTTPException: If refresh fails
+
     """
     # Verify refresh token
     payload = verify_token_sync(refresh_token, "refresh")
     if not payload:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token",
         )
 
     username = payload.get("sub")
     if not username or username not in users_db:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found",
         )
 
     # Check if stored refresh token matches
     if refresh_tokens_db.get(username) != refresh_token:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token",
         )
 
     # Create new tokens
@@ -173,8 +172,7 @@ def refresh_user_token(refresh_token: str) -> RefreshResponse:
 
 
 def logout_user(refresh_token: str) -> dict[str, str]:
-    """
-    Logout a user.
+    """Logout a user.
 
     Args:
         refresh_token: The refresh token to revoke
@@ -184,18 +182,19 @@ def logout_user(refresh_token: str) -> dict[str, str]:
 
     Raises:
         HTTPException: If logout fails
+
     """
     # Verify refresh token
     payload = verify_token_sync(refresh_token, "refresh")
     if not payload:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token",
         )
 
     username = payload.get("sub")
     if not username or username not in users_db:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found",
         )
 
     # Remove refresh token
@@ -210,8 +209,7 @@ security = HTTPBearer()
 def get_current_user(
     credentials: HTTPAuthorizationCredentials = Depends(security),
 ) -> dict[str, str]:
-    """
-    Get current user from token.
+    """Get current user from token.
 
     Args:
         credentials: HTTP authorization credentials
@@ -221,6 +219,7 @@ def get_current_user(
 
     Raises:
         HTTPException: If token is invalid
+
     """
     token = credentials.credentials
     payload = verify_token_sync(token, "access")
@@ -234,7 +233,7 @@ def get_current_user(
     username = payload.get("sub")
     if not username or username not in users_db:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found",
         )
 
     user = users_db[username]
@@ -249,8 +248,7 @@ def get_current_user(
 def get_current_active_user(
     current_user: dict[str, str] = Depends(get_current_user),
 ) -> dict[str, str]:
-    """
-    Get current active user.
+    """Get current active user.
 
     Args:
         current_user: Current user data
@@ -260,10 +258,11 @@ def get_current_active_user(
 
     Raises:
         HTTPException: If user is inactive
+
     """
     if not current_user.get("is_active", True):
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Inactive user"
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Inactive user",
         )
 
     return current_user

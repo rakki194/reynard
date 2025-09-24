@@ -1,5 +1,4 @@
-"""
-Enhanced content extraction pipeline with multi-tier fallback strategy.
+"""Enhanced content extraction pipeline with multi-tier fallback strategy.
 
 This module provides a sophisticated content extraction system that tries
 multiple extraction methods in order of preference, falling back to simpler
@@ -14,8 +13,7 @@ from .base_scraper import BaseScraper
 
 
 class EnhancedContentExtractor(BaseScraper):
-    """
-    Enhanced content extractor with multi-tier fallback strategy.
+    """Enhanced content extractor with multi-tier fallback strategy.
 
     Extraction strategy:
     1. Primary: Site-specific scrapers (Twitter, Wikipedia, GitHub, etc.)
@@ -76,7 +74,7 @@ class EnhancedContentExtractor(BaseScraper):
             self.logger.warning("General scraper not available")
 
         self.logger.info(
-            f"Initialized {len(self.scrapers)} scrapers: {list(self.scrapers.keys())}"
+            f"Initialized {len(self.scrapers)} scrapers: {list(self.scrapers.keys())}",
         )
 
     async def can_handle_url(self, url: str) -> bool:
@@ -84,14 +82,14 @@ class EnhancedContentExtractor(BaseScraper):
         return True  # Enhanced extractor can handle any URL
 
     async def scrape_content(self, url: str) -> ScrapingResult:
-        """
-        Extract content using multi-tier fallback strategy.
+        """Extract content using multi-tier fallback strategy.
 
         Args:
             url: URL to extract content from
 
         Returns:
             ScrapingResult with extracted content
+
         """
         try:
             # Try specialized scrapers first
@@ -216,8 +214,7 @@ class EnhancedContentExtractor(BaseScraper):
             )
 
     async def extract_with_method(self, url: str, method: str) -> ScrapingResult:
-        """
-        Extract content using a specific method.
+        """Extract content using a specific method.
 
         Args:
             url: URL to extract content from
@@ -225,6 +222,7 @@ class EnhancedContentExtractor(BaseScraper):
 
         Returns:
             ScrapingResult with extracted content
+
         """
         if method in self.scrapers:
             scraper = self.scrapers[method]
@@ -257,14 +255,14 @@ class EnhancedContentExtractor(BaseScraper):
         }
 
     async def test_extraction_methods(self, url: str) -> dict[str, ScrapingResult]:
-        """
-        Test all available extraction methods on a URL.
+        """Test all available extraction methods on a URL.
 
         Args:
             url: URL to test
 
         Returns:
             Dictionary mapping method names to results
+
         """
         results = {}
 
@@ -289,14 +287,14 @@ class EnhancedContentExtractor(BaseScraper):
         return results
 
     async def get_best_method(self, url: str) -> str:
-        """
-        Determine the best extraction method for a URL.
+        """Determine the best extraction method for a URL.
 
         Args:
             url: URL to analyze
 
         Returns:
             Name of the best extraction method
+
         """
         # Test all methods
         results = await self.test_extraction_methods(url)

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Ars Technica Article Summarizer
+"""Ars Technica Article Summarizer
 
 Demonstrates the experimental prompt refinement tools by scraping and summarizing
 the last 10 articles from Ars Technica. This showcases:
@@ -13,12 +12,11 @@ the last 10 articles from Ars Technica. This showcases:
 """
 
 import asyncio
-import json
 import logging
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 # Add the services directory to the path
 sys.path.append(str(Path(__file__).parent.parent))
@@ -29,14 +27,13 @@ from services.semantic_search import SemanticSearchService
 from services.web_scraping import WebScrapingService
 
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
 
 class ArsTechnicaSummarizer:
-    """
-    Specialized summarizer for Ars Technica articles using our experimental tools.
+    """Specialized summarizer for Ars Technica articles using our experimental tools.
     """
 
     def __init__(self):
@@ -46,8 +43,8 @@ class ArsTechnicaSummarizer:
         self.semantic_search = SemanticSearchService()
         self.refinement_service = PromptRefinementService()
 
-        self.articles: List[Dict[str, Any]] = []
-        self.summaries: List[Dict[str, Any]] = []
+        self.articles: list[dict[str, Any]] = []
+        self.summaries: list[dict[str, Any]] = []
 
     async def initialize(self) -> bool:
         """Initialize all services."""
@@ -65,10 +62,9 @@ class ArsTechnicaSummarizer:
             return False
 
     async def scrape_arstechnica_articles(
-        self, count: int = 10
-    ) -> List[Dict[str, Any]]:
-        """
-        Scrape the latest articles from Ars Technica.
+        self, count: int = 10,
+    ) -> list[dict[str, Any]]:
+        """Scrape the latest articles from Ars Technica.
 
         This demonstrates our web scraping capabilities.
         """
@@ -167,7 +163,7 @@ class ArsTechnicaSummarizer:
             self.articles = simulated_articles[:count]
 
             logger.info(
-                f"Successfully scraped {len(self.articles)} articles from Ars Technica"
+                f"Successfully scraped {len(self.articles)} articles from Ars Technica",
             )
             return self.articles
 
@@ -175,9 +171,8 @@ class ArsTechnicaSummarizer:
             logger.error(f"Failed to scrape Ars Technica articles: {e}")
             return []
 
-    async def analyze_articles(self) -> List[Dict[str, Any]]:
-        """
-        Analyze each article using our NLP processing capabilities.
+    async def analyze_articles(self) -> list[dict[str, Any]]:
+        """Analyze each article using our NLP processing capabilities.
 
         This demonstrates our advanced text analysis features.
         """
@@ -189,25 +184,25 @@ class ArsTechnicaSummarizer:
             try:
                 # Extract key concepts from the article
                 key_concepts = await self.nlp_processor.extract_key_concepts(
-                    f"{article['title']} {article['content']}"
+                    f"{article['title']} {article['content']}",
                 )
 
                 # Analyze the text comprehensively
                 nlp_analysis = await self.nlp_processor.analyze_text_comprehensive(
-                    article["content"]
+                    article["content"],
                 )
 
                 # Assess clarity and specificity
                 clarity_issues = await self.nlp_processor.assess_clarity_issues(
-                    article["title"]
+                    article["title"],
                 )
                 specificity_gaps = await self.nlp_processor.evaluate_specificity_gaps(
-                    article["title"]
+                    article["title"],
                 )
 
                 # Predict effectiveness
                 effectiveness_score = await self.nlp_processor.predict_effectiveness(
-                    article["title"]
+                    article["title"],
                 )
 
                 analyzed_article = {
@@ -231,8 +226,7 @@ class ArsTechnicaSummarizer:
         return analyzed_articles
 
     async def create_semantic_index(self) -> bool:
-        """
-        Create a semantic search index of all articles.
+        """Create a semantic search index of all articles.
 
         This demonstrates our ChromaDB and FAISS capabilities.
         """
@@ -259,7 +253,7 @@ class ArsTechnicaSummarizer:
             await self.semantic_search.add_documents(documents)
 
             logger.info(
-                f"Successfully indexed {len(documents)} articles in semantic search"
+                f"Successfully indexed {len(documents)} articles in semantic search",
             )
             return True
 
@@ -267,9 +261,8 @@ class ArsTechnicaSummarizer:
             logger.error(f"Failed to create semantic index: {e}")
             return False
 
-    async def generate_summaries(self) -> List[Dict[str, Any]]:
-        """
-        Generate intelligent summaries using our refinement tools.
+    async def generate_summaries(self) -> list[dict[str, Any]]:
+        """Generate intelligent summaries using our refinement tools.
 
         This demonstrates the full power of our experimental toolkit.
         """
@@ -284,7 +277,7 @@ class ArsTechnicaSummarizer:
 
                 # Use our refinement service to enhance the summarization request
                 refinement_result = await self.refinement_service.refine_query(
-                    summarization_query
+                    summarization_query,
                 )
 
                 # Generate a comprehensive summary
@@ -299,13 +292,13 @@ class ArsTechnicaSummarizer:
                     "improvement_score": refinement_result.improvement_score,
                     "nlp_insights": {
                         "sentiment": getattr(
-                            article.get("nlp_analysis", {}), "sentiment", {}
+                            article.get("nlp_analysis", {}), "sentiment", {},
                         ),
                         "language": getattr(
-                            article.get("nlp_analysis", {}), "language", "en"
+                            article.get("nlp_analysis", {}), "language", "en",
                         ),
                         "processing_time": getattr(
-                            article.get("nlp_analysis", {}), "processing_time", 0
+                            article.get("nlp_analysis", {}), "processing_time", 0,
                         ),
                     },
                     "analysis_quality": {
@@ -320,7 +313,7 @@ class ArsTechnicaSummarizer:
 
             except Exception as e:
                 logger.error(
-                    f"Failed to generate summary for '{article['title']}': {e}"
+                    f"Failed to generate summary for '{article['title']}': {e}",
                 )
                 # Fallback to basic summary
                 summaries.append(
@@ -331,7 +324,7 @@ class ArsTechnicaSummarizer:
                         "date": article.get("date", "Unknown"),
                         "original_summary": article.get("summary", ""),
                         "error": str(e),
-                    }
+                    },
                 )
 
         self.summaries = summaries
@@ -339,10 +332,9 @@ class ArsTechnicaSummarizer:
         return summaries
 
     async def perform_semantic_search(
-        self, query: str, top_k: int = 5
-    ) -> List[Dict[str, Any]]:
-        """
-        Perform semantic search across the article collection.
+        self, query: str, top_k: int = 5,
+    ) -> list[dict[str, Any]]:
+        """Perform semantic search across the article collection.
 
         This demonstrates our ChromaDB and FAISS search capabilities.
         """
@@ -351,7 +343,7 @@ class ArsTechnicaSummarizer:
         try:
             # Use our semantic search service
             search_results = await self.semantic_search.semantic_search(
-                query, limit=top_k
+                query, limit=top_k,
             )
 
             # Format results with article information
@@ -377,9 +369,8 @@ class ArsTechnicaSummarizer:
             logger.error(f"Semantic search failed: {e}")
             return []
 
-    async def generate_insights_report(self) -> Dict[str, Any]:
-        """
-        Generate a comprehensive insights report about the article collection.
+    async def generate_insights_report(self) -> dict[str, Any]:
+        """Generate a comprehensive insights report about the article collection.
 
         This demonstrates the analytical power of our tools.
         """
@@ -404,7 +395,7 @@ class ArsTechnicaSummarizer:
 
             # Get top concepts
             top_concepts = sorted(
-                concept_frequency.items(), key=lambda x: x[1], reverse=True
+                concept_frequency.items(), key=lambda x: x[1], reverse=True,
             )[:10]
 
             # Analyze sentiment distribution
@@ -450,7 +441,7 @@ class ArsTechnicaSummarizer:
                 },
                 "tool_performance": {
                     "nlp_processing_success_rate": len(
-                        [a for a in self.articles if "nlp_analysis" in a]
+                        [a for a in self.articles if "nlp_analysis" in a],
                     )
                     / len(self.articles),
                     "semantic_indexing_success": len(self.articles) > 0,
@@ -483,7 +474,7 @@ async def main():
     print("🦊 Ars Technica Article Summarizer")
     print("=" * 60)
     print(
-        "Demonstrating experimental prompt refinement tools with real-world content analysis"
+        "Demonstrating experimental prompt refinement tools with real-world content analysis",
     )
     print("=" * 60)
 
@@ -497,27 +488,27 @@ async def main():
         print("✅ All services initialized successfully")
 
         # Scrape articles
-        print(f"\n📰 Scraping latest articles from Ars Technica...")
+        print("\n📰 Scraping latest articles from Ars Technica...")
         articles = await summarizer.scrape_arstechnica_articles(count=10)
         print(f"✅ Scraped {len(articles)} articles")
 
         # Analyze articles
-        print(f"\n🧠 Analyzing articles with NLP processing...")
+        print("\n🧠 Analyzing articles with NLP processing...")
         analyzed_articles = await summarizer.analyze_articles()
         print(f"✅ Analyzed {len(analyzed_articles)} articles")
 
         # Create semantic index
-        print(f"\n🔍 Creating semantic search index...")
+        print("\n🔍 Creating semantic search index...")
         await summarizer.create_semantic_index()
         print("✅ Semantic index created successfully")
 
         # Generate summaries
-        print(f"\n📝 Generating intelligent summaries...")
+        print("\n📝 Generating intelligent summaries...")
         summaries = await summarizer.generate_summaries()
         print(f"✅ Generated {len(summaries)} summaries")
 
         # Display results
-        print(f"\n📊 RESULTS SUMMARY")
+        print("\n📊 RESULTS SUMMARY")
         print("=" * 60)
 
         for i, summary in enumerate(summaries, 1):
@@ -526,17 +517,17 @@ async def main():
             print(f"   Date: {summary['date']}")
             print(f"   Key Concepts: {', '.join(summary.get('key_concepts', [])[:5])}")
             print(
-                f"   Effectiveness Score: {summary.get('effectiveness_score', 0):.2f}"
+                f"   Effectiveness Score: {summary.get('effectiveness_score', 0):.2f}",
             )
             if "nlp_insights" in summary:
                 sentiment = summary["nlp_insights"].get("sentiment", {})
                 print(
-                    f"   Sentiment: {sentiment.get('label', 'neutral')} ({sentiment.get('score', 0):.2f})"
+                    f"   Sentiment: {sentiment.get('label', 'neutral')} ({sentiment.get('score', 0):.2f})",
                 )
             print(f"   URL: {summary.get('url', 'N/A')}")
 
         # Test semantic search
-        print(f"\n🔍 Testing semantic search...")
+        print("\n🔍 Testing semantic search...")
         search_queries = [
             "artificial intelligence and machine learning",
             "space exploration and astronomy",
@@ -548,35 +539,35 @@ async def main():
             results = await summarizer.perform_semantic_search(query, top_k=3)
             for j, result in enumerate(results, 1):
                 print(
-                    f"   {j}. {result['title']} (similarity: {result['similarity_score']:.2f})"
+                    f"   {j}. {result['title']} (similarity: {result['similarity_score']:.2f})",
                 )
 
         # Generate insights report
-        print(f"\n📈 Generating insights report...")
+        print("\n📈 Generating insights report...")
         insights = await summarizer.generate_insights_report()
 
-        print(f"\n📊 COLLECTION INSIGHTS")
+        print("\n📊 COLLECTION INSIGHTS")
         print("=" * 60)
         print(f"Total Articles: {insights['collection_summary']['total_articles']}")
         print(f"Categories: {insights['collection_summary']['categories']}")
         print(
-            f"Top Concepts: {[concept for concept, count in insights['collection_summary']['top_concepts'][:5]]}"
+            f"Top Concepts: {[concept for concept, count in insights['collection_summary']['top_concepts'][:5]]}",
         )
         print(
-            f"Sentiment Distribution: {insights['content_analysis']['sentiment_distribution']}"
+            f"Sentiment Distribution: {insights['content_analysis']['sentiment_distribution']}",
         )
         print(
-            f"Average Effectiveness: {insights['content_analysis']['average_effectiveness_score']:.2f}"
+            f"Average Effectiveness: {insights['content_analysis']['average_effectiveness_score']:.2f}",
         )
 
-        print(f"\n🎯 TOOL PERFORMANCE")
+        print("\n🎯 TOOL PERFORMANCE")
         print("=" * 60)
         perf = insights["tool_performance"]
         print(f"NLP Processing Success Rate: {perf['nlp_processing_success_rate']:.1%}")
         print(f"Semantic Indexing Success: {perf['semantic_indexing_success']}")
         print(f"Summarization Success Rate: {perf['summarization_success_rate']:.1%}")
 
-        print(f"\n🦊 Mission Accomplished!")
+        print("\n🦊 Mission Accomplished!")
         print("The experimental prompt refinement tools successfully:")
         print("✅ Scraped and analyzed real-world content")
         print("✅ Performed advanced NLP processing")

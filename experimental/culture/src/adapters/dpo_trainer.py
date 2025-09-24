@@ -1,5 +1,4 @@
-"""
-Direct Preference Optimization (DPO) Trainer for Cultural AI Alignment
+"""Direct Preference Optimization (DPO) Trainer for Cultural AI Alignment
 
 Implements DPO training methodology for improving LLM cultural understanding,
 specifically targeting the 42.3% improvement achieved in TaarofBench research.
@@ -88,8 +87,7 @@ You say:"""
 
 
 class DPOTrainer:
-    """
-    Direct Preference Optimization trainer for cultural AI alignment.
+    """Direct Preference Optimization trainer for cultural AI alignment.
 
     Implements the DPO methodology that achieved 42.3% improvement in
     TaarofBench cultural understanding evaluation.
@@ -110,7 +108,7 @@ class DPOTrainer:
             self.tokenizer.pad_token = self.tokenizer.eos_token
 
         self.model = AutoModelForCausalLM.from_pretrained(
-            model_name, torch_dtype=torch.float16, device_map="auto"
+            model_name, torch_dtype=torch.float16, device_map="auto",
         )
 
         # Initialize benchmark for data generation
@@ -139,10 +137,9 @@ class DPOTrainer:
         }
 
     def prepare_training_data(
-        self, cultural_context: str = "persian_taarof", num_examples: int = 1000
+        self, cultural_context: str = "persian_taarof", num_examples: int = 1000,
     ) -> list[DPOExample]:
-        """
-        Prepare DPO training data with cultural preference pairs.
+        """Prepare DPO training data with cultural preference pairs.
 
         Args:
             cultural_context: Cultural context for data generation
@@ -150,12 +147,13 @@ class DPOTrainer:
 
         Returns:
             List of DPO examples with chosen/rejected response pairs
+
         """
         logger.info(f"Preparing DPO training data for {cultural_context}")
 
         # Get scenarios from benchmark
         scenarios = self.benchmark.get_scenarios(
-            cultural_context=cultural_context, sample_size=num_examples
+            cultural_context=cultural_context, sample_size=num_examples,
         )
 
         examples = []
@@ -165,12 +163,12 @@ class DPOTrainer:
 
             # Generate rejected (culturally inappropriate) response
             rejected_response = self._generate_culturally_inappropriate_response(
-                scenario
+                scenario,
             )
 
             # Calculate preference strength based on cultural context
             preference_strength = self._calculate_preference_strength(
-                scenario, chosen_response, rejected_response
+                scenario, chosen_response, rejected_response,
             )
 
             example = DPOExample(
@@ -187,7 +185,7 @@ class DPOTrainer:
         return examples
 
     def _generate_culturally_appropriate_response(
-        self, scenario: dict[str, Any]
+        self, scenario: dict[str, Any],
     ) -> str:
         """Generate culturally appropriate response for scenario."""
         # This would use the expected response from the benchmark
@@ -195,7 +193,7 @@ class DPOTrainer:
         return scenario.get("expected_response", "")
 
     def _generate_culturally_inappropriate_response(
-        self, scenario: dict[str, Any]
+        self, scenario: dict[str, Any],
     ) -> str:
         """Generate culturally inappropriate response for scenario."""
         # Generate responses that violate cultural norms
@@ -211,7 +209,7 @@ class DPOTrainer:
         return np.random.choice(inappropriate_responses)
 
     def _calculate_preference_strength(
-        self, scenario: dict[str, Any], chosen_response: str, rejected_response: str
+        self, scenario: dict[str, Any], chosen_response: str, rejected_response: str,
     ) -> float:
         """Calculate preference strength for DPO training."""
         # Higher strength for clear cultural violations
@@ -224,8 +222,7 @@ class DPOTrainer:
         training_data: list[DPOExample],
         validation_data: list[DPOExample] | None = None,
     ) -> dict[str, Any]:
-        """
-        Train model using DPO methodology.
+        """Train model using DPO methodology.
 
         Args:
             training_data: List of DPO training examples
@@ -233,18 +230,19 @@ class DPOTrainer:
 
         Returns:
             Training results and metrics
+
         """
         logger.info("Starting DPO training")
 
         # Create datasets
         train_dataset = DPODataset(
-            training_data, self.tokenizer, self.config["max_length"]
+            training_data, self.tokenizer, self.config["max_length"],
         )
 
         val_dataset = None
         if validation_data:
             val_dataset = DPODataset(
-                validation_data, self.tokenizer, self.config["max_length"]
+                validation_data, self.tokenizer, self.config["max_length"],
             )
 
         # Training arguments
@@ -292,7 +290,7 @@ class DPOTrainer:
         }
 
     def evaluate_cultural_alignment(
-        self, test_scenarios: list[dict[str, Any]]
+        self, test_scenarios: list[dict[str, Any]],
     ) -> dict[str, float]:
         """Evaluate cultural alignment of trained model."""
         logger.info("Evaluating cultural alignment")
@@ -342,13 +340,13 @@ You say:"""
             )
 
         response = self.tokenizer.decode(
-            outputs[0][inputs.input_ids.shape[1] :], skip_special_tokens=True
+            outputs[0][inputs.input_ids.shape[1] :], skip_special_tokens=True,
         )
 
         return response.strip()
 
     def _evaluate_cultural_appropriateness(
-        self, scenario: dict[str, Any], response: str
+        self, scenario: dict[str, Any], response: str,
     ) -> bool:
         """Evaluate if response is culturally appropriate."""
         # This would use the cultural validator
@@ -391,18 +389,18 @@ class DPOCustomTrainer(Trainer):
 
         # Get model outputs
         chosen_outputs = model(
-            input_ids=chosen_input_ids, attention_mask=chosen_attention_mask
+            input_ids=chosen_input_ids, attention_mask=chosen_attention_mask,
         )
         rejected_outputs = model(
-            input_ids=rejected_input_ids, attention_mask=rejected_attention_mask
+            input_ids=rejected_input_ids, attention_mask=rejected_attention_mask,
         )
 
         # Calculate log probabilities
         chosen_log_probs = self._get_log_probs(
-            chosen_outputs.logits, chosen_input_ids, chosen_attention_mask
+            chosen_outputs.logits, chosen_input_ids, chosen_attention_mask,
         )
         rejected_log_probs = self._get_log_probs(
-            rejected_outputs.logits, rejected_input_ids, rejected_attention_mask
+            rejected_outputs.logits, rejected_input_ids, rejected_attention_mask,
         )
 
         # DPO loss
@@ -424,7 +422,7 @@ class DPOCustomTrainer(Trainer):
         # Calculate log probabilities
         log_probs = torch.nn.functional.log_softmax(shift_logits, dim=-1)
         selected_log_probs = log_probs.gather(
-            dim=-1, index=shift_labels.unsqueeze(-1)
+            dim=-1, index=shift_labels.unsqueeze(-1),
         ).squeeze(-1)
 
         # Mask out padding tokens

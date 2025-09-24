@@ -1852,6 +1852,149 @@
       },
       "problemMatcher": [],
       "detail": "Detect and configure the best Python interpreter for the workspace"
+    },
+    {
+      "label": "🎭 Playwright - Debug Tests (Firefox)",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "reynard-e2e-testing-framework", "test:debug"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Debug Playwright tests in Firefox with Reynard-specific configuration"
+    },
+    {
+      "label": "🎭 Playwright - Debug Auth Tests (Firefox)",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "reynard-e2e-testing-framework", "test:auth:debug"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Debug Playwright authentication tests in Firefox"
+    },
+    {
+      "label": "🎭 Playwright - UI Mode (Firefox)",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "reynard-e2e-testing-framework", "test:ui"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Open Playwright UI mode for interactive test debugging in Firefox"
+    },
+    {
+      "label": "🎭 Playwright - Install Browsers",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "reynard-e2e-testing-framework", "install:browsers"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Install Playwright browsers for E2E testing"
+    },
+    {
+      "label": "🎭 Playwright - Show Test Report",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "reynard-e2e-testing-framework", "test:report"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Open Playwright test report in browser"
+    },
+    {
+      "label": "🎭 Playwright - Debug Performance Tests",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "reynard-e2e-testing-framework", "test:performance:debug"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Debug Playwright performance tests in Firefox"
+    },
+    {
+      "label": "🎭 Playwright - Debug I18n Tests",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "reynard-e2e-testing-framework", "test:i18n:debug"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Debug Playwright internationalization tests in Firefox"
+    },
+    {
+      "label": "🎭 Playwright - Debug Animation Tests",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "reynard-e2e-testing-framework", "test:animation:debug"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Debug Playwright animation tests in Firefox"
+    },
+    {
+      "label": "🎭 Playwright - Debug Documentation Tests",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "reynard-e2e-testing-framework", "test:documentation:debug"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Debug Playwright documentation tests in Firefox"
     }
   ]
 }

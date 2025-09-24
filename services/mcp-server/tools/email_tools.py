@@ -9,10 +9,9 @@ Provides integration between agents and the email system.
 Follows the 140-line axiom and modular architecture principles.
 """
 
-import asyncio
 import logging
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from protocol.tool_registry import register_tool
 

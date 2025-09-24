@@ -7,11 +7,9 @@ Agent manager that uses the FastAPI backend for name generation data.
 Replaces the local agent-naming service with centralized backend access.
 """
 
-import json
 import logging
 import random
-from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Dict, Optional
 
 from .backend_data_service import backend_data_service
 

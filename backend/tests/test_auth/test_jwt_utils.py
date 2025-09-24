@@ -1,5 +1,4 @@
-"""
-Tests for JWT token utilities and security functions.
+"""Tests for JWT token utilities and security functions.
 
 This module tests JWT token creation, verification, and security measures.
 """
@@ -175,7 +174,7 @@ class TestJWTTokenVerification:
 
         try:
             malformed_token = jwt.encode(
-                malformed_payload, SECRET_KEY, algorithm=ALGORITHM
+                malformed_payload, SECRET_KEY, algorithm=ALGORITHM,
             )
             result = verify_token(malformed_token, "access")
             assert result is None

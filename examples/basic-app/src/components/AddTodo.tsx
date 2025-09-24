@@ -3,7 +3,7 @@
  * Form for adding new todos
  */
 
-import { Button, TextField } from "reynard-components";
+import { Button, TextField } from "reynard-components-core";
 import { Component, createSignal } from "solid-js";
 import { useCustomTranslation } from "../App";
 

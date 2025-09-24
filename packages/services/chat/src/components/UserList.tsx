@@ -4,7 +4,7 @@
  * Displays room participants with status indicators and actions.
  */
 import { Show, For, createSignal } from "solid-js";
-export const UserList = props => {
+export const UserList = (props: any) => {
   const [selectedUser, setSelectedUser] = createSignal(null);
   // Get status icon for user
   const getStatusIcon = status => {
@@ -47,8 +47,8 @@ export const UserList = props => {
       if (b.id === props.currentUser.id) return 1;
       // Then by status
       const statusOrder = { online: 0, away: 1, busy: 2, offline: 3 };
-      const aStatus = statusOrder[a.status] ?? 4;
-      const bStatus = statusOrder[b.status] ?? 4;
+      const aStatus = statusOrder[a.status as keyof typeof statusOrder] ?? 4;
+      const bStatus = statusOrder[b.status as keyof typeof statusOrder] ?? 4;
       if (aStatus !== bStatus) {
         return aStatus - bStatus;
       }

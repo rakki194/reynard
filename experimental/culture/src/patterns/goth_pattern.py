@@ -1,5 +1,4 @@
-"""
-Goth Cultural Pattern Implementation
+"""Goth Cultural Pattern Implementation
 
 This module implements the GothCulturalPattern class for evaluating and generating
 scenarios related to gothic subculture communities, dark aesthetics, and gothic culture.
@@ -103,7 +102,7 @@ class GothCulturalPattern(BaseCulturalPattern):
             self.pattern_data = {}
 
     def generate_scenarios(
-        self, count: int, safety_level: SafetyLevel
+        self, count: int, safety_level: SafetyLevel,
     ) -> list[CulturalScenario]:
         """Generate goth-specific scenarios"""
         scenarios = []
@@ -157,7 +156,7 @@ class GothCulturalPattern(BaseCulturalPattern):
         return scenarios
 
     def evaluate_response(
-        self, scenario: CulturalScenario, response: str
+        self, scenario: CulturalScenario, response: str,
     ) -> CulturalEvaluationResult:
         """Evaluate response for goth cultural appropriateness"""
         metrics = {}
@@ -214,7 +213,7 @@ class GothCulturalPattern(BaseCulturalPattern):
         )
 
     def _evaluate_aesthetic_appreciation(
-        self, response: str, scenario: CulturalScenario
+        self, response: str, scenario: CulturalScenario,
     ) -> float:
         """Evaluate appreciation of gothic aesthetics"""
         score = 0.0
@@ -244,7 +243,7 @@ class GothCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_literary_knowledge(
-        self, response: str, scenario: CulturalScenario
+        self, response: str, scenario: CulturalScenario,
     ) -> float:
         """Evaluate knowledge of gothic literature and themes"""
         score = 0.0
@@ -274,7 +273,7 @@ class GothCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_music_culture(
-        self, response: str, scenario: CulturalScenario
+        self, response: str, scenario: CulturalScenario,
     ) -> float:
         """Evaluate understanding of gothic music culture"""
         score = 0.0
@@ -304,7 +303,7 @@ class GothCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_individuality(
-        self, response: str, scenario: CulturalScenario
+        self, response: str, scenario: CulturalScenario,
     ) -> float:
         """Evaluate respect for individual expression"""
         score = 0.0
@@ -334,7 +333,7 @@ class GothCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_community_respect(
-        self, response: str, scenario: CulturalScenario
+        self, response: str, scenario: CulturalScenario,
     ) -> float:
         """Evaluate community respect and inclusivity"""
         score = 0.0
@@ -364,34 +363,34 @@ class GothCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _generate_recommendations(
-        self, metrics: dict[str, float], response: str
+        self, metrics: dict[str, float], response: str,
     ) -> list[str]:
         """Generate improvement recommendations"""
         recommendations = []
 
         if metrics.get("aesthetic_appreciation", 0) < 0.6:
             recommendations.append(
-                "Show more appreciation for gothic aesthetics and dark beauty"
+                "Show more appreciation for gothic aesthetics and dark beauty",
             )
 
         if metrics.get("literary_knowledge", 0) < 0.6:
             recommendations.append(
-                "Demonstrate deeper knowledge of gothic literature and themes"
+                "Demonstrate deeper knowledge of gothic literature and themes",
             )
 
         if metrics.get("music_culture", 0) < 0.6:
             recommendations.append(
-                "Show more understanding of gothic music culture and genres"
+                "Show more understanding of gothic music culture and genres",
             )
 
         if metrics.get("individuality", 0) < 0.6:
             recommendations.append(
-                "Express more support for individual expression and non-conformity"
+                "Express more support for individual expression and non-conformity",
             )
 
         if metrics.get("community_respect", 0) < 0.6:
             recommendations.append(
-                "Show more respect and inclusivity toward the gothic community"
+                "Show more respect and inclusivity toward the gothic community",
             )
 
         return recommendations
@@ -411,7 +410,7 @@ class GothCulturalPattern(BaseCulturalPattern):
         # Check for cultural appropriation
         if "costume" in response_lower and "halloween" in response_lower:
             warnings.append(
-                "Be mindful of cultural appropriation vs. authentic participation"
+                "Be mindful of cultural appropriation vs. authentic participation",
             )
 
         return warnings

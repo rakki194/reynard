@@ -1,5 +1,4 @@
-"""
-🔐 Session Encryption System for Reynard Backend
+"""🔐 Session Encryption System for Reynard Backend
 
 This module provides comprehensive session encryption and management with
 Redis backend, secure session handling, and advanced session security features.
@@ -22,11 +21,9 @@ import logging
 import secrets
 from dataclasses import asdict, dataclass
 from datetime import UTC, datetime, timedelta
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 import redis
-from fastapi import Request, Response
-from starlette.middleware.sessions import SessionMiddleware
 
 from app.security.audit_logger import (
     SecurityEventSeverity,
@@ -45,7 +42,6 @@ logger = logging.getLogger(__name__)
 class SessionEncryptionError(Exception):
     """Exception raised for session encryption-related errors."""
 
-    pass
 
 
 @dataclass
@@ -53,16 +49,16 @@ class SessionData:
     """Session data structure."""
 
     session_id: str
-    user_id: Optional[str]
+    user_id: str | None
     created_at: datetime
     last_accessed: datetime
     expires_at: datetime
-    ip_address: Optional[str]
-    user_agent: Optional[str]
+    ip_address: str | None
+    user_agent: str | None
     session_fingerprint: str
-    data: Dict[str, Any]
+    data: dict[str, Any]
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for serialization."""
         data = asdict(self)
         data["created_at"] = self.created_at.isoformat()
@@ -71,7 +67,7 @@ class SessionData:
         return data
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "SessionData":
+    def from_dict(cls, data: dict[str, Any]) -> "SessionData":
         """Create from dictionary."""
         return cls(
             session_id=data["session_id"],
@@ -87,8 +83,7 @@ class SessionData:
 
 
 class SessionEncryptionManager:
-    """
-    Comprehensive session encryption and management system.
+    """Comprehensive session encryption and management system.
 
     This class provides:
     - Encrypted session storage in Redis
@@ -97,12 +92,12 @@ class SessionEncryptionManager:
     - Security monitoring and anomaly detection
     """
 
-    def __init__(self, redis_client: Optional[redis.Redis] = None):
-        """
-        Initialize the session encryption manager.
+    def __init__(self, redis_client: redis.Redis | None = None):
+        """Initialize the session encryption manager.
 
         Args:
             redis_client: Redis client instance (optional)
+
         """
         self.config = get_session_security_config()
         self.key_manager = get_key_manager()
@@ -111,7 +106,7 @@ class SessionEncryptionManager:
         # Redis client
         if redis_client is None:
             self.redis_client = redis.Redis(
-                host="localhost", port=6379, db=0, decode_responses=True
+                host="localhost", port=6379, db=0, decode_responses=True,
             )
         else:
             self.redis_client = redis_client
@@ -141,7 +136,7 @@ class SessionEncryptionManager:
             pass
 
     def _generate_session_fingerprint(
-        self, ip_address: Optional[str], user_agent: Optional[str]
+        self, ip_address: str | None, user_agent: str | None,
     ) -> str:
         """Generate a session fingerprint for security."""
         fingerprint_data = f"{ip_address or 'unknown'}:{user_agent or 'unknown'}"
@@ -171,7 +166,7 @@ class SessionEncryptionManager:
             raise SessionEncryptionError(f"Session encryption failed: {e}")
 
     def _decrypt_session_data(
-        self, encrypted_data: str, session_id: str
+        self, encrypted_data: str, session_id: str,
     ) -> SessionData:
         """Decrypt session data from storage."""
         try:
@@ -196,13 +191,12 @@ class SessionEncryptionManager:
 
     def create_hybrid_session(
         self,
-        user_id: Optional[str] = None,
-        ip_address: Optional[str] = None,
-        user_agent: Optional[str] = None,
-        session_data: Optional[Dict[str, Any]] = None,
+        user_id: str | None = None,
+        ip_address: str | None = None,
+        user_agent: str | None = None,
+        session_data: dict[str, Any] | None = None,
     ) -> str:
-        """
-        Create a hybrid session using itsdangerous for token signing and Redis for data storage.
+        """Create a hybrid session using itsdangerous for token signing and Redis for data storage.
 
         This approach combines the best of both worlds:
         - itsdangerous provides secure, time-based token signing
@@ -217,6 +211,7 @@ class SessionEncryptionManager:
 
         Returns:
             itsdangerous-signed session token
+
         """
         try:
             # Generate unique session ID
@@ -224,12 +219,12 @@ class SessionEncryptionManager:
 
             # Generate session fingerprint
             session_fingerprint = self._generate_session_fingerprint(
-                ip_address, user_agent
+                ip_address, user_agent,
             )
 
             # Calculate expiration time
             expires_at = datetime.now(UTC) + timedelta(
-                minutes=self.config.session_timeout_minutes
+                minutes=self.config.session_timeout_minutes,
             )
 
             # Create session data for Redis storage
@@ -298,13 +293,12 @@ class SessionEncryptionManager:
 
     def create_session(
         self,
-        user_id: Optional[str] = None,
-        ip_address: Optional[str] = None,
-        user_agent: Optional[str] = None,
-        session_data: Optional[Dict[str, Any]] = None,
+        user_id: str | None = None,
+        ip_address: str | None = None,
+        user_agent: str | None = None,
+        session_data: dict[str, Any] | None = None,
     ) -> str:
-        """
-        Create a new encrypted session.
+        """Create a new encrypted session.
 
         Args:
             user_id: User ID (optional)
@@ -314,6 +308,7 @@ class SessionEncryptionManager:
 
         Returns:
             Session ID
+
         """
         try:
             # Generate unique session ID
@@ -321,12 +316,12 @@ class SessionEncryptionManager:
 
             # Generate session fingerprint
             session_fingerprint = self._generate_session_fingerprint(
-                ip_address, user_agent
+                ip_address, user_agent,
             )
 
             # Calculate expiration time
             expires_at = datetime.now(UTC) + timedelta(
-                minutes=self.config.session_timeout_minutes
+                minutes=self.config.session_timeout_minutes,
             )
 
             # Create session data
@@ -374,15 +369,15 @@ class SessionEncryptionManager:
             logger.error(f"Failed to create session: {e}")
             raise SessionEncryptionError(f"Session creation failed: {e}")
 
-    def get_hybrid_session(self, session_token: str) -> Optional[SessionData]:
-        """
-        Retrieve and verify a hybrid session using itsdangerous token.
+    def get_hybrid_session(self, session_token: str) -> SessionData | None:
+        """Retrieve and verify a hybrid session using itsdangerous token.
 
         Args:
             session_token: itsdangerous-signed session token
 
         Returns:
             SessionData object or None if not found/invalid
+
         """
         try:
             # Verify the itsdangerous token
@@ -425,7 +420,7 @@ class SessionEncryptionManager:
             # Store updated session (simplified for hybrid approach)
             session_json = json.dumps(session.to_dict(), default=str)
             self.redis_client.setex(
-                redis_key, self.config.session_timeout_minutes * 60, session_json
+                redis_key, self.config.session_timeout_minutes * 60, session_json,
             )
 
             return session
@@ -434,15 +429,15 @@ class SessionEncryptionManager:
             logger.error(f"Failed to get hybrid session: {e}")
             return None
 
-    def get_session(self, session_id: str) -> Optional[SessionData]:
-        """
-        Retrieve and decrypt a session.
+    def get_session(self, session_id: str) -> SessionData | None:
+        """Retrieve and decrypt a session.
 
         Args:
             session_id: Session ID
 
         Returns:
             SessionData object or None if not found
+
         """
         try:
             redis_key = f"session:{session_id}"
@@ -465,7 +460,7 @@ class SessionEncryptionManager:
             # Re-encrypt and store updated session
             encrypted_data = self._encrypt_session_data(session)
             self.redis_client.setex(
-                redis_key, self.config.session_timeout_minutes * 60, encrypted_data
+                redis_key, self.config.session_timeout_minutes * 60, encrypted_data,
             )
 
             return session
@@ -477,12 +472,11 @@ class SessionEncryptionManager:
     def update_session(
         self,
         session_id: str,
-        session_data: Dict[str, Any],
-        ip_address: Optional[str] = None,
-        user_agent: Optional[str] = None,
+        session_data: dict[str, Any],
+        ip_address: str | None = None,
+        user_agent: str | None = None,
     ) -> bool:
-        """
-        Update session data.
+        """Update session data.
 
         Args:
             session_id: Session ID
@@ -492,6 +486,7 @@ class SessionEncryptionManager:
 
         Returns:
             True if successful, False otherwise
+
         """
         try:
             session = self.get_session(session_id)
@@ -520,7 +515,7 @@ class SessionEncryptionManager:
             encrypted_data = self._encrypt_session_data(session)
             redis_key = f"session:{session_id}"
             self.redis_client.setex(
-                redis_key, self.config.session_timeout_minutes * 60, encrypted_data
+                redis_key, self.config.session_timeout_minutes * 60, encrypted_data,
             )
 
             return True
@@ -530,14 +525,14 @@ class SessionEncryptionManager:
             return False
 
     def delete_session(self, session_id: str) -> bool:
-        """
-        Delete a session.
+        """Delete a session.
 
         Args:
             session_id: Session ID
 
         Returns:
             True if successful, False otherwise
+
         """
         try:
             # Get session data before deletion for cleanup
@@ -570,7 +565,7 @@ class SessionEncryptionManager:
             return False
 
     def _validate_session_binding(
-        self, session: SessionData, ip_address: Optional[str], user_agent: Optional[str]
+        self, session: SessionData, ip_address: str | None, user_agent: str | None,
     ) -> bool:
         """Validate session binding to IP and user agent."""
         if not self.config.enable_session_binding:
@@ -580,14 +575,14 @@ class SessionEncryptionManager:
         if session.ip_address and ip_address:
             if session.ip_address != ip_address:
                 logger.warning(
-                    f"Session IP binding violation: {session.ip_address} != {ip_address}"
+                    f"Session IP binding violation: {session.ip_address} != {ip_address}",
                 )
                 return False
 
         # Check user agent binding
         if session.user_agent and user_agent:
             if session.user_agent != user_agent:
-                logger.warning(f"Session user agent binding violation")
+                logger.warning("Session user agent binding violation")
                 return False
 
         return True
@@ -602,7 +597,7 @@ class SessionEncryptionManager:
 
             # Set expiration for the user sessions set
             self.redis_client.expire(
-                user_sessions_key, self.config.session_timeout_minutes * 60
+                user_sessions_key, self.config.session_timeout_minutes * 60,
             )
 
             # Check concurrent session limits
@@ -645,13 +640,13 @@ class SessionEncryptionManager:
                 for session_id, _ in session_times[:sessions_to_remove]:
                     self.delete_session(session_id)
                     logger.info(
-                        f"Removed excess session {session_id} for user {user_id}"
+                        f"Removed excess session {session_id} for user {user_id}",
                     )
 
         except Exception as e:
             logger.error(f"Failed to enforce concurrent session limits: {e}")
 
-    def get_user_sessions(self, user_id: str) -> List[SessionData]:
+    def get_user_sessions(self, user_id: str) -> list[SessionData]:
         """Get all active sessions for a user."""
         try:
             user_sessions_key = f"user_sessions:{user_id}"
@@ -714,7 +709,7 @@ class SessionEncryptionManager:
                     if valid_sessions:
                         self.redis_client.sadd(key, *valid_sessions)
                         self.redis_client.expire(
-                            key, self.config.session_timeout_minutes * 60
+                            key, self.config.session_timeout_minutes * 60,
                         )
                     cleaned_count += len(session_ids) - len(valid_sessions)
 
@@ -725,7 +720,7 @@ class SessionEncryptionManager:
             logger.error(f"Failed to cleanup expired sessions: {e}")
             return 0
 
-    def get_session_statistics(self) -> Dict[str, Any]:
+    def get_session_statistics(self) -> dict[str, Any]:
         """Get session statistics."""
         try:
             # Count total sessions
@@ -751,7 +746,7 @@ class SessionEncryptionManager:
 
 
 # Global session encryption manager instance
-_session_encryption_manager: Optional[SessionEncryptionManager] = None
+_session_encryption_manager: SessionEncryptionManager | None = None
 
 
 def get_session_encryption_manager() -> SessionEncryptionManager:
@@ -763,10 +758,10 @@ def get_session_encryption_manager() -> SessionEncryptionManager:
 
 
 def create_encrypted_session(
-    user_id: Optional[str] = None,
-    ip_address: Optional[str] = None,
-    user_agent: Optional[str] = None,
-    session_data: Optional[Dict[str, Any]] = None,
+    user_id: str | None = None,
+    ip_address: str | None = None,
+    user_agent: str | None = None,
+    session_data: dict[str, Any] | None = None,
 ) -> str:
     """Create a new encrypted session (uses hybrid sessions by default)."""
     config = get_session_security_config()
@@ -774,13 +769,12 @@ def create_encrypted_session(
 
     if config.enable_hybrid_sessions:
         return manager.create_hybrid_session(
-            user_id, ip_address, user_agent, session_data
+            user_id, ip_address, user_agent, session_data,
         )
-    else:
-        return manager.create_session(user_id, ip_address, user_agent, session_data)
+    return manager.create_session(user_id, ip_address, user_agent, session_data)
 
 
-def get_encrypted_session(session_id_or_token: str) -> Optional[SessionData]:
+def get_encrypted_session(session_id_or_token: str) -> SessionData | None:
     """Get an encrypted session (handles both session IDs and hybrid tokens)."""
     config = get_session_security_config()
     manager = get_session_encryption_manager()
@@ -797,9 +791,9 @@ def get_encrypted_session(session_id_or_token: str) -> Optional[SessionData]:
 
 def update_encrypted_session(
     session_id: str,
-    session_data: Dict[str, Any],
-    ip_address: Optional[str] = None,
-    user_agent: Optional[str] = None,
+    session_data: dict[str, Any],
+    ip_address: str | None = None,
+    user_agent: str | None = None,
 ) -> bool:
     """Update an encrypted session."""
     manager = get_session_encryption_manager()
@@ -847,13 +841,12 @@ __all__ = [
 
 
 def create_session(
-    user_id: Optional[str] = None,
-    ip_address: Optional[str] = None,
-    user_agent: Optional[str] = None,
-    session_data: Optional[Dict[str, Any]] = None,
+    user_id: str | None = None,
+    ip_address: str | None = None,
+    user_agent: str | None = None,
+    session_data: dict[str, Any] | None = None,
 ) -> str:
-    """
-    Create a new session (recommended function - uses best available method).
+    """Create a new session (recommended function - uses best available method).
 
     This function automatically chooses the best session creation method:
     - Hybrid sessions (itsdangerous + Redis) if enabled
@@ -867,13 +860,13 @@ def create_session(
 
     Returns:
         Session token or ID
+
     """
     return create_encrypted_session(user_id, ip_address, user_agent, session_data)
 
 
-def get_session(session_id_or_token: str) -> Optional[SessionData]:
-    """
-    Get a session (recommended function - handles all session types).
+def get_session(session_id_or_token: str) -> SessionData | None:
+    """Get a session (recommended function - handles all session types).
 
     This function automatically handles:
     - Hybrid session tokens (itsdangerous-signed)
@@ -884,22 +877,23 @@ def get_session(session_id_or_token: str) -> Optional[SessionData]:
 
     Returns:
         SessionData object or None if not found
+
     """
     return get_encrypted_session(session_id_or_token)
 
 
 def create_hybrid_session(
-    user_id: Optional[str] = None,
-    ip_address: Optional[str] = None,
-    user_agent: Optional[str] = None,
-    session_data: Optional[Dict[str, Any]] = None,
+    user_id: str | None = None,
+    ip_address: str | None = None,
+    user_agent: str | None = None,
+    session_data: dict[str, Any] | None = None,
 ) -> str:
     """Create a new hybrid session using itsdangerous."""
     manager = get_session_encryption_manager()
     return manager.create_hybrid_session(user_id, ip_address, user_agent, session_data)
 
 
-def get_hybrid_session(session_token: str) -> Optional[SessionData]:
+def get_hybrid_session(session_token: str) -> SessionData | None:
     """Get a hybrid session using itsdangerous token."""
     manager = get_session_encryption_manager()
     return manager.get_hybrid_session(session_token)

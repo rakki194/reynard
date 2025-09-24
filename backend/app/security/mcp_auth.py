@@ -1,5 +1,4 @@
-"""
-🦊 Reynard MCP Authorization Service
+"""🦊 Reynard MCP Authorization Service
 ====================================
 
 Comprehensive MCP (Model Context Protocol) authentication and authorization system
@@ -67,7 +66,7 @@ class MCPTokenData(BaseModel):
     client_id: str = Field(..., description="MCP client identifier")
     client_type: str = Field(..., description="Type of MCP client (agent, tool, user)")
     permissions: list[str] = Field(
-        default_factory=list, description="List of granted permissions"
+        default_factory=list, description="List of granted permissions",
     )
     issued_at: float = Field(..., description="Token issuance timestamp")
     expires_at: float = Field(..., description="Token expiration timestamp")
@@ -81,7 +80,7 @@ class MCPClient(BaseModel):
     client_type: str = Field(..., description="Client type (agent, tool, user)")
     name: str = Field(..., description="Human-readable client name")
     permissions: list[str] = Field(
-        default_factory=list, description="Granted permissions"
+        default_factory=list, description="Granted permissions",
     )
     is_active: bool = Field(True, description="Whether client is active")
     created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
@@ -142,10 +141,9 @@ class MCPAuthService:
         logger.info(f"Initialized {len(default_clients)} default MCP clients")
 
     def generate_mcp_token(
-        self, client_id: str, additional_permissions: list[str] = None
+        self, client_id: str, additional_permissions: list[str] = None,
     ) -> str:
-        """
-        Generate a JWT token for MCP client authentication.
+        """Generate a JWT token for MCP client authentication.
 
         Args:
             client_id: MCP client identifier
@@ -156,6 +154,7 @@ class MCPAuthService:
 
         Raises:
             HTTPException: If client not found or inactive
+
         """
         if client_id not in self.clients:
             raise HTTPException(
@@ -190,20 +189,19 @@ class MCPAuthService:
 
         # Generate JWT token
         token = jwt.encode(
-            token_data.model_dump(), MCP_TOKEN_SECRET, algorithm=MCP_TOKEN_ALGORITHM
+            token_data.model_dump(), MCP_TOKEN_SECRET, algorithm=MCP_TOKEN_ALGORITHM,
         )
 
         # Update last used timestamp
         client.last_used = datetime.now(UTC)
 
         logger.info(
-            f"Generated MCP token for client '{client_id}' with {len(permissions)} permissions"
+            f"Generated MCP token for client '{client_id}' with {len(permissions)} permissions",
         )
         return token
 
     def validate_mcp_token(self, token: str) -> MCPTokenData:
-        """
-        Validate and decode MCP JWT token.
+        """Validate and decode MCP JWT token.
 
         Args:
             token: JWT token string
@@ -213,11 +211,12 @@ class MCPAuthService:
 
         Raises:
             HTTPException: If token is invalid, expired, or client inactive
+
         """
         try:
             # Decode JWT token
             payload = jwt.decode(
-                token, MCP_TOKEN_SECRET, algorithms=[MCP_TOKEN_ALGORITHM]
+                token, MCP_TOKEN_SECRET, algorithms=[MCP_TOKEN_ALGORITHM],
             )
 
             # Create token data object
@@ -248,11 +247,11 @@ class MCPAuthService:
 
         except jwt.ExpiredSignatureError:
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, detail="MCP token has expired"
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="MCP token has expired",
             )
         except jwt.InvalidTokenError:
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid MCP token"
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid MCP token",
             )
         except Exception as e:
             logger.error(f"MCP token validation failed: {e}")
@@ -262,10 +261,9 @@ class MCPAuthService:
             )
 
     def check_permission(
-        self, token_data: MCPTokenData, required_permission: str
+        self, token_data: MCPTokenData, required_permission: str,
     ) -> bool:
-        """
-        Check if token has required permission.
+        """Check if token has required permission.
 
         Args:
             token_data: Validated token data
@@ -273,6 +271,7 @@ class MCPAuthService:
 
         Returns:
             True if permission is granted
+
         """
         return required_permission in token_data.permissions
 
@@ -292,8 +291,7 @@ mcp_auth_service = MCPAuthService()
 async def get_mcp_client(
     credentials: HTTPAuthorizationCredentials = Depends(mcp_security),
 ) -> MCPTokenData:
-    """
-    Dependency to get authenticated MCP client from token.
+    """Dependency to get authenticated MCP client from token.
 
     Args:
         credentials: HTTP Bearer token credentials
@@ -303,6 +301,7 @@ async def get_mcp_client(
 
     Raises:
         HTTPException: If authentication fails
+
     """
     if not credentials or not credentials.credentials:
         raise HTTPException(
@@ -314,14 +313,14 @@ async def get_mcp_client(
 
 
 def require_mcp_permission(permission: str):
-    """
-    Decorator factory for requiring specific MCP permissions.
+    """Decorator factory for requiring specific MCP permissions.
 
     Args:
         permission: Required permission string
 
     Returns:
         Dependency function
+
     """
 
     async def permission_checker(

@@ -1,5 +1,4 @@
-"""
-Tests for MCP semantic search tools.
+"""Tests for MCP semantic search tools.
 
 Tests cover:
 - Enhanced Search Tools
@@ -57,7 +56,7 @@ class TestEnhancedSearchTools:
     async def test_natural_language_search_tool(self):
         """Test natural language search tool."""
         with patch(
-            "scripts.mcp.tools.search.enhanced_search_tools.requests.post"
+            "scripts.mcp.tools.search.enhanced_search_tools.requests.post",
         ) as mock_post:
             # Mock successful API response
             mock_response = MagicMock()
@@ -73,7 +72,7 @@ class TestEnhancedSearchTools:
                         "content": "def authenticate_user():",
                         "score": 0.95,
                         "context": "Authentication function",
-                    }
+                    },
                 ],
                 "search_time": 0.1,
             }
@@ -94,7 +93,7 @@ class TestEnhancedSearchTools:
     async def test_intelligent_search_tool(self):
         """Test intelligent search tool."""
         with patch(
-            "scripts.mcp.tools.search.enhanced_search_tools.requests.post"
+            "scripts.mcp.tools.search.enhanced_search_tools.requests.post",
         ) as mock_post:
             mock_response = MagicMock()
             mock_response.status_code = 200
@@ -108,7 +107,7 @@ class TestEnhancedSearchTools:
             mock_post.return_value = mock_response
 
             result = await self.tools.intelligent_search(
-                query="test query", max_results=10
+                query="test query", max_results=10,
             )
 
             assert result["success"] is True
@@ -117,7 +116,7 @@ class TestEnhancedSearchTools:
     async def test_contextual_search_tool(self):
         """Test contextual search tool."""
         with patch(
-            "scripts.mcp.tools.search.enhanced_search_tools.requests.post"
+            "scripts.mcp.tools.search.enhanced_search_tools.requests.post",
         ) as mock_post:
             mock_response = MagicMock()
             mock_response.status_code = 200
@@ -131,7 +130,7 @@ class TestEnhancedSearchTools:
             mock_post.return_value = mock_response
 
             result = await self.tools.contextual_search(
-                query="test query", context="test context", max_results=10
+                query="test query", context="test context", max_results=10,
             )
 
             assert result["success"] is True
@@ -140,7 +139,7 @@ class TestEnhancedSearchTools:
     async def test_analyze_query_tool(self):
         """Test analyze query tool."""
         with patch(
-            "scripts.mcp.tools.search.enhanced_search_tools.requests.post"
+            "scripts.mcp.tools.search.enhanced_search_tools.requests.post",
         ) as mock_post:
             mock_response = MagicMock()
             mock_response.status_code = 200
@@ -161,7 +160,7 @@ class TestEnhancedSearchTools:
     async def test_get_intelligent_suggestions_tool(self):
         """Test get intelligent suggestions tool."""
         with patch(
-            "scripts.mcp.tools.search.enhanced_search_tools.requests.post"
+            "scripts.mcp.tools.search.enhanced_search_tools.requests.post",
         ) as mock_post:
             mock_response = MagicMock()
             mock_response.status_code = 200
@@ -169,7 +168,7 @@ class TestEnhancedSearchTools:
                 "suggestions": [
                     {"query": "find function", "confidence": 0.9},
                     {"query": "locate method", "confidence": 0.8},
-                ]
+                ],
             }
             mock_post.return_value = mock_response
 
@@ -182,7 +181,7 @@ class TestEnhancedSearchTools:
     async def test_search_with_examples_tool(self):
         """Test search with examples tool."""
         with patch(
-            "scripts.mcp.tools.search.enhanced_search_tools.requests.post"
+            "scripts.mcp.tools.search.enhanced_search_tools.requests.post",
         ) as mock_post:
             mock_response = MagicMock()
             mock_response.status_code = 200
@@ -196,7 +195,7 @@ class TestEnhancedSearchTools:
             mock_post.return_value = mock_response
 
             result = await self.tools.search_with_examples(
-                query="test query", examples=["example1", "example2"], max_results=10
+                query="test query", examples=["example1", "example2"], max_results=10,
             )
 
             assert result["success"] is True
@@ -205,7 +204,7 @@ class TestEnhancedSearchTools:
     async def test_enhanced_search_health_check_tool(self):
         """Test enhanced search health check tool."""
         with patch(
-            "scripts.mcp.tools.search.enhanced_search_tools.requests.get"
+            "scripts.mcp.tools.search.enhanced_search_tools.requests.get",
         ) as mock_get:
             mock_response = MagicMock()
             mock_response.status_code = 200
@@ -226,7 +225,7 @@ class TestEnhancedSearchTools:
     async def test_tool_error_handling(self):
         """Test tool error handling."""
         with patch(
-            "scripts.mcp.tools.search.enhanced_search_tools.requests.post"
+            "scripts.mcp.tools.search.enhanced_search_tools.requests.post",
         ) as mock_post:
             # Mock API error
             mock_response = MagicMock()
@@ -235,7 +234,7 @@ class TestEnhancedSearchTools:
             mock_post.return_value = mock_response
 
             result = await self.tools.natural_language_search(
-                query="test query", max_results=10
+                query="test query", max_results=10,
             )
 
             assert result["success"] is False
@@ -245,13 +244,13 @@ class TestEnhancedSearchTools:
     async def test_tool_network_error(self):
         """Test tool network error handling."""
         with patch(
-            "scripts.mcp.tools.search.enhanced_search_tools.requests.post"
+            "scripts.mcp.tools.search.enhanced_search_tools.requests.post",
         ) as mock_post:
             # Mock network error
             mock_post.side_effect = Exception("Network error")
 
             result = await self.tools.natural_language_search(
-                query="test query", max_results=10
+                query="test query", max_results=10,
             )
 
             assert result["success"] is False

@@ -1,5 +1,4 @@
-"""
-Tests for utility modules.
+"""Tests for utility modules.
 """
 
 import sys
@@ -170,7 +169,7 @@ class TestCulturalAdapter:
                 suggested_replacement="good",
                 context="This is the best",
                 confidence_score=0.5,
-            )
+            ),
         ]
 
         adapted = adapter.adapt_findings(findings, "western")
@@ -192,7 +191,7 @@ class TestCulturalAdapter:
                 suggested_replacement="good",
                 context="This is the best",
                 confidence_score=0.5,
-            )
+            ),
         ]
 
         adapted = adapter.adapt_findings(findings, "eastern")
@@ -214,7 +213,7 @@ class TestCulturalAdapter:
                 suggested_replacement="good",
                 context="This is the best",
                 confidence_score=0.5,
-            )
+            ),
         ]
 
         adapted = adapter.adapt_findings(findings, "nordic")
@@ -236,7 +235,7 @@ class TestCulturalAdapter:
                 suggested_replacement="good",
                 context="This is the best",
                 confidence_score=0.5,
-            )
+            ),
         ]
 
         adapted = adapter.adapt_findings(findings, "unknown")
@@ -273,7 +272,7 @@ class TestMetricsCalculator:
                 suggested_replacement="good",
                 context="This is the best",
                 confidence_score=0.9,
-            )
+            ),
         ]
 
         score = calculator.calculate_humility_score(findings)
@@ -287,7 +286,7 @@ class TestMetricsCalculator:
         predicted_findings = []
 
         metrics = calculator.calculate_detection_metrics(
-            true_findings, predicted_findings
+            true_findings, predicted_findings,
         )
 
         assert hasattr(metrics, "precision")
@@ -319,7 +318,7 @@ class TestReportGenerator:
                 suggested_replacement="good",
                 context="This is the best",
                 confidence_score=0.9,
-            )
+            ),
         ]
 
         profile = HumilityProfile(

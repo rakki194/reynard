@@ -8,7 +8,7 @@ import { Show, For, createEffect, createSignal, onCleanup, splitProps, createMem
 import { useChat } from "../composables/useChat";
 import { ChatMessage } from "./ChatMessage";
 import { MessageInput } from "./MessageInput";
-export const ChatContainer = props => {
+export const ChatContainer = (props: any) => {
   const [local] = splitProps(props, [
     "endpoint",
     "authHeaders",
@@ -27,9 +27,9 @@ export const ChatContainer = props => {
     "onError",
   ]);
   const [autoScrollEnabled, setAutoScrollEnabled] = createSignal(true);
-  let messagesContainerRef;
+  let messagesContainerRef: HTMLDivElement | undefined;
   let isUserScrolling = false;
-  let scrollTimeout;
+  let scrollTimeout: any;
   // Initialize chat composable
   const chat = createMemo(() =>
     useChat({
@@ -82,7 +82,7 @@ export const ChatContainer = props => {
     }
   });
   // Handle message submission
-  const handleMessageSubmit = async content => {
+  const handleMessageSubmit = async (content: any) => {
     try {
       await chat().actions.sendMessage(content);
       local.onMessageSent?.(chat().messages()[chat().messages().length - 1]);
@@ -198,7 +198,7 @@ export const ChatContainer = props => {
                   isLatest={index() === chat().messages().length - 1}
                   showTimestamp={local.config?.showTimestamps}
                   showTokenCount={local.config?.showTokenCounts}
-                  onToolAction={(action, toolCall) => {
+                  onToolAction={(action: any, toolCall: any) => {
                     console.log("Tool action:", action, toolCall);
                     // Handle tool actions here
                   }}
@@ -265,8 +265,8 @@ export const ChatContainer = props => {
           <Show when={chat().error()}>
             <div class="reynard-chat-container__error">
               <span class="reynard-chat-container__error-icon">⚠️</span>
-              <span class="reynard-chat-container__error-text">{chat().error().message}</span>
-              <Show when={chat().error().recoverable}>
+              <span class="reynard-chat-container__error-text">{chat().error()?.message}</span>
+              <Show when={chat().error()?.recoverable}>
                 <button class="reynard-chat-container__error-retry" onClick={() => chat().actions.retryLastMessage()}>
                   Retry
                 </button>

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Release Automation Example for PHOENIX Control
+"""Release Automation Example for PHOENIX Control
 
 Demonstrates the complete release automation workflow including
 version management, changelog updates, and git operations.
@@ -42,7 +41,7 @@ async def main():
 
         # Suggest next version based on change type
         next_version = await version_manager.suggest_next_version(
-            current_version, "feature"
+            current_version, "feature",
         )
         if next_version:
             print(f"   Suggested Next Version: {next_version}")

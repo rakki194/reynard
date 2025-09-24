@@ -93,11 +93,11 @@ def probe_endpoint(token: str, path: str, payload: dict) -> None:
         exists_after = Path(payload.get("output_path", "")).exists()
         if exists_after and not existed_before:
             print(
-                "    [VULNERABLE] Endpoint wrote outside ROOT_DIR using absolute output_path."
+                "    [VULNERABLE] Endpoint wrote outside ROOT_DIR using absolute output_path.",
             )
         elif exists_after and existed_before:
             print(
-                "    [POTENTIALLY VULNERABLE] Target file pre-existed; verify timestamps."
+                "    [POTENTIALLY VULNERABLE] Target file pre-existed; verify timestamps.",
             )
         else:
             print("    [OK] No file created outside ROOT_DIR.")
@@ -105,7 +105,7 @@ def probe_endpoint(token: str, path: str, payload: dict) -> None:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Probe output_path writes outside ROOT_DIR"
+        description="Probe output_path writes outside ROOT_DIR",
     )
     parser.add_argument("--username", default=USERNAME)
     parser.add_argument("--password", default=PASSWORD)

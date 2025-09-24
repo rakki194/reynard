@@ -1,13 +1,11 @@
-"""
-Agent Email API routes for Reynard Backend.
+"""Agent Email API routes for Reynard Backend.
 
 This module provides REST API endpoints for agent-to-agent email communication
 and automated email generation based on agent interactions.
 """
 
 import logging
-from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 
@@ -23,12 +21,10 @@ from ..models.agent_email_models import (
 from ..models.email_models import (
     EmailBulkRequest,
     EmailBulkResponse,
-    EmailSendRequest,
     EmailSendResponse,
 )
 from ..services.email.ai.agent_email_service import AgentEmailService
 from ..services.email.core.email_service import (
-    EmailAttachment,
     EmailMessage,
     email_service,
 )
@@ -43,10 +39,9 @@ agent_email_service = AgentEmailService()
 
 @router.get("/{agent_id}/config", response_model=AgentEmailConfig)
 async def get_agent_email_config(
-    agent_id: str, current_user: dict = Depends(get_current_active_user)
+    agent_id: str, current_user: dict = Depends(get_current_active_user),
 ) -> AgentEmailConfig:
-    """
-    Get agent email configuration.
+    """Get agent email configuration.
 
     Args:
         agent_id: Agent ID
@@ -54,6 +49,7 @@ async def get_agent_email_config(
 
     Returns:
         AgentEmailConfig: Agent email configuration
+
     """
     try:
         config = await agent_email_service.get_agent_config(agent_id)
@@ -67,7 +63,7 @@ async def get_agent_email_config(
         logger.error(f"Failed to get agent config for {agent_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get agent config: {str(e)}",
+            detail=f"Failed to get agent config: {e!s}",
         )
 
 
@@ -77,8 +73,7 @@ async def update_agent_email_config(
     config: AgentEmailConfig,
     current_user: dict = Depends(get_current_active_user),
 ) -> AgentEmailConfig:
-    """
-    Update agent email configuration.
+    """Update agent email configuration.
 
     Args:
         agent_id: Agent ID
@@ -87,6 +82,7 @@ async def update_agent_email_config(
 
     Returns:
         AgentEmailConfig: Updated agent email configuration
+
     """
     try:
         updated_config = await agent_email_service.update_agent_config(agent_id, config)
@@ -95,16 +91,15 @@ async def update_agent_email_config(
         logger.error(f"Failed to update agent config for {agent_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to update agent config: {str(e)}",
+            detail=f"Failed to update agent config: {e!s}",
         )
 
 
 @router.get("/{agent_id}/stats", response_model=AgentEmailStats)
 async def get_agent_email_stats(
-    agent_id: str, current_user: dict = Depends(get_current_active_user)
+    agent_id: str, current_user: dict = Depends(get_current_active_user),
 ) -> AgentEmailStats:
-    """
-    Get agent email statistics.
+    """Get agent email statistics.
 
     Args:
         agent_id: Agent ID
@@ -112,6 +107,7 @@ async def get_agent_email_stats(
 
     Returns:
         AgentEmailStats: Agent email statistics
+
     """
     try:
         stats = await agent_email_service.get_agent_stats(agent_id)
@@ -125,16 +121,15 @@ async def get_agent_email_stats(
         logger.error(f"Failed to get agent stats for {agent_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get agent stats: {str(e)}",
+            detail=f"Failed to get agent stats: {e!s}",
         )
 
 
-@router.get("/{agent_id}/templates", response_model=List[AgentEmailTemplate])
+@router.get("/{agent_id}/templates", response_model=list[AgentEmailTemplate])
 async def get_agent_email_templates(
-    agent_id: str, current_user: dict = Depends(get_current_active_user)
-) -> List[AgentEmailTemplate]:
-    """
-    Get agent email templates.
+    agent_id: str, current_user: dict = Depends(get_current_active_user),
+) -> list[AgentEmailTemplate]:
+    """Get agent email templates.
 
     Args:
         agent_id: Agent ID
@@ -142,6 +137,7 @@ async def get_agent_email_templates(
 
     Returns:
         List[AgentEmailTemplate]: Agent email templates
+
     """
     try:
         templates = await agent_email_service.get_agent_templates(agent_id)
@@ -150,7 +146,7 @@ async def get_agent_email_templates(
         logger.error(f"Failed to get agent templates for {agent_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get agent templates: {str(e)}",
+            detail=f"Failed to get agent templates: {e!s}",
         )
 
 
@@ -160,8 +156,7 @@ async def create_agent_email_template(
     template: AgentEmailTemplate,
     current_user: dict = Depends(get_current_active_user),
 ) -> AgentEmailTemplate:
-    """
-    Create agent email template.
+    """Create agent email template.
 
     Args:
         agent_id: Agent ID
@@ -170,17 +165,18 @@ async def create_agent_email_template(
 
     Returns:
         AgentEmailTemplate: Created agent email template
+
     """
     try:
         created_template = await agent_email_service.create_agent_template(
-            agent_id, template
+            agent_id, template,
         )
         return created_template
     except Exception as e:
         logger.error(f"Failed to create agent template for {agent_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to create agent template: {str(e)}",
+            detail=f"Failed to create agent template: {e!s}",
         )
 
 
@@ -189,9 +185,8 @@ async def delete_agent_email_template(
     agent_id: str,
     template_id: str,
     current_user: dict = Depends(get_current_active_user),
-) -> Dict[str, Any]:
-    """
-    Delete agent email template.
+) -> dict[str, Any]:
+    """Delete agent email template.
 
     Args:
         agent_id: Agent ID
@@ -200,6 +195,7 @@ async def delete_agent_email_template(
 
     Returns:
         Dict: Deletion result
+
     """
     try:
         success = await agent_email_service.delete_agent_template(agent_id, template_id)
@@ -211,11 +207,11 @@ async def delete_agent_email_template(
         return {"success": True, "message": "Template deleted successfully"}
     except Exception as e:
         logger.error(
-            f"Failed to delete agent template {template_id} for {agent_id}: {e}"
+            f"Failed to delete agent template {template_id} for {agent_id}: {e}",
         )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to delete agent template: {str(e)}",
+            detail=f"Failed to delete agent template: {e!s}",
         )
 
 
@@ -225,8 +221,7 @@ async def send_agent_email(
     request: AgentEmailSendRequest,
     current_user: dict = Depends(get_current_active_user),
 ) -> EmailSendResponse:
-    """
-    Send email from one agent to another.
+    """Send email from one agent to another.
 
     Args:
         agent_id: Sender agent ID
@@ -235,11 +230,12 @@ async def send_agent_email(
 
     Returns:
         EmailSendResponse: Send result
+
     """
     try:
         # Get target agent email
         target_config = await agent_email_service.get_agent_config(
-            request.target_agent_id
+            request.target_agent_id,
         )
         if not target_config:
             raise HTTPException(
@@ -265,7 +261,7 @@ async def send_agent_email(
         # Update agent stats
         await agent_email_service.update_agent_stats(agent_id, "sent")
         await agent_email_service.update_agent_stats(
-            request.target_agent_id, "received"
+            request.target_agent_id, "received",
         )
 
         # Log the interaction
@@ -291,7 +287,7 @@ async def send_agent_email(
         logger.error(f"Failed to send agent email from {agent_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to send agent email: {str(e)}",
+            detail=f"Failed to send agent email: {e!s}",
         )
 
 
@@ -301,8 +297,7 @@ async def send_agent_bulk_email(
     request: AgentEmailBulkRequest,
     current_user: dict = Depends(get_current_active_user),
 ) -> EmailBulkResponse:
-    """
-    Send bulk emails from one agent to multiple agents.
+    """Send bulk emails from one agent to multiple agents.
 
     Args:
         agent_id: Sender agent ID
@@ -311,6 +306,7 @@ async def send_agent_bulk_email(
 
     Returns:
         EmailBulkResponse: Bulk send results
+
     """
     try:
         # Get target agent emails
@@ -341,7 +337,7 @@ async def send_agent_bulk_email(
 
         # Update agent stats
         await agent_email_service.update_agent_stats(
-            agent_id, "sent", len(target_emails)
+            agent_id, "sent", len(target_emails),
         )
         for target_agent_id in request.target_agent_ids:
             await agent_email_service.update_agent_stats(target_agent_id, "received")
@@ -364,7 +360,7 @@ async def send_agent_bulk_email(
         logger.error(f"Failed to send agent bulk email from {agent_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to send agent bulk email: {str(e)}",
+            detail=f"Failed to send agent bulk email: {e!s}",
         )
 
 
@@ -374,9 +370,8 @@ async def trigger_agent_automated_email(
     request: AgentEmailTriggerRequest,
     background_tasks: BackgroundTasks,
     current_user: dict = Depends(get_current_active_user),
-) -> Dict[str, Any]:
-    """
-    Trigger automated email for an agent based on events.
+) -> dict[str, Any]:
+    """Trigger automated email for an agent based on events.
 
     Args:
         agent_id: Agent ID
@@ -386,6 +381,7 @@ async def trigger_agent_automated_email(
 
     Returns:
         Dict: Trigger result
+
     """
     try:
         # Process the trigger in background
@@ -406,7 +402,7 @@ async def trigger_agent_automated_email(
         logger.error(f"Failed to trigger automated email for {agent_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to trigger automated email: {str(e)}",
+            detail=f"Failed to trigger automated email: {e!s}",
         )
 
 
@@ -416,9 +412,8 @@ async def get_agent_email_messages(
     limit: int = 50,
     offset: int = 0,
     current_user: dict = Depends(get_current_active_user),
-) -> Dict[str, Any]:
-    """
-    Get agent email messages.
+) -> dict[str, Any]:
+    """Get agent email messages.
 
     Args:
         agent_id: Agent ID
@@ -428,6 +423,7 @@ async def get_agent_email_messages(
 
     Returns:
         Dict: Agent email messages
+
     """
     try:
         messages = await agent_email_service.get_agent_messages(agent_id, limit, offset)
@@ -441,7 +437,7 @@ async def get_agent_email_messages(
         logger.error(f"Failed to get agent messages for {agent_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get agent messages: {str(e)}",
+            detail=f"Failed to get agent messages: {e!s}",
         )
 
 
@@ -451,9 +447,8 @@ async def get_agent_email_interactions(
     limit: int = 50,
     offset: int = 0,
     current_user: dict = Depends(get_current_active_user),
-) -> Dict[str, Any]:
-    """
-    Get agent email interactions.
+) -> dict[str, Any]:
+    """Get agent email interactions.
 
     Args:
         agent_id: Agent ID
@@ -463,10 +458,11 @@ async def get_agent_email_interactions(
 
     Returns:
         Dict: Agent email interactions
+
     """
     try:
         interactions = await agent_email_service.get_agent_interactions(
-            agent_id, limit, offset
+            agent_id, limit, offset,
         )
         return {
             "interactions": interactions,
@@ -478,5 +474,5 @@ async def get_agent_email_interactions(
         logger.error(f"Failed to get agent interactions for {agent_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get agent interactions: {str(e)}",
+            detail=f"Failed to get agent interactions: {e!s}",
         )

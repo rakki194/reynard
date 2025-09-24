@@ -1,5 +1,4 @@
-"""
-🔐 Comprehensive Key Management System for Reynard Backend
+"""🔐 Comprehensive Key Management System for Reynard Backend
 
 This module provides enterprise-grade key management with HSM simulation,
 key rotation, and secure key storage. It serves as the foundation for all
@@ -30,10 +29,10 @@ import json
 import logging
 import secrets
 import time
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes, serialization
@@ -88,12 +87,12 @@ class KeyMetadata:
         key_id: str,
         key_type: KeyType,
         status: KeyStatus = KeyStatus.ACTIVE,
-        created_at: Optional[datetime] = None,
-        expires_at: Optional[datetime] = None,
-        last_used: Optional[datetime] = None,
+        created_at: datetime | None = None,
+        expires_at: datetime | None = None,
+        last_used: datetime | None = None,
         usage_count: int = 0,
         rotation_schedule_days: int = 90,
-        metadata: Optional[Dict[str, Any]] = None,
+        metadata: dict[str, Any] | None = None,
     ):
         self.key_id = key_id
         self.key_type = key_type
@@ -105,7 +104,7 @@ class KeyMetadata:
         self.rotation_schedule_days = rotation_schedule_days
         self.metadata = metadata or {}
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for serialization."""
         return {
             "key_id": self.key_id,
@@ -120,7 +119,7 @@ class KeyMetadata:
         }
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "KeyMetadata":
+    def from_dict(cls, data: dict[str, Any]) -> "KeyMetadata":
         """Create from dictionary."""
         return cls(
             key_id=data["key_id"],
@@ -148,8 +147,7 @@ class KeyMetadata:
 
 
 class KeyManager:
-    """
-    Central key management system with HSM simulation.
+    """Central key management system with HSM simulation.
 
     This class provides comprehensive key management including:
     - Key generation with secure entropy
@@ -161,15 +159,15 @@ class KeyManager:
 
     def __init__(
         self,
-        master_password: Optional[str] = None,
+        master_password: str | None = None,
         use_database: bool = True,
     ):
-        """
-        Initialize the key manager.
+        """Initialize the key manager.
 
         Args:
             master_password: Master password for key encryption (default: from env)
             use_database: Whether to use database storage (default: True)
+
         """
         # Master password for key encryption
         self.master_password = master_password or self._get_master_password()
@@ -181,7 +179,7 @@ class KeyManager:
         self.key_cache_service = get_key_cache_service()
 
         # Key metadata storage (in-memory cache)
-        self._metadata: Dict[str, KeyMetadata] = {}
+        self._metadata: dict[str, KeyMetadata] = {}
 
         # Load existing metadata from database
         if self.use_database:
@@ -204,7 +202,7 @@ class KeyManager:
             master_password = secrets.token_urlsafe(32)
             logger.warning(
                 "No REYNARD_MASTER_PASSWORD found in environment. "
-                "Generated temporary password. Set REYNARD_MASTER_PASSWORD for production."
+                "Generated temporary password. Set REYNARD_MASTER_PASSWORD for production.",
             )
         return master_password
 
@@ -243,7 +241,7 @@ class KeyManager:
                     self._metadata[record.key_id] = metadata
 
                 logger.info(
-                    f"Loaded metadata for {len(self._metadata)} keys from database"
+                    f"Loaded metadata for {len(self._metadata)} keys from database",
                 )
         except Exception as e:
             logger.error(f"Failed to load key metadata from database: {e}")
@@ -253,14 +251,14 @@ class KeyManager:
         """Load key metadata from files (backward compatibility)."""
         if self.metadata_file.exists():
             try:
-                with open(self.metadata_file, "r") as f:
+                with open(self.metadata_file) as f:
                     data = json.load(f)
 
                 for key_id, metadata_dict in data.items():
                     self._metadata[key_id] = KeyMetadata.from_dict(metadata_dict)
 
                 logger.info(
-                    f"Loaded metadata for {len(self._metadata)} keys from files"
+                    f"Loaded metadata for {len(self._metadata)} keys from files",
                 )
             except Exception as e:
                 logger.error(f"Failed to load key metadata from files: {e}")
@@ -289,7 +287,7 @@ class KeyManager:
                         metadata.rotation_schedule_days
                     )
                     existing_key.key_metadata = json.dumps(metadata.metadata)
-                    existing_key.updated_at = datetime.now(timezone.utc)
+                    existing_key.updated_at = datetime.now(UTC)
                 else:
                     # Create new key record
                     new_key = KeyStorage(
@@ -374,7 +372,7 @@ class KeyManager:
 
         # Encrypt the key
         cipher = Cipher(
-            algorithms.AES(encryption_key), modes.CBC(iv), backend=default_backend()
+            algorithms.AES(encryption_key), modes.CBC(iv), backend=default_backend(),
         )
         encryptor = cipher.encryptor()
 
@@ -407,9 +405,9 @@ class KeyManager:
                 if existing_key:
                     # Update existing key data
                     existing_key.encrypted_key_data = base64.b64encode(
-                        key_data
+                        key_data,
                     ).decode()
-                    existing_key.updated_at = datetime.now(timezone.utc)
+                    existing_key.updated_at = datetime.now(UTC)
                 else:
                     # Create new key record
                     new_key = KeyStorage(
@@ -433,7 +431,7 @@ class KeyManager:
         except Exception as e:
             logger.error(f"Failed to save key {key_id} to database: {e}")
 
-    def _load_key_from_database(self, key_id: str) -> Optional[bytes]:
+    def _load_key_from_database(self, key_id: str) -> bytes | None:
         """Load encrypted key data from database."""
         try:
             with get_key_storage_session() as session:
@@ -466,7 +464,7 @@ class KeyManager:
         except Exception as e:
             logger.error(f"Failed to save key {key_id} to file: {e}")
 
-    def _load_key_from_file(self, key_id: str) -> Optional[bytes]:
+    def _load_key_from_file(self, key_id: str) -> bytes | None:
         """Load encrypted key data from file (backward compatibility)."""
         try:
             key_file = self.keys_directory / f"{key_id}.key"
@@ -500,7 +498,7 @@ class KeyManager:
 
         # Decrypt the key
         cipher = Cipher(
-            algorithms.AES(decryption_key), modes.CBC(iv), backend=default_backend()
+            algorithms.AES(decryption_key), modes.CBC(iv), backend=default_backend(),
         )
         decryptor = cipher.decryptor()
 
@@ -516,11 +514,10 @@ class KeyManager:
         key_type: KeyType,
         key_size: int = 256,
         rotation_schedule_days: int = 90,
-        expires_in_days: Optional[int] = None,
-        metadata: Optional[Dict[str, Any]] = None,
+        expires_in_days: int | None = None,
+        metadata: dict[str, Any] | None = None,
     ) -> bytes:
-        """
-        Generate a new cryptographic key.
+        """Generate a new cryptographic key.
 
         Args:
             key_id: Unique identifier for the key
@@ -532,6 +529,7 @@ class KeyManager:
 
         Returns:
             Generated key bytes
+
         """
         if key_id in self._metadata:
             raise ValueError(f"Key {key_id} already exists")
@@ -540,7 +538,7 @@ class KeyManager:
         if key_type in [KeyType.JWT_SIGNING, KeyType.SYSTEM_MASTER]:
             # Generate RSA key for signing
             private_key = rsa.generate_private_key(
-                public_exponent=65537, key_size=2048, backend=default_backend()
+                public_exponent=65537, key_size=2048, backend=default_backend(),
             )
             key_data = private_key.private_bytes(
                 encoding=serialization.Encoding.PEM,
@@ -603,9 +601,8 @@ class KeyManager:
             # Set secure permissions
             key_file.chmod(0o600)
 
-    def get_key(self, key_id: str, update_usage: bool = True) -> Optional[bytes]:
-        """
-        Retrieve a key by ID.
+    def get_key(self, key_id: str, update_usage: bool = True) -> bytes | None:
+        """Retrieve a key by ID.
 
         Args:
             key_id: Key identifier
@@ -613,6 +610,7 @@ class KeyManager:
 
         Returns:
             Key bytes or None if not found
+
         """
         # Check Redis cache first
         if self.use_database:
@@ -663,7 +661,7 @@ class KeyManager:
         """Update key usage statistics."""
         if key_id in self._metadata:
             metadata = self._metadata[key_id]
-            metadata.last_used = datetime.now(timezone.utc)
+            metadata.last_used = datetime.now(UTC)
             metadata.usage_count += 1
 
             if self.use_database:
@@ -674,14 +672,14 @@ class KeyManager:
                 self._save_metadata_to_files()
 
     def rotate_key(self, key_id: str) -> bytes:
-        """
-        Rotate a key by generating a new version.
+        """Rotate a key by generating a new version.
 
         Args:
             key_id: Key identifier to rotate
 
         Returns:
             New key bytes
+
         """
         if key_id not in self._metadata:
             raise ValueError(f"Key {key_id} not found")
@@ -718,8 +716,8 @@ class KeyManager:
             logger.info(f"Revoked key {key_id}")
 
     def list_keys(
-        self, key_type: Optional[KeyType] = None, status: Optional[KeyStatus] = None
-    ) -> List[KeyMetadata]:
+        self, key_type: KeyType | None = None, status: KeyStatus | None = None,
+    ) -> list[KeyMetadata]:
         """List keys with optional filtering."""
         keys = list(self._metadata.values())
 
@@ -731,13 +729,13 @@ class KeyManager:
 
         return keys
 
-    def get_key_metadata(self, key_id: str) -> Optional[KeyMetadata]:
+    def get_key_metadata(self, key_id: str) -> KeyMetadata | None:
         """Get metadata for a key."""
         return self._metadata.get(key_id)
 
     def cleanup_expired_keys(self) -> int:
         """Remove expired keys and return count of cleaned keys."""
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         expired_keys = []
 
         for key_id, metadata in self._metadata.items():
@@ -764,10 +762,10 @@ class KeyManager:
         key_id: str,
         operation: str,
         success: bool,
-        user_id: Optional[str] = None,
-        ip_address: Optional[str] = None,
-        user_agent: Optional[str] = None,
-        error_message: Optional[str] = None,
+        user_id: str | None = None,
+        ip_address: str | None = None,
+        user_agent: str | None = None,
+        error_message: str | None = None,
     ) -> None:
         """Log key access for audit purposes."""
         if not self.use_database:
@@ -834,7 +832,7 @@ class KeyManager:
 
 
 # Global key manager instance
-_key_manager: Optional[KeyManager] = None
+_key_manager: KeyManager | None = None
 
 
 def get_key_manager() -> KeyManager:
@@ -846,8 +844,8 @@ def get_key_manager() -> KeyManager:
 
 
 def get_key(
-    key_id: str, key_type: KeyType, update_usage: bool = True
-) -> Optional[bytes]:
+    key_id: str, key_type: KeyType, update_usage: bool = True,
+) -> bytes | None:
     """Get a key by ID and type."""
     key_manager = get_key_manager()
     return key_manager.get_key(key_id, update_usage)
@@ -858,8 +856,8 @@ def generate_key(
     key_type: KeyType,
     key_size: int = 256,
     rotation_schedule_days: int = 90,
-    expires_in_days: Optional[int] = None,
-    metadata: Optional[Dict[str, Any]] = None,
+    expires_in_days: int | None = None,
+    metadata: dict[str, Any] | None = None,
 ) -> bytes:
     """Generate a new key."""
     key_manager = get_key_manager()
@@ -886,8 +884,8 @@ def revoke_key(key_id: str) -> None:
 
 
 def list_keys(
-    key_type: Optional[KeyType] = None, status: Optional[KeyStatus] = None
-) -> List[KeyMetadata]:
+    key_type: KeyType | None = None, status: KeyStatus | None = None,
+) -> list[KeyMetadata]:
     """List keys with optional filtering."""
     key_manager = get_key_manager()
     return key_manager.list_keys(key_type, status)

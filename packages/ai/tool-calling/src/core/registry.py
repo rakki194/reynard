@@ -1,5 +1,4 @@
-"""
-🦊 Reynard AI Tool Registry System
+"""🦊 Reynard AI Tool Registry System
 =================================
 
 Comprehensive tool registry and management system for the Reynard AI tool-calling
@@ -49,8 +48,7 @@ logger = logging.getLogger(__name__)
 
 
 class ToolRegistry:
-    """
-    Central registry for managing AI tools with advanced validation and security features.
+    """Central registry for managing AI tools with advanced validation and security features.
 
     The ToolRegistry serves as the central hub for all AI tool operations within the
     Reynard ecosystem. It provides comprehensive tool lifecycle management, including
@@ -84,11 +82,11 @@ class ToolRegistry:
         registry.register_tool(my_tool)
         result = await registry.execute_tool("my_tool", context, parameters)
         ```
+
     """
 
     def __init__(self, validation_level=None):
-        """
-        Initialize the ToolRegistry with optional validation level configuration.
+        """Initialize the ToolRegistry with optional validation level configuration.
 
         Creates a new tool registry instance with empty indexes and configurable
         validation settings. The registry starts with no tools and builds its
@@ -108,6 +106,7 @@ class ToolRegistry:
             _tags (dict[str, set[str]]): Tag-based tool index
             _validation_level (ValidationLevel): Current validation level
             _validator (ToolValidator): Lazy-loaded validation engine
+
         """
         self._tools: dict[str, BaseTool] = {}
         self._categories: dict[str, set[str]] = {}
@@ -116,8 +115,7 @@ class ToolRegistry:
         self._validator = None
 
     def register_tool(self, tool: BaseTool) -> None:
-        """
-        Register a tool in the registry with comprehensive indexing.
+        """Register a tool in the registry with comprehensive indexing.
 
         Adds a new tool to the registry and updates all relevant indexes for
         efficient discovery and filtering. The registration process includes
@@ -147,6 +145,7 @@ class ToolRegistry:
             registry.register_tool(my_tool)
             # Tool is now available for discovery and execution
             ```
+
         """
         if tool.name in self._tools:
             raise ValueError(f"Tool '{tool.name}' is already registered")
@@ -168,14 +167,14 @@ class ToolRegistry:
         logger.info(f"Registered tool: {tool.name} (category: {category})")
 
     def unregister_tool(self, tool_name: str) -> bool:
-        """
-        Unregister a tool from the registry.
+        """Unregister a tool from the registry.
 
         Args:
             tool_name: Name of the tool to unregister
 
         Returns:
             True if tool was unregistered, False if not found
+
         """
         if tool_name not in self._tools:
             return False
@@ -202,14 +201,14 @@ class ToolRegistry:
         return True
 
     def get_tool(self, tool_name: str) -> BaseTool | None:
-        """
-        Get a tool by name.
+        """Get a tool by name.
 
         Args:
             tool_name: Name of the tool
 
         Returns:
             Tool instance or None if not found
+
         """
         return self._tools.get(tool_name)
 
@@ -220,8 +219,7 @@ class ToolRegistry:
         permission: str | None = None,
         user_role: str | None = None,
     ) -> list[BaseTool]:
-        """
-        List available tools with optional filtering.
+        """List available tools with optional filtering.
 
         Args:
             category: Filter by category
@@ -231,6 +229,7 @@ class ToolRegistry:
 
         Returns:
             List of matching tools
+
         """
         tools = list(self._tools.values())
 
@@ -260,8 +259,7 @@ class ToolRegistry:
         return tools
 
     def search_tools(self, query: str, user_role: str | None = None) -> list[BaseTool]:
-        """
-        Search tools by name, description, category, or tags.
+        """Search tools by name, description, category, or tags.
 
         Args:
             query: Search query
@@ -269,6 +267,7 @@ class ToolRegistry:
 
         Returns:
             List of matching tools
+
         """
         query_lower = query.lower()
         matching_tools = []
@@ -305,14 +304,14 @@ class ToolRegistry:
         return list(self._tags.keys())
 
     def get_tools_by_category(self, category: str) -> list[BaseTool]:
-        """
-        Get all tools in a specific category.
+        """Get all tools in a specific category.
 
         Args:
             category: Category name
 
         Returns:
             List of tools in the category
+
         """
         if category not in self._categories:
             return []
@@ -320,14 +319,14 @@ class ToolRegistry:
         return [self._tools[name] for name in self._categories[category]]
 
     def get_tools_by_tag(self, tag: str) -> list[BaseTool]:
-        """
-        Get all tools with a specific tag.
+        """Get all tools with a specific tag.
 
         Args:
             tag: Tag name
 
         Returns:
             List of tools with the tag
+
         """
         if tag not in self._tags:
             return []
@@ -340,8 +339,7 @@ class ToolRegistry:
         context: ToolExecutionContext,
         parameters: dict[str, Any] | None = None,
     ) -> ToolResult:
-        """
-        Execute a tool with the given parameters.
+        """Execute a tool with the given parameters.
 
         Args:
             tool_name: Name of the tool to execute
@@ -355,6 +353,7 @@ class ToolRegistry:
             ToolNotFoundError: If tool is not found
             ToolPermissionError: If user lacks permission
             ToolValidationError: If parameters are invalid
+
         """
         # Get the tool
         tool = self.get_tool(tool_name)
@@ -364,7 +363,7 @@ class ToolRegistry:
         # Check permissions
         if not context.has_permission(tool.required_permission):
             raise ToolPermissionError(
-                tool_name, tool.required_permission, context.user_role
+                tool_name, tool.required_permission, context.user_role,
             )
 
         # Prepare parameters
@@ -380,7 +379,7 @@ class ToolRegistry:
 
         # Use enhanced validator for comprehensive validation
         validation_result = self._get_validator().validate_tool_parameters(
-            tool_name, original_params, tool.parameters, validation_context
+            tool_name, original_params, tool.parameters, validation_context,
         )
 
         if not validation_result.valid:
@@ -392,10 +391,10 @@ class ToolRegistry:
                     risk.value for risk in validation_result.security_risks
                 ],
                 "provided_parameters": self._redact_sensitive_parameters(
-                    original_params
+                    original_params,
                 ),
                 "converted_parameters": self._redact_sensitive_parameters(
-                    validation_result.converted_parameters
+                    validation_result.converted_parameters,
                 ),
                 "tool_name": tool_name,
                 "user_id": context.user_id,
@@ -405,18 +404,18 @@ class ToolRegistry:
             # Log security events without exposing sensitive data
             logger.warning(
                 f"Tool validation failed: {tool_name} for user {context.user_id[:8]}... "
-                f"(role: {context.user_role})"
+                f"(role: {context.user_role})",
             )
 
             if validation_result.warnings:
                 logger.info(
-                    f"Tool validation warnings: {tool_name} for user {context.user_id[:8]}..."
+                    f"Tool validation warnings: {tool_name} for user {context.user_id[:8]}...",
                 )
 
             if validation_result.security_risks:
                 logger.warning(
                     f"Security risks detected: {tool_name} for user {context.user_id[:8]}... "
-                    f"risks: {len(validation_result.security_risks)}"
+                    f"risks: {len(validation_result.security_risks)}",
                 )
 
             # Convert error lists to strings
@@ -441,30 +440,30 @@ class ToolRegistry:
 
         # Execute the tool
         logger.info(
-            f"Executing tool '{tool_name}' for user {context.user_id} (role: {context.user_role})"
+            f"Executing tool '{tool_name}' for user {context.user_id} (role: {context.user_role})",
         )
 
         try:
             result = await tool.execute_with_timeout(context, **prepared_params)
             logger.info(
-                f"Tool '{tool_name}' executed successfully for user {context.user_id}"
+                f"Tool '{tool_name}' executed successfully for user {context.user_id}",
             )
             return result
         except Exception as e:
             logger.error(
-                f"Tool '{tool_name}' execution failed for user {context.user_id}: {e}"
+                f"Tool '{tool_name}' execution failed for user {context.user_id}: {e}",
             )
             raise
 
     def get_tool_info(self, tool_name: str) -> dict[str, Any] | None:
-        """
-        Get detailed information about a tool.
+        """Get detailed information about a tool.
 
         Args:
             tool_name: Name of the tool
 
         Returns:
             Tool information dictionary or None if not found
+
         """
         tool = self.get_tool(tool_name)
         if not tool:
@@ -473,11 +472,11 @@ class ToolRegistry:
         return tool.to_dict()
 
     def get_registry_stats(self) -> dict[str, Any]:
-        """
-        Get statistics about the tool registry.
+        """Get statistics about the tool registry.
 
         Returns:
             Registry statistics
+
         """
         return {
             "total_tools": len(self._tools),
@@ -488,7 +487,7 @@ class ToolRegistry:
             },
             "tools_by_permission": {
                 perm: len(
-                    [t for t in self._tools.values() if t.required_permission == perm]
+                    [t for t in self._tools.values() if t.required_permission == perm],
                 )
                 for perm in ["read", "write", "execute", "admin"]
             },
@@ -500,8 +499,7 @@ class ToolRegistry:
         parameters: dict[str, Any],
         context: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """
-        Validate parameters for a tool without executing it using enhanced validation.
+        """Validate parameters for a tool without executing it using enhanced validation.
 
         Args:
             tool_name: Name of the tool to validate parameters for
@@ -516,6 +514,7 @@ class ToolRegistry:
             - tool_found: bool - whether the tool exists
             - security_risks: List[str] - security risk levels detected
             - converted_parameters: Dict[str, Any] - parameters with type conversions applied
+
         """
         tool = self.get_tool(tool_name)
         if not tool:
@@ -530,7 +529,7 @@ class ToolRegistry:
 
         # Use enhanced validator
         validation_result = self._get_validator().validate_tool_parameters(
-            tool_name, parameters, tool.parameters, context
+            tool_name, parameters, tool.parameters, context,
         )
 
         return {
@@ -540,19 +539,19 @@ class ToolRegistry:
             "tool_found": True,
             "security_risks": [risk.value for risk in validation_result.security_risks],
             "converted_parameters": self._redact_sensitive_parameters(
-                validation_result.converted_parameters
+                validation_result.converted_parameters,
             ),
         }
 
     def to_dict(self, user_role: str | None = None) -> dict[str, Any]:
-        """
-        Convert registry to dictionary for API responses.
+        """Convert registry to dictionary for API responses.
 
         Args:
             user_role: Filter tools by user role permissions
 
         Returns:
             Registry dictionary
+
         """
         tools = []
         for tool in self._tools.values():
@@ -584,21 +583,21 @@ class ToolRegistry:
         return self._validator
 
     def set_validation_level(self, level) -> None:
-        """
-        Set the validation level for the registry.
+        """Set the validation level for the registry.
 
         Args:
             level: New validation level
+
         """
         self._get_validator().set_validation_level(level)
         logger.info(f"Tool registry validation level set to: {level.value}")
 
     def get_validation_level(self):
-        """
-        Get the current validation level.
+        """Get the current validation level.
 
         Returns:
             Current validation level
+
         """
         return self._get_validator().validation_level
 
@@ -614,14 +613,14 @@ class ToolRegistry:
         return required_permission in user_permissions
 
     def _redact_sensitive_parameters(self, params: dict[str, Any]) -> dict[str, Any]:
-        """
-        Redact sensitive parameters for logging and error reporting.
+        """Redact sensitive parameters for logging and error reporting.
 
         Args:
             params: Parameters to redact
 
         Returns:
             Parameters with sensitive values redacted
+
         """
         sensitive_keys = {
             "path",
@@ -653,15 +652,15 @@ class ToolRegistry:
         return redacted
 
     def _log_admin_tool_execution(
-        self, tool_name: str, context: ToolExecutionContext, params: dict[str, Any]
+        self, tool_name: str, context: ToolExecutionContext, params: dict[str, Any],
     ) -> None:
-        """
-        Log admin-level tool executions for audit purposes.
+        """Log admin-level tool executions for audit purposes.
 
         Args:
             tool_name: Name of the tool being executed
             context: Execution context
             params: Tool parameters (already prepared)
+
         """
         import json
         from datetime import datetime

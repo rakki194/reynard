@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Enum Implementations
+"""Enum Implementations
 ===================
 
 Specific implementations of enum providers for different data types.
@@ -137,6 +136,7 @@ class TraitEnumProvider(MetadataEnumProvider):
         Args:
             trait_type: Type of trait ('personality', 'physical', 'ability')
             data_provider: Optional backend data provider
+
         """
         super().__init__(f"{trait_type}_traits", data_provider)
         self.trait_type = trait_type
@@ -184,7 +184,7 @@ class TraitEnumProvider(MetadataEnumProvider):
                     "description": "Flexible and versatile",
                 },
             }
-        elif self.trait_type == "physical":
+        if self.trait_type == "physical":
             return {
                 "size": {"weight": 1.0, "description": "Physical dimensions"},
                 "strength": {"weight": 1.0, "description": "Physical power"},
@@ -193,7 +193,7 @@ class TraitEnumProvider(MetadataEnumProvider):
                 "appearance": {"weight": 1.0, "description": "Visual attractiveness"},
                 "grace": {"weight": 1.0, "description": "Elegant movement"},
             }
-        elif self.trait_type == "ability":
+        if self.trait_type == "ability":
             return {
                 "strategist": {"weight": 1.0, "description": "Strategic thinking"},
                 "hunter": {"weight": 1.0, "description": "Tracking and pursuit"},
@@ -204,19 +204,17 @@ class TraitEnumProvider(MetadataEnumProvider):
                 "explorer": {"weight": 1.0, "description": "Discovery and adventure"},
                 "guardian": {"weight": 1.0, "description": "Protection and defense"},
             }
-        else:
-            return {}
+        return {}
 
     def get_default_fallback(self) -> str:
         """Get the default fallback trait."""
         if self.trait_type == "personality":
             return "adaptability"
-        elif self.trait_type == "physical":
+        if self.trait_type == "physical":
             return "agility"
-        elif self.trait_type == "ability":
+        if self.trait_type == "ability":
             return "strategist"
-        else:
-            return "unknown"
+        return "unknown"
 
 
 class CustomEnumProvider(MetadataEnumProvider):
@@ -236,6 +234,7 @@ class CustomEnumProvider(MetadataEnumProvider):
             fallback_data: Fallback data when backend is unavailable
             default_fallback: Default value when validation fails
             data_provider: Optional backend data provider
+
         """
         super().__init__(enum_type, data_provider)
         self._custom_fallback_data = fallback_data

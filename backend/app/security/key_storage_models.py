@@ -1,5 +1,4 @@
-"""
-🔐 Key Storage Database Models
+"""🔐 Key Storage Database Models
 
 Database models for secure key storage using PostgreSQL and Redis.
 This module provides the database schema for storing cryptographic keys
@@ -18,8 +17,6 @@ Version: 1.0.0
 
 import logging
 import os
-from datetime import datetime, timezone
-from typing import Any, Dict, Optional
 from uuid import uuid4
 
 from sqlalchemy import (
@@ -88,7 +85,7 @@ class KeyAccessLog(KeyBase):
     id = Column(PostgresUUID(as_uuid=True), primary_key=True, default=uuid4)
     key_id = Column(String(255), nullable=False, index=True)
     operation = Column(
-        String(100), nullable=False
+        String(100), nullable=False,
     )  # 'read', 'write', 'rotate', 'revoke'
     user_id = Column(String(255), nullable=True)  # Optional user context
     ip_address = Column(String(45), nullable=True)  # IPv4 or IPv6

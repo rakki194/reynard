@@ -1,5 +1,4 @@
-"""
-🦊 Custom Reload Handler for Intelligent Service Reloading
+"""🦊 Custom Reload Handler for Intelligent Service Reloading
 
 This module provides a custom reload handler that intercepts file changes
 and intelligently reloads only the affected services instead of restarting
@@ -20,8 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 class IntelligentReloadHandler(StatReload):
-    """
-    Custom reload handler that provides intelligent service-specific reloading.
+    """Custom reload handler that provides intelligent service-specific reloading.
 
     This handler intercepts file changes and determines which services should
     be reloaded, then reloads only those services instead of restarting the
@@ -43,14 +41,14 @@ class IntelligentReloadHandler(StatReload):
         self.reload_manager = reload_manager
 
     def should_reload(self, files: list[Path]) -> bool:
-        """
-        Determine if the application should reload based on changed files.
+        """Determine if the application should reload based on changed files.
 
         Args:
             files: List of changed file paths
 
         Returns:
             True if the application should reload
+
         """
         if not self.reload_manager or not self.app:
             # Fall back to standard reload behavior
@@ -66,7 +64,7 @@ class IntelligentReloadHandler(StatReload):
 
         if services_to_reload:
             logger.info(
-                f"🔄 Detected changes affecting services: {', '.join(services_to_reload)}"
+                f"🔄 Detected changes affecting services: {', '.join(services_to_reload)}",
             )
 
             # Reload the affected services
@@ -74,16 +72,15 @@ class IntelligentReloadHandler(StatReload):
 
             # Don't reload the entire application
             return False
-        else:
-            # No service-specific changes, use standard reload
-            return super().should_reload(files)
+        # No service-specific changes, use standard reload
+        return super().should_reload(files)
 
     async def _reload_services(self, service_names: list[str]):
-        """
-        Reload the specified services.
+        """Reload the specified services.
 
         Args:
             service_names: List of service names to reload
+
         """
         try:
             logger.info(f"🔄 Reloading services: {', '.join(service_names)}")
@@ -102,8 +99,7 @@ class IntelligentReloadHandler(StatReload):
 
 
 def create_intelligent_reload_handler(app, reload_manager):
-    """
-    Create an intelligent reload handler for the given app and reload manager.
+    """Create an intelligent reload handler for the given app and reload manager.
 
     Args:
         app: The FastAPI application instance
@@ -111,6 +107,7 @@ def create_intelligent_reload_handler(app, reload_manager):
 
     Returns:
         The intelligent reload handler
+
     """
     handler = IntelligentReloadHandler()
     handler.set_app(app)

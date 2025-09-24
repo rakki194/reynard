@@ -1,5 +1,4 @@
-"""
-🐼 Comprehensive pytest tests for Continuous Indexing Service
+"""🐼 Comprehensive pytest tests for Continuous Indexing Service
 
 This test suite covers all aspects of the continuous indexing service:
 - File system event handling (modified, created, deleted)
@@ -13,14 +12,11 @@ Author: Ailuropoda-Sage-59 (Panda Spirit)
 """
 
 import asyncio
-import os
 import tempfile
-import time
 from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
-from watchdog.events import FileSystemEvent
 
 from app.config.continuous_indexing_config import continuous_indexing_config
 from app.services.infrastructure.continuous_indexing import (
@@ -82,11 +78,11 @@ class TestContinuousIndexingService:
 
     @pytest.mark.asyncio
     async def test_service_initialization_invalid_config(
-        self, service_config, temp_dir
+        self, service_config, temp_dir,
     ):
         """🐼 Test service initialization with invalid configuration."""
         with patch.object(
-            continuous_indexing_config, "validate", return_value=["Invalid config"]
+            continuous_indexing_config, "validate", return_value=["Invalid config"],
         ):
             service = ContinuousIndexingService(service_config)
             result = await service.initialize()
@@ -140,7 +136,7 @@ class TestContinuousIndexingService:
 
     @pytest.mark.asyncio
     async def test_index_files_with_rag_service(
-        self, indexing_service, mock_rag_service, temp_dir
+        self, indexing_service, mock_rag_service, temp_dir,
     ):
         """🐼 Test indexing files with RAG service."""
         indexing_service.set_rag_service(mock_rag_service)
@@ -154,7 +150,7 @@ class TestContinuousIndexingService:
 
         # Patch the watch root to match our test directory
         with patch.object(
-            continuous_indexing_config, "watch_root", "/home/kade/test_project"
+            continuous_indexing_config, "watch_root", "/home/kade/test_project",
         ):
             # Test indexing
             await indexing_service.index_files([test_file1, test_file2])
@@ -188,7 +184,7 @@ class TestContinuousIndexingService:
 
         # Patch the watch root to match our test directory
         with patch.object(
-            continuous_indexing_config, "watch_root", "/home/kade/test_project"
+            continuous_indexing_config, "watch_root", "/home/kade/test_project",
         ):
             doc = await indexing_service._create_document_from_file(test_file)
 
@@ -283,7 +279,7 @@ class TestCodebaseChangeHandler:
 
         # Mock the config
         with patch.object(
-            continuous_indexing_config, "should_watch_file", return_value=True
+            continuous_indexing_config, "should_watch_file", return_value=True,
         ):
             with patch.object(continuous_indexing_config, "debounce_seconds", 0.1):
                 change_handler.on_modified(event)
@@ -309,7 +305,7 @@ class TestCodebaseChangeHandler:
         event.src_path = "/test/newfile.py"
 
         with patch.object(
-            continuous_indexing_config, "should_watch_file", return_value=True
+            continuous_indexing_config, "should_watch_file", return_value=True,
         ):
             change_handler.on_created(event)
 
@@ -323,7 +319,7 @@ class TestCodebaseChangeHandler:
         event.src_path = "/test/deleted.py"
 
         with patch.object(
-            continuous_indexing_config, "should_watch_file", return_value=True
+            continuous_indexing_config, "should_watch_file", return_value=True,
         ):
             change_handler.on_deleted(event)
 
@@ -339,7 +335,7 @@ class TestCodebaseChangeHandler:
         event.src_path = "/test/file.py"
 
         with patch.object(
-            continuous_indexing_config, "should_watch_file", return_value=True
+            continuous_indexing_config, "should_watch_file", return_value=True,
         ):
             change_handler.on_modified(event)
 
@@ -353,7 +349,7 @@ class TestCodebaseChangeHandler:
         event.src_path = "/test/file.py"
 
         with patch.object(
-            continuous_indexing_config, "should_watch_file", return_value=False
+            continuous_indexing_config, "should_watch_file", return_value=False,
         ):
             change_handler.on_modified(event)
 
@@ -367,7 +363,7 @@ class TestCodebaseChangeHandler:
         event.src_path = "/test/file.py"
 
         with patch.object(
-            continuous_indexing_config, "should_watch_file", return_value=True
+            continuous_indexing_config, "should_watch_file", return_value=True,
         ):
             with patch.object(continuous_indexing_config, "debounce_seconds", 1.0):
                 # First change
@@ -445,7 +441,7 @@ class TestContinuousIndexingIntegration:
         # Mock RAG service to raise an error
         mock_rag_service = AsyncMock()
         mock_rag_service.index_documents = AsyncMock(
-            side_effect=Exception("Indexing failed")
+            side_effect=Exception("Indexing failed"),
         )
 
         service_config = {
@@ -455,7 +451,7 @@ class TestContinuousIndexingIntegration:
         }
 
         with patch.object(
-            continuous_indexing_config, "watch_root", "/home/kade/test_project"
+            continuous_indexing_config, "watch_root", "/home/kade/test_project",
         ):
             with patch.object(continuous_indexing_config, "enabled", True):
                 service = ContinuousIndexingService(service_config)
@@ -502,7 +498,7 @@ class PandaTestUtils:
 
     @staticmethod
     def create_bamboo_file(
-        temp_dir: Path, name: str, content: str = "🐼 *munches bamboo*"
+        temp_dir: Path, name: str, content: str = "🐼 *munches bamboo*",
     ) -> Path:
         """Create a test file with panda-themed content."""
         file_path = temp_dir / name
@@ -511,7 +507,7 @@ class PandaTestUtils:
 
     @staticmethod
     def assert_panda_spirit(
-        test_result: bool, message: str = "Panda spirit not detected"
+        test_result: bool, message: str = "Panda spirit not detected",
     ):
         """Assert with panda spirit."""
         assert test_result, f"🐼 {message}"

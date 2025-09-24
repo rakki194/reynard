@@ -1,12 +1,11 @@
-"""
-Memory System
+"""Memory System
 
 Manages agent memories, storage, retrieval, decay, and consolidation.
 Processes memory operations for all agents in the ECS world.
 """
 
 import logging
-from typing import Any, Dict, List
+from typing import Any
 
 from ..components.memory import MemoryComponent, MemoryType
 from ..core.system import System
@@ -15,19 +14,18 @@ logger = logging.getLogger(__name__)
 
 
 class MemorySystem(System):
-    """
-    System for managing agent memories, storage, and retrieval.
+    """System for managing agent memories, storage, and retrieval.
 
     Handles memory decay, consolidation, cleanup, and provides
     intelligent memory management for all agents.
     """
 
     def __init__(self, world) -> None:
-        """
-        Initialize the memory system.
+        """Initialize the memory system.
 
         Args:
             world: The ECS world this system belongs to
+
         """
         super().__init__(world)
         self.memory_processing_interval = 1.0  # Process memories every second
@@ -37,11 +35,11 @@ class MemorySystem(System):
         self.total_memories_cleaned = 0
 
     def update(self, delta_time: float) -> None:
-        """
-        Process memory operations for all agents.
+        """Process memory operations for all agents.
 
         Args:
             delta_time: Time elapsed since last update
+
         """
         self.last_processing_time += delta_time
 
@@ -51,11 +49,11 @@ class MemorySystem(System):
             self.last_processing_time = 0.0
 
     def _process_memory_operations(self, delta_time: float) -> None:
-        """
-        Process all memory operations for agents with memory components.
+        """Process all memory operations for agents with memory components.
 
         Args:
             delta_time: Time elapsed since last processing
+
         """
         entities = self.get_entities_with_components(MemoryComponent)
 
@@ -65,14 +63,14 @@ class MemorySystem(System):
                 self._process_agent_memories(memory_comp, delta_time)
 
     def _process_agent_memories(
-        self, memory_comp: MemoryComponent, delta_time: float
+        self, memory_comp: MemoryComponent, delta_time: float,
     ) -> None:
-        """
-        Process memory operations for a specific agent.
+        """Process memory operations for a specific agent.
 
         Args:
             memory_comp: The agent's memory component
             delta_time: Time elapsed since last processing
+
         """
         # Apply memory decay
         self._process_memory_decay(memory_comp, delta_time)
@@ -88,14 +86,14 @@ class MemorySystem(System):
         self.total_memories_processed += len(memory_comp.memories)
 
     def _process_memory_decay(
-        self, memory_comp: MemoryComponent, delta_time: float
+        self, memory_comp: MemoryComponent, delta_time: float,
     ) -> None:
-        """
-        Apply decay to memories based on importance and access patterns.
+        """Apply decay to memories based on importance and access patterns.
 
         Args:
             memory_comp: The agent's memory component
             delta_time: Time elapsed since last processing
+
         """
         for memory in memory_comp.memories.values():
             # Calculate decay based on importance and access frequency
@@ -113,14 +111,14 @@ class MemorySystem(System):
             memory.decay(decay_factor)
 
     def _consolidate_important_memories(self, memory_comp: MemoryComponent) -> int:
-        """
-        Consolidate important memories to prevent decay.
+        """Consolidate important memories to prevent decay.
 
         Args:
             memory_comp: The agent's memory component
 
         Returns:
             Number of memories consolidated
+
         """
         consolidated_count = 0
 
@@ -141,14 +139,14 @@ class MemorySystem(System):
         return consolidated_count
 
     def _cleanup_irrelevant_memories(self, memory_comp: MemoryComponent) -> int:
-        """
-        Remove memories that have decayed below recall threshold.
+        """Remove memories that have decayed below recall threshold.
 
         Args:
             memory_comp: The agent's memory component
 
         Returns:
             Number of memories cleaned up
+
         """
         memories_to_remove = []
 
@@ -170,10 +168,9 @@ class MemorySystem(System):
         content: str,
         importance: float = 0.5,
         emotional_weight: float = 0.0,
-        associated_agents: List[str] | None = None,
+        associated_agents: list[str] | None = None,
     ) -> str | None:
-        """
-        Store a memory for a specific agent.
+        """Store a memory for a specific agent.
 
         Args:
             agent_id: ID of the agent
@@ -185,6 +182,7 @@ class MemorySystem(System):
 
         Returns:
             Memory ID if successful, None if agent not found
+
         """
         entity = self.world.get_entity(agent_id)
         if not entity:
@@ -208,9 +206,8 @@ class MemorySystem(System):
         query: str = "",
         memory_type: MemoryType | None = None,
         limit: int = 10,
-    ) -> List[Any]:
-        """
-        Retrieve memories for a specific agent.
+    ) -> list[Any]:
+        """Retrieve memories for a specific agent.
 
         Args:
             agent_id: ID of the agent
@@ -220,6 +217,7 @@ class MemorySystem(System):
 
         Returns:
             List of memories
+
         """
         entity = self.world.get_entity(agent_id)
         if not entity:
@@ -230,18 +228,18 @@ class MemorySystem(System):
             return []
 
         return memory_comp.search_memories(
-            query=query, memory_type=memory_type, limit=limit
+            query=query, memory_type=memory_type, limit=limit,
         )
 
-    def get_memory_stats_for_agent(self, agent_id: str) -> Dict[str, Any]:
-        """
-        Get memory statistics for a specific agent.
+    def get_memory_stats_for_agent(self, agent_id: str) -> dict[str, Any]:
+        """Get memory statistics for a specific agent.
 
         Args:
             agent_id: ID of the agent
 
         Returns:
             Memory statistics dictionary
+
         """
         entity = self.world.get_entity(agent_id)
         if not entity:
@@ -253,7 +251,7 @@ class MemorySystem(System):
 
         return memory_comp.get_memory_stats()
 
-    def get_system_stats(self) -> Dict[str, Any]:
+    def get_system_stats(self) -> dict[str, Any]:
         """Get comprehensive system statistics."""
         total_agents = len(self.get_entities_with_components(MemoryComponent))
 
@@ -267,14 +265,14 @@ class MemorySystem(System):
         }
 
     def force_memory_consolidation(self, agent_id: str | None = None) -> int:
-        """
-        Force memory consolidation for an agent or all agents.
+        """Force memory consolidation for an agent or all agents.
 
         Args:
             agent_id: ID of specific agent, or None for all agents
 
         Returns:
             Number of memories consolidated
+
         """
         if agent_id:
             entity = self.world.get_entity(agent_id)
@@ -286,29 +284,28 @@ class MemorySystem(System):
                 return 0
 
             return self._consolidate_important_memories(memory_comp)
-        else:
-            # Consolidate for all agents
-            total_consolidated = 0
-            entities = self.get_entities_with_components(MemoryComponent)
+        # Consolidate for all agents
+        total_consolidated = 0
+        entities = self.get_entities_with_components(MemoryComponent)
 
-            for entity in entities:
-                memory_comp = entity.get_component(MemoryComponent)
-                if memory_comp:
-                    total_consolidated += self._consolidate_important_memories(
-                        memory_comp
-                    )
+        for entity in entities:
+            memory_comp = entity.get_component(MemoryComponent)
+            if memory_comp:
+                total_consolidated += self._consolidate_important_memories(
+                    memory_comp,
+                )
 
-            return total_consolidated
+        return total_consolidated
 
     def force_memory_cleanup(self, agent_id: str | None = None) -> int:
-        """
-        Force memory cleanup for an agent or all agents.
+        """Force memory cleanup for an agent or all agents.
 
         Args:
             agent_id: ID of specific agent, or None for all agents
 
         Returns:
             Number of memories cleaned up
+
         """
         if agent_id:
             entity = self.world.get_entity(agent_id)
@@ -320,14 +317,13 @@ class MemorySystem(System):
                 return 0
 
             return self._cleanup_irrelevant_memories(memory_comp)
-        else:
-            # Cleanup for all agents
-            total_cleaned = 0
-            entities = self.get_entities_with_components(MemoryComponent)
+        # Cleanup for all agents
+        total_cleaned = 0
+        entities = self.get_entities_with_components(MemoryComponent)
 
-            for entity in entities:
-                memory_comp = entity.get_component(MemoryComponent)
-                if memory_comp:
-                    total_cleaned += self._cleanup_irrelevant_memories(memory_comp)
+        for entity in entities:
+            memory_comp = entity.get_component(MemoryComponent)
+            if memory_comp:
+                total_cleaned += self._cleanup_irrelevant_memories(memory_comp)
 
-            return total_cleaned
+        return total_cleaned

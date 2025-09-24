@@ -1,5 +1,4 @@
-"""
-Main router for Ollama API endpoints.
+"""Main router for Ollama API endpoints.
 """
 
 from fastapi import APIRouter

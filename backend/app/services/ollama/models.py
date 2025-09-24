@@ -1,5 +1,4 @@
-"""
-Data models for Ollama service.
+"""Data models for Ollama service.
 """
 
 from typing import Any
@@ -13,7 +12,7 @@ class OllamaConfig(BaseModel):
     enabled: bool = Field(True, description="Whether Ollama service is enabled")
     base_url: str = Field("http://localhost:11434", description="Ollama server URL")
     default_model: str = Field(
-        "embeddinggemma:latest", description="Default model for generation"
+        "embeddinggemma:latest", description="Default model for generation",
     )
     timeout_seconds: int = Field(300, description="Request timeout in seconds")
     max_concurrent_requests: int = Field(5, description="Maximum concurrent requests")
@@ -58,7 +57,7 @@ class OllamaModelInfo(BaseModel):
     is_available: bool = Field(..., description="Whether model is currently available")
     context_length: int = Field(4096, description="Model context length")
     capabilities: list[str] = Field(
-        default_factory=list, description="Model capabilities"
+        default_factory=list, description="Model capabilities",
     )
 
 
@@ -71,14 +70,14 @@ class OllamaStats(BaseModel):
     successful_requests: int = Field(..., description="Successful chat requests")
     failed_requests: int = Field(..., description="Failed chat requests")
     average_processing_time: float = Field(
-        ..., description="Average processing time in seconds"
+        ..., description="Average processing time in seconds",
     )
     total_tokens_generated: int = Field(..., description="Total tokens generated")
     usage_stats: dict[str, int] = Field(
-        ..., description="Model usage statistics", alias="model_usage"
+        ..., description="Model usage statistics", alias="model_usage",
     )
     assistant_usage: dict[str, int] = Field(
-        ..., description="Assistant usage statistics"
+        ..., description="Assistant usage statistics",
     )
     tools_usage: dict[str, int] = Field(..., description="Tools usage statistics")
     error_rate: float = Field(..., description="Error rate percentage")
@@ -91,5 +90,5 @@ class OllamaStreamEvent(BaseModel):
     data: str = Field("", description="Event data (token text or tool call)")
     timestamp: float = Field(..., description="Event timestamp")
     metadata: dict[str, Any] = Field(
-        default_factory=dict, description="Additional metadata"
+        default_factory=dict, description="Additional metadata",
     )

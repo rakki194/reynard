@@ -1,5 +1,4 @@
-"""
-Security Service: Enterprise-grade security and compliance features.
+"""Security Service: Enterprise-grade security and compliance features.
 
 This service provides:
 - Data encryption and decryption
@@ -9,14 +8,13 @@ This service provides:
 - Token management and validation
 """
 
-import hashlib
 import logging
 import secrets
 import time
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 logger = logging.getLogger("uvicorn")
 
@@ -54,9 +52,9 @@ class SecurityPolicy:
     encryption_required: bool
     audit_required: bool
     retention_days: int
-    allowed_operations: List[OperationType]
-    allowed_users: List[str]
-    allowed_roles: List[str]
+    allowed_operations: list[OperationType]
+    allowed_users: list[str]
+    allowed_roles: list[str]
     enabled: bool = True
 
 
@@ -74,28 +72,28 @@ class AuditLog:
     ip_address: str
     user_agent: str
     success: bool
-    details: Dict[str, Any]
-    metadata: Dict[str, Any]
+    details: dict[str, Any]
+    metadata: dict[str, Any]
 
 
 class SecurityService:
     """Enterprise-grade security and compliance service."""
 
-    def __init__(self, config: Dict[str, Any]):
+    def __init__(self, config: dict[str, Any]):
         self.config = config
         self.enabled = config.get("rag_security_enabled", True)
 
         # Encryption keys (in production, these would be managed by a key management service)
-        self.encryption_keys: Dict[AccessLevel, str] = {}
+        self.encryption_keys: dict[AccessLevel, str] = {}
 
         # Security policies
-        self.security_policies: Dict[str, SecurityPolicy] = {}
+        self.security_policies: dict[str, SecurityPolicy] = {}
 
         # Audit logs
-        self.audit_logs: List[AuditLog] = []
+        self.audit_logs: list[AuditLog] = []
 
         # User permissions (simplified for demo)
-        self.user_permissions: Dict[str, List[str]] = {}
+        self.user_permissions: dict[str, list[str]] = {}
 
         # Initialize components
         self._initialize_encryption()
@@ -186,7 +184,7 @@ class SecurityService:
             key = self.encryption_keys.get(access_level)
             if not key:
                 raise ValueError(
-                    f"No encryption key found for access level: {access_level}"
+                    f"No encryption key found for access level: {access_level}",
                 )
 
             # Simple XOR encryption (in production, use proper encryption like AES)
@@ -221,7 +219,7 @@ class SecurityService:
             key = self.encryption_keys.get(access_level)
             if not key:
                 raise ValueError(
-                    f"No decryption key found for access level: {access_level}"
+                    f"No decryption key found for access level: {access_level}",
                 )
 
             # Simple XOR decryption
@@ -259,14 +257,14 @@ class SecurityService:
             # Check if operation is allowed
             if operation not in policy.allowed_operations:
                 logger.warning(
-                    f"Operation {operation} not allowed for access level {access_level}"
+                    f"Operation {operation} not allowed for access level {access_level}",
                 )
                 return False
 
             # Check user access
             if not self._check_user_access(user_id, policy):
                 logger.warning(
-                    f"User {user_id} not authorized for access level {access_level}"
+                    f"User {user_id} not authorized for access level {access_level}",
                 )
                 return False
 
@@ -299,8 +297,8 @@ class SecurityService:
             return False
 
     def _get_policy_for_access_level(
-        self, access_level: AccessLevel
-    ) -> Optional[SecurityPolicy]:
+        self, access_level: AccessLevel,
+    ) -> SecurityPolicy | None:
         """Get security policy for access level."""
         for policy in self.security_policies.values():
             if policy.access_level == access_level and policy.enabled:
@@ -322,7 +320,7 @@ class SecurityService:
 
         return False
 
-    def _get_user_roles(self, user_id: str) -> List[str]:
+    def _get_user_roles(self, user_id: str) -> list[str]:
         """Get roles for a user (simplified implementation)."""
         # In production, this would query a user management system
         role_mapping = {
@@ -343,7 +341,7 @@ class SecurityService:
         resource_id: str,
         access_level: AccessLevel,
         success: bool,
-        details: Optional[Dict[str, Any]] = None,
+        details: dict[str, Any] | None = None,
         ip_address: str = "127.0.0.1",
         user_agent: str = "system",
     ) -> None:
@@ -402,12 +400,12 @@ class SecurityService:
 
             if len(recent_failures) >= 5:
                 logger.warning(
-                    f"Suspicious activity detected: {len(recent_failures)} failed access attempts by {audit_log.user_id}"
+                    f"Suspicious activity detected: {len(recent_failures)} failed access attempts by {audit_log.user_id}",
                 )
 
                 # In production, this would trigger alerts, lock accounts, etc.
                 await self._handle_suspicious_activity(
-                    audit_log.user_id, recent_failures
+                    audit_log.user_id, recent_failures,
                 )
 
             # Check for unusual access patterns
@@ -422,14 +420,14 @@ class SecurityService:
 
             if len(recent_access) >= 100:  # More than 100 operations in an hour
                 logger.warning(
-                    f"High activity detected: {len(recent_access)} operations by {audit_log.user_id} in the last hour"
+                    f"High activity detected: {len(recent_access)} operations by {audit_log.user_id} in the last hour",
                 )
 
         except Exception as e:
             logger.error(f"Failed to check suspicious activity: {e}")
 
     async def _handle_suspicious_activity(
-        self, user_id: str, failed_attempts: List[AuditLog]
+        self, user_id: str, failed_attempts: list[AuditLog],
     ) -> None:
         """Handle detected suspicious activity."""
         # In production, this would:
@@ -439,16 +437,16 @@ class SecurityService:
         # - Log to security monitoring system
 
         logger.warning(
-            f"Handling suspicious activity for user {user_id}: {len(failed_attempts)} failed attempts"
+            f"Handling suspicious activity for user {user_id}: {len(failed_attempts)} failed attempts",
         )
 
     async def get_audit_logs(
         self,
-        user_id: Optional[str] = None,
-        operation: Optional[OperationType] = None,
-        access_level: Optional[AccessLevel] = None,
+        user_id: str | None = None,
+        operation: OperationType | None = None,
+        access_level: AccessLevel | None = None,
         hours: int = 24,
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """Get audit logs with optional filtering."""
         try:
             cutoff_time = datetime.now() - timedelta(hours=hours)
@@ -494,7 +492,7 @@ class SecurityService:
             logger.error(f"Failed to get audit logs: {e}")
             return []
 
-    async def get_security_report(self) -> Dict[str, Any]:
+    async def get_security_report(self) -> dict[str, Any]:
         """Generate security report."""
         try:
             # Calculate statistics
@@ -537,7 +535,7 @@ class SecurityService:
                 "access_level_distribution": access_level_counts,
                 "operation_distribution": operation_counts,
                 "active_policies": len(
-                    [p for p in self.security_policies.values() if p.enabled]
+                    [p for p in self.security_policies.values() if p.enabled],
                 ),
                 "encryption_enabled": len(self.encryption_keys) > 0,
                 "security_features": {
@@ -552,13 +550,13 @@ class SecurityService:
             logger.error(f"Failed to generate security report: {e}")
             return {"error": str(e)}
 
-    def get_security_stats(self) -> Dict[str, Any]:
+    def get_security_stats(self) -> dict[str, Any]:
         """Get security service statistics."""
         return {
             "enabled": self.enabled,
             "total_audit_logs": len(self.audit_logs),
             "active_policies": len(
-                [p for p in self.security_policies.values() if p.enabled]
+                [p for p in self.security_policies.values() if p.enabled],
             ),
             "encryption_keys_configured": len(self.encryption_keys),
             "access_levels_supported": len(AccessLevel),
@@ -568,6 +566,6 @@ class SecurityService:
                     log
                     for log in self.audit_logs
                     if log.timestamp > datetime.now() - timedelta(hours=24)
-                ]
+                ],
             ),
         }

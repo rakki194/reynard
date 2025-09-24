@@ -1,5 +1,4 @@
-"""
-🦊 Reynard Diffusion Model Cache
+"""🦊 Reynard Diffusion Model Cache
 ===============================
 
 Advanced model caching system for Diffusion-LLM service with intelligent
@@ -20,7 +19,7 @@ Version: 1.0.0
 import asyncio
 import time
 from collections import OrderedDict
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 from ...core.logging_config import get_service_logger
 
@@ -30,7 +29,7 @@ logger = get_service_logger("diffusion")
 class ModelCacheEntry:
     """Represents a cached model entry with metadata."""
 
-    def __init__(self, model_id: str, model_instance: Any, metadata: Dict[str, Any]):
+    def __init__(self, model_id: str, model_instance: Any, metadata: dict[str, Any]):
         self.model_id = model_id
         self.model_instance = model_instance
         self.metadata = metadata
@@ -53,7 +52,7 @@ class ModelCacheEntry:
         """Update memory usage information."""
         self.memory_usage = memory_usage
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary representation."""
         return {
             "model_id": self.model_id,
@@ -67,8 +66,7 @@ class ModelCacheEntry:
 
 
 class DiffusionModelCache:
-    """
-    Intelligent model cache for Diffusion-LLM service.
+    """Intelligent model cache for Diffusion-LLM service.
 
     Provides advanced caching capabilities including:
     - LRU eviction policy
@@ -105,8 +103,8 @@ class DiffusionModelCache:
         }
 
         # Background tasks
-        self._health_check_task: Optional[asyncio.Task] = None
-        self._cleanup_task: Optional[asyncio.Task] = None
+        self._health_check_task: asyncio.Task | None = None
+        self._cleanup_task: asyncio.Task | None = None
         self._running = False
 
         logger.info(
@@ -157,7 +155,7 @@ class DiffusionModelCache:
 
         logger.info("DiffusionModelCache stopped and cleared")
 
-    async def get_model(self, model_id: str) -> Optional[Any]:
+    async def get_model(self, model_id: str) -> Any | None:
         """Get a cached model instance."""
         async with self._lock:
             self._stats["total_requests"] += 1
@@ -168,7 +166,7 @@ class DiffusionModelCache:
                 # Check if model is healthy
                 if not entry.is_healthy:
                     logger.warning(
-                        f"Model {model_id} is unhealthy, removing from cache"
+                        f"Model {model_id} is unhealthy, removing from cache",
                     )
                     del self._cache[model_id]
                     self._stats["misses"] += 1
@@ -181,16 +179,15 @@ class DiffusionModelCache:
 
                 logger.debug(f"Cache hit for model {model_id}")
                 return entry.model_instance
-            else:
-                self._stats["misses"] += 1
-                logger.debug(f"Cache miss for model {model_id}")
-                return None
+            self._stats["misses"] += 1
+            logger.debug(f"Cache miss for model {model_id}")
+            return None
 
     async def put_model(
         self,
         model_id: str,
         model_instance: Any,
-        metadata: Optional[Dict[str, Any]] = None,
+        metadata: dict[str, Any] | None = None,
     ) -> None:
         """Cache a model instance."""
         if metadata is None:
@@ -229,7 +226,7 @@ class DiffusionModelCache:
                 # Perform health check on model
                 # This would typically involve a simple inference test
                 is_healthy = await self._perform_model_health_check(
-                    entry.model_instance
+                    entry.model_instance,
                 )
                 entry.update_health(is_healthy)
 
@@ -246,7 +243,7 @@ class DiffusionModelCache:
                 del self._cache[model_id]
                 return False
 
-    async def get_cache_stats(self) -> Dict[str, Any]:
+    async def get_cache_stats(self) -> dict[str, Any]:
         """Get cache statistics."""
         async with self._lock:
             hit_rate = (
@@ -362,7 +359,7 @@ class DiffusionModelCache:
 
 
 # Global cache instance
-_model_cache: Optional[DiffusionModelCache] = None
+_model_cache: DiffusionModelCache | None = None
 
 
 def get_model_cache() -> DiffusionModelCache:

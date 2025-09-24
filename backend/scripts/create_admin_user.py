@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Create an administrator user account for the AI agent.
+"""Create an administrator user account for the AI agent.
 
 This script creates a new admin user in the Gatekeeper authentication system
 and saves the credentials securely.
@@ -19,11 +18,11 @@ sys.path.insert(0, str(backend_path))
 
 import asyncio
 
-from app.gatekeeper_config import get_auth_manager, get_config
+from app.gatekeeper_config import get_auth_manager
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -57,7 +56,7 @@ async def create_admin_user():
         from gatekeeper.models.user import UserCreate, UserRole
 
         user_data = UserCreate(
-            username=username, email=email, password=password, role=UserRole.ADMIN
+            username=username, email=email, password=password, role=UserRole.ADMIN,
         )
 
         # Create the user
@@ -86,7 +85,7 @@ async def create_admin_user():
 
                     update_data = UserUpdate(role=UserRole.ADMIN)
                     updated_user = await auth_manager.update_user(
-                        existing_user.id, update_data
+                        existing_user.id, update_data,
                     )
                     logger.info("✅ Existing user role updated to admin")
                     return {
@@ -115,18 +114,18 @@ async def test_authentication(credentials):
         from gatekeeper.models.user import UserLogin
 
         login_data = UserLogin(
-            username=credentials["username"], password=credentials["password"]
+            username=credentials["username"], password=credentials["password"],
         )
 
         if credentials["password"] == "EXISTING_USER_PASSWORD_NOT_KNOWN":
             logger.warning(
-                "⚠️ Cannot test authentication - password not known for existing user"
+                "⚠️ Cannot test authentication - password not known for existing user",
             )
             return False
 
         # Attempt login
         tokens = await auth_manager.authenticate(
-            login_data.username, login_data.password
+            login_data.username, login_data.password,
         )
         logger.info("✅ Authentication successful")
         logger.info(f"Access token: {tokens.access_token[:20]}...")
@@ -141,7 +140,7 @@ async def test_authentication(credentials):
             current_user = await auth_manager.get_current_user(tokens.access_token)
             if current_user:
                 logger.info(
-                    f"✅ Current user: {current_user.username}, Role: {current_user.role}"
+                    f"✅ Current user: {current_user.username}, Role: {current_user.role}",
                 )
             else:
                 logger.warning("⚠️ Could not retrieve current user details")

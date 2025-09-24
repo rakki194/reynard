@@ -1,5 +1,4 @@
-"""
-Core email services.
+"""Core email services.
 
 Basic email functionality including SMTP sending, IMAP receiving, and multi-account management.
 """
@@ -9,9 +8,9 @@ from .imap_service import IMAPService
 from .multi_account_service import MultiAccountService
 
 __all__ = [
-    "email_service",
-    "EmailMessage",
     "EmailAttachment",
+    "EmailMessage",
     "IMAPService",
     "MultiAccountService",
+    "email_service",
 ]

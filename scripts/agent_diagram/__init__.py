@@ -1,5 +1,4 @@
-"""
-Agent Diagram Library
+"""Agent Diagram Library
 
 A modular library for parsing changelog files and generating agent contribution diagrams.
 """

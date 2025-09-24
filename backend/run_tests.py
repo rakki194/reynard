@@ -1,22 +1,19 @@
 #!/usr/bin/env python3
-"""
-Test runner for semantic search functionality.
+"""Test runner for semantic search functionality.
 
 This script runs comprehensive tests for the semantic search implementation
 including unit tests, integration tests, and performance tests.
 """
 
-import asyncio
 import subprocess
 import sys
 from pathlib import Path
-from typing import List, Optional
 
 
-def run_command(cmd: List[str], cwd: Optional[Path] = None) -> int:
+def run_command(cmd: list[str], cwd: Path | None = None) -> int:
     """Run a command and return the exit code."""
     print(f"Running: {' '.join(cmd)}")
-    result = subprocess.run(cmd, cwd=cwd)
+    result = subprocess.run(cmd, cwd=cwd, check=False)
     return result.returncode
 
 
@@ -24,7 +21,7 @@ def install_test_dependencies() -> int:
     """Install test dependencies."""
     print("🦊 Installing test dependencies...")
     return run_command(
-        [sys.executable, "-m", "pip", "install", "-r", "requirements-test.txt"]
+        [sys.executable, "-m", "pip", "install", "-r", "requirements-test.txt"],
     )
 
 
@@ -41,7 +38,7 @@ def run_unit_tests() -> int:
             "tests/test_semantic_search.py::TestEnhancedSearchService",
             "-v",
             "--tb=short",
-        ]
+        ],
     )
 
 
@@ -58,7 +55,7 @@ def run_integration_tests() -> int:
             "tests/test_mcp_tools.py",
             "-v",
             "--tb=short",
-        ]
+        ],
     )
 
 
@@ -66,7 +63,7 @@ def run_all_tests() -> int:
     """Run all tests."""
     print("🦊 Running all tests...")
     return run_command(
-        [sys.executable, "-m", "pytest", "tests/", "-v", "--tb=short", "--durations=10"]
+        [sys.executable, "-m", "pytest", "tests/", "-v", "--tb=short", "--durations=10"],
     )
 
 
@@ -83,7 +80,7 @@ def run_coverage_tests() -> int:
             "--cov-report=html",
             "--cov-report=term-missing",
             "-v",
-        ]
+        ],
     )
 
 
@@ -99,7 +96,7 @@ def run_performance_tests() -> int:
             "--benchmark-only",
             "--benchmark-sort=mean",
             "-v",
-        ]
+        ],
     )
 
 
@@ -145,7 +142,7 @@ def main():
         else:
             print(f"❌ Unknown test type: {test_type}")
             print(
-                "Available options: install, unit, integration, coverage, performance, all"
+                "Available options: install, unit, integration, coverage, performance, all",
             )
             return 1
 

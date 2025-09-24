@@ -1,11 +1,9 @@
-"""
-Gallery Service for Reynard Backend
+"""Gallery Service for Reynard Backend
 
 This service provides comprehensive gallery-dl integration with progress tracking,
 batch processing, and seamless integration with the Reynard ecosystem.
 """
 
-import importlib.util
 import logging
 import time
 from dataclasses import dataclass
@@ -16,11 +14,12 @@ from app.extractors.registry import extractor_registry
 
 # Import gallery-dl library
 try:
-    from gallery_dl import config, job, extractor, option, output, util
+    from gallery_dl import config, extractor, job, option, output, util
     from gallery_dl.extractor.common import Extractor, Message
+
     GALLERY_DL_AVAILABLE = True
 except ImportError as e:
-    logging.error(f"Failed to import gallery-dl: {e}")
+    logging.exception(f"Failed to import gallery-dl: {e}")
     GALLERY_DL_AVAILABLE = False
 
 logger = logging.getLogger(__name__)
@@ -59,8 +58,7 @@ class DownloadResult:
 
 
 class ReynardGalleryService:
-    """
-    Reynard Gallery Service
+    """Reynard Gallery Service
 
     Provides comprehensive gallery-dl integration with:
     - Progress tracking
@@ -112,7 +110,7 @@ class ReynardGalleryService:
                 logger.warning("No extractors available")
             else:
                 logger.info(
-                    f"Gallery service initialized with {len(test_extractors)} extractors"
+                    f"Gallery service initialized with {len(test_extractors)} extractors",
                 )
 
         except Exception:
@@ -148,22 +146,24 @@ class ReynardGalleryService:
             return []
 
         extractors = []
-        
+
         # Get standard gallery-dl extractors
         try:
             standard_extractors = extractor.extractors()
             for extr in standard_extractors:
-                extractors.append({
-                    "name": extr.__name__,
-                    "category": getattr(extr, "category", "unknown"),
-                    "subcategory": getattr(extr, "subcategory", "unknown"),
-                    "pattern": getattr(extr, "pattern", ""),
-                    "example": getattr(extr, "example", ""),
-                    "description": extr.__doc__ or "",
-                    "features": [],
-                    "reynard_enabled": False,
-                    "type": "standard",
-                })
+                extractors.append(
+                    {
+                        "name": extr.__name__,
+                        "category": getattr(extr, "category", "unknown"),
+                        "subcategory": getattr(extr, "subcategory", "unknown"),
+                        "pattern": getattr(extr, "pattern", ""),
+                        "example": getattr(extr, "example", ""),
+                        "description": extr.__doc__ or "",
+                        "features": [],
+                        "reynard_enabled": False,
+                        "type": "standard",
+                    },
+                )
         except Exception as e:
             logger.warning(f"Failed to get standard extractors: {e}")
 
@@ -243,7 +243,7 @@ class ReynardGalleryService:
             return {"is_valid": False, "error": f"Validation failed: {e!s}"}
 
     async def download_gallery(
-        self, url: str, options: dict[str, Any] | None = None
+        self, url: str, options: dict[str, Any] | None = None,
     ) -> DownloadResult:
         """Download a gallery from URL"""
         if not self.gallery_dl_available:
@@ -306,7 +306,7 @@ class ReynardGalleryService:
                     # File download message
                     file_info = msg[1]
                     file_url = msg[2]
-                    
+
                     files.append(
                         {
                             "url": file_url,
@@ -314,7 +314,7 @@ class ReynardGalleryService:
                             "extension": file_info.get("extension", ""),
                             "size": file_info.get("filesize", 0),
                             "metadata": file_info,
-                        }
+                        },
                     )
 
                     downloaded_files += 1

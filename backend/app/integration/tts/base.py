@@ -1,5 +1,4 @@
-"""
-Base TTS Backend for Reynard
+"""Base TTS Backend for Reynard
 
 Abstract base class for TTS backend implementations.
 """
@@ -20,7 +19,6 @@ class TTSBackend(ABC):
     @abstractmethod
     async def initialize(self) -> bool:
         """Initialize the TTS backend."""
-        pass
 
     @abstractmethod
     async def synthesize(
@@ -33,22 +31,18 @@ class TTSBackend(ABC):
         lang: str = "en",
     ) -> Path:
         """Synthesize text to speech."""
-        pass
 
     @abstractmethod
     async def get_available_voices(self) -> list[dict[str, Any]]:
         """Get list of available voices."""
-        pass
 
     @abstractmethod
     async def get_supported_languages(self) -> list[str]:
         """Get list of supported languages."""
-        pass
 
     @abstractmethod
     async def get_supported_formats(self) -> list[str]:
         """Get list of supported output formats."""
-        pass
 
     async def health_check(self) -> bool:
         """Check if the backend is healthy."""
@@ -56,7 +50,6 @@ class TTSBackend(ABC):
 
     async def cleanup(self):
         """Clean up backend resources."""
-        pass
 
     def is_initialized(self) -> bool:
         """Check if backend is initialized."""

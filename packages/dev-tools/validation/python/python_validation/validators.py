@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Python validation functions for Reynard framework pre-commit hooks.
+"""Python validation functions for Reynard framework pre-commit hooks.
 """
 
 import os
@@ -13,7 +12,7 @@ from .command_runner import run_command
 def check_formatting(python_files: list[str]) -> bool:
     """Check code formatting with Black."""
     success, output = run_command(
-        ["black", "--check", "--diff", *python_files], "Black formatting check"
+        ["black", "--check", "--diff", *python_files], "Black formatting check",
     )
     if not success:
         print_colored("💡 Run 'black .' to fix formatting issues", YELLOW)
@@ -66,7 +65,7 @@ def check_type_hints(typed_files: list[str]) -> None:
         return
 
     success, output = run_command(
-        ["mypy", "--no-error-summary", *typed_files], "MyPy type checking"
+        ["mypy", "--no-error-summary", *typed_files], "MyPy type checking",
     )
     if not success:
         print(output)  # noqa: T201
@@ -76,7 +75,7 @@ def check_type_hints(typed_files: list[str]) -> None:
 def check_security(python_files: list[str]) -> None:
     """Check security issues with Bandit (non-blocking)."""
     success, output = run_command(
-        ["bandit", "-r", "-f", "txt", *python_files], "Bandit security check"
+        ["bandit", "-r", "-f", "txt", *python_files], "Bandit security check",
     )
     if not success:
         print(output)  # noqa: T201
@@ -104,7 +103,7 @@ def _is_single_line_comment(stripped: str) -> bool:
 
 
 def _handle_docstring_start(
-    stripped: str, in_multiline_comment: bool
+    stripped: str, in_multiline_comment: bool,
 ) -> tuple[bool, bool]:
     """Handle the start of a docstring and return (should_continue, new_multiline_state)."""
     if stripped.startswith('"""') or stripped.startswith("'''"):
@@ -115,7 +114,7 @@ def _handle_docstring_start(
 
 
 def _handle_docstring_end(
-    stripped: str, in_multiline_comment: bool
+    stripped: str, in_multiline_comment: bool,
 ) -> tuple[bool, bool]:
     """Handle the end of a docstring and return (should_continue, new_multiline_state)."""
     if in_multiline_comment and ('"""' in stripped or "'''" in stripped):
@@ -142,7 +141,7 @@ def _count_code_lines(lines: list[str]) -> int:
         # Handle multi-line comments (docstrings)
         if '"""' in stripped or "'''" in stripped:
             should_continue, in_multiline_comment = _handle_docstring_start(
-                stripped, in_multiline_comment
+                stripped, in_multiline_comment,
             )
             if should_continue:
                 continue
@@ -151,7 +150,7 @@ def _count_code_lines(lines: list[str]) -> int:
                 continue
 
             should_continue, in_multiline_comment = _handle_docstring_end(
-                stripped, in_multiline_comment
+                stripped, in_multiline_comment,
             )
             if should_continue:
                 continue
@@ -193,8 +192,7 @@ def _check_single_file_length(file_path: str) -> tuple[bool, int, int, str]:
 
 
 def check_file_lengths(python_files: list[str]) -> bool:
-    """
-    Check Python file line counts against modularity standards.
+    """Check Python file line counts against modularity standards.
 
     Similar to TypeScript setup:
     - Source files: max 250 lines
@@ -204,7 +202,7 @@ def check_file_lengths(python_files: list[str]) -> bool:
 
     for file_path in python_files:
         has_violation, line_count, max_lines, file_type = _check_single_file_length(
-            file_path
+            file_path,
         )
 
         if has_violation:
@@ -223,7 +221,7 @@ def check_file_lengths(python_files: list[str]) -> bool:
         print_colored("   - Use the 250-line limit for source files", YELLOW)
         print_colored("   - Test files can be up to 300 lines", YELLOW)
         print_colored(
-            "   - Extract classes and functions into separate modules", YELLOW
+            "   - Extract classes and functions into separate modules", YELLOW,
         )
         return False
 
@@ -231,14 +229,14 @@ def check_file_lengths(python_files: list[str]) -> bool:
 
 
 def validate_python_files(python_files: list[str]) -> bool:
-    """
-    Validate Python files with comprehensive checks.
+    """Validate Python files with comprehensive checks.
 
     Args:
         python_files: list of Python file paths to validate
 
     Returns:
         True if all validations pass, False otherwise
+
     """
     if not python_files:
         print_colored("✅ No Python files staged for commit", GREEN)

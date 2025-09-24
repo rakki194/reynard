@@ -1,13 +1,10 @@
-"""
-Test ECS Integration
+"""Test ECS Integration
 
 Integration tests for the complete ECS system.
 """
 
 import os
 import sys
-
-import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
 
@@ -98,7 +95,7 @@ class TestECSIntegration:
         agents = []
         for i in range(5):
             agent = world.create_agent(
-                f"agent{i}", "fox" if i % 2 == 0 else "wolf", "foundation", f"Agent{i}"
+                f"agent{i}", "fox" if i % 2 == 0 else "wolf", "foundation", f"Agent{i}",
             )
             agents.append(agent)
 
@@ -143,7 +140,7 @@ class TestECSIntegration:
         import math
 
         initial_distance = math.sqrt(
-            (position.x - 100.0) ** 2 + (position.y - 100.0) ** 2
+            (position.x - 100.0) ** 2 + (position.y - 100.0) ** 2,
         )
         assert initial_distance > 0
 

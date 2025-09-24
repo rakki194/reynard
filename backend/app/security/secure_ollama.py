@@ -1,5 +1,4 @@
-"""
-Secure Ollama Service Wrapper for Reynard Backend
+"""Secure Ollama Service Wrapper for Reynard Backend
 
 This module provides a secure wrapper around the Ollama service
 to prevent information disclosure and other security vulnerabilities.
@@ -19,8 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 class SecureOllamaService:
-    """
-    Secure wrapper around the Ollama service that validates
+    """Secure wrapper around the Ollama service that validates
     all inputs and prevents information disclosure.
     """
 
@@ -28,8 +26,7 @@ class SecureOllamaService:
         self.ollama_service = ollama_service
 
     async def chat_secure(self, request: SecureChatRequest) -> dict[str, Any]:
-        """
-        Securely process a chat request with comprehensive input validation.
+        """Securely process a chat request with comprehensive input validation.
 
         Args:
             request: Validated chat request data
@@ -39,6 +36,7 @@ class SecureOllamaService:
 
         Raises:
             HTTPException: If chat processing fails or security violation detected
+
         """
         try:
             # Additional security checks
@@ -64,8 +62,7 @@ class SecureOllamaService:
             )
 
     async def assistant_chat_secure(self, request: SecureChatRequest) -> dict[str, Any]:
-        """
-        Securely process an assistant chat request with comprehensive input validation.
+        """Securely process an assistant chat request with comprehensive input validation.
 
         Args:
             request: Validated assistant chat request data
@@ -75,6 +72,7 @@ class SecureOllamaService:
 
         Raises:
             HTTPException: If assistant processing fails or security violation detected
+
         """
         try:
             # Additional security checks
@@ -105,14 +103,14 @@ class SecureOllamaService:
             # Check for command injection patterns in message
             if not validate_command_input(request.message):
                 logger.warning(
-                    f"Command injection attempt in chat message: {request.message[:100]}..."
+                    f"Command injection attempt in chat message: {request.message[:100]}...",
                 )
                 return False
 
             # Check for suspicious patterns in message
             if self._contains_suspicious_patterns(request.message):
                 logger.warning(
-                    f"Suspicious pattern in chat message: {request.message[:100]}..."
+                    f"Suspicious pattern in chat message: {request.message[:100]}...",
                 )
                 return False
 
@@ -120,13 +118,13 @@ class SecureOllamaService:
             if request.system_prompt:
                 if not validate_command_input(request.system_prompt):
                     logger.warning(
-                        f"Command injection attempt in system prompt: {request.system_prompt[:100]}..."
+                        f"Command injection attempt in system prompt: {request.system_prompt[:100]}...",
                     )
                     return False
 
                 if self._contains_suspicious_patterns(request.system_prompt):
                     logger.warning(
-                        f"Suspicious pattern in system prompt: {request.system_prompt[:100]}..."
+                        f"Suspicious pattern in system prompt: {request.system_prompt[:100]}...",
                     )
                     return False
 
@@ -273,13 +271,13 @@ class SecureOllamaService:
             for field in text_fields:
                 if field in response_dict and isinstance(response_dict[field], str):
                     response_dict[field] = self._sanitize_text_content(
-                        response_dict[field]
+                        response_dict[field],
                     )
 
             # Sanitize metadata
             if "metadata" in response_dict:
                 response_dict["metadata"] = self._sanitize_metadata(
-                    response_dict["metadata"]
+                    response_dict["metadata"],
                 )
 
             return response_dict
@@ -325,13 +323,13 @@ class SecureOllamaService:
             for field in text_fields:
                 if field in response_dict and isinstance(response_dict[field], str):
                     response_dict[field] = self._sanitize_text_content(
-                        response_dict[field]
+                        response_dict[field],
                     )
 
             # Sanitize metadata
             if "metadata" in response_dict:
                 response_dict["metadata"] = self._sanitize_metadata(
-                    response_dict["metadata"]
+                    response_dict["metadata"],
                 )
 
             return response_dict
@@ -353,7 +351,7 @@ class SecureOllamaService:
 
             # Remove email addresses
             text = re.sub(
-                r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b", "[EMAIL]", text
+                r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b", "[EMAIL]", text,
             )
 
             # Remove tokens and keys

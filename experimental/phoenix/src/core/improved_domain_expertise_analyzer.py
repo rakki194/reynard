@@ -1,5 +1,4 @@
-"""
-PHOENIX Improved Domain Expertise Analyzer
+"""PHOENIX Improved Domain Expertise Analyzer
 
 Enhanced domain expertise detection and analysis module addressing limitations in:
 - Domain coverage expansion
@@ -11,26 +10,19 @@ Author: Vulpine (Fox Specialist)
 Version: 2.0.0
 """
 
-import json
 import logging
 import math
 import re
 from collections import defaultdict
-from datetime import datetime
-from typing import Any, Dict, List, Optional, Tuple
-
-import numpy as np
+from typing import Any
 
 from ..utils.data_structures import (
-    AgentGeneticMaterial,
     AgentState,
-    StructuredKnowledge,
 )
 
 
 class ImprovedDomainExpertiseAnalyzer:
-    """
-    Enhanced domain expertise analysis system addressing previous limitations.
+    """Enhanced domain expertise analysis system addressing previous limitations.
 
     Improvements:
     - Expanded domain coverage (10+ domains)
@@ -67,7 +59,7 @@ class ImprovedDomainExpertiseAnalyzer:
 
         self.logger.info("🎯 Improved domain expertise analyzer initialized")
 
-    def _initialize_enhanced_domain_patterns(self) -> Dict[str, Dict[str, Any]]:
+    def _initialize_enhanced_domain_patterns(self) -> dict[str, dict[str, Any]]:
         """Initialize expanded domain-specific expertise patterns."""
         return {
             # Technical Domains
@@ -437,10 +429,9 @@ class ImprovedDomainExpertiseAnalyzer:
         }
 
     def analyze_domain_expertise(
-        self, agent_output: str, agent_state: AgentState
-    ) -> Dict[str, Dict[str, Any]]:
-        """
-        Analyze domain expertise with improved normalization and bias correction.
+        self, agent_output: str, agent_state: AgentState,
+    ) -> dict[str, dict[str, Any]]:
+        """Analyze domain expertise with improved normalization and bias correction.
 
         Args:
             agent_output: The agent's output text
@@ -448,9 +439,10 @@ class ImprovedDomainExpertiseAnalyzer:
 
         Returns:
             Dictionary of domain expertise analysis results
+
         """
         self.logger.debug(
-            f"Analyzing domain expertise from output of length {len(agent_output)}"
+            f"Analyzing domain expertise from output of length {len(agent_output)}",
         )
 
         # Normalize text length and apply bias correction
@@ -465,38 +457,38 @@ class ImprovedDomainExpertiseAnalyzer:
 
             # Apply length normalization
             normalized_score = self._apply_length_normalization(
-                base_score, length_factor
+                base_score, length_factor,
             )
 
             # Apply bias correction
             corrected_score = self._apply_bias_correction(
-                normalized_score, domain, agent_output
+                normalized_score, domain, agent_output,
             )
 
             if corrected_score > 0.1:  # Minimum threshold for domain detection
                 domain_expertise[domain] = {
                     "expertise_score": corrected_score,
                     "expertise_level": self._determine_expertise_level(
-                        normalized_output, patterns
+                        normalized_output, patterns,
                     ),
                     "confidence": self._calculate_domain_confidence(
-                        normalized_output, patterns, corrected_score
+                        normalized_output, patterns, corrected_score,
                     ),
                     "indicators": self._extract_domain_indicators(
-                        normalized_output, patterns
+                        normalized_output, patterns,
                     ),
                     "terminology_usage": self._analyze_terminology_usage(
-                        normalized_output, patterns
+                        normalized_output, patterns,
                     ),
                     "concept_depth": self._analyze_concept_depth(
-                        normalized_output, patterns
+                        normalized_output, patterns,
                     ),
                     "length_normalization_factor": length_factor,
                     "bias_correction_applied": True,
                 }
 
         self.logger.info(
-            f"Detected expertise in {len(domain_expertise)} domains with normalization"
+            f"Detected expertise in {len(domain_expertise)} domains with normalization",
         )
         return domain_expertise
 
@@ -513,7 +505,7 @@ class ImprovedDomainExpertiseAnalyzer:
             return " ".join(words + padding_words)
 
         # If text is too long, truncate intelligently
-        elif word_count > self.normalization_params["max_length"]:
+        if word_count > self.normalization_params["max_length"]:
             # Keep first and last parts, remove middle
             keep_words = self.normalization_params["max_length"] // 2
             return " ".join(words[:keep_words] + words[-keep_words:])
@@ -531,11 +523,10 @@ class ImprovedDomainExpertiseAnalyzer:
         if word_count < optimal_min:
             # Penalize very short texts
             return 0.5 + (word_count / optimal_min) * 0.5
-        elif word_count > optimal_max:
+        if word_count > optimal_max:
             # Slight penalty for very long texts
             return 1.0 - min(0.2, (word_count - optimal_max) / optimal_max * 0.2)
-        else:
-            return 1.0
+        return 1.0
 
     def _apply_length_normalization(self, score: float, length_factor: float) -> float:
         """Apply length-based normalization to expertise score."""
@@ -560,7 +551,7 @@ class ImprovedDomainExpertiseAnalyzer:
         bias_factor = bias_factors.get(domain, 1.0)
         return min(1.0, score * bias_factor)
 
-    def _calculate_domain_expertise(self, text: str, patterns: Dict[str, Any]) -> float:
+    def _calculate_domain_expertise(self, text: str, patterns: dict[str, Any]) -> float:
         """Calculate domain expertise score with improved methodology."""
         scores = {}
 
@@ -578,7 +569,7 @@ class ImprovedDomainExpertiseAnalyzer:
 
         # Analyze contextual relevance
         context_score = self._analyze_contextual_relevance(
-            text, patterns["context_indicators"]
+            text, patterns["context_indicators"],
         )
         scores["context"] = context_score
 
@@ -593,7 +584,7 @@ class ImprovedDomainExpertiseAnalyzer:
 
         return min(1.0, total_score)
 
-    def _analyze_expertise_depth(self, text: str, patterns: Dict[str, Any]) -> float:
+    def _analyze_expertise_depth(self, text: str, patterns: dict[str, Any]) -> float:
         """Analyze depth of expertise understanding."""
         expertise_levels = patterns["expertise_levels"]
 
@@ -617,7 +608,7 @@ class ImprovedDomainExpertiseAnalyzer:
         )
         return min(1.0, depth_score / total_indicators) if total_indicators > 0 else 0.0
 
-    def _analyze_pattern_matches(self, text: str, patterns: List[str]) -> float:
+    def _analyze_pattern_matches(self, text: str, patterns: list[str]) -> float:
         """Analyze pattern matches with improved scoring."""
         matches = 0
         total_patterns = len(patterns)
@@ -631,7 +622,7 @@ class ImprovedDomainExpertiseAnalyzer:
             return min(1.0, math.log(matches + 1) / math.log(total_patterns + 1))
         return 0.0
 
-    def _analyze_contextual_relevance(self, text: str, indicators: List[str]) -> float:
+    def _analyze_contextual_relevance(self, text: str, indicators: list[str]) -> float:
         """Analyze contextual relevance with improved scoring."""
         text_lower = text.lower()
         matches = sum(1 for indicator in indicators if indicator in text_lower)
@@ -643,7 +634,7 @@ class ImprovedDomainExpertiseAnalyzer:
             else 0.0
         )
 
-    def _determine_expertise_level(self, text: str, patterns: Dict[str, Any]) -> str:
+    def _determine_expertise_level(self, text: str, patterns: dict[str, Any]) -> str:
         """Determine expertise level with improved logic."""
         expertise_levels = patterns["expertise_levels"]
 
@@ -665,7 +656,7 @@ class ImprovedDomainExpertiseAnalyzer:
         return best_level if weighted_scores[best_level] > 0 else "unknown"
 
     def _calculate_domain_confidence(
-        self, text: str, patterns: Dict[str, Any], expertise_score: float
+        self, text: str, patterns: dict[str, Any], expertise_score: float,
     ) -> float:
         """Calculate confidence with improved methodology."""
         base_confidence = expertise_score
@@ -678,7 +669,7 @@ class ImprovedDomainExpertiseAnalyzer:
 
         # Boost confidence for contextual coherence
         contextual_matches = self._analyze_contextual_relevance(
-            text, patterns["context_indicators"]
+            text, patterns["context_indicators"],
         )
 
         # Boost confidence for depth indicators
@@ -693,8 +684,8 @@ class ImprovedDomainExpertiseAnalyzer:
         return min(1.0, base_confidence + confidence_boost)
 
     def _extract_domain_indicators(
-        self, text: str, patterns: Dict[str, Any]
-    ) -> List[str]:
+        self, text: str, patterns: dict[str, Any],
+    ) -> list[str]:
         """Extract specific domain indicators with improved extraction."""
         indicators = []
 
@@ -716,8 +707,8 @@ class ImprovedDomainExpertiseAnalyzer:
         return indicators[:8]  # Limit to 8 total indicators
 
     def _analyze_terminology_usage(
-        self, text: str, patterns: Dict[str, Any]
-    ) -> Dict[str, Any]:
+        self, text: str, patterns: dict[str, Any],
+    ) -> dict[str, Any]:
         """Analyze terminology usage with enhanced metrics."""
         terminology_analysis = {
             "total_terms": 0,
@@ -750,8 +741,8 @@ class ImprovedDomainExpertiseAnalyzer:
         return terminology_analysis
 
     def _analyze_concept_depth(
-        self, text: str, patterns: Dict[str, Any]
-    ) -> Dict[str, Any]:
+        self, text: str, patterns: dict[str, Any],
+    ) -> dict[str, Any]:
         """Analyze depth of concept understanding with enhanced metrics."""
         concept_analysis = {
             "concept_count": 0,
@@ -805,8 +796,8 @@ class ImprovedDomainExpertiseAnalyzer:
         return concept_analysis
 
     def calculate_cross_domain_transfer(
-        self, domain_expertise: Dict[str, Dict[str, Any]]
-    ) -> Dict[str, float]:
+        self, domain_expertise: dict[str, dict[str, Any]],
+    ) -> dict[str, float]:
         """Calculate potential for cross-domain knowledge transfer with enhanced analysis."""
         if len(domain_expertise) < 2:
             return {}

@@ -1,14 +1,12 @@
-"""
-PostgreSQL-based ECS World Service
+"""PostgreSQL-based ECS World Service
 
 Provides ECS world functionality using PostgreSQL database instead of JSON files.
 """
 
 import json
 import logging
-from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
-from uuid import UUID
+from datetime import UTC, datetime
+from typing import Any
 
 from fastapi import FastAPI, HTTPException
 from sqlalchemy import and_, or_
@@ -39,8 +37,7 @@ logger = logging.getLogger(__name__)
 
 
 class PostgresECSWorldService:
-    """
-    PostgreSQL-based ECS World service for FastAPI backend integration.
+    """PostgreSQL-based ECS World service for FastAPI backend integration.
 
     Provides database-backed ECS world functionality with full CRUD operations
     for agents, traits, interactions, and other ECS components.
@@ -85,7 +82,7 @@ class PostgresECSWorldService:
         """Ensure the service is initialized."""
         if not self._initialized:
             logger.warning(
-                "ECS World Service not initialized, initializing synchronously..."
+                "ECS World Service not initialized, initializing synchronously...",
             )
             try:
                 # Initialize synchronously without async
@@ -119,16 +116,15 @@ class PostgresECSWorldService:
         spirit: str,
         style: str,
         generation: int = 1,
-        personality_traits: Optional[Dict[str, float]] = None,
-        physical_traits: Optional[Dict[str, float]] = None,
-        ability_traits: Optional[Dict[str, float]] = None,
-        specializations: Optional[List[str]] = None,
-        domain_expertise: Optional[List[str]] = None,
-        achievements: Optional[List[str]] = None,
-        workflow_preferences: Optional[Dict[str, bool]] = None,
-    ) -> Dict[str, Any]:
-        """
-        Create a new agent in the ECS world.
+        personality_traits: dict[str, float] | None = None,
+        physical_traits: dict[str, float] | None = None,
+        ability_traits: dict[str, float] | None = None,
+        specializations: list[str] | None = None,
+        domain_expertise: list[str] | None = None,
+        achievements: list[str] | None = None,
+        workflow_preferences: dict[str, bool] | None = None,
+    ) -> dict[str, Any]:
+        """Create a new agent in the ECS world.
 
         Args:
             agent_id: Unique agent identifier
@@ -146,6 +142,7 @@ class PostgresECSWorldService:
 
         Returns:
             Dictionary containing the created agent data
+
         """
         self._ensure_initialized()
         try:
@@ -156,7 +153,7 @@ class PostgresECSWorldService:
                 )
                 if existing_agent:
                     raise HTTPException(
-                        status_code=400, detail=f"Entity {agent_id} already exists"
+                        status_code=400, detail=f"Entity {agent_id} already exists",
                     )
 
                 # Create the agent
@@ -273,18 +270,18 @@ class PostgresECSWorldService:
         except Exception as e:
             logger.error(f"❌ Failed to create agent {agent_id}: {e}")
             raise HTTPException(
-                status_code=500, detail=f"Failed to create agent: {str(e)}"
+                status_code=500, detail=f"Failed to create agent: {e!s}",
             )
 
-    async def get_agent(self, agent_id: str) -> Optional[Dict[str, Any]]:
-        """
-        Get an agent by ID.
+    async def get_agent(self, agent_id: str) -> dict[str, Any] | None:
+        """Get an agent by ID.
 
         Args:
             agent_id: Agent identifier
 
         Returns:
             Dictionary containing agent data or None if not found
+
         """
         self._ensure_initialized()
         try:
@@ -346,15 +343,15 @@ class PostgresECSWorldService:
             logger.error(f"❌ Failed to get agent {agent_id}: {e}")
             return None
 
-    async def get_agent_by_name(self, name: str) -> Optional[Dict[str, Any]]:
-        """
-        Get an agent by name.
+    async def get_agent_by_name(self, name: str) -> dict[str, Any] | None:
+        """Get an agent by name.
 
         Args:
             name: Agent name
 
         Returns:
             Dictionary containing agent data or None if not found
+
         """
         self._ensure_initialized()
         try:
@@ -413,12 +410,12 @@ class PostgresECSWorldService:
             logger.error(f"❌ Failed to get agent by name {name}: {e}")
             return None
 
-    async def get_all_agents(self) -> List[Dict[str, Any]]:
-        """
-        Get all agents in the ECS world.
+    async def get_all_agents(self) -> list[dict[str, Any]]:
+        """Get all agents in the ECS world.
 
         Returns:
             List of dictionaries containing agent data
+
         """
         self._ensure_initialized()
         try:
@@ -437,7 +434,7 @@ class PostgresECSWorldService:
                             "active": agent.active,
                             "created_at": agent.created_at.isoformat(),
                             "last_activity": agent.last_activity.isoformat(),
-                        }
+                        },
                     )
 
                 return result
@@ -452,9 +449,8 @@ class PostgresECSWorldService:
         receiver_id: str,
         message: str,
         interaction_type: str = "communication",
-    ) -> Dict[str, Any]:
-        """
-        Send a message between agents.
+    ) -> dict[str, Any]:
+        """Send a message between agents.
 
         Args:
             sender_id: Sender agent ID
@@ -464,6 +460,7 @@ class PostgresECSWorldService:
 
         Returns:
             Dictionary containing interaction data
+
         """
         self._ensure_initialized()
         try:
@@ -478,7 +475,7 @@ class PostgresECSWorldService:
 
                 if not sender or not receiver:
                     raise HTTPException(
-                        status_code=404, detail="One or both agents not found"
+                        status_code=404, detail="One or both agents not found",
                     )
 
                 # Create interaction
@@ -492,8 +489,8 @@ class PostgresECSWorldService:
                 session.add(interaction)
 
                 # Update last activity for both agents
-                sender.last_activity = datetime.now(timezone.utc)
-                receiver.last_activity = datetime.now(timezone.utc)
+                sender.last_activity = datetime.now(UTC)
+                receiver.last_activity = datetime.now(UTC)
 
                 session.commit()
 
@@ -510,17 +507,16 @@ class PostgresECSWorldService:
             raise
         except Exception as e:
             logger.error(
-                f"❌ Failed to send message from {sender_id} to {receiver_id}: {e}"
+                f"❌ Failed to send message from {sender_id} to {receiver_id}: {e}",
             )
             raise HTTPException(
-                status_code=500, detail=f"Failed to send message: {str(e)}"
+                status_code=500, detail=f"Failed to send message: {e!s}",
             )
 
     async def get_agent_interactions(
-        self, agent_id: str, limit: int = 10
-    ) -> List[Dict[str, Any]]:
-        """
-        Get interaction history for a specific agent.
+        self, agent_id: str, limit: int = 10,
+    ) -> list[dict[str, Any]]:
+        """Get interaction history for a specific agent.
 
         Args:
             agent_id: Agent identifier (string)
@@ -528,6 +524,7 @@ class PostgresECSWorldService:
 
         Returns:
             List of interaction dictionaries
+
         """
         self._ensure_initialized()
         try:
@@ -545,7 +542,7 @@ class PostgresECSWorldService:
                         or_(
                             AgentInteraction.sender_id == agent.id,
                             AgentInteraction.receiver_id == agent.id,
-                        )
+                        ),
                     )
                     .order_by(AgentInteraction.created_at.desc())
                     .limit(limit)
@@ -583,7 +580,7 @@ class PostgresECSWorldService:
                             "interaction_type": interaction.interaction_type,
                             "timestamp": interaction.created_at.isoformat(),
                             "energy_level": interaction.energy_level,
-                        }
+                        },
                     )
 
                 return result
@@ -592,12 +589,12 @@ class PostgresECSWorldService:
             logger.error(f"❌ Failed to get interactions for agent {agent_id}: {e}")
             return []
 
-    async def get_world_status(self) -> Dict[str, Any]:
-        """
-        Get the current status of the ECS world.
+    async def get_world_status(self) -> dict[str, Any]:
+        """Get the current status of the ECS world.
 
         Returns:
             Dictionary containing world status information
+
         """
         self._ensure_initialized()
         try:
@@ -629,7 +626,7 @@ class PostgresECSWorldService:
 
     # Naming Configuration Methods
 
-    async def get_naming_spirits(self) -> Dict[str, Any]:
+    async def get_naming_spirits(self) -> dict[str, Any]:
         """Get all available spirits with their configurations."""
         try:
             session = self.get_session()
@@ -648,21 +645,21 @@ class PostgresECSWorldService:
             logger.error(f"Error getting naming spirits: {e}")
             raise
 
-    async def get_naming_spirit(self, spirit_name: str) -> Dict[str, Any]:
+    async def get_naming_spirit(self, spirit_name: str) -> dict[str, Any]:
         """Get a specific spirit configuration."""
         try:
             session = self.get_session()
             spirit = (
                 session.query(NamingSpirit)
                 .filter(
-                    and_(NamingSpirit.name == spirit_name, NamingSpirit.enabled == True)
+                    and_(NamingSpirit.name == spirit_name, NamingSpirit.enabled == True),
                 )
                 .first()
             )
 
             if not spirit:
                 raise HTTPException(
-                    status_code=404, detail=f"Spirit '{spirit_name}' not found"
+                    status_code=404, detail=f"Spirit '{spirit_name}' not found",
                 )
 
             result = spirit.to_dict()
@@ -675,7 +672,7 @@ class PostgresECSWorldService:
             logger.error(f"Error getting spirit {spirit_name}: {e}")
             raise
 
-    async def get_naming_components(self) -> Dict[str, Any]:
+    async def get_naming_components(self) -> dict[str, Any]:
         """Get all naming components organized by type."""
         try:
             session = self.get_session()
@@ -698,7 +695,7 @@ class PostgresECSWorldService:
             logger.error(f"Error getting naming components: {e}")
             raise
 
-    async def get_naming_component_type(self, component_type: str) -> Dict[str, Any]:
+    async def get_naming_component_type(self, component_type: str) -> dict[str, Any]:
         """Get a specific type of naming component."""
         try:
             session = self.get_session()
@@ -708,7 +705,7 @@ class PostgresECSWorldService:
                     and_(
                         NamingComponent.component_type == component_type,
                         NamingComponent.enabled == True,
-                    )
+                    ),
                 )
                 .all()
             )
@@ -729,7 +726,7 @@ class PostgresECSWorldService:
             logger.error(f"Error getting component type {component_type}: {e}")
             raise
 
-    async def get_naming_config(self) -> Dict[str, Any]:
+    async def get_naming_config(self) -> dict[str, Any]:
         """Get the complete naming configuration."""
         try:
             session = self.get_session()
@@ -748,7 +745,7 @@ class PostgresECSWorldService:
             logger.error(f"Error getting naming config: {e}")
             raise
 
-    async def get_naming_schemes(self) -> Dict[str, Any]:
+    async def get_naming_schemes(self) -> dict[str, Any]:
         """Get all available naming schemes."""
         try:
             session = self.get_session()
@@ -758,7 +755,7 @@ class PostgresECSWorldService:
                     and_(
                         NamingConfig.config_key == "schemes",
                         NamingConfig.enabled == True,
-                    )
+                    ),
                 )
                 .first()
             )
@@ -773,7 +770,7 @@ class PostgresECSWorldService:
             logger.error(f"Error getting naming schemes: {e}")
             raise
 
-    async def get_naming_styles(self) -> Dict[str, Any]:
+    async def get_naming_styles(self) -> dict[str, Any]:
         """Get all available naming styles."""
         try:
             session = self.get_session()
@@ -783,7 +780,7 @@ class PostgresECSWorldService:
                     and_(
                         NamingConfig.config_key == "styles",
                         NamingConfig.enabled == True,
-                    )
+                    ),
                 )
                 .first()
             )
@@ -798,7 +795,7 @@ class PostgresECSWorldService:
             logger.error(f"Error getting naming styles: {e}")
             raise
 
-    async def get_generation_numbers(self) -> Dict[str, Any]:
+    async def get_generation_numbers(self) -> dict[str, Any]:
         """Get generation numbers for all spirits."""
         try:
             session = self.get_session()
@@ -817,21 +814,21 @@ class PostgresECSWorldService:
             logger.error(f"Error getting generation numbers: {e}")
             raise
 
-    async def get_spirit_generation_numbers(self, spirit_name: str) -> Dict[str, Any]:
+    async def get_spirit_generation_numbers(self, spirit_name: str) -> dict[str, Any]:
         """Get generation numbers for a specific spirit."""
         try:
             session = self.get_session()
             spirit = (
                 session.query(NamingSpirit)
                 .filter(
-                    and_(NamingSpirit.name == spirit_name, NamingSpirit.enabled == True)
+                    and_(NamingSpirit.name == spirit_name, NamingSpirit.enabled == True),
                 )
                 .first()
             )
 
             if not spirit:
                 raise HTTPException(
-                    status_code=404, detail=f"Spirit '{spirit_name}' not found"
+                    status_code=404, detail=f"Spirit '{spirit_name}' not found",
                 )
 
             result = {"spirit": spirit_name, "numbers": spirit.generation_numbers}
@@ -842,7 +839,7 @@ class PostgresECSWorldService:
             raise
         except Exception as e:
             logger.error(
-                f"Error getting generation numbers for spirit {spirit_name}: {e}"
+                f"Error getting generation numbers for spirit {spirit_name}: {e}",
             )
             raise
 
@@ -854,9 +851,8 @@ class PostgresECSWorldService:
         parent2_id: str,
         offspring_id: str,
         offspring_name: str = None,
-    ) -> Dict[str, Any]:
-        """
-        Create offspring from two parent agents with genetic inheritance.
+    ) -> dict[str, Any]:
+        """Create offspring from two parent agents with genetic inheritance.
 
         Args:
             parent1_id: First parent agent ID
@@ -866,6 +862,7 @@ class PostgresECSWorldService:
 
         Returns:
             Dictionary containing the created offspring data
+
         """
         self._ensure_initialized()
         try:
@@ -880,12 +877,12 @@ class PostgresECSWorldService:
 
                 if not parent1 or not parent2:
                     raise HTTPException(
-                        status_code=404, detail="One or both parent agents not found"
+                        status_code=404, detail="One or both parent agents not found",
                     )
 
                 # Calculate genetic compatibility
                 compatibility_score = await self._calculate_genetic_compatibility(
-                    parent1_id, parent2_id
+                    parent1_id, parent2_id,
                 )
 
                 if compatibility_score < 0.3:
@@ -983,11 +980,11 @@ class PostgresECSWorldService:
         except Exception as e:
             logger.error(f"❌ Failed to create offspring: {e}")
             raise HTTPException(
-                status_code=500, detail=f"Failed to create offspring: {str(e)}"
+                status_code=500, detail=f"Failed to create offspring: {e!s}",
             )
 
     async def _calculate_genetic_compatibility(
-        self, agent1_id: str, agent2_id: str
+        self, agent1_id: str, agent2_id: str,
     ) -> float:
         """Calculate genetic compatibility between two agents."""
         try:
@@ -1011,7 +1008,7 @@ class PostgresECSWorldService:
                     for trait2 in agent2.personality_traits:
                         if trait1.trait_name == trait2.trait_name:
                             similarity = 1.0 - abs(
-                                trait1.trait_value - trait2.trait_value
+                                trait1.trait_value - trait2.trait_value,
                             )
                             trait_similarity += similarity
                             trait_count += 1
@@ -1021,7 +1018,7 @@ class PostgresECSWorldService:
                     for trait2 in agent2.physical_traits:
                         if trait1.trait_name == trait2.trait_name:
                             similarity = 1.0 - abs(
-                                trait1.trait_value - trait2.trait_value
+                                trait1.trait_value - trait2.trait_value,
                             )
                             trait_similarity += similarity
                             trait_count += 1
@@ -1031,7 +1028,7 @@ class PostgresECSWorldService:
                     for trait2 in agent2.ability_traits:
                         if trait1.trait_name == trait2.trait_name:
                             similarity = 1.0 - abs(
-                                trait1.trait_value - trait2.trait_value
+                                trait1.trait_value - trait2.trait_value,
                             )
                             trait_similarity += similarity
                             trait_count += 1
@@ -1049,7 +1046,7 @@ class PostgresECSWorldService:
                 generation_bonus = max(0.0, 0.2 - (generation_diff * 0.05))
 
                 final_compatibility = min(
-                    1.0, base_compatibility + spirit_bonus + generation_bonus
+                    1.0, base_compatibility + spirit_bonus + generation_bonus,
                 )
                 return final_compatibility
 
@@ -1058,7 +1055,7 @@ class PostgresECSWorldService:
             return 0.0
 
     async def _inherit_traits(
-        self, session: Session, offspring: Agent, parent1: Agent, parent2: Agent
+        self, session: Session, offspring: Agent, parent1: Agent, parent2: Agent,
     ):
         """Inherit traits from parents to offspring."""
         try:
@@ -1140,10 +1137,9 @@ class PostgresECSWorldService:
             raise
 
     async def find_compatible_mates(
-        self, agent_id: str, max_results: int = 5
-    ) -> List[Dict[str, Any]]:
-        """
-        Find compatible mates for an agent based on genetic compatibility.
+        self, agent_id: str, max_results: int = 5,
+    ) -> list[dict[str, Any]]:
+        """Find compatible mates for an agent based on genetic compatibility.
 
         Args:
             agent_id: Agent identifier
@@ -1151,6 +1147,7 @@ class PostgresECSWorldService:
 
         Returns:
             List of compatible mate information
+
         """
         self._ensure_initialized()
         try:
@@ -1165,7 +1162,7 @@ class PostgresECSWorldService:
                 mates = []
                 for other_agent in other_agents:
                     compatibility = await self._calculate_genetic_compatibility(
-                        agent_id, other_agent.agent_id
+                        agent_id, other_agent.agent_id,
                     )
 
                     if compatibility >= 0.4:  # Minimum compatibility threshold
@@ -1176,7 +1173,7 @@ class PostgresECSWorldService:
                                 "spirit": other_agent.spirit,
                                 "generation": other_agent.generation,
                                 "compatibility_score": compatibility,
-                            }
+                            },
                         )
 
                 # Sort by compatibility score (highest first)
@@ -1189,10 +1186,9 @@ class PostgresECSWorldService:
             return []
 
     async def analyze_compatibility(
-        self, agent1_id: str, agent2_id: str
-    ) -> Dict[str, Any]:
-        """
-        Analyze genetic compatibility between two agents.
+        self, agent1_id: str, agent2_id: str,
+    ) -> dict[str, Any]:
+        """Analyze genetic compatibility between two agents.
 
         Args:
             agent1_id: First agent identifier
@@ -1200,11 +1196,12 @@ class PostgresECSWorldService:
 
         Returns:
             Detailed compatibility analysis
+
         """
         self._ensure_initialized()
         try:
             compatibility_score = await self._calculate_genetic_compatibility(
-                agent1_id, agent2_id
+                agent1_id, agent2_id,
             )
 
             with self.get_session() as session:
@@ -1217,7 +1214,7 @@ class PostgresECSWorldService:
 
                 if not agent1 or not agent2:
                     raise HTTPException(
-                        status_code=404, detail="One or both agents not found"
+                        status_code=404, detail="One or both agents not found",
                     )
 
                 # Detailed analysis
@@ -1226,7 +1223,7 @@ class PostgresECSWorldService:
                     "agent2_id": agent2_id,
                     "compatibility_score": compatibility_score,
                     "compatibility_level": self._get_compatibility_level(
-                        compatibility_score
+                        compatibility_score,
                     ),
                     "breeding_recommended": compatibility_score >= 0.4,
                     "spirit_compatibility": agent1.spirit == agent2.spirit,
@@ -1237,7 +1234,7 @@ class PostgresECSWorldService:
                         "ability_traits": len(agent1.ability_traits),
                     },
                     "recommendation": self._get_breeding_recommendation(
-                        compatibility_score
+                        compatibility_score,
                     ),
                 }
 
@@ -1248,38 +1245,35 @@ class PostgresECSWorldService:
         except Exception as e:
             logger.error(f"❌ Failed to analyze compatibility: {e}")
             raise HTTPException(
-                status_code=500, detail=f"Failed to analyze compatibility: {str(e)}"
+                status_code=500, detail=f"Failed to analyze compatibility: {e!s}",
             )
 
     def _get_compatibility_level(self, score: float) -> str:
         """Get compatibility level description."""
         if score >= 0.8:
             return "excellent"
-        elif score >= 0.6:
+        if score >= 0.6:
             return "good"
-        elif score >= 0.4:
+        if score >= 0.4:
             return "moderate"
-        elif score >= 0.2:
+        if score >= 0.2:
             return "poor"
-        else:
-            return "very_poor"
+        return "very_poor"
 
     def _get_breeding_recommendation(self, score: float) -> str:
         """Get breeding recommendation based on compatibility score."""
         if score >= 0.7:
             return "Highly recommended for breeding"
-        elif score >= 0.5:
+        if score >= 0.5:
             return "Good candidate for breeding"
-        elif score >= 0.4:
+        if score >= 0.4:
             return "Acceptable for breeding"
-        elif score >= 0.3:
+        if score >= 0.3:
             return "Not recommended for breeding"
-        else:
-            return "Strongly not recommended for breeding"
+        return "Strongly not recommended for breeding"
 
-    async def get_agent_lineage(self, agent_id: str, depth: int = 3) -> Dict[str, Any]:
-        """
-        Get agent family tree and lineage.
+    async def get_agent_lineage(self, agent_id: str, depth: int = 3) -> dict[str, Any]:
+        """Get agent family tree and lineage.
 
         Args:
             agent_id: Agent identifier
@@ -1287,6 +1281,7 @@ class PostgresECSWorldService:
 
         Returns:
             Lineage information
+
         """
         self._ensure_initialized()
         try:
@@ -1312,7 +1307,7 @@ class PostgresECSWorldService:
 
                 # Build lineage tree
                 lineage_tree = await self._build_lineage_tree(
-                    session, lineage_record, depth
+                    session, lineage_record, depth,
                 )
 
                 return {
@@ -1353,12 +1348,12 @@ class PostgresECSWorldService:
         except Exception as e:
             logger.error(f"❌ Failed to get agent lineage: {e}")
             raise HTTPException(
-                status_code=500, detail=f"Failed to get agent lineage: {str(e)}"
+                status_code=500, detail=f"Failed to get agent lineage: {e!s}",
             )
 
     async def _build_lineage_tree(
-        self, session: Session, lineage_record: AgentLineage, depth: int
-    ) -> Dict[str, Any]:
+        self, session: Session, lineage_record: AgentLineage, depth: int,
+    ) -> dict[str, Any]:
         """Build lineage tree recursively."""
         if depth <= 0:
             return {
@@ -1380,7 +1375,7 @@ class PostgresECSWorldService:
             )
             if parent1_lineage:
                 tree["parent1"] = await self._build_lineage_tree(
-                    session, parent1_lineage, depth - 1
+                    session, parent1_lineage, depth - 1,
                 )
 
         if lineage_record.parent2:
@@ -1391,22 +1386,22 @@ class PostgresECSWorldService:
             )
             if parent2_lineage:
                 tree["parent2"] = await self._build_lineage_tree(
-                    session, parent2_lineage, depth - 1
+                    session, parent2_lineage, depth - 1,
                 )
 
         return tree
 
     # Position and Movement Methods
 
-    async def get_agent_position(self, agent_id: str) -> Dict[str, Any]:
-        """
-        Get the current position of an agent.
+    async def get_agent_position(self, agent_id: str) -> dict[str, Any]:
+        """Get the current position of an agent.
 
         Args:
             agent_id: Agent identifier
 
         Returns:
             Position data
+
         """
         self._ensure_initialized()
         try:
@@ -1447,15 +1442,15 @@ class PostgresECSWorldService:
         except Exception as e:
             logger.error(f"❌ Failed to get agent position: {e}")
             raise HTTPException(
-                status_code=500, detail=f"Failed to get agent position: {str(e)}"
+                status_code=500, detail=f"Failed to get agent position: {e!s}",
             )
 
-    async def get_all_agent_positions(self) -> Dict[str, Any]:
-        """
-        Get positions of all agents in the world.
+    async def get_all_agent_positions(self) -> dict[str, Any]:
+        """Get positions of all agents in the world.
 
         Returns:
             Dictionary containing all agent positions
+
         """
         self._ensure_initialized()
         try:
@@ -1476,7 +1471,7 @@ class PostgresECSWorldService:
                                 "velocity_x": agent.position.velocity_x,
                                 "velocity_y": agent.position.velocity_y,
                                 "movement_speed": agent.position.movement_speed,
-                            }
+                            },
                         )
 
                 return {
@@ -1487,12 +1482,11 @@ class PostgresECSWorldService:
         except Exception as e:
             logger.error(f"❌ Failed to get all agent positions: {e}")
             raise HTTPException(
-                status_code=500, detail=f"Failed to get all agent positions: {str(e)}"
+                status_code=500, detail=f"Failed to get all agent positions: {e!s}",
             )
 
-    async def move_agent(self, agent_id: str, x: float, y: float) -> Dict[str, Any]:
-        """
-        Move an agent to a specific position.
+    async def move_agent(self, agent_id: str, x: float, y: float) -> dict[str, Any]:
+        """Move an agent to a specific position.
 
         Args:
             agent_id: Agent identifier
@@ -1501,6 +1495,7 @@ class PostgresECSWorldService:
 
         Returns:
             Updated position data
+
         """
         self._ensure_initialized()
         try:
@@ -1551,14 +1546,13 @@ class PostgresECSWorldService:
         except Exception as e:
             logger.error(f"❌ Failed to move agent: {e}")
             raise HTTPException(
-                status_code=500, detail=f"Failed to move agent: {str(e)}"
+                status_code=500, detail=f"Failed to move agent: {e!s}",
             )
 
     async def move_agent_towards(
-        self, agent_id: str, target_agent_id: str, distance: float = 50.0
-    ) -> Dict[str, Any]:
-        """
-        Move an agent towards another agent.
+        self, agent_id: str, target_agent_id: str, distance: float = 50.0,
+    ) -> dict[str, Any]:
+        """Move an agent towards another agent.
 
         Args:
             agent_id: Agent to move
@@ -1567,6 +1561,7 @@ class PostgresECSWorldService:
 
         Returns:
             Updated position data
+
         """
         self._ensure_initialized()
         try:
@@ -1580,7 +1575,7 @@ class PostgresECSWorldService:
 
                 if not agent or not target_agent:
                     raise HTTPException(
-                        status_code=404, detail="One or both agents not found"
+                        status_code=404, detail="One or both agents not found",
                     )
 
                 agent_position = agent.position
@@ -1646,14 +1641,13 @@ class PostgresECSWorldService:
         except Exception as e:
             logger.error(f"❌ Failed to move agent towards target: {e}")
             raise HTTPException(
-                status_code=500, detail=f"Failed to move agent towards target: {str(e)}"
+                status_code=500, detail=f"Failed to move agent towards target: {e!s}",
             )
 
     async def get_agent_distance(
-        self, agent1_id: str, agent2_id: str
-    ) -> Dict[str, Any]:
-        """
-        Get the distance between two agents.
+        self, agent1_id: str, agent2_id: str,
+    ) -> dict[str, Any]:
+        """Get the distance between two agents.
 
         Args:
             agent1_id: First agent identifier
@@ -1661,6 +1655,7 @@ class PostgresECSWorldService:
 
         Returns:
             Distance information
+
         """
         self._ensure_initialized()
         try:
@@ -1674,7 +1669,7 @@ class PostgresECSWorldService:
 
                 if not agent1 or not agent2:
                     raise HTTPException(
-                        status_code=404, detail="One or both agents not found"
+                        status_code=404, detail="One or both agents not found",
                     )
 
                 pos1 = agent1.position
@@ -1703,14 +1698,13 @@ class PostgresECSWorldService:
         except Exception as e:
             logger.error(f"❌ Failed to get agent distance: {e}")
             raise HTTPException(
-                status_code=500, detail=f"Failed to get agent distance: {str(e)}"
+                status_code=500, detail=f"Failed to get agent distance: {e!s}",
             )
 
     async def get_nearby_agents(
-        self, agent_id: str, radius: float = 100.0
-    ) -> List[Dict[str, Any]]:
-        """
-        Get all agents within a certain radius of an agent.
+        self, agent_id: str, radius: float = 100.0,
+    ) -> list[dict[str, Any]]:
+        """Get all agents within a certain radius of an agent.
 
         Args:
             agent_id: Agent identifier
@@ -1718,6 +1712,7 @@ class PostgresECSWorldService:
 
         Returns:
             List of nearby agents
+
         """
         self._ensure_initialized()
         try:
@@ -1753,7 +1748,7 @@ class PostgresECSWorldService:
                                     "x": other_agent.position.x,
                                     "y": other_agent.position.y,
                                     "distance": distance,
-                                }
+                                },
                             )
 
                 # Sort by distance
@@ -1766,20 +1761,20 @@ class PostgresECSWorldService:
         except Exception as e:
             logger.error(f"❌ Failed to get nearby agents: {e}")
             raise HTTPException(
-                status_code=500, detail=f"Failed to get nearby agents: {str(e)}"
+                status_code=500, detail=f"Failed to get nearby agents: {e!s}",
             )
 
     # Breeding Control Methods
 
-    async def enable_breeding(self, enabled: bool = True) -> Dict[str, str]:
-        """
-        Enable or disable automatic breeding.
+    async def enable_breeding(self, enabled: bool = True) -> dict[str, str]:
+        """Enable or disable automatic breeding.
 
         Args:
             enabled: Whether to enable breeding
 
         Returns:
             Status message
+
         """
         self._ensure_initialized()
         try:
@@ -1812,15 +1807,15 @@ class PostgresECSWorldService:
         except Exception as e:
             logger.error(f"❌ Failed to set breeding status: {e}")
             raise HTTPException(
-                status_code=500, detail=f"Failed to set breeding status: {str(e)}"
+                status_code=500, detail=f"Failed to set breeding status: {e!s}",
             )
 
-    async def get_breeding_stats(self) -> Dict[str, Any]:
-        """
-        Get breeding statistics.
+    async def get_breeding_stats(self) -> dict[str, Any]:
+        """Get breeding statistics.
 
         Returns:
             Breeding statistics
+
         """
         self._ensure_initialized()
         try:
@@ -1830,7 +1825,7 @@ class PostgresECSWorldService:
 
                 total_breedings = len(breeding_records)
                 successful_breedings = len(
-                    [r for r in breeding_records if r.breeding_success]
+                    [r for r in breeding_records if r.breeding_success],
                 )
                 failed_breedings = total_breedings - successful_breedings
 
@@ -1877,20 +1872,20 @@ class PostgresECSWorldService:
         except Exception as e:
             logger.error(f"❌ Failed to get breeding stats: {e}")
             raise HTTPException(
-                status_code=500, detail=f"Failed to get breeding stats: {str(e)}"
+                status_code=500, detail=f"Failed to get breeding stats: {e!s}",
             )
 
     # Relationship Management Methods
 
-    async def get_agent_relationships(self, agent_id: str) -> Dict[str, Any]:
-        """
-        Get all relationships for an agent.
+    async def get_agent_relationships(self, agent_id: str) -> dict[str, Any]:
+        """Get all relationships for an agent.
 
         Args:
             agent_id: Agent identifier
 
         Returns:
             Relationship information
+
         """
         self._ensure_initialized()
         try:
@@ -1906,7 +1901,7 @@ class PostgresECSWorldService:
                         or_(
                             AgentRelationship.agent1_id == agent.id,
                             AgentRelationship.agent2_id == agent.id,
-                        )
+                        ),
                     )
                     .all()
                 )
@@ -1939,7 +1934,7 @@ class PostgresECSWorldService:
                                     if rel.last_interaction
                                     else None
                                 ),
-                            }
+                            },
                         )
 
                 return {
@@ -1953,14 +1948,13 @@ class PostgresECSWorldService:
         except Exception as e:
             logger.error(f"❌ Failed to get agent relationships: {e}")
             raise HTTPException(
-                status_code=500, detail=f"Failed to get agent relationships: {str(e)}"
+                status_code=500, detail=f"Failed to get agent relationships: {e!s}",
             )
 
     async def initiate_interaction(
-        self, agent1_id: str, agent2_id: str, interaction_type: str = "communication"
-    ) -> Dict[str, Any]:
-        """
-        Initiate an interaction between two agents.
+        self, agent1_id: str, agent2_id: str, interaction_type: str = "communication",
+    ) -> dict[str, Any]:
+        """Initiate an interaction between two agents.
 
         Args:
             agent1_id: First agent identifier
@@ -1969,6 +1963,7 @@ class PostgresECSWorldService:
 
         Returns:
             Interaction data
+
         """
         self._ensure_initialized()
         try:
@@ -1982,7 +1977,7 @@ class PostgresECSWorldService:
 
                 if not agent1 or not agent2:
                     raise HTTPException(
-                        status_code=404, detail="One or both agents not found"
+                        status_code=404, detail="One or both agents not found",
                     )
 
                 # Create interaction
@@ -2008,7 +2003,7 @@ class PostgresECSWorldService:
                                 AgentRelationship.agent1_id == agent2.id,
                                 AgentRelationship.agent2_id == agent1.id,
                             ),
-                        )
+                        ),
                     )
                     .first()
                 )
@@ -2024,7 +2019,7 @@ class PostgresECSWorldService:
                         interaction_count=1,
                         positive_interactions=1,
                         negative_interactions=0,
-                        last_interaction=datetime.now(timezone.utc),
+                        last_interaction=datetime.now(UTC),
                     )
                     session.add(relationship)
                 else:
@@ -2033,11 +2028,11 @@ class PostgresECSWorldService:
                     relationship.strength = min(1.0, relationship.strength + 0.05)
                     relationship.trust_level = min(1.0, relationship.trust_level + 0.03)
                     relationship.familiarity = min(1.0, relationship.familiarity + 0.02)
-                    relationship.last_interaction = datetime.now(timezone.utc)
+                    relationship.last_interaction = datetime.now(UTC)
 
                 # Update last activity for both agents
-                agent1.last_activity = datetime.now(timezone.utc)
-                agent2.last_activity = datetime.now(timezone.utc)
+                agent1.last_activity = datetime.now(UTC)
+                agent2.last_activity = datetime.now(UTC)
 
                 session.commit()
 
@@ -2058,7 +2053,7 @@ class PostgresECSWorldService:
         except Exception as e:
             logger.error(f"❌ Failed to initiate interaction: {e}")
             raise HTTPException(
-                status_code=500, detail=f"Failed to initiate interaction: {str(e)}"
+                status_code=500, detail=f"Failed to initiate interaction: {e!s}",
             )
 
 

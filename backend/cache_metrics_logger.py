@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Cache Metrics Logger
+"""Cache Metrics Logger
 ====================
 
 A comprehensive logging system for cache performance metrics.
@@ -9,15 +8,13 @@ This provides detailed logging, analysis, and reporting of cache effectiveness.
 
 import asyncio
 import csv
-import json
 import logging
 import sqlite3
 import time
-from contextlib import asynccontextmanager
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 
 @dataclass
@@ -65,8 +62,8 @@ class CacheMetricsLogger:
         self._init_database()
 
         # In-memory storage for recent metrics
-        self.recent_metrics: List[CacheMetricsEntry] = []
-        self.performance_tests: List[CachePerformanceTest] = []
+        self.recent_metrics: list[CacheMetricsEntry] = []
+        self.performance_tests: list[CachePerformanceTest] = []
 
         # Configuration
         self.max_memory_entries = 1000
@@ -90,7 +87,7 @@ class CacheMetricsLogger:
 
         # Formatter
         formatter = logging.Formatter(
-            "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+            "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         )
         file_handler.setFormatter(formatter)
         console_handler.setFormatter(formatter)
@@ -122,7 +119,7 @@ class CacheMetricsLogger:
                     memory_usage_bytes INTEGER,
                     key_count INTEGER
                 )
-            """
+            """,
             )
 
             # Create performance tests table
@@ -138,12 +135,12 @@ class CacheMetricsLogger:
                     speedup_factor REAL,
                     cache_hit BOOLEAN
                 )
-            """
+            """,
             )
 
             conn.commit()
 
-    async def log_metrics(self, metrics_data: Dict[str, Any]):
+    async def log_metrics(self, metrics_data: dict[str, Any]):
         """Log cache metrics to file, database, and memory."""
         try:
             # Extract metrics
@@ -158,7 +155,7 @@ class CacheMetricsLogger:
                 cache_misses=search_metrics.get("cache_misses", 0),
                 cache_hit_rate=search_metrics.get("cache_hit_rate", 0.0),
                 average_search_time_ms=search_metrics.get(
-                    "average_search_time_ms", 0.0
+                    "average_search_time_ms", 0.0,
                 ),
                 total_search_time_ms=search_metrics.get("total_search_time_ms", 0.0),
                 redis_available=cache_status.get("redis_available", False),
@@ -180,7 +177,7 @@ class CacheMetricsLogger:
                 f"Cache Metrics - Searches: {entry.total_searches}, "
                 f"Hits: {entry.cache_hits}, Misses: {entry.cache_misses}, "
                 f"Hit Rate: {entry.cache_hit_rate:.1f}%, "
-                f"Avg Time: {entry.average_search_time_ms:.2f}ms"
+                f"Avg Time: {entry.average_search_time_ms:.2f}ms",
             )
 
         except Exception as e:
@@ -201,7 +198,7 @@ class CacheMetricsLogger:
             self.logger.info(
                 f"Performance Test - {test.test_name}: "
                 f"Speedup: {test.speedup_factor:.1f}x, "
-                f"Cache Hit: {test.cache_hit}"
+                f"Cache Hit: {test.cache_hit}",
             )
 
         except Exception as e:
@@ -293,7 +290,7 @@ class CacheMetricsLogger:
                     "legacy_cache_size",
                     "memory_usage_bytes",
                     "key_count",
-                ]
+                ],
             )
 
             # Write data
@@ -311,7 +308,7 @@ class CacheMetricsLogger:
                         entry.legacy_cache_size,
                         entry.memory_usage_bytes,
                         entry.key_count,
-                    ]
+                    ],
                 )
 
         return str(csv_file)
@@ -340,7 +337,7 @@ class CacheMetricsLogger:
                     "second_request_time_ms",
                     "speedup_factor",
                     "cache_hit",
-                ]
+                ],
             )
 
             # Write data
@@ -354,12 +351,12 @@ class CacheMetricsLogger:
                         test.second_request_time_ms,
                         test.speedup_factor,
                         test.cache_hit,
-                    ]
+                    ],
                 )
 
         return str(csv_file)
 
-    def generate_metrics_report(self, hours: int = 24) -> Dict[str, Any]:
+    def generate_metrics_report(self, hours: int = 24) -> dict[str, Any]:
         """Generate a comprehensive metrics report."""
         cutoff_time = datetime.now() - timedelta(hours=hours)
 
@@ -447,27 +444,27 @@ class CacheMetricsLogger:
 
         print(f"📈 Data Points: {report['data_points']}")
         print(
-            f"⏱️  Time Range: {report['time_range']['start']} to {report['time_range']['end']}"
+            f"⏱️  Time Range: {report['time_range']['start']} to {report['time_range']['end']}",
         )
 
         cache_perf = report["cache_performance"]
-        print(f"\n💾 Cache Performance:")
+        print("\n💾 Cache Performance:")
         print(f"   Average Hit Rate: {cache_perf['average_hit_rate']:.1f}%")
         print(f"   Max Hit Rate: {cache_perf['max_hit_rate']:.1f}%")
         print(f"   Min Hit Rate: {cache_perf['min_hit_rate']:.1f}%")
         print(f"   Hit Rate Trend: {cache_perf['hit_rate_trend']:+.1f}%")
 
         search_perf = report["search_performance"]
-        print(f"\n🔍 Search Performance:")
+        print("\n🔍 Search Performance:")
         print(f"   Average Search Time: {search_perf['average_search_time_ms']:.2f}ms")
         print(f"   Max Search Time: {search_perf['max_search_time_ms']:.2f}ms")
         print(f"   Min Search Time: {search_perf['min_search_time_ms']:.2f}ms")
         print(f"   Total Searches: {search_perf['total_searches']}")
 
         system_status = report["system_status"]
-        print(f"\n⚙️  System Status:")
+        print("\n⚙️  System Status:")
         print(
-            f"   Redis Available: {'✅' if system_status['redis_available'] else '❌'}"
+            f"   Redis Available: {'✅' if system_status['redis_available'] else '❌'}",
         )
         print(f"   Cache Size: {system_status['current_cache_size']}")
         print(f"   Memory Usage: {system_status['current_memory_usage_mb']:.2f}MB")
@@ -475,7 +472,7 @@ class CacheMetricsLogger:
 
         if "performance_tests" in report:
             perf_tests = report["performance_tests"]
-            print(f"\n🚀 Performance Tests:")
+            print("\n🚀 Performance Tests:")
             print(f"   Total Tests: {perf_tests['total_tests']}")
             print(f"   Average Speedup: {perf_tests['average_speedup']:.1f}x")
             print(f"   Max Speedup: {perf_tests['max_speedup']:.1f}x")
@@ -495,14 +492,14 @@ class CacheMetricsLogger:
                     import requests
 
                     response = requests.get(
-                        "http://localhost:8000/api/search/performance", timeout=5
+                        "http://localhost:8000/api/search/performance", timeout=5,
                     )
                     if response.status_code == 200:
                         metrics_data = response.json()
                         await self.log_metrics(metrics_data)
                     else:
                         self.logger.warning(
-                            f"API returned status {response.status_code}"
+                            f"API returned status {response.status_code}",
                         )
                 except Exception as e:
                     self.logger.error(f"Failed to get metrics: {e}")
@@ -552,7 +549,7 @@ async def main():
                     "memory_usage_bytes": 1024 * 1024 * 10,  # 10MB
                     "key_count": 1000,
                 },
-            }
+            },
         }
 
         await logger.log_metrics(test_metrics)

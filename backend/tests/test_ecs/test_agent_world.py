@@ -1,13 +1,10 @@
-"""
-Test AgentWorld
+"""Test AgentWorld
 
 Tests for the AgentWorld class and simulation functionality.
 """
 
 import os
 import sys
-
-import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
 
@@ -30,7 +27,7 @@ class TestAgentWorld:
 
         agent_id = "test-agent-1"
         entity = world.create_agent(
-            agent_id=agent_id, spirit="fox", style="foundation", name="TestAgent"
+            agent_id=agent_id, spirit="fox", style="foundation", name="TestAgent",
         )
 
         assert entity is not None

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Test .env File Integration with Embedding Backend Configuration
+"""Test .env File Integration with Embedding Backend Configuration
 
 This script demonstrates how to use .env files to configure embedding backends
 and tests the integration with the virtual environment.
@@ -8,7 +7,6 @@ and tests the integration with the virtual environment.
 
 import os
 import sys
-import tempfile
 from pathlib import Path
 
 # Add the backend directory to the Python path
@@ -23,7 +21,6 @@ from app.config.embedding_backend_config import (
 
 def test_env_file_scenarios():
     """Test different .env file scenarios."""
-
     print("🦦 Testing .env File Scenarios with Embedding Backend Configuration")
     print("=" * 70)
 
@@ -42,7 +39,7 @@ def test_env_file_scenarios():
 
         print(f"   Ollama enabled: {config.backends['ollama'].enabled}")
         print(
-            f"   Sentence Transformers enabled: {config.backends['sentence_transformers'].enabled}"
+            f"   Sentence Transformers enabled: {config.backends['sentence_transformers'].enabled}",
         )
         print(f"   Enabled backends: {[b.name for b in config.get_enabled_backends()]}")
         print("   ✅ Only Ollama is enabled")
@@ -64,7 +61,7 @@ def test_env_file_scenarios():
         print(f"   Mock mode: {config.mock_mode}")
         print(f"   Ollama enabled: {config.backends['ollama'].enabled}")
         print(
-            f"   Sentence Transformers enabled: {config.backends['sentence_transformers'].enabled}"
+            f"   Sentence Transformers enabled: {config.backends['sentence_transformers'].enabled}",
         )
         print(f"   Enabled backends: {[b.name for b in config.get_enabled_backends()]}")
         print("   ✅ Mock mode is enabled, all backends effectively disabled")
@@ -86,13 +83,13 @@ def test_env_file_scenarios():
 
         print(f"   Ollama enabled: {config.backends['ollama'].enabled}")
         print(
-            f"   Sentence Transformers enabled: {config.backends['sentence_transformers'].enabled}"
+            f"   Sentence Transformers enabled: {config.backends['sentence_transformers'].enabled}",
         )
         print(f"   Allow fallback: {config.allow_fallback}")
         print(f"   Default backend: {config.default_backend}")
         print(f"   Primary backend: {config.get_primary_backend().name}")
         print(
-            f"   Fallback backends: {[b.name for b in config.get_fallback_backends()]}"
+            f"   Fallback backends: {[b.name for b in config.get_fallback_backends()]}",
         )
         print("   ✅ Production setup with Ollama primary, ST fallback")
 
@@ -118,7 +115,7 @@ def test_env_file_scenarios():
         print(f"   Ollama max retries: {ollama_backend.max_retries}")
         print(f"   Ollama default model: {ollama_backend.default_model}")
         print(
-            f"   Sentence Transformers enabled: {config.backends['sentence_transformers'].enabled}"
+            f"   Sentence Transformers enabled: {config.backends['sentence_transformers'].enabled}",
         )
         print("   ✅ Custom Ollama configuration applied")
 
@@ -132,7 +129,6 @@ def test_env_file_scenarios():
 
 def create_sample_env_files():
     """Create sample .env files for different scenarios."""
-
     print("\n📝 Creating Sample .env Files")
     print("=" * 35)
 

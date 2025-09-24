@@ -18,15 +18,15 @@ def test_login_endpoint():
         print(f"    Response: {response.json()}")
         if response.status_code == 401:
             print(
-                "    [OK] Login failed as expected for invalid credentials (Status 401 Unauthorized)."
+                "    [OK] Login failed as expected for invalid credentials (Status 401 Unauthorized).",
             )
         else:
             print(
-                "    [WARNING] Unexpected status code for invalid credentials. Expected 401."
+                "    [WARNING] Unexpected status code for invalid credentials. Expected 401.",
             )
     except requests.exceptions.ConnectionError as e:
         print(
-            f"    [ERROR] Could not connect to the backend. Please ensure it's running on {BASE_URL}. Error: {e}"
+            f"    [ERROR] Could not connect to the backend. Please ensure it's running on {BASE_URL}. Error: {e}",
         )
         return
     except Exception as e:
@@ -40,11 +40,11 @@ def test_login_endpoint():
     print(f"    Response: {response.json()}")
     if response.status_code == 400:
         print(
-            "    [OK] Login failed as expected for empty credentials (Status 400 Bad Request)."
+            "    [OK] Login failed as expected for empty credentials (Status 400 Bad Request).",
         )
     else:
         print(
-            "    [WARNING] Unexpected status code for empty credentials. Expected 400."
+            "    [WARNING] Unexpected status code for empty credentials. Expected 400.",
         )
 
     # Test case 3: SQL Injection attempt in username
@@ -57,7 +57,7 @@ def test_login_endpoint():
         print("    [OK] SQL Injection attempt in username failed as expected.")
     else:
         print(
-            "    [WARNING] SQL Injection attempt in username might have succeeded or returned unexpected status."
+            "    [WARNING] SQL Injection attempt in username might have succeeded or returned unexpected status.",
         )
 
     # Test case 4: SQL Injection attempt in password
@@ -70,12 +70,12 @@ def test_login_endpoint():
         print("    [OK] SQL Injection attempt in password failed as expected.")
     else:
         print(
-            "    [WARNING] SQL Injection attempt in password might have succeeded or returned unexpected status."
+            "    [WARNING] SQL Injection attempt in password might have succeeded or returned unexpected status.",
         )
 
     # Test case 5: SQL Injection attempt with "OR 1=1" in username and empty password
     print(
-        "\n[+] Attempting SQL Injection with ' OR 1=1' in username and empty password..."
+        "\n[+] Attempting SQL Injection with ' OR 1=1' in username and empty password...",
     )
     sql_injection_bypass = {"username": "' OR 1=1 --", "password": ""}
     response = requests.post(f"{BASE_URL}/api/login", json=sql_injection_bypass)
@@ -83,16 +83,16 @@ def test_login_endpoint():
     print(f"    Response: {response.json()}")
     if response.status_code in [401, 400]:
         print(
-            "    [OK] SQL Injection bypass attempt in username with empty password failed as expected."
+            "    [OK] SQL Injection bypass attempt in username with empty password failed as expected.",
         )
     else:
         print(
-            "    [WARNING] SQL Injection bypass attempt in username with empty password might have succeeded or returned unexpected status."
+            "    [WARNING] SQL Injection bypass attempt in username with empty password might have succeeded or returned unexpected status.",
         )
 
     # Test case 6: Accessing a protected endpoint without authentication after login attempts
     print(
-        "\n[+] Attempting to access /api/config without authentication after login attempts..."
+        "\n[+] Attempting to access /api/config without authentication after login attempts...",
     )
     try:
         response = requests.get(f"{BASE_URL}/api/config")
@@ -100,19 +100,19 @@ def test_login_endpoint():
         print(f"    Response: {response.json()}")
         if response.status_code == 401 or response.status_code == 403:
             print(
-                "    [OK] Access to /api/config is restricted as expected (authentication/authorization required)."
+                "    [OK] Access to /api/config is restricted as expected (authentication/authorization required).",
             )
         else:
             print(
-                f"    [WARNING] Unexpected status code {response.status_code} for /api/config (expected 401/403)."
+                f"    [WARNING] Unexpected status code {response.status_code} for /api/config (expected 401/403).",
             )
     except requests.exceptions.ConnectionError as e:
         print(
-            f"    [ERROR] Could not connect to the backend. Please ensure it's running on {BASE_URL}. Error: {e}"
+            f"    [ERROR] Could not connect to the backend. Please ensure it's running on {BASE_URL}. Error: {e}",
         )
     except json.JSONDecodeError:
         print(
-            f"    [ERROR] Failed to decode JSON response. Response content: {response.text}"
+            f"    [ERROR] Failed to decode JSON response. Response content: {response.text}",
         )
     except Exception as e:
         print(f"    [ERROR] An unexpected error occurred: {e}")

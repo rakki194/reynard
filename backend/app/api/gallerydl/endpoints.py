@@ -1,5 +1,4 @@
-"""
-Gallery-dl API Endpoints
+"""Gallery-dl API Endpoints
 
 FastAPI endpoints for gallery-dl integration with Reynard.
 Provides comprehensive download management, progress tracking, and error handling.
@@ -133,15 +132,14 @@ async def download_gallery(
     current_user: dict[str, str] = Depends(get_current_active_user),
     service: ReynardGalleryService = Depends(get_gallery_service),
 ):
-    """
-    Download a gallery from URL
+    """Download a gallery from URL
 
     This endpoint starts a gallery download in the background and returns
     a download ID for tracking progress.
     """
     try:
         logger.info(
-            f"Starting gallery download for user {current_user.id}: {request.url}"
+            f"Starting gallery download for user {current_user.id}: {request.url}",
         )
 
         # Prepare download options
@@ -167,18 +165,17 @@ async def download_gallery(
                     "estimated_files": result.stats.get("total_files", 0),
                 },
             )
-        else:
-            return GalleryDownloadResponse(
-                success=False,
-                download_id="",
-                message="Download failed to start",
-                error=result.error,
-            )
+        return GalleryDownloadResponse(
+            success=False,
+            download_id="",
+            message="Download failed to start",
+            error=result.error,
+        )
 
     except Exception as e:
         logger.exception(f"Error starting gallery download: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to start download: {str(e)}"
+            status_code=500, detail=f"Failed to start download: {e!s}",
         )
 
 
@@ -188,8 +185,7 @@ async def validate_url(
     current_user: dict[str, str] = Depends(get_current_active_user),
     service: ReynardGalleryService = Depends(get_gallery_service),
 ):
-    """
-    Validate a URL and detect extractor
+    """Validate a URL and detect extractor
 
     Validates if a URL can be processed by gallery-dl and returns
     information about the detected extractor.
@@ -207,7 +203,7 @@ async def validate_url(
 
     except Exception as e:
         logger.exception(f"Error validating URL: {e}")
-        raise HTTPException(status_code=500, detail=f"Failed to validate URL: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to validate URL: {e!s}")
 
 
 @router.get("/extractors", response_model=ExtractorListResponse)
@@ -215,8 +211,7 @@ async def get_extractors(
     current_user: dict[str, str] = Depends(get_current_active_user),
     service: ReynardGalleryService = Depends(get_gallery_service),
 ):
-    """
-    Get list of available extractors
+    """Get list of available extractors
 
     Returns all available extractors including Reynard custom extractors.
     """
@@ -237,7 +232,7 @@ async def get_extractors(
                     supported_domains=ext.get("domains", []),
                     reynard_enabled=ext.get("reynard_enabled", False),
                     type=ext.get("type", "standard"),
-                )
+                ),
             )
 
         return ExtractorListResponse(
@@ -249,7 +244,7 @@ async def get_extractors(
     except Exception as e:
         logger.exception(f"Error getting extractors: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to get extractors: {str(e)}"
+            status_code=500, detail=f"Failed to get extractors: {e!s}",
         )
 
 
@@ -259,14 +254,13 @@ async def get_download_progress(
     current_user: dict[str, str] = Depends(get_current_active_user),
     service: ReynardGalleryService = Depends(get_gallery_service),
 ):
-    """
-    Get download progress for a specific download
+    """Get download progress for a specific download
 
     Returns current progress information for an active download.
     """
     try:
         logger.info(
-            f"Getting progress for download {download_id} (user {current_user.id})"
+            f"Getting progress for download {download_id} (user {current_user.id})",
         )
 
         progress = await service.get_download_progress(download_id)
@@ -294,7 +288,7 @@ async def get_download_progress(
         raise
     except Exception as e:
         logger.exception(f"Error getting download progress: {e}")
-        raise HTTPException(status_code=500, detail=f"Failed to get progress: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get progress: {e!s}")
 
 
 @router.get("/downloads/active", response_model=list[ProgressResponse])
@@ -302,8 +296,7 @@ async def get_active_downloads(
     current_user: dict[str, str] = Depends(get_current_active_user),
     service: ReynardGalleryService = Depends(get_gallery_service),
 ):
-    """
-    Get all active downloads
+    """Get all active downloads
 
     Returns list of all currently active downloads.
     """
@@ -334,7 +327,7 @@ async def get_active_downloads(
     except Exception as e:
         logger.exception(f"Error getting active downloads: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to get active downloads: {str(e)}"
+            status_code=500, detail=f"Failed to get active downloads: {e!s}",
         )
 
 
@@ -344,8 +337,7 @@ async def cancel_download(
     current_user: dict[str, str] = Depends(get_current_active_user),
     service: ReynardGalleryService = Depends(get_gallery_service),
 ):
-    """
-    Cancel an active download
+    """Cancel an active download
 
     Cancels a download that is currently in progress.
     """
@@ -356,15 +348,14 @@ async def cancel_download(
 
         if result.success:
             return {"success": True, "message": "Download cancelled successfully"}
-        else:
-            raise HTTPException(status_code=400, detail=result.error)
+        raise HTTPException(status_code=400, detail=result.error)
 
     except HTTPException:
         raise
     except Exception as e:
         logger.exception(f"Error cancelling download: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to cancel download: {str(e)}"
+            status_code=500, detail=f"Failed to cancel download: {e!s}",
         )
 
 
@@ -373,8 +364,7 @@ async def get_download_history(
     current_user: dict[str, str] = Depends(get_current_active_user),
     service: ReynardGalleryService = Depends(get_gallery_service),
 ):
-    """
-    Get download history
+    """Get download history
 
     Returns list of completed downloads with metadata.
     """
@@ -387,14 +377,13 @@ async def get_download_history(
     except Exception as e:
         logger.exception(f"Error getting download history: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to get download history: {str(e)}"
+            status_code=500, detail=f"Failed to get download history: {e!s}",
         )
 
 
 @router.get("/health", response_model=HealthResponse)
 async def get_health(service: ReynardGalleryService = Depends(get_gallery_service)):
-    """
-    Get service health status
+    """Get service health status
 
     Returns current health status and metrics.
     """
@@ -412,7 +401,7 @@ async def get_health(service: ReynardGalleryService = Depends(get_gallery_servic
     except Exception as e:
         logger.exception(f"Error getting health status: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to get health status: {str(e)}"
+            status_code=500, detail=f"Failed to get health status: {e!s}",
         )
 
 
@@ -421,8 +410,7 @@ async def get_stats(
     current_user: dict[str, str] = Depends(get_current_active_user),
     service: ReynardGalleryService = Depends(get_gallery_service),
 ):
-    """
-    Get extractor statistics
+    """Get extractor statistics
 
     Returns statistics about extractor usage and performance.
     """
@@ -434,4 +422,4 @@ async def get_stats(
 
     except Exception as e:
         logger.exception(f"Error getting stats: {e}")
-        raise HTTPException(status_code=500, detail=f"Failed to get stats: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get stats: {e!s}")

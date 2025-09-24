@@ -1,5 +1,4 @@
-"""
-MCP Server Integration for CULTURE Framework
+"""MCP Server Integration for CULTURE Framework
 
 This module provides MCP server integration tools for cultural evaluation,
 scenario generation, and model adaptation across diverse cultural contexts.
@@ -371,7 +370,7 @@ class CulturalMCPTools:
                 analysis_result = self._analyze_trends(relevant_evaluations)
             elif analysis_type == "recommendations":
                 analysis_result = self._analyze_recommendations(
-                    relevant_evaluations, pattern
+                    relevant_evaluations, pattern,
                 )
             elif analysis_type == "comparison":
                 analysis_result = self._analyze_comparison(relevant_evaluations)
@@ -390,7 +389,7 @@ class CulturalMCPTools:
             return {"error": f"Cultural analysis failed: {e!s}", "success": False}
 
     def _analyze_metrics(
-        self, evaluations: list[dict[str, Any]], pattern: BaseCulturalPattern
+        self, evaluations: list[dict[str, Any]], pattern: BaseCulturalPattern,
     ) -> dict[str, Any]:
         """Analyze evaluation metrics"""
         if not evaluations:
@@ -461,7 +460,7 @@ class CulturalMCPTools:
         }
 
     def _analyze_recommendations(
-        self, evaluations: list[dict[str, Any]], pattern: BaseCulturalPattern
+        self, evaluations: list[dict[str, Any]], pattern: BaseCulturalPattern,
     ) -> dict[str, Any]:
         """Analyze common recommendations"""
         all_recommendations = []
@@ -475,7 +474,7 @@ class CulturalMCPTools:
 
         # Sort by frequency
         sorted_recommendations = sorted(
-            recommendation_counts.items(), key=lambda x: x[1], reverse=True
+            recommendation_counts.items(), key=lambda x: x[1], reverse=True,
         )
 
         return {

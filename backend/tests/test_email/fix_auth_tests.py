@@ -3,7 +3,7 @@
 import re
 
 # Read the test file
-with open("test_advanced_email_routes.py", "r") as f:
+with open("test_advanced_email_routes.py") as f:
     content = f.read()
 
 # Pattern to find test functions that need updating
@@ -36,7 +36,7 @@ updated_content = re.sub(test_pattern, replace_auth, content, flags=re.DOTALL)
 
 print("Updated test file with new authentication pattern")
 print(
-    "Note: You'll need to manually add 'finally: app.dependency_overrides.clear()' blocks to each test"
+    "Note: You'll need to manually add 'finally: app.dependency_overrides.clear()' blocks to each test",
 )
 
 # Write the updated content

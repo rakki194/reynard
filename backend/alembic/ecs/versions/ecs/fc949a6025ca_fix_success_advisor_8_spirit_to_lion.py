@@ -27,7 +27,7 @@ def upgrade() -> None:
         SET spirit = 'lion'
         WHERE agent_id = 'permanent-release-manager-success-advisor-8'
         AND spirit = 'lizard';
-    """
+    """,
     )
 
     # Also update any agent with the name 'Success-Advisor-8' to ensure consistency
@@ -37,7 +37,7 @@ def upgrade() -> None:
         SET spirit = 'lion'
         WHERE name = 'Success-Advisor-8'
         AND spirit != 'lion';
-    """
+    """,
     )
 
 
@@ -50,7 +50,7 @@ def downgrade() -> None:
         SET spirit = 'lizard'
         WHERE agent_id = 'permanent-release-manager-success-advisor-8'
         AND spirit = 'lion';
-    """
+    """,
     )
 
     # Also revert any agent with the name 'Success-Advisor-8'
@@ -60,5 +60,5 @@ def downgrade() -> None:
         SET spirit = 'lizard'
         WHERE name = 'Success-Advisor-8'
         AND spirit = 'lion';
-    """
+    """,
     )

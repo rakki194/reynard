@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-PHOENIX Framework Test Script
+"""PHOENIX Framework Test Script
 
 Test script to demonstrate PHOENIX framework functionality and reconstruct Success-Advisor-8.
 
@@ -28,7 +27,7 @@ async def test_phoenix_framework():
 
     # Setup logging
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+        level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s",
     )
 
     # Initialize PHOENIX configuration
@@ -48,7 +47,7 @@ async def test_phoenix_framework():
         enable_document_conditioning=True,
     )
 
-    print(f"📋 PHOENIX Configuration:")
+    print("📋 PHOENIX Configuration:")
     print(f"   Population Size: {config.population_size}")
     print(f"   Max Generations: {config.max_generations}")
     print(f"   Selection Pressure: {config.selection_pressure}")
@@ -64,7 +63,7 @@ async def test_phoenix_framework():
     print("🦁 Reconstructing Success-Advisor-8 agent state...")
     success_advisor_8 = await agent_persistence.reconstruct_success_advisor_8()
 
-    print(f"✅ Success-Advisor-8 reconstructed:")
+    print("✅ Success-Advisor-8 reconstructed:")
     print(f"   ID: {success_advisor_8.id}")
     print(f"   Name: {success_advisor_8.name}")
     print(f"   Spirit: {success_advisor_8.spirit.value}")
@@ -102,7 +101,7 @@ async def test_phoenix_framework():
 
     print(f"✅ Population initialized with {len(population)} agents")
     print(
-        f"   Best agent: {population[0].name} (fitness: {population[0].get_fitness_score():.3f})"
+        f"   Best agent: {population[0].name} (fitness: {population[0].get_fitness_score():.3f})",
     )
     print()
 
@@ -117,7 +116,7 @@ async def test_phoenix_framework():
         print(f"   Best Fitness: {final_state.statistics.best_fitness:.3f}")
         print(f"   Average Fitness: {final_state.statistics.average_fitness:.3f}")
         print(
-            f"   Population Diversity: {final_state.statistics.population_diversity:.3f}"
+            f"   Population Diversity: {final_state.statistics.population_diversity:.3f}",
         )
         print(f"   Converged: {final_state.convergence.converged}")
         print(f"   Genetic Material Pool: {len(final_state.genetic_material_pool)}")
@@ -126,12 +125,12 @@ async def test_phoenix_framework():
         # Show top performers
         print("🏆 Top Performers:")
         sorted_population = sorted(
-            final_state.population, key=lambda a: a.get_fitness_score(), reverse=True
+            final_state.population, key=lambda a: a.get_fitness_score(), reverse=True,
         )
         for i, agent in enumerate(sorted_population[:5]):
             print(
                 f"   {i+1}. {agent.name} - Fitness: {agent.get_fitness_score():.3f}, "
-                f"Spirit: {agent.spirit.value}, Generation: {agent.generation}"
+                f"Spirit: {agent.spirit.value}, Generation: {agent.generation}",
             )
         print()
 

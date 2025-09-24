@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Test Mermaid Diagram Rendering
+"""Test Mermaid Diagram Rendering
 
 This script tests if the generated mermaid diagram can be rendered correctly.
 """

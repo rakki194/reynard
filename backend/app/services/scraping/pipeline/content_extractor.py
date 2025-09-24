@@ -1,5 +1,4 @@
-"""
-Content Extractor for Reynard Backend
+"""Content Extractor for Reynard Backend
 
 Extracts and processes content from various sources.
 """
@@ -11,8 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 class ContentExtractor:
-    """
-    Extracts and processes content from various sources.
+    """Extracts and processes content from various sources.
 
     Provides utilities for content extraction, cleaning,
     and preprocessing.
@@ -48,10 +46,9 @@ class ContentExtractor:
             return False
 
     async def extract_content(
-        self, source: str, config: dict[str, Any] | None = None
+        self, source: str, config: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """
-        Extract content from a source.
+        """Extract content from a source.
 
         Args:
             source: Source to extract from
@@ -59,6 +56,7 @@ class ContentExtractor:
 
         Returns:
             Extracted content data
+
         """
         try:
             # Placeholder implementation

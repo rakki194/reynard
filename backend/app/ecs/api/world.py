@@ -1,17 +1,15 @@
-"""
-ECS World Management API
+"""ECS World Management API
 ========================
 
 Core world simulation endpoints for status, control, and monitoring.
 """
 
 import logging
-from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
-from ..postgres_service import PostgresECSWorldService, get_postgres_ecs_service
+from ..postgres_service import get_postgres_ecs_service
 
 logger = logging.getLogger(__name__)
 

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Simple Ars Technica Demo
+"""Simple Ars Technica Demo
 
 A clean demonstration of our experimental prompt refinement tools
 working with simulated Ars Technica content.
@@ -70,22 +69,22 @@ async def main():
 
         # Extract key concepts using NLP
         key_concepts = await nlp_processor.extract_key_concepts(
-            f"{article['title']} {article['content']}"
+            f"{article['title']} {article['content']}",
         )
         print(f"   Key Concepts: {', '.join(key_concepts[:5])}")
 
         # Analyze text comprehensively
         nlp_analysis = await nlp_processor.analyze_text_comprehensive(
-            article["content"]
+            article["content"],
         )
         print(f"   Language: {nlp_analysis.language}")
         sentiment = nlp_analysis.sentiment
         if isinstance(sentiment, dict):
             print(
-                f"   Sentiment: {sentiment.get('label', 'neutral')} ({sentiment.get('score', 0):.2f})"
+                f"   Sentiment: {sentiment.get('label', 'neutral')} ({sentiment.get('score', 0):.2f})",
             )
         else:
-            print(f"   Sentiment: neutral (0.50)")
+            print("   Sentiment: neutral (0.50)")
         print(f"   Processing Time: {nlp_analysis.processing_time:.3f}s")
 
         # Assess clarity and effectiveness
@@ -101,11 +100,11 @@ async def main():
                 "nlp_analysis": nlp_analysis,
                 "clarity_issues": clarity_issues,
                 "effectiveness": effectiveness,
-            }
+            },
         )
 
     # Create semantic search index
-    print(f"\n🔍 Creating semantic search index...")
+    print("\n🔍 Creating semantic search index...")
     documents = []
     for i, article in enumerate(processed_articles):
         doc = {
@@ -123,7 +122,7 @@ async def main():
     print("✅ Semantic index created successfully")
 
     # Test semantic search
-    print(f"\n🔍 Testing semantic search capabilities...")
+    print("\n🔍 Testing semantic search capabilities...")
     search_queries = [
         "artificial intelligence and machine learning",
         "space exploration and rockets",
@@ -137,11 +136,11 @@ async def main():
             metadata = result.get("metadata", {})
             similarity = 1 - result.get("distance", 1)
             print(
-                f"   {j}. {metadata.get('title', 'Unknown')} (similarity: {similarity:.2f})"
+                f"   {j}. {metadata.get('title', 'Unknown')} (similarity: {similarity:.2f})",
             )
 
     # Test prompt refinement
-    print(f"\n🎯 Testing prompt refinement capabilities...")
+    print("\n🎯 Testing prompt refinement capabilities...")
     test_queries = [
         "How do I make my code better?",
         "What's the latest in AI technology?",
@@ -156,7 +155,7 @@ async def main():
         print(f"   Processing Time: {refinement_result.processing_time:.3f}s")
 
     # Generate summary insights
-    print(f"\n📊 SUMMARY INSIGHTS")
+    print("\n📊 SUMMARY INSIGHTS")
     print("=" * 70)
 
     # Analyze categories
@@ -200,7 +199,7 @@ async def main():
         sentiment_dist[sentiment] = sentiment_dist.get(sentiment, 0) + 1
     print(f"Sentiment Distribution: {sentiment_dist}")
 
-    print(f"\n🦊 Mission Accomplished!")
+    print("\n🦊 Mission Accomplished!")
     print("Our experimental prompt refinement tools successfully demonstrated:")
     print("✅ Advanced NLP processing with key concept extraction")
     print("✅ Sentiment analysis and text comprehension")

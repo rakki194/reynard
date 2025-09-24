@@ -1,5 +1,4 @@
-"""
-Reynard Mermaid Service
+"""Reynard Mermaid Service
 
 A service for rendering Mermaid diagrams to SVG and PNG formats.
 Based on the mermaid-py library but adapted for the Reynard ecosystem.

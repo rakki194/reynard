@@ -1,5 +1,4 @@
-"""
-Image Utilities package for Reynard Backend
+"""Image Utilities package for Reynard Backend
 
 This package re-exports the image utilities from `app.utils`
 to provide a stable module location under `app.image_utils`.

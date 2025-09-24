@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Reynard Basic Backend Example
+"""Reynard Basic Backend Example
 Modular FastAPI server demonstrating uvicorn reload best practices
 """
 
@@ -8,22 +7,22 @@ import os
 import time
 from contextlib import asynccontextmanager
 
-from config import UvicornConfig
 from database import DatabaseService
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
-from gatekeeper_config import (
-    close_auth_manager,
-    initialize_auth_manager,
-)
 from logging_config import (
     get_app_logger,
     setup_logging,
 )
 from routes import health, users
 
+from config import UvicornConfig
 from gatekeeper.api.dependencies import set_auth_manager
 from gatekeeper.api.routes import create_auth_router
+from gatekeeper_config import (
+    close_auth_manager,
+    initialize_auth_manager,
+)
 from services import BackgroundService, CacheService
 
 # Setup professional logging first

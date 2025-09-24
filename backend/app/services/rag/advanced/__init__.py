@@ -1,5 +1,4 @@
-"""
-Advanced RAG Features
+"""Advanced RAG Features
 
 This module contains advanced RAG capabilities:
 - Performance monitoring and optimization
@@ -16,9 +15,9 @@ from .monitoring import PerformanceMonitor
 from .security import SecurityService
 
 __all__ = [
-    "PerformanceMonitor",
-    "SecurityService",
     "ContinuousImprovement",
     "DocumentationService",
     "ModelEvaluator",
+    "PerformanceMonitor",
+    "SecurityService",
 ]

@@ -9,7 +9,6 @@ Now uses the new @register_tool decorator system for automatic registration.
 Follows the 140-line axiom and modular architecture principles.
 """
 
-import asyncio
 import logging
 import os
 import subprocess

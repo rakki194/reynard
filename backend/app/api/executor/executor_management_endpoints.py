@@ -1,5 +1,4 @@
-"""
-Executor Management Endpoints for Reynard Backend
+"""Executor Management Endpoints for Reynard Backend
 
 Management endpoint implementations for executor operations.
 """
@@ -37,8 +36,7 @@ async def shutdown_executor(wait: bool = True):
 
 @router.post("/execute")
 async def execute_task(request: TaskExecutionRequest):
-    """
-    Execute a task in the thread pool.
+    """Execute a task in the thread pool.
 
     Note: This is a simplified endpoint for demonstration.
     In practice, you'd want to implement proper task serialization

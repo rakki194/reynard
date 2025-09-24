@@ -1,5 +1,4 @@
-"""
-Image Types for Reynard Backend
+"""Image Types for Reynard Backend
 
 Type definitions for the image processing system.
 """

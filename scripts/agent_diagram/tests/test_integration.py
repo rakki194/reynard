@@ -1,5 +1,4 @@
-"""
-Integration tests for the agent diagram library.
+"""Integration tests for the agent diagram library.
 """
 
 import os

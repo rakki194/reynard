@@ -42,7 +42,6 @@
     { "path": "./packages/core/algorithms" },
     { "path": "./packages/core/composables" },
     { "path": "./packages/core/config" },
-    { "path": "./packages/core/connection" },
     { "path": "./packages/core/core" },
     { "path": "./packages/core/dynamic-enum" },
     { "path": "./packages/core/features" },
@@ -94,11 +93,12 @@
     { "path": "./packages/media/video" },
 
     // Services packages
+    { "path": "./packages/core/connection" },
     { "path": "./packages/services/api-client" },
     { "path": "./packages/services/api-client/src/generated" },
-    { "path": "./packages/services/auth" },
     { "path": "./packages/services/chat" },
     { "path": "./packages/services/service-manager" },
+    { "path": "./packages/services/auth" },
 
     // UI packages
     { "path": "./packages/ui/animation" },

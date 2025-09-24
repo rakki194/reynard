@@ -1,5 +1,4 @@
-"""
-Tests for advanced query expansion algorithms.
+"""Tests for advanced query expansion algorithms.
 
 Tests cover:
 - Synonym-based expansion

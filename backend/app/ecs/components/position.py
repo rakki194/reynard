@@ -1,5 +1,4 @@
-"""
-Position Component
+"""Position Component
 
 Agent spatial position and movement tracking component.
 """
@@ -10,20 +9,19 @@ from ..core.component import Component
 
 
 class PositionComponent(Component):
-    """
-    Agent spatial position and movement tracking.
+    """Agent spatial position and movement tracking.
 
     Tracks the agent's current position, velocity, target position,
     and movement parameters in the 2D world space.
     """
 
     def __init__(self, x: float = 0.0, y: float = 0.0) -> None:
-        """
-        Initialize the position component.
+        """Initialize the position component.
 
         Args:
             x: Initial X coordinate
             y: Initial Y coordinate
+
         """
         super().__init__()
         self.x = x
@@ -36,14 +34,14 @@ class PositionComponent(Component):
         self.last_update = time.time()
 
     def distance_to(self, other: "PositionComponent") -> float:
-        """
-        Calculate distance to another position.
+        """Calculate distance to another position.
 
         Args:
             other: Another PositionComponent
 
         Returns:
             Distance between the two positions
+
         """
         import math
 

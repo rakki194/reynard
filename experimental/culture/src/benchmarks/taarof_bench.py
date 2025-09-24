@@ -1,5 +1,4 @@
-"""
-TaarofBench: Persian Cultural Communication Benchmark
+"""TaarofBench: Persian Cultural Communication Benchmark
 
 Implementation of the TaarofBench evaluation framework for assessing LLM
 understanding of Persian taarof (ritual politeness) patterns.
@@ -36,8 +35,7 @@ class TaarofScenario:
 
 
 class TaarofBenchmark:
-    """
-    Persian taarof cultural communication benchmark.
+    """Persian taarof cultural communication benchmark.
 
     Implements the 450-scenario evaluation framework from TaarofBench research,
     covering 12 common social interaction topics with native speaker validation.
@@ -181,8 +179,7 @@ class TaarofBenchmark:
         difficulty_filter: str | None = None,
         taarof_expected: bool | None = None,
     ) -> list[dict[str, Any]]:
-        """
-        Get scenarios for evaluation with optional filtering.
+        """Get scenarios for evaluation with optional filtering.
 
         Args:
             cultural_context: Cultural context for evaluation
@@ -193,6 +190,7 @@ class TaarofBenchmark:
 
         Returns:
             List of scenario dictionaries
+
         """
         filtered_scenarios = self.scenarios.copy()
 
@@ -295,7 +293,7 @@ You say:"""
         return prompt
 
     def validate_response(
-        self, response: str, scenario: TaarofScenario, cultural_validator: Any
+        self, response: str, scenario: TaarofScenario, cultural_validator: Any,
     ) -> dict[str, Any]:
         """Validate a model response against cultural expectations."""
         # This would integrate with the cultural validator
@@ -327,7 +325,7 @@ You say:"""
                     "cultural_notes": scenario.cultural_notes,
                     "difficulty_level": scenario.difficulty_level,
                     "gender_context": scenario.gender_context,
-                }
+                },
             )
 
         with open(output_path, "w", encoding="utf-8") as f:

@@ -1,5 +1,4 @@
-"""
-🔐 Database Encryption System for Reynard Backend
+"""🔐 Database Encryption System for Reynard Backend
 
 This module provides comprehensive database encryption capabilities including
 transparent data encryption (TDE), column-level encryption, and secure
@@ -38,8 +37,7 @@ class DatabaseEncryptionError(Exception):
 
 
 class DatabaseEncryptionManager:
-    """
-    Comprehensive database encryption management system.
+    """Comprehensive database encryption management system.
 
     This class provides:
     - Transparent Data Encryption (TDE) setup and management
@@ -49,12 +47,12 @@ class DatabaseEncryptionManager:
     """
 
     def __init__(self, database_url: str, database_name: str = "reynard"):
-        """
-        Initialize the database encryption manager.
+        """Initialize the database encryption manager.
 
         Args:
             database_url: Database connection URL
             database_name: Name of the database
+
         """
         self.database_url = database_url
         self.database_name = database_name
@@ -74,7 +72,7 @@ class DatabaseEncryptionManager:
         master_key_id = f"{self.database_name}_master_key"
         if not self.key_manager.get_key(master_key_id):
             logger.info(
-                "Creating master encryption key for database %s", self.database_name
+                "Creating master encryption key for database %s", self.database_name,
             )
             self.key_manager.generate_key(
                 key_id=master_key_id,
@@ -161,10 +159,9 @@ class DatabaseEncryptionManager:
             logger.warning("Failed to enable pgcrypto extension: %s", e)
 
     def encrypt_field_value(
-        self, value: str | bytes | None, field_name: str, table_name: str
+        self, value: str | bytes | None, field_name: str, table_name: str,
     ) -> str | None:
-        """
-        Encrypt a field value for database storage.
+        """Encrypt a field value for database storage.
 
         Args:
             value: Value to encrypt
@@ -173,6 +170,7 @@ class DatabaseEncryptionManager:
 
         Returns:
             Encrypted value as base64 string or None
+
         """
         if value is None:
             return None
@@ -191,7 +189,7 @@ class DatabaseEncryptionManager:
 
             # Encrypt the value
             encrypted_value = EncryptionUtils.encrypt_field(
-                data=value, key=encryption_key, field_name=field_identifier
+                data=value, key=encryption_key, field_name=field_identifier,
             )
 
             # Log the encryption operation
@@ -206,15 +204,14 @@ class DatabaseEncryptionManager:
 
         except Exception as e:
             logger.exception(
-                "Failed to encrypt field %s in table %s", field_name, table_name
+                "Failed to encrypt field %s in table %s", field_name, table_name,
             )
             raise DatabaseEncryptionError(f"Field encryption failed: {e}") from e
 
     def decrypt_field_value(
-        self, encrypted_value: str, field_name: str, table_name: str
+        self, encrypted_value: str, field_name: str, table_name: str,
     ) -> str | None:
-        """
-        Decrypt a field value from database storage.
+        """Decrypt a field value from database storage.
 
         Args:
             encrypted_value: Encrypted value as base64 string
@@ -223,6 +220,7 @@ class DatabaseEncryptionManager:
 
         Returns:
             Decrypted value or None
+
         """
         if encrypted_value is None:
             return None
@@ -258,15 +256,14 @@ class DatabaseEncryptionManager:
 
         except Exception as e:
             logger.exception(
-                "Failed to decrypt field %s in table %s", field_name, table_name
+                "Failed to decrypt field %s in table %s", field_name, table_name,
             )
             raise DatabaseEncryptionError(f"Field decryption failed: {e}") from e
 
     def encrypt_sensitive_columns(
-        self, table_name: str, data: dict[str, Any], sensitive_columns: list[str]
+        self, table_name: str, data: dict[str, Any], sensitive_columns: list[str],
     ) -> dict[str, Any]:
-        """
-        Encrypt sensitive columns in a data dictionary.
+        """Encrypt sensitive columns in a data dictionary.
 
         Args:
             table_name: Name of the table
@@ -275,6 +272,7 @@ class DatabaseEncryptionManager:
 
         Returns:
             Data dictionary with encrypted sensitive columns
+
         """
         encrypted_data = data.copy()
 
@@ -289,10 +287,9 @@ class DatabaseEncryptionManager:
         return encrypted_data
 
     def decrypt_sensitive_columns(
-        self, table_name: str, data: dict[str, Any], sensitive_columns: list[str]
+        self, table_name: str, data: dict[str, Any], sensitive_columns: list[str],
     ) -> dict[str, Any]:
-        """
-        Decrypt sensitive columns in a data dictionary.
+        """Decrypt sensitive columns in a data dictionary.
 
         Args:
             table_name: Name of the table
@@ -301,6 +298,7 @@ class DatabaseEncryptionManager:
 
         Returns:
             Data dictionary with decrypted sensitive columns
+
         """
         decrypted_data = data.copy()
 
@@ -315,14 +313,14 @@ class DatabaseEncryptionManager:
         return decrypted_data
 
     def get_sensitive_columns_for_table(self, table_name: str) -> list[str]:
-        """
-        Get list of sensitive columns for a table.
+        """Get list of sensitive columns for a table.
 
         Args:
             table_name: Name of the table
 
         Returns:
             List of sensitive column names
+
         """
         # Define sensitive columns for each table
         sensitive_columns_map = {
@@ -338,10 +336,9 @@ class DatabaseEncryptionManager:
         return sensitive_columns_map.get(table_name, [])
 
     def migrate_table_to_encryption(
-        self, table_name: str, batch_size: int = 1000
+        self, table_name: str, batch_size: int = 1000,
     ) -> dict[str, Any]:
-        """
-        Migrate an existing table to use encryption.
+        """Migrate an existing table to use encryption.
 
         Args:
             table_name: Name of the table to migrate
@@ -349,6 +346,7 @@ class DatabaseEncryptionManager:
 
         Returns:
             Migration results
+
         """
         logger.info("Starting encryption migration for table %s", table_name)
 
@@ -373,7 +371,7 @@ class DatabaseEncryptionManager:
             with engine.connect() as conn:
                 # Get total record count - using parameterized query to prevent SQL injection
                 count_result = conn.execute(
-                    text("SELECT COUNT(*) FROM :table_name"), {"table_name": table_name}
+                    text("SELECT COUNT(*) FROM :table_name"), {"table_name": table_name},
                 )
                 results["total_records"] = count_result.scalar()
 
@@ -392,7 +390,7 @@ class DatabaseEncryptionManager:
                         SELECT * FROM :table_name
                         ORDER BY id
                         LIMIT :batch_size OFFSET :offset
-                    """
+                    """,
                     )
 
                     batch_result = conn.execute(
@@ -437,7 +435,7 @@ class DatabaseEncryptionManager:
                                         UPDATE :table_name
                                         SET :column_name = :column_value
                                         WHERE id = :id
-                                    """
+                                    """,
                                     )
 
                                     conn.execute(
@@ -489,10 +487,9 @@ class DatabaseEncryptionManager:
         return results
 
     def rotate_table_encryption_key(
-        self, table_name: str, batch_size: int = 1000
+        self, table_name: str, batch_size: int = 1000,
     ) -> dict[str, Any]:
-        """
-        Rotate encryption key for a table by re-encrypting all data.
+        """Rotate encryption key for a table by re-encrypting all data.
 
         Args:
             table_name: Name of the table
@@ -500,6 +497,7 @@ class DatabaseEncryptionManager:
 
         Returns:
             Key rotation results
+
         """
         logger.info("Starting key rotation for table %s", table_name)
 
@@ -544,7 +542,7 @@ class DatabaseEncryptionManager:
             with engine.connect() as conn:
                 # Get total record count - using parameterized query to prevent SQL injection
                 count_result = conn.execute(
-                    text("SELECT COUNT(*) FROM :table_name"), {"table_name": table_name}
+                    text("SELECT COUNT(*) FROM :table_name"), {"table_name": table_name},
                 )
                 results["total_records"] = count_result.scalar()
 
@@ -563,7 +561,7 @@ class DatabaseEncryptionManager:
                         SELECT * FROM :table_name
                         ORDER BY id
                         LIMIT :batch_size OFFSET :offset
-                    """
+                    """,
                     )
 
                     batch_result = conn.execute(
@@ -611,7 +609,7 @@ class DatabaseEncryptionManager:
                                         UPDATE :table_name
                                         SET :column_name = :column_value
                                         WHERE id = :id
-                                    """
+                                    """,
                                     )
 
                                     conn.execute(
@@ -703,14 +701,14 @@ _database_encryption_managers: dict[str, DatabaseEncryptionManager] = {}
 
 
 def get_database_encryption_manager(
-    database_url: str, database_name: str = "reynard"
+    database_url: str, database_name: str = "reynard",
 ) -> DatabaseEncryptionManager:
     """Get or create a database encryption manager."""
     key = f"{database_url}:{database_name}"
 
     if key not in _database_encryption_managers:
         _database_encryption_managers[key] = DatabaseEncryptionManager(
-            database_url=database_url, database_name=database_name
+            database_url=database_url, database_name=database_name,
         )
 
     return _database_encryption_managers[key]

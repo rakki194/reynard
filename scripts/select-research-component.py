@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Research Component Selection Script for Reynard Ecosystem
+"""Research Component Selection Script for Reynard Ecosystem
 
 This script randomly selects components from the Reynard codebase for research analysis.
 It provides detailed information about the selected component to guide agents in conducting
@@ -13,16 +12,14 @@ Date: 2025-01-15
 import argparse
 import json
 import logging
-import os
 import random
 from dataclasses import asdict, dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -36,14 +33,14 @@ class ComponentInfo:
     category: str
     weight: float
     description: str
-    files: List[str]
-    subdirectories: List[str]
+    files: list[str]
+    subdirectories: list[str]
     file_count: int
     directory_count: int
-    primary_languages: List[str]
-    key_files: List[str]
-    dependencies: List[str]
-    research_focus_areas: List[str]
+    primary_languages: list[str]
+    key_files: list[str]
+    dependencies: list[str]
+    research_focus_areas: list[str]
 
 
 @dataclass
@@ -52,8 +49,8 @@ class ResearchAssignment:
 
     component: ComponentInfo
     agent_specialist: str
-    research_questions: List[str]
-    analysis_focus: List[str]
+    research_questions: list[str]
+    analysis_focus: list[str]
     timestamp: datetime
     assignment_id: str
 
@@ -65,7 +62,7 @@ class ReynardComponentSelector:
         self.base_path = Path(base_path)
         self.components = self._discover_components()
 
-    def _discover_components(self) -> Dict[str, List[ComponentInfo]]:
+    def _discover_components(self) -> dict[str, list[ComponentInfo]]:
         """Discover all components in the Reynard ecosystem."""
         components = {
             "core_packages": [],
@@ -82,7 +79,7 @@ class ReynardComponentSelector:
             pkg_path = self.base_path / "packages" / pkg
             if pkg_path.exists():
                 components["core_packages"].append(
-                    self._analyze_component(str(pkg_path), pkg, "core_packages", 0.25)
+                    self._analyze_component(str(pkg_path), pkg, "core_packages", 0.25),
                 )
 
         # Specialized packages (Weight: 20%)
@@ -153,8 +150,8 @@ class ReynardComponentSelector:
             if pkg_path.exists():
                 components["specialized_packages"].append(
                     self._analyze_component(
-                        str(pkg_path), pkg, "specialized_packages", 0.20
-                    )
+                        str(pkg_path), pkg, "specialized_packages", 0.20,
+                    ),
                 )
 
         # Backend services (Weight: 20%)
@@ -173,7 +170,7 @@ class ReynardComponentSelector:
                         service.replace("/", "-"),
                         "backend_services",
                         0.20,
-                    )
+                    ),
                 )
 
         # Testing and quality (Weight: 15%)
@@ -187,7 +184,7 @@ class ReynardComponentSelector:
                         test_comp.replace("/", "-"),
                         "testing_quality",
                         0.15,
-                    )
+                    ),
                 )
 
         # Examples and templates (Weight: 10%)
@@ -202,7 +199,7 @@ class ReynardComponentSelector:
                             f"example-{example_dir.name}",
                             "examples_templates",
                             0.10,
-                        )
+                        ),
                     )
         if templates_path.exists():
             for template_dir in templates_path.iterdir():
@@ -213,7 +210,7 @@ class ReynardComponentSelector:
                             f"template-{template_dir.name}",
                             "examples_templates",
                             0.10,
-                        )
+                        ),
                     )
 
         # Tools and scripts (Weight: 10%)
@@ -221,14 +218,14 @@ class ReynardComponentSelector:
         if scripts_path.exists():
             components["tools_scripts"].append(
                 self._analyze_component(
-                    str(scripts_path), "scripts", "tools_scripts", 0.10
-                )
+                    str(scripts_path), "scripts", "tools_scripts", 0.10,
+                ),
             )
 
         return components
 
     def _analyze_component(
-        self, path: str, name: str, category: str, weight: float
+        self, path: str, name: str, category: str, weight: float,
     ) -> ComponentInfo:
         """Analyze a component and extract comprehensive information."""
         path_obj = Path(path)
@@ -277,18 +274,18 @@ class ReynardComponentSelector:
         package_json_path = path_obj / "package.json"
         if package_json_path.exists():
             try:
-                with open(package_json_path, "r") as f:
+                with open(package_json_path) as f:
                     package_data = json.load(f)
                     if "dependencies" in package_data:
                         dependencies.extend(
-                            list(package_data["dependencies"].keys())[:10]
+                            list(package_data["dependencies"].keys())[:10],
                         )  # Top 10
             except:
                 pass
 
         # Generate research focus areas based on component characteristics
         research_focus_areas = self._generate_research_focus_areas(
-            name, category, list(primary_languages)
+            name, category, list(primary_languages),
         )
 
         return ComponentInfo(
@@ -297,7 +294,7 @@ class ReynardComponentSelector:
             category=category,
             weight=weight,
             description=self._generate_description(
-                name, category, len(files), len(subdirectories)
+                name, category, len(files), len(subdirectories),
             ),
             files=files[:100],  # Limit to first 100 files for performance
             subdirectories=subdirectories[:20],  # Limit to first 20 subdirectories
@@ -310,15 +307,15 @@ class ReynardComponentSelector:
         )
 
     def _generate_research_focus_areas(
-        self, name: str, category: str, languages: List[str]
-    ) -> List[str]:
+        self, name: str, category: str, languages: list[str],
+    ) -> list[str]:
         """Generate research focus areas based on component characteristics."""
         focus_areas = []
 
         # Category-based focus areas
         if category == "core_packages":
             focus_areas.extend(
-                ["Foundation Architecture", "Core Utilities", "Framework Integration"]
+                ["Foundation Architecture", "Core Utilities", "Framework Integration"],
             )
         elif category == "specialized_packages":
             focus_areas.extend(
@@ -326,21 +323,21 @@ class ReynardComponentSelector:
                     "Domain-Specific Design",
                     "Specialized Functionality",
                     "Integration Patterns",
-                ]
+                ],
             )
         elif category == "backend_services":
             focus_areas.extend(
-                ["Service Architecture", "API Design", "Backend Performance"]
+                ["Service Architecture", "API Design", "Backend Performance"],
             )
         elif category == "testing_quality":
             focus_areas.extend(
-                ["Quality Assurance", "Testing Strategies", "Code Analysis"]
+                ["Quality Assurance", "Testing Strategies", "Code Analysis"],
             )
         elif category == "examples_templates":
             focus_areas.extend(["Usage Patterns", "Best Practices", "Template Design"])
         elif category == "tools_scripts":
             focus_areas.extend(
-                ["Development Tools", "Automation", "Scripting Patterns"]
+                ["Development Tools", "Automation", "Scripting Patterns"],
             )
 
         # Language-based focus areas
@@ -358,19 +355,19 @@ class ReynardComponentSelector:
             focus_areas.extend(["Real-time Communication", "WebSocket Patterns"])
         if "rag" in name.lower():
             focus_areas.extend(
-                ["AI Integration", "Vector Databases", "Semantic Search"]
+                ["AI Integration", "Vector Databases", "Semantic Search"],
             )
         if "3d" in name.lower():
             focus_areas.extend(["3D Graphics", "WebGL", "Three.js Integration"])
         if "game" in name.lower():
             focus_areas.extend(
-                ["Game Development", "ECS Architecture", "Performance Optimization"]
+                ["Game Development", "ECS Architecture", "Performance Optimization"],
             )
 
         return list(set(focus_areas))  # Remove duplicates
 
     def _generate_description(
-        self, name: str, category: str, file_count: int, dir_count: int
+        self, name: str, category: str, file_count: int, dir_count: int,
     ) -> str:
         """Generate a description for the component."""
         descriptions = {
@@ -427,8 +424,8 @@ class ResearchAssignmentGenerator:
         return assignment
 
     def _generate_research_questions(
-        self, component: ComponentInfo, specialist: str
-    ) -> List[str]:
+        self, component: ComponentInfo, specialist: str,
+    ) -> list[str]:
         """Generate research questions based on component and specialist."""
         base_questions = [
             f"How does the {component.name} component contribute to the overall Reynard ecosystem?",
@@ -459,8 +456,8 @@ class ResearchAssignmentGenerator:
         return base_questions + specialist_questions.get(specialist, [])
 
     def _generate_analysis_focus(
-        self, component: ComponentInfo, specialist: str
-    ) -> List[str]:
+        self, component: ComponentInfo, specialist: str,
+    ) -> list[str]:
         """Generate analysis focus areas based on component and specialist."""
         base_focus = [
             "Architectural Analysis",
@@ -497,7 +494,7 @@ class ResearchAssignmentGenerator:
 def main():
     """Main execution function."""
     parser = argparse.ArgumentParser(
-        description="Select components for research analysis"
+        description="Select components for research analysis",
     )
     parser.add_argument(
         "--base-path",
@@ -534,10 +531,10 @@ def main():
                 component=component,
                 agent_specialist=args.specialist,
                 research_questions=assignment_generator._generate_research_questions(
-                    component, args.specialist
+                    component, args.specialist,
                 ),
                 analysis_focus=assignment_generator._generate_analysis_focus(
-                    component, args.specialist
+                    component, args.specialist,
                 ),
                 timestamp=datetime.now(),
                 assignment_id=f"{component.name}_{args.specialist}_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
@@ -561,7 +558,7 @@ def main():
             print(output)
 
         logger.info(
-            f"Generated research assignment for {component.name} with {assignment.agent_specialist} specialist"
+            f"Generated research assignment for {component.name} with {assignment.agent_specialist} specialist",
         )
 
     except Exception as e:

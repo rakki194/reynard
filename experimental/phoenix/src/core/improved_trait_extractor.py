@@ -1,5 +1,4 @@
-"""
-PHOENIX Improved Trait Extractor
+"""PHOENIX Improved Trait Extractor
 
 Enhanced trait extraction module addressing limitations in:
 - Trait accuracy vs quantity trade-off
@@ -11,28 +10,22 @@ Author: Vulpine (Fox Specialist)
 Version: 2.0.0
 """
 
-import json
 import logging
 import math
 import re
 from collections import defaultdict
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Tuple
-
-import numpy as np
+from typing import Any
 
 from ..utils.data_structures import (
-    AgentGeneticMaterial,
     AgentState,
-    StructuredKnowledge,
     SubliminalTrait,
     TraitCategory,
 )
 
 
 class ImprovedTraitExtractor:
-    """
-    Enhanced trait extraction system addressing accuracy vs quantity trade-off.
+    """Enhanced trait extraction system addressing accuracy vs quantity trade-off.
 
     Improvements:
     - Quality-based trait filtering
@@ -68,7 +61,7 @@ class ImprovedTraitExtractor:
 
         self.logger.info("🧠 Improved trait extractor initialized")
 
-    def _initialize_enhanced_trait_patterns(self) -> Dict[str, Dict[str, Any]]:
+    def _initialize_enhanced_trait_patterns(self) -> dict[str, dict[str, Any]]:
         """Initialize enhanced trait inference patterns with quality indicators."""
         return {
             # Cognitive Processing Traits
@@ -505,10 +498,9 @@ class ImprovedTraitExtractor:
         }
 
     def extract_traits_from_output(
-        self, agent_output: str, agent_state: AgentState
-    ) -> List[SubliminalTrait]:
-        """
-        Extract high-quality traits from agent output with improved filtering.
+        self, agent_output: str, agent_state: AgentState,
+    ) -> list[SubliminalTrait]:
+        """Extract high-quality traits from agent output with improved filtering.
 
         Args:
             agent_output: The agent's output text
@@ -516,16 +508,17 @@ class ImprovedTraitExtractor:
 
         Returns:
             List of high-quality extracted traits
+
         """
         self.logger.debug(
-            f"Extracting traits from output of length {len(agent_output)}"
+            f"Extracting traits from output of length {len(agent_output)}",
         )
 
         # First pass: extract all potential traits
         all_traits = []
         for trait_name, pattern_data in self.trait_inference_patterns.items():
             trait_score = self._calculate_enhanced_trait_score(
-                agent_output, pattern_data
+                agent_output, pattern_data,
             )
 
             if trait_score > self.quality_thresholds["minimum_strength"]:
@@ -535,10 +528,10 @@ class ImprovedTraitExtractor:
                     strength=trait_score,
                     category=pattern_data["category"],
                     manifestation=self._extract_manifestation(
-                        agent_output, pattern_data
+                        agent_output, pattern_data,
                     ),
                     confidence=self._calculate_enhanced_confidence(
-                        agent_output, pattern_data, trait_score
+                        agent_output, pattern_data, trait_score,
                     ),
                 )
                 all_traits.append(trait)
@@ -550,43 +543,43 @@ class ImprovedTraitExtractor:
         validated_traits = self._validate_trait_consistency(filtered_traits)
 
         self.logger.info(
-            f"Extracted {len(validated_traits)} high-quality traits from {len(all_traits)} candidates"
+            f"Extracted {len(validated_traits)} high-quality traits from {len(all_traits)} candidates",
         )
         return validated_traits
 
     def _calculate_enhanced_trait_score(
-        self, text: str, pattern_data: Dict[str, Any]
+        self, text: str, pattern_data: dict[str, Any],
     ) -> float:
         """Calculate enhanced trait score with quality indicators."""
         scores = {}
 
         # Lexical analysis
         lexical_score = self._analyze_lexical_patterns(
-            text, pattern_data["lexical_patterns"]
+            text, pattern_data["lexical_patterns"],
         )
         scores["lexical"] = lexical_score
 
         # Syntactic analysis
         syntactic_score = self._analyze_syntactic_patterns(
-            text, pattern_data["syntactic_patterns"]
+            text, pattern_data["syntactic_patterns"],
         )
         scores["syntactic"] = syntactic_score
 
         # Semantic analysis
         semantic_score = self._analyze_semantic_indicators(
-            text, pattern_data["semantic_indicators"]
+            text, pattern_data["semantic_indicators"],
         )
         scores["semantic"] = semantic_score
 
         # Contextual analysis
         contextual_score = self._analyze_contextual_cues(
-            text, pattern_data["contextual_cues"]
+            text, pattern_data["contextual_cues"],
         )
         scores["contextual"] = contextual_score
 
         # Quality analysis
         quality_score = self._analyze_quality_indicators(
-            text, pattern_data["quality_indicators"]
+            text, pattern_data["quality_indicators"],
         )
         scores["quality"] = quality_score
 
@@ -597,7 +590,7 @@ class ImprovedTraitExtractor:
 
         # Apply confidence boosters
         confidence_boost = self._calculate_confidence_boost(
-            text, pattern_data["confidence_boosters"]
+            text, pattern_data["confidence_boosters"],
         )
         total_score *= 1 + confidence_boost
 
@@ -608,7 +601,7 @@ class ImprovedTraitExtractor:
         return min(1.0, total_score)
 
     def _analyze_quality_indicators(
-        self, text: str, quality_indicators: List[str]
+        self, text: str, quality_indicators: list[str],
     ) -> float:
         """Analyze quality indicators in text."""
         text_lower = text.lower()
@@ -616,8 +609,8 @@ class ImprovedTraitExtractor:
         return matches / len(quality_indicators) if quality_indicators else 0.0
 
     def _apply_quality_filtering(
-        self, traits: List[SubliminalTrait]
-    ) -> List[SubliminalTrait]:
+        self, traits: list[SubliminalTrait],
+    ) -> list[SubliminalTrait]:
         """Apply quality-based filtering to traits."""
         # Filter by minimum confidence
         filtered_traits = [
@@ -654,8 +647,8 @@ class ImprovedTraitExtractor:
         return final_traits[:max_total_traits]
 
     def _validate_trait_consistency(
-        self, traits: List[SubliminalTrait]
-    ) -> List[SubliminalTrait]:
+        self, traits: list[SubliminalTrait],
+    ) -> list[SubliminalTrait]:
         """Validate trait consistency and remove contradictory traits."""
         if not traits:
             return []
@@ -683,7 +676,7 @@ class ImprovedTraitExtractor:
         return consistent_traits
 
     def _are_contradictory(
-        self, trait1: SubliminalTrait, trait2: SubliminalTrait
+        self, trait1: SubliminalTrait, trait2: SubliminalTrait,
     ) -> bool:
         """Check if two traits are contradictory with enhanced logic."""
         # Define contradictory trait pairs
@@ -704,7 +697,7 @@ class ImprovedTraitExtractor:
 
         return False
 
-    def _analyze_lexical_patterns(self, text: str, patterns: List[str]) -> float:
+    def _analyze_lexical_patterns(self, text: str, patterns: list[str]) -> float:
         """Analyze lexical patterns with improved scoring."""
         matches = 0
         total_patterns = len(patterns)
@@ -718,7 +711,7 @@ class ImprovedTraitExtractor:
             return min(1.0, math.log(matches + 1) / math.log(total_patterns + 1))
         return 0.0
 
-    def _analyze_syntactic_patterns(self, text: str, patterns: List[str]) -> float:
+    def _analyze_syntactic_patterns(self, text: str, patterns: list[str]) -> float:
         """Analyze syntactic patterns with improved scoring."""
         matches = 0
         total_patterns = len(patterns)
@@ -734,7 +727,7 @@ class ImprovedTraitExtractor:
             else 0.0
         )
 
-    def _analyze_semantic_indicators(self, text: str, indicators: List[str]) -> float:
+    def _analyze_semantic_indicators(self, text: str, indicators: list[str]) -> float:
         """Analyze semantic indicators with improved scoring."""
         text_lower = text.lower()
         matches = sum(1 for indicator in indicators if indicator in text_lower)
@@ -746,7 +739,7 @@ class ImprovedTraitExtractor:
             else 0.0
         )
 
-    def _analyze_contextual_cues(self, text: str, cues: List[str]) -> float:
+    def _analyze_contextual_cues(self, text: str, cues: list[str]) -> float:
         """Analyze contextual cues with improved scoring."""
         text_lower = text.lower()
         matches = sum(1 for cue in cues if cue in text_lower)
@@ -754,13 +747,13 @@ class ImprovedTraitExtractor:
         # Apply square root scaling
         return min(1.0, math.sqrt(matches) / math.sqrt(len(cues))) if cues else 0.0
 
-    def _calculate_confidence_boost(self, text: str, boosters: List[str]) -> float:
+    def _calculate_confidence_boost(self, text: str, boosters: list[str]) -> float:
         """Calculate confidence boost from booster words."""
         text_lower = text.lower()
         matches = sum(1 for booster in boosters if booster in text_lower)
         return min(0.4, matches * 0.08)  # Max 40% boost
 
-    def _extract_manifestation(self, text: str, pattern_data: Dict[str, Any]) -> str:
+    def _extract_manifestation(self, text: str, pattern_data: dict[str, Any]) -> str:
         """Extract trait manifestation examples with improved extraction."""
         manifestations = []
 
@@ -777,7 +770,7 @@ class ImprovedTraitExtractor:
         return "; ".join(manifestations[:4])  # Limit to 4 total manifestations
 
     def _calculate_enhanced_confidence(
-        self, text: str, pattern_data: Dict[str, Any], trait_score: float
+        self, text: str, pattern_data: dict[str, Any], trait_score: float,
     ) -> float:
         """Calculate enhanced confidence in trait extraction."""
         base_confidence = trait_score
@@ -813,8 +806,8 @@ class ImprovedTraitExtractor:
         return min(1.0, base_confidence + confidence_boost)
 
     def analyze_trait_correlations(
-        self, traits: List[SubliminalTrait]
-    ) -> Dict[str, float]:
+        self, traits: list[SubliminalTrait],
+    ) -> dict[str, float]:
         """Analyze correlations between extracted traits with enhanced analysis."""
         if len(traits) < 2:
             return {}
@@ -836,7 +829,7 @@ class ImprovedTraitExtractor:
 
                 # Confidence correlation
                 confidence_correlation = 1.0 - abs(
-                    trait1.confidence - trait2.confidence
+                    trait1.confidence - trait2.confidence,
                 )
 
                 # Combined correlation with enhanced weighting
@@ -849,7 +842,7 @@ class ImprovedTraitExtractor:
 
         return correlations
 
-    def calculate_trait_quality_score(self, traits: List[SubliminalTrait]) -> float:
+    def calculate_trait_quality_score(self, traits: list[SubliminalTrait]) -> float:
         """Calculate overall trait quality score."""
         if not traits:
             return 0.0

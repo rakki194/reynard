@@ -1,5 +1,4 @@
-"""
-Continuous Indexing Service for Reynard Backend.
+"""Continuous Indexing Service for Reynard Backend.
 
 This module provides continuous monitoring and indexing of the codebase for search and analysis.
 """
@@ -9,12 +8,11 @@ import hashlib
 import json
 import logging
 import os
-import time
 import uuid
 from dataclasses import asdict, dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any
 
 # File monitoring imports
 try:
@@ -62,10 +60,10 @@ class IndexedFile:
     file_size: int
     last_modified: datetime
     file_type: str
-    language: Optional[str] = None
+    language: str | None = None
     content: str = ""
-    tokens: List[str] = None
-    metadata: Dict[str, Any] = None
+    tokens: list[str] = None
+    metadata: dict[str, Any] = None
     indexed_at: datetime = None
     is_deleted: bool = False
 
@@ -82,9 +80,9 @@ class IndexedFile:
 class IndexingConfig:
     """Indexing configuration."""
 
-    watch_directories: List[str] = None
-    exclude_patterns: List[str] = None
-    include_extensions: List[str] = None
+    watch_directories: list[str] = None
+    exclude_patterns: list[str] = None
+    include_extensions: list[str] = None
     max_file_size_mb: int = 10
     index_interval_seconds: int = 30
     batch_size: int = 100
@@ -151,9 +149,9 @@ class SearchResult:
     file_path: str
     relative_path: str
     score: float
-    highlights: List[str] = None
+    highlights: list[str] = None
     context: str = ""
-    matched_terms: List[str] = None
+    matched_terms: list[str] = None
 
     def __post_init__(self):
         if self.highlights is None:
@@ -191,7 +189,7 @@ class ContinuousIndexingService:
 
     def __init__(
         self,
-        config: Optional[IndexingConfig] = None,
+        config: IndexingConfig | None = None,
         data_dir: str = "data/indexing",
     ):
         self.config = config or IndexingConfig()
@@ -210,9 +208,9 @@ class ContinuousIndexingService:
         self.is_monitoring = False
 
         # Indexing state
-        self.indexed_files: Dict[str, IndexedFile] = {}
-        self.pending_files: Set[str] = set()
-        self.deleted_files: Set[str] = set()
+        self.indexed_files: dict[str, IndexedFile] = {}
+        self.pending_files: set[str] = set()
+        self.deleted_files: set[str] = set()
         self.index_lock = asyncio.Lock()
 
         # Search index
@@ -228,7 +226,7 @@ class ContinuousIndexingService:
         try:
             metadata_file = self.data_dir / "metadata.json"
             if metadata_file.exists():
-                with open(metadata_file, "r", encoding="utf-8") as f:
+                with open(metadata_file, encoding="utf-8") as f:
                     metadata_data = json.load(f)
                     self.indexed_files = {
                         file_id: IndexedFile(**file_data)
@@ -287,7 +285,7 @@ class ContinuousIndexingService:
                 self.search_index = index.open_dir(str(self.index_dir))
             else:
                 self.search_index = index.create_in(
-                    str(self.index_dir), self.index_schema
+                    str(self.index_dir), self.index_schema,
                 )
 
             logger.info("Search index initialized")
@@ -334,7 +332,7 @@ class ContinuousIndexingService:
             logger.error(f"Failed to calculate hash for {file_path}: {e}")
             return ""
 
-    def _extract_file_metadata(self, file_path: str) -> Dict[str, Any]:
+    def _extract_file_metadata(self, file_path: str) -> dict[str, Any]:
         """Extract metadata from a file."""
         try:
             file_path_obj = Path(file_path)
@@ -359,7 +357,7 @@ class ContinuousIndexingService:
                 except ClassNotFound:
                     try:
                         with open(
-                            file_path, "r", encoding="utf-8", errors="ignore"
+                            file_path, encoding="utf-8", errors="ignore",
                         ) as f:
                             content = f.read(1024)  # Read first 1KB
                         lexer = guess_lexer_for_filename(file_path, content)
@@ -375,7 +373,7 @@ class ContinuousIndexingService:
             logger.error(f"Failed to extract metadata for {file_path}: {e}")
             return {}
 
-    def _tokenize_content(self, content: str, language: str) -> List[str]:
+    def _tokenize_content(self, content: str, language: str) -> list[str]:
         """Tokenize file content."""
         try:
             if not PYGMENTS_AVAILABLE or not self.config.enable_tokenization:
@@ -413,15 +411,15 @@ class ContinuousIndexingService:
             logger.error(f"Failed to tokenize content: {e}")
             return []
 
-    async def index_file(self, file_path: str) -> Optional[IndexedFile]:
-        """
-        Index a single file.
+    async def index_file(self, file_path: str) -> IndexedFile | None:
+        """Index a single file.
 
         Args:
             file_path: Path to the file to index
 
         Returns:
             IndexedFile object if successful, None otherwise
+
         """
         try:
             if not self._should_index_file(file_path):
@@ -445,7 +443,7 @@ class ContinuousIndexingService:
 
             # Read file content
             try:
-                with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+                with open(file_path, encoding="utf-8", errors="ignore") as f:
                     content = f.read()
             except Exception as e:
                 logger.error(f"Failed to read file {file_path}: {e}")
@@ -456,7 +454,7 @@ class ContinuousIndexingService:
 
             # Tokenize content
             tokens = self._tokenize_content(
-                content, metadata.get("language", "unknown")
+                content, metadata.get("language", "unknown"),
             )
 
             # Create indexed file
@@ -520,14 +518,14 @@ class ContinuousIndexingService:
             logger.error(f"Failed to add file to search index: {e}")
 
     async def remove_file_from_index(self, file_path: str) -> bool:
-        """
-        Remove a file from the index.
+        """Remove a file from the index.
 
         Args:
             file_path: Path to the file to remove
 
         Returns:
             True if successful
+
         """
         try:
             # Find the file in indexed files
@@ -657,11 +655,10 @@ class ContinuousIndexingService:
         self,
         query: str,
         limit: int = 20,
-        file_types: Optional[List[str]] = None,
-        languages: Optional[List[str]] = None,
-    ) -> List[SearchResult]:
-        """
-        Search the indexed files.
+        file_types: list[str] | None = None,
+        languages: list[str] | None = None,
+    ) -> list[SearchResult]:
+        """Search the indexed files.
 
         Args:
             query: Search query
@@ -671,6 +668,7 @@ class ContinuousIndexingService:
 
         Returns:
             List of SearchResult objects
+
         """
         try:
             if not self.search_index:
@@ -729,17 +727,17 @@ class ContinuousIndexingService:
             logger.error(f"Search failed: {e}")
             return []
 
-    async def get_file_statistics(self) -> Dict[str, Any]:
-        """
-        Get statistics about indexed files.
+    async def get_file_statistics(self) -> dict[str, Any]:
+        """Get statistics about indexed files.
 
         Returns:
             Dictionary containing statistics
+
         """
         try:
             total_files = len(self.indexed_files)
             active_files = len(
-                [f for f in self.indexed_files.values() if not f.is_deleted]
+                [f for f in self.indexed_files.values() if not f.is_deleted],
             )
             deleted_files = total_files - active_files
 
@@ -790,11 +788,11 @@ class ContinuousIndexingService:
             return {}
 
     async def cleanup_old_files(self) -> int:
-        """
-        Clean up old deleted files from the index.
+        """Clean up old deleted files from the index.
 
         Returns:
             Number of files cleaned up
+
         """
         try:
             cutoff_date = datetime.now() - timedelta(days=self.config.auto_cleanup_days)
@@ -820,11 +818,11 @@ class ContinuousIndexingService:
             return 0
 
     async def rebuild_index(self) -> int:
-        """
-        Rebuild the entire search index.
+        """Rebuild the entire search index.
 
         Returns:
             Number of files indexed
+
         """
         try:
             if not self.search_index:

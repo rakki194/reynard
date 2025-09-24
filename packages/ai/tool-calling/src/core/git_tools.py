@@ -1,5 +1,4 @@
-"""
-Git tools for the yipyap assistant.
+"""Git tools for the yipyap assistant.
 
 This module provides git-related tools that allow the assistant to perform
 version control operations on datasets including status checking, staging,
@@ -33,7 +32,7 @@ def get_git_manager():
             "type": "string",
             "description": "Path to the dataset directory relative to the root",
             "required": True,
-        }
+        },
     },
 )
 async def git_status_tool(dataset_path: str) -> dict[str, Any]:
@@ -70,7 +69,7 @@ async def git_status_tool(dataset_path: str) -> dict[str, Any]:
             "type": "string",
             "description": "Path to the dataset directory where the repository will be initialized",
             "required": True,
-        }
+        },
     },
 )
 async def git_init_tool(dataset_path: str) -> dict[str, Any]:
@@ -121,7 +120,7 @@ async def git_init_tool(dataset_path: str) -> dict[str, Any]:
     },
 )
 async def git_add_tool(
-    dataset_path: str, files: list[str] = None, all_files: bool = False
+    dataset_path: str, files: list[str] = None, all_files: bool = False,
 ) -> dict[str, Any]:
     """Stage files for the next commit."""
     try:
@@ -177,7 +176,7 @@ async def git_add_tool(
     },
 )
 async def git_unstage_tool(
-    dataset_path: str, files: list[str] = None, all_files: bool = False
+    dataset_path: str, files: list[str] = None, all_files: bool = False,
 ) -> dict[str, Any]:
     """Unstage files from the staging area."""
     try:
@@ -249,7 +248,7 @@ async def git_commit_tool(
     try:
         git_manager = get_git_manager()
         success = git_manager.commit_changes(
-            dataset_path, message, author_name, author_email
+            dataset_path, message, author_name, author_email,
         )
 
         if success:
@@ -281,7 +280,7 @@ async def git_commit_tool(
             "type": "string",
             "description": "Path to the dataset directory",
             "required": True,
-        }
+        },
     },
 )
 async def git_branches_tool(dataset_path: str) -> dict[str, Any]:
@@ -357,7 +356,7 @@ async def git_branches_tool(dataset_path: str) -> dict[str, Any]:
     },
 )
 async def git_create_branch_tool(
-    dataset_path: str, branch_name: str, switch_to: bool = True
+    dataset_path: str, branch_name: str, switch_to: bool = True,
 ) -> dict[str, Any]:
     """Create a new branch and optionally switch to it."""
     try:
@@ -468,7 +467,7 @@ async def git_history_tool(dataset_path: str, limit: int = 20) -> dict[str, Any]
                     "author_email": commit.author_email,
                     "timestamp": commit.timestamp.isoformat(),
                     "files_changed": commit.files_changed,
-                }
+                },
             )
 
         return {
@@ -545,7 +544,7 @@ async def git_revert_tool(dataset_path: str, files: list[str]) -> dict[str, Any]
     },
 )
 async def git_delete_untracked_tool(
-    dataset_path: str, file_path: str
+    dataset_path: str, file_path: str,
 ) -> dict[str, Any]:
     """Delete an untracked file from the repository."""
     try:
@@ -581,7 +580,7 @@ async def git_delete_untracked_tool(
             "type": "string",
             "description": "Path to the dataset directory",
             "required": True,
-        }
+        },
     },
 )
 async def git_lfs_update_tool(dataset_path: str) -> dict[str, Any]:

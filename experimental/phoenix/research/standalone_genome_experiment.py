@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Standalone Real Agent Genome Experiment
+"""Standalone Real Agent Genome Experiment
 
 This script runs a comparison experiment between agents with and without genome data
 using real Ollama Qwen3 model integration, without complex import dependencies.
@@ -13,12 +12,11 @@ import argparse
 import asyncio
 import json
 import logging
-import sys
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import aiohttp
 
@@ -58,26 +56,26 @@ class AgentState:
     spirit: SpiritType
     style: NamingStyle
     generation: int
-    parents: List[str]
-    personality_traits: Dict[str, float]
-    physical_traits: Dict[str, float]
-    ability_traits: Dict[str, float]
-    performance_history: List[Dict[str, Any]]
-    knowledge_base: Dict[str, Any]
+    parents: list[str]
+    personality_traits: dict[str, float]
+    physical_traits: dict[str, float]
+    ability_traits: dict[str, float]
+    performance_history: list[dict[str, Any]]
+    knowledge_base: dict[str, Any]
 
 
 class OllamaInterface:
     """Interface for interacting with Ollama models."""
 
     def __init__(
-        self, base_url: str = "http://localhost:11434", model: str = "qwen2.5:3b"
+        self, base_url: str = "http://localhost:11434", model: str = "qwen2.5:3b",
     ):
         self.base_url = base_url
         self.model = model
         self.logger = logging.getLogger(__name__)
 
     async def generate_response(
-        self, prompt: str, system_prompt: Optional[str] = None
+        self, prompt: str, system_prompt: str | None = None,
     ) -> str:
         """Generate a response from the Ollama model."""
         try:
@@ -100,9 +98,8 @@ class OllamaInterface:
                     if response.status == 200:
                         result = await response.json()
                         return result.get("response", "")
-                    else:
-                        self.logger.error(f"Ollama API error: {response.status}")
-                        return ""
+                    self.logger.error(f"Ollama API error: {response.status}")
+                    return ""
         except Exception as e:
             self.logger.error(f"Error calling Ollama: {e}")
             return ""
@@ -112,7 +109,7 @@ class OllamaInterface:
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(
-                    f"{self.base_url}/api/tags", timeout=aiohttp.ClientTimeout(total=5)
+                    f"{self.base_url}/api/tags", timeout=aiohttp.ClientTimeout(total=5),
                 ) as response:
                     return response.status == 200
         except:
@@ -138,11 +135,11 @@ class RealAgentInterface:
         ]
 
     async def collect_agent_data(
-        self, agent: AgentState, task_prompt: str
-    ) -> Dict[str, Any]:
+        self, agent: AgentState, task_prompt: str,
+    ) -> dict[str, Any]:
         """Collect real data from an agent by having it perform a task."""
         self.logger.info(
-            f"Collecting data from agent {agent.name} for task: {task_prompt[:50]}..."
+            f"Collecting data from agent {agent.name} for task: {task_prompt[:50]}...",
         )
 
         # Create system prompt based on agent traits
@@ -183,7 +180,7 @@ class RealAgentInterface:
         }
 
         spirit_desc = spirit_descriptions.get(
-            agent.spirit.value, "You are a unique being with special characteristics."
+            agent.spirit.value, "You are a unique being with special characteristics.",
         )
 
         # Add trait-based characteristics
@@ -206,8 +203,8 @@ class RealAgentInterface:
         return f"{spirit_desc} You are {trait_desc}. Respond to tasks in a way that reflects your unique personality and abilities. Be authentic to your character while providing helpful and accurate information."
 
     async def _analyze_agent_response(
-        self, agent: AgentState, response: str, task_prompt: str
-    ) -> Dict[str, Any]:
+        self, agent: AgentState, response: str, task_prompt: str,
+    ) -> dict[str, Any]:
         """Analyze the agent's response for various characteristics."""
         analysis = {
             "word_count": len(response.split()),
@@ -335,8 +332,8 @@ class RealAgentInterface:
         return matches / len(keywords) if keywords else 0.0
 
     def _assess_trait_manifestation(
-        self, agent: AgentState, response: str
-    ) -> Dict[str, float]:
+        self, agent: AgentState, response: str,
+    ) -> dict[str, float]:
         """Assess how well the response manifests the agent's traits."""
         manifestations = {}
 
@@ -366,11 +363,11 @@ class RealAgentInterface:
 
         return manifestations
 
-    def _calculate_quality_score(self, analysis: Dict[str, Any]) -> float:
+    def _calculate_quality_score(self, analysis: dict[str, Any]) -> float:
         """Calculate an overall quality score for the response."""
         # Weighted combination of various factors
         word_count_score = min(
-            1.0, analysis["word_count"] / 200.0
+            1.0, analysis["word_count"] / 200.0,
         )  # Optimal around 200 words
         technical_score = min(1.0, analysis["technical_terms"] / 10.0)
         creativity_score = min(1.0, analysis["creativity_indicators"] / 5.0)
@@ -391,8 +388,8 @@ class RealAgentInterface:
         return min(1.0, quality)
 
     async def collect_agent_data_without_genome(
-        self, agent: AgentState, task_prompt: str
-    ) -> Dict[str, Any]:
+        self, agent: AgentState, task_prompt: str,
+    ) -> dict[str, Any]:
         """Collect data from agent without genome-based conditioning."""
         self.logger.info(f"Collecting data from agent {agent.name} WITHOUT genome data")
 
@@ -416,11 +413,11 @@ class RealAgentInterface:
         }
 
     async def run_comparison_experiment(
-        self, agents: List[AgentState], num_trials: int = 10
-    ) -> Dict[str, Any]:
+        self, agents: list[AgentState], num_trials: int = 10,
+    ) -> dict[str, Any]:
         """Run a comparison experiment with and without genome data."""
         self.logger.info(
-            f"Running comparison experiment with {len(agents)} agents, {num_trials} trials each"
+            f"Running comparison experiment with {len(agents)} agents, {num_trials} trials each",
         )
 
         results = {
@@ -445,7 +442,7 @@ class RealAgentInterface:
 
             # Run without genome data (no system prompt)
             without_genome_data = await self.collect_agent_data_without_genome(
-                agent, task
+                agent, task,
             )
             results["without_genome"].append(without_genome_data)
 
@@ -461,13 +458,13 @@ class RealAgentInterface:
             json.dump(results, f, indent=2)
 
         self.logger.info(
-            f"Comparison experiment completed. Results saved to {results_file}"
+            f"Comparison experiment completed. Results saved to {results_file}",
         )
         return results
 
     async def _analyze_comparison_results(
-        self, results: Dict[str, Any]
-    ) -> Dict[str, Any]:
+        self, results: dict[str, Any],
+    ) -> dict[str, Any]:
         """Analyze the comparison between with and without genome data."""
         with_genome = results["with_genome"]
         without_genome = results["without_genome"]
@@ -549,7 +546,7 @@ class RealAgentInterface:
         }
 
 
-async def create_test_agents() -> List[AgentState]:
+async def create_test_agents() -> list[AgentState]:
     """Create a set of test agents with different characteristics."""
     agents = []
 
@@ -670,7 +667,7 @@ async def check_ollama_availability(ollama_interface: OllamaInterface) -> bool:
 
     if not await ollama_interface.is_available():
         print(
-            "❌ Ollama is not available. Please ensure Ollama is running on localhost:11434"
+            "❌ Ollama is not available. Please ensure Ollama is running on localhost:11434",
         )
         return False
 
@@ -679,7 +676,7 @@ async def check_ollama_availability(ollama_interface: OllamaInterface) -> bool:
     # Test a simple generation
     print("🧪 Testing model generation...")
     test_response = await ollama_interface.generate_response(
-        "Hello, can you respond with just 'OK'?"
+        "Hello, can you respond with just 'OK'?",
     )
 
     if not test_response:
@@ -692,7 +689,7 @@ async def check_ollama_availability(ollama_interface: OllamaInterface) -> bool:
 
 async def run_experiment(num_trials: int = 10, model: str = "qwen2.5:3b"):
     """Run the genome comparison experiment."""
-    print(f"🚀 Starting Real Agent Genome Experiment")
+    print("🚀 Starting Real Agent Genome Experiment")
     print(f"📊 Configuration: {num_trials} trials, model: {model}")
 
     # Initialize interfaces
@@ -701,7 +698,7 @@ async def run_experiment(num_trials: int = 10, model: str = "qwen2.5:3b"):
 
     # Check availability
     if not await check_ollama_availability(ollama_interface):
-        return
+        return None
 
     # Create test agents
     print("👥 Creating test agents...")
@@ -722,7 +719,7 @@ async def run_experiment(num_trials: int = 10, model: str = "qwen2.5:3b"):
     print(f"\n📊 Sample Size: {comparison['sample_size']} trials")
     print(f"⏰ Timestamp: {results['timestamp']}")
 
-    print(f"\n🔬 METRIC COMPARISON:")
+    print("\n🔬 METRIC COMPARISON:")
     print("-" * 50)
 
     for metric in comparison["with_genome_averages"]:
@@ -731,11 +728,11 @@ async def run_experiment(num_trials: int = 10, model: str = "qwen2.5:3b"):
         improvement = comparison["improvements_percent"][metric]
 
         print(
-            f"{metric.replace('_', ' ').title():<25}: {with_val:.3f} vs {without_val:.3f} ({improvement:+.1f}%)"
+            f"{metric.replace('_', ' ').title():<25}: {with_val:.3f} vs {without_val:.3f} ({improvement:+.1f}%)",
         )
 
     # Identify key findings
-    print(f"\n🎯 KEY FINDINGS:")
+    print("\n🎯 KEY FINDINGS:")
     print("-" * 50)
 
     quality_improvement = comparison["improvements_percent"]["quality_score"]
@@ -743,18 +740,18 @@ async def run_experiment(num_trials: int = 10, model: str = "qwen2.5:3b"):
 
     if quality_improvement > 0:
         print(
-            f"✅ Quality Score: {quality_improvement:+.1f}% improvement with genome data"
+            f"✅ Quality Score: {quality_improvement:+.1f}% improvement with genome data",
         )
     else:
         print(f"❌ Quality Score: {quality_improvement:+.1f}% change with genome data")
 
     if spirit_improvement > 0:
         print(
-            f"✅ Spirit Alignment: {spirit_improvement:+.1f}% improvement with genome data"
+            f"✅ Spirit Alignment: {spirit_improvement:+.1f}% improvement with genome data",
         )
     else:
         print(
-            f"❌ Spirit Alignment: {spirit_improvement:+.1f}% change with genome data"
+            f"❌ Spirit Alignment: {spirit_improvement:+.1f}% change with genome data",
         )
 
     # Check for significant improvements
@@ -765,7 +762,7 @@ async def run_experiment(num_trials: int = 10, model: str = "qwen2.5:3b"):
     ]
 
     if significant_improvements:
-        print(f"\n🌟 Significant Improvements (>10%):")
+        print("\n🌟 Significant Improvements (>10%):")
         for metric in significant_improvements:
             improvement = comparison["improvements_percent"][metric]
             print(f"   • {metric.replace('_', ' ').title()}: {improvement:+.1f}%")
@@ -779,10 +776,10 @@ async def main():
     """Main function."""
     parser = argparse.ArgumentParser(description="Run Real Agent Genome Experiment")
     parser.add_argument(
-        "--trials", type=int, default=10, help="Number of trials to run"
+        "--trials", type=int, default=10, help="Number of trials to run",
     )
     parser.add_argument(
-        "--model", type=str, default="qwen2.5:3b", help="Ollama model to use"
+        "--model", type=str, default="qwen2.5:3b", help="Ollama model to use",
     )
     parser.add_argument("--verbose", action="store_true", help="Enable verbose logging")
 
@@ -791,7 +788,7 @@ async def main():
     # Setup logging
     log_level = logging.DEBUG if args.verbose else logging.INFO
     logging.basicConfig(
-        level=log_level, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        level=log_level, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     try:

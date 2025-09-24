@@ -1,5 +1,4 @@
-"""
-Content Categorizer for Reynard Backend
+"""Content Categorizer for Reynard Backend
 
 Categorizes scraped content based on various criteria.
 """
@@ -13,8 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class ContentCategorizer:
-    """
-    Categorizes scraped content based on various criteria.
+    """Categorizes scraped content based on various criteria.
 
     Analyzes content and assigns appropriate categories
     based on content type, keywords, and other factors.
@@ -51,10 +49,9 @@ class ContentCategorizer:
             return False
 
     async def categorize_content(
-        self, content: str, metadata: dict[str, Any] | None = None
+        self, content: str, metadata: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """
-        Categorize content based on analysis.
+        """Categorize content based on analysis.
 
         Args:
             content: Content to categorize
@@ -62,6 +59,7 @@ class ContentCategorizer:
 
         Returns:
             Categorization result
+
         """
         try:
             if not content:
@@ -111,7 +109,7 @@ class ContentCategorizer:
             return 0.0
 
     def _generate_tags(
-        self, content: str, metadata: dict[str, Any] | None = None
+        self, content: str, metadata: dict[str, Any] | None = None,
     ) -> list[str]:
         """Generate tags for content."""
         tags = []

@@ -1,5 +1,4 @@
-"""
-NLWeb Tool Registry for Reynard Backend
+"""NLWeb Tool Registry for Reynard Backend
 
 Manages registration, discovery, and routing of NLWeb tools.
 """
@@ -28,7 +27,7 @@ class NLWebToolRegistry:
                 "success_count": 0,
                 "failure_count": 0,
                 "avg_execution_time": 0.0,
-            }
+            },
         )
 
     def register_tool(self, tool: NLWebTool) -> bool:
@@ -53,7 +52,7 @@ class NLWebToolRegistry:
                 self._enabled_tools.add(tool.name)
 
             logger.info(
-                f"Registered NLWeb tool: {tool.name} in category {tool.category}"
+                f"Registered NLWeb tool: {tool.name} in category {tool.category}",
             )
             return True
 
@@ -254,7 +253,7 @@ class NLWebToolRegistry:
 
         if tool.priority < 0 or tool.priority > 100:
             logger.error(
-                f"Tool priority must be between 0 and 100, got: {tool.priority}"
+                f"Tool priority must be between 0 and 100, got: {tool.priority}",
             )
             return False
 

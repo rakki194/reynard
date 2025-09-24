@@ -1,5 +1,4 @@
-"""
-Model coordination service for caption generation.
+"""Model coordination service for caption generation.
 
 This module handles model loading, coordination, and lifecycle management
 with proper locking and resource management.
@@ -21,7 +20,7 @@ class ModelCoordinator:
         self._manager = get_captioner_manager()
 
     def should_load_model(
-        self, generator_name: str, *, is_batch: bool, batch_size: int = 0
+        self, generator_name: str, *, is_batch: bool, batch_size: int = 0,
     ) -> bool:
         """Determine if a model should be loaded based on context."""
         captioner = self._manager.get_captioner(generator_name)

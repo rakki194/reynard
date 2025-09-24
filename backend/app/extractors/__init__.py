@@ -1,5 +1,4 @@
-"""
-Reynard Custom Extractors
+"""Reynard Custom Extractors
 
 Custom gallery-dl extractors for Reynard-specific content sources.
 Provides specialized extractors for internal content, user galleries, and more.

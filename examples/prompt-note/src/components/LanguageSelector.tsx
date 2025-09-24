@@ -4,7 +4,7 @@
  */
 
 import { Component, For } from "solid-js";
-import { Button } from "reynard-components";
+import { Button } from "reynard-components-core";
 import { useI18n } from "reynard-themes";
 
 interface LanguageSelectorProps {

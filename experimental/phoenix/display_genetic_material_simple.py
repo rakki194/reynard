@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Display Extracted Genetic Material - Simple Version
+"""Display Extracted Genetic Material - Simple Version
 
 Show the genetic material that was actually extracted during the analysis.
 
@@ -8,9 +7,7 @@ Author: Success-Advisor-8 (Permanent Release Manager)
 Version: 1.0.0
 """
 
-import json
 import sys
-from datetime import datetime
 from pathlib import Path
 
 # Add src to path
@@ -100,7 +97,7 @@ def create_sample_genetic_materials():
                 category=TraitCategory.COGNITIVE,
                 manifestation="Detailed technical analysis and systematic problem-solving",
                 confidence=0.92,
-            )
+            ),
         ],
         fitness_score=0.92,
         generation_context=GenerationContext(
@@ -283,14 +280,14 @@ def display_genetic_material(gm_name, genetic_material):
     print(f"🧬 GENETIC MATERIAL: {gm_name}")
     print(f"{'='*80}")
 
-    print(f"📋 Basic Information:")
+    print("📋 Basic Information:")
     print(f"   ID: {genetic_material.id}")
     print(f"   Agent ID: {genetic_material.agent_id}")
     print(f"   Generation: {genetic_material.generation}")
     print(f"   Fitness Score: {genetic_material.fitness_score:.3f}")
     print(f"   Created: {genetic_material.created_at.strftime('%Y-%m-%d %H:%M:%S')}")
 
-    print(f"\n📝 Content Preview:")
+    print("\n📝 Content Preview:")
     content_preview = (
         genetic_material.content[:100] + "..."
         if len(genetic_material.content) > 100
@@ -298,38 +295,38 @@ def display_genetic_material(gm_name, genetic_material):
     )
     print(f"   {content_preview}")
 
-    print(f"\n🧠 Structured Knowledge:")
+    print("\n🧠 Structured Knowledge:")
     print(
-        f"   Categories: {', '.join(genetic_material.structured_knowledge.categories)}"
+        f"   Categories: {', '.join(genetic_material.structured_knowledge.categories)}",
     )
-    print(f"   Concepts:")
+    print("   Concepts:")
     for concept in genetic_material.structured_knowledge.concepts:
         print(f"     • {concept['name']}: {concept['confidence']:.3f}")
-    print(f"   Reasoning Patterns:")
+    print("   Reasoning Patterns:")
     for pattern in genetic_material.structured_knowledge.reasoning_patterns:
         print(f"     • {pattern['pattern']}: {pattern['confidence']:.3f}")
-    print(f"   Strategies:")
+    print("   Strategies:")
     for strategy in genetic_material.structured_knowledge.strategies:
         print(f"     • {strategy['strategy']}: {strategy['confidence']:.3f}")
-    print(f"   Domain Knowledge:")
+    print("   Domain Knowledge:")
     for domain, score in genetic_material.structured_knowledge.domain_knowledge.items():
         print(f"     • {domain}: {score:.3f}")
 
-    print(f"\n🎯 Relevance Scores:")
+    print("\n🎯 Relevance Scores:")
     for domain, score in genetic_material.relevance_scores.items():
         print(f"   • {domain}: {score:.3f}")
 
-    print(f"\n🎭 Subliminal Traits:")
+    print("\n🎭 Subliminal Traits:")
     for trait in genetic_material.subliminal_traits:
         print(f"   • {trait.name} ({trait.category.value}):")
         print(f"     - Strength: {trait.strength:.3f}")
         print(f"     - Confidence: {trait.confidence:.3f}")
         print(f"     - Manifestation: {trait.manifestation}")
 
-    print(f"\n📊 Generation Context:")
+    print("\n📊 Generation Context:")
     print(f"   Task: {genetic_material.generation_context.task}")
     print(f"   Environment: {genetic_material.generation_context.environment}")
-    print(f"   Performance Metrics:")
+    print("   Performance Metrics:")
     for (
         metric,
         value,
@@ -340,7 +337,7 @@ def display_genetic_material(gm_name, genetic_material):
 def display_summary_statistics(genetic_materials):
     """Display summary statistics across all genetic materials."""
     print(f"\n{'='*80}")
-    print(f"📊 GENETIC MATERIAL SUMMARY STATISTICS")
+    print("📊 GENETIC MATERIAL SUMMARY STATISTICS")
     print(f"{'='*80}")
 
     # Collect statistics
@@ -367,40 +364,40 @@ def display_summary_statistics(genetic_materials):
                 relevance_scores[domain] = []
             relevance_scores[domain].append(score)
 
-    print(f"📈 Fitness Statistics:")
+    print("📈 Fitness Statistics:")
     print(f"   Average Fitness: {sum(fitness_scores)/len(fitness_scores):.3f}")
     print(f"   Highest Fitness: {max(fitness_scores):.3f}")
     print(f"   Lowest Fitness: {min(fitness_scores):.3f}")
     print(f"   Fitness Range: {max(fitness_scores) - min(fitness_scores):.3f}")
 
-    print(f"\n🧠 Trait Analysis:")
+    print("\n🧠 Trait Analysis:")
     for trait_name, strengths in all_traits.items():
         avg_strength = sum(strengths) / len(strengths)
         max_strength = max(strengths)
         min_strength = min(strengths)
         print(
-            f"   • {trait_name}: avg={avg_strength:.3f}, max={max_strength:.3f}, min={min_strength:.3f}, count={len(strengths)}"
+            f"   • {trait_name}: avg={avg_strength:.3f}, max={max_strength:.3f}, min={min_strength:.3f}, count={len(strengths)}",
         )
 
-    print(f"\n📚 Knowledge Domain Analysis:")
+    print("\n📚 Knowledge Domain Analysis:")
     print(f"   Total Unique Domains: {len(all_domains)}")
     for domain in sorted(all_domains):
         scores = relevance_scores[domain]
         avg_score = sum(scores) / len(scores)
         print(f"   • {domain}: avg={avg_score:.3f}, count={len(scores)}")
 
-    print(f"\n🎯 Most Common Traits:")
+    print("\n🎯 Most Common Traits:")
     trait_counts = {name: len(strengths) for name, strengths in all_traits.items()}
     sorted_traits = sorted(trait_counts.items(), key=lambda x: x[1], reverse=True)
     for trait_name, count in sorted_traits:
         print(f"   • {trait_name}: {count} occurrences")
 
-    print(f"\n💪 Strongest Traits:")
+    print("\n💪 Strongest Traits:")
     trait_max_strengths = {
         name: max(strengths) for name, strengths in all_traits.items()
     }
     sorted_strengths = sorted(
-        trait_max_strengths.items(), key=lambda x: x[1], reverse=True
+        trait_max_strengths.items(), key=lambda x: x[1], reverse=True,
     )
     for trait_name, max_strength in sorted_strengths:
         print(f"   • {trait_name}: {max_strength:.3f} max strength")

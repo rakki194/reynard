@@ -1,5 +1,4 @@
-"""
-Dimensionality Reduction Utilities
+"""Dimensionality Reduction Utilities
 
 Provides implementations of PCA, t-SNE, and UMAP for embedding visualization.
 """
@@ -66,8 +65,7 @@ class PCAReducer:
         logger.info("PCA reducer initialized")
 
     async def reduce(self, data: np.ndarray, parameters: PCAParameters) -> np.ndarray:
-        """
-        Perform PCA dimensionality reduction.
+        """Perform PCA dimensionality reduction.
 
         Args:
             data: Input data array (n_samples, n_features)
@@ -75,11 +73,12 @@ class PCAReducer:
 
         Returns:
             Reduced data array (n_samples, n_components)
+
         """
         try:
             # Run in thread pool to avoid blocking
             return await asyncio.get_event_loop().run_in_executor(
-                None, self._reduce_sync, data, parameters
+                None, self._reduce_sync, data, parameters,
             )
         except Exception as e:
             logger.error(f"PCA reduction failed: {e}")
@@ -115,7 +114,7 @@ class PCAReducer:
             logger.info(f"PCA reduction: {data.shape} -> {reduced_data.shape}")
             logger.info(f"Explained variance ratio: {pca.explained_variance_ratio_}")
             logger.info(
-                f"Cumulative explained variance: {np.cumsum(pca.explained_variance_ratio_)}"
+                f"Cumulative explained variance: {np.cumsum(pca.explained_variance_ratio_)}",
             )
 
             return reduced_data
@@ -151,8 +150,7 @@ class TSNEReducer:
         logger.info("t-SNE reducer initialized")
 
     async def reduce(self, data: np.ndarray, parameters: TSNEParameters) -> np.ndarray:
-        """
-        Perform t-SNE dimensionality reduction.
+        """Perform t-SNE dimensionality reduction.
 
         Args:
             data: Input data array (n_samples, n_features)
@@ -160,11 +158,12 @@ class TSNEReducer:
 
         Returns:
             Reduced data array (n_samples, n_components)
+
         """
         try:
             # Run in thread pool to avoid blocking
             return await asyncio.get_event_loop().run_in_executor(
-                None, self._reduce_sync, data, parameters
+                None, self._reduce_sync, data, parameters,
             )
         except Exception as e:
             logger.error(f"t-SNE reduction failed: {e}")
@@ -231,8 +230,7 @@ class UMAPReducer:
         logger.info("UMAP reducer initialized")
 
     async def reduce(self, data: np.ndarray, parameters: UMAPParameters) -> np.ndarray:
-        """
-        Perform UMAP dimensionality reduction.
+        """Perform UMAP dimensionality reduction.
 
         Args:
             data: Input data array (n_samples, n_features)
@@ -240,11 +238,12 @@ class UMAPReducer:
 
         Returns:
             Reduced data array (n_samples, n_components)
+
         """
         try:
             # Run in thread pool to avoid blocking
             return await asyncio.get_event_loop().run_in_executor(
-                None, self._reduce_sync, data, parameters
+                None, self._reduce_sync, data, parameters,
             )
         except Exception as e:
             logger.error(f"UMAP reduction failed: {e}")
@@ -291,8 +290,7 @@ _reducers: dict[str, DimensionalityReducer] = {}
 
 
 def get_dimensionality_reducer(method: str) -> DimensionalityReducer:
-    """
-    Get a dimensionality reducer instance.
+    """Get a dimensionality reducer instance.
 
     Args:
         method: Reduction method ('pca', 'tsne', 'umap')
@@ -302,6 +300,7 @@ def get_dimensionality_reducer(method: str) -> DimensionalityReducer:
 
     Raises:
         ValueError: If method is not supported
+
     """
     if method not in _reducers:
         if method == "pca":
@@ -317,11 +316,11 @@ def get_dimensionality_reducer(method: str) -> DimensionalityReducer:
 
 
 def get_available_methods() -> dict[str, dict[str, Any]]:
-    """
-    Get information about available dimensionality reduction methods.
+    """Get information about available dimensionality reduction methods.
 
     Returns:
         Dictionary mapping method names to their information
+
     """
     methods = {
         "pca": {
@@ -357,8 +356,7 @@ def get_available_methods() -> dict[str, dict[str, Any]]:
 
 
 def validate_parameters(method: str, parameters: dict[str, Any]) -> dict[str, Any]:
-    """
-    Validate and normalize parameters for a given method.
+    """Validate and normalize parameters for a given method.
 
     Args:
         method: Reduction method
@@ -369,12 +367,13 @@ def validate_parameters(method: str, parameters: dict[str, Any]) -> dict[str, An
 
     Raises:
         ValueError: If parameters are invalid
+
     """
     if method == "pca":
         return {
             "n_components": min(max(int(parameters.get("n_components", 3)), 2), 50),
             "variance_threshold": min(
-                max(float(parameters.get("variance_threshold", 0.95)), 0.0), 1.0
+                max(float(parameters.get("variance_threshold", 0.95)), 0.0), 1.0,
             ),
             "whiten": bool(parameters.get("whiten", False)),
             "svd_solver": str(parameters.get("svd_solver", "auto")),
@@ -384,13 +383,13 @@ def validate_parameters(method: str, parameters: dict[str, Any]) -> dict[str, An
         return {
             "n_components": min(max(int(parameters.get("n_components", 3)), 2), 3),
             "perplexity": min(
-                max(float(parameters.get("perplexity", 30.0)), 5.0), 100.0
+                max(float(parameters.get("perplexity", 30.0)), 5.0), 100.0,
             ),
             "learning_rate": min(
-                max(float(parameters.get("learning_rate", 200.0)), 10.0), 1000.0
+                max(float(parameters.get("learning_rate", 200.0)), 10.0), 1000.0,
             ),
             "early_exaggeration": min(
-                max(float(parameters.get("early_exaggeration", 12.0)), 1.0), 50.0
+                max(float(parameters.get("early_exaggeration", 12.0)), 1.0), 50.0,
             ),
             "max_iter": min(max(int(parameters.get("max_iter", 1000)), 100), 10000),
             "metric": str(parameters.get("metric", "euclidean")),
@@ -403,12 +402,12 @@ def validate_parameters(method: str, parameters: dict[str, Any]) -> dict[str, An
             "n_neighbors": min(max(int(parameters.get("n_neighbors", 15)), 2), 100),
             "min_dist": min(max(float(parameters.get("min_dist", 0.1)), 0.0), 1.0),
             "learning_rate": min(
-                max(float(parameters.get("learning_rate", 1.0)), 0.1), 10.0
+                max(float(parameters.get("learning_rate", 1.0)), 0.1), 10.0,
             ),
             "spread": min(max(float(parameters.get("spread", 1.0)), 0.1), 10.0),
             "metric": str(parameters.get("metric", "euclidean")),
             "local_connectivity": min(
-                max(int(parameters.get("local_connectivity", 1)), 1), 10
+                max(int(parameters.get("local_connectivity", 1)), 1), 10,
             ),
         }
 

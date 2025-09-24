@@ -1,5 +1,4 @@
-"""
-XSS Detection Patterns
+"""XSS Detection Patterns
 
 This module contains regex patterns for detecting
 Cross-Site Scripting (XSS) attack attempts.

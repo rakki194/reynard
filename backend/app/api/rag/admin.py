@@ -1,5 +1,4 @@
-"""
-RAG Admin Endpoints for Reynard Backend
+"""RAG Admin Endpoints for Reynard Backend
 
 Administrative endpoints for RAG system management and monitoring.
 """

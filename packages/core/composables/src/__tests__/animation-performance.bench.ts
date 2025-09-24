@@ -11,7 +11,7 @@
  * @since 1.0.0
  */
 
-import { bench, describe } from "vitest";
+import { describe, beforeEach, afterEach, it, expect, bench } from 'vitest';
 import { createSignal } from "solid-js";
 
 // Mock the animation control hook
@@ -130,7 +130,7 @@ describe("Animation Performance Benchmarks", () => {
     for (let i = 0; i < 1000; i++) {
       try {
         // Simulate dynamic import check
-        const isAvailable = mockAnimationControl.isAnimationPackageAvailable()();
+        const isAvailable = mockAnimationControl.isAnimationPackageAvailable()[0]();
       } catch {
         // Package not available
       }

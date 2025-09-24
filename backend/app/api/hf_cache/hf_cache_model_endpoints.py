@@ -1,5 +1,4 @@
-"""
-HuggingFace Cache Model Endpoints for Reynard Backend
+"""HuggingFace Cache Model Endpoints for Reynard Backend
 
 Model-specific endpoint implementations for HF cache operations.
 """

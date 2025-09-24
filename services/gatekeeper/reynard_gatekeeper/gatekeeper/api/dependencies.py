@@ -1,5 +1,4 @@
-"""
-FastAPI dependencies for Gatekeeper authentication.
+"""FastAPI dependencies for Gatekeeper authentication.
 
 This module provides dependency injection functions for authentication,
 authorization, and role-based access control.
@@ -21,14 +20,14 @@ _auth_manager: AuthManager | None = None
 
 
 def get_auth_manager() -> AuthManager:
-    """
-    Get the authentication manager instance.
+    """Get the authentication manager instance.
 
     Returns:
         AuthManager: The authentication manager
 
     Raises:
         HTTPException: If auth manager is not initialized
+
     """
     global _auth_manager
     if _auth_manager is None:
@@ -40,19 +39,18 @@ def get_auth_manager() -> AuthManager:
 
 
 def set_auth_manager(auth_manager: AuthManager) -> None:
-    """
-    Set the global authentication manager instance.
+    """Set the global authentication manager instance.
 
     Args:
         auth_manager: The authentication manager to set
+
     """
     global _auth_manager
     _auth_manager = auth_manager
 
 
 async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
-    """
-    Dependency to get the current authenticated user from the token.
+    """Dependency to get the current authenticated user from the token.
 
     Args:
         token (str): The JWT token from the Authorization header.
@@ -62,6 +60,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
 
     Raises:
         HTTPException: If the token is invalid or user data is missing.
+
     """
     auth_manager = get_auth_manager()
 
@@ -77,19 +76,18 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
 
 
 def require_role(required_role: UserRole) -> Callable[[User], User]:
-    """
-    Dependency factory to require a specific user role.
+    """Dependency factory to require a specific user role.
 
     Args:
         required_role: The role required to access the endpoint
 
     Returns:
         Dependency function that checks the user's role
+
     """
 
     async def _require_role(current_user: User = Depends(get_current_user)) -> User:
-        """
-        Check if the current user has the required role.
+        """Check if the current user has the required role.
 
         Args:
             current_user: The current authenticated user
@@ -99,6 +97,7 @@ def require_role(required_role: UserRole) -> Callable[[User], User]:
 
         Raises:
             HTTPException: If the user doesn't have the required role
+
         """
         if current_user.role != required_role:
             raise HTTPException(
@@ -111,19 +110,18 @@ def require_role(required_role: UserRole) -> Callable[[User], User]:
 
 
 def require_roles(required_roles: list[UserRole]) -> Callable[[User], User]:
-    """
-    Dependency factory to require one of several user roles.
+    """Dependency factory to require one of several user roles.
 
     Args:
         required_roles: List of roles that grant access to the endpoint
 
     Returns:
         Dependency function that checks if the user has one of the required roles
+
     """
 
     async def _require_roles(current_user: User = Depends(get_current_user)) -> User:
-        """
-        Check if the current user has one of the required roles.
+        """Check if the current user has one of the required roles.
 
         Args:
             current_user: The current authenticated user
@@ -133,6 +131,7 @@ def require_roles(required_roles: list[UserRole]) -> Callable[[User], User]:
 
         Raises:
             HTTPException: If the user doesn't have any of the required roles
+
         """
         if current_user.role not in required_roles:
             role_names = [role.value for role in required_roles]
@@ -146,18 +145,17 @@ def require_roles(required_roles: list[UserRole]) -> Callable[[User], User]:
 
 
 def require_active_user() -> Callable[[User], User]:
-    """
-    Dependency factory to require an active (non-guest) user.
+    """Dependency factory to require an active (non-guest) user.
 
     Returns:
         Dependency function that checks if the user is active
+
     """
 
     async def _require_active_user(
         current_user: User = Depends(get_current_user),
     ) -> User:
-        """
-        Check if the current user is active (not a guest).
+        """Check if the current user is active (not a guest).
 
         Args:
             current_user: The current authenticated user
@@ -167,6 +165,7 @@ def require_active_user() -> Callable[[User], User]:
 
         Raises:
             HTTPException: If the user is a guest
+
         """
         if current_user.role == UserRole.GUEST:
             raise HTTPException(
@@ -179,58 +178,57 @@ def require_active_user() -> Callable[[User], User]:
 
 
 def require_admin() -> Callable[[User], User]:
-    """
-    Dependency factory to require an admin user.
+    """Dependency factory to require an admin user.
 
     Returns:
         Dependency function that checks if the user is an admin
+
     """
     return require_role(UserRole.ADMIN)
 
 
 # Backward-compatible version for tests
 def require_admin_legacy() -> Callable[[User], User]:
-    """
-    Legacy version of require_admin for backward compatibility with tests.
+    """Legacy version of require_admin for backward compatibility with tests.
 
     Returns:
         Dependency function that checks if the user is an admin
+
     """
     return require_role(UserRole.ADMIN)
 
 
 def require_regular_user() -> Callable[[User], User]:
-    """
-    Dependency factory to require a regular user.
+    """Dependency factory to require a regular user.
 
     Returns:
         Dependency function that checks if the user is a regular user
+
     """
     return require_role(UserRole.REGULAR)
 
 
 def require_guest() -> Callable[[User], User]:
-    """
-    Dependency factory to require a guest user.
+    """Dependency factory to require a guest user.
 
     Returns:
         Dependency function that checks if the user is a guest
+
     """
     return require_role(UserRole.GUEST)
 
 
 # Backward-compatible version for tests
 def require_active_user_legacy() -> Callable[[User], User]:
-    """
-    Legacy version of require_active_user for backward compatibility with tests.
+    """Legacy version of require_active_user for backward compatibility with tests.
 
     Returns:
         Dependency function that checks if the user is active
+
     """
 
     async def _require_active_user_legacy(current_user: User) -> User:
-        """
-        Check if the current user is active (not a guest).
+        """Check if the current user is active (not a guest).
 
         Args:
             current_user: The current authenticated user
@@ -240,6 +238,7 @@ def require_active_user_legacy() -> Callable[[User], User]:
 
         Raises:
             HTTPException: If the user is a guest
+
         """
         if current_user.role == UserRole.GUEST:
             raise HTTPException(
@@ -252,14 +251,14 @@ def require_active_user_legacy() -> Callable[[User], User]:
 
 
 async def get_current_user_optional(request: Request) -> User | None:
-    """
-    Optional dependency to get the current user if a token is provided.
+    """Optional dependency to get the current user if a token is provided.
 
     Args:
         request: The FastAPI request object
 
     Returns:
         Optional[User]: The user if a valid token is provided, None otherwise
+
     """
     # Try to get token from Authorization header
     auth_header = request.headers.get("Authorization")
@@ -279,8 +278,7 @@ async def get_current_user_optional(request: Request) -> User | None:
 
 
 async def get_current_user_sse(request: Request) -> User:
-    """
-    Resolve the current user for SSE endpoints where browsers cannot set
+    """Resolve the current user for SSE endpoints where browsers cannot set
     Authorization headers on EventSource. Supports:
       - Authorization: Bearer <token>
       - Query params: ?token=<access_token> or ?access_token=<access_token>
@@ -318,18 +316,17 @@ async def get_current_user_sse(request: Request) -> User:
 
 
 def get_current_active_user_sse() -> Callable[[User], User]:
-    """
-    Active-user variant for SSE routes.
+    """Active-user variant for SSE routes.
 
     Returns:
         Dependency function that checks if the user is active for SSE
+
     """
 
     async def _get_current_active_user_sse(
         current_user: User = Depends(get_current_user_sse),
     ) -> User:
-        """
-        Active-user variant for SSE routes.
+        """Active-user variant for SSE routes.
         """
         if current_user.role == UserRole.GUEST:
             raise HTTPException(
@@ -342,8 +339,7 @@ def get_current_active_user_sse() -> Callable[[User], User]:
 
 
 async def validate_token(token: str, required_role: UserRole | None = None) -> bool:
-    """
-    Validate a token and optionally check role requirements.
+    """Validate a token and optionally check role requirements.
 
     Args:
         token: The JWT token to validate
@@ -351,11 +347,12 @@ async def validate_token(token: str, required_role: UserRole | None = None) -> b
 
     Returns:
         bool: True if token is valid and meets role requirements
+
     """
     try:
         auth_manager = get_auth_manager()
         return await auth_manager.validate_token(
-            token, required_role.value if required_role else None
+            token, required_role.value if required_role else None,
         )
     except Exception:
         return False

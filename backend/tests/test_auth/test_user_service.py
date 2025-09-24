@@ -1,5 +1,4 @@
-"""
-Tests for user service functionality.
+"""Tests for user service functionality.
 
 This module tests user creation, authentication, and user management.
 """
@@ -363,7 +362,7 @@ class TestCurrentUser:
         from fastapi.security import HTTPAuthorizationCredentials
 
         credentials = HTTPAuthorizationCredentials(
-            scheme="Bearer", credentials=access_token
+            scheme="Bearer", credentials=access_token,
         )
 
         result = get_current_user(credentials)
@@ -377,7 +376,7 @@ class TestCurrentUser:
         from fastapi.security import HTTPAuthorizationCredentials
 
         credentials = HTTPAuthorizationCredentials(
-            scheme="Bearer", credentials="invalid_token"
+            scheme="Bearer", credentials="invalid_token",
         )
 
         with pytest.raises(HTTPException) as exc_info:
@@ -417,7 +416,7 @@ class TestCurrentUser:
         from fastapi.security import HTTPAuthorizationCredentials
 
         credentials = HTTPAuthorizationCredentials(
-            scheme="Bearer", credentials=access_token
+            scheme="Bearer", credentials=access_token,
         )
 
         result = get_current_active_user(get_current_user(credentials))
@@ -443,7 +442,7 @@ class TestCurrentUser:
         from fastapi.security import HTTPAuthorizationCredentials
 
         credentials = HTTPAuthorizationCredentials(
-            scheme="Bearer", credentials=access_token
+            scheme="Bearer", credentials=access_token,
         )
 
         with pytest.raises(HTTPException) as exc_info:

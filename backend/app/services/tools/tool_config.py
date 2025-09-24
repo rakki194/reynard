@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Unified Tool Configuration System
+"""Unified Tool Configuration System
 =================================
 
 Shared configuration system for all tools across MCP server and backend API.

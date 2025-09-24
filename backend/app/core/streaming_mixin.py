@@ -1,5 +1,4 @@
-"""
-🦊 Reynard Streaming Response Mixin
+"""🦊 Reynard Streaming Response Mixin
 ===================================
 
 Advanced streaming response capabilities for the Reynard backend services,
@@ -30,8 +29,8 @@ import asyncio
 import json
 import time
 import uuid
-from collections import defaultdict
-from typing import Any, AsyncGenerator, Callable, Dict, List, Optional, Union
+from collections.abc import AsyncGenerator, Callable
+from typing import Any
 
 from fastapi import WebSocket, WebSocketDisconnect
 from fastapi.responses import StreamingResponse
@@ -39,7 +38,6 @@ from pydantic import BaseModel
 from sse_starlette import EventSourceResponse
 
 from .error_handler import service_error_handler
-from .exceptions import InternalError, ValidationError
 from .logging_config import get_service_logger
 
 logger = get_service_logger("streaming")
@@ -52,7 +50,7 @@ class StreamingEvent(BaseModel):
     type: str
     data: Any
     timestamp: float = 0.0
-    metadata: Dict[str, Any] = {}
+    metadata: dict[str, Any] = {}
 
     def __init__(self, **data):
         if not data.get("id"):
@@ -84,8 +82,8 @@ class WebSocketConnection:
         self.last_heartbeat = time.time()
         self.events_sent = 0
         self.is_active = True
-        self.subscriptions: List[str] = []
-        self.filters: Dict[str, Any] = {}
+        self.subscriptions: list[str] = []
+        self.filters: dict[str, Any] = {}
 
     async def send_event(self, event: StreamingEvent) -> bool:
         """Send event to WebSocket connection."""
@@ -127,8 +125,7 @@ class WebSocketConnection:
 
 
 class StreamingResponseMixin:
-    """
-    Advanced streaming response mixin with enterprise-grade capabilities.
+    """Advanced streaming response mixin with enterprise-grade capabilities.
 
     Provides sophisticated streaming patterns including:
     - Event filtering and transformation
@@ -139,12 +136,12 @@ class StreamingResponseMixin:
     """
 
     def __init__(self):
-        self._websocket_connections: Dict[str, WebSocketConnection] = {}
+        self._websocket_connections: dict[str, WebSocketConnection] = {}
         self._streaming_metrics = StreamingMetrics()
-        self._event_filters: Dict[str, Callable] = {}
-        self._event_transformers: Dict[str, Callable] = {}
-        self._heartbeat_task: Optional[asyncio.Task] = None
-        self._cleanup_task: Optional[asyncio.Task] = None
+        self._event_filters: dict[str, Callable] = {}
+        self._event_transformers: dict[str, Callable] = {}
+        self._heartbeat_task: asyncio.Task | None = None
+        self._cleanup_task: asyncio.Task | None = None
         self._background_tasks_started = False
 
     def _start_background_tasks(self):
@@ -179,7 +176,7 @@ class StreamingResponseMixin:
                 for connection_id in inactive_connections:
                     await self._remove_websocket_connection(connection_id)
 
-            except Exception as e:
+            except Exception:
                 logger.exception("Error in heartbeat loop")
                 await asyncio.sleep(5)  # Wait before retrying
 
@@ -204,7 +201,7 @@ class StreamingResponseMixin:
                 # Update metrics
                 self._update_streaming_metrics()
 
-            except Exception as e:
+            except Exception:
                 logger.exception("Error in cleanup loop")
                 await asyncio.sleep(10)  # Wait before retrying
 
@@ -243,12 +240,12 @@ class StreamingResponseMixin:
                 if hasattr(service, "stream_data"):
                     return EventSourceResponse(service.stream_data())
                 raise HTTPException(
-                    status_code=501, detail="Streaming not supported by this service"
+                    status_code=501, detail="Streaming not supported by this service",
                 )
             except Exception as e:
                 logger.error(f"Streaming failed for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="stream_data", error=e, service_name=self.service_name
+                    operation="stream_data", error=e, service_name=self.service_name,
                 )
 
         @self.router.websocket("/ws")
@@ -322,7 +319,7 @@ class StreamingResponseMixin:
             await self._remove_websocket_connection(connection_id)
 
     async def _handle_websocket_message(
-        self, connection: WebSocketConnection, message: str
+        self, connection: WebSocketConnection, message: str,
     ):
         """Handle incoming WebSocket message."""
         try:
@@ -334,7 +331,7 @@ class StreamingResponseMixin:
                 event_types = data.get("event_types", [])
                 connection.subscriptions = event_types
                 logger.info(
-                    f"Connection {connection.connection_id} subscribed to: {event_types}"
+                    f"Connection {connection.connection_id} subscribed to: {event_types}",
                 )
 
             elif message_type == "filter":
@@ -342,7 +339,7 @@ class StreamingResponseMixin:
                 filters = data.get("filters", {})
                 connection.filters = filters
                 logger.info(
-                    f"Connection {connection.connection_id} set filters: {filters}"
+                    f"Connection {connection.connection_id} set filters: {filters}",
                 )
 
             elif message_type == "ping":
@@ -363,10 +360,9 @@ class StreamingResponseMixin:
         self,
         data_generator: AsyncGenerator,
         content_type: str = "text/plain",
-        headers: Optional[Dict[str, str]] = None,
+        headers: dict[str, str] | None = None,
     ) -> StreamingResponse:
-        """
-        Create an enhanced streaming response with error handling.
+        """Create an enhanced streaming response with error handling.
 
         Args:
             data_generator: Generator that yields data
@@ -375,6 +371,7 @@ class StreamingResponseMixin:
 
         Returns:
             StreamingResponse: The streaming response
+
         """
         default_headers = {
             "Cache-Control": "no-cache",
@@ -393,10 +390,9 @@ class StreamingResponseMixin:
         )
 
     def create_sse_response(
-        self, event_generator: AsyncGenerator, headers: Optional[Dict[str, str]] = None
+        self, event_generator: AsyncGenerator, headers: dict[str, str] | None = None,
     ) -> EventSourceResponse:
-        """
-        Create an enhanced Server-Sent Events response.
+        """Create an enhanced Server-Sent Events response.
 
         Args:
             event_generator: Generator that yields SSE events
@@ -404,6 +400,7 @@ class StreamingResponseMixin:
 
         Returns:
             EventSourceResponse: The SSE response
+
         """
         default_headers = {
             "X-Streaming-Service": self.service_name,
@@ -418,11 +415,10 @@ class StreamingResponseMixin:
     def create_enhanced_sse_response(
         self,
         event_generator: AsyncGenerator,
-        filters: Optional[Dict[str, Any]] = None,
-        transformers: Optional[Dict[str, Callable]] = None,
+        filters: dict[str, Any] | None = None,
+        transformers: dict[str, Callable] | None = None,
     ) -> EventSourceResponse:
-        """
-        Create an enhanced SSE response with filtering and transformation.
+        """Create an enhanced SSE response with filtering and transformation.
 
         Args:
             event_generator: Generator that yields events
@@ -431,6 +427,7 @@ class StreamingResponseMixin:
 
         Returns:
             EventSourceResponse: The enhanced SSE response
+
         """
 
         async def enhanced_event_generator():
@@ -480,13 +477,11 @@ class StreamingResponseMixin:
         return self.create_sse_response(enhanced_event_generator())
 
     def _apply_event_filters(
-        self, event: StreamingEvent, filters: Dict[str, Any]
+        self, event: StreamingEvent, filters: dict[str, Any],
     ) -> bool:
         """Apply event filters."""
         for filter_key, filter_value in filters.items():
-            if filter_key == "type" and event.type != filter_value:
-                return False
-            elif (
+            if (filter_key == "type" and event.type != filter_value) or (
                 filter_key in event.metadata
                 and event.metadata[filter_key] != filter_value
             ):
@@ -494,7 +489,7 @@ class StreamingResponseMixin:
         return True
 
     def _apply_event_transformers(
-        self, event: StreamingEvent, transformers: Dict[str, Callable]
+        self, event: StreamingEvent, transformers: dict[str, Callable],
     ) -> StreamingEvent:
         """Apply event transformers."""
         for transformer_key, transformer_func in transformers.items():
@@ -504,7 +499,7 @@ class StreamingResponseMixin:
                 event.metadata = transformer_func(event.metadata)
             elif transformer_key in event.metadata:
                 event.metadata[transformer_key] = transformer_func(
-                    event.metadata[transformer_key]
+                    event.metadata[transformer_key],
                 )
         return event
 
@@ -524,7 +519,7 @@ class StreamingResponseMixin:
             await asyncio.gather(*send_tasks, return_exceptions=True)
 
     def add_event_filter(
-        self, name: str, filter_func: Callable[[StreamingEvent], bool]
+        self, name: str, filter_func: Callable[[StreamingEvent], bool],
     ):
         """Add a custom event filter."""
         self._event_filters[name] = filter_func

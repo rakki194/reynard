@@ -1,5 +1,4 @@
-"""
-🧪 Tests for Custom Reload Handler
+"""🧪 Tests for Custom Reload Handler
 
 This module contains tests for the custom uvicorn reload handler that
 provides intelligent service-specific reloading capabilities.
@@ -125,10 +124,9 @@ class TestIntelligentReloadHandler:
         def mock_get_affected_services(file_path):
             if "ecs" in file_path:
                 return ["ecs_world"]
-            elif "gatekeeper" in file_path:
+            if "gatekeeper" in file_path:
                 return ["gatekeeper"]
-            else:
-                return []
+            return []
 
         reload_manager.get_affected_services.side_effect = mock_get_affected_services
 
@@ -298,10 +296,9 @@ class TestIntegration:
         def mock_get_affected_services(file_path):
             if "ecs" in file_path:
                 return ["ecs_world"]
-            elif "gatekeeper" in file_path:
+            if "gatekeeper" in file_path:
                 return ["gatekeeper"]
-            else:
-                return []
+            return []
 
         reload_manager.get_affected_services.side_effect = mock_get_affected_services
 
@@ -367,7 +364,7 @@ class TestErrorHandling:
         handler = create_intelligent_reload_handler(app, reload_manager)
 
         # Test with invalid file paths
-        files = [Path(""), Path("invalid"), Path("/nonexistent/path")]
+        files = [Path(), Path("invalid"), Path("/nonexistent/path")]
         reload_manager.get_affected_services.return_value = []
 
         # Should use standard reload behavior

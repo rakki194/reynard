@@ -1,10 +1,8 @@
-"""
-AI-Powered Email Response Service for Reynard Backend.
+"""AI-Powered Email Response Service for Reynard Backend.
 
 This module provides AI-powered email response generation using LLM integration.
 """
 
-import asyncio
 import json
 import logging
 import re
@@ -12,7 +10,7 @@ import uuid
 from dataclasses import asdict, dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 # AI/LLM imports
 try:
@@ -48,15 +46,15 @@ class EmailContext:
     original_body: str
     sender_email: str
     recipient_email: str
-    sender_name: Optional[str] = None
-    recipient_name: Optional[str] = None
+    sender_name: str | None = None
+    recipient_name: str | None = None
     email_type: str = "general"  # general, question, request, complaint, meeting, etc.
     priority: str = "normal"  # low, normal, high, urgent
     sentiment: str = "neutral"  # positive, neutral, negative
     language: str = "en"
-    previous_emails: List[Dict[str, Any]] = None
-    agent_personality: Optional[Dict[str, Any]] = None
-    extracted_at: Optional[datetime] = None
+    previous_emails: list[dict[str, Any]] = None
+    agent_personality: dict[str, Any] | None = None
+    extracted_at: datetime | None = None
 
     def __post_init__(self):
         if self.previous_emails is None:
@@ -71,11 +69,11 @@ class AIResponse:
     original_email_id: str
     subject: str
     body: str
-    html_body: Optional[str] = None
+    html_body: str | None = None
     tone: str = "professional"  # professional, friendly, formal, casual
     confidence_score: float = 0.0  # 0.0 to 1.0
     response_type: str = "reply"  # reply, forward, new
-    suggested_actions: List[str] = None
+    suggested_actions: list[str] = None
     generated_at: datetime = None
     model_used: str = "unknown"
     processing_time_ms: int = 0
@@ -108,7 +106,7 @@ class AIResponseConfig:
     include_disclaimer: bool = True
 
     # Language settings
-    supported_languages: List[str] = None
+    supported_languages: list[str] = None
     auto_detect_language: bool = True
 
     def __post_init__(self):
@@ -121,7 +119,7 @@ class AIEmailResponseService:
 
     def __init__(
         self,
-        config: Optional[AIResponseConfig] = None,
+        config: AIResponseConfig | None = None,
         data_dir: str = "data/ai_responses",
     ):
         self.config = config or AIResponseConfig()
@@ -142,9 +140,9 @@ class AIEmailResponseService:
         self.ollama_available = False
 
         # Context storage
-        self.contexts: Dict[str, EmailContext] = {}
-        self.responses: Dict[str, AIResponse] = {}
-        self.templates: Dict[str, Any] = {}
+        self.contexts: dict[str, EmailContext] = {}
+        self.responses: dict[str, AIResponse] = {}
+        self.templates: dict[str, Any] = {}
 
         # Initialize OpenAI client only if API key is available
         if OPENAI_AVAILABLE:
@@ -156,7 +154,7 @@ class AIEmailResponseService:
                     logger.info("OpenAI client initialized successfully")
                 else:
                     logger.info(
-                        "OpenAI API key not found, skipping OpenAI initialization"
+                        "OpenAI API key not found, skipping OpenAI initialization",
                     )
             except Exception as e:
                 logger.warning(f"Failed to initialize OpenAI client: {e}")
@@ -171,7 +169,7 @@ class AIEmailResponseService:
                     logger.info("Anthropic client initialized successfully")
                 else:
                     logger.info(
-                        "Anthropic API key not found, skipping Anthropic initialization"
+                        "Anthropic API key not found, skipping Anthropic initialization",
                     )
             except Exception as e:
                 logger.warning(f"Failed to initialize Anthropic client: {e}")
@@ -203,7 +201,7 @@ class AIEmailResponseService:
             logger.info(f"Available AI services: {', '.join(available_services)}")
         else:
             logger.warning(
-                "No AI services available - email response generation will be limited"
+                "No AI services available - email response generation will be limited",
             )
 
         # Load existing responses and templates
@@ -215,7 +213,7 @@ class AIEmailResponseService:
         try:
             responses_file = self.data_dir / "responses.json"
             if responses_file.exists():
-                with open(responses_file, "r", encoding="utf-8") as f:
+                with open(responses_file, encoding="utf-8") as f:
                     responses_data = json.load(f)
                     self.responses = {
                         resp_id: AIResponse(**resp_data)
@@ -232,7 +230,7 @@ class AIEmailResponseService:
         try:
             templates_file = self.data_dir / "templates.json"
             if templates_file.exists():
-                with open(templates_file, "r", encoding="utf-8") as f:
+                with open(templates_file, encoding="utf-8") as f:
                     self.templates = json.load(f)
             else:
                 self.templates = self._create_default_templates()
@@ -271,7 +269,7 @@ class AIEmailResponseService:
         except Exception as e:
             logger.error(f"Failed to save templates: {e}")
 
-    def _create_default_templates(self) -> Dict[str, Any]:
+    def _create_default_templates(self) -> dict[str, Any]:
         """Create default response templates."""
         return {
             "greeting": {
@@ -290,15 +288,15 @@ class AIEmailResponseService:
             "signature": "{agent_name}\n{agent_title}\n{company_name}",
         }
 
-    async def analyze_email_context(self, email_data: Dict[str, Any]) -> EmailContext:
-        """
-        Analyze email to extract context for AI response generation.
+    async def analyze_email_context(self, email_data: dict[str, Any]) -> EmailContext:
+        """Analyze email to extract context for AI response generation.
 
         Args:
             email_data: Email data dictionary
 
         Returns:
             EmailContext object
+
         """
         try:
             start_time = datetime.now()
@@ -308,7 +306,7 @@ class AIEmailResponseService:
             body = email_data.get("body", "")
             sender_email = email_data.get("sender_email", email_data.get("sender", ""))
             recipient_email = email_data.get(
-                "recipient_email", email_data.get("recipient", "")
+                "recipient_email", email_data.get("recipient", ""),
             )
 
             # Analyze email type
@@ -325,10 +323,10 @@ class AIEmailResponseService:
 
             # Extract names (use provided names if available, otherwise extract from email)
             sender_name = email_data.get(
-                "sender_name"
+                "sender_name",
             ) or self._extract_name_from_email(sender_email)
             recipient_name = email_data.get(
-                "recipient_name"
+                "recipient_name",
             ) or self._extract_name_from_email(recipient_email)
 
             # Get agent personality if available
@@ -366,11 +364,10 @@ class AIEmailResponseService:
         self,
         email_context: EmailContext,
         response_type: str = "reply",
-        custom_instructions: Optional[str] = None,
-        model: Optional[str] = None,
+        custom_instructions: str | None = None,
+        model: str | None = None,
     ) -> AIResponse:
-        """
-        Generate AI-powered email response.
+        """Generate AI-powered email response.
 
         Args:
             email_context: Email context for response generation
@@ -380,6 +377,7 @@ class AIEmailResponseService:
 
         Returns:
             AIResponse object
+
         """
         try:
             start_time = datetime.now()
@@ -401,15 +399,15 @@ class AIEmailResponseService:
                 or not model.startswith(("gpt", "claude"))
             ):
                 response_data = await self._generate_ollama_response(
-                    email_context, response_type, custom_instructions, model
+                    email_context, response_type, custom_instructions, model,
                 )
             elif model.startswith("gpt") and self.openai_client:
                 response_data = await self._generate_openai_response(
-                    email_context, response_type, custom_instructions, model
+                    email_context, response_type, custom_instructions, model,
                 )
             elif model.startswith("claude") and self.anthropic_client:
                 response_data = await self._generate_anthropic_response(
-                    email_context, response_type, custom_instructions, model
+                    email_context, response_type, custom_instructions, model,
                 )
             else:
                 raise ValueError(f"Unsupported model: {model} or service not available")
@@ -427,7 +425,7 @@ class AIEmailResponseService:
                 suggested_actions=response_data.get("suggested_actions", []),
                 model_used=model,
                 processing_time_ms=int(
-                    (datetime.now() - start_time).total_seconds() * 1000
+                    (datetime.now() - start_time).total_seconds() * 1000,
                 ),
             )
 
@@ -443,10 +441,9 @@ class AIEmailResponseService:
             raise
 
     async def generate_auto_reply(
-        self, email_context: EmailContext, agent_config: Dict[str, Any]
+        self, email_context: EmailContext, agent_config: dict[str, Any],
     ) -> AIResponse:
-        """
-        Generate automatic reply for agent emails.
+        """Generate automatic reply for agent emails.
 
         Args:
             email_context: Email context
@@ -454,6 +451,7 @@ class AIEmailResponseService:
 
         Returns:
             AIResponse object
+
         """
         try:
             # Custom instructions for auto-reply
@@ -479,10 +477,9 @@ class AIEmailResponseService:
             raise
 
     async def suggest_response_improvements(
-        self, response: AIResponse, email_context: EmailContext
-    ) -> List[str]:
-        """
-        Suggest improvements for an AI-generated response.
+        self, response: AIResponse, email_context: EmailContext,
+    ) -> list[str]:
+        """Suggest improvements for an AI-generated response.
 
         Args:
             response: AI-generated response
@@ -490,6 +487,7 @@ class AIEmailResponseService:
 
         Returns:
             List of improvement suggestions
+
         """
         try:
             suggestions = []
@@ -505,7 +503,7 @@ class AIEmailResponseService:
             # Check tone appropriateness
             if email_context.sentiment == "negative" and response.tone == "casual":
                 suggestions.append(
-                    "Consider using a more professional tone for negative sentiment emails."
+                    "Consider using a more professional tone for negative sentiment emails.",
                 )
 
             # Check for missing information
@@ -526,10 +524,9 @@ class AIEmailResponseService:
             return []
 
     async def get_response_history(
-        self, email_address: str, limit: int = 10
-    ) -> List[AIResponse]:
-        """
-        Get response history for an email address.
+        self, email_address: str, limit: int = 10,
+    ) -> list[AIResponse]:
+        """Get response history for an email address.
 
         Args:
             email_address: Email address to get history for
@@ -537,6 +534,7 @@ class AIEmailResponseService:
 
         Returns:
             List of AIResponse objects
+
         """
         try:
             # Filter responses by email address
@@ -563,27 +561,26 @@ class AIEmailResponseService:
 
         if any(word in text for word in ["meeting", "schedule", "appointment", "call"]):
             return "meeting"
-        elif any(
+        if any(
             word in text
             for word in ["question", "?", "how", "what", "when", "where", "why"]
         ):
             return "question"
-        elif any(
+        if any(
             word in text for word in ["request", "please", "can you", "could you"]
         ):
             return "request"
-        elif any(
+        if any(
             word in text for word in ["complaint", "problem", "issue", "error", "bug"]
         ):
             return "complaint"
-        elif any(word in text for word in ["thank", "thanks", "appreciate"]):
+        if any(word in text for word in ["thank", "thanks", "appreciate"]):
             return "gratitude"
-        elif any(
+        if any(
             word in text for word in ["urgent", "asap", "immediately", "critical"]
         ):
             return "urgent"
-        else:
-            return "general"
+        return "general"
 
     def _analyze_priority(self, subject: str, body: str) -> str:
         """Analyze email priority."""
@@ -594,12 +591,11 @@ class AIEmailResponseService:
             for word in ["urgent", "asap", "immediately", "critical", "emergency"]
         ):
             return "urgent"
-        elif any(word in text for word in ["important", "priority", "high"]):
+        if any(word in text for word in ["important", "priority", "high"]):
             return "high"
-        elif any(word in text for word in ["low", "whenever", "flexible", "no rush"]):
+        if any(word in text for word in ["low", "whenever", "flexible", "no rush"]):
             return "low"
-        else:
-            return "normal"
+        return "normal"
 
     def _analyze_sentiment(self, body: str) -> str:
         """Analyze email sentiment."""
@@ -631,10 +627,9 @@ class AIEmailResponseService:
 
         if positive_count > negative_count:
             return "positive"
-        elif negative_count > positive_count:
+        if negative_count > positive_count:
             return "negative"
-        else:
-            return "neutral"
+        return "neutral"
 
     def _detect_language(self, text: str) -> str:
         """Detect email language."""
@@ -645,20 +640,19 @@ class AIEmailResponseService:
             word in text_lower for word in ["the", "and", "is", "are", "was", "were"]
         ):
             return "en"
-        elif any(word in text_lower for word in ["el", "la", "de", "que", "y", "en"]):
+        if any(word in text_lower for word in ["el", "la", "de", "que", "y", "en"]):
             return "es"
-        elif any(
+        if any(
             word in text_lower for word in ["le", "la", "de", "et", "est", "dans"]
         ):
             return "fr"
-        elif any(
+        if any(
             word in text_lower for word in ["der", "die", "das", "und", "ist", "sind"]
         ):
             return "de"
-        else:
-            return "en"  # Default to English
+        return "en"  # Default to English
 
-    def _extract_name_from_email(self, email: str) -> Optional[str]:
+    def _extract_name_from_email(self, email: str) -> str | None:
         """Extract name from email address."""
         if "@" in email:
             local_part = email.split("@")[0]
@@ -669,7 +663,7 @@ class AIEmailResponseService:
             return name if name else None
         return None
 
-    async def _get_agent_personality(self, email: str) -> Optional[Dict[str, Any]]:
+    async def _get_agent_personality(self, email: str) -> dict[str, Any] | None:
         """Get agent personality configuration."""
         try:
             # This would integrate with the agent system
@@ -688,14 +682,14 @@ class AIEmailResponseService:
         self,
         email_context: EmailContext,
         response_type: str,
-        custom_instructions: Optional[str],
+        custom_instructions: str | None,
         model: str,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Generate response using OpenAI API."""
         try:
             # Build the prompt
             prompt = self._build_openai_prompt(
-                email_context, response_type, custom_instructions
+                email_context, response_type, custom_instructions,
             )
 
             # Call OpenAI API
@@ -734,14 +728,14 @@ class AIEmailResponseService:
         self,
         email_context: EmailContext,
         response_type: str,
-        custom_instructions: Optional[str],
+        custom_instructions: str | None,
         model: str,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Generate response using Anthropic API."""
         try:
             # Build the prompt
             prompt = self._build_anthropic_prompt(
-                email_context, response_type, custom_instructions
+                email_context, response_type, custom_instructions,
             )
 
             # Call Anthropic API
@@ -774,7 +768,7 @@ class AIEmailResponseService:
         self,
         email_context: EmailContext,
         response_type: str,
-        custom_instructions: Optional[str],
+        custom_instructions: str | None,
     ) -> str:
         """Build prompt for OpenAI API."""
         prompt = f"""
@@ -811,15 +805,15 @@ class AIEmailResponseService:
         self,
         email_context: EmailContext,
         response_type: str,
-        custom_instructions: Optional[str],
+        custom_instructions: str | None,
     ) -> str:
         """Build prompt for Anthropic API."""
         # Similar to OpenAI prompt but adapted for Anthropic
         return self._build_openai_prompt(
-            email_context, response_type, custom_instructions
+            email_context, response_type, custom_instructions,
         )
 
-    def _parse_response_text(self, response_text: str) -> Tuple[str, str]:
+    def _parse_response_text(self, response_text: str) -> tuple[str, str]:
         """Parse AI response text to extract subject and body."""
         try:
             lines = response_text.strip().split("\n")
@@ -858,16 +852,15 @@ class AIEmailResponseService:
             word in text_lower for word in ["hi", "hey", "hello", "thanks", "cheers"]
         ):
             return "friendly"
-        elif any(
+        if any(
             word in text_lower for word in ["sincerely", "respectfully", "regards"]
         ):
             return "formal"
-        elif any(word in text_lower for word in ["yo", "sup", "lol", "haha"]):
+        if any(word in text_lower for word in ["yo", "sup", "lol", "haha"]):
             return "casual"
-        else:
-            return "professional"
+        return "professional"
 
-    def _extract_suggested_actions(self, text: str) -> List[str]:
+    def _extract_suggested_actions(self, text: str) -> list[str]:
         """Extract suggested actions from response text."""
         actions = []
 
@@ -886,18 +879,17 @@ class AIEmailResponseService:
         self,
         email_context: EmailContext,
         response_type: str,
-        custom_instructions: Optional[str],
+        custom_instructions: str | None,
         model: str,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Generate response using Ollama."""
         try:
-            import json
 
             import requests
 
             # Build the prompt
             prompt = self._build_ollama_prompt(
-                email_context, response_type, custom_instructions
+                email_context, response_type, custom_instructions,
             )
 
             # Prepare the request payload
@@ -914,7 +906,7 @@ class AIEmailResponseService:
 
             # Make the request to Ollama
             response = requests.post(
-                "http://localhost:11434/api/generate", json=payload, timeout=30
+                "http://localhost:11434/api/generate", json=payload, timeout=30,
             )
 
             if response.status_code != 200:
@@ -946,7 +938,7 @@ class AIEmailResponseService:
         self,
         email_context: EmailContext,
         response_type: str,
-        custom_instructions: Optional[str],
+        custom_instructions: str | None,
     ) -> str:
         """Build prompt for Ollama."""
         prompt = f"""You are an AI assistant helping to generate professional email responses.
@@ -984,11 +976,11 @@ ai_email_response_service = None
 
 
 def get_ai_email_response_service() -> AIEmailResponseService:
-    """
-    Get the AI email response service instance with lazy initialization.
+    """Get the AI email response service instance with lazy initialization.
 
     Returns:
         AIEmailResponseService: The initialized service instance
+
     """
     global ai_email_response_service
     if ai_email_response_service is None:
@@ -997,11 +989,11 @@ def get_ai_email_response_service() -> AIEmailResponseService:
 
 
 async def initialize_ai_email_response_service() -> bool:
-    """
-    Initialize the AI email response service.
+    """Initialize the AI email response service.
 
     Returns:
         bool: True if initialization was successful, False otherwise
+
     """
     try:
         global ai_email_response_service
@@ -1015,8 +1007,7 @@ async def initialize_ai_email_response_service() -> bool:
 
 
 async def shutdown_ai_email_response_service() -> None:
-    """
-    Shutdown the AI email response service.
+    """Shutdown the AI email response service.
     """
     try:
         global ai_email_response_service
@@ -1029,11 +1020,11 @@ async def shutdown_ai_email_response_service() -> None:
 
 
 async def health_check_ai_email_response_service() -> bool:
-    """
-    Health check for the AI email response service.
+    """Health check for the AI email response service.
 
     Returns:
         bool: True if service is healthy, False otherwise
+
     """
     try:
         global ai_email_response_service

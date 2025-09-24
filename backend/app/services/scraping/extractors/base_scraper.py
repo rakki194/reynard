@@ -1,5 +1,4 @@
-"""
-Base Scraper for Reynard Backend
+"""Base Scraper for Reynard Backend
 
 Abstract base class for all content scrapers.
 """
@@ -17,19 +16,18 @@ logger = logging.getLogger(__name__)
 
 
 class BaseScraper(ABC):
-    """
-    Abstract base class for all content scrapers.
+    """Abstract base class for all content scrapers.
 
     Provides common functionality and defines the interface that all
     specialized scrapers must implement.
     """
 
     def __init__(self, logger: logging.Logger | None = None):
-        """
-        Initialize the base scraper.
+        """Initialize the base scraper.
 
         Args:
             logger: Logger instance
+
         """
         self.logger = logger or logging.getLogger(__name__)
         self.scraper_type = ScrapingType.GENERAL
@@ -38,8 +36,7 @@ class BaseScraper(ABC):
 
     @abstractmethod
     async def scrape_content(self, url: str) -> ScrapingResult:
-        """
-        Scrape content from a URL.
+        """Scrape content from a URL.
 
         Args:
             url: URL to scrape
@@ -49,13 +46,13 @@ class BaseScraper(ABC):
 
         Raises:
             NotImplementedError: Must be implemented by subclasses
+
         """
         raise NotImplementedError("Subclasses must implement scrape_content")
 
     @abstractmethod
     async def can_handle_url(self, url: str) -> bool:
-        """
-        Check if this scraper can handle the given URL.
+        """Check if this scraper can handle the given URL.
 
         Args:
             url: URL to check
@@ -65,15 +62,16 @@ class BaseScraper(ABC):
 
         Raises:
             NotImplementedError: Must be implemented by subclasses
+
         """
         raise NotImplementedError("Subclasses must implement can_handle_url")
 
     async def initialize(self) -> bool:
-        """
-        Initialize the scraper.
+        """Initialize the scraper.
 
         Returns:
             True if initialization successful
+
         """
         try:
             logger.info(f"Initializing scraper: {self.name}")
@@ -84,11 +82,11 @@ class BaseScraper(ABC):
             return False
 
     async def shutdown(self) -> bool:
-        """
-        Shutdown the scraper.
+        """Shutdown the scraper.
 
         Returns:
             True if shutdown successful
+
         """
         try:
             logger.info(f"Shutting down scraper: {self.name}")
@@ -99,11 +97,11 @@ class BaseScraper(ABC):
             return False
 
     def get_info(self) -> dict[str, Any]:
-        """
-        Get scraper information.
+        """Get scraper information.
 
         Returns:
             Dictionary with scraper information
+
         """
         return {
             "name": self.name,
@@ -122,14 +120,14 @@ class BaseScraper(ABC):
         logger.info(f"Disabled scraper: {self.name}")
 
     async def validate_url(self, url: str) -> bool:
-        """
-        Validate a URL before scraping.
+        """Validate a URL before scraping.
 
         Args:
             url: URL to validate
 
         Returns:
             True if URL is valid for this scraper
+
         """
         if not self.enabled:
             return False
@@ -141,37 +139,37 @@ class BaseScraper(ABC):
         return True
 
     async def get_rate_limit_delay(self) -> float:
-        """
-        Get the delay to wait before next request.
+        """Get the delay to wait before next request.
 
         Returns:
             Delay in seconds
+
         """
         # Default implementation - subclasses can override
         return 1.0
 
     async def respect_robots_txt(self, url: str) -> bool:
-        """
-        Check if we should respect robots.txt for the given URL.
+        """Check if we should respect robots.txt for the given URL.
 
         Args:
             url: URL to check
 
         Returns:
             True if we should respect robots.txt
+
         """
         # Default implementation - subclasses can override
         return True
 
     async def _make_request(self, url: str) -> aiohttp.ClientResponse | None:
-        """
-        Make an HTTP request to the given URL.
+        """Make an HTTP request to the given URL.
 
         Args:
             url: URL to request
 
         Returns:
             Response object or None if failed
+
         """
         try:
             headers = {
@@ -195,13 +193,13 @@ class BaseScraper(ABC):
             return None
 
     def _parse_html(self, html_content: str) -> BeautifulSoup:
-        """
-        Parse HTML content using BeautifulSoup.
+        """Parse HTML content using BeautifulSoup.
 
         Args:
             html_content: HTML content to parse
 
         Returns:
             BeautifulSoup object
+
         """
         return BeautifulSoup(html_content, "html.parser")

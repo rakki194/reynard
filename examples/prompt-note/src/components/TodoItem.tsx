@@ -4,7 +4,7 @@
  */
 
 import { Component } from "solid-js";
-import { Toggle } from "reynard-components";
+import { Toggle } from "reynard-components-core";
 
 interface Todo {
   id: number;

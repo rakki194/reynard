@@ -1,5 +1,4 @@
-"""
-Specialized HackerNews scraper for handling HackerNews content and API integration.
+"""Specialized HackerNews scraper for handling HackerNews content and API integration.
 """
 
 import logging
@@ -10,8 +9,7 @@ from .base_scraper import BaseScraper
 
 
 class HackerNewsScraper(BaseScraper):
-    """
-    Specialized HackerNews scraper with API integration and web scraping fallback.
+    """Specialized HackerNews scraper with API integration and web scraping fallback.
 
     Features:
     - HackerNews API integration for stories, comments, and users
@@ -33,14 +31,14 @@ class HackerNewsScraper(BaseScraper):
         return any(domain in url.lower() for domain in self.supported_domains)
 
     async def scrape_content(self, url: str) -> ScrapingResult:
-        """
-        Scrape content from a HackerNews URL.
+        """Scrape content from a HackerNews URL.
 
         Args:
             url: HackerNews URL to scrape
 
         Returns:
             ScrapingResult with extracted content
+
         """
         try:
             # Extract item ID from URL
@@ -78,7 +76,7 @@ class HackerNewsScraper(BaseScraper):
 
             async with aiohttp.ClientSession() as session:
                 async with session.get(
-                    f"{self.api_base_url}/item/{item_id}.json"
+                    f"{self.api_base_url}/item/{item_id}.json",
                 ) as response:
                     if response.status == 200:
                         data = await response.json()
@@ -106,7 +104,7 @@ class HackerNewsScraper(BaseScraper):
             return None
 
     def _create_result_from_api_content(
-        self, url: str, content: dict[str, Any]
+        self, url: str, content: dict[str, Any],
     ) -> ScrapingResult:
         """Create ScrapingResult from API content."""
         # Determine content text
@@ -187,7 +185,7 @@ class HackerNewsScraper(BaseScraper):
 
             # Extract comments count
             comments_element = soup.find(
-                "a", href=lambda x: x and "item?id=" in x and "comments" in x
+                "a", href=lambda x: x and "item?id=" in x and "comments" in x,
             )
             comments_count = 0
             if comments_element:
@@ -218,7 +216,7 @@ class HackerNewsScraper(BaseScraper):
                 },
                 quality={
                     "score": self._calculate_web_quality_score(
-                        score, comments_count, story_text
+                        score, comments_count, story_text,
                     ),
                     "factors": {
                         "content_length": len(story_text or title),
@@ -274,7 +272,7 @@ class HackerNewsScraper(BaseScraper):
         return min(score, 1.0)
 
     def _calculate_web_quality_score(
-        self, score: int, comments: int, content: str
+        self, score: int, comments: int, content: str,
     ) -> float:
         """Calculate quality score for web scraped content."""
         quality_score = 0.0
@@ -362,14 +360,14 @@ class HackerNewsScraper(BaseScraper):
             )
 
     async def get_top_stories(self, limit: int = 30) -> list[dict[str, Any]]:
-        """
-        Get top stories from HackerNews.
+        """Get top stories from HackerNews.
 
         Args:
             limit: Maximum number of stories to return
 
         Returns:
             List of story information dictionaries
+
         """
         try:
             import aiohttp
@@ -377,7 +375,7 @@ class HackerNewsScraper(BaseScraper):
             async with aiohttp.ClientSession() as session:
                 # Get top story IDs
                 async with session.get(
-                    f"{self.api_base_url}/topstories.json"
+                    f"{self.api_base_url}/topstories.json",
                 ) as response:
                     if response.status == 200:
                         story_ids = await response.json()
@@ -386,7 +384,7 @@ class HackerNewsScraper(BaseScraper):
                         stories = []
                         for story_id in story_ids[:limit]:
                             async with session.get(
-                                f"{self.api_base_url}/item/{story_id}.json"
+                                f"{self.api_base_url}/item/{story_id}.json",
                             ) as item_response:
                                 if item_response.status == 200:
                                     story_data = await item_response.json()
@@ -400,9 +398,9 @@ class HackerNewsScraper(BaseScraper):
                                                 "by": story_data.get("by", ""),
                                                 "time": story_data.get("time", 0),
                                                 "descendants": story_data.get(
-                                                    "descendants", 0
+                                                    "descendants", 0,
                                                 ),
-                                            }
+                                            },
                                         )
 
                         return stories
@@ -414,21 +412,21 @@ class HackerNewsScraper(BaseScraper):
             return []
 
     async def get_user_profile(self, username: str) -> dict[str, Any] | None:
-        """
-        Get user profile information.
+        """Get user profile information.
 
         Args:
             username: HackerNews username
 
         Returns:
             User profile dictionary or None
+
         """
         try:
             import aiohttp
 
             async with aiohttp.ClientSession() as session:
                 async with session.get(
-                    f"{self.api_base_url}/user/{username}.json"
+                    f"{self.api_base_url}/user/{username}.json",
                 ) as response:
                     if response.status == 200:
                         data = await response.json()
@@ -449,8 +447,7 @@ class HackerNewsScraper(BaseScraper):
             return None
 
     async def get_comments(self, item_id: str, limit: int = 20) -> list[dict[str, Any]]:
-        """
-        Get comments for a story or comment.
+        """Get comments for a story or comment.
 
         Args:
             item_id: HackerNews item ID
@@ -458,13 +455,14 @@ class HackerNewsScraper(BaseScraper):
 
         Returns:
             List of comment dictionaries
+
         """
         try:
             import aiohttp
 
             async with aiohttp.ClientSession() as session:
                 async with session.get(
-                    f"{self.api_base_url}/item/{item_id}.json"
+                    f"{self.api_base_url}/item/{item_id}.json",
                 ) as response:
                     if response.status == 200:
                         data = await response.json()
@@ -473,7 +471,7 @@ class HackerNewsScraper(BaseScraper):
                             comments = []
                             for comment_id in data["kids"][:limit]:
                                 async with session.get(
-                                    f"{self.api_base_url}/item/{comment_id}.json"
+                                    f"{self.api_base_url}/item/{comment_id}.json",
                                 ) as comment_response:
                                     if comment_response.status == 200:
                                         comment_data = await comment_response.json()
@@ -485,17 +483,17 @@ class HackerNewsScraper(BaseScraper):
                                                 {
                                                     "id": comment_data.get("id"),
                                                     "text": comment_data.get(
-                                                        "text", ""
+                                                        "text", "",
                                                     ),
                                                     "by": comment_data.get("by", ""),
                                                     "time": comment_data.get("time", 0),
                                                     "parent": comment_data.get(
-                                                        "parent"
+                                                        "parent",
                                                     ),
                                                     "kids": comment_data.get(
-                                                        "kids", []
+                                                        "kids", [],
                                                     ),
-                                                }
+                                                },
                                             )
 
                             return comments

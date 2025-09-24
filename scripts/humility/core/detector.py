@@ -1,14 +1,11 @@
-"""
-Enhanced Humility Detector - Core Detection Engine
+"""Enhanced Humility Detector - Core Detection Engine
 """
 
 import asyncio
-import json
 import logging
-import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 from analyzers import (
     EpistemicHumilityAnalyzer,
@@ -18,14 +15,11 @@ from analyzers import (
     SentimentAnalyzer,
     TransformerAnalyzer,
 )
+
 from utils import CulturalAdapter, MetricsCalculator, TextProcessor
 
 from .config import HumilityConfig
 from .models import (
-    ConfidenceLevel,
-    CulturalContext,
-    DetectionCategory,
-    DetectionMetrics,
     HumilityFinding,
     HumilityProfile,
     SeverityLevel,
@@ -33,8 +27,7 @@ from .models import (
 
 
 class HumilityDetector:
-    """
-    Humility Detector with NLP, ML, and psychological analysis.
+    """Humility Detector with NLP, ML, and psychological analysis.
 
     This detector combines multiple analysis techniques:
     - Pattern-based detection
@@ -47,7 +40,7 @@ class HumilityDetector:
     - Explainable AI features
     """
 
-    def __init__(self, config: Optional[HumilityConfig] = None):
+    def __init__(self, config: HumilityConfig | None = None):
         """Initialize the humility detector."""
         self.config = config or HumilityConfig()
         self.logger = logging.getLogger(__name__)
@@ -86,15 +79,14 @@ class HumilityDetector:
         self.metrics_calculator = MetricsCalculator(self.config)
 
         # Cache for results
-        self.cache: Dict[str, Any] = {}
+        self.cache: dict[str, Any] = {}
 
         self.logger.info("Humility Detector initialized")
 
     async def analyze_text(
-        self, text: str, file_path: str = "", cultural_context: Optional[str] = None
+        self, text: str, file_path: str = "", cultural_context: str | None = None,
     ) -> HumilityProfile:
-        """
-        Analyze text for humility-related patterns and generate comprehensive profile.
+        """Analyze text for humility-related patterns and generate comprehensive profile.
 
         Args:
             text: Text to analyze
@@ -103,6 +95,7 @@ class HumilityDetector:
 
         Returns:
             Comprehensive humility profile
+
         """
         self.logger.info(f"Analyzing text from {file_path or 'string input'}")
 
@@ -158,7 +151,7 @@ class HumilityDetector:
         # Apply cultural adaptation if enabled
         if self.cultural_adapter and cultural_context:
             all_findings = self.cultural_adapter.adapt_findings(
-                all_findings, cultural_context
+                all_findings, cultural_context,
             )
 
         # Filter findings by confidence and severity
@@ -166,7 +159,7 @@ class HumilityDetector:
 
         # Calculate comprehensive scores
         scores = self._calculate_comprehensive_scores(
-            filtered_findings, analysis_metrics
+            filtered_findings, analysis_metrics,
         )
 
         # Generate recommendations
@@ -191,7 +184,7 @@ class HumilityDetector:
             self.cache[cache_key] = profile
 
         self.logger.info(
-            f"Analysis complete: {len(filtered_findings)} findings, overall score: {scores['overall']:.2f}"
+            f"Analysis complete: {len(filtered_findings)} findings, overall score: {scores['overall']:.2f}",
         )
         return profile
 
@@ -202,12 +195,12 @@ class HumilityDetector:
             file_size_mb = file_path.stat().st_size / (1024 * 1024)
             if file_size_mb > self.config.max_file_size_mb:
                 self.logger.warning(
-                    f"File {file_path} is too large ({file_size_mb:.1f}MB), skipping"
+                    f"File {file_path} is too large ({file_size_mb:.1f}MB), skipping",
                 )
                 return self._create_empty_profile()
 
             # Read file
-            with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+            with open(file_path, encoding="utf-8", errors="ignore") as f:
                 content = f.read()
 
             return await self.analyze_text(content, str(file_path))
@@ -217,8 +210,8 @@ class HumilityDetector:
             return self._create_empty_profile()
 
     async def analyze_directory(
-        self, directory: Path, extensions: Optional[List[str]] = None
-    ) -> Dict[str, HumilityProfile]:
+        self, directory: Path, extensions: list[str] | None = None,
+    ) -> dict[str, HumilityProfile]:
         """Analyze all files in a directory."""
         if extensions is None:
             extensions = self.config.supported_extensions
@@ -235,7 +228,7 @@ class HumilityDetector:
                     files.append(file_path)
 
         self.logger.info(
-            f"Found {len(files)} files to analyze (excluding {len(excluded_dirs)} directory types)"
+            f"Found {len(files)} files to analyze (excluding {len(excluded_dirs)} directory types)",
         )
 
         # Analyze files in parallel
@@ -277,7 +270,7 @@ class HumilityDetector:
         finally:
             loop.close()
 
-    async def _run_pattern_analysis(self, text: str, file_path: str) -> Dict[str, Any]:
+    async def _run_pattern_analysis(self, text: str, file_path: str) -> dict[str, Any]:
         """Run pattern-based analysis."""
         try:
             findings = self.pattern_analyzer.analyze(text, file_path)
@@ -287,8 +280,8 @@ class HumilityDetector:
             return {"findings": [], "metrics": {}}
 
     async def _run_sentiment_analysis(
-        self, text: str, file_path: str
-    ) -> Dict[str, Any]:
+        self, text: str, file_path: str,
+    ) -> dict[str, Any]:
         """Run sentiment analysis."""
         try:
             if not self.sentiment_analyzer:
@@ -301,7 +294,7 @@ class HumilityDetector:
             self.logger.error(f"Sentiment analysis failed: {e}")
             return {"findings": [], "metrics": {}}
 
-    async def _run_hexaco_analysis(self, text: str, file_path: str) -> Dict[str, Any]:
+    async def _run_hexaco_analysis(self, text: str, file_path: str) -> dict[str, Any]:
         """Run HEXACO personality analysis."""
         try:
             if not self.hexaco_analyzer:
@@ -315,8 +308,8 @@ class HumilityDetector:
             return {"findings": [], "metrics": {}}
 
     async def _run_epistemic_analysis(
-        self, text: str, file_path: str
-    ) -> Dict[str, Any]:
+        self, text: str, file_path: str,
+    ) -> dict[str, Any]:
         """Run epistemic humility analysis."""
         try:
             if not self.epistemic_analyzer:
@@ -329,7 +322,7 @@ class HumilityDetector:
             self.logger.error(f"Epistemic analysis failed: {e}")
             return {"findings": [], "metrics": {}}
 
-    async def _run_liwc_analysis(self, text: str, file_path: str) -> Dict[str, Any]:
+    async def _run_liwc_analysis(self, text: str, file_path: str) -> dict[str, Any]:
         """Run LIWC linguistic analysis."""
         try:
             if not self.liwc_analyzer:
@@ -343,8 +336,8 @@ class HumilityDetector:
             return {"findings": [], "metrics": {}}
 
     async def _run_transformer_analysis(
-        self, text: str, file_path: str
-    ) -> Dict[str, Any]:
+        self, text: str, file_path: str,
+    ) -> dict[str, Any]:
         """Run transformer model analysis."""
         try:
             if not self.transformer_analyzer:
@@ -358,8 +351,8 @@ class HumilityDetector:
             return {"findings": [], "metrics": {}}
 
     def _filter_findings(
-        self, findings: List[HumilityFinding]
-    ) -> List[HumilityFinding]:
+        self, findings: list[HumilityFinding],
+    ) -> list[HumilityFinding]:
         """Filter findings based on confidence and severity thresholds."""
         filtered = []
 
@@ -378,7 +371,7 @@ class HumilityDetector:
             min_severity = SeverityLevel(self.config.min_severity_threshold)
 
             if severity_order.index(finding.severity) < severity_order.index(
-                min_severity
+                min_severity,
             ):
                 continue
 
@@ -387,8 +380,8 @@ class HumilityDetector:
         return filtered
 
     def _calculate_comprehensive_scores(
-        self, findings: List[HumilityFinding], analysis_metrics: Dict[str, Any]
-    ) -> Dict[str, float]:
+        self, findings: list[HumilityFinding], analysis_metrics: dict[str, Any],
+    ) -> dict[str, float]:
         """Calculate comprehensive humility scores."""
         scores = {}
 
@@ -409,7 +402,7 @@ class HumilityDetector:
 
             max_possible_penalty = len(findings) * 4 * 1.0
             scores["overall"] = max(
-                0, 100 - (total_penalty / max_possible_penalty * 100)
+                0, 100 - (total_penalty / max_possible_penalty * 100),
             )
 
         # Individual component scores
@@ -422,8 +415,8 @@ class HumilityDetector:
         return scores
 
     def _generate_recommendations(
-        self, findings: List[HumilityFinding], scores: Dict[str, float]
-    ) -> Dict[str, List[str]]:
+        self, findings: list[HumilityFinding], scores: dict[str, float],
+    ) -> dict[str, list[str]]:
         """Generate recommendations based on findings and scores."""
         recommendations = []
         improvement_areas = []
@@ -439,32 +432,32 @@ class HumilityDetector:
         for category, count in category_counts.items():
             if count > 0:
                 improvement_areas.append(
-                    f"Reduce {category.replace('_', ' ')} language"
+                    f"Reduce {category.replace('_', ' ')} language",
                 )
 
                 if category == "superlatives":
                     recommendations.append(
-                        "Replace superlatives with more modest alternatives"
+                        "Replace superlatives with more modest alternatives",
                     )
                 elif category == "exaggeration":
                     recommendations.append(
-                        "Use more measured language instead of hyperbolic claims"
+                        "Use more measured language instead of hyperbolic claims",
                     )
                 elif category == "self_promotion":
                     recommendations.append(
-                        "Focus on user value rather than system capabilities"
+                        "Focus on user value rather than system capabilities",
                     )
                 elif category == "dismissiveness":
                     recommendations.append("Acknowledge other approaches and solutions")
                 elif category == "absolute_claims":
                     recommendations.append(
-                        "Use more nuanced language instead of absolute statements"
+                        "Use more nuanced language instead of absolute statements",
                     )
 
         # Score-based recommendations
         if scores["overall"] < 70:
             recommendations.append(
-                "Consider a comprehensive review of communication style"
+                "Consider a comprehensive review of communication style",
             )
             improvement_areas.append("Overall humility and modesty")
         elif scores["overall"] > 85:
@@ -499,7 +492,7 @@ class HumilityDetector:
             strengths=[],
         )
 
-    def get_cache_stats(self) -> Dict[str, Any]:
+    def get_cache_stats(self) -> dict[str, Any]:
         """Get cache statistics."""
         return {
             "cache_size": len(self.cache),

@@ -1,5 +1,4 @@
-"""
-Token management for the Gatekeeper authentication library.
+"""Token management for the Gatekeeper authentication library.
 
 This module provides JWT token creation, validation, and management functionality
 for the authentication system.
@@ -27,19 +26,18 @@ TOKEN_TYPE_BEARER = "bearer"  # OAuth token type constant  # noqa: S105
 
 
 class TokenManager:
-    """
-    Token management class for JWT operations.
+    """Token management class for JWT operations.
 
     Provides methods for creating, validating, and managing JWT tokens
     for authentication and authorization.
     """
 
     def __init__(self, config: TokenConfig):
-        """
-        Initialize the token manager.
+        """Initialize the token manager.
 
         Args:
             config: Token configuration containing secret key and other settings
+
         """
         self.config = config
         self._validate_config()
@@ -90,14 +88,14 @@ class TokenManager:
             self._last_cleanup = current_time
 
     def check_rate_limit(self, identifier: str) -> bool:
-        """
-        Check if the request is within rate limits.
+        """Check if the request is within rate limits.
 
         Args:
             identifier: IP address or user identifier
 
         Returns:
             bool: True if within limits, False if rate limited
+
         """
         self._cleanup_rate_limits()
 
@@ -120,32 +118,31 @@ class TokenManager:
         return True
 
     def blacklist_token(self, token: str) -> None:
-        """
-        Add a token to the blacklist (revoke it).
+        """Add a token to the blacklist (revoke it).
 
         Args:
             token: The JWT token to blacklist
+
         """
         self._blacklisted_tokens.add(token)
         logger.info("Token blacklisted (length: %d)", len(token))
 
     def is_token_blacklisted(self, token: str) -> bool:
-        """
-        Check if a token is blacklisted.
+        """Check if a token is blacklisted.
 
         Args:
             token: The JWT token to check
 
         Returns:
             bool: True if token is blacklisted
+
         """
         return token in self._blacklisted_tokens
 
     def create_access_token(
-        self, data: dict[str, Any], expires_delta: timedelta | None = None
+        self, data: dict[str, Any], expires_delta: timedelta | None = None,
     ) -> str:
-        """
-        Creates a JWT access token.
+        """Creates a JWT access token.
 
         Args:
             data: The data to encode into the token (e.g., {"sub": username, "role": role})
@@ -153,6 +150,7 @@ class TokenManager:
 
         Returns:
             str: The encoded JWT token
+
         """
         # Convert TokenData to dict if needed
         to_encode = data.model_dump() if hasattr(data, "model_dump") else data.copy()
@@ -166,7 +164,7 @@ class TokenManager:
                     "iat": datetime.now(UTC),
                     "type": "access",
                     "jti": secrets.token_urlsafe(32),
-                }
+                },
             )
         elif "exp" not in to_encode:
             # Only set default expiration if not already provided
@@ -177,7 +175,7 @@ class TokenManager:
                     "iat": datetime.now(UTC),
                     "type": "access",
                     "jti": secrets.token_urlsafe(32),
-                }
+                },
             )
         else:
             # Keep existing exp, just add other fields
@@ -186,7 +184,7 @@ class TokenManager:
                     "iat": datetime.now(UTC),
                     "type": "access",
                     "jti": secrets.token_urlsafe(32),
-                }
+                },
             )
 
         # Add optional claims
@@ -196,15 +194,14 @@ class TokenManager:
             to_encode["aud"] = self.config.audience
 
         encoded_jwt = jwt.encode(
-            to_encode, self.config.secret_key, algorithm=self.config.algorithm
+            to_encode, self.config.secret_key, algorithm=self.config.algorithm,
         )
         return str(encoded_jwt)
 
     def create_refresh_token(
-        self, data: dict[str, Any], expires_delta: timedelta | None = None
+        self, data: dict[str, Any], expires_delta: timedelta | None = None,
     ) -> str:
-        """
-        Creates a JWT refresh token.
+        """Creates a JWT refresh token.
 
         Args:
             data: The data to encode into the token (e.g., {"sub": username, "role": role})
@@ -212,6 +209,7 @@ class TokenManager:
 
         Returns:
             str: The encoded JWT refresh token
+
         """
         # Convert TokenData to dict if needed
         to_encode = data.model_dump() if hasattr(data, "model_dump") else data.copy()
@@ -227,7 +225,7 @@ class TokenManager:
                 "iat": datetime.now(UTC),
                 "type": "refresh",
                 "jti": secrets.token_urlsafe(32),
-            }
+            },
         )
 
         # Add optional claims
@@ -237,19 +235,19 @@ class TokenManager:
             to_encode["aud"] = self.config.audience
 
         encoded_jwt = jwt.encode(
-            to_encode, self.config.secret_key, algorithm=self.config.algorithm
+            to_encode, self.config.secret_key, algorithm=self.config.algorithm,
         )
         return str(encoded_jwt)
 
     def create_tokens(self, data: dict[str, Any]) -> TokenResponse:
-        """
-        Create both access and refresh tokens.
+        """Create both access and refresh tokens.
 
         Args:
             data: The data to encode into the tokens
 
         Returns:
             TokenResponse: Object containing both tokens and metadata
+
         """
         access_token = self.create_access_token(data)
         refresh_token = self.create_refresh_token(data)
@@ -263,10 +261,9 @@ class TokenManager:
         )
 
     def verify_token(
-        self, token: str, token_type: str = TOKEN_TYPE_ACCESS
+        self, token: str, token_type: str = TOKEN_TYPE_ACCESS,
     ) -> TokenValidationResult:
-        """
-        Verify and decode a JWT token.
+        """Verify and decode a JWT token.
 
         Args:
             token: The JWT token to verify
@@ -274,6 +271,7 @@ class TokenManager:
 
         Returns:
             TokenValidationResult: Result of token validation
+
         """
         try:
             # Check if token is blacklisted
@@ -333,14 +331,14 @@ class TokenManager:
             )
 
     def refresh_access_token(self, refresh_token: str) -> str | None:
-        """
-        Create a new access token using a valid refresh token.
+        """Create a new access token using a valid refresh token.
 
         Args:
             refresh_token: The refresh token
 
         Returns:
             Optional[str]: New access token if refresh token is valid
+
         """
         result = self.verify_token(refresh_token, "refresh")
         if not result.is_valid:
@@ -361,14 +359,14 @@ class TokenManager:
         return self.create_access_token(user_data)
 
     def get_token_info(self, token: str) -> dict[str, Any] | None:
-        """
-        Get information about a token without verifying it.
+        """Get information about a token without verifying it.
 
         Args:
             token: The JWT token
 
         Returns:
             Optional[Dict[str, Any]]: Token payload if valid format
+
         """
         try:
             # Split token and decode payload directly (bypasses signature verification)
@@ -389,13 +387,13 @@ class TokenManager:
             return None
 
     def revoke_user_tokens(self, username: str) -> None:
-        """
-        Revoke all tokens for a specific user.
+        """Revoke all tokens for a specific user.
         Note: This is a simple implementation. In production, you might want
         to track tokens by user and revoke them individually.
 
         Args:
             username: The username whose tokens should be revoked
+
         """
         # In a production system, you would track tokens by user
         # and revoke them individually. This is a placeholder.
@@ -427,11 +425,11 @@ class TokenManager:
             logger.info("Cleaned up %d expired blacklisted tokens", len(expired_tokens))
 
     def get_blacklist_stats(self) -> dict[str, Any]:
-        """
-        Get statistics about the token blacklist.
+        """Get statistics about the token blacklist.
 
         Returns:
             Dict[str, Any]: Statistics about blacklisted tokens
+
         """
         return {
             "total_blacklisted": len(self._blacklisted_tokens),

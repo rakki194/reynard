@@ -1,5 +1,4 @@
-"""
-Gallery API Module
+"""Gallery API Module
 
 FastAPI endpoints for gallery-dl integration with Reynard.
 """

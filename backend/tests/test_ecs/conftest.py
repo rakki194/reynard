@@ -1,5 +1,4 @@
-"""
-Pytest configuration for ECS tests.
+"""Pytest configuration for ECS tests.
 """
 
 import os
@@ -27,7 +26,7 @@ def sample_agents(agent_world):
     spirits = ["fox", "wolf", "otter", "eagle", "lion"]
     styles = ["foundation", "exo", "hybrid", "cyberpunk", "mythological"]
 
-    for i, (spirit, style) in enumerate(zip(spirits, styles)):
+    for i, (spirit, style) in enumerate(zip(spirits, styles, strict=False)):
         agent = agent_world.create_agent(
             agent_id=f"agent_{i}",
             spirit=spirit,

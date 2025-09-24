@@ -10,13 +10,13 @@ import { MessageInput } from "./MessageInput";
 import { RoomList } from "./RoomList";
 import { UserList } from "./UserList";
 import { P2PMessage } from "./P2PMessage";
-export const P2PChatContainer = props => {
+export const P2PChatContainer = (props: any) => {
   const [sidebarOpen, setSidebarOpen] = createSignal(true);
   const [userListOpen, setUserListOpen] = createSignal(props.ui?.showUserList ?? true);
   const [searchQuery, setSearchQuery] = createSignal("");
-  let messagesContainerRef;
+  let messagesContainerRef: HTMLDivElement | undefined;
   let isUserScrolling = false;
-  let scrollTimeout;
+  let scrollTimeout: any;
   // Initialize P2P chat
   const p2pChat = useP2PChat({
     currentUser: props.currentUser,
@@ -56,12 +56,12 @@ export const P2PChatContainer = props => {
     }
   });
   // Handle room selection
-  const handleRoomSelect = room => {
+  const handleRoomSelect = (room: any) => {
     p2pChat.actions.switchRoom(room.id);
     props.onRoomJoined?.(room);
   };
   // Handle message sending
-  const handleMessageSubmit = async content => {
+  const handleMessageSubmit = async (content: any) => {
     const activeRoom = p2pChat.activeRoom();
     if (!activeRoom) return;
     try {
@@ -72,7 +72,7 @@ export const P2PChatContainer = props => {
     }
   };
   // Handle typing indicators
-  const handleInputChange = content => {
+  const handleInputChange = (content: any) => {
     const activeRoom = p2pChat.activeRoom();
     if (!activeRoom) return;
     if (content.trim()) {
@@ -179,7 +179,7 @@ export const P2PChatContainer = props => {
             </Show>
 
             <div class="reynard-p2p-chat-header__info">
-              <h2 class="reynard-p2p-chat-header__title">{p2pChat.activeRoom().name}</h2>
+              <h2 class="reynard-p2p-chat-header__title">{p2pChat.activeRoom()?.name}</h2>
               <span class="reynard-p2p-chat-header__participants">{currentRoomParticipants().length} participants</span>
             </div>
 
@@ -219,11 +219,11 @@ export const P2PChatContainer = props => {
                     showTimestamp={true}
                     showReactions={props.config?.enableReactions}
                     showReadReceipts={props.config?.enableReadReceipts}
-                    onMessageAction={(action, msg) => {
+                    onMessageAction={(action: any, msg: any) => {
                       console.log("Message action:", action, msg);
                       // Handle message actions (edit, delete, reply, etc.)
                     }}
-                    onReaction={emoji => {
+                    onReaction={(emoji: any) => {
                       if (props.config?.enableReactions) {
                         p2pChat.actions.reactToMessage(message.id, emoji);
                       }
@@ -277,7 +277,7 @@ export const P2PChatContainer = props => {
           <UserList
             users={currentRoomParticipants()}
             currentUser={props.currentUser}
-            onUserSelect={user => {
+            onUserSelect={(user: any) => {
               console.log("User selected:", user);
               // TODO: Handle user selection (profile, DM, etc.)
             }}

@@ -1,5 +1,4 @@
-"""
-Prompt Refinement Services
+"""Prompt Refinement Services
 
 Core service implementations for prompt refinement and query optimization.
 """
@@ -11,9 +10,9 @@ from .semantic_search import SemanticSearchService
 from .web_scraping import WebScrapingService
 
 __all__ = [
-    "PromptRefinementService",
-    "WebScrapingService",
-    "SemanticSearchService",
-    "NLPProcessingService",
     "CodeAnalysisService",
+    "NLPProcessingService",
+    "PromptRefinementService",
+    "SemanticSearchService",
+    "WebScrapingService",
 ]

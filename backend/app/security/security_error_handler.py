@@ -1,5 +1,4 @@
-"""
-Centralized Security Error Handler for Reynard Backend
+"""Centralized Security Error Handler for Reynard Backend
 
 This module provides a unified security error handling system that standardizes
 security error responses, implements threat detection and response strategies,
@@ -9,12 +8,10 @@ and provides comprehensive security metrics collection.
 import logging
 import time
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from fastapi import Request
 from fastapi.responses import JSONResponse
-
-from app.core.error_handler import ErrorSeverity, service_error_handler
 
 logger = logging.getLogger(__name__)
 
@@ -46,8 +43,7 @@ class SecurityEventType(Enum):
 
 
 class SecurityErrorHandler:
-    """
-    Centralized security error handler that provides standardized security error responses,
+    """Centralized security error handler that provides standardized security error responses,
     threat detection and response strategies, and comprehensive security metrics collection.
     """
 
@@ -110,7 +106,7 @@ class SecurityErrorHandler:
         }
 
         # IP-based threat tracking
-        self.ip_threat_levels: Dict[str, SecurityThreatLevel] = {}
+        self.ip_threat_levels: dict[str, SecurityThreatLevel] = {}
         self.ip_blocklist: set = set()
         self.ip_whitelist: set = set()
 
@@ -119,11 +115,10 @@ class SecurityErrorHandler:
         event_type: SecurityEventType,
         request: Request,
         threat_level: SecurityThreatLevel,
-        details: Dict[str, Any],
+        details: dict[str, Any],
         response_action: str = "block",
     ) -> JSONResponse:
-        """
-        Handle security errors with standardized responses and threat detection.
+        """Handle security errors with standardized responses and threat detection.
 
         Args:
             event_type: Type of security event
@@ -134,6 +129,7 @@ class SecurityErrorHandler:
 
         Returns:
             JSONResponse: Standardized security error response
+
         """
         # Update security metrics
         self._update_security_metrics(event_type, threat_level, request, details)
@@ -141,11 +137,13 @@ class SecurityErrorHandler:
         # Determine response action based on threat level and IP history
         client_ip = self._get_client_ip(request)
         final_action = self._determine_response_action(
-            threat_level, client_ip, response_action
+            threat_level, client_ip, response_action,
         )
 
         # Execute response strategy
-        response_strategy = self.response_strategies.get(threat_level, self._log_and_monitor)
+        response_strategy = self.response_strategies.get(
+            threat_level, self._log_and_monitor,
+        )
         response_strategy(event_type, request, details, final_action)
 
         # Create security error response
@@ -158,7 +156,9 @@ class SecurityErrorHandler:
         )
 
         # Log security event
-        self._log_security_event(event_type, threat_level, request, details, final_action)
+        self._log_security_event(
+            event_type, threat_level, request, details, final_action,
+        )
 
         # Return appropriate response
         if final_action in ["block", "block_permanently"]:
@@ -167,22 +167,20 @@ class SecurityErrorHandler:
                 content=response_data,
                 headers=self._get_security_headers(),
             )
-        elif final_action == "rate_limit":
+        if final_action == "rate_limit":
             return JSONResponse(
                 status_code=429,
                 content=response_data,
                 headers=self._get_security_headers() | {"Retry-After": "60"},
             )
-        else:
-            return JSONResponse(
-                status_code=200,
-                content=response_data,
-                headers=self._get_security_headers(),
-            )
+        return JSONResponse(
+            status_code=200,
+            content=response_data,
+            headers=self._get_security_headers(),
+        )
 
-    def detect_threats(self, content: str, request: Request) -> List[Dict[str, Any]]:
-        """
-        Detect security threats in request content.
+    def detect_threats(self, content: str, request: Request) -> list[dict[str, Any]]:
+        """Detect security threats in request content.
 
         Args:
             content: Content to analyze
@@ -190,6 +188,7 @@ class SecurityErrorHandler:
 
         Returns:
             List of detected threats with details
+
         """
         detected_threats = []
         client_ip = self._get_client_ip(request)
@@ -232,7 +231,7 @@ class SecurityErrorHandler:
             self.ip_blocklist.remove(ip)
         logger.info(f"IP {ip} whitelisted: {reason}")
 
-    def get_security_metrics(self) -> Dict[str, Any]:
+    def get_security_metrics(self) -> dict[str, Any]:
         """Get current security metrics for monitoring."""
         return {
             **self.security_metrics,
@@ -266,7 +265,7 @@ class SecurityErrorHandler:
         event_type: SecurityEventType,
         threat_level: SecurityThreatLevel,
         request: Request,
-        details: Dict[str, Any],
+        details: dict[str, Any],
     ) -> None:
         """Update security metrics."""
         self.security_metrics["total_security_events"] += 1
@@ -296,7 +295,7 @@ class SecurityErrorHandler:
         self.security_metrics["events_by_user_agent"][user_agent] += 1
 
     def _determine_response_action(
-        self, threat_level: SecurityThreatLevel, client_ip: str, requested_action: str
+        self, threat_level: SecurityThreatLevel, client_ip: str, requested_action: str,
     ) -> str:
         """Determine the appropriate response action based on threat level and IP history."""
         # Check if IP is whitelisted
@@ -313,21 +312,20 @@ class SecurityErrorHandler:
         # Escalate threat level based on history
         if ip_threat_level == SecurityThreatLevel.CRITICAL:
             return "block_permanently"
-        elif ip_threat_level == SecurityThreatLevel.HIGH:
+        if ip_threat_level == SecurityThreatLevel.HIGH:
             return "block"
-        elif ip_threat_level == SecurityThreatLevel.MEDIUM:
+        if ip_threat_level == SecurityThreatLevel.MEDIUM:
             return "rate_limit"
-        else:
-            return requested_action
+        return requested_action
 
     def _create_security_error_response(
         self,
         event_type: SecurityEventType,
         threat_level: SecurityThreatLevel,
         action: str,
-        details: Dict[str, Any],
+        details: dict[str, Any],
         request: Request,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Create standardized security error response."""
         response_data = {
             "error": {
@@ -336,7 +334,7 @@ class SecurityErrorHandler:
                 "threat_level": threat_level.value,
                 "action_taken": action,
                 "timestamp": time.time(),
-            }
+            },
         }
 
         # Add request information
@@ -367,7 +365,7 @@ class SecurityErrorHandler:
         # Fallback to direct connection
         return request.client.host if request.client else "unknown"
 
-    def _get_security_headers(self) -> Dict[str, str]:
+    def _get_security_headers(self) -> dict[str, str]:
         """Get security headers for responses."""
         return {
             "X-Content-Type-Options": "nosniff",
@@ -378,7 +376,7 @@ class SecurityErrorHandler:
             "X-Security-Event": "true",
         }
 
-    def _sanitize_details(self, details: Dict[str, Any]) -> Dict[str, Any]:
+    def _sanitize_details(self, details: dict[str, Any]) -> dict[str, Any]:
         """Sanitize details to prevent information disclosure."""
         sanitized = {}
 
@@ -413,7 +411,7 @@ class SecurityErrorHandler:
 
         # Remove email addresses
         text = re.sub(
-            r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b", "[EMAIL]", text
+            r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b", "[EMAIL]", text,
         )
 
         # Remove tokens and keys
@@ -426,7 +424,7 @@ class SecurityErrorHandler:
         event_type: SecurityEventType,
         threat_level: SecurityThreatLevel,
         request: Request,
-        details: Dict[str, Any],
+        details: dict[str, Any],
         action: str,
     ) -> None:
         """Log security event with appropriate level."""
@@ -459,7 +457,7 @@ class SecurityErrorHandler:
         self,
         event_type: SecurityEventType,
         request: Request,
-        details: Dict[str, Any],
+        details: dict[str, Any],
         action: str,
     ) -> None:
         """Log and monitor strategy for low-level threats."""
@@ -470,7 +468,7 @@ class SecurityErrorHandler:
         self,
         event_type: SecurityEventType,
         request: Request,
-        details: Dict[str, Any],
+        details: dict[str, Any],
         action: str,
     ) -> None:
         """Log and rate limit strategy for medium-level threats."""
@@ -483,7 +481,7 @@ class SecurityErrorHandler:
         self,
         event_type: SecurityEventType,
         request: Request,
-        details: Dict[str, Any],
+        details: dict[str, Any],
         action: str,
     ) -> None:
         """Log and block temporarily strategy for high-level threats."""
@@ -491,13 +489,15 @@ class SecurityErrorHandler:
         self.security_metrics["blocked_requests"] += 1
         client_ip = self._get_client_ip(request)
         self.ip_threat_levels[client_ip] = SecurityThreatLevel.HIGH
-        logger.error(f"Security event logged and temporarily blocked: {event_type.value}")
+        logger.error(
+            f"Security event logged and temporarily blocked: {event_type.value}",
+        )
 
     def _log_and_block_permanently(
         self,
         event_type: SecurityEventType,
         request: Request,
-        details: Dict[str, Any],
+        details: dict[str, Any],
         action: str,
     ) -> None:
         """Log and block permanently strategy for critical threats."""
@@ -505,7 +505,9 @@ class SecurityErrorHandler:
         self.security_metrics["blocked_requests"] += 1
         client_ip = self._get_client_ip(request)
         self.block_ip(client_ip, f"Critical security violation: {event_type.value}")
-        logger.critical(f"Security event logged and permanently blocked: {event_type.value}")
+        logger.critical(
+            f"Security event logged and permanently blocked: {event_type.value}",
+        )
 
 
 # Global security error handler instance

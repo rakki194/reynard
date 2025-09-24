@@ -1,5 +1,4 @@
-"""
-Hot Reload API Endpoints for Service Management
+"""Hot Reload API Endpoints for Service Management
 
 This module provides endpoints for hot-reloading specific services without
 restarting the entire server. This is useful for development and debugging.
@@ -20,8 +19,7 @@ router = APIRouter(prefix="/api/admin/hot-reload", tags=["Hot Reload"])
 
 @router.post("/service/{service_name}")
 async def reload_service(service_name: str) -> JSONResponse:
-    """
-    Hot-reload a specific service without restarting the server.
+    """Hot-reload a specific service without restarting the server.
 
     This endpoint allows you to reload a single service, which is useful
     for development when you've made changes to a specific service.
@@ -31,6 +29,7 @@ async def reload_service(service_name: str) -> JSONResponse:
 
     Returns:
         JSONResponse with reload status and details
+
     """
     try:
         registry = get_service_registry()
@@ -53,13 +52,12 @@ async def reload_service(service_name: str) -> JSONResponse:
                     "message": f"Service '{service_name}' reloaded successfully",
                     "service_name": service_name,
                     "timestamp": asyncio.get_event_loop().time(),
-                }
+                },
             )
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail=f"Failed to reload service '{service_name}'",
-            )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to reload service '{service_name}'",
+        )
 
     except HTTPException:
         raise
@@ -67,18 +65,17 @@ async def reload_service(service_name: str) -> JSONResponse:
         logger.exception("Failed to reload service %s", service_name)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to reload service: {str(e)}",
+            detail=f"Failed to reload service: {e!s}",
         )
 
 
 @router.post("/services")
 async def reload_services_by_pattern(
     pattern: str = Query(
-        ..., description="Pattern to match service names (e.g., 'rag*', '*indexing*')"
-    )
+        ..., description="Pattern to match service names (e.g., 'rag*', '*indexing*')",
+    ),
 ) -> JSONResponse:
-    """
-    Hot-reload multiple services matching a pattern.
+    """Hot-reload multiple services matching a pattern.
 
     This endpoint allows you to reload multiple services at once using
     a pattern match. Useful for reloading related services.
@@ -88,6 +85,7 @@ async def reload_services_by_pattern(
 
     Returns:
         JSONResponse with reload results for each matching service
+
     """
     try:
         registry = get_service_registry()
@@ -114,7 +112,7 @@ async def reload_services_by_pattern(
                 "failed": failed,
                 "results": results,
                 "timestamp": asyncio.get_event_loop().time(),
-            }
+            },
         )
 
     except HTTPException:
@@ -123,17 +121,17 @@ async def reload_services_by_pattern(
         logger.exception("Failed to reload services with pattern %s", pattern)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to reload services: {str(e)}",
+            detail=f"Failed to reload services: {e!s}",
         )
 
 
 @router.get("/services")
 async def list_services() -> JSONResponse:
-    """
-    List all available services that can be hot-reloaded.
+    """List all available services that can be hot-reloaded.
 
     Returns:
         JSONResponse with list of available services and their status
+
     """
     try:
         registry = get_service_registry()
@@ -155,27 +153,27 @@ async def list_services() -> JSONResponse:
                 "total_services": len(services_info),
                 "services": services_info,
                 "timestamp": asyncio.get_event_loop().time(),
-            }
+            },
         )
 
     except Exception as e:
         logger.exception("Failed to list services")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to list services: {str(e)}",
+            detail=f"Failed to list services: {e!s}",
         )
 
 
 @router.get("/service/{service_name}/status")
 async def get_service_status(service_name: str) -> JSONResponse:
-    """
-    Get the current status of a specific service.
+    """Get the current status of a specific service.
 
     Args:
         service_name: Name of the service to check
 
     Returns:
         JSONResponse with service status and details
+
     """
     try:
         registry = get_service_registry()
@@ -199,7 +197,7 @@ async def get_service_status(service_name: str) -> JSONResponse:
                 "last_health_check": service_info.last_health_check,
                 "error": str(service_info.error) if service_info.error else None,
                 "timestamp": asyncio.get_event_loop().time(),
-            }
+            },
         )
 
     except HTTPException:
@@ -208,5 +206,5 @@ async def get_service_status(service_name: str) -> JSONResponse:
         logger.exception("Failed to get service status for %s", service_name)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get service status: {str(e)}",
+            detail=f"Failed to get service status: {e!s}",
         )

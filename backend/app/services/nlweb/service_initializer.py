@@ -1,5 +1,4 @@
-"""
-NLWeb Service Initializer for Reynard Backend
+"""NLWeb Service Initializer for Reynard Backend
 
 Initializes and manages the NLWeb service instance for the Reynard backend.
 """
@@ -17,8 +16,7 @@ _nlweb_service: NLWebService | None = None
 
 
 def initialize_nlweb_service(config: dict[str, Any]) -> NLWebService:
-    """
-    Initialize the NLWeb service with the given configuration.
+    """Initialize the NLWeb service with the given configuration.
 
     Args:
         config: Configuration dictionary containing NLWeb settings
@@ -28,6 +26,7 @@ def initialize_nlweb_service(config: dict[str, Any]) -> NLWebService:
 
     Raises:
         RuntimeError: If service initialization fails
+
     """
     global _nlweb_service
 
@@ -50,14 +49,14 @@ def initialize_nlweb_service(config: dict[str, Any]) -> NLWebService:
             canary_percentage=nlweb_config.get("canary_percentage", 5.0),
             rollback_enabled=nlweb_config.get("rollback_enabled", False),
             performance_monitoring_enabled=nlweb_config.get(
-                "performance_monitoring_enabled", True
+                "performance_monitoring_enabled", True,
             ),
             proxy_max_retries=nlweb_config.get("proxy_max_retries", 2),
             proxy_backoff_ms=nlweb_config.get("proxy_backoff_ms", 200),
             proxy_connect_timeout_ms=nlweb_config.get("proxy_connect_timeout_ms", 2000),
             proxy_read_timeout_ms=nlweb_config.get("proxy_read_timeout_ms", 10000),
             proxy_sse_idle_timeout_ms=nlweb_config.get(
-                "proxy_sse_idle_timeout_ms", 15000
+                "proxy_sse_idle_timeout_ms", 15000,
             ),
         )
 
@@ -73,21 +72,21 @@ def initialize_nlweb_service(config: dict[str, Any]) -> NLWebService:
 
 
 def get_nlweb_service() -> NLWebService | None:
-    """
-    Get the global NLWeb service instance.
+    """Get the global NLWeb service instance.
 
     Returns:
         NLWebService instance if initialized, None otherwise
+
     """
     return _nlweb_service
 
 
 async def shutdown_nlweb_service() -> bool:
-    """
-    Shutdown the NLWeb service.
+    """Shutdown the NLWeb service.
 
     Returns:
         True if shutdown was successful, False otherwise
+
     """
     global _nlweb_service
 
@@ -106,27 +105,27 @@ async def shutdown_nlweb_service() -> bool:
 
 
 def is_nlweb_service_available() -> bool:
-    """
-    Check if the NLWeb service is available and ready.
+    """Check if the NLWeb service is available and ready.
 
     Returns:
         True if service is available, False otherwise
+
     """
     return _nlweb_service is not None and _nlweb_service.is_available()
 
 
 async def ensure_nlweb_service_initialized() -> bool:
-    """
-    Ensure the NLWeb service is initialized and ready.
+    """Ensure the NLWeb service is initialized and ready.
 
     Returns:
         True if service is ready, False otherwise
+
     """
     global _nlweb_service
 
     if _nlweb_service is None:
         logger.warning(
-            "NLWeb service not initialized, attempting to initialize with defaults"
+            "NLWeb service not initialized, attempting to initialize with defaults",
         )
         try:
             # Initialize with default configuration

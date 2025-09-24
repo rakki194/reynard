@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Test suite for data structures.
+"""Test suite for data structures.
 
 Tests the custom data structures used throughout the PHOENIX Control system.
 
@@ -17,7 +16,6 @@ import pytest
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from phoenix_control.src.utils.data_structures import (
-    AgentState,
     NamingStyle,
     PerformanceMetrics,
     QualityConfig,
@@ -152,7 +150,7 @@ class TestPerformanceMetrics:
     def test_performance_metrics_defaults(self):
         """Test performance metrics with default values."""
         metrics = PerformanceMetrics(
-            timestamp="2025-01-15T10:30:00Z", action="test_action", success=True
+            timestamp="2025-01-15T10:30:00Z", action="test_action", success=True,
         )
 
         # Test default values
@@ -238,7 +236,7 @@ class TestStatisticalSignificance:
     def test_statistical_significance_defaults(self):
         """Test statistical significance with default values."""
         significance = StatisticalSignificance(
-            p_value=0.05, confidence_level=0.95, sample_size=100
+            p_value=0.05, confidence_level=0.95, sample_size=100,
         )
 
         # Test default values

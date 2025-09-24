@@ -1,11 +1,9 @@
-"""
-Test script for performance monitoring system.
+"""Test script for performance monitoring system.
 
 This script demonstrates and tests the performance monitoring functionality.
 """
 
 import asyncio
-import os
 import sys
 import time
 from pathlib import Path
@@ -146,13 +144,13 @@ async def test_bottleneck_analysis(tracker, profiler):
 
     for trend in trends:
         print(
-            f"   - {trend.metric_name}: {trend.trend_direction} ({trend.change_percentage:+.1f}%)"
+            f"   - {trend.metric_name}: {trend.trend_direction} ({trend.change_percentage:+.1f}%)",
         )
 
     # Generate optimization report
     report = analyzer.generate_optimization_report()
     print(
-        f"   Optimization score: {report['optimization_score']['score']}/100 ({report['optimization_score']['grade']})"
+        f"   Optimization score: {report['optimization_score']['score']}/100 ({report['optimization_score']['grade']})",
     )
 
     return analyzer

@@ -1,10 +1,8 @@
-"""
-Email Encryption Service for Reynard Backend.
+"""Email Encryption Service for Reynard Backend.
 
 This module provides email encryption functionality using PGP and S/MIME.
 """
 
-import asyncio
 import base64
 import json
 import logging
@@ -14,7 +12,6 @@ import uuid
 from dataclasses import asdict, dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
 
 # PGP imports
 try:
@@ -48,11 +45,11 @@ class EncryptionKey:
     key_type: str  # 'pgp' or 'smime'
     fingerprint: str
     public_key: str
-    private_key: Optional[str] = None
+    private_key: str | None = None
     user_id: str = ""
     email: str = ""
     created_at: datetime = None
-    expires_at: Optional[datetime] = None
+    expires_at: datetime | None = None
     is_revoked: bool = False
     trust_level: str = "unknown"  # unknown, marginal, full, ultimate
 
@@ -69,10 +66,10 @@ class EncryptedMessage:
     original_message: str
     encrypted_content: str
     encryption_method: str  # 'pgp' or 'smime'
-    recipient_keys: List[str]  # Key IDs or fingerprints
-    sender_key: Optional[str] = None
+    recipient_keys: list[str]  # Key IDs or fingerprints
+    sender_key: str | None = None
     encrypted_at: datetime = None
-    signature: Optional[str] = None
+    signature: str | None = None
     is_signed: bool = False
 
     def __post_init__(self):
@@ -101,7 +98,7 @@ class EmailEncryptionService:
 
     def __init__(
         self,
-        config: Optional[EncryptionConfig] = None,
+        config: EncryptionConfig | None = None,
         data_dir: str = "data/encryption",
     ):
         self.config = config or EncryptionConfig()
@@ -140,7 +137,7 @@ class EmailEncryptionService:
         try:
             keys_file = self.data_dir / "keys.json"
             if keys_file.exists():
-                with open(keys_file, "r", encoding="utf-8") as f:
+                with open(keys_file, encoding="utf-8") as f:
                     keys_data = json.load(f)
                     self.keys = {
                         key_id: EncryptionKey(**key_data)
@@ -193,12 +190,11 @@ class EmailEncryptionService:
         self,
         name: str,
         email: str,
-        passphrase: Optional[str] = None,
+        passphrase: str | None = None,
         key_type: str = "RSA",
         key_length: int = 2048,
     ) -> EncryptionKey:
-        """
-        Generate a new PGP keypair.
+        """Generate a new PGP keypair.
 
         Args:
             name: Key owner name
@@ -209,6 +205,7 @@ class EmailEncryptionService:
 
         Returns:
             EncryptionKey object
+
         """
         try:
             if not self.pgp:
@@ -259,14 +256,14 @@ class EmailEncryptionService:
             raise
 
     async def import_pgp_key(self, public_key_data: str) -> EncryptionKey:
-        """
-        Import a PGP public key.
+        """Import a PGP public key.
 
         Args:
             public_key_data: PGP public key data
 
         Returns:
             EncryptionKey object
+
         """
         try:
             if not self.pgp:
@@ -308,12 +305,11 @@ class EmailEncryptionService:
     async def encrypt_message_pgp(
         self,
         message: str,
-        recipient_keys: List[str],
-        sign_with: Optional[str] = None,
-        passphrase: Optional[str] = None,
+        recipient_keys: list[str],
+        sign_with: str | None = None,
+        passphrase: str | None = None,
     ) -> EncryptedMessage:
-        """
-        Encrypt a message using PGP.
+        """Encrypt a message using PGP.
 
         Args:
             message: Message to encrypt
@@ -323,6 +319,7 @@ class EmailEncryptionService:
 
         Returns:
             EncryptedMessage object
+
         """
         try:
             if not self.pgp:
@@ -364,10 +361,9 @@ class EmailEncryptionService:
     async def decrypt_message_pgp(
         self,
         encrypted_content: str,
-        passphrase: Optional[str] = None,
-    ) -> Tuple[str, bool, Optional[str]]:
-        """
-        Decrypt a PGP message.
+        passphrase: str | None = None,
+    ) -> tuple[str, bool, str | None]:
+        """Decrypt a PGP message.
 
         Args:
             encrypted_content: Encrypted message content
@@ -375,6 +371,7 @@ class EmailEncryptionService:
 
         Returns:
             Tuple of (decrypted_message, is_signed, signer_fingerprint)
+
         """
         try:
             if not self.pgp:
@@ -402,10 +399,9 @@ class EmailEncryptionService:
             raise
 
     async def verify_pgp_signature(
-        self, message: str, signature: str
-    ) -> Tuple[bool, Optional[str]]:
-        """
-        Verify a PGP signature.
+        self, message: str, signature: str,
+    ) -> tuple[bool, str | None]:
+        """Verify a PGP signature.
 
         Args:
             message: Original message
@@ -413,6 +409,7 @@ class EmailEncryptionService:
 
         Returns:
             Tuple of (is_valid, signer_fingerprint)
+
         """
         try:
             if not self.pgp:
@@ -425,9 +422,8 @@ class EmailEncryptionService:
                 signer_fingerprint = verified.fingerprint
                 logger.info(f"PGP signature verified: {signer_fingerprint}")
                 return True, signer_fingerprint
-            else:
-                logger.warning("PGP signature verification failed")
-                return False, None
+            logger.warning("PGP signature verification failed")
+            return False, None
 
         except Exception as e:
             logger.error(f"Failed to verify PGP signature: {e}")
@@ -440,9 +436,8 @@ class EmailEncryptionService:
         organization: str = "",
         country: str = "US",
         validity_days: int = 365,
-    ) -> Tuple[str, str]:
-        """
-        Generate a self-signed S/MIME certificate.
+    ) -> tuple[str, str]:
+        """Generate a self-signed S/MIME certificate.
 
         Args:
             common_name: Certificate common name
@@ -453,6 +448,7 @@ class EmailEncryptionService:
 
         Returns:
             Tuple of (certificate_pem, private_key_pem)
+
         """
         try:
             if not self.smime_available:
@@ -460,7 +456,7 @@ class EmailEncryptionService:
 
             # Generate private key
             private_key = rsa.generate_private_key(
-                public_exponent=65537, key_size=2048, backend=default_backend()
+                public_exponent=65537, key_size=2048, backend=default_backend(),
             )
 
             # Create certificate
@@ -472,7 +468,7 @@ class EmailEncryptionService:
                     x509.NameAttribute(NameOID.ORGANIZATION_NAME, organization),
                     x509.NameAttribute(NameOID.COMMON_NAME, common_name),
                     x509.NameAttribute(NameOID.EMAIL_ADDRESS, email),
-                ]
+                ],
             )
 
             cert = (
@@ -508,12 +504,11 @@ class EmailEncryptionService:
     async def encrypt_message_smime(
         self,
         message: str,
-        recipient_certificates: List[str],
-        sender_certificate: Optional[str] = None,
-        sender_private_key: Optional[str] = None,
+        recipient_certificates: list[str],
+        sender_certificate: str | None = None,
+        sender_private_key: str | None = None,
     ) -> EncryptedMessage:
-        """
-        Encrypt a message using S/MIME.
+        """Encrypt a message using S/MIME.
 
         Args:
             message: Message to encrypt
@@ -523,6 +518,7 @@ class EmailEncryptionService:
 
         Returns:
             EncryptedMessage object
+
         """
         try:
             if not self.smime_available:
@@ -533,7 +529,7 @@ class EmailEncryptionService:
 
             # For now, we'll create a placeholder encrypted message
             encrypted_content = base64.b64encode(message.encode("utf-8")).decode(
-                "utf-8"
+                "utf-8",
             )
 
             # Create encrypted message object
@@ -551,7 +547,7 @@ class EmailEncryptionService:
             self._save_encrypted_message(encrypted_message)
 
             logger.info(
-                f"Encrypted message with S/MIME: {encrypted_message.message_id}"
+                f"Encrypted message with S/MIME: {encrypted_message.message_id}",
             )
             return encrypted_message
 
@@ -563,10 +559,9 @@ class EmailEncryptionService:
         self,
         encrypted_content: str,
         private_key: str,
-        passphrase: Optional[str] = None,
-    ) -> Tuple[str, bool]:
-        """
-        Decrypt an S/MIME message.
+        passphrase: str | None = None,
+    ) -> tuple[str, bool]:
+        """Decrypt an S/MIME message.
 
         Args:
             encrypted_content: Encrypted message content
@@ -575,6 +570,7 @@ class EmailEncryptionService:
 
         Returns:
             Tuple of (decrypted_message, is_signed)
+
         """
         try:
             if not self.smime_available:
@@ -594,10 +590,9 @@ class EmailEncryptionService:
             raise
 
     async def get_available_keys(
-        self, key_type: Optional[str] = None, email: Optional[str] = None
-    ) -> List[EncryptionKey]:
-        """
-        Get available encryption keys.
+        self, key_type: str | None = None, email: str | None = None,
+    ) -> list[EncryptionKey]:
+        """Get available encryption keys.
 
         Args:
             key_type: Filter by key type ('pgp' or 'smime')
@@ -605,6 +600,7 @@ class EmailEncryptionService:
 
         Returns:
             List of EncryptionKey objects
+
         """
         try:
             keys = list(self.keys.values())
@@ -624,10 +620,9 @@ class EmailEncryptionService:
             return []
 
     async def revoke_key(
-        self, key_id: str, reason: str = "No reason specified"
+        self, key_id: str, reason: str = "No reason specified",
     ) -> bool:
-        """
-        Revoke an encryption key.
+        """Revoke an encryption key.
 
         Args:
             key_id: Key ID to revoke
@@ -635,6 +630,7 @@ class EmailEncryptionService:
 
         Returns:
             True if successful
+
         """
         try:
             if key_id not in self.keys:
@@ -647,7 +643,7 @@ class EmailEncryptionService:
             if key.key_type == "pgp" and self.pgp:
                 try:
                     revocation_cert = self.pgp.gen_revoke(
-                        key_id, reason=reason, passphrase=None
+                        key_id, reason=reason, passphrase=None,
                     )
                     # Store revocation certificate
                     revocation_file = self.keys_dir / f"{key_id}.rev"
@@ -666,8 +662,7 @@ class EmailEncryptionService:
             return False
 
     async def set_key_trust(self, key_id: str, trust_level: str) -> bool:
-        """
-        Set trust level for a PGP key.
+        """Set trust level for a PGP key.
 
         Args:
             key_id: Key ID
@@ -675,6 +670,7 @@ class EmailEncryptionService:
 
         Returns:
             True if successful
+
         """
         try:
             if key_id not in self.keys:

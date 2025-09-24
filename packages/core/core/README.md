@@ -6,6 +6,128 @@ Core utilities, composables, and modules that
 power the entire Reynard ecosystem. This package provides the essential building blocks for reactive state management,
 security, HTTP clients, and comprehensive utility functions.
 
+## Architecture
+
+```mermaid
+graph TB
+    subgraph "🦊 Reynard Core Framework"
+        A[Core Index] --> B[Modules]
+        A --> C[Composables]
+        A --> D[Utils]
+        A --> E[Clients]
+        A --> F[Security]
+        
+        subgraph "🎯 Core Modules"
+            B --> B1[Notification System]
+            B --> B2[Notification Manager]
+            B --> B3[Notification Factories]
+            B --> B4[Notification Utils]
+        end
+        
+        subgraph "⚡ SolidJS Composables"
+            C --> C1[useNotifications]
+            C --> C2[useLocalStorage]
+            C --> C3[useMediaQuery]
+            C --> C4[useDebounce]
+            C --> C5[useApiClient]
+        end
+        
+        subgraph "🛠️ Utility Functions"
+            D --> D1[Date Utils]
+            D --> D2[Formatters]
+            D --> D3[Language Utils]
+            D --> D4[Validation]
+            D --> D5[Async Utils]
+            D --> D6[Package Exports]
+            D --> D7[Optional i18n]
+        end
+        
+        subgraph "🌐 HTTP Clients"
+            E --> E1[API Client]
+            E --> E2[HTTP Client]
+            E --> E3[Health Monitoring]
+            E --> E4[Error Handling]
+        end
+        
+        subgraph "🛡️ Security Module"
+            F --> F1[Crypto Utils]
+            F --> F2[Input Validation]
+            F --> F3[File Validation]
+            F --> F4[Headers Security]
+            F --> F5[XSS Protection]
+            F --> F6[SQL Injection Prevention]
+        end
+        
+        subgraph "🔧 Specialized Modules"
+            G[Lazy Loading] --> G1[Package Export Registry]
+            G --> G2[Dynamic Module Loading]
+            H[HF Cache] --> H1[ML Model Caching]
+            I[Image Utils] --> I1[Format Detection]
+            J[Executor] --> J1[Task Management]
+        end
+        
+        subgraph "🌍 Internationalization"
+            K[Language Support] --> K1[Core Translations]
+            K --> K2[Language Detection]
+            K --> K3[Fallback Translations]
+        end
+    end
+    
+    subgraph "📦 External Dependencies"
+        L[SolidJS] --> C
+        M[Optional i18n] --> K
+        N[Browser APIs] --> C1
+        N --> C2
+    end
+    
+    A -->|Exports| O[Framework Integration]
+    B1 -->|Toast System| P[UI Components]
+    C1 -->|Reactive State| Q[Application State]
+    F1 -->|Security| R[Secure Operations]
+    E1 -->|API Calls| S[Backend Services]
+```
+
+## Data Flow
+
+```mermaid
+sequenceDiagram
+    participant App as Application
+    participant Core as Reynard Core
+    participant Composable as Composables
+    participant Security as Security Module
+    participant Client as HTTP Client
+    participant Backend as Backend API
+    
+    Note over App, Backend: Application Initialization
+    App->>Core: Import Core Modules
+    Core->>Security: Initialize Security Config
+    Core->>Client: Setup HTTP Client
+    
+    Note over App, Backend: User Interaction Flow
+    App->>Composable: useNotifications()
+    Composable->>Core: Create Notification
+    Core->>App: Toast Notification
+    
+    App->>Composable: useLocalStorage()
+    Composable->>Core: Reactive Storage
+    Core->>App: State Updates
+    
+    Note over App, Backend: API Communication
+    App->>Composable: useApiClient()
+    Composable->>Security: Validate Request
+    Security->>Client: Secure HTTP Call
+    Client->>Backend: API Request
+    Backend-->>Client: Response
+    Client-->>Composable: Typed Response
+    Composable-->>App: Reactive Data
+    
+    Note over App, Backend: Security Validation
+    App->>Security: validateInput()
+    Security->>Security: XSS Protection
+    Security->>Security: SQL Injection Check
+    Security-->>App: Validation Result
+```
+
 ## Table of Contents
 
 - [reynard-core](#reynard-core)

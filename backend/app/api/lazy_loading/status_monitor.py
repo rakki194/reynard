@@ -1,5 +1,4 @@
-"""
-Status Monitor for Lazy Loading
+"""Status Monitor for Lazy Loading
 
 This module handles status monitoring and performance metrics
 for the lazy loading system.
@@ -110,7 +109,7 @@ class StatusMonitor:
                         "last_access": metadata.last_access,
                         "error_count": metadata.error_count,
                         "dependencies": metadata.dependencies,
-                    }
+                    },
                 )
 
             return packages_info

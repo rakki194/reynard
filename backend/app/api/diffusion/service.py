@@ -1,5 +1,4 @@
-"""
-Service layer integration for Diffusion-LLM API.
+"""Service layer integration for Diffusion-LLM API.
 
 Refactored to use standardized logging and service patterns with proper dependency injection.
 """
@@ -13,8 +12,7 @@ logger = get_service_logger("diffusion")
 
 
 class DiffusionServiceManager:
-    """
-    Service manager for Diffusion-LLM API with proper dependency injection.
+    """Service manager for Diffusion-LLM API with proper dependency injection.
 
     This class manages the Diffusion service instance without using globals,
     providing better testability and cleaner architecture.
@@ -38,7 +36,7 @@ class DiffusionServiceManager:
             await service.initialize(config)
         except (
             Exception
-        ) as e:  # noqa: BLE001 - We want to catch all initialization errors
+        ) as e:
             logger.exception(
                 "Failed to initialize Diffusion service",
                 extra={

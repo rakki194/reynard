@@ -15,10 +15,9 @@ import logging
 import time
 from dataclasses import dataclass, field
 from enum import Enum
-from functools import wraps
-from typing import Any, Awaitable, Callable, Dict, Optional
+from typing import Any, Callable, Dict, Optional
 
-from config.tool_config import ToolCategory, ToolConfigManager
+from config.tool_config import ToolConfigManager
 from services.tool_config_service import ToolConfigService
 
 logger = logging.getLogger(__name__)
@@ -193,7 +192,6 @@ class ToolRegistry:
 
     def discover_tools(self, module_path: str):
         """Auto-discover tools in a module."""
-        import importlib
         import os
 
         if os.path.exists(module_path):
@@ -339,35 +337,34 @@ def register_tool(
     def decorator(func):
         # Import validator here to avoid circular imports
         from validation.schema_validator import MCPSchemaValidator
-        
+
         # Use the input_schema parameter from the outer scope
         schema_to_use = input_schema
-        
+
         # Generate default schema if not provided
         if schema_to_use is None:
             schema_to_use = {
                 "type": "object",
                 "properties": {
-                    "arguments": {
-                        "type": "object",
-                        "description": "Tool arguments"
-                    }
+                    "arguments": {"type": "object", "description": "Tool arguments"}
                 },
-                "required": []
+                "required": [],
             }
-        
+
         # Validate the schema before registration
         validator = MCPSchemaValidator()
         tool_def = {
             "name": name,
             "description": description,
-            "inputSchema": schema_to_use
+            "inputSchema": schema_to_use,
         }
-        
+
         validation_result = validator.validate_tool_schema(tool_def)
         if not validation_result.is_valid:
-            raise ValueError(f"Invalid tool schema for '{name}': {validation_result.errors}")
-        
+            raise ValueError(
+                f"Invalid tool schema for '{name}': {validation_result.errors}"
+            )
+
         # Store the registration parameters for lazy registration
         func._tool_registration = {
             "name": name,

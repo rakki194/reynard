@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-🦊 CHANGELOG.md Codebase Scanner
+"""🦊 CHANGELOG.md Codebase Scanner
 ===============================
 
 Strategic fox specialist tool for comprehensive codebase scanning
@@ -225,14 +224,14 @@ class ChangelogScanner:
 
         print("\n📋 SUMMARY:")
         print(
-            f"  • Monolithic files: {self.results.get('monoliths', {}).get('count', 0)}"
+            f"  • Monolithic files: {self.results.get('monoliths', {}).get('count', 0)}",
         )
         print(
-            f"  • Development tools: {self.results.get('development_tools', {}).get('count', 0)}"
+            f"  • Development tools: {self.results.get('development_tools', {}).get('count', 0)}",
         )
         print(f"  • MCP tools: {self.results.get('mcp_tools', {}).get('count', 0)}")
         print(
-            f"  • Validation tools: {self.results.get('validation_tools', {}).get('count', 0)}"
+            f"  • Validation tools: {self.results.get('validation_tools', {}).get('count', 0)}",
         )
 
         # Show top monoliths if any
@@ -241,7 +240,7 @@ class ChangelogScanner:
             print(f"\n🏗️  TOP MONOLITHS (>{monoliths[0].get('line_count', 0)} lines):")
             for i, monolith in enumerate(monoliths[:5], 1):
                 print(
-                    f"  {i}. {monolith.get('file_path', 'Unknown')} ({monolith.get('line_count', 0)} lines)"
+                    f"  {i}. {monolith.get('file_path', 'Unknown')} ({monolith.get('line_count', 0)} lines)",
                 )
 
         # Show key tools

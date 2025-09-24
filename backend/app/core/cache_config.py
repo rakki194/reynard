@@ -1,12 +1,11 @@
-"""
-Cache Configuration
+"""Cache Configuration
 ==================
 
 Configuration settings for Redis caching and fallback mechanisms.
 """
 
 import os
-from typing import Any, Dict
+from typing import Any
 
 
 class CacheConfig:
@@ -35,7 +34,7 @@ class CacheConfig:
     ECS_REDIS_DB: int = int(os.getenv("ECS_REDIS_DB", "3"))
 
     # Cache TTL Settings
-    CACHE_TTL_SETTINGS: Dict[str, int] = {
+    CACHE_TTL_SETTINGS: dict[str, int] = {
         "naming_spirits": 1800,  # 30 minutes
         "naming_components": 1800,  # 30 minutes
         "naming_config": 3600,  # 1 hour
@@ -54,12 +53,12 @@ class CacheConfig:
 
         Returns:
             Redis URL with database number
+
         """
         base_url = cls.REDIS_URL.rstrip("/")
         if "?" in base_url:
             return f"{base_url}&db={db_number}"
-        else:
-            return f"{base_url}/{db_number}"
+        return f"{base_url}/{db_number}"
 
     @classmethod
     def get_alembic_redis_url(cls) -> str:
@@ -67,6 +66,7 @@ class CacheConfig:
 
         Returns:
             Redis URL for Alembic database
+
         """
         return cls.get_redis_url(cls.ALEMBIC_REDIS_DB)
 
@@ -76,6 +76,7 @@ class CacheConfig:
 
         Returns:
             Redis URL for ECS database
+
         """
         return cls.get_redis_url(cls.ECS_REDIS_DB)
 
@@ -88,15 +89,17 @@ class CacheConfig:
 
         Returns:
             TTL in seconds
+
         """
         return cls.CACHE_TTL_SETTINGS.get(cache_type, cls.CACHE_DEFAULT_TTL)
 
     @classmethod
-    def to_dict(cls) -> Dict[str, Any]:
+    def to_dict(cls) -> dict[str, Any]:
         """Convert configuration to dictionary.
 
         Returns:
             Configuration dictionary
+
         """
         return {
             "redis_enabled": cls.REDIS_ENABLED,

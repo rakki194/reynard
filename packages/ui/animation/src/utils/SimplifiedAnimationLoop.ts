@@ -157,10 +157,11 @@ export function createStaggeredAnimation(
 ): () => void {
   const startTime = performance.now();
   const itemIds: string[] = [];
+  let completedItems = 0;
 
   // Add all items to the global loop
   for (let i = 0; i < itemCount; i++) {
-    const itemId = `staggered-${i}-${Date.now()}`;
+    const itemId = `staggered-${i}-${Date.now()}-${Math.random()}`;
     itemIds.push(itemId);
 
     globalAnimationLoop.addItem({
@@ -171,10 +172,11 @@ export function createStaggeredAnimation(
       easing,
       onUpdate: (progress) => onItemUpdate(i, progress),
       onComplete: () => {
+        completedItems++;
         onItemComplete?.(i);
         
         // Check if all items are complete
-        if (itemIds.every(id => !globalAnimationLoop.items.has(id))) {
+        if (completedItems >= itemCount) {
           onAllComplete?.();
         }
       },

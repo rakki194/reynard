@@ -1,5 +1,4 @@
-"""
-TTS API Models for Reynard Backend
+"""TTS API Models for Reynard Backend
 
 Pydantic models for TTS API requests and responses.
 """
@@ -14,10 +13,10 @@ class TTSSynthesisRequest(BaseModel):
     """Request model for TTS synthesis with comprehensive validation."""
 
     text: str = Field(
-        ..., description="Text to synthesize", min_length=1, max_length=10000
+        ..., description="Text to synthesize", min_length=1, max_length=10000,
     )
     backend: str | None = Field(
-        None, description="TTS backend to use (kokoro, coqui, xtts)"
+        None, description="TTS backend to use (kokoro, coqui, xtts)",
     )
     voice: str = Field("default", description="Voice to use for synthesis")
     speed: float = Field(1.0, description="Speech speed multiplier", ge=0.5, le=2.0)
@@ -44,7 +43,7 @@ class TTSSynthesisRequest(BaseModel):
         for pattern in dangerous_patterns:
             if re.search(pattern, v, re.IGNORECASE):
                 raise ValueError(
-                    f"Text contains potentially dangerous content: {pattern}"
+                    f"Text contains potentially dangerous content: {pattern}",
                 )
 
         # Check for excessive repetition (potential spam)
@@ -65,7 +64,7 @@ class TTSSynthesisRequest(BaseModel):
             unique_chars = len(set(v.lower()))
             if unique_chars < 10:  # Too few unique characters
                 raise ValueError(
-                    "Text appears to have insufficient character diversity"
+                    "Text appears to have insufficient character diversity",
                 )
 
         return v.strip()
@@ -80,7 +79,7 @@ class TTSSynthesisRequest(BaseModel):
         valid_backends = ["espeak", "festival", "coqui", "xtts", "kokoro"]
         if v.lower() not in valid_backends:
             raise ValueError(
-                f"Invalid backend: {v}. Valid options: {', '.join(valid_backends)}"
+                f"Invalid backend: {v}. Valid options: {', '.join(valid_backends)}",
             )
 
         return v.lower()
@@ -112,7 +111,7 @@ class TTSSynthesisRequest(BaseModel):
         # Check for valid language code format (ISO 639-1)
         if not re.match(r"^[a-z]{2}(-[A-Z]{2})?$", v):
             raise ValueError(
-                "Invalid language code format. Use ISO 639-1 format (e.g., 'en', 'en-US')"
+                "Invalid language code format. Use ISO 639-1 format (e.g., 'en', 'en-US')",
             )
 
         return v.strip().lower()
@@ -123,7 +122,7 @@ class TTSSynthesisRequest(BaseModel):
         # Check if both OGG and Opus conversion are requested
         if self.to_ogg and self.to_opus:
             raise ValueError(
-                "Cannot convert to both OGG and Opus formats simultaneously"
+                "Cannot convert to both OGG and Opus formats simultaneously",
             )
 
         # Check if speed is reasonable for the text length
@@ -148,7 +147,7 @@ class TTSSynthesisResponse(BaseModel):
 
     # Audio quality metrics
     quality_metrics: dict[str, Any] = Field(
-        default_factory=dict, description="Audio quality metrics and analysis"
+        default_factory=dict, description="Audio quality metrics and analysis",
     )
     audio_format: str | None = Field(None, description="Detected audio format")
     sample_rate: int | None = Field(None, description="Audio sample rate in Hz")
@@ -157,22 +156,22 @@ class TTSSynthesisResponse(BaseModel):
 
     # Quality scores (0.0 to 1.0)
     overall_quality: float | None = Field(
-        None, description="Overall audio quality score"
+        None, description="Overall audio quality score",
     )
     clarity_score: float | None = Field(None, description="Audio clarity score")
     naturalness_score: float | None = Field(
-        None, description="Speech naturalness score"
+        None, description="Speech naturalness score",
     )
     intelligibility_score: float | None = Field(
-        None, description="Speech intelligibility score"
+        None, description="Speech intelligibility score",
     )
 
     # Issues and recommendations
     quality_issues: list[str] = Field(
-        default_factory=list, description="Identified quality issues"
+        default_factory=list, description="Identified quality issues",
     )
     recommendations: list[str] = Field(
-        default_factory=list, description="Quality improvement recommendations"
+        default_factory=list, description="Quality improvement recommendations",
     )
 
 
@@ -180,7 +179,7 @@ class TTSBatchRequest(BaseModel):
     """Request model for batch TTS synthesis with comprehensive validation."""
 
     texts: list[str] = Field(
-        ..., description="List of texts to synthesize", min_length=1, max_length=100
+        ..., description="List of texts to synthesize", min_length=1, max_length=100,
     )
     backend: str | None = Field(None, description="TTS backend to use")
     voice: str = Field("default", description="Voice to use for synthesis")
@@ -216,7 +215,7 @@ class TTSBatchRequest(BaseModel):
             for pattern in dangerous_patterns:
                 if re.search(pattern, text, re.IGNORECASE):
                     raise ValueError(
-                        f"Text {i} contains potentially dangerous content: {pattern}"
+                        f"Text {i} contains potentially dangerous content: {pattern}",
                     )
 
             validated_texts.append(text.strip())
@@ -233,7 +232,7 @@ class TTSBatchRequest(BaseModel):
         valid_backends = ["espeak", "festival", "coqui", "xtts", "kokoro"]
         if v.lower() not in valid_backends:
             raise ValueError(
-                f"Invalid backend: {v}. Valid options: {', '.join(valid_backends)}"
+                f"Invalid backend: {v}. Valid options: {', '.join(valid_backends)}",
             )
 
         return v.lower()
@@ -262,7 +261,7 @@ class TTSBatchRequest(BaseModel):
 
         if not re.match(r"^[a-z]{2}(-[A-Z]{2})?$", v):
             raise ValueError(
-                "Invalid language code format. Use ISO 639-1 format (e.g., 'en', 'en-US')"
+                "Invalid language code format. Use ISO 639-1 format (e.g., 'en', 'en-US')",
             )
 
         return v.strip().lower()
@@ -272,7 +271,7 @@ class TTSBatchRequest(BaseModel):
         """Validate overall request consistency."""
         if self.to_ogg and self.to_opus:
             raise ValueError(
-                "Cannot convert to both OGG and Opus formats simultaneously"
+                "Cannot convert to both OGG and Opus formats simultaneously",
             )
 
         # Check total text length
@@ -288,13 +287,13 @@ class TTSBatchResponse(BaseModel):
 
     success: bool = Field(..., description="Whether batch synthesis was successful")
     results: list[TTSSynthesisResponse] = Field(
-        ..., description="Individual synthesis results"
+        ..., description="Individual synthesis results",
     )
     total_processing_time: float = Field(
-        ..., description="Total processing time in seconds"
+        ..., description="Total processing time in seconds",
     )
     error: str | None = Field(
-        None, description="Error message if batch synthesis failed"
+        None, description="Error message if batch synthesis failed",
     )
 
 
@@ -325,20 +324,20 @@ class TTSConfigRequest(BaseModel):
     default_backend: str | None = Field(None, description="Default backend to use")
     default_voice: str | None = Field(None, description="Default voice to use")
     default_speed: float | None = Field(
-        None, description="Default speech speed", ge=0.5, le=2.0
+        None, description="Default speech speed", ge=0.5, le=2.0,
     )
     default_language: str | None = Field(None, description="Default language")
     max_text_length: int | None = Field(
-        None, description="Maximum text length", ge=100, le=50000
+        None, description="Maximum text length", ge=100, le=50000,
     )
     chunk_size: int | None = Field(
-        None, description="Text chunk size for long texts", ge=100, le=5000
+        None, description="Text chunk size for long texts", ge=100, le=5000,
     )
     enable_audio_processing: bool | None = Field(
-        None, description="Enable audio processing"
+        None, description="Enable audio processing",
     )
     output_directory: str | None = Field(
-        None, description="Output directory for audio files"
+        None, description="Output directory for audio files",
     )
 
 
@@ -364,7 +363,7 @@ class TTSStatsResponse(BaseModel):
     failed_synthesis: int = Field(..., description="Failed synthesis count")
     average_processing_time: float = Field(..., description="Average processing time")
     total_audio_generated: float = Field(
-        ..., description="Total audio duration generated"
+        ..., description="Total audio duration generated",
     )
     backend_usage: dict[str, int] = Field(..., description="Backend usage statistics")
     voice_usage: dict[str, int] = Field(..., description="Voice usage statistics")
@@ -387,14 +386,14 @@ class AudioQualityMetrics(BaseModel):
     clarity_score: float = Field(0.0, description="Audio clarity score")
     naturalness_score: float = Field(0.0, description="Speech naturalness score")
     intelligibility_score: float = Field(
-        0.0, description="Speech intelligibility score"
+        0.0, description="Speech intelligibility score",
     )
 
     # Technical metrics
     signal_to_noise_ratio: float = Field(0.0, description="Signal-to-noise ratio in dB")
     dynamic_range: float = Field(0.0, description="Dynamic range in dB")
     frequency_response_score: float = Field(
-        0.0, description="Frequency response quality"
+        0.0, description="Frequency response quality",
     )
     distortion_level: float = Field(0.0, description="Distortion level (0.0 to 1.0)")
 
@@ -411,10 +410,10 @@ class AudioQualityMetrics(BaseModel):
 
     # Issues and recommendations
     issues: list[str] = Field(
-        default_factory=list, description="Identified quality issues"
+        default_factory=list, description="Identified quality issues",
     )
     recommendations: list[str] = Field(
-        default_factory=list, description="Quality improvement recommendations"
+        default_factory=list, description="Quality improvement recommendations",
     )
 
 
@@ -423,7 +422,7 @@ class AudioValidationRequest(BaseModel):
 
     audio_file_path: str = Field(..., description="Path to audio file for validation")
     validate_content: bool = Field(
-        True, description="Whether to perform content validation"
+        True, description="Whether to perform content validation",
     )
     quality_level: str = Field("high", description="Quality validation level")
 
@@ -435,12 +434,12 @@ class AudioValidationResponse(BaseModel):
     format: str = Field(..., description="Detected audio format")
     metadata: dict[str, Any] = Field(default_factory=dict, description="Audio metadata")
     quality_metrics: dict[str, Any] = Field(
-        default_factory=dict, description="Quality metrics"
+        default_factory=dict, description="Quality metrics",
     )
     file_size: int = Field(0, description="File size in bytes")
     validation_timestamp: float = Field(0.0, description="Validation timestamp")
     issues: list[str] = Field(
-        default_factory=list, description="Validation issues found"
+        default_factory=list, description="Validation issues found",
     )
 
 
@@ -458,13 +457,13 @@ class QualityTrendResponse(BaseModel):
 
     time_window: str = Field(..., description="Analysis time window")
     trends: dict[str, Any] = Field(
-        default_factory=dict, description="Quality trends by category"
+        default_factory=dict, description="Quality trends by category",
     )
     summary: dict[str, Any] = Field(
-        default_factory=dict, description="Trend summary statistics"
+        default_factory=dict, description="Trend summary statistics",
     )
     recommendations: list[str] = Field(
-        default_factory=list, description="Trend-based recommendations"
+        default_factory=list, description="Trend-based recommendations",
     )
     analysis_timestamp: float = Field(0.0, description="Analysis timestamp")
 
@@ -476,14 +475,14 @@ class QualitySummaryResponse(BaseModel):
     clarity_score: float = Field(..., description="Average clarity score")
     naturalness_score: float = Field(..., description="Average naturalness score")
     intelligibility_score: float = Field(
-        ..., description="Average intelligibility score"
+        ..., description="Average intelligibility score",
     )
     backend_performance: dict[str, Any] = Field(
-        default_factory=dict, description="Backend performance metrics"
+        default_factory=dict, description="Backend performance metrics",
     )
     total_samples: int = Field(0, description="Total quality samples analyzed")
     recent_samples: int = Field(0, description="Recent samples count")
     quality_distribution: dict[str, int] = Field(
-        default_factory=dict, description="Quality level distribution"
+        default_factory=dict, description="Quality level distribution",
     )
     summary_timestamp: float = Field(0.0, description="Summary timestamp")

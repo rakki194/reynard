@@ -1,5 +1,4 @@
-"""
-Advanced Code Tokenization Module
+"""Advanced Code Tokenization Module
 ================================
 
 Provides intelligent tokenization for programming languages with:
@@ -12,7 +11,7 @@ Provides intelligent tokenization for programming languages with:
 import logging
 import re
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 # Optional imports for tree-sitter
 try:
@@ -30,13 +29,12 @@ logger = logging.getLogger(__name__)
 
 
 class CodeTokenizer:
-    """
-    Advanced tokenizer for programming languages with Tree-sitter support.
+    """Advanced tokenizer for programming languages with Tree-sitter support.
     """
 
     def __init__(self):
-        self.parsers: Dict[str, Any] = {}
-        self.languages: Dict[str, Any] = {}
+        self.parsers: dict[str, Any] = {}
+        self.languages: dict[str, Any] = {}
         self._initialized = False
         self._initialize_parsers()
 
@@ -154,7 +152,7 @@ class CodeTokenizer:
                     self.parsers[lang] = parser
                     self.languages[lang] = config
                     logger.info(
-                        f"Tree-sitter parser for {lang} initialized successfully"
+                        f"Tree-sitter parser for {lang} initialized successfully",
                     )
                 else:
                     self.parsers[lang] = None
@@ -182,7 +180,7 @@ class CodeTokenizer:
 
         return "generic"
 
-    def tokenize_with_ast(self, code: str, language: str) -> List[str]:
+    def tokenize_with_ast(self, code: str, language: str) -> list[str]:
         """Tokenize code using Tree-sitter AST parsing."""
         if (
             not self._initialized
@@ -207,12 +205,12 @@ class CodeTokenizer:
 
         except Exception as e:
             logger.warning(
-                f"AST tokenization failed for {language}: {e}, using fallback"
+                f"AST tokenization failed for {language}: {e}, using fallback",
             )
             return self._fallback_tokenize(code, language)
 
     def _extract_tokens_from_ast(
-        self, node, code: str, tokens: List[str], language: str
+        self, node, code: str, tokens: list[str], language: str,
     ) -> None:
         """Extract meaningful tokens from AST nodes."""
         # Get the text content of this node
@@ -256,7 +254,7 @@ class CodeTokenizer:
         for child in node.children:
             self._extract_tokens_from_ast(child, code, tokens, language)
 
-    def _split_identifier(self, identifier: str) -> List[str]:
+    def _split_identifier(self, identifier: str) -> list[str]:
         """Split identifiers into meaningful parts."""
         tokens = []
 
@@ -291,7 +289,7 @@ class CodeTokenizer:
         cleaned = re.sub(r"\*/\s*$", "", cleaned)
         return cleaned.strip()
 
-    def _fallback_tokenize(self, code: str, language: str) -> List[str]:
+    def _fallback_tokenize(self, code: str, language: str) -> list[str]:
         """Fallback tokenization using regex patterns."""
         # Step 1: Clean and normalize the code
         code = self._normalize_code(code)
@@ -335,7 +333,7 @@ class CodeTokenizer:
         code = code.replace("\r\n", "\n").replace("\r", "\n")
         return code
 
-    def _extract_strings(self, code: str) -> List[str]:
+    def _extract_strings(self, code: str) -> list[str]:
         """Extract string literals."""
         strings = []
         # Match various string patterns
@@ -369,7 +367,7 @@ class CodeTokenizer:
 
         return code
 
-    def _extract_identifiers(self, code: str, language: str) -> List[str]:
+    def _extract_identifiers(self, code: str, language: str) -> list[str]:
         """Extract identifiers with intelligent splitting."""
         # Pattern for identifiers (letters, digits, underscores)
         identifier_pattern = r"\b[a-zA-Z_][a-zA-Z0-9_]*\b"
@@ -397,7 +395,7 @@ class CodeTokenizer:
 
         return split_identifiers
 
-    def _extract_keywords(self, code: str, language: str) -> List[str]:
+    def _extract_keywords(self, code: str, language: str) -> list[str]:
         """Extract language-specific keywords."""
         if language not in self.languages:
             return []
@@ -413,7 +411,7 @@ class CodeTokenizer:
 
         return found_keywords
 
-    def _extract_numbers(self, code: str) -> List[str]:
+    def _extract_numbers(self, code: str) -> list[str]:
         """Extract numeric literals."""
         # Pattern for various number formats
         number_pattern = r"\b\d+(\.\d+)?([eE][+-]?\d+)?\b"
@@ -422,7 +420,7 @@ class CodeTokenizer:
         # Flatten the tuples and return as strings
         return ["".join(num) for num in numbers]
 
-    def _extract_comments(self, code: str) -> List[str]:
+    def _extract_comments(self, code: str) -> list[str]:
         """Extract comments."""
         comments = []
 
@@ -447,12 +445,12 @@ class CodeTokenizer:
 
         return cleaned_comments
 
-    def tokenize(self, code: str, file_path: str = "") -> List[str]:
+    def tokenize(self, code: str, file_path: str = "") -> list[str]:
         """Main tokenization method."""
         language = self.detect_language(file_path) if file_path else "generic"
         return self.tokenize_with_ast(code, language)
 
-    def get_tokenization_stats(self) -> Dict[str, Any]:
+    def get_tokenization_stats(self) -> dict[str, Any]:
         """Get statistics about tokenization capabilities."""
         return {
             "tree_sitter_available": TREE_SITTER_AVAILABLE,

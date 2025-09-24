@@ -2,6 +2,95 @@
 
 A modular TypeScript tool that generates TypeScript configurations from the Reynard project architecture.
 
+## Architecture
+
+```mermaid
+graph TB
+    subgraph "⚙️ TSConfig Generator"
+        A[CLI Interface] --> B[TSConfigGenerator]
+        B --> C[Architecture Integration]
+        B --> D[Config Generation]
+        B --> E[Validation System]
+        
+        subgraph "Architecture Integration"
+            C --> C1[Project Architecture]
+            C --> C2[Buildable Directories]
+            C --> C3[TypeScript Directories]
+            C --> C4[Package Metadata]
+        end
+        
+        subgraph "Config Generation"
+            D --> D1[Root Configuration]
+            D --> D2[Package References]
+            D --> D3[Compiler Options]
+            D --> D4[File Patterns]
+            D --> D5[Individual Configs]
+        end
+        
+        subgraph "Validation System"
+            E --> E1[Config Validation]
+            E --> E2[Error Handling]
+            E --> E3[Backup Support]
+            E --> E4[Warning System]
+        end
+    end
+    
+    subgraph "🏗️ Project Architecture"
+        F[Architecture Definition] --> G[95+ Packages]
+        F --> H[Directory Structure]
+        F --> I[Build Configurations]
+        F --> J[File Patterns]
+    end
+    
+    subgraph "📦 Generated Outputs"
+        K[Root tsconfig.json] --> L[Package References]
+        K --> M[Compiler Settings]
+        K --> N[Include/Exclude Patterns]
+        O[Individual Configs] --> P[Package-specific Settings]
+    end
+    
+    C1 -->|Reads| F
+    D1 -->|Generates| K
+    D5 -->|Generates| O
+```
+
+## Generation Process
+
+```mermaid
+sequenceDiagram
+    participant CLI as CLI Interface
+    participant Generator as TSConfigGenerator
+    participant Arch as Project Architecture
+    participant Config as Config System
+    participant Output as Generated Files
+    
+    CLI->>Generator: Generate Command
+    Generator->>Arch: Get Buildable Directories
+    Arch-->>Generator: 95+ Package Paths
+    
+    Generator->>Arch: Get TypeScript Directories
+    Arch-->>Generator: Directory Metadata
+    
+    Generator->>Config: Filter Directories
+    Config-->>Generator: Filtered Packages
+    
+    Generator->>Config: Generate Package Configs
+    Config-->>Generator: Package Configurations
+    
+    alt Individual Configs Requested
+        Generator->>Output: Generate Individual tsconfig.json
+        Output-->>Generator: Package-specific Files
+    end
+    
+    Generator->>Output: Generate Root Configuration
+    Output-->>Generator: Root tsconfig.json
+    
+    Generator->>Config: Validate Configuration
+    Config-->>Generator: Validation Results
+    
+    Generator-->>CLI: Generation Complete
+```
+
 ## Overview
 
 This tool automatically generates comprehensive TypeScript configurations by analyzing the project architecture, eliminating the need for manual configuration of 95+ buildable packages in a monorepo.

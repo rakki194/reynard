@@ -1,5 +1,4 @@
-"""
-Mermaid diagram generator for agent contributions.
+"""Mermaid diagram generator for agent contributions.
 """
 
 import re
@@ -10,19 +9,18 @@ from .contribution import AgentContribution
 
 
 class MermaidDiagramGenerator:
-    """
-    Generates a mermaid diagram from agent contributions.
+    """Generates a mermaid diagram from agent contributions.
 
     This class creates visual representations of agent contributions organized
     by category using mermaid diagram syntax.
     """
 
     def __init__(self, contributions: list[AgentContribution]):
-        """
-        Initialize the generator with agent contributions.
+        """Initialize the generator with agent contributions.
 
         Args:
             contributions: List of agent contributions to visualize
+
         """
         self.contributions = contributions
         self.categorizer = AgentCategorizer()
@@ -32,11 +30,11 @@ class MermaidDiagramGenerator:
             contribution.category = self.categorizer.categorize_agent(contribution)
 
     def generate_diagram(self) -> str:
-        """
-        Generate the mermaid diagram content.
+        """Generate the mermaid diagram content.
 
         Returns:
             Mermaid diagram syntax as a string
+
         """
         # Group contributions by category
         categories = defaultdict(list)
@@ -66,7 +64,7 @@ class MermaidDiagramGenerator:
             category_letter = self._get_category_letter(category)
 
             for i, contribution in enumerate(
-                contributions[:5]
+                contributions[:5],
             ):  # Limit to 5 per category
                 node_id = f"{category_letter}{i + 1}"
 
@@ -82,14 +80,14 @@ class MermaidDiagramGenerator:
         return "\n".join(lines)
 
     def _get_category_letter(self, category: str) -> str:
-        """
-        Get the letter identifier for a category.
+        """Get the letter identifier for a category.
 
         Args:
             category: The category name
 
         Returns:
             Single letter identifier for the category
+
         """
         category_map = {
             "Security & Analysis": "B",
@@ -103,14 +101,14 @@ class MermaidDiagramGenerator:
         return category_map.get(category, "H")
 
     def _clean_text_for_mermaid(self, text: str) -> str:
-        """
-        Clean text for use in mermaid diagrams.
+        """Clean text for use in mermaid diagrams.
 
         Args:
             text: The text to clean
 
         Returns:
             Cleaned text safe for mermaid syntax
+
         """
         if not text:
             return ""
@@ -138,11 +136,11 @@ class MermaidDiagramGenerator:
         return text
 
     def generate_summary(self) -> str:
-        """
-        Generate a summary of agent contributions by category.
+        """Generate a summary of agent contributions by category.
 
         Returns:
             Markdown formatted summary
+
         """
         categories = defaultdict(list)
         for contribution in self.contributions:
@@ -165,11 +163,11 @@ class MermaidDiagramGenerator:
         return "\n".join(lines)
 
     def generate_key_patterns(self) -> str:
-        """
-        Generate key patterns section.
+        """Generate key patterns section.
 
         Returns:
             Markdown formatted patterns analysis
+
         """
         # Analyze patterns
         refactor_count = sum(

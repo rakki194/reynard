@@ -1,5 +1,4 @@
-"""
-🔥 Document Indexer with File Indexing Tests
+"""🔥 Document Indexer with File Indexing Tests
 ============================================
 
 Comprehensive pytest tests for document indexer integration with file indexing service.
@@ -13,7 +12,7 @@ Version: 1.0.0
 import asyncio
 import tempfile
 from pathlib import Path
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, patch
 
 import pytest
 
@@ -38,7 +37,7 @@ class TestDocumentIndexerFileIndexingIntegration:
                 "rag_chunk_max_tokens": 256,
                 "rag_chunk_min_tokens": 50,
                 "rag_chunk_overlap_ratio": 0.1,
-            }
+            },
         )
         return config
 
@@ -62,7 +61,7 @@ class TestDocumentIndexerFileIndexingIntegration:
             file_indexing_service,
         )
 
-        yield indexer, mock_vector_store, mock_embedding_service, file_indexing_service
+        return indexer, mock_vector_store, mock_embedding_service, file_indexing_service
 
     @pytest.fixture
     def temp_directory_with_files(self):
@@ -94,7 +93,7 @@ class ClassOne:
     def method_two(self):
         '''Another method for testing.'''
         return "Another method"
-"""
+""",
             )
 
             (temp_path / "module2.py").write_text(
@@ -125,7 +124,7 @@ class ClassTwo:
     def add_data(self, key: str, value: str) -> None:
         '''Add data to the class.'''
         self.data.append({key: value})
-"""
+""",
             )
 
             (temp_path / "documentation.md").write_text(
@@ -158,14 +157,14 @@ The indexer can be configured with various parameters:
 - Chunk size limits
 - Overlap ratios
 - Batch processing settings
-"""
+""",
             )
 
             yield temp_path
 
     @pytest.mark.asyncio
     async def test_document_indexer_initialization_with_file_indexing(
-        self, document_indexer_config
+        self, document_indexer_config,
     ):
         """Test document indexer initialization with file indexing service."""
         # Mock dependencies
@@ -204,7 +203,7 @@ The indexer can be configured with various parameters:
 
     @pytest.mark.asyncio
     async def test_document_indexer_file_content_retrieval(
-        self, document_indexer, temp_directory_with_files
+        self, document_indexer, temp_directory_with_files,
     ):
         """Test document indexer file content retrieval using file indexing service."""
         indexer, mock_vector_store, mock_embedding_service, file_indexing_service = (
@@ -226,7 +225,7 @@ The indexer can be configured with various parameters:
 
     @pytest.mark.asyncio
     async def test_document_indexer_chunking_with_file_indexing(
-        self, document_indexer, temp_directory_with_files
+        self, document_indexer, temp_directory_with_files,
     ):
         """Test document indexer chunking using file indexing service."""
         indexer, mock_vector_store, mock_embedding_service, file_indexing_service = (
@@ -256,7 +255,7 @@ The indexer can be configured with various parameters:
 
     @pytest.mark.asyncio
     async def test_document_indexer_batch_processing(
-        self, document_indexer, temp_directory_with_files
+        self, document_indexer, temp_directory_with_files,
     ):
         """Test document indexer batch processing with file indexing service."""
         indexer, mock_vector_store, mock_embedding_service, file_indexing_service = (
@@ -278,7 +277,7 @@ The indexer can be configured with various parameters:
                         "path": str(file_path),
                         "content": content,
                         "file_type": file_path.suffix,
-                    }
+                    },
                 )
 
         # Test batch processing
@@ -306,7 +305,7 @@ The indexer can be configured with various parameters:
 
     @pytest.mark.asyncio
     async def test_document_indexer_caching_integration(
-        self, document_indexer, temp_directory_with_files
+        self, document_indexer, temp_directory_with_files,
     ):
         """Test document indexer integration with file indexing caching."""
         indexer, mock_vector_store, mock_embedding_service, file_indexing_service = (
@@ -331,7 +330,7 @@ The indexer can be configured with various parameters:
 
     @pytest.mark.asyncio
     async def test_document_indexer_performance(
-        self, document_indexer, temp_directory_with_files
+        self, document_indexer, temp_directory_with_files,
     ):
         """Test document indexer performance with file indexing service."""
         indexer, mock_vector_store, mock_embedding_service, file_indexing_service = (
@@ -368,7 +367,7 @@ The indexer can be configured with various parameters:
 
     @pytest.mark.asyncio
     async def test_document_indexer_concurrent_processing(
-        self, document_indexer, temp_directory_with_files
+        self, document_indexer, temp_directory_with_files,
     ):
         """Test document indexer concurrent processing with file indexing service."""
         indexer, mock_vector_store, mock_embedding_service, file_indexing_service = (
@@ -405,7 +404,7 @@ The indexer can be configured with various parameters:
 
     @pytest.mark.asyncio
     async def test_document_indexer_language_detection(
-        self, document_indexer, temp_directory_with_files
+        self, document_indexer, temp_directory_with_files,
     ):
         """Test document indexer language detection with file indexing service."""
         indexer, mock_vector_store, mock_embedding_service, file_indexing_service = (
@@ -437,7 +436,7 @@ The indexer can be configured with various parameters:
 
     @pytest.mark.asyncio
     async def test_document_indexer_metadata_extraction(
-        self, document_indexer, temp_directory_with_files
+        self, document_indexer, temp_directory_with_files,
     ):
         """Test document indexer metadata extraction with file indexing service."""
         indexer, mock_vector_store, mock_embedding_service, file_indexing_service = (
@@ -470,7 +469,7 @@ The indexer can be configured with various parameters:
 
     @pytest.mark.asyncio
     async def test_document_indexer_worker_processing(
-        self, document_indexer, temp_directory_with_files
+        self, document_indexer, temp_directory_with_files,
     ):
         """Test document indexer worker processing with file indexing service."""
         indexer, mock_vector_store, mock_embedding_service, file_indexing_service = (
@@ -500,7 +499,7 @@ The indexer can be configured with various parameters:
 
     @pytest.mark.asyncio
     async def test_document_indexer_statistics(
-        self, document_indexer, temp_directory_with_files
+        self, document_indexer, temp_directory_with_files,
     ):
         """Test document indexer statistics with file indexing service."""
         indexer, mock_vector_store, mock_embedding_service, file_indexing_service = (

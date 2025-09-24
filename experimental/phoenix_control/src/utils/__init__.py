@@ -1,5 +1,4 @@
-"""
-Utility modules for PHOENIX Control.
+"""Utility modules for PHOENIX Control.
 
 Provides core data structures, logging utilities, and helper functions
 for the Success-Advisor-8 distillation system.
@@ -18,14 +17,14 @@ from .data_structures import (
 from .logging import get_logger, setup_logging
 
 __all__ = [
+    "AgentConfig",
     "AgentState",
-    "SpiritType",
     "NamingStyle",
     "PerformanceMetrics",
-    "StatisticalSignificance",
-    "AgentConfig",
-    "ReleaseConfig",
     "QualityConfig",
-    "setup_logging",
+    "ReleaseConfig",
+    "SpiritType",
+    "StatisticalSignificance",
     "get_logger",
+    "setup_logging",
 ]

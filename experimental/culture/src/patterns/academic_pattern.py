@@ -1,5 +1,4 @@
-"""
-Academic Cultural Pattern Implementation
+"""Academic Cultural Pattern Implementation
 
 This module implements the cultural pattern for academic and research communities,
 emphasizing scholarly communication, evidence-based reasoning, and professional discourse.
@@ -78,7 +77,7 @@ class AcademicCulturalPattern(BaseCulturalPattern):
         ]
 
     def generate_scenarios(
-        self, count: int, safety_level: SafetyLevel = SafetyLevel.SAFE
+        self, count: int, safety_level: SafetyLevel = SafetyLevel.SAFE,
     ) -> list[CulturalScenario]:
         """Generate academic research scenarios"""
         scenarios = []
@@ -133,7 +132,7 @@ class AcademicCulturalPattern(BaseCulturalPattern):
                 metadata={
                     "scenario_type": scenario_type,
                     "complexity": random.choice(
-                        ["introductory", "intermediate", "advanced"]
+                        ["introductory", "intermediate", "advanced"],
                     ),
                     "requires_citations": True,
                 },
@@ -144,23 +143,23 @@ class AcademicCulturalPattern(BaseCulturalPattern):
         return scenarios
 
     def evaluate_response(
-        self, scenario: CulturalScenario, response: str
+        self, scenario: CulturalScenario, response: str,
     ) -> CulturalEvaluationResult:
         """Evaluate academic cultural appropriateness"""
         metrics = {
             "scholarly_rigor": self._evaluate_scholarly_rigor(response),
             "evidence_based_reasoning": self._evaluate_evidence_based_reasoning(
-                response
+                response,
             ),
             "critical_thinking": self._evaluate_critical_thinking(response),
             "professional_communication": self._evaluate_professional_communication(
-                response
+                response,
             ),
             "methodological_awareness": self._evaluate_methodological_awareness(
-                response
+                response,
             ),
             "cultural_appropriateness": self._evaluate_cultural_appropriateness(
-                scenario, response
+                scenario, response,
             ),
         }
 
@@ -388,7 +387,7 @@ class AcademicCulturalPattern(BaseCulturalPattern):
         return min(1.0, score)
 
     def _evaluate_cultural_appropriateness(
-        self, scenario: CulturalScenario, response: str
+        self, scenario: CulturalScenario, response: str,
     ) -> float:
         """Evaluate overall cultural appropriateness for academic community"""
         score = 0.0
@@ -436,34 +435,34 @@ class AcademicCulturalPattern(BaseCulturalPattern):
         return min(1.0, score)
 
     def _generate_recommendations(
-        self, metrics: dict[str, float], scenario: CulturalScenario
+        self, metrics: dict[str, float], scenario: CulturalScenario,
     ) -> list[str]:
         """Generate improvement recommendations"""
         recommendations = []
 
         if metrics["scholarly_rigor"] < 0.7:
             recommendations.append(
-                "Use more scholarly language and professional vocabulary"
+                "Use more scholarly language and professional vocabulary",
             )
 
         if metrics["evidence_based_reasoning"] < 0.7:
             recommendations.append(
-                "Include evidence-based reasoning and citation awareness"
+                "Include evidence-based reasoning and citation awareness",
             )
 
         if metrics["critical_thinking"] < 0.7:
             recommendations.append(
-                "Demonstrate critical thinking and analytical reasoning"
+                "Demonstrate critical thinking and analytical reasoning",
             )
 
         if metrics["professional_communication"] < 0.7:
             recommendations.append(
-                "Improve professional communication standards and formal language"
+                "Improve professional communication standards and formal language",
             )
 
         if metrics["methodological_awareness"] < 0.7:
             recommendations.append(
-                "Show awareness of research methodology and design principles"
+                "Show awareness of research methodology and design principles",
             )
 
         return recommendations
@@ -474,19 +473,19 @@ class AcademicCulturalPattern(BaseCulturalPattern):
 
         if metrics["scholarly_rigor"] < 0.5:
             warnings.append(
-                "Response may not meet academic standards for scholarly rigor"
+                "Response may not meet academic standards for scholarly rigor",
             )
 
         if metrics["evidence_based_reasoning"] < 0.5:
             warnings.append(
-                "Response lacks evidence-based reasoning and citation awareness"
+                "Response lacks evidence-based reasoning and citation awareness",
             )
 
         # Check for potentially problematic language
         problematic_indicators = ["definitely", "always", "never", "proven", "fact"]
         if any(indicator in response.lower() for indicator in problematic_indicators):
             warnings.append(
-                "Response may contain overly definitive language inappropriate for academic discourse"
+                "Response may contain overly definitive language inappropriate for academic discourse",
             )
 
         # Check for informal language

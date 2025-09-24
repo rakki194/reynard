@@ -1,5 +1,4 @@
-"""
-Health check routes for Reynard Basic Backend
+"""Health check routes for Reynard Basic Backend
 Provides health monitoring and system status endpoints
 """
 
@@ -157,7 +156,6 @@ async def services_status(
     bg_service: BackgroundService = Depends(get_background_service),
 ):
     """Detailed services status endpoint"""
-
     services = {}
 
     # Database service
@@ -170,7 +168,7 @@ async def services_status(
         )
     except Exception as e:
         services["database"] = ServiceStatus(
-            name="database", status="error", details={"error": str(e)}
+            name="database", status="error", details={"error": str(e)},
         )
 
     # Cache service
@@ -183,7 +181,7 @@ async def services_status(
         )
     except Exception as e:
         services["cache"] = ServiceStatus(
-            name="cache", status="error", details={"error": str(e)}
+            name="cache", status="error", details={"error": str(e)},
         )
 
     # Background service
@@ -196,7 +194,7 @@ async def services_status(
         )
     except Exception as e:
         services["background"] = ServiceStatus(
-            name="background", status="error", details={"error": str(e)}
+            name="background", status="error", details={"error": str(e)},
         )
 
     return services
@@ -209,7 +207,6 @@ async def metrics_endpoint(
     bg_service: BackgroundService = Depends(get_background_service),
 ):
     """Metrics endpoint for monitoring"""
-
     # Collect metrics from all services
     metrics = {
         "timestamp": time.time(),

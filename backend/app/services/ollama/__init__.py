@@ -1,5 +1,4 @@
-"""
-Ollama services for Reynard backend.
+"""Ollama services for Reynard backend.
 
 This module provides services for Ollama local LLM integration
 with ReynardAssistant, tool calling, and streaming responses.

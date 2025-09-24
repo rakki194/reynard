@@ -1,5 +1,4 @@
-"""
-Caption monitoring endpoints for Reynard Backend.
+"""Caption monitoring endpoints for Reynard Backend.
 
 This module provides monitoring and statistics endpoints for
 caption generation system health and performance.

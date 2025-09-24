@@ -1,5 +1,4 @@
-"""
-Optimized Search Service
+"""Optimized Search Service
 =======================
 
 High-performance search service with intelligent caching, connection pooling,
@@ -13,7 +12,7 @@ import json
 import logging
 import time
 from pathlib import Path
-from typing import Any, Optional, Union
+from typing import Any
 
 import aiohttp
 import numpy as np
@@ -91,8 +90,7 @@ class SearchMetrics:
 
 
 class OptimizedSearchService:
-    """
-    Optimized search service with intelligent caching and performance monitoring.
+    """Optimized search service with intelligent caching and performance monitoring.
 
     Features:
     - Redis-based intelligent caching with compression
@@ -105,7 +103,7 @@ class OptimizedSearchService:
     def __init__(self):
         """Initialize the optimized search service."""
         # Embedding service for generating embeddings
-        self._embedding_service: Optional[EmbeddingService] = None
+        self._embedding_service: EmbeddingService | None = None
 
         # Performance metrics
         self._metrics = SearchMetrics()
@@ -113,7 +111,7 @@ class OptimizedSearchService:
         # Cache system - Redis only, no legacy fallback
 
         # Connection pooling for HTTP requests - configured by default
-        self._http_session: Optional[aiohttp.ClientSession] = None
+        self._http_session: aiohttp.ClientSession | None = None
         if OPTIMIZATION_AVAILABLE:
             http_config = get_http_config()
             self._session_connector = aiohttp.TCPConnector(
@@ -159,7 +157,7 @@ class OptimizedSearchService:
                         )
                         await self._cache_manager.initialize()
                         logger.info(
-                            "✅ Redis cache manager initialized successfully with optimized settings"
+                            "✅ Redis cache manager initialized successfully with optimized settings",
                         )
                     else:
                         logger.info("ℹ️ Cache optimization disabled by configuration")
@@ -170,7 +168,7 @@ class OptimizedSearchService:
 
                 except Exception as e:
                     logger.warning(
-                        "⚠️ Failed to initialize optimization components: %s", e
+                        "⚠️ Failed to initialize optimization components: %s", e,
                     )
                     if cache_config.get("fallback_to_legacy", True):
                         logger.info("Continuing with legacy caching")
@@ -178,7 +176,7 @@ class OptimizedSearchService:
                         raise
             else:
                 logger.warning(
-                    "⚠️ Optimization components not available - using legacy implementation"
+                    "⚠️ Optimization components not available - using legacy implementation",
                 )
 
             # Initialize embedding service
@@ -229,7 +227,7 @@ class OptimizedSearchService:
 
     def _generate_cache_key(
         self,
-        request: Union[SemanticSearchRequest, SyntaxSearchRequest, HybridSearchRequest],
+        request: SemanticSearchRequest | SyntaxSearchRequest | HybridSearchRequest,
         search_type: str,
     ) -> str:
         """Generate a cache key for the request."""
@@ -265,7 +263,7 @@ class OptimizedSearchService:
         return None
 
     async def _cache_result(
-        self, cache_key: str, result: SearchResponse, ttl: int = 3600
+        self, cache_key: str, result: SearchResponse, ttl: int = 3600,
     ):
         """Cache search result."""
         if OPTIMIZATION_AVAILABLE and hasattr(self, "_cache_manager"):
@@ -283,13 +281,13 @@ class OptimizedSearchService:
         try:
             if self._http_session:
                 async with self._http_session.get(
-                    "http://localhost:8001/health", timeout=5
+                    "http://localhost:8001/health", timeout=5,
                 ) as response:
                     if response.status == 200:
                         logger.info("✅ RAG backend connection successful")
                     else:
                         logger.warning(
-                            f"RAG backend health check failed: {response.status}"
+                            f"RAG backend health check failed: {response.status}",
                         )
         except Exception as e:
             logger.debug(f"RAG backend not available: {e}")
@@ -316,17 +314,16 @@ class OptimizedSearchService:
                 if response.status == 200:
                     result = await response.json()
                     return {"success": True, "data": result}
-                else:
-                    return {
-                        "success": False,
-                        "error": f"RAG service returned status {response.status}",
-                    }
+                return {
+                    "success": False,
+                    "error": f"RAG service returned status {response.status}",
+                }
 
         except Exception as e:
             return {"success": False, "error": f"RAG service not available: {e}"}
 
     def _format_rag_response(
-        self, rag_result: dict[str, Any], query: str, start_time: float
+        self, rag_result: dict[str, Any], query: str, start_time: float,
     ) -> SearchResponse:
         """Format RAG response as SearchResponse."""
         try:
@@ -342,7 +339,7 @@ class OptimizedSearchService:
                         line_number=item.get("line_number", 0),
                         match_type="rag",
                         context=item.get("context", ""),
-                    )
+                    ),
                 )
 
             return SearchResponse(
@@ -365,7 +362,7 @@ class OptimizedSearchService:
             )
 
     async def _local_semantic_search(
-        self, request: SemanticSearchRequest, start_time: float
+        self, request: SemanticSearchRequest, start_time: float,
     ) -> SearchResponse:
         """Perform local semantic search using embedding service."""
         try:
@@ -382,7 +379,7 @@ class OptimizedSearchService:
 
             # Get relevant files
             files = await self._get_relevant_files(
-                request.file_types, request.directories
+                request.file_types, request.directories,
             )
             if not files:
                 return SearchResponse(
@@ -396,7 +393,7 @@ class OptimizedSearchService:
 
             # Generate query embedding using the embedding service
             query_embedding_result = await self._embedding_service.generate_embeddings(
-                [request.query]
+                [request.query],
             )
             if not query_embedding_result.success:
                 return SearchResponse(
@@ -416,7 +413,7 @@ class OptimizedSearchService:
             file_contents = []
 
             logger.info(
-                f"Processing {len(files)} files in batches of {batch_size} for semantic search"
+                f"Processing {len(files)} files in batches of {batch_size} for semantic search",
             )
 
             for i in range(0, len(files), batch_size):
@@ -427,7 +424,7 @@ class OptimizedSearchService:
                 # Read batch of files
                 for file_path in batch_files:
                     try:
-                        with open(file_path, "r", encoding="utf-8") as f:
+                        with open(file_path, encoding="utf-8") as f:
                             content = f.read()
                             if len(content.strip()) > 0:
                                 batch_contents.append(content)
@@ -442,27 +439,27 @@ class OptimizedSearchService:
                         # Generate embeddings for the entire batch using embedding service
                         batch_embeddings_result = (
                             await self._embedding_service.generate_embeddings(
-                                batch_contents
+                                batch_contents,
                             )
                         )
                         if not batch_embeddings_result.success:
                             logger.warning(
-                                f"Failed to generate embeddings for batch {i // batch_size + 1}: {batch_embeddings_result.error}"
+                                f"Failed to generate embeddings for batch {i // batch_size + 1}: {batch_embeddings_result.error}",
                             )
                             continue
 
                         # Store embeddings and content
                         for j, (file_path, content) in enumerate(
-                            zip(batch_paths, batch_contents, strict=True)
+                            zip(batch_paths, batch_contents, strict=True),
                         ):
                             file_embeddings.append(
-                                batch_embeddings_result.embeddings[j]
+                                batch_embeddings_result.embeddings[j],
                             )
                             file_contents.append((file_path, content))
 
                     except Exception as e:
                         logger.warning(
-                            f"Failed to process batch {i // batch_size + 1}: {e}"
+                            f"Failed to process batch {i // batch_size + 1}: {e}",
                         )
                         continue
 
@@ -523,7 +520,7 @@ class OptimizedSearchService:
                                 sim_value = float(similarity)
                         except (ValueError, TypeError) as conv_error:
                             logger.debug(
-                                f"Failed to convert similarity to float: {conv_error}, skipping"
+                                f"Failed to convert similarity to float: {conv_error}, skipping",
                             )
                             continue
 
@@ -532,7 +529,7 @@ class OptimizedSearchService:
 
                 except Exception as e:
                     logger.warning(
-                        f"Vectorized similarity calculation failed, falling back to loop: {e}"
+                        f"Vectorized similarity calculation failed, falling back to loop: {e}",
                     )
                     # Fallback to loop-based calculation
                     for i, file_embedding in enumerate(file_embeddings):
@@ -550,7 +547,7 @@ class OptimizedSearchService:
                                 sim_value = float(similarity)
                         except (ValueError, TypeError) as conv_error:
                             logger.debug(
-                                f"Failed to convert similarity to float in fallback: {conv_error}, skipping"
+                                f"Failed to convert similarity to float in fallback: {conv_error}, skipping",
                             )
                             continue
 
@@ -576,7 +573,7 @@ class OptimizedSearchService:
                         context=(
                             content[:200] + "..." if len(content) > 200 else content
                         ),
-                    )
+                    ),
                 )
 
             return SearchResponse(
@@ -616,7 +613,7 @@ class OptimizedSearchService:
             rag_result = await self._search_via_rag(request)
             if rag_result.get("success"):
                 result = self._format_rag_response(
-                    rag_result, request.query, start_time
+                    rag_result, request.query, start_time,
                 )
                 # Only cache successful results, not errors
                 if result.success:
@@ -631,7 +628,7 @@ class OptimizedSearchService:
                     await self._cache_result(cache_key, result, ttl=cache_ttl)
                 self._metrics.record_search(time.time() - start_time, cache_hit=False)
                 return result
-            elif "RAG service not available" in str(rag_result.get("error", "")):
+            if "RAG service not available" in str(rag_result.get("error", "")):
                 logger.info("RAG service not available, using local search")
 
             # Fallback to local semantic search
@@ -665,8 +662,8 @@ class OptimizedSearchService:
 
     async def _get_relevant_files(
         self,
-        file_types: Optional[list[str]] = None,
-        directories: Optional[list[str]] = None,
+        file_types: list[str] | None = None,
+        directories: list[str] | None = None,
     ) -> list[Path]:
         """Get relevant files for search."""
         try:
@@ -730,7 +727,7 @@ class OptimizedSearchService:
 
             # Get relevant files
             files = await self._get_relevant_files(
-                request.file_types, request.directories
+                request.file_types, request.directories,
             )
             if not files:
                 return SearchResponse(
@@ -764,7 +761,7 @@ class OptimizedSearchService:
                 cmd,
                 capture_output=True,
                 text=True,
-                cwd=Path(__file__).parent.parent.parent.parent.parent,
+                cwd=Path(__file__).parent.parent.parent.parent.parent, check=False,
             )
 
             # Parse results
@@ -787,7 +784,7 @@ class OptimizedSearchService:
                                         line_number=match_data.get("line_number", 0),
                                         match_type="syntax",
                                         context=lines.get("text", ""),
-                                    )
+                                    ),
                                 )
                         except json.JSONDecodeError:
                             continue
@@ -825,7 +822,7 @@ class OptimizedSearchService:
             )
 
     def _combine_search_results(
-        self, semantic_response: SearchResponse, syntax_response: SearchResponse
+        self, semantic_response: SearchResponse, syntax_response: SearchResponse,
     ) -> SearchResponse:
         """Combine semantic and syntax search results."""
         try:
@@ -879,7 +876,7 @@ class OptimizedSearchService:
 
             # Calculate combined search time
             combined_time = max(
-                semantic_response.search_time, syntax_response.search_time
+                semantic_response.search_time, syntax_response.search_time,
             )
 
             return SearchResponse(
@@ -900,19 +897,18 @@ class OptimizedSearchService:
                     if len(semantic_response.results) > len(syntax_response.results)
                     else syntax_response
                 )
-            elif semantic_response.success:
+            if semantic_response.success:
                 return semantic_response
-            elif syntax_response.success:
+            if syntax_response.success:
                 return syntax_response
-            else:
-                return SearchResponse(
-                    success=False,
-                    query=semantic_response.query,
-                    total_results=0,
-                    results=[],
-                    search_time=time.time(),
-                    error="Both semantic and syntax searches failed",
-                )
+            return SearchResponse(
+                success=False,
+                query=semantic_response.query,
+                total_results=0,
+                results=[],
+                search_time=time.time(),
+                error="Both semantic and syntax searches failed",
+            )
 
     async def hybrid_search(self, request: HybridSearchRequest) -> SearchResponse:
         """Perform optimized hybrid search combining semantic and syntax search with caching."""
@@ -949,7 +945,7 @@ class OptimizedSearchService:
 
             # Wait for both to complete
             semantic_response, syntax_response = await asyncio.gather(
-                semantic_task, syntax_task, return_exceptions=True
+                semantic_task, syntax_task, return_exceptions=True,
             )
 
             # Handle exceptions from parallel tasks
@@ -977,7 +973,7 @@ class OptimizedSearchService:
 
             # Combine results
             search_response = self._combine_search_results(
-                semantic_response, syntax_response
+                semantic_response, syntax_response,
             )
 
             # Cache the result with configured TTL
@@ -1010,7 +1006,7 @@ class OptimizedSearchService:
         try:
             # Get relevant files
             files = await self._get_relevant_files(
-                request.file_types, request.directories
+                request.file_types, request.directories,
             )
 
             # Check if embedding service is available
@@ -1031,7 +1027,7 @@ class OptimizedSearchService:
             chunk_size = request.chunk_size or 512
 
             logger.info(
-                f"Starting batch indexing of {len(files)} files with batch size {batch_size}"
+                f"Starting batch indexing of {len(files)} files with batch size {batch_size}",
             )
 
             for i in range(0, len(files), batch_size):
@@ -1042,7 +1038,7 @@ class OptimizedSearchService:
                 # Read batch of files
                 for file_path in batch_files:
                     try:
-                        with open(file_path, "r", encoding="utf-8") as f:
+                        with open(file_path, encoding="utf-8") as f:
                             content = f.read()
                             if len(content.strip()) > 0:
                                 batch_contents.append(content)
@@ -1061,31 +1057,31 @@ class OptimizedSearchService:
                         # Generate embeddings for the entire batch using embedding service
                         batch_embeddings_result = (
                             await self._embedding_service.generate_embeddings(
-                                batch_contents
+                                batch_contents,
                             )
                         )
                         if batch_embeddings_result.success:
                             indexed_files += len(batch_contents)
                         else:
                             logger.warning(
-                                f"Failed to generate embeddings for batch {i // batch_size + 1}: {batch_embeddings_result.error}"
+                                f"Failed to generate embeddings for batch {i // batch_size + 1}: {batch_embeddings_result.error}",
                             )
 
                         # Log progress
                         if (i + batch_size) % (batch_size * 10) == 0:
                             logger.info(
-                                f"Indexed {i + len(batch_contents)}/{len(files)} files"
+                                f"Indexed {i + len(batch_contents)}/{len(files)} files",
                             )
 
                     except Exception as e:
                         logger.warning(
-                            f"Failed to process batch {i // batch_size + 1}: {e}"
+                            f"Failed to process batch {i // batch_size + 1}: {e}",
                         )
                         continue
 
             index_time = time.time() - start_time
             logger.info(
-                f"Indexing completed: {indexed_files} files, {total_chunks} chunks in {index_time:.2f}s"
+                f"Indexing completed: {indexed_files} files, {total_chunks} chunks in {index_time:.2f}s",
             )
 
             return IndexResponse(
@@ -1193,7 +1189,7 @@ class OptimizedSearchService:
             }
 
     async def get_query_suggestions(
-        self, query: str, limit: int = 5
+        self, query: str, limit: int = 5,
     ) -> SuggestionsResponse:
         """Get query suggestions based on the input query."""
         try:
@@ -1260,7 +1256,7 @@ class OptimizedSearchService:
                             "text": query.replace(term, related_term),
                             "type": "code_synonym",
                             "confidence": 0.8,
-                        }
+                        },
                     )
 
         return suggestions
@@ -1289,7 +1285,7 @@ class OptimizedSearchService:
                             "text": new_query,
                             "type": "synonym",
                             "confidence": 0.7,
-                        }
+                        },
                     )
 
         return suggestions

@@ -1,5 +1,4 @@
-"""
-Mock password manager.
+"""Mock password manager.
 """
 
 from ..main import MockPasswordManager, SecurityLevel

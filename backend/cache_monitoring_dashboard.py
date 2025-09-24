@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Cache Monitoring Dashboard
+"""Cache Monitoring Dashboard
 ==========================
 
 A real-time dashboard to monitor cache performance and prove it's working.
@@ -8,15 +7,11 @@ This provides live metrics, visualizations, and cache analysis.
 """
 
 import asyncio
-import json
-import queue
-import threading
 import time
 from collections import deque
-from datetime import datetime, timedelta
-from typing import Any, Dict, List
+from datetime import datetime
+from typing import Any
 
-import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 import requests
 
@@ -37,20 +32,19 @@ class CacheMonitoringDashboard:
             "timestamps": deque(maxlen=50),
         }
 
-    async def get_cache_metrics(self) -> Dict[str, Any]:
+    async def get_cache_metrics(self) -> dict[str, Any]:
         """Get current cache metrics from the API."""
         try:
             response = requests.get(
-                f"{self.base_url}/api/search/performance", timeout=5
+                f"{self.base_url}/api/search/performance", timeout=5,
             )
             if response.status_code == 200:
                 return response.json()
-            else:
-                return {"error": f"API returned status {response.status_code}"}
+            return {"error": f"API returned status {response.status_code}"}
         except Exception as e:
             return {"error": str(e)}
 
-    async def perform_test_search(self, query: str) -> Dict[str, Any]:
+    async def perform_test_search(self, query: str) -> dict[str, Any]:
         """Perform a test search and measure performance."""
         try:
             start_time = time.time()
@@ -75,14 +69,14 @@ class CacheMonitoringDashboard:
                 "timestamp": datetime.now(),
             }
 
-    def update_metrics_history(self, metrics: Dict[str, Any]):
+    def update_metrics_history(self, metrics: dict[str, Any]):
         """Update the metrics history."""
         if "error" not in metrics:
             self.metrics_history.append(
-                {"timestamp": datetime.now(), "metrics": metrics}
+                {"timestamp": datetime.now(), "metrics": metrics},
             )
 
-    def print_current_metrics(self, metrics: Dict[str, Any]):
+    def print_current_metrics(self, metrics: dict[str, Any]):
         """Print current metrics in a formatted way."""
         print("\n" + "=" * 60)
         print(f"🦊 Cache Monitoring Dashboard - {datetime.now().strftime('%H:%M:%S')}")
@@ -102,22 +96,22 @@ class CacheMonitoringDashboard:
         print(f"   Cache misses: {search_metrics.get('cache_misses', 0)}")
         print(f"   Hit rate: {search_metrics.get('cache_hit_rate', 0):.1f}%")
         print(
-            f"   Average search time: {search_metrics.get('average_search_time_ms', 0):.2f}ms"
+            f"   Average search time: {search_metrics.get('average_search_time_ms', 0):.2f}ms",
         )
 
         print("\n💾 Cache Status:")
         print(
-            f"   Redis available: {'✅' if cache_status.get('redis_available', False) else '❌'}"
+            f"   Redis available: {'✅' if cache_status.get('redis_available', False) else '❌'}",
         )
         print(f"   Legacy cache size: {cache_status.get('legacy_cache_size', 0)}")
         print(f"   Cache max size: {cache_status.get('cache_max_size', 0)}")
 
         print("\n⚡ Optimization Status:")
         print(
-            f"   Optimization available: {'✅' if optimization_status.get('optimization_available', False) else '❌'}"
+            f"   Optimization available: {'✅' if optimization_status.get('optimization_available', False) else '❌'}",
         )
         print(
-            f"   HTTP connection pooling: {'✅' if optimization_status.get('http_connection_pooling', False) else '❌'}"
+            f"   HTTP connection pooling: {'✅' if optimization_status.get('http_connection_pooling', False) else '❌'}",
         )
         print(f"   Models loaded: {len(optimization_status.get('models_loaded', []))}")
 
@@ -132,7 +126,7 @@ class CacheMonitoringDashboard:
             )
             hit_rate_trend = current_hit_rate - previous_hit_rate
 
-            print(f"\n📈 Trends:")
+            print("\n📈 Trends:")
             print(f"   Hit rate change: {hit_rate_trend:+.1f}%")
 
     async def run_performance_test(self):
@@ -172,16 +166,16 @@ class CacheMonitoringDashboard:
 
                         # Update performance data
                         self.performance_data["response_times"].append(
-                            result2["response_time_ms"]
+                            result2["response_time_ms"],
                         )
                         self.performance_data["timestamps"].append(datetime.now())
                 else:
                     print(
-                        f"   ❌ Second request failed: {result2.get('error', 'Unknown error')}"
+                        f"   ❌ Second request failed: {result2.get('error', 'Unknown error')}",
                     )
             else:
                 print(
-                    f"   ❌ First request failed: {result1.get('error', 'Unknown error')}"
+                    f"   ❌ First request failed: {result1.get('error', 'Unknown error')}",
                 )
 
             # Small delay between tests
@@ -293,7 +287,7 @@ class CacheMonitoringDashboard:
             max_hit_rate = max(hit_rates)
             min_hit_rate = min(hit_rates)
 
-            print(f"📊 Cache Hit Rate Statistics:")
+            print("📊 Cache Hit Rate Statistics:")
             print(f"   Average: {avg_hit_rate:.1f}%")
             print(f"   Maximum: {max_hit_rate:.1f}%")
             print(f"   Minimum: {min_hit_rate:.1f}%")
@@ -305,13 +299,13 @@ class CacheMonitoringDashboard:
         # Performance test results
         if self.performance_data["response_times"]:
             avg_response_time = sum(self.performance_data["response_times"]) / len(
-                self.performance_data["response_times"]
+                self.performance_data["response_times"],
             )
             print(f"🚀 Average Cached Response Time: {avg_response_time:.2f}ms")
 
         print(f"\n📈 Data Points Collected: {len(self.metrics_history)}")
         print(
-            f"⏱️  Monitoring Duration: {len(self.metrics_history) * self.update_interval / 60:.1f} minutes"
+            f"⏱️  Monitoring Duration: {len(self.metrics_history) * self.update_interval / 60:.1f} minutes",
         )
 
         print("\n✅ Cache monitoring complete!")

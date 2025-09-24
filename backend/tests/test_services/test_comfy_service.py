@@ -1,5 +1,4 @@
-"""
-Tests for ComfyUI service.
+"""Tests for ComfyUI service.
 
 This module tests the ComfyUI service functionality for
 workflow execution and management.
@@ -45,7 +44,7 @@ class TestComfyService:
 
         # Create test workflow request
         workflow_request = ComfyWorkflowRequest(
-            workflow_id="test_workflow", inputs={"text": "test input"}, priority=1
+            workflow_id="test_workflow", inputs={"text": "test input"}, priority=1,
         )
 
         # Execute workflow
@@ -70,7 +69,7 @@ class TestComfyService:
 
         # Create test workflow request
         workflow_request = ComfyWorkflowRequest(
-            workflow_id="test_workflow", inputs={"text": "test input"}, priority=1
+            workflow_id="test_workflow", inputs={"text": "test input"}, priority=1,
         )
 
         # Execute workflow
@@ -233,10 +232,10 @@ class TestComfyService:
                             "filename": "output.png",
                             "type": "output",
                             "subfolder": "output",
-                        }
-                    ]
-                }
-            }
+                        },
+                    ],
+                },
+            },
         }
         mock_client.get.return_value = mock_response
 
@@ -286,7 +285,7 @@ class TestComfyService:
         # Upload workflow
         workflow_data = {
             "nodes": [
-                {"id": "1", "type": "text_input", "inputs": {"text": "Hello World"}}
+                {"id": "1", "type": "text_input", "inputs": {"text": "Hello World"}},
             ],
             "connections": [],
         }
@@ -433,7 +432,7 @@ class TestComfyService:
                     "name": "Text to Image",
                     "description": "Generate images from text prompts",
                     "category": "generation",
-                }
+                },
             ],
             "total": 1,
         }
@@ -464,7 +463,7 @@ class TestComfyService:
                     "name": "Text to Image",
                     "description": "Generate images from text prompts",
                     "category": "generation",
-                }
+                },
             ],
             "total": 1,
         }
@@ -495,7 +494,7 @@ class TestComfyService:
                     "name": "Text to Image",
                     "description": "Generate images from text prompts",
                     "category": "generation",
-                }
+                },
             ],
             "total": 1,
             "page": 1,
@@ -713,7 +712,7 @@ class TestComfyService:
 
     @patch("app.services.comfy.comfy_service.httpx.AsyncClient")
     async def test_get_workflow_templates_http_version_not_supported(
-        self, mock_client_class
+        self, mock_client_class,
     ):
         """Test workflow templates retrieval with HTTP version not supported."""
         # Mock the HTTP client
@@ -732,7 +731,7 @@ class TestComfyService:
 
     @patch("app.services.comfy.comfy_service.httpx.AsyncClient")
     async def test_get_workflow_templates_variant_also_negotiates(
-        self, mock_client_class
+        self, mock_client_class,
     ):
         """Test workflow templates retrieval with variant also negotiates."""
         # Mock the HTTP client
@@ -802,7 +801,7 @@ class TestComfyService:
 
     @patch("app.services.comfy.comfy_service.httpx.AsyncClient")
     async def test_get_workflow_templates_network_authentication_required(
-        self, mock_client_class
+        self, mock_client_class,
     ):
         """Test workflow templates retrieval with network authentication required."""
         # Mock the HTTP client

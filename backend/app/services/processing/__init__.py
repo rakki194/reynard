@@ -1,5 +1,4 @@
-"""
-Data processing services.
+"""Data processing services.
 
 Services for processing and visualizing data including embeddings and images.
 """

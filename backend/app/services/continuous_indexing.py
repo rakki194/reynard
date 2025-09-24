@@ -1,5 +1,4 @@
-"""
-Continuous Indexing Service
+"""Continuous Indexing Service
 
 Service for continuous monitoring and indexing of the Reynard codebase.
 Provides real-time file watching and automatic re-indexing capabilities.
@@ -136,10 +135,10 @@ class ContinuousIndexingService:
 
         # Indexing queue
         self.indexing_queue: asyncio.Queue = asyncio.Queue(
-            maxsize=continuous_indexing_config.max_queue_size
+            maxsize=continuous_indexing_config.max_queue_size,
         )
         self.removal_queue: asyncio.Queue = asyncio.Queue(
-            maxsize=continuous_indexing_config.max_queue_size
+            maxsize=continuous_indexing_config.max_queue_size,
         )
 
         # Statistics
@@ -226,7 +225,7 @@ class ContinuousIndexingService:
             # This is expected during testing or when the service isn't fully initialized
             # Only log as debug to avoid cluttering logs during normal operation
             logger.debug(
-                "No event loop running, cannot schedule task (this is normal during testing)"
+                "No event loop running, cannot schedule task (this is normal during testing)",
             )
             return None
         except Exception as e:
@@ -258,7 +257,7 @@ class ContinuousIndexingService:
             try:
                 # Wait for files to index
                 file_path = await asyncio.wait_for(
-                    self.indexing_queue.get(), timeout=1.0
+                    self.indexing_queue.get(), timeout=1.0,
                 )
 
                 # Wait a bit to batch multiple changes
@@ -282,7 +281,7 @@ class ContinuousIndexingService:
                 # Index the files
                 await self.index_files(files_to_index)
 
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 continue
             except Exception as e:
                 logger.error("Error processing indexing queue: %s", e)
@@ -293,13 +292,13 @@ class ContinuousIndexingService:
             try:
                 # Wait for files to remove
                 file_path = await asyncio.wait_for(
-                    self.removal_queue.get(), timeout=1.0
+                    self.removal_queue.get(), timeout=1.0,
                 )
 
                 # Remove from index
                 await self.remove_file_from_index(file_path)
 
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 continue
             except Exception as e:
                 logger.error("Error processing removal queue: %s", e)
@@ -337,7 +336,7 @@ class ContinuousIndexingService:
 
             # Create document
             relative_path = file_path.relative_to(
-                continuous_indexing_config.get_watch_root_path()
+                continuous_indexing_config.get_watch_root_path(),
             )
             return {
                 "file_id": str(relative_path),
@@ -351,8 +350,8 @@ class ContinuousIndexingService:
                     "extension": file_path.suffix,
                     "parent_dir": str(
                         file_path.parent.relative_to(
-                            continuous_indexing_config.get_watch_root_path()
-                        )
+                            continuous_indexing_config.get_watch_root_path(),
+                        ),
                     ),
                     "indexed_at": time.time(),
                     "indexed_by": "continuous_indexing",

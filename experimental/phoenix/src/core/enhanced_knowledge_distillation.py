@@ -1,5 +1,4 @@
-"""
-PHOENIX Enhanced Knowledge Distillation
+"""PHOENIX Enhanced Knowledge Distillation
 
 Enhanced knowledge distillation system that integrates advanced trait extraction,
 domain expertise analysis, and specialization accuracy assessment.
@@ -8,10 +7,9 @@ Author: Vulpine (Fox Specialist)
 Version: 1.0.0
 """
 
-import json
 import logging
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from ..utils.data_structures import (
     AgentGeneticMaterial,
@@ -25,8 +23,7 @@ from .subliminal_trait_extractor import SubliminalTraitExtractor
 
 
 class EnhancedKnowledgeDistillation:
-    """
-    Enhanced knowledge distillation system for PHOENIX framework.
+    """Enhanced knowledge distillation system for PHOENIX framework.
 
     Integrates:
     - Advanced subliminal trait extraction
@@ -55,10 +52,9 @@ class EnhancedKnowledgeDistillation:
         self.logger.info("🧠 Enhanced knowledge distillation system initialized")
 
     def distill_knowledge(
-        self, agent_output: str, agent_state: AgentState
+        self, agent_output: str, agent_state: AgentState,
     ) -> KnowledgeDistillationResult:
-        """
-        Perform comprehensive knowledge distillation from agent output.
+        """Perform comprehensive knowledge distillation from agent output.
 
         Args:
             agent_output: The agent's output text
@@ -66,36 +62,37 @@ class EnhancedKnowledgeDistillation:
 
         Returns:
             Comprehensive knowledge distillation result
+
         """
         self.logger.info(
-            f"Starting enhanced knowledge distillation for agent {agent_state.id}"
+            f"Starting enhanced knowledge distillation for agent {agent_state.id}",
         )
 
         # Extract subliminal traits
         subliminal_traits = self.trait_extractor.extract_traits_from_output(
-            agent_output, agent_state
+            agent_output, agent_state,
         )
 
         # Analyze domain expertise
         domain_expertise = self.domain_analyzer.analyze_domain_expertise(
-            agent_output, agent_state
+            agent_output, agent_state,
         )
 
         # Analyze specialization accuracy
         specialization_accuracy = (
             self.specialization_analyzer.analyze_specialization_accuracy(
-                agent_output, agent_state
+                agent_output, agent_state,
             )
         )
 
         # Calculate knowledge fidelity
         knowledge_fidelity = self._calculate_knowledge_fidelity(
-            subliminal_traits, domain_expertise, specialization_accuracy
+            subliminal_traits, domain_expertise, specialization_accuracy,
         )
 
         # Create structured knowledge
         structured_knowledge = self._create_structured_knowledge(
-            subliminal_traits, domain_expertise, specialization_accuracy
+            subliminal_traits, domain_expertise, specialization_accuracy,
         )
 
         # Calculate overall distillation quality
@@ -135,15 +132,15 @@ class EnhancedKnowledgeDistillation:
         )
 
         self.logger.info(
-            f"Enhanced knowledge distillation completed with quality: {distillation_quality:.3f}"
+            f"Enhanced knowledge distillation completed with quality: {distillation_quality:.3f}",
         )
         return result
 
     def _calculate_knowledge_fidelity(
         self,
-        traits: List,
-        domain_expertise: Dict[str, Any],
-        specialization_accuracy: Dict[str, Any],
+        traits: list,
+        domain_expertise: dict[str, Any],
+        specialization_accuracy: dict[str, Any],
     ) -> float:
         """Calculate knowledge fidelity score."""
         # Base fidelity from trait consistency
@@ -171,9 +168,9 @@ class EnhancedKnowledgeDistillation:
 
     def _create_structured_knowledge(
         self,
-        traits: List,
-        domain_expertise: Dict[str, Any],
-        specialization_accuracy: Dict[str, Any],
+        traits: list,
+        domain_expertise: dict[str, Any],
+        specialization_accuracy: dict[str, Any],
     ) -> StructuredKnowledge:
         """Create structured knowledge from analysis results."""
         # Extract categories from traits
@@ -243,14 +240,14 @@ class EnhancedKnowledgeDistillation:
                 else 0.0
             ),
             "specialization_accuracy": specialization_accuracy.get(
-                "overall_accuracy", 0.0
+                "overall_accuracy", 0.0,
             ),
             "overall_confidence": 0.0,  # Will be calculated
         }
 
         # Calculate overall confidence
         confidence_scores["overall_confidence"] = sum(confidence_scores.values()) / len(
-            confidence_scores
+            confidence_scores,
         )
 
         return StructuredKnowledge(
@@ -264,9 +261,9 @@ class EnhancedKnowledgeDistillation:
 
     def _calculate_distillation_quality(
         self,
-        traits: List,
-        domain_expertise: Dict[str, Any],
-        specialization_accuracy: Dict[str, Any],
+        traits: list,
+        domain_expertise: dict[str, Any],
+        specialization_accuracy: dict[str, Any],
         knowledge_fidelity: float,
     ) -> float:
         """Calculate overall distillation quality."""
@@ -290,7 +287,7 @@ class EnhancedKnowledgeDistillation:
 
         return min(1.0, quality)
 
-    def _calculate_trait_accuracy(self, traits: List) -> float:
+    def _calculate_trait_accuracy(self, traits: list) -> float:
         """Calculate trait extraction accuracy."""
         if not traits:
             return 0.0
@@ -307,8 +304,8 @@ class EnhancedKnowledgeDistillation:
         return min(1.0, accuracy)
 
     def _calculate_relevance_scores(
-        self, domain_expertise: Dict[str, Any]
-    ) -> Dict[str, float]:
+        self, domain_expertise: dict[str, Any],
+    ) -> dict[str, float]:
         """Calculate relevance scores for different domains."""
         relevance_scores = {}
 
@@ -320,8 +317,8 @@ class EnhancedKnowledgeDistillation:
         return relevance_scores
 
     def analyze_cross_agent_knowledge_transfer(
-        self, distillation_results: List[KnowledgeDistillationResult]
-    ) -> Dict[str, Any]:
+        self, distillation_results: list[KnowledgeDistillationResult],
+    ) -> dict[str, Any]:
         """Analyze potential for cross-agent knowledge transfer."""
         if len(distillation_results) < 2:
             return {"error": "Need at least 2 agents for transfer analysis"}
@@ -351,7 +348,7 @@ class EnhancedKnowledgeDistillation:
 
                 # Calculate domain transfer potential
                 domain_transfer = self._calculate_domain_transfer_potential(
-                    result1.domain_expertise_scores, result2.domain_expertise_scores
+                    result1.domain_expertise_scores, result2.domain_expertise_scores,
                 )
                 transfer_analysis["domain_transfer_potential"][
                     transfer_key
@@ -360,7 +357,7 @@ class EnhancedKnowledgeDistillation:
                 # Calculate specialization transfer potential
                 specialization_transfer = (
                     self._calculate_specialization_transfer_potential(
-                        result1.specialization_accuracy, result2.specialization_accuracy
+                        result1.specialization_accuracy, result2.specialization_accuracy,
                     )
                 )
                 transfer_analysis["specialization_transfer_potential"][
@@ -380,7 +377,7 @@ class EnhancedKnowledgeDistillation:
         return transfer_analysis
 
     def _calculate_trait_transfer_potential(
-        self, traits1: List, traits2: List
+        self, traits1: list, traits2: list,
     ) -> float:
         """Calculate trait transfer potential between two agents."""
         if not traits1 or not traits2:
@@ -396,7 +393,7 @@ class EnhancedKnowledgeDistillation:
             return 0.0
 
         transfer_score = len(common_categories) / max(
-            len(categories1), len(categories2)
+            len(categories1), len(categories2),
         )
 
         # Boost for high-quality traits
@@ -407,7 +404,7 @@ class EnhancedKnowledgeDistillation:
         return min(1.0, transfer_score * quality_boost)
 
     def _calculate_domain_transfer_potential(
-        self, domains1: Dict[str, Any], domains2: Dict[str, Any]
+        self, domains1: dict[str, Any], domains2: dict[str, Any],
     ) -> float:
         """Calculate domain transfer potential between two agents."""
         if not domains1 or not domains2:
@@ -425,14 +422,14 @@ class EnhancedKnowledgeDistillation:
             expertise1 = domains1[domain]["expertise_score"]
             expertise2 = domains2[domain]["expertise_score"]
             transfer_score = min(
-                expertise1, expertise2
+                expertise1, expertise2,
             )  # Transfer limited by lower expertise
             transfer_scores.append(transfer_score)
 
         return sum(transfer_scores) / len(transfer_scores) if transfer_scores else 0.0
 
     def _calculate_specialization_transfer_potential(
-        self, spec1: Dict[str, Any], spec2: Dict[str, Any]
+        self, spec1: dict[str, Any], spec2: dict[str, Any],
     ) -> float:
         """Calculate specialization transfer potential between two agents."""
         if not spec1 or not spec2:
@@ -443,20 +440,19 @@ class EnhancedKnowledgeDistillation:
         spirit2 = spec2.get("spirit_type", "unknown")
 
         if self.specialization_analyzer._are_complementary_specializations(
-            spirit1, spirit2
+            spirit1, spirit2,
         ):
             # High transfer potential for complementary specializations
             accuracy1 = spec1.get("overall_accuracy", 0.0)
             accuracy2 = spec2.get("overall_accuracy", 0.0)
             return (accuracy1 + accuracy2) / 2
-        else:
-            # Lower transfer potential for non-complementary specializations
-            accuracy1 = spec1.get("overall_accuracy", 0.0)
-            accuracy2 = spec2.get("overall_accuracy", 0.0)
-            return (accuracy1 + accuracy2) / 4  # Reduced by half
+        # Lower transfer potential for non-complementary specializations
+        accuracy1 = spec1.get("overall_accuracy", 0.0)
+        accuracy2 = spec2.get("overall_accuracy", 0.0)
+        return (accuracy1 + accuracy2) / 4  # Reduced by half
 
     def generate_distillation_report(
-        self, distillation_results: List[KnowledgeDistillationResult]
+        self, distillation_results: list[KnowledgeDistillationResult],
     ) -> str:
         """Generate comprehensive distillation report."""
         report = f"""
@@ -506,7 +502,7 @@ Cross-Agent Transfer Analysis:
 
             # Analyze cross-agent transfer
             transfer_analysis = self.analyze_cross_agent_knowledge_transfer(
-                distillation_results
+                distillation_results,
             )
 
             if "overall_transfer_potential" in transfer_analysis:
@@ -515,7 +511,7 @@ Cross-Agent Transfer Analysis:
                 ].items():
                     report += f"- {transfer_key}: {potential:.3f}\n"
 
-        report += f"""
+        report += """
 Recommendations:
 ---------------
 1. Focus on improving knowledge fidelity through better trait extraction

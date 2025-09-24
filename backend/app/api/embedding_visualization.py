@@ -14,10 +14,8 @@ from typing import Any
 from fastapi import Depends, HTTPException, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel, Field
 
-from gatekeeper.api.dependencies import require_active_user
-from gatekeeper.models.user import User
-
 from app.core.base_router import BaseServiceRouter, ServiceStatus
+from app.core.logging_config import get_service_logger
 from app.core.router_mixins import (
     ConfigEndpointMixin,
     MetricsMixin,
@@ -25,7 +23,6 @@ from app.core.router_mixins import (
     StreamingResponseMixin,
     ValidationMixin,
 )
-from app.core.logging_config import get_service_logger
 from app.services.processing.embedding_visualization_service import (
     EmbeddingVisualizationService,
 )
@@ -33,6 +30,8 @@ from app.utils.dimensionality_reduction import (
     get_available_methods,
     validate_parameters,
 )
+from gatekeeper.api.dependencies import require_active_user
+from gatekeeper.models.user import User
 
 logger = get_service_logger("embedding-visualization")
 

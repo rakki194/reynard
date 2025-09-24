@@ -1,5 +1,4 @@
-"""
-Router Mixins for Reynard Backend Services
+"""Router Mixins for Reynard Backend Services
 
 This module provides reusable mixins that can be combined with
 BaseServiceRouter to add specific functionality to service routers.
@@ -9,9 +8,7 @@ import logging
 from typing import Any
 
 from fastapi import File, HTTPException, UploadFile
-from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
-from sse_starlette import EventSourceResponse
 
 from .error_handler import service_error_handler
 from .exceptions import ValidationError
@@ -21,16 +18,15 @@ logger = logging.getLogger(__name__)
 
 
 class ConfigEndpointMixin:
-    """
-    Mixin that provides configuration endpoints for services.
+    """Mixin that provides configuration endpoints for services.
     """
 
     def setup_config_endpoints(self, config_model: type[BaseModel]) -> None:
-        """
-        Setup configuration endpoints for the service.
+        """Setup configuration endpoints for the service.
 
         Args:
             config_model: Pydantic model for configuration
+
         """
 
         @self.router.get("/config")
@@ -48,7 +44,7 @@ class ConfigEndpointMixin:
             except Exception as e:
                 logger.error(f"Failed to get config for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="get_config", error=e, service_name=self.service_name
+                    operation="get_config", error=e, service_name=self.service_name,
                 )
 
         @self.router.put("/config")
@@ -70,7 +66,7 @@ class ConfigEndpointMixin:
             except Exception as e:
                 logger.error(f"Failed to update config for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="update_config", error=e, service_name=self.service_name
+                    operation="update_config", error=e, service_name=self.service_name,
                 )
 
         @self.router.post("/config/validate")
@@ -82,7 +78,7 @@ class ConfigEndpointMixin:
             except Exception as e:
                 logger.error(f"Config validation failed for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="validate_config", error=e, service_name=self.service_name
+                    operation="validate_config", error=e, service_name=self.service_name,
                 )
 
 
@@ -91,8 +87,7 @@ StreamingResponseMixin = EnhancedStreamingResponseMixin
 
 
 class FileUploadMixin:
-    """
-    Mixin that provides file upload capabilities.
+    """Mixin that provides file upload capabilities.
     """
 
     def setup_file_upload_endpoints(self) -> None:
@@ -111,12 +106,12 @@ class FileUploadMixin:
                         "result": result,
                     }
                 raise HTTPException(
-                    status_code=501, detail="File upload not supported by this service"
+                    status_code=501, detail="File upload not supported by this service",
                 )
             except Exception as e:
                 logger.error(f"File upload failed for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="upload_file", error=e, service_name=self.service_name
+                    operation="upload_file", error=e, service_name=self.service_name,
                 )
 
         @self.router.post("/upload/batch")
@@ -138,12 +133,11 @@ class FileUploadMixin:
             except Exception as e:
                 logger.error(f"Batch file upload failed for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="upload_files", error=e, service_name=self.service_name
+                    operation="upload_files", error=e, service_name=self.service_name,
                 )
 
     def validate_file_type(self, file: UploadFile, allowed_types: list[str]) -> bool:
-        """
-        Validate file type.
+        """Validate file type.
 
         Args:
             file: Uploaded file
@@ -154,6 +148,7 @@ class FileUploadMixin:
 
         Raises:
             ValidationError: If file type is not allowed
+
         """
         if file.content_type not in allowed_types:
             raise ValidationError(
@@ -166,8 +161,7 @@ class FileUploadMixin:
         return True
 
     def validate_file_size(self, file: UploadFile, max_size: int) -> bool:
-        """
-        Validate file size.
+        """Validate file size.
 
         Args:
             file: Uploaded file
@@ -178,6 +172,7 @@ class FileUploadMixin:
 
         Raises:
             ValidationError: If file size exceeds limits
+
         """
         if file.size and file.size > max_size:
             raise ValidationError(
@@ -188,8 +183,7 @@ class FileUploadMixin:
 
 
 class MetricsMixin:
-    """
-    Mixin that provides metrics collection capabilities.
+    """Mixin that provides metrics collection capabilities.
     """
 
     def __init__(self):
@@ -217,7 +211,7 @@ class MetricsMixin:
             except Exception as e:
                 logger.error(f"Failed to get metrics for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="get_metrics", error=e, service_name=self.service_name
+                    operation="get_metrics", error=e, service_name=self.service_name,
                 )
 
         @self.router.get("/metrics/reset")
@@ -229,16 +223,16 @@ class MetricsMixin:
             except Exception as e:
                 logger.error(f"Failed to reset metrics for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="reset_metrics", error=e, service_name=self.service_name
+                    operation="reset_metrics", error=e, service_name=self.service_name,
                 )
 
     def record_request(self, endpoint: str, response_time: float) -> None:
-        """
-        Record a request metric.
+        """Record a request metric.
 
         Args:
             endpoint: The endpoint that was called
             response_time: Response time in seconds
+
         """
         self._metrics["requests_total"] += 1
 
@@ -253,11 +247,11 @@ class MetricsMixin:
             self._metrics["response_times"] = self._metrics["response_times"][-1000:]
 
     def record_error(self, error_type: str) -> None:
-        """
-        Record an error metric.
+        """Record an error metric.
 
         Args:
             error_type: Type of error that occurred
+
         """
         self._metrics["errors_total"] += 1
 
@@ -284,8 +278,7 @@ class MetricsMixin:
 
 
 class RateLimitingMixin:
-    """
-    Mixin that provides rate limiting capabilities.
+    """Mixin that provides rate limiting capabilities.
     """
 
     def __init__(self):
@@ -306,16 +299,16 @@ class RateLimitingMixin:
             except Exception as e:
                 logger.error(f"Failed to get rate limits for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="get_rate_limits", error=e, service_name=self.service_name
+                    operation="get_rate_limits", error=e, service_name=self.service_name,
                 )
 
     def set_rate_limit(self, endpoint: str, requests_per_minute: int) -> None:
-        """
-        Set rate limit for an endpoint.
+        """Set rate limit for an endpoint.
 
         Args:
             endpoint: The endpoint to limit
             requests_per_minute: Maximum requests per minute
+
         """
         self._rate_limits[endpoint] = {
             "requests_per_minute": requests_per_minute,
@@ -324,8 +317,7 @@ class RateLimitingMixin:
         }
 
     def check_rate_limit(self, endpoint: str) -> bool:
-        """
-        Check if request is within rate limit.
+        """Check if request is within rate limit.
 
         Args:
             endpoint: The endpoint being accessed
@@ -335,6 +327,7 @@ class RateLimitingMixin:
 
         Raises:
             HTTPException: If rate limit exceeded
+
         """
         if endpoint not in self._rate_limits:
             return True
@@ -368,15 +361,13 @@ class RateLimitingMixin:
 
 
 class ValidationMixin:
-    """
-    Mixin that provides input validation capabilities.
+    """Mixin that provides input validation capabilities.
     """
 
     def validate_request(
-        self, request_model: type[BaseModel], data: dict[str, Any]
+        self, request_model: type[BaseModel], data: dict[str, Any],
     ) -> BaseModel:
-        """
-        Validate request data against a model.
+        """Validate request data against a model.
 
         Args:
             request_model: Pydantic model to validate against
@@ -387,6 +378,7 @@ class ValidationMixin:
 
         Raises:
             ValidationError: If validation fails
+
         """
         try:
             return request_model(**data)
@@ -397,10 +389,9 @@ class ValidationMixin:
             )
 
     def validate_query_params(
-        self, params: dict[str, Any], required_params: list[str]
+        self, params: dict[str, Any], required_params: list[str],
     ) -> None:
-        """
-        Validate query parameters.
+        """Validate query parameters.
 
         Args:
             params: Query parameters
@@ -408,6 +399,7 @@ class ValidationMixin:
 
         Raises:
             ValidationError: If required parameters are missing
+
         """
         missing_params = [param for param in required_params if param not in params]
         if missing_params:

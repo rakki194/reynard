@@ -1,5 +1,4 @@
-"""
-Embedding Backend Configuration for Reynard Backend.
+"""Embedding Backend Configuration for Reynard Backend.
 
 This module provides granular control over different embedding backends,
 allowing easy enable/disable of specific providers like Ollama, Sentence Transformers,
@@ -8,7 +7,7 @@ and future backends without affecting the entire embedding service.
 
 import os
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 
 @dataclass
@@ -23,15 +22,15 @@ class EmbeddingBackendConfig:
     enabled: bool = True
 
     # Backend-specific settings
-    base_url: Optional[str] = None
-    api_key: Optional[str] = None
+    base_url: str | None = None
+    api_key: str | None = None
     timeout_seconds: int = 30
     max_retries: int = 3
     retry_delay: float = 1.0
 
     # Model configuration
-    default_model: Optional[str] = None
-    supported_models: List[str] = field(default_factory=list)
+    default_model: str | None = None
+    supported_models: list[str] = field(default_factory=list)
 
     # Performance settings
     max_concurrent_requests: int = 8
@@ -42,9 +41,9 @@ class EmbeddingBackendConfig:
 
     # Additional metadata
     description: str = ""
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert configuration to dictionary format."""
         return {
             "name": self.name,
@@ -70,29 +69,29 @@ class EmbeddingBackendsConfig:
     """Configuration for all embedding backends."""
 
     # Individual backend configurations
-    backends: Dict[str, EmbeddingBackendConfig] = field(default_factory=dict)
+    backends: dict[str, EmbeddingBackendConfig] = field(default_factory=dict)
 
     # Global settings
     enabled: bool = field(
         default_factory=lambda: os.getenv("EMBEDDING_BACKENDS_ENABLED", "true").lower()
-        == "true"
+        == "true",
     )
 
     # Fallback behavior
     allow_fallback: bool = field(
         default_factory=lambda: os.getenv("EMBEDDING_ALLOW_FALLBACK", "true").lower()
-        == "true"
+        == "true",
     )
 
     # Default backend selection
     default_backend: str = field(
-        default_factory=lambda: os.getenv("EMBEDDING_DEFAULT_BACKEND", "ollama")
+        default_factory=lambda: os.getenv("EMBEDDING_DEFAULT_BACKEND", "ollama"),
     )
 
     # Mock mode for testing
     mock_mode: bool = field(
         default_factory=lambda: os.getenv("EMBEDDING_MOCK_MODE", "false").lower()
-        == "true"
+        == "true",
     )
 
     def __post_init__(self) -> None:
@@ -102,7 +101,6 @@ class EmbeddingBackendsConfig:
 
     def _initialize_default_backends(self) -> None:
         """Initialize default backend configurations."""
-
         # Ollama backend configuration
         ollama_config = EmbeddingBackendConfig(
             name="ollama",
@@ -113,7 +111,7 @@ class EmbeddingBackendsConfig:
             max_retries=int(os.getenv("EMBEDDING_OLLAMA_MAX_RETRIES", "3")),
             retry_delay=float(os.getenv("EMBEDDING_OLLAMA_RETRY_DELAY", "1.0")),
             default_model=os.getenv(
-                "EMBEDDING_OLLAMA_DEFAULT_MODEL", "embeddinggemma:latest"
+                "EMBEDDING_OLLAMA_DEFAULT_MODEL", "embeddinggemma:latest",
             ),
             supported_models=[
                 "embeddinggemma:latest",
@@ -123,7 +121,7 @@ class EmbeddingBackendsConfig:
                 "bge-m3",
             ],
             max_concurrent_requests=int(
-                os.getenv("EMBEDDING_OLLAMA_MAX_CONCURRENT", "8")
+                os.getenv("EMBEDDING_OLLAMA_MAX_CONCURRENT", "8"),
             ),
             batch_size=int(os.getenv("EMBEDDING_OLLAMA_BATCH_SIZE", "16")),
             priority=1,
@@ -137,13 +135,13 @@ class EmbeddingBackendsConfig:
             enabled=os.getenv("EMBEDDING_SENTENCE_TRANSFORMERS_ENABLED", "true").lower()
             == "true",
             timeout_seconds=int(
-                os.getenv("EMBEDDING_SENTENCE_TRANSFORMERS_TIMEOUT", "30")
+                os.getenv("EMBEDDING_SENTENCE_TRANSFORMERS_TIMEOUT", "30"),
             ),
             max_retries=int(
-                os.getenv("EMBEDDING_SENTENCE_TRANSFORMERS_MAX_RETRIES", "3")
+                os.getenv("EMBEDDING_SENTENCE_TRANSFORMERS_MAX_RETRIES", "3"),
             ),
             retry_delay=float(
-                os.getenv("EMBEDDING_SENTENCE_TRANSFORMERS_RETRY_DELAY", "1.0")
+                os.getenv("EMBEDDING_SENTENCE_TRANSFORMERS_RETRY_DELAY", "1.0"),
             ),
             default_model=os.getenv(
                 "EMBEDDING_SENTENCE_TRANSFORMERS_DEFAULT_MODEL",
@@ -155,10 +153,10 @@ class EmbeddingBackendsConfig:
                 "sentence-transformers/all-distilroberta-v1",
             ],
             max_concurrent_requests=int(
-                os.getenv("EMBEDDING_SENTENCE_TRANSFORMERS_MAX_CONCURRENT", "4")
+                os.getenv("EMBEDDING_SENTENCE_TRANSFORMERS_MAX_CONCURRENT", "4"),
             ),
             batch_size=int(
-                os.getenv("EMBEDDING_SENTENCE_TRANSFORMERS_BATCH_SIZE", "8")
+                os.getenv("EMBEDDING_SENTENCE_TRANSFORMERS_BATCH_SIZE", "8"),
             ),
             priority=2,
             description="Sentence Transformers library for local embeddings",
@@ -174,7 +172,7 @@ class EmbeddingBackendsConfig:
             max_retries=int(os.getenv("EMBEDDING_OPENAI_MAX_RETRIES", "3")),
             retry_delay=float(os.getenv("EMBEDDING_OPENAI_RETRY_DELAY", "1.0")),
             default_model=os.getenv(
-                "EMBEDDING_OPENAI_DEFAULT_MODEL", "text-embedding-3-small"
+                "EMBEDDING_OPENAI_DEFAULT_MODEL", "text-embedding-3-small",
             ),
             supported_models=[
                 "text-embedding-3-small",
@@ -182,7 +180,7 @@ class EmbeddingBackendsConfig:
                 "text-embedding-ada-002",
             ],
             max_concurrent_requests=int(
-                os.getenv("EMBEDDING_OPENAI_MAX_CONCURRENT", "5")
+                os.getenv("EMBEDDING_OPENAI_MAX_CONCURRENT", "5"),
             ),
             batch_size=int(os.getenv("EMBEDDING_OPENAI_BATCH_SIZE", "10")),
             priority=3,
@@ -209,7 +207,7 @@ class EmbeddingBackendsConfig:
                 "BAAI/bge-large-en-v1.5",
             ],
             max_concurrent_requests=int(
-                os.getenv("EMBEDDING_HUGGINGFACE_MAX_CONCURRENT", "4")
+                os.getenv("EMBEDDING_HUGGINGFACE_MAX_CONCURRENT", "4"),
             ),
             batch_size=int(os.getenv("EMBEDDING_HUGGINGFACE_BATCH_SIZE", "8")),
             priority=4,
@@ -224,14 +222,14 @@ class EmbeddingBackendsConfig:
             "huggingface": huggingface_config,
         }
 
-    def get_enabled_backends(self) -> List[EmbeddingBackendConfig]:
+    def get_enabled_backends(self) -> list[EmbeddingBackendConfig]:
         """Get list of enabled backends sorted by priority."""
         enabled_backends = [
             backend for backend in self.backends.values() if backend.enabled
         ]
         return sorted(enabled_backends, key=lambda x: x.priority)
 
-    def get_backend(self, name: str) -> Optional[EmbeddingBackendConfig]:
+    def get_backend(self, name: str) -> EmbeddingBackendConfig | None:
         """Get a specific backend configuration by name."""
         return self.backends.get(name)
 
@@ -256,17 +254,17 @@ class EmbeddingBackendsConfig:
             return True
         return False
 
-    def get_primary_backend(self) -> Optional[EmbeddingBackendConfig]:
+    def get_primary_backend(self) -> EmbeddingBackendConfig | None:
         """Get the primary (highest priority) enabled backend."""
         enabled_backends = self.get_enabled_backends()
         return enabled_backends[0] if enabled_backends else None
 
-    def get_fallback_backends(self) -> List[EmbeddingBackendConfig]:
+    def get_fallback_backends(self) -> list[EmbeddingBackendConfig]:
         """Get fallback backends (excluding the primary)."""
         enabled_backends = self.get_enabled_backends()
         return enabled_backends[1:] if len(enabled_backends) > 1 else []
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert configuration to dictionary format."""
         return {
             "enabled": self.enabled,
@@ -288,7 +286,7 @@ class EmbeddingBackendsConfig:
         if not enabled_backends and not self.mock_mode:
             raise ValueError(
                 "EmbeddingBackendsConfig validation error: "
-                "At least one backend must be enabled or mock_mode must be true"
+                "At least one backend must be enabled or mock_mode must be true",
             )
 
         # Validate individual backend configurations
@@ -301,33 +299,33 @@ class EmbeddingBackendsConfig:
         if backend.provider == "ollama" and backend.enabled:
             if not backend.base_url:
                 raise ValueError(
-                    f"Backend '{backend.name}': base_url is required for Ollama"
+                    f"Backend '{backend.name}': base_url is required for Ollama",
                 )
 
         if backend.provider in ["openai", "huggingface"] and backend.enabled:
             if not backend.api_key:
                 raise ValueError(
-                    f"Backend '{backend.name}': api_key is required for {backend.provider}"
+                    f"Backend '{backend.name}': api_key is required for {backend.provider}",
                 )
 
         if backend.timeout_seconds <= 0:
             raise ValueError(
-                f"Backend '{backend.name}': timeout_seconds must be positive"
+                f"Backend '{backend.name}': timeout_seconds must be positive",
             )
 
         if backend.max_retries < 0:
             raise ValueError(
-                f"Backend '{backend.name}': max_retries must be non-negative"
+                f"Backend '{backend.name}': max_retries must be non-negative",
             )
 
         if backend.retry_delay < 0:
             raise ValueError(
-                f"Backend '{backend.name}': retry_delay must be non-negative"
+                f"Backend '{backend.name}': retry_delay must be non-negative",
             )
 
 
 # Global configuration instance
-_embedding_backends_config: Optional[EmbeddingBackendsConfig] = None
+_embedding_backends_config: EmbeddingBackendsConfig | None = None
 
 
 def get_embedding_backends_config() -> EmbeddingBackendsConfig:

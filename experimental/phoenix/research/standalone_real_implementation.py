@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-PHOENIX Standalone Real Implementation
+"""PHOENIX Standalone Real Implementation
 
 Standalone implementation of Phoenix knowledge distillation system that replaces
 simulated metrics with actual algorithmic implementations.
@@ -14,19 +13,18 @@ import asyncio
 import json
 import logging
 import re
-from collections import defaultdict
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 import numpy as np
 import pandas as pd
-import scipy.stats as stats
+from scipy import stats
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -50,7 +48,7 @@ class StandaloneTraitExtractor:
         self.trait_patterns = {
             "analytical_thinking": {
                 "patterns": [
-                    r"\b(analyze|examine|evaluate|assess|scrutinize|investigate)\b"
+                    r"\b(analyze|examine|evaluate|assess|scrutinize|investigate)\b",
                 ],
                 "indicators": ["analysis", "evaluation", "assessment", "reasoning"],
                 "category": "cognitive",
@@ -78,8 +76,8 @@ class StandaloneTraitExtractor:
         }
 
     def extract_traits_from_output(
-        self, agent_output: str, agent_state
-    ) -> List[SubliminalTrait]:
+        self, agent_output: str, agent_state,
+    ) -> list[SubliminalTrait]:
         """Extract traits from agent output."""
         traits = []
 
@@ -93,7 +91,7 @@ class StandaloneTraitExtractor:
                     strength=score,
                     category=pattern_data["category"],
                     manifestation=self._extract_manifestation(
-                        agent_output, pattern_data
+                        agent_output, pattern_data,
                     ),
                     confidence=min(1.0, score * 1.2),
                 )
@@ -101,7 +99,7 @@ class StandaloneTraitExtractor:
 
         return traits
 
-    def _calculate_trait_score(self, text: str, pattern_data: Dict[str, Any]) -> float:
+    def _calculate_trait_score(self, text: str, pattern_data: dict[str, Any]) -> float:
         """Calculate trait score."""
         matches = 0
         for pattern in pattern_data["patterns"]:
@@ -118,7 +116,7 @@ class StandaloneTraitExtractor:
         score = (matches + indicator_matches * 0.5) / len(pattern_data["patterns"])
         return min(1.0, score)
 
-    def _extract_manifestation(self, text: str, pattern_data: Dict[str, Any]) -> str:
+    def _extract_manifestation(self, text: str, pattern_data: dict[str, Any]) -> str:
         """Extract trait manifestation."""
         manifestations = []
         for pattern in pattern_data["patterns"]:
@@ -126,7 +124,7 @@ class StandaloneTraitExtractor:
             manifestations.extend(matches[:2])
         return "; ".join(manifestations[:3])
 
-    def validate_trait_consistency(self, traits: List[SubliminalTrait]) -> float:
+    def validate_trait_consistency(self, traits: list[SubliminalTrait]) -> float:
         """Validate trait consistency."""
         if not traits:
             return 0.0
@@ -143,7 +141,7 @@ class StandaloneDomainAnalyzer:
         self.domain_patterns = {
             "software_engineering": {
                 "terminology": [
-                    r"\b(algorithm|data structure|complexity|optimization)\b"
+                    r"\b(algorithm|data structure|complexity|optimization)\b",
                 ],
                 "concepts": [r"\b(OOP|functional programming|SOLID principles)\b"],
                 "context_indicators": [
@@ -155,7 +153,7 @@ class StandaloneDomainAnalyzer:
             },
             "machine_learning": {
                 "terminology": [
-                    r"\b(neural network|deep learning|reinforcement learning)\b"
+                    r"\b(neural network|deep learning|reinforcement learning)\b",
                 ],
                 "concepts": [r"\b(backpropagation|gradient descent|optimization)\b"],
                 "context_indicators": ["model", "training", "prediction", "algorithm"],
@@ -163,8 +161,8 @@ class StandaloneDomainAnalyzer:
         }
 
     def analyze_domain_expertise(
-        self, agent_output: str, agent_state
-    ) -> Dict[str, Any]:
+        self, agent_output: str, agent_state,
+    ) -> dict[str, Any]:
         """Analyze domain expertise."""
         domain_expertise = {}
 
@@ -185,7 +183,7 @@ class StandaloneDomainAnalyzer:
 
         return domain_expertise
 
-    def _calculate_domain_expertise(self, text: str, patterns: Dict[str, Any]) -> float:
+    def _calculate_domain_expertise(self, text: str, patterns: dict[str, Any]) -> float:
         """Calculate domain expertise score."""
         terminology_score = self._analyze_patterns(text, patterns["terminology"])
         concept_score = self._analyze_patterns(text, patterns["concepts"])
@@ -193,21 +191,21 @@ class StandaloneDomainAnalyzer:
 
         return terminology_score * 0.4 + concept_score * 0.4 + context_score * 0.2
 
-    def _analyze_patterns(self, text: str, patterns: List[str]) -> float:
+    def _analyze_patterns(self, text: str, patterns: list[str]) -> float:
         """Analyze pattern matches."""
         matches = sum(
             1 for pattern in patterns if re.search(pattern, text, re.IGNORECASE)
         )
         return matches / len(patterns) if patterns else 0.0
 
-    def _analyze_context(self, text: str, indicators: List[str]) -> float:
+    def _analyze_context(self, text: str, indicators: list[str]) -> float:
         """Analyze contextual relevance."""
         matches = sum(
             1 for indicator in indicators if indicator.lower() in text.lower()
         )
         return matches / len(indicators) if indicators else 0.0
 
-    def _extract_indicators(self, text: str, patterns: Dict[str, Any]) -> List[str]:
+    def _extract_indicators(self, text: str, patterns: dict[str, Any]) -> list[str]:
         """Extract domain indicators."""
         indicators = []
         for pattern_list in [patterns["terminology"], patterns["concepts"]]:
@@ -230,17 +228,17 @@ class StandaloneSpecializationAnalyzer:
                 ],
                 "patterns": {
                     "strategic_planning": [
-                        r"\b(strategy|strategic|planning|roadmap|vision)\b"
+                        r"\b(strategy|strategic|planning|roadmap|vision)\b",
                     ],
                     "problem_solving": [r"\b(solve|resolve|fix|address|tackle)\b"],
                     "adaptability": [r"\b(adapt|adjust|modify|change|flexible)\b"],
                 },
-            }
+            },
         }
 
     def analyze_specialization_accuracy(
-        self, agent_output: str, agent_state
-    ) -> Dict[str, Any]:
+        self, agent_output: str, agent_state,
+    ) -> dict[str, Any]:
         """Analyze specialization accuracy."""
         spirit = agent_state.spirit.lower()
         if spirit not in self.spirit_specializations:
@@ -269,7 +267,7 @@ class StandaloneSpecializationAnalyzer:
             "specialization_scores": specialization_scores,
         }
 
-    def _analyze_patterns(self, text: str, patterns: List[str]) -> float:
+    def _analyze_patterns(self, text: str, patterns: list[str]) -> float:
         """Analyze pattern matches."""
         matches = sum(
             1 for pattern in patterns if re.search(pattern, text, re.IGNORECASE)
@@ -333,7 +331,7 @@ class StandaloneRealImplementation:
             style=style,
         )
 
-    async def analyze_baseline_performance(self) -> Dict[str, Any]:
+    async def analyze_baseline_performance(self) -> dict[str, Any]:
         """Analyze baseline performance using real algorithms."""
         self.logger.info("🔬 Analyzing baseline performance with real algorithms...")
 
@@ -342,18 +340,18 @@ class StandaloneRealImplementation:
 
         # Use real trait extraction
         subliminal_traits = self.trait_extractor.extract_traits_from_output(
-            baseline_output, baseline_agent
+            baseline_output, baseline_agent,
         )
 
         # Use real domain expertise analysis
         domain_expertise = self.domain_analyzer.analyze_domain_expertise(
-            baseline_output, baseline_agent
+            baseline_output, baseline_agent,
         )
 
         # Use real specialization accuracy analysis
         specialization_accuracy = (
             self.specialization_analyzer.analyze_specialization_accuracy(
-                baseline_output, baseline_agent
+                baseline_output, baseline_agent,
             )
         )
 
@@ -387,12 +385,12 @@ class StandaloneRealImplementation:
 
         # Real specialization accuracy
         metrics["specialization_accuracy"] = specialization_accuracy.get(
-            "overall_accuracy", 0.0
+            "overall_accuracy", 0.0,
         )
 
         # Real knowledge fidelity calculation
         metrics["knowledge_fidelity"] = self._calculate_real_knowledge_fidelity(
-            subliminal_traits, domain_expertise, specialization_accuracy
+            subliminal_traits, domain_expertise, specialization_accuracy,
         )
 
         # Real overall quality calculation
@@ -401,7 +399,7 @@ class StandaloneRealImplementation:
         self.logger.info(f"✅ Baseline analysis completed: {metrics}")
         return metrics
 
-    async def analyze_phoenix_performance(self) -> Dict[str, Any]:
+    async def analyze_phoenix_performance(self) -> dict[str, Any]:
         """Analyze Phoenix performance using real algorithms."""
         self.logger.info("🦁 Analyzing Phoenix performance with real algorithms...")
 
@@ -410,18 +408,18 @@ class StandaloneRealImplementation:
 
         # Use real trait extraction
         subliminal_traits = self.trait_extractor.extract_traits_from_output(
-            phoenix_output, phoenix_agent
+            phoenix_output, phoenix_agent,
         )
 
         # Use real domain expertise analysis
         domain_expertise = self.domain_analyzer.analyze_domain_expertise(
-            phoenix_output, phoenix_agent
+            phoenix_output, phoenix_agent,
         )
 
         # Use real specialization accuracy analysis
         specialization_accuracy = (
             self.specialization_analyzer.analyze_specialization_accuracy(
-                phoenix_output, phoenix_agent
+                phoenix_output, phoenix_agent,
             )
         )
 
@@ -455,12 +453,12 @@ class StandaloneRealImplementation:
 
         # Real specialization accuracy
         metrics["specialization_accuracy"] = specialization_accuracy.get(
-            "overall_accuracy", 0.0
+            "overall_accuracy", 0.0,
         )
 
         # Real knowledge fidelity calculation
         metrics["knowledge_fidelity"] = self._calculate_real_knowledge_fidelity(
-            subliminal_traits, domain_expertise, specialization_accuracy
+            subliminal_traits, domain_expertise, specialization_accuracy,
         )
 
         # Real overall quality calculation
@@ -471,9 +469,9 @@ class StandaloneRealImplementation:
 
     def _calculate_real_knowledge_fidelity(
         self,
-        traits: List,
-        domain_expertise: Dict[str, Any],
-        specialization_accuracy: Dict[str, Any],
+        traits: list,
+        domain_expertise: dict[str, Any],
+        specialization_accuracy: dict[str, Any],
     ) -> float:
         """Calculate real knowledge fidelity."""
         if not traits and not domain_expertise:
@@ -503,7 +501,7 @@ class StandaloneRealImplementation:
 
         return min(1.0, fidelity)
 
-    def _calculate_real_overall_quality(self, metrics: Dict[str, Any]) -> float:
+    def _calculate_real_overall_quality(self, metrics: dict[str, Any]) -> float:
         """Calculate real overall quality."""
         quality = (
             metrics.get("trait_accuracy", 0.0) * 0.3
@@ -513,7 +511,7 @@ class StandaloneRealImplementation:
         )
         return min(1.0, quality)
 
-    async def run_real_validation(self, num_trials: int = 30) -> Dict[str, Any]:
+    async def run_real_validation(self, num_trials: int = 30) -> dict[str, Any]:
         """Run real validation with actual algorithms."""
         self.logger.info(f"🚀 Starting real validation with {num_trials} trials...")
 
@@ -536,7 +534,7 @@ class StandaloneRealImplementation:
 
         # Perform statistical analysis
         statistical_analysis = self._perform_statistical_analysis(
-            baseline_results, phoenix_results
+            baseline_results, phoenix_results,
         )
 
         # Generate results
@@ -548,7 +546,7 @@ class StandaloneRealImplementation:
             "phoenix_results": phoenix_results,
             "statistical_analysis": statistical_analysis,
             "summary": self._generate_summary(
-                baseline_results, phoenix_results, statistical_analysis
+                baseline_results, phoenix_results, statistical_analysis,
             ),
         }
 
@@ -559,8 +557,8 @@ class StandaloneRealImplementation:
         return results
 
     def _perform_statistical_analysis(
-        self, baseline_results: List[Dict], phoenix_results: List[Dict]
-    ) -> Dict[str, Any]:
+        self, baseline_results: list[dict], phoenix_results: list[dict],
+    ) -> dict[str, Any]:
         """Perform statistical analysis on real results."""
         self.logger.info("📊 Performing statistical analysis on real results...")
 
@@ -611,7 +609,7 @@ class StandaloneRealImplementation:
                             (len(baseline_values) - 1) * np.var(baseline_values)
                             + (len(phoenix_values) - 1) * np.var(phoenix_values)
                         )
-                        / (len(baseline_values) + len(phoenix_values) - 2)
+                        / (len(baseline_values) + len(phoenix_values) - 2),
                     )
                     effect_size = (
                         np.mean(phoenix_values) - np.mean(baseline_values)
@@ -642,10 +640,10 @@ class StandaloneRealImplementation:
 
     def _generate_summary(
         self,
-        baseline_results: List[Dict],
-        phoenix_results: List[Dict],
-        statistical_analysis: Dict[str, Any],
-    ) -> Dict[str, Any]:
+        baseline_results: list[dict],
+        phoenix_results: list[dict],
+        statistical_analysis: dict[str, Any],
+    ) -> dict[str, Any]:
         """Generate summary of real validation results."""
         # Count significant improvements
         significant_count = sum(
@@ -677,14 +675,14 @@ class StandaloneRealImplementation:
             "average_effect_size": avg_effect_size,
             "assessment": assessment,
             "baseline_avg_quality": np.mean(
-                [r.get("overall_quality", 0.0) for r in baseline_results]
+                [r.get("overall_quality", 0.0) for r in baseline_results],
             ),
             "phoenix_avg_quality": np.mean(
-                [r.get("overall_quality", 0.0) for r in phoenix_results]
+                [r.get("overall_quality", 0.0) for r in phoenix_results],
             ),
         }
 
-    def _save_results(self, results: Dict[str, Any]):
+    def _save_results(self, results: dict[str, Any]):
         """Save real validation results."""
         results_dir = Path("real_validation_results")
         results_dir.mkdir(parents=True, exist_ok=True)
@@ -703,7 +701,7 @@ class StandaloneRealImplementation:
 
         self.logger.info(f"Results saved to {results_dir}")
 
-    def generate_real_report(self, results: Dict[str, Any]) -> str:
+    def generate_real_report(self, results: dict[str, Any]) -> str:
         """Generate report for real validation results."""
         summary = results["summary"]
 
@@ -740,7 +738,7 @@ Significance Tests:
             significance = "SIGNIFICANT" if test["significant"] else "NOT SIGNIFICANT"
             report += f"- {metric}: {significance} (p = {test['p_value']:.4f}, effect size = {test['effect_size']:.3f})\n"
 
-        report += f"""
+        report += """
 Effect Sizes:
 ------------
 """
@@ -790,12 +788,11 @@ Analysis completed: {datetime.now().isoformat()}
         abs_effect = abs(effect_size)
         if abs_effect < 0.2:
             return "negligible"
-        elif abs_effect < 0.5:
+        if abs_effect < 0.5:
             return "small"
-        elif abs_effect < 0.8:
+        if abs_effect < 0.8:
             return "medium"
-        else:
-            return "large"
+        return "large"
 
 
 async def main():
@@ -817,7 +814,7 @@ async def main():
     with open(report_file, "w") as f:
         f.write(report)
 
-    print(f"\n📊 Full results saved to: real_validation_results/")
+    print("\n📊 Full results saved to: real_validation_results/")
     print("🦊 Real Phoenix Implementation Validation Complete!")
 
 

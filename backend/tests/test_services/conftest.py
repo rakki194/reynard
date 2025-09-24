@@ -1,9 +1,7 @@
-"""
-Test configuration and fixtures for RAG service tests.
+"""Test configuration and fixtures for RAG service tests.
 """
 
 import asyncio
-from typing import Any, Dict
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
@@ -255,7 +253,7 @@ def mock_model_evaluator():
             "throughput_per_second": 10.0,
             "error_rate": 0.01,
             "timestamp": "2024-01-01T00:00:00",
-        }
+        },
     }
     service.generate_evaluation_report.return_value = (
         "# Model Evaluation Report\n\nTest report"
@@ -368,7 +366,7 @@ def mock_database_connection():
     connection = AsyncMock()
     connection.execute.return_value.rowcount = 1
     connection.execute.return_value.fetchall.return_value = [
-        {"id": 1, "text": "test result", "similarity": 0.95}
+        {"id": 1, "text": "test result", "similarity": 0.95},
     ]
     connection.execute.return_value.fetchone.return_value = ["pgvector"]
     return connection

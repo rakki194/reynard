@@ -1,13 +1,9 @@
-"""
-Test suite for RAG Core Services.
+"""Test suite for RAG Core Services.
 
 Tests the core RAG functionality including embeddings, vector store, indexing, and search.
 """
 
-import asyncio
-import time
-from typing import Any, Dict, List
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, patch
 
 import pytest
 
@@ -50,7 +46,7 @@ class TestEmbeddingService:
         with patch("aiohttp.ClientSession.post") as mock_post:
             mock_response = AsyncMock()
             mock_response.json.return_value = {
-                "embedding": [0.1, 0.2, 0.3] * 100
+                "embedding": [0.1, 0.2, 0.3] * 100,
             }  # 300-dim embedding
             mock_post.return_value.__aenter__.return_value = mock_response
 
@@ -68,7 +64,7 @@ class TestEmbeddingService:
         with patch("aiohttp.ClientSession.post") as mock_post:
             mock_response = AsyncMock()
             mock_response.json.return_value = {
-                "embeddings": [[0.1, 0.2, 0.3] * 100 for _ in texts]
+                "embeddings": [[0.1, 0.2, 0.3] * 100 for _ in texts],
             }
             mock_post.return_value.__aenter__.return_value = mock_response
 
@@ -172,7 +168,7 @@ class TestVectorStoreService:
             )
 
             results = await vector_store_service.similarity_search(
-                query_embedding, limit
+                query_embedding, limit,
             )
 
             assert len(results) == 2
@@ -189,7 +185,7 @@ class TestVectorStoreService:
                 "chunk_text": "Test chunk 1",
                 "embedding": [0.1, 0.2, 0.3] * 100,
                 "metadata": {"chunk_type": "function"},
-            }
+            },
         ]
 
         with patch("sqlalchemy.create_engine") as mock_engine:
@@ -200,7 +196,7 @@ class TestVectorStoreService:
             )
 
             result = await vector_store_service.insert_document_embeddings(
-                embedding_data
+                embedding_data,
             )
 
             assert result is not None
@@ -252,7 +248,7 @@ class TestClass:
 """
 
         chunks, symbol_map = document_indexer.ast_chunker.chunk_code_ast_aware(
-            python_code, "python"
+            python_code, "python",
         )
 
         assert len(chunks) > 0
@@ -269,7 +265,7 @@ class TestClass:
                 "content": "def hello(): return 'world'",
                 "file_path": "test.py",
                 "language": "python",
-            }
+            },
         ]
 
         with patch.object(document_indexer, "_process_document") as mock_process:
@@ -343,7 +339,7 @@ class TestSearchEngine:
             ]
 
             results = await search_engine.search(
-                query, search_type="semantic", limit=limit
+                query, search_type="semantic", limit=limit,
             )
 
             assert len(results) == 2
@@ -362,7 +358,7 @@ class TestSearchEngine:
             ]
 
             results = await search_engine.search(
-                query, search_type="keyword", limit=limit
+                query, search_type="keyword", limit=limit,
             )
 
             assert len(results) == 2
@@ -380,14 +376,14 @@ class TestSearchEngine:
         ):
 
             mock_semantic.return_value = [
-                {"id": 1, "text": "Auth system implementation", "score": 0.95}
+                {"id": 1, "text": "Auth system implementation", "score": 0.95},
             ]
             mock_keyword.return_value = [
-                {"id": 2, "text": "Authentication module", "score": 0.90}
+                {"id": 2, "text": "Authentication module", "score": 0.90},
             ]
 
             results = await search_engine.search(
-                query, search_type="hybrid", limit=limit
+                query, search_type="hybrid", limit=limit,
             )
 
             assert len(results) >= 1
@@ -407,7 +403,7 @@ class TestSearchEngine:
         ]
 
         fused_results = search_engine._reciprocal_rank_fusion(
-            semantic_results, keyword_results
+            semantic_results, keyword_results,
         )
 
         assert len(fused_results) >= 3
@@ -456,7 +452,7 @@ class TestRAGCoreIntegration:
             # Mock embedding response
             mock_embedding_response = AsyncMock()
             mock_embedding_response.json.return_value = {
-                "embedding": [0.1, 0.2, 0.3] * 100
+                "embedding": [0.1, 0.2, 0.3] * 100,
             }
             mock_post.return_value.__aenter__.return_value = mock_embedding_response
 
@@ -474,7 +470,7 @@ class TestRAGCoreIntegration:
                     "content": "def hello(): return 'world'",
                     "file_path": "test.py",
                     "language": "python",
-                }
+                },
             ]
 
             index_result = await document_indexer.index_documents(documents)

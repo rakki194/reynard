@@ -1,5 +1,4 @@
-"""
-🔥 Initial Indexing Service with File Indexing Tests
+"""🔥 Initial Indexing Service with File Indexing Tests
 ====================================================
 
 Comprehensive pytest tests for initial indexing service integration with file indexing.
@@ -13,12 +12,11 @@ Version: 1.0.0
 import asyncio
 import tempfile
 from pathlib import Path
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock
 
 import pytest
 
 from app.config.file_indexing_config import get_file_indexing_config
-from app.services.rag.file_indexing_service import get_file_indexing_service
 from app.services.rag.initial_indexing import InitialIndexingService
 
 
@@ -34,7 +32,7 @@ class TestInitialIndexingServiceFileIndexingIntegration:
                 "rag_continuous_indexing_watch_root": "/tmp/test_watch_root",
                 "file_indexing_enabled": True,
                 "caching_enabled": True,
-            }
+            },
         )
         return config
 
@@ -46,7 +44,7 @@ class TestInitialIndexingServiceFileIndexingIntegration:
         # Initialize file indexing service
         await service.file_indexing_service.initialize(initial_indexing_config)
 
-        yield service
+        return service
 
     @pytest.fixture
     def temp_directory_with_files(self):
@@ -64,7 +62,7 @@ def function_one():
 class ClassOne:
     def method_one(self):
         return "Method from class one"
-"""
+""",
             )
 
             (temp_path / "module2.py").write_text(
@@ -79,7 +77,7 @@ def function_two():
 class ClassTwo:
     def __init__(self):
         self.value = 42
-"""
+""",
             )
 
             (temp_path / "documentation.md").write_text(
@@ -88,7 +86,7 @@ class ClassTwo:
 
 This is test documentation for the initial indexing service.
 It contains information about the test modules.
-"""
+""",
             )
 
             (temp_path / "config.json").write_text('{"test": true, "value": 42}')
@@ -101,7 +99,7 @@ It contains information about the test modules.
 def sub_function():
     '''Function in subdirectory.'''
     return "Hello from subdirectory"
-"""
+""",
             )
 
             yield temp_path
@@ -119,12 +117,12 @@ def sub_function():
 
     @pytest.mark.asyncio
     async def test_file_discovery_with_file_indexing(
-        self, initial_indexing_service, temp_directory_with_files
+        self, initial_indexing_service, temp_directory_with_files,
     ):
         """Test file discovery using file indexing service."""
         # Update config to use temp directory
         initial_indexing_service.config["rag_continuous_indexing_watch_root"] = str(
-            temp_directory_with_files
+            temp_directory_with_files,
         )
 
         # Test file discovery
@@ -139,12 +137,12 @@ def sub_function():
 
     @pytest.mark.asyncio
     async def test_file_discovery_performance(
-        self, initial_indexing_service, temp_directory_with_files
+        self, initial_indexing_service, temp_directory_with_files,
     ):
         """Test file discovery performance using file indexing service."""
         # Update config to use temp directory
         initial_indexing_service.config["rag_continuous_indexing_watch_root"] = str(
-            temp_directory_with_files
+            temp_directory_with_files,
         )
 
         # Time the file discovery
@@ -159,7 +157,7 @@ def sub_function():
 
     @pytest.mark.asyncio
     async def test_file_discovery_fallback(
-        self, initial_indexing_config, temp_directory_with_files
+        self, initial_indexing_config, temp_directory_with_files,
     ):
         """Test file discovery fallback when file indexing fails."""
         service = InitialIndexingService(initial_indexing_config)
@@ -171,7 +169,7 @@ def sub_function():
 
         # Update config to use temp directory
         service.config["rag_continuous_indexing_watch_root"] = str(
-            temp_directory_with_files
+            temp_directory_with_files,
         )
 
         # Test file discovery with fallback
@@ -183,7 +181,7 @@ def sub_function():
 
     @pytest.mark.asyncio
     async def test_file_discovery_with_nonexistent_directory(
-        self, initial_indexing_service
+        self, initial_indexing_service,
     ):
         """Test file discovery with non-existent directory."""
         # Set non-existent directory
@@ -214,12 +212,12 @@ def sub_function():
 
     @pytest.mark.asyncio
     async def test_file_discovery_file_type_filtering(
-        self, initial_indexing_service, temp_directory_with_files
+        self, initial_indexing_service, temp_directory_with_files,
     ):
         """Test file discovery with different file types."""
         # Update config to use temp directory
         initial_indexing_service.config["rag_continuous_indexing_watch_root"] = str(
-            temp_directory_with_files
+            temp_directory_with_files,
         )
 
         # Test file discovery
@@ -236,12 +234,12 @@ def sub_function():
 
     @pytest.mark.asyncio
     async def test_file_discovery_recursive(
-        self, initial_indexing_service, temp_directory_with_files
+        self, initial_indexing_service, temp_directory_with_files,
     ):
         """Test recursive file discovery in subdirectories."""
         # Update config to use temp directory
         initial_indexing_service.config["rag_continuous_indexing_watch_root"] = str(
-            temp_directory_with_files
+            temp_directory_with_files,
         )
 
         # Test file discovery
@@ -253,12 +251,12 @@ def sub_function():
 
     @pytest.mark.asyncio
     async def test_file_indexing_service_integration(
-        self, initial_indexing_service, temp_directory_with_files
+        self, initial_indexing_service, temp_directory_with_files,
     ):
         """Test integration with file indexing service."""
         # Update config to use temp directory
         initial_indexing_service.config["rag_continuous_indexing_watch_root"] = str(
-            temp_directory_with_files
+            temp_directory_with_files,
         )
 
         # Test file discovery
@@ -272,12 +270,12 @@ def sub_function():
 
     @pytest.mark.asyncio
     async def test_concurrent_file_discovery(
-        self, initial_indexing_service, temp_directory_with_files
+        self, initial_indexing_service, temp_directory_with_files,
     ):
         """Test concurrent file discovery operations."""
         # Update config to use temp directory
         initial_indexing_service.config["rag_continuous_indexing_watch_root"] = str(
-            temp_directory_with_files
+            temp_directory_with_files,
         )
 
         # Test concurrent file discovery
@@ -288,7 +286,7 @@ def sub_function():
         for result in results:
             assert len(result) > 0
             assert len(result) == len(
-                results[0]
+                results[0],
             )  # All should have same number of files
 
     @pytest.mark.asyncio
@@ -320,12 +318,12 @@ def sub_function():
 
                 for j in range(5):
                     (subdir / f"file_{i}_{j}.py").write_text(
-                        f"def test_{i}_{j}(): pass"
+                        f"def test_{i}_{j}(): pass",
                     )
 
             # Update config to use temp directory
             initial_indexing_service.config["rag_continuous_indexing_watch_root"] = str(
-                temp_path
+                temp_path,
             )
 
             # Test file discovery
@@ -346,7 +344,7 @@ def sub_function():
 
             # Update config to use temp directory
             initial_indexing_service.config["rag_continuous_indexing_watch_root"] = str(
-                temp_path
+                temp_path,
             )
 
             # Benchmark file discovery
@@ -378,7 +376,7 @@ def sub_function():
 
             # Update config to use temp directory
             initial_indexing_service.config["rag_continuous_indexing_watch_root"] = str(
-                temp_path
+                temp_path,
             )
 
             # Test file discovery
@@ -398,7 +396,7 @@ class TestInitialIndexingServiceIntegration:
 
     @pytest.mark.asyncio
     async def test_initial_indexing_service_with_continuous_indexing(
-        self, initial_indexing_config
+        self, initial_indexing_config,
     ):
         """Test initial indexing service with continuous indexing integration."""
         # Mock continuous indexing service

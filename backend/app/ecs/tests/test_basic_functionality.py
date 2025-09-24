@@ -1,5 +1,4 @@
-"""
-Basic Functionality Tests
+"""Basic Functionality Tests
 
 Simple tests to verify the core Success-Advisor-8 implementation works.
 """
@@ -7,7 +6,6 @@ Simple tests to verify the core Success-Advisor-8 implementation works.
 import sys
 import tempfile
 from pathlib import Path
-from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 

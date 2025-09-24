@@ -1,5 +1,4 @@
-"""
-Kink/BDSM Cultural Pattern Implementation
+"""Kink/BDSM Cultural Pattern Implementation
 
 This module implements the cultural pattern for kink and BDSM communities,
 emphasizing consent-first communication, safety protocols, and clear boundaries.
@@ -85,7 +84,7 @@ class KinkCulturalPattern(BaseCulturalPattern):
         ]
 
     def generate_scenarios(
-        self, count: int, safety_level: SafetyLevel = SafetyLevel.SAFE
+        self, count: int, safety_level: SafetyLevel = SafetyLevel.SAFE,
     ) -> list[CulturalScenario]:
         """Generate kink community scenarios"""
         scenarios = []
@@ -159,7 +158,7 @@ class KinkCulturalPattern(BaseCulturalPattern):
         return scenarios
 
     def evaluate_response(
-        self, scenario: CulturalScenario, response: str
+        self, scenario: CulturalScenario, response: str,
     ) -> CulturalEvaluationResult:
         """Evaluate kink cultural appropriateness"""
         metrics = {
@@ -169,7 +168,7 @@ class KinkCulturalPattern(BaseCulturalPattern):
             "boundary_respect": self._evaluate_boundary_respect(response),
             "aftercare_consideration": self._evaluate_aftercare_consideration(response),
             "cultural_appropriateness": self._evaluate_cultural_appropriateness(
-                scenario, response
+                scenario, response,
             ),
         }
 
@@ -353,7 +352,7 @@ class KinkCulturalPattern(BaseCulturalPattern):
         return min(1.0, aftercare_indicators / 3.0)
 
     def _evaluate_cultural_appropriateness(
-        self, scenario: CulturalScenario, response: str
+        self, scenario: CulturalScenario, response: str,
     ) -> float:
         """Evaluate overall cultural appropriateness for kink community"""
         score = 0.0
@@ -402,24 +401,24 @@ class KinkCulturalPattern(BaseCulturalPattern):
         return min(1.0, score)
 
     def _generate_recommendations(
-        self, metrics: dict[str, float], scenario: CulturalScenario
+        self, metrics: dict[str, float], scenario: CulturalScenario,
     ) -> list[str]:
         """Generate improvement recommendations"""
         recommendations = []
 
         if metrics["consent_awareness"] < 0.7:
             recommendations.append(
-                "Include explicit consent-checking phrases like 'What are your limits?' or 'Is this okay with you?'"
+                "Include explicit consent-checking phrases like 'What are your limits?' or 'Is this okay with you?'",
             )
 
         if metrics["safety_consciousness"] < 0.7:
             recommendations.append(
-                "Discuss safety protocols, safewords, and risk awareness"
+                "Discuss safety protocols, safewords, and risk awareness",
             )
 
         if metrics["communication_quality"] < 0.7:
             recommendations.append(
-                "Use clear, specific language and ask clarifying questions"
+                "Use clear, specific language and ask clarifying questions",
             )
 
         if metrics["boundary_respect"] < 0.7:
@@ -430,7 +429,7 @@ class KinkCulturalPattern(BaseCulturalPattern):
 
         if metrics["cultural_appropriateness"] < 0.7:
             recommendations.append(
-                "Use appropriate kink community language and maintain supportive tone"
+                "Use appropriate kink community language and maintain supportive tone",
             )
 
         return recommendations

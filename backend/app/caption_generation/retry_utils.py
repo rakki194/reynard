@@ -35,7 +35,6 @@ async def retry_with_backoff(
     kwargs: dict | None = None,
 ) -> T:
     """Run an async operation with retries and exponential backoff."""
-
     cfg = DEFAULT_RETRY_CONFIG.copy()
     if config:
         cfg.update(config)  # type: ignore[arg-type]
@@ -52,7 +51,7 @@ async def retry_with_backoff(
                     cfg["max_delay"],
                 )
                 logger.info(
-                    f"Retrying {operation_name} in {delay:.1f}s (attempt {attempt + 1}/{cfg['max_retries'] + 1})"
+                    f"Retrying {operation_name} in {delay:.1f}s (attempt {attempt + 1}/{cfg['max_retries'] + 1})",
                 )
                 await asyncio.sleep(delay)
 

@@ -8,7 +8,6 @@ Now uses the new @register_tool decorator system for automatic registration.
 Provides programmatic access to all Git automation components.
 """
 
-import json
 import subprocess
 from pathlib import Path
 from typing import Any, Dict, List, Optional

@@ -1,5 +1,4 @@
-"""
-Agent contribution data model.
+"""Agent contribution data model.
 """
 
 from dataclasses import dataclass
@@ -7,14 +6,14 @@ from dataclasses import dataclass
 
 @dataclass
 class AgentContribution:
-    """
-    Represents a single contribution by an agent.
+    """Represents a single contribution by an agent.
 
     Attributes:
         agent_name: The name of the agent (e.g., "Loyal-Librarian-56")
         title: The title of the contribution
         description: Detailed description of the contribution
         category: The category this contribution falls into (auto-assigned)
+
     """
 
     agent_name: str

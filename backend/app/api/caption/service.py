@@ -1,5 +1,4 @@
-"""
-Caption service for Reynard Backend.
+"""Caption service for Reynard Backend.
 
 This module provides the business logic for caption generation operations
 including single and batch processing.
@@ -55,7 +54,7 @@ class CaptionAPIService:
             # Check if generator is available
             if not self._caption_service.is_generator_available(request.generator_name):
                 raise ValueError(
-                    f"Generator '{request.generator_name}' is not available"
+                    f"Generator '{request.generator_name}' is not available",
                 )
 
             # Generate caption
@@ -83,7 +82,7 @@ class CaptionAPIService:
             raise
 
     async def generate_batch_captions(
-        self, request: BatchCaptionRequest
+        self, request: BatchCaptionRequest,
     ) -> list[CaptionResponse]:
         """Generate captions for multiple images in batch."""
         try:
@@ -96,10 +95,10 @@ class CaptionAPIService:
 
                 # Check if generator is available
                 if not self._caption_service.is_generator_available(
-                    task_request.generator_name
+                    task_request.generator_name,
                 ):
                     raise ValueError(
-                        f"Generator '{task_request.generator_name}' is not available"
+                        f"Generator '{task_request.generator_name}' is not available",
                     )
 
                 tasks.append(
@@ -109,12 +108,12 @@ class CaptionAPIService:
                         config=task_request.config,
                         force=task_request.force,
                         post_process=task_request.post_process,
-                    )
+                    ),
                 )
 
             # Generate captions
             results = await self._caption_service.generate_batch_captions(
-                tasks=tasks, max_concurrent=request.max_concurrent
+                tasks=tasks, max_concurrent=request.max_concurrent,
             )
 
             return [
@@ -137,7 +136,7 @@ class CaptionAPIService:
             raise
 
     async def load_model(
-        self, model_name: str, config: dict[str, Any] | None = None
+        self, model_name: str, config: dict[str, Any] | None = None,
     ) -> bool:
         """Load a specific caption model."""
         try:

@@ -1,5 +1,4 @@
-"""
-Logging Configuration for Reynard Backend Services
+"""Logging Configuration for Reynard Backend Services
 
 This module provides centralized logging configuration with structured
 logging, context management, and service-specific loggers.
@@ -27,13 +26,11 @@ class ContextFilter(logging.Filter):
 
 
 class StructuredFormatter(logging.Formatter):
-    """
-    Custom formatter that outputs structured JSON logs.
+    """Custom formatter that outputs structured JSON logs.
     """
 
     def format(self, record: logging.LogRecord) -> str:
         """Format log record as structured JSON."""
-
         # Base log structure
         log_entry = {
             "timestamp": datetime.utcnow().isoformat() + "Z",
@@ -80,8 +77,7 @@ class StructuredFormatter(logging.Formatter):
 
 
 class ServiceContextFilter(logging.Filter):
-    """
-    Filter that adds service context to log records.
+    """Filter that adds service context to log records.
     """
 
     def __init__(self, service_name: str):
@@ -95,14 +91,14 @@ class ServiceContextFilter(logging.Filter):
 
 
 def get_service_logger(service_name: str) -> logging.Logger:
-    """
-    Get a logger configured for a specific service.
+    """Get a logger configured for a specific service.
 
     Args:
         service_name: Name of the service
 
     Returns:
         logging.Logger: Configured logger for the service
+
     """
     logger_name = f"reynard.{service_name}"
     logger = logging.getLogger(logger_name)
@@ -115,14 +111,14 @@ def get_service_logger(service_name: str) -> logging.Logger:
 
 
 def get_api_logger(api_name: str) -> logging.Logger:
-    """
-    Get a logger configured for a specific API.
+    """Get a logger configured for a specific API.
 
     Args:
         api_name: Name of the API
 
     Returns:
         logging.Logger: Configured logger for the API
+
     """
     logger_name = f"reynard.api.{api_name}"
     logger = logging.getLogger(logger_name)
@@ -140,16 +136,15 @@ def setup_logging(
     log_file: str | None = None,
     enable_console: bool = True,
 ) -> None:
-    """
-    Setup centralized logging configuration.
+    """Setup centralized logging configuration.
 
     Args:
         log_level: Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
         log_format: Log format (structured, simple, detailed)
         log_file: Optional log file path
         enable_console: Whether to enable console logging
-    """
 
+    """
     # Convert log level string to logging constant
     numeric_level = getattr(logging, log_level.upper(), logging.INFO)
 
@@ -240,11 +235,11 @@ def setup_logging(
 
 
 def get_logging_config() -> dict[str, Any]:
-    """
-    Get current logging configuration.
+    """Get current logging configuration.
 
     Returns:
         Dict containing current logging configuration
+
     """
     return {
         "level": logging.getLogger().level,
@@ -259,11 +254,11 @@ def get_logging_config() -> dict[str, Any]:
 
 
 def set_log_level(level: str) -> None:
-    """
-    Set logging level for all Reynard loggers.
+    """Set logging level for all Reynard loggers.
 
     Args:
         level: Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+
     """
     numeric_level = getattr(logging, level.upper(), logging.INFO)
 
@@ -280,13 +275,12 @@ def set_log_level(level: str) -> None:
 
 
 def add_log_context(context: dict[str, Any]) -> None:
-    """
-    Add context to all log records.
+    """Add context to all log records.
 
     Args:
         context: Dictionary of context data to add
-    """
 
+    """
     # Add context filter to all Reynard loggers
     context_filter = ContextFilter(context)
     for logger_name in ["reynard", "reynard.api", "reynard.services", "reynard.core"]:

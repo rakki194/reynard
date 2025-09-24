@@ -1,5 +1,4 @@
-"""
-Success-Advisor-8 Legacy Tracker
+"""Success-Advisor-8 Legacy Tracker
 
 Tracks Success-Advisor-8 movements and activities across the codebase
 for comprehensive legacy management and analysis.
@@ -66,20 +65,19 @@ class LegacyReport:
 
 
 class SuccessAdvisor8LegacyTracker:
-    """
-    Track Success-Advisor-8 legacy across codebase and CHANGELOG files.
+    """Track Success-Advisor-8 legacy across codebase and CHANGELOG files.
 
     Provides comprehensive tracking of Success-Advisor-8 activities,
     code movements, and legacy analysis for the Reynard ecosystem.
     """
 
     def __init__(self, codebase_path: str, changelog_path: str = "CHANGELOG.md"):
-        """
-        Initialize the legacy tracker.
+        """Initialize the legacy tracker.
 
         Args:
             codebase_path: Path to the codebase root
             changelog_path: Path to CHANGELOG.md file
+
         """
         self.codebase_path = Path(codebase_path)
         # If changelog_path is already an absolute path, use it directly
@@ -115,11 +113,11 @@ class SuccessAdvisor8LegacyTracker:
         }
 
     async def parse_changelog_entries(self) -> list[SuccessAdvisor8Activity]:
-        """
-        Parse CHANGELOG.md for Success-Advisor-8 activities.
+        """Parse CHANGELOG.md for Success-Advisor-8 activities.
 
         Returns:
             List of Success-Advisor-8 activities found in CHANGELOG
+
         """
         if not self.changelog_path.exists():
             logger.warning("CHANGELOG not found at %s", self.changelog_path)
@@ -146,23 +144,23 @@ class SuccessAdvisor8LegacyTracker:
             # Check for Success-Advisor-8 references
             if self._contains_success_advisor_8_reference(line):
                 activity = await self._extract_activity_from_line(
-                    line, i, current_version, current_date
+                    line, i, current_version, current_date,
                 )
                 if activity:
                     activities.append(activity)
 
         self.activities.extend(activities)
         logger.info(
-            "Found %d Success-Advisor-8 activities in CHANGELOG", len(activities)
+            "Found %d Success-Advisor-8 activities in CHANGELOG", len(activities),
         )
         return activities
 
     async def scan_codebase_movements(self) -> list[CodeMovement]:
-        """
-        Scan codebase for Success-Advisor-8 movements and references.
+        """Scan codebase for Success-Advisor-8 movements and references.
 
         Returns:
             List of code movements and references
+
         """
         movements = []
 
@@ -190,11 +188,11 @@ class SuccessAdvisor8LegacyTracker:
         return movements
 
     async def generate_legacy_report(self) -> LegacyReport:
-        """
-        Generate comprehensive legacy tracking report.
+        """Generate comprehensive legacy tracking report.
 
         Returns:
             Complete legacy report with all activities and movements
+
         """
         # Parse CHANGELOG entries
         changelog_entries = await self.parse_changelog_entries()
@@ -222,14 +220,14 @@ class SuccessAdvisor8LegacyTracker:
         return report
 
     async def export_legacy_data(self, output_path: str) -> bool:
-        """
-        Export legacy tracking data to JSON file.
+        """Export legacy tracking data to JSON file.
 
         Args:
             output_path: Path to output JSON file
 
         Returns:
             True if export successful, False otherwise
+
         """
         try:
             report = await self.generate_legacy_report()
@@ -246,7 +244,7 @@ class SuccessAdvisor8LegacyTracker:
             output_file = Path(output_path)
             output_file.parent.mkdir(parents=True, exist_ok=True)
             output_file.write_text(
-                json.dumps(export_data, indent=2, default=str), encoding="utf-8"
+                json.dumps(export_data, indent=2, default=str), encoding="utf-8",
             )
 
             logger.info("Exported legacy data to %s", output_path)
@@ -265,7 +263,7 @@ class SuccessAdvisor8LegacyTracker:
         return False
 
     async def _extract_activity_from_line(
-        self, line: str, line_number: int, version: str | None, date: datetime | None
+        self, line: str, line_number: int, version: str | None, date: datetime | None,
     ) -> SuccessAdvisor8Activity | None:
         """Extract Success-Advisor-8 activity from changelog line."""
         try:
@@ -503,7 +501,7 @@ class SuccessAdvisor8LegacyTracker:
         return None
 
     def _get_js_function_context(
-        self, lines: list[str], line_number: int
+        self, lines: list[str], line_number: int,
     ) -> str | None:
         """Get function context for JavaScript/TypeScript line."""
         for i in range(line_number - 1, max(0, line_number - 10), -1):
@@ -529,7 +527,7 @@ class SuccessAdvisor8LegacyTracker:
         return None
 
     def _generate_summary(
-        self, activities: list[SuccessAdvisor8Activity], movements: list[CodeMovement]
+        self, activities: list[SuccessAdvisor8Activity], movements: list[CodeMovement],
     ) -> dict[str, Any]:
         """Generate summary statistics for legacy report."""
         # Activity type distribution
@@ -566,10 +564,10 @@ class SuccessAdvisor8LegacyTracker:
             "total_files_scanned": len({movement.file_path for movement in movements}),
             "date_range": {
                 "earliest": min(
-                    (activity.timestamp for activity in activities), default=None
+                    (activity.timestamp for activity in activities), default=None,
                 ),
                 "latest": max(
-                    (activity.timestamp for activity in activities), default=None
+                    (activity.timestamp for activity in activities), default=None,
                 ),
             },
         }

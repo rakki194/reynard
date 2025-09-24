@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-FastAPI ECS Search Load Testing Suite
+"""FastAPI ECS Search Load Testing Suite
 
 Comprehensive load testing for the Reynard FastAPI ECS search system using Locust.
 This script provides realistic load testing scenarios including:
@@ -12,23 +11,19 @@ This script provides realistic load testing scenarios including:
 """
 
 import asyncio
-import json
 import logging
 import random
 import statistics
 import sys
-import time
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import aiohttp
 import psutil
-from locust import HttpUser, between, events, task
+from locust import HttpUser, between, task
 from locust.env import Environment
-from locust.log import setup_logging
-from locust.stats import stats_history, stats_printer
 
 # Add backend to path for imports
 sys.path.append(str(Path(__file__).parent.parent))
@@ -45,7 +40,7 @@ class LoadTestScenario:
     name: str
     endpoint: str
     method: str
-    payload: Optional[Dict[str, Any]] = None
+    payload: dict[str, Any] | None = None
     weight: int = 1
     min_wait: float = 1.0
     max_wait: float = 3.0
@@ -75,9 +70,9 @@ class SystemMonitor:
         self.process = psutil.Process()
         self.baseline_memory = self.process.memory_info().rss / 1024 / 1024
         self.baseline_cpu = self.process.cpu_percent()
-        self.metrics: List[Dict[str, Any]] = []
+        self.metrics: list[dict[str, Any]] = []
 
-    def get_current_metrics(self) -> Dict[str, Any]:
+    def get_current_metrics(self) -> dict[str, Any]:
         """Get current system metrics."""
         memory_info = self.process.memory_info()
         return {
@@ -107,7 +102,7 @@ class SystemMonitor:
         """Stop monitoring."""
         self.monitoring = False
 
-    def get_peak_metrics(self) -> Dict[str, Any]:
+    def get_peak_metrics(self) -> dict[str, Any]:
         """Get peak resource usage metrics."""
         if not self.metrics:
             return {}
@@ -173,7 +168,7 @@ class SearchLoadTestUser(HttpUser):
         }
 
         with self.client.post(
-            "/api/search/semantic", json=payload, catch_response=True
+            "/api/search/semantic", json=payload, catch_response=True,
         ) as response:
             if response.status_code == 200:
                 data = response.json()
@@ -209,7 +204,7 @@ class SearchLoadTestUser(HttpUser):
         }
 
         with self.client.post(
-            "/api/search/syntax", json=payload, catch_response=True
+            "/api/search/syntax", json=payload, catch_response=True,
         ) as response:
             if response.status_code == 200:
                 data = response.json()
@@ -232,7 +227,7 @@ class SearchLoadTestUser(HttpUser):
         }
 
         with self.client.post(
-            "/api/search/hybrid", json=payload, catch_response=True
+            "/api/search/hybrid", json=payload, catch_response=True,
         ) as response:
             if response.status_code == 200:
                 data = response.json()
@@ -255,7 +250,7 @@ class SearchLoadTestUser(HttpUser):
         }
 
         with self.client.post(
-            "/api/search/search", json=payload, catch_response=True
+            "/api/search/search", json=payload, catch_response=True,
         ) as response:
             if response.status_code == 200:
                 data = response.json()
@@ -324,7 +319,7 @@ class ECSLoadTestUser(HttpUser):
         }
 
         with self.client.post(
-            "/api/ecs/agents", json=payload, catch_response=True
+            "/api/ecs/agents", json=payload, catch_response=True,
         ) as response:
             if response.status_code == 200:
                 data = response.json()
@@ -355,12 +350,12 @@ class ECSLoadTestUser(HttpUser):
             "agent1_id": f"test-agent-{random.randint(1, 100)}",
             "agent2_id": f"test-agent-{random.randint(1, 100)}",
             "interaction_type": random.choice(
-                ["communication", "social", "collaboration"]
+                ["communication", "social", "collaboration"],
             ),
         }
 
         with self.client.post(
-            "/api/ecs/interactions", json=payload, catch_response=True
+            "/api/ecs/interactions", json=payload, catch_response=True,
         ) as response:
             if response.status_code == 200:
                 data = response.json()
@@ -404,7 +399,7 @@ class RAGLoadTestUser(HttpUser):
         }
 
         with self.client.post(
-            "/api/rag/query", json=payload, catch_response=True
+            "/api/rag/query", json=payload, catch_response=True,
         ) as response:
             if response.status_code == 200:
                 data = response.json()
@@ -422,7 +417,7 @@ class RAGLoadTestUser(HttpUser):
         payload = {"texts": texts, "model": "mxbai-embed-large"}
 
         with self.client.post(
-            "/api/rag/embed", json=payload, catch_response=True
+            "/api/rag/embed", json=payload, catch_response=True,
         ) as response:
             if response.status_code == 200:
                 data = response.json()
@@ -441,7 +436,7 @@ class RAGLoadTestUser(HttpUser):
                 response.success()
             else:
                 response.failure(
-                    f"RAG health check failed: HTTP {response.status_code}"
+                    f"RAG health check failed: HTTP {response.status_code}",
                 )
 
 
@@ -451,14 +446,14 @@ class LoadTestRunner:
     def __init__(self, host: str = "http://localhost:8000"):
         self.host = host
         self.monitor = SystemMonitor()
-        self.results: List[LoadTestResult] = []
+        self.results: list[LoadTestResult] = []
 
     async def run_search_load_test(
-        self, users: int = 50, spawn_rate: int = 10, run_time: str = "5m"
+        self, users: int = 50, spawn_rate: int = 10, run_time: str = "5m",
     ) -> LoadTestResult:
         """Run search endpoint load test."""
         logger.info(
-            f"Starting search load test: {users} users, {spawn_rate} spawn rate, {run_time} duration"
+            f"Starting search load test: {users} users, {spawn_rate} spawn rate, {run_time} duration",
         )
 
         # Start system monitoring
@@ -488,11 +483,11 @@ class LoadTestRunner:
         return result
 
     async def run_ecs_load_test(
-        self, users: int = 30, spawn_rate: int = 5, run_time: str = "3m"
+        self, users: int = 30, spawn_rate: int = 5, run_time: str = "3m",
     ) -> LoadTestResult:
         """Run ECS endpoint load test."""
         logger.info(
-            f"Starting ECS load test: {users} users, {spawn_rate} spawn rate, {run_time} duration"
+            f"Starting ECS load test: {users} users, {spawn_rate} spawn rate, {run_time} duration",
         )
 
         # Start system monitoring
@@ -522,11 +517,11 @@ class LoadTestRunner:
         return result
 
     async def run_rag_load_test(
-        self, users: int = 20, spawn_rate: int = 3, run_time: str = "3m"
+        self, users: int = 20, spawn_rate: int = 3, run_time: str = "3m",
     ) -> LoadTestResult:
         """Run RAG endpoint load test."""
         logger.info(
-            f"Starting RAG load test: {users} users, {spawn_rate} spawn rate, {run_time} duration"
+            f"Starting RAG load test: {users} users, {spawn_rate} spawn rate, {run_time} duration",
         )
 
         # Start system monitoring
@@ -559,12 +554,11 @@ class LoadTestRunner:
         """Parse duration string to seconds."""
         if duration.endswith("s"):
             return int(duration[:-1])
-        elif duration.endswith("m"):
+        if duration.endswith("m"):
             return int(duration[:-1]) * 60
-        elif duration.endswith("h"):
+        if duration.endswith("h"):
             return int(duration[:-1]) * 3600
-        else:
-            return int(duration)
+        return int(duration)
 
     def _collect_test_results(self, test_name: str, stats) -> LoadTestResult:
         """Collect test results from Locust stats."""
@@ -633,19 +627,19 @@ class LoadTestRunner:
             report.append("🖥️  SYSTEM RESOURCE USAGE")
             report.append("-" * 40)
             report.append(
-                f"Peak Memory Usage: {peak_metrics.get('peak_memory_mb', 0):.2f} MB"
+                f"Peak Memory Usage: {peak_metrics.get('peak_memory_mb', 0):.2f} MB",
             )
             report.append(
-                f"Peak CPU Usage: {peak_metrics.get('peak_cpu_percent', 0):.2f}%"
+                f"Peak CPU Usage: {peak_metrics.get('peak_cpu_percent', 0):.2f}%",
             )
             report.append(
-                f"Average Memory Usage: {peak_metrics.get('average_memory_mb', 0):.2f} MB"
+                f"Average Memory Usage: {peak_metrics.get('average_memory_mb', 0):.2f} MB",
             )
             report.append(
-                f"Average CPU Usage: {peak_metrics.get('average_cpu_percent', 0):.2f}%"
+                f"Average CPU Usage: {peak_metrics.get('average_cpu_percent', 0):.2f}%",
             )
             report.append(
-                f"Monitoring Duration: {peak_metrics.get('monitoring_duration_seconds', 0)} seconds"
+                f"Monitoring Duration: {peak_metrics.get('monitoring_duration_seconds', 0)} seconds",
             )
             report.append("")
 
@@ -657,7 +651,7 @@ class LoadTestRunner:
             report.append(f"Successful: {result.successful_requests}")
             report.append(f"Failed: {result.failed_requests}")
             report.append(
-                f"Success Rate: {((result.successful_requests / result.total_requests) * 100):.1f}%"
+                f"Success Rate: {((result.successful_requests / result.total_requests) * 100):.1f}%",
             )
             report.append(f"Error Rate: {result.error_rate_percent:.1f}%")
             report.append("")
@@ -681,11 +675,11 @@ class LoadTestRunner:
                 report.append("  ⚠️  High response times - optimize database queries")
             if result.p95_response_time_ms > 2000:
                 report.append(
-                    "  ⚠️  High 95th percentile latency - check for bottlenecks"
+                    "  ⚠️  High 95th percentile latency - check for bottlenecks",
                 )
             if result.requests_per_second < 100:
                 report.append(
-                    "  ⚠️  Low throughput - consider connection pooling optimization"
+                    "  ⚠️  Low throughput - consider connection pooling optimization",
                 )
             report.append("")
 
@@ -717,26 +711,26 @@ async def main():
 
         # Search endpoints load test
         search_result = await runner.run_search_load_test(
-            users=50, spawn_rate=10, run_time="5m"
+            users=50, spawn_rate=10, run_time="5m",
         )
         logger.info(
-            f"Search load test completed: {search_result.requests_per_second:.2f} req/s"
+            f"Search load test completed: {search_result.requests_per_second:.2f} req/s",
         )
 
         # ECS endpoints load test
         ecs_result = await runner.run_ecs_load_test(
-            users=30, spawn_rate=5, run_time="3m"
+            users=30, spawn_rate=5, run_time="3m",
         )
         logger.info(
-            f"ECS load test completed: {ecs_result.requests_per_second:.2f} req/s"
+            f"ECS load test completed: {ecs_result.requests_per_second:.2f} req/s",
         )
 
         # RAG endpoints load test
         rag_result = await runner.run_rag_load_test(
-            users=20, spawn_rate=3, run_time="3m"
+            users=20, spawn_rate=3, run_time="3m",
         )
         logger.info(
-            f"RAG load test completed: {rag_result.requests_per_second:.2f} req/s"
+            f"RAG load test completed: {rag_result.requests_per_second:.2f} req/s",
         )
 
         # Generate and save report

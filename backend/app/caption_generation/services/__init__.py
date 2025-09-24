@@ -1,5 +1,4 @@
-"""
-Caption generation services module.
+"""Caption generation services module.
 
 This module provides specialized services for caption generation including
 model coordination, batch processing, and service orchestration.

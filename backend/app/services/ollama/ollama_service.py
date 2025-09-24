@@ -1,5 +1,4 @@
-"""
-Main Ollama service orchestrator.
+"""Main Ollama service orchestrator.
 
 This service manages Ollama local LLM integration with ReynardAssistant,
 tool calling, streaming responses, and context awareness.
@@ -53,7 +52,7 @@ class OllamaService:
 
             # Initialize Ollama client
             self._client = OllamaClient(
-                self._config.base_url, self._config.timeout_seconds
+                self._config.base_url, self._config.timeout_seconds,
             )
 
             # Initialize ReynardAssistant if enabled
@@ -68,7 +67,7 @@ class OllamaService:
             return False
 
     async def chat_stream(
-        self, params: OllamaChatParams
+        self, params: OllamaChatParams,
     ) -> AsyncIterable[OllamaStreamEvent]:
         """Chat with Ollama with streaming support."""
         if not self._enabled:
@@ -131,7 +130,7 @@ class OllamaService:
             )
 
     async def assistant_stream(
-        self, params: OllamaAssistantParams
+        self, params: OllamaAssistantParams,
     ) -> AsyncIterable[OllamaStreamEvent]:
         """Chat with ReynardAssistant with streaming support."""
         if not self._enabled or not self._assistant:
@@ -333,7 +332,7 @@ class OllamaClient:
             return False
 
     async def chat_stream(
-        self, params: OllamaChatParams
+        self, params: OllamaChatParams,
     ) -> AsyncIterable[OllamaStreamEvent]:
         """Stream chat response."""
         try:
@@ -356,11 +355,11 @@ class OllamaClient:
             # Add system prompt if provided
             if params.system_prompt:
                 payload["messages"].insert(
-                    0, {"role": "system", "content": params.system_prompt}
+                    0, {"role": "system", "content": params.system_prompt},
                 )
 
             async with self.session.post(
-                f"{self.base_url}/api/chat", json=payload
+                f"{self.base_url}/api/chat", json=payload,
             ) as response:
                 if response.status == 200:
                     async for line in response.content:
@@ -434,10 +433,10 @@ class OllamaClient:
                                 modified_at=model_data.get("modified_at", ""),
                                 is_available=True,
                                 context_length=model_data.get("details", {}).get(
-                                    "parameter_size", 4096
+                                    "parameter_size", 4096,
                                 ),
                                 capabilities=["chat", "completion"],
-                            )
+                            ),
                         )
                     return models
                 return []
@@ -459,7 +458,7 @@ class OllamaClient:
         try:
             await self._ensure_session()
             async with self.session.post(
-                f"{self.base_url}/api/pull", json={"name": model_name}
+                f"{self.base_url}/api/pull", json={"name": model_name},
             ) as response:
                 return response.status == 200
         except Exception as e:
@@ -485,7 +484,7 @@ class ReynardAssistant:
         self.config = config
 
     async def chat_stream(
-        self, params: OllamaAssistantParams
+        self, params: OllamaAssistantParams,
     ) -> AsyncIterable[OllamaStreamEvent]:
         """Stream assistant response with tool calling."""
         try:
@@ -532,7 +531,7 @@ class ReynardAssistant:
                             "path": {
                                 "type": "string",
                                 "description": "Directory path to list",
-                            }
+                            },
                         },
                         "required": ["path"],
                     },
@@ -546,7 +545,7 @@ class ReynardAssistant:
                     "parameters": {
                         "type": "object",
                         "properties": {
-                            "query": {"type": "string", "description": "Search query"}
+                            "query": {"type": "string", "description": "Search query"},
                         },
                         "required": ["query"],
                     },
@@ -560,4 +559,3 @@ class ReynardAssistant:
 
     async def cleanup(self) -> None:
         """Cleanup assistant resources."""
-        pass

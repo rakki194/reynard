@@ -1,5 +1,4 @@
-"""
-Search Engine: Advanced search capabilities combining semantic and keyword matching.
+"""Search Engine: Advanced search capabilities combining semantic and keyword matching.
 
 This service provides:
 - Semantic search using vector embeddings
@@ -11,11 +10,10 @@ This service provides:
 
 import asyncio
 import logging
-import math
 import re
 import time
-from collections import Counter, defaultdict
-from typing import Any, Dict, List, Optional, Tuple
+from collections import defaultdict
+from typing import Any
 
 from sqlalchemy import text
 
@@ -45,12 +43,12 @@ class KeywordIndex:
     """Simple keyword index for fast keyword-based search."""
 
     def __init__(self):
-        self.index: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
-        self.documents: List[Dict[str, Any]] = []
+        self.index: dict[str, list[dict[str, Any]]] = defaultdict(list)
+        self.documents: list[dict[str, Any]] = []
         self.bm25_index = None
         self._build_bm25_index()
 
-    def add_document(self, doc_id: str, text: str, metadata: Dict[str, Any]) -> None:
+    def add_document(self, doc_id: str, text: str, metadata: dict[str, Any]) -> None:
         """Add a document to the keyword index."""
         doc = {
             "id": doc_id,
@@ -65,7 +63,7 @@ class KeywordIndex:
         for token in doc["tokens"]:
             self.index[token].append(doc)
 
-    def _tokenize(self, text: str) -> List[str]:
+    def _tokenize(self, text: str) -> list[str]:
         """Tokenize text for keyword indexing."""
         # Simple tokenization - in production, use more sophisticated tokenization
         text = text.lower()
@@ -136,7 +134,7 @@ class KeywordIndex:
                 logger.warning(f"Failed to build BM25 index: {e}")
                 self.bm25_index = None
 
-    def search_keywords(self, query: str, limit: int = 10) -> List[Dict[str, Any]]:
+    def search_keywords(self, query: str, limit: int = 10) -> list[dict[str, Any]]:
         """Search using keyword matching."""
         query_tokens = self._tokenize(query)
 
@@ -164,12 +162,12 @@ class KeywordIndex:
                         "score": score,
                         "type": "keyword",
                         "metadata": doc["metadata"],
-                    }
+                    },
                 )
 
         return results
 
-    def search_bm25(self, query: str, limit: int = 10) -> List[Dict[str, Any]]:
+    def search_bm25(self, query: str, limit: int = 10) -> list[dict[str, Any]]:
         """Search using BM25 scoring."""
         if not self.bm25_index:
             return self.search_keywords(query, limit)
@@ -195,7 +193,7 @@ class KeywordIndex:
                             "score": score,
                             "type": "bm25",
                             "metadata": doc["metadata"],
-                        }
+                        },
                     )
 
             return results
@@ -230,9 +228,9 @@ class SearchEngine:
         self,
         query: str,
         limit: int = 10,
-        dataset_id: Optional[str] = None,
+        dataset_id: str | None = None,
         similarity_threshold: float = 0.0,
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """Perform semantic search using embeddings."""
         try:
             start_time = time.time()
@@ -261,7 +259,7 @@ class SearchEngine:
                         "path": result.get("path", ""),
                         "title": result.get("title", ""),
                         "file_type": result.get("file_type", ""),
-                    }
+                    },
                 )
 
             # Update stats
@@ -269,7 +267,7 @@ class SearchEngine:
 
             search_time = (time.time() - start_time) * 1000
             logger.debug(
-                f"Semantic search completed in {search_time:.2f}ms, found {len(formatted_results)} results"
+                f"Semantic search completed in {search_time:.2f}ms, found {len(formatted_results)} results",
             )
 
             return formatted_results
@@ -279,8 +277,8 @@ class SearchEngine:
             return []
 
     async def keyword_search(
-        self, query: str, limit: int = 10, use_bm25: bool = True
-    ) -> List[Dict[str, Any]]:
+        self, query: str, limit: int = 10, use_bm25: bool = True,
+    ) -> list[dict[str, Any]]:
         """Perform keyword-based search."""
         try:
             start_time = time.time()
@@ -296,7 +294,7 @@ class SearchEngine:
 
             search_time = (time.time() - start_time) * 1000
             logger.debug(
-                f"Keyword search completed in {search_time:.2f}ms, found {len(results)} results"
+                f"Keyword search completed in {search_time:.2f}ms, found {len(results)} results",
             )
 
             return results
@@ -309,12 +307,11 @@ class SearchEngine:
         self,
         query: str,
         limit: int = 10,
-        semantic_weight: Optional[float] = None,
-        keyword_weight: Optional[float] = None,
-        dataset_id: Optional[str] = None,
-    ) -> List[Dict[str, Any]]:
+        semantic_weight: float | None = None,
+        keyword_weight: float | None = None,
+        dataset_id: str | None = None,
+    ) -> list[dict[str, Any]]:
         """Combine semantic and keyword search with weighted fusion."""
-
         if semantic_weight is None:
             semantic_weight = self.default_semantic_weight
         if keyword_weight is None:
@@ -333,12 +330,12 @@ class SearchEngine:
         keyword_task = self.keyword_search(query, limit * 2)
 
         semantic_results, keyword_results = await asyncio.gather(
-            semantic_task, keyword_task
+            semantic_task, keyword_task,
         )
 
         # Fusion with Reciprocal Rank Fusion (RRF)
         fused_results = self._reciprocal_rank_fusion(
-            semantic_results, keyword_results, semantic_weight, keyword_weight, limit
+            semantic_results, keyword_results, semantic_weight, keyword_weight, limit,
         )
 
         # Update performance stats
@@ -346,21 +343,20 @@ class SearchEngine:
         self._update_search_stats(fusion_time)
 
         logger.debug(
-            f"Hybrid search completed in {fusion_time:.2f}ms, found {len(fused_results)} results"
+            f"Hybrid search completed in {fusion_time:.2f}ms, found {len(fused_results)} results",
         )
 
         return fused_results
 
     def _reciprocal_rank_fusion(
         self,
-        semantic_results: List[Dict],
-        keyword_results: List[Dict],
+        semantic_results: list[dict],
+        keyword_results: list[dict],
         semantic_weight: float,
         keyword_weight: float,
         limit: int,
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """Combine results using Reciprocal Rank Fusion algorithm."""
-
         # Create score maps
         semantic_scores = {}
         keyword_scores = {}
@@ -414,7 +410,7 @@ class SearchEngine:
         self.search_stats["hybrid_searches"] += 1
         return final_results
 
-    def _get_doc_id(self, result: Dict[str, Any]) -> str:
+    def _get_doc_id(self, result: dict[str, Any]) -> str:
         """Extract document ID from result."""
         # Try different possible ID fields
         metadata = result.get("metadata", {})
@@ -438,7 +434,7 @@ class SearchEngine:
                 current_avg * (total_searches - 1) + fusion_time_ms
             ) / total_searches
 
-    def index_documents(self, documents: List[Dict[str, Any]]) -> None:
+    def index_documents(self, documents: list[dict[str, Any]]) -> None:
         """Index documents for keyword search."""
         for doc in documents:
             doc_id = doc.get("id", str(hash(doc.get("text", ""))))
@@ -458,7 +454,7 @@ class SearchEngine:
             # Get all document chunks from the vector store
             if not self.vector_store_service or not self.vector_store_service._enabled:
                 logger.warning(
-                    "Vector store service not available for keyword index population"
+                    "Vector store service not available for keyword index population",
                 )
                 return
 
@@ -468,17 +464,17 @@ class SearchEngine:
             if documents:
                 self.index_documents(documents)
                 logger.info(
-                    f"Populated keyword index with {len(documents)} documents from vector store"
+                    f"Populated keyword index with {len(documents)} documents from vector store",
                 )
             else:
                 logger.info(
-                    "No documents found in vector store for keyword index population"
+                    "No documents found in vector store for keyword index population",
                 )
 
         except Exception as e:
             logger.error(f"Failed to populate keyword index from vector store: {e}")
 
-    async def _get_all_document_chunks(self) -> List[Dict[str, Any]]:
+    async def _get_all_document_chunks(self) -> list[dict[str, Any]]:
         """Get all document chunks from the vector store."""
         try:
             if not self.vector_store_service._engine:
@@ -500,8 +496,8 @@ class SearchEngine:
                         JOIN rag_documents d ON dc.document_id = d.id
                         WHERE dc.text IS NOT NULL AND dc.text != ''
                         ORDER BY dc.id
-                    """
-                    )
+                    """,
+                    ),
                 )
 
                 documents = []
@@ -540,10 +536,9 @@ class SearchEngine:
         query: str,
         search_type: str = "hybrid",
         limit: int = 10,
-        filters: Optional[Dict[str, Any]] = None,
-    ) -> List[Dict[str, Any]]:
+        filters: dict[str, Any] | None = None,
+    ) -> list[dict[str, Any]]:
         """Search with additional filters and options."""
-
         # Apply filters
         dataset_id = filters.get("dataset_id") if filters else None
         similarity_threshold = (
@@ -555,7 +550,7 @@ class SearchEngine:
         # Perform search based on type
         if search_type == "semantic":
             results = await self.semantic_search(
-                query, limit, dataset_id, similarity_threshold
+                query, limit, dataset_id, similarity_threshold,
             )
         elif search_type == "keyword":
             results = await self.keyword_search(query, limit)
@@ -577,7 +572,7 @@ class SearchEngine:
 
         return results
 
-    def get_search_stats(self) -> Dict[str, Any]:
+    def get_search_stats(self) -> dict[str, Any]:
         """Get search engine statistics."""
         return {
             **self.search_stats,
@@ -597,8 +592,8 @@ class SearchEngine:
         logger.info("Keyword index cleared")
 
     async def benchmark_search_performance(
-        self, test_queries: List[str], iterations: int = 5
-    ) -> Dict[str, Any]:
+        self, test_queries: list[str], iterations: int = 5,
+    ) -> dict[str, Any]:
         """Benchmark search performance across different methods."""
         results = {"semantic_only": [], "keyword_only": [], "hybrid": []}
 

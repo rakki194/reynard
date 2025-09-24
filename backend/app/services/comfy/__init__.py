@@ -1,5 +1,4 @@
-"""
-ComfyUI Integration Service
+"""ComfyUI Integration Service
 
 Provides workflow automation, queue management, and image generation
 capabilities through ComfyUI integration.

@@ -1,13 +1,10 @@
-"""
-Test ECS Systems
+"""Test ECS Systems
 
 Tests for all ECS systems including Social, Gender, Interaction, etc.
 """
 
 import os
 import sys
-
-import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
 
@@ -19,7 +16,7 @@ from backend.app.ecs.components import (
     MemoryComponent,
     SocialComponent,
 )
-from backend.app.ecs.core import ECSWorld, Entity
+from backend.app.ecs.core import ECSWorld
 from backend.app.ecs.systems import (
     GenderSystem,
     InteractionSystem,

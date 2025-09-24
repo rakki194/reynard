@@ -1,5 +1,4 @@
-"""
-Command-line interface for the agent diagram generator.
+"""Command-line interface for the agent diagram generator.
 """
 
 import argparse
@@ -14,20 +13,20 @@ from .core.parser import ChangelogParser
 
 
 def main() -> int:
-    """
-    Main function to generate the agent contributions diagram.
+    """Main function to generate the agent contributions diagram.
 
     Returns:
         Exit code (0 for success, 1 for error)
+
     """
     parser = argparse.ArgumentParser(
-        description="Generate agent contributions diagram from changelog"
+        description="Generate agent contributions diagram from changelog",
     )
     parser.add_argument(
-        "--changelog", default="CHANGELOG.md", help="Path to changelog file"
+        "--changelog", default="CHANGELOG.md", help="Path to changelog file",
     )
     parser.add_argument(
-        "--output", default="agent_contributions_diagram.md", help="Output file path"
+        "--output", default="agent_contributions_diagram.md", help="Output file path",
     )
     parser.add_argument("--verbose", "-v", action="store_true", help="Verbose output")
 
@@ -73,7 +72,7 @@ def main() -> int:
         print(f"✅ Successfully generated {args.output}")
         unique_agents = len(set(c.agent_name for c in contributions))
         print(
-            f"📊 Processed {len(contributions)} contributions from {unique_agents} unique agents"
+            f"📊 Processed {len(contributions)} contributions from {unique_agents} unique agents",
         )
 
         # Validate the generated diagram

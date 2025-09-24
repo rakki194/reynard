@@ -1,11 +1,10 @@
-"""
-Email models for Reynard Backend.
+"""Email models for Reynard Backend.
 
 This module provides Pydantic models for email-related data structures.
 """
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from pydantic import BaseModel, EmailStr, Field, field_validator
 
@@ -14,8 +13,8 @@ class EmailAttachmentModel(BaseModel):
     """Email attachment model."""
 
     file_path: str = Field(..., description="Path to the attachment file")
-    filename: Optional[str] = Field(
-        None, description="Custom filename for the attachment"
+    filename: str | None = Field(
+        None, description="Custom filename for the attachment",
     )
 
     @field_validator("file_path")
@@ -32,26 +31,26 @@ class EmailAttachmentModel(BaseModel):
 class EmailSendRequest(BaseModel):
     """Request model for sending emails."""
 
-    to_emails: List[EmailStr] = Field(
-        ..., min_length=1, description="List of recipient email addresses"
+    to_emails: list[EmailStr] = Field(
+        ..., min_length=1, description="List of recipient email addresses",
     )
     subject: str = Field(..., min_length=1, max_length=200, description="Email subject")
     body: str = Field(..., min_length=1, description="Plain text email body")
-    html_body: Optional[str] = Field(None, description="HTML email body")
-    cc_emails: Optional[List[EmailStr]] = Field(None, description="CC email addresses")
-    bcc_emails: Optional[List[EmailStr]] = Field(
-        None, description="BCC email addresses"
+    html_body: str | None = Field(None, description="HTML email body")
+    cc_emails: list[EmailStr] | None = Field(None, description="CC email addresses")
+    bcc_emails: list[EmailStr] | None = Field(
+        None, description="BCC email addresses",
     )
-    attachments: Optional[List[EmailAttachmentModel]] = Field(
-        None, description="Email attachments"
+    attachments: list[EmailAttachmentModel] | None = Field(
+        None, description="Email attachments",
     )
-    reply_to: Optional[EmailStr] = Field(None, description="Reply-to email address")
+    reply_to: EmailStr | None = Field(None, description="Reply-to email address")
 
     @field_validator("to_emails", "cc_emails", "bcc_emails")
     @classmethod
     def validate_email_lists(
-        cls, v: Optional[List[EmailStr]]
-    ) -> Optional[List[EmailStr]]:
+        cls, v: list[EmailStr] | None,
+    ) -> list[EmailStr] | None:
         """Validate email lists are not empty if provided."""
         if v is not None and len(v) == 0:
             raise ValueError("Email list cannot be empty")
@@ -62,52 +61,52 @@ class EmailSendResponse(BaseModel):
     """Response model for email sending."""
 
     success: bool = Field(..., description="Whether the email was sent successfully")
-    message_id: Optional[str] = Field(None, description="Email message ID")
-    sent_at: Optional[datetime] = Field(
-        None, description="Timestamp when email was sent"
+    message_id: str | None = Field(None, description="Email message ID")
+    sent_at: datetime | None = Field(
+        None, description="Timestamp when email was sent",
     )
-    recipients: List[str] = Field(..., description="List of recipients")
-    error: Optional[str] = Field(None, description="Error message if sending failed")
+    recipients: list[str] = Field(..., description="List of recipients")
+    error: str | None = Field(None, description="Error message if sending failed")
 
 
 class EmailTemplateRequest(BaseModel):
     """Request model for sending templated emails."""
 
-    to_emails: List[EmailStr] = Field(
-        ..., min_length=1, description="List of recipient email addresses"
+    to_emails: list[EmailStr] = Field(
+        ..., min_length=1, description="List of recipient email addresses",
     )
     template_name: str = Field(
-        ..., min_length=1, description="Name of the email template"
+        ..., min_length=1, description="Name of the email template",
     )
-    template_variables: Dict[str, Any] = Field(
-        default_factory=dict, description="Template variables"
+    template_variables: dict[str, Any] = Field(
+        default_factory=dict, description="Template variables",
     )
-    subject: Optional[str] = Field(
-        None, description="Custom subject (overrides template)"
+    subject: str | None = Field(
+        None, description="Custom subject (overrides template)",
     )
-    cc_emails: Optional[List[EmailStr]] = Field(None, description="CC email addresses")
-    bcc_emails: Optional[List[EmailStr]] = Field(
-        None, description="BCC email addresses"
+    cc_emails: list[EmailStr] | None = Field(None, description="CC email addresses")
+    bcc_emails: list[EmailStr] | None = Field(
+        None, description="BCC email addresses",
     )
-    attachments: Optional[List[EmailAttachmentModel]] = Field(
-        None, description="Email attachments"
+    attachments: list[EmailAttachmentModel] | None = Field(
+        None, description="Email attachments",
     )
 
 
 class EmailBulkRequest(BaseModel):
     """Request model for bulk email sending."""
 
-    to_emails: List[EmailStr] = Field(
-        ..., min_length=1, description="List of recipient email addresses"
+    to_emails: list[EmailStr] = Field(
+        ..., min_length=1, description="List of recipient email addresses",
     )
     subject: str = Field(..., min_length=1, max_length=200, description="Email subject")
     body: str = Field(..., min_length=1, description="Plain text email body")
-    html_body: Optional[str] = Field(None, description="HTML email body")
+    html_body: str | None = Field(None, description="HTML email body")
     batch_size: int = Field(
-        10, ge=1, le=100, description="Number of emails to send per batch"
+        10, ge=1, le=100, description="Number of emails to send per batch",
     )
     delay_between_batches: float = Field(
-        1.0, ge=0.0, le=60.0, description="Delay between batches in seconds"
+        1.0, ge=0.0, le=60.0, description="Delay between batches in seconds",
     )
 
 
@@ -119,7 +118,7 @@ class EmailBulkResponse(BaseModel):
     failed_sends: int = Field(..., description="Number of failed sends")
     batch_count: int = Field(..., description="Number of batches processed")
     processing_time: float = Field(..., description="Total processing time in seconds")
-    results: List[EmailSendResponse] = Field(..., description="Individual send results")
+    results: list[EmailSendResponse] = Field(..., description="Individual send results")
 
 
 class EmailConfigModel(BaseModel):
@@ -138,13 +137,13 @@ class EmailStatusModel(BaseModel):
     """Email status model."""
 
     service_configured: bool = Field(
-        ..., description="Whether email service is properly configured"
+        ..., description="Whether email service is properly configured",
     )
     smtp_server: str = Field(..., description="SMTP server being used")
     from_email: str = Field(..., description="Default from email")
     test_connection: bool = Field(
-        ..., description="Whether SMTP connection test passed"
+        ..., description="Whether SMTP connection test passed",
     )
-    last_test_time: Optional[datetime] = Field(
-        None, description="Last connection test time"
+    last_test_time: datetime | None = Field(
+        None, description="Last connection test time",
     )

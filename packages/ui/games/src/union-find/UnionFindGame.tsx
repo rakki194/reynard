@@ -1,8 +1,48 @@
-import { UnionFind } from "reynard-algorithms";
+// import { UnionFind } from "reynard-algorithms";
+
+// Temporary placeholder for UnionFind until algorithms package is built
+class UnionFind {
+  parent: number[];
+  rank: number[];
+  
+  constructor(size: number) {
+    this.parent = Array.from({ length: size }, (_, i) => i);
+    this.rank = new Array(size).fill(0);
+  }
+  
+  find(x: number): number {
+    if (this.parent[x] !== x) {
+      this.parent[x] = this.find(this.parent[x]);
+    }
+    return this.parent[x];
+  }
+  
+  union(x: number, y: number): boolean {
+    const rootX = this.find(x);
+    const rootY = this.find(y);
+    
+    if (rootX === rootY) return false;
+    
+    if (this.rank[rootX] < this.rank[rootY]) {
+      this.parent[rootX] = rootY;
+    } else if (this.rank[rootX] > this.rank[rootY]) {
+      this.parent[rootY] = rootX;
+    } else {
+      this.parent[rootY] = rootX;
+      this.rank[rootX]++;
+    }
+    
+    return true;
+  }
+  
+  connected(x: number, y: number): boolean {
+    return this.find(x) === this.find(y);
+  }
+}
 import { Button } from "reynard-components-core";
 import { createSignal, onMount } from "solid-js";
 import "./UnionFindGame.css";
-export function UnionFindGame(props = {}) {
+export function UnionFindGame(props: any = {}) {
   const [grid, setGrid] = createSignal([]);
   const [uf, setUf] = createSignal(null);
   const [selectedCells, setSelectedCells] = createSignal(new Set());
@@ -45,7 +85,7 @@ export function UnionFindGame(props = {}) {
     if (!currentUf) return [];
     const components = new Map();
     for (const cellKey of Array.from(selectedCells)) {
-      const [row, col] = cellKey.split("-").map(Number);
+      const [row, col] = String(cellKey).split("-").map(Number);
       const cellId = getCellId(row, col);
       const root = currentUf.find(cellId);
       if (!components.has(root)) {
@@ -133,7 +173,7 @@ export function UnionFindGame(props = {}) {
     const currentColor = grid()[row][col];
     // Check if any selected cell is adjacent and has the same color
     for (const selectedKey of Array.from(currentSelection)) {
-      const [selRow, selCol] = selectedKey.split("-").map(Number);
+      const [selRow, selCol] = String(selectedKey).split("-").map(Number);
       if (grid()[selRow][selCol] === currentColor && isAdjacent(row, col, selRow, selCol)) {
         return true;
       }
@@ -157,7 +197,7 @@ export function UnionFindGame(props = {}) {
         const currentColor = grid()[row][col];
         for (const selectedKey of Array.from(newSelected)) {
           if (selectedKey === cellKey) continue;
-          const [selRow, selCol] = selectedKey.split("-").map(Number);
+          const [selRow, selCol] = String(selectedKey).split("-").map(Number);
           if (grid()[selRow][selCol] === currentColor && isAdjacent(row, col, selRow, selCol)) {
             const selId = getCellId(selRow, selCol);
             currentUf.union(cellId, selId);

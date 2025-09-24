@@ -1,5 +1,4 @@
-"""
-🦊 Reynard TTS Audio Validator
+"""🦊 Reynard TTS Audio Validator
 ==============================
 
 Advanced audio format validation and quality metrics for TTS service with comprehensive
@@ -19,12 +18,9 @@ Version: 1.0.0
 """
 
 import asyncio
-import io
-import os
 import struct
-import wave
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any
 
 import aiofiles
 
@@ -36,7 +32,7 @@ logger = get_service_logger("tts")
 class AudioFormatError(Exception):
     """Exception raised for audio format validation errors."""
 
-    def __init__(self, message: str, format_info: Optional[Dict[str, Any]] = None):
+    def __init__(self, message: str, format_info: dict[str, Any] | None = None):
         super().__init__(message)
         self.format_info = format_info or {}
 
@@ -44,14 +40,13 @@ class AudioFormatError(Exception):
 class AudioQualityError(Exception):
     """Exception raised for audio quality issues."""
 
-    def __init__(self, message: str, quality_metrics: Optional[Dict[str, Any]] = None):
+    def __init__(self, message: str, quality_metrics: dict[str, Any] | None = None):
         super().__init__(message)
         self.quality_metrics = quality_metrics or {}
 
 
 class AudioValidator:
-    """
-    Comprehensive audio validation and quality analysis.
+    """Comprehensive audio validation and quality analysis.
 
     Provides advanced audio format validation, quality metrics,
     and content analysis for TTS service integration.
@@ -132,14 +127,13 @@ class AudioValidator:
     def __init__(self, quality_level: str = "high"):
         self.quality_level = quality_level
         self.thresholds = self.QUALITY_THRESHOLDS.get(
-            quality_level, self.QUALITY_THRESHOLDS["high"]
+            quality_level, self.QUALITY_THRESHOLDS["high"],
         )
 
     async def validate_audio_file(
-        self, file_path: Union[str, Path], validate_content: bool = True
-    ) -> Dict[str, Any]:
-        """
-        Comprehensive audio file validation.
+        self, file_path: str | Path, validate_content: bool = True,
+    ) -> dict[str, Any]:
+        """Comprehensive audio file validation.
 
         Args:
             file_path: Path to audio file
@@ -151,6 +145,7 @@ class AudioValidator:
         Raises:
             AudioFormatError: If format validation fails
             AudioQualityError: If quality validation fails
+
         """
         file_path = Path(file_path)
 
@@ -221,10 +216,9 @@ class AudioValidator:
         }
 
     async def validate_uploaded_audio(
-        self, file_content: bytes, filename: str, validate_content: bool = True
-    ) -> Dict[str, Any]:
-        """
-        Validate uploaded audio file content.
+        self, file_content: bytes, filename: str, validate_content: bool = True,
+    ) -> dict[str, Any]:
+        """Validate uploaded audio file content.
 
         Args:
             file_content: Raw file content
@@ -233,13 +227,14 @@ class AudioValidator:
 
         Returns:
             Dictionary with validation results
+
         """
         if not file_content:
             raise AudioFormatError("Uploaded audio file is empty")
 
         # Detect format from content
         format_info = self._detect_audio_format(
-            file_content[:1024], Path(filename).suffix.lower()
+            file_content[:1024], Path(filename).suffix.lower(),
         )
         if not format_info:
             raise AudioFormatError(
@@ -308,18 +303,18 @@ class AudioValidator:
                 temp_path.unlink(missing_ok=True)
 
     def _detect_audio_format(
-        self, header: bytes, extension: str
-    ) -> Optional[Dict[str, Any]]:
+        self, header: bytes, extension: str,
+    ) -> dict[str, Any] | None:
         """Detect audio format from file header and extension."""
         for format_name, format_info in self.AUDIO_FORMATS.items():
             # Check extension
             if extension in format_info["extensions"]:
                 # Check signature for some formats
                 if format_name in ["wav", "ogg", "flac"] and header.startswith(
-                    format_info["signature"]
+                    format_info["signature"],
                 ):
                     return {"format": format_name, **format_info}
-                elif format_name in ["mp3", "opus"]:
+                if format_name in ["mp3", "opus"]:
                     # MP3 and Opus have more complex signatures
                     if self._check_complex_signature(header, format_name):
                         return {"format": format_name, **format_info}
@@ -333,22 +328,21 @@ class AudioValidator:
         if format_name == "mp3":
             # Check for MP3 frame headers
             return header.startswith(b"\xff\xfb") or header.startswith(b"\xff\xfa")
-        elif format_name == "opus":
+        if format_name == "opus":
             # Check for Opus header
             return b"OpusHead" in header[:100]
         return False
 
     async def _get_audio_metadata(
-        self, file_path: Path, format_name: str
-    ) -> Dict[str, Any]:
+        self, file_path: Path, format_name: str,
+    ) -> dict[str, Any]:
         """Get audio metadata based on format."""
         if format_name == "wav":
             return await self._get_wav_metadata(file_path)
-        else:
-            # For other formats, use basic file analysis
-            return await self._get_basic_metadata(file_path)
+        # For other formats, use basic file analysis
+        return await self._get_basic_metadata(file_path)
 
-    async def _get_wav_metadata(self, file_path: Path) -> Dict[str, Any]:
+    async def _get_wav_metadata(self, file_path: Path) -> dict[str, Any]:
         """Get WAV file metadata."""
         try:
             async with aiofiles.open(file_path, "rb") as f:
@@ -360,12 +354,12 @@ class AudioValidator:
 
                 # Parse WAV header
                 riff, file_size, wave, fmt, fmt_size = struct.unpack(
-                    "<4sI4s4sI", header[:20]
+                    "<4sI4s4sI", header[:20],
                 )
 
                 if riff != b"RIFF" or wave != b"WAVE" or fmt != b"fmt ":
                     raise AudioFormatError(
-                        "Invalid WAV file: missing RIFF/WAVE/fmt headers"
+                        "Invalid WAV file: missing RIFF/WAVE/fmt headers",
                     )
 
                 # Read format chunk
@@ -402,7 +396,7 @@ class AudioValidator:
             logger.error(f"Error reading WAV metadata: {e}")
             raise AudioFormatError(f"Failed to read WAV metadata: {e}")
 
-    async def _get_basic_metadata(self, file_path: Path) -> Dict[str, Any]:
+    async def _get_basic_metadata(self, file_path: Path) -> dict[str, Any]:
         """Get basic metadata for non-WAV formats."""
         # For non-WAV formats, we'll use file size and basic analysis
         file_size = file_path.stat().st_size
@@ -422,8 +416,8 @@ class AudioValidator:
         }
 
     async def _analyze_audio_quality(
-        self, file_path: Path, metadata: Dict[str, Any]
-    ) -> Dict[str, Any]:
+        self, file_path: Path, metadata: dict[str, Any],
+    ) -> dict[str, Any]:
         """Analyze audio quality metrics."""
         try:
             # Basic quality metrics
@@ -459,7 +453,7 @@ class AudioValidator:
                 "issues": [f"Quality analysis failed: {e}"],
             }
 
-    def _estimate_bitrate(self, metadata: Dict[str, Any]) -> int:
+    def _estimate_bitrate(self, metadata: dict[str, Any]) -> int:
         """Estimate audio bitrate from metadata."""
         sample_rate = metadata.get("sample_rate", 0)
         channels = metadata.get("channels", 0)
@@ -469,7 +463,7 @@ class AudioValidator:
             return sample_rate * channels * bits_per_sample
         return 0
 
-    def _calculate_quality_score(self, metrics: Dict[str, Any]) -> float:
+    def _calculate_quality_score(self, metrics: dict[str, Any]) -> float:
         """Calculate overall audio quality score (0.0 to 1.0)."""
         score = 0.0
 
@@ -511,7 +505,7 @@ class AudioValidator:
 
         return min(score, 1.0)
 
-    def _check_audio_issues(self, metrics: Dict[str, Any]) -> List[str]:
+    def _check_audio_issues(self, metrics: dict[str, Any]) -> list[str]:
         """Check for common audio quality issues."""
         issues = []
 
@@ -519,21 +513,21 @@ class AudioValidator:
         sample_rate = metrics.get("sample_rate", 0)
         if sample_rate < self.thresholds["min_sample_rate"]:
             issues.append(
-                f"Low sample rate: {sample_rate}Hz < {self.thresholds['min_sample_rate']}Hz"
+                f"Low sample rate: {sample_rate}Hz < {self.thresholds['min_sample_rate']}Hz",
             )
 
         # Check bitrate
         bitrate = metrics.get("estimated_bitrate", 0)
         if bitrate < self.thresholds["min_bitrate"] * 1000:
             issues.append(
-                f"Low bitrate: {bitrate//1000}kbps < {self.thresholds['min_bitrate']}kbps"
+                f"Low bitrate: {bitrate//1000}kbps < {self.thresholds['min_bitrate']}kbps",
             )
 
         # Check channels
         channels = metrics.get("channels", 0)
         if channels < self.thresholds["min_channels"]:
             issues.append(
-                f"Insufficient channels: {channels} < {self.thresholds['min_channels']}"
+                f"Insufficient channels: {channels} < {self.thresholds['min_channels']}",
             )
 
         # Check duration
@@ -545,7 +539,7 @@ class AudioValidator:
 
         return issues
 
-    def _validate_quality_metrics(self, metrics: Dict[str, Any]) -> None:
+    def _validate_quality_metrics(self, metrics: dict[str, Any]) -> None:
         """Validate audio quality against thresholds."""
         issues = metrics.get("issues", [])
         if issues:
@@ -561,7 +555,7 @@ class AudioValidator:
                 metrics,
             )
 
-    async def get_supported_formats(self) -> Dict[str, Any]:
+    async def get_supported_formats(self) -> dict[str, Any]:
         """Get information about supported audio formats."""
         return {
             "supported_formats": list(self.AUDIO_FORMATS.keys()),
@@ -573,7 +567,7 @@ class AudioValidator:
 
 
 # Global validator instance
-_audio_validator: Optional[AudioValidator] = None
+_audio_validator: AudioValidator | None = None
 
 
 def get_audio_validator(quality_level: str = "high") -> AudioValidator:

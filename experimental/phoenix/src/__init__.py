@@ -1,5 +1,4 @@
-"""
-PHOENIX: Progressive Hierarchical Optimization and Evolutionary Neural Intelligence eXtraction
+"""PHOENIX: Progressive Hierarchical Optimization and Evolutionary Neural Intelligence eXtraction
 
 A groundbreaking methodology for multi-generational AI agent improvement through
 evolutionary knowledge distillation with adaptive document conditioning.

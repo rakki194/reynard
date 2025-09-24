@@ -1,5 +1,4 @@
-"""
-🔐 Encryption Utilities for Reynard Backend
+"""🔐 Encryption Utilities for Reynard Backend
 
 This module provides common encryption utilities for the Reynard security
 infrastructure, including symmetric and asymmetric encryption, hashing,
@@ -18,13 +17,11 @@ Version: 1.0.0
 """
 
 import base64
-import hashlib
 import logging
 import secrets
-from typing import Any, Dict, Optional, Tuple, Union
 
 from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import hashes, serialization
+from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric import padding, rsa
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
@@ -36,18 +33,15 @@ logger = logging.getLogger(__name__)
 class EncryptionError(Exception):
     """Exception raised for encryption-related errors."""
 
-    pass
 
 
 class DecryptionError(Exception):
     """Exception raised for decryption-related errors."""
 
-    pass
 
 
 class EncryptionUtils:
-    """
-    Comprehensive encryption utilities for the Reynard backend.
+    """Comprehensive encryption utilities for the Reynard backend.
 
     This class provides methods for:
     - Symmetric encryption/decryption with AES-256-GCM
@@ -75,8 +69,7 @@ class EncryptionUtils:
         iterations: int = 100000,
         algorithm: str = "pbkdf2",
     ) -> bytes:
-        """
-        Derive a key from a password using PBKDF2 or Scrypt.
+        """Derive a key from a password using PBKDF2 or Scrypt.
 
         Args:
             password: Password to derive key from
@@ -87,6 +80,7 @@ class EncryptionUtils:
 
         Returns:
             Derived key bytes
+
         """
         password_bytes = password.encode("utf-8")
 
@@ -113,10 +107,9 @@ class EncryptionUtils:
 
     @staticmethod
     def encrypt_aes_gcm(
-        data: bytes, key: bytes, associated_data: Optional[bytes] = None
-    ) -> Tuple[bytes, bytes]:
-        """
-        Encrypt data using AES-256-GCM.
+        data: bytes, key: bytes, associated_data: bytes | None = None,
+    ) -> tuple[bytes, bytes]:
+        """Encrypt data using AES-256-GCM.
 
         Args:
             data: Data to encrypt
@@ -125,6 +118,7 @@ class EncryptionUtils:
 
         Returns:
             Tuple of (encrypted_data, iv)
+
         """
         if len(key) != 32:
             raise EncryptionError("Key must be 32 bytes for AES-256")
@@ -150,10 +144,9 @@ class EncryptionUtils:
         encrypted_data: bytes,
         key: bytes,
         iv: bytes,
-        associated_data: Optional[bytes] = None,
+        associated_data: bytes | None = None,
     ) -> bytes:
-        """
-        Decrypt data using AES-256-GCM.
+        """Decrypt data using AES-256-GCM.
 
         Args:
             encrypted_data: Encrypted data
@@ -163,6 +156,7 @@ class EncryptionUtils:
 
         Returns:
             Decrypted data
+
         """
         if len(key) != 32:
             raise DecryptionError("Key must be 32 bytes for AES-256")
@@ -170,7 +164,7 @@ class EncryptionUtils:
         try:
             # Create cipher
             cipher = Cipher(
-                algorithms.AES(key), modes.GCM(iv), backend=default_backend()
+                algorithms.AES(key), modes.GCM(iv), backend=default_backend(),
             )
             decryptor = cipher.decryptor()
 
@@ -188,10 +182,9 @@ class EncryptionUtils:
 
     @staticmethod
     def encrypt_aes_cbc(
-        data: bytes, key: bytes, iv: Optional[bytes] = None
-    ) -> Tuple[bytes, bytes]:
-        """
-        Encrypt data using AES-256-CBC.
+        data: bytes, key: bytes, iv: bytes | None = None,
+    ) -> tuple[bytes, bytes]:
+        """Encrypt data using AES-256-CBC.
 
         Args:
             data: Data to encrypt
@@ -200,6 +193,7 @@ class EncryptionUtils:
 
         Returns:
             Tuple of (encrypted_data, iv)
+
         """
         if len(key) != 32:
             raise EncryptionError("Key must be 32 bytes for AES-256")
@@ -223,8 +217,7 @@ class EncryptionUtils:
 
     @staticmethod
     def decrypt_aes_cbc(encrypted_data: bytes, key: bytes, iv: bytes) -> bytes:
-        """
-        Decrypt data using AES-256-CBC.
+        """Decrypt data using AES-256-CBC.
 
         Args:
             encrypted_data: Encrypted data
@@ -233,6 +226,7 @@ class EncryptionUtils:
 
         Returns:
             Decrypted data
+
         """
         if len(key) != 32:
             raise DecryptionError("Key must be 32 bytes for AES-256")
@@ -240,7 +234,7 @@ class EncryptionUtils:
         try:
             # Create cipher
             cipher = Cipher(
-                algorithms.AES(key), modes.CBC(iv), backend=default_backend()
+                algorithms.AES(key), modes.CBC(iv), backend=default_backend(),
             )
             decryptor = cipher.decryptor()
 
@@ -259,10 +253,9 @@ class EncryptionUtils:
 
     @staticmethod
     def encrypt_rsa(
-        data: bytes, public_key: rsa.RSAPublicKey, padding_algorithm: str = "oaep"
+        data: bytes, public_key: rsa.RSAPublicKey, padding_algorithm: str = "oaep",
     ) -> bytes:
-        """
-        Encrypt data using RSA.
+        """Encrypt data using RSA.
 
         Args:
             data: Data to encrypt
@@ -271,6 +264,7 @@ class EncryptionUtils:
 
         Returns:
             Encrypted data
+
         """
         try:
             if padding_algorithm.lower() == "oaep":
@@ -293,8 +287,7 @@ class EncryptionUtils:
         private_key: rsa.RSAPrivateKey,
         padding_algorithm: str = "oaep",
     ) -> bytes:
-        """
-        Decrypt data using RSA.
+        """Decrypt data using RSA.
 
         Args:
             encrypted_data: Encrypted data
@@ -303,6 +296,7 @@ class EncryptionUtils:
 
         Returns:
             Decrypted data
+
         """
         try:
             if padding_algorithm.lower() == "oaep":
@@ -321,10 +315,9 @@ class EncryptionUtils:
 
     @staticmethod
     def sign_rsa(
-        data: bytes, private_key: rsa.RSAPrivateKey, hash_algorithm: str = "sha256"
+        data: bytes, private_key: rsa.RSAPrivateKey, hash_algorithm: str = "sha256",
     ) -> bytes:
-        """
-        Sign data using RSA.
+        """Sign data using RSA.
 
         Args:
             data: Data to sign
@@ -333,6 +326,7 @@ class EncryptionUtils:
 
         Returns:
             Digital signature
+
         """
         try:
             if hash_algorithm.lower() == "sha256":
@@ -347,7 +341,7 @@ class EncryptionUtils:
             return private_key.sign(
                 data,
                 padding.PSS(
-                    mgf=padding.MGF1(hash_algo), salt_length=padding.PSS.MAX_LENGTH
+                    mgf=padding.MGF1(hash_algo), salt_length=padding.PSS.MAX_LENGTH,
                 ),
                 hash_algo,
             )
@@ -362,8 +356,7 @@ class EncryptionUtils:
         public_key: rsa.RSAPublicKey,
         hash_algorithm: str = "sha256",
     ) -> bool:
-        """
-        Verify RSA signature.
+        """Verify RSA signature.
 
         Args:
             data: Original data
@@ -373,6 +366,7 @@ class EncryptionUtils:
 
         Returns:
             True if signature is valid, False otherwise
+
         """
         try:
             if hash_algorithm.lower() == "sha256":
@@ -388,7 +382,7 @@ class EncryptionUtils:
                 signature,
                 data,
                 padding.PSS(
-                    mgf=padding.MGF1(hash_algo), salt_length=padding.PSS.MAX_LENGTH
+                    mgf=padding.MGF1(hash_algo), salt_length=padding.PSS.MAX_LENGTH,
                 ),
                 hash_algo,
             )
@@ -399,10 +393,9 @@ class EncryptionUtils:
 
     @staticmethod
     def hash_data(
-        data: bytes, algorithm: str = "sha256", salt: Optional[bytes] = None
+        data: bytes, algorithm: str = "sha256", salt: bytes | None = None,
     ) -> bytes:
-        """
-        Hash data using specified algorithm.
+        """Hash data using specified algorithm.
 
         Args:
             data: Data to hash
@@ -411,6 +404,7 @@ class EncryptionUtils:
 
         Returns:
             Hash bytes
+
         """
         if salt:
             data = salt + data
@@ -432,10 +426,9 @@ class EncryptionUtils:
 
     @staticmethod
     def secure_hash_password(
-        password: str, salt: Optional[bytes] = None, iterations: int = 100000
-    ) -> Tuple[bytes, bytes]:
-        """
-        Securely hash a password using PBKDF2.
+        password: str, salt: bytes | None = None, iterations: int = 100000,
+    ) -> tuple[bytes, bytes]:
+        """Securely hash a password using PBKDF2.
 
         Args:
             password: Password to hash
@@ -444,6 +437,7 @@ class EncryptionUtils:
 
         Returns:
             Tuple of (hash, salt)
+
         """
         if salt is None:
             salt = EncryptionUtils.generate_salt(32)
@@ -463,10 +457,9 @@ class EncryptionUtils:
 
     @staticmethod
     def verify_password(
-        password: str, password_hash: bytes, salt: bytes, iterations: int = 100000
+        password: str, password_hash: bytes, salt: bytes, iterations: int = 100000,
     ) -> bool:
-        """
-        Verify a password against its hash.
+        """Verify a password against its hash.
 
         Args:
             password: Password to verify
@@ -476,19 +469,19 @@ class EncryptionUtils:
 
         Returns:
             True if password matches, False otherwise
+
         """
         try:
             computed_hash, _ = EncryptionUtils.secure_hash_password(
-                password, salt, iterations
+                password, salt, iterations,
             )
             return secrets.compare_digest(password_hash, computed_hash)
         except Exception:
             return False
 
     @staticmethod
-    def encrypt_field(data: Union[str, bytes], key: bytes, field_name: str) -> str:
-        """
-        Encrypt a field value for database storage.
+    def encrypt_field(data: str | bytes, key: bytes, field_name: str) -> str:
+        """Encrypt a field value for database storage.
 
         Args:
             data: Data to encrypt
@@ -497,6 +490,7 @@ class EncryptionUtils:
 
         Returns:
             Base64-encoded encrypted data with IV
+
         """
         if isinstance(data, str):
             data = data.encode("utf-8")
@@ -515,8 +509,7 @@ class EncryptionUtils:
 
     @staticmethod
     def decrypt_field(encrypted_data: str, key: bytes, field_name: str) -> str:
-        """
-        Decrypt a field value from database storage.
+        """Decrypt a field value from database storage.
 
         Args:
             encrypted_data: Base64-encoded encrypted data
@@ -525,6 +518,7 @@ class EncryptionUtils:
 
         Returns:
             Decrypted string
+
         """
         try:
             # Decode base64
@@ -539,7 +533,7 @@ class EncryptionUtils:
 
             # Decrypt data
             decrypted_data = EncryptionUtils.decrypt_aes_gcm(
-                encrypted, key, iv, associated_data
+                encrypted, key, iv, associated_data,
             )
 
             return decrypted_data.decode("utf-8")
@@ -569,7 +563,7 @@ class EncryptionUtils:
 
 
 # Convenience functions for common operations
-def encrypt_data(data: Union[str, bytes], key: bytes) -> str:
+def encrypt_data(data: str | bytes, key: bytes) -> str:
     """Encrypt data and return base64-encoded result."""
     if isinstance(data, str):
         data = data.encode("utf-8")
@@ -593,7 +587,7 @@ def hash_string(data: str, algorithm: str = "sha256") -> str:
     return hash_bytes.hex()
 
 
-def generate_password_hash(password: str) -> Tuple[str, str]:
+def generate_password_hash(password: str) -> tuple[str, str]:
     """Generate a secure password hash and return (hash, salt) as hex strings."""
     password_hash, salt = EncryptionUtils.secure_hash_password(password)
     return password_hash.hex(), salt.hex()

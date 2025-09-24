@@ -1,5 +1,4 @@
-"""
-Specialized Wikipedia scraper with optimized content extraction and filtering.
+"""Specialized Wikipedia scraper with optimized content extraction and filtering.
 """
 
 import logging
@@ -11,8 +10,7 @@ from .base_scraper import BaseScraper
 
 
 class WikipediaScraper(BaseScraper):
-    """
-    Specialized Wikipedia scraper with optimized content extraction and filtering.
+    """Specialized Wikipedia scraper with optimized content extraction and filtering.
 
     Features:
     - Wikipedia API integration
@@ -43,14 +41,14 @@ class WikipediaScraper(BaseScraper):
         return any(domain in url.lower() for domain in self.supported_domains)
 
     async def scrape_content(self, url: str) -> ScrapingResult:
-        """
-        Scrape content from a Wikipedia URL.
+        """Scrape content from a Wikipedia URL.
 
         Args:
             url: Wikipedia URL to scrape
 
         Returns:
             ScrapingResult with extracted content
+
         """
         try:
             # Extract page title from URL
@@ -91,7 +89,7 @@ class WikipediaScraper(BaseScraper):
                 },
                 quality={
                     "score": self._calculate_wikipedia_quality_score(
-                        content, cleaned_content
+                        content, cleaned_content,
                     ),
                     "factors": {
                         "content_length": len(cleaned_content),
@@ -100,7 +98,7 @@ class WikipediaScraper(BaseScraper):
                         "page_length": content.get("page_length", 0),
                         "completeness": self._calculate_completeness_score(content),
                         "readability": self._calculate_readability_score(
-                            cleaned_content
+                            cleaned_content,
                         ),
                     },
                 },
@@ -207,7 +205,7 @@ class WikipediaScraper(BaseScraper):
 
             # Remove unwanted elements
             for element in content_div.find_all(
-                ["div", "span"], class_=re.compile(r"navbox|infobox|sidebar|ambox")
+                ["div", "span"], class_=re.compile(r"navbox|infobox|sidebar|ambox"),
             ):
                 element.decompose()
 
@@ -277,7 +275,7 @@ class WikipediaScraper(BaseScraper):
         return content
 
     def _calculate_wikipedia_quality_score(
-        self, content: dict[str, Any], cleaned_text: str
+        self, content: dict[str, Any], cleaned_text: str,
     ) -> float:
         """Calculate quality score for Wikipedia content."""
         score = 0.0
@@ -445,10 +443,9 @@ class WikipediaScraper(BaseScraper):
             )
 
     async def search_articles(
-        self, query: str, limit: int = 10
+        self, query: str, limit: int = 10,
     ) -> list[dict[str, Any]]:
-        """
-        Search for Wikipedia articles.
+        """Search for Wikipedia articles.
 
         Args:
             query: Search query
@@ -456,6 +453,7 @@ class WikipediaScraper(BaseScraper):
 
         Returns:
             List of article information dictionaries
+
         """
         try:
             import aiohttp

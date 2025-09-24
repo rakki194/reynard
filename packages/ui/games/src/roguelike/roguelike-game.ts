@@ -132,17 +132,13 @@ export class RoguelikeGame {
   }
 
   private setupSystems(): void {
-    const systems = [
-      system(inputSystem),
-      system(visionSystem),
-      system(aiSystem),
-      system(combatSystem),
-      system(itemSystem),
-      system(gameStateSystem),
-    ];
-
-    const schedule = this.world.getSchedule();
-    schedule.addSystems(systems);
+    // Add systems directly to the world
+    this.world.addSystem(system("input", inputSystem).build());
+    this.world.addSystem(system("vision", visionSystem).build());
+    this.world.addSystem(system("ai", aiSystem).build());
+    this.world.addSystem(system("combat", combatSystem).build());
+    this.world.addSystem(system("item", itemSystem).build());
+    this.world.addSystem(system("gameState", gameStateSystem).build());
   }
 
   private setupInitialGame(): void {

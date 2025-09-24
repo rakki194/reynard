@@ -1,5 +1,4 @@
-"""
-Lazy Loading Core for Reynard Backend
+"""Lazy Loading Core for Reynard Backend
 
 Core implementation of the lazy loading system.
 """
@@ -26,8 +25,7 @@ T = TypeVar("T")
 
 
 class LazyPackageExport:
-    """
-    Lazy loading proxy for package exports with validation and performance monitoring.
+    """Lazy loading proxy for package exports with validation and performance monitoring.
     """
 
     def __init__(
@@ -80,7 +78,7 @@ class LazyPackageExport:
                     importlib.import_module(dep)
                 except ImportError as e:
                     logger.warning(
-                        f"Failed to load dependency {dep} for {self._package_name}: {e}"
+                        f"Failed to load dependency {dep} for {self._package_name}: {e}",
                     )
 
             # Load the main module

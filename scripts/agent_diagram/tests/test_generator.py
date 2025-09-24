@@ -1,5 +1,4 @@
-"""
-Tests for the MermaidDiagramGenerator class.
+"""Tests for the MermaidDiagramGenerator class.
 """
 
 from ..core.contribution import AgentContribution
@@ -16,7 +15,7 @@ class TestMermaidDiagramGenerator:
                 agent_name="Test-Agent-123",
                 title="Test Feature",
                 description="Test description",
-            )
+            ),
         ]
 
         generator = MermaidDiagramGenerator(contributions)
@@ -30,7 +29,7 @@ class TestMermaidDiagramGenerator:
                 agent_name="Test-Agent-123",
                 title="Test Feature",
                 description="Test description",
-            )
+            ),
         ]
 
         generator = MermaidDiagramGenerator(contributions)
@@ -80,7 +79,7 @@ class TestMermaidDiagramGenerator:
                     agent_name=f"Test-Agent-{i}",
                     title="Test Feature",
                     description="Test description",
-                )
+                ),
             )
 
         generator = MermaidDiagramGenerator(contributions)
@@ -98,7 +97,7 @@ class TestMermaidDiagramGenerator:
                 agent_name="Test-Agent-123",
                 title="Test Feature",
                 description="Test description",
-            )
+            ),
         ]
 
         generator = MermaidDiagramGenerator(contributions)
@@ -128,7 +127,7 @@ class TestMermaidDiagramGenerator:
                 agent_name="Test-Agent-123",
                 title="Test Feature",
                 description="Test description",
-            )
+            ),
         ]
 
         generator = MermaidDiagramGenerator(contributions)
@@ -142,7 +141,7 @@ class TestMermaidDiagramGenerator:
                 agent_name="Test-Agent-123",
                 title="Test Feature",
                 description="Test description",
-            )
+            ),
         ]
 
         generator = MermaidDiagramGenerator(contributions)
@@ -156,7 +155,7 @@ class TestMermaidDiagramGenerator:
                 agent_name="Test-Agent-123",
                 title="Test Feature",
                 description="Test description",
-            )
+            ),
         ]
 
         generator = MermaidDiagramGenerator(contributions)

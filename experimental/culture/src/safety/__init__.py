@@ -1,5 +1,4 @@
-"""
-CULTURE Safety Module
+"""CULTURE Safety Module
 
 This module provides safety validation and content filtering for the CULTURE framework,
 ensuring appropriate and safe communication across all cultural contexts.

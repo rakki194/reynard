@@ -1,5 +1,4 @@
-"""
-Enhanced Image Processing Service for Reynard Backend
+"""Enhanced Image Processing Service for Reynard Backend
 
 This service provides sophisticated image processing capabilities with plugin support,
 combining the best of Yipyap's plugin management with Reynard's clean architecture.
@@ -14,8 +13,7 @@ logger = logging.getLogger("uvicorn")
 
 
 class ImageProcessingService:
-    """
-    Enhanced image processing service with sophisticated plugin management.
+    """Enhanced image processing service with sophisticated plugin management.
 
     This service handles the initialization and lifecycle management of image
     processing plugins including pillow-jxl and pillow-avif support with
@@ -121,7 +119,7 @@ class ImageProcessingService:
             self.active_jobs[job_id]["failed_at"] = datetime.now(UTC)
 
     async def _send_progress_update(
-        self, job_id: str, progress: float, message: str = ""
+        self, job_id: str, progress: float, message: str = "",
     ):
         """Send progress update for a job."""
         if job_id in self.job_progress_callbacks:
@@ -129,7 +127,7 @@ class ImageProcessingService:
                 await self.job_progress_callbacks[job_id](job_id, progress, message)
             except Exception as e:
                 logger.exception(
-                    "Error sending progress update for job %s: %s", job_id, e
+                    "Error sending progress update for job %s: %s", job_id, e,
                 )
 
     async def _perform_reduction_with_progress(self, job: dict[str, Any]):
@@ -140,7 +138,7 @@ class ImageProcessingService:
         for step in range(total_steps):
             progress = (step + 1) / total_steps
             await self._send_progress_update(
-                job_id, progress, "Processing step %d/%d" % (step + 1, total_steps)
+                job_id, progress, "Processing step %d/%d" % (step + 1, total_steps),
             )
             await asyncio.sleep(self.progress_update_interval)
 
@@ -164,7 +162,7 @@ class ImageProcessingService:
             logger.info(
                 f"Image processing service initialized - JXL: {self._pillow_jxl_available}, "
                 f"AVIF: {self._pillow_avif_available}, "
-                f"Total formats: {len(self._supported_formats)}"
+                f"Total formats: {len(self._supported_formats)}",
             )
             return True
 
@@ -355,7 +353,7 @@ class ImageProcessingService:
             "queue_size": self.reduction_queue.qsize(),
             "cache_hit_rate": self.cache_stats.get("hits", 0)
             / max(
-                1, self.cache_stats.get("hits", 0) + self.cache_stats.get("misses", 0)
+                1, self.cache_stats.get("hits", 0) + self.cache_stats.get("misses", 0),
             ),
             "total_operations": self.cache_stats.get("hits", 0)
             + self.cache_stats.get("misses", 0),
@@ -485,7 +483,7 @@ class ImageProcessingService:
                 "supports_alpha": True,
                 "default_quality": 90,
                 "default_effort": 7,
-                "compression_levels": list(range(0, 10)),
+                "compression_levels": list(range(10)),
             }
 
         # Add AVIF support if available
@@ -501,7 +499,7 @@ class ImageProcessingService:
                 "supports_animation": True,
                 "supports_alpha": True,
                 "default_quality": 80,
-                "compression_levels": list(range(0, 10)),
+                "compression_levels": list(range(10)),
             }
 
     def _get_mime_type(self, extension: str) -> str:

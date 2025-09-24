@@ -1,13 +1,11 @@
-"""
-Agent categorizer for classifying contributions by type.
+"""Agent categorizer for classifying contributions by type.
 """
 
 from .contribution import AgentContribution
 
 
 class AgentCategorizer:
-    """
-    Categorizes agents based on their contributions.
+    """Categorizes agents based on their contributions.
 
     This class analyzes contribution text to automatically assign categories
     based on keyword matching and content analysis.
@@ -108,14 +106,14 @@ class AgentCategorizer:
         }
 
     def categorize_agent(self, contribution: AgentContribution) -> str:
-        """
-        Categorize an agent based on their contribution.
+        """Categorize an agent based on their contribution.
 
         Args:
             contribution: The agent contribution to categorize
 
         Returns:
             The category name that best matches the contribution
+
         """
         text = f"{contribution.title} {contribution.description}".lower()
 
@@ -132,22 +130,22 @@ class AgentCategorizer:
         return "Specialized"
 
     def get_category_keywords(self, category: str) -> list[str]:
-        """
-        Get the keywords for a specific category.
+        """Get the keywords for a specific category.
 
         Args:
             category: The category name
 
         Returns:
             List of keywords for the category
+
         """
         return self.category_keywords.get(category, [])
 
     def get_all_categories(self) -> list[str]:
-        """
-        Get all available categories.
+        """Get all available categories.
 
         Returns:
             List of all category names
+
         """
         return list(self.category_keywords.keys())

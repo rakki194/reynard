@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Check Success-Advisor-8 Messages
+"""Check Success-Advisor-8 Messages
 
 Simple script to check messages and system status for Success-Advisor-8.
 """
@@ -55,7 +54,7 @@ async def check_messages():
             print("\n🦁 Success-Advisor-8 Message History:")
             print("=" * 50)
             interactions = await service.get_agent_interactions(
-                "success-advisor-8", limit=10
+                "success-advisor-8", limit=10,
             )
             if interactions:
                 for i, interaction in enumerate(interactions, 1):

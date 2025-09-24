@@ -4,6 +4,7 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@solidjs/testing-library";
+// import { setupStandardTest } from "reynard-testing";
 import { ChatMessage } from "../components/ChatMessage";
 import type { ChatMessage as ChatMessageType } from "../types";
 
@@ -45,9 +46,9 @@ describe("ChatMessage", () => {
 
     render(() => <ChatMessage message={message} />);
 
-    expect(screen.getByText("You")).toBeInTheDocument();
-    expect(screen.getByText("Hello there!")).toBeInTheDocument();
-    expect(screen.getByTestId("markdown-renderer")).toBeInTheDocument();
+    expect(screen.getByText("You")).toBeTruthy();
+    expect(screen.getByText("Hello there!")).toBeTruthy();
+    expect(screen.getByTestId("markdown-renderer")).toBeTruthy();
   });
 
   it("should render assistant message correctly", () => {
@@ -59,8 +60,8 @@ describe("ChatMessage", () => {
 
     render(() => <ChatMessage message={message} />);
 
-    expect(screen.getByText("Assistant")).toBeInTheDocument();
-    expect(screen.getByText("Hello back!")).toBeInTheDocument();
+    expect(screen.getByText("Assistant")).toBeTruthy();
+    expect(screen.getByText("Hello back!")).toBeTruthy();
   });
 
   it("should render system message correctly", () => {
@@ -72,8 +73,8 @@ describe("ChatMessage", () => {
 
     render(() => <ChatMessage message={message} />);
 
-    expect(screen.getByText("System")).toBeInTheDocument();
-    expect(screen.getByText("System notification")).toBeInTheDocument();
+    expect(screen.getByText("System")).toBeTruthy();
+    expect(screen.getByText("System notification")).toBeTruthy();
   });
 
   it("should render tool message correctly", () => {
@@ -86,8 +87,8 @@ describe("ChatMessage", () => {
 
     render(() => <ChatMessage message={message} />);
 
-    expect(screen.getByText("calculator")).toBeInTheDocument();
-    expect(screen.getByText("Tool result")).toBeInTheDocument();
+    expect(screen.getByText("calculator")).toBeTruthy();
+    expect(screen.getByText("Tool result")).toBeTruthy();
   });
 
   it("should show timestamp when enabled", () => {
@@ -97,8 +98,8 @@ describe("ChatMessage", () => {
     render(() => <ChatMessage message={message} showTimestamp={true} />);
 
     const timestamp = screen.getByRole("time");
-    expect(timestamp).toBeInTheDocument();
-    expect(timestamp).toHaveAttribute("datetime");
+    expect(timestamp).toBeTruthy();
+    expect(timestamp).toHaveProperty("datetime");
   });
 
   it("should hide timestamp when disabled", () => {
@@ -107,7 +108,7 @@ describe("ChatMessage", () => {
 
     render(() => <ChatMessage message={message} showTimestamp={false} />);
 
-    expect(screen.queryByRole("time")).not.toBeInTheDocument();
+    expect(screen.queryByRole("time")).not.toBeTruthy();
   });
 
   it("should show token count when enabled", () => {
@@ -118,7 +119,7 @@ describe("ChatMessage", () => {
 
     render(() => <ChatMessage message={message} showTokenCount={true} />);
 
-    expect(screen.getByText("42 tokens")).toBeInTheDocument();
+    expect(screen.getByText("42 tokens")).toBeTruthy();
   });
 
   it("should show streaming indicator for streaming messages", () => {
@@ -135,10 +136,10 @@ describe("ChatMessage", () => {
 
     render(() => <ChatMessage message={message} />);
 
-    expect(screen.getByTestId("markdown-renderer")).toBeInTheDocument();
+    expect(screen.getByTestId("markdown-renderer")).toBeTruthy();
     // Should show streaming indicator in header
     const streamingDots = document.querySelector(".reynard-chat-message__typing-dots");
-    expect(streamingDots).toBeInTheDocument();
+    expect(streamingDots).toBeTruthy();
   });
 
   it("should show thinking indicator when thinking", () => {
@@ -155,7 +156,7 @@ describe("ChatMessage", () => {
 
     render(() => <ChatMessage message={message} />);
 
-    expect(screen.getByTestId("thinking-indicator")).toBeInTheDocument();
+    expect(screen.getByTestId("thinking-indicator")).toBeTruthy();
   });
 
   it("should toggle thinking section visibility", async () => {
@@ -167,11 +168,11 @@ describe("ChatMessage", () => {
     render(() => <ChatMessage message={message} />);
 
     const thinkingToggle = screen.getByRole("button", { name: /thinking/i });
-    expect(thinkingToggle).toBeInTheDocument();
+    expect(thinkingToggle).toBeTruthy();
 
     fireEvent.click(thinkingToggle);
 
-    expect(screen.getByTestId("thinking-indicator")).toBeInTheDocument();
+    expect(screen.getByTestId("thinking-indicator")).toBeTruthy();
   });
 
   it("should toggle details panel", async () => {
@@ -189,9 +190,9 @@ describe("ChatMessage", () => {
     const detailsToggle = screen.getByRole("button", { name: /details/i });
     fireEvent.click(detailsToggle);
 
-    expect(screen.getByText("Message ID:")).toBeInTheDocument();
-    expect(screen.getByText("gpt-4")).toBeInTheDocument();
-    expect(screen.getByText("0.7")).toBeInTheDocument();
+    expect(screen.getByText("Message ID:")).toBeTruthy();
+    expect(screen.getByText("gpt-4")).toBeTruthy();
+    expect(screen.getByText("0.7")).toBeTruthy();
   });
 
   it("should render tool calls", () => {
@@ -210,8 +211,8 @@ describe("ChatMessage", () => {
 
     render(() => <ChatMessage message={message} />);
 
-    expect(screen.getByTestId("tool-call")).toBeInTheDocument();
-    expect(screen.getByText("calculator")).toBeInTheDocument();
+    expect(screen.getByTestId("tool-call")).toBeTruthy();
+    expect(screen.getByText("calculator")).toBeTruthy();
   });
 
   it("should render error state", () => {
@@ -226,8 +227,8 @@ describe("ChatMessage", () => {
 
     render(() => <ChatMessage message={message} />);
 
-    expect(screen.getByText("Failed to process message")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /retry/i })).toBeInTheDocument();
+    expect(screen.getByText("Failed to process message")).toBeTruthy();
+    expect(screen.getByRole("button", { name: /retry/i })).toBeTruthy();
   });
 
   it("should not show retry button for non-recoverable errors", () => {
@@ -242,8 +243,8 @@ describe("ChatMessage", () => {
 
     render(() => <ChatMessage message={message} />);
 
-    expect(screen.getByText("Fatal error occurred")).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /retry/i })).not.toBeInTheDocument();
+    expect(screen.getByText("Fatal error occurred")).toBeTruthy();
+    expect(screen.queryByRole("button", { name: /retry/i })).not.toBeTruthy();
   });
 
   it("should use custom renderer when provided", () => {
@@ -253,7 +254,7 @@ describe("ChatMessage", () => {
 
     render(() => <ChatMessage message={message} customRenderer={customRenderer} />);
 
-    expect(screen.getByTestId("custom-content")).toBeInTheDocument();
+    expect(screen.getByTestId("custom-content")).toBeTruthy();
     expect(customRenderer).toHaveBeenCalledWith("Original content", message);
     // Custom renderer should replace markdown renderer
     expect(screen.queryAllByTestId("markdown-renderer")).toHaveLength(0);
@@ -262,11 +263,11 @@ describe("ChatMessage", () => {
   it("should apply correct CSS classes for different roles", () => {
     cleanup();
     render(() => <ChatMessage message={createMockMessage({ role: "user" })} />);
-    expect(document.querySelector(".reynard-chat-message--user")).toBeInTheDocument();
+    expect(document.querySelector(".reynard-chat-message--user")).toBeTruthy();
 
     cleanup();
     render(() => <ChatMessage message={createMockMessage({ role: "assistant" })} />);
-    expect(document.querySelector(".reynard-chat-message--assistant")).toBeInTheDocument();
+    expect(document.querySelector(".reynard-chat-message--assistant")).toBeTruthy();
   });
 
   it("should apply streaming class when streaming", () => {
@@ -283,7 +284,7 @@ describe("ChatMessage", () => {
 
     render(() => <ChatMessage message={message} />);
 
-    expect(document.querySelector(".reynard-chat-message--streaming")).toBeInTheDocument();
+    expect(document.querySelector(".reynard-chat-message--streaming")).toBeTruthy();
   });
 
   it("should apply latest class when isLatest is true", () => {
@@ -292,7 +293,7 @@ describe("ChatMessage", () => {
 
     render(() => <ChatMessage message={message} isLatest={true} />);
 
-    expect(document.querySelector(".reynard-chat-message--latest")).toBeInTheDocument();
+    expect(document.querySelector(".reynard-chat-message--latest")).toBeTruthy();
   });
 
   it("should show placeholder when streaming without content", () => {
@@ -310,7 +311,7 @@ describe("ChatMessage", () => {
 
     render(() => <ChatMessage message={message} />);
 
-    expect(screen.getByText("Preparing response...")).toBeInTheDocument();
+    expect(screen.getByText("Preparing response...")).toBeTruthy();
   });
 
   it("should format processing time correctly", () => {
@@ -323,7 +324,7 @@ describe("ChatMessage", () => {
 
     render(() => <ChatMessage message={message} />);
 
-    expect(screen.getByText("1235ms")).toBeInTheDocument();
+    expect(screen.getByText("1235ms")).toBeTruthy();
   });
 
   it("should use custom avatar when provided", () => {
@@ -333,6 +334,6 @@ describe("ChatMessage", () => {
 
     render(() => <ChatMessage message={message} avatar={<CustomAvatar />} />);
 
-    expect(screen.getByTestId("custom-avatar")).toBeInTheDocument();
+    expect(screen.getByTestId("custom-avatar")).toBeTruthy();
   });
 });

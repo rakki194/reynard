@@ -3,7 +3,7 @@
  */
 
 import { Component } from "solid-js";
-import { Card } from "reynard-components";
+import { Card } from "reynard-components-core";
 
 const ProfilePage: Component = () => {
   return (

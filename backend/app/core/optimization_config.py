@@ -1,5 +1,4 @@
-"""
-🦊 Reynard Optimization Configuration
+"""🦊 Reynard Optimization Configuration
 =====================================
 
 Comprehensive performance optimization configuration for the Reynard FastAPI backend.
@@ -43,7 +42,7 @@ Version: 1.0.0
 """
 
 import os
-from typing import Any, Dict
+from typing import Any
 
 # Default optimization settings
 # This configuration provides comprehensive performance optimizations for the Reynard backend
@@ -53,16 +52,16 @@ DEFAULT_OPTIMIZATION_CONFIG = {
     "cache": {
         "enabled": True,  # Enable/disable caching system
         "redis_url": os.getenv(
-            "REDIS_URL", "redis://localhost:6379/1"
+            "REDIS_URL", "redis://localhost:6379/1",
         ),  # Redis connection URL
         "max_connections": int(
-            os.getenv("REDIS_MAX_CONNECTIONS", "20")
+            os.getenv("REDIS_MAX_CONNECTIONS", "20"),
         ),  # Max Redis connections
         "default_ttl": int(
-            os.getenv("CACHE_TTL", "3600")
+            os.getenv("CACHE_TTL", "3600"),
         ),  # Default cache TTL (1 hour)
         "compression_threshold": int(
-            os.getenv("CACHE_COMPRESSION_THRESHOLD", "1024")
+            os.getenv("CACHE_COMPRESSION_THRESHOLD", "1024"),
         ),  # Compression threshold (1KB)
         "enable_metrics": True,  # Enable cache performance metrics
         "fallback_to_legacy": True,  # Fallback to legacy cache if Redis fails
@@ -81,7 +80,7 @@ DEFAULT_OPTIMIZATION_CONFIG = {
         "enabled": True,
         "connection_limit": int(os.getenv("HTTP_CONNECTION_LIMIT", "100")),
         "connection_limit_per_host": int(
-            os.getenv("HTTP_CONNECTION_LIMIT_PER_HOST", "30")
+            os.getenv("HTTP_CONNECTION_LIMIT_PER_HOST", "30"),
         ),
         "dns_cache_ttl": int(os.getenv("HTTP_DNS_CACHE_TTL", "300")),
         "enable_dns_cache": True,
@@ -107,7 +106,7 @@ DEFAULT_OPTIMIZATION_CONFIG = {
 }
 
 
-def get_optimization_config() -> Dict[str, Any]:
+def get_optimization_config() -> dict[str, Any]:
     """Get the optimization configuration with environment variable overrides."""
     config = DEFAULT_OPTIMIZATION_CONFIG.copy()
 
@@ -141,26 +140,26 @@ def is_optimization_enabled(component: str) -> bool:
     return config.get(component, {}).get("enabled", False)
 
 
-def get_cache_config() -> Dict[str, Any]:
+def get_cache_config() -> dict[str, Any]:
     """Get cache-specific configuration."""
     return get_optimization_config()["cache"]
 
 
-def get_database_config() -> Dict[str, Any]:
+def get_database_config() -> dict[str, Any]:
     """Get database-specific configuration."""
     return get_optimization_config()["database"]
 
 
-def get_http_config() -> Dict[str, Any]:
+def get_http_config() -> dict[str, Any]:
     """Get HTTP-specific configuration."""
     return get_optimization_config()["http"]
 
 
-def get_monitoring_config() -> Dict[str, Any]:
+def get_monitoring_config() -> dict[str, Any]:
     """Get monitoring-specific configuration."""
     return get_optimization_config()["monitoring"]
 
 
-def get_search_config() -> Dict[str, Any]:
+def get_search_config() -> dict[str, Any]:
     """Get search-specific configuration."""
     return get_optimization_config()["search"]

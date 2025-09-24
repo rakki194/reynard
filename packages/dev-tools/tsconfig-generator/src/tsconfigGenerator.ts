@@ -11,6 +11,8 @@ import {
   getBuildConfiguration,
   type DirectoryDefinition as ArchitectureDirectoryDefinition
 } from "reynard-project-architecture";
+import { writeFileSync, mkdirSync, existsSync } from "fs";
+import { join, dirname } from "path";
 
 /**
  * Get buildable directories using architecture.ts
@@ -67,6 +69,11 @@ export class TSConfigGenerator {
       // Generate package configurations
       const packageConfigs = this.generatePackageConfigs(filteredDirs, config, errors, warnings);
 
+      // Generate individual package configs if requested
+      if (config.generateIndividual) {
+        this.generateIndividualPackageConfigs(packageConfigs, config, errors, warnings);
+      }
+
       // Generate root configuration
       const rootConfig = this.generateRootConfig(config, packageConfigs);
 
@@ -102,15 +109,33 @@ export class TSConfigGenerator {
 
     for (const directory of directories) {
       // Apply filters based on configuration
-      if (!config.includePackages && directory.category === "source") {
+      // Default to including all categories unless explicitly disabled
+      if (config.includePackages === false && directory.category === "source") {
         continue;
       }
 
-      if (!config.includeTemplates && directory.category === "templates") {
+      if (config.includeTemplates === false && directory.category === "templates") {
         continue;
       }
 
-      if (!config.includeScripts && directory.category === "scripts") {
+      if (config.includeScripts === false && directory.category === "scripts") {
+        continue;
+      }
+
+      if (config.includeTools === false && directory.category === "tools") {
+        continue;
+      }
+
+      if (config.includeDocumentation === false && directory.category === "documentation") {
+        continue;
+      }
+
+      if (config.includeTesting === false && directory.category === "testing") {
+        continue;
+      }
+
+      // Skip non-buildable directories unless explicitly included
+      if (!directory.buildable && !config.includeNonBuildable) {
         continue;
       }
 
@@ -198,6 +223,33 @@ export class TSConfigGenerator {
     }
 
     return references;
+  }
+
+  private generateIndividualPackageConfigs(
+    packageConfigs: PackageTSConfig[],
+    config: TSConfigGeneratorConfig,
+    errors: string[],
+    warnings: string[]
+  ): void {
+    for (const packageConfig of packageConfigs) {
+      try {
+        const outputPath = join(packageConfig.path, 'tsconfig.generated.json');
+        const configContent = JSON.stringify(packageConfig.config, null, 2);
+        
+        // Create directory if it doesn't exist
+        const dir = dirname(outputPath);
+        if (!existsSync(dir)) {
+          mkdirSync(dir, { recursive: true });
+        }
+        
+        writeFileSync(outputPath, configContent);
+        console.log(`Generated individual config: ${outputPath}`);
+      } catch (error) {
+        const errorMessage = `Failed to generate individual config for ${packageConfig.name}: ${(error as Error).message}`;
+        console.error(errorMessage);
+        errors.push(errorMessage);
+      }
+    }
   }
 
   private generateRootConfig(config: TSConfigGeneratorConfig, packageConfigs: PackageTSConfig[]): any {

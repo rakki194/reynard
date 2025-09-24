@@ -1,5 +1,4 @@
-"""
-Safety Framework for CULTURE Framework
+"""Safety Framework for CULTURE Framework
 
 This module provides comprehensive safety validation and content filtering
 for cultural AI interactions, ensuring appropriate and safe communication
@@ -120,7 +119,7 @@ class SafetyFramework:
                     v
                     for v in violations
                     if v.severity in [SafetySeverity.HIGH, SafetySeverity.CRITICAL]
-                ]
+                ],
             )
             == 0
         )
@@ -169,7 +168,7 @@ class SafetyFramework:
     def sanitize_content(self, content: str, target_safety_level: SafetyLevel) -> str:
         """Sanitize content to meet target safety level"""
         assessment = self.assess_safety(
-            content, CulturalContext.CASUAL, target_safety_level
+            content, CulturalContext.CASUAL, target_safety_level,
         )
 
         if assessment.is_safe:
@@ -181,7 +180,7 @@ class SafetyFramework:
         for violation in assessment.violations:
             if violation.severity in [SafetySeverity.HIGH, SafetySeverity.CRITICAL]:
                 sanitized_content = self._apply_sanitization(
-                    sanitized_content, violation
+                    sanitized_content, violation,
                 )
 
         return sanitized_content
@@ -201,13 +200,13 @@ class SafetyFramework:
                         context=content,
                         suggested_action="Remove or modify harmful content",
                         confidence=0.8,
-                    )
+                    ),
                 )
 
         return violations
 
     def _check_explicit_content(
-        self, content: str, safety_level: SafetyLevel
+        self, content: str, safety_level: SafetyLevel,
     ) -> list[SafetyViolation]:
         """Check for explicit content based on safety level"""
         violations = []
@@ -225,7 +224,7 @@ class SafetyFramework:
                             context=content,
                             suggested_action="Remove explicit content or change safety level",
                             confidence=0.9,
-                        )
+                        ),
                     )
 
         return violations
@@ -245,7 +244,7 @@ class SafetyFramework:
                         context=content,
                         suggested_action="Replace with respectful language",
                         confidence=0.8,
-                    )
+                    ),
                 )
 
         return violations
@@ -265,7 +264,7 @@ class SafetyFramework:
                         context=content,
                         suggested_action="Use inclusive language",
                         confidence=0.9,
-                    )
+                    ),
                 )
 
         return violations
@@ -285,13 +284,13 @@ class SafetyFramework:
                         context=content,
                         suggested_action="Use direct, honest communication",
                         confidence=0.7,
-                    )
+                    ),
                 )
 
         return violations
 
     def _check_consent_violations(
-        self, content: str, user_consent: str | None
+        self, content: str, user_consent: str | None,
     ) -> list[SafetyViolation]:
         """Check for consent violations"""
         violations = []
@@ -312,13 +311,13 @@ class SafetyFramework:
                         context=content,
                         suggested_action="Include explicit consent checking",
                         confidence=0.6,
-                    )
+                    ),
                 )
 
         return violations
 
     def _check_boundary_violations(
-        self, content: str, cultural_context: CulturalContext
+        self, content: str, cultural_context: CulturalContext,
     ) -> list[SafetyViolation]:
         """Check for boundary violations based on cultural context"""
         violations = []
@@ -345,13 +344,13 @@ class SafetyFramework:
                     context=content,
                     suggested_action="Respect boundaries and use consent-aware language",
                     confidence=0.8,
-                )
+                ),
             )
 
         return violations
 
     def _calculate_safety_score(
-        self, violations: list[SafetyViolation], content: str
+        self, violations: list[SafetyViolation], content: str,
     ) -> float:
         """Calculate overall safety score"""
         if not violations:
@@ -381,13 +380,13 @@ class SafetyFramework:
         for violation in violations:
             if violation.severity in [SafetySeverity.HIGH, SafetySeverity.CRITICAL]:
                 warnings.append(
-                    f"{violation.violation_type.value}: {violation.description}"
+                    f"{violation.violation_type.value}: {violation.description}",
                 )
 
         return warnings
 
     def _generate_recommendations(
-        self, violations: list[SafetyViolation], cultural_context: CulturalContext
+        self, violations: list[SafetyViolation], cultural_context: CulturalContext,
     ) -> list[str]:
         """Generate safety recommendations"""
         recommendations = []
@@ -399,19 +398,19 @@ class SafetyFramework:
         if cultural_context in [CulturalContext.KINK, CulturalContext.INTIMATE]:
             recommendations.append("Ensure explicit consent for all activities")
             recommendations.append(
-                "Include safety protocols and aftercare considerations"
+                "Include safety protocols and aftercare considerations",
             )
 
         if cultural_context in [CulturalContext.FURRY, CulturalContext.ROLEPLAY]:
             recommendations.append("Maintain clear OOC/IC separation")
             recommendations.append(
-                "Respect character boundaries and species characteristics"
+                "Respect character boundaries and species characteristics",
             )
 
         return list(set(recommendations))  # Remove duplicates
 
     def _determine_content_level(
-        self, violations: list[SafetyViolation], safety_score: float
+        self, violations: list[SafetyViolation], safety_score: float,
     ) -> SafetyLevel:
         """Determine appropriate content level"""
         if safety_score >= 0.9 and not violations:

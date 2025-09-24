@@ -1,5 +1,4 @@
-"""
-Tests for Legacy Tracking Service
+"""Tests for Legacy Tracking Service
 
 Comprehensive tests for the Success-Advisor-8 legacy tracking service
 that integrates with the existing FastAPI ECS backend.
@@ -16,6 +15,7 @@ import pytest
 sys.path.append(str(Path(__file__).parent.parent))
 
 from postgres_service import PostgresECSWorldService
+
 from services.legacy_tracking_service import LegacyTrackingService
 
 
@@ -43,11 +43,11 @@ class TestLegacyTrackingService:
                 "activity_type": "release",
                 "description": "Success-Advisor-8 released version 1.0.0",
                 "timestamp": datetime.now().isoformat(),
-            }
+            },
         ]
 
         with patch.object(
-            legacy_service.changelog_parser, "parse_success_advisor_8_activities"
+            legacy_service.changelog_parser, "parse_success_advisor_8_activities",
         ) as mock_parser:
             mock_parser.return_value = mock_activities
 
@@ -70,7 +70,7 @@ class TestLegacyTrackingService:
                 "line_number": 10,
                 "content": "Success-Advisor-8 implementation",
                 "movement_type": "definition",
-            }
+            },
         ]
 
         with patch.object(
@@ -100,19 +100,19 @@ class TestLegacyTrackingService:
         mock_summary = "🦁 Success-Advisor-8 Activity Summary"
 
         with patch.object(
-            legacy_service, "get_success_advisor_8_activities", new_callable=AsyncMock
+            legacy_service, "get_success_advisor_8_activities", new_callable=AsyncMock,
         ) as mock_activities_method:
             with patch.object(
-                legacy_service, "get_codebase_movements", new_callable=AsyncMock
+                legacy_service, "get_codebase_movements", new_callable=AsyncMock,
             ) as mock_movements_method:
                 with patch.object(
-                    legacy_service, "_get_ecs_agent_data", new_callable=AsyncMock
+                    legacy_service, "_get_ecs_agent_data", new_callable=AsyncMock,
                 ) as mock_ecs_method:
                     with patch.object(
-                        legacy_service.changelog_parser, "analyze_activity_trends"
+                        legacy_service.changelog_parser, "analyze_activity_trends",
                     ) as mock_analysis_method:
                         with patch.object(
-                            legacy_service.changelog_parser, "generate_activity_summary"
+                            legacy_service.changelog_parser, "generate_activity_summary",
                         ) as mock_summary_method:
 
                             # Set up mocks
@@ -139,7 +139,7 @@ class TestLegacyTrackingService:
 
     @pytest.mark.asyncio
     async def test_track_success_advisor_8_activity(
-        self, legacy_service, mock_ecs_service
+        self, legacy_service, mock_ecs_service,
     ):
         """Test tracking Success-Advisor-8 activity."""
         # Mock ECS service
@@ -147,7 +147,7 @@ class TestLegacyTrackingService:
 
         # Test
         result = await legacy_service.track_success_advisor_8_activity(
-            "Test activity", {"context": "test"}
+            "Test activity", {"context": "test"},
         )
 
         # Verify
@@ -170,7 +170,7 @@ class TestLegacyTrackingService:
         }
 
         with patch.object(
-            legacy_service.changelog_parser, "analyze_activity_trends"
+            legacy_service.changelog_parser, "analyze_activity_trends",
         ) as mock_analyzer:
             mock_analyzer.return_value = mock_trends
 
@@ -188,7 +188,7 @@ class TestLegacyTrackingService:
         mock_summary = "🦁 Success-Advisor-8 Activity Summary\n\n📊 Total Activities: 8"
 
         with patch.object(
-            legacy_service.changelog_parser, "generate_activity_summary"
+            legacy_service.changelog_parser, "generate_activity_summary",
         ) as mock_analyzer:
             mock_analyzer.return_value = mock_summary
 
@@ -210,7 +210,7 @@ class TestLegacyTrackingService:
         }
 
         with patch.object(
-            legacy_service, "generate_legacy_report", new_callable=AsyncMock
+            legacy_service, "generate_legacy_report", new_callable=AsyncMock,
         ) as mock_report_method:
             with patch("builtins.open", mock_open()) as mock_file:
                 with patch("pathlib.Path.mkdir") as mock_mkdir:
@@ -221,7 +221,7 @@ class TestLegacyTrackingService:
 
                         # Test
                         result = await legacy_service.export_legacy_data(
-                            "/tmp/test_export.json"
+                            "/tmp/test_export.json",
                         )
 
                         # Verify
@@ -291,7 +291,7 @@ class TestLegacyTrackingService:
         }
 
         with patch.object(
-            legacy_service.changelog_parser, "get_parser_info"
+            legacy_service.changelog_parser, "get_parser_info",
         ) as mock_parser_info:
             mock_parser_info.return_value = mock_info
 
@@ -335,7 +335,7 @@ class TestErrorHandling:
         legacy_service = LegacyTrackingService(mock_ecs_service, ".")
 
         with patch.object(
-            legacy_service, "get_success_advisor_8_activities", new_callable=AsyncMock
+            legacy_service, "get_success_advisor_8_activities", new_callable=AsyncMock,
         ) as mock_activities:
             mock_activities.side_effect = Exception("Test error")
 
@@ -354,7 +354,7 @@ class TestErrorHandling:
         legacy_service = LegacyTrackingService(mock_ecs_service, ".")
 
         with patch.object(
-            legacy_service, "generate_legacy_report", new_callable=AsyncMock
+            legacy_service, "generate_legacy_report", new_callable=AsyncMock,
         ) as mock_report:
             mock_report.side_effect = Exception("Export error")
 

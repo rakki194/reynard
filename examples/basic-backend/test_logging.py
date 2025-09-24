@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Test script to demonstrate professional logging functionality
+"""Test script to demonstrate professional logging functionality
 Run this script to see the logging system in action
 """
 
@@ -15,7 +14,6 @@ from logging_config import (
 
 def test_logging():
     """Test various logging scenarios"""
-
     # Setup logging
     setup_logging()
 

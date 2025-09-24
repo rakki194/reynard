@@ -1,5 +1,4 @@
-"""
-Content Deduplicator for Reynard Backend
+"""Content Deduplicator for Reynard Backend
 
 Identifies and removes duplicate content.
 """
@@ -12,8 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class ContentDeduplicator:
-    """
-    Identifies and removes duplicate content.
+    """Identifies and removes duplicate content.
 
     Uses various techniques to detect duplicate or similar
     content and remove redundancies.
@@ -52,16 +50,16 @@ class ContentDeduplicator:
             return False
 
     async def deduplicate_content(
-        self, content_list: list[dict[str, Any]]
+        self, content_list: list[dict[str, Any]],
     ) -> list[dict[str, Any]]:
-        """
-        Remove duplicate content from a list.
+        """Remove duplicate content from a list.
 
         Args:
             content_list: List of content items to deduplicate
 
         Returns:
             List of unique content items
+
         """
         try:
             unique_content = []
@@ -84,14 +82,14 @@ class ContentDeduplicator:
             return content_list
 
     async def is_duplicate(self, content: str) -> bool:
-        """
-        Check if content is a duplicate.
+        """Check if content is a duplicate.
 
         Args:
             content: Content to check
 
         Returns:
             True if content is a duplicate
+
         """
         try:
             content_hash = self._generate_content_hash(content)
@@ -102,14 +100,14 @@ class ContentDeduplicator:
             return False
 
     async def add_content(self, content: str) -> str:
-        """
-        Add content to the deduplication index.
+        """Add content to the deduplication index.
 
         Args:
             content: Content to add
 
         Returns:
             Content hash
+
         """
         try:
             content_hash = self._generate_content_hash(content)
@@ -135,8 +133,7 @@ class ContentDeduplicator:
             return ""
 
     def _calculate_similarity(self, content1: str, content2: str) -> float:
-        """
-        Calculate similarity between two content strings.
+        """Calculate similarity between two content strings.
 
         Args:
             content1: First content string
@@ -144,6 +141,7 @@ class ContentDeduplicator:
 
         Returns:
             Similarity score (0-1)
+
         """
         try:
             # Simple similarity calculation based on common words

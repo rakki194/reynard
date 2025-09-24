@@ -17,9 +17,9 @@ export * from "./retry";
 export * from "./security";
 export * from "./types";
 
-// HTTP Client System
-export { HTTPClient, HTTPConnection } from "./http/client";
+// HTTP Client System - Re-exported from reynard-http-client
 export {
+  HTTPClient,
   createAuthMiddleware,
   createTokenRefreshMiddleware,
   createLoggingMiddleware as createHTTPLoggingMiddleware,
@@ -36,8 +36,6 @@ export {
   type LoggingConfig,
   type CacheConfig,
   type RateLimitConfig,
-} from "./http/middleware";
-export {
   type HTTPClientConfig,
   type HTTPRequestOptions,
   type HTTPResponse,
@@ -45,43 +43,7 @@ export {
   type HTTPMetrics,
   type RequestMetrics,
   type HTTP_PRESETS,
-} from "./http/types";
-export {
-  buildUrl,
-  parseQueryParams,
-  addQueryParams,
-  mergeHeaders,
-  normalizeHeaders,
-  hasHeader,
-  getHeader,
-  createRequestOptions,
-  cloneRequestOptions,
-  validateRequestOptions,
-  isSuccessResponse,
-  isClientError,
-  isServerError,
-  isRedirectResponse,
-  getContentType,
-  isJsonResponse,
-  isTextResponse,
-  isBinaryResponse,
-  createErrorFromResponse,
-  isNetworkError as isHTTPNetworkError,
-  isTimeoutError as isHTTPTimeoutError,
-  isRetryableError as isHTTPRetryableError,
-  getErrorMessage as getHTTPErrorMessage,
-  serializeData,
-  parseResponseData,
-  formDataToObject,
-  objectToFormData,
-  measureRequest,
-  createTimer,
-  isValidUrl,
-  isValidHttpMethod,
-  isValidStatusCode,
-  formatBytes,
-  formatDuration,
-} from "./http/utils";
+} from "reynard-http-client";
 
 // Error Handling System
 export {

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Comprehensive validation test for performance monitoring system.
+"""Comprehensive validation test for performance monitoring system.
 
 This script validates that our performance monitoring is measuring actual
 application performance and not just monitoring overhead. It tests:
@@ -13,12 +12,11 @@ application performance and not just monitoring overhead. It tests:
 import asyncio
 import json
 import logging
-import os
 import statistics
 import sys
 import time
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 # Add the backend directory to Python path
 backend_dir = Path(__file__).parent.parent.parent.parent
@@ -29,7 +27,6 @@ from app.ecs.performance import (
     PerformanceAnalyzer,
     PerformanceTracker,
     track_async_task,
-    track_db_query,
 )
 
 logger = logging.getLogger(__name__)
@@ -43,7 +40,7 @@ class PerformanceValidationSuite:
         self.baseline_metrics = {}
         self.monitored_metrics = {}
 
-    async def run_validation_suite(self) -> Dict[str, Any]:
+    async def run_validation_suite(self) -> dict[str, Any]:
         """Run complete validation suite."""
         print("🐍 Mysterious-Prime-67 Performance Monitoring Validation Suite")
         print("=" * 70)
@@ -77,7 +74,7 @@ class PerformanceValidationSuite:
 
         return validation_report
 
-    async def _test_monitoring_overhead(self) -> Dict[str, Any]:
+    async def _test_monitoring_overhead(self) -> dict[str, Any]:
         """Test monitoring overhead impact."""
         print("\n🔍 Testing Monitoring Overhead...")
 
@@ -139,18 +136,18 @@ class PerformanceValidationSuite:
         }
 
         print(
-            f"   Baseline: {baseline_avg*1000:.2f}ms ± {statistics.stdev(baseline_times)*1000:.2f}ms"
+            f"   Baseline: {baseline_avg*1000:.2f}ms ± {statistics.stdev(baseline_times)*1000:.2f}ms",
         )
         print(
-            f"   Monitored: {monitored_avg*1000:.2f}ms ± {statistics.stdev(monitored_times)*1000:.2f}ms"
+            f"   Monitored: {monitored_avg*1000:.2f}ms ± {statistics.stdev(monitored_times)*1000:.2f}ms",
         )
         print(
-            f"   Overhead: {overhead_percentage:.2f}% {'✅' if overhead_acceptable else '❌'}"
+            f"   Overhead: {overhead_percentage:.2f}% {'✅' if overhead_acceptable else '❌'}",
         )
 
         return result
 
-    async def _test_bottleneck_detection(self) -> Dict[str, Any]:
+    async def _test_bottleneck_detection(self) -> dict[str, Any]:
         """Test real vs false bottleneck detection."""
         print("\n🔍 Testing Bottleneck Detection Accuracy...")
 
@@ -237,17 +234,17 @@ class PerformanceValidationSuite:
         }
 
         print(
-            f"   Slow endpoint detected: {'✅' if slow_bottleneck_detected else '❌'}"
+            f"   Slow endpoint detected: {'✅' if slow_bottleneck_detected else '❌'}",
         )
         print(
-            f"   Fast endpoint false positive: {'❌' if fast_bottleneck_detected else '✅'}"
+            f"   Fast endpoint false positive: {'❌' if fast_bottleneck_detected else '✅'}",
         )
         print(f"   Error rate detected: {'✅' if error_bottleneck_detected else '❌'}")
         print(f"   Detection accuracy: {accuracy:.1%}")
 
         return result
 
-    async def _test_memory_monitoring(self) -> Dict[str, Any]:
+    async def _test_memory_monitoring(self) -> dict[str, Any]:
         """Test memory monitoring accuracy."""
         print("\n🔍 Testing Memory Monitoring Accuracy...")
 
@@ -304,13 +301,13 @@ class PerformanceValidationSuite:
         print(f"   Current memory: {current_memory:.1f}MB")
         print(f"   Tracked memory: {tracked_memory:.1f}MB")
         print(
-            f"   Memory increase detected: {'✅' if memory_increase_detected else '❌'}"
+            f"   Memory increase detected: {'✅' if memory_increase_detected else '❌'}",
         )
         print(f"   Memory trend detected: {'✅' if memory_trend_detected else '❌'}")
 
         return result
 
-    async def _test_database_tracking(self) -> Dict[str, Any]:
+    async def _test_database_tracking(self) -> dict[str, Any]:
         """Test database query tracking accuracy."""
         print("\n🔍 Testing Database Query Tracking...")
 
@@ -368,7 +365,7 @@ class PerformanceValidationSuite:
 
         return result
 
-    async def _test_async_monitoring(self) -> Dict[str, Any]:
+    async def _test_async_monitoring(self) -> dict[str, Any]:
         """Test async task monitoring accuracy."""
         print("\n🔍 Testing Async Task Monitoring...")
 
@@ -397,7 +394,7 @@ class PerformanceValidationSuite:
         if len(async_tasks) == len(test_durations):
             total_error = 0.0
             for i, (task, expected, actual) in enumerate(
-                zip(async_tasks, test_durations, actual_durations)
+                zip(async_tasks, test_durations, actual_durations, strict=False),
             ):
                 error = abs(actual - expected) / expected
                 total_error += error
@@ -424,7 +421,7 @@ class PerformanceValidationSuite:
 
         return result
 
-    async def _test_trend_analysis(self) -> Dict[str, Any]:
+    async def _test_trend_analysis(self) -> dict[str, Any]:
         """Test performance trend analysis."""
         print("\n🔍 Testing Performance Trend Analysis...")
 
@@ -478,7 +475,7 @@ class PerformanceValidationSuite:
 
         return result
 
-    def _generate_validation_report(self) -> Dict[str, Any]:
+    def _generate_validation_report(self) -> dict[str, Any]:
         """Generate comprehensive validation report."""
         print("\n" + "=" * 70)
         print("📊 VALIDATION REPORT")
@@ -501,7 +498,7 @@ class PerformanceValidationSuite:
 
         if self.results["overhead"]["overhead_percentage"] > 5.0:
             recommendations.append(
-                "Consider optimizing monitoring overhead - currently > 5%"
+                "Consider optimizing monitoring overhead - currently > 5%",
             )
 
         if not self.results["bottleneck_detection"]["test_passed"]:
@@ -521,7 +518,7 @@ class PerformanceValidationSuite:
 
         if not recommendations:
             recommendations.append(
-                "All validation tests passed - monitoring system is working correctly"
+                "All validation tests passed - monitoring system is working correctly",
             )
 
         report = {
@@ -551,7 +548,7 @@ class PerformanceValidationSuite:
 
         print(f"\nOverall Success Rate: {overall_success_rate:.1%}")
         print(
-            f"Validation Status: {'✅ PASSED' if report['validation_passed'] else '❌ FAILED'}"
+            f"Validation Status: {'✅ PASSED' if report['validation_passed'] else '❌ FAILED'}",
         )
 
         print("\n📋 Recommendations:")

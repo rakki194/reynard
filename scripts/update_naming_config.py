@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Update Naming Config Script
+"""Update Naming Config Script
 ===========================
 
 This script updates the naming_config.json file to include all available spirits
@@ -8,7 +7,6 @@ from the generated race files.
 """
 
 import json
-import sys
 from pathlib import Path
 
 
@@ -18,7 +16,7 @@ def load_race_data(races_dir: Path):
 
     for race_file in races_dir.glob("*.json"):
         try:
-            with open(race_file, "r", encoding="utf-8") as f:
+            with open(race_file, encoding="utf-8") as f:
                 race_data = json.load(f)
                 spirit_name = race_data["name"]
 
@@ -45,7 +43,7 @@ def update_naming_config(config_file: Path, new_spirits: dict):
     """Update the naming config file with new spirits."""
     try:
         # Load existing config
-        with open(config_file, "r", encoding="utf-8") as f:
+        with open(config_file, encoding="utf-8") as f:
             config = json.load(f)
 
         # Update the spirits section
@@ -79,10 +77,10 @@ def main():
         print(f"  - {spirit_name} {spirits[spirit_name]['emoji']}")
 
     # Update the naming config
-    print(f"\n🔄 Updating naming config...")
+    print("\n🔄 Updating naming config...")
     update_naming_config(config_file, spirits)
 
-    print(f"\n🎯 Update complete!")
+    print("\n🎯 Update complete!")
     print(f"✅ Updated naming_config.json with {len(spirits)} spirits")
 
 

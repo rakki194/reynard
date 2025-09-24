@@ -1,5 +1,4 @@
-"""
-🦊 Reynard Progress Monitoring Service
+"""🦊 Reynard Progress Monitoring Service
 ======================================
 
 Real-time progress monitoring for indexing operations.
@@ -22,7 +21,7 @@ import asyncio
 import json
 import logging
 import time
-from typing import Any, Dict, List, Optional, Set
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -32,18 +31,18 @@ class ProgressMonitor:
 
     def __init__(self):
         """Initialize the progress monitor."""
-        self.active_connections: Set[Any] = set()
-        self.progress_history: List[Dict[str, Any]] = []
+        self.active_connections: set[Any] = set()
+        self.progress_history: list[dict[str, Any]] = []
         self.max_history_size = 100
         self.update_interval = 1.0  # seconds
         self.is_monitoring = False
-        self.monitor_task: Optional[asyncio.Task] = None
+        self.monitor_task: asyncio.Task | None = None
 
     async def add_connection(self, websocket: Any) -> None:
         """Add a WebSocket connection for progress updates."""
         self.active_connections.add(websocket)
         logger.info(
-            f"Added progress monitoring connection. Total: {len(self.active_connections)}"
+            f"Added progress monitoring connection. Total: {len(self.active_connections)}",
         )
 
     async def remove_connection(self, websocket: Any) -> None:
@@ -51,10 +50,10 @@ class ProgressMonitor:
         if websocket in self.active_connections:
             self.active_connections.remove(websocket)
             logger.info(
-                f"Removed progress monitoring connection. Total: {len(self.active_connections)}"
+                f"Removed progress monitoring connection. Total: {len(self.active_connections)}",
             )
 
-    async def broadcast_progress(self, progress_data: Dict[str, Any]) -> None:
+    async def broadcast_progress(self, progress_data: dict[str, Any]) -> None:
         """Broadcast progress update to all connected clients."""
         if not self.active_connections:
             return
@@ -65,7 +64,7 @@ class ProgressMonitor:
                     "type": "progress_update",
                     "timestamp": time.time(),
                     "data": progress_data,
-                }
+                },
             )
 
             # Send to all active connections
@@ -84,7 +83,7 @@ class ProgressMonitor:
         except Exception as e:
             logger.error(f"Failed to broadcast progress: {e}")
 
-    async def record_progress(self, progress_data: Dict[str, Any]) -> None:
+    async def record_progress(self, progress_data: dict[str, Any]) -> None:
         """Record progress data in history."""
         try:
             # Add timestamp if not present
@@ -104,7 +103,7 @@ class ProgressMonitor:
         except Exception as e:
             logger.error(f"Failed to record progress: {e}")
 
-    async def get_progress_history(self, limit: int = 50) -> List[Dict[str, Any]]:
+    async def get_progress_history(self, limit: int = 50) -> list[dict[str, Any]]:
         """Get recent progress history."""
         return (
             self.progress_history[-limit:]
@@ -112,7 +111,7 @@ class ProgressMonitor:
             else self.progress_history.copy()
         )
 
-    async def get_current_progress(self) -> Optional[Dict[str, Any]]:
+    async def get_current_progress(self) -> dict[str, Any] | None:
         """Get the most recent progress data."""
         return self.progress_history[-1] if self.progress_history else None
 
@@ -168,7 +167,7 @@ class ProgressMonitor:
         """Get the number of active connections."""
         return len(self.active_connections)
 
-    async def get_monitoring_stats(self) -> Dict[str, Any]:
+    async def get_monitoring_stats(self) -> dict[str, Any]:
         """Get monitoring statistics."""
         return {
             "active_connections": len(self.active_connections),
@@ -183,7 +182,7 @@ class ProgressMonitor:
 
 
 # Global progress monitor instance
-_global_progress_monitor: Optional[ProgressMonitor] = None
+_global_progress_monitor: ProgressMonitor | None = None
 
 
 def get_progress_monitor() -> ProgressMonitor:

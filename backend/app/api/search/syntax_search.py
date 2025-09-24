@@ -1,5 +1,4 @@
-"""
-Syntax Search Module
+"""Syntax Search Module
 ===================
 
 Handles syntax-based search functionality using ripgrep for fast text pattern matching.
@@ -8,7 +7,7 @@ Handles syntax-based search functionality using ripgrep for fast text pattern ma
 import asyncio
 import logging
 import time
-from typing import Any, Dict, List
+from typing import Any
 
 from .models import SearchResponse, SearchResult, SyntaxSearchRequest
 
@@ -32,7 +31,7 @@ class SyntaxSearchHandler:
             cached_result = await self.search_service._get_cached_result(cache_key)
             if cached_result:
                 self.search_service._metrics.record_search(
-                    time.time() - start_time, cache_hit=True
+                    time.time() - start_time, cache_hit=True,
                 )
                 logger.debug(f"Cache hit for syntax search: {request.query[:50]}...")
                 return cached_result
@@ -57,10 +56,10 @@ class SyntaxSearchHandler:
 
             # Cache the result
             await self.search_service._cache_result(
-                cache_key, search_response, ttl=1800
+                cache_key, search_response, ttl=1800,
             )  # 30 minutes for syntax search
             self.search_service._metrics.record_search(
-                time.time() - start_time, cache_hit=False
+                time.time() - start_time, cache_hit=False,
             )
             return search_response
 
@@ -75,11 +74,11 @@ class SyntaxSearchHandler:
                 error=str(e),
             )
             self.search_service._metrics.record_search(
-                time.time() - start_time, cache_hit=False
+                time.time() - start_time, cache_hit=False,
             )
             return error_result
 
-    def _build_ripgrep_command(self, request: SyntaxSearchRequest) -> List[str]:
+    def _build_ripgrep_command(self, request: SyntaxSearchRequest) -> list[str]:
         """Build ripgrep command from request."""
         command = ["rg", "-n", "--color", "never", "--no-heading"]
 
@@ -111,7 +110,7 @@ class SyntaxSearchHandler:
 
         return command
 
-    async def _run_ripgrep(self, command: List[str]) -> Dict[str, Any]:
+    async def _run_ripgrep(self, command: list[str]) -> dict[str, Any]:
         """Run ripgrep command."""
         try:
             process = await asyncio.create_subprocess_exec(
@@ -134,8 +133,8 @@ class SyntaxSearchHandler:
             return {"success": False, "stdout": "", "stderr": str(e), "returncode": -1}
 
     def _parse_ripgrep_results(
-        self, result: Dict[str, Any], request: SyntaxSearchRequest
-    ) -> List[SearchResult]:
+        self, result: dict[str, Any], request: SyntaxSearchRequest,
+    ) -> list[SearchResult]:
         """Parse ripgrep output into SearchResult objects."""
         if not result["success"] or not result["stdout"]:
             return []
@@ -165,7 +164,7 @@ class SyntaxSearchHandler:
                     match_type="syntax",
                     context=content,
                     snippet=self._extract_snippet(content),
-                )
+                ),
             )
 
         return results

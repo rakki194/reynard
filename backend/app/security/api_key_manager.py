@@ -1,5 +1,4 @@
-"""
-🔐 API Key Management System for Reynard Backend
+"""🔐 API Key Management System for Reynard Backend
 
 This module provides comprehensive API key management with encryption,
 rotation, scoping, and usage tracking for secure API access.
@@ -17,13 +16,12 @@ Author: Vulpine (Security-focused Fox Specialist)
 Version: 1.0.0
 """
 
-import json
 import logging
 import secrets
 from dataclasses import asdict, dataclass
 from datetime import datetime, timedelta
 from enum import Enum
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any
 
 from app.security.audit_logger import (
     SecurityEvent,
@@ -85,21 +83,21 @@ class APIKeyMetadata:
 
     key_id: str
     name: str
-    description: Optional[str]
-    user_id: Optional[str]
+    description: str | None
+    user_id: str | None
     status: APIKeyStatus
-    scopes: Set[APIKeyScope]
+    scopes: set[APIKeyScope]
     created_at: datetime
-    expires_at: Optional[datetime]
-    last_used: Optional[datetime]
+    expires_at: datetime | None
+    last_used: datetime | None
     usage_count: int
     rate_limit_per_minute: int
     rate_limit_burst: int
-    ip_whitelist: Optional[List[str]]
-    ip_blacklist: Optional[List[str]]
-    metadata: Dict[str, Any]
+    ip_whitelist: list[str] | None
+    ip_blacklist: list[str] | None
+    metadata: dict[str, Any]
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for serialization."""
         data = asdict(self)
         data["status"] = self.status.value
@@ -110,7 +108,7 @@ class APIKeyMetadata:
         return data
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "APIKeyMetadata":
+    def from_dict(cls, data: dict[str, Any]) -> "APIKeyMetadata":
         """Create from dictionary."""
         return cls(
             key_id=data["key_id"],
@@ -140,8 +138,7 @@ class APIKeyMetadata:
 
 
 class APIKeyManager:
-    """
-    Comprehensive API key management system.
+    """Comprehensive API key management system.
 
     This class provides:
     - Secure API key generation and storage
@@ -158,8 +155,8 @@ class APIKeyManager:
         self.key_manager = get_key_manager()
 
         # In-memory storage for API key metadata (in production, this would be a database)
-        self._api_key_metadata: Dict[str, APIKeyMetadata] = {}
-        self._api_key_usage: Dict[str, List[datetime]] = {}
+        self._api_key_metadata: dict[str, APIKeyMetadata] = {}
+        self._api_key_usage: dict[str, list[datetime]] = {}
 
         # Ensure API key encryption key exists
         self._ensure_api_key_encryption_key()
@@ -188,7 +185,7 @@ class APIKeyManager:
                 raise ValueError("API key encryption key not found")
 
             encrypted_key = EncryptionUtils.encrypt_field(
-                data=api_key, key=encryption_key, field_name=f"api_key_{key_id}"
+                data=api_key, key=encryption_key, field_name=f"api_key_{key_id}",
             )
 
             return encrypted_key
@@ -219,18 +216,17 @@ class APIKeyManager:
     def create_api_key(
         self,
         name: str,
-        description: Optional[str] = None,
-        user_id: Optional[str] = None,
-        scopes: Optional[Set[APIKeyScope]] = None,
-        expires_in_days: Optional[int] = None,
-        rate_limit_per_minute: Optional[int] = None,
-        rate_limit_burst: Optional[int] = None,
-        ip_whitelist: Optional[List[str]] = None,
-        ip_blacklist: Optional[List[str]] = None,
-        metadata: Optional[Dict[str, Any]] = None,
-    ) -> Tuple[str, APIKeyMetadata]:
-        """
-        Create a new API key.
+        description: str | None = None,
+        user_id: str | None = None,
+        scopes: set[APIKeyScope] | None = None,
+        expires_in_days: int | None = None,
+        rate_limit_per_minute: int | None = None,
+        rate_limit_burst: int | None = None,
+        ip_whitelist: list[str] | None = None,
+        ip_blacklist: list[str] | None = None,
+        metadata: dict[str, Any] | None = None,
+    ) -> tuple[str, APIKeyMetadata]:
+        """Create a new API key.
 
         Args:
             name: Human-readable name for the API key
@@ -246,6 +242,7 @@ class APIKeyManager:
 
         Returns:
             Tuple of (api_key, metadata)
+
         """
         try:
             # Generate unique key ID
@@ -313,7 +310,7 @@ class APIKeyManager:
                         "scopes": [scope.value for scope in scopes],
                         "expires_at": expires_at.isoformat() if expires_at else None,
                     },
-                )
+                ),
             )
 
             logger.info(f"Created API key {key_id} for user {user_id}")
@@ -326,11 +323,10 @@ class APIKeyManager:
     def validate_api_key(
         self,
         api_key: str,
-        required_scopes: Optional[Set[APIKeyScope]] = None,
-        ip_address: Optional[str] = None,
-    ) -> Optional[APIKeyMetadata]:
-        """
-        Validate an API key and check permissions.
+        required_scopes: set[APIKeyScope] | None = None,
+        ip_address: str | None = None,
+    ) -> APIKeyMetadata | None:
+        """Validate an API key and check permissions.
 
         Args:
             api_key: API key to validate
@@ -339,6 +335,7 @@ class APIKeyManager:
 
         Returns:
             APIKeyMetadata if valid, None otherwise
+
         """
         try:
             # Find the API key by decrypting and comparing
@@ -349,7 +346,7 @@ class APIKeyManager:
                     if stored_key == api_key:
                         # Found the matching key
                         return self._validate_api_key_metadata(
-                            metadata, required_scopes, ip_address
+                            metadata, required_scopes, ip_address,
                         )
                 except Exception:
                     # Continue searching if decryption fails
@@ -367,7 +364,7 @@ class APIKeyManager:
                     action="validate",
                     result="failure",
                     details={"reason": "key_not_found"},
-                )
+                ),
             )
 
             return None
@@ -379,9 +376,9 @@ class APIKeyManager:
     def _validate_api_key_metadata(
         self,
         metadata: APIKeyMetadata,
-        required_scopes: Optional[Set[APIKeyScope]] = None,
-        ip_address: Optional[str] = None,
-    ) -> Optional[APIKeyMetadata]:
+        required_scopes: set[APIKeyScope] | None = None,
+        ip_address: str | None = None,
+    ) -> APIKeyMetadata | None:
         """Validate API key metadata and permissions."""
         # Check if key is active
         if metadata.status != APIKeyStatus.ACTIVE:
@@ -397,7 +394,7 @@ class APIKeyManager:
                     action="validate",
                     result="failure",
                     details={"reason": "key_inactive", "status": metadata.status.value},
-                )
+                ),
             )
             return None
 
@@ -418,7 +415,7 @@ class APIKeyManager:
                         "reason": "key_expired",
                         "expires_at": metadata.expires_at.isoformat(),
                     },
-                )
+                ),
             )
             return None
 
@@ -440,7 +437,7 @@ class APIKeyManager:
                             "reason": "ip_not_whitelisted",
                             "ip_address": ip_address,
                         },
-                    )
+                    ),
                 )
                 return None
 
@@ -459,7 +456,7 @@ class APIKeyManager:
                         action="validate",
                         result="failure",
                         details={"reason": "ip_blacklisted", "ip_address": ip_address},
-                    )
+                    ),
                 )
                 return None
 
@@ -482,7 +479,7 @@ class APIKeyManager:
                             "reason": "insufficient_scopes",
                             "missing_scopes": [scope.value for scope in missing_scopes],
                         },
-                    )
+                    ),
                 )
                 return None
 
@@ -516,15 +513,15 @@ class APIKeyManager:
         except Exception as e:
             logger.error(f"Failed to update API key usage: {e}")
 
-    def check_rate_limit(self, key_id: str) -> Tuple[bool, Dict[str, Any]]:
-        """
-        Check if API key is within rate limits.
+    def check_rate_limit(self, key_id: str) -> tuple[bool, dict[str, Any]]:
+        """Check if API key is within rate limits.
 
         Args:
             key_id: API key ID
 
         Returns:
             Tuple of (is_allowed, rate_limit_info)
+
         """
         try:
             if key_id not in self._api_key_metadata:
@@ -557,7 +554,7 @@ class APIKeyManager:
                             "requests_in_minute": len(recent_usage),
                             "rate_limit": metadata.rate_limit_per_minute,
                         },
-                    )
+                    ),
                 )
 
                 return False, {
@@ -578,9 +575,8 @@ class APIKeyManager:
             logger.error(f"Failed to check rate limit: {e}")
             return False, {"error": str(e)}
 
-    def revoke_api_key(self, key_id: str, user_id: Optional[str] = None) -> bool:
-        """
-        Revoke an API key.
+    def revoke_api_key(self, key_id: str, user_id: str | None = None) -> bool:
+        """Revoke an API key.
 
         Args:
             key_id: API key ID to revoke
@@ -588,6 +584,7 @@ class APIKeyManager:
 
         Returns:
             True if successful, False otherwise
+
         """
         try:
             if key_id not in self._api_key_metadata:
@@ -614,7 +611,7 @@ class APIKeyManager:
                     action="revoke",
                     result="success",
                     details={"key_name": metadata.name},
-                )
+                ),
             )
 
             logger.info(f"Revoked API key {key_id}")
@@ -625,10 +622,9 @@ class APIKeyManager:
             return False
 
     def rotate_api_key(
-        self, key_id: str, user_id: Optional[str] = None
-    ) -> Optional[str]:
-        """
-        Rotate an API key by generating a new one.
+        self, key_id: str, user_id: str | None = None,
+    ) -> str | None:
+        """Rotate an API key by generating a new one.
 
         Args:
             key_id: API key ID to rotate
@@ -636,6 +632,7 @@ class APIKeyManager:
 
         Returns:
             New API key if successful, None otherwise
+
         """
         try:
             if key_id not in self._api_key_metadata:
@@ -668,7 +665,7 @@ class APIKeyManager:
                     action="rotate",
                     result="success",
                     details={"key_name": metadata.name},
-                )
+                ),
             )
 
             logger.info(f"Rotated API key {key_id}")
@@ -678,13 +675,13 @@ class APIKeyManager:
             logger.error(f"Failed to rotate API key: {e}")
             return None
 
-    def get_api_key_metadata(self, key_id: str) -> Optional[APIKeyMetadata]:
+    def get_api_key_metadata(self, key_id: str) -> APIKeyMetadata | None:
         """Get API key metadata."""
         return self._api_key_metadata.get(key_id)
 
     def list_api_keys(
-        self, user_id: Optional[str] = None, status: Optional[APIKeyStatus] = None
-    ) -> List[APIKeyMetadata]:
+        self, user_id: str | None = None, status: APIKeyStatus | None = None,
+    ) -> list[APIKeyMetadata]:
         """List API keys with optional filtering."""
         keys = list(self._api_key_metadata.values())
 
@@ -696,7 +693,7 @@ class APIKeyManager:
 
         return keys
 
-    def get_api_key_statistics(self) -> Dict[str, Any]:
+    def get_api_key_statistics(self) -> dict[str, Any]:
         """Get API key statistics."""
         total_keys = len(self._api_key_metadata)
         active_keys = len(
@@ -704,21 +701,21 @@ class APIKeyManager:
                 k
                 for k in self._api_key_metadata.values()
                 if k.status == APIKeyStatus.ACTIVE
-            ]
+            ],
         )
         expired_keys = len(
             [
                 k
                 for k in self._api_key_metadata.values()
                 if k.expires_at and datetime.utcnow() > k.expires_at
-            ]
+            ],
         )
         revoked_keys = len(
             [
                 k
                 for k in self._api_key_metadata.values()
                 if k.status == APIKeyStatus.REVOKED
-            ]
+            ],
         )
 
         return {
@@ -732,7 +729,7 @@ class APIKeyManager:
 
 
 # Global API key manager instance
-_api_key_manager: Optional[APIKeyManager] = None
+_api_key_manager: APIKeyManager | None = None
 
 
 def get_api_key_manager() -> APIKeyManager:
@@ -745,16 +742,16 @@ def get_api_key_manager() -> APIKeyManager:
 
 def create_api_key(
     name: str,
-    description: Optional[str] = None,
-    user_id: Optional[str] = None,
-    scopes: Optional[Set[APIKeyScope]] = None,
-    expires_in_days: Optional[int] = None,
-    rate_limit_per_minute: Optional[int] = None,
-    rate_limit_burst: Optional[int] = None,
-    ip_whitelist: Optional[List[str]] = None,
-    ip_blacklist: Optional[List[str]] = None,
-    metadata: Optional[Dict[str, Any]] = None,
-) -> Tuple[str, APIKeyMetadata]:
+    description: str | None = None,
+    user_id: str | None = None,
+    scopes: set[APIKeyScope] | None = None,
+    expires_in_days: int | None = None,
+    rate_limit_per_minute: int | None = None,
+    rate_limit_burst: int | None = None,
+    ip_whitelist: list[str] | None = None,
+    ip_blacklist: list[str] | None = None,
+    metadata: dict[str, Any] | None = None,
+) -> tuple[str, APIKeyMetadata]:
     """Create a new API key."""
     manager = get_api_key_manager()
     return manager.create_api_key(
@@ -773,35 +770,35 @@ def create_api_key(
 
 def validate_api_key(
     api_key: str,
-    required_scopes: Optional[Set[APIKeyScope]] = None,
-    ip_address: Optional[str] = None,
-) -> Optional[APIKeyMetadata]:
+    required_scopes: set[APIKeyScope] | None = None,
+    ip_address: str | None = None,
+) -> APIKeyMetadata | None:
     """Validate an API key."""
     manager = get_api_key_manager()
     return manager.validate_api_key(api_key, required_scopes, ip_address)
 
 
-def check_api_key_rate_limit(key_id: str) -> Tuple[bool, Dict[str, Any]]:
+def check_api_key_rate_limit(key_id: str) -> tuple[bool, dict[str, Any]]:
     """Check API key rate limit."""
     manager = get_api_key_manager()
     return manager.check_rate_limit(key_id)
 
 
-def revoke_api_key(key_id: str, user_id: Optional[str] = None) -> bool:
+def revoke_api_key(key_id: str, user_id: str | None = None) -> bool:
     """Revoke an API key."""
     manager = get_api_key_manager()
     return manager.revoke_api_key(key_id, user_id)
 
 
-def rotate_api_key(key_id: str, user_id: Optional[str] = None) -> Optional[str]:
+def rotate_api_key(key_id: str, user_id: str | None = None) -> str | None:
     """Rotate an API key."""
     manager = get_api_key_manager()
     return manager.rotate_api_key(key_id, user_id)
 
 
 def list_api_keys(
-    user_id: Optional[str] = None, status: Optional[APIKeyStatus] = None
-) -> List[APIKeyMetadata]:
+    user_id: str | None = None, status: APIKeyStatus | None = None,
+) -> list[APIKeyMetadata]:
     """List API keys."""
     manager = get_api_key_manager()
     return manager.list_api_keys(user_id, status)

@@ -1,5 +1,4 @@
-"""
-Reynard API Integration Tests
+"""Reynard API Integration Tests
 
 This module tests the integration between NLWeb tool calling and actual
 Reynard API endpoints, demonstrating real-world usage scenarios.
@@ -62,7 +61,7 @@ class TestReynardAPIIntegration:
         return {"Authorization": f"Bearer {mock_auth_token}"}
 
     def test_reynard_health_endpoints(
-        self, client: TestClient, auth_headers: dict[str, str]
+        self, client: TestClient, auth_headers: dict[str, str],
     ) -> None:
         """Test Reynard core health endpoints."""
         # Test root endpoint
@@ -82,7 +81,7 @@ class TestReynardAPIIntegration:
         assert data["status"] == "healthy"
 
     def test_nlweb_suggest_with_reynard_context(
-        self, client: TestClient, auth_headers: dict[str, str]
+        self, client: TestClient, auth_headers: dict[str, str],
     ) -> None:
         """Test NLWeb tool suggestions with Reynard-specific context."""
         with patch("app.api.nlweb.endpoints.get_nlweb_service") as mock_service:
@@ -122,7 +121,7 @@ class TestReynardAPIIntegration:
                         "prompt": "futuristic cityscape with neon lights",
                     },
                     "reasoning": "Query mentions image generation - suggesting ComfyUI workflow",
-                }
+                },
             ]
 
             mock_suggestion_response = {
@@ -134,7 +133,7 @@ class TestReynardAPIIntegration:
             }
 
             mock_nlweb_service.suggest_tools = AsyncMock(
-                return_value=mock_suggestion_response
+                return_value=mock_suggestion_response,
             )
             mock_service.return_value = mock_nlweb_service
 
@@ -160,7 +159,7 @@ class TestReynardAPIIntegration:
             }
 
             response = client.post(
-                "/api/nlweb/suggest", json=request_data, headers=auth_headers
+                "/api/nlweb/suggest", json=request_data, headers=auth_headers,
             )
 
             assert response.status_code == 200
@@ -175,7 +174,7 @@ class TestReynardAPIIntegration:
 
     @pytest.mark.asyncio
     async def test_ollama_chat_with_reynard_context(
-        self, async_client: AsyncClient, auth_headers: dict[str, str]
+        self, async_client: AsyncClient, auth_headers: dict[str, str],
     ) -> None:
         """Test Ollama chat with Reynard-specific context and tools."""
         async with async_client:
@@ -253,7 +252,7 @@ class TestReynardAPIIntegration:
                 }
 
                 response = await async_client.post(
-                    "/api/ollama/chat", json=request_data, headers=auth_headers
+                    "/api/ollama/chat", json=request_data, headers=auth_headers,
                 )
 
                 assert response.status_code == 200
@@ -265,7 +264,7 @@ class TestReynardAPIIntegration:
                 assert "comfy_image_generation" in data["tools_used"]
 
     def test_multi_service_workflow_suggestion(
-        self, client: TestClient, auth_headers: dict[str, str]
+        self, client: TestClient, auth_headers: dict[str, str],
     ) -> None:
         """Test NLWeb suggesting multi-service workflows for Reynard."""
         with patch("app.api.nlweb.endpoints.get_nlweb_service") as mock_service:
@@ -341,7 +340,7 @@ class TestReynardAPIIntegration:
             }
 
             mock_nlweb_service.suggest_tools = AsyncMock(
-                return_value=mock_suggestion_response
+                return_value=mock_suggestion_response,
             )
             mock_service.return_value = mock_nlweb_service
 
@@ -369,7 +368,7 @@ class TestReynardAPIIntegration:
             }
 
             response = client.post(
-                "/api/nlweb/suggest", json=request_data, headers=auth_headers
+                "/api/nlweb/suggest", json=request_data, headers=auth_headers,
             )
 
             assert response.status_code == 200
@@ -384,7 +383,7 @@ class TestReynardAPIIntegration:
             assert suggestions[2]["tool"]["name"] == "tts_audio_generation"
 
     def test_reynard_service_error_handling(
-        self, client: TestClient, auth_headers: dict[str, str]
+        self, client: TestClient, auth_headers: dict[str, str],
     ) -> None:
         """Test error handling when Reynard services are unavailable."""
         with patch("app.api.nlweb.endpoints.get_nlweb_service") as mock_service:
@@ -410,7 +409,7 @@ class TestReynardAPIIntegration:
                         "model": "qwen3:latest",
                     },
                     "reasoning": "ComfyUI service unavailable - fallback to text generation",
-                }
+                },
             ]
 
             mock_suggestion_response = {
@@ -424,7 +423,7 @@ class TestReynardAPIIntegration:
             }
 
             mock_nlweb_service.suggest_tools = AsyncMock(
-                return_value=mock_suggestion_response
+                return_value=mock_suggestion_response,
             )
             mock_service.return_value = mock_nlweb_service
 
@@ -439,7 +438,7 @@ class TestReynardAPIIntegration:
                             "comfy": "unavailable",
                             "ollama": "available",
                             "tts": "available",
-                        }
+                        },
                     },
                 },
                 "max_suggestions": 3,
@@ -448,7 +447,7 @@ class TestReynardAPIIntegration:
             }
 
             response = client.post(
-                "/api/nlweb/suggest", json=request_data, headers=auth_headers
+                "/api/nlweb/suggest", json=request_data, headers=auth_headers,
             )
 
             assert response.status_code == 200
@@ -460,7 +459,7 @@ class TestReynardAPIIntegration:
             assert suggestion["tool"]["name"] == "ollama_chat"
 
     def test_reynard_context_aware_suggestions(
-        self, client: TestClient, auth_headers: dict[str, str]
+        self, client: TestClient, auth_headers: dict[str, str],
     ) -> None:
         """Test context-aware suggestions based on Reynard project type."""
         with patch("app.api.nlweb.endpoints.get_nlweb_service") as mock_service:
@@ -515,7 +514,7 @@ class TestReynardAPIIntegration:
                             "score": 90.0 - (i * 5),
                             "parameters": {"test_param": "test_value"},
                             "reasoning": f"Context-aware suggestion for {test_case['project_type']} project",
-                        }
+                        },
                     )
 
                 mock_suggestion_response = {
@@ -531,7 +530,7 @@ class TestReynardAPIIntegration:
                 }
 
                 mock_nlweb_service.suggest_tools = AsyncMock(
-                    return_value=mock_suggestion_response
+                    return_value=mock_suggestion_response,
                 )
                 mock_service.return_value = mock_nlweb_service
 
@@ -558,7 +557,7 @@ class TestReynardAPIIntegration:
                 }
 
                 response = client.post(
-                    "/api/nlweb/suggest", json=request_data, headers=auth_headers
+                    "/api/nlweb/suggest", json=request_data, headers=auth_headers,
                 )
 
                 assert response.status_code == 200

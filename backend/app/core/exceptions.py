@@ -1,5 +1,4 @@
-"""
-Custom Exception Classes for Reynard Backend Services
+"""Custom Exception Classes for Reynard Backend Services
 
 This module defines custom exception classes for different error types,
 providing structured error handling and better error classification.
@@ -57,7 +56,7 @@ class TokenExpiredError(ReynardBaseException):
 
     def __init__(self, message: str = "Authentication token has expired", **kwargs):
         super().__init__(
-            message=message, error_code="AUTH_TOKEN_EXPIRED", status_code=401, **kwargs
+            message=message, error_code="AUTH_TOKEN_EXPIRED", status_code=401, **kwargs,
         )
 
 
@@ -66,7 +65,7 @@ class TokenInvalidError(ReynardBaseException):
 
     def __init__(self, message: str = "Invalid authentication token", **kwargs):
         super().__init__(
-            message=message, error_code="AUTH_TOKEN_INVALID", status_code=401, **kwargs
+            message=message, error_code="AUTH_TOKEN_INVALID", status_code=401, **kwargs,
         )
 
 
@@ -75,7 +74,7 @@ class AccountLockedError(ReynardBaseException):
 
     def __init__(self, message: str = "Account is locked", **kwargs):
         super().__init__(
-            message=message, error_code="AUTH_ACCOUNT_LOCKED", status_code=423, **kwargs
+            message=message, error_code="AUTH_ACCOUNT_LOCKED", status_code=423, **kwargs,
         )
 
 
@@ -177,7 +176,7 @@ class SecurityError(ReynardBaseException):
 
     def __init__(self, message: str, error_code: str, **kwargs):
         super().__init__(
-            message=message, error_code=error_code, status_code=403, **kwargs
+            message=message, error_code=error_code, status_code=403, **kwargs,
         )
 
 
@@ -193,7 +192,7 @@ class CommandInjectionError(SecurityError):
 
     def __init__(self, message: str = "Command injection attempt detected", **kwargs):
         super().__init__(
-            message=message, error_code="SECURITY_COMMAND_INJECTION", **kwargs
+            message=message, error_code="SECURITY_COMMAND_INJECTION", **kwargs,
         )
 
 
@@ -209,7 +208,7 @@ class PathTraversalError(SecurityError):
 
     def __init__(self, message: str = "Path traversal attempt detected", **kwargs):
         super().__init__(
-            message=message, error_code="SECURITY_PATH_TRAVERSAL", **kwargs
+            message=message, error_code="SECURITY_PATH_TRAVERSAL", **kwargs,
         )
 
 
@@ -217,7 +216,7 @@ class RateLimitError(SecurityError):
     """Raised when rate limit is exceeded."""
 
     def __init__(
-        self, message: str = "Rate limit exceeded", retry_after: int = 60, **kwargs
+        self, message: str = "Rate limit exceeded", retry_after: int = 60, **kwargs,
     ):
         super().__init__(
             message=message,
@@ -233,7 +232,7 @@ class SuspiciousActivityError(SecurityError):
 
     def __init__(self, message: str = "Suspicious activity detected", **kwargs):
         super().__init__(
-            message=message, error_code="SECURITY_SUSPICIOUS_ACTIVITY", **kwargs
+            message=message, error_code="SECURITY_SUSPICIOUS_ACTIVITY", **kwargs,
         )
 
 
@@ -243,7 +242,7 @@ class SystemError(ReynardBaseException):
 
     def __init__(self, message: str, error_code: str, **kwargs):
         super().__init__(
-            message=message, error_code=error_code, status_code=500, **kwargs
+            message=message, error_code=error_code, status_code=500, **kwargs,
         )
 
 
@@ -308,7 +307,7 @@ class BusinessError(ReynardBaseException):
 
     def __init__(self, message: str, error_code: str, **kwargs):
         super().__init__(
-            message=message, error_code=error_code, status_code=400, **kwargs
+            message=message, error_code=error_code, status_code=400, **kwargs,
         )
 
 

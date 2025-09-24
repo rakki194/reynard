@@ -1,5 +1,4 @@
-"""
-Backends package for the Gatekeeper authentication library.
+"""Backends package for the Gatekeeper authentication library.
 
 This package contains backend implementations for user data storage.
 """

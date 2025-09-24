@@ -1,5 +1,4 @@
-"""
-Gunicorn Production Configuration for Reynard Backend
+"""Gunicorn Production Configuration for Reynard Backend
 
 This configuration optimizes Gunicorn for production deployment with:
 - Optimal worker processes based on CPU cores

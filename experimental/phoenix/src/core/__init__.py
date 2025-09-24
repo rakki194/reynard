@@ -1,5 +1,4 @@
-"""
-PHOENIX Core Module
+"""PHOENIX Core Module
 
 Core components of the PHOENIX evolutionary knowledge distillation framework.
 
@@ -13,8 +12,8 @@ from .phoenix_framework import PhoenixFramework
 from .statistical_validation import StatisticalValidation
 
 __all__ = [
-    "PhoenixFramework",
     "EvolutionaryOperators",
     "KnowledgeDistillation",
+    "PhoenixFramework",
     "StatisticalValidation",
 ]

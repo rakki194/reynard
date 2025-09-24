@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Test suite for AgentStatePersistence class.
+"""Test suite for AgentStatePersistence class.
 
 Tests the agent state persistence system including save, load,
 backup, and recovery operations.

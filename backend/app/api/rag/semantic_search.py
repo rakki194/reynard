@@ -1,5 +1,4 @@
-"""
-🦊 Reynard RAG Enhanced Semantic Search
+"""🦊 Reynard RAG Enhanced Semantic Search
 =======================================
 
 Advanced semantic search capabilities for RAG service with intelligent query processing,
@@ -18,12 +17,11 @@ Author: Reynard Development Team
 Version: 1.0.0
 """
 
-import asyncio
 import re
 import time
 from collections import defaultdict, deque
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any
 
 from ...core.logging_config import get_service_logger
 
@@ -38,18 +36,18 @@ class QueryIntent:
         str  # "code_search", "documentation", "concept_explanation", "troubleshooting"
     )
     confidence: float  # 0.0 to 1.0
-    keywords: List[str]
-    entities: List[str]
-    context: Dict[str, Any] = field(default_factory=dict)
+    keywords: list[str]
+    entities: list[str]
+    context: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
 class SearchContext:
     """Context information for search optimization."""
 
-    user_history: List[str] = field(default_factory=list)
-    recent_queries: List[str] = field(default_factory=list)
-    preferred_modalities: List[str] = field(default_factory=list)
+    user_history: list[str] = field(default_factory=list)
+    recent_queries: list[str] = field(default_factory=list)
+    preferred_modalities: list[str] = field(default_factory=list)
     session_id: str = ""
     timestamp: float = field(default_factory=time.time)
 
@@ -58,17 +56,16 @@ class SearchContext:
 class EnhancedSearchResult:
     """Enhanced search result with additional metadata."""
 
-    original_hit: Dict[str, Any]
+    original_hit: dict[str, Any]
     enhanced_score: float
-    relevance_factors: Dict[str, float]
-    semantic_tags: List[str]
-    context_matches: List[str]
+    relevance_factors: dict[str, float]
+    semantic_tags: list[str]
+    context_matches: list[str]
     rerank_reason: str = ""
 
 
 class SemanticSearchEnhancer:
-    """
-    Advanced semantic search enhancement system.
+    """Advanced semantic search enhancement system.
 
     Provides intelligent query processing, result reranking,
     and multi-modal search optimization for RAG service.
@@ -77,11 +74,11 @@ class SemanticSearchEnhancer:
     def __init__(self, max_history_size: int = 1000):
         self.max_history_size = max_history_size
         self.query_history: deque = deque(maxlen=max_history_size)
-        self.result_feedback: Dict[str, List[bool]] = defaultdict(list)
+        self.result_feedback: dict[str, list[bool]] = defaultdict(list)
         self.intent_patterns = self._initialize_intent_patterns()
         self.semantic_enhancements = self._initialize_semantic_enhancements()
 
-    def _initialize_intent_patterns(self) -> Dict[str, List[str]]:
+    def _initialize_intent_patterns(self) -> dict[str, list[str]]:
         """Initialize query intent detection patterns."""
         return {
             "code_search": [
@@ -107,7 +104,7 @@ class SemanticSearchEnhancer:
             ],
         }
 
-    def _initialize_semantic_enhancements(self) -> Dict[str, Any]:
+    def _initialize_semantic_enhancements(self) -> dict[str, Any]:
         """Initialize semantic enhancement configurations."""
         return {
             "code_boost_factors": {
@@ -133,10 +130,9 @@ class SemanticSearchEnhancer:
         }
 
     async def enhance_query(
-        self, query: str, context: Optional[SearchContext] = None
-    ) -> Tuple[str, QueryIntent, Dict[str, Any]]:
-        """
-        Enhance query with semantic processing and intent detection.
+        self, query: str, context: SearchContext | None = None,
+    ) -> tuple[str, QueryIntent, dict[str, Any]]:
+        """Enhance query with semantic processing and intent detection.
 
         Args:
             query: Original search query
@@ -144,6 +140,7 @@ class SemanticSearchEnhancer:
 
         Returns:
             Tuple of (enhanced_query, intent, enhancement_metadata)
+
         """
         try:
             # Detect query intent
@@ -169,11 +166,11 @@ class SemanticSearchEnhancer:
                     "enhanced_query": enhanced_query,
                     "intent": intent.intent_type,
                     "timestamp": time.time(),
-                }
+                },
             )
 
             logger.info(
-                f"Query enhanced: '{query}' -> '{enhanced_query}' (intent: {intent.intent_type})"
+                f"Query enhanced: '{query}' -> '{enhanced_query}' (intent: {intent.intent_type})",
             )
 
             return enhanced_query, intent, enhancement_metadata
@@ -223,7 +220,7 @@ class SemanticSearchEnhancer:
             context={"patterns_matched": matches if "matches" in locals() else []},
         )
 
-    def _extract_keywords(self, query: str) -> List[str]:
+    def _extract_keywords(self, query: str) -> list[str]:
         """Extract important keywords from query."""
         # Remove common stop words
         stop_words = {
@@ -283,7 +280,7 @@ class SemanticSearchEnhancer:
 
         return keywords[:10]  # Limit to top 10 keywords
 
-    def _extract_entities(self, query: str) -> List[str]:
+    def _extract_entities(self, query: str) -> list[str]:
         """Extract named entities from query."""
         entities = []
 
@@ -337,7 +334,7 @@ class SemanticSearchEnhancer:
         return " ".join(enhanced_parts)
 
     async def _enhance_documentation_query(
-        self, query: str, intent: QueryIntent
+        self, query: str, intent: QueryIntent,
     ) -> str:
         """Enhance documentation search queries."""
         enhanced_parts = [query]
@@ -351,7 +348,7 @@ class SemanticSearchEnhancer:
         return " ".join(enhanced_parts)
 
     async def _enhance_troubleshooting_query(
-        self, query: str, intent: QueryIntent
+        self, query: str, intent: QueryIntent,
     ) -> str:
         """Enhance troubleshooting queries."""
         enhanced_parts = [query]
@@ -401,13 +398,12 @@ class SemanticSearchEnhancer:
 
     async def rerank_results(
         self,
-        results: List[Dict[str, Any]],
+        results: list[dict[str, Any]],
         query: str,
         intent: QueryIntent,
-        context: Optional[SearchContext] = None,
-    ) -> List[EnhancedSearchResult]:
-        """
-        Rerank search results using advanced algorithms.
+        context: SearchContext | None = None,
+    ) -> list[EnhancedSearchResult]:
+        """Rerank search results using advanced algorithms.
 
         Args:
             results: Original search results
@@ -417,13 +413,14 @@ class SemanticSearchEnhancer:
 
         Returns:
             List of enhanced and reranked results
+
         """
         try:
             enhanced_results = []
 
             for i, result in enumerate(results):
                 enhanced_result = await self._enhance_single_result(
-                    result, query, intent, context, i
+                    result, query, intent, context, i,
                 )
                 enhanced_results.append(enhanced_result)
 
@@ -451,10 +448,10 @@ class SemanticSearchEnhancer:
 
     async def _enhance_single_result(
         self,
-        result: Dict[str, Any],
+        result: dict[str, Any],
         query: str,
         intent: QueryIntent,
-        context: Optional[SearchContext],
+        context: SearchContext | None,
         original_rank: int,
     ) -> EnhancedSearchResult:
         """Enhance a single search result with additional scoring factors."""
@@ -490,7 +487,7 @@ class SemanticSearchEnhancer:
 
         # Calculate enhanced score
         enhanced_score = await self._calculate_enhanced_score(
-            base_score, relevance_factors, original_rank
+            base_score, relevance_factors, original_rank,
         )
 
         # Determine rerank reason
@@ -505,7 +502,7 @@ class SemanticSearchEnhancer:
             rerank_reason=rerank_reason,
         )
 
-    async def _calculate_content_quality(self, result: Dict[str, Any]) -> float:
+    async def _calculate_content_quality(self, result: dict[str, Any]) -> float:
         """Calculate content quality score for a result."""
         quality_score = 0.5  # Base score
 
@@ -533,7 +530,7 @@ class SemanticSearchEnhancer:
         return min(quality_score, 1.0)
 
     async def _calculate_intent_alignment(
-        self, result: Dict[str, Any], intent: QueryIntent
+        self, result: dict[str, Any], intent: QueryIntent,
     ) -> float:
         """Calculate how well a result aligns with the detected intent."""
         alignment_score = 0.5  # Base score
@@ -592,15 +589,15 @@ class SemanticSearchEnhancer:
 
         return min(alignment_score, 1.0)
 
-    async def _calculate_recency_factor(self, result: Dict[str, Any]) -> float:
+    async def _calculate_recency_factor(self, result: dict[str, Any]) -> float:
         """Calculate recency factor for a result."""
         # This would typically use file modification time or creation date
         # For now, return a neutral score
         return 0.5
 
     async def _calculate_context_relevance(
-        self, result: Dict[str, Any], context: SearchContext
-    ) -> Dict[str, Any]:
+        self, result: dict[str, Any], context: SearchContext,
+    ) -> dict[str, Any]:
         """Calculate context relevance for a result."""
         relevance_score = 0.0
         matches = []
@@ -628,7 +625,7 @@ class SemanticSearchEnhancer:
         return {"score": min(relevance_score, 1.0), "matches": matches}
 
     async def _calculate_semantic_enhancement(
-        self, result: Dict[str, Any], query: str
+        self, result: dict[str, Any], query: str,
     ) -> float:
         """Calculate semantic enhancement factor."""
         # This would typically use more sophisticated semantic analysis
@@ -650,8 +647,8 @@ class SemanticSearchEnhancer:
         return min(enhancement_score, 1.0)
 
     async def _generate_semantic_tags(
-        self, result: Dict[str, Any], intent: QueryIntent
-    ) -> List[str]:
+        self, result: dict[str, Any], intent: QueryIntent,
+    ) -> list[str]:
         """Generate semantic tags for a result."""
         tags = []
 
@@ -682,7 +679,7 @@ class SemanticSearchEnhancer:
         return tags
 
     async def _calculate_enhanced_score(
-        self, base_score: float, relevance_factors: Dict[str, float], original_rank: int
+        self, base_score: float, relevance_factors: dict[str, float], original_rank: int,
     ) -> float:
         """Calculate enhanced score using multiple factors."""
         # Weighted combination of factors
@@ -701,7 +698,7 @@ class SemanticSearchEnhancer:
 
         return min(enhanced_score, 1.0)
 
-    def _determine_rerank_reason(self, relevance_factors: Dict[str, float]) -> str:
+    def _determine_rerank_reason(self, relevance_factors: dict[str, float]) -> str:
         """Determine the primary reason for reranking."""
         if not relevance_factors:
             return "no_enhancement"
@@ -712,12 +709,11 @@ class SemanticSearchEnhancer:
 
         if score > 0.7:
             return f"high_{factor_name}"
-        elif score > 0.5:
+        if score > 0.5:
             return f"medium_{factor_name}"
-        else:
-            return f"low_{factor_name}"
+        return f"low_{factor_name}"
 
-    async def get_search_analytics(self) -> Dict[str, Any]:
+    async def get_search_analytics(self) -> dict[str, Any]:
         """Get search analytics and insights."""
         if not self.query_history:
             return {"message": "No search data available"}
@@ -755,8 +751,8 @@ class SemanticSearchEnhancer:
         }
 
     async def optimize_search_parameters(
-        self, query: str, intent: QueryIntent, context: Optional[SearchContext] = None
-    ) -> Dict[str, Any]:
+        self, query: str, intent: QueryIntent, context: SearchContext | None = None,
+    ) -> dict[str, Any]:
         """Optimize search parameters based on query analysis."""
         optimized_params = {
             "top_k": 20,  # Default
@@ -795,7 +791,7 @@ class SemanticSearchEnhancer:
 
 
 # Global semantic search enhancer instance
-_semantic_enhancer: Optional[SemanticSearchEnhancer] = None
+_semantic_enhancer: SemanticSearchEnhancer | None = None
 
 
 def get_semantic_enhancer() -> SemanticSearchEnhancer:

@@ -1,5 +1,4 @@
-"""
-Image Utils Core for Reynard Backend
+"""Image Utils Core for Reynard Backend
 
 Main ImageUtils class that combines format support and processing utilities.
 """

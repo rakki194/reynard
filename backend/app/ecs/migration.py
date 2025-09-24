@@ -1,20 +1,17 @@
-"""
-ECS Data Migration Script
+"""ECS Data Migration Script
 
 Migrates existing JSON agent data to PostgreSQL database.
 """
 
 import json
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Dict, List
 
 from .database import (
     AbilityTrait,
     Agent,
     AgentAchievement,
-    AgentDomainExpertise,
     AgentPosition,
     AgentSpecialization,
     AgentWorkflowPreference,
@@ -34,17 +31,17 @@ class ECSDataMigrator:
         self.db = ecs_db
 
     async def migrate_agent_names_json(self, json_file_path: str) -> int:
-        """
-        Migrate agent data from agent-names.json file.
+        """Migrate agent data from agent-names.json file.
 
         Args:
             json_file_path: Path to the agent-names.json file
 
         Returns:
             Number of agents migrated
+
         """
         try:
-            with open(json_file_path, "r") as f:
+            with open(json_file_path) as f:
                 data = json.load(f)
 
             migrated_count = 0
@@ -63,14 +60,14 @@ class ECSDataMigrator:
                             created_at=datetime.fromisoformat(
                                 agent_data.get(
                                     "generated_at",
-                                    datetime.now(timezone.utc).isoformat(),
-                                ).replace("Z", "+00:00")
+                                    datetime.now(UTC).isoformat(),
+                                ).replace("Z", "+00:00"),
                             ),
                             last_activity=datetime.fromisoformat(
                                 agent_data.get(
                                     "last_activity",
-                                    datetime.now(timezone.utc).isoformat(),
-                                ).replace("Z", "+00:00")
+                                    datetime.now(UTC).isoformat(),
+                                ).replace("Z", "+00:00"),
                             ),
                         )
 
@@ -131,7 +128,7 @@ class ECSDataMigrator:
 
                         migrated_count += 1
                         logger.info(
-                            f"✅ Migrated agent: {agent.name} ({agent.agent_id})"
+                            f"✅ Migrated agent: {agent.name} ({agent.agent_id})",
                         )
 
                     except Exception as e:
@@ -141,7 +138,7 @@ class ECSDataMigrator:
 
                 session.commit()
                 logger.info(
-                    f"✅ Successfully migrated {migrated_count} agents from {json_file_path}"
+                    f"✅ Successfully migrated {migrated_count} agents from {json_file_path}",
                 )
                 return migrated_count
 
@@ -150,17 +147,17 @@ class ECSDataMigrator:
             return 0
 
     async def migrate_phoenix_agent_data(self, json_file_path: str) -> int:
-        """
-        Migrate agent data from PHOENIX experiment JSON files.
+        """Migrate agent data from PHOENIX experiment JSON files.
 
         Args:
             json_file_path: Path to the PHOENIX agent JSON file
 
         Returns:
             Number of agents migrated
+
         """
         try:
-            with open(json_file_path, "r") as f:
+            with open(json_file_path) as f:
                 data = json.load(f)
 
             migrated_count = 0
@@ -177,13 +174,13 @@ class ECSDataMigrator:
                         active=True,
                         created_at=datetime.fromisoformat(
                             data.get(
-                                "created_at", datetime.now(timezone.utc).isoformat()
-                            )
+                                "created_at", datetime.now(UTC).isoformat(),
+                            ),
                         ),
                         last_activity=datetime.fromisoformat(
                             data.get(
-                                "last_updated", datetime.now(timezone.utc).isoformat()
-                            )
+                                "last_updated", datetime.now(UTC).isoformat(),
+                            ),
                         ),
                     )
 
@@ -235,7 +232,7 @@ class ECSDataMigrator:
 
                     migrated_count += 1
                     logger.info(
-                        f"✅ Migrated PHOENIX agent: {agent.name} ({agent.agent_id})"
+                        f"✅ Migrated PHOENIX agent: {agent.name} ({agent.agent_id})",
                     )
 
                 except Exception as e:
@@ -245,7 +242,7 @@ class ECSDataMigrator:
 
                 session.commit()
                 logger.info(
-                    f"✅ Successfully migrated {migrated_count} PHOENIX agents from {json_file_path}"
+                    f"✅ Successfully migrated {migrated_count} PHOENIX agents from {json_file_path}",
                 )
                 return migrated_count
 
@@ -253,12 +250,12 @@ class ECSDataMigrator:
             logger.error(f"❌ Failed to migrate PHOENIX agent data: {e}")
             return 0
 
-    async def migrate_all_data(self) -> Dict[str, int]:
-        """
-        Migrate all available JSON data to PostgreSQL.
+    async def migrate_all_data(self) -> dict[str, int]:
+        """Migrate all available JSON data to PostgreSQL.
 
         Returns:
             Dictionary with migration results
+
         """
         results = {}
 
@@ -272,7 +269,7 @@ class ECSDataMigrator:
 
         # Find and migrate PHOENIX agent data
         phoenix_files = [
-            "/home/kade/runeset/reynard/experimental/phoenix/data/agent_state/new_agent_candidate.json"
+            "/home/kade/runeset/reynard/experimental/phoenix/data/agent_state/new_agent_candidate.json",
         ]
 
         for file_path in phoenix_files:

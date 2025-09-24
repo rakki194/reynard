@@ -1,5 +1,4 @@
-"""
-Article-specific summarizer for Reynard.
+"""Article-specific summarizer for Reynard.
 
 This module provides specialized summarization for articles, blog posts,
 news content, and general web text with article-specific prompts and processing.
@@ -23,19 +22,18 @@ logger = logging.getLogger(__name__)
 
 
 class ArticleSummarizer(BaseSummarizer):
-    """
-    Specialized summarizer for articles and web content.
+    """Specialized summarizer for articles and web content.
 
     This summarizer is optimized for articles, blog posts, news content,
     and general web text with specialized prompts and processing.
     """
 
     def __init__(self, ollama_service):
-        """
-        Initialize the article summarizer.
+        """Initialize the article summarizer.
 
         Args:
             ollama_service: Instance of Reynard's OllamaService
+
         """
         super().__init__(
             name="article_summarizer",
@@ -60,7 +58,7 @@ class ArticleSummarizer(BaseSummarizer):
             return False
 
     async def summarize(
-        self, text: str, options: SummarizationOptions
+        self, text: str, options: SummarizationOptions,
     ) -> SummarizationResult:
         """Summarize article text."""
         if not self._is_available:
@@ -111,12 +109,12 @@ class ArticleSummarizer(BaseSummarizer):
 
             if options.include_highlights:
                 result.highlights = await self._extract_article_highlights(
-                    processed_text
+                    processed_text,
                 )
 
             # Calculate quality score
             result.quality_score = await self._calculate_article_quality(
-                text, summary_text
+                text, summary_text,
             )
 
             return result
@@ -126,7 +124,7 @@ class ArticleSummarizer(BaseSummarizer):
             raise
 
     async def summarize_stream(
-        self, text: str, options: SummarizationOptions
+        self, text: str, options: SummarizationOptions,
     ) -> AsyncGenerator[dict[str, Any]]:
         """Stream article summarization progress."""
         if not self._is_available:
@@ -149,7 +147,7 @@ class ArticleSummarizer(BaseSummarizer):
             # Stream summary generation
             summary_text = ""
             async for chunk in self._generate_article_summary_stream(
-                processed_text, options
+                processed_text, options,
             ):
                 if chunk.get("type") == "token":
                     summary_text += chunk.get("data", "")
@@ -191,14 +189,14 @@ class ArticleSummarizer(BaseSummarizer):
         return True
 
     def _preprocess_article(self, text: str) -> str:
-        """
-        Preprocess article text for better summarization.
+        """Preprocess article text for better summarization.
 
         Args:
             text: Raw article text
 
         Returns:
             Preprocessed text
+
         """
         # Remove excessive whitespace
         text = " ".join(text.split())
@@ -219,7 +217,7 @@ class ArticleSummarizer(BaseSummarizer):
         return text.strip()
 
     async def _generate_article_summary(
-        self, text: str, options: SummarizationOptions
+        self, text: str, options: SummarizationOptions,
     ) -> str:
         """Generate article summary using specialized prompts."""
         system_prompt, user_prompt = self._get_article_prompts(text, options)
@@ -244,7 +242,7 @@ class ArticleSummarizer(BaseSummarizer):
         return summary_text.strip()
 
     async def _generate_article_summary_stream(
-        self, text: str, options: SummarizationOptions
+        self, text: str, options: SummarizationOptions,
     ) -> AsyncGenerator[dict[str, Any]]:
         """Generate article summary with streaming."""
         system_prompt, user_prompt = self._get_article_prompts(text, options)
@@ -267,7 +265,7 @@ class ArticleSummarizer(BaseSummarizer):
             }
 
     def _get_article_prompts(
-        self, text: str, options: SummarizationOptions
+        self, text: str, options: SummarizationOptions,
     ) -> tuple[str, str]:
         """Get specialized prompts for article summarization."""
         # Article-specific system prompt
@@ -432,7 +430,7 @@ Guidelines:
         return highlights[:4]  # Limit to 4 highlights
 
     async def _calculate_article_quality(
-        self, original_text: str, summary: str
+        self, original_text: str, summary: str,
     ) -> float:
         """Calculate quality score for article summary."""
         # Enhanced quality scoring for articles

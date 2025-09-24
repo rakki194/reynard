@@ -1,10 +1,8 @@
-"""
-Pattern-based analyzer for boastful language detection.
+"""Pattern-based analyzer for boastful language detection.
 Enhanced version of the original pattern matching approach.
 """
 
 import re
-from typing import Any, Dict, List
 
 from core.config import HumilityConfig
 from core.models import (
@@ -24,7 +22,7 @@ class PatternAnalyzer:
         self.replacements = self._load_enhanced_replacements()
         self.severity_weights = self._load_severity_weights()
 
-    def _load_enhanced_patterns(self) -> Dict[str, List[Dict]]:
+    def _load_enhanced_patterns(self) -> dict[str, list[dict]]:
         """Load comprehensive boastful language patterns."""
         return {
             "superlatives": [
@@ -230,7 +228,7 @@ class PatternAnalyzer:
             ],
         }
 
-    def _load_enhanced_replacements(self) -> Dict[str, str]:
+    def _load_enhanced_replacements(self) -> dict[str, str]:
         """Load comprehensive replacement suggestions."""
         return {
             # Superlatives
@@ -522,7 +520,7 @@ class PatternAnalyzer:
             "it's elementary": "it's fundamental",
         }
 
-    def _load_severity_weights(self) -> Dict[SeverityLevel, int]:
+    def _load_severity_weights(self) -> dict[SeverityLevel, int]:
         """Load severity weights for scoring."""
         return {
             SeverityLevel.LOW: 1,
@@ -531,7 +529,7 @@ class PatternAnalyzer:
             SeverityLevel.CRITICAL: 4,
         }
 
-    def analyze(self, text: str, file_path: str = "") -> List[HumilityFinding]:
+    def analyze(self, text: str, file_path: str = "") -> list[HumilityFinding]:
         """Analyze text for boastful language patterns."""
         findings = []
         lines = text.split("\n")
@@ -550,7 +548,7 @@ class PatternAnalyzer:
                         original_text = match.group()
                         word = original_text.lower()
                         replacement = self.replacements.get(
-                            word, "consider alternative"
+                            word, "consider alternative",
                         )
 
                         # Calculate context (surrounding words)
@@ -576,7 +574,7 @@ class PatternAnalyzer:
                                 "word_position": match.start(),
                                 "line_length": len(line),
                                 "surrounding_words": self._extract_surrounding_words(
-                                    line, match
+                                    line, match,
                                 ),
                             },
                         )
@@ -588,14 +586,13 @@ class PatternAnalyzer:
         """Convert confidence score to confidence level."""
         if confidence_score >= 0.9:
             return ConfidenceLevel.VERY_HIGH
-        elif confidence_score >= 0.7:
+        if confidence_score >= 0.7:
             return ConfidenceLevel.HIGH
-        elif confidence_score >= 0.5:
+        if confidence_score >= 0.5:
             return ConfidenceLevel.MEDIUM
-        else:
-            return ConfidenceLevel.LOW
+        return ConfidenceLevel.LOW
 
-    def _extract_surrounding_words(self, line: str, match) -> List[str]:
+    def _extract_surrounding_words(self, line: str, match) -> list[str]:
         """Extract words surrounding the match for context."""
         start = max(0, match.start() - 50)
         end = min(len(line), match.end() + 50)

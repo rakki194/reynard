@@ -1,5 +1,4 @@
-"""
-🐼 Shared pytest fixtures for Continuous Indexing tests
+"""🐼 Shared pytest fixtures for Continuous Indexing tests
 
 This module provides shared fixtures and utilities for testing the continuous indexing service.
 All fixtures are designed with panda spirit and thoroughness in mind.
@@ -9,8 +8,8 @@ Author: Ailuropoda-Sage-59 (Panda Spirit)
 
 import asyncio
 import tempfile
+from collections.abc import Generator
 from pathlib import Path
-from typing import Generator
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
@@ -27,7 +26,7 @@ def event_loop():
 
 
 @pytest.fixture
-def temp_directory() -> Generator[Path, None, None]:
+def temp_directory() -> Generator[Path]:
     """🐼 Create a temporary directory for testing file operations."""
     with tempfile.TemporaryDirectory() as temp_dir:
         yield Path(temp_dir)
@@ -257,7 +256,7 @@ class PandaTestHelpers:
 
     @staticmethod
     def assert_panda_spirit(
-        test_result: bool, message: str = "Panda spirit not detected"
+        test_result: bool, message: str = "Panda spirit not detected",
     ):
         """Assert with panda spirit."""
         assert test_result, f"🐼 {message}"
@@ -280,12 +279,12 @@ class PandaTestHelpers:
 
         habitat["panda_poem.md"] = temp_dir / "panda_poem.md"
         habitat["panda_poem.md"].write_text(
-            "# Panda Life\n\n🐼 *rolls around*\n\nBamboo is everything!"
+            "# Panda Life\n\n🐼 *rolls around*\n\nBamboo is everything!",
         )
 
         habitat["panda_config.json"] = temp_dir / "panda_config.json"
         habitat["panda_config.json"].write_text(
-            '{"spirit": "panda", "energy": "high", "bamboo_count": 42}'
+            '{"spirit": "panda", "energy": "high", "bamboo_count": 42}',
         )
 
         return habitat

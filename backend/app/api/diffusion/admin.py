@@ -1,5 +1,4 @@
-"""
-Administrative endpoints for Diffusion-LLM service.
+"""Administrative endpoints for Diffusion-LLM service.
 """
 
 import logging
@@ -66,7 +65,7 @@ async def reload_model(model_id: str):
 
         if not success:
             raise HTTPException(
-                status_code=400, detail=f"Failed to reload model {model_id}"
+                status_code=400, detail=f"Failed to reload model {model_id}",
             )
 
         return {"success": True, "message": f"Model {model_id} reloaded successfully"}

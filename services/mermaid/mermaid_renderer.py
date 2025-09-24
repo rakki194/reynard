@@ -1,18 +1,12 @@
-"""
-Mermaid Renderer
+"""Mermaid Renderer
 
 A Python-based mermaid diagram renderer that uses Playwright to render diagrams
 to SVG and PNG formats, based on the mermaid.ink architecture.
 """
 
-import asyncio
-import base64
-import json
-import os
 import sys
-import tempfile
 from pathlib import Path
-from typing import Any, Dict, Optional, Tuple
+from typing import Any
 
 # Add the mcp-server services directory to Python path
 current_file = Path(__file__).resolve()
@@ -27,8 +21,7 @@ from playwright_browser_service import PlaywrightBrowserService
 
 
 class MermaidRenderer:
-    """
-    Mermaid diagram renderer using Playwright browser automation.
+    """Mermaid diagram renderer using Playwright browser automation.
 
     This renderer creates HTML pages with mermaid.js and uses Playwright
     to render them to SVG and PNG formats, similar to mermaid.ink.
@@ -44,14 +37,14 @@ class MermaidRenderer:
         self.mermaid_js_path = current_file.parent / "assets" / "mermaid.js"
 
     def _get_mermaid_js_content(self) -> str:
-        """
-        Read the local mermaid.js file content.
+        """Read the local mermaid.js file content.
 
         Returns:
             JavaScript content as string
+
         """
         try:
-            with open(self.mermaid_js_path, "r", encoding="utf-8") as f:
+            with open(self.mermaid_js_path, encoding="utf-8") as f:
                 return f.read()
         except FileNotFoundError:
             raise RuntimeError(f"Mermaid.js file not found at {self.mermaid_js_path}")
@@ -62,12 +55,11 @@ class MermaidRenderer:
         self,
         diagram: str,
         theme: str = "default",
-        bg_color: Optional[str] = None,
-        width: Optional[int] = None,
-        height: Optional[int] = None,
+        bg_color: str | None = None,
+        width: int | None = None,
+        height: int | None = None,
     ) -> str:
-        """
-        Create HTML content for mermaid rendering.
+        """Create HTML content for mermaid rendering.
 
         Args:
             diagram: The mermaid diagram content
@@ -78,6 +70,7 @@ class MermaidRenderer:
 
         Returns:
             HTML content string
+
         """
         # Clean the diagram content
         clean_diagram = diagram.strip()
@@ -215,15 +208,15 @@ class MermaidRenderer:
 """
         return html_content
 
-    def _extract_svg_content(self, html_content: str) -> Tuple[bool, str, str]:
-        """
-        Extract SVG content from rendered HTML.
+    def _extract_svg_content(self, html_content: str) -> tuple[bool, str, str]:
+        """Extract SVG content from rendered HTML.
 
         Args:
             html_content: The HTML content to extract SVG from
 
         Returns:
             Tuple of (success, svg_content, error_message)
+
         """
         try:
             success, svg_content, error = (
@@ -249,10 +242,9 @@ class MermaidRenderer:
             return False, "", f"SVG extraction error: {e}"
 
     def _create_png_from_svg(
-        self, svg_content: str, bg_color: Optional[str] = None
-    ) -> Tuple[bool, bytes, str]:
-        """
-        Convert SVG content to PNG using Playwright.
+        self, svg_content: str, bg_color: str | None = None,
+    ) -> tuple[bool, bytes, str]:
+        """Convert SVG content to PNG using Playwright.
 
         Args:
             svg_content: The SVG content to convert
@@ -260,6 +252,7 @@ class MermaidRenderer:
 
         Returns:
             Tuple of (success, png_data, error_message)
+
         """
         try:
             # Create HTML with the SVG
@@ -311,12 +304,11 @@ class MermaidRenderer:
         self,
         diagram: str,
         theme: str = "default",
-        bg_color: Optional[str] = None,
-        width: Optional[int] = None,
-        height: Optional[int] = None,
-    ) -> Tuple[bool, str, str]:
-        """
-        Render a mermaid diagram to SVG format.
+        bg_color: str | None = None,
+        width: int | None = None,
+        height: int | None = None,
+    ) -> tuple[bool, str, str]:
+        """Render a mermaid diagram to SVG format.
 
         Args:
             diagram: The mermaid diagram content
@@ -327,10 +319,11 @@ class MermaidRenderer:
 
         Returns:
             Tuple of (success, svg_content, error_message)
+
         """
         try:
             html_content = self._create_mermaid_html(
-                diagram, theme, bg_color, width, height
+                diagram, theme, bg_color, width, height,
             )
             return self._extract_svg_content(html_content)
         except Exception as e:
@@ -340,12 +333,11 @@ class MermaidRenderer:
         self,
         diagram: str,
         theme: str = "default",
-        bg_color: Optional[str] = None,
-        width: Optional[int] = None,
-        height: Optional[int] = None,
-    ) -> Tuple[bool, bytes, str]:
-        """
-        Render a mermaid diagram to PNG format.
+        bg_color: str | None = None,
+        width: int | None = None,
+        height: int | None = None,
+    ) -> tuple[bool, bytes, str]:
+        """Render a mermaid diagram to PNG format.
 
         Args:
             diagram: The mermaid diagram content
@@ -356,11 +348,12 @@ class MermaidRenderer:
 
         Returns:
             Tuple of (success, png_data, error_message)
+
         """
         try:
             # First render to SVG
             success, svg_content, error = self.render_to_svg(
-                diagram, theme, bg_color, width, height
+                diagram, theme, bg_color, width, height,
             )
             if not success:
                 return False, b"", error
@@ -376,12 +369,11 @@ class MermaidRenderer:
         diagram: str,
         output_path: str,
         theme: str = "default",
-        bg_color: Optional[str] = None,
-        width: Optional[int] = None,
-        height: Optional[int] = None,
-    ) -> Tuple[bool, str, str]:
-        """
-        Render and save a mermaid diagram as SVG.
+        bg_color: str | None = None,
+        width: int | None = None,
+        height: int | None = None,
+    ) -> tuple[bool, str, str]:
+        """Render and save a mermaid diagram as SVG.
 
         Args:
             diagram: The mermaid diagram content
@@ -393,10 +385,11 @@ class MermaidRenderer:
 
         Returns:
             Tuple of (success, output_path, error_message)
+
         """
         try:
             success, svg_content, error = self.render_to_svg(
-                diagram, theme, bg_color, width, height
+                diagram, theme, bg_color, width, height,
             )
             if not success:
                 return False, "", error
@@ -418,12 +411,11 @@ class MermaidRenderer:
         diagram: str,
         output_path: str,
         theme: str = "default",
-        bg_color: Optional[str] = None,
-        width: Optional[int] = None,
-        height: Optional[int] = None,
-    ) -> Tuple[bool, str, str]:
-        """
-        Render and save a mermaid diagram as PNG.
+        bg_color: str | None = None,
+        width: int | None = None,
+        height: int | None = None,
+    ) -> tuple[bool, str, str]:
+        """Render and save a mermaid diagram as PNG.
 
         Args:
             diagram: The mermaid diagram content
@@ -435,10 +427,11 @@ class MermaidRenderer:
 
         Returns:
             Tuple of (success, output_path, error_message)
+
         """
         try:
             success, png_data, error = self.render_to_png(
-                diagram, theme, bg_color, width, height
+                diagram, theme, bg_color, width, height,
             )
             if not success:
                 return False, "", error
@@ -455,15 +448,15 @@ class MermaidRenderer:
         except Exception as e:
             return False, "", f"PNG save error: {e}"
 
-    def validate_diagram(self, diagram: str) -> Tuple[bool, str]:
-        """
-        Validate a mermaid diagram by attempting to render it.
+    def validate_diagram(self, diagram: str) -> tuple[bool, str]:
+        """Validate a mermaid diagram by attempting to render it.
 
         Args:
             diagram: The mermaid diagram content
 
         Returns:
             Tuple of (is_valid, error_message)
+
         """
         try:
             success, _, error = self.render_to_svg(diagram)
@@ -471,15 +464,15 @@ class MermaidRenderer:
         except Exception as e:
             return False, str(e)
 
-    def get_diagram_stats(self, diagram: str) -> Dict[str, Any]:
-        """
-        Get statistics about a mermaid diagram.
+    def get_diagram_stats(self, diagram: str) -> dict[str, Any]:
+        """Get statistics about a mermaid diagram.
 
         Args:
             diagram: The mermaid diagram content
 
         Returns:
             Dictionary with diagram statistics
+
         """
         try:
             success, svg_content, svg_error = self.render_to_svg(diagram)

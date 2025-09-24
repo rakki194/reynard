@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Embedding Backend Configuration Demo
+"""Embedding Backend Configuration Demo
 
 This script demonstrates how to use the new embedding backend configuration
 system to easily enable/disable different embedding backends.
@@ -25,7 +24,6 @@ from app.services.rag.core.embeddings import EmbeddingService
 
 async def demo_backend_configuration():
     """Demonstrate the embedding backend configuration system."""
-
     print("🦦 Embedding Backend Configuration Demo")
     print("=" * 50)
 
@@ -65,7 +63,7 @@ async def demo_backend_configuration():
 
     print(f"Mock mode: {config.mock_mode}")
     print(
-        "In mock mode, all backends are effectively disabled and mock embeddings are returned."
+        "In mock mode, all backends are effectively disabled and mock embeddings are returned.",
     )
 
     # Demo 4: Environment variable simulation
@@ -85,15 +83,15 @@ async def demo_backend_configuration():
         env_config = get_embedding_backends_config()
 
         print("With environment variables:")
-        print(f"  EMBEDDING_OLLAMA_ENABLED=false")
-        print(f"  EMBEDDING_SENTENCE_TRANSFORMERS_ENABLED=true")
-        print(f"  EMBEDDING_MOCK_MODE=false")
-        print(f"  EMBEDDING_DEFAULT_BACKEND=sentence_transformers")
+        print("  EMBEDDING_OLLAMA_ENABLED=false")
+        print("  EMBEDDING_SENTENCE_TRANSFORMERS_ENABLED=true")
+        print("  EMBEDDING_MOCK_MODE=false")
+        print("  EMBEDDING_DEFAULT_BACKEND=sentence_transformers")
 
-        print(f"\nResult:")
+        print("\nResult:")
         print(f"  Ollama enabled: {env_config.backends['ollama'].enabled}")
         print(
-            f"  Sentence Transformers enabled: {env_config.backends['sentence_transformers'].enabled}"
+            f"  Sentence Transformers enabled: {env_config.backends['sentence_transformers'].enabled}",
         )
         print(f"  Mock mode: {env_config.mock_mode}")
         print(f"  Default backend: {env_config.default_backend}")
@@ -151,11 +149,11 @@ async def demo_backend_configuration():
 
     # Get service stats
     stats = await embedding_service.get_stats()
-    print(f"\nService stats:")
+    print("\nService stats:")
     print(f"  Enabled: {stats['enabled']}")
     print(f"  Mock mode: {stats.get('backend_config', {}).get('mock_mode', 'N/A')}")
     print(
-        f"  Enabled backends: {stats.get('backend_config', {}).get('enabled_backends', [])}"
+        f"  Enabled backends: {stats.get('backend_config', {}).get('enabled_backends', [])}",
     )
 
     print("\n🎉 Demo completed successfully!")
@@ -163,7 +161,7 @@ async def demo_backend_configuration():
     print("1. Set environment variables to control backends")
     print("2. Use EMBEDDING_OLLAMA_ENABLED=false to disable Ollama")
     print(
-        "3. Use EMBEDDING_SENTENCE_TRANSFORMERS_ENABLED=false to disable Sentence Transformers"
+        "3. Use EMBEDDING_SENTENCE_TRANSFORMERS_ENABLED=false to disable Sentence Transformers",
     )
     print("4. Use EMBEDDING_MOCK_MODE=true for testing without real backends")
 

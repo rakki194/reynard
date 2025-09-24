@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Database setup script for Prompt Note application
+"""Database setup script for Prompt Note application
 Creates PostgreSQL database, user, and initial schema
 """
 
@@ -53,7 +52,7 @@ def create_database_and_user():
                 END IF;
             END
             $$;
-        """
+        """,
         )
 
         # Create database if it doesn't exist
@@ -61,7 +60,7 @@ def create_database_and_user():
         cursor.execute(
             f"""
             SELECT 1 FROM pg_database WHERE datname = '{DB_NAME}'
-        """
+        """,
         )
         if not cursor.fetchone():
             cursor.execute(f"CREATE DATABASE {DB_NAME} OWNER {DB_USER}")
@@ -71,10 +70,10 @@ def create_database_and_user():
         cursor.execute(f"GRANT ALL PRIVILEGES ON DATABASE {DB_NAME} TO {DB_USER}")
         cursor.execute(f"GRANT ALL ON SCHEMA public TO {DB_USER}")
         cursor.execute(
-            f"GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO {DB_USER}"
+            f"GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO {DB_USER}",
         )
         cursor.execute(
-            f"GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO {DB_USER}"
+            f"GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO {DB_USER}",
         )
 
         cursor.close()
@@ -118,8 +117,8 @@ def create_tables():
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
-            """
-                )
+            """,
+                ),
             )
 
             # Create notebooks table
@@ -137,8 +136,8 @@ def create_tables():
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
-            """
-                )
+            """,
+                ),
             )
 
             # Create notes table
@@ -157,8 +156,8 @@ def create_tables():
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
-            """
-                )
+            """,
+                ),
             )
 
             # Create collaborations table
@@ -174,8 +173,8 @@ def create_tables():
                     permission VARCHAR(20) DEFAULT 'read',
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
-            """
-                )
+            """,
+                ),
             )
 
             # Create activity_logs table for analytics
@@ -192,8 +191,8 @@ def create_tables():
                     metadata TEXT,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
-            """
-                )
+            """,
+                ),
             )
 
             # Create achievements table
@@ -211,8 +210,8 @@ def create_tables():
                     rarity VARCHAR(20) DEFAULT 'common',
                     unlocked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
-            """
-                )
+            """,
+                ),
             )
 
             # Create file_attachments table
@@ -230,54 +229,54 @@ def create_tables():
                     file_path VARCHAR(500),
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
-            """
-                )
+            """,
+                ),
             )
 
             # Create indexes for better performance
             logger.info("Creating indexes...")
             conn.execute(
                 text(
-                    "CREATE INDEX IF NOT EXISTS idx_notebooks_user_id ON notebooks(user_id)"
-                )
+                    "CREATE INDEX IF NOT EXISTS idx_notebooks_user_id ON notebooks(user_id)",
+                ),
             )
             conn.execute(
                 text(
-                    "CREATE INDEX IF NOT EXISTS idx_notes_notebook_id ON notes(notebook_id)"
-                )
+                    "CREATE INDEX IF NOT EXISTS idx_notes_notebook_id ON notes(notebook_id)",
+                ),
             )
             conn.execute(
-                text("CREATE INDEX IF NOT EXISTS idx_notes_user_id ON notes(user_id)")
-            )
-            conn.execute(
-                text(
-                    "CREATE INDEX IF NOT EXISTS idx_collaborations_resource_id ON collaborations(resource_id)"
-                )
+                text("CREATE INDEX IF NOT EXISTS idx_notes_user_id ON notes(user_id)"),
             )
             conn.execute(
                 text(
-                    "CREATE INDEX IF NOT EXISTS idx_collaborations_user_id ON collaborations(user_id)"
-                )
+                    "CREATE INDEX IF NOT EXISTS idx_collaborations_resource_id ON collaborations(resource_id)",
+                ),
             )
             conn.execute(
                 text(
-                    "CREATE INDEX IF NOT EXISTS idx_achievements_user_id ON achievements(user_id)"
-                )
+                    "CREATE INDEX IF NOT EXISTS idx_collaborations_user_id ON collaborations(user_id)",
+                ),
             )
             conn.execute(
                 text(
-                    "CREATE INDEX IF NOT EXISTS idx_file_attachments_note_id ON file_attachments(note_id)"
-                )
+                    "CREATE INDEX IF NOT EXISTS idx_achievements_user_id ON achievements(user_id)",
+                ),
             )
             conn.execute(
                 text(
-                    "CREATE INDEX IF NOT EXISTS idx_activity_logs_user_id ON activity_logs(user_id)"
-                )
+                    "CREATE INDEX IF NOT EXISTS idx_file_attachments_note_id ON file_attachments(note_id)",
+                ),
             )
             conn.execute(
                 text(
-                    "CREATE INDEX IF NOT EXISTS idx_activity_logs_action ON activity_logs(action)"
-                )
+                    "CREATE INDEX IF NOT EXISTS idx_activity_logs_user_id ON activity_logs(user_id)",
+                ),
+            )
+            conn.execute(
+                text(
+                    "CREATE INDEX IF NOT EXISTS idx_activity_logs_action ON activity_logs(action)",
+                ),
             )
 
             conn.commit()

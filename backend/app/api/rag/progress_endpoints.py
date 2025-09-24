@@ -1,5 +1,4 @@
-"""
-🦊 Reynard Progress Monitoring API Endpoints
+"""🦊 Reynard Progress Monitoring API Endpoints
 ============================================
 
 WebSocket and HTTP endpoints for real-time progress monitoring
@@ -18,12 +17,10 @@ Version: 1.0.0
 
 import json
 import logging
-from typing import Any, Dict
 
-from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 from fastapi.responses import JSONResponse
 
-from app.core.service_registry import get_service_registry
 from app.services.rag.progress_monitor import get_progress_monitor
 
 logger = logging.getLogger(__name__)
@@ -63,32 +60,32 @@ async def websocket_progress_endpoint(websocket: WebSocket):
                 if message.get("type") == "ping":
                     await websocket.send_text(
                         json.dumps(
-                            {"type": "pong", "timestamp": message.get("timestamp")}
-                        )
+                            {"type": "pong", "timestamp": message.get("timestamp")},
+                        ),
                     )
                 elif message.get("type") == "get_history":
                     history = await progress_monitor.get_progress_history(
-                        message.get("limit", 50)
+                        message.get("limit", 50),
                     )
                     await websocket.send_text(
-                        json.dumps({"type": "history", "data": history})
+                        json.dumps({"type": "history", "data": history}),
                     )
                 elif message.get("type") == "get_stats":
                     stats = await progress_monitor.get_monitoring_stats()
                     await websocket.send_text(
-                        json.dumps({"type": "stats", "data": stats})
+                        json.dumps({"type": "stats", "data": stats}),
                     )
 
             except WebSocketDisconnect:
                 break
             except json.JSONDecodeError:
                 await websocket.send_text(
-                    json.dumps({"type": "error", "message": "Invalid JSON message"})
+                    json.dumps({"type": "error", "message": "Invalid JSON message"}),
                 )
             except Exception as e:
                 logger.error(f"WebSocket error: {e}")
                 await websocket.send_text(
-                    json.dumps({"type": "error", "message": str(e)})
+                    json.dumps({"type": "error", "message": str(e)}),
                 )
 
     except WebSocketDisconnect:
@@ -115,7 +112,7 @@ async def get_progress_history(limit: int = 50) -> JSONResponse:
                     "total_entries": len(history),
                     "limit": limit,
                 },
-            }
+            },
         )
 
     except Exception as e:
@@ -137,7 +134,7 @@ async def get_current_progress() -> JSONResponse:
                     "current_progress": current_progress,
                     "has_progress": current_progress is not None,
                 },
-            }
+            },
         )
 
     except Exception as e:
@@ -173,7 +170,7 @@ async def get_connection_info() -> JSONResponse:
                     "active_connections": connection_count,
                     "is_monitoring": progress_monitor.is_monitoring,
                 },
-            }
+            },
         )
 
     except Exception as e:

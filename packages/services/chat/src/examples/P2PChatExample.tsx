@@ -13,7 +13,7 @@ export const BasicP2PChat = () => {
   const currentUser = {
     id: "user-123",
     name: "John Doe",
-    status: "online",
+    status: "online" as const,
     avatar: "👤",
   };
   return (
@@ -50,7 +50,7 @@ export const DualChatExample = () => {
   const currentUser = {
     id: "user-123",
     name: "John Doe",
-    status: "online",
+    status: "online" as const,
     avatar: "👤",
   };
   return (
@@ -99,7 +99,7 @@ export const CustomP2PChat = () => {
   const currentUser = {
     id: "user-123",
     name: "John Doe",
-    status: "online",
+    status: "online" as const,
   };
   const p2pChat = useP2PChat({
     currentUser,
@@ -120,7 +120,7 @@ export const CustomP2PChat = () => {
   };
   const handleCreateDirectMessage = async userId => {
     const room = await p2pChat.actions.createRoom(`DM with ${userId}`, "direct", [
-      { id: userId, name: "Other User", status: "online" },
+      { id: userId, name: "Other User", status: "online" as const },
     ]);
     p2pChat.actions.switchRoom(room.id);
   };
@@ -173,7 +173,7 @@ export const CustomP2PChat = () => {
             class="p2p-message-input"
             onKeyDown={e => {
               if (e.key === "Enter") {
-                const target = e.target;
+                const target = e.target as HTMLInputElement;
                 if (target.value.trim()) {
                   handleSendMessage(target.value.trim());
                   target.value = "";
@@ -198,7 +198,7 @@ export const RealtimeFeaturesDemo = () => {
   const currentUser = {
     id: "user-123",
     name: "John Doe",
-    status: "online",
+    status: "online" as const,
   };
   const p2pChat = useP2PChat({
     currentUser,
@@ -222,7 +222,7 @@ export const RealtimeFeaturesDemo = () => {
           value={currentUser.status}
           onChange={e => {
             const newStatus = e.target.value;
-            p2pChat.actions.updateUserStatusViaWebSocket(newStatus);
+            p2pChat.actions.updateUserStatusViaWebSocket(newStatus as "online" | "away" | "busy" | "offline");
           }}
         >
           <option value="online">Online</option>

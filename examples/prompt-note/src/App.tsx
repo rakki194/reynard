@@ -8,10 +8,10 @@ import { Router, Route, Navigate } from "@solidjs/router";
 import { ReynardProvider, useTheme } from "reynard-themes";
 import { NotificationsProvider, useNotifications, createNotificationsModule } from "reynard-core";
 import { AuthProvider, useAuth } from "reynard-auth";
-import { Button, Modal, Tabs, TabPanel, Card } from "reynard-components";
+import { Button, Modal, Tabs, TabPanel, Card } from "reynard-components-core";
 import { CodeEditor } from "reynard-monaco";
-import { ChatContainer } from "reynard-chat";
-import { useAuthFetch } from "reynard-composables";
+// import { ChatContainer } from "reynard-chat";
+// import { useAuthFetch } from "reynard-composables";
 import { ThemeToggle } from "./components/ThemeToggle";
 import { LanguageSelector } from "./components/LanguageSelector";
 import LoginPage from "./pages/LoginPage";
@@ -20,7 +20,7 @@ import NotebookPage from "./pages/NotebookPage";
 import NoteEditorPage from "./pages/NoteEditorPage";
 import ProfilePage from "./pages/ProfilePage";
 import { GamificationPanel } from "./components/GamificationPanel";
-import "reynard-themes/reynard-themes.css";
+import "reynard-themes/themes.css";
 import "./styles.css";
 
 interface User {
@@ -79,14 +79,16 @@ const App: Component = () => {
   const themeContext = useTheme();
   const { notify } = useNotifications();
   const { isAuthenticated, user: authUser } = useAuth();
-  const authFetch = useAuthFetch({
-    logout: () => {
-      setUser(null);
-      notify("Logged out successfully", "info");
-    },
-    notify: (message, type) => notify(message, type),
-    navigate: path => (window.location.href = path),
-  });
+  // Simple auth fetch implementation
+  const authFetch = async (url: string, options: any = {}) => {
+    const token = localStorage.getItem('auth_token');
+    const headers = {
+      'Content-Type': 'application/json',
+      ...(token && { 'Authorization': `Bearer ${token}` }),
+      ...options.headers,
+    };
+    return fetch(url, { ...options, headers });
+  };
 
   // Load user data when authenticated
   createEffect(() => {

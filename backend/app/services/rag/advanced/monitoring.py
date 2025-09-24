@@ -1,5 +1,4 @@
-"""
-Performance Monitor: Comprehensive performance monitoring and optimization.
+"""Performance Monitor: Comprehensive performance monitoring and optimization.
 
 This service provides:
 - Real-time performance metrics collection
@@ -10,13 +9,11 @@ This service provides:
 - Prometheus metrics integration
 """
 
-import asyncio
 import logging
-import time
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import Enum
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 logger = logging.getLogger("uvicorn")
 
@@ -70,8 +67,8 @@ class PerformanceMetric:
     metric_name: str
     value: float
     timestamp: datetime
-    metadata: Dict[str, Any]
-    tags: Dict[str, str]
+    metadata: dict[str, Any]
+    tags: dict[str, str]
 
 
 @dataclass
@@ -79,26 +76,26 @@ class SystemHealth:
     """System health status."""
 
     overall_status: str  # 'healthy', 'degraded', 'critical'
-    services: Dict[str, str]
+    services: dict[str, str]
     performance_score: float
     last_updated: datetime
-    alerts: List[str]
+    alerts: list[str]
 
 
 class PerformanceMonitor:
     """Comprehensive performance monitoring system."""
 
-    def __init__(self, config: Dict[str, Any]):
+    def __init__(self, config: dict[str, Any]):
         self.config = config
         self.enabled = config.get("rag_monitoring_enabled", True)
 
         # Metrics storage
-        self.metrics_history: Dict[str, List[PerformanceMetric]] = {}
-        self.active_alerts: Dict[str, PerformanceAlert] = {}
-        self.alert_history: List[Dict[str, Any]] = []
+        self.metrics_history: dict[str, list[PerformanceMetric]] = {}
+        self.active_alerts: dict[str, PerformanceAlert] = {}
+        self.alert_history: list[dict[str, Any]] = []
 
         # Performance baselines
-        self.performance_baselines: Dict[str, float] = {}
+        self.performance_baselines: dict[str, float] = {}
 
         # System monitoring
         self.system_metrics = {
@@ -121,7 +118,7 @@ class PerformanceMonitor:
         """Initialize Prometheus metrics if available."""
         if not PROMETHEUS_AVAILABLE:
             logger.warning(
-                "Prometheus client not available, metrics will be stored locally only"
+                "Prometheus client not available, metrics will be stored locally only",
             )
             return
 
@@ -254,8 +251,8 @@ class PerformanceMonitor:
         self,
         metric_name: str,
         value: float,
-        metadata: Optional[Dict[str, Any]] = None,
-        tags: Optional[Dict[str, str]] = None,
+        metadata: dict[str, Any] | None = None,
+        tags: dict[str, str] | None = None,
     ) -> None:
         """Record a performance metric."""
         if not self.enabled:
@@ -311,32 +308,32 @@ class PerformanceMonitor:
                 model = tags.get("model", "unknown")
                 status = tags.get("status", "success")
                 self.prometheus_metrics["embedding_requests_total"].labels(
-                    model=model, status=status
+                    model=model, status=status,
                 ).inc()
 
             elif metric_name == "embedding_duration_seconds":
                 model = tags.get("model", "unknown")
                 self.prometheus_metrics["embedding_duration_seconds"].labels(
-                    model=model
+                    model=model,
                 ).observe(value)
 
             elif metric_name == "search_requests_total":
                 search_type = tags.get("search_type", "unknown")
                 status = tags.get("status", "success")
                 self.prometheus_metrics["search_requests_total"].labels(
-                    search_type=search_type, status=status
+                    search_type=search_type, status=status,
                 ).inc()
 
             elif metric_name == "search_duration_seconds":
                 search_type = tags.get("search_type", "unknown")
                 self.prometheus_metrics["search_duration_seconds"].labels(
-                    search_type=search_type
+                    search_type=search_type,
                 ).observe(value)
 
             elif metric_name == "cache_hit_rate":
                 cache_type = tags.get("cache_type", "unknown")
                 self.prometheus_metrics["cache_hit_rate"].labels(
-                    cache_type=cache_type
+                    cache_type=cache_type,
                 ).set(value)
 
             elif metric_name == "cpu_usage_percent":
@@ -355,7 +352,6 @@ class PerformanceMonitor:
         """Update performance trend analysis."""
         # This would implement trend analysis logic
         # For now, just store the metric
-        pass
 
     async def _check_alerts(self, metric: PerformanceMetric) -> None:
         """Check if metric triggers any alerts."""
@@ -385,7 +381,7 @@ class PerformanceMonitor:
                 await self._trigger_alert(alert, metric)
 
     async def _trigger_alert(
-        self, alert: PerformanceAlert, metric: PerformanceMetric
+        self, alert: PerformanceAlert, metric: PerformanceMetric,
     ) -> None:
         """Trigger a performance alert."""
         try:
@@ -422,20 +418,20 @@ class PerformanceMonitor:
             await self._send_alert_notification(alert_data)
 
             logger.warning(
-                f"Performance alert triggered: {alert.alert_id} - {alert.description}"
+                f"Performance alert triggered: {alert.alert_id} - {alert.description}",
             )
 
         except Exception as e:
             logger.error(f"Failed to trigger alert {alert.alert_id}: {e}")
 
-    async def _send_alert_notification(self, alert_data: Dict[str, Any]) -> None:
+    async def _send_alert_notification(self, alert_data: dict[str, Any]) -> None:
         """Send alert notification."""
         # This would integrate with notification systems (email, Slack, etc.)
         # For now, just log the alert
         logger.warning(
             f"ALERT: {alert_data['description']} - "
             f"Value: {alert_data['actual_value']}, "
-            f"Threshold: {alert_data['threshold_value']}"
+            f"Threshold: {alert_data['threshold_value']}",
         )
 
     async def get_system_health(self) -> SystemHealth:
@@ -449,13 +445,13 @@ class PerformanceMonitor:
 
                 # Record system metrics
                 await self.record_metric(
-                    "cpu_usage_percent", self.system_metrics["cpu_usage"]
+                    "cpu_usage_percent", self.system_metrics["cpu_usage"],
                 )
                 await self.record_metric(
-                    "memory_usage_percent", self.system_metrics["memory_usage"]
+                    "memory_usage_percent", self.system_metrics["memory_usage"],
                 )
                 await self.record_metric(
-                    "disk_usage_percent", self.system_metrics["disk_usage"]
+                    "disk_usage_percent", self.system_metrics["disk_usage"],
                 )
 
             # Determine overall health status
@@ -509,8 +505,8 @@ class PerformanceMonitor:
             )
 
     def _get_recent_metrics(
-        self, minutes: int = 5
-    ) -> Dict[str, List[PerformanceMetric]]:
+        self, minutes: int = 5,
+    ) -> dict[str, list[PerformanceMetric]]:
         """Get recent metrics within specified time window."""
         cutoff_time = datetime.now() - timedelta(minutes=minutes)
         recent_metrics = {}
@@ -522,7 +518,7 @@ class PerformanceMonitor:
 
         return recent_metrics
 
-    def _get_service_status(self) -> Dict[str, str]:
+    def _get_service_status(self) -> dict[str, str]:
         """Get status of various services."""
         # This would check actual service health
         return {
@@ -532,7 +528,7 @@ class PerformanceMonitor:
             "monitoring": "healthy",
         }
 
-    async def get_performance_summary(self, hours: int = 24) -> Dict[str, Any]:
+    async def get_performance_summary(self, hours: int = 24) -> dict[str, Any]:
         """Get performance summary for specified time period."""
         try:
             cutoff_time = datetime.now() - timedelta(hours=hours)
@@ -567,7 +563,7 @@ class PerformanceMonitor:
 
             # Calculate overall performance score
             summary["performance_score"] = self._calculate_performance_score(
-                summary["metrics"]
+                summary["metrics"],
             )
 
             return summary
@@ -576,7 +572,7 @@ class PerformanceMonitor:
             logger.error(f"Failed to get performance summary: {e}")
             return {"error": str(e)}
 
-    def _calculate_performance_score(self, metrics: Dict[str, Any]) -> float:
+    def _calculate_performance_score(self, metrics: dict[str, Any]) -> float:
         """Calculate overall performance score based on metrics."""
         try:
             # Weight different metrics
@@ -633,7 +629,7 @@ class PerformanceMonitor:
             report.append(f"- **Overall Status**: {health.overall_status.upper()}")
             report.append(f"- **Performance Score**: {health.performance_score:.2f}")
             report.append(
-                f"- **Last Updated**: {health.last_updated.strftime('%Y-%m-%d %H:%M:%S')}"
+                f"- **Last Updated**: {health.last_updated.strftime('%Y-%m-%d %H:%M:%S')}",
             )
             report.append("")
 
@@ -659,13 +655,13 @@ class PerformanceMonitor:
                 report.append("## Recent Alerts")
                 for alert in summary["alerts"][-10:]:  # Last 10 alerts
                     report.append(
-                        f"- **{alert['severity'].upper()}**: {alert['description']}"
+                        f"- **{alert['severity'].upper()}**: {alert['description']}",
                     )
                     report.append(
-                        f"  - Value: {alert['actual_value']:.2f}, Threshold: {alert['threshold_value']:.2f}"
+                        f"  - Value: {alert['actual_value']:.2f}, Threshold: {alert['threshold_value']:.2f}",
                     )
                     report.append(
-                        f"  - Time: {alert['timestamp'].strftime('%Y-%m-%d %H:%M:%S')}"
+                        f"  - Time: {alert['timestamp'].strftime('%Y-%m-%d %H:%M:%S')}",
                     )
                 report.append("")
 
@@ -691,14 +687,14 @@ class PerformanceMonitor:
             return "# Prometheus metrics not available\n"
 
         try:
-            from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
+            from prometheus_client import generate_latest
 
             return generate_latest(self.prometheus_registry).decode("utf-8")
         except Exception as e:
             logger.error(f"Failed to generate Prometheus metrics: {e}")
             return f"# Error generating metrics: {e}\n"
 
-    def get_monitor_stats(self) -> Dict[str, Any]:
+    def get_monitor_stats(self) -> dict[str, Any]:
         """Get monitoring system statistics."""
         return {
             "enabled": self.enabled,

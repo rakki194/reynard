@@ -1,5 +1,4 @@
-"""
-🦊 Reynard Image Processing Test Suite
+"""🦊 Reynard Image Processing Test Suite
 =====================================
 
 Comprehensive test suite for the Reynard image processing utilities, providing
@@ -40,8 +39,7 @@ from app.utils.image_types import ImageTransform
 
 
 class TestImageProcessing:
-    """
-    Comprehensive test cases for the ImageProcessing class.
+    """Comprehensive test cases for the ImageProcessing class.
 
     Provides thorough testing of all image processing functionality including
     dimension validation, aspect ratio calculations, resize operations, and
@@ -50,8 +48,7 @@ class TestImageProcessing:
     """
 
     def test_validate_dimensions_valid(self):
-        """
-        Test dimension validation with valid input parameters.
+        """Test dimension validation with valid input parameters.
 
         Validates that the ImageProcessing.validate_dimensions method correctly
         identifies valid image dimensions within acceptable ranges. Tests various
@@ -62,8 +59,7 @@ class TestImageProcessing:
         assert ImageProcessing.validate_dimensions(9999, 9999) is True
 
     def test_validate_dimensions_invalid(self):
-        """
-        Test dimension validation with invalid input parameters.
+        """Test dimension validation with invalid input parameters.
 
         Validates that the ImageProcessing.validate_dimensions method correctly
         rejects invalid image dimensions including zero values, negative values,
@@ -110,7 +106,7 @@ class TestImageProcessing:
         # Height-based: 15x30 (diff: |15-50| = 35)
         # Height-based is better, so should return (15, 30)
         result = ImageProcessing.calculate_resize_dimensions(
-            100, 200, target_width=50, target_height=30
+            100, 200, target_width=50, target_height=30,
         )
         assert result == (15, 30)
 
@@ -122,7 +118,7 @@ class TestImageProcessing:
         # Height-based: 60x30 (diff: |60-50| = 10)
         # Width-based is better, so should return (50, 25)
         result = ImageProcessing.calculate_resize_dimensions(
-            200, 100, target_width=50, target_height=30
+            200, 100, target_width=50, target_height=30,
         )
         assert result == (50, 25)
 

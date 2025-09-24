@@ -1,5 +1,4 @@
-"""
-PHOENIX Integration Module
+"""PHOENIX Integration Module
 
 Integration components for connecting PHOENIX with external systems.
 

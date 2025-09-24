@@ -1,5 +1,4 @@
-"""
-ECS Main API Router
+"""ECS Main API Router
 ===================
 
 Main router that combines all ECS API endpoints into a single organized structure.

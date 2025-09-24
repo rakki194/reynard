@@ -1,7 +1,23 @@
-# reynard-auth
+# Reynard Auth
 
 Complete authentication and user management system for SolidJS applications with JWT tokens,
 password strength analysis, and comprehensive security features.
+
+## 🏗️ Architecture
+
+Reynard Auth is built on a modular architecture with clear separation of concerns:
+
+- **`reynard-auth-core`** - Core authentication logic, token management, and HTTP client
+- **`reynard-auth-composables`** - SolidJS composables and UI components
+- **`reynard-http-client`** - Robust HTTP client with middleware support
+- **`reynard-auth`** - Unified interface that re-exports from the modular packages
+
+This architecture provides:
+
+- **Framework Agnostic Core**: Core logic that works with any framework
+- **Framework-Specific Composables**: SolidJS-specific reactive state and components
+- **Modular Dependencies**: Use only what you need
+- **Backward Compatibility**: Existing code continues to work unchanged
 
 ## 🚀 Features
 
@@ -18,8 +34,22 @@ password strength analysis, and comprehensive security features.
 ## 📦 Installation
 
 ```bash
-pnpm install reynard-auth reynard-core reynard-components jwt-decode @zxcvbn-ts/core solid-js
+# Install the main auth package (includes all dependencies)
+pnpm install reynard-auth
+
+# Or install individual packages for more control
+pnpm install reynard-auth-core reynard-auth-composables reynard-http-client
 ```
+
+### Dependencies
+
+The main `reynard-auth` package automatically includes:
+
+- `reynard-auth-core` - Core authentication logic
+- `reynard-auth-composables` - SolidJS composables and components
+- `reynard-http-client` - HTTP client with middleware support
+- `reynard-validation` - Form validation utilities
+- `reynard-components-core` - UI components
 
 ## 🎯 Quick Start
 

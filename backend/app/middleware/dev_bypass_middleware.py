@@ -1,5 +1,4 @@
-"""
-Development Bypass Middleware for Fenrir Testing Suite
+"""Development Bypass Middleware for Fenrir Testing Suite
 
 This middleware provides a secure development bypass system that allows
 the Reynard fenrir testing suite to bypass rate limiting and other
@@ -28,8 +27,7 @@ logger = logging.getLogger(__name__)
 
 
 class DevBypassMiddleware(BaseHTTPMiddleware):
-    """
-    Development bypass middleware for fenrir testing suite.
+    """Development bypass middleware for fenrir testing suite.
 
     This middleware allows the fenrir testing suite to bypass certain
     security restrictions (like rate limiting) when running in development
@@ -53,10 +51,9 @@ class DevBypassMiddleware(BaseHTTPMiddleware):
         self.localhost_patterns = ["127.0.0.1", "localhost", "::1", "0.0.0.0"]
 
     async def dispatch(
-        self, request: Request, call_next: Callable[[Request], Awaitable[Response]]
+        self, request: Request, call_next: Callable[[Request], Awaitable[Response]],
     ) -> Response:
-        """
-        Process request and apply development bypasses if conditions are met.
+        """Process request and apply development bypasses if conditions are met.
 
         Args:
             request: The incoming HTTP request
@@ -64,6 +61,7 @@ class DevBypassMiddleware(BaseHTTPMiddleware):
 
         Returns:
             Response: The HTTP response
+
         """
         # Only apply bypasses in development mode
         if self.config.environment != "development":
@@ -92,7 +90,7 @@ class DevBypassMiddleware(BaseHTTPMiddleware):
             logger.info(
                 f"🦊 Development bypass applied for fenrir testing: "
                 f"{request.method} {request.url.path} from {client_ip} "
-                f"(User-Agent: {user_agent})"
+                f"(User-Agent: {user_agent})",
             )
 
         response = await call_next(request)
@@ -105,14 +103,14 @@ class DevBypassMiddleware(BaseHTTPMiddleware):
         return response
 
     def _get_client_ip(self, request: Request) -> str:
-        """
-        Extract the real client IP address from the request.
+        """Extract the real client IP address from the request.
 
         Args:
             request: The HTTP request
 
         Returns:
             str: The client IP address
+
         """
         # Check for forwarded headers (in case of reverse proxy)
         forwarded_for = request.headers.get("x-forwarded-for")
@@ -131,38 +129,38 @@ class DevBypassMiddleware(BaseHTTPMiddleware):
         return "unknown"
 
     def _is_localhost(self, ip: str) -> bool:
-        """
-        Check if the IP address is localhost.
+        """Check if the IP address is localhost.
 
         Args:
             ip: The IP address to check
 
         Returns:
             bool: True if the IP is localhost
+
         """
         return any(pattern in ip for pattern in self.localhost_patterns)
 
     def _is_fenrir_request(self, user_agent: str) -> bool:
-        """
-        Check if the request is from the fenrir testing suite.
+        """Check if the request is from the fenrir testing suite.
 
         Args:
             user_agent: The User-Agent header value
 
         Returns:
             bool: True if the request is from fenrir suite
+
         """
         return any(agent in user_agent for agent in self.fenrir_user_agents)
 
 
 def setup_dev_bypass_middleware(
-    app: Callable, bypass_rate_limiting: bool = True
+    app: Callable, bypass_rate_limiting: bool = True,
 ) -> None:
-    """
-    Set up the development bypass middleware.
+    """Set up the development bypass middleware.
 
     Args:
         app: The FastAPI application
         bypass_rate_limiting: Whether to bypass rate limiting
+
     """
     app.add_middleware(DevBypassMiddleware, bypass_rate_limiting=bypass_rate_limiting)

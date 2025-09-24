@@ -1,5 +1,4 @@
-"""
-ComfyUI API Models
+"""ComfyUI API Models
 
 Pydantic models for ComfyUI API endpoints.
 """
@@ -53,7 +52,7 @@ class ComfyPresetRequest(BaseModel):
     workflow: dict[str, Any] = Field(..., description="Preset workflow")
     parameters: dict[str, Any] | None = Field(None, description="Preset parameters")
     is_default: bool | None = Field(
-        False, description="Whether this is the default preset"
+        False, description="Whether this is the default preset",
     )
 
 
@@ -69,11 +68,11 @@ class ComfyWorkflowTemplateRequest(BaseModel):
     parameters: dict[str, Any] | None = Field(None, description="Template parameters")
     visibility: str | None = Field("private", description="Template visibility")
     parent_template_id: str | None = Field(
-        None, description="Parent template ID for branches"
+        None, description="Parent template ID for branches",
     )
     branch_name: str | None = Field(None, description="Branch name")
     is_community: bool | None = Field(
-        False, description="Whether this is a community template"
+        False, description="Whether this is a community template",
     )
 
 
@@ -83,5 +82,5 @@ class ComfyIngestRequest(BaseModel):
     prompt_id: str = Field(..., description="Prompt ID")
     workflow: dict[str, Any] = Field(..., description="Workflow definition")
     metadata: dict[str, Any] = Field(
-        default_factory=dict, description="Additional metadata"
+        default_factory=dict, description="Additional metadata",
     )

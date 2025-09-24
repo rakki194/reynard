@@ -1,5 +1,4 @@
-"""
-Success-Advisor-8 Legacy Tracking System
+"""Success-Advisor-8 Legacy Tracking System
 
 Comprehensive tracking and analysis of Success-Advisor-8 activities
 and movements across the Reynard ecosystem.
@@ -27,20 +26,20 @@ from .success_advisor_8_tracker import (
 from .unified_parser import UnifiedChangelogParser
 
 __all__ = [
-    "SuccessAdvisor8Activity",
-    "CodeMovement",
-    "LegacyReport",
-    "SuccessAdvisor8LegacyTracker",
-    "GenomeActivity",
     "BehavioralPattern",
     "CapabilityProfile",
-    "SuccessAdvisor8GenomeTracker",
-    "PhoenixProjectActivity",
-    "ResearchInitiative",
+    "CodeMovement",
     "ExperimentResult",
-    "PhoenixProjectTracker",
-    "UnifiedChangelogParser",
+    "GenomeActivity",
     "GitTag",
-    "SuccessAdvisor8Release",
     "GitTagTracker",
+    "LegacyReport",
+    "PhoenixProjectActivity",
+    "PhoenixProjectTracker",
+    "ResearchInitiative",
+    "SuccessAdvisor8Activity",
+    "SuccessAdvisor8GenomeTracker",
+    "SuccessAdvisor8LegacyTracker",
+    "SuccessAdvisor8Release",
+    "UnifiedChangelogParser",
 ]

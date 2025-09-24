@@ -1,5 +1,4 @@
-"""
-Embedding Visualization Service
+"""Embedding Visualization Service
 
 Provides dimensionality reduction and visualization capabilities for embeddings.
 Supports PCA, t-SNE, UMAP, and statistical analysis of embedding data.
@@ -70,8 +69,7 @@ class EmbeddingQualityMetrics:
 
 
 class EmbeddingVisualizationService:
-    """
-    Service for embedding visualization and dimensionality reduction.
+    """Service for embedding visualization and dimensionality reduction.
 
     Provides comprehensive embedding analysis including:
     - Dimensionality reduction (PCA, t-SNE, UMAP)
@@ -149,7 +147,7 @@ class EmbeddingVisualizationService:
 
         for key, entry in self.cache.items():
             if now - entry["timestamp"] > timedelta(
-                seconds=entry.get("ttl", self.cache_ttl)
+                seconds=entry.get("ttl", self.cache_ttl),
             ):
                 expired_keys.append(key)
 
@@ -197,7 +195,7 @@ class EmbeddingVisualizationService:
 
             # Perform the actual reduction
             result = await self._perform_reduction_with_progress(
-                method, embeddings, parameters, job_id
+                method, embeddings, parameters, job_id,
             )
 
             # Update job with result
@@ -226,7 +224,7 @@ class EmbeddingVisualizationService:
                 {
                     "status": "failed",
                     "error": str(e),
-                    "message": f"{method.upper()} reduction failed: {str(e)}",
+                    "message": f"{method.upper()} reduction failed: {e!s}",
                 },
             )
 
@@ -266,15 +264,15 @@ class EmbeddingVisualizationService:
         # Perform actual reduction
         reducer = self.reducers[method]
         return await self._perform_reduction_with_params(
-            reducer, embeddings, method, parameters
+            reducer, embeddings, method, parameters,
         )
 
     async def get_embedding_stats(self) -> EmbeddingStats:
-        """
-        Get comprehensive statistics about available embeddings.
+        """Get comprehensive statistics about available embeddings.
 
         Returns:
             EmbeddingStats: Statistical information about the embedding dataset
+
         """
         try:
             # This would typically query the vector database
@@ -291,7 +289,7 @@ class EmbeddingVisualizationService:
             )
 
             logger.info(
-                f"Retrieved embedding stats: {stats.total_embeddings} embeddings"
+                f"Retrieved embedding stats: {stats.total_embeddings} embeddings",
             )
             return stats
 
@@ -300,11 +298,11 @@ class EmbeddingVisualizationService:
             raise
 
     async def get_available_methods(self) -> dict[str, Any]:
-        """
-        Get available dimensionality reduction methods and their parameters.
+        """Get available dimensionality reduction methods and their parameters.
 
         Returns:
             Dict containing available methods and their parameter schemas
+
         """
         methods = {
             "pca": {
@@ -413,8 +411,7 @@ class EmbeddingVisualizationService:
         use_cache: bool = True,
         cache_ttl_seconds: int | None = None,
     ) -> EmbeddingReductionResult:
-        """
-        Perform dimensionality reduction on embeddings.
+        """Perform dimensionality reduction on embeddings.
 
         Args:
             method: Reduction method ('pca', 'tsne', 'umap')
@@ -427,6 +424,7 @@ class EmbeddingVisualizationService:
 
         Returns:
             EmbeddingReductionResult: Results of the reduction operation
+
         """
         start_time = datetime.now()
         job_id = str(uuid.uuid4())
@@ -434,7 +432,7 @@ class EmbeddingVisualizationService:
         try:
             # Generate cache key
             cache_key = self._generate_cache_key(
-                method, filters, parameters, max_samples, random_seed
+                method, filters, parameters, max_samples, random_seed,
             )
 
             # Check cache first
@@ -460,7 +458,7 @@ class EmbeddingVisualizationService:
 
             # Get embeddings (mock data for now)
             embeddings, original_indices = await self._get_embeddings(
-                filters, max_samples
+                filters, max_samples,
             )
 
             if len(embeddings) == 0:
@@ -476,7 +474,7 @@ class EmbeddingVisualizationService:
             # Perform reduction
             reducer = self.reducers[method]
             transformed_data = await self._perform_reduction_with_params(
-                reducer, embeddings_array, method, parameters
+                reducer, embeddings_array, method, parameters,
             )
 
             # Calculate processing time
@@ -513,7 +511,7 @@ class EmbeddingVisualizationService:
                 }
 
             logger.info(
-                f"Successfully performed {method} reduction: {len(embeddings)} embeddings -> {transformed_data.shape}"
+                f"Successfully performed {method} reduction: {len(embeddings)} embeddings -> {transformed_data.shape}",
             )
             return result
 
@@ -527,7 +525,7 @@ class EmbeddingVisualizationService:
                 parameters=parameters or {},
                 metadata={},
                 processing_time_ms=int(
-                    (datetime.now() - start_time).total_seconds() * 1000
+                    (datetime.now() - start_time).total_seconds() * 1000,
                 ),
                 job_id=job_id,
                 cached=False,
@@ -535,16 +533,16 @@ class EmbeddingVisualizationService:
             )
 
     async def analyze_embedding_quality(
-        self, embeddings: list[list[float]]
+        self, embeddings: list[list[float]],
     ) -> EmbeddingQualityMetrics:
-        """
-        Analyze the quality of embeddings using various metrics.
+        """Analyze the quality of embeddings using various metrics.
 
         Args:
             embeddings: List of embedding vectors
 
         Returns:
             EmbeddingQualityMetrics: Quality analysis results
+
         """
         try:
             embeddings_array = np.array(embeddings)
@@ -569,16 +567,16 @@ class EmbeddingVisualizationService:
 
             if coherence_score < 0.5:
                 issues.append(
-                    "Low coherence - embeddings may not capture semantic relationships well"
+                    "Low coherence - embeddings may not capture semantic relationships well",
                 )
                 recommendations.append(
-                    "Consider using a different embedding model or fine-tuning"
+                    "Consider using a different embedding model or fine-tuning",
                 )
 
             if separation_score < 0.4:
                 issues.append("Poor separation - embeddings may be too similar")
                 recommendations.append(
-                    "Increase embedding dimensionality or use contrastive learning"
+                    "Increase embedding dimensionality or use contrastive learning",
                 )
 
             if density_score < 0.3:
@@ -588,20 +586,20 @@ class EmbeddingVisualizationService:
             if distribution_score < 0.6:
                 issues.append("Poor distribution - embeddings may have bias")
                 recommendations.append(
-                    "Normalize embeddings or use balanced training data"
+                    "Normalize embeddings or use balanced training data",
                 )
 
             if overall_score >= 0.8:
                 recommendations.append(
-                    "Excellent embedding quality - no immediate improvements needed"
+                    "Excellent embedding quality - no immediate improvements needed",
                 )
             elif overall_score >= 0.6:
                 recommendations.append(
-                    "Good embedding quality - minor optimizations possible"
+                    "Good embedding quality - minor optimizations possible",
                 )
             else:
                 recommendations.append(
-                    "Consider significant improvements to embedding quality"
+                    "Consider significant improvements to embedding quality",
                 )
 
             return EmbeddingQualityMetrics(
@@ -638,10 +636,10 @@ class EmbeddingVisualizationService:
             "cache_misses": self.cache_stats["misses"],
             "cache_evictions": self.cache_stats["evictions"],
             "oldest_entry": min(
-                (entry["timestamp"] for entry in self.cache.values()), default=None
+                (entry["timestamp"] for entry in self.cache.values()), default=None,
             ),
             "newest_entry": max(
-                (entry["timestamp"] for entry in self.cache.values()), default=None
+                (entry["timestamp"] for entry in self.cache.values()), default=None,
             ),
             "active_jobs": len(self.active_jobs),
             "worker_tasks": len(self.worker_tasks),
@@ -745,7 +743,7 @@ class EmbeddingVisualizationService:
         return f"reduction_{hash(json.dumps(key_data, sort_keys=True))}"
 
     def _is_cache_valid(
-        self, cached_entry: dict[str, Any], custom_ttl: int | None = None
+        self, cached_entry: dict[str, Any], custom_ttl: int | None = None,
     ) -> bool:
         """Check if a cached entry is still valid."""
         ttl = custom_ttl or cached_entry.get("ttl", self.cache_ttl)
@@ -757,8 +755,7 @@ class EmbeddingVisualizationService:
         filters: dict[str, Any] | None = None,
         max_samples: int | None = None,
     ) -> tuple[list[list[float]], list[int]]:
-        """
-        Get embeddings from the vector database.
+        """Get embeddings from the vector database.
 
         This is a mock implementation that generates sample embeddings.
         In a real implementation, this would query the actual vector database.

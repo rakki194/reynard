@@ -1,5 +1,4 @@
-"""
-Tool executor for handling tool execution with proper error handling and logging.
+"""Tool executor for handling tool execution with proper error handling and logging.
 
 This module provides the execution framework for tools, including timeout handling,
 error recovery, logging, and integration with the existing threading patterns.
@@ -19,19 +18,18 @@ logger = logging.getLogger(__name__)
 
 
 class ToolExecutor:
-    """
-    Handles the execution of tools with proper error handling and logging.
+    """Handles the execution of tools with proper error handling and logging.
 
     The executor provides a unified interface for executing tools while handling
     timeouts, errors, resource management, and integration with existing threading.
     """
 
     def __init__(self, thread_pool: ThreadPoolExecutor | None = None):
-        """
-        Initialize the tool executor.
+        """Initialize the tool executor.
 
         Args:
             thread_pool: Optional thread pool for CPU-bound operations
+
         """
         self.thread_pool = thread_pool
         self._execution_stats = {
@@ -43,10 +41,9 @@ class ToolExecutor:
         }
 
     async def execute_tool(
-        self, tool: BaseTool, context: ToolExecutionContext, parameters: dict[str, Any]
+        self, tool: BaseTool, context: ToolExecutionContext, parameters: dict[str, Any],
     ) -> ToolResult:
-        """
-        Execute a tool with the given context and parameters.
+        """Execute a tool with the given context and parameters.
 
         Args:
             tool: Tool instance to execute
@@ -55,13 +52,14 @@ class ToolExecutor:
 
         Returns:
             Tool execution result
+
         """
         start_time = time.time()
         self._execution_stats["total_executions"] += 1
 
         try:
             logger.info(
-                f"Starting execution of tool '{tool.name}' for user {context.user_id}"
+                f"Starting execution of tool '{tool.name}' for user {context.user_id}",
             )
 
             # Prepare execution context
@@ -70,11 +68,11 @@ class ToolExecutor:
             # Execute the tool
             if context.dry_run:
                 result = await self._execute_dry_run(
-                    tool, execution_context, parameters
+                    tool, execution_context, parameters,
                 )
             else:
                 result = await self._execute_with_monitoring(
-                    tool, execution_context, parameters
+                    tool, execution_context, parameters,
                 )
 
             # Record execution time
@@ -90,7 +88,7 @@ class ToolExecutor:
             self._execution_stats["total_execution_time"] += execution_time
 
             logger.info(
-                f"Tool '{tool.name}' execution completed in {execution_time:.2f}s"
+                f"Tool '{tool.name}' execution completed in {execution_time:.2f}s",
             )
             return result
 
@@ -125,16 +123,16 @@ class ToolExecutor:
             )
 
     def _prepare_execution_context(
-        self, context: ToolExecutionContext
+        self, context: ToolExecutionContext,
     ) -> ToolExecutionContext:
-        """
-        Prepare the execution context with additional environment setup.
+        """Prepare the execution context with additional environment setup.
 
         Args:
             context: Original execution context
 
         Returns:
             Enhanced execution context
+
         """
         # Create a copy of the context
         enhanced_context = ToolExecutionContext(
@@ -154,16 +152,15 @@ class ToolExecutor:
                 "YIPYAP_EXECUTOR": "true",
                 "YIPYAP_USER_ID": context.user_id,
                 "YIPYAP_USER_ROLE": context.user_role,
-            }
+            },
         )
 
         return enhanced_context
 
     async def _execute_dry_run(
-        self, tool: BaseTool, context: ToolExecutionContext, parameters: dict[str, Any]
+        self, tool: BaseTool, context: ToolExecutionContext, parameters: dict[str, Any],
     ) -> ToolResult:
-        """
-        Execute a tool in dry-run mode (simulation only).
+        """Execute a tool in dry-run mode (simulation only).
 
         Args:
             tool: Tool to execute
@@ -172,6 +169,7 @@ class ToolExecutor:
 
         Returns:
             Simulated tool result
+
         """
         logger.info(f"Executing tool '{tool.name}' in dry-run mode")
 
@@ -192,10 +190,9 @@ class ToolExecutor:
         )
 
     async def _execute_with_monitoring(
-        self, tool: BaseTool, context: ToolExecutionContext, parameters: dict[str, Any]
+        self, tool: BaseTool, context: ToolExecutionContext, parameters: dict[str, Any],
     ) -> ToolResult:
-        """
-        Execute a tool with monitoring and resource checks.
+        """Execute a tool with monitoring and resource checks.
 
         Args:
             tool: Tool to execute
@@ -204,6 +201,7 @@ class ToolExecutor:
 
         Returns:
             Tool execution result
+
         """
         # Check available resources before execution
         self._check_system_resources(tool.name)
@@ -213,7 +211,7 @@ class ToolExecutor:
 
         try:
             result = await asyncio.wait_for(
-                tool.execute(context, **parameters), timeout=timeout
+                tool.execute(context, **parameters), timeout=timeout,
             )
 
             # Validate result
@@ -227,14 +225,14 @@ class ToolExecutor:
             raise ToolTimeoutError(tool.name, timeout)
 
     def _check_system_resources(self, tool_name: str) -> None:
-        """
-        Check system resources before tool execution.
+        """Check system resources before tool execution.
 
         Args:
             tool_name: Name of the tool being executed
 
         Raises:
             ToolResourceError: If system resources are insufficient
+
         """
         try:
             import psutil
@@ -252,7 +250,7 @@ class ToolExecutor:
             disk = psutil.disk_usage("/")
             if disk.percent > 95:
                 raise ToolResourceError(
-                    tool_name, "disk", f"System disk usage too high: {disk.percent}%"
+                    tool_name, "disk", f"System disk usage too high: {disk.percent}%",
                 )
 
         except ImportError:
@@ -268,8 +266,7 @@ class ToolExecutor:
         parameters: dict[str, Any],
         is_async: bool = False,
     ) -> ToolResult:
-        """
-        Execute a regular function as a tool.
+        """Execute a regular function as a tool.
 
         Args:
             func: Function to execute
@@ -279,6 +276,7 @@ class ToolExecutor:
 
         Returns:
             Tool execution result
+
         """
         start_time = time.time()
 
@@ -290,7 +288,7 @@ class ToolExecutor:
             elif self.thread_pool:
                 loop = asyncio.get_event_loop()
                 result = await loop.run_in_executor(
-                    self.thread_pool, lambda: func(**parameters)
+                    self.thread_pool, lambda: func(**parameters),
                 )
             else:
                 # Execute in default executor
@@ -314,11 +312,11 @@ class ToolExecutor:
             )
 
     def get_execution_stats(self) -> dict[str, Any]:
-        """
-        Get execution statistics.
+        """Get execution statistics.
 
         Returns:
             Dictionary of execution statistics
+
         """
         stats = self._execution_stats.copy()
 

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Ignore File Utilities
+"""Ignore File Utilities
 ====================
 
 Utilities for parsing .gitignore and .cursorignore files to determine
@@ -8,9 +7,7 @@ which files should be excluded from indexing and search operations.
 """
 
 import fnmatch
-import os
 from pathlib import Path
-from typing import List, Set
 
 
 class IgnoreFileParser:
@@ -19,8 +16,8 @@ class IgnoreFileParser:
     def __init__(self, project_root: Path):
         """Initialize the ignore file parser."""
         self.project_root = project_root
-        self._gitignore_patterns: List[str] = []
-        self._cursorignore_patterns: List[str] = []
+        self._gitignore_patterns: list[str] = []
+        self._cursorignore_patterns: list[str] = []
         self._load_ignore_files()
 
     def _load_ignore_files(self):
@@ -35,12 +32,12 @@ class IgnoreFileParser:
         if cursorignore_path.exists():
             self._cursorignore_patterns = self._parse_ignore_file(cursorignore_path)
 
-    def _parse_ignore_file(self, ignore_file: Path) -> List[str]:
+    def _parse_ignore_file(self, ignore_file: Path) -> list[str]:
         """Parse an ignore file and return patterns."""
         patterns = []
 
         try:
-            with open(ignore_file, "r", encoding="utf-8") as f:
+            with open(ignore_file, encoding="utf-8") as f:
                 for line in f:
                     line = line.strip()
 
@@ -62,8 +59,7 @@ class IgnoreFileParser:
         return patterns
 
     def should_ignore(self, file_path: Path) -> bool:
-        """
-        Determine if a file should be ignored based on ignore patterns.
+        """Determine if a file should be ignored based on ignore patterns.
 
         .cursorignore patterns override .gitignore patterns.
         """
@@ -84,7 +80,7 @@ class IgnoreFileParser:
 
         return False
 
-    def _check_patterns(self, relative_path: Path, patterns: List[str]) -> bool:
+    def _check_patterns(self, relative_path: Path, patterns: list[str]) -> bool:
         """Check if a path matches any ignore patterns."""
         path_str = str(relative_path).replace("\\", "/")
         path_parts = path_str.split("/")
@@ -110,7 +106,7 @@ class IgnoreFileParser:
         return ignored
 
     def _match_pattern(
-        self, path_str: str, path_parts: List[str], pattern: str
+        self, path_str: str, path_parts: list[str], pattern: str,
     ) -> bool:
         """Check if a path matches a specific pattern."""
         # Handle directory patterns (ending with /)

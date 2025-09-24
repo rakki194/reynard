@@ -1,5 +1,4 @@
-"""
-Reconstruction Metrics
+"""Reconstruction Metrics
 
 Quantitative measures for agent reconstruction success.
 
@@ -7,9 +6,8 @@ Author: Recognition-Grandmaster-27 (Tiger Specialist)
 Version: 1.0.0
 """
 
-import math
 from dataclasses import dataclass
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 import numpy as np
 from scipy import stats
@@ -44,7 +42,7 @@ class ReconstructionMetrics:
     overall_success: float
     reconstruction_quality: float
 
-    def to_dict(self) -> Dict[str, float]:
+    def to_dict(self) -> dict[str, float]:
         """Convert metrics to dictionary."""
         return {
             "trait_accuracy": self.trait_accuracy,
@@ -70,12 +68,11 @@ class MetricsCalculator:
 
     @staticmethod
     def calculate_trait_accuracy(
-        target_traits: Dict[str, float],
-        reconstructed_traits: Dict[str, float],
+        target_traits: dict[str, float],
+        reconstructed_traits: dict[str, float],
         tolerance: float = 0.1,
-    ) -> Tuple[float, float, float, float]:
+    ) -> tuple[float, float, float, float]:
         """Calculate trait accuracy metrics."""
-
         # Get common traits
         common_traits = set(target_traits.keys()) & set(reconstructed_traits.keys())
         if not common_traits:
@@ -116,13 +113,12 @@ class MetricsCalculator:
 
     @staticmethod
     def calculate_performance_match(
-        target_performance: Dict[str, float],
-        reconstructed_performance: Dict[str, float],
+        target_performance: dict[str, float],
+        reconstructed_performance: dict[str, float],
     ) -> float:
         """Calculate performance matching score."""
-
         common_metrics = set(target_performance.keys()) & set(
-            reconstructed_performance.keys()
+            reconstructed_performance.keys(),
         )
         if not common_metrics:
             return 0.0
@@ -132,7 +128,7 @@ class MetricsCalculator:
             target_val = target_performance[metric]
             recon_val = reconstructed_performance[metric]
             error = abs(target_val - recon_val) / max(
-                target_val, 0.001
+                target_val, 0.001,
             )  # Avoid division by zero
             total_error += error
 
@@ -143,19 +139,18 @@ class MetricsCalculator:
 
     @staticmethod
     def calculate_behavioral_similarity(
-        target_responses: List[str], reconstructed_responses: List[str]
+        target_responses: list[str], reconstructed_responses: list[str],
     ) -> float:
         """Calculate behavioral similarity score."""
-
         if len(target_responses) != len(reconstructed_responses):
             return 0.0
 
         # Simple similarity based on response length and content overlap
         similarities = []
-        for target_resp, recon_resp in zip(target_responses, reconstructed_responses):
+        for target_resp, recon_resp in zip(target_responses, reconstructed_responses, strict=False):
             # Length similarity
             len_sim = 1 - abs(len(target_resp) - len(recon_resp)) / max(
-                len(target_resp), len(recon_resp), 1
+                len(target_resp), len(recon_resp), 1,
             )
 
             # Content similarity (simple word overlap)
@@ -163,7 +158,7 @@ class MetricsCalculator:
             recon_words = set(recon_resp.lower().split())
             if target_words or recon_words:
                 content_sim = len(target_words & recon_words) / len(
-                    target_words | recon_words
+                    target_words | recon_words,
                 )
             else:
                 content_sim = 1.0
@@ -176,10 +171,9 @@ class MetricsCalculator:
 
     @staticmethod
     def calculate_knowledge_fidelity(
-        target_knowledge: Dict[str, Any], reconstructed_knowledge: Dict[str, Any]
+        target_knowledge: dict[str, Any], reconstructed_knowledge: dict[str, Any],
     ) -> float:
         """Calculate knowledge fidelity score."""
-
         fidelity_scores = []
 
         # Domain expertise match
@@ -191,7 +185,7 @@ class MetricsCalculator:
             recon_domains = set(reconstructed_knowledge["domain_expertise"])
             if target_domains or recon_domains:
                 domain_fidelity = len(target_domains & recon_domains) / len(
-                    target_domains | recon_domains
+                    target_domains | recon_domains,
                 )
                 fidelity_scores.append(domain_fidelity)
 
@@ -204,7 +198,7 @@ class MetricsCalculator:
             recon_specs = set(reconstructed_knowledge["specializations"])
             if target_specs or recon_specs:
                 spec_fidelity = len(target_specs & recon_specs) / len(
-                    target_specs | recon_specs
+                    target_specs | recon_specs,
                 )
                 fidelity_scores.append(spec_fidelity)
 
@@ -213,7 +207,6 @@ class MetricsCalculator:
     @staticmethod
     def calculate_overall_success(metrics: ReconstructionMetrics) -> float:
         """Calculate overall success score."""
-
         # Weighted combination of key metrics
         weights = {
             "trait_accuracy": 0.25,

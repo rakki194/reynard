@@ -1,20 +1,16 @@
-"""
-Simple integration test to verify basic functionality without file system operations.
+"""Simple integration test to verify basic functionality without file system operations.
 """
 
 import sys
-import tempfile
 from datetime import datetime
 from pathlib import Path
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
 sys.path.append(str(Path(__file__).parent.parent))
 
-from postgres_service import PostgresECSWorldService
-from services.legacy_tracking_service import LegacyTrackingService
-from services.unified_agent_manager import AgentState, UnifiedAgentStateManager
+from services.unified_agent_manager import UnifiedAgentStateManager
 
 
 class TestSimpleIntegration:
@@ -69,7 +65,6 @@ class TestSimpleIntegration:
     @pytest.mark.asyncio
     async def test_basic_agent_state_retrieval(self, agent_manager, mock_ecs_service):
         """Test basic agent state retrieval without file system operations."""
-
         # Get Success-Advisor-8 agent state
         state = await agent_manager.get_agent_state("success-advisor-8")
 
@@ -83,7 +78,6 @@ class TestSimpleIntegration:
     @pytest.mark.asyncio
     async def test_agent_activity_tracking(self, agent_manager, mock_ecs_service):
         """Test agent activity tracking."""
-
         # Track Success-Advisor-8 activity
         await agent_manager.track_agent_activity(
             "success-advisor-8",
@@ -97,7 +91,6 @@ class TestSimpleIntegration:
     @pytest.mark.asyncio
     async def test_agent_not_found(self, agent_manager, mock_ecs_service):
         """Test handling of non-existent agent."""
-
         # Try to get non-existent agent
         state = await agent_manager.get_agent_state("non-existent-agent")
 

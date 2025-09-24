@@ -1,5 +1,4 @@
-"""
-Example streaming tool that demonstrates streaming execution progress.
+"""Example streaming tool that demonstrates streaming execution progress.
 
 This tool shows how to implement a tool that can emit progress updates
 and intermediate results during execution.
@@ -21,8 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 class StreamingExampleTool(StreamingBaseTool, ProgressReportingMixin):
-    """
-    Example tool that demonstrates streaming execution progress.
+    """Example tool that demonstrates streaming execution progress.
 
     This tool simulates a long-running operation with progress updates
     and intermediate results.
@@ -75,10 +73,9 @@ class StreamingExampleTool(StreamingBaseTool, ProgressReportingMixin):
         return ["streaming", "example", "demo", "progress"]
 
     async def execute_streaming(
-        self, context: StreamingToolExecutionContext, **params
+        self, context: StreamingToolExecutionContext, **params,
     ) -> AsyncGenerator[StreamingToolResult]:
-        """
-        Execute the tool with streaming progress updates.
+        """Execute the tool with streaming progress updates.
 
         Args:
             context: Streaming execution context
@@ -86,6 +83,7 @@ class StreamingExampleTool(StreamingBaseTool, ProgressReportingMixin):
 
         Yields:
             StreamingToolResult objects with progress updates
+
         """
         operation = params.get("operation", "process_data")
         steps = params.get("steps", 5)
@@ -94,7 +92,7 @@ class StreamingExampleTool(StreamingBaseTool, ProgressReportingMixin):
         try:
             # Report initialization
             await self.report_initialization_progress(
-                context, self.name, context.request_id or "unknown"
+                context, self.name, context.request_id or "unknown",
             )
 
             # Simulate processing steps
@@ -125,7 +123,7 @@ class StreamingExampleTool(StreamingBaseTool, ProgressReportingMixin):
                         "step": i + 1,
                         "status": "completed",
                         "result": f"Step {i + 1} result for {operation}",
-                    }
+                    },
                 )
 
                 # Yield intermediate result
@@ -150,7 +148,7 @@ class StreamingExampleTool(StreamingBaseTool, ProgressReportingMixin):
 
             # Report completion
             await self.report_completion_progress(
-                context, "Execution completed successfully"
+                context, "Execution completed successfully",
             )
 
             # Yield final result
@@ -179,7 +177,7 @@ class StreamingExampleTool(StreamingBaseTool, ProgressReportingMixin):
 
             # Report error
             await self.report_error_progress(
-                context, str(e), error_type=type(e).__name__, retryable=True
+                context, str(e), error_type=type(e).__name__, retryable=True,
             )
 
             # Yield error result
@@ -195,8 +193,7 @@ class StreamingExampleTool(StreamingBaseTool, ProgressReportingMixin):
 
 
 class StreamingErrorTool(StreamingBaseTool, ProgressReportingMixin):
-    """
-    Example tool that demonstrates error handling in streaming execution.
+    """Example tool that demonstrates error handling in streaming execution.
     """
 
     @property
@@ -237,10 +234,9 @@ class StreamingErrorTool(StreamingBaseTool, ProgressReportingMixin):
         return ["streaming", "example", "error", "demo"]
 
     async def execute_streaming(
-        self, context: StreamingToolExecutionContext, **params
+        self, context: StreamingToolExecutionContext, **params,
     ) -> AsyncGenerator[StreamingToolResult]:
-        """
-        Execute the tool with error handling demonstration.
+        """Execute the tool with error handling demonstration.
         """
         should_fail = params.get("should_fail", False)
         fail_step = params.get("fail_step", 3)
@@ -248,7 +244,7 @@ class StreamingErrorTool(StreamingBaseTool, ProgressReportingMixin):
         try:
             # Report initialization
             await self.report_initialization_progress(
-                context, self.name, context.request_id or "unknown"
+                context, self.name, context.request_id or "unknown",
             )
 
             # Simulate processing steps
@@ -281,7 +277,7 @@ class StreamingErrorTool(StreamingBaseTool, ProgressReportingMixin):
 
             # Report completion
             await self.report_completion_progress(
-                context, "Execution completed successfully"
+                context, "Execution completed successfully",
             )
 
             # Yield final result
@@ -298,7 +294,7 @@ class StreamingErrorTool(StreamingBaseTool, ProgressReportingMixin):
 
             # Report error
             await self.report_error_progress(
-                context, str(e), error_type=type(e).__name__, retryable=True
+                context, str(e), error_type=type(e).__name__, retryable=True,
             )
 
             # Yield error result

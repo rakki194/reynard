@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Semantic Search Service
+"""Semantic Search Service
 
 Advanced semantic search using chromadb and faiss for prompt refinement research.
 Replaces the pseudo-code semantic_search() functions with actual implementations.
@@ -8,13 +7,12 @@ Replaces the pseudo-code semantic_search() functions with actual implementations
 🦊 Fox approach: Intelligent vector search with strategic similarity matching
 """
 
-import asyncio
 import json
 import logging
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 import numpy as np
 
@@ -53,19 +51,18 @@ class SearchResult:
 
     content: str
     score: float
-    metadata: Dict[str, Any]
+    metadata: dict[str, Any]
     source: str
     timestamp: float
 
 
 class SemanticSearchService:
-    """
-    Advanced semantic search service using chromadb and faiss.
+    """Advanced semantic search service using chromadb and faiss.
 
     Provides vector-based similarity search for prompt refinement research.
     """
 
-    def __init__(self, config: Optional[Dict[str, Any]] = None):
+    def __init__(self, config: dict[str, Any] | None = None):
         """Initialize the semantic search service."""
         self.config = config or {}
 
@@ -80,11 +77,11 @@ class SemanticSearchService:
         self.data_dir.mkdir(parents=True, exist_ok=True)
 
         # Initialize components
-        self.embedding_model_instance: Optional[SentenceTransformer] = None
-        self.chroma_client: Optional[chromadb.ClientAPI] = None
-        self.chroma_collection: Optional[chromadb.Collection] = None
-        self.faiss_index: Optional[faiss.Index] = None
-        self.vector_store: Dict[str, Any] = {}
+        self.embedding_model_instance: SentenceTransformer | None = None
+        self.chroma_client: chromadb.ClientAPI | None = None
+        self.chroma_collection: chromadb.Collection | None = None
+        self.faiss_index: faiss.Index | None = None
+        self.vector_store: dict[str, Any] = {}
 
         self._initialized = False
 
@@ -94,7 +91,7 @@ class SemanticSearchService:
             # Initialize embedding model
             if SENTENCE_TRANSFORMERS_AVAILABLE:
                 self.embedding_model_instance = SentenceTransformer(
-                    self.embedding_model
+                    self.embedding_model,
                 )
                 logger.info(f"Loaded embedding model: {self.embedding_model}")
             else:
@@ -110,7 +107,7 @@ class SemanticSearchService:
                 # Get or create collection
                 try:
                     self.chroma_collection = self.chroma_client.get_collection(
-                        name=self.collection_name
+                        name=self.collection_name,
                     )
                 except ValueError:
                     self.chroma_collection = self.chroma_client.create_collection(
@@ -128,7 +125,7 @@ class SemanticSearchService:
                     self.embedding_model_instance.get_sentence_embedding_dimension()
                 )
                 self.faiss_index = faiss.IndexFlatIP(
-                    embedding_dim
+                    embedding_dim,
                 )  # Inner product for cosine similarity
                 logger.info(f"FAISS index initialized with dimension {embedding_dim}")
             else:
@@ -146,10 +143,9 @@ class SemanticSearchService:
             return False
 
     async def research_related_concepts(
-        self, query: str, key_concepts: List[str]
-    ) -> Dict[str, Any]:
-        """
-        Research related concepts using semantic search.
+        self, query: str, key_concepts: list[str],
+    ) -> dict[str, Any]:
+        """Research related concepts using semantic search.
 
         Replaces the pseudo-code semantic_search() function.
         """
@@ -185,7 +181,7 @@ class SemanticSearchService:
             "search_results": ranked_results,
             "related_concepts": related_concepts,
             "concept_relationships": self._analyze_concept_relationships(
-                ranked_results
+                ranked_results,
             ),
         }
 
@@ -194,10 +190,9 @@ class SemanticSearchService:
         query: str,
         limit: int = 10,
         similarity_threshold: float = 0.7,
-        metadata_filter: Optional[Dict[str, Any]] = None,
-    ) -> List[SearchResult]:
-        """
-        Perform semantic search using vector similarity.
+        metadata_filter: dict[str, Any] | None = None,
+    ) -> list[SearchResult]:
+        """Perform semantic search using vector similarity.
 
         Replaces the pseudo-code semantic_search() function.
         """
@@ -213,17 +208,17 @@ class SemanticSearchService:
             # Search using ChromaDB if available
             if self.chroma_collection:
                 results = await self._search_chromadb(
-                    query_embedding, limit, similarity_threshold, metadata_filter
+                    query_embedding, limit, similarity_threshold, metadata_filter,
                 )
             # Fallback to FAISS
             elif self.faiss_index is not None:
                 results = await self._search_faiss(
-                    query_embedding, limit, similarity_threshold
+                    query_embedding, limit, similarity_threshold,
                 )
             # Fallback to simple similarity
             else:
                 results = await self._search_fallback(
-                    query, limit, similarity_threshold
+                    query, limit, similarity_threshold,
                 )
 
             logger.info(f"Found {len(results)} semantic search results")
@@ -234,14 +229,14 @@ class SemanticSearchService:
             return []
 
     async def add_documents(
-        self, documents: List[Dict[str, Any]], batch_size: int = 100
+        self, documents: list[dict[str, Any]], batch_size: int = 100,
     ) -> bool:
-        """
-        Add documents to the semantic search index.
+        """Add documents to the semantic search index.
 
         Args:
             documents: List of documents with 'content', 'metadata', and 'id' fields
             batch_size: Number of documents to process in each batch
+
         """
         if not self._initialized:
             await self.initialize()
@@ -262,8 +257,8 @@ class SemanticSearchService:
             return False
 
     def _generate_semantic_queries(
-        self, query: str, key_concepts: List[str]
-    ) -> List[str]:
+        self, query: str, key_concepts: list[str],
+    ) -> list[str]:
         """Generate semantic search queries."""
         queries = [query]  # Original query
 
@@ -286,9 +281,8 @@ class SemanticSearchService:
             # Use sentence transformers
             embedding = self.embedding_model_instance.encode(text)
             return embedding.astype(np.float32)
-        else:
-            # Fallback to simple hash-based embedding
-            return self._generate_fallback_embedding(text)
+        # Fallback to simple hash-based embedding
+        return self._generate_fallback_embedding(text)
 
     def _generate_fallback_embedding(self, text: str) -> np.ndarray:
         """Generate fallback embedding using simple hash."""
@@ -312,8 +306,8 @@ class SemanticSearchService:
         query_embedding: np.ndarray,
         limit: int,
         similarity_threshold: float,
-        metadata_filter: Optional[Dict[str, Any]] = None,
-    ) -> List[SearchResult]:
+        metadata_filter: dict[str, Any] | None = None,
+    ) -> list[SearchResult]:
         """Search using ChromaDB."""
         try:
             # Convert numpy array to list for ChromaDB
@@ -333,8 +327,8 @@ class SemanticSearchService:
                     zip(
                         results["documents"][0],
                         results["metadatas"][0],
-                        results["distances"][0],
-                    )
+                        results["distances"][0], strict=False,
+                    ),
                 ):
                     # Convert distance to similarity score
                     similarity_score = 1.0 - distance
@@ -347,7 +341,7 @@ class SemanticSearchService:
                                 metadata=metadata or {},
                                 source=metadata.get("source", "unknown"),
                                 timestamp=time.time(),
-                            )
+                            ),
                         )
 
             return search_results
@@ -357,8 +351,8 @@ class SemanticSearchService:
             return []
 
     async def _search_faiss(
-        self, query_embedding: np.ndarray, limit: int, similarity_threshold: float
-    ) -> List[SearchResult]:
+        self, query_embedding: np.ndarray, limit: int, similarity_threshold: float,
+    ) -> list[SearchResult]:
         """Search using FAISS."""
         try:
             if self.faiss_index.ntotal == 0:
@@ -370,7 +364,7 @@ class SemanticSearchService:
 
             # Convert results to SearchResult objects
             search_results = []
-            for score, idx in zip(scores[0], indices[0]):
+            for score, idx in zip(scores[0], indices[0], strict=False):
                 if idx >= 0 and score >= similarity_threshold:
                     # Get document from vector store
                     doc_id = f"doc_{idx}"
@@ -383,7 +377,7 @@ class SemanticSearchService:
                                 metadata=doc_data.get("metadata", {}),
                                 source=doc_data.get("source", "unknown"),
                                 timestamp=time.time(),
-                            )
+                            ),
                         )
 
             return search_results
@@ -393,8 +387,8 @@ class SemanticSearchService:
             return []
 
     async def _search_fallback(
-        self, query: str, limit: int, similarity_threshold: float
-    ) -> List[SearchResult]:
+        self, query: str, limit: int, similarity_threshold: float,
+    ) -> list[SearchResult]:
         """Fallback search using simple text similarity."""
         try:
             query_words = set(query.lower().split())
@@ -418,7 +412,7 @@ class SemanticSearchService:
                             metadata=doc_data.get("metadata", {}),
                             source=doc_data.get("source", "unknown"),
                             timestamp=time.time(),
-                        )
+                        ),
                     )
 
             # Sort by score and limit results
@@ -429,7 +423,7 @@ class SemanticSearchService:
             logger.error(f"Fallback search failed: {e}")
             return []
 
-    async def _add_document_batch(self, documents: List[Dict[str, Any]]) -> None:
+    async def _add_document_batch(self, documents: list[dict[str, Any]]) -> None:
         """Add a batch of documents to the index."""
         try:
             # Extract content and metadata
@@ -482,7 +476,7 @@ class SemanticSearchService:
             logger.error(f"Failed to add document batch: {e}")
             raise
 
-    def _deduplicate_results(self, results: List[SearchResult]) -> List[SearchResult]:
+    def _deduplicate_results(self, results: list[SearchResult]) -> list[SearchResult]:
         """Remove duplicate results based on content similarity."""
         unique_results = []
         seen_contents = set()
@@ -497,13 +491,13 @@ class SemanticSearchService:
         return unique_results
 
     def _rank_results(
-        self, results: List[SearchResult], query: str
-    ) -> List[SearchResult]:
+        self, results: list[SearchResult], query: str,
+    ) -> list[SearchResult]:
         """Rank results by relevance to the query."""
         # Sort by score (already done in search methods)
         return sorted(results, key=lambda x: x.score, reverse=True)
 
-    def _extract_related_concepts(self, results: List[SearchResult]) -> List[str]:
+    def _extract_related_concepts(self, results: list[SearchResult]) -> list[str]:
         """Extract related concepts from search results."""
         concepts = set()
 
@@ -559,8 +553,8 @@ class SemanticSearchService:
         return list(concepts)[:15]  # Limit to 15 concepts
 
     def _analyze_concept_relationships(
-        self, results: List[SearchResult]
-    ) -> Dict[str, List[str]]:
+        self, results: list[SearchResult],
+    ) -> dict[str, list[str]]:
         """Analyze relationships between concepts."""
         relationships = {}
 
@@ -594,10 +588,10 @@ class SemanticSearchService:
             # Load from JSON fallback storage
             fallback_file = self.data_dir / "vector_store.json"
             if fallback_file.exists():
-                with open(fallback_file, "r") as f:
+                with open(fallback_file) as f:
                     self.vector_store = json.load(f)
                 logger.info(
-                    f"Loaded {len(self.vector_store)} documents from fallback storage"
+                    f"Loaded {len(self.vector_store)} documents from fallback storage",
                 )
 
         except Exception as e:
@@ -627,15 +621,14 @@ class SemanticSearchService:
             return False
 
     async def research_related_concepts(
-        self, query: str, key_concepts: List[str] = None
-    ) -> Dict[str, Any]:
-        """
-        Research related concepts using semantic search.
+        self, query: str, key_concepts: list[str] = None,
+    ) -> dict[str, Any]:
+        """Research related concepts using semantic search.
 
         Enhanced version that accepts key concepts for better research.
         """
         logger.debug(
-            f"Researching related concepts for: {query} with concepts: {key_concepts}"
+            f"Researching related concepts for: {query} with concepts: {key_concepts}",
         )
 
         # Perform semantic search

@@ -1,5 +1,4 @@
-"""
-🦊 Reynard Summarization API Endpoints
+"""🦊 Reynard Summarization API Endpoints
 =====================================
 
 Enterprise-grade summarization endpoints with advanced streaming capabilities,
@@ -25,14 +24,11 @@ Author: Reynard Development Team
 Version: 2.0.0 - Enterprise patterns
 """
 
-import time
-from typing import Any, Dict, List
+from typing import Any
 
 from pydantic import BaseModel, Field
 
 from ...core.base_router import BaseServiceRouter
-from ...core.error_handler import service_error_handler
-from ...core.exceptions import InternalError, ValidationError
 from ...core.logging_config import get_service_logger
 from ...core.router_mixins import ConfigEndpointMixin, StreamingResponseMixin
 from ...services.summarization.summarization_service import (
@@ -44,8 +40,6 @@ from .models import (
     ContentTypeDetectionRequest,
     ContentTypeDetectionResponse,
     HealthCheckResponse,
-    SummarizationConfigRequest,
-    SummarizationConfigResponse,
     SummarizationRequest,
     SummarizationResponse,
     SummarizationStatsResponse,
@@ -58,7 +52,7 @@ class SummarizationConfigModel(BaseModel):
     """Configuration model for Summarization service."""
 
     default_model: str = Field(
-        default="llama3.2:3b", description="Default model for summarization"
+        default="llama3.2:3b", description="Default model for summarization",
     )
     default_content_type: str = Field(
         default="general",
@@ -77,13 +71,13 @@ class SummarizationConfigModel(BaseModel):
         description="Maximum text length for summarization",
     )
     enable_caching: bool = Field(
-        default=True, description="Enable result caching for performance"
+        default=True, description="Enable result caching for performance",
     )
     cache_ttl_seconds: int = Field(
-        default=3600, ge=60, le=86400, description="Cache TTL in seconds"
+        default=3600, ge=60, le=86400, description="Cache TTL in seconds",
     )
     enable_content_type_detection: bool = Field(
-        default=True, description="Enable automatic content type detection"
+        default=True, description="Enable automatic content type detection",
     )
     content_type_confidence_threshold: float = Field(
         default=0.7,
@@ -92,24 +86,23 @@ class SummarizationConfigModel(BaseModel):
         description="Minimum confidence for content type detection",
     )
     enable_performance_stats: bool = Field(
-        default=True, description="Enable performance statistics collection"
+        default=True, description="Enable performance statistics collection",
     )
     batch_processing_max_requests: int = Field(
-        default=50, ge=1, le=100, description="Maximum requests per batch"
+        default=50, ge=1, le=100, description="Maximum requests per batch",
     )
     streaming_enabled: bool = Field(
-        default=True, description="Enable streaming for batch operations"
+        default=True, description="Enable streaming for batch operations",
     )
     performance_stats_retention_days: int = Field(
-        default=30, ge=1, le=365, description="Performance stats retention period"
+        default=30, ge=1, le=365, description="Performance stats retention period",
     )
 
 
 class SummarizationServiceRouter(
-    BaseServiceRouter, ConfigEndpointMixin, StreamingResponseMixin
+    BaseServiceRouter, ConfigEndpointMixin, StreamingResponseMixin,
 ):
-    """
-    Summarization service router with enterprise-grade patterns.
+    """Summarization service router with enterprise-grade patterns.
 
     Provides standardized service patterns including:
     - Centralized error handling and recovery
@@ -143,7 +136,7 @@ class SummarizationServiceRouter(
         """Get the summarization service instance."""
         return get_summarization_service()
 
-    async def check_service_health(self) -> Dict[str, Any]:
+    async def check_service_health(self) -> dict[str, Any]:
         """Check service health and dependencies."""
         try:
             if not is_summarization_service_initialized():
@@ -195,7 +188,7 @@ class SummarizationServiceRouter(
             )
 
         @self.router.post(
-            "/detect-content-type", response_model=ContentTypeDetectionResponse
+            "/detect-content-type", response_model=ContentTypeDetectionResponse,
         )
         async def detect_content_type(request: ContentTypeDetectionRequest):
             """Automatically detect the content type of text."""
@@ -238,7 +231,7 @@ class SummarizationServiceRouter(
             )
 
     async def _handle_summarize_request(
-        self, request: SummarizationRequest
+        self, request: SummarizationRequest,
     ) -> SummarizationResponse:
         """Handle text summarization request."""
         service = self.get_service()
@@ -298,24 +291,23 @@ class SummarizationServiceRouter(
                     }
 
             return self.create_sse_response(event_generator())
-        else:
-            # Process batch without streaming
-            results = []
-            async for event in service.summarize_batch(
-                requests=request.requests,
-                enable_streaming=False,
-            ):
-                if event.get("event") == "request_complete":
-                    results.append(event.get("data", {}))
+        # Process batch without streaming
+        results = []
+        async for event in service.summarize_batch(
+            requests=request.requests,
+            enable_streaming=False,
+        ):
+            if event.get("event") == "request_complete":
+                results.append(event.get("data", {}))
 
-            return {
-                "success": True,
-                "results": results,
-                "total_processed": len(results),
-            }
+        return {
+            "success": True,
+            "results": results,
+            "total_processed": len(results),
+        }
 
     async def _handle_content_type_detection_request(
-        self, request: ContentTypeDetectionRequest
+        self, request: ContentTypeDetectionRequest,
     ) -> ContentTypeDetectionResponse:
         """Handle content type detection request."""
         service = self.get_service()

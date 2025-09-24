@@ -7,9 +7,7 @@ Service to fetch name generation data from the FastAPI backend.
 Replaces local data loading with centralized backend data access.
 """
 
-import json
 import logging
-from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import httpx

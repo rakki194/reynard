@@ -1,5 +1,4 @@
-"""
-Caption API module for Reynard Backend.
+"""Caption API module for Reynard Backend.
 
 This module provides REST API endpoints for caption generation
 with proper error handling and type safety.

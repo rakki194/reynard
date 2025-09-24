@@ -1,5 +1,4 @@
-"""
-🦊 ItsDangerous Integration for Reynard Backend
+"""🦊 ItsDangerous Integration for Reynard Backend
 
 This module provides strategic integration of itsdangerous for specific security
 use cases where it excels over our custom encryption system. Since itsdangerous
@@ -26,18 +25,15 @@ Version: 1.0.0
 
 import logging
 from datetime import UTC, datetime, timedelta
-from typing import Any, Dict, Optional, Union
+from typing import Any
 
-import itsdangerous
 from itsdangerous import (
     BadSignature,
     SignatureExpired,
     TimestampSigner,
-    URLSafeSerializer,
     URLSafeTimedSerializer,
 )
 
-from app.security.encryption_utils import EncryptionUtils
 from app.security.key_manager import KeyType, get_key_manager
 
 logger = logging.getLogger(__name__)
@@ -46,12 +42,10 @@ logger = logging.getLogger(__name__)
 class ItsDangerousError(Exception):
     """Exception raised for itsdangerous-related errors."""
 
-    pass
 
 
 class ItsDangerousUtils:
-    """
-    Strategic integration of itsdangerous for specific security use cases.
+    """Strategic integration of itsdangerous for specific security use cases.
 
     This class provides methods for:
     - Time-based token signing and verification
@@ -100,12 +94,11 @@ class ItsDangerousUtils:
 
     def create_timestamped_token(
         self,
-        data: Union[str, Dict[str, Any]],
-        expires_in: Optional[timedelta] = None,
+        data: str | dict[str, Any],
+        expires_in: timedelta | None = None,
         key_id: str = "itsdangerous_token_key",
     ) -> str:
-        """
-        Create a timestamped token that expires automatically.
+        """Create a timestamped token that expires automatically.
 
         Args:
             data: Data to include in the token
@@ -114,6 +107,7 @@ class ItsDangerousUtils:
 
         Returns:
             URL-safe timestamped token
+
         """
         try:
             if expires_in is None:
@@ -141,11 +135,10 @@ class ItsDangerousUtils:
     def verify_timestamped_token(
         self,
         token: str,
-        max_age: Optional[int] = None,
+        max_age: int | None = None,
         key_id: str = "itsdangerous_token_key",
-    ) -> Optional[Union[str, Dict[str, Any]]]:
-        """
-        Verify a timestamped token and return the data.
+    ) -> str | dict[str, Any] | None:
+        """Verify a timestamped token and return the data.
 
         Args:
             token: Token to verify
@@ -154,6 +147,7 @@ class ItsDangerousUtils:
 
         Returns:
             Token data if valid, None if invalid or expired
+
         """
         try:
             if max_age is None:
@@ -183,11 +177,10 @@ class ItsDangerousUtils:
 
     def create_session_token(
         self,
-        session_data: Dict[str, Any],
-        expires_in: Optional[timedelta] = None,
+        session_data: dict[str, Any],
+        expires_in: timedelta | None = None,
     ) -> str:
-        """
-        Create a secure session token.
+        """Create a secure session token.
 
         Args:
             session_data: Session data to encode
@@ -195,13 +188,14 @@ class ItsDangerousUtils:
 
         Returns:
             URL-safe session token
+
         """
         try:
             if expires_in is None:
                 expires_in = timedelta(hours=24)
 
             serializer = URLSafeTimedSerializer(
-                self._get_signing_key("itsdangerous_session_key")
+                self._get_signing_key("itsdangerous_session_key"),
             )
 
             # Add timestamp to session data
@@ -222,10 +216,9 @@ class ItsDangerousUtils:
     def verify_session_token(
         self,
         token: str,
-        max_age: Optional[int] = None,
-    ) -> Optional[Dict[str, Any]]:
-        """
-        Verify a session token and return the session data.
+        max_age: int | None = None,
+    ) -> dict[str, Any] | None:
+        """Verify a session token and return the session data.
 
         Args:
             token: Session token to verify
@@ -233,13 +226,14 @@ class ItsDangerousUtils:
 
         Returns:
             Session data if valid, None if invalid or expired
+
         """
         try:
             if max_age is None:
                 max_age = 86400  # 24 hours default
 
             serializer = URLSafeTimedSerializer(
-                self._get_signing_key("itsdangerous_session_key")
+                self._get_signing_key("itsdangerous_session_key"),
             )
 
             return serializer.loads(
@@ -261,10 +255,9 @@ class ItsDangerousUtils:
     def create_password_reset_token(
         self,
         user_id: str,
-        expires_in: Optional[timedelta] = None,
+        expires_in: timedelta | None = None,
     ) -> str:
-        """
-        Create a password reset token.
+        """Create a password reset token.
 
         Args:
             user_id: User ID to create token for
@@ -272,13 +265,14 @@ class ItsDangerousUtils:
 
         Returns:
             URL-safe password reset token
+
         """
         try:
             if expires_in is None:
                 expires_in = timedelta(hours=1)
 
             serializer = URLSafeTimedSerializer(
-                self._get_signing_key("itsdangerous_token_key")
+                self._get_signing_key("itsdangerous_token_key"),
             )
 
             reset_data = {
@@ -299,10 +293,9 @@ class ItsDangerousUtils:
     def verify_password_reset_token(
         self,
         token: str,
-        max_age: Optional[int] = None,
-    ) -> Optional[Dict[str, Any]]:
-        """
-        Verify a password reset token.
+        max_age: int | None = None,
+    ) -> dict[str, Any] | None:
+        """Verify a password reset token.
 
         Args:
             token: Password reset token to verify
@@ -310,13 +303,14 @@ class ItsDangerousUtils:
 
         Returns:
             Token data if valid, None if invalid or expired
+
         """
         try:
             if max_age is None:
                 max_age = 3600  # 1 hour default
 
             serializer = URLSafeTimedSerializer(
-                self._get_signing_key("itsdangerous_token_key")
+                self._get_signing_key("itsdangerous_token_key"),
             )
 
             data = serializer.loads(
@@ -346,10 +340,9 @@ class ItsDangerousUtils:
         self,
         user_id: str,
         email: str,
-        expires_in: Optional[timedelta] = None,
+        expires_in: timedelta | None = None,
     ) -> str:
-        """
-        Create an email verification token.
+        """Create an email verification token.
 
         Args:
             user_id: User ID to create token for
@@ -358,13 +351,14 @@ class ItsDangerousUtils:
 
         Returns:
             URL-safe email verification token
+
         """
         try:
             if expires_in is None:
                 expires_in = timedelta(hours=24)
 
             serializer = URLSafeTimedSerializer(
-                self._get_signing_key("itsdangerous_token_key")
+                self._get_signing_key("itsdangerous_token_key"),
             )
 
             verification_data = {
@@ -386,10 +380,9 @@ class ItsDangerousUtils:
     def verify_email_verification_token(
         self,
         token: str,
-        max_age: Optional[int] = None,
-    ) -> Optional[Dict[str, Any]]:
-        """
-        Verify an email verification token.
+        max_age: int | None = None,
+    ) -> dict[str, Any] | None:
+        """Verify an email verification token.
 
         Args:
             token: Email verification token to verify
@@ -397,13 +390,14 @@ class ItsDangerousUtils:
 
         Returns:
             Token data if valid, None if invalid or expired
+
         """
         try:
             if max_age is None:
                 max_age = 86400  # 24 hours default
 
             serializer = URLSafeTimedSerializer(
-                self._get_signing_key("itsdangerous_token_key")
+                self._get_signing_key("itsdangerous_token_key"),
             )
 
             data = serializer.loads(
@@ -424,7 +418,7 @@ class ItsDangerousUtils:
             return None
         except BadSignature:
             logger.warning(
-                f"Invalid email verification token signature: {token[:20]}..."
+                f"Invalid email verification token signature: {token[:20]}...",
             )
             return None
         except Exception as e:
@@ -435,10 +429,9 @@ class ItsDangerousUtils:
         self,
         user_id: str,
         permissions: list[str],
-        expires_in: Optional[timedelta] = None,
+        expires_in: timedelta | None = None,
     ) -> str:
-        """
-        Create an API key token.
+        """Create an API key token.
 
         Args:
             user_id: User ID to create token for
@@ -447,13 +440,14 @@ class ItsDangerousUtils:
 
         Returns:
             URL-safe API key token
+
         """
         try:
             if expires_in is None:
                 expires_in = timedelta(days=30)
 
             serializer = URLSafeTimedSerializer(
-                self._get_signing_key("itsdangerous_token_key")
+                self._get_signing_key("itsdangerous_token_key"),
             )
 
             api_key_data = {
@@ -475,10 +469,9 @@ class ItsDangerousUtils:
     def verify_api_key_token(
         self,
         token: str,
-        max_age: Optional[int] = None,
-    ) -> Optional[Dict[str, Any]]:
-        """
-        Verify an API key token.
+        max_age: int | None = None,
+    ) -> dict[str, Any] | None:
+        """Verify an API key token.
 
         Args:
             token: API key token to verify
@@ -486,13 +479,14 @@ class ItsDangerousUtils:
 
         Returns:
             Token data if valid, None if invalid or expired
+
         """
         try:
             if max_age is None:
                 max_age = 2592000  # 30 days default
 
             serializer = URLSafeTimedSerializer(
-                self._get_signing_key("itsdangerous_token_key")
+                self._get_signing_key("itsdangerous_token_key"),
             )
 
             data = serializer.loads(
@@ -521,10 +515,9 @@ class ItsDangerousUtils:
     def create_simple_token(
         self,
         data: str,
-        expires_in: Optional[timedelta] = None,
+        expires_in: timedelta | None = None,
     ) -> str:
-        """
-        Create a simple timestamped token for basic use cases.
+        """Create a simple timestamped token for basic use cases.
 
         Args:
             data: Simple string data to encode
@@ -532,6 +525,7 @@ class ItsDangerousUtils:
 
         Returns:
             URL-safe timestamped token
+
         """
         try:
             if expires_in is None:
@@ -539,7 +533,7 @@ class ItsDangerousUtils:
 
             # Use URLSafeTimedSerializer for expiration support
             serializer = URLSafeTimedSerializer(
-                self._get_signing_key("itsdangerous_token_key")
+                self._get_signing_key("itsdangerous_token_key"),
             )
             token = serializer.dumps(data, salt="simple-token-salt")
             return token
@@ -551,10 +545,9 @@ class ItsDangerousUtils:
     def verify_simple_token(
         self,
         token: str,
-        max_age: Optional[int] = None,
-    ) -> Optional[str]:
-        """
-        Verify a simple timestamped token.
+        max_age: int | None = None,
+    ) -> str | None:
+        """Verify a simple timestamped token.
 
         Args:
             token: Token to verify
@@ -562,10 +555,11 @@ class ItsDangerousUtils:
 
         Returns:
             Original data if valid, None if invalid or expired
+
         """
         try:
             serializer = URLSafeTimedSerializer(
-                self._get_signing_key("itsdangerous_token_key")
+                self._get_signing_key("itsdangerous_token_key"),
             )
             # Use max_age if provided, otherwise use default from creation
             if max_age is None:
@@ -585,7 +579,7 @@ class ItsDangerousUtils:
 
 
 # Global instance
-_itsdangerous_utils: Optional[ItsDangerousUtils] = None
+_itsdangerous_utils: ItsDangerousUtils | None = None
 
 
 def get_itsdangerous_utils() -> ItsDangerousUtils:
@@ -598,8 +592,8 @@ def get_itsdangerous_utils() -> ItsDangerousUtils:
 
 # Convenience functions
 def create_timestamped_token(
-    data: Union[str, Dict[str, Any]],
-    expires_in: Optional[timedelta] = None,
+    data: str | dict[str, Any],
+    expires_in: timedelta | None = None,
 ) -> str:
     """Create a timestamped token."""
     utils = get_itsdangerous_utils()
@@ -608,16 +602,16 @@ def create_timestamped_token(
 
 def verify_timestamped_token(
     token: str,
-    max_age: Optional[int] = None,
-) -> Optional[Union[str, Dict[str, Any]]]:
+    max_age: int | None = None,
+) -> str | dict[str, Any] | None:
     """Verify a timestamped token."""
     utils = get_itsdangerous_utils()
     return utils.verify_timestamped_token(token, max_age)
 
 
 def create_session_token(
-    session_data: Dict[str, Any],
-    expires_in: Optional[timedelta] = None,
+    session_data: dict[str, Any],
+    expires_in: timedelta | None = None,
 ) -> str:
     """Create a session token."""
     utils = get_itsdangerous_utils()
@@ -626,8 +620,8 @@ def create_session_token(
 
 def verify_session_token(
     token: str,
-    max_age: Optional[int] = None,
-) -> Optional[Dict[str, Any]]:
+    max_age: int | None = None,
+) -> dict[str, Any] | None:
     """Verify a session token."""
     utils = get_itsdangerous_utils()
     return utils.verify_session_token(token, max_age)
@@ -635,7 +629,7 @@ def verify_session_token(
 
 def create_password_reset_token(
     user_id: str,
-    expires_in: Optional[timedelta] = None,
+    expires_in: timedelta | None = None,
 ) -> str:
     """Create a password reset token."""
     utils = get_itsdangerous_utils()
@@ -644,8 +638,8 @@ def create_password_reset_token(
 
 def verify_password_reset_token(
     token: str,
-    max_age: Optional[int] = None,
-) -> Optional[Dict[str, Any]]:
+    max_age: int | None = None,
+) -> dict[str, Any] | None:
     """Verify a password reset token."""
     utils = get_itsdangerous_utils()
     return utils.verify_password_reset_token(token, max_age)
@@ -654,7 +648,7 @@ def verify_password_reset_token(
 def create_email_verification_token(
     user_id: str,
     email: str,
-    expires_in: Optional[timedelta] = None,
+    expires_in: timedelta | None = None,
 ) -> str:
     """Create an email verification token."""
     utils = get_itsdangerous_utils()
@@ -663,8 +657,8 @@ def create_email_verification_token(
 
 def verify_email_verification_token(
     token: str,
-    max_age: Optional[int] = None,
-) -> Optional[Dict[str, Any]]:
+    max_age: int | None = None,
+) -> dict[str, Any] | None:
     """Verify an email verification token."""
     utils = get_itsdangerous_utils()
     return utils.verify_email_verification_token(token, max_age)
@@ -673,7 +667,7 @@ def verify_email_verification_token(
 def create_api_key_token(
     user_id: str,
     permissions: list[str],
-    expires_in: Optional[timedelta] = None,
+    expires_in: timedelta | None = None,
 ) -> str:
     """Create an API key token."""
     utils = get_itsdangerous_utils()
@@ -682,8 +676,8 @@ def create_api_key_token(
 
 def verify_api_key_token(
     token: str,
-    max_age: Optional[int] = None,
-) -> Optional[Dict[str, Any]]:
+    max_age: int | None = None,
+) -> dict[str, Any] | None:
     """Verify an API key token."""
     utils = get_itsdangerous_utils()
     return utils.verify_api_key_token(token, max_age)
@@ -691,17 +685,17 @@ def verify_api_key_token(
 
 # Export all functions
 __all__ = [
-    "ItsDangerousUtils",
     "ItsDangerousError",
-    "get_itsdangerous_utils",
-    "create_timestamped_token",
-    "verify_timestamped_token",
-    "create_session_token",
-    "verify_session_token",
-    "create_password_reset_token",
-    "verify_password_reset_token",
-    "create_email_verification_token",
-    "verify_email_verification_token",
+    "ItsDangerousUtils",
     "create_api_key_token",
+    "create_email_verification_token",
+    "create_password_reset_token",
+    "create_session_token",
+    "create_timestamped_token",
+    "get_itsdangerous_utils",
     "verify_api_key_token",
+    "verify_email_verification_token",
+    "verify_password_reset_token",
+    "verify_session_token",
+    "verify_timestamped_token",
 ]

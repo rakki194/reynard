@@ -1,5 +1,4 @@
-"""
-Test suite for vectorized similarity calculations.
+"""Test suite for vectorized similarity calculations.
 
 This module tests the core vectorized similarity calculation logic
 that was causing the "axis 1 is out of bounds" error.
@@ -22,7 +21,7 @@ class TestVectorizedSimilarity:
                 [2.0, 4.0, 6.0],  # Proportional to query
                 [0.0, 0.0, 0.0],  # Zero vector
                 [-1.0, -2.0, -3.0],  # Opposite direction
-            ]
+            ],
         )
 
         # Calculate cosine similarities
@@ -179,7 +178,7 @@ class TestVectorizedSimilarity:
             [
                 [1e-10, 1e-10, 1e-10],
                 [1e-9, 1e-9, 1e-9],
-            ]
+            ],
         )
 
         query_norm = np.linalg.norm(query_vec)
@@ -198,7 +197,7 @@ class TestVectorizedSimilarity:
             [
                 [1e10, 1e10, 1e10],
                 [2e10, 2e10, 2e10],
-            ]
+            ],
         )
 
         query_norm = np.linalg.norm(query_vec)

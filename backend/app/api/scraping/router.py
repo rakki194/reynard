@@ -1,5 +1,4 @@
-"""
-Scraping API Router for Reynard Backend
+"""Scraping API Router for Reynard Backend
 
 FastAPI router for scraping operations.
 """
@@ -75,7 +74,7 @@ async def get_jobs(service: ScrapingService = Depends(get_scraping_service)):
 
 @router.get("/jobs/{job_id}", response_model=ScrapingApiResponse)
 async def get_job(
-    job_id: UUID, service: ScrapingService = Depends(get_scraping_service)
+    job_id: UUID, service: ScrapingService = Depends(get_scraping_service),
 ):
     """Get a specific scraping job."""
     try:
@@ -92,13 +91,13 @@ async def get_job(
 
 @router.get("/jobs/{job_id}/results", response_model=ScrapingApiResponse)
 async def get_job_results(
-    job_id: UUID, service: ScrapingService = Depends(get_scraping_service)
+    job_id: UUID, service: ScrapingService = Depends(get_scraping_service),
 ):
     """Get results for a scraping job."""
     try:
         results = await service.get_job_results(job_id)
         return ScrapingApiResponse(
-            success=True, data=[result.dict() for result in results]
+            success=True, data=[result.dict() for result in results],
         )
     except Exception as e:
         logger.error(f"Failed to get job results {job_id}: {e}")
@@ -107,7 +106,7 @@ async def get_job_results(
 
 @router.post("/jobs/{job_id}/cancel", response_model=ScrapingApiResponse)
 async def cancel_job(
-    job_id: UUID, service: ScrapingService = Depends(get_scraping_service)
+    job_id: UUID, service: ScrapingService = Depends(get_scraping_service),
 ):
     """Cancel a scraping job."""
     try:
@@ -147,7 +146,7 @@ async def get_configs(service: ScrapingService = Depends(get_scraping_service)):
 
 @router.put("/configs", response_model=ScrapingApiResponse)
 async def update_configs(
-    configs: dict[str, Any], service: ScrapingService = Depends(get_scraping_service)
+    configs: dict[str, Any], service: ScrapingService = Depends(get_scraping_service),
 ):
     """Update scraping configurations."""
     try:
@@ -160,13 +159,13 @@ async def update_configs(
 
 @router.get("/configs/{config_type}/reset", response_model=ScrapingApiResponse)
 async def reset_config(
-    config_type: str, service: ScrapingService = Depends(get_scraping_service)
+    config_type: str, service: ScrapingService = Depends(get_scraping_service),
 ):
     """Reset a specific configuration to defaults."""
     try:
         # TODO: Implement configuration reset
         return ScrapingApiResponse(
-            success=True, message=f"Configuration {config_type} reset"
+            success=True, message=f"Configuration {config_type} reset",
         )
     except Exception as e:
         logger.error(f"Failed to reset config {config_type}: {e}")
@@ -218,7 +217,7 @@ async def create_pipeline(
 
 @router.post("/pipelines/{pipeline_id}/start", response_model=ScrapingApiResponse)
 async def start_pipeline(
-    pipeline_id: UUID, service: ScrapingService = Depends(get_scraping_service)
+    pipeline_id: UUID, service: ScrapingService = Depends(get_scraping_service),
 ):
     """Start a processing pipeline."""
     try:
@@ -231,7 +230,7 @@ async def start_pipeline(
 
 @router.post("/pipelines/{pipeline_id}/stop", response_model=ScrapingApiResponse)
 async def stop_pipeline(
-    pipeline_id: UUID, service: ScrapingService = Depends(get_scraping_service)
+    pipeline_id: UUID, service: ScrapingService = Depends(get_scraping_service),
 ):
     """Stop a processing pipeline."""
     try:
@@ -244,7 +243,7 @@ async def stop_pipeline(
 
 @router.post("/pipelines/{pipeline_id}/pause", response_model=ScrapingApiResponse)
 async def pause_pipeline(
-    pipeline_id: UUID, service: ScrapingService = Depends(get_scraping_service)
+    pipeline_id: UUID, service: ScrapingService = Depends(get_scraping_service),
 ):
     """Pause a processing pipeline."""
     try:
@@ -257,7 +256,7 @@ async def pause_pipeline(
 
 @router.post("/pipelines/{pipeline_id}/resume", response_model=ScrapingApiResponse)
 async def resume_pipeline(
-    pipeline_id: UUID, service: ScrapingService = Depends(get_scraping_service)
+    pipeline_id: UUID, service: ScrapingService = Depends(get_scraping_service),
 ):
     """Resume a processing pipeline."""
     try:
@@ -270,7 +269,7 @@ async def resume_pipeline(
 
 @router.delete("/pipelines/{pipeline_id}", response_model=ScrapingApiResponse)
 async def delete_pipeline(
-    pipeline_id: UUID, service: ScrapingService = Depends(get_scraping_service)
+    pipeline_id: UUID, service: ScrapingService = Depends(get_scraping_service),
 ):
     """Delete a processing pipeline."""
     try:
@@ -299,7 +298,7 @@ async def get_gallery_downloads(
 
 @router.get("/gallery-downloads/{job_id}", response_model=ScrapingApiResponse)
 async def get_gallery_download(
-    job_id: str, service: ScrapingService = Depends(get_scraping_service)
+    job_id: str, service: ScrapingService = Depends(get_scraping_service),
 ):
     """Get a specific gallery download job."""
     try:
@@ -314,7 +313,7 @@ async def get_gallery_download(
 
 @router.post("/gallery-downloads", response_model=ScrapingApiResponse)
 async def start_gallery_download(
-    request: dict, service: ScrapingService = Depends(get_scraping_service)
+    request: dict, service: ScrapingService = Depends(get_scraping_service),
 ):
     """Start a new gallery download job."""
     try:
@@ -333,7 +332,7 @@ async def start_gallery_download(
 
 @router.post("/gallery-downloads/validate", response_model=ScrapingApiResponse)
 async def validate_gallery_url(
-    request: dict, service: ScrapingService = Depends(get_scraping_service)
+    request: dict, service: ScrapingService = Depends(get_scraping_service),
 ):
     """Validate a URL for gallery download."""
     try:
@@ -363,7 +362,7 @@ async def get_gallery_extractors(
 
 @router.get("/gallery-downloads/{job_id}/progress", response_model=ScrapingApiResponse)
 async def get_gallery_download_progress(
-    job_id: str, service: ScrapingService = Depends(get_scraping_service)
+    job_id: str, service: ScrapingService = Depends(get_scraping_service),
 ):
     """Get download progress for a specific gallery job."""
     try:
@@ -378,7 +377,7 @@ async def get_gallery_download_progress(
 
 @router.delete("/gallery-downloads/{job_id}/cancel", response_model=ScrapingApiResponse)
 async def cancel_gallery_download(
-    job_id: str, service: ScrapingService = Depends(get_scraping_service)
+    job_id: str, service: ScrapingService = Depends(get_scraping_service),
 ):
     """Cancel a gallery download job."""
     try:
@@ -386,7 +385,7 @@ async def cancel_gallery_download(
         if not success:
             return ScrapingApiResponse(success=False, error="Failed to cancel download")
         return ScrapingApiResponse(
-            success=True, message="Download cancelled successfully"
+            success=True, message="Download cancelled successfully",
         )
     except Exception as e:
         logger.error(f"Failed to cancel gallery download {job_id}: {e}")
@@ -395,7 +394,7 @@ async def cancel_gallery_download(
 
 @router.delete("/gallery-downloads/{job_id}", response_model=ScrapingApiResponse)
 async def delete_gallery_download(
-    job_id: str, service: ScrapingService = Depends(get_scraping_service)
+    job_id: str, service: ScrapingService = Depends(get_scraping_service),
 ):
     """Delete a gallery download job."""
     try:
@@ -403,7 +402,7 @@ async def delete_gallery_download(
         if not success:
             return ScrapingApiResponse(success=False, error="Failed to delete download")
         return ScrapingApiResponse(
-            success=True, message="Download deleted successfully"
+            success=True, message="Download deleted successfully",
         )
     except Exception as e:
         logger.error(f"Failed to delete gallery download {job_id}: {e}")
@@ -428,7 +427,7 @@ async def get_gallery_download_statistics(
 
 @router.post("/enhanced/extract", response_model=ScrapingApiResponse)
 async def extract_content_enhanced(
-    request: dict, service: ScrapingService = Depends(get_scraping_service)
+    request: dict, service: ScrapingService = Depends(get_scraping_service),
 ):
     """Extract content using enhanced extractor with multi-tier fallback."""
     try:
@@ -458,7 +457,7 @@ async def get_enhanced_extraction_methods(
 
 @router.post("/enhanced/test-methods", response_model=ScrapingApiResponse)
 async def test_extraction_methods(
-    request: dict, service: ScrapingService = Depends(get_scraping_service)
+    request: dict, service: ScrapingService = Depends(get_scraping_service),
 ):
     """Test all available extraction methods on a URL."""
     try:
@@ -477,7 +476,7 @@ async def test_extraction_methods(
 
 @router.post("/enhanced/best-method", response_model=ScrapingApiResponse)
 async def get_best_extraction_method(
-    request: dict, service: ScrapingService = Depends(get_scraping_service)
+    request: dict, service: ScrapingService = Depends(get_scraping_service),
 ):
     """Determine the best extraction method for a URL."""
     try:

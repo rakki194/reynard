@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Initialize the authentication database with Gatekeeper.
+"""Initialize the authentication database with Gatekeeper.
 
 This script verifies that the Gatekeeper authentication system can connect
 to the dedicated auth database. Gatekeeper manages its own table creation.
@@ -19,13 +18,13 @@ from sqlalchemy import create_engine, text
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
 # Get database URL from environment
 AUTH_DATABASE_URL = os.getenv(
-    "AUTH_DATABASE_URL", "postgresql://postgres:password@localhost:5432/reynard_auth"
+    "AUTH_DATABASE_URL", "postgresql://postgres:password@localhost:5432/reynard_auth",
 )
 
 

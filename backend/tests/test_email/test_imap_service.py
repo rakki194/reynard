@@ -1,9 +1,7 @@
-"""
-Tests for IMAP Service with Agent Integration
+"""Tests for IMAP Service with Agent Integration
 """
 
 import asyncio
-import json
 import tempfile
 from datetime import datetime
 from pathlib import Path
@@ -101,7 +99,7 @@ class TestIMAPService:
 
         # Create new service instance to test loading
         new_service = IMAPService(
-            config=imap_service.config, data_dir=imap_service.data_dir
+            config=imap_service.config, data_dir=imap_service.data_dir,
         )
 
         # Check if email was loaded
@@ -112,7 +110,7 @@ class TestIMAPService:
 
     @pytest.mark.asyncio
     async def test_detect_agent_email_with_agent_service(
-        self, imap_service, sample_email
+        self, imap_service, sample_email,
     ):
         """Test agent email detection with agent service available."""
         # Mock agent email service
@@ -121,7 +119,7 @@ class TestIMAPService:
 
         with patch("app.services.imap_service.agent_email_service") as mock_service:
             mock_service.get_agent_config_by_email = AsyncMock(
-                return_value=mock_agent_config
+                return_value=mock_agent_config,
             )
 
             # Test detection
@@ -132,11 +130,11 @@ class TestIMAPService:
 
     @pytest.mark.asyncio
     async def test_detect_agent_email_without_agent_service(
-        self, imap_service, sample_email
+        self, imap_service, sample_email,
     ):
         """Test agent email detection without agent service."""
         with patch(
-            "app.services.imap_service.agent_email_service", side_effect=ImportError
+            "app.services.imap_service.agent_email_service", side_effect=ImportError,
         ):
             result = await imap_service._detect_agent_email(sample_email)
 
@@ -153,14 +151,14 @@ class TestIMAPService:
             mock_service.update_agent_stats = AsyncMock()
             mock_service.log_agent_interaction = AsyncMock()
             mock_service.get_agent_config = AsyncMock(
-                return_value=Mock(auto_reply_enabled=False)
+                return_value=Mock(auto_reply_enabled=False),
             )
 
             await imap_service._process_agent_email(sample_email)
 
             # Verify agent stats were updated
             mock_service.update_agent_stats.assert_called_once_with(
-                "agent-123", "received"
+                "agent-123", "received",
             )
 
             # Verify interaction was logged
@@ -283,13 +281,13 @@ class TestIMAPService:
     async def test_start_email_monitoring(self, imap_service):
         """Test starting email monitoring."""
         with patch.object(
-            imap_service, "get_unread_emails", new_callable=AsyncMock
+            imap_service, "get_unread_emails", new_callable=AsyncMock,
         ) as mock_get_emails:
             mock_get_emails.return_value = []
 
             # Start monitoring with short interval for testing
             monitoring_task = asyncio.create_task(
-                imap_service.start_email_monitoring(interval=0.1)
+                imap_service.start_email_monitoring(interval=0.1),
             )
 
             # Let it run briefly

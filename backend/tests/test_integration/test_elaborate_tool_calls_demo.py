@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Elaborate NLWeb Tool Calls Demo
+"""Elaborate NLWeb Tool Calls Demo
 
 This script demonstrates advanced tool calling patterns with Ollama integration,
 showcasing 2025 best practices for complex multi-tool workflows, streaming responses,
@@ -139,8 +138,8 @@ class ElaborateToolCallsDemo:
                                 "quality",
                                 "security",
                                 "performance",
-                            ]
-                        }
+                            ],
+                        },
                     },
                 ),
                 NLWebToolParameter(
@@ -157,7 +156,7 @@ class ElaborateToolCallsDemo:
                             "java",
                             "cpp",
                             "auto",
-                        ]
+                        ],
                     },
                 ),
                 NLWebToolParameter(
@@ -200,7 +199,7 @@ class ElaborateToolCallsDemo:
                     required=False,
                     default="general",
                     constraints={
-                        "enum": ["general", "academic", "news", "images", "videos"]
+                        "enum": ["general", "academic", "news", "images", "videos"],
                     },
                 ),
                 NLWebToolParameter(
@@ -322,7 +321,7 @@ class ElaborateToolCallsDemo:
                 print(f"    {j}. {tool_name} (Score: {suggestion['score']:.1f})")
                 print(f"       📋 {suggestion['reasoning']}")
                 print(
-                    f"       ⚙️  Parameters: {json.dumps(suggestion['parameters'], indent=8)}"
+                    f"       ⚙️  Parameters: {json.dumps(suggestion['parameters'], indent=8)}",
                 )
 
     async def demo_multi_tool_workflow(self):
@@ -511,11 +510,11 @@ class ElaborateToolCallsDemo:
             else:
                 print("    ❌ Validation failed - parameter constraints violated")
                 print(
-                    "    🔧 Suggested fix: Adjust parameter values to meet constraints"
+                    "    🔧 Suggested fix: Adjust parameter values to meet constraints",
                 )
 
     async def _mock_suggest_tools(
-        self, request: NLWebSuggestionRequest
+        self, request: NLWebSuggestionRequest,
     ) -> list[dict[str, Any]]:
         """Mock tool suggestions for demo purposes."""
         # This would normally call the actual service
@@ -534,7 +533,7 @@ class ElaborateToolCallsDemo:
                         "max_results": 15,
                     },
                     "reasoning": "Query mentions security - suggesting web search for latest practices",
-                }
+                },
             )
 
             suggestions.append(
@@ -547,7 +546,7 @@ class ElaborateToolCallsDemo:
                         "output_format": "detailed",
                     },
                     "reasoning": "Security analysis requires code examination",
-                }
+                },
             )
 
         if "analyze" in request.query.lower():
@@ -561,7 +560,7 @@ class ElaborateToolCallsDemo:
                         "options": {"recursive": True, "max_results": 50},
                     },
                     "reasoning": "Analysis request suggests file operations tool",
-                }
+                },
             )
 
         return suggestions[: request.max_suggestions or 3]

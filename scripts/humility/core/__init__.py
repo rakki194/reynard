@@ -1,5 +1,4 @@
-"""
-Enhanced Humility Detector - Core Module
+"""Enhanced Humility Detector - Core Module
 Part of the Reynard project's commitment to humble communication.
 
 This module provides the core components for advanced humility detection
@@ -11,10 +10,10 @@ from .detector import HumilityDetector
 from .models import ConfidenceLevel, DetectionCategory, HumilityFinding, SeverityLevel
 
 __all__ = [
-    "HumilityDetector",
-    "HumilityFinding",
-    "SeverityLevel",
     "ConfidenceLevel",
     "DetectionCategory",
     "HumilityConfig",
+    "HumilityDetector",
+    "HumilityFinding",
+    "SeverityLevel",
 ]

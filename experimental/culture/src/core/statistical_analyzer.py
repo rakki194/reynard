@@ -1,5 +1,4 @@
-"""
-Statistical Analysis Framework for Cultural AI Evaluation
+"""Statistical Analysis Framework for Cultural AI Evaluation
 
 Comprehensive statistical analysis tools for evaluating cultural AI alignment,
 including significance testing, effect size calculation, and confidence intervals.
@@ -17,8 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 class StatisticalAnalyzer:
-    """
-    Comprehensive statistical analysis framework for cultural AI evaluation.
+    """Comprehensive statistical analysis framework for cultural AI evaluation.
 
     Provides rigorous statistical testing, effect size calculation, and
     confidence interval estimation for cultural alignment assessment.
@@ -35,8 +33,7 @@ class StatisticalAnalyzer:
         scenarios: list[dict[str, Any]],
         cultural_context: str,
     ) -> dict[str, Any]:
-        """
-        Perform comprehensive statistical analysis of evaluation results.
+        """Perform comprehensive statistical analysis of evaluation results.
 
         Args:
             validation_results: Model validation results
@@ -45,6 +42,7 @@ class StatisticalAnalyzer:
 
         Returns:
             Comprehensive statistical analysis results
+
         """
         logger.info(f"Performing statistical analysis for {cultural_context}")
 
@@ -53,7 +51,7 @@ class StatisticalAnalyzer:
 
         # Confidence interval for accuracy
         confidence_interval = self._calculate_confidence_interval(
-            validation_results, cultural_context
+            validation_results, cultural_context,
         )
 
         # Effect size calculation
@@ -61,7 +59,7 @@ class StatisticalAnalyzer:
 
         # Statistical significance testing
         significance_test = self._test_statistical_significance(
-            validation_results, scenarios
+            validation_results, scenarios,
         )
 
         # Cultural bias analysis
@@ -82,7 +80,7 @@ class StatisticalAnalyzer:
         }
 
     def _calculate_descriptive_statistics(
-        self, validation_results: list[dict[str, Any]]
+        self, validation_results: list[dict[str, Any]],
     ) -> dict[str, Any]:
         """Calculate descriptive statistics for validation results."""
         if not validation_results:
@@ -140,7 +138,7 @@ class StatisticalAnalyzer:
         return (max(0, lower_bound), min(1, upper_bound))
 
     def _calculate_effect_size(
-        self, validation_results: list[dict[str, Any]], scenarios: list[dict[str, Any]]
+        self, validation_results: list[dict[str, Any]], scenarios: list[dict[str, Any]],
     ) -> dict[str, float]:
         """Calculate effect sizes for cultural performance."""
         if not validation_results:
@@ -171,7 +169,7 @@ class StatisticalAnalyzer:
         n_non_taarof = len(non_taarof_results)
         pooled_std = np.sqrt(
             ((n_taarof - 1) * std_taarof**2 + (n_non_taarof - 1) * std_non_taarof**2)
-            / (n_taarof + n_non_taarof - 2)
+            / (n_taarof + n_non_taarof - 2),
         )
 
         cohens_d = (
@@ -199,7 +197,7 @@ class StatisticalAnalyzer:
         }
 
     def _test_statistical_significance(
-        self, validation_results: list[dict[str, Any]], scenarios: list[dict[str, Any]]
+        self, validation_results: list[dict[str, Any]], scenarios: list[dict[str, Any]],
     ) -> dict[str, Any]:
         """Test statistical significance of cultural performance differences."""
         if not validation_results:
@@ -227,7 +225,7 @@ class StatisticalAnalyzer:
         else:
             # Use Mann-Whitney U test for small samples or non-normal data
             statistic, p_value = stats.mannwhitneyu(
-                taarof_scores, non_taarof_scores, alternative="two-sided"
+                taarof_scores, non_taarof_scores, alternative="two-sided",
             )
             test_type = "mann_whitney_u"
 
@@ -241,7 +239,7 @@ class StatisticalAnalyzer:
         }
 
     def _analyze_cultural_bias(
-        self, validation_results: list[dict[str, Any]], scenarios: list[dict[str, Any]]
+        self, validation_results: list[dict[str, Any]], scenarios: list[dict[str, Any]],
     ) -> dict[str, Any]:
         """Analyze cultural bias in model responses."""
         if not validation_results:
@@ -297,7 +295,7 @@ class StatisticalAnalyzer:
         }
 
     def _analyze_politeness_disconnect(
-        self, validation_results: list[dict[str, Any]]
+        self, validation_results: list[dict[str, Any]],
     ) -> dict[str, Any]:
         """Analyze disconnect between politeness and cultural appropriateness."""
         if not validation_results:
@@ -358,7 +356,7 @@ class StatisticalAnalyzer:
         }
 
     def compare_groups(
-        self, accuracies: list[float], group_names: list[str]
+        self, accuracies: list[float], group_names: list[str],
     ) -> dict[str, Any]:
         """Compare performance across multiple groups/models."""
         if len(accuracies) < 2:
@@ -407,7 +405,7 @@ class StatisticalAnalyzer:
         }
 
     def power_analysis(
-        self, effect_size: float, sample_size: int, alpha: float | None = None
+        self, effect_size: float, sample_size: int, alpha: float | None = None,
     ) -> dict[str, float]:
         """Perform statistical power analysis."""
         if alpha is None:

@@ -59,15 +59,15 @@ def post_process_caption(
 
             caption = _re.sub(r"\s+", " ", caption)
         elif step == "normalize_punctuation_spacing" and rules.get(
-            "normalize_punctuation_spacing"
+            "normalize_punctuation_spacing",
         ):
             caption = _normalize_spacing(caption)
         elif step == "case_conversion":
             caption = _apply_case(
-                caption, (rules.get("case_conversion") or "none").lower()
+                caption, (rules.get("case_conversion") or "none").lower(),
             )
         elif step == "ensure_terminal_punctuation" and rules.get(
-            "ensure_terminal_punctuation"
+            "ensure_terminal_punctuation",
         ):
             if caption and caption[-1] not in ".!?":
                 caption = caption + "."

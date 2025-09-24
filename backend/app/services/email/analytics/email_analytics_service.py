@@ -1,10 +1,8 @@
-"""
-Email Analytics Service for Reynard Backend.
+"""Email Analytics Service for Reynard Backend.
 
 This module provides comprehensive email analytics, reporting, and insights generation.
 """
 
-import asyncio
 import json
 import logging
 import statistics
@@ -12,7 +10,7 @@ from collections import Counter, defaultdict
 from dataclasses import asdict, dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -32,12 +30,12 @@ class EmailMetrics:
     avg_email_length: float
     most_active_hour: int
     most_active_day: str
-    top_senders: List[Dict[str, Any]]
-    top_recipients: List[Dict[str, Any]]
-    email_volume_trend: List[Dict[str, Any]]
-    agent_activity: Dict[str, Dict[str, Any]]
-    content_analysis: Dict[str, Any]
-    performance_metrics: Dict[str, float]
+    top_senders: list[dict[str, Any]]
+    top_recipients: list[dict[str, Any]]
+    email_volume_trend: list[dict[str, Any]]
+    agent_activity: dict[str, dict[str, Any]]
+    content_analysis: dict[str, Any]
+    performance_metrics: dict[str, float]
 
 
 @dataclass
@@ -49,10 +47,10 @@ class EmailInsight:
     description: str
     severity: str  # 'low', 'medium', 'high', 'critical'
     confidence: float  # 0.0 to 1.0
-    data: Dict[str, Any]
+    data: dict[str, Any]
     timestamp: datetime
     actionable: bool
-    suggested_actions: List[str]
+    suggested_actions: list[str]
 
 
 @dataclass
@@ -65,9 +63,9 @@ class EmailReport:
     period_end: datetime
     generated_at: datetime
     metrics: EmailMetrics
-    insights: List[EmailInsight]
-    recommendations: List[str]
-    charts_data: Dict[str, Any]
+    insights: list[EmailInsight]
+    recommendations: list[str]
+    charts_data: dict[str, Any]
 
 
 class EmailAnalyticsService:
@@ -78,18 +76,17 @@ class EmailAnalyticsService:
         self.data_dir.mkdir(parents=True, exist_ok=True)
 
         # Cache for metrics
-        self._metrics_cache: Dict[str, Tuple[EmailMetrics, datetime]] = {}
+        self._metrics_cache: dict[str, tuple[EmailMetrics, datetime]] = {}
         self._cache_ttl_hours = 1
 
     async def get_email_metrics(
         self,
-        period_start: Optional[datetime] = None,
-        period_end: Optional[datetime] = None,
-        agent_id: Optional[str] = None,
+        period_start: datetime | None = None,
+        period_end: datetime | None = None,
+        agent_id: str | None = None,
         use_cache: bool = True,
     ) -> EmailMetrics:
-        """
-        Get comprehensive email metrics for a period.
+        """Get comprehensive email metrics for a period.
 
         Args:
             period_start: Start of the period (default: 30 days ago)
@@ -99,6 +96,7 @@ class EmailAnalyticsService:
 
         Returns:
             EmailMetrics object
+
         """
         try:
             # Set default period if not provided
@@ -117,12 +115,12 @@ class EmailAnalyticsService:
 
             # Get email data
             emails_data = await self._get_emails_data(
-                period_start, period_end, agent_id
+                period_start, period_end, agent_id,
             )
 
             # Calculate metrics
             metrics = await self._calculate_metrics(
-                emails_data, period_start, period_end
+                emails_data, period_start, period_end,
             )
 
             # Cache the results
@@ -136,12 +134,11 @@ class EmailAnalyticsService:
 
     async def generate_insights(
         self,
-        period_start: Optional[datetime] = None,
-        period_end: Optional[datetime] = None,
-        agent_id: Optional[str] = None,
-    ) -> List[EmailInsight]:
-        """
-        Generate insights from email data.
+        period_start: datetime | None = None,
+        period_end: datetime | None = None,
+        agent_id: str | None = None,
+    ) -> list[EmailInsight]:
+        """Generate insights from email data.
 
         Args:
             period_start: Start of the period
@@ -150,6 +147,7 @@ class EmailAnalyticsService:
 
         Returns:
             List of EmailInsight objects
+
         """
         try:
             # Set default period if not provided
@@ -160,7 +158,7 @@ class EmailAnalyticsService:
 
             # Get email data
             emails_data = await self._get_emails_data(
-                period_start, period_end, agent_id
+                period_start, period_end, agent_id,
             )
 
             insights = []
@@ -194,12 +192,11 @@ class EmailAnalyticsService:
     async def generate_report(
         self,
         report_type: str = "weekly",
-        period_start: Optional[datetime] = None,
-        period_end: Optional[datetime] = None,
-        agent_id: Optional[str] = None,
+        period_start: datetime | None = None,
+        period_end: datetime | None = None,
+        agent_id: str | None = None,
     ) -> EmailReport:
-        """
-        Generate comprehensive email report.
+        """Generate comprehensive email report.
 
         Args:
             report_type: Type of report ('daily', 'weekly', 'monthly', 'custom')
@@ -209,6 +206,7 @@ class EmailAnalyticsService:
 
         Returns:
             EmailReport object
+
         """
         try:
             # Set default period based on report type
@@ -231,7 +229,7 @@ class EmailAnalyticsService:
 
             # Generate charts data
             charts_data = await self._generate_charts_data(
-                period_start, period_end, agent_id
+                period_start, period_end, agent_id,
             )
 
             # Create report
@@ -259,11 +257,10 @@ class EmailAnalyticsService:
     async def get_agent_performance(
         self,
         agent_id: str,
-        period_start: Optional[datetime] = None,
-        period_end: Optional[datetime] = None,
-    ) -> Dict[str, Any]:
-        """
-        Get performance metrics for a specific agent.
+        period_start: datetime | None = None,
+        period_end: datetime | None = None,
+    ) -> dict[str, Any]:
+        """Get performance metrics for a specific agent.
 
         Args:
             agent_id: Agent ID
@@ -272,6 +269,7 @@ class EmailAnalyticsService:
 
         Returns:
             Dictionary with agent performance metrics
+
         """
         try:
             # Set default period if not provided
@@ -282,7 +280,7 @@ class EmailAnalyticsService:
 
             # Get email data for the agent
             emails_data = await self._get_emails_data(
-                period_start, period_end, agent_id
+                period_start, period_end, agent_id,
             )
 
             # Calculate agent-specific metrics
@@ -339,7 +337,7 @@ class EmailAnalyticsService:
                 "sentiment_analysis": self._analyze_sentiment(emails_data),
                 "peak_hours": self._get_peak_hours(emails_data),
                 "top_correspondents": self._get_top_correspondents(
-                    emails_data, agent_id
+                    emails_data, agent_id,
                 ),
             }
 
@@ -351,10 +349,9 @@ class EmailAnalyticsService:
         self,
         metric: str = "volume",
         period_days: int = 30,
-        agent_id: Optional[str] = None,
-    ) -> List[Dict[str, Any]]:
-        """
-        Get email trends over time.
+        agent_id: str | None = None,
+    ) -> list[dict[str, Any]]:
+        """Get email trends over time.
 
         Args:
             metric: Metric to analyze ('volume', 'response_time', 'sentiment')
@@ -363,6 +360,7 @@ class EmailAnalyticsService:
 
         Returns:
             List of trend data points
+
         """
         try:
             end_date = datetime.now()
@@ -405,7 +403,7 @@ class EmailAnalyticsService:
                         "date": date.isoformat(),
                         "value": value,
                         "count": len(day_emails),
-                    }
+                    },
                 )
 
             return trends
@@ -424,10 +422,10 @@ class EmailAnalyticsService:
 
     async def _get_emails_data(
         self,
-        period_start: Optional[datetime],
-        period_end: Optional[datetime],
-        agent_id: Optional[str],
-    ) -> List[Dict[str, Any]]:
+        period_start: datetime | None,
+        period_end: datetime | None,
+        agent_id: str | None,
+    ) -> list[dict[str, Any]]:
         """Get email data for analysis."""
         try:
             # This would integrate with actual email services
@@ -488,23 +486,23 @@ class EmailAnalyticsService:
 
     async def _calculate_metrics(
         self,
-        emails_data: List[Dict[str, Any]],
-        period_start: Optional[datetime],
-        period_end: Optional[datetime],
+        emails_data: list[dict[str, Any]],
+        period_start: datetime | None,
+        period_end: datetime | None,
     ) -> EmailMetrics:
         """Calculate comprehensive email metrics."""
         try:
             total_emails = len(emails_data)
             sent_emails = len([e for e in emails_data if e.get("sender_agent_id")])
             received_emails = len(
-                [e for e in emails_data if e.get("recipient_agent_id")]
+                [e for e in emails_data if e.get("recipient_agent_id")],
             )
             agent_emails = len(
                 [
                     e
                     for e in emails_data
                     if e.get("sender_agent_id") or e.get("recipient_agent_id")
-                ]
+                ],
             )
 
             # Response time analysis
@@ -556,7 +554,7 @@ class EmailAnalyticsService:
             agent_activity = {}
             for email in emails_data:
                 agent_id = email.get("sender_agent_id") or email.get(
-                    "recipient_agent_id"
+                    "recipient_agent_id",
                 )
                 if agent_id:
                     if agent_id not in agent_activity:
@@ -618,8 +616,8 @@ class EmailAnalyticsService:
             return self._create_empty_metrics()
 
     def _get_common_phrases(
-        self, texts: List[str], min_length: int = 3
-    ) -> List[Dict[str, Any]]:
+        self, texts: list[str], min_length: int = 3,
+    ) -> list[dict[str, Any]]:
         """Extract common phrases from text."""
         try:
             # Simple phrase extraction (in production, use NLP libraries)
@@ -638,7 +636,7 @@ class EmailAnalyticsService:
             logger.error(f"Failed to extract common phrases: {e}")
             return []
 
-    def _get_default_period(self, report_type: str) -> Tuple[datetime, datetime]:
+    def _get_default_period(self, report_type: str) -> tuple[datetime, datetime]:
         """Get default period for report type."""
         end_date = datetime.now()
 
@@ -654,8 +652,8 @@ class EmailAnalyticsService:
         return start_date, end_date
 
     async def _analyze_volume_trends(
-        self, emails_data: List[Dict[str, Any]]
-    ) -> List[EmailInsight]:
+        self, emails_data: list[dict[str, Any]],
+    ) -> list[EmailInsight]:
         """Analyze email volume trends."""
         insights = []
 
@@ -694,7 +692,7 @@ class EmailAnalyticsService:
                                 "Investigate cause of spike",
                                 "Check for system issues",
                             ],
-                        )
+                        ),
                     )
 
             # Detect trends
@@ -717,7 +715,7 @@ class EmailAnalyticsService:
                                 "Monitor capacity",
                                 "Consider scaling resources",
                             ],
-                        )
+                        ),
                     )
 
         except Exception as e:
@@ -726,8 +724,8 @@ class EmailAnalyticsService:
         return insights
 
     async def _analyze_response_times(
-        self, emails_data: List[Dict[str, Any]]
-    ) -> List[EmailInsight]:
+        self, emails_data: list[dict[str, Any]],
+    ) -> list[EmailInsight]:
         """Analyze email response times."""
         insights = []
 
@@ -763,7 +761,7 @@ class EmailAnalyticsService:
                             "Review response processes",
                             "Set up alerts for slow responses",
                         ],
-                    )
+                    ),
                 )
 
             # Very slow responses
@@ -786,7 +784,7 @@ class EmailAnalyticsService:
                             "Investigate specific cases",
                             "Implement escalation procedures",
                         ],
-                    )
+                    ),
                 )
 
         except Exception as e:
@@ -795,8 +793,8 @@ class EmailAnalyticsService:
         return insights
 
     async def _analyze_content_patterns(
-        self, emails_data: List[Dict[str, Any]]
-    ) -> List[EmailInsight]:
+        self, emails_data: list[dict[str, Any]],
+    ) -> list[EmailInsight]:
         """Analyze email content patterns."""
         insights = []
 
@@ -825,7 +823,7 @@ class EmailAnalyticsService:
                             timestamp=datetime.now(),
                             actionable=False,
                             suggested_actions=[],
-                        )
+                        ),
                     )
 
             # Analyze sentiment
@@ -851,7 +849,7 @@ class EmailAnalyticsService:
                             "Review communication tone",
                             "Address underlying issues",
                         ],
-                    )
+                    ),
                 )
 
         except Exception as e:
@@ -860,8 +858,8 @@ class EmailAnalyticsService:
         return insights
 
     async def _analyze_agent_activity(
-        self, emails_data: List[Dict[str, Any]]
-    ) -> List[EmailInsight]:
+        self, emails_data: list[dict[str, Any]],
+    ) -> list[EmailInsight]:
         """Analyze agent activity patterns."""
         insights = []
 
@@ -896,7 +894,7 @@ class EmailAnalyticsService:
                                 "Check agent status",
                                 "Verify configuration",
                             ],
-                        )
+                        ),
                     )
 
             # Find highly active agents
@@ -918,7 +916,7 @@ class EmailAnalyticsService:
                             timestamp=datetime.now(),
                             actionable=False,
                             suggested_actions=[],
-                        )
+                        ),
                     )
 
         except Exception as e:
@@ -927,8 +925,8 @@ class EmailAnalyticsService:
         return insights
 
     async def _detect_anomalies(
-        self, emails_data: List[Dict[str, Any]]
-    ) -> List[EmailInsight]:
+        self, emails_data: list[dict[str, Any]],
+    ) -> list[EmailInsight]:
         """Detect anomalies in email data."""
         insights = []
 
@@ -956,7 +954,7 @@ class EmailAnalyticsService:
                             timestamp=datetime.now(),
                             actionable=False,
                             suggested_actions=[],
-                        )
+                        ),
                     )
 
             # Detect email length anomalies
@@ -987,7 +985,7 @@ class EmailAnalyticsService:
                             timestamp=datetime.now(),
                             actionable=False,
                             suggested_actions=[],
-                        )
+                        ),
                     )
 
         except Exception as e:
@@ -996,8 +994,8 @@ class EmailAnalyticsService:
         return insights
 
     async def _generate_recommendations(
-        self, metrics: EmailMetrics, insights: List[EmailInsight]
-    ) -> List[str]:
+        self, metrics: EmailMetrics, insights: list[EmailInsight],
+    ) -> list[str]:
         """Generate recommendations based on metrics and insights."""
         recommendations = []
 
@@ -1005,19 +1003,19 @@ class EmailAnalyticsService:
             # Response time recommendations
             if metrics.avg_response_time_hours > 24:
                 recommendations.append(
-                    "Consider implementing automated responses for common queries to reduce response time"
+                    "Consider implementing automated responses for common queries to reduce response time",
                 )
 
             # Volume recommendations
             if metrics.total_emails > 1000:  # High volume
                 recommendations.append(
-                    "Consider implementing email categorization and routing to improve efficiency"
+                    "Consider implementing email categorization and routing to improve efficiency",
                 )
 
             # Agent activity recommendations
             if len(metrics.agent_activity) > 5:  # Multiple agents
                 recommendations.append(
-                    "Review agent workload distribution to ensure balanced email handling"
+                    "Review agent workload distribution to ensure balanced email handling",
                 )
 
             # Insight-based recommendations
@@ -1028,7 +1026,7 @@ class EmailAnalyticsService:
             # General recommendations
             if metrics.performance_metrics.get("response_rate", 0) < 80:
                 recommendations.append(
-                    "Improve response rate by setting up email monitoring and alerts"
+                    "Improve response rate by setting up email monitoring and alerts",
                 )
 
         except Exception as e:
@@ -1037,13 +1035,13 @@ class EmailAnalyticsService:
         return list(set(recommendations))  # Remove duplicates
 
     async def _generate_charts_data(
-        self, period_start: datetime, period_end: datetime, agent_id: Optional[str]
-    ) -> Dict[str, Any]:
+        self, period_start: datetime, period_end: datetime, agent_id: str | None,
+    ) -> dict[str, Any]:
         """Generate data for charts and visualizations."""
         try:
             # Get email data
             emails_data = await self._get_emails_data(
-                period_start, period_end, agent_id
+                period_start, period_end, agent_id,
             )
 
             # Volume over time
@@ -1123,25 +1121,25 @@ class EmailAnalyticsService:
         except Exception as e:
             logger.error(f"Failed to save report: {e}")
 
-    def _analyze_email_types(self, emails_data: List[Dict[str, Any]]) -> Dict[str, int]:
+    def _analyze_email_types(self, emails_data: list[dict[str, Any]]) -> dict[str, int]:
         """Analyze distribution of email types."""
         email_types = [e.get("email_type", "unknown") for e in emails_data]
         return dict(Counter(email_types))
 
-    def _analyze_sentiment(self, emails_data: List[Dict[str, Any]]) -> Dict[str, int]:
+    def _analyze_sentiment(self, emails_data: list[dict[str, Any]]) -> dict[str, int]:
         """Analyze sentiment distribution."""
         sentiments = [e.get("sentiment", "neutral") for e in emails_data]
         return dict(Counter(sentiments))
 
-    def _get_peak_hours(self, emails_data: List[Dict[str, Any]]) -> List[int]:
+    def _get_peak_hours(self, emails_data: list[dict[str, Any]]) -> list[int]:
         """Get peak activity hours."""
         hours = [e.get("date", datetime.now()).hour for e in emails_data]
         hour_counts = Counter(hours)
         return [hour for hour, _ in hour_counts.most_common(5)]
 
     def _get_top_correspondents(
-        self, emails_data: List[Dict[str, Any]], agent_id: str
-    ) -> List[Dict[str, Any]]:
+        self, emails_data: list[dict[str, Any]], agent_id: str,
+    ) -> list[dict[str, Any]]:
         """Get top correspondents for an agent."""
         correspondents = []
         for email in emails_data:
@@ -1175,7 +1173,7 @@ class EmailAnalyticsService:
             # Response time score (0-40 points)
             if avg_response_time > 0:
                 response_score = max(
-                    0, 40 - (avg_response_time / 24) * 10
+                    0, 40 - (avg_response_time / 24) * 10,
                 )  # Penalty for slow responses
                 score += response_score
             else:
@@ -1184,7 +1182,7 @@ class EmailAnalyticsService:
             # Engagement score (0-20 points)
             if total_emails > 0:
                 engagement_score = min(
-                    20, (sent_emails + received_emails) / total_emails * 20
+                    20, (sent_emails + received_emails) / total_emails * 20,
                 )
                 score += engagement_score
 

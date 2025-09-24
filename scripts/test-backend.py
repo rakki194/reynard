@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Test script for the Reynard FastAPI backend
+"""Test script for the Reynard FastAPI backend
 This script tests the authentication endpoints and JWT functionality
 """
 
@@ -37,11 +36,11 @@ def test_user_registration() -> dict[str, Any] | None:
 
     try:
         response = requests.post(
-            f"{BASE_URL}/api/auth/register", json=user_data, timeout=REQUEST_TIMEOUT
+            f"{BASE_URL}/api/auth/register", json=user_data, timeout=REQUEST_TIMEOUT,
         )
         if response.status_code == 200:
             print("✅ User registration passed")
-            return cast(dict[str, Any], response.json())
+            return cast("dict[str, Any]", response.json())
         print(f"❌ User registration failed: {response.status_code} - {response.text}")
         return None
     except (requests.exceptions.RequestException, requests.exceptions.Timeout) as e:
@@ -55,11 +54,11 @@ def test_user_login() -> dict[str, Any] | None:
 
     try:
         response = requests.post(
-            f"{BASE_URL}/api/auth/login", json=login_data, timeout=REQUEST_TIMEOUT
+            f"{BASE_URL}/api/auth/login", json=login_data, timeout=REQUEST_TIMEOUT,
         )
         if response.status_code == 200:
             print("✅ User login passed")
-            return cast(dict[str, Any], response.json())
+            return cast("dict[str, Any]", response.json())
         print(f"❌ User login failed: {response.status_code} - {response.text}")
         return None
     except (requests.exceptions.RequestException, requests.exceptions.Timeout) as e:
@@ -73,13 +72,13 @@ def test_protected_route(access_token: str) -> bool:
 
     try:
         response = requests.get(
-            f"{BASE_URL}/api/protected", headers=headers, timeout=REQUEST_TIMEOUT
+            f"{BASE_URL}/api/protected", headers=headers, timeout=REQUEST_TIMEOUT,
         )
         if response.status_code == 200:
             print("✅ Protected route access passed")
             return True
         print(
-            f"❌ Protected route access failed: {response.status_code} - {response.text}"
+            f"❌ Protected route access failed: {response.status_code} - {response.text}",
         )
         return False
     except (requests.exceptions.RequestException, requests.exceptions.Timeout) as e:
@@ -93,13 +92,13 @@ def test_user_info(access_token: str) -> bool:
 
     try:
         response = requests.get(
-            f"{BASE_URL}/api/auth/me", headers=headers, timeout=REQUEST_TIMEOUT
+            f"{BASE_URL}/api/auth/me", headers=headers, timeout=REQUEST_TIMEOUT,
         )
         if response.status_code == 200:
             print("✅ User info retrieval passed")
             return True
         print(
-            f"❌ User info retrieval failed: {response.status_code} - {response.text}"
+            f"❌ User info retrieval failed: {response.status_code} - {response.text}",
         )
         return False
     except (requests.exceptions.RequestException, requests.exceptions.Timeout) as e:
@@ -113,7 +112,7 @@ def test_token_refresh(refresh_token: str) -> bool:
 
     try:
         response = requests.post(
-            f"{BASE_URL}/api/auth/refresh", json=refresh_data, timeout=REQUEST_TIMEOUT
+            f"{BASE_URL}/api/auth/refresh", json=refresh_data, timeout=REQUEST_TIMEOUT,
         )
         if response.status_code == 200:
             print("✅ Token refresh passed")

@@ -3,7 +3,7 @@
  */
 
 import { Component } from "solid-js";
-import { Card } from "reynard-components";
+import { Card } from "reynard-components-core";
 import { CodeEditor } from "reynard-monaco";
 
 const NoteEditorPage: Component = () => {
@@ -17,7 +17,7 @@ const NoteEditorPage: Component = () => {
             value="# Welcome to Prompt Note\n\nThis is a markdown editor powered by Monaco.\n\n## Features\n- Rich text editing\n- Markdown support\n- Real-time collaboration\n- AI-powered assistance"
             language="markdown"
             height="400px"
-            onChange={value => console.log("Content changed:", value)}
+            onChange={(value: any) => console.log("Content changed:", value)}
           />
         </div>
       </Card>

@@ -3,7 +3,7 @@
  */
 
 import { Component, Show } from "solid-js";
-import { Card } from "reynard-components";
+import { Card } from "reynard-components-core";
 import "./NotebookCard.css";
 
 interface Notebook {

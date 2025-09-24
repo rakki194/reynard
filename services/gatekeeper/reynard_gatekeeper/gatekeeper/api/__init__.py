@@ -1,5 +1,4 @@
-"""
-API modules for the Gatekeeper library.
+"""API modules for the Gatekeeper library.
 
 This package contains FastAPI integration, dependencies, and route handlers.
 """

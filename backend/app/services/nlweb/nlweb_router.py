@@ -1,5 +1,4 @@
-"""
-NLWeb Router for Reynard Backend
+"""NLWeb Router for Reynard Backend
 
 Intelligent tool suggestion and routing system that analyzes natural language queries
 and suggests appropriate tools with parameters.
@@ -72,7 +71,7 @@ class NLWebRouter:
         }
 
     async def suggest_tools(
-        self, request: NLWebSuggestionRequest
+        self, request: NLWebSuggestionRequest,
     ) -> NLWebSuggestionResponse:
         """Suggest tools based on natural language query."""
         start_time = time.time()
@@ -185,7 +184,7 @@ class NLWebRouter:
         return candidates
 
     def _filter_by_context(
-        self, tools: list[NLWebTool], context: NLWebContext
+        self, tools: list[NLWebTool], context: NLWebContext,
     ) -> list[NLWebTool]:
         """Filter tools based on context."""
         filtered = []
@@ -198,7 +197,7 @@ class NLWebRouter:
         return filtered
 
     def _is_tool_relevant_to_context(
-        self, tool: NLWebTool, context: NLWebContext
+        self, tool: NLWebTool, context: NLWebContext,
     ) -> bool:
         """Check if a tool is relevant to the given context."""
         # Git-related tools for git repositories
@@ -227,7 +226,7 @@ class NLWebRouter:
         return matches
 
     async def _score_tools(
-        self, request: NLWebSuggestionRequest, tools: list[NLWebTool]
+        self, request: NLWebSuggestionRequest, tools: list[NLWebTool],
     ) -> list[tuple[NLWebTool, float]]:
         """Score tools based on query relevance."""
         scored_tools = []
@@ -268,7 +267,7 @@ class NLWebRouter:
                     pattern_type in tag.lower() for tag in tool.tags
                 ):
                     weight = self.priority_weights.get(
-                        pattern_type, self.priority_weights["default"]
+                        pattern_type, self.priority_weights["default"],
                     )
                     score += 25.0 * weight
 
@@ -305,7 +304,7 @@ class NLWebRouter:
         return score
 
     def _extract_parameters(
-        self, request: NLWebSuggestionRequest, tool: NLWebTool
+        self, request: NLWebSuggestionRequest, tool: NLWebTool,
     ) -> dict[str, Any]:
         """Extract parameters from query for the tool."""
         parameters = {}
@@ -324,7 +323,7 @@ class NLWebRouter:
         return parameters
 
     def _extract_parameter_value(
-        self, query: str, param: NLWebToolParameter
+        self, query: str, param: NLWebToolParameter,
     ) -> Any | None:
         """Extract parameter value from query."""
         param_name = param.name.lower()
@@ -360,7 +359,7 @@ class NLWebRouter:
             return value
 
     def _generate_reasoning(
-        self, request: NLWebSuggestionRequest, tool: NLWebTool, score: float
+        self, request: NLWebSuggestionRequest, tool: NLWebTool, score: float,
     ) -> str:
         """Generate reasoning for tool suggestion."""
         reasons = []
@@ -385,7 +384,7 @@ class NLWebRouter:
 
         if request.context:
             if request.context.git_status and request.context.git_status.get(
-                "isRepository", False
+                "isRepository", False,
             ):
                 if "git" in tool.category.lower() or "git" in tool.tags:
                     reasons.append("Tool is relevant for git repository context")
@@ -396,13 +395,13 @@ class NLWebRouter:
 
         if not reasons:
             reasons.append(
-                f"Tool has high priority ({tool.priority}) and general relevance"
+                f"Tool has high priority ({tool.priority}) and general relevance",
             )
 
         return "; ".join(reasons)
 
     def _generate_parameter_hints(
-        self, request: NLWebSuggestionRequest, tool: NLWebTool
+        self, request: NLWebSuggestionRequest, tool: NLWebTool,
     ) -> dict[str, Any]:
         """Generate parameter hints for better tool execution."""
         hints = {}
@@ -419,7 +418,7 @@ class NLWebRouter:
         return hints
 
     def _suggest_parameter_value(
-        self, request: NLWebSuggestionRequest, param: NLWebToolParameter
+        self, request: NLWebSuggestionRequest, param: NLWebToolParameter,
     ) -> Any | None:
         """Suggest a parameter value based on context."""
         if request.context:
@@ -451,7 +450,7 @@ class NLWebRouter:
             if request.context.selected_items:
                 key_parts.append(f"items:{','.join(request.context.selected_items)}")
             if request.context.git_status and request.context.git_status.get(
-                "isRepository"
+                "isRepository",
             ):
                 key_parts.append("git:true")
 
@@ -496,7 +495,7 @@ class NLWebRouter:
         if all_latencies:
             all_latencies.sort()
             self.performance_stats.avg_processing_time_ms = sum(all_latencies) / len(
-                all_latencies
+                all_latencies,
             )
             self.performance_stats.p95_processing_time_ms = all_latencies[
                 int(len(all_latencies) * 0.95)

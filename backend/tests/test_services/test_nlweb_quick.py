@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Quick NLWeb test script to verify setup and run basic tests.
+"""Quick NLWeb test script to verify setup and run basic tests.
 
 This script provides a simple way to test NLWeb functionality
 without running the full test suite.
@@ -88,7 +87,7 @@ def test_tool_registry():
                 type="string",
                 description="Test parameter",
                 required=True,
-            )
+            ),
         ],
         examples=["test example", "run test tool"],
     )
@@ -147,7 +146,7 @@ async def test_ollama_integration():
         async with httpx.AsyncClient() as client:
             try:
                 response = await client.get(
-                    "http://localhost:11434/api/tags", timeout=5.0
+                    "http://localhost:11434/api/tags", timeout=5.0,
                 )
                 if response.status_code == 200:
                     models = response.json()

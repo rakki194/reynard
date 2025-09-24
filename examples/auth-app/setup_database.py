@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Database setup script for Reynard Auth App
+"""Database setup script for Reynard Auth App
 Creates the database and initial tables using Gatekeeper
 """
 
@@ -22,7 +21,7 @@ async def setup_database():
 
     # Database configuration
     database_url = os.getenv(
-        "DATABASE_URL", "postgresql://yipyap:yipyap@localhost:5432/yipyap"
+        "DATABASE_URL", "postgresql://yipyap:yipyap@localhost:5432/yipyap",
     )
 
     print(f"📊 Using database: {database_url}")
@@ -30,7 +29,7 @@ async def setup_database():
     # Initialize PostgreSQL backend
     print("🔧 Initializing PostgreSQL backend...")
     backend = PostgreSQLBackend(
-        database_url=database_url, echo=True  # Enable SQL logging for setup
+        database_url=database_url, echo=True,  # Enable SQL logging for setup
     )
 
     # Test database connection
@@ -45,10 +44,10 @@ async def setup_database():
         print("   2. Start PostgreSQL: sudo systemctl start postgresql")
         print("   3. Create database: sudo -u postgres createdb yipyap")
         print(
-            "   4. Create user: sudo -u postgres psql -c \"CREATE USER yipyap WITH PASSWORD 'yipyap';\""
+            "   4. Create user: sudo -u postgres psql -c \"CREATE USER yipyap WITH PASSWORD 'yipyap';\"",
         )
         print(
-            '   5. Grant privileges: sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE yipyap TO yipyap;"'
+            '   5. Grant privileges: sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE yipyap TO yipyap;"',
         )
         return False
 

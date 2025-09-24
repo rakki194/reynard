@@ -1,5 +1,4 @@
-"""
-System Base Class for ECS World
+"""System Base Class for ECS World
 
 Base class for all ECS systems. Systems contain logic and operate on entities with specific components.
 """
@@ -18,44 +17,43 @@ logger = logging.getLogger(__name__)
 
 
 class System(ABC):
-    """
-    Base class for all ECS systems.
+    """Base class for all ECS systems.
 
     Systems contain logic and operate on entities that have specific components.
     They are the primary way to implement behavior in the ECS architecture.
     """
 
     def __init__(self, world: "ECSWorld"):
-        """
-        Initialize the system.
+        """Initialize the system.
 
         Args:
             world: The ECS world this system belongs to
+
         """
         self.world = world
         self.enabled = True
 
     @abstractmethod
     def update(self, delta_time: float) -> None:
-        """
-        Update system logic.
+        """Update system logic.
 
         Args:
             delta_time: Time elapsed since last update
+
         """
         raise NotImplementedError("Subclasses must implement update method")
 
     def get_entities_with_components(
-        self, *component_types: type[Component]
+        self, *component_types: type[Component],
     ) -> list[Entity]:
-        """
-        Get entities that have all specified components.
+        """Get entities that have all specified components.
 
         Args:
             *component_types: Component types to filter by
 
         Returns:
             List of entities that have all specified components
+
         """
         entities = []
         for entity in self.world.entities.values():

@@ -1,5 +1,4 @@
-"""
-Enhanced Image Format Converter for Reynard Backend
+"""Enhanced Image Format Converter for Reynard Backend
 
 Comprehensive image format conversion with optimization and validation,
 supporting multiple input and output formats with format-specific
@@ -21,18 +20,15 @@ except ImportError:
 class FormatConversionError(Exception):
     """Base exception for format conversion errors."""
 
-    pass
 
 
 class UnsupportedFormatError(FormatConversionError):
     """Exception raised when a format is not supported."""
 
-    pass
 
 
 class ImageFormatConverter:
-    """
-    Handles image format conversion with optimization and validation.
+    """Handles image format conversion with optimization and validation.
 
     This class provides comprehensive image format conversion capabilities,
     supporting multiple input and output formats with format-specific
@@ -49,7 +45,7 @@ class ImageFormatConverter:
                 "supports_alpha": True,
                 "default_quality": 80,
                 "default_method": 4,
-                "compression_levels": list(range(0, 7)),
+                "compression_levels": list(range(7)),
             },
             "png": {
                 "extensions": [".png"],
@@ -58,7 +54,7 @@ class ImageFormatConverter:
                 "supports_alpha": True,
                 "default_quality": 95,
                 "optimize": True,
-                "compression_levels": list(range(0, 10)),
+                "compression_levels": list(range(10)),
             },
             "jpeg": {
                 "extensions": [".jpg", ".jpeg"],
@@ -76,7 +72,7 @@ class ImageFormatConverter:
                 "supports_alpha": True,
                 "default_quality": 90,
                 "default_effort": 7,
-                "compression_levels": list(range(0, 10)),
+                "compression_levels": list(range(10)),
             },
             "avif": {
                 "extensions": [".avif"],
@@ -84,7 +80,7 @@ class ImageFormatConverter:
                 "supports_animation": True,
                 "supports_alpha": True,
                 "default_quality": 80,
-                "compression_levels": list(range(0, 10)),
+                "compression_levels": list(range(10)),
             },
             "gif": {
                 "extensions": [".gif"],
@@ -124,7 +120,7 @@ class ImageFormatConverter:
         try:
             if _global_image_service is None:
                 logger.debug(
-                    "No global service instance available, removing JXL support"
+                    "No global service instance available, removing JXL support",
                 )
                 if "jxl" in self.supported_formats:
                     del self.supported_formats["jxl"]
@@ -132,7 +128,7 @@ class ImageFormatConverter:
 
             if not _global_image_service.is_jxl_supported():
                 logger.debug(
-                    "JXL format support not available (pillow-jxl not installed)"
+                    "JXL format support not available (pillow-jxl not installed)",
                 )
                 if "jxl" in self.supported_formats:
                     del self.supported_formats["jxl"]
@@ -149,7 +145,7 @@ class ImageFormatConverter:
         try:
             if _global_image_service is None:
                 logger.debug(
-                    "No global service instance available, removing AVIF support"
+                    "No global service instance available, removing AVIF support",
                 )
                 if "avif" in self.supported_formats:
                     del self.supported_formats["avif"]
@@ -157,7 +153,7 @@ class ImageFormatConverter:
 
             if not _global_image_service.is_avif_supported():
                 logger.debug(
-                    "AVIF format support not available (pillow-avif not installed)"
+                    "AVIF format support not available (pillow-avif not installed)",
                 )
                 if "avif" in self.supported_formats:
                     del self.supported_formats["avif"]
@@ -170,47 +166,47 @@ class ImageFormatConverter:
                 del self.supported_formats["avif"]
 
     def get_supported_formats(self) -> dict[str, dict[str, Any]]:
-        """
-        Get dictionary of supported formats and their capabilities.
+        """Get dictionary of supported formats and their capabilities.
 
         Returns:
             Dictionary mapping format names to their capabilities
+
         """
         return self.supported_formats.copy()
 
     def is_format_supported(self, format_name: str) -> bool:
-        """
-        Check if a format is supported for conversion.
+        """Check if a format is supported for conversion.
 
         Args:
             format_name: Format name (e.g., 'webp', 'png', 'jpeg')
 
         Returns:
             True if format is supported, False otherwise
+
         """
         return format_name.lower() in self.supported_formats
 
     def get_format_info(self, format_name: str) -> dict[str, Any] | None:
-        """
-        Get detailed information about a specific format.
+        """Get detailed information about a specific format.
 
         Args:
             format_name: Format name (e.g., 'webp', 'png', 'jpeg')
 
         Returns:
             Dictionary with format information or None if not supported
+
         """
         return self.supported_formats.get(format_name.lower())
 
     def get_conversion_options(self, format_name: str) -> dict[str, Any]:
-        """
-        Get conversion options for a specific format.
+        """Get conversion options for a specific format.
 
         Args:
             format_name: Format name (e.g., 'webp', 'png', 'jpeg')
 
         Returns:
             Dictionary with conversion options
+
         """
         format_info = self.get_format_info(format_name)
         if not format_info:
@@ -245,8 +241,7 @@ class ImageFormatConverter:
         return options
 
     def validate_conversion(self, input_format: str, output_format: str) -> bool:
-        """
-        Validate if conversion from input to output format is supported.
+        """Validate if conversion from input to output format is supported.
 
         Args:
             input_format: Input format name
@@ -254,6 +249,7 @@ class ImageFormatConverter:
 
         Returns:
             True if conversion is supported, False otherwise
+
         """
         if not self.is_format_supported(input_format):
             logger.warning(f"Input format '{input_format}' is not supported")
@@ -269,25 +265,24 @@ class ImageFormatConverter:
 
         # Check alpha channel support
         if input_info.get("supports_alpha", False) and not output_info.get(
-            "supports_alpha", False
+            "supports_alpha", False,
         ):
             logger.warning(
-                f"Converting from {input_format} (with alpha) to {output_format} (no alpha) may lose transparency"
+                f"Converting from {input_format} (with alpha) to {output_format} (no alpha) may lose transparency",
             )
 
         # Check animation support
         if input_info.get("supports_animation", False) and not output_info.get(
-            "supports_animation", False
+            "supports_animation", False,
         ):
             logger.warning(
-                f"Converting from {input_format} (animated) to {output_format} (not animated) may lose animation"
+                f"Converting from {input_format} (animated) to {output_format} (not animated) may lose animation",
             )
 
         return True
 
     def get_optimal_format(self, requirements: dict[str, Any]) -> str | None:
-        """
-        Get the optimal format based on requirements.
+        """Get the optimal format based on requirements.
 
         Args:
             requirements: Dictionary with requirements like:
@@ -298,6 +293,7 @@ class ImageFormatConverter:
 
         Returns:
             Recommended format name or None if no suitable format found
+
         """
         candidates = []
 
@@ -345,7 +341,7 @@ class ImageFormatConverter:
         return score
 
     def _score_quality_priority(
-        self, format_info: dict[str, Any], requirements: dict[str, Any]
+        self, format_info: dict[str, Any], requirements: dict[str, Any],
     ) -> int:
         """Score format based on quality priority."""
         quality_priority = requirements.get("quality_priority", "medium")
@@ -360,7 +356,7 @@ class ImageFormatConverter:
         return 0
 
     def _score_size_priority(
-        self, format_info: dict[str, Any], requirements: dict[str, Any]
+        self, format_info: dict[str, Any], requirements: dict[str, Any],
     ) -> int:
         """Score format based on size priority."""
         size_priority = requirements.get("size_priority", "medium")
@@ -375,14 +371,14 @@ class ImageFormatConverter:
         return 0
 
     def get_file_extension(self, format_name: str) -> str:
-        """
-        Get the primary file extension for a format.
+        """Get the primary file extension for a format.
 
         Args:
             format_name: Format name
 
         Returns:
             Primary file extension (e.g., '.jpg', '.png')
+
         """
         format_info = self.get_format_info(format_name)
         if not format_info:
@@ -392,14 +388,14 @@ class ImageFormatConverter:
         return extensions[0] if extensions else f".{format_name}"
 
     def get_mime_type(self, format_name: str) -> str:
-        """
-        Get the MIME type for a format.
+        """Get the MIME type for a format.
 
         Args:
             format_name: Format name
 
         Returns:
             MIME type (e.g., 'image/jpeg', 'image/png')
+
         """
         format_info = self.get_format_info(format_name)
         if not format_info:

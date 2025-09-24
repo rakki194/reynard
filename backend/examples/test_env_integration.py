@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Test .env File Integration with Embedding Backend Configuration
+"""Test .env File Integration with Embedding Backend Configuration
 
 This script demonstrates and tests that the embedding backend configuration
 system properly loads settings from .env files.
@@ -8,7 +7,6 @@ system properly loads settings from .env files.
 
 import os
 import sys
-import tempfile
 from pathlib import Path
 
 # Add the backend directory to the Python path
@@ -23,7 +21,6 @@ from app.config.embedding_backend_config import (
 
 def test_env_file_integration():
     """Test that .env file variables are properly loaded."""
-
     print("🦦 Testing .env File Integration")
     print("=" * 40)
 
@@ -34,7 +31,7 @@ def test_env_file_integration():
 
     print(f"  Ollama enabled: {config.backends['ollama'].enabled}")
     print(
-        f"  Sentence Transformers enabled: {config.backends['sentence_transformers'].enabled}"
+        f"  Sentence Transformers enabled: {config.backends['sentence_transformers'].enabled}",
     )
     print(f"  Mock mode: {config.mock_mode}")
 
@@ -64,13 +61,13 @@ def test_env_file_integration():
 
         print(f"  Ollama enabled: {config.backends['ollama'].enabled}")
         print(
-            f"  Sentence Transformers enabled: {config.backends['sentence_transformers'].enabled}"
+            f"  Sentence Transformers enabled: {config.backends['sentence_transformers'].enabled}",
         )
         print(f"  Mock mode: {config.mock_mode}")
         print(f"  Default backend: {config.default_backend}")
         print(f"  Ollama timeout: {config.backends['ollama'].timeout_seconds}")
         print(
-            f"  ST max concurrent: {config.backends['sentence_transformers'].max_concurrent_requests}"
+            f"  ST max concurrent: {config.backends['sentence_transformers'].max_concurrent_requests}",
         )
 
         # Verify the settings were applied
@@ -120,7 +117,7 @@ def test_env_file_integration():
         print(f"  Mock mode: {config.mock_mode}")
         print(f"  Ollama enabled: {config.backends['ollama'].enabled}")
         print(
-            f"  Sentence Transformers enabled: {config.backends['sentence_transformers'].enabled}"
+            f"  Sentence Transformers enabled: {config.backends['sentence_transformers'].enabled}",
         )
 
         assert config.mock_mode is True, "Mock mode should be enabled"
@@ -144,7 +141,6 @@ def test_env_file_integration():
 
 def create_sample_env_file():
     """Create a sample .env file for testing."""
-
     print("\n📝 Creating sample .env file...")
 
     sample_env_content = """# Sample .env file for embedding backend configuration

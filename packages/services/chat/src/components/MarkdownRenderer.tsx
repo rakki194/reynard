@@ -7,7 +7,7 @@
 import { createMemo, createEffect } from "solid-js";
 import { createStreamingMarkdownParser } from "../utils/StreamingMarkdownParser";
 // Simple HTML sanitization function
-const sanitizeHTML = html => {
+const sanitizeHTML = (html: any) => {
   // Remove potentially dangerous tags and attributes
   return html
     .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
@@ -18,8 +18,8 @@ const sanitizeHTML = html => {
     .replace(/on\w+\s*=/gi, "")
     .replace(/<a[^>]*href\s*=\s*["']?javascript:/gi, '<a href="#"');
 };
-export const MarkdownRenderer = props => {
-  let containerRef;
+export const MarkdownRenderer = (props: any) => {
+  let containerRef: HTMLDivElement | undefined;
   // Parse markdown content
   const parsedContent = createMemo(() => {
     if (!props.content) {
@@ -34,7 +34,7 @@ export const MarkdownRenderer = props => {
     return result;
   });
   // Handle link clicks
-  const handleLinkClick = event => {
+  const handleLinkClick = (event: any) => {
     const target = event.target;
     if (target.tagName === "A") {
       const href = target.getAttribute("href");
@@ -79,8 +79,8 @@ export const MarkdownRenderer = props => {
       // Apply syntax highlighting if available
       if (typeof window !== "undefined" && window.hljs) {
         const codeBlocks = containerRef.querySelectorAll('pre code[class*="language-"]');
-        codeBlocks.forEach(block => {
-          window.hljs.highlightElement(block);
+        codeBlocks.forEach((block: any) => {
+          window.hljs?.highlightElement(block);
         });
       }
       // Apply math rendering if available
@@ -90,10 +90,10 @@ export const MarkdownRenderer = props => {
       // Apply mermaid diagrams if available
       if (props.enableDiagrams && typeof window !== "undefined" && window.mermaid) {
         const diagrams = containerRef.querySelectorAll(".language-mermaid");
-        diagrams.forEach((diagram, index) => {
+        diagrams.forEach((diagram: any, index: any) => {
           const id = `mermaid-${Date.now()}-${index}`;
           diagram.id = id;
-          window.mermaid.init(undefined, `#${id}`);
+          window.mermaid?.init(undefined, `#${id}`);
         });
       }
     }

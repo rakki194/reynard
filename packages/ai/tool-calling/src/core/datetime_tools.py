@@ -1,5 +1,4 @@
-"""
-Date/Time tools for the yipyap assistant.
+"""Date/Time tools for the yipyap assistant.
 
 This module provides datetime-related tools that allow the assistant to perform
 time operations including getting current time with timezone support and
@@ -76,10 +75,9 @@ def get_datetime_service():
     },
 )
 async def get_current_time_tool(
-    timezone: str = "UTC", format_name: str = "iso", include_timezone_info: bool = True
+    timezone: str = "UTC", format_name: str = "iso", include_timezone_info: bool = True,
 ) -> dict[str, Any]:
-    """
-    Get current date and time with timezone support.
+    """Get current date and time with timezone support.
 
     Args:
         timezone: Timezone name or alias
@@ -88,6 +86,7 @@ async def get_current_time_tool(
 
     Returns:
         Dictionary containing current time information
+
     """
     try:
         from ..utils.datetime_utils import DateTimeUtils
@@ -108,7 +107,7 @@ async def get_current_time_tool(
                 timezone_info = {
                     "name": timezone,
                     "offset_hours": int(
-                        current_time.utcoffset().total_seconds() / 3600
+                        current_time.utcoffset().total_seconds() / 3600,
                     ),
                     "abbreviation": current_time.strftime("%Z"),
                     "is_dst": bool(current_time.dst()),
@@ -206,8 +205,7 @@ async def format_time_tool(
     target_timezone: str = "",
     custom_format: str = "",
 ) -> dict[str, Any]:
-    """
-    Format a given time input in various formats with timezone conversion.
+    """Format a given time input in various formats with timezone conversion.
 
     Args:
         time_input: Time input to format
@@ -219,6 +217,7 @@ async def format_time_tool(
 
     Returns:
         Dictionary containing formatted time information
+
     """
     try:
         from ..utils.datetime_utils import DateTimeUtils
@@ -233,11 +232,11 @@ async def format_time_tool(
             parsed_time = DateTimeUtils.parse_iso_time(time_input, source_timezone)
         elif input_format == "unix":
             parsed_time = DateTimeUtils.parse_unix_timestamp(
-                time_input, source_timezone
+                time_input, source_timezone,
             )
         elif input_format == "custom" and custom_format and custom_format.strip():
             parsed_time = DateTimeUtils.parse_custom_time(
-                time_input, custom_format, source_timezone
+                time_input, custom_format, source_timezone,
             )
         else:
             raise ValueError(f"Invalid input format: {input_format}")
@@ -253,7 +252,7 @@ async def format_time_tool(
             and target_timezone != source_timezone
         ):
             converted_time = DateTimeUtils.convert_timezone(
-                parsed_time, target_timezone
+                parsed_time, target_timezone,
             )
             if converted_time:
                 final_time = converted_time

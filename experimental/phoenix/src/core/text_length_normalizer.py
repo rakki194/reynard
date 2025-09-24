@@ -1,5 +1,4 @@
-"""
-PHOENIX Text Length Normalizer
+"""PHOENIX Text Length Normalizer
 
 Specialized module for handling text length dependency in results:
 - Length normalization algorithms
@@ -15,17 +14,11 @@ import logging
 import math
 import re
 from collections import Counter
-from datetime import datetime
-from typing import Any, Dict, List, Optional, Tuple
-
-import numpy as np
-
-from ..utils.data_structures import AgentState
+from typing import Any
 
 
 class TextLengthNormalizer:
-    """
-    Text length normalization system to address length dependency in results.
+    """Text length normalization system to address length dependency in results.
 
     Features:
     - Multiple normalization strategies
@@ -58,10 +51,9 @@ class TextLengthNormalizer:
         self.logger.info("📏 Text length normalizer initialized")
 
     def normalize_text_length(
-        self, text: str, strategy: str = "adaptive"
-    ) -> Dict[str, Any]:
-        """
-        Normalize text length using specified strategy.
+        self, text: str, strategy: str = "adaptive",
+    ) -> dict[str, Any]:
+        """Normalize text length using specified strategy.
 
         Args:
             text: Input text to normalize
@@ -69,23 +61,23 @@ class TextLengthNormalizer:
 
         Returns:
             Dictionary containing normalized text and metadata
+
         """
         self.logger.debug(
-            f"Normalizing text of length {len(text.split())} words using {strategy} strategy"
+            f"Normalizing text of length {len(text.split())} words using {strategy} strategy",
         )
 
         if strategy == "adaptive":
             return self._adaptive_normalization(text)
-        elif strategy == "truncate":
+        if strategy == "truncate":
             return self._truncation_normalization(text)
-        elif strategy == "expand":
+        if strategy == "expand":
             return self._expansion_normalization(text)
-        elif strategy == "statistical":
+        if strategy == "statistical":
             return self._statistical_normalization(text)
-        else:
-            raise ValueError(f"Unknown normalization strategy: {strategy}")
+        raise ValueError(f"Unknown normalization strategy: {strategy}")
 
-    def _adaptive_normalization(self, text: str) -> Dict[str, Any]:
+    def _adaptive_normalization(self, text: str) -> dict[str, Any]:
         """Apply adaptive normalization based on text characteristics."""
         words = text.split()
         word_count = len(words)
@@ -94,30 +86,28 @@ class TextLengthNormalizer:
         if word_count < self.normalization_params["min_length"]:
             # Text too short - expand with context
             return self._expand_short_text(text, target_length)
-        elif word_count > self.normalization_params["max_length"]:
+        if word_count > self.normalization_params["max_length"]:
             # Text too long - intelligently truncate
             return self._truncate_long_text(text, target_length)
-        elif (
+        if (
             abs(word_count - target_length) / target_length
             > self.normalization_params["length_tolerance"]
         ):
             # Text within acceptable range but not optimal - adjust
             if word_count < target_length:
                 return self._expand_short_text(text, target_length)
-            else:
-                return self._truncate_long_text(text, target_length)
-        else:
-            # Text already optimal length
-            return {
-                "normalized_text": text,
-                "original_length": word_count,
-                "normalized_length": word_count,
-                "normalization_factor": 1.0,
-                "strategy_used": "none",
-                "quality_preserved": True,
-            }
+            return self._truncate_long_text(text, target_length)
+        # Text already optimal length
+        return {
+            "normalized_text": text,
+            "original_length": word_count,
+            "normalized_length": word_count,
+            "normalization_factor": 1.0,
+            "strategy_used": "none",
+            "quality_preserved": True,
+        }
 
-    def _expand_short_text(self, text: str, target_length: int) -> Dict[str, Any]:
+    def _expand_short_text(self, text: str, target_length: int) -> dict[str, Any]:
         """Expand short text while preserving quality."""
         words = text.split()
         current_length = len(words)
@@ -145,7 +135,7 @@ class TextLengthNormalizer:
             "quality_preserved": self._assess_quality_preservation(text, expanded_text),
         }
 
-    def _truncate_long_text(self, text: str, target_length: int) -> Dict[str, Any]:
+    def _truncate_long_text(self, text: str, target_length: int) -> dict[str, Any]:
         """Intelligently truncate long text while preserving key information."""
         words = text.split()
         current_length = len(words)
@@ -155,7 +145,7 @@ class TextLengthNormalizer:
 
         # Keep most important words
         important_words = sorted(
-            word_importance.items(), key=lambda x: x[1], reverse=True
+            word_importance.items(), key=lambda x: x[1], reverse=True,
         )
         words_to_keep = [word for word, _ in important_words[:target_length]]
 
@@ -169,11 +159,11 @@ class TextLengthNormalizer:
             "normalization_factor": len(truncated_text.split()) / current_length,
             "strategy_used": "truncation",
             "quality_preserved": self._assess_quality_preservation(
-                text, truncated_text
+                text, truncated_text,
             ),
         }
 
-    def _statistical_normalization(self, text: str) -> Dict[str, Any]:
+    def _statistical_normalization(self, text: str) -> dict[str, Any]:
         """Apply statistical normalization with bias correction."""
         words = text.split()
         current_length = len(words)
@@ -189,22 +179,21 @@ class TextLengthNormalizer:
         if bias_corrected_ratio > 1.2:
             # Text is significantly longer - truncate
             return self._truncate_long_text(text, target_length)
-        elif bias_corrected_ratio < 0.8:
+        if bias_corrected_ratio < 0.8:
             # Text is significantly shorter - expand
             return self._expand_short_text(text, target_length)
-        else:
-            # Text is within acceptable range
-            return {
-                "normalized_text": text,
-                "original_length": current_length,
-                "normalized_length": current_length,
-                "normalization_factor": 1.0,
-                "strategy_used": "statistical_none",
-                "quality_preserved": True,
-                "bias_correction_applied": True,
-            }
+        # Text is within acceptable range
+        return {
+            "normalized_text": text,
+            "original_length": current_length,
+            "normalized_length": current_length,
+            "normalization_factor": 1.0,
+            "strategy_used": "statistical_none",
+            "quality_preserved": True,
+            "bias_correction_applied": True,
+        }
 
-    def _analyze_text_characteristics(self, text: str) -> Dict[str, Any]:
+    def _analyze_text_characteristics(self, text: str) -> dict[str, Any]:
         """Analyze text characteristics to inform normalization strategy."""
         words = text.lower().split()
 
@@ -222,7 +211,7 @@ class TextLengthNormalizer:
             "efficiency",
         ]
         technical_score = sum(1 for word in words if word in technical_terms) / len(
-            words
+            words,
         )
 
         # Analytical indicators
@@ -239,7 +228,7 @@ class TextLengthNormalizer:
             "determine",
         ]
         analytical_score = sum(1 for word in words if word in analytical_terms) / len(
-            words
+            words,
         )
 
         # Complexity indicators
@@ -385,7 +374,7 @@ class TextLengthNormalizer:
 
         return expanded_text
 
-    def _calculate_word_importance(self, text: str) -> Dict[str, float]:
+    def _calculate_word_importance(self, text: str) -> dict[str, float]:
         """Calculate importance scores for words in text."""
         words = text.lower().split()
         word_freq = Counter(words)
@@ -459,7 +448,7 @@ class TextLengthNormalizer:
         return importance_scores
 
     def _reconstruct_text_from_words(
-        self, important_words: List[str], original_text: str
+        self, important_words: list[str], original_text: str,
     ) -> str:
         """Reconstruct text from important words while maintaining structure."""
         # Simple reconstruction - in practice, this could be more sophisticated
@@ -480,7 +469,7 @@ class TextLengthNormalizer:
         return corrected_ratio
 
     def _assess_quality_preservation(
-        self, original_text: str, normalized_text: str
+        self, original_text: str, normalized_text: str,
     ) -> bool:
         """Assess whether quality was preserved during normalization."""
         # Simple quality assessment - in practice, this could be more sophisticated
@@ -512,8 +501,8 @@ class TextLengthNormalizer:
         return max(0.5, min(2.0, bias_factor))  # Clamp between 0.5 and 2.0
 
     def normalize_metrics_by_length(
-        self, metrics: Dict[str, float], text: str
-    ) -> Dict[str, float]:
+        self, metrics: dict[str, float], text: str,
+    ) -> dict[str, float]:
         """Normalize metrics by text length to remove length bias."""
         length_bias_factor = self.calculate_length_bias_factor(text)
 

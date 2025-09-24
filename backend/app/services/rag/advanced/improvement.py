@@ -1,5 +1,4 @@
-"""
-Continuous Improvement: A/B testing framework and optimization pipeline.
+"""Continuous Improvement: A/B testing framework and optimization pipeline.
 
 This service provides:
 - Automated model evaluation and A/B testing
@@ -9,14 +8,13 @@ This service provides:
 - Continuous 5% monthly improvement tracking
 """
 
-import asyncio
 import logging
 import statistics
 import time
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import Enum
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 logger = logging.getLogger("uvicorn")
 
@@ -49,16 +47,16 @@ class Experiment:
     description: str
     hypothesis: str
     improvement_type: ImprovementType
-    control_config: Dict[str, Any]
-    treatment_config: Dict[str, Any]
+    control_config: dict[str, Any]
+    treatment_config: dict[str, Any]
     traffic_split: float  # 0.0 to 1.0
-    success_metrics: List[str]
+    success_metrics: list[str]
     minimum_sample_size: int
     significance_level: float
     status: ExperimentStatus
-    start_date: Optional[datetime]
-    end_date: Optional[datetime]
-    results: Optional[Dict[str, Any]]
+    start_date: datetime | None
+    end_date: datetime | None
+    results: dict[str, Any] | None
 
 
 @dataclass
@@ -68,35 +66,35 @@ class Feedback:
     feedback_id: str
     user_id: str
     query: str
-    results: List[Dict[str, Any]]
+    results: list[dict[str, Any]]
     relevance_score: int  # 1-5 scale
     satisfaction_score: int  # 1-5 scale
     comments: str
     timestamp: datetime
-    metadata: Dict[str, Any]
+    metadata: dict[str, Any]
 
 
 class ContinuousImprovement:
     """Automated continuous improvement pipeline."""
 
-    def __init__(self, config: Dict[str, Any]):
+    def __init__(self, config: dict[str, Any]):
         self.config = config
         self.enabled = config.get("rag_continuous_improvement_enabled", True)
 
         # Experiments
-        self.experiments: Dict[str, Experiment] = {}
-        self.active_experiments: Dict[str, Experiment] = {}
+        self.experiments: dict[str, Experiment] = {}
+        self.active_experiments: dict[str, Experiment] = {}
 
         # Feedback collection
-        self.feedback_data: List[Feedback] = []
-        self.feedback_analysis: Dict[str, Any] = {}
+        self.feedback_data: list[Feedback] = []
+        self.feedback_analysis: dict[str, Any] = {}
 
         # Improvement tracking
-        self.improvement_history: List[Dict[str, Any]] = []
+        self.improvement_history: list[dict[str, Any]] = []
         self.monthly_improvement_target = 0.05  # 5% monthly improvement
 
         # Automated optimization
-        self.optimization_recommendations: List[Dict[str, Any]] = []
+        self.optimization_recommendations: list[dict[str, Any]] = []
 
     async def create_experiment(
         self,
@@ -104,10 +102,10 @@ class ContinuousImprovement:
         description: str,
         hypothesis: str,
         improvement_type: ImprovementType,
-        control_config: Dict[str, Any],
-        treatment_config: Dict[str, Any],
+        control_config: dict[str, Any],
+        treatment_config: dict[str, Any],
         traffic_split: float = 0.5,
-        success_metrics: Optional[List[str]] = None,
+        success_metrics: list[str] | None = None,
         minimum_sample_size: int = 1000,
     ) -> str:
         """Create a new A/B testing experiment."""
@@ -160,7 +158,7 @@ class ContinuousImprovement:
         experiment_id: str,
         user_id: str,
         variant: str,  # "control" or "treatment"
-        metrics: Dict[str, float],
+        metrics: dict[str, float],
     ) -> bool:
         """Collect data for an active experiment."""
         if experiment_id not in self.active_experiments:
@@ -185,7 +183,7 @@ class ContinuousImprovement:
 
         return True
 
-    async def analyze_experiment(self, experiment_id: str) -> Dict[str, Any]:
+    async def analyze_experiment(self, experiment_id: str) -> dict[str, Any]:
         """Analyze experiment results and determine statistical significance."""
         if experiment_id not in self.experiments:
             return {"error": "Experiment not found"}
@@ -253,7 +251,7 @@ class ContinuousImprovement:
             "recommendation": "implement" if experiment_success else "reject",
         }
 
-    async def complete_experiment(self, experiment_id: str) -> Dict[str, Any]:
+    async def complete_experiment(self, experiment_id: str) -> dict[str, Any]:
         """Complete an experiment and generate final results."""
         if experiment_id not in self.active_experiments:
             return {"error": "Experiment not found or not active"}
@@ -278,7 +276,7 @@ class ContinuousImprovement:
         return analysis
 
     async def _record_improvement(
-        self, experiment: Experiment, analysis: Dict[str, Any]
+        self, experiment: Experiment, analysis: dict[str, Any],
     ) -> None:
         """Record successful improvement."""
         improvement_record = {
@@ -298,7 +296,7 @@ class ContinuousImprovement:
         await self._generate_optimization_recommendations(experiment, analysis)
 
     async def _generate_optimization_recommendations(
-        self, experiment: Experiment, analysis: Dict[str, Any]
+        self, experiment: Experiment, analysis: dict[str, Any],
     ) -> None:
         """Generate optimization recommendations based on successful experiments."""
         recommendation = {
@@ -321,7 +319,7 @@ class ContinuousImprovement:
         self,
         user_id: str,
         query: str,
-        results: List[Dict[str, Any]],
+        results: list[dict[str, Any]],
         relevance_score: int,
         satisfaction_score: int,
         comments: str = "",
@@ -368,10 +366,10 @@ class ContinuousImprovement:
             return
 
         avg_satisfaction = sum(f.satisfaction_score for f in recent_feedback) / len(
-            recent_feedback
+            recent_feedback,
         )
         avg_relevance = sum(f.relevance_score for f in recent_feedback) / len(
-            recent_feedback
+            recent_feedback,
         )
 
         # Identify common issues
@@ -393,16 +391,16 @@ class ContinuousImprovement:
             "total_feedback": len(recent_feedback),
             "low_satisfaction_count": len(low_satisfaction_feedback),
             "common_issues": dict(
-                sorted(common_issues.items(), key=lambda x: x[1], reverse=True)[:10]
+                sorted(common_issues.items(), key=lambda x: x[1], reverse=True)[:10],
             ),
         }
 
-    async def get_improvement_progress(self) -> Dict[str, Any]:
+    async def get_improvement_progress(self) -> dict[str, Any]:
         """Get progress towards monthly improvement targets."""
         current_month = datetime.now().replace(day=1)
         month_start = current_month
         month_end = (current_month + timedelta(days=32)).replace(day=1) - timedelta(
-            days=1
+            days=1,
         )
 
         # Get improvements from this month
@@ -435,7 +433,7 @@ class ContinuousImprovement:
 
         return progress
 
-    async def get_optimization_recommendations(self) -> List[Dict[str, Any]]:
+    async def get_optimization_recommendations(self) -> list[dict[str, Any]]:
         """Get pending optimization recommendations."""
         pending_recommendations = [
             rec
@@ -445,7 +443,7 @@ class ContinuousImprovement:
 
         # Sort by priority and estimated impact
         pending_recommendations.sort(
-            key=lambda x: (x["priority"] == "high", x["estimated_impact"]), reverse=True
+            key=lambda x: (x["priority"] == "high", x["estimated_impact"]), reverse=True,
         )
 
         return pending_recommendations
@@ -461,7 +459,7 @@ class ContinuousImprovement:
 
         return False
 
-    def get_continuous_improvement_stats(self) -> Dict[str, Any]:
+    def get_continuous_improvement_stats(self) -> dict[str, Any]:
         """Get continuous improvement statistics."""
         return {
             "enabled": self.enabled,
@@ -472,7 +470,7 @@ class ContinuousImprovement:
                     e
                     for e in self.experiments.values()
                     if e.status == ExperimentStatus.COMPLETED
-                ]
+                ],
             ),
             "total_feedback": len(self.feedback_data),
             "improvements_recorded": len(self.improvement_history),
@@ -481,7 +479,7 @@ class ContinuousImprovement:
                     r
                     for r in self.optimization_recommendations
                     if r["status"] == "pending"
-                ]
+                ],
             ),
             "monthly_target_percent": self.monthly_improvement_target * 100,
         }

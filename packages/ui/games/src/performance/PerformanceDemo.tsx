@@ -1,4 +1,57 @@
-import { debounce, MemoryMonitor, PerformanceTimer, throttle } from "reynard-algorithms";
+// import { debounce, MemoryMonitor, PerformanceTimer, throttle } from "reynard-algorithms";
+
+// Temporary placeholders until algorithms package is built
+function debounce<T extends (...args: any[]) => any>(func: T, wait: number): T {
+  let timeout: NodeJS.Timeout;
+  return ((...args: any[]) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait);
+  }) as T;
+}
+
+function throttle<T extends (...args: any[]) => any>(func: T, limit: number): T {
+  let inThrottle: boolean;
+  return ((...args: any[]) => {
+    if (!inThrottle) {
+      func(...args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
+    }
+  }) as T;
+}
+
+class MemoryMonitor {
+  static getMemoryUsage() {
+    if ((performance as any).memory) {
+      return {
+        used: (performance as any).memory.usedJSHeapSize,
+        total: (performance as any).memory.totalJSHeapSize,
+        limit: (performance as any).memory.jsHeapSizeLimit
+      };
+    }
+    return { used: 0, total: 0, limit: 0 };
+  }
+  
+  static measure(): { used: number; total: number; limit: number } {
+    return this.getMemoryUsage();
+  }
+}
+
+class PerformanceTimer {
+  private startTime: number = 0;
+  
+  start() {
+    this.startTime = performance.now();
+  }
+  
+  end(): number {
+    return performance.now() - this.startTime;
+  }
+  
+  stop(): number {
+    return this.end();
+  }
+}
 import { Button } from "reynard-components-core";
 import { createSignal } from "solid-js";
 import "./PerformanceDemo.css";
@@ -10,20 +63,20 @@ export function PerformanceDemo(_props = {}) {
     const newMemoryMonitor = new MemoryMonitor();
     setMemoryMonitor(newMemoryMonitor);
     newTimer.start();
-    const memoryBefore = newMemoryMonitor.measure();
+    const memoryBefore = MemoryMonitor.measure();
     // Simulate heavy operation
     let result = 0;
     for (let i = 0; i < 1000000; i++) {
       result += Math.sqrt(i) * Math.sin(i);
     }
     const duration = newTimer.stop();
-    const memoryAfter = newMemoryMonitor.measure();
+    const memoryAfter = MemoryMonitor.measure();
     setMeasurements(prev => [
       ...prev,
       {
         name: `Heavy Operation ${prev.length + 1}`,
         duration,
-        memory: memoryAfter - memoryBefore,
+        memory: memoryAfter.used - memoryBefore.used,
         timestamp: Date.now(),
       },
     ]);

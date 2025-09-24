@@ -1,5 +1,4 @@
-"""
-Hybrid Search Module
+"""Hybrid Search Module
 ===================
 
 Handles hybrid search functionality that combines semantic and syntax search
@@ -9,7 +8,7 @@ for comprehensive code exploration.
 import asyncio
 import logging
 import time
-from typing import Any, Dict, List
+from typing import Any
 
 from .models import (
     HybridSearchRequest,
@@ -26,7 +25,7 @@ class HybridSearchHandler:
     """Handles hybrid search operations combining semantic and syntax search."""
 
     def __init__(
-        self, search_service: Any, semantic_handler: Any, syntax_handler: Any
+        self, search_service: Any, semantic_handler: Any, syntax_handler: Any,
     ) -> None:
         """Initialize the hybrid search handler."""
         self.search_service = search_service
@@ -43,7 +42,7 @@ class HybridSearchHandler:
             cached_result = await self.search_service._get_cached_result(cache_key)
             if cached_result:
                 self.search_service._metrics.record_search(
-                    time.time() - start_time, cache_hit=True
+                    time.time() - start_time, cache_hit=True,
                 )
                 logger.debug(f"Cache hit for hybrid search: {request.query[:50]}...")
                 return cached_result
@@ -69,18 +68,18 @@ class HybridSearchHandler:
 
             # Run both searches in parallel for better performance
             semantic_task = asyncio.create_task(
-                self.semantic_handler.search(semantic_req)
+                self.semantic_handler.search(semantic_req),
             )
             syntax_task = asyncio.create_task(self.syntax_handler.search(syntax_req))
 
             semantic_response, syntax_response = await asyncio.gather(
-                semantic_task, syntax_task, return_exceptions=True
+                semantic_task, syntax_task, return_exceptions=True,
             )
 
             # Handle exceptions from parallel tasks
             if isinstance(semantic_response, Exception):
                 logger.warning(
-                    "Semantic search failed in hybrid: %s", semantic_response
+                    "Semantic search failed in hybrid: %s", semantic_response,
                 )
                 semantic_response = SearchResponse(
                     success=False,
@@ -104,7 +103,7 @@ class HybridSearchHandler:
 
             # Combine results - now both are guaranteed to be SearchResponse objects
             combined_results = self._combine_search_results(
-                semantic_response, syntax_response, request
+                semantic_response, syntax_response, request,
             )
 
             search_response = SearchResponse(
@@ -118,10 +117,10 @@ class HybridSearchHandler:
 
             # Cache the result
             await self.search_service._cache_result(
-                cache_key, search_response, ttl=1800
+                cache_key, search_response, ttl=1800,
             )  # 30 minutes for hybrid search
             self.search_service._metrics.record_search(
-                time.time() - start_time, cache_hit=False
+                time.time() - start_time, cache_hit=False,
             )
             return search_response
 
@@ -136,7 +135,7 @@ class HybridSearchHandler:
                 error=str(e),
             )
             self.search_service._metrics.record_search(
-                time.time() - start_time, cache_hit=False
+                time.time() - start_time, cache_hit=False,
             )
             return error_result
 
@@ -145,7 +144,7 @@ class HybridSearchHandler:
         semantic_response: SearchResponse,
         syntax_response: SearchResponse,
         request: HybridSearchRequest,
-    ) -> List[SearchResult]:
+    ) -> list[SearchResult]:
         """Combine results from semantic and syntax search."""
         combined = []
         seen_files = set()

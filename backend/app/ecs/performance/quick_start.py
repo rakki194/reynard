@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Quick start example for FastAPI ECS Performance Monitoring.
+"""Quick start example for FastAPI ECS Performance Monitoring.
 
 This script demonstrates how to quickly set up and use the performance
 monitoring system in your FastAPI application.
@@ -25,7 +24,6 @@ from .middleware import (
 
 def create_monitored_app() -> FastAPI:
     """Create a FastAPI app with performance monitoring enabled."""
-
     app = FastAPI(
         title="ECS Backend with Performance Monitoring",
         description="Example FastAPI app with comprehensive performance monitoring",
@@ -136,7 +134,7 @@ async def main():
 
     print("\n🚀 To run the server:")
     print(
-        "   uvicorn app.ecs.performance.quick_start:app --reload --host 0.0.0.0 --port 8000"
+        "   uvicorn app.ecs.performance.quick_start:app --reload --host 0.0.0.0 --port 8000",
     )
 
     print("\n🧪 To test the endpoints:")
@@ -147,12 +145,12 @@ async def main():
 
     print("\n📈 To run load tests:")
     print(
-        "   python -m app.ecs.performance.benchmark_cli --mode load-test --base-url http://localhost:8000 --endpoints / /health /slow --concurrent-users 10 --duration 30"
+        "   python -m app.ecs.performance.benchmark_cli --mode load-test --base-url http://localhost:8000 --endpoints / /health /slow --concurrent-users 10 --duration 30",
     )
 
     print("\n🔍 To profile an endpoint:")
     print(
-        "   python -m app.ecs.performance.benchmark_cli --mode profile --base-url http://localhost:8000 --endpoints /slow --iterations 50"
+        "   python -m app.ecs.performance.benchmark_cli --mode profile --base-url http://localhost:8000 --endpoints /slow --iterations 50",
     )
 
     print("\n" + "=" * 70)

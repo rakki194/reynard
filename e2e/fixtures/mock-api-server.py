@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-🦊 Mock API Server for Cloudflare Outage Testing
+"""🦊 Mock API Server for Cloudflare Outage Testing
 
 This server simulates the Tenant Service API that was overwhelmed
 during the Cloudflare outage. It provides endpoints that can be
@@ -15,14 +14,14 @@ import threading
 import time
 from datetime import datetime
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import urlparse
 
 
 # Configure detailed logging
 def setup_logging():
     # Create logs directory if it doesn't exist
     log_dir = os.path.join(
-        os.path.dirname(__file__), "..", "results", "effects", "backend-logs"
+        os.path.dirname(__file__), "..", "results", "effects", "backend-logs",
     )
     os.makedirs(log_dir, exist_ok=True)
 
@@ -84,7 +83,7 @@ class MockAPIHandler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Access-Control-Allow-Origin", "*")
         self.send_header(
-            "Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"
+            "Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS",
         )
         self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
         self.send_header("Access-Control-Max-Age", "86400")
@@ -105,7 +104,7 @@ class MockAPIHandler(BaseHTTPRequestHandler):
 
         if cleaned_count > 0:
             logger.debug(
-                f"🧹 Cleaned {cleaned_count} old timestamps from rate limit window"
+                f"🧹 Cleaned {cleaned_count} old timestamps from rate limit window",
             )
 
         # Check if we're over the limit
@@ -114,20 +113,20 @@ class MockAPIHandler(BaseHTTPRequestHandler):
             >= _global_state["rate_limit_requests"]
         ):
             logger.warning(
-                f"🚫 RATE LIMIT EXCEEDED: {len(_global_state['request_timestamps'])} requests in {_global_state['rate_limit_window']}s (limit: {_global_state['rate_limit_requests']})"
+                f"🚫 RATE LIMIT EXCEEDED: {len(_global_state['request_timestamps'])} requests in {_global_state['rate_limit_window']}s (limit: {_global_state['rate_limit_requests']})",
             )
             logger.warning(
-                f"🚫 Rate limit details: window={_global_state['rate_limit_window']}s, limit={_global_state['rate_limit_requests']}, current={len(_global_state['request_timestamps'])}"
+                f"🚫 Rate limit details: window={_global_state['rate_limit_window']}s, limit={_global_state['rate_limit_requests']}, current={len(_global_state['request_timestamps'])}",
             )
             return False
 
         # Add current request timestamp
         _global_state["request_timestamps"].append(current_time)
         remaining = _global_state["rate_limit_requests"] - len(
-            _global_state["request_timestamps"]
+            _global_state["request_timestamps"],
         )
         logger.debug(
-            f"✅ Rate limit check passed: {len(_global_state['request_timestamps'])}/{_global_state['rate_limit_requests']} requests, {remaining} remaining"
+            f"✅ Rate limit check passed: {len(_global_state['request_timestamps'])}/{_global_state['rate_limit_requests']} requests, {remaining} remaining",
         )
         return True
 
@@ -145,7 +144,7 @@ class MockAPIHandler(BaseHTTPRequestHandler):
                 > _global_state["circuit_breaker_timeout"]
             ):
                 logger.info(
-                    f"🔄 CIRCUIT BREAKER RESET: {_global_state['circuit_breaker_failures']} failures cleared, allowing requests again"
+                    f"🔄 CIRCUIT BREAKER RESET: {_global_state['circuit_breaker_failures']} failures cleared, allowing requests again",
                 )
                 _global_state["circuit_breaker_failures"] = 0
                 _global_state["circuit_breaker_reset_time"] = 0
@@ -154,13 +153,13 @@ class MockAPIHandler(BaseHTTPRequestHandler):
                     current_time - _global_state["circuit_breaker_reset_time"]
                 )
                 logger.warning(
-                    f"⚡ CIRCUIT BREAKER OPEN: blocking requests for {remaining_time:.1f}s (failures: {_global_state['circuit_breaker_failures']}/{_global_state['circuit_breaker_threshold']})"
+                    f"⚡ CIRCUIT BREAKER OPEN: blocking requests for {remaining_time:.1f}s (failures: {_global_state['circuit_breaker_failures']}/{_global_state['circuit_breaker_threshold']})",
                 )
                 return False
 
         if _global_state["circuit_breaker_failures"] > 0:
             logger.debug(
-                f"🔧 Circuit breaker status: {_global_state['circuit_breaker_failures']}/{_global_state['circuit_breaker_threshold']} failures"
+                f"🔧 Circuit breaker status: {_global_state['circuit_breaker_failures']}/{_global_state['circuit_breaker_threshold']} failures",
             )
 
         return True
@@ -185,17 +184,17 @@ class MockAPIHandler(BaseHTTPRequestHandler):
             >= _global_state["rapid_request_threshold"]
         ):
             logger.warning(
-                f"🚨 RAPID REQUEST DETECTED: {len(_global_state['rapid_request_timestamps'])} requests in {_global_state['rapid_request_window']}s (threshold: {_global_state['rapid_request_threshold']})"
+                f"🚨 RAPID REQUEST DETECTED: {len(_global_state['rapid_request_timestamps'])} requests in {_global_state['rapid_request_window']}s (threshold: {_global_state['rapid_request_threshold']})",
             )
             logger.warning(
-                f"🚨 This indicates a potential infinite loop or API spam attack!"
+                "🚨 This indicates a potential infinite loop or API spam attack!",
             )
             return False
 
         # Add current request timestamp
         _global_state["rapid_request_timestamps"].append(current_time)
         logger.debug(
-            f"✅ Rapid request check passed: {len(_global_state['rapid_request_timestamps'])}/{_global_state['rapid_request_threshold']} requests in {_global_state['rapid_request_window']}s"
+            f"✅ Rapid request check passed: {len(_global_state['rapid_request_timestamps'])}/{_global_state['rapid_request_threshold']} requests in {_global_state['rapid_request_window']}s",
         )
         return True
 
@@ -225,10 +224,10 @@ class MockAPIHandler(BaseHTTPRequestHandler):
                 >= _global_state["identical_request_threshold"]
             ):
                 logger.warning(
-                    f"🚨 IDENTICAL REQUEST PATTERN DETECTED: {request_key} called {_global_state['request_cache'][request_key]['count']} times in {_global_state['cache_window']}s"
+                    f"🚨 IDENTICAL REQUEST PATTERN DETECTED: {request_key} called {_global_state['request_cache'][request_key]['count']} times in {_global_state['cache_window']}s",
                 )
                 logger.warning(
-                    f"🚨 This indicates a potential infinite loop in the frontend!"
+                    "🚨 This indicates a potential infinite loop in the frontend!",
                 )
                 return False
         else:
@@ -240,7 +239,7 @@ class MockAPIHandler(BaseHTTPRequestHandler):
             }
 
         logger.debug(
-            f"✅ Request pattern check passed: {request_key} count={_global_state['request_cache'].get(request_key, {}).get('count', 0)}"
+            f"✅ Request pattern check passed: {request_key} count={_global_state['request_cache'].get(request_key, {}).get('count', 0)}",
         )
         return True
 
@@ -252,7 +251,7 @@ class MockAPIHandler(BaseHTTPRequestHandler):
         _global_state["request_count"] += 1
 
         logger.info(
-            f"🌐 REQUEST #{_global_state['request_count']}: {self.command} {path} from {self.client_address[0]}"
+            f"🌐 REQUEST #{_global_state['request_count']}: {self.command} {path} from {self.client_address[0]}",
         )
 
         # Check circuit breaker first (if enabled)
@@ -261,7 +260,7 @@ class MockAPIHandler(BaseHTTPRequestHandler):
             and not self.check_circuit_breaker()
         ):
             logger.error(
-                f"❌ REQUEST #{_global_state['request_count']} BLOCKED: Circuit breaker open"
+                f"❌ REQUEST #{_global_state['request_count']} BLOCKED: Circuit breaker open",
             )
             self.send_error(503, "Service Unavailable - Circuit Breaker Open")
             return
@@ -269,7 +268,7 @@ class MockAPIHandler(BaseHTTPRequestHandler):
         # Check rate limit (if enabled)
         if _global_state["rate_limiting_enabled"] and not self.check_rate_limit():
             logger.error(
-                f"❌ REQUEST #{_global_state['request_count']} BLOCKED: Rate limit exceeded"
+                f"❌ REQUEST #{_global_state['request_count']} BLOCKED: Rate limit exceeded",
             )
             self.send_error(429, "Too Many Requests - Rate Limit Exceeded")
             return
@@ -280,7 +279,7 @@ class MockAPIHandler(BaseHTTPRequestHandler):
             and not self.check_rapid_request_detection()
         ):
             logger.error(
-                f"❌ REQUEST #{_global_state['request_count']} BLOCKED: Rapid request pattern detected"
+                f"❌ REQUEST #{_global_state['request_count']} BLOCKED: Rapid request pattern detected",
             )
             self.send_error(429, "Too Many Requests - Rapid Request Pattern Detected")
             return
@@ -290,15 +289,15 @@ class MockAPIHandler(BaseHTTPRequestHandler):
             "request_pattern_detection_enabled"
         ] and not self.check_request_pattern_detection(path, self.command):
             logger.error(
-                f"❌ REQUEST #{_global_state['request_count']} BLOCKED: Identical request pattern detected"
+                f"❌ REQUEST #{_global_state['request_count']} BLOCKED: Identical request pattern detected",
             )
             self.send_error(
-                429, "Too Many Requests - Identical Request Pattern Detected"
+                429, "Too Many Requests - Identical Request Pattern Detected",
             )
             return
 
         logger.info(
-            f"✅ REQUEST #{_global_state['request_count']} PASSED: All safeguards cleared"
+            f"✅ REQUEST #{_global_state['request_count']} PASSED: All safeguards cleared",
         )
 
         # Simulate the Tenant Service API endpoints
@@ -320,7 +319,7 @@ class MockAPIHandler(BaseHTTPRequestHandler):
             self.handle_control_status()
         else:
             logger.warning(
-                f"⚠️ REQUEST #{_global_state['request_count']} NOT FOUND: {path}"
+                f"⚠️ REQUEST #{_global_state['request_count']} NOT FOUND: {path}",
             )
             self.send_error(404, "Not Found")
 
@@ -340,10 +339,10 @@ class MockAPIHandler(BaseHTTPRequestHandler):
             ):
                 _global_state["circuit_breaker_reset_time"] = time.time()
                 logger.warning(
-                    f"⚡ Circuit breaker triggered after {_global_state['circuit_breaker_failures']} failures"
+                    f"⚡ Circuit breaker triggered after {_global_state['circuit_breaker_failures']} failures",
                 )
             logger.error(
-                f"💥 Simulated failure for request #{_global_state['request_count']} (failure rate: {_global_state['failure_rate']})"
+                f"💥 Simulated failure for request #{_global_state['request_count']} (failure rate: {_global_state['failure_rate']})",
             )
             self.send_error(500, "Internal Server Error - Tenant Service Overloaded")
             return
@@ -351,7 +350,7 @@ class MockAPIHandler(BaseHTTPRequestHandler):
         # Reset circuit breaker on successful request
         if _global_state["circuit_breaker_failures"] > 0:
             _global_state["circuit_breaker_failures"] = max(
-                0, _global_state["circuit_breaker_failures"] - 1
+                0, _global_state["circuit_breaker_failures"] - 1,
             )
 
         response_data = {
@@ -361,7 +360,7 @@ class MockAPIHandler(BaseHTTPRequestHandler):
                     "name": "Test Organization",
                     "status": "active",
                     "created_at": "2025-01-01T00:00:00Z",
-                }
+                },
             ],
             "request_count": _global_state["request_count"],
             "timestamp": time.time(),
@@ -389,7 +388,7 @@ class MockAPIHandler(BaseHTTPRequestHandler):
                     0,
                     _global_state["rate_limit_requests"]
                     - len(_global_state["request_timestamps"]),
-                )
+                ),
             ),
         )
         self.send_header(
@@ -467,7 +466,7 @@ class MockAPIHandler(BaseHTTPRequestHandler):
 
     def handle_reset(self):
         """Handle /api/v1/control/reset - Reset all counters and state"""
-        logger.info(f"🔄 RESET REQUEST: Resetting all server state")
+        logger.info("🔄 RESET REQUEST: Resetting all server state")
 
         # Reset all counters and state
         _global_state["request_count"] = 0
@@ -487,7 +486,7 @@ class MockAPIHandler(BaseHTTPRequestHandler):
                 "circuit_breaker_failures": _global_state["circuit_breaker_failures"],
                 "rate_limit_timestamps": len(_global_state["request_timestamps"]),
                 "rapid_request_timestamps": len(
-                    _global_state["rapid_request_timestamps"]
+                    _global_state["rapid_request_timestamps"],
                 ),
                 "request_cache_size": len(_global_state["request_cache"]),
             },
@@ -515,7 +514,7 @@ class MockAPIHandler(BaseHTTPRequestHandler):
                             "rate_limiting_enabled"
                         ]
                         logger.info(
-                            f"🔧 Rate limiting {'enabled' if _global_state['rate_limiting_enabled'] else 'disabled'}"
+                            f"🔧 Rate limiting {'enabled' if _global_state['rate_limiting_enabled'] else 'disabled'}",
                         )
 
                     if "circuit_breaker_enabled" in config:
@@ -523,7 +522,7 @@ class MockAPIHandler(BaseHTTPRequestHandler):
                             "circuit_breaker_enabled"
                         ]
                         logger.info(
-                            f"🔧 Circuit breaker {'enabled' if _global_state['circuit_breaker_enabled'] else 'disabled'}"
+                            f"🔧 Circuit breaker {'enabled' if _global_state['circuit_breaker_enabled'] else 'disabled'}",
                         )
 
                     if "failure_simulation_enabled" in config:
@@ -531,13 +530,13 @@ class MockAPIHandler(BaseHTTPRequestHandler):
                             "failure_simulation_enabled"
                         ]
                         logger.info(
-                            f"🔧 Failure simulation {'enabled' if _global_state['failure_simulation_enabled'] else 'disabled'}"
+                            f"🔧 Failure simulation {'enabled' if _global_state['failure_simulation_enabled'] else 'disabled'}",
                         )
 
                     if "failure_rate" in config:
                         _global_state["failure_rate"] = config["failure_rate"]
                         logger.info(
-                            f"🔧 Failure rate set to {_global_state['failure_rate']}"
+                            f"🔧 Failure rate set to {_global_state['failure_rate']}",
                         )
 
                     if "rate_limit_requests" in config:
@@ -545,7 +544,7 @@ class MockAPIHandler(BaseHTTPRequestHandler):
                             "rate_limit_requests"
                         ]
                         logger.info(
-                            f"🔧 Rate limit requests set to {_global_state['rate_limit_requests']}"
+                            f"🔧 Rate limit requests set to {_global_state['rate_limit_requests']}",
                         )
 
                     if "circuit_breaker_threshold" in config:
@@ -553,7 +552,7 @@ class MockAPIHandler(BaseHTTPRequestHandler):
                             "circuit_breaker_threshold"
                         ]
                         logger.info(
-                            f"🔧 Circuit breaker threshold set to {_global_state['circuit_breaker_threshold']}"
+                            f"🔧 Circuit breaker threshold set to {_global_state['circuit_breaker_threshold']}",
                         )
 
                     if "rapid_request_detection_enabled" in config:
@@ -561,7 +560,7 @@ class MockAPIHandler(BaseHTTPRequestHandler):
                             "rapid_request_detection_enabled"
                         ]
                         logger.info(
-                            f"🔧 Rapid request detection {'enabled' if _global_state['rapid_request_detection_enabled'] else 'disabled'}"
+                            f"🔧 Rapid request detection {'enabled' if _global_state['rapid_request_detection_enabled'] else 'disabled'}",
                         )
 
                     if "rapid_request_threshold" in config:
@@ -569,7 +568,7 @@ class MockAPIHandler(BaseHTTPRequestHandler):
                             "rapid_request_threshold"
                         ]
                         logger.info(
-                            f"🔧 Rapid request threshold set to {_global_state['rapid_request_threshold']}"
+                            f"🔧 Rapid request threshold set to {_global_state['rapid_request_threshold']}",
                         )
 
                     if "request_pattern_detection_enabled" in config:
@@ -577,7 +576,7 @@ class MockAPIHandler(BaseHTTPRequestHandler):
                             "request_pattern_detection_enabled"
                         ]
                         logger.info(
-                            f"🔧 Request pattern detection {'enabled' if _global_state['request_pattern_detection_enabled'] else 'disabled'}"
+                            f"🔧 Request pattern detection {'enabled' if _global_state['request_pattern_detection_enabled'] else 'disabled'}",
                         )
 
                     if "identical_request_threshold" in config:
@@ -585,7 +584,7 @@ class MockAPIHandler(BaseHTTPRequestHandler):
                             "identical_request_threshold"
                         ]
                         logger.info(
-                            f"🔧 Identical request threshold set to {_global_state['identical_request_threshold']}"
+                            f"🔧 Identical request threshold set to {_global_state['identical_request_threshold']}",
                         )
 
                     response_data = {
@@ -680,7 +679,7 @@ class MockAPIHandler(BaseHTTPRequestHandler):
             if current_time - ts < _global_state["rate_limit_window"]
         ]
         rate_limit_remaining = max(
-            0, _global_state["rate_limit_requests"] - len(recent_requests)
+            0, _global_state["rate_limit_requests"] - len(recent_requests),
         )
 
         # Calculate circuit breaker status
@@ -705,7 +704,7 @@ class MockAPIHandler(BaseHTTPRequestHandler):
                 "circuit_breaker_failures": _global_state["circuit_breaker_failures"],
                 "rate_limit_timestamps": len(_global_state["request_timestamps"]),
                 "rapid_request_timestamps": len(
-                    _global_state["rapid_request_timestamps"]
+                    _global_state["rapid_request_timestamps"],
                 ),
                 "request_cache_size": len(_global_state["request_cache"]),
             },
@@ -742,7 +741,7 @@ class MockAPIHandler(BaseHTTPRequestHandler):
                         ts
                         for ts in _global_state["rapid_request_timestamps"]
                         if current_time - ts < _global_state["rapid_request_window"]
-                    ]
+                    ],
                 ),
                 "status": (
                     "active"
@@ -751,7 +750,7 @@ class MockAPIHandler(BaseHTTPRequestHandler):
                             ts
                             for ts in _global_state["rapid_request_timestamps"]
                             if current_time - ts < _global_state["rapid_request_window"]
-                        ]
+                        ],
                     )
                     < _global_state["rapid_request_threshold"]
                     else "triggered"
@@ -818,7 +817,7 @@ class MockAPIServer:
             import requests
 
             response = requests.get(
-                f"http://localhost:{self.port}/api/v1/stats", timeout=1
+                f"http://localhost:{self.port}/api/v1/stats", timeout=1,
             )
             return response.json()
         except:

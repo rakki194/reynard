@@ -1,5 +1,4 @@
-"""
-Image Utils API Models for Reynard Backend
+"""Image Utils API Models for Reynard Backend
 
 Pydantic models for image processing API endpoints.
 """

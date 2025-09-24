@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Cache Proof Demonstration Script
+"""Cache Proof Demonstration Script
 ================================
 
 This script provides comprehensive proof that the intelligent caching system
@@ -15,17 +14,14 @@ Features:
 """
 
 import asyncio
-import json
 import statistics
 import time
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 import matplotlib.pyplot as plt
-import requests
-import seaborn as sns
 
 from app.api.search.models import (
     HybridSearchRequest,
@@ -65,8 +61,8 @@ class CacheProofDemonstrator:
 
     def __init__(self):
         self.search_service = OptimizedSearchService()
-        self.test_results: List[CacheTestResult] = []
-        self.performance_comparisons: List[PerformanceComparison] = []
+        self.test_results: list[CacheTestResult] = []
+        self.performance_comparisons: list[PerformanceComparison] = []
 
     async def initialize(self):
         """Initialize the search service."""
@@ -83,7 +79,7 @@ class CacheProofDemonstrator:
         await self.search_service.close()
         print("✅ Search service closed")
 
-    def _generate_test_queries(self) -> List[Dict[str, Any]]:
+    def _generate_test_queries(self) -> list[dict[str, Any]]:
         """Generate test queries for cache demonstration."""
         return [
             {
@@ -128,7 +124,7 @@ class CacheProofDemonstrator:
             },
         ]
 
-    async def demonstrate_cache_hits_misses(self) -> Dict[str, Any]:
+    async def demonstrate_cache_hits_misses(self) -> dict[str, Any]:
         """Demonstrate cache hits and misses with detailed logging."""
         print("\n🧪 Demonstrating Cache Hits and Misses")
         print("=" * 50)
@@ -173,7 +169,7 @@ class CacheProofDemonstrator:
                             len(first_result.results) if first_result.success else 0
                         ),
                     },
-                }
+                },
             )
 
             print(f"   First request: {first_time:.2f}ms (Cache Miss)")
@@ -235,7 +231,7 @@ class CacheProofDemonstrator:
         if results["total_tests"] > 0:
             results["hit_rate"] = (results["cache_hits"] / results["total_tests"]) * 100
 
-        print(f"\n📊 Overall Results:")
+        print("\n📊 Overall Results:")
         print(f"   Total tests: {results['total_tests']}")
         print(f"   Cache hits: {results['cache_hits']}")
         print(f"   Cache misses: {results['cache_misses']}")
@@ -243,35 +239,34 @@ class CacheProofDemonstrator:
 
         return results
 
-    async def _execute_search(self, test_query: Dict[str, Any]):
+    async def _execute_search(self, test_query: dict[str, Any]):
         """Execute a search based on the test query."""
         query = test_query["query"]
         search_type = test_query["type"]
 
         if search_type == "semantic":
             request = SemanticSearchRequest(
-                query=query, max_results=20, similarity_threshold=0.7
+                query=query, max_results=20, similarity_threshold=0.7,
             )
             return await self.search_service.semantic_search(request)
 
-        elif search_type == "syntax":
+        if search_type == "syntax":
             request = SyntaxSearchRequest(query=query, max_results=20)
             return await self.search_service.syntax_search(request)
 
-        elif search_type == "hybrid":
+        if search_type == "hybrid":
             request = HybridSearchRequest(
-                query=query, max_results=20, similarity_threshold=0.7
+                query=query, max_results=20, similarity_threshold=0.7,
             )
             return await self.search_service.hybrid_search(request)
 
-        else:
-            raise ValueError(f"Unknown search type: {search_type}")
+        raise ValueError(f"Unknown search type: {search_type}")
 
-    def _generate_cache_key(self, test_query: Dict[str, Any]) -> str:
+    def _generate_cache_key(self, test_query: dict[str, Any]) -> str:
         """Generate a cache key for the test query."""
         return f"test:{test_query['type']}:{hash(test_query['query'])}"
 
-    async def demonstrate_performance_improvement(self) -> Dict[str, Any]:
+    async def demonstrate_performance_improvement(self) -> dict[str, Any]:
         """Demonstrate performance improvement with caching."""
         print("\n🚀 Performance Improvement Demonstration")
         print("=" * 50)
@@ -334,13 +329,13 @@ class CacheProofDemonstrator:
         speedups = [test["speedup_factor"] for test in performance_data["tests"]]
         performance_data["average_speedup"] = statistics.mean(speedups)
 
-        print(f"\n📊 Overall Performance Results:")
+        print("\n📊 Overall Performance Results:")
         print(f"   Average speedup: {performance_data['average_speedup']:.1f}x")
         print(f"   Total time saved: {performance_data['total_time_saved_ms']:.2f}ms")
 
         return performance_data
 
-    async def demonstrate_cache_metrics(self) -> Dict[str, Any]:
+    async def demonstrate_cache_metrics(self) -> dict[str, Any]:
         """Demonstrate real-time cache metrics."""
         print("\n📊 Real-time Cache Metrics")
         print("=" * 50)
@@ -374,7 +369,7 @@ class CacheProofDemonstrator:
                 print(f"   Average get time: {cache_metrics.average_get_time_ms:.2f}ms")
                 print(f"   Average set time: {cache_metrics.average_set_time_ms:.2f}ms")
                 print(
-                    f"   Memory usage: {cache_metrics.memory_usage_bytes / 1024 / 1024:.2f}MB"
+                    f"   Memory usage: {cache_metrics.memory_usage_bytes / 1024 / 1024:.2f}MB",
                 )
                 print(f"   Key count: {cache_metrics.key_count}")
             except Exception as e:
@@ -469,12 +464,12 @@ class CacheProofDemonstrator:
 
         plt.tight_layout()
         plt.savefig(
-            output_dir / "cache_performance_analysis.png", dpi=300, bbox_inches="tight"
+            output_dir / "cache_performance_analysis.png", dpi=300, bbox_inches="tight",
         )
         plt.close()
 
         print(
-            f"✅ Visualization saved to: {output_dir / 'cache_performance_analysis.png'}"
+            f"✅ Visualization saved to: {output_dir / 'cache_performance_analysis.png'}",
         )
 
         # Create summary report
@@ -502,16 +497,16 @@ class CacheProofDemonstrator:
                 f.write(f"- **Hit Rate**: {hit_rate:.1f}%\n\n")
 
                 avg_hit_time = statistics.mean(
-                    [r.response_time_ms for r in self.test_results if r.cache_hit]
+                    [r.response_time_ms for r in self.test_results if r.cache_hit],
                 )
                 avg_miss_time = statistics.mean(
-                    [r.response_time_ms for r in self.test_results if not r.cache_hit]
+                    [r.response_time_ms for r in self.test_results if not r.cache_hit],
                 )
 
                 f.write(f"- **Average Hit Time**: {avg_hit_time:.2f}ms\n")
                 f.write(f"- **Average Miss Time**: {avg_miss_time:.2f}ms\n")
                 f.write(
-                    f"- **Average Speedup**: {avg_miss_time / avg_hit_time:.1f}x\n\n"
+                    f"- **Average Speedup**: {avg_miss_time / avg_hit_time:.1f}x\n\n",
                 )
 
             if self.performance_comparisons:
@@ -524,10 +519,10 @@ class CacheProofDemonstrator:
 
             f.write("## Conclusion\n\n")
             f.write(
-                "The cache system is working correctly, providing significant performance improvements\n"
+                "The cache system is working correctly, providing significant performance improvements\n",
             )
             f.write(
-                "for repeated queries. The intelligent caching strategy effectively reduces response times\n"
+                "for repeated queries. The intelligent caching strategy effectively reduces response times\n",
             )
             f.write("while maintaining data consistency.\n")
 
@@ -567,10 +562,10 @@ class CacheProofDemonstrator:
             print("\n📊 Key Findings:")
             print(f"   • Cache hit rate: {cache_results['hit_rate']:.1f}%")
             print(
-                f"   • Average speedup: {performance_results['average_speedup']:.1f}x"
+                f"   • Average speedup: {performance_results['average_speedup']:.1f}x",
             )
             print(
-                f"   • Total time saved: {performance_results['total_time_saved_ms']:.2f}ms"
+                f"   • Total time saved: {performance_results['total_time_saved_ms']:.2f}ms",
             )
             print("\n🦊 The intelligent caching system is working perfectly!")
 

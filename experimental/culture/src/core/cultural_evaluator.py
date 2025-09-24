@@ -1,5 +1,4 @@
-"""
-CULTURE: Cultural Understanding and Linguistic Translation for Universal Recognition and Evaluation
+"""CULTURE: Cultural Understanding and Linguistic Translation for Universal Recognition and Evaluation
 
 Core cultural evaluation framework for assessing LLM understanding of culturally specific
 communication patterns, with initial focus on Persian taarof.
@@ -46,8 +45,7 @@ class CulturalEvaluationResult:
 
 
 class CulturalEvaluator:
-    """
-    Main orchestrator for cultural evaluation of Large Language Models.
+    """Main orchestrator for cultural evaluation of Large Language Models.
 
     This class coordinates the evaluation process, statistical analysis,
     and result interpretation for cultural AI alignment assessment.
@@ -58,7 +56,7 @@ class CulturalEvaluator:
         self.config = self._load_config(config_path)
         self.model_interface = ModelInterface(self.config.get("model_config", {}))
         self.cultural_validator = CulturalValidator(
-            self.config.get("validation_config", {})
+            self.config.get("validation_config", {}),
         )
         self.statistical_analyzer = StatisticalAnalyzer()
         self.cultural_metrics = CulturalMetrics()
@@ -91,8 +89,7 @@ class CulturalEvaluator:
         cultural_context: str = "persian_taarof",
         sample_size: int | None = None,
     ) -> CulturalEvaluationResult:
-        """
-        Evaluate a model's cultural understanding using specified benchmark.
+        """Evaluate a model's cultural understanding using specified benchmark.
 
         Args:
             model_name: Name of the model to evaluate
@@ -102,6 +99,7 @@ class CulturalEvaluator:
 
         Returns:
             CulturalEvaluationResult with comprehensive evaluation metrics
+
         """
         logger.info(f"Starting cultural evaluation for {model_name}")
 
@@ -117,7 +115,7 @@ class CulturalEvaluator:
 
         # Validate cultural appropriateness
         validation_results = await self._validate_responses(
-            model_responses, scenarios, cultural_context
+            model_responses, scenarios, cultural_context,
         )
 
         # Calculate metrics
@@ -125,7 +123,7 @@ class CulturalEvaluator:
 
         # Perform statistical analysis
         statistical_analysis = self.statistical_analyzer.analyze_results(
-            validation_results, scenarios, cultural_context
+            validation_results, scenarios, cultural_context,
         )
 
         # Create comprehensive result
@@ -150,7 +148,7 @@ class CulturalEvaluator:
         return result
 
     async def _evaluate_scenarios(
-        self, model_name: str, scenarios: list[dict[str, Any]]
+        self, model_name: str, scenarios: list[dict[str, Any]],
     ) -> list[dict[str, Any]]:
         """Evaluate model responses for given scenarios."""
         responses = []
@@ -158,7 +156,7 @@ class CulturalEvaluator:
         for scenario in scenarios:
             try:
                 response = await self.model_interface.generate_response(
-                    model_name, scenario
+                    model_name, scenario,
                 )
                 responses.append(
                     {
@@ -166,7 +164,7 @@ class CulturalEvaluator:
                         "scenario": scenario,
                         "response": response,
                         "timestamp": asyncio.get_event_loop().time(),
-                    }
+                    },
                 )
             except Exception as e:
                 logger.error(f"Error evaluating scenario {scenario['id']}: {e}")
@@ -176,7 +174,7 @@ class CulturalEvaluator:
                         "scenario": scenario,
                         "response": None,
                         "error": str(e),
-                    }
+                    },
                 )
 
         return responses
@@ -195,7 +193,7 @@ class CulturalEvaluator:
                 continue
 
             validation = await self.cultural_validator.validate_response(
-                response_data["response"], response_data["scenario"], cultural_context
+                response_data["response"], response_data["scenario"], cultural_context,
             )
 
             validation_results.append(
@@ -207,13 +205,13 @@ class CulturalEvaluator:
                     "politeness_score": validation["politeness_score"],
                     "cultural_score": validation["cultural_score"],
                     "explanation": validation["explanation"],
-                }
+                },
             )
 
         return validation_results
 
     def _calculate_metrics(
-        self, validation_results: list[dict[str, Any]], scenarios: list[dict[str, Any]]
+        self, validation_results: list[dict[str, Any]], scenarios: list[dict[str, Any]],
     ) -> dict[str, float]:
         """Calculate comprehensive cultural metrics."""
         if not validation_results:
@@ -307,7 +305,7 @@ class CulturalEvaluator:
 
         # Statistical comparison
         comparison_stats = self.statistical_analyzer.compare_groups(
-            accuracies, model_names
+            accuracies, model_names,
         )
 
         return {
@@ -322,7 +320,7 @@ class CulturalEvaluator:
         }
 
     def export_results(
-        self, result: CulturalEvaluationResult, output_path: Path
+        self, result: CulturalEvaluationResult, output_path: Path,
     ) -> None:
         """Export evaluation results to file."""
         output_data = asdict(result)

@@ -1,5 +1,4 @@
-"""
-🦊 Reynard RAG Query Analytics
+"""🦊 Reynard RAG Query Analytics
 =============================
 
 Comprehensive query analytics system for RAG service with performance tracking,
@@ -18,12 +17,11 @@ Author: Reynard Development Team
 Version: 1.0.0
 """
 
-import asyncio
 import json
 import time
 from collections import defaultdict, deque
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any
 
 from ...core.logging_config import get_service_logger
 
@@ -44,8 +42,8 @@ class QueryMetrics:
     results_count: int
     top_score: float
     avg_score: float
-    user_satisfaction: Optional[float] = None
-    click_through_rate: Optional[float] = None
+    user_satisfaction: float | None = None
+    click_through_rate: float | None = None
     session_id: str = ""
     user_id: str = ""
 
@@ -72,12 +70,12 @@ class PerformanceStats:
 class UsageInsights:
     """Usage pattern insights and analytics."""
 
-    popular_queries: List[Tuple[str, int]]
-    query_trends: Dict[str, List[Tuple[float, int]]]
-    peak_usage_hours: List[int]
-    user_behavior_patterns: Dict[str, Any]
-    search_effectiveness: Dict[str, float]
-    optimization_opportunities: List[str]
+    popular_queries: list[tuple[str, int]]
+    query_trends: dict[str, list[tuple[float, int]]]
+    peak_usage_hours: list[int]
+    user_behavior_patterns: dict[str, Any]
+    search_effectiveness: dict[str, float]
+    optimization_opportunities: list[str]
 
 
 @dataclass
@@ -89,13 +87,12 @@ class AnalyticsReport:
     time_period: str
     performance_stats: PerformanceStats
     usage_insights: UsageInsights
-    recommendations: List[str]
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    recommendations: list[str]
+    metadata: dict[str, Any] = field(default_factory=dict)
 
 
 class QueryAnalyticsCollector:
-    """
-    Advanced query analytics collection and analysis system.
+    """Advanced query analytics collection and analysis system.
 
     Tracks query performance, usage patterns, and provides
     intelligent insights for RAG service optimization.
@@ -106,9 +103,9 @@ class QueryAnalyticsCollector:
         self.retention_days = retention_days
         self.query_history: deque = deque(maxlen=max_history_size)
         self.performance_metrics: deque = deque(maxlen=max_history_size)
-        self.user_sessions: Dict[str, List[str]] = defaultdict(list)
-        self.query_feedback: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
-        self.analytics_cache: Dict[str, Any] = {}
+        self.user_sessions: dict[str, list[str]] = defaultdict(list)
+        self.query_feedback: dict[str, list[dict[str, Any]]] = defaultdict(list)
+        self.analytics_cache: dict[str, Any] = {}
         self.cache_ttl = 300  # 5 minutes
 
     async def record_query_metrics(
@@ -124,8 +121,7 @@ class QueryAnalyticsCollector:
         session_id: str = "",
         user_id: str = "",
     ) -> None:
-        """
-        Record comprehensive query metrics.
+        """Record comprehensive query metrics.
 
         Args:
             query_id: Unique identifier for the query
@@ -138,6 +134,7 @@ class QueryAnalyticsCollector:
             avg_score: Average score of all results
             session_id: Optional session identifier
             user_id: Optional user identifier
+
         """
         try:
             total_time = processing_time + embedding_time + search_time
@@ -167,7 +164,7 @@ class QueryAnalyticsCollector:
             self._invalidate_cache()
 
             logger.debug(
-                f"Recorded metrics for query {query_id}: {total_time:.3f}s total"
+                f"Recorded metrics for query {query_id}: {total_time:.3f}s total",
             )
 
         except Exception as e:
@@ -177,12 +174,11 @@ class QueryAnalyticsCollector:
         self,
         query_id: str,
         feedback_type: str,
-        rating: Optional[float] = None,
-        comments: Optional[str] = None,
-        clicked_results: Optional[List[str]] = None,
+        rating: float | None = None,
+        comments: str | None = None,
+        clicked_results: list[str] | None = None,
     ) -> None:
-        """
-        Record user feedback for a query.
+        """Record user feedback for a query.
 
         Args:
             query_id: Query identifier
@@ -190,6 +186,7 @@ class QueryAnalyticsCollector:
             rating: Optional rating score (0.0 to 1.0)
             comments: Optional user comments
             clicked_results: Optional list of clicked result IDs
+
         """
         try:
             feedback = {
@@ -209,7 +206,7 @@ class QueryAnalyticsCollector:
                         metrics.user_satisfaction = rating
                     elif feedback_type == "click" and clicked_results:
                         metrics.click_through_rate = len(clicked_results) / max(
-                            metrics.results_count, 1
+                            metrics.results_count, 1,
                         )
                     break
 
@@ -219,16 +216,16 @@ class QueryAnalyticsCollector:
             logger.error(f"Failed to record user feedback: {e}")
 
     async def get_performance_stats(
-        self, time_window_hours: int = 24
+        self, time_window_hours: int = 24,
     ) -> PerformanceStats:
-        """
-        Get aggregated performance statistics.
+        """Get aggregated performance statistics.
 
         Args:
             time_window_hours: Time window for analysis in hours
 
         Returns:
             Performance statistics for the specified time window
+
         """
         try:
             cache_key = f"performance_stats_{time_window_hours}"
@@ -325,14 +322,14 @@ class QueryAnalyticsCollector:
             )
 
     async def get_usage_insights(self, time_window_hours: int = 24) -> UsageInsights:
-        """
-        Get usage pattern insights and analytics.
+        """Get usage pattern insights and analytics.
 
         Args:
             time_window_hours: Time window for analysis in hours
 
         Returns:
             Usage insights for the specified time window
+
         """
         try:
             cache_key = f"usage_insights_{time_window_hours}"
@@ -361,7 +358,7 @@ class QueryAnalyticsCollector:
                 query_counts[metrics.query_text] += 1
 
             popular_queries = sorted(
-                query_counts.items(), key=lambda x: x[1], reverse=True
+                query_counts.items(), key=lambda x: x[1], reverse=True,
             )[:10]
 
             # Analyze query trends (simplified - would need more sophisticated time series analysis)
@@ -396,7 +393,7 @@ class QueryAnalyticsCollector:
                 hour_counts[hour] += 1
 
             peak_usage_hours = sorted(
-                hour_counts.items(), key=lambda x: x[1], reverse=True
+                hour_counts.items(), key=lambda x: x[1], reverse=True,
             )[:3]
             peak_usage_hours = [hour for hour, count in peak_usage_hours]
 
@@ -405,7 +402,7 @@ class QueryAnalyticsCollector:
                 "avg_queries_per_session": self._calculate_avg_queries_per_session(),
                 "session_duration_patterns": self._analyze_session_durations(),
                 "query_complexity_distribution": self._analyze_query_complexity(
-                    recent_metrics
+                    recent_metrics,
                 ),
             }
 
@@ -416,14 +413,14 @@ class QueryAnalyticsCollector:
                 "top_result_quality": sum(m.top_score for m in recent_metrics)
                 / len(recent_metrics),
                 "result_count_adequacy": self._calculate_result_adequacy(
-                    recent_metrics
+                    recent_metrics,
                 ),
                 "user_satisfaction": self._calculate_user_satisfaction(recent_metrics),
             }
 
             # Generate optimization opportunities
             optimization_opportunities = self._generate_optimization_opportunities(
-                recent_metrics
+                recent_metrics,
             )
 
             insights = UsageInsights(
@@ -457,7 +454,7 @@ class QueryAnalyticsCollector:
         total_queries = sum(len(queries) for queries in self.user_sessions.values())
         return total_queries / len(self.user_sessions)
 
-    def _analyze_session_durations(self) -> Dict[str, Any]:
+    def _analyze_session_durations(self) -> dict[str, Any]:
         """Analyze session duration patterns."""
         # This would require more sophisticated session tracking
         # For now, return basic statistics
@@ -466,7 +463,7 @@ class QueryAnalyticsCollector:
             "session_length_distribution": {},
         }
 
-    def _analyze_query_complexity(self, metrics: List[QueryMetrics]) -> Dict[str, Any]:
+    def _analyze_query_complexity(self, metrics: list[QueryMetrics]) -> dict[str, Any]:
         """Analyze query complexity distribution."""
         complexity_distribution = {
             "simple": 0,  # < 3 words
@@ -485,13 +482,13 @@ class QueryAnalyticsCollector:
 
         return complexity_distribution
 
-    def _calculate_result_adequacy(self, metrics: List[QueryMetrics]) -> float:
+    def _calculate_result_adequacy(self, metrics: list[QueryMetrics]) -> float:
         """Calculate how adequate the result counts are."""
         # Assume 5-15 results is adequate
         adequate_count = sum(1 for m in metrics if 5 <= m.results_count <= 15)
         return adequate_count / len(metrics) if metrics else 0.0
 
-    def _calculate_user_satisfaction(self, metrics: List[QueryMetrics]) -> float:
+    def _calculate_user_satisfaction(self, metrics: list[QueryMetrics]) -> float:
         """Calculate average user satisfaction."""
         satisfaction_scores = [
             m.user_satisfaction for m in metrics if m.user_satisfaction is not None
@@ -503,8 +500,8 @@ class QueryAnalyticsCollector:
         )
 
     def _generate_optimization_opportunities(
-        self, metrics: List[QueryMetrics]
-    ) -> List[str]:
+        self, metrics: list[QueryMetrics],
+    ) -> list[str]:
         """Generate optimization opportunities based on metrics analysis."""
         opportunities = []
 
@@ -531,16 +528,16 @@ class QueryAnalyticsCollector:
         return opportunities
 
     async def generate_analytics_report(
-        self, time_period: str = "24h"
+        self, time_period: str = "24h",
     ) -> AnalyticsReport:
-        """
-        Generate a comprehensive analytics report.
+        """Generate a comprehensive analytics report.
 
         Args:
             time_period: Time period for the report (e.g., "24h", "7d", "30d")
 
         Returns:
             Comprehensive analytics report
+
         """
         try:
             # Parse time period
@@ -552,7 +549,7 @@ class QueryAnalyticsCollector:
 
             # Generate recommendations
             recommendations = self._generate_recommendations(
-                performance_stats, usage_insights
+                performance_stats, usage_insights,
             )
 
             # Create report
@@ -610,16 +607,15 @@ class QueryAnalyticsCollector:
         """Parse time period string to hours."""
         if time_period.endswith("h"):
             return int(time_period[:-1])
-        elif time_period.endswith("d"):
+        if time_period.endswith("d"):
             return int(time_period[:-1]) * 24
-        elif time_period.endswith("w"):
+        if time_period.endswith("w"):
             return int(time_period[:-1]) * 24 * 7
-        else:
-            return 24  # Default to 24 hours
+        return 24  # Default to 24 hours
 
     def _generate_recommendations(
-        self, performance_stats: PerformanceStats, usage_insights: UsageInsights
-    ) -> List[str]:
+        self, performance_stats: PerformanceStats, usage_insights: UsageInsights,
+    ) -> list[str]:
         """Generate optimization recommendations based on analytics."""
         recommendations = []
 
@@ -645,14 +641,13 @@ class QueryAnalyticsCollector:
 
         return recommendations
 
-    def _get_cached_result(self, cache_key: str) -> Optional[Any]:
+    def _get_cached_result(self, cache_key: str) -> Any | None:
         """Get cached result if still valid."""
         if cache_key in self.analytics_cache:
             cached_data = self.analytics_cache[cache_key]
             if time.time() - cached_data["timestamp"] < self.cache_ttl:
                 return cached_data["data"]
-            else:
-                del self.analytics_cache[cache_key]
+            del self.analytics_cache[cache_key]
         return None
 
     def _cache_result(self, cache_key: str, data: Any) -> None:
@@ -666,7 +661,7 @@ class QueryAnalyticsCollector:
         """Invalidate analytics cache."""
         self.analytics_cache.clear()
 
-    async def get_real_time_metrics(self) -> Dict[str, Any]:
+    async def get_real_time_metrics(self) -> dict[str, Any]:
         """Get real-time metrics for dashboard."""
         try:
             # Get recent metrics (last 5 minutes)
@@ -687,10 +682,10 @@ class QueryAnalyticsCollector:
             # Calculate real-time metrics
             queries_per_minute = len(recent_metrics) / 5  # 5-minute window
             avg_response_time = sum(m.total_time for m in recent_metrics) / len(
-                recent_metrics
+                recent_metrics,
             )
             active_sessions = len(
-                set(m.session_id for m in recent_metrics if m.session_id)
+                set(m.session_id for m in recent_metrics if m.session_id),
             )
 
             return {
@@ -712,8 +707,8 @@ class QueryAnalyticsCollector:
             }
 
     async def export_analytics_data(
-        self, format: str = "json"
-    ) -> Union[str, Dict[str, Any]]:
+        self, format: str = "json",
+    ) -> str | dict[str, Any]:
         """Export analytics data in specified format."""
         try:
             export_data = {
@@ -743,8 +738,7 @@ class QueryAnalyticsCollector:
 
             if format.lower() == "json":
                 return json.dumps(export_data, indent=2)
-            else:
-                return export_data
+            return export_data
 
         except Exception as e:
             logger.error(f"Failed to export analytics data: {e}")
@@ -752,7 +746,7 @@ class QueryAnalyticsCollector:
 
 
 # Global analytics collector instance
-_analytics_collector: Optional[QueryAnalyticsCollector] = None
+_analytics_collector: QueryAnalyticsCollector | None = None
 
 
 def get_analytics_collector() -> QueryAnalyticsCollector:

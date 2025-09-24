@@ -1,5 +1,4 @@
-"""
-Tests for image types utilities.
+"""Tests for image types utilities.
 
 This module tests the ImageFormat, ImageInfo, and ImageTransform classes
 for image processing type definitions.
@@ -78,7 +77,7 @@ class TestImageInfo:
     def test_image_info_creation(self):
         """Test ImageInfo creation with all parameters."""
         info = ImageInfo(
-            width=1920, height=1080, format="JPEG", mode="RGB", size=1024000
+            width=1920, height=1080, format="JPEG", mode="RGB", size=1024000,
         )
 
         assert info.width == 1920
@@ -263,7 +262,7 @@ class TestImageTransform:
         convert = "RGB"
 
         transform = ImageTransform(
-            resize=resize, crop=crop, normalize=normalize, convert=convert
+            resize=resize, crop=crop, normalize=normalize, convert=convert,
         )
 
         # Modify original values

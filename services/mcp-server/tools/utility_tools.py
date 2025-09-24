@@ -10,14 +10,13 @@ Follows the 140-line axiom and modular architecture principles.
 """
 
 import logging
-import os
-import signal
 import subprocess
-import zoneinfo
 from datetime import datetime
 from typing import Any
 
 import requests
+import zoneinfo
+
 from protocol.tool_registry import register_tool
 
 logger = logging.getLogger(__name__)

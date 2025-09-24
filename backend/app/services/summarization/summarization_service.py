@@ -1,5 +1,4 @@
-"""
-🦊 Reynard Summarization Service
+"""🦊 Reynard Summarization Service
 ===============================
 
 Main summarization service for Reynard with enterprise-grade patterns.
@@ -20,7 +19,6 @@ Author: Reynard Development Team
 Version: 2.0.0 - Enterprise patterns
 """
 
-import logging
 from collections.abc import AsyncGenerator
 from typing import Any
 
@@ -37,8 +35,7 @@ logger = get_service_logger("summarization")
 
 
 class SummarizationService:
-    """
-    Main summarization service that orchestrates all summarization operations.
+    """Main summarization service that orchestrates all summarization operations.
 
     This service provides a unified interface for text summarization,
     integrating with the existing Ollama service and providing specialized
@@ -46,27 +43,27 @@ class SummarizationService:
     """
 
     def __init__(self, ollama_service=None):
-        """
-        Initialize the summarization service.
+        """Initialize the summarization service.
 
         Args:
             ollama_service: Instance of Reynard's OllamaService
+
         """
         self.ollama_service = ollama_service
         self.manager = SummarizationManager()
         self._initialized = False
 
     async def initialize(self) -> bool:
-        """
-        Initialize the summarization service.
+        """Initialize the summarization service.
 
         Returns:
             True if initialization was successful, False otherwise
+
         """
         try:
             if not self.ollama_service:
                 logger.warning(
-                    "⚠️ Ollama service not available - summarization will be limited"
+                    "⚠️ Ollama service not available - summarization will be limited",
                 )
                 return False
 
@@ -124,8 +121,7 @@ class SummarizationService:
         temperature: float = 0.3,
         top_p: float = 0.9,
     ) -> dict[str, Any]:
-        """
-        Summarize text with specified options.
+        """Summarize text with specified options.
 
         Args:
             text: Text to summarize
@@ -144,6 +140,7 @@ class SummarizationService:
         Raises:
             RuntimeError: If service is not initialized
             ValueError: If parameters are invalid
+
         """
         if not self._initialized:
             raise RuntimeError("SummarizationService is not initialized")
@@ -194,8 +191,7 @@ class SummarizationService:
         temperature: float = 0.3,
         top_p: float = 0.9,
     ) -> AsyncGenerator[dict[str, Any]]:
-        """
-        Stream text summarization with progress updates.
+        """Stream text summarization with progress updates.
 
         Args:
             text: Text to summarize
@@ -210,6 +206,7 @@ class SummarizationService:
 
         Yields:
             Progress updates and final result
+
         """
         if not self._initialized:
             yield {
@@ -247,8 +244,7 @@ class SummarizationService:
         requests: list[dict[str, Any]],
         enable_streaming: bool = False,
     ) -> AsyncGenerator[dict[str, Any]]:
-        """
-        Process a batch of summarization requests.
+        """Process a batch of summarization requests.
 
         Args:
             requests: List of summarization requests
@@ -256,6 +252,7 @@ class SummarizationService:
 
         Yields:
             Progress updates and results
+
         """
         if not self._initialized:
             yield {
@@ -277,14 +274,14 @@ class SummarizationService:
             }
 
     async def detect_content_type(self, text: str) -> str:
-        """
-        Automatically detect the content type of text.
+        """Automatically detect the content type of text.
 
         Args:
             text: Text to analyze
 
         Returns:
             Detected content type
+
         """
         if not self._initialized:
             return "general"
@@ -297,11 +294,11 @@ class SummarizationService:
             return "general"
 
     def get_available_models(self) -> list[str]:
-        """
-        Get list of available models for summarization.
+        """Get list of available models for summarization.
 
         Returns:
             List of available model names
+
         """
         if not self.ollama_service:
             return []
@@ -315,11 +312,11 @@ class SummarizationService:
             return []
 
     def get_supported_content_types(self) -> dict[str, list[str]]:
-        """
-        Get supported content types and their summarizers.
+        """Get supported content types and their summarizers.
 
         Returns:
             Dictionary mapping content types to summarizer names
+
         """
         if not self._initialized:
             return {}
@@ -335,20 +332,20 @@ class SummarizationService:
             return {}
 
     def get_supported_summary_levels(self) -> list[str]:
-        """
-        Get supported summary levels.
+        """Get supported summary levels.
 
         Returns:
             List of supported summary level names
+
         """
         return [level.value for level in SummaryLevel]
 
     def get_performance_stats(self) -> dict[str, Any]:
-        """
-        Get performance statistics.
+        """Get performance statistics.
 
         Returns:
             Dictionary containing performance statistics
+
         """
         if not self._initialized:
             return {}
@@ -360,20 +357,20 @@ class SummarizationService:
             return {}
 
     def is_available(self) -> bool:
-        """
-        Check if the service is available.
+        """Check if the service is available.
 
         Returns:
             True if available, False otherwise
+
         """
         return self._initialized and self.manager.is_available()
 
     async def health_check(self) -> dict[str, Any]:
-        """
-        Perform health check on the service.
+        """Perform health check on the service.
 
         Returns:
             Health check results
+
         """
         try:
             # Check if service is initialized
@@ -438,8 +435,7 @@ class SummarizationService:
 
 
 class SummarizationServiceManager:
-    """
-    Service manager for Summarization API with proper dependency injection.
+    """Service manager for Summarization API with proper dependency injection.
 
     This class manages the Summarization service instance without using globals,
     providing better testability and cleaner architecture.
@@ -463,7 +459,7 @@ class SummarizationServiceManager:
             await service.initialize()
         except (
             Exception
-        ) as e:  # noqa: BLE001 - We want to catch all initialization errors
+        ) as e:
             logger.exception(
                 "Failed to initialize Summarization service",
                 extra={

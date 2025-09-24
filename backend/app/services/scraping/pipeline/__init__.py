@@ -1,5 +1,4 @@
-"""
-Processing Pipeline for Reynard Backend
+"""Processing Pipeline for Reynard Backend
 
 Content processing pipeline components for scraping results.
 """

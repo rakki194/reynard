@@ -1,3 +1,2 @@
-"""
-Test suite for the Humility Detector.
+"""Test suite for the Humility Detector.
 """

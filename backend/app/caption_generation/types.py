@@ -1,5 +1,4 @@
-"""
-Caption Generation Types
+"""Caption Generation Types
 
 This module defines enums and type definitions for the caption generation system.
 """

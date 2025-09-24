@@ -1,5 +1,4 @@
-"""
-Scraping Manager for Reynard Backend
+"""Scraping Manager for Reynard Backend
 
 Manages scraping operations, job queues, and resource allocation.
 """
@@ -15,8 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class ScrapingManager:
-    """
-    Manages scraping operations and job queues.
+    """Manages scraping operations and job queues.
 
     Handles job scheduling, resource allocation, and coordination
     between different scraping components.
@@ -71,14 +69,14 @@ class ScrapingManager:
             return False
 
     async def add_job(self, job: ScrapingJob) -> bool:
-        """
-        Add a job to the queue.
+        """Add a job to the queue.
 
         Args:
             job: Scraping job to add
 
         Returns:
             True if job was added successfully
+
         """
         try:
             await self.job_queue.put(job)
@@ -91,26 +89,26 @@ class ScrapingManager:
             return False
 
     async def get_job(self, job_id: UUID) -> ScrapingJob | None:
-        """
-        Get a job by ID.
+        """Get a job by ID.
 
         Args:
             job_id: Job ID
 
         Returns:
             Job if found, None otherwise
+
         """
         return self.active_jobs.get(job_id) or self.completed_jobs.get(job_id)
 
     async def cancel_job(self, job_id: UUID) -> bool:
-        """
-        Cancel a job.
+        """Cancel a job.
 
         Args:
             job_id: Job ID to cancel
 
         Returns:
             True if job was cancelled
+
         """
         try:
             if job_id in self.active_jobs:
@@ -139,11 +137,11 @@ class ScrapingManager:
         return self.job_queue.qsize()
 
     async def _worker(self, worker_name: str) -> None:
-        """
-        Worker task that processes jobs from the queue.
+        """Worker task that processes jobs from the queue.
 
         Args:
             worker_name: Name of the worker
+
         """
         logger.info(f"Started worker: {worker_name}")
 
@@ -176,12 +174,12 @@ class ScrapingManager:
             logger.error(f"Error in worker {worker_name}: {e}")
 
     async def _process_job(self, job: ScrapingJob, worker_name: str) -> None:
-        """
-        Process a scraping job.
+        """Process a scraping job.
 
         Args:
             job: Job to process
             worker_name: Name of the worker processing the job
+
         """
         logger.info(f"Processing job {job.id} in {worker_name}")
 

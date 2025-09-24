@@ -1,5 +1,4 @@
-"""
-Quality Assessment Models for Reynard Backend
+"""Quality Assessment Models for Reynard Backend
 
 Data models for content quality assessment.
 """

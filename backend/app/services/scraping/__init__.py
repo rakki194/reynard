@@ -1,5 +1,4 @@
-"""
-Scraping Services for Reynard Backend
+"""Scraping Services for Reynard Backend
 
 This module provides comprehensive scraping and content extraction capabilities,
 ported from Pawprint with enhanced integration for the Reynard ecosystem.

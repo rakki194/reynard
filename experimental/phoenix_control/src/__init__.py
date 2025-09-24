@@ -1,5 +1,4 @@
-"""
-PHOENIX Control: Success-Advisor-8 Distillation
+"""PHOENIX Control: Success-Advisor-8 Distillation
 
 A clean, modular distillation of Success-Advisor-8's capabilities
 extracted from the comprehensive PHOENIX framework and documentation.
@@ -14,4 +13,4 @@ from .quality.validation import QualityAssurance
 
 __version__ = "1.0.0"
 __author__ = "Champion-Designer-32"
-__all__ = ["SuccessAdvisor8", "ReleaseAutomation", "QualityAssurance"]
+__all__ = ["QualityAssurance", "ReleaseAutomation", "SuccessAdvisor8"]

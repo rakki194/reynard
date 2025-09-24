@@ -1,5 +1,4 @@
-"""
-Mock gatekeeper API dependencies.
+"""Mock gatekeeper API dependencies.
 """
 
 from fastapi import Depends
@@ -32,7 +31,6 @@ def set_auth_manager(auth_manager: MockAuthManager) -> None:
     """Set the mock auth manager."""
     # For testing, we don't need to actually set anything
     # The mock auth manager is already configured
-    pass
 
 
 __all__ = [

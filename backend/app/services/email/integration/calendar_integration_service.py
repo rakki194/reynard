@@ -1,18 +1,16 @@
-"""
-Calendar Integration Service for Reynard Backend.
+"""Calendar Integration Service for Reynard Backend.
 
 This module provides calendar integration functionality for meeting scheduling from emails.
 """
 
-import asyncio
 import json
 import logging
 import re
 import uuid
 from dataclasses import asdict, dataclass
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 # Calendar API imports
 try:
@@ -45,16 +43,16 @@ class CalendarEvent:
     description: str
     start_time: datetime
     end_time: datetime
-    location: Optional[str] = None
-    attendees: List[str] = None
-    organizer: Optional[str] = None
+    location: str | None = None
+    attendees: list[str] = None
+    organizer: str | None = None
     status: str = "confirmed"  # confirmed, tentative, cancelled
     calendar_id: str = "primary"
     created_at: datetime = None
     updated_at: datetime = None
-    meeting_link: Optional[str] = None
+    meeting_link: str | None = None
     is_recurring: bool = False
-    recurrence_rule: Optional[str] = None
+    recurrence_rule: str | None = None
 
     def __post_init__(self):
         if self.attendees is None:
@@ -72,11 +70,11 @@ class MeetingRequest:
     request_id: str
     email_message_id: str
     subject: str
-    proposed_times: List[datetime]
+    proposed_times: list[datetime]
     duration_minutes: int
-    attendees: List[str]
-    location: Optional[str] = None
-    description: Optional[str] = None
+    attendees: list[str]
+    location: str | None = None
+    description: str | None = None
     priority: str = "normal"  # low, normal, high
     meeting_type: str = "meeting"  # meeting, call, video_call
     extracted_at: datetime = None
@@ -99,7 +97,7 @@ class CalendarConfig:
     max_meeting_duration_hours: int = 8
     working_hours_start: int = 9  # 9 AM
     working_hours_end: int = 17  # 5 PM
-    working_days: List[int] = None  # 0=Monday, 6=Sunday
+    working_days: list[int] = None  # 0=Monday, 6=Sunday
     timezone: str = "UTC"
 
     def __post_init__(self):
@@ -111,7 +109,7 @@ class CalendarIntegrationService:
     """Service for calendar integration and meeting scheduling."""
 
     def __init__(
-        self, config: Optional[CalendarConfig] = None, data_dir: str = "data/calendar"
+        self, config: CalendarConfig | None = None, data_dir: str = "data/calendar",
     ):
         self.config = config or CalendarConfig()
         self.data_dir = Path(data_dir)
@@ -164,7 +162,7 @@ class CalendarIntegrationService:
         try:
             events_file = self.data_dir / "events.json"
             if events_file.exists():
-                with open(events_file, "r", encoding="utf-8") as f:
+                with open(events_file, encoding="utf-8") as f:
                     events_data = json.load(f)
                     self.events = {
                         event_id: CalendarEvent(**event_data)
@@ -181,7 +179,7 @@ class CalendarIntegrationService:
         try:
             requests_file = self.data_dir / "meeting_requests.json"
             if requests_file.exists():
-                with open(requests_file, "r", encoding="utf-8") as f:
+                with open(requests_file, encoding="utf-8") as f:
                     requests_data = json.load(f)
                     self.meeting_requests = {
                         req_id: MeetingRequest(**req_data)
@@ -246,9 +244,8 @@ class CalendarIntegrationService:
         email_body: str,
         email_message_id: str,
         sender_email: str,
-    ) -> List[MeetingRequest]:
-        """
-        Extract meeting requests from email content.
+    ) -> list[MeetingRequest]:
+        """Extract meeting requests from email content.
 
         Args:
             email_subject: Email subject line
@@ -258,6 +255,7 @@ class CalendarIntegrationService:
 
         Returns:
             List of MeetingRequest objects
+
         """
         try:
             requests = []
@@ -331,11 +329,10 @@ class CalendarIntegrationService:
     async def schedule_meeting(
         self,
         meeting_request: MeetingRequest,
-        selected_time: Optional[datetime] = None,
+        selected_time: datetime | None = None,
         calendar_id: str = "primary",
     ) -> CalendarEvent:
-        """
-        Schedule a meeting from a meeting request.
+        """Schedule a meeting from a meeting request.
 
         Args:
             meeting_request: Meeting request to schedule
@@ -344,6 +341,7 @@ class CalendarIntegrationService:
 
         Returns:
             CalendarEvent object
+
         """
         try:
             # Select time
@@ -355,7 +353,7 @@ class CalendarIntegrationService:
 
             # Calculate end time
             end_time = selected_time + timedelta(
-                minutes=meeting_request.duration_minutes
+                minutes=meeting_request.duration_minutes,
             )
 
             # Create calendar event
@@ -397,11 +395,10 @@ class CalendarIntegrationService:
         start_date: datetime,
         end_date: datetime,
         duration_minutes: int,
-        attendees: List[str],
+        attendees: list[str],
         calendar_id: str = "primary",
-    ) -> List[Dict[str, Any]]:
-        """
-        Get available time slots for scheduling.
+    ) -> list[dict[str, Any]]:
+        """Get available time slots for scheduling.
 
         Args:
             start_date: Start of availability window
@@ -412,11 +409,12 @@ class CalendarIntegrationService:
 
         Returns:
             List of available time slots
+
         """
         try:
             # Get existing events in the time range
             existing_events = await self._get_events_in_range(
-                start_date, end_date, calendar_id
+                start_date, end_date, calendar_id,
             )
 
             # Generate possible time slots
@@ -426,7 +424,7 @@ class CalendarIntegrationService:
             while current_time + timedelta(minutes=duration_minutes) <= end_date:
                 # Check if this time slot is available
                 if self._is_time_slot_available(
-                    current_time, duration_minutes, existing_events
+                    current_time, duration_minutes, existing_events,
                 ):
                     # Check if it's within working hours
                     if self._is_within_working_hours(current_time):
@@ -438,7 +436,7 @@ class CalendarIntegrationService:
                                 ).isoformat(),
                                 "duration_minutes": duration_minutes,
                                 "available": True,
-                            }
+                            },
                         )
 
                 # Move to next slot (every 30 minutes)
@@ -451,10 +449,9 @@ class CalendarIntegrationService:
             return []
 
     async def get_upcoming_meetings(
-        self, user_email: str, days_ahead: int = 7
-    ) -> List[CalendarEvent]:
-        """
-        Get upcoming meetings for a user.
+        self, user_email: str, days_ahead: int = 7,
+    ) -> list[CalendarEvent]:
+        """Get upcoming meetings for a user.
 
         Args:
             user_email: User's email address
@@ -462,6 +459,7 @@ class CalendarIntegrationService:
 
         Returns:
             List of upcoming CalendarEvent objects
+
         """
         try:
             now = datetime.now()
@@ -490,9 +488,8 @@ class CalendarIntegrationService:
             logger.error(f"Failed to get upcoming meetings: {e}")
             return []
 
-    async def cancel_meeting(self, event_id: str, reason: Optional[str] = None) -> bool:
-        """
-        Cancel a scheduled meeting.
+    async def cancel_meeting(self, event_id: str, reason: str | None = None) -> bool:
+        """Cancel a scheduled meeting.
 
         Args:
             event_id: Event ID to cancel
@@ -500,6 +497,7 @@ class CalendarIntegrationService:
 
         Returns:
             True if successful
+
         """
         try:
             if event_id not in self.events:
@@ -529,10 +527,9 @@ class CalendarIntegrationService:
         self,
         event_id: str,
         new_start_time: datetime,
-        new_duration_minutes: Optional[int] = None,
+        new_duration_minutes: int | None = None,
     ) -> bool:
-        """
-        Reschedule a meeting.
+        """Reschedule a meeting.
 
         Args:
             event_id: Event ID to reschedule
@@ -541,6 +538,7 @@ class CalendarIntegrationService:
 
         Returns:
             True if successful
+
         """
         try:
             if event_id not in self.events:
@@ -555,7 +553,7 @@ class CalendarIntegrationService:
             event.start_time = new_start_time
             if new_duration_minutes:
                 event.end_time = new_start_time + timedelta(
-                    minutes=new_duration_minutes
+                    minutes=new_duration_minutes,
                 )
             else:
                 # Keep original duration
@@ -581,7 +579,7 @@ class CalendarIntegrationService:
 
     # Private helper methods
 
-    def _extract_proposed_times(self, text: str) -> List[datetime]:
+    def _extract_proposed_times(self, text: str) -> list[datetime]:
         """Extract proposed meeting times from text."""
         times = []
 
@@ -629,7 +627,7 @@ class CalendarIntegrationService:
 
         return 60  # Default 1 hour
 
-    def _extract_attendees(self, text: str, sender_email: str) -> List[str]:
+    def _extract_attendees(self, text: str, sender_email: str) -> list[str]:
         """Extract meeting attendees from text."""
         attendees = [sender_email]  # Include sender
 
@@ -643,7 +641,7 @@ class CalendarIntegrationService:
 
         return attendees
 
-    def _extract_meeting_location(self, text: str) -> Optional[str]:
+    def _extract_meeting_location(self, text: str) -> str | None:
         """Extract meeting location from text."""
         location_keywords = ["location", "where", "place", "room", "office", "address"]
 
@@ -674,10 +672,9 @@ class CalendarIntegrationService:
             for word in ["video", "zoom", "teams", "webinar", "google meet"]
         ):
             return "video_call"
-        elif any(word in text_lower for word in ["call", "phone", "telephone"]):
+        if any(word in text_lower for word in ["call", "phone", "telephone"]):
             return "call"
-        else:
-            return "meeting"
+        return "meeting"
 
     def _extract_meeting_priority(self, text: str) -> str:
         """Extract meeting priority from text."""
@@ -687,26 +684,24 @@ class CalendarIntegrationService:
             word in text_lower for word in ["urgent", "asap", "immediately", "critical"]
         ):
             return "high"
-        elif any(word in text_lower for word in ["low", "whenever", "flexible"]):
+        if any(word in text_lower for word in ["low", "whenever", "flexible"]):
             return "low"
-        else:
-            return "normal"
+        return "normal"
 
-    def _generate_meeting_link(self, meeting_type: str) -> Optional[str]:
+    def _generate_meeting_link(self, meeting_type: str) -> str | None:
         """Generate meeting link based on type."""
         if meeting_type == "video_call":
             # In production, this would integrate with actual video conferencing services
             return f"https://meet.example.com/room/{uuid.uuid4().hex[:8]}"
-        elif meeting_type == "call":
+        if meeting_type == "call":
             # Generate a phone conference link
             return f"https://conference.example.com/room/{uuid.uuid4().hex[:8]}"
-        else:
-            # Regular meetings don't need links
-            return None
+        # Regular meetings don't need links
+        return None
 
     async def _get_events_in_range(
-        self, start_date: datetime, end_date: datetime, calendar_id: str
-    ) -> List[CalendarEvent]:
+        self, start_date: datetime, end_date: datetime, calendar_id: str,
+    ) -> list[CalendarEvent]:
         """Get events in a time range."""
         events = []
 
@@ -725,7 +720,7 @@ class CalendarIntegrationService:
         self,
         start_time: datetime,
         duration_minutes: int,
-        existing_events: List[CalendarEvent],
+        existing_events: list[CalendarEvent],
     ) -> bool:
         """Check if a time slot is available."""
         end_time = start_time + timedelta(minutes=duration_minutes)

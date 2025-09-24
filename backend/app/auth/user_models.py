@@ -1,5 +1,4 @@
-"""
-User models for Reynard Backend.
+"""User models for Reynard Backend.
 
 This module provides Pydantic models for user-related operations.
 """

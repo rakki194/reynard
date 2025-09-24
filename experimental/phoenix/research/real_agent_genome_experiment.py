@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Real Agent Genome Experiment
+"""Real Agent Genome Experiment
 
 This script runs a comparison experiment between agents with and without genome data
 using real Ollama Qwen3 model integration.
@@ -11,10 +10,8 @@ Version: 1.0.0
 
 import argparse
 import asyncio
-import json
 import logging
 import sys
-from datetime import datetime
 from pathlib import Path
 
 # Add the src directory to the path
@@ -33,7 +30,7 @@ except ImportError as e:
 
     result = subprocess.run(
         [sys.executable, "standalone_genome_experiment.py"] + sys.argv[1:],
-        cwd=Path(__file__).parent,
+        cwd=Path(__file__).parent, check=False,
     )
     sys.exit(result.returncode)
 
@@ -159,7 +156,7 @@ async def check_ollama_availability(ollama_interface: OllamaInterface) -> bool:
 
     if not await ollama_interface.is_available():
         print(
-            "❌ Ollama is not available. Please ensure Ollama is running on localhost:11434"
+            "❌ Ollama is not available. Please ensure Ollama is running on localhost:11434",
         )
         return False
 
@@ -168,7 +165,7 @@ async def check_ollama_availability(ollama_interface: OllamaInterface) -> bool:
     # Test a simple generation
     print("🧪 Testing model generation...")
     test_response = await ollama_interface.generate_response(
-        "Hello, can you respond with just 'OK'?"
+        "Hello, can you respond with just 'OK'?",
     )
 
     if not test_response:
@@ -181,7 +178,7 @@ async def check_ollama_availability(ollama_interface: OllamaInterface) -> bool:
 
 async def run_experiment(num_trials: int = 10, model: str = "qwen2.5:7b"):
     """Run the genome comparison experiment."""
-    print(f"🚀 Starting Real Agent Genome Experiment")
+    print("🚀 Starting Real Agent Genome Experiment")
     print(f"📊 Configuration: {num_trials} trials, model: {model}")
 
     # Initialize interfaces
@@ -190,7 +187,7 @@ async def run_experiment(num_trials: int = 10, model: str = "qwen2.5:7b"):
 
     # Check availability
     if not await check_ollama_availability(ollama_interface):
-        return
+        return None
 
     # Create test agents
     print("👥 Creating test agents...")
@@ -211,7 +208,7 @@ async def run_experiment(num_trials: int = 10, model: str = "qwen2.5:7b"):
     print(f"\n📊 Sample Size: {comparison['sample_size']} trials")
     print(f"⏰ Timestamp: {results['timestamp']}")
 
-    print(f"\n🔬 METRIC COMPARISON:")
+    print("\n🔬 METRIC COMPARISON:")
     print("-" * 50)
 
     for metric in comparison["with_genome_averages"]:
@@ -220,11 +217,11 @@ async def run_experiment(num_trials: int = 10, model: str = "qwen2.5:7b"):
         improvement = comparison["improvements_percent"][metric]
 
         print(
-            f"{metric.replace('_', ' ').title():<25}: {with_val:.3f} vs {without_val:.3f} ({improvement:+.1f}%)"
+            f"{metric.replace('_', ' ').title():<25}: {with_val:.3f} vs {without_val:.3f} ({improvement:+.1f}%)",
         )
 
     # Identify key findings
-    print(f"\n🎯 KEY FINDINGS:")
+    print("\n🎯 KEY FINDINGS:")
     print("-" * 50)
 
     quality_improvement = comparison["improvements_percent"]["quality_score"]
@@ -232,18 +229,18 @@ async def run_experiment(num_trials: int = 10, model: str = "qwen2.5:7b"):
 
     if quality_improvement > 0:
         print(
-            f"✅ Quality Score: {quality_improvement:+.1f}% improvement with genome data"
+            f"✅ Quality Score: {quality_improvement:+.1f}% improvement with genome data",
         )
     else:
         print(f"❌ Quality Score: {quality_improvement:+.1f}% change with genome data")
 
     if spirit_improvement > 0:
         print(
-            f"✅ Spirit Alignment: {spirit_improvement:+.1f}% improvement with genome data"
+            f"✅ Spirit Alignment: {spirit_improvement:+.1f}% improvement with genome data",
         )
     else:
         print(
-            f"❌ Spirit Alignment: {spirit_improvement:+.1f}% change with genome data"
+            f"❌ Spirit Alignment: {spirit_improvement:+.1f}% change with genome data",
         )
 
     # Check for significant improvements
@@ -254,7 +251,7 @@ async def run_experiment(num_trials: int = 10, model: str = "qwen2.5:7b"):
     ]
 
     if significant_improvements:
-        print(f"\n🌟 Significant Improvements (>10%):")
+        print("\n🌟 Significant Improvements (>10%):")
         for metric in significant_improvements:
             improvement = comparison["improvements_percent"][metric]
             print(f"   • {metric.replace('_', ' ').title()}: {improvement:+.1f}%")
@@ -268,10 +265,10 @@ async def main():
     """Main function."""
     parser = argparse.ArgumentParser(description="Run Real Agent Genome Experiment")
     parser.add_argument(
-        "--trials", type=int, default=10, help="Number of trials to run"
+        "--trials", type=int, default=10, help="Number of trials to run",
     )
     parser.add_argument(
-        "--model", type=str, default="qwen2.5:7b", help="Ollama model to use"
+        "--model", type=str, default="qwen2.5:7b", help="Ollama model to use",
     )
     parser.add_argument("--verbose", action="store_true", help="Enable verbose logging")
 
@@ -280,7 +277,7 @@ async def main():
     # Setup logging
     log_level = logging.DEBUG if args.verbose else logging.INFO
     logging.basicConfig(
-        level=log_level, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        level=log_level, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     try:

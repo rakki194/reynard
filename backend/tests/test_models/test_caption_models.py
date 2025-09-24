@@ -1,5 +1,4 @@
-"""
-Tests for caption generation models.
+"""Tests for caption generation models.
 
 This module tests the Pydantic models used for caption generation
 request/response schemas.
@@ -460,7 +459,7 @@ class TestModelManagementResponse:
         """Test ModelManagementResponse with invalid field types."""
         with pytest.raises(ValidationError) as exc_info:
             ModelManagementResponse(
-                success="yes", message=123  # Should be boolean  # Should be string
+                success="yes", message=123,  # Should be boolean  # Should be string
             )
 
         errors = exc_info.value.errors()

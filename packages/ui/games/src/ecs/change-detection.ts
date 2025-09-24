@@ -78,11 +78,11 @@ export class ChangeDetectionImpl implements ChangeDetection {
     this.incrementTick();
 
     // Clean up removed components after advancing tick
-    for (const [key, ticks] of this.componentTicks.entries()) {
+    Array.from(this.componentTicks.entries()).forEach(([key, ticks]) => {
       if (ticks.removed) {
         this.componentTicks.delete(key);
       }
-    }
+    });
   }
 
   /**

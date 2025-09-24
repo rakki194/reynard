@@ -1,5 +1,4 @@
-"""
-Tests for Ollama service functionality.
+"""Tests for Ollama service functionality.
 
 This module tests the OllamaService class and its integration with
 ReynardAssistant, tool calling, and streaming responses.
@@ -50,15 +49,15 @@ class TestOllamaService:
                     "system_prompt": "You are a helpful assistant",
                     "tools_enabled": True,
                 },
-            }
+            },
         }
 
         with (
             patch(
-                "app.services.ollama.ollama_service.OllamaClient"
+                "app.services.ollama.ollama_service.OllamaClient",
             ) as mock_client_class,
             patch(
-                "app.services.ollama.ollama_service.ReynardAssistant"
+                "app.services.ollama.ollama_service.ReynardAssistant",
             ) as mock_assistant_class,
         ):
 
@@ -207,7 +206,7 @@ class TestOllamaService:
         service._enabled = False
 
         params = OllamaAssistantParams(
-            model="llama3.1", message="Hello", tools_enabled=True
+            model="llama3.1", message="Hello", tools_enabled=True,
         )
 
         events = []
@@ -489,8 +488,8 @@ class TestOllamaClient:
                     "modified_at": "2024-01-01T00:00:00Z",
                     "digest": "sha256:abc123",
                     "details": {"format": "gguf", "family": "llama"},
-                }
-            ]
+                },
+            ],
         }
         client.session.get.return_value.__aenter__.return_value = mock_response
 

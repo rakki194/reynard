@@ -1,5 +1,4 @@
-"""
-Ollama-based summarizer for Reynard.
+"""Ollama-based summarizer for Reynard.
 
 This module provides a summarizer that uses the existing Ollama service
 for text summarization with different content types and summary levels.
@@ -23,19 +22,18 @@ logger = logging.getLogger(__name__)
 
 
 class OllamaSummarizer(BaseSummarizer):
-    """
-    Ollama-based summarizer that integrates with Reynard's Ollama service.
+    """Ollama-based summarizer that integrates with Reynard's Ollama service.
 
     This summarizer uses the existing Ollama service to generate summaries
     for different content types with specialized prompts and configurations.
     """
 
     def __init__(self, ollama_service):
-        """
-        Initialize the Ollama summarizer.
+        """Initialize the Ollama summarizer.
 
         Args:
             ollama_service: Instance of Reynard's OllamaService
+
         """
         super().__init__(
             name="ollama_summarizer",
@@ -51,11 +49,11 @@ class OllamaSummarizer(BaseSummarizer):
         self._default_model = "llama3.2:3b"  # Default model for summarization
 
     async def initialize(self) -> bool:
-        """
-        Initialize the Ollama summarizer.
+        """Initialize the Ollama summarizer.
 
         Returns:
             True if initialization was successful, False otherwise
+
         """
         try:
             if not self.ollama_service:
@@ -76,10 +74,9 @@ class OllamaSummarizer(BaseSummarizer):
             return False
 
     async def summarize(
-        self, text: str, options: SummarizationOptions
+        self, text: str, options: SummarizationOptions,
     ) -> SummarizationResult:
-        """
-        Summarize text using Ollama.
+        """Summarize text using Ollama.
 
         Args:
             text: Text to summarize
@@ -91,6 +88,7 @@ class OllamaSummarizer(BaseSummarizer):
         Raises:
             ValueError: If text is empty or invalid
             RuntimeError: If summarizer is not available
+
         """
         if not self._is_available:
             raise RuntimeError("OllamaSummarizer is not available")
@@ -134,7 +132,7 @@ class OllamaSummarizer(BaseSummarizer):
 
             # Calculate quality score
             result.quality_score = await self._calculate_quality_score(
-                text, summary_text
+                text, summary_text,
             )
 
             return result
@@ -144,10 +142,9 @@ class OllamaSummarizer(BaseSummarizer):
             raise
 
     async def summarize_stream(
-        self, text: str, options: SummarizationOptions
+        self, text: str, options: SummarizationOptions,
     ) -> AsyncGenerator[dict[str, Any]]:
-        """
-        Stream summarization progress and results.
+        """Stream summarization progress and results.
 
         Args:
             text: Text to summarize
@@ -155,6 +152,7 @@ class OllamaSummarizer(BaseSummarizer):
 
         Yields:
             Progress updates and final result
+
         """
         if not self._is_available:
             yield {
@@ -201,14 +199,14 @@ class OllamaSummarizer(BaseSummarizer):
             }
 
     async def validate_text(self, text: str) -> bool:
-        """
-        Validate if the text is suitable for summarization.
+        """Validate if the text is suitable for summarization.
 
         Args:
             text: Text to validate
 
         Returns:
             True if text is valid, False otherwise
+
         """
         if not text or not text.strip():
             return False
@@ -224,8 +222,7 @@ class OllamaSummarizer(BaseSummarizer):
         return True
 
     async def _generate_summary(self, text: str, options: SummarizationOptions) -> str:
-        """
-        Generate summary using Ollama service.
+        """Generate summary using Ollama service.
 
         Args:
             text: Text to summarize
@@ -233,6 +230,7 @@ class OllamaSummarizer(BaseSummarizer):
 
         Returns:
             Generated summary text
+
         """
         # Get specialized prompt for content type
         system_prompt, user_prompt = self._get_prompts(text, options)
@@ -263,10 +261,9 @@ class OllamaSummarizer(BaseSummarizer):
         return summary_text.strip()
 
     async def _generate_summary_stream(
-        self, text: str, options: SummarizationOptions
+        self, text: str, options: SummarizationOptions,
     ) -> AsyncGenerator[dict[str, Any]]:
-        """
-        Generate summary with streaming support.
+        """Generate summary with streaming support.
 
         Args:
             text: Text to summarize
@@ -274,6 +271,7 @@ class OllamaSummarizer(BaseSummarizer):
 
         Yields:
             Streaming events
+
         """
         # Get specialized prompt for content type
         system_prompt, user_prompt = self._get_prompts(text, options)
@@ -297,8 +295,7 @@ class OllamaSummarizer(BaseSummarizer):
             }
 
     def _get_prompts(self, text: str, options: SummarizationOptions) -> tuple[str, str]:
-        """
-        Get specialized prompts for the content type and summary level.
+        """Get specialized prompts for the content type and summary level.
 
         Args:
             text: Text to summarize
@@ -306,6 +303,7 @@ class OllamaSummarizer(BaseSummarizer):
 
         Returns:
             Tuple of (system_prompt, user_prompt)
+
         """
         # Base system prompt
         system_prompt = "You are an expert text summarizer. Generate high-quality, accurate summaries that capture the essential information from the input text."
@@ -356,14 +354,14 @@ class OllamaSummarizer(BaseSummarizer):
         return system_prompt, user_prompt
 
     async def _extract_outline(self, summary: str) -> list[str]:
-        """
-        Extract outline points from summary.
+        """Extract outline points from summary.
 
         Args:
             summary: Summary text
 
         Returns:
             List of outline points
+
         """
         # Simple outline extraction - split by sentences and filter
         sentences = summary.split(".")
@@ -380,8 +378,7 @@ class OllamaSummarizer(BaseSummarizer):
         return outline[:5]  # Limit to 5 points
 
     async def _extract_highlights(self, original_text: str, summary: str) -> list[str]:
-        """
-        Extract highlights from original text based on summary.
+        """Extract highlights from original text based on summary.
 
         Args:
             original_text: Original text
@@ -389,6 +386,7 @@ class OllamaSummarizer(BaseSummarizer):
 
         Returns:
             List of highlights
+
         """
         # Simple highlight extraction - find sentences that contain key terms from summary
         summary_words = set(summary.lower().split())
@@ -406,8 +404,7 @@ class OllamaSummarizer(BaseSummarizer):
         return highlights[:3]  # Limit to 3 highlights
 
     async def _calculate_quality_score(self, original_text: str, summary: str) -> float:
-        """
-        Calculate quality score for the summary.
+        """Calculate quality score for the summary.
 
         Args:
             original_text: Original text
@@ -415,6 +412,7 @@ class OllamaSummarizer(BaseSummarizer):
 
         Returns:
             Quality score between 0.0 and 1.0
+
         """
         # Simple quality scoring based on length ratio and word overlap
         original_words = set(original_text.lower().split())

@@ -1,5 +1,4 @@
-"""
-ECS Core Package
+"""ECS Core Package
 
 Core ECS components including Component, Entity, System, and ECSWorld.
 """
@@ -9,4 +8,4 @@ from .entity import Entity
 from .system import System
 from .world import ECSWorld
 
-__all__ = ["Component", "Entity", "System", "ECSWorld"]
+__all__ = ["Component", "ECSWorld", "Entity", "System"]

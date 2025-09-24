@@ -1,5 +1,4 @@
-"""
-Configuration management for Reynard Basic Backend
+"""Configuration management for Reynard Basic Backend
 Handles environment-based configuration for uvicorn and application settings
 """
 
@@ -73,7 +72,7 @@ class AppConfig:
         self.environment = os.getenv("ENVIRONMENT", "development")
         self.debug = os.getenv("DEBUG", "true").lower() == "true"
         self.secret_key = os.getenv(
-            "SECRET_KEY", "your-secret-key-change-in-production"
+            "SECRET_KEY", "your-secret-key-change-in-production",
         )
         self.cors_origins = self._parse_cors_origins()
         self.rate_limit = int(os.getenv("RATE_LIMIT", "100"))  # requests per minute
@@ -81,7 +80,7 @@ class AppConfig:
     def _parse_cors_origins(self) -> list[str]:
         """Parse CORS origins from environment variable"""
         origins = os.getenv(
-            "CORS_ORIGINS", "http://localhost:3000,http://localhost:5173"
+            "CORS_ORIGINS", "http://localhost:3000,http://localhost:5173",
         )
         return [origin.strip() for origin in origins.split(",") if origin.strip()]
 

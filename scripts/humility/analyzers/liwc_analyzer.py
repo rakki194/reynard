@@ -1,9 +1,7 @@
-"""
-LIWC (Linguistic Inquiry and Word Count) analysis module.
+"""LIWC (Linguistic Inquiry and Word Count) analysis module.
 """
 
-import asyncio
-from typing import Any, Dict, List
+from typing import Any
 
 from core.config import HumilityConfig
 from core.models import (
@@ -21,7 +19,7 @@ class LiwcAnalyzer:
         self.config = config
         self.liwc_categories = self._load_liwc_categories()
 
-    def _load_liwc_categories(self) -> Dict[str, List[str]]:
+    def _load_liwc_categories(self) -> dict[str, list[str]]:
         """Load LIWC categories relevant to humility analysis."""
         return {
             "first_person_singular": ["i", "me", "my", "mine", "myself"],
@@ -82,7 +80,7 @@ class LiwcAnalyzer:
             ],
         }
 
-    async def analyze(self, text: str, file_path: str = "") -> List[HumilityFinding]:
+    async def analyze(self, text: str, file_path: str = "") -> list[HumilityFinding]:
         """Analyze text using LIWC categories."""
         findings = []
         lines = text.split("\n")
@@ -144,7 +142,7 @@ class LiwcAnalyzer:
 
         return findings
 
-    async def get_metrics(self, text: str) -> Dict[str, Any]:
+    async def get_metrics(self, text: str) -> dict[str, Any]:
         """Get LIWC metrics for the text."""
         words = text.lower().split()
         total_words = len(words)
@@ -169,7 +167,7 @@ class LiwcAnalyzer:
                 "category_ratios": category_ratios,
                 "linguistic_humility": linguistic_humility,
                 "total_words": total_words,
-            }
+            },
         }
 
     def _create_liwc_finding(
@@ -200,7 +198,7 @@ class LiwcAnalyzer:
         )
 
     def _calculate_linguistic_humility(
-        self, category_ratios: Dict[str, float]
+        self, category_ratios: dict[str, float],
     ) -> float:
         """Calculate linguistic humility score based on LIWC ratios."""
         # Higher tentativeness and lower first-person usage indicates more humility

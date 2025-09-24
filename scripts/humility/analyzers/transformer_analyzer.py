@@ -1,16 +1,11 @@
-"""
-Transformer model analysis module (placeholder for BERT/RoBERTa integration).
+"""Transformer model analysis module (placeholder for BERT/RoBERTa integration).
 """
 
-import asyncio
-from typing import Any, Dict, List
+from typing import Any
 
 from core.config import HumilityConfig
 from core.models import (
-    ConfidenceLevel,
-    DetectionCategory,
     HumilityFinding,
-    SeverityLevel,
 )
 
 
@@ -23,7 +18,7 @@ class TransformerAnalyzer:
         # For now, this is a placeholder that demonstrates the interface
         self.model_loaded = False
 
-    async def analyze(self, text: str, file_path: str = "") -> List[HumilityFinding]:
+    async def analyze(self, text: str, file_path: str = "") -> list[HumilityFinding]:
         """Analyze text using transformer models."""
         # Placeholder implementation
         # In a real implementation, this would:
@@ -41,7 +36,7 @@ class TransformerAnalyzer:
 
         return findings
 
-    async def get_metrics(self, text: str) -> Dict[str, Any]:
+    async def get_metrics(self, text: str) -> dict[str, Any]:
         """Get transformer model metrics."""
         # Placeholder implementation
         return {
@@ -49,7 +44,7 @@ class TransformerAnalyzer:
                 "model_loaded": self.model_loaded,
                 "contextual_embeddings": None,
                 "classification_scores": None,
-            }
+            },
         }
 
     def _load_model(self) -> bool:

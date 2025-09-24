@@ -1,5 +1,4 @@
-"""
-Thread Pool Executor Core for Reynard Backend
+"""Thread Pool Executor Core for Reynard Backend
 
 Core implementation of the thread pool executor manager.
 """
@@ -17,8 +16,7 @@ logger = logging.getLogger("uvicorn")
 
 
 class ThreadPoolExecutorManager:
-    """
-    Thread pool executor manager with async support and performance monitoring.
+    """Thread pool executor manager with async support and performance monitoring.
     """
 
     def __init__(self, config: ExecutorConfig = None):
@@ -42,7 +40,7 @@ class ThreadPoolExecutorManager:
                 )
                 self._state = ExecutorState.RUNNING
                 logger.info(
-                    f"Thread pool executor initialized with {self._config.max_workers} workers"
+                    f"Thread pool executor initialized with {self._config.max_workers} workers",
                 )
                 return True
 
@@ -74,7 +72,7 @@ class ThreadPoolExecutorManager:
             self._stats.active_tasks += 1
             self._stats.current_concurrent_tasks += 1
             self._stats.max_concurrent_tasks = max(
-                self._stats.max_concurrent_tasks, self._stats.current_concurrent_tasks
+                self._stats.max_concurrent_tasks, self._stats.current_concurrent_tasks,
             )
 
             self._active_tasks[task_id] = TaskInfo(
@@ -91,7 +89,7 @@ class ThreadPoolExecutorManager:
             future = self._executor.submit(fn, *args, **kwargs)
 
             result = await asyncio.wait_for(
-                loop.run_in_executor(None, lambda: future.result()), timeout=timeout
+                loop.run_in_executor(None, lambda: future.result()), timeout=timeout,
             )
 
             # Update stats

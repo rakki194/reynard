@@ -1,5 +1,4 @@
-"""
-Image Utils Plugin Endpoints for Reynard Backend
+"""Image Utils Plugin Endpoints for Reynard Backend
 
 Plugin-specific endpoints for image processing operations.
 """
@@ -70,7 +69,7 @@ async def health_check():
             "jxl_supported": service.is_jxl_supported(),
             "avif_supported": service.is_avif_supported(),
             "supported_formats_count": len(
-                service.get_supported_formats_for_inference()
+                service.get_supported_formats_for_inference(),
             ),
         }
 

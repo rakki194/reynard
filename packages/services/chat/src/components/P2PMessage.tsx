@@ -6,7 +6,7 @@
  */
 import { Show, For, createMemo, createSignal } from "solid-js";
 import { MarkdownRenderer } from "./MarkdownRenderer";
-export const P2PMessage = props => {
+export const P2PMessage = (props: any) => {
   const [showReactions, setShowReactions] = createSignal(false);
   const [showMoreActions, setShowMoreActions] = createSignal(false);
   // Check if message is from current user
@@ -14,7 +14,7 @@ export const P2PMessage = props => {
     return props.message.sender?.id === props.currentUser.id;
   });
   // Format timestamp relative to now
-  const formatTimestamp = timestamp => {
+  const formatTimestamp = (timestamp: any) => {
     const now = Date.now();
     const diff = now - timestamp;
     const minutes = Math.floor(diff / 60000);

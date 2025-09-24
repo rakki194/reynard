@@ -1,5 +1,4 @@
-"""
-Tests for semantic search API endpoints.
+"""Tests for semantic search API endpoints.
 
 Tests cover:
 - Natural Language Search Endpoints
@@ -28,7 +27,7 @@ class TestNaturalLanguageSearchEndpoints:
     def test_natural_language_search_endpoint(self):
         """Test the natural language search endpoint."""
         with patch(
-            "app.api.search.natural_language_endpoints.get_enhanced_search_service"
+            "app.api.search.natural_language_endpoints.get_enhanced_search_service",
         ) as mock_service:
             # Mock the enhanced search service
             mock_search_service = AsyncMock()
@@ -43,7 +42,7 @@ class TestNaturalLanguageSearchEndpoints:
                         content="def authenticate_user():",
                         score=0.95,
                         context="Authentication function",
-                    )
+                    ),
                 ],
                 search_time=0.1,
             )
@@ -51,7 +50,7 @@ class TestNaturalLanguageSearchEndpoints:
 
             # Mock MCP authentication
             with patch(
-                "app.api.search.natural_language_endpoints.require_mcp_permission"
+                "app.api.search.natural_language_endpoints.require_mcp_permission",
             ) as mock_auth:
                 mock_auth.return_value = lambda: None
 
@@ -74,7 +73,7 @@ class TestNaturalLanguageSearchEndpoints:
     def test_intelligent_search_endpoint(self):
         """Test the intelligent search endpoint."""
         with patch(
-            "app.api.search.natural_language_endpoints.get_enhanced_search_service"
+            "app.api.search.natural_language_endpoints.get_enhanced_search_service",
         ) as mock_service:
             mock_search_service = AsyncMock()
             mock_search_service.intelligent_search.return_value = SearchResponse(
@@ -87,7 +86,7 @@ class TestNaturalLanguageSearchEndpoints:
             mock_service.return_value = mock_search_service
 
             with patch(
-                "app.api.search.natural_language_endpoints.require_mcp_permission"
+                "app.api.search.natural_language_endpoints.require_mcp_permission",
             ) as mock_auth:
                 mock_auth.return_value = lambda: None
 
@@ -103,7 +102,7 @@ class TestNaturalLanguageSearchEndpoints:
     def test_contextual_search_endpoint(self):
         """Test the contextual search endpoint."""
         with patch(
-            "app.api.search.natural_language_endpoints.get_enhanced_search_service"
+            "app.api.search.natural_language_endpoints.get_enhanced_search_service",
         ) as mock_service:
             mock_search_service = AsyncMock()
             mock_search_service.contextual_search.return_value = SearchResponse(
@@ -116,7 +115,7 @@ class TestNaturalLanguageSearchEndpoints:
             mock_service.return_value = mock_search_service
 
             with patch(
-                "app.api.search.natural_language_endpoints.require_mcp_permission"
+                "app.api.search.natural_language_endpoints.require_mcp_permission",
             ) as mock_auth:
                 mock_auth.return_value = lambda: None
 
@@ -136,7 +135,7 @@ class TestNaturalLanguageSearchEndpoints:
     def test_analyze_query_endpoint(self):
         """Test the analyze query endpoint."""
         with patch(
-            "app.api.search.natural_language_endpoints.get_enhanced_search_service"
+            "app.api.search.natural_language_endpoints.get_enhanced_search_service",
         ) as mock_service:
             mock_search_service = AsyncMock()
             mock_search_service.analyze_query.return_value = {
@@ -148,12 +147,12 @@ class TestNaturalLanguageSearchEndpoints:
             mock_service.return_value = mock_search_service
 
             with patch(
-                "app.api.search.natural_language_endpoints.require_mcp_permission"
+                "app.api.search.natural_language_endpoints.require_mcp_permission",
             ) as mock_auth:
                 mock_auth.return_value = lambda: None
 
                 response = self.client.post(
-                    "/api/search/analyze-query", json={"query": "find function"}
+                    "/api/search/analyze-query", json={"query": "find function"},
                 )
 
                 assert response.status_code == 200
@@ -164,24 +163,24 @@ class TestNaturalLanguageSearchEndpoints:
     def test_get_intelligent_suggestions_endpoint(self):
         """Test the intelligent suggestions endpoint."""
         with patch(
-            "app.api.search.natural_language_endpoints.get_enhanced_search_service"
+            "app.api.search.natural_language_endpoints.get_enhanced_search_service",
         ) as mock_service:
             mock_search_service = AsyncMock()
             mock_search_service.get_intelligent_suggestions.return_value = {
                 "suggestions": [
                     {"query": "find function", "confidence": 0.9},
                     {"query": "locate method", "confidence": 0.8},
-                ]
+                ],
             }
             mock_service.return_value = mock_search_service
 
             with patch(
-                "app.api.search.natural_language_endpoints.require_mcp_permission"
+                "app.api.search.natural_language_endpoints.require_mcp_permission",
             ) as mock_auth:
                 mock_auth.return_value = lambda: None
 
                 response = self.client.post(
-                    "/api/search/suggestions/intelligent", json={"query": "find"}
+                    "/api/search/suggestions/intelligent", json={"query": "find"},
                 )
 
                 assert response.status_code == 200
@@ -192,7 +191,7 @@ class TestNaturalLanguageSearchEndpoints:
     def test_search_with_examples_endpoint(self):
         """Test the search with examples endpoint."""
         with patch(
-            "app.api.search.natural_language_endpoints.get_enhanced_search_service"
+            "app.api.search.natural_language_endpoints.get_enhanced_search_service",
         ) as mock_service:
             mock_search_service = AsyncMock()
             mock_search_service.search_with_examples.return_value = SearchResponse(
@@ -205,7 +204,7 @@ class TestNaturalLanguageSearchEndpoints:
             mock_service.return_value = mock_search_service
 
             with patch(
-                "app.api.search.natural_language_endpoints.require_mcp_permission"
+                "app.api.search.natural_language_endpoints.require_mcp_permission",
             ) as mock_auth:
                 mock_auth.return_value = lambda: None
 
@@ -225,7 +224,7 @@ class TestNaturalLanguageSearchEndpoints:
     def test_enhanced_search_health_check_endpoint(self):
         """Test the enhanced search health check endpoint."""
         with patch(
-            "app.api.search.natural_language_endpoints.get_enhanced_search_service"
+            "app.api.search.natural_language_endpoints.get_enhanced_search_service",
         ) as mock_service:
             mock_search_service = AsyncMock()
             mock_search_service.enhanced_search_health_check.return_value = {
@@ -237,7 +236,7 @@ class TestNaturalLanguageSearchEndpoints:
             mock_service.return_value = mock_search_service
 
             with patch(
-                "app.api.search.natural_language_endpoints.require_mcp_permission"
+                "app.api.search.natural_language_endpoints.require_mcp_permission",
             ) as mock_auth:
                 mock_auth.return_value = lambda: None
 
@@ -251,7 +250,7 @@ class TestNaturalLanguageSearchEndpoints:
     def test_natural_language_search_validation_error(self):
         """Test natural language search with validation error."""
         with patch(
-            "app.api.search.natural_language_endpoints.require_mcp_permission"
+            "app.api.search.natural_language_endpoints.require_mcp_permission",
         ) as mock_auth:
             mock_auth.return_value = lambda: None
 
@@ -270,16 +269,16 @@ class TestNaturalLanguageSearchEndpoints:
     def test_natural_language_search_service_error(self):
         """Test natural language search with service error."""
         with patch(
-            "app.api.search.natural_language_endpoints.get_enhanced_search_service"
+            "app.api.search.natural_language_endpoints.get_enhanced_search_service",
         ) as mock_service:
             mock_search_service = AsyncMock()
             mock_search_service.natural_language_search.side_effect = Exception(
-                "Service error"
+                "Service error",
             )
             mock_service.return_value = mock_search_service
 
             with patch(
-                "app.api.search.natural_language_endpoints.require_mcp_permission"
+                "app.api.search.natural_language_endpoints.require_mcp_permission",
             ) as mock_auth:
                 mock_auth.return_value = lambda: None
 
@@ -322,7 +321,7 @@ class TestSearchEndpointIntegration:
     def test_search_endpoint_consistency(self):
         """Test that search endpoints return consistent response formats."""
         with patch(
-            "app.api.search.natural_language_endpoints.get_enhanced_search_service"
+            "app.api.search.natural_language_endpoints.get_enhanced_search_service",
         ) as mock_service:
             mock_search_service = AsyncMock()
             mock_search_service.natural_language_search.return_value = SearchResponse(
@@ -336,14 +335,14 @@ class TestSearchEndpointIntegration:
                         content="test content",
                         score=0.9,
                         context="test context",
-                    )
+                    ),
                 ],
                 search_time=0.1,
             )
             mock_service.return_value = mock_search_service
 
             with patch(
-                "app.api.search.natural_language_endpoints.require_mcp_permission"
+                "app.api.search.natural_language_endpoints.require_mcp_permission",
             ) as mock_auth:
                 mock_auth.return_value = lambda: None
 

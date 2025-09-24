@@ -1,5 +1,4 @@
-"""
-Test suite for Success-Advisor-8 Legacy Tracker.
+"""Test suite for Success-Advisor-8 Legacy Tracker.
 
 Comprehensive tests for the Success-Advisor-8 legacy tracking system,
 including CHANGELOG parsing, codebase scanning, and report generation.
@@ -12,10 +11,8 @@ import json
 import tempfile
 from datetime import datetime
 from pathlib import Path
-from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
-
 from backend.app.ecs.legacy_tracking.success_advisor_8_tracker import (
     CodeMovement,
     LegacyReport,
@@ -140,7 +137,7 @@ class TestLegacyReport:
                 activity_type="feature",
                 description="Test feature",
                 timestamp=datetime.now(),
-            )
+            ),
         ]
 
         movements = [
@@ -149,7 +146,7 @@ class TestLegacyReport:
                 line_number=1,
                 content="Test content",
                 movement_type="usage",
-            )
+            ),
         ]
 
         report = LegacyReport(
@@ -341,39 +338,39 @@ tracker.scan_codebase_movements()
         """Test Success-Advisor-8 reference detection."""
         # Test various patterns
         assert tracker._contains_success_advisor_8_reference(
-            "Success-Advisor-8 implementation"
+            "Success-Advisor-8 implementation",
         )
         assert tracker._contains_success_advisor_8_reference(
-            "SUCCESS-ADVISOR-8 tracking"
+            "SUCCESS-ADVISOR-8 tracking",
         )
         assert tracker._contains_success_advisor_8_reference(
-            "success_advisor_8 reference"
+            "success_advisor_8 reference",
         )
         assert tracker._contains_success_advisor_8_reference("SuccessAdvisor8 class")
         assert tracker._contains_success_advisor_8_reference(
-            "success_advisor8 function"
+            "success_advisor8 function",
         )
 
         # Test lion spirit patterns
         assert tracker._contains_success_advisor_8_reference(
-            "🦁 mane flows with strategic wisdom"
+            "🦁 mane flows with strategic wisdom",
         )
         assert tracker._contains_success_advisor_8_reference(
-            "🦁 roars strategic commands"
+            "🦁 roars strategic commands",
         )
 
         # Test release management patterns
         assert tracker._contains_success_advisor_8_reference(
-            "release management system"
+            "release management system",
         )
         assert tracker._contains_success_advisor_8_reference("version bump process")
 
         # Test negative cases
         assert not tracker._contains_success_advisor_8_reference(
-            "Regular code without patterns"
+            "Regular code without patterns",
         )
         assert not tracker._contains_success_advisor_8_reference(
-            "Some other functionality"
+            "Some other functionality",
         )
 
     def test_classify_activity_type(self, tracker):
@@ -431,7 +428,7 @@ tracker.scan_codebase_movements()
         )
         assert (
             tracker._classify_js_movement(
-                "const tracker = require('success_advisor_8')"
+                "const tracker = require('success_advisor_8')",
             )
             == "import"
         )
@@ -462,7 +459,7 @@ tracker.scan_codebase_movements()
         )
         assert (
             tracker._classify_markdown_movement(
-                "```python\nSuccess-Advisor-8 code\n```"
+                "```python\nSuccess-Advisor-8 code\n```",
             )
             == "code_block"
         )
@@ -581,7 +578,7 @@ tracker.scan_codebase_movements()
     async def test_export_legacy_data(self, tracker):
         """Test legacy data export functionality."""
         with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False
+            mode="w", suffix=".json", delete=False,
         ) as temp_file:
             temp_path = temp_file.name
 
@@ -592,7 +589,7 @@ tracker.scan_codebase_movements()
             # Verify the exported file exists and contains valid JSON
             assert Path(temp_path).exists()
 
-            with open(temp_path, "r", encoding="utf-8") as f:
+            with open(temp_path, encoding="utf-8") as f:
                 export_data = json.load(f)
 
             assert "report" in export_data
@@ -624,25 +621,21 @@ tracker.scan_codebase_movements()
         """Test function context extraction."""
         # Note: This test is skipped due to implementation issues with the range calculation
         # The context extraction methods have bugs in their range calculations
-        pass
 
     def test_get_class_context(self, tracker):
         """Test class context extraction."""
         # Note: This test is skipped due to implementation issues with the range calculation
         # The context extraction methods have bugs in their range calculations
-        pass
 
     def test_get_js_function_context(self, tracker):
         """Test JavaScript function context extraction."""
         # Note: This test is skipped due to implementation issues with the range calculation
         # The context extraction methods have bugs in their range calculations
-        pass
 
     def test_get_js_class_context(self, tracker):
         """Test JavaScript class context extraction."""
         # Note: This test is skipped due to implementation issues with the range calculation
         # The context extraction methods have bugs in their range calculations
-        pass
 
     def test_get_heading_context(self, tracker):
         """Test Markdown heading context extraction."""
@@ -654,7 +647,7 @@ tracker.scan_codebase_movements()
         ]
 
         context = tracker._get_heading_context(
-            lines, 4
+            lines, 4,
         )  # Line 4 contains the reference
         assert context == "## Sub Heading"
 
@@ -988,11 +981,11 @@ Integration with release management systems:
 
     @pytest.mark.asyncio
     async def test_complete_legacy_tracking_workflow(
-        self, temp_codebase_with_complex_structure
+        self, temp_codebase_with_complex_structure,
     ):
         """Test the complete legacy tracking workflow."""
         tracker = SuccessAdvisor8LegacyTracker(
-            str(temp_codebase_with_complex_structure)
+            str(temp_codebase_with_complex_structure),
         )
 
         # Step 1: Parse CHANGELOG entries
@@ -1028,7 +1021,7 @@ Integration with release management systems:
 
         # Step 4: Export legacy data
         with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False
+            mode="w", suffix=".json", delete=False,
         ) as temp_file:
             temp_path = temp_file.name
 
@@ -1037,7 +1030,7 @@ Integration with release management systems:
             assert success
 
             # Verify export contains all expected data
-            with open(temp_path, "r", encoding="utf-8") as f:
+            with open(temp_path, encoding="utf-8") as f:
                 export_data = json.load(f)
 
             assert export_data["report"]["total_activities"] == report.total_activities
@@ -1053,11 +1046,11 @@ Integration with release management systems:
 
     @pytest.mark.asyncio
     async def test_pattern_matching_comprehensive(
-        self, temp_codebase_with_complex_structure
+        self, temp_codebase_with_complex_structure,
     ):
         """Test comprehensive pattern matching across all file types."""
         tracker = SuccessAdvisor8LegacyTracker(
-            str(temp_codebase_with_complex_structure)
+            str(temp_codebase_with_complex_structure),
         )
 
         # Test all pattern types
@@ -1091,11 +1084,11 @@ Integration with release management systems:
 
     @pytest.mark.asyncio
     async def test_movement_classification_comprehensive(
-        self, temp_codebase_with_complex_structure
+        self, temp_codebase_with_complex_structure,
     ):
         """Test comprehensive movement classification."""
         tracker = SuccessAdvisor8LegacyTracker(
-            str(temp_codebase_with_complex_structure)
+            str(temp_codebase_with_complex_structure),
         )
 
         # Test Python movement classification

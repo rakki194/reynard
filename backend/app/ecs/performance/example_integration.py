@@ -1,5 +1,4 @@
-"""
-Example integration of performance monitoring into FastAPI ECS backend.
+"""Example integration of performance monitoring into FastAPI ECS backend.
 
 This example shows how to integrate the performance monitoring system
 into your FastAPI application.
@@ -27,7 +26,6 @@ logger = logging.getLogger(__name__)
 
 def create_app_with_performance_monitoring() -> FastAPI:
     """Create FastAPI app with performance monitoring enabled."""
-
     app = FastAPI(
         title="ECS Backend with Performance Monitoring",
         description="FastAPI ECS backend with comprehensive performance monitoring",

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-🦊 Debug CHANGELOG.md Scanner
+"""🦊 Debug CHANGELOG.md Scanner
 ============================
 
 Simple debug version to identify what's causing the hang.

@@ -1,5 +1,4 @@
-"""
-ComfyUI Service Models
+"""ComfyUI Service Models
 
 Pydantic models for ComfyUI API requests and responses.
 """
@@ -28,11 +27,11 @@ class ComfyStatusResponse(BaseModel):
     """Response model for workflow status."""
 
     status: str = Field(
-        ..., description="Current status: pending, processing, completed, error"
+        ..., description="Current status: pending, processing, completed, error",
     )
     progress: float = Field(0.0, ge=0.0, le=1.0, description="Progress from 0.0 to 1.0")
     images: list[dict[str, Any]] = Field(
-        default_factory=list, description="Generated images"
+        default_factory=list, description="Generated images",
     )
     error: str | None = Field(None, description="Error message if failed")
     message: str | None = Field(None, description="Status message")
@@ -79,7 +78,7 @@ class ComfyValidationResponse(BaseModel):
 
     is_valid: bool = Field(..., description="Whether the input is valid")
     suggestions: list[str] = Field(
-        default_factory=list, description="Alternative suggestions"
+        default_factory=list, description="Alternative suggestions",
     )
     errors: list[str] = Field(default_factory=list, description="Validation errors")
 
@@ -100,7 +99,7 @@ class ComfyPresetRequest(BaseModel):
     workflow: dict[str, Any] = Field(..., description="Preset workflow")
     parameters: dict[str, Any] | None = Field(None, description="Preset parameters")
     is_default: bool | None = Field(
-        False, description="Whether this is the default preset"
+        False, description="Whether this is the default preset",
     )
 
 
@@ -130,11 +129,11 @@ class ComfyWorkflowTemplateRequest(BaseModel):
     parameters: dict[str, Any] | None = Field(None, description="Template parameters")
     visibility: str | None = Field("private", description="Template visibility")
     parent_template_id: str | None = Field(
-        None, description="Parent template ID for branches"
+        None, description="Parent template ID for branches",
     )
     branch_name: str | None = Field(None, description="Branch name")
     is_community: bool | None = Field(
-        False, description="Whether this is a community template"
+        False, description="Whether this is a community template",
     )
 
 
@@ -153,7 +152,7 @@ class ComfyWorkflowTemplateResponse(BaseModel):
     parent_template_id: str | None = Field(None, description="Parent template ID")
     branch_name: str | None = Field(None, description="Branch name")
     is_community: bool = Field(
-        False, description="Whether this is a community template"
+        False, description="Whether this is a community template",
     )
     usage_count: int = Field(0, description="Usage count")
     rating: float | None = Field(None, description="Average rating")
@@ -198,7 +197,7 @@ class ComfyIngestRequest(BaseModel):
     prompt_id: str = Field(..., description="Prompt ID")
     workflow: dict[str, Any] = Field(..., description="Workflow definition")
     metadata: dict[str, Any] = Field(
-        default_factory=dict, description="Additional metadata"
+        default_factory=dict, description="Additional metadata",
     )
 
 

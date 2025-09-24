@@ -14,24 +14,56 @@ import {
   AgentEmailApi,
   ImapApi,
 } from "./generated/index";
+import { HTTPClient } from "reynard-http-client";
 import type { AuthFetchOptions, AuthFetch } from "./types";
 
 export interface ReynardApiClientConfig {
   basePath?: string;
   authFetch?: AuthFetch;
   timeout?: number;
+  httpClient?: HTTPClient;
 }
 
 /**
  * Creates a configured Reynard API client
  */
 export function createReynardApiClient(config: ReynardApiClientConfig = {}) {
-  const { basePath = "http://localhost:8000", authFetch, timeout = 30000 } = config;
+  const { basePath = "http://localhost:8000", authFetch, timeout = 30000, httpClient } = config;
+
+  // Create HTTP client if not provided
+  const client = httpClient || new HTTPClient({
+    baseUrl: basePath,
+    timeout,
+    retries: 3,
+    enableRetry: true,
+    enableCircuitBreaker: true,
+    enableMetrics: true,
+  });
+
+  // Create a fetch wrapper for the HTTP client
+  const httpFetch = async (url: string, options: RequestInit = {}) => {
+    const method = options.method || 'GET';
+    const headers = options.headers as Record<string, string> || {};
+    const body = options.body;
+
+    const response = await client.request({
+      method: method as any,
+      endpoint: url.replace(basePath, ''),
+      headers,
+      data: body,
+    });
+
+    return new Response(JSON.stringify(response.data), {
+      status: response.status,
+      statusText: response.statusText,
+      headers: new Headers(response.headers as Record<string, string>),
+    });
+  };
 
   // Create configuration
   const apiConfig = new Configuration({
     basePath,
-    fetchApi: authFetch || fetch,
+    fetchApi: authFetch || httpFetch,
   });
 
   // Create API clients
@@ -53,6 +85,7 @@ export function createReynardApiClient(config: ReynardApiClientConfig = {}) {
   return {
     api: healthApi,
     config: apiConfig,
+    httpClient: client,
 
     // Core services
     rag: {

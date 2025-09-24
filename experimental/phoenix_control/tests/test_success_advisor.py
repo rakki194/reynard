@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Test suite for Success-Advisor-8 agent.
+"""Test suite for Success-Advisor-8 agent.
 
 Tests the Success-Advisor-8 agent reconstruction, state management,
 and core functionality.
@@ -109,7 +108,7 @@ class TestSuccessAdvisor8:
                 "action": "test_action",
                 "success": True,
                 "details": "Test performance entry",
-            }
+            },
         )
 
         assert len(agent.performance_history) == initial_count + 1
@@ -154,7 +153,7 @@ class TestSuccessAdvisor8:
                 "action": "test_operation",
                 "success": True,
                 "details": "Test operation",
-            }
+            },
         )
 
         # Verify state consistency

@@ -1,5 +1,4 @@
-"""
-Medical Cultural Pattern Implementation
+"""Medical Cultural Pattern Implementation
 
 This module implements the MedicalCulturalPattern class for evaluating and generating
 scenarios related to medical professionals, healthcare communication, and medical ethics.
@@ -103,7 +102,7 @@ class MedicalCulturalPattern(BaseCulturalPattern):
             self.pattern_data = {}
 
     def generate_scenarios(
-        self, count: int, safety_level: SafetyLevel
+        self, count: int, safety_level: SafetyLevel,
     ) -> list[CulturalScenario]:
         """Generate medical-specific scenarios"""
         scenarios = []
@@ -157,7 +156,7 @@ class MedicalCulturalPattern(BaseCulturalPattern):
         return scenarios
 
     def evaluate_response(
-        self, scenario: CulturalScenario, response: str
+        self, scenario: CulturalScenario, response: str,
     ) -> CulturalEvaluationResult:
         """Evaluate response for medical cultural appropriateness"""
         metrics = {}
@@ -166,7 +165,7 @@ class MedicalCulturalPattern(BaseCulturalPattern):
 
         # Professional communication evaluation
         communication_score = self._evaluate_professional_communication(
-            response, scenario
+            response, scenario,
         )
         metrics["professional_communication"] = communication_score
         total_score += communication_score * 0.25
@@ -216,7 +215,7 @@ class MedicalCulturalPattern(BaseCulturalPattern):
         )
 
     def _evaluate_professional_communication(
-        self, response: str, scenario: CulturalScenario
+        self, response: str, scenario: CulturalScenario,
     ) -> float:
         """Evaluate professional communication skills"""
         score = 0.0
@@ -246,7 +245,7 @@ class MedicalCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_medical_accuracy(
-        self, response: str, scenario: CulturalScenario
+        self, response: str, scenario: CulturalScenario,
     ) -> float:
         """Evaluate medical accuracy and scientific rigor"""
         score = 0.0
@@ -276,7 +275,7 @@ class MedicalCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_patient_safety(
-        self, response: str, scenario: CulturalScenario
+        self, response: str, scenario: CulturalScenario,
     ) -> float:
         """Evaluate patient safety awareness"""
         score = 0.0
@@ -306,7 +305,7 @@ class MedicalCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_ethical_conduct(
-        self, response: str, scenario: CulturalScenario
+        self, response: str, scenario: CulturalScenario,
     ) -> float:
         """Evaluate ethical conduct and professional standards"""
         score = 0.0
@@ -336,7 +335,7 @@ class MedicalCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_collaborative_care(
-        self, response: str, scenario: CulturalScenario
+        self, response: str, scenario: CulturalScenario,
     ) -> float:
         """Evaluate collaborative care approach"""
         score = 0.0
@@ -371,19 +370,19 @@ class MedicalCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _generate_recommendations(
-        self, metrics: dict[str, float], response: str
+        self, metrics: dict[str, float], response: str,
     ) -> list[str]:
         """Generate improvement recommendations"""
         recommendations = []
 
         if metrics.get("professional_communication", 0) < 0.6:
             recommendations.append(
-                "Improve professional communication and empathetic language"
+                "Improve professional communication and empathetic language",
             )
 
         if metrics.get("medical_accuracy", 0) < 0.6:
             recommendations.append(
-                "Ensure medical accuracy and evidence-based information"
+                "Ensure medical accuracy and evidence-based information",
             )
 
         if metrics.get("patient_safety", 0) < 0.6:
@@ -391,7 +390,7 @@ class MedicalCulturalPattern(BaseCulturalPattern):
 
         if metrics.get("ethical_conduct", 0) < 0.6:
             recommendations.append(
-                "Maintain higher ethical standards and professional conduct"
+                "Maintain higher ethical standards and professional conduct",
             )
 
         if metrics.get("collaborative_care", 0) < 0.6:
@@ -407,7 +406,7 @@ class MedicalCulturalPattern(BaseCulturalPattern):
         # Check for medical advice
         if "diagnose" in response_lower or "prescribe" in response_lower:
             warnings.append(
-                "Avoid providing specific medical diagnoses or prescriptions"
+                "Avoid providing specific medical diagnoses or prescriptions",
             )
 
         # Check for privacy violations

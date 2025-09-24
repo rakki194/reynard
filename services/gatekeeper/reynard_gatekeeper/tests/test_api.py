@@ -1,5 +1,4 @@
-"""
-Tests for API functionality in the Gatekeeper library.
+"""Tests for API functionality in the Gatekeeper library.
 
 This module tests the FastAPI integration, dependencies, and routes.
 """
@@ -63,7 +62,7 @@ class TestDependencies:
 
         # Create user and get token
         user_data = UserCreate(
-            username="testuser", password="TestPassword123!", email="test@example.com"
+            username="testuser", password="TestPassword123!", email="test@example.com",
         )
         await auth_manager.create_user(user_data)
         tokens = await auth_manager.authenticate("testuser", "TestPassword123!")
@@ -187,7 +186,7 @@ class TestDependencies:
 
         # Create user and get token
         user_data = UserCreate(
-            username="testuser", password="TestPassword123!", email="test@example.com"
+            username="testuser", password="TestPassword123!", email="test@example.com",
         )
         await auth_manager.create_user(user_data)
         tokens = await auth_manager.authenticate("testuser", "TestPassword123!")
@@ -209,7 +208,7 @@ class TestDependencies:
 
         # Create user and get token
         user_data = UserCreate(
-            username="testuser", password="TestPassword123!", email="test@example.com"
+            username="testuser", password="TestPassword123!", email="test@example.com",
         )
         await auth_manager.create_user(user_data)
         tokens = await auth_manager.authenticate("testuser", "TestPassword123!")
@@ -222,7 +221,7 @@ class TestDependencies:
                 "type": "http",
                 "headers": [],
                 "query_string": f"token={tokens.access_token}".encode(),
-            }
+            },
         )
 
         # Test the dependency chain: first get the user, then check if active
@@ -265,7 +264,7 @@ class TestDependencies:
                 "type": "http",
                 "headers": [],
                 "query_string": f"token={tokens.access_token}".encode(),
-            }
+            },
         )
 
         # Test the dependency chain: first get the user, then check if active
@@ -298,7 +297,7 @@ class TestAPIIntegration:
 
         # Create user and get token
         user_data = UserCreate(
-            username="testuser", password="TestPassword123!", email="test@example.com"
+            username="testuser", password="TestPassword123!", email="test@example.com",
         )
         await auth_manager.create_user(user_data)
         tokens = await auth_manager.authenticate("testuser", "TestPassword123!")

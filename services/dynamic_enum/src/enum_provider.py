@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Enum Provider Interface
+"""Enum Provider Interface
 =======================
 
 Core interfaces and base classes for dynamic enum providers.
@@ -31,6 +30,7 @@ class EnumProvider(ABC):
         Args:
             enum_type: The type of enum this provider handles (e.g., 'spirits', 'styles')
             data_provider: Optional backend data provider
+
         """
         self.enum_type = enum_type
         self.data_provider = data_provider
@@ -40,22 +40,18 @@ class EnumProvider(ABC):
     @abstractmethod
     async def get_available_values(self) -> set[str]:
         """Get all available values for this enum type."""
-        pass
 
     @abstractmethod
     async def validate_value(self, value: str) -> str:
         """Validate and return a value, with fallback if invalid."""
-        pass
 
     @abstractmethod
     async def get_random_value(self, weighted: bool = True) -> str:
         """Get a random value from this enum type."""
-        pass
 
     @abstractmethod
     def get_fallback_data(self) -> dict[str, Any]:
         """Get fallback data when backend is unavailable."""
-        pass
 
     async def get_all_data(self) -> dict[str, Any]:
         """Get all data for this enum type."""
@@ -117,7 +113,6 @@ class WeightedEnumProvider(EnumProvider):
     @abstractmethod
     def get_default_fallback(self) -> str:
         """Get the default fallback value for this enum type."""
-        pass
 
 
 class MetadataEnumProvider(WeightedEnumProvider):
@@ -133,6 +128,7 @@ class MetadataEnumProvider(WeightedEnumProvider):
 
         Returns:
             The metadata value or default
+
         """
         try:
             data = await self.get_all_data()

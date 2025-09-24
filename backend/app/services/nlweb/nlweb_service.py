@@ -1,5 +1,4 @@
-"""
-NLWeb Service for Reynard Backend
+"""NLWeb Service for Reynard Backend
 
 Main service that orchestrates the NLWeb assistant tooling and routing system.
 Provides a unified interface for tool suggestion, performance monitoring, and configuration.
@@ -96,7 +95,7 @@ class NLWebService:
             return False
 
     async def suggest_tools(
-        self, request: NLWebSuggestionRequest
+        self, request: NLWebSuggestionRequest,
     ) -> NLWebSuggestionResponse:
         """Get tool suggestions for a natural language query."""
         if not self.enabled or not self.initialized:
@@ -108,7 +107,7 @@ class NLWebService:
             # Check rollback status
             if self.rollback_enabled:
                 logger.warning(
-                    "NLWeb service is in rollback mode - suggestions disabled"
+                    "NLWeb service is in rollback mode - suggestions disabled",
                 )
                 return NLWebSuggestionResponse(
                     suggestions=[],
@@ -194,7 +193,7 @@ class NLWebService:
             return NLWebPerformanceStats()
 
     async def get_tools(
-        self, category: str | None = None, tags: list[str] | None = None
+        self, category: str | None = None, tags: list[str] | None = None,
     ) -> list[NLWebTool]:
         """Get available tools, optionally filtered by category or tags."""
         try:
@@ -262,7 +261,7 @@ class NLWebService:
             return False
 
     async def enable_rollback(
-        self, request: NLWebRollbackRequest
+        self, request: NLWebRollbackRequest,
     ) -> NLWebRollbackResponse:
         """Enable or disable emergency rollback."""
         try:
@@ -270,7 +269,7 @@ class NLWebService:
             self.configuration.rollback_enabled = request.enable
 
             logger.warning(
-                f"NLWeb rollback {'enabled' if request.enable else 'disabled'}: {request.reason}"
+                f"NLWeb rollback {'enabled' if request.enable else 'disabled'}: {request.reason}",
             )
 
             return NLWebRollbackResponse(
@@ -302,7 +301,7 @@ class NLWebService:
                     status="pass" if self.initialized else "fail",
                     value=self.initialized,
                     threshold="true",
-                )
+                ),
             )
 
             # Configuration check
@@ -313,7 +312,7 @@ class NLWebService:
                     status="pass" if self.configuration else "fail",
                     value=self.configuration is not None,
                     threshold="true",
-                )
+                ),
             )
 
             # Performance checks
@@ -331,7 +330,7 @@ class NLWebService:
                         ),
                         value=f"{performance_stats.p95_processing_time_ms:.1f}ms",
                         threshold="1500ms",
-                    )
+                    ),
                 )
 
                 checks.append(
@@ -343,7 +342,7 @@ class NLWebService:
                         ),
                         value=f"{performance_stats.cache_hit_rate:.1f}%",
                         threshold="20%",
-                    )
+                    ),
                 )
 
                 checks.append(
@@ -355,7 +354,7 @@ class NLWebService:
                         ),
                         value=performance_stats.total_requests,
                         threshold="10",
-                    )
+                    ),
                 )
 
             # Configuration checks
@@ -366,7 +365,7 @@ class NLWebService:
                     status="pass" if self.configuration.enabled else "info",
                     value=self.configuration.enabled,
                     threshold="true",
-                )
+                ),
             )
 
             checks.append(
@@ -376,7 +375,7 @@ class NLWebService:
                     status="pass" if self.configuration.canary_enabled else "info",
                     value=self.configuration.canary_enabled,
                     threshold="true",
-                )
+                ),
             )
 
             checks.append(
@@ -386,7 +385,7 @@ class NLWebService:
                     status="warn" if self.configuration.rollback_enabled else "pass",
                     value=self.configuration.rollback_enabled,
                     threshold="false",
-                )
+                ),
             )
 
             # Determine overall status

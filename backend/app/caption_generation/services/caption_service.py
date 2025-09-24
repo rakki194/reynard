@@ -1,5 +1,4 @@
-"""
-Main caption service orchestrator.
+"""Main caption service orchestrator.
 
 This module provides the main service interface that coordinates
 model management, batch processing, and statistics tracking.
@@ -46,7 +45,7 @@ class CaptionService:
 
         try:
             if not self._model_coordinator.should_load_model(
-                generator_name, is_batch=False
+                generator_name, is_batch=False,
             ):
                 return CaptionResult(
                     image_path=image_path,
@@ -73,11 +72,11 @@ class CaptionService:
             if not force:
                 caption_path = image_path.with_suffix(f".{model.caption_type.value}")
                 logger.debug(
-                    f"Checking if caption exists for {generator_name}: {caption_path}"
+                    f"Checking if caption exists for {generator_name}: {caption_path}",
                 )
                 if caption_path.exists():
                     logger.info(
-                        f"Caption already exists for {generator_name} at {caption_path}, skipping generation"
+                        f"Caption already exists for {generator_name} at {caption_path}, skipping generation",
                     )
                     return CaptionResult(
                         image_path=image_path,
@@ -92,7 +91,7 @@ class CaptionService:
             caption = await self._generate_caption_with_retry(model, image_path, config)
             if caption and config.get("post_process", True):
                 caption = post_process_caption(
-                    caption, generator_name, config.get("post_processing_settings")
+                    caption, generator_name, config.get("post_processing_settings"),
                 )
 
             processing_time = time.time() - start_time
@@ -112,7 +111,7 @@ class CaptionService:
         except CaptionError as e:
             processing_time = time.time() - start_time
             logger.error(
-                f"Caption generation error for {image_path}: {e}", exc_info=True
+                f"Caption generation error for {image_path}: {e}", exc_info=True,
             )
             stats_mod.record_usage(generator_name, processing_time, False)
             self._total_processed += 1
@@ -154,11 +153,11 @@ class CaptionService:
     ) -> list[CaptionResult]:
         """Generate captions for multiple images in batch."""
         return await self._batch_processor.process_batch(
-            tasks, progress_callback, max_concurrent
+            tasks, progress_callback, max_concurrent,
         )
 
     async def _generate_caption_with_retry(
-        self, model: CaptionGenerator, image_path, config: dict[str, Any]
+        self, model: CaptionGenerator, image_path, config: dict[str, Any],
     ) -> str:
         """Generate caption with retry logic."""
 
@@ -184,7 +183,7 @@ class CaptionService:
                 raise CaptionGenerationError(model.name, str(e), retryable=retryable)
 
         return await retry_with_backoff(
-            _generate, "caption generation", config=self._retry_config
+            _generate, "caption generation", config=self._retry_config,
         )
 
     # Introspection and control
@@ -218,7 +217,6 @@ class CaptionService:
 
     def unload_all_models(self) -> None:
         """Unload all models."""
-        pass
 
     # Stats facade
     def get_model_usage_stats(self, model_name: str) -> dict[str, Any] | None:

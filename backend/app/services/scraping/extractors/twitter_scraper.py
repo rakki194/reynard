@@ -1,10 +1,8 @@
-"""
-Specialized Twitter/X scraper for handling Twitter's dynamic content and rate limiting.
+"""Specialized Twitter/X scraper for handling Twitter's dynamic content and rate limiting.
 """
 
 import logging
 import os
-import subprocess
 from typing import Any
 
 from ..models import ScrapingResult, ScrapingType
@@ -12,8 +10,7 @@ from .base_scraper import BaseScraper
 
 
 class TwitterScraper(BaseScraper):
-    """
-    Specialized Twitter/X scraper for handling Twitter's dynamic content.
+    """Specialized Twitter/X scraper for handling Twitter's dynamic content.
 
     Features:
     - Dynamic content extraction using Playwright
@@ -39,7 +36,7 @@ class TwitterScraper(BaseScraper):
             return True
         except ImportError:
             self.logger.warning(
-                "Playwright not available. Install with: pip install playwright && playwright install chromium"
+                "Playwright not available. Install with: pip install playwright && playwright install chromium",
             )
             return False
 
@@ -47,11 +44,12 @@ class TwitterScraper(BaseScraper):
         """Check if gallery-dl is available."""
         try:
             import gallery_dl
+
             self.logger.info(f"gallery-dl library available: {gallery_dl.__version__}")
             return True
         except ImportError:
             self.logger.warning(
-                "gallery-dl library not found. Install with: pip install gallery-dl"
+                "gallery-dl library not found. Install with: pip install gallery-dl",
             )
             return False
 
@@ -60,14 +58,14 @@ class TwitterScraper(BaseScraper):
         return any(domain in url.lower() for domain in self.supported_domains)
 
     async def scrape_content(self, url: str) -> ScrapingResult:
-        """
-        Scrape content from a Twitter URL.
+        """Scrape content from a Twitter URL.
 
         Args:
             url: Twitter URL to scrape
 
         Returns:
             ScrapingResult with extracted content
+
         """
         try:
             if not self.playwright_available:
@@ -121,7 +119,7 @@ class TwitterScraper(BaseScraper):
             async with async_playwright() as p:
                 browser = await p.chromium.launch(headless=True)
                 context = await browser.new_context(
-                    user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+                    user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
                 )
                 page = await context.new_page()
 
@@ -205,7 +203,7 @@ class TwitterScraper(BaseScraper):
 
                         return result;
                     }
-                """
+                """,
                 )
 
                 await browser.close()
@@ -278,10 +276,9 @@ class TwitterScraper(BaseScraper):
             )
 
     async def scrape_user_timeline(
-        self, username: str, limit: int = 20
+        self, username: str, limit: int = 20,
     ) -> list[ScrapingResult]:
-        """
-        Scrape a user's timeline.
+        """Scrape a user's timeline.
 
         Args:
             username: Twitter username (without @)
@@ -289,6 +286,7 @@ class TwitterScraper(BaseScraper):
 
         Returns:
             List of ScrapingResult objects
+
         """
         if not self.playwright_available:
             self.logger.warning("Playwright not available for timeline scraping")
@@ -303,7 +301,7 @@ class TwitterScraper(BaseScraper):
             async with async_playwright() as p:
                 browser = await p.chromium.launch(headless=True)
                 context = await browser.new_context(
-                    user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+                    user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
                 )
                 page = await context.new_page()
 
@@ -337,7 +335,7 @@ class TwitterScraper(BaseScraper):
 
                             return tweets;
                         }
-                    """
+                    """,
                     )
 
                     for tweet in tweets:
@@ -372,7 +370,7 @@ class TwitterScraper(BaseScraper):
 
                     # Scroll down to load more tweets
                     await page.evaluate(
-                        "window.scrollTo(0, document.body.scrollHeight)"
+                        "window.scrollTo(0, document.body.scrollHeight)",
                     )
                     await page.wait_for_timeout(2000)
 
@@ -448,10 +446,9 @@ class TwitterScraper(BaseScraper):
         return score
 
     async def download_media(
-        self, url: str, output_dir: str = "downloads"
+        self, url: str, output_dir: str = "downloads",
     ) -> list[str]:
-        """
-        Download media from a Twitter URL using gallery-dl.
+        """Download media from a Twitter URL using gallery-dl.
 
         Args:
             url: Twitter URL with media
@@ -459,6 +456,7 @@ class TwitterScraper(BaseScraper):
 
         Returns:
             List of downloaded file paths
+
         """
         if not self.gallery_dl_available:
             self.logger.warning("gallery-dl not available for media download")
@@ -469,8 +467,8 @@ class TwitterScraper(BaseScraper):
             os.makedirs(output_dir, exist_ok=True)
 
             # Import gallery-dl library
-            from gallery_dl import job, config
-            
+            from gallery_dl import config, job
+
             # Configure gallery-dl
             config.set((), "base-directory", output_dir)
             config.set((), "skip", True)  # Skip existing files
@@ -492,7 +490,9 @@ class TwitterScraper(BaseScraper):
                         if os.path.exists(filepath):
                             downloaded_files.append(filepath)
 
-            self.logger.info(f"Downloaded {len(downloaded_files)} media files from {url}")
+            self.logger.info(
+                f"Downloaded {len(downloaded_files)} media files from {url}",
+            )
             return downloaded_files
 
         except Exception as e:

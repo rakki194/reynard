@@ -1,5 +1,4 @@
-"""
-PHOENIX Knowledge Distillation
+"""PHOENIX Knowledge Distillation
 
 Core knowledge distillation algorithms for extracting genetic material from agent outputs.
 Implements subliminal learning and adaptive document conditioning.
@@ -9,11 +8,10 @@ Version: 1.0.0
 """
 
 import hashlib
-import json
 import logging
 import re
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 from ..utils.data_structures import (
     AgentGeneticMaterial,
@@ -28,8 +26,7 @@ from ..utils.data_structures import (
 
 
 class KnowledgeDistillation:
-    """
-    Knowledge distillation system for PHOENIX framework.
+    """Knowledge distillation system for PHOENIX framework.
 
     Implements:
     - Agent output analysis and genetic material extraction
@@ -39,11 +36,11 @@ class KnowledgeDistillation:
     """
 
     def __init__(self, config: PhoenixConfig):
-        """
-        Initialize knowledge distillation system.
+        """Initialize knowledge distillation system.
 
         Args:
             config: PHOENIX configuration parameters
+
         """
         self.config = config
         self.logger = logging.getLogger(__name__)
@@ -1833,10 +1830,9 @@ class KnowledgeDistillation:
         self.logger.info("🧠 Knowledge distillation system initialized")
 
     async def extract_genetic_material(
-        self, agent: AgentState, output: str, generation: int
+        self, agent: AgentState, output: str, generation: int,
     ) -> AgentGeneticMaterial:
-        """
-        Extract genetic material from agent output.
+        """Extract genetic material from agent output.
 
         Args:
             agent: Agent that generated the output
@@ -1845,6 +1841,7 @@ class KnowledgeDistillation:
 
         Returns:
             Extracted genetic material
+
         """
         self.logger.info(f"🧬 Extracting genetic material from agent {agent.name}")
 
@@ -1886,19 +1883,19 @@ class KnowledgeDistillation:
         )
 
         self.logger.info(
-            f"✅ Extracted genetic material with {len(subliminal_traits)} traits and {len(relevance_scores)} domains"
+            f"✅ Extracted genetic material with {len(subliminal_traits)} traits and {len(relevance_scores)} domains",
         )
         return genetic_material
 
     async def _analyze_output_structure(self, output: str) -> StructuredKnowledge:
-        """
-        Analyze the structure of agent output.
+        """Analyze the structure of agent output.
 
         Args:
             output: Agent output text
 
         Returns:
             Structured knowledge representation
+
         """
         # Extract categories
         categories = self._extract_categories(output)
@@ -1917,7 +1914,7 @@ class KnowledgeDistillation:
 
         # Calculate confidence scores
         confidence_scores = self._calculate_confidence_scores(
-            output, concepts, reasoning_patterns
+            output, concepts, reasoning_patterns,
         )
 
         return StructuredKnowledge(
@@ -1929,7 +1926,7 @@ class KnowledgeDistillation:
             confidence_scores=confidence_scores,
         )
 
-    def _extract_categories(self, output: str) -> List[str]:
+    def _extract_categories(self, output: str) -> list[str]:
         """Extract knowledge categories from output."""
         categories = []
 
@@ -1964,7 +1961,7 @@ class KnowledgeDistillation:
 
         return categories
 
-    def _extract_concepts(self, output: str) -> List[Dict[str, Any]]:
+    def _extract_concepts(self, output: str) -> list[dict[str, Any]]:
         """Extract key concepts from output."""
         concepts = []
 
@@ -1980,7 +1977,7 @@ class KnowledgeDistillation:
                             "related": [],
                             "importance": 0.8,
                             "domain_relevance": {domain: 1.0},
-                        }
+                        },
                     )
 
         # Extract general concepts using simple NLP
@@ -2091,12 +2088,12 @@ class KnowledgeDistillation:
                     "related": [],
                     "importance": word_freq[word] / len(words),
                     "domain_relevance": {},
-                }
+                },
             )
 
         return concepts
 
-    def _extract_reasoning_patterns(self, output: str) -> List[Dict[str, Any]]:
+    def _extract_reasoning_patterns(self, output: str) -> list[dict[str, Any]]:
         """Extract reasoning patterns from output."""
         patterns = []
 
@@ -2110,7 +2107,7 @@ class KnowledgeDistillation:
                     "steps": ["Identify condition", "Apply logic", "Draw conclusion"],
                     "success_rate": 0.8,
                     "domains": ["logic", "problem_solving"],
-                }
+                },
             )
 
         if re.search(r"because|since|therefore|thus", output, re.IGNORECASE):
@@ -2126,7 +2123,7 @@ class KnowledgeDistillation:
                     ],
                     "success_rate": 0.7,
                     "domains": ["analysis", "explanation"],
-                }
+                },
             )
 
         if re.search(r"first|second|third|then|next|finally", output, re.IGNORECASE):
@@ -2138,12 +2135,12 @@ class KnowledgeDistillation:
                     "steps": ["Identify sequence", "Order steps", "Execute in order"],
                     "success_rate": 0.9,
                     "domains": ["problem_solving", "planning"],
-                }
+                },
             )
 
         return patterns
 
-    def _extract_strategies(self, output: str) -> List[Dict[str, Any]]:
+    def _extract_strategies(self, output: str) -> list[dict[str, Any]]:
         """Extract problem-solving strategies from output."""
         strategies = []
 
@@ -2162,7 +2159,7 @@ class KnowledgeDistillation:
                     ],
                     "effectiveness": 0.8,
                     "contexts": ["complex_problems", "systematic_analysis"],
-                }
+                },
             )
 
         if re.search(r"alternative|option|choice|either.*or", output, re.IGNORECASE):
@@ -2179,7 +2176,7 @@ class KnowledgeDistillation:
                     ],
                     "effectiveness": 0.7,
                     "contexts": ["decision_making", "problem_solving"],
-                }
+                },
             )
 
         if re.search(r"example|instance|case.*study", output, re.IGNORECASE):
@@ -2195,12 +2192,12 @@ class KnowledgeDistillation:
                     ],
                     "effectiveness": 0.6,
                     "contexts": ["explanation", "learning"],
-                }
+                },
             )
 
         return strategies
 
-    def _extract_domain_knowledge(self, output: str) -> Dict[str, Any]:
+    def _extract_domain_knowledge(self, output: str) -> dict[str, Any]:
         """Extract domain-specific knowledge."""
         domain_knowledge = {}
 
@@ -2214,7 +2211,7 @@ class KnowledgeDistillation:
                         c for c in patterns["concepts"] if c in output.lower()
                     ],
                     "confidence": len(
-                        [kw for kw in patterns["keywords"] if kw in output.lower()]
+                        [kw for kw in patterns["keywords"] if kw in output.lower()],
                     )
                     / len(patterns["keywords"]),
                 }
@@ -2222,14 +2219,14 @@ class KnowledgeDistillation:
         return domain_knowledge
 
     def _calculate_confidence_scores(
-        self, output: str, concepts: List[Dict], reasoning_patterns: List[Dict]
-    ) -> Dict[str, float]:
+        self, output: str, concepts: list[dict], reasoning_patterns: list[dict],
+    ) -> dict[str, float]:
         """Calculate confidence scores for extracted knowledge."""
         confidence_scores = {}
 
         # Base confidence on output quality indicators
         confidence_scores["overall"] = min(
-            1.0, len(output) / 1000
+            1.0, len(output) / 1000,
         )  # Longer outputs generally more confident
 
         # Concept confidence
@@ -2251,9 +2248,8 @@ class KnowledgeDistillation:
 
         return confidence_scores
 
-    async def _detect_subliminal_traits(self, output: str) -> List[SubliminalTrait]:
-        """
-        Detect subliminal traits in agent output.
+    async def _detect_subliminal_traits(self, output: str) -> list[SubliminalTrait]:
+        """Detect subliminal traits in agent output.
         Based on Cloud et al. (2025) research on subliminal learning.
 
         Args:
@@ -2261,6 +2257,7 @@ class KnowledgeDistillation:
 
         Returns:
             List of detected subliminal traits
+
         """
         detected_traits = []
 
@@ -2291,7 +2288,7 @@ class KnowledgeDistillation:
 
                 # Calculate confidence based on multiple indicators
                 confidence = min(
-                    1.0, (keyword_matches * 0.3 + pattern_matches * 0.7) / 2
+                    1.0, (keyword_matches * 0.3 + pattern_matches * 0.7) / 2,
                 )
 
                 trait = SubliminalTrait(
@@ -2307,7 +2304,7 @@ class KnowledgeDistillation:
 
         return detected_traits
 
-    def _find_trait_manifestation(self, output: str, trait_info: Dict[str, Any]) -> str:
+    def _find_trait_manifestation(self, output: str, trait_info: dict[str, Any]) -> str:
         """Find specific manifestation of a trait in the output."""
         # Look for the first pattern match
         for pattern in trait_info["patterns"]:
@@ -2326,15 +2323,15 @@ class KnowledgeDistillation:
 
         return "Trait detected in output"
 
-    async def _calculate_relevance_scores(self, output: str) -> Dict[str, float]:
-        """
-        Calculate relevance scores for different domains.
+    async def _calculate_relevance_scores(self, output: str) -> dict[str, float]:
+        """Calculate relevance scores for different domains.
 
         Args:
             output: Agent output text
 
         Returns:
             Dictionary of domain relevance scores
+
         """
         relevance_scores = {}
 
@@ -2360,8 +2357,7 @@ class KnowledgeDistillation:
         return relevance_scores
 
     async def _calculate_fitness_score(self, agent: AgentState, output: str) -> float:
-        """
-        Calculate fitness score for the genetic material.
+        """Calculate fitness score for the genetic material.
 
         Args:
             agent: Agent that generated the output
@@ -2369,6 +2365,7 @@ class KnowledgeDistillation:
 
         Returns:
             Fitness score (0.0 to 1.0)
+
         """
         # Base fitness on agent's current performance
         base_fitness = agent.get_fitness_score()
@@ -2424,8 +2421,8 @@ class KnowledgeDistillation:
         # Syntactic complexity (presence of complex structures)
         complex_structures = len(
             re.findall(
-                r"\b(if|when|because|although|while|since)\b", output, re.IGNORECASE
-            )
+                r"\b(if|when|because|although|while|since)\b", output, re.IGNORECASE,
+            ),
         )
         syntactic_complexity = min(1.0, complex_structures / 5)
 
@@ -2445,19 +2442,19 @@ class KnowledgeDistillation:
         return f"genetic_{agent.id}_{content_hash}_{timestamp}"
 
     async def distill_knowledge(
-        self, genetic_materials: List[AgentGeneticMaterial]
+        self, genetic_materials: list[AgentGeneticMaterial],
     ) -> KnowledgeDistillationResult:
-        """
-        Distill knowledge from multiple genetic materials.
+        """Distill knowledge from multiple genetic materials.
 
         Args:
             genetic_materials: List of genetic materials to distill
 
         Returns:
             Distilled knowledge result
+
         """
         self.logger.info(
-            f"🧠 Distilling knowledge from {len(genetic_materials)} genetic materials"
+            f"🧠 Distilling knowledge from {len(genetic_materials)} genetic materials",
         )
 
         # Combine structured knowledge
@@ -2482,12 +2479,12 @@ class KnowledgeDistillation:
         )
 
         self.logger.info(
-            f"✅ Knowledge distillation completed with quality {distillation_quality:.3f}"
+            f"✅ Knowledge distillation completed with quality {distillation_quality:.3f}",
         )
         return result
 
     def _combine_structured_knowledge(
-        self, genetic_materials: List[AgentGeneticMaterial]
+        self, genetic_materials: list[AgentGeneticMaterial],
     ) -> StructuredKnowledge:
         """Combine structured knowledge from multiple genetic materials."""
         all_categories = set()
@@ -2540,7 +2537,7 @@ class KnowledgeDistillation:
         # Average confidence scores
         for key in combined_confidence:
             combined_confidence[key] = sum(combined_confidence[key]) / len(
-                combined_confidence[key]
+                combined_confidence[key],
             )
 
         return StructuredKnowledge(
@@ -2553,8 +2550,8 @@ class KnowledgeDistillation:
         )
 
     def _aggregate_subliminal_traits(
-        self, genetic_materials: List[AgentGeneticMaterial]
-    ) -> List[SubliminalTrait]:
+        self, genetic_materials: list[AgentGeneticMaterial],
+    ) -> list[SubliminalTrait]:
         """Aggregate subliminal traits from multiple genetic materials."""
         trait_aggregates = {}
 
@@ -2571,7 +2568,7 @@ class KnowledgeDistillation:
                 trait_aggregates[trait.name]["strengths"].append(trait.strength)
                 trait_aggregates[trait.name]["confidences"].append(trait.confidence)
                 trait_aggregates[trait.name]["manifestations"].append(
-                    trait.manifestation
+                    trait.manifestation,
                 )
 
         # Create aggregated traits
@@ -2580,7 +2577,7 @@ class KnowledgeDistillation:
             avg_strength = sum(data["strengths"]) / len(data["strengths"])
             avg_confidence = sum(data["confidences"]) / len(data["confidences"])
             combined_manifestation = "; ".join(
-                data["manifestations"][:3]
+                data["manifestations"][:3],
             )  # Limit to 3 manifestations
 
             aggregated_trait = SubliminalTrait(
@@ -2597,8 +2594,8 @@ class KnowledgeDistillation:
         return aggregated_traits
 
     def _combine_relevance_scores(
-        self, genetic_materials: List[AgentGeneticMaterial]
-    ) -> Dict[str, float]:
+        self, genetic_materials: list[AgentGeneticMaterial],
+    ) -> dict[str, float]:
         """Combine relevance scores from multiple genetic materials."""
         combined_scores = {}
 
@@ -2611,13 +2608,13 @@ class KnowledgeDistillation:
         # Average relevance scores
         for domain in combined_scores:
             combined_scores[domain] = sum(combined_scores[domain]) / len(
-                combined_scores[domain]
+                combined_scores[domain],
             )
 
         return combined_scores
 
     def _calculate_distillation_quality(
-        self, genetic_materials: List[AgentGeneticMaterial]
+        self, genetic_materials: list[AgentGeneticMaterial],
     ) -> float:
         """Calculate the quality of knowledge distillation."""
         if not genetic_materials:
@@ -2625,7 +2622,7 @@ class KnowledgeDistillation:
 
         # Quality factors
         diversity_score = len(
-            set(material.agent_id for material in genetic_materials)
+            set(material.agent_id for material in genetic_materials),
         ) / len(genetic_materials)
         fitness_score = sum(
             material.fitness_score for material in genetic_materials

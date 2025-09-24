@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Test PostgreSQL Integration for Phoenix Experiments
+"""Test PostgreSQL Integration for Phoenix Experiments
 
 Tests the integration between Phoenix experiments and PostgreSQL ECS system.
 """
@@ -8,7 +7,6 @@ Tests the integration between Phoenix experiments and PostgreSQL ECS system.
 import asyncio
 import logging
 import sys
-from pathlib import Path
 
 # Add the backend to the path for ECS service access
 sys.path.append("/home/kade/runeset/reynard/backend")
@@ -39,13 +37,13 @@ async def test_postgres_integration():
             print(f"   Name: {success_advisor_data.get('name')}")
             print(f"   Spirit: {success_advisor_data.get('spirit')}")
             print(
-                f"   Personality Traits: {len(success_advisor_data.get('personality_traits', {}))}"
+                f"   Personality Traits: {len(success_advisor_data.get('personality_traits', {}))}",
             )
             print(
-                f"   Physical Traits: {len(success_advisor_data.get('physical_traits', {}))}"
+                f"   Physical Traits: {len(success_advisor_data.get('physical_traits', {}))}",
             )
             print(
-                f"   Ability Traits: {len(success_advisor_data.get('ability_traits', {}))}"
+                f"   Ability Traits: {len(success_advisor_data.get('ability_traits', {}))}",
             )
         else:
             print("❌ Failed to load Success-Advisor-8")
@@ -67,19 +65,19 @@ async def test_postgres_integration():
         print("\n3. Testing agent comparison...")
         if len(phoenix_agents) >= 2:
             comparison = await data_loader.compare_agents(
-                phoenix_agents[0].get("agent_id"), phoenix_agents[1].get("agent_id")
+                phoenix_agents[0].get("agent_id"), phoenix_agents[1].get("agent_id"),
             )
 
             if comparison:
                 print("✅ Agent comparison successful!")
                 print(
-                    f"   Personality Similarity: {comparison.get('personality_similarity', 0):.3f}"
+                    f"   Personality Similarity: {comparison.get('personality_similarity', 0):.3f}",
                 )
                 print(
-                    f"   Physical Similarity: {comparison.get('physical_similarity', 0):.3f}"
+                    f"   Physical Similarity: {comparison.get('physical_similarity', 0):.3f}",
                 )
                 print(
-                    f"   Ability Similarity: {comparison.get('ability_similarity', 0):.3f}"
+                    f"   Ability Similarity: {comparison.get('ability_similarity', 0):.3f}",
                 )
             else:
                 print("❌ Agent comparison failed")
@@ -88,7 +86,7 @@ async def test_postgres_integration():
         # Test 4: Test experiment configuration
         print("\n4. Testing experiment configuration...")
         config = ExperimentConfig(
-            experiment_type=ExperimentType.PHOENIX_EVOLUTIONARY, use_postgresql=True
+            experiment_type=ExperimentType.PHOENIX_EVOLUTIONARY, use_postgresql=True,
         )
 
         print("✅ Experiment configuration created!")

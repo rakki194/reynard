@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Color utilities for Reynard validation scripts.
+"""Color utilities for Reynard validation scripts.
 """
 
 # ANSI color codes for terminal output

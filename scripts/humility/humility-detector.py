@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Humility Detector - Detection of Boastful Language
+"""Humility Detector - Detection of Boastful Language
 Part of the Reynard project's commitment to humble communication.
 
 This detector combines multiple analysis techniques:
@@ -86,7 +85,7 @@ Examples:
         help="Minimum confidence threshold (0.0-1.0)",
     )
     parser.add_argument(
-        "--max-findings", type=int, default=100, help="Maximum findings per file"
+        "--max-findings", type=int, default=100, help="Maximum findings per file",
     )
 
     # Advanced features
@@ -105,7 +104,7 @@ Examples:
 
     # Utility options
     parser.add_argument(
-        "--verbose", "-v", action="store_true", help="Enable verbose logging"
+        "--verbose", "-v", action="store_true", help="Enable verbose logging",
     )
     parser.add_argument(
         "--cache-results",
@@ -114,7 +113,7 @@ Examples:
         help="Cache analysis results",
     )
     parser.add_argument(
-        "--clear-cache", action="store_true", help="Clear analysis cache"
+        "--clear-cache", action="store_true", help="Clear analysis cache",
     )
 
     args = parser.parse_args()
@@ -231,7 +230,7 @@ Examples:
                 else 0
             )
 
-            logger.info(f"Analysis complete:")
+            logger.info("Analysis complete:")
             logger.info(f"  Files analyzed: {len(profiles)}")
             logger.info(f"  Total findings: {total_findings}")
             logger.info(f"  Average humility score: {avg_score:.1f}/100")
@@ -244,12 +243,12 @@ Examples:
                 # Exit with appropriate code
                 if total_findings > 0:
                     logger.warning(
-                        "Boastful language detected. Consider reviewing findings."
+                        "Boastful language detected. Consider reviewing findings.",
                     )
                     return 1
             else:
                 logger.info(
-                    "No boastful language detected. Great job maintaining humble communication!"
+                    "No boastful language detected. Great job maintaining humble communication!",
                 )
                 return 0
 

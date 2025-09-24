@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-CULTURE: Cultural Understanding and Linguistic Translation for Universal Recognition and Evaluation
+"""CULTURE: Cultural Understanding and Linguistic Translation for Universal Recognition and Evaluation
 
 Main entry point for the CULTURE framework - a comprehensive system for evaluating
 and improving LLM understanding of culturally specific communication patterns.
@@ -31,7 +30,7 @@ from src.safety.safety_framework import SafetyFramework
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -39,13 +38,11 @@ logger = logging.getLogger(__name__)
 @click.group()
 @click.version_option(version="1.0.0", prog_name="CULTURE")
 def cli():
-    """
-    CULTURE: Cultural Understanding and Linguistic Translation for Universal Recognition and Evaluation
+    """CULTURE: Cultural Understanding and Linguistic Translation for Universal Recognition and Evaluation
 
     A comprehensive framework for evaluating and improving LLM understanding
     of culturally specific communication patterns, with initial focus on Persian taarof.
     """
-    pass
 
 
 @cli.command()
@@ -93,14 +90,14 @@ def evaluate(
 
 @cli.command()
 @click.option(
-    "--model", default="meta-llama/Llama-2-7b-hf", help="Base model for training"
+    "--model", default="meta-llama/Llama-2-7b-hf", help="Base model for training",
 )
 @click.option("--context", default="persian_taarof", help="Cultural context")
 @click.option("--num-examples", default=1000, help="Number of training examples")
 @click.option("--output-dir", default="./dpo_outputs", help="Output directory")
 @click.option("--config", type=click.Path(), help="Training configuration file")
 def train_dpo(
-    model: str, context: str, num_examples: int, output_dir: str, config: Path | None
+    model: str, context: str, num_examples: int, output_dir: str, config: Path | None,
 ):
     """Train a model using Direct Preference Optimization for cultural alignment."""
 
@@ -112,7 +109,7 @@ def train_dpo(
 
         # Prepare training data
         training_data = trainer.prepare_training_data(
-            cultural_context=context, num_examples=num_examples
+            cultural_context=context, num_examples=num_examples,
         )
 
         # Split data for validation
@@ -130,12 +127,12 @@ def train_dpo(
         # Evaluate cultural alignment
         benchmark = TaarofBenchmark()
         test_scenarios = benchmark.get_scenarios(
-            cultural_context=context, sample_size=100
+            cultural_context=context, sample_size=100,
         )
 
         alignment_results = trainer.evaluate_cultural_alignment(test_scenarios)
         logger.info(
-            f"Cultural alignment accuracy: {alignment_results['cultural_accuracy']:.2%}"
+            f"Cultural alignment accuracy: {alignment_results['cultural_accuracy']:.2%}",
         )
 
     asyncio.run(run_training())
@@ -170,14 +167,14 @@ def analyze_benchmark(benchmark: str, output: Path | None):
     for topic, stats in info["topic_statistics"].items():
         print(
             f"- {topic}: {stats['total_scenarios']} scenarios "
-            f"({stats['taarof_expected']} taarof, {stats['non_taarof']} non-taarof)"
+            f"({stats['taarof_expected']} taarof, {stats['non_taarof']} non-taarof)",
         )
 
     print("\n## Difficulty Statistics")
     for level, stats in info["difficulty_statistics"].items():
         print(
             f"- {level}: {stats['total_scenarios']} scenarios "
-            f"({stats['taarof_expected']} taarof, {stats['non_taarof']} non-taarof)"
+            f"({stats['taarof_expected']} taarof, {stats['non_taarof']} non-taarof)",
         )
 
     # Export if requested
@@ -253,13 +250,13 @@ def compare_models(
 
 @cli.command()
 @click.option(
-    "--scenarios", type=int, default=10, help="Number of scenarios to generate"
+    "--scenarios", type=int, default=10, help="Number of scenarios to generate",
 )
 @click.option("--topic", help="Specific topic to focus on")
 @click.option("--difficulty", help="Difficulty level filter")
 @click.option("--output", type=click.Path(), help="Output file for scenarios")
 def generate_scenarios(
-    scenarios: int, topic: str | None, difficulty: str | None, output: Path | None
+    scenarios: int, topic: str | None, difficulty: str | None, output: Path | None,
 ):
     """Generate sample cultural scenarios for testing."""
     logger.info(f"Generating {scenarios} cultural scenarios")
@@ -269,7 +266,7 @@ def generate_scenarios(
 
     # Get scenarios
     sample_scenarios = benchmark.get_scenarios(
-        sample_size=scenarios, topic_filter=topic, difficulty_filter=difficulty
+        sample_size=scenarios, topic_filter=topic, difficulty_filter=difficulty,
     )
 
     # Print scenarios
@@ -278,7 +275,7 @@ def generate_scenarios(
         print(f"\n## Scenario {i}: {scenario['id']}")
         print(f"**Environment**: {scenario['environment']}")
         print(
-            f"**Roles**: {scenario['llm_role']} (you) and {scenario['user_role']} (me)"
+            f"**Roles**: {scenario['llm_role']} (you) and {scenario['user_role']} (me)",
         )
         print(f"**Context**: {scenario['context']}")
         print(f'**User says**: "{scenario["user_utterance"]}"')
@@ -319,7 +316,7 @@ def evaluate_cultural_response(cultural_context: str, response: str, safety_leve
 
     # Evaluate response
     result = mcp_tools.evaluate_cultural_response(
-        response=response, cultural_context=cultural_context, safety_level=safety_level
+        response=response, cultural_context=cultural_context, safety_level=safety_level,
     )
 
     if result.get("success"):
@@ -365,7 +362,7 @@ def evaluate_cultural_response(cultural_context: str, response: str, safety_leve
 )
 @click.option("--output", type=click.Path(), help="Output file for scenarios")
 def generate_cultural_scenarios(
-    cultural_context: str, count: int, safety_level: str, output: Path | None
+    cultural_context: str, count: int, safety_level: str, output: Path | None,
 ):
     """Generate cultural scenarios using the new framework."""
     logger.info(f"Generating {count} {cultural_context} scenarios")
@@ -375,7 +372,7 @@ def generate_cultural_scenarios(
 
     # Generate scenarios
     result = mcp_tools.generate_cultural_scenarios(
-        cultural_context=cultural_context, count=count, safety_level=safety_level
+        cultural_context=cultural_context, count=count, safety_level=safety_level,
     )
 
     if result.get("success"):
@@ -412,7 +409,7 @@ def generate_cultural_scenarios(
 )
 @click.option("--agent-id", default="test-agent", help="Agent ID")
 @click.option(
-    "--interactions", type=int, default=3, help="Number of interactions to simulate"
+    "--interactions", type=int, default=3, help="Number of interactions to simulate",
 )
 def simulate_cultural_agent(cultural_context: str, agent_id: str, interactions: int):
     """Simulate cultural agent interactions using ECS integration."""
@@ -457,12 +454,12 @@ def simulate_cultural_agent(cultural_context: str, agent_id: str, interactions: 
         evaluation = agent.evaluate_cultural_response(scenario, response)
         print(f"**Overall Score**: {evaluation.overall_score:.2f}")
         print(
-            f"**Cultural Appropriateness**: {evaluation.cultural_appropriateness:.2f}"
+            f"**Cultural Appropriateness**: {evaluation.cultural_appropriateness:.2f}",
         )
 
         # Simulate interaction with another agent
         interaction = agent.interact_with_agent(
-            partner_id=f"partner-{i}", scenario=scenario, response=response
+            partner_id=f"partner-{i}", scenario=scenario, response=response,
         )
         print(f"**Interaction Success**: {interaction.success_score:.2f}")
         print(f"**Learning Outcome**: {interaction.learning_outcome}")
@@ -517,7 +514,7 @@ def assess_safety(content: str, cultural_context: str, safety_level: str):
         print(f"\n## Safety Violations ({len(assessment.violations)})")
         for violation in assessment.violations:
             print(
-                f"- **{violation.violation_type.value}** ({violation.severity.value}): {violation.description}"
+                f"- **{violation.violation_type.value}** ({violation.severity.value}): {violation.description}",
             )
             print(f"  Suggested Action: {violation.suggested_action}")
 
@@ -616,22 +613,22 @@ def list_supported_contexts():
     print("```bash")
     print("# Evaluate a furry roleplay response")
     print(
-        "python main.py evaluate-cultural-response --cultural-context furry --response '*purrs softly* May I approach?'"
+        "python main.py evaluate-cultural-response --cultural-context furry --response '*purrs softly* May I approach?'",
     )
     print()
     print("# Generate kink community scenarios")
     print(
-        "python main.py generate-cultural-scenarios --cultural-context kink --count 5 --safety-level moderate"
+        "python main.py generate-cultural-scenarios --cultural-context kink --count 5 --safety-level moderate",
     )
     print()
     print("# Simulate academic cultural agent")
     print(
-        "python main.py simulate-cultural-agent --cultural-context academic --interactions 3"
+        "python main.py simulate-cultural-agent --cultural-context academic --interactions 3",
     )
     print()
     print("# Assess content safety")
     print(
-        "python main.py assess-safety --content 'This is a test message' --cultural-context casual"
+        "python main.py assess-safety --content 'This is a test message' --cultural-context casual",
     )
     print("```")
 
