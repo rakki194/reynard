@@ -5,6 +5,7 @@
 import { For, Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
 import { Button, TextField, Select } from "reynard-components-core/primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
+import { log } from "reynard-error-boundaries";
 export const PackageDiscoveryPanel = props => {
   const [packages, setPackages] = createSignal([]);
   const [summary, setSummary] = createSignal({
@@ -138,7 +139,10 @@ export const PackageDiscoveryPanel = props => {
       setSummary(mockSummary);
       setLastUpdate(new Date());
     } catch (error) {
-      console.error("Failed to refresh package data:", error);
+      log.error("Failed to refresh package data", error instanceof Error ? error : new Error(String(error)), undefined, {
+        component: "PackageDiscoveryPanel",
+        function: "refreshPackageData"
+      });
     } finally {
       setIsRefreshing(false);
     }
@@ -150,21 +154,30 @@ export const PackageDiscoveryPanel = props => {
       await new Promise(resolve => setTimeout(resolve, 2000));
       await refreshPackageData();
     } catch (error) {
-      console.error("Failed to discover packages:", error);
+      log.error("Failed to discover packages", error instanceof Error ? error : new Error(String(error)), undefined, {
+        component: "PackageDiscoveryPanel",
+        function: "handleDiscoverPackages"
+      });
     } finally {
       setIsDiscovering(false);
     }
   };
   const handleRegisterPackage = async packageName => {
     // In a real implementation, this would call the backend registration endpoint
-    console.log(`Registering package: ${packageName}`);
+    log.info(`Registering package: ${packageName}`, undefined, {
+      component: "PackageDiscoveryPanel",
+      function: "handleRegisterPackage"
+    });
     // Simulate registration
     const updatedPackages = packages().map(pkg => (pkg.name === packageName ? { ...pkg, status: "registered" } : pkg));
     setPackages(updatedPackages);
   };
   const handleResolveConflict = async packageName => {
     // In a real implementation, this would call the conflict resolution endpoint
-    console.log(`Resolving conflict for package: ${packageName}`);
+    log.info(`Resolving conflict for package: ${packageName}`, undefined, {
+      component: "PackageDiscoveryPanel",
+      function: "handleResolveConflict"
+    });
     // Simulate conflict resolution
     const updatedPackages = packages().map(pkg =>
       pkg.name === packageName ? { ...pkg, status: "discovered", conflicts: [] } : pkg

@@ -5,6 +5,7 @@
 import { For, Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
 import { Button } from "reynard-components-core/primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
+import { log } from "reynard-error-boundaries";
 export const PerformanceAlertsPanel = props => {
   const [alerts, setAlerts] = createSignal([]);
   const [alertSummary, setAlertSummary] = createSignal({
@@ -75,7 +76,10 @@ export const PerformanceAlertsPanel = props => {
       setAlertSummary(summary);
       setLastUpdate(new Date());
     } catch (error) {
-      console.error("Failed to update alerts:", error);
+      log.error("Failed to update alerts", error instanceof Error ? error : new Error(String(error)), undefined, {
+        component: "PerformanceAlertsPanel",
+        function: "updateAlerts"
+      });
     } finally {
       setIsRefreshing(false);
     }

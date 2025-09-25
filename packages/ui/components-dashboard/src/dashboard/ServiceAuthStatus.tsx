@@ -5,6 +5,7 @@
 import { Show, For, createSignal, onMount } from "solid-js";
 import { Button } from "reynard-components-core/primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
+import { log } from "reynard-error-boundaries";
 export const ServiceAuthStatus = props => {
   const [authServices, setAuthServices] = createSignal([]);
   const [isChecking, setIsChecking] = createSignal(false);
@@ -51,7 +52,10 @@ export const ServiceAuthStatus = props => {
       setAuthServices(mockServices);
       setLastCheck(new Date());
     } catch (error) {
-      console.error("Failed to check auth services:", error);
+      log.error("Failed to check auth services", error instanceof Error ? error : new Error(String(error)), undefined, {
+        component: "ServiceAuthStatus",
+        function: "checkAuthServices"
+      });
     } finally {
       setIsChecking(false);
     }

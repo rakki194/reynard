@@ -6,8 +6,43 @@ import { Chart } from "reynard-charts";
 import { Button } from "reynard-components-core/primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { For, Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
-export const PerformanceMetricsPanel = props => {
-  const [metrics, setMetrics] = createSignal({
+import { log } from "reynard-error-boundaries";
+
+// Type definitions
+interface PerformanceHistoryEntry {
+  timestamp: number;
+  frameRate: number;
+  memoryUsage: number;
+  browserResponsiveness: number;
+  selectionDuration?: number;
+  itemsPerSecond?: number;
+  domUpdateCount?: number;
+  styleApplicationCount?: number;
+  frameDropCount?: number;
+}
+
+interface PerformanceMetrics {
+  averageFrameRate: number;
+  averageMemoryUsage: number;
+  averageBrowserResponsiveness: number;
+  averageSelectionDuration: number;
+  averageItemsPerSecond: number;
+  totalDomUpdates: number;
+  totalStyleApplications: number;
+  totalFrameDrops: number;
+  performanceScore: number;
+}
+
+interface PerformanceMetricsPanelProps {
+  performanceHistory: PerformanceHistoryEntry[];
+  refreshInterval?: number;
+}
+
+type TimeRange = "1m" | "5m" | "15m" | "30m" | "1h";
+type MetricType = "frameRate" | "memoryUsage" | "browserResponsiveness" | "selectionDuration" | "itemsPerSecond" | "domUpdateCount" | "styleApplicationCount" | "frameDropCount";
+
+export const PerformanceMetricsPanel = (props: PerformanceMetricsPanelProps) => {
+  const [metrics, setMetrics] = createSignal<PerformanceMetrics>({
     averageFrameRate: 0,
     averageMemoryUsage: 0,
     averageBrowserResponsiveness: 0,
@@ -18,12 +53,12 @@ export const PerformanceMetricsPanel = props => {
     totalFrameDrops: 0,
     performanceScore: 0,
   });
-  const [selectedMetric, setSelectedMetric] = createSignal("frameRate");
-  const [timeRange, setTimeRange] = createSignal("5m");
+  const [selectedMetric, setSelectedMetric] = createSignal<MetricType>("frameRate");
+  const [timeRange, setTimeRange] = createSignal<TimeRange>("5m");
   const [isRefreshing, setIsRefreshing] = createSignal(false);
-  const [lastUpdate, setLastUpdate] = createSignal(null);
+  const [lastUpdate, setLastUpdate] = createSignal<Date | null>(null);
   // Auto-refresh functionality
-  let refreshInterval;
+  let refreshInterval: NodeJS.Timeout | undefined;
   onMount(() => {
     // Initial data load
     updateMetrics();
@@ -54,34 +89,34 @@ export const PerformanceMetricsPanel = props => {
     try {
       const history = props.performanceHistory;
       if (history.length === 0) {
-        setLastUpdate(new Date());
+        setLastUpdate(() => new Date());
         return;
       }
       // Calculate time range filter
       const now = Date.now();
       const timeRangeMs = getTimeRangeMs(timeRange());
-      const filteredHistory = history.filter(entry => now - entry.timestamp <= timeRangeMs);
+      const filteredHistory = history.filter((entry: PerformanceHistoryEntry) => now - entry.timestamp <= timeRangeMs);
       if (filteredHistory.length === 0) {
-        setLastUpdate(new Date());
+        setLastUpdate(() => new Date());
         return;
       }
       // Calculate metrics
       const averageFrameRate =
-        filteredHistory.reduce((sum, entry) => sum + entry.frameRate, 0) / filteredHistory.length;
+        filteredHistory.reduce((sum: number, entry: PerformanceHistoryEntry) => sum + entry.frameRate, 0) / filteredHistory.length;
       const averageMemoryUsage =
-        filteredHistory.reduce((sum, entry) => sum + entry.memoryUsage, 0) / filteredHistory.length;
+        filteredHistory.reduce((sum: number, entry: PerformanceHistoryEntry) => sum + entry.memoryUsage, 0) / filteredHistory.length;
       const averageBrowserResponsiveness =
-        filteredHistory.reduce((sum, entry) => sum + entry.browserResponsiveness, 0) / filteredHistory.length;
+        filteredHistory.reduce((sum: number, entry: PerformanceHistoryEntry) => sum + entry.browserResponsiveness, 0) / filteredHistory.length;
       const averageSelectionDuration =
-        filteredHistory.reduce((sum, entry) => sum + (entry.selectionDuration || 0), 0) / filteredHistory.length;
+        filteredHistory.reduce((sum: number, entry: PerformanceHistoryEntry) => sum + (entry.selectionDuration || 0), 0) / filteredHistory.length;
       const averageItemsPerSecond =
-        filteredHistory.reduce((sum, entry) => sum + (entry.itemsPerSecond || 0), 0) / filteredHistory.length;
-      const totalDomUpdates = filteredHistory.reduce((sum, entry) => sum + (entry.domUpdateCount || 0), 0);
+        filteredHistory.reduce((sum: number, entry: PerformanceHistoryEntry) => sum + (entry.itemsPerSecond || 0), 0) / filteredHistory.length;
+      const totalDomUpdates = filteredHistory.reduce((sum: number, entry: PerformanceHistoryEntry) => sum + (entry.domUpdateCount || 0), 0);
       const totalStyleApplications = filteredHistory.reduce(
-        (sum, entry) => sum + (entry.styleApplicationCount || 0),
+        (sum: number, entry: PerformanceHistoryEntry) => sum + (entry.styleApplicationCount || 0),
         0
       );
-      const totalFrameDrops = filteredHistory.reduce((sum, entry) => sum + (entry.frameDropCount || 0), 0);
+      const totalFrameDrops = filteredHistory.reduce((sum: number, entry: PerformanceHistoryEntry) => sum + (entry.frameDropCount || 0), 0);
       // Calculate performance score (0-100)
       const performanceScore = calculatePerformanceScore({
         averageFrameRate,
@@ -101,15 +136,18 @@ export const PerformanceMetricsPanel = props => {
         performanceScore,
       };
       setMetrics(newMetrics);
-      setLastUpdate(new Date());
+      setLastUpdate(() => new Date());
     } catch (error) {
-      console.error("Failed to update performance metrics:", error);
+      log.error("Failed to update performance metrics", error instanceof Error ? error : new Error(String(error)), undefined, {
+        component: "PerformanceMetricsPanel",
+        function: "updateMetrics"
+      });
     } finally {
       setIsRefreshing(false);
     }
   };
   // Get time range in milliseconds
-  const getTimeRangeMs = range => {
+  const getTimeRangeMs = (range: TimeRange): number => {
     switch (range) {
       case "1m":
         return 60 * 1000;
@@ -126,7 +164,7 @@ export const PerformanceMetricsPanel = props => {
     }
   };
   // Calculate performance score
-  const calculatePerformanceScore = data => {
+  const calculatePerformanceScore = (data: { averageFrameRate: number; averageBrowserResponsiveness: number; totalFrameDrops: number; dataPoints: number }): number => {
     let score = 100;
     // Frame rate penalty
     if (data.averageFrameRate < 30) {
@@ -156,20 +194,20 @@ export const PerformanceMetricsPanel = props => {
     return Math.max(0, Math.min(100, score));
   };
   // Get performance score color
-  const getPerformanceScoreColor = score => {
+  const getPerformanceScoreColor = (score: number): string => {
     if (score >= 80) return "success";
     if (score >= 60) return "warning";
     return "error";
   };
   // Get performance score message
-  const getPerformanceScoreMessage = score => {
+  const getPerformanceScoreMessage = (score: number): string => {
     if (score >= 80) return "Excellent";
     if (score >= 60) return "Good";
     if (score >= 40) return "Fair";
     return "Poor";
   };
   // Format memory usage
-  const formatMemory = bytes => {
+  const formatMemory = (bytes: number): string => {
     if (bytes > 1024 * 1024 * 1024) {
       return `${(bytes / (1024 * 1024 * 1024)).toFixed(1)} GB`;
     } else if (bytes > 1024 * 1024) {
@@ -181,7 +219,7 @@ export const PerformanceMetricsPanel = props => {
     }
   };
   // Format duration
-  const formatDuration = ms => {
+  const formatDuration = (ms: number): string => {
     if (ms < 1000) {
       return `${ms.toFixed(0)}ms`;
     } else {
@@ -189,18 +227,18 @@ export const PerformanceMetricsPanel = props => {
     }
   };
   // Get chart data for selected metric
-  const getChartData = () => {
+  const getChartData = (): Array<{ timestamp: number; value: number }> => {
     const history = props.performanceHistory;
     const timeRangeMs = getTimeRangeMs(timeRange());
     const now = Date.now();
-    const filteredHistory = history.filter(entry => now - entry.timestamp <= timeRangeMs);
-    return filteredHistory.map(entry => ({
+    const filteredHistory = history.filter((entry: PerformanceHistoryEntry) => now - entry.timestamp <= timeRangeMs);
+    return filteredHistory.map((entry: PerformanceHistoryEntry) => ({
       timestamp: entry.timestamp,
       value: getMetricValue(entry, selectedMetric()),
     }));
   };
   // Get metric value from history entry
-  const getMetricValue = (entry, metric) => {
+  const getMetricValue = (entry: PerformanceHistoryEntry, metric: MetricType): number => {
     switch (metric) {
       case "frameRate":
         return entry.frameRate;
@@ -223,7 +261,7 @@ export const PerformanceMetricsPanel = props => {
     }
   };
   // Get metric label
-  const getMetricLabel = metric => {
+  const getMetricLabel = (metric: MetricType): string => {
     switch (metric) {
       case "frameRate":
         return "Frame Rate (fps)";
@@ -245,7 +283,7 @@ export const PerformanceMetricsPanel = props => {
         return "Unknown Metric";
     }
   };
-  const availableMetrics = [
+  const availableMetrics: MetricType[] = [
     "frameRate",
     "memoryUsage",
     "browserResponsiveness",
@@ -255,7 +293,7 @@ export const PerformanceMetricsPanel = props => {
     "styleApplicationCount",
     "frameDropCount",
   ];
-  const timeRanges = ["1m", "5m", "15m", "30m", "1h"];
+  const timeRanges: TimeRange[] = ["1m", "5m", "15m", "30m", "1h"];
   return (
     <div class="performance-metrics-panel">
       {/* Header */}
@@ -284,14 +322,14 @@ export const PerformanceMetricsPanel = props => {
       <div class="metrics-controls">
         <div class="control-group">
           <label>Metric:</label>
-          <select value={selectedMetric()} onChange={e => setSelectedMetric(e.currentTarget.value)}>
+          <select value={selectedMetric()} onChange={e => setSelectedMetric(e.currentTarget.value as MetricType)}>
             <For each={availableMetrics}>{metric => <option value={metric}>{getMetricLabel(metric)}</option>}</For>
           </select>
         </div>
 
         <div class="control-group">
           <label>Time Range:</label>
-          <select value={timeRange()} onChange={e => setTimeRange(e.currentTarget.value)}>
+          <select value={timeRange()} onChange={e => setTimeRange(e.currentTarget.value as TimeRange)}>
             <For each={timeRanges}>{range => <option value={range}>{range}</option>}</For>
           </select>
         </div>
@@ -351,11 +389,11 @@ export const PerformanceMetricsPanel = props => {
         <h4>{getMetricLabel(selectedMetric())}</h4>
         <Chart
           type="line"
-          labels={getChartData().map(entry => new Date(entry.timestamp).toLocaleTimeString())}
+          labels={getChartData().map((entry: { timestamp: number; value: number }) => new Date(entry.timestamp).toLocaleTimeString())}
           datasets={[
             {
               label: getMetricLabel(selectedMetric()),
-              data: getChartData().map(entry => entry.value),
+              data: getChartData().map((entry: { timestamp: number; value: number }) => entry.value),
               borderColor: "oklch(0.7 0.15 200)",
               backgroundColor: "oklch(0.7 0.15 200 / 0.1)",
               tension: 0.1,
@@ -369,7 +407,7 @@ export const PerformanceMetricsPanel = props => {
 
       {/* Last Update */}
       <Show when={lastUpdate()}>
-        <div class="last-update">Last updated: {lastUpdate().toLocaleString()}</div>
+        <div class="last-update">Last updated: {lastUpdate()?.toLocaleString()}</div>
       </Show>
     </div>
   );

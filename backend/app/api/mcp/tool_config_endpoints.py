@@ -36,6 +36,7 @@ class ToolConfigRequest(BaseModel):
     dependencies: List[str] = Field(default=[], description="Tool dependencies")
     config: Dict[str, Any] = Field(default={}, description="Tool configuration")
     version: str = Field(default="1.0.0", description="Tool version")
+    is_system_tool: bool = Field(default=False, description="Whether tool is a system tool")
     execution_type: str = Field(default="sync", description="Execution type")
     timeout_seconds: Optional[int] = Field(default=30, description="Timeout in seconds")
     max_concurrent: Optional[int] = Field(default=1, description="Max concurrent executions")
@@ -157,48 +158,56 @@ async def get_enabled_tools(
         )
 
 
-@router.post("/tools", response_model=Dict[str, str])
+@router.post("/tools", response_model=Dict[str, Any])
 async def create_tool(
     tool_data: ToolConfigRequest,
     service: ToolConfigService = Depends(get_tool_config_service)
-) -> Dict[str, str]:
+) -> Dict[str, Any]:
     """Create a new tool."""
     try:
-        success = service.create_tool(tool_data.dict(), changed_by="api")
-        if not success:
+        logger.info(f"Creating tool: {tool_data.name}")
+        logger.info(f"Tool data: {tool_data.dict()}")
+        result = service.create_tool(tool_data.dict(), changed_by="api")
+        logger.info(f"Service result: {result}")
+        logger.info(f"Result type: {type(result)}")
+        logger.info(f"Result is None: {result is None}")
+        if not result:
+            logger.error(f"Service returned falsy result: {result}")
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Failed to create tool '{tool_data.name}'"
             )
-        return {"message": f"Tool '{tool_data.name}' created successfully"}
+        return result
     except HTTPException:
         raise
     except Exception as e:
         logger.error(f"Failed to create tool {tool_data.name}: {e}")
+        import traceback
+        logger.error(f"Traceback: {traceback.format_exc()}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to create tool: {str(e)}"
         )
 
 
-@router.put("/tools/{tool_name}", response_model=Dict[str, str])
+@router.put("/tools/{tool_name}", response_model=Dict[str, Any])
 async def update_tool(
     tool_name: str,
     tool_data: ToolUpdateRequest,
     service: ToolConfigService = Depends(get_tool_config_service)
-) -> Dict[str, str]:
+) -> Dict[str, Any]:
     """Update an existing tool."""
     try:
         # Filter out None values
         update_data = {k: v for k, v in tool_data.dict().items() if v is not None}
         
-        success = service.update_tool(tool_name, update_data, changed_by="api")
-        if not success:
+        result = service.update_tool(tool_name, update_data, changed_by="api")
+        if not result:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=f"Tool '{tool_name}' not found or update failed"
             )
-        return {"message": f"Tool '{tool_name}' updated successfully"}
+        return result
     except HTTPException:
         raise
     except Exception as e:

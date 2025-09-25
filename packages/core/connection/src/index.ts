@@ -16,6 +16,7 @@ export * from "./pool";
 export * from "./retry";
 export * from "./security";
 export * from "./types";
+export * from "./websocket";
 
 // HTTP Client System - Re-exported from reynard-http-client
 export {

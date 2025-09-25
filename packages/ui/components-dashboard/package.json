@@ -35,7 +35,8 @@
     "prebuild": "pnpm clean:build"
   },
   "dependencies": {
-    "reynard-components-core": "workspace:*"
+    "reynard-components-core": "workspace:*",
+    "reynard-error-boundaries": "workspace:*"
   },
   "devDependencies": {
     "@solidjs/testing-library": "0.8.10",

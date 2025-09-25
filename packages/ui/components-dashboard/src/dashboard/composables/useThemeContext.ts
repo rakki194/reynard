@@ -5,6 +5,7 @@
 
 import { createMemo } from "solid-js";
 import { useTheme } from "reynard-themes";
+import { log } from "reynard-error-boundaries";
 
 export interface ThemeContextFallback {
   theme: string;
@@ -19,11 +20,17 @@ export const useThemeContext = () => {
     try {
       return useTheme();
     } catch (error) {
-      console.error("useThemeContext: Theme context not available", error);
+      log.error("useThemeContext: Theme context not available", error instanceof Error ? error : new Error(String(error)), undefined, {
+        component: "useThemeContext",
+        function: "useThemeContext"
+      });
       return {
         theme: "light",
         setTheme: (theme: string) => {
-          console.warn("Theme context not available, cannot set theme:", theme);
+          log.warn("Theme context not available, cannot set theme", { theme }, {
+            component: "useThemeContext",
+            function: "setTheme"
+          });
         },
         getTagStyle: () => ({}),
         isDark: false,

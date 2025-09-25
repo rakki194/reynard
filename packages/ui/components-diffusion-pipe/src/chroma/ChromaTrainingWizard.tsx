@@ -385,18 +385,24 @@ export const ChromaTrainingWizard: Component<ChromaTrainingWizardProps> = (props
               </div>
               
               <div class="setting-group">
-                <Checkbox
-                  label="Enable Flux Shift"
-                  checked={wizardConfig().model?.flux_shift ?? true}
-                  onChange={(e) => {
-                    updateWizardConfig({
-                      model: {
-                        ...wizardConfig().model,
-                        flux_shift: e.currentTarget.checked
-                      }
-                    });
-                  }}
-                />
+                <div class="checkbox-with-label">
+                  <Checkbox
+                    checked={wizardConfig().model?.flux_shift ?? true}
+                    onChange={(checked) => {
+                      updateWizardConfig({
+                        model: {
+                          type: wizardConfig().model?.type || 'chroma',
+                          diffusers_path: wizardConfig().model?.diffusers_path || '',
+                          transformer_path: wizardConfig().model?.transformer_path || '',
+                          dtype: wizardConfig().model?.dtype || 'bfloat16',
+                          transformer_dtype: wizardConfig().model?.transformer_dtype || 'float8',
+                          flux_shift: checked
+                        }
+                      });
+                    }}
+                  />
+                  <label>Enable Flux Shift</label>
+                </div>
               </div>
             </div>
           </div>
@@ -409,21 +415,23 @@ export const ChromaTrainingWizard: Component<ChromaTrainingWizardProps> = (props
             <p>Configure monitoring and logging (optional).</p>
             
             <div class="monitoring-settings">
-              <Checkbox
-                label="Enable WandB Monitoring"
-                checked={wizardConfig().monitoring?.enable_wandb ?? false}
-                onChange={(e) => {
-                  updateWizardConfig({
-                    monitoring: {
-                      enable_wandb: e.currentTarget.checked,
-                      wandb_api_key: wizardConfig().monitoring?.wandb_api_key || '',
-                      wandb_tracker_name: 'chroma-lora',
-                      wandb_run_name: 'chroma-training'
-                    }
-                  });
-                  markStepCompleted('monitoring');
-                }}
-              />
+              <div class="checkbox-with-label">
+                <Checkbox
+                  checked={wizardConfig().monitoring?.enable_wandb ?? false}
+                  onChange={(checked) => {
+                    updateWizardConfig({
+                      monitoring: {
+                        enable_wandb: checked,
+                        wandb_api_key: wizardConfig().monitoring?.wandb_api_key || '',
+                        wandb_tracker_name: 'chroma-lora',
+                        wandb_run_name: 'chroma-training'
+                      } as TrainingConfig['monitoring']
+                    });
+                    markStepCompleted('monitoring');
+                  }}
+                />
+                <label>Enable WandB Monitoring</label>
+              </div>
               
               <Show when={wizardConfig().monitoring?.enable_wandb}>
                 <TextField
@@ -433,8 +441,10 @@ export const ChromaTrainingWizard: Component<ChromaTrainingWizardProps> = (props
                   onChange={(e) => {
                     updateWizardConfig({
                       monitoring: {
-                        ...wizardConfig().monitoring,
-                        wandb_api_key: e.currentTarget.value
+                        enable_wandb: wizardConfig().monitoring?.enable_wandb ?? false,
+                        wandb_api_key: e.currentTarget.value,
+                        wandb_tracker_name: wizardConfig().monitoring?.wandb_tracker_name || 'chroma-lora',
+                        wandb_run_name: wizardConfig().monitoring?.wandb_run_name || 'chroma-training'
                       }
                     });
                   }}

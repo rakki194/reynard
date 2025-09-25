@@ -12,6 +12,7 @@ import { TextField } from "reynard-components-core/primitives";
 import { Select } from "reynard-components-core/primitives";
 import { Badge } from "reynard-components-core/primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
+import { useTrainingWebSocket } from '../hooks/useTrainingWebSocket';
 
 export interface LogEntry {
   timestamp: string;
@@ -22,7 +23,9 @@ export interface LogEntry {
 }
 
 export interface TrainingLogsProps {
-  logs: LogEntry[];
+  logs?: LogEntry[];
+  trainingId?: string;
+  websocketUrl?: string;
   isStreaming?: boolean;
   onClear?: () => void;
   onExport?: () => void;
@@ -40,6 +43,7 @@ export interface LogFilter {
 
 export const TrainingLogs: Component<TrainingLogsProps> = props => {
   const [filteredLogs, setFilteredLogs] = createSignal<LogEntry[]>([]);
+  const [allLogs, setAllLogs] = createSignal<LogEntry[]>(props.logs || []);
   const [filter, setFilter] = createSignal<LogFilter>({});
   const [searchTerm, setSearchTerm] = createSignal("");
   const [selectedLevel, setSelectedLevel] = createSignal<string>("all");
@@ -47,12 +51,39 @@ export const TrainingLogs: Component<TrainingLogsProps> = props => {
   const [isAutoScroll, setIsAutoScroll] = createSignal(props.autoScroll ?? true);
   const [isExpanded, setIsExpanded] = createSignal(!props.compact);
 
+  // WebSocket integration for real-time log streaming
+  const websocket = props.websocketUrl && props.trainingId ? useTrainingWebSocket({
+    url: props.websocketUrl,
+    reconnectInterval: 5000,
+    maxReconnectAttempts: 5,
+    heartbeatInterval: 30000,
+  }) : null;
+
   let logContainer: HTMLDivElement | undefined;
   let scrollTimeout: NodeJS.Timeout | undefined;
 
+  // Handle WebSocket events for real-time log streaming
+  createEffect(() => {
+    if (websocket) {
+      const events = websocket.events();
+      events.forEach(event => {
+        if (event.type === "log" && event.trainingId === props.trainingId) {
+          const logEntry: LogEntry = {
+            timestamp: event.timestamp.toISOString(),
+            level: event.data.level || "info",
+            message: event.data.message || "",
+            source: event.data.source,
+            metadata: event.data.metadata,
+          };
+          setAllLogs(prev => [...prev, logEntry]);
+        }
+      });
+    }
+  });
+
   // Filter logs based on current filter
   createEffect(() => {
-    let filtered = [...props.logs];
+    let filtered = [...allLogs()];
 
     // Apply level filter
     if (selectedLevel() !== "all") {
@@ -80,6 +111,19 @@ export const TrainingLogs: Component<TrainingLogsProps> = props => {
     setFilteredLogs(filtered);
   });
 
+  // Subscribe to training logs via WebSocket
+  onMount(() => {
+    if (websocket && props.trainingId) {
+      websocket.subscribe(props.trainingId);
+    }
+  });
+
+  onCleanup(() => {
+    if (websocket && props.trainingId) {
+      websocket.unsubscribe(props.trainingId);
+    }
+  });
+
   // Auto-scroll to bottom when new logs arrive
   createEffect(() => {
     if (isAutoScroll() && logContainer) {
@@ -99,7 +143,7 @@ export const TrainingLogs: Component<TrainingLogsProps> = props => {
 
   // Get unique sources from logs
   const getUniqueSources = () => {
-    const sources = new Set(props.logs.map(log => log.source).filter(Boolean));
+    const sources = new Set(allLogs().map(log => log.source).filter(Boolean));
     return Array.from(sources);
   };
 
@@ -174,12 +218,32 @@ export const TrainingLogs: Component<TrainingLogsProps> = props => {
       <div class="logs-header">
         <div class="logs-title">
           <h3>Training Logs</h3>
-          <Show when={props.isStreaming}>
-            <Badge variant="secondary">
-              <span class="streaming-indicator" />
-              Live
-            </Badge>
-          </Show>
+          <div class="status-badges">
+            <Show when={websocket && websocket.isConnected()}>
+              <Badge variant="secondary">
+                <span class="streaming-indicator" />
+                Live
+              </Badge>
+            </Show>
+            <Show when={websocket && websocket.isConnecting()}>
+              <Badge variant="outline">
+                <span class="connecting-indicator" />
+                Connecting...
+              </Badge>
+            </Show>
+            <Show when={websocket && websocket.error()}>
+              <Badge variant="destructive">
+                <span class="error-indicator" />
+                Connection Error
+              </Badge>
+            </Show>
+            <Show when={!websocket && props.isStreaming}>
+              <Badge variant="secondary">
+                <span class="streaming-indicator" />
+                Live
+              </Badge>
+            </Show>
+          </div>
         </div>
 
         <div class="logs-actions">
@@ -307,7 +371,7 @@ export const TrainingLogs: Component<TrainingLogsProps> = props => {
       <div class="logs-footer">
         <div class="logs-stats">
           <span>
-            {filteredLogs().length} of {props.logs.length} logs
+            {filteredLogs().length} of {allLogs().length} logs
           </span>
         </div>
         <div class="logs-controls">

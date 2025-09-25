@@ -5,6 +5,7 @@
 import { For, Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
 import { Button, TextField, Select } from "reynard-components-core/primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
+import { log } from "reynard-error-boundaries";
 export const PackageAnalyticsPanel = props => {
   const [analytics, setAnalytics] = createSignal([]);
   const [summary, setSummary] = createSignal({
@@ -188,7 +189,10 @@ export const PackageAnalyticsPanel = props => {
       setSummary(mockSummary);
       setLastUpdate(new Date());
     } catch (error) {
-      console.error("Failed to refresh analytics data:", error);
+      log.error("Failed to refresh analytics data", error instanceof Error ? error : new Error(String(error)), undefined, {
+        component: "PackageAnalyticsPanel",
+        function: "refreshAnalyticsData"
+      });
     } finally {
       setIsRefreshing(false);
     }

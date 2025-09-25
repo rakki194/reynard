@@ -6,6 +6,7 @@
 import { applyTheme, computeAnimation, computeHoverStyles, computeTagBackground, computeTagColor } from "./themeUtils";
 import { isDarkTheme, isHighContrastTheme } from "./themes";
 import type { ThemeContext, ThemeName } from "./types";
+import { log } from "reynard-error-boundaries";
 
 /**
  * Creates a theme context with reactive theme state
@@ -16,17 +17,25 @@ export const createThemeContext = (
 ): ThemeContext => ({
   get theme() {
     const currentTheme = theme();
-    console.log("ThemeContext - get theme() called, returning:", currentTheme);
+    log.debug("Theme getter called", { currentTheme }, {
+      component: "themeContext",
+      function: "theme"
+    });
     return currentTheme;
   },
 
   setTheme(newTheme: ThemeName) {
-    console.log("setTheme called with:", newTheme);
-    console.log("Current theme before setThemeState:", theme());
+    log.debug("Theme setter called", { newTheme, currentTheme: theme() }, {
+      component: "themeContext",
+      function: "setTheme"
+    });
     setThemeState(newTheme);
-    console.log("Current theme after setThemeState:", theme());
     applyTheme(newTheme);
     localStorage.setItem("reynard-theme", newTheme);
+    log.debug("Theme updated", { newTheme }, {
+      component: "themeContext",
+      function: "setTheme"
+    });
   },
 
   getTagStyle(tag: string) {

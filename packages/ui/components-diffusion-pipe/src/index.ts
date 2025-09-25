@@ -25,6 +25,9 @@ export type { TrainingLogsProps, LogEntry, LogFilter } from "./training/Training
 export { ResourceMonitor } from "./training/ResourceMonitor";
 export type { ResourceMonitorProps, ResourceData, ResourceAlert } from "./training/ResourceMonitor";
 
+export { TrainingTimeline } from "./training/TrainingTimeline";
+export type { TrainingTimelineProps, TimelineEvent } from "./training/TrainingTimeline";
+
 // Configuration components
 export { ConfigBuilder } from "./config/ConfigBuilder";
 export type { ConfigBuilderProps, TrainingConfig } from "./config/ConfigBuilder";
@@ -68,6 +71,13 @@ export type {
   UseRealTimeUpdatesReturn,
   RealTimeUpdateData,
 } from "./hooks/useRealTimeUpdates";
+
+export { useTrainingWebSocket } from "./hooks/useTrainingWebSocket";
+export type {
+  UseTrainingWebSocketReturn,
+  TrainingEvent,
+  TrainingWebSocketConfig,
+} from "./hooks/useTrainingWebSocket";
 
 // Types
 export * from "./types";

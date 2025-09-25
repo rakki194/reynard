@@ -6,6 +6,8 @@
  * RGB conversion functions are kept for non-CSS use cases (e.g., canvas, image processing).
  */
 
+import { log } from "reynard-error-boundaries";
+
 /**
  * OKLCH color interface
  */
@@ -117,7 +119,10 @@ export function oklchStringToCSS(oklchColor: string): string {
   const oklch = parseOKLCH(oklchColor);
   if (!oklch) {
     // Fallback to a default color if parsing fails
-    console.warn(`Invalid OKLCH color format: ${oklchColor}`);
+    log.warn(`Invalid OKLCH color format: ${oklchColor}`, undefined, {
+      component: "colorConversion",
+      function: "oklchStringToCSS"
+    });
     return "oklch(40% 0.02 0)"; // Neutral gray fallback
   }
 
@@ -135,7 +140,10 @@ export function oklchStringToRgb(oklchColor: string): string {
   const oklch = parseOKLCH(oklchColor);
   if (!oklch) {
     // Fallback to a default color if parsing fails
-    console.warn(`Invalid OKLCH color format: ${oklchColor}`);
+    log.warn(`Invalid OKLCH color format: ${oklchColor}`, undefined, {
+      component: "colorConversion",
+      function: "oklchStringToCSS"
+    });
     return "#666666";
   }
 
@@ -155,7 +163,10 @@ export function oklchStringToCSSWithAlpha(oklchColor: string, alpha: number = 1)
   const oklch = parseOKLCH(oklchColor);
   if (!oklch) {
     // Fallback to a default color if parsing fails
-    console.warn(`Invalid OKLCH color format: ${oklchColor}`);
+    log.warn(`Invalid OKLCH color format: ${oklchColor}`, undefined, {
+      component: "colorConversion",
+      function: "oklchStringToCSS"
+    });
     return `oklch(40% 0.02 0 / ${alpha})`;
   }
 
@@ -174,7 +185,10 @@ export function oklchStringToCSSWithAlpha(oklchColor: string, alpha: number = 1)
 export function oklchStringToHex(oklchColor: string): string {
   const oklch = parseOKLCH(oklchColor);
   if (!oklch) {
-    console.warn(`Invalid OKLCH color format: ${oklchColor}`);
+    log.warn(`Invalid OKLCH color format: ${oklchColor}`, undefined, {
+      component: "colorConversion",
+      function: "oklchStringToCSS"
+    });
     return "#666666";
   }
 

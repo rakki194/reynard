@@ -5,6 +5,7 @@
 import { For, Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
 import { Button, TextField, Select } from "reynard-components-core/primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
+import { log } from "reynard-error-boundaries";
 export const PackageInstallationPanel = props => {
   const [packages, setPackages] = createSignal([]);
   const [summary, setSummary] = createSignal({
@@ -135,14 +136,20 @@ export const PackageInstallationPanel = props => {
       setSummary(mockSummary);
       setLastUpdate(new Date());
     } catch (error) {
-      console.error("Failed to refresh installation data:", error);
+      log.error("Failed to refresh installation data", error instanceof Error ? error : new Error(String(error)), undefined, {
+        component: "PackageInstallationPanel",
+        function: "refreshInstallationData"
+      });
     } finally {
       setIsRefreshing(false);
     }
   };
   const handleInstallPackage = async packageName => {
     // In a real implementation, this would call the backend installation endpoint
-    console.log(`Installing package: ${packageName}`);
+    log.info(`Installing package: ${packageName}`, undefined, {
+      component: "PackageInstallationPanel",
+      function: "handleInstallPackage"
+    });
     // Simulate installation
     const updatedPackages = packages().map(pkg =>
       pkg.name === packageName ? { ...pkg, status: "installing", startTime: new Date() } : pkg
@@ -171,7 +178,10 @@ export const PackageInstallationPanel = props => {
   };
   const handleCancelInstallation = async packageName => {
     // In a real implementation, this would call the backend cancellation endpoint
-    console.log(`Cancelling installation: ${packageName}`);
+    log.info(`Cancelling installation: ${packageName}`, undefined, {
+      component: "PackageInstallationPanel",
+      function: "handleCancelInstallation"
+    });
     // Simulate cancellation
     const updatedPackages = packages().map(pkg =>
       pkg.name === packageName ? { ...pkg, status: "cancelled", endTime: new Date() } : pkg
@@ -180,7 +190,10 @@ export const PackageInstallationPanel = props => {
   };
   const handleRetryInstallation = async packageName => {
     // In a real implementation, this would call the backend retry endpoint
-    console.log(`Retrying installation: ${packageName}`);
+    log.info(`Retrying installation: ${packageName}`, undefined, {
+      component: "PackageInstallationPanel",
+      function: "handleRetryInstallation"
+    });
     // Simulate retry
     const updatedPackages = packages().map(pkg =>
       pkg.name === packageName

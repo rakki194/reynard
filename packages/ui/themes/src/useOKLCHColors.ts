@@ -7,6 +7,7 @@ import { createTagColorGenerator } from "reynard-colors";
 import { createMemo } from "solid-js";
 import { useTheme } from "./ThemeProvider";
 import { oklchStringToCSS } from "./colorConversion";
+import { log } from "reynard-error-boundaries";
 import {
   generateColorVariant,
   generateComplementaryColors,
@@ -74,7 +75,10 @@ export function useTagColors() {
     // Access theme to make this reactive to theme changes
     const currentTheme = themeContext.theme;
 
-    console.log(`getTagStyle called for tag: ${tag}, theme: ${currentTheme}`);
+    log.debug(`getTagStyle called for tag: ${tag}, theme: ${currentTheme}`, undefined, {
+      component: "useOKLCHColors",
+      function: "getTagStyle"
+    });
 
     const backgroundColor = generateTagColor(currentTheme, tag, intensity);
 
@@ -105,7 +109,10 @@ export function useTagColors() {
       "--tag-color": textColor,
     };
 
-    console.log(`getTagStyle result for ${tag}:`, result);
+    log.debug(`getTagStyle result for ${tag}`, { result }, {
+      component: "useOKLCHColors",
+      function: "getTagStyle"
+    });
 
     return result;
   });

@@ -4,6 +4,7 @@
  */
 
 import { createSignal, createEffect, onMount, onCleanup } from "solid-js";
+import { log } from "reynard-error-boundaries";
 import type { PackageLifecycleInfo, LifecycleSummary, PackageLifecycleState } from "../types/PackageLifecycleTypes";
 
 export function usePackageLifecycle(refreshInterval?: number) {
@@ -67,7 +68,10 @@ export function usePackageLifecycle(refreshInterval?: number) {
         isRefreshing: false,
       }));
     } catch (error) {
-      console.error("Failed to refresh lifecycle data:", error);
+      log.error("Failed to refresh lifecycle data", error instanceof Error ? error : new Error(String(error)), undefined, {
+        component: "usePackageLifecycle",
+        function: "refreshLifecycleData"
+      });
       setState(prev => ({ ...prev, isRefreshing: false }));
     }
   };

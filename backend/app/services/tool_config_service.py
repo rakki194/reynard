@@ -118,7 +118,7 @@ class ToolConfigService:
             return tool.enabled if tool else False
         except Exception as e:
             logger.error(f"Failed to check if tool {name} is enabled: {e}")
-            return False
+            return None
         finally:
             if not self.db_session:
                 db.close()
@@ -130,7 +130,7 @@ class ToolConfigService:
             tool = db.query(Tool).filter(Tool.name == name).first()
             if not tool:
                 logger.warning(f"Tool {name} not found")
-                return False
+                return None
             
             if tool.enabled:
                 return tool.to_dict()  # Already enabled
@@ -147,7 +147,7 @@ class ToolConfigService:
         except Exception as e:
             logger.error(f"Failed to enable tool {name}: {e}")
             db.rollback()
-            return False
+            return None
         finally:
             if not self.db_session:
                 db.close()
@@ -159,7 +159,7 @@ class ToolConfigService:
             tool = db.query(Tool).filter(Tool.name == name).first()
             if not tool:
                 logger.warning(f"Tool {name} not found")
-                return False
+                return None
             
             if not tool.enabled:
                 return tool.to_dict()  # Already disabled
@@ -176,7 +176,7 @@ class ToolConfigService:
         except Exception as e:
             logger.error(f"Failed to disable tool {name}: {e}")
             db.rollback()
-            return False
+            return None
         finally:
             if not self.db_session:
                 db.close()
@@ -188,7 +188,7 @@ class ToolConfigService:
             tool = db.query(Tool).filter(Tool.name == name).first()
             if not tool:
                 logger.warning(f"Tool {name} not found")
-                return False
+                return None
             
             old_enabled = tool.enabled
             new_enabled = not old_enabled
@@ -205,13 +205,14 @@ class ToolConfigService:
         except Exception as e:
             logger.error(f"Failed to toggle tool {name}: {e}")
             db.rollback()
-            return False
+            return None
         finally:
             if not self.db_session:
                 db.close()
 
     def create_tool(self, tool_data: Dict[str, Any], changed_by: str = "system") -> Optional[Dict[str, Any]]:
         """Create a new tool."""
+        # Use the provided session or create a new one
         db = self._get_db_session()
         try:
             # Get category - handle both category name and category_id
@@ -224,30 +225,30 @@ class ToolConfigService:
                         category_id = uuid.UUID(category_id)
                     except ValueError:
                         logger.error(f"Invalid UUID format: {category_id}")
-                        return False
+                        return None
                 
                 category = db.query(ToolCategory).filter(
                     ToolCategory.id == category_id
                 ).first()
                 if not category:
                     logger.error(f"Category with ID {tool_data['category_id']} not found")
-                    return False
+                    return None
             elif "category" in tool_data:
                 category = db.query(ToolCategory).filter(
                     ToolCategory.name == ToolCategoryEnum(tool_data["category"].upper())
                 ).first()
                 if not category:
                     logger.error(f"Category {tool_data['category']} not found")
-                    return False
+                    return None
             else:
                 logger.error("Either 'category' or 'category_id' must be provided")
-                return False
+                return None
             
             # Check if tool already exists
             existing = db.query(Tool).filter(Tool.name == tool_data["name"]).first()
             if existing:
                 logger.warning(f"Tool {tool_data['name']} already exists")
-                return False
+                return existing.to_dict()
             
             # Create tool
             tool = Tool(
@@ -276,7 +277,7 @@ class ToolConfigService:
         except Exception as e:
             logger.error(f"Failed to create tool {tool_data.get('name', 'unknown')}: {e}")
             db.rollback()
-            return False
+            return None
         finally:
             if not self.db_session:
                 db.close()
@@ -288,10 +289,15 @@ class ToolConfigService:
             tool = db.query(Tool).filter(Tool.name == name).first()
             if not tool:
                 logger.warning(f"Tool {name} not found")
-                return False
+                return None
             
             # Store old values for history
             old_values = tool.to_dict()
+            
+            # Debug logging
+            logger.info(f"Tool data received: {tool_data}")
+            logger.info(f"Tool data keys: {list(tool_data.keys())}")
+            logger.info(f"'enabled' in tool_data: {'enabled' in tool_data}")
             
             # Update fields
             if "description" in tool_data:
@@ -303,7 +309,16 @@ class ToolConfigService:
             if "version" in tool_data:
                 tool.version = tool_data["version"]
             if "enabled" in tool_data:
+                logger.info(f"Updating enabled field from {tool.enabled} to {tool_data['enabled']}")
+                # Use direct SQL update to ensure the field is updated
+                from sqlalchemy import text
+                db.execute(
+                    text("UPDATE tools SET enabled = :enabled WHERE id = :tool_id"),
+                    {"enabled": tool_data["enabled"], "tool_id": tool.id}
+                )
+                # Update the object in memory as well
                 tool.enabled = tool_data["enabled"]
+                logger.info(f"Enabled field after update: {tool.enabled}")
             if "execution_type" in tool_data:
                 tool.execution_type = tool_data["execution_type"]
             if "timeout_seconds" in tool_data:
@@ -323,7 +338,7 @@ class ToolConfigService:
         except Exception as e:
             logger.error(f"Failed to update tool {name}: {e}")
             db.rollback()
-            return False
+            return None
         finally:
             if not self.db_session:
                 db.close()
@@ -335,7 +350,7 @@ class ToolConfigService:
             tool = db.query(Tool).filter(Tool.name == name).first()
             if not tool:
                 logger.warning(f"Tool {name} not found")
-                return False
+                return None
             
             # Record history before deleting
             self._record_change(db, tool, "deleted", tool.to_dict(), None, changed_by)
@@ -352,7 +367,7 @@ class ToolConfigService:
         except Exception as e:
             logger.error(f"Failed to delete tool {name}: {e}")
             db.rollback()
-            return False
+            return None
         finally:
             if not self.db_session:
                 db.close()
@@ -589,7 +604,7 @@ class ToolConfigService:
         except Exception as e:
             logger.error(f"Failed to update global configuration: {e}")
             db.rollback()
-            return False
+            return None
         finally:
             if not self.db_session:
                 db.close()

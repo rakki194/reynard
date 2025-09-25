@@ -6,6 +6,7 @@ import { Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
 import { Tabs } from "reynard-components-core/primitives";
 import { Button } from "reynard-components-core/primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
+import { log } from "reynard-error-boundaries";
 import { PackageDiscoveryPanel } from "./PackageDiscoveryPanel";
 import { PackageInstallationPanel } from "./PackageInstallationPanel";
 import { PackageDependencyGraph } from "./PackageDependencyGraph";
@@ -72,7 +73,10 @@ export const PackageManagementDashboard = props => {
       await Promise.all([refreshPackageData(), refreshDiscoveryData(), refreshAnalyticsData()]);
       setLastRefresh(new Date());
     } catch (error) {
-      console.error("Failed to refresh package data:", error);
+      log.error("Failed to refresh package data", error instanceof Error ? error : new Error(String(error)), undefined, {
+        component: "PackageManagementDashboard",
+        function: "refreshPackageData"
+      });
     } finally {
       setIsRefreshing(false);
     }

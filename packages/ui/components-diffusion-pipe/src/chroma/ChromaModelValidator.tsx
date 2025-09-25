@@ -410,7 +410,7 @@ export const ChromaModelValidator: Component<ChromaModelValidatorProps> = (props
                   <span class="label">Supported Data Types:</span>
                   <div class="dtype-badges">
                     {validationResult()!.compatibility.supported_dtypes.map(dtype => (
-                      <Badge variant="outline" key={dtype}>{dtype}</Badge>
+                      <Badge variant="outline">{dtype}</Badge>
                     ))}
                   </div>
                 </div>

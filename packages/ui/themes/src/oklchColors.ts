@@ -6,6 +6,7 @@
 import type { ThemeName } from "./types";
 import { createTagColorGenerator, formatOKLCH, adjustLightness, type OKLCHColor } from "reynard-colors";
 import { themeOKLCHPalettes } from "./oklchPalettes";
+import { log } from "reynard-error-boundaries";
 
 // Create a cached color generator for performance
 const colorGenerator = createTagColorGenerator();
@@ -16,7 +17,10 @@ const colorGenerator = createTagColorGenerator();
 export function getOKLCHColor(theme: ThemeName, colorName: string): OKLCHColor {
   const palette = themeOKLCHPalettes[theme];
   if (!palette || !palette[colorName]) {
-    console.warn(`Color ${colorName} not found for theme ${theme}, using fallback`);
+    log.warn(`Color ${colorName} not found for theme ${theme}, using fallback`, undefined, {
+      component: "oklchColors",
+      function: "getOKLCHColor"
+    });
     return { l: 50, c: 0.1, h: 0 }; // Fallback color
   }
   return palette[colorName];

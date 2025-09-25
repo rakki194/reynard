@@ -4,6 +4,7 @@
  */
 import { For, Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { Button } from "reynard-components-core/primitives";
+import { log } from "reynard-error-boundaries";
 export const PerformanceAlertsTab = props => {
   const [selectedSeverity, setSelectedSeverity] = createSignal("all");
   const [selectedStatus, setSelectedStatus] = createSignal("all");
@@ -59,7 +60,10 @@ export const PerformanceAlertsTab = props => {
       setAlertSummary(summary);
       setLastUpdate(new Date());
     } catch (error) {
-      console.error("Failed to update alerts:", error);
+      log.error("Failed to update alerts", error instanceof Error ? error : new Error(String(error)), undefined, {
+        component: "PerformanceAlertsTab",
+        function: "updateAlerts"
+      });
     } finally {
       setIsRefreshing(false);
     }

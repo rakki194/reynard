@@ -5,6 +5,7 @@
 import { Show, createEffect, createSignal, onMount } from "solid-js";
 import { Button, Select, TextField } from "reynard-components-core/primitives";
 import { Toggle } from "reynard-components-core/primitives";
+import { log } from "reynard-error-boundaries";
 export const PerformanceExportTab = props => {
   const [exportOptions, setExportOptions] = createSignal({
     format: "json",
@@ -171,7 +172,10 @@ export const PerformanceExportTab = props => {
       // Call the parent export callback
       props.onExport();
     } catch (error) {
-      console.error("Failed to export performance data:", error);
+      log.error("Failed to export performance data", error instanceof Error ? error : new Error(String(error)), undefined, {
+        component: "PerformanceExportTab",
+        function: "exportPerformanceData"
+      });
     } finally {
       setIsExporting(false);
       setExportProgress(0);

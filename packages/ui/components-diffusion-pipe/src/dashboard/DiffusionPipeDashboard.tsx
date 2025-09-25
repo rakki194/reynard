@@ -338,10 +338,14 @@ export const DiffusionPipeDashboard: Component<DiffusionPipeDashboardProps> = pr
       label: "Chroma Training",
       content: (
         <div class="chroma-tab">
-          <div class="chroma-placeholder">
-            <h3>Chroma Training Wizard</h3>
-            <p>Chroma-specific training interface coming soon...</p>
-          </div>
+          <ChromaTrainingWizard
+            onWizardComplete={(config) => {
+              console.log("Chroma wizard completed:", config);
+            }}
+            onConfigGenerated={(config) => {
+              console.log("Chroma config generated:", config);
+            }}
+          />
         </div>
       ),
     },

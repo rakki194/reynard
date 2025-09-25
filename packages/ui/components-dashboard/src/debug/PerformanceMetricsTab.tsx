@@ -4,6 +4,7 @@
  */
 import { For, Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
 import { Button } from "reynard-components-core/primitives";
+import { log } from "reynard-error-boundaries";
 export const PerformanceMetricsTab = props => {
   const [selectedMetric, setSelectedMetric] = createSignal("frameRate");
   const [timeRange, setTimeRange] = createSignal("5m");

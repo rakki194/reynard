@@ -4,6 +4,7 @@
  */
 import { Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
 import { Button } from "reynard-components-core/primitives";
+import { log } from "reynard-error-boundaries";
 export const PerformanceMemoryTab = props => {
   const [isMonitoring, setIsMonitoring] = createSignal(false);
   const [isRefreshing, setIsRefreshing] = createSignal(false);
@@ -90,7 +91,10 @@ export const PerformanceMemoryTab = props => {
       });
       setLastUpdate(new Date());
     } catch (error) {
-      console.error("Failed to update memory statistics:", error);
+      log.error("Failed to update memory statistics", error instanceof Error ? error : new Error(String(error)), undefined, {
+        component: "PerformanceMemoryTab",
+        function: "updateMemoryStats"
+      });
     } finally {
       setIsRefreshing(false);
     }
@@ -115,7 +119,10 @@ export const PerformanceMemoryTab = props => {
     if (window.gc) {
       window.gc();
     } else {
-      console.warn("Garbage collection not available in this environment");
+      log.warn("Garbage collection not available in this environment", undefined, {
+        component: "PerformanceMemoryTab",
+        function: "triggerGarbageCollection"
+      });
     }
   };
   // Format memory usage

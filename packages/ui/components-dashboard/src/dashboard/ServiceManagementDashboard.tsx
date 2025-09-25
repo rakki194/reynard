@@ -6,6 +6,7 @@ import { Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
 import { Tabs } from "reynard-components-core/primitives";
 import { Button } from "reynard-components-core/primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
+import { log } from "reynard-error-boundaries";
 import { ServiceStatusPanel } from "./ServiceStatusPanel";
 import { ServiceRestartPanel } from "./ServiceRestartPanel";
 import { FeatureAvailabilityPanel } from "./FeatureAvailabilityPanel";
@@ -69,7 +70,10 @@ export const ServiceManagementDashboard = props => {
       await Promise.all([refreshServiceData(), refreshFeatureData(), refreshAuthData()]);
       setLastRefresh(new Date());
     } catch (error) {
-      console.error("Failed to refresh service data:", error);
+      log.error("Failed to refresh service data", error instanceof Error ? error : new Error(String(error)), undefined, {
+        component: "ServiceManagementDashboard",
+        function: "refreshServiceData"
+      });
     } finally {
       setIsRefreshing(false);
     }

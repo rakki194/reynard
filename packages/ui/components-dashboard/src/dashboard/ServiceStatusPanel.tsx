@@ -5,6 +5,7 @@
 import { For, Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
 import { Button } from "reynard-components-core/primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
+import { log } from "reynard-error-boundaries";
 import { ServiceHealthIndicator } from "./ServiceHealthIndicator";
 import { ServiceLoadingProgress } from "./ServiceLoadingProgress";
 import { ServiceDependencyGraph } from "./ServiceDependencyGraph";
@@ -178,7 +179,10 @@ export const ServiceStatusPanel = props => {
   };
   const handleRestartService = async serviceName => {
     // In a real implementation, this would call the backend restart endpoint
-    console.log(`Restarting service: ${serviceName}`);
+    log.info(`Restarting service: ${serviceName}`, undefined, {
+      component: "ServiceStatusPanel",
+      function: "restartService"
+    });
     // Simulate restart
     const updatedServices = { ...services() };
     if (updatedServices[serviceName]) {

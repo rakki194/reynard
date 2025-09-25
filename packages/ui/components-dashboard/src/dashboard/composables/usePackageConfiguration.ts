@@ -4,6 +4,7 @@
  */
 
 import { createSignal, createEffect, onMount } from "solid-js";
+import { log } from "reynard-error-boundaries";
 import type {
   PackageConfiguration,
   GlobalConfiguration,
@@ -62,7 +63,10 @@ export function usePackageConfiguration() {
         isRefreshing: false,
       }));
     } catch (error) {
-      console.error("Failed to refresh configuration data:", error);
+      log.error("Failed to refresh configuration data", error instanceof Error ? error : new Error(String(error)), undefined, {
+        component: "usePackageConfiguration",
+        function: "refreshConfigurationData"
+      });
       setState(prev => ({ ...prev, isRefreshing: false }));
     }
   };
@@ -82,7 +86,10 @@ export function usePackageConfiguration() {
         isSaving: false,
       }));
     } catch (error) {
-      console.error("Failed to save package configuration:", error);
+      log.error("Failed to save package configuration", error instanceof Error ? error : new Error(String(error)), undefined, {
+        component: "usePackageConfiguration",
+        function: "savePackageConfiguration"
+      });
       setState(prev => ({ ...prev, isSaving: false }));
     }
   };
@@ -100,7 +107,10 @@ export function usePackageConfiguration() {
         isSaving: false,
       }));
     } catch (error) {
-      console.error("Failed to save global configuration:", error);
+      log.error("Failed to save global configuration", error instanceof Error ? error : new Error(String(error)), undefined, {
+        component: "usePackageConfiguration",
+        function: "saveGlobalConfiguration"
+      });
       setState(prev => ({ ...prev, isSaving: false }));
     }
   };
