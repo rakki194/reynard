@@ -7,6 +7,7 @@
  * @since 1.0.0
  */
 
+import { log } from "reynard-error-boundaries";
 import { createSignal, createEffect, onCleanup } from "solid-js";
 import { AnimationStateManager, AnimationStateConfig } from "../state/AnimationStateManager";
 import { SmartAnimationCore } from "../engines/SmartAnimationCore";
@@ -45,10 +46,16 @@ export function createAnimationStateInitialization(options: UseAnimationStateIni
       setIsInitialized(true);
 
       if (enhancedConfig.enableLogging) {
-        console.log("useAnimationState: Animation state manager initialized with global control integration");
+        log.info("Animation state manager initialized with global control integration", undefined, { 
+          component: "useAnimationStateInitialization", 
+          function: "initializeAnimationState" 
+        });
       }
     } catch (error) {
-      console.error("useAnimationState: Failed to initialize animation state manager:", error);
+             log.error("Failed to initialize animation state manager", error instanceof Error ? error : new Error(String(error)), undefined, {
+        component: "useAnimationStateInitialization", 
+        function: "initializeAnimationState" 
+      });
     }
   };
 

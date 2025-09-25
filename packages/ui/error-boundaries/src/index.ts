@@ -38,6 +38,10 @@ export type {
 // Export utilities
 export { analyzeError, createErrorContext } from "./utils/ErrorAnalyzer";
 
+// Export logging system
+export { logger, log, enableDebugLogging, enableProductionLogging, createPackageLogger } from "./utils/ReynardLogger";
+export type { LogLevel, LogContext, LogEntry, LoggerConfig, LogDestination } from "./utils/ReynardLogger";
+
 export {
   builtInRecoveryStrategies,
   getApplicableStrategies,

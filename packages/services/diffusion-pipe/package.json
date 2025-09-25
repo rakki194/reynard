@@ -1,0 +1,65 @@
+{
+  "name": "reynard-diffusion-pipe",
+  "version": "0.1.0",
+  "description": "Diffusion-Pipe API client and service integration for Reynard",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./client": {
+      "types": "./dist/client/index.d.ts",
+      "import": "./dist/client/index.js"
+    },
+    "./websocket": {
+      "types": "./dist/websocket/index.d.ts",
+      "import": "./dist/websocket/index.js"
+    },
+    "./types": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/types/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "generate": "openapi-generator-cli generate -i http://localhost:8000/openapi.json -g typescript-fetch -o ./src/generated --additional-properties=typescriptThreePlus=true,supportsES6=true,withInterfaces=true,useSingleRequestParameter=true,npmName=reynard-diffusion-pipe",
+    "generate:watch": "nodemon --watch ../../backend --exec 'pnpm run generate'",
+    "build": "vite build && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly && (test -d src/generated && cp -r src/generated/* dist/generated/ || true)",
+    "build:watch": "tsc --watch",
+    "clean": "rm -rf dist src/generated",
+    "typecheck": "tsc --noEmit",
+    "test": "source ../../../vitest.env.global && VITEST_AGENT_ID=diffusion-pipe ../../../scripts/testing/vitest-global-queue.sh run diffusion-pipe",
+    "test:coverage": "vitest run --coverage",
+    "test:coverage:check": "vitest run --coverage --reporter=verbose",
+    "evergreen": "node scripts/evergreen-update.js",
+    "evergreen:watch": "nodemon --watch ../../backend --exec 'pnpm run evergreen'",
+    "update": "pnpm run evergreen && pnpm run build"
+  },
+  "dependencies": {
+    "reynard-http-client": "workspace:*",
+    "reynard-i18n": "workspace:*",
+    "reynard-connection": "workspace:*",
+    "reynard-core": "workspace:*",
+    "solid-js": "1.9.9"
+  },
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "2.23.1",
+    "@types/node": "24.5.2",
+    "@vitest/coverage-v8": "3.2.4",
+    "@vitest/ui": "3.2.4",
+    "happy-dom": "^18.0.1",
+    "nodemon": "3.1.10",
+    "reynard-testing": "workspace:*",
+    "typescript": "5.9.2",
+    "vite": "7.1.7",
+    "vitest": "3.2.4"
+  },
+  "peerDependencies": {
+    "solid-js": "1.9.9"
+  }
+}

@@ -3,6 +3,7 @@
  * Quality-adaptive animation engine that adjusts based on performance
  */
 
+import { log } from "reynard-error-boundaries";
 import type { AnimationCallbacks } from "../types";
 import { createAnimationCore } from "../core/AnimationCore";
 import { createQualityManager } from "./QualityManager";
@@ -16,7 +17,10 @@ export function createAdaptiveAnimationEngine(config = DEFAULT_ADAPTIVE_CONFIG) 
 
   const adaptiveStart = (callbacks: AnimationCallbacks) => {
     if (isInitialized) {
-      console.warn("🦊 AdaptiveAnimation: Already initialized, ignoring start request");
+      log.warn("Already initialized, ignoring start request", undefined, {
+        component: "AdaptiveAnimation",
+        function: "start",
+      });
       return;
     }
 

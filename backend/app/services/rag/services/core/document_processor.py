@@ -13,12 +13,12 @@ import time
 from typing import Any, Dict, List, Optional, AsyncGenerator
 
 from ...interfaces.base import BaseService, ServiceStatus
-from ...interfaces.document import DocumentProcessor, Document, DocumentChunk, ChunkMetadata
+from ...interfaces.document import DocumentProcessor, IDocumentIndexer, Document, DocumentChunk, ChunkMetadata
 
 logger = logging.getLogger("uvicorn")
 
 
-class ASTDocumentProcessor(BaseService, DocumentProcessor):
+class ASTDocumentProcessor(IDocumentIndexer):
     """AST-aware document processor with intelligent chunking."""
 
     def __init__(self, config: Optional[Dict[str, Any]] = None):
@@ -659,3 +659,241 @@ class ASTDocumentProcessor(BaseService, DocumentProcessor):
             # Note: vector_store and embedding_service would be injected by the calling script
         ):
             yield item
+
+    # IDocumentIndexer interface methods
+    async def index_documents(
+        self, documents: List[Dict[str, Any]],
+    ) -> AsyncGenerator[Dict[str, Any], None]:
+        """Index documents with streaming progress."""
+        try:
+            total_docs = len(documents)
+            processed = 0
+            failures = 0
+            
+            for i, doc_data in enumerate(documents):
+                try:
+                    # Create Document object from dict
+                    document = Document(
+                        id=doc_data.get("id", f"doc_{i}"),
+                        content=doc_data.get("content", ""),
+                        file_path=doc_data.get("file_path", ""),
+                        file_type=doc_data.get("file_type", "text"),
+                        language=doc_data.get("language", "text"),
+                        metadata=doc_data.get("metadata", {})
+                    )
+                    
+                    # Process document into chunks
+                    chunks = await self.process_document(document)
+                    
+                    # Update metrics
+                    self.metrics["documents_processed"] += 1
+                    self.metrics["chunks_created"] += len(chunks)
+                    
+                    processed += 1
+                    
+                    # Yield progress update
+                    yield {
+                        "type": "progress",
+                        "processed": processed,
+                        "total": total_docs,
+                        "failures": failures,
+                        "document_id": document.id,
+                        "chunks_created": len(chunks)
+                    }
+                    
+                except Exception as e:
+                    failures += 1
+                    logger.error(f"Failed to process document {i}: {e}")
+                    yield {
+                        "type": "error",
+                        "document_id": doc_data.get("id", f"doc_{i}"),
+                        "error": str(e)
+                    }
+            
+            # Yield completion
+            yield {
+                "type": "complete",
+                "processed": processed,
+                "total": total_docs,
+                "failures": failures
+            }
+            
+        except Exception as e:
+            logger.error(f"Failed to index documents: {e}")
+            yield {
+                "type": "error",
+                "error": str(e)
+            }
+
+    async def pause(self) -> None:
+        """Pause the document indexer."""
+        # For now, this is a no-op since we don't have background processing
+        logger.info("Document indexer paused")
+
+    async def resume(self) -> None:
+        """Resume the document indexer."""
+        # For now, this is a no-op since we don't have background processing
+        logger.info("Document indexer resumed")
+
+    def get_supported_languages(self) -> List[str]:
+        """Get list of supported languages for chunking."""
+        return self.supported_languages.copy()
+
+    def is_language_supported(self, language: str) -> bool:
+        """Check if language is supported for chunking."""
+        return language.lower() in [lang.lower() for lang in self.supported_languages]
+
+    # DocumentProcessor interface methods
+    async def process_document(
+        self, document: Document,
+    ) -> List[DocumentChunk]:
+        """Process a document into chunks."""
+        try:
+            start_time = time.time()
+            
+            # Detect language
+            language = self._detect_language(document.file_path, document.content)
+            
+            # Process based on language
+            if language in self.supported_languages:
+                chunks = await self._process_structured_document(document, language)
+            else:
+                chunks = await self._process_text_document(document)
+            
+            # Update metrics
+            processing_time = (time.time() - start_time) * 1000
+            self.metrics["documents_processed"] += 1
+            self.metrics["chunks_created"] += len(chunks)
+            self.metrics["languages_detected"][language] = self.metrics["languages_detected"].get(language, 0) + 1
+            
+            logger.debug(f"Processed document {document.id} into {len(chunks)} chunks in {processing_time:.2f}ms")
+            return chunks
+            
+        except Exception as e:
+            self.metrics["processing_errors"] += 1
+            logger.error(f"Failed to process document {document.id}: {e}")
+            raise
+
+    def get_supported_file_types(self) -> List[str]:
+        """Get list of supported file types."""
+        return [
+            ".py", ".js", ".ts", ".jsx", ".tsx", ".java", ".cpp", ".c", ".h", ".hpp",
+            ".go", ".rs", ".php", ".rb", ".swift", ".kt", ".scala", ".clj", ".hs",
+            ".ml", ".fs", ".vb", ".cs", ".dart", ".r", ".m", ".mm", ".pl", ".sh",
+            ".bash", ".zsh", ".fish", ".ps1", ".bat", ".cmd", ".sql", ".html", ".css",
+            ".scss", ".sass", ".less", ".xml", ".json", ".yaml", ".yml", ".toml",
+            ".ini", ".cfg", ".conf", ".md", ".rst", ".txt", ".log"
+        ]
+
+    def _detect_language(self, file_path: str, content: str) -> str:
+        """Detect programming language from file path and content."""
+        if not file_path:
+            return "text"
+        
+        # Get file extension
+        ext = file_path.lower().split('.')[-1] if '.' in file_path else ""
+        
+        # Language mapping
+        language_map = {
+            "py": "python",
+            "js": "javascript", 
+            "ts": "typescript",
+            "jsx": "javascript",
+            "tsx": "typescript",
+            "java": "java",
+            "cpp": "cpp",
+            "c": "c",
+            "h": "c",
+            "hpp": "cpp",
+            "go": "go",
+            "rs": "rust",
+            "php": "php",
+            "rb": "ruby",
+            "swift": "swift",
+            "kt": "kotlin",
+            "scala": "scala",
+            "clj": "clojure",
+            "hs": "haskell",
+            "ml": "ocaml",
+            "fs": "fsharp",
+            "vb": "vb",
+            "cs": "csharp",
+            "dart": "dart",
+            "r": "r",
+            "m": "matlab",
+            "mm": "objective-c",
+            "pl": "perl",
+            "sh": "bash",
+            "bash": "bash",
+            "zsh": "bash",
+            "fish": "bash",
+            "ps1": "powershell",
+            "bat": "batch",
+            "cmd": "batch",
+            "sql": "sql",
+            "html": "html",
+            "css": "css",
+            "scss": "scss",
+            "sass": "sass",
+            "less": "less",
+            "xml": "xml",
+            "json": "json",
+            "yaml": "yaml",
+            "yml": "yaml",
+            "toml": "toml",
+            "ini": "ini",
+            "cfg": "ini",
+            "conf": "ini",
+            "md": "markdown",
+            "rst": "rst",
+            "txt": "text",
+            "log": "text"
+        }
+        
+        return language_map.get(ext, "text")
+
+    async def _process_text_document(self, document: Document) -> List[DocumentChunk]:
+        """Process a text document into chunks using simple text chunking."""
+        try:
+            content = document.content
+            if not content:
+                return []
+            
+            chunks = []
+            lines = content.split('\n')
+            current_chunk = ""
+            current_line = 1
+            chunk_id = 1
+            
+            for line_num, line in enumerate(lines, 1):
+                current_chunk += line + '\n'
+                
+                # Create chunk when we reach max size or end of document
+                if len(current_chunk) >= self.max_chunk_size or line_num == len(lines):
+                    if current_chunk.strip():
+                        chunk = DocumentChunk(
+                            id=f"{document.id}_chunk_{chunk_id}",
+                            content=current_chunk.strip(),
+                            start_line=current_line,
+                            end_line=line_num,
+                            chunk_type="text",
+                            metadata={
+                                "file_path": document.file_path,
+                                "language": document.language,
+                                "chunk_type": "text",
+                                "parent_function": None,
+                                "parent_class": None,
+                                "complexity_score": 0.0
+                            }
+                        )
+                        chunks.append(chunk)
+                        chunk_id += 1
+                    
+                    current_chunk = ""
+                    current_line = line_num + 1
+            
+            return chunks
+            
+        except Exception as e:
+            logger.error(f"Failed to process text document {document.id}: {e}")
+            return []

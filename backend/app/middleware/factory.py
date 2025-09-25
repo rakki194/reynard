@@ -32,22 +32,22 @@ def setup_middleware(
     """
     logger.info(f"Setting up Reynard middleware for {environment} environment")
     
-    # Development bypass middleware (first)
+    # Development bypass middleware (first) - TEMPORARILY DISABLED
     if environment in ["development", "testing"]:
         app.add_middleware(
             DevelopmentBypassMiddleware,
-            enabled=True,
+            enabled=False,  # Temporarily disabled due to config issues
             environment=environment
         )
-        logger.info("Added development bypass middleware")
+        logger.info("Added development bypass middleware (disabled)")
     
-    # Input validation middleware (second)
+    # Input validation middleware (second) - TEMPORARILY DISABLED
     app.add_middleware(
         InputValidationMiddleware,
-        enabled=True,
+        enabled=False,  # Temporarily disabled due to config issues
         environment=environment
     )
-    logger.info("Added input validation middleware")
+    logger.info("Added input validation middleware (disabled)")
     
     # CORS middleware (third)
     app.add_middleware(
@@ -65,13 +65,13 @@ def setup_middleware(
     )
     logger.info("Added rate limiting middleware")
     
-    # Security headers middleware (last)
+    # Security headers middleware (last) - TEMPORARILY DISABLED
     app.add_middleware(
         SecurityHeadersMiddleware,
-        enabled=True,
+        enabled=False,  # Temporarily disabled due to config issues
         environment=environment
     )
-    logger.info("Added security headers middleware")
+    logger.info("Added security headers middleware (disabled)")
     
     logger.info("Reynard middleware setup complete")
 

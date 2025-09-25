@@ -3,6 +3,7 @@
  * Manages quality levels and adaptation logic for adaptive animation
  */
 
+import { log } from "reynard-error-boundaries";
 import type { AdaptiveConfig } from "./AdaptiveConfig";
 
 export interface QualityManager {
@@ -27,8 +28,16 @@ export function createQualityManager(config: AdaptiveConfig): QualityManager {
         currentQualityIndex++;
         lowFPSFrames = 0;
         if (config.enablePerformanceMonitoring) {
-          console.log(
-            `🦊 QualityManager: Reduced quality to level ${currentQualityIndex} (${config.qualityLevels[currentQualityIndex] * 100}%)`
+          log.debug(
+            "Reduced quality",
+            {
+              level: currentQualityIndex,
+              percentage: config.qualityLevels[currentQualityIndex] * 100,
+            },
+            {
+              component: "QualityManager",
+              function: "adaptQuality",
+            }
           );
         }
       }
@@ -40,8 +49,16 @@ export function createQualityManager(config: AdaptiveConfig): QualityManager {
         currentQualityIndex--;
         highFPSFrames = 0;
         if (config.enablePerformanceMonitoring) {
-          console.log(
-            `🦊 QualityManager: Increased quality to level ${currentQualityIndex} (${config.qualityLevels[currentQualityIndex] * 100}%)`
+          log.debug(
+            "Increased quality",
+            {
+              level: currentQualityIndex,
+              percentage: config.qualityLevels[currentQualityIndex] * 100,
+            },
+            {
+              component: "QualityManager",
+              function: "adaptQuality",
+            }
           );
         }
       }

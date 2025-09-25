@@ -174,7 +174,7 @@ def _setup_routers(app: FastAPI) -> None:
     app.include_router(tts_router)
     app.include_router(mcp_endpoints.router, prefix="/api")
     app.include_router(mcp_tools_endpoints.router, prefix="/api")
-    app.include_router(mcp_tool_config_endpoints.router, prefix="/api")
+    app.include_router(mcp_tool_config_endpoints.router)
     app.include_router(pdf_processing_endpoints.router, prefix="/api")
     
     # MCP Bootstrap Router (for initial authentication)

@@ -207,7 +207,7 @@ export const performanceUtils = {
     const endTime = performance.now();
     const duration = endTime - startTime;
 
-    console.log(`${name}: ${duration.toFixed(2)}ms (${iterations} iterations)`);
+    console.log(`Performance: ${name} took ${duration}ms for ${iterations} iterations`);
     return { result, duration };
   },
 

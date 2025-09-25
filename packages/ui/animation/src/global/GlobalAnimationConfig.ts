@@ -5,6 +5,7 @@
  * Provides default settings, persistence, and validation.
  */
 
+import { log } from "reynard-error-boundaries";
 import type { GlobalAnimationConfig, SystemPreferences, GlobalAnimationPersistence } from "./GlobalAnimationTypes.js";
 
 /**
@@ -215,7 +216,10 @@ export function createPersistence(storageKey: string = "reynard-animation-config
       try {
         localStorage.setItem(storageKey, JSON.stringify(config));
       } catch (error) {
-        console.warn("🦊 GlobalAnimation: Failed to save to localStorage:", error);
+        log.warn("Failed to save to localStorage", error, undefined, {
+          component: "GlobalAnimationConfig",
+          function: "saveToLocalStorage",
+        });
       }
     },
 
@@ -227,7 +231,10 @@ export function createPersistence(storageKey: string = "reynard-animation-config
         const parsed = JSON.parse(stored);
         return validateConfig(parsed);
       } catch (error) {
-        console.warn("🦊 GlobalAnimation: Failed to load from localStorage:", error);
+        log.warn("Failed to load from localStorage", error, undefined, {
+          component: "GlobalAnimationConfig",
+          function: "loadFromLocalStorage",
+        });
         return null;
       }
     },
@@ -236,7 +243,10 @@ export function createPersistence(storageKey: string = "reynard-animation-config
       try {
         sessionStorage.setItem(storageKey, JSON.stringify(config));
       } catch (error) {
-        console.warn("🦊 GlobalAnimation: Failed to save to sessionStorage:", error);
+        log.warn("Failed to save to sessionStorage", error, undefined, {
+          component: "GlobalAnimationConfig",
+          function: "saveToSessionStorage",
+        });
       }
     },
 
@@ -248,7 +258,10 @@ export function createPersistence(storageKey: string = "reynard-animation-config
         const parsed = JSON.parse(stored);
         return validateConfig(parsed);
       } catch (error) {
-        console.warn("🦊 GlobalAnimation: Failed to load from sessionStorage:", error);
+        log.warn("Failed to load from sessionStorage", error, undefined, {
+          component: "GlobalAnimationConfig",
+          function: "loadFromSessionStorage",
+        });
         return null;
       }
     },
@@ -258,7 +271,10 @@ export function createPersistence(storageKey: string = "reynard-animation-config
         localStorage.removeItem(storageKey);
         sessionStorage.removeItem(storageKey);
       } catch (error) {
-        console.warn("🦊 GlobalAnimation: Failed to clear storage:", error);
+        log.warn("Failed to clear storage", error, undefined, {
+          component: "GlobalAnimationConfig",
+          function: "clearStorage",
+        });
       }
     },
 
@@ -271,7 +287,10 @@ export function createPersistence(storageKey: string = "reynard-animation-config
         const parsed = JSON.parse(configString);
         return validateConfig(parsed);
       } catch (error) {
-        console.warn("🦊 GlobalAnimation: Failed to import config:", error);
+        log.warn("Failed to import config", error, undefined, {
+          component: "GlobalAnimationConfig",
+          function: "importConfig",
+        });
         return null;
       }
     },

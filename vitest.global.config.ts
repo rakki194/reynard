@@ -1229,6 +1229,26 @@ export default defineConfig({
         },
       },
       {
+        name: "packages/services/diffusion-pipe",
+        root: "./packages/services/diffusion-pipe",
+        test: {
+          setupFiles: ["./src/__tests__/setup.ts"],
+          include: ["src/**/*.{test,spec}.{js,ts,tsx}"],
+          exclude: ["node_modules", "dist", "build", "coverage", "node_modules", "dist", "build", "coverage"],
+          environment: "happy-dom",
+          coverage: {
+            thresholds: {
+              global: {
+                branches: 80,
+                functions: 85,
+                lines: 85,
+                statements: 85,
+              },
+            },
+          },
+        },
+      },
+      {
         name: "packages/services/auth",
         root: "./packages/services/auth",
         test: {
@@ -1411,6 +1431,26 @@ export default defineConfig({
       {
         name: "packages/ui/components-dashboard",
         root: "./packages/ui/components-dashboard",
+        test: {
+          setupFiles: ["./src/__tests__/setup.ts"],
+          include: ["src/**/*.{test,spec}.{js,ts,tsx}"],
+          exclude: ["node_modules", "dist", "build", "coverage", "node_modules", "dist", "build", "coverage"],
+          environment: "happy-dom",
+          coverage: {
+            thresholds: {
+              global: {
+                branches: 80,
+                functions: 85,
+                lines: 85,
+                statements: 85,
+              },
+            },
+          },
+        },
+      },
+      {
+        name: "packages/ui/components-diffusion-pipe",
+        root: "./packages/ui/components-diffusion-pipe",
         test: {
           setupFiles: ["./src/__tests__/setup.ts"],
           include: ["src/**/*.{test,spec}.{js,ts,tsx}"],

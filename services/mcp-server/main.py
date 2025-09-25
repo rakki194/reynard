@@ -26,7 +26,7 @@ from protocol.tool_discovery import ToolDiscovery
 # pylint: disable=wrong-import-position
 from protocol.tool_registry import get_tool_registry
 from services.backend_agent_manager import BackendAgentManager
-from services.tool_config_service import ToolConfigService
+from services.postgresql_tool_config_service import ToolConfigService
 from utils.logging_config import setup_logging
 
 # pylint: enable=wrong-import-position

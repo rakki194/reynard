@@ -4,6 +4,7 @@
  */
 
 import { createSignal, onCleanup } from "solid-js";
+import { log } from "reynard-error-boundaries";
 import type { AnimationConfig, AnimationState, AnimationCallbacks, PerformanceStats } from "../types";
 
 export function createAnimationCore(initialConfig: AnimationConfig) {
@@ -44,7 +45,10 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
 
     // Safety check: prevent infinite loops
     if (!animationId) {
-      console.warn("🦊 AnimationCore: Animation ID is undefined, stopping");
+      log.warn("Animation ID is undefined, stopping", undefined, {
+        component: "AnimationCore",
+        function: "animate",
+      });
       setAnimationState(prev => ({ ...prev, isRunning: false }));
       return;
     }
@@ -69,7 +73,11 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
 
     // Safety check: prevent runaway animations
     if (frameCount > maxFramesPerSecond) {
-      console.warn("🦊 AnimationCore: Frame count exceeded safety limit, stopping animation");
+      log.warn("Frame count exceeded safety limit, stopping animation", undefined, {
+        component: "AnimationCore",
+        function: "animate",
+        frameCount,
+      });
       stop();
       return;
     }
@@ -97,14 +105,24 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
     if (callbacks.onUpdate) {
       try {
         if (config.enablePerformanceMonitoring) {
-          console.log("🦊 AnimationCore: Calling onUpdate", {
-            deltaTime,
-            frameCount: state.frameCount,
-          });
+          log.debug(
+            "Calling onUpdate",
+            {
+              deltaTime,
+              frameCount: state.frameCount,
+            },
+            {
+              component: "AnimationCore",
+              function: "animate",
+            }
+          );
         }
         callbacks.onUpdate(deltaTime, state.frameCount);
       } catch (error) {
-        console.error("🦊 AnimationCore: Error in onUpdate callback", error);
+        log.error("Error in onUpdate callback", error instanceof Error ? error : new Error(String(error)), undefined, {
+          component: "AnimationCore",
+          function: "animate",
+        });
       }
     }
     const updateTime = performance.now() - updateStartTime;
@@ -114,14 +132,24 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
     if (callbacks.onRender) {
       try {
         if (config.enablePerformanceMonitoring) {
-          console.log("🦊 AnimationCore: Calling onRender", {
-            deltaTime,
-            frameCount: state.frameCount,
-          });
+          log.debug(
+            "Calling onRender",
+            {
+              deltaTime,
+              frameCount: state.frameCount,
+            },
+            {
+              component: "AnimationCore",
+              function: "animate",
+            }
+          );
         }
         callbacks.onRender(deltaTime, state.frameCount);
       } catch (error) {
-        console.error("🦊 AnimationCore: Error in onRender callback", error);
+        log.error("Error in onRender callback", error instanceof Error ? error : new Error(String(error)), undefined, {
+          component: "AnimationCore",
+          function: "animate",
+        });
       }
     }
     const renderTime = performance.now() - renderStartTime;
@@ -154,7 +182,10 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
   const start = (newCallbacks: AnimationCallbacks) => {
     const state = animationState();
     if (state.isRunning) {
-      console.warn("🦊 AnimationCore: Animation already running, ignoring start request");
+      log.warn("Animation already running, ignoring start request", undefined, {
+        component: "AnimationCore",
+        function: "start",
+      });
       return;
     }
 
@@ -162,13 +193,23 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
 
     // Set up safety timeout
     safetyTimeout = window.setTimeout(() => {
-      console.warn("🦊 AnimationCore: Safety timeout reached, stopping animation");
+      log.warn("Safety timeout reached, stopping animation", undefined, {
+        component: "AnimationCore",
+        function: "start",
+      });
       stop();
     }, 30000); // 30 second safety timeout
 
     setAnimationState(prev => ({ ...prev, isRunning: true }));
     animationId = window.requestAnimationFrame(animate);
-    console.log("🦊 AnimationCore: Animation started with ID", animationId);
+    log.info(
+      "Animation started",
+      { animationId },
+      {
+        component: "AnimationCore",
+        function: "start",
+      }
+    );
   };
 
   /**
@@ -219,7 +260,10 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
     getPerformanceStats,
     updateConfig: (newConfig: Partial<AnimationConfig>) => {
       config = { ...config, ...newConfig };
-      console.log("🦊 AnimationCore: Config updated", config);
+      log.debug("Config updated", config, {
+        component: "AnimationCore",
+        function: "updateConfig",
+      });
     },
     updateCallbacks: (newCallbacks: AnimationCallbacks) => {
       callbacks = { ...callbacks, ...newCallbacks };

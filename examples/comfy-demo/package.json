@@ -19,7 +19,7 @@
     "reynard-core": "workspace:*"
   },
   "devDependencies": {
-    "vite": "7.1.6",
+    "vite": "7.1.7",
     "vite-plugin-solid": "^2.8.0",
     "typescript": "^5.0.0"
   }

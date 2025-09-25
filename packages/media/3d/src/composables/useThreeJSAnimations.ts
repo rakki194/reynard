@@ -7,27 +7,6 @@ import { useCameraAnimations } from "./useCameraAnimations";
 import { useClusterAnimations } from "./useClusterAnimations";
 import { Easing } from "../utils/easing";
 
-// Smart import for unified animation system
-let animationPackage: unknown = null;
-let isPackageAvailable = false;
-
-const checkAnimationPackageAvailability = async () => {
-  try {
-    const packageCheck = await import("reynard-animation");
-    if (packageCheck && packageCheck.useThreeJSAnimations) {
-      animationPackage = packageCheck;
-      isPackageAvailable = true;
-      return true;
-    }
-  } catch (error) {
-    console.warn("🦊 3D: reynard-animation package not available, using fallback 3D animations");
-  }
-  return false;
-};
-
-// Initialize package availability
-checkAnimationPackageAvailability();
-
 export function useThreeJSAnimations() {
   const pointAnimations = usePointAnimations();
   const cameraAnimations = useCameraAnimations();

@@ -272,11 +272,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
 
   examples/algo-bench:
     dependencies:
@@ -318,11 +318,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
 
   examples/animation-demo:
     dependencies:
@@ -431,11 +431,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
 
   examples/basic-app:
     dependencies:
@@ -480,11 +480,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
 
   examples/clock:
     dependencies:
@@ -529,11 +529,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
 
   examples/comfy-demo:
     dependencies:
@@ -566,11 +566,11 @@ importers:
         specifier: ^5.0.0
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: ^2.8.0
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
 
   examples/comprehensive-dashboard:
     dependencies:
@@ -618,11 +618,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -682,11 +682,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -752,11 +752,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -783,11 +783,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
 
   examples/error-demo:
     dependencies:
@@ -817,11 +817,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
 
   examples/features-app:
     dependencies:
@@ -866,11 +866,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
 
   examples/file-test:
     dependencies:
@@ -915,11 +915,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
 
   examples/gallery-dl-demo:
     dependencies:
@@ -964,11 +964,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
 
   examples/games-demo:
     dependencies:
@@ -1095,11 +1095,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
 
   examples/i18n-demo:
     dependencies:
@@ -1147,11 +1147,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -1199,11 +1199,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
 
   examples/image-caption-app:
     dependencies:
@@ -1257,11 +1257,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
 
   examples/multi-theme:
     dependencies:
@@ -1306,11 +1306,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
 
   examples/prompt-note:
     dependencies:
@@ -1443,11 +1443,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
 
   examples/test-app:
     dependencies:
@@ -1522,11 +1522,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -1568,11 +1568,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
 
   packages/ai/ai-shared:
     dependencies:
@@ -1605,11 +1605,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -1645,11 +1645,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -1676,11 +1676,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -1707,11 +1707,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -1738,11 +1738,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -1787,11 +1787,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -1818,11 +1818,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -1903,11 +1903,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -1946,11 +1946,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -1986,11 +1986,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -2044,11 +2044,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -2106,11 +2106,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -2173,11 +2173,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -2265,11 +2265,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -2293,11 +2293,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -2330,11 +2330,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -2373,11 +2373,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -2413,11 +2413,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -2514,11 +2514,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -2542,11 +2542,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -2582,11 +2582,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -2626,11 +2626,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -2666,8 +2666,8 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -2709,11 +2709,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -2739,11 +2739,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -2822,11 +2822,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -2908,11 +2908,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -2951,11 +2951,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -2994,11 +2994,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -3037,11 +3037,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -3083,11 +3083,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -3185,11 +3185,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -3261,11 +3261,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -3411,11 +3411,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -3475,8 +3475,8 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -3669,8 +3669,8 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(tsx@4.20.5)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)(tsx@4.20.5)
@@ -3820,11 +3820,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)(tsx@4.20.5)
@@ -3872,11 +3872,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -3933,11 +3933,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -3985,11 +3985,11 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -4046,11 +4046,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -4113,11 +4113,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -4174,11 +4174,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -4226,11 +4226,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -4296,11 +4296,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -4372,11 +4372,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -4442,11 +4442,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -4500,11 +4500,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -4555,11 +4555,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -4613,11 +4613,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -4659,8 +4659,8 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -4781,11 +4781,60 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
+      vitest:
+        specifier: 3.2.4
+        version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+
+  packages/services/diffusion-pipe:
+    dependencies:
+      reynard-connection:
+        specifier: workspace:*
+        version: link:../../core/connection
+      reynard-core:
+        specifier: workspace:*
+        version: link:../../core/core
+      reynard-http-client:
+        specifier: workspace:*
+        version: link:../../core/http-client
+      reynard-i18n:
+        specifier: workspace:*
+        version: link:../../core/i18n
+      solid-js:
+        specifier: 1.9.9
+        version: 1.9.9
+    devDependencies:
+      '@openapitools/openapi-generator-cli':
+        specifier: 2.23.1
+        version: 2.23.1(@types/node@24.5.2)
+      '@types/node':
+        specifier: 24.5.2
+        version: 24.5.2
+      '@vitest/coverage-v8':
+        specifier: 3.2.4
+        version: 3.2.4(vitest@3.2.4)
+      '@vitest/ui':
+        specifier: 3.2.4
+        version: 3.2.4(vitest@3.2.4)
+      happy-dom:
+        specifier: ^18.0.1
+        version: 18.0.1
+      nodemon:
+        specifier: 3.1.10
+        version: 3.1.10
+      reynard-testing:
+        specifier: workspace:*
+        version: link:../../core/testing
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
+      vite:
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -4842,11 +4891,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -4876,11 +4925,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -5011,8 +5060,8 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -5054,11 +5103,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -5100,11 +5149,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -5143,11 +5192,66 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
+      vitest:
+        specifier: 3.2.4
+        version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+
+  packages/ui/components-diffusion-pipe:
+    dependencies:
+      reynard-charts:
+        specifier: workspace:*
+        version: link:../charts
+      reynard-components-core:
+        specifier: workspace:*
+        version: link:../components-core
+      reynard-connection:
+        specifier: workspace:*
+        version: link:../../core/connection
+      reynard-core:
+        specifier: workspace:*
+        version: link:../../core/core
+      reynard-diffusion-pipe:
+        specifier: workspace:*
+        version: link:../../services/diffusion-pipe
+      reynard-fluent-icons:
+        specifier: workspace:*
+        version: link:../fluent-icons
+    devDependencies:
+      '@solidjs/testing-library':
+        specifier: 0.8.10
+        version: 0.8.10(solid-js@1.9.9)
+      '@types/node':
+        specifier: 24.5.2
+        version: 24.5.2
+      '@vitest/coverage-v8':
+        specifier: 3.2.4
+        version: 3.2.4(vitest@3.2.4)
+      '@vitest/ui':
+        specifier: 3.2.4
+        version: 3.2.4(vitest@3.2.4)
+      happy-dom:
+        specifier: 18.0.1
+        version: 18.0.1
+      reynard-testing:
+        specifier: workspace:*
+        version: link:../../core/testing
+      solid-js:
+        specifier: 1.9.9
+        version: 1.9.9
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
+      vite:
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
+      vite-plugin-solid:
+        specifier: 2.11.8
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -5186,11 +5290,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -5232,11 +5336,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -5299,11 +5403,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -5336,11 +5440,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -5419,11 +5523,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -5526,11 +5630,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -5621,11 +5725,11 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vite:
-        specifier: 7.1.6
-        version: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(solid-js@1.9.9)(vite@7.1.6)
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
@@ -16047,28 +16151,6 @@ packages:
       - supports-color
     dev: true
 
-  /vite-plugin-solid@2.11.8(solid-js@1.9.9)(vite@7.1.6):
-    resolution: {integrity: sha512-hFrCxBfv3B1BmFqnJF4JOCYpjrmi/zwyeKjcomQ0khh8HFyQ8SbuBWQ7zGojfrz6HUOBFrJBNySDi/JgAHytWg==}
-    peerDependencies:
-      '@testing-library/jest-dom': ^5.16.6 || ^5.17.0 || ^6.*
-      solid-js: ^1.7.2
-      vite: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0
-    peerDependenciesMeta:
-      '@testing-library/jest-dom':
-        optional: true
-    dependencies:
-      '@babel/core': 7.28.4
-      '@types/babel__core': 7.20.5
-      babel-preset-solid: 1.9.9(@babel/core@7.28.4)(solid-js@1.9.9)
-      merge-anything: 5.1.7
-      solid-js: 1.9.9
-      solid-refresh: 0.6.3(solid-js@1.9.9)
-      vite: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
-      vitefu: 1.1.1(vite@7.1.6)
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
   /vite-plugin-solid@2.11.8(solid-js@1.9.9)(vite@7.1.7):
     resolution: {integrity: sha512-hFrCxBfv3B1BmFqnJF4JOCYpjrmi/zwyeKjcomQ0khh8HFyQ8SbuBWQ7zGojfrz6HUOBFrJBNySDi/JgAHytWg==}
     peerDependencies:
@@ -16089,58 +16171,6 @@ packages:
       vitefu: 1.1.1(vite@7.1.7)
     transitivePeerDependencies:
       - supports-color
-    dev: true
-
-  /vite@7.1.6(@types/node@24.5.2)(tsx@4.20.5):
-    resolution: {integrity: sha512-SRYIB8t/isTwNn8vMB3MR6E+EQZM/WG1aKmmIUCfDXfVvKfc20ZpamngWHKzAmmu9ppsgxsg4b2I7c90JZudIQ==}
-    engines: {node: ^20.19.0 || >=22.12.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': ^20.19.0 || >=22.12.0
-      jiti: '>=1.21.0'
-      less: ^4.0.0
-      lightningcss: ^1.21.0
-      sass: ^1.70.0
-      sass-embedded: ^1.70.0
-      stylus: '>=0.54.8'
-      sugarss: ^5.0.0
-      terser: ^5.16.0
-      tsx: ^4.8.1
-      yaml: ^2.4.2
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      jiti:
-        optional: true
-      less:
-        optional: true
-      lightningcss:
-        optional: true
-      sass:
-        optional: true
-      sass-embedded:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
-      tsx:
-        optional: true
-      yaml:
-        optional: true
-    dependencies:
-      '@types/node': 24.5.2
-      esbuild: 0.25.10
-      fdir: 6.5.0(picomatch@4.0.3)
-      picomatch: 4.0.3
-      postcss: 8.5.6
-      rollup: 4.50.2
-      tinyglobby: 0.2.15
-      tsx: 4.20.5
-    optionalDependencies:
-      fsevents: 2.3.3
     dev: true
 
   /vite@7.1.7(@types/node@24.5.2)(tsx@4.20.5):
@@ -16245,17 +16275,6 @@ packages:
       yaml: 2.8.1
     optionalDependencies:
       fsevents: 2.3.3
-    dev: true
-
-  /vitefu@1.1.1(vite@7.1.6):
-    resolution: {integrity: sha512-B/Fegf3i8zh0yFbpzZ21amWzHmuNlLlmJT6n7bu5e+pCHUKQIfXSYokrqOBGEMMe9UG2sostKQF9mml/vYaWJQ==}
-    peerDependencies:
-      vite: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0-beta.0
-    peerDependenciesMeta:
-      vite:
-        optional: true
-    dependencies:
-      vite: 7.1.6(@types/node@24.5.2)(tsx@4.20.5)
     dev: true
 
   /vitefu@1.1.1(vite@7.1.7):

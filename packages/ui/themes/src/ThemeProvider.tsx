@@ -11,6 +11,7 @@ import { createMockI18n } from "reynard-core";
 import { getInitialTheme } from "./themeInitialization";
 import { createThemeContext } from "./themeContext";
 import { setupThemeLifecycle } from "./themeLifecycle";
+import { log } from "reynard-error-boundaries";
 
 // Create contexts with default value to prevent context not found errors
 export const ReynardContextInstance = createContext<ReynardContext | undefined>(undefined);

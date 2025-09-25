@@ -18,7 +18,7 @@ from enum import Enum
 from typing import Any, Callable, Dict, Optional
 
 from config.tool_config import ToolConfigManager
-from services.tool_config_service import ToolConfigService
+from services.postgresql_tool_config_service import ToolConfigService
 
 logger = logging.getLogger(__name__)
 

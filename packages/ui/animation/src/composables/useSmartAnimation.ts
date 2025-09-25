@@ -8,6 +8,8 @@
  * @since 1.0.0
  */
 
+import { log } from "reynard-error-boundaries";
+
 import { createSignal, createMemo, createEffect, onCleanup } from "solid-js";
 import {
   SmartAnimationCore,
@@ -86,10 +88,16 @@ export function useSmartAnimation(options: UseSmartAnimationOptions = {}): UseSm
       setIsInitialized(true);
 
       if (config.enableLogging) {
-        console.log("🦊 useSmartAnimation: Smart animation core initialized");
+        log.info("Smart animation core initialized", undefined, {
+          component: "useSmartAnimation",
+          function: "initializeSmartCore",
+        });
       }
     } catch (error) {
-      console.error("🦊 useSmartAnimation: Failed to initialize smart animation core:", error);
+             log.error("Failed to initialize smart animation core", error instanceof Error ? error : new Error(String(error)), undefined, {
+        component: "useSmartAnimation",
+        function: "initializeSmartCore",
+      });
     }
   };
 

@@ -12,7 +12,9 @@ from typing import Any
 
 from ...config.rag_config import get_rag_config
 from ...core.logging_config import get_service_logger
-from ...services.rag import DocumentIndexer, EmbeddingService, VectorStoreService
+from ...services.rag import DocumentIndexer, VectorStoreService
+from ...services.rag.services.core.embedding import UnifiedEmbeddingService
+from ...core.service_registry import get_service_registry
 from .models import RAGIngestItem
 
 logger = get_service_logger("rag")
@@ -39,18 +41,18 @@ class RAGService:
             self._config = rag_config.to_dict()
 
             # Initialize vector database service
-            self._vector_db_service = VectorStoreService()
-            await self._vector_db_service.initialize(self._config)
+            self._vector_db_service = VectorStoreService(self._config)
+            await self._vector_db_service.initialize()
 
-            # Initialize embedding service
-            self._embedding_service = EmbeddingService()
-            await self._embedding_service.initialize(self._config)
+            # Initialize embedding service using unified AI service
+            service_registry = get_service_registry()
+            ai_service = service_registry.get_service_instance("ai_service")
+            self._embedding_service = UnifiedEmbeddingService(ai_service, self._config)
+            await self._embedding_service.initialize()
 
             # Initialize indexing service
-            self._indexing_service = DocumentIndexer()
-            await self._indexing_service.initialize(
-                self._config, self._vector_db_service, self._embedding_service,
-            )
+            self._indexing_service = DocumentIndexer(self._config)
+            await self._indexing_service.initialize()
 
             self._initialized = True
             logger.info("RAG service initialized successfully")

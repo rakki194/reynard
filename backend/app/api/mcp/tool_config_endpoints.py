@@ -1,436 +1,417 @@
-"""Tool Configuration Management Endpoints
-======================================
+#!/usr/bin/env python3
+"""
+Tool Configuration API Endpoints
+================================
 
-Endpoints for managing MCP tool configuration and enable/disable states.
+FastAPI endpoints for managing tool configurations via PostgreSQL.
+Provides REST API for tool CRUD operations, statistics, and configuration management.
+
+Author: Reynard Development Team
+Version: 1.0.0
 """
 
-import logging
-from datetime import UTC
-from typing import Any
+from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel, Field
+from sqlalchemy.orm import Session
+
+from app.core.database import get_db_session
+import logging
+from app.services.tool_config_service import ToolConfigService
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/mcp/tool-config", tags=["mcp_tool_config"])
+router = APIRouter(prefix="/api/mcp/tool-config", tags=["tool-configuration"])
 
 
-def _generate_mcp_admin_token() -> str:
-    """Generate an admin token for MCP server communication."""
-    import time
-    from datetime import datetime, timedelta
-
-    import jwt
-
-    # MCP token configuration (should match MCP server)
-    MCP_JWT_SECRET = "reynard-mcp-secret-key-2025"
-    MCP_JWT_ALGORITHM = "HS256"
-    MCP_TOKEN_EXPIRE_HOURS = 24
-
-    # Create token payload
-    expire = datetime.now(UTC) + timedelta(hours=MCP_TOKEN_EXPIRE_HOURS)
-    payload = {
-        "client_id": "backend-admin",
-        "permissions": [
-            "mcp:admin",
-            "mcp:tools:manage",
-            "mcp:config:read",
-            "mcp:config:write",
-        ],
-        "exp": expire.timestamp(),
-        "iat": time.time(),
-        "iss": "reynard-mcp-server",
-        "aud": "reynard-backend",
-    }
-
-    # Generate token
-    token = jwt.encode(payload, MCP_JWT_SECRET, algorithm=MCP_JWT_ALGORITHM)
-    return token
-
-
-class ToolConfigResponse(BaseModel):
-    """Response model for tool configuration."""
-
+# Pydantic Models
+class ToolConfigRequest(BaseModel):
+    """Request model for tool configuration."""
+    
     name: str = Field(..., description="Tool name")
     category: str = Field(..., description="Tool category")
-    enabled: bool = Field(..., description="Whether tool is enabled")
+    enabled: bool = Field(default=True, description="Whether tool is enabled")
     description: str = Field(..., description="Tool description")
-    dependencies: list[str] = Field(
-        default_factory=list, description="Tool dependencies",
-    )
-    config: dict[str, Any] = Field(
-        default_factory=dict, description="Tool configuration",
-    )
+    dependencies: List[str] = Field(default=[], description="Tool dependencies")
+    config: Dict[str, Any] = Field(default={}, description="Tool configuration")
+    version: str = Field(default="1.0.0", description="Tool version")
+    execution_type: str = Field(default="sync", description="Execution type")
+    timeout_seconds: Optional[int] = Field(default=30, description="Timeout in seconds")
+    max_concurrent: Optional[int] = Field(default=1, description="Max concurrent executions")
 
 
-class ToolConfigUpdateRequest(BaseModel):
+class ToolUpdateRequest(BaseModel):
     """Request model for updating tool configuration."""
-
-    tool_name: str = Field(..., description="Name of the tool to update")
-    enabled: bool | None = Field(None, description="New enabled state")
-    config: dict[str, Any] | None = Field(None, description="New configuration")
-
-
-class ToolConfigListResponse(BaseModel):
-    """Response model for tool configuration list."""
-
-    tools: dict[str, ToolConfigResponse] = Field(
-        ..., description="All tool configurations",
-    )
-    total_tools: int = Field(..., description="Total number of tools")
-    enabled_tools: int = Field(..., description="Number of enabled tools")
-    disabled_tools: int = Field(..., description="Number of disabled tools")
+    
+    description: Optional[str] = Field(None, description="Tool description")
+    dependencies: Optional[List[str]] = Field(None, description="Tool dependencies")
+    config: Optional[Dict[str, Any]] = Field(None, description="Tool configuration")
+    version: Optional[str] = Field(None, description="Tool version")
+    execution_type: Optional[str] = Field(None, description="Execution type")
+    timeout_seconds: Optional[int] = Field(None, description="Timeout in seconds")
+    max_concurrent: Optional[int] = Field(None, description="Max concurrent executions")
 
 
 class ToolToggleRequest(BaseModel):
     """Request model for toggling tool state."""
+    
+    enabled: bool = Field(..., description="New enabled state")
 
-    tool_name: str = Field(..., description="Name of the tool to toggle")
+
+class JSONSyncRequest(BaseModel):
+    """Request model for syncing from JSON."""
+    
+    json_data: Dict[str, Any] = Field(..., description="JSON configuration data")
 
 
-async def _get_mcp_tool_configs() -> dict[str, Any]:
-    """Get tool configurations from MCP server."""
+class GlobalConfigRequest(BaseModel):
+    """Request model for global configuration."""
+    
+    auto_sync_enabled: Optional[bool] = Field(None, description="Enable auto-sync")
+    default_timeout: Optional[int] = Field(None, description="Default timeout")
+    max_concurrent_tools: Optional[int] = Field(None, description="Max concurrent tools")
+    cache_ttl_seconds: Optional[int] = Field(None, description="Cache TTL")
+    settings: Optional[Dict[str, Any]] = Field(None, description="Additional settings")
+
+
+# Dependency
+def get_tool_config_service(db: Session = Depends(get_db_session)) -> ToolConfigService:
+    """Get tool configuration service."""
+    return ToolConfigService(db_session=db)
+
+
+# Endpoints
+@router.get("/tools", response_model=List[Dict[str, Any]])
+async def get_all_tools(
+    include_disabled: bool = Query(default=False, description="Include disabled tools"),
+    service: ToolConfigService = Depends(get_tool_config_service)
+) -> List[Dict[str, Any]]:
+    """Get all tools with optional filtering."""
     try:
-        # Import the MCP communication function
-        from .tools_endpoints import _send_mcp_request
-
-        # Generate admin token for MCP server communication
-        admin_token = _generate_mcp_admin_token()
-
-        # Call the MCP server to get tool configurations
-        result = await _send_mcp_request(
-            "tools/call",
-            {"name": "get_tool_configs", "arguments": {}, "auth_token": admin_token},
-        )
-
-        if result and result.get("success"):
-            # The _send_mcp_request function already extracts the result
-            return result
-        logger.error(f"MCP server returned error: {result}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="MCP server returned error",
-        )
+        tools = service.get_all_tools(include_disabled=include_disabled)
+        return tools
     except Exception as e:
-        logger.error(f"Failed to get MCP tool configurations: {e}")
+        logger.error(f"Failed to get all tools: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get tool configurations: {e}",
+            detail=f"Failed to get tools: {str(e)}"
         )
 
 
-async def _update_mcp_tool_config(
+@router.get("/tools/{tool_name}", response_model=Dict[str, Any])
+async def get_tool(
     tool_name: str,
-    enabled: bool | None = None,
-    config: dict[str, Any] | None = None,
-) -> bool:
-    """Update tool configuration in MCP server."""
+    service: ToolConfigService = Depends(get_tool_config_service)
+) -> Dict[str, Any]:
+    """Get a specific tool by name."""
     try:
-        # Import the MCP communication function
-        from .tools_endpoints import _send_mcp_request
-
-        # Generate admin token for MCP server communication
-        admin_token = _generate_mcp_admin_token()
-
-        # Determine which MCP tool to call based on the operation
-        if enabled is not None:
-            tool_method = "enable_tool" if enabled else "disable_tool"
-            result = await _send_mcp_request(
-                "tools/call",
-                {
-                    "name": tool_method,
-                    "arguments": {"tool_name": tool_name},
-                    "auth_token": admin_token,
-                },
+        tool = service.get_tool_by_name(tool_name)
+        if not tool:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Tool '{tool_name}' not found"
             )
-        elif config is not None:
-            result = await _send_mcp_request(
-                "tools/call",
-                {
-                    "name": "update_tool_config",
-                    "arguments": {"tool_name": tool_name, "config": config},
-                    "auth_token": admin_token,
-                },
-            )
-        else:
-            logger.warning(f"No operation specified for tool {tool_name}")
-            return False
-
-        if result and result.get("success"):
-            logger.info(
-                f"Successfully updated tool {tool_name}: enabled={enabled}, config={config}",
-            )
-            return True
-        logger.error(f"MCP server returned error for tool {tool_name}: {result}")
-        return False
-    except Exception as e:
-        logger.error(f"Failed to update MCP tool configuration for {tool_name}: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to update tool configuration: {e}",
-        )
-
-
-@router.get("/", response_model=ToolConfigListResponse)
-async def get_tool_configurations():
-    """Get all tool configurations.
-
-    Returns the current state of all MCP tools including their enabled/disabled status.
-    """
-    try:
-        config_data = await _get_mcp_tool_configs()
-
-        # Convert to response format
-        tools = {}
-        for name, config in config_data["tools"].items():
-            tools[name] = ToolConfigResponse(**config)
-
-        # Extract stats from the MCP response
-        stats = config_data.get("stats", {})
-
-        return ToolConfigListResponse(
-            tools=tools,
-            total_tools=stats.get("total_tools", 0),
-            enabled_tools=stats.get("enabled_tools", 0),
-            disabled_tools=stats.get("disabled_tools", 0),
-        )
-
+        return tool
     except HTTPException:
         raise
     except Exception as e:
-        logger.exception("Failed to get tool configurations")
+        logger.error(f"Failed to get tool {tool_name}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get tool configurations: {e}",
+            detail=f"Failed to get tool: {str(e)}"
         )
 
 
-@router.get("/{tool_name}", response_model=ToolConfigResponse)
-async def get_tool_configuration(tool_name: str):
-    """Get configuration for a specific tool.
-
-    Returns the configuration and status for the specified tool.
-    """
+@router.get("/tools/category/{category}", response_model=List[Dict[str, Any]])
+async def get_tools_by_category(
+    category: str,
+    include_disabled: bool = Query(default=False, description="Include disabled tools"),
+    service: ToolConfigService = Depends(get_tool_config_service)
+) -> List[Dict[str, Any]]:
+    """Get tools by category."""
     try:
-        config_data = await _get_mcp_tool_configs()
-
-        if tool_name not in config_data["tools"]:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Tool '{tool_name}' not found",
-            )
-
-        tool_config = config_data["tools"][tool_name]
-        return ToolConfigResponse(**tool_config)
-
-    except HTTPException:
-        raise
+        tools = service.get_tools_by_category(category, include_disabled=include_disabled)
+        return tools
     except Exception as e:
-        logger.exception(f"Failed to get tool configuration for {tool_name}")
+        logger.error(f"Failed to get tools by category {category}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get tool configuration: {e}",
+            detail=f"Failed to get tools by category: {str(e)}"
         )
 
 
-@router.put("/{tool_name}", response_model=ToolConfigResponse)
-async def update_tool_configuration(tool_name: str, request: ToolConfigUpdateRequest):
-    """Update configuration for a specific tool.
-
-    Updates the enabled state and/or configuration for the specified tool.
-    """
+@router.get("/tools/enabled", response_model=List[str])
+async def get_enabled_tools(
+    service: ToolConfigService = Depends(get_tool_config_service)
+) -> List[str]:
+    """Get list of enabled tool names."""
     try:
-        # Validate tool exists
-        config_data = await _get_mcp_tool_configs()
-        if tool_name not in config_data["tools"]:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Tool '{tool_name}' not found",
-            )
-
-        # Update the tool configuration
-        success = await _update_mcp_tool_config(
-            tool_name=tool_name, enabled=request.enabled, config=request.config,
+        enabled_tools = service.get_enabled_tools()
+        return list(enabled_tools)
+    except Exception as e:
+        logger.error(f"Failed to get enabled tools: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get enabled tools: {str(e)}"
         )
 
+
+@router.post("/tools", response_model=Dict[str, str])
+async def create_tool(
+    tool_data: ToolConfigRequest,
+    service: ToolConfigService = Depends(get_tool_config_service)
+) -> Dict[str, str]:
+    """Create a new tool."""
+    try:
+        success = service.create_tool(tool_data.dict(), changed_by="api")
         if not success:
             raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Failed to update tool configuration",
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Failed to create tool '{tool_data.name}'"
             )
-
-        # Get updated configuration
-        updated_config_data = await _get_mcp_tool_configs()
-        updated_config = updated_config_data["tools"][tool_name]
-
-        return ToolConfigResponse(**updated_config)
-
+        return {"message": f"Tool '{tool_data.name}' created successfully"}
     except HTTPException:
         raise
     except Exception as e:
-        logger.exception(f"Failed to update tool configuration for {tool_name}")
+        logger.error(f"Failed to create tool {tool_data.name}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to update tool configuration: {e}",
+            detail=f"Failed to create tool: {str(e)}"
         )
 
 
-@router.post("/{tool_name}/toggle", response_model=ToolConfigResponse)
-async def toggle_tool(tool_name: str):
-    """Toggle the enabled state of a tool.
-
-    Switches the enabled/disabled state of the specified tool.
-    """
+@router.put("/tools/{tool_name}", response_model=Dict[str, str])
+async def update_tool(
+    tool_name: str,
+    tool_data: ToolUpdateRequest,
+    service: ToolConfigService = Depends(get_tool_config_service)
+) -> Dict[str, str]:
+    """Update an existing tool."""
     try:
-        # Get current configuration
-        config_data = await _get_mcp_tool_configs()
-        if tool_name not in config_data["tools"]:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Tool '{tool_name}' not found",
-            )
-
-        current_config = config_data["tools"][tool_name]
-        new_enabled_state = not current_config["enabled"]
-
-        # Update the tool configuration
-        success = await _update_mcp_tool_config(
-            tool_name=tool_name, enabled=new_enabled_state,
-        )
-
+        # Filter out None values
+        update_data = {k: v for k, v in tool_data.dict().items() if v is not None}
+        
+        success = service.update_tool(tool_name, update_data, changed_by="api")
         if not success:
             raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Failed to toggle tool state",
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Tool '{tool_name}' not found or update failed"
             )
-
-        # Get updated configuration
-        updated_config_data = await _get_mcp_tool_configs()
-        updated_config = updated_config_data["tools"][tool_name]
-
-        return ToolConfigResponse(**updated_config)
-
+        return {"message": f"Tool '{tool_name}' updated successfully"}
     except HTTPException:
         raise
     except Exception as e:
-        logger.exception(f"Failed to toggle tool {tool_name}")
+        logger.error(f"Failed to update tool {tool_name}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to toggle tool: {e}",
+            detail=f"Failed to update tool: {str(e)}"
         )
 
 
-@router.post("/{tool_name}/enable", response_model=ToolConfigResponse)
-async def enable_tool(tool_name: str):
-    """Enable a specific tool.
-
-    Enables the specified tool if it's currently disabled.
-    """
+@router.delete("/tools/{tool_name}", response_model=Dict[str, str])
+async def delete_tool(
+    tool_name: str,
+    service: ToolConfigService = Depends(get_tool_config_service)
+) -> Dict[str, str]:
+    """Delete a tool."""
     try:
-        # Get current configuration
-        config_data = await _get_mcp_tool_configs()
-        if tool_name not in config_data["tools"]:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Tool '{tool_name}' not found",
-            )
-
-        current_config = config_data["tools"][tool_name]
-        if current_config["enabled"]:
-            # Tool is already enabled
-            return ToolConfigResponse(**current_config)
-
-        # Enable the tool
-        success = await _update_mcp_tool_config(tool_name=tool_name, enabled=True)
-
+        success = service.delete_tool(tool_name, changed_by="api")
         if not success:
             raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Failed to enable tool",
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Tool '{tool_name}' not found"
             )
-
-        # Get updated configuration
-        updated_config_data = await _get_mcp_tool_configs()
-        updated_config = updated_config_data["tools"][tool_name]
-
-        return ToolConfigResponse(**updated_config)
-
+        return {"message": f"Tool '{tool_name}' deleted successfully"}
     except HTTPException:
         raise
     except Exception as e:
-        logger.exception(f"Failed to enable tool {tool_name}")
+        logger.error(f"Failed to delete tool {tool_name}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to enable tool: {e}",
+            detail=f"Failed to delete tool: {str(e)}"
         )
 
 
-@router.post("/{tool_name}/disable", response_model=ToolConfigResponse)
-async def disable_tool(tool_name: str):
-    """Disable a specific tool.
-
-    Disables the specified tool if it's currently enabled.
-    """
+@router.post("/tools/{tool_name}/enable", response_model=Dict[str, str])
+async def enable_tool(
+    tool_name: str,
+    service: ToolConfigService = Depends(get_tool_config_service)
+) -> Dict[str, str]:
+    """Enable a tool."""
     try:
-        # Get current configuration
-        config_data = await _get_mcp_tool_configs()
-        if tool_name not in config_data["tools"]:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Tool '{tool_name}' not found",
-            )
-
-        current_config = config_data["tools"][tool_name]
-        if not current_config["enabled"]:
-            # Tool is already disabled
-            return ToolConfigResponse(**current_config)
-
-        # Disable the tool
-        success = await _update_mcp_tool_config(tool_name=tool_name, enabled=False)
-
+        success = service.enable_tool(tool_name, changed_by="api")
         if not success:
             raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Failed to disable tool",
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Tool '{tool_name}' not found"
             )
-
-        # Get updated configuration
-        updated_config_data = await _get_mcp_tool_configs()
-        updated_config = updated_config_data["tools"][tool_name]
-
-        return ToolConfigResponse(**updated_config)
-
+        return {"message": f"Tool '{tool_name}' enabled successfully"}
     except HTTPException:
         raise
     except Exception as e:
-        logger.exception(f"Failed to disable tool {tool_name}")
+        logger.error(f"Failed to enable tool {tool_name}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to disable tool: {e}",
+            detail=f"Failed to enable tool: {str(e)}"
         )
 
 
-@router.get("/category/{category}", response_model=dict[str, ToolConfigResponse])
-async def get_tools_by_category(category: str):
-    """Get all tools in a specific category.
-
-    Returns all tools that belong to the specified category.
-    """
+@router.post("/tools/{tool_name}/disable", response_model=Dict[str, str])
+async def disable_tool(
+    tool_name: str,
+    service: ToolConfigService = Depends(get_tool_config_service)
+) -> Dict[str, str]:
+    """Disable a tool."""
     try:
-        config_data = await _get_mcp_tool_configs()
-
-        # Filter tools by category
-        category_tools = {}
-        for name, config in config_data["tools"].items():
-            if config["category"] == category:
-                category_tools[name] = ToolConfigResponse(**config)
-
-        return category_tools
-
+        success = service.disable_tool(tool_name, changed_by="api")
+        if not success:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Tool '{tool_name}' not found"
+            )
+        return {"message": f"Tool '{tool_name}' disabled successfully"}
+    except HTTPException:
+        raise
     except Exception as e:
-        logger.exception(f"Failed to get tools for category {category}")
+        logger.error(f"Failed to disable tool {tool_name}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get tools by category: {e}",
+            detail=f"Failed to disable tool: {str(e)}"
         )
+
+
+@router.post("/tools/{tool_name}/toggle", response_model=Dict[str, Any])
+async def toggle_tool(
+    tool_name: str,
+    service: ToolConfigService = Depends(get_tool_config_service)
+) -> Dict[str, Any]:
+    """Toggle a tool's enabled state."""
+    try:
+        new_state = service.toggle_tool(tool_name, changed_by="api")
+        return {
+            "message": f"Tool '{tool_name}' toggled successfully",
+            "enabled": new_state
+        }
+    except Exception as e:
+        logger.error(f"Failed to toggle tool {tool_name}: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to toggle tool: {str(e)}"
+        )
+
+
+@router.get("/categories", response_model=List[Dict[str, Any]])
+async def get_categories(
+    service: ToolConfigService = Depends(get_tool_config_service)
+) -> List[Dict[str, Any]]:
+    """Get all tool categories."""
+    try:
+        categories = service.get_tool_categories()
+        return categories
+    except Exception as e:
+        logger.error(f"Failed to get categories: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get categories: {str(e)}"
+        )
+
+
+@router.get("/statistics", response_model=Dict[str, Any])
+async def get_statistics(
+    service: ToolConfigService = Depends(get_tool_config_service)
+) -> Dict[str, Any]:
+    """Get tool configuration statistics."""
+    try:
+        stats = service.get_tool_statistics()
+        return stats
+    except Exception as e:
+        logger.error(f"Failed to get statistics: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get statistics: {str(e)}"
+        )
+
+
+@router.get("/tools/{tool_name}/history", response_model=List[Dict[str, Any]])
+async def get_tool_history(
+    tool_name: str,
+    limit: int = Query(default=50, ge=1, le=100, description="Number of history entries to return"),
+    service: ToolConfigService = Depends(get_tool_config_service)
+) -> List[Dict[str, Any]]:
+    """Get change history for a tool."""
+    try:
+        history = service.get_tool_history(tool_name, limit=limit)
+        return history
+    except Exception as e:
+        logger.error(f"Failed to get tool history for {tool_name}: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get tool history: {str(e)}"
+        )
+
+
+@router.post("/sync-from-json", response_model=Dict[str, Any])
+async def sync_from_json(
+    sync_request: JSONSyncRequest,
+    service: ToolConfigService = Depends(get_tool_config_service)
+) -> Dict[str, Any]:
+    """Sync tools from JSON configuration."""
+    try:
+        results = service.sync_from_json(sync_request.json_data, changed_by="api")
+        return results
+    except Exception as e:
+        logger.error(f"Failed to sync from JSON: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to sync from JSON: {str(e)}"
+        )
+
+
+@router.get("/configuration", response_model=Dict[str, Any])
+async def get_global_configuration(
+    service: ToolConfigService = Depends(get_tool_config_service)
+) -> Dict[str, Any]:
+    """Get global tool configuration."""
+    try:
+        config = service.get_global_configuration()
+        return config
+    except Exception as e:
+        logger.error(f"Failed to get global configuration: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get global configuration: {str(e)}"
+        )
+
+
+@router.put("/configuration", response_model=Dict[str, str])
+async def update_global_configuration(
+    config_data: GlobalConfigRequest,
+    service: ToolConfigService = Depends(get_tool_config_service)
+) -> Dict[str, str]:
+    """Update global tool configuration."""
+    try:
+        # Filter out None values
+        update_data = {k: v for k, v in config_data.dict().items() if v is not None}
+        
+        success = service.update_global_configuration(update_data, changed_by="api")
+        if not success:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Failed to update global configuration"
+            )
+        return {"message": "Global configuration updated successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to update global configuration: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to update global configuration: {str(e)}"
+        )
+
+
+@router.get("/health", response_model=Dict[str, str])
+async def health_check() -> Dict[str, str]:
+    """Health check endpoint."""
+    return {"status": "healthy", "service": "tool-configuration"}

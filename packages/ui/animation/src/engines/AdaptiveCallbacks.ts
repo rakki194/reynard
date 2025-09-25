@@ -3,6 +3,7 @@
  * Creates adaptive callbacks for the animation engine
  */
 
+import { log } from "reynard-error-boundaries";
 import type { AnimationCallbacks } from "../types";
 import type { QualityManager } from "./QualityManager";
 import type { AdaptiveConfig } from "./AdaptiveConfig";
@@ -20,7 +21,10 @@ export function createAdaptiveCallbacks(
         qualityManager.adaptQuality(stats.currentFPS);
         callbacks.onFrameEnd?.(frameTime, frameCount);
       } catch (error) {
-        console.error("🦊 AdaptiveCallbacks: Error in onFrameEnd callback", error);
+               log.error("Error in onFrameEnd callback", error instanceof Error ? error : new Error(String(error)), undefined, {
+          component: "AdaptiveCallbacks",
+          function: "onFrameEnd",
+        });
       }
     },
   };

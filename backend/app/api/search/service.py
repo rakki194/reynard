@@ -18,7 +18,7 @@ import aiohttp
 import numpy as np
 
 # Import embedding service instead of direct sentence transformers
-from app.services.rag.services.core.embedding import EmbeddingService
+from app.services.rag.services.core.embedding import UnifiedEmbeddingService
 
 # Import optimization modules - enabled by default
 try:
@@ -103,7 +103,7 @@ class OptimizedSearchService:
     def __init__(self):
         """Initialize the optimized search service."""
         # Embedding service for generating embeddings
-        self._embedding_service: EmbeddingService | None = None
+        self._embedding_service: UnifiedEmbeddingService | None = None
 
         # Performance metrics
         self._metrics = SearchMetrics()
@@ -179,8 +179,12 @@ class OptimizedSearchService:
                     "⚠️ Optimization components not available - using legacy implementation",
                 )
 
-            # Initialize embedding service
-            self._embedding_service = EmbeddingService()
+            # Initialize embedding service with AI service
+            from app.core.service_registry import get_service_registry
+            service_registry = get_service_registry()
+            ai_service = service_registry.get_service_instance("ai_service")
+            
+            self._embedding_service = UnifiedEmbeddingService(ai_service)
             # Get embedding configuration
             embedding_config = {
                 "rag_enabled": True,
@@ -191,7 +195,7 @@ class OptimizedSearchService:
                     "mock_mode": False,
                 },
             }
-            await self._embedding_service.initialize(embedding_config)
+            await self._embedding_service.initialize()
 
             # Test RAG backend connection (non-blocking)
             self._rag_connection_task = asyncio.create_task(self._test_rag_connection())

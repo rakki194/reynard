@@ -42,7 +42,7 @@ logger = logging.getLogger(__name__)
 
 # ECS Database configuration
 ECS_DATABASE_URL = os.getenv(
-    "ECS_DATABASE_URL", "postgresql://postgres:password@localhost:5432/reynard_ecs",
+    "ECS_DATABASE_URL",
 )
 
 # SQLAlchemy setup

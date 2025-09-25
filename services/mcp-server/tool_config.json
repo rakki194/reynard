@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "last_updated": "2025-09-25T11:37:45.718250",
+  "last_updated": "",
   "tools": {
     "generate_agent_name": {
       "name": "generate_agent_name",
@@ -30,7 +30,7 @@
       "name": "list_agent_names",
       "category": "agent",
       "enabled": true,
-      "description": "List all agents and their names",
+      "description": "List all assigned agent names",
       "dependencies": [],
       "config": {}
     },
@@ -38,7 +38,7 @@
       "name": "roll_agent_spirit",
       "category": "agent",
       "enabled": true,
-      "description": "Randomly select an animal spirit (weighted distribution)",
+      "description": "Randomly select animal spirits",
       "dependencies": [],
       "config": {}
     },
@@ -54,7 +54,7 @@
       "name": "agent_startup_sequence",
       "category": "agent",
       "enabled": true,
-      "description": "Complete agent initialization with random spirit selection",
+      "description": "Complete initialization with ECS integration",
       "dependencies": [],
       "config": {}
     },
@@ -246,7 +246,7 @@
       "name": "lint_python",
       "category": "linting",
       "enabled": true,
-      "description": "Flake8, Pylint for Python (with auto-fix and error limiting)",
+      "description": "Flake8, Pylint for Python (with auto-fix)",
       "dependencies": [],
       "config": {}
     },
@@ -412,441 +412,17 @@
     },
     "detect_monoliths": {
       "name": "detect_monoliths",
-      "category": "analysis",
+      "category": "monolith",
       "enabled": true,
-      "description": "🔥 Detect large monolithic files that violate the 140-line axiom with RAG acceleration. Perfect for finding code that needs refactoring into smaller, more maintainable modules. Use this to identify files that are too complex and should be broken down.",
+      "description": "Detect large monolithic files that violate the 140-line axiom",
       "dependencies": [],
       "config": {}
     },
     "analyze_file_complexity": {
       "name": "analyze_file_complexity",
-      "category": "analysis",
+      "category": "monolith",
       "enabled": true,
-      "description": "🔍 Deep-dive analysis of a specific file's complexity metrics with intelligent caching. Perfect for understanding why a file is considered a monolith and what specific refactoring opportunities exist.",
-      "dependencies": [],
-      "config": {}
-    },
-    "download_and_index_paper": {
-      "name": "download_and_index_paper",
-      "category": "research",
-      "enabled": true,
-      "description": "Download and index an academic paper in Reynard's RAG system",
-      "dependencies": [],
-      "config": {}
-    },
-    "search_local_papers": {
-      "name": "search_local_papers",
-      "category": "research",
-      "enabled": true,
-      "description": "Search for papers in the local Reynard paper database",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_rag_paper_stats": {
-      "name": "get_rag_paper_stats",
-      "category": "research",
-      "enabled": true,
-      "description": "Get statistics about academic papers in Reynard's RAG system",
-      "dependencies": [],
-      "config": {}
-    },
-    "ingest_paper_to_rag": {
-      "name": "ingest_paper_to_rag",
-      "category": "research",
-      "enabled": true,
-      "description": "Ingest an academic paper into Reynard's RAG system for semantic search",
-      "dependencies": [],
-      "config": {}
-    },
-    "search_papers_in_rag": {
-      "name": "search_papers_in_rag",
-      "category": "research",
-      "enabled": true,
-      "description": "Search for academic papers in Reynard's RAG system using semantic search",
-      "dependencies": [],
-      "config": {}
-    },
-    "academic_review_workflow": {
-      "name": "academic_review_workflow",
-      "category": "research",
-      "enabled": true,
-      "description": "Complete academic review workflow with automated research and analysis",
-      "dependencies": [],
-      "config": {}
-    },
-    "comprehensive_literature_review": {
-      "name": "comprehensive_literature_review",
-      "category": "research",
-      "enabled": true,
-      "description": "Perform a comprehensive literature review using all available research tools",
-      "dependencies": [],
-      "config": {}
-    },
-    "novelty_assessment_workflow": {
-      "name": "novelty_assessment_workflow",
-      "category": "research",
-      "enabled": true,
-      "description": "Perform comprehensive novelty assessment for a research proposal",
-      "dependencies": [],
-      "config": {}
-    },
-    "research_paper_pipeline": {
-      "name": "research_paper_pipeline",
-      "category": "research",
-      "enabled": true,
-      "description": "Complete pipeline for discovering, downloading, and indexing research papers",
-      "dependencies": [],
-      "config": {}
-    },
-    "download_arxiv_paper": {
-      "name": "download_arxiv_paper",
-      "category": "research",
-      "enabled": true,
-      "description": "Download a specific arXiv paper by ID",
-      "dependencies": [],
-      "config": {}
-    },
-    "search_arxiv_papers": {
-      "name": "search_arxiv_papers",
-      "category": "research",
-      "enabled": true,
-      "description": "Search and retrieve papers from arXiv.org with advanced filtering",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_mermaid_diagram_stats": {
-      "name": "get_mermaid_diagram_stats",
-      "category": "visualization",
-      "enabled": true,
-      "description": "Get statistics and analysis of a mermaid diagram",
-      "dependencies": [],
-      "config": {}
-    },
-    "render_mermaid_to_png": {
-      "name": "render_mermaid_to_png",
-      "category": "visualization",
-      "enabled": true,
-      "description": "Render mermaid diagram to PNG format",
-      "dependencies": [],
-      "config": {}
-    },
-    "test_mermaid_render": {
-      "name": "test_mermaid_render",
-      "category": "visualization",
-      "enabled": true,
-      "description": "Test mermaid diagram rendering with a simple example",
-      "dependencies": [],
-      "config": {}
-    },
-    "check_secret": {
-      "name": "check_secret",
-      "category": "secrets",
-      "enabled": true,
-      "description": "Check if a secret is available and set",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_secret": {
-      "name": "get_secret",
-      "category": "secrets",
-      "enabled": true,
-      "description": "Retrieve a user secret by name",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_secret_info": {
-      "name": "get_secret_info",
-      "category": "secrets",
-      "enabled": true,
-      "description": "Get detailed information about a secret",
-      "dependencies": [],
-      "config": {}
-    },
-    "list_secrets": {
-      "name": "list_secrets",
-      "category": "secrets",
-      "enabled": true,
-      "description": "List all available secrets",
-      "dependencies": [],
-      "config": {}
-    },
-    "disable_tool": {
-      "name": "disable_tool",
-      "category": "management",
-      "enabled": true,
-      "description": "Disable a specific tool",
-      "dependencies": [],
-      "config": {}
-    },
-    "enable_tool": {
-      "name": "enable_tool",
-      "category": "management",
-      "enabled": true,
-      "description": "Enable a specific tool",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_tool_configs": {
-      "name": "get_tool_configs",
-      "category": "management",
-      "enabled": true,
-      "description": "Get all tool configurations and statistics",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_tool_metadata": {
-      "name": "get_tool_metadata",
-      "category": "management",
-      "enabled": true,
-      "description": "Get metadata for a specific tool",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_tool_status": {
-      "name": "get_tool_status",
-      "category": "management",
-      "enabled": true,
-      "description": "Get status of a specific tool or all tools",
-      "dependencies": [],
-      "config": {}
-    },
-    "list_tools_by_category": {
-      "name": "list_tools_by_category",
-      "category": "management",
-      "enabled": true,
-      "description": "List tools grouped by category",
-      "dependencies": [],
-      "config": {}
-    },
-    "scrape_webpage_content": {
-      "name": "scrape_webpage_content",
-      "category": "playwright",
-      "enabled": true,
-      "description": "Scrape content from webpages using Playwright browser automation",
-      "dependencies": [],
-      "config": {}
-    },
-    "take_webpage_screenshot": {
-      "name": "take_webpage_screenshot",
-      "category": "playwright",
-      "enabled": true,
-      "description": "Take screenshots of webpages using Playwright browser automation",
-      "dependencies": [],
-      "config": {}
-    },
-    "test_playwright_connection": {
-      "name": "test_playwright_connection",
-      "category": "playwright",
-      "enabled": true,
-      "description": "Test Playwright browser connection and capabilities",
-      "dependencies": [],
-      "config": {}
-    },
-    "git_add": {
-      "name": "git_add",
-      "category": "git",
-      "enabled": true,
-      "description": "Add files to Git staging area",
-      "dependencies": [],
-      "config": {}
-    },
-    "git_branch_info": {
-      "name": "git_branch_info",
-      "category": "git",
-      "enabled": true,
-      "description": "Get current branch information",
-      "dependencies": [],
-      "config": {}
-    },
-    "git_commit": {
-      "name": "git_commit",
-      "category": "git",
-      "enabled": true,
-      "description": "Create a new commit",
-      "dependencies": [],
-      "config": {}
-    },
-    "git_commit_history": {
-      "name": "git_commit_history",
-      "category": "git",
-      "enabled": true,
-      "description": "Get recent commit history",
-      "dependencies": [],
-      "config": {}
-    },
-    "git_diff": {
-      "name": "git_diff",
-      "category": "git",
-      "enabled": true,
-      "description": "Get diff of current changes",
-      "dependencies": [],
-      "config": {}
-    },
-    "git_pull": {
-      "name": "git_pull",
-      "category": "git",
-      "enabled": true,
-      "description": "Pull latest changes from remote repository",
-      "dependencies": [],
-      "config": {}
-    },
-    "git_push": {
-      "name": "git_push",
-      "category": "git",
-      "enabled": true,
-      "description": "Push commits to remote repository",
-      "dependencies": [],
-      "config": {}
-    },
-    "git_status": {
-      "name": "git_status",
-      "category": "git",
-      "enabled": true,
-      "description": "Get current Git repository status",
-      "dependencies": [],
-      "config": {}
-    },
-    "execute_vscode_task": {
-      "name": "execute_vscode_task",
-      "category": "vscode",
-      "enabled": true,
-      "description": "Execute a VS Code task by name",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_vscode_task_info": {
-      "name": "get_vscode_task_info",
-      "category": "vscode",
-      "enabled": true,
-      "description": "Get detailed information about a specific VS Code task",
-      "dependencies": [],
-      "config": {}
-    },
-    "validate_vscode_task": {
-      "name": "validate_vscode_task",
-      "category": "vscode",
-      "enabled": true,
-      "description": "Validate that a VS Code task exists and is executable",
-      "dependencies": [],
-      "config": {}
-    },
-    "find_ecs_agent": {
-      "name": "find_ecs_agent",
-      "category": "social",
-      "enabled": true,
-      "description": "Find an agent in the ECS world by name or ID with flexible matching",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_agent_relationships": {
-      "name": "get_agent_relationships",
-      "category": "social",
-      "enabled": true,
-      "description": "Get all relationships for an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_agent_social_stats": {
-      "name": "get_agent_social_stats",
-      "category": "social",
-      "enabled": true,
-      "description": "Get social interaction statistics for an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_ecs_world_status": {
-      "name": "get_ecs_world_status",
-      "category": "social",
-      "enabled": true,
-      "description": "Get the current status of the ECS world including agent counts and system health",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_interaction_history": {
-      "name": "get_interaction_history",
-      "category": "social",
-      "enabled": true,
-      "description": "Get the interaction history for an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_nearby_agents": {
-      "name": "get_nearby_agents",
-      "category": "social",
-      "enabled": true,
-      "description": "Get all agents within a certain radius of an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "initiate_interaction": {
-      "name": "initiate_interaction",
-      "category": "social",
-      "enabled": true,
-      "description": "Initiate an interaction between two agents",
-      "dependencies": [],
-      "config": {}
-    },
-    "send_chat_message": {
-      "name": "send_chat_message",
-      "category": "social",
-      "enabled": true,
-      "description": "Send a chat message from one agent to another with automatic agent ID resolution",
-      "dependencies": [],
-      "config": {}
-    },
-    "create_agent_email_template": {
-      "name": "create_agent_email_template",
-      "category": "email",
-      "enabled": true,
-      "description": "Create an email template for an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_agent_email_config": {
-      "name": "get_agent_email_config",
-      "category": "email",
-      "enabled": true,
-      "description": "Get email configuration for an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_agent_email_stats": {
-      "name": "get_agent_email_stats",
-      "category": "email",
-      "enabled": true,
-      "description": "Get email statistics for an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "send_agent_email": {
-      "name": "send_agent_email",
-      "category": "email",
-      "enabled": true,
-      "description": "Send email from one agent to another",
-      "dependencies": [],
-      "config": {}
-    },
-    "setup_agent_email": {
-      "name": "setup_agent_email",
-      "category": "email",
-      "enabled": true,
-      "description": "Setup email configuration for an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "trigger_agent_automated_email": {
-      "name": "trigger_agent_automated_email",
-      "category": "email",
-      "enabled": true,
-      "description": "Trigger automated email for an agent based on events",
-      "dependencies": [],
-      "config": {}
-    },
-    "invoke_success_advisor_8": {
-      "name": "invoke_success_advisor_8",
-      "category": "agent",
-      "enabled": true,
-      "description": "Invoke Success-Advisor-8 spirit inhabitation through ECS API",
+      "description": "Deep-dive analysis of a specific file's complexity metrics",
       "dependencies": [],
       "config": {}
     }

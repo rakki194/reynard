@@ -5,6 +5,7 @@
  * Integrates with the unified animation system.
  */
 
+import { log } from "reynard-error-boundaries";
 import type { OKLCHColor } from "reynard-colors";
 import {
   easedHueShift,
@@ -28,7 +29,10 @@ async function importColorAnimationPackage(): Promise<unknown | null> {
     const colorModule = await import("reynard-colors" as string);
     return colorModule;
   } catch (error) {
-    console.warn("🦊 ColorAnimation: Color package not available, using fallback");
+    log.warn("Color package not available, using fallback", undefined, {
+      component: "ColorAnimationSystem",
+      function: "checkColorPackageAvailability",
+    });
     return null;
   }
 }
@@ -42,7 +46,10 @@ async function importFallbackSystem(): Promise<unknown | null> {
     const fallbackModule = await import("reynard-composables" as string);
     return (fallbackModule as Record<string, unknown>).useAnimationFallback;
   } catch (error) {
-    console.warn("🦊 ColorAnimation: Fallback system not available");
+    log.warn("Fallback system not available", undefined, {
+      component: "ColorAnimationSystem",
+      function: "checkFallbackAvailability",
+    });
     return null;
   }
 }
@@ -56,7 +63,10 @@ async function importGlobalControl(): Promise<unknown | null> {
     const controlModule = await import("reynard-composables" as string);
     return (controlModule as Record<string, unknown>).useAnimationControl;
   } catch (error) {
-    console.warn("🦊 ColorAnimation: Global animation control not available");
+    log.warn("Global animation control not available", undefined, {
+      component: "ColorAnimationSystem",
+      function: "checkGlobalAnimationControl",
+    });
     return null;
   }
 }
@@ -119,7 +129,10 @@ export function createColorAnimationSystem(): {
       // No animation system available
       animationEngine = "disabled";
     } catch (error) {
-      console.warn("🦊 ColorAnimation: Failed to initialize animation system:", error);
+      log.warn("Failed to initialize animation system", error, undefined, {
+        component: "ColorAnimationSystem",
+        function: "initializeColorAnimationSystem",
+      });
       animationEngine = "disabled";
     }
   };

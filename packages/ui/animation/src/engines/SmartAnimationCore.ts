@@ -13,6 +13,7 @@
 
 import { createSignal, createMemo, createEffect, onCleanup } from "solid-js";
 import { SmartImportSystem, getSmartImportSystem } from "../smart-imports/SmartImportSystem";
+import { log } from "../utils/Logger";
 
 export interface SmartAnimationConfig {
   /** Whether to use fallback when package unavailable */
@@ -91,7 +92,7 @@ class NoOpAnimationEngine {
     const startTime = performance.now();
 
     if (this.config.enableLogging) {
-      console.log("🦊 NoOpAnimationEngine: Applying properties immediately", properties);
+      log.debug("🦊 NoOpAnimationEngine: Applying properties immediately", properties);
     }
 
     // Apply properties immediately
@@ -119,7 +120,7 @@ class NoOpAnimationEngine {
     const startTime = performance.now();
 
     if (this.config.enableLogging) {
-      console.log("🦊 NoOpAnimationEngine: Applying staggered properties immediately", properties);
+      log.debug("🦊 NoOpAnimationEngine: Applying staggered properties immediately", properties);
     }
 
     // Apply properties to all elements immediately
@@ -149,7 +150,7 @@ class NoOpAnimationEngine {
     const startTime = performance.now();
 
     if (this.config.enableLogging) {
-      console.log("🦊 NoOpAnimationEngine: Completing animation loop immediately");
+      log.debug("🦊 NoOpAnimationEngine: Completing animation loop immediately");
     }
 
     // Complete immediately
@@ -190,7 +191,7 @@ class FallbackAnimationEngine {
     const { duration = 300, easing = "ease", delay = 0, useTransitions = true } = options;
 
     if (this.config.enableLogging) {
-      console.log("🦊 FallbackAnimationEngine: Creating CSS transition animation", properties);
+      log.debug("🦊 FallbackAnimationEngine: Creating CSS transition animation", properties);
     }
 
     return new Promise(resolve => {
@@ -270,7 +271,7 @@ class FallbackAnimationEngine {
     } = options;
 
     if (this.config.enableLogging) {
-      console.log("🦊 FallbackAnimationEngine: Creating staggered CSS transition animation", properties);
+      log.debug("🦊 FallbackAnimationEngine: Creating staggered CSS transition animation", properties);
     }
 
     // Calculate delays for each element
@@ -322,7 +323,7 @@ class FallbackAnimationEngine {
     const startTime = performance.now();
 
     if (this.config.enableLogging) {
-      console.log("🦊 FallbackAnimationEngine: Creating CSS-based animation loop");
+      log.debug("🦊 FallbackAnimationEngine: Creating CSS-based animation loop");
     }
 
     return new Promise(resolve => {
@@ -413,12 +414,12 @@ export class SmartAnimationCore {
         if (result.success && result.module) {
           this.fullEngine = result.module;
           if (this.config.enableLogging) {
-            console.log("🦊 SmartAnimationCore: Full animation engine loaded");
+            log.debug("🦊 SmartAnimationCore: Full animation engine loaded");
           }
         }
       } catch (error) {
         if (this.config.enableLogging) {
-          console.warn("🦊 SmartAnimationCore: Failed to load full animation engine:", error);
+          log.warn("🦊 SmartAnimationCore: Failed to load full animation engine:", error);
         }
       }
     }
@@ -509,7 +510,7 @@ export class SmartAnimationCore {
       this.updateAnimationState({ engineType: newEngineType });
 
       if (this.config.enableLogging) {
-        console.log(`🦊 SmartAnimationCore: Engine type changed to ${newEngineType}`);
+        log.debug(`🦊 SmartAnimationCore: Engine type changed to ${newEngineType}`);
       }
     }
   }
@@ -548,7 +549,7 @@ export class SmartAnimationCore {
     const engineType = state.engineType;
 
     if (this.config.enableLogging) {
-      console.log(`🦊 SmartAnimationCore: Creating animation with ${engineType} engine`, properties);
+      log.debug(`🦊 SmartAnimationCore: Creating animation with ${engineType} engine`, properties);
     }
 
     switch (engineType) {
@@ -577,7 +578,7 @@ export class SmartAnimationCore {
     const engineType = state.engineType;
 
     if (this.config.enableLogging) {
-      console.log(`🦊 SmartAnimationCore: Creating staggered animation with ${engineType} engine`, properties);
+      log.debug(`🦊 SmartAnimationCore: Creating staggered animation with ${engineType} engine`, properties);
     }
 
     switch (engineType) {
@@ -606,7 +607,7 @@ export class SmartAnimationCore {
     const engineType = state.engineType;
 
     if (this.config.enableLogging) {
-      console.log(`🦊 SmartAnimationCore: Creating animation loop with ${engineType} engine`);
+      log.debug(`🦊 SmartAnimationCore: Creating animation loop with ${engineType} engine`);
     }
 
     switch (engineType) {
@@ -631,7 +632,7 @@ export class SmartAnimationCore {
     this.updateEngineType();
 
     if (this.config.enableLogging) {
-      console.log("🦊 SmartAnimationCore: Configuration updated", this.config);
+      log.debug("🦊 SmartAnimationCore: Configuration updated", this.config);
     }
   }
 
@@ -642,7 +643,7 @@ export class SmartAnimationCore {
     this.smartImportSystem.cleanup();
 
     if (this.config.enableLogging) {
-      console.log("🦊 SmartAnimationCore: Cleaned up");
+      log.debug("🦊 SmartAnimationCore: Cleaned up");
     }
   }
 }

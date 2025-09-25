@@ -3,6 +3,7 @@
  * Unified staggered animation system from floating-panel package
  */
 
+import { log } from "reynard-error-boundaries";
 import { createSignal, createEffect, onCleanup } from "solid-js";
 import type { StaggeredAnimationConfig, StaggeredAnimationItem, EasingType } from "../types";
 import { createSimpleAnimationLoop } from "../utils/AnimationLoop";
@@ -59,7 +60,10 @@ export function useStaggeredAnimation(options: UseStaggeredAnimationOptions = {}
 
   const start = async (itemCount: number): Promise<void> => {
     if (isAnimating()) {
-      console.warn("🦊 StaggeredAnimation: Already animating, ignoring start request");
+      log.warn("Already animating, ignoring start request", undefined, { 
+        component: "useStaggeredAnimation", 
+        function: "start" 
+      });
       return;
     }
 

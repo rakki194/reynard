@@ -51,7 +51,8 @@ from typing import Any
 from app.core.debug_logging import log_rag_operation, debug_log
 
 from ..email.infrastructure.continuous_indexing import ContinuousIndexingService
-from .services.core import EmbeddingService, VectorStoreService, DocumentIndexer, SearchEngine
+from .services.core import VectorStoreService, DocumentIndexer, SearchEngine
+from .services.core.embedding import UnifiedEmbeddingService as EmbeddingService
 from .services.monitoring.prometheus_monitoring import PrometheusMonitoringService
 from .services.security.access_control_security import AccessControlSecurityService
 from .services.evaluation.model_evaluation import ModelEvaluationService
@@ -180,8 +181,12 @@ class RAGService:
             raise RuntimeError("Failed to initialize file indexing service")
         logger.info("✅ File indexing service initialized")
 
-        # Initialize embedding service
-        self.embedding_service = EmbeddingService(self.config)
+        # Initialize embedding service with AI service
+        from app.core.service_registry import get_service_registry
+        service_registry = get_service_registry()
+        ai_service = service_registry.get_service_instance("ai_service")
+        
+        self.embedding_service = EmbeddingService(ai_service, self.config)
         if not await self.embedding_service.initialize():
             raise RuntimeError("Failed to initialize embedding service")
 

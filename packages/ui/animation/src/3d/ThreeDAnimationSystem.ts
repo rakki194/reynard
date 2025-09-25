@@ -5,6 +5,7 @@
  * Integrates with the unified animation system.
  */
 
+import { log } from "reynard-error-boundaries";
 import type {
   EmbeddingPoint,
   ClusterAnimation,
@@ -41,7 +42,10 @@ async function import3DAnimationPackage(): Promise<unknown | null> {
     const threeDModule = await import("reynard-3d" as string);
     return threeDModule;
   } catch (error) {
-    console.warn("🦊 ThreeDAnimation: 3D package not available, using fallback");
+    log.warn("3D package not available, using fallback", undefined, {
+      component: "ThreeDAnimationSystem",
+      function: "checkThreeDPackageAvailability",
+    });
     return null;
   }
 }
@@ -55,7 +59,10 @@ async function importFallbackSystem(): Promise<unknown | null> {
     const fallbackModule = await import("reynard-composables" as string);
     return (fallbackModule as Record<string, unknown>).useAnimationFallback;
   } catch (error) {
-    console.warn("🦊 ThreeDAnimation: Fallback system not available");
+    log.warn("Fallback system not available", undefined, {
+      component: "ThreeDAnimationSystem",
+      function: "checkFallbackAvailability",
+    });
     return null;
   }
 }
@@ -69,7 +76,10 @@ async function importGlobalControl(): Promise<unknown | null> {
     const controlModule = await import("reynard-composables" as string);
     return (controlModule as Record<string, unknown>).useAnimationControl;
   } catch (error) {
-    console.warn("🦊 ThreeDAnimation: Global animation control not available");
+    log.warn("Global animation control not available", undefined, {
+      component: "ThreeDAnimationSystem",
+      function: "checkGlobalAnimationControl",
+    });
     return null;
   }
 }
@@ -129,7 +139,10 @@ export function createThreeDAnimationSystem(): {
       // No animation system available
       animationEngine = "disabled";
     } catch (error) {
-      console.warn("🦊 ThreeDAnimation: Failed to initialize animation system:", error);
+      log.warn("Failed to initialize animation system", error, undefined, {
+        component: "ThreeDAnimationSystem",
+        function: "initializeThreeDAnimationSystem",
+      });
       animationEngine = "disabled";
     }
   };

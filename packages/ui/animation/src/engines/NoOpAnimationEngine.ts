@@ -8,6 +8,8 @@
  * @since 1.0.0
  */
 
+import { log } from "../utils/Logger";
+
 import {
   AnimationEngine,
   AnimationConfig,
@@ -138,7 +140,7 @@ export class NoOpAnimationEngine implements AnimationEngine {
     this.updateMemoryUsage();
 
     if (this.config.enableLogging) {
-      console.log("NoOpAnimationEngine: Initialized with immediate completion");
+      log.debug("NoOpAnimationEngine: Initialized with immediate completion");
     }
   }
 
@@ -150,7 +152,7 @@ export class NoOpAnimationEngine implements AnimationEngine {
     this.callbacks = callbacks;
 
     if (this.config.enableLogging) {
-      console.log("NoOpAnimationEngine: Started with immediate completion");
+      log.debug("NoOpAnimationEngine: Started with immediate completion");
     }
 
     // Call frame start callback
@@ -179,7 +181,7 @@ export class NoOpAnimationEngine implements AnimationEngine {
     this.state.isRunning = false;
 
     if (this.config.enableLogging) {
-      console.log("NoOpAnimationEngine: Stopped");
+      log.debug("NoOpAnimationEngine: Stopped");
     }
   }
 
@@ -195,7 +197,7 @@ export class NoOpAnimationEngine implements AnimationEngine {
     this.state.averageFPS = 0;
 
     if (this.config.enableLogging) {
-      console.log("NoOpAnimationEngine: Reset");
+      log.debug("NoOpAnimationEngine: Reset");
     }
   }
 
@@ -221,7 +223,7 @@ export class NoOpAnimationEngine implements AnimationEngine {
     this.config = { ...this.config, ...config };
 
     if (this.config.enableLogging) {
-      console.log("NoOpAnimationEngine: Configuration updated", config);
+      log.debug("NoOpAnimationEngine: Configuration updated", config);
     }
   }
 
@@ -232,7 +234,7 @@ export class NoOpAnimationEngine implements AnimationEngine {
     this.callbacks = { ...this.callbacks, ...callbacks };
 
     if (this.config.enableLogging) {
-      console.log("NoOpAnimationEngine: Callbacks updated");
+      log.debug("NoOpAnimationEngine: Callbacks updated");
     }
   }
 
@@ -241,7 +243,7 @@ export class NoOpAnimationEngine implements AnimationEngine {
    */
   async pause(): Promise<AnimationResult> {
     if (this.config.enableLogging) {
-      console.log("NoOpAnimationEngine: Pause requested (no-op)");
+      log.debug("NoOpAnimationEngine: Pause requested (no-op)");
     }
 
     return {
@@ -267,7 +269,7 @@ export class NoOpAnimationEngine implements AnimationEngine {
    */
   async resume(): Promise<AnimationResult> {
     if (this.config.enableLogging) {
-      console.log("NoOpAnimationEngine: Resume requested (no-op)");
+      log.debug("NoOpAnimationEngine: Resume requested (no-op)");
     }
 
     return {
@@ -323,7 +325,7 @@ export class NoOpAnimationEngine implements AnimationEngine {
     this.memoryUsage = 0;
 
     if (this.config.enableLogging) {
-      console.log("NoOpAnimationEngine: Performance metrics reset");
+      log.debug("NoOpAnimationEngine: Performance metrics reset");
     }
   }
 
@@ -342,7 +344,7 @@ export class NoOpAnimationEngine implements AnimationEngine {
     this.state.isActive = true;
 
     if (this.config.enableLogging) {
-      console.log("NoOpAnimationEngine: Engine activated");
+      log.debug("NoOpAnimationEngine: Engine activated");
     }
   }
 
@@ -354,7 +356,7 @@ export class NoOpAnimationEngine implements AnimationEngine {
     this.state.isActive = false;
 
     if (this.config.enableLogging) {
-      console.log("NoOpAnimationEngine: Engine deactivated");
+      log.debug("NoOpAnimationEngine: Engine deactivated");
     }
   }
 
@@ -370,7 +372,7 @@ export class NoOpAnimationEngine implements AnimationEngine {
       });
     } catch (error) {
       if (this.config.enableLogging) {
-        console.warn("NoOpAnimationEngine: Failed to apply properties", error);
+        log.warn("NoOpAnimationEngine: Failed to apply properties", error);
       }
     }
   }
@@ -432,7 +434,7 @@ export class NoOpAnimationEngine implements AnimationEngine {
       this.performanceMetrics.peakMemoryUsage = Math.max(this.performanceMetrics.peakMemoryUsage, estimatedMemory);
     } catch (error) {
       if (this.config.enableLogging) {
-        console.warn("NoOpAnimationEngine: Failed to update memory usage", error);
+        log.warn("NoOpAnimationEngine: Failed to update memory usage", error);
       }
     }
   }
@@ -454,7 +456,7 @@ export class NoOpAnimationEngine implements AnimationEngine {
     this.memoryUsage = 0;
 
     if (this.config.enableLogging) {
-      console.log("NoOpAnimationEngine: Cleaned up");
+      log.debug("NoOpAnimationEngine: Cleaned up");
     }
   }
 }

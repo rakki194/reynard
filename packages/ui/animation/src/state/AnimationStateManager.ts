@@ -11,6 +11,7 @@
 import { createSignal, onCleanup } from "solid-js";
 import { SmartAnimationCore, SmartAnimationConfig, SmartAnimationState } from "../engines/SmartAnimationCore";
 import { AccessibilityComplianceMonitor, AccessibilityCompliance } from "./AccessibilityComplianceMonitor";
+import { log } from "../utils/Logger";
 
 export interface AnimationStateConfig {
   /** Whether to integrate with global animation control */
@@ -133,7 +134,7 @@ export class AnimationStateManager {
    */
   private async initialize(): Promise<void> {
     if (this.config.enableLogging) {
-      console.log("AnimationStateManager: Initializing animation state management");
+      log.debug("AnimationStateManager: Initializing animation state management");
     }
 
     // Set up global animation control integration
@@ -172,12 +173,12 @@ export class AnimationStateManager {
         this.globalControlIntegration = globalControl.useAnimationControl();
 
         if (this.config.enableLogging) {
-          console.log("AnimationStateManager: Global animation control integrated");
+          log.debug("AnimationStateManager: Global animation control integrated");
         }
       }
     } catch (error) {
       if (this.config.enableLogging) {
-        console.warn("AnimationStateManager: Global animation control not available:", error);
+        log.warn("AnimationStateManager: Global animation control not available:", error);
       }
     }
   }
@@ -316,7 +317,7 @@ export class AnimationStateManager {
     await this.updateSmartAnimationCoreConfig(newState);
 
     if (this.config.enableLogging) {
-      console.log(`AnimationStateManager: State updated (${update.type}):`, update.data);
+      log.debug(`AnimationStateManager: State updated (${update.type}):`, update.data);
     }
   }
 
@@ -422,11 +423,11 @@ export class AnimationStateManager {
       localStorage.setItem("reynard-animation-state", JSON.stringify(persistenceData));
 
       if (this.config.enableLogging) {
-        console.log("AnimationStateManager: State persisted");
+        log.debug("AnimationStateManager: State persisted");
       }
     } catch (error) {
       if (this.config.enableLogging) {
-        console.warn("AnimationStateManager: Failed to persist state:", error);
+        log.warn("AnimationStateManager: Failed to persist state:", error);
       }
     }
   }
@@ -454,12 +455,12 @@ export class AnimationStateManager {
         });
 
         if (this.config.enableLogging) {
-          console.log("AnimationStateManager: Persisted state loaded");
+          log.debug("AnimationStateManager: Persisted state loaded");
         }
       }
     } catch (error) {
       if (this.config.enableLogging) {
-        console.warn("AnimationStateManager: Failed to load persisted state:", error);
+        log.warn("AnimationStateManager: Failed to load persisted state:", error);
       }
     }
   }
@@ -471,7 +472,7 @@ export class AnimationStateManager {
     this.config = { ...this.config, ...newConfig };
 
     if (this.config.enableLogging) {
-      console.log("AnimationStateManager: Configuration updated", this.config);
+      log.debug("AnimationStateManager: Configuration updated", this.config);
     }
   }
 
@@ -495,7 +496,7 @@ export class AnimationStateManager {
     }
 
     if (this.config.enableLogging) {
-      console.log("AnimationStateManager: Cleaned up");
+      log.debug("AnimationStateManager: Cleaned up");
     }
   }
 }

@@ -31,6 +31,15 @@ class SecurityHeadersConfig:
         self.hsts_include_subdomains = hsts_include_subdomains
         self.csp_policy = csp_policy or "default-src 'self'"
         
+        # Add missing attributes that middleware expects
+        self.x_content_type_options = kwargs.get('x_content_type_options', True)
+        self.x_frame_options = kwargs.get('x_frame_options', 'DENY')
+        self.x_xss_protection = kwargs.get('x_xss_protection', True)
+        self.referrer_policy = kwargs.get('referrer_policy', 'strict-origin-when-cross-origin')
+        self.permissions_policy = kwargs.get('permissions_policy', 'geolocation=(), microphone=(), camera=()')
+        self.strict_transport_security = kwargs.get('strict_transport_security', True)
+        self.content_security_policy = kwargs.get('content_security_policy', "default-src 'self'")
+        
         # Store additional kwargs
         for key, value in kwargs.items():
             setattr(self, key, value)
@@ -72,6 +81,11 @@ class InputValidationConfig:
         self.xss_detection = xss_detection
         self.path_traversal_detection = path_traversal_detection
         self.command_injection_detection = command_injection_detection
+        
+        # Add missing attributes that middleware expects
+        self.skip_paths = kwargs.get('skip_paths', ['/health', '/docs', '/openapi.json'])
+        self.max_request_size = kwargs.get('max_request_size', 10 * 1024 * 1024)  # 10MB
+        self.allowed_content_types = kwargs.get('allowed_content_types', ['application/json', 'application/x-www-form-urlencoded', 'multipart/form-data'])
         
         # Store additional kwargs
         for key, value in kwargs.items():
@@ -138,6 +152,14 @@ class DevelopmentBypassConfig:
         self.bypass_security_headers = bypass_security_headers
         self.bypass_input_validation = bypass_input_validation
         self.log_bypass_events = log_bypass_events
+        
+        # Add missing attributes that middleware expects
+        self.environment = kwargs.get('environment', 'development')
+        self.bypass_paths = kwargs.get('bypass_paths', ['/health', '/docs', '/openapi.json'])
+        self.bypass_ips = kwargs.get('bypass_ips', ['127.0.0.1', '::1'])
+        self.localhost_patterns = kwargs.get('localhost_patterns', ['127.0.0.1', '::1', 'localhost'])
+        self.development_mode = kwargs.get('development_mode', True)
+        self.bypass_headers = kwargs.get('bypass_headers', ['X-Development-Bypass'])
         
         # Store additional kwargs
         for key, value in kwargs.items():

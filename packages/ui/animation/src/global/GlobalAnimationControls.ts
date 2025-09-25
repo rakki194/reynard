@@ -5,6 +5,7 @@
  * Provides centralized control over all animation systems.
  */
 
+import { log } from "reynard-error-boundaries";
 import type {
   GlobalAnimationConfig,
   GlobalAnimationControls,
@@ -270,7 +271,10 @@ export class GlobalAnimationControlSystem {
         try {
           listener(data);
         } catch (error) {
-          console.warn(`🦊 GlobalAnimation: Error in event listener for ${event}:`, error);
+          log.warn(`Error in event listener for ${event}`, error, undefined, { 
+            component: "GlobalAnimationControls", 
+            function: "addEventListener" 
+          });
         }
       });
     }

@@ -24,7 +24,7 @@ class RAGConfig:
     rag_database_url: str = field(
         default_factory=lambda: os.getenv(
             "RAG_DATABASE_URL",
-            "postgresql://reynard_rag:CHANGE_THIS_PASSWORD@localhost:5432/reynard_rag",
+            None,  # Will be set from environment variable
         ),
     )
 

@@ -6,6 +6,7 @@
  */
 
 import { createSignal, createMemo, onCleanup, createContext, useContext } from "solid-js";
+import { log } from "reynard-error-boundaries";
 import type {
   GlobalAnimationConfig,
   GlobalAnimationState,
@@ -283,7 +284,10 @@ export function GlobalAnimationProvider(props: { children: any; options?: Global
   // Debug logging
   if (debug) {
     createMemo(() => {
-      console.log("🦊 GlobalAnimation: State updated", state());
+      log.debug("State updated", state(), { 
+        component: "useGlobalAnimationContext", 
+        function: "updateState" 
+      });
     });
   }
 

@@ -23,3 +23,7 @@ export { NoOpAnimationEngine } from "./engines/NoOpAnimationEngine";
 // Core functionality
 export { createAnimationCore } from "./core/AnimationCore";
 export { PerformanceMonitor } from "./core/PerformanceMonitor";
+
+// Logging system
+export { logger, log, enableDebugLogging, enableProductionLogging } from "./utils/Logger";
+export type { LogLevel, LoggerConfig } from "./utils/Logger";

@@ -7,6 +7,7 @@ import { createErrorContext } from "../utils/ErrorAnalyzer";
 import { getApplicableStrategies, executeRecoveryStrategy } from "../utils/RecoveryStrategies";
 import { createErrorReport } from "../utils/ErrorSerializer";
 import { ErrorFallback } from "./ErrorFallback";
+import { log } from "../utils/ReynardLogger";
 import type { ErrorBoundaryConfig, ErrorInfo, RecoveryAction } from "../types/ErrorTypes";
 
 interface ErrorBoundaryProps extends ErrorBoundaryConfig {
@@ -33,7 +34,15 @@ export const ErrorBoundary: Component<ErrorBoundaryProps> = props => {
   });
   // Handle error occurrence
   const handleError = (error: Error, errorInfo: ErrorInfo) => {
-    console.error("ErrorBoundary caught error:", error, errorInfo);
+    log.error(
+      "ErrorBoundary caught error",
+      error,
+      { errorInfo },
+      {
+        component: "ErrorBoundary",
+        function: "handleError",
+      }
+    );
     // Create error context
     const context = createErrorContext(error, errorInfo);
     // Get applicable recovery strategies
@@ -107,11 +116,27 @@ export const ErrorBoundary: Component<ErrorBoundaryProps> = props => {
         // Retry the component
         retry();
       } else {
-        console.error("Recovery failed:", result.error);
+        log.error(
+          "Recovery failed",
+          result.error,
+          { action },
+          {
+            component: "ErrorBoundary",
+            function: "handleRecovery",
+          }
+        );
         // Could show error message to user
       }
     } catch (recoveryError) {
-      console.error("Recovery execution failed:", recoveryError);
+      log.error(
+        "Recovery execution failed",
+        recoveryError instanceof Error ? recoveryError : new Error(String(recoveryError)),
+        { action },
+        {
+          component: "ErrorBoundary",
+          function: "handleRecovery",
+        }
+      );
     } finally {
       setState(prev => ({ ...prev, isRecovering: false }));
     }
@@ -131,10 +156,24 @@ export const ErrorBoundary: Component<ErrorBoundaryProps> = props => {
         body: JSON.stringify(report),
       });
       if (!response.ok) {
-        console.warn("Failed to report error:", response.statusText);
+        log.warn(
+          "Failed to report error",
+          { statusText: response.statusText },
+          {
+            component: "ErrorBoundary",
+            function: "reportError",
+          }
+        );
       }
     } catch (error) {
-      console.warn("Error reporting failed:", error);
+      log.warn(
+        "Error reporting failed",
+        { error },
+        {
+          component: "ErrorBoundary",
+          function: "reportError",
+        }
+      );
     }
   };
   // Global error handler

@@ -29,7 +29,8 @@
   "dependencies": {
     "solid-js": "1.9.9",
     "reynard-colors": "workspace:*",
-    "reynard-core": "workspace:*"
+    "reynard-core": "workspace:*",
+    "reynard-error-boundaries": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "24.5.2",

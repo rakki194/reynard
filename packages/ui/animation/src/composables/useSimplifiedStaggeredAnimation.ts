@@ -4,6 +4,7 @@
  * Uses single requestAnimationFrame loop - no setTimeout anti-patterns
  */
 
+import { log } from "reynard-error-boundaries";
 import { createSignal, onCleanup } from "solid-js";
 import type { EasingType } from "../types";
 import { createStaggeredAnimation } from "../utils/SimplifiedAnimationLoop";
@@ -68,7 +69,10 @@ export function useSimplifiedStaggeredAnimation(
 
   const start = (itemCount: number): void => {
     if (isAnimating()) {
-      console.warn("🦊 SimplifiedStaggeredAnimation: Already animating, ignoring start request");
+      log.warn("Already animating, ignoring start request", undefined, { 
+        component: "useSimplifiedStaggeredAnimation", 
+        function: "start" 
+      });
       return;
     }
 

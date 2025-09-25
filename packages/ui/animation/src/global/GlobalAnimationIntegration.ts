@@ -5,6 +5,7 @@
  * and performance monitoring. Connects the global context with CSS control.
  */
 
+import { log } from "reynard-error-boundaries";
 import { createSignal, createMemo, onCleanup, createEffect } from "solid-js";
 import type {
   GlobalAnimationConfig,
@@ -136,7 +137,10 @@ export class GlobalAnimationIntegration {
 
       this.performanceObserver.observe({ entryTypes: ["measure", "navigation"] });
     } catch (error) {
-      console.warn("🦊 GlobalAnimation: Performance monitoring not available:", error);
+      log.warn("Performance monitoring not available", error, undefined, { 
+        component: "GlobalAnimationIntegration", 
+        function: "initializePerformanceMonitoring" 
+      });
     }
   }
 
@@ -284,7 +288,10 @@ export class GlobalAnimationIntegration {
       try {
         callback(event, data);
       } catch (error) {
-        console.warn("🦊 GlobalAnimation: Error in observer:", error);
+        log.warn("Error in observer", error, undefined, { 
+          component: "GlobalAnimationIntegration", 
+          function: "observe" 
+        });
       }
     });
   }

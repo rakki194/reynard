@@ -99,6 +99,7 @@
     { "path": "./packages/services/chat" },
     { "path": "./packages/services/service-manager" },
     { "path": "./packages/services/auth" },
+    { "path": "./packages/services/diffusion-pipe" },
 
     // UI packages
     { "path": "./packages/ui/animation" },
@@ -107,6 +108,7 @@
     { "path": "./packages/ui/components-charts" },
     { "path": "./packages/ui/components-core" },
     { "path": "./packages/ui/components-dashboard" },
+    { "path": "./packages/ui/components-diffusion-pipe" },
     { "path": "./packages/ui/components-themes" },
     { "path": "./packages/ui/components-utils" },
     { "path": "./packages/ui/dashboard" },

@@ -309,7 +309,7 @@ async def lifespan(app: FastAPI):
 async def _init_image_processing_service(config: dict[str, Any]) -> bool:
     """Initialize the image processing service."""
     try:
-        from app.services.processing.image_processing_service import (
+        from app.services.image_processing_service import (
             initialize_image_processing_service,
         )
 

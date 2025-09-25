@@ -11,6 +11,8 @@
  * @since 1.0.0
  */
 
+import { log } from "../utils/Logger";
+
 import { createSignal, createMemo, createEffect, onCleanup } from "solid-js";
 
 export interface SmartImportConfig {
@@ -98,9 +100,7 @@ export class SmartImportSystem {
       this.packageAvailability.set(packageName, availability);
 
       if (this.config.enableLogging) {
-        console.log(
-          `🦊 SmartImport: Package ${packageName} is available (${(performance.now() - startTime).toFixed(2)}ms)`
-        );
+        log.packageImport(packageName, performance.now() - startTime, true);
       }
 
       return availability;
@@ -118,7 +118,7 @@ export class SmartImportSystem {
       this.packageAvailability.set(packageName, availability);
 
       if (this.config.enableLogging) {
-        console.warn(`🦊 SmartImport: Package ${packageName} unavailable (attempt ${failedAttempts}):`, error);
+        log.warn(`Package ${packageName} unavailable (attempt ${failedAttempts}):`, error);
       }
 
       // Schedule retry if needed
@@ -178,7 +178,7 @@ export class SmartImportSystem {
       });
 
       if (this.config.enableLogging) {
-        console.log(`🦊 SmartImport: Successfully imported ${packageName} (${duration.toFixed(2)}ms)`);
+        log.packageImport(packageName, duration, true);
       }
 
       return {
@@ -195,7 +195,7 @@ export class SmartImportSystem {
       // Use fallback if available
       if (this.config.useFallback && fallbackModule) {
         if (this.config.enableLogging) {
-          console.warn(`🦊 SmartImport: Using fallback for ${packageName}:`, errorMessage);
+          log.warn(`Using fallback for ${packageName}:`, errorMessage);
         }
 
         return {
@@ -219,7 +219,7 @@ export class SmartImportSystem {
       });
 
       if (this.config.enableLogging) {
-        console.error(`🦊 SmartImport: Failed to import ${packageName}:`, errorMessage);
+        log.error(`Failed to import ${packageName}:`, errorMessage);
       }
 
       return {
@@ -245,7 +245,7 @@ export class SmartImportSystem {
   clearCache(): void {
     this.importCache.clear();
     if (this.config.enableLogging) {
-      console.log("🦊 SmartImport: Cache cleared");
+      log.debug("Cache cleared");
     }
   }
 
@@ -255,7 +255,7 @@ export class SmartImportSystem {
   clearAvailabilityCache(): void {
     this.packageAvailability.clear();
     if (this.config.enableLogging) {
-      console.log("🦊 SmartImport: Availability cache cleared");
+      log.debug("Availability cache cleared");
     }
   }
 
@@ -265,7 +265,7 @@ export class SmartImportSystem {
   updateConfig(newConfig: Partial<SmartImportConfig>): void {
     this.config = { ...this.config, ...newConfig };
     if (this.config.enableLogging) {
-      console.log("🦊 SmartImport: Configuration updated", this.config);
+      log.debug("Configuration updated", this.config);
     }
   }
 
@@ -290,7 +290,7 @@ export class SmartImportSystem {
     this.retryTimeouts.set(packageName, timeout);
 
     if (this.config.enableLogging) {
-      console.log(`🦊 SmartImport: Scheduled retry for ${packageName} in ${delay}ms (attempt ${attempt})`);
+      log.debug(`Scheduled retry for ${packageName} in ${delay}ms (attempt ${attempt})`);
     }
   }
 
@@ -307,7 +307,7 @@ export class SmartImportSystem {
     this.clearAvailabilityCache();
 
     if (this.config.enableLogging) {
-      console.log("🦊 SmartImport: System cleaned up");
+      log.debug("System cleaned up");
     }
   }
 }

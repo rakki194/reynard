@@ -1,0 +1,327 @@
+/**
+ * 🦊 Training Logs Component
+ *
+ * Real-time log streaming with filtering and search
+ * following Reynard's log viewer patterns.
+ */
+
+import { Show, createSignal, createEffect, onMount, onCleanup, Component } from "solid-js";
+import { Card } from "reynard-components-core/primitives";
+import { Button } from "reynard-components-core/primitives";
+import { TextField } from "reynard-components-core/primitives";
+import { Select } from "reynard-components-core/primitives";
+import { Badge } from "reynard-components-core/primitives";
+import { fluentIconsPackage } from "reynard-fluent-icons";
+
+export interface LogEntry {
+  timestamp: string;
+  level: "info" | "warning" | "error" | "debug";
+  message: string;
+  source?: string;
+  metadata?: any;
+}
+
+export interface TrainingLogsProps {
+  logs: LogEntry[];
+  isStreaming?: boolean;
+  onClear?: () => void;
+  onExport?: () => void;
+  onFilter?: (filter: LogFilter) => void;
+  compact?: boolean;
+  maxLines?: number;
+  autoScroll?: boolean;
+}
+
+export interface LogFilter {
+  level?: "info" | "warning" | "error" | "debug";
+  search?: string;
+  source?: string;
+}
+
+export const TrainingLogs: Component<TrainingLogsProps> = props => {
+  const [filteredLogs, setFilteredLogs] = createSignal<LogEntry[]>([]);
+  const [filter, setFilter] = createSignal<LogFilter>({});
+  const [searchTerm, setSearchTerm] = createSignal("");
+  const [selectedLevel, setSelectedLevel] = createSignal<string>("all");
+  const [selectedSource, setSelectedSource] = createSignal<string>("all");
+  const [isAutoScroll, setIsAutoScroll] = createSignal(props.autoScroll ?? true);
+  const [isExpanded, setIsExpanded] = createSignal(!props.compact);
+
+  let logContainer: HTMLDivElement | undefined;
+  let scrollTimeout: NodeJS.Timeout | undefined;
+
+  // Filter logs based on current filter
+  createEffect(() => {
+    let filtered = [...props.logs];
+
+    // Apply level filter
+    if (selectedLevel() !== "all") {
+      filtered = filtered.filter(log => log.level === selectedLevel());
+    }
+
+    // Apply source filter
+    if (selectedSource() !== "all") {
+      filtered = filtered.filter(log => log.source === selectedSource());
+    }
+
+    // Apply search filter
+    if (searchTerm()) {
+      const term = searchTerm().toLowerCase();
+      filtered = filtered.filter(
+        log => log.message.toLowerCase().includes(term) || log.source?.toLowerCase().includes(term)
+      );
+    }
+
+    // Limit number of lines
+    if (props.maxLines) {
+      filtered = filtered.slice(-props.maxLines);
+    }
+
+    setFilteredLogs(filtered);
+  });
+
+  // Auto-scroll to bottom when new logs arrive
+  createEffect(() => {
+    if (isAutoScroll() && logContainer) {
+      scrollTimeout = setTimeout(() => {
+        if (logContainer) {
+          logContainer.scrollTop = logContainer.scrollHeight;
+        }
+      }, 100);
+    }
+  });
+
+  onCleanup(() => {
+    if (scrollTimeout) {
+      clearTimeout(scrollTimeout);
+    }
+  });
+
+  // Get unique sources from logs
+  const getUniqueSources = () => {
+    const sources = new Set(props.logs.map(log => log.source).filter(Boolean));
+    return Array.from(sources);
+  };
+
+  // Get log level color
+  const getLogLevelColor = (level: string) => {
+    switch (level) {
+      case "error":
+        return "destructive";
+      case "warning":
+        return "outline";
+      case "info":
+        return "default";
+      case "debug":
+        return "secondary";
+      default:
+        return "secondary";
+    }
+  };
+
+  // Get log level icon
+  const getLogLevelIcon = (level: string) => {
+    switch (level) {
+      case "error":
+        return fluentIconsPackage.getIcon("dismiss-circle");
+      case "warning":
+        return fluentIconsPackage.getIcon("warning");
+      case "info":
+        return fluentIconsPackage.getIcon("info");
+      case "debug":
+        return fluentIconsPackage.getIcon("bug");
+      default:
+        return fluentIconsPackage.getIcon("info");
+    }
+  };
+
+  // Format timestamp
+  const formatTimestamp = (timestamp: string) => {
+    return new Date(timestamp).toLocaleTimeString();
+  };
+
+  // Handle filter changes
+  const handleFilterChange = () => {
+    const newFilter: LogFilter = {
+      level: selectedLevel() !== "all" ? (selectedLevel() as any) : undefined,
+      search: searchTerm() || undefined,
+      source: selectedSource() !== "all" ? selectedSource() : undefined,
+    };
+
+    setFilter(newFilter);
+    props.onFilter?.(newFilter);
+  };
+
+  // Handle clear logs
+  const handleClear = () => {
+    props.onClear?.();
+  };
+
+  // Handle export logs
+  const handleExport = () => {
+    props.onExport?.();
+  };
+
+  // Handle scroll to bottom
+  const handleScrollToBottom = () => {
+    if (logContainer) {
+      logContainer.scrollTop = logContainer.scrollHeight;
+    }
+  };
+
+  return (
+    <Card class={`training-logs ${props.compact ? "compact" : ""}`}>
+      <div class="logs-header">
+        <div class="logs-title">
+          <h3>Training Logs</h3>
+          <Show when={props.isStreaming}>
+            <Badge variant="secondary">
+              <span class="streaming-indicator" />
+              Live
+            </Badge>
+          </Show>
+        </div>
+
+        <div class="logs-actions">
+          <Button variant="ghost" size="sm" onClick={handleClear}>
+            Clear
+          </Button>
+          <Button variant="ghost" size="sm" onClick={handleExport}>
+            Export
+          </Button>
+          <Button variant="ghost" size="sm" onClick={() => setIsExpanded(!isExpanded())}>
+            <div
+              // eslint-disable-next-line solid/no-innerhtml
+              innerHTML={fluentIconsPackage.getIcon(isExpanded() ? "chevron-up" : "chevron-down")?.outerHTML || ""}
+            />
+          </Button>
+        </div>
+      </div>
+
+      <Show when={isExpanded()}>
+        <div class="logs-filters">
+          <div class="filter-group">
+            <TextField
+              placeholder="Search logs..."
+              value={searchTerm()}
+              onInput={e => {
+                setSearchTerm(e.currentTarget.value);
+                handleFilterChange();
+              }}
+              size="sm"
+            />
+          </div>
+
+          <div class="filter-group">
+            <Select
+              value={selectedLevel()}
+              onChange={e => {
+                setSelectedLevel(e.currentTarget.value);
+                handleFilterChange();
+              }}
+              options={[
+                { value: "all", label: "All Levels" },
+                { value: "error", label: "Error" },
+                { value: "warning", label: "Warning" },
+                { value: "info", label: "Info" },
+                { value: "debug", label: "Debug" },
+              ]}
+              size="sm"
+            />
+          </div>
+
+          <Show when={getUniqueSources().length > 0}>
+            <div class="filter-group">
+              <Select
+                value={selectedSource()}
+                onChange={e => {
+                  setSelectedSource(e.currentTarget.value);
+                  handleFilterChange();
+                }}
+                options={[
+                  { value: "all", label: "All Sources" },
+                  ...getUniqueSources()
+                    .filter((source): source is string => source !== undefined)
+                    .map((source: string) => ({
+                      value: source,
+                      label: source,
+                    })),
+                ]}
+                size="sm"
+              />
+            </div>
+          </Show>
+
+          <div class="filter-group">
+            <Button
+              variant={isAutoScroll() ? "primary" : "ghost"}
+              size="sm"
+              onClick={() => setIsAutoScroll(!isAutoScroll())}
+            >
+              Auto-scroll
+            </Button>
+          </div>
+        </div>
+      </Show>
+
+      <div class="logs-container" ref={logContainer}>
+        <div class="logs-content">
+          {filteredLogs().map((log, index) => (
+            <div class={`log-entry log-${log.level}`}>
+              <div class="log-timestamp">{formatTimestamp(log.timestamp)}</div>
+              <div class="log-level">
+                <Badge variant={getLogLevelColor(log.level)}>
+                  <span class="level-icon">
+                    <div
+                      // eslint-disable-next-line solid/no-innerhtml
+                      innerHTML={getLogLevelIcon(log.level)?.outerHTML || ""}
+                    />
+                  </span>
+                  {log.level.toUpperCase()}
+                </Badge>
+              </div>
+              <Show when={log.source}>
+                <div class="log-source">{log.source}</div>
+              </Show>
+              <div class="log-message">{log.message}</div>
+            </div>
+          ))}
+
+          <Show when={filteredLogs().length === 0}>
+            <div class="logs-empty">
+              <div class="empty-icon">
+                <div
+                  // eslint-disable-next-line solid/no-innerhtml
+                  innerHTML={fluentIconsPackage.getIcon("document-text")?.outerHTML || ""}
+                />
+              </div>
+              <p>No logs to display</p>
+              <Show when={searchTerm() || selectedLevel() !== "all" || selectedSource() !== "all"}>
+                <p>Try adjusting your filters</p>
+              </Show>
+            </div>
+          </Show>
+        </div>
+      </div>
+
+      <div class="logs-footer">
+        <div class="logs-stats">
+          <span>
+            {filteredLogs().length} of {props.logs.length} logs
+          </span>
+        </div>
+        <div class="logs-controls">
+          <Button variant="ghost" size="sm" onClick={handleScrollToBottom}>
+            <div
+              // eslint-disable-next-line solid/no-innerhtml
+              innerHTML={fluentIconsPackage.getIcon("arrow-down")?.outerHTML || ""}
+            />
+            Bottom
+          </Button>
+        </div>
+      </div>
+    </Card>
+  );
+};
+
+export default TrainingLogs;
