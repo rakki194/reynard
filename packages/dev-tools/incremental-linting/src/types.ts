@@ -246,14 +246,13 @@ export interface LintingStats {
   /** Cache hit rate */
   cacheHitRate: number;
   /** Linter performance */
-  linterPerformance: Record<string, {
-    filesProcessed: number;
-    averageTime: number;
-    totalTime: number;
-    issuesFound: number;
-  }>;
+  linterPerformance: Record<
+    string,
+    {
+      filesProcessed: number;
+      averageTime: number;
+      totalTime: number;
+      issuesFound: number;
+    }
+  >;
 }
-
-
-
-

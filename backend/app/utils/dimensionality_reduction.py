@@ -16,9 +16,17 @@ if is_numpy_enabled() and can_load_service("numpy"):
         import numpy as np
         load_service("numpy")
     except ImportError:
-        np = None
+        # Create a dummy numpy module for type hints
+        class DummyNumpy:
+            class ndarray:
+                pass
+        np = DummyNumpy()
 else:
-    np = None
+    # Create a dummy numpy module for type hints
+    class DummyNumpy:
+        class ndarray:
+            pass
+    np = DummyNumpy()
 
 logger = logging.getLogger(__name__)
 

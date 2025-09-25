@@ -73,10 +73,11 @@ export const DATA_PACKAGES: DirectoryDefinition[] = [
     "packages/data/scraping",
     "Web scraping utilities and data extraction tools - provides web scraping capabilities, data extraction, content parsing, and web data collection utilities",
     {
-      relationships: buildRelationships(
-        COMMON_RELATIONSHIPS.CORE_DEPENDENCY,
-        { directory: "packages/ai/nlweb", type: "dependency", description: "Used by natural language web processing" }
-      ),
+      relationships: buildRelationships(COMMON_RELATIONSHIPS.CORE_DEPENDENCY, {
+        directory: "packages/ai/nlweb",
+        type: "dependency",
+        description: "Used by natural language web processing",
+      }),
       metadata: DATA_METADATA,
     }
   ),
@@ -88,7 +89,11 @@ export const DATA_PACKAGES: DirectoryDefinition[] = [
     {
       relationships: buildRelationships(
         { directory: "packages/data/repository-core", type: "dependency", description: "Uses core repository system" },
-        { directory: "packages/data/repository-multimodal", type: "dependency", description: "Uses multimodal repository" },
+        {
+          directory: "packages/data/repository-multimodal",
+          type: "dependency",
+          description: "Uses multimodal repository",
+        },
         { directory: "packages/data/repository-search", type: "dependency", description: "Uses search repository" },
         { directory: "packages/data/repository-storage", type: "dependency", description: "Uses storage repository" }
       ),

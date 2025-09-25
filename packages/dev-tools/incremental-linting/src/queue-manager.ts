@@ -44,7 +44,7 @@ export class LintingQueueManager extends FileQueueManager {
    */
   getLintingStatus(): LintingQueueStatus {
     const baseStatus = this.getStatus();
-    
+
     return {
       ...baseStatus,
       isRunning: baseStatus.isProcessing,

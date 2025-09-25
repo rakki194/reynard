@@ -1,6 +1,6 @@
 # ECS Memory & Interaction System Performance Optimization Guide
 
-*Comprehensive guide for optimizing the ECS Memory & Interaction System for production deployment*
+_Comprehensive guide for optimizing the ECS Memory & Interaction System for production deployment_
 
 ## Table of Contents
 
@@ -38,22 +38,22 @@ class OptimizedMemoryComponent(Component):
         self.memories = deque(maxlen=memory_capacity)
         self.memory_index = {}  # Fast lookup by ID
         self.importance_threshold = 0.5
-        
+
     def add_memory(self, memory: Memory) -> None:
         """Optimized memory addition with automatic cleanup."""
         # Remove least important memories if at capacity
         if len(self.memories) >= self.memory_capacity:
             self._cleanup_old_memories()
-        
+
         self.memories.append(memory)
         self.memory_index[memory.id] = memory
-        
+
     def _cleanup_old_memories(self) -> None:
         """Remove least important memories efficiently."""
         # Sort by importance and remove bottom 10%
         sorted_memories = sorted(self.memories, key=lambda m: m.importance)
         to_remove = len(sorted_memories) // 10
-        
+
         for memory in sorted_memories[:to_remove]:
             self.memories.remove(memory)
             del self.memory_index[memory.id]
@@ -70,14 +70,14 @@ class OptimizedInteractionComponent(Component):
         self.relationships = {}
         self.interaction_cache = LRUCache(maxsize=1000)
         self.social_energy = 1.0
-        
+
     def get_relationship_strength(self, agent_id: str) -> float:
         """Cached relationship strength lookup."""
         cache_key = f"relationship_{agent_id}"
-        
+
         if cache_key in self.interaction_cache:
             return self.interaction_cache[cache_key]
-        
+
         strength = self._calculate_relationship_strength(agent_id)
         self.interaction_cache[cache_key] = strength
         return strength
@@ -94,13 +94,13 @@ class OptimizedKnowledgeComponent(Component):
         self.knowledge_trie = Trie()
         self.knowledge_cache = {}
         self.learning_rate = 1.0
-        
+
     def search_knowledge(self, query: str) -> List[Knowledge]:
         """Efficient knowledge search using Trie."""
         # Check cache first
         if query in self.knowledge_cache:
             return self.knowledge_cache[query]
-        
+
         # Use Trie for prefix matching
         results = self.knowledge_trie.search(query)
         self.knowledge_cache[query] = results
@@ -142,7 +142,7 @@ class OptimizedECSService:
             .order_by(Memory.importance.desc())\
             .limit(limit)\
             .all()
-    
+
     def get_agent_relationships(self, agent_id: str) -> List[Relationship]:
         """Optimized relationship retrieval with joins."""
         return session.query(Relationship)\
@@ -180,12 +180,12 @@ def cache_result(expiration: int = 300):
         @wraps(func)
         def wrapper(*args, **kwargs):
             cache_key = f"{func.__name__}:{hash(str(args) + str(kwargs))}"
-            
+
             # Try to get from cache
             cached_result = redis_client.get(cache_key)
             if cached_result:
                 return json.loads(cached_result)
-            
+
             # Execute function and cache result
             result = func(*args, **kwargs)
             redis_client.setex(cache_key, expiration, json.dumps(result))
@@ -211,11 +211,11 @@ class ECSMemoryCache:
         self.cache = {}
         self.max_size = max_size
         self.lock = threading.RLock()
-        
+
     def get(self, key: str) -> Optional[Any]:
         with self.lock:
             return self.cache.get(key)
-    
+
     def set(self, key: str, value: Any) -> None:
         with self.lock:
             if len(self.cache) >= self.max_size:
@@ -223,9 +223,9 @@ class ECSMemoryCache:
                 oldest_keys = list(self.cache.keys())[:100]
                 for old_key in oldest_keys:
                     del self.cache[old_key]
-            
+
             self.cache[key] = value
-    
+
     def clear(self) -> None:
         with self.lock:
             self.cache.clear()
@@ -263,21 +263,21 @@ async def get_agent_memories(
 ):
     """Paginated memory retrieval with filtering."""
     offset = (page - 1) * size
-    
+
     query = session.query(Memory)\
         .filter(Memory.agent_id == agent_id)
-    
+
     if importance_min is not None:
         query = query.filter(Memory.importance >= importance_min)
-    
+
     memories = query\
         .order_by(Memory.importance.desc())\
         .offset(offset)\
         .limit(size)\
         .all()
-    
+
     total = query.count()
-    
+
     return {
         "memories": memories,
         "pagination": {
@@ -301,13 +301,13 @@ executor = ThreadPoolExecutor(max_workers=4)
 async def process_agent_batch(agent_ids: List[str]) -> List[dict]:
     """Process multiple agents asynchronously."""
     loop = asyncio.get_event_loop()
-    
+
     # Process agents in parallel
     tasks = [
         loop.run_in_executor(executor, process_single_agent, agent_id)
         for agent_id in agent_ids
     ]
-    
+
     results = await asyncio.gather(*tasks)
     return results
 
@@ -330,35 +330,35 @@ class MemoryMonitor:
     def __init__(self, warning_threshold: float = 0.8):
         self.warning_threshold = warning_threshold
         self.logger = logging.getLogger(__name__)
-    
+
     def check_memory_usage(self) -> dict:
         """Check current memory usage."""
         memory = psutil.virtual_memory()
-        
+
         usage_info = {
             "total": memory.total,
             "available": memory.available,
             "used": memory.used,
             "percentage": memory.percent
         }
-        
+
         if memory.percent > self.warning_threshold * 100:
             self.logger.warning(f"High memory usage: {memory.percent}%")
-        
+
         return usage_info
-    
+
     def cleanup_if_needed(self) -> None:
         """Cleanup resources if memory usage is high."""
         memory = psutil.virtual_memory()
-        
+
         if memory.percent > self.warning_threshold * 100:
             # Trigger garbage collection
             import gc
             gc.collect()
-            
+
             # Clear caches
             ecs_cache.clear()
-            
+
             self.logger.info("Performed memory cleanup")
 ```
 
@@ -373,23 +373,23 @@ class CPUOptimizer:
     def __init__(self):
         self.cpu_count = multiprocessing.cpu_count()
         self.process_pool = ProcessPoolExecutor(max_workers=self.cpu_count)
-    
+
     def parallel_agent_processing(self, agents: List[Agent]) -> List[dict]:
         """Process agents in parallel using multiple processes."""
         # Split agents into chunks
         chunk_size = len(agents) // self.cpu_count
         chunks = [agents[i:i + chunk_size] for i in range(0, len(agents), chunk_size)]
-        
+
         # Process chunks in parallel
         futures = [
             self.process_pool.submit(process_agent_chunk, chunk)
             for chunk in chunks
         ]
-        
+
         results = []
         for future in futures:
             results.extend(future.result())
-        
+
         return results
 
 def process_agent_chunk(agents: List[Agent]) -> List[dict]:
@@ -415,7 +415,7 @@ class PerformanceMonitor:
     def __init__(self):
         self.metrics = defaultdict(list)
         self.start_times = {}
-    
+
     def time_function(self, func_name: str):
         """Decorator to time function execution."""
         def decorator(func):
@@ -424,12 +424,12 @@ class PerformanceMonitor:
                 start_time = time.time()
                 result = func(*args, **kwargs)
                 execution_time = time.time() - start_time
-                
+
                 self.metrics[func_name].append(execution_time)
                 return result
             return wrapper
         return decorator
-    
+
     def get_metrics(self) -> dict:
         """Get performance metrics."""
         return {
@@ -463,7 +463,7 @@ async def health_check():
         "timestamp": time.time(),
         "components": {}
     }
-    
+
     # Check database connection
     try:
         session.execute("SELECT 1")
@@ -471,7 +471,7 @@ async def health_check():
     except Exception as e:
         health_status["components"]["database"] = f"unhealthy: {str(e)}"
         health_status["status"] = "unhealthy"
-    
+
     # Check Redis connection
     try:
         redis_client.ping()
@@ -479,14 +479,14 @@ async def health_check():
     except Exception as e:
         health_status["components"]["redis"] = f"unhealthy: {str(e)}"
         health_status["status"] = "unhealthy"
-    
+
     # Check memory usage
     memory = psutil.virtual_memory()
     health_status["components"]["memory"] = {
         "usage_percent": memory.percent,
         "status": "healthy" if memory.percent < 90 else "warning"
     }
-    
+
     return health_status
 ```
 
@@ -555,40 +555,40 @@ spec:
         app: ecs-backend
     spec:
       containers:
-      - name: ecs-backend
-        image: ecs-backend:latest
-        ports:
-        - containerPort: 8000
-        env:
-        - name: ECS_DATABASE_URL
-          valueFrom:
-            secretKeyRef:
-              name: ecs-secrets
-              key: database-url
-        - name: ECS_REDIS_URL
-          valueFrom:
-            secretKeyRef:
-              name: ecs-secrets
-              key: redis-url
-        resources:
-          requests:
-            memory: "1Gi"
-            cpu: "500m"
-          limits:
-            memory: "2Gi"
-            cpu: "1000m"
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 8000
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 8000
-          initialDelaySeconds: 5
-          periodSeconds: 5
+        - name: ecs-backend
+          image: ecs-backend:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: ECS_DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: ecs-secrets
+                  key: database-url
+            - name: ECS_REDIS_URL
+              valueFrom:
+                secretKeyRef:
+                  name: ecs-secrets
+                  key: redis-url
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
 ---
 apiVersion: v1
 kind: Service
@@ -598,8 +598,8 @@ spec:
   selector:
     app: ecs-backend
   ports:
-  - port: 80
-    targetPort: 8000
+    - port: 80
+      targetPort: 8000
   type: LoadBalancer
 ```
 
@@ -637,27 +637,27 @@ from concurrent.futures import ThreadPoolExecutor
 async def load_test_ecs_api():
     """Load test the ECS API endpoints."""
     base_url = "http://localhost:8000"
-    
+
     async with aiohttp.ClientSession() as session:
         tasks = []
-        
+
         # Create 1000 concurrent requests
         for i in range(1000):
             task = asyncio.create_task(
                 make_request(session, f"{base_url}/agents/agent_{i}/memories")
             )
             tasks.append(task)
-        
+
         # Wait for all requests to complete
         start_time = time.time()
         results = await asyncio.gather(*tasks, return_exceptions=True)
         end_time = time.time()
-        
+
         # Calculate metrics
         successful_requests = sum(1 for r in results if not isinstance(r, Exception))
         total_time = end_time - start_time
         requests_per_second = len(tasks) / total_time
-        
+
         print(f"Total requests: {len(tasks)}")
         print(f"Successful requests: {successful_requests}")
         print(f"Total time: {total_time:.2f}s")

@@ -1,6 +1,6 @@
 /**
  * Vitest Configuration for E2E Coverage Integration
- * 
+ *
  * This configuration enables integration between E2E tests and Vitest
  * for comprehensive coverage reporting across the entire ecosystem.
  */
@@ -9,10 +9,7 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
-    include: [
-      "scripts/**/*.{test,spec}.{js,ts,tsx}",
-      "core/**/*.{test,spec}.{js,ts,tsx}",
-    ],
+    include: ["scripts/**/*.{test,spec}.{js,ts,tsx}", "core/**/*.{test,spec}.{js,ts,tsx}"],
     exclude: [
       "node_modules",
       "dist",
@@ -28,11 +25,7 @@ export default defineConfig({
       enabled: true,
       reporter: ["text", "html", "lcov", "json"],
       reportsDirectory: "../coverage/e2e-utils",
-      include: [
-        "core/**/*.ts",
-        "modules/**/*.ts",
-        "scripts/**/*.ts",
-      ],
+      include: ["core/**/*.ts", "modules/**/*.ts", "scripts/**/*.ts"],
       exclude: [
         "node_modules/**",
         "dist/**",

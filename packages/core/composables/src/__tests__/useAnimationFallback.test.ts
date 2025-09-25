@@ -1,12 +1,12 @@
 /**
  * 🦊 Animation Fallback System Tests
- * 
+ *
  * Tests for the animation fallback system including:
  * - CSS-based fallback animations
  * - Immediate completion for disabled animations
  * - Staggered animation fallbacks
  * - Performance optimizations
- * 
+ *
  * @author Agile-Prime-90 (Reynard Lizard Specialist)
  * @since 1.0.0
  */
@@ -42,70 +42,66 @@ describe("useAnimationFallback", () => {
 
   it("should create fallback animation with CSS transitions", async () => {
     const { useAnimationFallback } = require("../useAnimationFallback");
-    
+
     render(() => {
       const fallback = useAnimationFallback();
-      
+
       const animationPromise = fallback.createFallbackAnimation(
         testElement,
         { opacity: "1" },
         { duration: 100, useTransitions: true }
       );
-      
+
       expect(testElement.style.opacity).toBe("1");
       expect(testElement.style.transition).toContain("opacity");
-      
+
       return animationPromise;
     });
   });
 
   it("should create fallback animation without transitions", async () => {
     const { useAnimationFallback } = require("../useAnimationFallback");
-    
+
     render(() => {
       const fallback = useAnimationFallback();
-      
+
       const animationPromise = fallback.createFallbackAnimation(
         testElement,
         { opacity: "1" },
         { duration: 100, useTransitions: false }
       );
-      
+
       expect(testElement.style.opacity).toBe("1");
       expect(testElement.style.transition).toBe("");
-      
+
       return animationPromise;
     });
   });
 
   it("should create fallback animation with delay", async () => {
     const { useAnimationFallback } = require("../useAnimationFallback");
-    
+
     render(() => {
       const fallback = useAnimationFallback();
-      
+
       const animationPromise = fallback.createFallbackAnimation(
         testElement,
         { opacity: "1" },
         { duration: 100, delay: 50, useTransitions: true }
       );
-      
+
       expect(testElement.style.opacity).toBe("1");
       expect(testElement.style.transitionDelay).toBe("50ms");
-      
+
       return animationPromise;
     });
   });
 
   it("should create fallback staggered animation", async () => {
     const { useAnimationFallback } = require("../useAnimationFallback");
-    
-    const elements = [
-      document.createElement("div"),
-      document.createElement("div"),
-      document.createElement("div"),
-    ];
-    
+
+    const elements = [document.createElement("div"), document.createElement("div"), document.createElement("div")];
+
     elements.forEach(el => {
       el.style.opacity = "0";
       document.body.appendChild(el);
@@ -113,18 +109,18 @@ describe("useAnimationFallback", () => {
 
     render(() => {
       const fallback = useAnimationFallback();
-      
+
       const animationPromise = fallback.createFallbackStaggeredAnimation(
         elements,
         { opacity: "1" },
         { duration: 100, stagger: 50, direction: "forward" }
       );
-      
+
       elements.forEach((el, index) => {
         expect(el.style.opacity).toBe("1");
         expect(el.style.transition).toContain("opacity");
       });
-      
+
       return animationPromise;
     });
 
@@ -138,13 +134,9 @@ describe("useAnimationFallback", () => {
 
   it("should create fallback staggered animation with reverse direction", async () => {
     const { useAnimationFallback } = require("../useAnimationFallback");
-    
-    const elements = [
-      document.createElement("div"),
-      document.createElement("div"),
-      document.createElement("div"),
-    ];
-    
+
+    const elements = [document.createElement("div"), document.createElement("div"), document.createElement("div")];
+
     elements.forEach(el => {
       el.style.opacity = "0";
       document.body.appendChild(el);
@@ -152,18 +144,18 @@ describe("useAnimationFallback", () => {
 
     render(() => {
       const fallback = useAnimationFallback();
-      
+
       const animationPromise = fallback.createFallbackStaggeredAnimation(
         elements,
         { opacity: "1" },
         { duration: 100, stagger: 50, direction: "reverse" }
       );
-      
+
       elements.forEach((el, index) => {
         expect(el.style.opacity).toBe("1");
         expect(el.style.transition).toContain("opacity");
       });
-      
+
       return animationPromise;
     });
 
@@ -177,13 +169,9 @@ describe("useAnimationFallback", () => {
 
   it("should create fallback staggered animation with center direction", async () => {
     const { useAnimationFallback } = require("../useAnimationFallback");
-    
-    const elements = [
-      document.createElement("div"),
-      document.createElement("div"),
-      document.createElement("div"),
-    ];
-    
+
+    const elements = [document.createElement("div"), document.createElement("div"), document.createElement("div")];
+
     elements.forEach(el => {
       el.style.opacity = "0";
       document.body.appendChild(el);
@@ -191,18 +179,18 @@ describe("useAnimationFallback", () => {
 
     render(() => {
       const fallback = useAnimationFallback();
-      
+
       const animationPromise = fallback.createFallbackStaggeredAnimation(
         elements,
         { opacity: "1" },
         { duration: 100, stagger: 50, direction: "center" }
       );
-      
+
       elements.forEach((el, index) => {
         expect(el.style.opacity).toBe("1");
         expect(el.style.transition).toContain("opacity");
       });
-      
+
       return animationPromise;
     });
 
@@ -216,13 +204,9 @@ describe("useAnimationFallback", () => {
 
   it("should create fallback staggered animation with random direction", async () => {
     const { useAnimationFallback } = require("../useAnimationFallback");
-    
-    const elements = [
-      document.createElement("div"),
-      document.createElement("div"),
-      document.createElement("div"),
-    ];
-    
+
+    const elements = [document.createElement("div"), document.createElement("div"), document.createElement("div")];
+
     elements.forEach(el => {
       el.style.opacity = "0";
       document.body.appendChild(el);
@@ -230,18 +214,18 @@ describe("useAnimationFallback", () => {
 
     render(() => {
       const fallback = useAnimationFallback();
-      
+
       const animationPromise = fallback.createFallbackStaggeredAnimation(
         elements,
         { opacity: "1" },
         { duration: 100, stagger: 50, direction: "random" }
       );
-      
+
       elements.forEach((el, index) => {
         expect(el.style.opacity).toBe("1");
         expect(el.style.transition).toContain("opacity");
       });
-      
+
       return animationPromise;
     });
 
@@ -255,28 +239,28 @@ describe("useAnimationFallback", () => {
 
   it("should create fallback staggered animation state", () => {
     const { useAnimationFallback } = require("../useAnimationFallback");
-    
+
     render(() => {
       const fallback = useAnimationFallback();
-      
+
       const state = fallback.createFallbackStaggeredAnimationState(3, {
         duration: 100,
         stagger: 50,
         direction: "forward",
       });
-      
+
       expect(state.items().length).toBe(0);
       expect(state.isAnimating()).toBe(false);
-      
+
       // Test start
       state.start();
       expect(state.isAnimating()).toBe(true);
       expect(state.items().length).toBe(3);
-      
+
       // Test stop
       state.stop();
       expect(state.isAnimating()).toBe(false);
-      
+
       // Test reset
       state.reset();
       expect(state.items().length).toBe(0);
@@ -285,22 +269,26 @@ describe("useAnimationFallback", () => {
 
   it("should create fallback animation loop", async () => {
     const { useAnimationFallback } = require("../useAnimationFallback");
-    
+
     render(() => {
       const fallback = useAnimationFallback();
-      
+
       let progress = 0;
       let completed = false;
-      
+
       const animationPromise = fallback.createFallbackAnimationLoop(
         100,
-        (p) => { progress = p; },
-        () => { completed = true; }
+        p => {
+          progress = p;
+        },
+        () => {
+          completed = true;
+        }
       );
-      
+
       expect(progress).toBe(0);
       expect(completed).toBe(false);
-      
+
       return animationPromise.then(() => {
         expect(progress).toBe(1);
         expect(completed).toBe(true);
@@ -316,19 +304,19 @@ describe("useAnimationFallback", () => {
     });
 
     const { useAnimationFallback } = require("../useAnimationFallback");
-    
+
     render(() => {
       const fallback = useAnimationFallback();
-      
+
       const animationPromise = fallback.createFallbackAnimation(
         testElement,
         { opacity: "1" },
         { duration: 100, useTransitions: true }
       );
-      
+
       expect(testElement.style.opacity).toBe("1");
       expect(testElement.style.transition).toBe("");
-      
+
       return animationPromise;
     });
   });
@@ -341,13 +329,9 @@ describe("useAnimationFallback", () => {
     });
 
     const { useAnimationFallback } = require("../useAnimationFallback");
-    
-    const elements = [
-      document.createElement("div"),
-      document.createElement("div"),
-      document.createElement("div"),
-    ];
-    
+
+    const elements = [document.createElement("div"), document.createElement("div"), document.createElement("div")];
+
     elements.forEach(el => {
       el.style.opacity = "0";
       document.body.appendChild(el);
@@ -355,18 +339,18 @@ describe("useAnimationFallback", () => {
 
     render(() => {
       const fallback = useAnimationFallback();
-      
+
       const animationPromise = fallback.createFallbackStaggeredAnimation(
         elements,
         { opacity: "1" },
         { duration: 100, stagger: 50 }
       );
-      
+
       elements.forEach((el, index) => {
         expect(el.style.opacity).toBe("1");
         expect(el.style.transition).toBe("");
       });
-      
+
       return animationPromise;
     });
 
@@ -386,19 +370,23 @@ describe("useAnimationFallback", () => {
     });
 
     const { useAnimationFallback } = require("../useAnimationFallback");
-    
+
     render(() => {
       const fallback = useAnimationFallback();
-      
+
       let progress = 0;
       let completed = false;
-      
+
       const animationPromise = fallback.createFallbackAnimationLoop(
         100,
-        (p) => { progress = p; },
-        () => { completed = true; }
+        p => {
+          progress = p;
+        },
+        () => {
+          completed = true;
+        }
       );
-      
+
       return animationPromise.then(() => {
         expect(progress).toBe(1);
         expect(completed).toBe(true);

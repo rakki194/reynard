@@ -152,222 +152,223 @@ const DemoContent: Component = () => {
             <>
               {/* Navigation */}
               <div class="demo-actions" style={{ "margin-bottom": "2rem", "justify-content": "center" }}>
-            <button
-              class={`btn ${demoMode() === "overview" ? "btn-primary" : "btn-secondary"}`}
-              onClick={() => setDemoMode("overview")}
-            >
-              <Info size={16} />
-              Overview
-            </button>
-            <button
-              class={`btn ${demoMode() === "errors" ? "btn-primary" : "btn-secondary"}`}
-              onClick={() => setDemoMode("errors")}
-            >
-              <Bug size={16} />
-              Error Demos
-            </button>
-            <button
-              class={`btn ${demoMode() === "recovery" ? "btn-primary" : "btn-secondary"}`}
-              onClick={() => setDemoMode("recovery")}
-            >
-              <ArrowClockwise size={16} />
-              Recovery
-            </button>
-            <button
-              class={`btn ${demoMode() === "analytics" ? "btn-primary" : "btn-secondary"}`}
-              onClick={() => setDemoMode("analytics")}
-            >
-              <Database size={16} />
-              Analytics
-            </button>
-            <button class="btn btn-warning" onClick={resetDemo}>
-              <ArrowClockwise size={16} />
-              Reset Demo
-            </button>
-          </div>
+                <button
+                  class={`btn ${demoMode() === "overview" ? "btn-primary" : "btn-secondary"}`}
+                  onClick={() => setDemoMode("overview")}
+                >
+                  <Info size={16} />
+                  Overview
+                </button>
+                <button
+                  class={`btn ${demoMode() === "errors" ? "btn-primary" : "btn-secondary"}`}
+                  onClick={() => setDemoMode("errors")}
+                >
+                  <Bug size={16} />
+                  Error Demos
+                </button>
+                <button
+                  class={`btn ${demoMode() === "recovery" ? "btn-primary" : "btn-secondary"}`}
+                  onClick={() => setDemoMode("recovery")}
+                >
+                  <ArrowClockwise size={16} />
+                  Recovery
+                </button>
+                <button
+                  class={`btn ${demoMode() === "analytics" ? "btn-primary" : "btn-secondary"}`}
+                  onClick={() => setDemoMode("analytics")}
+                >
+                  <Database size={16} />
+                  Analytics
+                </button>
+                <button class="btn btn-warning" onClick={resetDemo}>
+                  <ArrowClockwise size={16} />
+                  Reset Demo
+                </button>
+              </div>
 
-          {/* Demo Content */}
-          <Show
-            when={demoMode() === "overview"}
-            fallback={
+              {/* Demo Content */}
               <Show
-                when={demoMode() === "errors"}
+                when={demoMode() === "overview"}
                 fallback={
                   <Show
-                    when={demoMode() === "recovery"}
+                    when={demoMode() === "errors"}
                     fallback={
-                      <Show when={demoMode() === "analytics"}>
-                        <div class="error-demo-container">
-                          <h2>Analytics Dashboard</h2>
-                          <p>Error analytics and recovery statistics will be displayed here.</p>
-                          <Show when={analytics()}>
-                            <div class="analytics-grid">
-                              <div class="analytics-card">
-                                <h4>Total Errors</h4>
-                                <div class="value">{analytics()?.total_errors || 0}</div>
-                              </div>
-                              <div class="analytics-card">
-                                <h4>Recovery Attempts</h4>
-                                <div class="value">{analytics()?.recovery_attempts || 0}</div>
-                              </div>
+                      <Show
+                        when={demoMode() === "recovery"}
+                        fallback={
+                          <Show when={demoMode() === "analytics"}>
+                            <div class="error-demo-container">
+                              <h2>Analytics Dashboard</h2>
+                              <p>Error analytics and recovery statistics will be displayed here.</p>
+                              <Show when={analytics()}>
+                                <div class="analytics-grid">
+                                  <div class="analytics-card">
+                                    <h4>Total Errors</h4>
+                                    <div class="value">{analytics()?.total_errors || 0}</div>
+                                  </div>
+                                  <div class="analytics-card">
+                                    <h4>Recovery Attempts</h4>
+                                    <div class="value">{analytics()?.recovery_attempts || 0}</div>
+                                  </div>
+                                </div>
+                              </Show>
                             </div>
                           </Show>
+                        }
+                      >
+                        <div class="error-demo-container">
+                          <h2>Recovery Strategy Demonstrations</h2>
+                          <p>Test various recovery strategies and see how they handle different error scenarios.</p>
+                          <div class="demo-actions">
+                            <button class="btn btn-primary">Test Retry Strategy</button>
+                            <button class="btn btn-secondary">Test Reset Strategy</button>
+                            <button class="btn btn-warning">Test Fallback Strategy</button>
+                          </div>
                         </div>
                       </Show>
                     }
                   >
                     <div class="error-demo-container">
-                      <h2>Recovery Strategy Demonstrations</h2>
-                      <p>Test various recovery strategies and see how they handle different error scenarios.</p>
+                      <h2>Error Boundary Demonstrations</h2>
+                      <p>Test various error scenarios and see how the error boundary system handles them.</p>
                       <div class="demo-actions">
-                        <button class="btn btn-primary">Test Retry Strategy</button>
-                        <button class="btn btn-secondary">Test Reset Strategy</button>
-                        <button class="btn btn-warning">Test Fallback Strategy</button>
+                        <button class="btn btn-primary">Simulate Network Error</button>
+                        <button class="btn btn-warning">Simulate Timeout Error</button>
+                        <button class="btn btn-danger">Simulate Critical Error</button>
                       </div>
                     </div>
                   </Show>
                 }
               >
-                <div class="error-demo-container">
-                  <h2>Error Boundary Demonstrations</h2>
-                  <p>Test various error scenarios and see how the error boundary system handles them.</p>
-                  <div class="demo-actions">
-                    <button class="btn btn-primary">Simulate Network Error</button>
-                    <button class="btn btn-warning">Simulate Timeout Error</button>
-                    <button class="btn btn-danger">Simulate Critical Error</button>
+                <div class="demo-grid">
+                  <div class="demo-card">
+                    <h3>
+                      <Bug size={24} />
+                      Error Boundaries
+                    </h3>
+                    <p>
+                      Comprehensive error boundary system with automatic error classification, severity assessment, and
+                      recovery strategies.
+                    </p>
+                    <div class="demo-actions">
+                      <button class="btn btn-primary" onClick={() => setDemoMode("errors")}>
+                        <Bug size={16} />
+                        Try Error Demos
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="demo-card">
+                    <h3>
+                      <ArrowClockwise size={24} />
+                      Recovery Strategies
+                    </h3>
+                    <p>
+                      Built-in recovery mechanisms including retry, reset, fallback UI, redirect, and reload strategies
+                      with priority-based execution.
+                    </p>
+                    <div class="demo-actions">
+                      <button class="btn btn-primary" onClick={() => setDemoMode("recovery")}>
+                        <ArrowClockwise size={16} />
+                        Test Recovery
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="demo-card">
+                    <h3>
+                      <Database size={24} />
+                      Error Analytics
+                    </h3>
+                    <p>
+                      Real-time error reporting, analytics, and monitoring with filtering, batching, and external
+                      service integration.
+                    </p>
+                    <div class="demo-actions">
+                      <button class="btn btn-primary" onClick={() => setDemoMode("analytics")}>
+                        <Database size={16} />
+                        View Analytics
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="demo-card">
+                    <h3>
+                      <Shield size={24} />
+                      Error Classification
+                    </h3>
+                    <p>
+                      Automatic error categorization by type (network, rendering, validation, auth, permission,
+                      resource, timeout) and severity levels.
+                    </p>
+                    <div class="demo-actions">
+                      <button class="btn btn-info" onClick={() => setDemoMode("errors")}>
+                        <Shield size={16} />
+                        See Classification
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="demo-card">
+                    <h3>
+                      <Zap size={24} />
+                      Performance
+                    </h3>
+                    <p>
+                      Optimized error handling with minimal performance impact, efficient recovery strategies, and smart
+                      error reporting.
+                    </p>
+                    <div class="demo-actions">
+                      <button class="btn btn-success" onClick={() => setDemoMode("analytics")}>
+                        <Zap size={16} />
+                        View Performance
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="demo-card">
+                    <h3>
+                      <Settings size={24} />
+                      Configuration
+                    </h3>
+                    <p>
+                      Highly configurable error boundaries with custom recovery strategies, error reporting endpoints,
+                      and user-defined error handling.
+                    </p>
+                    <div class="demo-actions">
+                      <button class="btn btn-secondary" onClick={() => setDemoMode("recovery")}>
+                        <Settings size={16} />
+                        Configure
+                      </button>
+                    </div>
                   </div>
                 </div>
+
+                {/* Backend Status */}
+                <Show when={backendStatus() === "connected"}>
+                  <div class="status-message status-success">
+                    <CheckmarkCircle size={20} />
+                    <span>Backend connected successfully. All error simulation endpoints are available.</span>
+                  </div>
+                </Show>
+
+                <Show when={backendStatus() === "disconnected"}>
+                  <div class="status-message status-error">
+                    <Warning size={20} />
+                    <span>
+                      Backend disconnected. Error simulation features will not work. Make sure to start the backend
+                      server.
+                    </span>
+                  </div>
+                </Show>
+
+                <Show when={backendStatus() === "checking"}>
+                  <div class="status-message status-info">
+                    <Info size={20} />
+                    <span>Checking backend connection...</span>
+                  </div>
+                </Show>
               </Show>
-            }
-          >
-            <div class="demo-grid">
-              <div class="demo-card">
-                <h3>
-                  <Bug size={24} />
-                  Error Boundaries
-                </h3>
-                <p>
-                  Comprehensive error boundary system with automatic error classification, severity assessment, and
-                  recovery strategies.
-                </p>
-                <div class="demo-actions">
-                  <button class="btn btn-primary" onClick={() => setDemoMode("errors")}>
-                    <Bug size={16} />
-                    Try Error Demos
-                  </button>
-                </div>
-              </div>
-
-              <div class="demo-card">
-                <h3>
-                  <ArrowClockwise size={24} />
-                  Recovery Strategies
-                </h3>
-                <p>
-                  Built-in recovery mechanisms including retry, reset, fallback UI, redirect, and reload strategies with
-                  priority-based execution.
-                </p>
-                <div class="demo-actions">
-                  <button class="btn btn-primary" onClick={() => setDemoMode("recovery")}>
-                    <ArrowClockwise size={16} />
-                    Test Recovery
-                  </button>
-                </div>
-              </div>
-
-              <div class="demo-card">
-                <h3>
-                  <Database size={24} />
-                  Error Analytics
-                </h3>
-                <p>
-                  Real-time error reporting, analytics, and monitoring with filtering, batching, and external service
-                  integration.
-                </p>
-                <div class="demo-actions">
-                  <button class="btn btn-primary" onClick={() => setDemoMode("analytics")}>
-                    <Database size={16} />
-                    View Analytics
-                  </button>
-                </div>
-              </div>
-
-              <div class="demo-card">
-                <h3>
-                  <Shield size={24} />
-                  Error Classification
-                </h3>
-                <p>
-                  Automatic error categorization by type (network, rendering, validation, auth, permission, resource,
-                  timeout) and severity levels.
-                </p>
-                <div class="demo-actions">
-                  <button class="btn btn-info" onClick={() => setDemoMode("errors")}>
-                    <Shield size={16} />
-                    See Classification
-                  </button>
-                </div>
-              </div>
-
-              <div class="demo-card">
-                <h3>
-                  <Zap size={24} />
-                  Performance
-                </h3>
-                <p>
-                  Optimized error handling with minimal performance impact, efficient recovery strategies, and smart
-                  error reporting.
-                </p>
-                <div class="demo-actions">
-                  <button class="btn btn-success" onClick={() => setDemoMode("analytics")}>
-                    <Zap size={16} />
-                    View Performance
-                  </button>
-                </div>
-              </div>
-
-              <div class="demo-card">
-                <h3>
-                  <Settings size={24} />
-                  Configuration
-                </h3>
-                <p>
-                  Highly configurable error boundaries with custom recovery strategies, error reporting endpoints, and
-                  user-defined error handling.
-                </p>
-                <div class="demo-actions">
-                  <button class="btn btn-secondary" onClick={() => setDemoMode("recovery")}>
-                    <Settings size={16} />
-                    Configure
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Backend Status */}
-            <Show when={backendStatus() === "connected"}>
-              <div class="status-message status-success">
-                <CheckmarkCircle size={20} />
-                <span>Backend connected successfully. All error simulation endpoints are available.</span>
-              </div>
-            </Show>
-
-            <Show when={backendStatus() === "disconnected"}>
-              <div class="status-message status-error">
-                <Warning size={20} />
-                <span>
-                  Backend disconnected. Error simulation features will not work. Make sure to start the backend server.
-                </span>
-              </div>
-            </Show>
-
-            <Show when={backendStatus() === "checking"}>
-              <div class="status-message status-info">
-                <Info size={20} />
-                <span>Checking backend connection...</span>
-              </div>
-            </Show>
-          </Show>
             </>
           )}
         </ErrorBoundary>

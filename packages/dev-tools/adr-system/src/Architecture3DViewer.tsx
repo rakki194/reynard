@@ -210,54 +210,54 @@ export function Architecture3DViewer(props: Architecture3DViewerProps) {
     lighting: {
       ambient: {
         color: "#404040",
-        intensity: 0.4
+        intensity: 0.4,
       },
       directional: {
         color: "#ffffff",
         intensity: 0.8,
-        position: [1, 1, 1] as [number, number, number]
+        position: [1, 1, 1] as [number, number, number],
       },
       point: {
         color: "#ffffff",
         intensity: 0.5,
-        position: [0, 50, 0] as [number, number, number]
-      }
+        position: [0, 50, 0] as [number, number, number],
+      },
     },
     componentVisualization: {
       size: {
         min: 1,
         max: 10,
-        scale: "linear" as const
+        scale: "linear" as const,
       },
       color: {
         scheme: "type" as const,
-        customColors: {}
+        customColors: {},
       },
       shape: {
         scheme: "type" as const,
-        customShapes: {}
+        customShapes: {},
       },
       opacity: 0.8,
-      wireframe: false
+      wireframe: false,
     },
     relationshipVisualization: {
       enabled: true,
       width: {
         min: 0.1,
         max: 2.0,
-        scale: "linear" as const
+        scale: "linear" as const,
       },
       color: {
         scheme: "type" as const,
-        customColors: {}
+        customColors: {},
       },
       style: "tube" as const,
       opacity: 0.6,
       animation: {
         enabled: true,
         speed: 1.0,
-        direction: "forward" as const
-      }
+        direction: "forward" as const,
+      },
     },
     clustering: {
       enabled: false,
@@ -268,8 +268,8 @@ export function Architecture3DViewer(props: Architecture3DViewerProps) {
         showClusters: true,
         clusterColors: ["#ff6b6b", "#4ecdc4", "#45b7d1", "#96ceb4", "#feca57"],
         clusterOpacity: 0.3,
-        showClusterLabels: true
-      }
+        showClusterLabels: true,
+      },
     },
     performance: {
       maxComponents: 1000,
@@ -278,9 +278,9 @@ export function Architecture3DViewer(props: Architecture3DViewerProps) {
       occlusionCulling: false,
       instancing: true,
       shadowMapping: false,
-      antialiasing: true
+      antialiasing: true,
     },
-    ...props.config
+    ...props.config,
   }));
 
   // State management
@@ -308,25 +308,25 @@ export function Architecture3DViewer(props: Architecture3DViewerProps) {
   // Computed values
   const components = createMemo(() => {
     let comps: (ArchitectureComponent | DependencyNode)[] = [];
-    
+
     if (props.architectureMap) {
       comps = Array.from(props.architectureMap.components.values());
     } else if (props.dependencyGraph) {
       comps = Array.from(props.dependencyGraph.nodes.values());
     }
-    
+
     return comps;
   });
 
   const relationships = createMemo(() => {
     let rels: (ArchitectureRelationship | DependencyEdge)[] = [];
-    
+
     if (props.architectureMap) {
       rels = Array.from(props.architectureMap.relationships.values());
     } else if (props.dependencyGraph) {
       rels = Array.from(props.dependencyGraph.edges.values());
     }
-    
+
     return rels;
   });
 
@@ -336,10 +336,11 @@ export function Architecture3DViewer(props: Architecture3DViewerProps) {
     // Apply search filter
     if (searchQuery()) {
       const query = searchQuery().toLowerCase();
-      filtered = filtered.filter(comp => 
-        comp.name.toLowerCase().includes(query) ||
-        comp.path.toLowerCase().includes(query) ||
-        ('category' in comp && comp.category.toLowerCase().includes(query))
+      filtered = filtered.filter(
+        comp =>
+          comp.name.toLowerCase().includes(query) ||
+          comp.path.toLowerCase().includes(query) ||
+          ("category" in comp && comp.category.toLowerCase().includes(query))
       );
     }
 
@@ -349,13 +350,13 @@ export function Architecture3DViewer(props: Architecture3DViewerProps) {
     }
 
     // Apply category filter
-    if (filterCategory() !== "all" && 'category' in filtered[0]) {
-      filtered = filtered.filter(comp => 'category' in comp && comp.category === filterCategory());
+    if (filterCategory() !== "all" && "category" in filtered[0]) {
+      filtered = filtered.filter(comp => "category" in comp && comp.category === filterCategory());
     }
 
     // Apply layer filter
-    if (filterLayer() !== "all" && 'layer' in filtered[0]) {
-      filtered = filtered.filter(comp => 'layer' in comp && comp.layer === filterLayer());
+    if (filterLayer() !== "all" && "layer" in filtered[0]) {
+      filtered = filtered.filter(comp => "layer" in comp && comp.layer === filterLayer());
     }
 
     return filtered;
@@ -370,9 +371,7 @@ export function Architecture3DViewer(props: Architecture3DViewerProps) {
 
     // Only show relationships between visible components
     const visibleComponentIds = new Set(filteredComponents().map(comp => comp.id));
-    filtered = filtered.filter(rel => 
-      visibleComponentIds.has(rel.source) && visibleComponentIds.has(rel.target)
-    );
+    filtered = filtered.filter(rel => visibleComponentIds.has(rel.source) && visibleComponentIds.has(rel.target));
 
     return filtered;
   });
@@ -388,7 +387,7 @@ export function Architecture3DViewer(props: Architecture3DViewerProps) {
   const componentCategories = createMemo(() => {
     const categories = new Set<string>();
     for (const comp of components()) {
-      if ('category' in comp) {
+      if ("category" in comp) {
         categories.add(comp.category);
       }
     }
@@ -398,7 +397,7 @@ export function Architecture3DViewer(props: Architecture3DViewerProps) {
   const componentLayers = createMemo(() => {
     const layers = new Set<string>();
     for (const comp of components()) {
-      if ('layer' in comp) {
+      if ("layer" in comp) {
         layers.add(comp.layer);
       }
     }
@@ -415,7 +414,7 @@ export function Architecture3DViewer(props: Architecture3DViewerProps) {
       totalComponents,
       totalRelationships,
       visibleComponents,
-      visibleRelationships
+      visibleRelationships,
     };
   });
 
@@ -438,7 +437,7 @@ export function Architecture3DViewer(props: Architecture3DViewerProps) {
           class: [0.8, 0.3, 0.8],
           function: [0.3, 0.8, 0.8],
           data: [0.5, 0.5, 0.5],
-          config: [0.6, 0.6, 0.6]
+          config: [0.6, 0.6, 0.6],
         };
         color = typeColors[comp.type] || [0.5, 0.5, 0.5];
       }
@@ -446,22 +445,25 @@ export function Architecture3DViewer(props: Architecture3DViewerProps) {
       // Calculate size based on configuration
       let size = componentSize();
       if (config().componentVisualization.size.scale === "logarithmic") {
-        size = Math.log10(('metadata' in comp && comp.metadata.linesOfCode) || 100) * 2;
+        size = Math.log10(("metadata" in comp && comp.metadata.linesOfCode) || 100) * 2;
       }
 
       return {
         id: comp.id,
         position: [x, y, z] as [number, number, number],
         color,
-        size: Math.max(config().componentVisualization.size.min, Math.min(config().componentVisualization.size.max, size)),
+        size: Math.max(
+          config().componentVisualization.size.min,
+          Math.min(config().componentVisualization.size.max, size)
+        ),
         metadata: {
           name: comp.name,
           type: comp.type,
-          category: 'category' in comp ? comp.category : 'unknown',
-          layer: 'layer' in comp ? comp.layer : 'unknown',
+          category: "category" in comp ? comp.category : "unknown",
+          layer: "layer" in comp ? comp.layer : "unknown",
           path: comp.path,
-          description: 'description' in comp ? comp.description : ''
-        }
+          description: "description" in comp ? comp.description : "",
+        },
       };
     });
 
@@ -471,7 +473,7 @@ export function Architecture3DViewer(props: Architecture3DViewerProps) {
   // Event handlers
   const handleComponentClick = (component: ArchitectureComponent | DependencyNode, event: any) => {
     event.stopPropagation();
-    
+
     const newSelection = new Set(selectedComponents());
     if (newSelection.has(component.id)) {
       newSelection.delete(component.id);
@@ -485,7 +487,7 @@ export function Architecture3DViewer(props: Architecture3DViewerProps) {
 
   const handleRelationshipClick = (relationship: ArchitectureRelationship | DependencyEdge, event: any) => {
     event.stopPropagation();
-    
+
     const newSelection = new Set(selectedRelationships());
     if (newSelection.has(relationship.id)) {
       newSelection.delete(relationship.id);
@@ -514,9 +516,13 @@ export function Architecture3DViewer(props: Architecture3DViewerProps) {
     const points = visualizationData().points;
     if (points.length === 0) return;
 
-    let minX = Infinity, minY = Infinity, minZ = Infinity;
-    let maxX = -Infinity, maxY = -Infinity, maxZ = -Infinity;
-    
+    let minX = Infinity,
+      minY = Infinity,
+      minZ = Infinity;
+    let maxX = -Infinity,
+      maxY = -Infinity,
+      maxZ = -Infinity;
+
     for (const point of points) {
       const [x, y, z] = point.position;
       minX = Math.min(minX, x);
@@ -550,84 +556,61 @@ export function Architecture3DViewer(props: Architecture3DViewerProps) {
   return (
     <div class={`architecture-3d-viewer ${props.class || ""}`}>
       {/* Control Panel */}
-      <div class="viewer-controls" style={{ 
-        display: "flex", 
-        "flex-wrap": "wrap", 
-        gap: "8px", 
-        padding: "12px",
-        "background-color": "#2a2a2a",
-        "border-bottom": "1px solid #444"
-      }}>
+      <div
+        class="viewer-controls"
+        style={{
+          display: "flex",
+          "flex-wrap": "wrap",
+          gap: "8px",
+          padding: "12px",
+          "background-color": "#2a2a2a",
+          "border-bottom": "1px solid #444",
+        }}
+      >
         {/* Search */}
         <Input
           placeholder="Search components..."
           value={searchQuery()}
-          onInput={(e) => setSearchQuery(e.target.value)}
+          onInput={e => setSearchQuery(e.target.value)}
           style={{ width: "200px" }}
         />
 
         {/* Filters */}
-        <Select
-          value={filterType()}
-          onChange={(e) => setFilterType(e.target.value)}
-          style={{ width: "120px" }}
-        >
+        <Select value={filterType()} onChange={e => setFilterType(e.target.value)} style={{ width: "120px" }}>
           <option value="all">All Types</option>
-          <For each={componentTypes()}>
-            {(type) => <option value={type}>{type}</option>}
-          </For>
+          <For each={componentTypes()}>{type => <option value={type}>{type}</option>}</For>
         </Select>
 
         <Show when={componentCategories().length > 0}>
-          <Select
-            value={filterCategory()}
-            onChange={(e) => setFilterCategory(e.target.value)}
-            style={{ width: "120px" }}
-          >
+          <Select value={filterCategory()} onChange={e => setFilterCategory(e.target.value)} style={{ width: "120px" }}>
             <option value="all">All Categories</option>
-            <For each={componentCategories()}>
-              {(category) => <option value={category}>{category}</option>}
-            </For>
+            <For each={componentCategories()}>{category => <option value={category}>{category}</option>}</For>
           </Select>
         </Show>
 
         <Show when={componentLayers().length > 0}>
-          <Select
-            value={filterLayer()}
-            onChange={(e) => setFilterLayer(e.target.value)}
-            style={{ width: "120px" }}
-          >
+          <Select value={filterLayer()} onChange={e => setFilterLayer(e.target.value)} style={{ width: "120px" }}>
             <option value="all">All Layers</option>
-            <For each={componentLayers()}>
-              {(layer) => <option value={layer}>{layer}</option>}
-            </For>
+            <For each={componentLayers()}>{layer => <option value={layer}>{layer}</option>}</For>
           </Select>
         </Show>
 
         {/* Toggles */}
         <Checkbox
           checked={showRelationships()}
-          onChange={(e) => setShowRelationships(e.target.checked)}
+          onChange={e => setShowRelationships(e.target.checked)}
           label="Show Relationships"
         />
 
-        <Checkbox
-          checked={showLabels()}
-          onChange={(e) => setShowLabels(e.target.checked)}
-          label="Show Labels"
-        />
+        <Checkbox checked={showLabels()} onChange={e => setShowLabels(e.target.checked)} label="Show Labels" />
 
-        <Checkbox
-          checked={clusteringEnabled()}
-          onChange={toggleClustering}
-          label="Enable Clustering"
-        />
+        <Checkbox checked={clusteringEnabled()} onChange={toggleClustering} label="Enable Clustering" />
 
         {/* Clustering Controls */}
         <Show when={clusteringEnabled()}>
           <Select
             value={clusteringAlgorithm()}
-            onChange={(e) => setClusteringAlgorithm(e.target.value as any)}
+            onChange={e => setClusteringAlgorithm(e.target.value as any)}
             style={{ width: "120px" }}
           >
             <option value="kmeans">K-Means</option>
@@ -641,7 +624,7 @@ export function Architecture3DViewer(props: Architecture3DViewerProps) {
               min={2}
               max={10}
               value={maxClusters()}
-              onChange={(value) => setMaxClusters(value)}
+              onChange={value => setMaxClusters(value)}
               style={{ width: "80px" }}
             />
             <span style={{ color: "#fff", "font-size": "12px" }}>{maxClusters()}</span>
@@ -655,7 +638,7 @@ export function Architecture3DViewer(props: Architecture3DViewerProps) {
             min={1}
             max={10}
             value={componentSize()}
-            onChange={(value) => setComponentSize(value)}
+            onChange={value => setComponentSize(value)}
             style={{ width: "80px" }}
           />
         </div>
@@ -667,7 +650,7 @@ export function Architecture3DViewer(props: Architecture3DViewerProps) {
             max={1}
             step={0.1}
             value={componentOpacity()}
-            onChange={(value) => setComponentOpacity(value)}
+            onChange={value => setComponentOpacity(value)}
             style={{ width: "80px" }}
           />
         </div>
@@ -688,15 +671,22 @@ export function Architecture3DViewer(props: Architecture3DViewerProps) {
       </div>
 
       {/* Statistics */}
-      <div class="viewer-stats" style={{ 
-        display: "flex", 
-        gap: "16px", 
-        padding: "8px 12px",
-        "background-color": "#333",
-        "font-size": "12px"
-      }}>
-        <Badge variant="info">Components: {statistics().visibleComponents}/{statistics().totalComponents}</Badge>
-        <Badge variant="info">Relationships: {statistics().visibleRelationships}/{statistics().totalRelationships}</Badge>
+      <div
+        class="viewer-stats"
+        style={{
+          display: "flex",
+          gap: "16px",
+          padding: "8px 12px",
+          "background-color": "#333",
+          "font-size": "12px",
+        }}
+      >
+        <Badge variant="info">
+          Components: {statistics().visibleComponents}/{statistics().totalComponents}
+        </Badge>
+        <Badge variant="info">
+          Relationships: {statistics().visibleRelationships}/{statistics().totalRelationships}
+        </Badge>
         <Badge variant="info">Selected: {selectedComponents().size}</Badge>
         <Badge variant={clusteringEnabled() ? "success" : "secondary"}>
           Clustering: {clusteringEnabled() ? "On" : "Off"}
@@ -705,88 +695,93 @@ export function Architecture3DViewer(props: Architecture3DViewerProps) {
 
       {/* 3D Visualization */}
       <div class="viewer-3d" style={{ position: "relative" }}>
-        <Show when={isLoading()} fallback={
-          <ThreeJSVisualization
-            width={props.width || 1000}
-            height={props.height || 700}
-            backgroundColor={config().backgroundColor}
-            enableDamping={config().enableDamping}
-            autoRotate={config().autoRotate}
-            onSceneReady={(scene, camera, renderer, controls) => {
-              // Setup lighting
-              const ambientLight = new THREE.AmbientLight(
-                config().lighting.ambient.color,
-                config().lighting.ambient.intensity
-              );
-              scene.add(ambientLight);
-
-              const directionalLight = new THREE.DirectionalLight(
-                config().lighting.directional.color,
-                config().lighting.directional.intensity
-              );
-              directionalLight.position.set(...config().lighting.directional.position);
-              scene.add(directionalLight);
-
-              const pointLight = new THREE.PointLight(
-                config().lighting.point.color,
-                config().lighting.point.intensity
-              );
-              pointLight.position.set(...config().lighting.point.position);
-              scene.add(pointLight);
-
-              // Setup grid
-              if (config().showGrid) {
-                const gridHelper = new THREE.GridHelper(
-                  config().gridSize,
-                  config().gridDivisions,
-                  config().gridColor,
-                  config().gridColor
+        <Show
+          when={isLoading()}
+          fallback={
+            <ThreeJSVisualization
+              width={props.width || 1000}
+              height={props.height || 700}
+              backgroundColor={config().backgroundColor}
+              enableDamping={config().enableDamping}
+              autoRotate={config().autoRotate}
+              onSceneReady={(scene, camera, renderer, controls) => {
+                // Setup lighting
+                const ambientLight = new THREE.AmbientLight(
+                  config().lighting.ambient.color,
+                  config().lighting.ambient.intensity
                 );
-                scene.add(gridHelper);
-              }
+                scene.add(ambientLight);
 
-              // Setup axes
-              if (config().showAxes) {
-                const axesHelper = new THREE.AxesHelper(config().axisSize);
-                scene.add(axesHelper);
-              }
+                const directionalLight = new THREE.DirectionalLight(
+                  config().lighting.directional.color,
+                  config().lighting.directional.intensity
+                );
+                directionalLight.position.set(...config().lighting.directional.position);
+                scene.add(directionalLight);
 
-              // Add point cloud visualization
-              const pointCloud = new PointCloudVisualization({
-                points: visualizationData().points,
-                settings: {
-                  colorMapping: "custom",
-                  sizeMapping: "custom",
-                  enableHighlighting: true,
-                  maxPoints: config().performance.maxComponents
-                },
-                onPointClick: (point, event) => {
-                  const component = components().find(comp => comp.id === point.id);
-                  if (component) {
-                    handleComponentClick(component, event);
-                  }
+                const pointLight = new THREE.PointLight(
+                  config().lighting.point.color,
+                  config().lighting.point.intensity
+                );
+                pointLight.position.set(...config().lighting.point.position);
+                scene.add(pointLight);
+
+                // Setup grid
+                if (config().showGrid) {
+                  const gridHelper = new THREE.GridHelper(
+                    config().gridSize,
+                    config().gridDivisions,
+                    config().gridColor,
+                    config().gridColor
+                  );
+                  scene.add(gridHelper);
                 }
-              });
-              
-              scene.add(pointCloud);
 
-              // Setup camera controls
-              controls.addEventListener('change', () => {
-                const position = camera.position.toArray() as [number, number, number];
-                const target = controls.target.toArray() as [number, number, number];
-                handleCameraChange(position, target);
-              });
+                // Setup axes
+                if (config().showAxes) {
+                  const axesHelper = new THREE.AxesHelper(config().axisSize);
+                  scene.add(axesHelper);
+                }
+
+                // Add point cloud visualization
+                const pointCloud = new PointCloudVisualization({
+                  points: visualizationData().points,
+                  settings: {
+                    colorMapping: "custom",
+                    sizeMapping: "custom",
+                    enableHighlighting: true,
+                    maxPoints: config().performance.maxComponents,
+                  },
+                  onPointClick: (point, event) => {
+                    const component = components().find(comp => comp.id === point.id);
+                    if (component) {
+                      handleComponentClick(component, event);
+                    }
+                  },
+                });
+
+                scene.add(pointCloud);
+
+                // Setup camera controls
+                controls.addEventListener("change", () => {
+                  const position = camera.position.toArray() as [number, number, number];
+                  const target = controls.target.toArray() as [number, number, number];
+                  handleCameraChange(position, target);
+                });
+              }}
+            />
+          }
+        >
+          <div
+            style={{
+              display: "flex",
+              "align-items": "center",
+              "justify-content": "center",
+              height: "400px",
+              "background-color": config().backgroundColor,
+              color: "#fff",
             }}
-          />
-        }>
-          <div style={{ 
-            display: "flex", 
-            "align-items": "center", 
-            "justify-content": "center",
-            height: "400px",
-            "background-color": config().backgroundColor,
-            color: "#fff"
-          }}>
+          >
             Loading 3D visualization...
           </div>
         </Show>
@@ -794,20 +789,25 @@ export function Architecture3DViewer(props: Architecture3DViewerProps) {
 
       {/* Selection Info */}
       <Show when={selectedComponents().size > 0 || selectedRelationships().size > 0}>
-        <div class="selection-info" style={{ 
-          padding: "12px",
-          "background-color": "#2a2a2a",
-          "border-top": "1px solid #444"
-        }}>
+        <div
+          class="selection-info"
+          style={{
+            padding: "12px",
+            "background-color": "#2a2a2a",
+            "border-top": "1px solid #444",
+          }}
+        >
           <h4 style={{ margin: "0 0 8px 0", color: "#fff" }}>
             Selection ({selectedComponents().size} components, {selectedRelationships().size} relationships)
           </h4>
           <div style={{ display: "flex", "flex-wrap": "wrap", gap: "8px" }}>
             <For each={Array.from(selectedComponents())}>
-              {(componentId) => {
+              {componentId => {
                 const component = components().find(comp => comp.id === componentId);
                 return component ? (
-                  <Badge variant="primary">{component.name} ({component.type})</Badge>
+                  <Badge variant="primary">
+                    {component.name} ({component.type})
+                  </Badge>
                 ) : null;
               }}
             </For>
@@ -828,15 +828,15 @@ export function Architecture3DViewerDemo() {
 
   const loadDemoData = async () => {
     setIsLoading(true);
-    
+
     try {
       // Load demo architecture map or dependency graph
       // This would typically load from actual data sources
       console.log("Loading demo 3D architecture data...");
-      
+
       // Simulate loading delay
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       // Set demo data (would be replaced with actual data loading)
       setArchitectureMap(null);
       setDependencyGraph(null);
@@ -854,28 +854,29 @@ export function Architecture3DViewerDemo() {
   return (
     <div class="architecture-3d-viewer-demo" style={{ padding: "20px" }}>
       <h2>3D Architecture Viewer Demo</h2>
-      
-      <Show when={isLoading()} fallback={
-        <Architecture3DViewer
-          architectureMap={architectureMap() || undefined}
-          dependencyGraph={dependencyGraph() || undefined}
-          width={1200}
-          height={800}
-          onComponentClick={(component, event) => {
-            console.log("Component clicked:", component);
-          }}
-          onRelationshipClick={(relationship, event) => {
-            console.log("Relationship clicked:", relationship);
-          }}
-          onCameraChange={(position, target) => {
-            console.log("Camera changed:", position, target);
-          }}
-        />
-      }>
+
+      <Show
+        when={isLoading()}
+        fallback={
+          <Architecture3DViewer
+            architectureMap={architectureMap() || undefined}
+            dependencyGraph={dependencyGraph() || undefined}
+            width={1200}
+            height={800}
+            onComponentClick={(component, event) => {
+              console.log("Component clicked:", component);
+            }}
+            onRelationshipClick={(relationship, event) => {
+              console.log("Relationship clicked:", relationship);
+            }}
+            onCameraChange={(position, target) => {
+              console.log("Camera changed:", position, target);
+            }}
+          />
+        }
+      >
         <div>Loading 3D architecture data...</div>
       </Show>
     </div>
   );
 }
-
-

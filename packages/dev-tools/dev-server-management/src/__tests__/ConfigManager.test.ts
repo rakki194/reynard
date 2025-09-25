@@ -26,7 +26,7 @@ describe("ConfigManager", () => {
   beforeEach(async () => {
     // Create mock file system
     mockFS = createMockFileSystem();
-    
+
     // Create test config manager with default config
     const defaultConfig = {
       projects: {
@@ -52,11 +52,11 @@ describe("ConfigManager", () => {
         format: "json",
       },
     };
-    
+
     testConfigManager = new TestConfigManager(defaultConfig);
-    
+
     // The file system mock is now handled globally in test-utils.ts
-    
+
     // Import ConfigManager after mocks are set up
     const { ConfigManager } = await import("../core/ConfigManager.js");
     configManager = new ConfigManager("test-config.json");
@@ -94,7 +94,7 @@ describe("ConfigManager", () => {
           format: "json",
         },
       };
-      
+
       const testConfigManager = new TestConfigManager(defaultConfig);
       const config = await testConfigManager.loadConfig();
 

@@ -23,7 +23,9 @@ export function UploadTab(props: any) {
             class="hidden"
           />
           <label for="file-upload" class="upload-label">
-            <div class="upload-icon"><Icon name="upload" /></div>
+            <div class="upload-icon">
+              <Icon name="upload" />
+            </div>
             <span>Click to upload or drag and drop</span>
             <small>Supports: .txt, .md, .py, .js, .ts, .json, .yaml, .html</small>
           </label>

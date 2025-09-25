@@ -1,6 +1,6 @@
 /**
  * 🦊 Simplified Staggered Animation Composable
- * 
+ *
  * Uses single requestAnimationFrame loop - no setTimeout anti-patterns
  */
 
@@ -91,18 +91,12 @@ export function useSimplifiedStaggeredAnimation(
       config.stagger,
       config.easing,
       (index, progress) => {
-        setItems(prev => prev.map(item => 
-          item.index === index 
-            ? { ...item, progress, isAnimating: true }
-            : item
-        ));
+        setItems(prev => prev.map(item => (item.index === index ? { ...item, progress, isAnimating: true } : item)));
       },
-      (index) => {
-        setItems(prev => prev.map(item => 
-          item.index === index 
-            ? { ...item, isAnimating: false, progress: 1 }
-            : item
-        ));
+      index => {
+        setItems(prev =>
+          prev.map(item => (item.index === index ? { ...item, isAnimating: false, progress: 1 } : item))
+        );
         config.onItemComplete?.(index);
       },
       () => {

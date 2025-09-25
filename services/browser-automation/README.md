@@ -79,17 +79,17 @@ curl -X POST "http://localhost:8001/pdf" \
 
 ### Endpoints
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/health` | GET | Health check |
-| `/info` | GET | Service information |
-| `/screenshot` | POST | Take screenshot |
-| `/screenshot/save` | POST | Save screenshot to file |
-| `/scrape` | POST | Scrape webpage content |
-| `/pdf` | POST | Generate PDF |
-| `/pdf/save` | POST | Save PDF to file |
-| `/javascript` | POST | Execute JavaScript |
-| `/interact` | POST | Perform page interactions |
+| Endpoint           | Method | Description               |
+| ------------------ | ------ | ------------------------- |
+| `/health`          | GET    | Health check              |
+| `/info`            | GET    | Service information       |
+| `/screenshot`      | POST   | Take screenshot           |
+| `/screenshot/save` | POST   | Save screenshot to file   |
+| `/scrape`          | POST   | Scrape webpage content    |
+| `/pdf`             | POST   | Generate PDF              |
+| `/pdf/save`        | POST   | Save PDF to file          |
+| `/javascript`      | POST   | Execute JavaScript        |
+| `/interact`        | POST   | Perform page interactions |
 
 ### Request Models
 
@@ -341,4 +341,4 @@ Contributions are welcome! Please follow the Reynard coding standards and submit
 
 ---
 
-*Built with 🦊 Reynard precision and 🌐 web automation expertise*
+_Built with 🦊 Reynard precision and 🌐 web automation expertise_

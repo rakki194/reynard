@@ -46,9 +46,7 @@ export const DEFAULT_BATCHING_STRATEGY: BatchingStrategy = {
 export class ParallelIteratorImpl<T extends Component[]> implements ParallelIterator<T> {
   private strategy: BatchingStrategy = DEFAULT_BATCHING_STRATEGY;
 
-  constructor(
-    private queryResult: QueryResult<T>
-  ) {}
+  constructor(private queryResult: QueryResult<T>) {}
 
   forEach(callback: (entity: Entity, ...components: T) => void): void {
     this.forEachInit(
@@ -61,7 +59,10 @@ export class ParallelIteratorImpl<T extends Component[]> implements ParallelIter
 
   forEachInit<U>(init: () => U, callback: (local: U, entity: Entity, ...components: T) => void): void {
     // Check if we're in a web worker environment
-    if (typeof Worker !== "undefined" && typeof (globalThis as { importScripts?: () => void }).importScripts === "function") {
+    if (
+      typeof Worker !== "undefined" &&
+      typeof (globalThis as { importScripts?: () => void }).importScripts === "function"
+    ) {
       // We're in a web worker, use parallel execution
       this.executeParallel(init, callback);
     } else {
@@ -86,7 +87,7 @@ export class ParallelIteratorImpl<T extends Component[]> implements ParallelIter
     // For now, fallback to sequential execution
     // In a real implementation, this would use Web Workers or SharedArrayBuffer
     // The strategy would be used to determine batch sizes for parallel processing
-    console.log('Using batching strategy:', this.strategy);
+    console.log("Using batching strategy:", this.strategy);
     this.executeSequential(init, callback);
   }
 }

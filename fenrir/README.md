@@ -1,496 +1,347 @@
-# 🐺 Fenrir Security Testing Framework
+# 🦊 Fenrir MCP Authentication Security Tests
 
-_Advanced penetration testing and security assessment toolkit for the Reynard ecosystem_
-
-**Version:** 1.0.0
-**Last Updated:** September 23, 2025
-**Author:** 🐺 The Wolf Pack
+Comprehensive security testing suite for MCP (Model Context Protocol) authentication system, including MCP server security, FastAPI backend integration, and end-to-end authentication flow validation.
 
 ## Overview
 
-Fenrir is a comprehensive, modular security testing framework designed specifically for the Reynard ecosystem. It provides systematic vulnerability assessment, penetration testing, and security validation across the entire Reynard backend infrastructure, including AI services, authentication systems, and API endpoints.
+Fenrir provides comprehensive security testing for the Reynard MCP authentication system, ensuring:
 
-The framework combines traditional security testing methodologies with cutting-edge AI-specific attack vectors, making it uniquely suited for testing modern AI-powered applications and services.
+- **MCP Server Security**: Verifies the MCP server is not publicly accessible without proper authentication
+- **JWT Token Validation**: Tests token generation, validation, expiration, and permission checking
+- **Rate Limiting**: Validates abuse prevention and rate limiting mechanisms
+- **End-to-End Flow**: Tests complete authentication flow between MCP and FastAPI backend
+- **Cross-Service Integration**: Ensures tokens work correctly across different services
+- **Security Headers**: Validates proper security headers and CORS configuration
 
-## Architecture
+## Test Architecture
 
-```mermaid
-graph TB
-    subgraph "Fenrir Core Framework"
-        A[Fuzzy Engine] --> B[Endpoint Orchestrator]
-        B --> C[Vulnerability Analyzer]
-        C --> D[Results Aggregator]
-    end
+### Test Components
 
-    subgraph "Attack Modules"
-        E[Traditional Fuzzing] --> A
-        F[Grammar-Based Fuzzing] --> A
-        G[WebSocket Fuzzing] --> A
-        H[ML Model Fuzzing] --> A
-        I[Auth Bypass] --> A
-    end
+1. **Python Unit Tests** (`test_mcp_authentication.py`)
+   - Core authentication logic testing
+   - JWT token validation
+   - Permission checking
+   - Rate limiting validation
 
-    subgraph "Exploit Arsenal"
-        J[API Exploits] --> K[LLM Exploits]
-        L[CORS Exploits] --> K
-        M[JWT Exploits] --> K
-        N[SQL Injection] --> K
-        O[SSRF Exploits] --> K
-        P[Rate Limiting] --> K
-    end
+2. **Playwright E2E Tests** (`mcp-authentication.spec.ts`)
+   - End-to-end authentication flow testing
+   - Cross-service integration testing
+   - Security header validation
+   - Performance and load testing
 
-    subgraph "Backend Integration"
-        Q[Reynard Backend] --> R[Ollama Service]
-        Q --> S[NLWeb Service]
-        Q --> T[ComfyUI Service]
-        Q --> U[RAG System]
-        Q --> V[Auth System]
-    end
+3. **Test Utilities**
+   - `MCPAuthTestSuite`: Token generation and validation utilities
+   - `SecurityTestUtils`: Security testing helpers and attack payloads
 
-    A --> Q
-    K --> Q
-```
+4. **Test Runner** (`run_authentication_tests.py`)
+   - Comprehensive test orchestration
+   - Environment validation
+   - Report generation
+   - Results aggregation
 
-## Core Components
+## Quick Start
 
-### 1. **Fuzzy Engine** (`core/fuzzy.py`)
+### Prerequisites
 
-The central orchestration engine that coordinates all attack modules and provides a unified interface for security testing.
+1. **Python Dependencies**
 
-**Key Features:**
+   ```bash
+   pip install pytest requests PyJWT fastapi
+   ```
 
-- **Modular Architecture**: Pluggable attack modules for extensibility
-- **Async Operations**: High-performance concurrent testing
-- **Intelligent Coordination**: Smart endpoint discovery and attack sequencing
-- **Result Aggregation**: Comprehensive vulnerability reporting
+2. **Node.js Dependencies**
 
-**Usage:**
+   ```bash
+   cd e2e
+   npm install
+   npx playwright install
+   ```
 
-```python
-from fenrir.core import Fuzzy
+3. **Running Services**
+   - MCP Server: `http://localhost:8001`
+   - FastAPI Backend: `http://localhost:8000`
 
-async with Fuzzy(base_url="http://localhost:8000") as fuzzer:
-    await fuzzer.fuzz_authentication_endpoints()
-    await fuzzer.fuzz_all_specialized_endpoints()
-    fuzzer.generate_fuzz_report()
-```
+### Running Tests
 
-### 2. **Attack Modules** (`exploits/attacks/`)
-
-Specialized fuzzing engines targeting specific vulnerability classes:
-
-#### **TraditionalFuzzer**
-
-- Standard HTTP endpoint coverage
-- Parameter manipulation and injection
-- Header-based attacks
-- Method enumeration
-
-#### **GrammarFuzzer**
-
-- Syntactically valid malicious payloads
-- Context-aware mutation strategies
-- Learning-based payload generation
-- Advanced obfuscation techniques
-
-#### **WebSocketFuzzer**
-
-- Real-time communication attacks
-- Message flooding and manipulation
-- Protocol-specific vulnerabilities
-- Connection state exploitation
-
-#### **MLFuzzer**
-
-- AI/ML model-specific vulnerabilities
-- Input validation bypass
-- Model poisoning attacks
-- Inference manipulation
-
-#### **AuthBypassFuzzer**
-
-- Authentication mechanism bypass
-- Session management exploitation
-- Token manipulation
-- Privilege escalation
-
-### 3. **Exploit Arsenal** (`exploits/`)
-
-Comprehensive collection of specialized exploit modules:
-
-#### **LLM Exploits** (`llm_exploits/`)
-
-The most sophisticated module targeting AI services:
-
-```mermaid
-graph LR
-    A[LLM Orchestrator] --> B[Prompt Injection]
-    A --> C[Streaming Exploits]
-    A --> D[Service Chain Attacks]
-    A --> E[Advanced AI Exploits]
-
-    B --> F[Ollama Injection]
-    B --> G[NLWeb Injection]
-    B --> H[ComfyUI Injection]
-
-    C --> I[SSE Manipulation]
-    C --> J[Stream Hijacking]
-
-    D --> K[Multi-Service Exploitation]
-    D --> L[Chain Reaction Attacks]
-
-    E --> M[Steganography Injection]
-    E --> N[Unicode Obfuscation]
-    E --> O[Fantasy Language Attacks]
-```
-
-**Target Services:**
-
-- **Ollama**: Local LLM inference (`/api/ollama/`)
-- **NLWeb**: Natural language processing (`/api/nlweb/`)
-- **ComfyUI**: Image generation workflows (`/api/comfy/`)
-- **RAG**: Retrieval-Augmented Generation (`/api/rag/`)
-- **Caption**: Image captioning services (`/api/caption/`)
-- **Summarization**: Document processing (`/api/summarization/`)
-- **TTS**: Text-to-speech synthesis (`/api/tts/`)
-
-#### **Advanced AI Exploitation Arsenal**
-
-Cutting-edge techniques for bypassing AI security measures:
-
-- **Steganography-Based Prompt Injection**: Hidden messages in Unicode
-- **Universal Encoding Exploits**: Multi-layer encoding chains
-- **Fantasy Language Obfuscation**: Quenya, Klingon, Aurebesh
-- **Ancient Script Exploitation**: Elder Futhark, Egyptian hieroglyphics
-- **Invisible Text Injection**: Unicode Tags block exploitation
-
-#### **Traditional Security Exploits**
-
-**API Exploits** (`api_exploits/`)
-
-- BOLA (Broken Object Level Authorization)
-- Mass assignment vulnerabilities
-- API versioning attacks
-- Endpoint enumeration
-
-**CORS Exploits** (`cors_exploits/`)
-
-- Misconfiguration detection
-- Origin validation bypass
-- Credential exposure
-- Preflight manipulation
-
-**JWT Exploits** (`jwt_exploits/`)
-
-- Secret key vulnerabilities
-- Signature bypass attempts
-- Timing attacks
-- Algorithm confusion
-
-**SQL Injection** (`sql_injection/`)
-
-- Regex bypass techniques
-- Blind injection attacks
-- Union-based exploits
-- Obfuscated payloads
-
-**SSRF Exploits** (`ssrf_exploits/`)
-
-- Internal network scanning
-- Cloud metadata exploitation
-- Protocol smuggling
-- DNS rebinding
-
-**Rate Limiting** (`rate_limiting/`)
-
-- Bypass techniques
-- Distributed attacks
-- Header manipulation
-- Timing-based evasion
-
-## Backend Integration
-
-Fenrir integrates deeply with the Reynard backend ecosystem:
-
-### **Service Discovery**
-
-```mermaid
-sequenceDiagram
-    participant F as Fenrir
-    participant B as Backend
-    participant O as Ollama
-    participant N as NLWeb
-    participant C as ComfyUI
-
-    F->>B: Health Check
-    B->>F: Service Status
-    F->>O: Model Enumeration
-    O->>F: Available Models
-    F->>N: Tool Registry
-    N->>F: Available Tools
-    F->>C: Workflow Discovery
-    C->>F: Workflow Templates
-```
-
-### **Authentication Integration**
-
-- JWT token validation and manipulation
-- Session management testing
-- OAuth flow exploitation
-- Multi-factor authentication bypass
-
-### **Database Integration**
-
-- PostgreSQL connection testing
-- Vector database exploitation (pgvector)
-- Redis cache manipulation
-- Connection pool exhaustion
-
-### **External Service Integration**
-
-- MCP (Model Context Protocol) server testing
-- IMAP email service exploitation
-- File system access testing
-- Network service enumeration
-
-## E2E Testing Integration
-
-Fenrir integrates seamlessly with the Reynard E2E testing framework:
-
-### **Playwright Integration**
-
-```typescript
-// E2E Security Test Example
-import { runFenrirExploit } from "../../modules/security";
-
-test("should test JWT vulnerabilities", async () => {
-  const result = await runFenrirExploit("jwt_exploits.secret_key_attack", {
-    target: config.backendUrl,
-    verbose: config.verbose,
-    destructive: config.destructive,
-  });
-
-  expect(result.success).toBeDefined();
-  expect(result.vulnerabilitiesFound).toBeGreaterThanOrEqual(0);
-});
-```
-
-### **Test Suites**
-
-- **API Security**: Comprehensive API vulnerability testing
-- **JWT Security**: Token-based authentication testing
-- **SQL Injection**: Database security validation
-- **SSRF Attacks**: Server-side request forgery testing
-- **Penetration Tests**: Full system security assessment
-
-## Usage
-
-### **Quick Start**
+#### Run All Tests
 
 ```bash
-# Run comprehensive security assessment
-cd fenrir
-python run_all_exploits.py
-
-# Run LLM-specific attacks
-python run_llm_exploits.py
-
-# Run with specific options
-python run_all_exploits.py --destructive --verbose
+python fenrir/run_authentication_tests.py --all --verbose
 ```
 
-### **E2E Integration**
+#### Run Python Unit Tests Only
 
 ```bash
-# Run security tests via E2E framework
-cd e2e
-npm run security:assess
-
-# Run destructive security tests
-npm run security:assess:destructive
-
-# Run specific Fenrir tests
-npm run fenrir:test
+python fenrir/run_authentication_tests.py --unit
 ```
 
-### **Programmatic Usage**
-
-```python
-from fenrir import BlackHatExploitSuite
-
-# Initialize exploit suite
-suite = BlackHatExploitSuite(
-    target_url="http://localhost:8000",
-    verbose=True,
-    destructive=False
-)
-
-# Run comprehensive assessment
-results = suite.run_comprehensive_assessment()
-
-# Run specific exploit categories
-llm_results = suite.run_llm_exploits()
-api_results = suite.run_api_exploits()
-auth_results = suite.run_authentication_exploits()
-```
-
-## Configuration
-
-### **Environment Variables**
+#### Run Playwright E2E Tests Only
 
 ```bash
-# Backend Configuration
-FENRIR_TARGET_URL=http://localhost:8000
-FENRIR_VERBOSE=true
-FENRIR_DESTRUCTIVE=false
-
-# Database Configuration
-DATABASE_URL=postgresql://postgres:password@localhost:5432/reynard
-ECS_DATABASE_URL=postgresql://postgres:password@localhost:5432/reynard_ecs
-
-# Service Configuration
-OLLAMA_BASE_URL=http://localhost:11434
-COMFYUI_BASE_URL=http://localhost:8188
-MCP_HOST=localhost
-MCP_PORT=3001
+python fenrir/run_authentication_tests.py --e2e
 ```
 
-### **Exploit Configuration**
+#### Run with Custom Output
 
-```python
-from fenrir.exploits.llm_exploits import LLMExploitationConfig
-
-config = LLMExploitationConfig(
-    target_url="http://localhost:8000",
-    ollama_base_url="http://localhost:11434",
-    comfyui_base_url="http://localhost:8188",
-    max_concurrent_requests=10,
-    request_timeout=30.0,
-    enable_destructive_tests=False,
-    enable_advanced_ai_exploits=True,
-    export_vulnerabilities=True,
-    include_remediation=True
-)
+```bash
+python fenrir/run_authentication_tests.py --all --output my_results.json
 ```
 
-## Security Considerations
+## Test Categories
 
-### **Safe Testing Practices**
+### 🔒 MCP Server Security Tests
 
-- **Non-Destructive Mode**: Default mode prevents data corruption
-- **Controlled Environment**: Designed for testing environments only
-- **Rate Limiting**: Built-in request throttling to prevent DoS
-- **Error Handling**: Graceful failure handling and recovery
+- **Public Accessibility**: Verifies unauthenticated requests are rejected
+- **Invalid Token Rejection**: Tests rejection of malformed/invalid tokens
+- **Expired Token Handling**: Validates proper expiration checking
+- **Permission Validation**: Ensures permission-based access control works
+- **Tool Access Control**: Tests unauthorized tool access blocking
 
-### **Production Safety**
+### 🔗 FastAPI Backend Integration Tests
 
-- **Environment Detection**: Automatic production environment detection
-- **Safety Checks**: Multiple validation layers before destructive operations
-- **Audit Logging**: Comprehensive logging of all security tests
-- **Rollback Capabilities**: Automatic rollback for failed tests
+- **Bootstrap Authentication**: Tests the initial authentication flow
+- **Invalid Credentials**: Validates rejection of invalid credentials
+- **Token Refresh**: Tests token refresh mechanism
+- **Client Type Validation**: Ensures proper client type checking
 
-## Results and Reporting
+### 🛡️ Rate Limiting and Abuse Prevention
 
-### **Vulnerability Reports**
+- **Authentication Rate Limiting**: Tests rate limiting on auth endpoints
+- **Brute Force Protection**: Validates protection against brute force attacks
+- **Request Throttling**: Tests throttling of rapid requests
+- **Concurrent Request Handling**: Validates handling of concurrent requests
 
-```json
-{
-  "timestamp": "2025-09-23T19:40:06Z",
-  "target": "http://localhost:8000",
-  "total_tests": 1247,
-  "vulnerabilities_found": 23,
-  "critical": 2,
-  "high": 8,
-  "medium": 10,
-  "low": 3,
-  "exploits": [
-    {
-      "type": "JWT_SECRET_WEAK",
-      "severity": "critical",
-      "endpoint": "/api/auth/login",
-      "description": "Weak JWT secret key detected",
-      "remediation": "Use cryptographically strong secret key"
-    }
-  ]
-}
+### 🔄 End-to-End Authentication Flow
+
+- **Complete Flow**: Tests full MCP to backend authentication flow
+- **Cross-Service Validation**: Ensures tokens work across services
+- **Token Expiration**: Tests proper expiration handling
+- **Session Management**: Validates session state maintenance
+
+### 🔐 Advanced Security Features
+
+- **JWT Signature Validation**: Tests signature verification
+- **Malformed Token Handling**: Validates handling of malformed tokens
+- **CORS Headers**: Tests proper CORS configuration
+- **Security Headers**: Validates security header presence
+- **Token Revocation**: Tests token revocation mechanism
+
+### 📊 Performance and Load Testing
+
+- **High Load Authentication**: Tests authentication under high load
+- **Sustained Load**: Validates performance under sustained load
+- **Response Time Validation**: Ensures responses within acceptable limits
+- **Concurrent Session Handling**: Tests multiple concurrent sessions
+
+## Test Configuration
+
+### Environment Variables
+
+```bash
+# MCP Server Configuration
+MCP_SERVER_URL=http://localhost:8001
+MCP_TOKEN_SECRET=reynard-mcp-secret-key-2025
+MCP_TOKEN_ALGORITHM=HS256
+MCP_TOKEN_EXPIRE_HOURS=24
+
+# FastAPI Backend Configuration
+FASTAPI_BACKEND_URL=http://localhost:8000
+
+# Test Configuration
+TEST_CLIENT_ID=test-mcp-client
+TEST_CLIENT_SECRET=test-secret-key-2025
 ```
 
-### **Performance Metrics**
+### Test Data
 
-- **Test Execution Time**: Comprehensive timing analysis
-- **Request/Response Metrics**: Detailed performance profiling
-- **Resource Utilization**: Memory and CPU usage tracking
-- **Success/Failure Rates**: Statistical analysis of test results
+The test suite uses various test data patterns:
 
-## Advanced Features
+- **Valid Test Clients**: Properly configured test clients with appropriate permissions
+- **Invalid Credentials**: Malformed, expired, or incorrect authentication data
+- **Attack Payloads**: SQL injection, XSS, path traversal, and other attack vectors
+- **Load Test Data**: High-volume concurrent request patterns
+- **Edge Cases**: Boundary conditions and error scenarios
 
-### **Machine Learning Integration**
+## Security Test Coverage
 
-- **Adaptive Fuzzing**: ML-based payload generation
-- **Pattern Recognition**: Automated vulnerability pattern detection
-- **Behavioral Analysis**: AI-powered attack strategy optimization
-- **Anomaly Detection**: Intelligent identification of security issues
+### Authentication Security
 
-### **Distributed Testing**
+- ✅ JWT token generation and validation
+- ✅ Token expiration and refresh mechanisms
+- ✅ Permission-based access control
+- ✅ Client type validation
+- ✅ Signature verification
 
-- **Multi-Node Coordination**: Distributed testing across multiple systems
-- **Load Balancing**: Intelligent request distribution
-- **Result Aggregation**: Centralized collection of distributed results
-- **Fault Tolerance**: Automatic failover and recovery
+### Network Security
 
-### **Custom Exploit Development**
+- ✅ HTTPS enforcement (when configured)
+- ✅ CORS policy validation
+- ✅ Security headers verification
+- ✅ Request/response sanitization
 
-```python
-from fenrir.core import BaseFuzzer, FuzzResult
+### Application Security
 
-class CustomExploit(BaseFuzzer):
-    async def fuzz_endpoint(self, url: str) -> list[FuzzResult]:
-        # Custom exploit logic
-        results = []
-        # ... implementation
-        return results
+- ✅ Input validation and sanitization
+- ✅ SQL injection prevention
+- ✅ XSS attack prevention
+- ✅ Path traversal protection
+- ✅ Command injection prevention
+
+### Operational Security
+
+- ✅ Rate limiting and throttling
+- ✅ Brute force protection
+- ✅ Session management
+- ✅ Token revocation
+- ✅ Audit logging
+
+## Test Results and Reporting
+
+### Report Format
+
+The test runner generates comprehensive reports including:
+
+- **Test Summary**: Overall pass/fail statistics
+- **Detailed Results**: Per-test results with timing information
+- **Security Scan Results**: Bandit security scan findings
+- **Recommendations**: Actionable security improvement suggestions
+
+### Output Files
+
+- **JSON Results**: Machine-readable test results
+- **Console Output**: Human-readable test progress and results
+- **Security Reports**: Detailed security scan findings
+
+### Example Output
+
 ```
+🦊 Fenrir MCP Authentication Security Test Report
+============================================================
+Timestamp: 2025-01-15T10:30:00
+Test Suite: Fenrir MCP Authentication Security
+
+📊 Test Summary
+--------------------
+Total Tests: 45
+Passed: 43
+Failed: 2
+Success Rate: 95.6%
+
+🔍 Python Tests
+------------------------------
+Status: completed
+Duration: 12.34 seconds
+Overall Status: PASS
+
+🔍 Playwright Tests
+------------------------------
+Status: completed
+Duration: 45.67 seconds
+
+💡 Recommendations
+--------------------
+🎉 All tests passed! Your authentication system is secure.
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Service Connection Errors**
+   - Ensure MCP server and FastAPI backend are running
+   - Check service URLs and ports
+   - Verify network connectivity
+
+2. **Authentication Failures**
+   - Verify test client credentials
+   - Check JWT secret configuration
+   - Ensure proper token generation
+
+3. **Rate Limiting Issues**
+   - Adjust rate limiting configuration
+   - Check for existing rate limit blocks
+   - Verify test timing and intervals
+
+4. **Playwright Test Failures**
+   - Ensure Playwright is properly installed
+   - Check browser dependencies
+   - Verify e2e test configuration
+
+### Debug Mode
+
+Run tests with verbose logging for detailed debugging:
+
+```bash
+python fenrir/run_authentication_tests.py --all --verbose
+```
+
+### Environment Validation
+
+The test runner automatically validates the test environment:
+
+- Service connectivity checks
+- Required package verification
+- Configuration validation
+- Test data preparation
 
 ## Contributing
 
-### **Development Setup**
+### Adding New Tests
 
-```bash
-# Clone and setup
-git clone <repository>
-cd fenrir
+1. **Python Tests**: Add to `test_mcp_authentication.py`
+2. **E2E Tests**: Add to `mcp-authentication.spec.ts`
+3. **Utilities**: Extend test utility classes as needed
 
-# Install dependencies
-pip install -r requirements.txt
+### Test Guidelines
 
-# Run tests
-python -m pytest tests/
+- **Comprehensive Coverage**: Test both success and failure scenarios
+- **Security Focus**: Prioritize security-related test cases
+- **Performance Awareness**: Include performance and load testing
+- **Documentation**: Document test purpose and expected behavior
 
-# Run linting
-python -m flake8 .
-python -m black .
-```
+### Code Style
 
-### **Adding New Exploits**
+- Follow existing code patterns and conventions
+- Use descriptive test names and comments
+- Include proper error handling and cleanup
+- Maintain test isolation and independence
 
-1. Create exploit module in appropriate directory
-2. Inherit from `BaseFuzzer` or specific exploit base class
-3. Implement required methods
-4. Add comprehensive tests
-5. Update documentation
+## Security Considerations
+
+### Test Data Security
+
+- Use dedicated test credentials and tokens
+- Avoid using production data in tests
+- Clean up test data after test completion
+- Use secure random generation for test data
+
+### Test Environment
+
+- Run tests in isolated environments
+- Use dedicated test databases and services
+- Implement proper test data isolation
+- Monitor test execution for security issues
+
+### Reporting Security
+
+- Avoid logging sensitive information
+- Sanitize error messages in reports
+- Use secure file handling for results
+- Implement proper access controls for test results
 
 ## License
 
-MIT License - See LICENSE file for details.
+This test suite is part of the Reynard project and follows the same licensing terms.
 
 ## Support
 
 For issues, questions, or contributions:
 
-- **Issues**: GitHub Issues
-- **Documentation**: [Reynard Documentation](https://docs.reynard.dev)
-- **Community**: [Reynard Discord](https://discord.gg/reynard)
+1. Check the troubleshooting section above
+2. Review existing test patterns and examples
+3. Consult the Reynard project documentation
+4. Submit issues through the project's issue tracker
 
 ---
 
-_🐺 Fenrir combines the precision of a wolf pack with the intelligence of modern security research to provide comprehensive vulnerability assessment for the Reynard ecosystem._
+_Created by Odonata-Oracle-6 (Dragonfly Specialist) - Determined, patient, and loyal to the cause of secure authentication._ 🦟

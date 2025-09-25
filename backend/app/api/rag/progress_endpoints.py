@@ -97,7 +97,7 @@ async def websocket_progress_endpoint(websocket: WebSocket):
         await progress_monitor.remove_connection(websocket)
 
 
-@router.get("/history")
+@router.get("/history", operation_id="rag_progress_history")
 async def get_progress_history(limit: int = 50) -> JSONResponse:
     """Get progress history."""
     try:
@@ -120,7 +120,7 @@ async def get_progress_history(limit: int = 50) -> JSONResponse:
         return JSONResponse({"status": "error", "message": str(e)}, status_code=500)
 
 
-@router.get("/current")
+@router.get("/current", operation_id="rag_progress_current")
 async def get_current_progress() -> JSONResponse:
     """Get current progress status."""
     try:
@@ -142,7 +142,7 @@ async def get_current_progress() -> JSONResponse:
         return JSONResponse({"status": "error", "message": str(e)}, status_code=500)
 
 
-@router.get("/stats")
+@router.get("/stats", operation_id="rag_progress_stats")
 async def get_monitoring_stats() -> JSONResponse:
     """Get monitoring statistics."""
     try:
@@ -156,7 +156,7 @@ async def get_monitoring_stats() -> JSONResponse:
         return JSONResponse({"status": "error", "message": str(e)}, status_code=500)
 
 
-@router.get("/connections")
+@router.get("/connections", operation_id="rag_progress_connections")
 async def get_connection_info() -> JSONResponse:
     """Get WebSocket connection information."""
     try:

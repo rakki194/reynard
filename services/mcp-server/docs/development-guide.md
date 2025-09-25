@@ -1,6 +1,6 @@
 # 🦊 MCP Development Guide
 
-*A Guide to Creating MCP Tools*
+_A Guide to Creating MCP Tools_
 
 ## Overview
 
@@ -13,30 +13,30 @@ The MCP server uses a dynamic tool generation system that aims to reduce manual 
 ```mermaid
 graph LR
     %%{init: {'theme': 'neutral'}}%%
-    
+
     subgraph "🛠️ MCP Tool Architecture"
         direction LR
-        
+
         RegisterTool["@register_tool<br/>Decorator"]
         ToolRegistry["Tool Registry<br/>Dynamic Discovery"]
         ToolGenerator["Tool Generator<br/>Definition Builder"]
         SchemaValidator["Schema Validator<br/>Protocol Compliance"]
         MCPHandler["MCP Handler<br/>Request Processing"]
-        
+
         RegisterTool -->|"Registers"| ToolRegistry
         ToolRegistry -->|"Generates"| ToolGenerator
         ToolRegistry -->|"Validates"| SchemaValidator
         ToolGenerator -->|"Processes"| MCPHandler
         SchemaValidator -->|"Ensures"| MCPHandler
     end
-    
+
     %% Styling
     classDef decorator fill:#e1f5fe,stroke:#01579b,stroke-width:2px
     classDef registry fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
     classDef generator fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
     classDef validator fill:#fff3e0,stroke:#e65100,stroke-width:2px
     classDef handler fill:#fce4ec,stroke:#880e4f,stroke-width:2px
-    
+
     class RegisterTool decorator
     class ToolRegistry registry
     class ToolGenerator generator
@@ -146,10 +146,10 @@ def my_tool(arguments):
         url = arguments.get("url")
         if not url:
             raise ValueError("url parameter is required")
-        
+
         # Your tool logic
         result = process_url(url)
-        
+
         return {
             "type": "text",
             "text": f"Processed: {result}"
@@ -284,7 +284,7 @@ def test_your_tool():
     # Test valid input
     result = your_tool_function({"param": "value"})
     assert result["type"] == "text"
-    
+
     # Test invalid input
     with pytest.raises(ValueError):
         your_tool_function({})
@@ -364,13 +364,13 @@ logging.basicConfig(level=logging.DEBUG)
 def tool_function(arguments: dict[str, Any]) -> dict[str, Any]:
     """
     Tool implementation.
-    
+
     Args:
         arguments: Dictionary containing tool arguments
-        
+
     Returns:
         Dictionary with tool result
-        
+
     Raises:
         ValueError: If required parameters are missing
         RuntimeError: If tool execution fails
@@ -455,4 +455,4 @@ You can create tools with the knowledge that the system will help catch issues b
 
 ---
 
-*"In the realm of code, there are few shortcuts to excellence. Primarily through systematic thinking, thorough analysis, and persistent pursuit of quality can we work toward mastery."* - The Reynard Way
+_"In the realm of code, there are few shortcuts to excellence. Primarily through systematic thinking, thorough analysis, and persistent pursuit of quality can we work toward mastery."_ - The Reynard Way

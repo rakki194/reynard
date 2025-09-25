@@ -3,7 +3,7 @@
  * Unified color scheme for all Reynard dev-tools
  */
 
-import type { ColorConfig } from '../types/Logger.js';
+import type { ColorConfig } from "../types/Logger.js";
 
 export const DEFAULT_COLORS: ColorConfig = {
   red: "\x1b[31m",

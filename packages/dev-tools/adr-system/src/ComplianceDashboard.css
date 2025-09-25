@@ -10,30 +10,30 @@
   --dashboard-text: oklch(0.15 0.01 240);
   --dashboard-border: oklch(0.85 0.01 240);
   --dashboard-shadow: oklch(0.15 0.01 240 / 0.1);
-  
+
   /* Score colors */
   --score-excellent: oklch(0.6 0.15 140);
   --score-good: oklch(0.6 0.15 200);
   --score-fair: oklch(0.6 0.15 60);
   --score-poor: oklch(0.6 0.15 30);
   --score-critical: oklch(0.6 0.15 0);
-  
+
   /* Severity colors */
   --severity-critical: oklch(0.6 0.15 0);
   --severity-high: oklch(0.6 0.15 30);
   --severity-medium: oklch(0.6 0.15 60);
   --severity-low: oklch(0.6 0.15 200);
-  
+
   /* Priority colors */
   --priority-high: oklch(0.6 0.15 0);
   --priority-medium: oklch(0.6 0.15 60);
   --priority-low: oklch(0.6 0.15 200);
-  
+
   background: var(--dashboard-bg);
   color: var(--dashboard-text);
   min-height: 100vh;
   padding: 1.5rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Header */
@@ -114,8 +114,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .error-message {
@@ -247,7 +251,9 @@
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 4px 16px var(--dashboard-shadow);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .metric-card:hover {
@@ -436,7 +442,9 @@
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 4px 16px var(--dashboard-shadow);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .team-member-card:hover {
@@ -576,7 +584,9 @@
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 4px 16px var(--dashboard-shadow);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .action-item:hover {
@@ -627,57 +637,57 @@
   .compliance-dashboard {
     padding: 1rem;
   }
-  
+
   .header-content {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .header-stats {
     justify-content: space-between;
     width: 100%;
   }
-  
+
   .dashboard-header h1 {
     font-size: 1.5rem;
   }
-  
+
   .score-header {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .score-badge {
     font-size: 1.5rem;
     padding: 0.5rem 1rem;
   }
-  
+
   .category-score {
     grid-template-columns: 1fr;
     gap: 0.5rem;
   }
-  
+
   .metrics-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .charts-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .team-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .recommendations-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .action-header {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .action-details {
     flex-direction: column;
     gap: 0.5rem;
@@ -688,26 +698,26 @@
   .compliance-dashboard {
     padding: 0.75rem;
   }
-  
+
   .dashboard-header h1 {
     font-size: 1.25rem;
   }
-  
+
   .header-stats {
     flex-direction: column;
     gap: 1rem;
   }
-  
+
   .stat {
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
   }
-  
+
   .score-card.primary {
     padding: 1rem;
   }
-  
+
   .metric-card,
   .team-member-card,
   .recommendation-category,
@@ -724,12 +734,12 @@
     --dashboard-border: oklch(0.2 0.01 240);
     --dashboard-shadow: oklch(0.05 0.01 240 / 0.3);
   }
-  
+
   .score-card.primary {
     background: linear-gradient(135deg, oklch(0.15 0.01 240), oklch(0.12 0.01 240));
     border-color: oklch(0.2 0.01 240);
   }
-  
+
   .metric-card,
   .team-member-card,
   .recommendation-category,
@@ -738,11 +748,9 @@
     background: oklch(0.12 0.01 240);
     border-color: oklch(0.2 0.01 240);
   }
-  
+
   .error-message {
     background: oklch(0.15 0.01 240);
     border-color: oklch(0.2 0.01 240);
   }
 }
-
-

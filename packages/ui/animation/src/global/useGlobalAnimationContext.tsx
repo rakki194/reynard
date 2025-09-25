@@ -1,12 +1,12 @@
 /**
  * 🦊 Global Animation Context
- * 
+ *
  * SolidJS composable for global animation control and state management.
  * Provides centralized animation configuration and controls.
  */
 
 import { createSignal, createMemo, onCleanup, createContext, useContext } from "solid-js";
-import type { 
+import type {
   GlobalAnimationConfig,
   GlobalAnimationState,
   GlobalAnimationControls,
@@ -15,9 +15,9 @@ import type {
   SystemPreferences,
   AnimationPackageInfo,
   GlobalAnimationEvents,
-  GlobalAnimationTesting
+  GlobalAnimationTesting,
 } from "./GlobalAnimationTypes.js";
-import { 
+import {
   DEFAULT_GLOBAL_ANIMATION_CONFIG,
   detectSystemPreferences,
   createConfigFromPreferences,
@@ -25,7 +25,7 @@ import {
   mergeConfigs,
   createPersistence,
   shouldDisableAnimations,
-  getAnimationEngine
+  getAnimationEngine,
 } from "./GlobalAnimationConfig.js";
 
 // Global animation context
@@ -34,10 +34,7 @@ const GlobalAnimationContext = createContext<UseGlobalAnimationContextReturn>();
 /**
  * Global animation context provider
  */
-export function GlobalAnimationProvider(props: {
-  children: any;
-  options?: GlobalAnimationContextOptions;
-}) {
+export function GlobalAnimationProvider(props: { children: any; options?: GlobalAnimationContextOptions }) {
   const {
     initialConfig = {},
     persistConfig = true,
@@ -51,13 +48,15 @@ export function GlobalAnimationProvider(props: {
 
   // System preferences
   const [systemPreferences, setSystemPreferences] = createSignal<SystemPreferences>(
-    autoDetectPreferences ? detectSystemPreferences() : {
-      prefersReducedMotion: false,
-      prefersHighContrast: false,
-      prefersColorScheme: "no-preference",
-      prefersContrast: "no-preference",
-      forcedColors: "none",
-    }
+    autoDetectPreferences
+      ? detectSystemPreferences()
+      : {
+          prefersReducedMotion: false,
+          prefersHighContrast: false,
+          prefersColorScheme: "no-preference",
+          prefersContrast: "no-preference",
+          forcedColors: "none",
+        }
   );
 
   // Configuration state
@@ -107,11 +106,7 @@ export function GlobalAnimationProvider(props: {
     const isDisabled = shouldDisableAnimations(currentConfig, effectivePreferences);
 
     // Determine animation engine
-    const animationEngine = getAnimationEngine(
-      currentConfig,
-      effectivePreferences,
-      currentPackages.length > 0
-    );
+    const animationEngine = getAnimationEngine(currentConfig, effectivePreferences, currentPackages.length > 0);
 
     return {
       config: currentConfig,
@@ -129,7 +124,7 @@ export function GlobalAnimationProvider(props: {
     setEnabled: (enabled: boolean) => {
       const newConfig = { ...config(), enabled };
       setConfig(validateConfig(newConfig));
-      
+
       if (persistConfig) {
         persistence.saveToLocalStorage(newConfig);
       }
@@ -147,7 +142,7 @@ export function GlobalAnimationProvider(props: {
         },
       };
       setConfig(validateConfig(newConfig));
-      
+
       if (persistConfig) {
         persistence.saveToLocalStorage(newConfig);
       }
@@ -166,7 +161,7 @@ export function GlobalAnimationProvider(props: {
         },
       };
       setConfig(validateConfig(newConfig));
-      
+
       if (persistConfig) {
         persistence.saveToLocalStorage(newConfig);
       }
@@ -179,7 +174,7 @@ export function GlobalAnimationProvider(props: {
       const mergedConfig = mergeConfigs(config(), newConfig);
       const validatedConfig = validateConfig(mergedConfig);
       setConfig(validatedConfig);
-      
+
       if (persistConfig) {
         persistence.saveToLocalStorage(validatedConfig);
       }
@@ -191,7 +186,7 @@ export function GlobalAnimationProvider(props: {
     resetConfig: () => {
       const defaultConfig = createConfigFromPreferences(systemPreferences());
       setConfig(defaultConfig);
-      
+
       if (persistConfig) {
         persistence.saveToLocalStorage(defaultConfig);
       }
@@ -298,11 +293,7 @@ export function GlobalAnimationProvider(props: {
     isAvailable: () => true,
   };
 
-  return (
-    <GlobalAnimationContext.Provider value={contextValue}>
-      {props.children}
-    </GlobalAnimationContext.Provider>
-  );
+  return <GlobalAnimationContext.Provider value={contextValue}>{props.children}</GlobalAnimationContext.Provider>;
 }
 
 /**
@@ -310,11 +301,11 @@ export function GlobalAnimationProvider(props: {
  */
 export function useGlobalAnimationContext(): UseGlobalAnimationContextReturn {
   const context = useContext(GlobalAnimationContext);
-  
+
   if (!context) {
     throw new Error("useGlobalAnimationContext must be used within a GlobalAnimationProvider");
   }
-  
+
   return context;
 }
 

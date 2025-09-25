@@ -1,6 +1,6 @@
 /**
  * 🦊 Simple Animation State Composable
- * 
+ *
  * No unnecessary abstractions - just direct, simple animation state
  */
 
@@ -27,17 +27,8 @@ export interface SimpleAnimationStateReturn {
   reset: () => void;
 }
 
-export function useSimpleAnimationState(
-  options: SimpleAnimationStateOptions = {}
-): SimpleAnimationStateReturn {
-  const {
-    initial = false,
-    duration = 300,
-    easing = "easeInOut",
-    onStart,
-    onComplete,
-    onUpdate,
-  } = options;
+export function useSimpleAnimationState(options: SimpleAnimationStateOptions = {}): SimpleAnimationStateReturn {
+  const { initial = false, duration = 300, easing = "easeInOut", onStart, onComplete, onUpdate } = options;
 
   const [isActive, setIsActive] = createSignal(initial);
   const [isCompleted, setIsCompleted] = createSignal(initial);
@@ -56,7 +47,7 @@ export function useSimpleAnimationState(
     cleanupFunction = createSimpleAnimation(
       duration,
       easing,
-      (animProgress) => {
+      animProgress => {
         setProgress(animProgress);
         onUpdate?.(animProgress);
       },

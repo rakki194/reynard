@@ -8,7 +8,7 @@ import { createSignal, createEffect, onCleanup } from "solid-js";
 import { ConnectionManager } from "reynard-connection";
 
 export interface DownloadEvent {
-  type: 'progress' | 'status' | 'error' | 'complete';
+  type: "progress" | "status" | "error" | "complete";
   downloadId: string;
   data: any;
   timestamp: Date;
@@ -33,14 +33,12 @@ export interface UseGalleryWebSocketReturn {
   reconnect: () => void;
 }
 
-export const useGalleryWebSocket = (
-  config: WebSocketConfig
-): UseGalleryWebSocketReturn => {
+export const useGalleryWebSocket = (config: WebSocketConfig): UseGalleryWebSocketReturn => {
   const [isConnected, setIsConnected] = createSignal(false);
   const [isConnecting, setIsConnecting] = createSignal(false);
   const [error, setError] = createSignal<string | null>(null);
   const [events, setEvents] = createSignal<DownloadEvent[]>([]);
-  
+
   let connectionRef: ConnectionManager | null = null;
   const subscriptionsRef = new Set<string>();
   let reconnectTimeoutRef: NodeJS.Timeout | null = null;
@@ -65,7 +63,7 @@ export const useGalleryWebSocket = (
     clearHeartbeatTimeout();
     heartbeatTimeoutRef = setTimeout(() => {
       if (connectionRef && isConnected()) {
-        connectionRef.send({ type: 'ping' });
+        connectionRef.send({ type: "ping" });
         startHeartbeat();
       }
     }, config.heartbeatInterval || 30000);
@@ -77,12 +75,12 @@ export const useGalleryWebSocket = (
         type: message.type,
         downloadId: message.downloadId,
         data: message.data,
-        timestamp: new Date(message.timestamp || Date.now())
+        timestamp: new Date(message.timestamp || Date.now()),
       };
 
       setEvents(prev => [event, ...prev.slice(0, 99)]); // Keep last 100 events
     } catch (err) {
-      console.error('Failed to parse WebSocket message:', err);
+      console.error("Failed to parse WebSocket message:", err);
     }
   };
 
@@ -95,7 +93,7 @@ export const useGalleryWebSocket = (
     try {
       const connection = new ConnectionManager({
         url: config.url,
-        protocols: ['gallery-dl'],
+        protocols: ["gallery-dl"],
         onMessage: handleMessage,
         onOpen: () => {
           setIsConnected(true);
@@ -108,7 +106,7 @@ export const useGalleryWebSocket = (
           setIsConnected(false);
           setIsConnecting(false);
           clearHeartbeatTimeout();
-          
+
           // Attempt to reconnect
           if (reconnectAttemptsRef < (config.maxReconnectAttempts || 5)) {
             reconnectAttemptsRef++;
@@ -116,19 +114,19 @@ export const useGalleryWebSocket = (
               connect();
             }, config.reconnectInterval || 5000);
           } else {
-            setError('Max reconnection attempts reached');
+            setError("Max reconnection attempts reached");
           }
         },
         onError: (err: any) => {
-          setError(err.message || 'WebSocket connection error');
+          setError(err.message || "WebSocket connection error");
           setIsConnecting(false);
-        }
+        },
       });
 
       connectionRef = connection;
       await connection.connect();
     } catch (err: any) {
-      setError(err instanceof Error ? err.message : 'Connection failed');
+      setError(err instanceof Error ? err.message : "Connection failed");
       setIsConnecting(false);
     }
   };
@@ -136,12 +134,12 @@ export const useGalleryWebSocket = (
   const disconnect = () => {
     clearReconnectTimeout();
     clearHeartbeatTimeout();
-    
+
     if (connectionRef) {
       connectionRef.disconnect();
       connectionRef = null;
     }
-    
+
     setIsConnected(false);
     setIsConnecting(false);
     setError(null);
@@ -151,23 +149,23 @@ export const useGalleryWebSocket = (
     if (connectionRef && isConnected()) {
       connectionRef.send(message);
     } else {
-      console.warn('WebSocket not connected, cannot send message');
+      console.warn("WebSocket not connected, cannot send message");
     }
   };
 
   const subscribe = (downloadId: string) => {
     subscriptionsRef.add(downloadId);
     sendMessage({
-      type: 'subscribe',
-      downloadId
+      type: "subscribe",
+      downloadId,
     });
   };
 
   const unsubscribe = (downloadId: string) => {
     subscriptionsRef.delete(downloadId);
     sendMessage({
-      type: 'unsubscribe',
-      downloadId
+      type: "unsubscribe",
+      downloadId,
     });
   };
 
@@ -184,7 +182,7 @@ export const useGalleryWebSocket = (
   // Auto-connect on mount
   createEffect(() => {
     connect();
-    
+
     onCleanup(() => {
       disconnect();
     });
@@ -205,6 +203,6 @@ export const useGalleryWebSocket = (
     subscribe,
     unsubscribe,
     clearEvents,
-    reconnect
+    reconnect,
   };
 };

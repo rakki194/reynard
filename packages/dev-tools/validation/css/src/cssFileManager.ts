@@ -25,7 +25,7 @@ export class CSSFileManager extends CatalystFileManager {
         /third_party/,
       ],
       includePatterns: [/\.css$/],
-      verbose: config.verbose || false
+      verbose: config.verbose || false,
     });
     this.config = config;
   }
@@ -51,13 +51,15 @@ export class CSSFileManager extends CatalystFileManager {
       const fullPath = this.resolvePath(scanDir);
       if (this.fileExists(fullPath)) {
         const files = this.scanDirectory(fullPath, { extensions: [".css"] });
-        cssFiles.push(...files.map(file => ({
-          path: file.path,
-          name: file.name,
-          size: file.size,
-          modified: file.modified,
-          readable: file.readable,
-        })));
+        cssFiles.push(
+          ...files.map(file => ({
+            path: file.path,
+            name: file.name,
+            size: file.size,
+            modified: file.modified,
+            readable: file.readable,
+          }))
+        );
       }
     }
 

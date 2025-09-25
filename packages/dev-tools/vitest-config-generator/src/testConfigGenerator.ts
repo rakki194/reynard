@@ -5,7 +5,11 @@
 
 import type { GeneratorConfig, VitestProjectConfig } from "./types.js";
 
-export function generateTestConfig(config: GeneratorConfig, globalExcludePatterns: string[], projects: VitestProjectConfig[]) {
+export function generateTestConfig(
+  config: GeneratorConfig,
+  globalExcludePatterns: string[],
+  projects: VitestProjectConfig[]
+) {
   return {
     // Worker configuration
     maxWorkers: config.maxWorkers || 1,
@@ -26,10 +30,10 @@ export function generateTestConfig(config: GeneratorConfig, globalExcludePattern
     hookTimeout: 10000,
 
     // Reporter configuration
-    reporters: [
-      "default",
-      ["json", { outputFile: ".vitest-reports/global-report.json" }],
-    ] as (string | [string, any])[],
+    reporters: ["default", ["json", { outputFile: ".vitest-reports/global-report.json" }]] as (
+      | string
+      | [string, any]
+    )[],
 
     // Coverage settings
     coverage: {

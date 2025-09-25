@@ -1,6 +1,6 @@
 # 🦊 Backend Migration Guide
 
-*Comprehensive guide for migrating to and maintaining the refactored backend architecture*
+_Comprehensive guide for migrating to and maintaining the refactored backend architecture_
 
 ## Overview
 
@@ -118,7 +118,7 @@ class LegacyServiceRouter(BaseServiceRouter, ConfigEndpointMixin, StreamingRespo
     def __init__(self):
         super().__init__(prefix="/api/legacy-service", tags=["legacy-service"])
         self._setup_endpoints()
-    
+
     def _setup_endpoints(self):
         @self.router.get("/health")
         async def health():
@@ -127,7 +127,7 @@ class LegacyServiceRouter(BaseServiceRouter, ConfigEndpointMixin, StreamingRespo
                 self._perform_health_check,
                 "Health check failed"
             )
-        
+
         @self.router.post("/process")
         async def process_data(data: dict):
             return await self._standard_async_operation(
@@ -135,7 +135,7 @@ class LegacyServiceRouter(BaseServiceRouter, ConfigEndpointMixin, StreamingRespo
                 lambda: legacy_process(data),
                 "Data processing failed"
             )
-    
+
     async def _perform_health_check(self):
         # Health check implementation
         return {"status": "healthy"}
@@ -192,10 +192,10 @@ async def init_legacy_service(config: dict) -> dict:
             "initialized_at": time.time(),
             "status": "running"
         }
-        
+
         logger.info("Legacy service initialized successfully")
         return service_instance
-        
+
     except Exception as e:
         logger.error(f"Legacy service initialization failed: {e}")
         raise
@@ -207,9 +207,9 @@ async def shutdown_legacy_service(instance: dict) -> None:
         if instance:
             instance["status"] = "shutdown"
             instance["shutdown_at"] = time.time()
-        
+
         logger.info("Legacy service shutdown completed")
-        
+
     except Exception as e:
         logger.error(f"Legacy service shutdown failed: {e}")
 
@@ -219,7 +219,7 @@ async def health_check_legacy_service() -> bool:
         # Perform health check
         # This could be a database query, API call, etc.
         return True
-        
+
     except Exception as e:
         logger.error(f"Legacy service health check failed: {e}")
         return False
@@ -331,7 +331,7 @@ async def health_check_legacy_service() -> bool:
         # Check external API availability
         # Check internal service status
         return True
-        
+
     except Exception as e:
         logger.error(f"Health check failed: {e}")
         return False
@@ -349,14 +349,14 @@ async def advanced_health_check_legacy_service() -> HealthStatus:
         db_healthy = await check_database_health()
         api_healthy = await check_external_api_health()
         service_healthy = await check_internal_service_health()
-        
+
         if not db_healthy:
             return HealthStatus.UNHEALTHY
         elif not api_healthy or not service_healthy:
             return HealthStatus.DEGRADED
         else:
             return HealthStatus.HEALTHY
-            
+
     except Exception as e:
         logger.error(f"Advanced health check failed: {e}")
         return HealthStatus.UNHEALTHY
@@ -393,7 +393,7 @@ class LegacyServiceRouter(BaseServiceRouter):
                 self._perform_health_check,
                 "Health check failed"
             )
-        
+
         @self.router.get("/health/detailed")
         async def detailed_health():
             return await self._standard_async_operation(
@@ -401,12 +401,12 @@ class LegacyServiceRouter(BaseServiceRouter):
                 self._perform_detailed_health_check,
                 "Detailed health check failed"
             )
-    
+
     async def _perform_health_check(self):
         """Basic health check endpoint."""
         health_manager = get_health_check_manager()
         result = health_manager.get_health_status("legacy-service")
-        
+
         if result:
             return {
                 "status": result.status.value,
@@ -415,12 +415,12 @@ class LegacyServiceRouter(BaseServiceRouter):
             }
         else:
             return {"status": "unknown", "message": "No health data available"}
-    
+
     async def _perform_detailed_health_check(self):
         """Detailed health check endpoint."""
         health_manager = get_health_check_manager()
         result = health_manager.get_health_status("legacy-service")
-        
+
         if result:
             return {
                 "status": result.status.value,
@@ -492,7 +492,7 @@ from pydantic import BaseModel, validator
 class ProcessDataRequest(BaseModel):
     data: str
     user_id: int
-    
+
     @validator('data')
     def validate_data(cls, v):
         if len(v) > 10000:
@@ -500,7 +500,7 @@ class ProcessDataRequest(BaseModel):
         if '<script>' in v.lower():
             raise ValueError('Invalid data format')
         return v
-    
+
     @validator('user_id')
     def validate_user_id(cls, v):
         if v <= 0:
@@ -556,12 +556,12 @@ def test_registry():
 async def test_health_endpoint(test_registry):
     # Initialize service
     await test_registry.initialize_service("test-service")
-    
+
     # Test health endpoint
     client = TestClient(app)
     response = client.get("/api/legacy-service/health")
     assert response.status_code == 200
-    
+
     health_data = response.json()
     assert "status" in health_data
     assert "timestamp" in health_data
@@ -578,13 +578,13 @@ async def test_service_lifecycle():
     """Test complete service lifecycle."""
     registry = EnhancedServiceRegistry()
     config_manager = ServiceConfigManager()
-    
+
     # Register configuration
     config_manager.register_service_config(
         "test-service",
         default_config={"timeout": 30}
     )
-    
+
     # Register service
     registry.register_service(
         name="test-service",
@@ -593,16 +593,16 @@ async def test_service_lifecycle():
         shutdown_func=test_shutdown,
         health_check_func=test_health_check
     )
-    
+
     # Test initialization
     success = await registry.initialize_service("test-service")
     assert success is True
-    
+
     # Test health check
     health_manager = get_health_check_manager()
     health_result = await health_manager.perform_health_check("test-service")
     assert health_result.status == HealthStatus.HEALTHY
-    
+
     # Test shutdown
     await registry.shutdown_service("test-service")
     service_info = registry.get_service_info("test-service")
@@ -618,7 +618,7 @@ async def test_service_lifecycle():
 async def test_service_performance():
     """Test service performance benchmarks."""
     registry = EnhancedServiceRegistry()
-    
+
     # Register service
     registry.register_service(
         name="performance-test-service",
@@ -626,22 +626,22 @@ async def test_service_performance():
         startup_func=test_startup,
         shutdown_func=test_shutdown
     )
-    
+
     # Test initialization performance
     start_time = time.time()
     success = await registry.initialize_service("performance-test-service")
     end_time = time.time()
-    
+
     assert success is True
     initialization_time = end_time - start_time
     assert initialization_time < 1.0  # Should initialize within 1 second
-    
+
     # Test health check performance
     health_manager = get_health_check_manager()
     start_time = time.time()
     health_result = await health_manager.perform_health_check("performance-test-service")
     end_time = time.time()
-    
+
     health_check_time = end_time - start_time
     assert health_check_time < 0.5  # Should complete within 500ms
 ```
@@ -813,14 +813,14 @@ import requests
 
 async def validate_performance():
     """Validate system performance after migration."""
-    
+
     # Test service initialization time
     start_time = time.time()
     # Initialize services
     end_time = time.time()
     init_time = end_time - start_time
     assert init_time < 10.0, f"Initialization too slow: {init_time}s"
-    
+
     # Test API response times
     response_times = []
     for _ in range(100):
@@ -828,10 +828,10 @@ async def validate_performance():
         response = requests.get("http://localhost:8000/health/")
         end_time = time.time()
         response_times.append(end_time - start_time)
-    
+
     avg_response_time = sum(response_times) / len(response_times)
     assert avg_response_time < 0.5, f"Response time too slow: {avg_response_time}s"
-    
+
     # Test health check performance
     start_time = time.time()
     response = requests.get("http://localhost:8000/health/services")
@@ -854,25 +854,25 @@ from app.core.health_check_automation import start_health_automation
 
 async def setup_monitoring():
     """Setup comprehensive monitoring."""
-    
+
     # Start health monitoring
     await start_health_monitoring()
     print("✅ Health monitoring started")
-    
+
     # Start health automation
     await start_health_automation()
     print("✅ Health automation started")
-    
+
     # Verify monitoring endpoints
     import requests
-    
+
     endpoints = [
         "/health/",
         "/health/services",
         "/health/metrics",
         "/health/predictive"
     ]
-    
+
     for endpoint in endpoints:
         response = requests.get(f"http://localhost:8000{endpoint}")
         assert response.status_code == 200, f"Endpoint {endpoint} not working"
@@ -1035,4 +1035,4 @@ Remember that migration is not just a one-time event but an ongoing process of i
 
 ---
 
-*For additional support or questions, refer to the troubleshooting section or contact the development team.*
+_For additional support or questions, refer to the troubleshooting section or contact the development team._

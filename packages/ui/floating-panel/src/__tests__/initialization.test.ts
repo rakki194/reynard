@@ -1,6 +1,6 @@
 /**
  * Initialization Tests
- * 
+ *
  * Tests for overlay manager initialization and setup.
  */
 

@@ -14,7 +14,7 @@ import type { DirectoryDefinition, ProjectArchitecture } from "../types.js";
 export function checkCircularDependencies(architecture: ProjectArchitecture): string[] {
   const errors: string[] = [];
   const directoryMap = new Map<string, DirectoryDefinition>();
-  
+
   // Build directory map
   for (const directory of architecture.directories) {
     directoryMap.set(directory.name, directory);
@@ -24,7 +24,7 @@ export function checkCircularDependencies(architecture: ProjectArchitecture): st
   for (const directory of architecture.directories) {
     const visited = new Set<string>();
     const recursionStack = new Set<string>();
-    
+
     if (hasCircularDependency(directory, directoryMap, visited, recursionStack)) {
       errors.push(`Circular dependency detected involving directory: ${directory.name}`);
     }
@@ -45,7 +45,7 @@ function hasCircularDependency(
   if (recursionStack.has(directory.name)) {
     return true;
   }
-  
+
   if (visited.has(directory.name)) {
     return false;
   }
@@ -102,22 +102,24 @@ export function checkOrphanedDirectories(architecture: ProjectArchitecture): str
 
   // Find directories that are not referenced by any other directory
   for (const directory of architecture.directories) {
-    if (!referencedDirectories.has(directory.name) && 
-        directory.importance !== "excluded" && 
-        directory.name !== "packages" && 
-        directory.name !== "services" && 
-        directory.name !== "examples" && 
-        directory.name !== "templates" && 
-        directory.name !== "e2e" && 
-        directory.name !== "scripts" && 
-        directory.name !== "docs" && 
-        directory.name !== "backend" && 
-        directory.name !== "data" && 
-        directory.name !== "nginx" && 
-        directory.name !== "fenrir" && 
-        directory.name !== "experimental" && 
-        directory.name !== ".vscode" && 
-        directory.name !== "third_party") {
+    if (
+      !referencedDirectories.has(directory.name) &&
+      directory.importance !== "excluded" &&
+      directory.name !== "packages" &&
+      directory.name !== "services" &&
+      directory.name !== "examples" &&
+      directory.name !== "templates" &&
+      directory.name !== "e2e" &&
+      directory.name !== "scripts" &&
+      directory.name !== "docs" &&
+      directory.name !== "backend" &&
+      directory.name !== "data" &&
+      directory.name !== "nginx" &&
+      directory.name !== "fenrir" &&
+      directory.name !== "experimental" &&
+      directory.name !== ".vscode" &&
+      directory.name !== "third_party"
+    ) {
       warnings.push(`Orphaned directory found: ${directory.name}`);
     }
   }
@@ -143,10 +145,10 @@ export function checkInconsistentImportanceLevels(architecture: ProjectArchitect
       if (relationship.type === "dependency") {
         const dependentDirectory = directoryMap.get(relationship.directory);
         if (dependentDirectory) {
-          const importanceOrder = { "critical": 4, "important": 3, "optional": 2, "excluded": 1 };
+          const importanceOrder = { critical: 4, important: 3, optional: 2, excluded: 1 };
           const currentImportance = importanceOrder[directory.importance];
           const dependentImportance = importanceOrder[dependentDirectory.importance];
-          
+
           if (currentImportance > dependentImportance) {
             warnings.push(
               `Directory ${directory.name} (${directory.importance}) depends on less important directory ${dependentDirectory.name} (${dependentDirectory.importance})`
@@ -168,12 +170,13 @@ export function checkMissingCoreDependencies(architecture: ProjectArchitecture):
   const coreDirectories = ["packages/core/core", "packages/core/validation"];
 
   for (const directory of architecture.directories) {
-    if (directory.category === "source" && 
-        directory.importance !== "excluded" && 
-        !directory.name.startsWith("packages/core/") &&
-        !directory.name.startsWith("services/") &&
-        !directory.name.startsWith("backend/")) {
-      
+    if (
+      directory.category === "source" &&
+      directory.importance !== "excluded" &&
+      !directory.name.startsWith("packages/core/") &&
+      !directory.name.startsWith("services/") &&
+      !directory.name.startsWith("backend/")
+    ) {
       const hasCoreDependency = directory.relationships.some(
         rel => rel.type === "dependency" && coreDirectories.includes(rel.directory)
       );

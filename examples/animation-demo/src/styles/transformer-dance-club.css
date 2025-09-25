@@ -6,7 +6,7 @@
  */
 
 /* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap");
 
 /* Transformer Dance Club Demo Container */
 .transformer-dance-club-demo {
@@ -28,7 +28,7 @@
 
 /* Force center the transformer dance club title */
 .transformer-dance-club-demo .demo-header h1.page-title {
-  font-family: 'Orbitron', monospace;
+  font-family: "Orbitron", monospace;
   font-size: 2.5rem;
   font-weight: 900;
   margin: 0;
@@ -39,7 +39,9 @@
   background-size: 300% 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: gradientShift 2s infinite, bounce 1s infinite;
+  animation:
+    gradientShift 2s infinite,
+    bounce 1s infinite;
   text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
   /* Force centering */
   position: relative;
@@ -63,7 +65,7 @@
   background: linear-gradient(45deg, #000011, #001122, #000033);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  font-family: 'Orbitron', monospace;
+  font-family: "Orbitron", monospace;
 }
 
 /* Strobe Effect */
@@ -79,8 +81,13 @@
 }
 
 @keyframes strobe {
-  0%, 90% { background: transparent; }
-  95% { background: rgba(255, 255, 255, 0.1); }
+  0%,
+  90% {
+    background: transparent;
+  }
+  95% {
+    background: rgba(255, 255, 255, 0.1);
+  }
 }
 
 /* Dance Floor Grid */
@@ -99,8 +106,13 @@
 }
 
 @keyframes danceFloor {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.7; }
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
 
 /* Transformer Container */
@@ -146,7 +158,8 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 20px currentColor;
     transform: scale(1);
   }
@@ -186,10 +199,19 @@
 }
 
 @keyframes dance {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  25% { transform: translateY(-5px) rotate(2deg); }
-  50% { transform: translateY(0px) rotate(0deg); }
-  75% { transform: translateY(-3px) rotate(-2deg); }
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-5px) rotate(2deg);
+  }
+  50% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-3px) rotate(-2deg);
+  }
 }
 
 .add-norm {
@@ -218,8 +240,12 @@
 }
 
 @keyframes rainbow {
-  0% { filter: hue-rotate(0deg); }
-  100% { filter: hue-rotate(360deg); }
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
 }
 
 /* Block Containers */
@@ -235,7 +261,8 @@
 }
 
 @keyframes blockGlow {
-  0%, 100% {
+  0%,
+  100% {
     border-color: #00d9ff;
     box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
   }
@@ -261,8 +288,13 @@
 }
 
 @keyframes spin {
-  0%, 100% { transform: translateY(-50%) rotate(0deg); }
-  50% { transform: translateY(-50%) rotate(360deg); }
+  0%,
+  100% {
+    transform: translateY(-50%) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-50%) rotate(360deg);
+  }
 }
 
 /* Transformer Title */
@@ -277,20 +309,33 @@
   background-size: 300% 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: gradientShift 2s infinite, bounce 1s infinite;
+  animation:
+    gradientShift 2s infinite,
+    bounce 1s infinite;
   text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
   z-index: 100;
 }
 
 @keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @keyframes bounce {
-  0%, 100% { transform: translateX(-50%) translateY(0px); }
-  50% { transform: translateX(-50%) translateY(-10px); }
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0px);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-10px);
+  }
 }
 
 /* Disco Ball */
@@ -308,9 +353,15 @@
 }
 
 @keyframes discoBall {
-  0% { transform: rotate(0deg) scale(1); }
-  50% { transform: rotate(180deg) scale(1.1); }
-  100% { transform: rotate(360deg) scale(1); }
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.1);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
 }
 
 /* Speaker */
@@ -327,8 +378,14 @@
 }
 
 @keyframes bass {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.2); box-shadow: 0 0 20px #ff006e; }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+    box-shadow: 0 0 20px #ff006e;
+  }
 }
 
 /* Party Lights */
@@ -342,7 +399,8 @@
 }
 
 @keyframes partyLight {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.3;
     transform: scale(1);
     box-shadow: 0 0 10px currentColor;
@@ -434,42 +492,42 @@
     gap: 2rem;
     padding: 1rem;
   }
-  
+
   .encoder-section,
   .decoder-section {
     width: 100%;
   }
-  
+
   .component {
     min-width: 150px;
     padding: 12px 20px;
     font-size: 0.8rem;
   }
-  
+
   .transformer-title {
     font-size: 18px;
     top: 10px;
   }
-  
+
   .disco-ball {
     width: 40px;
     height: 40px;
     top: 60px;
     right: 60px;
   }
-  
+
   .speaker {
     width: 30px;
     height: 45px;
     bottom: 15px;
     right: 15px;
   }
-  
+
   .light {
     width: 15px;
     height: 15px;
   }
-  
+
   .nx-label {
     right: -30px;
     font-size: 12px;
@@ -481,22 +539,22 @@
   .transformer-dance-club-demo .page-title {
     font-size: 2rem;
   }
-  
+
   .transformer-visualization {
     min-height: 500px;
   }
-  
+
   .component {
     min-width: 120px;
     padding: 10px 15px;
     font-size: 0.7rem;
   }
-  
+
   .encoder-block,
   .decoder-block {
     padding: 15px;
   }
-  
+
   .transformer-title {
     font-size: 16px;
   }
@@ -514,7 +572,7 @@
   .transformer-title {
     animation: none;
   }
-  
+
   .component:hover {
     transform: none;
   }
@@ -525,12 +583,12 @@
   .component {
     border: 2px solid currentColor;
   }
-  
+
   .encoder-block,
   .decoder-block {
     border-width: 3px;
   }
-  
+
   .transformer-title {
     -webkit-text-fill-color: initial;
     color: white;
@@ -543,7 +601,7 @@
     background: white;
     color: black;
   }
-  
+
   .strobe,
   .dance-floor,
   .disco-ball,
@@ -551,7 +609,7 @@
   .light {
     display: none;
   }
-  
+
   .component {
     box-shadow: none;
     border: 1px solid black;

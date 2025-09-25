@@ -124,6 +124,10 @@ class VersionService:
             "summary": self._generate_version_summary(versions),
         }
 
+    async def get_versions(self) -> dict[str, Any]:
+        """Get all available version information."""
+        return await self.get_all_versions()
+
     def _generate_version_summary(self, versions: dict[str, Any]) -> str:
         """Generate a summary of available versions."""
         available = [

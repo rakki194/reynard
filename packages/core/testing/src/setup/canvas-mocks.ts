@@ -73,8 +73,8 @@ function createMockCanvasContext() {
  */
 export function setupCanvasMocks() {
   // Mock canvas for image processing
-  global.HTMLCanvasElement.prototype.getContext = vi.fn(
-    () => createMockCanvasContext()
+  global.HTMLCanvasElement.prototype.getContext = vi.fn(() =>
+    createMockCanvasContext()
   ) as unknown as typeof HTMLCanvasElement.prototype.getContext;
 
   global.HTMLCanvasElement.prototype.toBlob = vi.fn(callback => {

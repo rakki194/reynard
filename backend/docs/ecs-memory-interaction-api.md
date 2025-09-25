@@ -1,6 +1,6 @@
 # ECS Memory & Interaction System API Documentation
 
-*Comprehensive API reference for the ECS Memory & Interaction System in the Reynard framework*
+_Comprehensive API reference for the ECS Memory & Interaction System in the Reynard framework_
 
 ## Overview
 
@@ -468,7 +468,7 @@ if interaction.can_interact():
         content="Hello! I'd like to discuss the new project proposal.",
         duration=45.0
     )
-    
+
     if new_interaction:
         print(f"Interaction started: {new_interaction.content}")
     else:

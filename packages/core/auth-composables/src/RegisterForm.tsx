@@ -82,7 +82,10 @@ export const RegisterForm: Component<RegisterFormProps> = props => {
     if (!value) return "Username is required";
     const usernameResult = validateUsername(value);
     if (!usernameResult.isValid) {
-      return usernameResult.error || "Username must be 3-20 characters and contain only letters, numbers, hyphens, and underscores";
+      return (
+        usernameResult.error ||
+        "Username must be 3-20 characters and contain only letters, numbers, hyphens, and underscores"
+      );
     }
     return null;
   });

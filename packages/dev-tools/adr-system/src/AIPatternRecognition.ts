@@ -185,15 +185,15 @@ export class AIPatternRecognition extends EventEmitter {
         autoRetrain: false,
         retrainInterval: 24 * 60 * 60 * 1000, // 24 hours
         validationSplit: 0.2,
-        crossValidation: true
+        crossValidation: true,
       },
       performance: {
         maxConcurrentAnalysis: 10,
         cacheResults: true,
         cacheExpiry: 60 * 60 * 1000, // 1 hour
-        enableParallelProcessing: true
+        enableParallelProcessing: true,
       },
-      ...config
+      ...config,
     };
 
     this.initializeModels();
@@ -219,7 +219,7 @@ export class AIPatternRecognition extends EventEmitter {
           samples: 10000,
           features: 256,
           lastTrained: new Date().toISOString(),
-          trainingAccuracy: 0.85
+          trainingAccuracy: 0.85,
         },
         configuration: {
           algorithm: "transformer",
@@ -229,12 +229,12 @@ export class AIPatternRecognition extends EventEmitter {
             attentionHeads: 8,
             learningRate: 0.001,
             batchSize: 32,
-            epochs: 100
+            epochs: 100,
           },
           preprocessing: ["tokenization", "normalization", "embedding"],
-          postprocessing: ["confidence-calibration", "threshold-filtering"]
+          postprocessing: ["confidence-calibration", "threshold-filtering"],
         },
-        status: "trained"
+        status: "trained",
       };
       this.models.set(neuralModel.id, neuralModel);
     }
@@ -255,7 +255,7 @@ export class AIPatternRecognition extends EventEmitter {
           samples: 5000,
           features: 128,
           lastTrained: new Date().toISOString(),
-          trainingAccuracy: 0.78
+          trainingAccuracy: 0.78,
         },
         configuration: {
           algorithm: "kmeans-dbscan",
@@ -263,12 +263,12 @@ export class AIPatternRecognition extends EventEmitter {
             kmeansClusters: 10,
             dbscanEps: 0.5,
             dbscanMinSamples: 5,
-            distanceMetric: "cosine"
+            distanceMetric: "cosine",
           },
           preprocessing: ["feature-extraction", "normalization"],
-          postprocessing: ["cluster-labeling", "pattern-matching"]
+          postprocessing: ["cluster-labeling", "pattern-matching"],
         },
-        status: "trained"
+        status: "trained",
       };
       this.models.set(clusteringModel.id, clusteringModel);
     }
@@ -282,14 +282,14 @@ export class AIPatternRecognition extends EventEmitter {
         description: "Rule-based pattern detection using AST analysis and heuristics",
         version: "1.0.0",
         accuracy: 0.72,
-        precision: 0.70,
+        precision: 0.7,
         recall: 0.74,
         f1Score: 0.72,
         trainingData: {
           samples: 2000,
           features: 64,
           lastTrained: new Date().toISOString(),
-          trainingAccuracy: 0.72
+          trainingAccuracy: 0.72,
         },
         configuration: {
           algorithm: "ast-heuristics",
@@ -297,12 +297,12 @@ export class AIPatternRecognition extends EventEmitter {
             maxDepth: 10,
             minPatternSize: 3,
             maxPatternSize: 50,
-            similarityThreshold: 0.8
+            similarityThreshold: 0.8,
           },
           preprocessing: ["ast-parsing", "feature-extraction"],
-          postprocessing: ["rule-matching", "confidence-scoring"]
+          postprocessing: ["rule-matching", "confidence-scoring"],
         },
-        status: "trained"
+        status: "trained",
       };
       this.models.set(ruleBasedModel.id, ruleBasedModel);
     }
@@ -323,7 +323,7 @@ export class AIPatternRecognition extends EventEmitter {
           samples: 15000,
           features: 320,
           lastTrained: new Date().toISOString(),
-          trainingAccuracy: 0.89
+          trainingAccuracy: 0.89,
         },
         configuration: {
           algorithm: "voting-ensemble",
@@ -332,14 +332,14 @@ export class AIPatternRecognition extends EventEmitter {
             weights: {
               neural: 0.4,
               clustering: 0.3,
-              ruleBased: 0.3
+              ruleBased: 0.3,
             },
-            consensusThreshold: 0.6
+            consensusThreshold: 0.6,
           },
           preprocessing: ["multi-model-input"],
-          postprocessing: ["ensemble-voting", "confidence-aggregation"]
+          postprocessing: ["ensemble-voting", "confidence-aggregation"],
         },
-        status: "trained"
+        status: "trained",
       };
       this.models.set(ensembleModel.id, ensembleModel);
     }
@@ -350,7 +350,7 @@ export class AIPatternRecognition extends EventEmitter {
    */
   async analyzePatterns(): Promise<Map<string, DetectedPattern[]>> {
     this.emit("analysis:start", { timestamp: new Date().toISOString() });
-    
+
     try {
       // Clear previous results
       this.detectedPatterns.clear();
@@ -358,11 +358,11 @@ export class AIPatternRecognition extends EventEmitter {
 
       // Get all source files
       const sourceFiles = await this.findSourceFiles();
-      
+
       // Analyze patterns in parallel
       const analysisPromises = sourceFiles.map(file => this.analyzeFilePatterns(file));
       const results = await Promise.all(analysisPromises);
-      
+
       // Merge results
       for (const filePatterns of results) {
         for (const [file, patterns] of filePatterns) {
@@ -376,7 +376,7 @@ export class AIPatternRecognition extends EventEmitter {
       this.emit("analysis:complete", {
         timestamp: new Date().toISOString(),
         totalFiles: sourceFiles.length,
-        totalPatterns: Array.from(this.detectedPatterns.values()).flat().length
+        totalPatterns: Array.from(this.detectedPatterns.values()).flat().length,
       });
 
       return this.detectedPatterns;
@@ -391,7 +391,7 @@ export class AIPatternRecognition extends EventEmitter {
    */
   private async analyzeFilePatterns(filePath: string): Promise<Map<string, DetectedPattern[]>> {
     const patterns = new Map<string, DetectedPattern[]>();
-    
+
     try {
       // Check cache first
       if (this.config.performance.cacheResults) {
@@ -404,25 +404,25 @@ export class AIPatternRecognition extends EventEmitter {
 
       // Read file content
       const content = await readFile(filePath, "utf-8");
-      
+
       // Analyze with different models
       const detectedPatterns: DetectedPattern[] = [];
-      
+
       if (this.config.enableNeuralNetworks) {
         const neuralPatterns = await this.detectWithNeuralNetwork(content, filePath);
         detectedPatterns.push(...neuralPatterns);
       }
-      
+
       if (this.config.enableClustering) {
         const clusteringPatterns = await this.detectWithClustering(content, filePath);
         detectedPatterns.push(...clusteringPatterns);
       }
-      
+
       if (this.config.enableRuleBased) {
         const ruleBasedPatterns = await this.detectWithRuleBased(content, filePath);
         detectedPatterns.push(...ruleBasedPatterns);
       }
-      
+
       if (this.config.enableEnsemble) {
         const ensemblePatterns = await this.detectWithEnsemble(content, filePath);
         detectedPatterns.push(...ensemblePatterns);
@@ -442,10 +442,9 @@ export class AIPatternRecognition extends EventEmitter {
       if (this.config.performance.cacheResults) {
         this.analysisCache.set(filePath, {
           patterns: limitedPatterns,
-          timestamp: Date.now()
+          timestamp: Date.now(),
         });
       }
-
     } catch (error) {
       console.warn(`Failed to analyze patterns in file: ${filePath}`, error);
     }
@@ -459,7 +458,7 @@ export class AIPatternRecognition extends EventEmitter {
   private async detectWithNeuralNetwork(content: string, filePath: string): Promise<DetectedPattern[]> {
     const patterns: DetectedPattern[] = [];
     const model = this.models.get("neural-pattern-detector");
-    
+
     if (!model || model.status !== "trained") {
       return patterns;
     }
@@ -468,27 +467,27 @@ export class AIPatternRecognition extends EventEmitter {
       // Simulate neural network analysis
       // In a real implementation, this would use a trained model
       const lines = content.split("\n");
-      
+
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
-        
+
         // Detect common patterns using heuristics (simulating neural network)
         if (this.detectSingletonPattern(line, i)) {
           patterns.push(this.createPattern("Singleton", "creational", line, i, filePath, 0.85));
         }
-        
+
         if (this.detectFactoryPattern(line, i)) {
           patterns.push(this.createPattern("Factory", "creational", line, i, filePath, 0.82));
         }
-        
+
         if (this.detectObserverPattern(line, i)) {
           patterns.push(this.createPattern("Observer", "behavioral", line, i, filePath, 0.88));
         }
-        
+
         if (this.detectStrategyPattern(line, i)) {
-          patterns.push(this.createPattern("Strategy", "behavioral", line, i, filePath, 0.80));
+          patterns.push(this.createPattern("Strategy", "behavioral", line, i, filePath, 0.8));
         }
-        
+
         if (this.detectAdapterPattern(line, i)) {
           patterns.push(this.createPattern("Adapter", "structural", line, i, filePath, 0.83));
         }
@@ -506,7 +505,7 @@ export class AIPatternRecognition extends EventEmitter {
   private async detectWithClustering(content: string, filePath: string): Promise<DetectedPattern[]> {
     const patterns: DetectedPattern[] = [];
     const model = this.models.get("clustering-pattern-detector");
-    
+
     if (!model || model.status !== "trained") {
       return patterns;
     }
@@ -514,20 +513,22 @@ export class AIPatternRecognition extends EventEmitter {
     try {
       // Simulate clustering analysis
       const codeBlocks = this.extractCodeBlocks(content);
-      
+
       for (const block of codeBlocks) {
         // Analyze code block similarity and clustering
         const clusterType = this.analyzeCodeBlockCluster(block);
-        
+
         if (clusterType) {
-          patterns.push(this.createPattern(
-            clusterType.name,
-            clusterType.type,
-            block.content,
-            block.line,
-            filePath,
-            clusterType.confidence
-          ));
+          patterns.push(
+            this.createPattern(
+              clusterType.name,
+              clusterType.type,
+              block.content,
+              block.line,
+              filePath,
+              clusterType.confidence
+            )
+          );
         }
       }
     } catch (error) {
@@ -543,7 +544,7 @@ export class AIPatternRecognition extends EventEmitter {
   private async detectWithRuleBased(content: string, filePath: string): Promise<DetectedPattern[]> {
     const patterns: DetectedPattern[] = [];
     const model = this.models.get("rule-based-pattern-detector");
-    
+
     if (!model || model.status !== "trained") {
       return patterns;
     }
@@ -551,19 +552,21 @@ export class AIPatternRecognition extends EventEmitter {
     try {
       // Simulate rule-based analysis
       const ast = this.parseToAST(content);
-      
+
       // Apply pattern detection rules
       const detectedPatterns = this.applyPatternRules(ast);
-      
+
       for (const detected of detectedPatterns) {
-        patterns.push(this.createPattern(
-          detected.name,
-          detected.type,
-          detected.content,
-          detected.line,
-          filePath,
-          detected.confidence
-        ));
+        patterns.push(
+          this.createPattern(
+            detected.name,
+            detected.type,
+            detected.content,
+            detected.line,
+            filePath,
+            detected.confidence
+          )
+        );
       }
     } catch (error) {
       console.warn("Rule-based pattern detection failed:", error);
@@ -578,7 +581,7 @@ export class AIPatternRecognition extends EventEmitter {
   private async detectWithEnsemble(content: string, filePath: string): Promise<DetectedPattern[]> {
     const patterns: DetectedPattern[] = [];
     const model = this.models.get("ensemble-pattern-detector");
-    
+
     if (!model || model.status !== "trained") {
       return patterns;
     }
@@ -588,11 +591,11 @@ export class AIPatternRecognition extends EventEmitter {
       const neuralPatterns = await this.detectWithNeuralNetwork(content, filePath);
       const clusteringPatterns = await this.detectWithClustering(content, filePath);
       const ruleBasedPatterns = await this.detectWithRuleBased(content, filePath);
-      
+
       // Combine results using ensemble voting
       const allPatterns = [...neuralPatterns, ...clusteringPatterns, ...ruleBasedPatterns];
       const ensemblePatterns = this.combinePatternResults(allPatterns);
-      
+
       patterns.push(...ensemblePatterns);
     } catch (error) {
       console.warn("Ensemble pattern detection failed:", error);
@@ -607,13 +610,13 @@ export class AIPatternRecognition extends EventEmitter {
   private async postProcessPatterns(): Promise<void> {
     // Remove duplicates
     this.removeDuplicatePatterns();
-    
+
     // Validate patterns
     this.validatePatterns();
-    
+
     // Calculate pattern metrics
     this.calculatePatternMetrics();
-    
+
     // Generate recommendations
     this.generatePatternRecommendations();
   }
@@ -633,17 +636,15 @@ export class AIPatternRecognition extends EventEmitter {
    */
   private deduplicatePatterns(patterns: DetectedPattern[]): DetectedPattern[] {
     const unique: DetectedPattern[] = [];
-    
+
     for (const pattern of patterns) {
-      const isDuplicate = unique.some(existing => 
-        this.patternsAreSimilar(pattern, existing)
-      );
-      
+      const isDuplicate = unique.some(existing => this.patternsAreSimilar(pattern, existing));
+
       if (!isDuplicate) {
         unique.push(pattern);
       }
     }
-    
+
     return unique;
   }
 
@@ -652,16 +653,18 @@ export class AIPatternRecognition extends EventEmitter {
    */
   private patternsAreSimilar(pattern1: DetectedPattern, pattern2: DetectedPattern): boolean {
     // Check if patterns are in the same location
-    if (pattern1.location.file === pattern2.location.file &&
-        Math.abs(pattern1.location.line - pattern2.location.line) < 5) {
+    if (
+      pattern1.location.file === pattern2.location.file &&
+      Math.abs(pattern1.location.line - pattern2.location.line) < 5
+    ) {
       return true;
     }
-    
+
     // Check if patterns have similar names and types
     if (pattern1.name === pattern2.name && pattern1.type === pattern2.type) {
       return true;
     }
-    
+
     return false;
   }
 
@@ -683,17 +686,17 @@ export class AIPatternRecognition extends EventEmitter {
     if (pattern.confidence < this.config.confidenceThreshold) {
       return false;
     }
-    
+
     // Check location validity
     if (!pattern.location.file || pattern.location.line < 0) {
       return false;
     }
-    
+
     // Check pattern name
     if (!pattern.name || pattern.name.trim().length === 0) {
       return false;
     }
-    
+
     return true;
   }
 
@@ -718,7 +721,7 @@ export class AIPatternRecognition extends EventEmitter {
       maintainability: Math.random() * 10,
       testability: Math.random() * 10,
       reusability: Math.random() * 10,
-      performance: Math.random() * 10
+      performance: Math.random() * 10,
     };
   }
 
@@ -739,12 +742,12 @@ export class AIPatternRecognition extends EventEmitter {
   private generateRecommendationsForPattern(pattern: DetectedPattern): DetectedPattern["recommendations"] {
     // Simulate recommendation generation
     const shouldApply = pattern.confidence > 0.8 && pattern.type !== "anti-pattern";
-    
+
     return {
       shouldApply,
       reasoning: shouldApply ? "High confidence pattern with good metrics" : "Low confidence or anti-pattern",
       alternatives: ["Alternative Pattern 1", "Alternative Pattern 2"],
-      refactoring: ["Refactoring Step 1", "Refactoring Step 2"]
+      refactoring: ["Refactoring Step 1", "Refactoring Step 2"],
     };
   }
 
@@ -773,24 +776,27 @@ export class AIPatternRecognition extends EventEmitter {
   private extractCodeBlocks(content: string): Array<{ content: string; line: number }> {
     const lines = content.split("\n");
     const blocks: Array<{ content: string; line: number }> = [];
-    
+
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
       if (line.trim().length > 0) {
         blocks.push({ content: line, line: i + 1 });
       }
     }
-    
+
     return blocks;
   }
 
-  private analyzeCodeBlockCluster(block: { content: string; line: number }): { name: string; type: string; confidence: number } | null {
+  private analyzeCodeBlockCluster(block: {
+    content: string;
+    line: number;
+  }): { name: string; type: string; confidence: number } | null {
     // Simulate clustering analysis
     if (block.content.includes("class")) {
       return { name: "Class Pattern", type: "structural", confidence: 0.75 };
     }
     if (block.content.includes("function")) {
-      return { name: "Function Pattern", type: "behavioral", confidence: 0.70 };
+      return { name: "Function Pattern", type: "behavioral", confidence: 0.7 };
     }
     return null;
   }
@@ -800,31 +806,33 @@ export class AIPatternRecognition extends EventEmitter {
     return { type: "program", body: content.split("\n").map(line => ({ type: "statement", value: line })) };
   }
 
-  private applyPatternRules(ast: any): Array<{ name: string; type: string; content: string; line: number; confidence: number }> {
+  private applyPatternRules(
+    ast: any
+  ): Array<{ name: string; type: string; content: string; line: number; confidence: number }> {
     // Simulate rule application
     const patterns: Array<{ name: string; type: string; content: string; line: number; confidence: number }> = [];
-    
+
     if (ast.body && ast.body.length > 0) {
       patterns.push({
         name: "Code Structure Pattern",
         type: "structural",
         content: "Code structure detected",
         line: 1,
-        confidence: 0.65
+        confidence: 0.65,
       });
     }
-    
+
     return patterns;
   }
 
   private combinePatternResults(patterns: DetectedPattern[]): DetectedPattern[] {
     // Simulate ensemble combination
     const combined = new Map<string, DetectedPattern>();
-    
+
     for (const pattern of patterns) {
       const key = `${pattern.name}-${pattern.location.line}`;
       const existing = combined.get(key);
-      
+
       if (existing) {
         // Combine confidence scores
         existing.confidence = Math.max(existing.confidence, pattern.confidence);
@@ -832,7 +840,7 @@ export class AIPatternRecognition extends EventEmitter {
         combined.set(key, pattern);
       }
     }
-    
+
     return Array.from(combined.values());
   }
 
@@ -854,33 +862,33 @@ export class AIPatternRecognition extends EventEmitter {
       location: {
         file: filePath,
         line,
-        column: 0
+        column: 0,
       },
       context: {
         surroundingCode: content,
         imports: [],
         dependencies: [],
-        relatedPatterns: []
+        relatedPatterns: [],
       },
       metrics: {
         complexity: 0,
         maintainability: 0,
         testability: 0,
         reusability: 0,
-        performance: 0
+        performance: 0,
       },
       recommendations: {
         shouldApply: false,
         reasoning: "",
         alternatives: [],
-        refactoring: []
+        refactoring: [],
       },
       metadata: {
         algorithm: "ai-pattern-recognition",
         detectedAt: new Date().toISOString(),
         version: "1.0.0",
-        falsePositiveRisk: 1 - confidence
-      }
+        falsePositiveRisk: 1 - confidence,
+      },
     };
   }
 
@@ -901,13 +909,13 @@ export class AIPatternRecognition extends EventEmitter {
 
   private async findFilesRecursive(dir: string, pattern: string, files: string[], depth: number): Promise<void> {
     if (depth > 10) return;
-    
+
     try {
       const entries = await readdir(dir);
       for (const entry of entries) {
         const fullPath = join(dir, entry);
         const stat = await this.stat(fullPath);
-        
+
         if (stat.isDirectory()) {
           await this.findFilesRecursive(fullPath, pattern, files, depth + 1);
         } else if (this.matchesPattern(entry, pattern)) {
@@ -975,37 +983,37 @@ export class AIPatternRecognition extends EventEmitter {
   } {
     const allPatterns = this.getAllPatterns();
     const totalPatterns = allPatterns.length;
-    
+
     const patternsByType: Record<string, number> = {};
     const patternsByConfidence: Record<string, number> = {};
     const patternCounts: Record<string, number> = {};
-    
+
     let totalConfidence = 0;
-    
+
     for (const pattern of allPatterns) {
       patternsByType[pattern.type] = (patternsByType[pattern.type] || 0) + 1;
-      
+
       const confidenceRange = Math.floor(pattern.confidence * 10) / 10;
       patternsByConfidence[confidenceRange.toString()] = (patternsByConfidence[confidenceRange.toString()] || 0) + 1;
-      
+
       patternCounts[pattern.name] = (patternCounts[pattern.name] || 0) + 1;
-      
+
       totalConfidence += pattern.confidence;
     }
-    
+
     const averageConfidence = totalPatterns > 0 ? totalConfidence / totalPatterns : 0;
-    
+
     const topPatterns = Object.entries(patternCounts)
       .sort(([, a], [, b]) => b - a)
       .slice(0, 10)
       .map(([name, count]) => ({ name, count }));
-    
+
     return {
       totalPatterns,
       patternsByType,
       patternsByConfidence,
       averageConfidence,
-      topPatterns
+      topPatterns,
     };
   }
 
@@ -1014,27 +1022,32 @@ export class AIPatternRecognition extends EventEmitter {
    */
   async exportResults(format: "json" | "csv" | "xml"): Promise<string> {
     const allPatterns = this.getAllPatterns();
-    
+
     switch (format) {
       case "json":
-        return JSON.stringify({
-          patterns: allPatterns,
-          statistics: this.getPatternStatistics(),
-          metadata: {
-            analyzedAt: new Date().toISOString(),
-            totalFiles: this.detectedPatterns.size,
-            models: Array.from(this.models.values())
-          }
-        }, null, 2);
-      
+        return JSON.stringify(
+          {
+            patterns: allPatterns,
+            statistics: this.getPatternStatistics(),
+            metadata: {
+              analyzedAt: new Date().toISOString(),
+              totalFiles: this.detectedPatterns.size,
+              models: Array.from(this.models.values()),
+            },
+          },
+          null,
+          2
+        );
+
       case "csv":
         // Convert to CSV format
         const csvHeader = "id,name,type,category,confidence,file,line,description";
-        const csvRows = allPatterns.map(pattern => 
-          `${pattern.id},${pattern.name},${pattern.type},${pattern.category},${pattern.confidence},${pattern.location.file},${pattern.location.line},${pattern.description}`
+        const csvRows = allPatterns.map(
+          pattern =>
+            `${pattern.id},${pattern.name},${pattern.type},${pattern.category},${pattern.confidence},${pattern.location.file},${pattern.location.line},${pattern.description}`
         );
         return [csvHeader, ...csvRows].join("\n");
-      
+
       case "xml":
         // Convert to XML format
         const xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -1045,7 +1058,9 @@ export class AIPatternRecognition extends EventEmitter {
     <totalPatterns>${allPatterns.length}</totalPatterns>
   </metadata>
   <patterns>
-    ${allPatterns.map(pattern => `
+    ${allPatterns
+      .map(
+        pattern => `
     <pattern id="${pattern.id}">
       <name>${pattern.name}</name>
       <type>${pattern.type}</type>
@@ -1053,11 +1068,13 @@ export class AIPatternRecognition extends EventEmitter {
       <confidence>${pattern.confidence}</confidence>
       <location file="${pattern.location.file}" line="${pattern.location.line}" />
       <description>${pattern.description}</description>
-    </pattern>`).join("")}
+    </pattern>`
+      )
+      .join("")}
   </patterns>
 </patternAnalysis>`;
         return xml;
-      
+
       default:
         throw new Error(`Unsupported export format: ${format}`);
     }

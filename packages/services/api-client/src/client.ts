@@ -31,24 +31,26 @@ export function createReynardApiClient(config: ReynardApiClientConfig = {}) {
   const { basePath = "http://localhost:8000", authFetch, timeout = 30000, httpClient } = config;
 
   // Create HTTP client if not provided
-  const client = httpClient || new HTTPClient({
-    baseUrl: basePath,
-    timeout,
-    retries: 3,
-    enableRetry: true,
-    enableCircuitBreaker: true,
-    enableMetrics: true,
-  });
+  const client =
+    httpClient ||
+    new HTTPClient({
+      baseUrl: basePath,
+      timeout,
+      retries: 3,
+      enableRetry: true,
+      enableCircuitBreaker: true,
+      enableMetrics: true,
+    });
 
   // Create a fetch wrapper for the HTTP client
   const httpFetch = async (url: string, options: RequestInit = {}) => {
-    const method = options.method || 'GET';
-    const headers = options.headers as Record<string, string> || {};
+    const method = options.method || "GET";
+    const headers = (options.headers as Record<string, string>) || {};
     const body = options.body;
 
     const response = await client.request({
       method: method as any,
-      endpoint: url.replace(basePath, ''),
+      endpoint: url.replace(basePath, ""),
       headers,
       data: body,
     });

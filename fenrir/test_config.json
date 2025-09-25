@@ -1,0 +1,143 @@
+{
+  "test_suite": {
+    "name": "Fenrir MCP Authentication Security Tests",
+    "version": "1.0.0",
+    "description": "Comprehensive security testing for MCP authentication system"
+  },
+  "services": {
+    "mcp_server": {
+      "url": "http://localhost:8001",
+      "health_endpoint": "/health",
+      "tools_endpoint": "/tools/list",
+      "execute_endpoint": "/tools/execute"
+    },
+    "fastapi_backend": {
+      "url": "http://localhost:8000",
+      "health_endpoint": "/health",
+      "bootstrap_endpoint": "/api/mcp/bootstrap",
+      "refresh_endpoint": "/api/mcp/refresh",
+      "status_endpoint": "/api/mcp/status",
+      "revoke_endpoint": "/api/mcp/revoke"
+    }
+  },
+  "authentication": {
+    "jwt_secret": "reynard-mcp-secret-key-2025",
+    "jwt_algorithm": "HS256",
+    "token_expire_hours": 24,
+    "refresh_token_expire_hours": 168
+  },
+  "test_clients": {
+    "default": {
+      "client_id": "test-mcp-client",
+      "client_secret": "test-secret-key-2025",
+      "client_type": "agent",
+      "permissions": ["mcp:read", "mcp:write", "mcp:admin"]
+    },
+    "limited": {
+      "client_id": "test-mcp-client-limited",
+      "client_secret": "test-secret-key-2025-limited",
+      "client_type": "agent",
+      "permissions": ["mcp:read"]
+    },
+    "tool": {
+      "client_id": "test-mcp-tool",
+      "client_secret": "test-secret-key-2025-tool",
+      "client_type": "tool",
+      "permissions": ["mcp:tools:execute"]
+    }
+  },
+  "test_scenarios": {
+    "security_tests": {
+      "public_accessibility": true,
+      "invalid_token_rejection": true,
+      "expired_token_rejection": true,
+      "permission_validation": true,
+      "rate_limiting": true,
+      "brute_force_protection": true
+    },
+    "integration_tests": {
+      "bootstrap_authentication": true,
+      "token_refresh": true,
+      "cross_service_validation": true,
+      "end_to_end_flow": true
+    },
+    "performance_tests": {
+      "high_load_authentication": true,
+      "sustained_load": true,
+      "concurrent_requests": true,
+      "response_time_validation": true
+    }
+  },
+  "test_parameters": {
+    "rate_limiting": {
+      "max_requests_per_minute": 100,
+      "brute_force_attempts": 5,
+      "concurrent_requests": 50
+    },
+    "performance": {
+      "max_response_time_ms": 5000,
+      "sustained_load_duration_seconds": 60,
+      "high_load_request_count": 100
+    },
+    "security": {
+      "token_expiration_seconds": 1,
+      "invalid_token_count": 10,
+      "malformed_token_count": 5
+    }
+  },
+  "attack_payloads": {
+    "sql_injection": [
+      "'; DROP TABLE users; --",
+      "' OR '1'='1",
+      "'; INSERT INTO users VALUES ('hacker', 'password'); --"
+    ],
+    "xss": ["<script>alert('xss')</script>", "javascript:alert('xss')", "<img src=x onerror=alert('xss')>"],
+    "path_traversal": [
+      "../../../etc/passwd",
+      "..\\..\\..\\windows\\system32\\drivers\\etc\\hosts",
+      "....//....//....//etc/passwd"
+    ],
+    "command_injection": ["test; rm -rf /", "test | cat /etc/passwd", "test && whoami"]
+  },
+  "expected_responses": {
+    "unauthorized": {
+      "status_code": 401,
+      "contains": ["unauthorized", "invalid", "expired"]
+    },
+    "forbidden": {
+      "status_code": 403,
+      "contains": ["forbidden", "permission", "access denied"]
+    },
+    "rate_limited": {
+      "status_code": 429,
+      "contains": ["rate limit", "too many requests"]
+    },
+    "success": {
+      "status_code": 200,
+      "contains": []
+    }
+  },
+  "security_headers": {
+    "required": ["x-content-type-options", "x-frame-options", "x-xss-protection"],
+    "recommended": ["strict-transport-security", "content-security-policy", "referrer-policy"]
+  },
+  "cors_configuration": {
+    "allowed_origins": ["http://localhost:3000", "https://reynard.dev"],
+    "allowed_methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    "allowed_headers": ["Authorization", "Content-Type", "X-Requested-With"]
+  },
+  "reporting": {
+    "output_formats": ["json", "html", "console"],
+    "include_timing": true,
+    "include_security_scan": true,
+    "include_performance_metrics": true,
+    "detailed_error_logging": true
+  },
+  "environment": {
+    "python_version": "3.8+",
+    "node_version": "16+",
+    "required_packages": ["pytest", "requests", "PyJWT", "fastapi", "playwright"],
+    "test_timeout_seconds": 300,
+    "cleanup_after_tests": true
+  }
+}

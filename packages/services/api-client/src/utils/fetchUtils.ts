@@ -8,10 +8,7 @@ export function createFetchComposable() {
   const [loading, setLoading] = createSignal(false);
   const [error, setError] = createSignal<string | null>(null);
 
-  const fetchWithErrorHandling = async <T>(
-    url: string,
-    options?: RequestInit
-  ): Promise<T> => {
+  const fetchWithErrorHandling = async <T>(url: string, options?: RequestInit): Promise<T> => {
     setLoading(true);
     setError(null);
 

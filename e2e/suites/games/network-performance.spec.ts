@@ -1,8 +1,8 @@
 /**
  * Games Demo Network Performance E2E Tests
- * 
+ *
  * Performance-focused tests for network requests and resource loading.
- * 
+ *
  * @author 🦊 The Cunning Fox
  */
 
@@ -23,22 +23,22 @@ test.describe("Games Demo Network Performance", () => {
 
   test("should load resources efficiently", async () => {
     const requests: string[] = [];
-    
+
     // Track network requests
-    page.on('request', request => {
+    page.on("request", request => {
       requests.push(request.url());
     });
-    
+
     await page.goto(GAMES_DEMO_URL, { waitUntil: "networkidle" });
-    
+
     // Should not have excessive requests
     expect(requests.length).toBeLessThan(50);
-    
+
     // Check for large resources
-    const largeRequests = requests.filter(url => 
-      url.includes('.js') || url.includes('.css') || url.includes('.png') || url.includes('.jpg')
+    const largeRequests = requests.filter(
+      url => url.includes(".js") || url.includes(".css") || url.includes(".png") || url.includes(".jpg")
     );
-    
+
     // Should have reasonable number of resources
     expect(largeRequests.length).toBeLessThan(20);
   });
@@ -46,19 +46,19 @@ test.describe("Games Demo Network Performance", () => {
   test("should handle resource loading errors gracefully", async () => {
     // Block some resources to test error handling
     await page.route("**/*.png", route => route.abort());
-    
+
     const startTime = Date.now();
-    
-    await page.goto(GAMES_DEMO_URL, { 
+
+    await page.goto(GAMES_DEMO_URL, {
       waitUntil: "networkidle",
-      timeout: 30000 
+      timeout: 30000,
     });
-    
+
     const loadTime = Date.now() - startTime;
-    
+
     // Should still load within reasonable time even with blocked resources
     expect(loadTime).toBeLessThan(5000);
-    
+
     // Page should still be functional
     await expect(page.locator("h1")).toContainText("Reynard Games Demo");
   });

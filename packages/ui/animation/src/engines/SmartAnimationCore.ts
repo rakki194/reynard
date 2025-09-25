@@ -1,12 +1,12 @@
 /**
  * 🦊 Smart Animation Core
- * 
+ *
  * Intelligent animation engine that automatically adapts based on:
  * - Animation package availability
  * - Global animation control state
  * - Performance mode settings
  * - Accessibility preferences
- * 
+ *
  * @author Agile-Prime-90 (Reynard Lizard Specialist)
  * @since 1.0.0
  */
@@ -187,18 +187,13 @@ class FallbackAnimationEngine {
     options: AnimationOptions = {}
   ): Promise<AnimationResult> {
     const startTime = performance.now();
-    const {
-      duration = 300,
-      easing = "ease",
-      delay = 0,
-      useTransitions = true,
-    } = options;
+    const { duration = 300, easing = "ease", delay = 0, useTransitions = true } = options;
 
     if (this.config.enableLogging) {
       console.log("🦊 FallbackAnimationEngine: Creating CSS transition animation", properties);
     }
 
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       if (!useTransitions) {
         // Apply properties immediately
         Object.assign(element.style, properties);
@@ -215,7 +210,7 @@ class FallbackAnimationEngine {
       // Set up CSS transition
       const transitionProperty = Object.keys(properties).join(", ");
       element.style.transition = `${transitionProperty} ${duration}ms ${easing}`;
-      
+
       if (delay > 0) {
         element.style.transitionDelay = `${delay}ms`;
       }
@@ -240,16 +235,19 @@ class FallbackAnimationEngine {
       element.addEventListener("transitionend", handleTransitionEnd);
 
       // Fallback timeout
-      setTimeout(() => {
-        element.removeEventListener("transitionend", handleTransitionEnd);
-        resolve({
-          success: true,
-          usedFallback: true,
-          usedNoOp: false,
-          duration: performance.now() - startTime,
-          error: null,
-        });
-      }, duration + delay + 100);
+      setTimeout(
+        () => {
+          element.removeEventListener("transitionend", handleTransitionEnd);
+          resolve({
+            success: true,
+            usedFallback: true,
+            usedNoOp: false,
+            duration: performance.now() - startTime,
+            error: null,
+          });
+        },
+        duration + delay + 100
+      );
     });
   }
 
@@ -327,13 +325,13 @@ class FallbackAnimationEngine {
       console.log("🦊 FallbackAnimationEngine: Creating CSS-based animation loop");
     }
 
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const animate = (currentTime: number) => {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        
+
         onUpdate(progress);
-        
+
         if (progress < 1) {
           requestAnimationFrame(animate);
         } else {
@@ -347,7 +345,7 @@ class FallbackAnimationEngine {
           });
         }
       };
-      
+
       requestAnimationFrame(animate);
     });
   }
@@ -401,7 +399,7 @@ export class SmartAnimationCore {
   private async initialize(): Promise<void> {
     // Check if animation package is available
     const availability = await this.smartImportSystem.checkPackageAvailability("reynard-animation");
-    
+
     this.updateAnimationState({
       isAnimationPackageAvailable: availability.isAvailable,
       isFallbackMode: !availability.isAvailable && this.config.useFallback,
@@ -506,10 +504,10 @@ export class SmartAnimationCore {
   private updateEngineType(): void {
     const currentState = this.animationState[0]();
     const newEngineType = this.determineEngineType(currentState.isAnimationPackageAvailable);
-    
+
     if (newEngineType !== currentState.engineType) {
       this.updateAnimationState({ engineType: newEngineType });
-      
+
       if (this.config.enableLogging) {
         console.log(`🦊 SmartAnimationCore: Engine type changed to ${newEngineType}`);
       }
@@ -558,7 +556,7 @@ export class SmartAnimationCore {
         if (this.fullEngine && this.fullEngine.animate) {
           return this.fullEngine.animate(element, properties, options);
         }
-        // Fall through to fallback if full engine not available
+      // Fall through to fallback if full engine not available
       case "fallback":
         return this.fallbackEngine.animate(element, properties, options);
       case "no-op":
@@ -587,7 +585,7 @@ export class SmartAnimationCore {
         if (this.fullEngine && this.fullEngine.animateStaggered) {
           return this.fullEngine.animateStaggered(elements, properties, options);
         }
-        // Fall through to fallback if full engine not available
+      // Fall through to fallback if full engine not available
       case "fallback":
         return this.fallbackEngine.animateStaggered(elements, properties, options);
       case "no-op":
@@ -616,7 +614,7 @@ export class SmartAnimationCore {
         if (this.fullEngine && this.fullEngine.animateLoop) {
           return this.fullEngine.animateLoop(duration, onUpdate, onComplete);
         }
-        // Fall through to fallback if full engine not available
+      // Fall through to fallback if full engine not available
       case "fallback":
         return this.fallbackEngine.animateLoop(duration, onUpdate, onComplete);
       case "no-op":
@@ -631,7 +629,7 @@ export class SmartAnimationCore {
   updateConfig(newConfig: Partial<SmartAnimationConfig>): void {
     this.config = { ...this.config, ...newConfig };
     this.updateEngineType();
-    
+
     if (this.config.enableLogging) {
       console.log("🦊 SmartAnimationCore: Configuration updated", this.config);
     }
@@ -642,7 +640,7 @@ export class SmartAnimationCore {
    */
   cleanup(): void {
     this.smartImportSystem.cleanup();
-    
+
     if (this.config.enableLogging) {
       console.log("🦊 SmartAnimationCore: Cleaned up");
     }
@@ -678,4 +676,3 @@ export function cleanupSmartAnimationCore(): void {
     globalSmartAnimationCore = null;
   }
 }
-

@@ -1,11 +1,15 @@
 /**
  * 🦊 Gesture Animation Composable
- * 
+ *
  * SolidJS composable for gesture-based animations
  */
 
 import { createSignal, onCleanup, onMount } from "solid-js";
-import { GestureAnimationSystem, GestureAnimationConfig, GestureAnimationState } from "../gestures/GestureAnimationSystem";
+import {
+  GestureAnimationSystem,
+  GestureAnimationConfig,
+  GestureAnimationState,
+} from "../gestures/GestureAnimationSystem";
 import type { EasingType } from "../types";
 
 export interface UseGestureAnimationOptions {
@@ -44,9 +48,7 @@ export interface UseGestureAnimationReturn {
   ref: (element: HTMLElement) => void;
 }
 
-export function useGestureAnimation(
-  options: UseGestureAnimationOptions = {}
-): UseGestureAnimationReturn {
+export function useGestureAnimation(options: UseGestureAnimationOptions = {}): UseGestureAnimationReturn {
   const [state, setState] = createSignal<GestureAnimationState>({
     translateX: 0,
     translateY: 0,
@@ -62,7 +64,7 @@ export function useGestureAnimation(
 
   const ref = (element: HTMLElement) => {
     elementRef = element;
-    
+
     if (gestureSystem) {
       gestureSystem.destroy();
     }
@@ -80,15 +82,15 @@ export function useGestureAnimation(
       momentum: options.momentum,
       bounds: options.bounds,
       easing: options.easing,
-      onGestureStart: (event) => {
+      onGestureStart: event => {
         setIsAnimating(true);
         options.onGestureStart?.(event);
       },
-      onGestureMove: (event) => {
+      onGestureMove: event => {
         setState(gestureSystem!.getState());
         options.onGestureMove?.(event);
       },
-      onGestureEnd: (event) => {
+      onGestureEnd: event => {
         setIsAnimating(false);
         setState(gestureSystem!.getState());
         options.onGestureEnd?.(event);
@@ -100,10 +102,10 @@ export function useGestureAnimation(
 
   const animateTo = (targetState: Partial<GestureAnimationState>, duration: number = 300): void => {
     if (!gestureSystem) return;
-    
+
     setIsAnimating(true);
     gestureSystem.animateTo(targetState, duration);
-    
+
     // Update state after animation
     setTimeout(() => {
       setState(gestureSystem!.getState());

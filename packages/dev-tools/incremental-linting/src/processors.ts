@@ -39,7 +39,7 @@ export class LintingProcessors {
    */
   getProcessorsForFile(filePath: string): LintingProcessor[] {
     const applicableProcessors: LintingProcessor[] = [];
-    
+
     for (const processor of this.processors.values()) {
       if (processor.canProcess(filePath)) {
         applicableProcessors.push(processor);

@@ -13,7 +13,7 @@ graph TB
         A --> D[Model Loader]
         A --> E[Event System]
         A --> F[UI Components]
-        
+
         subgraph "📋 Model Registry"
             B --> B1[Model Registration]
             B --> B2[Model Discovery]
@@ -29,7 +29,7 @@ graph TB
             B4 --> B12[ModelType Enum]
             B4 --> B13[Type Filtering]
         end
-        
+
         subgraph "⬇️ Download Manager"
             C --> C1[Concurrent Downloads]
             C --> C2[Progress Tracking]
@@ -45,7 +45,7 @@ graph TB
             C4 --> C12[Retry Logic]
             C4 --> C13[Error Recovery]
         end
-        
+
         subgraph "🔄 Model Loader"
             D --> D1[Model Loading]
             D --> D2[Lifecycle Management]
@@ -60,7 +60,7 @@ graph TB
             D4 --> D11[Instance Tracking]
             D4 --> D12[Memory Management]
         end
-        
+
         subgraph "📡 Event System"
             E --> E1[Event Handlers]
             E --> E2[Event Types]
@@ -77,7 +77,7 @@ graph TB
             E4 --> E13[Event Logging]
             E4 --> E14[Event Analytics]
         end
-        
+
         subgraph "🎨 UI Components"
             F --> F1[Model Manager Dashboard]
             F --> F2[Health Overview]
@@ -92,7 +92,7 @@ graph TB
             F4 --> F11[Download Progress]
             F4 --> F12[Loading Indicators]
         end
-        
+
         subgraph "🏗️ Base Model System"
             G[Base Model] --> G1[Abstract Base Class]
             G --> G2[Model Lifecycle]
@@ -107,7 +107,7 @@ graph TB
             G4 --> G11[Configuration Management]
             G4 --> G12[Metadata Storage]
         end
-        
+
         subgraph "📊 Model Types"
             H[Model Types] --> H1[Caption Generator]
             H --> H2[Detection Model]
@@ -120,7 +120,7 @@ graph TB
             H4 --> H9[Text Generation]
             H5 --> H10[Image Classification]
         end
-        
+
         subgraph "🔧 Model Operations"
             I[Operations] --> I1[Model Registration]
             I --> I2[Model Download]
@@ -135,7 +135,7 @@ graph TB
             I5 --> I11[Health Check Execution]
             I6 --> I12[Update Model Config]
         end
-        
+
         subgraph "📈 Model Status & Health"
             J[Status System] --> J1[Model Status]
             J --> J2[Model Health]
@@ -155,7 +155,7 @@ graph TB
             J4 --> J16[Health Checks]
         end
     end
-    
+
     subgraph "🌐 External Integration"
         K[Backend API] --> K1[Model Endpoints]
         K --> K2[Health Endpoints]
@@ -164,7 +164,7 @@ graph TB
         L --> L2[Component Integration]
         L --> L3[useModelManager Hook]
     end
-    
+
     A -->|Orchestrates| M[Model Lifecycle]
     B -->|Manages| N[Model Registry]
     C -->|Handles| O[Download Process]
@@ -184,13 +184,13 @@ sequenceDiagram
     participant Loader as Model Loader
     participant Model as Base Model
     participant UI as UI Components
-    
+
     Note over App, UI: Model Registration
     App->>Manager: registerModel(modelInfo)
     Manager->>Registry: registerModel(modelInfo)
     Registry-->>Manager: Model Registered
     Manager-->>App: Registration Complete
-    
+
     Note over App, UI: Model Download
     App->>Manager: downloadModel(modelId, progressCallback)
     Manager->>Registry: getModelInfo(modelId)
@@ -199,15 +199,15 @@ sequenceDiagram
     Downloader->>Downloader: Check Concurrent Limit
     Downloader->>Downloader: Initialize Progress Tracking
     Downloader->>Downloader: Start Download Process
-    
+
     loop Download Progress
         Downloader->>App: Progress Update
         Downloader->>UI: Update Progress Bar
     end
-    
+
     Downloader-->>Manager: Download Complete
     Manager-->>App: Download Success
-    
+
     Note over App, UI: Model Loading
     App->>Manager: loadModel(modelId, config)
     Manager->>Registry: getModelInfo(modelId)
@@ -222,14 +222,14 @@ sequenceDiagram
     Model-->>Loader: Model Loaded
     Loader-->>Manager: Load Complete
     Manager-->>App: Model Instance
-    
+
     Note over App, UI: Health Monitoring
     loop Health Monitoring
         Manager->>Model: healthCheck()
         Model-->>Manager: Health Status
         Manager->>UI: Update Health Display
     end
-    
+
     Note over App, UI: Model Unloading
     App->>Manager: unloadModel(modelId)
     Manager->>Loader: unloadModel(modelId)
@@ -246,27 +246,27 @@ sequenceDiagram
 ```mermaid
 stateDiagram-v2
     [*] --> NOT_DOWNLOADED: Model Registration
-    
+
     NOT_DOWNLOADED --> DOWNLOADING: downloadModel()
     DOWNLOADING --> DOWNLOADED: Download Complete
     DOWNLOADING --> ERROR: Download Failed
-    
+
     DOWNLOADED --> LOADING: loadModel()
     LOADING --> LOADED: Load Complete
     LOADING --> ERROR: Load Failed
-    
+
     LOADED --> LOADING: Reload Model
     LOADED --> NOT_DOWNLOADED: deleteModel()
-    
+
     ERROR --> DOWNLOADING: Retry Download
     ERROR --> LOADING: Retry Load
     ERROR --> NOT_DOWNLOADED: Reset Model
-    
+
     state DOWNLOADED {
         [*] --> Available
         Available --> Ready: Model Ready
     }
-    
+
     state LOADED {
         [*] --> HEALTHY
         HEALTHY --> DEGRADED: Performance Issues
@@ -275,7 +275,7 @@ stateDiagram-v2
         UNHEALTHY --> DEGRADED: Partial Recovery
         UNHEALTHY --> ERROR: Complete Failure
     }
-    
+
     state ERROR {
         [*] --> ErrorState
         ErrorState --> Retry: Retry Operation
@@ -291,7 +291,7 @@ graph TB
         A[ModelManager] --> B[HealthOverview]
         A --> C[ModelsGrid]
         A --> D[ErrorDisplay]
-        
+
         subgraph "📊 Health Overview"
             B --> B1[System Health Status]
             B --> B2[Performance Metrics]
@@ -305,7 +305,7 @@ graph TB
             B4 --> B10[Health Icons]
             B4 --> B11[Status Colors]
         end
-        
+
         subgraph "📋 Models Grid"
             C --> C1[Model Cards]
             C --> C2[Model Controls]
@@ -320,7 +320,7 @@ graph TB
             C4 --> C11[Download Progress]
             C4 --> C12[Loading Progress]
         end
-        
+
         subgraph "⚠️ Error Display"
             D --> D1[Error Messages]
             D --> D2[Error Actions]
@@ -332,7 +332,7 @@ graph TB
             D3 --> D8[Error Log]
             D3 --> D9[Error Analytics]
         end
-        
+
         subgraph "🔄 useModelManager Hook"
             E[useModelManager] --> E1[Reactive State]
             E --> E2[Model Operations]
@@ -348,7 +348,7 @@ graph TB
             E4 --> E12[WebSocket Updates]
         end
     end
-    
+
     subgraph "🎯 Model Card Components"
         F[Model Card] --> F1[Model Header]
         F --> F2[Model Body]
@@ -362,7 +362,7 @@ graph TB
         F3 --> F10[Action Buttons]
         F3 --> F11[Health Status]
     end
-    
+
     A -->|Uses| E
     B -->|Displays| F
     C -->|Renders| F

@@ -6,13 +6,13 @@
 
 import { describe, it, expect } from "vitest";
 import type { LintResult, LintIssue, LinterConfig, LintingQueueStatus } from "../types.js";
-import { 
-  createMockLintResult, 
-  createMockLintIssue, 
+import {
+  createMockLintResult,
+  createMockLintIssue,
   createMockLinterConfig,
   expectLintResult,
   expectLintIssue,
-  expectLinterConfig
+  expectLinterConfig,
 } from "./test-utils.js";
 
 describe("Types", () => {
@@ -24,7 +24,7 @@ describe("Types", () => {
 
     it("should handle different severity levels", () => {
       const severities: Array<"error" | "warning" | "info" | "hint"> = ["error", "warning", "info", "hint"];
-      
+
       severities.forEach(severity => {
         const issue = createMockLintIssue("Test message", severity, 1, 1);
         expect(issue.severity).toBe(severity);
@@ -48,12 +48,9 @@ describe("Types", () => {
     });
 
     it("should handle results with issues", () => {
-      const issues = [
-        createMockLintIssue("Error 1", "error", 1, 1),
-        createMockLintIssue("Warning 1", "warning", 2, 5),
-      ];
+      const issues = [createMockLintIssue("Error 1", "error", 1, 1), createMockLintIssue("Warning 1", "warning", 2, 5)];
       const result = createMockLintResult("/test/file.ts", issues);
-      
+
       expectLintResult(result);
       expect(result.issues).toHaveLength(2);
       expect(result.success).toBe(false);
@@ -82,7 +79,7 @@ describe("Types", () => {
     it("should handle different file patterns", () => {
       const patterns = ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"];
       const config = createMockLinterConfig("eslint", patterns);
-      
+
       expectLinterConfig(config);
       expect(config.patterns).toEqual(patterns);
     });
@@ -91,7 +88,7 @@ describe("Types", () => {
       const excludePatterns = ["**/node_modules/**", "**/dist/**"];
       const config = createMockLinterConfig("test-linter", ["**/*.ts"]);
       config.excludePatterns = excludePatterns;
-      
+
       expectLinterConfig(config);
       expect(config.excludePatterns).toEqual(excludePatterns);
     });
@@ -102,7 +99,7 @@ describe("Types", () => {
       config.timeout = 60000;
       config.parallel = false;
       config.priority = 5;
-      
+
       expectLinterConfig(config);
       expect(config.maxFileSize).toBe(2097152);
       expect(config.timeout).toBe(60000);

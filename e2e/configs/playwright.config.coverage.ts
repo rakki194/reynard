@@ -22,10 +22,7 @@ const resultsPaths = resultsManager.createDirectories();
 
 export default defineConfig({
   testDir: "../suites",
-  testMatch: [
-    "**/auth/*.spec.ts",
-    "**/auth-*.spec.ts",
-  ],
+  testMatch: ["**/auth/*.spec.ts", "**/auth-*.spec.ts"],
 
   /* Run tests in files in parallel */
   fullyParallel: false, // Disable for coverage collection
@@ -69,7 +66,7 @@ export default defineConfig({
 
     /* Enable coverage collection */
     extraHTTPHeaders: {
-      'Coverage-Enabled': 'true',
+      "Coverage-Enabled": "true",
     },
   },
 
@@ -77,14 +74,14 @@ export default defineConfig({
   projects: [
     {
       name: "chromium-coverage",
-      use: { 
+      use: {
         ...devices["Desktop Chrome"],
         // Enable coverage collection in browser
         launchOptions: {
           args: [
-            '--enable-code-coverage',
-            '--disable-extensions-file-access-check',
-            '--enable-experimental-web-platform-features',
+            "--enable-code-coverage",
+            "--disable-extensions-file-access-check",
+            "--enable-experimental-web-platform-features",
           ],
         },
       },
@@ -106,8 +103,8 @@ export default defineConfig({
       timeout: 120 * 1000,
       env: {
         // Enable coverage instrumentation in dev server
-        VITE_COVERAGE: 'true',
-        NODE_ENV: 'test',
+        VITE_COVERAGE: "true",
+        NODE_ENV: "test",
       },
     },
   ],

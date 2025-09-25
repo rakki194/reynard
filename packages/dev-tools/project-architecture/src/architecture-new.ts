@@ -4,7 +4,7 @@
  *
  * Centralized definition of the Reynard project structure with semantic
  * and syntactic pathing, relationships, and comprehensive documentation.
- * 
+ *
  * This is the main orchestrator that composes all modular architecture definitions.
  */
 
@@ -27,16 +27,8 @@ import { INFRASTRUCTURE_DIRECTORIES } from "./directories/infrastructure.js";
 import { ROOT_SERVICES } from "./directories/services-root.js";
 
 // Import configuration modules
-import { 
-  DEFAULT_WATCHING, 
-  DEFAULT_BUILD, 
-  DEFAULT_TESTING, 
-  DEFAULT_LINTING 
-} from "./config/defaults.js";
-import { 
-  GLOBAL_EXCLUDE_PATTERNS, 
-  GLOBAL_INCLUDE_PATTERNS 
-} from "./config/patterns.js";
+import { DEFAULT_WATCHING, DEFAULT_BUILD, DEFAULT_TESTING, DEFAULT_LINTING } from "./config/defaults.js";
+import { GLOBAL_EXCLUDE_PATTERNS, GLOBAL_INCLUDE_PATTERNS } from "./config/patterns.js";
 
 /**
  * Reynard Project Architecture Definition
@@ -51,43 +43,43 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
   directories: [
     // Core packages
     ...CORE_PACKAGES,
-    
+
     // AI packages
     ...AI_PACKAGES,
-    
+
     // UI packages
     ...UI_PACKAGES,
-    
+
     // Service packages
     ...SERVICE_PACKAGES,
-    
+
     // Data packages
     ...DATA_PACKAGES,
-    
+
     // Media packages
     ...MEDIA_PACKAGES,
-    
+
     // Dev tools packages
     ...DEV_TOOLS_PACKAGES,
-    
+
     // Documentation packages
     ...DOCS_PACKAGES,
-    
+
     // Example packages
     ...EXAMPLE_PACKAGES,
-    
+
     // Template packages
     ...TEMPLATE_PACKAGES,
-    
+
     // Testing directories
     ...TESTING_DIRECTORIES,
-    
+
     // Scripts directories
     ...SCRIPTS_DIRECTORIES,
-    
+
     // Infrastructure directories
     ...INFRASTRUCTURE_DIRECTORIES,
-    
+
     // Root services
     ...ROOT_SERVICES,
   ],

@@ -47,7 +47,7 @@ def _get_document_indexer():
     return document_indexer
 
 
-@router.post("/resume")
+@router.post("/resume", operation_id="rag_document_indexer_resume")
 async def resume_document_indexer() -> JSONResponse:
     """Resume the document indexer."""
     try:
@@ -68,7 +68,7 @@ async def resume_document_indexer() -> JSONResponse:
         ) from e
 
 
-@router.post("/pause")
+@router.post("/pause", operation_id="rag_document_indexer_pause")
 async def pause_document_indexer() -> JSONResponse:
     """Pause the document indexer."""
     try:
@@ -89,7 +89,7 @@ async def pause_document_indexer() -> JSONResponse:
         ) from e
 
 
-@router.get("/status")
+@router.get("/status", operation_id="rag_document_indexer_status")
 async def get_document_indexer_status() -> JSONResponse:
     """Get document indexer status and metrics."""
     try:
@@ -108,7 +108,7 @@ async def get_document_indexer_status() -> JSONResponse:
         ) from e
 
 
-@router.get("/queue")
+@router.get("/queue", operation_id="rag_document_indexer_queue")
 async def get_queue_status() -> JSONResponse:
     """Get queue status and metrics."""
     try:

@@ -376,25 +376,15 @@ const RecoveryDemo: Component = () => {
         </div>
 
         <div style="display: flex; flex-direction: column; gap: 2rem;">
-          <ErrorBoundary>
-            {() => <RetryStrategyDemo />}
-          </ErrorBoundary>
+          <ErrorBoundary>{() => <RetryStrategyDemo />}</ErrorBoundary>
 
-          <ErrorBoundary>
-            {() => <ResetStrategyDemo />}
-          </ErrorBoundary>
+          <ErrorBoundary>{() => <ResetStrategyDemo />}</ErrorBoundary>
 
-          <ErrorBoundary>
-            {() => <FallbackStrategyDemo />}
-          </ErrorBoundary>
+          <ErrorBoundary>{() => <FallbackStrategyDemo />}</ErrorBoundary>
 
-          <ErrorBoundary>
-            {() => <RedirectStrategyDemo />}
-          </ErrorBoundary>
+          <ErrorBoundary>{() => <RedirectStrategyDemo />}</ErrorBoundary>
 
-          <ErrorBoundary>
-            {() => <ReloadStrategyDemo />}
-          </ErrorBoundary>
+          <ErrorBoundary>{() => <ReloadStrategyDemo />}</ErrorBoundary>
         </div>
       </div>
     </div>

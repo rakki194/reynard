@@ -30,7 +30,7 @@ export function createDefaultConfig(rootPath: string): IncrementalLintingConfig 
         priority: 10,
         workingDirectory: rootPath,
       },
-      
+
       // Python linting with Ruff (single tool approach)
       {
         name: "ruff",
@@ -45,7 +45,7 @@ export function createDefaultConfig(rootPath: string): IncrementalLintingConfig 
         priority: 10,
         workingDirectory: rootPath,
       },
-      
+
       // Python type checking with MyPy
       {
         name: "mypy",
@@ -60,7 +60,7 @@ export function createDefaultConfig(rootPath: string): IncrementalLintingConfig 
         priority: 5,
         workingDirectory: rootPath,
       },
-      
+
       // Markdown linting
       {
         name: "markdownlint",
@@ -75,7 +75,7 @@ export function createDefaultConfig(rootPath: string): IncrementalLintingConfig 
         priority: 3,
         workingDirectory: rootPath,
       },
-      
+
       // Shell script linting
       {
         name: "shellcheck",
@@ -91,7 +91,7 @@ export function createDefaultConfig(rootPath: string): IncrementalLintingConfig 
         workingDirectory: rootPath,
       },
     ],
-    
+
     includePatterns: [
       "packages/**/*",
       "backend/**/*",
@@ -101,7 +101,7 @@ export function createDefaultConfig(rootPath: string): IncrementalLintingConfig 
       "docs/**/*",
       "scripts/**/*",
     ],
-    
+
     excludePatterns: [
       "**/node_modules/**",
       "**/dist/**",
@@ -119,7 +119,7 @@ export function createDefaultConfig(rootPath: string): IncrementalLintingConfig 
       "**/tmp/**",
       "**/temp/**",
     ],
-    
+
     debounceDelay: 1000, // 1 second debounce
     maxConcurrency: 4, // Limit concurrent linters
     incremental: true,
@@ -207,10 +207,6 @@ export function validateConfig(config: IncrementalLintingConfig): { valid: boole
 
   return {
     valid: errors.length === 0,
-    errors
+    errors,
   };
 }
-
-
-
-

@@ -85,8 +85,13 @@ class GalleryBatchProcessor:
         self.processing_lock = asyncio.Lock()
         self._shutdown = False
 
-        # Start background processor
-        self._processor_task = asyncio.create_task(self._process_downloads())
+        # Background processor will be started when needed
+        self._processor_task = None
+
+    async def _ensure_processor_started(self):
+        """Ensure the background processor is started."""
+        if self._processor_task is None or self._processor_task.done():
+            self._processor_task = asyncio.create_task(self._process_downloads())
 
     async def create_batch_download(
         self,
@@ -125,6 +130,9 @@ class GalleryBatchProcessor:
 
         # Sort queue by priority
         self.download_queue.sort(key=lambda x: x.priority.value, reverse=True)
+
+        # Start processor if not already running
+        await self._ensure_processor_started()
 
         logger.info(f"Created batch download '{name}' with {len(urls)} items")
 

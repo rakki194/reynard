@@ -1,6 +1,6 @@
 /**
  * 🦊 Color Animation System
- * 
+ *
  * Unified color animation functions consolidated from the colors package.
  * Provides smooth color transitions with easing and fallback support.
  */
@@ -29,7 +29,7 @@ export interface HueShiftOptions extends ColorAnimationOptions {
 /**
  * Shift hue with easing function for smooth transitions
  * Consolidated from packages/colors/src/utils/hueShifting.ts
- * 
+ *
  * @param baseColor - Base OKLCH color
  * @param deltaH - Maximum hue shift amount
  * @param progress - Progress value (0-1)
@@ -50,7 +50,7 @@ export function easedHueShift(
 
 /**
  * Pure hue shift without easing
- * 
+ *
  * @param baseColor - Base OKLCH color
  * @param deltaH - Hue shift amount in degrees
  * @returns Shifted OKLCH color
@@ -64,7 +64,7 @@ export function pureHueShift(baseColor: OKLCHColor, deltaH: number): OKLCHColor 
 
 /**
  * Batch hue shift multiple colors
- * 
+ *
  * @param colors - Array of OKLCH colors
  * @param deltaH - Hue shift amount in degrees
  * @returns Array of shifted OKLCH colors
@@ -95,7 +95,7 @@ export const ColorEasingFunctions = {
 
 /**
  * Create a smooth color transition between two colors
- * 
+ *
  * @param startColor - Starting OKLCH color
  * @param endColor - Ending OKLCH color
  * @param progress - Progress value (0-1)
@@ -109,7 +109,7 @@ export function interpolateColor(
   easingFunction: (t: number) => number = Easing.linear
 ): OKLCHColor {
   const easedProgress = easingFunction(progress);
-  
+
   return {
     l: startColor.l + (endColor.l - startColor.l) * easedProgress,
     c: startColor.c + (endColor.c - startColor.c) * easedProgress,
@@ -119,7 +119,7 @@ export function interpolateColor(
 
 /**
  * Interpolate hue values considering the circular nature of hue
- * 
+ *
  * @param startHue - Starting hue
  * @param endHue - Ending hue
  * @param t - Interpolation factor (0-1)
@@ -128,20 +128,20 @@ export function interpolateColor(
 export function interpolateHue(startHue: number, endHue: number, t: number): number {
   // Handle hue wrapping (0-360 degrees)
   let diff = endHue - startHue;
-  
+
   if (diff > 180) {
     diff -= 360;
   } else if (diff < -180) {
     diff += 360;
   }
-  
+
   const result = startHue + diff * t;
   return ((result % 360) + 360) % 360;
 }
 
 /**
  * Create a color ramp with custom easing
- * 
+ *
  * @param baseColor - Base OKLCH color
  * @param targetColor - Target OKLCH color
  * @param stops - Number of intermediate stops
@@ -167,7 +167,7 @@ export function generateEasedColorRamp(
 
 /**
  * Create a hue shift ramp with easing
- * 
+ *
  * @param baseColor - Base OKLCH color
  * @param stops - Number of stops
  * @param maxShift - Maximum hue shift
@@ -193,7 +193,7 @@ export function generateEasedHueRamp(
 
 /**
  * Smart color animation with fallback support
- * 
+ *
  * @param startColor - Starting color
  * @param endColor - Ending color
  * @param options - Animation options
@@ -204,12 +204,7 @@ export async function animateColorTransition(
   endColor: OKLCHColor,
   options: ColorAnimationOptions = {}
 ): Promise<OKLCHColor[]> {
-  const {
-    duration = 300,
-    easing = "linear",
-    useFallback = true,
-    respectGlobalControl = true,
-  } = options;
+  const { duration = 300, easing = "linear", useFallback = true, respectGlobalControl = true } = options;
 
   // Check if animations should be disabled
   if (respectGlobalControl && shouldDisableColorAnimations()) {
@@ -230,7 +225,7 @@ export async function animateColorTransition(
  */
 function shouldDisableColorAnimations(): boolean {
   if (typeof window === "undefined") return true;
-  
+
   // Check for reduced motion preference
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     return true;
@@ -270,7 +265,7 @@ async function createFallbackColorTransition(
   options: ColorAnimationOptions
 ): Promise<OKLCHColor[]> {
   const { duration = 300, easing = "linear" } = options;
-  
+
   // Simple fallback: return end color immediately
   return [endColor];
 }
@@ -284,10 +279,10 @@ async function createFullColorTransition(
   options: ColorAnimationOptions
 ): Promise<OKLCHColor[]> {
   const { duration = 300, easing = "linear" } = options;
-  
+
   // Create smooth transition with multiple steps
   const steps = Math.max(2, Math.floor(duration / 16)); // ~60fps
   const easingFunction = ColorEasingFunctions[easing] || Easing.linear;
-  
+
   return generateEasedColorRamp(startColor, endColor, steps, easingFunction);
 }

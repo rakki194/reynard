@@ -13,7 +13,8 @@ from sqlalchemy import engine_from_config, pool
 from sqlalchemy.ext.asyncio import AsyncEngine
 
 # Import your models here if you have custom auth models
-# from app.auth.user_models import Base
+from app.security.pgp_key_models import AuthBase
+# SSH key models use the same AuthBase
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -26,12 +27,10 @@ if config.config_file_name is not None:
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-# target_metadata = Base.metadata
+target_metadata = AuthBase.metadata
 
-# Since Gatekeeper manages its own schema, we'll use an empty metadata
-# for now. If you add custom auth models later, uncomment the line above
-# and import your Base class.
-target_metadata = None
+# PGP key models are now included in auth database migrations
+# Gatekeeper still manages its own schema, but we can add custom models
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

@@ -1,6 +1,6 @@
 /**
  * 🦊 Scroll Animation Composable
- * 
+ *
  * SolidJS composable for scroll-triggered animations
  */
 
@@ -10,7 +10,7 @@ import type { ParallaxOptions, RevealOptions, ProgressAnimationOptions } from ".
 import type { EasingType } from "../types";
 
 export interface UseScrollAnimationOptions {
-  type: 'parallax' | 'reveal' | 'progress';
+  type: "parallax" | "reveal" | "progress";
   parallax?: ParallaxOptions;
   reveal?: RevealOptions;
   progress?: ProgressAnimationOptions;
@@ -26,31 +26,29 @@ export interface UseScrollAnimationReturn {
   cleanup: () => void;
 }
 
-export function useScrollAnimation(
-  options: UseScrollAnimationOptions
-): UseScrollAnimationReturn {
+export function useScrollAnimation(options: UseScrollAnimationOptions): UseScrollAnimationReturn {
   const [isVisible, setIsVisible] = createSignal(false);
   const [progress, setProgress] = createSignal(0);
-  
+
   let elementRef: HTMLElement | null = null;
   let cleanupFunction: (() => void) | null = null;
   let scrollAnimations: ScrollAnimations = globalScrollAnimations;
 
   const ref = (element: HTMLElement) => {
     elementRef = element;
-    
+
     if (cleanupFunction) {
       cleanupFunction();
     }
 
     switch (options.type) {
-      case 'parallax':
+      case "parallax":
         if (options.parallax) {
           cleanupFunction = scrollAnimations.createParallax(element, {
             ...options.parallax,
             // Add progress callback if provided
             ...(options.onProgress && {
-              onProgress: (progress) => {
+              onProgress: progress => {
                 setProgress(progress);
                 options.onProgress?.(progress);
               },
@@ -58,8 +56,8 @@ export function useScrollAnimation(
           });
         }
         break;
-        
-      case 'reveal':
+
+      case "reveal":
         if (options.reveal) {
           cleanupFunction = scrollAnimations.createReveal(element, {
             ...options.reveal,
@@ -74,12 +72,12 @@ export function useScrollAnimation(
           });
         }
         break;
-        
-      case 'progress':
+
+      case "progress":
         if (options.progress) {
           cleanupFunction = scrollAnimations.createProgressAnimation(element, {
             ...options.progress,
-            onProgress: (progress) => {
+            onProgress: progress => {
               setProgress(progress);
               options.onProgress?.(progress);
             },
@@ -112,7 +110,7 @@ export function useScrollAnimation(
 // Convenience composables for specific animation types
 export function useParallax(options: ParallaxOptions & { onProgress?: (progress: number) => void }) {
   return useScrollAnimation({
-    type: 'parallax',
+    type: "parallax",
     parallax: options,
     onProgress: options.onProgress,
   });
@@ -120,7 +118,7 @@ export function useParallax(options: ParallaxOptions & { onProgress?: (progress:
 
 export function useReveal(options: RevealOptions & { onEnter?: () => void; onExit?: () => void }) {
   return useScrollAnimation({
-    type: 'reveal',
+    type: "reveal",
     reveal: options,
     onEnter: options.onEnter,
     onExit: options.onExit,
@@ -129,7 +127,7 @@ export function useReveal(options: RevealOptions & { onEnter?: () => void; onExi
 
 export function useProgressAnimation(options: ProgressAnimationOptions & { onProgress?: (progress: number) => void }) {
   return useScrollAnimation({
-    type: 'progress',
+    type: "progress",
     progress: options,
     onProgress: options.onProgress,
   });

@@ -2,9 +2,9 @@
  * Provider for animal spirit enums
  */
 
-import { BaseEnumProvider } from '../core/EnumProvider';
-import type { EnumProviderConfig, EnumData, EnumValue } from '../types';
-import type { EnumDataProvider } from '../types/DataProvider';
+import { BaseEnumProvider } from "../core/EnumProvider";
+import type { EnumProviderConfig, EnumData, EnumValue } from "../types";
+import type { EnumDataProvider } from "../types/DataProvider";
 
 /**
  * Provider for animal spirit enums with weighted selection
@@ -20,7 +20,7 @@ export class SpiritEnumProvider extends BaseEnumProvider {
   protected async fetchEnumData(): Promise<EnumData> {
     if (this.dataProvider) {
       try {
-        return await this.dataProvider.fetchEnumData('spirits');
+        return await this.dataProvider.fetchEnumData("spirits");
       } catch (error) {
         console.warn(`Failed to fetch spirit data from provider: ${error}`);
         return this.fallbackData;
@@ -36,12 +36,12 @@ export class SpiritEnumProvider extends BaseEnumProvider {
   async getRandomSpirit(weighted = true): Promise<EnumValue> {
     const data = await this.getEnumData();
     const keys = Object.keys(data);
-    
+
     if (keys.length === 0) {
       return {
         value: this.defaultFallback,
         weight: 1.0,
-        metadata: { emoji: '🦊', description: 'Default spirit' }
+        metadata: { emoji: "🦊", description: "Default spirit" },
       };
     }
 
@@ -169,9 +169,9 @@ export class SpiritEnumProvider extends BaseEnumProvider {
       weightDistribution: {
         min: minWeight === Infinity ? 0 : minWeight,
         max: maxWeight === -Infinity ? 0 : maxWeight,
-        average: Object.keys(data).length > 0 ? totalWeight / Object.keys(data).length : 0
+        average: Object.keys(data).length > 0 ? totalWeight / Object.keys(data).length : 0,
       },
-      emojiCount
+      emojiCount,
     };
   }
 }

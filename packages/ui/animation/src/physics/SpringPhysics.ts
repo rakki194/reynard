@@ -1,15 +1,15 @@
 /**
  * 🦊 Spring Physics System
- * 
+ *
  * Mass, stiffness, damping parameters with velocity-based spring calculations
  */
 
 export interface SpringConfig {
-  mass: number;        // Mass of the object (affects inertia)
-  stiffness: number;   // Spring stiffness (how strong the spring is)
-  damping: number;     // Damping coefficient (friction/resistance)
-  precision: number;   // Precision threshold for stopping
-  velocity?: number;   // Initial velocity
+  mass: number; // Mass of the object (affects inertia)
+  stiffness: number; // Spring stiffness (how strong the spring is)
+  damping: number; // Damping coefficient (friction/resistance)
+  precision: number; // Precision threshold for stopping
+  velocity?: number; // Initial velocity
 }
 
 export interface SpringState {
@@ -99,8 +99,8 @@ export class SpringPhysics {
     this.state.position += this.state.velocity * (deltaTime / 1000);
 
     // Check if spring is at rest
-    const isAtRest = Math.abs(displacement) < this.config.precision && 
-                     Math.abs(this.state.velocity) < this.config.precision;
+    const isAtRest =
+      Math.abs(displacement) < this.config.precision && Math.abs(this.state.velocity) < this.config.precision;
 
     if (isAtRest && !this.state.isAtRest) {
       this.state.isAtRest = true;
@@ -160,24 +160,24 @@ export class SpringEasing {
   static create(config: SpringConfig): (t: number) => number {
     const spring = new SpringPhysics(config);
     spring.setTarget(1);
-    
+
     return (t: number): number => {
       if (t <= 0) return 0;
       if (t >= 1) return 1;
-      
+
       // Reset spring for each evaluation
       spring.reset();
       spring.setTarget(1);
-      
+
       // Simulate spring for the given time
       const totalTime = t * 1000; // Convert to milliseconds
       let currentTime = 0;
-      
+
       while (currentTime < totalTime && !spring.isAtRest()) {
         spring.update(16); // 60fps simulation
         currentTime += 16;
       }
-      
+
       return spring.getState().position;
     };
   }
@@ -188,19 +188,19 @@ export class SpringEasing {
   static readonly presets = {
     // Gentle spring
     gentle: { mass: 1, stiffness: 120, damping: 14, precision: 0.01 },
-    
+
     // Wobbly spring
     wobbly: { mass: 1, stiffness: 180, damping: 12, precision: 0.01 },
-    
+
     // Stiff spring
     stiff: { mass: 1, stiffness: 210, damping: 20, precision: 0.01 },
-    
+
     // Slow spring
     slow: { mass: 1, stiffness: 280, damping: 60, precision: 0.01 },
-    
+
     // Bouncy spring
     bouncy: { mass: 1, stiffness: 400, damping: 10, precision: 0.01 },
-    
+
     // No bounce spring
     noBounce: { mass: 1, stiffness: 200, damping: 25, precision: 0.01 },
   };
@@ -229,7 +229,7 @@ export class MultiSpringPhysics {
     if (target.length !== this.dimensions) {
       throw new Error(`Target must have ${this.dimensions} dimensions`);
     }
-    
+
     this.springs.forEach((spring, index) => {
       spring.setTarget(target[index]);
     });
@@ -239,7 +239,7 @@ export class MultiSpringPhysics {
     if (position.length !== this.dimensions) {
       throw new Error(`Position must have ${this.dimensions} dimensions`);
     }
-    
+
     this.springs.forEach((spring, index) => {
       spring.setPosition(position[index]);
     });
@@ -280,7 +280,7 @@ export class SpringAnimationLoop {
 
   start(): void {
     if (this.isRunning) return;
-    
+
     this.isRunning = true;
     this.animate();
   }

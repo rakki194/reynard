@@ -7,7 +7,7 @@ import type { Plugin } from "vite";
  * Includes additional setup for UI component testing
  */
 export default defineConfig({
-    plugins: [solid() as any],
+  plugins: [solid() as any],
   test: {
     environment: "happy-dom",
     globals: true,

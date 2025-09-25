@@ -151,9 +151,9 @@ export class OptimizationSuggestionEngine extends EventEmitter {
         maxConcurrentAnalysis: 10,
         cacheResults: true,
         cacheExpiry: 60 * 60 * 1000, // 1 hour
-        enableParallelProcessing: true
+        enableParallelProcessing: true,
       },
-      ...config
+      ...config,
     };
   }
 
@@ -162,7 +162,7 @@ export class OptimizationSuggestionEngine extends EventEmitter {
    */
   async generateSuggestions(): Promise<Map<string, OptimizationSuggestion[]>> {
     this.emit("analysis:start", { timestamp: new Date().toISOString() });
-    
+
     try {
       // Clear previous results
       this.suggestions.clear();
@@ -170,11 +170,11 @@ export class OptimizationSuggestionEngine extends EventEmitter {
 
       // Get all source files
       const sourceFiles = await this.findSourceFiles();
-      
+
       // Analyze files in parallel
       const analysisPromises = sourceFiles.map(file => this.analyzeFileOptimizations(file));
       const results = await Promise.all(analysisPromises);
-      
+
       // Merge results
       for (const fileSuggestions of results) {
         for (const [file, suggestions] of fileSuggestions) {
@@ -188,7 +188,7 @@ export class OptimizationSuggestionEngine extends EventEmitter {
       this.emit("analysis:complete", {
         timestamp: new Date().toISOString(),
         totalFiles: sourceFiles.length,
-        totalSuggestions: Array.from(this.suggestions.values()).flat().length
+        totalSuggestions: Array.from(this.suggestions.values()).flat().length,
       });
 
       return this.suggestions;
@@ -203,7 +203,7 @@ export class OptimizationSuggestionEngine extends EventEmitter {
    */
   private async analyzeFileOptimizations(filePath: string): Promise<Map<string, OptimizationSuggestion[]>> {
     const suggestions = new Map<string, OptimizationSuggestion[]>();
-    
+
     try {
       // Check cache first
       if (this.config.performance.cacheResults) {
@@ -216,35 +216,35 @@ export class OptimizationSuggestionEngine extends EventEmitter {
 
       // Read file content
       const content = await readFile(filePath, "utf-8");
-      
+
       // Generate suggestions using different methods
       const generatedSuggestions: OptimizationSuggestion[] = [];
-      
+
       if (this.config.enablePerformanceOptimizations) {
         const performanceSuggestions = await this.generatePerformanceSuggestions(content, filePath);
         generatedSuggestions.push(...performanceSuggestions);
       }
-      
+
       if (this.config.enableMaintainabilityOptimizations) {
         const maintainabilitySuggestions = await this.generateMaintainabilitySuggestions(content, filePath);
         generatedSuggestions.push(...maintainabilitySuggestions);
       }
-      
+
       if (this.config.enableArchitecturalOptimizations) {
         const architecturalSuggestions = await this.generateArchitecturalSuggestions(content, filePath);
         generatedSuggestions.push(...architecturalSuggestions);
       }
-      
+
       if (this.config.enableSecurityOptimizations) {
         const securitySuggestions = await this.generateSecuritySuggestions(content, filePath);
         generatedSuggestions.push(...securitySuggestions);
       }
-      
+
       if (this.config.enableScalabilityOptimizations) {
         const scalabilitySuggestions = await this.generateScalabilitySuggestions(content, filePath);
         generatedSuggestions.push(...scalabilitySuggestions);
       }
-      
+
       if (this.config.enableCodeQualityOptimizations) {
         const qualitySuggestions = await this.generateCodeQualitySuggestions(content, filePath);
         generatedSuggestions.push(...qualitySuggestions);
@@ -252,9 +252,10 @@ export class OptimizationSuggestionEngine extends EventEmitter {
 
       // Filter by thresholds
       const filteredSuggestions = generatedSuggestions.filter(
-        suggestion => suggestion.metrics.impact >= this.config.minImpactThreshold &&
-                     suggestion.metrics.effort <= this.config.maxEffortThreshold &&
-                     suggestion.metrics.confidence >= this.config.confidenceThreshold
+        suggestion =>
+          suggestion.metrics.impact >= this.config.minImpactThreshold &&
+          suggestion.metrics.effort <= this.config.maxEffortThreshold &&
+          suggestion.metrics.confidence >= this.config.confidenceThreshold
       );
 
       // Limit suggestions per file
@@ -266,10 +267,9 @@ export class OptimizationSuggestionEngine extends EventEmitter {
       if (this.config.performance.cacheResults) {
         this.analysisCache.set(filePath, {
           suggestions: limitedSuggestions,
-          timestamp: Date.now()
+          timestamp: Date.now(),
         });
       }
-
     } catch (error) {
       console.warn(`Failed to analyze optimizations in file: ${filePath}`, error);
     }
@@ -282,60 +282,68 @@ export class OptimizationSuggestionEngine extends EventEmitter {
    */
   private async generatePerformanceSuggestions(content: string, filePath: string): Promise<OptimizationSuggestion[]> {
     const suggestions: OptimizationSuggestion[] = [];
-    
+
     try {
       const lines = content.split("\n");
-      
+
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
-        
+
         // Detect performance issues and suggest optimizations
         if (this.detectNPlusOneQuery(line)) {
-          suggestions.push(this.createSuggestion(
-            "Optimize N+1 Query",
-            "performance",
-            "Replace N+1 queries with batch loading or joins",
-            line,
-            i,
-            filePath,
-            "n-plus-one-query"
-          ));
+          suggestions.push(
+            this.createSuggestion(
+              "Optimize N+1 Query",
+              "performance",
+              "Replace N+1 queries with batch loading or joins",
+              line,
+              i,
+              filePath,
+              "n-plus-one-query"
+            )
+          );
         }
-        
+
         if (this.detectInefficientLoop(line)) {
-          suggestions.push(this.createSuggestion(
-            "Optimize Loop Performance",
-            "performance",
-            "Use more efficient loop constructs or algorithms",
-            line,
-            i,
-            filePath,
-            "inefficient-loop"
-          ));
+          suggestions.push(
+            this.createSuggestion(
+              "Optimize Loop Performance",
+              "performance",
+              "Use more efficient loop constructs or algorithms",
+              line,
+              i,
+              filePath,
+              "inefficient-loop"
+            )
+          );
         }
-        
+
         if (this.detectMemoryLeak(line)) {
-          suggestions.push(this.createSuggestion(
-            "Fix Memory Leak",
-            "performance",
-            "Add proper cleanup and memory management",
-            line,
-            i,
-            filePath,
-            "memory-leak"
-          ));
+          suggestions.push(
+            this.createSuggestion(
+              "Fix Memory Leak",
+              "performance",
+              "Add proper cleanup and memory management",
+              line,
+              i,
+              filePath,
+              "memory-leak"
+            )
+          );
         }
-        
+
         if (this.detectUnnecessaryRendering(line)) {
-          suggestions.push(this.createSuggestion(
-            "Optimize Rendering",
-            "performance",
-            "Implement memoization or reduce unnecessary re-renders",
-            line,
-            i,
-            filePath,
-            "unnecessary-rendering"
-          ));
+          suggestions.push(
+            this.createSuggestion(
+              "Optimize Rendering",
+              "performance",
+              "Implement memoization or reduce unnecessary re-renders",
+              line,
+              i,
+              filePath,
+              "unnecessary-rendering"
+            )
+          );
         }
       }
     } catch (error) {
@@ -348,62 +356,73 @@ export class OptimizationSuggestionEngine extends EventEmitter {
   /**
    * Generate maintainability optimization suggestions.
    */
-  private async generateMaintainabilitySuggestions(content: string, filePath: string): Promise<OptimizationSuggestion[]> {
+  private async generateMaintainabilitySuggestions(
+    content: string,
+    filePath: string
+  ): Promise<OptimizationSuggestion[]> {
     const suggestions: OptimizationSuggestion[] = [];
-    
+
     try {
       const lines = content.split("\n");
-      
+
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
-        
+
         // Detect maintainability issues and suggest improvements
         if (this.detectLongFunction(line)) {
-          suggestions.push(this.createSuggestion(
-            "Extract Long Function",
-            "maintainability",
-            "Break down long functions into smaller, focused functions",
-            line,
-            i,
-            filePath,
-            "long-function"
-          ));
+          suggestions.push(
+            this.createSuggestion(
+              "Extract Long Function",
+              "maintainability",
+              "Break down long functions into smaller, focused functions",
+              line,
+              i,
+              filePath,
+              "long-function"
+            )
+          );
         }
-        
+
         if (this.detectDuplicateCode(line)) {
-          suggestions.push(this.createSuggestion(
-            "Remove Code Duplication",
-            "maintainability",
-            "Extract common code into reusable functions or components",
-            line,
-            i,
-            filePath,
-            "duplicate-code"
-          ));
+          suggestions.push(
+            this.createSuggestion(
+              "Remove Code Duplication",
+              "maintainability",
+              "Extract common code into reusable functions or components",
+              line,
+              i,
+              filePath,
+              "duplicate-code"
+            )
+          );
         }
-        
+
         if (this.detectComplexConditional(line)) {
-          suggestions.push(this.createSuggestion(
-            "Simplify Complex Conditional",
-            "maintainability",
-            "Break down complex conditionals into simpler, readable logic",
-            line,
-            i,
-            filePath,
-            "complex-conditional"
-          ));
+          suggestions.push(
+            this.createSuggestion(
+              "Simplify Complex Conditional",
+              "maintainability",
+              "Break down complex conditionals into simpler, readable logic",
+              line,
+              i,
+              filePath,
+              "complex-conditional"
+            )
+          );
         }
-        
+
         if (this.detectMissingDocumentation(line)) {
-          suggestions.push(this.createSuggestion(
-            "Add Documentation",
-            "maintainability",
-            "Add JSDoc comments and inline documentation",
-            line,
-            i,
-            filePath,
-            "missing-documentation"
-          ));
+          suggestions.push(
+            this.createSuggestion(
+              "Add Documentation",
+              "maintainability",
+              "Add JSDoc comments and inline documentation",
+              line,
+              i,
+              filePath,
+              "missing-documentation"
+            )
+          );
         }
       }
     } catch (error) {
@@ -418,60 +437,68 @@ export class OptimizationSuggestionEngine extends EventEmitter {
    */
   private async generateArchitecturalSuggestions(content: string, filePath: string): Promise<OptimizationSuggestion[]> {
     const suggestions: OptimizationSuggestion[] = [];
-    
+
     try {
       const lines = content.split("\n");
-      
+
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
-        
+
         // Detect architectural issues and suggest improvements
         if (this.detectTightCoupling(line)) {
-          suggestions.push(this.createSuggestion(
-            "Reduce Tight Coupling",
-            "architecture",
-            "Implement dependency injection or use interfaces to reduce coupling",
-            line,
-            i,
-            filePath,
-            "tight-coupling"
-          ));
+          suggestions.push(
+            this.createSuggestion(
+              "Reduce Tight Coupling",
+              "architecture",
+              "Implement dependency injection or use interfaces to reduce coupling",
+              line,
+              i,
+              filePath,
+              "tight-coupling"
+            )
+          );
         }
-        
+
         if (this.detectGodClass(line)) {
-          suggestions.push(this.createSuggestion(
-            "Break Down God Class",
-            "architecture",
-            "Split large classes into smaller, focused classes",
-            line,
-            i,
-            filePath,
-            "god-class"
-          ));
+          suggestions.push(
+            this.createSuggestion(
+              "Break Down God Class",
+              "architecture",
+              "Split large classes into smaller, focused classes",
+              line,
+              i,
+              filePath,
+              "god-class"
+            )
+          );
         }
-        
+
         if (this.detectCircularDependency(line)) {
-          suggestions.push(this.createSuggestion(
-            "Resolve Circular Dependency",
-            "architecture",
-            "Refactor to eliminate circular dependencies",
-            line,
-            i,
-            filePath,
-            "circular-dependency"
-          ));
+          suggestions.push(
+            this.createSuggestion(
+              "Resolve Circular Dependency",
+              "architecture",
+              "Refactor to eliminate circular dependencies",
+              line,
+              i,
+              filePath,
+              "circular-dependency"
+            )
+          );
         }
-        
+
         if (this.detectViolationOfSingleResponsibility(line)) {
-          suggestions.push(this.createSuggestion(
-            "Apply Single Responsibility Principle",
-            "architecture",
-            "Ensure each class/function has a single responsibility",
-            line,
-            i,
-            filePath,
-            "single-responsibility"
-          ));
+          suggestions.push(
+            this.createSuggestion(
+              "Apply Single Responsibility Principle",
+              "architecture",
+              "Ensure each class/function has a single responsibility",
+              line,
+              i,
+              filePath,
+              "single-responsibility"
+            )
+          );
         }
       }
     } catch (error) {
@@ -486,60 +513,68 @@ export class OptimizationSuggestionEngine extends EventEmitter {
    */
   private async generateSecuritySuggestions(content: string, filePath: string): Promise<OptimizationSuggestion[]> {
     const suggestions: OptimizationSuggestion[] = [];
-    
+
     try {
       const lines = content.split("\n");
-      
+
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
-        
+
         // Detect security issues and suggest improvements
         if (this.detectSQLInjection(line)) {
-          suggestions.push(this.createSuggestion(
-            "Prevent SQL Injection",
-            "security",
-            "Use parameterized queries or prepared statements",
-            line,
-            i,
-            filePath,
-            "sql-injection"
-          ));
+          suggestions.push(
+            this.createSuggestion(
+              "Prevent SQL Injection",
+              "security",
+              "Use parameterized queries or prepared statements",
+              line,
+              i,
+              filePath,
+              "sql-injection"
+            )
+          );
         }
-        
+
         if (this.detectXSSVulnerability(line)) {
-          suggestions.push(this.createSuggestion(
-            "Prevent XSS Attack",
-            "security",
-            "Sanitize user input and use proper escaping",
-            line,
-            i,
-            filePath,
-            "xss-vulnerability"
-          ));
+          suggestions.push(
+            this.createSuggestion(
+              "Prevent XSS Attack",
+              "security",
+              "Sanitize user input and use proper escaping",
+              line,
+              i,
+              filePath,
+              "xss-vulnerability"
+            )
+          );
         }
-        
+
         if (this.detectHardcodedSecrets(line)) {
-          suggestions.push(this.createSuggestion(
-            "Remove Hardcoded Secrets",
-            "security",
-            "Use environment variables or secure configuration",
-            line,
-            i,
-            filePath,
-            "hardcoded-secrets"
-          ));
+          suggestions.push(
+            this.createSuggestion(
+              "Remove Hardcoded Secrets",
+              "security",
+              "Use environment variables or secure configuration",
+              line,
+              i,
+              filePath,
+              "hardcoded-secrets"
+            )
+          );
         }
-        
+
         if (this.detectInsecureRandom(line)) {
-          suggestions.push(this.createSuggestion(
-            "Use Secure Random",
-            "security",
-            "Replace Math.random() with crypto.getRandomValues()",
-            line,
-            i,
-            filePath,
-            "insecure-random"
-          ));
+          suggestions.push(
+            this.createSuggestion(
+              "Use Secure Random",
+              "security",
+              "Replace Math.random() with crypto.getRandomValues()",
+              line,
+              i,
+              filePath,
+              "insecure-random"
+            )
+          );
         }
       }
     } catch (error) {
@@ -554,60 +589,68 @@ export class OptimizationSuggestionEngine extends EventEmitter {
    */
   private async generateScalabilitySuggestions(content: string, filePath: string): Promise<OptimizationSuggestion[]> {
     const suggestions: OptimizationSuggestion[] = [];
-    
+
     try {
       const lines = content.split("\n");
-      
+
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
-        
+
         // Detect scalability issues and suggest improvements
         if (this.detectSynchronousOperation(line)) {
-          suggestions.push(this.createSuggestion(
-            "Make Operations Asynchronous",
-            "scalability",
-            "Convert synchronous operations to asynchronous for better scalability",
-            line,
-            i,
-            filePath,
-            "synchronous-operation"
-          ));
+          suggestions.push(
+            this.createSuggestion(
+              "Make Operations Asynchronous",
+              "scalability",
+              "Convert synchronous operations to asynchronous for better scalability",
+              line,
+              i,
+              filePath,
+              "synchronous-operation"
+            )
+          );
         }
-        
+
         if (this.detectBlockingOperation(line)) {
-          suggestions.push(this.createSuggestion(
-            "Implement Non-blocking Operations",
-            "scalability",
-            "Use non-blocking I/O operations",
-            line,
-            i,
-            filePath,
-            "blocking-operation"
-          ));
+          suggestions.push(
+            this.createSuggestion(
+              "Implement Non-blocking Operations",
+              "scalability",
+              "Use non-blocking I/O operations",
+              line,
+              i,
+              filePath,
+              "blocking-operation"
+            )
+          );
         }
-        
+
         if (this.detectInefficientDataStructure(line)) {
-          suggestions.push(this.createSuggestion(
-            "Optimize Data Structure",
-            "scalability",
-            "Use more efficient data structures for the use case",
-            line,
-            i,
-            filePath,
-            "inefficient-data-structure"
-          ));
+          suggestions.push(
+            this.createSuggestion(
+              "Optimize Data Structure",
+              "scalability",
+              "Use more efficient data structures for the use case",
+              line,
+              i,
+              filePath,
+              "inefficient-data-structure"
+            )
+          );
         }
-        
+
         if (this.detectMissingCaching(line)) {
-          suggestions.push(this.createSuggestion(
-            "Implement Caching",
-            "scalability",
-            "Add caching layer for frequently accessed data",
-            line,
-            i,
-            filePath,
-            "missing-caching"
-          ));
+          suggestions.push(
+            this.createSuggestion(
+              "Implement Caching",
+              "scalability",
+              "Add caching layer for frequently accessed data",
+              line,
+              i,
+              filePath,
+              "missing-caching"
+            )
+          );
         }
       }
     } catch (error) {
@@ -622,60 +665,68 @@ export class OptimizationSuggestionEngine extends EventEmitter {
    */
   private async generateCodeQualitySuggestions(content: string, filePath: string): Promise<OptimizationSuggestion[]> {
     const suggestions: OptimizationSuggestion[] = [];
-    
+
     try {
       const lines = content.split("\n");
-      
+
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
-        
+
         // Detect code quality issues and suggest improvements
         if (this.detectMagicNumbers(line)) {
-          suggestions.push(this.createSuggestion(
-            "Replace Magic Numbers",
-            "code-quality",
-            "Use named constants instead of magic numbers",
-            line,
-            i,
-            filePath,
-            "magic-numbers"
-          ));
+          suggestions.push(
+            this.createSuggestion(
+              "Replace Magic Numbers",
+              "code-quality",
+              "Use named constants instead of magic numbers",
+              line,
+              i,
+              filePath,
+              "magic-numbers"
+            )
+          );
         }
-        
+
         if (this.detectInconsistentNaming(line)) {
-          suggestions.push(this.createSuggestion(
-            "Improve Naming Consistency",
-            "code-quality",
-            "Use consistent naming conventions",
-            line,
-            i,
-            filePath,
-            "inconsistent-naming"
-          ));
+          suggestions.push(
+            this.createSuggestion(
+              "Improve Naming Consistency",
+              "code-quality",
+              "Use consistent naming conventions",
+              line,
+              i,
+              filePath,
+              "inconsistent-naming"
+            )
+          );
         }
-        
+
         if (this.detectUnusedVariables(line)) {
-          suggestions.push(this.createSuggestion(
-            "Remove Unused Variables",
-            "code-quality",
-            "Remove unused variables and imports",
-            line,
-            i,
-            filePath,
-            "unused-variables"
-          ));
+          suggestions.push(
+            this.createSuggestion(
+              "Remove Unused Variables",
+              "code-quality",
+              "Remove unused variables and imports",
+              line,
+              i,
+              filePath,
+              "unused-variables"
+            )
+          );
         }
-        
+
         if (this.detectMissingErrorHandling(line)) {
-          suggestions.push(this.createSuggestion(
-            "Add Error Handling",
-            "code-quality",
-            "Add proper error handling and validation",
-            line,
-            i,
-            filePath,
-            "missing-error-handling"
-          ));
+          suggestions.push(
+            this.createSuggestion(
+              "Add Error Handling",
+              "code-quality",
+              "Add proper error handling and validation",
+              line,
+              i,
+              filePath,
+              "missing-error-handling"
+            )
+          );
         }
       }
     } catch (error) {
@@ -691,16 +742,16 @@ export class OptimizationSuggestionEngine extends EventEmitter {
   private async postProcessSuggestions(): Promise<void> {
     // Remove duplicates
     this.removeDuplicateSuggestions();
-    
+
     // Validate suggestions
     this.validateSuggestions();
-    
+
     // Calculate ROI scores
     this.calculateROIScores();
-    
+
     // Generate implementation details
     this.generateImplementationDetails();
-    
+
     // Sort by priority and impact
     this.sortSuggestions();
   }
@@ -720,17 +771,15 @@ export class OptimizationSuggestionEngine extends EventEmitter {
    */
   private deduplicateSuggestions(suggestions: OptimizationSuggestion[]): OptimizationSuggestion[] {
     const unique: OptimizationSuggestion[] = [];
-    
+
     for (const suggestion of suggestions) {
-      const isDuplicate = unique.some(existing => 
-        this.suggestionsAreSimilar(suggestion, existing)
-      );
-      
+      const isDuplicate = unique.some(existing => this.suggestionsAreSimilar(suggestion, existing));
+
       if (!isDuplicate) {
         unique.push(suggestion);
       }
     }
-    
+
     return unique;
   }
 
@@ -739,16 +788,18 @@ export class OptimizationSuggestionEngine extends EventEmitter {
    */
   private suggestionsAreSimilar(suggestion1: OptimizationSuggestion, suggestion2: OptimizationSuggestion): boolean {
     // Check if suggestions are in the same location
-    if (suggestion1.location.file === suggestion2.location.file &&
-        Math.abs(suggestion1.location.line - suggestion2.location.line) < 3) {
+    if (
+      suggestion1.location.file === suggestion2.location.file &&
+      Math.abs(suggestion1.location.line - suggestion2.location.line) < 3
+    ) {
       return true;
     }
-    
+
     // Check if suggestions have similar titles and types
     if (suggestion1.title === suggestion2.title && suggestion1.type === suggestion2.type) {
       return true;
     }
-    
+
     return false;
   }
 
@@ -770,27 +821,27 @@ export class OptimizationSuggestionEngine extends EventEmitter {
     if (suggestion.metrics.impact < this.config.minImpactThreshold) {
       return false;
     }
-    
+
     // Check effort threshold
     if (suggestion.metrics.effort > this.config.maxEffortThreshold) {
       return false;
     }
-    
+
     // Check confidence threshold
     if (suggestion.metrics.confidence < this.config.confidenceThreshold) {
       return false;
     }
-    
+
     // Check location validity
     if (!suggestion.location.file || suggestion.location.line < 0) {
       return false;
     }
-    
+
     // Check title
     if (!suggestion.title || suggestion.title.trim().length === 0) {
       return false;
     }
-    
+
     return true;
   }
 
@@ -827,14 +878,14 @@ export class OptimizationSuggestionEngine extends EventEmitter {
         // Sort by priority first, then by ROI
         const priorityOrder = { critical: 4, high: 3, medium: 2, low: 1 };
         const priorityDiff = priorityOrder[b.priority] - priorityOrder[a.priority];
-        
+
         if (priorityDiff !== 0) {
           return priorityDiff;
         }
-        
+
         return b.metrics.roi - a.metrics.roi;
       });
-      
+
       this.suggestions.set(file, sorted);
     }
   }
@@ -886,7 +937,7 @@ export class OptimizationSuggestionEngine extends EventEmitter {
   }
 
   private detectViolationOfSingleResponsibility(line: string): boolean {
-    return line.includes("function") && (line.includes("save") && line.includes("send"));
+    return line.includes("function") && line.includes("save") && line.includes("send");
   }
 
   private detectSQLInjection(line: string): boolean {
@@ -949,7 +1000,7 @@ export class OptimizationSuggestionEngine extends EventEmitter {
     const impact = Math.random() * 7 + 3; // 3-10
     const effort = Math.random() * 6 + 2; // 2-8
     const confidence = Math.random() * 0.3 + 0.7; // 0.7-1.0
-    
+
     return {
       id: `suggestion-${Date.now()}-${Math.random()}`,
       type: type as any,
@@ -960,45 +1011,45 @@ export class OptimizationSuggestionEngine extends EventEmitter {
       location: {
         file: filePath,
         line,
-        column: 0
+        column: 0,
       },
       metrics: {
         impact,
         effort,
         confidence,
-        roi: impact / Math.max(effort, 1)
+        roi: impact / Math.max(effort, 1),
       },
       context: {
         currentCode: content,
         suggestedCode: this.generateSuggestedCode(content, type),
         relatedFiles: [],
         dependencies: [],
-        affectedComponents: []
+        affectedComponents: [],
       },
       implementation: {
         steps: [],
         estimatedTime: "",
         requiredSkills: [],
         risks: [],
-        testing: []
+        testing: [],
       },
       validation: {
         isApplicable: true,
         reasoning: "Suggestion is applicable based on code analysis",
         alternatives: [],
-        prerequisites: []
+        prerequisites: [],
       },
       metadata: {
         algorithm: "optimization-engine",
         generatedAt: new Date().toISOString(),
-        version: "1.0.0"
-      }
+        version: "1.0.0",
+      },
     };
   }
 
   private determinePriority(impact: number, effort: number): "low" | "medium" | "high" | "critical" {
     const roi = impact / Math.max(effort, 1);
-    
+
     if (roi >= 2.0 && impact >= 8) return "critical";
     if (roi >= 1.5 && impact >= 6) return "high";
     if (roi >= 1.0 && impact >= 4) return "medium";
@@ -1019,28 +1070,21 @@ export class OptimizationSuggestionEngine extends EventEmitter {
     }
   }
 
-  private generateImplementationForSuggestion(suggestion: OptimizationSuggestion): OptimizationSuggestion["implementation"] {
+  private generateImplementationForSuggestion(
+    suggestion: OptimizationSuggestion
+  ): OptimizationSuggestion["implementation"] {
     return {
       steps: [
         "Analyze current implementation",
         "Create backup of existing code",
         "Implement suggested changes",
         "Run tests to verify functionality",
-        "Update documentation"
+        "Update documentation",
       ],
       estimatedTime: this.estimateTime(suggestion.metrics.effort),
       requiredSkills: this.getRequiredSkills(suggestion.type),
-      risks: [
-        "Potential breaking changes",
-        "Performance regression",
-        "Integration issues"
-      ],
-      testing: [
-        "Unit tests",
-        "Integration tests",
-        "Performance tests",
-        "Regression tests"
-      ]
+      risks: ["Potential breaking changes", "Performance regression", "Integration issues"],
+      testing: ["Unit tests", "Integration tests", "Performance tests", "Regression tests"],
     };
   }
 
@@ -1048,15 +1092,8 @@ export class OptimizationSuggestionEngine extends EventEmitter {
     return {
       isApplicable: suggestion.metrics.confidence > 0.7,
       reasoning: `High confidence (${suggestion.metrics.confidence}) in suggestion applicability`,
-      alternatives: [
-        "Alternative approach 1",
-        "Alternative approach 2"
-      ],
-      prerequisites: [
-        "Code review",
-        "Testing environment setup",
-        "Backup creation"
-      ]
+      alternatives: ["Alternative approach 1", "Alternative approach 2"],
+      prerequisites: ["Code review", "Testing environment setup", "Backup creation"],
     };
   }
 
@@ -1074,9 +1111,9 @@ export class OptimizationSuggestionEngine extends EventEmitter {
       architecture: ["System design", "Design patterns", "SOLID principles"],
       security: ["Security best practices", "Vulnerability assessment", "Secure coding"],
       scalability: ["Distributed systems", "Performance optimization", "System architecture"],
-      "code-quality": ["Code review", "Best practices", "Testing"]
+      "code-quality": ["Code review", "Best practices", "Testing"],
     };
-    
+
     return skillMap[type] || ["General programming", "Code review"];
   }
 
@@ -1088,13 +1125,13 @@ export class OptimizationSuggestionEngine extends EventEmitter {
 
   private async findFilesRecursive(dir: string, pattern: string, files: string[], depth: number): Promise<void> {
     if (depth > 10) return;
-    
+
     try {
       const entries = await readdir(dir);
       for (const entry of entries) {
         const fullPath = join(dir, entry);
         const stat = await this.stat(fullPath);
-        
+
         if (stat.isDirectory()) {
           await this.findFilesRecursive(fullPath, pattern, files, depth + 1);
         } else if (this.matchesPattern(entry, pattern)) {
@@ -1164,34 +1201,34 @@ export class OptimizationSuggestionEngine extends EventEmitter {
   } {
     const allSuggestions = this.getAllSuggestions();
     const totalSuggestions = allSuggestions.length;
-    
+
     const suggestionsByType: Record<string, number> = {};
     const suggestionsByPriority: Record<string, number> = {};
     const suggestionCounts: Record<string, number> = {};
-    
+
     let totalImpact = 0;
     let totalEffort = 0;
     let totalROI = 0;
-    
+
     for (const suggestion of allSuggestions) {
       suggestionsByType[suggestion.type] = (suggestionsByType[suggestion.type] || 0) + 1;
       suggestionsByPriority[suggestion.priority] = (suggestionsByPriority[suggestion.priority] || 0) + 1;
       suggestionCounts[suggestion.title] = (suggestionCounts[suggestion.title] || 0) + 1;
-      
+
       totalImpact += suggestion.metrics.impact;
       totalEffort += suggestion.metrics.effort;
       totalROI += suggestion.metrics.roi;
     }
-    
+
     const averageImpact = totalSuggestions > 0 ? totalImpact / totalSuggestions : 0;
     const averageEffort = totalSuggestions > 0 ? totalEffort / totalSuggestions : 0;
     const averageROI = totalSuggestions > 0 ? totalROI / totalSuggestions : 0;
-    
+
     const topSuggestions = Object.entries(suggestionCounts)
       .sort(([, a], [, b]) => b - a)
       .slice(0, 10)
       .map(([title, count]) => ({ title, count }));
-    
+
     return {
       totalSuggestions,
       suggestionsByType,
@@ -1199,7 +1236,7 @@ export class OptimizationSuggestionEngine extends EventEmitter {
       averageImpact,
       averageEffort,
       averageROI,
-      topSuggestions
+      topSuggestions,
     };
   }
 
@@ -1208,26 +1245,31 @@ export class OptimizationSuggestionEngine extends EventEmitter {
    */
   async exportSuggestions(format: "json" | "csv" | "xml"): Promise<string> {
     const allSuggestions = this.getAllSuggestions();
-    
+
     switch (format) {
       case "json":
-        return JSON.stringify({
-          suggestions: allSuggestions,
-          statistics: this.getSuggestionStatistics(),
-          metadata: {
-            analyzedAt: new Date().toISOString(),
-            totalFiles: this.suggestions.size,
-            config: this.config
-          }
-        }, null, 2);
-      
+        return JSON.stringify(
+          {
+            suggestions: allSuggestions,
+            statistics: this.getSuggestionStatistics(),
+            metadata: {
+              analyzedAt: new Date().toISOString(),
+              totalFiles: this.suggestions.size,
+              config: this.config,
+            },
+          },
+          null,
+          2
+        );
+
       case "csv":
         const csvHeader = "id,type,priority,title,file,line,impact,effort,roi,confidence";
-        const csvRows = allSuggestions.map(suggestion => 
-          `${suggestion.id},${suggestion.type},${suggestion.priority},${suggestion.title},${suggestion.location.file},${suggestion.location.line},${suggestion.metrics.impact},${suggestion.metrics.effort},${suggestion.metrics.roi},${suggestion.metrics.confidence}`
+        const csvRows = allSuggestions.map(
+          suggestion =>
+            `${suggestion.id},${suggestion.type},${suggestion.priority},${suggestion.title},${suggestion.location.file},${suggestion.location.line},${suggestion.metrics.impact},${suggestion.metrics.effort},${suggestion.metrics.roi},${suggestion.metrics.confidence}`
         );
         return [csvHeader, ...csvRows].join("\n");
-      
+
       case "xml":
         const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <optimizationSuggestions>
@@ -1237,7 +1279,9 @@ export class OptimizationSuggestionEngine extends EventEmitter {
     <totalSuggestions>${allSuggestions.length}</totalSuggestions>
   </metadata>
   <suggestions>
-    ${allSuggestions.map(suggestion => `
+    ${allSuggestions
+      .map(
+        suggestion => `
     <suggestion id="${suggestion.id}">
       <type>${suggestion.type}</type>
       <priority>${suggestion.priority}</priority>
@@ -1247,11 +1291,13 @@ export class OptimizationSuggestionEngine extends EventEmitter {
       <effort>${suggestion.metrics.effort}</effort>
       <roi>${suggestion.metrics.roi}</roi>
       <confidence>${suggestion.metrics.confidence}</confidence>
-    </suggestion>`).join("")}
+    </suggestion>`
+      )
+      .join("")}
   </suggestions>
 </optimizationSuggestions>`;
         return xml;
-      
+
       default:
         throw new Error(`Unsupported export format: ${format}`);
     }

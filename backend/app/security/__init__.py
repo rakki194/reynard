@@ -100,7 +100,7 @@ from .security_config import (
     get_security_headers_config,
     get_session_security_config,
 )
-from .security_headers import add_security_headers_middleware
+# Security headers middleware moved to app.middleware.security.headers
 from .security_middleware import SecurityMiddleware, setup_security_middleware
 from .session_encryption import (
     SessionData,
@@ -195,7 +195,7 @@ __all__ = [
     "rotate_api_key",
     "list_api_keys",
     # Legacy Components
-    "add_security_headers_middleware",
+    # "add_security_headers_middleware",  # Moved to app.middleware.security.headers
     "validate_input_security",
     "SecurityMiddleware",
     "setup_security_middleware",

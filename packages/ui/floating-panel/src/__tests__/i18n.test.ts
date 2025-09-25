@@ -19,7 +19,7 @@ describe("floating-panel i18n Tests", () => {
       if (!result.success) {
         console.log("i18n validation failed:", result);
         console.log("Errors:", result.errors);
-        
+
         // Skip assertion if it's a path issue (not related to our animation migration)
         if (result.errors.some(error => error.includes("Package directory not found"))) {
           console.log("Skipping i18n test due to path configuration issue");

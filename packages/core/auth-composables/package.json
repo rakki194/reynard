@@ -11,10 +11,7 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "files": [
-    "dist",
-    "README.md"
-  ],
+  "files": ["dist", "README.md"],
   "scripts": {
     "dev": "vite build --watch",
     "build": "tsc && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
@@ -24,14 +21,7 @@
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
-  "keywords": [
-    "solidjs",
-    "composables",
-    "authentication",
-    "auth",
-    "reynard",
-    "typescript"
-  ],
+  "keywords": ["solidjs", "composables", "authentication", "auth", "reynard", "typescript"],
   "author": "Balazs Horvath",
   "license": "MIT",
   "dependencies": {

@@ -1,14 +1,20 @@
 /**
  * 🦊 Spring Physics Tests
- * 
+ *
  * Test spring physics system with mass, stiffness, damping parameters
  */
 
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { SpringPhysics, SpringEasing, MultiSpringPhysics, SpringAnimationLoop } from '../physics/SpringPhysics';
-import { useSpringAnimation, useSpring2D, useSpring3D, getSpringEasing, createSpringEasing } from '../composables/useSpringAnimation';
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import { SpringPhysics, SpringEasing, MultiSpringPhysics, SpringAnimationLoop } from "../physics/SpringPhysics";
+import {
+  useSpringAnimation,
+  useSpring2D,
+  useSpring3D,
+  getSpringEasing,
+  createSpringEasing,
+} from "../composables/useSpringAnimation";
 
-describe('Spring Physics System', () => {
+describe("Spring Physics System", () => {
   beforeEach(() => {
     // Setup for tests
   });
@@ -17,8 +23,8 @@ describe('Spring Physics System', () => {
     // Cleanup after tests
   });
 
-  describe('SpringPhysics', () => {
-    it('should create spring physics instance', () => {
+  describe("SpringPhysics", () => {
+    it("should create spring physics instance", () => {
       const spring = new SpringPhysics({
         mass: 1,
         stiffness: 100,
@@ -31,7 +37,7 @@ describe('Spring Physics System', () => {
       expect(spring.getState().velocity).toBe(0);
     });
 
-    it('should set target and update position', () => {
+    it("should set target and update position", () => {
       const spring = new SpringPhysics({
         mass: 1,
         stiffness: 100,
@@ -50,7 +56,7 @@ describe('Spring Physics System', () => {
       }
     });
 
-    it('should reach target position within precision', () => {
+    it("should reach target position within precision", () => {
       const spring = new SpringPhysics({
         mass: 1,
         stiffness: 200,
@@ -71,7 +77,7 @@ describe('Spring Physics System', () => {
       expect(Math.abs(spring.getState().position - 50)).toBeLessThan(0.01);
     });
 
-    it('should handle different spring configurations', () => {
+    it("should handle different spring configurations", () => {
       const configs = [
         { mass: 1, stiffness: 100, damping: 10 },
         { mass: 2, stiffness: 200, damping: 20 },
@@ -90,7 +96,7 @@ describe('Spring Physics System', () => {
       });
     });
 
-    it('should reset to initial state', () => {
+    it("should reset to initial state", () => {
       const spring = new SpringPhysics({
         mass: 1,
         stiffness: 100,
@@ -110,7 +116,7 @@ describe('Spring Physics System', () => {
       expect(spring.getTarget()).toBe(0);
     });
 
-    it('should handle initial velocity', () => {
+    it("should handle initial velocity", () => {
       const spring = new SpringPhysics({
         mass: 1,
         stiffness: 100,
@@ -123,8 +129,8 @@ describe('Spring Physics System', () => {
     });
   });
 
-  describe('SpringEasing', () => {
-    it('should create spring easing function', () => {
+  describe("SpringEasing", () => {
+    it("should create spring easing function", () => {
       const easing = SpringEasing.create({
         mass: 1,
         stiffness: 100,
@@ -132,25 +138,25 @@ describe('Spring Physics System', () => {
         precision: 0.01,
       });
 
-      expect(typeof easing).toBe('function');
+      expect(typeof easing).toBe("function");
       expect(easing(0)).toBe(0);
       expect(easing(1)).toBe(1);
     });
 
-    it('should provide predefined spring presets', () => {
-      const presets = ['gentle', 'wobbly', 'stiff', 'slow', 'bouncy', 'noBounce'] as const;
-      
+    it("should provide predefined spring presets", () => {
+      const presets = ["gentle", "wobbly", "stiff", "slow", "bouncy", "noBounce"] as const;
+
       presets.forEach(preset => {
         const easing = SpringEasing.getPreset(preset);
-        expect(typeof easing).toBe('function');
+        expect(typeof easing).toBe("function");
         expect(easing(0)).toBe(0);
         expect(easing(1)).toBe(1);
       });
     });
 
-    it('should create smooth easing curves', () => {
-      const easing = SpringEasing.getPreset('gentle');
-      
+    it("should create smooth easing curves", () => {
+      const easing = SpringEasing.getPreset("gentle");
+
       // Test multiple points along the curve
       const points = [0, 0.25, 0.5, 0.75, 1];
       points.forEach(point => {
@@ -162,8 +168,8 @@ describe('Spring Physics System', () => {
     });
   });
 
-  describe('MultiSpringPhysics', () => {
-    it('should create multi-dimensional spring system', () => {
+  describe("MultiSpringPhysics", () => {
+    it("should create multi-dimensional spring system", () => {
       const multiSpring = new MultiSpringPhysics(2, {
         mass: 1,
         stiffness: 100,
@@ -174,7 +180,7 @@ describe('Spring Physics System', () => {
       expect(multiSpring).toBeDefined();
     });
 
-    it('should handle 2D spring animations', () => {
+    it("should handle 2D spring animations", () => {
       const multiSpring = new MultiSpringPhysics(2, {
         mass: 1,
         stiffness: 100,
@@ -193,7 +199,7 @@ describe('Spring Physics System', () => {
       }
     });
 
-    it('should handle 3D spring animations', () => {
+    it("should handle 3D spring animations", () => {
       const multiSpring = new MultiSpringPhysics(3, {
         mass: 1,
         stiffness: 100,
@@ -214,8 +220,8 @@ describe('Spring Physics System', () => {
     });
   });
 
-  describe('SpringAnimationLoop', () => {
-    it('should create animation loop', () => {
+  describe("SpringAnimationLoop", () => {
+    it("should create animation loop", () => {
       const spring = new SpringPhysics({
         mass: 1,
         stiffness: 100,
@@ -230,7 +236,7 @@ describe('Spring Physics System', () => {
       expect(loop).toBeDefined();
     });
 
-    it('should start and stop animation loop', () => {
+    it("should start and stop animation loop", () => {
       const spring = new SpringPhysics({
         mass: 1,
         stiffness: 100,
@@ -246,16 +252,16 @@ describe('Spring Physics System', () => {
       };
 
       const loop = new SpringAnimationLoop(spring, onUpdate);
-      
+
       loop.start();
       expect(updates.length).toBeGreaterThan(0);
-      
+
       loop.stop();
     });
   });
 
-  describe('useSpringAnimation Composable', () => {
-    it('should create spring animation composable', () => {
+  describe("useSpringAnimation Composable", () => {
+    it("should create spring animation composable", () => {
       const springAnimation = useSpringAnimation({
         mass: 1,
         stiffness: 100,
@@ -263,12 +269,12 @@ describe('Spring Physics System', () => {
       });
 
       expect(springAnimation).toBeDefined();
-      expect(typeof springAnimation.value).toBe('function');
-      expect(typeof springAnimation.setTarget).toBe('function');
-      expect(typeof springAnimation.reset).toBe('function');
+      expect(typeof springAnimation.value).toBe("function");
+      expect(typeof springAnimation.setTarget).toBe("function");
+      expect(typeof springAnimation.reset).toBe("function");
     });
 
-    it('should handle target changes', () => {
+    it("should handle target changes", () => {
       const springAnimation = useSpringAnimation({
         mass: 1,
         stiffness: 200,
@@ -280,20 +286,20 @@ describe('Spring Physics System', () => {
       expect(springAnimation.value()).toBeGreaterThanOrEqual(0);
     });
 
-    it('should provide velocity and rest state', () => {
+    it("should provide velocity and rest state", () => {
       const springAnimation = useSpringAnimation({
         mass: 1,
         stiffness: 100,
         damping: 10,
       });
 
-      expect(typeof springAnimation.velocity()).toBe('number');
-      expect(typeof springAnimation.isAtRest()).toBe('boolean');
+      expect(typeof springAnimation.velocity()).toBe("number");
+      expect(typeof springAnimation.isAtRest()).toBe("boolean");
     });
   });
 
-  describe('useSpring2D Composable', () => {
-    it('should create 2D spring animation', () => {
+  describe("useSpring2D Composable", () => {
+    it("should create 2D spring animation", () => {
       const spring2D = useSpring2D({
         mass: 1,
         stiffness: 100,
@@ -301,12 +307,12 @@ describe('Spring Physics System', () => {
       });
 
       expect(spring2D).toBeDefined();
-      expect(typeof spring2D.x).toBe('function');
-      expect(typeof spring2D.y).toBe('function');
-      expect(typeof spring2D.setTarget).toBe('function');
+      expect(typeof spring2D.x).toBe("function");
+      expect(typeof spring2D.y).toBe("function");
+      expect(typeof spring2D.setTarget).toBe("function");
     });
 
-    it('should handle 2D target changes', () => {
+    it("should handle 2D target changes", () => {
       const spring2D = useSpring2D({
         mass: 1,
         stiffness: 200,
@@ -319,8 +325,8 @@ describe('Spring Physics System', () => {
     });
   });
 
-  describe('useSpring3D Composable', () => {
-    it('should create 3D spring animation', () => {
+  describe("useSpring3D Composable", () => {
+    it("should create 3D spring animation", () => {
       const spring3D = useSpring3D({
         mass: 1,
         stiffness: 100,
@@ -328,13 +334,13 @@ describe('Spring Physics System', () => {
       });
 
       expect(spring3D).toBeDefined();
-      expect(typeof spring3D.x).toBe('function');
-      expect(typeof spring3D.y).toBe('function');
-      expect(typeof spring3D.z).toBe('function');
-      expect(typeof spring3D.setTarget).toBe('function');
+      expect(typeof spring3D.x).toBe("function");
+      expect(typeof spring3D.y).toBe("function");
+      expect(typeof spring3D.z).toBe("function");
+      expect(typeof spring3D.setTarget).toBe("function");
     });
 
-    it('should handle 3D target changes', () => {
+    it("should handle 3D target changes", () => {
       const spring3D = useSpring3D({
         mass: 1,
         stiffness: 200,
@@ -348,19 +354,19 @@ describe('Spring Physics System', () => {
     });
   });
 
-  describe('Spring Easing Functions', () => {
-    it('should provide spring easing presets', () => {
-      const presets = ['gentle', 'wobbly', 'stiff', 'slow', 'bouncy', 'noBounce'] as const;
-      
+  describe("Spring Easing Functions", () => {
+    it("should provide spring easing presets", () => {
+      const presets = ["gentle", "wobbly", "stiff", "slow", "bouncy", "noBounce"] as const;
+
       presets.forEach(preset => {
         const easing = getSpringEasing(preset);
-        expect(typeof easing).toBe('function');
+        expect(typeof easing).toBe("function");
         expect(easing(0)).toBe(0);
         expect(easing(1)).toBe(1);
       });
     });
 
-    it('should create custom spring easing', () => {
+    it("should create custom spring easing", () => {
       const easing = createSpringEasing({
         mass: 1,
         stiffness: 150,
@@ -368,14 +374,14 @@ describe('Spring Physics System', () => {
         precision: 0.01,
       });
 
-      expect(typeof easing).toBe('function');
+      expect(typeof easing).toBe("function");
       expect(easing(0)).toBe(0);
       expect(easing(1)).toBe(1);
     });
   });
 
-  describe('Performance', () => {
-    it('should handle multiple spring updates efficiently', () => {
+  describe("Performance", () => {
+    it("should handle multiple spring updates efficiently", () => {
       const spring = new SpringPhysics({
         mass: 1,
         stiffness: 100,
@@ -386,34 +392,36 @@ describe('Spring Physics System', () => {
       spring.setTarget(100);
 
       const startTime = performance.now();
-      
+
       // Simulate many spring updates
       for (let i = 0; i < 1000; i++) {
         spring.update(16);
       }
-      
+
       const endTime = performance.now();
       const duration = endTime - startTime;
-      
+
       console.log(`1000 spring updates: ${duration.toFixed(2)}ms`);
       expect(duration).toBeLessThan(50); // Should be very fast
     });
 
-    it('should handle multiple spring instances efficiently', () => {
+    it("should handle multiple spring instances efficiently", () => {
       const springs: SpringPhysics[] = [];
-      
+
       // Create many spring instances
       for (let i = 0; i < 100; i++) {
-        springs.push(new SpringPhysics({
-          mass: 1,
-          stiffness: 100,
-          damping: 10,
-          precision: 0.01,
-        }));
+        springs.push(
+          new SpringPhysics({
+            mass: 1,
+            stiffness: 100,
+            damping: 10,
+            precision: 0.01,
+          })
+        );
       }
 
       const startTime = performance.now();
-      
+
       // Update all springs
       springs.forEach(spring => {
         spring.setTarget(100);
@@ -421,10 +429,10 @@ describe('Spring Physics System', () => {
           spring.update(16);
         }
       });
-      
+
       const endTime = performance.now();
       const duration = endTime - startTime;
-      
+
       console.log(`100 springs with 10 updates each: ${duration.toFixed(2)}ms`);
       expect(duration).toBeLessThan(100); // Should be reasonably fast
     });

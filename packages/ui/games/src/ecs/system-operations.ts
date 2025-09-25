@@ -1,9 +1,6 @@
 // System operations for the ECS world
 
-import {
-  Schedule,
-  System,
-} from "./types";
+import { Schedule, System } from "./types";
 
 /**
  * System operations mixin for WorldImpl.

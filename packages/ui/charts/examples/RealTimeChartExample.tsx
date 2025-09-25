@@ -13,7 +13,7 @@ export function RealTimeChartExample() {
 
   const startRealTimeData = () => {
     if (isRunning()) return;
-    
+
     setIsRunning(true);
     intervalId = setInterval(() => {
       const newPoint: RealTimeDataPoint = {
@@ -21,7 +21,7 @@ export function RealTimeChartExample() {
         value: Math.random() * 100,
         label: new Date().toLocaleTimeString(),
       };
-      
+
       setData(prev => {
         const updated = [...prev, newPoint];
         // Keep only last 50 points
@@ -51,12 +51,12 @@ export function RealTimeChartExample() {
   return (
     <div style={{ padding: "20px", background: "#1a1a1a", color: "white" }}>
       <h2>🦊 Reynard Charts - Real-Time Example</h2>
-      
+
       <div style={{ margin: "20px 0" }}>
         <h3>Live Performance Metrics</h3>
-        
+
         <div style={{ margin: "10px 0" }}>
-          <button 
+          <button
             onClick={startRealTimeData}
             disabled={isRunning()}
             style={{
@@ -66,13 +66,13 @@ export function RealTimeChartExample() {
               color: "white",
               border: "none",
               borderRadius: "4px",
-              cursor: isRunning() ? "not-allowed" : "pointer"
+              cursor: isRunning() ? "not-allowed" : "pointer",
             }}
           >
             {isRunning() ? "Running..." : "Start"}
           </button>
-          
-          <button 
+
+          <button
             onClick={stopRealTimeData}
             disabled={!isRunning()}
             style={{
@@ -82,13 +82,13 @@ export function RealTimeChartExample() {
               color: "white",
               border: "none",
               borderRadius: "4px",
-              cursor: !isRunning() ? "not-allowed" : "pointer"
+              cursor: !isRunning() ? "not-allowed" : "pointer",
             }}
           >
             Stop
           </button>
-          
-          <button 
+
+          <button
             onClick={clearData}
             style={{
               padding: "8px 16px",
@@ -97,7 +97,7 @@ export function RealTimeChartExample() {
               color: "white",
               border: "none",
               borderRadius: "4px",
-              cursor: "pointer"
+              cursor: "pointer",
             }}
           >
             Clear
@@ -137,4 +137,3 @@ export function RealTimeChartExample() {
     </div>
   );
 }
-

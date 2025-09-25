@@ -8,10 +8,7 @@
     "vscode": "^1.104.0",
     "node": ">=18.0.0"
   },
-  "categories": [
-    "Linters",
-    "Other"
-  ],
+  "categories": ["Linters", "Other"],
   "activationEvents": [
     "onCommand:reynard-linting.toggle",
     "onCommand:reynard-linting.lintFile",
@@ -113,18 +110,14 @@
       ]
     }
   },
-  "files": [
-    "dist",
-    "README.md",
-    "CHANGELOG.md"
-  ],
+  "files": ["dist", "README.md", "CHANGELOG.md"],
   "scripts": {
     "dev": "vite build --watch",
     "build": "pnpm clean && vite build && tsc -p tsconfig.build.json --declaration --emitDeclarationOnly",
     "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly",
     "build:watch": "vite build --watch",
-                "package": "vsce package --no-dependencies",
-                "package:pre-release": "vsce package --no-dependencies --pre-release",
+    "package": "vsce package --no-dependencies",
+    "package:pre-release": "vsce package --no-dependencies --pre-release",
     "publish": "vsce publish",
     "publish:pre-release": "vsce publish --pre-release",
     "test": "vitest run",
@@ -174,6 +167,3 @@
   },
   "license": "MIT"
 }
-
-
-

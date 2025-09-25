@@ -1,6 +1,6 @@
 /**
  * 🦊 Test ConfigManager
- * 
+ *
  * A test-specific ConfigManager that bypasses file system operations
  * and uses in-memory configuration for testing purposes.
  */
@@ -54,9 +54,7 @@ export class TestConfigManager {
   }
 
   getProjectsByCategory(category: string): ProjectConfig[] {
-    return Object.values(this.config.projects).filter(
-      project => project.type === category
-    );
+    return Object.values(this.config.projects).filter(project => project.type === category);
   }
 
   validateConfig(config: DevServerConfig): boolean {
@@ -72,4 +70,3 @@ export class TestConfigManager {
     this.config = { ...this.config, ...updates };
   }
 }
-

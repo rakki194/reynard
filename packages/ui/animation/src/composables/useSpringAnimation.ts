@@ -1,11 +1,17 @@
 /**
  * 🦊 Spring Animation Composable
- * 
+ *
  * SolidJS composable for spring-based animations with natural motion physics
  */
 
 import { createSignal, onCleanup, onMount } from "solid-js";
-import { SpringPhysics, SpringEasing, SpringAnimationLoop, type SpringConfig, type SpringResult } from "../physics/SpringPhysics";
+import {
+  SpringPhysics,
+  SpringEasing,
+  SpringAnimationLoop,
+  type SpringConfig,
+  type SpringResult,
+} from "../physics/SpringPhysics";
 
 export interface UseSpringAnimationOptions extends SpringConfig {
   initialValue?: number;
@@ -23,9 +29,7 @@ export interface UseSpringAnimationReturn {
   stop: () => void;
 }
 
-export function useSpringAnimation(
-  options: UseSpringAnimationOptions = {}
-): UseSpringAnimationReturn {
+export function useSpringAnimation(options: UseSpringAnimationOptions = {}): UseSpringAnimationReturn {
   const {
     mass = 1,
     stiffness = 100,
@@ -68,7 +72,7 @@ export function useSpringAnimation(
   const setTarget = (target: number): void => {
     spring.setTarget(target);
     setIsAtRest(false);
-    
+
     // Start animation loop if not running
     if (!animationLoop) {
       animationLoop = new SpringAnimationLoop(spring, handleUpdate, handleComplete);

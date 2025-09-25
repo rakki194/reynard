@@ -30,64 +30,64 @@ describe("HealthChecker", () => {
     // Set up comprehensive fetch mock
     vi.mocked(global.fetch).mockImplementation(async (url: string | URL | Request, init?: RequestInit) => {
       const urlString = url.toString();
-      
+
       // Mock successful HTTP health check
-      if (urlString.includes('/api/health') || urlString.includes('/health')) {
+      if (urlString.includes("/api/health") || urlString.includes("/health")) {
         return {
           ok: true,
           status: 200,
-          statusText: 'OK',
+          statusText: "OK",
           headers: new Headers(),
           url: urlString,
           redirected: false,
-          type: 'basic' as ResponseType,
+          type: "basic" as ResponseType,
           text: () => Promise.resolve("OK"),
           json: () => Promise.resolve({ status: "healthy" }),
           blob: () => Promise.resolve(new Blob()),
           arrayBuffer: () => Promise.resolve(new ArrayBuffer(0)),
           formData: () => Promise.resolve(new FormData()),
-          clone: () => ({} as Response),
+          clone: () => ({}) as Response,
           body: null,
           bodyUsed: false,
         } as Response;
       }
-      
+
       // Mock failed HTTP health check
-      if (urlString.includes('/api/error')) {
+      if (urlString.includes("/api/error")) {
         return {
           ok: false,
           status: 500,
-          statusText: 'Internal Server Error',
+          statusText: "Internal Server Error",
           headers: new Headers(),
           url: urlString,
           redirected: false,
-          type: 'basic' as ResponseType,
+          type: "basic" as ResponseType,
           text: () => Promise.resolve("Internal Server Error"),
           json: () => Promise.resolve({ error: "Internal Server Error" }),
           blob: () => Promise.resolve(new Blob()),
           arrayBuffer: () => Promise.resolve(new ArrayBuffer(0)),
           formData: () => Promise.resolve(new FormData()),
-          clone: () => ({} as Response),
+          clone: () => ({}) as Response,
           body: null,
           bodyUsed: false,
         } as Response;
       }
-      
+
       // Default successful response
       return {
         ok: true,
         status: 200,
-        statusText: 'OK',
+        statusText: "OK",
         headers: new Headers(),
         url: urlString,
         redirected: false,
-        type: 'basic' as ResponseType,
+        type: "basic" as ResponseType,
         text: () => Promise.resolve("OK"),
         json: () => Promise.resolve({ status: "healthy" }),
         blob: () => Promise.resolve(new Blob()),
         arrayBuffer: () => Promise.resolve(new ArrayBuffer(0)),
         formData: () => Promise.resolve(new FormData()),
-        clone: () => ({} as Response),
+        clone: () => ({}) as Response,
         body: null,
         bodyUsed: false,
       } as Response;

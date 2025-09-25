@@ -40,7 +40,7 @@ Object.defineProperty(window, "sessionStorage", {
 Object.defineProperty(global, "crypto", {
   value: {
     randomUUID: vi.fn(() => "mock-uuid"),
-    getRandomValues: vi.fn((arr) => arr),
+    getRandomValues: vi.fn(arr => arr),
   },
 });
 

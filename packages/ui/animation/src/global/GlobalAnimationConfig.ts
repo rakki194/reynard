@@ -1,15 +1,11 @@
 /**
  * 🦊 Global Animation Configuration
- * 
+ *
  * Configuration management for the global animation system.
  * Provides default settings, persistence, and validation.
  */
 
-import type { 
-  GlobalAnimationConfig, 
-  SystemPreferences,
-  GlobalAnimationPersistence 
-} from "./GlobalAnimationTypes.js";
+import type { GlobalAnimationConfig, SystemPreferences, GlobalAnimationPersistence } from "./GlobalAnimationTypes.js";
 
 /**
  * Default global animation configuration
@@ -227,7 +223,7 @@ export function createPersistence(storageKey: string = "reynard-animation-config
       try {
         const stored = localStorage.getItem(storageKey);
         if (!stored) return null;
-        
+
         const parsed = JSON.parse(stored);
         return validateConfig(parsed);
       } catch (error) {
@@ -248,7 +244,7 @@ export function createPersistence(storageKey: string = "reynard-animation-config
       try {
         const stored = sessionStorage.getItem(storageKey);
         if (!stored) return null;
-        
+
         const parsed = JSON.parse(stored);
         return validateConfig(parsed);
       } catch (error) {

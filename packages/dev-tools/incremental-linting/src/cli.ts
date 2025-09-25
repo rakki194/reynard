@@ -30,7 +30,7 @@ program
   .action(async (options: any) => {
     try {
       let config: IncrementalLintingConfig;
-      
+
       try {
         config = await loadConfig(options.config);
       } catch {
@@ -39,7 +39,7 @@ program
         config.verbose = options.verbose;
         config.persistCache = !options.noCache;
         config.maxConcurrency = parseInt(options.maxConcurrency);
-        
+
         // Save default config
         await saveConfig(config, options.config);
         console.log(`📝 Created default configuration at ${options.config}`);
@@ -61,7 +61,7 @@ program
 
       // Start the service
       const service = new IncrementalLintingService(config);
-      
+
       // Handle graceful shutdown
       process.on("SIGINT", async () => {
         console.log("\n🦊 Shutting down incremental linting service...");
@@ -76,10 +76,9 @@ program
       });
 
       await service.start();
-      
+
       // Keep the process running
       console.log("🦊 Incremental linting service is running. Press Ctrl+C to stop.");
-      
     } catch (error: any) {
       console.error("❌ Failed to start incremental linting service:", error);
       process.exit(1);
@@ -96,7 +95,7 @@ program
   .action(async (files: string[], options: any) => {
     try {
       let config: IncrementalLintingConfig;
-      
+
       try {
         config = await loadConfig(options.config);
       } catch {
@@ -110,7 +109,7 @@ program
       await service.start();
 
       const results = await service.lintFiles(files);
-      
+
       // Output results
       if (options.format === "json") {
         console.log(JSON.stringify(results, null, 2));
@@ -131,7 +130,6 @@ program
       }
 
       await service.stop();
-      
     } catch (error: any) {
       console.error("❌ Failed to lint files:", error);
       process.exit(1);
@@ -146,9 +144,9 @@ program
     try {
       const config = await loadConfig(options.config);
       const service = new IncrementalLintingService(config);
-      
+
       const status = service.getStatus();
-      
+
       console.log("🦊 Incremental Linting Service Status");
       console.log("=====================================");
       console.log(`Root Path: ${config.rootPath}`);
@@ -158,7 +156,7 @@ program
       console.log(`Cache: ${config.persistCache ? "Enabled" : "Disabled"}`);
       console.log(`Total Issues: ${status.totalIssues}`);
       console.log(`Average Lint Time: ${status.averageLintTime.toFixed(2)}ms`);
-      
+
       if (status.issuesBySeverity) {
         console.log("\nIssues by Severity:");
         Object.entries(status.issuesBySeverity).forEach(([severity, count]) => {
@@ -167,7 +165,6 @@ program
           }
         });
       }
-      
     } catch (error: any) {
       console.error("❌ Failed to get status:", error);
       process.exit(1);
@@ -185,7 +182,6 @@ program
       await saveConfig(config, options.output);
       console.log(`✅ Created configuration file at ${options.output}`);
       console.log("📝 Edit the configuration file to customize linters and settings");
-      
     } catch (error: any) {
       console.error("❌ Failed to initialize configuration:", error);
       process.exit(1);
@@ -200,10 +196,9 @@ program
     try {
       const config = await loadConfig(options.config);
       const service = new IncrementalLintingService(config);
-      
+
       await service.clearCache();
       console.log("✅ Linting cache cleared");
-      
     } catch (error: any) {
       console.error("❌ Failed to clear cache:", error);
       process.exit(1);
@@ -215,7 +210,3 @@ program.parse();
 
 // Export program for testing
 export { program };
-
-
-
-

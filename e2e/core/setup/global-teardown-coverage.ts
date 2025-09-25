@@ -1,6 +1,6 @@
 /**
  * Global Teardown for E2E Tests with Code Coverage
- * 
+ *
  * Collects and processes code coverage data from E2E tests,
  * merges it with Vitest coverage, and generates comprehensive reports.
  */
@@ -49,7 +49,6 @@ async function globalTeardown(config: FullConfig) {
 
     console.log("✅ E2E coverage teardown completed");
     console.log(`📊 Coverage reports available in: ${coverageReportsDir}`);
-
   } catch (error) {
     console.error("❌ Error during coverage teardown:", error);
     // Don't fail the test run due to coverage issues
@@ -65,7 +64,7 @@ async function collectBrowserCoverage(rawDir: string): Promise<void> {
   // Browser coverage data is typically stored in the global window object
   // and needs to be extracted from the browser context
   const coverageFiles = await fs.readdir(rawDir).catch(() => []);
-  
+
   if (coverageFiles.length === 0) {
     console.log("⚠️ No browser coverage files found");
     return;
@@ -77,27 +76,23 @@ async function collectBrowserCoverage(rawDir: string): Promise<void> {
 /**
  * Process and merge coverage data
  */
-async function processCoverageData(
-  coverageDir: string,
-  rawDir: string,
-  reportsDir: string
-): Promise<void> {
+async function processCoverageData(coverageDir: string, rawDir: string, reportsDir: string): Promise<void> {
   console.log("🔄 Processing coverage data...");
 
   try {
     // Use c8 or v8-to-istanbul to process coverage data
     const command = `npx c8 report --reporter=html --reporter=lcov --reporter=json --reports-dir="${reportsDir}" --temp-directory="${rawDir}"`;
-    
+
     const { stdout, stderr } = await exec(command, { cwd: process.cwd() });
-    
+
     if (stderr) {
       console.log("Coverage processing warnings:", stderr);
     }
-    
+
     console.log("✅ Coverage data processed successfully");
   } catch (error) {
     console.log("⚠️ Coverage processing completed with warnings:", error);
-    
+
     // Fallback: Create basic coverage report
     await createFallbackCoverageReport(reportsDir);
   }
@@ -106,10 +101,7 @@ async function processCoverageData(
 /**
  * Generate comprehensive coverage reports
  */
-async function generateCoverageReports(
-  coverageDir: string,
-  reportsDir: string
-): Promise<void> {
+async function generateCoverageReports(coverageDir: string, reportsDir: string): Promise<void> {
   console.log("📈 Generating coverage reports...");
 
   // Generate summary report
@@ -125,10 +117,7 @@ async function generateCoverageReports(
     files: [],
   };
 
-  await fs.writeFile(
-    join(reportsDir, "coverage-summary.json"),
-    JSON.stringify(summaryReport, null, 2)
-  );
+  await fs.writeFile(join(reportsDir, "coverage-summary.json"), JSON.stringify(summaryReport, null, 2));
 
   // Generate HTML index
   const htmlIndex = `
@@ -218,10 +207,7 @@ async function createFallbackCoverageReport(reportsDir: string): Promise<void> {
     timestamp: new Date().toISOString(),
   };
 
-  await fs.writeFile(
-    join(reportsDir, "fallback-report.json"),
-    JSON.stringify(fallbackReport, null, 2)
-  );
+  await fs.writeFile(join(reportsDir, "fallback-report.json"), JSON.stringify(fallbackReport, null, 2));
 }
 
 /**

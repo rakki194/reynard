@@ -2,7 +2,7 @@
  * Core type definitions for the Dynamic Enum System
  */
 
-import type { EnumDataProvider } from './DataProvider';
+import type { EnumDataProvider } from "./DataProvider";
 
 /**
  * Represents a single enum value with optional metadata
@@ -64,7 +64,7 @@ export interface EnumServiceConfig {
   /** Cache timeout in milliseconds (default: 5 minutes) */
   cacheTimeout?: number;
   /** Fallback strategy when backend fails */
-  fallbackStrategy?: 'silent' | 'warn' | 'error';
+  fallbackStrategy?: "silent" | "warn" | "error";
   /** Enable performance metrics (default: true) */
   enableMetrics?: boolean;
   /** Maximum retry attempts for failed requests */

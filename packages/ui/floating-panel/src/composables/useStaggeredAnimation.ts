@@ -43,7 +43,7 @@ const createFallbackStaggeredAnimation = (options: UseStaggeredAnimationOptions 
     setTotalItems(items.length);
     setIsAnimating(true);
     setCurrentIndex(0);
-    
+
     // Simple fallback: complete immediately
     setTimeout(() => {
       setIsAnimating(false);

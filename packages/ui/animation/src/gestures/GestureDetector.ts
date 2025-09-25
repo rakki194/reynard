@@ -1,11 +1,11 @@
 /**
  * 🦊 Gesture Detector
- * 
+ *
  * Detects touch/mouse gestures and provides animation triggers
  */
 
 export interface GestureEvent {
-  type: 'drag' | 'swipe' | 'pinch' | 'rotate' | 'tap' | 'longpress';
+  type: "drag" | "swipe" | "pinch" | "rotate" | "tap" | "longpress";
   startX: number;
   startY: number;
   currentX: number;
@@ -64,19 +64,19 @@ export class GestureDetector {
 
   private bindEvents(): void {
     // Mouse events
-    this.element.addEventListener('mousedown', this.handleStart.bind(this));
-    this.element.addEventListener('mousemove', this.handleMove.bind(this));
-    this.element.addEventListener('mouseup', this.handleEnd.bind(this));
-    this.element.addEventListener('mouseleave', this.handleEnd.bind(this));
+    this.element.addEventListener("mousedown", this.handleStart.bind(this));
+    this.element.addEventListener("mousemove", this.handleMove.bind(this));
+    this.element.addEventListener("mouseup", this.handleEnd.bind(this));
+    this.element.addEventListener("mouseleave", this.handleEnd.bind(this));
 
     // Touch events
-    this.element.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: false });
-    this.element.addEventListener('touchmove', this.handleTouchMove.bind(this), { passive: false });
-    this.element.addEventListener('touchend', this.handleTouchEnd.bind(this), { passive: false });
-    this.element.addEventListener('touchcancel', this.handleTouchEnd.bind(this), { passive: false });
+    this.element.addEventListener("touchstart", this.handleTouchStart.bind(this), { passive: false });
+    this.element.addEventListener("touchmove", this.handleTouchMove.bind(this), { passive: false });
+    this.element.addEventListener("touchend", this.handleTouchEnd.bind(this), { passive: false });
+    this.element.addEventListener("touchcancel", this.handleTouchEnd.bind(this), { passive: false });
 
     // Prevent context menu on long press
-    this.element.addEventListener('contextmenu', (e) => e.preventDefault());
+    this.element.addEventListener("contextmenu", e => e.preventDefault());
   }
 
   private handleStart(event: MouseEvent): void {
@@ -90,9 +90,9 @@ export class GestureDetector {
     if (this.options.preventDefault) {
       event.preventDefault();
     }
-    
+
     this.touchCount = event.touches.length;
-    
+
     if (event.touches.length === 1) {
       const touch = event.touches[0];
       this.startGesture(touch.clientX, touch.clientY);
@@ -110,7 +110,7 @@ export class GestureDetector {
     this.lastTime = this.startTime;
 
     const gestureEvent: GestureEvent = {
-      type: 'drag',
+      type: "drag",
       startX: this.startX,
       startY: this.startY,
       currentX: x,
@@ -129,18 +129,18 @@ export class GestureDetector {
   private startMultiTouch(touch1: Touch, touch2: Touch): void {
     this.isActive = true;
     this.startTime = performance.now();
-    
+
     const centerX = (touch1.clientX + touch2.clientX) / 2;
     const centerY = (touch1.clientY + touch2.clientY) / 2;
-    
+
     this.startX = this.lastX = centerX;
     this.startY = this.lastY = centerY;
-    
+
     this.initialDistance = this.getDistance(touch1, touch2);
     this.initialAngle = this.getAngle(touch1, touch2);
-    
+
     const gestureEvent: GestureEvent = {
-      type: 'pinch',
+      type: "pinch",
       startX: this.startX,
       startY: this.startY,
       currentX: centerX,
@@ -183,7 +183,7 @@ export class GestureDetector {
   private updateGesture(x: number, y: number): void {
     const currentTime = performance.now();
     const deltaTime = currentTime - this.lastTime;
-    
+
     if (deltaTime > 0) {
       this.velocityX = (x - this.lastX) / deltaTime;
       this.velocityY = (y - this.lastY) / deltaTime;
@@ -194,11 +194,11 @@ export class GestureDetector {
     const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
     // Determine gesture type based on movement
-    let gestureType: GestureEvent['type'] = 'drag';
+    let gestureType: GestureEvent["type"] = "drag";
     if (distance < this.options.minDistance) {
-      gestureType = 'tap';
+      gestureType = "tap";
     } else if (Math.abs(this.velocityX) > Math.abs(this.velocityY)) {
-      gestureType = 'swipe';
+      gestureType = "swipe";
     }
 
     const gestureEvent: GestureEvent = {
@@ -226,15 +226,15 @@ export class GestureDetector {
     const currentTime = performance.now();
     const centerX = (touch1.clientX + touch2.clientX) / 2;
     const centerY = (touch1.clientY + touch2.clientY) / 2;
-    
+
     const currentDistance = this.getDistance(touch1, touch2);
     const currentAngle = this.getAngle(touch1, touch2);
-    
+
     const scale = currentDistance / this.initialDistance;
     const rotation = currentAngle - this.initialAngle;
 
     const gestureEvent: GestureEvent = {
-      type: 'pinch',
+      type: "pinch",
       startX: this.startX,
       startY: this.startY,
       currentX: centerX,
@@ -276,12 +276,12 @@ export class GestureDetector {
     const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
     // Determine final gesture type
-    let gestureType: GestureEvent['type'] = 'tap';
+    let gestureType: GestureEvent["type"] = "tap";
     if (distance > this.options.minDistance) {
       if (Math.abs(this.velocityX) > Math.abs(this.velocityY)) {
-        gestureType = 'swipe';
+        gestureType = "swipe";
       } else {
-        gestureType = 'drag';
+        gestureType = "drag";
       }
     }
 
@@ -317,14 +317,14 @@ export class GestureDetector {
 
   destroy(): void {
     // Remove all event listeners
-    this.element.removeEventListener('mousedown', this.handleStart.bind(this));
-    this.element.removeEventListener('mousemove', this.handleMove.bind(this));
-    this.element.removeEventListener('mouseup', this.handleEnd.bind(this));
-    this.element.removeEventListener('mouseleave', this.handleEnd.bind(this));
-    
-    this.element.removeEventListener('touchstart', this.handleTouchStart.bind(this));
-    this.element.removeEventListener('touchmove', this.handleTouchMove.bind(this));
-    this.element.removeEventListener('touchend', this.handleTouchEnd.bind(this));
-    this.element.removeEventListener('touchcancel', this.handleTouchEnd.bind(this));
+    this.element.removeEventListener("mousedown", this.handleStart.bind(this));
+    this.element.removeEventListener("mousemove", this.handleMove.bind(this));
+    this.element.removeEventListener("mouseup", this.handleEnd.bind(this));
+    this.element.removeEventListener("mouseleave", this.handleEnd.bind(this));
+
+    this.element.removeEventListener("touchstart", this.handleTouchStart.bind(this));
+    this.element.removeEventListener("touchmove", this.handleTouchMove.bind(this));
+    this.element.removeEventListener("touchend", this.handleTouchEnd.bind(this));
+    this.element.removeEventListener("touchcancel", this.handleTouchEnd.bind(this));
   }
 }

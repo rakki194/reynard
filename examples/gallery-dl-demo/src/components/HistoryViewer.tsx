@@ -6,7 +6,7 @@ interface HistoryViewerProps {
   onRetry: (url: string) => void;
 }
 
-export const HistoryViewer: Component<HistoryViewerProps> = (props) => {
+export const HistoryViewer: Component<HistoryViewerProps> = props => {
   const formatBytes = (bytes: number): string => {
     if (bytes === 0) return "0 B";
     const k = 1024;
@@ -54,16 +54,14 @@ export const HistoryViewer: Component<HistoryViewerProps> = (props) => {
       ) : (
         <div class="history-list">
           <For each={props.history}>
-            {(download) => (
+            {download => (
               <div class="history-item">
                 <div class="history-info">
                   <div class="history-url">
                     {getStatusIcon(download.success)} {download.url}
                   </div>
                   <div class="history-meta">
-                    <span class={`status ${getStatusClass(download.success)}`}>
-                      {getStatusText(download.success)}
-                    </span>
+                    <span class={`status ${getStatusClass(download.success)}`}>{getStatusText(download.success)}</span>
                     {download.success && (
                       <>
                         <span> • {download.files?.length || 0} files</span>
@@ -75,9 +73,7 @@ export const HistoryViewer: Component<HistoryViewerProps> = (props) => {
                         )}
                       </>
                     )}
-                    {download.extractor && (
-                      <span> • {download.extractor}</span>
-                    )}
+                    {download.extractor && <span> • {download.extractor}</span>}
                   </div>
                 </div>
 
@@ -93,10 +89,7 @@ export const HistoryViewer: Component<HistoryViewerProps> = (props) => {
                       Open Folder
                     </button>
                   )}
-                  <button
-                    class="action-button"
-                    onClick={() => props.onRetry(download.url)}
-                  >
+                  <button class="action-button" onClick={() => props.onRetry(download.url)}>
                     Retry
                   </button>
                 </div>

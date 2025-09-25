@@ -32,34 +32,37 @@ export function validateDirectoryDefinition(directory: DirectoryDefinition): str
   }
 
   // Path validation
-  if (directory.path && !directory.path.startsWith("packages/") && 
-      !directory.path.startsWith("services/") && 
-      !directory.path.startsWith("examples/") && 
-      !directory.path.startsWith("templates/") && 
-      !directory.path.startsWith("e2e/") && 
-      !directory.path.startsWith("scripts/") && 
-      !directory.path.startsWith("docs/") && 
-      !directory.path.startsWith("backend/") && 
-      !directory.path.startsWith("data/") && 
-      !directory.path.startsWith("nginx/") && 
-      !directory.path.startsWith("fenrir/") && 
-      !directory.path.startsWith("experimental/") && 
-      !directory.path.startsWith(".vscode/") && 
-      !directory.path.startsWith("third_party/") && 
-      directory.path !== "packages" && 
-      directory.path !== "services" && 
-      directory.path !== "examples" && 
-      directory.path !== "templates" && 
-      directory.path !== "e2e" && 
-      directory.path !== "scripts" && 
-      directory.path !== "docs" && 
-      directory.path !== "backend" && 
-      directory.path !== "data" && 
-      directory.path !== "nginx" && 
-      directory.path !== "fenrir" && 
-      directory.path !== "experimental" && 
-      directory.path !== ".vscode" && 
-      directory.path !== "third_party") {
+  if (
+    directory.path &&
+    !directory.path.startsWith("packages/") &&
+    !directory.path.startsWith("services/") &&
+    !directory.path.startsWith("examples/") &&
+    !directory.path.startsWith("templates/") &&
+    !directory.path.startsWith("e2e/") &&
+    !directory.path.startsWith("scripts/") &&
+    !directory.path.startsWith("docs/") &&
+    !directory.path.startsWith("backend/") &&
+    !directory.path.startsWith("data/") &&
+    !directory.path.startsWith("nginx/") &&
+    !directory.path.startsWith("fenrir/") &&
+    !directory.path.startsWith("experimental/") &&
+    !directory.path.startsWith(".vscode/") &&
+    !directory.path.startsWith("third_party/") &&
+    directory.path !== "packages" &&
+    directory.path !== "services" &&
+    directory.path !== "examples" &&
+    directory.path !== "templates" &&
+    directory.path !== "e2e" &&
+    directory.path !== "scripts" &&
+    directory.path !== "docs" &&
+    directory.path !== "backend" &&
+    directory.path !== "data" &&
+    directory.path !== "nginx" &&
+    directory.path !== "fenrir" &&
+    directory.path !== "experimental" &&
+    directory.path !== ".vscode" &&
+    directory.path !== "third_party"
+  ) {
     errors.push(`Invalid directory path: ${directory.path}`);
   }
 

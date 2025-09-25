@@ -1,6 +1,6 @@
 /**
  * 🦊 3D Animation Types
- * 
+ *
  * Type definitions for 3D animation system consolidated from the 3D package.
  * Provides comprehensive type safety for 3D animations and interactions.
  */

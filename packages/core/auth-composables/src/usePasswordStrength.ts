@@ -273,13 +273,7 @@ function getFeedbackMessage(score: number, warning?: string): string {
  * Get estimated crack time
  */
 function getCrackTime(score: number): string {
-  const times = [
-    "instantly",
-    "seconds",
-    "minutes",
-    "hours",
-    "years",
-  ];
+  const times = ["instantly", "seconds", "minutes", "hours", "years"];
 
   return times[score] || "unknown";
 }

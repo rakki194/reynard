@@ -148,7 +148,7 @@ class BackendDataService:
             )
             response.raise_for_status()
             data = response.json()
-            return data.get("numbers", [])
+            return data.get("generation_numbers", [])
         except Exception as e:
             logger.error(f"Error fetching generation numbers for spirit {spirit}: {e}")
             return []

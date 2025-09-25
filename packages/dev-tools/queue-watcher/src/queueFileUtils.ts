@@ -1,6 +1,6 @@
 /**
  * 🦊 Reynard Queue Watcher File Utilities
- * 
+ *
  * Enhanced file utilities using catalyst for consistent file operations.
  */
 
@@ -129,7 +129,7 @@ export function wasRecentlyProcessed(
 export function getFileType(filePath: string): string | null {
   // Use catalyst FileTypeDetector for consistent file type detection
   const catalystType = FileTypeDetector.getFileType(filePath);
-  
+
   if (catalystType) {
     return catalystType;
   }

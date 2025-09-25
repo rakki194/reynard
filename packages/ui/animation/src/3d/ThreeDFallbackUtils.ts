@@ -1,6 +1,6 @@
 /**
  * 🦊 3D Fallback Animation Utilities
- * 
+ *
  * Utility functions for applying CSS-based fallback 3D animations.
  * Provides immediate completion for disabled animations and performance optimizations.
  */
@@ -55,7 +55,7 @@ export function apply3DPointFallback(
   element.style.setProperty("--point-opacity", "1");
 
   element.classList.add("three-d-point-fallback");
-  
+
   // Trigger the transition
   requestAnimationFrame(() => {
     element.classList.add("animate");
@@ -97,9 +97,9 @@ export function apply3DClusterFallback(
     element.style.setProperty("--cluster-z", `${center[2]}px`);
     element.style.setProperty("--cluster-scale", "1.2");
     element.style.setProperty("--3d-animation-delay", `${index * 50}ms`);
-    
+
     element.classList.add("three-d-cluster-fallback");
-    
+
     // Trigger the transition
     requestAnimationFrame(() => {
       element.classList.add("animate");
@@ -139,7 +139,7 @@ export function apply3DCameraFallback(
   element.style.setProperty("--camera-z", `${endPosition[2]}px`);
 
   element.classList.add("three-d-camera-fallback");
-  
+
   // Trigger the transition
   requestAnimationFrame(() => {
     element.classList.add("animate");
@@ -177,7 +177,7 @@ export function apply3DRotationFallback(
   element.style.setProperty("--rotation-z", `${rotation[2]}deg`);
 
   element.classList.add("three-d-rotation-fallback");
-  
+
   // Trigger the transition
   requestAnimationFrame(() => {
     element.classList.add("animate");
@@ -215,7 +215,7 @@ export function apply3DScaleFallback(
   element.style.setProperty("--scale-z", scale[2].toString());
 
   element.classList.add("three-d-scale-fallback");
-  
+
   // Trigger the transition
   requestAnimationFrame(() => {
     element.classList.add("animate");
@@ -253,7 +253,7 @@ export function apply3DTranslationFallback(
   element.style.setProperty("--translation-z", `${translation[2]}px`);
 
   element.classList.add("three-d-translation-fallback");
-  
+
   // Trigger the transition
   requestAnimationFrame(() => {
     element.classList.add("animate");
@@ -266,10 +266,10 @@ export function apply3DTranslationFallback(
 export function applyImmediate3DTransform(element: HTMLElement, point: EmbeddingPoint): void {
   element.style.transform = `translate3d(${point.x}px, ${point.y}px, ${point.z}px)`;
   element.style.transition = "none";
-  
+
   // Force reflow
   element.offsetHeight;
-  
+
   // Restore transition
   element.style.transition = "";
 }
@@ -279,7 +279,7 @@ export function applyImmediate3DTransform(element: HTMLElement, point: Embedding
  */
 function shouldDisable3DAnimations(): boolean {
   if (typeof window === "undefined") return true;
-  
+
   // Check for reduced motion preference
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     return true;
@@ -301,10 +301,7 @@ function shouldDisable3DAnimations(): boolean {
 /**
  * Create CSS custom properties for 3D animation
  */
-export function create3DAnimationCSS(
-  transforms: Record<string, string>,
-  options: ThreeDFallbackOptions = {}
-): string {
+export function create3DAnimationCSS(transforms: Record<string, string>, options: ThreeDFallbackOptions = {}): string {
   const {
     duration = 800,
     easing = "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
@@ -369,7 +366,7 @@ export function remove3DAnimationClasses(element: HTMLElement): void {
  */
 export function cleanup3DAnimationStyles(element: HTMLElement): void {
   remove3DAnimationClasses(element);
-  
+
   // Remove CSS custom properties
   const propertiesToRemove = [
     "--3d-animation-duration",

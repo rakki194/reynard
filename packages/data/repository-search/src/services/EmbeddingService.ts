@@ -40,11 +40,19 @@ export class EmbeddingService {
     return { healthy: this.initialized, metadata: { service: "EmbeddingService" } };
   }
 
-  async generateEmbedding(_modality: ModalityType, _content: string, _options?: SearchOptions): Promise<VectorEmbedding> {
+  async generateEmbedding(
+    _modality: ModalityType,
+    _content: string,
+    _options?: SearchOptions
+  ): Promise<VectorEmbedding> {
     throw new RepositoryError("EmbeddingService not implemented", "NOT_IMPLEMENTED");
   }
 
-  async generateBatchEmbeddings(_modality: ModalityType, _contents: string[], _options?: SearchOptions): Promise<VectorEmbedding[]> {
+  async generateBatchEmbeddings(
+    _modality: ModalityType,
+    _contents: string[],
+    _options?: SearchOptions
+  ): Promise<VectorEmbedding[]> {
     throw new RepositoryError("EmbeddingService not implemented", "NOT_IMPLEMENTED");
   }
 

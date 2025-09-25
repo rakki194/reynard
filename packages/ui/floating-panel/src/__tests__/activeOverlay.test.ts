@@ -1,6 +1,6 @@
 /**
  * Active Overlay Tests
- * 
+ *
  * Tests for active overlay functionality.
  */
 

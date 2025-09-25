@@ -55,7 +55,6 @@ export const CORE_PACKAGES: DirectoryDefinition[] = [
     }
   ),
 
-
   createCorePackage(
     "packages/core/composables",
     "packages/core/composables",
@@ -102,10 +101,11 @@ export const CORE_PACKAGES: DirectoryDefinition[] = [
     "packages/core/features",
     "Feature flags and conditional functionality - provides feature flag management, conditional feature activation, and feature toggling capabilities",
     {
-      relationships: buildRelationships(
-        COMMON_RELATIONSHIPS.CORE_DEPENDENCY,
-        { directory: "packages/core/config", type: "dependency", description: "Uses configuration utilities" }
-      ),
+      relationships: buildRelationships(COMMON_RELATIONSHIPS.CORE_DEPENDENCY, {
+        directory: "packages/core/config",
+        type: "dependency",
+        description: "Uses configuration utilities",
+      }),
       metadata: CORE_METADATA,
     }
   ),
@@ -115,10 +115,11 @@ export const CORE_PACKAGES: DirectoryDefinition[] = [
     "packages/core/i18n",
     "Internationalization and localization - provides multi-language support, translation management, and localization utilities for global applications",
     {
-      relationships: buildRelationships(
-        COMMON_RELATIONSHIPS.CORE_DEPENDENCY,
-        { directory: "packages/core/config", type: "dependency", description: "Uses configuration utilities" }
-      ),
+      relationships: buildRelationships(COMMON_RELATIONSHIPS.CORE_DEPENDENCY, {
+        directory: "packages/core/config",
+        type: "dependency",
+        description: "Uses configuration utilities",
+      }),
       metadata: CORE_METADATA,
     }
   ),
@@ -142,9 +143,7 @@ export const CORE_PACKAGES: DirectoryDefinition[] = [
     "packages/core/validation",
     "Data validation utilities and schemas - provides validation frameworks, schema validation, data validation utilities, and type checking capabilities",
     {
-      relationships: buildRelationships(
-        COMMON_RELATIONSHIPS.CORE_DEPENDENCY
-      ),
+      relationships: buildRelationships(COMMON_RELATIONSHIPS.CORE_DEPENDENCY),
       metadata: CORE_METADATA,
     }
   ),

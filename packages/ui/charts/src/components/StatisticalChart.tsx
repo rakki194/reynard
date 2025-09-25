@@ -240,12 +240,12 @@ export const StatisticalChart = (props: StatisticalChartProps) => {
     let values: any[] = [];
     if (Array.isArray(local.data.values)) {
       values = local.data.values;
-    } else if (typeof local.data.values === 'function') {
+    } else if (typeof local.data.values === "function") {
       try {
         const result = local.data.values();
         if (Array.isArray(result)) {
           values = result;
-        } else if (result && typeof result[Symbol.iterator] === 'function') {
+        } else if (result && typeof result[Symbol.iterator] === "function") {
           values = Array.from(result);
         } else {
           values = [];

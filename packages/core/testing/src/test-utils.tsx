@@ -183,7 +183,10 @@ function suppressConsoleWarnings() {
 /**
  * Test component rendering with standard setup and provider support
  */
-export async function testComponentRendering(Component: Component<any>, options: ComponentTestOptions = {}): Promise<any> {
+export async function testComponentRendering(
+  Component: Component<any>,
+  options: ComponentTestOptions = {}
+): Promise<any> {
   const { props = {}, wrapper, providers = [] } = options;
   // Render with providers
   let renderResult;
@@ -219,7 +222,11 @@ export async function testComponentRendering(Component: Component<any>, options:
 /**
  * Test component with signal updates
  */
-export async function testComponentWithSignals(Component: Component<any>, signalUpdates: SignalUpdate[], options: ComponentTestOptions = {}): Promise<any> {
+export async function testComponentWithSignals(
+  Component: Component<any>,
+  signalUpdates: SignalUpdate[],
+  options: ComponentTestOptions = {}
+): Promise<any> {
   const renderResult = await testComponentRendering(Component, options);
   // Apply signal updates
   for (const update of signalUpdates) {
@@ -233,7 +240,11 @@ export async function testComponentWithSignals(Component: Component<any>, signal
 /**
  * Test component error handling
  */
-export async function testComponentErrorHandling(Component: Component<any>, errorTrigger: ErrorTrigger, options: ComponentTestOptions = {}): Promise<any> {
+export async function testComponentErrorHandling(
+  Component: Component<any>,
+  errorTrigger: ErrorTrigger,
+  options: ComponentTestOptions = {}
+): Promise<any> {
   const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
   try {
     const renderResult = await testComponentRendering(Component, options);
@@ -278,7 +289,11 @@ export async function testAPIClient(apiCall: () => Promise<any>, options: ApiTes
 /**
  * Test API error handling
  */
-export async function testAPIErrorHandling(apiCall: () => Promise<any>, expectedError: any, options: ApiTestOptions = {}) {
+export async function testAPIErrorHandling(
+  apiCall: () => Promise<any>,
+  expectedError: any,
+  options: ApiTestOptions = {}
+) {
   const { mockError = new Error("Network error") } = options;
   // Mock fetch to reject
   (global.fetch as any).mockRejectedValueOnce(mockError);
@@ -313,7 +328,7 @@ export function testValidation(validator: (value: any) => any, options: Validati
   // Test valid values
   validValues.forEach((value: any) => {
     const result = validator(value);
-    if (typeof result === 'object' && result !== null) {
+    if (typeof result === "object" && result !== null) {
       expect(result.isValid).toBe(true);
       expect(result.error).toBeUndefined();
     } else {
@@ -323,7 +338,7 @@ export function testValidation(validator: (value: any) => any, options: Validati
   // Test invalid values
   invalidValues.forEach((value: any, index: number) => {
     const result = validator(value);
-    if (typeof result === 'object' && result !== null) {
+    if (typeof result === "object" && result !== null) {
       expect(result.isValid).toBe(false);
       if (errorMessages[index]) {
         expect(result.error).toContain(errorMessages[index]);
@@ -543,7 +558,11 @@ export function useTestAppContext() {
 /**
  * Render with theme provider
  */
-export function renderWithTheme(ui: () => JSX.Element, theme: any = { name: "light", colors: {} }, options: RenderOptions = {}): any {
+export function renderWithTheme(
+  ui: () => JSX.Element,
+  theme: any = { name: "light", colors: {} },
+  options: RenderOptions = {}
+): any {
   const ThemeProvider = (props: any) => {
     return createComponent(() => props.children, { theme });
   };
@@ -585,7 +604,11 @@ export function renderWithAppContext(ui: () => JSX.Element, options: RenderOptio
 /**
  * Render with multiple providers
  */
-export function renderWithProviders(ui: () => JSX.Element, providers: Component<any>[] = [], options: RenderOptions = {}): any {
+export function renderWithProviders(
+  ui: () => JSX.Element,
+  providers: Component<any>[] = [],
+  options: RenderOptions = {}
+): any {
   const Wrapper = (props: any) => {
     return providers.reduceRight((element: JSX.Element, Provider: Component<any>) => {
       return <Provider>{element}</Provider>;

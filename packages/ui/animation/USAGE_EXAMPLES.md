@@ -1,6 +1,6 @@
 # 🦊 Animation System Usage Examples
 
-*Comprehensive examples for using the Reynard animation system*
+_Comprehensive examples for using the Reynard animation system_
 
 ## Overview
 
@@ -26,7 +26,7 @@ function SimpleAnimation() {
       <button onClick={() => animationState.toggle()}>
         Toggle Animation
       </button>
-      <div 
+      <div
         class="animated-element"
         classList={{ 'active': animationState.isActive() }}
       >
@@ -43,9 +43,9 @@ function SimpleAnimation() {
 import { useStaggeredAnimation } from 'reynard-animation';
 
 function StaggeredAnimation() {
-  const items = Array.from({ length: 5 }, (_, i) => ({ 
-    id: i, 
-    name: `Item ${i + 1}` 
+  const items = Array.from({ length: 5 }, (_, i) => ({
+    id: i,
+    name: `Item ${i + 1}`
   }));
 
   const staggeredAnimation = useStaggeredAnimation({
@@ -63,7 +63,7 @@ function StaggeredAnimation() {
       </button>
       <For each={items}>
         {(item, index) => (
-          <div 
+          <div
             class="staggered-item"
             classList={{ 'active': staggeredAnimation.isActive() }}
             style={{
@@ -105,12 +105,12 @@ function ThreeDAnimation() {
       <button onClick={() => threeJSAnimation.scale({ x: 1.5, y: 1.5 })}>
         Scale Up
       </button>
-      <div 
+      <div
         class="three-d-element"
         style={{
-          transform: `rotateX(${threeJSAnimation.rotation().x}deg) 
-                     rotateY(${threeJSAnimation.rotation().y}deg) 
-                     rotateZ(${threeJSAnimation.rotation().z}deg) 
+          transform: `rotateX(${threeJSAnimation.rotation().x}deg)
+                     rotateY(${threeJSAnimation.rotation().y}deg)
+                     rotateZ(${threeJSAnimation.rotation().z}deg)
                      scale(${threeJSAnimation.scale().x})`,
         }}
       >
@@ -141,7 +141,7 @@ function CSSFallback() {
       <button onClick={() => animationState.toggle()}>
         Toggle with CSS Fallback
       </button>
-      <div 
+      <div
         class="fallback-element"
         classList={{ 'active': animationState.isActive() }}
       >
@@ -170,7 +170,7 @@ function ImmediateFallback() {
       <button onClick={() => animationState.toggle()}>
         Toggle with Immediate Fallback
       </button>
-      <div 
+      <div
         class="immediate-element"
         classList={{ 'active': animationState.isActive() }}
       >
@@ -224,7 +224,7 @@ function SmartImportFallback() {
           <button onClick={() => animationState()?.toggle()}>
             Toggle with Smart Import
           </button>
-          <div 
+          <div
             class="smart-element"
             classList={{ 'active': animationState()?.isActive() }}
           >
@@ -285,7 +285,7 @@ function ComponentPerformanceMode() {
       <button onClick={() => animationState.toggle()}>
         Toggle with Performance Mode
       </button>
-      <div 
+      <div
         class="performance-element"
         classList={{ 'active': animationState.isActive() }}
       >
@@ -404,7 +404,7 @@ function ReducedMotionSupport() {
       <button onClick={() => animationState.toggle()}>
         Toggle with Reduced Motion Support
       </button>
-      <div 
+      <div
         class="reduced-motion-element"
         classList={{ 'active': animationState.isActive() }}
       >
@@ -432,14 +432,14 @@ function FocusManagement() {
 
   return (
     <div class="focus-management-container">
-      <button 
+      <button
         onClick={() => animationState.toggle()}
         onFocus={() => animationState.start()}
         onBlur={() => animationState.stop()}
       >
         Focus-Aware Button
       </button>
-      <div 
+      <div
         class="focus-element"
         classList={{ 'active': animationState.isActive() }}
       >
@@ -472,7 +472,7 @@ function ScreenReaderAnnouncements() {
       <button onClick={() => animationState.toggle()}>
         Toggle with Screen Reader Announcements
       </button>
-      <div 
+      <div
         class="screen-reader-element"
         classList={{ 'active': animationState.isActive() }}
         aria-live="polite"
@@ -504,7 +504,7 @@ function OldAnimation() {
       <button onClick={toggleVisibility}>
         Toggle Visibility
       </button>
-      <div 
+      <div
         class="old-element"
         classList={{ 'visible': isVisible() }}
       >
@@ -533,7 +533,7 @@ function NewAnimation() {
       <button onClick={() => animationState.toggle()}>
         Toggle Visibility
       </button>
-      <div 
+      <div
         class="new-element"
         classList={{ 'visible': animationState.isActive() }}
       >
@@ -569,7 +569,7 @@ function OldStaggeredAnimation() {
       </button>
       <For each={items}>
         {(item, index) => (
-          <div 
+          <div
             class="old-staggered-item"
             classList={{ 'active': isActive() }}
             style={{ 'animation-delay': `${index() * 100}ms` }}
@@ -606,7 +606,7 @@ function NewStaggeredAnimation() {
       </button>
       <For each={items}>
         {(item, index) => (
-          <div 
+          <div
             class="new-staggered-item"
             classList={{ 'active': staggeredAnimation.isActive() }}
             style={{ 'animation-delay': `${index() * 100}ms` }}
@@ -637,7 +637,7 @@ function Old3DAnimation() {
       <button onClick={rotate}>
         Rotate
       </button>
-      <div 
+      <div
         class="old-3d-element"
         style={{ transform: `rotateY(${rotation()}deg)` }}
       >
@@ -666,7 +666,7 @@ function New3DAnimation() {
       <button onClick={() => threeJSAnimation.rotate({ y: 90 })}>
         Rotate
       </button>
-      <div 
+      <div
         class="new-3d-element"
         style={{
           transform: `rotateY(${threeJSAnimation.rotation().y}deg)`,
@@ -688,7 +688,7 @@ import { useAnimationState, useStaggeredAnimation } from 'reynard-animation';
 
 function ComplexAnimationSequence() {
   const [currentStep, setCurrentStep] = createSignal(0);
-  
+
   const mainAnimation = useAnimationState({
     initial: false,
     duration: 500,
@@ -697,7 +697,7 @@ function ComplexAnimationSequence() {
   });
 
   const items = Array.from({ length: 3 }, (_, i) => ({ id: i, name: `Step ${i + 1}` }));
-  
+
   const staggeredAnimation = useStaggeredAnimation({
     items,
     stagger: 200,
@@ -710,11 +710,11 @@ function ComplexAnimationSequence() {
     // Step 1: Start main animation
     mainAnimation.start();
     await new Promise(resolve => setTimeout(resolve, 500));
-    
+
     // Step 2: Start staggered animation
     staggeredAnimation.start();
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
+
     // Step 3: Complete sequence
     setCurrentStep(3);
   };
@@ -724,7 +724,7 @@ function ComplexAnimationSequence() {
       <button onClick={runSequence}>
         Run Complex Sequence
       </button>
-      <div 
+      <div
         class="main-element"
         classList={{ 'active': mainAnimation.isActive() }}
       >
@@ -732,7 +732,7 @@ function ComplexAnimationSequence() {
       </div>
       <For each={items}>
         {(item, index) => (
-          <div 
+          <div
             class="sequence-item"
             classList={{ 'active': staggeredAnimation.isActive() }}
             style={{ 'animation-delay': `${index() * 200}ms` }}
@@ -762,7 +762,7 @@ function ConditionalAnimationLoading() {
     // Check device capabilities
     const isLowEndDevice = navigator.hardwareConcurrency < 4;
     const hasReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    
+
     if (isLowEndDevice || hasReducedMotion) {
       // Load lightweight animation system
       const { useAnimationState } = await import('reynard-animation/lightweight');
@@ -782,7 +782,7 @@ function ConditionalAnimationLoading() {
         fallback: 'css',
       }));
     }
-    
+
     setIsLoading(false);
   });
 
@@ -795,7 +795,7 @@ function ConditionalAnimationLoading() {
           <button onClick={() => animationSystem()?.toggle()}>
             Toggle Conditional Animation
           </button>
-          <div 
+          <div
             class="conditional-element"
             classList={{ 'active': animationSystem()?.isActive() }}
           >
@@ -818,7 +818,7 @@ function ConditionalAnimationLoading() {
   --animation-duration: 300ms;
   --animation-easing: ease-in-out;
   --animation-delay: 0ms;
-  
+
   transition: all var(--animation-duration) var(--animation-easing);
   transition-delay: var(--animation-delay);
 }
@@ -859,7 +859,9 @@ function ConditionalAnimationLoading() {
 .animation-slide-up {
   transform: translateY(20px);
   opacity: 0;
-  transition: transform 300ms ease-out, opacity 300ms ease-out;
+  transition:
+    transform 300ms ease-out,
+    opacity 300ms ease-out;
 }
 
 .animation-slide-up.active {
@@ -870,7 +872,9 @@ function ConditionalAnimationLoading() {
 .animation-scale {
   transform: scale(0.9);
   opacity: 0;
-  transition: transform 300ms ease-out, opacity 300ms ease-out;
+  transition:
+    transform 300ms ease-out,
+    opacity 300ms ease-out;
 }
 
 .animation-scale.active {
@@ -915,9 +919,9 @@ describe('Animation System', () => {
     const element = getByRole('generic');
 
     expect(element).not.toHaveClass('active');
-    
+
     fireEvent.click(button);
-    
+
     expect(element).toHaveClass('active');
   });
 });
@@ -934,7 +938,7 @@ describe('Staggered Animation Integration', () => {
   it('should animate items in sequence', async () => {
     const TestComponent = () => {
       const items = Array.from({ length: 3 }, (_, i) => ({ id: i, name: `Item ${i}` }));
-      
+
       const staggeredAnimation = useStaggeredAnimation({
         items,
         stagger: 100,
@@ -950,7 +954,7 @@ describe('Staggered Animation Integration', () => {
           </button>
           <For each={items}>
             {(item, index) => (
-              <div 
+              <div
                 class="staggered-item"
                 classList={{ 'active': staggeredAnimation.isActive() }}
                 data-testid={`item-${item.id}`}
@@ -965,9 +969,9 @@ describe('Staggered Animation Integration', () => {
 
     const { getByText, getByTestId } = render(() => <TestComponent />);
     const button = getByText('Start Animation');
-    
+
     fireEvent.click(button);
-    
+
     await waitFor(() => {
       expect(getByTestId('item-0')).toHaveClass('active');
     });
@@ -977,4 +981,4 @@ describe('Staggered Animation Integration', () => {
 
 ---
 
-*🦊 These examples demonstrate the power and flexibility of the Reynard animation system, providing practical guidance for implementation across various scenarios.*
+_🦊 These examples demonstrate the power and flexibility of the Reynard animation system, providing practical guidance for implementation across various scenarios._

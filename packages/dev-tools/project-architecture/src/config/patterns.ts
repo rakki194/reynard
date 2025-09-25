@@ -68,42 +68,22 @@ export const GLOBAL_INCLUDE_PATTERNS = [
 /**
  * Package-specific exclude patterns
  */
-export const PACKAGE_EXCLUDE_PATTERNS = [
-  "**/node_modules/**",
-  "**/dist/**",
-  "**/build/**",
-] as const;
+export const PACKAGE_EXCLUDE_PATTERNS = ["**/node_modules/**", "**/dist/**", "**/build/**"] as const;
 
 /**
  * Package-specific include patterns
  */
-export const PACKAGE_INCLUDE_PATTERNS = [
-  "**/*.ts",
-  "**/*.tsx",
-  "**/*.js",
-  "**/*.jsx",
-  "**/*.json",
-  "**/*.md",
-] as const;
+export const PACKAGE_INCLUDE_PATTERNS = ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json", "**/*.md"] as const;
 
 /**
  * Service-specific exclude patterns
  */
-export const SERVICE_EXCLUDE_PATTERNS = [
-  "**/__pycache__/**",
-  "**/htmlcov/**",
-  "**/*.egg-info/**",
-] as const;
+export const SERVICE_EXCLUDE_PATTERNS = ["**/__pycache__/**", "**/htmlcov/**", "**/*.egg-info/**"] as const;
 
 /**
  * Service-specific include patterns
  */
-export const SERVICE_INCLUDE_PATTERNS = [
-  "**/*.py",
-  "**/*.json",
-  "**/*.md",
-  "**/*.toml",
-] as const;
+export const SERVICE_INCLUDE_PATTERNS = ["**/*.py", "**/*.json", "**/*.md", "**/*.toml"] as const;
 
 /**
  * Documentation-specific include patterns

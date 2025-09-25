@@ -32,7 +32,3 @@ export { createDefaultConfig, loadConfig, saveConfig } from "./config.js";
 
 // Default export
 export { IncrementalLintingService as default } from "./linting-service.js";
-
-
-
-

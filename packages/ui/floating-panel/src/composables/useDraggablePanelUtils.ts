@@ -32,7 +32,9 @@ export function snapToPoint(position: PanelPosition, snapPoints?: PanelSnapPoint
   );
 
   for (const point of snapPoints) {
-    const distance = Math.sqrt(Math.pow((position.left || 0) - point.left, 2) + Math.pow((position.top || 0) - point.top, 2));
+    const distance = Math.sqrt(
+      Math.pow((position.left || 0) - point.left, 2) + Math.pow((position.top || 0) - point.top, 2)
+    );
     if (distance < minDistance) {
       minDistance = distance;
       closestPoint = point;

@@ -1,6 +1,6 @@
 /**
  * 🦊 Animation State Manager
- * 
+ *
  * Manages animation state and provides computed values
  */
 
@@ -19,9 +19,7 @@ export interface AnimationState {
 /**
  * Create animation state management
  */
-export function createAnimationStateManager(
-  respectGlobalControl: boolean
-): {
+export function createAnimationStateManager(respectGlobalControl: boolean): {
   state: AnimationState;
   setters: {
     setIsAnimating: (animating: boolean) => void;
@@ -42,13 +40,13 @@ export function createAnimationStateManager(
   // Check if animations should be disabled
   const shouldDisableAnimations = createMemo(() => {
     if (animationEngine() === "disabled") return true;
-    
+
     if (globalControl() && respectGlobalControl) {
       const control = globalControl() as Record<string, unknown>;
       const isDisabled = control.isAnimationsDisabled as (() => boolean) | undefined;
       return isDisabled?.() || false;
     }
-    
+
     return false;
   });
 
@@ -73,5 +71,3 @@ export function createAnimationStateManager(
 
   return { state, setters };
 }
-
-

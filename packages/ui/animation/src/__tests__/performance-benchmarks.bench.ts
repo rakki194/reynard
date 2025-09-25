@@ -1,13 +1,13 @@
 /**
  * 🦊 Animation Performance Benchmarks
- * 
+ *
  * Comprehensive performance benchmarks for the animation system including:
  * - Fallback vs full animations
  * - Bundle size impact analysis
  * - Performance mode benefits
  * - Memory usage comparisons
  * - Animation control overhead
- * 
+ *
  * @author Vulpine (Strategic Fox Specialist)
  * @since 1.0.0
  */
@@ -30,7 +30,11 @@ const mockFallbackSystem = {
     Object.assign(element.style, properties);
     return new Promise(resolve => setTimeout(resolve, 16)); // ~60fps
   },
-  createFallbackStaggeredAnimation: async (elements: HTMLElement[], properties: Record<string, string>, stagger: number = 50) => {
+  createFallbackStaggeredAnimation: async (
+    elements: HTMLElement[],
+    properties: Record<string, string>,
+    stagger: number = 50
+  ) => {
     // Simulate staggered CSS transitions
     const promises = elements.map((element, index) => {
       return new Promise<void>(resolve => {
@@ -53,38 +57,44 @@ const mockFullAnimationSystem = {
   createAnimation: async (element: HTMLElement, properties: Record<string, string>, duration: number = 300) => {
     // Simulate full animation with easing
     const startTime = performance.now();
-    const startValues = Object.keys(properties).reduce((acc, key) => {
-      acc[key] = parseFloat(getComputedStyle(element)[key as any] || '0');
-      return acc;
-    }, {} as Record<string, number>);
-    
-    const endValues = Object.keys(properties).reduce((acc, key) => {
-      acc[key] = parseFloat(properties[key]);
-      return acc;
-    }, {} as Record<string, number>);
-    
+    const startValues = Object.keys(properties).reduce(
+      (acc, key) => {
+        acc[key] = parseFloat(getComputedStyle(element)[key as any] || "0");
+        return acc;
+      },
+      {} as Record<string, number>
+    );
+
+    const endValues = Object.keys(properties).reduce(
+      (acc, key) => {
+        acc[key] = parseFloat(properties[key]);
+        return acc;
+      },
+      {} as Record<string, number>
+    );
+
     return new Promise<void>(resolve => {
       const animate = (currentTime: number) => {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        
+
         // Simple ease-out function
         const easedProgress = 1 - Math.pow(1 - progress, 3);
-        
+
         Object.keys(properties).forEach(key => {
           const start = startValues[key];
           const end = endValues[key];
           const current = start + (end - start) * easedProgress;
-          (element.style as any)[key] = current + (key.includes('opacity') ? '' : 'px');
+          (element.style as any)[key] = current + (key.includes("opacity") ? "" : "px");
         });
-        
+
         if (progress < 1) {
           requestAnimationFrame(animate);
         } else {
           resolve();
         }
       };
-      
+
       requestAnimationFrame(animate);
     });
   },
@@ -124,48 +134,56 @@ describe("Animation Performance Benchmarks", () => {
 
   describe("Fallback vs Full Animation Performance", () => {
     bench("Fallback Animation - Single Element", async () => {
-      await mockFallbackSystem.createFallbackAnimation(testElement, { 
-        opacity: "1", 
-        transform: "translateX(100px)" 
+      await mockFallbackSystem.createFallbackAnimation(testElement, {
+        opacity: "1",
+        transform: "translateX(100px)",
       });
     });
 
     bench("Full Animation - Single Element", async () => {
-      await mockFullAnimationSystem.createAnimation(testElement, { 
-        opacity: "1", 
-        transform: "translateX(100px)" 
-      }, 300);
+      await mockFullAnimationSystem.createAnimation(
+        testElement,
+        {
+          opacity: "1",
+          transform: "translateX(100px)",
+        },
+        300
+      );
     });
 
     bench("Fallback Animation - Multiple Elements", async () => {
-      await mockFallbackSystem.createFallbackStaggeredAnimation(testElements, { 
-        opacity: "1", 
-        transform: "translateX(100px)" 
+      await mockFallbackSystem.createFallbackStaggeredAnimation(testElements, {
+        opacity: "1",
+        transform: "translateX(100px)",
       });
     });
 
     bench("Full Animation - Multiple Elements", async () => {
-      const promises = testElements.map(el => 
-        mockFullAnimationSystem.createAnimation(el, { 
-          opacity: "1", 
-          transform: "translateX(100px)" 
-        }, 300)
+      const promises = testElements.map(el =>
+        mockFullAnimationSystem.createAnimation(
+          el,
+          {
+            opacity: "1",
+            transform: "translateX(100px)",
+          },
+          300
+        )
       );
       await Promise.all(promises);
     });
 
     bench("Immediate Completion - Single Element", () => {
-      mockFallbackSystem.createImmediateCompletion(testElement, { 
-        opacity: "1", 
-        transform: "translateX(100px)" 
+      mockFallbackSystem.createImmediateCompletion(testElement, {
+        opacity: "1",
+        transform: "translateX(100px)",
       });
     });
 
     bench("Immediate Completion - Multiple Elements", () => {
       testElements.forEach(el => {
-        mockFallbackSystem.createImmediateCompletion(el, { 
-          opacity: "1", 
-          transform: "translateX(100px)" 
+        mockFallbackSystem.createImmediateCompletion(el, {
+          opacity: "1",
+          transform: "translateX(100px)",
         });
       });
     });
@@ -180,13 +198,14 @@ describe("Animation Performance Benchmarks", () => {
         isAccessibilityMode: false,
         animationPackageAvailable: true,
       };
-      
+
       // Simulate state checks (1000 iterations)
       for (let i = 0; i < 1000; i++) {
-        const shouldAnimate = !state.isAnimationsDisabled && 
-                             !state.isPerformanceMode && 
-                             !state.isAccessibilityMode &&
-                             state.animationPackageAvailable;
+        const shouldAnimate =
+          !state.isAnimationsDisabled &&
+          !state.isPerformanceMode &&
+          !state.isAccessibilityMode &&
+          state.animationPackageAvailable;
       }
     });
 
@@ -204,7 +223,7 @@ describe("Animation Performance Benchmarks", () => {
     bench("CSS Class Management", () => {
       // Simulate CSS class management overhead
       const root = document.documentElement;
-      
+
       for (let i = 0; i < 1000; i++) {
         root.classList.toggle("animations-disabled", i % 2 === 0);
         root.classList.toggle("performance-mode", i % 3 === 0);
@@ -227,7 +246,7 @@ describe("Animation Performance Benchmarks", () => {
     bench("Animation Object Creation", () => {
       // Simulate memory allocation for animation objects
       const animations = [];
-      
+
       for (let i = 0; i < 1000; i++) {
         animations.push({
           id: i,
@@ -240,7 +259,7 @@ describe("Animation Performance Benchmarks", () => {
           isRunning: false,
         });
       }
-      
+
       // Clean up
       animations.length = 0;
     });
@@ -248,7 +267,7 @@ describe("Animation Performance Benchmarks", () => {
     bench("Fallback Object Creation", () => {
       // Simulate memory allocation for fallback objects
       const fallbacks = [];
-      
+
       for (let i = 0; i < 1000; i++) {
         fallbacks.push({
           id: i,
@@ -259,7 +278,7 @@ describe("Animation Performance Benchmarks", () => {
           stagger: 50,
         });
       }
-      
+
       // Clean up
       fallbacks.length = 0;
     });
@@ -267,7 +286,7 @@ describe("Animation Performance Benchmarks", () => {
     bench("Animation State Object Creation", () => {
       // Simulate memory allocation for animation state objects
       const states = [];
-      
+
       for (let i = 0; i < 1000; i++) {
         states.push({
           id: i,
@@ -278,7 +297,7 @@ describe("Animation Performance Benchmarks", () => {
           lastUpdate: performance.now(),
         });
       }
-      
+
       // Clean up
       states.length = 0;
     });
@@ -295,9 +314,9 @@ describe("Animation Performance Benchmarks", () => {
     bench("Performance Mode - Disabled Animations", () => {
       // Simulate performance mode with disabled animations
       largeElementSet.forEach(el => {
-        mockFallbackSystem.createImmediateCompletion(el, { 
-          opacity: "1", 
-          transform: "translateX(100px)" 
+        mockFallbackSystem.createImmediateCompletion(el, {
+          opacity: "1",
+          transform: "translateX(100px)",
         });
       });
     });
@@ -325,9 +344,9 @@ describe("Animation Performance Benchmarks", () => {
       largeElementSet.forEach(el => {
         el.style.animation = "none";
         el.style.transition = "none";
-        mockFallbackSystem.createImmediateCompletion(el, { 
-          opacity: "1", 
-          transform: "translateX(100px)" 
+        mockFallbackSystem.createImmediateCompletion(el, {
+          opacity: "1",
+          transform: "translateX(100px)",
         });
       });
     });
@@ -346,7 +365,7 @@ describe("Animation Performance Benchmarks", () => {
         useGlobalAnimationContext: () => ({}),
         useSmartImport: () => ({}),
       };
-      
+
       // Simulate size calculation
       const size = JSON.stringify(controlSystem).length;
       return size;
@@ -362,7 +381,7 @@ describe("Animation Performance Benchmarks", () => {
         ".fallback-animation { transition: all 0.3s ease; }",
         ".staggered-animation { transition-delay: var(--stagger-delay, 0s); }",
       ];
-      
+
       const totalSize = cssRules.join("").length;
       return totalSize;
     });
@@ -376,7 +395,7 @@ describe("Animation Performance Benchmarks", () => {
         createCSSFallback: () => {},
         createTransitionFallback: () => {},
       };
-      
+
       const size = JSON.stringify(fallbackSystem).length;
       return size;
     });
@@ -389,7 +408,7 @@ describe("Animation Performance Benchmarks", () => {
         createGracefulFallback: () => {},
         handleImportError: () => {},
       };
-      
+
       const size = JSON.stringify(smartImportSystem).length;
       return size;
     });
@@ -401,25 +420,25 @@ describe("Animation Performance Benchmarks", () => {
       const element = testElement;
       const startTime = performance.now();
       const duration = 1000; // 1 second
-      
+
       return new Promise<void>(resolve => {
         const animate = (currentTime: number) => {
           const elapsed = currentTime - startTime;
           const progress = Math.min(elapsed / duration, 1);
-          
+
           // Complex cubic-bezier easing
           const easedProgress = 1 - Math.pow(1 - progress, 4);
-          
+
           element.style.opacity = easedProgress.toString();
           element.style.transform = `translateX(${easedProgress * 100}px)`;
-          
+
           if (progress < 1) {
             requestAnimationFrame(animate);
           } else {
             resolve();
           }
         };
-        
+
         requestAnimationFrame(animate);
       });
     });
@@ -430,7 +449,7 @@ describe("Animation Performance Benchmarks", () => {
       element.style.transition = "opacity 0.3s linear, transform 0.3s linear";
       element.style.opacity = "1";
       element.style.transform = "translateX(100px)";
-      
+
       // Wait for transition
       return new Promise<void>(resolve => {
         setTimeout(resolve, 300);

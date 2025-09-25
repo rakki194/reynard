@@ -1,6 +1,6 @@
 /**
  * Coverage Integration Utilities
- * 
+ *
  * Provides utilities for integrating E2E code coverage with Vitest
  * and generating comprehensive coverage reports across the entire ecosystem.
  */
@@ -72,10 +72,7 @@ export class CoverageIntegration {
       },
     };
 
-    await fs.writeFile(
-      join(this.coverageDir, "coverage-config.json"),
-      JSON.stringify(config, null, 2)
-    );
+    await fs.writeFile(join(this.coverageDir, "coverage-config.json"), JSON.stringify(config, null, 2));
   }
 
   /**
@@ -85,30 +82,18 @@ export class CoverageIntegration {
     try {
       // Collect JavaScript coverage
       const jsCoverage = await page.coverage.stopJSCoverage();
-      
+
       // Save coverage data
-      const coverageFile = join(
-        this.e2eCoverageDir,
-        `js-coverage-${Date.now()}.json`
-      );
-      
-      await fs.writeFile(
-        coverageFile,
-        JSON.stringify(jsCoverage, null, 2)
-      );
+      const coverageFile = join(this.e2eCoverageDir, `js-coverage-${Date.now()}.json`);
+
+      await fs.writeFile(coverageFile, JSON.stringify(jsCoverage, null, 2));
 
       // Collect CSS coverage if available
       try {
         const cssCoverage = await page.coverage.stopCSSCoverage();
-        const cssCoverageFile = join(
-          this.e2eCoverageDir,
-          `css-coverage-${Date.now()}.json`
-        );
-        
-        await fs.writeFile(
-          cssCoverageFile,
-          JSON.stringify(cssCoverage, null, 2)
-        );
+        const cssCoverageFile = join(this.e2eCoverageDir, `css-coverage-${Date.now()}.json`);
+
+        await fs.writeFile(cssCoverageFile, JSON.stringify(cssCoverage, null, 2));
       } catch (error) {
         // CSS coverage might not be available
         console.log("CSS coverage not available:", error.message);
@@ -148,10 +133,7 @@ export class CoverageIntegration {
     const mergedReport = this.mergeReports(reports);
 
     // Save merged report
-    await fs.writeFile(
-      join(this.coverageDir, "merged-coverage.json"),
-      JSON.stringify(mergedReport, null, 2)
-    );
+    await fs.writeFile(join(this.coverageDir, "merged-coverage.json"), JSON.stringify(mergedReport, null, 2));
 
     return mergedReport;
   }
@@ -177,21 +159,17 @@ export class CoverageIntegration {
    */
   async runVitestCoverage(): Promise<void> {
     return new Promise((resolve, reject) => {
-      const vitestProcess = spawn(
-        "npx",
-        ["vitest", "run", "--coverage", "--reporter=json"],
-        {
-          cwd: this.workspaceRoot,
-          stdio: ["inherit", "pipe", "pipe"],
-        }
-      );
+      const vitestProcess = spawn("npx", ["vitest", "run", "--coverage", "--reporter=json"], {
+        cwd: this.workspaceRoot,
+        stdio: ["inherit", "pipe", "pipe"],
+      });
 
       let output = "";
-      vitestProcess.stdout.on("data", (data) => {
+      vitestProcess.stdout.on("data", data => {
         output += data.toString();
       });
 
-      vitestProcess.on("close", (code) => {
+      vitestProcess.on("close", code => {
         if (code === 0) {
           resolve();
         } else {
@@ -232,9 +210,7 @@ export class CoverageIntegration {
   private async loadE2ECoverage(): Promise<CoverageReport | null> {
     try {
       const e2eCoverageFiles = await fs.readdir(this.e2eCoverageDir);
-      const jsCoverageFiles = e2eCoverageFiles.filter((file) =>
-        file.startsWith("js-coverage-")
-      );
+      const jsCoverageFiles = e2eCoverageFiles.filter(file => file.startsWith("js-coverage-"));
 
       if (jsCoverageFiles.length === 0) {
         return null;
@@ -332,10 +308,7 @@ export class CoverageIntegration {
     }
 
     // Calculate percentages
-    mergedSummary.lines.percentage = this.calculatePercentage(
-      mergedSummary.lines.covered,
-      mergedSummary.lines.total
-    );
+    mergedSummary.lines.percentage = this.calculatePercentage(mergedSummary.lines.covered, mergedSummary.lines.total);
     mergedSummary.functions.percentage = this.calculatePercentage(
       mergedSummary.functions.covered,
       mergedSummary.functions.total
@@ -457,7 +430,9 @@ export class CoverageIntegration {
                 </tr>
             </thead>
             <tbody>
-                ${report.files.map(file => `
+                ${report.files
+                  .map(
+                    file => `
                     <tr>
                         <td>${file.path}</td>
                         <td class="percentage ${this.getCoverageClass(file.coverage.lines.percentage)}">${file.coverage.lines.percentage}%</td>
@@ -465,7 +440,9 @@ export class CoverageIntegration {
                         <td class="percentage ${this.getCoverageClass(file.coverage.branches.percentage)}">${file.coverage.branches.percentage}%</td>
                         <td class="percentage ${this.getCoverageClass(file.coverage.statements.percentage)}">${file.coverage.statements.percentage}%</td>
                     </tr>
-                `).join('')}
+                `
+                  )
+                  .join("")}
             </tbody>
         </table>
     </div>
@@ -495,10 +472,10 @@ Overall Coverage:
 Files Analyzed: ${report.files.length}
 
 Coverage Status:
-  ${report.summary.lines.percentage >= 80 ? '✅' : report.summary.lines.percentage >= 60 ? '⚠️' : '❌'} Lines Coverage: ${this.getCoverageStatus(report.summary.lines.percentage)}
-  ${report.summary.functions.percentage >= 80 ? '✅' : report.summary.functions.percentage >= 60 ? '⚠️' : '❌'} Functions Coverage: ${this.getCoverageStatus(report.summary.functions.percentage)}
-  ${report.summary.branches.percentage >= 80 ? '✅' : report.summary.branches.percentage >= 60 ? '⚠️' : '❌'} Branches Coverage: ${this.getCoverageStatus(report.summary.branches.percentage)}
-  ${report.summary.statements.percentage >= 80 ? '✅' : report.summary.statements.percentage >= 60 ? '⚠️' : '❌'} Statements Coverage: ${this.getCoverageStatus(report.summary.statements.percentage)}
+  ${report.summary.lines.percentage >= 80 ? "✅" : report.summary.lines.percentage >= 60 ? "⚠️" : "❌"} Lines Coverage: ${this.getCoverageStatus(report.summary.lines.percentage)}
+  ${report.summary.functions.percentage >= 80 ? "✅" : report.summary.functions.percentage >= 60 ? "⚠️" : "❌"} Functions Coverage: ${this.getCoverageStatus(report.summary.functions.percentage)}
+  ${report.summary.branches.percentage >= 80 ? "✅" : report.summary.branches.percentage >= 60 ? "⚠️" : "❌"} Branches Coverage: ${this.getCoverageStatus(report.summary.branches.percentage)}
+  ${report.summary.statements.percentage >= 80 ? "✅" : report.summary.statements.percentage >= 60 ? "⚠️" : "❌"} Statements Coverage: ${this.getCoverageStatus(report.summary.statements.percentage)}
 `;
 
     await fs.writeFile(join(this.coverageDir, "coverage-summary.txt"), summary);

@@ -1,6 +1,6 @@
 /**
  * 🦊 Fallback Staggered Animation System
- * 
+ *
  * Provides CSS-based staggered animations when the full animation package is unavailable.
  * Includes immediate completion for disabled animations and accessibility compliance.
  */
@@ -161,7 +161,7 @@ export function createFallbackElementAnimation(
     useTransitions = true,
   } = options;
 
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     // If not using transitions, apply properties immediately
     if (!useTransitions) {
       elements.forEach(element => {
@@ -212,10 +212,13 @@ export function createFallbackElementAnimation(
           element.addEventListener("transitionend", handleTransitionEnd);
 
           // Fallback timeout in case transition doesn't fire
-          setTimeout(() => {
-            element.removeEventListener("transitionend", handleTransitionEnd);
-            elementResolve();
-          }, duration + delays[index] + 100);
+          setTimeout(
+            () => {
+              element.removeEventListener("transitionend", handleTransitionEnd);
+              elementResolve();
+            },
+            duration + delays[index] + 100
+          );
         }, delays[index]);
       });
     });
@@ -252,7 +255,7 @@ export function createAccessibilityCompliantFallback(
 ): FallbackStaggeredAnimationState {
   // Check for reduced motion preference
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  
+
   if (prefersReducedMotion) {
     // Immediate completion for reduced motion
     return createFallbackStaggeredAnimation(itemCount, {
@@ -270,5 +273,3 @@ export function createAccessibilityCompliantFallback(
     ...options,
   });
 }
-
-

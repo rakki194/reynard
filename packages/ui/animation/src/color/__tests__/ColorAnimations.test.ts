@@ -1,6 +1,6 @@
 /**
  * 🦊 Color Animation Tests
- * 
+ *
  * Comprehensive test suite for the unified color animation system.
  * Tests smart imports, fallbacks, and accessibility compliance.
  */
@@ -75,7 +75,7 @@ describe("ColorAnimations", () => {
     it("should shift multiple colors", () => {
       const colors = [mockBaseColor, { ...mockBaseColor, h: 60 }];
       const result = batchHueShift(colors, 30);
-      
+
       expect(result).toHaveLength(2);
       expect(result[0].h).toBe(30);
       expect(result[1].h).toBe(90);
@@ -85,7 +85,7 @@ describe("ColorAnimations", () => {
   describe("interpolateColor", () => {
     it("should interpolate between two colors", () => {
       const result = interpolateColor(mockBaseColor, mockTargetColor, 0.5);
-      
+
       expect(result.l).toBe(0.6); // (0.5 + 0.7) / 2
       expect(result.c).toBe(0.15); // (0.1 + 0.2) / 2
       expect(result.h).toBe(60); // (0 + 120) / 2
@@ -95,7 +95,7 @@ describe("ColorAnimations", () => {
       const startColor = { l: 0.5, c: 0.1, h: 350 };
       const endColor = { l: 0.5, c: 0.1, h: 10 };
       const result = interpolateColor(startColor, endColor, 0.5);
-      
+
       expect(result.h).toBe(0); // Should wrap correctly
     });
   });
@@ -103,7 +103,7 @@ describe("ColorAnimations", () => {
   describe("generateEasedColorRamp", () => {
     it("should generate color ramp with default parameters", () => {
       const result = generateEasedColorRamp(mockBaseColor, mockTargetColor);
-      
+
       expect(result).toHaveLength(5);
       expect(result[0]).toEqual(mockBaseColor);
       expect(result[4]).toEqual(mockTargetColor);
@@ -111,7 +111,7 @@ describe("ColorAnimations", () => {
 
     it("should generate color ramp with custom stops", () => {
       const result = generateEasedColorRamp(mockBaseColor, mockTargetColor, 3);
-      
+
       expect(result).toHaveLength(3);
       expect(result[0]).toEqual(mockBaseColor);
       expect(result[2]).toEqual(mockTargetColor);
@@ -121,7 +121,7 @@ describe("ColorAnimations", () => {
   describe("generateEasedHueRamp", () => {
     it("should generate hue ramp", () => {
       const result = generateEasedHueRamp(mockBaseColor, 3, 60);
-      
+
       expect(result).toHaveLength(3);
       expect(result[0].h).toBe(0);
       expect(result[1].h).toBe(30);
@@ -196,7 +196,7 @@ describe("ColorAnimationSystem", () => {
   describe("createColorAnimationSystem", () => {
     it("should create color animation system", () => {
       const system = createColorAnimationSystem();
-      
+
       expect(system.state).toBeDefined();
       expect(system.functions).toBeDefined();
       expect(system.state.animationEngine).toBeDefined();
@@ -206,7 +206,7 @@ describe("ColorAnimationSystem", () => {
 
     it("should provide enhanced functions", () => {
       const system = createColorAnimationSystem();
-      
+
       expect(system.functions.easedHueShift).toBeDefined();
       expect(system.functions.pureHueShift).toBeDefined();
       expect(system.functions.batchHueShift).toBeDefined();
@@ -221,7 +221,7 @@ describe("ColorAnimationSystem", () => {
     it("should return singleton instance", () => {
       const system1 = getColorAnimationSystem();
       const system2 = getColorAnimationSystem();
-      
+
       expect(system1).toBe(system2);
     });
   });
@@ -231,7 +231,7 @@ describe("ColorAnimationSystem", () => {
       const system1 = getColorAnimationSystem();
       resetColorAnimationSystem();
       const system2 = getColorAnimationSystem();
-      
+
       expect(system1).not.toBe(system2);
     });
   });
@@ -255,7 +255,7 @@ describe("ColorFallbackUtils", () => {
   describe("applyColorFallbackTransition", () => {
     it("should apply CSS transition", () => {
       applyColorFallbackTransition(mockBaseColor, mockTargetColor, mockElement);
-      
+
       expect(mockElement.classList.contains("color-fallback-transition")).toBe(true);
       expect(mockElement.style.getPropertyValue("--color-start")).toBe("oklch(0.5 0.1 0)");
       expect(mockElement.style.getPropertyValue("--color-end")).toBe("oklch(0.7 0.2 120)");
@@ -280,7 +280,7 @@ describe("ColorFallbackUtils", () => {
   describe("applyHueFallbackShift", () => {
     it("should apply hue shift", () => {
       applyHueFallbackShift(mockBaseColor, 30, mockElement);
-      
+
       expect(mockElement.classList.contains("hue-fallback-shift")).toBe(true);
       expect(mockElement.style.getPropertyValue("--hue-shift")).toBe("30deg");
     });
@@ -290,7 +290,7 @@ describe("ColorFallbackUtils", () => {
     it("should apply color ramp", () => {
       const colors = [mockBaseColor, mockTargetColor];
       applyColorRampFallback(colors, mockElement);
-      
+
       expect(mockElement.classList.contains("color-ramp-fallback")).toBe(true);
     });
   });
@@ -299,9 +299,9 @@ describe("ColorFallbackUtils", () => {
     it("should apply staggered animation", () => {
       const elements = [mockElement, document.createElement("div")];
       const colors = [mockBaseColor, mockTargetColor];
-      
+
       applyStaggeredColorFallback(elements, colors);
-      
+
       elements.forEach(element => {
         expect(element.classList.contains("color-staggered-fallback")).toBe(true);
         expect(element.classList.contains("color-item")).toBe(true);
@@ -313,9 +313,9 @@ describe("ColorFallbackUtils", () => {
     it("should remove animation classes and styles", () => {
       mockElement.classList.add("color-fallback-transition");
       mockElement.style.setProperty("--color-animation-duration", "300ms");
-      
+
       cleanupColorAnimationStyles(mockElement);
-      
+
       expect(mockElement.classList.contains("color-fallback-transition")).toBe(false);
       expect(mockElement.style.getPropertyValue("--color-animation-duration")).toBe("");
     });
@@ -330,10 +330,10 @@ describe("Integration Tests", () => {
       global.import = vi.fn().mockRejectedValue(new Error("Module not found"));
 
       const system = createColorAnimationSystem();
-      
+
       // Should still work with fallbacks
       expect(system.state.animationEngine()).toBe("fallback");
-      
+
       global.import = originalImport;
     });
   });
@@ -346,17 +346,17 @@ describe("Integration Tests", () => {
       } as MediaQueryList);
 
       const system = createColorAnimationSystem();
-      
+
       expect(system.state.isAnimationsDisabled()).toBe(true);
     });
 
     it("should respect performance mode", () => {
       document.documentElement.classList.add("performance-mode");
-      
+
       const system = createColorAnimationSystem();
-      
+
       expect(system.state.isAnimationsDisabled()).toBe(true);
-      
+
       document.documentElement.classList.remove("performance-mode");
     });
   });
@@ -364,16 +364,14 @@ describe("Integration Tests", () => {
   describe("Performance Optimizations", () => {
     it("should use immediate completion when disabled", () => {
       document.documentElement.classList.add("animations-disabled");
-      
+
       const system = createColorAnimationSystem();
       const result = system.functions.easedHueShift(mockBaseColor, 30, 0.5);
-      
+
       // Should return base color when disabled
       expect(result).toEqual(mockBaseColor);
-      
+
       document.documentElement.classList.remove("animations-disabled");
     });
   });
 });
-
-

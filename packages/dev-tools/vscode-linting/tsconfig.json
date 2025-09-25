@@ -12,7 +12,5 @@
   },
   "include": ["src/**/*"],
   "exclude": ["dist", "node_modules", "**/*.test.ts", "**/*.spec.ts"],
-  "references": [
-    { "path": "../incremental-linting" }
-  ]
+  "references": [{ "path": "../incremental-linting" }]
 }

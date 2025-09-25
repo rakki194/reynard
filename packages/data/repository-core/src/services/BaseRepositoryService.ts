@@ -46,17 +46,13 @@ export abstract class BaseRepositoryService {
       await this.onInitialize();
       this.initialized = true;
       this.startTime = new Date();
-      
+
       // Start health check timer if configured
       if (this.config.healthCheckInterval) {
         this.startHealthCheck();
       }
     } catch (error) {
-      throw new RepositoryError(
-        `Failed to initialize ${this.config.name}`,
-        "INITIALIZATION_ERROR",
-        error
-      );
+      throw new RepositoryError(`Failed to initialize ${this.config.name}`, "INITIALIZATION_ERROR", error);
     }
   }
 
@@ -78,11 +74,7 @@ export abstract class BaseRepositoryService {
       await this.onShutdown();
       this.initialized = false;
     } catch (error) {
-      throw new RepositoryError(
-        `Failed to shutdown ${this.config.name}`,
-        "SHUTDOWN_ERROR",
-        error
-      );
+      throw new RepositoryError(`Failed to shutdown ${this.config.name}`, "SHUTDOWN_ERROR", error);
     }
   }
 
@@ -130,10 +122,7 @@ export abstract class BaseRepositoryService {
    */
   protected ensureInitialized(): void {
     if (!this.initialized) {
-      throw new RepositoryError(
-        `${this.config.name} not initialized. Call initialize() first.`,
-        "NOT_INITIALIZED"
-      );
+      throw new RepositoryError(`${this.config.name} not initialized. Call initialize() first.`, "NOT_INITIALIZED");
     }
   }
 

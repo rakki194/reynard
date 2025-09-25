@@ -1,6 +1,6 @@
 /**
  * 🦊 Performance Monitor
- * 
+ *
  * Real performance monitoring with tracer timers and metrics
  */
 
@@ -49,7 +49,7 @@ export class PerformanceMonitor {
 
     const currentTime = performance.now();
     const frameTime = currentTime - this.lastFrameTime;
-    
+
     this.frameTimes.push(frameTime);
     this.frameCount++;
     this.lastFrameTime = currentTime;
@@ -57,12 +57,12 @@ export class PerformanceMonitor {
 
   stop(): PerformanceMetrics {
     if (!this.isMonitoring) {
-      throw new Error('Performance monitoring not started');
+      throw new Error("Performance monitoring not started");
     }
 
     const endTime = performance.now();
     const totalDuration = endTime - this.startTime;
-    
+
     const averageFrameTime = this.frameTimes.reduce((sum, time) => sum + time, 0) / this.frameTimes.length;
     const minFrameTime = Math.min(...this.frameTimes);
     const maxFrameTime = Math.max(...this.frameTimes);
@@ -84,7 +84,7 @@ export class PerformanceMonitor {
   }
 
   private getMemoryUsage(): number | undefined {
-    if ('memory' in performance) {
+    if ("memory" in performance) {
       return (performance as any).memory.usedJSHeapSize;
     }
     return undefined;
@@ -110,11 +110,7 @@ export class PerformanceMonitor {
 export class BenchmarkRunner {
   private results: BenchmarkResult[] = [];
 
-  async runBenchmark(
-    name: string,
-    fn: () => Promise<void> | void,
-    iterations: number = 1
-  ): Promise<BenchmarkResult> {
+  async runBenchmark(name: string, fn: () => Promise<void> | void, iterations: number = 1): Promise<BenchmarkResult> {
     const durations: number[] = [];
     const allMetrics: PerformanceMetrics[] = [];
 
@@ -134,7 +130,7 @@ export class BenchmarkRunner {
     const averageDuration = durations.reduce((sum, d) => sum + d, 0) / durations.length;
     const minDuration = Math.min(...durations);
     const maxDuration = Math.max(...durations);
-    
+
     // Calculate standard deviation
     const variance = durations.reduce((sum, d) => sum + Math.pow(d - averageDuration, 2), 0) / durations.length;
     const standardDeviation = Math.sqrt(variance);
@@ -170,8 +166,8 @@ export class BenchmarkRunner {
   }
 
   generateReport(): string {
-    let report = 'Performance Benchmark Report\n';
-    report += '============================\n\n';
+    let report = "Performance Benchmark Report\n";
+    report += "============================\n\n";
 
     this.results.forEach(result => {
       report += `${result.name}:\n`;
@@ -185,7 +181,7 @@ export class BenchmarkRunner {
       if (result.metrics.memoryUsage) {
         report += `  Memory Usage: ${(result.metrics.memoryUsage / 1024 / 1024).toFixed(2)}MB\n`;
       }
-      report += '\n';
+      report += "\n";
     });
 
     return report;
@@ -219,7 +215,7 @@ export const performanceUtils = {
    * Measure memory usage
    */
   getMemoryUsage(): { used: number; total: number; limit: number } | null {
-    if ('memory' in performance) {
+    if ("memory" in performance) {
       const memory = (performance as any).memory;
       return {
         used: memory.usedJSHeapSize,
@@ -236,10 +232,9 @@ export const performanceUtils = {
   isPerformanceAcceptable(metrics: PerformanceMetrics): boolean {
     const targetFrameTime = 1000 / 60; // 60fps
     const acceptableFrameTime = targetFrameTime * 1.5; // 50% tolerance
-    
+
     return (
-      metrics.averageFrameTime <= acceptableFrameTime &&
-      metrics.droppedFrames <= metrics.frameCount * 0.05 // Less than 5% dropped frames
+      metrics.averageFrameTime <= acceptableFrameTime && metrics.droppedFrames <= metrics.frameCount * 0.05 // Less than 5% dropped frames
     );
   },
 };

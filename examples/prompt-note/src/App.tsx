@@ -81,10 +81,10 @@ const App: Component = () => {
   const { isAuthenticated, user: authUser } = useAuth();
   // Simple auth fetch implementation
   const authFetch = async (url: string, options: any = {}) => {
-    const token = localStorage.getItem('auth_token');
+    const token = localStorage.getItem("auth_token");
     const headers = {
-      'Content-Type': 'application/json',
-      ...(token && { 'Authorization': `Bearer ${token}` }),
+      "Content-Type": "application/json",
+      ...(token && { Authorization: `Bearer ${token}` }),
       ...options.headers,
     };
     return fetch(url, { ...options, headers });

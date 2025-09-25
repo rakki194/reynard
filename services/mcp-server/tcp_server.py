@@ -10,6 +10,10 @@ import asyncio
 import json
 import sys
 
+# Load backend environment configuration
+from load_backend_env import load_backend_env
+load_backend_env()
+
 from main import MCPServer
 from utils.logging_config import setup_logging
 

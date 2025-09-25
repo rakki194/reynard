@@ -86,7 +86,7 @@ function setupFileWatchers(watchDirectories: string[], excludePatterns: RegExp[]
   watchDirectories.forEach(dir => {
     // Convert relative paths to absolute paths
     const absoluteDir = path.resolve(dir);
-    
+
     if (fs.existsSync(absoluteDir)) {
       console.log(`👀 Watching directory: ${absoluteDir}`);
 

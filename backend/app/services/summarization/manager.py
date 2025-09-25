@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 class SummarizationManager:
     """Manager for orchestrating multiple summarization services.
 
-    This class provides a unified interface for summarization operations,
+    This class provides a consistent interface for summarization operations,
     automatically selecting the best summarizer for each request and
     providing fallback options when needed.
     """

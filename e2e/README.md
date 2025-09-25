@@ -50,53 +50,53 @@ graph TB
             A --> D[Coverage Integration]
             A --> E[Type Definitions]
         end
-        
+
         subgraph "Testing Modules"
             F[Auth Module] --> F1[Auth Helpers]
             F --> F2[Form Handlers]
             F --> F3[Token Manager]
-            
+
             G[DOM Module] --> G1[DOM Assertions]
             G --> G2[Element Verification]
-            
+
             H[I18n Module] --> H1[Benchmark Helpers]
             H --> H2[Performance Analysis]
-            
+
             I[Security Module] --> I1[Penetration Tests]
             I --> I2[Fenrir Integration]
-            
+
             J[Mock Module] --> J1[Mock Server]
             J --> J2[API Client]
-            
+
             K[Documentation Module] --> K1[Doc Scanner]
             K --> K2[Example Validator]
         end
-        
+
         subgraph "Test Suites"
             L[Auth Suites] --> L1[Enhanced Auth Tests]
             L --> L2[Comprehensive Auth]
-            
+
             M[DOM Suites] --> M1[Accessibility Tests]
             M --> M2[Form Tests]
             M --> M3[Visibility Tests]
-            
+
             N[I18n Suites] --> N1[Benchmark Tests]
             N --> N2[Bundle Analysis]
-            
+
             O[Security Suites] --> O1[Penetration Tests]
             O --> O2[SQL Injection]
             O --> O3[CSRF Attacks]
-            
+
             P[Documentation Suites] --> P1[Validation Tests]
-            
+
             Q[Games Suites] --> Q1[3D Games Tests]
             Q --> Q2[Roguelike Tests]
             Q --> Q3[Performance Tests]
-            
+
             R[Effects Suites] --> R1[SolidJS Effects]
             R --> R2[Prevention Patterns]
         end
-        
+
         subgraph "Playwright Configurations"
             S[Main Config] --> S1[E2E Tests]
             T[DOM Config] --> T1[DOM Tests]
@@ -107,7 +107,7 @@ graph TB
             Y[Games Config] --> Y1[Game Tests]
             Z[Effects Config] --> Z1[Effects Tests]
         end
-        
+
         subgraph "Results Management"
             AA[Unified Results] --> AA1[Timestamped Runs]
             AA --> AA2[HTML Reports]
@@ -118,7 +118,7 @@ graph TB
             AA --> AA7[Traces]
             AA --> AA8[Videos]
         end
-        
+
         subgraph "Coverage Integration"
             BB[E2E Coverage] --> BB1[Browser Coverage]
             BB --> BB2[CSS Coverage]
@@ -128,26 +128,26 @@ graph TB
             DD --> DD2[Threshold Checking]
         end
     end
-    
+
     %% Connections
     F --> L
     G --> M
     H --> N
     I --> O
     K --> P
-    
+
     L --> S
     M --> T
     N --> U
     O --> V
     P --> X
-    
+
     S --> AA
     T --> AA
     U --> AA
     V --> AA
     X --> AA
-    
+
     BB --> DD
     CC --> DD
     DD --> AA
@@ -509,7 +509,7 @@ A comprehensive E2E test suite that validates all code examples in documentation
 The Documentation Validation System ensures that every code example in the Reynard project documentation is:
 
 - **Syntactically correct** - Code compiles and runs without errors
-- **Executable** - Commands and scripts work as intended  
+- **Executable** - Commands and scripts work as intended
 - **Up-to-date** - Examples reflect current API and usage patterns
 - **Dependency-aware** - Required packages and tools are available
 
@@ -520,42 +520,42 @@ graph TD
     A[📚 Documentation Files] --> B[🔍 Doc Scanner Core]
     B --> C[📝 Extract Code Examples]
     C --> D{Code Type?}
-    
+
     D -->|Bash| E[🐚 Bash Validator]
     D -->|TypeScript| F[📘 TS Validator]
     D -->|JSON| G[📄 JSON Validator]
     D -->|Python| H[🐍 Python Validator]
     D -->|Dockerfile| I[🐳 Docker Validator]
-    
+
     E --> J[🏗️ Create Test Environment]
     F --> J
     G --> J
     H --> J
     I --> J
-    
+
     J --> K[📁 /tmp/reynard-doc-test-*]
     K --> L[⚙️ Setup Dependencies]
     L --> M[▶️ Execute Code]
     M --> N{Success?}
-    
+
     N -->|Yes| O[✅ Validation Passed]
     N -->|No| P[❌ Validation Failed]
-    
+
     O --> Q[📊 Generate Report]
     P --> Q
-    
+
     Q --> R[📈 HTML Report]
     Q --> S[📋 JSON Report]
     Q --> T[📝 JUnit Report]
-    
+
     R --> U[🎯 Success Criteria]
     S --> U
     T --> U
-    
+
     U --> V{Thresholds Met?}
     V -->|Yes| W[🎉 Documentation Valid]
     V -->|No| X[⚠️ Needs Improvement]
-    
+
     style A fill:#e1f5fe
     style B fill:#f3e5f5
     style J fill:#fff3e0
@@ -590,7 +590,7 @@ pnpm run test:documentation:report
 ### Success Criteria
 
 - **README.md Examples**: ≥80% success rate
-- **Package Documentation**: ≥70% success rate  
+- **Package Documentation**: ≥70% success rate
 - **Example Applications**: ≥75% success rate
 - **Bash/Shell Scripts**: ≥85% success rate
 - **TypeScript Examples**: ≥80% success rate
@@ -616,36 +616,36 @@ The Coverage Integration System provides:
 graph TD
     A[🧪 E2E Tests] --> B[🌐 Browser Coverage]
     C[🔬 Vitest Tests] --> D[📊 Unit Coverage]
-    
+
     B --> E[📁 E2E Coverage Data]
     D --> F[📁 Vitest Coverage Data]
-    
+
     E --> G[🔄 Coverage Integration]
     F --> G
-    
+
     G --> H[📈 Merge Coverage Reports]
     H --> I[📊 Comprehensive Report]
-    
+
     I --> J[🎨 HTML Dashboard]
     I --> K[📝 Text Summary]
     I --> L[📋 LCOV Report]
     I --> M[🔧 JSON Data]
-    
+
     J --> N[📊 Coverage Metrics]
     K --> N
     L --> N
     M --> N
-    
+
     N --> O{Thresholds Check}
     O -->|Pass| P[✅ Quality Gates Passed]
     O -->|Fail| Q[⚠️ Quality Gates Failed]
-    
+
     P --> R[🚀 CI/CD Integration]
     Q --> S[📋 Improvement Recommendations]
-    
+
     R --> T[🎯 Production Ready]
     S --> U[🔧 Code Quality Improvements]
-    
+
     style A fill:#e3f2fd
     style C fill:#f3e5f5
     style G fill:#fff3e0
@@ -708,7 +708,7 @@ graph TD
     A[🧪 Test Execution] --> B[📅 Timestamp Generation]
     B --> C[🆔 Run ID Generation]
     C --> D[📁 Results Directory Creation]
-    
+
     D --> E[results/]
     E --> F[📂 e2e/]
     E --> G[📂 effects/]
@@ -718,7 +718,7 @@ graph TD
     E --> K[📂 performance/]
     E --> L[📂 components/]
     E --> M[📂 dom/]
-    
+
     F --> N[📅 2025-01-15_14-30-25_a1b2c3d4/]
     G --> O[📅 2025-01-15_14-35-10_e5f6g7h8/]
     H --> P[📅 2025-01-15_14-40-15_i9j0k1l2/]
@@ -727,29 +727,29 @@ graph TD
     K --> S[📅 2025-01-15_14-55-00_u1v2w3x4/]
     L --> T[📅 2025-01-15_15-00-15_y5z6a7b8/]
     M --> U[📅 2025-01-15_15-05-30_c9d0e1f2/]
-    
+
     N --> V[📄 report.html]
     N --> W[📋 results.json]
     N --> X[📝 results.xml]
     N --> Y[📊 summary.md]
     N --> Z[⚡ performance.json]
-    
+
     N --> AA[📁 artifacts/]
     N --> BB[📸 screenshots/]
     N --> CC[🔍 traces/]
     N --> DD[🎥 videos/]
-    
+
     V --> EE[🎯 HTML Test Report]
     W --> FF[🔧 JSON Results]
     X --> GG[📊 JUnit XML]
     Y --> HH[📝 Test Summary]
     Z --> II[⚡ Performance Metrics]
-    
+
     AA --> JJ[🗂️ Test Artifacts]
     BB --> KK[📷 Failure Screenshots]
     CC --> LL[🔍 Playwright Traces]
     DD --> MM[🎬 Test Videos]
-    
+
     style A fill:#e3f2fd
     style E fill:#f3e5f5
     style N fill:#fff3e0

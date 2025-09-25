@@ -2,9 +2,9 @@
  * Provider for trait enums (personality, physical, ability traits)
  */
 
-import { BaseEnumProvider } from '../core/EnumProvider';
-import type { EnumProviderConfig, EnumData, EnumValue } from '../types';
-import type { EnumDataProvider } from '../types/DataProvider';
+import { BaseEnumProvider } from "../core/EnumProvider";
+import type { EnumProviderConfig, EnumData, EnumValue } from "../types";
+import type { EnumDataProvider } from "../types/DataProvider";
 
 /**
  * Provider for trait enums with specialized trait operations
@@ -20,7 +20,7 @@ export class TraitEnumProvider extends BaseEnumProvider {
   protected async fetchEnumData(): Promise<EnumData> {
     if (this.dataProvider) {
       try {
-        return await this.dataProvider.fetchEnumData('traits');
+        return await this.dataProvider.fetchEnumData("traits");
       } catch (error) {
         console.warn(`Failed to fetch trait data from provider: ${error}`);
         return this.fallbackData;
@@ -33,7 +33,7 @@ export class TraitEnumProvider extends BaseEnumProvider {
   /**
    * Get traits by category (personality, physical, ability)
    */
-  async getTraitsByCategory(category: 'personality' | 'physical' | 'ability'): Promise<EnumData> {
+  async getTraitsByCategory(category: "personality" | "physical" | "ability"): Promise<EnumData> {
     const data = await this.getEnumData();
     const filtered: EnumData = {};
 
@@ -108,14 +108,14 @@ export class TraitEnumProvider extends BaseEnumProvider {
     physical: EnumValue[];
     ability: EnumValue[];
   }> {
-    const personalityTraits = await this.getTraitsByCategory('personality');
-    const physicalTraits = await this.getTraitsByCategory('physical');
-    const abilityTraits = await this.getTraitsByCategory('ability');
+    const personalityTraits = await this.getTraitsByCategory("personality");
+    const physicalTraits = await this.getTraitsByCategory("physical");
+    const abilityTraits = await this.getTraitsByCategory("ability");
 
     return {
       personality: this.selectRandomTraits(personalityTraits, personalityCount),
       physical: this.selectRandomTraits(physicalTraits, physicalCount),
-      ability: this.selectRandomTraits(abilityTraits, abilityCount)
+      ability: this.selectRandomTraits(abilityTraits, abilityCount),
     };
   }
 
@@ -204,9 +204,9 @@ export class TraitEnumProvider extends BaseEnumProvider {
       valueDistribution: {
         min: minValue === Infinity ? 0 : minValue,
         max: maxValue === -Infinity ? 0 : maxValue,
-        average: Object.keys(data).length > 0 ? totalValue / Object.keys(data).length : 0
+        average: Object.keys(data).length > 0 ? totalValue / Object.keys(data).length : 0,
       },
-      tagCounts
+      tagCounts,
     };
   }
 
@@ -242,8 +242,7 @@ export class TraitEnumProvider extends BaseEnumProvider {
     const data = await this.getEnumData();
 
     for (const [key, value] of Object.entries(data)) {
-      if (key.toLowerCase() === name.toLowerCase() || 
-          value.value.toLowerCase() === name.toLowerCase()) {
+      if (key.toLowerCase() === name.toLowerCase() || value.value.toLowerCase() === name.toLowerCase()) {
         return value;
       }
     }

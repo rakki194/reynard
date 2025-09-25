@@ -23,7 +23,7 @@ export interface DownloadManagerProps {
 export interface Download {
   id: string;
   url: string;
-  status: 'pending' | 'downloading' | 'completed' | 'error' | 'cancelled';
+  status: "pending" | "downloading" | "completed" | "error" | "cancelled";
   progress: number;
   totalFiles?: number;
   downloadedFiles?: number;
@@ -40,7 +40,7 @@ export interface Download {
 export interface DownloadQueue {
   id: string;
   downloads: Download[];
-  status: 'idle' | 'running' | 'paused' | 'completed' | 'error';
+  status: "idle" | "running" | "paused" | "completed" | "error";
   totalDownloads: number;
   completedDownloads: number;
   failedDownloads: number;
@@ -65,7 +65,7 @@ export const DownloadManager = (props: DownloadManagerProps) => {
   const [validationResult, setValidationResult] = createSignal<any>(null);
   const [isDownloading, setIsDownloading] = createSignal(false);
   const [showAdvanced, setShowAdvanced] = createSignal(false);
-  
+
   // Initialize service
   onMount(async () => {
     try {
@@ -123,12 +123,12 @@ export const DownloadManager = (props: DownloadManagerProps) => {
 
     setIsDownloading(true);
     const downloadId = `download_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     // Create download entry
     const download: Download = {
       id: downloadId,
       url: currentUrl,
-      status: 'pending',
+      status: "pending",
       progress: 0,
       startTime: new Date(),
     };
@@ -137,28 +137,35 @@ export const DownloadManager = (props: DownloadManagerProps) => {
 
     try {
       const result = await service().downloadGallery(currentUrl, downloadOptions());
-      
+
       if (result.success) {
-        setDownloads(prev => prev.map(d => 
-          d.id === downloadId 
-            ? { ...d, status: 'completed', progress: 100, result: result.data, endTime: new Date() }
-            : d
-        ));
+        setDownloads(prev =>
+          prev.map(d =>
+            d.id === downloadId
+              ? { ...d, status: "completed", progress: 100, result: result.data, endTime: new Date() }
+              : d
+          )
+        );
         props.onDownloadComplete?.(result.data);
       } else {
-        setDownloads(prev => prev.map(d => 
-          d.id === downloadId 
-            ? { ...d, status: 'error', error: result.error, endTime: new Date() }
-            : d
-        ));
+        setDownloads(prev =>
+          prev.map(d => (d.id === downloadId ? { ...d, status: "error", error: result.error, endTime: new Date() } : d))
+        );
         props.onDownloadError?.(result.error);
       }
     } catch (error) {
-      setDownloads(prev => prev.map(d => 
-        d.id === downloadId 
-          ? { ...d, status: 'error', error: error instanceof Error ? error.message : 'Download failed', endTime: new Date() }
-          : d
-      ));
+      setDownloads(prev =>
+        prev.map(d =>
+          d.id === downloadId
+            ? {
+                ...d,
+                status: "error",
+                error: error instanceof Error ? error.message : "Download failed",
+                endTime: new Date(),
+              }
+            : d
+        )
+      );
       props.onDownloadError?.(error);
     } finally {
       setIsDownloading(false);
@@ -167,16 +174,12 @@ export const DownloadManager = (props: DownloadManagerProps) => {
 
   // Cancel download
   const cancelDownload = (downloadId: string) => {
-    setDownloads(prev => prev.map(d => 
-      d.id === downloadId 
-        ? { ...d, status: 'cancelled', endTime: new Date() }
-        : d
-    ));
+    setDownloads(prev => prev.map(d => (d.id === downloadId ? { ...d, status: "cancelled", endTime: new Date() } : d)));
   };
 
   // Clear completed downloads
   const clearCompleted = () => {
-    setDownloads(prev => prev.filter(d => d.status !== 'completed'));
+    setDownloads(prev => prev.filter(d => d.status !== "completed"));
   };
 
   // Clear all downloads
@@ -191,34 +194,30 @@ export const DownloadManager = (props: DownloadManagerProps) => {
           <Icon name="Download" class="header-icon" />
           <h2>Gallery Download Manager</h2>
         </div>
-        
+
         <div class="download-input-section">
           <TextField
             value={url()}
-            onInput={(e) => setUrl(e.currentTarget.value)}
+            onInput={e => setUrl(e.currentTarget.value)}
             placeholder="Enter gallery URL (e.g., https://twitter.com/user/status/123)"
             class="url-input"
             disabled={isDownloading()}
           />
-          
+
           <Show when={isValidating()}>
             <div class="validation-indicator">
               <Icon name="Clock" class="loading-icon" />
               <span>Validating URL...</span>
             </div>
           </Show>
-          
+
           <Show when={validationResult()}>
-            <div class={`validation-result ${validationResult()?.isValid ? 'valid' : 'invalid'}`}>
-              <Icon 
-                name={validationResult()?.isValid ? "CheckCircle" : "AlertCircle"} 
-                class="validation-icon"
-              />
+            <div class={`validation-result ${validationResult()?.isValid ? "valid" : "invalid"}`}>
+              <Icon name={validationResult()?.isValid ? "CheckCircle" : "AlertCircle"} class="validation-icon" />
               <span>
-                {validationResult()?.isValid 
-                  ? `Valid - ${validationResult()?.extractor?.name || 'Unknown extractor'}`
-                  : validationResult()?.error
-                }
+                {validationResult()?.isValid
+                  ? `Valid - ${validationResult()?.extractor?.name || "Unknown extractor"}`
+                  : validationResult()?.error}
               </span>
             </div>
           </Show>
@@ -233,12 +232,8 @@ export const DownloadManager = (props: DownloadManagerProps) => {
             <Icon name={isDownloading() ? "Pause" : "Play"} />
             {isDownloading() ? "Downloading..." : "Start Download"}
           </Button>
-          
-          <Button
-            onClick={() => setShowAdvanced(!showAdvanced())}
-            variant="secondary"
-            class="advanced-toggle-btn"
-          >
+
+          <Button onClick={() => setShowAdvanced(!showAdvanced())} variant="secondary" class="advanced-toggle-btn">
             <Icon name="Settings" />
             Advanced Options
           </Button>
@@ -252,26 +247,28 @@ export const DownloadManager = (props: DownloadManagerProps) => {
                 <label>Output Directory</label>
                 <TextField
                   value={downloadOptions().outputDirectory || ""}
-                  onInput={(e) => setDownloadOptions(prev => ({ ...prev, outputDirectory: e.currentTarget.value }))}
+                  onInput={e => setDownloadOptions(prev => ({ ...prev, outputDirectory: e.currentTarget.value }))}
                   placeholder="./downloads"
                 />
               </div>
-              
+
               <div class="option-group">
                 <label>Filename Format</label>
                 <TextField
                   value={downloadOptions().filename || ""}
-                  onInput={(e) => setDownloadOptions(prev => ({ ...prev, filename: e.currentTarget.value }))}
+                  onInput={e => setDownloadOptions(prev => ({ ...prev, filename: e.currentTarget.value }))}
                   placeholder="{title}_{id}"
                 />
               </div>
-              
+
               <div class="option-group">
                 <label>Max Concurrent Downloads</label>
                 <TextField
                   type="number"
                   value={downloadOptions().maxConcurrent || ""}
-                  onInput={(e) => setDownloadOptions(prev => ({ ...prev, maxConcurrent: parseInt(e.currentTarget.value) }))}
+                  onInput={e =>
+                    setDownloadOptions(prev => ({ ...prev, maxConcurrent: parseInt(e.currentTarget.value) }))
+                  }
                   placeholder="5"
                 />
               </div>
@@ -293,48 +290,48 @@ export const DownloadManager = (props: DownloadManagerProps) => {
               </Button>
             </div>
           </div>
-          
+
           <div class="downloads-list">
             <For each={downloads()}>
-              {(download) => (
+              {download => (
                 <div class={`download-item ${download.status}`}>
                   <div class="download-info">
                     <div class="download-url">{download.url}</div>
                     <div class="download-status">
-                      <Icon 
+                      <Icon
                         name={
-                          download.status === 'completed' ? 'CheckCircle' :
-                          download.status === 'error' ? 'AlertCircle' :
-                          download.status === 'downloading' ? 'Clock' :
-                          'Square'
+                          download.status === "completed"
+                            ? "CheckCircle"
+                            : download.status === "error"
+                              ? "AlertCircle"
+                              : download.status === "downloading"
+                                ? "Clock"
+                                : "Square"
                         }
                         class="status-icon"
                       />
                       <span class="status-text">{download.status}</span>
                     </div>
                   </div>
-                  
-                  <Show when={download.status === 'downloading'}>
+
+                  <Show when={download.status === "downloading"}>
                     <div class="download-progress">
                       <div class="progress-bar">
-                        <div 
-                          class="progress-fill" 
-                          style={{ width: `${download.progress}%` }}
-                        />
+                        <div class="progress-fill" style={{ width: `${download.progress}%` }} />
                       </div>
                       <span class="progress-text">
                         {download.progress}% ({download.downloadedFiles || 0}/{download.totalFiles || 0} files)
                       </span>
                     </div>
                   </Show>
-                  
-                  <Show when={download.status === 'error'}>
+
+                  <Show when={download.status === "error"}>
                     <div class="download-error">
                       <span class="error-text">{download.error}</span>
                     </div>
                   </Show>
-                  
-                  <Show when={download.status === 'downloading'}>
+
+                  <Show when={download.status === "downloading"}>
                     <Button
                       onClick={() => cancelDownload(download.id)}
                       variant="secondary"

@@ -1,6 +1,6 @@
 /**
  * Test User Data Fixtures
- * 
+ *
  * Provides comprehensive test data generation for authentication testing
  * with realistic scenarios and edge cases.
  */
@@ -26,7 +26,7 @@ export class TestUserData {
   static generateValidUser(): ITestUserData {
     this.userCounter++;
     const timestamp = Date.now();
-    
+
     return {
       username: `testuser_${this.userCounter}_${timestamp}`,
       email: `test.user.${this.userCounter}.${timestamp}@example.com`,
@@ -42,7 +42,7 @@ export class TestUserData {
   static generateAdminUser(): ITestUserData {
     this.userCounter++;
     const timestamp = Date.now();
-    
+
     return {
       username: `admin_${this.userCounter}_${timestamp}`,
       email: `admin.${this.userCounter}.${timestamp}@example.com`,
@@ -58,7 +58,7 @@ export class TestUserData {
   static generateWeakPasswordUser(): ITestUserData {
     this.userCounter++;
     const timestamp = Date.now();
-    
+
     return {
       username: `weakpwd_${this.userCounter}_${timestamp}`,
       email: `weak.${this.userCounter}.${timestamp}@example.com`,
@@ -73,7 +73,7 @@ export class TestUserData {
   static generateInvalidEmailUser(): ITestUserData {
     this.userCounter++;
     const timestamp = Date.now();
-    
+
     return {
       username: `invalid_${this.userCounter}_${timestamp}`,
       email: "invalid-email-format",
@@ -88,7 +88,7 @@ export class TestUserData {
   static generateSpecialCharUser(): ITestUserData {
     this.userCounter++;
     const timestamp = Date.now();
-    
+
     return {
       username: `user-with-special_chars.${this.userCounter}`,
       email: `special.${this.userCounter}.${timestamp}@example.com`,
@@ -102,11 +102,11 @@ export class TestUserData {
    */
   static generateBulkUsers(count: number): ITestUserData[] {
     const users: ITestUserData[] = [];
-    
+
     for (let i = 0; i < count; i++) {
       users.push(this.generateValidUser());
     }
-    
+
     return users;
   }
 
@@ -117,7 +117,7 @@ export class TestUserData {
     this.userCounter++;
     const timestamp = Date.now();
     const longString = "a".repeat(100);
-    
+
     return {
       username: `long_${longString}_${this.userCounter}`,
       email: `long.${longString}.${timestamp}@example.com`,
@@ -132,7 +132,7 @@ export class TestUserData {
   static generateSQLInjectionUser(): ITestUserData {
     this.userCounter++;
     const timestamp = Date.now();
-    
+
     return {
       username: `'; DROP TABLE users; --`,
       email: `sql.injection.${timestamp}@example.com`,
@@ -147,7 +147,7 @@ export class TestUserData {
   static generateXSSUser(): ITestUserData {
     this.userCounter++;
     const timestamp = Date.now();
-    
+
     return {
       username: `<script>alert('xss')</script>`,
       email: `xss.test.${timestamp}@example.com`,
@@ -162,7 +162,7 @@ export class TestUserData {
   static generateUnicodeUser(): ITestUserData {
     this.userCounter++;
     const timestamp = Date.now();
-    
+
     return {
       username: `用户_${this.userCounter}_${timestamp}`,
       email: `unicode.${timestamp}@example.com`,
@@ -187,17 +187,9 @@ export class TestUserData {
         this.generateSpecialCharUser(),
         this.generateUnicodeUser(),
       ],
-      invalid: [
-        this.generateWeakPasswordUser(),
-        this.generateInvalidEmailUser(),
-      ],
-      security: [
-        this.generateSQLInjectionUser(),
-        this.generateXSSUser(),
-      ],
-      boundary: [
-        this.generateLongFieldUser(),
-      ],
+      invalid: [this.generateWeakPasswordUser(), this.generateInvalidEmailUser()],
+      security: [this.generateSQLInjectionUser(), this.generateXSSUser()],
+      boundary: [this.generateLongFieldUser()],
     };
   }
 

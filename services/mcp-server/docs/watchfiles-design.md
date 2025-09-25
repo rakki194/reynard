@@ -1,6 +1,6 @@
 # 🦊 Intelligent Watchfiles Tool - Technical Design Document
 
-*Strategic fox specialist ready to outfox any file watching challenge!*
+_Strategic fox specialist ready to outfox any file watching challenge!_
 
 ## 📋 Executive Summary
 
@@ -32,22 +32,22 @@ graph TB
     B --> C[ChangeAnalyzer]
     C --> D[ReloadOrchestrator]
     D --> E[MCP Server]
-    
+
     F[GamificationEngine] --> G[ProgressTracker]
     F --> H[AchievementSystem]
     F --> I[RewardSystem]
-    
+
     B --> F
     D --> F
-    
+
     J[Configuration] --> B
     J --> C
     J --> D
-    
+
     K[watchfiles Library] --> B
     L[Tool Registry] --> E
     M[Tool Discovery] --> E
-    
+
     style A fill:#e1f5fe
     style B fill:#f3e5f5
     style C fill:#e8f5e8
@@ -74,29 +74,29 @@ flowchart TD
     A[File Change Detected] --> B{Debounce Check}
     B -->|Too Recent| C[Skip Processing]
     B -->|Valid Change| D[Filter File Type]
-    
+
     D --> E{File Pattern Match}
     E -->|Excluded| F[Ignore Change]
     E -->|Critical File| G[Full Restart Strategy]
     E -->|Tool File| H[Hot Reload Strategy]
     E -->|Service File| I[Service Restart Strategy]
-    
+
     G --> J[Graceful Shutdown]
     H --> K[Tool Registry Refresh]
     I --> L[Service Reload]
-    
+
     J --> M[Full Server Restart]
     K --> N[Update Tool Discovery]
     L --> O[Restart Specific Services]
-    
+
     M --> P[Server Ready]
     N --> P
     O --> P
-    
+
     P --> Q[Award XP & Update Progress]
     Q --> R[Check Achievements]
     R --> S[Display Status]
-    
+
     style A fill:#ffebee
     style G fill:#ffcdd2
     style H fill:#c8e6c9
@@ -127,7 +127,7 @@ class IntelligentFileWatcher:
         self.exclude_patterns = exclude_patterns
         self.debounce_delay = 0.1  # 100ms debounce
         self.last_change_time = 0
-        
+
     async def start_watching(self):
         async for changes in awatch(*self.watch_paths):
             if self._should_process_changes(changes):
@@ -169,16 +169,16 @@ EXCLUDE_PATTERNS = [
 class ChangeAnalyzer:
     def __init__(self):
         self.dependency_graph = self._build_dependency_graph()
-        
+
     def analyze_changes(self, changes: list[tuple]) -> ReloadStrategy:
         affected_components = set()
-        
+
         for change_type, file_path in changes:
             components = self._get_affected_components(file_path)
             affected_components.update(components)
-            
+
         return self._determine_reload_strategy(affected_components)
-    
+
     def _get_affected_components(self, file_path: str) -> set[str]:
         """Map file changes to affected MCP components."""
         if "tools/" in file_path:
@@ -222,15 +222,15 @@ class ReloadOrchestrator:
     def __init__(self, mcp_server: MCPServer):
         self.mcp_server = mcp_server
         self.reload_in_progress = False
-        
+
     async def execute_reload(self, strategy: ReloadStrategy):
         if self.reload_in_progress:
             logger.warning("Reload already in progress, skipping")
             return
-            
+
         self.reload_in_progress = True
         start_time = time.time()
-        
+
         try:
             if strategy == ReloadStrategy.HOT_RELOAD:
                 await self._hot_reload()
@@ -238,24 +238,24 @@ class ReloadOrchestrator:
                 await self._restart_services()
             elif strategy == ReloadStrategy.FULL_RESTART:
                 await self._full_restart()
-                
+
             reload_time = time.time() - start_time
             logger.info(f"✅ Reload completed in {reload_time:.3f}s")
-            
+
         except Exception as e:
             logger.error(f"❌ Reload failed: {e}")
             await self._fallback_restart()
         finally:
             self.reload_in_progress = False
-    
+
     async def _hot_reload(self):
         """Hot reload tool definitions without restarting server."""
         # Refresh tool registry
         await self.mcp_server.tool_registry.refresh()
-        
+
         # Reload tool discovery
         await self.mcp_server.tool_discovery.rescan()
-        
+
         # Update MCP handler
         self.mcp_server.mcp_handler.refresh_tools()
 ```
@@ -269,23 +269,23 @@ graph LR
     A[Development Activity] --> B[XP Calculator]
     B --> C[Level System]
     C --> D[Achievement Checker]
-    
+
     E[File Changes] --> F[Activity Tracker]
     F --> G[Streak Counter]
     G --> H[Daily Challenges]
-    
+
     I[Progress Tracker] --> J[Visual Feedback]
     J --> K[Progress Bar]
     J --> L[Level Display]
-    
+
     M[Achievement System] --> N[Badge Collection]
     M --> O[Unlockable Features]
     M --> P[Reward System]
-    
+
     B --> I
     D --> M
     H --> B
-    
+
     style A fill:#e3f2fd
     style B fill:#f3e5f5
     style C fill:#e8f5e8
@@ -314,25 +314,25 @@ class GamificationEngine:
         self.achievements = set()
         self.streak_days = 0
         self.last_activity = None
-        
+
     def award_xp(self, amount: int, reason: str):
         """Award XP for development activities."""
         self.xp_total += amount
         self._check_level_up()
         self._check_achievements()
-        
+
         logger.info(f"🎮 +{amount} XP for {reason} (Total: {self.xp_total})")
-    
+
     def _check_achievements(self):
         """Check for new achievements."""
         new_achievements = []
-        
+
         if self.xp_total >= 100 and "first_100_xp" not in self.achievements:
             new_achievements.append("first_100_xp")
-            
+
         if self.streak_days >= 7 and "week_streak" not in self.achievements:
             new_achievements.append("week_streak")
-            
+
         for achievement in new_achievements:
             self.achievements.add(achievement)
             self._celebrate_achievement(achievement)
@@ -346,7 +346,7 @@ def display_progress(self):
     progress_bar = self._create_progress_bar()
     level_info = f"Level {self.level} ({self.xp_total} XP)"
     achievements = f"Achievements: {len(self.achievements)}"
-    
+
     print(f"""
 🦊 MCP Watchfiles Development Progress
 {'=' * 50}
@@ -367,24 +367,24 @@ Streak: {self.streak_days} days
 class MCPServer:
     def __init__(self, enable_watchfiles: bool = False):
         # ... existing initialization ...
-        
+
         if enable_watchfiles:
             self.watchfiles_manager = MCPReloadManager(self)
             asyncio.create_task(self.watchfiles_manager.start())
-    
+
     async def graceful_shutdown(self):
         """Graceful shutdown for reload operations."""
         logger.info("🔄 Initiating graceful shutdown...")
-        
+
         # Stop accepting new requests
         self._shutdown_requested = True
-        
+
         # Wait for current requests to complete
         await self._wait_for_requests_completion()
-        
+
         # Clean up resources
         await self._cleanup_resources()
-        
+
         logger.info("✅ Graceful shutdown completed")
 ```
 
@@ -394,22 +394,22 @@ class MCPServer:
 def main():
     """Enhanced main entry point with watchfiles support."""
     parser = argparse.ArgumentParser(description="MCP Reynard Server")
-    parser.add_argument("--watchfiles", action="store_true", 
+    parser.add_argument("--watchfiles", action="store_true",
                        help="Enable intelligent file watching")
-    parser.add_argument("--watch-paths", nargs="+", 
+    parser.add_argument("--watch-paths", nargs="+",
                        default=["tools/", "services/", "protocol/"],
                        help="Paths to watch for changes")
     parser.add_argument("--gamification", action="store_true",
                        help="Enable gamified development tracking")
-    
+
     args = parser.parse_args()
-    
+
     server = MCPServer(enable_watchfiles=args.watchfiles)
-    
+
     if args.watchfiles:
         logger.info("🦊 Intelligent watchfiles enabled")
         logger.info(f"📁 Watching paths: {args.watch_paths}")
-        
+
     asyncio.run(server.run())
 ```
 
@@ -431,19 +431,19 @@ class ResourceManager:
         self.max_memory_mb = 50
         self.max_cpu_percent = 5
         self.monitoring_interval = 30  # seconds
-        
+
     async def monitor_resources(self):
         """Monitor and limit resource usage."""
         while True:
             memory_usage = self._get_memory_usage()
             cpu_usage = self._get_cpu_usage()
-            
+
             if memory_usage > self.max_memory_mb:
                 await self._optimize_memory()
-                
+
             if cpu_usage > self.max_cpu_percent:
                 await self._throttle_operations()
-                
+
             await asyncio.sleep(self.monitoring_interval)
 ```
 
@@ -466,13 +466,13 @@ class WatchfilesTestSuite:
         # Modify file
         # Verify change detection
         # Clean up
-        
+
     async def test_reload_strategies(self):
         """Test different reload strategies."""
         # Test hot reload
         # Test service restart
         # Test full restart
-        
+
     async def test_gamification_system(self):
         """Test gamification features."""
         # Test XP awarding
@@ -514,7 +514,7 @@ watchfiles:
     - "**/tests/**"
   debounce_delay: 0.1
   max_reloads_per_minute: 10
-  
+
 gamification:
   enabled: true
   xp_multiplier: 1.0
@@ -579,7 +579,7 @@ pytest>=7.0.0  # Testing framework
 
 ---
 
-*🦊 "Every file change is an opportunity to outfox the old ways and embrace the new!" - Strategic Fox Specialist*
+_🦊 "Every file change is an opportunity to outfox the old ways and embrace the new!" - Strategic Fox Specialist_
 
 **Document Version**: 1.0  
 **Last Updated**: 2025-01-15  

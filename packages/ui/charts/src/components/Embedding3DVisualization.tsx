@@ -329,7 +329,8 @@ export const Embedding3DVisualization = (props: Embedding3DVisualizationProps) =
 
           <Show when={selectedPoint() !== null}>
             <div class="selected-info">
-              Selected Point {selectedPoint()}: {local.data?.original_embeddings?.[selectedPoint() as number]?.id || "Unknown"}
+              Selected Point {selectedPoint()}:{" "}
+              {local.data?.original_embeddings?.[selectedPoint() as number]?.id || "Unknown"}
             </div>
           </Show>
         </div>

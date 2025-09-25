@@ -4,7 +4,7 @@
 Main summarization service for Reynard with enterprise-grade patterns.
 
 This service integrates with the existing Ollama service and provides
-a unified interface for text summarization with multiple content types
+a consistent interface for text summarization with multiple content types
 and specialized summarizers, following standardized service patterns.
 
 Key Features:
@@ -28,7 +28,7 @@ from .base import ContentType, SummarizationOptions, SummaryLevel
 from .code_summarizer import CodeSummarizer
 from .document_summarizer import DocumentSummarizer
 from .manager import SummarizationManager
-from .ollama_summarizer import OllamaSummarizer
+from .ai_summarizer import AISummarizer
 from .technical_summarizer import TechnicalSummarizer
 
 logger = get_service_logger("summarization")
@@ -37,7 +37,7 @@ logger = get_service_logger("summarization")
 class SummarizationService:
     """Main summarization service that orchestrates all summarization operations.
 
-    This service provides a unified interface for text summarization,
+    This service provides a consistent interface for text summarization,
     integrating with the existing Ollama service and providing specialized
     summarizers for different content types.
     """
@@ -86,9 +86,9 @@ class SummarizationService:
     async def _register_summarizers(self) -> None:
         """Register all available summarizers with the manager."""
         try:
-            # Register Ollama summarizer (general purpose)
-            ollama_summarizer = OllamaSummarizer(self.ollama_service)
-            self.manager.register_summarizer("ollama", ollama_summarizer)
+            # Register AI summarizer (general purpose)
+            ai_summarizer = AISummarizer()
+            self.manager.register_summarizer("ai", ai_summarizer)
 
             # Register specialized summarizers
             article_summarizer = ArticleSummarizer(self.ollama_service)

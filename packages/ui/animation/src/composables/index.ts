@@ -6,19 +6,19 @@
 export { useAnimationState } from "./useAnimationState";
 export { useStaggeredAnimation } from "./useStaggeredAnimation";
 export { useStrikeoutAnimation } from "./useStrikeoutAnimation";
-export { 
-  useGlobalAnimationState, 
-  usePerformanceModeState, 
-  useAccessibilityCompliance, 
-  useAnimationPackageState, 
-  useImmediateCompletionState 
+export {
+  useGlobalAnimationState,
+  usePerformanceModeState,
+  useAccessibilityCompliance,
+  useAnimationPackageState,
+  useImmediateCompletionState,
 } from "./useAnimationStateHooks";
-export { 
-  useSmartAnimation, 
-  useAnimationEngineType, 
-  useAnimationPackageAvailability, 
-  useAnimationPerformanceMode, 
-  useAnimationAccessibilityMode 
+export {
+  useSmartAnimation,
+  useAnimationEngineType,
+  useAnimationPackageAvailability,
+  useAnimationPerformanceMode,
+  useAnimationAccessibilityMode,
 } from "./useSmartAnimation";
 
 // Re-export types

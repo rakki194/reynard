@@ -1,6 +1,6 @@
 # Documentation Validation E2E Tests
 
-🦩 *flamingo feathers ruffle with validation precision* This comprehensive test suite validates all code examples in documentation files by creating isolated test environments and executing them in `/tmp/` directories.
+🦩 _flamingo feathers ruffle with validation precision_ This comprehensive test suite validates all code examples in documentation files by creating isolated test environments and executing them in `/tmp/` directories.
 
 ## Overview
 
@@ -145,10 +145,10 @@ console.log('Found examples:', examples.length);
 ```typescript
 const TEST_CONFIG = {
   projectRoot: process.cwd(),
-  maxConcurrency: 3,        // Parallel test execution limit
-  timeout: 60000,           // 1 minute per test
+  maxConcurrency: 3, // Parallel test execution limit
+  timeout: 60000, // 1 minute per test
   skipTypes: ["markdown", "other"], // Skip non-executable types
-  focusTypes: [],           // Empty = test all types
+  focusTypes: [], // Empty = test all types
 };
 ```
 
@@ -158,9 +158,9 @@ const TEST_CONFIG = {
 // e2e/configs/playwright.config.documentation.ts
 export default defineConfig({
   testDir: "../suites/documentation",
-  fullyParallel: false,     // Sequential execution to avoid conflicts
-  workers: 1,               // Single worker for temp directory isolation
-  timeout: 300000,          // 5 minutes per test
+  fullyParallel: false, // Sequential execution to avoid conflicts
+  workers: 1, // Single worker for temp directory isolation
+  timeout: 300000, // 5 minutes per test
   // ... additional configuration
 });
 ```
@@ -170,7 +170,7 @@ export default defineConfig({
 ### Success Criteria
 
 - **README.md Examples**: ≥80% success rate
-- **Package Documentation**: ≥70% success rate  
+- **Package Documentation**: ≥70% success rate
 - **Example Applications**: ≥75% success rate
 - **Bash/Shell Scripts**: ≥85% success rate
 - **TypeScript Examples**: ≥80% success rate
@@ -323,4 +323,4 @@ When documentation validation fails:
 
 ---
 
-🦩 *flamingo feathers ruffle with validation satisfaction* The documentation validation system ensures that every code example in the Reynard project is accurate, executable, and up-to-date. By creating isolated test environments and executing real code, we maintain the highest standards of documentation quality and developer experience!
+🦩 _flamingo feathers ruffle with validation satisfaction_ The documentation validation system ensures that every code example in the Reynard project is accurate, executable, and up-to-date. By creating isolated test environments and executing real code, we maintain the highest standards of documentation quality and developer experience!

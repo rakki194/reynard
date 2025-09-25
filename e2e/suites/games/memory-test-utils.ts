@@ -1,8 +1,8 @@
 /**
  * Memory Performance Testing Utilities
- * 
+ *
  * Helper functions for memory leak detection and performance testing.
- * 
+ *
  * @author 🦊 The Cunning Fox
  */
 
@@ -39,15 +39,15 @@ export interface MemorySnapshot {
 export async function getMemoryUsage(page: Page): Promise<MemorySnapshot | null> {
   return await page.evaluate(() => {
     const perf = performance as PerformanceWithMemory;
-    
+
     if (perf.memory) {
       return {
         used: perf.memory.usedJSHeapSize,
         total: perf.memory.totalJSHeapSize,
-        limit: perf.memory.jsHeapSizeLimit
+        limit: perf.memory.jsHeapSizeLimit,
       };
     }
-    
+
     return null;
   });
 }
@@ -69,18 +69,12 @@ export function bytesToMB(bytes: number): number {
 /**
  * Assert memory increase is within acceptable limits
  */
-export function assertMemoryIncrease(
-  initial: MemorySnapshot, 
-  final: MemorySnapshot, 
-  maxIncreaseMB: number
-): void {
+export function assertMemoryIncrease(initial: MemorySnapshot, final: MemorySnapshot, maxIncreaseMB: number): void {
   const increase = calculateMemoryIncrease(initial, final);
   const increaseMB = bytesToMB(increase);
-  
+
   if (increaseMB > maxIncreaseMB) {
-    throw new Error(
-      `Memory increase too large: ${increaseMB.toFixed(2)}MB (max: ${maxIncreaseMB}MB)`
-    );
+    throw new Error(`Memory increase too large: ${increaseMB.toFixed(2)}MB (max: ${maxIncreaseMB}MB)`);
   }
 }
 

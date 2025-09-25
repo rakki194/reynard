@@ -128,40 +128,40 @@ export async function activate(context: vscode.ExtensionContext): Promise<any> {
 
   // Initialize configuration
   configuration = new LintingConfiguration(context);
-  
+
   // Initialize status bar
   statusBar = new LintingStatusBar();
-  
+
   // Initialize linting provider
   try {
     lintingProvider = new VSCodeLintingProvider();
   } catch (error) {
     console.error(`Failed to initialize linting provider: ${error}`);
     // Don't show error message in tests, just log it
-    if (process.env.NODE_ENV !== 'test') {
+    if (process.env.NODE_ENV !== "test") {
       vscode.window.showErrorMessage(`Failed to initialize linting provider: ${error}`);
     }
     // Continue without linting provider
   }
-  
+
   // Register commands
   registerCommands(context);
-  
+
   // Register event listeners
   registerEventListeners(context);
-  
+
   // Start language server
   await startLanguageServer(context);
-  
+
   // Start incremental linting service
   await startLintingService();
-  
+
   // Register file watchers
   registerFileWatchers(context);
-  
+
   // Update status bar
   statusBar.updateStatus("active", "Reynard Linting Active");
-  
+
   // Return the extension API
   return {
     lintingService,
@@ -176,27 +176,27 @@ export async function activate(context: vscode.ExtensionContext): Promise<any> {
  */
 export async function deactivate(): Promise<void> {
   console.log("🦊 Reynard Incremental Linting extension is deactivating...");
-  
+
   if (client) {
     await client.stop();
     client = undefined;
   }
-  
+
   if (lintingService) {
     await lintingService.stop();
     lintingService = undefined;
   }
-  
+
   if (statusBar) {
     statusBar.dispose();
     statusBar = undefined;
   }
-  
+
   if (lintingProvider) {
     lintingProvider.dispose();
     lintingProvider = undefined;
   }
-  
+
   if (outputChannel) {
     outputChannel.dispose();
     outputChannel = undefined;
@@ -230,7 +230,7 @@ function registerCommands(context: vscode.ExtensionContext): void {
 
     const filePath = editor.document.uri.fsPath;
     statusBar?.updateStatus("working", "Linting...");
-    
+
     try {
       const results = await lintingService.lintFile(filePath);
       lintingProvider?.updateResults(filePath, [results]);
@@ -246,22 +246,22 @@ function registerCommands(context: vscode.ExtensionContext): void {
     if (!lintingService) return;
 
     statusBar?.updateStatus("working", "Linting Workspace...");
-    
+
     try {
       // Get all files in workspace
       const files = await vscode.workspace.findFiles(
         "**/*.{ts,tsx,js,jsx,py,md,sh}",
         "**/{node_modules,dist,build,coverage,__pycache__}/**"
       );
-      
+
       const filePaths = files.map(uri => uri.fsPath);
       const results = await lintingService.lintFiles(filePaths);
-      
+
       // Update all results
       for (const result of results) {
         lintingProvider?.updateResults(result.filePath, [result]);
       }
-      
+
       statusBar?.updateStatus("active", "Workspace Linting Complete");
       vscode.window.showInformationMessage(`🦊 Linted ${files.length} files`);
     } catch (error) {
@@ -307,10 +307,10 @@ function registerCommands(context: vscode.ExtensionContext): void {
  */
 async function startLanguageServer(context: vscode.ExtensionContext): Promise<void> {
   const serverModule = context.asAbsolutePath("dist/language-server.js");
-  
+
   const serverOptions: ServerOptions = {
     run: { module: serverModule, transport: TransportKind.ipc },
-    debug: { module: serverModule, transport: TransportKind.ipc }
+    debug: { module: serverModule, transport: TransportKind.ipc },
   };
 
   const clientOptions: LanguageClientOptions = {
@@ -321,19 +321,14 @@ async function startLanguageServer(context: vscode.ExtensionContext): Promise<vo
       { scheme: "file", language: "javascriptreact" },
       { scheme: "file", language: "python" },
       { scheme: "file", language: "markdown" },
-      { scheme: "file", language: "shellscript" }
+      { scheme: "file", language: "shellscript" },
     ],
     synchronize: {
-      fileEvents: vscode.workspace.createFileSystemWatcher("**/.reynard-linting.json")
-    }
+      fileEvents: vscode.workspace.createFileSystemWatcher("**/.reynard-linting.json"),
+    },
   };
 
-  client = new LanguageClient(
-    "reynard-linting",
-    "Reynard Incremental Linting",
-    serverOptions,
-    clientOptions
-  );
+  client = new LanguageClient("reynard-linting", "Reynard Incremental Linting", serverOptions, clientOptions);
 
   await client.start();
 }
@@ -345,21 +340,21 @@ async function startLintingService(): Promise<void> {
   try {
     // const _config = await loadLintingConfiguration(); // Not used
     lintingService = new MockIncrementalLintingService();
-    
+
     // Set up event handlers
     lintingService.on("started", () => {
       statusBar?.updateStatus("active", "Reynard Linting Active");
     });
-    
+
     lintingService.on("stopped", () => {
       statusBar?.updateStatus("inactive", "Reynard Linting Stopped");
     });
-    
+
     await lintingService.start();
   } catch (error) {
     console.error(`Failed to start linting service: ${error}`);
     // Don't show error message in tests, just log it
-    if (process.env.NODE_ENV !== 'test') {
+    if (process.env.NODE_ENV !== "test") {
       vscode.window.showErrorMessage(`Failed to start linting service: ${error}`);
     }
     statusBar?.updateStatus("error", "Failed to Start");
@@ -372,25 +367,25 @@ async function startLintingService(): Promise<void> {
 function registerFileWatchers(context: vscode.ExtensionContext): void {
   // Watch for file changes
   const fileWatcher = vscode.workspace.createFileSystemWatcher("**/*.{ts,tsx,js,jsx,py,md,sh}");
-  
-  fileWatcher.onDidChange(async (uri) => {
+
+  fileWatcher.onDidChange(async uri => {
     if (lintingService && configuration?.shouldLintOnSave()) {
       const results = await lintingService.lintFile(uri.fsPath);
       lintingProvider?.updateResults(uri.fsPath, [results]);
     }
   });
-  
-  fileWatcher.onDidCreate(async (uri) => {
+
+  fileWatcher.onDidCreate(async uri => {
     if (lintingService) {
       const results = await lintingService.lintFile(uri.fsPath);
       lintingProvider?.updateResults(uri.fsPath, [results]);
     }
   });
-  
-  fileWatcher.onDidDelete((uri) => {
+
+  fileWatcher.onDidDelete(uri => {
     lintingProvider?.clearFileIssues(uri.fsPath);
   });
-  
+
   context.subscriptions.push(fileWatcher);
 }
 
@@ -399,7 +394,7 @@ function registerFileWatchers(context: vscode.ExtensionContext): void {
  */
 function registerEventListeners(context: vscode.ExtensionContext): void {
   // Document save events
-  const saveListener = vscode.workspace.onDidSaveTextDocument(async (document) => {
+  const saveListener = vscode.workspace.onDidSaveTextDocument(async document => {
     if (lintingService && configuration?.shouldLintOnSave()) {
       const results = await lintingService.lintFile(document.uri.fsPath);
       lintingProvider?.updateResults(document.uri.fsPath, [results]);
@@ -407,7 +402,7 @@ function registerEventListeners(context: vscode.ExtensionContext): void {
   });
 
   // Document change events
-  const changeListener = vscode.workspace.onDidChangeTextDocument(async (event) => {
+  const changeListener = vscode.workspace.onDidChangeTextDocument(async event => {
     if (lintingService && configuration?.shouldLintOnChange()) {
       const results = await lintingService.lintFile(event.document.uri.fsPath);
       lintingProvider?.updateResults(event.document.uri.fsPath, [results]);
@@ -415,7 +410,7 @@ function registerEventListeners(context: vscode.ExtensionContext): void {
   });
 
   // Active editor change events
-  const editorChangeListener = vscode.window.onDidChangeActiveTextEditor(async (editor) => {
+  const editorChangeListener = vscode.window.onDidChangeActiveTextEditor(async editor => {
     if (editor && lintingService) {
       const results = await lintingService.lintFile(editor.document.uri.fsPath);
       lintingProvider?.updateResults(editor.document.uri.fsPath, [results]);
@@ -423,17 +418,12 @@ function registerEventListeners(context: vscode.ExtensionContext): void {
   });
 
   // Configuration change events
-  const configChangeListener = vscode.workspace.onDidChangeConfiguration(async (event) => {
+  const configChangeListener = vscode.workspace.onDidChangeConfiguration(async event => {
     if (event.affectsConfiguration("reynard-linting") && configuration && lintingService) {
       const newConfig = await configuration.loadConfiguration();
       lintingService.updateConfig(newConfig);
     }
   });
 
-  context.subscriptions.push(
-    saveListener,
-    changeListener,
-    editorChangeListener,
-    configChangeListener
-  );
+  context.subscriptions.push(saveListener, changeListener, editorChangeListener, configChangeListener);
 }

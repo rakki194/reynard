@@ -1,6 +1,6 @@
 /**
  * 🦊 Color Animation Module
- * 
+ *
  * Unified color animation system with smart imports and fallback support.
  * Consolidates color animation functionality from across the Reynard codebase.
  */
@@ -18,22 +18,10 @@ export * from "./useColorAnimation.js";
 export * from "./ColorFallbackUtils.js";
 
 // Re-export types for convenience
-export type {
-  ColorAnimationOptions,
-  HueShiftOptions,
-} from "./ColorAnimations.js";
+export type { ColorAnimationOptions, HueShiftOptions } from "./ColorAnimations.js";
 
-export type {
-  ColorAnimationSystemState,
-} from "./ColorAnimationSystem.js";
+export type { ColorAnimationSystemState } from "./ColorAnimationSystem.js";
 
-export type {
-  UseColorAnimationOptions,
-  UseColorAnimationReturn,
-} from "./useColorAnimation.js";
+export type { UseColorAnimationOptions, UseColorAnimationReturn } from "./useColorAnimation.js";
 
-export type {
-  ColorFallbackOptions,
-} from "./ColorFallbackUtils.js";
-
-
+export type { ColorFallbackOptions } from "./ColorFallbackUtils.js";

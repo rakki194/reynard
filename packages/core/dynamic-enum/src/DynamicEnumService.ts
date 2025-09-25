@@ -2,28 +2,28 @@
  * Main Dynamic Enum Service
  */
 
-import type { 
-  EnumServiceConfig, 
-  EnumServiceMetrics, 
-  EnumData, 
-  EnumValue, 
+import type {
+  EnumServiceConfig,
+  EnumServiceMetrics,
+  EnumData,
+  EnumValue,
   EnumResult,
   EnumOperationOptions,
-  ValidationResult
-} from './types';
-import type { EnumProvider } from './types/Provider';
-import type { EnumDataProvider } from './types/DataProvider';
+  ValidationResult,
+} from "./types";
+import type { EnumProvider } from "./types/Provider";
+import type { EnumDataProvider } from "./types/DataProvider";
 
-import { DynamicEnumProviderRegistry } from './core/EnumProviderRegistry';
-import { DynamicEnumProviderFactory } from './core/EnumProviderFactory';
-import { CacheManager } from './utils/CacheManager';
-import { FallbackManager } from './utils/FallbackManager';
-import { ValidationUtils } from './utils/ValidationUtils';
+import { DynamicEnumProviderRegistry } from "./core/EnumProviderRegistry";
+import { DynamicEnumProviderFactory } from "./core/EnumProviderFactory";
+import { CacheManager } from "./utils/CacheManager";
+import { FallbackManager } from "./utils/FallbackManager";
+import { ValidationUtils } from "./utils/ValidationUtils";
 
-import { SpiritEnumProvider } from './providers/SpiritEnumProvider';
-import { StyleEnumProvider } from './providers/StyleEnumProvider';
-import { TraitEnumProvider } from './providers/TraitEnumProvider';
-import { CustomEnumProvider } from './providers/CustomEnumProvider';
+import { SpiritEnumProvider } from "./providers/SpiritEnumProvider";
+import { StyleEnumProvider } from "./providers/StyleEnumProvider";
+import { TraitEnumProvider } from "./providers/TraitEnumProvider";
+import { CustomEnumProvider } from "./providers/CustomEnumProvider";
 
 /**
  * Main service for managing dynamic enums
@@ -41,10 +41,10 @@ export class DynamicEnumService {
     this.config = {
       enableCaching: true,
       cacheTimeout: 5 * 60 * 1000, // 5 minutes
-      fallbackStrategy: 'warn',
+      fallbackStrategy: "warn",
       enableMetrics: true,
       maxRetries: 3,
-      ...config
+      ...config,
     };
 
     this.providerRegistry = new DynamicEnumProviderRegistry();
@@ -61,7 +61,7 @@ export class DynamicEnumService {
       cacheMisses: 0,
       errors: 0,
       providerCount: 0,
-      averageResponseTime: 0
+      averageResponseTime: 0,
     };
 
     this.initializeCache();
@@ -76,7 +76,7 @@ export class DynamicEnumService {
       this.cacheManager = new CacheManager({
         ttl: this.config.cacheTimeout!,
         maxAge: this.config.cacheTimeout! * 2,
-        cleanupInterval: this.config.cacheTimeout! / 2
+        cleanupInterval: this.config.cacheTimeout! / 2,
       });
     }
   }
@@ -86,10 +86,10 @@ export class DynamicEnumService {
    */
   private initializeProviders(): void {
     // Register provider constructors
-    this.providerFactory.registerProviderConstructor('spirits', SpiritEnumProvider);
-    this.providerFactory.registerProviderConstructor('styles', StyleEnumProvider);
-    this.providerFactory.registerProviderConstructor('traits', TraitEnumProvider);
-    this.providerFactory.registerProviderConstructor('custom', CustomEnumProvider);
+    this.providerFactory.registerProviderConstructor("spirits", SpiritEnumProvider);
+    this.providerFactory.registerProviderConstructor("styles", StyleEnumProvider);
+    this.providerFactory.registerProviderConstructor("traits", TraitEnumProvider);
+    this.providerFactory.registerProviderConstructor("custom", CustomEnumProvider);
 
     // Set fallback strategy
     this.fallbackManager.setFallbackStrategy(this.config.fallbackStrategy!);
@@ -106,11 +106,7 @@ export class DynamicEnumService {
   /**
    * Create and register a provider for an enum type
    */
-  createAndRegisterProvider(
-    enumType: string, 
-    config: any, 
-    dataProvider?: EnumDataProvider
-  ): void {
+  createAndRegisterProvider(enumType: string, config: any, dataProvider?: EnumDataProvider): void {
     try {
       const provider = this.providerFactory.createProvider(enumType, config, dataProvider);
       this.registerProvider(enumType, provider);
@@ -147,7 +143,7 @@ export class DynamicEnumService {
 
       // Fetch data
       const data = await provider.getEnumData(options);
-      
+
       // Cache the data
       if (this.cacheManager) {
         this.cacheManager.set(enumType, data);
@@ -158,7 +154,7 @@ export class DynamicEnumService {
     } catch (error) {
       this.metrics.errors++;
       this.updateResponseTime(startTime);
-      
+
       // Try fallback
       const fallbackData = this.fallbackManager.getFallbackDataWithErrorHandling(enumType, error as Error);
       return fallbackData;
@@ -178,12 +174,12 @@ export class DynamicEnumService {
    */
   async getMetadata(enumType: string, key: string): Promise<any> {
     this.metrics.metadataRequests++;
-    
+
     const provider = this.providerRegistry.getProvider(enumType);
     if (provider) {
       return await provider.getMetadata(key);
     }
-    
+
     return null;
   }
 
@@ -192,16 +188,16 @@ export class DynamicEnumService {
    */
   validateValue(enumType: string, value: string): ValidationResult {
     this.metrics.validations++;
-    
+
     const provider = this.providerRegistry.getProvider(enumType);
     if (provider) {
       return provider.validateValue(value);
     }
-    
+
     return {
       isValid: false,
       value: null,
-      error: `No provider registered for enum type '${enumType}'`
+      error: `No provider registered for enum type '${enumType}'`,
     };
   }
 
@@ -210,16 +206,16 @@ export class DynamicEnumService {
    */
   async getRandomValue(enumType: string, options?: EnumOperationOptions): Promise<EnumResult> {
     this.metrics.randomSelections++;
-    
+
     const provider = this.providerRegistry.getProvider(enumType);
     if (!provider) {
       const fallbackValue = this.fallbackManager.getDefaultFallback(enumType);
       return {
-        value: fallbackValue || 'unknown',
-        isFallback: true
+        value: fallbackValue || "unknown",
+        isFallback: true,
       };
     }
-    
+
     return await provider.getRandomValue(options);
   }
 
@@ -228,16 +224,16 @@ export class DynamicEnumService {
    */
   async getRandomValues(enumType: string, count: number, options?: EnumOperationOptions): Promise<EnumResult[]> {
     this.metrics.randomSelections++;
-    
+
     const provider = this.providerRegistry.getProvider(enumType);
     if (!provider) {
       const fallbackValue = this.fallbackManager.getDefaultFallback(enumType);
       return Array(count).fill({
-        value: fallbackValue || 'unknown',
-        isFallback: true
+        value: fallbackValue || "unknown",
+        isFallback: true,
       });
     }
-    
+
     return await provider.getRandomValues(count, options);
   }
 
@@ -249,7 +245,7 @@ export class DynamicEnumService {
     if (provider) {
       return provider.hasValue(value);
     }
-    
+
     return false;
   }
 
@@ -261,7 +257,7 @@ export class DynamicEnumService {
     if (provider) {
       return provider.getKeys();
     }
-    
+
     return [];
   }
 
@@ -273,7 +269,7 @@ export class DynamicEnumService {
     if (provider) {
       return provider.getCount();
     }
-    
+
     return 0;
   }
 
@@ -285,7 +281,7 @@ export class DynamicEnumService {
     if (provider) {
       await provider.refresh();
     }
-    
+
     // Clear cache for this type
     if (this.cacheManager) {
       this.cacheManager.delete(enumType);
@@ -297,7 +293,7 @@ export class DynamicEnumService {
    */
   async refreshAll(): Promise<void> {
     await this.providerRegistry.refreshAllProviders();
-    
+
     // Clear all cache
     if (this.cacheManager) {
       this.cacheManager.clear();
@@ -381,7 +377,7 @@ export class DynamicEnumService {
    */
   private updateResponseTime(startTime: number): void {
     const responseTime = Date.now() - startTime;
-    this.metrics.averageResponseTime = 
+    this.metrics.averageResponseTime =
       (this.metrics.averageResponseTime * (this.metrics.requests - 1) + responseTime) / this.metrics.requests;
   }
 

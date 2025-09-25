@@ -7,7 +7,7 @@ import {
   getTestableDirectories,
   getGlobalExcludePatterns,
   queryDirectories,
-  type DirectoryDefinition as ArchitectureDirectoryDefinition
+  type DirectoryDefinition as ArchitectureDirectoryDefinition,
 } from "reynard-project-architecture";
 import type { DirectoryDefinition } from "./types.js";
 
@@ -28,7 +28,7 @@ export function getArchitectureDirectoryDefinitions(): ArchitectureDirectoryDefi
     testable: true,
     includeOptional: false,
     includeGenerated: false,
-    includeThirdParty: false
+    includeThirdParty: false,
   }).directories;
 }
 

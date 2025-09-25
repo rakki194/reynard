@@ -25,6 +25,8 @@ from app.api.agent_email_routes import router as agent_email_router
 from app.api.caption import router as caption_router
 from app.api.comfy import router as comfy_router
 from app.api.email_routes import router as email_router
+from app.api.pgp_key_routes import router as pgp_key_router
+from app.api.ssh_key_routes import router as ssh_key_router
 from app.api.executor.executor import router as executor_router
 from app.api.gallerydl import router as gallerydl_router
 from app.api.hf_cache.hf_cache import router as hf_cache_router
@@ -34,10 +36,11 @@ from app.api.lazy_loading import router as lazy_loading_router
 from app.api.mcp import endpoints as mcp_endpoints
 from app.api.mcp import tool_config_endpoints as mcp_tool_config_endpoints
 from app.api.mcp import tools_endpoints as mcp_tools_endpoints
+from app.api.mcp import pdf_processing_endpoints
 from app.api.nlweb import router as nlweb_router
 from app.api.notebooks import endpoints as notebooks_endpoints
 from app.api.notes import endpoints as notes_endpoints
-from app.api.ollama import router as ollama_router
+from app.api.ai import router as ai_router
 from app.api.rag import router as rag_router
 from app.api.search import router as search_router
 from app.api.summarization import router as summarization_router
@@ -61,12 +64,8 @@ from app.ecs.api.main import router as ecs_router
 # ECS World integration
 from app.ecs.postgres_service import register_postgres_ecs_service
 
-# Middleware components
-from app.middleware.cors_config import setup_cors_middleware
-from app.middleware.dev_bypass_middleware import setup_dev_bypass_middleware
-from app.middleware.input_validation_middleware import setup_input_validation_middleware
-from app.middleware.rate_limiting import setup_rate_limiting
-from app.middleware.security_headers import add_security_headers
+# New modular middleware system
+from app.middleware import setup_middleware
 from app.security.error_handler import setup_error_handlers
 
 # Security components
@@ -122,8 +121,9 @@ def create_app() -> FastAPI:
 def _setup_middleware(app: FastAPI, config: AppConfig) -> FastAPI:
     """Configure all middleware for the FastAPI application.
 
-    This function sets up the complete middleware stack including CORS,
-    rate limiting, security headers, input validation, and trusted host validation.
+    This function sets up the complete middleware stack using the new modular
+    middleware system with comprehensive security, CORS, rate limiting, and
+    development support.
 
     Args:
         app: The FastAPI application instance.
@@ -136,24 +136,8 @@ def _setup_middleware(app: FastAPI, config: AppConfig) -> FastAPI:
     # Penetration testing middleware (first to handle session control)
     setup_penetration_testing_middleware(app)
 
-    # Development bypass middleware (second to set bypass flags)
-    setup_dev_bypass_middleware(app)
-
-    # Input validation middleware (third to validate input)
-    setup_input_validation_middleware(app)
-
-    # CORS configuration
-    setup_cors_middleware(app)
-
-    # Rate limiting
-    setup_rate_limiting(app)
-
-    # Security headers middleware
-    app.middleware("http")(add_security_headers)
-    app.add_middleware(
-        TrustedHostMiddleware,
-        allowed_hosts=config.allowed_hosts,
-    )
+    # Setup the new modular middleware system
+    setup_middleware(app, environment=config.environment)
 
     # Security middleware (last to wrap everything)
     app = setup_security_middleware(app)
@@ -191,12 +175,17 @@ def _setup_routers(app: FastAPI) -> None:
     app.include_router(mcp_endpoints.router, prefix="/api")
     app.include_router(mcp_tools_endpoints.router, prefix="/api")
     app.include_router(mcp_tool_config_endpoints.router, prefix="/api")
+    app.include_router(pdf_processing_endpoints.router, prefix="/api")
+    
+    # MCP Bootstrap Router (for initial authentication)
+    from app.api.mcp import bootstrap_endpoints
+    app.include_router(bootstrap_endpoints.router, prefix="/api")
 
     # Admin Routers
     app.include_router(hot_reload_router)
 
-    # Ollama Router (use original for now, secure version will be added after service initialization)
-    app.include_router(ollama_router)
+    # AI Router (use original for now, secure version will be added after service initialization)
+    app.include_router(ai_router)
 
     app.include_router(comfy_router)
 
@@ -222,5 +211,8 @@ def _setup_routers(app: FastAPI) -> None:
     # IMAP Router
     app.include_router(imap_router)
 
-    # IMAP Router
-    app.include_router(imap_router)
+    # PGP Key Management Router
+    app.include_router(pgp_key_router)
+    
+    # SSH Key Management Router
+    app.include_router(ssh_key_router)

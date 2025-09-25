@@ -62,11 +62,7 @@ interface PerformanceOverlayProps {
 export const PerformanceOverlay = (props: PerformanceOverlayProps) => {
   const stats = props.performanceStats?.();
   return (
-    <Show
-      when={
-        props.enablePerformanceMonitoring && stats && (stats.activeVisualizations || 0) > 0
-      }
-    >
+    <Show when={props.enablePerformanceMonitoring && stats && (stats.activeVisualizations || 0) > 0}>
       <div class="chart-performance-overlay">
         {t("performance.fps")}: {stats?.fps || 0} | Memory: {(stats?.memoryUsage || 0).toFixed(1)}MB
       </div>

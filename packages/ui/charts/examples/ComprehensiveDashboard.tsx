@@ -57,7 +57,7 @@ export function ComprehensiveDashboard() {
         value: Math.random() * 100,
         label: new Date().toLocaleTimeString(),
       };
-      
+
       setRealTimeData(prev => {
         const updated = [...prev, newPoint];
         return updated.length > 30 ? updated.slice(-30) : updated;
@@ -76,27 +76,29 @@ export function ComprehensiveDashboard() {
   const currentTheme = () => themeColors[selectedTheme()];
 
   return (
-    <div style={{ 
-      padding: "20px", 
-      background: currentTheme().background, 
-      color: currentTheme().text,
-      minHeight: "100vh"
-    }}>
+    <div
+      style={{
+        padding: "20px",
+        background: currentTheme().background,
+        color: currentTheme().text,
+        minHeight: "100vh",
+      }}
+    >
       <header style={{ marginBottom: "30px" }}>
         <h1>🦊 Reynard Charts - Comprehensive Dashboard</h1>
         <p>Professional data visualization with OKLCH color integration and real-time capabilities</p>
-        
+
         <div style={{ margin: "20px 0" }}>
           <label style={{ marginRight: "10px" }}>Theme:</label>
-          <select 
+          <select
             value={selectedTheme()}
-            onChange={(e) => setSelectedTheme(e.target.value as any)}
+            onChange={e => setSelectedTheme(e.target.value as any)}
             style={{
               padding: "5px 10px",
               background: currentTheme().card,
               color: currentTheme().text,
               border: "1px solid #ccc",
-              borderRadius: "4px"
+              borderRadius: "4px",
             }}
           >
             <option value="dark">Dark</option>
@@ -108,12 +110,14 @@ export function ComprehensiveDashboard() {
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "30px" }}>
         {/* Line Chart */}
-        <div style={{ 
-          background: currentTheme().card, 
-          padding: "20px", 
-          borderRadius: "8px",
-          border: "1px solid #ddd"
-        }}>
+        <div
+          style={{
+            background: currentTheme().card,
+            padding: "20px",
+            borderRadius: "8px",
+            border: "1px solid #ddd",
+          }}
+        >
           <h3>📈 Sales Trend Analysis</h3>
           <Chart
             type="line"
@@ -133,12 +137,14 @@ export function ComprehensiveDashboard() {
         </div>
 
         {/* Bar Chart */}
-        <div style={{ 
-          background: currentTheme().card, 
-          padding: "20px", 
-          borderRadius: "8px",
-          border: "1px solid #ddd"
-        }}>
+        <div
+          style={{
+            background: currentTheme().card,
+            padding: "20px",
+            borderRadius: "8px",
+            border: "1px solid #ddd",
+          }}
+        >
           <h3>📊 Performance Metrics</h3>
           <Chart
             type="bar"
@@ -159,12 +165,14 @@ export function ComprehensiveDashboard() {
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "30px" }}>
         {/* Pie Chart */}
-        <div style={{ 
-          background: currentTheme().card, 
-          padding: "20px", 
-          borderRadius: "8px",
-          border: "1px solid #ddd"
-        }}>
+        <div
+          style={{
+            background: currentTheme().card,
+            padding: "20px",
+            borderRadius: "8px",
+            border: "1px solid #ddd",
+          }}
+        >
           <h3>🥧 Traffic Sources</h3>
           <Chart
             type="pie"
@@ -180,20 +188,24 @@ export function ComprehensiveDashboard() {
         </div>
 
         {/* Doughnut Chart */}
-        <div style={{ 
-          background: currentTheme().card, 
-          padding: "20px", 
-          borderRadius: "8px",
-          border: "1px solid #ddd"
-        }}>
+        <div
+          style={{
+            background: currentTheme().card,
+            padding: "20px",
+            borderRadius: "8px",
+            border: "1px solid #ddd",
+          }}
+        >
           <h3>🍩 Revenue Breakdown</h3>
           <Chart
             type="doughnut"
             labels={["Product Sales", "Services", "Subscriptions"]}
-            datasets={[{
-              label: "Revenue",
-              data: [60, 25, 15],
-            }]}
+            datasets={[
+              {
+                label: "Revenue",
+                data: [60, 25, 15],
+              },
+            ]}
             useOKLCH={true}
             colorTheme={selectedTheme()}
             width={400}
@@ -205,13 +217,15 @@ export function ComprehensiveDashboard() {
       </div>
 
       {/* Real-Time Chart */}
-      <div style={{ 
-        background: currentTheme().card, 
-        padding: "20px", 
-        borderRadius: "8px",
-        border: "1px solid #ddd",
-        marginBottom: "30px"
-      }}>
+      <div
+        style={{
+          background: currentTheme().card,
+          padding: "20px",
+          borderRadius: "8px",
+          border: "1px solid #ddd",
+          marginBottom: "30px",
+        }}
+      >
         <h3>⚡ Real-Time Monitoring</h3>
         <RealTimeChart
           type="line"
@@ -233,12 +247,14 @@ export function ComprehensiveDashboard() {
       </div>
 
       {/* Features Overview */}
-      <div style={{ 
-        background: currentTheme().card, 
-        padding: "20px", 
-        borderRadius: "8px",
-        border: "1px solid #ddd"
-      }}>
+      <div
+        style={{
+          background: currentTheme().card,
+          padding: "20px",
+          borderRadius: "8px",
+          border: "1px solid #ddd",
+        }}
+      >
         <h3>🚀 Reynard Charts Features</h3>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "20px" }}>
           <div>
@@ -273,4 +289,3 @@ export function ComprehensiveDashboard() {
     </div>
   );
 }
-

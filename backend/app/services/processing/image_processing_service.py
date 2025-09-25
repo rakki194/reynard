@@ -41,10 +41,18 @@ if is_opencv_enabled() and is_numpy_enabled() and can_load_service("opencv") and
         load_service("numpy")
     except ImportError:
         OPENCV_AVAILABLE = False
-        np = None
+        # Create a dummy numpy module for type hints
+        class DummyNumpy:
+            class ndarray:
+                pass
+        np = DummyNumpy()
 else:
     OPENCV_AVAILABLE = False
-    np = None
+    # Create a dummy numpy module for type hints
+    class DummyNumpy:
+        class ndarray:
+            pass
+    np = DummyNumpy()
 
 # Scikit-image import (conditional)
 if is_numpy_enabled() and can_load_service("scikit_learn"):
@@ -974,3 +982,8 @@ class ImageProcessingService:
 
 # Global image processing service instance
 image_processing_service = ImageProcessingService()
+
+
+def get_image_processing_service() -> ImageProcessingService:
+    """Get the global image processing service instance."""
+    return image_processing_service

@@ -93,18 +93,18 @@ Reynard consists of 40+ specialized packages, each with a specific purpose:
 
 ### Specialized Packages
 
-| Package                  | Purpose              | Key Features                           |
-| ------------------------ | -------------------- | -------------------------------------- |
-| `reynard-chat`           | Chat system          | Real-time messaging, message history   |
-| `reynard-rag`            | RAG system           | Vector search, embeddings, retrieval   |
+| Package                  | Purpose              | Key Features                              |
+| ------------------------ | -------------------- | ----------------------------------------- |
+| `reynard-chat`           | Chat system          | Real-time messaging, message history      |
+| `reynard-rag`            | RAG system           | Vector search, embeddings, retrieval      |
 | `reynard-auth`           | Authentication       | Modular auth system, JWT, user management |
-| `reynard-gallery`        | Media management     | File uploads, thumbnails, galleries    |
-| `reynard-annotating`     | AI captioning        | Multiple AI models, batch processing   |
-| `reynard-floating-panel` | Floating panels      | Staggered animations, state management |
-| `reynard-3d`             | 3D components        | Three.js integration, 3D scenes        |
-| `reynard-charts`         | Data visualization   | Charts, graphs, analytics              |
-| `reynard-games`          | Game components      | Roguelike, puzzle games                |
-| `reynard-algorithms`     | Algorithm primitives | Data structures, utilities             |
+| `reynard-gallery`        | Media management     | File uploads, thumbnails, galleries       |
+| `reynard-annotating`     | AI captioning        | Multiple AI models, batch processing      |
+| `reynard-floating-panel` | Floating panels      | Staggered animations, state management    |
+| `reynard-3d`             | 3D components        | Three.js integration, 3D scenes           |
+| `reynard-charts`         | Data visualization   | Charts, graphs, analytics                 |
+| `reynard-games`          | Game components      | Roguelike, puzzle games                   |
+| `reynard-algorithms`     | Algorithm primitives | Data structures, utilities                |
 
 ### Project Structure
 

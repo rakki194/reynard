@@ -15,11 +15,11 @@ vi.mock("reynard-queue-watcher", () => {
     isProcessing: false,
     queueDetails: {},
   });
-  
-  const MockFileQueueManager = vi.fn().mockImplementation(function() {
+
+  const MockFileQueueManager = vi.fn().mockImplementation(function () {
     this.getStatus = mockGetStatus;
   });
-  
+
   return {
     FileQueueManager: MockFileQueueManager,
   };
@@ -106,7 +106,7 @@ describe("LintingQueueManager", () => {
   describe("getLintingStatus", () => {
     it("should return linting-specific status", () => {
       const status = queueManager.getLintingStatus();
-      
+
       expect(status).toBeDefined();
       expect(status.isRunning).toBe(false); // Based on mock
       expect(status.totalFiles).toBe(0);
@@ -127,7 +127,7 @@ describe("LintingQueueManager", () => {
 
     it("should include base status properties", () => {
       const status = queueManager.getLintingStatus();
-      
+
       expect(status.totalQueues).toBe(1);
       expect(status.processingFiles).toEqual([]);
       expect(status.isProcessing).toBe(false);
@@ -147,7 +147,7 @@ describe("LintingQueueManager", () => {
       };
 
       queueManager.updateLintingStats(result);
-      
+
       const status = queueManager.getLintingStatus();
       expect(status.totalFiles).toBe(1);
       expect(status.filesWithIssues).toBe(0);
@@ -185,7 +185,7 @@ describe("LintingQueueManager", () => {
       };
 
       queueManager.updateLintingStats(result);
-      
+
       const status = queueManager.getLintingStatus();
       expect(status.totalFiles).toBe(1);
       expect(status.filesWithIssues).toBe(1);
@@ -214,7 +214,7 @@ describe("LintingQueueManager", () => {
 
       queueManager.updateLintingStats(result1);
       queueManager.updateLintingStats(result2);
-      
+
       const status = queueManager.getLintingStatus();
       expect(status.totalFiles).toBe(2);
       expect(status.averageLintTime).toBe(150); // (100 + 200) / 2
@@ -278,7 +278,7 @@ describe("LintingQueueManager", () => {
       ];
 
       results.forEach(result => queueManager.updateLintingStats(result));
-      
+
       const status = queueManager.getLintingStatus();
       expect(status.totalFiles).toBe(3);
       expect(status.filesWithIssues).toBe(2); // file2 and file3 have issues
@@ -310,17 +310,17 @@ describe("LintingQueueManager", () => {
       };
 
       queueManager.updateLintingStats(result);
-      
+
       // Verify statistics are set
       let status = queueManager.getLintingStatus();
       expect(status.totalFiles).toBe(1);
       expect(status.filesWithIssues).toBe(1);
       expect(status.totalIssues).toBe(1);
       expect(status.averageLintTime).toBe(100);
-      
+
       // Reset statistics
       queueManager.resetLintingStats();
-      
+
       // Verify statistics are reset
       status = queueManager.getLintingStatus();
       expect(status.totalFiles).toBe(0);
@@ -334,7 +334,7 @@ describe("LintingQueueManager", () => {
       expect(() => {
         queueManager.resetLintingStats();
       }).not.toThrow();
-      
+
       const status = queueManager.getLintingStatus();
       expect(status.totalFiles).toBe(0);
       expect(status.filesWithIssues).toBe(0);
@@ -358,13 +358,13 @@ describe("LintingQueueManager", () => {
 
       // Register processor
       queueManager.registerLintingProcessor("test", processor);
-      
+
       // Process a file
       const result = await processor.process("/test/file.ts");
-      
+
       // Update statistics
       queueManager.updateLintingStats(result);
-      
+
       // Check status
       const status = queueManager.getLintingStatus();
       expect(status.totalFiles).toBe(1);
@@ -382,7 +382,7 @@ describe("LintingQueueManager", () => {
       };
 
       queueManager.updateLintingStats(result);
-      
+
       const status = queueManager.getLintingStatus();
       expect(status.totalFiles).toBe(1);
       expect(status.averageLintTime).toBe(0);

@@ -1,12 +1,12 @@
 /**
  * 🦊 Gesture Animation System
- * 
+ *
  * Connects gestures to animation properties with momentum and physics
  */
 
-import { GestureDetector, GestureEvent, GestureOptions } from './GestureDetector';
-import { createSimpleAnimation } from '../utils/SimplifiedAnimationLoop';
-import type { EasingType } from '../types';
+import { GestureDetector, GestureEvent, GestureOptions } from "./GestureDetector";
+import { createSimpleAnimation } from "../utils/SimplifiedAnimationLoop";
+import type { EasingType } from "../types";
 
 export interface GestureAnimationConfig {
   element: HTMLElement;
@@ -59,7 +59,7 @@ export class GestureAnimationSystem {
         friction: 0.95,
         maxVelocity: 2,
       },
-      easing: 'easeOutCubic',
+      easing: "easeOutCubic",
       ...config,
     };
 
@@ -87,7 +87,7 @@ export class GestureAnimationSystem {
   private handleGestureStart(event: GestureEvent): void {
     this.isDragging = true;
     this.state.isAnimating = false;
-    
+
     // Stop any existing momentum animation
     if (this.momentumAnimation) {
       this.momentumAnimation();
@@ -101,7 +101,7 @@ export class GestureAnimationSystem {
     if (!this.isDragging) return;
 
     // Update state based on gesture type and enabled properties
-    if (event.type === 'drag' || event.type === 'swipe') {
+    if (event.type === "drag" || event.type === "swipe") {
       if (this.config.properties.translateX) {
         this.state.translateX += event.deltaX - (event.deltaX - (event.currentX - event.startX));
       }
@@ -110,7 +110,7 @@ export class GestureAnimationSystem {
       }
     }
 
-    if (event.type === 'pinch') {
+    if (event.type === "pinch") {
       if (this.config.properties.scale && event.scale) {
         this.state.scale = Math.max(0.1, Math.min(5, event.scale));
       }
@@ -132,7 +132,7 @@ export class GestureAnimationSystem {
     this.isDragging = false;
 
     // Apply momentum if enabled
-    if (this.config.momentum?.enabled && (event.type === 'drag' || event.type === 'swipe')) {
+    if (this.config.momentum?.enabled && (event.type === "drag" || event.type === "swipe")) {
       this.applyMomentum(event.velocityX, event.velocityY);
     }
 
@@ -144,7 +144,7 @@ export class GestureAnimationSystem {
 
     const friction = this.config.momentum.friction;
     const maxVelocity = this.config.momentum.maxVelocity;
-    
+
     // Clamp velocity
     velocityX = Math.max(-maxVelocity, Math.min(maxVelocity, velocityX));
     velocityY = Math.max(-maxVelocity, Math.min(maxVelocity, velocityY));
@@ -216,21 +216,21 @@ export class GestureAnimationSystem {
 
   private applyTransform(): void {
     const transform = [];
-    
+
     if (this.config.properties.translateX || this.config.properties.translateY) {
       transform.push(`translate3d(${this.state.translateX}px, ${this.state.translateY}px, 0)`);
     }
-    
+
     if (this.config.properties.scale) {
       transform.push(`scale(${this.state.scale})`);
     }
-    
+
     if (this.config.properties.rotate) {
       transform.push(`rotate(${this.state.rotate}rad)`);
     }
 
-    this.config.element.style.transform = transform.join(' ');
-    
+    this.config.element.style.transform = transform.join(" ");
+
     if (this.config.properties.opacity) {
       this.config.element.style.opacity = this.state.opacity.toString();
     }
@@ -253,15 +253,23 @@ export class GestureAnimationSystem {
 
     this.momentumAnimation = createSimpleAnimation(
       duration,
-      this.config.easing || 'easeOutCubic',
-      (progress) => {
+      this.config.easing || "easeOutCubic",
+      progress => {
         // Interpolate between start and target state
-        this.state.translateX = this.lerp(startState.translateX, targetState.translateX || startState.translateX, progress);
-        this.state.translateY = this.lerp(startState.translateY, targetState.translateY || startState.translateY, progress);
+        this.state.translateX = this.lerp(
+          startState.translateX,
+          targetState.translateX || startState.translateX,
+          progress
+        );
+        this.state.translateY = this.lerp(
+          startState.translateY,
+          targetState.translateY || startState.translateY,
+          progress
+        );
         this.state.scale = this.lerp(startState.scale, targetState.scale || startState.scale, progress);
         this.state.rotate = this.lerp(startState.rotate, targetState.rotate || startState.rotate, progress);
         this.state.opacity = this.lerp(startState.opacity, targetState.opacity || startState.opacity, progress);
-        
+
         this.applyBounds();
         this.applyTransform();
       },

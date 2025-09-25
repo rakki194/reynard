@@ -52,7 +52,11 @@ export const AI_PACKAGES: DirectoryDefinition[] = [
     {
       relationships: buildRelationships(
         COMMON_RELATIONSHIPS.AI_SHARED_DEPENDENCY,
-        { directory: "packages/ai/annotating-florence2", type: "dependency", description: "Used by Florence2 annotator" },
+        {
+          directory: "packages/ai/annotating-florence2",
+          type: "dependency",
+          description: "Used by Florence2 annotator",
+        },
         { directory: "packages/ai/annotating-joy", type: "dependency", description: "Used by Joy annotator" }
       ),
       metadata: AI_METADATA,
@@ -64,10 +68,11 @@ export const AI_PACKAGES: DirectoryDefinition[] = [
     "packages/ai/annotating-florence2",
     "Florence2 model integration for image annotation - provides specialized annotation capabilities using Microsoft's Florence2 vision-language model for detailed image understanding and annotation",
     {
-      relationships: buildRelationships(
-        COMMON_RELATIONSHIPS.AI_SHARED_DEPENDENCY,
-        { directory: "packages/ai/annotating-core", type: "dependency", description: "Uses core annotation system" }
-      ),
+      relationships: buildRelationships(COMMON_RELATIONSHIPS.AI_SHARED_DEPENDENCY, {
+        directory: "packages/ai/annotating-core",
+        type: "dependency",
+        description: "Uses core annotation system",
+      }),
       metadata: AI_METADATA,
     }
   ),
@@ -77,10 +82,11 @@ export const AI_PACKAGES: DirectoryDefinition[] = [
     "packages/ai/annotating-joy",
     "Joy model integration for document annotation - provides document annotation capabilities using the Joy model for text and document understanding and annotation",
     {
-      relationships: buildRelationships(
-        COMMON_RELATIONSHIPS.AI_SHARED_DEPENDENCY,
-        { directory: "packages/ai/annotating-core", type: "dependency", description: "Uses core annotation system" }
-      ),
+      relationships: buildRelationships(COMMON_RELATIONSHIPS.AI_SHARED_DEPENDENCY, {
+        directory: "packages/ai/annotating-core",
+        type: "dependency",
+        description: "Uses core annotation system",
+      }),
       metadata: AI_METADATA,
     }
   ),
@@ -90,10 +96,11 @@ export const AI_PACKAGES: DirectoryDefinition[] = [
     "packages/ai/annotating-jtp2",
     "JTP2 model integration for specialized annotation tasks - provides specialized annotation capabilities using the JTP2 model for advanced annotation workflows",
     {
-      relationships: buildRelationships(
-        COMMON_RELATIONSHIPS.AI_SHARED_DEPENDENCY,
-        { directory: "packages/ai/annotating-core", type: "dependency", description: "Uses core annotation system" }
-      ),
+      relationships: buildRelationships(COMMON_RELATIONSHIPS.AI_SHARED_DEPENDENCY, {
+        directory: "packages/ai/annotating-core",
+        type: "dependency",
+        description: "Uses core annotation system",
+      }),
       metadata: AI_METADATA,
     }
   ),
@@ -117,10 +124,11 @@ export const AI_PACKAGES: DirectoryDefinition[] = [
     "packages/ai/annotating-wdv3",
     "WDV3 model integration for advanced annotation workflows - provides advanced annotation capabilities using the WDV3 model for complex annotation tasks and workflows",
     {
-      relationships: buildRelationships(
-        COMMON_RELATIONSHIPS.AI_SHARED_DEPENDENCY,
-        { directory: "packages/ai/annotating-core", type: "dependency", description: "Uses core annotation system" }
-      ),
+      relationships: buildRelationships(COMMON_RELATIONSHIPS.AI_SHARED_DEPENDENCY, {
+        directory: "packages/ai/annotating-core",
+        type: "dependency",
+        description: "Uses core annotation system",
+      }),
       metadata: AI_METADATA,
     }
   ),
@@ -204,7 +212,11 @@ export const AI_PACKAGES: DirectoryDefinition[] = [
       relationships: buildRelationships(
         COMMON_RELATIONSHIPS.AI_SHARED_DEPENDENCY,
         COMMON_RELATIONSHIPS.CORE_DEPENDENCY,
-        { directory: "packages/data/repository-core", type: "dependency", description: "Uses repository for model storage" }
+        {
+          directory: "packages/data/repository-core",
+          type: "dependency",
+          description: "Uses repository for model storage",
+        }
       ),
       metadata: AI_METADATA,
     }

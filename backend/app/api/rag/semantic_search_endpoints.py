@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/semantic-search", tags=["semantic-search"])
 
 
-@router.post("/search")
+@router.post("/search", operation_id="rag_semantic_search")
 async def semantic_search(
     query: str,
     search_type: str = Query(
@@ -122,7 +122,7 @@ async def semantic_search(
         )
 
 
-@router.post("/code-analysis")
+@router.post("/code-analysis", operation_id="rag_code_analysis")
 async def analyze_code_structure(
     query: str,
     analysis_type: str = Query(
@@ -231,7 +231,7 @@ async def analyze_code_structure(
         )
 
 
-@router.post("/document-search")
+@router.post("/document-search", operation_id="rag_document_search")
 async def search_documentation(
     query: str,
     doc_type: str = Query(
@@ -314,7 +314,7 @@ async def search_documentation(
         )
 
 
-@router.get("/search-stats")
+@router.get("/search-stats", operation_id="rag_search_stats")
 async def get_search_statistics() -> JSONResponse:
     """Get semantic search statistics and capabilities."""
     try:

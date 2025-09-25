@@ -31,4 +31,4 @@ export interface LoggerOptions {
   colors?: Partial<ColorConfig>;
 }
 
-export type LogLevel = 'info' | 'warn' | 'error' | 'success' | 'debug' | 'verbose';
+export type LogLevel = "info" | "warn" | "error" | "success" | "debug" | "verbose";

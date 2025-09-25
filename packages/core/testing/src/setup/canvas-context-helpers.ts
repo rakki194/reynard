@@ -15,9 +15,19 @@ export function createDrawingMethods(): Record<string, any> {
     fillRect: vi.fn(),
     clearRect: vi.fn(),
     strokeRect: vi.fn(),
-    getImageData: vi.fn(() => ({ data: new Uint8ClampedArray(4), width: 1, height: 1, colorSpace: "srgb" as PredefinedColorSpace })),
+    getImageData: vi.fn(() => ({
+      data: new Uint8ClampedArray(4),
+      width: 1,
+      height: 1,
+      colorSpace: "srgb" as PredefinedColorSpace,
+    })),
     putImageData: vi.fn(),
-    createImageData: vi.fn(() => ({ data: new Uint8ClampedArray(4), width: 1, height: 1, colorSpace: "srgb" as PredefinedColorSpace })),
+    createImageData: vi.fn(() => ({
+      data: new Uint8ClampedArray(4),
+      width: 1,
+      height: 1,
+      colorSpace: "srgb" as PredefinedColorSpace,
+    })),
     drawImage: vi.fn(),
   };
 }
@@ -60,14 +70,14 @@ export function createTextMethods(): Record<string, any> {
   return {
     fillText: vi.fn(),
     strokeText: vi.fn(),
-    measureText: vi.fn(() => ({ 
-      width: 0, 
-      actualBoundingBoxAscent: 0, 
-      actualBoundingBoxDescent: 0, 
-      actualBoundingBoxLeft: 0, 
-      actualBoundingBoxRight: 0, 
-      fontBoundingBoxAscent: 0, 
-      fontBoundingBoxDescent: 0 
+    measureText: vi.fn(() => ({
+      width: 0,
+      actualBoundingBoxAscent: 0,
+      actualBoundingBoxDescent: 0,
+      actualBoundingBoxLeft: 0,
+      actualBoundingBoxRight: 0,
+      fontBoundingBoxAscent: 0,
+      fontBoundingBoxDescent: 0,
     })),
   };
 }

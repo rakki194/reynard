@@ -82,12 +82,7 @@ describe("AuthOrchestrator", () => {
         loginEndpoint: "/custom/login",
       };
 
-      const orchestrator = createAuthOrchestrator(
-        customConfig,
-        mockCallbacks,
-        mockAuthState,
-        mockUpdateAuthState
-      );
+      const orchestrator = createAuthOrchestrator(customConfig, mockCallbacks, mockAuthState, mockUpdateAuthState);
 
       expect(orchestrator).toBeDefined();
       expect(createAuthClient).toHaveBeenCalledWith(
@@ -104,12 +99,7 @@ describe("AuthOrchestrator", () => {
     let orchestrator: any;
 
     beforeEach(() => {
-      orchestrator = createAuthOrchestrator(
-        DEFAULT_AUTH_CONFIG,
-        mockCallbacks,
-        mockAuthState,
-        mockUpdateAuthState
-      );
+      orchestrator = createAuthOrchestrator(DEFAULT_AUTH_CONFIG, mockCallbacks, mockAuthState, mockUpdateAuthState);
     });
 
     it("should return auth state function", () => {

@@ -18,8 +18,8 @@ vi.mock("node:child_process", () => ({
 
 // Mock node:util to ensure promisify works with our exec mock
 vi.mock("node:util", () => ({
-  promisify: vi.fn().mockImplementation((fn) => {
-    if (fn.name === 'exec') {
+  promisify: vi.fn().mockImplementation(fn => {
+    if (fn.name === "exec") {
       return vi.fn().mockImplementation(async (command: string) => {
         return new Promise((resolve, reject) => {
           // Use the mocked exec function
@@ -297,7 +297,7 @@ describe("PortManager", () => {
 
     it("should check if port is in use", async () => {
       mockNetwork.setPortInUse(3000, true);
-      
+
       // Debug: Check if the mock network is working
       expect(mockNetwork.isPortInUse(3000)).toBe(true);
 

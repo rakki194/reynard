@@ -18,7 +18,16 @@ describe("Queue Watcher Integration", () => {
     });
 
     it("should have proper directory coverage", () => {
-      const expectedDirs = ["../../../packages", "../../../backend", "../../../services", "../../../docs", "../../../examples", "../../../templates", "../../../e2e", "../../../scripts"];
+      const expectedDirs = [
+        "../../../packages",
+        "../../../backend",
+        "../../../services",
+        "../../../docs",
+        "../../../examples",
+        "../../../templates",
+        "../../../e2e",
+        "../../../scripts",
+      ];
 
       for (const dir of expectedDirs) {
         expect(DEFAULT_CONFIG.watchDirectories).toContain(dir);

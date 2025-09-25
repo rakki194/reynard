@@ -16,7 +16,7 @@ vi.doMock("path", () => ({
       return parts.slice(0, -1).join("/") || "/";
     }),
     join: vi.fn((...args: string[]) => args.join("/")),
-    resolve: vi.fn((path: string) => path.startsWith("/") ? path : "/test/workspace/" + path),
+    resolve: vi.fn((path: string) => (path.startsWith("/") ? path : "/test/workspace/" + path)),
   },
   dirname: vi.fn((path: string) => {
     if (!path) return "/";
@@ -24,7 +24,7 @@ vi.doMock("path", () => ({
     return parts.slice(0, -1).join("/") || "/";
   }),
   join: vi.fn((...args: string[]) => args.join("/")),
-  resolve: vi.fn((path: string) => path.startsWith("/") ? path : "/test/workspace/" + path),
+  resolve: vi.fn((path: string) => (path.startsWith("/") ? path : "/test/workspace/" + path)),
 }));
 
 // Import config after mocking
@@ -42,7 +42,7 @@ describe("Configuration", () => {
   describe("createDefaultConfig", () => {
     it("should create a default configuration", () => {
       const config = createDefaultConfig("/test/workspace");
-      
+
       expect(config).toHaveProperty("rootPath");
       expect(config).toHaveProperty("linters");
       expect(config).toHaveProperty("includePatterns");
@@ -68,9 +68,9 @@ describe("Configuration", () => {
 
     it("should include default linters", () => {
       const config = createDefaultConfig("/test/workspace");
-      
+
       expect(config.linters.length).toBeGreaterThan(0);
-      
+
       const linterNames = config.linters.map(l => l.name);
       expect(linterNames).toContain("eslint");
       expect(linterNames).toContain("ruff");
@@ -79,7 +79,7 @@ describe("Configuration", () => {
 
     it("should have reasonable default values", () => {
       const config = createDefaultConfig("/test/workspace");
-      
+
       expect(config.debounceDelay).toBeGreaterThan(0);
       expect(config.maxConcurrency).toBeGreaterThan(0);
       expect(config.maxConcurrency).toBeLessThanOrEqual(10);
@@ -104,7 +104,7 @@ describe("Configuration", () => {
             timeout: 30000,
             parallel: true,
             priority: 10,
-          }
+          },
         ],
         includePatterns: ["**/*.ts"],
         excludePatterns: ["**/node_modules/**"],
@@ -120,10 +120,10 @@ describe("Configuration", () => {
       mockFsPromises.readFile.mockResolvedValue(configContent);
 
       const config = await loadConfig("/test/workspace/.reynard-linting.json");
-      
+
       expect(config).toHaveProperty("rootPath");
       expect(config).toHaveProperty("linters");
-      
+
       // Check if the mock was called - if not, we get the default config
       if (mockFsPromises.readFile.mock.calls.length > 0) {
         // Mock was called, expect the mocked config
@@ -140,7 +140,7 @@ describe("Configuration", () => {
       mockFs.existsSync.mockReturnValue(false);
 
       const config = await loadConfig("/test/workspace/.reynard-linting.json");
-      
+
       expect(config).toHaveProperty("rootPath");
       expect(config).toHaveProperty("linters");
       expect(config.linters.length).toBeGreaterThan(0);
@@ -151,7 +151,7 @@ describe("Configuration", () => {
       mockFs.readFileSync.mockReturnValue(Buffer.from("invalid json"));
 
       const config = await loadConfig("/test/workspace/.reynard-linting.json");
-      
+
       // Should fall back to default config
       expect(config).toHaveProperty("rootPath");
       expect(config).toHaveProperty("linters");
@@ -164,7 +164,7 @@ describe("Configuration", () => {
       });
 
       const config = await loadConfig("/test/workspace/.reynard-linting.json");
-      
+
       // Should fall back to default config
       expect(config).toHaveProperty("rootPath");
       expect(config).toHaveProperty("linters");
@@ -173,9 +173,9 @@ describe("Configuration", () => {
     it("should handle non-ENOENT file read errors gracefully", async () => {
       // Mock fs/promises.readFile to throw a non-ENOENT error
       mockFsPromises.readFile.mockRejectedValue(new Error("Permission denied"));
-      
+
       const config = await loadConfig("/restricted/config.json");
-      
+
       // Should return default config
       expect(config).toBeDefined();
       expect(config.rootPath).toBe("/");
@@ -186,28 +186,26 @@ describe("Configuration", () => {
       // Mock fs/promises.mkdir and writeFile
       mockFsPromises.mkdir.mockResolvedValue(undefined);
       mockFsPromises.writeFile.mockResolvedValue(undefined);
-      
+
       const testConfig = createDefaultConfig("/test");
       const configPath = "/test/config.json";
-      
+
       await expect(saveConfig(testConfig, configPath)).resolves.not.toThrow();
-      
+
       expect(mockFsPromises.mkdir).toHaveBeenCalledWith("/test", { recursive: true });
-      expect(mockFsPromises.writeFile).toHaveBeenCalledWith(
-        configPath,
-        JSON.stringify(testConfig, null, 2),
-        "utf-8"
-      );
+      expect(mockFsPromises.writeFile).toHaveBeenCalledWith(configPath, JSON.stringify(testConfig, null, 2), "utf-8");
     });
 
     it("should test saveConfig function error handling", async () => {
       // Mock fs/promises.mkdir to throw an error
       mockFsPromises.mkdir.mockRejectedValue(new Error("Permission denied"));
-      
+
       const testConfig = createDefaultConfig("/test");
       const configPath = "/test/config.json";
-      
-      await expect(saveConfig(testConfig, configPath)).rejects.toThrow("Failed to save configuration to /test/config.json: Error: Permission denied");
+
+      await expect(saveConfig(testConfig, configPath)).rejects.toThrow(
+        "Failed to save configuration to /test/config.json: Error: Permission denied"
+      );
     });
   });
 
@@ -215,7 +213,7 @@ describe("Configuration", () => {
     it("should validate a correct configuration", () => {
       const config = createDefaultConfig("/test/workspace");
       const result = validateConfig(config);
-      
+
       expect(result.valid).toBe(true);
       expect(result.errors).toHaveLength(0);
     });
@@ -223,9 +221,9 @@ describe("Configuration", () => {
     it("should detect missing rootPath", () => {
       const config = createDefaultConfig("/test/workspace");
       config.rootPath = "";
-      
+
       const result = validateConfig(config);
-      
+
       expect(result.valid).toBe(false);
       expect(result.errors.length).toBeGreaterThan(0);
       expect(result.errors.some(e => e.includes("rootPath"))).toBe(true);
@@ -235,9 +233,9 @@ describe("Configuration", () => {
       const config = createDefaultConfig("/test/workspace");
       config.linters[0].name = "";
       config.linters[0].command = "";
-      
+
       const result = validateConfig(config);
-      
+
       expect(result.valid).toBe(false);
       expect(result.errors.length).toBeGreaterThan(0);
     });
@@ -246,9 +244,9 @@ describe("Configuration", () => {
       const config = createDefaultConfig("/test/workspace");
       config.debounceDelay = -1;
       config.maxConcurrency = 0;
-      
+
       const result = validateConfig(config);
-      
+
       expect(result.valid).toBe(false);
       expect(result.errors.length).toBeGreaterThan(0);
     });
@@ -257,9 +255,9 @@ describe("Configuration", () => {
       const config = createDefaultConfig("/test/workspace");
       config.includePatterns = [];
       config.excludePatterns = [];
-      
+
       const result = validateConfig(config);
-      
+
       expect(result.valid).toBe(false);
       expect(result.errors.length).toBeGreaterThan(0);
     });
@@ -267,24 +265,24 @@ describe("Configuration", () => {
     it("should detect linter with empty patterns", () => {
       const config = createDefaultConfig("/test/workspace");
       config.linters[0].patterns = [];
-      
+
       const result = validateConfig(config);
-      
+
       expect(result.valid).toBe(false);
       expect(result.errors).toContain("Linter eslint must have at least one pattern");
     });
 
-  it("should detect empty linters array", () => {
-    const config = createDefaultConfig("/test/workspace");
-    config.linters = [];
-    
-    const result = validateConfig(config);
-    
-    expect(result.valid).toBe(false);
-    expect(result.errors).toContain("At least one linter must be configured");
-  });
+    it("should detect empty linters array", () => {
+      const config = createDefaultConfig("/test/workspace");
+      config.linters = [];
 
-  // Note: saveConfig tests are skipped due to path mocking issues
-  // The saveConfig function is tested indirectly through CLI tests
-});
+      const result = validateConfig(config);
+
+      expect(result.valid).toBe(false);
+      expect(result.errors).toContain("At least one linter must be configured");
+    });
+
+    // Note: saveConfig tests are skipped due to path mocking issues
+    // The saveConfig function is tested indirectly through CLI tests
+  });
 });

@@ -1,6 +1,6 @@
 /**
  * 🎭 Staggered Animation Demo
- * 
+ *
  * Showcase of staggered animation effects
  */
 
@@ -20,14 +20,14 @@ export const StaggeredAnimationDemo: Component = () => {
     duration: 500,
     delay: 100,
     stagger: 50,
-    direction: "forward" as "forward" | "reverse" | "center" | "random"
+    direction: "forward" as "forward" | "reverse" | "center" | "random",
   });
 
   const staggeredAnimation = useStaggeredAnimation({
     duration: animationConfig().duration,
     delay: animationConfig().delay,
     stagger: animationConfig().stagger,
-    direction: animationConfig().direction
+    direction: animationConfig().direction,
   });
 
   const startAnimation = () => {
@@ -42,16 +42,16 @@ export const StaggeredAnimationDemo: Component = () => {
     const newId = Math.max(...items().map(i => i.id)) + 1;
     const colors = [
       "var(--color-primary)",
-      "var(--color-secondary)", 
+      "var(--color-secondary)",
       "var(--color-accent)",
       "var(--color-success)",
       "var(--color-warning)",
-      "var(--color-error)"
+      "var(--color-error)",
     ];
     const newItem = {
       id: newId,
       text: `Item ${newId}`,
-      color: colors[newId % colors.length]
+      color: colors[newId % colors.length],
     };
     setItems(prev => [...prev, newItem]);
   };
@@ -66,9 +66,7 @@ export const StaggeredAnimationDemo: Component = () => {
     <div class="staggered-animation-demo">
       <div class="demo-header">
         <h1 class="page-title">🎭 Staggered Animation Demo</h1>
-        <p class="page-description">
-          Experience sequential animation effects with customizable timing and direction.
-        </p>
+        <p class="page-description">Experience sequential animation effects with customizable timing and direction.</p>
       </div>
 
       {/* Controls */}
@@ -86,10 +84,12 @@ export const StaggeredAnimationDemo: Component = () => {
               max="1000"
               step="100"
               value={animationConfig().duration}
-              onInput={(e) => setAnimationConfig(prev => ({
-                ...prev,
-                duration: parseInt(e.currentTarget.value)
-              }))}
+              onInput={e =>
+                setAnimationConfig(prev => ({
+                  ...prev,
+                  duration: parseInt(e.currentTarget.value),
+                }))
+              }
             />
             <span class="control-value">{animationConfig().duration}ms</span>
           </div>
@@ -102,10 +102,12 @@ export const StaggeredAnimationDemo: Component = () => {
               max="500"
               step="50"
               value={animationConfig().delay}
-              onInput={(e) => setAnimationConfig(prev => ({
-                ...prev,
-                delay: parseInt(e.currentTarget.value)
-              }))}
+              onInput={e =>
+                setAnimationConfig(prev => ({
+                  ...prev,
+                  delay: parseInt(e.currentTarget.value),
+                }))
+              }
             />
             <span class="control-value">{animationConfig().delay}ms</span>
           </div>
@@ -118,10 +120,12 @@ export const StaggeredAnimationDemo: Component = () => {
               max="200"
               step="25"
               value={animationConfig().stagger}
-              onInput={(e) => setAnimationConfig(prev => ({
-                ...prev,
-                stagger: parseInt(e.currentTarget.value)
-              }))}
+              onInput={e =>
+                setAnimationConfig(prev => ({
+                  ...prev,
+                  stagger: parseInt(e.currentTarget.value),
+                }))
+              }
             />
             <span class="control-value">{animationConfig().stagger}ms</span>
           </div>
@@ -130,10 +134,12 @@ export const StaggeredAnimationDemo: Component = () => {
             <label class="control-label">Direction</label>
             <select
               value={animationConfig().direction}
-              onChange={(e) => setAnimationConfig(prev => ({
-                ...prev,
-                direction: e.currentTarget.value as "forward" | "reverse" | "center" | "random"
-              }))}
+              onChange={e =>
+                setAnimationConfig(prev => ({
+                  ...prev,
+                  direction: e.currentTarget.value as "forward" | "reverse" | "center" | "random",
+                }))
+              }
             >
               <option value="forward">Forward</option>
               <option value="reverse">Reverse</option>
@@ -171,9 +177,7 @@ export const StaggeredAnimationDemo: Component = () => {
         <div class="status-grid">
           <div class="status-item">
             <span class="status-label">Is Animating:</span>
-            <span class="status-value">
-              {staggeredAnimation.isAnimating() ? "Yes" : "No"}
-            </span>
+            <span class="status-value">{staggeredAnimation.isAnimating() ? "Yes" : "No"}</span>
           </div>
           <div class="status-item">
             <span class="status-label">Total Items:</span>
@@ -210,19 +214,15 @@ export const StaggeredAnimationDemo: Component = () => {
                   style={{
                     "background-color": item.color,
                     "animation-delay": `${animationItem()?.delay || 0}ms`,
-                    "opacity": animationItem()?.isAnimating ? "1" : "0.7",
-                    "transform": `scale(${Math.max(animationItem()?.progress || 0.1, 0.1)})`,
-                    "transition": "all 0.3s ease"
+                    opacity: animationItem()?.isAnimating ? "1" : "0.7",
+                    transform: `scale(${Math.max(animationItem()?.progress || 0.1, 0.1)})`,
+                    transition: "all 0.3s ease",
                   }}
                 >
                   <div class="item-content">
                     <div class="item-text">{item.text}</div>
-                    <div class="item-delay">
-                      Delay: {animationItem()?.delay || 0}ms
-                    </div>
-                    <div class="item-progress">
-                      Progress: {Math.round((animationItem()?.progress || 0) * 100)}%
-                    </div>
+                    <div class="item-delay">Delay: {animationItem()?.delay || 0}ms</div>
+                    <div class="item-progress">Progress: {Math.round((animationItem()?.progress || 0) * 100)}%</div>
                   </div>
                 </div>
               );
@@ -238,7 +238,7 @@ export const StaggeredAnimationDemo: Component = () => {
           Code Example
         </h2>
         <pre class="code-example">
-{`import { useStaggeredAnimation } from "reynard-animation";
+          {`import { useStaggeredAnimation } from "reynard-animation";
 
 const staggeredAnimation = useStaggeredAnimation({
   duration: 500,

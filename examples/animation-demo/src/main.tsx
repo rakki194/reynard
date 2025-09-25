@@ -1,6 +1,6 @@
 /**
  * 🎬 Animation Demo Main Entry Point
- * 
+ *
  * Entry point for the Reynard Animation System Demo
  */
 

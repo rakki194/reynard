@@ -15,14 +15,14 @@ graph TB
         A --> D[Health Checker]
         A --> E[Metrics Tracker]
         A --> F[Security Manager]
-        
+
         subgraph "🌐 Connection Types"
             B --> B1[HTTP Connection]
             B --> B2[WebSocket Connection]
             B --> B3[SSE Connection]
             B --> B4[Database Connection]
         end
-        
+
         subgraph "🛠️ HTTP Client System"
             G[HTTP Client] --> G1[Middleware Stack]
             G --> G2[Request/Response]
@@ -32,7 +32,7 @@ graph TB
             G1 --> G6[Cache Middleware]
             G1 --> G7[Rate Limit Middleware]
         end
-        
+
         subgraph "✅ Validation System"
             H[Validation Utils] --> H1[Schema Validation]
             H --> H2[Field Validators]
@@ -44,7 +44,7 @@ graph TB
             H2 --> H8[Password Validator]
             H2 --> H9[Token Validator]
         end
-        
+
         subgraph "⚠️ Error Handling System"
             I[Error System] --> I1[Error Classes]
             I --> I2[Error Handlers]
@@ -57,14 +57,14 @@ graph TB
             I2 --> I9[Network Handler]
             I2 --> I10[Auth Handler]
         end
-        
+
         subgraph "🔄 Retry Strategies"
             J[Retry System] --> J1[Exponential Backoff]
             J --> J2[Linear Backoff]
             J --> J3[Fixed Delay]
             J --> J4[Jitter Retry]
         end
-        
+
         subgraph "📊 Connection Management"
             K[Connection Pool] --> K1[Acquire/Release]
             K --> K2[Health Monitoring]
@@ -72,7 +72,7 @@ graph TB
             L[WebSocket Pool] --> L1[WebSocket Management]
             L --> L2[Connection Reuse]
         end
-        
+
         subgraph "🔒 Security Features"
             M[Security Manager] --> M1[Authorization Headers]
             M --> M2[Security Levels]
@@ -80,14 +80,14 @@ graph TB
             M --> M4[Rate Limiting]
         end
     end
-    
+
     subgraph "📦 External Dependencies"
         N[Browser APIs] --> B2
         N --> B3
         O[Fetch API] --> B1
         P[EventSource] --> B3
     end
-    
+
     A -->|Manages| Q[Application Connections]
     G -->|HTTP Requests| R[Backend Services]
     H -->|Validates| S[User Input]
@@ -104,14 +104,14 @@ sequenceDiagram
     participant Pool as Connection Pool
     participant Health as Health Checker
     participant Metrics as Metrics Tracker
-    
+
     Note over App, Metrics: Connection Initialization
     App->>Manager: Create Connection Manager
     Manager->>Connection: Initialize Base Connection
     Connection->>Pool: Register with Pool
     Pool->>Health: Setup Health Monitoring
     Health->>Metrics: Initialize Metrics Tracking
-    
+
     Note over App, Metrics: Connection Lifecycle
     App->>Manager: Connect to Service
     Manager->>Connection: connect()
@@ -119,19 +119,19 @@ sequenceDiagram
     Connection->>Metrics: Track Connection Event
     Connection-->>Manager: Connection Established
     Manager-->>App: Connection Ready
-    
+
     Note over App, Metrics: Health Monitoring
     Health->>Connection: healthCheck()
     Connection-->>Health: Health Status
     Health->>Metrics: Update Health Metrics
     Health->>Manager: Report Health Status
-    
+
     Note over App, Metrics: Data Flow
     App->>Connection: send(data)
     Connection->>Connection: Process Data
     Connection->>Metrics: Track Request
     Connection-->>App: Response Data
-    
+
     Note over App, Metrics: Error Handling
     Connection->>Connection: Handle Error
     Connection->>Metrics: Track Error
@@ -145,33 +145,33 @@ sequenceDiagram
 ```mermaid
 flowchart TD
     A[Connection Request] --> B{Connection Type?}
-    
+
     B -->|HTTP| C[HTTP Connection]
     B -->|WebSocket| D[WebSocket Connection]
     B -->|SSE| E[SSE Connection]
     B -->|Database| F[Database Connection]
-    
+
     C --> C1[Fetch API]
     C1 --> C2[POST/GET Request]
     C2 --> C3[JSON Response]
-    
+
     D --> D1[WebSocket API]
     D1 --> D2[Persistent Connection]
     D2 --> D3[Message Events]
-    
+
     E --> E1[EventSource API]
     E1 --> E2[Server-Sent Events]
     E2 --> E3[One-way Communication]
-    
+
     F --> F1[Database Driver]
     F1 --> F2[Query Execution]
     F2 --> F3[Result Set]
-    
+
     C3 --> G[Response Processing]
     D3 --> G
     E3 --> G
     F3 --> G
-    
+
     G --> H[Health Check]
     H --> I[Metrics Update]
     I --> J[Connection Status]

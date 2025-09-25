@@ -40,8 +40,9 @@
 .fallback-staggered-entrance {
   opacity: 0;
   transform: translateY(20px) scale(0.95);
-  transition: opacity var(--fallback-animation-duration) var(--fallback-animation-easing),
-              transform var(--fallback-animation-duration) var(--fallback-animation-easing);
+  transition:
+    opacity var(--fallback-animation-duration) var(--fallback-animation-easing),
+    transform var(--fallback-animation-duration) var(--fallback-animation-easing);
 }
 
 .fallback-staggered-entrance.animate {
@@ -53,8 +54,9 @@
 .fallback-staggered-exit {
   opacity: 1;
   transform: translateY(0) scale(1);
-  transition: opacity var(--fallback-animation-duration) var(--fallback-animation-easing),
-              transform var(--fallback-animation-duration) var(--fallback-animation-easing);
+  transition:
+    opacity var(--fallback-animation-duration) var(--fallback-animation-easing),
+    transform var(--fallback-animation-duration) var(--fallback-animation-easing);
 }
 
 .fallback-staggered-exit.animate {
@@ -63,47 +65,108 @@
 }
 
 /* Direction-specific animations */
-.fallback-staggered-forward .fallback-staggered-item:nth-child(1) { transition-delay: calc(var(--fallback-animation-delay) + 0 * var(--fallback-animation-stagger)); }
-.fallback-staggered-forward .fallback-staggered-item:nth-child(2) { transition-delay: calc(var(--fallback-animation-delay) + 1 * var(--fallback-animation-stagger)); }
-.fallback-staggered-forward .fallback-staggered-item:nth-child(3) { transition-delay: calc(var(--fallback-animation-delay) + 2 * var(--fallback-animation-stagger)); }
-.fallback-staggered-forward .fallback-staggered-item:nth-child(4) { transition-delay: calc(var(--fallback-animation-delay) + 3 * var(--fallback-animation-stagger)); }
-.fallback-staggered-forward .fallback-staggered-item:nth-child(5) { transition-delay: calc(var(--fallback-animation-delay) + 4 * var(--fallback-animation-stagger)); }
-.fallback-staggered-forward .fallback-staggered-item:nth-child(6) { transition-delay: calc(var(--fallback-animation-delay) + 5 * var(--fallback-animation-stagger)); }
-.fallback-staggered-forward .fallback-staggered-item:nth-child(7) { transition-delay: calc(var(--fallback-animation-delay) + 6 * var(--fallback-animation-stagger)); }
-.fallback-staggered-forward .fallback-staggered-item:nth-child(8) { transition-delay: calc(var(--fallback-animation-delay) + 7 * var(--fallback-animation-stagger)); }
-.fallback-staggered-forward .fallback-staggered-item:nth-child(9) { transition-delay: calc(var(--fallback-animation-delay) + 8 * var(--fallback-animation-stagger)); }
-.fallback-staggered-forward .fallback-staggered-item:nth-child(10) { transition-delay: calc(var(--fallback-animation-delay) + 9 * var(--fallback-animation-stagger)); }
+.fallback-staggered-forward .fallback-staggered-item:nth-child(1) {
+  transition-delay: calc(var(--fallback-animation-delay) + 0 * var(--fallback-animation-stagger));
+}
+.fallback-staggered-forward .fallback-staggered-item:nth-child(2) {
+  transition-delay: calc(var(--fallback-animation-delay) + 1 * var(--fallback-animation-stagger));
+}
+.fallback-staggered-forward .fallback-staggered-item:nth-child(3) {
+  transition-delay: calc(var(--fallback-animation-delay) + 2 * var(--fallback-animation-stagger));
+}
+.fallback-staggered-forward .fallback-staggered-item:nth-child(4) {
+  transition-delay: calc(var(--fallback-animation-delay) + 3 * var(--fallback-animation-stagger));
+}
+.fallback-staggered-forward .fallback-staggered-item:nth-child(5) {
+  transition-delay: calc(var(--fallback-animation-delay) + 4 * var(--fallback-animation-stagger));
+}
+.fallback-staggered-forward .fallback-staggered-item:nth-child(6) {
+  transition-delay: calc(var(--fallback-animation-delay) + 5 * var(--fallback-animation-stagger));
+}
+.fallback-staggered-forward .fallback-staggered-item:nth-child(7) {
+  transition-delay: calc(var(--fallback-animation-delay) + 6 * var(--fallback-animation-stagger));
+}
+.fallback-staggered-forward .fallback-staggered-item:nth-child(8) {
+  transition-delay: calc(var(--fallback-animation-delay) + 7 * var(--fallback-animation-stagger));
+}
+.fallback-staggered-forward .fallback-staggered-item:nth-child(9) {
+  transition-delay: calc(var(--fallback-animation-delay) + 8 * var(--fallback-animation-stagger));
+}
+.fallback-staggered-forward .fallback-staggered-item:nth-child(10) {
+  transition-delay: calc(var(--fallback-animation-delay) + 9 * var(--fallback-animation-stagger));
+}
 
 /* Reverse direction */
-.fallback-staggered-reverse .fallback-staggered-item:nth-child(1) { transition-delay: calc(var(--fallback-animation-delay) + 9 * var(--fallback-animation-stagger)); }
-.fallback-staggered-reverse .fallback-staggered-item:nth-child(2) { transition-delay: calc(var(--fallback-animation-delay) + 8 * var(--fallback-animation-stagger)); }
-.fallback-staggered-reverse .fallback-staggered-item:nth-child(3) { transition-delay: calc(var(--fallback-animation-delay) + 7 * var(--fallback-animation-stagger)); }
-.fallback-staggered-reverse .fallback-staggered-item:nth-child(4) { transition-delay: calc(var(--fallback-animation-delay) + 6 * var(--fallback-animation-stagger)); }
-.fallback-staggered-reverse .fallback-staggered-item:nth-child(5) { transition-delay: calc(var(--fallback-animation-delay) + 5 * var(--fallback-animation-stagger)); }
-.fallback-staggered-reverse .fallback-staggered-item:nth-child(6) { transition-delay: calc(var(--fallback-animation-delay) + 4 * var(--fallback-animation-stagger)); }
-.fallback-staggered-reverse .fallback-staggered-item:nth-child(7) { transition-delay: calc(var(--fallback-animation-delay) + 3 * var(--fallback-animation-stagger)); }
-.fallback-staggered-reverse .fallback-staggered-item:nth-child(8) { transition-delay: calc(var(--fallback-animation-delay) + 2 * var(--fallback-animation-stagger)); }
-.fallback-staggered-reverse .fallback-staggered-item:nth-child(9) { transition-delay: calc(var(--fallback-animation-delay) + 1 * var(--fallback-animation-stagger)); }
-.fallback-staggered-reverse .fallback-staggered-item:nth-child(10) { transition-delay: calc(var(--fallback-animation-delay) + 0 * var(--fallback-animation-stagger)); }
+.fallback-staggered-reverse .fallback-staggered-item:nth-child(1) {
+  transition-delay: calc(var(--fallback-animation-delay) + 9 * var(--fallback-animation-stagger));
+}
+.fallback-staggered-reverse .fallback-staggered-item:nth-child(2) {
+  transition-delay: calc(var(--fallback-animation-delay) + 8 * var(--fallback-animation-stagger));
+}
+.fallback-staggered-reverse .fallback-staggered-item:nth-child(3) {
+  transition-delay: calc(var(--fallback-animation-delay) + 7 * var(--fallback-animation-stagger));
+}
+.fallback-staggered-reverse .fallback-staggered-item:nth-child(4) {
+  transition-delay: calc(var(--fallback-animation-delay) + 6 * var(--fallback-animation-stagger));
+}
+.fallback-staggered-reverse .fallback-staggered-item:nth-child(5) {
+  transition-delay: calc(var(--fallback-animation-delay) + 5 * var(--fallback-animation-stagger));
+}
+.fallback-staggered-reverse .fallback-staggered-item:nth-child(6) {
+  transition-delay: calc(var(--fallback-animation-delay) + 4 * var(--fallback-animation-stagger));
+}
+.fallback-staggered-reverse .fallback-staggered-item:nth-child(7) {
+  transition-delay: calc(var(--fallback-animation-delay) + 3 * var(--fallback-animation-stagger));
+}
+.fallback-staggered-reverse .fallback-staggered-item:nth-child(8) {
+  transition-delay: calc(var(--fallback-animation-delay) + 2 * var(--fallback-animation-stagger));
+}
+.fallback-staggered-reverse .fallback-staggered-item:nth-child(9) {
+  transition-delay: calc(var(--fallback-animation-delay) + 1 * var(--fallback-animation-stagger));
+}
+.fallback-staggered-reverse .fallback-staggered-item:nth-child(10) {
+  transition-delay: calc(var(--fallback-animation-delay) + 0 * var(--fallback-animation-stagger));
+}
 
 /* Center-out direction */
-.fallback-staggered-center .fallback-staggered-item:nth-child(1) { transition-delay: calc(var(--fallback-animation-delay) + 4 * var(--fallback-animation-stagger)); }
-.fallback-staggered-center .fallback-staggered-item:nth-child(2) { transition-delay: calc(var(--fallback-animation-delay) + 3 * var(--fallback-animation-stagger)); }
-.fallback-staggered-center .fallback-staggered-item:nth-child(3) { transition-delay: calc(var(--fallback-animation-delay) + 2 * var(--fallback-animation-stagger)); }
-.fallback-staggered-center .fallback-staggered-item:nth-child(4) { transition-delay: calc(var(--fallback-animation-delay) + 1 * var(--fallback-animation-stagger)); }
-.fallback-staggered-center .fallback-staggered-item:nth-child(5) { transition-delay: calc(var(--fallback-animation-delay) + 0 * var(--fallback-animation-stagger)); }
-.fallback-staggered-center .fallback-staggered-item:nth-child(6) { transition-delay: calc(var(--fallback-animation-delay) + 1 * var(--fallback-animation-stagger)); }
-.fallback-staggered-center .fallback-staggered-item:nth-child(7) { transition-delay: calc(var(--fallback-animation-delay) + 2 * var(--fallback-animation-stagger)); }
-.fallback-staggered-center .fallback-staggered-item:nth-child(8) { transition-delay: calc(var(--fallback-animation-delay) + 3 * var(--fallback-animation-stagger)); }
-.fallback-staggered-center .fallback-staggered-item:nth-child(9) { transition-delay: calc(var(--fallback-animation-delay) + 4 * var(--fallback-animation-stagger)); }
-.fallback-staggered-center .fallback-staggered-item:nth-child(10) { transition-delay: calc(var(--fallback-animation-delay) + 5 * var(--fallback-animation-stagger)); }
+.fallback-staggered-center .fallback-staggered-item:nth-child(1) {
+  transition-delay: calc(var(--fallback-animation-delay) + 4 * var(--fallback-animation-stagger));
+}
+.fallback-staggered-center .fallback-staggered-item:nth-child(2) {
+  transition-delay: calc(var(--fallback-animation-delay) + 3 * var(--fallback-animation-stagger));
+}
+.fallback-staggered-center .fallback-staggered-item:nth-child(3) {
+  transition-delay: calc(var(--fallback-animation-delay) + 2 * var(--fallback-animation-stagger));
+}
+.fallback-staggered-center .fallback-staggered-item:nth-child(4) {
+  transition-delay: calc(var(--fallback-animation-delay) + 1 * var(--fallback-animation-stagger));
+}
+.fallback-staggered-center .fallback-staggered-item:nth-child(5) {
+  transition-delay: calc(var(--fallback-animation-delay) + 0 * var(--fallback-animation-stagger));
+}
+.fallback-staggered-center .fallback-staggered-item:nth-child(6) {
+  transition-delay: calc(var(--fallback-animation-delay) + 1 * var(--fallback-animation-stagger));
+}
+.fallback-staggered-center .fallback-staggered-item:nth-child(7) {
+  transition-delay: calc(var(--fallback-animation-delay) + 2 * var(--fallback-animation-stagger));
+}
+.fallback-staggered-center .fallback-staggered-item:nth-child(8) {
+  transition-delay: calc(var(--fallback-animation-delay) + 3 * var(--fallback-animation-stagger));
+}
+.fallback-staggered-center .fallback-staggered-item:nth-child(9) {
+  transition-delay: calc(var(--fallback-animation-delay) + 4 * var(--fallback-animation-stagger));
+}
+.fallback-staggered-center .fallback-staggered-item:nth-child(10) {
+  transition-delay: calc(var(--fallback-animation-delay) + 5 * var(--fallback-animation-stagger));
+}
 
 /* Floating panel specific animations */
 .floating-panel-fallback-entrance {
   opacity: 0;
   transform: translateY(20px) scale(0.95);
-  transition: opacity var(--fallback-animation-duration) var(--fallback-animation-easing),
-              transform var(--fallback-animation-duration) var(--fallback-animation-easing);
+  transition:
+    opacity var(--fallback-animation-duration) var(--fallback-animation-easing),
+    transform var(--fallback-animation-duration) var(--fallback-animation-easing);
 }
 
 .floating-panel-fallback-entrance.animate {
@@ -114,8 +177,9 @@
 .floating-panel-fallback-exit {
   opacity: 1;
   transform: translateY(0) scale(1);
-  transition: opacity var(--fallback-animation-duration) var(--fallback-animation-easing),
-              transform var(--fallback-animation-duration) var(--fallback-animation-easing);
+  transition:
+    opacity var(--fallback-animation-duration) var(--fallback-animation-easing),
+    transform var(--fallback-animation-duration) var(--fallback-animation-easing);
 }
 
 .floating-panel-fallback-exit.animate {
@@ -127,8 +191,9 @@
 .floating-panel-content-fallback {
   opacity: 0;
   transform: translateY(10px);
-  transition: opacity var(--fallback-animation-duration) var(--fallback-animation-easing),
-              transform var(--fallback-animation-duration) var(--fallback-animation-easing);
+  transition:
+    opacity var(--fallback-animation-duration) var(--fallback-animation-easing),
+    transform var(--fallback-animation-duration) var(--fallback-animation-easing);
 }
 
 .floating-panel-content-fallback.animate {
@@ -140,8 +205,9 @@
 .floating-panel-button-fallback {
   opacity: 0;
   transform: scale(0.8);
-  transition: opacity var(--fallback-animation-duration) var(--fallback-animation-easing),
-              transform var(--fallback-animation-duration) var(--fallback-animation-easing);
+  transition:
+    opacity var(--fallback-animation-duration) var(--fallback-animation-easing),
+    transform var(--fallback-animation-duration) var(--fallback-animation-easing);
 }
 
 .floating-panel-button-fallback.animate {

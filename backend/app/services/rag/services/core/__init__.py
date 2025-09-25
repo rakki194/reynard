@@ -13,7 +13,7 @@ Author: Reynard Development Team
 Version: 1.0.0
 """
 
-from .embedding import OllamaEmbeddingService as EmbeddingService
+from .ai_embedding import AIEmbeddingService as EmbeddingService
 from .vector_store import PostgreSQLVectorStore as VectorStoreService
 from .search import HybridSearchEngine as SearchEngine
 from .document_processor import ASTDocumentProcessor as DocumentIndexer

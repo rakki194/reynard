@@ -1,16 +1,16 @@
 /**
  * 🦊 3D Animation Utilities
- * 
+ *
  * Utility functions for 3D animations consolidated from the 3D package.
  * Provides interpolation, easing, and animation execution functions.
  */
 
-import type { 
-  EmbeddingPoint, 
-  ClusterAnimation, 
-  PointAnimation, 
+import type {
+  EmbeddingPoint,
+  ClusterAnimation,
+  PointAnimation,
   CameraAnimation,
-  EasingType 
+  EasingType,
 } from "./ThreeDAnimationTypes.js";
 import { Easing } from "../easing/easing.js";
 
@@ -41,19 +41,23 @@ export function interpolateEmbeddingPoint(
   easing: EasingType = "linear"
 ): EmbeddingPoint {
   const easedT = Easing[easing](t);
-  
+
   return {
     x: start.x + (end.x - start.x) * easedT,
     y: start.y + (end.y - start.y) * easedT,
     z: start.z + (end.z - start.z) * easedT,
-    color: start.color && end.color ? [
-      start.color[0] + (end.color[0] - start.color[0]) * easedT,
-      start.color[1] + (end.color[1] - start.color[1]) * easedT,
-      start.color[2] + (end.color[2] - start.color[2]) * easedT,
-    ] as [number, number, number] : start.color || end.color,
-    size: start.size !== undefined && end.size !== undefined 
-      ? start.size + (end.size - start.size) * easedT 
-      : start.size || end.size,
+    color:
+      start.color && end.color
+        ? ([
+            start.color[0] + (end.color[0] - start.color[0]) * easedT,
+            start.color[1] + (end.color[1] - start.color[1]) * easedT,
+            start.color[2] + (end.color[2] - start.color[2]) * easedT,
+          ] as [number, number, number])
+        : start.color || end.color,
+    size:
+      start.size !== undefined && end.size !== undefined
+        ? start.size + (end.size - start.size) * easedT
+        : start.size || end.size,
     label: start.label || end.label,
     metadata: start.metadata || end.metadata,
   };
@@ -78,17 +82,17 @@ export function getInterpolatedClusterPoints(
       if (clusterAnimation.isAnimating) {
         const progress = clusterAnimation.progress;
         const easedProgress = Easing[clusterAnimation.easing](progress);
-        
+
         // Calculate distance from cluster center
         const distance = Math.sqrt(
           Math.pow(point.x - clusterAnimation.center[0], 2) +
-          Math.pow(point.y - clusterAnimation.center[1], 2) +
-          Math.pow(point.z - clusterAnimation.center[2], 2)
+            Math.pow(point.y - clusterAnimation.center[1], 2) +
+            Math.pow(point.z - clusterAnimation.center[2], 2)
         );
 
         // Apply expansion effect
         if (distance < clusterAnimation.expansionRadius) {
-          const expansionFactor = 1 + (easedProgress * 0.5); // 50% expansion
+          const expansionFactor = 1 + easedProgress * 0.5; // 50% expansion
           const directionX = (point.x - clusterAnimation.center[0]) / distance;
           const directionY = (point.y - clusterAnimation.center[1]) / distance;
           const directionZ = (point.z - clusterAnimation.center[2]) / distance;
@@ -123,13 +127,8 @@ export function getInterpolatedPointPositions(
       if (pointAnimation.isAnimating && index < pointAnimation.targetPoints.length) {
         const progress = pointAnimation.progress;
         const targetPoint = pointAnimation.targetPoints[index];
-        
-        interpolatedPoint = interpolateEmbeddingPoint(
-          point,
-          targetPoint,
-          progress,
-          pointAnimation.easing
-        );
+
+        interpolatedPoint = interpolateEmbeddingPoint(point, targetPoint, progress, pointAnimation.easing);
       }
     }
 
@@ -149,7 +148,7 @@ export async function executeClusterAnimation(options: {
   const { duration, easing, onProgress, onComplete } = options;
   const startTime = performance.now();
 
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const animate = (currentTime: number) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
@@ -268,14 +267,9 @@ export function createCameraAnimationInstance(options: {
 /**
  * Calculate distance between two 3D points
  */
-export function calculateDistance3D(
-  point1: [number, number, number],
-  point2: [number, number, number]
-): number {
+export function calculateDistance3D(point1: [number, number, number], point2: [number, number, number]): number {
   return Math.sqrt(
-    Math.pow(point2[0] - point1[0], 2) +
-    Math.pow(point2[1] - point1[1], 2) +
-    Math.pow(point2[2] - point1[2], 2)
+    Math.pow(point2[0] - point1[0], 2) + Math.pow(point2[1] - point1[1], 2) + Math.pow(point2[2] - point1[2], 2)
   );
 }
 
@@ -285,12 +279,8 @@ export function calculateDistance3D(
 export function normalizeVector3(vector: [number, number, number]): [number, number, number] {
   const length = Math.sqrt(vector[0] * vector[0] + vector[1] * vector[1] + vector[2] * vector[2]);
   if (length === 0) return [0, 0, 0];
-  
-  return [
-    vector[0] / length,
-    vector[1] / length,
-    vector[2] / length,
-  ];
+
+  return [vector[0] / length, vector[1] / length, vector[2] / length];
 }
 
 /**
@@ -298,7 +288,7 @@ export function normalizeVector3(vector: [number, number, number]): [number, num
  */
 export function calculateCenterPoint(points: EmbeddingPoint[]): [number, number, number] {
   if (points.length === 0) return [0, 0, 0];
-  
+
   const sum = points.reduce(
     (acc, point) => ({
       x: acc.x + point.x,
@@ -307,12 +297,8 @@ export function calculateCenterPoint(points: EmbeddingPoint[]): [number, number,
     }),
     { x: 0, y: 0, z: 0 }
   );
-  
-  return [
-    sum.x / points.length,
-    sum.y / points.length,
-    sum.z / points.length,
-  ];
+
+  return [sum.x / points.length, sum.y / points.length, sum.z / points.length];
 }
 
 /**
@@ -320,7 +306,7 @@ export function calculateCenterPoint(points: EmbeddingPoint[]): [number, number,
  */
 export function shouldDisable3DAnimations(): boolean {
   if (typeof window === "undefined") return true;
-  
+
   // Check for reduced motion preference
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     return true;

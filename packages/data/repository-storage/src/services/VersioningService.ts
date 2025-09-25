@@ -33,7 +33,10 @@ export class VersioningService {
     return { healthy: this.initialized, metadata: { service: "VersioningService" } };
   }
 
-  async createVersion(_datasetId: string, _version: Omit<DatasetVersion, "id" | "createdAt" | "datasetId">): Promise<DatasetVersion> {
+  async createVersion(
+    _datasetId: string,
+    _version: Omit<DatasetVersion, "id" | "createdAt" | "datasetId">
+  ): Promise<DatasetVersion> {
     throw new RepositoryError("VersioningService not implemented", "NOT_IMPLEMENTED");
   }
 

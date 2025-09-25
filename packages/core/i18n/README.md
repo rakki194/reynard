@@ -18,7 +18,7 @@ graph TB
         A --> D[Loading System]
         A --> E[Intl Integration]
         A --> F[Features System]
-        
+
         subgraph "🎯 Core Context"
             B --> B1[I18nProvider]
             B --> B2[I18nState]
@@ -32,7 +32,7 @@ graph TB
             B3 --> B10[Translation Function]
             B4 --> B11[Component Access]
         end
-        
+
         subgraph "🔄 Translation Engine"
             C --> C1[Translation Core]
             C --> C2[Translation Features]
@@ -47,7 +47,7 @@ graph TB
             C4 --> C11[createBaseI18nModule]
             C4 --> C12[createAnalyticsI18nModule]
         end
-        
+
         subgraph "📥 Loading System"
             D --> D1[Core Loader]
             D --> D2[Optimized Loader]
@@ -62,7 +62,7 @@ graph TB
             D4 --> D11[Namespace Loading]
             D4 --> D12[Dynamic Imports]
         end
-        
+
         subgraph "🌍 Intl Integration"
             E --> E1[Intl Formatter]
             E --> E2[Date Formatting]
@@ -76,7 +76,7 @@ graph TB
             E4 --> E10[Relative Time]
             E5 --> E11[Language-specific Rules]
         end
-        
+
         subgraph "🚀 Features System"
             F --> F1[Analytics]
             F --> F2[Debug System]
@@ -95,7 +95,7 @@ graph TB
             F5 --> F15[i18next Migration]
             F5 --> F16[solidI18n Migration]
         end
-        
+
         subgraph "🗣️ Language Support"
             G[37 Languages] --> G1[European Languages]
             G --> G2[Asian Languages]
@@ -106,7 +106,7 @@ graph TB
             G3 --> G7[Arabic, Hebrew, Turkish, etc.]
             G4 --> G8[Arabic, Hebrew, Persian, etc.]
         end
-        
+
         subgraph "📚 Translation Data"
             H[Translation Files] --> H1[37 Language Directories]
             H --> H2[Namespace Structure]
@@ -118,7 +118,7 @@ graph TB
             H3 --> H8[Type-safe Translations]
             H3 --> H9[Translation Types]
         end
-        
+
         subgraph "🧠 Grammar & Pluralization"
             I[Grammar System] --> I1[Pluralization Rules]
             I --> I2[Grammar Helpers]
@@ -131,7 +131,7 @@ graph TB
             I2 --> I9[Portuguese: complex plurals]
             I3 --> I10[Language-specific Rules]
         end
-        
+
         subgraph "🛠️ Utilities"
             J[Utility System] --> J1[Basic Utils]
             J --> J2[Formatting Utils]
@@ -147,7 +147,7 @@ graph TB
             J4 --> J12[Polish Plural]
         end
     end
-    
+
     subgraph "🌐 External Integration"
         K[SolidJS] --> K1[Reactive System]
         K --> K2[Context API]
@@ -156,7 +156,7 @@ graph TB
         L --> L2[Formatting APIs]
         L --> L3[Plural Rules]
     end
-    
+
     A -->|Provides| M[Translation API]
     B -->|Manages| N[Locale State]
     C -->|Handles| O[Translation Logic]
@@ -176,19 +176,19 @@ sequenceDiagram
     participant Loader as Loading System
     participant Cache as Cache System
     participant Intl as Intl API
-    
+
     Note over App, Intl: Application Initialization
     App->>Provider: Initialize I18n
     Provider->>Context: Create I18n State
     Context->>Engine: Setup Translation Engine
     Engine->>Loader: Configure Loading System
     Loader->>Cache: Initialize Cache
-    
+
     Note over App, Intl: Translation Request
     App->>Context: useI18n()
     Context->>Engine: t(key, params)
     Engine->>Cache: Check Cache
-    
+
     alt Translation in Cache
         Cache-->>Engine: Cached Translation
     else Translation Not Cached
@@ -197,12 +197,12 @@ sequenceDiagram
         Loader-->>Engine: Translation Data
         Engine->>Cache: Store in Cache
     end
-    
+
     Engine->>Intl: Format with Intl API
     Intl-->>Engine: Formatted Content
     Engine-->>Context: Final Translation
     Context-->>App: Translated Text
-    
+
     Note over App, Intl: Locale Change
     App->>Context: setLocale(newLocale)
     Context->>Engine: Update Locale
@@ -223,7 +223,7 @@ graph TB
         A --> C[Asian Languages]
         A --> D[Middle Eastern Languages]
         A --> E[RTL Languages]
-        
+
         subgraph "🇪🇺 European Languages (25)"
             B --> B1[English - en]
             B --> B2[German - de]
@@ -252,7 +252,7 @@ graph TB
             B --> B25[Greek - el]
             B --> B26[Maltese - mt]
         end
-        
+
         subgraph "🇦🇸 Asian Languages (8)"
             C --> C1[Japanese - ja]
             C --> C2[Korean - ko]
@@ -263,13 +263,13 @@ graph TB
             C --> C7[Indonesian - id]
             C --> C8[Turkish - tr]
         end
-        
+
         subgraph "🇦🇪 Middle Eastern Languages (3)"
             D --> D1[Arabic - ar]
             D --> D2[Hebrew - he]
             D --> D3[Ukrainian - uk]
         end
-        
+
         subgraph "🔄 RTL Languages (4)"
             E --> E1[Arabic - ar]
             E --> E2[Hebrew - he]
@@ -277,26 +277,26 @@ graph TB
             E --> E4[Urdu - ur]
         end
     end
-    
+
     subgraph "🧠 Advanced Features"
         F[Language Features] --> F1[Pluralization Rules]
         F --> F2[Grammar Helpers]
         F --> F3[RTL Support]
         F --> F4[Vowel Harmony]
-        
+
         F1 --> F1A[Russian: one/few/many]
         F1 --> F1B[Arabic: singular/dual/plural/large]
         F1 --> F1C[Polish: teen numbers]
         F1 --> F1D[Turkish: vowel harmony]
-        
+
         F2 --> F2A[Hungarian: a/az articles]
         F2 --> F2B[Portuguese: complex plurals]
         F2 --> F2C[Slavic: case handling]
-        
+
         F3 --> F3A[Text Direction]
         F3 --> F3B[Layout Support]
         F3 --> F3C[UI Adaptation]
-        
+
         F4 --> F4A[Turkish Rules]
         F4 --> F4B[Hungarian Rules]
         F4 --> F4C[Finnish Rules]
@@ -308,31 +308,31 @@ graph TB
 ```mermaid
 flowchart TD
     A[Translation Request] --> B{Cache Check}
-    
+
     B -->|Hit| C[Return Cached]
     B -->|Miss| D[Load Translation]
-    
+
     D --> E[Dynamic Import]
     E --> F[Load Language File]
     F --> G[Parse Translation Data]
     G --> H[Store in Cache]
     H --> I[Return Translation]
-    
+
     C --> J[Format Translation]
     I --> J
-    
+
     J --> K{Intl Formatting?}
     K -->|Yes| L[Apply Intl Formatting]
     K -->|No| M[Return Raw Translation]
-    
+
     L --> N[Date/Number/Currency Format]
     N --> O[Return Formatted]
     M --> O
-    
+
     O --> P[Update Analytics]
     P --> Q[Performance Monitoring]
     Q --> R[Return to Component]
-    
+
     subgraph "Cache Management"
         S[Cache System] --> S1[Translation Cache]
         S --> S2[Namespace Cache]
@@ -341,7 +341,7 @@ flowchart TD
         S2 --> S5[Namespace Isolation]
         S3 --> S6[Bundle Optimization]
     end
-    
+
     subgraph "Performance Features"
         T[Performance System] --> T1[Bundle Optimization]
         T --> T2[Tree Shaking]

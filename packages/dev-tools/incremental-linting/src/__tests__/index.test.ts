@@ -37,7 +37,7 @@ describe("Index Module", () => {
 
   it("should export all types", async () => {
     const indexModule = await import("../index.js");
-    
+
     // Check that type exports are available (they won't be at runtime, but the module should load)
     expect(indexModule).toBeDefined();
   });
@@ -51,7 +51,7 @@ describe("Index Module", () => {
   it("should create a default config when imported", async () => {
     const { createDefaultConfig } = await import("../index.js");
     const config = createDefaultConfig("/test");
-    
+
     expect(config).toBeDefined();
     expect(config.rootPath).toBe("/test");
     expect(config.linters).toBeDefined();

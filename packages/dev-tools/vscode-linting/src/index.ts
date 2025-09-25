@@ -16,5 +16,3 @@ export type { StatusType } from "./status-bar.js";
 
 // Default export
 export { activate as default } from "./extension.js";
-
-

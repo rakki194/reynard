@@ -123,7 +123,7 @@ describe("Watcher Core", () => {
       expect(mockOn).toHaveBeenCalledWith("unlink", expect.any(Function));
       expect(mockOn).toHaveBeenCalledWith("error", expect.any(Function));
       expect(mockOn).toHaveBeenCalledWith("ready", expect.any(Function));
-      
+
       // Verify that we have the correct number of calls (5 event types per directory)
       // The exact number depends on how many directories are being watched
       const totalCalls = mockOn.mock.calls.length;
@@ -147,7 +147,7 @@ describe("Watcher Core", () => {
       expect(mockOn).toHaveBeenCalledWith("unlink", expect.any(Function));
       // Should not handle rename events
       expect(mockOn).not.toHaveBeenCalledWith("rename", expect.any(Function));
-      
+
       // Verify that we have the correct number of calls (5 event types per directory)
       const totalCalls = mockOn.mock.calls.length;
       expect(totalCalls).toBeGreaterThan(0);

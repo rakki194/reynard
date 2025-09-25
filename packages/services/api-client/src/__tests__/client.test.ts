@@ -131,19 +131,19 @@ describe("Reynard API Client", () => {
     it("should accept custom HTTP client", () => {
       const customHttpClient = new HTTPClient();
       const client = createReynardApiClient({ httpClient: customHttpClient });
-      
+
       expect(client.httpClient).toBe(customHttpClient);
     });
 
     it("should accept custom base path", () => {
       const client = createReynardApiClient({ basePath: "https://api.example.com" });
-      
+
       expect(client.config.basePath).toBe("https://api.example.com");
     });
 
     it("should accept custom timeout", () => {
       const client = createReynardApiClient({ timeout: 5000 });
-      
+
       expect(client.httpClient).toBeDefined();
     });
   });

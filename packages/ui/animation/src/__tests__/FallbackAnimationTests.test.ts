@@ -1,21 +1,21 @@
 /**
  * 🦊 Fallback Animation Tests
- * 
+ *
  * Comprehensive test suite for fallback animation functionality.
  * Tests CSS fallback animations, immediate completion, and performance optimizations.
  */
 
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
-import { 
+import {
   useAnimationFallback,
   applyStaggeredFallback,
   applyImmediateCompletion,
   createFallbackAnimationCSS,
   applyFallbackAnimationCSS,
   removeFallbackAnimationClasses,
-  cleanupFallbackAnimationStyles
+  cleanupFallbackAnimationStyles,
 } from "../core/index.js";
-import { 
+import {
   applyColorFallbackTransition,
   applyHueFallbackShift,
   applyColorRampFallback,
@@ -25,9 +25,9 @@ import {
   createColorAnimationCSS,
   applyColorAnimationCSS,
   removeColorAnimationClasses,
-  cleanupColorAnimationStyles
+  cleanupColorAnimationStyles,
 } from "../color/index.js";
-import { 
+import {
   apply3DPointFallback,
   apply3DClusterFallback,
   apply3DCameraFallback,
@@ -38,12 +38,9 @@ import {
   create3DAnimationCSS,
   apply3DAnimationCSS,
   remove3DAnimationClasses,
-  cleanup3DAnimationStyles
+  cleanup3DAnimationStyles,
 } from "../3d/index.js";
-import { 
-  GlobalAnimationDisableFunctions,
-  AnimationDisableTesting
-} from "../global/GlobalAnimationDisableUtils.js";
+import { GlobalAnimationDisableFunctions, AnimationDisableTesting } from "../global/GlobalAnimationDisableUtils.js";
 
 // Mock DOM APIs
 const mockDocument = {
@@ -93,7 +90,7 @@ const mockWindow = {
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn(),
   })),
-  requestAnimationFrame: vi.fn((callback) => {
+  requestAnimationFrame: vi.fn(callback => {
     callback();
     return 1;
   }),
@@ -132,15 +129,15 @@ describe("Fallback Animation Tests", () => {
       };
 
       applyStaggeredFallback([mockElement], options);
-      
+
       expect(mockElement.style.setProperty).toHaveBeenCalled();
       expect(mockElement.classList.add).toHaveBeenCalled();
     });
 
     it("should create fallback animation CSS", () => {
       const transforms = {
-        "transform": "translateX(100px)",
-        "opacity": "0.5",
+        transform: "translateX(100px)",
+        opacity: "0.5",
       };
 
       const css = createFallbackAnimationCSS(transforms, {
@@ -156,8 +153,8 @@ describe("Fallback Animation Tests", () => {
 
     it("should apply fallback animation CSS to element", () => {
       const transforms = {
-        "transform": "translateX(100px)",
-        "opacity": "0.5",
+        transform: "translateX(100px)",
+        opacity: "0.5",
       };
 
       applyFallbackAnimationCSS(mockElement, transforms, {
@@ -173,13 +170,13 @@ describe("Fallback Animation Tests", () => {
 
     it("should remove fallback animation classes", () => {
       removeFallbackAnimationClasses(mockElement);
-      
+
       expect(mockElement.classList.remove).toHaveBeenCalled();
     });
 
     it("should cleanup fallback animation styles", () => {
       cleanupFallbackAnimationStyles(mockElement);
-      
+
       expect(mockElement.style.removeProperty).toHaveBeenCalled();
     });
   });
@@ -187,7 +184,7 @@ describe("Fallback Animation Tests", () => {
   describe("Immediate Completion for Disabled State", () => {
     it("should apply immediate completion when animations disabled", () => {
       GlobalAnimationDisableFunctions.disableAllAnimations();
-      
+
       const options = {
         duration: 300,
         easing: "ease-in-out",
@@ -196,35 +193,35 @@ describe("Fallback Animation Tests", () => {
       };
 
       applyStaggeredFallback([mockElement], options);
-      
+
       // Should apply immediate completion
       expect(mockElement.style.setProperty).toHaveBeenCalled();
     });
 
     it("should apply immediate completion for color animations", () => {
       GlobalAnimationDisableFunctions.disableAllAnimations();
-      
+
       const startColor = [255, 0, 0] as [number, number, number];
       const endColor = [0, 255, 0] as [number, number, number];
-      
+
       applyImmediateColorChange(mockElement, startColor, endColor);
-      
+
       expect(mockElement.style.setProperty).toHaveBeenCalled();
     });
 
     it("should apply immediate completion for 3D animations", () => {
       GlobalAnimationDisableFunctions.disableAllAnimations();
-      
+
       const point = { x: 100, y: 200, z: 300 };
-      
+
       applyImmediate3DTransform(mockElement, point);
-      
+
       expect(mockElement.style.transform).toBe("translate3d(100px, 200px, 300px)");
     });
 
     it("should handle immediate completion with performance optimizations", () => {
       GlobalAnimationDisableFunctions.togglePerformanceMode(true);
-      
+
       const options = {
         duration: 300,
         easing: "ease-in-out",
@@ -234,7 +231,7 @@ describe("Fallback Animation Tests", () => {
       };
 
       applyStaggeredFallback([mockElement], options);
-      
+
       expect(mockElement.style.setProperty).toHaveBeenCalled();
     });
   });
@@ -242,7 +239,7 @@ describe("Fallback Animation Tests", () => {
   describe("Performance Optimizations", () => {
     it("should apply performance optimizations in performance mode", () => {
       GlobalAnimationDisableFunctions.togglePerformanceMode(true);
-      
+
       const options = {
         duration: 300,
         easing: "ease-in-out",
@@ -252,13 +249,13 @@ describe("Fallback Animation Tests", () => {
       };
 
       applyStaggeredFallback([mockElement], options);
-      
+
       expect(mockElement.style.setProperty).toHaveBeenCalled();
     });
 
     it("should use reduced duration in performance mode", () => {
       GlobalAnimationDisableFunctions.togglePerformanceMode(true);
-      
+
       const options = {
         duration: 300,
         easing: "ease-in-out",
@@ -268,7 +265,7 @@ describe("Fallback Animation Tests", () => {
       };
 
       applyStaggeredFallback([mockElement], options);
-      
+
       // Should use reduced duration
       expect(mockElement.style.setProperty).toHaveBeenCalledWith(
         expect.stringContaining("duration"),
@@ -278,10 +275,10 @@ describe("Fallback Animation Tests", () => {
 
     it("should optimize color animations for performance", () => {
       GlobalAnimationDisableFunctions.togglePerformanceMode(true);
-      
+
       const startColor = [255, 0, 0] as [number, number, number];
       const endColor = [0, 255, 0] as [number, number, number];
-      
+
       applyColorFallbackTransition(mockElement, startColor, endColor, {
         duration: 300,
         easing: "ease-in-out",
@@ -289,16 +286,16 @@ describe("Fallback Animation Tests", () => {
         respectGlobalControl: true,
         performanceMode: true,
       });
-      
+
       expect(mockElement.style.setProperty).toHaveBeenCalled();
     });
 
     it("should optimize 3D animations for performance", () => {
       GlobalAnimationDisableFunctions.togglePerformanceMode(true);
-      
+
       const startPoint = { x: 0, y: 0, z: 0 };
       const endPoint = { x: 100, y: 200, z: 300 };
-      
+
       apply3DPointFallback(mockElement, startPoint, endPoint, {
         duration: 300,
         easing: "ease-in-out",
@@ -306,7 +303,7 @@ describe("Fallback Animation Tests", () => {
         respectGlobalControl: true,
         performanceMode: true,
       });
-      
+
       expect(mockElement.style.setProperty).toHaveBeenCalled();
     });
   });
@@ -333,7 +330,7 @@ describe("Fallback Animation Tests", () => {
       };
 
       applyStaggeredFallback([mockElement], options);
-      
+
       // Should apply immediate completion due to reduced motion
       expect(mockElement.style.setProperty).toHaveBeenCalled();
     });
@@ -359,7 +356,7 @@ describe("Fallback Animation Tests", () => {
       };
 
       applyStaggeredFallback([mockElement], options);
-      
+
       expect(mockElement.style.setProperty).toHaveBeenCalled();
     });
 
@@ -384,14 +381,14 @@ describe("Fallback Animation Tests", () => {
       };
 
       applyStaggeredFallback([mockElement], options);
-      
+
       expect(mockElement.style.setProperty).toHaveBeenCalled();
     });
 
     it("should provide accessible color animations", () => {
       const startColor = [255, 0, 0] as [number, number, number];
       const endColor = [0, 255, 0] as [number, number, number];
-      
+
       applyColorFallbackTransition(mockElement, startColor, endColor, {
         duration: 300,
         easing: "ease-in-out",
@@ -399,14 +396,14 @@ describe("Fallback Animation Tests", () => {
         respectGlobalControl: true,
         accessibilityMode: true,
       });
-      
+
       expect(mockElement.style.setProperty).toHaveBeenCalled();
     });
 
     it("should provide accessible 3D animations", () => {
       const startPoint = { x: 0, y: 0, z: 0 };
       const endPoint = { x: 100, y: 200, z: 300 };
-      
+
       apply3DPointFallback(mockElement, startPoint, endPoint, {
         duration: 300,
         easing: "ease-in-out",
@@ -414,7 +411,7 @@ describe("Fallback Animation Tests", () => {
         respectGlobalControl: true,
         accessibilityMode: true,
       });
-      
+
       expect(mockElement.style.setProperty).toHaveBeenCalled();
     });
   });
@@ -423,9 +420,9 @@ describe("Fallback Animation Tests", () => {
     it("should apply color fallback transition", () => {
       const startColor = [255, 0, 0] as [number, number, number];
       const endColor = [0, 255, 0] as [number, number, number];
-      
+
       applyColorFallbackTransition(mockElement, startColor, endColor);
-      
+
       expect(mockElement.style.setProperty).toHaveBeenCalled();
       expect(mockElement.classList.add).toHaveBeenCalled();
     });
@@ -433,9 +430,9 @@ describe("Fallback Animation Tests", () => {
     it("should apply hue fallback shift", () => {
       const baseColor = { l: 0.5, c: 0.2, h: 0 };
       const deltaH = 60;
-      
+
       applyHueFallbackShift(mockElement, baseColor, deltaH);
-      
+
       expect(mockElement.style.setProperty).toHaveBeenCalled();
       expect(mockElement.classList.add).toHaveBeenCalled();
     });
@@ -446,22 +443,19 @@ describe("Fallback Animation Tests", () => {
         [0, 255, 0] as [number, number, number],
         [0, 0, 255] as [number, number, number],
       ];
-      
+
       applyColorRampFallback(mockElement, colors);
-      
+
       expect(mockElement.style.setProperty).toHaveBeenCalled();
       expect(mockElement.classList.add).toHaveBeenCalled();
     });
 
     it("should apply staggered color fallback", () => {
       const elements = [mockElement, mockDocument.createElement() as any];
-      const colors = [
-        [255, 0, 0] as [number, number, number],
-        [0, 255, 0] as [number, number, number],
-      ];
-      
+      const colors = [[255, 0, 0] as [number, number, number], [0, 255, 0] as [number, number, number]];
+
       applyStaggeredColorFallback(elements, colors);
-      
+
       elements.forEach(element => {
         expect(element.style.setProperty).toHaveBeenCalled();
         expect(element.classList.add).toHaveBeenCalled();
@@ -471,41 +465,38 @@ describe("Fallback Animation Tests", () => {
     it("should apply immediate color change", () => {
       const startColor = [255, 0, 0] as [number, number, number];
       const endColor = [0, 255, 0] as [number, number, number];
-      
+
       applyImmediateColorChange(mockElement, startColor, endColor);
-      
+
       expect(mockElement.style.setProperty).toHaveBeenCalled();
     });
 
     it("should apply immediate color ramp", () => {
-      const colors = [
-        [255, 0, 0] as [number, number, number],
-        [0, 255, 0] as [number, number, number],
-      ];
-      
+      const colors = [[255, 0, 0] as [number, number, number], [0, 255, 0] as [number, number, number]];
+
       applyImmediateColorRamp(mockElement, colors);
-      
+
       expect(mockElement.style.setProperty).toHaveBeenCalled();
     });
 
     it("should create color animation CSS", () => {
       const transforms = {
-        "color": "rgb(255, 0, 0)",
+        color: "rgb(255, 0, 0)",
         "background-color": "rgb(0, 255, 0)",
       };
-      
+
       const css = createColorAnimationCSS(transforms, {
         duration: 300,
         easing: "ease-in-out",
       });
-      
+
       expect(css).toContain("--color: rgb(255, 0, 0)");
       expect(css).toContain("--background-color: rgb(0, 255, 0)");
     });
 
     it("should cleanup color animation styles", () => {
       cleanupColorAnimationStyles(mockElement);
-      
+
       expect(mockElement.style.removeProperty).toHaveBeenCalled();
       expect(mockElement.classList.remove).toHaveBeenCalled();
     });
@@ -515,9 +506,9 @@ describe("Fallback Animation Tests", () => {
     it("should apply 3D point fallback", () => {
       const startPoint = { x: 0, y: 0, z: 0 };
       const endPoint = { x: 100, y: 200, z: 300 };
-      
+
       apply3DPointFallback(mockElement, startPoint, endPoint);
-      
+
       expect(mockElement.style.setProperty).toHaveBeenCalled();
       expect(mockElement.classList.add).toHaveBeenCalled();
     });
@@ -526,9 +517,9 @@ describe("Fallback Animation Tests", () => {
       const elements = [mockElement, mockDocument.createElement() as any];
       const center: [number, number, number] = [100, 200, 300];
       const expansionRadius = 50;
-      
+
       apply3DClusterFallback(elements, center, expansionRadius);
-      
+
       elements.forEach(element => {
         expect(element.style.setProperty).toHaveBeenCalled();
         expect(element.classList.add).toHaveBeenCalled();
@@ -538,53 +529,53 @@ describe("Fallback Animation Tests", () => {
     it("should apply 3D camera fallback", () => {
       const startPosition: [number, number, number] = [0, 0, 0];
       const endPosition: [number, number, number] = [100, 200, 300];
-      
+
       apply3DCameraFallback(mockElement, startPosition, endPosition);
-      
+
       expect(mockElement.style.setProperty).toHaveBeenCalled();
       expect(mockElement.classList.add).toHaveBeenCalled();
     });
 
     it("should apply 3D rotation fallback", () => {
       const rotation: [number, number, number] = [45, 90, 135];
-      
+
       apply3DRotationFallback(mockElement, rotation);
-      
+
       expect(mockElement.style.setProperty).toHaveBeenCalled();
       expect(mockElement.classList.add).toHaveBeenCalled();
     });
 
     it("should apply 3D scale fallback", () => {
       const scale: [number, number, number] = [1.5, 2.0, 0.5];
-      
+
       apply3DScaleFallback(mockElement, scale);
-      
+
       expect(mockElement.style.setProperty).toHaveBeenCalled();
       expect(mockElement.classList.add).toHaveBeenCalled();
     });
 
     it("should apply 3D translation fallback", () => {
       const translation: [number, number, number] = [100, 200, 300];
-      
+
       apply3DTranslationFallback(mockElement, translation);
-      
+
       expect(mockElement.style.setProperty).toHaveBeenCalled();
       expect(mockElement.classList.add).toHaveBeenCalled();
     });
 
     it("should create 3D animation CSS", () => {
       const transforms = {
-        "transform": "translate3d(100px, 200px, 300px)",
-        "opacity": "0.8",
+        transform: "translate3d(100px, 200px, 300px)",
+        opacity: "0.8",
       };
-      
+
       const css = create3DAnimationCSS(transforms, {
         duration: 300,
         easing: "ease-in-out",
         perspective: 1000,
         transformOrigin: "center center",
       });
-      
+
       expect(css).toContain("--transform: translate3d(100px, 200px, 300px)");
       expect(css).toContain("--opacity: 0.8");
       expect(css).toContain("--3d-perspective: 1000px");
@@ -593,7 +584,7 @@ describe("Fallback Animation Tests", () => {
 
     it("should cleanup 3D animation styles", () => {
       cleanup3DAnimationStyles(mockElement);
-      
+
       expect(mockElement.style.removeProperty).toHaveBeenCalled();
       expect(mockElement.classList.remove).toHaveBeenCalled();
     });
@@ -610,11 +601,11 @@ describe("Fallback Animation Tests", () => {
       const originalWindow = global.window;
       // @ts-ignore
       delete global.window;
-      
+
       expect(() => {
         applyStaggeredFallback([mockElement], {});
       }).not.toThrow();
-      
+
       // Restore window
       global.window = originalWindow;
     });
@@ -623,11 +614,11 @@ describe("Fallback Animation Tests", () => {
       const originalDocument = global.document;
       // @ts-ignore
       delete global.document;
-      
+
       expect(() => {
         applyStaggeredFallback([mockElement], {});
       }).not.toThrow();
-      
+
       // Restore document
       global.document = originalDocument;
     });
@@ -637,7 +628,7 @@ describe("Fallback Animation Tests", () => {
         duration: -1, // Invalid duration
         easing: null, // Invalid easing
       } as any;
-      
+
       expect(() => {
         applyStaggeredFallback([mockElement], invalidOptions);
       }).not.toThrow();
@@ -647,33 +638,32 @@ describe("Fallback Animation Tests", () => {
   describe("Performance Benchmarks", () => {
     it("should measure fallback animation performance", () => {
       const startTime = performance.now();
-      
+
       applyStaggeredFallback([mockElement], {
         duration: 300,
         easing: "ease-in-out",
       });
-      
+
       const endTime = performance.now();
       const duration = endTime - startTime;
-      
+
       // Should complete quickly (less than 10ms)
       expect(duration).toBeLessThan(10);
     });
 
     it("should measure immediate completion performance", () => {
       const startTime = performance.now();
-      
+
       applyImmediateCompletion([mockElement], {
         duration: 300,
         easing: "ease-in-out",
       });
-      
+
       const endTime = performance.now();
       const duration = endTime - startTime;
-      
+
       // Should complete very quickly (less than 5ms)
       expect(duration).toBeLessThan(5);
     });
   });
 });
-

@@ -99,7 +99,7 @@ export function useAuthContext(): AuthContextValue {
     throw new Error("useAuthContext must be used within an AuthProvider");
   }
   return context;
-};
+}
 
 /**
  * Higher-order component to require authentication
@@ -113,18 +113,18 @@ export function withAuth<T extends Record<string, any>>(
 ): Component<T> {
   return (props: T) => {
     const auth = useAuthContext();
-    
+
     if (auth.isLoading()) {
       return options.fallback ? <options.fallback /> : <div>Loading...</div>;
     }
-    
+
     if (!auth.isAuthenticated()) {
       if (options.redirectTo && typeof window !== "undefined") {
         window.location.href = options.redirectTo;
       }
       return options.fallback ? <options.fallback /> : <div>Authentication required</div>;
     }
-    
+
     return <WrappedComponent {...props} />;
   };
 }

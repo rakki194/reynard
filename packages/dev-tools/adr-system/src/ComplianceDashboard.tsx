@@ -15,7 +15,11 @@ import { fluentIconsPackage } from "reynard-fluent-icons";
 import { ComplianceScorer, ComplianceScore, ComplianceReport } from "./ComplianceScorer";
 import { RealTimeArchitectureMonitor, MonitoringDashboard } from "./RealTimeArchitectureMonitor";
 import { TeamPerformanceTracker, TeamMember, TeamPerformanceReport } from "./TeamPerformanceTracker";
-import { REYNARD_ARCHITECTURE, getDirectoriesByCategory, getDirectoriesByImportance } from "reynard-project-architecture";
+import {
+  REYNARD_ARCHITECTURE,
+  getDirectoriesByCategory,
+  getDirectoriesByImportance,
+} from "reynard-project-architecture";
 
 export interface DashboardConfig {
   refreshInterval: number;
@@ -26,7 +30,7 @@ export interface DashboardConfig {
     performance: number;
     security: number;
   };
-  theme: 'light' | 'dark' | 'auto';
+  theme: "light" | "dark" | "auto";
 }
 
 export interface TeamMetrics {
@@ -35,7 +39,7 @@ export interface TeamMetrics {
   violationsFixed: number;
   adrsCreated: number;
   lastActivity: string;
-  trend: 'improving' | 'declining' | 'stable';
+  trend: "improving" | "declining" | "stable";
   role: string;
   team: string;
   productivityScore: number;
@@ -51,7 +55,7 @@ export interface ComplianceDashboardProps {
   onComplianceChange?: (score: ComplianceScore) => void;
 }
 
-export const ComplianceDashboard: Component<ComplianceDashboardProps> = (props) => {
+export const ComplianceDashboard: Component<ComplianceDashboardProps> = props => {
   const [complianceScore, setComplianceScore] = createSignal<ComplianceScore | null>(null);
   const [complianceReport, setComplianceReport] = createSignal<ComplianceReport | null>(null);
   const [monitoringDashboard, setMonitoringDashboard] = createSignal<MonitoringDashboard | null>(null);
@@ -70,7 +74,7 @@ export const ComplianceDashboard: Component<ComplianceDashboardProps> = (props) 
       performance: 85,
       security: 90,
     },
-    theme: 'auto',
+    theme: "auto",
     ...props.config,
   };
 
@@ -107,16 +111,15 @@ export const ComplianceDashboard: Component<ComplianceDashboardProps> = (props) 
       // Check for alerts
       if (score.overall < dashboardConfig.alertThresholds.compliance) {
         props.onViolationAlert?.({
-          type: 'compliance',
-          severity: 'warning',
+          type: "compliance",
+          severity: "warning",
           message: `Compliance score below threshold: ${score.overall}%`,
           score,
         });
       }
-
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load compliance data');
-      console.error('Compliance data loading error:', err);
+      setError(err instanceof Error ? err.message : "Failed to load compliance data");
+      console.error("Compliance data loading error:", err);
     } finally {
       setIsLoading(false);
     }
@@ -128,7 +131,7 @@ export const ComplianceDashboard: Component<ComplianceDashboardProps> = (props) 
       const dashboard = await architectureMonitor.getDashboard();
       setMonitoringDashboard(dashboard);
     } catch (err) {
-      console.error('Monitoring data loading error:', err);
+      console.error("Monitoring data loading error:", err);
     }
   };
 
@@ -137,7 +140,7 @@ export const ComplianceDashboard: Component<ComplianceDashboardProps> = (props) 
     try {
       // Initialize team performance tracker
       await teamPerformanceTracker.initialize();
-      
+
       // Get team performance report
       const teamReport = await teamPerformanceTracker.getTeamPerformanceReport("Architecture", {
         start: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days ago
@@ -157,8 +160,11 @@ export const ComplianceDashboard: Component<ComplianceDashboardProps> = (props) 
               violationsFixed: Math.floor(Math.random() * 20) + 5,
               adrsCreated: Math.floor(Math.random() * 10) + 2,
               lastActivity: member.lastActive,
-              trend: memberPerformance.metrics.slice(-7).some(m => m.metadata.trend === 'improving') ? 'improving' : 
-                     memberPerformance.metrics.slice(-7).some(m => m.metadata.trend === 'declining') ? 'declining' : 'stable',
+              trend: memberPerformance.metrics.slice(-7).some(m => m.metadata.trend === "improving")
+                ? "improving"
+                : memberPerformance.metrics.slice(-7).some(m => m.metadata.trend === "declining")
+                  ? "declining"
+                  : "stable",
               role: member.role,
               team: member.team,
               productivityScore: Math.round(memberPerformance.productivity.productivityScore * 10),
@@ -171,19 +177,19 @@ export const ComplianceDashboard: Component<ComplianceDashboardProps> = (props) 
 
       setTeamMetrics(teamMetrics);
     } catch (err) {
-      console.error('Team metrics loading error:', err);
+      console.error("Team metrics loading error:", err);
     }
   };
 
   // Get project architecture insights
   const architectureInsights = createMemo(() => {
-    const criticalDirectories = getDirectoriesByImportance(REYNARD_ARCHITECTURE, 'critical');
-    const sourceDirectories = getDirectoriesByCategory(REYNARD_ARCHITECTURE, 'source');
-    
+    const criticalDirectories = getDirectoriesByImportance(REYNARD_ARCHITECTURE, "critical");
+    const sourceDirectories = getDirectoriesByCategory(REYNARD_ARCHITECTURE, "source");
+
     return {
       totalPackages: sourceDirectories.length,
       criticalPackages: criticalDirectories.length,
-      architectureHealth: 'healthy', // This would be calculated based on compliance
+      architectureHealth: "healthy", // This would be calculated based on compliance
     };
   });
 
@@ -194,18 +200,20 @@ export const ComplianceDashboard: Component<ComplianceDashboardProps> = (props) 
 
     return {
       labels: Object.keys(score.categories),
-      datasets: [{
-        label: "Compliance Score",
-        data: Object.values(score.categories),
-        backgroundColor: visualization.generateColors(Object.keys(score.categories).length, 0.7),
-        borderColor: visualization.generateColors(Object.keys(score.categories).length, 1),
-        borderWidth: 2,
-      }]
+      datasets: [
+        {
+          label: "Compliance Score",
+          data: Object.values(score.categories),
+          backgroundColor: visualization.generateColors(Object.keys(score.categories).length, 0.7),
+          borderColor: visualization.generateColors(Object.keys(score.categories).length, 1),
+          borderWidth: 2,
+        },
+      ],
     };
   });
 
   // Real-time monitoring data
-  const [realTimeData, setRealTimeData] = createSignal<Array<{timestamp: number, value: number, label: string}>>([]);
+  const [realTimeData, setRealTimeData] = createSignal<Array<{ timestamp: number; value: number; label: string }>>([]);
   let realTimeInterval: NodeJS.Timeout;
 
   const generateRealTimeData = () => {
@@ -221,11 +229,7 @@ export const ComplianceDashboard: Component<ComplianceDashboardProps> = (props) 
 
   // Initialize data loading
   onMount(async () => {
-    await Promise.all([
-      loadComplianceData(),
-      loadMonitoringData(),
-      loadTeamMetrics(),
-    ]);
+    await Promise.all([loadComplianceData(), loadMonitoringData(), loadTeamMetrics()]);
 
     // Set up auto-refresh
     const refreshInterval = setInterval(() => {
@@ -244,19 +248,22 @@ export const ComplianceDashboard: Component<ComplianceDashboardProps> = (props) 
 
   // Helper function to determine score class
   const getScoreClass = (score: number): string => {
-    if (score >= 90) return 'excellent';
-    if (score >= 80) return 'good';
-    if (score >= 70) return 'fair';
-    if (score >= 60) return 'poor';
-    return 'critical';
+    if (score >= 90) return "excellent";
+    if (score >= 80) return "good";
+    if (score >= 70) return "fair";
+    if (score >= 60) return "poor";
+    return "critical";
   };
 
   // Helper function to get trend icon
   const getTrendIcon = (trend: string): string => {
     switch (trend) {
-      case 'improving': return '📈';
-      case 'declining': return '📉';
-      default: return '➡️';
+      case "improving":
+        return "📈";
+      case "declining":
+        return "📉";
+      default:
+        return "➡️";
     }
   };
 
@@ -331,10 +338,7 @@ export const ComplianceDashboard: Component<ComplianceDashboardProps> = (props) 
                     <div class="category-score">
                       <span class="category-name">{category}</span>
                       <div class="score-bar">
-                        <div 
-                          class="score-fill" 
-                          style={{ width: `${score}%` }}
-                        ></div>
+                        <div class="score-fill" style={{ width: `${score}%` }}></div>
                       </div>
                       <span class="category-value">{score}%</span>
                     </div>
@@ -381,8 +385,8 @@ export const ComplianceDashboard: Component<ComplianceDashboardProps> = (props) 
             <Card class="metric-card">
               <h3>⚡ Performance</h3>
               <div class="metric-content">
-                <For each={monitoringDashboard()?.metrics.filter(m => m.category === 'performance') || []}>
-                  {(metric) => (
+                <For each={monitoringDashboard()?.metrics.filter(m => m.category === "performance") || []}>
+                  {metric => (
                     <div class="performance-metric">
                       <span class="metric-name">{metric.name}</span>
                       <span class="metric-value">{metric.value.toFixed(2)}</span>
@@ -399,7 +403,7 @@ export const ComplianceDashboard: Component<ComplianceDashboardProps> = (props) 
                 <Show when={complianceReport()?.violationAnalysis.byCategory.security}>
                   <div class="security-status">
                     <span class="security-score">
-                      {100 - ((complianceReport()?.violationAnalysis.byCategory.security || 0) * 5)}%
+                      {100 - (complianceReport()?.violationAnalysis.byCategory.security || 0) * 5}%
                     </span>
                     <span class="security-label">Security Score</span>
                   </div>
@@ -413,9 +417,7 @@ export const ComplianceDashboard: Component<ComplianceDashboardProps> = (props) 
               <div class="metric-content">
                 <div class="architecture-health">
                   <span class="health-status healthy">Healthy</span>
-                  <span class="health-details">
-                    {architectureInsights().totalPackages} packages monitored
-                  </span>
+                  <span class="health-details">{architectureInsights().totalPackages} packages monitored</span>
                 </div>
               </div>
             </Card>
@@ -464,13 +466,11 @@ export const ComplianceDashboard: Component<ComplianceDashboardProps> = (props) 
             <h2>👥 Team Performance</h2>
             <div class="team-grid">
               <For each={teamMetrics()}>
-                {(member) => (
+                {member => (
                   <Card class="team-member-card">
                     <div class="member-header">
                       <h4>{member.member}</h4>
-                      <div class={`trend-indicator ${member.trend}`}>
-                        {getTrendIcon(member.trend)}
-                      </div>
+                      <div class={`trend-indicator ${member.trend}`}>{getTrendIcon(member.trend)}</div>
                     </div>
                     <div class="member-metrics">
                       <div class="member-metric">
@@ -525,25 +525,19 @@ export const ComplianceDashboard: Component<ComplianceDashboardProps> = (props) 
               <Card class="recommendation-category">
                 <h4>🚨 Immediate</h4>
                 <ul>
-                  <For each={complianceReport()!.recommendations.immediate}>
-                    {(rec) => <li>{rec}</li>}
-                  </For>
+                  <For each={complianceReport()!.recommendations.immediate}>{rec => <li>{rec}</li>}</For>
                 </ul>
               </Card>
               <Card class="recommendation-category">
                 <h4>📅 Short Term</h4>
                 <ul>
-                  <For each={complianceReport()!.recommendations.shortTerm}>
-                    {(rec) => <li>{rec}</li>}
-                  </For>
+                  <For each={complianceReport()!.recommendations.shortTerm}>{rec => <li>{rec}</li>}</For>
                 </ul>
               </Card>
               <Card class="recommendation-category">
                 <h4>🎯 Long Term</h4>
                 <ul>
-                  <For each={complianceReport()!.recommendations.longTerm}>
-                    {(rec) => <li>{rec}</li>}
-                  </For>
+                  <For each={complianceReport()!.recommendations.longTerm}>{rec => <li>{rec}</li>}</For>
                 </ul>
               </Card>
             </div>
@@ -558,7 +552,15 @@ export const ComplianceDashboard: Component<ComplianceDashboardProps> = (props) 
                   {(action, index) => (
                     <Card class={`action-item ${action.priority}`}>
                       <div class="action-header">
-                        <Badge variant={action.priority === 'high' ? 'danger' : action.priority === 'medium' ? 'warning' : 'secondary'}>
+                        <Badge
+                          variant={
+                            action.priority === "high"
+                              ? "danger"
+                              : action.priority === "medium"
+                                ? "warning"
+                                : "secondary"
+                          }
+                        >
                           {action.priority}
                         </Badge>
                         <span class="action-title">{action.action}</span>

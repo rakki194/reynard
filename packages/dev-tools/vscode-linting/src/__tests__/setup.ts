@@ -36,7 +36,7 @@ vi.mock("vscode", () => ({
         uri: { fsPath: "/test/workspace" },
         name: "test-workspace",
         index: 0,
-      }
+      },
     ],
     getConfiguration: vi.fn(() => ({
       get: vi.fn(),

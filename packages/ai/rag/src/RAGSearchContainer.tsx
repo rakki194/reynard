@@ -19,7 +19,7 @@ import "./styles.css";
 export function RAGSearchContainer(props: RAGSearchProps) {
   // Initialize API service
   const apiService = new RAGApiService({ basePath: props.apiBaseUrl || "/api" });
-  
+
   // Initialize composables
   const documents = useRAGDocuments({ apiService });
   const search = useRAGSearch({
@@ -126,7 +126,7 @@ export function RAGSearchContainer(props: RAGSearchProps) {
   // Search handler
   const handleSearch = async (query: string, searchModality: RAGModality, searchTopK: number) => {
     await search.performSearch(query, searchModality, searchTopK);
-    
+
     // Add to history
     const results = search.results();
     history.addSearchToHistory(

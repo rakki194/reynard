@@ -345,4 +345,4 @@ For issues and questions:
 
 ---
 
-*Built with 🦊 for the Reynard ecosystem*
+_Built with 🦊 for the Reynard ecosystem_

@@ -16,7 +16,7 @@ graph TB
         A --> D[Dependency Analyzer]
         A --> E[VS Code Integration]
         A --> F[Diagram Generator]
-        
+
         subgraph "📋 Architecture Definition"
             B --> B1[REYNARD_ARCHITECTURE]
             B --> B2[Directory Definitions]
@@ -29,7 +29,7 @@ graph TB
             B3 --> B9[Build Dependencies]
             B3 --> B10[Test Dependencies]
         end
-        
+
         subgraph "🛠️ Utility Functions"
             C --> C1[Path Resolution]
             C --> C2[Directory Queries]
@@ -45,7 +45,7 @@ graph TB
             C4 --> C12[validateProjectStructure]
             C4 --> C13[generateProjectStructureReport]
         end
-        
+
         subgraph "🔍 Dependency Analyzer"
             D --> D1[Dependency Graph]
             D --> D2[Circular Detection]
@@ -61,7 +61,7 @@ graph TB
             D4 --> D12[Category Diagrams]
             D4 --> D13[Dependency Diagrams]
         end
-        
+
         subgraph "💻 VS Code Integration"
             E --> E1[Task Generation]
             E --> E2[Workspace Config]
@@ -76,7 +76,7 @@ graph TB
             E5 --> E11[generateTestTasks]
             E6 --> E12[generateLintTasks]
         end
-        
+
         subgraph "📊 Diagram Generator"
             F --> F1[Simplified Diagrams]
             F --> F2[Category Visualization]
@@ -87,7 +87,7 @@ graph TB
             F3 --> F7[Relationship Mapping]
             F4 --> F8[High-level Structure]
         end
-        
+
         subgraph "📁 Directory Categories"
             G[Category System] --> G1[Source Code]
             G --> G2[Documentation]
@@ -106,7 +106,7 @@ graph TB
             G4 --> G15[Dev Tools]
             G4 --> G16[Build Tools]
         end
-        
+
         subgraph "🎯 Importance Levels"
             H[Importance System] --> H1[Critical]
             H --> H2[Important]
@@ -122,7 +122,7 @@ graph TB
             H4 --> H12[Generated Files]
         end
     end
-    
+
     subgraph "🌐 External Integration"
         I[Development Tools] --> I1[TSConfig Generator]
         I --> I2[Queue Watcher]
@@ -133,7 +133,7 @@ graph TB
         J --> J2[Workspace Management]
         J --> J3[File Watching]
     end
-    
+
     A -->|Provides| K[Project Structure API]
     B -->|Defines| L[Monorepo Organization]
     C -->|Enables| M[Structure Operations]
@@ -152,13 +152,13 @@ sequenceDiagram
     participant Analyzer as Dependency Analyzer
     participant VSCode as VS Code
     participant Tools as Development Tools
-    
+
     Note over Dev, Tools: Project Structure Analysis
     Dev->>Arch: Query Project Structure
     Arch->>Utils: getWatchableDirectories()
     Utils->>Arch: Directory Definitions
     Arch-->>Dev: Watchable Directories List
-    
+
     Note over Dev, Tools: Dependency Analysis
     Dev->>Analyzer: Analyze Dependencies
     Analyzer->>Arch: Load Architecture Definition
@@ -167,7 +167,7 @@ sequenceDiagram
     Analyzer->>Analyzer: Detect Circular Dependencies
     Analyzer->>Analyzer: Generate Health Report
     Analyzer-->>Dev: Analysis Results
-    
+
     Note over Dev, Tools: VS Code Integration
     Dev->>VSCode: Generate Tasks
     VSCode->>Arch: Request Task Configuration
@@ -175,7 +175,7 @@ sequenceDiagram
     Utils-->>Arch: Buildable Directories
     Arch->>VSCode: Task Definitions
     VSCode-->>Dev: VS Code Tasks
-    
+
     Note over Dev, Tools: Development Workflow
     Dev->>Tools: Run Build/Test/Lint
     Tools->>Arch: Query Directory Config
@@ -198,7 +198,7 @@ graph TB
         A --> G[templates/]
         A --> H[e2e/]
         A --> I[scripts/]
-        
+
         subgraph "📦 Packages (77+ packages)"
             B --> B1[ai/ - 17 packages]
             B --> B2[core/ - 9 packages]
@@ -208,7 +208,7 @@ graph TB
             B --> B6[media/ - 9 packages]
             B --> B7[services/ - 5 packages]
             B --> B8[ui/ - 17 packages]
-            
+
             B1 --> B1A[rag, annotating-*, caption-*, comfy, model-management, multimodal, nlweb, tool-calling]
             B2 --> B2A[core, testing, validation, composables, config, connection, features, i18n, settings]
             B3 --> B3A[file-processing, repository-*, scraping, unified-repository]
@@ -218,14 +218,14 @@ graph TB
             B7 --> B7A[api-client, auth, chat, email]
             B8 --> B8A[animation, charts, components-*, dashboard, floating-panel, themes, ui]
         end
-        
+
         subgraph "🐍 Backend Services"
             C --> C1[Python Backend]
             C --> C2[FastAPI Services]
             C --> C3[Database Layer]
             C --> C4[API Endpoints]
         end
-        
+
         subgraph "🔧 Root Services"
             D --> D1[agent-naming/]
             D --> D2[gatekeeper/]
@@ -234,14 +234,14 @@ graph TB
             D2 --> D2A[Authentication]
             D3 --> D3A[47+ Development Tools]
         end
-        
+
         subgraph "📚 Documentation"
             E --> E1[Project Docs]
             E --> E2[API Documentation]
             E --> E3[Architecture Guides]
             E --> E4[Development Guides]
         end
-        
+
         subgraph "🎯 Examples & Templates"
             F --> F1[22 Example Apps]
             F --> F2[Demonstration Code]
@@ -249,7 +249,7 @@ graph TB
             G --> G1[Project Templates]
             G --> G2[Starter Kits]
         end
-        
+
         subgraph "🧪 Testing & Scripts"
             H --> H1[E2E Tests]
             H --> H2[Playwright Tests]
@@ -257,19 +257,19 @@ graph TB
             I --> I2[Build Scripts]
         end
     end
-    
+
     subgraph "🔗 Relationships"
         J[Package Dependencies] --> J1[Internal Dependencies]
         J --> J2[External Dependencies]
         J --> J3[Build Dependencies]
         J --> J4[Test Dependencies]
-        
+
         K[Development Flow] --> K1[Source Code Changes]
         K --> K2[Build Process]
         K --> K3[Testing Process]
         K --> K4[Documentation Updates]
     end
-    
+
     B -->|Depends on| C
     B -->|Uses| D
     F -->|Demonstrates| B
@@ -286,44 +286,44 @@ flowchart TD
     B --> C[Graph Construction]
     C --> D[Node Creation]
     C --> E[Edge Mapping]
-    
+
     D --> D1[Package Nodes]
     D --> D2[Category Nodes]
     D --> D3[Importance Nodes]
-    
+
     E --> E1[Dependency Edges]
     E --> E2[Relationship Edges]
     E --> E3[Build Edges]
-    
+
     D1 --> F[Analysis Engine]
     D2 --> F
     D3 --> F
     E1 --> F
     E2 --> F
     E3 --> F
-    
+
     F --> G[Circular Detection]
     F --> H[Health Analysis]
     F --> I[Orphan Detection]
     F --> J[Chain Analysis]
-    
+
     G --> K[Validation Report]
     H --> K
     I --> K
     J --> K
-    
+
     K --> L[Mermaid Diagrams]
     K --> M[Health Reports]
     K --> N[Recommendations]
-    
+
     L --> L1[Category Diagram]
     L --> L2[Dependency Diagram]
     L --> L3[Architecture Overview]
-    
+
     M --> M1[Package Health]
     M --> M2[Dependency Health]
     M --> M3[Structure Health]
-    
+
     N --> N1[Optimization Suggestions]
     N --> N2[Refactoring Recommendations]
     N --> N3[Architecture Improvements]

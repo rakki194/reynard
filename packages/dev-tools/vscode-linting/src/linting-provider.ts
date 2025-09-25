@@ -50,7 +50,7 @@ export class VSCodeLintingProvider {
    */
   updateResults(filePath: string, results: LintResult[]): void {
     const allIssues: LintIssue[] = [];
-    
+
     for (const result of results) {
       if (result.success) {
         allIssues.push(...result.issues);
@@ -117,21 +117,18 @@ export class VSCodeLintingProvider {
       Math.max(0, (issue.endColumn || issue.column) - 1)
     );
 
-    const diagnostic = new vscode.Diagnostic(
-      range,
-      issue.message,
-      this.mapSeverity(issue.severity)
-    );
+    const diagnostic = new vscode.Diagnostic(range, issue.message, this.mapSeverity(issue.severity));
 
     diagnostic.source = issue.source;
     diagnostic.code = issue.rule;
-    
+
     if (issue.suggestions && issue.suggestions.length > 0) {
-      diagnostic.relatedInformation = issue.suggestions.map((suggestion: string) => 
-        new vscode.DiagnosticRelatedInformation(
-          new vscode.Location(vscode.Uri.file(issue.filePath), range),
-          suggestion
-        )
+      diagnostic.relatedInformation = issue.suggestions.map(
+        (suggestion: string) =>
+          new vscode.DiagnosticRelatedInformation(
+            new vscode.Location(vscode.Uri.file(issue.filePath), range),
+            suggestion
+          )
       );
     }
 
@@ -177,7 +174,7 @@ export class VSCodeLintingProvider {
   async lintDocument(document: vscode.TextDocument): Promise<LintResult> {
     // Mock implementation for testing
     const issues: LintIssue[] = [];
-    
+
     // Add issues for large files (for file size limit test)
     if (document.getText().length > 1000) {
       issues.push({
@@ -191,7 +188,7 @@ export class VSCodeLintingProvider {
         source: "mock-linter",
       });
     }
-    
+
     // Add a mock issue for testing event handling
     issues.push({
       id: "mock-issue",
@@ -203,7 +200,7 @@ export class VSCodeLintingProvider {
       rule: "mock-rule",
       source: "mock-linter",
     });
-    
+
     return {
       filePath: document.fileName,
       issues,
@@ -243,7 +240,9 @@ export class VSCodeLintingProvider {
    * Handle document save events
    */
   async handleDocumentSave(document: vscode.TextDocument): Promise<void> {
-    const lintOnSave = this.configuration.get ? this.configuration.get("reynard-linting.lintOnSave") : this.configuration.lintOnSave;
+    const lintOnSave = this.configuration.get
+      ? this.configuration.get("reynard-linting.lintOnSave")
+      : this.configuration.lintOnSave;
     if (lintOnSave !== false) {
       const result = await this.lintDocument(document);
       if (result.issues.length > 0) {
@@ -257,7 +256,9 @@ export class VSCodeLintingProvider {
    * Handle document change events
    */
   async handleDocumentChange(document: vscode.TextDocument): Promise<void> {
-    const lintOnChange = this.configuration.get ? this.configuration.get("reynard-linting.lintOnChange") : this.configuration.lintOnChange;
+    const lintOnChange = this.configuration.get
+      ? this.configuration.get("reynard-linting.lintOnChange")
+      : this.configuration.lintOnChange;
     if (lintOnChange !== false) {
       // Debounced linting would be implemented here
       const result = await this.lintDocument(document);
@@ -284,6 +285,3 @@ export class VSCodeLintingProvider {
     this.issues.clear();
   }
 }
-
-
-

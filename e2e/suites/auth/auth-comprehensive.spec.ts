@@ -1,6 +1,6 @@
 /**
  * Comprehensive Authentication E2E Tests
- * 
+ *
  * This test suite provides comprehensive coverage of authentication flows
  * including registration, login, password management, session handling,
  * and error scenarios. These tests are designed to work with code coverage
@@ -34,11 +34,14 @@ test.describe("Comprehensive Authentication Flows", () => {
     const cssCoverage = await page.coverage.stopCSSCoverage();
 
     // Store coverage for aggregation
-    await page.evaluate((coverage) => {
-      window.__coverage__ = window.__coverage__ || {};
-      window.__coverage__.js = coverage.js;
-      window.__coverage__.css = coverage.css;
-    }, { js: jsCoverage, css: cssCoverage });
+    await page.evaluate(
+      coverage => {
+        window.__coverage__ = window.__coverage__ || {};
+        window.__coverage__.js = coverage.js;
+        window.__coverage__.css = coverage.css;
+      },
+      { js: jsCoverage, css: cssCoverage }
+    );
   });
 
   test.describe("User Registration Flow", () => {
@@ -77,10 +80,7 @@ test.describe("Comprehensive Authentication Flows", () => {
       await auth.forms.submitRegistrationForm();
 
       // Verify error message
-      await auth.verification.verifyErrorMessage(
-        "registration-error",
-        "User already exists"
-      );
+      await auth.verification.verifyErrorMessage("registration-error", "User already exists");
     });
 
     test("should validate registration form fields", async () => {
@@ -134,10 +134,7 @@ test.describe("Comprehensive Authentication Flows", () => {
       await auth.forms.submitLoginForm();
 
       // Verify error message
-      await auth.verification.verifyErrorMessage(
-        "login-error",
-        "Invalid credentials"
-      );
+      await auth.verification.verifyErrorMessage("login-error", "Invalid credentials");
       await auth.verification.verifyNotAuthenticated();
     });
 
@@ -223,10 +220,7 @@ test.describe("Comprehensive Authentication Flows", () => {
       await page.click("[data-testid='submit-forgot-password']");
 
       // Verify success message
-      await auth.verification.verifySuccessMessage(
-        "forgot-password-success",
-        "Password reset email sent"
-      );
+      await auth.verification.verifySuccessMessage("forgot-password-success", "Password reset email sent");
     });
   });
 
@@ -244,9 +238,7 @@ test.describe("Comprehensive Authentication Flows", () => {
 
       // Verify profile was updated
       await page.click("[data-testid='profile-link']");
-      await expect(page.locator("[data-testid='full-name-display']")).toContainText(
-        updates.fullName
-      );
+      await expect(page.locator("[data-testid='full-name-display']")).toContainText(updates.fullName);
     });
 
     test("should validate profile update fields", async () => {
@@ -268,7 +260,7 @@ test.describe("Comprehensive Authentication Flows", () => {
   test.describe("Security and Error Handling", () => {
     test("should handle network errors gracefully", async () => {
       // Simulate network failure
-      await page.route("**/api/**", (route) => {
+      await page.route("**/api/**", route => {
         route.abort("failed");
       });
 
@@ -277,10 +269,7 @@ test.describe("Comprehensive Authentication Flows", () => {
       await auth.forms.submitLoginForm();
 
       // Verify error handling
-      await auth.verification.verifyErrorMessage(
-        "network-error",
-        "Network error occurred"
-      );
+      await auth.verification.verifyErrorMessage("network-error", "Network error occurred");
     });
 
     test("should prevent CSRF attacks", async () => {
@@ -321,10 +310,7 @@ test.describe("Comprehensive Authentication Flows", () => {
       }
 
       // Verify rate limiting
-      await auth.verification.verifyErrorMessage(
-        "rate-limit-error",
-        "Too many attempts"
-      );
+      await auth.verification.verifyErrorMessage("rate-limit-error", "Too many attempts");
     });
   });
 
@@ -394,7 +380,7 @@ test.describe("Comprehensive Authentication Flows", () => {
       const response = await page.evaluate(async () => {
         return fetch("/api/auth/me", {
           credentials: "include",
-        }).then((r) => r.json());
+        }).then(r => r.json());
       });
 
       expect(response.user).toBeTruthy();

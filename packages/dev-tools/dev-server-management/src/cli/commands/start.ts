@@ -14,7 +14,7 @@ export const handleStart = async (
   } catch (error) {
     console.error(`Failed to start project ${project}:`, error);
     // In test environment, throw instead of exiting
-    if (process.env.NODE_ENV === 'test' || process.env.VITEST === 'true') {
+    if (process.env.NODE_ENV === "test" || process.env.VITEST === "true") {
       throw error;
     }
     process.exit(1);

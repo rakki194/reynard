@@ -89,7 +89,9 @@ class MCPHandler:
                     )
 
             # Check if tool is enabled
+            logger.debug(f"🔍 Checking if tool {tool_name} is enabled...")
             if not self.tool_registry.is_tool_enabled(tool_name):
+                logger.error(f"❌ Tool {tool_name} is disabled")
                 return {
                     "jsonrpc": "2.0",
                     "id": request_id,
@@ -98,8 +100,11 @@ class MCPHandler:
                         "message": f"Tool '{tool_name}' is disabled",
                     },
                 }
+            logger.debug(f"✅ Tool {tool_name} is enabled")
 
+            logger.debug(f"🔍 MCP handler calling tool router for {tool_name}")
             result = await self.tool_router.route_tool_call(tool_name, arguments)
+            logger.debug(f"🔍 Tool router returned: {result}")
         except ValueError as e:
             return {
                 "jsonrpc": "2.0",

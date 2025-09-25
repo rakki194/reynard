@@ -50,7 +50,7 @@ export class DocumentationScannerCore {
    */
   async scanFile(filePath: string): Promise<ICodeExample[]> {
     const fullPath = join(this.projectRoot, filePath);
-    
+
     if (!this.isDocumentationFile(fullPath)) {
       return [];
     }
@@ -58,10 +58,10 @@ export class DocumentationScannerCore {
     try {
       const content = readFileSync(fullPath, "utf-8");
       const examples = this.extractCodeExamples(content, filePath);
-      
+
       this.scannedFiles.add(filePath);
       this.codeExamples.push(...examples);
-      
+
       return examples;
     } catch (error) {
       console.warn(`⚠️  Failed to scan file ${filePath}:`, error);
@@ -75,7 +75,7 @@ export class DocumentationScannerCore {
   protected extractCodeExamples(content: string, filePath: string): ICodeExample[] {
     const examples: ICodeExample[] = [];
     const lines = content.split("\n");
-    
+
     let inCodeBlock = false;
     let currentLanguage = "";
     let currentContent: string[] = [];
@@ -84,7 +84,7 @@ export class DocumentationScannerCore {
 
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
-      
+
       // Check for code block start
       if (line.startsWith("```")) {
         if (inCodeBlock) {
@@ -100,7 +100,7 @@ export class DocumentationScannerCore {
           if (example) {
             examples.push(example);
           }
-          
+
           inCodeBlock = false;
           currentContent = [];
           currentLanguage = "";
@@ -149,7 +149,7 @@ export class DocumentationScannerCore {
       type,
       isExecutable,
       dependencies,
-      validationRules
+      validationRules,
     };
   }
 
@@ -158,7 +158,7 @@ export class DocumentationScannerCore {
    */
   protected determineCodeType(language: string, content: string): ICodeExample["type"] {
     const lang = language.toLowerCase();
-    
+
     if (lang === "bash" || lang === "sh" || lang === "shell") return "bash";
     if (lang === "typescript" || lang === "ts" || lang === "tsx") return "typescript";
     if (lang === "json") return "json";
@@ -166,12 +166,12 @@ export class DocumentationScannerCore {
     if (lang === "python" || lang === "py") return "python";
     if (lang === "dockerfile") return "dockerfile";
     if (lang === "markdown" || lang === "md") return "markdown";
-    
+
     // Try to detect from content
     if (content.includes("pnpm") || content.includes("npm") || content.includes("yarn")) return "bash";
     if (content.includes("import ") || content.includes("from ")) return "typescript";
     if (content.startsWith("{") || content.startsWith("[")) return "json";
-    
+
     return "other";
   }
 
@@ -181,14 +181,26 @@ export class DocumentationScannerCore {
   protected isExecutableCode(type: ICodeExample["type"], content: string): boolean {
     switch (type) {
       case "bash":
-        return content.includes("pnpm") || content.includes("npm") || content.includes("yarn") || 
-               content.includes("git") || content.includes("cd") || content.includes("mkdir");
+        return (
+          content.includes("pnpm") ||
+          content.includes("npm") ||
+          content.includes("yarn") ||
+          content.includes("git") ||
+          content.includes("cd") ||
+          content.includes("mkdir")
+        );
       case "typescript":
-        return content.includes("import ") || content.includes("export ") || 
-               content.includes("function ") || content.includes("const ") || content.includes("class ");
+        return (
+          content.includes("import ") ||
+          content.includes("export ") ||
+          content.includes("function ") ||
+          content.includes("const ") ||
+          content.includes("class ")
+        );
       case "json":
-        return content.includes("package.json") || content.includes("tsconfig") || 
-               content.includes("playwright.config");
+        return (
+          content.includes("package.json") || content.includes("tsconfig") || content.includes("playwright.config")
+        );
       case "python":
         return content.includes("import ") || content.includes("def ") || content.includes("class ");
       case "dockerfile":
@@ -203,7 +215,7 @@ export class DocumentationScannerCore {
    */
   protected extractDependencies(content: string, type: ICodeExample["type"]): string[] {
     const dependencies: string[] = [];
-    
+
     if (type === "bash") {
       // Extract package names from install commands
       const installMatches = content.match(/(?:pnpm|npm|yarn)\s+(?:add|install)\s+([^\s\n]+)/g);
@@ -225,7 +237,7 @@ export class DocumentationScannerCore {
         });
       }
     }
-    
+
     return [...new Set(dependencies)]; // Remove duplicates
   }
 
@@ -234,20 +246,20 @@ export class DocumentationScannerCore {
    */
   protected generateValidationRules(type: ICodeExample["type"], content: string): ValidationRule[] {
     const rules: ValidationRule[] = [];
-    
+
     if (type === "bash") {
       if (content.includes("pnpm")) {
         rules.push({
           type: "dependency",
           rule: "pnpm must be available",
-          severity: "error"
+          severity: "error",
         });
       }
       if (content.includes("cd ")) {
         rules.push({
           type: "runtime",
           rule: "Directory must exist",
-          severity: "error"
+          severity: "error",
         });
       }
     } else if (type === "typescript") {
@@ -255,22 +267,22 @@ export class DocumentationScannerCore {
         rules.push({
           type: "syntax",
           rule: "TypeScript syntax must be valid",
-          severity: "error"
+          severity: "error",
         });
         rules.push({
           type: "import",
           rule: "All imports must be resolvable",
-          severity: "error"
+          severity: "error",
         });
       }
     } else if (type === "json") {
       rules.push({
         type: "syntax",
         rule: "JSON must be valid",
-        severity: "error"
+        severity: "error",
       });
     }
-    
+
     return rules;
   }
 
@@ -281,13 +293,13 @@ export class DocumentationScannerCore {
     const contextLines: string[] = [];
     const start = Math.max(0, lineIndex - 3);
     const end = Math.min(lines.length, lineIndex + 1);
-    
+
     for (let i = start; i < end; i++) {
       if (i !== lineIndex) {
         contextLines.push(lines[i]);
       }
     }
-    
+
     return contextLines.join("\n").trim();
   }
 
@@ -297,7 +309,7 @@ export class DocumentationScannerCore {
   protected isDocumentationFile(fileName: string): boolean {
     const ext = extname(fileName).toLowerCase();
     const name = fileName.toLowerCase();
-    
+
     return (
       ext === ".md" ||
       name === "readme" ||
@@ -346,4 +358,3 @@ export class DocumentationScannerCore {
     this.codeExamples = [];
   }
 }
-

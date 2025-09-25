@@ -1,6 +1,6 @@
 /**
  * 🧭 Navigation Component
- * 
+ *
  * Sidebar navigation for the animation demo app
  */
 
@@ -23,59 +23,59 @@ const navItems: NavItem[] = [
     id: "dashboard",
     label: "Dashboard",
     icon: "📊",
-    description: "Overview of all animation features"
+    description: "Overview of all animation features",
   },
   {
     id: "staggered",
     label: "Staggered Animations",
     icon: "🎭",
-    description: "Sequential animation effects"
+    description: "Sequential animation effects",
   },
   {
     id: "floating-panel",
     label: "Floating Panels",
     icon: "🪟",
-    description: "Panel animations and transitions"
+    description: "Panel animations and transitions",
   },
   {
     id: "colors",
     label: "Color Animations",
     icon: "🎨",
-    description: "Color transitions and effects"
+    description: "Color transitions and effects",
   },
   {
     id: "gradients",
     label: "Gradient Animations",
     icon: "🌈",
-    description: "Animated gradients and color flows"
+    description: "Animated gradients and color flows",
   },
   {
     id: "3d",
     label: "3D Animations",
     icon: "🎪",
-    description: "Three.js integration and 3D effects"
+    description: "Three.js integration and 3D effects",
   },
   {
     id: "performance",
     label: "Performance",
     icon: "⚡",
-    description: "Performance monitoring and metrics"
+    description: "Performance monitoring and metrics",
   },
   {
     id: "transformer-dance-club",
     label: "Transformer Dance Club",
     icon: "🕺",
-    description: "Interactive transformer architecture visualization"
-  }
+    description: "Interactive transformer architecture visualization",
+  },
 ];
 
-export const Navigation: Component<NavigationProps> = (props) => {
+export const Navigation: Component<NavigationProps> = props => {
   return (
     <nav class="demo-nav">
       <h2 class="nav-title">Animation Demos</h2>
       <ul class="nav-list">
         <For each={navItems}>
-          {(item) => (
+          {item => (
             <li class="nav-item">
               <button
                 class={`nav-link ${props.currentPage === item.id ? "active" : ""}`}

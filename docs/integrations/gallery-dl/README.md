@@ -53,14 +53,11 @@ const galleryService = new GalleryService({
 });
 
 // Download a gallery
-const result = await galleryService.downloadGallery(
-  "https://www.instagram.com/p/example/",
-  {
-    outputDirectory: "./downloads",
-    maxConcurrent: 3,
-    retries: 3
-  }
-);
+const result = await galleryService.downloadGallery("https://www.instagram.com/p/example/", {
+  outputDirectory: "./downloads",
+  maxConcurrent: 3,
+  retries: 3,
+});
 
 console.log(`Downloaded ${result.files.length} files`);
 ```
@@ -76,10 +73,10 @@ function MyApp() {
     <div>
       <h1>Media Downloader</h1>
       <DownloadManager
-        onDownloadComplete={(result) => {
+        onDownloadComplete={result => {
           console.log("Download completed:", result);
         }}
-        onError={(error) => {
+        onError={error => {
           console.error("Download failed:", error);
         }}
       />
@@ -120,15 +117,12 @@ Download media from a URL.
 **Example:**
 
 ```typescript
-const result = await galleryService.downloadGallery(
-  "https://example.com/gallery",
-  {
-    outputDirectory: "./downloads",
-    maxConcurrent: 5,
-    retries: 3,
-    timeout: 60
-  }
-);
+const result = await galleryService.downloadGallery("https://example.com/gallery", {
+  outputDirectory: "./downloads",
+  maxConcurrent: 5,
+  retries: 3,
+  timeout: 60,
+});
 ```
 
 ##### `validateUrl(url: string): Promise<ValidationResult>`
@@ -255,15 +249,15 @@ import { useSettings } from "reynard-settings";
 
 function MyComponent() {
   const { getSetting, updateSetting } = useSettings();
-  
+
   // Get current configuration
   const config = await getSetting("gallery-dl-config");
-  
+
   // Update configuration
   await updateSetting("gallery-dl-config", {
     ...config,
     maxConcurrent: 5,
-    defaultRetries: 3
+    defaultRetries: 3,
   });
 }
 ```
@@ -362,16 +356,12 @@ class ReynardContentExtractor(Extractor):
 Process multiple URLs efficiently:
 
 ```typescript
-const urls = [
-  "https://example.com/gallery1",
-  "https://example.com/gallery2",
-  "https://example.com/gallery3"
-];
+const urls = ["https://example.com/gallery1", "https://example.com/gallery2", "https://example.com/gallery3"];
 
 const batchResult = await galleryService.createBatchDownload(urls, {
   maxConcurrent: 3,
   retries: 2,
-  outputDirectory: "./batch-downloads"
+  outputDirectory: "./batch-downloads",
 });
 
 console.log(`Batch download ID: ${batchResult.batchId}`);
@@ -389,7 +379,7 @@ const result = await galleryService.downloadGallery(url, options);
 const progressInterval = setInterval(async () => {
   const progress = await galleryService.getDownloadProgress(result.downloadId);
   console.log(`Progress: ${progress.percentage}%`);
-  
+
   if (progress.status === "completed" || progress.status === "error") {
     clearInterval(progressInterval);
   }
@@ -403,12 +393,12 @@ Comprehensive error handling:
 ```typescript
 try {
   const result = await galleryService.downloadGallery(url, options);
-  
+
   if (!result.success) {
     console.error("Download failed:", result.error);
     return;
   }
-  
+
   console.log("Download successful:", result.files.length, "files");
 } catch (error) {
   if (error instanceof ValidationError) {
@@ -436,9 +426,9 @@ describe("GalleryService", () => {
       baseUrl: "http://localhost:8000",
       timeout: 30000,
     });
-    
+
     const result = await service.downloadGallery("https://example.com/gallery", {});
-    
+
     expect(result.success).toBe(true);
     expect(result.files).toHaveLength(5);
   });
@@ -452,10 +442,10 @@ import { test, expect } from "@playwright/test";
 
 test("should download gallery from URL", async ({ page }) => {
   await page.goto("/gallery-dl");
-  
+
   await page.fill('[data-testid="url-input"]', "https://example.com/gallery");
   await page.click('[data-testid="download-button"]');
-  
+
   await expect(page.locator('[data-testid="progress-bar"]')).toBeVisible();
   await expect(page.locator('[data-testid="download-complete"]')).toBeVisible({ timeout: 30000 });
 });
@@ -472,7 +462,7 @@ All gallery-dl operations require user authentication:
 const service = new GalleryService({
   name: "secure-service",
   baseUrl: "http://localhost:8000",
-  token: "your-auth-token"
+  token: "your-auth-token",
 });
 ```
 
@@ -497,7 +487,7 @@ Filter content based on your requirements:
 const options = {
   minFileSize: 1024, // 1KB minimum
   maxFileSize: 10485760, // 10MB maximum
-  allowedTypes: ["image/jpeg", "image/png", "video/mp4"]
+  allowedTypes: ["image/jpeg", "image/png", "video/mp4"],
 };
 ```
 
@@ -512,7 +502,7 @@ Optimize download performance:
 const options = {
   maxConcurrent: 5, // Increase for faster downloads
   timeout: 30, // Adjust based on network speed
-  retries: 3 // Balance between reliability and speed
+  retries: 3, // Balance between reliability and speed
 };
 ```
 
@@ -525,7 +515,7 @@ const service = new GalleryService({
   name: "cached-service",
   baseUrl: "http://localhost:8000",
   enableCache: true,
-  cacheSize: 100 // MB
+  cacheSize: 100, // MB
 });
 ```
 
@@ -537,7 +527,7 @@ Monitor memory usage for large downloads:
 // Use streaming for large files
 const options = {
   streamLargeFiles: true,
-  maxMemoryUsage: 512 * 1024 * 1024 // 512MB
+  maxMemoryUsage: 512 * 1024 * 1024, // 512MB
 };
 ```
 
@@ -554,7 +544,7 @@ const options = {
 const options = {
   timeout: 60, // Increase timeout
   retries: 5, // Increase retries
-  sleep: 2 // Add delay between requests
+  sleep: 2, // Add delay between requests
 };
 ```
 
@@ -567,7 +557,7 @@ const options = {
 const service = new GalleryService({
   name: "auth-service",
   baseUrl: "http://localhost:8000",
-  token: "valid-auth-token" // Ensure token is valid
+  token: "valid-auth-token", // Ensure token is valid
 });
 ```
 
@@ -580,7 +570,7 @@ const service = new GalleryService({
 const options = {
   maxConcurrent: 2, // Reduce concurrent downloads
   streamLargeFiles: true, // Enable streaming
-  maxMemoryUsage: 256 * 1024 * 1024 // Limit memory usage
+  maxMemoryUsage: 256 * 1024 * 1024, // Limit memory usage
 };
 ```
 
@@ -593,7 +583,7 @@ const service = new GalleryService({
   name: "debug-service",
   baseUrl: "http://localhost:8000",
   debug: true,
-  logLevel: "debug"
+  logLevel: "debug",
 });
 ```
 
@@ -603,47 +593,36 @@ const service = new GalleryService({
 
 ```tsx
 import React, { useState } from "react";
-import { 
-  DownloadManager, 
-  ProgressTracker, 
-  ResultsDisplay,
-  ConfigurationPanel 
-} from "reynard-gallery-dl";
+import { DownloadManager, ProgressTracker, ResultsDisplay, ConfigurationPanel } from "reynard-gallery-dl";
 
 function GalleryDownloadApp() {
   const [downloads, setDownloads] = useState([]);
   const [config, setConfig] = useState({});
   const [results, setResults] = useState([]);
 
-  const handleDownloadComplete = (result) => {
+  const handleDownloadComplete = result => {
     setResults(prev => [...prev, result]);
   };
 
-  const handleConfigChange = (newConfig) => {
+  const handleConfigChange = newConfig => {
     setConfig(newConfig);
   };
 
   return (
     <div className="gallery-download-app">
       <h1>Gallery Downloader</h1>
-      
+
       <div className="app-layout">
         <div className="sidebar">
-          <ConfigurationPanel
-            onConfigChange={handleConfigChange}
-            initialConfig={config}
-          />
+          <ConfigurationPanel onConfigChange={handleConfigChange} initialConfig={config} />
         </div>
-        
+
         <div className="main-content">
-          <DownloadManager
-            onDownloadComplete={handleDownloadComplete}
-            config={config}
-          />
-          
+          <DownloadManager onDownloadComplete={handleDownloadComplete} config={config} />
+
           <ResultsDisplay
             results={results}
-            onExport={(format) => {
+            onExport={format => {
               console.log(`Exporting as ${format}`);
             }}
           />
@@ -677,7 +656,7 @@ export function useGalleryDownload() {
       });
 
       const result = await service.downloadGallery(url, options);
-      
+
       setDownloads(prev => [...prev, result]);
       return result;
     } catch (err) {
@@ -703,7 +682,7 @@ export function useGalleryDownload() {
     isLoading,
     error,
     downloadGallery,
-    getDownloadProgress
+    getDownloadProgress,
   };
 }
 ```
@@ -739,4 +718,4 @@ This integration is part of the Reynard project and is licensed under the MIT Li
 
 ---
 
-*Built with ❤️ by the Reynard team*
+_Built with ❤️ by the Reynard team_

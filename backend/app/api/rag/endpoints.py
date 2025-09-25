@@ -213,7 +213,7 @@ class RAGServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
                 "test_query_rag", self._handle_test_query_request, request,
             )
 
-        @self.router.get("/health")
+        @self.router.get("/health", operation_id="rag_health_check")
         async def health_check():
             """Simple health check for RAG service."""
             return await self._standard_async_operation(

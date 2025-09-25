@@ -3,8 +3,12 @@
 import sys
 from pathlib import Path
 
-# Import social tools to register them
-from . import social_tools
+# Import tools from ultimate organized subdirectories to register them
+from . import agent
+from . import development
+from . import visualization
+from . import system
+from . import research
 
 # Legacy agent-naming system removed - now using FastAPI ECS backend
 
@@ -22,28 +26,28 @@ def get_tool_definitions():
 
 def get_config_tools():
     """Lazy import for config tools."""
-    from .config_tools import ConfigTools
+    from .system.config import ConfigTools
 
     return ConfigTools
 
 
 def get_agent_tools():
     """Lazy import for agent tools."""
-    from .agent_tools import AgentTools
+    from .agent.core.tools import AgentTools
 
     return AgentTools
 
 
 def get_ecs_agent_tools():
     """Lazy import for ECS agent tools."""
-    from .ecs_agent_tools import ECSAgentTools
+    from .agent.ecs.ecs import ECSAgentTools
 
     return ECSAgentTools
 
 
 def get_social_tools():
     """Lazy import for social tools."""
-    from .social_tools import (
+    from .agent.social.interactions import (
         find_ecs_agent,
         get_agent_relationships,
         get_agent_social_stats,
@@ -68,28 +72,28 @@ def get_social_tools():
 
 def get_image_viewer_tools():
     """Lazy import for image viewer tools."""
-    from .image_viewer_tools import ImageViewerTools
+    from .visualization.media.images import ImageViewerTools
 
     return ImageViewerTools
 
 
 def get_linting_tools():
     """Lazy import for linting tools."""
-    from .linting_tools import LintingTools
+    from .development.code_quality.linting import LintingTools
 
     return LintingTools
 
 
 def get_mermaid_tools():
     """Lazy import for mermaid tools."""
-    from .mermaid_tools import MermaidTools
+    from .visualization.diagrams.mermaid import MermaidTools
 
     return MermaidTools
 
 
 def get_monolith_detection_tools():
     """Lazy import for monolith detection tools."""
-    from .monolith_detection import MonolithDetectionTools
+    from .development.code_quality.monolith_detection import MonolithDetectionTools
 
     return MonolithDetectionTools
 
@@ -103,30 +107,37 @@ def get_search_tools():
 
 def get_utility_tools():
     """Lazy import for utility tools."""
-    from .utility_tools import UtilityTools
+    from .system.utilities.utility import UtilityTools
 
     return UtilityTools
 
 
 def get_version_vscode_tools():
     """Lazy import for version VS Code tools."""
-    from .version_vscode_tools import VersionVSCodeTools
+    from .development.ide.version import VersionVSCodeTools
 
     return VersionVSCodeTools
 
 
 def get_vscode_tasks_tools():
     """Lazy import for VS Code tasks tools."""
-    from .vscode_tasks_tools import VSCodeTasksTools
+    from .development.ide.vscode import VSCodeTasksTools
 
     return VSCodeTasksTools
 
 
 def get_secrets_tools():
     """Lazy import for secrets management tools."""
-    from .secrets_tools import SecretsTools
+    from .system.security.secrets import SecretsTools
 
     return SecretsTools
+
+
+def get_research_tools():
+    """Lazy import for research tools."""
+    from .research import get_research_tool_definitions
+
+    return get_research_tool_definitions
 
 
 __all__ = [
@@ -139,6 +150,7 @@ __all__ = [
     "get_linting_tools",
     "get_mermaid_tools",
     "get_monolith_detection_tools",
+    "get_research_tools",
     "get_search_tools",
     "get_secrets_tools",
     "get_utility_tools",

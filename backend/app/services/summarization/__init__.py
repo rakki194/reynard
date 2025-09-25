@@ -1,8 +1,19 @@
-"""Summarization services module for Reynard.
+"""🦊 Reynard Summarization Services Module
+=========================================
 
 This module provides a modular approach to text summarization with support for
 different content types, summarization strategies, and quality optimization.
-Integrates with existing Ollama service and leverages Yipyap's proven architecture.
+Integrates with the AI service and supports multiple model providers.
+
+Key Features:
+- Multi-Provider Support: Works with Ollama, vLLM, SGLang, LLaMA.cpp
+- Content Type Specialization: Different strategies for articles, code, documents
+- Quality Optimization: Advanced quality scoring and improvement suggestions
+- Streaming Support: Real-time summarization with progress updates
+- Template System: Flexible summarization templates and customization
+
+Author: Reynard Development Team
+Version: 2.0.0 - AI Service Integration
 """
 
 from .article_summarizer import ArticleSummarizer
@@ -16,8 +27,14 @@ from .base import (
 from .code_summarizer import CodeSummarizer
 from .document_summarizer import DocumentSummarizer
 from .manager import SummarizationManager
-from .ollama_summarizer import OllamaSummarizer
 from .technical_summarizer import TechnicalSummarizer
+from .ai_summarizer import (
+    AISummarizer,
+    get_ai_summarizer,
+    health_check_ai_summarizer,
+    initialize_ai_summarizer,
+    shutdown_ai_summarizer,
+)
 
 __all__ = [
     "ArticleSummarizer",
@@ -25,10 +42,14 @@ __all__ = [
     "CodeSummarizer",
     "ContentType",
     "DocumentSummarizer",
-    "OllamaSummarizer",
     "SummarizationManager",
     "SummarizationOptions",
     "SummarizationResult",
     "SummaryLevel",
     "TechnicalSummarizer",
+    "AISummarizer",
+    "get_ai_summarizer",
+    "health_check_ai_summarizer",
+    "initialize_ai_summarizer",
+    "shutdown_ai_summarizer",
 ]

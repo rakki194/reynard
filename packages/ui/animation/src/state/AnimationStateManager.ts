@@ -1,9 +1,9 @@
 /**
  * Animation State Manager
- * 
+ *
  * Advanced state management system that integrates with global animation control.
  * Provides intelligent state management, performance optimizations, and accessibility compliance.
- * 
+ *
  * @author Agile-Prime-90 (Reynard Lizard Specialist)
  * @since 1.0.0
  */
@@ -112,10 +112,7 @@ export class AnimationStateManager {
   private debounceTimeout: NodeJS.Timeout | null = null;
   private globalControlIntegration: unknown = null;
 
-  constructor(
-    smartAnimationCore: SmartAnimationCore,
-    config: Partial<AnimationStateConfig> = {}
-  ) {
+  constructor(smartAnimationCore: SmartAnimationCore, config: Partial<AnimationStateConfig> = {}) {
     this.smartAnimationCore = smartAnimationCore;
     this.config = {
       integrateGlobalControl: true,
@@ -170,10 +167,10 @@ export class AnimationStateManager {
     try {
       // Try to import the global animation control system
       const globalControl = await import("reynard-composables");
-      
+
       if (globalControl && globalControl.useAnimationControl) {
         this.globalControlIntegration = globalControl.useAnimationControl();
-        
+
         if (this.config.enableLogging) {
           console.log("AnimationStateManager: Global animation control integrated");
         }
@@ -189,7 +186,7 @@ export class AnimationStateManager {
    * Set up accessibility compliance monitoring
    */
   private setupAccessibilityComplianceMonitoring(): void {
-    this.accessibilityMonitor = new AccessibilityComplianceMonitor((compliance) => {
+    this.accessibilityMonitor = new AccessibilityComplianceMonitor(compliance => {
       this.queueStateUpdate({
         type: "accessibility",
         data: { accessibilityCompliance: compliance },
@@ -207,7 +204,7 @@ export class AnimationStateManager {
     const performanceObserver = new MutationObserver(() => {
       const isPerformanceMode = document.documentElement.classList.contains("performance-mode");
       const currentState = this.getState();
-      
+
       if (isPerformanceMode !== currentState.isPerformanceMode) {
         this.queueStateUpdate({
           type: "performance",
@@ -340,11 +337,7 @@ export class AnimationStateManager {
   /**
    * Update performance metrics
    */
-  updatePerformanceMetrics(animationResult: {
-    duration: number;
-    usedFallback: boolean;
-    usedNoOp: boolean;
-  }): void {
+  updatePerformanceMetrics(animationResult: { duration: number; usedFallback: boolean; usedNoOp: boolean }): void {
     const [state, _setState] = this.state;
     const currentState = state();
     const metrics = currentState.performanceMetrics;
@@ -352,7 +345,9 @@ export class AnimationStateManager {
     const newMetrics = {
       ...metrics,
       totalAnimations: metrics.totalAnimations + 1,
-      averageAnimationTime: (metrics.averageAnimationTime * metrics.totalAnimations + animationResult.duration) / (metrics.totalAnimations + 1),
+      averageAnimationTime:
+        (metrics.averageAnimationTime * metrics.totalAnimations + animationResult.duration) /
+        (metrics.totalAnimations + 1),
     };
 
     if (animationResult.usedNoOp) {
@@ -392,7 +387,7 @@ export class AnimationStateManager {
    */
   async updateState(): Promise<void> {
     const smartState = this.smartAnimationCore.getState();
-    
+
     this.queueStateUpdate({
       type: "global",
       data: {
@@ -425,7 +420,7 @@ export class AnimationStateManager {
       };
 
       localStorage.setItem("reynard-animation-state", JSON.stringify(persistenceData));
-      
+
       if (this.config.enableLogging) {
         console.log("AnimationStateManager: State persisted");
       }
@@ -448,7 +443,7 @@ export class AnimationStateManager {
       const persistedData = localStorage.getItem("reynard-animation-state");
       if (persistedData) {
         const data = JSON.parse(persistedData);
-        
+
         this.queueStateUpdate({
           type: "global",
           data: {
@@ -474,7 +469,7 @@ export class AnimationStateManager {
    */
   updateConfig(newConfig: Partial<AnimationStateConfig>): void {
     this.config = { ...this.config, ...newConfig };
-    
+
     if (this.config.enableLogging) {
       console.log("AnimationStateManager: Configuration updated", this.config);
     }

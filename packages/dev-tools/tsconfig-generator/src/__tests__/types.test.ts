@@ -3,12 +3,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import type { 
-  TSConfigGeneratorConfig, 
-  GeneratorResult, 
-  TsConfigJson,
-  ValidationResult 
-} from "../types.js";
+import type { TSConfigGeneratorConfig, GeneratorResult, TsConfigJson, ValidationResult } from "../types.js";
 
 describe("Types", () => {
   describe("TSConfigGeneratorConfig", () => {
@@ -101,19 +96,9 @@ describe("Types", () => {
           skipLibCheck: true,
           forceConsistentCasingInFileNames: true,
         },
-        include: [
-          "src/**/*",
-          "packages/**/*",
-        ],
-        exclude: [
-          "**/*.test.ts",
-          "**/*.test.tsx",
-          "node_modules",
-        ],
-        references: [
-          { path: "packages/core/core" },
-          { path: "packages/ui/components" },
-        ],
+        include: ["src/**/*", "packages/**/*"],
+        exclude: ["**/*.test.ts", "**/*.test.tsx", "node_modules"],
+        references: [{ path: "packages/core/core" }, { path: "packages/ui/components" }],
         extends: "./tsconfig.base.json",
       };
 
@@ -153,10 +138,7 @@ describe("Types", () => {
     it("should accept invalid validation result", () => {
       const result: ValidationResult = {
         valid: false,
-        errors: [
-          "Missing required 'compilerOptions'",
-          "Missing required 'include' patterns",
-        ],
+        errors: ["Missing required 'compilerOptions'", "Missing required 'include' patterns"],
       };
 
       expect(result.valid).toBe(false);

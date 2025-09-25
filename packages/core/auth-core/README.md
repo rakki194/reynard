@@ -288,10 +288,12 @@ const httpClient = new HTTPClient({
 });
 
 // Add auth middleware
-httpClient.use(createAuthMiddleware({
-  type: "bearer",
-  getToken: () => tokenManager.getAccessToken(),
-}));
+httpClient.use(
+  createAuthMiddleware({
+    type: "bearer",
+    getToken: () => tokenManager.getAccessToken(),
+  })
+);
 ```
 
 ## Testing
@@ -302,18 +304,21 @@ The auth core includes comprehensive test utilities:
 import { createMockAuthClient } from "reynard-auth-core/testing";
 
 const mockAuthClient = createMockAuthClient();
-mockAuthClient.mockLogin({
-  identifier: "test@example.com",
-  password: "password123",
-}, {
-  success: true,
-  user: { id: "1", username: "test", email: "test@example.com" },
-  tokens: {
-    accessToken: "mock_access_token",
-    refreshToken: "mock_refresh_token",
-    expiresAt: Date.now() + 3600000,
+mockAuthClient.mockLogin(
+  {
+    identifier: "test@example.com",
+    password: "password123",
   },
-});
+  {
+    success: true,
+    user: { id: "1", username: "test", email: "test@example.com" },
+    tokens: {
+      accessToken: "mock_access_token",
+      refreshToken: "mock_refresh_token",
+      expiresAt: Date.now() + 3600000,
+    },
+  }
+);
 
 // Use in tests
 const result = await mockAuthClient.login({

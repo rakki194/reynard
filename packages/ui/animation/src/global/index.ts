@@ -1,6 +1,6 @@
 /**
  * 🦊 Global Animation Module
- * 
+ *
  * Global animation control system with centralized configuration and state management.
  * Provides unified control over all animation systems across the Reynard ecosystem.
  */

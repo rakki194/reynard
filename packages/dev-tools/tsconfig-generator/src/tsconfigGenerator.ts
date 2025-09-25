@@ -9,7 +9,7 @@ import {
   getGlobalExcludePatterns,
   queryDirectories,
   getBuildConfiguration,
-  type DirectoryDefinition as ArchitectureDirectoryDefinition
+  type DirectoryDefinition as ArchitectureDirectoryDefinition,
 } from "reynard-project-architecture";
 import { writeFileSync, mkdirSync, existsSync } from "fs";
 import { join, dirname } from "path";
@@ -32,10 +32,7 @@ function getArchitectureTypeScriptDirectories(): ArchitectureDirectoryDefinition
     includeGenerated: false,
     includeThirdParty: false,
     // Filter for TypeScript/JavaScript packages
-  }).directories.filter(dir => 
-    dir.fileTypes.includes("typescript") || 
-    dir.fileTypes.includes("javascript")
-  );
+  }).directories.filter(dir => dir.fileTypes.includes("typescript") || dir.fileTypes.includes("javascript"));
 }
 
 /**
@@ -102,7 +99,7 @@ export class TSConfigGenerator {
   }
 
   private filterDirectories(
-    directories: ArchitectureDirectoryDefinition[], 
+    directories: ArchitectureDirectoryDefinition[],
     config: TSConfigGeneratorConfig
   ): ArchitectureDirectoryDefinition[] {
     const filtered: ArchitectureDirectoryDefinition[] = [];
@@ -173,7 +170,7 @@ export class TSConfigGenerator {
     config: TSConfigGeneratorConfig
   ): PackageTSConfig {
     const buildConfig = getBuildConfiguration(directory.name);
-    
+
     // Generate references to dependencies
     const references = this.generateReferences(directory);
 
@@ -217,7 +214,7 @@ export class TSConfigGenerator {
     for (const relationship of directory.relationships) {
       if (relationship.type === "dependency") {
         // Convert dependency path to reference path
-        const refPath = `../${relationship.directory.split('/').pop()}`;
+        const refPath = `../${relationship.directory.split("/").pop()}`;
         references.push(refPath);
       }
     }
@@ -233,15 +230,15 @@ export class TSConfigGenerator {
   ): void {
     for (const packageConfig of packageConfigs) {
       try {
-        const outputPath = join(packageConfig.path, 'tsconfig.generated.json');
+        const outputPath = join(packageConfig.path, "tsconfig.generated.json");
         const configContent = JSON.stringify(packageConfig.config, null, 2);
-        
+
         // Create directory if it doesn't exist
         const dir = dirname(outputPath);
         if (!existsSync(dir)) {
           mkdirSync(dir, { recursive: true });
         }
-        
+
         writeFileSync(outputPath, configContent);
         console.log(`Generated individual config: ${outputPath}`);
       } catch (error) {
@@ -271,16 +268,11 @@ export class TSConfigGenerator {
         ...config.customCompilerOptions,
       },
       include: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
-      exclude: [
-        "node_modules",
-        "dist",
-        "build",
-        "coverage",
-        ...globalExcludePatterns,
-      ],
-      ...(config.includeReferences && packageConfigs.length > 0 && {
-        references: packageConfigs.map(pkg => ({ path: pkg.path }))
-      }),
+      exclude: ["node_modules", "dist", "build", "coverage", ...globalExcludePatterns],
+      ...(config.includeReferences &&
+        packageConfigs.length > 0 && {
+          references: packageConfigs.map(pkg => ({ path: pkg.path })),
+        }),
     };
   }
 }

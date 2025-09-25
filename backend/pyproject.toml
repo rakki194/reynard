@@ -44,8 +44,10 @@ dependencies = [
     "argon2-cffi",
     "cryptography",
     "itsdangerous",
-    "gallery-dl>=1.30.7",
+    "gallery-dl",
     "reynard-gatekeeper @ file:///home/kade/runeset/reynard/services/gatekeeper",
+    # PDF processing with marker
+    "marker-pdf[full]",
 ]
 
 [project.optional-dependencies]

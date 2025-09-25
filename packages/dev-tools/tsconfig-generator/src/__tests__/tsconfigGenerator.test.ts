@@ -8,17 +8,8 @@ import type { TSConfigGeneratorConfig, TSConfigResult } from "../types.js";
 
 // Mock the architecture module
 vi.mock("reynard-project-architecture", () => ({
-  getBuildableDirectories: vi.fn(() => [
-    "packages/core/core",
-    "packages/ui/components",
-    "packages/services/auth",
-  ]),
-  getGlobalExcludePatterns: vi.fn(() => [
-    "node_modules",
-    "dist",
-    "**/*.test.ts",
-    "**/*.test.tsx",
-  ]),
+  getBuildableDirectories: vi.fn(() => ["packages/core/core", "packages/ui/components", "packages/services/auth"]),
+  getGlobalExcludePatterns: vi.fn(() => ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"]),
   getBuildConfiguration: vi.fn(() => ({
     target: "ES2022",
     module: "ESNext",
@@ -163,7 +154,7 @@ describe("TsConfigGenerator", () => {
       expect(result.success).toBe(true);
       expect(result.config.references).toBeDefined();
       expect(result.config.references!.length).toBeGreaterThan(0);
-      
+
       // Check that references point to package tsconfig files
       const referencePaths = result.config.references!.map(ref => ref.path);
       expect(referencePaths).toContain("packages/core/core");
@@ -221,7 +212,7 @@ describe("TsConfigGenerator", () => {
 
       expect(result.success).toBe(true);
       expect(result.packagesProcessed).toBeGreaterThan(0);
-      
+
       // The generateIndividual flag is handled internally but doesn't change the return structure
       // Individual configs are generated but not returned in the result
     });
@@ -299,5 +290,4 @@ describe("TsConfigGenerator", () => {
       expect(result.packagesProcessed).toBe(3);
     });
   });
-
 });

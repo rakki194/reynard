@@ -1,9 +1,9 @@
 /**
  * 3D Games Selection E2E Tests
- * 
+ *
  * Tests for game selection functionality including
  * displaying available games and handling game selection.
- * 
+ *
  * @author 🦊 The Cunning Fox
  */
 
@@ -16,11 +16,11 @@ test.describe("Game Selection", () => {
   test.beforeEach(async ({ browser }) => {
     page = await browser.newPage();
     await page.setViewportSize({ width: 1280, height: 720 });
-    
+
     // Navigate to 3D games
-    await page.goto(`${GAMES_DEMO_URL}/#3d-games`, { 
+    await page.goto(`${GAMES_DEMO_URL}/#3d-games`, {
       waitUntil: "networkidle",
-      timeout: 30000 
+      timeout: 30000,
     });
   });
 
@@ -31,10 +31,10 @@ test.describe("Game Selection", () => {
   test("should display available 3D games", async () => {
     // Check for game selection interface
     await expect(page.locator(".game-selection")).toBeVisible();
-    
+
     // Look for game options or buttons
     const gameButtons = page.locator("button").filter({ hasText: /cube|space|maze|particle/i });
-    if (await gameButtons.count() > 0) {
+    if ((await gameButtons.count()) > 0) {
       await expect(gameButtons.first()).toBeVisible();
     }
   });
@@ -42,14 +42,14 @@ test.describe("Game Selection", () => {
   test("should handle game selection", async () => {
     // Look for game selection buttons
     const gameButtons = page.locator("button").filter({ hasText: /cube|space|maze|particle|play|start/i });
-    
-    if (await gameButtons.count() > 0) {
+
+    if ((await gameButtons.count()) > 0) {
       // Click on first available game
       await gameButtons.first().click();
-      
+
       // Wait for game to load
       await page.waitForTimeout(2000);
-      
+
       // Check if game container appears
       const gameContainer = page.locator(".game-container, .game-viewport, canvas");
       await expect(gameContainer).toBeVisible();

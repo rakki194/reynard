@@ -222,7 +222,7 @@ class SummarizationServiceRouter(
                 operation_func=self._handle_get_stats_request,
             )
 
-        @self.router.get("/health", response_model=HealthCheckResponse)
+        @self.router.get("/health", response_model=HealthCheckResponse, operation_id="summarization_health_check")
         async def health_check():
             """Perform health check on the summarization service."""
             return await self._standard_async_operation(

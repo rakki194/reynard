@@ -11,7 +11,7 @@ Tests cover:
 
 import pytest
 
-from app.api.search.natural_language_processor import NaturalLanguageProcessor
+from app.api.search.nlp_processor import NaturalLanguageProcessor
 
 
 class TestAdvancedQueryExpansion:

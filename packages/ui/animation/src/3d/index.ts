@@ -1,6 +1,6 @@
 /**
  * 🦊 3D Animation Module
- * 
+ *
  * Unified 3D animation system with smart imports and fallback support.
  * Consolidates 3D animation functionality from across the Reynard codebase.
  */
@@ -32,6 +32,4 @@ export type {
   UseThreeDAnimationReturn,
 } from "./ThreeDAnimationTypes.js";
 
-export type {
-  ThreeDFallbackOptions,
-} from "./ThreeDFallbackUtils.js";
+export type { ThreeDFallbackOptions } from "./ThreeDFallbackUtils.js";

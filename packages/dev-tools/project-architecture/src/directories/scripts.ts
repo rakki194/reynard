@@ -24,15 +24,8 @@ export const SCRIPTS_DIRECTORIES: DirectoryDefinition[] = [
     ["python", "shell", "javascript", "json", "markdown"],
     "Automation scripts, utilities, and development tools (2 packages): CSS validation and workflow validation tools",
     {
-      relationships: buildRelationships(
-        COMMON_RELATIONSHIPS.BACKEND_SIBLING
-      ),
-      excludePatterns: [
-        ...SERVICE_EXCLUDE_PATTERNS,
-        "**/venv/**",
-        "**/dist/**",
-        "**/build/**",
-      ],
+      relationships: buildRelationships(COMMON_RELATIONSHIPS.BACKEND_SIBLING),
+      excludePatterns: [...SERVICE_EXCLUDE_PATTERNS, "**/venv/**", "**/dist/**", "**/build/**"],
       includePatterns: ["**/*.py", "**/*.sh", "**/*.js", "**/*.json", "**/*.md"],
       buildable: false,
       metadata: SCRIPTS_METADATA,

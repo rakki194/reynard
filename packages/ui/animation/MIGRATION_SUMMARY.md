@@ -1,6 +1,6 @@
 # 🦊 Animation System Migration Summary
 
-*Complete summary of packages migrated to the unified animation system*
+_Complete summary of packages migrated to the unified animation system_
 
 ## Migration Overview
 
@@ -242,4 +242,4 @@ The animation system migration is complete and successful. All packages now use 
 
 ---
 
-*🦊 The unified animation system provides a robust, accessible, and performant foundation for all animations in the Reynard ecosystem.*
+_🦊 The unified animation system provides a robust, accessible, and performant foundation for all animations in the Reynard ecosystem._

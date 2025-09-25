@@ -13,10 +13,7 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": [
-    "dist",
-    "README.md"
-  ],
+  "files": ["dist", "README.md"],
   "scripts": {
     "dev": "vite build --watch",
     "build": "vite build && tsc src/index.ts --declaration --declarationMap --emitDeclarationOnly --outDir dist --skipLibCheck",
@@ -29,14 +26,7 @@
     "typecheck": "tsc --noEmit --skipLibCheck",
     "clean": "rm -rf dist"
   },
-  "keywords": [
-    "enum",
-    "dynamic",
-    "typescript",
-    "provider",
-    "caching",
-    "reynard"
-  ],
+  "keywords": ["enum", "dynamic", "typescript", "provider", "caching", "reynard"],
   "author": "Reynard Development Team",
   "license": "MIT",
   "dependencies": {

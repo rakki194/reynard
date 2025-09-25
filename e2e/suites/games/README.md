@@ -339,4 +339,4 @@ The games tests are designed to run in CI environments with:
 
 ---
 
-🦊 *whiskers twitch with testing precision* These comprehensive E2E tests ensure the Games Demo application provides an excellent user experience across all supported browsers and devices!
+🦊 _whiskers twitch with testing precision_ These comprehensive E2E tests ensure the Games Demo application provides an excellent user experience across all supported browsers and devices!

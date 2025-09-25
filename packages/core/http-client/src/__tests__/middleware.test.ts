@@ -33,7 +33,7 @@ describe("HTTP Middleware", () => {
   describe("createLoggingMiddleware", () => {
     it("should log requests and responses", async () => {
       const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-      
+
       const middleware = createLoggingMiddleware({
         logRequests: true,
         logResponses: true,
@@ -47,7 +47,7 @@ describe("HTTP Middleware", () => {
 
       await middleware.request!(config);
       expect(consoleSpy).toHaveBeenCalled();
-      
+
       consoleSpy.mockRestore();
     });
   });

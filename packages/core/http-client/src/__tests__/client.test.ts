@@ -245,11 +245,9 @@ describe("HTTPClient", () => {
     });
 
     it("should handle timeout errors", async () => {
-      const mockFetch = vi.fn().mockImplementation(() => 
-        new Promise((_, reject) => 
-          setTimeout(() => reject(new Error("Timeout")), 100)
-        )
-      );
+      const mockFetch = vi
+        .fn()
+        .mockImplementation(() => new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), 100)));
       global.fetch = mockFetch;
 
       const timeoutClient = new HTTPClient({
@@ -291,7 +289,7 @@ describe("HTTPClient", () => {
       global.fetch = mockFetch;
 
       await client.post("/upload", formData);
-      
+
       expect(mockFetch).toHaveBeenCalledWith(
         "https://api.example.com/upload",
         expect.objectContaining({
@@ -388,13 +386,10 @@ describe("HTTPClient", () => {
       global.fetch = mockFetch;
 
       await client.get("/test", {
-        params: { page: 1, limit: 10 }
+        params: { page: 1, limit: 10 },
       });
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        "https://api.example.com/test?page=1&limit=10",
-        expect.any(Object)
-      );
+      expect(mockFetch).toHaveBeenCalledWith("https://api.example.com/test?page=1&limit=10", expect.any(Object));
     });
   });
 });

@@ -1,14 +1,14 @@
 import { describe, it, expect } from "vitest";
-import type { 
-  ReynardApiConfig, 
-  ApiModule, 
-  RAGModule, 
-  CaptionModule, 
-  ChatModule, 
-  AuthModule, 
-  EmailModule, 
+import type {
+  ReynardApiConfig,
+  ApiModule,
+  RAGModule,
+  CaptionModule,
+  ChatModule,
+  AuthModule,
+  EmailModule,
   HealthModule,
-  ReynardApiClient
+  ReynardApiClient,
 } from "../types";
 
 describe("API Client Types", () => {

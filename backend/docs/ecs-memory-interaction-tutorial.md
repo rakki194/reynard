@@ -1,6 +1,6 @@
 # ECS Memory & Interaction System Tutorial
 
-*Step-by-step guide to using the ECS Memory & Interaction System in the Reynard framework*
+_Step-by-step guide to using the ECS Memory & Interaction System in the Reynard framework_
 
 ## Table of Contents
 
@@ -125,7 +125,7 @@ if interaction.can_interact():
         content="Hello Bob! How are you doing today?",
         duration=30.0
     )
-    
+
     if comm_interaction:
         print(f"Interaction started: {comm_interaction.id}")
         print(f"Energy cost: {comm_interaction.energy_cost}")
@@ -175,7 +175,7 @@ if relationship:
     print(f"Familiarity: {relationship.familiarity:.2f}")
     print(f"Interaction count: {relationship.interaction_count}")
     print(f"Total time together: {relationship.total_time_together:.1f} seconds")
-    
+
     # Check relationship quality
     if relationship.is_positive_relationship():
         print("This is a positive relationship")
@@ -313,10 +313,10 @@ world.update(1.0)  # 1 hour of simulation time
 ```python
 def process_interaction_with_memory(agent, target_agent_id, interaction_type, content):
     """Process an interaction and create corresponding memories."""
-    
+
     memory = agent.get_component(MemoryComponent)
     interaction = agent.get_component(InteractionComponent)
-    
+
     # Initiate interaction
     new_interaction = interaction.initiate_interaction(
         target_agent_id=target_agent_id,
@@ -324,11 +324,11 @@ def process_interaction_with_memory(agent, target_agent_id, interaction_type, co
         content=content,
         duration=60.0
     )
-    
+
     if new_interaction:
         # Create memory based on interaction
         memory_content = f"Had {interaction_type.value} with {target_agent_id}: {content}"
-        
+
         # Determine importance based on interaction type
         importance = 0.5
         if interaction_type == InteractionType.TEACHING:
@@ -337,7 +337,7 @@ def process_interaction_with_memory(agent, target_agent_id, interaction_type, co
             importance = 0.7
         elif interaction_type == InteractionType.ROMANTIC:
             importance = 0.9
-        
+
         # Store memory
         memory_id = memory.store_memory(
             memory_type=MemoryType.SOCIAL,
@@ -346,9 +346,9 @@ def process_interaction_with_memory(agent, target_agent_id, interaction_type, co
             emotional_weight=0.3,
             associated_agents=[target_agent_id]
         )
-        
+
         return new_interaction, memory_id
-    
+
     return None, None
 
 # Use the function
@@ -362,15 +362,15 @@ interaction, memory_id = process_interaction_with_memory(
 ```python
 def analyze_social_network(agent):
     """Analyze an agent's social network."""
-    
+
     interaction = agent.get_component(InteractionComponent)
     memory = agent.get_component(MemoryComponent)
-    
+
     # Get relationship statistics
     rel_stats = interaction.get_relationship_stats()
     interaction_stats = interaction.get_interaction_stats()
     memory_stats = memory.get_memory_stats()
-    
+
     print("=== Social Network Analysis ===")
     print(f"Total relationships: {rel_stats['total_relationships']}")
     print(f"Positive relationships: {rel_stats['positive_relationships']}")
@@ -379,12 +379,12 @@ def analyze_social_network(agent):
     print(f"Total interactions: {interaction_stats['total_interactions']}")
     print(f"Success rate: {interaction_stats['success_rate']:.1%}")
     print(f"Social memories: {memory_stats['memory_types'].get('social', 0)}")
-    
+
     # Analyze relationship types
     print("\n=== Relationship Types ===")
     for rel_type, count in rel_stats['relationship_types'].items():
         print(f"{rel_type}: {count}")
-    
+
     # Analyze interaction types
     print("\n=== Interaction Types ===")
     for int_type, count in interaction_stats['interaction_types'].items():
@@ -407,12 +407,12 @@ analyze_social_network(agent1)
 # Best practice: Regular memory maintenance
 def maintain_memories(agent, time_elapsed):
     """Maintain agent memories with regular consolidation."""
-    
+
     memory = agent.get_component(MemoryComponent)
-    
+
     # Consolidate memories
     memory.consolidate_memories(time_elapsed)
-    
+
     # Check capacity usage
     stats = memory.get_memory_stats()
     if stats['capacity_usage'] > 0.9:
@@ -422,11 +422,11 @@ def maintain_memories(agent, time_elapsed):
 
 def cleanup_old_memories(memory, target_usage=0.8):
     """Clean up old, low-importance memories."""
-    
+
     # Get memories sorted by importance
     all_memories = list(memory.memories.values())
     all_memories.sort(key=lambda m: m.importance)
-    
+
     # Remove lowest importance memories until target usage is reached
     target_count = int(memory.memory_capacity * target_usage)
     while len(memory.memories) > target_count and all_memories:
@@ -445,19 +445,19 @@ def cleanup_old_memories(memory, target_usage=0.8):
 # Best practice: Safe interaction management
 def safe_interaction(agent, target_agent_id, interaction_type, content):
     """Safely initiate an interaction with proper error handling."""
-    
+
     interaction = agent.get_component(InteractionComponent)
-    
+
     # Check energy
     if not interaction.can_interact():
         print("Cannot interact - insufficient energy")
         return None
-    
+
     # Check relationship capacity
     if len(interaction.relationships) >= interaction.max_relationships:
         print("Cannot interact - relationship capacity full")
         return None
-    
+
     # Initiate interaction
     result = interaction.initiate_interaction(
         target_agent_id=target_agent_id,
@@ -465,7 +465,7 @@ def safe_interaction(agent, target_agent_id, interaction_type, content):
         content=content,
         duration=30.0
     )
-    
+
     if result:
         print(f"Interaction successful: {result.id}")
         return result
@@ -485,23 +485,23 @@ def safe_interaction(agent, target_agent_id, interaction_type, content):
 # Best practice: Efficient batch processing
 def batch_memory_operations(agent, memories_data):
     """Efficiently process multiple memory operations."""
-    
+
     memory = agent.get_component(MemoryComponent)
     memory_ids = []
-    
+
     # Batch store memories
     for memory_data in memories_data:
         memory_id = memory.store_memory(**memory_data)
         memory_ids.append(memory_id)
-    
+
     # Batch consolidate
     memory.consolidate_memories(1.0)
-    
+
     return memory_ids
 
 def efficient_memory_search(memory, search_criteria):
     """Efficiently search memories with proper filtering."""
-    
+
     # Use specific filters to reduce search space
     if 'memory_type' in search_criteria:
         return memory.search_memories(
@@ -533,7 +533,7 @@ stats = memory.get_memory_stats()
 if stats['capacity_usage'] > 0.95:
     # Consolidate memories to remove forgotten ones
     memory.consolidate_memories(24.0)
-    
+
     # If still full, increase capacity or implement cleanup
     if stats['capacity_usage'] > 0.95:
         memory.memory_capacity = int(memory.memory_capacity * 1.5)
@@ -550,7 +550,7 @@ if stats['capacity_usage'] > 0.95:
 if not interaction.can_interact():
     # Wait for energy recovery
     interaction.recover_social_energy(1.0)  # 1 hour recovery
-    
+
     # Or reduce energy drain rate
     interaction.energy_drain_rate = 0.1  # Reduce from default 0.2
 ```
@@ -567,7 +567,7 @@ if len(interaction.relationships) >= interaction.max_relationships:
     # Remove weakest relationships
     relationships = list(interaction.relationships.items())
     relationships.sort(key=lambda x: x[1].get_relationship_quality())
-    
+
     # Remove lowest quality relationship
     if relationships:
         weakest_agent_id = relationships[0][0]
@@ -603,28 +603,28 @@ if memory is None:
 # Debug helper function
 def debug_agent_state(agent):
     """Debug helper to print agent state."""
-    
+
     memory = agent.get_component(MemoryComponent)
     interaction = agent.get_component(InteractionComponent)
-    
+
     print("=== Agent Debug State ===")
     print(f"Agent ID: {agent.id}")
-    
+
     # Memory state
     memory_stats = memory.get_memory_stats()
     print(f"Memories: {memory_stats['total_memories']}/{memory.memory_capacity}")
     print(f"Memory types: {memory_stats['memory_types']}")
-    
+
     # Interaction state
     interaction_stats = interaction.get_interaction_stats()
     print(f"Interactions: {interaction_stats['total_interactions']}")
     print(f"Relationships: {interaction_stats['total_relationships']}")
     print(f"Social energy: {interaction_stats['social_energy']:.2f}")
-    
+
     # Recent activity
     recent_memories = memory.search_memories(limit=3)
     print(f"Recent memories: {len(recent_memories)}")
-    
+
     recent_interactions = interaction.get_recent_interactions(3)
     print(f"Recent interactions: {len(recent_interactions)}")
 

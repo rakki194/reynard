@@ -293,9 +293,9 @@ class WebSocketManager:
                 self.connection_metadata[connection_id][
                     "last_heartbeat"
                 ] = datetime.now()
-                except Exception:
-                    logger.warning(f"Failed to send heartbeat to {connection_id}")
-                    disconnected.append(connection_id)
+            except Exception:
+                logger.warning(f"Failed to send heartbeat to {connection_id}")
+                disconnected.append(connection_id)
 
         # Remove disconnected connections
         for connection_id in disconnected:
@@ -390,8 +390,8 @@ class EmbeddingVisualizationServiceRouter(
         # TODO: Fix endpoint definitions to use proper async function syntax
         # self._setup_embedding_endpoints()
 
-        # Start WebSocket heartbeat
-        asyncio.create_task(self.websocket_manager.start_heartbeat())
+        # WebSocket heartbeat will be started when the service is actually used
+        # asyncio.create_task(self.websocket_manager.start_heartbeat())
 
     def get_service(self):
         """Get the embedding visualization service instance."""

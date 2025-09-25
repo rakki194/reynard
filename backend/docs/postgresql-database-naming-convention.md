@@ -7,28 +7,31 @@ This document defines the standardized naming convention for PostgreSQL database
 ## Standardized Naming Convention
 
 ### Core Principle
+
 All PostgreSQL database connection variables follow the pattern: `{SERVICE}_DATABASE_URL`
 
 ### Standardized Variables
 
-| Variable Name | Purpose | Database | Example |
-|---------------|---------|----------|---------|
-| `DATABASE_URL` | Main application database | `reynard` | `postgresql://postgres:password@localhost:5432/reynard` |
-| `AUTH_DATABASE_URL` | Authentication & authorization | `reynard_auth` | `postgresql://postgres:password@localhost:5432/reynard_auth` |
-| `ECS_DATABASE_URL` | Entity Component System | `reynard_ecs` | `postgresql://postgres:password@localhost:5432/reynard_ecs` |
-| `RAG_DATABASE_URL` | RAG (Retrieval-Augmented Generation) | `reynard_rag` | `postgresql://postgres:password@localhost:5432/reynard_rag` |
-| `KEY_STORAGE_DATABASE_URL` | Security key storage | `reynard_keys` | `postgresql://postgres:password@localhost:5432/reynard_keys` |
-| `E2E_DATABASE_URL` | End-to-end testing | `reynard_e2e` | `postgresql://postgres:password@localhost:5432/reynard_e2e` |
-| `E2E_ECS_DATABASE_URL` | ECS end-to-end testing | `reynard_ecs_e2e` | `postgresql://postgres:password@localhost:5432/reynard_ecs_e2e` |
+| Variable Name              | Purpose                              | Database          | Example                                                         |
+| -------------------------- | ------------------------------------ | ----------------- | --------------------------------------------------------------- |
+| `DATABASE_URL`             | Main application database            | `reynard`         | `postgresql://postgres:password@localhost:5432/reynard`         |
+| `AUTH_DATABASE_URL`        | Authentication & authorization       | `reynard_auth`    | `postgresql://postgres:password@localhost:5432/reynard_auth`    |
+| `ECS_DATABASE_URL`         | Entity Component System              | `reynard_ecs`     | `postgresql://postgres:password@localhost:5432/reynard_ecs`     |
+| `RAG_DATABASE_URL`         | RAG (Retrieval-Augmented Generation) | `reynard_rag`     | `postgresql://postgres:password@localhost:5432/reynard_rag`     |
+| `KEY_STORAGE_DATABASE_URL` | Security key storage                 | `reynard_keys`    | `postgresql://postgres:password@localhost:5432/reynard_keys`    |
+| `E2E_DATABASE_URL`         | End-to-end testing                   | `reynard_e2e`     | `postgresql://postgres:password@localhost:5432/reynard_e2e`     |
+| `E2E_ECS_DATABASE_URL`     | ECS end-to-end testing               | `reynard_ecs_e2e` | `postgresql://postgres:password@localhost:5432/reynard_ecs_e2e` |
 
 ## Migration History
 
 ### Changes Made
+
 - **Removed**: `PG_DSN` → **Replaced with**: `RAG_DATABASE_URL`
 - **Removed**: `RAG_BACKEND_URL` (unused variable)
 - **Standardized**: All database variables now follow `{SERVICE}_DATABASE_URL` pattern
 
 ### Files Updated
+
 - `backend/.env` - Updated variable names
 - `backend/env.example` - Updated example configuration
 - `backend/rag_config_example.env` - Updated RAG example
@@ -40,6 +43,7 @@ All PostgreSQL database connection variables follow the pattern: `{SERVICE}_DATA
 ## Configuration Files
 
 ### backend/.env
+
 ```bash
 # Main application database
 DATABASE_URL=postgresql://postgres:password@localhost:5432/reynard
@@ -64,6 +68,7 @@ E2E_ECS_DATABASE_URL=postgresql://postgres:password@localhost:5432/reynard_ecs_e
 ## Code Usage Examples
 
 ### Python Configuration
+
 ```python
 import os
 
@@ -78,6 +83,7 @@ auth_database_url = os.getenv("AUTH_DATABASE_URL", "postgresql://postgres:passwo
 ```
 
 ### Service Configuration
+
 ```python
 # RAG Service Configuration
 rag_config = {
@@ -98,6 +104,7 @@ ecs_config = {
 ## Database Setup
 
 ### Creating Databases
+
 ```bash
 # Create all databases
 createdb reynard
@@ -110,6 +117,7 @@ createdb reynard_ecs_e2e
 ```
 
 ### Environment Setup
+
 ```bash
 # Copy example configuration
 cp env.example .env
@@ -121,6 +129,7 @@ cp env.example .env
 ## Testing Configuration
 
 ### Test Database URLs
+
 ```python
 # Test configuration
 test_config = {
@@ -133,6 +142,7 @@ test_config = {
 ## Docker Configuration
 
 ### docker-compose.yml
+
 ```yaml
 services:
   backend:
@@ -147,12 +157,14 @@ services:
 ## Security Considerations
 
 ### Production Environment
+
 - Use strong, unique passwords for each database
 - Use different database users for different services
 - Enable SSL connections in production
 - Regularly rotate database credentials
 
 ### Development Environment
+
 - Use separate databases for development and testing
 - Use different credentials for different environments
 - Never commit real credentials to version control
@@ -160,12 +172,14 @@ services:
 ## Troubleshooting
 
 ### Common Issues
+
 1. **Connection Refused**: Check if PostgreSQL is running
 2. **Authentication Failed**: Verify username and password
 3. **Database Not Found**: Ensure database exists
 4. **Permission Denied**: Check user permissions
 
 ### Debug Commands
+
 ```bash
 # Test database connection
 psql $RAG_DATABASE_URL -c "SELECT 1;"
@@ -195,4 +209,4 @@ psql $RAG_DATABASE_URL -c "SELECT pg_size_pretty(pg_database_size(current_databa
 
 ---
 
-*This document is maintained by the Reynard Development Team. Last updated: 2025-01-15*
+_This document is maintained by the Reynard Development Team. Last updated: 2025-01-15_

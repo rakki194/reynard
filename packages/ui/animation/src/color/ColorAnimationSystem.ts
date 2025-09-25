@@ -1,12 +1,12 @@
 /**
  * 🦊 Color Animation System
- * 
+ *
  * Smart import system for color animations with fallback support.
  * Integrates with the unified animation system.
  */
 
 import type { OKLCHColor } from "reynard-colors";
-import { 
+import {
   easedHueShift,
   pureHueShift,
   batchHueShift,
@@ -15,8 +15,8 @@ import {
   generateEasedHueRamp,
   animateColorTransition,
   ColorEasingFunctions,
-  type ColorAnimationOptions, 
-  type HueShiftOptions 
+  type ColorAnimationOptions,
+  type HueShiftOptions,
 } from "./ColorAnimations.js";
 
 /**
@@ -130,13 +130,13 @@ export function createColorAnimationSystem(): {
   // Check if animations should be disabled
   const checkAnimationsDisabled = () => {
     if (animationEngine === "disabled") return true;
-    
+
     if (globalControl) {
       const control = globalControl as Record<string, unknown>;
       const isDisabled = control.isAnimationsDisabled as (() => boolean) | undefined;
       return isDisabled?.() || false;
     }
-    
+
     return false;
   };
 

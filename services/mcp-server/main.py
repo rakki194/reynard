@@ -15,6 +15,10 @@ import sys
 import time
 from typing import Any, Optional
 
+# Load backend environment configuration
+from load_backend_env import load_backend_env
+load_backend_env()
+
 from protocol.mcp_handler import MCPHandler
 from protocol.tool_discovery import ToolDiscovery
 
@@ -93,6 +97,7 @@ class MCPServer:
 
         # Auto-discover and import tools from the tools directory
         logger.debug("🕐 Starting tool discovery...")
+        logger.debug(f"🔍 Current tool registry has {len(self.tool_registry.list_all_tools())} tools before discovery")
         discovery_start = time.time()
         try:
             discovered_count = self.tool_discovery.discover_and_import_tools("tools")
@@ -100,6 +105,7 @@ class MCPServer:
             logger.info(
                 "Auto-discovered %d tools in %.3fs", discovered_count, discovery_elapsed
             )
+            logger.debug(f"🔍 Tool registry now has {len(self.tool_registry.list_all_tools())} tools after discovery")
         except Exception as e:  # noqa: BLE001  # pylint: disable=broad-exception-caught
             discovery_elapsed = time.time() - discovery_start
             logger.error("Tool discovery failed after %.3fs: %s", discovery_elapsed, e)
@@ -121,8 +127,12 @@ class MCPServer:
 
     def _ensure_tools_initialized(self) -> None:
         """Ensure tools are initialized (lazy loading)."""
+        logger.debug(f"🔍 _ensure_tools_initialized called - _tools_initialized: {self._tools_initialized}")
         if not self._tools_initialized:
+            logger.info("🚀 Starting lazy initialization of tools...")
             self._lazy_init_tools()
+        else:
+            logger.debug("✅ Tools already initialized, skipping lazy init")
 
     def _validate_mcp_handler(self, request_id: str) -> dict[str, Any] | None:
         """Validate that MCP handler is initialized."""
@@ -154,9 +164,11 @@ class MCPServer:
         if method == "tools/call":
             tool_name = params.get("name")
             arguments = params.get("arguments", {})
+            logger.debug(f"🔍 Main handler calling MCP handler for tool: {tool_name}")
             call_result = await self.mcp_handler.handle_tool_call(
                 tool_name, arguments, request_id, request
             )
+            logger.debug(f"🔍 MCP handler returned: {call_result}")
 
             # Nudge ECS time forward for every MCP action (if agent manager is available)
             if self.agent_manager:
@@ -188,6 +200,7 @@ class MCPServer:
             request_id = request.get("id")
 
             # Initialize tools on first request (lazy loading)
+            logger.debug(f"🔍 Handling request: {method} - calling _ensure_tools_initialized")
             self._ensure_tools_initialized()
 
             # Ensure mcp_handler is initialized

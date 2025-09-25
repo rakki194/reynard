@@ -10,23 +10,23 @@ export class Configuration {
 
 export class AuthenticationApi {
   constructor(private config: Configuration) {}
-  
+
   async loginApiAuthLoginPost(data: any) {
     return { access_token: "mock-token", refresh_token: "mock-refresh" };
   }
-  
+
   async registerApiAuthRegisterPost(data: any) {
     return { access_token: "mock-token", refresh_token: "mock-refresh" };
   }
-  
+
   async refreshTokensApiAuthRefreshPost(data: any) {
     return { access_token: "new-mock-token", refresh_token: "new-mock-refresh" };
   }
-  
+
   async logoutApiAuthLogoutPost() {
     return { message: "Logged out" };
   }
-  
+
   async getCurrentUserInfoApiAuthMeGet() {
     return {
       id: 1,
@@ -35,14 +35,14 @@ export class AuthenticationApi {
       role: "regular",
       isActive: true,
       createdAt: new Date().toISOString(),
-      profilePictureUrl: null
+      profilePictureUrl: null,
     };
   }
 }
 
 export class HealthApi {
   constructor(private config: Configuration) {}
-  
+
   async healthCheckApiHealthGet() {
     return { status: "healthy" };
   }
@@ -50,19 +50,19 @@ export class HealthApi {
 
 export class RagApi {
   constructor(private config: Configuration) {}
-  
+
   async queryRagApiRagQueryPost(data: any) {
     return { results: [] };
   }
-  
+
   async ingestDocumentsApiRagIngestPost(data: any) {
     return { message: "Ingested" };
   }
-  
+
   async getRagStatsApiRagAdminStatsGet() {
     return { stats: {} };
   }
-  
+
   async getRagConfigApiRagConfigGet() {
     return { config: {} };
   }
@@ -70,15 +70,15 @@ export class RagApi {
 
 export class CaptionApi {
   constructor(private config: Configuration) {}
-  
+
   async generateCaptionApiCaptionGeneratePost(data: any) {
     return { caption: "Mock caption" };
   }
-  
+
   async generateBatchCaptionsApiCaptionBatchPost(data: any) {
     return { captions: [] };
   }
-  
+
   async getAvailableGeneratorsApiCaptionGeneratorsGet() {
     return { generators: [] };
   }
@@ -86,7 +86,7 @@ export class CaptionApi {
 
 export class CaptionUploadApi {
   constructor(private config: Configuration) {}
-  
+
   async uploadAndGenerateCaptionApiCaptionUploadPost(data: any) {
     return { caption: "Mock caption" };
   }
@@ -94,19 +94,19 @@ export class CaptionUploadApi {
 
 export class OllamaApi {
   constructor(private config: Configuration) {}
-  
+
   async chatApiOllamaChatPost(data: any) {
     return { response: "Mock response" };
   }
-  
+
   async chatStreamApiOllamaChatStreamPost(data: any) {
     return { response: "Mock stream response" };
   }
-  
+
   async assistantChatApiOllamaAssistantPost(data: any) {
     return { response: "Mock assistant response" };
   }
-  
+
   async assistantChatStreamApiOllamaAssistantStreamPost(data: any) {
     return { response: "Mock assistant stream response" };
   }
@@ -114,15 +114,15 @@ export class OllamaApi {
 
 export class EmailApi {
   constructor(private config: Configuration) {}
-  
+
   async sendEmailApiEmailSendPost(data: any) {
     return { message: "Email sent" };
   }
-  
+
   async sendBulkEmailApiEmailSendBulkPost(data: any) {
     return { message: "Bulk email sent" };
   }
-  
+
   async getEmailStatusApiEmailStatusGet() {
     return { status: "sent" };
   }
@@ -130,31 +130,31 @@ export class EmailApi {
 
 export class AgentEmailApi {
   constructor(private config: Configuration) {}
-  
+
   async sendAgentEmailApiEmailAgentsAgentIdSendPost(agentId: string, data: any) {
     return { message: "Agent email sent" };
   }
-  
+
   async sendAgentBulkEmailApiEmailAgentsAgentIdSendBulkPost(agentId: string, data: any) {
     return { message: "Agent bulk email sent" };
   }
-  
+
   async getAgentEmailConfigApiEmailAgentsAgentIdConfigGet(agentId: string) {
     return { config: {} };
   }
-  
+
   async updateAgentEmailConfigApiEmailAgentsAgentIdConfigPut(agentId: string, data: any) {
     return { config: {} };
   }
-  
+
   async getAgentEmailStatsApiEmailAgentsAgentIdStatsGet(agentId: string) {
     return { stats: {} };
   }
-  
+
   async createAgentEmailTemplateApiEmailAgentsAgentIdTemplatesPost(agentId: string, data: any) {
     return { template: {} };
   }
-  
+
   async triggerAgentAutomatedEmailApiEmailAgentsAgentIdTriggerPost(agentId: string, data: any) {
     return { message: "Triggered" };
   }
@@ -162,39 +162,39 @@ export class AgentEmailApi {
 
 export class ImapApi {
   constructor(private config: Configuration) {}
-  
+
   async testImapConnectionApiImapTestGet() {
     return { status: "connected" };
   }
-  
+
   async getImapStatusApiImapStatusGet() {
     return { status: "active" };
   }
-  
+
   async getEmailsSummaryApiImapEmailsSummaryGet() {
     return { summary: {} };
   }
-  
+
   async getRecentEmailsApiImapEmailsRecentGet() {
     return { emails: [] };
   }
-  
+
   async getUnreadEmailsApiImapEmailsUnreadGet() {
     return { emails: [] };
   }
-  
+
   async getAgentEmailsApiImapEmailsAgentAgentIdGet(agentId: string) {
     return { emails: [] };
   }
-  
+
   async markEmailAsReadApiImapEmailsMessageIdMarkReadPost(messageId: string) {
     return { message: "Marked as read" };
   }
-  
+
   async markEmailAsProcessedApiImapEmailsMessageIdMarkProcessedPost(messageId: string) {
     return { message: "Marked as processed" };
   }
-  
+
   async startEmailMonitoringApiImapMonitoringStartPost() {
     return { message: "Monitoring started" };
   }

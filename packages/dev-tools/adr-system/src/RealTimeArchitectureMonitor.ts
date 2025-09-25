@@ -181,7 +181,7 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
     const baseMetrics = await this.collectMetrics();
     const realTimeMetrics = await this.collectRealTimeMetrics();
     const metrics = [...baseMetrics, ...realTimeMetrics];
-    
+
     const alerts = Array.from(this.activeAlerts.values());
     const trends = this.calculateTrends();
     const topIssues = this.getTopIssues();
@@ -259,7 +259,7 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
     for (const file of files) {
       try {
         const watcher = watch(file);
-        
+
         // Use async iterator for file watching
         (async () => {
           for await (const event of watcher) {
@@ -602,20 +602,39 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
       const values = recentHistory.map(metric => metric.value);
 
       // Enhanced categorization with more specific metrics
-      if (metricName.includes("modularity") || metricName.includes("interface") || 
-          metricName.includes("type-safety") || metricName.includes("Compliance") ||
-          metricName.includes("ADR") || metricName.includes("Architecture")) {
+      if (
+        metricName.includes("modularity") ||
+        metricName.includes("interface") ||
+        metricName.includes("type-safety") ||
+        metricName.includes("Compliance") ||
+        metricName.includes("ADR") ||
+        metricName.includes("Architecture")
+      ) {
         trends.compliance.push(...values);
-      } else if (metricName.includes("performance") || metricName.includes("Memory") || 
-                 metricName.includes("CPU") || metricName.includes("API") || 
-                 metricName.includes("Network") || metricName.includes("Response")) {
+      } else if (
+        metricName.includes("performance") ||
+        metricName.includes("Memory") ||
+        metricName.includes("CPU") ||
+        metricName.includes("API") ||
+        metricName.includes("Network") ||
+        metricName.includes("Response")
+      ) {
         trends.performance.push(...values);
-      } else if (metricName.includes("dependency") || metricName.includes("Security") ||
-                 metricName.includes("Vulnerability") || metricName.includes("Audit")) {
+      } else if (
+        metricName.includes("dependency") ||
+        metricName.includes("Security") ||
+        metricName.includes("Vulnerability") ||
+        metricName.includes("Audit")
+      ) {
         trends.security.push(...values);
-      } else if (metricName.includes("quality") || metricName.includes("Complexity") ||
-                 metricName.includes("Duplication") || metricName.includes("Coverage") ||
-                 metricName.includes("Files") || metricName.includes("TypeScript")) {
+      } else if (
+        metricName.includes("quality") ||
+        metricName.includes("Complexity") ||
+        metricName.includes("Duplication") ||
+        metricName.includes("Coverage") ||
+        metricName.includes("Files") ||
+        metricName.includes("TypeScript")
+      ) {
         trends.quality.push(...values);
       }
     }
@@ -645,24 +664,24 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
     const baseValue = this.getBaseValueForCategory(category);
     const trend = this.getTrendForCategory(category);
     const volatility = this.getVolatilityForCategory(category);
-    
+
     const values: number[] = [];
     let currentValue = baseValue;
-    
+
     for (let i = 0; i < dataPoints; i++) {
       // Add trend component
       currentValue += trend;
-      
+
       // Add random volatility
       const randomChange = (Math.random() - 0.5) * volatility;
       currentValue += randomChange;
-      
+
       // Ensure value stays within reasonable bounds
       currentValue = Math.max(0, Math.min(100, currentValue));
-      
+
       values.push(Math.round(currentValue * 100) / 100);
     }
-    
+
     return values;
   }
 
@@ -671,11 +690,16 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
    */
   private getBaseValueForCategory(category: string): number {
     switch (category) {
-      case "compliance": return 85;
-      case "performance": return 78;
-      case "quality": return 82;
-      case "security": return 90;
-      default: return 80;
+      case "compliance":
+        return 85;
+      case "performance":
+        return 78;
+      case "quality":
+        return 82;
+      case "security":
+        return 90;
+      default:
+        return 80;
     }
   }
 
@@ -684,11 +708,16 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
    */
   private getTrendForCategory(category: string): number {
     switch (category) {
-      case "compliance": return 0.1; // Slight improvement
-      case "performance": return -0.05; // Slight decline
-      case "quality": return 0.2; // Improving
-      case "security": return 0.05; // Stable with slight improvement
-      default: return 0;
+      case "compliance":
+        return 0.1; // Slight improvement
+      case "performance":
+        return -0.05; // Slight decline
+      case "quality":
+        return 0.2; // Improving
+      case "security":
+        return 0.05; // Stable with slight improvement
+      default:
+        return 0;
     }
   }
 
@@ -697,11 +726,16 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
    */
   private getVolatilityForCategory(category: string): number {
     switch (category) {
-      case "compliance": return 2; // Low volatility
-      case "performance": return 5; // Higher volatility
-      case "quality": return 3; // Medium volatility
-      case "security": return 1; // Very low volatility
-      default: return 2;
+      case "compliance":
+        return 2; // Low volatility
+      case "performance":
+        return 5; // Higher volatility
+      case "quality":
+        return 3; // Medium volatility
+      case "security":
+        return 1; // Very low volatility
+      default:
+        return 2;
     }
   }
 
@@ -715,7 +749,7 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
     security: TrendAnalysis;
   } {
     const trends = this.calculateTrends();
-    
+
     return {
       compliance: this.analyzeTrend(trends.compliance, "compliance"),
       performance: this.analyzeTrend(trends.performance, "performance"),
@@ -743,33 +777,33 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
     const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
     const variance = values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / values.length;
     const stdDev = Math.sqrt(variance);
-    
+
     // Calculate trend direction and strength
     const firstHalf = values.slice(0, Math.floor(values.length / 2));
     const secondHalf = values.slice(Math.floor(values.length / 2));
     const firstHalfMean = firstHalf.reduce((sum, val) => sum + val, 0) / firstHalf.length;
     const secondHalfMean = secondHalf.reduce((sum, val) => sum + val, 0) / secondHalf.length;
-    
+
     const trendChange = secondHalfMean - firstHalfMean;
     const trendStrength = Math.abs(trendChange) / stdDev;
-    
+
     let direction: "improving" | "declining" | "stable";
     if (trendChange > stdDev * 0.5) direction = "improving";
     else if (trendChange < -stdDev * 0.5) direction = "declining";
     else direction = "stable";
-    
+
     // Calculate confidence based on data consistency
-    const confidence = Math.max(0, Math.min(1, 1 - (stdDev / mean)));
-    
+    const confidence = Math.max(0, Math.min(1, 1 - stdDev / mean));
+
     // Generate forecast (simple linear projection)
     const forecast = this.generateForecast(values, 12); // Next 12 data points
-    
+
     // Generate insights
     const insights = this.generateTrendInsights(category, direction, trendStrength, mean, stdDev);
-    
+
     // Generate recommendations
     const recommendations = this.generateTrendRecommendations(category, direction, trendStrength);
-    
+
     return {
       direction,
       strength: Math.min(1, trendStrength),
@@ -785,17 +819,17 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
    */
   private generateForecast(values: number[], periods: number): number[] {
     if (values.length < 2) return values;
-    
+
     const forecast: number[] = [];
     const recent = values.slice(-5); // Use last 5 values for trend calculation
     const trend = (recent[recent.length - 1] - recent[0]) / (recent.length - 1);
     const lastValue = values[values.length - 1];
-    
+
     for (let i = 1; i <= periods; i++) {
-      const projectedValue = lastValue + (trend * i);
+      const projectedValue = lastValue + trend * i;
       forecast.push(Math.max(0, Math.min(100, projectedValue)));
     }
-    
+
     return forecast;
   }
 
@@ -803,14 +837,14 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
    * Generate insights based on trend analysis
    */
   private generateTrendInsights(
-    category: string, 
-    direction: string, 
-    strength: number, 
-    mean: number, 
+    category: string,
+    direction: string,
+    strength: number,
+    mean: number,
     stdDev: number
   ): string[] {
     const insights: string[] = [];
-    
+
     // Direction insights
     if (direction === "improving") {
       insights.push(`📈 ${category} is showing positive improvement`);
@@ -825,7 +859,7 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
     } else {
       insights.push(`➡️ ${category} is stable`);
     }
-    
+
     // Value insights
     if (mean > 90) {
       insights.push(`🌟 Excellent ${category} levels`);
@@ -836,27 +870,23 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
     } else {
       insights.push(`🚨 Critical ${category} levels`);
     }
-    
+
     // Volatility insights
     if (stdDev > mean * 0.2) {
       insights.push(`📊 High volatility in ${category} metrics`);
     } else {
       insights.push(`📊 Stable ${category} metrics`);
     }
-    
+
     return insights;
   }
 
   /**
    * Generate recommendations based on trend analysis
    */
-  private generateTrendRecommendations(
-    category: string, 
-    direction: string, 
-    strength: number
-  ): string[] {
+  private generateTrendRecommendations(category: string, direction: string, strength: number): string[] {
     const recommendations: string[] = [];
-    
+
     if (direction === "declining") {
       recommendations.push(`🔧 Investigate causes of ${category} decline`);
       recommendations.push(`📋 Create action plan for ${category} improvement`);
@@ -872,7 +902,7 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
       recommendations.push(`📊 Monitor ${category} for changes`);
       recommendations.push(`🔍 Look for optimization opportunities`);
     }
-    
+
     // Category-specific recommendations
     switch (category) {
       case "compliance":
@@ -892,7 +922,7 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
         recommendations.push("🛡️ Conduct security reviews");
         break;
     }
-    
+
     return recommendations;
   }
 
@@ -1090,8 +1120,8 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
         metadata: {
           description: "Current heap memory usage",
           impact: "High memory usage can affect performance",
-          recommendations: ["Optimize memory usage", "Check for memory leaks"]
-        }
+          recommendations: ["Optimize memory usage", "Check for memory leaks"],
+        },
       });
 
       // CPU usage (simplified)
@@ -1107,8 +1137,8 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
         metadata: {
           description: "Current CPU usage",
           impact: "High CPU usage can slow down operations",
-          recommendations: ["Optimize algorithms", "Check for infinite loops"]
-        }
+          recommendations: ["Optimize algorithms", "Check for infinite loops"],
+        },
       });
 
       // File system metrics
@@ -1122,7 +1152,6 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
       // Code quality metrics
       const codeQualityMetrics = await this.collectCodeQualityMetrics();
       realTimeMetrics.push(...codeQualityMetrics);
-
     } catch (error) {
       console.error("Error collecting real-time metrics:", error);
     }
@@ -1150,12 +1179,12 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
         metadata: {
           description: "Total number of files in codebase",
           impact: "Large file counts can affect build times",
-          recommendations: ["Consider file organization", "Split large files"]
-        }
+          recommendations: ["Consider file organization", "Split large files"],
+        },
       });
 
       // Count TypeScript files
-      const tsFileCount = await this.countFilesByExtension(this.codebasePath, ['.ts', '.tsx']);
+      const tsFileCount = await this.countFilesByExtension(this.codebasePath, [".ts", ".tsx"]);
       metrics.push({
         name: "TypeScript Files",
         value: tsFileCount,
@@ -1167,12 +1196,17 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
         metadata: {
           description: "Number of TypeScript files",
           impact: "TypeScript files provide better type safety",
-          recommendations: ["Convert JS files to TS", "Maintain type coverage"]
-        }
+          recommendations: ["Convert JS files to TS", "Maintain type coverage"],
+        },
       });
 
       // Count test files
-      const testFileCount = await this.countFilesByExtension(this.codebasePath, ['.test.ts', '.test.tsx', '.spec.ts', '.spec.tsx']);
+      const testFileCount = await this.countFilesByExtension(this.codebasePath, [
+        ".test.ts",
+        ".test.tsx",
+        ".spec.ts",
+        ".spec.tsx",
+      ]);
       metrics.push({
         name: "Test Files",
         value: testFileCount,
@@ -1184,10 +1218,9 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
         metadata: {
           description: "Number of test files",
           impact: "Test coverage affects code quality",
-          recommendations: ["Increase test coverage", "Add integration tests"]
-        }
+          recommendations: ["Increase test coverage", "Add integration tests"],
+        },
       });
-
     } catch (error) {
       console.error("Error collecting file system metrics:", error);
     }
@@ -1215,8 +1248,8 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
         metadata: {
           description: "Average API response time",
           impact: "Slow APIs affect user experience",
-          recommendations: ["Optimize API endpoints", "Add caching"]
-        }
+          recommendations: ["Optimize API endpoints", "Add caching"],
+        },
       });
 
       metrics.push({
@@ -1230,10 +1263,9 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
         metadata: {
           description: "Network requests per second",
           impact: "High request rates can overwhelm servers",
-          recommendations: ["Implement rate limiting", "Add load balancing"]
-        }
+          recommendations: ["Implement rate limiting", "Add load balancing"],
+        },
       });
-
     } catch (error) {
       console.error("Error collecting network metrics:", error);
     }
@@ -1261,8 +1293,8 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
         metadata: {
           description: "Average cyclomatic complexity",
           impact: "High complexity makes code hard to maintain",
-          recommendations: ["Refactor complex functions", "Split large functions"]
-        }
+          recommendations: ["Refactor complex functions", "Split large functions"],
+        },
       });
 
       // Code duplication percentage
@@ -1278,8 +1310,8 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
         metadata: {
           description: "Percentage of duplicated code",
           impact: "Duplicated code increases maintenance burden",
-          recommendations: ["Extract common functions", "Use shared utilities"]
-        }
+          recommendations: ["Extract common functions", "Use shared utilities"],
+        },
       });
 
       // Test coverage percentage
@@ -1295,10 +1327,9 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
         metadata: {
           description: "Test coverage percentage",
           impact: "Low test coverage increases bug risk",
-          recommendations: ["Add unit tests", "Increase integration tests"]
-        }
+          recommendations: ["Add unit tests", "Increase integration tests"],
+        },
       });
-
     } catch (error) {
       console.error("Error collecting code quality metrics:", error);
     }

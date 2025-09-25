@@ -16,7 +16,7 @@ export class MarkdownValidationCLI extends BaseCLI {
     super({
       name: "markdown-validator",
       description: "🦊 Markdown validation tools for the Reynard ecosystem",
-      version: "1.0.0"
+      version: "1.0.0",
     });
   }
 
@@ -25,39 +25,39 @@ export class MarkdownValidationCLI extends BaseCLI {
       name: "toc <file>",
       description: "Validate Table of Contents",
       options: {
-        "--fix": "Automatically fix issues"
+        "--fix": "Automatically fix issues",
       },
-      action: (options: any) => this.handleTocValidation(options.file, options)
+      action: (options: any) => this.handleTocValidation(options.file, options),
     });
 
     this.addCommand({
       name: "links <file>",
       description: "Validate links",
       options: {
-        "--fix": "Automatically fix issues"
+        "--fix": "Automatically fix issues",
       },
-      action: (options: any) => this.handleLinksValidation(options.file, options)
+      action: (options: any) => this.handleLinksValidation(options.file, options),
     });
 
     this.addCommand({
       name: "sentence-length <file>",
       description: "Validate sentence length",
       options: {
-        "--max-length <number>": "Maximum sentence length (default: 100)"
+        "--max-length <number>": "Maximum sentence length (default: 100)",
       },
-      action: (options: any) => this.handleSentenceLengthValidation(options.file, options)
+      action: (options: any) => this.handleSentenceLengthValidation(options.file, options),
     });
 
     this.addCommand({
       name: "test-conflict",
       description: "Test ToC conflict detection",
-      action: (options: any) => this.handleTestConflict()
+      action: (options: any) => this.handleTestConflict(),
     });
 
     this.addHelpExamples([
       "markdown-validator toc README.md",
       "markdown-validator links docs/CONTRIBUTING.md --fix",
-      "markdown-validator sentence-length src/index.md --max-length 80 --verbose"
+      "markdown-validator sentence-length src/index.md --max-length 80 --verbose",
     ]);
   }
 
@@ -131,7 +131,11 @@ export class MarkdownValidationCLI extends BaseCLI {
 
     try {
       const validator = new SentenceLengthValidator(this.logger);
-      const result = await validator.validateFile(file, { maxLength: typeof cliOptions.maxLength === 'string' ? parseInt(cliOptions.maxLength) : cliOptions.maxLength || 100, verbose: this.isVerbose() });
+      const result = await validator.validateFile(file, {
+        maxLength:
+          typeof cliOptions.maxLength === "string" ? parseInt(cliOptions.maxLength) : cliOptions.maxLength || 100,
+        verbose: this.isVerbose(),
+      });
 
       if (result.success) {
         this.logger.success("Sentence length validation passed!");

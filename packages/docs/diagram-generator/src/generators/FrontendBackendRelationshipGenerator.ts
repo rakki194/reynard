@@ -539,7 +539,12 @@ export class FrontendBackendRelationshipGenerator implements DiagramGenerator {
           frontendUsers: ["reynard-rag", "reynard-api-client"],
         },
         { path: "/api/search", method: "GET", purpose: "Semantic search", frontendUsers: ["reynard-rag"] },
-        { path: "/api/gallerydl", method: "GET", purpose: "Gallery-dl management", frontendUsers: ["reynard-gallery-dl"] },
+        {
+          path: "/api/gallerydl",
+          method: "GET",
+          purpose: "Gallery-dl management",
+          frontendUsers: ["reynard-gallery-dl"],
+        },
         {
           path: "/api/auth",
           method: "POST",

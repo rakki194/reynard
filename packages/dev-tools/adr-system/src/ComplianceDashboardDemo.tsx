@@ -1,6 +1,6 @@
 /**
  * 🦊 Compliance Dashboard Demo
- * 
+ *
  * Demo component showcasing the Compliance Dashboard integration
  * with the Reynard project architecture system.
  */
@@ -22,7 +22,7 @@ export const ComplianceDashboardDemo: Component = () => {
       performance: 80,
       security: 85,
     },
-    theme: 'auto' as const,
+    theme: "auto" as const,
   });
 
   const handleViolationAlert = (violation: any) => {
@@ -46,7 +46,7 @@ export const ComplianceDashboardDemo: Component = () => {
   const toggleTheme = () => {
     setDemoConfig(prev => ({
       ...prev,
-      theme: prev.theme === 'light' ? 'dark' : 'light'
+      theme: prev.theme === "light" ? "dark" : "light",
     }));
   };
 
@@ -65,7 +65,7 @@ export const ComplianceDashboardDemo: Component = () => {
           🦊 ADR Compliance Dashboard Demo
         </h1>
         <p>Interactive demonstration of the Reynard Architecture Compliance Dashboard</p>
-        
+
         <div class="demo-controls">
           <Show when={!isRunning()}>
             <Button onClick={startDemo} variant="primary" size="lg">
@@ -80,7 +80,7 @@ export const ComplianceDashboardDemo: Component = () => {
               Start Demo
             </Button>
           </Show>
-          
+
           <Show when={isRunning()}>
             <Button onClick={stopDemo} variant="secondary" size="lg">
               {fluentIconsPackage.getIcon("stop") && (
@@ -94,7 +94,7 @@ export const ComplianceDashboardDemo: Component = () => {
               Stop Demo
             </Button>
           </Show>
-          
+
           <Button onClick={toggleTheme} variant="tertiary" size="lg">
             {fluentIconsPackage.getIcon("dark-theme") && (
               <span class="button-icon">
@@ -120,11 +120,11 @@ export const ComplianceDashboardDemo: Component = () => {
               </div>
               <div class="config-item">
                 <span class="config-label">Show Trends:</span>
-                <span class="config-value">{demoConfig().showTrends ? 'Yes' : 'No'}</span>
+                <span class="config-value">{demoConfig().showTrends ? "Yes" : "No"}</span>
               </div>
               <div class="config-item">
                 <span class="config-label">Show Team Metrics:</span>
-                <span class="config-value">{demoConfig().showTeamMetrics ? 'Yes' : 'No'}</span>
+                <span class="config-value">{demoConfig().showTeamMetrics ? "Yes" : "No"}</span>
               </div>
               <div class="config-item">
                 <span class="config-label">Theme:</span>
@@ -186,5 +186,3 @@ export const ComplianceDashboardDemo: Component = () => {
 };
 
 export default ComplianceDashboardDemo;
-
-

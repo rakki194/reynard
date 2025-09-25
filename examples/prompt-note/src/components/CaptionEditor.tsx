@@ -62,13 +62,7 @@ export const CaptionEditor: Component<CaptionEditorProps> = props => {
                 <div class="tags-display">
                   <h4>Tags:</h4>
                   <div class="tag-bubbles">
-                    <For each={props.image.tags}>
-                      {(tag, index) => (
-                        <div class="tag-bubble">
-                          {tag}
-                        </div>
-                      )}
-                    </For>
+                    <For each={props.image.tags}>{(tag, index) => <div class="tag-bubble">{tag}</div>}</For>
                   </div>
                 </div>
               </Show>

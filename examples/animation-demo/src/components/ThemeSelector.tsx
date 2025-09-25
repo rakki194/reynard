@@ -1,6 +1,6 @@
 /**
  * 🎨 Theme Selector Component
- * 
+ *
  * Dropdown selector for changing themes in the animation demo
  */
 
@@ -19,15 +19,11 @@ export const ThemeSelector: Component = () => {
       <select
         id="theme-select"
         value={theme}
-        onChange={(e) => setTheme(e.currentTarget.value as ThemeName)}
+        onChange={e => setTheme(e.currentTarget.value as ThemeName)}
         class="selector-dropdown"
       >
         <For each={availableThemes}>
-          {(themeName) => (
-            <option value={themeName}>
-              {themes[themeName].displayName || themeName}
-            </option>
-          )}
+          {themeName => <option value={themeName}>{themes[themeName].displayName || themeName}</option>}
         </For>
       </select>
     </div>

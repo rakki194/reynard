@@ -1,9 +1,9 @@
 /**
  * 🦊 Smart Import Composable
- * 
+ *
  * SolidJS composable for smart imports with fallback support.
  * Provides reactive state management for package availability and imports.
- * 
+ *
  * @author Agile-Prime-90 (Reynard Lizard Specialist)
  * @since 1.0.0
  */
@@ -98,7 +98,7 @@ export function useSmartImport<T>(options: UseSmartImportOptions): UseSmartImpor
 
     try {
       const result = await smartImportSystem.smartImport<T>(packageName, fallbackModule);
-      
+
       setIsSuccess(result.success);
       setIsError(!result.success);
       setUsedFallback(result.usedFallback);
@@ -140,7 +140,7 @@ export function useSmartImport<T>(options: UseSmartImportOptions): UseSmartImpor
 
     // Clear availability cache to force recheck
     smartImportSystem.clearAvailabilityCache();
-    
+
     return performImport();
   };
 
@@ -148,7 +148,7 @@ export function useSmartImport<T>(options: UseSmartImportOptions): UseSmartImpor
   const refreshImport = async (): Promise<SmartImportResult<T>> => {
     smartImportSystem.clearCache();
     smartImportSystem.clearAvailabilityCache();
-    
+
     return performImport();
   };
 
@@ -219,10 +219,7 @@ export function usePackageAvailability(packageName: string, config?: Partial<Sma
 /**
  * Hook for multiple package availability checks
  */
-export function useMultiplePackageAvailability(
-  packageNames: string[],
-  config?: Partial<SmartImportConfig>
-) {
+export function useMultiplePackageAvailability(packageNames: string[], config?: Partial<SmartImportConfig>) {
   const [availabilities, setAvailabilities] = createSignal<Map<string, PackageAvailability>>(new Map());
   const [isChecking, setIsChecking] = createSignal(false);
 
@@ -232,9 +229,9 @@ export function useMultiplePackageAvailability(
     setIsChecking(true);
     try {
       const results = new Map<string, PackageAvailability>();
-      
+
       await Promise.all(
-        packageNames.map(async (packageName) => {
+        packageNames.map(async packageName => {
           const result = await smartImportSystem.checkPackageAvailability(packageName);
           results.set(packageName, result);
         })

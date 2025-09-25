@@ -39,7 +39,7 @@ export const createAuthOrchestrator = (
       if (token && !tokenManager.validateToken(token).error) {
         // Token is valid, get user profile
         const user = await authClient.getCurrentUser();
-        
+
         if (user) {
           updateAuthState({
             user,

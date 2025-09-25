@@ -20,10 +20,11 @@ export const DOCS_PACKAGES: DirectoryDefinition[] = [
     "packages/docs/diagram-generator",
     "Mermaid and flowchart generation for technical documentation - provides diagram generation, flowchart creation, and visual documentation tools",
     {
-      relationships: buildRelationships(
-        COMMON_RELATIONSHIPS.CORE_DEPENDENCY,
-        { directory: "packages/docs/docs-generator", type: "dependency", description: "Used by docs generator" }
-      ),
+      relationships: buildRelationships(COMMON_RELATIONSHIPS.CORE_DEPENDENCY, {
+        directory: "packages/docs/docs-generator",
+        type: "dependency",
+        description: "Used by docs generator",
+      }),
       metadata: DOCS_METADATA,
     }
   ),
@@ -47,10 +48,11 @@ export const DOCS_PACKAGES: DirectoryDefinition[] = [
     "packages/docs/docs-core",
     "Documentation engine, processing, and content management - provides core documentation processing, content management, and documentation engine capabilities",
     {
-      relationships: buildRelationships(
-        COMMON_RELATIONSHIPS.CORE_DEPENDENCY,
-        { directory: "packages/docs/docs-generator", type: "dependency", description: "Used by docs generator" }
-      ),
+      relationships: buildRelationships(COMMON_RELATIONSHIPS.CORE_DEPENDENCY, {
+        directory: "packages/docs/docs-generator",
+        type: "dependency",
+        description: "Used by docs generator",
+      }),
       metadata: DOCS_METADATA,
     }
   ),

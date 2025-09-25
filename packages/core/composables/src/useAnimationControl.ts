@@ -1,10 +1,10 @@
 /**
  * 🦊 Global Animation Control System
- * 
+ *
  * Provides centralized control over all animations in the Reynard ecosystem.
  * Supports accessibility preferences, performance modes, and optional animation package.
  * Migrated to use unified animation system.
- * 
+ *
  * @author Agile-Prime-90 (Reynard Lizard Specialist)
  * @since 1.0.0
  */
@@ -46,7 +46,7 @@ function useAnimationPackageDetection() {
 
   createEffect(() => {
     let isMounted = true;
-    
+
     const checkAnimationPackage = async () => {
       try {
         await import("reynard-animation");
@@ -73,7 +73,9 @@ function useAnimationPackageDetection() {
 /**
  * Create animation control functions
  */
-function createAnimationControlFunctions(setConfig: (fn: (prev: AnimationControlConfig) => AnimationControlConfig) => void) {
+function createAnimationControlFunctions(
+  setConfig: (fn: (prev: AnimationControlConfig) => AnimationControlConfig) => void
+) {
   return {
     disableAllAnimations: () => setConfig(prev => ({ ...prev, enabled: false })),
     enableAllAnimations: () => setConfig(prev => ({ ...prev, enabled: true })),
@@ -90,19 +92,17 @@ function createAnimationControlFunctions(setConfig: (fn: (prev: AnimationControl
 /**
  * Create animation state computation
  */
-function createAnimationStateComputation(
-  config: () => AnimationControlConfig,
-  prefersReducedMotion: () => boolean
-) {
+function createAnimationStateComputation(config: () => AnimationControlConfig, prefersReducedMotion: () => boolean) {
   return createMemo<AnimationControlState>(() => {
     const currentConfig = config();
     const prefersReduced = prefersReducedMotion();
-    
+
     return {
-      isAnimationsDisabled: !currentConfig.enabled || 
-                           (currentConfig.respectReducedMotion && prefersReduced) ||
-                           currentConfig.performanceMode ||
-                           !currentConfig.animationPackageAvailable,
+      isAnimationsDisabled:
+        !currentConfig.enabled ||
+        (currentConfig.respectReducedMotion && prefersReduced) ||
+        currentConfig.performanceMode ||
+        !currentConfig.animationPackageAvailable,
       prefersReducedMotion: prefersReduced,
       isAnimationPackageAvailable: currentConfig.animationPackageAvailable,
       isPerformanceMode: currentConfig.performanceMode,
@@ -118,7 +118,7 @@ function setupCSSClassManagement(animationState: () => AnimationControlState) {
   createEffect(() => {
     const state = animationState();
     const root = document.documentElement;
-    
+
     root.classList.toggle("animations-disabled", state.isAnimationsDisabled);
     root.classList.toggle("performance-mode", state.isPerformanceMode);
     root.classList.toggle("accessibility-mode", state.isAccessibilityMode);
@@ -132,19 +132,19 @@ function setupCSSClassManagement(animationState: () => AnimationControlState) {
 
 /**
  * Global animation control composable
- * 
+ *
  * Provides centralized control over all animations with support for:
  * - Accessibility preferences (prefers-reduced-motion)
  * - Performance modes
  * - Optional animation package availability
  * - Global enable/disable functionality
- * 
+ *
  * @returns Animation control state and functions
  */
 export function useAnimationControl() {
   const prefersReducedMotion = usePrefersReducedMotion();
   const isAnimationPackageAvailable = useAnimationPackageDetection();
-  
+
   const [config, setConfig] = createSignal<AnimationControlConfig>({
     enabled: true,
     respectReducedMotion: true,
@@ -159,7 +159,7 @@ export function useAnimationControl() {
 
   const animationState = createAnimationStateComputation(config, prefersReducedMotion);
   const controlFunctions = createAnimationControlFunctions(setConfig);
-  
+
   setupCSSClassManagement(animationState);
 
   return {
@@ -180,7 +180,7 @@ export function useAnimationControl() {
 
 /**
  * Hook for checking if animations are disabled
- * 
+ *
  * @returns Computed signal indicating if animations are disabled
  */
 export function useIsAnimationsDisabled() {
@@ -190,7 +190,7 @@ export function useIsAnimationsDisabled() {
 
 /**
  * Hook for checking if animation package is available
- * 
+ *
  * @returns Computed signal indicating if animation package is available
  */
 export function useIsAnimationPackageAvailable() {
@@ -200,7 +200,7 @@ export function useIsAnimationPackageAvailable() {
 
 /**
  * Hook for checking if performance mode is active
- * 
+ *
  * @returns Computed signal indicating if performance mode is active
  */
 export function useIsPerformanceMode() {
@@ -210,7 +210,7 @@ export function useIsPerformanceMode() {
 
 /**
  * Hook for checking if accessibility mode is active
- * 
+ *
  * @returns Computed signal indicating if accessibility mode is active
  */
 export function useIsAccessibilityMode() {

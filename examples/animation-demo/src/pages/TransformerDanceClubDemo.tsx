@@ -1,6 +1,6 @@
 /**
  * 🕺 Transformer Dance Club Demo
- * 
+ *
  * Interactive visualization of transformer architecture with dance club aesthetics
  * Showcases neural network components through playful animations and effects
  */
@@ -22,14 +22,13 @@ interface AnimationConfig {
   backgroundHueSpeed: number;
 }
 
-
 export const TransformerDanceClubDemo: Component = () => {
   const [animationConfig, setAnimationConfig] = createSignal<AnimationConfig>({
     strobeSpeed: 300,
     danceFloorSpeed: 2000,
     componentPulseSpeed: 1500,
     autoDanceInterval: 2000,
-    backgroundHueSpeed: 100
+    backgroundHueSpeed: 100,
   });
 
   // Initialize composables
@@ -38,7 +37,7 @@ export const TransformerDanceClubDemo: Component = () => {
     sparkleDuration: 1200,
     danceDuration: 800,
     scaleAmount: 1.3,
-    rotationAmount: 8
+    rotationAmount: 8,
   });
 
   const transformerAnimations = useTransformerAnimations();
@@ -57,12 +56,12 @@ export const TransformerDanceClubDemo: Component = () => {
   };
 
   const toggleAnimations = () => {
-    console.log('Toggle animations called, current state:', transformerAnimations.animationState().isPlaying);
+    console.log("Toggle animations called, current state:", transformerAnimations.animationState().isPlaying);
     if (transformerAnimations.animationState().isPlaying) {
-      console.log('Stopping animations...');
+      console.log("Stopping animations...");
       stopAnimations();
     } else {
-      console.log('Starting animations...');
+      console.log("Starting animations...");
       startAnimations();
     }
   };
@@ -75,13 +74,13 @@ export const TransformerDanceClubDemo: Component = () => {
 
   const updateConfig = (key: keyof AnimationConfig, value: number) => {
     setAnimationConfig(prev => ({ ...prev, [key]: value }));
-    transformerAnimations.updateConfig({ 
+    transformerAnimations.updateConfig({
       strobeSpeed: animationConfig().strobeSpeed,
       danceFloorSpeed: animationConfig().danceFloorSpeed,
       backgroundHueSpeed: animationConfig().backgroundHueSpeed,
       autoDanceInterval: animationConfig().autoDanceInterval,
       componentPulseSpeed: animationConfig().componentPulseSpeed,
-      [key]: value 
+      [key]: value,
     });
   };
 
@@ -105,8 +104,8 @@ export const TransformerDanceClubDemo: Component = () => {
       <div class="demo-header">
         <h1 class="page-title">🕺 Transformer Dance Club 💃</h1>
         <p class="page-description">
-          Interactive visualization of transformer architecture with dance club aesthetics.
-          Click components to make them dance!
+          Interactive visualization of transformer architecture with dance club aesthetics. Click components to make
+          them dance!
         </p>
       </div>
 
@@ -146,7 +145,7 @@ export const TransformerDanceClubDemo: Component = () => {
           Implementation Notes
         </h2>
         <div class="code-example">
-{`// Transformer Dance Club - Interactive Neural Network Visualization
+          {`// Transformer Dance Club - Interactive Neural Network Visualization
 
 // Key Features:
 // - Interactive component clicking with dance animations

@@ -1,8 +1,8 @@
 /**
  * Animation State Composable Helpers
- * 
+ *
  * Helper functions for the useAnimationState composable.
- * 
+ *
  * @author Agile-Prime-90 (Reynard Lizard Specialist)
  * @since 1.0.0
  */
@@ -12,9 +12,7 @@ import { AnimationStateManager, AnimationStateConfig } from "../state/AnimationS
 /**
  * Performance optimization functions
  */
-export function createPerformanceOptimizationFunctions(
-  animationStateManager: () => AnimationStateManager | null
-) {
+export function createPerformanceOptimizationFunctions(animationStateManager: () => AnimationStateManager | null) {
   const enablePerformanceMode = () => {
     const stateManager = animationStateManager();
     if (stateManager) {
@@ -48,9 +46,7 @@ export function createPerformanceOptimizationFunctions(
 /**
  * Accessibility compliance functions
  */
-export function createAccessibilityComplianceFunctions(
-  animationStateManager: () => AnimationStateManager | null
-) {
+export function createAccessibilityComplianceFunctions(animationStateManager: () => AnimationStateManager | null) {
   const enableAccessibilityMode = () => {
     const stateManager = animationStateManager();
     if (stateManager) {
@@ -74,9 +70,7 @@ export function createAccessibilityComplianceFunctions(
 /**
  * Immediate completion functions
  */
-export function createImmediateCompletionFunctions(
-  animationStateManager: () => AnimationStateManager | null
-) {
+export function createImmediateCompletionFunctions(animationStateManager: () => AnimationStateManager | null) {
   const enableImmediateCompletion = () => {
     const stateManager = animationStateManager();
     if (stateManager) {

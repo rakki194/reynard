@@ -57,7 +57,7 @@ export function useRAGSettings(config: RAGSettingsConfig) {
     maxResults,
     similarityThreshold,
     enableReranking,
-    
+
     // Actions
     updateEmbeddingModel,
     updateMaxResults,

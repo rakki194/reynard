@@ -8,9 +8,8 @@ import {
   getArchitectureTestableDirectories,
   getArchitectureDirectoryDefinitions,
   convertArchitectureDirectory,
-  getArchitectureGlobalExcludePatterns
+  getArchitectureGlobalExcludePatterns,
 } from "./architectureHelpers.js";
-
 
 import type { VitestGlobalConfig, GeneratorConfig, GeneratorResult, VitestProjectConfig } from "./types.js";
 import { ProjectConfigGenerator } from "./projectConfigGenerator.js";

@@ -35,16 +35,7 @@
     "test": "vitest",
     "clean": "rm -rf dist"
   },
-  "keywords": [
-    "reynard",
-    "dev-tools",
-    "cli",
-    "logger",
-    "file-utils",
-    "catalyst",
-    "utilities",
-    "shared"
-  ],
+  "keywords": ["reynard", "dev-tools", "cli", "logger", "file-utils", "catalyst", "utilities", "shared"],
   "author": "Reynard Framework",
   "license": "MIT",
   "dependencies": {

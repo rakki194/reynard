@@ -82,7 +82,15 @@ export class SearchValidator {
    * Validate modality type
    */
   static validateModality(modality: ModalityType): ModalityType {
-    const validModalities: ModalityType[] = [ModalityType.TEXT, ModalityType.IMAGE, ModalityType.AUDIO, ModalityType.VIDEO, ModalityType.DATA, ModalityType.CODE, ModalityType.DOCUMENT];
+    const validModalities: ModalityType[] = [
+      ModalityType.TEXT,
+      ModalityType.IMAGE,
+      ModalityType.AUDIO,
+      ModalityType.VIDEO,
+      ModalityType.DATA,
+      ModalityType.CODE,
+      ModalityType.DOCUMENT,
+    ];
 
     if (!validModalities.includes(modality)) {
       throw new SearchValidationError(`Invalid modality type: ${modality}`, "modality", modality);

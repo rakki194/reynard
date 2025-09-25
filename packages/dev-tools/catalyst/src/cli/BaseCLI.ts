@@ -3,10 +3,10 @@
  * Base class for consistent CLI implementations across all Reynard dev-tools
  */
 
-import { Command } from 'commander';
-import type { BaseCLIConfig, CLIOptions, CLICommand } from '../types/CLI.js';
-import { ReynardLogger } from '../logger/ReynardLogger.js';
-import { CLIUtils } from './CLIUtils.js';
+import { Command } from "commander";
+import type { BaseCLIConfig, CLIOptions, CLICommand } from "../types/CLI.js";
+import { ReynardLogger } from "../logger/ReynardLogger.js";
+import { CLIUtils } from "./CLIUtils.js";
 
 export abstract class BaseCLI {
   protected readonly program: Command;
@@ -17,7 +17,7 @@ export abstract class BaseCLI {
     this.config = config;
     this.program = new Command();
     this.logger = new ReynardLogger({ verbose: config.options?.verbose || false });
-    
+
     this.setupProgram();
     this.addCommonOptions();
     this.setupCommands();
@@ -27,10 +27,7 @@ export abstract class BaseCLI {
    * Setup the main program
    */
   private setupProgram(): void {
-    this.program
-      .name(this.config.name)
-      .description(this.config.description)
-      .version(this.config.version);
+    this.program.name(this.config.name).description(this.config.description).version(this.config.version);
   }
 
   /**
@@ -38,9 +35,9 @@ export abstract class BaseCLI {
    */
   protected addCommonOptions(): void {
     this.program
-      .option('-v, --verbose', 'Enable verbose output')
-      .option('--backup', 'Create backup of existing files')
-      .option('--validate', 'Validate generated output');
+      .option("-v, --verbose", "Enable verbose output")
+      .option("--backup", "Create backup of existing files")
+      .option("--validate", "Validate generated output");
   }
 
   /**
@@ -52,13 +49,11 @@ export abstract class BaseCLI {
    * Add a command to the CLI
    */
   protected addCommand(command: CLICommand): void {
-    const cmd = this.program
-      .command(command.name)
-      .description(command.description);
+    const cmd = this.program.command(command.name).description(command.description);
 
     if (command.options) {
       for (const [option, config] of Object.entries(command.options)) {
-        if (typeof config === 'string') {
+        if (typeof config === "string") {
           cmd.option(option, config);
         } else {
           cmd.option(option, config.description, config.defaultValue);
@@ -99,12 +94,12 @@ export abstract class BaseCLI {
     }
 
     const validation = CLIUtils.validateConfig(data, requiredFields);
-    
+
     if (validation.valid) {
-      this.logger.success('✅ Validation passed');
+      this.logger.success("✅ Validation passed");
       return true;
     } else {
-      this.logger.error('❌ Validation failed:');
+      this.logger.error("❌ Validation failed:");
       validation.errors.forEach(error => this.logger.error(`  - ${error}`));
       return false;
     }
@@ -157,7 +152,7 @@ export abstract class BaseCLI {
    * Add help examples
    */
   protected addHelpExamples(examples: string[]): void {
-    this.program.addHelpText('after', `\nExamples:\n${examples.map(ex => `  ${ex}`).join('\n')}\n`);
+    this.program.addHelpText("after", `\nExamples:\n${examples.map(ex => `  ${ex}`).join("\n")}\n`);
   }
 
   /**
@@ -194,9 +189,9 @@ export abstract class BaseCLI {
   protected logStartup(): void {
     this.logger.header(`${this.config.name} v${this.config.version}`);
     this.logger.info(this.config.description);
-    
+
     if (this.isVerbose()) {
-      this.logger.debug('Verbose mode enabled');
+      this.logger.debug("Verbose mode enabled");
     }
   }
 

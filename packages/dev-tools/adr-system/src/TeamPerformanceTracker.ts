@@ -328,10 +328,10 @@ export class TeamPerformanceTracker extends EventEmitter {
       "Quality Specialist": 8,
       "Testing Specialist": 6,
     };
-    
+
     const bonus = roleBonus[member.role as keyof typeof roleBonus] || 0;
     const randomVariation = (Math.random() - 0.5) * 10;
-    
+
     return Math.max(0, Math.min(100, baseScore + bonus + randomVariation));
   }
 
@@ -346,10 +346,10 @@ export class TeamPerformanceTracker extends EventEmitter {
       "Quality Specialist": 1.1,
       "Testing Specialist": 1.3,
     };
-    
+
     const multiplier = roleMultiplier[member.role as keyof typeof roleMultiplier] || 1;
     const randomVariation = (Math.random() - 0.5) * 3;
-    
+
     return Math.max(0, baseScore * multiplier + randomVariation);
   }
 
@@ -364,10 +364,10 @@ export class TeamPerformanceTracker extends EventEmitter {
       "Quality Specialist": 10,
       "Testing Specialist": 8,
     };
-    
+
     const bonus = roleBonus[member.role as keyof typeof roleBonus] || 0;
     const randomVariation = (Math.random() - 0.5) * 8;
-    
+
     return Math.max(0, Math.min(100, baseScore + bonus + randomVariation));
   }
 
@@ -382,10 +382,10 @@ export class TeamPerformanceTracker extends EventEmitter {
       "Quality Specialist": 1.2,
       "Testing Specialist": 1.1,
     };
-    
+
     const multiplier = roleMultiplier[member.role as keyof typeof roleMultiplier] || 1;
     const randomVariation = (Math.random() - 0.5) * 2;
-    
+
     return Math.max(0, baseScore * multiplier + randomVariation);
   }
 
@@ -400,10 +400,10 @@ export class TeamPerformanceTracker extends EventEmitter {
       "Quality Specialist": 1.3,
       "Testing Specialist": 1.0,
     };
-    
+
     const multiplier = roleMultiplier[member.role as keyof typeof roleMultiplier] || 1;
     const randomVariation = (Math.random() - 0.5) * 2;
-    
+
     return Math.max(0, baseScore * multiplier + randomVariation);
   }
 
@@ -431,9 +431,10 @@ export class TeamPerformanceTracker extends EventEmitter {
   private async generateCollaborationAnalysis(memberId: string, member: TeamMember): Promise<CollaborationAnalysis> {
     const interactions = [];
     const otherMembers = Array.from(this.teamMembers.values()).filter(m => m.id !== memberId);
-    
+
     // Generate interactions with other team members
-    for (const otherMember of otherMembers.slice(0, 3)) { // Limit to 3 interactions for demo
+    for (const otherMember of otherMembers.slice(0, 3)) {
+      // Limit to 3 interactions for demo
       interactions.push({
         with: otherMember.id,
         type: this.getRandomInteractionType(),
@@ -464,7 +465,11 @@ export class TeamPerformanceTracker extends EventEmitter {
    */
   private getRandomInteractionType(): "code_review" | "pair_programming" | "discussion" | "mentoring" {
     const types = ["code_review", "pair_programming", "discussion", "mentoring"];
-    return types[Math.floor(Math.random() * types.length)] as "code_review" | "pair_programming" | "discussion" | "mentoring";
+    return types[Math.floor(Math.random() * types.length)] as
+      | "code_review"
+      | "pair_programming"
+      | "discussion"
+      | "mentoring";
   }
 
   /**
@@ -508,7 +513,10 @@ export class TeamPerformanceTracker extends EventEmitter {
   /**
    * Get team performance report
    */
-  async getTeamPerformanceReport(teamId: string, period: { start: string; end: string }): Promise<TeamPerformanceReport> {
+  async getTeamPerformanceReport(
+    teamId: string,
+    period: { start: string; end: string }
+  ): Promise<TeamPerformanceReport> {
     const teamMembers = Array.from(this.teamMembers.values()).filter(m => m.team === teamId);
     const memberScores = new Map<string, number>();
     const trends = {
@@ -547,15 +555,20 @@ export class TeamPerformanceTracker extends EventEmitter {
       trends.innovation.push(...innovationValues);
 
       // Calculate averages
-      if (complianceValues.length > 0) totalCompliance += complianceValues.reduce((a, b) => a + b, 0) / complianceValues.length;
-      if (productivityValues.length > 0) totalProductivity += productivityValues.reduce((a, b) => a + b, 0) / productivityValues.length;
+      if (complianceValues.length > 0)
+        totalCompliance += complianceValues.reduce((a, b) => a + b, 0) / complianceValues.length;
+      if (productivityValues.length > 0)
+        totalProductivity += productivityValues.reduce((a, b) => a + b, 0) / productivityValues.length;
       if (qualityValues.length > 0) totalQuality += qualityValues.reduce((a, b) => a + b, 0) / qualityValues.length;
-      if (collaborationValues.length > 0) totalCollaboration += collaborationValues.reduce((a, b) => a + b, 0) / collaborationValues.length;
-      if (innovationValues.length > 0) totalInnovation += innovationValues.reduce((a, b) => a + b, 0) / innovationValues.length;
+      if (collaborationValues.length > 0)
+        totalCollaboration += collaborationValues.reduce((a, b) => a + b, 0) / collaborationValues.length;
+      if (innovationValues.length > 0)
+        totalInnovation += innovationValues.reduce((a, b) => a + b, 0) / innovationValues.length;
     }
 
     const memberCount = teamMembers.length;
-    const overallScore = (totalCompliance + totalProductivity + totalQuality + totalCollaboration + totalInnovation) / (memberCount * 5);
+    const overallScore =
+      (totalCompliance + totalProductivity + totalQuality + totalCollaboration + totalInnovation) / (memberCount * 5);
 
     // Get top performers
     const topPerformers = teamMembers
@@ -724,5 +737,3 @@ export class TeamPerformanceTracker extends EventEmitter {
 }
 
 export default TeamPerformanceTracker;
-
-

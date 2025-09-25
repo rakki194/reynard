@@ -1,6 +1,6 @@
 /**
  * 🤖 Transformer Animations Composable
- * 
+ *
  * Specialized composable for transformer architecture animations
  * Manages strobe effects, dance floor, background animations, and component flows
  */
@@ -30,16 +30,16 @@ export const useTransformerAnimations = (config: Partial<TransformerAnimationCon
     backgroundHueSpeed: 100,
     autoDanceInterval: 2000,
     componentPulseSpeed: 1500,
-    flowDataSpeed: 1500
+    flowDataSpeed: 1500,
   };
 
   const finalConfig = { ...defaultConfig, ...config };
-  
+
   const [animationState, setAnimationState] = createSignal<AnimationState>({
     isPlaying: false,
     currentHue: 0,
     strobeIntensity: 0.1,
-    danceFloorOpacity: 0.3
+    danceFloorOpacity: 0.3,
   });
 
   const [animationIntervals, setAnimationIntervals] = createSignal<NodeJS.Timeout[]>([]);
@@ -49,17 +49,17 @@ export const useTransformerAnimations = (config: Partial<TransformerAnimationCon
    * Starts all transformer animations
    */
   const startAnimations = () => {
-    console.log('startAnimations called, current state:', animationState().isPlaying);
+    console.log("startAnimations called, current state:", animationState().isPlaying);
     if (animationState().isPlaying) return;
 
-    console.log('Starting transformer animations...');
+    console.log("Starting transformer animations...");
     const intervals: NodeJS.Timeout[] = [];
 
     // Background hue rotation
     const hueInterval = setInterval(() => {
       setAnimationState(prev => ({
         ...prev,
-        currentHue: (prev.currentHue + 1) % 360
+        currentHue: (prev.currentHue + 1) % 360,
       }));
     }, finalConfig.backgroundHueSpeed);
     intervals.push(hueInterval);
@@ -68,7 +68,7 @@ export const useTransformerAnimations = (config: Partial<TransformerAnimationCon
     const strobeInterval = setInterval(() => {
       setAnimationState(prev => ({
         ...prev,
-        strobeIntensity: 0.05 + Math.random() * 0.1
+        strobeIntensity: 0.05 + Math.random() * 0.1,
       }));
     }, finalConfig.strobeSpeed);
     intervals.push(strobeInterval);
@@ -77,7 +77,7 @@ export const useTransformerAnimations = (config: Partial<TransformerAnimationCon
     const danceFloorInterval = setInterval(() => {
       setAnimationState(prev => ({
         ...prev,
-        danceFloorOpacity: 0.2 + Math.random() * 0.5
+        danceFloorOpacity: 0.2 + Math.random() * 0.5,
       }));
     }, finalConfig.danceFloorSpeed);
     intervals.push(danceFloorInterval);
@@ -90,11 +90,11 @@ export const useTransformerAnimations = (config: Partial<TransformerAnimationCon
    * Stops all transformer animations
    */
   const stopAnimations = () => {
-    console.log('stopAnimations called, current intervals:', animationIntervals().length);
+    console.log("stopAnimations called, current intervals:", animationIntervals().length);
     animationIntervals().forEach(interval => clearInterval(interval));
     setAnimationIntervals([]);
     setAnimationState(prev => ({ ...prev, isPlaying: false }));
-    console.log('Animations stopped');
+    console.log("Animations stopped");
   };
 
   /**
@@ -102,7 +102,7 @@ export const useTransformerAnimations = (config: Partial<TransformerAnimationCon
    */
   const updateConfig = (newConfig: Partial<TransformerAnimationConfig>) => {
     Object.assign(finalConfig, newConfig);
-    
+
     if (animationState().isPlaying) {
       stopAnimations();
       startAnimations();
@@ -115,19 +115,19 @@ export const useTransformerAnimations = (config: Partial<TransformerAnimationCon
   const createDataFlow = (fromElement: HTMLElement, toElement: HTMLElement, duration: number = 1000) => {
     const fromRect = fromElement.getBoundingClientRect();
     const toRect = toElement.getBoundingClientRect();
-    
-    const flowElement = document.createElement('div');
-    flowElement.className = 'data-flow';
-    flowElement.style.position = 'fixed';
+
+    const flowElement = document.createElement("div");
+    flowElement.className = "data-flow";
+    flowElement.style.position = "fixed";
     flowElement.style.left = `${fromRect.right}px`;
     flowElement.style.top = `${fromRect.top + fromRect.height / 2}px`;
     flowElement.style.width = `${Math.sqrt(Math.pow(toRect.left - fromRect.right, 2) + Math.pow(toRect.top - fromRect.top, 2))}px`;
-    flowElement.style.height = '3px';
-    flowElement.style.background = 'linear-gradient(90deg, #00d9ff, #06ffa5)';
-    flowElement.style.transformOrigin = '0 50%';
+    flowElement.style.height = "3px";
+    flowElement.style.background = "linear-gradient(90deg, #00d9ff, #06ffa5)";
+    flowElement.style.transformOrigin = "0 50%";
     flowElement.style.animation = `dataFlow ${duration}ms ease-in-out`;
-    flowElement.style.zIndex = '1000';
-    flowElement.style.pointerEvents = 'none';
+    flowElement.style.zIndex = "1000";
+    flowElement.style.pointerEvents = "none";
 
     document.body.appendChild(flowElement);
 
@@ -154,24 +154,31 @@ export const useTransformerAnimations = (config: Partial<TransformerAnimationCon
    */
   const createCircularFlow = (components: HTMLElement[], delay: number = 300) => {
     createDataFlowSequence(components, delay);
-    
+
     // Complete the circle
-    setTimeout(() => {
-      if (components.length > 1) {
-        createDataFlow(components[components.length - 1], components[0]);
-      }
-    }, (components.length - 1) * delay);
+    setTimeout(
+      () => {
+        if (components.length > 1) {
+          createDataFlow(components[components.length - 1], components[0]);
+        }
+      },
+      (components.length - 1) * delay
+    );
   };
 
   /**
    * Creates a transformer attention visualization
    */
-  const createAttentionVisualization = (queryElement: HTMLElement, keyElements: HTMLElement[], valueElements: HTMLElement[]) => {
+  const createAttentionVisualization = (
+    queryElement: HTMLElement,
+    keyElements: HTMLElement[],
+    valueElements: HTMLElement[]
+  ) => {
     // Create attention lines from query to keys
     keyElements.forEach((keyElement, index) => {
       setTimeout(() => {
         createDataFlow(queryElement, keyElement, 800);
-        
+
         // Then flow to corresponding value
         if (valueElements[index]) {
           setTimeout(() => {
@@ -185,10 +192,13 @@ export const useTransformerAnimations = (config: Partial<TransformerAnimationCon
   /**
    * Creates a transformer block processing animation
    */
-  const animateTransformerBlock = (blockElements: HTMLElement[], processingOrder: string[] = ['attention', 'add-norm', 'feed-forward', 'add-norm']) => {
-    const orderedElements = processingOrder.map(order => 
-      blockElements.find(el => el.id.includes(order))
-    ).filter(Boolean) as HTMLElement[];
+  const animateTransformerBlock = (
+    blockElements: HTMLElement[],
+    processingOrder: string[] = ["attention", "add-norm", "feed-forward", "add-norm"]
+  ) => {
+    const orderedElements = processingOrder
+      .map(order => blockElements.find(el => el.id.includes(order)))
+      .filter(Boolean) as HTMLElement[];
 
     createDataFlowSequence(orderedElements, 300);
   };
@@ -209,9 +219,9 @@ export const useTransformerAnimations = (config: Partial<TransformerAnimationCon
 
     // Create cross-attention flow
     setTimeout(() => {
-      const encoderOutput = encoderElements.find(el => el.id.includes('add-norm') && el.id.includes('2'));
-      const decoderAttention = decoderElements.find(el => el.id.includes('cross-attention'));
-      
+      const encoderOutput = encoderElements.find(el => el.id.includes("add-norm") && el.id.includes("2"));
+      const decoderAttention = decoderElements.find(el => el.id.includes("cross-attention"));
+
       if (encoderOutput && decoderAttention) {
         createDataFlow(encoderOutput, decoderAttention, 1000);
       }
@@ -258,7 +268,7 @@ export const useTransformerAnimations = (config: Partial<TransformerAnimationCon
     // State
     animationState,
     isInitialized,
-    
+
     // Actions
     startAnimations,
     stopAnimations,
@@ -269,13 +279,13 @@ export const useTransformerAnimations = (config: Partial<TransformerAnimationCon
     createAttentionVisualization,
     animateTransformerBlock,
     animateForwardPass,
-    
+
     // Getters
     getBackgroundGradient,
     getStrobeBackground,
     getDanceFloorOpacity,
-    
+
     // Config
-    config: finalConfig
+    config: finalConfig,
   };
 };

@@ -23,7 +23,11 @@
 import { EventEmitter } from "events";
 import { readFile, readdir, stat } from "fs/promises";
 import { join, relative, dirname, basename, extname } from "path";
-import { REYNARD_ARCHITECTURE, getDirectoriesByCategory, getDirectoriesByImportance } from "reynard-project-architecture";
+import {
+  REYNARD_ARCHITECTURE,
+  getDirectoriesByCategory,
+  getDirectoriesByImportance,
+} from "reynard-project-architecture";
 
 /**
  * Represents an architectural component with comprehensive metadata.
@@ -452,8 +456,8 @@ export class ArchitectureMappingTools extends EventEmitter {
           performance: 80,
           scalability: 75,
           security: 85,
-          reliability: 80
-        }
+          reliability: 80,
+        },
       },
       patternDetection: {
         enabled: true,
@@ -461,7 +465,7 @@ export class ArchitectureMappingTools extends EventEmitter {
         includeStructural: true,
         includeBehavioral: true,
         includeCreational: true,
-        includeArchitectural: true
+        includeArchitectural: true,
       },
       interfaceAnalysis: {
         enabled: true,
@@ -469,9 +473,9 @@ export class ArchitectureMappingTools extends EventEmitter {
         includeEvents: true,
         includeMessages: true,
         includeFiles: true,
-        includeDatabases: true
+        includeDatabases: true,
       },
-      ...config
+      ...config,
     };
 
     this.architectureMap = this.initializeArchitectureMap();
@@ -501,8 +505,8 @@ export class ArchitectureMappingTools extends EventEmitter {
         totalViews: 0,
         totalRelationships: 0,
         overallQuality: 0,
-        lastAssessment: ""
-      }
+        lastAssessment: "",
+      },
     };
   }
 
@@ -511,7 +515,7 @@ export class ArchitectureMappingTools extends EventEmitter {
    */
   async generateArchitectureMap(): Promise<ArchitectureMap> {
     this.emit("mapping:start", { timestamp: new Date().toISOString() });
-    
+
     try {
       // Clear previous analysis
       this.architectureMap = this.initializeArchitectureMap();
@@ -519,23 +523,23 @@ export class ArchitectureMappingTools extends EventEmitter {
 
       // Analyze architectural components
       await this.analyzeArchitecturalComponents();
-      
+
       // Analyze architectural interfaces
       if (this.config.interfaceAnalysis.enabled) {
         await this.analyzeArchitecturalInterfaces();
       }
-      
+
       // Detect architectural patterns
       if (this.config.patternDetection.enabled) {
         await this.detectArchitecturalPatterns();
       }
-      
+
       // Create architectural views
       await this.createArchitecturalViews();
-      
+
       // Analyze architectural relationships
       await this.analyzeArchitecturalRelationships();
-      
+
       // Perform quality assessment
       if (this.config.qualityAssessment.enabled) {
         await this.performQualityAssessment();
@@ -550,7 +554,7 @@ export class ArchitectureMappingTools extends EventEmitter {
         interfaces: this.architectureMap.interfaces.size,
         patterns: this.architectureMap.patterns.size,
         views: this.architectureMap.views.size,
-        relationships: this.architectureMap.relationships.size
+        relationships: this.architectureMap.relationships.size,
       });
 
       return this.architectureMap;
@@ -565,20 +569,20 @@ export class ArchitectureMappingTools extends EventEmitter {
    */
   private async analyzeArchitecturalComponents(): Promise<void> {
     this.emit("mapping:components:start");
-    
+
     try {
       // Analyze packages as architectural components
       await this.analyzePackageComponents();
-      
+
       // Analyze service components
       await this.analyzeServiceComponents();
-      
+
       // Analyze module components
       await this.analyzeModuleComponents();
-      
+
       // Analyze interface components
       await this.analyzeInterfaceComponents();
-      
+
       this.emit("mapping:components:complete", { components: this.architectureMap.components.size });
     } catch (error) {
       this.emit("mapping:components:error", { error });
@@ -591,13 +595,13 @@ export class ArchitectureMappingTools extends EventEmitter {
    */
   private async analyzePackageComponents(): Promise<void> {
     const packageFiles = await this.findFiles("**/package.json");
-    
+
     for (const packageFile of packageFiles) {
       try {
         const packagePath = dirname(packageFile);
         const packageContent = await readFile(packageFile, "utf-8");
         const packageData = JSON.parse(packageContent);
-        
+
         const componentId = `pkg-${packagePath.replace(/\//g, "-")}`;
         const component: ArchitectureComponent = {
           id: componentId,
@@ -619,10 +623,10 @@ export class ArchitectureMappingTools extends EventEmitter {
             lastModified: new Date().toISOString(),
             complexity: this.calculatePackageComplexity(packageData),
             linesOfCode: await this.calculatePackageLinesOfCode(packagePath),
-            testCoverage: await this.calculateTestCoverage(packagePath)
-          }
+            testCoverage: await this.calculateTestCoverage(packagePath),
+          },
         };
-        
+
         this.architectureMap.components.set(componentId, component);
       } catch (error) {
         console.warn(`Failed to analyze package: ${packageFile}`, error);
@@ -635,11 +639,11 @@ export class ArchitectureMappingTools extends EventEmitter {
    */
   private async analyzeServiceComponents(): Promise<void> {
     const serviceDirectories = await this.findDirectories("**/services/**");
-    
+
     for (const serviceDir of serviceDirectories) {
       try {
         const serviceFiles = await this.findFiles(`${serviceDir}/**/*.{ts,tsx,js,jsx}`);
-        
+
         if (serviceFiles.length > 0) {
           const componentId = `svc-${serviceDir.replace(/\//g, "-")}`;
           const component: ArchitectureComponent = {
@@ -662,10 +666,10 @@ export class ArchitectureMappingTools extends EventEmitter {
               lastModified: new Date().toISOString(),
               complexity: await this.calculateServiceComplexity(serviceDir),
               linesOfCode: await this.calculateServiceLinesOfCode(serviceDir),
-              testCoverage: await this.calculateTestCoverage(serviceDir)
-            }
+              testCoverage: await this.calculateTestCoverage(serviceDir),
+            },
           };
-          
+
           this.architectureMap.components.set(componentId, component);
         }
       } catch (error) {
@@ -679,12 +683,12 @@ export class ArchitectureMappingTools extends EventEmitter {
    */
   private async analyzeModuleComponents(): Promise<void> {
     const moduleFiles = await this.findFiles("**/src/**/*.{ts,tsx,js,jsx}");
-    
+
     for (const moduleFile of moduleFiles) {
       try {
         const content = await readFile(moduleFile, "utf-8");
         const moduleInfo = this.analyzeModuleFile(content, moduleFile);
-        
+
         if (moduleInfo.isModule) {
           const componentId = `mod-${moduleFile.replace(/\//g, "-")}`;
           const component: ArchitectureComponent = {
@@ -707,10 +711,10 @@ export class ArchitectureMappingTools extends EventEmitter {
               lastModified: new Date().toISOString(),
               complexity: moduleInfo.complexity,
               linesOfCode: content.split("\n").length,
-              testCoverage: 0
-            }
+              testCoverage: 0,
+            },
           };
-          
+
           this.architectureMap.components.set(componentId, component);
         }
       } catch (error) {
@@ -724,12 +728,12 @@ export class ArchitectureMappingTools extends EventEmitter {
    */
   private async analyzeInterfaceComponents(): Promise<void> {
     const interfaceFiles = await this.findFiles("**/*.interface.{ts,tsx}");
-    
+
     for (const interfaceFile of interfaceFiles) {
       try {
         const content = await readFile(interfaceFile, "utf-8");
         const interfaceInfo = this.analyzeInterfaceFile(content, interfaceFile);
-        
+
         const componentId = `ifc-${interfaceFile.replace(/\//g, "-")}`;
         const component: ArchitectureComponent = {
           id: componentId,
@@ -751,10 +755,10 @@ export class ArchitectureMappingTools extends EventEmitter {
             lastModified: new Date().toISOString(),
             complexity: interfaceInfo.complexity,
             linesOfCode: content.split("\n").length,
-            testCoverage: 0
-          }
+            testCoverage: 0,
+          },
         };
-        
+
         this.architectureMap.components.set(componentId, component);
       } catch (error) {
         console.warn(`Failed to analyze interface: ${interfaceFile}`, error);
@@ -767,33 +771,33 @@ export class ArchitectureMappingTools extends EventEmitter {
    */
   private async analyzeArchitecturalInterfaces(): Promise<void> {
     this.emit("mapping:interfaces:start");
-    
+
     try {
       // Analyze API interfaces
       if (this.config.interfaceAnalysis.includeAPIs) {
         await this.analyzeAPIInterfaces();
       }
-      
+
       // Analyze event interfaces
       if (this.config.interfaceAnalysis.includeEvents) {
         await this.analyzeEventInterfaces();
       }
-      
+
       // Analyze message interfaces
       if (this.config.interfaceAnalysis.includeMessages) {
         await this.analyzeMessageInterfaces();
       }
-      
+
       // Analyze file interfaces
       if (this.config.interfaceAnalysis.includeFiles) {
         await this.analyzeFileInterfaces();
       }
-      
+
       // Analyze database interfaces
       if (this.config.interfaceAnalysis.includeDatabases) {
         await this.analyzeDatabaseInterfaces();
       }
-      
+
       this.emit("mapping:interfaces:complete", { interfaces: this.architectureMap.interfaces.size });
     } catch (error) {
       this.emit("mapping:interfaces:error", { error });
@@ -806,12 +810,12 @@ export class ArchitectureMappingTools extends EventEmitter {
    */
   private async analyzeAPIInterfaces(): Promise<void> {
     const apiFiles = await this.findFiles("**/*.{api,route,controller}.{ts,tsx,js,jsx}");
-    
+
     for (const apiFile of apiFiles) {
       try {
         const content = await readFile(apiFile, "utf-8");
         const apiInterfaces = this.extractAPIInterfaces(content, apiFile);
-        
+
         for (const apiInterface of apiInterfaces) {
           this.architectureMap.interfaces.set(apiInterface.id, apiInterface);
         }
@@ -826,28 +830,28 @@ export class ArchitectureMappingTools extends EventEmitter {
    */
   private async detectArchitecturalPatterns(): Promise<void> {
     this.emit("mapping:patterns:start");
-    
+
     try {
       // Detect structural patterns
       if (this.config.patternDetection.includeStructural) {
         await this.detectStructuralPatterns();
       }
-      
+
       // Detect behavioral patterns
       if (this.config.patternDetection.includeBehavioral) {
         await this.detectBehavioralPatterns();
       }
-      
+
       // Detect creational patterns
       if (this.config.patternDetection.includeCreational) {
         await this.detectCreationalPatterns();
       }
-      
+
       // Detect architectural patterns
       if (this.config.patternDetection.includeArchitectural) {
         await this.detectArchitecturalPatterns();
       }
-      
+
       this.emit("mapping:patterns:complete", { patterns: this.architectureMap.patterns.size });
     } catch (error) {
       this.emit("mapping:patterns:error", { error });
@@ -860,26 +864,26 @@ export class ArchitectureMappingTools extends EventEmitter {
    */
   private async createArchitecturalViews(): Promise<void> {
     this.emit("mapping:views:start");
-    
+
     try {
       // Create logical view
       await this.createLogicalView();
-      
+
       // Create physical view
       await this.createPhysicalView();
-      
+
       // Create deployment view
       await this.createDeploymentView();
-      
+
       // Create process view
       await this.createProcessView();
-      
+
       // Create data view
       await this.createDataView();
-      
+
       // Create security view
       await this.createSecurityView();
-      
+
       this.emit("mapping:views:complete", { views: this.architectureMap.views.size });
     } catch (error) {
       this.emit("mapping:views:error", { error });
@@ -892,17 +896,17 @@ export class ArchitectureMappingTools extends EventEmitter {
    */
   private async analyzeArchitecturalRelationships(): Promise<void> {
     this.emit("mapping:relationships:start");
-    
+
     try {
       // Analyze component relationships
       await this.analyzeComponentRelationships();
-      
+
       // Analyze interface relationships
       await this.analyzeInterfaceRelationships();
-      
+
       // Analyze pattern relationships
       await this.analyzePatternRelationships();
-      
+
       this.emit("mapping:relationships:complete", { relationships: this.architectureMap.relationships.size });
     } catch (error) {
       this.emit("mapping:relationships:error", { error });
@@ -915,7 +919,7 @@ export class ArchitectureMappingTools extends EventEmitter {
    */
   private async performQualityAssessment(): Promise<void> {
     this.emit("mapping:quality:start");
-    
+
     try {
       const assessment: ArchitectureQualityAssessment = {
         id: `assessment-${Date.now()}`,
@@ -927,32 +931,32 @@ export class ArchitectureMappingTools extends EventEmitter {
           scalability: 0,
           security: 0,
           reliability: 0,
-          usability: 0
+          usability: 0,
         },
         issues: [],
         recommendations: [],
         metadata: {
           assessor: "ArchitectureMappingTools",
           methodology: "Automated Analysis",
-          confidence: 0.8
-        }
+          confidence: 0.8,
+        },
       };
 
       // Assess maintainability
       assessment.dimensions.maintainability = await this.assessMaintainability();
-      
+
       // Assess performance
       assessment.dimensions.performance = await this.assessPerformance();
-      
+
       // Assess scalability
       assessment.dimensions.scalability = await this.assessScalability();
-      
+
       // Assess security
       assessment.dimensions.security = await this.assessSecurity();
-      
+
       // Assess reliability
       assessment.dimensions.reliability = await this.assessReliability();
-      
+
       // Assess usability
       assessment.dimensions.usability = await this.assessUsability();
 
@@ -966,11 +970,11 @@ export class ArchitectureMappingTools extends EventEmitter {
       assessment.recommendations = await this.generateRecommendations();
 
       this.architectureMap.qualityAssessments.push(assessment);
-      
-      this.emit("mapping:quality:complete", { 
+
+      this.emit("mapping:quality:complete", {
         overallScore: assessment.overallScore,
         issues: assessment.issues.length,
-        recommendations: assessment.recommendations.length
+        recommendations: assessment.recommendations.length,
       });
     } catch (error) {
       this.emit("mapping:quality:error", { error });
@@ -994,13 +998,13 @@ export class ArchitectureMappingTools extends EventEmitter {
 
   private async findFilesRecursive(dir: string, pattern: string, files: string[], depth: number): Promise<void> {
     if (depth > this.config.maxDepth) return;
-    
+
     try {
       const entries = await readdir(dir);
       for (const entry of entries) {
         const fullPath = join(dir, entry);
         const stat = await this.stat(fullPath);
-        
+
         if (stat.isDirectory()) {
           await this.findFilesRecursive(fullPath, pattern, files, depth + 1);
         } else if (this.matchesPattern(entry, pattern)) {
@@ -1012,15 +1016,20 @@ export class ArchitectureMappingTools extends EventEmitter {
     }
   }
 
-  private async findDirectoriesRecursive(dir: string, pattern: string, directories: string[], depth: number): Promise<void> {
+  private async findDirectoriesRecursive(
+    dir: string,
+    pattern: string,
+    directories: string[],
+    depth: number
+  ): Promise<void> {
     if (depth > this.config.maxDepth) return;
-    
+
     try {
       const entries = await readdir(dir);
       for (const entry of entries) {
         const fullPath = join(dir, entry);
         const stat = await this.stat(fullPath);
-        
+
         if (stat.isDirectory()) {
           if (this.matchesPattern(entry, pattern)) {
             directories.push(relative(this.config.rootPath, fullPath));
@@ -1050,7 +1059,9 @@ export class ArchitectureMappingTools extends EventEmitter {
     return filename === pattern;
   }
 
-  private determineArchitecturalLayer(path: string): "presentation" | "business" | "data" | "infrastructure" | "cross-cutting" {
+  private determineArchitecturalLayer(
+    path: string
+  ): "presentation" | "business" | "data" | "infrastructure" | "cross-cutting" {
     if (path.includes("ui/") || path.includes("components/")) return "presentation";
     if (path.includes("services/") || path.includes("business/")) return "business";
     if (path.includes("data/") || path.includes("repository/")) return "data";
@@ -1072,15 +1083,15 @@ export class ArchitectureMappingTools extends EventEmitter {
 
   private extractPackageResponsibilities(packageData: any): string[] {
     const responsibilities: string[] = [];
-    
+
     if (packageData.description) {
       responsibilities.push(packageData.description);
     }
-    
+
     if (packageData.keywords) {
       responsibilities.push(...packageData.keywords);
     }
-    
+
     return responsibilities;
   }
 
@@ -1092,7 +1103,7 @@ export class ArchitectureMappingTools extends EventEmitter {
       maintainability: 8,
       testability: 7,
       security: 6,
-      reliability: 7
+      reliability: 7,
     };
   }
 
@@ -1122,9 +1133,10 @@ export class ArchitectureMappingTools extends EventEmitter {
     this.architectureMap.metadata.totalViews = this.architectureMap.views.size;
     this.architectureMap.metadata.totalRelationships = this.architectureMap.relationships.size;
     this.architectureMap.metadata.lastUpdated = new Date().toISOString();
-    
+
     if (this.architectureMap.qualityAssessments.length > 0) {
-      const latestAssessment = this.architectureMap.qualityAssessments[this.architectureMap.qualityAssessments.length - 1];
+      const latestAssessment =
+        this.architectureMap.qualityAssessments[this.architectureMap.qualityAssessments.length - 1];
       this.architectureMap.metadata.overallQuality = latestAssessment.overallScore;
       this.architectureMap.metadata.lastAssessment = latestAssessment.timestamp;
     }
@@ -1155,9 +1167,10 @@ export class ArchitectureMappingTools extends EventEmitter {
    * Get quality issues by severity.
    */
   getQualityIssuesBySeverity(severity: string): ArchitectureQualityIssue[] {
-    const latestAssessment = this.architectureMap.qualityAssessments[this.architectureMap.qualityAssessments.length - 1];
+    const latestAssessment =
+      this.architectureMap.qualityAssessments[this.architectureMap.qualityAssessments.length - 1];
     if (!latestAssessment) return [];
-    
+
     return latestAssessment.issues.filter(issue => issue.severity === severity);
   }
 
@@ -1168,18 +1181,18 @@ export class ArchitectureMappingTools extends EventEmitter {
     switch (format) {
       case "json":
         return JSON.stringify(this.architectureMap, null, 2);
-      
+
       case "yaml":
         // Would require yaml library
         throw new Error("YAML export not yet implemented");
-      
+
       case "xml":
         // Would require xml library
         throw new Error("XML export not yet implemented");
-      
+
       case "mermaid":
         return this.generateMermaidArchitectureDiagram();
-      
+
       default:
         throw new Error(`Unsupported export format: ${format}`);
     }
@@ -1190,20 +1203,18 @@ export class ArchitectureMappingTools extends EventEmitter {
    */
   private generateMermaidArchitectureDiagram(): string {
     let mermaid = "graph TB\n";
-    
+
     // Add components
     for (const [componentId, component] of this.architectureMap.components) {
       const label = component.name.replace(/[^a-zA-Z0-9]/g, "_");
       mermaid += `  ${componentId}["${component.name}<br/>${component.type}"]\n`;
     }
-    
+
     // Add relationships
     for (const [relationshipId, relationship] of this.architectureMap.relationships) {
       mermaid += `  ${relationship.source} -->|${relationship.type}| ${relationship.target}\n`;
     }
-    
+
     return mermaid;
   }
 }
-
-

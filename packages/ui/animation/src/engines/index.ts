@@ -9,22 +9,19 @@ export { StroboscopicEngine } from "./StroboscopicEngine";
 export { createQualityManager } from "./QualityManager";
 export { createAdaptiveCallbacks } from "./AdaptiveCallbacks";
 export { DEFAULT_ADAPTIVE_CONFIG } from "./AdaptiveConfig";
-export { 
-  SmartAnimationCore, 
-  getSmartAnimationCore, 
+export {
+  SmartAnimationCore,
+  getSmartAnimationCore,
   createSmartAnimationCore,
-  cleanupSmartAnimationCore 
+  cleanupSmartAnimationCore,
 } from "./SmartAnimationCore";
-export { 
-  NoOpAnimationEngine, 
-  getNoOpAnimationEngine, 
-  createNoOpAnimationEngine, 
-  cleanupNoOpAnimationEngine 
+export {
+  NoOpAnimationEngine,
+  getNoOpAnimationEngine,
+  createNoOpAnimationEngine,
+  cleanupNoOpAnimationEngine,
 } from "./NoOpAnimationEngine";
-export { 
-  NoOpTestingUtilities, 
-  createNoOpTestingUtilities 
-} from "./NoOpTestingUtilities";
+export { NoOpTestingUtilities, createNoOpTestingUtilities } from "./NoOpTestingUtilities";
 
 // Re-export types
 export type { StroboscopicConfig, StroboscopicState } from "../types";

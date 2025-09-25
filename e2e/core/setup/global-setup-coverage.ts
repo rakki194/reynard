@@ -1,6 +1,6 @@
 /**
  * Global Setup for E2E Tests with Code Coverage
- * 
+ *
  * Initializes code coverage collection and sets up the test environment
  * for comprehensive coverage reporting with Vitest integration.
  */
@@ -33,10 +33,7 @@ async function globalSetup(config: FullConfig) {
     },
   };
 
-  await fs.writeFile(
-    join(coverageDir, "coverage-state.json"),
-    JSON.stringify(coverageState, null, 2)
-  );
+  await fs.writeFile(join(coverageDir, "coverage-state.json"), JSON.stringify(coverageState, null, 2));
 
   // Set up environment variables for coverage
   process.env.E2E_COVERAGE_ENABLED = "true";
@@ -60,12 +57,7 @@ async function initializeVitestIntegration(coverageDir: string): Promise<void> {
     enabled: true,
     reportsDirectory: join(coverageDir, "vitest"),
     reporter: ["text", "html", "lcov", "json"],
-    include: [
-      "packages/*/src/**/*.ts",
-      "packages/*/src/**/*.tsx",
-      "examples/*/src/**/*.ts",
-      "examples/*/src/**/*.tsx",
-    ],
+    include: ["packages/*/src/**/*.ts", "packages/*/src/**/*.tsx", "examples/*/src/**/*.ts", "examples/*/src/**/*.tsx"],
     exclude: [
       "node_modules/**",
       "dist/**",
@@ -88,10 +80,7 @@ async function initializeVitestIntegration(coverageDir: string): Promise<void> {
     },
   };
 
-  await fs.writeFile(
-    join(coverageDir, "vitest-integration.json"),
-    JSON.stringify(vitestCoverageConfig, null, 2)
-  );
+  await fs.writeFile(join(coverageDir, "vitest-integration.json"), JSON.stringify(vitestCoverageConfig, null, 2));
 }
 
 export default globalSetup;

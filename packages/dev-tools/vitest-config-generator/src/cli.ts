@@ -14,7 +14,7 @@ class VitestConfigCLI extends BaseCLI {
     super({
       name: "generate-vitest-config",
       description: "🦊 Generate Vitest configuration from Reynard project architecture",
-      version: "1.0.0"
+      version: "1.0.0",
     });
   }
 
@@ -33,9 +33,9 @@ class VitestConfigCLI extends BaseCLI {
         "--branches <number>": "Coverage threshold for branches",
         "--functions <number>": "Coverage threshold for functions",
         "--lines <number>": "Coverage threshold for lines",
-        "--statements <number>": "Coverage threshold for statements"
+        "--statements <number>": "Coverage threshold for statements",
       },
-      action: this.handleGenerate.bind(this)
+      action: this.handleGenerate.bind(this),
     });
 
     // Add help examples
@@ -46,14 +46,14 @@ class VitestConfigCLI extends BaseCLI {
       "generate-vitest-config generate --include-examples --include-templates",
       "generate-vitest-config generate --max-workers 4 --environment node",
       "generate-vitest-config generate --branches 90 --functions 95 --lines 95 --statements 95",
-      "generate-vitest-config generate --backup --validate"
+      "generate-vitest-config generate --backup --validate",
     ]);
   }
 
   private async handleGenerate(options: any): Promise<void> {
     try {
       this.logStartup();
-      
+
       // Build configuration
       const config: GeneratorConfig = {
         outputPath: options.output || "vitest.generated.config.ts",
@@ -100,7 +100,7 @@ class VitestConfigCLI extends BaseCLI {
 
       // Handle validation using catalyst utilities
       if (this.shouldValidate()) {
-        const validation = CLIUtils.validateConfig(result.config, ['test', 'coverage']);
+        const validation = CLIUtils.validateConfig(result.config, ["test", "coverage"]);
         if (!validation.valid) {
           this.logger.error("Generated configuration is invalid:");
           validation.errors.forEach(error => this.logger.error(`  - ${error}`));
@@ -136,7 +136,7 @@ class VitestConfigCLI extends BaseCLI {
       }
 
       this.logger.success(`Successfully generated configuration for ${result.projectsGenerated} projects`);
-      
+
       if (this.isVerbose()) {
         this.logger.section("Generation Summary");
         this.logger.info(`Projects generated: ${result.projectsGenerated}`);

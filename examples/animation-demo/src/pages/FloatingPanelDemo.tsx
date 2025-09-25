@@ -1,6 +1,6 @@
 /**
  * 🪟 Floating Panel Demo
- * 
+ *
  * Showcase of floating panel animations and transitions
  */
 
@@ -8,9 +8,9 @@ import { Component, createSignal, For, Show } from "solid-js";
 // import { FloatingPanel } from "reynard-floating-panel";
 
 // Mock FloatingPanel component for demo
-const FloatingPanel: Component<any> = (props) => {
+const FloatingPanel: Component<any> = props => {
   return (
-    <div 
+    <div
       class="floating-panel-mock"
       style={{
         position: "absolute",
@@ -23,16 +23,27 @@ const FloatingPanel: Component<any> = (props) => {
         "border-radius": "var(--radius-lg)",
         padding: "1rem",
         "box-shadow": "var(--shadow-lg)",
-        "z-index": 1000
+        "z-index": 1000,
       }}
     >
-      <div class="panel-header" style={{ display: "flex", "justify-content": "space-between", "align-items": "center", "margin-bottom": "1rem" }}>
+      <div
+        class="panel-header"
+        style={{
+          display: "flex",
+          "justify-content": "space-between",
+          "align-items": "center",
+          "margin-bottom": "1rem",
+        }}
+      >
         <h3 style={{ margin: 0, color: "var(--color-primary)" }}>{props.title}</h3>
-        <button onClick={props.onClose} style={{ background: "none", border: "none", "font-size": "1.2rem", cursor: "pointer" }}>×</button>
+        <button
+          onClick={props.onClose}
+          style={{ background: "none", border: "none", "font-size": "1.2rem", cursor: "pointer" }}
+        >
+          ×
+        </button>
       </div>
-      <div class="panel-body">
-        {props.children}
-      </div>
+      <div class="panel-body">{props.children}</div>
     </div>
   );
 };
@@ -49,7 +60,7 @@ export const FloatingPanelDemo: Component = () => {
     animationDuration: 300,
     easing: "ease-out",
     backdrop: true,
-    draggable: true
+    draggable: true,
   });
 
   const addPanel = () => {
@@ -58,10 +69,10 @@ export const FloatingPanelDemo: Component = () => {
       id: newId,
       title: `Panel ${newId}`,
       content: `This is floating panel number ${newId}`,
-      position: { 
-        x: Math.random() * 400 + 100, 
-        y: Math.random() * 300 + 100 
-      }
+      position: {
+        x: Math.random() * 400 + 100,
+        y: Math.random() * 300 + 100,
+      },
     };
     setPanels(prev => [...prev, newPanel]);
   };
@@ -101,10 +112,12 @@ export const FloatingPanelDemo: Component = () => {
               max="1000"
               step="100"
               value={panelConfig().animationDuration}
-              onInput={(e) => setPanelConfig(prev => ({
-                ...prev,
-                animationDuration: parseInt(e.currentTarget.value)
-              }))}
+              onInput={e =>
+                setPanelConfig(prev => ({
+                  ...prev,
+                  animationDuration: parseInt(e.currentTarget.value),
+                }))
+              }
             />
             <span class="control-value">{panelConfig().animationDuration}ms</span>
           </div>
@@ -113,10 +126,12 @@ export const FloatingPanelDemo: Component = () => {
             <label class="control-label">Easing</label>
             <select
               value={panelConfig().easing}
-              onChange={(e) => setPanelConfig(prev => ({
-                ...prev,
-                easing: e.currentTarget.value
-              }))}
+              onChange={e =>
+                setPanelConfig(prev => ({
+                  ...prev,
+                  easing: e.currentTarget.value,
+                }))
+              }
             >
               <option value="ease-out">Ease Out</option>
               <option value="ease-in">Ease In</option>
@@ -130,10 +145,12 @@ export const FloatingPanelDemo: Component = () => {
               <input
                 type="checkbox"
                 checked={panelConfig().backdrop}
-                onChange={(e) => setPanelConfig(prev => ({
-                  ...prev,
-                  backdrop: e.currentTarget.checked
-                }))}
+                onChange={e =>
+                  setPanelConfig(prev => ({
+                    ...prev,
+                    backdrop: e.currentTarget.checked,
+                  }))
+                }
               />
               Show Backdrop
             </label>
@@ -144,10 +161,12 @@ export const FloatingPanelDemo: Component = () => {
               <input
                 type="checkbox"
                 checked={panelConfig().draggable}
-                onChange={(e) => setPanelConfig(prev => ({
-                  ...prev,
-                  draggable: e.currentTarget.checked
-                }))}
+                onChange={e =>
+                  setPanelConfig(prev => ({
+                    ...prev,
+                    draggable: e.currentTarget.checked,
+                  }))
+                }
               />
               Draggable
             </label>
@@ -169,7 +188,7 @@ export const FloatingPanelDemo: Component = () => {
         </h2>
         <div class="panel-list">
           <For each={panels()}>
-            {(panel) => (
+            {panel => (
               <div class="panel-item">
                 <div class="panel-info">
                   <h4 class="panel-title">{panel.title}</h4>
@@ -179,16 +198,10 @@ export const FloatingPanelDemo: Component = () => {
                   </div>
                 </div>
                 <div class="panel-actions">
-                  <button
-                    class="control-button"
-                    onClick={() => togglePanel(panel.id)}
-                  >
+                  <button class="control-button" onClick={() => togglePanel(panel.id)}>
                     {activePanel() === panel.id ? "Hide" : "Show"}
                   </button>
-                  <button
-                    class="control-button danger"
-                    onClick={() => removePanel(panel.id)}
-                  >
+                  <button class="control-button danger" onClick={() => removePanel(panel.id)}>
                     🗑️ Remove
                   </button>
                 </div>
@@ -201,7 +214,7 @@ export const FloatingPanelDemo: Component = () => {
       {/* Floating Panels */}
       <div class="floating-panels-container">
         <For each={panels()}>
-          {(panel) => (
+          {panel => (
             <Show when={activePanel() === panel.id}>
               <FloatingPanel
                 title={panel.title}
@@ -211,7 +224,7 @@ export const FloatingPanelDemo: Component = () => {
                 onClose={() => setActivePanel(null)}
                 style={{
                   "animation-duration": `${panelConfig().animationDuration}ms`,
-                  "animation-timing-function": panelConfig().easing
+                  "animation-timing-function": panelConfig().easing,
                 }}
               >
                 <div class="panel-content">
@@ -239,7 +252,7 @@ export const FloatingPanelDemo: Component = () => {
           Code Example
         </h2>
         <pre class="code-example">
-{`import { FloatingPanel } from "reynard-floating-panel";
+          {`import { FloatingPanel } from "reynard-floating-panel";
 
 <FloatingPanel
   title="My Panel"

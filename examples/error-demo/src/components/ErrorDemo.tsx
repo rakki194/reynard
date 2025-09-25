@@ -431,37 +431,21 @@ const ErrorDemo: Component = () => {
         </div>
 
         <div class="error-demo-content-grid">
-          <ErrorBoundary>
-            {() => <NetworkErrorComponent />}
-          </ErrorBoundary>
+          <ErrorBoundary>{() => <NetworkErrorComponent />}</ErrorBoundary>
 
-          <ErrorBoundary>
-            {() => <TimeoutErrorComponent />}
-          </ErrorBoundary>
+          <ErrorBoundary>{() => <TimeoutErrorComponent />}</ErrorBoundary>
 
-          <ErrorBoundary>
-            {() => <ValidationErrorComponent />}
-          </ErrorBoundary>
+          <ErrorBoundary>{() => <ValidationErrorComponent />}</ErrorBoundary>
 
-          <ErrorBoundary>
-            {() => <AuthErrorComponent />}
-          </ErrorBoundary>
+          <ErrorBoundary>{() => <AuthErrorComponent />}</ErrorBoundary>
 
-          <ErrorBoundary>
-            {() => <PermissionErrorComponent />}
-          </ErrorBoundary>
+          <ErrorBoundary>{() => <PermissionErrorComponent />}</ErrorBoundary>
 
-          <ErrorBoundary>
-            {() => <ResourceErrorComponent />}
-          </ErrorBoundary>
+          <ErrorBoundary>{() => <ResourceErrorComponent />}</ErrorBoundary>
 
-          <ErrorBoundary>
-            {() => <CriticalErrorComponent />}
-          </ErrorBoundary>
+          <ErrorBoundary>{() => <CriticalErrorComponent />}</ErrorBoundary>
 
-          <ErrorBoundary>
-            {() => <RenderingErrorComponent />}
-          </ErrorBoundary>
+          <ErrorBoundary>{() => <RenderingErrorComponent />}</ErrorBoundary>
         </div>
       </div>
     </div>

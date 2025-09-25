@@ -20,14 +20,14 @@ export interface AuthFetchOptions {
   redirect?: "follow" | "error" | "manual";
   referrer?: string;
   referrerPolicy?:
-  | "no-referrer"
-  | "no-referrer-when-downgrade"
-  | "origin"
-  | "origin-when-cross-origin"
-  | "same-origin"
-  | "strict-origin"
-  | "strict-origin-when-cross-origin"
-  | "unsafe-url";
+    | "no-referrer"
+    | "no-referrer-when-downgrade"
+    | "origin"
+    | "origin-when-cross-origin"
+    | "same-origin"
+    | "strict-origin"
+    | "strict-origin-when-cross-origin"
+    | "unsafe-url";
   integrity?: string;
   keepalive?: boolean;
   signal?: globalThis.AbortSignal | null;

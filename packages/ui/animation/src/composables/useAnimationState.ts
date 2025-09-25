@@ -1,24 +1,20 @@
 /**
  * Animation State Composable
- * 
+ *
  * SolidJS composable for animation state management with global control integration.
  * Provides reactive state management, performance monitoring, and accessibility compliance.
- * 
+ *
  * @author Agile-Prime-90 (Reynard Lizard Specialist)
  * @since 1.0.0
  */
 
 import { createMemo } from "solid-js";
-import { 
-  AnimationStateManager, 
-  AnimationStateConfig, 
-  AnimationState 
-} from "../state/AnimationStateManager";
+import { AnimationStateManager, AnimationStateConfig, AnimationState } from "../state/AnimationStateManager";
 import { SmartAnimationCore } from "../engines/SmartAnimationCore";
-import { 
+import {
   createPerformanceOptimizationFunctions,
   createAccessibilityComplianceFunctions,
-  createImmediateCompletionFunctions
+  createImmediateCompletionFunctions,
 } from "./useAnimationStateHelpers";
 import { createReactiveStateGetters } from "./useAnimationStateReactive";
 import { createStateManagementFunctions } from "./useAnimationStateManagement";
@@ -88,33 +84,35 @@ export function useAnimationState(options: UseAnimationStateOptions = {}): UseAn
   // Reactive state getters
   const state = createMemo(() => {
     const stateManager = animationStateManager();
-    return stateManager ? stateManager.getState() : {
-      isGloballyDisabled: false,
-      isPackageAvailable: false,
-      isPerformanceMode: false,
-      isAccessibilityMode: false,
-      isFallbackMode: false,
-      engineType: "no-op" as const,
-      immediateCompletion: false,
-      performanceMetrics: {
-        averageAnimationTime: 0,
-        totalAnimations: 0,
-        disabledAnimations: 0,
-        fallbackAnimations: 0,
-        noOpAnimations: 0,
-      },
-      accessibilityCompliance: {
-        respectsReducedMotion: false,
-        respectsHighContrast: false,
-        respectsReducedData: false,
-        complianceScore: 0,
-      },
-      persistenceData: {
-        lastUpdate: Date.now(),
-        stateHistory: [],
-        userPreferences: {},
-      },
-    };
+    return stateManager
+      ? stateManager.getState()
+      : {
+          isGloballyDisabled: false,
+          isPackageAvailable: false,
+          isPerformanceMode: false,
+          isAccessibilityMode: false,
+          isFallbackMode: false,
+          engineType: "no-op" as const,
+          immediateCompletion: false,
+          performanceMetrics: {
+            averageAnimationTime: 0,
+            totalAnimations: 0,
+            disabledAnimations: 0,
+            fallbackAnimations: 0,
+            noOpAnimations: 0,
+          },
+          accessibilityCompliance: {
+            respectsReducedMotion: false,
+            respectsHighContrast: false,
+            respectsReducedData: false,
+            complianceScore: 0,
+          },
+          persistenceData: {
+            lastUpdate: Date.now(),
+            stateHistory: [],
+            userPreferences: {},
+          },
+        };
   });
 
   // Create reactive state getters

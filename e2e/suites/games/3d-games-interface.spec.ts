@@ -1,9 +1,9 @@
 /**
  * 3D Games Interface E2E Tests
- * 
+ *
  * Tests for the 3D games interface components including
  * page loading, score system, theme toggle, and game info.
- * 
+ *
  * @author 🦊 The Cunning Fox
  */
 
@@ -16,11 +16,11 @@ test.describe("3D Games Interface", () => {
   test.beforeEach(async ({ browser }) => {
     page = await browser.newPage();
     await page.setViewportSize({ width: 1280, height: 720 });
-    
+
     // Navigate to 3D games
-    await page.goto(`${GAMES_DEMO_URL}/#3d-games`, { 
+    await page.goto(`${GAMES_DEMO_URL}/#3d-games`, {
       waitUntil: "networkidle",
-      timeout: 30000 
+      timeout: 30000,
     });
   });
 
@@ -32,7 +32,7 @@ test.describe("3D Games Interface", () => {
     // Check page title and header
     await expect(page.locator("h1")).toContainText("Reynard 3D Games");
     await expect(page.locator("p")).toContainText("Three.js");
-    
+
     // Check for game selection interface
     await expect(page.locator(".game-selection")).toBeVisible();
   });
@@ -42,7 +42,7 @@ test.describe("3D Games Interface", () => {
     const scoreDisplay = page.locator(".score-display");
     await expect(scoreDisplay).toBeVisible();
     await expect(scoreDisplay).toContainText("Score:");
-    
+
     const scoreValue = scoreDisplay.locator(".score-value");
     await expect(scoreValue).toContainText("0");
   });
@@ -51,7 +51,7 @@ test.describe("3D Games Interface", () => {
     // Check theme toggle exists
     const themeToggle = page.locator("button").filter({ hasText: /theme/i });
     await expect(themeToggle).toBeVisible();
-    
+
     // Test theme toggle functionality
     await themeToggle.click();
     await expect(themeToggle).toBeEnabled();

@@ -40,17 +40,17 @@ export interface BackupResult {
   error?: string;
 }
 
-export type FileType = 
-  | 'typescript'
-  | 'javascript'
-  | 'python'
-  | 'markdown'
-  | 'json'
-  | 'yaml'
-  | 'css'
-  | 'html'
-  | 'shell'
-  | 'sql'
-  | 'config'
-  | 'toml'
-  | 'other';
+export type FileType =
+  | "typescript"
+  | "javascript"
+  | "python"
+  | "markdown"
+  | "json"
+  | "yaml"
+  | "css"
+  | "html"
+  | "shell"
+  | "sql"
+  | "config"
+  | "toml"
+  | "other";

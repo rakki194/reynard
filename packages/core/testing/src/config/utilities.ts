@@ -48,7 +48,7 @@ export async function getEnabledPackagePaths(): Promise<string[]> {
  */
 async function resolvePackagePath(relativePath: string): Promise<string> {
   const currentDir = process.cwd();
-  
+
   // Try to find the Reynard root directory by looking for package.json with "reynard" in name
   let searchDir = currentDir;
   let rootDir = currentDir;

@@ -37,10 +37,10 @@ const defaultConfig = JSON.stringify({
 // Set up default files for all possible paths
 const paths = [
   "/config.json",
-  "/home/user/.dev-server/config.json", 
+  "/home/user/.dev-server/config.json",
   "config.json",
   "dev-server-config.json",
-  ".dev-server/config.json"
+  ".dev-server/config.json",
 ];
 
 paths.forEach(path => {
@@ -53,7 +53,7 @@ vi.mock("node:fs/promises", () => ({
     if (content === undefined) {
       // Throw an error for missing files (simulating file not found)
       const error = new Error(`ENOENT: no such file or directory, open '${path}'`);
-      (error as any).code = 'ENOENT';
+      (error as any).code = "ENOENT";
       throw error;
     }
     return content;
@@ -68,7 +68,7 @@ vi.mock("node:child_process", () => ({
   spawn: vi.fn().mockImplementation((command, args, options) => {
     const mockProcess = {
       pid: 12345,
-      kill: vi.fn().mockImplementation((signal) => {
+      kill: vi.fn().mockImplementation(signal => {
         // Simulate process exit
         if (mockProcess._exitCallback) {
           mockProcess._exitCallback(0, signal);
@@ -76,12 +76,12 @@ vi.mock("node:child_process", () => ({
       }),
       on: vi.fn().mockImplementation((event, callback) => {
         // Store the callback for later use
-        if (event === 'exit') {
+        if (event === "exit") {
           mockProcess._exitCallback = callback;
         }
         return mockProcess;
       }),
-      stdout: { 
+      stdout: {
         on: vi.fn(),
         pipe: vi.fn(),
         unpipe: vi.fn(),
@@ -115,7 +115,7 @@ vi.mock("node:child_process", () => ({
         prependListener: vi.fn(),
         prependOnceListener: vi.fn(),
       },
-      stderr: { 
+      stderr: {
         on: vi.fn(),
         pipe: vi.fn(),
         unpipe: vi.fn(),
@@ -263,7 +263,7 @@ export const createMockProcess = () => ({
 
 export const createMockNetwork = () => {
   const portStatus = new Map<number, boolean>();
-  
+
   return {
     createServer: vi.fn().mockImplementation(callback => ({
       listen: vi.fn().mockImplementation((port, callback) => {

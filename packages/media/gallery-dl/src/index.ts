@@ -6,10 +6,10 @@
  */
 
 // Main exports
-export * from './components';
-export * from './services';
-export * from './types';
-export * from './utils';
+export * from "./components";
+export * from "./services";
+export * from "./types";
+export * from "./utils";
 
 // Default export for easy importing
-export { DownloadManager as default } from './components/DownloadManager';
+export { DownloadManager as default } from "./components/DownloadManager";

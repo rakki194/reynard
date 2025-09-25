@@ -2,8 +2,8 @@
  * Composite data adapter that combines multiple data providers with fallback logic
  */
 
-import type { EnumDataProvider, CompositeDataProviderConfig } from '../types/DataProvider';
-import type { EnumData } from '../types/EnumTypes';
+import type { EnumDataProvider, CompositeDataProviderConfig } from "../types/DataProvider";
+import type { EnumData } from "../types/EnumTypes";
 
 /**
  * Composite data provider implementation
@@ -12,7 +12,7 @@ export class CompositeDataAdapter implements EnumDataProvider {
   private config: CompositeDataProviderConfig;
   private primary: EnumDataProvider;
   private fallbacks: EnumDataProvider[];
-  private failureStrategy: 'fail-fast' | 'try-all' | 'best-effort';
+  private failureStrategy: "fail-fast" | "try-all" | "best-effort";
 
   constructor(config: CompositeDataProviderConfig) {
     this.config = config;
@@ -30,7 +30,7 @@ export class CompositeDataAdapter implements EnumDataProvider {
 
     for (let i = 0; i < providers.length; i++) {
       const provider = providers[i];
-      
+
       try {
         // Check if provider is available
         if (!(await provider.isAvailable())) {
@@ -39,7 +39,7 @@ export class CompositeDataAdapter implements EnumDataProvider {
 
         // Try to fetch data
         const data = await provider.fetchEnumData(enumType);
-        
+
         // Validate the data
         if (this.isValidEnumData(data)) {
           return data;
@@ -49,19 +49,19 @@ export class CompositeDataAdapter implements EnumDataProvider {
       } catch (error) {
         const errorMessage = `Provider ${provider.getProviderName()} failed: ${error}`;
         errors.push(new Error(errorMessage));
-        
+
         // Handle failure strategy
-        if (this.failureStrategy === 'fail-fast') {
+        if (this.failureStrategy === "fail-fast") {
           throw new Error(`Failed to fetch enum data for '${enumType}': ${errorMessage}`);
         }
-        
+
         // Continue to next provider
         continue;
       }
     }
 
     // All providers failed
-    const errorMessage = `All providers failed to fetch enum data for '${enumType}':\n${errors.map(e => e.message).join('\n')}`;
+    const errorMessage = `All providers failed to fetch enum data for '${enumType}':\n${errors.map(e => e.message).join("\n")}`;
     throw new Error(errorMessage);
   }
 
@@ -70,13 +70,13 @@ export class CompositeDataAdapter implements EnumDataProvider {
    */
   async isAvailable(): Promise<boolean> {
     const providers = [this.primary, ...this.fallbacks];
-    
+
     switch (this.failureStrategy) {
-      case 'fail-fast':
+      case "fail-fast":
         // Only primary needs to be available
         return await this.primary.isAvailable();
-        
-      case 'try-all':
+
+      case "try-all":
         // At least one provider needs to be available
         for (const provider of providers) {
           if (await provider.isAvailable()) {
@@ -84,11 +84,11 @@ export class CompositeDataAdapter implements EnumDataProvider {
           }
         }
         return false;
-        
-      case 'best-effort':
+
+      case "best-effort":
         // Always return true, let fetchEnumData handle failures
         return true;
-        
+
       default:
         return false;
     }
@@ -98,11 +98,8 @@ export class CompositeDataAdapter implements EnumDataProvider {
    * Get the name/identifier of this provider
    */
   getProviderName(): string {
-    const providerNames = [
-      this.primary.getProviderName(),
-      ...this.fallbacks.map(p => p.getProviderName())
-    ];
-    return `Composite[${providerNames.join(', ')}]`;
+    const providerNames = [this.primary.getProviderName(), ...this.fallbacks.map(p => p.getProviderName())];
+    return `Composite[${providerNames.join(", ")}]`;
   }
 
   /**
@@ -137,13 +134,13 @@ export class CompositeDataAdapter implements EnumDataProvider {
    * Check if enum data is valid
    */
   private isValidEnumData(data: any): boolean {
-    if (!data || typeof data !== 'object') {
+    if (!data || typeof data !== "object") {
       return false;
     }
 
     // Check if it has at least one valid enum value
     for (const [key, value] of Object.entries(data)) {
-      if (typeof value === 'object' && value !== null && 'value' in value) {
+      if (typeof value === "object" && value !== null && "value" in value) {
         return true;
       }
     }
@@ -178,7 +175,7 @@ export class CompositeDataAdapter implements EnumDataProvider {
   }> {
     const result = {
       primary: { available: false, error: undefined as string | undefined },
-      fallbacks: [] as Array<{ name: string; available: boolean; error?: string }>
+      fallbacks: [] as Array<{ name: string; available: boolean; error?: string }>,
     };
 
     // Check primary provider
@@ -196,13 +193,13 @@ export class CompositeDataAdapter implements EnumDataProvider {
         result.fallbacks.push({
           name: provider.getProviderName(),
           available,
-          error: undefined
+          error: undefined,
         });
       } catch (error) {
         result.fallbacks.push({
           name: provider.getProviderName(),
           available: false,
-          error: String(error)
+          error: String(error),
         });
       }
     }

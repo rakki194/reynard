@@ -81,7 +81,10 @@ export class DatasetService {
     throw new RepositoryError("DatasetService not implemented", "NOT_IMPLEMENTED");
   }
 
-  async createVersion(_datasetId: string, _version: Omit<DatasetVersion, "id" | "createdAt" | "datasetId">): Promise<DatasetVersion> {
+  async createVersion(
+    _datasetId: string,
+    _version: Omit<DatasetVersion, "id" | "createdAt" | "datasetId">
+  ): Promise<DatasetVersion> {
     throw new RepositoryError("DatasetService not implemented", "NOT_IMPLEMENTED");
   }
 

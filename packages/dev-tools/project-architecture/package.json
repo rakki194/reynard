@@ -13,9 +13,7 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "build": "pnpm clean && vite build && tsc -p tsconfig.build.json --declaration --emitDeclarationOnly && pnpm postbuild",
     "clean": "pnpm clean:all",

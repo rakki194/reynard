@@ -153,12 +153,36 @@ class ServiceConfigManager:
                 "chunk_size": 1000,
                 "chunk_overlap": 200,
             },
-            "ollama": {
+            "ai_service": {
                 "enabled": True,
-                "base_url": os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
+                "default_provider": os.getenv("AI_DEFAULT_PROVIDER", "ollama"),
+                "default_model": os.getenv("AI_DEFAULT_MODEL", "llama3.1:latest"),
                 "timeout": 60.0,
-                "model": "llama2",
+                "max_tokens": 2048,
+                "temperature": 0.7,
                 "streaming": True,
+                "providers": {
+                    "ollama": {
+                        "enabled": True,
+                        "base_url": os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
+                        "timeout": 30.0,
+                    },
+                    "vllm": {
+                        "enabled": os.getenv("VLLM_ENABLED", "false").lower() == "true",
+                        "base_url": os.getenv("VLLM_BASE_URL", "http://localhost:8000"),
+                        "timeout": 30.0,
+                    },
+                    "sglang": {
+                        "enabled": os.getenv("SGLANG_ENABLED", "false").lower() == "true",
+                        "base_url": os.getenv("SGLANG_BASE_URL", "http://localhost:30000"),
+                        "timeout": 30.0,
+                    },
+                    "llamacpp": {
+                        "enabled": os.getenv("LLAMACPP_ENABLED", "false").lower() == "true",
+                        "base_url": os.getenv("LLAMACPP_BASE_URL", "http://localhost:8080"),
+                        "timeout": 30.0,
+                    },
+                },
             },
             "tts": {
                 "enabled": True,

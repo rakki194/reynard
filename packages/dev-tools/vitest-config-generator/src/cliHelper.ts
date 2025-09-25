@@ -104,7 +104,6 @@ export async function executeCli(options: CliOptions): Promise<CliResult> {
       success: true,
       message: `Generated configuration for ${result.projectsGenerated} projects`,
     };
-
   } catch (error) {
     return {
       success: false,
@@ -121,7 +120,7 @@ export function parseCliOptions(args: string[]): CliOptions {
 
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
-    
+
     switch (arg) {
       case "-v":
       case "--verbose":

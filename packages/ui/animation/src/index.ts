@@ -1,6 +1,6 @@
 /**
  * 🎭 Reynard Animation System
- * 
+ *
  * Comprehensive animation system for the Reynard ecosystem
  */
 

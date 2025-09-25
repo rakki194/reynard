@@ -27,7 +27,7 @@ export interface ValidationResult {
   error?: string;
 }
 
-export const UrlValidator: Component<UrlValidatorProps> = (props) => {
+export const UrlValidator: Component<UrlValidatorProps> = props => {
   const [url, setUrl] = createSignal("");
   const [isValidating, setIsValidating] = createSignal(false);
   const [validationResult, setValidationResult] = createSignal<ValidationResult | null>(null);
@@ -48,10 +48,10 @@ export const UrlValidator: Component<UrlValidatorProps> = (props) => {
         extractor: result.extractor,
         error: result.error,
       };
-      
+
       setValidationResult(validation);
       props.onValidationChange?.(validation);
-      
+
       // Add to history
       setValidationHistory(prev => [validation, ...prev.slice(0, 9)]);
     } catch (error) {
@@ -59,7 +59,7 @@ export const UrlValidator: Component<UrlValidatorProps> = (props) => {
         isValid: false,
         error: error instanceof Error ? error.message : "Validation failed",
       };
-      
+
       setValidationResult(validation);
       props.onValidationChange?.(validation);
     } finally {
@@ -90,16 +90,16 @@ export const UrlValidator: Component<UrlValidatorProps> = (props) => {
           <Icon name="Link" class="header-icon" />
           <h3>URL Validator</h3>
         </div>
-        
+
         <div class="validation-input">
           <TextField
             value={url()}
-            onInput={(e) => setUrl(e.currentTarget.value)}
+            onInput={e => setUrl(e.currentTarget.value)}
             placeholder={props.placeholder || "Enter gallery URL..."}
             class="url-input"
             disabled={isValidating()}
           />
-          
+
           <Show when={isValidating()}>
             <div class="validation-indicator">
               <Icon name="Clock" class="loading-icon" />
@@ -109,17 +109,12 @@ export const UrlValidator: Component<UrlValidatorProps> = (props) => {
         </div>
 
         <Show when={validationResult()}>
-          <div class={`validation-result ${validationResult()?.isValid ? 'valid' : 'invalid'}`}>
+          <div class={`validation-result ${validationResult()?.isValid ? "valid" : "invalid"}`}>
             <div class="result-header">
-              <Icon 
-                name={validationResult()?.isValid ? "CheckCircle" : "AlertCircle"} 
-                class="result-icon"
-              />
-              <span class="result-status">
-                {validationResult()?.isValid ? "Valid URL" : "Invalid URL"}
-              </span>
+              <Icon name={validationResult()?.isValid ? "CheckCircle" : "AlertCircle"} class="result-icon" />
+              <span class="result-status">{validationResult()?.isValid ? "Valid URL" : "Invalid URL"}</span>
             </div>
-            
+
             <Show when={validationResult()?.extractor}>
               <div class="extractor-info">
                 <div class="extractor-name">
@@ -132,27 +127,26 @@ export const UrlValidator: Component<UrlValidatorProps> = (props) => {
                   </Show>
                 </div>
                 <Show when={validationResult()?.extractor?.description}>
-                  <div class="extractor-description">
-                    {validationResult()?.extractor?.description}
-                  </div>
+                  <div class="extractor-description">{validationResult()?.extractor?.description}</div>
                 </Show>
-                <Show when={validationResult()?.extractor?.features && (validationResult()?.extractor?.features?.length || 0) > 0}>
+                <Show
+                  when={
+                    validationResult()?.extractor?.features &&
+                    (validationResult()?.extractor?.features?.length || 0) > 0
+                  }
+                >
                   <div class="extractor-features">
                     <strong>Features:</strong>
                     <div class="features-list">
                       <For each={validationResult()?.extractor?.features || []}>
-                        {(feature) => (
-                          <span class="feature-tag">
-                            {feature}
-                          </span>
-                        )}
+                        {feature => <span class="feature-tag">{feature}</span>}
                       </For>
                     </div>
                   </div>
                 </Show>
               </div>
             </Show>
-            
+
             <Show when={validationResult()?.error}>
               <div class="validation-error">
                 <Icon name="AlertCircle" class="error-icon" />
@@ -163,37 +157,31 @@ export const UrlValidator: Component<UrlValidatorProps> = (props) => {
         </Show>
       </Card>
 
-        <Show when={validationHistory().length > 0}>
-          <Card class="history-card">
-            <div class="history-header">
-              <h4>Validation History</h4>
-              <Button onClick={clearHistory} variant="secondary" size="sm">
-                Clear
-              </Button>
-            </div>
-            
-            <div class="history-list">
-              <For each={validationHistory()}>
-                {(result) => (
-                  <div class={`history-item ${result.isValid ? 'valid' : 'invalid'}`}>
-                    <div class="history-status">
-                      <Icon 
-                        name={result.isValid ? "CheckCircle" : "AlertCircle"} 
-                        class="history-icon"
-                      />
-                      <span class="history-text">
-                        {result.isValid 
-                          ? `Valid - ${result.extractor?.name || 'Unknown'}`
-                          : result.error
-                        }
-                      </span>
-                    </div>
+      <Show when={validationHistory().length > 0}>
+        <Card class="history-card">
+          <div class="history-header">
+            <h4>Validation History</h4>
+            <Button onClick={clearHistory} variant="secondary" size="sm">
+              Clear
+            </Button>
+          </div>
+
+          <div class="history-list">
+            <For each={validationHistory()}>
+              {result => (
+                <div class={`history-item ${result.isValid ? "valid" : "invalid"}`}>
+                  <div class="history-status">
+                    <Icon name={result.isValid ? "CheckCircle" : "AlertCircle"} class="history-icon" />
+                    <span class="history-text">
+                      {result.isValid ? `Valid - ${result.extractor?.name || "Unknown"}` : result.error}
+                    </span>
                   </div>
-                )}
-              </For>
-            </div>
-          </Card>
-        </Show>
+                </div>
+              )}
+            </For>
+          </div>
+        </Card>
+      </Show>
     </div>
   );
 };

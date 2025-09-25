@@ -1,6 +1,6 @@
 /**
  * 🎨 Color Animation Demo
- * 
+ *
  * Comprehensive showcase of color transitions, hue shifting effects, and advanced color theory
  */
 
@@ -16,7 +16,7 @@ export const ColorAnimationDemo: Component = () => {
     saturation: 70,
     lightness: 50,
     colorMode: "hsl" as "hsl" | "oklch" | "rgb",
-    animationType: "hue-shift" as "hue-shift" | "rainbow" | "pulse" | "wave"
+    animationType: "hue-shift" as "hue-shift" | "rainbow" | "pulse" | "wave",
   });
 
   const [isAnimating, setIsAnimating] = createSignal(false);
@@ -25,7 +25,7 @@ export const ColorAnimationDemo: Component = () => {
   const [performance, setPerformance] = createSignal({
     fps: 60,
     frameTime: 16.67,
-    isOptimized: true
+    isOptimized: true,
   });
 
   // const hueShifting = useHueShifting();
@@ -39,7 +39,7 @@ export const ColorAnimationDemo: Component = () => {
     const now = Date.now();
     const frameTime = now - lastFrameTime;
     lastFrameTime = now;
-    
+
     frameCount++;
     if (now - fpsStartTime >= 1000) {
       const fps = Math.round((frameCount * 1000) / (now - fpsStartTime));
@@ -47,7 +47,7 @@ export const ColorAnimationDemo: Component = () => {
         ...prev,
         fps,
         frameTime: Math.round(frameTime * 100) / 100,
-        isOptimized: fps >= 55 && frameTime <= 20
+        isOptimized: fps >= 55 && frameTime <= 20,
       }));
       frameCount = 0;
       fpsStartTime = now;
@@ -58,28 +58,29 @@ export const ColorAnimationDemo: Component = () => {
     setIsAnimating(true);
     setAnimationFrame(0);
     const config = colorConfig();
-    
+
     const startTime = Date.now();
     const animate = () => {
       if (!isAnimating()) return;
-      
+
       updatePerformance();
-      
+
       const elapsed = Date.now() - startTime;
       const progress = Math.min(elapsed / config.animationDuration, 1);
-      
+
       // Debug logging
-      if (elapsed % 500 < 16) { // Log every ~500ms
-        console.log(`Animation: elapsed=${elapsed}ms, duration=${config.animationDuration}ms, progress=${(progress * 100).toFixed(1)}%`);
+      if (elapsed % 500 < 16) {
+        // Log every ~500ms
+        console.log(
+          `Animation: elapsed=${elapsed}ms, duration=${config.animationDuration}ms, progress=${(progress * 100).toFixed(1)}%`
+        );
       }
-      
+
       // Advanced easing functions
       let easedProgress = progress;
       switch (config.easing) {
         case "ease-in-out":
-          easedProgress = progress < 0.5 
-            ? 2 * progress * progress 
-            : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+          easedProgress = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
           break;
         case "ease-in":
           easedProgress = progress * progress;
@@ -96,16 +97,16 @@ export const ColorAnimationDemo: Component = () => {
       let newHue = config.baseHue;
       switch (config.animationType) {
         case "hue-shift":
-          newHue = config.baseHue + (config.shiftAmount * easedProgress);
+          newHue = config.baseHue + config.shiftAmount * easedProgress;
           break;
         case "rainbow":
-          newHue = (config.baseHue + (360 * easedProgress)) % 360;
+          newHue = (config.baseHue + 360 * easedProgress) % 360;
           break;
         case "pulse":
-          newHue = config.baseHue + (Math.sin(progress * Math.PI * 2) * (config.shiftAmount * 0.5));
+          newHue = config.baseHue + Math.sin(progress * Math.PI * 2) * (config.shiftAmount * 0.5);
           break;
         case "wave":
-          newHue = config.baseHue + (Math.sin(progress * Math.PI) * (config.shiftAmount * 0.3));
+          newHue = config.baseHue + Math.sin(progress * Math.PI) * (config.shiftAmount * 0.3);
           break;
       }
 
@@ -131,7 +132,7 @@ export const ColorAnimationDemo: Component = () => {
   const generateColorPalette = (hue: number) => {
     const config = colorConfig();
     const { saturation, lightness, colorMode } = config;
-    
+
     // Advanced color harmony generation
     const harmonies = {
       monochromatic: [hue, hue, hue, hue, hue, hue],
@@ -139,16 +140,16 @@ export const ColorAnimationDemo: Component = () => {
       complementary: [hue, hue + 180, hue + 30, hue + 210, hue - 30, hue + 150],
       triadic: [hue, hue + 120, hue + 240, hue + 60, hue + 180, hue + 300],
       tetradic: [hue, hue + 90, hue + 180, hue + 270, hue + 45, hue + 225],
-      splitComplementary: [hue, hue + 150, hue + 210, hue + 30, hue + 60, hue + 120]
+      splitComplementary: [hue, hue + 150, hue + 210, hue + 30, hue + 60, hue + 120],
     };
 
     const currentHarmony = harmonies.analogous; // Default to analogous
-    
+
     return currentHarmony.map((h, index) => {
       const adjustedHue = (h + 360) % 360; // Normalize hue
-      const adjustedSaturation = saturation + (index * 5); // Vary saturation slightly
-      const adjustedLightness = lightness + (Math.sin(index) * 10); // Vary lightness slightly
-      
+      const adjustedSaturation = saturation + index * 5; // Vary saturation slightly
+      const adjustedLightness = lightness + Math.sin(index) * 10; // Vary lightness slightly
+
       switch (colorMode) {
         case "oklch":
           return `oklch(${adjustedLightness}% ${adjustedSaturation / 100} ${adjustedHue})`;
@@ -166,31 +167,45 @@ export const ColorAnimationDemo: Component = () => {
     h /= 360;
     s /= 100;
     l /= 100;
-    
+
     const c = (1 - Math.abs(2 * l - 1)) * s;
-    const x = c * (1 - Math.abs((h * 6) % 2 - 1));
+    const x = c * (1 - Math.abs(((h * 6) % 2) - 1));
     const m = l - c / 2;
-    
-    let r = 0, g = 0, b = 0;
-    
-    if (0 <= h && h < 1/6) {
-      r = c; g = x; b = 0;
-    } else if (1/6 <= h && h < 2/6) {
-      r = x; g = c; b = 0;
-    } else if (2/6 <= h && h < 3/6) {
-      r = 0; g = c; b = x;
-    } else if (3/6 <= h && h < 4/6) {
-      r = 0; g = x; b = c;
-    } else if (4/6 <= h && h < 5/6) {
-      r = x; g = 0; b = c;
-    } else if (5/6 <= h && h < 1) {
-      r = c; g = 0; b = x;
+
+    let r = 0,
+      g = 0,
+      b = 0;
+
+    if (0 <= h && h < 1 / 6) {
+      r = c;
+      g = x;
+      b = 0;
+    } else if (1 / 6 <= h && h < 2 / 6) {
+      r = x;
+      g = c;
+      b = 0;
+    } else if (2 / 6 <= h && h < 3 / 6) {
+      r = 0;
+      g = c;
+      b = x;
+    } else if (3 / 6 <= h && h < 4 / 6) {
+      r = 0;
+      g = x;
+      b = c;
+    } else if (4 / 6 <= h && h < 5 / 6) {
+      r = x;
+      g = 0;
+      b = c;
+    } else if (5 / 6 <= h && h < 1) {
+      r = c;
+      g = 0;
+      b = x;
     }
-    
+
     r = Math.round((r + m) * 255);
     g = Math.round((g + m) * 255);
     b = Math.round((b + m) * 255);
-    
+
     return `rgb(${r}, ${g}, ${b})`;
   };
 
@@ -220,10 +235,12 @@ export const ColorAnimationDemo: Component = () => {
               max="360"
               step="10"
               value={colorConfig().baseHue}
-              onInput={(e) => setColorConfig(prev => ({
-                ...prev,
-                baseHue: parseInt(e.currentTarget.value)
-              }))}
+              onInput={e =>
+                setColorConfig(prev => ({
+                  ...prev,
+                  baseHue: parseInt(e.currentTarget.value),
+                }))
+              }
             />
             <span class="control-value">{colorConfig().baseHue}°</span>
           </div>
@@ -236,10 +253,12 @@ export const ColorAnimationDemo: Component = () => {
               max="180"
               step="10"
               value={colorConfig().shiftAmount}
-              onInput={(e) => setColorConfig(prev => ({
-                ...prev,
-                shiftAmount: parseInt(e.currentTarget.value)
-              }))}
+              onInput={e =>
+                setColorConfig(prev => ({
+                  ...prev,
+                  shiftAmount: parseInt(e.currentTarget.value),
+                }))
+              }
             />
             <span class="control-value">{colorConfig().shiftAmount}°</span>
           </div>
@@ -252,10 +271,12 @@ export const ColorAnimationDemo: Component = () => {
               max="8000"
               step="500"
               value={colorConfig().animationDuration}
-              onInput={(e) => setColorConfig(prev => ({
-                ...prev,
-                animationDuration: parseInt(e.currentTarget.value)
-              }))}
+              onInput={e =>
+                setColorConfig(prev => ({
+                  ...prev,
+                  animationDuration: parseInt(e.currentTarget.value),
+                }))
+              }
             />
             <span class="control-value">{colorConfig().animationDuration}ms</span>
           </div>
@@ -268,10 +289,12 @@ export const ColorAnimationDemo: Component = () => {
               max="100"
               step="5"
               value={colorConfig().saturation}
-              onInput={(e) => setColorConfig(prev => ({
-                ...prev,
-                saturation: parseInt(e.currentTarget.value)
-              }))}
+              onInput={e =>
+                setColorConfig(prev => ({
+                  ...prev,
+                  saturation: parseInt(e.currentTarget.value),
+                }))
+              }
             />
             <span class="control-value">{colorConfig().saturation}%</span>
           </div>
@@ -284,10 +307,12 @@ export const ColorAnimationDemo: Component = () => {
               max="100"
               step="5"
               value={colorConfig().lightness}
-              onInput={(e) => setColorConfig(prev => ({
-                ...prev,
-                lightness: parseInt(e.currentTarget.value)
-              }))}
+              onInput={e =>
+                setColorConfig(prev => ({
+                  ...prev,
+                  lightness: parseInt(e.currentTarget.value),
+                }))
+              }
             />
             <span class="control-value">{colorConfig().lightness}%</span>
           </div>
@@ -296,10 +321,12 @@ export const ColorAnimationDemo: Component = () => {
             <label class="control-label">Color Mode</label>
             <select
               value={colorConfig().colorMode}
-              onChange={(e) => setColorConfig(prev => ({
-                ...prev,
-                colorMode: e.currentTarget.value as "hsl" | "oklch" | "rgb"
-              }))}
+              onChange={e =>
+                setColorConfig(prev => ({
+                  ...prev,
+                  colorMode: e.currentTarget.value as "hsl" | "oklch" | "rgb",
+                }))
+              }
             >
               <option value="hsl">HSL</option>
               <option value="oklch">OKLCH</option>
@@ -311,10 +338,12 @@ export const ColorAnimationDemo: Component = () => {
             <label class="control-label">Animation Type</label>
             <select
               value={colorConfig().animationType}
-              onChange={(e) => setColorConfig(prev => ({
-                ...prev,
-                animationType: e.currentTarget.value as "hue-shift" | "rainbow" | "pulse" | "wave"
-              }))}
+              onChange={e =>
+                setColorConfig(prev => ({
+                  ...prev,
+                  animationType: e.currentTarget.value as "hue-shift" | "rainbow" | "pulse" | "wave",
+                }))
+              }
             >
               <option value="hue-shift">Hue Shift</option>
               <option value="rainbow">Rainbow</option>
@@ -327,10 +356,12 @@ export const ColorAnimationDemo: Component = () => {
             <label class="control-label">Easing</label>
             <select
               value={colorConfig().easing}
-              onChange={(e) => setColorConfig(prev => ({
-                ...prev,
-                easing: e.currentTarget.value
-              }))}
+              onChange={e =>
+                setColorConfig(prev => ({
+                  ...prev,
+                  easing: e.currentTarget.value,
+                }))
+              }
             >
               <option value="ease-in-out">Ease In Out</option>
               <option value="ease-in">Ease In</option>
@@ -340,18 +371,10 @@ export const ColorAnimationDemo: Component = () => {
           </div>
 
           <div class="control-group">
-            <button 
-              class="control-button primary" 
-              onClick={startColorAnimation}
-              disabled={isAnimating()}
-            >
+            <button class="control-button primary" onClick={startColorAnimation} disabled={isAnimating()}>
               {isAnimating() ? "🎨 Animating..." : "🎨 Start Animation"}
             </button>
-            <button 
-              class="control-button" 
-              onClick={stopColorAnimation}
-              disabled={!isAnimating()}
-            >
+            <button class="control-button" onClick={stopColorAnimation} disabled={!isAnimating()}>
               ⏹️ Stop Animation
             </button>
           </div>
@@ -371,7 +394,7 @@ export const ColorAnimationDemo: Component = () => {
                 class="color-swatch"
                 style={{
                   "background-color": color,
-                  "--animation-delay": `${index() * 100}ms`
+                  "--animation-delay": `${index() * 100}ms`,
                 }}
               >
                 <div class="color-info">
@@ -427,9 +450,7 @@ export const ColorAnimationDemo: Component = () => {
         <div class="status-grid">
           <div class="status-item">
             <span class="status-label">Is Animating:</span>
-            <span class="status-value">
-              {isAnimating() ? "Yes" : "No"}
-            </span>
+            <span class="status-value">{isAnimating() ? "Yes" : "No"}</span>
           </div>
           <div class="status-item">
             <span class="status-label">Current Hue:</span>
@@ -441,7 +462,10 @@ export const ColorAnimationDemo: Component = () => {
           </div>
           <div class="status-item">
             <span class="status-label">FPS:</span>
-            <span class="status-value" style={{ color: performance().isOptimized ? 'var(--color-success)' : 'var(--color-warning)' }}>
+            <span
+              class="status-value"
+              style={{ color: performance().isOptimized ? "var(--color-success)" : "var(--color-warning)" }}
+            >
               {performance().fps}
             </span>
           </div>
@@ -451,7 +475,10 @@ export const ColorAnimationDemo: Component = () => {
           </div>
           <div class="status-item">
             <span class="status-label">Performance:</span>
-            <span class="status-value" style={{ color: performance().isOptimized ? 'var(--color-success)' : 'var(--color-warning)' }}>
+            <span
+              class="status-value"
+              style={{ color: performance().isOptimized ? "var(--color-success)" : "var(--color-warning)" }}
+            >
               {performance().isOptimized ? "Optimized" : "Needs Optimization"}
             </span>
           </div>
@@ -461,7 +488,7 @@ export const ColorAnimationDemo: Component = () => {
           </div>
           <div class="status-item">
             <span class="status-label">Animation Type:</span>
-            <span class="status-value">{colorConfig().animationType.replace('-', ' ')}</span>
+            <span class="status-value">{colorConfig().animationType.replace("-", " ")}</span>
           </div>
         </div>
       </div>
@@ -473,7 +500,7 @@ export const ColorAnimationDemo: Component = () => {
           Code Example
         </h2>
         <pre class="code-example">
-{`import { useHueShifting } from "reynard-colors/utils";
+          {`import { useHueShifting } from "reynard-colors/utils";
 
 const hueShifting = useHueShifting();
 

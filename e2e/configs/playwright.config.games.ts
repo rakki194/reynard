@@ -19,7 +19,7 @@ import { getChromiumArgs, getFirefoxArgs } from "../suites/games/game-test-confi
 const resultsManager = createResultsManager(TEST_TYPES.E2E, {
   environment: process.env.NODE_ENV || "development",
   branch: process.env.GIT_BRANCH || "unknown",
-  commit: process.env.GIT_COMMIT || "unknown"
+  commit: process.env.GIT_COMMIT || "unknown",
 });
 
 // Create directories and get paths
@@ -29,9 +29,9 @@ export default defineConfig({
   testDir: "../suites/games",
   testMatch: [
     "**/games-demo.spec.ts",
-    "**/roguelike-game.spec.ts", 
+    "**/roguelike-game.spec.ts",
     "**/3d-games.spec.ts",
-    "**/games-performance.spec.ts"
+    "**/games-performance.spec.ts",
   ],
 
   /* Run tests in files in parallel */
@@ -82,48 +82,48 @@ export default defineConfig({
   projects: [
     {
       name: "chromium",
-      use: { 
+      use: {
         ...devices["Desktop Chrome"],
         // Game-specific settings
         viewport: { width: 1280, height: 720 },
         launchOptions: {
-          args: getChromiumArgs()
-        }
+          args: getChromiumArgs(),
+        },
       },
     },
 
     {
       name: "firefox",
-      use: { 
+      use: {
         ...devices["Desktop Firefox"],
         viewport: { width: 1280, height: 720 },
         launchOptions: {
-          firefoxUserPrefs: getFirefoxArgs()
-        }
+          firefoxUserPrefs: getFirefoxArgs(),
+        },
       },
     },
 
     {
       name: "webkit",
-      use: { 
+      use: {
         ...devices["Desktop Safari"],
-        viewport: { width: 1280, height: 720 }
+        viewport: { width: 1280, height: 720 },
       },
     },
 
     /* Test against mobile viewports for responsive games */
     {
       name: "Mobile Chrome",
-      use: { 
+      use: {
         ...devices["Pixel 5"],
-        viewport: { width: 375, height: 667 }
+        viewport: { width: 375, height: 667 },
       },
     },
     {
       name: "Mobile Safari",
-      use: { 
+      use: {
         ...devices["iPhone 12"],
-        viewport: { width: 375, height: 667 }
+        viewport: { width: 375, height: 667 },
       },
     },
 
@@ -135,11 +135,8 @@ export default defineConfig({
         viewport: { width: 1920, height: 1080 },
         deviceScaleFactor: 2,
         launchOptions: {
-          args: [
-            ...getChromiumArgs(),
-            "--force-device-scale-factor=2"
-          ]
-        }
+          args: [...getChromiumArgs(), "--force-device-scale-factor=2"],
+        },
       },
     },
   ],

@@ -29,12 +29,7 @@ export class RequestExecutor {
     };
 
     // Add body for methods that support it
-    if (
-      options.data &&
-      (options.method === "POST" ||
-        options.method === "PUT" ||
-        options.method === "PATCH")
-    ) {
+    if (options.data && (options.method === "POST" || options.method === "PUT" || options.method === "PATCH")) {
       if (options.data instanceof FormData) {
         requestOptions.body = options.data;
         // Remove Content-Type header for FormData (browser will set it with boundary)

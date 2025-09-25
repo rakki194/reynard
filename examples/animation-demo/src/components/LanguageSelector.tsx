@@ -1,6 +1,6 @@
 /**
  * 🌍 Language Selector Component
- * 
+ *
  * Dropdown selector for changing languages in the animation demo
  */
 
@@ -18,11 +18,11 @@ export const LanguageSelector: Component = () => {
       <select
         id="language-select"
         value={locale}
-        onChange={(e) => setLocale(e.currentTarget.value as LanguageCode)}
+        onChange={e => setLocale(e.currentTarget.value as LanguageCode)}
         class="selector-dropdown"
       >
         <For each={languages}>
-          {(lang) => (
+          {lang => (
             <option value={lang.code}>
               {lang.nativeName} ({lang.name})
             </option>

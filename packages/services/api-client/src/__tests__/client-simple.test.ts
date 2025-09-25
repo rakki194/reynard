@@ -19,7 +19,7 @@ vi.mock("reynard-http-client", () => ({
 describe("API Client", () => {
   it("should create API client with default configuration", () => {
     const client = createReynardApiClient();
-    
+
     expect(client).toBeDefined();
     expect(client.httpClient).toBeDefined();
     expect(client.config).toBeDefined();
@@ -37,9 +37,9 @@ describe("API Client", () => {
       basePath: "https://custom-api.com",
       timeout: 5000,
     };
-    
+
     const client = createReynardApiClient(customConfig);
-    
+
     expect(client).toBeDefined();
     expect(client.httpClient).toBeDefined();
     expect(client.config).toBeDefined();

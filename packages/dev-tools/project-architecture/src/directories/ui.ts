@@ -61,10 +61,11 @@ export const UI_PACKAGES: DirectoryDefinition[] = [
     "packages/ui/colors",
     "Color system and theme management - provides color utilities, theme management, color palettes, and design system color management",
     {
-      relationships: buildRelationships(
-        COMMON_RELATIONSHIPS.CORE_DEPENDENCY,
-        { directory: "packages/ui/themes", type: "dependency", description: "Used by themes" }
-      ),
+      relationships: buildRelationships(COMMON_RELATIONSHIPS.CORE_DEPENDENCY, {
+        directory: "packages/ui/themes",
+        type: "dependency",
+        description: "Used by themes",
+      }),
       metadata: UI_METADATA,
     }
   ),
@@ -184,11 +185,11 @@ export const UI_PACKAGES: DirectoryDefinition[] = [
     "packages/ui/themes",
     "Theme system and styling management - provides theme management, styling systems, design tokens, and theme switching capabilities",
     {
-      relationships: buildRelationships(
-        COMMON_RELATIONSHIPS.CORE_DEPENDENCY,
-        COMMON_RELATIONSHIPS.COLORS_DEPENDENCY,
-        { directory: "packages/ui/components-themes", type: "dependency", description: "Used by theme components" }
-      ),
+      relationships: buildRelationships(COMMON_RELATIONSHIPS.CORE_DEPENDENCY, COMMON_RELATIONSHIPS.COLORS_DEPENDENCY, {
+        directory: "packages/ui/components-themes",
+        type: "dependency",
+        description: "Used by theme components",
+      }),
       metadata: UI_METADATA,
     }
   ),
@@ -214,7 +215,11 @@ export const UI_PACKAGES: DirectoryDefinition[] = [
       relationships: buildRelationships(
         COMMON_RELATIONSHIPS.CORE_DEPENDENCY,
         COMMON_RELATIONSHIPS.UI_COMPONENTS_DEPENDENCY,
-        { directory: "packages/data/repository-core", type: "dependency", description: "Uses repository for chart data" }
+        {
+          directory: "packages/data/repository-core",
+          type: "dependency",
+          description: "Uses repository for chart data",
+        }
       ),
       metadata: UI_METADATA,
     }
@@ -225,10 +230,11 @@ export const UI_PACKAGES: DirectoryDefinition[] = [
     "packages/ui/fluent-icons",
     "Microsoft Fluent Icons integration - provides comprehensive icon system with Fluent Design icons, icon components, and icon utilities",
     {
-      relationships: buildRelationships(
-        COMMON_RELATIONSHIPS.CORE_DEPENDENCY,
-        { directory: "packages/ui/components-core", type: "dependency", description: "Used by UI components" }
-      ),
+      relationships: buildRelationships(COMMON_RELATIONSHIPS.CORE_DEPENDENCY, {
+        directory: "packages/ui/components-core",
+        type: "dependency",
+        description: "Used by UI components",
+      }),
       metadata: UI_METADATA,
     }
   ),

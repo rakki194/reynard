@@ -17,7 +17,6 @@ describe("Index Exports", () => {
     expect(typeof ConfigWriter).toBe("function");
   });
 
-
   it("should be able to instantiate VitestConfigGenerator", () => {
     const generator = new VitestConfigGenerator();
     expect(generator).toBeInstanceOf(VitestConfigGenerator);
@@ -27,7 +26,6 @@ describe("Index Exports", () => {
     const writer = new ConfigWriter();
     expect(writer).toBeInstanceOf(ConfigWriter);
   });
-
 
   it("should have generateConfig method on VitestConfigGenerator", () => {
     const generator = new VitestConfigGenerator();
@@ -48,5 +46,4 @@ describe("Index Exports", () => {
     const writer = new ConfigWriter();
     expect(typeof writer.backupCurrentConfig).toBe("function");
   });
-
 });

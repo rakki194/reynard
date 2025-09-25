@@ -65,7 +65,6 @@ export interface HTTPError extends Error {
 // Middleware Types
 // ============================================================================
 
-
 // ============================================================================
 // Authentication Types
 // ============================================================================
@@ -126,5 +125,3 @@ export interface RequestMetrics {
   success?: boolean;
   retryCount: number;
 }
-
-

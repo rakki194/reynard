@@ -18,8 +18,8 @@ export default defineConfig({
         "**/*.config.*",
         "**/__tests__/**",
         "**/test/**",
-        "**/tests/**"
-      ]
-    }
-  }
+        "**/tests/**",
+      ],
+    },
+  },
 });

@@ -2,8 +2,8 @@
  * File-based data adapter for fetching enum data from local files
  */
 
-import type { EnumDataProvider, FileDataProviderConfig } from '../types/DataProvider';
-import type { EnumData } from '../types/EnumTypes';
+import type { EnumDataProvider, FileDataProviderConfig } from "../types/DataProvider";
+import type { EnumData } from "../types/EnumTypes";
 
 /**
  * File-based data provider implementation
@@ -11,7 +11,7 @@ import type { EnumData } from '../types/EnumTypes';
 export class FileDataAdapter implements EnumDataProvider {
   private config: FileDataProviderConfig;
   private filePath: string;
-  private format: 'json' | 'yaml' | 'toml';
+  private format: "json" | "yaml" | "toml";
   private watch: boolean;
   private cachedData?: EnumData;
   private lastModified?: number;
@@ -70,14 +70,14 @@ export class FileDataAdapter implements EnumDataProvider {
   private async loadFile(): Promise<void> {
     try {
       const response = await fetch(this.filePath);
-      
+
       if (!response.ok) {
         throw new Error(`Failed to load file: ${response.status} ${response.statusText}`);
       }
 
       const text = await response.text();
       const data = this.parseFileContent(text);
-      
+
       this.cachedData = data;
       this.lastModified = Date.now();
     } catch (error) {
@@ -90,11 +90,11 @@ export class FileDataAdapter implements EnumDataProvider {
    */
   private parseFileContent(content: string): EnumData {
     switch (this.format) {
-      case 'json':
+      case "json":
         return this.parseJSON(content);
-      case 'yaml':
+      case "yaml":
         return this.parseYAML(content);
-      case 'toml':
+      case "toml":
         return this.parseTOML(content);
       default:
         throw new Error(`Unsupported file format: ${this.format}`);
@@ -120,16 +120,16 @@ export class FileDataAdapter implements EnumDataProvider {
     // This is a simplified YAML parser
     // In a real implementation, you'd use a proper YAML library
     try {
-      const lines = content.split('\n');
+      const lines = content.split("\n");
       const data: any = {};
-      let currentKey = '';
+      let currentKey = "";
       let currentValue: any = {};
       let inValue = false;
 
       for (const line of lines) {
         const trimmed = line.trim();
-        
-        if (trimmed.startsWith('- ')) {
+
+        if (trimmed.startsWith("- ")) {
           // Array item
           if (currentKey) {
             if (!data[currentKey]) {
@@ -137,12 +137,12 @@ export class FileDataAdapter implements EnumDataProvider {
             }
             data[currentKey].push(trimmed.substring(2));
           }
-        } else if (trimmed.includes(':')) {
+        } else if (trimmed.includes(":")) {
           // Key-value pair
-          const [key, value] = trimmed.split(':', 2);
+          const [key, value] = trimmed.split(":", 2);
           const cleanKey = key.trim();
           const cleanValue = value.trim();
-          
+
           if (cleanValue) {
             data[cleanKey] = cleanValue;
           } else {
@@ -169,23 +169,23 @@ export class FileDataAdapter implements EnumDataProvider {
     // This is a simplified TOML parser
     // In a real implementation, you'd use a proper TOML library
     try {
-      const lines = content.split('\n');
+      const lines = content.split("\n");
       const data: any = {};
-      let currentSection = '';
+      let currentSection = "";
 
       for (const line of lines) {
         const trimmed = line.trim();
-        
-        if (trimmed.startsWith('[') && trimmed.endsWith(']')) {
+
+        if (trimmed.startsWith("[") && trimmed.endsWith("]")) {
           // Section header
           currentSection = trimmed.slice(1, -1);
           data[currentSection] = {};
-        } else if (trimmed.includes('=')) {
+        } else if (trimmed.includes("=")) {
           // Key-value pair
-          const [key, value] = trimmed.split('=', 2);
+          const [key, value] = trimmed.split("=", 2);
           const cleanKey = key.trim();
-          const cleanValue = value.trim().replace(/^["']|["']$/g, ''); // Remove quotes
-          
+          const cleanValue = value.trim().replace(/^["']|["']$/g, ""); // Remove quotes
+
           if (currentSection) {
             data[currentSection][cleanKey] = cleanValue;
           } else {
@@ -207,22 +207,22 @@ export class FileDataAdapter implements EnumDataProvider {
     const enumData: EnumData = {};
 
     for (const [key, value] of Object.entries(data)) {
-      if (typeof value === 'object' && value !== null) {
+      if (typeof value === "object" && value !== null) {
         // Object format: { key: { value: 'value', weight: 1.0, metadata: {...} } }
         for (const [subKey, subValue] of Object.entries(value)) {
-          if (typeof subValue === 'object' && subValue !== null) {
+          if (typeof subValue === "object" && subValue !== null) {
             const enumValue = subValue as any;
             enumData[subKey] = {
               value: enumValue.value || subKey,
               weight: enumValue.weight || 1.0,
-              metadata: enumValue.metadata || {}
+              metadata: enumValue.metadata || {},
             };
           } else {
             // Simple key-value format: { key: 'value' }
             enumData[subKey] = {
               value: subValue as string,
               weight: 1.0,
-              metadata: {}
+              metadata: {},
             };
           }
         }
@@ -231,7 +231,7 @@ export class FileDataAdapter implements EnumDataProvider {
         enumData[key] = {
           value: value as string,
           weight: 1.0,
-          metadata: {}
+          metadata: {},
         };
       }
     }

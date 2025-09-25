@@ -1,6 +1,6 @@
 /**
  * 🦊 Simplified Animation Loop
- * 
+ *
  * Single requestAnimationFrame loop with proper frame timing
  * No setTimeout anti-patterns, no unnecessary abstractions
  */
@@ -28,9 +28,9 @@ export class SimplifiedAnimationLoop {
   /**
    * Add an animation item to the loop
    */
-  addItem(item: Omit<AnimationItem, 'isActive'>): void {
+  addItem(item: Omit<AnimationItem, "isActive">): void {
     this.items.set(item.id, { ...item, isActive: true });
-    
+
     if (!this.isRunning) {
       this.start();
     }
@@ -41,7 +41,7 @@ export class SimplifiedAnimationLoop {
    */
   removeItem(id: string): void {
     this.items.delete(id);
-    
+
     if (this.items.size === 0) {
       this.stop();
     }
@@ -52,7 +52,7 @@ export class SimplifiedAnimationLoop {
    */
   private start(): void {
     if (this.isRunning) return;
-    
+
     this.isRunning = true;
     this.lastFrameTime = performance.now();
     this.animate();
@@ -80,12 +80,12 @@ export class SimplifiedAnimationLoop {
 
     // Process all active animation items
     const itemsToRemove: string[] = [];
-    
+
     for (const [id, item] of this.items) {
       if (!item.isActive) continue;
 
       const elapsed = currentTime - item.startTime;
-      
+
       // Check if delay period is over
       if (elapsed < item.delay) {
         continue;
@@ -115,7 +115,7 @@ export class SimplifiedAnimationLoop {
     } else {
       this.stop();
     }
-  }
+  };
 
   /**
    * Get current animation count
@@ -170,11 +170,11 @@ export function createStaggeredAnimation(
       duration,
       delay: i * stagger,
       easing,
-      onUpdate: (progress) => onItemUpdate(i, progress),
+      onUpdate: progress => onItemUpdate(i, progress),
       onComplete: () => {
         completedItems++;
         onItemComplete?.(i);
-        
+
         // Check if all items are complete
         if (completedItems >= itemCount) {
           onAllComplete?.();
@@ -199,7 +199,7 @@ export function createSimpleAnimation(
   onComplete?: () => void
 ): () => void {
   const itemId = `simple-${Date.now()}-${Math.random()}`;
-  
+
   globalAnimationLoop.addItem({
     id: itemId,
     startTime: performance.now(),

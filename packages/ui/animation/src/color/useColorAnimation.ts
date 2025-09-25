@@ -1,6 +1,6 @@
 /**
  * 🦊 Color Animation Composable
- * 
+ *
  * SolidJS composable for color animations with smart imports and fallbacks.
  * Integrates with the unified animation system.
  */
@@ -35,13 +35,13 @@ export interface UseColorAnimationReturn {
   isAnimationsDisabled: () => boolean;
   /** Whether color package is available */
   isColorPackageAvailable: () => boolean;
-  
+
   /** Animation functions */
   animateToColor: (targetColor: OKLCHColor, options?: ColorAnimationOptions) => Promise<void>;
   animateHueShift: (deltaH: number, options?: ColorAnimationOptions) => Promise<void>;
   generateColorRamp: (targetColor: OKLCHColor, stops?: number) => OKLCHColor[];
   generateHueRamp: (maxShift: number, stops?: number) => OKLCHColor[];
-  
+
   /** Control functions */
   stopAnimation: () => void;
   resetToBase: () => void;
@@ -113,16 +113,12 @@ export function useColorAnimation(options: UseColorAnimationOptions = {}): UseCo
     setIsAnimating(true);
 
     try {
-      const colors = await functions.animateColorTransition(
-        currentColor(),
-        targetColor,
-        {
-          duration: animDuration,
-          easing: animEasing,
-          useFallback: animUseFallback,
-          respectGlobalControl: animRespectControl,
-        }
-      );
+      const colors = await functions.animateColorTransition(currentColor(), targetColor, {
+        duration: animDuration,
+        easing: animEasing,
+        useFallback: animUseFallback,
+        respectGlobalControl: animRespectControl,
+      });
 
       // Animate through the color steps
       const startTime = performance.now();
@@ -136,12 +132,7 @@ export function useColorAnimation(options: UseColorAnimationOptions = {}): UseCo
 
         // Interpolate between start and end color
         const startColor = currentColor();
-        const interpolated = functions.interpolateColor(
-          startColor,
-          targetColor,
-          easedProgress,
-          easingFunction
-        );
+        const interpolated = functions.interpolateColor(startColor, targetColor, easedProgress, easingFunction);
 
         setCurrentColor(interpolated);
 
@@ -165,36 +156,17 @@ export function useColorAnimation(options: UseColorAnimationOptions = {}): UseCo
     }
   };
 
-  const animateHueShift = async (
-    deltaH: number,
-    animationOptions: ColorAnimationOptions = {}
-  ): Promise<void> => {
+  const animateHueShift = async (deltaH: number, animationOptions: ColorAnimationOptions = {}): Promise<void> => {
     const targetColor = functions.pureHueShift(currentColor(), deltaH);
     await animateToColor(targetColor, animationOptions);
   };
 
-  const generateColorRamp = (
-    targetColor: OKLCHColor,
-    stops: number = 5
-  ): OKLCHColor[] => {
-    return functions.generateEasedColorRamp(
-      currentColor(),
-      targetColor,
-      stops,
-      ColorEasingFunctions[easing]
-    );
+  const generateColorRamp = (targetColor: OKLCHColor, stops: number = 5): OKLCHColor[] => {
+    return functions.generateEasedColorRamp(currentColor(), targetColor, stops, ColorEasingFunctions[easing]);
   };
 
-  const generateHueRamp = (
-    maxShift: number,
-    stops: number = 5
-  ): OKLCHColor[] => {
-    return functions.generateEasedHueRamp(
-      currentColor(),
-      stops,
-      maxShift,
-      ColorEasingFunctions[easing]
-    );
+  const generateHueRamp = (maxShift: number, stops: number = 5): OKLCHColor[] => {
+    return functions.generateEasedHueRamp(currentColor(), stops, maxShift, ColorEasingFunctions[easing]);
   };
 
   // Cleanup on unmount
@@ -220,7 +192,10 @@ export function useColorAnimation(options: UseColorAnimationOptions = {}): UseCo
 /**
  * Hook for creating color animation with specific base color
  */
-export function useColorAnimationWithBase(baseColor: OKLCHColor, options?: Omit<UseColorAnimationOptions, 'baseColor'>) {
+export function useColorAnimationWithBase(
+  baseColor: OKLCHColor,
+  options?: Omit<UseColorAnimationOptions, "baseColor">
+) {
   return useColorAnimation({ ...options, baseColor });
 }
 
@@ -229,10 +204,10 @@ export function useColorAnimationWithBase(baseColor: OKLCHColor, options?: Omit<
  */
 export function useHueShiftAnimation(baseColor: OKLCHColor, options?: UseColorAnimationOptions) {
   const colorAnimation = useColorAnimation({ ...options, baseColor });
-  
+
   return {
     ...colorAnimation,
-    shiftHue: (deltaH: number, animationOptions?: ColorAnimationOptions) => 
+    shiftHue: (deltaH: number, animationOptions?: ColorAnimationOptions) =>
       colorAnimation.animateHueShift(deltaH, animationOptions),
   };
 }

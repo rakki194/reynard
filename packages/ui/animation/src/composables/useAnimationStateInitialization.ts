@@ -1,8 +1,8 @@
 /**
  * Animation State Composable Initialization
- * 
+ *
  * Initialization logic for the useAnimationState composable.
- * 
+ *
  * @author Agile-Prime-90 (Reynard Lizard Specialist)
  * @since 1.0.0
  */
@@ -22,11 +22,7 @@ export interface UseAnimationStateInitializationOptions {
  * Create initialization logic for useAnimationState
  */
 export function createAnimationStateInitialization(options: UseAnimationStateInitializationOptions) {
-  const {
-    config = {},
-    smartAnimationCore,
-    autoInitialize = true,
-  } = options;
+  const { config = {}, smartAnimationCore, autoInitialize = true } = options;
 
   const [isInitialized, setIsInitialized] = createSignal(false);
   const [animationStateManager, setAnimationStateManager] = createSignal<AnimationStateManager | null>(null);
@@ -40,14 +36,14 @@ export function createAnimationStateInitialization(options: UseAnimationStateIni
     try {
       // Get or create smart animation core
       const core = smartAnimationCore || new SmartAnimationCore();
-      
+
       // Create animation state manager with enhanced configuration
       const enhancedConfig = createEnhancedConfig(config);
-      
+
       const stateManager = new AnimationStateManager(core, enhancedConfig);
       setAnimationStateManager(stateManager);
       setIsInitialized(true);
-      
+
       if (enhancedConfig.enableLogging) {
         console.log("useAnimationState: Animation state manager initialized with global control integration");
       }

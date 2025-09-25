@@ -4,13 +4,13 @@
  * Type definitions for the gallery-dl package.
  */
 
-export type DownloadStatus = 'pending' | 'downloading' | 'completed' | 'error' | 'cancelled';
+export type DownloadStatus = "pending" | "downloading" | "completed" | "error" | "cancelled";
 
-export type ExtractorCategory = 'image' | 'video' | 'audio' | 'document' | 'other';
+export type ExtractorCategory = "image" | "video" | "audio" | "document" | "other";
 
-export type PostProcessorType = 'metadata' | 'resize' | 'compress' | 'watermark';
+export type PostProcessorType = "metadata" | "resize" | "compress" | "watermark";
 
-export type FileType = 'image' | 'video' | 'audio' | 'document' | 'other';
+export type FileType = "image" | "video" | "audio" | "document" | "other";
 
 export interface DownloadOptions {
   outputDirectory?: string;

@@ -5,15 +5,15 @@ export default defineConfig({
   plugins: [solid()],
   server: {
     port: 3000,
-    open: true
+    open: true,
   },
   build: {
     target: "esnext",
-    sourcemap: true
+    sourcemap: true,
   },
   resolve: {
     alias: {
-      "@": "/src"
-    }
-  }
+      "@": "/src",
+    },
+  },
 });

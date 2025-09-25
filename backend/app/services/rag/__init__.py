@@ -4,7 +4,7 @@ This module provides a comprehensive RAG (Retrieval-Augmented Generation) system
 with clean, modular architecture and intuitive naming.
 
 Core Services:
-- EmbeddingService: Unified embedding generation with multiple providers
+- EmbeddingService: Embedding generation with multiple providers
 - VectorStoreService: PostgreSQL + pgvector management
 - DocumentIndexer: Intelligent document processing and chunking
 - SearchEngine: Advanced search with semantic and keyword matching
@@ -17,7 +17,7 @@ Advanced Features:
 - ModelEvaluationService: Model evaluation and benchmarking
 
 Main Entry Point:
-- RAGService: Unified orchestrator for all RAG capabilities
+- RAGService: Orchestrator for all RAG capabilities
 """
 
 # Conditional imports based on environment configuration

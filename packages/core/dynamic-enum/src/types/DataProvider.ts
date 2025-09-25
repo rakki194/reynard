@@ -2,7 +2,7 @@
  * Data provider interface for fetching enum data from various sources
  */
 
-import type { EnumData, EnumValue } from './EnumTypes';
+import type { EnumData, EnumValue } from "./EnumTypes";
 
 /**
  * Abstract interface for data providers
@@ -56,7 +56,7 @@ export interface FileDataProviderConfig {
   /** Path to the data file */
   filePath: string;
   /** File format (json, yaml, etc.) */
-  format: 'json' | 'yaml' | 'toml';
+  format: "json" | "yaml" | "toml";
   /** Whether to watch for file changes */
   watch?: boolean;
 }
@@ -88,5 +88,5 @@ export interface CompositeDataProviderConfig {
   /** Fallback data providers in order of preference */
   fallbacks: EnumDataProvider[];
   /** Strategy for handling provider failures */
-  failureStrategy: 'fail-fast' | 'try-all' | 'best-effort';
+  failureStrategy: "fail-fast" | "try-all" | "best-effort";
 }

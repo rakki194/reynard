@@ -1,6 +1,6 @@
 /**
  * Event Handling Tests
- * 
+ *
  * Tests for event handling functionality.
  */
 

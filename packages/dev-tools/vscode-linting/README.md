@@ -50,6 +50,7 @@ The extension can be configured through VS Code settings:
 
 1. Install the extension from the VS Code marketplace
 2. Or install from a `.vsix` file:
+
    ```bash
    code --install-extension reynard-vscode-linting-0.1.0.vsix
    ```

@@ -4,9 +4,5 @@
  * Central export point for all gallery-dl composables.
  */
 
-export { useGalleryWebSocket } from './useGalleryWebSocket';
-export type { 
-  UseGalleryWebSocketReturn, 
-  DownloadEvent, 
-  WebSocketConfig 
-} from './useGalleryWebSocket';
+export { useGalleryWebSocket } from "./useGalleryWebSocket";
+export type { UseGalleryWebSocketReturn, DownloadEvent, WebSocketConfig } from "./useGalleryWebSocket";

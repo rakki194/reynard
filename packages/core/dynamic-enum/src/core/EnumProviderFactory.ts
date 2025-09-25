@@ -2,21 +2,24 @@
  * Factory for creating enum providers
  */
 
-import type { EnumProvider, EnumProviderFactory } from '../types';
-import type { EnumProviderConfig } from '../types/EnumTypes';
-import type { EnumDataProvider } from '../types/DataProvider';
+import type { EnumProvider, EnumProviderFactory } from "../types";
+import type { EnumProviderConfig } from "../types/EnumTypes";
+import type { EnumDataProvider } from "../types/DataProvider";
 
 /**
  * Implementation of the enum provider factory
  */
 export class DynamicEnumProviderFactory implements EnumProviderFactory {
-  private providerConstructors: Map<string, new (config: EnumProviderConfig, dataProvider?: EnumDataProvider) => EnumProvider> = new Map();
+  private providerConstructors: Map<
+    string,
+    new (config: EnumProviderConfig, dataProvider?: EnumDataProvider) => EnumProvider
+  > = new Map();
 
   /**
    * Register a provider constructor for an enum type
    */
   registerProviderConstructor(
-    enumType: string, 
+    enumType: string,
     constructor: new (config: EnumProviderConfig, dataProvider?: EnumDataProvider) => EnumProvider
   ): void {
     this.providerConstructors.set(enumType, constructor);
@@ -27,7 +30,7 @@ export class DynamicEnumProviderFactory implements EnumProviderFactory {
    */
   createProvider(enumType: string, config: EnumProviderConfig, dataProvider?: EnumDataProvider): EnumProvider {
     const Constructor = this.providerConstructors.get(enumType);
-    
+
     if (!Constructor) {
       throw new Error(`No provider constructor registered for enum type: ${enumType}`);
     }

@@ -31,6 +31,9 @@ from ..services.email.integration.calendar_integration_service import (
 from ..services.email.integration.email_encryption_service import (
     email_encryption_service,
 )
+from ..services.email.integration.database_email_encryption_service import (
+    database_email_encryption_service,
+)
 
 router = APIRouter(prefix="/api/email", tags=["email"])
 
@@ -936,4 +939,192 @@ async def get_system_overview(
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Failed to get system overview: {e!s}",
+        )
+
+
+# Database-Integrated Email Encryption Routes
+@router.post("/encryption/database/encrypt")
+async def encrypt_email_content_database(
+    content: str,
+    recipient_email: str,
+    encryption_method: str | None = None,
+    sign_with: str | None = None,
+    current_user: dict = Depends(get_current_active_user),
+) -> dict[str, Any]:
+    """Encrypt email content using database-stored keys."""
+    try:
+        encrypted_email = await database_email_encryption_service.encrypt_email_content(
+            content=content,
+            recipient_email=recipient_email,
+            encryption_method=encryption_method,
+            sign_with=sign_with,
+        )
+
+        return {
+            "encrypted_content": encrypted_email.encrypted_content,
+            "encryption_method": encrypted_email.encryption_method,
+            "key_id": encrypted_email.key_id,
+            "encrypted_at": encrypted_email.encrypted_at.isoformat(),
+            "is_signed": encrypted_email.is_signed,
+            "signature": encrypted_email.signature,
+        }
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Failed to encrypt email content: {e!s}",
+        )
+
+
+@router.post("/encryption/database/decrypt")
+async def decrypt_email_content_database(
+    encrypted_content: str,
+    passphrase: str | None = None,
+    current_user: dict = Depends(get_current_active_user),
+) -> dict[str, Any]:
+    """Decrypt email content using user's private key."""
+    try:
+        decrypted_content = await database_email_encryption_service.decrypt_email_content(
+            encrypted_content=encrypted_content,
+            user_id=current_user["username"],
+            passphrase=passphrase,
+        )
+
+        return {
+            "decrypted_content": decrypted_content,
+            "decrypted_at": datetime.now().isoformat(),
+        }
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Failed to decrypt email content: {e!s}",
+        )
+
+
+@router.get("/encryption/database/public-key")
+async def get_user_public_key_database(
+    current_user: dict = Depends(get_current_active_user),
+) -> dict[str, Any]:
+    """Get user's public key for sharing."""
+    try:
+        public_key = await database_email_encryption_service.get_user_public_key(
+            user_id=current_user["username"]
+        )
+
+        if not public_key:
+            raise HTTPException(
+                status_code=404, detail="No public key found for user",
+            )
+
+        return {
+            "public_key": public_key,
+            "user_id": current_user["username"],
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Failed to get public key: {e!s}",
+        )
+
+
+@router.post("/encryption/database/verify-signature")
+async def verify_email_signature_database(
+    signed_content: str,
+    sender_email: str,
+    current_user: dict = Depends(get_current_active_user),
+) -> dict[str, Any]:
+    """Verify email signature using database-stored keys."""
+    try:
+        success, message = await database_email_encryption_service.verify_email_signature(
+            signed_content=signed_content,
+            sender_email=sender_email,
+        )
+
+        return {
+            "verified": success,
+            "message": message,
+            "sender_email": sender_email,
+            "verified_at": datetime.now().isoformat(),
+        }
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Failed to verify signature: {e!s}",
+        )
+
+
+@router.post("/encryption/database/generate-key")
+async def generate_pgp_key_database(
+    name: str,
+    email: str,
+    passphrase: str | None = None,
+    key_length: int = 2048,
+    key_type: str = "RSA",
+    is_primary: bool = True,
+    current_user: dict = Depends(get_current_active_user),
+) -> dict[str, Any]:
+    """Generate a new PGP key using database storage."""
+    try:
+        key_data = await database_email_encryption_service.generate_pgp_key_for_user(
+            user_id=current_user["username"],
+            name=name,
+            email=email,
+            passphrase=passphrase,
+            key_length=key_length,
+            key_type=key_type,
+            is_primary=is_primary,
+        )
+
+        return {
+            "key_id": key_data["key_id"],
+            "fingerprint": key_data["fingerprint"],
+            "public_key": key_data["public_key_armored"],
+            "user_id": key_data["user_id"],
+            "email": key_data["email"],
+            "created_at": key_data["created_at"],
+            "is_primary": key_data["is_primary"],
+        }
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Failed to generate PGP key: {e!s}",
+        )
+
+
+@router.post("/encryption/database/regenerate-key")
+async def regenerate_pgp_key_database(
+    old_key_id: str,
+    name: str | None = None,
+    email: str | None = None,
+    passphrase: str | None = None,
+    key_length: int | None = None,
+    key_type: str | None = None,
+    current_user: dict = Depends(get_current_active_user),
+) -> dict[str, Any]:
+    """Regenerate a PGP key using database storage."""
+    try:
+        key_data = await database_email_encryption_service.regenerate_pgp_key_for_user(
+            user_id=current_user["username"],
+            old_key_id=old_key_id,
+            name=name,
+            email=email,
+            passphrase=passphrase,
+            key_length=key_length,
+            key_type=key_type,
+        )
+
+        return {
+            "key_id": key_data["key_id"],
+            "fingerprint": key_data["fingerprint"],
+            "public_key": key_data["public_key_armored"],
+            "user_id": key_data["user_id"],
+            "email": key_data["email"],
+            "created_at": key_data["created_at"],
+            "is_primary": key_data["is_primary"],
+        }
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Failed to regenerate PGP key: {e!s}",
         )

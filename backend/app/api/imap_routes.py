@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/imap", tags=["imap"])
 
 
-@router.get("/status")
+@router.get("/status", operation_id="imap_status")
 async def get_imap_status(
     current_user: dict = Depends(get_current_active_user),
 ) -> dict[str, Any]:
@@ -54,7 +54,7 @@ async def get_imap_status(
         )
 
 
-@router.get("/emails/unread")
+@router.get("/emails/unread", operation_id="imap_emails_unread")
 async def get_unread_emails(
     limit: int = 10, current_user: dict = Depends(get_current_active_user),
 ) -> list[dict[str, Any]]:
@@ -95,7 +95,7 @@ async def get_unread_emails(
         )
 
 
-@router.get("/emails/recent")
+@router.get("/emails/recent", operation_id="imap_emails_recent")
 async def get_recent_emails(
     days: int = 7,
     limit: int = 10,
@@ -139,7 +139,7 @@ async def get_recent_emails(
         )
 
 
-@router.get("/emails/agent/{agent_id}")
+@router.get("/emails/agent/{agent_id}", operation_id="imap_emails_agent")
 async def get_agent_emails(
     agent_id: str,
     limit: int = 50,
@@ -183,7 +183,7 @@ async def get_agent_emails(
         )
 
 
-@router.get("/emails/summary")
+@router.get("/emails/summary", operation_id="imap_emails_summary")
 async def get_emails_summary(
     current_user: dict = Depends(get_current_active_user),
 ) -> dict[str, Any]:
@@ -204,7 +204,7 @@ async def get_emails_summary(
         )
 
 
-@router.post("/emails/{message_id}/mark-read")
+@router.post("/emails/{message_id}/mark-read", operation_id="imap_emails_mark_read")
 async def mark_email_as_read(
     message_id: str, current_user: dict = Depends(get_current_active_user),
 ) -> dict[str, Any]:
@@ -233,7 +233,7 @@ async def mark_email_as_read(
         )
 
 
-@router.post("/emails/{message_id}/mark-processed")
+@router.post("/emails/{message_id}/mark-processed", operation_id="imap_emails_mark_processed")
 async def mark_email_as_processed(
     message_id: str, current_user: dict = Depends(get_current_active_user),
 ) -> dict[str, Any]:
@@ -263,7 +263,7 @@ async def mark_email_as_processed(
         )
 
 
-@router.post("/monitoring/start")
+@router.post("/monitoring/start", operation_id="imap_monitoring_start")
 async def start_email_monitoring(
     interval: int = 60,
     background_tasks: BackgroundTasks = None,
@@ -297,7 +297,7 @@ async def start_email_monitoring(
         )
 
 
-@router.get("/test")
+@router.get("/test", operation_id="imap_test")
 async def test_imap_connection(
     current_user: dict = Depends(get_current_active_user),
 ) -> dict[str, Any]:

@@ -1,6 +1,6 @@
 /**
  * 🎬 Animation System Demo - Reynard Framework
- * 
+ *
  * Comprehensive showcase of the unified animation system including:
  * - Staggered animations
  * - Floating panel animations
@@ -44,9 +44,7 @@ const App: Component = () => {
                 <span class="reynard-logo">🦊</span>
                 Animation System Demo
               </h1>
-              <p class="demo-subtitle">
-                Comprehensive showcase of Reynard's unified animation system
-              </p>
+              <p class="demo-subtitle">Comprehensive showcase of Reynard's unified animation system</p>
             </div>
             <div class="selector-container">
               <ThemeSelector />
@@ -57,7 +55,7 @@ const App: Component = () => {
 
           <main class="demo-main">
             <Navigation currentPage={currentPage()} onPageChange={setCurrentPage} />
-            
+
             <div class="demo-content">
               <Show when={currentPage() === "dashboard"}>
                 <AnimationDashboard />

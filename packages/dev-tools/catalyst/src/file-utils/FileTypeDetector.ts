@@ -3,28 +3,28 @@
  * Unified file type detection for all Reynard dev-tools
  */
 
-import path from 'path';
-import type { FileType, FileTypeMapping } from '../types/FileUtils.js';
+import path from "path";
+import type { FileType, FileTypeMapping } from "../types/FileUtils.js";
 
 export class FileTypeDetector {
   private static readonly FILE_TYPE_MAPPING: FileTypeMapping = {
-    '.ts': 'typescript',
-    '.tsx': 'typescript',
-    '.js': 'javascript',
-    '.jsx': 'javascript',
-    '.py': 'python',
-    '.md': 'markdown',
-    '.mdx': 'markdown',
-    '.json': 'json',
-    '.yaml': 'yaml',
-    '.yml': 'yaml',
-    '.css': 'css',
-    '.html': 'html',
-    '.htm': 'html',
-    '.sh': 'shell',
-    '.sql': 'sql',
-    '.conf': 'config',
-    '.toml': 'toml',
+    ".ts": "typescript",
+    ".tsx": "typescript",
+    ".js": "javascript",
+    ".jsx": "javascript",
+    ".py": "python",
+    ".md": "markdown",
+    ".mdx": "markdown",
+    ".json": "json",
+    ".yaml": "yaml",
+    ".yml": "yaml",
+    ".css": "css",
+    ".html": "html",
+    ".htm": "html",
+    ".sh": "shell",
+    ".sql": "sql",
+    ".conf": "config",
+    ".toml": "toml",
   };
 
   /**

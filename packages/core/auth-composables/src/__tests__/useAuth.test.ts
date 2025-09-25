@@ -54,10 +54,12 @@ describe("useAuth", () => {
   });
 
   it("should return auth state and actions", () => {
-    const { result } = renderHook(() => useAuth({ 
-      config: { apiBaseUrl: "/api" },
-      autoInit: false 
-    }));
+    const { result } = renderHook(() =>
+      useAuth({
+        config: { apiBaseUrl: "/api" },
+        autoInit: false,
+      })
+    );
 
     expect(result).toBeDefined();
     expect(result.authState).toBeDefined();
@@ -76,10 +78,12 @@ describe("useAuth", () => {
   });
 
   it("should initialize with default state", () => {
-    const { result } = renderHook(() => useAuth({ 
-      config: { apiBaseUrl: "/api" },
-      autoInit: false 
-    }));
+    const { result } = renderHook(() =>
+      useAuth({
+        config: { apiBaseUrl: "/api" },
+        autoInit: false,
+      })
+    );
 
     expect(result.isAuthenticated()).toBe(false);
     expect(result.isLoading()).toBe(false);

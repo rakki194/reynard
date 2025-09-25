@@ -204,19 +204,26 @@ describe("CLI Helper", () => {
     it("should parse all options", () => {
       const args = [
         "--verbose",
-        "--output", "test.ts",
+        "--output",
+        "test.ts",
         "--include-packages",
         "--include-examples",
         "--include-templates",
         "--include-scripts",
-        "--max-workers", "4",
-        "--environment", "node",
-        "--branches", "90",
-        "--functions", "95",
-        "--lines", "95",
-        "--statements", "95",
+        "--max-workers",
+        "4",
+        "--environment",
+        "node",
+        "--branches",
+        "90",
+        "--functions",
+        "95",
+        "--lines",
+        "95",
+        "--statements",
+        "95",
         "--backup",
-        "--validate"
+        "--validate",
       ];
       const options = parseCliOptions(args);
 

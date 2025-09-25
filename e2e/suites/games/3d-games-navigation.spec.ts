@@ -1,9 +1,9 @@
 /**
  * Game Navigation E2E Tests
- * 
+ *
  * Tests for game navigation functionality including
  * back to menu and game switching.
- * 
+ *
  * @author 🦊 The Cunning Fox
  */
 
@@ -16,11 +16,11 @@ test.describe("Game Navigation", () => {
   test.beforeEach(async ({ browser }) => {
     page = await browser.newPage();
     await page.setViewportSize({ width: 1280, height: 720 });
-    
+
     // Navigate to 3D games
-    await page.goto(`${GAMES_DEMO_URL}/#3d-games`, { 
+    await page.goto(`${GAMES_DEMO_URL}/#3d-games`, {
       waitUntil: "networkidle",
-      timeout: 30000 
+      timeout: 30000,
     });
   });
 
@@ -30,12 +30,12 @@ test.describe("Game Navigation", () => {
 
   test("should have back to menu functionality", async () => {
     await page.goto(`${GAMES_DEMO_URL}/#3d-games`, { waitUntil: "networkidle" });
-    
+
     // Look for back button
     const backButton = page.locator("button").filter({ hasText: /back|menu/i });
-    if (await backButton.count() > 0) {
+    if ((await backButton.count()) > 0) {
       await backButton.first().click();
-      
+
       // Should return to game selection
       await expect(page.locator(".game-selection")).toBeVisible();
     }
@@ -43,18 +43,18 @@ test.describe("Game Navigation", () => {
 
   test("should switch between games", async () => {
     await page.goto(`${GAMES_DEMO_URL}/#3d-games`, { waitUntil: "networkidle" });
-    
+
     const gameButtons = page.locator("button").filter({ hasText: /cube|space|maze|particle/i });
-    
-    if (await gameButtons.count() >= 2) {
+
+    if ((await gameButtons.count()) >= 2) {
       // Select first game
       await gameButtons.first().click();
       await page.waitForTimeout(1000);
-      
+
       // Select second game
       await gameButtons.nth(1).click();
       await page.waitForTimeout(1000);
-      
+
       // Both games should be functional
       const gameContainer = page.locator(".game-container, canvas");
       await expect(gameContainer).toBeVisible();

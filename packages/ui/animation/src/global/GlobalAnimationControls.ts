@@ -1,22 +1,22 @@
 /**
  * 🦊 Global Animation Controls
- * 
+ *
  * Global animation control system with enable/disable functions and testing utilities.
  * Provides centralized control over all animation systems.
  */
 
-import type { 
+import type {
   GlobalAnimationConfig,
   GlobalAnimationControls,
   GlobalAnimationTesting,
   AnimationPackageInfo,
-  SystemPreferences
+  SystemPreferences,
 } from "./GlobalAnimationTypes.js";
-import { 
+import {
   shouldDisableAnimations,
   getAnimationEngine,
   validateConfig,
-  createPersistence
+  createPersistence,
 } from "./GlobalAnimationConfig.js";
 
 /**
@@ -87,11 +87,7 @@ export class GlobalAnimationControlSystem {
   getState() {
     const effectivePreferences = this.getSystemPreferences();
     const isDisabled = shouldDisableAnimations(this.config, effectivePreferences);
-    const animationEngine = getAnimationEngine(
-      this.config,
-      effectivePreferences,
-      this.availablePackages.size > 0
-    );
+    const animationEngine = getAnimationEngine(this.config, effectivePreferences, this.availablePackages.size > 0);
 
     return {
       config: this.getConfig(),
@@ -145,11 +141,7 @@ export class GlobalAnimationControlSystem {
    * Get current animation engine
    */
   getAnimationEngine(): "full" | "fallback" | "disabled" {
-    return getAnimationEngine(
-      this.config,
-      this.getSystemPreferences(),
-      this.availablePackages.size > 0
-    );
+    return getAnimationEngine(this.config, this.getSystemPreferences(), this.availablePackages.size > 0);
   }
 
   /**

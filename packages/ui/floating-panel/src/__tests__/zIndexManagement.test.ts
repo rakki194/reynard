@@ -1,6 +1,6 @@
 /**
  * Z-Index Management Tests
- * 
+ *
  * Tests for z-index management functionality.
  */
 

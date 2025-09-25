@@ -51,7 +51,7 @@ export const mockProcess = {
 export const mockPath = {
   join: vi.fn((...args: string[]) => args.join("/")),
   dirname: vi.fn((path: string) => path.split("/").slice(0, -1).join("/") || "/"),
-  resolve: vi.fn((path: string) => path.startsWith("/") ? path : "/test/workspace/" + path),
+  resolve: vi.fn((path: string) => (path.startsWith("/") ? path : "/test/workspace/" + path)),
 };
 
 // Setup mocks
@@ -213,10 +213,7 @@ export function createMockLintIssue(
 }
 
 // Mock linter configurations
-export function createMockLinterConfig(
-  name: string = "test-linter",
-  patterns: string[] = ["**/*.ts"]
-): LinterConfig {
+export function createMockLinterConfig(name: string = "test-linter", patterns: string[] = ["**/*.ts"]): LinterConfig {
   return {
     name,
     enabled: true,
@@ -260,99 +257,109 @@ export function mockLinterExecSync() {
   mockExecSync.mockImplementation((command: string) => {
     // Mock ESLint output
     if (command.includes("eslint")) {
-      return Buffer.from(JSON.stringify([
-        {
-          filePath: "/test/file.ts",
-          messages: [
-            {
-              ruleId: "no-unused-vars",
-              severity: 2,
-              message: "Variable is defined but never used",
-              line: 1,
-              column: 1,
-              endLine: 1,
-              endColumn: 5,
-            }
-          ],
-          errorCount: 1,
-          warningCount: 0,
-          fixableErrorCount: 0,
-          fixableWarningCount: 0,
-        }
-      ]));
+      return Buffer.from(
+        JSON.stringify([
+          {
+            filePath: "/test/file.ts",
+            messages: [
+              {
+                ruleId: "no-unused-vars",
+                severity: 2,
+                message: "Variable is defined but never used",
+                line: 1,
+                column: 1,
+                endLine: 1,
+                endColumn: 5,
+              },
+            ],
+            errorCount: 1,
+            warningCount: 0,
+            fixableErrorCount: 0,
+            fixableWarningCount: 0,
+          },
+        ])
+      );
     }
 
     // Mock Ruff output
     if (command.includes("ruff")) {
-      return Buffer.from(JSON.stringify([
-        {
-          code: "F401",
-          message: "Imported but unused",
-          location: {
-            row: 1,
-            column: 1,
+      return Buffer.from(
+        JSON.stringify([
+          {
+            code: "F401",
+            message: "Imported but unused",
+            location: {
+              row: 1,
+              column: 1,
+            },
+            end_location: {
+              row: 1,
+              column: 10,
+            },
+            filename: "/test/file.py",
           },
-          end_location: {
-            row: 1,
-            column: 10,
-          },
-          filename: "/test/file.py",
-        }
-      ]));
+        ])
+      );
     }
 
     // Mock MyPy output
     if (command.includes("mypy")) {
-      return Buffer.from(JSON.stringify([
-        {
-          path: "/test/file.py",
-          line: 1,
-          column: 1,
-          severity: "error",
-          message: "Missing return type annotation",
-          code: "missing-return-type",
-        }
-      ]));
+      return Buffer.from(
+        JSON.stringify([
+          {
+            path: "/test/file.py",
+            line: 1,
+            column: 1,
+            severity: "error",
+            message: "Missing return type annotation",
+            code: "missing-return-type",
+          },
+        ])
+      );
     }
 
     // Mock Markdownlint output
     if (command.includes("markdownlint")) {
-      return Buffer.from(JSON.stringify([
-        {
-          fileName: "/test/file.md",
-          lineNumber: 1,
-          ruleNames: ["MD013"],
-          ruleDescription: "Line length",
-          ruleInformation: "https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md#md013",
-          errorDetail: "Expected: 80; Actual: 120",
-          errorContext: "This is a very long line that exceeds the maximum line length",
-          errorRange: [1, 120],
-        }
-      ]));
+      return Buffer.from(
+        JSON.stringify([
+          {
+            fileName: "/test/file.md",
+            lineNumber: 1,
+            ruleNames: ["MD013"],
+            ruleDescription: "Line length",
+            ruleInformation: "https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md#md013",
+            errorDetail: "Expected: 80; Actual: 120",
+            errorContext: "This is a very long line that exceeds the maximum line length",
+            errorRange: [1, 120],
+          },
+        ])
+      );
     }
 
     // Mock Shellcheck output
     if (command.includes("shellcheck")) {
-      return Buffer.from(JSON.stringify([
-        {
-          file: "/test/script.sh",
-          line: 1,
-          column: 1,
-          level: "error",
-          code: 2086,
-          message: "Double quote to prevent globbing and word splitting",
-          fix: {
-            replacements: [
-              {
-                line: 1,
-                column: 1,
-                length: 1,
-                replacement: '"',
-              }
-            ],
+      return Buffer.from(
+        JSON.stringify([
+          {
+            file: "/test/script.sh",
+            line: 1,
+            column: 1,
+            level: "error",
+            code: 2086,
+            message: "Double quote to prevent globbing and word splitting",
+            fix: {
+              replacements: [
+                {
+                  line: 1,
+                  column: 1,
+                  length: 1,
+                  replacement: '"',
+                },
+              ],
+            },
           },
-        }
-      ]));
+        ])
+      );
     }
 
     return Buffer.from("Mock command output");

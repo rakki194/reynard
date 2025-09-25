@@ -1,11 +1,11 @@
 /**
  * 🦊 3D Animation System
- * 
+ *
  * Smart import system for 3D animations with fallback support.
  * Integrates with the unified animation system.
  */
 
-import type { 
+import type {
   EmbeddingPoint,
   ClusterAnimation,
   PointAnimation,
@@ -15,7 +15,7 @@ import type {
   CameraAnimationOptions,
   ThreeDAnimationState,
   ThreeDAnimationControls,
-  EasingType
+  EasingType,
 } from "./ThreeDAnimationTypes.js";
 import {
   interpolateVector3,
@@ -140,13 +140,13 @@ export function createThreeDAnimationSystem(): {
   // Check if animations should be disabled
   const checkAnimationsDisabled = () => {
     if (animationEngine === "disabled") return true;
-    
+
     if (globalControl) {
       const control = globalControl as Record<string, unknown>;
       const isDisabled = control.isAnimationsDisabled as (() => boolean) | undefined;
       return isDisabled?.() || false;
     }
-    
+
     return shouldDisable3DAnimations();
   };
 
@@ -172,9 +172,7 @@ export function createThreeDAnimationSystem(): {
       easing: clusterAnimation.easing,
       onProgress: (progress: number) => {
         clusterAnimations = clusterAnimations.map(cluster =>
-          cluster.clusterId === options.clusterId 
-            ? { ...cluster, progress }
-            : cluster
+          cluster.clusterId === options.clusterId ? { ...cluster, progress } : cluster
         );
       },
       onComplete: () => {
@@ -203,9 +201,7 @@ export function createThreeDAnimationSystem(): {
       easing: pointAnimation.easing,
       onProgress: (progress: number) => {
         pointAnimations = pointAnimations.map(animation =>
-          animation.animationId === options.animationId 
-            ? { ...animation, progress }
-            : animation
+          animation.animationId === options.animationId ? { ...animation, progress } : animation
         );
       },
       onComplete: () => {
@@ -236,9 +232,7 @@ export function createThreeDAnimationSystem(): {
       easing: cameraAnimation.easing,
       onProgress: (progress: number) => {
         cameraAnimations = cameraAnimations.map(animation =>
-          animation.animationId === options.animationId 
-            ? { ...animation, progress }
-            : animation
+          animation.animationId === options.animationId ? { ...animation, progress } : animation
         );
       },
       onComplete: () => {
@@ -266,10 +260,10 @@ export function createThreeDAnimationSystem(): {
 
     // First apply point animations
     let points = getInterpolatedPointPositions(originalPoints, pointAnimations);
-    
+
     // Then apply cluster animations
     points = getInterpolatedClusterPoints(points, clusterAnimations);
-    
+
     return points;
   };
 
@@ -287,40 +281,40 @@ export function createThreeDAnimationSystem(): {
     }
 
     const now = performance.now();
-    
+
     // Update point animations
     pointAnimations = pointAnimations.filter(animation => {
       const elapsed = now - animation.startTime;
       const progress = Math.min(elapsed / animation.duration, 1);
-      
+
       if (progress >= 1) {
         return false; // Remove completed animation
       }
-      
+
       return true;
     });
-    
+
     // Update cluster animations
     clusterAnimations = clusterAnimations.filter(animation => {
       const elapsed = now - animation.startTime;
       const progress = Math.min(elapsed / animation.duration, 1);
-      
+
       if (progress >= 1) {
         return false; // Remove completed animation
       }
-      
+
       return true;
     });
-    
+
     // Update camera animations
     cameraAnimations = cameraAnimations.filter(animation => {
       const elapsed = now - animation.startTime;
       const progress = Math.min(elapsed / animation.duration, 1);
-      
+
       if (progress >= 1) {
         return false; // Remove completed animation
       }
-      
+
       return true;
     });
   };

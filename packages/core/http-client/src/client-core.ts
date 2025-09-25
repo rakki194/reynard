@@ -5,12 +5,7 @@
  * This is the main orchestrator that coordinates all components.
  */
 
-import {
-  HTTPClientConfig,
-  HTTPRequestOptions,
-  HTTPResponse,
-  HTTPMetrics,
-} from "./types";
+import { HTTPClientConfig, HTTPRequestOptions, HTTPResponse, HTTPMetrics } from "./types";
 import { HTTPMiddleware } from "./middleware-types";
 import { CircuitBreaker } from "./circuit-breaker";
 import { RetryHandler } from "./retry-handler";

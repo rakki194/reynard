@@ -6,14 +6,14 @@
 
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { IncrementalLintingService } from "../linting-service.js";
-import { 
-  setupMocks, 
-  cleanupMocks, 
-  createTestFile, 
+import {
+  setupMocks,
+  cleanupMocks,
+  createTestFile,
   createMockLintResult,
   createMockLintIssue,
   mockLinterExecSync,
-  waitFor
+  waitFor,
 } from "./test-utils.js";
 
 describe("IncrementalLintingService", () => {
@@ -23,7 +23,7 @@ describe("IncrementalLintingService", () => {
   beforeEach(() => {
     setupMocks();
     mockLinterExecSync();
-    
+
     testConfig = {
       rootPath: "/test/workspace",
       linters: [
@@ -38,7 +38,7 @@ describe("IncrementalLintingService", () => {
           timeout: 30000,
           parallel: true,
           priority: 10,
-        }
+        },
       ],
       includePatterns: ["**/*.ts"],
       excludePatterns: ["**/node_modules/**"],
@@ -87,9 +87,9 @@ describe("IncrementalLintingService", () => {
 
     it("should lint a single file", async () => {
       const filePath = createTestFile("/test/file.ts", "const unused = 1;");
-      
+
       const result = await service.lintFile(filePath);
-      
+
       expect(result).toHaveProperty("filePath");
       expect(result).toHaveProperty("issues");
       expect(result).toHaveProperty("duration");
@@ -100,9 +100,9 @@ describe("IncrementalLintingService", () => {
     it("should lint multiple files", async () => {
       const file1 = createTestFile("/test/file1.ts", "const unused1 = 1;");
       const file2 = createTestFile("/test/file2.ts", "const unused2 = 2;");
-      
+
       const results = await service.lintFiles([file1, file2]);
-      
+
       expect(results).toHaveLength(2);
       expect(results[0].filePath).toBe(file1);
       expect(results[1].filePath).toBe(file2);
@@ -110,7 +110,7 @@ describe("IncrementalLintingService", () => {
 
     it("should handle files that don't exist", async () => {
       const result = await service.lintFile("/test/nonexistent.ts");
-      
+
       expect(result).toHaveProperty("filePath");
       expect(result).toHaveProperty("issues");
       expect(result.issues.length).toBeGreaterThan(0);
@@ -120,9 +120,9 @@ describe("IncrementalLintingService", () => {
     it("should respect file size limits", async () => {
       const largeContent = "const unused = 1;".repeat(100000);
       const filePath = createTestFile("/test/large.ts", largeContent);
-      
+
       const result = await service.lintFile(filePath);
-      
+
       expect(result).toHaveProperty("filePath");
       expect(result).toHaveProperty("issues");
       // Should have issues due to file size limit
@@ -131,16 +131,16 @@ describe("IncrementalLintingService", () => {
 
     it("should handle linter timeouts", async () => {
       const filePath = createTestFile("/test/file.ts", "const unused = 1;");
-      
+
       // Mock a timeout scenario
       vi.spyOn(service as any, "executeLinter").mockImplementation(() => {
         return new Promise((_, reject) => {
           setTimeout(() => reject(new Error("Timeout")), 100);
         });
       });
-      
+
       const result = await service.lintFile(filePath);
-      
+
       expect(result).toHaveProperty("filePath");
       expect(result).toHaveProperty("issues");
       expect(result.issues.length).toBeGreaterThan(0);
@@ -156,10 +156,10 @@ describe("IncrementalLintingService", () => {
     it("should only lint changed files", async () => {
       const file1 = createTestFile("/test/file1.ts", "const unused1 = 1;");
       const file2 = createTestFile("/test/file2.ts", "const unused2 = 2;");
-      
+
       // First lint
       await service.lintFiles([file1, file2]);
-      
+
       // Mock file modification time change
       const { mockFs } = await import("./test-utils.js");
       mockFs.statSync.mockImplementation((path: string) => {
@@ -168,19 +168,19 @@ describe("IncrementalLintingService", () => {
         }
         return { mtime: new Date(), size: 1024 };
       });
-      
+
       // Second lint should only process file1
       const results = await service.lintFiles([file1, file2]);
-      
+
       expect(results).toHaveLength(2);
       // file1 should be re-linted, file2 should be skipped
     });
 
     it("should update cache after linting", async () => {
       const filePath = createTestFile("/test/file.ts", "const unused = 1;");
-      
+
       await service.lintFile(filePath);
-      
+
       // Check that cache was updated
       const cache = (service as any).cache;
       expect(cache.has(filePath)).toBe(true);
@@ -193,25 +193,25 @@ describe("IncrementalLintingService", () => {
     });
 
     it("should respect concurrency limits", async () => {
-      const files = Array.from({ length: 10 }, (_, i) => 
+      const files = Array.from({ length: 10 }, (_, i) =>
         createTestFile(`/test/file${i}.ts`, `const unused${i} = ${i};`)
       );
-      
+
       const startTime = Date.now();
       await service.lintFiles(files);
       const endTime = Date.now();
-      
+
       // Should take some time due to concurrency limits
       expect(endTime - startTime).toBeGreaterThan(0);
     });
 
     it("should handle queue overflow gracefully", async () => {
-      const files = Array.from({ length: 100 }, (_, i) => 
+      const files = Array.from({ length: 100 }, (_, i) =>
         createTestFile(`/test/file${i}.ts`, `const unused${i} = ${i};`)
       );
-      
+
       const results = await service.lintFiles(files);
-      
+
       expect(results).toHaveLength(100);
       results.forEach(result => {
         expect(result).toHaveProperty("filePath");
@@ -228,9 +228,9 @@ describe("IncrementalLintingService", () => {
     it("should track linting statistics", async () => {
       const file1 = createTestFile("/test/file1.ts", "const unused1 = 1;");
       const file2 = createTestFile("/test/file2.ts", "const unused2 = 2;");
-      
+
       await service.lintFiles([file1, file2]);
-      
+
       const status = service.getStatus();
       expect(status.totalFiles).toBeGreaterThan(0);
       expect(status.filesWithIssues).toBeGreaterThan(0);
@@ -239,10 +239,10 @@ describe("IncrementalLintingService", () => {
 
     it("should reset statistics", async () => {
       const filePath = createTestFile("/test/file.ts", "const unused = 1;");
-      
+
       await service.lintFile(filePath);
       service.resetStats();
-      
+
       const status = service.getStatus();
       expect(status.totalFiles).toBe(0);
       expect(status.filesWithIssues).toBe(0);
@@ -257,15 +257,15 @@ describe("IncrementalLintingService", () => {
 
     it("should handle linter execution errors", async () => {
       const filePath = createTestFile("/test/file.ts", "const unused = 1;");
-      
+
       // Mock linter failure
       const { mockExecSync } = await import("./test-utils.js");
       mockExecSync.mockImplementation(() => {
         throw new Error("Linter failed");
       });
-      
+
       const result = await service.lintFile(filePath);
-      
+
       expect(result).toHaveProperty("filePath");
       expect(result).toHaveProperty("issues");
       expect(result.issues.length).toBeGreaterThan(0);
@@ -274,7 +274,7 @@ describe("IncrementalLintingService", () => {
 
     it("should handle invalid file paths", async () => {
       const result = await service.lintFile("");
-      
+
       expect(result).toHaveProperty("filePath");
       expect(result).toHaveProperty("issues");
       expect(result.issues.length).toBeGreaterThan(0);
@@ -288,10 +288,10 @@ describe("IncrementalLintingService", () => {
         ...testConfig,
         cacheDir: "/tmp/test-cache",
       };
-      
+
       const service = new IncrementalLintingService(configWithCache);
       await service.start();
-      
+
       // Cache should be loaded (even if empty)
       expect(service).toBeDefined();
       await service.stop();
@@ -302,11 +302,11 @@ describe("IncrementalLintingService", () => {
         ...testConfig,
         cacheDir: "/tmp/test-cache",
       };
-      
+
       const service = new IncrementalLintingService(configWithCache);
       await service.start();
       await service.stop();
-      
+
       // Should not throw errors
       expect(service).toBeDefined();
     });
@@ -316,11 +316,11 @@ describe("IncrementalLintingService", () => {
         ...testConfig,
         cacheDir: "/invalid/path/that/does/not/exist",
       };
-      
+
       const service = new IncrementalLintingService(configWithInvalidCache);
       await service.start();
       await service.stop();
-      
+
       // Should handle errors gracefully
       expect(service).toBeDefined();
     });
@@ -330,7 +330,7 @@ describe("IncrementalLintingService", () => {
     it("should start file watching", async () => {
       const service = new IncrementalLintingService(testConfig);
       await service.start();
-      
+
       // File watching should be active
       expect(service).toBeDefined();
       await service.stop();
@@ -340,7 +340,7 @@ describe("IncrementalLintingService", () => {
       const service = new IncrementalLintingService(testConfig);
       await service.start();
       await service.stop();
-      
+
       // Should stop gracefully
       expect(service).toBeDefined();
     });
@@ -385,14 +385,14 @@ describe("IncrementalLintingService", () => {
 
       // Simulate file watcher events by calling the internal method
       // This tests the file watcher event handlers
-      const enqueueSpy = vi.spyOn(service as any, 'enqueueFileForLinting');
-      
+      const enqueueSpy = vi.spyOn(service as any, "enqueueFileForLinting");
+
       // Simulate file add event
-      (service as any).watcher?.emit('add', '/test/newfile.ts');
-      
+      (service as any).watcher?.emit("add", "/test/newfile.ts");
+
       // Should have called enqueueFileForLinting
-      expect(enqueueSpy).toHaveBeenCalledWith('/test/newfile.ts');
-      
+      expect(enqueueSpy).toHaveBeenCalledWith("/test/newfile.ts");
+
       await service.stop();
     });
 
@@ -401,9 +401,9 @@ describe("IncrementalLintingService", () => {
         ...testConfig,
         cacheDir: "/tmp/test-cache",
       };
-      
+
       const service = new IncrementalLintingService(configWithCache);
-      
+
       // Mock cache file with expired entries
       const mockCacheEntries = [
         {
@@ -419,18 +419,18 @@ describe("IncrementalLintingService", () => {
           results: [],
           timestamp: new Date(),
           expiresAt: new Date(Date.now() + 3600000), // 1 hour from now (valid)
-        }
+        },
       ];
-      
+
       // Mock fs/promises.readFile to return cache data
       const { mockFsPromises } = await import("./test-utils.js");
       mockFsPromises.readFile.mockResolvedValue(JSON.stringify(mockCacheEntries));
-      
+
       await service.start();
-      
+
       // Should load cache and filter expired entries
       expect(service).toBeDefined();
-      
+
       await service.stop();
     });
 
@@ -439,18 +439,18 @@ describe("IncrementalLintingService", () => {
         ...testConfig,
         cacheDir: "/tmp/test-cache",
       };
-      
+
       const service = new IncrementalLintingService(configWithCache);
-      
+
       // Mock fs/promises.readFile to throw an error
       const { mockFsPromises } = await import("./test-utils.js");
       mockFsPromises.readFile.mockRejectedValue(new Error("Cache file not found"));
-      
+
       await service.start();
-      
+
       // Should handle cache loading errors gracefully
       expect(service).toBeDefined();
-      
+
       await service.stop();
     });
   });
@@ -459,7 +459,7 @@ describe("IncrementalLintingService", () => {
     it("should execute production linter code paths", async () => {
       const originalNodeEnv = process.env.NODE_ENV;
       process.env.NODE_ENV = "production";
-      
+
       try {
         const service = new IncrementalLintingService(testConfig);
         await service.start();
@@ -482,7 +482,7 @@ describe("IncrementalLintingService", () => {
     it("should handle linter execution errors in production mode", async () => {
       const originalNodeEnv = process.env.NODE_ENV;
       process.env.NODE_ENV = "production";
-      
+
       try {
         const service = new IncrementalLintingService(testConfig);
         await service.start();
@@ -502,7 +502,7 @@ describe("IncrementalLintingService", () => {
     it("should handle file processing in production mode", async () => {
       const originalNodeEnv = process.env.NODE_ENV;
       process.env.NODE_ENV = "production";
-      
+
       try {
         const service = new IncrementalLintingService(testConfig);
         await service.start();
@@ -510,9 +510,9 @@ describe("IncrementalLintingService", () => {
         const processors = (service as any).processors;
         expect(processors).toBeDefined();
         expect(processors.size).toBeGreaterThan(0);
-        
+
         const processor = processors.values().next().value;
-        
+
         // Test the process method in production mode
         const result = await processor.process("/test/file.ts");
         expect(result).toHaveProperty("filePath");
@@ -531,7 +531,7 @@ describe("IncrementalLintingService", () => {
     it("should handle linter output parsing in production mode", async () => {
       const originalNodeEnv = process.env.NODE_ENV;
       process.env.NODE_ENV = "production";
-      
+
       try {
         const service = new IncrementalLintingService(testConfig);
         await service.start();
@@ -539,9 +539,9 @@ describe("IncrementalLintingService", () => {
         const processors = (service as any).processors;
         expect(processors).toBeDefined();
         expect(processors.size).toBeGreaterThan(0);
-        
+
         const processor = processors.values().next().value;
-        
+
         // Test the parseLinterOutput method
         const mockOutput = JSON.stringify([
           {
@@ -553,11 +553,11 @@ describe("IncrementalLintingService", () => {
                 message: "Variable is defined but never used",
                 line: 1,
                 column: 1,
-              }
-            ]
-          }
+              },
+            ],
+          },
         ]);
-        
+
         const result = processor.parseLinterOutput(mockOutput, "", "/test/file.ts");
         expect(result).toBeDefined();
         expect(Array.isArray(result)).toBe(true);
@@ -572,7 +572,7 @@ describe("IncrementalLintingService", () => {
     it("should handle invalid linter output in production mode", async () => {
       const originalNodeEnv = process.env.NODE_ENV;
       process.env.NODE_ENV = "production";
-      
+
       try {
         const service = new IncrementalLintingService(testConfig);
         await service.start();
@@ -580,9 +580,9 @@ describe("IncrementalLintingService", () => {
         const processors = (service as any).processors;
         expect(processors).toBeDefined();
         expect(processors.size).toBeGreaterThan(0);
-        
+
         const processor = processors.values().next().value;
-        
+
         // Test with invalid JSON output
         const result = processor.parseLinterOutput("invalid json", "", "/test/file.ts");
         expect(result).toBeDefined();
@@ -598,7 +598,7 @@ describe("IncrementalLintingService", () => {
     it("should handle file size limits in production mode", async () => {
       const originalNodeEnv = process.env.NODE_ENV;
       process.env.NODE_ENV = "production";
-      
+
       try {
         const service = new IncrementalLintingService(testConfig);
         await service.start();
@@ -606,9 +606,9 @@ describe("IncrementalLintingService", () => {
         const processors = (service as any).processors;
         expect(processors).toBeDefined();
         expect(processors.size).toBeGreaterThan(0);
-        
+
         const processor = processors.values().next().value;
-        
+
         // Test with a file that exceeds size limits
         const result = await processor.process("/test/large-file.ts");
         expect(result).toHaveProperty("filePath");
@@ -623,57 +623,57 @@ describe("IncrementalLintingService", () => {
 
   describe("utility functions and edge cases", () => {
     it("should test printColored function", () => {
-      const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
-      
+      const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+
       // Import the printColored function by accessing it through the service
       // Since it's not exported, we'll test it indirectly through the service
       const service = new IncrementalLintingService(testConfig);
-      
+
       // The printColored function is used internally, so we test it indirectly
       // by ensuring the service can be created and used
       expect(service).toBeDefined();
-      
+
       consoleSpy.mockRestore();
     });
 
     it("should test printColored function through service start/stop", async () => {
-      const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
-      
+      const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+
       const service = new IncrementalLintingService(testConfig);
-      
+
       // Start the service to trigger printColored calls
       await service.start();
-      
+
       // Stop the service to trigger more printColored calls
       await service.stop();
-      
+
       // Verify that console.log was called (which includes printColored calls)
       expect(consoleSpy).toHaveBeenCalled();
-      
+
       consoleSpy.mockRestore();
     });
 
     it("should test printColored function through cache save error", async () => {
-      const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
-      
+      const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+
       // Mock fs/promises.writeFile to throw an error
       const { mockFsPromises } = await import("./test-utils.js");
       mockFsPromises.writeFile.mockRejectedValue(new Error("Cache save error"));
-      
+
       const configWithCache = {
         ...testConfig,
         cacheDir: "/tmp/test-cache",
       };
-      
+
       const service = new IncrementalLintingService(configWithCache);
       await service.start();
-      
+
       // Try to save cache, which should trigger the error path with printColored
       await service.stop();
-      
+
       // Verify that console.log was called (which includes the error printColored call)
       expect(consoleSpy).toHaveBeenCalled();
-      
+
       consoleSpy.mockRestore();
     });
 
@@ -682,18 +682,18 @@ describe("IncrementalLintingService", () => {
         ...testConfig,
         lintOnChange: true,
       };
-      
+
       const service = new IncrementalLintingService(configWithLintOnChange);
       await service.start();
 
-      const enqueueSpy = vi.spyOn(service as any, 'enqueueFileForLinting');
-      
+      const enqueueSpy = vi.spyOn(service as any, "enqueueFileForLinting");
+
       // Simulate file change event
-      (service as any).watcher?.emit('change', '/test/changed-file.ts');
-      
+      (service as any).watcher?.emit("change", "/test/changed-file.ts");
+
       // Should have called enqueueFileForLinting because lintOnChange is enabled
-      expect(enqueueSpy).toHaveBeenCalledWith('/test/changed-file.ts');
-      
+      expect(enqueueSpy).toHaveBeenCalledWith("/test/changed-file.ts");
+
       await service.stop();
     });
 
@@ -702,18 +702,18 @@ describe("IncrementalLintingService", () => {
         ...testConfig,
         lintOnChange: false,
       };
-      
+
       const service = new IncrementalLintingService(configWithLintOnChangeDisabled);
       await service.start();
 
-      const enqueueSpy = vi.spyOn(service as any, 'enqueueFileForLinting');
-      
+      const enqueueSpy = vi.spyOn(service as any, "enqueueFileForLinting");
+
       // Simulate file change event
-      (service as any).watcher?.emit('change', '/test/changed-file.ts');
-      
+      (service as any).watcher?.emit("change", "/test/changed-file.ts");
+
       // Should NOT have called enqueueFileForLinting because lintOnChange is disabled
       expect(enqueueSpy).not.toHaveBeenCalled();
-      
+
       await service.stop();
     });
 
@@ -721,14 +721,14 @@ describe("IncrementalLintingService", () => {
       const service = new IncrementalLintingService(testConfig);
       await service.start();
 
-      const enqueueSpy = vi.spyOn(service as any, 'enqueueFileForLinting');
-      
+      const enqueueSpy = vi.spyOn(service as any, "enqueueFileForLinting");
+
       // Simulate file unlink (delete) event
-      (service as any).watcher?.emit('unlink', '/test/deleted-file.ts');
-      
+      (service as any).watcher?.emit("unlink", "/test/deleted-file.ts");
+
       // Should NOT have called enqueueFileForLinting for unlink events
       expect(enqueueSpy).not.toHaveBeenCalled();
-      
+
       await service.stop();
     });
 
@@ -737,9 +737,9 @@ describe("IncrementalLintingService", () => {
         ...testConfig,
         cacheDir: "/tmp/test-cache",
       };
-      
+
       const service = new IncrementalLintingService(configWithCache);
-      
+
       // Mock cache file with valid entries
       const mockCacheEntries = [
         {
@@ -748,18 +748,18 @@ describe("IncrementalLintingService", () => {
           results: [],
           timestamp: new Date(),
           expiresAt: new Date(Date.now() + 3600000), // 1 hour from now (valid)
-        }
+        },
       ];
-      
+
       // Mock fs/promises.readFile to return cache data
       const { mockFsPromises } = await import("./test-utils.js");
       mockFsPromises.readFile.mockResolvedValue(JSON.stringify(mockCacheEntries));
-      
+
       await service.start();
-      
+
       // Should load cache and add valid entries
       expect(service).toBeDefined();
-      
+
       await service.stop();
     });
 
@@ -768,9 +768,9 @@ describe("IncrementalLintingService", () => {
         ...testConfig,
         cacheDir: "/tmp/test-cache",
       };
-      
+
       const service = new IncrementalLintingService(configWithCache);
-      
+
       // Mock cache file with expired entries
       const mockCacheEntries = [
         {
@@ -779,18 +779,18 @@ describe("IncrementalLintingService", () => {
           results: [],
           timestamp: new Date(Date.now() - 86400000), // 1 day ago
           expiresAt: new Date(Date.now() - 3600000), // 1 hour ago (expired)
-        }
+        },
       ];
-      
+
       // Mock fs/promises.readFile to return cache data
       const { mockFsPromises } = await import("./test-utils.js");
       mockFsPromises.readFile.mockResolvedValue(JSON.stringify(mockCacheEntries));
-      
+
       await service.start();
-      
+
       // Should load cache and filter expired entries
       expect(service).toBeDefined();
-      
+
       await service.stop();
     });
 
@@ -799,18 +799,18 @@ describe("IncrementalLintingService", () => {
         ...testConfig,
         cacheDir: "/tmp/test-cache",
       };
-      
+
       const service = new IncrementalLintingService(configWithCache);
-      
+
       // Mock fs/promises.readFile to return invalid JSON
       const { mockFsPromises } = await import("./test-utils.js");
       mockFsPromises.readFile.mockResolvedValue("invalid json");
-      
+
       await service.start();
-      
+
       // Should handle invalid JSON gracefully
       expect(service).toBeDefined();
-      
+
       await service.stop();
     });
 
@@ -819,18 +819,18 @@ describe("IncrementalLintingService", () => {
         ...testConfig,
         cacheDir: "/tmp/test-cache",
       };
-      
+
       const service = new IncrementalLintingService(configWithCache);
-      
+
       // Mock fs/promises.readFile to throw an error
       const { mockFsPromises } = await import("./test-utils.js");
       mockFsPromises.readFile.mockRejectedValue(new Error("File read error"));
-      
+
       await service.start();
-      
+
       // Should handle file read errors gracefully
       expect(service).toBeDefined();
-      
+
       await service.stop();
     });
 
@@ -839,16 +839,16 @@ describe("IncrementalLintingService", () => {
         ...testConfig,
         cacheDir: "/tmp/test-cache",
       };
-      
+
       const service = new IncrementalLintingService(configWithCache);
       await service.start();
-      
+
       // Test clearCache method
       await service.clearCache();
-      
+
       // Should not throw errors
       expect(service).toBeDefined();
-      
+
       await service.stop();
     });
 
@@ -861,7 +861,7 @@ describe("IncrementalLintingService", () => {
       await service.lintFile("/test/file2.ts");
 
       const status = service.getStatus();
-      
+
       expect(status).toHaveProperty("isRunning");
       expect(status).toHaveProperty("activeFiles");
       expect(status).toHaveProperty("queuedFiles");
@@ -872,14 +872,14 @@ describe("IncrementalLintingService", () => {
       expect(status).toHaveProperty("totalIssues");
       expect(status).toHaveProperty("issuesBySeverity");
       expect(status).toHaveProperty("averageLintTime");
-      
+
       await service.stop();
     });
 
     it("should test LinterProcessor canProcess method with file size limits", async () => {
       const originalNodeEnv = process.env.NODE_ENV;
       process.env.NODE_ENV = "production";
-      
+
       try {
         const service = new IncrementalLintingService(testConfig);
         await service.start();
@@ -887,9 +887,9 @@ describe("IncrementalLintingService", () => {
         const processors = (service as any).processors;
         expect(processors).toBeDefined();
         expect(processors.size).toBeGreaterThan(0);
-        
+
         const processor = processors.values().next().value;
-        
+
         // Test canProcess with a file that should be processable
         const canProcess = processor.canProcess("/test/file.ts");
         expect(typeof canProcess).toBe("boolean");
@@ -903,7 +903,7 @@ describe("IncrementalLintingService", () => {
     it("should test LinterProcessor runLinter method", async () => {
       const originalNodeEnv = process.env.NODE_ENV;
       process.env.NODE_ENV = "production";
-      
+
       try {
         const service = new IncrementalLintingService(testConfig);
         await service.start();
@@ -911,9 +911,9 @@ describe("IncrementalLintingService", () => {
         const processors = (service as any).processors;
         expect(processors).toBeDefined();
         expect(processors.size).toBeGreaterThan(0);
-        
+
         const processor = processors.values().next().value;
-        
+
         // Test runLinter method
         try {
           const result = await processor.runLinter("/test/file.ts");
@@ -932,7 +932,7 @@ describe("IncrementalLintingService", () => {
     it("should test LinterProcessor parseLinterOutput method with valid JSON", async () => {
       const originalNodeEnv = process.env.NODE_ENV;
       process.env.NODE_ENV = "production";
-      
+
       try {
         const service = new IncrementalLintingService(testConfig);
         await service.start();
@@ -940,9 +940,9 @@ describe("IncrementalLintingService", () => {
         const processors = (service as any).processors;
         expect(processors).toBeDefined();
         expect(processors.size).toBeGreaterThan(0);
-        
+
         const processor = processors.values().next().value;
-        
+
         // Test parseLinterOutput with valid JSON
         const mockOutput = JSON.stringify([
           {
@@ -954,11 +954,11 @@ describe("IncrementalLintingService", () => {
                 message: "Variable is defined but never used",
                 line: 1,
                 column: 1,
-              }
-            ]
-          }
+              },
+            ],
+          },
         ]);
-        
+
         const result = processor.parseLinterOutput(mockOutput, "", "/test/file.ts");
         expect(Array.isArray(result)).toBe(true);
 
@@ -971,7 +971,7 @@ describe("IncrementalLintingService", () => {
     it("should test LinterProcessor parseLinterOutput method with invalid JSON", async () => {
       const originalNodeEnv = process.env.NODE_ENV;
       process.env.NODE_ENV = "production";
-      
+
       try {
         const service = new IncrementalLintingService(testConfig);
         await service.start();
@@ -979,9 +979,9 @@ describe("IncrementalLintingService", () => {
         const processors = (service as any).processors;
         expect(processors).toBeDefined();
         expect(processors.size).toBeGreaterThan(0);
-        
+
         const processor = processors.values().next().value;
-        
+
         // Test parseLinterOutput with invalid JSON
         const result = processor.parseLinterOutput("invalid json", "", "/test/file.ts");
         expect(Array.isArray(result)).toBe(true);
@@ -996,7 +996,7 @@ describe("IncrementalLintingService", () => {
     it("should test LinterProcessor parseLinterOutput method with text output", async () => {
       const originalNodeEnv = process.env.NODE_ENV;
       process.env.NODE_ENV = "production";
-      
+
       try {
         const service = new IncrementalLintingService(testConfig);
         await service.start();
@@ -1004,9 +1004,9 @@ describe("IncrementalLintingService", () => {
         const processors = (service as any).processors;
         expect(processors).toBeDefined();
         expect(processors.size).toBeGreaterThan(0);
-        
+
         const processor = processors.values().next().value;
-        
+
         // Test parseLinterOutput with text output (non-JSON)
         const textOutput = "1:1: error: Variable is defined but never used\n2:5: warning: Unused import";
         const result = processor.parseLinterOutput(textOutput, "", "/test/file.ts");
@@ -1021,7 +1021,7 @@ describe("IncrementalLintingService", () => {
     it("should test LinterProcessor severity mapping", async () => {
       const originalNodeEnv = process.env.NODE_ENV;
       process.env.NODE_ENV = "production";
-      
+
       try {
         const service = new IncrementalLintingService(testConfig);
         await service.start();
@@ -1029,9 +1029,9 @@ describe("IncrementalLintingService", () => {
         const processors = (service as any).processors;
         expect(processors).toBeDefined();
         expect(processors.size).toBeGreaterThan(0);
-        
+
         const processor = processors.values().next().value;
-        
+
         // Test severity mapping by calling parseLinterOutput with different severity values
         const mockOutput = JSON.stringify([
           {
@@ -1050,11 +1050,11 @@ describe("IncrementalLintingService", () => {
                 message: "Test error",
                 line: 2,
                 column: 1,
-              }
-            ]
-          }
+              },
+            ],
+          },
         ]);
-        
+
         const result = processor.parseLinterOutput(mockOutput, "", "/test/file.ts");
         expect(Array.isArray(result)).toBe(true);
 
@@ -1075,9 +1075,9 @@ describe("IncrementalLintingService", () => {
       const watcher = (service as any).watcher;
       if (watcher) {
         // Simulate file events
-        watcher.emit('add', '/test/new-file.ts');
-        watcher.emit('change', '/test/changed-file.ts');
-        watcher.emit('unlink', '/test/deleted-file.ts');
+        watcher.emit("add", "/test/new-file.ts");
+        watcher.emit("change", "/test/changed-file.ts");
+        watcher.emit("unlink", "/test/deleted-file.ts");
       }
 
       await service.stop();
@@ -1171,17 +1171,19 @@ describe("IncrementalLintingService", () => {
       // Test with minimal valid config
       const minimalConfig = {
         rootPath: "/test",
-        linters: [{
-          name: "test-linter",
-          command: "test-command",
-          patterns: ["**/*.ts"],
-          excludePatterns: [],
-          maxFileSize: 1024,
-          timeout: 30000,
-          parallel: true,
-          priority: 10,
-          enabled: true,
-        }],
+        linters: [
+          {
+            name: "test-linter",
+            command: "test-command",
+            patterns: ["**/*.ts"],
+            excludePatterns: [],
+            maxFileSize: 1024,
+            timeout: 30000,
+            parallel: true,
+            priority: 10,
+            enabled: true,
+          },
+        ],
         includePatterns: ["**/*.ts"],
         excludePatterns: [],
         maxConcurrency: 1,

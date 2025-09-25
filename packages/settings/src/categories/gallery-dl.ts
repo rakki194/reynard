@@ -22,9 +22,9 @@ export const galleryDlSettings: SettingCategory = {
       validation: {
         required: true,
         minLength: 1,
-        pattern: "^[^<>:\"|?*]+$"
+        pattern: '^[^<>:"|?*]+$',
       },
-      category: "download"
+      category: "download",
     },
     {
       key: "maxConcurrentDownloads",
@@ -33,9 +33,9 @@ export const galleryDlSettings: SettingCategory = {
       description: "Maximum number of concurrent downloads",
       validation: {
         min: 1,
-        max: 10
+        max: 10,
       },
-      category: "download"
+      category: "download",
     },
     {
       key: "defaultRetries",
@@ -44,9 +44,9 @@ export const galleryDlSettings: SettingCategory = {
       description: "Default number of retries for failed downloads",
       validation: {
         min: 0,
-        max: 10
+        max: 10,
       },
-      category: "download"
+      category: "download",
     },
     {
       key: "defaultTimeout",
@@ -55,9 +55,9 @@ export const galleryDlSettings: SettingCategory = {
       description: "Default timeout in seconds for downloads",
       validation: {
         min: 5,
-        max: 300
+        max: 300,
       },
-      category: "download"
+      category: "download",
     },
     {
       key: "sleepBetweenDownloads",
@@ -67,9 +67,9 @@ export const galleryDlSettings: SettingCategory = {
       validation: {
         min: 0,
         max: 10,
-        step: 0.1
+        step: 0.1,
       },
-      category: "download"
+      category: "download",
     },
 
     // File Settings
@@ -80,9 +80,9 @@ export const galleryDlSettings: SettingCategory = {
       description: "Default filename format for downloaded files",
       validation: {
         required: true,
-        minLength: 1
+        minLength: 1,
       },
-      category: "files"
+      category: "files",
     },
     {
       key: "minFileSize",
@@ -90,9 +90,9 @@ export const galleryDlSettings: SettingCategory = {
       default: 0,
       description: "Minimum file size in bytes (0 = no limit)",
       validation: {
-        min: 0
+        min: 0,
       },
-      category: "files"
+      category: "files",
     },
     {
       key: "maxFileSize",
@@ -100,23 +100,23 @@ export const galleryDlSettings: SettingCategory = {
       default: 0,
       description: "Maximum file size in bytes (0 = no limit)",
       validation: {
-        min: 0
+        min: 0,
       },
-      category: "files"
+      category: "files",
     },
     {
       key: "createSubdirectories",
       type: "boolean",
       default: true,
       description: "Create subdirectories based on gallery structure",
-      category: "files"
+      category: "files",
     },
     {
       key: "skipExistingFiles",
       type: "boolean",
       default: true,
       description: "Skip files that already exist",
-      category: "files"
+      category: "files",
     },
 
     // Extractor Settings
@@ -125,7 +125,7 @@ export const galleryDlSettings: SettingCategory = {
       type: "boolean",
       default: true,
       description: "Enable Reynard custom extractors",
-      category: "extractors"
+      category: "extractors",
     },
     {
       key: "extractorOptions",
@@ -136,11 +136,11 @@ export const galleryDlSettings: SettingCategory = {
         schema: {
           type: "object",
           additionalProperties: {
-            type: "object"
-          }
-        }
+            type: "object",
+          },
+        },
       },
-      category: "extractors"
+      category: "extractors",
     },
     {
       key: "allowedExtractors",
@@ -149,10 +149,10 @@ export const galleryDlSettings: SettingCategory = {
       description: "List of allowed extractors (empty = all allowed)",
       validation: {
         items: {
-          type: "string"
-        }
+          type: "string",
+        },
       },
-      category: "extractors"
+      category: "extractors",
     },
     {
       key: "blockedExtractors",
@@ -161,10 +161,10 @@ export const galleryDlSettings: SettingCategory = {
       description: "List of blocked extractors",
       validation: {
         items: {
-          type: "string"
-        }
+          type: "string",
+        },
       },
-      category: "extractors"
+      category: "extractors",
     },
 
     // Postprocessor Settings
@@ -176,17 +176,17 @@ export const galleryDlSettings: SettingCategory = {
       validation: {
         items: {
           type: "string",
-          enum: ["metadata", "thumbnail", "resize", "compress", "watermark"]
-        }
+          enum: ["metadata", "thumbnail", "resize", "compress", "watermark"],
+        },
       },
-      category: "postprocessors"
+      category: "postprocessors",
     },
     {
       key: "generateThumbnails",
       type: "boolean",
       default: true,
       description: "Generate thumbnails for downloaded images",
-      category: "postprocessors"
+      category: "postprocessors",
     },
     {
       key: "thumbnailSize",
@@ -195,16 +195,16 @@ export const galleryDlSettings: SettingCategory = {
       description: "Thumbnail size in pixels",
       validation: {
         min: 50,
-        max: 1000
+        max: 1000,
       },
-      category: "postprocessors"
+      category: "postprocessors",
     },
     {
       key: "extractMetadata",
       type: "boolean",
       default: true,
       description: "Extract and save metadata from downloaded files",
-      category: "postprocessors"
+      category: "postprocessors",
     },
 
     // Advanced Settings
@@ -215,9 +215,9 @@ export const galleryDlSettings: SettingCategory = {
       description: "User agent string for HTTP requests",
       validation: {
         required: true,
-        minLength: 10
+        minLength: 10,
       },
-      category: "advanced"
+      category: "advanced",
     },
     {
       key: "customHeaders",
@@ -228,18 +228,18 @@ export const galleryDlSettings: SettingCategory = {
         schema: {
           type: "object",
           additionalProperties: {
-            type: "string"
-          }
-        }
+            type: "string",
+          },
+        },
       },
-      category: "advanced"
+      category: "advanced",
     },
     {
       key: "enableLogging",
       type: "boolean",
       default: true,
       description: "Enable detailed logging for downloads",
-      category: "advanced"
+      category: "advanced",
     },
     {
       key: "logLevel",
@@ -247,9 +247,9 @@ export const galleryDlSettings: SettingCategory = {
       default: "info",
       description: "Logging level for gallery-dl operations",
       validation: {
-        enum: ["debug", "info", "warning", "error"]
+        enum: ["debug", "info", "warning", "error"],
       },
-      category: "advanced"
+      category: "advanced",
     },
     {
       key: "maxLogFileSize",
@@ -258,9 +258,9 @@ export const galleryDlSettings: SettingCategory = {
       description: "Maximum log file size in bytes",
       validation: {
         min: 1048576, // 1MB
-        max: 104857600 // 100MB
+        max: 104857600, // 100MB
       },
-      category: "advanced"
+      category: "advanced",
     },
 
     // AI Integration Settings
@@ -269,7 +269,7 @@ export const galleryDlSettings: SettingCategory = {
       type: "boolean",
       default: false,
       description: "Enable AI-powered metadata extraction",
-      category: "ai"
+      category: "ai",
     },
     {
       key: "aiMetadataProvider",
@@ -277,9 +277,9 @@ export const galleryDlSettings: SettingCategory = {
       default: "reynard",
       description: "AI metadata extraction provider",
       validation: {
-        enum: ["reynard", "openai", "anthropic", "local"]
+        enum: ["reynard", "openai", "anthropic", "local"],
       },
-      category: "ai"
+      category: "ai",
     },
     {
       key: "aiMetadataConfidence",
@@ -289,23 +289,23 @@ export const galleryDlSettings: SettingCategory = {
       validation: {
         min: 0,
         max: 1,
-        step: 0.1
+        step: 0.1,
       },
-      category: "ai"
+      category: "ai",
     },
     {
       key: "autoTagImages",
       type: "boolean",
       default: false,
       description: "Automatically generate tags for downloaded images",
-      category: "ai"
+      category: "ai",
     },
     {
       key: "autoCategorize",
       type: "boolean",
       default: false,
       description: "Automatically categorize downloaded content",
-      category: "ai"
+      category: "ai",
     },
 
     // Security Settings
@@ -314,7 +314,7 @@ export const galleryDlSettings: SettingCategory = {
       type: "boolean",
       default: true,
       description: "Require user authentication for downloads",
-      category: "security"
+      category: "security",
     },
     {
       key: "allowedDomains",
@@ -324,10 +324,10 @@ export const galleryDlSettings: SettingCategory = {
       validation: {
         items: {
           type: "string",
-          pattern: "^[a-zA-Z0-9.-]+$"
-        }
+          pattern: "^[a-zA-Z0-9.-]+$",
+        },
       },
-      category: "security"
+      category: "security",
     },
     {
       key: "blockedDomains",
@@ -337,10 +337,10 @@ export const galleryDlSettings: SettingCategory = {
       validation: {
         items: {
           type: "string",
-          pattern: "^[a-zA-Z0-9.-]+$"
-        }
+          pattern: "^[a-zA-Z0-9.-]+$",
+        },
       },
-      category: "security"
+      category: "security",
     },
     {
       key: "maxDownloadSize",
@@ -349,9 +349,9 @@ export const galleryDlSettings: SettingCategory = {
       description: "Maximum total download size per session in bytes",
       validation: {
         min: 1048576, // 1MB
-        max: 10737418240 // 10GB
+        max: 10737418240, // 10GB
       },
-      category: "security"
+      category: "security",
     },
     {
       key: "rateLimitPerMinute",
@@ -360,21 +360,21 @@ export const galleryDlSettings: SettingCategory = {
       description: "Maximum downloads per minute per user",
       validation: {
         min: 1,
-        max: 300
+        max: 300,
       },
-      category: "security"
-    }
-  ]
+      category: "security",
+    },
+  ],
 };
 
 // Helper function to get default configuration
 export function getDefaultGalleryDlConfig(): Record<string, any> {
   const config: Record<string, any> = {};
-  
+
   galleryDlSettings.settings.forEach(setting => {
     config[setting.key] = setting.default;
   });
-  
+
   return config;
 }
 
@@ -384,79 +384,79 @@ export function validateGalleryDlConfig(config: Record<string, any>): {
   errors: string[];
 } {
   const errors: string[] = [];
-  
+
   galleryDlSettings.settings.forEach(setting => {
     const value = config[setting.key];
-    
+
     // Check required fields
     if (setting.validation?.required && (value === undefined || value === null || value === "")) {
       errors.push(`${setting.key} is required`);
       return;
     }
-    
+
     // Skip validation if value is not provided and not required
     if (value === undefined || value === null) {
       return;
     }
-    
+
     // Type validation
     if (setting.type === "number" && typeof value !== "number") {
       errors.push(`${setting.key} must be a number`);
       return;
     }
-    
+
     if (setting.type === "boolean" && typeof value !== "boolean") {
       errors.push(`${setting.key} must be a boolean`);
       return;
     }
-    
+
     if (setting.type === "string" && typeof value !== "string") {
       errors.push(`${setting.key} must be a string`);
       return;
     }
-    
+
     if (setting.type === "array" && !Array.isArray(value)) {
       errors.push(`${setting.key} must be an array`);
       return;
     }
-    
+
     if (setting.type === "object" && typeof value !== "object") {
       errors.push(`${setting.key} must be an object`);
       return;
     }
-    
+
     // Additional validation
     if (setting.validation) {
       const validation = setting.validation;
-      
+
       if (validation.minLength && typeof value === "string" && value.length < validation.minLength) {
         errors.push(`${setting.key} must be at least ${validation.minLength} characters long`);
       }
-      
+
       if (validation.maxLength && typeof value === "string" && value.length > validation.maxLength) {
         errors.push(`${setting.key} must be at most ${validation.maxLength} characters long`);
       }
-      
+
       if (validation.min && typeof value === "number" && value < validation.min) {
         errors.push(`${setting.key} must be at least ${validation.min}`);
       }
-      
+
       if (validation.max && typeof value === "number" && value > validation.max) {
         errors.push(`${setting.key} must be at most ${validation.max}`);
       }
-      
+
       if (validation.pattern && typeof value === "string" && !new RegExp(validation.pattern).test(value)) {
         errors.push(`${setting.key} format is invalid`);
       }
-      
+
       if (validation.enum && !validation.enum.includes(value)) {
         errors.push(`${setting.key} must be one of: ${validation.enum.join(", ")}`);
       }
     }
   });
-  
+
   return {
     isValid: errors.length === 0,
-    errors
+    errors,
   };
 }

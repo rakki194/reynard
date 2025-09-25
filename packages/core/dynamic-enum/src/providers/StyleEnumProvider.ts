@@ -2,9 +2,9 @@
  * Provider for naming style enums
  */
 
-import { BaseEnumProvider } from '../core/EnumProvider';
-import type { EnumProviderConfig, EnumData, EnumValue } from '../types';
-import type { EnumDataProvider } from '../types/DataProvider';
+import { BaseEnumProvider } from "../core/EnumProvider";
+import type { EnumProviderConfig, EnumData, EnumValue } from "../types";
+import type { EnumDataProvider } from "../types/DataProvider";
 
 /**
  * Provider for naming style enums
@@ -20,7 +20,7 @@ export class StyleEnumProvider extends BaseEnumProvider {
   protected async fetchEnumData(): Promise<EnumData> {
     if (this.dataProvider) {
       try {
-        return await this.dataProvider.fetchEnumData('styles');
+        return await this.dataProvider.fetchEnumData("styles");
       } catch (error) {
         console.warn(`Failed to fetch style data from provider: ${error}`);
         return this.fallbackData;
@@ -36,12 +36,12 @@ export class StyleEnumProvider extends BaseEnumProvider {
   async getRandomStyle(): Promise<EnumValue> {
     const data = await this.getEnumData();
     const keys = Object.keys(data);
-    
+
     if (keys.length === 0) {
       return {
         value: this.defaultFallback,
         weight: 1.0,
-        metadata: { description: 'Default style' }
+        metadata: { description: "Default style" },
       };
     }
 
@@ -88,8 +88,7 @@ export class StyleEnumProvider extends BaseEnumProvider {
     const data = await this.getEnumData();
 
     for (const [key, value] of Object.entries(data)) {
-      if (key.toLowerCase() === name.toLowerCase() || 
-          value.value.toLowerCase() === name.toLowerCase()) {
+      if (key.toLowerCase() === name.toLowerCase() || value.value.toLowerCase() === name.toLowerCase()) {
         return value;
       }
     }
@@ -151,7 +150,7 @@ export class StyleEnumProvider extends BaseEnumProvider {
       total: Object.keys(data).length,
       types,
       characteristics,
-      averageWeight: Object.keys(data).length > 0 ? totalWeight / Object.keys(data).length : 0
+      averageWeight: Object.keys(data).length > 0 ? totalWeight / Object.keys(data).length : 0,
     };
   }
 
@@ -159,15 +158,15 @@ export class StyleEnumProvider extends BaseEnumProvider {
    * Validate style name format
    */
   validateStyleName(name: string): boolean {
-    if (!name || typeof name !== 'string') {
+    if (!name || typeof name !== "string") {
       return false;
     }
 
     // Check for valid style name patterns
     const validPatterns = [
-      /^[a-zA-Z]+-[a-zA-Z]+-\d+$/,  // foundation-style-123
-      /^[a-zA-Z]+-[a-zA-Z]+$/,       // foundation-style
-      /^[a-zA-Z]+$/,                 // foundation
+      /^[a-zA-Z]+-[a-zA-Z]+-\d+$/, // foundation-style-123
+      /^[a-zA-Z]+-[a-zA-Z]+$/, // foundation-style
+      /^[a-zA-Z]+$/, // foundation
     ];
 
     return validPatterns.some(pattern => pattern.test(name));
@@ -179,7 +178,7 @@ export class StyleEnumProvider extends BaseEnumProvider {
   async generateStyleName(type: string, characteristics: string[] = []): Promise<string> {
     const data = await this.getEnumData();
     const typeStyles = await this.getStylesByType(type);
-    
+
     if (Object.keys(typeStyles).length === 0) {
       return `${type}-default-1`;
     }

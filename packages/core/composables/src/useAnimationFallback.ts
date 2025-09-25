@@ -1,9 +1,9 @@
 /**
  * 🦊 Animation Fallback System
- * 
+ *
  * Provides fallback animation functionality when the animation package is not available.
  * Uses CSS transitions and immediate completion for disabled animations.
- * 
+ *
  * @author Agile-Prime-90 (Reynard Lizard Specialist)
  * @since 1.0.0
  */
@@ -42,10 +42,10 @@ export interface FallbackAnimationItem {
 
 /**
  * Animation fallback system
- * 
+ *
  * Provides fallback animation functionality when the animation package is not available.
  * Automatically detects if animations should be disabled and provides appropriate fallbacks.
- * 
+ *
  * @returns Fallback animation functions and state
  */
 export function useAnimationFallback() {
@@ -53,7 +53,7 @@ export function useAnimationFallback() {
 
   /**
    * Create a fallback animation using CSS transitions
-   * 
+   *
    * @param element - The element to animate
    * @param properties - CSS properties to animate
    * @param options - Animation options
@@ -64,14 +64,9 @@ export function useAnimationFallback() {
     properties: Record<string, string>,
     options: FallbackAnimationOptions = {}
   ): Promise<void> => {
-    const {
-      duration = 300,
-      easing = "ease",
-      delay = 0,
-      useTransitions = true,
-    } = options;
+    const { duration = 300, easing = "ease", delay = 0, useTransitions = true } = options;
 
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       // If animations are disabled, apply properties immediately
       if (isAnimationsDisabled()) {
         Object.assign(element.style, properties);
@@ -89,7 +84,7 @@ export function useAnimationFallback() {
       // Set up CSS transition
       const transitionProperty = Object.keys(properties).join(", ");
       element.style.transition = `${transitionProperty} ${duration}ms ${easing}`;
-      
+
       // Apply delay if specified
       if (delay > 0) {
         element.style.transitionDelay = `${delay}ms`;
@@ -110,16 +105,19 @@ export function useAnimationFallback() {
       element.addEventListener("transitionend", handleTransitionEnd);
 
       // Fallback timeout in case transition doesn't fire
-      setTimeout(() => {
-        element.removeEventListener("transitionend", handleTransitionEnd);
-        resolve();
-      }, duration + delay + 100);
+      setTimeout(
+        () => {
+          element.removeEventListener("transitionend", handleTransitionEnd);
+          resolve();
+        },
+        duration + delay + 100
+      );
     });
   };
 
   /**
    * Create a fallback staggered animation
-   * 
+   *
    * @param elements - Array of elements to animate
    * @param properties - CSS properties to animate
    * @param options - Animation options
@@ -181,7 +179,7 @@ export function useAnimationFallback() {
 
   /**
    * Create a fallback staggered animation with state management
-   * 
+   *
    * @param itemCount - Number of items to animate
    * @param options - Animation options
    * @returns Staggered animation state and controls
@@ -193,12 +191,7 @@ export function useAnimationFallback() {
     const [items, setItems] = createSignal<FallbackAnimationItem[]>([]);
     const [isAnimating, setIsAnimating] = createSignal(false);
 
-    const {
-      duration = 300,
-      delay = 0,
-      stagger = 100,
-      direction = "forward",
-    } = options;
+    const { duration = 300, delay = 0, stagger = 100, direction = "forward" } = options;
 
     const start = async (): Promise<void> => {
       if (isAnimating()) {
@@ -211,7 +204,7 @@ export function useAnimationFallback() {
       // Create items with calculated delays
       const newItems: FallbackAnimationItem[] = Array.from({ length: itemCount }, (_, index) => {
         let itemDelay = delay;
-        
+
         switch (direction) {
           case "forward":
             itemDelay += index * stagger;
@@ -263,7 +256,9 @@ export function useAnimationFallback() {
               if (progress < 1) {
                 requestAnimationFrame(animate);
               } else {
-                setItems(prev => prev.map(i => (i.index === item.index ? { ...i, isAnimating: false, progress: 1 } : i)));
+                setItems(prev =>
+                  prev.map(i => (i.index === item.index ? { ...i, isAnimating: false, progress: 1 } : i))
+                );
                 resolve();
               }
             };
@@ -299,7 +294,7 @@ export function useAnimationFallback() {
 
   /**
    * Create a simple fallback animation loop
-   * 
+   *
    * @param duration - Duration of the animation in milliseconds
    * @param onUpdate - Callback called on each frame with progress (0-1)
    * @param onComplete - Callback called when animation completes
@@ -310,7 +305,7 @@ export function useAnimationFallback() {
     onUpdate: (progress: number) => void,
     onComplete?: () => void
   ): Promise<void> => {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       // If animations are disabled, complete immediately
       if (isAnimationsDisabled()) {
         onUpdate(1);
@@ -320,13 +315,13 @@ export function useAnimationFallback() {
       }
 
       const startTime = performance.now();
-      
+
       const animate = (currentTime: number) => {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        
+
         onUpdate(progress);
-        
+
         if (progress < 1) {
           requestAnimationFrame(animate);
         } else {
@@ -334,7 +329,7 @@ export function useAnimationFallback() {
           resolve();
         }
       };
-      
+
       requestAnimationFrame(animate);
     });
   };
@@ -345,7 +340,7 @@ export function useAnimationFallback() {
     createFallbackStaggeredAnimation,
     createFallbackStaggeredAnimationState,
     createFallbackAnimationLoop,
-    
+
     // State
     isAnimationsDisabled,
     isAnimationPackageAvailable,
@@ -354,7 +349,7 @@ export function useAnimationFallback() {
 
 /**
  * Hook for creating fallback animations
- * 
+ *
  * @returns Fallback animation functions
  */
 export function useFallbackAnimations() {

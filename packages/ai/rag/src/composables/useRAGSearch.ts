@@ -24,11 +24,7 @@ export function useRAGSearch(config: RAGSearchConfig) {
   const [error, setError] = createSignal<string | null>(null);
 
   // Search operations
-  const performSearch = async (
-    searchQuery: string,
-    modality: RAGModality = "docs",
-    topK?: number
-  ) => {
+  const performSearch = async (searchQuery: string, modality: RAGModality = "docs", topK?: number) => {
     if (!searchQuery.trim()) {
       setResults([]);
       return;
@@ -40,7 +36,7 @@ export function useRAGSearch(config: RAGSearchConfig) {
 
     try {
       const startTime = performance.now();
-      
+
       const response = await config.apiService.search(searchQuery, {
         modality,
         topK: topK || config.maxResults,
@@ -50,7 +46,7 @@ export function useRAGSearch(config: RAGSearchConfig) {
 
       const endTime = performance.now();
       setQueryTime(endTime - startTime);
-      
+
       // Transform API response to RAGResult format
       const transformedResults = response.hits.map((hit: any, index: any) => ({
         chunk_id: hit.id?.toString() || `chunk-${index}`,
@@ -97,7 +93,7 @@ export function useRAGSearch(config: RAGSearchConfig) {
     isSearching,
     queryTime,
     error,
-    
+
     // Actions
     performSearch,
     clearSearch,

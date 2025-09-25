@@ -1,6 +1,6 @@
 /**
  * 🦊 Color Animation Composable Tests
- * 
+ *
  * Test suite for the useColorAnimation SolidJS composable.
  * Tests reactive color animations and smart import integration.
  */
@@ -39,7 +39,12 @@ describe("useColorAnimation", () => {
   it("should initialize with base color", () => {
     const TestComponent = () => {
       const { currentColor } = useColorAnimation({ baseColor: mockBaseColor });
-      return <div data-testid="color" style={{ backgroundColor: `oklch(${currentColor().l} ${currentColor().c} ${currentColor().h})` }} />;
+      return (
+        <div
+          data-testid="color"
+          style={{ backgroundColor: `oklch(${currentColor().l} ${currentColor().c} ${currentColor().h})` }}
+        />
+      );
     };
 
     render(() => <TestComponent />);
@@ -78,26 +83,34 @@ describe("useColorAnimation", () => {
 
       return (
         <div>
-          <div data-testid="color" style={{ backgroundColor: `oklch(${currentColor().l} ${currentColor().c} ${currentColor().h})` }} />
+          <div
+            data-testid="color"
+            style={{ backgroundColor: `oklch(${currentColor().l} ${currentColor().c} ${currentColor().h})` }}
+          />
           <div data-testid="animating">{isAnimating().toString()}</div>
-          <button data-testid="animate" onClick={handleAnimate}>Animate</button>
+          <button data-testid="animate" onClick={handleAnimate}>
+            Animate
+          </button>
         </div>
       );
     };
 
     render(() => <TestComponent />);
-    
+
     const animateButton = screen.getByTestId("animate");
     const animatingElement = screen.getByTestId("animating");
-    
+
     fireEvent.click(animateButton);
-    
+
     expect(animatingElement.textContent).toBe("true");
-    
+
     // Wait for animation to complete
-    await waitFor(() => {
-      expect(animatingElement.textContent).toBe("false");
-    }, { timeout: 100 });
+    await waitFor(
+      () => {
+        expect(animatingElement.textContent).toBe("false");
+      },
+      { timeout: 100 }
+    );
   });
 
   it("should animate hue shift", async () => {
@@ -113,43 +126,55 @@ describe("useColorAnimation", () => {
 
       return (
         <div>
-          <div data-testid="color" style={{ backgroundColor: `oklch(${currentColor().l} ${currentColor().c} ${currentColor().h})` }} />
+          <div
+            data-testid="color"
+            style={{ backgroundColor: `oklch(${currentColor().l} ${currentColor().c} ${currentColor().h})` }}
+          />
           <div data-testid="animating">{isAnimating().toString()}</div>
-          <button data-testid="shift" onClick={handleShift}>Shift Hue</button>
+          <button data-testid="shift" onClick={handleShift}>
+            Shift Hue
+          </button>
         </div>
       );
     };
 
     render(() => <TestComponent />);
-    
+
     const shiftButton = screen.getByTestId("shift");
     const animatingElement = screen.getByTestId("animating");
-    
+
     fireEvent.click(shiftButton);
-    
+
     expect(animatingElement.textContent).toBe("true");
-    
-    await waitFor(() => {
-      expect(animatingElement.textContent).toBe("false");
-    }, { timeout: 100 });
+
+    await waitFor(
+      () => {
+        expect(animatingElement.textContent).toBe("false");
+      },
+      { timeout: 100 }
+    );
   });
 
   it("should generate color ramp", () => {
     const TestComponent = () => {
       const { generateColorRamp } = useColorAnimation({ baseColor: mockBaseColor });
       const ramp = generateColorRamp(mockTargetColor, 3);
-      
+
       return (
         <div>
           {ramp.map((color, index) => (
-            <div key={index} data-testid={`ramp-${index}`} style={{ backgroundColor: `oklch(${color.l} ${color.c} ${color.h})` }} />
+            <div
+              key={index}
+              data-testid={`ramp-${index}`}
+              style={{ backgroundColor: `oklch(${color.l} ${color.c} ${color.h})` }}
+            />
           ))}
         </div>
       );
     };
 
     render(() => <TestComponent />);
-    
+
     expect(screen.getByTestId("ramp-0")).toBeInTheDocument();
     expect(screen.getByTestId("ramp-1")).toBeInTheDocument();
     expect(screen.getByTestId("ramp-2")).toBeInTheDocument();
@@ -159,18 +184,22 @@ describe("useColorAnimation", () => {
     const TestComponent = () => {
       const { generateHueRamp } = useColorAnimation({ baseColor: mockBaseColor });
       const ramp = generateHueRamp(120, 3);
-      
+
       return (
         <div>
           {ramp.map((color, index) => (
-            <div key={index} data-testid={`hue-ramp-${index}`} style={{ backgroundColor: `oklch(${color.l} ${color.c} ${color.h})` }} />
+            <div
+              key={index}
+              data-testid={`hue-ramp-${index}`}
+              style={{ backgroundColor: `oklch(${color.l} ${color.c} ${color.h})` }}
+            />
           ))}
         </div>
       );
     };
 
     render(() => <TestComponent />);
-    
+
     expect(screen.getByTestId("hue-ramp-0")).toBeInTheDocument();
     expect(screen.getByTestId("hue-ramp-1")).toBeInTheDocument();
     expect(screen.getByTestId("hue-ramp-2")).toBeInTheDocument();
@@ -193,23 +222,30 @@ describe("useColorAnimation", () => {
 
       return (
         <div>
-          <div data-testid="color" style={{ backgroundColor: `oklch(${currentColor().l} ${currentColor().c} ${currentColor().h})` }} />
+          <div
+            data-testid="color"
+            style={{ backgroundColor: `oklch(${currentColor().l} ${currentColor().c} ${currentColor().h})` }}
+          />
           <div data-testid="animating">{isAnimating().toString()}</div>
-          <button data-testid="animate" onClick={handleAnimate}>Animate</button>
-          <button data-testid="stop" onClick={handleStop}>Stop</button>
+          <button data-testid="animate" onClick={handleAnimate}>
+            Animate
+          </button>
+          <button data-testid="stop" onClick={handleStop}>
+            Stop
+          </button>
         </div>
       );
     };
 
     render(() => <TestComponent />);
-    
+
     const animateButton = screen.getByTestId("animate");
     const stopButton = screen.getByTestId("stop");
     const animatingElement = screen.getByTestId("animating");
-    
+
     fireEvent.click(animateButton);
     expect(animatingElement.textContent).toBe("true");
-    
+
     fireEvent.click(stopButton);
     expect(animatingElement.textContent).toBe("false");
   });
@@ -217,22 +253,27 @@ describe("useColorAnimation", () => {
   it("should reset to base color", () => {
     const TestComponent = () => {
       const { currentColor, resetToBase } = useColorAnimation({ baseColor: mockBaseColor });
-      
+
       return (
         <div>
-          <div data-testid="color" style={{ backgroundColor: `oklch(${currentColor().l} ${currentColor().c} ${currentColor().h})` }} />
-          <button data-testid="reset" onClick={resetToBase}>Reset</button>
+          <div
+            data-testid="color"
+            style={{ backgroundColor: `oklch(${currentColor().l} ${currentColor().c} ${currentColor().h})` }}
+          />
+          <button data-testid="reset" onClick={resetToBase}>
+            Reset
+          </button>
         </div>
       );
     };
 
     render(() => <TestComponent />);
-    
+
     const resetButton = screen.getByTestId("reset");
     const colorElement = screen.getByTestId("color");
-    
+
     fireEvent.click(resetButton);
-    
+
     expect(colorElement.style.backgroundColor).toBe("oklch(0.5 0.1 0)");
   });
 
@@ -253,31 +294,41 @@ describe("useColorAnimation", () => {
 
       return (
         <div>
-          <div data-testid="color" style={{ backgroundColor: `oklch(${currentColor().l} ${currentColor().c} ${currentColor().h})` }} />
+          <div
+            data-testid="color"
+            style={{ backgroundColor: `oklch(${currentColor().l} ${currentColor().c} ${currentColor().h})` }}
+          />
           <div data-testid="animating">{isAnimating().toString()}</div>
-          <button data-testid="animate1" onClick={handleAnimate1}>Animate 1</button>
-          <button data-testid="animate2" onClick={handleAnimate2}>Animate 2</button>
+          <button data-testid="animate1" onClick={handleAnimate1}>
+            Animate 1
+          </button>
+          <button data-testid="animate2" onClick={handleAnimate2}>
+            Animate 2
+          </button>
         </div>
       );
     };
 
     render(() => <TestComponent />);
-    
+
     const animate1Button = screen.getByTestId("animate1");
     const animate2Button = screen.getByTestId("animate2");
     const animatingElement = screen.getByTestId("animating");
-    
+
     // Start first animation
     fireEvent.click(animate1Button);
     expect(animatingElement.textContent).toBe("true");
-    
+
     // Start second animation (should ignore)
     fireEvent.click(animate2Button);
     expect(animatingElement.textContent).toBe("true");
-    
-    await waitFor(() => {
-      expect(animatingElement.textContent).toBe("false");
-    }, { timeout: 200 });
+
+    await waitFor(
+      () => {
+        expect(animatingElement.textContent).toBe("false");
+      },
+      { timeout: 200 }
+    );
   });
 });
 
@@ -294,17 +345,22 @@ describe("useHueShiftAnimation", () => {
 
       return (
         <div>
-          <div data-testid="color" style={{ backgroundColor: `oklch(${currentColor().l} ${currentColor().c} ${currentColor().h})` }} />
-          <button data-testid="shift" onClick={handleShift}>Shift Hue</button>
+          <div
+            data-testid="color"
+            style={{ backgroundColor: `oklch(${currentColor().l} ${currentColor().c} ${currentColor().h})` }}
+          />
+          <button data-testid="shift" onClick={handleShift}>
+            Shift Hue
+          </button>
         </div>
       );
     };
 
     render(() => <TestComponent />);
-    
+
     const shiftButton = screen.getByTestId("shift");
     fireEvent.click(shiftButton);
-    
+
     // Should trigger animation
     expect(mockRAF).toHaveBeenCalled();
   });
@@ -336,7 +392,7 @@ describe("Accessibility Integration", () => {
 
     render(() => <TestComponent />);
     expect(screen.getByTestId("disabled").textContent).toBe("true");
-    
+
     document.documentElement.classList.remove("performance-mode");
   });
 });
@@ -357,25 +413,28 @@ describe("Performance Optimizations", () => {
 
       return (
         <div>
-          <div data-testid="color" style={{ backgroundColor: `oklch(${currentColor().l} ${currentColor().c} ${currentColor().h})` }} />
+          <div
+            data-testid="color"
+            style={{ backgroundColor: `oklch(${currentColor().l} ${currentColor().c} ${currentColor().h})` }}
+          />
           <div data-testid="animating">{isAnimating().toString()}</div>
-          <button data-testid="animate" onClick={handleAnimate}>Animate</button>
+          <button data-testid="animate" onClick={handleAnimate}>
+            Animate
+          </button>
         </div>
       );
     };
 
     render(() => <TestComponent />);
-    
+
     const animateButton = screen.getByTestId("animate");
     const animatingElement = screen.getByTestId("animating");
-    
+
     fireEvent.click(animateButton);
-    
+
     // Should complete immediately
     expect(animatingElement.textContent).toBe("false");
-    
+
     document.documentElement.classList.remove("animations-disabled");
   });
 });
-
-

@@ -1,12 +1,12 @@
 /**
  * 🦊 Smart Import System
- * 
+ *
  * Provides intelligent import system for the Reynard animation package with:
  * - Dynamic import with fallbacks
  * - Package availability detection
  * - Graceful degradation
  * - Error handling for missing packages
- * 
+ *
  * @author Agile-Prime-90 (Reynard Lizard Specialist)
  * @since 1.0.0
  */
@@ -80,14 +80,12 @@ export class SmartImportSystem {
     }
 
     const startTime = performance.now();
-    
+
     try {
       // Try to dynamically import the package
       await Promise.race([
         import(packageName),
-        new Promise((_, reject) => 
-          setTimeout(() => reject(new Error("Import timeout")), this.config.importTimeout)
-        )
+        new Promise((_, reject) => setTimeout(() => reject(new Error("Import timeout")), this.config.importTimeout)),
       ]);
 
       const availability: PackageAvailability = {
@@ -98,9 +96,11 @@ export class SmartImportSystem {
       };
 
       this.packageAvailability.set(packageName, availability);
-      
+
       if (this.config.enableLogging) {
-        console.log(`🦊 SmartImport: Package ${packageName} is available (${(performance.now() - startTime).toFixed(2)}ms)`);
+        console.log(
+          `🦊 SmartImport: Package ${packageName} is available (${(performance.now() - startTime).toFixed(2)}ms)`
+        );
       }
 
       return availability;
@@ -159,9 +159,7 @@ export class SmartImportSystem {
       // Try to import the package
       const module = await Promise.race([
         import(packageName),
-        new Promise((_, reject) => 
-          setTimeout(() => reject(new Error("Import timeout")), timeout)
-        )
+        new Promise((_, reject) => setTimeout(() => reject(new Error("Import timeout")), timeout)),
       ]);
 
       const duration = performance.now() - startTime;

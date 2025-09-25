@@ -1,6 +1,6 @@
 /**
  * 🦊 Scroll Observer
- * 
+ *
  * Implements Intersection Observer for scroll triggers with scroll position tracking
  */
 
@@ -32,7 +32,7 @@ export class ScrollObserver {
 
   private setupScrollListener(): void {
     let ticking = false;
-    
+
     this.scrollListener = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
@@ -43,7 +43,7 @@ export class ScrollObserver {
       }
     };
 
-    window.addEventListener('scroll', this.scrollListener, { passive: true });
+    window.addEventListener("scroll", this.scrollListener, { passive: true });
   }
 
   private handleScroll(): void {
@@ -70,26 +70,26 @@ export class ScrollObserver {
     const rect = element.getBoundingClientRect();
     const windowHeight = window.innerHeight;
     const elementHeight = rect.height;
-    
+
     // Calculate how much of the element is visible
     const elementTop = rect.top;
     const elementBottom = rect.bottom;
-    
+
     // Element is completely above viewport
     if (elementBottom < 0) {
       return 0;
     }
-    
+
     // Element is completely below viewport
     if (elementTop > windowHeight) {
       return 0;
     }
-    
+
     // Element is partially or completely visible
     const visibleTop = Math.max(0, elementTop);
     const visibleBottom = Math.min(windowHeight, elementBottom);
     const visibleHeight = visibleBottom - visibleTop;
-    
+
     return Math.min(1, Math.max(0, visibleHeight / elementHeight));
   }
 
@@ -98,8 +98,8 @@ export class ScrollObserver {
 
     if (!this.intersectionObserver) {
       this.intersectionObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
+        entries => {
+          entries.forEach(entry => {
             const elementOptions = this.elements.get(entry.target);
             if (!elementOptions) return;
 
@@ -135,9 +135,9 @@ export class ScrollObserver {
     this.elements.clear();
     this.intersectionObserver?.disconnect();
     this.intersectionObserver = null;
-    
+
     if (this.scrollListener) {
-      window.removeEventListener('scroll', this.scrollListener);
+      window.removeEventListener("scroll", this.scrollListener);
       this.scrollListener = null;
     }
   }

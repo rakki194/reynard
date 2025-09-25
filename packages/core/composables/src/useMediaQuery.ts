@@ -1,6 +1,6 @@
 /**
  * 🦊 Media Query Hook
- * 
+ *
  * Provides reactive media query functionality for SolidJS.
  */
 
@@ -8,7 +8,7 @@ import { createSignal, createEffect, onCleanup } from "solid-js";
 
 /**
  * Hook for checking if user prefers reduced motion
- * 
+ *
  * @returns Signal indicating if user prefers reduced motion
  */
 export function usePrefersReducedMotion() {
@@ -20,7 +20,7 @@ export function usePrefersReducedMotion() {
     }
 
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    
+
     const updatePreference = () => {
       setPrefersReducedMotion(mediaQuery.matches);
     };
@@ -41,7 +41,7 @@ export function usePrefersReducedMotion() {
 
 /**
  * Hook for checking media query matches
- * 
+ *
  * @param query - Media query string
  * @returns Signal indicating if media query matches
  */
@@ -54,7 +54,7 @@ export function useMediaQuery(query: string) {
     }
 
     const mediaQuery = window.matchMedia(query);
-    
+
     const updateMatches = () => {
       setMatches(mediaQuery.matches);
     };

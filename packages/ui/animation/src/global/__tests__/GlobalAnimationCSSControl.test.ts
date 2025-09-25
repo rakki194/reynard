@@ -1,22 +1,22 @@
 /**
  * 🦊 Global Animation CSS Control Tests
- * 
+ *
  * Comprehensive test suite for the global animation CSS control system.
  * Tests CSS injection, disable utilities, and integration features.
  */
 
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
-import { 
+import {
   GlobalAnimationDisableUtils,
   getGlobalAnimationDisableUtils,
   resetGlobalAnimationDisableUtils,
   GlobalAnimationDisableFunctions,
-  AnimationDisableTesting
+  AnimationDisableTesting,
 } from "../GlobalAnimationDisableUtils.js";
-import { 
+import {
   GlobalAnimationIntegration,
   GlobalAnimationIntegrationUtils,
-  useGlobalAnimationIntegration
+  useGlobalAnimationIntegration,
 } from "../GlobalAnimationIntegration.js";
 import type { GlobalAnimationConfig, SystemPreferences } from "../GlobalAnimationTypes.js";
 
@@ -89,7 +89,7 @@ describe("Global Animation Disable Utils", () => {
   describe("Animation Control", () => {
     it("should disable all animations", () => {
       disableUtils.disableAllAnimations();
-      
+
       const state = disableUtils.getCurrentState();
       expect(state.isDisabled).toBe(true);
     });
@@ -97,21 +97,21 @@ describe("Global Animation Disable Utils", () => {
     it("should enable all animations", () => {
       disableUtils.disableAllAnimations();
       disableUtils.enableAllAnimations();
-      
+
       const state = disableUtils.getCurrentState();
       expect(state.isDisabled).toBe(false);
     });
 
     it("should toggle performance mode", () => {
       disableUtils.togglePerformanceMode(true);
-      
+
       const state = disableUtils.getCurrentState();
       expect(state.isPerformanceMode).toBe(true);
     });
 
     it("should toggle accessibility mode", () => {
       disableUtils.toggleAccessibilityMode(true);
-      
+
       const state = disableUtils.getCurrentState();
       expect(state.isAccessibilityMode).toBe(true);
     });
@@ -120,7 +120,7 @@ describe("Global Animation Disable Utils", () => {
   describe("CSS Injection", () => {
     it("should inject CSS for disabling animations", () => {
       disableUtils.disableAllAnimations({ useCSSInjection: true });
-      
+
       expect(mockDocument.createElement).toHaveBeenCalledWith("style");
       expect(mockDocument.head.appendChild).toHaveBeenCalled();
     });
@@ -128,7 +128,7 @@ describe("Global Animation Disable Utils", () => {
     it("should remove injected CSS", () => {
       disableUtils.disableAllAnimations({ useCSSInjection: true });
       disableUtils.enableAllAnimations({ useCSSInjection: true });
-      
+
       // Should have called removeChild
       expect(mockDocument.head.removeChild).toHaveBeenCalled();
     });
@@ -140,7 +140,7 @@ describe("Global Animation Disable Utils", () => {
         id: "test-css",
         useImportant: true,
       });
-      
+
       expect(mockDocument.createElement).toHaveBeenCalledWith("style");
       expect(mockDocument.head.appendChild).toHaveBeenCalled();
     });
@@ -150,9 +150,9 @@ describe("Global Animation Disable Utils", () => {
         css: "body { color: red; }",
         id: "test-css",
       });
-      
+
       disableUtils.removeInjectedCSS("test-css");
-      
+
       expect(mockDocument.head.removeChild).toHaveBeenCalled();
     });
   });
@@ -194,7 +194,7 @@ describe("Global Animation Disable Utils", () => {
       };
 
       disableUtils.applyConfiguration(config, preferences);
-      
+
       const state = disableUtils.getCurrentState();
       expect(state.isDisabled).toBe(true);
       expect(state.isPerformanceMode).toBe(true);
@@ -205,7 +205,7 @@ describe("Global Animation Disable Utils", () => {
   describe("State Management", () => {
     it("should get current state", () => {
       const state = disableUtils.getCurrentState();
-      
+
       expect(state).toHaveProperty("isDisabled");
       expect(state).toHaveProperty("isPerformanceMode");
       expect(state).toHaveProperty("isAccessibilityMode");
@@ -216,9 +216,9 @@ describe("Global Animation Disable Utils", () => {
       disableUtils.disableAllAnimations();
       disableUtils.togglePerformanceMode(true);
       disableUtils.toggleAccessibilityMode(true);
-      
+
       disableUtils.reset();
-      
+
       const state = disableUtils.getCurrentState();
       expect(state.isDisabled).toBe(false);
       expect(state.isPerformanceMode).toBe(false);
@@ -238,7 +238,7 @@ describe("Global Animation Disable Functions", () => {
 
   it("should provide global disable functions", () => {
     GlobalAnimationDisableFunctions.disableAllAnimations();
-    
+
     const state = GlobalAnimationDisableFunctions.getCurrentState();
     expect(state.isDisabled).toBe(true);
   });
@@ -246,21 +246,21 @@ describe("Global Animation Disable Functions", () => {
   it("should provide global enable functions", () => {
     GlobalAnimationDisableFunctions.disableAllAnimations();
     GlobalAnimationDisableFunctions.enableAllAnimations();
-    
+
     const state = GlobalAnimationDisableFunctions.getCurrentState();
     expect(state.isDisabled).toBe(false);
   });
 
   it("should provide performance mode toggle", () => {
     GlobalAnimationDisableFunctions.togglePerformanceMode(true);
-    
+
     const state = GlobalAnimationDisableFunctions.getCurrentState();
     expect(state.isPerformanceMode).toBe(true);
   });
 
   it("should provide accessibility mode toggle", () => {
     GlobalAnimationDisableFunctions.toggleAccessibilityMode(true);
-    
+
     const state = GlobalAnimationDisableFunctions.getCurrentState();
     expect(state.isAccessibilityMode).toBe(true);
   });
@@ -289,7 +289,7 @@ describe("Global Animation Integration", () => {
 
     it("should get performance metrics", () => {
       const metrics = integration.getPerformanceMetrics();
-      
+
       expect(metrics).toHaveProperty("activeAnimations");
       expect(metrics).toHaveProperty("averageDuration");
       expect(metrics).toHaveProperty("totalAnimationTime");
@@ -299,7 +299,7 @@ describe("Global Animation Integration", () => {
 
     it("should get accessibility metrics", () => {
       const metrics = integration.getAccessibilityMetrics();
-      
+
       expect(metrics).toHaveProperty("reducedMotion");
       expect(metrics).toHaveProperty("highContrast");
       expect(metrics).toHaveProperty("forcedColors");
@@ -311,10 +311,10 @@ describe("Global Animation Integration", () => {
   describe("Observer System", () => {
     it("should add and remove observers", () => {
       const observer = vi.fn();
-      
+
       integration.addObserver(observer);
       expect(integration.getIntegrationState().isActive).toBe(true);
-      
+
       integration.removeObserver(observer);
       expect(integration.getIntegrationState().isActive).toBe(false);
     });
@@ -322,10 +322,10 @@ describe("Global Animation Integration", () => {
     it("should notify observers", () => {
       const observer = vi.fn();
       integration.addObserver(observer);
-      
+
       // Trigger a notification
       integration.updateOptions({ enablePerformanceMonitoring: true });
-      
+
       // Observer should have been called
       expect(observer).toHaveBeenCalled();
     });
@@ -337,9 +337,9 @@ describe("Global Animation Integration", () => {
         enablePerformanceMonitoring: true,
         enableAccessibilityMonitoring: true,
       };
-      
+
       integration.updateOptions(newOptions);
-      
+
       const state = integration.getIntegrationState();
       expect(state.options.enablePerformanceMonitoring).toBe(true);
       expect(state.options.enableAccessibilityMonitoring).toBe(true);
@@ -371,7 +371,7 @@ describe("Global Animation Integration Utils", () => {
 
   it("should get browser capabilities", () => {
     const capabilities = GlobalAnimationIntegrationUtils.getBrowserCapabilities();
-    
+
     expect(capabilities).toHaveProperty("performanceObserver");
     expect(capabilities).toHaveProperty("matchMedia");
     expect(capabilities).toHaveProperty("cssCustomProperties");
@@ -383,9 +383,9 @@ describe("Animation Disable Testing", () => {
     const restore = AnimationDisableTesting.mockDocument({
       head: { appendChild: vi.fn() },
     });
-    
+
     expect(global.document.head.appendChild).toBeDefined();
-    
+
     restore();
   });
 
@@ -393,15 +393,15 @@ describe("Animation Disable Testing", () => {
     const restore = AnimationDisableTesting.mockWindow({
       matchMedia: vi.fn(),
     });
-    
+
     expect(global.window.matchMedia).toBeDefined();
-    
+
     restore();
   });
 
   it("should create test configuration", () => {
     const config = AnimationDisableTesting.createTestConfig();
-    
+
     expect(config).toHaveProperty("enabled");
     expect(config).toHaveProperty("performance");
     expect(config).toHaveProperty("accessibility");
@@ -411,7 +411,7 @@ describe("Animation Disable Testing", () => {
 
   it("should create test preferences", () => {
     const preferences = AnimationDisableTesting.createTestPreferences();
-    
+
     expect(preferences).toHaveProperty("prefersReducedMotion");
     expect(preferences).toHaveProperty("prefersHighContrast");
     expect(preferences).toHaveProperty("prefersColorScheme");
@@ -436,7 +436,7 @@ describe("CSS Generation", () => {
       useCSSInjection: true,
       customSelector: ".test-selector",
     });
-    
+
     expect(mockDocument.createElement).toHaveBeenCalledWith("style");
   });
 
@@ -445,7 +445,7 @@ describe("CSS Generation", () => {
       useCSSInjection: true,
       immediateCompletion: true,
     });
-    
+
     expect(mockDocument.createElement).toHaveBeenCalledWith("style");
   });
 
@@ -454,7 +454,7 @@ describe("CSS Generation", () => {
       useCSSInjection: true,
       includePrintStyles: true,
     });
-    
+
     expect(mockDocument.createElement).toHaveBeenCalledWith("style");
   });
 });
@@ -464,15 +464,15 @@ describe("Error Handling", () => {
     const originalDocument = global.document;
     // @ts-ignore
     delete global.document;
-    
+
     const disableUtils = new GlobalAnimationDisableUtils();
     disableUtils.disableAllAnimations();
-    
+
     // Should not throw
     expect(() => disableUtils.getCurrentState()).not.toThrow();
-    
+
     disableUtils.destroy();
-    
+
     // Restore document
     global.document = originalDocument;
   });
@@ -481,19 +481,18 @@ describe("Error Handling", () => {
     const originalWindow = global.window;
     // @ts-ignore
     delete global.window;
-    
+
     const integration = new GlobalAnimationIntegration({
       enablePerformanceMonitoring: false,
       enableAccessibilityMonitoring: false,
     });
-    
+
     // Should not throw
     expect(() => integration.getIntegrationState()).not.toThrow();
-    
+
     integration.destroy();
-    
+
     // Restore window
     global.window = originalWindow;
   });
 });
-

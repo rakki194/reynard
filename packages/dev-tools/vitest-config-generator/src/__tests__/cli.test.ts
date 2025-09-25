@@ -85,13 +85,10 @@ describe("CLI Interface", () => {
 
     it("should run with include/exclude options", () => {
       expect(() => {
-        execSync(
-          `node ${cliPath} generate --include-scripts --output /tmp/test-config-filter.ts`,
-          {
-            encoding: "utf8",
-            cwd: process.cwd(),
-          }
-        );
+        execSync(`node ${cliPath} generate --include-scripts --output /tmp/test-config-filter.ts`, {
+          encoding: "utf8",
+          cwd: process.cwd(),
+        });
       }).not.toThrow();
     });
   });

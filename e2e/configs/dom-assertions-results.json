@@ -45,11 +45,7 @@
         "name": "chromium",
         "testDir": "/home/kade/runeset/reynard/e2e/suites",
         "testIgnore": [],
-        "testMatch": [
-          "dom/*.spec.ts",
-          "auth/*.spec.ts",
-          "tracing/*.spec.ts"
-        ],
+        "testMatch": ["dom/*.spec.ts", "auth/*.spec.ts", "tracing/*.spec.ts"],
         "timeout": 30000
       }
     ],

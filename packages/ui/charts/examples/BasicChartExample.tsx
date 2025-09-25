@@ -29,7 +29,7 @@ export function BasicChartExample() {
   return (
     <div style={{ padding: "20px", background: "#1a1a1a", color: "white" }}>
       <h2>🦊 Reynard Charts - Basic Example</h2>
-      
+
       <div style={{ margin: "20px 0" }}>
         <h3>Line Chart with OKLCH Colors</h3>
         <Chart

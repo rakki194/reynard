@@ -41,23 +41,23 @@ export function useECS(client: ReynardApiClient) {
   const namingSystem = useNamingSystem(client);
 
   // Combine loading states
-  const combinedLoading = () => 
-    _loading() || 
-    worldManagement.loading() || 
-    agentManagement.loading() || 
-    agentMovement.loading() || 
-    agentProximity.loading() || 
-    agentInteractions.loading() || 
+  const combinedLoading = () =>
+    _loading() ||
+    worldManagement.loading() ||
+    agentManagement.loading() ||
+    agentMovement.loading() ||
+    agentProximity.loading() ||
+    agentInteractions.loading() ||
     namingSystem.loading();
 
   // Combine error states
-  const combinedError = () => 
-    _error() || 
-    worldManagement.error() || 
-    agentManagement.error() || 
-    agentMovement.error() || 
-    agentProximity.error() || 
-    agentInteractions.error() || 
+  const combinedError = () =>
+    _error() ||
+    worldManagement.error() ||
+    agentManagement.error() ||
+    agentMovement.error() ||
+    agentProximity.error() ||
+    agentInteractions.error() ||
     namingSystem.error();
 
   return {

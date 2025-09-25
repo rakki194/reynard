@@ -38,7 +38,7 @@ describe("ProcessManager", () => {
           removeListener: vi.fn(),
           removeAllListeners: vi.fn(),
           addListener: vi.fn(),
-          stdout: { 
+          stdout: {
             on: vi.fn(),
             pipe: vi.fn(),
             unpipe: vi.fn(),
@@ -72,7 +72,7 @@ describe("ProcessManager", () => {
             prependListener: vi.fn(),
             prependOnceListener: vi.fn(),
           },
-          stderr: { 
+          stderr: {
             on: vi.fn(),
             pipe: vi.fn(),
             unpipe: vi.fn(),
@@ -118,39 +118,39 @@ describe("ProcessManager", () => {
 
         // Set up method implementations
         mockProcess.on.mockImplementation((event, callback) => {
-          if (event === 'spawn') {
+          if (event === "spawn") {
             mockProcess._spawnCallback = callback;
-          } else if (event === 'exit') {
+          } else if (event === "exit") {
             mockProcess._exitCallback = callback;
-          } else if (event === 'error') {
+          } else if (event === "error") {
             mockProcess._errorCallback = callback;
           }
           return mockProcess;
         });
 
         mockProcess.once.mockImplementation((event, callback) => {
-          if (event === 'spawn') {
+          if (event === "spawn") {
             mockProcess._spawnCallback = callback;
-          } else if (event === 'exit') {
+          } else if (event === "exit") {
             mockProcess._exitCallback = callback;
-          } else if (event === 'error') {
+          } else if (event === "error") {
             mockProcess._errorCallback = callback;
           }
           return mockProcess;
         });
 
         mockProcess.addListener.mockImplementation((event, callback) => {
-          if (event === 'spawn') {
+          if (event === "spawn") {
             mockProcess._spawnCallback = callback;
-          } else if (event === 'exit') {
+          } else if (event === "exit") {
             mockProcess._exitCallback = callback;
-          } else if (event === 'error') {
+          } else if (event === "error") {
             mockProcess._errorCallback = callback;
           }
           return mockProcess;
         });
 
-        mockProcess.kill.mockImplementation((signal) => {
+        mockProcess.kill.mockImplementation(signal => {
           if (mockProcess._exitCallback) {
             mockProcess._exitCallback(0, signal);
           }

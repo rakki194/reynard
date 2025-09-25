@@ -10,26 +10,26 @@ graph TB
         A[Animation Core] --> B[Smart Import System]
         A --> C[Global Animation Control]
         A --> D[State Management]
-        
+
         B --> E[Full Engine]
         B --> F[Fallback Engine]
         B --> G[No-Op Engine]
-        
+
         C --> H[Performance Mode]
         C --> I[Accessibility Mode]
         C --> J[Package Availability]
-        
+
         D --> K[Animation State Manager]
         D --> L[Accessibility Monitor]
         D --> M[Performance Monitor]
-        
+
         E --> N[3D Animations]
         E --> O[Color Animations]
         E --> P[Staggered Animations]
-        
+
         F --> Q[CSS Fallbacks]
         F --> R[Immediate Completion]
-        
+
         G --> S[No-Op Completion]
     end
 ```
@@ -43,22 +43,22 @@ graph LR
         B --> C[Full Engine]
         B --> D[Fallback Engine]
         B --> E[No-Op Engine]
-        
+
         C --> F[AnimationCore]
         C --> G[AdaptiveAnimation]
         C --> H[ThrottledAnimation]
         C --> I[StroboscopicEngine]
-        
+
         F --> J[High-Performance Loop]
         F --> K[FPS Limiting]
         F --> L[Safety Checks]
-        
+
         G --> M[Quality Scaling]
         G --> N[Performance Adaptation]
-        
+
         H --> O[Throttled Updates]
         H --> P[Performance Optimization]
-        
+
         I --> Q[Stroboscopic Effects]
         I --> R[Phyllotactic Spirals]
     end
@@ -84,32 +84,32 @@ graph TD
         A --> D[Cubic]
         A --> E[Elastic]
         A --> F[Bounce]
-        
+
         B --> B1[linear]
-        
+
         C --> C1[easeInQuad]
         C --> C2[easeOutQuad]
         C --> C3[easeInOutQuad]
-        
+
         D --> D1[easeInCubic]
         D --> D2[easeOutCubic]
         D --> D3[easeInOutCubic]
-        
+
         E --> E1[easeInElastic]
         E --> E2[easeOutElastic]
         E --> E3[easeInOutElastic]
-        
+
         F --> F1[easeInBounce]
         F --> F2[easeOutBounce]
         F --> F3[easeInOutBounce]
     end
-    
+
     subgraph "Interpolation Functions"
         G[Interpolation] --> H[Number Interpolation]
         G --> I[Vector2 Interpolation]
         G --> J[Vector3 Interpolation]
         G --> K[Color Interpolation]
-        
+
         H --> H1[interpolate]
         I --> I1[interpolateVector2]
         J --> J1[interpolateVector3]
@@ -134,29 +134,29 @@ graph TB
         A[useAnimationState] --> B[State Management]
         A --> C[Performance Optimization]
         A --> D[Accessibility Compliance]
-        
+
         E[useStaggeredAnimation] --> F[Sequential Animation]
         E --> G[Direction Control]
         E --> H[Timing Management]
-        
+
         I[useSmartAnimation] --> J[Engine Selection]
         I --> K[Fallback Handling]
         I --> L[Global Control Integration]
-        
+
         M[useThreeDAnimation] --> N[3D Transformations]
         M --> O[Camera Controls]
         M --> P[Particle Systems]
-        
+
         Q[useColorAnimation] --> R[Color Transitions]
         Q --> S[Hue Shifting]
         Q --> T[Color Ramps]
     end
-    
+
     subgraph "Reactive Features"
         U[Reactive State] --> V[Automatic Updates]
         U --> W[Performance Monitoring]
         U --> X[Accessibility Compliance]
-        
+
         Y[Automatic Cleanup] --> Z[Memory Management]
         Y --> AA[Resource Cleanup]
         Y --> BB[Event Listener Cleanup]
@@ -182,30 +182,30 @@ graph LR
         A[PerformanceMonitor] --> B[Metrics Collection]
         A --> C[Analysis Engine]
         A --> D[Optimization Recommendations]
-        
+
         B --> E[FPS Tracking]
         B --> F[Frame Time Analysis]
         B --> G[Memory Usage]
         B --> H[Render Time]
-        
+
         C --> I[Stability Calculations]
         C --> J[Trend Analysis]
         C --> K[Quality Assessment]
-        
+
         D --> L[Quality Scaling]
         D --> M[Performance Alerts]
         D --> N[Optimization Tips]
     end
-    
+
     subgraph "Adaptive Quality System"
         O[Quality Manager] --> P[Performance Thresholds]
         O --> Q[Quality Levels]
         O --> R[Adaptation Logic]
-        
+
         P --> S[Min FPS: 30]
         P --> T[Max Frame Time: 33.33ms]
         P --> U[Memory Limit: 100MB]
-        
+
         Q --> V[Level 1: 100%]
         Q --> W[Level 2: 75%]
         Q --> X[Level 3: 50%]
@@ -233,29 +233,29 @@ graph TD
         A --> C[Repeating Loop]
         A --> D[Ping-Pong Loop]
         A --> E[Cluster Loop]
-        
+
         B --> B1[Single Execution]
         B --> B2[Progress Tracking]
-        
+
         C --> C1[Multiple Cycles]
         C --> C2[Cycle Completion]
-        
+
         D --> D1[Forward Motion]
         D --> D2[Reverse Motion]
-        
+
         E --> E1[Multiple Points]
         E --> E2[Coordinated Movement]
     end
-    
+
     subgraph "Utility Functions"
         F[Frame Timing] --> G[RequestAnimationFrame]
         F --> H[Performance.now]
         F --> I[Delta Time Calculation]
-        
+
         J[Interpolation Helpers] --> K[Linear Interpolation]
         J --> L[Eased Interpolation]
         J --> M[Vector Interpolation]
-        
+
         N[Safety Features] --> O[Timeout Protection]
         N --> P[Frame Count Limits]
         N --> Q[Error Boundaries]
@@ -280,23 +280,23 @@ graph TB
         B --> C{Cache Hit?}
         C -->|Yes| D[Return Cached]
         C -->|No| E[Import Package]
-        
+
         E --> F{Import Success?}
         F -->|Yes| G[Cache Result]
         F -->|No| H[Use Fallback]
-        
+
         G --> I[Update Availability]
         H --> J[Log Warning]
-        
+
         I --> K[Return Module]
         J --> L[Return Fallback]
     end
-    
+
     subgraph "Package Availability"
         M[Package Check] --> N[Network Test]
         M --> O[Module Resolution]
         M --> P[Error Handling]
-        
+
         N --> Q[Available: Full Engine]
         O --> R[Unavailable: Fallback]
         P --> S[Error: No-Op Engine]
@@ -320,26 +320,26 @@ graph LR
         A[GlobalAnimationControlSystem] --> B[Configuration Management]
         A --> C[State Persistence]
         A --> D[CSS Integration]
-        
+
         B --> E[Performance Settings]
         B --> F[Accessibility Settings]
         B --> G[Fallback Settings]
-        
+
         C --> H[LocalStorage]
         C --> I[SessionStorage]
         C --> J[Memory State]
-        
+
         D --> K[CSS Classes]
         D --> L[Custom Properties]
         D --> M[Media Queries]
     end
-    
+
     subgraph "Control Modes"
         N[Animation Modes] --> O[Enabled]
         N --> P[Performance Mode]
         N --> Q[Accessibility Mode]
         N --> R[Disabled]
-        
+
         O --> S[Full Animations]
         P --> T[Reduced Quality]
         Q --> U[Respect Preferences]
@@ -364,34 +364,34 @@ graph TB
         A[3D Animation System] --> B[Three.js Integration]
         A --> C[Fallback System]
         A --> D[Smart Imports]
-        
+
         B --> E[WebGL Rendering]
         B --> F[Camera Controls]
         B --> G[Particle Systems]
         B --> H[Transform Animations]
-        
+
         C --> I[CSS 3D Transforms]
         C --> J[Canvas Fallbacks]
         C --> K[Immediate Completion]
-        
+
         D --> L[Package Detection]
         D --> M[Engine Selection]
         D --> N[Graceful Degradation]
     end
-    
+
     subgraph "3D Animation Types"
         O[Animation Types] --> P[Point Animations]
         O --> Q[Cluster Animations]
         O --> R[Camera Animations]
-        
+
         P --> P1[Position Transitions]
         P --> P2[Scale Changes]
         P --> P3[Color Transitions]
-        
+
         Q --> Q1[Group Movement]
         Q --> Q2[Expansion Effects]
         Q --> Q3[Coordinated Motion]
-        
+
         R --> R1[Position Changes]
         R --> R2[Target Updates]
         R --> R3[Zoom Effects]
@@ -417,42 +417,42 @@ graph LR
         A --> C[Hue Shifting]
         A --> D[Color Ramps]
         A --> E[Fallback System]
-        
+
         B --> F[Perceptual Uniformity]
         B --> G[Wide Gamut Support]
         B --> H[Accessibility Compliance]
-        
+
         C --> I[Eased Hue Transitions]
         C --> J[Batch Hue Shifting]
         C --> K[Pure Hue Shifts]
-        
+
         D --> L[Gradient Generation]
         D --> M[Eased Color Ramps]
         D --> N[Custom Stops]
-        
+
         E --> O[CSS Color Transitions]
         E --> P[Immediate Completion]
         E --> Q[Reduced Motion Support]
     end
-    
+
     subgraph "Color Animation Types"
         R[Animation Types] --> S[Color Transitions]
         R --> T[Hue Shifts]
         R --> U[Color Ramps]
         R --> V[Staggered Colors]
-        
+
         S --> S1[Start to End]
         S --> S2[Eased Interpolation]
         S --> S3[Progress Tracking]
-        
+
         T --> T1[Delta Hue Shifts]
         T --> T2[Batch Processing]
         T --> T3[Eased Transitions]
-        
+
         U --> U1[Gradient Generation]
         U --> U2[Custom Easing]
         U --> U3[Multiple Stops]
-        
+
         V --> V1[Sequential Animation]
         V --> V2[Direction Control]
         V --> V3[Timing Management]
@@ -494,13 +494,17 @@ const smartAnimation = useSmartAnimation({
 });
 
 // Animate element with automatic engine selection
-await smartAnimation.animate(element, {
-  transform: "scale(1.2)",
-  opacity: "0.8"
-}, {
-  duration: 500,
-  easing: "easeOutCubic"
-});
+await smartAnimation.animate(
+  element,
+  {
+    transform: "scale(1.2)",
+    opacity: "0.8",
+  },
+  {
+    duration: 500,
+    easing: "easeOutCubic",
+  }
+);
 ```
 
 ### Advanced Staggered Animation
@@ -516,8 +520,8 @@ const staggeredAnimation = useStaggeredAnimation({
   direction: "center", // forward, reverse, center, random
   onStart: () => console.log("Animation started"),
   onComplete: () => console.log("Animation completed"),
-  onItemStart: (index) => console.log(`Item ${index} started`),
-  onItemComplete: (index) => console.log(`Item ${index} completed`),
+  onItemStart: index => console.log(`Item ${index} started`),
+  onItemComplete: index => console.log(`Item ${index} completed`),
 });
 
 // Start animation for 5 items
@@ -695,29 +699,29 @@ graph TB
         A --> D[Composables]
         A --> E[Specialized Systems]
         A --> F[Utilities]
-        
+
         B --> B1[AnimationCore.ts]
         B --> B2[PerformanceMonitor.ts]
         B --> B3[SmartImportSystem.ts]
         B --> B4[GlobalAnimationControl.ts]
-        
+
         C --> C1[SmartAnimationCore.ts]
         C --> C2[AdaptiveAnimation.ts]
         C --> C3[ThrottledAnimation.ts]
         C --> C4[StroboscopicEngine.ts]
         C --> C5[NoOpAnimationEngine.ts]
-        
+
         D --> D1[useAnimationState.ts]
         D --> D2[useStaggeredAnimation.ts]
         D --> D3[useSmartAnimation.ts]
         D --> D4[useThreeDAnimation.ts]
         D --> D5[useColorAnimation.ts]
-        
+
         E --> E1[3D Animation System]
         E --> E2[Color Animation System]
         E --> E3[Global Animation System]
         E --> E4[State Management]
-        
+
         F --> F1[AnimationLoop.ts]
         F --> F2[Easing Functions]
         F --> F3[Type Definitions]
@@ -977,10 +981,18 @@ const colorAnimation = useColorAnimation({
 ```typescript
 type EasingType =
   | "linear"
-  | "easeInQuad" | "easeOutQuad" | "easeInOutQuad"
-  | "easeInCubic" | "easeOutCubic" | "easeInOutCubic"
-  | "easeInElastic" | "easeOutElastic" | "easeInOutElastic"
-  | "easeInBounce" | "easeOutBounce" | "easeInOutBounce";
+  | "easeInQuad"
+  | "easeOutQuad"
+  | "easeInOutQuad"
+  | "easeInCubic"
+  | "easeOutCubic"
+  | "easeInOutCubic"
+  | "easeInElastic"
+  | "easeOutElastic"
+  | "easeInOutElastic"
+  | "easeInBounce"
+  | "easeOutBounce"
+  | "easeInOutBounce";
 ```
 
 #### Interpolation Functions
@@ -1115,7 +1127,7 @@ The adaptive engine automatically reduces quality when performance drops:
    ```typescript
    // Old
    const engine = createAnimationCore(config);
-   
+
    // New
    const smartAnimation = useSmartAnimation({ config });
    ```
@@ -1125,10 +1137,10 @@ The adaptive engine automatically reduces quality when performance drops:
    ```typescript
    // Old
    const animation = useAnimationState();
-   
+
    // New
    const animation = useAnimationState({
-     config: { integrateGlobalControl: true }
+     config: { integrateGlobalControl: true },
    });
    ```
 
@@ -1137,7 +1149,7 @@ The adaptive engine automatically reduces quality when performance drops:
    ```typescript
    // Old
    import { createAnimationCore } from "reynard-animation";
-   
+
    // New
    import { useSmartAnimation } from "reynard-animation";
    ```

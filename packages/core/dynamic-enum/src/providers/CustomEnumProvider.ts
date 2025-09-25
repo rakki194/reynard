@@ -2,16 +2,16 @@
  * Provider for custom/user-defined enums
  */
 
-import { BaseEnumProvider } from '../core/EnumProvider';
-import type { EnumProviderConfig, EnumData, EnumValue } from '../types';
-import type { EnumDataProvider } from '../types/DataProvider';
+import { BaseEnumProvider } from "../core/EnumProvider";
+import type { EnumProviderConfig, EnumData, EnumValue } from "../types";
+import type { EnumDataProvider } from "../types/DataProvider";
 
 /**
  * Provider for custom/user-defined enums
  */
 export class CustomEnumProvider extends BaseEnumProvider {
   private customData?: EnumData;
-  private dataSource?: 'provider' | 'custom' | 'fallback';
+  private dataSource?: "provider" | "custom" | "fallback";
 
   constructor(config: EnumProviderConfig, dataProvider?: EnumDataProvider) {
     super(config, dataProvider);
@@ -22,14 +22,14 @@ export class CustomEnumProvider extends BaseEnumProvider {
    */
   setCustomData(data: EnumData): void {
     this.customData = data;
-    this.dataSource = 'custom';
+    this.dataSource = "custom";
   }
 
   /**
    * Get current data source
    */
-  getDataSource(): 'provider' | 'custom' | 'fallback' {
-    return this.dataSource || 'fallback';
+  getDataSource(): "provider" | "custom" | "fallback" {
+    return this.dataSource || "fallback";
   }
 
   /**
@@ -38,7 +38,7 @@ export class CustomEnumProvider extends BaseEnumProvider {
   protected async fetchEnumData(): Promise<EnumData> {
     // If custom data is set, use it
     if (this.customData) {
-      this.dataSource = 'custom';
+      this.dataSource = "custom";
       return this.customData;
     }
 
@@ -46,7 +46,7 @@ export class CustomEnumProvider extends BaseEnumProvider {
     if (this.dataProvider) {
       try {
         const data = await this.dataProvider.fetchEnumData(this.enumType);
-        this.dataSource = 'provider';
+        this.dataSource = "provider";
         return data;
       } catch (error) {
         console.warn(`Failed to fetch custom enum data from provider: ${error}`);
@@ -54,7 +54,7 @@ export class CustomEnumProvider extends BaseEnumProvider {
     }
 
     // Fall back to fallback data
-    this.dataSource = 'fallback';
+    this.dataSource = "fallback";
     return this.fallbackData;
   }
 
@@ -65,9 +65,9 @@ export class CustomEnumProvider extends BaseEnumProvider {
     if (!this.customData) {
       this.customData = {};
     }
-    
+
     this.customData[key] = value;
-    this.dataSource = 'custom';
+    this.dataSource = "custom";
   }
 
   /**
@@ -81,7 +81,7 @@ export class CustomEnumProvider extends BaseEnumProvider {
     const removed = delete this.customData[key];
     if (removed && Object.keys(this.customData).length === 0) {
       this.customData = undefined;
-      this.dataSource = 'fallback';
+      this.dataSource = "fallback";
     }
 
     return removed;
@@ -104,7 +104,7 @@ export class CustomEnumProvider extends BaseEnumProvider {
    */
   clearCustomData(): void {
     this.customData = undefined;
-    this.dataSource = 'fallback';
+    this.dataSource = "fallback";
   }
 
   /**
@@ -140,15 +140,15 @@ export class CustomEnumProvider extends BaseEnumProvider {
   } {
     const total = this.getCount();
     const custom = this.customData ? Object.keys(this.customData).length : 0;
-    const provider = this.dataSource === 'provider' ? total - custom : 0;
-    const fallback = this.dataSource === 'fallback' ? total : 0;
+    const provider = this.dataSource === "provider" ? total - custom : 0;
+    const fallback = this.dataSource === "fallback" ? total : 0;
 
     return {
       total,
       custom,
       provider,
       fallback,
-      dataSource: this.dataSource || 'fallback'
+      dataSource: this.dataSource || "fallback",
     };
   }
 
@@ -165,24 +165,24 @@ export class CustomEnumProvider extends BaseEnumProvider {
   importCustomData(jsonData: string): boolean {
     try {
       const data = JSON.parse(jsonData);
-      
+
       // Validate the data structure
-      if (typeof data !== 'object' || data === null) {
-        throw new Error('Invalid data format');
+      if (typeof data !== "object" || data === null) {
+        throw new Error("Invalid data format");
       }
 
       // Validate each enum value
       for (const [key, value] of Object.entries(data)) {
-        if (typeof value !== 'object' || value === null || !('value' in value)) {
+        if (typeof value !== "object" || value === null || !("value" in value)) {
           throw new Error(`Invalid enum value for key '${key}'`);
         }
       }
 
       this.customData = data as EnumData;
-      this.dataSource = 'custom';
+      this.dataSource = "custom";
       return true;
     } catch (error) {
-      console.error('Failed to import custom data:', error);
+      console.error("Failed to import custom data:", error);
       return false;
     }
   }
@@ -193,7 +193,7 @@ export class CustomEnumProvider extends BaseEnumProvider {
   async mergeWithProviderData(): Promise<EnumData> {
     const providerData = await this.fetchEnumData();
     const customData = this.customData || {};
-    
+
     // Merge custom data with provider data (custom takes precedence)
     return { ...providerData, ...customData };
   }
@@ -208,10 +208,10 @@ export class CustomEnumProvider extends BaseEnumProvider {
     hasFallback: boolean;
   } {
     return {
-      source: this.dataSource || 'fallback',
+      source: this.dataSource || "fallback",
       hasCustom: this.customData !== undefined,
       hasProvider: this.dataProvider !== undefined,
-      hasFallback: Object.keys(this.fallbackData).length > 0
+      hasFallback: Object.keys(this.fallbackData).length > 0,
     };
   }
 }

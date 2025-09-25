@@ -22,7 +22,7 @@ export function createMockCanvasContext() {
   return {
     // Canvas properties
     canvas: {} as HTMLCanvasElement,
-    
+
     // Combine all method groups
     ...createDrawingMethods(),
     ...createPathMethods(),

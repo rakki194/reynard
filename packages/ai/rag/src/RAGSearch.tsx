@@ -14,7 +14,15 @@ import { RAG3DVisualizationModal } from "./components/RAG3DVisualizationModal";
 import { RAGFileModal } from "./components/RAGFileModal";
 import { RAGImageModal } from "./components/RAGImageModal";
 import { RAGSearchHistory } from "./components/RAGSearchHistory";
-import type { RAGSearchProps, RAGModality, FileModalState, ImageModalState, ThreeDModalState, SearchHistoryItem, RAGQueryHit } from "./types";
+import type {
+  RAGSearchProps,
+  RAGModality,
+  FileModalState,
+  ImageModalState,
+  ThreeDModalState,
+  SearchHistoryItem,
+  RAGQueryHit,
+} from "./types";
 import "./styles.css";
 export function RAGSearch(props: any) {
   // Use component composable for initialization and state management

@@ -24,15 +24,8 @@ export const TESTING_DIRECTORIES: DirectoryDefinition[] = [
     ["typescript", "javascript", "json", "markdown"],
     "End-to-end tests and test configurations (1 package): Comprehensive E2E testing suite",
     {
-      relationships: buildRelationships(
-        COMMON_RELATIONSHIPS.PACKAGES_TESTS,
-        COMMON_RELATIONSHIPS.EXAMPLES_TESTS
-      ),
-      excludePatterns: [
-        ...PACKAGE_EXCLUDE_PATTERNS,
-        "**/test-results/**",
-        "**/playwright-report/**",
-      ],
+      relationships: buildRelationships(COMMON_RELATIONSHIPS.PACKAGES_TESTS, COMMON_RELATIONSHIPS.EXAMPLES_TESTS),
+      excludePatterns: [...PACKAGE_EXCLUDE_PATTERNS, "**/test-results/**", "**/playwright-report/**"],
       includePatterns: ["**/*.ts", "**/*.js", "**/*.json", "**/*.md"],
       metadata: TESTING_METADATA,
     }

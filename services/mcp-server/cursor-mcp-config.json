@@ -7,7 +7,8 @@
         "source ~/venv/bin/activate && cd /home/kade/runeset/reynard/services/mcp-server && python3 main.py"
       ],
       "env": {
-        "PYTHONPATH": "/home/kade/runeset/reynard/services/mcp-server"
+        "PYTHONPATH": "/home/kade/runeset/reynard/services/mcp-server",
+        "BACKEND_ENV_PATH": "/home/kade/runeset/reynard/backend/.env"
       }
     }
   }

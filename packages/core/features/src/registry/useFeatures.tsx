@@ -28,7 +28,7 @@ const FeatureContextProvider = createContext<FeatureContext>();
 /**
  * Feature provider component
  */
-export const FeatureProvider: ParentComponent<FeatureProviderProps> = (props) => {
+export const FeatureProvider: ParentComponent<FeatureProviderProps> = props => {
   // eslint-disable-next-line solid/reactivity
   const context = createFeatureContext(props.config);
   return <FeatureContextProvider.Provider value={context}>{props.children}</FeatureContextProvider.Provider>;

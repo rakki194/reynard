@@ -52,7 +52,7 @@ export class CSSVariableValidator {
       ...config,
     };
 
-        this.logger = new ReynardLogger({ verbose: this.config.verbose || false });
+    this.logger = new ReynardLogger({ verbose: this.config.verbose || false });
     this.fileManager = new CSSFileManager(this.config, this.logger);
     this.extractor = new VariableExtractor(this.fileManager, this.logger);
     this.validator = new VariableValidator(this.config, this.logger, this.extractor);
@@ -240,7 +240,7 @@ export class CSSVariableValidator {
    */
   updateConfig(newConfig: Partial<ValidatorConfig>): void {
     this.config = { ...this.config, ...newConfig };
-        this.logger = new ReynardLogger({ verbose: this.config.verbose || false });
+    this.logger = new ReynardLogger({ verbose: this.config.verbose || false });
     this.fileManager = new CSSFileManager(this.config, this.logger);
     this.extractor = new VariableExtractor(this.fileManager, this.logger);
     this.validator = new VariableValidator(this.config, this.logger, this.extractor);

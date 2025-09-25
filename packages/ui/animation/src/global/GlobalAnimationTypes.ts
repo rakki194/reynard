@@ -1,6 +1,6 @@
 /**
  * 🦊 Global Animation Types
- * 
+ *
  * Type definitions for the global animation control system.
  * Provides comprehensive type safety for global animation management.
  */

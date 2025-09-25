@@ -1,6 +1,6 @@
 /**
  * Authentication Form Handlers for E2E Testing
- * 
+ *
  * Provides comprehensive form interaction utilities for authentication
  * testing including registration, login, password change, and profile updates.
  */
@@ -35,15 +35,17 @@ export class AuthFormHandlers {
    */
   async navigateToRegistration(): Promise<void> {
     // Try multiple ways to get to registration
-    const registerButton = this.page.locator("[data-testid='register-button'], [data-testid='show-register'], button:has-text('Register')").first();
-    
+    const registerButton = this.page
+      .locator("[data-testid='register-button'], [data-testid='show-register'], button:has-text('Register')")
+      .first();
+
     if (await registerButton.isVisible()) {
       await registerButton.click();
     } else {
       // Navigate to registration page directly
       await this.page.goto("/register");
     }
-    
+
     await this.page.waitForLoadState("networkidle");
     await expect(this.page.locator("[data-testid='registration-form'], [data-testid='register-form']")).toBeVisible();
   }
@@ -52,14 +54,16 @@ export class AuthFormHandlers {
    * Navigate to login form
    */
   async navigateToLogin(): Promise<void> {
-    const loginButton = this.page.locator("[data-testid='login-button'], [data-testid='show-login'], button:has-text('Login')").first();
-    
+    const loginButton = this.page
+      .locator("[data-testid='login-button'], [data-testid='show-login'], button:has-text('Login')")
+      .first();
+
     if (await loginButton.isVisible()) {
       await loginButton.click();
     } else {
       await this.page.goto("/login");
     }
-    
+
     await this.page.waitForLoadState("networkidle");
     await expect(this.page.locator("[data-testid='login-form']")).toBeVisible();
   }
@@ -71,21 +75,23 @@ export class AuthFormHandlers {
     if (userData.username) {
       await this.page.fill("[data-testid='username-input'], [name='username'], #username", userData.username);
     }
-    
+
     if (userData.email) {
       await this.page.fill("[data-testid='email-input'], [name='email'], #email", userData.email);
     }
-    
+
     if (userData.password) {
       await this.page.fill("[data-testid='password-input'], [name='password'], #password", userData.password);
-      
+
       // Fill confirm password if field exists
-      const confirmPasswordField = this.page.locator("[data-testid='confirm-password-input'], [name='confirmPassword'], #confirmPassword");
+      const confirmPasswordField = this.page.locator(
+        "[data-testid='confirm-password-input'], [name='confirmPassword'], #confirmPassword"
+      );
       if (await confirmPasswordField.isVisible()) {
         await confirmPasswordField.fill(userData.password);
       }
     }
-    
+
     if (userData.fullName) {
       const fullNameField = this.page.locator("[data-testid='full-name-input'], [name='fullName'], #fullName");
       if (await fullNameField.isVisible()) {
@@ -98,7 +104,9 @@ export class AuthFormHandlers {
    * Submit registration form
    */
   async submitRegistrationForm(): Promise<void> {
-    await this.page.click("[data-testid='register-submit'], [data-testid='submit-registration'], button[type='submit']:has-text('Register')");
+    await this.page.click(
+      "[data-testid='register-submit'], [data-testid='submit-registration'], button[type='submit']:has-text('Register')"
+    );
     await this.page.waitForLoadState("networkidle");
   }
 
@@ -118,19 +126,19 @@ export class AuthFormHandlers {
     }
 
     // Try different selector patterns for username/identifier field
-    const identifierField = this.page.locator(
-      "[data-testid='username-input'], [data-testid='identifier-input'], [name='username'], [name='identifier'], #username, #identifier"
-    ).first();
-    
+    const identifierField = this.page
+      .locator(
+        "[data-testid='username-input'], [data-testid='identifier-input'], [name='username'], [name='identifier'], #username, #identifier"
+      )
+      .first();
+
     if (await identifierField.isVisible()) {
       await identifierField.fill(identifier);
     }
 
     // Try different selector patterns for password field
-    const passwordField = this.page.locator(
-      "[data-testid='password-input'], [name='password'], #password"
-    ).first();
-    
+    const passwordField = this.page.locator("[data-testid='password-input'], [name='password'], #password").first();
+
     if (await passwordField.isVisible()) {
       await passwordField.fill(password);
     }
@@ -140,7 +148,9 @@ export class AuthFormHandlers {
    * Submit login form
    */
   async submitLoginForm(): Promise<void> {
-    await this.page.click("[data-testid='login-submit'], [data-testid='submit-login'], button[type='submit']:has-text('Login'), button[type='submit']:has-text('Sign In')");
+    await this.page.click(
+      "[data-testid='login-submit'], [data-testid='submit-login'], button[type='submit']:has-text('Login'), button[type='submit']:has-text('Sign In')"
+    );
     await this.page.waitForLoadState("networkidle");
   }
 
@@ -165,7 +175,7 @@ export class AuthFormHandlers {
     // Fill password change form
     await this.page.fill("[data-testid='current-password-input'], [name='currentPassword']", currentPassword);
     await this.page.fill("[data-testid='new-password-input'], [name='newPassword']", newPassword);
-    
+
     // Fill confirm new password if field exists
     const confirmField = this.page.locator("[data-testid='confirm-new-password-input'], [name='confirmNewPassword']");
     if (await confirmField.isVisible()) {
@@ -189,7 +199,7 @@ export class AuthFormHandlers {
     if (updates.fullName) {
       await this.page.fill("[data-testid='full-name-input'], [name='fullName']", updates.fullName);
     }
-    
+
     if (updates.email) {
       await this.page.fill("[data-testid='email-input'], [name='email']", updates.email);
     }
@@ -219,7 +229,7 @@ export class AuthFormHandlers {
   async clearForm(): Promise<void> {
     const inputs = this.page.locator("input[type='text'], input[type='email'], input[type='password']");
     const inputCount = await inputs.count();
-    
+
     for (let i = 0; i < inputCount; i++) {
       await inputs.nth(i).clear();
     }
@@ -240,14 +250,14 @@ export class AuthFormHandlers {
     const errorElements = this.page.locator(".error, .invalid, [data-testid$='-error']");
     const messages: string[] = [];
     const count = await errorElements.count();
-    
+
     for (let i = 0; i < count; i++) {
       const text = await errorElements.nth(i).textContent();
       if (text) {
         messages.push(text.trim());
       }
     }
-    
+
     return messages;
   }
 

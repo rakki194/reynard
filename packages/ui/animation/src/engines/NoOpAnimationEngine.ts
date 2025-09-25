@@ -1,14 +1,21 @@
 /**
  * No-Op Animation Engine
- * 
+ *
  * Provides immediate completion for disabled animations with performance monitoring.
  * Memory-efficient fallback engine that completes animations instantly without visual effects.
- * 
+ *
  * @author Agile-Prime-90 (Reynard Lizard Specialist)
  * @since 1.0.0
  */
 
-import { AnimationEngine, AnimationConfig, AnimationResult, AnimationState, AnimationCallbacks, PerformanceStats } from "../types/index.js";
+import {
+  AnimationEngine,
+  AnimationConfig,
+  AnimationResult,
+  AnimationState,
+  AnimationCallbacks,
+  PerformanceStats,
+} from "../types/index.js";
 
 export interface NoOpAnimationConfig extends AnimationConfig {
   /** Whether to enable performance monitoring */
@@ -67,7 +74,7 @@ export interface NoOpAnimationState {
 
 /**
  * No-Op Animation Engine
- * 
+ *
  * Provides immediate completion for animations when they are disabled.
  * Optimized for performance with minimal memory footprint.
  */
@@ -141,26 +148,26 @@ export class NoOpAnimationEngine implements AnimationEngine {
   start(callbacks: AnimationCallbacks): void {
     this.state.isRunning = true;
     this.callbacks = callbacks;
-    
+
     if (this.config.enableLogging) {
       console.log("NoOpAnimationEngine: Started with immediate completion");
     }
 
     // Call frame start callback
     callbacks.onFrameStart?.(performance.now());
-    
+
     // Complete immediately
     const frameTime = performance.now();
     this.state.frameCount++;
     this.state.lastFrameTime = frameTime;
     this.state.deltaTime = 0;
     this.state.fps = 60; // Simulate 60 FPS
-    
+
     // Call update and render callbacks
     callbacks.onUpdate?.(0, this.state.frameCount);
     callbacks.onRender?.(0, this.state.frameCount);
     callbacks.onFrameEnd?.(0, this.state.frameCount);
-    
+
     // Stop immediately
     this.stop();
   }
@@ -170,7 +177,7 @@ export class NoOpAnimationEngine implements AnimationEngine {
    */
   stop(): void {
     this.state.isRunning = false;
-    
+
     if (this.config.enableLogging) {
       console.log("NoOpAnimationEngine: Stopped");
     }
@@ -186,7 +193,7 @@ export class NoOpAnimationEngine implements AnimationEngine {
     this.state.deltaTime = 0;
     this.state.fps = 0;
     this.state.averageFPS = 0;
-    
+
     if (this.config.enableLogging) {
       console.log("NoOpAnimationEngine: Reset");
     }
@@ -212,7 +219,7 @@ export class NoOpAnimationEngine implements AnimationEngine {
    */
   updateConfig(config: Partial<AnimationConfig>): void {
     this.config = { ...this.config, ...config };
-    
+
     if (this.config.enableLogging) {
       console.log("NoOpAnimationEngine: Configuration updated", config);
     }
@@ -223,7 +230,7 @@ export class NoOpAnimationEngine implements AnimationEngine {
    */
   updateCallbacks(callbacks: AnimationCallbacks): void {
     this.callbacks = { ...this.callbacks, ...callbacks };
-    
+
     if (this.config.enableLogging) {
       console.log("NoOpAnimationEngine: Callbacks updated");
     }
@@ -291,7 +298,6 @@ export class NoOpAnimationEngine implements AnimationEngine {
       memoryUsage: this.memoryUsage,
     };
   }
-
 
   /**
    * Get performance metrics
@@ -387,7 +393,7 @@ export class NoOpAnimationEngine implements AnimationEngine {
     }
 
     // Calculate average completion time
-    this.performanceMetrics.averageCompletionTime = 
+    this.performanceMetrics.averageCompletionTime =
       this.completionTimes.reduce((sum, time) => sum + time, 0) / this.completionTimes.length;
 
     // Calculate animations per second (rolling window)
@@ -416,17 +422,14 @@ export class NoOpAnimationEngine implements AnimationEngine {
 
     try {
       // Estimate memory usage based on engine state
-      const estimatedMemory = 
+      const estimatedMemory =
         JSON.stringify(this.state).length * 2 + // State serialization
         JSON.stringify(this.performanceMetrics).length * 2 + // Metrics serialization
         this.completionTimes.length * 8; // Completion times array
 
       this.memoryUsage = estimatedMemory;
       this.performanceMetrics.totalMemoryUsage += estimatedMemory;
-      this.performanceMetrics.peakMemoryUsage = Math.max(
-        this.performanceMetrics.peakMemoryUsage,
-        estimatedMemory
-      );
+      this.performanceMetrics.peakMemoryUsage = Math.max(this.performanceMetrics.peakMemoryUsage, estimatedMemory);
     } catch (error) {
       if (this.config.enableLogging) {
         console.warn("NoOpAnimationEngine: Failed to update memory usage", error);

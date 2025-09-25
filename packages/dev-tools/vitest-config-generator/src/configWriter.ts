@@ -106,7 +106,7 @@ export default defineConfig(${JSON.stringify(config, null, 2)});
     if (config.test.projects) {
       config.test.projects.forEach((project, index) => {
         const projectIdentifier = project.name || `Project ${index}`;
-        
+
         if (!project.name) {
           errors.push(`${projectIdentifier}: missing name`);
         }

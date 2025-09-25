@@ -13,7 +13,7 @@ graph TB
         A --> E[Icons]
         A --> F[Styling System]
         A --> G[Theme Integration]
-        
+
         subgraph "🧱 Primitives"
             B --> B1[Button]
             B --> B2[Badge]
@@ -50,7 +50,7 @@ graph TB
             B11 --> B11A[Toggle Switch]
             B11 --> B11B[On/Off States]
         end
-        
+
         subgraph "🧭 Navigation"
             C --> C1[BreadcrumbButton]
             C --> C2[BreadcrumbActionButton]
@@ -59,7 +59,7 @@ graph TB
             C2 --> C2A[Action Buttons]
             C2 --> C2B[Dropdown Actions]
         end
-        
+
         subgraph "📐 Layout"
             D --> D1[AppHeader]
             D --> D2[AppFooter]
@@ -74,7 +74,7 @@ graph TB
             D4 --> D4A[Getting Started Guide]
             D4 --> D4B[Onboarding Content]
         end
-        
+
         subgraph "🎯 Icons"
             E --> E1[Icon Component]
             E --> E2[Icon System]
@@ -90,7 +90,7 @@ graph TB
             E3 --> E3E[Glow Effects]
             E3 --> E3F[Tooltip Support]
         end
-        
+
         subgraph "🎨 Styling System"
             F --> F1[CSS Variables]
             F --> F2[Component Styles]
@@ -110,7 +110,7 @@ graph TB
             F4 --> F4A[Mobile-first Design]
             F4 --> F4B[Breakpoint Support]
         end
-        
+
         subgraph "🌈 Theme Integration"
             G --> G1[Theme System]
             G --> G2[Color System]
@@ -125,7 +125,7 @@ graph TB
             G4 --> G4A[Spacing Scale]
             G4 --> G4B[Component Spacing]
         end
-        
+
         subgraph "📦 Component Categories"
             H[Component Types] --> H1[Form Controls]
             H --> H2[Display Components]
@@ -138,7 +138,7 @@ graph TB
             H4 --> H4A[AppHeader, AppFooter, HeroSection]
             H5 --> H5A[IconButton, Tabs, Modal]
         end
-        
+
         subgraph "🔧 Component Features"
             I[Features] --> I1[Accessibility]
             I --> I2[Responsive Design]
@@ -157,7 +157,7 @@ graph TB
             I5 --> I5A[Reactive Components]
             I5 --> I5B[Signal Integration]
         end
-        
+
         subgraph "📚 Component Props"
             J[Props System] --> J1[Base Props]
             J --> J2[Variant Props]
@@ -176,7 +176,7 @@ graph TB
             J5 --> J5B[Change Handlers]
         end
     end
-    
+
     subgraph "🌐 External Dependencies"
         K[Reynard Core] --> K1[Core Utilities]
         K --> K2[Shared Types]
@@ -187,7 +187,7 @@ graph TB
         N[SolidJS] --> N1[Reactive System]
         N --> N2[Component System]
     end
-    
+
     A -->|Provides| O[UI Component Library]
     B -->|Offers| P[Primitive Components]
     C -->|Provides| Q[Navigation Components]
@@ -202,30 +202,30 @@ graph TB
 ```mermaid
 flowchart TD
     A[Component Request] --> B{Component Type?}
-    
+
     B -->|Primitive| C[Primitive Component]
     B -->|Navigation| D[Navigation Component]
     B -->|Layout| E[Layout Component]
     B -->|Icon| F[Icon Component]
-    
+
     C --> G[Component Props]
     D --> G
     E --> G
     F --> G
-    
+
     G --> H[Props Validation]
     H --> I[Component Rendering]
     I --> J[Theme Application]
     J --> K[Style Application]
     K --> L[Event Binding]
     L --> M[Component Output]
-    
+
     subgraph "Component Rendering"
         N[Component System] --> N1[SolidJS Components]
         N --> N2[Props Processing]
         N --> N3[State Management]
         N --> N4[Event Handling]
-        
+
         N1 --> N1A[Functional Components]
         N1 --> N1B[Reactive Updates]
         N2 --> N2A[Props Merging]
@@ -235,13 +235,13 @@ flowchart TD
         N4 --> N4A[Event Handlers]
         N4 --> N4B[User Interactions]
     end
-    
+
     subgraph "Theme Application"
         O[Theme System] --> O1[Theme Variables]
         O --> O2[Color Application]
         O --> O3[Typography Application]
         O --> O4[Spacing Application]
-        
+
         O1 --> O1A[CSS Variables]
         O1 --> O1B[Theme Switching]
         O2 --> O2A[OKLCH Colors]
@@ -251,13 +251,13 @@ flowchart TD
         O4 --> O4A[Spacing Scale]
         O4 --> O4B[Margin/Padding]
     end
-    
+
     subgraph "Style Application"
         P[Styling System] --> P1[Component Styles]
         P --> P2[Variant Styles]
         P --> P3[State Styles]
         P --> P4[Responsive Styles]
-        
+
         P1 --> P1A[Base Styles]
         P1 --> P1B[Component-specific CSS]
         P2 --> P2A[Color Variants]
@@ -279,28 +279,28 @@ sequenceDiagram
     participant Theme as Theme System
     participant Styles as Styling System
     participant DOM as DOM
-    
+
     Note over App, DOM: Component Usage
     App->>Component: Import Component
     Component->>Props: Process Props
     Props->>Props: Validate Props
     Props->>Props: Merge Default Props
     Props-->>Component: Processed Props
-    
+
     Component->>Theme: Apply Theme
     Theme->>Theme: Get Current Theme
     Theme->>Theme: Apply Theme Variables
     Theme-->>Component: Theme Applied
-    
+
     Component->>Styles: Apply Styles
     Styles->>Styles: Get Component Styles
     Styles->>Styles: Apply Variant Styles
     Styles->>Styles: Apply State Styles
     Styles-->>Component: Styles Applied
-    
+
     Component->>DOM: Render Component
     DOM-->>App: Component Rendered
-    
+
     Note over App, DOM: User Interaction
     App->>Component: User Interaction
     Component->>Component: Handle Event
@@ -309,7 +309,7 @@ sequenceDiagram
     Styles-->>Component: Styles Updated
     Component->>DOM: Update DOM
     DOM-->>App: UI Updated
-    
+
     Note over App, DOM: Theme Change
     App->>Theme: Change Theme
     Theme->>Theme: Update Theme Variables
@@ -331,7 +331,7 @@ graph TB
         A --> E[Layout Export]
         A --> F[Icons Export]
         A --> G[Styles Export]
-        
+
         subgraph "🧱 Primitives Export"
             C --> C1[Button]
             C --> C2[Badge]
@@ -345,45 +345,45 @@ graph TB
             C --> C10[TextField]
             C --> C11[Toggle]
         end
-        
+
         subgraph "🧭 Navigation Export"
             D --> D1[BreadcrumbButton]
             D --> D2[BreadcrumbActionButton]
         end
-        
+
         subgraph "📐 Layout Export"
             E --> E1[AppHeader]
             E --> E2[AppFooter]
             E --> E3[HeroSection]
             E --> E4[GettingStarted]
         end
-        
+
         subgraph "🎯 Icons Export"
             F --> F1[Icon]
             F --> F2[Icon Props]
         end
-        
+
         subgraph "🎨 Styles Export"
             G --> G1[styles.css]
             G --> G2[theme.css]
         end
     end
-    
+
     subgraph "🔧 Import Examples"
         H[Import Examples] --> H1[Full Import]
         H --> H2[Selective Import]
         H --> H3[Style Import]
-        
+
         H1 --> H1A[import { Button, Card } from "reynard-components-core"]
         H2 --> H2A[import { Button } from "reynard-components-core/primitives"]
         H3 --> H3A[import "reynard-components-core/styles"]
     end
-    
+
     subgraph "📚 TypeScript Support"
         I[TypeScript] --> I1[Component Props]
         I --> I2[Type Exports]
         I --> I3[IntelliSense Support]
-        
+
         I1 --> I1A[ButtonProps, CardProps, etc.]
         I2 --> I2A[Exported Types]
         I3 --> I3A[Auto-completion]

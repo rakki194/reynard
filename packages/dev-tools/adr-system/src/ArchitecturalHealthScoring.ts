@@ -146,9 +146,9 @@ export class ArchitecturalHealthScoring extends EventEmitter {
         maxConcurrentAnalysis: 10,
         cacheResults: true,
         cacheExpiry: 60 * 60 * 1000, // 1 hour
-        enableParallelProcessing: true
+        enableParallelProcessing: true,
       },
-      ...config
+      ...config,
     };
   }
 
@@ -157,7 +157,7 @@ export class ArchitecturalHealthScoring extends EventEmitter {
    */
   async calculateHealthScores(): Promise<Map<string, ArchitecturalHealthScore[]>> {
     this.emit("scoring:start", { timestamp: new Date().toISOString() });
-    
+
     try {
       // Clear previous results
       this.healthScores.clear();
@@ -165,11 +165,11 @@ export class ArchitecturalHealthScoring extends EventEmitter {
 
       // Get all source files
       const sourceFiles = await this.findSourceFiles();
-      
+
       // Calculate scores in parallel
       const scoringPromises = sourceFiles.map(file => this.calculateFileHealthScores(file));
       const results = await Promise.all(scoringPromises);
-      
+
       // Merge results
       for (const fileScores of results) {
         for (const [file, scores] of fileScores) {
@@ -183,7 +183,7 @@ export class ArchitecturalHealthScoring extends EventEmitter {
       this.emit("scoring:complete", {
         timestamp: new Date().toISOString(),
         totalFiles: sourceFiles.length,
-        totalScores: Array.from(this.healthScores.values()).flat().length
+        totalScores: Array.from(this.healthScores.values()).flat().length,
       });
 
       return this.healthScores;
@@ -198,7 +198,7 @@ export class ArchitecturalHealthScoring extends EventEmitter {
    */
   private async calculateFileHealthScores(filePath: string): Promise<Map<string, ArchitecturalHealthScore[]>> {
     const scores = new Map<string, ArchitecturalHealthScore[]>();
-    
+
     try {
       // Check cache first
       if (this.config.performance.cacheResults) {
@@ -211,35 +211,35 @@ export class ArchitecturalHealthScoring extends EventEmitter {
 
       // Read file content
       const content = await readFile(filePath, "utf-8");
-      
+
       // Calculate scores using different methods
       const calculatedScores: ArchitecturalHealthScore[] = [];
-      
+
       if (this.config.enablePerformanceScoring) {
         const performanceScore = await this.calculatePerformanceHealthScore(content, filePath);
         calculatedScores.push(performanceScore);
       }
-      
+
       if (this.config.enableMaintainabilityScoring) {
         const maintainabilityScore = await this.calculateMaintainabilityHealthScore(content, filePath);
         calculatedScores.push(maintainabilityScore);
       }
-      
+
       if (this.config.enableSecurityScoring) {
         const securityScore = await this.calculateSecurityHealthScore(content, filePath);
         calculatedScores.push(securityScore);
       }
-      
+
       if (this.config.enableScalabilityScoring) {
         const scalabilityScore = await this.calculateScalabilityHealthScore(content, filePath);
         calculatedScores.push(scalabilityScore);
       }
-      
+
       if (this.config.enableReliabilityScoring) {
         const reliabilityScore = await this.calculateReliabilityHealthScore(content, filePath);
         calculatedScores.push(reliabilityScore);
       }
-      
+
       if (this.config.enableOverallScoring) {
         const overallScore = await this.calculateOverallHealthScore(calculatedScores, filePath);
         calculatedScores.push(overallScore);
@@ -256,10 +256,9 @@ export class ArchitecturalHealthScoring extends EventEmitter {
       if (this.config.performance.cacheResults) {
         this.analysisCache.set(filePath, {
           scores: filteredScores,
-          timestamp: Date.now()
+          timestamp: Date.now(),
         });
       }
-
     } catch (error) {
       console.warn(`Failed to calculate health scores for file: ${filePath}`, error);
     }
@@ -276,32 +275,32 @@ export class ArchitecturalHealthScoring extends EventEmitter {
         name: "Code Complexity",
         weight: 0.3,
         score: this.calculateComplexityScore(content),
-        impact: 0
+        impact: 0,
       },
       {
         name: "Loop Efficiency",
         weight: 0.25,
         score: this.calculateLoopEfficiencyScore(content),
-        impact: 0
+        impact: 0,
       },
       {
         name: "Memory Usage",
         weight: 0.2,
         score: this.calculateMemoryUsageScore(content),
-        impact: 0
+        impact: 0,
       },
       {
         name: "Async Operations",
         weight: 0.15,
         score: this.calculateAsyncOperationsScore(content),
-        impact: 0
+        impact: 0,
       },
       {
         name: "Algorithm Efficiency",
         weight: 0.1,
         score: this.calculateAlgorithmEfficiencyScore(content),
-        impact: 0
-      }
+        impact: 0,
+      },
     ];
 
     const weightedScore = this.calculateWeightedScore(factors);
@@ -324,44 +323,47 @@ export class ArchitecturalHealthScoring extends EventEmitter {
   /**
    * Calculate maintainability health score.
    */
-  private async calculateMaintainabilityHealthScore(content: string, filePath: string): Promise<ArchitecturalHealthScore> {
+  private async calculateMaintainabilityHealthScore(
+    content: string,
+    filePath: string
+  ): Promise<ArchitecturalHealthScore> {
     const factors = [
       {
         name: "Code Readability",
         weight: 0.25,
         score: this.calculateReadabilityScore(content),
-        impact: 0
+        impact: 0,
       },
       {
         name: "Documentation",
         weight: 0.2,
         score: this.calculateDocumentationScore(content),
-        impact: 0
+        impact: 0,
       },
       {
         name: "Function Length",
         weight: 0.2,
         score: this.calculateFunctionLengthScore(content),
-        impact: 0
+        impact: 0,
       },
       {
         name: "Cyclomatic Complexity",
         weight: 0.15,
         score: this.calculateCyclomaticComplexityScore(content),
-        impact: 0
+        impact: 0,
       },
       {
         name: "Code Duplication",
         weight: 0.1,
         score: this.calculateCodeDuplicationScore(content),
-        impact: 0
+        impact: 0,
       },
       {
         name: "Naming Conventions",
         weight: 0.1,
         score: this.calculateNamingConventionsScore(content),
-        impact: 0
-      }
+        impact: 0,
+      },
     ];
 
     const weightedScore = this.calculateWeightedScore(factors);
@@ -390,32 +392,32 @@ export class ArchitecturalHealthScoring extends EventEmitter {
         name: "Vulnerability Detection",
         weight: 0.3,
         score: this.calculateVulnerabilityScore(content),
-        impact: 0
+        impact: 0,
       },
       {
         name: "Input Validation",
         weight: 0.25,
         score: this.calculateInputValidationScore(content),
-        impact: 0
+        impact: 0,
       },
       {
         name: "Authentication",
         weight: 0.2,
         score: this.calculateAuthenticationScore(content),
-        impact: 0
+        impact: 0,
       },
       {
         name: "Authorization",
         weight: 0.15,
         score: this.calculateAuthorizationScore(content),
-        impact: 0
+        impact: 0,
       },
       {
         name: "Data Encryption",
         weight: 0.1,
         score: this.calculateDataEncryptionScore(content),
-        impact: 0
-      }
+        impact: 0,
+      },
     ];
 
     const weightedScore = this.calculateWeightedScore(factors);
@@ -444,32 +446,32 @@ export class ArchitecturalHealthScoring extends EventEmitter {
         name: "Concurrency Support",
         weight: 0.3,
         score: this.calculateConcurrencyScore(content),
-        impact: 0
+        impact: 0,
       },
       {
         name: "Resource Management",
         weight: 0.25,
         score: this.calculateResourceManagementScore(content),
-        impact: 0
+        impact: 0,
       },
       {
         name: "Load Balancing",
         weight: 0.2,
         score: this.calculateLoadBalancingScore(content),
-        impact: 0
+        impact: 0,
       },
       {
         name: "Caching Strategy",
         weight: 0.15,
         score: this.calculateCachingStrategyScore(content),
-        impact: 0
+        impact: 0,
       },
       {
         name: "Database Optimization",
         weight: 0.1,
         score: this.calculateDatabaseOptimizationScore(content),
-        impact: 0
-      }
+        impact: 0,
+      },
     ];
 
     const weightedScore = this.calculateWeightedScore(factors);
@@ -498,32 +500,32 @@ export class ArchitecturalHealthScoring extends EventEmitter {
         name: "Error Handling",
         weight: 0.3,
         score: this.calculateErrorHandlingScore(content),
-        impact: 0
+        impact: 0,
       },
       {
         name: "Logging",
         weight: 0.25,
         score: this.calculateLoggingScore(content),
-        impact: 0
+        impact: 0,
       },
       {
         name: "Monitoring",
         weight: 0.2,
         score: this.calculateMonitoringScore(content),
-        impact: 0
+        impact: 0,
       },
       {
         name: "Fault Tolerance",
         weight: 0.15,
         score: this.calculateFaultToleranceScore(content),
-        impact: 0
+        impact: 0,
       },
       {
         name: "Testing Coverage",
         weight: 0.1,
         score: this.calculateTestingCoverageScore(content),
-        impact: 0
-      }
+        impact: 0,
+      },
     ];
 
     const weightedScore = this.calculateWeightedScore(factors);
@@ -546,12 +548,15 @@ export class ArchitecturalHealthScoring extends EventEmitter {
   /**
    * Calculate overall health score.
    */
-  private async calculateOverallHealthScore(individualScores: ArchitecturalHealthScore[], filePath: string): Promise<ArchitecturalHealthScore> {
+  private async calculateOverallHealthScore(
+    individualScores: ArchitecturalHealthScore[],
+    filePath: string
+  ): Promise<ArchitecturalHealthScore> {
     const factors = individualScores.map(score => ({
       name: score.type.charAt(0).toUpperCase() + score.type.slice(1),
       weight: this.getOverallWeight(score.type),
       score: score.score,
-      impact: 0
+      impact: 0,
     }));
 
     const weightedScore = this.calculateWeightedScore(factors);
@@ -577,15 +582,15 @@ export class ArchitecturalHealthScoring extends EventEmitter {
   private async postProcessScores(): Promise<void> {
     // Calculate impact for each factor
     this.calculateFactorImpacts();
-    
+
     // Update historical data
     this.updateHistoricalData();
-    
+
     // Calculate trends
     if (this.config.enableTrendAnalysis) {
       this.calculateTrends();
     }
-    
+
     // Generate recommendations
     this.generateRecommendations();
   }
@@ -608,21 +613,21 @@ export class ArchitecturalHealthScoring extends EventEmitter {
    */
   private updateHistoricalData(): void {
     const allScores = Array.from(this.healthScores.values()).flat();
-    
+
     for (const score of allScores) {
       const key = `${score.type}-${score.location.file}`;
       if (!this.historicalScores.has(key)) {
         this.historicalScores.set(key, []);
       }
-      
+
       const history = this.historicalScores.get(key)!;
       history.push({
         timestamp: new Date().toISOString(),
         score: score.score,
         grade: score.grade,
-        confidence: score.metrics.confidence
+        confidence: score.metrics.confidence,
       });
-      
+
       // Keep only recent history
       if (history.length > 1000) {
         history.splice(0, history.length - 1000);
@@ -638,7 +643,7 @@ export class ArchitecturalHealthScoring extends EventEmitter {
       for (const score of scores) {
         const key = `${score.type}-${file}`;
         const history = this.historicalScores.get(key) || [];
-        
+
         if (history.length >= 2) {
           const recent = history.slice(-2);
           const trend = this.calculateTrend(recent);
@@ -724,7 +729,7 @@ export class ArchitecturalHealthScoring extends EventEmitter {
   private calculateCodeDuplicationScore(content: string): number {
     const lines = content.split("\n");
     const uniqueLines = new Set(lines);
-    const duplicationRatio = 1 - (uniqueLines.size / lines.length);
+    const duplicationRatio = 1 - uniqueLines.size / lines.length;
     const score = Math.max(0, 100 - duplicationRatio * 100);
     return score;
   }
@@ -738,7 +743,8 @@ export class ArchitecturalHealthScoring extends EventEmitter {
   }
 
   private calculateVulnerabilityScore(content: string): number {
-    const vulnerabilities = (content.match(/eval\s*\(|innerHTML|document\.write|setTimeout\s*\(.*string/g) || []).length;
+    const vulnerabilities = (content.match(/eval\s*\(|innerHTML|document\.write|setTimeout\s*\(.*string/g) || [])
+      .length;
     const score = Math.max(0, 100 - vulnerabilities * 20);
     return score;
   }
@@ -827,9 +833,11 @@ export class ArchitecturalHealthScoring extends EventEmitter {
     return score;
   }
 
-  private calculateWeightedScore(factors: Array<{ name: string; weight: number; score: number; impact: number }>): number {
+  private calculateWeightedScore(
+    factors: Array<{ name: string; weight: number; score: number; impact: number }>
+  ): number {
     const totalWeight = factors.reduce((sum, factor) => sum + factor.weight, 0);
-    const weightedSum = factors.reduce((sum, factor) => sum + (factor.weight * factor.score), 0);
+    const weightedSum = factors.reduce((sum, factor) => sum + factor.weight * factor.score, 0);
     return totalWeight > 0 ? weightedSum / totalWeight : 0;
   }
 
@@ -850,7 +858,7 @@ export class ArchitecturalHealthScoring extends EventEmitter {
     const scores = factors.map(f => f.score);
     const avgScore = scores.reduce((sum, score) => sum + score, 0) / scores.length;
     const variance = scores.reduce((sum, score) => sum + Math.pow(score - avgScore, 2), 0) / scores.length;
-    const confidence = Math.max(0.5, 1 - (variance / 10000));
+    const confidence = Math.max(0.5, 1 - variance / 10000);
     return Math.min(1, confidence);
   }
 
@@ -860,42 +868,42 @@ export class ArchitecturalHealthScoring extends EventEmitter {
       maintainability: 0.25,
       security: 0.2,
       scalability: 0.15,
-      reliability: 0.15
+      reliability: 0.15,
     };
     return weights[type] || 0.1;
   }
 
   private calculateTrend(history: any[]): "improving" | "stable" | "declining" {
     if (history.length < 2) return "stable";
-    
+
     const recent = history[history.length - 1].score;
     const previous = history[history.length - 2].score;
     const diff = recent - previous;
-    
+
     if (diff > 5) return "improving";
     if (diff < -5) return "declining";
     return "stable";
   }
 
-  private generateRecommendationsForScore(score: ArchitecturalHealthScore): ArchitecturalHealthScore["recommendations"] {
-    const priority = score.score < 60 ? "critical" : 
-                    score.score < 70 ? "high" : 
-                    score.score < 80 ? "medium" : "low";
-    
+  private generateRecommendationsForScore(
+    score: ArchitecturalHealthScore
+  ): ArchitecturalHealthScore["recommendations"] {
+    const priority = score.score < 60 ? "critical" : score.score < 70 ? "high" : score.score < 80 ? "medium" : "low";
+
     const actions = [];
     if (score.score < 80) {
       actions.push("Review and refactor code");
       actions.push("Add comprehensive testing");
       actions.push("Improve documentation");
     }
-    
+
     const expectedImprovement = Math.min(20, 100 - score.score);
-    
+
     return {
       priority,
       actions,
       expectedImprovement,
-      effort: priority === "critical" ? "high" : "medium"
+      effort: priority === "critical" ? "high" : "medium",
     };
   }
 
@@ -918,32 +926,32 @@ export class ArchitecturalHealthScoring extends EventEmitter {
       grade: grade as any,
       description,
       location: {
-        file: filePath
+        file: filePath,
       },
       metrics: {
         rawScore: score,
         normalizedScore: score,
         confidence,
         trend: "stable",
-        lastUpdated: new Date().toISOString()
+        lastUpdated: new Date().toISOString(),
       },
       breakdown: {
         factors,
         totalWeight: factors.reduce((sum, factor) => sum + factor.weight, 0),
-        weightedScore: score
+        weightedScore: score,
       },
       recommendations: {
         priority: "medium",
         actions: [],
         expectedImprovement: 0,
-        effort: "medium"
+        effort: "medium",
       },
       metadata: {
         algorithm,
         calculatedAt: new Date().toISOString(),
         version: "1.0.0",
-        dataPoints: factors.length
-      }
+        dataPoints: factors.length,
+      },
     };
   }
 
@@ -954,7 +962,7 @@ export class ArchitecturalHealthScoring extends EventEmitter {
       security: "security",
       scalability: "scalability",
       reliability: "reliability",
-      overall: "overall"
+      overall: "overall",
     };
     return categories[type] || "other";
   }
@@ -967,13 +975,13 @@ export class ArchitecturalHealthScoring extends EventEmitter {
 
   private async findFilesRecursive(dir: string, pattern: string, files: string[], depth: number): Promise<void> {
     if (depth > 10) return;
-    
+
     try {
       const entries = await readdir(dir);
       for (const entry of entries) {
         const fullPath = join(dir, entry);
         const stat = await this.stat(fullPath);
-        
+
         if (stat.isDirectory()) {
           await this.findFilesRecursive(fullPath, pattern, files, depth + 1);
         } else if (this.matchesPattern(entry, pattern)) {
@@ -1035,38 +1043,38 @@ export class ArchitecturalHealthScoring extends EventEmitter {
   } {
     const allScores = this.getAllHealthScores();
     const totalScores = allScores.length;
-    
+
     const scoresByType: Record<string, number> = {};
     const scoresByGrade: Record<string, number> = {};
     const scoreCounts: Record<string, number> = {};
-    
+
     let totalScore = 0;
     let totalConfidence = 0;
-    
+
     for (const score of allScores) {
       scoresByType[score.type] = (scoresByType[score.type] || 0) + 1;
       scoresByGrade[score.grade] = (scoresByGrade[score.grade] || 0) + 1;
       scoreCounts[score.type] = (scoreCounts[score.type] || 0) + 1;
-      
+
       totalScore += score.score;
       totalConfidence += score.metrics.confidence;
     }
-    
+
     const averageScore = totalScores > 0 ? totalScore / totalScores : 0;
     const averageConfidence = totalScores > 0 ? totalConfidence / totalScores : 0;
-    
+
     const topScores = Object.entries(scoreCounts)
       .sort(([, a], [, b]) => b - a)
       .slice(0, 10)
       .map(([type, count]) => ({ type, count }));
-    
+
     return {
       totalScores,
       scoresByType,
       scoresByGrade,
       averageScore,
       averageConfidence,
-      topScores
+      topScores,
     };
   }
 
@@ -1075,26 +1083,31 @@ export class ArchitecturalHealthScoring extends EventEmitter {
    */
   async exportHealthScores(format: "json" | "csv" | "xml"): Promise<string> {
     const allScores = this.getAllHealthScores();
-    
+
     switch (format) {
       case "json":
-        return JSON.stringify({
-          healthScores: allScores,
-          statistics: this.getHealthScoreStatistics(),
-          metadata: {
-            analyzedAt: new Date().toISOString(),
-            totalFiles: this.healthScores.size,
-            config: this.config
-          }
-        }, null, 2);
-      
+        return JSON.stringify(
+          {
+            healthScores: allScores,
+            statistics: this.getHealthScoreStatistics(),
+            metadata: {
+              analyzedAt: new Date().toISOString(),
+              totalFiles: this.healthScores.size,
+              config: this.config,
+            },
+          },
+          null,
+          2
+        );
+
       case "csv":
         const csvHeader = "id,type,score,grade,file,confidence,trend";
-        const csvRows = allScores.map(score => 
-          `${score.id},${score.type},${score.score},${score.grade},${score.location.file},${score.metrics.confidence},${score.metrics.trend}`
+        const csvRows = allScores.map(
+          score =>
+            `${score.id},${score.type},${score.score},${score.grade},${score.location.file},${score.metrics.confidence},${score.metrics.trend}`
         );
         return [csvHeader, ...csvRows].join("\n");
-      
+
       case "xml":
         const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <healthScores>
@@ -1104,7 +1117,9 @@ export class ArchitecturalHealthScoring extends EventEmitter {
     <totalScores>${allScores.length}</totalScores>
   </metadata>
   <scores>
-    ${allScores.map(score => `
+    ${allScores
+      .map(
+        score => `
     <score id="${score.id}">
       <type>${score.type}</type>
       <score>${score.score}</score>
@@ -1112,11 +1127,13 @@ export class ArchitecturalHealthScoring extends EventEmitter {
       <file>${score.location.file}</file>
       <confidence>${score.metrics.confidence}</confidence>
       <trend>${score.metrics.trend}</trend>
-    </score>`).join("")}
+    </score>`
+      )
+      .join("")}
   </scores>
 </healthScores>`;
         return xml;
-      
+
       default:
         throw new Error(`Unsupported export format: ${format}`);
     }

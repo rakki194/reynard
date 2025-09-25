@@ -1,6 +1,6 @@
 /**
  * 🎛️ Animation Controls Component
- * 
+ *
  * Global animation controls for the demo app
  */
 
@@ -12,7 +12,7 @@ export const AnimationControls: Component = () => {
   const isAnimationsDisabled = () => false;
   const toggleAnimations = () => {};
   const setPerformanceMode = (_mode: string) => {};
-  
+
   const [showControls, setShowControls] = createSignal(false);
 
   return (
@@ -24,33 +24,27 @@ export const AnimationControls: Component = () => {
       >
         🎛️ Controls
       </button>
-      
+
       <Show when={showControls()}>
         <div class="controls-panel">
           <div class="control-group">
             <label class="control-label">
-              <input
-                type="checkbox"
-                checked={!isAnimationsDisabled()}
-                onChange={() => toggleAnimations()}
-              />
+              <input type="checkbox" checked={!isAnimationsDisabled()} onChange={() => toggleAnimations()} />
               Enable Animations
             </label>
           </div>
-          
+
           <div class="control-group">
             <label class="control-label">
               Performance Mode:
-              <select
-                onChange={(e) => setPerformanceMode(e.currentTarget.value as "normal" | "high" | "low")}
-              >
+              <select onChange={e => setPerformanceMode(e.currentTarget.value as "normal" | "high" | "low")}>
                 <option value="normal">Normal</option>
                 <option value="high">High Performance</option>
                 <option value="low">Low Performance</option>
               </select>
             </label>
           </div>
-          
+
           <div class="control-group">
             <button
               class="control-button"

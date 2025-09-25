@@ -23,7 +23,10 @@ export const EmbeddingVisualizationDashboard = (props: EmbeddingVisualizationDas
   const dashboard = useEmbeddingDashboard(() => props.isVisible ?? true);
   return (
     <div class={`reynard-embedding-visualization-dashboard ${props.class || ""}`}>
-      <EmbeddingDashboardHeader activeTab={dashboard.activeTab()} onTabChange={(tab: string) => dashboard.setActiveTab(tab as any)} />
+      <EmbeddingDashboardHeader
+        activeTab={dashboard.activeTab()}
+        onTabChange={(tab: string) => dashboard.setActiveTab(tab as any)}
+      />
 
       <div class="dashboard-content">
         <EmbeddingDashboardSidebar

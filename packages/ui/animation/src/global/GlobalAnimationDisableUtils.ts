@@ -1,6 +1,6 @@
 /**
  * 🦊 Global Animation Disable Utilities
- * 
+ *
  * Utility functions for disabling animations globally with CSS injection and testing support.
  * Provides comprehensive animation control and testing capabilities.
  */
@@ -127,13 +127,9 @@ export class GlobalAnimationDisableUtils {
   /**
    * Inject CSS to disable animations
    */
-  private injectDisableCSS(
-    selector: string,
-    immediateCompletion: boolean,
-    includePrintStyles: boolean
-  ): void {
+  private injectDisableCSS(selector: string, immediateCompletion: boolean, includePrintStyles: boolean): void {
     const css = this.generateDisableCSS(selector, immediateCompletion, includePrintStyles);
-    
+
     this.injectCSS({
       css,
       id: "reynard-animation-disable",
@@ -152,11 +148,7 @@ export class GlobalAnimationDisableUtils {
   /**
    * Generate CSS for disabling animations
    */
-  private generateDisableCSS(
-    selector: string,
-    immediateCompletion: boolean,
-    includePrintStyles: boolean
-  ): string {
+  private generateDisableCSS(selector: string, immediateCompletion: boolean, includePrintStyles: boolean): string {
     let css = `
       /* Global Animation Disable */
       ${selector},
@@ -215,11 +207,7 @@ export class GlobalAnimationDisableUtils {
   private removeDisableClasses(): void {
     if (typeof document === "undefined") return;
 
-    document.documentElement.classList.remove(
-      "animations-disabled",
-      "no-animations",
-      "immediate-completion"
-    );
+    document.documentElement.classList.remove("animations-disabled", "no-animations", "immediate-completion");
   }
 
   /**
@@ -258,7 +246,7 @@ export class GlobalAnimationDisableUtils {
     const style = document.createElement("style");
     style.id = id;
     style.type = "text/css";
-    
+
     // Process CSS if using important
     const processedCSS = useImportant ? this.addImportantToCSS(css) : css;
     style.textContent = processedCSS;

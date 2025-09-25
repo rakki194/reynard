@@ -26,6 +26,12 @@ class ToolRouter:
     ) -> dict[str, Any]:
         """Route a tool call to the appropriate handler."""
         try:
+            # Debug: Check what tools are available
+            all_tools = self.tool_registry.list_all_tools()
+            logger.debug(f"🔍 Available tools in registry: {len(all_tools)}")
+            if tool_name not in all_tools:
+                logger.error(f"❌ Tool '{tool_name}' not found in registry. Available tools: {list(all_tools.keys())}")
+            
             # Get the tool handler from registry
             handler = self.tool_registry.get_handler(tool_name)
             
@@ -42,10 +48,15 @@ class ToolRouter:
             if any(param.kind == param.VAR_KEYWORD for param in sig.parameters.values()):
                 # Function expects **kwargs, pass arguments as keyword argument
                 logger.debug("Function expects **kwargs, passing arguments=arguments")
-                if handler.execution_type == ToolExecutionType.ASYNC:
-                    result = await handler.handler_method(arguments=arguments)
-                else:
-                    result = handler.handler_method(arguments=arguments)
+                try:
+                    if handler.execution_type == ToolExecutionType.ASYNC:
+                        result = await handler.handler_method(arguments=arguments)
+                    else:
+                        result = handler.handler_method(arguments=arguments)
+                    logger.debug(f"Tool execution successful, result: {result}")
+                except Exception as e:
+                    logger.error(f"Tool execution failed: {e}")
+                    raise
             else:
                 # Function expects direct arguments
                 logger.debug("Function expects direct arguments, passing arguments directly")

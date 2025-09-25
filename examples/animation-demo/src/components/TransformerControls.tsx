@@ -1,6 +1,6 @@
 /**
  * 🎛️ Transformer Controls Component
- * 
+ *
  * Interactive controls for the transformer dance club demo
  */
 
@@ -24,7 +24,7 @@ interface TransformerControlsProps {
   onBurstEffect: () => void;
 }
 
-export const TransformerControls: Component<TransformerControlsProps> = (props) => {
+export const TransformerControls: Component<TransformerControlsProps> = props => {
   return (
     <div class="animation-card">
       <h2 class="card-title">
@@ -40,7 +40,7 @@ export const TransformerControls: Component<TransformerControlsProps> = (props) 
             max="1000"
             step="50"
             value={props.animationConfig.strobeSpeed}
-            onInput={(e) => props.onConfigUpdate('strobeSpeed', parseInt(e.currentTarget.value))}
+            onInput={e => props.onConfigUpdate("strobeSpeed", parseInt(e.currentTarget.value))}
           />
           <span class="control-value">{props.animationConfig.strobeSpeed}ms</span>
         </div>
@@ -53,7 +53,7 @@ export const TransformerControls: Component<TransformerControlsProps> = (props) 
             max="5000"
             step="100"
             value={props.animationConfig.danceFloorSpeed}
-            onInput={(e) => props.onConfigUpdate('danceFloorSpeed', parseInt(e.currentTarget.value))}
+            onInput={e => props.onConfigUpdate("danceFloorSpeed", parseInt(e.currentTarget.value))}
           />
           <span class="control-value">{props.animationConfig.danceFloorSpeed}ms</span>
         </div>
@@ -66,7 +66,7 @@ export const TransformerControls: Component<TransformerControlsProps> = (props) 
             max="5000"
             step="100"
             value={props.animationConfig.autoDanceInterval}
-            onInput={(e) => props.onConfigUpdate('autoDanceInterval', parseInt(e.currentTarget.value))}
+            onInput={e => props.onConfigUpdate("autoDanceInterval", parseInt(e.currentTarget.value))}
           />
           <span class="control-value">{props.animationConfig.autoDanceInterval}ms</span>
         </div>
@@ -79,17 +79,14 @@ export const TransformerControls: Component<TransformerControlsProps> = (props) 
             max="500"
             step="10"
             value={props.animationConfig.backgroundHueSpeed}
-            onInput={(e) => props.onConfigUpdate('backgroundHueSpeed', parseInt(e.currentTarget.value))}
+            onInput={e => props.onConfigUpdate("backgroundHueSpeed", parseInt(e.currentTarget.value))}
           />
           <span class="control-value">{props.animationConfig.backgroundHueSpeed}ms</span>
         </div>
 
         <div class="control-group">
-          <button 
-            class={`control-button ${props.isPlaying ? 'danger' : 'primary'}`}
-            onClick={props.onStartStop}
-          >
-            {props.isPlaying ? '⏹️ Stop' : '▶️ Start'} Animations
+          <button class={`control-button ${props.isPlaying ? "danger" : "primary"}`} onClick={props.onStartStop}>
+            {props.isPlaying ? "⏹️ Stop" : "▶️ Start"} Animations
           </button>
         </div>
 

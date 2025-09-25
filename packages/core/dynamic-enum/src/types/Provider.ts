@@ -2,14 +2,14 @@
  * Provider interface definitions for the Dynamic Enum System
  */
 
-import type { 
-  EnumData, 
-  EnumValue, 
-  EnumMetadata, 
+import type {
+  EnumData,
+  EnumValue,
+  EnumMetadata,
   ValidationResult,
   EnumOperationOptions,
-  EnumResult
-} from './EnumTypes';
+  EnumResult,
+} from "./EnumTypes";
 
 /**
  * Abstract base interface for enum providers

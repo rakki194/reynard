@@ -1,13 +1,6 @@
 // Commands implementation for deferred world modifications
 
-import {
-  Commands,
-  Component,
-  ComponentType,
-  Entity,
-  Resource,
-  ResourceType,
-} from "./types";
+import { Commands, Component, ComponentType, Entity, Resource, ResourceType } from "./types";
 
 import { WorldImpl } from "./world-core";
 

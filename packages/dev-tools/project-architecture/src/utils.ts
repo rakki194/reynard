@@ -413,11 +413,11 @@ function matchesPattern(filePath: string, pattern: string): boolean {
 export function getFileTypeFromExtension(filePath: string): string {
   // Use catalyst FileTypeDetector for consistent file type detection
   const catalystType = FileTypeDetector.getFileType(filePath);
-  
+
   if (catalystType) {
     return catalystType;
   }
-  
+
   // Return "other" for unknown file types
   return "other";
 }

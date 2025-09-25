@@ -8,7 +8,7 @@ interface DownloadManagerProps {
   service: GalleryService | null;
 }
 
-export const DownloadManager: Component<DownloadManagerProps> = (props) => {
+export const DownloadManager: Component<DownloadManagerProps> = props => {
   const [url, setUrl] = createSignal("");
   const [isValidating, setIsValidating] = createSignal(false);
   const [validationResult, setValidationResult] = createSignal<{
@@ -33,7 +33,7 @@ export const DownloadManager: Component<DownloadManagerProps> = (props) => {
     } catch (error) {
       setValidationResult({
         isValid: false,
-        error: error instanceof Error ? error.message : "Validation failed"
+        error: error instanceof Error ? error.message : "Validation failed",
       });
     } finally {
       setIsValidating(false);
@@ -89,14 +89,10 @@ export const DownloadManager: Component<DownloadManagerProps> = (props) => {
           {validationResult()!.isValid ? (
             <div>
               ✅ URL is valid
-              {validationResult()!.extractor && (
-                <span> • Detected extractor: {validationResult()!.extractor}</span>
-              )}
+              {validationResult()!.extractor && <span> • Detected extractor: {validationResult()!.extractor}</span>}
             </div>
           ) : (
-            <div>
-              ❌ {validationResult()!.error || "Invalid URL"}
-            </div>
+            <div>❌ {validationResult()!.error || "Invalid URL"}</div>
           )}
         </div>
       )}

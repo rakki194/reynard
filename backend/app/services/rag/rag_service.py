@@ -1,7 +1,7 @@
 """🦊 Reynard RAG (Retrieval-Augmented Generation) Service
 ======================================================
 
-Unified orchestrator for all RAG capabilities within the Reynard ecosystem.
+Orchestrator for all RAG capabilities within the Reynard ecosystem.
 This service provides a comprehensive, production-ready RAG system that combines
 advanced semantic search, document indexing, and intelligent information retrieval
 with enterprise-grade monitoring, security, and performance optimization.
@@ -28,7 +28,7 @@ Core Architecture:
 - ModelEvaluator: Model performance evaluation and testing
 
 Key Features:
-- Unified API for all RAG operations with consistent error handling
+- Consistent API for all RAG operations with consistent error handling
 - Service orchestration with dependency management and health monitoring
 - Configuration management with environment-specific settings
 - Graceful shutdown and resource cleanup
@@ -65,7 +65,7 @@ logger = logging.getLogger("uvicorn")
 
 
 class RAGService:
-    """Unified RAG service orchestrator with enterprise-grade capabilities.
+    """RAG service orchestrator with enterprise-grade capabilities.
 
     The RAGService serves as the central orchestrator for all RAG operations within
     the Reynard ecosystem. It provides a comprehensive, production-ready RAG system

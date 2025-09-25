@@ -32,13 +32,13 @@ export class ParallelCommandsImpl implements ParallelCommands {
       spawn: (...components: Component[]) => {
         this.commandQueue.push(() => {
           // Commands will be applied later
-          console.log('Spawning entity with components:', components);
+          console.log("Spawning entity with components:", components);
         });
       },
       despawn: (entity: Entity) => {
         this.commandQueue.push(() => {
           // Commands will be applied later
-          console.log('Despawning entity:', entity);
+          console.log("Despawning entity:", entity);
         });
       },
     };

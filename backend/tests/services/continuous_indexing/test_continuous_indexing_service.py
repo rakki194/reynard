@@ -20,8 +20,9 @@ import pytest
 
 from app.config.continuous_indexing_config import continuous_indexing_config
 from app.services.infrastructure.continuous_indexing import (
-    CodebaseChangeHandler,
+    FileChangeHandler,
     ContinuousIndexingService,
+    IndexingConfig,
 )
 
 
@@ -53,20 +54,39 @@ class TestContinuousIndexingService:
     @pytest.fixture
     def indexing_service(self, service_config, temp_dir):
         """Create a ContinuousIndexingService instance for testing."""
-        # Patch the config to use our temp directory
-        with patch.object(continuous_indexing_config, "watch_root", str(temp_dir)):
-            with patch.object(continuous_indexing_config, "enabled", True):
-                service = ContinuousIndexingService(service_config)
-                return service
+        # Create a proper IndexingConfig object
+        config = IndexingConfig(
+            watch_directories=[str(temp_dir)],
+            exclude_patterns=["*.pyc", "__pycache__"],
+            include_extensions=[".py", ".js", ".ts", ".md"],
+            max_file_size_mb=10,
+            index_interval_seconds=30,
+            batch_size=100,
+            enable_syntax_highlighting=True,
+            enable_tokenization=True,
+            enable_metadata_extraction=True,
+            auto_cleanup_days=30,
+        )
+        
+        service = ContinuousIndexingService(config, str(temp_dir))
+        return service
 
     @pytest.mark.asyncio
     async def test_service_initialization(self, indexing_service, temp_dir):
         """🐼 Test that the service initializes correctly."""
-        # Test initialization
-        result = await indexing_service.initialize()
-        assert result is True
-        assert indexing_service.change_handler is not None
+        # Test that the service can be created and has expected attributes
+        assert indexing_service is not None
+        assert hasattr(indexing_service, 'start_monitoring')
+        assert hasattr(indexing_service, 'stop_monitoring')
+        
+        # Test that the service can start monitoring
+        await indexing_service.start_monitoring()
+        assert indexing_service.file_handler is not None
         assert indexing_service.observer is not None
+        assert indexing_service.is_monitoring is True
+        
+        # Clean up
+        await indexing_service.stop_monitoring()
 
     @pytest.mark.asyncio
     async def test_service_initialization_disabled(self, service_config, temp_dir):
@@ -254,8 +274,8 @@ class TestContinuousIndexingService:
         assert indexing_service.running is False
 
 
-class TestCodebaseChangeHandler:
-    """Test suite for CodebaseChangeHandler class."""
+class TestFileChangeHandler:
+    """Test suite for FileChangeHandler class."""
 
     @pytest.fixture
     def mock_indexer(self):
@@ -267,8 +287,8 @@ class TestCodebaseChangeHandler:
 
     @pytest.fixture
     def change_handler(self, mock_indexer):
-        """Create a CodebaseChangeHandler instance."""
-        return CodebaseChangeHandler(mock_indexer)
+        """Create a FileChangeHandler instance."""
+        return FileChangeHandler(mock_indexer)
 
     def test_on_modified_file(self, change_handler, mock_indexer):
         """🐼 Test handling file modification events."""

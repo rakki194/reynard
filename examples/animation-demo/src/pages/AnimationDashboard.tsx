@@ -1,6 +1,6 @@
 /**
  * 📊 Animation Dashboard
- * 
+ *
  * Overview page showcasing all animation system features
  */
 
@@ -14,9 +14,9 @@ export const AnimationDashboard: Component = () => {
     fps: 60,
     memoryUsage: 45.2,
     loadTime: 1200,
-    animationCount: 5
+    animationCount: 5,
   });
-  
+
   const [metrics, setMetrics] = createSignal(getPerformanceMetrics());
 
   onMount(() => {
@@ -33,8 +33,8 @@ export const AnimationDashboard: Component = () => {
       <div class="dashboard-header">
         <h1 class="page-title">🎬 Animation System Dashboard</h1>
         <p class="page-description">
-          Welcome to the comprehensive showcase of Reynard's unified animation system. 
-          Explore different animation types, performance metrics, and interactive demos.
+          Welcome to the comprehensive showcase of Reynard's unified animation system. Explore different animation
+          types, performance metrics, and interactive demos.
         </p>
       </div>
 
@@ -47,9 +47,7 @@ export const AnimationDashboard: Component = () => {
         <div class="status-grid">
           <div class="status-item">
             <span class="status-label">Animation Engine:</span>
-            <span class="status-value">
-              {isAnimationsDisabled() ? "Disabled" : "Active"}
-            </span>
+            <span class="status-value">{isAnimationsDisabled() ? "Disabled" : "Active"}</span>
           </div>
           <div class="status-item">
             <span class="status-label">Fallback System:</span>
@@ -98,44 +96,32 @@ export const AnimationDashboard: Component = () => {
           <div class="feature-item">
             <div class="feature-icon">🎭</div>
             <h3 class="feature-title">Staggered Animations</h3>
-            <p class="feature-description">
-              Sequential animation effects with customizable timing and easing
-            </p>
+            <p class="feature-description">Sequential animation effects with customizable timing and easing</p>
           </div>
           <div class="feature-item">
             <div class="feature-icon">🪟</div>
             <h3 class="feature-title">Floating Panels</h3>
-            <p class="feature-description">
-              Smooth panel transitions with smart positioning and z-index management
-            </p>
+            <p class="feature-description">Smooth panel transitions with smart positioning and z-index management</p>
           </div>
           <div class="feature-item">
             <div class="feature-icon">🎨</div>
             <h3 class="feature-title">Color Transitions</h3>
-            <p class="feature-description">
-              Beautiful color animations with hue shifting and gradient effects
-            </p>
+            <p class="feature-description">Beautiful color animations with hue shifting and gradient effects</p>
           </div>
           <div class="feature-item">
             <div class="feature-icon">🎪</div>
             <h3 class="feature-title">3D Animations</h3>
-            <p class="feature-description">
-              Three.js integration with WebGL-powered 3D effects and transitions
-            </p>
+            <p class="feature-description">Three.js integration with WebGL-powered 3D effects and transitions</p>
           </div>
           <div class="feature-item">
             <div class="feature-icon">⚡</div>
             <h3 class="feature-title">Performance Mode</h3>
-            <p class="feature-description">
-              Adaptive performance optimization with automatic quality adjustment
-            </p>
+            <p class="feature-description">Adaptive performance optimization with automatic quality adjustment</p>
           </div>
           <div class="feature-item">
             <div class="feature-icon">🛡️</div>
             <h3 class="feature-title">Fallback System</h3>
-            <p class="feature-description">
-              Graceful degradation with CSS-based fallbacks when needed
-            </p>
+            <p class="feature-description">Graceful degradation with CSS-based fallbacks when needed</p>
           </div>
         </div>
       </div>
@@ -147,8 +133,8 @@ export const AnimationDashboard: Component = () => {
           Quick Start
         </h2>
         <p class="card-description">
-          Get started with the animation system by exploring the different demo pages. 
-          Each page showcases specific animation features with interactive examples.
+          Get started with the animation system by exploring the different demo pages. Each page showcases specific
+          animation features with interactive examples.
         </p>
         <div class="quick-start-grid">
           <div class="quick-start-item">

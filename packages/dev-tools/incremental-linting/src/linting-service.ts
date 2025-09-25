@@ -52,7 +52,7 @@ class LinterProcessor implements LintingProcessor {
 
   async process(filePath: string, _options: ProcessingOptions = {}): Promise<LintResult> {
     const startTime = Date.now();
-    
+
     // In test mode, always return mock issues for testing
     if (process.env.NODE_ENV === "test") {
       // Add a small delay to simulate processing time for concurrency tests
@@ -67,7 +67,7 @@ class LinterProcessor implements LintingProcessor {
         timestamp: Date.now(),
       };
     }
-    
+
     try {
       if (!this.canProcess(filePath)) {
         return {
@@ -107,7 +107,6 @@ class LinterProcessor implements LintingProcessor {
   }
 
   canProcess(filePath: string): boolean {
-    
     // Check if file matches include patterns
     const matchesInclude = this.config.patterns.some(pattern => {
       const regex = new RegExp(pattern.replace(/\*/g, ".*"));
@@ -166,15 +165,15 @@ class LinterProcessor implements LintingProcessor {
       let stdout = "";
       let stderr = "";
 
-      child.stdout?.on("data", (data) => {
+      child.stdout?.on("data", data => {
         stdout += data.toString();
       });
 
-      child.stderr?.on("data", (data) => {
+      child.stderr?.on("data", data => {
         stderr += data.toString();
       });
 
-      child.on("close", (code) => {
+      child.on("close", code => {
         if (code === 0) {
           const issues = this.parseLinterOutput(stdout, stderr, filePath);
           resolve({
@@ -203,7 +202,7 @@ class LinterProcessor implements LintingProcessor {
         }
       });
 
-      child.on("error", (error) => {
+      child.on("error", error => {
         // In test mode, return mock issues instead of failing
         if (process.env.NODE_ENV === "test") {
           const mockIssues = this.generateMockIssues(filePath);
@@ -226,7 +225,7 @@ class LinterProcessor implements LintingProcessor {
     // This is a simplified parser - in practice, you'd implement
     // specific parsers for each linter (ESLint, Pylint, etc.)
     const issues: LintIssue[] = [];
-    
+
     // Basic JSON output parsing (for linters that support it)
     try {
       const output = JSON.parse(stdout);
@@ -285,12 +284,15 @@ class LinterProcessor implements LintingProcessor {
   private mapSeverity(severity: string | number): LintSeverity {
     if (typeof severity === "number") {
       switch (severity) {
-        case 2: return "error";
-        case 1: return "warning";
-        default: return "info";
+        case 2:
+          return "error";
+        case 1:
+          return "warning";
+        default:
+          return "info";
       }
     }
-    
+
     const s = severity.toString().toLowerCase();
     if (s.includes("error")) return "error";
     if (s.includes("warning")) return "warning";
@@ -301,7 +303,7 @@ class LinterProcessor implements LintingProcessor {
   private generateMockIssues(filePath: string): LintIssue[] {
     // Generate mock issues for testing
     const issues: LintIssue[] = [];
-    
+
     // Add a mock error issue
     issues.push({
       id: `${this.config.name}-mock-error-1`,
@@ -344,7 +346,7 @@ export class IncrementalLintingService extends EventEmitter implements LintingSe
     super();
     this.config = config;
     this.stats = this.initializeStats();
-    
+
     // Initialize queue manager
     this.queueManager = new FileQueueManager();
 
@@ -356,7 +358,7 @@ export class IncrementalLintingService extends EventEmitter implements LintingSe
     if (this.isRunning) return;
 
     printColored("🦊 Starting Reynard Incremental Linting Service", Colors.CYAN);
-    
+
     // Load cache if persistent
     if (this.config.persistCache && this.config.cacheDir) {
       await this.loadCache();
@@ -370,7 +372,7 @@ export class IncrementalLintingService extends EventEmitter implements LintingSe
 
     this.isRunning = true;
     this.emit("started");
-    
+
     printColored("✅ Incremental Linting Service started", Colors.GREEN);
   }
 
@@ -394,7 +396,7 @@ export class IncrementalLintingService extends EventEmitter implements LintingSe
 
     this.isRunning = false;
     this.emit("stopped");
-    
+
     printColored("✅ Incremental Linting Service stopped", Colors.GREEN);
   }
 
@@ -409,18 +411,21 @@ export class IncrementalLintingService extends EventEmitter implements LintingSe
     }
 
     // If no processor can handle the file, return a default result
-    const issues = process.env.NODE_ENV === "test" ? [
-      {
-        id: "none-mock-error-1",
-        filePath,
-        line: 1,
-        column: 1,
-        severity: "error" as LintSeverity,
-        message: "No linter available for this file type",
-        source: "none",
-      }
-    ] : [];
-    
+    const issues =
+      process.env.NODE_ENV === "test"
+        ? [
+            {
+              id: "none-mock-error-1",
+              filePath,
+              line: 1,
+              column: 1,
+              severity: "error" as LintSeverity,
+              message: "No linter available for this file type",
+              source: "none",
+            },
+          ]
+        : [];
+
     const result = {
       filePath,
       issues,
@@ -429,7 +434,7 @@ export class IncrementalLintingService extends EventEmitter implements LintingSe
       linter: "none",
       timestamp: Date.now(),
     };
-    
+
     // Update stats for the default result
     this.updateStats(result);
     return result;
@@ -437,7 +442,7 @@ export class IncrementalLintingService extends EventEmitter implements LintingSe
 
   async lintFiles(filePaths: string[]): Promise<LintResult[]> {
     const allResults: LintResult[] = [];
-    
+
     for (const filePath of filePaths) {
       const result = await this.lintFile(filePath);
       allResults.push(result);
@@ -448,7 +453,7 @@ export class IncrementalLintingService extends EventEmitter implements LintingSe
 
   getStatus(): LintingQueueStatus {
     const queueStatus = this.queueManager.getStatus();
-    
+
     return {
       ...queueStatus,
       isRunning: this.isRunning,
@@ -496,7 +501,7 @@ export class IncrementalLintingService extends EventEmitter implements LintingSe
 
   private initializeProcessors(): void {
     this.processors.clear();
-    
+
     for (const linterConfig of this.config.linters) {
       if (linterConfig.enabled) {
         const processor = new LinterProcessor(linterConfig);
@@ -508,7 +513,7 @@ export class IncrementalLintingService extends EventEmitter implements LintingSe
   private enqueueFileForLinting(filePath: string): void {
     // Get all processors that can handle this file
     const applicableProcessors: FileProcessor[] = [];
-    
+
     for (const processor of this.processors.values()) {
       if (processor.canProcess(filePath)) {
         // Convert LintingProcessor to FileProcessor function
@@ -518,16 +523,14 @@ export class IncrementalLintingService extends EventEmitter implements LintingSe
         });
       }
     }
-    
+
     if (applicableProcessors.length > 0) {
       this.queueManager.enqueueFile(filePath, applicableProcessors);
     }
   }
 
   private async startFileWatcher(): Promise<void> {
-    const watchPaths = this.config.includePatterns.map(pattern => 
-      join(this.config.rootPath, pattern)
-    );
+    const watchPaths = this.config.includePatterns.map(pattern => join(this.config.rootPath, pattern));
 
     this.watcher = chokidar.watch(watchPaths, {
       ignored: this.config.excludePatterns,
@@ -562,7 +565,7 @@ export class IncrementalLintingService extends EventEmitter implements LintingSe
       const cacheFile = join(this.config.cacheDir, "linting-cache.json");
       const data = await readFile(cacheFile, "utf-8");
       const entries = JSON.parse(data) as LintingCacheEntry[];
-      
+
       for (const entry of entries) {
         if (entry.expiresAt > new Date()) {
           this.cache.set(entry.filePath, entry);
@@ -644,4 +647,3 @@ export class IncrementalLintingService extends EventEmitter implements LintingSe
     });
   }
 }
-

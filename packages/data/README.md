@@ -36,22 +36,22 @@ graph TB
         subgraph "📦 Core Foundation Layer"
             RC[repository-core<br/>📋 Types & Constants<br/>🔧 Base Services<br/>⚡ Error Handling]
         end
-        
+
         subgraph "🔧 Specialized Service Layer"
             FP[file-processing<br/>🖼️ Thumbnail Generation<br/>📊 Metadata Extraction<br/>🎬 Media Analysis]
             SC[scraping<br/>🕷️ Content Extraction<br/>📈 Quality Assessment<br/>📥 Gallery Downloads]
         end
-        
+
         subgraph "🎯 Repository Specialization Layer"
             RM[repository-multimodal<br/>🎭 Multimodal Data<br/>🔄 Cross-Modal Processing]
             RS[repository-search<br/>🔍 Vector Search<br/>🧠 Semantic Discovery]
             RST[repository-storage<br/>💾 Persistence Layer<br/>📊 Parquet Support]
         end
-        
+
         subgraph "🚀 Unified Orchestration Layer"
             UR[unified-repository<br/>🎯 Main Orchestrator<br/>🌐 API Gateway<br/>📈 Analytics Dashboard]
         end
-        
+
         subgraph "🌐 Reynard Ecosystem Integration"
             RAG[reynard-rag<br/>🧠 RAG System<br/>📚 Document Retrieval]
             MULTIMODAL[reynard-multimodal<br/>🎭 Multimodal Processing]
@@ -60,35 +60,35 @@ graph TB
             CORE[Core Services<br/>reynard-service-manager<br/>reynard-connection<br/>reynard-core]
         end
     end
-    
+
     %% Dependencies
     RC --> RM
     RC --> RS
     RC --> RST
     RC --> FP
-    
+
     RM --> UR
     RS --> UR
     RST --> UR
     FP --> UR
     SC --> UR
-    
+
     %% Ecosystem Integration
     RAG --> UR
     MULTIMODAL --> UR
     AI_SHARED --> UR
     UI --> UR
     CORE --> UR
-    
+
     %% External Dependencies
     UR --> DB[(PostgreSQL<br/>+ pgvector)]
     UR --> STORAGE[(Storage<br/>Local/S3/GCS)]
-    
+
     %% Embedding Consumption
     RAG[reynard-rag<br/>🧠 RAG System<br/>📚 Document Retrieval] --> EMBEDDINGS[(Embedding<br/>Models)]
     RS --> EMBEDDINGS
     UR --> EMBEDDINGS
-    
+
     %% Styling
     classDef coreLayer fill:#e1f5fe,stroke:#01579b,stroke-width:2px
     classDef serviceLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
@@ -96,7 +96,7 @@ graph TB
     classDef orchestrationLayer fill:#fff3e0,stroke:#e65100,stroke-width:3px
     classDef ecosystemLayer fill:#fce4ec,stroke:#880e4f,stroke-width:2px
     classDef externalLayer fill:#f5f5f5,stroke:#424242,stroke-width:2px
-    
+
     class RC coreLayer
     class FP,SC serviceLayer
     class RM,RS,RST repoLayer
@@ -199,7 +199,7 @@ function ScrapingComponent() {
   const handleScrape = async () => {
     const job = await createJob({
       url: "https://example.com/article",
-      type: "general"
+      type: "general",
     });
   };
 }
@@ -310,7 +310,7 @@ const results = await repository.search({
 ```text
 unified-repository (orchestrator)
 ├── repository-multimodal (multimodal data)
-├── repository-search (search capabilities)  
+├── repository-search (search capabilities)
 ├── repository-storage (persistence)
 ├── file-processing (file operations)
 └── repository-core (foundation)
@@ -624,11 +624,7 @@ const dataset = await repository.createDataset({
 });
 
 // Ingest files
-await repository.ingestFiles(dataset.id, [
-  "papers/paper1.pdf", 
-  "papers/paper1_figures/", 
-  "papers/paper1_data.parquet"
-]);
+await repository.ingestFiles(dataset.id, ["papers/paper1.pdf", "papers/paper1_figures/", "papers/paper1_data.parquet"]);
 ```
 
 ### **Advanced Multimodal Search**
@@ -753,4 +749,4 @@ This project is licensed under the MIT License - see the [LICENSE](../../LICENSE
 
 **Built with the cunning of a fox, the thoroughness of an otter, and the relentless determination of a wolf!** 🦊🦦🐺
 
-*The Reynard Data Ecosystem represents the apex of multimodal data management - a comprehensive, scalable, and maintainable solution that embodies the strategic thinking, thorough analysis, and persistent pursuit of excellence that defines the Reynard way.*
+_The Reynard Data Ecosystem represents the apex of multimodal data management - a comprehensive, scalable, and maintainable solution that embodies the strategic thinking, thorough analysis, and persistent pursuit of excellence that defines the Reynard way._

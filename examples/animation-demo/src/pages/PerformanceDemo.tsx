@@ -1,6 +1,6 @@
 /**
  * ⚡ Performance Demo
- * 
+ *
  * Showcase of performance monitoring and optimization features
  */
 
@@ -21,7 +21,7 @@ export const PerformanceDemo: Component = () => {
     fps: 60,
     memoryUsage: 45.2,
     loadTime: 1200,
-    animationCount: 5
+    animationCount: 5,
   });
   const setPerformanceMode = (_mode: string) => {};
   const isAnimationsDisabled = () => false;
@@ -33,43 +33,43 @@ export const PerformanceDemo: Component = () => {
 
   const updateMetrics = () => {
     const perfMetrics = getPerformanceMetrics();
-    
+
     setMetrics([
       {
         name: "FPS",
         value: perfMetrics.fps,
         unit: "fps",
         trend: perfMetrics.fps > 55 ? "up" : perfMetrics.fps < 30 ? "down" : "stable",
-        threshold: { warning: 45, critical: 30 }
+        threshold: { warning: 45, critical: 30 },
       },
       {
         name: "Memory Usage",
         value: perfMetrics.memoryUsage,
         unit: "MB",
         trend: perfMetrics.memoryUsage < 50 ? "down" : perfMetrics.memoryUsage > 100 ? "up" : "stable",
-        threshold: { warning: 80, critical: 120 }
+        threshold: { warning: 80, critical: 120 },
       },
       {
         name: "Load Time",
         value: perfMetrics.loadTime,
         unit: "ms",
         trend: perfMetrics.loadTime < 1000 ? "down" : perfMetrics.loadTime > 3000 ? "up" : "stable",
-        threshold: { warning: 2000, critical: 5000 }
+        threshold: { warning: 2000, critical: 5000 },
       },
       {
         name: "Active Animations",
         value: perfMetrics.animationCount,
         unit: "count",
         trend: perfMetrics.animationCount < 10 ? "down" : perfMetrics.animationCount > 50 ? "up" : "stable",
-        threshold: { warning: 30, critical: 100 }
-      }
+        threshold: { warning: 30, critical: 100 },
+      },
     ]);
   };
 
   const startMonitoring = () => {
     setIsMonitoring(true);
     updateMetrics();
-    
+
     monitoringInterval = setInterval(() => {
       updateMetrics();
     }, 1000);
@@ -104,9 +104,12 @@ export const PerformanceDemo: Component = () => {
 
   const getTrendIcon = (trend: "up" | "down" | "stable") => {
     switch (trend) {
-      case "up": return "📈";
-      case "down": return "📉";
-      case "stable": return "➡️";
+      case "up":
+        return "📈";
+      case "down":
+        return "📉";
+      case "stable":
+        return "➡️";
     }
   };
 
@@ -130,7 +133,7 @@ export const PerformanceDemo: Component = () => {
             <label class="control-label">Performance Mode</label>
             <select
               value={performanceMode()}
-              onChange={(e) => handlePerformanceModeChange(e.currentTarget.value as "normal" | "high" | "low")}
+              onChange={e => handlePerformanceModeChange(e.currentTarget.value as "normal" | "high" | "low")}
             >
               <option value="normal">Normal</option>
               <option value="high">High Performance</option>
@@ -152,10 +155,7 @@ export const PerformanceDemo: Component = () => {
           </div>
 
           <div class="control-group">
-            <button 
-              class="control-button primary" 
-              onClick={isMonitoring() ? stopMonitoring : startMonitoring}
-            >
+            <button class="control-button primary" onClick={isMonitoring() ? stopMonitoring : startMonitoring}>
               {isMonitoring() ? "⏹️ Stop Monitoring" : "▶️ Start Monitoring"}
             </button>
           </div>
@@ -170,7 +170,7 @@ export const PerformanceDemo: Component = () => {
         </h2>
         <div class="performance-metrics">
           <For each={metrics()}>
-            {(metric) => (
+            {metric => (
               <div class={`metric-card ${getMetricStatus(metric)}`}>
                 <div class="metric-header">
                   <div class="metric-name">{metric.name}</div>
@@ -182,10 +182,12 @@ export const PerformanceDemo: Component = () => {
                 </div>
                 <div class="metric-thresholds">
                   <div class="threshold warning">
-                    Warning: {metric.threshold.warning}{metric.unit}
+                    Warning: {metric.threshold.warning}
+                    {metric.unit}
                   </div>
                   <div class="threshold critical">
-                    Critical: {metric.threshold.critical}{metric.unit}
+                    Critical: {metric.threshold.critical}
+                    {metric.unit}
                   </div>
                 </div>
               </div>
@@ -271,9 +273,7 @@ export const PerformanceDemo: Component = () => {
         <div class="status-grid">
           <div class="status-item">
             <span class="status-label">Monitoring:</span>
-            <span class="status-value">
-              {isMonitoring() ? "Active" : "Inactive"}
-            </span>
+            <span class="status-value">{isMonitoring() ? "Active" : "Inactive"}</span>
           </div>
           <div class="status-item">
             <span class="status-label">Performance Mode:</span>
@@ -281,9 +281,7 @@ export const PerformanceDemo: Component = () => {
           </div>
           <div class="status-item">
             <span class="status-label">Animations:</span>
-            <span class="status-value">
-              {isAnimationsDisabled() ? "Disabled" : "Enabled"}
-            </span>
+            <span class="status-value">{isAnimationsDisabled() ? "Disabled" : "Enabled"}</span>
           </div>
           <div class="status-item">
             <span class="status-label">Fallback System:</span>
@@ -299,7 +297,7 @@ export const PerformanceDemo: Component = () => {
           Code Example
         </h2>
         <pre class="code-example">
-{`import { useAnimationControl } from "reynard-core/composables";
+          {`import { useAnimationControl } from "reynard-core/composables";
 
 const { 
   getPerformanceMetrics, 

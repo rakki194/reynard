@@ -17,12 +17,12 @@
   --animation-duration: 0.3s;
   --animation-timing: ease;
   --animation-delay: 0s;
-  
+
   /* Transition properties */
   --transition-duration: 0.3s;
   --transition-timing: ease;
   --transition-delay: 0s;
-  
+
   /* Performance mode properties */
   --performance-animation-duration: 0.1s;
   --performance-transition-duration: 0.1s;
@@ -41,30 +41,35 @@
     --transition-duration: 0s;
     --transition-delay: 0s;
   }
-  
+
   /* Disable all animations and transitions */
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0s !important;
     animation-delay: 0s !important;
     transition-duration: 0s !important;
     transition-delay: 0s !important;
     scroll-behavior: auto !important;
   }
-  
+
   /* Disable specific animation properties */
   [style*="animation"] {
     animation: none !important;
   }
-  
+
   [style*="transition"] {
     transition: none !important;
   }
-  
+
   /* Disable CSS animations */
   @keyframes * {
-    from, to { transform: none; }
+    from,
+    to {
+      transform: none;
+    }
   }
-  
+
   /* Ensure no transform animations */
   * {
     transform: none !important;
@@ -82,8 +87,8 @@
   --transition-delay: 0s;
 }
 
-.animations-disabled *, 
-.animations-disabled *::before, 
+.animations-disabled *,
+.animations-disabled *::before,
 .animations-disabled *::after {
   animation-duration: 0s !important;
   animation-delay: 0s !important;
@@ -101,7 +106,10 @@
 }
 
 .animations-disabled @keyframes * {
-  from, to { transform: none; }
+  from,
+  to {
+    transform: none;
+  }
 }
 
 .animations-disabled * {
@@ -223,7 +231,9 @@
    ========================================================================== */
 
 @media print {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation: none !important;
     transition: none !important;
     transform: none !important;
@@ -250,8 +260,10 @@
     --animation-duration: 0s;
     --transition-duration: 0s;
   }
-  
-  *, *::before, *::after {
+
+  *,
+  *::before,
+  *::after {
     animation: none !important;
     transition: none !important;
   }

@@ -95,4 +95,3 @@ export interface DependencyHealthScore {
   issues: string[];
   lastUpdated: string;
 }
-

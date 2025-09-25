@@ -25,26 +25,26 @@ npm install @reynard/dev-tools-catalyst
 ### CLI Base Class
 
 ```typescript
-import { BaseCLI } from '@reynard/dev-tools-catalyst';
+import { BaseCLI } from "@reynard/dev-tools-catalyst";
 
 class MyToolCLI extends BaseCLI {
   constructor() {
     super({
-      name: 'my-tool',
-      description: '🦊 My awesome dev tool',
-      version: '1.0.0'
+      name: "my-tool",
+      description: "🦊 My awesome dev tool",
+      version: "1.0.0",
     });
   }
 
   protected setupCommands(): void {
     this.addCommand({
-      name: 'generate',
-      description: 'Generate something awesome',
-      action: async (options) => {
+      name: "generate",
+      description: "Generate something awesome",
+      action: async options => {
         this.logStartup();
         // Your logic here
-        this.logCompletion(true, 'Generation completed!');
-      }
+        this.logCompletion(true, "Generation completed!");
+      },
     });
   }
 }
@@ -57,32 +57,32 @@ cli.parse();
 ### Unified Logger
 
 ```typescript
-import { ReynardLogger } from '@reynard/dev-tools-catalyst';
+import { ReynardLogger } from "@reynard/dev-tools-catalyst";
 
 const logger = new ReynardLogger({ verbose: true });
 
-logger.info('Processing files...');
-logger.success('All files processed successfully!');
-logger.warn('Some files had warnings');
-logger.error('Failed to process file');
-logger.section('Summary');
+logger.info("Processing files...");
+logger.success("All files processed successfully!");
+logger.warn("Some files had warnings");
+logger.error("Failed to process file");
+logger.section("Summary");
 logger.summary({ files: 42, errors: 0, warnings: 3 });
 ```
 
 ### File Utilities
 
 ```typescript
-import { FileTypeDetector, FileExclusionManager, FileManager } from '@reynard/dev-tools-catalyst';
+import { FileTypeDetector, FileExclusionManager, FileManager } from "@reynard/dev-tools-catalyst";
 
 // File type detection
-const fileType = FileTypeDetector.getFileType('src/index.ts'); // 'typescript'
+const fileType = FileTypeDetector.getFileType("src/index.ts"); // 'typescript'
 
 // File exclusion
-const shouldExclude = FileExclusionManager.shouldExcludeFile('node_modules/package/index.js'); // true
+const shouldExclude = FileExclusionManager.shouldExcludeFile("node_modules/package/index.js"); // true
 
 // File operations
 const fileManager = new FileManager({ verbose: true });
-const files = fileManager.scanDirectory('./src', { extensions: ['.ts', '.js'] });
+const files = fileManager.scanDirectory("./src", { extensions: [".ts", ".js"] });
 ```
 
 ## 📚 **API Reference**
@@ -169,7 +169,7 @@ Common file operations and directory scanning.
 Catalyst uses a consistent color scheme across all tools:
 
 - **🔵 Blue**: Info messages
-- **🟡 Yellow**: Warning messages  
+- **🟡 Yellow**: Warning messages
 - **🔴 Red**: Error messages
 - **🟢 Green**: Success messages
 - **🟣 Magenta**: Debug messages and sections
@@ -211,16 +211,16 @@ npm run lint:fix
 **Before:**
 
 ```typescript
-import { Command } from 'commander';
-import { writeFileSync, existsSync } from 'fs';
+import { Command } from "commander";
+import { writeFileSync, existsSync } from "fs";
 
 const program = new Command();
 program
-  .name('my-tool')
-  .description('My tool')
-  .version('1.0.0')
-  .option('-v, --verbose', 'Verbose output')
-  .action(async (options) => {
+  .name("my-tool")
+  .description("My tool")
+  .version("1.0.0")
+  .option("-v, --verbose", "Verbose output")
+  .action(async options => {
     // Custom implementation
   });
 ```
@@ -228,14 +228,14 @@ program
 **After:**
 
 ```typescript
-import { BaseCLI } from '@reynard/dev-tools-catalyst';
+import { BaseCLI } from "@reynard/dev-tools-catalyst";
 
 class MyToolCLI extends BaseCLI {
   constructor() {
     super({
-      name: 'my-tool',
-      description: 'My tool',
-      version: '1.0.0'
+      name: "my-tool",
+      description: "My tool",
+      version: "1.0.0",
     });
   }
 
@@ -251,8 +251,8 @@ class MyToolCLI extends BaseCLI {
 
 ```typescript
 class CustomLogger {
-  private colors = { red: '\x1b[31m', green: '\x1b[32m' };
-  
+  private colors = { red: "\x1b[31m", green: "\x1b[32m" };
+
   info(message: string) {
     console.log(`${this.colors.blue}${message}`);
   }
@@ -263,10 +263,10 @@ class CustomLogger {
 **After:**
 
 ```typescript
-import { ReynardLogger } from '@reynard/dev-tools-catalyst';
+import { ReynardLogger } from "@reynard/dev-tools-catalyst";
 
 const logger = new ReynardLogger({ verbose: true });
-logger.info('Message');
+logger.info("Message");
 ```
 
 ## 🤝 **Contributing**
@@ -287,4 +287,4 @@ Catalyst is part of the Reynard ecosystem of dev-tools. Learn more at [reynard.d
 
 ---
 
-*Made with ⚗️ by the Reynard team*
+_Made with ⚗️ by the Reynard team_

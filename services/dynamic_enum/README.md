@@ -146,7 +146,7 @@ class BackendDataProvider(Protocol):
     async def get_naming_spirits(self) -> Dict[str, Any]:
         """Get naming spirits data from backend."""
         ...
-    
+
     async def get_naming_enums(self) -> Dict[str, Any]:
         """Get naming enums data from backend."""
         ...

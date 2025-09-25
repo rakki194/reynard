@@ -24,7 +24,7 @@ export class WorkflowFileManager extends CatalystFileManager {
       projectRoot: process.cwd(),
       excludePatterns: excludePatterns.map(pattern => new RegExp(pattern.replace(/\*/g, ".*"))),
       includePatterns: includePatterns.map(pattern => new RegExp(pattern.replace(/\*/g, ".*"))),
-      verbose: logger ? true : false
+      verbose: logger ? true : false,
     });
     this.workflowDir = workflowDir;
     this.tempDir = tempDir;
@@ -41,7 +41,7 @@ export class WorkflowFileManager extends CatalystFileManager {
 
     const files = this.scanDirectory(this.workflowDir, {
       extensions: [".yml", ".yaml"],
-      recursive: false
+      recursive: false,
     });
 
     return files.map(file => ({

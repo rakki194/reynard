@@ -151,12 +151,10 @@ export function createStatsCommand(): Command {
  */
 export function createStartMultipleCommand(): Command {
   const command = new Command("start-multiple");
-  command
-    .description("Start multiple servers interactively")
-    .action(async () => {
-      const globalOptions: GlobalOptions = { config: "dev-server.config.json", verbose: false };
-      await handleStartMultiple(globalOptions);
-    });
+  command.description("Start multiple servers interactively").action(async () => {
+    const globalOptions: GlobalOptions = { config: "dev-server.config.json", verbose: false };
+    await handleStartMultiple(globalOptions);
+  });
   return command;
 }
 

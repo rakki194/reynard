@@ -114,20 +114,20 @@ export function InteractiveDiagramSystem(props: InteractiveDiagramSystemProps) {
         package: "#7ED321",
         module: "#F5A623",
         directory: "#BD10E0",
-        service: "#50E3C2"
+        service: "#50E3C2",
       },
       edgeColors: {
         import: "#4A90E2",
         export: "#7ED321",
         dependency: "#F5A623",
         inheritance: "#BD10E0",
-        composition: "#50E3C2"
+        composition: "#50E3C2",
       },
       textColor: "#ffffff",
       selectionColor: "#ff6b6b",
-      hoverColor: "#4ecdc4"
+      hoverColor: "#4ecdc4",
     },
-    ...props.config
+    ...props.config,
   }));
 
   // State management
@@ -155,10 +155,11 @@ export function InteractiveDiagramSystem(props: InteractiveDiagramSystemProps) {
     // Apply search filter
     if (searchQuery()) {
       const query = searchQuery().toLowerCase();
-      filtered = filtered.filter(node => 
-        node.label.toLowerCase().includes(query) ||
-        node.path.toLowerCase().includes(query) ||
-        node.category.toLowerCase().includes(query)
+      filtered = filtered.filter(
+        node =>
+          node.label.toLowerCase().includes(query) ||
+          node.path.toLowerCase().includes(query) ||
+          node.category.toLowerCase().includes(query)
       );
     }
 
@@ -186,9 +187,7 @@ export function InteractiveDiagramSystem(props: InteractiveDiagramSystemProps) {
 
     // Only show edges between visible nodes
     const visibleNodeIds = new Set(filteredNodes().map(node => node.id));
-    filtered = filtered.filter(edge => 
-      visibleNodeIds.has(edge.source) && visibleNodeIds.has(edge.target)
-    );
+    filtered = filtered.filter(edge => visibleNodeIds.has(edge.source) && visibleNodeIds.has(edge.target));
 
     return filtered;
   });
@@ -223,14 +222,14 @@ export function InteractiveDiagramSystem(props: InteractiveDiagramSystemProps) {
       visibleNodes,
       visibleEdges,
       health: props.graph.metadata.health,
-      complexity: props.graph.metadata.complexity
+      complexity: props.graph.metadata.complexity,
     };
   });
 
   // Event handlers
   const handleNodeClick = (node: DependencyNode, event: MouseEvent) => {
     event.stopPropagation();
-    
+
     if (config().enableSelection) {
       if (config().enableMultiSelect && event.ctrlKey) {
         // Multi-select mode
@@ -252,7 +251,7 @@ export function InteractiveDiagramSystem(props: InteractiveDiagramSystemProps) {
 
   const handleEdgeClick = (edge: DependencyEdge, event: MouseEvent) => {
     event.stopPropagation();
-    
+
     if (config().enableSelection) {
       if (config().enableMultiSelect && event.ctrlKey) {
         // Multi-select mode
@@ -283,10 +282,7 @@ export function InteractiveDiagramSystem(props: InteractiveDiagramSystemProps) {
     if (config().enableZoom) {
       event.preventDefault();
       const delta = event.deltaY > 0 ? 0.9 : 1.1;
-      const newZoom = Math.max(
-        config().minZoom,
-        Math.min(config().maxZoom, zoom() * delta)
-      );
+      const newZoom = Math.max(config().minZoom, Math.min(config().maxZoom, zoom() * delta));
       setZoom(newZoom);
     }
   };
@@ -302,7 +298,7 @@ export function InteractiveDiagramSystem(props: InteractiveDiagramSystemProps) {
     if (isDragging() && config().enablePan) {
       setPan({
         x: event.clientX - dragStart().x,
-        y: event.clientY - dragStart().y
+        y: event.clientY - dragStart().y,
       });
     }
   };
@@ -335,8 +331,11 @@ export function InteractiveDiagramSystem(props: InteractiveDiagramSystemProps) {
     const nodes = filteredNodes();
     if (nodes.length === 0) return;
 
-    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-    
+    let minX = Infinity,
+      minY = Infinity,
+      maxX = -Infinity,
+      maxY = -Infinity;
+
     for (const node of nodes) {
       const x = node.visual.x || 0;
       const y = node.visual.y || 0;
@@ -358,7 +357,7 @@ export function InteractiveDiagramSystem(props: InteractiveDiagramSystemProps) {
     setZoom(scale);
     setPan({
       x: (props.width || 800) / 2 - centerX * scale,
-      y: (props.height || 600) / 2 - centerY * scale
+      y: (props.height || 600) / 2 - centerY * scale,
     });
   };
 
@@ -369,13 +368,13 @@ export function InteractiveDiagramSystem(props: InteractiveDiagramSystemProps) {
 
   // Effect to notify parent of selection changes
   createEffect(() => {
-    const selectedNodeObjects = Array.from(selectedNodes()).map(id => 
-      props.graph.nodes.get(id)
-    ).filter(Boolean) as DependencyNode[];
-    
-    const selectedEdgeObjects = Array.from(selectedEdges()).map(id => 
-      props.graph.edges.get(id)
-    ).filter(Boolean) as DependencyEdge[];
+    const selectedNodeObjects = Array.from(selectedNodes())
+      .map(id => props.graph.nodes.get(id))
+      .filter(Boolean) as DependencyNode[];
+
+    const selectedEdgeObjects = Array.from(selectedEdges())
+      .map(id => props.graph.edges.get(id))
+      .filter(Boolean) as DependencyEdge[];
 
     props.onSelectionChange?.(selectedNodeObjects, selectedEdgeObjects);
   });
@@ -389,20 +388,20 @@ export function InteractiveDiagramSystem(props: InteractiveDiagramSystemProps) {
       position: [
         node.visual.x || 0,
         node.visual.y || 0,
-        Math.random() * 100 // Random Z for now
+        Math.random() * 100, // Random Z for now
       ] as [number, number, number],
       color: [
         parseFloat(config().theme.nodeColors[node.type]?.slice(1, 3) || "74", 16) / 255,
         parseFloat(config().theme.nodeColors[node.type]?.slice(3, 5) || "144", 16) / 255,
-        parseFloat(config().theme.nodeColors[node.type]?.slice(5, 7) || "226", 16) / 255
+        parseFloat(config().theme.nodeColors[node.type]?.slice(5, 7) || "226", 16) / 255,
       ] as [number, number, number],
       size: (node.visual.size || 8) * 2,
       metadata: {
         label: node.label,
         type: node.type,
         category: node.category,
-        path: node.path
-      }
+        path: node.path,
+      },
     }));
 
     return (
@@ -420,16 +419,16 @@ export function InteractiveDiagramSystem(props: InteractiveDiagramSystemProps) {
               colorMapping: "custom",
               sizeMapping: "custom",
               enableHighlighting: true,
-              maxPoints: 10000
+              maxPoints: 10000,
             },
             onPointClick: (point, event) => {
               const node = props.graph.nodes.get(point.id);
               if (node) {
                 handleNodeClick(node, event);
               }
-            }
+            },
           });
-          
+
           scene.add(pointCloud);
         }}
       />
@@ -449,7 +448,7 @@ export function InteractiveDiagramSystem(props: InteractiveDiagramSystemProps) {
           "background-color": config().theme.backgroundColor,
           position: "relative",
           overflow: "hidden",
-          cursor: isDragging() ? "grabbing" : "grab"
+          cursor: isDragging() ? "grabbing" : "grab",
         }}
         onClick={handleCanvasClick}
         onWheel={handleWheel}
@@ -464,15 +463,15 @@ export function InteractiveDiagramSystem(props: InteractiveDiagramSystemProps) {
           style={{
             transform: `translate(${pan().x}px, ${pan().y}px) scale(${zoom()})`,
             "transform-origin": "0 0",
-            transition: isDragging() ? "none" : `transform ${config().animationDuration}ms ease-out`
+            transition: isDragging() ? "none" : `transform ${config().animationDuration}ms ease-out`,
           }}
         >
           {/* Render edges */}
           <For each={filteredEdges()}>
-            {(edge) => {
+            {edge => {
               const sourceNode = props.graph.nodes.get(edge.source);
               const targetNode = props.graph.nodes.get(edge.target);
-              
+
               if (!sourceNode || !targetNode) return null;
 
               const x1 = sourceNode.visual.x || 0;
@@ -490,15 +489,21 @@ export function InteractiveDiagramSystem(props: InteractiveDiagramSystemProps) {
                   y1={y1}
                   x2={x2}
                   y2={y2}
-                  stroke={isCircular ? "#ff0000" : (isSelected ? config().theme.selectionColor : config().theme.edgeColors[edge.type] || "#666666")}
-                  stroke-width={isSelected ? 4 : (isHovered ? 3 : edge.visual.width || 2)}
+                  stroke={
+                    isCircular
+                      ? "#ff0000"
+                      : isSelected
+                        ? config().theme.selectionColor
+                        : config().theme.edgeColors[edge.type] || "#666666"
+                  }
+                  stroke-width={isSelected ? 4 : isHovered ? 3 : edge.visual.width || 2}
                   stroke-dasharray={isCircular ? "5,5" : "none"}
-                  opacity={isSelected ? 1 : (isHovered ? 0.8 : 0.6)}
+                  opacity={isSelected ? 1 : isHovered ? 0.8 : 0.6}
                   style={{
                     cursor: "pointer",
-                    transition: "all 0.2s ease"
+                    transition: "all 0.2s ease",
                   }}
-                  onClick={(e) => handleEdgeClick(edge, e)}
+                  onClick={e => handleEdgeClick(edge, e)}
                   onMouseEnter={() => handleEdgeHover(edge.id)}
                   onMouseLeave={() => handleEdgeHover(null)}
                 />
@@ -508,7 +513,7 @@ export function InteractiveDiagramSystem(props: InteractiveDiagramSystemProps) {
 
           {/* Render nodes */}
           <For each={filteredNodes()}>
-            {(node) => {
+            {node => {
               const x = node.visual.x || 0;
               const y = node.visual.y || 0;
               const size = node.visual.size || 8;
@@ -520,9 +525,9 @@ export function InteractiveDiagramSystem(props: InteractiveDiagramSystemProps) {
                   transform={`translate(${x}, ${y})`}
                   style={{
                     cursor: "pointer",
-                    transition: "all 0.2s ease"
+                    transition: "all 0.2s ease",
                   }}
-                  onClick={(e) => handleNodeClick(node, e)}
+                  onClick={e => handleNodeClick(node, e)}
                   onMouseEnter={() => handleNodeHover(node.id)}
                   onMouseLeave={() => handleNodeHover(null)}
                 >
@@ -530,13 +535,19 @@ export function InteractiveDiagramSystem(props: InteractiveDiagramSystemProps) {
                   <circle
                     cx={0}
                     cy={0}
-                    r={isSelected ? size + 4 : (isHovered ? size + 2 : size)}
-                    fill={isSelected ? config().theme.selectionColor : (isHovered ? config().theme.hoverColor : config().theme.nodeColors[node.type] || "#666666")}
+                    r={isSelected ? size + 4 : isHovered ? size + 2 : size}
+                    fill={
+                      isSelected
+                        ? config().theme.selectionColor
+                        : isHovered
+                          ? config().theme.hoverColor
+                          : config().theme.nodeColors[node.type] || "#666666"
+                    }
                     stroke={isSelected ? "#ffffff" : "none"}
                     stroke-width={isSelected ? 2 : 0}
-                    opacity={isSelected ? 1 : (isHovered ? 0.9 : 0.8)}
+                    opacity={isSelected ? 1 : isHovered ? 0.9 : 0.8}
                   />
-                  
+
                   {/* Node label */}
                   <Show when={showLabels()}>
                     <text
@@ -562,64 +573,47 @@ export function InteractiveDiagramSystem(props: InteractiveDiagramSystemProps) {
   return (
     <div class={`interactive-diagram-system ${props.class || ""}`}>
       {/* Control Panel */}
-      <div class="diagram-controls" style={{ 
-        display: "flex", 
-        "flex-wrap": "wrap", 
-        gap: "8px", 
-        padding: "12px",
-        "background-color": "#2a2a2a",
-        "border-bottom": "1px solid #444"
-      }}>
+      <div
+        class="diagram-controls"
+        style={{
+          display: "flex",
+          "flex-wrap": "wrap",
+          gap: "8px",
+          padding: "12px",
+          "background-color": "#2a2a2a",
+          "border-bottom": "1px solid #444",
+        }}
+      >
         {/* Search */}
         <Input
           placeholder="Search nodes..."
           value={searchQuery()}
-          onInput={(e) => setSearchQuery(e.target.value)}
+          onInput={e => setSearchQuery(e.target.value)}
           style={{ width: "200px" }}
         />
 
         {/* Filters */}
-        <Select
-          value={filterType()}
-          onChange={(e) => setFilterType(e.target.value)}
-          style={{ width: "120px" }}
-        >
+        <Select value={filterType()} onChange={e => setFilterType(e.target.value)} style={{ width: "120px" }}>
           <option value="all">All Types</option>
-          <For each={nodeTypes()}>
-            {(type) => <option value={type}>{type}</option>}
-          </For>
+          <For each={nodeTypes()}>{type => <option value={type}>{type}</option>}</For>
         </Select>
 
-        <Select
-          value={filterCategory()}
-          onChange={(e) => setFilterCategory(e.target.value)}
-          style={{ width: "120px" }}
-        >
+        <Select value={filterCategory()} onChange={e => setFilterCategory(e.target.value)} style={{ width: "120px" }}>
           <option value="all">All Categories</option>
-          <For each={nodeCategories()}>
-            {(category) => <option value={category}>{category}</option>}
-          </For>
+          <For each={nodeCategories()}>{category => <option value={category}>{category}</option>}</For>
         </Select>
 
         {/* Toggles */}
         <Checkbox
           checked={showCircularDeps()}
-          onChange={(e) => setShowCircularDeps(e.target.checked)}
+          onChange={e => setShowCircularDeps(e.target.checked)}
           label="Show Circular"
         />
 
-        <Checkbox
-          checked={showLabels()}
-          onChange={(e) => setShowLabels(e.target.checked)}
-          label="Show Labels"
-        />
+        <Checkbox checked={showLabels()} onChange={e => setShowLabels(e.target.checked)} label="Show Labels" />
 
         {/* Layout */}
-        <Select
-          value={layoutMode()}
-          onChange={(e) => setLayoutMode(e.target.value as any)}
-          style={{ width: "140px" }}
-        >
+        <Select value={layoutMode()} onChange={e => setLayoutMode(e.target.value as any)} style={{ width: "140px" }}>
           <option value="force-directed">Force Directed</option>
           <option value="hierarchical">Hierarchical</option>
           <option value="circular">Circular</option>
@@ -646,19 +640,30 @@ export function InteractiveDiagramSystem(props: InteractiveDiagramSystemProps) {
       </div>
 
       {/* Statistics */}
-      <div class="diagram-stats" style={{ 
-        display: "flex", 
-        gap: "16px", 
-        padding: "8px 12px",
-        "background-color": "#333",
-        "font-size": "12px"
-      }}>
-        <Badge variant="info">Nodes: {statistics().visibleNodes}/{statistics().totalNodes}</Badge>
-        <Badge variant="info">Edges: {statistics().visibleEdges}/{statistics().totalEdges}</Badge>
+      <div
+        class="diagram-stats"
+        style={{
+          display: "flex",
+          gap: "16px",
+          padding: "8px 12px",
+          "background-color": "#333",
+          "font-size": "12px",
+        }}
+      >
+        <Badge variant="info">
+          Nodes: {statistics().visibleNodes}/{statistics().totalNodes}
+        </Badge>
+        <Badge variant="info">
+          Edges: {statistics().visibleEdges}/{statistics().totalEdges}
+        </Badge>
         <Badge variant={statistics().circularDeps > 0 ? "warning" : "success"}>
           Circular: {statistics().circularDeps}
         </Badge>
-        <Badge variant={statistics().health === "excellent" ? "success" : statistics().health === "good" ? "info" : "warning"}>
+        <Badge
+          variant={
+            statistics().health === "excellent" ? "success" : statistics().health === "good" ? "info" : "warning"
+          }
+        >
           Health: {statistics().health}
         </Badge>
         <Badge variant="info">Complexity: {statistics().complexity.toFixed(2)}</Badge>
@@ -673,20 +678,25 @@ export function InteractiveDiagramSystem(props: InteractiveDiagramSystemProps) {
 
       {/* Selection Info */}
       <Show when={selectedNodes().size > 0 || selectedEdges().size > 0}>
-        <div class="selection-info" style={{ 
-          padding: "12px",
-          "background-color": "#2a2a2a",
-          "border-top": "1px solid #444"
-        }}>
+        <div
+          class="selection-info"
+          style={{
+            padding: "12px",
+            "background-color": "#2a2a2a",
+            "border-top": "1px solid #444",
+          }}
+        >
           <h4 style={{ margin: "0 0 8px 0", color: config().theme.textColor }}>
             Selection ({selectedNodes().size} nodes, {selectedEdges().size} edges)
           </h4>
           <div style={{ display: "flex", "flex-wrap": "wrap", gap: "8px" }}>
             <For each={Array.from(selectedNodes())}>
-              {(nodeId) => {
+              {nodeId => {
                 const node = props.graph.nodes.get(nodeId);
                 return node ? (
-                  <Badge variant="primary">{node.label} ({node.type})</Badge>
+                  <Badge variant="primary">
+                    {node.label} ({node.type})
+                  </Badge>
                 ) : null;
               }}
             </For>
@@ -706,7 +716,7 @@ export function InteractiveDiagramSystemDemo() {
 
   const generateDemoGraph = async () => {
     setIsLoading(true);
-    
+
     try {
       const generator = new DependencyGraphGenerator("/path/to/codebase");
       const generatedGraph = await generator.generateGraph();
@@ -725,27 +735,28 @@ export function InteractiveDiagramSystemDemo() {
   return (
     <div class="interactive-diagram-demo" style={{ padding: "20px" }}>
       <h2>Interactive Diagram System Demo</h2>
-      
-      <Show when={isLoading()} fallback={
-        <Show when={graph()} fallback={
-          <div>Failed to load graph</div>
-        }>
-          <InteractiveDiagramSystem
-            graph={graph()!}
-            width={1000}
-            height={700}
-            onSelectionChange={(nodes, edges) => {
-              console.log("Selection changed:", nodes, edges);
-            }}
-            onNodeClick={(node, event) => {
-              console.log("Node clicked:", node);
-            }}
-            onEdgeClick={(edge, event) => {
-              console.log("Edge clicked:", edge);
-            }}
-          />
-        </Show>
-      }>
+
+      <Show
+        when={isLoading()}
+        fallback={
+          <Show when={graph()} fallback={<div>Failed to load graph</div>}>
+            <InteractiveDiagramSystem
+              graph={graph()!}
+              width={1000}
+              height={700}
+              onSelectionChange={(nodes, edges) => {
+                console.log("Selection changed:", nodes, edges);
+              }}
+              onNodeClick={(node, event) => {
+                console.log("Node clicked:", node);
+              }}
+              onEdgeClick={(edge, event) => {
+                console.log("Edge clicked:", edge);
+              }}
+            />
+          </Show>
+        }
+      >
         <div>Generating dependency graph...</div>
       </Show>
     </div>

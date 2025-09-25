@@ -11,7 +11,7 @@ export const handleStartMultiple = async (globalOptions: GlobalOptions) => {
   } catch (error) {
     console.error(`Failed to start projects:`, error);
     // In test environment, throw instead of exiting
-    if (process.env.NODE_ENV === 'test' || process.env.VITEST === 'true') {
+    if (process.env.NODE_ENV === "test" || process.env.VITEST === "true") {
       throw error;
     }
     process.exit(1);

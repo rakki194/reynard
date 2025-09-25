@@ -1,6 +1,6 @@
 /**
  * 🦊 Animation System Initializer
- * 
+ *
  * Handles smart imports and initialization of animation systems
  */
 
@@ -91,5 +91,3 @@ export function createAnimationSystemInitializer(
     }
   };
 }
-
-

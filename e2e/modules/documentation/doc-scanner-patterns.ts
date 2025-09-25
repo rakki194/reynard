@@ -17,7 +17,7 @@ export class DocumentationScannerPatterns extends DocumentationScannerCore {
    */
   async scanAllDocumentation(): Promise<ICodeExample[]> {
     console.log("🦩 Scanning documentation files for code examples...");
-    
+
     const docPaths = [
       "README.md",
       "docs/",
@@ -26,7 +26,7 @@ export class DocumentationScannerPatterns extends DocumentationScannerCore {
       "templates/*/README.md",
       "e2e/README.md",
       "CONTRIBUTING.md",
-      "CHANGELOG.md"
+      "CHANGELOG.md",
     ];
 
     for (const pattern of docPaths) {
@@ -45,7 +45,7 @@ export class DocumentationScannerPatterns extends DocumentationScannerCore {
       // Handle glob patterns
       const basePath = pattern.split("*")[0];
       const searchPath = join(this.projectRoot, basePath);
-      
+
       try {
         const entries = readdirSync(searchPath, { withFileTypes: true });
         for (const entry of entries) {
@@ -84,4 +84,3 @@ export class DocumentationScannerPatterns extends DocumentationScannerCore {
     }
   }
 }
-

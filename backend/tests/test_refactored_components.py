@@ -43,7 +43,7 @@ from app.core.service_load_balancer import (
 )
 
 # Security component imports
-from app.security.security_middleware import AdaptiveRateLimiter, SecurityErrorHandler
+from app.security.security_middleware import SecurityErrorHandler
 
 
 class TestServiceErrorHandler:

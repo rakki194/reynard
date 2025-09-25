@@ -194,31 +194,31 @@ export class DependencyGraphGenerator extends EventEmitter {
           package: "#7ED321",
           module: "#F5A623",
           directory: "#BD10E0",
-          service: "#50E3C2"
+          service: "#50E3C2",
         },
         edgeColors: {
           import: "#4A90E2",
           export: "#7ED321",
           dependency: "#F5A623",
           inheritance: "#BD10E0",
-          composition: "#50E3C2"
+          composition: "#50E3C2",
         },
         nodeSizes: {
           file: 8,
           package: 12,
           module: 10,
           directory: 15,
-          service: 14
+          service: 14,
         },
         edgeWidths: {
           import: 2,
           export: 2,
           dependency: 3,
           inheritance: 2,
-          composition: 2
-        }
+          composition: 2,
+        },
       },
-      ...config
+      ...config,
     };
 
     this.graph = this.initializeGraph();
@@ -240,15 +240,15 @@ export class DependencyGraphGenerator extends EventEmitter {
         totalEdges: 0,
         circularDependencies: 0,
         complexity: 0,
-        health: "excellent"
+        health: "excellent",
       },
       layout: {
         algorithm: this.config.layoutAlgorithm,
         width: 1200,
         height: 800,
         center: { x: 600, y: 400 },
-        scale: 1.0
-      }
+        scale: 1.0,
+      },
     };
   }
 
@@ -257,7 +257,7 @@ export class DependencyGraphGenerator extends EventEmitter {
    */
   async generateGraph(): Promise<DependencyGraph> {
     this.emit("analysis:start", { timestamp: new Date().toISOString() });
-    
+
     try {
       // Clear previous analysis
       this.graph = this.initializeGraph();
@@ -265,16 +265,16 @@ export class DependencyGraphGenerator extends EventEmitter {
 
       // Analyze the codebase structure
       await this.analyzeCodebaseStructure();
-      
+
       // Analyze dependencies at different levels
       if (this.config.includePackageLevel) {
         await this.analyzePackageDependencies();
       }
-      
+
       if (this.config.includeDirectoryLevel) {
         await this.analyzeDirectoryDependencies();
       }
-      
+
       if (this.config.includeFileLevel) {
         await this.analyzeFileDependencies();
       }
@@ -297,7 +297,7 @@ export class DependencyGraphGenerator extends EventEmitter {
         timestamp: new Date().toISOString(),
         nodes: this.graph.nodes.size,
         edges: this.graph.edges.size,
-        circularDependencies: this.graph.metadata.circularDependencies
+        circularDependencies: this.graph.metadata.circularDependencies,
       });
 
       return this.graph;
@@ -312,11 +312,11 @@ export class DependencyGraphGenerator extends EventEmitter {
    */
   private async analyzeCodebaseStructure(): Promise<void> {
     this.emit("analysis:structure:start");
-    
+
     try {
       // Get directories by category from Reynard architecture
       const directoriesByCategory = getDirectoriesByCategory();
-      
+
       for (const [category, directories] of directoriesByCategory) {
         for (const directory of directories) {
           const nodeId = `dir-${directory.path.replace(/\//g, "-")}`;
@@ -329,22 +329,22 @@ export class DependencyGraphGenerator extends EventEmitter {
             importance: directory.importance || "optional",
             metadata: {
               description: directory.description,
-              ...directory.metadata
+              ...directory.metadata,
             },
             visual: {
               color: this.config.styling.nodeColors.directory,
               size: this.config.styling.nodeSizes.directory,
-              shape: "square"
-            }
+              shape: "square",
+            },
           };
-          
+
           this.graph.nodes.set(nodeId, node);
         }
       }
 
       // Analyze package.json files for package-level nodes
       await this.analyzePackageFiles();
-      
+
       this.emit("analysis:structure:complete", { nodes: this.graph.nodes.size });
     } catch (error) {
       this.emit("analysis:structure:error", { error });
@@ -357,13 +357,13 @@ export class DependencyGraphGenerator extends EventEmitter {
    */
   private async analyzePackageFiles(): Promise<void> {
     const packageFiles = await this.findFiles("**/package.json");
-    
+
     for (const packageFile of packageFiles) {
       try {
         const packagePath = dirname(packageFile);
         const packageContent = await readFile(packageFile, "utf-8");
         const packageData = JSON.parse(packageContent);
-        
+
         const nodeId = `pkg-${packagePath.replace(/\//g, "-")}`;
         const node: DependencyNode = {
           id: nodeId,
@@ -378,15 +378,15 @@ export class DependencyGraphGenerator extends EventEmitter {
             dependencies: Object.keys(packageData.dependencies || {}),
             devDependencies: Object.keys(packageData.devDependencies || {}),
             peerDependencies: Object.keys(packageData.peerDependencies || {}),
-            ...packageData
+            ...packageData,
           },
           visual: {
             color: this.config.styling.nodeColors.package,
             size: this.config.styling.nodeSizes.package,
-            shape: "circle"
-          }
+            shape: "circle",
+          },
         };
-        
+
         this.graph.nodes.set(nodeId, node);
       } catch (error) {
         console.warn(`Failed to analyze package.json: ${packageFile}`, error);
@@ -399,7 +399,7 @@ export class DependencyGraphGenerator extends EventEmitter {
    */
   private async analyzePackageDependencies(): Promise<void> {
     this.emit("analysis:packages:start");
-    
+
     for (const [nodeId, node] of this.graph.nodes) {
       if (node.type === "package" && node.metadata.dependencies) {
         for (const dep of node.metadata.dependencies) {
@@ -416,21 +416,21 @@ export class DependencyGraphGenerator extends EventEmitter {
               isCircular: false,
               metadata: {
                 importType: "dependency",
-                usageCount: 1
+                usageCount: 1,
               },
               visual: {
                 color: this.config.styling.edgeColors.dependency,
                 width: this.config.styling.edgeWidths.dependency,
-                style: "solid"
-              }
+                style: "solid",
+              },
             };
-            
+
             this.graph.edges.set(edgeId, edge);
           }
         }
       }
     }
-    
+
     this.emit("analysis:packages:complete", { edges: this.graph.edges.size });
   }
 
@@ -439,16 +439,16 @@ export class DependencyGraphGenerator extends EventEmitter {
    */
   private async analyzeDirectoryDependencies(): Promise<void> {
     this.emit("analysis:directories:start");
-    
+
     // Use Reynard architecture relationships
     for (const [category, directories] of Object.entries(REYNARD_ARCHITECTURE.directories)) {
       for (const directory of directories) {
         if (directory.relationships) {
           const sourceNodeId = `dir-${directory.path.replace(/\//g, "-")}`;
-          
+
           for (const relationship of directory.relationships) {
             const targetNodeId = `dir-${relationship.target.replace(/\//g, "-")}`;
-            
+
             if (this.graph.nodes.has(sourceNodeId) && this.graph.nodes.has(targetNodeId)) {
               const edgeId = `${sourceNodeId}-${targetNodeId}`;
               const edge: DependencyEdge = {
@@ -461,22 +461,22 @@ export class DependencyGraphGenerator extends EventEmitter {
                 isCircular: false,
                 metadata: {
                   description: relationship.description,
-                  ...relationship.metadata
+                  ...relationship.metadata,
                 },
                 visual: {
                   color: this.config.styling.edgeColors[relationship.type] || "#666666",
                   width: this.config.styling.edgeWidths[relationship.type] || 2,
-                  style: "solid"
-                }
+                  style: "solid",
+                },
               };
-              
+
               this.graph.edges.set(edgeId, edge);
             }
           }
         }
       }
     }
-    
+
     this.emit("analysis:directories:complete", { edges: this.graph.edges.size });
   }
 
@@ -485,15 +485,15 @@ export class DependencyGraphGenerator extends EventEmitter {
    */
   private async analyzeFileDependencies(): Promise<void> {
     this.emit("analysis:files:start");
-    
+
     const sourceFiles = await this.findFiles("**/*.{ts,tsx,js,jsx}");
-    
+
     for (const filePath of sourceFiles) {
       try {
         const content = await readFile(filePath, "utf-8");
         const imports = this.extractImports(content);
         const exports = this.extractExports(content);
-        
+
         // Create file node if it doesn't exist
         const fileNodeId = `file-${filePath.replace(/\//g, "-")}`;
         if (!this.graph.nodes.has(fileNodeId)) {
@@ -509,18 +509,18 @@ export class DependencyGraphGenerator extends EventEmitter {
             metadata: {
               imports: imports.length,
               exports: exports.length,
-              complexity: this.calculateFileComplexity(content)
+              complexity: this.calculateFileComplexity(content),
             },
             visual: {
               color: this.config.styling.nodeColors.file,
               size: this.config.styling.nodeSizes.file,
-              shape: "circle"
-            }
+              shape: "circle",
+            },
           };
-          
+
           this.graph.nodes.set(fileNodeId, fileNode);
         }
-        
+
         // Create import edges
         for (const importPath of imports) {
           const targetNodeId = this.resolveImportPath(importPath, filePath);
@@ -536,15 +536,15 @@ export class DependencyGraphGenerator extends EventEmitter {
               isCircular: false,
               metadata: {
                 importType: "named",
-                importPath: importPath
+                importPath: importPath,
               },
               visual: {
                 color: this.config.styling.edgeColors.import,
                 width: this.config.styling.edgeWidths.import,
-                style: "solid"
-              }
+                style: "solid",
+              },
             };
-            
+
             this.graph.edges.set(edgeId, edge);
           }
         }
@@ -552,7 +552,7 @@ export class DependencyGraphGenerator extends EventEmitter {
         console.warn(`Failed to analyze file: ${filePath}`, error);
       }
     }
-    
+
     this.emit("analysis:files:complete", { edges: this.graph.edges.size });
   }
 
@@ -561,11 +561,11 @@ export class DependencyGraphGenerator extends EventEmitter {
    */
   private async detectCircularDependencies(): Promise<void> {
     this.emit("analysis:circular:start");
-    
+
     const visited = new Set<string>();
     const recursionStack = new Set<string>();
     const circularPaths: string[][] = [];
-    
+
     const dfs = (nodeId: string, path: string[]): void => {
       if (recursionStack.has(nodeId)) {
         // Found a cycle
@@ -574,31 +574,31 @@ export class DependencyGraphGenerator extends EventEmitter {
         circularPaths.push([...cycle, nodeId]);
         return;
       }
-      
+
       if (visited.has(nodeId)) {
         return;
       }
-      
+
       visited.add(nodeId);
       recursionStack.add(nodeId);
-      
+
       // Check all outgoing edges
       for (const [edgeId, edge] of this.graph.edges) {
         if (edge.source === nodeId) {
           dfs(edge.target, [...path, nodeId]);
         }
       }
-      
+
       recursionStack.delete(nodeId);
     };
-    
+
     // Run DFS from each unvisited node
     for (const [nodeId] of this.graph.nodes) {
       if (!visited.has(nodeId)) {
         dfs(nodeId, []);
       }
     }
-    
+
     // Mark circular edges
     for (const cycle of circularPaths) {
       for (let i = 0; i < cycle.length - 1; i++) {
@@ -611,7 +611,7 @@ export class DependencyGraphGenerator extends EventEmitter {
         }
       }
     }
-    
+
     this.graph.metadata.circularDependencies = circularPaths.length;
     this.emit("analysis:circular:complete", { circularDependencies: circularPaths.length });
   }
@@ -623,13 +623,13 @@ export class DependencyGraphGenerator extends EventEmitter {
     const totalNodes = this.graph.nodes.size;
     const totalEdges = this.graph.edges.size;
     const circularDependencies = this.graph.metadata.circularDependencies;
-    
+
     // Calculate complexity score
     const complexity = this.calculateGraphComplexity();
-    
+
     // Determine health status
     const health = this.determineGraphHealth(totalNodes, totalEdges, circularDependencies, complexity);
-    
+
     this.graph.metadata.totalNodes = totalNodes;
     this.graph.metadata.totalEdges = totalEdges;
     this.graph.metadata.complexity = complexity;
@@ -641,7 +641,7 @@ export class DependencyGraphGenerator extends EventEmitter {
    */
   private async applyLayout(): Promise<void> {
     this.emit("layout:start", { algorithm: this.config.layoutAlgorithm });
-    
+
     switch (this.config.layoutAlgorithm) {
       case "force-directed":
         await this.applyForceDirectedLayout();
@@ -656,7 +656,7 @@ export class DependencyGraphGenerator extends EventEmitter {
         await this.applyGridLayout();
         break;
     }
-    
+
     this.emit("layout:complete");
   }
 
@@ -666,17 +666,17 @@ export class DependencyGraphGenerator extends EventEmitter {
   private async applyForceDirectedLayout(): Promise<void> {
     const nodes = Array.from(this.graph.nodes.values());
     const edges = Array.from(this.graph.edges.values());
-    
+
     // Initialize positions randomly
     nodes.forEach(node => {
       node.visual.x = Math.random() * this.graph.layout.width;
       node.visual.y = Math.random() * this.graph.layout.height;
     });
-    
+
     // Run force simulation (simplified version)
     const iterations = 100;
     const k = Math.sqrt((this.graph.layout.width * this.graph.layout.height) / nodes.length);
-    
+
     for (let i = 0; i < iterations; i++) {
       // Repulsion forces
       for (let j = 0; j < nodes.length; j++) {
@@ -687,31 +687,31 @@ export class DependencyGraphGenerator extends EventEmitter {
           const dy = (node1.visual.y || 0) - (node2.visual.y || 0);
           const distance = Math.sqrt(dx * dx + dy * dy) || 1;
           const force = (k * k) / distance;
-          
+
           const fx = (dx / distance) * force;
           const fy = (dy / distance) * force;
-          
+
           node1.visual.x = (node1.visual.x || 0) - fx * 0.1;
           node1.visual.y = (node1.visual.y || 0) - fy * 0.1;
           node2.visual.x = (node2.visual.x || 0) + fx * 0.1;
           node2.visual.y = (node2.visual.y || 0) + fy * 0.1;
         }
       }
-      
+
       // Attraction forces
       edges.forEach(edge => {
         const sourceNode = this.graph.nodes.get(edge.source);
         const targetNode = this.graph.nodes.get(edge.target);
-        
+
         if (sourceNode && targetNode) {
           const dx = (targetNode.visual.x || 0) - (sourceNode.visual.x || 0);
           const dy = (targetNode.visual.y || 0) - (sourceNode.visual.y || 0);
           const distance = Math.sqrt(dx * dx + dy * dy) || 1;
           const force = (distance * distance) / k;
-          
+
           const fx = (dx / distance) * force;
           const fy = (dy / distance) * force;
-          
+
           sourceNode.visual.x = (sourceNode.visual.x || 0) + fx * 0.1;
           sourceNode.visual.y = (sourceNode.visual.y || 0) + fy * 0.1;
           targetNode.visual.x = (targetNode.visual.x || 0) - fx * 0.1;
@@ -728,16 +728,16 @@ export class DependencyGraphGenerator extends EventEmitter {
     // Simplified hierarchical layout
     const nodes = Array.from(this.graph.nodes.values());
     const levels = this.calculateHierarchyLevels();
-    
+
     const levelHeight = this.graph.layout.height / Math.max(levels.size, 1);
-    
+
     for (const [nodeId, level] of levels) {
       const node = this.graph.nodes.get(nodeId);
       if (node) {
         const nodesInLevel = Array.from(levels.entries()).filter(([_, l]) => l === level);
         const nodeIndex = nodesInLevel.findIndex(([id, _]) => id === nodeId);
         const levelWidth = this.graph.layout.width / Math.max(nodesInLevel.length, 1);
-        
+
         node.visual.x = nodeIndex * levelWidth + levelWidth / 2;
         node.visual.y = level * levelHeight + levelHeight / 2;
       }
@@ -752,7 +752,7 @@ export class DependencyGraphGenerator extends EventEmitter {
     const radius = Math.min(this.graph.layout.width, this.graph.layout.height) / 3;
     const centerX = this.graph.layout.width / 2;
     const centerY = this.graph.layout.height / 2;
-    
+
     nodes.forEach((node, index) => {
       const angle = (2 * Math.PI * index) / nodes.length;
       node.visual.x = centerX + radius * Math.cos(angle);
@@ -767,14 +767,14 @@ export class DependencyGraphGenerator extends EventEmitter {
     const nodes = Array.from(this.graph.nodes.values());
     const cols = Math.ceil(Math.sqrt(nodes.length));
     const rows = Math.ceil(nodes.length / cols);
-    
+
     const cellWidth = this.graph.layout.width / cols;
     const cellHeight = this.graph.layout.height / rows;
-    
+
     nodes.forEach((node, index) => {
       const col = index % cols;
       const row = Math.floor(index / cols);
-      
+
       node.visual.x = col * cellWidth + cellWidth / 2;
       node.visual.y = row * cellHeight + cellHeight / 2;
     });
@@ -800,13 +800,13 @@ export class DependencyGraphGenerator extends EventEmitter {
 
   private async findFilesRecursive(dir: string, pattern: string, files: string[], depth: number): Promise<void> {
     if (depth > this.config.maxDepth) return;
-    
+
     try {
       const entries = await readdir(dir);
       for (const entry of entries) {
         const fullPath = join(dir, entry);
         const stat = await this.stat(fullPath);
-        
+
         if (stat.isDirectory()) {
           await this.findFilesRecursive(fullPath, pattern, files, depth + 1);
         } else if (this.matchesPattern(entry, pattern)) {
@@ -865,11 +865,11 @@ export class DependencyGraphGenerator extends EventEmitter {
     const imports: string[] = [];
     const importRegex = /import\s+.*?\s+from\s+['"]([^'"]+)['"]/g;
     let match;
-    
+
     while ((match = importRegex.exec(content)) !== null) {
       imports.push(match[1]);
     }
-    
+
     return imports;
   }
 
@@ -877,11 +877,11 @@ export class DependencyGraphGenerator extends EventEmitter {
     const exports: string[] = [];
     const exportRegex = /export\s+.*?\s+from\s+['"]([^'"]+)['"]/g;
     let match;
-    
+
     while ((match = exportRegex.exec(content)) !== null) {
       exports.push(match[1]);
     }
-    
+
     return exports;
   }
 
@@ -891,7 +891,7 @@ export class DependencyGraphGenerator extends EventEmitter {
     const functions = (content.match(/function\s+\w+/g) || []).length;
     const classes = (content.match(/class\s+\w+/g) || []).length;
     const imports = (content.match(/import\s+/g) || []).length;
-    
+
     return Math.min(10, (functions + classes + imports) / 10);
   }
 
@@ -901,7 +901,7 @@ export class DependencyGraphGenerator extends EventEmitter {
       const resolvedPath = join(dirname(fromFile), importPath);
       return `file-${resolvedPath.replace(/\//g, "-")}`;
     }
-    
+
     // Look for package nodes
     return this.findPackageNode(importPath);
   }
@@ -918,13 +918,13 @@ export class DependencyGraphGenerator extends EventEmitter {
   private calculateHierarchyLevels(): Map<string, number> {
     const levels = new Map<string, number>();
     const visited = new Set<string>();
-    
+
     const dfs = (nodeId: string, level: number): void => {
       if (visited.has(nodeId)) return;
-      
+
       visited.add(nodeId);
       levels.set(nodeId, level);
-      
+
       // Check outgoing edges
       for (const [_, edge] of this.graph.edges) {
         if (edge.source === nodeId) {
@@ -932,14 +932,14 @@ export class DependencyGraphGenerator extends EventEmitter {
         }
       }
     };
-    
+
     // Start from root nodes (nodes with no incoming edges)
     const rootNodes = Array.from(this.graph.nodes.keys()).filter(nodeId => {
       return !Array.from(this.graph.edges.values()).some(edge => edge.target === nodeId);
     });
-    
+
     rootNodes.forEach(nodeId => dfs(nodeId, 0));
-    
+
     return levels;
   }
 
@@ -947,7 +947,7 @@ export class DependencyGraphGenerator extends EventEmitter {
     const nodes = this.graph.nodes.size;
     const edges = this.graph.edges.size;
     const circularDeps = this.graph.metadata.circularDependencies;
-    
+
     // Complexity formula: nodes + edges + circular dependencies penalty
     return Math.min(10, (nodes + edges + circularDeps * 5) / 100);
   }
@@ -971,21 +971,25 @@ export class DependencyGraphGenerator extends EventEmitter {
   async exportGraph(format: "json" | "mermaid" | "svg" | "png"): Promise<string | Buffer> {
     switch (format) {
       case "json":
-        return JSON.stringify({
-          nodes: Array.from(this.graph.nodes.entries()),
-          edges: Array.from(this.graph.edges.entries()),
-          metadata: this.graph.metadata,
-          layout: this.graph.layout
-        }, null, 2);
-      
+        return JSON.stringify(
+          {
+            nodes: Array.from(this.graph.nodes.entries()),
+            edges: Array.from(this.graph.edges.entries()),
+            metadata: this.graph.metadata,
+            layout: this.graph.layout,
+          },
+          null,
+          2
+        );
+
       case "mermaid":
         return this.generateMermaidDiagram();
-      
+
       case "svg":
       case "png":
         // These would require additional rendering libraries
         throw new Error(`${format} export not yet implemented`);
-      
+
       default:
         throw new Error(`Unsupported export format: ${format}`);
     }
@@ -996,19 +1000,19 @@ export class DependencyGraphGenerator extends EventEmitter {
    */
   private generateMermaidDiagram(): string {
     let mermaid = "graph TD\n";
-    
+
     // Add nodes
     for (const [nodeId, node] of this.graph.nodes) {
       const label = node.label.replace(/[^a-zA-Z0-9]/g, "_");
       mermaid += `  ${nodeId}["${node.label}"]\n`;
     }
-    
+
     // Add edges
     for (const [edgeId, edge] of this.graph.edges) {
       const style = edge.isCircular ? "stroke:#ff0000,stroke-dasharray: 5 5" : "";
       mermaid += `  ${edge.source} -->|${edge.type}| ${edge.target}\n`;
     }
-    
+
     return mermaid;
   }
 
@@ -1054,12 +1058,12 @@ export class DependencyGraphGenerator extends EventEmitter {
   } {
     const nodesByType: Record<string, number> = {};
     const nodesByCategory: Record<string, number> = {};
-    
+
     for (const node of this.graph.nodes.values()) {
       nodesByType[node.type] = (nodesByType[node.type] || 0) + 1;
       nodesByCategory[node.category] = (nodesByCategory[node.category] || 0) + 1;
     }
-    
+
     return {
       totalNodes: this.graph.metadata.totalNodes,
       totalEdges: this.graph.metadata.totalEdges,
@@ -1067,9 +1071,7 @@ export class DependencyGraphGenerator extends EventEmitter {
       complexity: this.graph.metadata.complexity,
       health: this.graph.metadata.health,
       nodesByType,
-      nodesByCategory
+      nodesByCategory,
     };
   }
 }
-
-

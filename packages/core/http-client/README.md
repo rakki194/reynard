@@ -61,9 +61,9 @@ interface HTTPClientOptions {
 
 ```typescript
 interface CircuitBreakerConfig {
-  failureThreshold: number;    // Number of failures before opening
-  recoveryTimeout: number;     // Time to wait before attempting recovery
-  monitoringPeriod: number;    // Time window for failure counting
+  failureThreshold: number; // Number of failures before opening
+  recoveryTimeout: number; // Time to wait before attempting recovery
+  monitoringPeriod: number; // Time window for failure counting
 }
 ```
 
@@ -105,13 +105,13 @@ const customMiddleware: HTTPMiddleware = {
   async processRequest(request, next) {
     // Modify request
     request.headers["X-Custom-Header"] = "value";
-    
+
     // Continue to next middleware
     const response = await next(request);
-    
+
     // Modify response
     return response;
-  }
+  },
 };
 
 client.use(customMiddleware);
@@ -153,7 +153,7 @@ interface HTTPResponse<T = any> {
 ### Request Interceptors
 
 ```typescript
-client.addRequestInterceptor((request) => {
+client.addRequestInterceptor(request => {
   // Add timestamp to all requests
   request.headers["X-Request-Time"] = Date.now().toString();
   return request;
@@ -163,7 +163,7 @@ client.addRequestInterceptor((request) => {
 ### Response Interceptors
 
 ```typescript
-client.addResponseInterceptor((response) => {
+client.addResponseInterceptor(response => {
   // Log response time
   const requestTime = response.config.headers["X-Request-Time"];
   if (requestTime) {
@@ -180,10 +180,10 @@ client.addResponseInterceptor((response) => {
 const client = new HTTPClient({
   retries: 3,
   retryDelay: 1000,
-  retryCondition: (error) => {
+  retryCondition: error => {
     // Only retry on network errors or 5xx status codes
     return error.status >= 500 || !error.status;
-  }
+  },
 });
 ```
 
@@ -201,10 +201,12 @@ const client = new HTTPClient({
   baseUrl: "https://api.example.com",
 });
 
-client.use(createAuthMiddleware({
-  type: "bearer",
-  getToken: () => tokenManager.getAccessToken(),
-}));
+client.use(
+  createAuthMiddleware({
+    type: "bearer",
+    getToken: () => tokenManager.getAccessToken(),
+  })
+);
 ```
 
 ## Testing

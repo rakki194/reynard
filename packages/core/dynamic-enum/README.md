@@ -21,49 +21,49 @@ pnpm add reynard-dynamic-enum
 ## Quick Start
 
 ```typescript
-import { DynamicEnumService, SpiritEnumProvider } from 'reynard-dynamic-enum';
+import { DynamicEnumService, SpiritEnumProvider } from "reynard-dynamic-enum";
 
 // Create the service
 const service = new DynamicEnumService({
   enableCaching: true,
   cacheTimeout: 5 * 60 * 1000, // 5 minutes
-  fallbackStrategy: 'warn'
+  fallbackStrategy: "warn",
 });
 
 // Create a spirit provider
 const spiritProvider = new SpiritEnumProvider({
-  enumType: 'spirits',
+  enumType: "spirits",
   fallbackData: {
     fox: {
-      value: 'fox',
+      value: "fox",
       weight: 0.4,
       metadata: {
-        emoji: '🦊',
-        description: 'Strategic and cunning',
-        category: 'canine'
-      }
+        emoji: "🦊",
+        description: "Strategic and cunning",
+        category: "canine",
+      },
     },
     wolf: {
-      value: 'wolf',
+      value: "wolf",
       weight: 0.25,
       metadata: {
-        emoji: '🐺',
-        description: 'Pack-oriented and loyal',
-        category: 'canine'
-      }
-    }
+        emoji: "🐺",
+        description: "Pack-oriented and loyal",
+        category: "canine",
+      },
+    },
   },
-  defaultFallback: 'fox'
+  defaultFallback: "fox",
 });
 
 // Register the provider
-service.registerProvider('spirits', spiritProvider);
+service.registerProvider("spirits", spiritProvider);
 
 // Use the service
-const randomSpirit = await service.getRandomValue('spirits');
+const randomSpirit = await service.getRandomValue("spirits");
 console.log(randomSpirit.value); // 'fox' or 'wolf'
 
-const spiritData = await service.getEnumData('spirits');
+const spiritData = await service.getEnumData("spirits");
 console.log(spiritData.fox.metadata.emoji); // '🦊'
 ```
 
@@ -105,11 +105,11 @@ new DynamicEnumService(config?: EnumServiceConfig)
 
 ```typescript
 interface EnumServiceConfig {
-  enableCaching?: boolean;        // Enable intelligent caching (default: true)
-  cacheTimeout?: number;          // Cache TTL in milliseconds (default: 5 minutes)
-  fallbackStrategy?: 'silent' | 'warn' | 'error'; // Error handling strategy
-  enableMetrics?: boolean;        // Enable performance metrics (default: true)
-  maxRetries?: number;           // Maximum retry attempts (default: 3)
+  enableCaching?: boolean; // Enable intelligent caching (default: true)
+  cacheTimeout?: number; // Cache TTL in milliseconds (default: 5 minutes)
+  fallbackStrategy?: "silent" | "warn" | "error"; // Error handling strategy
+  enableMetrics?: boolean; // Enable performance metrics (default: true)
+  maxRetries?: number; // Maximum retry attempts (default: 3)
   dataProvider?: EnumDataProvider; // Custom data provider
 }
 ```
@@ -161,23 +161,23 @@ destroy(): void
 
 ```typescript
 abstract class BaseEnumProvider implements EnumProvider {
-  constructor(config: EnumProviderConfig, dataProvider?: EnumDataProvider)
-  
+  constructor(config: EnumProviderConfig, dataProvider?: EnumDataProvider);
+
   // Core Methods
-  getEnumType(): string
-  getEnumData(options?: EnumOperationOptions): Promise<EnumData>
-  getEnumValue(key: string, options?: EnumOperationOptions): Promise<EnumValue | null>
-  getMetadata(key: string): Promise<EnumMetadata | null>
-  validateValue(value: string): ValidationResult
-  getRandomValue(options?: EnumOperationOptions): Promise<EnumResult>
-  getRandomValues(count: number, options?: EnumOperationOptions): Promise<EnumResult[]>
-  
+  getEnumType(): string;
+  getEnumData(options?: EnumOperationOptions): Promise<EnumData>;
+  getEnumValue(key: string, options?: EnumOperationOptions): Promise<EnumValue | null>;
+  getMetadata(key: string): Promise<EnumMetadata | null>;
+  validateValue(value: string): ValidationResult;
+  getRandomValue(options?: EnumOperationOptions): Promise<EnumResult>;
+  getRandomValues(count: number, options?: EnumOperationOptions): Promise<EnumResult[]>;
+
   // Utility Methods
-  hasValue(value: string): boolean
-  getKeys(): string[]
-  getCount(): number
-  refresh(): Promise<void>
-  isReady(): boolean
+  hasValue(value: string): boolean;
+  getKeys(): string[];
+  getCount(): number;
+  refresh(): Promise<void>;
+  isReady(): boolean;
 }
 ```
 
@@ -186,13 +186,13 @@ abstract class BaseEnumProvider implements EnumProvider {
 ```typescript
 class SpiritEnumProvider extends BaseEnumProvider {
   // Specialized Methods
-  getRandomSpirit(weighted?: boolean): Promise<EnumValue>
-  getSpiritsByCategory(category: string): Promise<EnumData>
-  getSpiritCategories(): Promise<string[]>
-  getSpiritByEmoji(emoji: string): Promise<EnumValue | null>
-  getHighWeightSpirits(threshold?: number): Promise<EnumData>
-  getLowWeightSpirits(threshold?: number): Promise<EnumData>
-  getSpiritStatistics(): Promise<SpiritStatistics>
+  getRandomSpirit(weighted?: boolean): Promise<EnumValue>;
+  getSpiritsByCategory(category: string): Promise<EnumData>;
+  getSpiritCategories(): Promise<string[]>;
+  getSpiritByEmoji(emoji: string): Promise<EnumValue | null>;
+  getHighWeightSpirits(threshold?: number): Promise<EnumData>;
+  getLowWeightSpirits(threshold?: number): Promise<EnumData>;
+  getSpiritStatistics(): Promise<SpiritStatistics>;
 }
 ```
 
@@ -202,11 +202,11 @@ class SpiritEnumProvider extends BaseEnumProvider {
 
 ```typescript
 class APIClientAdapter implements EnumDataProvider {
-  constructor(config: APIDataProviderConfig)
-  
-  fetchEnumData(enumType: string): Promise<EnumData>
-  isAvailable(): Promise<boolean>
-  getProviderName(): string
+  constructor(config: APIDataProviderConfig);
+
+  fetchEnumData(enumType: string): Promise<EnumData>;
+  isAvailable(): Promise<boolean>;
+  getProviderName(): string;
 }
 ```
 
@@ -214,11 +214,12 @@ class APIClientAdapter implements EnumDataProvider {
 
 ```typescript
 interface APIDataProviderConfig {
-  baseUrl: string;                    // Base URL for the API
-  endpoint: string;                   // API endpoint for fetching enum data
-  timeout?: number;                   // Request timeout in milliseconds
-  headers?: Record<string, string>;   // Authentication headers
-  retryConfig?: {                     // Request retry configuration
+  baseUrl: string; // Base URL for the API
+  endpoint: string; // API endpoint for fetching enum data
+  timeout?: number; // Request timeout in milliseconds
+  headers?: Record<string, string>; // Authentication headers
+  retryConfig?: {
+    // Request retry configuration
     maxRetries: number;
     retryDelay: number;
     backoffMultiplier: number;
@@ -230,11 +231,11 @@ interface APIDataProviderConfig {
 
 ```typescript
 class FileDataAdapter implements EnumDataProvider {
-  constructor(config: FileDataProviderConfig)
-  
-  fetchEnumData(enumType: string): Promise<EnumData>
-  isAvailable(): Promise<boolean>
-  getProviderName(): string
+  constructor(config: FileDataProviderConfig);
+
+  fetchEnumData(enumType: string): Promise<EnumData>;
+  isAvailable(): Promise<boolean>;
+  getProviderName(): string;
 }
 ```
 
@@ -242,9 +243,9 @@ class FileDataAdapter implements EnumDataProvider {
 
 ```typescript
 interface FileDataProviderConfig {
-  filePath: string;        // Path to the data file
-  format: 'json' | 'yaml' | 'toml'; // File format
-  watch?: boolean;         // Whether to watch for file changes
+  filePath: string; // Path to the data file
+  format: "json" | "yaml" | "toml"; // File format
+  watch?: boolean; // Whether to watch for file changes
 }
 ```
 
@@ -253,128 +254,142 @@ interface FileDataProviderConfig {
 ### Basic Usage
 
 ```typescript
-import { DynamicEnumService, SpiritEnumProvider } from 'reynard-dynamic-enum';
+import { DynamicEnumService, SpiritEnumProvider } from "reynard-dynamic-enum";
 
 const service = new DynamicEnumService();
 
 // Create and register a spirit provider
 const spiritProvider = new SpiritEnumProvider({
-  enumType: 'spirits',
+  enumType: "spirits",
   fallbackData: {
-    fox: { value: 'fox', weight: 0.4, metadata: { emoji: '🦊' } },
-    wolf: { value: 'wolf', weight: 0.25, metadata: { emoji: '🐺' } }
+    fox: { value: "fox", weight: 0.4, metadata: { emoji: "🦊" } },
+    wolf: { value: "wolf", weight: 0.25, metadata: { emoji: "🐺" } },
   },
-  defaultFallback: 'fox'
+  defaultFallback: "fox",
 });
 
-service.registerProvider('spirits', spiritProvider);
+service.registerProvider("spirits", spiritProvider);
 
 // Get random spirit
-const spirit = await service.getRandomValue('spirits');
+const spirit = await service.getRandomValue("spirits");
 console.log(spirit.value); // 'fox' or 'wolf'
 
 // Get spirit data
-const data = await service.getEnumData('spirits');
+const data = await service.getEnumData("spirits");
 console.log(data.fox.metadata.emoji); // '🦊'
 ```
 
 ### With API Data Source
 
 ```typescript
-import { DynamicEnumService, APIClientAdapter } from 'reynard-dynamic-enum';
+import { DynamicEnumService, APIClientAdapter } from "reynard-dynamic-enum";
 
 const apiAdapter = new APIClientAdapter({
-  baseUrl: 'https://api.example.com',
-  endpoint: 'enums',
+  baseUrl: "https://api.example.com",
+  endpoint: "enums",
   timeout: 10000,
   headers: {
-    'Authorization': 'Bearer your-token'
-  }
+    Authorization: "Bearer your-token",
+  },
 });
 
 const service = new DynamicEnumService({
   dataProvider: apiAdapter,
   enableCaching: true,
-  cacheTimeout: 5 * 60 * 1000
+  cacheTimeout: 5 * 60 * 1000,
 });
 
 // Create provider with API data source
-service.createAndRegisterProvider('spirits', {
-  enumType: 'spirits',
-  fallbackData: { /* fallback data */ },
-  defaultFallback: 'fox'
-}, apiAdapter);
+service.createAndRegisterProvider(
+  "spirits",
+  {
+    enumType: "spirits",
+    fallbackData: {
+      /* fallback data */
+    },
+    defaultFallback: "fox",
+  },
+  apiAdapter
+);
 ```
 
 ### With File Data Source
 
 ```typescript
-import { DynamicEnumService, FileDataAdapter } from 'reynard-dynamic-enum';
+import { DynamicEnumService, FileDataAdapter } from "reynard-dynamic-enum";
 
 const fileAdapter = new FileDataAdapter({
-  filePath: '/path/to/spirits.json',
-  format: 'json',
-  watch: true
+  filePath: "/path/to/spirits.json",
+  format: "json",
+  watch: true,
 });
 
 const service = new DynamicEnumService({
-  dataProvider: fileAdapter
+  dataProvider: fileAdapter,
 });
 
 // Create provider with file data source
-service.createAndRegisterProvider('spirits', {
-  enumType: 'spirits',
-  fallbackData: { /* fallback data */ },
-  defaultFallback: 'fox'
-}, fileAdapter);
+service.createAndRegisterProvider(
+  "spirits",
+  {
+    enumType: "spirits",
+    fallbackData: {
+      /* fallback data */
+    },
+    defaultFallback: "fox",
+  },
+  fileAdapter
+);
 ```
 
 ### Custom Provider
 
 ```typescript
-import { BaseEnumProvider } from 'reynard-dynamic-enum';
+import { BaseEnumProvider } from "reynard-dynamic-enum";
 
 class CustomEnumProvider extends BaseEnumProvider {
   protected async fetchEnumData(): Promise<EnumData> {
     // Custom data fetching logic
     return {
-      custom1: { value: 'custom1', weight: 1.0, metadata: {} },
-      custom2: { value: 'custom2', weight: 1.0, metadata: {} }
+      custom1: { value: "custom1", weight: 1.0, metadata: {} },
+      custom2: { value: "custom2", weight: 1.0, metadata: {} },
     };
   }
 }
 
 const service = new DynamicEnumService();
 const customProvider = new CustomEnumProvider({
-  enumType: 'custom',
-  fallbackData: { /* fallback data */ },
-  defaultFallback: 'custom1'
+  enumType: "custom",
+  fallbackData: {
+    /* fallback data */
+  },
+  defaultFallback: "custom1",
 });
 
-service.registerProvider('custom', customProvider);
+service.registerProvider("custom", customProvider);
 ```
 
 ### Performance Monitoring
 
 ```typescript
 const service = new DynamicEnumService({
-  enableMetrics: true
+  enableMetrics: true,
 });
 
 // Use the service...
-await service.getRandomValue('spirits');
-await service.getEnumData('spirits');
+await service.getRandomValue("spirits");
+await service.getEnumData("spirits");
 
 // Get metrics
 const metrics = service.getMetrics();
-console.log('Total requests:', metrics.requests);
-console.log('Cache hits:', metrics.cacheHits);
-console.log('Average response time:', metrics.averageResponseTime);
+console.log("Total requests:", metrics.requests);
+console.log("Cache hits:", metrics.cacheHits);
+console.log("Average response time:", metrics.averageResponseTime);
 
 // Get cache statistics
 const cacheStats = service.getCacheStats();
-console.log('Cache size:', cacheStats.size);
-console.log('Hit rate:', cacheStats.hitRate);
+console.log("Cache size:", cacheStats.size);
+console.log("Hit rate:", cacheStats.hitRate);
 ```
 
 ## Type Definitions
@@ -424,7 +439,7 @@ The system provides comprehensive error handling with multiple fallback strategi
 
 ```typescript
 const service = new DynamicEnumService({
-  fallbackStrategy: 'warn' // or 'silent' or 'error'
+  fallbackStrategy: "warn", // or 'silent' or 'error'
 });
 ```
 

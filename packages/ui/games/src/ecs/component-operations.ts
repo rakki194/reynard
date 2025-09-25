@@ -1,11 +1,6 @@
 // Component operations for the ECS world
 
-import {
-  Component,
-  ComponentType,
-  Entity,
-  StorageType,
-} from "./types";
+import { Component, ComponentType, Entity, StorageType } from "./types";
 
 import { ComponentRegistry, ComponentStorage } from "./component";
 import { ChangeDetectionImpl } from "./change-detection";

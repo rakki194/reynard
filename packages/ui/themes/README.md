@@ -11,7 +11,7 @@ graph TB
         A --> C[I18n System]
         A --> D[Context Management]
         A --> E[Lifecycle Management]
-        
+
         subgraph "🎨 Theme System"
             B --> B1[Theme Registry]
             B --> B2[Theme Context]
@@ -29,7 +29,7 @@ graph TB
             B5 --> B14[System Theme Detection]
             B5 --> B15[Media Query Handling]
         end
-        
+
         subgraph "🌍 I18n System"
             C --> C1[Translation Context]
             C --> C2[Language Management]
@@ -44,7 +44,7 @@ graph TB
             C4 --> C11[Text Direction]
             C4 --> C12[Layout Adaptation]
         end
-        
+
         subgraph "🔄 Context Management"
             D --> D1[Reynard Context]
             D --> D2[Theme Context]
@@ -60,7 +60,7 @@ graph TB
             D4 --> D12[useTheme]
             D4 --> D13[useTranslation]
         end
-        
+
         subgraph "⚡ Lifecycle Management"
             E --> E1[Theme Initialization]
             E --> E2[System Theme Detection]
@@ -75,7 +75,7 @@ graph TB
             E4 --> E11[Event Cleanup]
             E4 --> E12[Memory Management]
         end
-        
+
         subgraph "🎨 Theme Registry"
             F[Theme Registry] --> F1[Light Theme]
             F --> F2[Dark Theme]
@@ -94,7 +94,7 @@ graph TB
             F7 --> F7A[High Contrast Dark]
             F8 --> F8A[High Contrast Light]
         end
-        
+
         subgraph "🌈 Color System"
             G[OKLCH Color System] --> G1[Color Generation]
             G --> G2[Color Palettes]
@@ -109,7 +109,7 @@ graph TB
             G4 --> G11[OKLCH to RGB]
             G4 --> G12[OKLCH to CSS]
         end
-        
+
         subgraph "🎯 Theme Configuration"
             H[Theme Config] --> H1[Colors]
             H --> H2[Typography]
@@ -134,7 +134,7 @@ graph TB
             H6 --> H21[Animation Durations]
             H6 --> H22[Easing Functions]
         end
-        
+
         subgraph "🛠️ Theme Utilities"
             I[Theme Utilities] --> I1[Theme Application]
             I --> I2[Theme Calculations]
@@ -150,7 +150,7 @@ graph TB
             I4 --> I12[Theme Validation]
             I4 --> I13[Error Handling]
         end
-        
+
         subgraph "🌐 System Integration"
             J[System Integration] --> J1[System Theme Detection]
             J --> J2[Media Query Management]
@@ -166,7 +166,7 @@ graph TB
             J4 --> J12[Lazy Loading]
         end
     end
-    
+
     subgraph "🌐 External Integration"
         K[SolidJS] --> K1[Reactive Signals]
         K --> K2[Context API]
@@ -178,7 +178,7 @@ graph TB
         M --> M2[Local Storage]
         M --> M3[System Preferences]
     end
-    
+
     A -->|Provides| N[Unified Theme & I18n]
     B -->|Manages| O[Theme State]
     C -->|Handles| P[Translation State]
@@ -196,7 +196,7 @@ sequenceDiagram
     participant I18n as I18n System
     participant System as System APIs
     participant CSS as CSS Variables
-    
+
     Note over App, CSS: Application Initialization
     App->>Provider: Initialize ReynardProvider
     Provider->>Theme: getInitialTheme()
@@ -204,24 +204,24 @@ sequenceDiagram
     Theme->>System: Check system preference
     System-->>Theme: Theme Preference
     Theme-->>Provider: Initial Theme
-    
+
     Provider->>I18n: Initialize I18n Module
     I18n->>System: Detect Browser Locale
     System-->>I18n: Locale Information
     I18n-->>Provider: I18n Context
-    
+
     Provider->>Theme: setupThemeLifecycle()
     Theme->>System: Setup Media Query Listeners
     Theme->>CSS: Apply Initial Theme
     CSS-->>App: Theme Applied
-    
+
     Note over App, CSS: Theme Switching
     App->>Provider: setTheme(newTheme)
     Provider->>Theme: setTheme(newTheme)
     Theme->>CSS: Update CSS Variables
     Theme->>System: Save to localStorage
     CSS-->>App: Theme Updated
-    
+
     Note over App, CSS: System Theme Change
     System->>Theme: System Theme Changed
     Theme->>Theme: Check if Auto-switch Enabled
@@ -231,7 +231,7 @@ sequenceDiagram
     else Manual Theme Set
         Theme->>Theme: Ignore System Change
     end
-    
+
     Note over App, CSS: Component Usage
     App->>Provider: useTheme() Hook
     Provider-->>App: Theme Context
@@ -244,27 +244,27 @@ sequenceDiagram
 ```mermaid
 flowchart TD
     A[Theme Request] --> B{Theme Source?}
-    
+
     B -->|User Selection| C[User Theme]
     B -->|System Preference| D[System Theme]
     B -->|Default| E[Default Theme]
-    
+
     C --> F[Theme Validation]
     D --> F
     E --> F
-    
+
     F --> G{Theme Valid?}
     G -->|Yes| H[Apply Theme]
     G -->|No| I[Fallback Theme]
     I --> H
-    
+
     H --> J[Update CSS Variables]
     J --> K[Update Document Attributes]
     K --> L[Trigger Theme Change Events]
     L --> M[Update Component State]
-    
+
     M --> N[Theme Applied]
-    
+
     subgraph "Theme Configuration"
         O[Theme Config] --> O1[Colors]
         O --> O2[Typography]
@@ -272,20 +272,20 @@ flowchart TD
         O --> O4[Shadows]
         O --> O5[Borders]
         O --> O6[Animations]
-        
+
         O1 --> O1A[Primary Colors]
         O1 --> O1B[Secondary Colors]
         O1 --> O1C[Background Colors]
         O1 --> O1D[Text Colors]
         O1 --> O1E[Accent Colors]
     end
-    
+
     subgraph "Color System"
         P[OKLCH Colors] --> P1[Color Generation]
         P --> P2[Color Palettes]
         P --> P3[Color Utilities]
         P --> P4[Color Conversion]
-        
+
         P1 --> P1A[Tag Colors]
         P1 --> P1B[Theme Colors]
         P2 --> P2A[Theme Palettes]
@@ -295,13 +295,13 @@ flowchart TD
         P4 --> P4A[OKLCH to RGB]
         P4 --> P4B[OKLCH to CSS]
     end
-    
+
     subgraph "System Integration"
         Q[System APIs] --> Q1[Media Queries]
         Q --> Q2[Local Storage]
         Q --> Q3[System Preferences]
         Q --> Q4[Accessibility]
-        
+
         Q1 --> Q1A[prefers-color-scheme]
         Q1 --> Q1B[prefers-reduced-motion]
         Q2 --> Q2A[Theme Persistence]
@@ -321,7 +321,7 @@ graph TB
         A[ReynardProvider] --> B[Theme Context]
         A --> C[Translation Context]
         A --> D[Combined Context]
-        
+
         subgraph "🎯 Theme Context"
             B --> B1[Theme State]
             B --> B2[Theme Actions]
@@ -333,7 +333,7 @@ graph TB
             B3 --> B8[isDark]
             B3 --> B9[isHighContrast]
         end
-        
+
         subgraph "🌍 Translation Context"
             C --> C1[Translation State]
             C --> C2[Translation Actions]
@@ -345,7 +345,7 @@ graph TB
             C3 --> C8[isRTL]
             C3 --> C9[Language Detection]
         end
-        
+
         subgraph "🔄 Combined Context"
             D --> D1[Reynard Context]
             D --> D2[Context Hooks]
@@ -357,7 +357,7 @@ graph TB
             D3 --> D8[Context Provider]
             D3 --> D9[Context Consumer]
         end
-        
+
         subgraph "🎨 Component Usage"
             E[Component] --> E1[Theme Hook]
             E --> E2[Translation Hook]
@@ -369,7 +369,7 @@ graph TB
             E5 --> E8[Translation State & Actions]
             E6 --> E9[Combined State & Actions]
         end
-        
+
         subgraph "🔄 Reactive Updates"
             F[Reactive System] --> F1[Theme Changes]
             F --> F2[Locale Changes]
@@ -382,21 +382,21 @@ graph TB
             F6 --> F9[UI Update]
         end
     end
-    
+
     subgraph "🎯 Hook Usage Examples"
         G[useTheme Hook] --> G1["const theme, setTheme = useTheme()"]
         G --> G2["const isDark, isHighContrast = useTheme()"]
         G --> G3["const getTagStyle = useTheme()"]
-        
+
         H[useTranslation Hook] --> H1["const t, locale = useTranslation()"]
         H --> H2["const setLocale, isRTL = useTranslation()"]
         H --> H3["const languages = useTranslation()"]
-        
+
         I[useReynard Hook] --> I1["const theme, translation = useReynard()"]
         I --> I2["const theme setTheme, translation t = useReynard()"]
         I --> I3["const context = useReynard()"]
     end
-    
+
     A -->|Provides| J[Unified Context]
     B -->|Manages| K[Theme State]
     C -->|Manages| L[Translation State]

@@ -1,21 +1,21 @@
 /**
  * 🦊 Global Animation Integration
- * 
+ *
  * Integration system for global animation control with automatic CSS class management
  * and performance monitoring. Connects the global context with CSS control.
  */
 
 import { createSignal, createMemo, onCleanup, createEffect } from "solid-js";
-import type { 
+import type {
   GlobalAnimationConfig,
   GlobalAnimationState,
   SystemPreferences,
-  GlobalAnimationControls
+  GlobalAnimationControls,
 } from "./GlobalAnimationTypes.js";
-import { 
+import {
   GlobalAnimationDisableUtils,
   getGlobalAnimationDisableUtils,
-  GlobalAnimationDisableFunctions
+  GlobalAnimationDisableFunctions,
 } from "./GlobalAnimationDisableUtils.js";
 
 export interface AnimationIntegrationOptions {
@@ -83,7 +83,7 @@ export class GlobalAnimationIntegration {
     };
 
     this.disableUtils = getGlobalAnimationDisableUtils();
-    
+
     this.performanceMetrics = {
       activeAnimations: 0,
       averageDuration: 0,
@@ -129,7 +129,7 @@ export class GlobalAnimationIntegration {
     }
 
     try {
-      this.performanceObserver = new PerformanceObserver((list) => {
+      this.performanceObserver = new PerformanceObserver(list => {
         const entries = list.getEntries();
         this.updatePerformanceMetrics(entries);
       });
@@ -156,7 +156,7 @@ export class GlobalAnimationIntegration {
 
     Object.entries(mediaQueries).forEach(([key, mediaQuery]) => {
       this.mediaQueryObservers.set(key, mediaQuery);
-      
+
       const updateAccessibility = () => {
         this.updateAccessibilityMetrics();
       };
@@ -178,19 +178,12 @@ export class GlobalAnimationIntegration {
    * Update performance metrics
    */
   private updatePerformanceMetrics(entries: PerformanceEntry[]): void {
-    const animationEntries = entries.filter(entry => 
-      entry.entryType === "measure" && entry.name.includes("animation")
-    );
+    const animationEntries = entries.filter(entry => entry.entryType === "measure" && entry.name.includes("animation"));
 
     this.performanceMetrics.activeAnimations = animationEntries.length;
-    this.performanceMetrics.totalAnimationTime = animationEntries.reduce(
-      (total, entry) => total + entry.duration,
-      0
-    );
-    this.performanceMetrics.averageDuration = 
-      animationEntries.length > 0 
-        ? this.performanceMetrics.totalAnimationTime / animationEntries.length 
-        : 0;
+    this.performanceMetrics.totalAnimationTime = animationEntries.reduce((total, entry) => total + entry.duration, 0);
+    this.performanceMetrics.averageDuration =
+      animationEntries.length > 0 ? this.performanceMetrics.totalAnimationTime / animationEntries.length : 0;
     this.performanceMetrics.lastCheck = Date.now();
 
     this.notifyObservers("performanceUpdate", this.performanceMetrics);
@@ -204,12 +197,9 @@ export class GlobalAnimationIntegration {
       return;
     }
 
-    this.accessibilityMetrics.reducedMotion = 
-      this.mediaQueryObservers.get("prefersReducedMotion")?.matches || false;
-    this.accessibilityMetrics.highContrast = 
-      this.mediaQueryObservers.get("prefersHighContrast")?.matches || false;
-    this.accessibilityMetrics.forcedColors = 
-      this.mediaQueryObservers.get("forcedColors")?.matches || false;
+    this.accessibilityMetrics.reducedMotion = this.mediaQueryObservers.get("prefersReducedMotion")?.matches || false;
+    this.accessibilityMetrics.highContrast = this.mediaQueryObservers.get("prefersHighContrast")?.matches || false;
+    this.accessibilityMetrics.forcedColors = this.mediaQueryObservers.get("forcedColors")?.matches || false;
     this.accessibilityMetrics.lastCheck = Date.now();
 
     this.notifyObservers("accessibilityUpdate", this.accessibilityMetrics);
@@ -218,10 +208,7 @@ export class GlobalAnimationIntegration {
   /**
    * Integrate with global animation context
    */
-  integrateWithContext(
-    state: () => GlobalAnimationState,
-    controls: GlobalAnimationControls
-  ): void {
+  integrateWithContext(state: () => GlobalAnimationState, controls: GlobalAnimationControls): void {
     // Watch for state changes and apply them
     createEffect(() => {
       const currentState = state();
@@ -338,7 +325,7 @@ export class GlobalAnimationIntegration {
    */
   updateOptions(newOptions: Partial<AnimationIntegrationOptions>): void {
     this.options = { ...this.options, ...newOptions };
-    
+
     // Reinitialize if needed
     if (newOptions.enablePerformanceMonitoring !== undefined) {
       if (newOptions.enablePerformanceMonitoring) {
@@ -371,7 +358,7 @@ export class GlobalAnimationIntegration {
    * Cleanup accessibility monitoring
    */
   private cleanupAccessibilityMonitoring(): void {
-    this.mediaQueryObservers.forEach((mediaQuery) => {
+    this.mediaQueryObservers.forEach(mediaQuery => {
       // Remove event listeners
       mediaQuery.removeEventListener("change", () => {});
     });
@@ -396,8 +383,7 @@ export const GlobalAnimationIntegrationUtils = {
   /**
    * Create integration system
    */
-  createIntegration: (options?: AnimationIntegrationOptions) => 
-    new GlobalAnimationIntegration(options),
+  createIntegration: (options?: AnimationIntegrationOptions) => new GlobalAnimationIntegration(options),
 
   /**
    * Get current integration state
@@ -467,7 +453,7 @@ export function useGlobalAnimationIntegration(options?: AnimationIntegrationOpti
   // Update metrics when integration changes
   createEffect(() => {
     const currentIntegration = integration();
-    
+
     const updateMetrics = () => {
       setPerformanceMetrics(currentIntegration.getPerformanceMetrics());
       setAccessibilityMetrics(currentIntegration.getAccessibilityMetrics());
@@ -494,7 +480,6 @@ export function useGlobalAnimationIntegration(options?: AnimationIntegrationOpti
     performanceMetrics,
     accessibilityMetrics,
     getIntegrationState: () => integration().getIntegrationState(),
-    updateOptions: (newOptions: Partial<AnimationIntegrationOptions>) => 
-      integration().updateOptions(newOptions),
+    updateOptions: (newOptions: Partial<AnimationIntegrationOptions>) => integration().updateOptions(newOptions),
   };
 }

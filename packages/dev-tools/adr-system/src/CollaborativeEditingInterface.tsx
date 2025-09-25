@@ -272,13 +272,13 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
       enabled: true,
       maxAttempts: 5,
       delay: 1000,
-      backoff: 2
+      backoff: 2,
     },
     conflictResolution: "automatic" as const,
     autoSave: {
       enabled: true,
       interval: 5000,
-      onChange: true
+      onChange: true,
     },
     ui: {
       showUserCursors: true,
@@ -286,13 +286,13 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
       showChangeHistory: true,
       showComments: true,
       showChat: true,
-      theme: "dark" as const
+      theme: "dark" as const,
     },
     permissions: {
       allowAnonymous: false,
       requireInvitation: true,
       allowSelfRegistration: false,
-      defaultRole: "viewer" as const
+      defaultRole: "viewer" as const,
     },
     notifications: {
       enabled: true,
@@ -300,9 +300,9 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
       onUserLeave: true,
       onComment: true,
       onChange: false,
-      onConflict: true
+      onConflict: true,
     },
-    ...props.config
+    ...props.config,
   }));
 
   // State management
@@ -359,24 +359,24 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
   const connectWebSocket = () => {
     try {
       websocket = new WebSocket(config().websocketUrl);
-      
+
       websocket.onopen = () => {
         setIsConnected(true);
         setError(null);
         reconnectAttempts = 0;
         console.log("Connected to collaborative editing server");
-        
+
         // Join session
         if (props.sessionId) {
           sendMessage({
             type: "join_session",
             sessionId: props.sessionId,
-            user: props.currentUser
+            user: props.currentUser,
           });
         }
       };
-      
-      websocket.onmessage = (event) => {
+
+      websocket.onmessage = event => {
         try {
           const message = JSON.parse(event.data);
           handleWebSocketMessage(message);
@@ -384,17 +384,17 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
           console.error("Failed to parse WebSocket message:", error);
         }
       };
-      
+
       websocket.onclose = () => {
         setIsConnected(false);
         console.log("Disconnected from collaborative editing server");
-        
+
         if (config().reconnection.enabled && reconnectAttempts < config().reconnection.maxAttempts) {
           scheduleReconnect();
         }
       };
-      
-      websocket.onerror = (error) => {
+
+      websocket.onerror = error => {
         console.error("WebSocket error:", error);
         setError("Connection error occurred");
       };
@@ -408,10 +408,10 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
     if (reconnectTimer) {
       clearTimeout(reconnectTimer);
     }
-    
+
     const delay = config().reconnection.delay * Math.pow(config().reconnection.backoff, reconnectAttempts);
     reconnectAttempts++;
-    
+
     reconnectTimer = setTimeout(() => {
       console.log(`Attempting to reconnect (${reconnectAttempts}/${config().reconnection.maxAttempts})`);
       connectWebSocket();
@@ -430,7 +430,7 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
         setSession(message.session);
         props.onSessionChange?.(message.session);
         break;
-        
+
       case "user_joined":
         if (session()) {
           const updatedSession = { ...session()! };
@@ -439,7 +439,7 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
           props.onUserJoin?.(message.user);
         }
         break;
-        
+
       case "user_left":
         if (session()) {
           const updatedSession = { ...session()! };
@@ -448,14 +448,14 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
           props.onUserLeave?.(message.user);
         }
         break;
-        
+
       case "content_changed":
         if (message.operation.userId !== props.currentUser.id) {
           applyChange(message.operation);
           props.onContentChange?.(message.content, message.operation);
         }
         break;
-        
+
       case "comment_added":
         if (session()) {
           const updatedSession = { ...session()! };
@@ -464,16 +464,16 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
           props.onCommentAdded?.(message.comment);
         }
         break;
-        
+
       case "conflict_detected":
         setConflicts(prev => [...prev, message.conflict]);
         props.onConflict?.(message.conflict);
         break;
-        
+
       case "chat_message":
         setChatMessages(prev => [...prev, message.message]);
         break;
-        
+
       default:
         console.log("Unknown message type:", message.type);
     }
@@ -491,14 +491,14 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
       sendMessage({
         type: "content_change",
         operation,
-        sessionId: session()?.id
+        sessionId: session()?.id,
       });
     }
   };
 
   const handleContentChange = (newContent: string) => {
     if (!canEdit()) return;
-    
+
     const operation: ChangeOperation = {
       id: `change-${Date.now()}-${Math.random()}`,
       type: "insert",
@@ -508,13 +508,13 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
       content: newContent,
       previousContent: content(),
       metadata: {},
-      status: "pending"
+      status: "pending",
     };
-    
+
     setContent(newContent);
     setPendingChanges(prev => [...prev, operation]);
     sendChange(operation);
-    
+
     // Auto-save
     if (config().autoSave.onChange) {
       scheduleAutoSave();
@@ -525,7 +525,7 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
     if (autoSaveTimer) {
       clearTimeout(autoSaveTimer);
     }
-    
+
     autoSaveTimer = setTimeout(() => {
       saveSession();
     }, config().autoSave.interval);
@@ -536,7 +536,7 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
       sendMessage({
         type: "save_session",
         sessionId: session()!.id,
-        content: content()
+        content: content(),
       });
     }
   };
@@ -544,7 +544,7 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
   // Comment management
   const addComment = () => {
     if (!canComment() || !newComment().trim()) return;
-    
+
     const comment: CollaborativeComment = {
       id: `comment-${Date.now()}-${Math.random()}`,
       author: props.currentUser.id,
@@ -556,16 +556,16 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
       replies: [],
       mentions: [],
       metadata: {
-        isResolved: false
-      }
+        isResolved: false,
+      },
     };
-    
+
     sendMessage({
       type: "add_comment",
       comment,
-      sessionId: session()?.id
+      sessionId: session()?.id,
     });
-    
+
     setNewComment("");
     setCommentPosition(null);
   };
@@ -574,27 +574,27 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
     sendMessage({
       type: "resolve_comment",
       commentId,
-      sessionId: session()?.id
+      sessionId: session()?.id,
     });
   };
 
   // Chat management
   const sendChatMessage = () => {
     if (!chatMessage().trim()) return;
-    
+
     const message = {
       id: `chat-${Date.now()}-${Math.random()}`,
       author: props.currentUser.id,
       content: chatMessage(),
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
-    
+
     sendMessage({
       type: "chat_message",
       message,
-      sessionId: session()?.id
+      sessionId: session()?.id,
     });
-    
+
     setChatMessage("");
   };
 
@@ -623,34 +623,34 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
   });
 
   return (
-    <div class={`collaborative-editing-interface ${props.class || ""}`} style={{
-      width: `${props.width || 1200}px`,
-      height: `${props.height || 800}px`,
-      display: "flex",
-      "flex-direction": "column",
-      "background-color": config().ui.theme === "dark" ? "#1a1a1a" : "#ffffff",
-      color: config().ui.theme === "dark" ? "#ffffff" : "#000000"
-    }}>
-      {/* Header */}
-      <div class="collaborative-header" style={{
+    <div
+      class={`collaborative-editing-interface ${props.class || ""}`}
+      style={{
+        width: `${props.width || 1200}px`,
+        height: `${props.height || 800}px`,
         display: "flex",
-        "justify-content": "space-between",
-        "align-items": "center",
-        padding: "12px",
-        "background-color": config().ui.theme === "dark" ? "#2a2a2a" : "#f5f5f5",
-        "border-bottom": "1px solid #444"
-      }}>
+        "flex-direction": "column",
+        "background-color": config().ui.theme === "dark" ? "#1a1a1a" : "#ffffff",
+        color: config().ui.theme === "dark" ? "#ffffff" : "#000000",
+      }}
+    >
+      {/* Header */}
+      <div
+        class="collaborative-header"
+        style={{
+          display: "flex",
+          "justify-content": "space-between",
+          "align-items": "center",
+          padding: "12px",
+          "background-color": config().ui.theme === "dark" ? "#2a2a2a" : "#f5f5f5",
+          "border-bottom": "1px solid #444",
+        }}
+      >
         <div class="session-info">
-          <h3 style={{ margin: 0 }}>
-            {session()?.name || "Collaborative Session"}
-          </h3>
+          <h3 style={{ margin: 0 }}>{session()?.name || "Collaborative Session"}</h3>
           <div style={{ display: "flex", gap: "8px", "align-items": "center" }}>
-            <Badge variant={isConnected() ? "success" : "error"}>
-              {isConnected() ? "Connected" : "Disconnected"}
-            </Badge>
-            <Badge variant="info">
-              {onlineUsers().length} online
-            </Badge>
+            <Badge variant={isConnected() ? "success" : "error"}>{isConnected() ? "Connected" : "Disconnected"}</Badge>
+            <Badge variant="info">{onlineUsers().length} online</Badge>
             <Show when={error()}>
               <Badge variant="error">{error()}</Badge>
             </Show>
@@ -658,28 +658,15 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
         </div>
 
         <div class="header-controls" style={{ display: "flex", gap: "8px" }}>
-          <Button
-            onClick={() => setShowUserList(!showUserList())}
-            size="small"
-            variant="secondary"
-          >
+          <Button onClick={() => setShowUserList(!showUserList())} size="small" variant="secondary">
             Users ({onlineUsers().length})
           </Button>
 
-          <Button
-            onClick={() => setShowChangeHistory(!showChangeHistory())}
-            size="small"
-            variant="secondary"
-          >
+          <Button onClick={() => setShowChangeHistory(!showChangeHistory())} size="small" variant="secondary">
             History
           </Button>
 
-          <Button
-            onClick={saveSession}
-            size="small"
-            variant="primary"
-            disabled={!canEdit()}
-          >
+          <Button onClick={saveSession} size="small" variant="primary" disabled={!canEdit()}>
             Save
           </Button>
         </div>
@@ -692,7 +679,7 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
           {/* Tabs */}
           <Tabs
             value={activeTab()}
-            onChange={(value) => setActiveTab(value as any)}
+            onChange={value => setActiveTab(value as any)}
             style={{ "border-bottom": "1px solid #444" }}
           >
             <Tabs.Tab value="editor">Editor</Tabs.Tab>
@@ -707,7 +694,7 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
               <div class="editor-container" style={{ height: "100%" }}>
                 <TextArea
                   value={content()}
-                  onInput={(e) => handleContentChange(e.target.value)}
+                  onInput={e => handleContentChange(e.target.value)}
                   placeholder="Start collaborating..."
                   disabled={!canEdit()}
                   style={{
@@ -721,7 +708,7 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
                     padding: "12px",
                     "font-family": "monospace",
                     "font-size": "14px",
-                    resize: "vertical"
+                    resize: "vertical",
                   }}
                 />
               </div>
@@ -730,7 +717,7 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
             <Show when={activeTab() === "comments"}>
               <div class="comments-container">
                 <For each={openComments()}>
-                  {(comment) => (
+                  {comment => (
                     <Card style={{ margin: "8px 0", padding: "12px" }}>
                       <div style={{ display: "flex", "justify-content": "space-between", "align-items": "start" }}>
                         <div>
@@ -739,11 +726,7 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
                             {new Date(comment.timestamp).toLocaleString()}
                           </span>
                         </div>
-                        <Button
-                          onClick={() => resolveComment(comment.id)}
-                          size="small"
-                          variant="secondary"
-                        >
+                        <Button onClick={() => resolveComment(comment.id)} size="small" variant="secondary">
                           Resolve
                         </Button>
                       </div>
@@ -756,7 +739,7 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
                   <Card style={{ margin: "8px 0", padding: "12px" }}>
                     <TextArea
                       value={newComment()}
-                      onInput={(e) => setNewComment(e.target.value)}
+                      onInput={e => setNewComment(e.target.value)}
                       placeholder="Add a comment..."
                       style={{ width: "100%", "min-height": "80px" }}
                     />
@@ -774,8 +757,10 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
               <div class="chat-container" style={{ height: "100%", display: "flex", "flex-direction": "column" }}>
                 <div class="chat-messages" style={{ flex: 1, overflow: "auto", "max-height": "400px" }}>
                   <For each={chatMessages()}>
-                    {(message) => (
-                      <div style={{ margin: "8px 0", padding: "8px", "background-color": "#333", "border-radius": "4px" }}>
+                    {message => (
+                      <div
+                        style={{ margin: "8px 0", padding: "8px", "background-color": "#333", "border-radius": "4px" }}
+                      >
                         <strong>{message.author}</strong>
                         <span style={{ color: "#666", "margin-left": "8px" }}>
                           {new Date(message.timestamp).toLocaleString()}
@@ -789,9 +774,9 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
                 <div class="chat-input" style={{ display: "flex", gap: "8px", margin: "8px 0" }}>
                   <Input
                     value={chatMessage()}
-                    onInput={(e) => setChatMessage(e.target.value)}
+                    onInput={e => setChatMessage(e.target.value)}
                     placeholder="Type a message..."
-                    onKeyPress={(e) => {
+                    onKeyPress={e => {
                       if (e.key === "Enter") {
                         sendChatMessage();
                       }
@@ -808,7 +793,7 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
             <Show when={activeTab() === "history"}>
               <div class="history-container">
                 <For each={recentChanges()}>
-                  {(change) => (
+                  {change => (
                     <Card style={{ margin: "8px 0", padding: "12px" }}>
                       <div style={{ display: "flex", "justify-content": "space-between", "align-items": "start" }}>
                         <div>
@@ -832,35 +817,42 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
 
         {/* Sidebar */}
         <Show when={showUserList() || showChangeHistory()}>
-          <div class="collaborative-sidebar" style={{
-            width: "300px",
-            "background-color": config().ui.theme === "dark" ? "#2a2a2a" : "#f5f5f5",
-            "border-left": "1px solid #444",
-            padding: "16px"
-          }}>
+          <div
+            class="collaborative-sidebar"
+            style={{
+              width: "300px",
+              "background-color": config().ui.theme === "dark" ? "#2a2a2a" : "#f5f5f5",
+              "border-left": "1px solid #444",
+              padding: "16px",
+            }}
+          >
             <Show when={showUserList()}>
               <h4>Online Users</h4>
               <For each={onlineUsers()}>
-                {(user) => (
-                  <div style={{
-                    display: "flex",
-                    "align-items": "center",
-                    gap: "8px",
-                    padding: "8px",
-                    "background-color": config().ui.theme === "dark" ? "#333" : "#ffffff",
-                    "border-radius": "4px",
-                    margin: "4px 0"
-                  }}>
+                {user => (
+                  <div
+                    style={{
+                      display: "flex",
+                      "align-items": "center",
+                      gap: "8px",
+                      padding: "8px",
+                      "background-color": config().ui.theme === "dark" ? "#333" : "#ffffff",
+                      "border-radius": "4px",
+                      margin: "4px 0",
+                    }}
+                  >
                     <div
                       style={{
                         width: "12px",
                         height: "12px",
                         "background-color": user.color,
-                        "border-radius": "50%"
+                        "border-radius": "50%",
                       }}
                     />
                     <span>{user.name}</span>
-                    <Badge variant="secondary" size="small">{user.role}</Badge>
+                    <Badge variant="secondary" size="small">
+                      {user.role}
+                    </Badge>
                   </div>
                 )}
               </For>
@@ -869,19 +861,19 @@ export function CollaborativeEditingInterface(props: CollaborativeEditingInterfa
             <Show when={showChangeHistory()}>
               <h4>Recent Changes</h4>
               <For each={recentChanges().slice(0, 5)}>
-                {(change) => (
-                  <div style={{
-                    padding: "8px",
-                    "background-color": config().ui.theme === "dark" ? "#333" : "#ffffff",
-                    "border-radius": "4px",
-                    margin: "4px 0",
-                    "font-size": "12px"
-                  }}>
+                {change => (
+                  <div
+                    style={{
+                      padding: "8px",
+                      "background-color": config().ui.theme === "dark" ? "#333" : "#ffffff",
+                      "border-radius": "4px",
+                      margin: "4px 0",
+                      "font-size": "12px",
+                    }}
+                  >
                     <div style={{ display: "flex", "justify-content": "space-between" }}>
                       <span>{change.userId}</span>
-                      <span style={{ color: "#666" }}>
-                        {new Date(change.timestamp).toLocaleTimeString()}
-                      </span>
+                      <span style={{ color: "#666" }}>{new Date(change.timestamp).toLocaleTimeString()}</span>
                     </div>
                     <div style={{ color: "#666", "margin-top": "4px" }}>
                       {change.type}: {change.content.substring(0, 50)}...
@@ -910,43 +902,41 @@ export function CollaborativeEditingInterfaceDemo() {
       canComment: true,
       canInvite: false,
       canDelete: false,
-      canExport: true
+      canExport: true,
     },
     status: "online",
     lastActivity: new Date().toISOString(),
-    color: "#4A90E2"
+    color: "#4A90E2",
   });
 
   return (
     <div class="collaborative-editing-demo" style={{ padding: "20px" }}>
       <h2>Collaborative Editing Interface Demo</h2>
-      
+
       <CollaborativeEditingInterface
         currentUser={currentUser()}
         sessionId="demo-session"
         width={1200}
         height={800}
-        onSessionChange={(session) => {
+        onSessionChange={session => {
           console.log("Session changed:", session);
         }}
-        onUserJoin={(user) => {
+        onUserJoin={user => {
           console.log("User joined:", user);
         }}
-        onUserLeave={(user) => {
+        onUserLeave={user => {
           console.log("User left:", user);
         }}
         onContentChange={(content, operation) => {
           console.log("Content changed:", content, operation);
         }}
-        onCommentAdded={(comment) => {
+        onCommentAdded={comment => {
           console.log("Comment added:", comment);
         }}
-        onConflict={(conflict) => {
+        onConflict={conflict => {
           console.log("Conflict detected:", conflict);
         }}
       />
     </div>
   );
 }
-
-

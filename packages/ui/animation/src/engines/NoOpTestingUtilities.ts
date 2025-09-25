@@ -1,9 +1,9 @@
 /**
  * No-Op Testing Utilities
- * 
+ *
  * Testing utilities and helpers for the no-op animation engine.
  * Provides performance testing, memory analysis, and validation tools.
- * 
+ *
  * @author Agile-Prime-90 (Reynard Lizard Specialist)
  * @since 1.0.0
  */
@@ -130,7 +130,7 @@ export class NoOpTestingUtilities {
    */
   async testImmediateCompletion(engine: NoOpAnimationEngine): Promise<NoOpTestResult> {
     const startTime = performance.now();
-    
+
     try {
       // Create test element
       const testElement = document.createElement("div");
@@ -156,7 +156,9 @@ export class NoOpTestingUtilities {
         duration,
         performanceMetrics: engine.getPerformanceMetrics(),
         memoryUsage: engine.getState().memoryUsage,
-        error: passed ? undefined : `Completion time ${result.duration}ms exceeds threshold ${this.config.maxCompletionTimeThreshold}ms`,
+        error: passed
+          ? undefined
+          : `Completion time ${result.duration}ms exceeds threshold ${this.config.maxCompletionTimeThreshold}ms`,
         data: {
           animationResult: result,
           completionTime: result.duration,
@@ -180,11 +182,11 @@ export class NoOpTestingUtilities {
    */
   async testPerformanceMetrics(engine: NoOpAnimationEngine): Promise<NoOpTestResult> {
     const startTime = performance.now();
-    
+
     try {
       // Reset metrics
       engine.resetPerformanceMetrics();
-      
+
       const testElement = document.createElement("div");
       const initialMetrics = engine.getPerformanceMetrics();
 
@@ -200,7 +202,7 @@ export class NoOpTestingUtilities {
       const endTime = performance.now();
       const duration = endTime - startTime;
 
-      const passed = 
+      const passed =
         finalMetrics.totalAnimations === 10 &&
         finalMetrics.averageCompletionTime >= 0 &&
         finalMetrics.animationsPerSecond > 0;
@@ -236,7 +238,7 @@ export class NoOpTestingUtilities {
    */
   async testMemoryEfficiency(engine: NoOpAnimationEngine): Promise<NoOpTestResult> {
     const startTime = performance.now();
-    
+
     try {
       const testElement = document.createElement("div");
       const initialMemory = engine.getState().memoryUsage;
@@ -262,7 +264,9 @@ export class NoOpTestingUtilities {
         duration,
         performanceMetrics: engine.getPerformanceMetrics(),
         memoryUsage: finalMemory,
-        error: passed ? undefined : `Memory increase ${memoryIncrease} bytes exceeds threshold ${this.config.maxMemoryThreshold} bytes`,
+        error: passed
+          ? undefined
+          : `Memory increase ${memoryIncrease} bytes exceeds threshold ${this.config.maxMemoryThreshold} bytes`,
         data: {
           initialMemory,
           finalMemory,
@@ -288,22 +292,22 @@ export class NoOpTestingUtilities {
    */
   async testConfigurationUpdates(engine: NoOpAnimationEngine): Promise<NoOpTestResult> {
     const startTime = performance.now();
-    
+
     try {
       const testElement = document.createElement("div");
-      
+
       // Test with default config
       const result1 = await engine.start(testElement, { width: "100px" });
-      
+
       // Update config
       engine.updateConfig({
         completionDelay: 5,
         enableLogging: true,
       });
-      
+
       // Test with updated config
       const result2 = await engine.start(testElement, { width: "200px" });
-      
+
       const endTime = performance.now();
       const duration = endTime - startTime;
 
@@ -339,23 +343,23 @@ export class NoOpTestingUtilities {
    */
   async testStateManagement(engine: NoOpAnimationEngine): Promise<NoOpTestResult> {
     const startTime = performance.now();
-    
+
     try {
       const testElement = document.createElement("div");
-      
+
       // Test initial state
       const initialState = engine.getState();
-      
+
       // Start animation
       await engine.start(testElement, { width: "100px" });
-      
+
       // Test state after animation
       const finalState = engine.getState();
-      
+
       const endTime = performance.now();
       const duration = endTime - startTime;
 
-      const passed = 
+      const passed =
         !initialState.isAnimating &&
         !finalState.isAnimating &&
         finalState.progress === 1 &&
@@ -391,7 +395,7 @@ export class NoOpTestingUtilities {
    */
   async testMemoryLeaks(engine: NoOpAnimationEngine): Promise<NoOpTestResult> {
     const startTime = performance.now();
-    
+
     try {
       const testElement = document.createElement("div");
       const initialMemory = engine.getState().memoryUsage;
@@ -402,7 +406,7 @@ export class NoOpTestingUtilities {
           width: `${100 + (i % 100)}px`,
           height: `${100 + (i % 100)}px`,
         });
-        
+
         // Check memory every 100 animations
         if (i % 100 === 0) {
           const currentMemory = engine.getState().memoryUsage;
@@ -449,7 +453,7 @@ export class NoOpTestingUtilities {
    */
   async testStressPerformance(engine: NoOpAnimationEngine): Promise<NoOpTestResult> {
     const startTime = performance.now();
-    
+
     try {
       const testElement = document.createElement("div");
       const stressTestCount = 10000;
@@ -519,15 +523,15 @@ export class NoOpTestingUtilities {
       report.push(`- **Total Animations**: ${result.performanceMetrics.totalAnimations}`);
       report.push(`- **Average Completion Time**: ${result.performanceMetrics.averageCompletionTime.toFixed(2)}ms`);
       report.push(`- **Animations/Second**: ${result.performanceMetrics.animationsPerSecond.toFixed(2)}`);
-      
+
       if (result.error) {
         report.push(`- **Error**: ${result.error}`);
       }
-      
+
       if (result.data) {
         report.push(`- **Data**: ${JSON.stringify(result.data, null, 2)}`);
       }
-      
+
       report.push(``);
     });
 

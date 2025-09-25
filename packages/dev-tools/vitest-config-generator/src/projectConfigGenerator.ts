@@ -57,9 +57,10 @@ export class ProjectConfigGenerator {
   private getIncludePatterns(directory: DirectoryDefinition): string[] {
     // Check if directory has specific test patterns
     if (directory.includePatterns && directory.includePatterns.length > 0) {
-      const testPatterns = directory.includePatterns
-        .filter((pattern: string) => pattern.includes("test") || pattern.includes("spec"));
-      
+      const testPatterns = directory.includePatterns.filter(
+        (pattern: string) => pattern.includes("test") || pattern.includes("spec")
+      );
+
       if (testPatterns.length > 0) {
         return testPatterns;
       }
@@ -71,7 +72,7 @@ export class ProjectConfigGenerator {
       `${basePath}/**/*.{test,spec}.{js,ts,tsx}`,
       `${basePath}/**/__tests__/**/*.{js,ts,tsx}`,
       `${basePath}/src/**/*.{test,spec}.{js,ts,tsx}`,
-      `${basePath}/src/__tests__/**/*.{js,ts,tsx}`
+      `${basePath}/src/__tests__/**/*.{js,ts,tsx}`,
     ];
   }
 

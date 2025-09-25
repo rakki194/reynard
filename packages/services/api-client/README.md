@@ -12,7 +12,7 @@ graph TB
         A --> C[Generated APIs]
         A --> D[Composables]
         A --> E[Utilities]
-        
+
         subgraph "Generated APIs"
             C --> C1[HealthApi]
             C --> C2[RagApi]
@@ -23,7 +23,7 @@ graph TB
             C --> C7[AgentEmailApi]
             C --> C8[ImapApi]
         end
-        
+
         subgraph "SolidJS Composables"
             D --> D1[useAuth]
             D --> D2[useCaption]
@@ -34,21 +34,21 @@ graph TB
             D --> D7[useMCP]
             D --> D8[useAgentInteractions]
         end
-        
+
         subgraph "Utilities"
             E --> E1[Error Handling]
             E --> E2[Fetch Utils]
             E --> E3[Response Parsing]
         end
     end
-    
+
     subgraph "🔄 Evergreen System"
         F[OpenAPI Spec] --> G[Change Detection]
         G --> H[Auto Generation]
         H --> I[Type Updates]
         I --> J[Client Rebuild]
     end
-    
+
     subgraph "🏗️ Backend Services"
         K[FastAPI Backend] --> L[OpenAPI Schema]
         K --> M[RAG Service]
@@ -59,7 +59,7 @@ graph TB
         K --> R[ECS World]
         K --> S[MCP Management]
     end
-    
+
     F -.->|Monitors| L
     A -->|Type-safe calls| K
     D -->|Reactive state| A
@@ -74,13 +74,13 @@ sequenceDiagram
     participant Composable as SolidJS Composable
     participant Backend as FastAPI Backend
     participant Evergreen as Evergreen System
-    
+
     Note over App, Evergreen: Development Phase
     Backend->>Evergreen: OpenAPI Schema Changes
     Evergreen->>Evergreen: Detect Changes
     Evergreen->>Client: Regenerate Types
     Evergreen->>Client: Rebuild Client
-    
+
     Note over App, Backend: Runtime Phase
     App->>Composable: useAuth(), useRAG(), etc.
     Composable->>Client: createReynardApiClient()

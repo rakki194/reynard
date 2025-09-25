@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "last_updated": "2025-09-24T21:12:08.591867",
+  "last_updated": "2025-09-25T11:37:45.718250",
   "tools": {
     "generate_agent_name": {
       "name": "generate_agent_name",
@@ -310,7 +310,7 @@
       "name": "search_semantic",
       "category": "search",
       "enabled": true,
-      "description": "Perform semantic search using vector embeddings",
+      "description": "Perform semantic search using RAG backend with Ollama embeddings",
       "dependencies": [],
       "config": {}
     },
@@ -426,6 +426,150 @@
       "dependencies": [],
       "config": {}
     },
+    "download_and_index_paper": {
+      "name": "download_and_index_paper",
+      "category": "research",
+      "enabled": true,
+      "description": "Download and index an academic paper in Reynard's RAG system",
+      "dependencies": [],
+      "config": {}
+    },
+    "search_local_papers": {
+      "name": "search_local_papers",
+      "category": "research",
+      "enabled": true,
+      "description": "Search for papers in the local Reynard paper database",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_rag_paper_stats": {
+      "name": "get_rag_paper_stats",
+      "category": "research",
+      "enabled": true,
+      "description": "Get statistics about academic papers in Reynard's RAG system",
+      "dependencies": [],
+      "config": {}
+    },
+    "ingest_paper_to_rag": {
+      "name": "ingest_paper_to_rag",
+      "category": "research",
+      "enabled": true,
+      "description": "Ingest an academic paper into Reynard's RAG system for semantic search",
+      "dependencies": [],
+      "config": {}
+    },
+    "search_papers_in_rag": {
+      "name": "search_papers_in_rag",
+      "category": "research",
+      "enabled": true,
+      "description": "Search for academic papers in Reynard's RAG system using semantic search",
+      "dependencies": [],
+      "config": {}
+    },
+    "academic_review_workflow": {
+      "name": "academic_review_workflow",
+      "category": "research",
+      "enabled": true,
+      "description": "Complete academic review workflow with automated research and analysis",
+      "dependencies": [],
+      "config": {}
+    },
+    "comprehensive_literature_review": {
+      "name": "comprehensive_literature_review",
+      "category": "research",
+      "enabled": true,
+      "description": "Perform a comprehensive literature review using all available research tools",
+      "dependencies": [],
+      "config": {}
+    },
+    "novelty_assessment_workflow": {
+      "name": "novelty_assessment_workflow",
+      "category": "research",
+      "enabled": true,
+      "description": "Perform comprehensive novelty assessment for a research proposal",
+      "dependencies": [],
+      "config": {}
+    },
+    "research_paper_pipeline": {
+      "name": "research_paper_pipeline",
+      "category": "research",
+      "enabled": true,
+      "description": "Complete pipeline for discovering, downloading, and indexing research papers",
+      "dependencies": [],
+      "config": {}
+    },
+    "download_arxiv_paper": {
+      "name": "download_arxiv_paper",
+      "category": "research",
+      "enabled": true,
+      "description": "Download a specific arXiv paper by ID",
+      "dependencies": [],
+      "config": {}
+    },
+    "search_arxiv_papers": {
+      "name": "search_arxiv_papers",
+      "category": "research",
+      "enabled": true,
+      "description": "Search and retrieve papers from arXiv.org with advanced filtering",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_mermaid_diagram_stats": {
+      "name": "get_mermaid_diagram_stats",
+      "category": "visualization",
+      "enabled": true,
+      "description": "Get statistics and analysis of a mermaid diagram",
+      "dependencies": [],
+      "config": {}
+    },
+    "render_mermaid_to_png": {
+      "name": "render_mermaid_to_png",
+      "category": "visualization",
+      "enabled": true,
+      "description": "Render mermaid diagram to PNG format",
+      "dependencies": [],
+      "config": {}
+    },
+    "test_mermaid_render": {
+      "name": "test_mermaid_render",
+      "category": "visualization",
+      "enabled": true,
+      "description": "Test mermaid diagram rendering with a simple example",
+      "dependencies": [],
+      "config": {}
+    },
+    "check_secret": {
+      "name": "check_secret",
+      "category": "secrets",
+      "enabled": true,
+      "description": "Check if a secret is available and set",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_secret": {
+      "name": "get_secret",
+      "category": "secrets",
+      "enabled": true,
+      "description": "Retrieve a user secret by name",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_secret_info": {
+      "name": "get_secret_info",
+      "category": "secrets",
+      "enabled": true,
+      "description": "Get detailed information about a secret",
+      "dependencies": [],
+      "config": {}
+    },
+    "list_secrets": {
+      "name": "list_secrets",
+      "category": "secrets",
+      "enabled": true,
+      "description": "List all available secrets",
+      "dependencies": [],
+      "config": {}
+    },
     "disable_tool": {
       "name": "disable_tool",
       "category": "management",
@@ -474,147 +618,27 @@
       "dependencies": [],
       "config": {}
     },
-    "create_agent_email_template": {
-      "name": "create_agent_email_template",
-      "category": "email",
+    "scrape_webpage_content": {
+      "name": "scrape_webpage_content",
+      "category": "playwright",
       "enabled": true,
-      "description": "Create an email template for an agent",
+      "description": "Scrape content from webpages using Playwright browser automation",
       "dependencies": [],
       "config": {}
     },
-    "get_agent_email_config": {
-      "name": "get_agent_email_config",
-      "category": "email",
+    "take_webpage_screenshot": {
+      "name": "take_webpage_screenshot",
+      "category": "playwright",
       "enabled": true,
-      "description": "Get email configuration for an agent",
+      "description": "Take screenshots of webpages using Playwright browser automation",
       "dependencies": [],
       "config": {}
     },
-    "get_agent_email_stats": {
-      "name": "get_agent_email_stats",
-      "category": "email",
+    "test_playwright_connection": {
+      "name": "test_playwright_connection",
+      "category": "playwright",
       "enabled": true,
-      "description": "Get email statistics for an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "send_agent_email": {
-      "name": "send_agent_email",
-      "category": "email",
-      "enabled": true,
-      "description": "Send email from one agent to another",
-      "dependencies": [],
-      "config": {}
-    },
-    "setup_agent_email": {
-      "name": "setup_agent_email",
-      "category": "email",
-      "enabled": true,
-      "description": "Setup email configuration for an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "trigger_agent_automated_email": {
-      "name": "trigger_agent_automated_email",
-      "category": "email",
-      "enabled": true,
-      "description": "Trigger automated email for an agent based on events",
-      "dependencies": [],
-      "config": {}
-    },
-    "invoke_success_advisor_8": {
-      "name": "invoke_success_advisor_8",
-      "category": "agent",
-      "enabled": true,
-      "description": "Invoke Success-Advisor-8 spirit inhabitation through ECS API",
-      "dependencies": [],
-      "config": {}
-    },
-    "find_ecs_agent": {
-      "name": "find_ecs_agent",
-      "category": "social",
-      "enabled": true,
-      "description": "Find an agent in the ECS world by name or ID with flexible matching",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_agent_relationships": {
-      "name": "get_agent_relationships",
-      "category": "social",
-      "enabled": true,
-      "description": "Get all relationships for an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_agent_social_stats": {
-      "name": "get_agent_social_stats",
-      "category": "social",
-      "enabled": true,
-      "description": "Get social interaction statistics for an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_ecs_world_status": {
-      "name": "get_ecs_world_status",
-      "category": "social",
-      "enabled": true,
-      "description": "Get the current status of the ECS world including agent counts and system health",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_interaction_history": {
-      "name": "get_interaction_history",
-      "category": "social",
-      "enabled": true,
-      "description": "Get the interaction history for an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_nearby_agents": {
-      "name": "get_nearby_agents",
-      "category": "social",
-      "enabled": true,
-      "description": "Get all agents within a certain radius of an agent",
-      "dependencies": [],
-      "config": {}
-    },
-    "initiate_interaction": {
-      "name": "initiate_interaction",
-      "category": "social",
-      "enabled": true,
-      "description": "Initiate an interaction between two agents",
-      "dependencies": [],
-      "config": {}
-    },
-    "send_chat_message": {
-      "name": "send_chat_message",
-      "category": "social",
-      "enabled": true,
-      "description": "Send a chat message from one agent to another with automatic agent ID resolution",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_mermaid_diagram_stats": {
-      "name": "get_mermaid_diagram_stats",
-      "category": "visualization",
-      "enabled": true,
-      "description": "Get statistics and analysis of a mermaid diagram",
-      "dependencies": [],
-      "config": {}
-    },
-    "render_mermaid_to_png": {
-      "name": "render_mermaid_to_png",
-      "category": "visualization",
-      "enabled": true,
-      "description": "Render mermaid diagram to PNG format",
-      "dependencies": [],
-      "config": {}
-    },
-    "test_mermaid_render": {
-      "name": "test_mermaid_render",
-      "category": "visualization",
-      "enabled": true,
-      "description": "Test mermaid diagram rendering with a simple example",
+      "description": "Test Playwright browser connection and capabilities",
       "dependencies": [],
       "config": {}
     },
@@ -682,38 +706,6 @@
       "dependencies": [],
       "config": {}
     },
-    "check_secret": {
-      "name": "check_secret",
-      "category": "secrets",
-      "enabled": true,
-      "description": "Check if a secret is available and set",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_secret": {
-      "name": "get_secret",
-      "category": "secrets",
-      "enabled": true,
-      "description": "Retrieve a user secret by name",
-      "dependencies": [],
-      "config": {}
-    },
-    "get_secret_info": {
-      "name": "get_secret_info",
-      "category": "secrets",
-      "enabled": true,
-      "description": "Get detailed information about a secret",
-      "dependencies": [],
-      "config": {}
-    },
-    "list_secrets": {
-      "name": "list_secrets",
-      "category": "secrets",
-      "enabled": true,
-      "description": "List all available secrets",
-      "dependencies": [],
-      "config": {}
-    },
     "execute_vscode_task": {
       "name": "execute_vscode_task",
       "category": "vscode",
@@ -738,27 +730,123 @@
       "dependencies": [],
       "config": {}
     },
-    "scrape_webpage_content": {
-      "name": "scrape_webpage_content",
-      "category": "playwright",
+    "find_ecs_agent": {
+      "name": "find_ecs_agent",
+      "category": "social",
       "enabled": true,
-      "description": "Scrape content from webpages using Playwright browser automation",
+      "description": "Find an agent in the ECS world by name or ID with flexible matching",
       "dependencies": [],
       "config": {}
     },
-    "take_webpage_screenshot": {
-      "name": "take_webpage_screenshot",
-      "category": "playwright",
+    "get_agent_relationships": {
+      "name": "get_agent_relationships",
+      "category": "social",
       "enabled": true,
-      "description": "Take screenshots of webpages using Playwright browser automation",
+      "description": "Get all relationships for an agent",
       "dependencies": [],
       "config": {}
     },
-    "test_playwright_connection": {
-      "name": "test_playwright_connection",
-      "category": "playwright",
+    "get_agent_social_stats": {
+      "name": "get_agent_social_stats",
+      "category": "social",
       "enabled": true,
-      "description": "Test Playwright browser connection and capabilities",
+      "description": "Get social interaction statistics for an agent",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_ecs_world_status": {
+      "name": "get_ecs_world_status",
+      "category": "social",
+      "enabled": true,
+      "description": "Get the current status of the ECS world including agent counts and system health",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_interaction_history": {
+      "name": "get_interaction_history",
+      "category": "social",
+      "enabled": true,
+      "description": "Get the interaction history for an agent",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_nearby_agents": {
+      "name": "get_nearby_agents",
+      "category": "social",
+      "enabled": true,
+      "description": "Get all agents within a certain radius of an agent",
+      "dependencies": [],
+      "config": {}
+    },
+    "initiate_interaction": {
+      "name": "initiate_interaction",
+      "category": "social",
+      "enabled": true,
+      "description": "Initiate an interaction between two agents",
+      "dependencies": [],
+      "config": {}
+    },
+    "send_chat_message": {
+      "name": "send_chat_message",
+      "category": "social",
+      "enabled": true,
+      "description": "Send a chat message from one agent to another with automatic agent ID resolution",
+      "dependencies": [],
+      "config": {}
+    },
+    "create_agent_email_template": {
+      "name": "create_agent_email_template",
+      "category": "email",
+      "enabled": true,
+      "description": "Create an email template for an agent",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_agent_email_config": {
+      "name": "get_agent_email_config",
+      "category": "email",
+      "enabled": true,
+      "description": "Get email configuration for an agent",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_agent_email_stats": {
+      "name": "get_agent_email_stats",
+      "category": "email",
+      "enabled": true,
+      "description": "Get email statistics for an agent",
+      "dependencies": [],
+      "config": {}
+    },
+    "send_agent_email": {
+      "name": "send_agent_email",
+      "category": "email",
+      "enabled": true,
+      "description": "Send email from one agent to another",
+      "dependencies": [],
+      "config": {}
+    },
+    "setup_agent_email": {
+      "name": "setup_agent_email",
+      "category": "email",
+      "enabled": true,
+      "description": "Setup email configuration for an agent",
+      "dependencies": [],
+      "config": {}
+    },
+    "trigger_agent_automated_email": {
+      "name": "trigger_agent_automated_email",
+      "category": "email",
+      "enabled": true,
+      "description": "Trigger automated email for an agent based on events",
+      "dependencies": [],
+      "config": {}
+    },
+    "invoke_success_advisor_8": {
+      "name": "invoke_success_advisor_8",
+      "category": "agent",
+      "enabled": true,
+      "description": "Invoke Success-Advisor-8 spirit inhabitation through ECS API",
       "dependencies": [],
       "config": {}
     }

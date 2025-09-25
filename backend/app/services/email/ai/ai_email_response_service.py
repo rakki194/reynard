@@ -1,6 +1,21 @@
-"""AI-Powered Email Response Service for Reynard Backend.
+"""🦊 Reynard AI-Powered Email Response Service
+=============================================
 
-This module provides AI-powered email response generation using LLM integration.
+AI-powered email response generation using the AI service.
+This module provides sophisticated email response generation with support
+for multiple model providers through the AI interface.
+
+Key Features:
+- Multi-Provider Support: Works with Ollama, vLLM, SGLang, LLaMA.cpp
+- Intelligent Provider Selection: Automatic provider selection based on capabilities
+- Advanced Email Analysis: Context extraction, sentiment analysis, priority detection
+- Response Generation: Professional email responses with customizable tone
+- Template System: Flexible response templates and customization
+- Quality Assessment: Confidence scoring and improvement suggestions
+- Streaming Support: Real-time response generation and streaming
+
+Author: Reynard Development Team
+Version: 2.0.0 - AI Service Integration
 """
 
 import json
@@ -10,29 +25,10 @@ import uuid
 from dataclasses import asdict, dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
-# AI/LLM imports
-try:
-    import openai
-
-    OPENAI_AVAILABLE = True
-except ImportError:
-    OPENAI_AVAILABLE = False
-
-try:
-    from anthropic import Anthropic
-
-    ANTHROPIC_AVAILABLE = True
-except ImportError:
-    ANTHROPIC_AVAILABLE = False
-
-try:
-    import requests
-
-    OLLAMA_AVAILABLE = True
-except ImportError:
-    OLLAMA_AVAILABLE = False
+from ...ai import AIService, ChatMessage, ProviderType
+from ...ai.interfaces.model_provider import ModelCapability
 
 logger = logging.getLogger(__name__)
 
@@ -90,7 +86,8 @@ class AIResponseConfig:
     """AI response generation configuration."""
 
     # Model settings
-    default_model: str = "gpt-3.5-turbo"  # or claude-3-sonnet
+    default_provider: ProviderType = ProviderType.OLLAMA
+    default_model: str = "llama3.1:latest"
     max_tokens: int = 1000
     temperature: float = 0.7
 
@@ -115,12 +112,13 @@ class AIResponseConfig:
 
 
 class AIEmailResponseService:
-    """Service for AI-powered email response generation."""
+    """Service for AI-powered email response generation using AI service."""
 
     def __init__(
         self,
         config: AIResponseConfig | None = None,
         data_dir: str = "data/ai_responses",
+        ai_service: Optional[AIService] = None,
     ):
         self.config = config or AIResponseConfig()
         self.data_dir = Path(data_dir)
@@ -134,79 +132,42 @@ class AIEmailResponseService:
         self.contexts_dir = self.data_dir / "contexts"
         self.contexts_dir.mkdir(exist_ok=True)
 
-        # AI clients
-        self.openai_client = None
-        self.anthropic_client = None
-        self.ollama_available = False
+        # AI service
+        self.ai_service = ai_service
+        self._initialized = False
 
         # Context storage
         self.contexts: dict[str, EmailContext] = {}
         self.responses: dict[str, AIResponse] = {}
         self.templates: dict[str, Any] = {}
 
-        # Initialize OpenAI client only if API key is available
-        if OPENAI_AVAILABLE:
-            try:
-                import os
-
-                if os.getenv("OPENAI_API_KEY"):
-                    self.openai_client = openai.AsyncOpenAI()
-                    logger.info("OpenAI client initialized successfully")
-                else:
-                    logger.info(
-                        "OpenAI API key not found, skipping OpenAI initialization",
-                    )
-            except Exception as e:
-                logger.warning(f"Failed to initialize OpenAI client: {e}")
-
-        # Initialize Anthropic client only if API key is available
-        if ANTHROPIC_AVAILABLE:
-            try:
-                import os
-
-                if os.getenv("ANTHROPIC_API_KEY"):
-                    self.anthropic_client = Anthropic()
-                    logger.info("Anthropic client initialized successfully")
-                else:
-                    logger.info(
-                        "Anthropic API key not found, skipping Anthropic initialization",
-                    )
-            except Exception as e:
-                logger.warning(f"Failed to initialize Anthropic client: {e}")
-
-        # Check Ollama availability
-        if OLLAMA_AVAILABLE:
-            try:
-                import requests
-
-                response = requests.get("http://localhost:11434/api/tags", timeout=2)
-                if response.status_code == 200:
-                    self.ollama_available = True
-                    logger.info("Ollama service detected and available")
-                else:
-                    logger.info("Ollama service not responding")
-            except Exception as e:
-                logger.info(f"Ollama service not available: {e}")
-
-        # Log available AI services
-        available_services = []
-        if self.openai_client:
-            available_services.append("OpenAI")
-        if self.anthropic_client:
-            available_services.append("Anthropic")
-        if self.ollama_available:
-            available_services.append("Ollama")
-
-        if available_services:
-            logger.info(f"Available AI services: {', '.join(available_services)}")
-        else:
-            logger.warning(
-                "No AI services available - email response generation will be limited",
-            )
-
         # Load existing responses and templates
         self._load_responses()
         self._load_templates()
+
+    async def initialize(self) -> bool:
+        """Initialize the AI email response service.
+        
+        Returns:
+            True if initialization successful, False otherwise
+        """
+        try:
+            if not self.ai_service:
+                # Get AI service from global registry
+                from ...ai import get_ai_service
+                self.ai_service = get_ai_service()
+            
+            if not self.ai_service:
+                logger.error("No AI service available for email response generation")
+                return False
+            
+            self._initialized = True
+            logger.info("✅ AI Email Response Service initialized successfully")
+            return True
+            
+        except Exception as e:
+            logger.error(f"❌ Failed to initialize AI Email Response Service: {e}")
+            return False
 
     def _load_responses(self) -> None:
         """Load existing AI responses."""
@@ -366,67 +327,67 @@ class AIEmailResponseService:
         response_type: str = "reply",
         custom_instructions: str | None = None,
         model: str | None = None,
+        provider: Optional[ProviderType] = None,
     ) -> AIResponse:
-        """Generate AI-powered email response.
+        """Generate AI-powered email response using AI service.
 
         Args:
             email_context: Email context for response generation
             response_type: Type of response to generate
             custom_instructions: Custom instructions for the AI
             model: Specific model to use
+            provider: Preferred provider to use
 
         Returns:
             AIResponse object
 
         """
         try:
+            if not self._initialized:
+                await self.initialize()
+            
+            if not self.ai_service:
+                raise ValueError("AI service not available")
+
             start_time = datetime.now()
 
-            # Determine which model to use (default to Ollama if available)
-            if not model:
-                if self.ollama_available:
-                    model = "llama3.1"  # Default Ollama model
-                elif self.openai_client:
-                    model = self.config.default_model
-                elif self.anthropic_client:
-                    model = "claude-3-sonnet-20240229"
-                else:
-                    raise ValueError("No AI services available")
+            # Build the prompt for email response generation
+            system_prompt, user_prompt = self._build_email_prompt(
+                email_context, response_type, custom_instructions
+            )
 
-            # Generate the response
-            if self.ollama_available and (
-                model in ["llama3.1", "llama3", "mistral", "codellama"]
-                or not model.startswith(("gpt", "claude"))
-            ):
-                response_data = await self._generate_ollama_response(
-                    email_context, response_type, custom_instructions, model,
-                )
-            elif model.startswith("gpt") and self.openai_client:
-                response_data = await self._generate_openai_response(
-                    email_context, response_type, custom_instructions, model,
-                )
-            elif model.startswith("claude") and self.anthropic_client:
-                response_data = await self._generate_anthropic_response(
-                    email_context, response_type, custom_instructions, model,
-                )
-            else:
-                raise ValueError(f"Unsupported model: {model} or service not available")
+            # Create chat messages
+            messages = [
+                ChatMessage(role="system", content=system_prompt),
+                ChatMessage(role="user", content=user_prompt),
+            ]
+
+            # Generate response using AI service
+            chat_result = await self.ai_service.generate_chat_completion(
+                messages=messages,
+                model=model or self.config.default_model,
+                max_tokens=self.config.max_tokens,
+                temperature=self.config.temperature,
+                provider=provider or self.config.default_provider,
+            )
+
+            # Parse the response
+            response_text = chat_result.message.content
+            subject, body = self._parse_response_text(response_text)
 
             # Create AIResponse object
             response = AIResponse(
                 response_id=str(uuid.uuid4()),
-                original_email_id=email_context.sender_email,  # Placeholder
-                subject=response_data.get("subject", ""),
-                body=response_data.get("body", ""),
-                html_body=response_data.get("html_body"),
-                tone=response_data.get("tone", self.config.default_tone),
-                confidence_score=response_data.get("confidence_score", 0.0),
+                original_email_id=email_context.sender_email,
+                subject=subject,
+                body=body,
+                html_body=self._generate_html_body(body),
+                tone=self._detect_tone(body),
+                confidence_score=self._calculate_confidence_score(email_context, body),
                 response_type=response_type,
-                suggested_actions=response_data.get("suggested_actions", []),
-                model_used=model,
-                processing_time_ms=int(
-                    (datetime.now() - start_time).total_seconds() * 1000,
-                ),
+                suggested_actions=self._extract_suggested_actions(body),
+                model_used=chat_result.model_used,
+                processing_time_ms=int(chat_result.processing_time_ms),
             )
 
             # Store the response
@@ -678,101 +639,40 @@ class AIEmailResponseService:
             logger.error(f"Failed to get agent personality: {e}")
             return None
 
-    async def _generate_openai_response(
+    def _build_email_prompt(
         self,
         email_context: EmailContext,
         response_type: str,
         custom_instructions: str | None,
-        model: str,
-    ) -> dict[str, Any]:
-        """Generate response using OpenAI API."""
-        try:
-            # Build the prompt
-            prompt = self._build_openai_prompt(
-                email_context, response_type, custom_instructions,
-            )
+    ) -> tuple[str, str]:
+        """Build system and user prompts for email response generation.
+        
+        Args:
+            email_context: Email context for response generation
+            response_type: Type of response to generate
+            custom_instructions: Custom instructions for the AI
+            
+        Returns:
+            Tuple of (system_prompt, user_prompt)
+        """
+        # System prompt
+        system_prompt = f"""You are a professional email assistant for Reynard Systems. 
+        Generate appropriate email responses with the following guidelines:
+        
+        - Use a {self.config.default_tone} tone
+        - Keep responses under {self.config.max_response_length} characters
+        - Include appropriate greeting and closing
+        - Be helpful, accurate, and professional
+        - Address the sender's specific needs and concerns
+        
+        Agent Personality: {email_context.agent_personality or 'Professional and helpful'}
+        
+        Format your response as:
+        SUBJECT: [subject line]
+        BODY: [response body]"""
 
-            # Call OpenAI API
-            response = await self.openai_client.chat.completions.create(
-                model=model,
-                messages=[
-                    {
-                        "role": "system",
-                        "content": "You are a professional email assistant. Generate appropriate email responses.",
-                    },
-                    {"role": "user", "content": prompt},
-                ],
-                max_tokens=self.config.max_tokens,
-                temperature=self.config.temperature,
-            )
-
-            # Parse the response
-            response_text = response.choices[0].message.content
-
-            # Extract subject and body
-            subject, body = self._parse_response_text(response_text)
-
-            return {
-                "subject": subject,
-                "body": body,
-                "tone": self._detect_tone(body),
-                "confidence_score": 0.8,  # Placeholder
-                "suggested_actions": self._extract_suggested_actions(body),
-            }
-
-        except Exception as e:
-            logger.error(f"OpenAI response generation failed: {e}")
-            raise
-
-    async def _generate_anthropic_response(
-        self,
-        email_context: EmailContext,
-        response_type: str,
-        custom_instructions: str | None,
-        model: str,
-    ) -> dict[str, Any]:
-        """Generate response using Anthropic API."""
-        try:
-            # Build the prompt
-            prompt = self._build_anthropic_prompt(
-                email_context, response_type, custom_instructions,
-            )
-
-            # Call Anthropic API
-            response = await self.anthropic_client.messages.create(
-                model=model,
-                max_tokens=self.config.max_tokens,
-                temperature=self.config.temperature,
-                messages=[{"role": "user", "content": prompt}],
-            )
-
-            # Parse the response
-            response_text = response.content[0].text
-
-            # Extract subject and body
-            subject, body = self._parse_response_text(response_text)
-
-            return {
-                "subject": subject,
-                "body": body,
-                "tone": self._detect_tone(body),
-                "confidence_score": 0.8,  # Placeholder
-                "suggested_actions": self._extract_suggested_actions(body),
-            }
-
-        except Exception as e:
-            logger.error(f"Anthropic response generation failed: {e}")
-            raise
-
-    def _build_openai_prompt(
-        self,
-        email_context: EmailContext,
-        response_type: str,
-        custom_instructions: str | None,
-    ) -> str:
-        """Build prompt for OpenAI API."""
-        prompt = f"""
-        Generate a {response_type} email response with the following context:
+        # User prompt
+        user_prompt = f"""Generate a {response_type} email response with the following context:
         
         Original Email:
         Subject: {email_context.original_subject}
@@ -782,36 +682,66 @@ class AIEmailResponseService:
         Email Type: {email_context.email_type}
         Priority: {email_context.priority}
         Sentiment: {email_context.sentiment}
-        
-        Agent Personality: {email_context.agent_personality or 'Professional and helpful'}
+        Language: {email_context.language}
         
         {custom_instructions or ''}
         
-        Please generate:
-        1. An appropriate subject line
-        2. A professional response body
-        3. Use tone: {self.config.default_tone}
-        4. Keep response under {self.config.max_response_length} characters
-        5. Include appropriate greeting and closing
+        Please generate an appropriate response that addresses the sender's needs."""
+
+        return system_prompt, user_prompt
+
+    def _generate_html_body(self, text_body: str) -> str:
+        """Generate HTML version of the email body.
         
-        Format your response as:
-        SUBJECT: [subject line]
-        BODY: [response body]
+        Args:
+            text_body: Plain text email body
+            
+        Returns:
+            HTML formatted email body
         """
+        # Simple HTML conversion - convert line breaks to <br> tags
+        html_body = text_body.replace('\n', '<br>\n')
+        
+        # Add basic HTML structure
+        html_body = f"""<html>
+        <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+        {html_body}
+        </body>
+        </html>"""
+        
+        return html_body
 
-        return prompt
-
-    def _build_anthropic_prompt(
-        self,
-        email_context: EmailContext,
-        response_type: str,
-        custom_instructions: str | None,
-    ) -> str:
-        """Build prompt for Anthropic API."""
-        # Similar to OpenAI prompt but adapted for Anthropic
-        return self._build_openai_prompt(
-            email_context, response_type, custom_instructions,
-        )
+    def _calculate_confidence_score(self, email_context: EmailContext, response_body: str) -> float:
+        """Calculate confidence score for the generated response.
+        
+        Args:
+            email_context: Original email context
+            response_body: Generated response body
+            
+        Returns:
+            Confidence score between 0.0 and 1.0
+        """
+        score = 0.5  # Base score
+        
+        # Length appropriateness
+        if 50 <= len(response_body) <= self.config.max_response_length:
+            score += 0.2
+        
+        # Tone appropriateness
+        if email_context.sentiment == "negative" and "sorry" in response_body.lower():
+            score += 0.1
+        elif email_context.sentiment == "positive" and any(word in response_body.lower() for word in ["thank", "appreciate", "glad"]):
+            score += 0.1
+        
+        # Question addressing
+        if email_context.email_type == "question" and "?" in response_body:
+            score += 0.1
+        
+        # Professional closing
+        if any(word in response_body.lower() for word in ["regards", "sincerely", "best", "thanks"]):
+            score += 0.1
+        
+        return min(1.0, max(0.0, score))
 
     def _parse_response_text(self, response_text: str) -> tuple[str, str]:
         """Parse AI response text to extract subject and body."""
@@ -875,100 +805,6 @@ class AIEmailResponseService:
 
         return actions
 
-    async def _generate_ollama_response(
-        self,
-        email_context: EmailContext,
-        response_type: str,
-        custom_instructions: str | None,
-        model: str,
-    ) -> dict[str, Any]:
-        """Generate response using Ollama."""
-        try:
-
-            import requests
-
-            # Build the prompt
-            prompt = self._build_ollama_prompt(
-                email_context, response_type, custom_instructions,
-            )
-
-            # Prepare the request payload
-            payload = {
-                "model": model,
-                "prompt": prompt,
-                "stream": False,
-                "options": {
-                    "temperature": 0.7,
-                    "top_p": 0.9,
-                    "max_tokens": self.config.max_response_length,
-                },
-            }
-
-            # Make the request to Ollama
-            response = requests.post(
-                "http://localhost:11434/api/generate", json=payload, timeout=30,
-            )
-
-            if response.status_code != 200:
-                raise ValueError(f"Ollama API error: {response.status_code}")
-
-            result = response.json()
-            response_text = result.get("response", "")
-
-            if not response_text:
-                raise ValueError("Empty response from Ollama")
-
-            # Parse the response
-            subject, body = self._parse_response_text(response_text)
-
-            return {
-                "subject": subject,
-                "body": body,
-                "html_body": None,
-                "tone": self._detect_tone(body),
-                "confidence_score": 0.8,  # Ollama responses are generally reliable
-                "suggested_actions": self._extract_suggested_actions(body),
-            }
-
-        except Exception as e:
-            logger.error(f"Ollama response generation failed: {e}")
-            raise
-
-    def _build_ollama_prompt(
-        self,
-        email_context: EmailContext,
-        response_type: str,
-        custom_instructions: str | None,
-    ) -> str:
-        """Build prompt for Ollama."""
-        prompt = f"""You are an AI assistant helping to generate professional email responses.
-
-Original Email:
-From: {email_context.sender_email}
-Subject: {email_context.original_subject}
-Body: {email_context.original_body}
-
-Email Type: {email_context.email_type}
-Priority: {email_context.priority}
-Sentiment: {email_context.sentiment}
-
-Agent Personality: {email_context.agent_personality or 'Professional and helpful'}
-
-{custom_instructions or ''}
-
-Please generate a professional email response with:
-1. An appropriate subject line
-2. A professional response body
-3. Use tone: {self.config.default_tone}
-4. Keep response under {self.config.max_response_length} characters
-5. Include appropriate greeting and closing
-
-Format your response as:
-SUBJECT: [subject line]
-BODY: [response body]
-"""
-
-        return prompt
 
 
 # Global AI response service instance - will be initialized lazily
@@ -999,6 +835,7 @@ async def initialize_ai_email_response_service() -> bool:
         global ai_email_response_service
         if ai_email_response_service is None:
             ai_email_response_service = AIEmailResponseService()
+            await ai_email_response_service.initialize()
             logger.info("✅ AI email response service initialized successfully")
         return True
     except Exception as e:
@@ -1031,17 +868,17 @@ async def health_check_ai_email_response_service() -> bool:
         if ai_email_response_service is None:
             return False
 
-        # Check if any AI services are available
-        available_services = []
-        if ai_email_response_service.openai_client:
-            available_services.append("OpenAI")
-        if ai_email_response_service.anthropic_client:
-            available_services.append("Anthropic")
-        if ai_email_response_service.ollama_available:
-            available_services.append("Ollama")
-
-        # Service is healthy if at least one AI service is available
-        return len(available_services) > 0
+        # Check if the service is initialized and AI service is available
+        if not ai_email_response_service._initialized:
+            return False
+        
+        if not ai_email_response_service.ai_service:
+            return False
+        
+        # Check AI service health
+        health_status = ai_email_response_service.ai_service.get_health_status()
+        return health_status["service_initialized"] and health_status["healthy_providers"] > 0
+        
     except Exception as e:
         logger.error(f"❌ AI email response service health check error: {e}")
         return False

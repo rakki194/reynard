@@ -24,9 +24,7 @@ export const INFRASTRUCTURE_DIRECTORIES: DirectoryDefinition[] = [
     ["json", "yaml", "sql", "data"],
     "Data files, datasets, and configuration data",
     {
-      relationships: buildRelationships(
-        { directory: "backend", type: "dependency", description: "Backend data" }
-      ),
+      relationships: buildRelationships({ directory: "backend", type: "dependency", description: "Backend data" }),
       excludePatterns: ["**/cache/**", "**/tmp/**"],
       includePatterns: ["**/*.json", "**/*.yaml", "**/*.yml", "**/*.sql", "**/*.csv", "**/*.tsv"],
       buildable: false,
@@ -45,9 +43,11 @@ export const INFRASTRUCTURE_DIRECTORIES: DirectoryDefinition[] = [
     ["config", "shell"],
     "Nginx configuration and deployment scripts",
     {
-      relationships: buildRelationships(
-        { directory: "backend", type: "configures", description: "Configures backend" }
-      ),
+      relationships: buildRelationships({
+        directory: "backend",
+        type: "configures",
+        description: "Configures backend",
+      }),
       includePatterns: ["**/*.conf", "**/*.sh", "**/*.md"],
       buildable: false,
       testable: false,
@@ -64,15 +64,8 @@ export const INFRASTRUCTURE_DIRECTORIES: DirectoryDefinition[] = [
     ["python", "json", "markdown"],
     "Fenrir development tools and utilities",
     {
-      relationships: buildRelationships(
-        COMMON_RELATIONSHIPS.SCRIPTS_SIBLING
-      ),
-      excludePatterns: [
-        ...SERVICE_EXCLUDE_PATTERNS,
-        "**/venv/**",
-        "**/dist/**",
-        "**/build/**",
-      ],
+      relationships: buildRelationships(COMMON_RELATIONSHIPS.SCRIPTS_SIBLING),
+      excludePatterns: [...SERVICE_EXCLUDE_PATTERNS, "**/venv/**", "**/dist/**", "**/build/**"],
       includePatterns: ["**/*.py", "**/*.json", "**/*.md"],
       optional: true,
       metadata: INFRASTRUCTURE_METADATA,
@@ -87,15 +80,8 @@ export const INFRASTRUCTURE_DIRECTORIES: DirectoryDefinition[] = [
     ["python", "javascript", "typescript", "json", "markdown"],
     "Experimental packages and prototypes (1 package): Phoenix control system",
     {
-      relationships: buildRelationships(
-        COMMON_RELATIONSHIPS.BACKEND_SIBLING
-      ),
-      excludePatterns: [
-        ...SERVICE_EXCLUDE_PATTERNS,
-        "**/venv/**",
-        "**/dist/**",
-        "**/build/**",
-      ],
+      relationships: buildRelationships(COMMON_RELATIONSHIPS.BACKEND_SIBLING),
+      excludePatterns: [...SERVICE_EXCLUDE_PATTERNS, "**/venv/**", "**/dist/**", "**/build/**"],
       includePatterns: ["**/*.py", "**/*.js", "**/*.ts", "**/*.json", "**/*.md"],
       optional: true,
       metadata: INFRASTRUCTURE_METADATA,

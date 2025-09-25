@@ -1,6 +1,6 @@
 /**
  * 🦊 CSS Fallback Animation Utilities
- * 
+ *
  * Utilities for applying CSS-based fallback animations to DOM elements.
  * Provides seamless integration with the staggered animation system.
  */
@@ -117,7 +117,7 @@ export function applyCSSFallbackAnimation(
       return new Promise<void>(resolve => {
         setTimeout(() => {
           element.classList.add("animate");
-          
+
           // Listen for transition end
           const handleTransitionEnd = (event: TransitionEvent) => {
             if (event.target === element) {
@@ -129,10 +129,13 @@ export function applyCSSFallbackAnimation(
           element.addEventListener("transitionend", handleTransitionEnd);
 
           // Fallback timeout
-          setTimeout(() => {
-            element.removeEventListener("transitionend", handleTransitionEnd);
-            resolve();
-          }, duration + delays[index] + 100);
+          setTimeout(
+            () => {
+              element.removeEventListener("transitionend", handleTransitionEnd);
+              resolve();
+            },
+            duration + delays[index] + 100
+          );
         }, delays[index]);
       });
     });
@@ -170,11 +173,7 @@ export function applyFloatingPanelCSSFallback(
   animationType: "entrance" | "exit",
   options: CSSFallbackOptions = {}
 ): CSSFallbackAnimation {
-  const {
-    duration = 300,
-    easing = "ease",
-    useTransitions = true,
-  } = options;
+  const { duration = 300, easing = "ease", useTransitions = true } = options;
 
   // Set CSS custom properties
   const setCSSProperties = () => {
@@ -193,11 +192,7 @@ export function applyFloatingPanelCSSFallback(
     setCSSProperties();
 
     // Remove existing classes
-    panel.classList.remove(
-      "floating-panel-fallback-entrance",
-      "floating-panel-fallback-exit",
-      "animate"
-    );
+    panel.classList.remove("floating-panel-fallback-entrance", "floating-panel-fallback-exit", "animate");
 
     // Add appropriate class
     if (animationType === "entrance") {
@@ -210,7 +205,7 @@ export function applyFloatingPanelCSSFallback(
     await new Promise<void>(resolve => {
       setTimeout(() => {
         panel.classList.add("animate");
-        
+
         const handleTransitionEnd = (event: TransitionEvent) => {
           if (event.target === panel) {
             panel.removeEventListener("transitionend", handleTransitionEnd);
@@ -236,11 +231,7 @@ export function applyFloatingPanelCSSFallback(
 
   // Reset animation
   const reset = (): void => {
-    panel.classList.remove(
-      "floating-panel-fallback-entrance",
-      "floating-panel-fallback-exit",
-      "animate"
-    );
+    panel.classList.remove("floating-panel-fallback-entrance", "floating-panel-fallback-exit", "animate");
   };
 
   return { start, stop, reset };
@@ -249,15 +240,8 @@ export function applyFloatingPanelCSSFallback(
 /**
  * Apply content CSS fallback animation
  */
-export function applyContentCSSFallback(
-  content: HTMLElement,
-  options: CSSFallbackOptions = {}
-): CSSFallbackAnimation {
-  const {
-    duration = 300,
-    easing = "ease",
-    useTransitions = true,
-  } = options;
+export function applyContentCSSFallback(content: HTMLElement, options: CSSFallbackOptions = {}): CSSFallbackAnimation {
+  const { duration = 300, easing = "ease", useTransitions = true } = options;
 
   // Set CSS custom properties
   const setCSSProperties = () => {
@@ -285,7 +269,7 @@ export function applyContentCSSFallback(
     await new Promise<void>(resolve => {
       setTimeout(() => {
         content.classList.add("animate");
-        
+
         const handleTransitionEnd = (event: TransitionEvent) => {
           if (event.target === content) {
             content.removeEventListener("transitionend", handleTransitionEnd);
@@ -321,9 +305,9 @@ export function applyContentCSSFallback(
  * Check if CSS fallback animations are supported
  */
 export function isCSSFallbackSupported(): boolean {
-  return typeof document !== "undefined" && 
-         typeof window !== "undefined" && 
-         "transition" in document.documentElement.style;
+  return (
+    typeof document !== "undefined" && typeof window !== "undefined" && "transition" in document.documentElement.style
+  );
 }
 
 /**
@@ -331,7 +315,7 @@ export function isCSSFallbackSupported(): boolean {
  */
 export function shouldDisableCSSAnimations(): boolean {
   if (typeof window === "undefined") return true;
-  
+
   // Check for reduced motion preference
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     return true;
@@ -393,5 +377,3 @@ export function createAccessibilityCompliantCSSFallback(
 
   return applyCSSFallbackAnimation(elements, animationType, accessibilityOptions);
 }
-
-

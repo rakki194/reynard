@@ -41,8 +41,16 @@ class BackendAgentManager:
                 all_spirits = await backend_data_service.get_animal_spirits()
                 if not all_spirits:
                     return "Vulpine"  # Fallback
-                spirit = random.choice(list(all_spirits.keys()))
-                spirit_names = all_spirits[spirit]
+                
+                # The API returns {"races": {spirit_name: spirit_data, ...}}
+                # So we need to get the actual spirit names from the races key
+                races_data = all_spirits.get("races", {})
+                if not races_data:
+                    return "Vulpine"  # Fallback
+                
+                spirit = random.choice(list(races_data.keys()))
+                spirit_data = races_data[spirit]
+                spirit_names = spirit_data.get("names", [])
 
             if not spirit_names:
                 return "Vulpine"  # Fallback

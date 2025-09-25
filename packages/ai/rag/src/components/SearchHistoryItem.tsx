@@ -4,12 +4,7 @@
  * Individual search history item display component.
  */
 import { Button, Card, Badge, Icon } from "reynard-components-core";
-import {
-  formatTimestamp,
-  getModalityIcon,
-  getModalityColor,
-  getScoreColor,
-} from "../utils/searchHistoryUtils";
+import { formatTimestamp, getModalityIcon, getModalityColor, getScoreColor } from "../utils/searchHistoryUtils";
 export const SearchHistoryItem = (props: any) => {
   return (
     <Card class="history-item">

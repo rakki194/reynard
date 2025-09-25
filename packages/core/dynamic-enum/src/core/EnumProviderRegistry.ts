@@ -2,7 +2,7 @@
  * Registry for managing enum providers
  */
 
-import type { EnumProvider, EnumProviderRegistry } from '../types';
+import type { EnumProvider, EnumProviderRegistry } from "../types";
 
 /**
  * Implementation of the enum provider registry
@@ -15,7 +15,7 @@ export class DynamicEnumProviderRegistry implements EnumProviderRegistry {
    */
   registerProvider(enumType: string, provider: EnumProvider): void {
     if (!enumType || !provider) {
-      throw new Error('Enum type and provider are required');
+      throw new Error("Enum type and provider are required");
     }
 
     if (this.providers.has(enumType)) {
@@ -98,9 +98,9 @@ export class DynamicEnumProviderRegistry implements EnumProviderRegistry {
    */
   getAggregatedMetrics(): Record<string, any> {
     const metrics: Record<string, any> = {};
-    
+
     for (const [enumType, provider] of Array.from(this.providers)) {
-      if ('getMetrics' in provider) {
+      if ("getMetrics" in provider) {
         metrics[enumType] = (provider as any).getMetrics();
       }
     }

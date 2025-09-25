@@ -7,10 +7,20 @@
  * @module algorithms/optimization/algorithmSelector
  */
 
-import type { PerformanceRecord, AlgorithmSelection, SelectionStats, WorkloadCharacteristics } from "./algorithm-selector-types";
+import type {
+  PerformanceRecord,
+  AlgorithmSelection,
+  SelectionStats,
+  WorkloadCharacteristics,
+} from "./algorithm-selector-types";
 
 // Re-export types for external use
-export type { AlgorithmSelection, WorkloadCharacteristics, PerformanceRecord, SelectionStats } from "./algorithm-selector-types";
+export type {
+  AlgorithmSelection,
+  WorkloadCharacteristics,
+  PerformanceRecord,
+  SelectionStats,
+} from "./algorithm-selector-types";
 import { WorkloadAnalyzer } from "./workload-analyzer";
 import { AlgorithmSelectorCore } from "./algorithm-selector-core";
 import { PerformanceTracker } from "./performance-tracker";

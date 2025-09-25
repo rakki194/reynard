@@ -1,12 +1,6 @@
 // Query operations for the ECS world
 
-import {
-  Component,
-  ComponentType,
-  Entity,
-  QueryFilter,
-  QueryResult,
-} from "./types";
+import { Component, ComponentType, Entity, QueryFilter, QueryResult } from "./types";
 
 import { EntityManager } from "./entity";
 import { ComponentStorage } from "./component";
@@ -32,9 +26,15 @@ export class QueryWorldMixin {
   ): QueryBuilder<T> & {
     forEach: (callback: (entity: Entity, ...components: T) => void | false) => void;
     first: () => { entity: Entity; components: T } | undefined;
-    added: <U extends Component>(componentType: ComponentType<U>) => ReturnType<QueryWorldMixin['createFilteredQueryBuilder']>;
-    changed: <U extends Component>(componentType: ComponentType<U>) => ReturnType<QueryWorldMixin['createFilteredQueryBuilder']>;
-    removed: <U extends Component>(componentType: ComponentType<U>) => ReturnType<QueryWorldMixin['createFilteredQueryBuilder']>;
+    added: <U extends Component>(
+      componentType: ComponentType<U>
+    ) => ReturnType<QueryWorldMixin["createFilteredQueryBuilder"]>;
+    changed: <U extends Component>(
+      componentType: ComponentType<U>
+    ) => ReturnType<QueryWorldMixin["createFilteredQueryBuilder"]>;
+    removed: <U extends Component>(
+      componentType: ComponentType<U>
+    ) => ReturnType<QueryWorldMixin["createFilteredQueryBuilder"]>;
   } {
     const builder = new QueryBuilder<T>();
     for (const componentType of componentTypes) {
@@ -52,9 +52,12 @@ export class QueryWorldMixin {
         const result = query.execute(this.entityManager, this.componentStorage, this.changeDetection);
         return result.first();
       },
-      added: <U extends Component>(componentType: ComponentType<U>) => this.createFilteredQueryBuilder(builder, 'added', componentType),
-      changed: <U extends Component>(componentType: ComponentType<U>) => this.createFilteredQueryBuilder(builder, 'changed', componentType),
-      removed: <U extends Component>(componentType: ComponentType<U>) => this.createFilteredQueryBuilder(builder, 'removed', componentType),
+      added: <U extends Component>(componentType: ComponentType<U>) =>
+        this.createFilteredQueryBuilder(builder, "added", componentType),
+      changed: <U extends Component>(componentType: ComponentType<U>) =>
+        this.createFilteredQueryBuilder(builder, "changed", componentType),
+      removed: <U extends Component>(componentType: ComponentType<U>) =>
+        this.createFilteredQueryBuilder(builder, "removed", componentType),
     });
   }
 
@@ -63,12 +66,12 @@ export class QueryWorldMixin {
    */
   private createFilteredQueryBuilder<T extends Component[], U extends Component>(
     originalBuilder: QueryBuilder<T>,
-    filterType: 'added' | 'changed' | 'removed',
+    filterType: "added" | "changed" | "removed",
     componentType: ComponentType<U>
   ) {
     const query = originalBuilder.build();
     const filteredQuery = query[filterType](componentType);
-    
+
     const newBuilder = new QueryBuilder();
     newBuilder.componentTypes = [...originalBuilder.componentTypes];
     newBuilder.filters = {

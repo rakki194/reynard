@@ -2,7 +2,7 @@
  * Fallback manager for the Dynamic Enum System
  */
 
-import type { EnumData, EnumValue, ValidationResult } from '../types/EnumTypes';
+import type { EnumData, EnumValue, ValidationResult } from "../types/EnumTypes";
 
 /**
  * Fallback manager for handling enum data when primary sources fail
@@ -10,7 +10,7 @@ import type { EnumData, EnumValue, ValidationResult } from '../types/EnumTypes';
 export class FallbackManager {
   private fallbackData: Map<string, EnumData> = new Map();
   private defaultFallbacks: Map<string, string> = new Map();
-  private fallbackStrategy: 'silent' | 'warn' | 'error' = 'warn';
+  private fallbackStrategy: "silent" | "warn" | "error" = "warn";
 
   /**
    * Set fallback data for an enum type
@@ -43,7 +43,7 @@ export class FallbackManager {
   /**
    * Set fallback strategy
    */
-  setFallbackStrategy(strategy: 'silent' | 'warn' | 'error'): void {
+  setFallbackStrategy(strategy: "silent" | "warn" | "error"): void {
     this.fallbackStrategy = strategy;
   }
 
@@ -59,7 +59,7 @@ export class FallbackManager {
    */
   getFallbackValue(enumType: string, key?: string): EnumValue | null {
     const fallbackData = this.getFallbackData(enumType);
-    
+
     if (!fallbackData) {
       return null;
     }
@@ -78,13 +78,13 @@ export class FallbackManager {
    */
   getFallbackDataWithErrorHandling(enumType: string, error: Error): EnumData {
     const fallbackData = this.getFallbackData(enumType);
-    
+
     if (!fallbackData) {
-      this.handleFallbackError(enumType, error, 'No fallback data available');
+      this.handleFallbackError(enumType, error, "No fallback data available");
       return {};
     }
 
-    this.handleFallbackError(enumType, error, 'Using fallback data');
+    this.handleFallbackError(enumType, error, "Using fallback data");
     return fallbackData;
   }
 
@@ -93,12 +93,12 @@ export class FallbackManager {
    */
   validateFallbackData(enumType: string): ValidationResult {
     const fallbackData = this.getFallbackData(enumType);
-    
+
     if (!fallbackData) {
       return {
         isValid: false,
         value: null,
-        error: `No fallback data available for enum type '${enumType}'`
+        error: `No fallback data available for enum type '${enumType}'`,
       };
     }
 
@@ -106,25 +106,25 @@ export class FallbackManager {
       return {
         isValid: false,
         value: null,
-        error: `Fallback data for enum type '${enumType}' is empty`
+        error: `Fallback data for enum type '${enumType}' is empty`,
       };
     }
 
     // Validate each enum value
     for (const [key, value] of Object.entries(fallbackData)) {
-      if (!value || typeof value !== 'object' || !value.value) {
+      if (!value || typeof value !== "object" || !value.value) {
         return {
           isValid: false,
           value: null,
-          error: `Invalid fallback value for key '${key}' in enum type '${enumType}'`
+          error: `Invalid fallback value for key '${key}' in enum type '${enumType}'`,
         };
       }
     }
 
     return {
       isValid: true,
-      value: 'valid',
-      error: null
+      value: "valid",
+      error: null,
     };
   }
 
@@ -141,7 +141,7 @@ export class FallbackManager {
       totalTypes: Math.max(this.fallbackData.size, this.defaultFallbacks.size),
       typesWithFallback: this.fallbackData.size,
       typesWithDefault: this.defaultFallbacks.size,
-      strategy: this.fallbackStrategy
+      strategy: this.fallbackStrategy,
     };
   }
 
@@ -194,15 +194,15 @@ export class FallbackManager {
    */
   private handleFallbackError(enumType: string, error: Error, message: string): void {
     const fullMessage = `${message} for enum type '${enumType}': ${error.message}`;
-    
+
     switch (this.fallbackStrategy) {
-      case 'silent':
+      case "silent":
         // Do nothing
         break;
-      case 'warn':
+      case "warn":
         console.warn(fullMessage);
         break;
-      case 'error':
+      case "error":
         console.error(fullMessage);
         break;
     }
@@ -213,15 +213,15 @@ export class FallbackManager {
    */
   createFallbackDataFromObject(enumType: string, data: Record<string, string>): void {
     const enumData: EnumData = {};
-    
+
     for (const [key, value] of Object.entries(data)) {
       enumData[key] = {
         value,
         weight: 1.0,
-        metadata: {}
+        metadata: {},
       };
     }
-    
+
     this.setFallbackData(enumType, enumData);
   }
 
@@ -230,16 +230,16 @@ export class FallbackManager {
    */
   createFallbackDataFromArray(enumType: string, data: string[]): void {
     const enumData: EnumData = {};
-    
+
     for (let i = 0; i < data.length; i++) {
       const value = data[i];
       enumData[`item_${i}`] = {
         value,
         weight: 1.0,
-        metadata: { index: i }
+        metadata: { index: i },
       };
     }
-    
+
     this.setFallbackData(enumType, enumData);
   }
 
@@ -250,9 +250,9 @@ export class FallbackManager {
     const data = {
       fallbackData: Object.fromEntries(this.fallbackData),
       defaultFallbacks: Object.fromEntries(this.defaultFallbacks),
-      strategy: this.fallbackStrategy
+      strategy: this.fallbackStrategy,
     };
-    
+
     return JSON.stringify(data, null, 2);
   }
 
@@ -262,22 +262,22 @@ export class FallbackManager {
   importFallbackData(jsonData: string): boolean {
     try {
       const data = JSON.parse(jsonData);
-      
+
       if (data.fallbackData) {
         this.fallbackData = new Map(Object.entries(data.fallbackData));
       }
-      
+
       if (data.defaultFallbacks) {
         this.defaultFallbacks = new Map(Object.entries(data.defaultFallbacks));
       }
-      
+
       if (data.strategy) {
         this.fallbackStrategy = data.strategy;
       }
-      
+
       return true;
     } catch (error) {
-      console.error('Failed to import fallback data:', error);
+      console.error("Failed to import fallback data:", error);
       return false;
     }
   }

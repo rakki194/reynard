@@ -52,10 +52,7 @@ export class RetryHandler {
    * Calculate retry delay with exponential backoff and jitter
    */
   calculateRetryDelay(attempt: number): number {
-    const delay = Math.min(
-      this.config.baseDelay * Math.pow(2, attempt),
-      this.config.maxDelay
-    );
+    const delay = Math.min(this.config.baseDelay * Math.pow(2, attempt), this.config.maxDelay);
     const jitter = Math.random() * this.config.jitterFactor * delay;
     return delay + jitter;
   }

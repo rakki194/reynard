@@ -142,9 +142,9 @@ export class AnomalyDetectionSystem extends EventEmitter {
         maxConcurrentAnalysis: 10,
         cacheResults: true,
         cacheExpiry: 30 * 60 * 1000, // 30 minutes
-        enableParallelProcessing: true
+        enableParallelProcessing: true,
       },
-      ...config
+      ...config,
     };
   }
 
@@ -153,7 +153,7 @@ export class AnomalyDetectionSystem extends EventEmitter {
    */
   async detectAnomalies(): Promise<Map<string, ArchitecturalAnomaly[]>> {
     this.emit("detection:start", { timestamp: new Date().toISOString() });
-    
+
     try {
       // Clear previous results
       this.detectedAnomalies.clear();
@@ -161,11 +161,11 @@ export class AnomalyDetectionSystem extends EventEmitter {
 
       // Get all source files
       const sourceFiles = await this.findSourceFiles();
-      
+
       // Analyze anomalies in parallel
       const analysisPromises = sourceFiles.map(file => this.analyzeFileAnomalies(file));
       const results = await Promise.all(analysisPromises);
-      
+
       // Merge results
       for (const fileAnomalies of results) {
         for (const [file, anomalies] of fileAnomalies) {
@@ -180,7 +180,7 @@ export class AnomalyDetectionSystem extends EventEmitter {
       this.emit("detection:complete", {
         timestamp: new Date().toISOString(),
         totalFiles: sourceFiles.length,
-        totalAnomalies: Array.from(this.detectedAnomalies.values()).flat().length
+        totalAnomalies: Array.from(this.detectedAnomalies.values()).flat().length,
       });
 
       return this.detectedAnomalies;
@@ -195,7 +195,7 @@ export class AnomalyDetectionSystem extends EventEmitter {
    */
   private async analyzeFileAnomalies(filePath: string): Promise<Map<string, ArchitecturalAnomaly[]>> {
     const anomalies = new Map<string, ArchitecturalAnomaly[]>();
-    
+
     try {
       // Check cache first
       if (this.config.performance.cacheResults) {
@@ -208,25 +208,25 @@ export class AnomalyDetectionSystem extends EventEmitter {
 
       // Read file content
       const content = await readFile(filePath, "utf-8");
-      
+
       // Analyze with different algorithms
       const detectedAnomalies: ArchitecturalAnomaly[] = [];
-      
+
       if (this.config.enableIsolationForest) {
         const isolationAnomalies = await this.detectWithIsolationForest(content, filePath);
         detectedAnomalies.push(...isolationAnomalies);
       }
-      
+
       if (this.config.enableLOF) {
         const lofAnomalies = await this.detectWithLOF(content, filePath);
         detectedAnomalies.push(...lofAnomalies);
       }
-      
+
       if (this.config.enableOneClassSVM) {
         const svmAnomalies = await this.detectWithOneClassSVM(content, filePath);
         detectedAnomalies.push(...svmAnomalies);
       }
-      
+
       if (this.config.enableStatistical) {
         const statisticalAnomalies = await this.detectWithStatistical(content, filePath);
         detectedAnomalies.push(...statisticalAnomalies);
@@ -234,8 +234,9 @@ export class AnomalyDetectionSystem extends EventEmitter {
 
       // Filter by thresholds
       const filteredAnomalies = detectedAnomalies.filter(
-        anomaly => anomaly.metrics.anomalyScore >= this.config.anomalyThreshold &&
-                   anomaly.metrics.confidence >= this.config.confidenceThreshold
+        anomaly =>
+          anomaly.metrics.anomalyScore >= this.config.anomalyThreshold &&
+          anomaly.metrics.confidence >= this.config.confidenceThreshold
       );
 
       // Limit anomalies per file
@@ -247,10 +248,9 @@ export class AnomalyDetectionSystem extends EventEmitter {
       if (this.config.performance.cacheResults) {
         this.analysisCache.set(filePath, {
           anomalies: limitedAnomalies,
-          timestamp: Date.now()
+          timestamp: Date.now(),
         });
       }
-
     } catch (error) {
       console.warn(`Failed to analyze anomalies in file: ${filePath}`, error);
     }
@@ -263,19 +263,19 @@ export class AnomalyDetectionSystem extends EventEmitter {
    */
   private async detectWithIsolationForest(content: string, filePath: string): Promise<ArchitecturalAnomaly[]> {
     const anomalies: ArchitecturalAnomaly[] = [];
-    
+
     try {
       // Simulate Isolation Forest analysis
       const lines = content.split("\n");
       const features = this.extractFeatures(content);
-      
+
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
         const lineFeatures = this.extractLineFeatures(line, i, features);
-        
+
         // Calculate isolation score (simplified)
         const isolationScore = this.calculateIsolationScore(lineFeatures);
-        
+
         if (isolationScore > this.config.anomalyThreshold) {
           const anomaly = this.createAnomaly(
             "Isolation Forest Anomaly",
@@ -301,16 +301,16 @@ export class AnomalyDetectionSystem extends EventEmitter {
    */
   private async detectWithLOF(content: string, filePath: string): Promise<ArchitecturalAnomaly[]> {
     const anomalies: ArchitecturalAnomaly[] = [];
-    
+
     try {
       // Simulate LOF analysis
       const codeBlocks = this.extractCodeBlocks(content);
       const features = this.extractFeatures(content);
-      
+
       for (const block of codeBlocks) {
         const blockFeatures = this.extractBlockFeatures(block, features);
         const lofScore = this.calculateLOFScore(blockFeatures, codeBlocks);
-        
+
         if (lofScore > this.config.anomalyThreshold) {
           const anomaly = this.createAnomaly(
             "LOF Anomaly",
@@ -336,15 +336,15 @@ export class AnomalyDetectionSystem extends EventEmitter {
    */
   private async detectWithOneClassSVM(content: string, filePath: string): Promise<ArchitecturalAnomaly[]> {
     const anomalies: ArchitecturalAnomaly[] = [];
-    
+
     try {
       // Simulate One-Class SVM analysis
       const functions = this.extractFunctions(content);
-      
+
       for (const func of functions) {
         const functionFeatures = this.extractFunctionFeatures(func);
         const svmScore = this.calculateSVMScore(functionFeatures);
-        
+
         if (svmScore > this.config.anomalyThreshold) {
           const anomaly = this.createAnomaly(
             "SVM Anomaly",
@@ -370,11 +370,11 @@ export class AnomalyDetectionSystem extends EventEmitter {
    */
   private async detectWithStatistical(content: string, filePath: string): Promise<ArchitecturalAnomaly[]> {
     const anomalies: ArchitecturalAnomaly[] = [];
-    
+
     try {
       // Simulate statistical analysis
       const metrics = this.calculateStatisticalMetrics(content);
-      
+
       // Check for statistical outliers
       for (const [metric, value] of Object.entries(metrics)) {
         if (this.isStatisticalOutlier(metric, value)) {
@@ -403,16 +403,16 @@ export class AnomalyDetectionSystem extends EventEmitter {
   private async postProcessAnomalies(): Promise<void> {
     // Remove duplicates
     this.removeDuplicateAnomalies();
-    
+
     // Validate anomalies
     this.validateAnomalies();
-    
+
     // Calculate anomaly metrics
     this.calculateAnomalyMetrics();
-    
+
     // Generate recommendations
     this.generateAnomalyRecommendations();
-    
+
     // Update anomaly history
     this.updateAnomalyHistory();
   }
@@ -432,17 +432,15 @@ export class AnomalyDetectionSystem extends EventEmitter {
    */
   private deduplicateAnomalies(anomalies: ArchitecturalAnomaly[]): ArchitecturalAnomaly[] {
     const unique: ArchitecturalAnomaly[] = [];
-    
+
     for (const anomaly of anomalies) {
-      const isDuplicate = unique.some(existing => 
-        this.anomaliesAreSimilar(anomaly, existing)
-      );
-      
+      const isDuplicate = unique.some(existing => this.anomaliesAreSimilar(anomaly, existing));
+
       if (!isDuplicate) {
         unique.push(anomaly);
       }
     }
-    
+
     return unique;
   }
 
@@ -451,16 +449,18 @@ export class AnomalyDetectionSystem extends EventEmitter {
    */
   private anomaliesAreSimilar(anomaly1: ArchitecturalAnomaly, anomaly2: ArchitecturalAnomaly): boolean {
     // Check if anomalies are in the same location
-    if (anomaly1.location.file === anomaly2.location.file &&
-        Math.abs(anomaly1.location.line - anomaly2.location.line) < 3) {
+    if (
+      anomaly1.location.file === anomaly2.location.file &&
+      Math.abs(anomaly1.location.line - anomaly2.location.line) < 3
+    ) {
       return true;
     }
-    
+
     // Check if anomalies have similar types and titles
     if (anomaly1.type === anomaly2.type && anomaly1.title === anomaly2.title) {
       return true;
     }
-    
+
     return false;
   }
 
@@ -482,22 +482,22 @@ export class AnomalyDetectionSystem extends EventEmitter {
     if (anomaly.metrics.anomalyScore < this.config.anomalyThreshold) {
       return false;
     }
-    
+
     // Check confidence threshold
     if (anomaly.metrics.confidence < this.config.confidenceThreshold) {
       return false;
     }
-    
+
     // Check location validity
     if (!anomaly.location.file || anomaly.location.line < 0) {
       return false;
     }
-    
+
     // Check title
     if (!anomaly.title || anomaly.title.trim().length === 0) {
       return false;
     }
-    
+
     return true;
   }
 
@@ -531,7 +531,7 @@ export class AnomalyDetectionSystem extends EventEmitter {
   private updateAnomalyHistory(): void {
     const allAnomalies = Array.from(this.detectedAnomalies.values()).flat();
     this.anomalyHistory.push(...allAnomalies);
-    
+
     // Keep only recent history (last 1000 anomalies)
     if (this.anomalyHistory.length > 1000) {
       this.anomalyHistory = this.anomalyHistory.slice(-1000);
@@ -549,58 +549,65 @@ export class AnomalyDetectionSystem extends EventEmitter {
       imports: this.countImports(content),
       functions: this.countFunctions(content),
       classes: this.countClasses(content),
-      comments: this.countComments(content)
+      comments: this.countComments(content),
     };
   }
 
-  private extractLineFeatures(line: string, lineNumber: number, features: Record<string, number>): Record<string, number> {
+  private extractLineFeatures(
+    line: string,
+    lineNumber: number,
+    features: Record<string, number>
+  ): Record<string, number> {
     return {
       length: line.length,
       complexity: this.calculateLineComplexity(line),
       nesting: this.calculateLineNesting(line),
       lineNumber: lineNumber,
-      ...features
+      ...features,
     };
   }
 
   private extractCodeBlocks(content: string): Array<{ content: string; line: number }> {
     const lines = content.split("\n");
     const blocks: Array<{ content: string; line: number }> = [];
-    
+
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
       if (line.trim().length > 0) {
         blocks.push({ content: line, line: i + 1 });
       }
     }
-    
+
     return blocks;
   }
 
-  private extractBlockFeatures(block: { content: string; line: number }, features: Record<string, number>): Record<string, number> {
+  private extractBlockFeatures(
+    block: { content: string; line: number },
+    features: Record<string, number>
+  ): Record<string, number> {
     return {
       length: block.content.length,
       complexity: this.calculateLineComplexity(block.content),
       lineNumber: block.line,
-      ...features
+      ...features,
     };
   }
 
   private extractFunctions(content: string): Array<{ content: string; line: number; name: string }> {
     const functions: Array<{ content: string; line: number; name: string }> = [];
     const lines = content.split("\n");
-    
+
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
       if (line.includes("function") || line.includes("=>") || line.includes("(")) {
         functions.push({
           content: line,
           line: i + 1,
-          name: this.extractFunctionName(line)
+          name: this.extractFunctionName(line),
         });
       }
     }
-    
+
     return functions;
   }
 
@@ -611,7 +618,7 @@ export class AnomalyDetectionSystem extends EventEmitter {
       lineNumber: func.line,
       hasParameters: func.content.includes("(") && func.content.includes(")"),
       isAsync: func.content.includes("async"),
-      isArrow: func.content.includes("=>")
+      isArrow: func.content.includes("=>"),
     };
   }
 
@@ -621,7 +628,10 @@ export class AnomalyDetectionSystem extends EventEmitter {
     return Math.min(1, score);
   }
 
-  private calculateLOFScore(features: Record<string, number>, allBlocks: Array<{ content: string; line: number }>): number {
+  private calculateLOFScore(
+    features: Record<string, number>,
+    allBlocks: Array<{ content: string; line: number }>
+  ): number {
     // Simulate LOF score calculation
     const score = Math.random() * 0.4 + 0.4; // Random score between 0.4 and 0.8
     return Math.min(1, score);
@@ -640,7 +650,7 @@ export class AnomalyDetectionSystem extends EventEmitter {
       commentRatio: this.calculateCommentRatio(content),
       functionCount: this.countFunctions(content),
       classCount: this.countClasses(content),
-      importCount: this.countImports(content)
+      importCount: this.countImports(content),
     };
   }
 
@@ -652,9 +662,9 @@ export class AnomalyDetectionSystem extends EventEmitter {
       commentRatio: 0.1,
       functionCount: 20,
       classCount: 10,
-      importCount: 50
+      importCount: 50,
     };
-    
+
     return value > (thresholds[metric] || 100);
   }
 
@@ -721,19 +731,14 @@ export class AnomalyDetectionSystem extends EventEmitter {
 
   private generateRecommendationsForAnomaly(anomaly: ArchitecturalAnomaly): ArchitecturalAnomaly["recommendations"] {
     // Simulate recommendation generation
-    const priority = anomaly.metrics.anomalyScore > 0.8 ? "critical" : 
-                    anomaly.metrics.anomalyScore > 0.6 ? "high" : "medium";
-    
+    const priority =
+      anomaly.metrics.anomalyScore > 0.8 ? "critical" : anomaly.metrics.anomalyScore > 0.6 ? "high" : "medium";
+
     return {
       priority,
-      actions: [
-        "Review the code structure",
-        "Consider refactoring",
-        "Add unit tests",
-        "Update documentation"
-      ],
+      actions: ["Review the code structure", "Consider refactoring", "Add unit tests", "Update documentation"],
       estimatedEffort: priority === "critical" ? "high" : "medium",
-      expectedImpact: "Improved maintainability and performance"
+      expectedImpact: "Improved maintainability and performance",
     };
   }
 
@@ -756,32 +761,32 @@ export class AnomalyDetectionSystem extends EventEmitter {
       location: {
         file: filePath,
         line,
-        column: 0
+        column: 0,
       },
       metrics: {
         anomalyScore,
         confidence: Math.random() * 0.3 + 0.7, // 0.7-1.0
         impact: Math.random() * 10,
-        frequency: 1
+        frequency: 1,
       },
       context: {
         surroundingCode: content,
         relatedFiles: [],
         dependencies: [],
-        affectedComponents: []
+        affectedComponents: [],
       },
       recommendations: {
         priority: "medium",
         actions: [],
         estimatedEffort: "medium",
-        expectedImpact: ""
+        expectedImpact: "",
       },
       metadata: {
         algorithm,
         detectedAt: new Date().toISOString(),
         lastSeen: new Date().toISOString(),
-        falsePositiveRisk: 1 - anomalyScore
-      }
+        falsePositiveRisk: 1 - anomalyScore,
+      },
     };
   }
 
@@ -792,7 +797,7 @@ export class AnomalyDetectionSystem extends EventEmitter {
       maintainability: "maintainability",
       scalability: "scalability",
       reliability: "reliability",
-      design: "design"
+      design: "design",
     };
     return categories[type] || "other";
   }
@@ -812,13 +817,13 @@ export class AnomalyDetectionSystem extends EventEmitter {
 
   private async findFilesRecursive(dir: string, pattern: string, files: string[], depth: number): Promise<void> {
     if (depth > 10) return;
-    
+
     try {
       const entries = await readdir(dir);
       for (const entry of entries) {
         const fullPath = join(dir, entry);
         const stat = await this.stat(fullPath);
-        
+
         if (stat.isDirectory()) {
           await this.findFilesRecursive(fullPath, pattern, files, depth + 1);
         } else if (this.matchesPattern(entry, pattern)) {
@@ -886,33 +891,33 @@ export class AnomalyDetectionSystem extends EventEmitter {
   } {
     const allAnomalies = this.getAllAnomalies();
     const totalAnomalies = allAnomalies.length;
-    
+
     const anomaliesByType: Record<string, number> = {};
     const anomaliesBySeverity: Record<string, number> = {};
     const anomalyCounts: Record<string, number> = {};
-    
+
     let totalAnomalyScore = 0;
-    
+
     for (const anomaly of allAnomalies) {
       anomaliesByType[anomaly.type] = (anomaliesByType[anomaly.type] || 0) + 1;
       anomaliesBySeverity[anomaly.severity] = (anomaliesBySeverity[anomaly.severity] || 0) + 1;
       anomalyCounts[anomaly.title] = (anomalyCounts[anomaly.title] || 0) + 1;
       totalAnomalyScore += anomaly.metrics.anomalyScore;
     }
-    
+
     const averageAnomalyScore = totalAnomalies > 0 ? totalAnomalyScore / totalAnomalies : 0;
-    
+
     const topAnomalies = Object.entries(anomalyCounts)
       .sort(([, a], [, b]) => b - a)
       .slice(0, 10)
       .map(([title, count]) => ({ title, count }));
-    
+
     return {
       totalAnomalies,
       anomaliesByType,
       anomaliesBySeverity,
       averageAnomalyScore,
-      topAnomalies
+      topAnomalies,
     };
   }
 
@@ -926,7 +931,7 @@ export class AnomalyDetectionSystem extends EventEmitter {
           console.error("Real-time anomaly detection failed:", error);
         });
       }, this.config.monitoringInterval);
-      
+
       this.emit("monitoring:started");
     }
   }
@@ -947,26 +952,31 @@ export class AnomalyDetectionSystem extends EventEmitter {
    */
   async exportResults(format: "json" | "csv" | "xml"): Promise<string> {
     const allAnomalies = this.getAllAnomalies();
-    
+
     switch (format) {
       case "json":
-        return JSON.stringify({
-          anomalies: allAnomalies,
-          statistics: this.getAnomalyStatistics(),
-          metadata: {
-            analyzedAt: new Date().toISOString(),
-            totalFiles: this.detectedAnomalies.size,
-            config: this.config
-          }
-        }, null, 2);
-      
+        return JSON.stringify(
+          {
+            anomalies: allAnomalies,
+            statistics: this.getAnomalyStatistics(),
+            metadata: {
+              analyzedAt: new Date().toISOString(),
+              totalFiles: this.detectedAnomalies.size,
+              config: this.config,
+            },
+          },
+          null,
+          2
+        );
+
       case "csv":
         const csvHeader = "id,type,severity,title,file,line,anomalyScore,confidence,impact";
-        const csvRows = allAnomalies.map(anomaly => 
-          `${anomaly.id},${anomaly.type},${anomaly.severity},${anomaly.title},${anomaly.location.file},${anomaly.location.line},${anomaly.metrics.anomalyScore},${anomaly.metrics.confidence},${anomaly.metrics.impact}`
+        const csvRows = allAnomalies.map(
+          anomaly =>
+            `${anomaly.id},${anomaly.type},${anomaly.severity},${anomaly.title},${anomaly.location.file},${anomaly.location.line},${anomaly.metrics.anomalyScore},${anomaly.metrics.confidence},${anomaly.metrics.impact}`
         );
         return [csvHeader, ...csvRows].join("\n");
-      
+
       case "xml":
         const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <anomalyAnalysis>
@@ -976,7 +986,9 @@ export class AnomalyDetectionSystem extends EventEmitter {
     <totalAnomalies>${allAnomalies.length}</totalAnomalies>
   </metadata>
   <anomalies>
-    ${allAnomalies.map(anomaly => `
+    ${allAnomalies
+      .map(
+        anomaly => `
     <anomaly id="${anomaly.id}">
       <type>${anomaly.type}</type>
       <severity>${anomaly.severity}</severity>
@@ -985,14 +997,15 @@ export class AnomalyDetectionSystem extends EventEmitter {
       <anomalyScore>${anomaly.metrics.anomalyScore}</anomalyScore>
       <confidence>${anomaly.metrics.confidence}</confidence>
       <impact>${anomaly.metrics.impact}</impact>
-    </anomaly>`).join("")}
+    </anomaly>`
+      )
+      .join("")}
   </anomalies>
 </anomalyAnalysis>`;
         return xml;
-      
+
       default:
         throw new Error(`Unsupported export format: ${format}`);
     }
   }
 }
-

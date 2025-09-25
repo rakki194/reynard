@@ -3,9 +3,9 @@
  * Common CLI utility functions for all Reynard dev-tools
  */
 
-import fs from 'fs';
-import path from 'path';
-import type { BackupOptions, ValidationResult } from '../types/CLI.js';
+import fs from "fs";
+import path from "path";
+import type { BackupOptions, ValidationResult } from "../types/CLI.js";
 
 export class CLIUtils {
   /**
@@ -16,10 +16,10 @@ export class CLIUtils {
 
     try {
       if (!fs.existsSync(filePath)) {
-        return { success: false, error: 'File does not exist' };
+        return { success: false, error: "File does not exist" };
       }
 
-      const backupDirPath = backupDir || path.join(process.cwd(), '.catalyst-backups');
+      const backupDirPath = backupDir || path.join(process.cwd(), ".catalyst-backups");
 
       // Ensure backup directory exists
       if (!fs.existsSync(backupDirPath)) {
@@ -32,7 +32,7 @@ export class CLIUtils {
 
       let backupFileName: string;
       if (timestamp) {
-        const timestampStr = new Date().toISOString().replace(/[:.]/g, '-');
+        const timestampStr = new Date().toISOString().replace(/[:.]/g, "-");
         backupFileName = `${baseName}.${timestampStr}.backup${fileExt}`;
       } else {
         backupFileName = `${baseName}.backup${fileExt}`;
@@ -75,10 +75,10 @@ export class CLIUtils {
     output?: string;
   } {
     return {
-      verbose: args.includes('--verbose') || args.includes('-v'),
-      backup: args.includes('--backup'),
-      validate: args.includes('--validate'),
-      output: this.getOptionValue(args, ['--output', '-o']),
+      verbose: args.includes("--verbose") || args.includes("-v"),
+      backup: args.includes("--backup"),
+      validate: args.includes("--validate"),
+      output: this.getOptionValue(args, ["--output", "-o"]),
     };
   }
 
@@ -138,15 +138,15 @@ export class CLIUtils {
       process.exit(0);
     };
 
-    process.on('SIGINT', () => shutdown('SIGINT'));
-    process.on('SIGTERM', () => shutdown('SIGTERM'));
+    process.on("SIGINT", () => shutdown("SIGINT"));
+    process.on("SIGTERM", () => shutdown("SIGTERM"));
   }
 
   /**
    * Check if running in development mode
    */
   static isDevelopment(): boolean {
-    return process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'dev';
+    return process.env.NODE_ENV === "development" || process.env.NODE_ENV === "dev";
   }
 
   /**
@@ -175,7 +175,7 @@ export class CLIUtils {
    */
   static readJsonFile(filePath: string): { success: boolean; data?: any; error?: string } {
     try {
-      const content = fs.readFileSync(filePath, 'utf-8');
+      const content = fs.readFileSync(filePath, "utf-8");
       const data = JSON.parse(content);
       return { success: true, data };
     } catch (error) {
@@ -189,7 +189,7 @@ export class CLIUtils {
   static writeJsonFile(filePath: string, data: any, pretty: boolean = true): { success: boolean; error?: string } {
     try {
       const content = pretty ? JSON.stringify(data, null, 2) : JSON.stringify(data);
-      fs.writeFileSync(filePath, content, 'utf-8');
+      fs.writeFileSync(filePath, content, "utf-8");
       return { success: true };
     } catch (error) {
       return { success: false, error: (error as Error).message };

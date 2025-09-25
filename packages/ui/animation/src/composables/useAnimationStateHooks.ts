@@ -1,8 +1,8 @@
 /**
  * Animation State Composable Hooks
- * 
+ *
  * Specialized hooks for the useAnimationState composable.
- * 
+ *
  * @author Agile-Prime-90 (Reynard Lizard Specialist)
  * @since 1.0.0
  */
@@ -14,7 +14,7 @@ import { useAnimationState } from "./useAnimationState";
  */
 export function useGlobalAnimationState() {
   const { isGloballyDisabled, isInitialized } = useAnimationState();
-  
+
   return {
     isGloballyDisabled,
     isInitialized,
@@ -27,7 +27,7 @@ export function useGlobalAnimationState() {
  */
 export function usePerformanceModeState() {
   const { isPerformanceMode, performanceMetrics, isInitialized } = useAnimationState();
-  
+
   return {
     isPerformanceMode,
     performanceMetrics,
@@ -41,7 +41,7 @@ export function usePerformanceModeState() {
  */
 export function useAccessibilityCompliance() {
   const { accessibilityCompliance, isInitialized } = useAnimationState();
-  
+
   return {
     accessibilityCompliance,
     isInitialized,
@@ -55,7 +55,7 @@ export function useAccessibilityCompliance() {
  */
 export function useAnimationPackageState() {
   const { isPackageAvailable, isFallbackMode, engineType, isInitialized } = useAnimationState();
-  
+
   return {
     isPackageAvailable,
     isFallbackMode,
@@ -72,7 +72,7 @@ export function useAnimationPackageState() {
  */
 export function useImmediateCompletionState() {
   const { immediateCompletion, isGloballyDisabled, isInitialized } = useAnimationState();
-  
+
   return {
     immediateCompletion,
     isGloballyDisabled,

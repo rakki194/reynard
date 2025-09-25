@@ -24,7 +24,7 @@ const fallbackT = (key: string) => {
     "games.aiEnemies": "AI Enemies",
     "games.differentEnemyTypesWithUniqueBehaviors": "Different enemy types with unique behaviors",
     "games.pixelArt": "Pixel Art",
-    "games.retroStyleRenderingWithCrispPixels": "Retro-style rendering with crisp pixels"
+    "games.retroStyleRenderingWithCrispPixels": "Retro-style rendering with crisp pixels",
   };
   return translations[key] || key;
 };

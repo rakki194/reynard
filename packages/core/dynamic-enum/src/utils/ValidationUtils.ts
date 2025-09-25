@@ -2,7 +2,7 @@
  * Validation utilities for the Dynamic Enum System
  */
 
-import type { EnumData, EnumValue, ValidationResult } from '../types/EnumTypes';
+import type { EnumData, EnumValue, ValidationResult } from "../types/EnumTypes";
 
 /**
  * Validation utilities for enum data and values
@@ -12,11 +12,11 @@ export class ValidationUtils {
    * Validate enum data structure
    */
   static validateEnumData(data: any): ValidationResult {
-    if (!data || typeof data !== 'object') {
+    if (!data || typeof data !== "object") {
       return {
         isValid: false,
         value: null,
-        error: 'Enum data must be an object'
+        error: "Enum data must be an object",
       };
     }
 
@@ -24,7 +24,7 @@ export class ValidationUtils {
       return {
         isValid: false,
         value: null,
-        error: 'Enum data must be an object, not an array'
+        error: "Enum data must be an object, not an array",
       };
     }
 
@@ -38,7 +38,7 @@ export class ValidationUtils {
         return {
           isValid: false,
           value: null,
-          error: `Invalid enum value for key '${key}': ${validation.error}`
+          error: `Invalid enum value for key '${key}': ${validation.error}`,
         };
       }
     }
@@ -47,14 +47,14 @@ export class ValidationUtils {
       return {
         isValid: false,
         value: null,
-        error: 'Enum data must contain at least one valid enum value'
+        error: "Enum data must contain at least one valid enum value",
       };
     }
 
     return {
       isValid: true,
-      value: 'valid',
-      error: null
+      value: "valid",
+      error: null,
     };
   }
 
@@ -62,37 +62,37 @@ export class ValidationUtils {
    * Validate enum value structure
    */
   static validateEnumValue(value: any): ValidationResult {
-    if (!value || typeof value !== 'object') {
+    if (!value || typeof value !== "object") {
       return {
         isValid: false,
         value: null,
-        error: 'Enum value must be an object'
+        error: "Enum value must be an object",
       };
     }
 
-    if (typeof value.value !== 'string') {
+    if (typeof value.value !== "string") {
       return {
         isValid: false,
         value: null,
-        error: 'Enum value must have a string value property'
+        error: "Enum value must have a string value property",
       };
     }
 
-    if (value.value.trim() === '') {
+    if (value.value.trim() === "") {
       return {
         isValid: false,
         value: null,
-        error: 'Enum value cannot be empty'
+        error: "Enum value cannot be empty",
       };
     }
 
     // Validate weight if present
     if (value.weight !== undefined) {
-      if (typeof value.weight !== 'number' || value.weight < 0) {
+      if (typeof value.weight !== "number" || value.weight < 0) {
         return {
           isValid: false,
           value: null,
-          error: 'Enum value weight must be a non-negative number'
+          error: "Enum value weight must be a non-negative number",
         };
       }
     }
@@ -104,7 +104,7 @@ export class ValidationUtils {
         return {
           isValid: false,
           value: null,
-          error: `Invalid metadata: ${metadataValidation.error}`
+          error: `Invalid metadata: ${metadataValidation.error}`,
         };
       }
     }
@@ -112,7 +112,7 @@ export class ValidationUtils {
     return {
       isValid: true,
       value: value.value,
-      error: null
+      error: null,
     };
   }
 
@@ -124,47 +124,47 @@ export class ValidationUtils {
       return {
         isValid: true,
         value: null,
-        error: null
+        error: null,
       };
     }
 
-    if (typeof metadata !== 'object') {
+    if (typeof metadata !== "object") {
       return {
         isValid: false,
         value: null,
-        error: 'Metadata must be an object'
+        error: "Metadata must be an object",
       };
     }
 
     // Validate emoji if present
     if (metadata.emoji !== undefined) {
-      if (typeof metadata.emoji !== 'string') {
+      if (typeof metadata.emoji !== "string") {
         return {
           isValid: false,
           value: null,
-          error: 'Metadata emoji must be a string'
+          error: "Metadata emoji must be a string",
         };
       }
     }
 
     // Validate description if present
     if (metadata.description !== undefined) {
-      if (typeof metadata.description !== 'string') {
+      if (typeof metadata.description !== "string") {
         return {
           isValid: false,
           value: null,
-          error: 'Metadata description must be a string'
+          error: "Metadata description must be a string",
         };
       }
     }
 
     // Validate category if present
     if (metadata.category !== undefined) {
-      if (typeof metadata.category !== 'string') {
+      if (typeof metadata.category !== "string") {
         return {
           isValid: false,
           value: null,
-          error: 'Metadata category must be a string'
+          error: "Metadata category must be a string",
         };
       }
     }
@@ -175,16 +175,16 @@ export class ValidationUtils {
         return {
           isValid: false,
           value: null,
-          error: 'Metadata tags must be an array'
+          error: "Metadata tags must be an array",
         };
       }
 
       for (const tag of metadata.tags) {
-        if (typeof tag !== 'string') {
+        if (typeof tag !== "string") {
           return {
             isValid: false,
             value: null,
-            error: 'All metadata tags must be strings'
+            error: "All metadata tags must be strings",
           };
         }
       }
@@ -192,8 +192,8 @@ export class ValidationUtils {
 
     return {
       isValid: true,
-      value: 'valid',
-      error: null
+      value: "valid",
+      error: null,
     };
   }
 
@@ -201,19 +201,19 @@ export class ValidationUtils {
    * Validate enum key
    */
   static validateEnumKey(key: any): ValidationResult {
-    if (typeof key !== 'string') {
+    if (typeof key !== "string") {
       return {
         isValid: false,
         value: null,
-        error: 'Enum key must be a non-empty string'
+        error: "Enum key must be a non-empty string",
       };
     }
 
-    if (key.trim() === '') {
+    if (key.trim() === "") {
       return {
         isValid: false,
         value: null,
-        error: 'Enum key cannot be empty'
+        error: "Enum key cannot be empty",
       };
     }
 
@@ -222,14 +222,14 @@ export class ValidationUtils {
       return {
         isValid: false,
         value: null,
-        error: 'Enum key can only contain alphanumeric characters, underscores, and hyphens'
+        error: "Enum key can only contain alphanumeric characters, underscores, and hyphens",
       };
     }
 
     return {
       isValid: true,
       value: key,
-      error: null
+      error: null,
     };
   }
 
@@ -237,19 +237,19 @@ export class ValidationUtils {
    * Validate enum type name
    */
   static validateEnumType(enumType: any): ValidationResult {
-    if (typeof enumType !== 'string') {
+    if (typeof enumType !== "string") {
       return {
         isValid: false,
         value: null,
-        error: 'Enum type must be a non-empty string'
+        error: "Enum type must be a non-empty string",
       };
     }
 
-    if (enumType.trim() === '') {
+    if (enumType.trim() === "") {
       return {
         isValid: false,
         value: null,
-        error: 'Enum type cannot be empty'
+        error: "Enum type cannot be empty",
       };
     }
 
@@ -258,14 +258,14 @@ export class ValidationUtils {
       return {
         isValid: false,
         value: null,
-        error: 'Enum type can only contain alphanumeric characters, underscores, and hyphens'
+        error: "Enum type can only contain alphanumeric characters, underscores, and hyphens",
       };
     }
 
     return {
       isValid: true,
       value: enumType,
-      error: null
+      error: null,
     };
   }
 
@@ -273,8 +273,8 @@ export class ValidationUtils {
    * Sanitize enum value
    */
   static sanitizeEnumValue(value: string): string {
-    if (typeof value !== 'string') {
-      return '';
+    if (typeof value !== "string") {
+      return "";
     }
 
     return value.trim();
@@ -284,22 +284,22 @@ export class ValidationUtils {
    * Sanitize enum key
    */
   static sanitizeEnumKey(key: string): string {
-    if (typeof key !== 'string') {
-      return '';
+    if (typeof key !== "string") {
+      return "";
     }
 
-    return key.trim().replace(/[^a-zA-Z0-9_-]/g, '_');
+    return key.trim().replace(/[^a-zA-Z0-9_-]/g, "_");
   }
 
   /**
    * Sanitize enum type
    */
   static sanitizeEnumType(enumType: string): string {
-    if (typeof enumType !== 'string') {
-      return '';
+    if (typeof enumType !== "string") {
+      return "";
     }
 
-    return enumType.trim().replace(/[^a-zA-Z0-9_-]/g, '_');
+    return enumType.trim().replace(/[^a-zA-Z0-9_-]/g, "_");
   }
 
   /**
@@ -317,7 +317,7 @@ export class ValidationUtils {
    * Check if enum data contains a value
    */
   static enumDataContainsValue(data: EnumData, value: string): boolean {
-    if (!data || typeof value !== 'string') {
+    if (!data || typeof value !== "string") {
       return false;
     }
 
@@ -381,7 +381,7 @@ export class ValidationUtils {
       return {
         isValid: false,
         value: null,
-        error: `Duplicate values found: ${duplicateValues.join(', ')}`
+        error: `Duplicate values found: ${duplicateValues.join(", ")}`,
       };
     }
 
@@ -389,14 +389,14 @@ export class ValidationUtils {
       return {
         isValid: false,
         value: null,
-        error: `Duplicate keys found: ${duplicateKeys.join(', ')}`
+        error: `Duplicate keys found: ${duplicateKeys.join(", ")}`,
       };
     }
 
     return {
       isValid: true,
-      value: 'valid',
-      error: null
+      value: "valid",
+      error: null,
     };
   }
 }

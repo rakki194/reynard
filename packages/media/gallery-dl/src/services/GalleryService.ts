@@ -63,14 +63,14 @@ export class GalleryService {
   async getExtractors(): Promise<{ success: boolean; data?: ExtractorInfo[]; error?: string }> {
     try {
       const response = await this.connection.request({
-        method: 'GET',
-        path: '/api/gallery/extractors',
+        method: "GET",
+        path: "/api/gallery/extractors",
       });
       return { success: true, data: response.data };
     } catch (error) {
-      return { 
-        success: false, 
-        error: error instanceof Error ? error.message : 'Failed to get extractors' 
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Failed to get extractors",
       };
     }
   }
@@ -78,15 +78,15 @@ export class GalleryService {
   async validateUrl(url: string): Promise<ValidationResponse> {
     try {
       const response = await this.connection.request({
-        method: 'POST',
-        path: '/api/gallery/validate',
+        method: "POST",
+        path: "/api/gallery/validate",
         data: { url },
       });
       return response.data;
     } catch (error) {
       return {
         isValid: false,
-        error: error instanceof Error ? error.message : 'Validation failed',
+        error: error instanceof Error ? error.message : "Validation failed",
       };
     }
   }
@@ -94,15 +94,15 @@ export class GalleryService {
   async downloadGallery(url: string, options: Record<string, any> = {}): Promise<DownloadResponse> {
     try {
       const response = await this.connection.request({
-        method: 'POST',
-        path: '/api/gallery/download',
+        method: "POST",
+        path: "/api/gallery/download",
         data: { url, options },
       });
       return { success: true, data: response.data };
     } catch (error) {
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Download failed',
+        error: error instanceof Error ? error.message : "Download failed",
       };
     }
   }
@@ -110,8 +110,8 @@ export class GalleryService {
   async batchDownload(request: BatchDownloadRequest): Promise<BatchDownloadResponse> {
     try {
       const response = await this.connection.request({
-        method: 'POST',
-        path: '/api/gallery/batch-download',
+        method: "POST",
+        path: "/api/gallery/batch-download",
         data: request,
       });
       return { success: true, results: response.data };
@@ -119,7 +119,7 @@ export class GalleryService {
       return {
         success: false,
         results: [],
-        error: error instanceof Error ? error.message : 'Batch download failed',
+        error: error instanceof Error ? error.message : "Batch download failed",
       };
     }
   }

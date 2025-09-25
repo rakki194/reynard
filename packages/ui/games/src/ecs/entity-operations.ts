@@ -1,9 +1,6 @@
 // Entity operations for the ECS world
 
-import {
-  Component,
-  Entity,
-} from "./types";
+import { Component, Entity } from "./types";
 
 import { EntityManager } from "./entity";
 import { ComponentRegistry, ComponentStorage } from "./component";

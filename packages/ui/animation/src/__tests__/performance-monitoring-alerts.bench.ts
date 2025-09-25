@@ -1,12 +1,12 @@
 /**
  * 🦊 Performance Monitoring Alert System
- * 
+ *
  * Alert and notification functionality including:
  * - Performance alert processing
  * - Alert notifications
  * - Alert aggregation and deduplication
  * - Performance optimization recommendations
- * 
+ *
  * @author Vulpine (Strategic Fox Specialist)
  * @since 1.0.0
  */
@@ -25,8 +25,9 @@ const mockPerformanceMonitor = {
     timing: {
       domContentLoaded: performance.timing?.domContentLoadedEventEnd - performance.timing?.navigationStart || 0,
       loadComplete: performance.timing?.loadEventEnd - performance.timing?.navigationStart || 0,
-      firstPaint: performance.getEntriesByType('paint').find(entry => entry.name === 'first-paint')?.startTime || 0,
-      firstContentfulPaint: performance.getEntriesByType('paint').find(entry => entry.name === 'first-contentful-paint')?.startTime || 0,
+      firstPaint: performance.getEntriesByType("paint").find(entry => entry.name === "first-paint")?.startTime || 0,
+      firstContentfulPaint:
+        performance.getEntriesByType("paint").find(entry => entry.name === "first-contentful-paint")?.startTime || 0,
     },
     animation: {
       frameRate: 60,
@@ -35,91 +36,98 @@ const mockPerformanceMonitor = {
       animationCount: 0,
     },
   }),
-  
+
   checkThresholds: (metrics: any) => {
     const alerts: Array<{ type: string; category: string; message: string }> = [];
-    
+
     // Check memory thresholds
     if (metrics.memory.used > 100 * 1024 * 1024) {
-      alerts.push({ type: 'critical', category: 'memory', message: 'Memory usage critical' });
+      alerts.push({ type: "critical", category: "memory", message: "Memory usage critical" });
     } else if (metrics.memory.used > 50 * 1024 * 1024) {
-      alerts.push({ type: 'warning', category: 'memory', message: 'Memory usage high' });
+      alerts.push({ type: "warning", category: "memory", message: "Memory usage high" });
     }
-    
+
     // Check timing thresholds
     if (metrics.timing.domContentLoaded > 5000) {
-      alerts.push({ type: 'critical', category: 'timing', message: 'DOM content loaded too slow' });
+      alerts.push({ type: "critical", category: "timing", message: "DOM content loaded too slow" });
     } else if (metrics.timing.domContentLoaded > 2000) {
-      alerts.push({ type: 'warning', category: 'timing', message: 'DOM content loaded slow' });
+      alerts.push({ type: "warning", category: "timing", message: "DOM content loaded slow" });
     }
-    
+
     // Check animation thresholds
     if (metrics.animation.frameRate < 30) {
-      alerts.push({ type: 'critical', category: 'animation', message: 'Frame rate too low' });
+      alerts.push({ type: "critical", category: "animation", message: "Frame rate too low" });
     } else if (metrics.animation.frameRate < 45) {
-      alerts.push({ type: 'warning', category: 'animation', message: 'Frame rate low' });
+      alerts.push({ type: "warning", category: "animation", message: "Frame rate low" });
     }
-    
+
     return {
       alerts,
-      status: alerts.length === 0 ? 'healthy' : alerts.some(alert => alert.type === 'critical') ? 'critical' : 'warning',
+      status:
+        alerts.length === 0 ? "healthy" : alerts.some(alert => alert.type === "critical") ? "critical" : "warning",
     };
   },
-  
+
   generateRecommendations: (alerts: Array<{ type: string; category: string; message: string }>) => {
-    const recommendations: Array<{ category: string; priority: string; title: string; description: string; actions: string[] }> = [];
-    
+    const recommendations: Array<{
+      category: string;
+      priority: string;
+      title: string;
+      description: string;
+      actions: string[];
+    }> = [];
+
     alerts.forEach(alert => {
       const recommendation = mockPerformanceMonitor.createRecommendation(alert);
       if (recommendation) {
         recommendations.push(recommendation);
       }
     });
-    
+
     return recommendations;
   },
-  
+
   createRecommendation: (alert: { type: string; category: string; message: string }) => {
-    const priority = alert.type === 'critical' ? 'high' : 'medium';
-    
+    const priority = alert.type === "critical" ? "high" : "medium";
+
     switch (alert.category) {
-      case 'memory':
+      case "memory":
         return {
-          category: 'memory',
+          category: "memory",
           priority,
-          title: 'Optimize Memory Usage',
-          description: 'Consider reducing animation complexity or implementing memory cleanup',
+          title: "Optimize Memory Usage",
+          description: "Consider reducing animation complexity or implementing memory cleanup",
           actions: [
-            'Reduce animation duration',
-            'Implement animation cleanup',
-            'Use performance mode',
-            'Disable non-essential animations',
+            "Reduce animation duration",
+            "Implement animation cleanup",
+            "Use performance mode",
+            "Disable non-essential animations",
           ],
         };
-      case 'timing':
+      case "timing":
         return {
-          category: 'timing',
+          category: "timing",
           priority,
-          title: 'Improve Load Performance',
-          description: 'Optimize initial load time and rendering performance',
+          title: "Improve Load Performance",
+          description: "Optimize initial load time and rendering performance",
           actions: [
-            'Use lazy loading for animations',
-            'Implement code splitting',
-            'Optimize bundle size',
-            'Use performance mode',
+            "Use lazy loading for animations",
+            "Implement code splitting",
+            "Optimize bundle size",
+            "Use performance mode",
           ],
         };
-      case 'animation':
+      case "animation":
         return {
-          category: 'animation',
+          category: "animation",
           priority,
-          title: 'Optimize Animation Performance',
-          description: 'Improve animation frame rate and reduce dropped frames',
+          title: "Optimize Animation Performance",
+          description: "Improve animation frame rate and reduce dropped frames",
           actions: [
-            'Reduce animation complexity',
-            'Use CSS animations instead of JS',
-            'Implement frame rate limiting',
-            'Use performance mode',
+            "Reduce animation complexity",
+            "Use CSS animations instead of JS",
+            "Implement frame rate limiting",
+            "Use performance mode",
           ],
         };
       default:
@@ -159,27 +167,27 @@ describe("Performance Monitoring Alert System", () => {
     bench("Process Performance Alerts", () => {
       const metrics = mockPerformanceMonitor.collectMetrics();
       const thresholdCheck = mockPerformanceMonitor.checkThresholds(metrics);
-      
+
       const alertProcessing = {
         alerts: thresholdCheck.alerts,
         processedAt: Date.now(),
         alertCount: thresholdCheck.alerts.length,
-        criticalCount: thresholdCheck.alerts.filter(a => a.type === 'critical').length,
-        warningCount: thresholdCheck.alerts.filter(a => a.type === 'warning').length,
+        criticalCount: thresholdCheck.alerts.filter(a => a.type === "critical").length,
+        warningCount: thresholdCheck.alerts.filter(a => a.type === "warning").length,
       };
     });
 
     bench("Generate Alert Notifications", () => {
       const metrics = mockPerformanceMonitor.collectMetrics();
       const thresholdCheck = mockPerformanceMonitor.checkThresholds(metrics);
-      
+
       const notifications = thresholdCheck.alerts.map(alert => ({
         id: `alert-${Date.now()}-${Math.random()}`,
         type: alert.type,
         category: alert.category,
         message: alert.message,
         timestamp: Date.now(),
-        severity: alert.type === 'critical' ? 'high' : 'medium',
+        severity: alert.type === "critical" ? "high" : "medium",
         actionable: true,
         recommendations: mockPerformanceMonitor.generateRecommendations([alert]),
       }));
@@ -188,12 +196,12 @@ describe("Performance Monitoring Alert System", () => {
     bench("Alert Aggregation and Deduplication", () => {
       // Simulate multiple alerts over time
       const alerts = [
-        { type: 'warning', category: 'memory', message: 'Memory usage high', timestamp: Date.now() - 5000 },
-        { type: 'warning', category: 'memory', message: 'Memory usage high', timestamp: Date.now() - 3000 },
-        { type: 'critical', category: 'animation', message: 'Frame rate too low', timestamp: Date.now() - 1000 },
-        { type: 'warning', category: 'timing', message: 'Load time slow', timestamp: Date.now() },
+        { type: "warning", category: "memory", message: "Memory usage high", timestamp: Date.now() - 5000 },
+        { type: "warning", category: "memory", message: "Memory usage high", timestamp: Date.now() - 3000 },
+        { type: "critical", category: "animation", message: "Frame rate too low", timestamp: Date.now() - 1000 },
+        { type: "warning", category: "timing", message: "Load time slow", timestamp: Date.now() },
       ];
-      
+
       // Aggregate similar alerts
       const aggregated = alerts.reduce((acc, alert) => {
         const key = `${alert.category}-${alert.type}`;
@@ -216,21 +224,21 @@ describe("Performance Monitoring Alert System", () => {
   describe("Performance Optimization Recommendations", () => {
     bench("Generate Performance Recommendations", () => {
       const alerts = [
-        { type: 'critical', category: 'memory', message: 'Memory usage critical' },
-        { type: 'warning', category: 'animation', message: 'Frame rate low' },
-        { type: 'warning', category: 'timing', message: 'Load time slow' },
+        { type: "critical", category: "memory", message: "Memory usage critical" },
+        { type: "warning", category: "animation", message: "Frame rate low" },
+        { type: "warning", category: "timing", message: "Load time slow" },
       ];
-      
+
       mockPerformanceMonitor.generateRecommendations(alerts);
     });
 
     bench("Prioritize Performance Recommendations", () => {
       const recommendations = mockPerformanceMonitor.generateRecommendations([
-        { type: 'critical', category: 'memory', message: 'Memory usage critical' },
-        { type: 'warning', category: 'animation', message: 'Frame rate low' },
-        { type: 'warning', category: 'timing', message: 'Load time slow' },
+        { type: "critical", category: "memory", message: "Memory usage critical" },
+        { type: "warning", category: "animation", message: "Frame rate low" },
+        { type: "warning", category: "timing", message: "Load time slow" },
       ]);
-      
+
       const prioritized = recommendations.sort((a, b) => {
         const priorityOrder: Record<string, number> = { high: 3, medium: 2, low: 1 };
         return priorityOrder[b.priority] - priorityOrder[a.priority];
@@ -239,18 +247,18 @@ describe("Performance Monitoring Alert System", () => {
 
     bench("Generate Actionable Performance Plan", () => {
       const recommendations = mockPerformanceMonitor.generateRecommendations([
-        { type: 'critical', category: 'memory', message: 'Memory usage critical' },
-        { type: 'warning', category: 'animation', message: 'Frame rate low' },
+        { type: "critical", category: "memory", message: "Memory usage critical" },
+        { type: "warning", category: "animation", message: "Frame rate low" },
       ]);
-      
+
       const plan = {
-        immediate: recommendations.filter(r => r.priority === 'high'),
-        shortTerm: recommendations.filter(r => r.priority === 'medium'),
-        longTerm: recommendations.filter(r => r.priority === 'low'),
+        immediate: recommendations.filter(r => r.priority === "high"),
+        shortTerm: recommendations.filter(r => r.priority === "medium"),
+        longTerm: recommendations.filter(r => r.priority === "low"),
         estimatedImpact: {
-          memory: 'high',
-          performance: 'medium',
-          userExperience: 'high',
+          memory: "high",
+          performance: "medium",
+          userExperience: "high",
         },
         implementationOrder: recommendations.map((r, index) => ({
           step: index + 1,

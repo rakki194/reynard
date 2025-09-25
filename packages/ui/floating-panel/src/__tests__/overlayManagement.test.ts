@@ -1,6 +1,6 @@
 /**
  * Overlay Management Tests
- * 
+ *
  * Tests for overlay management functionality.
  */
 

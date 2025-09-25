@@ -59,7 +59,7 @@ from app.core.service_initializers import (
     init_comfy_service,
     init_gatekeeper_service,
     init_nlweb_service,
-    init_ollama_service,
+    init_ai_service,
     init_rag_service,
     init_search_service,
     init_tts_service,
@@ -98,17 +98,18 @@ async def _setup_secure_routers(app: FastAPI, registry) -> None:
         except Exception as e:
             logger.warning(f"Failed to add secure auth router: {e}")
 
-        # Set up secure ollama router
+        # Set up secure AI router
         try:
-            from app.api.ollama.service import get_ollama_service
-            from app.security.secure_ollama_routes import create_secure_ollama_router
+            from app.core.service_registry import ServiceRegistry
+            from app.security.secure_ai_routes import create_secure_ai_router
 
-            ollama_service = get_ollama_service()
-            secure_ollama_router = create_secure_ollama_router(ollama_service)
-            app.include_router(secure_ollama_router, prefix="/api/secure")
-            logger.info("✅ Secure ollama router added successfully")
+            service_registry = ServiceRegistry()
+            ai_service = service_registry.get_service("ai_service")
+            secure_ai_router = create_secure_ai_router(ai_service)
+            app.include_router(secure_ai_router, prefix="/api/secure")
+            logger.info("✅ Secure AI router added successfully")
         except Exception as e:
-            logger.warning(f"Failed to add secure ollama router: {e}")
+            logger.warning(f"Failed to add secure AI router: {e}")
 
         # Set up secure summarization router
         try:
@@ -220,9 +221,9 @@ async def lifespan(app: FastAPI):
     )
 
     registry.register_service(
-        "ollama",
-        service_configs["ollama"],
-        init_ollama_service,
+        "ai_service",
+        service_configs["ai_service"],
+        init_ai_service,
         None,  # No shutdown function yet
         None,  # No health check yet
         startup_priority=25,

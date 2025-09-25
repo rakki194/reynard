@@ -17,12 +17,12 @@
   --accessibility-mode: 0;
   --reduced-motion: 0;
   --high-contrast: 0;
-  
+
   /* Animation Engine Variables */
   --animation-engine: "full";
   --fallback-mode: 0;
   --immediate-completion: 0;
-  
+
   /* Performance Variables */
   --animation-duration: 300ms;
   --animation-duration-fast: 150ms;
@@ -31,13 +31,13 @@
   --animation-iteration-count: 1;
   --animation-fill-mode: both;
   --animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  
+
   /* Accessibility Variables */
   --animation-reduced-duration: 0ms;
   --animation-reduced-delay: 0ms;
   --animation-high-contrast-duration: 200ms;
   --animation-high-contrast-delay: 0ms;
-  
+
   /* Global Animation Classes */
   --animation-class-prefix: "reynard-animation";
   --animation-disabled-class: "animations-disabled";
@@ -60,7 +60,7 @@
     --animation-iteration-count: 1;
     --immediate-completion: 1;
   }
-  
+
   /* Disable all animations when reduced motion is preferred */
   *,
   *::before,
@@ -97,7 +97,7 @@
     --animation-duration-fast: 100ms;
     --animation-duration-slow: 300ms;
   }
-  
+
   /* Simplify animations in forced colors mode */
   *,
   *::before,
@@ -333,7 +333,7 @@
     --animation-delay: 0ms;
     --immediate-completion: 1;
   }
-  
+
   *,
   *::before,
   *::after {

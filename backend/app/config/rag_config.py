@@ -28,7 +28,7 @@ class RAGConfig:
         ),
     )
 
-    # Ollama configuration
+    # AI service configuration (Ollama provider)
     ollama_base_url: str = field(
         default_factory=lambda: os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
     )

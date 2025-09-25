@@ -1,9 +1,6 @@
 // Resource operations for the ECS world
 
-import {
-  Resource,
-  ResourceType,
-} from "./types";
+import { Resource, ResourceType } from "./types";
 
 import { ResourceRegistry, ResourceStorage } from "./resource";
 

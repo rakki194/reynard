@@ -43,7 +43,7 @@ describe("LintingProcessors", () => {
 
   beforeEach(() => {
     processors = new LintingProcessors();
-    
+
     mockProcessor1 = new MockProcessor({
       name: "eslint",
       enabled: true,
@@ -70,7 +70,7 @@ describe("LintingProcessors", () => {
   describe("register", () => {
     it("should register a processor", () => {
       processors.register("eslint", mockProcessor1);
-      
+
       expect(processors.size()).toBe(1);
       expect(processors.get("eslint")).toBe(mockProcessor1);
     });
@@ -78,7 +78,7 @@ describe("LintingProcessors", () => {
     it("should allow registering multiple processors", () => {
       processors.register("eslint", mockProcessor1);
       processors.register("prettier", mockProcessor2);
-      
+
       expect(processors.size()).toBe(2);
       expect(processors.get("eslint")).toBe(mockProcessor1);
       expect(processors.get("prettier")).toBe(mockProcessor2);
@@ -98,7 +98,7 @@ describe("LintingProcessors", () => {
 
       processors.register("eslint", mockProcessor1);
       processors.register("eslint", newProcessor);
-      
+
       expect(processors.size()).toBe(1);
       expect(processors.get("eslint")).toBe(newProcessor);
     });
@@ -111,7 +111,7 @@ describe("LintingProcessors", () => {
 
     it("should return registered processor", () => {
       processors.register("eslint", mockProcessor1);
-      
+
       const retrieved = processors.get("eslint");
       expect(retrieved).toBe(mockProcessor1);
     });
@@ -126,12 +126,12 @@ describe("LintingProcessors", () => {
     it("should return copy of all processors", () => {
       processors.register("eslint", mockProcessor1);
       processors.register("prettier", mockProcessor2);
-      
+
       const all = processors.getAll();
       expect(all.size).toBe(2);
       expect(all.get("eslint")).toBe(mockProcessor1);
       expect(all.get("prettier")).toBe(mockProcessor2);
-      
+
       // Should be a copy, not the original map
       expect(all).not.toBe(processors["processors"]);
     });
@@ -144,62 +144,74 @@ describe("LintingProcessors", () => {
     });
 
     it("should return processors that can handle the file", () => {
-      const canProcessProcessor = new MockProcessor({
-        name: "can-process",
-        enabled: true,
-        command: "test",
-        args: [],
-        patterns: ["**/*.ts"],
-        excludePatterns: [],
-        maxFileSize: 1024,
-        timeout: 30000,
-      }, true);
+      const canProcessProcessor = new MockProcessor(
+        {
+          name: "can-process",
+          enabled: true,
+          command: "test",
+          args: [],
+          patterns: ["**/*.ts"],
+          excludePatterns: [],
+          maxFileSize: 1024,
+          timeout: 30000,
+        },
+        true
+      );
 
-      const cannotProcessProcessor = new MockProcessor({
-        name: "cannot-process",
-        enabled: true,
-        command: "test",
-        args: [],
-        patterns: ["**/*.ts"],
-        excludePatterns: [],
-        maxFileSize: 1024,
-        timeout: 30000,
-      }, false);
+      const cannotProcessProcessor = new MockProcessor(
+        {
+          name: "cannot-process",
+          enabled: true,
+          command: "test",
+          args: [],
+          patterns: ["**/*.ts"],
+          excludePatterns: [],
+          maxFileSize: 1024,
+          timeout: 30000,
+        },
+        false
+      );
 
       processors.register("can-process", canProcessProcessor);
       processors.register("cannot-process", cannotProcessProcessor);
-      
+
       const applicable = processors.getProcessorsForFile("/test/file.ts");
       expect(applicable).toHaveLength(1);
       expect(applicable[0]).toBe(canProcessProcessor);
     });
 
     it("should return multiple processors that can handle the file", () => {
-      const processor1 = new MockProcessor({
-        name: "processor1",
-        enabled: true,
-        command: "test",
-        args: [],
-        patterns: ["**/*.ts"],
-        excludePatterns: [],
-        maxFileSize: 1024,
-        timeout: 30000,
-      }, true);
+      const processor1 = new MockProcessor(
+        {
+          name: "processor1",
+          enabled: true,
+          command: "test",
+          args: [],
+          patterns: ["**/*.ts"],
+          excludePatterns: [],
+          maxFileSize: 1024,
+          timeout: 30000,
+        },
+        true
+      );
 
-      const processor2 = new MockProcessor({
-        name: "processor2",
-        enabled: true,
-        command: "test",
-        args: [],
-        patterns: ["**/*.ts"],
-        excludePatterns: [],
-        maxFileSize: 1024,
-        timeout: 30000,
-      }, true);
+      const processor2 = new MockProcessor(
+        {
+          name: "processor2",
+          enabled: true,
+          command: "test",
+          args: [],
+          patterns: ["**/*.ts"],
+          excludePatterns: [],
+          maxFileSize: 1024,
+          timeout: 30000,
+        },
+        true
+      );
 
       processors.register("processor1", processor1);
       processors.register("processor2", processor2);
-      
+
       const applicable = processors.getProcessorsForFile("/test/file.ts");
       expect(applicable).toHaveLength(2);
       expect(applicable).toContain(processor1);
@@ -216,7 +228,7 @@ describe("LintingProcessors", () => {
     it("should remove existing processor and return true", () => {
       processors.register("eslint", mockProcessor1);
       expect(processors.size()).toBe(1);
-      
+
       const removed = processors.remove("eslint");
       expect(removed).toBe(true);
       expect(processors.size()).toBe(0);
@@ -227,7 +239,7 @@ describe("LintingProcessors", () => {
       processors.register("eslint", mockProcessor1);
       processors.register("prettier", mockProcessor2);
       expect(processors.size()).toBe(2);
-      
+
       const removed = processors.remove("eslint");
       expect(removed).toBe(true);
       expect(processors.size()).toBe(1);
@@ -241,7 +253,7 @@ describe("LintingProcessors", () => {
       processors.register("eslint", mockProcessor1);
       processors.register("prettier", mockProcessor2);
       expect(processors.size()).toBe(2);
-      
+
       processors.clear();
       expect(processors.size()).toBe(0);
       expect(processors.get("eslint")).toBeUndefined();
@@ -262,10 +274,10 @@ describe("LintingProcessors", () => {
 
     it("should return correct count after registering processors", () => {
       expect(processors.size()).toBe(0);
-      
+
       processors.register("eslint", mockProcessor1);
       expect(processors.size()).toBe(1);
-      
+
       processors.register("prettier", mockProcessor2);
       expect(processors.size()).toBe(2);
     });
@@ -274,10 +286,10 @@ describe("LintingProcessors", () => {
       processors.register("eslint", mockProcessor1);
       processors.register("prettier", mockProcessor2);
       expect(processors.size()).toBe(2);
-      
+
       processors.remove("eslint");
       expect(processors.size()).toBe(1);
-      
+
       processors.remove("prettier");
       expect(processors.size()).toBe(0);
     });
@@ -297,14 +309,14 @@ describe("LintingProcessors", () => {
       });
 
       processors.register("test", processor);
-      
+
       const canProcess = processor.canProcess("/test/file.ts");
       expect(canProcess).toBe(true);
-      
+
       const result = await processor.process("/test/file.ts");
       expect(result.filePath).toBe("/test/file.ts");
       expect(result.linter).toBe("mock");
-      
+
       const applicable = processors.getProcessorsForFile("/test/file.ts");
       expect(applicable).toHaveLength(1);
       expect(applicable[0]).toBe(processor);

@@ -34,7 +34,9 @@ export const ImageDisplay = (props: any) => {
 
         <Show when={imageError()}>
           <div class="image-error">
-            <div class="error-icon"><Icon name="image-error" /></div>
+            <div class="error-icon">
+              <Icon name="image-error" />
+            </div>
             <span>Failed to load image</span>
             <Button onClick={handleRetry}>Retry</Button>
           </div>

@@ -57,13 +57,7 @@ describe("AuthClient", () => {
         loginEndpoint: "/custom/login",
       };
 
-      const authClient = createAuthClient(
-        customConfig,
-        tokenManager,
-        () => ({}),
-        mockUpdateAuthState,
-        mockCallbacks
-      );
+      const authClient = createAuthClient(customConfig, tokenManager, () => ({}), mockUpdateAuthState, mockCallbacks);
 
       expect(authClient).toBeDefined();
     });
@@ -101,10 +95,7 @@ describe("AuthClient", () => {
 
       await authClient.login({ username: "testuser", password: "password" });
 
-      expect(mockClient.post).toHaveBeenCalledWith(
-        "/auth/login",
-        { username: "testuser", password: "password" }
-      );
+      expect(mockClient.post).toHaveBeenCalledWith("/auth/login", { username: "testuser", password: "password" });
     });
 
     it("should handle login error", async () => {
@@ -128,9 +119,7 @@ describe("AuthClient", () => {
         mockCallbacks
       );
 
-      await expect(
-        authClient.login({ username: "testuser", password: "wrong" })
-      ).rejects.toThrow();
+      await expect(authClient.login({ username: "testuser", password: "wrong" })).rejects.toThrow();
     });
   });
 
@@ -169,14 +158,11 @@ describe("AuthClient", () => {
         password: "password",
       });
 
-      expect(mockClient.post).toHaveBeenCalledWith(
-        "/auth/register",
-        {
-          username: "newuser",
-          email: "new@example.com",
-          password: "password",
-        }
-      );
+      expect(mockClient.post).toHaveBeenCalledWith("/auth/register", {
+        username: "newuser",
+        email: "new@example.com",
+        password: "password",
+      });
     });
   });
 });

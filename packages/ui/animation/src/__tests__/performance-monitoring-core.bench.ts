@@ -1,11 +1,11 @@
 /**
  * 🦊 Performance Monitoring Core System
- * 
+ *
  * Core performance monitoring functionality including:
  * - Performance metrics collection
  * - Basic threshold checking
  * - Memory and timing analysis
- * 
+ *
  * @author Vulpine (Strategic Fox Specialist)
  * @since 1.0.0
  */
@@ -24,8 +24,9 @@ const mockPerformanceMonitor = {
     timing: {
       domContentLoaded: performance.timing?.domContentLoadedEventEnd - performance.timing?.navigationStart || 0,
       loadComplete: performance.timing?.loadEventEnd - performance.timing?.navigationStart || 0,
-      firstPaint: performance.getEntriesByType('paint').find(entry => entry.name === 'first-paint')?.startTime || 0,
-      firstContentfulPaint: performance.getEntriesByType('paint').find(entry => entry.name === 'first-contentful-paint')?.startTime || 0,
+      firstPaint: performance.getEntriesByType("paint").find(entry => entry.name === "first-paint")?.startTime || 0,
+      firstContentfulPaint:
+        performance.getEntriesByType("paint").find(entry => entry.name === "first-contentful-paint")?.startTime || 0,
     },
     animation: {
       frameRate: 60,
@@ -34,34 +35,35 @@ const mockPerformanceMonitor = {
       animationCount: 0,
     },
   }),
-  
+
   checkThresholds: (metrics: any) => {
     const alerts: Array<{ type: string; category: string; message: string }> = [];
-    
+
     // Check memory thresholds
     if (metrics.memory.used > 100 * 1024 * 1024) {
-      alerts.push({ type: 'critical', category: 'memory', message: 'Memory usage critical' });
+      alerts.push({ type: "critical", category: "memory", message: "Memory usage critical" });
     } else if (metrics.memory.used > 50 * 1024 * 1024) {
-      alerts.push({ type: 'warning', category: 'memory', message: 'Memory usage high' });
+      alerts.push({ type: "warning", category: "memory", message: "Memory usage high" });
     }
-    
+
     // Check timing thresholds
     if (metrics.timing.domContentLoaded > 5000) {
-      alerts.push({ type: 'critical', category: 'timing', message: 'DOM content loaded too slow' });
+      alerts.push({ type: "critical", category: "timing", message: "DOM content loaded too slow" });
     } else if (metrics.timing.domContentLoaded > 2000) {
-      alerts.push({ type: 'warning', category: 'timing', message: 'DOM content loaded slow' });
+      alerts.push({ type: "warning", category: "timing", message: "DOM content loaded slow" });
     }
-    
+
     // Check animation thresholds
     if (metrics.animation.frameRate < 30) {
-      alerts.push({ type: 'critical', category: 'animation', message: 'Frame rate too low' });
+      alerts.push({ type: "critical", category: "animation", message: "Frame rate too low" });
     } else if (metrics.animation.frameRate < 45) {
-      alerts.push({ type: 'warning', category: 'animation', message: 'Frame rate low' });
+      alerts.push({ type: "warning", category: "animation", message: "Frame rate low" });
     }
-    
+
     return {
       alerts,
-      status: alerts.length === 0 ? 'healthy' : alerts.some(alert => alert.type === 'critical') ? 'critical' : 'warning',
+      status:
+        alerts.length === 0 ? "healthy" : alerts.some(alert => alert.type === "critical") ? "critical" : "warning",
     };
   },
 };
@@ -100,33 +102,33 @@ describe("Performance Monitoring Core System", () => {
 
     bench("Collect Metrics with Memory Info", () => {
       const metrics = mockPerformanceMonitor.collectMetrics();
-      
+
       // Simulate memory pressure
       if (metrics.memory.used > 80 * 1024 * 1024) {
-        (metrics.memory as any).pressure = 'high';
+        (metrics.memory as any).pressure = "high";
       } else if (metrics.memory.used > 50 * 1024 * 1024) {
-        (metrics.memory as any).pressure = 'medium';
+        (metrics.memory as any).pressure = "medium";
       } else {
-        (metrics.memory as any).pressure = 'low';
+        (metrics.memory as any).pressure = "low";
       }
     });
 
     bench("Collect Animation-Specific Metrics", () => {
       const metrics = mockPerformanceMonitor.collectMetrics();
-      
+
       // Add animation-specific metrics
-      (metrics.animation as any).activeAnimations = document.querySelectorAll('[style*="animation"], [style*="transition"]').length;
-      (metrics.animation as any).gpuAccelerated = document.querySelectorAll('.gpu-accelerated').length;
+      (metrics.animation as any).activeAnimations = document.querySelectorAll(
+        '[style*="animation"], [style*="transition"]'
+      ).length;
+      (metrics.animation as any).gpuAccelerated = document.querySelectorAll(".gpu-accelerated").length;
       (metrics.animation as any).willChangeElements = document.querySelectorAll('[style*="will-change"]').length;
       (metrics.animation as any).transformElements = document.querySelectorAll('[style*="transform"]').length;
     });
 
     bench("Collect Performance Entries", () => {
       const entries = performance.getEntries();
-      const animationEntries = entries.filter(entry => 
-        entry.name.includes('animation') || 
-        entry.name.includes('transition') ||
-        entry.entryType === 'measure'
+      const animationEntries = entries.filter(
+        entry => entry.name.includes("animation") || entry.name.includes("transition") || entry.entryType === "measure"
       );
     });
   });
@@ -143,12 +145,12 @@ describe("Performance Monitoring Core System", () => {
         warning: 50 * 1024 * 1024, // 50MB
         critical: 100 * 1024 * 1024, // 100MB
       };
-      
-      let status = 'healthy';
+
+      let status = "healthy";
       if (metrics.memory.used > memoryThresholds.critical) {
-        status = 'critical';
+        status = "critical";
       } else if (metrics.memory.used > memoryThresholds.warning) {
-        status = 'warning';
+        status = "warning";
       }
     });
 
@@ -158,19 +160,19 @@ describe("Performance Monitoring Core System", () => {
         frameRate: { warning: 45, critical: 30 },
         droppedFrames: { warning: 5, critical: 10 },
       };
-      
+
       const alerts: Array<{ type: string; message: string }> = [];
-      
+
       if (metrics.animation.frameRate < animationThresholds.frameRate.critical) {
-        alerts.push({ type: 'critical', message: 'Frame rate critically low' });
+        alerts.push({ type: "critical", message: "Frame rate critically low" });
       } else if (metrics.animation.frameRate < animationThresholds.frameRate.warning) {
-        alerts.push({ type: 'warning', message: 'Frame rate low' });
+        alerts.push({ type: "warning", message: "Frame rate low" });
       }
-      
+
       if (metrics.animation.droppedFrames > animationThresholds.droppedFrames.critical) {
-        alerts.push({ type: 'critical', message: 'Too many dropped frames' });
+        alerts.push({ type: "critical", message: "Too many dropped frames" });
       } else if (metrics.animation.droppedFrames > animationThresholds.droppedFrames.warning) {
-        alerts.push({ type: 'warning', message: 'Some dropped frames' });
+        alerts.push({ type: "warning", message: "Some dropped frames" });
       }
     });
   });

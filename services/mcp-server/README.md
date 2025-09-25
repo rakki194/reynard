@@ -347,11 +347,38 @@ The server uses `tool_config.json` for tool definitions and configurations:
 }
 ```
 
-### Environment Variables
+### Environment Configuration
+
+The MCP server now uses the **unified backend configuration** from `backend/.env` for consistent settings across all Reynard services.
+
+**Key Configuration Variables**:
+
+- `MCP_HOST`: MCP server host (default: localhost)
+- `MCP_PORT`: MCP server port (default: 8001)
+- `MCP_DEBUG`: Enable debug mode (default: True)
+- `MCP_AUTH_DEBUG`: Enable authentication debug logging (default: True)
+- `MCP_CLIENT_ID`: MCP client identifier (default: reynard-mcp-server)
+- `BACKEND_BASE_URL`: FastAPI backend URL (default: <http://localhost:8000>)
+- `MCP_TOKEN_SECRET`: JWT token secret for authentication
+- `MCP_TOKEN_ALGORITHM`: JWT algorithm (default: HS256)
+- `MCP_TOKEN_EXPIRE_HOURS`: Token expiration time (default: 24)
+
+**Database Configuration**:
+
+- `DATABASE_URL`: Primary application database
+- `AUTH_DATABASE_URL`: Authentication database
+- `ECS_DATABASE_URL`: ECS world simulation database
+- `KEY_STORAGE_DATABASE_URL`: Key storage database
+
+**Redis Configuration**:
+
+- `REDIS_URL`: Redis cache connection
+- `REDIS_HOST`: Redis host (default: localhost)
+- `REDIS_PORT`: Redis port (default: 6379)
+
+**Legacy Environment Variables** (for reference):
 
 - `PYTHONPATH`: Path to the MCP server directory
-- `ECS_BACKEND_URL`: URL for ECS world simulation backend
-- `RAG_BACKEND_URL`: URL for semantic search backend
 - `LOG_LEVEL`: Logging level (DEBUG, INFO, WARNING, ERROR)
 
 ## 🐛 Troubleshooting
@@ -362,8 +389,10 @@ The server uses `tool_config.json` for tool definitions and configurations:
 
 - Check server is running: `cd /home/kade/runeset/reynard/services/mcp-server && python3 main.py`
 - Verify configuration in `cursor-mcp-config.json`
+- Ensure backend `.env` file exists and is properly configured
 - Test with: `python3 test-mcp-server.py`
 - Check Python virtual environment: `source ~/venv/bin/activate`
+- Verify backend environment loading: Check `load_backend_env.py` is working correctly
 
 **Name Generation Issues**:
 

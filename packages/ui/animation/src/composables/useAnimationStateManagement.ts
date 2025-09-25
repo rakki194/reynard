@@ -1,8 +1,8 @@
 /**
  * Animation State Composable State Management
- * 
+ *
  * State management functions for the useAnimationState composable.
- * 
+ *
  * @author Agile-Prime-90 (Reynard Lizard Specialist)
  * @since 1.0.0
  */
@@ -12,10 +12,12 @@ import { AnimationStateManager, AnimationStateConfig } from "../state/AnimationS
 /**
  * Create state management functions
  */
-export function createStateManagementFunctions(
-  animationStateManager: () => AnimationStateManager | null
-) {
-  const updatePerformanceMetrics = (animationResult: { duration: number; usedFallback: boolean; usedNoOp: boolean }) => {
+export function createStateManagementFunctions(animationStateManager: () => AnimationStateManager | null) {
+  const updatePerformanceMetrics = (animationResult: {
+    duration: number;
+    usedFallback: boolean;
+    usedNoOp: boolean;
+  }) => {
     const stateManager = animationStateManager();
     if (stateManager) {
       stateManager.updatePerformanceMetrics(animationResult);

@@ -1,46 +1,34 @@
 /**
  * 🦊 Integration Tests
- * 
+ *
  * Comprehensive test suite for package integration, fallback systems, and performance modes.
  * Tests the complete animation system integration across all packages.
  */
 
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
-import { 
+import {
   useAnimationControl,
   useAnimationFallback,
   createSmartAnimationCore,
-  createNoOpAnimationEngine
+  createNoOpAnimationEngine,
 } from "../core/index.js";
-import { 
-  useColorAnimation,
-  useHueShift,
-  useColorRamp,
-  useStaggeredColorAnimation
-} from "../color/index.js";
-import { 
-  useThreeDAnimation,
-  useClusterAnimation,
-  usePointAnimation,
-  useCameraAnimation
-} from "../3d/index.js";
-import { 
+import { useColorAnimation, useHueShift, useColorRamp, useStaggeredColorAnimation } from "../color/index.js";
+import { useThreeDAnimation, useClusterAnimation, usePointAnimation, useCameraAnimation } from "../3d/index.js";
+import {
   GlobalAnimationProvider,
   useGlobalAnimationContext,
   useGlobalAnimationState,
   useGlobalAnimationControls,
   useShouldDisableAnimations,
   useAnimationEngine,
-  usePackageAvailability
+  usePackageAvailability,
 } from "../global/index.js";
-import { 
+import {
   GlobalAnimationDisableFunctions,
   GlobalAnimationIntegrationUtils,
-  useGlobalAnimationIntegration
+  useGlobalAnimationIntegration,
 } from "../global/index.js";
-import { 
-  AnimationDisableTesting
-} from "../global/GlobalAnimationDisableUtils.js";
+import { AnimationDisableTesting } from "../global/GlobalAnimationDisableUtils.js";
 
 // Mock DOM APIs
 const mockDocument = {
@@ -90,7 +78,7 @@ const mockWindow = {
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn(),
   })),
-  requestAnimationFrame: vi.fn((callback) => {
+  requestAnimationFrame: vi.fn(callback => {
     callback();
     return 1;
   }),
@@ -129,11 +117,11 @@ describe("Integration Tests", () => {
         const globalContext = useGlobalAnimationContext();
         const animationControl = useAnimationControl();
         const animationFallback = useAnimationFallback();
-        
+
         expect(globalContext).toBeDefined();
         expect(animationControl).toBeDefined();
         expect(animationFallback).toBeDefined();
-        
+
         return null;
       };
 
@@ -147,13 +135,13 @@ describe("Integration Tests", () => {
         const hueShift = useHueShift();
         const colorRamp = useColorRamp();
         const staggeredColor = useStaggeredColorAnimation();
-        
+
         expect(globalContext).toBeDefined();
         expect(colorAnimation).toBeDefined();
         expect(hueShift).toBeDefined();
         expect(colorRamp).toBeDefined();
         expect(staggeredColor).toBeDefined();
-        
+
         return null;
       };
 
@@ -167,13 +155,13 @@ describe("Integration Tests", () => {
         const clusterAnimation = useClusterAnimation();
         const pointAnimation = usePointAnimation();
         const cameraAnimation = useCameraAnimation();
-        
+
         expect(globalContext).toBeDefined();
         expect(threeDAnimation).toBeDefined();
         expect(clusterAnimation).toBeDefined();
         expect(pointAnimation).toBeDefined();
         expect(cameraAnimation).toBeDefined();
-        
+
         return null;
       };
 
@@ -185,11 +173,11 @@ describe("Integration Tests", () => {
         const shouldDisable = useShouldDisableAnimations();
         const animationEngine = useAnimationEngine();
         const packageAvailability = usePackageAvailability();
-        
+
         expect(shouldDisable).toBeDefined();
         expect(animationEngine).toBeDefined();
         expect(packageAvailability).toBeDefined();
-        
+
         return null;
       };
 
@@ -199,14 +187,14 @@ describe("Integration Tests", () => {
     it("should integrate global animation integration", () => {
       const TestComponent = () => {
         const integration = useGlobalAnimationIntegration();
-        
+
         expect(integration).toBeDefined();
         expect(integration.integration).toBeDefined();
         expect(integration.performanceMetrics).toBeDefined();
         expect(integration.accessibilityMetrics).toBeDefined();
         expect(integration.getIntegrationState).toBeDefined();
         expect(integration.updateOptions).toBeDefined();
-        
+
         return null;
       };
 
@@ -218,14 +206,14 @@ describe("Integration Tests", () => {
     it("should integrate fallback systems with global control", () => {
       // Disable animations globally
       GlobalAnimationDisableFunctions.disableAllAnimations();
-      
+
       const TestComponent = () => {
         const globalContext = useGlobalAnimationContext();
         const animationFallback = useAnimationFallback();
-        
+
         expect(globalContext).toBeDefined();
         expect(animationFallback).toBeDefined();
-        
+
         return null;
       };
 
@@ -235,14 +223,14 @@ describe("Integration Tests", () => {
     it("should integrate color fallback with global control", () => {
       // Disable animations globally
       GlobalAnimationDisableFunctions.disableAllAnimations();
-      
+
       const TestComponent = () => {
         const globalContext = useGlobalAnimationContext();
         const colorAnimation = useColorAnimation();
-        
+
         expect(globalContext).toBeDefined();
         expect(colorAnimation).toBeDefined();
-        
+
         return null;
       };
 
@@ -252,14 +240,14 @@ describe("Integration Tests", () => {
     it("should integrate 3D fallback with global control", () => {
       // Disable animations globally
       GlobalAnimationDisableFunctions.disableAllAnimations();
-      
+
       const TestComponent = () => {
         const globalContext = useGlobalAnimationContext();
         const threeDAnimation = useThreeDAnimation();
-        
+
         expect(globalContext).toBeDefined();
         expect(threeDAnimation).toBeDefined();
-        
+
         return null;
       };
 
@@ -271,10 +259,10 @@ describe("Integration Tests", () => {
       const TestComponent = () => {
         const packageAvailability = usePackageAvailability();
         const animationEngine = useAnimationEngine();
-        
+
         expect(packageAvailability).toBeDefined();
         expect(animationEngine).toBeDefined();
-        
+
         return null;
       };
 
@@ -285,10 +273,10 @@ describe("Integration Tests", () => {
       const TestComponent = () => {
         const animationControl = useAnimationControl();
         const animationFallback = useAnimationFallback();
-        
+
         expect(animationControl).toBeDefined();
         expect(animationFallback).toBeDefined();
-        
+
         return null;
       };
 
@@ -300,18 +288,18 @@ describe("Integration Tests", () => {
     it("should integrate performance mode with all animation systems", () => {
       // Enable performance mode
       GlobalAnimationDisableFunctions.togglePerformanceMode(true);
-      
+
       const TestComponent = () => {
         const globalContext = useGlobalAnimationContext();
         const animationControl = useAnimationControl();
         const colorAnimation = useColorAnimation();
         const threeDAnimation = useThreeDAnimation();
-        
+
         expect(globalContext).toBeDefined();
         expect(animationControl).toBeDefined();
         expect(colorAnimation).toBeDefined();
         expect(threeDAnimation).toBeDefined();
-        
+
         return null;
       };
 
@@ -320,16 +308,16 @@ describe("Integration Tests", () => {
 
     it("should optimize color animations in performance mode", () => {
       GlobalAnimationDisableFunctions.togglePerformanceMode(true);
-      
+
       const TestComponent = () => {
         const colorAnimation = useColorAnimation();
         const hueShift = useHueShift();
         const colorRamp = useColorRamp();
-        
+
         expect(colorAnimation).toBeDefined();
         expect(hueShift).toBeDefined();
         expect(colorRamp).toBeDefined();
-        
+
         return null;
       };
 
@@ -338,16 +326,16 @@ describe("Integration Tests", () => {
 
     it("should optimize 3D animations in performance mode", () => {
       GlobalAnimationDisableFunctions.togglePerformanceMode(true);
-      
+
       const TestComponent = () => {
         const threeDAnimation = useThreeDAnimation();
         const clusterAnimation = useClusterAnimation();
         const pointAnimation = usePointAnimation();
-        
+
         expect(threeDAnimation).toBeDefined();
         expect(clusterAnimation).toBeDefined();
         expect(pointAnimation).toBeDefined();
-        
+
         return null;
       };
 
@@ -358,14 +346,14 @@ describe("Integration Tests", () => {
       const TestComponent = () => {
         const integration = useGlobalAnimationIntegration();
         const performanceMetrics = integration.performanceMetrics();
-        
+
         expect(performanceMetrics).toBeDefined();
         expect(performanceMetrics().activeAnimations).toBeDefined();
         expect(performanceMetrics().averageDuration).toBeDefined();
         expect(performanceMetrics().totalAnimationTime).toBeDefined();
         expect(performanceMetrics().performanceMode).toBeDefined();
         expect(performanceMetrics().lastCheck).toBeDefined();
-        
+
         return null;
       };
 
@@ -377,18 +365,18 @@ describe("Integration Tests", () => {
     it("should integrate accessibility mode with all animation systems", () => {
       // Enable accessibility mode
       GlobalAnimationDisableFunctions.toggleAccessibilityMode(true);
-      
+
       const TestComponent = () => {
         const globalContext = useGlobalAnimationContext();
         const animationControl = useAnimationControl();
         const colorAnimation = useColorAnimation();
         const threeDAnimation = useThreeDAnimation();
-        
+
         expect(globalContext).toBeDefined();
         expect(animationControl).toBeDefined();
         expect(colorAnimation).toBeDefined();
         expect(threeDAnimation).toBeDefined();
-        
+
         return null;
       };
 
@@ -411,10 +399,10 @@ describe("Integration Tests", () => {
       const TestComponent = () => {
         const shouldDisable = useShouldDisableAnimations();
         const animationEngine = useAnimationEngine();
-        
+
         expect(shouldDisable).toBeDefined();
         expect(animationEngine).toBeDefined();
-        
+
         return null;
       };
 
@@ -437,10 +425,10 @@ describe("Integration Tests", () => {
       const TestComponent = () => {
         const globalContext = useGlobalAnimationContext();
         const colorAnimation = useColorAnimation();
-        
+
         expect(globalContext).toBeDefined();
         expect(colorAnimation).toBeDefined();
-        
+
         return null;
       };
 
@@ -451,14 +439,14 @@ describe("Integration Tests", () => {
       const TestComponent = () => {
         const integration = useGlobalAnimationIntegration();
         const accessibilityMetrics = integration.accessibilityMetrics();
-        
+
         expect(accessibilityMetrics).toBeDefined();
         expect(accessibilityMetrics().reducedMotion).toBeDefined();
         expect(accessibilityMetrics().highContrast).toBeDefined();
         expect(accessibilityMetrics().forcedColors).toBeDefined();
         expect(accessibilityMetrics().accessibilityMode).toBeDefined();
         expect(accessibilityMetrics().lastCheck).toBeDefined();
-        
+
         return null;
       };
 
@@ -471,13 +459,13 @@ describe("Integration Tests", () => {
       const TestComponent = () => {
         const globalContext = useGlobalAnimationContext();
         const smartCore = createSmartAnimationCore();
-        
+
         expect(globalContext).toBeDefined();
         expect(smartCore).toBeDefined();
         expect(smartCore.isAnimationsDisabled).toBeDefined();
         expect(smartCore.isPackageAvailable).toBeDefined();
         expect(smartCore.getAnimationEngine).toBeDefined();
-        
+
         return null;
       };
 
@@ -488,13 +476,13 @@ describe("Integration Tests", () => {
       const TestComponent = () => {
         const globalContext = useGlobalAnimationContext();
         const noOpEngine = createNoOpAnimationEngine();
-        
+
         expect(globalContext).toBeDefined();
         expect(noOpEngine).toBeDefined();
         expect(noOpEngine.animate).toBeDefined();
         expect(noOpEngine.stop).toBeDefined();
         expect(noOpEngine.isAnimating).toBeDefined();
-        
+
         return null;
       };
 
@@ -506,11 +494,11 @@ describe("Integration Tests", () => {
         const globalContext = useGlobalAnimationContext();
         const animationEngine = useAnimationEngine();
         const smartCore = createSmartAnimationCore();
-        
+
         expect(globalContext).toBeDefined();
         expect(animationEngine).toBeDefined();
         expect(smartCore).toBeDefined();
-        
+
         return null;
       };
 
@@ -522,28 +510,28 @@ describe("Integration Tests", () => {
     it("should provide integration utilities", () => {
       const integration = GlobalAnimationIntegrationUtils.createIntegration();
       expect(integration).toBeDefined();
-      
+
       const state = GlobalAnimationIntegrationUtils.getCurrentIntegrationState();
       expect(state).toBeDefined();
       expect(state.disableState).toBeDefined();
       expect(state.integrationActive).toBeDefined();
-      
+
       const isAvailable = GlobalAnimationIntegrationUtils.isIntegrationAvailable();
       expect(typeof isAvailable).toBe("boolean");
-      
+
       const capabilities = GlobalAnimationIntegrationUtils.getBrowserCapabilities();
       expect(capabilities).toBeDefined();
       expect(capabilities.performanceObserver).toBeDefined();
       expect(capabilities.matchMedia).toBeDefined();
       expect(capabilities.cssCustomProperties).toBeDefined();
-      
+
       integration.destroy();
     });
 
     it("should apply global settings", () => {
       const config = AnimationDisableTesting.createTestConfig();
       const preferences = AnimationDisableTesting.createTestPreferences();
-      
+
       expect(() => {
         GlobalAnimationIntegrationUtils.applyGlobalSettings(config, preferences);
       }).not.toThrow();
@@ -557,27 +545,27 @@ describe("Integration Tests", () => {
         const globalContext = useGlobalAnimationContext();
         const globalState = useGlobalAnimationState();
         const globalControls = useGlobalAnimationControls();
-        
+
         // Core animations
         const animationControl = useAnimationControl();
         const animationFallback = useAnimationFallback();
-        
+
         // Color animations
         const colorAnimation = useColorAnimation();
         const hueShift = useHueShift();
         const colorRamp = useColorRamp();
-        
+
         // 3D animations
         const threeDAnimation = useThreeDAnimation();
         const clusterAnimation = useClusterAnimation();
         const pointAnimation = usePointAnimation();
-        
+
         // Global integration
         const shouldDisable = useShouldDisableAnimations();
         const animationEngine = useAnimationEngine();
         const packageAvailability = usePackageAvailability();
         const integration = useGlobalAnimationIntegration();
-        
+
         // Verify all systems are available
         expect(globalContext).toBeDefined();
         expect(globalState).toBeDefined();
@@ -594,7 +582,7 @@ describe("Integration Tests", () => {
         expect(animationEngine).toBeDefined();
         expect(packageAvailability).toBeDefined();
         expect(integration).toBeDefined();
-        
+
         return null;
       };
 
@@ -605,17 +593,17 @@ describe("Integration Tests", () => {
       const TestComponent = () => {
         const globalControls = useGlobalAnimationControls();
         const integration = useGlobalAnimationIntegration();
-        
+
         expect(globalControls).toBeDefined();
         expect(integration).toBeDefined();
-        
+
         // Test state changes
         expect(() => {
           globalControls.setEnabled(false);
           globalControls.togglePerformanceMode();
           globalControls.toggleAccessibilityMode();
         }).not.toThrow();
-        
+
         return null;
       };
 
@@ -627,11 +615,11 @@ describe("Integration Tests", () => {
         const packageAvailability = usePackageAvailability();
         const animationEngine = useAnimationEngine();
         const smartCore = createSmartAnimationCore();
-        
+
         expect(packageAvailability).toBeDefined();
         expect(animationEngine).toBeDefined();
         expect(smartCore).toBeDefined();
-        
+
         return null;
       };
 
@@ -650,7 +638,7 @@ describe("Integration Tests", () => {
           useThreeDAnimation();
           useGlobalAnimationContext();
         }).not.toThrow();
-        
+
         return null;
       };
 
@@ -661,10 +649,10 @@ describe("Integration Tests", () => {
       const TestComponent = () => {
         const packageAvailability = usePackageAvailability();
         const animationEngine = useAnimationEngine();
-        
+
         expect(packageAvailability).toBeDefined();
         expect(animationEngine).toBeDefined();
-        
+
         return null;
       };
 
@@ -675,10 +663,10 @@ describe("Integration Tests", () => {
       const TestComponent = () => {
         const capabilities = GlobalAnimationIntegrationUtils.getBrowserCapabilities();
         const isAvailable = GlobalAnimationIntegrationUtils.isIntegrationAvailable();
-        
+
         expect(capabilities).toBeDefined();
         expect(typeof isAvailable).toBe("boolean");
-        
+
         return null;
       };
 
@@ -689,40 +677,39 @@ describe("Integration Tests", () => {
   describe("Performance Integration", () => {
     it("should measure integration performance", () => {
       const startTime = performance.now();
-      
+
       const TestComponent = () => {
         useGlobalAnimationContext();
         useAnimationControl();
         useColorAnimation();
         useThreeDAnimation();
         useGlobalAnimationIntegration();
-        
+
         return null;
       };
-      
+
       TestComponent();
-      
+
       const endTime = performance.now();
       const duration = endTime - startTime;
-      
+
       // Should initialize quickly (less than 50ms)
       expect(duration).toBeLessThan(50);
     });
 
     it("should measure state change performance", () => {
       const startTime = performance.now();
-      
+
       GlobalAnimationDisableFunctions.disableAllAnimations();
       GlobalAnimationDisableFunctions.enableAllAnimations();
       GlobalAnimationDisableFunctions.togglePerformanceMode(true);
       GlobalAnimationDisableFunctions.toggleAccessibilityMode(true);
-      
+
       const endTime = performance.now();
       const duration = endTime - startTime;
-      
+
       // Should change state quickly (less than 10ms)
       expect(duration).toBeLessThan(10);
     });
   });
 });
-

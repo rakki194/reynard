@@ -121,10 +121,7 @@ describe("CLI Unit Tests", () => {
 
       mockWriteFileSync(outputPath, JSON.stringify(config, null, 2));
 
-      expect(mockWriteFileSync).toHaveBeenCalledWith(
-        outputPath,
-        JSON.stringify(config, null, 2)
-      );
+      expect(mockWriteFileSync).toHaveBeenCalledWith(outputPath, JSON.stringify(config, null, 2));
     });
 
     it("should check if file exists", () => {

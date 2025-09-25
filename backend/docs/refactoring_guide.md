@@ -1,6 +1,6 @@
 # 🦊 Backend Refactoring Guide
 
-*Comprehensive guide to the Reynard backend refactoring architecture and implementation*
+_Comprehensive guide to the Reynard backend refactoring architecture and implementation_
 
 ## Overview
 
@@ -50,12 +50,12 @@ graph TB
     subgraph "Client Layer"
         C[Client Applications]
     end
-    
+
     subgraph "API Gateway"
         LB[Load Balancer]
         GW[API Gateway]
     end
-    
+
     subgraph "Core Infrastructure"
         ER[Error Handler]
         LM[Logging Manager]
@@ -63,7 +63,7 @@ graph TB
         SR[Service Registry]
         HM[Health Monitor]
     end
-    
+
     subgraph "Service Layer"
         OS[Ollama Service]
         DS[Diffusion Service]
@@ -72,19 +72,19 @@ graph TB
         SS[Search Service]
         CS[ComfyUI Service]
     end
-    
+
     subgraph "Security Layer"
         SM[Security Middleware]
         RM[Rate Limiter]
         VM[Validation Middleware]
     end
-    
+
     subgraph "Monitoring Layer"
         HA[Health Automation]
         PM[Predictive Monitor]
         MA[Metrics Aggregator]
     end
-    
+
     C --> LB
     LB --> GW
     GW --> SM
@@ -96,33 +96,33 @@ graph TB
     VM --> RS
     VM --> SS
     VM --> CS
-    
+
     OS --> SR
     DS --> SR
     TS --> SR
     RS --> SR
     SS --> SR
     CS --> SR
-    
+
     SR --> HM
     HM --> HA
     HA --> PM
     PM --> MA
-    
+
     ER --> OS
     ER --> DS
     ER --> TS
     ER --> RS
     ER --> SS
     ER --> CS
-    
+
     LM --> OS
     LM --> DS
     LM --> TS
     LM --> RS
     LM --> SS
     LM --> CS
-    
+
     CM --> OS
     CM --> DS
     CM --> TS
@@ -178,7 +178,7 @@ class MyServiceRouter(BaseServiceRouter, ConfigEndpointMixin, StreamingResponseM
     def __init__(self):
         super().__init__(prefix="/api/my-service", tags=["my-service"])
         self._setup_endpoints()
-    
+
     def _setup_endpoints(self):
         @self.router.get("/health")
         async def health_check():
@@ -242,7 +242,7 @@ class MyServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
     def __init__(self):
         super().__init__()
         self._setup_config_endpoints()
-    
+
     def _setup_config_endpoints(self):
         # Automatic config endpoints
         self._add_config_endpoint()
@@ -586,7 +586,7 @@ class TestServiceEndpoints:
         response = client.get("/health/")
         assert response.status_code == 200
         assert "system_status" in response.json()
-    
+
     def test_service_health_endpoint(self):
         response = client.get("/health/service/gatekeeper")
         assert response.status_code == 200
@@ -605,21 +605,21 @@ from app.core.enhanced_service_registry import EnhancedServiceRegistry
 class TestPerformance:
     async def test_service_initialization_performance(self):
         registry = EnhancedServiceRegistry()
-        
+
         start_time = time.time()
         await registry.initialize_all()
         end_time = time.time()
-        
+
         initialization_time = end_time - start_time
         assert initialization_time < 5.0  # Should initialize within 5 seconds
-    
+
     async def test_health_check_performance(self):
         health_manager = get_health_check_manager()
-        
+
         start_time = time.time()
         await health_manager.perform_health_check("gatekeeper")
         end_time = time.time()
-        
+
         health_check_time = end_time - start_time
         assert health_check_time < 1.0  # Should complete within 1 second
 ```
@@ -681,7 +681,7 @@ class MyServiceRouter(BaseServiceRouter):
     def __init__(self):
         super().__init__(prefix="/api/my-service", tags=["my-service"])
         self._setup_endpoints()
-    
+
     def _setup_endpoints(self):
         @self.router.get("/health")
         async def health():
@@ -910,4 +910,4 @@ This refactoring establishes a solid foundation for future development and ensur
 
 ---
 
-*For questions or support, refer to the troubleshooting section or contact the development team.*
+_For questions or support, refer to the troubleshooting section or contact the development team._

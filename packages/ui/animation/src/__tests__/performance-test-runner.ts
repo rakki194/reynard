@@ -1,12 +1,12 @@
 /**
  * 🦊 Performance Test Runner for Animation System
- * 
+ *
  * Comprehensive performance test runner that orchestrates all performance tests:
  * - Performance benchmarks execution
  * - Bundle size analysis
  * - Performance monitoring and reporting
  * - Regression detection and alerting
- * 
+ *
  * @author Vulpine (Strategic Fox Specialist)
  * @since 1.0.0
  */
@@ -25,7 +25,7 @@ export interface PerformanceTestConfig {
       frameRate: number; // fps
     };
   };
-  
+
   // Bundle size configuration
   bundleSize: {
     maxSize: number; // bytes
@@ -34,7 +34,7 @@ export interface PerformanceTestConfig {
     gzipEnabled: boolean;
     brotliEnabled: boolean;
   };
-  
+
   // Performance monitoring configuration
   monitoring: {
     sampleRate: number; // samples per second
@@ -45,10 +45,10 @@ export interface PerformanceTestConfig {
       frameRate: { warning: number; critical: number };
     };
   };
-  
+
   // Reporting configuration
   reporting: {
-    outputFormat: 'json' | 'html' | 'markdown';
+    outputFormat: "json" | "html" | "markdown";
     includeCharts: boolean;
     includeRecommendations: boolean;
     outputPath: string;
@@ -84,14 +84,14 @@ export interface PerformanceTestResult {
     averageLoadTime: number;
     averageFrameRate: number;
     alerts: Array<{
-      type: 'warning' | 'critical';
+      type: "warning" | "critical";
       category: string;
       message: string;
     }>;
   };
   summary: {
     overallScore: number;
-    status: 'pass' | 'warning' | 'fail';
+    status: "pass" | "warning" | "fail";
     recommendations: string[];
   };
 }
@@ -99,33 +99,33 @@ export interface PerformanceTestResult {
 export class PerformanceTestRunner {
   private config: PerformanceTestConfig;
   private results: PerformanceTestResult[] = [];
-  
+
   constructor(config: PerformanceTestConfig) {
     this.config = config;
   }
-  
+
   /**
    * Run all performance tests
    */
   async runAllTests(): Promise<PerformanceTestResult> {
     const testId = `perf-test-${Date.now()}`;
     const startTime = performance.now();
-    
+
     console.log(`🦊 Starting performance test run: ${testId}`);
-    
+
     try {
       // Run benchmarks
       const benchmarks = await this.runBenchmarks();
-      
+
       // Run bundle size analysis
       const bundleSize = await this.runBundleSizeAnalysis();
-      
+
       // Run performance monitoring
       const monitoring = await this.runPerformanceMonitoring();
-      
+
       // Generate summary
       const summary = this.generateSummary(benchmarks, bundleSize, monitoring);
-      
+
       const result: PerformanceTestResult = {
         testId,
         timestamp: Date.now(),
@@ -135,33 +135,32 @@ export class PerformanceTestRunner {
         monitoring,
         summary,
       };
-      
+
       this.results.push(result);
-      
+
       // Generate report
       await this.generateReport(result);
-      
+
       console.log(`✅ Performance test completed: ${testId}`);
       console.log(`📊 Overall Score: ${summary.overallScore}/100`);
       console.log(`📈 Status: ${summary.status.toUpperCase()}`);
-      
+
       return result;
-      
     } catch (error) {
       console.error(`❌ Performance test failed: ${testId}`, error);
       throw error;
     }
   }
-  
+
   /**
    * Run performance benchmarks
    */
-  private async runBenchmarks(): Promise<PerformanceTestResult['benchmarks']> {
-    console.log('🏃 Running performance benchmarks...');
-    
+  private async runBenchmarks(): Promise<PerformanceTestResult["benchmarks"]> {
+    console.log("🏃 Running performance benchmarks...");
+
     const benchmarks = [
       {
-        name: 'Fallback Animation - Single Element',
+        name: "Fallback Animation - Single Element",
         iterations: this.config.benchmark.iterations,
         averageTime: 16, // 60fps
         minTime: 12,
@@ -170,7 +169,7 @@ export class PerformanceTestRunner {
         passed: true,
       },
       {
-        name: 'Full Animation - Single Element',
+        name: "Full Animation - Single Element",
         iterations: this.config.benchmark.iterations,
         averageTime: 300, // 300ms duration
         minTime: 280,
@@ -179,7 +178,7 @@ export class PerformanceTestRunner {
         passed: true,
       },
       {
-        name: 'Immediate Completion - Single Element',
+        name: "Immediate Completion - Single Element",
         iterations: this.config.benchmark.iterations,
         averageTime: 0.1,
         minTime: 0.05,
@@ -188,7 +187,7 @@ export class PerformanceTestRunner {
         passed: true,
       },
       {
-        name: 'Animation State Management',
+        name: "Animation State Management",
         iterations: this.config.benchmark.iterations,
         averageTime: 0.5,
         minTime: 0.3,
@@ -197,7 +196,7 @@ export class PerformanceTestRunner {
         passed: true,
       },
       {
-        name: 'Package Availability Check',
+        name: "Package Availability Check",
         iterations: this.config.benchmark.iterations,
         averageTime: 0.2,
         minTime: 0.1,
@@ -206,36 +205,37 @@ export class PerformanceTestRunner {
         passed: true,
       },
     ];
-    
+
     // Simulate benchmark execution
     for (const benchmark of benchmarks) {
       // Check if benchmark passes thresholds
-      benchmark.passed = benchmark.averageTime <= this.config.benchmark.threshold.timing &&
-                        benchmark.memoryUsage <= this.config.benchmark.threshold.memory * 1024;
+      benchmark.passed =
+        benchmark.averageTime <= this.config.benchmark.threshold.timing &&
+        benchmark.memoryUsage <= this.config.benchmark.threshold.memory * 1024;
     }
-    
+
     return benchmarks;
   }
-  
+
   /**
    * Run bundle size analysis
    */
-  private async runBundleSizeAnalysis(): Promise<PerformanceTestResult['bundleSize']> {
-    console.log('📦 Running bundle size analysis...');
-    
+  private async runBundleSizeAnalysis(): Promise<PerformanceTestResult["bundleSize"]> {
+    console.log("📦 Running bundle size analysis...");
+
     const bundleSize = {
       totalSize: 8192, // 8KB
       gzipSize: 5325, // ~65% compression
       brotliSize: 4506, // ~55% compression
       moduleBreakdown: {
-        'animation-core': 1024,
-        'animation-engines': 2048,
-        'animation-composables': 1536,
-        'animation-color': 512,
-        'animation-3d': 1024,
-        'animation-global': 768,
-        'animation-utils': 256,
-        'animation-css': 384,
+        "animation-core": 1024,
+        "animation-engines": 2048,
+        "animation-composables": 1536,
+        "animation-color": 512,
+        "animation-3d": 1024,
+        "animation-global": 768,
+        "animation-utils": 256,
+        "animation-css": 384,
       },
       optimization: {
         treeShaking: 0.3, // 30% reduction
@@ -243,98 +243,98 @@ export class PerformanceTestRunner {
         codeSplitting: 0.2, // 20% reduction
       },
     };
-    
+
     return bundleSize;
   }
-  
+
   /**
    * Run performance monitoring
    */
-  private async runPerformanceMonitoring(): Promise<PerformanceTestResult['monitoring']> {
-    console.log('📊 Running performance monitoring...');
-    
+  private async runPerformanceMonitoring(): Promise<PerformanceTestResult["monitoring"]> {
+    console.log("📊 Running performance monitoring...");
+
     const monitoring = {
       averageMemoryUsage: 45 * 1024 * 1024, // 45MB
       averageLoadTime: 1500, // 1.5s
       averageFrameRate: 58, // 58fps
       alerts: [
         {
-          type: 'warning' as const,
-          category: 'memory',
-          message: 'Memory usage approaching threshold',
+          type: "warning" as const,
+          category: "memory",
+          message: "Memory usage approaching threshold",
         },
       ],
     };
-    
+
     return monitoring;
   }
-  
+
   /**
    * Generate performance test summary
    */
   private generateSummary(
-    benchmarks: PerformanceTestResult['benchmarks'],
-    bundleSize: PerformanceTestResult['bundleSize'],
-    monitoring: PerformanceTestResult['monitoring']
-  ): PerformanceTestResult['summary'] {
+    benchmarks: PerformanceTestResult["benchmarks"],
+    bundleSize: PerformanceTestResult["bundleSize"],
+    monitoring: PerformanceTestResult["monitoring"]
+  ): PerformanceTestResult["summary"] {
     // Calculate overall score (0-100)
     let score = 100;
     const recommendations: string[] = [];
-    
+
     // Check benchmark performance
     const failedBenchmarks = benchmarks.filter(b => !b.passed);
     if (failedBenchmarks.length > 0) {
       score -= failedBenchmarks.length * 10;
       recommendations.push(`Optimize ${failedBenchmarks.length} failing benchmarks`);
     }
-    
+
     // Check bundle size
     if (bundleSize.totalSize > this.config.bundleSize.maxSize) {
       score -= 20;
-      recommendations.push('Reduce bundle size');
+      recommendations.push("Reduce bundle size");
     }
-    
+
     // Check memory usage
     if (monitoring.averageMemoryUsage > this.config.monitoring.alertThresholds.memory.warning) {
       score -= 15;
-      recommendations.push('Optimize memory usage');
+      recommendations.push("Optimize memory usage");
     }
-    
+
     // Check frame rate
     if (monitoring.averageFrameRate < this.config.monitoring.alertThresholds.frameRate.warning) {
       score -= 15;
-      recommendations.push('Improve animation frame rate');
+      recommendations.push("Improve animation frame rate");
     }
-    
+
     // Check load time
     if (monitoring.averageLoadTime > this.config.monitoring.alertThresholds.timing.warning) {
       score -= 10;
-      recommendations.push('Optimize load time');
+      recommendations.push("Optimize load time");
     }
-    
+
     // Determine status
-    let status: 'pass' | 'warning' | 'fail';
+    let status: "pass" | "warning" | "fail";
     if (score >= 90) {
-      status = 'pass';
+      status = "pass";
     } else if (score >= 70) {
-      status = 'warning';
+      status = "warning";
     } else {
-      status = 'fail';
+      status = "fail";
     }
-    
+
     return {
       overallScore: Math.max(0, score),
       status,
       recommendations,
     };
   }
-  
+
   /**
    * Generate performance test report
    */
   private async generateReport(result: PerformanceTestResult): Promise<void> {
-    console.log('📝 Generating performance report...');
-    
+    console.log("📝 Generating performance report...");
+
     const report = {
       testId: result.testId,
       timestamp: new Date(result.timestamp).toISOString(),
@@ -342,7 +342,7 @@ export class PerformanceTestRunner {
       summary: result.summary,
       benchmarks: result.benchmarks.map(b => ({
         name: b.name,
-        status: b.passed ? 'PASS' : 'FAIL',
+        status: b.passed ? "PASS" : "FAIL",
         averageTime: `${b.averageTime}ms`,
         memoryUsage: `${(b.memoryUsage / 1024).toFixed(1)}KB`,
       })),
@@ -359,20 +359,20 @@ export class PerformanceTestRunner {
       },
       recommendations: result.summary.recommendations,
     };
-    
+
     // Output report based on configuration
     switch (this.config.reporting.outputFormat) {
-      case 'json':
+      case "json":
         console.log(JSON.stringify(report, null, 2));
         break;
-      case 'markdown':
+      case "markdown":
         console.log(this.generateMarkdownReport(report));
         break;
       default:
-        console.log('Performance Test Report:', report);
+        console.log("Performance Test Report:", report);
     }
   }
-  
+
   /**
    * Generate markdown report
    */
@@ -390,7 +390,7 @@ export class PerformanceTestRunner {
 
 | Test | Status | Average Time | Memory Usage |
 |------|--------|--------------|--------------|
-${report.benchmarks.map((b: any) => `| ${b.name} | ${b.status} | ${b.averageTime} | ${b.memoryUsage} |`).join('\n')}
+${report.benchmarks.map((b: any) => `| ${b.name} | ${b.status} | ${b.averageTime} | ${b.memoryUsage} |`).join("\n")}
 
 ## 📦 Bundle Size
 
@@ -407,24 +407,24 @@ ${report.benchmarks.map((b: any) => `| ${b.name} | ${b.status} | ${b.averageTime
 
 ## 💡 Recommendations
 
-${report.recommendations.map((rec: string) => `- ${rec}`).join('\n')}
+${report.recommendations.map((rec: string) => `- ${rec}`).join("\n")}
     `.trim();
   }
-  
+
   /**
    * Get test history
    */
   getTestHistory(): PerformanceTestResult[] {
     return this.results;
   }
-  
+
   /**
    * Get latest test result
    */
   getLatestResult(): PerformanceTestResult | null {
     return this.results.length > 0 ? this.results[this.results.length - 1] : null;
   }
-  
+
   /**
    * Check for performance regressions
    */
@@ -441,48 +441,51 @@ ${report.recommendations.map((rec: string) => `- ${rec}`).join('\n')}
     if (this.results.length < 2) {
       return { hasRegression: false, regressionDetails: [] };
     }
-    
+
     const previous = this.results[this.results.length - 2];
     const current = this.results[this.results.length - 1];
-    
+
     const regressionDetails = [];
-    
+
     // Check overall score regression
     const scoreChange = current.summary.overallScore - previous.summary.overallScore;
-    if (scoreChange < -5) { // 5 point threshold
+    if (scoreChange < -5) {
+      // 5 point threshold
       regressionDetails.push({
-        metric: 'Overall Score',
+        metric: "Overall Score",
         previous: previous.summary.overallScore,
         current: current.summary.overallScore,
         change: scoreChange,
         changePercentage: (scoreChange / previous.summary.overallScore) * 100,
       });
     }
-    
+
     // Check bundle size regression
     const bundleSizeChange = current.bundleSize.totalSize - previous.bundleSize.totalSize;
-    if (bundleSizeChange > this.config.bundleSize.maxSize * 0.1) { // 10% threshold
+    if (bundleSizeChange > this.config.bundleSize.maxSize * 0.1) {
+      // 10% threshold
       regressionDetails.push({
-        metric: 'Bundle Size',
+        metric: "Bundle Size",
         previous: previous.bundleSize.totalSize,
         current: current.bundleSize.totalSize,
         change: bundleSizeChange,
         changePercentage: (bundleSizeChange / previous.bundleSize.totalSize) * 100,
       });
     }
-    
+
     // Check memory usage regression
     const memoryChange = current.monitoring.averageMemoryUsage - previous.monitoring.averageMemoryUsage;
-    if (memoryChange > 10 * 1024 * 1024) { // 10MB threshold
+    if (memoryChange > 10 * 1024 * 1024) {
+      // 10MB threshold
       regressionDetails.push({
-        metric: 'Memory Usage',
+        metric: "Memory Usage",
         previous: previous.monitoring.averageMemoryUsage,
         current: current.monitoring.averageMemoryUsage,
         change: memoryChange,
         changePercentage: (memoryChange / previous.monitoring.averageMemoryUsage) * 100,
       });
     }
-    
+
     return {
       hasRegression: regressionDetails.length > 0,
       regressionDetails,
@@ -519,10 +522,10 @@ export const defaultPerformanceConfig: PerformanceTestConfig = {
     },
   },
   reporting: {
-    outputFormat: 'markdown',
+    outputFormat: "markdown",
     includeCharts: true,
     includeRecommendations: true,
-    outputPath: './performance-reports',
+    outputPath: "./performance-reports",
   },
 };
 

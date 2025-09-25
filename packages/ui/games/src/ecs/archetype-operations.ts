@@ -1,10 +1,6 @@
 // Archetype operations for the ECS world
 
-import {
-  Component,
-  ComponentType,
-  Entity,
-} from "./types";
+import { Component, ComponentType, Entity } from "./types";
 
 import { ArchetypeId, Archetypes } from "./archetype";
 import { ComponentRegistry, ComponentStorage } from "./component";

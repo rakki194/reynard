@@ -13,18 +13,13 @@ export interface RAGHistoryConfig {
 
 export function useRAGHistory(config: RAGHistoryConfig = {}) {
   const maxItems = config.maxHistoryItems || 50;
-  
+
   // History state
   const [searchHistory, setSearchHistory] = createSignal<SearchHistoryItem[]>([]);
   const [isLoading, setIsLoading] = createSignal(false);
 
   // History operations
-  const addSearchToHistory = (
-    query: string,
-    modality: RAGModality,
-    resultCount: number,
-    topScore: number
-  ) => {
+  const addSearchToHistory = (query: string, modality: RAGModality, resultCount: number, topScore: number) => {
     const historyItem: SearchHistoryItem = {
       id: `search-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       query,
@@ -59,9 +54,7 @@ export function useRAGHistory(config: RAGHistoryConfig = {}) {
 
   const searchHistoryByQuery = (searchQuery: string) => {
     const query = searchQuery.toLowerCase();
-    return searchHistory().filter(item => 
-      item.query.toLowerCase().includes(query)
-    );
+    return searchHistory().filter(item => item.query.toLowerCase().includes(query));
   };
 
   // Load history from localStorage on initialization
@@ -95,7 +88,7 @@ export function useRAGHistory(config: RAGHistoryConfig = {}) {
     // State
     searchHistory,
     isLoading,
-    
+
     // Actions
     addSearchToHistory,
     clearHistory,

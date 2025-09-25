@@ -12,7 +12,7 @@ graph TB
         A --> C[Chat Composables]
         A --> D[Streaming System]
         A --> E[P2P System]
-        
+
         subgraph "🎯 Core Components"
             B --> B1[ChatMessage]
             B --> B2[MessageInput]
@@ -23,7 +23,7 @@ graph TB
             B --> B7[RoomList]
             B --> B8[UserList]
         end
-        
+
         subgraph "⚡ Chat Composables"
             C --> C1[useChat]
             C --> C2[useChatMessages]
@@ -34,7 +34,7 @@ graph TB
             C --> C7[useP2PMessages]
             C --> C8[useP2PRooms]
         end
-        
+
         subgraph "🌊 Streaming System"
             D --> D1[StreamingMarkdownParser]
             D --> D2[StreamingCoordinator]
@@ -46,7 +46,7 @@ graph TB
             D1 --> D8[CodeBlockHandler]
             D1 --> D9[TableParser]
         end
-        
+
         subgraph "🔗 P2P Features"
             E --> E1[Real-time Messaging]
             E --> E2[Room Management]
@@ -57,7 +57,7 @@ graph TB
             E --> E7[Message Reactions]
             E --> E8[Message Threads]
         end
-        
+
         subgraph "🛠️ Markdown Processing"
             F[Markdown Utils] --> F1[BaseMarkdownParser]
             F --> F2[Block Handlers]
@@ -72,7 +72,7 @@ graph TB
             F3 --> F11[MathProcessor]
             F3 --> F12[MediaProcessor]
         end
-        
+
         subgraph "🔧 Tool Integration"
             G[Tool System] --> G1[Tool Definitions]
             G --> G2[Tool Execution]
@@ -82,7 +82,7 @@ graph TB
             G1 --> G6[API Tools]
             G1 --> G7[Custom Tools]
         end
-        
+
         subgraph "📊 State Management"
             H[Chat State] --> H1[Message History]
             H --> H2[Connection State]
@@ -92,7 +92,7 @@ graph TB
             H --> H6[User State]
         end
     end
-    
+
     subgraph "🌐 Backend Integration"
         I[Chat Backend] --> I1[WebSocket Server]
         I --> I2[Message API]
@@ -100,7 +100,7 @@ graph TB
         I --> I4[User Management]
         I --> I5[Room Management]
     end
-    
+
     A -->|Manages| J[Chat Interface]
     C1 -->|Orchestrates| K[Chat Operations]
     D1 -->|Processes| L[Streaming Content]
@@ -117,13 +117,13 @@ sequenceDiagram
     participant Streaming as Streaming System
     participant Backend as Chat Backend
     participant Parser as Markdown Parser
-    
+
     Note over User, Parser: Message Sending
     User->>UI: Type Message
     UI->>Composable: useChat.sendMessage()
     Composable->>Backend: POST /api/chat
     Backend-->>Composable: Start Streaming Response
-    
+
     Note over User, Parser: Streaming Processing
     Backend->>Streaming: Stream Chunks
     Streaming->>Parser: Parse Markdown Chunks
@@ -132,13 +132,13 @@ sequenceDiagram
     Streaming->>Composable: Update Message
     Composable->>UI: Render Content
     UI-->>User: Display Streaming Text
-    
+
     Note over User, Parser: Tool Execution
     Backend->>Streaming: Tool Call Event
     Streaming->>Composable: useChatTools()
     Composable->>UI: Show Tool Progress
     UI-->>User: Tool Execution UI
-    
+
     Note over User, Parser: Message Completion
     Backend->>Streaming: End Stream
     Streaming->>Parser: Finalize Parsing
@@ -158,14 +158,14 @@ sequenceDiagram
     participant UI2 as Chat UI 2
     participant WS as WebSocket Server
     participant API as Chat API
-    
+
     Note over User1, API: Connection Setup
     User1->>UI1: Join Room
     UI1->>WS: WebSocket Connect
     WS->>API: Authenticate User
     API-->>WS: User Authenticated
     WS-->>UI1: Connection Established
-    
+
     Note over User1, API: Message Exchange
     User1->>UI1: Send Message
     UI1->>WS: message_sent Event
@@ -173,18 +173,18 @@ sequenceDiagram
     WS-->>UI2: message_sent Event
     UI2->>UI2: Add Message
     UI2-->>User2: Display Message
-    
+
     Note over User1, API: Real-time Features
     User1->>UI1: Start Typing
     UI1->>WS: typing_start Event
     WS-->>UI2: typing_start Event
     UI2-->>User2: Show Typing Indicator
-    
+
     User1->>UI1: Stop Typing
     UI1->>WS: typing_stop Event
     WS-->>UI2: typing_stop Event
     UI2-->>User2: Hide Typing Indicator
-    
+
     Note over User1, API: File Sharing
     User1->>UI1: Upload File
     UI1->>API: POST /api/chat/upload
@@ -201,26 +201,26 @@ flowchart TD
     A[Streaming Text] --> B[StreamingCoordinator]
     B --> C[ParserOrchestrator]
     C --> D{Content Type?}
-    
+
     D -->|Block| E[BlockParser]
     D -->|Inline| F[InlineParser]
     D -->|Thinking| G[ThinkingSectionParser]
-    
+
     E --> E1[CodeBlockHandler]
     E --> E2[ListHandler]
     E --> E3[TableParser]
     E --> E4[SectionCloser]
-    
+
     F --> F1[CodeProcessor]
     F --> F2[FormattingProcessor]
     F --> F3[LinkProcessor]
     F --> F4[MathProcessor]
     F --> F5[MediaProcessor]
-    
+
     G --> G1[Thinking Validation]
     G --> G2[Thinking Utils]
     G --> G3[Thinking Core]
-    
+
     E1 --> H[StreamingTextRenderer]
     E2 --> H
     E3 --> H
@@ -233,17 +233,17 @@ flowchart TD
     G1 --> H
     G2 --> H
     G3 --> H
-    
+
     H --> I[Rendered Content]
     I --> J[UI Update]
-    
+
     subgraph "🔄 Streaming State"
         K[Parser State] --> K1[Current Node]
         K --> K2[Buffer]
         K --> K3[Line Number]
         K --> K4[Errors/Warnings]
     end
-    
+
     subgraph "📊 Processing Features"
         L[Advanced Features] --> L1[Real-time Rendering]
         L --> L2[Error Recovery]

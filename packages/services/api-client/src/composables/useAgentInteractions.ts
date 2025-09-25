@@ -9,33 +9,24 @@ import { createFetchComposable } from "../utils/fetchUtils";
 export function useAgentInteractions(client: ReynardApiClient) {
   const { loading, error, fetchWithErrorHandling } = createFetchComposable();
 
-  const initiateInteraction = async (
-    agent_id: string,
-    request: InteractionRequest
-  ): Promise<InteractionResponse> => {
-    return fetchWithErrorHandling<InteractionResponse>(
-      `${client.config.basePath}/agents/${agent_id}/interact`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(request),
-      }
-    );
+  const initiateInteraction = async (agent_id: string, request: InteractionRequest): Promise<InteractionResponse> => {
+    return fetchWithErrorHandling<InteractionResponse>(`${client.config.basePath}/agents/${agent_id}/interact`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(request),
+    });
   };
 
   const sendChatMessage = async (agent_id: string, request: ChatRequest): Promise<unknown> => {
-    return fetchWithErrorHandling<unknown>(
-      `${client.config.basePath}/agents/${agent_id}/chat`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(request),
-      }
-    );
+    return fetchWithErrorHandling<unknown>(`${client.config.basePath}/agents/${agent_id}/chat`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(request),
+    });
   };
 
   return {

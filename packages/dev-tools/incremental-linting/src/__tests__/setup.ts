@@ -43,9 +43,9 @@ const mockProcess = {
 const mockPath = {
   resolve: vi.fn((...args) => args.join("/")),
   join: vi.fn((...args) => args.join("/")),
-  dirname: vi.fn((path) => path.split("/").slice(0, -1).join("/")),
-  basename: vi.fn((path) => path.split("/").pop() || ""),
-  extname: vi.fn((path) => {
+  dirname: vi.fn(path => path.split("/").slice(0, -1).join("/")),
+  basename: vi.fn(path => path.split("/").pop() || ""),
+  extname: vi.fn(path => {
     const parts = path.split(".");
     return parts.length > 1 ? `.${parts.pop()}` : "";
   }),

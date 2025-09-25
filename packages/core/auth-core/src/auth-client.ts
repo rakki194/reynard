@@ -42,7 +42,7 @@ export const createAuthClient = (
     retries: 2,
     middleware: [
       {
-        request: (requestConfig) => {
+        request: requestConfig => {
           const token = tokenManager.getAccessToken();
           if (token) {
             requestConfig.headers = {
@@ -52,7 +52,7 @@ export const createAuthClient = (
           }
           return requestConfig;
         },
-        error: async (error) => {
+        error: async error => {
           // Handle 401 errors with token refresh
           if (error.status === 401) {
             try {
@@ -205,10 +205,7 @@ export const createAuthClient = (
     updateAuthState({ isRefreshing: true });
 
     try {
-      const response = await httpClient.post<AuthTokens>(
-        config.refreshEndpoint || "/auth/refresh",
-        { refreshToken }
-      );
+      const response = await httpClient.post<AuthTokens>(config.refreshEndpoint || "/auth/refresh", { refreshToken });
 
       if (response.data) {
         const { accessToken, refreshToken: newRefreshToken } = response.data;

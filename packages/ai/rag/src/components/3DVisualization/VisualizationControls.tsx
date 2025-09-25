@@ -82,7 +82,12 @@ export const VisualizationControls = (props: any) => {
           Advanced Parameters
         </Button>
 
-        <Button variant="primary" onClick={props.onRefresh} disabled={props.isLoading} leftIcon={<Icon name="refresh" />}>
+        <Button
+          variant="primary"
+          onClick={props.onRefresh}
+          disabled={props.isLoading}
+          leftIcon={<Icon name="refresh" />}
+        >
           {props.isLoading ? "Loading..." : "Refresh"}
         </Button>
       </div>

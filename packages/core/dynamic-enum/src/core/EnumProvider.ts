@@ -2,17 +2,17 @@
  * Abstract base class for enum providers
  */
 
-import type { 
-  EnumProvider, 
-  EnumData, 
-  EnumValue, 
-  EnumMetadata, 
+import type {
+  EnumProvider,
+  EnumData,
+  EnumValue,
+  EnumMetadata,
   ValidationResult,
   EnumOperationOptions,
   EnumResult,
-  EnumProviderConfig
-} from '../types';
-import type { EnumDataProvider } from '../types/DataProvider';
+  EnumProviderConfig,
+} from "../types";
+import type { EnumDataProvider } from "../types/DataProvider";
 
 /**
  * Abstract base class that provides common functionality for enum providers
@@ -41,13 +41,13 @@ export abstract class BaseEnumProvider implements EnumProvider {
     this.cacheTimeout = config.cacheTimeout;
     this.enableMetrics = config.enableMetrics ?? true;
     this.dataProvider = dataProvider;
-    
+
     this.metrics = {
       requests: 0,
       cacheHits: 0,
       cacheMisses: 0,
       errors: 0,
-      lastResponseTime: 0
+      lastResponseTime: 0,
     };
   }
 
@@ -79,12 +79,12 @@ export abstract class BaseEnumProvider implements EnumProvider {
       this.cachedData = data;
       this.lastFetchTime = Date.now();
       this.metrics.lastResponseTime = Date.now() - startTime;
-      
+
       return data;
     } catch (error) {
       this.metrics.errors++;
       this.metrics.lastResponseTime = Date.now() - startTime;
-      
+
       // Return fallback data on error
       return this.fallbackData;
     }
@@ -103,18 +103,18 @@ export abstract class BaseEnumProvider implements EnumProvider {
    */
   async getMetadata(key: string): Promise<EnumMetadata | null> {
     const enumValue = await this.getEnumValue(key);
-    return enumValue?.metadata as EnumMetadata || null;
+    return (enumValue?.metadata as EnumMetadata) || null;
   }
 
   /**
    * Validate an enum value
    */
   validateValue(value: string): ValidationResult {
-    if (!value || typeof value !== 'string') {
+    if (!value || typeof value !== "string") {
       return {
         isValid: false,
         value: null,
-        error: 'Value must be a non-empty string'
+        error: "Value must be a non-empty string",
       };
     }
 
@@ -126,14 +126,14 @@ export abstract class BaseEnumProvider implements EnumProvider {
       return {
         isValid: false,
         value: null,
-        error: `Value '${value}' is not valid for enum type '${this.enumType}'`
+        error: `Value '${value}' is not valid for enum type '${this.enumType}'`,
       };
     }
 
     return {
       isValid: true,
       value,
-      error: null
+      error: null,
     };
   }
 
@@ -143,11 +143,11 @@ export abstract class BaseEnumProvider implements EnumProvider {
   async getRandomValue(options?: EnumOperationOptions): Promise<EnumResult> {
     const data = await this.getEnumData(options);
     const keys = Object.keys(data);
-    
+
     if (keys.length === 0) {
       return {
         value: this.defaultFallback,
-        isFallback: true
+        isFallback: true,
       };
     }
 
@@ -157,7 +157,7 @@ export abstract class BaseEnumProvider implements EnumProvider {
     return {
       value: enumValue.value,
       metadata: enumValue.metadata as EnumMetadata,
-      fromCache: this.isCacheValid()
+      fromCache: this.isCacheValid(),
     };
   }
 
@@ -168,22 +168,22 @@ export abstract class BaseEnumProvider implements EnumProvider {
     const results: EnumResult[] = [];
     const data = await this.getEnumData(options);
     const keys = Object.keys(data);
-    
+
     if (keys.length === 0) {
       return Array(count).fill({
         value: this.defaultFallback,
-        isFallback: true
+        isFallback: true,
       });
     }
 
     for (let i = 0; i < count; i++) {
       const selectedKey = this.selectRandomKey(keys, data, options?.weighted);
       const enumValue = data[selectedKey];
-      
+
       results.push({
         value: enumValue.value,
         metadata: enumValue.metadata as EnumMetadata,
-        fromCache: this.isCacheValid()
+        fromCache: this.isCacheValid(),
       });
     }
 
@@ -276,7 +276,7 @@ export abstract class BaseEnumProvider implements EnumProvider {
     }, 0);
 
     let random = Math.random() * totalWeight;
-    
+
     for (const key of keys) {
       const weight = data[key].weight || 1.0;
       random -= weight;

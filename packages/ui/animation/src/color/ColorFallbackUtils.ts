@@ -1,6 +1,6 @@
 /**
  * 🦊 Color Fallback Animation Utilities
- * 
+ *
  * Utility functions for applying CSS-based fallback color animations.
  * Provides immediate completion for disabled animations and performance optimizations.
  */
@@ -27,12 +27,7 @@ export function applyColorFallbackTransition(
   endColor: OKLCHColor,
   options: ColorFallbackOptions = {}
 ): void {
-  const {
-    duration = 300,
-    easing = "ease",
-    immediateCompletion = true,
-    respectGlobalControl = true,
-  } = options;
+  const { duration = 300, easing = "ease", immediateCompletion = true, respectGlobalControl = true } = options;
 
   // Check if animations should be disabled
   if (respectGlobalControl && shouldDisableColorAnimations()) {
@@ -49,7 +44,7 @@ export function applyColorFallbackTransition(
   element.style.setProperty("--color-end", oklchToCSS(endColor));
 
   element.classList.add("color-fallback-transition");
-  
+
   // Trigger the transition
   requestAnimationFrame(() => {
     element.style.backgroundColor = oklchToCSS(endColor);
@@ -65,12 +60,7 @@ export function applyHueFallbackShift(
   deltaH: number,
   options: ColorFallbackOptions = {}
 ): void {
-  const {
-    duration = 300,
-    easing = "ease",
-    immediateCompletion = true,
-    respectGlobalControl = true,
-  } = options;
+  const { duration = 300, easing = "ease", immediateCompletion = true, respectGlobalControl = true } = options;
 
   // Check if animations should be disabled
   if (respectGlobalControl && shouldDisableColorAnimations()) {
@@ -87,7 +77,7 @@ export function applyHueFallbackShift(
   element.style.setProperty("--hue-shift", `${deltaH}deg`);
 
   element.classList.add("hue-fallback-shift");
-  
+
   // Trigger the transition
   requestAnimationFrame(() => {
     element.classList.add("animate");
@@ -102,12 +92,7 @@ export function applyColorRampFallback(
   colors: OKLCHColor[],
   options: ColorFallbackOptions = {}
 ): void {
-  const {
-    duration = 300,
-    easing = "ease",
-    immediateCompletion = true,
-    respectGlobalControl = true,
-  } = options;
+  const { duration = 300, easing = "ease", immediateCompletion = true, respectGlobalControl = true } = options;
 
   // Check if animations should be disabled
   if (respectGlobalControl && shouldDisableColorAnimations()) {
@@ -120,12 +105,12 @@ export function applyColorRampFallback(
   // Apply CSS color ramp
   element.style.setProperty("--color-animation-duration", `${duration}ms`);
   element.style.setProperty("--color-animation-easing", easing);
-  
+
   const gradient = colors.map(color => oklchToCSS(color)).join(", ");
   element.style.setProperty("--color-ramp", gradient);
 
   element.classList.add("color-ramp-fallback");
-  
+
   // Trigger the transition
   requestAnimationFrame(() => {
     element.style.background = `linear-gradient(to right, ${gradient})`;
@@ -140,12 +125,7 @@ export function applyStaggeredColorFallback(
   colors: OKLCHColor[],
   options: ColorFallbackOptions = {}
 ): void {
-  const {
-    duration = 300,
-    easing = "ease",
-    immediateCompletion = true,
-    respectGlobalControl = true,
-  } = options;
+  const { duration = 300, easing = "ease", immediateCompletion = true, respectGlobalControl = true } = options;
 
   // Check if animations should be disabled
   if (respectGlobalControl && shouldDisableColorAnimations()) {
@@ -163,9 +143,9 @@ export function applyStaggeredColorFallback(
     element.style.setProperty("--color-animation-duration", `${duration}ms`);
     element.style.setProperty("--color-animation-easing", easing);
     element.style.setProperty("--color-animation-delay", `${index * 50}ms`);
-    
+
     element.classList.add("color-staggered-fallback", "color-item");
-    
+
     // Trigger the transition
     requestAnimationFrame(() => {
       const color = colors[index] || colors[0];
@@ -180,10 +160,10 @@ export function applyStaggeredColorFallback(
 export function applyImmediateColorChange(element: HTMLElement, color: OKLCHColor): void {
   element.style.backgroundColor = oklchToCSS(color);
   element.style.transition = "none";
-  
+
   // Force reflow
   element.offsetHeight;
-  
+
   // Restore transition
   element.style.transition = "";
 }
@@ -195,10 +175,10 @@ export function applyImmediateColorRamp(element: HTMLElement, colors: OKLCHColor
   const gradient = colors.map(color => oklchToCSS(color)).join(", ");
   element.style.background = `linear-gradient(to right, ${gradient})`;
   element.style.transition = "none";
-  
+
   // Force reflow
   element.offsetHeight;
-  
+
   // Restore transition
   element.style.transition = "";
 }
@@ -208,7 +188,7 @@ export function applyImmediateColorRamp(element: HTMLElement, colors: OKLCHColor
  */
 function shouldDisableColorAnimations(): boolean {
   if (typeof window === "undefined") return true;
-  
+
   // Check for reduced motion preference
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     return true;
@@ -247,19 +227,10 @@ function shiftHue(color: OKLCHColor, deltaH: number): OKLCHColor {
 /**
  * Create CSS custom properties for color animation
  */
-export function createColorAnimationCSS(
-  colors: OKLCHColor[],
-  options: ColorFallbackOptions = {}
-): string {
-  const {
-    duration = 300,
-    easing = "ease",
-  } = options;
+export function createColorAnimationCSS(colors: OKLCHColor[], options: ColorFallbackOptions = {}): string {
+  const { duration = 300, easing = "ease" } = options;
 
-  const cssVariables = [
-    `--color-animation-duration: ${duration}ms`,
-    `--color-animation-easing: ${easing}`,
-  ];
+  const cssVariables = [`--color-animation-duration: ${duration}ms`, `--color-animation-easing: ${easing}`];
 
   colors.forEach((color, index) => {
     cssVariables.push(`--color-${index}: ${oklchToCSS(color)}`);
@@ -308,7 +279,7 @@ export function removeColorAnimationClasses(element: HTMLElement): void {
  */
 export function cleanupColorAnimationStyles(element: HTMLElement): void {
   removeColorAnimationClasses(element);
-  
+
   // Remove CSS custom properties
   const propertiesToRemove = [
     "--color-animation-duration",

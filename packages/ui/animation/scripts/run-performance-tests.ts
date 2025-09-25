@@ -2,28 +2,32 @@
 
 /**
  * 🦊 Performance Test Runner Script
- * 
+ *
  * Command-line script to run comprehensive performance tests for the animation system.
  * Provides various options for different testing scenarios and output formats.
- * 
+ *
  * Usage:
  *   npm run test:performance
  *   npm run test:performance -- --format=json
  *   npm run test:performance -- --threshold=strict
  *   npm run test:performance -- --regression-check
- * 
+ *
  * @author Vulpine (Strategic Fox Specialist)
  * @since 1.0.0
  */
 
-import { PerformanceTestRunner, defaultPerformanceConfig, type PerformanceTestConfig } from "../src/__tests__/performance-test-runner";
+import {
+  PerformanceTestRunner,
+  defaultPerformanceConfig,
+  type PerformanceTestConfig,
+} from "../src/__tests__/performance-test-runner";
 import { performance } from "perf_hooks";
 import { writeFileSync, mkdirSync } from "fs";
 import { join } from "path";
 
 interface CLIOptions {
-  format: 'json' | 'html' | 'markdown' | 'console';
-  threshold: 'lenient' | 'normal' | 'strict';
+  format: "json" | "html" | "markdown" | "console";
+  threshold: "lenient" | "normal" | "strict";
   regressionCheck: boolean;
   output: string;
   iterations: number;
@@ -34,65 +38,65 @@ interface CLIOptions {
 class PerformanceTestCLI {
   private options: CLIOptions;
   private testRunner: PerformanceTestRunner;
-  
+
   constructor() {
     this.options = this.parseArguments();
     this.testRunner = new PerformanceTestRunner(this.getConfig());
   }
-  
+
   /**
    * Parse command line arguments
    */
   private parseArguments(): CLIOptions {
     const args = process.argv.slice(2);
     const options: CLIOptions = {
-      format: 'console',
-      threshold: 'normal',
+      format: "console",
+      threshold: "normal",
       regressionCheck: false,
-      output: './performance-reports',
+      output: "./performance-reports",
       iterations: 1000,
       verbose: false,
       help: false,
     };
-    
+
     for (let i = 0; i < args.length; i++) {
       const arg = args[i];
-      
+
       switch (arg) {
-        case '--format':
-        case '-f':
+        case "--format":
+        case "-f":
           const format = args[++i];
-          if (['json', 'html', 'markdown', 'console'].includes(format)) {
-            options.format = format as CLIOptions['format'];
+          if (["json", "html", "markdown", "console"].includes(format)) {
+            options.format = format as CLIOptions["format"];
           } else {
             console.error(`❌ Invalid format: ${format}`);
             process.exit(1);
           }
           break;
-          
-        case '--threshold':
-        case '-t':
+
+        case "--threshold":
+        case "-t":
           const threshold = args[++i];
-          if (['lenient', 'normal', 'strict'].includes(threshold)) {
-            options.threshold = threshold as CLIOptions['threshold'];
+          if (["lenient", "normal", "strict"].includes(threshold)) {
+            options.threshold = threshold as CLIOptions["threshold"];
           } else {
             console.error(`❌ Invalid threshold: ${threshold}`);
             process.exit(1);
           }
           break;
-          
-        case '--regression-check':
-        case '-r':
+
+        case "--regression-check":
+        case "-r":
           options.regressionCheck = true;
           break;
-          
-        case '--output':
-        case '-o':
+
+        case "--output":
+        case "-o":
           options.output = args[++i];
           break;
-          
-        case '--iterations':
-        case '-i':
+
+        case "--iterations":
+        case "-i":
           const iterations = parseInt(args[++i]);
           if (isNaN(iterations) || iterations <= 0) {
             console.error(`❌ Invalid iterations: ${args[i]}`);
@@ -100,36 +104,36 @@ class PerformanceTestCLI {
           }
           options.iterations = iterations;
           break;
-          
-        case '--verbose':
-        case '-v':
+
+        case "--verbose":
+        case "-v":
           options.verbose = true;
           break;
-          
-        case '--help':
-        case '-h':
+
+        case "--help":
+        case "-h":
           options.help = true;
           break;
-          
+
         default:
           console.error(`❌ Unknown option: ${arg}`);
           this.showHelp();
           process.exit(1);
       }
     }
-    
+
     return options;
   }
-  
+
   /**
    * Get configuration based on threshold setting
    */
   private getConfig(): PerformanceTestConfig {
     const config = { ...defaultPerformanceConfig };
-    
+
     // Adjust configuration based on threshold
     switch (this.options.threshold) {
-      case 'lenient':
+      case "lenient":
         config.benchmark.threshold = {
           memory: 200, // 200MB
           timing: 5000, // 5s
@@ -142,8 +146,8 @@ class PerformanceTestCLI {
           frameRate: { warning: 30, critical: 20 }, // 30fps/20fps
         };
         break;
-        
-      case 'strict':
+
+      case "strict":
         config.benchmark.threshold = {
           memory: 25, // 25MB
           timing: 500, // 500ms
@@ -156,28 +160,29 @@ class PerformanceTestCLI {
           frameRate: { warning: 50, critical: 40 }, // 50fps/40fps
         };
         break;
-        
-      case 'normal':
+
+      case "normal":
       default:
         // Use default configuration
         break;
     }
-    
+
     // Set iterations
     config.benchmark.iterations = this.options.iterations;
-    
+
     // Set output format
-    config.reporting.outputFormat = this.options.format === 'console' ? 'markdown' : this.options.format;
+    config.reporting.outputFormat = this.options.format === "console" ? "markdown" : this.options.format;
     config.reporting.outputPath = this.options.output;
-    
+
     return config;
   }
-  
+
   /**
    * Show help information
    */
   private showHelp(): void {
-    console.log(`
+    console.log(
+      `
 🦊 Animation Performance Test Runner
 
 Usage: npm run test:performance [options]
@@ -208,9 +213,10 @@ Output Formats:
   json:     JSON format for programmatic processing
   html:     HTML report with charts and visualizations
   markdown: Markdown format for documentation
-    `.trim());
+    `.trim()
+    );
   }
-  
+
   /**
    * Run performance tests
    */
@@ -219,131 +225,130 @@ Output Formats:
       this.showHelp();
       return;
     }
-    
-    console.log('🦊 Starting Animation Performance Tests...\n');
-    
+
+    console.log("🦊 Starting Animation Performance Tests...\n");
+
     if (this.options.verbose) {
-      console.log('Configuration:');
+      console.log("Configuration:");
       console.log(`  Format: ${this.options.format}`);
       console.log(`  Threshold: ${this.options.threshold}`);
       console.log(`  Iterations: ${this.options.iterations}`);
       console.log(`  Output: ${this.options.output}`);
       console.log(`  Regression Check: ${this.options.regressionCheck}`);
-      console.log('');
+      console.log("");
     }
-    
+
     try {
       const startTime = performance.now();
-      
+
       // Run performance tests
       const result = await this.testRunner.runAllTests();
-      
+
       const endTime = performance.now();
       const totalDuration = endTime - startTime;
-      
+
       // Check for regressions if requested
       if (this.options.regressionCheck) {
         const regressionCheck = this.testRunner.checkForRegressions();
         if (regressionCheck.hasRegression) {
-          console.log('⚠️  Performance regression detected!');
+          console.log("⚠️  Performance regression detected!");
           regressionCheck.regressionDetails.forEach(detail => {
             console.log(`  ${detail.metric}: ${detail.changePercentage.toFixed(1)}% change`);
           });
         } else {
-          console.log('✅ No performance regressions detected');
+          console.log("✅ No performance regressions detected");
         }
-        console.log('');
+        console.log("");
       }
-      
+
       // Output results based on format
       await this.outputResults(result, totalDuration);
-      
+
       // Exit with appropriate code
-      if (result.summary.status === 'fail') {
-        console.log('❌ Performance tests failed');
+      if (result.summary.status === "fail") {
+        console.log("❌ Performance tests failed");
         process.exit(1);
-      } else if (result.summary.status === 'warning') {
-        console.log('⚠️  Performance tests passed with warnings');
+      } else if (result.summary.status === "warning") {
+        console.log("⚠️  Performance tests passed with warnings");
         process.exit(0);
       } else {
-        console.log('✅ Performance tests passed');
+        console.log("✅ Performance tests passed");
         process.exit(0);
       }
-      
     } catch (error) {
-      console.error('❌ Performance tests failed with error:', error);
+      console.error("❌ Performance tests failed with error:", error);
       process.exit(1);
     }
   }
-  
+
   /**
    * Output results in the specified format
    */
   private async outputResults(result: any, totalDuration: number): Promise<void> {
     const timestamp = new Date().toISOString();
-    const filename = `performance-report-${timestamp.replace(/[:.]/g, '-')}`;
-    
+    const filename = `performance-report-${timestamp.replace(/[:.]/g, "-")}`;
+
     switch (this.options.format) {
-      case 'json':
+      case "json":
         await this.outputJSON(result, filename, totalDuration);
         break;
-        
-      case 'html':
+
+      case "html":
         await this.outputHTML(result, filename, totalDuration);
         break;
-        
-      case 'markdown':
+
+      case "markdown":
         await this.outputMarkdown(result, filename, totalDuration);
         break;
-        
-      case 'console':
+
+      case "console":
       default:
         this.outputConsole(result, totalDuration);
         break;
     }
   }
-  
+
   /**
    * Output results to console
    */
   private outputConsole(result: any, totalDuration: number): void {
-    console.log('📊 Performance Test Results');
-    console.log('='.repeat(50));
+    console.log("📊 Performance Test Results");
+    console.log("=".repeat(50));
     console.log(`Test ID: ${result.testId}`);
     console.log(`Duration: ${totalDuration.toFixed(2)}ms`);
     console.log(`Overall Score: ${result.summary.overallScore}/100`);
     console.log(`Status: ${result.summary.status.toUpperCase()}`);
-    console.log('');
-    
-    console.log('🏃 Benchmarks:');
+    console.log("");
+
+    console.log("🏃 Benchmarks:");
     result.benchmarks.forEach((benchmark: any) => {
-      const status = benchmark.passed ? '✅' : '❌';
+      const status = benchmark.passed ? "✅" : "❌";
       console.log(`  ${status} ${benchmark.name}: ${benchmark.averageTime}ms (${benchmark.memoryUsage} bytes)`);
     });
-    console.log('');
-    
-    console.log('📦 Bundle Size:');
+    console.log("");
+
+    console.log("📦 Bundle Size:");
     console.log(`  Total: ${(result.bundleSize.totalSize / 1024).toFixed(1)}KB`);
     console.log(`  Gzip: ${(result.bundleSize.gzipSize / 1024).toFixed(1)}KB`);
     console.log(`  Compression: ${((1 - result.bundleSize.gzipSize / result.bundleSize.totalSize) * 100).toFixed(1)}%`);
-    console.log('');
-    
-    console.log('📈 Performance Monitoring:');
+    console.log("");
+
+    console.log("📈 Performance Monitoring:");
     console.log(`  Memory: ${(result.monitoring.averageMemoryUsage / 1024 / 1024).toFixed(1)}MB`);
     console.log(`  Load Time: ${result.monitoring.averageLoadTime}ms`);
     console.log(`  Frame Rate: ${result.monitoring.averageFrameRate}fps`);
     console.log(`  Alerts: ${result.monitoring.alerts.length}`);
-    console.log('');
-    
+    console.log("");
+
     if (result.summary.recommendations.length > 0) {
-      console.log('💡 Recommendations:');
+      console.log("💡 Recommendations:");
       result.summary.recommendations.forEach((rec: string) => {
         console.log(`  • ${rec}`);
       });
-      console.log('');
+      console.log("");
     }
   }
-  
+
   /**
    * Output results as JSON
    */
@@ -354,14 +359,14 @@ Output Formats:
       generatedAt: new Date().toISOString(),
       config: this.getConfig(),
     };
-    
+
     const outputPath = join(this.options.output, `${filename}.json`);
     mkdirSync(this.options.output, { recursive: true });
     writeFileSync(outputPath, JSON.stringify(output, null, 2));
-    
+
     console.log(`📄 JSON report saved to: ${outputPath}`);
   }
-  
+
   /**
    * Output results as HTML
    */
@@ -425,14 +430,18 @@ Output Formats:
                     </tr>
                 </thead>
                 <tbody>
-                    ${result.benchmarks.map((benchmark: any) => `
+                    ${result.benchmarks
+                      .map(
+                        (benchmark: any) => `
                         <tr>
                             <td>${benchmark.name}</td>
-                            <td class="status-${benchmark.passed ? 'pass' : 'fail'}">${benchmark.passed ? '✅ PASS' : '❌ FAIL'}</td>
+                            <td class="status-${benchmark.passed ? "pass" : "fail"}">${benchmark.passed ? "✅ PASS" : "❌ FAIL"}</td>
                             <td>${benchmark.averageTime}ms</td>
                             <td>${benchmark.memoryUsage} bytes</td>
                         </tr>
-                    `).join('')}
+                    `
+                      )
+                      .join("")}
                 </tbody>
             </table>
             
@@ -472,27 +481,31 @@ Output Formats:
                 </tr>
             </table>
             
-            ${result.summary.recommendations.length > 0 ? `
+            ${
+              result.summary.recommendations.length > 0
+                ? `
                 <div class="recommendations">
                     <h3>💡 Recommendations</h3>
                     <ul>
-                        ${result.summary.recommendations.map((rec: string) => `<li>${rec}</li>`).join('')}
+                        ${result.summary.recommendations.map((rec: string) => `<li>${rec}</li>`).join("")}
                     </ul>
                 </div>
-            ` : ''}
+            `
+                : ""
+            }
         </div>
     </div>
 </body>
 </html>
     `.trim();
-    
+
     const outputPath = join(this.options.output, `${filename}.html`);
     mkdirSync(this.options.output, { recursive: true });
     writeFileSync(outputPath, html);
-    
+
     console.log(`📄 HTML report saved to: ${outputPath}`);
   }
-  
+
   /**
    * Output results as Markdown
    */
@@ -510,9 +523,12 @@ Output Formats:
 
 | Test | Status | Average Time | Memory Usage |
 |------|--------|--------------|--------------|
-${result.benchmarks.map((benchmark: any) => 
-  `| ${benchmark.name} | ${benchmark.passed ? '✅ PASS' : '❌ FAIL'} | ${benchmark.averageTime}ms | ${benchmark.memoryUsage} bytes |`
-).join('\n')}
+${result.benchmarks
+  .map(
+    (benchmark: any) =>
+      `| ${benchmark.name} | ${benchmark.passed ? "✅ PASS" : "❌ FAIL"} | ${benchmark.averageTime}ms | ${benchmark.memoryUsage} bytes |`
+  )
+  .join("\n")}
 
 ## 📦 Bundle Size
 
@@ -527,17 +543,21 @@ ${result.benchmarks.map((benchmark: any) =>
 - **Average Frame Rate**: ${result.monitoring.averageFrameRate}fps
 - **Alerts**: ${result.monitoring.alerts.length}
 
-${result.summary.recommendations.length > 0 ? `
+${
+  result.summary.recommendations.length > 0
+    ? `
 ## 💡 Recommendations
 
-${result.summary.recommendations.map((rec: string) => `- ${rec}`).join('\n')}
-` : ''}
+${result.summary.recommendations.map((rec: string) => `- ${rec}`).join("\n")}
+`
+    : ""
+}
     `.trim();
-    
+
     const outputPath = join(this.options.output, `${filename}.md`);
     mkdirSync(this.options.output, { recursive: true });
     writeFileSync(outputPath, markdown);
-    
+
     console.log(`📄 Markdown report saved to: ${outputPath}`);
   }
 }
@@ -546,7 +566,7 @@ ${result.summary.recommendations.map((rec: string) => `- ${rec}`).join('\n')}
 if (require.main === module) {
   const cli = new PerformanceTestCLI();
   cli.run().catch(error => {
-    console.error('❌ CLI execution failed:', error);
+    console.error("❌ CLI execution failed:", error);
     process.exit(1);
   });
 }

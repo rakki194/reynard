@@ -6,12 +6,7 @@
  * This is the primary interface for the Reynard HTTP system.
  */
 
-import {
-  HTTPClientConfig,
-  HTTPRequestOptions,
-  HTTPResponse,
-  HTTPMetrics,
-} from "./types";
+import { HTTPClientConfig, HTTPRequestOptions, HTTPResponse, HTTPMetrics } from "./types";
 import { HTTPMiddleware } from "./middleware-types";
 import { HTTPClientCore } from "./client-core";
 import { HTTPMethods } from "./http-methods";
@@ -27,7 +22,7 @@ export class HTTPClient {
   constructor(config: HTTPClientConfig) {
     // Initialize core functionality
     this.core = new HTTPClientCore(config);
-    
+
     // Initialize HTTP methods with bound request method
     this.httpMethods = new HTTPMethods(this.core.request.bind(this.core));
   }

@@ -1,6 +1,6 @@
 # ECS Memory & Interaction System Production Deployment Guide
 
-*Comprehensive guide for deploying the ECS Memory & Interaction System in production environments*
+_Comprehensive guide for deploying the ECS Memory & Interaction System in production environments_
 
 ## Table of Contents
 
@@ -37,23 +37,23 @@ production_requirements:
     memory: "8GB"
     storage: "100GB SSD"
     network: "1Gbps"
-  
+
   database_servers:
-    count: 2  # Primary + Replica
+    count: 2 # Primary + Replica
     cpu: "8 cores"
     memory: "16GB"
     storage: "500GB SSD"
     network: "1Gbps"
-  
+
   cache_servers:
-    count: 2  # Redis cluster
+    count: 2 # Redis cluster
     cpu: "2 cores"
     memory: "4GB"
     storage: "50GB SSD"
     network: "1Gbps"
-  
+
   load_balancer:
-    count: 2  # HA pair
+    count: 2 # HA pair
     cpu: "2 cores"
     memory: "4GB"
     network: "1Gbps"
@@ -71,24 +71,24 @@ aws_infrastructure:
       instance_type: "c5.2xlarge"
       count: 3
       availability_zones: ["us-west-2a", "us-west-2b", "us-west-2c"]
-    
+
     database:
       instance_type: "r5.2xlarge"
       count: 2
       availability_zones: ["us-west-2a", "us-west-2b"]
-  
+
   rds:
     engine: "postgresql"
     version: "13.7"
     instance_class: "db.r5.xlarge"
     storage: "500GB"
     multi_az: true
-  
+
   elasticache:
     engine: "redis"
     node_type: "cache.r5.large"
     num_cache_nodes: 2
-  
+
   load_balancer:
     type: "application"
     scheme: "internet-facing"
@@ -109,22 +109,22 @@ gcp_infrastructure:
       machine_type: "c2-standard-8"
       count: 3
       zones: ["us-central1-a", "us-central1-b", "us-central1-c"]
-    
+
     database:
       machine_type: "c2-standard-8"
       count: 2
       zones: ["us-central1-a", "us-central1-b"]
-  
+
   cloud_sql:
     database_version: "POSTGRES_13"
     tier: "db-custom-8-32768"
     storage_size: "500GB"
     availability_type: "REGIONAL"
-  
+
   memorystore:
     tier: "STANDARD_HA"
     memory_size_gb: 4
-  
+
   load_balancer:
     type: "HTTP(S)"
     global: true
@@ -171,22 +171,22 @@ effective_io_concurrency = 200
 ```sql
 -- Optimized database schema for production
 -- Create indexes for performance
-CREATE INDEX CONCURRENTLY idx_memories_agent_importance 
-ON memories(agent_id, importance DESC) 
+CREATE INDEX CONCURRENTLY idx_memories_agent_importance
+ON memories(agent_id, importance DESC)
 WHERE importance > 0.1;
 
-CREATE INDEX CONCURRENTLY idx_interactions_agents_time 
+CREATE INDEX CONCURRENTLY idx_interactions_agents_time
 ON interactions(source_agent_id, target_agent_id, timestamp DESC);
 
-CREATE INDEX CONCURRENTLY idx_relationships_strength 
-ON relationships(source_agent_id, strength DESC) 
+CREATE INDEX CONCURRENTLY idx_relationships_strength
+ON relationships(source_agent_id, strength DESC)
 WHERE strength > 0.0;
 
-CREATE INDEX CONCURRENTLY idx_knowledge_agent_topic 
-ON knowledge(agent_id, topic) 
+CREATE INDEX CONCURRENTLY idx_knowledge_agent_topic
+ON knowledge(agent_id, topic)
 WHERE topic IS NOT NULL;
 
-CREATE INDEX CONCURRENTLY idx_social_network_agent_type 
+CREATE INDEX CONCURRENTLY idx_social_network_agent_type
 ON social_networks(agent_id, connection_type);
 
 -- Partition large tables by date
@@ -198,7 +198,7 @@ FOR VALUES FROM ('2024-02-01') TO ('2024-03-01');
 
 -- Create materialized views for complex queries
 CREATE MATERIALIZED VIEW agent_relationship_summary AS
-SELECT 
+SELECT
     source_agent_id,
     COUNT(*) as total_relationships,
     AVG(strength) as avg_strength,
@@ -307,7 +307,7 @@ CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--worker
 
 ```yaml
 # docker-compose.prod.yml
-version: '3.8'
+version: "3.8"
 
 services:
   ecs-backend:
@@ -332,10 +332,10 @@ services:
       resources:
         limits:
           memory: 2G
-          cpus: '1.0'
+          cpus: "1.0"
         reservations:
           memory: 1G
-          cpus: '0.5'
+          cpus: "0.5"
 
   postgres:
     image: postgres:13
@@ -351,7 +351,7 @@ services:
       resources:
         limits:
           memory: 4G
-          cpus: '2.0'
+          cpus: "2.0"
 
   redis:
     image: redis:7-alpine
@@ -363,7 +363,7 @@ services:
       resources:
         limits:
           memory: 1G
-          cpus: '0.5'
+          cpus: "0.5"
 
   nginx:
     image: nginx:alpine
@@ -403,47 +403,47 @@ spec:
         app: ecs-backend
     spec:
       containers:
-      - name: ecs-backend
-        image: ecs-backend:latest
-        ports:
-        - containerPort: 8000
-        env:
-        - name: ECS_DATABASE_URL
-          valueFrom:
-            secretKeyRef:
-              name: ecs-secrets
-              key: database-url
-        - name: ECS_REDIS_URL
-          valueFrom:
-            secretKeyRef:
-              name: ecs-secrets
-              key: redis-url
-        resources:
-          requests:
-            memory: "1Gi"
-            cpu: "500m"
-          limits:
-            memory: "2Gi"
-            cpu: "1000m"
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 8000
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 8000
-          initialDelaySeconds: 5
-          periodSeconds: 5
-        volumeMounts:
-        - name: config-volume
-          mountPath: /app/config
+        - name: ecs-backend
+          image: ecs-backend:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: ECS_DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: ecs-secrets
+                  key: database-url
+            - name: ECS_REDIS_URL
+              valueFrom:
+                secretKeyRef:
+                  name: ecs-secrets
+                  key: redis-url
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app/config
       volumes:
-      - name: config-volume
-        configMap:
-          name: ecs-config
+        - name: config-volume
+          configMap:
+            name: ecs-config
 ---
 apiVersion: v1
 kind: Service
@@ -453,8 +453,8 @@ spec:
   selector:
     app: ecs-backend
   ports:
-  - port: 80
-    targetPort: 8000
+    - port: 80
+      targetPort: 8000
   type: LoadBalancer
 ---
 apiVersion: v1
@@ -466,11 +466,11 @@ data:
     [database]
     pool_size = 20
     max_overflow = 30
-    
+
     [cache]
     redis_timeout = 5
     cache_ttl = 300
-    
+
     [logging]
     level = INFO
     format = json
@@ -499,26 +499,26 @@ rule_files:
   - "ecs_rules.yml"
 
 scrape_configs:
-  - job_name: 'ecs-backend'
+  - job_name: "ecs-backend"
     static_configs:
-      - targets: ['ecs-backend-service:80']
+      - targets: ["ecs-backend-service:80"]
     metrics_path: /metrics
     scrape_interval: 5s
     scrape_timeout: 10s
 
-  - job_name: 'postgres'
+  - job_name: "postgres"
     static_configs:
-      - targets: ['postgres-exporter:9187']
+      - targets: ["postgres-exporter:9187"]
 
-  - job_name: 'redis'
+  - job_name: "redis"
     static_configs:
-      - targets: ['redis-exporter:9121']
+      - targets: ["redis-exporter:9121"]
 
 alerting:
   alertmanagers:
     - static_configs:
         - targets:
-          - alertmanager:9093
+            - alertmanager:9093
 ```
 
 ### 2. Grafana Dashboards
@@ -588,52 +588,52 @@ alerting:
 ```yaml
 # ecs_rules.yml
 groups:
-- name: ecs-alerts
-  rules:
-  - alert: HighErrorRate
-    expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.1
-    for: 2m
-    labels:
-      severity: critical
-    annotations:
-      summary: "High error rate detected"
-      description: "Error rate is {{ $value }} errors per second"
+  - name: ecs-alerts
+    rules:
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.1
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High error rate detected"
+          description: "Error rate is {{ $value }} errors per second"
 
-  - alert: HighResponseTime
-    expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 0.5
-    for: 5m
-    labels:
-      severity: warning
-    annotations:
-      summary: "High response time detected"
-      description: "95th percentile response time is {{ $value }}s"
+      - alert: HighResponseTime
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 0.5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High response time detected"
+          description: "95th percentile response time is {{ $value }}s"
 
-  - alert: HighMemoryUsage
-    expr: ecs_memory_usage_percent > 90
-    for: 2m
-    labels:
-      severity: warning
-    annotations:
-      summary: "High memory usage"
-      description: "Memory usage is {{ $value }}%"
+      - alert: HighMemoryUsage
+        expr: ecs_memory_usage_percent > 90
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage"
+          description: "Memory usage is {{ $value }}%"
 
-  - alert: DatabaseDown
-    expr: up{job="postgres"} == 0
-    for: 1m
-    labels:
-      severity: critical
-    annotations:
-      summary: "Database is down"
-      description: "PostgreSQL database is not responding"
+      - alert: DatabaseDown
+        expr: up{job="postgres"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Database is down"
+          description: "PostgreSQL database is not responding"
 
-  - alert: RedisDown
-    expr: up{job="redis"} == 0
-    for: 1m
-    labels:
-      severity: critical
-    annotations:
-      summary: "Redis is down"
-      description: "Redis cache is not responding"
+      - alert: RedisDown
+        expr: up{job="redis"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Redis is down"
+          description: "Redis cache is not responding"
 ```
 
 ## Security Configuration
@@ -673,7 +673,7 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
-        
+
         # Rate limiting
         limit_req zone=api burst=20 nodelay;
     }
@@ -699,7 +699,7 @@ app = FastAPI()
 # Security middleware
 app.add_middleware(HTTPSRedirectMiddleware)
 app.add_middleware(
-    TrustedHostMiddleware, 
+    TrustedHostMiddleware,
     allowed_hosts=["ecs.example.com", "*.example.com"]
 )
 app.add_middleware(
@@ -872,18 +872,18 @@ spec:
   minReplicas: 3
   maxReplicas: 10
   metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 70
-  - type: Resource
-    resource:
-      name: memory
-      target:
-        type: Utilization
-        averageUtilization: 80
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
 ```
 
 ### 2. Database Scaling
@@ -905,36 +905,36 @@ spec:
         app: postgres-replica
     spec:
       containers:
-      - name: postgres
-        image: postgres:13
-        env:
-        - name: POSTGRES_DB
-          value: ecs_production
-        - name: POSTGRES_USER
-          value: ecs_user
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: ecs-secrets
-              key: database-password
-        - name: PGUSER
-          value: postgres
-        command:
-        - bash
-        - -c
-        - |
-          # Wait for primary to be ready
-          until pg_isready -h postgres-primary; do sleep 1; done
-          
-          # Create replica
-          pg_basebackup -h postgres-primary -D /var/lib/postgresql/data -U replicator -v -P -W
-          
-          # Configure as replica
-          echo "standby_mode = 'on'" >> /var/lib/postgresql/data/recovery.conf
-          echo "primary_conninfo = 'host=postgres-primary port=5432 user=replicator'" >> /var/lib/postgresql/data/recovery.conf
-          
-          # Start PostgreSQL
-          postgres
+        - name: postgres
+          image: postgres:13
+          env:
+            - name: POSTGRES_DB
+              value: ecs_production
+            - name: POSTGRES_USER
+              value: ecs_user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ecs-secrets
+                  key: database-password
+            - name: PGUSER
+              value: postgres
+          command:
+            - bash
+            - -c
+            - |
+              # Wait for primary to be ready
+              until pg_isready -h postgres-primary; do sleep 1; done
+
+              # Create replica
+              pg_basebackup -h postgres-primary -D /var/lib/postgresql/data -U replicator -v -P -W
+
+              # Configure as replica
+              echo "standby_mode = 'on'" >> /var/lib/postgresql/data/recovery.conf
+              echo "primary_conninfo = 'host=postgres-primary port=5432 user=replicator'" >> /var/lib/postgresql/data/recovery.conf
+
+              # Start PostgreSQL
+              postgres
 ```
 
 ## Troubleshooting Guide
@@ -991,19 +991,19 @@ import requests
 def check_system_health():
     """Check overall system health."""
     print("=== System Health Check ===")
-    
+
     # CPU usage
     cpu_percent = psutil.cpu_percent(interval=1)
     print(f"CPU Usage: {cpu_percent}%")
-    
+
     # Memory usage
     memory = psutil.virtual_memory()
     print(f"Memory Usage: {memory.percent}%")
-    
+
     # Disk usage
     disk = psutil.disk_usage('/')
     print(f"Disk Usage: {disk.percent}%")
-    
+
     # Network I/O
     network = psutil.net_io_counters()
     print(f"Network I/O: {network.bytes_sent} bytes sent, {network.bytes_recv} bytes received")
@@ -1011,7 +1011,7 @@ def check_system_health():
 def check_application_health():
     """Check application health."""
     print("\n=== Application Health Check ===")
-    
+
     try:
         response = requests.get('http://localhost:8000/health', timeout=5)
         print(f"Health Check: {response.status_code}")
@@ -1022,11 +1022,11 @@ def check_application_health():
 def check_database_performance():
     """Check database performance."""
     print("\n=== Database Performance Check ===")
-    
+
     try:
         response = requests.get('http://localhost:8000/metrics', timeout=5)
         metrics = response.text
-        
+
         # Extract database metrics
         for line in metrics.split('\n'):
             if 'pg_stat_activity' in line or 'pg_database_size' in line:

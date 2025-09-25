@@ -618,7 +618,7 @@ export class ComplianceScorer {
       byCategory[violation.type] = (byCategory[violation.type] || 0) + 1;
 
       // Group by file
-      const location = violation.location || 'unknown';
+      const location = violation.location || "unknown";
       if (!byFile.has(location)) {
         byFile.set(location, []);
       }

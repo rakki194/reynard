@@ -1,29 +1,26 @@
 /**
  * 🦊 Animation Control Tests
- * 
+ *
  * Comprehensive test suite for animation control functionality.
  * Tests prefers-reduced-motion respect, fallbacks, performance, and accessibility.
  */
 
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
-import { 
+import {
   useAnimationControl,
   useAnimationFallback,
   shouldDisableAnimations,
   getAnimationEngine,
   createSmartAnimationCore,
-  createNoOpAnimationEngine
+  createNoOpAnimationEngine,
 } from "../core/index.js";
-import { 
+import {
   GlobalAnimationProvider,
   useGlobalAnimationContext,
   useGlobalAnimationState,
-  useGlobalAnimationControls
+  useGlobalAnimationControls,
 } from "../global/index.js";
-import { 
-  GlobalAnimationDisableFunctions,
-  AnimationDisableTesting
-} from "../global/GlobalAnimationDisableUtils.js";
+import { GlobalAnimationDisableFunctions, AnimationDisableTesting } from "../global/GlobalAnimationDisableUtils.js";
 import type { GlobalAnimationConfig, SystemPreferences } from "../global/GlobalAnimationTypes.js";
 
 // Mock DOM APIs
@@ -270,7 +267,7 @@ describe("Animation Control Tests", () => {
       // Package unavailable
       const packageAvailable = false;
       const engine = getAnimationEngine(config, preferences, packageAvailable);
-      
+
       expect(engine).toBe("fallback");
     });
 
@@ -312,7 +309,7 @@ describe("Animation Control Tests", () => {
       // Package available
       const packageAvailable = true;
       const engine = getAnimationEngine(config, preferences, packageAvailable);
-      
+
       expect(engine).toBe("full");
     });
 
@@ -353,7 +350,7 @@ describe("Animation Control Tests", () => {
 
       const packageAvailable = true;
       const engine = getAnimationEngine(config, preferences, packageAvailable);
-      
+
       expect(engine).toBe("disabled");
     });
   });
@@ -576,13 +573,13 @@ describe("Animation Control Tests", () => {
 
     it("should handle immediate completion", async () => {
       const engine = createNoOpAnimationEngine();
-      
+
       const result = await engine.animate({
         duration: 1000,
         onUpdate: vi.fn(),
         onComplete: vi.fn(),
       });
-      
+
       expect(result).toBeDefined();
     });
   });
@@ -629,7 +626,7 @@ describe("Animation Control Tests", () => {
   describe("Animation Disable Functions", () => {
     it("should disable all animations globally", () => {
       GlobalAnimationDisableFunctions.disableAllAnimations();
-      
+
       const state = GlobalAnimationDisableFunctions.getCurrentState();
       expect(state.isDisabled).toBe(true);
     });
@@ -637,21 +634,21 @@ describe("Animation Control Tests", () => {
     it("should enable all animations globally", () => {
       GlobalAnimationDisableFunctions.disableAllAnimations();
       GlobalAnimationDisableFunctions.enableAllAnimations();
-      
+
       const state = GlobalAnimationDisableFunctions.getCurrentState();
       expect(state.isDisabled).toBe(false);
     });
 
     it("should toggle performance mode", () => {
       GlobalAnimationDisableFunctions.togglePerformanceMode(true);
-      
+
       const state = GlobalAnimationDisableFunctions.getCurrentState();
       expect(state.isPerformanceMode).toBe(true);
     });
 
     it("should toggle accessibility mode", () => {
       GlobalAnimationDisableFunctions.toggleAccessibilityMode(true);
-      
+
       const state = GlobalAnimationDisableFunctions.getCurrentState();
       expect(state.isAccessibilityMode).toBe(true);
     });
@@ -672,9 +669,9 @@ describe("Animation Control Tests", () => {
       const restore = AnimationDisableTesting.mockDocument({
         head: { appendChild: vi.fn() },
       });
-      
+
       expect(global.document.head.appendChild).toBeDefined();
-      
+
       restore();
     });
 
@@ -682,9 +679,9 @@ describe("Animation Control Tests", () => {
       const restore = AnimationDisableTesting.mockWindow({
         matchMedia: vi.fn(),
       });
-      
+
       expect(global.window.matchMedia).toBeDefined();
-      
+
       restore();
     });
   });
@@ -694,13 +691,13 @@ describe("Animation Control Tests", () => {
       const originalWindow = global.window;
       // @ts-ignore
       delete global.window;
-      
+
       const config = AnimationDisableTesting.createTestConfig();
       const preferences = AnimationDisableTesting.createTestPreferences();
-      
+
       // Should not throw
       expect(() => shouldDisableAnimations(config, preferences)).not.toThrow();
-      
+
       // Restore window
       global.window = originalWindow;
     });
@@ -709,10 +706,10 @@ describe("Animation Control Tests", () => {
       const originalDocument = global.document;
       // @ts-ignore
       delete global.document;
-      
+
       // Should not throw
       expect(() => GlobalAnimationDisableFunctions.getCurrentState()).not.toThrow();
-      
+
       // Restore document
       global.document = originalDocument;
     });
@@ -726,7 +723,7 @@ describe("Animation Control Tests", () => {
       } as any;
 
       const preferences = AnimationDisableTesting.createTestPreferences();
-      
+
       // Should not throw and should handle gracefully
       expect(() => shouldDisableAnimations(invalidConfig, preferences)).not.toThrow();
     });

@@ -13,7 +13,7 @@ interface ErrorBoundaryProps extends ErrorBoundaryConfig {
   children: Component<any>;
 }
 
-export const ErrorBoundary: Component<ErrorBoundaryProps> = (props) => {
+export const ErrorBoundary: Component<ErrorBoundaryProps> = props => {
   const [state, setState] = createSignal<{
     error: Error | null;
     errorInfo: ErrorInfo | null;
@@ -168,30 +168,29 @@ export const ErrorBoundary: Component<ErrorBoundaryProps> = (props) => {
   }
   // Render error fallback or children
   return (
-    <Show when={!state().error} fallback={
-      <ErrorFallback
-        error={state().error!}
-        errorInfo={state().errorInfo!}
-        retry={retry}
-        reset={reset}
-        recoveryActions={state().recoveryActions}
-        isRecovering={state().isRecovering}
-        onRecovery={executeRecovery}
-        fallback={props.fallback}
-      />
-    }>
+    <Show
+      when={!state().error}
+      fallback={
+        <ErrorFallback
+          error={state().error!}
+          errorInfo={state().errorInfo!}
+          retry={retry}
+          reset={reset}
+          recoveryActions={state().recoveryActions}
+          isRecovering={state().isRecovering}
+          onRecovery={executeRecovery}
+          fallback={props.fallback}
+        />
+      }
+    >
       {props.children}
     </Show>
   );
 };
 // HOC for wrapping components with error boundary
 export const withErrorBoundary = <T extends Record<string, any>>(
-  Component: Component<T>, 
+  Component: Component<T>,
   errorBoundaryProps: ErrorBoundaryConfig
 ): any => {
-  return (props: T) => (
-    <ErrorBoundary {...errorBoundaryProps}>
-      {(Component as any)(props)}
-    </ErrorBoundary>
-  );
+  return (props: T) => <ErrorBoundary {...errorBoundaryProps}>{(Component as any)(props)}</ErrorBoundary>;
 };

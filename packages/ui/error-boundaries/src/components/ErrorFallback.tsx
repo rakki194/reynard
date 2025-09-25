@@ -5,7 +5,7 @@
 import { Show, For, createSignal, Component } from "solid-js";
 import type { ErrorFallbackProps, RecoveryAction } from "../types/ErrorTypes";
 
-export const ErrorFallback: Component<ErrorFallbackProps> = (props) => {
+export const ErrorFallback: Component<ErrorFallbackProps> = props => {
   const [userReport, setUserReport] = createSignal("");
   const handleRetry = () => {
     props.retry();

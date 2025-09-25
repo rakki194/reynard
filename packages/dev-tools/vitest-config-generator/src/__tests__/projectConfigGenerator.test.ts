@@ -128,7 +128,7 @@ describe("ProjectConfigGenerator", () => {
         "packages/packages/components/**/*.{test,spec}.{js,ts,tsx}",
         "packages/packages/components/**/__tests__/**/*.{js,ts,tsx}",
         "packages/packages/components/src/**/*.{test,spec}.{js,ts,tsx}",
-        "packages/packages/components/src/__tests__/**/*.{js,ts,tsx}"
+        "packages/packages/components/src/__tests__/**/*.{js,ts,tsx}",
       ]);
     });
 

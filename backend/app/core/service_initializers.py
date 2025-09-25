@@ -159,16 +159,16 @@ async def init_rag_service(service_config: dict[str, Any]) -> bool:
         return False
 
 
-async def init_ollama_service(service_config: dict[str, Any]) -> bool:
-    """Initialize the Ollama service for local LLM inference.
+async def init_ai_service(service_config: dict[str, Any]) -> bool:
+    """Initialize the AI service for multi-provider LLM inference.
 
-    This function sets up the Ollama service which provides local language
-    model inference capabilities, enabling offline AI processing and
-    reducing dependency on external API services.
+    This function sets up the AI service which provides multi-provider
+    language model inference capabilities, supporting Ollama, vLLM, SGLang,
+    and LLaMA.cpp Server for flexible AI processing.
 
     Args:
-        service_config: Configuration dictionary containing Ollama base URL,
-                       timeout settings, model configurations, and feature
+        service_config: Configuration dictionary containing AI provider settings,
+                       model configurations, timeout settings, and feature
                        toggles for assistant, tool calling, and streaming.
 
     Returns:
@@ -179,17 +179,17 @@ async def init_ollama_service(service_config: dict[str, Any]) -> bool:
 
     """
     try:
-        from app.api.ollama.service import initialize_ollama_service
+        from app.core.ai_service_initializer import init_ai_service
 
-        # Initialize the actual Ollama service
-        success = await initialize_ollama_service(service_config)
+        # Initialize the AI service
+        success = await init_ai_service(service_config)
         if success:
-            logger.info("🦙 Ollama service initialized successfully")
+            logger.info("🤖 AI service initialized successfully")
         else:
-            logger.warning("⚠️ Ollama service initialization failed")
+            logger.warning("⚠️ AI service initialization failed")
         return success
     except Exception as e:
-        logger.error(f"❌ Ollama initialization failed: {e}")
+        logger.error(f"❌ AI initialization failed: {e}")
         return False
 
 

@@ -152,7 +152,7 @@ describe("Types Integration", () => {
 
   it("should handle all LintSeverity values", () => {
     const severities: LintSeverity[] = ["error", "warning", "info", "hint"];
-    
+
     severities.forEach(severity => {
       const issue: LintIssue = {
         id: "test",
@@ -163,7 +163,7 @@ describe("Types Integration", () => {
         message: "Test",
         source: "test",
       };
-      
+
       expect(issue.severity).toBe(severity);
     });
   });

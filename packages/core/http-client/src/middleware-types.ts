@@ -15,11 +15,7 @@ export interface HTTPMiddleware {
   request?: (options: HTTPRequestOptions) => HTTPRequestOptions | Promise<HTTPRequestOptions>;
   response?: (response: HTTPResponse) => HTTPResponse | Promise<HTTPResponse>;
   error?: (error: HTTPError) => HTTPError | Promise<HTTPError>;
-  complete?: (
-    options: HTTPRequestOptions,
-    response?: HTTPResponse,
-    error?: HTTPError
-  ) => void | Promise<void>;
+  complete?: (options: HTTPRequestOptions, response?: HTTPResponse, error?: HTTPError) => void | Promise<void>;
 }
 
 export interface HTTPMiddlewareStack {

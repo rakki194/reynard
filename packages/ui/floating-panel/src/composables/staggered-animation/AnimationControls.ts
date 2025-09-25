@@ -1,6 +1,6 @@
 /**
  * 🦊 Animation Controls
- * 
+ *
  * Handles animation control functions for staggered animations
  */
 
@@ -57,10 +57,13 @@ export function createAnimationControls(
       setIsAnimating(false);
     } else if (animationEngine() === "full") {
       // Use full animation system (existing logic)
-      setTimeout(() => {
-        setIsAnimating(false);
-        setCurrentIndex(items.length - 1);
-      }, config.duration + (items.length * config.staggerStep));
+      setTimeout(
+        () => {
+          setIsAnimating(false);
+          setCurrentIndex(items.length - 1);
+        },
+        config.duration + items.length * config.staggerStep
+      );
     }
   };
 

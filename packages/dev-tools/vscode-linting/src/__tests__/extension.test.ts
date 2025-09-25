@@ -13,21 +13,27 @@ vi.mock("vscode", () => ({
   },
   window: {
     createStatusBarItem: vi.fn(() => ({
-      text: "", tooltip: "", command: "", show: vi.fn(), hide: vi.fn(), dispose: vi.fn(),
+      text: "",
+      tooltip: "",
+      command: "",
+      show: vi.fn(),
+      hide: vi.fn(),
+      dispose: vi.fn(),
     })),
     showInformationMessage: vi.fn(),
     showErrorMessage: vi.fn(),
     createOutputChannel: vi.fn(() => ({
-      appendLine: vi.fn(), show: vi.fn(), hide: vi.fn(), dispose: vi.fn(),
+      appendLine: vi.fn(),
+      show: vi.fn(),
+      hide: vi.fn(),
+      dispose: vi.fn(),
     })),
     activeTextEditor: null,
     onDidChangeActiveTextEditor: vi.fn(),
     onDidChangeTextDocument: vi.fn(),
   },
   workspace: {
-    workspaceFolders: [
-      { uri: { fsPath: "/test/workspace" }, name: "test-workspace", index: 0 }
-    ],
+    workspaceFolders: [{ uri: { fsPath: "/test/workspace" }, name: "test-workspace", index: 0 }],
     getConfiguration: vi.fn(() => ({ get: vi.fn(), update: vi.fn(), inspect: vi.fn() })),
     onDidChangeConfiguration: vi.fn(),
     onDidSaveTextDocument: vi.fn(),
@@ -37,12 +43,20 @@ vi.mock("vscode", () => ({
     findFiles: vi.fn(),
     asRelativePath: vi.fn(),
     createFileSystemWatcher: vi.fn(() => ({
-      onDidCreate: vi.fn(), onDidChange: vi.fn(), onDidDelete: vi.fn(), dispose: vi.fn(),
+      onDidCreate: vi.fn(),
+      onDidChange: vi.fn(),
+      onDidDelete: vi.fn(),
+      dispose: vi.fn(),
     })),
   },
   languages: {
     createDiagnosticCollection: vi.fn(() => ({
-      set: vi.fn(), delete: vi.fn(), clear: vi.fn(), dispose: vi.fn(), has: vi.fn(), forEach: vi.fn(),
+      set: vi.fn(),
+      delete: vi.fn(),
+      clear: vi.fn(),
+      dispose: vi.fn(),
+      has: vi.fn(),
+      forEach: vi.fn(),
     })),
     registerCodeActionsProvider: vi.fn(),
     registerDocumentFormattingEditProvider: vi.fn(),
@@ -60,7 +74,8 @@ vi.mock("vscode", () => ({
   Disposable: vi.fn(() => ({ dispose: vi.fn() })),
   EventEmitter: vi.fn(() => ({ event: vi.fn(), fire: vi.fn(), dispose: vi.fn() })),
   ExtensionContext: vi.fn(() => ({
-    subscriptions: [], extensionPath: "/test/extension",
+    subscriptions: [],
+    extensionPath: "/test/extension",
     globalState: { get: vi.fn(), update: vi.fn() },
     workspaceState: { get: vi.fn(), update: vi.fn() },
     secrets: { get: vi.fn(), store: vi.fn(), delete: vi.fn() },
@@ -70,9 +85,15 @@ vi.mock("vscode", () => ({
 // Mock vscode-languageclient
 vi.mock("vscode-languageclient/node", () => ({
   LanguageClient: vi.fn(() => ({
-    start: vi.fn(), stop: vi.fn(), sendRequest: vi.fn(), onRequest: vi.fn(), onNotification: vi.fn(), dispose: vi.fn(),
+    start: vi.fn(),
+    stop: vi.fn(),
+    sendRequest: vi.fn(),
+    onRequest: vi.fn(),
+    onNotification: vi.fn(),
+    dispose: vi.fn(),
   })),
-  LanguageClientOptions: {}, ServerOptions: {},
+  LanguageClientOptions: {},
+  ServerOptions: {},
   TransportKind: { stdio: "stdio", ipc: "ipc", pipe: "pipe", socket: "socket" },
 }));
 
@@ -83,7 +104,7 @@ import {
   createMockExtensionContext,
   createMockWorkspaceFolder,
   createMockConfiguration,
-  waitFor
+  waitFor,
 } from "./test-utils.js";
 
 // Get the mocked vscode module
@@ -130,34 +151,20 @@ describe("VS Code Extension", () => {
     it("should register commands", async () => {
       await activate(mockContext);
 
-      expect(vscode.commands.registerCommand).toHaveBeenCalledWith(
-        "reynard-linting.toggle",
-        expect.any(Function)
-      );
-      expect(vscode.commands.registerCommand).toHaveBeenCalledWith(
-        "reynard-linting.lintFile",
-        expect.any(Function)
-      );
+      expect(vscode.commands.registerCommand).toHaveBeenCalledWith("reynard-linting.toggle", expect.any(Function));
+      expect(vscode.commands.registerCommand).toHaveBeenCalledWith("reynard-linting.lintFile", expect.any(Function));
       expect(vscode.commands.registerCommand).toHaveBeenCalledWith(
         "reynard-linting.lintWorkspace",
         expect.any(Function)
       );
-      expect(vscode.commands.registerCommand).toHaveBeenCalledWith(
-        "reynard-linting.clearIssues",
-        expect.any(Function)
-      );
-      expect(vscode.commands.registerCommand).toHaveBeenCalledWith(
-        "reynard-linting.showConfig",
-        expect.any(Function)
-      );
+      expect(vscode.commands.registerCommand).toHaveBeenCalledWith("reynard-linting.clearIssues", expect.any(Function));
+      expect(vscode.commands.registerCommand).toHaveBeenCalledWith("reynard-linting.showConfig", expect.any(Function));
     });
 
     it("should create diagnostic collection", async () => {
       await activate(mockContext);
 
-      expect(vscode.languages.createDiagnosticCollection).toHaveBeenCalledWith(
-        "reynard-linting"
-      );
+      expect(vscode.languages.createDiagnosticCollection).toHaveBeenCalledWith("reynard-linting");
     });
 
     it("should create status bar item", async () => {
@@ -169,9 +176,7 @@ describe("VS Code Extension", () => {
     it("should create output channel", async () => {
       await activate(mockContext);
 
-      expect(vscode.window.createOutputChannel).toHaveBeenCalledWith(
-        "Reynard Linting"
-      );
+      expect(vscode.window.createOutputChannel).toHaveBeenCalledWith("Reynard Linting");
     });
 
     it("should handle missing workspace folders", async () => {
@@ -215,13 +220,13 @@ describe("VS Code Extension", () => {
 
     beforeEach(async () => {
       vi.clearAllMocks();
-      
+
       // Capture registered commands
       vscode.commands.registerCommand.mockImplementation((name: string, callback: Function) => {
         registeredCommands.set(name, callback);
         return { dispose: vi.fn() };
       });
-      
+
       await activate(mockContext);
     });
 

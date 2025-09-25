@@ -23,7 +23,7 @@ export function useRAGDocuments(config: RAGDocumentsConfig) {
   const loadDocuments = async () => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       const response = await config.apiService.getDocuments();
       setDocuments(response);
@@ -43,7 +43,7 @@ export function useRAGDocuments(config: RAGDocumentsConfig) {
   const uploadDocument = async (file: File, source?: string) => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       const result = await config.apiService.uploadDocument(file);
       // Refresh documents after upload
@@ -61,7 +61,7 @@ export function useRAGDocuments(config: RAGDocumentsConfig) {
   const deleteDocument = async (documentId: string) => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       await config.apiService.deleteDocument(documentId);
       // Refresh documents after deletion
@@ -81,7 +81,7 @@ export function useRAGDocuments(config: RAGDocumentsConfig) {
     stats,
     isLoading,
     error,
-    
+
     // Actions
     loadDocuments,
     refreshDocuments,

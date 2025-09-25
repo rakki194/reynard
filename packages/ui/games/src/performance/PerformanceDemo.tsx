@@ -15,7 +15,7 @@ function throttle<T extends (...args: any[]) => any>(func: T, limit: number): T 
     if (!inThrottle) {
       func(...args);
       inThrottle = true;
-      setTimeout(() => inThrottle = false, limit);
+      setTimeout(() => (inThrottle = false), limit);
     }
   }) as T;
 }
@@ -26,12 +26,12 @@ class MemoryMonitor {
       return {
         used: (performance as any).memory.usedJSHeapSize,
         total: (performance as any).memory.totalJSHeapSize,
-        limit: (performance as any).memory.jsHeapSizeLimit
+        limit: (performance as any).memory.jsHeapSizeLimit,
       };
     }
     return { used: 0, total: 0, limit: 0 };
   }
-  
+
   static measure(): { used: number; total: number; limit: number } {
     return this.getMemoryUsage();
   }
@@ -39,15 +39,15 @@ class MemoryMonitor {
 
 class PerformanceTimer {
   private startTime: number = 0;
-  
+
   start() {
     this.startTime = performance.now();
   }
-  
+
   end(): number {
     return performance.now() - this.startTime;
   }
-  
+
   stop(): number {
     return this.end();
   }

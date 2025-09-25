@@ -16,7 +16,6 @@ import { SERVICE_EXCLUDE_PATTERNS } from "../config/patterns.js";
  * Root services directory definitions
  */
 export const ROOT_SERVICES: DirectoryDefinition[] = [
-
   createDirectoryDefinition(
     "services/agent-naming",
     "services/agent-naming",
@@ -25,14 +24,12 @@ export const ROOT_SERVICES: DirectoryDefinition[] = [
     ["python", "json", "markdown", "toml"],
     "Agent naming system with animal spirit themes - generates and manages agent names with 105+ spirit types and multiple naming styles",
     {
-      relationships: buildRelationships(
-        { directory: "services/mcp-server", type: "dependency", description: "Used by MCP server for agent naming" }
-      ),
-      excludePatterns: [
-        ...SERVICE_EXCLUDE_PATTERNS,
-        "**/htmlcov/**",
-        "**/*.egg-info/**",
-      ],
+      relationships: buildRelationships({
+        directory: "services/mcp-server",
+        type: "dependency",
+        description: "Used by MCP server for agent naming",
+      }),
+      excludePatterns: [...SERVICE_EXCLUDE_PATTERNS, "**/htmlcov/**", "**/*.egg-info/**"],
       includePatterns: ["**/*.py", "**/*.json", "**/*.md", "**/*.toml"],
       buildConfig: {
         command: "pip",
@@ -61,14 +58,12 @@ export const ROOT_SERVICES: DirectoryDefinition[] = [
     ["python", "json", "markdown", "toml"],
     "Authentication and authorization system - provides secure access control and user management",
     {
-      relationships: buildRelationships(
-        { directory: "services/mcp-server", type: "dependency", description: "Used by MCP server for authentication" }
-      ),
-      excludePatterns: [
-        ...SERVICE_EXCLUDE_PATTERNS,
-        "**/htmlcov/**",
-        "**/*.egg-info/**",
-      ],
+      relationships: buildRelationships({
+        directory: "services/mcp-server",
+        type: "dependency",
+        description: "Used by MCP server for authentication",
+      }),
+      excludePatterns: [...SERVICE_EXCLUDE_PATTERNS, "**/htmlcov/**", "**/*.egg-info/**"],
       includePatterns: ["**/*.py", "**/*.json", "**/*.md", "**/*.toml"],
       buildConfig: {
         command: "pip",
@@ -102,12 +97,7 @@ export const ROOT_SERVICES: DirectoryDefinition[] = [
         { directory: "services/gatekeeper", type: "dependency", description: "Uses authentication system" },
         { directory: "packages", type: "dependency", description: "Uses packages" }
       ),
-      excludePatterns: [
-        ...SERVICE_EXCLUDE_PATTERNS,
-        "**/htmlcov/**",
-        "**/*.egg-info/**",
-        "**/data/**",
-      ],
+      excludePatterns: [...SERVICE_EXCLUDE_PATTERNS, "**/htmlcov/**", "**/*.egg-info/**", "**/data/**"],
       includePatterns: ["**/*.py", "**/*.json", "**/*.md", "**/*.toml", "**/*.sh"],
       buildConfig: {
         command: "pip",
@@ -128,5 +118,4 @@ export const ROOT_SERVICES: DirectoryDefinition[] = [
       metadata: MCP_METADATA,
     }
   ),
-
 ];

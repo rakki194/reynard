@@ -1,6 +1,6 @@
 /**
  * 🕺 Dance Effects Composable
- * 
+ *
  * Reusable composable for creating dance club effects and animations
  * Provides sparkle effects, component dancing, and visual feedback
  */
@@ -30,11 +30,11 @@ export const useDanceEffects = (config: Partial<DanceEffectConfig> = {}) => {
     sparkleDuration: 1000,
     danceDuration: 800,
     scaleAmount: 1.2,
-    rotationAmount: 5
+    rotationAmount: 5,
   };
 
   const finalConfig = { ...defaultConfig, ...config };
-  
+
   const [sparkles, setSparkles] = createSignal<SparkleData[]>([]);
   const [dancingComponents, setDancingComponents] = createSignal<Set<string>>(new Set<string>());
   const [totalSparklesCreated, setTotalSparklesCreated] = createSignal(0);
@@ -54,7 +54,7 @@ export const useDanceEffects = (config: Partial<DanceEffectConfig> = {}) => {
         y: rect.top + Math.random() * rect.height,
         size: 2 + Math.random() * 4,
         color: `hsl(${Math.random() * 360}, 100%, 70%)`,
-        duration: config.sparkleDuration
+        duration: config.sparkleDuration,
       };
       newSparkles.push(sparkle);
     }
@@ -74,12 +74,12 @@ export const useDanceEffects = (config: Partial<DanceEffectConfig> = {}) => {
   const danceComponent = (element: HTMLElement, customConfig?: Partial<DanceEffectConfig>) => {
     const config = { ...finalConfig, ...customConfig };
     const componentId = element.id || `component-${Date.now()}`;
-    
+
     // Add to dancing components
     setDancingComponents(prev => new Set([...prev, componentId]));
 
     // Reset animation
-    element.style.animation = 'none';
+    element.style.animation = "none";
     void element.offsetHeight; // Trigger reflow
     element.style.animation = `dance ${config.danceDuration}ms ease-in-out, pulse 1.5s infinite`;
 
@@ -88,10 +88,10 @@ export const useDanceEffects = (config: Partial<DanceEffectConfig> = {}) => {
 
     // Scale and rotation effect
     element.style.transform = `scale(${config.scaleAmount}) rotate(${config.rotationAmount}deg)`;
-    element.style.transition = 'transform 0.2s ease';
+    element.style.transition = "transform 0.2s ease";
 
     setTimeout(() => {
-      element.style.transform = '';
+      element.style.transform = "";
       setDancingComponents(prev => {
         const newSet = new Set(prev);
         newSet.delete(componentId);
@@ -105,7 +105,7 @@ export const useDanceEffects = (config: Partial<DanceEffectConfig> = {}) => {
    */
   const randomDance = (components: HTMLElement[], customConfig?: Partial<DanceEffectConfig>) => {
     if (components.length === 0) return;
-    
+
     const randomComponent = components[Math.floor(Math.random() * components.length)];
     danceComponent(randomComponent, customConfig);
   };
@@ -146,7 +146,7 @@ export const useDanceEffects = (config: Partial<DanceEffectConfig> = {}) => {
         y: y + Math.sin(angle) * distance,
         size: 3 + Math.random() * 5,
         color: `hsl(${Math.random() * 360}, 100%, 70%)`,
-        duration: config.sparkleDuration
+        duration: config.sparkleDuration,
       };
       newSparkles.push(sparkle);
     }
@@ -187,7 +187,7 @@ export const useDanceEffects = (config: Partial<DanceEffectConfig> = {}) => {
     sparkles,
     dancingComponents,
     totalSparklesCreated,
-    
+
     // Actions
     createSparkles,
     danceComponent,
@@ -198,8 +198,8 @@ export const useDanceEffects = (config: Partial<DanceEffectConfig> = {}) => {
     clearSparkles,
     stopAllDancing,
     reset,
-    
+
     // Config
-    config: finalConfig
+    config: finalConfig,
   };
 };

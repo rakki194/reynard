@@ -13,7 +13,7 @@ interface GameSelectorProps {
   onGameSelect: (game: "roguelike" | "3d-games") => void;
 }
 
-export const GameSelector: Component<GameSelectorProps> = (props) => {
+export const GameSelector: Component<GameSelectorProps> = props => {
   return (
     <div class="game-selector">
       <header class="app-header">
@@ -34,7 +34,10 @@ export const GameSelector: Component<GameSelectorProps> = (props) => {
           <div class="game-card" onClick={() => props.onGameSelect("roguelike")}>
             <div class="game-icon">🎮</div>
             <h3>Rogue-like Dungeon Crawler</h3>
-            <p>Experience a fully functional rogue-like dungeon crawler built with Reynard's ECS system. Features procedural dungeon generation, AI enemies, and pixel-perfect rendering.</p>
+            <p>
+              Experience a fully functional rogue-like dungeon crawler built with Reynard's ECS system. Features
+              procedural dungeon generation, AI enemies, and pixel-perfect rendering.
+            </p>
             <div class="game-features">
               <span class="feature-tag">ECS Architecture</span>
               <span class="feature-tag">Procedural Generation</span>
@@ -49,7 +52,10 @@ export const GameSelector: Component<GameSelectorProps> = (props) => {
           <div class="game-card" onClick={() => props.onGameSelect("3d-games")}>
             <div class="game-icon">🎲</div>
             <h3>3D Interactive Games</h3>
-            <p>Collection of 3D games and visualizations powered by Three.js. Includes cube collector, space shooter, maze explorer, and particle demos.</p>
+            <p>
+              Collection of 3D games and visualizations powered by Three.js. Includes cube collector, space shooter,
+              maze explorer, and particle demos.
+            </p>
             <div class="game-features">
               <span class="feature-tag">Three.js</span>
               <span class="feature-tag">3D Graphics</span>

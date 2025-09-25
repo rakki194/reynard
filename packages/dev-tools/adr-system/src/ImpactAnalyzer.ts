@@ -325,7 +325,7 @@ export class ImpactAnalyzer {
   private async watchFile(filePath: string): Promise<void> {
     try {
       const watcher = watch(filePath);
-      
+
       // Use async iterator for file watching
       (async () => {
         for await (const event of watcher) {

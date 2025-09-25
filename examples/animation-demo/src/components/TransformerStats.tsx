@@ -1,6 +1,6 @@
 /**
  * 📊 Transformer Stats Component
- * 
+ *
  * Statistics display for the transformer dance club demo
  */
 
@@ -15,7 +15,7 @@ interface TransformerStatsProps {
   isPlaying: boolean;
 }
 
-export const TransformerStats: Component<TransformerStatsProps> = (props) => {
+export const TransformerStats: Component<TransformerStatsProps> = props => {
   return (
     <div class="animation-card">
       <h2 class="card-title">
@@ -45,7 +45,7 @@ export const TransformerStats: Component<TransformerStatsProps> = (props) => {
         </div>
         <div class="status-item">
           <span class="status-label">Status:</span>
-          <span class="status-value">{props.isPlaying ? 'Dancing' : 'Paused'}</span>
+          <span class="status-value">{props.isPlaying ? "Dancing" : "Paused"}</span>
         </div>
       </div>
     </div>

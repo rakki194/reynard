@@ -21,7 +21,7 @@ const GalleryDlApp: Component = () => {
   const [downloadHistory, setDownloadHistory] = createSignal<DownloadResult[]>([]);
   const [isLoading, setIsLoading] = createSignal(false);
   const [error, setError] = createSignal<string | null>(null);
-  
+
   const { theme } = useTheme();
   const { notify } = useNotifications();
 
@@ -32,21 +32,24 @@ const GalleryDlApp: Component = () => {
       baseUrl: "http://localhost:8000",
       timeout: 30000,
     };
-    
+
     const service = new GalleryService(config);
     setGalleryService(service);
-    
+
     // Check service health
-    service.getServiceHealth().then((health: any) => {
-      if (health.status === "healthy") {
-        notify("Gallery-dl service connected successfully", "success");
-      } else {
-        notify("Gallery-dl service is not healthy", "warning");
-      }
-    }).catch((err: any) => {
-      console.error("Failed to connect to gallery-dl service:", err);
-      notify("Failed to connect to gallery-dl service", "error");
-    });
+    service
+      .getServiceHealth()
+      .then((health: any) => {
+        if (health.status === "healthy") {
+          notify("Gallery-dl service connected successfully", "success");
+        } else {
+          notify("Gallery-dl service is not healthy", "warning");
+        }
+      })
+      .catch((err: any) => {
+        console.error("Failed to connect to gallery-dl service:", err);
+        notify("Failed to connect to gallery-dl service", "error");
+      });
   });
 
   const handleDownload = async (url: string) => {
@@ -116,7 +119,7 @@ const GalleryDlApp: Component = () => {
         newMap.delete(downloadId);
         return newMap;
       });
-      
+
       notify("Download cancelled", "info");
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Unknown error";
@@ -154,20 +157,12 @@ const GalleryDlApp: Component = () => {
       </header>
 
       <main class="app-main">
-        {error() && (
-          <div class="error-message">
-            {error()}
-          </div>
-        )}
+        {error() && <div class="error-message">{error()}</div>}
 
         <section class="download-section">
           <h2 class="section-title">Start Download</h2>
           <Card variant="default" padding="lg">
-            <DownloadManager
-              onDownload={handleDownload}
-              isLoading={isLoading()}
-              service={galleryService()}
-            />
+            <DownloadManager onDownload={handleDownload} isLoading={isLoading()} service={galleryService()} />
           </Card>
         </section>
 
@@ -185,10 +180,7 @@ const GalleryDlApp: Component = () => {
         <section class="history-section">
           <h2 class="section-title">Download History</h2>
           <Card variant="default" padding="lg">
-            <HistoryViewer
-              history={downloadHistory()}
-              onRetry={handleDownload}
-            />
+            <HistoryViewer history={downloadHistory()} onRetry={handleDownload} />
           </Card>
         </section>
       </main>

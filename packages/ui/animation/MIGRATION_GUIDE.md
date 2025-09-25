@@ -1,6 +1,6 @@
 # 🦊 Animation System Migration Guide
 
-*Complete guide for migrating to the unified Reynard animation system*
+_Complete guide for migrating to the unified Reynard animation system_
 
 ## Overview
 
@@ -14,11 +14,11 @@ The animation system is designed as an **optional dependency** that gracefully d
 
 ```typescript
 // Smart import with fallback
-import { useAnimationState } from 'reynard-animation';
+import { useAnimationState } from "reynard-animation";
 
 // Fallback when package unavailable
 const animationState = useAnimationState({
-  fallback: 'css', // CSS-based fallback
+  fallback: "css", // CSS-based fallback
   immediate: true, // Immediate completion for disabled state
 });
 ```
@@ -48,7 +48,7 @@ Use the smart import system for graceful degradation:
 // Dynamic import with fallback
 const loadAnimation = async () => {
   try {
-    const { useAnimationState } = await import('reynard-animation');
+    const { useAnimationState } = await import("reynard-animation");
     return useAnimationState;
   } catch {
     // Fallback to CSS animations
@@ -84,7 +84,7 @@ For disabled animations, the system provides immediate completion:
 const animationState = useAnimationState({
   duration: 300,
   immediate: true, // Completes immediately when disabled
-  fallback: 'css',
+  fallback: "css",
 });
 ```
 
@@ -96,9 +96,9 @@ The system includes performance-optimized fallback implementations:
 // Performance-optimized fallback
 const performanceFallback = {
   duration: 150, // Reduced duration
-  easing: 'ease-out', // Optimized easing
-  willChange: 'transform', // GPU acceleration
-  backfaceVisibility: 'hidden', // Performance optimization
+  easing: "ease-out", // Optimized easing
+  willChange: "transform", // GPU acceleration
+  backfaceVisibility: "hidden", // Performance optimization
 };
 ```
 
@@ -120,7 +120,7 @@ useGlobalAnimationContext({
 const animationState = useAnimationState({
   performanceMode: true,
   duration: 150, // Reduced duration
-  complexity: 'low', // Reduced complexity
+  complexity: "low", // Reduced complexity
 });
 ```
 
@@ -140,16 +140,16 @@ The system automatically optimizes bundle size:
 
 ```typescript
 // Tree-shakable imports
-import { useAnimationState } from 'reynard-animation/core';
-import { useStaggeredAnimation } from 'reynard-animation/staggered';
+import { useAnimationState } from "reynard-animation/core";
+import { useStaggeredAnimation } from "reynard-animation/staggered";
 
 // Conditional loading
-if (typeof window !== 'undefined' && window.innerWidth > 768) {
+if (typeof window !== "undefined" && window.innerWidth > 768) {
   // Load full animations for desktop
-  await import('reynard-animation/full');
+  await import("reynard-animation/full");
 } else {
   // Load lightweight animations for mobile
-  await import('reynard-animation/lightweight');
+  await import("reynard-animation/lightweight");
 }
 ```
 
@@ -192,7 +192,7 @@ The system includes focus management for animations:
 const animationState = useAnimationState({
   focusVisible: true,
   focusDuration: 200,
-  focusEasing: 'ease-in-out',
+  focusEasing: "ease-in-out",
 });
 ```
 
@@ -204,7 +204,7 @@ Animations are designed to be screen reader friendly:
 // Screen reader announcements
 const animationState = useAnimationState({
   announce: true,
-  announceText: 'Animation completed',
+  announceText: "Animation completed",
   announceDelay: 100,
 });
 ```
@@ -228,13 +228,13 @@ const toggleVisibility = () => {
 
 ```typescript
 // New animation system
-import { useAnimationState } from 'reynard-animation';
+import { useAnimationState } from "reynard-animation";
 
 const animationState = useAnimationState({
   initial: false,
   duration: 300,
-  easing: 'ease-in-out',
-  fallback: 'css',
+  easing: "ease-in-out",
+  fallback: "css",
 });
 
 const toggleVisibility = () => {
@@ -263,13 +263,13 @@ const animateItems = () => {
 
 ```typescript
 // New staggered system
-import { useStaggeredAnimation } from 'reynard-animation';
+import { useStaggeredAnimation } from "reynard-animation";
 
 const staggeredAnimation = useStaggeredAnimation({
   items: Array.from({ length: 5 }, (_, i) => i),
   stagger: 100,
   duration: 300,
-  fallback: 'css',
+  fallback: "css",
 });
 
 const animateItems = () => {
@@ -294,13 +294,13 @@ const rotate = () => {
 
 ```typescript
 // New 3D animation system
-import { useThreeJSAnimations } from 'reynard-animation';
+import { useThreeJSAnimations } from "reynard-animation";
 
 const threeJSAnimation = useThreeJSAnimations({
   rotation: { x: 0, y: 0, z: 0 },
   duration: 500,
-  easing: 'ease-in-out',
-  fallback: 'css',
+  easing: "ease-in-out",
+  fallback: "css",
 });
 
 const rotate = () => {
@@ -316,10 +316,10 @@ Update your test configuration to handle optional dependencies:
 
 ```typescript
 // Test configuration
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 // Mock animation package
-vi.mock('reynard-animation', () => ({
+vi.mock("reynard-animation", () => ({
   useAnimationState: vi.fn(() => ({
     start: vi.fn(),
     stop: vi.fn(),
@@ -334,13 +334,13 @@ Test fallback behavior:
 
 ```typescript
 // Test fallback behavior
-describe('Animation Fallbacks', () => {
-  it('should use CSS fallback when package unavailable', () => {
+describe("Animation Fallbacks", () => {
+  it("should use CSS fallback when package unavailable", () => {
     // Test CSS fallback
-    expect(document.querySelector('.animation-fallback')).toBeTruthy();
+    expect(document.querySelector(".animation-fallback")).toBeTruthy();
   });
 
-  it('should complete immediately when disabled', () => {
+  it("should complete immediately when disabled", () => {
     // Test immediate completion
     const startTime = performance.now();
     animationState.start();
@@ -382,10 +382,10 @@ describe('Animation Fallbacks', () => {
 ```typescript
 // Handle missing package gracefully
 try {
-  const { useAnimationState } = await import('reynard-animation');
+  const { useAnimationState } = await import("reynard-animation");
   return useAnimationState;
 } catch (error) {
-  console.warn('Animation package not available, using fallback');
+  console.warn("Animation package not available, using fallback");
   return useCSSAnimationFallback;
 }
 ```
@@ -422,4 +422,4 @@ For migration support:
 
 ---
 
-*🦊 The unified animation system provides a robust, accessible, and performant foundation for all animations in the Reynard ecosystem.*
+_🦊 The unified animation system provides a robust, accessible, and performant foundation for all animations in the Reynard ecosystem._

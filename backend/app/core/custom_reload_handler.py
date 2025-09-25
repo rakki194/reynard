@@ -12,8 +12,14 @@ from pathlib import Path
 try:
     from uvicorn.reload import StatReload
 except ImportError:
-    # Fallback for different uvicorn versions
-    from uvicorn.supervisors import StatReload
+    try:
+        # Fallback for different uvicorn versions
+        from uvicorn.supervisors import StatReload
+    except ImportError:
+        # Create a dummy class if uvicorn is not available
+        class StatReload:
+            def __init__(self, *args, **kwargs):
+                pass
 
 logger = logging.getLogger(__name__)
 

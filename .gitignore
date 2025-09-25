@@ -174,13 +174,49 @@ __pycache__/
 *.generated.*
 *.auto.*
 
-# Cryptographic keys
+# Cryptographic keys and secrets
 .keys/
 *.key
 *.pem
 *.crt
 *.p12
 *.pfx
+*.gpg
+*.asc
+*.pgp
+# Data directories containing keys/secrets (not code directories)
+backend/data/**/keys/
+backend/data/**/secrets/
+backend/data/**/private/
+backend/data/**/encryption/
+backend/data/**/email_encryption/
+# Test data directories
+**/test*/**/keys/
+**/test*/**/secrets/
+**/test*/**/private/
+**/test*/**/encryption/
+**/test*/**/email_encryption/
 
 # Vitest coverage artifacts
 .vitest-coverage/
+
+# Backend data directories - runtime data, cache, and generated content
+backend/data/
+backend/generated/
+backend/logs/
+backend/htmlcov/
+backend/benchmarks/
+backend/coverage.xml
+backend/__pycache__/
+backend/**/__pycache__/
+backend/**/*.pyc
+backend/**/*.pyo
+backend/**/*.egg-info/
+backend/.pytest_cache/
+backend/.mypy_cache/
+backend/.coverage
+backend/.coverage.*
+backend/coverage/
+backend/htmlcov/
+backend/.benchmarks/
+backend/unsloth_compiled_cache/

@@ -6,18 +6,18 @@ import { Button } from "reynard-components-core";
 class SpatialHash {
   cellSize: number;
   cells: Map<string, Set<string>>;
-  
+
   constructor(cellSize: number) {
     this.cellSize = cellSize;
     this.cells = new Map();
   }
-  
+
   getCellKey(x: number, y: number): string {
     const cellX = Math.floor(x / this.cellSize);
     const cellY = Math.floor(y / this.cellSize);
     return `${cellX},${cellY}`;
   }
-  
+
   insert(id: string, x: number, y: number): void {
     const key = this.getCellKey(x, y);
     if (!this.cells.has(key)) {
@@ -25,12 +25,12 @@ class SpatialHash {
     }
     this.cells.get(key)!.add(id);
   }
-  
+
   query(x: number, y: number, radius: number = 0): string[] {
     const results = new Set<string>();
     const cellX = Math.floor(x / this.cellSize);
     const cellY = Math.floor(y / this.cellSize);
-    
+
     for (let dx = -1; dx <= 1; dx++) {
       for (let dy = -1; dy <= 1; dy++) {
         const key = `${cellX + dx},${cellY + dy}`;
@@ -39,14 +39,14 @@ class SpatialHash {
         }
       }
     }
-    
+
     return Array.from(results);
   }
-  
+
   clear(): void {
     this.cells.clear();
   }
-  
+
   getStats(): { cellCount: number; totalObjects: number } {
     let totalObjects = 0;
     this.cells.forEach(cell => {
@@ -54,7 +54,7 @@ class SpatialHash {
     });
     return {
       cellCount: this.cells.size,
-      totalObjects
+      totalObjects,
     };
   }
 }

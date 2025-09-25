@@ -94,11 +94,7 @@ export class MiddlewareManager {
   /**
    * Notify middleware of request completion
    */
-  async notifyCompletion<T>(
-    options: HTTPRequestOptions,
-    response?: HTTPResponse<T>,
-    error?: HTTPError
-  ): Promise<void> {
+  async notifyCompletion<T>(options: HTTPRequestOptions, response?: HTTPResponse<T>, error?: HTTPError): Promise<void> {
     for (const middleware of this.middleware) {
       if (middleware.complete) {
         await middleware.complete(options, response, error);

@@ -12,4 +12,3 @@ export { ExampleValidator } from "./example-validator.js";
 // Type Definitions
 export type { ICodeExample, ValidationRule } from "./doc-scanner.js";
 export type { IValidationResult, ITestEnvironment } from "./example-validator.js";
-

@@ -1,20 +1,20 @@
 /**
  * 🦊 Smart Animation Composable
- * 
+ *
  * SolidJS composable for smart animations with automatic engine selection.
  * Provides reactive state management for animation engine types and states.
- * 
+ *
  * @author Agile-Prime-90 (Reynard Lizard Specialist)
  * @since 1.0.0
  */
 
 import { createSignal, createMemo, createEffect, onCleanup } from "solid-js";
-import { 
-  SmartAnimationCore, 
-  SmartAnimationConfig, 
-  SmartAnimationState, 
-  AnimationOptions, 
-  AnimationResult 
+import {
+  SmartAnimationCore,
+  SmartAnimationConfig,
+  SmartAnimationState,
+  AnimationOptions,
+  AnimationResult,
 } from "../engines/SmartAnimationCore";
 
 export interface UseSmartAnimationOptions {
@@ -42,11 +42,23 @@ export interface UseSmartAnimationReturn {
   /** Current engine type */
   engineType: () => "full" | "fallback" | "no-op";
   /** Create an animation */
-  animate: (element: HTMLElement, properties: Record<string, string>, options?: AnimationOptions) => Promise<AnimationResult>;
+  animate: (
+    element: HTMLElement,
+    properties: Record<string, string>,
+    options?: AnimationOptions
+  ) => Promise<AnimationResult>;
   /** Create a staggered animation */
-  animateStaggered: (elements: HTMLElement[], properties: Record<string, string>, options?: AnimationOptions & { stagger?: number; direction?: string }) => Promise<AnimationResult>;
+  animateStaggered: (
+    elements: HTMLElement[],
+    properties: Record<string, string>,
+    options?: AnimationOptions & { stagger?: number; direction?: string }
+  ) => Promise<AnimationResult>;
   /** Create an animation loop */
-  animateLoop: (duration: number, onUpdate: (progress: number) => void, onComplete?: () => void) => Promise<AnimationResult>;
+  animateLoop: (
+    duration: number,
+    onUpdate: (progress: number) => void,
+    onComplete?: () => void
+  ) => Promise<AnimationResult>;
   /** Update configuration */
   updateConfig: (newConfig: Partial<SmartAnimationConfig>) => void;
   /** Get the underlying smart animation core */
@@ -57,10 +69,7 @@ export interface UseSmartAnimationReturn {
  * Smart animation composable with reactive state management
  */
 export function useSmartAnimation(options: UseSmartAnimationOptions = {}): UseSmartAnimationReturn {
-  const {
-    config = {},
-    autoInitialize = true,
-  } = options;
+  const { config = {}, autoInitialize = true } = options;
 
   const [isInitialized, setIsInitialized] = createSignal(false);
   const [smartAnimationCore, setSmartAnimationCore] = createSignal<SmartAnimationCore | null>(null);
@@ -75,7 +84,7 @@ export function useSmartAnimation(options: UseSmartAnimationOptions = {}): UseSm
       const core = new SmartAnimationCore(config);
       setSmartAnimationCore(core);
       setIsInitialized(true);
-      
+
       if (config.enableLogging) {
         console.log("🦊 useSmartAnimation: Smart animation core initialized");
       }
@@ -102,14 +111,16 @@ export function useSmartAnimation(options: UseSmartAnimationOptions = {}): UseSm
   // Reactive state getters
   const state = createMemo(() => {
     const core = smartAnimationCore();
-    return core ? core.getState() : {
-      isAnimationsDisabled: false,
-      isAnimationPackageAvailable: false,
-      isPerformanceMode: false,
-      isAccessibilityMode: false,
-      isFallbackMode: false,
-      engineType: "no-op" as const,
-    };
+    return core
+      ? core.getState()
+      : {
+          isAnimationsDisabled: false,
+          isAnimationPackageAvailable: false,
+          isPerformanceMode: false,
+          isAccessibilityMode: false,
+          isFallbackMode: false,
+          engineType: "no-op" as const,
+        };
   });
 
   const isAnimationsDisabled = createMemo(() => state().isAnimationsDisabled);
@@ -193,7 +204,7 @@ export function useSmartAnimation(options: UseSmartAnimationOptions = {}): UseSm
  */
 export function useAnimationEngineType() {
   const { engineType, isInitialized } = useSmartAnimation();
-  
+
   return {
     engineType,
     isInitialized,
@@ -208,7 +219,7 @@ export function useAnimationEngineType() {
  */
 export function useAnimationPackageAvailability() {
   const { isAnimationPackageAvailable, isInitialized } = useSmartAnimation();
-  
+
   return {
     isAvailable: isAnimationPackageAvailable,
     isInitialized,
@@ -220,7 +231,7 @@ export function useAnimationPackageAvailability() {
  */
 export function useAnimationPerformanceMode() {
   const { isPerformanceMode, isInitialized } = useSmartAnimation();
-  
+
   return {
     isPerformanceMode,
     isInitialized,
@@ -232,10 +243,9 @@ export function useAnimationPerformanceMode() {
  */
 export function useAnimationAccessibilityMode() {
   const { isAccessibilityMode, isInitialized } = useSmartAnimation();
-  
+
   return {
     isAccessibilityMode,
     isInitialized,
   };
 }
-

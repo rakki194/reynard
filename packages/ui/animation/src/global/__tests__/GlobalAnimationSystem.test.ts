@@ -1,12 +1,12 @@
 /**
  * 🦊 Global Animation System Tests
- * 
+ *
  * Comprehensive test suite for the global animation control system.
  * Tests configuration, state management, and controls.
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { 
+import {
   DEFAULT_GLOBAL_ANIMATION_CONFIG,
   PERFORMANCE_ANIMATION_CONFIG,
   ACCESSIBILITY_ANIMATION_CONFIG,
@@ -19,7 +19,7 @@ import {
   shouldDisableAnimations,
   getAnimationEngine,
   CONFIG_PRESETS,
-  getConfigPreset
+  getConfigPreset,
 } from "../GlobalAnimationConfig.js";
 import { GlobalAnimationControlSystem, GlobalAnimationUtils } from "../GlobalAnimationControls.js";
 
@@ -80,7 +80,7 @@ describe("Global Animation Configuration", () => {
       }));
 
       const preferences = detectSystemPreferences();
-      
+
       expect(preferences.prefersReducedMotion).toBe(true);
       expect(preferences.prefersHighContrast).toBe(false);
       expect(preferences.prefersColorScheme).toBe("light");
@@ -93,7 +93,7 @@ describe("Global Animation Configuration", () => {
       delete global.window;
 
       const preferences = detectSystemPreferences();
-      
+
       expect(preferences.prefersReducedMotion).toBe(false);
       expect(preferences.prefersHighContrast).toBe(false);
       expect(preferences.prefersColorScheme).toBe("no-preference");
@@ -114,7 +114,7 @@ describe("Global Animation Configuration", () => {
       };
 
       const config = createConfigFromPreferences(preferences);
-      
+
       expect(config.enabled).toBe(false);
       expect(config.fallback.immediateCompletion).toBe(true);
       expect(config.fallback.reducedMotionFallback).toBe(true);
@@ -130,7 +130,7 @@ describe("Global Animation Configuration", () => {
       };
 
       const config = createConfigFromPreferences(preferences);
-      
+
       expect(config.accessibility.highContrast).toBe(true);
       expect(config.performance.disableComplex).toBe(true);
     });
@@ -145,7 +145,7 @@ describe("Global Animation Configuration", () => {
       };
 
       const config = createConfigFromPreferences(preferences);
-      
+
       expect(config.accessibility.highContrast).toBe(true);
       expect(config.performance.disableComplex).toBe(true);
     });
@@ -161,7 +161,7 @@ describe("Global Animation Configuration", () => {
       };
 
       const validated = validateConfig(invalidConfig);
-      
+
       expect(validated.performance.maxFPS).toBe(60); // Should be fixed
       expect(validated.enabled).toBe(false); // Should be converted to boolean
     });
@@ -176,7 +176,7 @@ describe("Global Animation Configuration", () => {
       };
 
       const validated = validateConfig(validConfig);
-      
+
       expect(validated.enabled).toBe(true);
       expect(validated.performance.enabled).toBe(true);
       expect(validated.performance.maxFPS).toBe(30);
@@ -194,7 +194,7 @@ describe("Global Animation Configuration", () => {
       };
 
       const merged = mergeConfigs(base, override);
-      
+
       expect(merged.enabled).toBe(false);
       expect(merged.performance.enabled).toBe(true);
       expect(merged.performance.maxFPS).toBe(base.performance.maxFPS); // Should preserve base value
@@ -324,10 +324,7 @@ describe("Global Animation Control System", () => {
       forcedColors: "none" as const,
     };
 
-    controlSystem = new GlobalAnimationControlSystem(
-      DEFAULT_GLOBAL_ANIMATION_CONFIG,
-      mockPreferences
-    );
+    controlSystem = new GlobalAnimationControlSystem(DEFAULT_GLOBAL_ANIMATION_CONFIG, mockPreferences);
   });
 
   describe("Configuration Management", () => {
@@ -339,7 +336,7 @@ describe("Global Animation Control System", () => {
     it("should update configuration", () => {
       const newConfig = { enabled: false };
       controlSystem.updateConfig(newConfig);
-      
+
       const config = controlSystem.getConfig();
       expect(config.enabled).toBe(false);
     });
@@ -347,7 +344,7 @@ describe("Global Animation Control System", () => {
     it("should reset configuration", () => {
       controlSystem.updateConfig({ enabled: false });
       controlSystem.resetConfig();
-      
+
       const config = controlSystem.getConfig();
       expect(config.enabled).toBe(true);
     });
@@ -356,7 +353,7 @@ describe("Global Animation Control System", () => {
   describe("State Management", () => {
     it("should get current state", () => {
       const state = controlSystem.getState();
-      
+
       expect(state.config).toBeDefined();
       expect(state.isDisabled).toBe(false);
       expect(state.performanceMode).toBe(false);
@@ -366,7 +363,7 @@ describe("Global Animation Control System", () => {
 
     it("should update state when configuration changes", () => {
       controlSystem.updateConfig({ enabled: false });
-      
+
       const state = controlSystem.getState();
       expect(state.isDisabled).toBe(true);
       expect(state.animationEngine).toBe("disabled");
@@ -377,27 +374,27 @@ describe("Global Animation Control System", () => {
     it("should enable/disable animations", () => {
       controlSystem.setEnabled(false);
       expect(controlSystem.getConfig().enabled).toBe(false);
-      
+
       controlSystem.setEnabled(true);
       expect(controlSystem.getConfig().enabled).toBe(true);
     });
 
     it("should toggle performance mode", () => {
       expect(controlSystem.getConfig().performance.enabled).toBe(false);
-      
+
       controlSystem.togglePerformanceMode();
       expect(controlSystem.getConfig().performance.enabled).toBe(true);
-      
+
       controlSystem.togglePerformanceMode();
       expect(controlSystem.getConfig().performance.enabled).toBe(false);
     });
 
     it("should toggle accessibility mode", () => {
       expect(controlSystem.getConfig().accessibility.highContrast).toBe(false);
-      
+
       controlSystem.toggleAccessibilityMode();
       expect(controlSystem.getConfig().accessibility.highContrast).toBe(true);
-      
+
       controlSystem.toggleAccessibilityMode();
       expect(controlSystem.getConfig().accessibility.highContrast).toBe(false);
     });
@@ -406,10 +403,10 @@ describe("Global Animation Control System", () => {
   describe("Package Management", () => {
     it("should register and check package availability", () => {
       expect(controlSystem.checkPackageAvailability("test-package")).toBe(false);
-      
+
       controlSystem.registerPackage("test-package");
       expect(controlSystem.checkPackageAvailability("test-package")).toBe(true);
-      
+
       controlSystem.unregisterPackage("test-package");
       expect(controlSystem.checkPackageAvailability("test-package")).toBe(false);
     });
@@ -418,31 +415,31 @@ describe("Global Animation Control System", () => {
   describe("Testing Utilities", () => {
     it("should mock system preferences", () => {
       const testing = controlSystem.getTesting();
-      
+
       testing.mockSystemPreferences({ prefersReducedMotion: true });
-      
+
       const state = controlSystem.getState();
       expect(state.systemPreferences.prefersReducedMotion).toBe(true);
     });
 
     it("should mock package availability", () => {
       const testing = controlSystem.getTesting();
-      
+
       testing.mockPackageAvailability("test-package", true);
       expect(controlSystem.checkPackageAvailability("test-package")).toBe(true);
-      
+
       testing.mockPackageAvailability("test-package", false);
       expect(controlSystem.checkPackageAvailability("test-package")).toBe(false);
     });
 
     it("should reset mocks", () => {
       const testing = controlSystem.getTesting();
-      
+
       testing.mockSystemPreferences({ prefersReducedMotion: true });
       testing.mockPackageAvailability("test-package", true);
-      
+
       testing.resetMocks();
-      
+
       const state = controlSystem.getState();
       expect(state.systemPreferences.prefersReducedMotion).toBe(false);
       expect(controlSystem.checkPackageAvailability("test-package")).toBe(false);

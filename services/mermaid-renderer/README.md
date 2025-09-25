@@ -70,19 +70,19 @@ curl -X POST "http://localhost:8000/validate" \
 
 ### Endpoints
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/health` | GET | Health check |
-| `/info` | GET | Service information |
-| `/themes` | GET | Available themes |
-| `/render/svg` | POST | Render to SVG |
-| `/render/png` | POST | Render to PNG |
-| `/render/pdf` | POST | Render to PDF |
-| `/validate` | POST | Validate diagram |
-| `/stats` | POST | Get diagram statistics |
-| `/save/svg` | POST | Save as SVG file |
-| `/save/png` | POST | Save as PNG file |
-| `/save/pdf` | POST | Save as PDF file |
+| Endpoint      | Method | Description            |
+| ------------- | ------ | ---------------------- |
+| `/health`     | GET    | Health check           |
+| `/info`       | GET    | Service information    |
+| `/themes`     | GET    | Available themes       |
+| `/render/svg` | POST   | Render to SVG          |
+| `/render/png` | POST   | Render to PNG          |
+| `/render/pdf` | POST   | Render to PDF          |
+| `/validate`   | POST   | Validate diagram       |
+| `/stats`      | POST   | Get diagram statistics |
+| `/save/svg`   | POST   | Save as SVG file       |
+| `/save/png`   | POST   | Save as PNG file       |
+| `/save/pdf`   | POST   | Save as PDF file       |
 
 ### Request Models
 
@@ -255,4 +255,4 @@ Contributions are welcome! Please follow the Reynard coding standards and submit
 
 ---
 
-*Built with 🦊 Reynard precision and 🎨 artistic flair*
+_Built with 🦊 Reynard precision and 🎨 artistic flair_

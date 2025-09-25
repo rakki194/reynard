@@ -7,11 +7,14 @@ import { For, Show } from "solid-js";
 
 interface EmbeddingMethodSelectorProps {
   availableMethods?: {
-    methods: Record<string, {
-      name: string;
-      description?: string;
-      parameters?: Record<string, any>;
-    }>;
+    methods: Record<
+      string,
+      {
+        name: string;
+        description?: string;
+        parameters?: Record<string, any>;
+      }
+    >;
   };
   reductionMethod?: string;
   onMethodChange?: (method: string) => void;

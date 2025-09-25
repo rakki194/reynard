@@ -1,6 +1,6 @@
 /**
  * 🦊 Simple No-Op Animation Engine
- * 
+ *
  * Does absolutely nothing. Just calls callbacks immediately.
  * No performance monitoring, no state tracking, no bullshit.
  */

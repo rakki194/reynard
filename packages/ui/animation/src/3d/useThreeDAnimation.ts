@@ -1,19 +1,19 @@
 /**
  * 🦊 3D Animation Composable
- * 
+ *
  * SolidJS composable for 3D animations with smart imports and fallbacks.
  * Integrates with the unified animation system.
  */
 
 import { createSignal, createMemo, onCleanup } from "solid-js";
-import type { 
+import type {
   EmbeddingPoint,
   ClusterAnimationOptions,
   PointAnimationOptions,
   CameraAnimationOptions,
   ThreeDAnimationState,
   UseThreeDAnimationReturn,
-  EasingType
+  EasingType,
 } from "./ThreeDAnimationTypes.js";
 import { getThreeDAnimationSystem } from "./ThreeDAnimationSystem.js";
 
@@ -54,7 +54,7 @@ export function useThreeDAnimation(options: UseThreeDAnimationOptions = {}): Use
   // Enhanced animation controls with reactive state
   const enhancedControls = {
     ...controls,
-    
+
     createClusterAnimation: async (options: ClusterAnimationOptions) => {
       const enhancedOptions = {
         ...options,
@@ -66,7 +66,7 @@ export function useThreeDAnimation(options: UseThreeDAnimationOptions = {}): Use
       };
 
       await controls.createClusterAnimation(enhancedOptions);
-      
+
       // Update local state for reactivity
       setLocalClusterAnimations(prev => [...prev, ...options.points]);
     },
@@ -82,7 +82,7 @@ export function useThreeDAnimation(options: UseThreeDAnimationOptions = {}): Use
       };
 
       await controls.createPointAnimation(enhancedOptions);
-      
+
       // Update local state for reactivity
       setLocalPointAnimations(prev => [...prev, ...options.targetPoints]);
     },
@@ -114,13 +114,15 @@ export function useThreeDAnimation(options: UseThreeDAnimationOptions = {}): Use
   };
 
   // Reactive animation state
-  const reactiveState = createMemo((): ThreeDAnimationState => ({
-    pointAnimations: [], // Would need to track from system
-    clusterAnimations: [], // Would need to track from system
-    cameraAnimations: [], // Would need to track from system
-    isAnimationsDisabled: state.isAnimationsDisabled(),
-    animationEngine: state.animationEngine(),
-  }));
+  const reactiveState = createMemo(
+    (): ThreeDAnimationState => ({
+      pointAnimations: [], // Would need to track from system
+      clusterAnimations: [], // Would need to track from system
+      cameraAnimations: [], // Would need to track from system
+      isAnimationsDisabled: state.isAnimationsDisabled(),
+      animationEngine: state.animationEngine(),
+    })
+  );
 
   // Cleanup on unmount
   onCleanup(() => {
@@ -141,7 +143,7 @@ export function useThreeDAnimation(options: UseThreeDAnimationOptions = {}): Use
  */
 export function useClusterAnimation(options: UseThreeDAnimationOptions = {}) {
   const threeDAnimation = useThreeDAnimation(options);
-  
+
   return {
     ...threeDAnimation,
     createClusterAnimation: threeDAnimation.controls.createClusterAnimation,
@@ -157,7 +159,7 @@ export function useClusterAnimation(options: UseThreeDAnimationOptions = {}) {
  */
 export function usePointAnimation(options: UseThreeDAnimationOptions = {}) {
   const threeDAnimation = useThreeDAnimation(options);
-  
+
   return {
     ...threeDAnimation,
     createPointAnimation: threeDAnimation.controls.createPointAnimation,
@@ -173,7 +175,7 @@ export function usePointAnimation(options: UseThreeDAnimationOptions = {}) {
  */
 export function useCameraAnimation(options: UseThreeDAnimationOptions = {}) {
   const threeDAnimation = useThreeDAnimation(options);
-  
+
   return {
     ...threeDAnimation,
     createCameraAnimation: threeDAnimation.controls.createCameraAnimation,
@@ -189,7 +191,7 @@ export function useCameraAnimation(options: UseThreeDAnimationOptions = {}) {
  */
 export function useThreeDVisualization(options: UseThreeDAnimationOptions = {}) {
   const threeDAnimation = useThreeDAnimation(options);
-  
+
   return {
     ...threeDAnimation,
     // Additional visualization-specific methods would go here

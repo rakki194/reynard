@@ -2,7 +2,7 @@
  * Cache manager for the Dynamic Enum System
  */
 
-import type { CacheEntry, CacheConfig, EnumData } from '../types/EnumTypes';
+import type { CacheEntry, CacheConfig, EnumData } from "../types/EnumTypes";
 
 /**
  * Cache manager for storing and retrieving enum data
@@ -22,7 +22,7 @@ export class CacheManager {
    */
   get<T = EnumData>(key: string): T | null {
     const entry = this.cache.get(key);
-    
+
     if (!entry) {
       return null;
     }
@@ -48,7 +48,7 @@ export class CacheManager {
       data: data as any,
       created: Date.now(),
       lastAccessed: Date.now(),
-      accessCount: 0
+      accessCount: 0,
     };
 
     this.cache.set(key, entry);
@@ -89,7 +89,7 @@ export class CacheManager {
   } {
     const entries = Array.from(this.cache.values());
     const now = Date.now();
-    
+
     let totalAccesses = 0;
     let totalAge = 0;
     let oldestEntry = 0;
@@ -98,11 +98,11 @@ export class CacheManager {
     for (const entry of entries) {
       totalAccesses += entry.accessCount;
       totalAge += now - entry.created;
-      
+
       if (oldestEntry === 0 || entry.created < oldestEntry) {
         oldestEntry = entry.created;
       }
-      
+
       if (entry.created > newestEntry) {
         newestEntry = entry.created;
       }
@@ -114,7 +114,7 @@ export class CacheManager {
       totalAccesses,
       averageAge: entries.length > 0 ? totalAge / entries.length : 0,
       oldestEntry,
-      newestEntry
+      newestEntry,
     };
   }
 
@@ -128,7 +128,7 @@ export class CacheManager {
     isExpired: boolean;
   } | null {
     const entry = this.cache.get(key);
-    
+
     if (!entry) {
       return null;
     }
@@ -140,7 +140,7 @@ export class CacheManager {
       exists: true,
       age: now - entry.created,
       accessCount: entry.accessCount,
-      isExpired
+      isExpired,
     };
   }
 
@@ -152,7 +152,7 @@ export class CacheManager {
     const expiredKeys: string[] = [];
 
     for (const [key, entry] of Array.from(this.cache.entries())) {
-      if (this.isExpired(entry) || (now - entry.lastAccessed) > this.config.maxAge) {
+      if (this.isExpired(entry) || now - entry.lastAccessed > this.config.maxAge) {
         expiredKeys.push(key);
       }
     }
@@ -194,7 +194,7 @@ export class CacheManager {
    */
   private isExpired(entry: CacheEntry): boolean {
     const now = Date.now();
-    return (now - entry.created) > this.config.ttl;
+    return now - entry.created > this.config.ttl;
   }
 
   /**
@@ -223,7 +223,7 @@ export class CacheManager {
    */
   updateConfig(newConfig: Partial<CacheConfig>): void {
     this.config = { ...this.config, ...newConfig };
-    
+
     // Restart cleanup with new interval
     if (newConfig.cleanupInterval) {
       this.startCleanup();

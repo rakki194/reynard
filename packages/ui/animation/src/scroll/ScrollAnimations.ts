@@ -1,22 +1,22 @@
 /**
  * 🦊 Scroll Animations
- * 
+ *
  * Parallax scrolling effects, reveal animations, and progress-based animations
  */
 
-import { ScrollObserver, globalScrollObserver } from './ScrollObserver';
-import { createSimpleAnimation } from '../utils/SimplifiedAnimationLoop';
-import type { EasingType } from '../types';
+import { ScrollObserver, globalScrollObserver } from "./ScrollObserver";
+import { createSimpleAnimation } from "../utils/SimplifiedAnimationLoop";
+import type { EasingType } from "../types";
 
 export interface ParallaxOptions {
   speed: number; // 0 = no movement, 1 = same as scroll, >1 = faster
-  direction?: 'vertical' | 'horizontal' | 'both';
+  direction?: "vertical" | "horizontal" | "both";
   offset?: number;
   easing?: EasingType;
 }
 
 export interface RevealOptions {
-  direction?: 'up' | 'down' | 'left' | 'right' | 'fade';
+  direction?: "up" | "down" | "left" | "right" | "fade";
   distance?: number;
   duration?: number;
   easing?: EasingType;
@@ -47,15 +47,10 @@ export class ScrollAnimations {
    * Create parallax scrolling effect
    */
   createParallax(element: HTMLElement, options: ParallaxOptions): () => void {
-    const {
-      speed,
-      direction = 'vertical',
-      offset = 0,
-      easing = 'linear',
-    } = options;
+    const { speed, direction = "vertical", offset = 0, easing = "linear" } = options;
 
     let isActive = true;
-    let initialTransform = '';
+    let initialTransform = "";
 
     const updateParallax = (progress: number) => {
       if (!isActive) return;
@@ -64,29 +59,29 @@ export class ScrollAnimations {
       const elementRect = element.getBoundingClientRect();
       const elementTop = elementRect.top + scrollY;
       const viewportHeight = window.innerHeight;
-      
+
       // Calculate parallax offset
       const parallaxOffset = (scrollY - elementTop + viewportHeight) * speed + offset;
-      
-      let transform = '';
-      
-      if (direction === 'vertical' || direction === 'both') {
+
+      let transform = "";
+
+      if (direction === "vertical" || direction === "both") {
         transform += `translateY(${parallaxOffset}px) `;
       }
-      
-      if (direction === 'horizontal' || direction === 'both') {
+
+      if (direction === "horizontal" || direction === "both") {
         transform += `translateX(${parallaxOffset}px) `;
       }
-      
+
       element.style.transform = transform.trim();
     };
 
     // Set initial transform
     initialTransform = element.style.transform;
-    
+
     // Observe element for scroll progress
     this.observer.observe(element, {
-      onProgress: (progress) => {
+      onProgress: progress => {
         updateParallax(progress);
       },
     });
@@ -108,64 +103,64 @@ export class ScrollAnimations {
    */
   createReveal(element: HTMLElement, options: RevealOptions): () => void {
     const {
-      direction = 'up',
+      direction = "up",
       distance = 50,
       duration = 600,
-      easing = 'easeOutCubic',
+      easing = "easeOutCubic",
       delay = 0,
       triggerOnce = true,
     } = options;
 
     let isRevealed = false;
     let isAnimating = false;
-    let initialTransform = '';
-    let initialOpacity = '';
+    let initialTransform = "";
+    let initialOpacity = "";
 
     // Set initial state
     const setInitialState = () => {
       initialTransform = element.style.transform;
       initialOpacity = element.style.opacity;
-      
-      let hiddenTransform = '';
-      let hiddenOpacity = '0';
-      
+
+      let hiddenTransform = "";
+      let hiddenOpacity = "0";
+
       switch (direction) {
-        case 'up':
+        case "up":
           hiddenTransform = `translateY(${distance}px)`;
           break;
-        case 'down':
+        case "down":
           hiddenTransform = `translateY(-${distance}px)`;
           break;
-        case 'left':
+        case "left":
           hiddenTransform = `translateX(${distance}px)`;
           break;
-        case 'right':
+        case "right":
           hiddenTransform = `translateX(-${distance}px)`;
           break;
-        case 'fade':
-          hiddenOpacity = '0';
+        case "fade":
+          hiddenOpacity = "0";
           break;
       }
-      
+
       element.style.transform = hiddenTransform;
       element.style.opacity = hiddenOpacity;
     };
 
     const reveal = () => {
       if (isRevealed || isAnimating) return;
-      
+
       isAnimating = true;
-      
+
       setTimeout(() => {
         createSimpleAnimation(
           duration,
           easing,
-          (progress) => {
-            if (direction === 'fade') {
+          progress => {
+            if (direction === "fade") {
               element.style.opacity = progress.toString();
             } else {
               element.style.transform = initialTransform;
-              element.style.opacity = '1';
+              element.style.opacity = "1";
             }
           },
           () => {
@@ -203,48 +198,48 @@ export class ScrollAnimations {
    * Create progress-based animation
    */
   createProgressAnimation(element: HTMLElement, options: ProgressAnimationOptions): () => void {
-    const { properties, easing = 'linear' } = options;
-    
+    const { properties, easing = "linear" } = options;
+
     let isActive = true;
 
     const updateProgress = (progress: number) => {
       if (!isActive) return;
 
       const transforms: string[] = [];
-      
+
       if (properties.translateX) {
         const x = properties.translateX(progress);
         transforms.push(`translateX(${x}px)`);
       }
-      
+
       if (properties.translateY) {
         const y = properties.translateY(progress);
         transforms.push(`translateY(${y}px)`);
       }
-      
+
       if (properties.scale) {
         const scale = properties.scale(progress);
         transforms.push(`scale(${scale})`);
       }
-      
+
       if (properties.rotate) {
         const rotate = properties.rotate(progress);
         transforms.push(`rotate(${rotate}deg)`);
       }
-      
+
       if (properties.opacity) {
         const opacity = properties.opacity(progress);
         element.style.opacity = opacity.toString();
       }
-      
+
       if (transforms.length > 0) {
-        element.style.transform = transforms.join(' ');
+        element.style.transform = transforms.join(" ");
       }
     };
 
     // Observe element for scroll progress
     this.observer.observe(element, {
-      onProgress: (progress) => {
+      onProgress: progress => {
         updateProgress(progress);
       },
     });
@@ -252,8 +247,8 @@ export class ScrollAnimations {
     // Store cleanup function
     const cleanup = () => {
       isActive = false;
-      element.style.transform = '';
-      element.style.opacity = '';
+      element.style.transform = "";
+      element.style.opacity = "";
       this.observer.unobserve(element);
       this.elements.delete(element);
     };
@@ -265,20 +260,17 @@ export class ScrollAnimations {
   /**
    * Create scroll-triggered animation sequence
    */
-  createSequence(elements: HTMLElement[], options: {
-    stagger?: number;
-    direction?: 'up' | 'down' | 'left' | 'right' | 'fade';
-    distance?: number;
-    duration?: number;
-    easing?: EasingType;
-  }): () => void {
-    const {
-      stagger = 100,
-      direction = 'up',
-      distance = 50,
-      duration = 600,
-      easing = 'easeOutCubic',
-    } = options;
+  createSequence(
+    elements: HTMLElement[],
+    options: {
+      stagger?: number;
+      direction?: "up" | "down" | "left" | "right" | "fade";
+      distance?: number;
+      duration?: number;
+      easing?: EasingType;
+    }
+  ): () => void {
+    const { stagger = 100, direction = "up", distance = 50, duration = 600, easing = "easeOutCubic" } = options;
 
     const cleanups: (() => void)[] = [];
 

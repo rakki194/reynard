@@ -14,13 +14,13 @@ export interface RAGModalManagerProps {
   // Modal states
   fileModalState: () => FileModalState;
   setFileModalState: (state: FileModalState) => void;
-  
+
   imageModalState: () => ImageModalState;
   setImageModalState: (state: ImageModalState) => void;
-  
+
   threeDModalState: () => ThreeDModalState;
   setThreeDModalState: (state: ThreeDModalState) => void;
-  
+
   // Handlers
   onFileModalClose: () => void;
   onImageModalClose: () => void;

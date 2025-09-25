@@ -20,10 +20,7 @@ vi.mock("../tsconfigGenerator.js", () => ({
         },
         include: ["packages/**/*"],
         exclude: ["**/*.test.ts"],
-        references: [
-          { path: "packages/core/core" },
-          { path: "packages/ui/components" },
-        ],
+        references: [{ path: "packages/core/core" }, { path: "packages/ui/components" }],
       },
       projectsGenerated: 2,
       errors: [],
@@ -44,7 +41,7 @@ describe("CLI", () => {
     if (existsSync(testBackupPath)) {
       unlinkSync(testBackupPath);
     }
-    
+
     vi.clearAllMocks();
   });
 
@@ -154,8 +151,12 @@ describe("CLI", () => {
 
       expect(result).toContain("📦 Backed up existing file to:");
       // Check that a backup file exists (with timestamp in name)
-      const backupDir = '.catalyst-backups';
-      const backupFiles = require('fs').existsSync(backupDir) ? require('fs').readdirSync(backupDir).filter((f: string) => f.includes('.backup.')) : [];
+      const backupDir = ".catalyst-backups";
+      const backupFiles = require("fs").existsSync(backupDir)
+        ? require("fs")
+            .readdirSync(backupDir)
+            .filter((f: string) => f.includes(".backup."))
+        : [];
       expect(backupFiles.length).toBeGreaterThan(0);
     });
 

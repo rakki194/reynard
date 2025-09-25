@@ -8,7 +8,9 @@ import { Icon } from "reynard-components-core";
 export const SearchHistoryEmpty = (props: any) => {
   return (
     <div class="history-empty">
-      <div class="empty-icon"><Icon name="history" /></div>
+      <div class="empty-icon">
+        <Icon name="history" />
+      </div>
       <p>No search history found</p>
       <Show when={props.hasFilters}>
         <p>Try adjusting your filters</p>

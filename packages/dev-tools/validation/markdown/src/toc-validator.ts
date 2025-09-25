@@ -286,25 +286,27 @@ Content here.
 Content here.`;
 
       const analysis = this.analyzeToC(testContent);
-      
+
       if (analysis.hasConflict) {
         this.logger?.success("✅ Conflict detection test passed - conflicts detected as expected");
         return {
           success: true,
-          fixes: [`Detected ${analysis.tocCount} ToC sections and ${analysis.duplicates.length} duplicate entries`]
+          fixes: [`Detected ${analysis.tocCount} ToC sections and ${analysis.duplicates.length} duplicate entries`],
         };
       } else {
         this.logger?.error("❌ Conflict detection test failed - no conflicts detected");
         return {
           success: false,
-          error: "Expected conflicts but none were detected"
+          error: "Expected conflicts but none were detected",
         };
       }
     } catch (error) {
-      this.logger?.error(`❌ Conflict detection test failed: ${error instanceof Error ? error.message : String(error)}`);
+      this.logger?.error(
+        `❌ Conflict detection test failed: ${error instanceof Error ? error.message : String(error)}`
+      );
       return {
         success: false,
-        error: error instanceof Error ? error.message : String(error)
+        error: error instanceof Error ? error.message : String(error),
       };
     }
   }

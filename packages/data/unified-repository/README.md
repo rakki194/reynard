@@ -18,7 +18,7 @@ graph TB
         A --> F[Embedding System]
         A --> G[Metadata System]
         A --> H[API Layer]
-        
+
         subgraph "📊 Dataset Management"
             B --> B1[Dataset Service]
             B --> B2[Dataset CRUD]
@@ -37,7 +37,7 @@ graph TB
             B4 --> B4B[Size Statistics]
             B4 --> B4C[Modality Counts]
         end
-        
+
         subgraph "📁 File Management"
             C --> C1[File Service]
             C --> C2[File Processing]
@@ -57,7 +57,7 @@ graph TB
             C4 --> C4C[Document Files]
             C4 --> C4D[Code Files]
         end
-        
+
         subgraph "🔍 Search System"
             D --> D1[Search Service]
             D --> D2[Vector Search]
@@ -76,7 +76,7 @@ graph TB
             D4 --> D4B[Modality Filtering]
             D4 --> D4C[Unified Results]
         end
-        
+
         subgraph "📝 Versioning System"
             E --> E1[Versioning Service]
             E --> E2[Version Control]
@@ -92,7 +92,7 @@ graph TB
             E4 --> E4A[Change Detection]
             E4 --> E4B[Change Logging]
         end
-        
+
         subgraph "🧠 Embedding System"
             F --> F1[Embedding Service]
             F --> F2[Vector Generation]
@@ -108,7 +108,7 @@ graph TB
             F4 --> F4A[Similarity Search]
             F4 --> F4B[Vector Retrieval]
         end
-        
+
         subgraph "📋 Metadata System"
             G --> G1[Metadata Service]
             G --> G2[Metadata Extraction]
@@ -124,7 +124,7 @@ graph TB
             G4 --> G4A[Metadata Queries]
             G4 --> G4B[Metadata Filtering]
         end
-        
+
         subgraph "🌐 API Layer"
             H --> H1[REST API]
             H --> H2[GraphQL API]
@@ -139,7 +139,7 @@ graph TB
             H4 --> H4A[OpenAPI Spec]
             H4 --> H4B[API Examples]
         end
-        
+
         subgraph "🗃️ Data Storage"
             I[Storage Layer] --> I1[PostgreSQL]
             I --> I2[pgvector]
@@ -154,7 +154,7 @@ graph TB
             I4 --> I4A[Search Cache]
             I4 --> I4B[Metadata Cache]
         end
-        
+
         subgraph "🔧 Service Integration"
             J[External Services] --> J1[File Processing]
             J --> J2[RAG System]
@@ -169,7 +169,7 @@ graph TB
             J4 --> J4A[Base Repository]
             J4 --> J4B[Core Services]
         end
-        
+
         subgraph "📊 Supported Formats"
             K[File Formats] --> K1[Data Formats]
             K --> K2[Media Formats]
@@ -186,7 +186,7 @@ graph TB
             K4 --> K4B[Syntax Highlighting]
         end
     end
-    
+
     subgraph "🌐 External Integration"
         L[PostgreSQL + pgvector] --> L1[Vector Database]
         L --> L2[Relational Database]
@@ -197,7 +197,7 @@ graph TB
         O[Multimodal System] --> O1[Cross-Modal Processing]
         O --> O2[Unified Representations]
     end
-    
+
     A -->|Orchestrates| P[Multimodal Data Ecosystem]
     B -->|Manages| Q[Dataset Lifecycle]
     C -->|Handles| R[File Operations]
@@ -220,7 +220,7 @@ sequenceDiagram
     participant Search as Search Service
     participant Embedding as Embedding Service
     participant Storage as Storage Layer
-    
+
     Note over Client, Storage: Dataset Creation & File Ingestion
     Client->>API: Create Dataset Request
     API->>Repo: createDataset()
@@ -230,7 +230,7 @@ sequenceDiagram
     Dataset-->>Repo: Dataset Object
     Repo-->>API: Dataset Response
     API-->>Client: Dataset Created
-    
+
     Note over Client, Storage: File Ingestion
     Client->>API: Ingest Files Request
     API->>Repo: ingestFiles()
@@ -244,7 +244,7 @@ sequenceDiagram
     File-->>Repo: Ingestion Result
     Repo-->>API: Ingestion Response
     API-->>Client: Files Ingested
-    
+
     Note over Client, Storage: Multimodal Search
     Client->>API: Search Request
     API->>Repo: search()
@@ -257,7 +257,7 @@ sequenceDiagram
     Search-->>Repo: Search Results
     Repo-->>API: Search Response
     API-->>Client: Search Results
-    
+
     Note over Client, Storage: Version Management
     Client->>API: Create Version Request
     API->>Repo: createVersion()
@@ -274,33 +274,33 @@ sequenceDiagram
 ```mermaid
 flowchart TD
     A[Client Request] --> B{Request Type?}
-    
+
     B -->|Dataset| C[Dataset Service]
     B -->|File| D[File Service]
     B -->|Search| E[Search Service]
     B -->|Version| F[Versioning Service]
     B -->|Embedding| G[Embedding Service]
     B -->|Metadata| H[Metadata Service]
-    
+
     C --> I[Service Processing]
     D --> I
     E --> I
     F --> I
     G --> I
     H --> I
-    
+
     I --> J[Data Validation]
     J --> K[Business Logic]
     K --> L[Storage Operations]
     L --> M[Response Generation]
     M --> N[Client Response]
-    
+
     subgraph "Service Processing"
         O[Service Layer] --> O1[Input Validation]
         O --> O2[Authentication]
         O --> O3[Authorization]
         O --> O4[Rate Limiting]
-        
+
         O1 --> O1A[Schema Validation]
         O1 --> O1B[Type Checking]
         O2 --> O2A[User Authentication]
@@ -310,13 +310,13 @@ flowchart TD
         O4 --> O4A[Request Throttling]
         O4 --> O4B[Quota Management]
     end
-    
+
     subgraph "Storage Operations"
         P[Storage Layer] --> P1[Database Operations]
         P --> P2[File Operations]
         P --> P3[Vector Operations]
         P --> P4[Cache Operations]
-        
+
         P1 --> P1A[CRUD Operations]
         P1 --> P1B[Transaction Management]
         P2 --> P2A[File Storage]
@@ -335,27 +335,27 @@ graph TB
     subgraph "🔄 Multimodal Processing Pipeline"
         A[File Input] --> B[File Type Detection]
         B --> C{File Type?}
-        
+
         C -->|Data| D[Data Processing]
         C -->|Media| E[Media Processing]
         C -->|Document| F[Document Processing]
         C -->|Code| G[Code Processing]
-        
+
         D --> H[Schema Inference]
         E --> I[Media Analysis]
         F --> J[Content Extraction]
         G --> K[Syntax Analysis]
-        
+
         H --> L[Metadata Extraction]
         I --> L
         J --> L
         K --> L
-        
+
         L --> M[Embedding Generation]
         M --> N[Vector Storage]
         N --> O[Index Creation]
         O --> P[Search Integration]
-        
+
         subgraph "Data Processing"
             D --> D1[Parquet Analysis]
             D --> D2[Column Analysis]
@@ -367,7 +367,7 @@ graph TB
             D3 --> D3A[Summary Statistics]
             D3 --> D3B[Data Distribution]
         end
-        
+
         subgraph "Media Processing"
             E --> E1[Image Analysis]
             E --> E2[Video Analysis]
@@ -379,7 +379,7 @@ graph TB
             E3 --> E3A[Audio Features]
             E3 --> E3B[Transcription]
         end
-        
+
         subgraph "Document Processing"
             F --> F1[Text Extraction]
             F --> F2[Structure Analysis]
@@ -391,7 +391,7 @@ graph TB
             F3 --> F3A[Topic Analysis]
             F3 --> F3B[Entity Extraction]
         end
-        
+
         subgraph "Code Processing"
             G --> G1[Syntax Highlighting]
             G --> G2[Symbol Extraction]
@@ -403,7 +403,7 @@ graph TB
             G3 --> G3A[Complexity Analysis]
             G3 --> G3B[Dependency Analysis]
         end
-        
+
         subgraph "Embedding Generation"
             M --> M1[Text Embeddings]
             M --> M2[Image Embeddings]

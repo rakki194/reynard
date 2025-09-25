@@ -17,10 +17,7 @@ export class LintingStatusBar {
   private currentStatus: StatusType = "inactive";
 
   constructor() {
-    this.statusBarItem = vscode.window.createStatusBarItem(
-      vscode.StatusBarAlignment.Right,
-      100
-    );
+    this.statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
     this.statusBarItem.command = "reynard-linting.toggle";
     this.statusBarItem.show();
   }
@@ -30,10 +27,10 @@ export class LintingStatusBar {
    */
   updateStatus(status: StatusType, message: string): void {
     this.currentStatus = status;
-    
+
     const icon = this.getStatusIcon(status);
     const color = this.getStatusColor(status);
-    
+
     this.statusBarItem.text = `${icon} ${message}`;
     this.statusBarItem.color = color;
     this.statusBarItem.tooltip = this.getStatusTooltip(status, message);
@@ -80,7 +77,7 @@ export class LintingStatusBar {
    */
   private getStatusTooltip(status: StatusType, message: string): string {
     const baseTooltip = "Reynard Incremental Linting";
-    
+
     switch (status) {
       case "active":
         return `${baseTooltip} - Active\nClick to stop`;

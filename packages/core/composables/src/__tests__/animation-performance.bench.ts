@@ -1,17 +1,17 @@
 /**
  * 🦊 Animation Performance Benchmarks
- * 
+ *
  * Performance benchmarks for the animation system including:
  * - Fallback vs full animations
  * - Bundle size impact
  * - Performance mode benefits
  * - Memory usage comparisons
- * 
+ *
  * @author Agile-Prime-90 (Reynard Lizard Specialist)
  * @since 1.0.0
  */
 
-import { describe, beforeEach, afterEach, it, expect, bench } from 'vitest';
+import { describe, beforeEach, afterEach, it, expect, bench } from "vitest";
 import { createSignal } from "solid-js";
 
 // Mock the animation control hook
@@ -92,7 +92,7 @@ describe("Animation Performance Benchmarks", () => {
     // Simulate CSS transition
     testElement.style.transition = "opacity 0.3s ease";
     testElement.style.opacity = "1";
-    
+
     // Wait for transition
     await new Promise(resolve => setTimeout(resolve, 300));
   });
@@ -104,7 +104,7 @@ describe("Animation Performance Benchmarks", () => {
       el.style.transitionDelay = `${index * 0.1}s`;
       el.style.opacity = "1";
     });
-    
+
     // Wait for all transitions
     await new Promise(resolve => setTimeout(resolve, 300 + testElements.length * 100));
   });
@@ -116,12 +116,10 @@ describe("Animation Performance Benchmarks", () => {
       isPerformanceMode: false,
       isAccessibilityMode: false,
     };
-    
+
     // Simulate state checks
     for (let i = 0; i < 1000; i++) {
-      const shouldAnimate = !state.isAnimationsDisabled && 
-                           !state.isPerformanceMode && 
-                           !state.isAccessibilityMode;
+      const shouldAnimate = !state.isAnimationsDisabled && !state.isPerformanceMode && !state.isAccessibilityMode;
     }
   });
 
@@ -140,7 +138,7 @@ describe("Animation Performance Benchmarks", () => {
   bench("CSS Class Management", () => {
     // Simulate CSS class management overhead
     const root = document.documentElement;
-    
+
     for (let i = 0; i < 1000; i++) {
       root.classList.toggle("animations-disabled", i % 2 === 0);
       root.classList.toggle("performance-mode", i % 3 === 0);
@@ -151,7 +149,7 @@ describe("Animation Performance Benchmarks", () => {
   bench("Memory Allocation - Animation Objects", () => {
     // Simulate memory allocation for animation objects
     const animations = [];
-    
+
     for (let i = 0; i < 1000; i++) {
       animations.push({
         id: i,
@@ -162,7 +160,7 @@ describe("Animation Performance Benchmarks", () => {
         delay: 0,
       });
     }
-    
+
     // Clean up
     animations.length = 0;
   });
@@ -170,7 +168,7 @@ describe("Animation Performance Benchmarks", () => {
   bench("Memory Allocation - Fallback Objects", () => {
     // Simulate memory allocation for fallback objects
     const fallbacks = [];
-    
+
     for (let i = 0; i < 1000; i++) {
       fallbacks.push({
         id: i,
@@ -180,7 +178,7 @@ describe("Animation Performance Benchmarks", () => {
         immediate: false,
       });
     }
-    
+
     // Clean up
     fallbacks.length = 0;
   });
@@ -197,7 +195,7 @@ describe("Bundle Size Impact Analysis", () => {
       useIsPerformanceMode: () => ({}),
       useIsAccessibilityMode: () => ({}),
     };
-    
+
     // Simulate size calculation
     const size = JSON.stringify(controlSystem).length;
   });
@@ -210,7 +208,7 @@ describe("Bundle Size Impact Analysis", () => {
       ".accessibility-mode * { animation: none !important; }",
       "@media (prefers-reduced-motion: reduce) { * { animation: none !important; } }",
     ];
-    
+
     const totalSize = cssRules.join("").length;
   });
 });
@@ -223,7 +221,7 @@ describe("Performance Mode Benefits", () => {
       el.style.opacity = "0";
       return el;
     });
-    
+
     // Immediate completion (performance mode)
     elements.forEach(el => {
       el.style.opacity = "1";
@@ -238,7 +236,7 @@ describe("Performance Mode Benefits", () => {
       el.style.transition = "opacity 0.1s linear";
       return el;
     });
-    
+
     // Fast transitions (performance mode)
     elements.forEach(el => {
       el.style.opacity = "1";
@@ -253,7 +251,7 @@ describe("Performance Mode Benefits", () => {
       el.style.transition = "opacity 0.3s ease";
       return el;
     });
-    
+
     // Full animations (normal mode)
     elements.forEach(el => {
       el.style.opacity = "1";

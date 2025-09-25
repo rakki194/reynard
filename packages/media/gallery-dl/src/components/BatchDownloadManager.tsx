@@ -19,7 +19,7 @@ export interface BatchDownloadManagerProps {
 export interface BatchItem {
   id: string;
   url: string;
-  status: 'pending' | 'downloading' | 'completed' | 'error' | 'cancelled';
+  status: "pending" | "downloading" | "completed" | "error" | "cancelled";
   progress: number;
   error?: string;
 }
@@ -27,7 +27,7 @@ export interface BatchItem {
 export interface BatchDownload {
   id: string;
   name: string;
-  status: 'idle' | 'running' | 'paused' | 'completed' | 'error';
+  status: "idle" | "running" | "paused" | "completed" | "error";
   total_items: number;
   completed_items: number;
   failed_items: number;
@@ -43,7 +43,7 @@ export interface BatchResult {
   error?: string;
 }
 
-export const BatchDownloadManager: Component<BatchDownloadManagerProps> = (props) => {
+export const BatchDownloadManager: Component<BatchDownloadManagerProps> = props => {
   const [batches, setBatches] = createSignal<BatchDownload[]>([]);
   const [urls, setUrls] = createSignal("");
   const [batchName, setBatchName] = createSignal("");
@@ -131,14 +131,14 @@ export const BatchDownloadManager: Component<BatchDownloadManagerProps> = (props
     setIsCreating(true);
     try {
       const urlList = urls()
-        .split('\n')
+        .split("\n")
         .map(url => url.trim())
         .filter(url => url.length > 0);
 
       const newBatch: BatchDownload = {
         id: `batch_${Date.now()}`,
         name: batchName(),
-        status: 'idle',
+        status: "idle",
         total_items: urlList.length,
         completed_items: 0,
         failed_items: 0,
@@ -146,7 +146,7 @@ export const BatchDownloadManager: Component<BatchDownloadManagerProps> = (props
         items: urlList.map((url, index) => ({
           id: `item_${Date.now()}_${index}`,
           url,
-          status: 'pending',
+          status: "pending",
           progress: 0,
         })),
       };
@@ -154,7 +154,6 @@ export const BatchDownloadManager: Component<BatchDownloadManagerProps> = (props
       setBatches(prev => [newBatch, ...prev]);
       setUrls("");
       setBatchName("");
-      
     } catch (error) {
       props.onBatchError?.(error instanceof Error ? error.message : "Failed to create batch");
     } finally {
@@ -164,18 +163,13 @@ export const BatchDownloadManager: Component<BatchDownloadManagerProps> = (props
 
   const startBatch = async (batchId: string) => {
     try {
-      setBatches(prev => prev.map(batch => 
-        batch.id === batchId 
-          ? { ...batch, status: 'running' }
-          : batch
-      ));
-      
+      setBatches(prev => prev.map(batch => (batch.id === batchId ? { ...batch, status: "running" } : batch)));
+
       // Subscribe to batch updates
       subscribe(batchId);
-      
+
       // Mock batch processing
       simulateBatchProcessing(batchId);
-      
     } catch (error) {
       props.onBatchError?.(error instanceof Error ? error.message : "Failed to start batch");
     }
@@ -183,11 +177,7 @@ export const BatchDownloadManager: Component<BatchDownloadManagerProps> = (props
 
   const pauseBatch = async (batchId: string) => {
     try {
-      setBatches(prev => prev.map(batch => 
-        batch.id === batchId 
-          ? { ...batch, status: 'paused' }
-          : batch
-      ));
+      setBatches(prev => prev.map(batch => (batch.id === batchId ? { ...batch, status: "paused" } : batch)));
     } catch (error) {
       console.error("Failed to pause batch:", error);
     }
@@ -195,20 +185,20 @@ export const BatchDownloadManager: Component<BatchDownloadManagerProps> = (props
 
   const cancelBatch = async (batchId: string) => {
     try {
-      setBatches(prev => prev.map(batch => 
-        batch.id === batchId 
-          ? { 
-              ...batch, 
-              status: 'error',
-              items: batch.items.map(item => 
-                item.status === 'downloading' 
-                  ? { ...item, status: 'cancelled' }
-                  : item
-              )
-            }
-          : batch
-      ));
-      
+      setBatches(prev =>
+        prev.map(batch =>
+          batch.id === batchId
+            ? {
+                ...batch,
+                status: "error",
+                items: batch.items.map(item =>
+                  item.status === "downloading" ? { ...item, status: "cancelled" } : item
+                ),
+              }
+            : batch
+        )
+      );
+
       unsubscribe(batchId);
     } catch (error) {
       console.error("Failed to cancel batch:", error);
@@ -217,19 +207,21 @@ export const BatchDownloadManager: Component<BatchDownloadManagerProps> = (props
 
   const retryBatch = async (batchId: string) => {
     try {
-      setBatches(prev => prev.map(batch => 
-        batch.id === batchId 
-          ? { 
-              ...batch, 
-              status: 'idle',
-              items: batch.items.map(item => 
-                item.status === 'error' || item.status === 'cancelled'
-                  ? { ...item, status: 'pending', progress: 0, error: undefined }
-                  : item
-              )
-            }
-          : batch
-      ));
+      setBatches(prev =>
+        prev.map(batch =>
+          batch.id === batchId
+            ? {
+                ...batch,
+                status: "idle",
+                items: batch.items.map(item =>
+                  item.status === "error" || item.status === "cancelled"
+                    ? { ...item, status: "pending", progress: 0, error: undefined }
+                    : item
+                ),
+              }
+            : batch
+        )
+      );
     } catch (error) {
       console.error("Failed to retry batch:", error);
     }
@@ -243,29 +235,23 @@ export const BatchDownloadManager: Component<BatchDownloadManagerProps> = (props
     const processNext = () => {
       if (currentIndex >= batch.items.length) {
         // Batch completed
-        setBatches(prev => prev.map(b => 
-          b.id === batchId 
-            ? { ...b, status: 'completed' }
-            : b
-        ));
+        setBatches(prev => prev.map(b => (b.id === batchId ? { ...b, status: "completed" } : b)));
         return;
       }
 
       const item = batch.items[currentIndex];
-      if (item.status === 'pending') {
+      if (item.status === "pending") {
         // Start processing this item
-        setBatches(prev => prev.map(b => 
-          b.id === batchId 
-            ? {
-                ...b,
-                items: b.items.map(i => 
-                  i.id === item.id 
-                    ? { ...i, status: 'downloading' }
-                    : i
-                )
-              }
-            : b
-        ));
+        setBatches(prev =>
+          prev.map(b =>
+            b.id === batchId
+              ? {
+                  ...b,
+                  items: b.items.map(i => (i.id === item.id ? { ...i, status: "downloading" } : i)),
+                }
+              : b
+          )
+        );
 
         // Simulate download progress
         let progress = 0;
@@ -274,37 +260,33 @@ export const BatchDownloadManager: Component<BatchDownloadManagerProps> = (props
           if (progress >= 100) {
             progress = 100;
             clearInterval(progressInterval);
-            
+
             // Mark item as completed
-            setBatches(prev => prev.map(b => 
-              b.id === batchId 
-                ? {
-                    ...b,
-                    completed_items: b.completed_items + 1,
-                    items: b.items.map(i => 
-                      i.id === item.id 
-                        ? { ...i, status: 'completed', progress: 100 }
-                        : i
-                    )
-                  }
-                : b
-            ));
-            
+            setBatches(prev =>
+              prev.map(b =>
+                b.id === batchId
+                  ? {
+                      ...b,
+                      completed_items: b.completed_items + 1,
+                      items: b.items.map(i => (i.id === item.id ? { ...i, status: "completed", progress: 100 } : i)),
+                    }
+                  : b
+              )
+            );
+
             currentIndex++;
             setTimeout(processNext, 1000);
           } else {
-            setBatches(prev => prev.map(b => 
-              b.id === batchId 
-                ? {
-                    ...b,
-                    items: b.items.map(i => 
-                      i.id === item.id 
-                        ? { ...i, progress }
-                        : i
-                    )
-                  }
-                : b
-            ));
+            setBatches(prev =>
+              prev.map(b =>
+                b.id === batchId
+                  ? {
+                      ...b,
+                      items: b.items.map(i => (i.id === item.id ? { ...i, progress } : i)),
+                    }
+                  : b
+              )
+            );
           }
         }, 200);
       } else {
@@ -318,21 +300,31 @@ export const BatchDownloadManager: Component<BatchDownloadManagerProps> = (props
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'completed': return 'success';
-      case 'running': return 'primary';
-      case 'paused': return 'warning';
-      case 'error': return 'error';
-      default: return 'muted';
+      case "completed":
+        return "success";
+      case "running":
+        return "primary";
+      case "paused":
+        return "warning";
+      case "error":
+        return "error";
+      default:
+        return "muted";
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'completed': return 'CheckCircle';
-      case 'running': return 'Play';
-      case 'paused': return 'Pause';
-      case 'error': return 'AlertCircle';
-      default: return 'Circle';
+      case "completed":
+        return "CheckCircle";
+      case "running":
+        return "Play";
+      case "paused":
+        return "Pause";
+      case "error":
+        return "AlertCircle";
+      default:
+        return "Circle";
     }
   };
 
@@ -344,11 +336,11 @@ export const BatchDownloadManager: Component<BatchDownloadManagerProps> = (props
             <Icon name="Layers" class="header-icon" />
             <h2>Batch Download Manager</h2>
           </div>
-          
+
           <div class="connection-status">
-            <Icon 
-              name={isConnected() ? "Wifi" : "WifiOff"} 
-              class={`status-icon ${isConnected() ? 'connected' : 'disconnected'}`}
+            <Icon
+              name={isConnected() ? "Wifi" : "WifiOff"}
+              class={`status-icon ${isConnected() ? "connected" : "disconnected"}`}
             />
             <span>{isConnected() ? "Connected" : "Disconnected"}</span>
           </div>
@@ -357,27 +349,27 @@ export const BatchDownloadManager: Component<BatchDownloadManagerProps> = (props
 
       <Card class="create-batch-section">
         <h3>Create New Batch</h3>
-        
+
         <div class="batch-form">
           <div class="form-group">
             <label>Batch Name</label>
             <TextField
               value={batchName()}
-              onInput={(e) => setBatchName(e.currentTarget.value)}
+              onInput={e => setBatchName(e.currentTarget.value)}
               placeholder="Enter batch name..."
             />
           </div>
-          
+
           <div class="form-group">
             <label>URLs (one per line)</label>
             <textarea
               value={urls()}
-              onInput={(e) => setUrls(e.currentTarget.value)}
+              onInput={e => setUrls(e.currentTarget.value)}
               placeholder="https://twitter.com/user/status/123&#10;https://instagram.com/p/abc123&#10;https://example.com/gallery"
               rows={5}
             />
           </div>
-          
+
           <Button
             onClick={createBatch}
             disabled={!urls().trim() || !batchName().trim() || isCreating()}
@@ -394,42 +386,35 @@ export const BatchDownloadManager: Component<BatchDownloadManagerProps> = (props
           <h3>Batch Downloads</h3>
           <span class="batches-count">{batches().length} batches</span>
         </div>
-        
+
         <div class="batches-list">
           <For each={batches()}>
-            {(batch) => (
+            {batch => (
               <div class={`batch-item ${batch.status}`}>
                 <div class="batch-info">
                   <div class="batch-header">
-                    <Icon 
-                      name={getStatusIcon(batch.status)} 
-                      class={`status-icon ${getStatusColor(batch.status)}`}
-                    />
+                    <Icon name={getStatusIcon(batch.status)} class={`status-icon ${getStatusColor(batch.status)}`} />
                     <span class="batch-name">{batch.name}</span>
                     <span class="batch-status">{batch.status}</span>
                   </div>
-                  
+
                   <div class="batch-details">
                     <span class="batch-items">
                       {batch.completed_items}/{batch.total_items} items
                     </span>
-                    <span class="batch-date">
-                      {batch.created_at.toLocaleDateString()}
-                    </span>
+                    <span class="batch-date">{batch.created_at.toLocaleDateString()}</span>
                   </div>
-                  
+
                   <div class="batch-progress">
                     <div class="progress-bar">
-                      <div 
-                        class="progress-fill" 
+                      <div
+                        class="progress-fill"
                         style={{ width: `${(batch.completed_items / batch.total_items) * 100}%` }}
                       />
                     </div>
-                    <span class="progress-text">
-                      {Math.round((batch.completed_items / batch.total_items) * 100)}%
-                    </span>
+                    <span class="progress-text">{Math.round((batch.completed_items / batch.total_items) * 100)}%</span>
                   </div>
-                  
+
                   <Show when={batch.failed_items > 0}>
                     <div class="batch-errors">
                       <Icon name="AlertCircle" class="error-icon" />
@@ -437,73 +422,45 @@ export const BatchDownloadManager: Component<BatchDownloadManagerProps> = (props
                     </div>
                   </Show>
                 </div>
-                
+
                 <div class="batch-actions">
-                  <Show when={batch.status === 'idle'}>
-                    <Button
-                      onClick={() => startBatch(batch.id)}
-                      variant="primary"
-                      size="sm"
-                    >
+                  <Show when={batch.status === "idle"}>
+                    <Button onClick={() => startBatch(batch.id)} variant="primary" size="sm">
                       <Icon name="Play" />
                       Start
                     </Button>
                   </Show>
-                  
-                  <Show when={batch.status === 'running'}>
-                    <Button
-                      onClick={() => pauseBatch(batch.id)}
-                      variant="secondary"
-                      size="sm"
-                    >
+
+                  <Show when={batch.status === "running"}>
+                    <Button onClick={() => pauseBatch(batch.id)} variant="secondary" size="sm">
                       <Icon name="Pause" />
                       Pause
                     </Button>
-                    <Button
-                      onClick={() => cancelBatch(batch.id)}
-                      variant="danger"
-                      size="sm"
-                    >
+                    <Button onClick={() => cancelBatch(batch.id)} variant="danger" size="sm">
                       <Icon name="Square" />
                       Cancel
                     </Button>
                   </Show>
-                  
-                  <Show when={batch.status === 'paused'}>
-                    <Button
-                      onClick={() => startBatch(batch.id)}
-                      variant="primary"
-                      size="sm"
-                    >
+
+                  <Show when={batch.status === "paused"}>
+                    <Button onClick={() => startBatch(batch.id)} variant="primary" size="sm">
                       <Icon name="Play" />
                       Resume
                     </Button>
-                    <Button
-                      onClick={() => cancelBatch(batch.id)}
-                      variant="danger"
-                      size="sm"
-                    >
+                    <Button onClick={() => cancelBatch(batch.id)} variant="danger" size="sm">
                       <Icon name="Square" />
                       Cancel
                     </Button>
                   </Show>
-                  
-                  <Show when={batch.status === 'error' && batch.failed_items > 0}>
-                    <Button
-                      onClick={() => retryBatch(batch.id)}
-                      variant="secondary"
-                      size="sm"
-                    >
+
+                  <Show when={batch.status === "error" && batch.failed_items > 0}>
+                    <Button onClick={() => retryBatch(batch.id)} variant="secondary" size="sm">
                       <Icon name="RefreshCw" />
                       Retry
                     </Button>
                   </Show>
-                  
-                  <Button
-                    onClick={() => setSelectedBatch(batch)}
-                    variant="secondary"
-                    size="sm"
-                  >
+
+                  <Button onClick={() => setSelectedBatch(batch)} variant="secondary" size="sm">
                     <Icon name="Eye" />
                     View
                   </Button>
@@ -518,46 +475,42 @@ export const BatchDownloadManager: Component<BatchDownloadManagerProps> = (props
         <Card class="batch-details-section">
           <div class="section-header">
             <h3>Batch Details: {selectedBatch()?.name}</h3>
-            <Button
-              onClick={() => setSelectedBatch(null)}
-              variant="secondary"
-              size="sm"
-            >
+            <Button onClick={() => setSelectedBatch(null)} variant="secondary" size="sm">
               <Icon name="X" />
               Close
             </Button>
           </div>
-          
+
           <div class="items-list">
             <For each={selectedBatch()?.items || []}>
-              {(item) => (
+              {item => (
                 <div class={`item-row ${item.status}`}>
                   <div class="item-info">
-                    <Icon 
+                    <Icon
                       name={
-                        item.status === 'completed' ? 'CheckCircle' :
-                        item.status === 'downloading' ? 'Clock' :
-                        item.status === 'error' ? 'AlertCircle' :
-                        'Circle'
+                        item.status === "completed"
+                          ? "CheckCircle"
+                          : item.status === "downloading"
+                            ? "Clock"
+                            : item.status === "error"
+                              ? "AlertCircle"
+                              : "Circle"
                       }
                       class={`item-icon ${getStatusColor(item.status)}`}
                     />
                     <span class="item-url">{item.url}</span>
                     <span class="item-status">{item.status}</span>
                   </div>
-                  
-                  <Show when={item.status === 'downloading'}>
+
+                  <Show when={item.status === "downloading"}>
                     <div class="item-progress">
                       <div class="progress-bar">
-                        <div 
-                          class="progress-fill" 
-                          style={{ width: `${item.progress}%` }}
-                        />
+                        <div class="progress-fill" style={{ width: `${item.progress}%` }} />
                       </div>
                       <span class="progress-text">{Math.round(item.progress)}%</span>
                     </div>
                   </Show>
-                  
+
                   <Show when={item.error}>
                     <div class="item-error">
                       <Icon name="AlertCircle" class="error-icon" />

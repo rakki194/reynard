@@ -149,9 +149,9 @@ export class ImpactPredictionModels extends EventEmitter {
         maxConcurrentAnalysis: 10,
         cacheResults: true,
         cacheExpiry: 30 * 60 * 1000, // 30 minutes
-        enableParallelProcessing: true
+        enableParallelProcessing: true,
       },
-      ...config
+      ...config,
     };
   }
 
@@ -159,12 +159,12 @@ export class ImpactPredictionModels extends EventEmitter {
    * Predict impact of architectural changes.
    */
   async predictImpact(changeDescription: string, affectedFiles: string[]): Promise<Map<string, ImpactPrediction[]>> {
-    this.emit("prediction:start", { 
+    this.emit("prediction:start", {
       timestamp: new Date().toISOString(),
       changeDescription,
-      affectedFiles: affectedFiles.length
+      affectedFiles: affectedFiles.length,
     });
-    
+
     try {
       // Clear previous results
       this.predictions.clear();
@@ -178,7 +178,7 @@ export class ImpactPredictionModels extends EventEmitter {
       // Analyze each affected file
       const analysisPromises = affectedFiles.map(file => this.analyzeFileImpact(file, changeDescription));
       const results = await Promise.all(analysisPromises);
-      
+
       // Merge results
       for (const filePredictions of results) {
         for (const [file, predictions] of filePredictions) {
@@ -192,7 +192,7 @@ export class ImpactPredictionModels extends EventEmitter {
       this.emit("prediction:complete", {
         timestamp: new Date().toISOString(),
         totalFiles: affectedFiles.length,
-        totalPredictions: Array.from(this.predictions.values()).flat().length
+        totalPredictions: Array.from(this.predictions.values()).flat().length,
       });
 
       return this.predictions;
@@ -205,9 +205,12 @@ export class ImpactPredictionModels extends EventEmitter {
   /**
    * Analyze impact for a single file.
    */
-  private async analyzeFileImpact(filePath: string, changeDescription: string): Promise<Map<string, ImpactPrediction[]>> {
+  private async analyzeFileImpact(
+    filePath: string,
+    changeDescription: string
+  ): Promise<Map<string, ImpactPrediction[]>> {
     const predictions = new Map<string, ImpactPrediction[]>();
-    
+
     try {
       // Check cache first
       if (this.config.performance.cacheResults) {
@@ -221,35 +224,39 @@ export class ImpactPredictionModels extends EventEmitter {
 
       // Read file content
       const content = await readFile(filePath, "utf-8");
-      
+
       // Generate predictions using different models
       const generatedPredictions: ImpactPrediction[] = [];
-      
+
       if (this.config.enablePerformancePrediction) {
         const performancePredictions = await this.predictPerformanceImpact(content, filePath, changeDescription);
         generatedPredictions.push(...performancePredictions);
       }
-      
+
       if (this.config.enableMaintainabilityPrediction) {
-        const maintainabilityPredictions = await this.predictMaintainabilityImpact(content, filePath, changeDescription);
+        const maintainabilityPredictions = await this.predictMaintainabilityImpact(
+          content,
+          filePath,
+          changeDescription
+        );
         generatedPredictions.push(...maintainabilityPredictions);
       }
-      
+
       if (this.config.enableScalabilityPrediction) {
         const scalabilityPredictions = await this.predictScalabilityImpact(content, filePath, changeDescription);
         generatedPredictions.push(...scalabilityPredictions);
       }
-      
+
       if (this.config.enableSecurityPrediction) {
         const securityPredictions = await this.predictSecurityImpact(content, filePath, changeDescription);
         generatedPredictions.push(...securityPredictions);
       }
-      
+
       if (this.config.enableReliabilityPrediction) {
         const reliabilityPredictions = await this.predictReliabilityImpact(content, filePath, changeDescription);
         generatedPredictions.push(...reliabilityPredictions);
       }
-      
+
       if (this.config.enableCostPrediction) {
         const costPredictions = await this.predictCostImpact(content, filePath, changeDescription);
         generatedPredictions.push(...costPredictions);
@@ -270,10 +277,9 @@ export class ImpactPredictionModels extends EventEmitter {
         const cacheKey = `${filePath}-${changeDescription}`;
         this.analysisCache.set(cacheKey, {
           predictions: limitedPredictions,
-          timestamp: Date.now()
+          timestamp: Date.now(),
         });
       }
-
     } catch (error) {
       console.warn(`Failed to analyze impact for file: ${filePath}`, error);
     }
@@ -284,16 +290,20 @@ export class ImpactPredictionModels extends EventEmitter {
   /**
    * Predict performance impact.
    */
-  private async predictPerformanceImpact(content: string, filePath: string, changeDescription: string): Promise<ImpactPrediction[]> {
+  private async predictPerformanceImpact(
+    content: string,
+    filePath: string,
+    changeDescription: string
+  ): Promise<ImpactPrediction[]> {
     const predictions: ImpactPrediction[] = [];
-    
+
     try {
       // Analyze performance-related patterns
       const performanceMetrics = this.analyzePerformanceMetrics(content);
-      
+
       // Predict impact based on change description
       const impactMagnitude = this.calculatePerformanceImpact(changeDescription, performanceMetrics);
-      
+
       if (impactMagnitude > 0) {
         const prediction = this.createPrediction(
           "Performance Impact",
@@ -316,16 +326,20 @@ export class ImpactPredictionModels extends EventEmitter {
   /**
    * Predict maintainability impact.
    */
-  private async predictMaintainabilityImpact(content: string, filePath: string, changeDescription: string): Promise<ImpactPrediction[]> {
+  private async predictMaintainabilityImpact(
+    content: string,
+    filePath: string,
+    changeDescription: string
+  ): Promise<ImpactPrediction[]> {
     const predictions: ImpactPrediction[] = [];
-    
+
     try {
       // Analyze maintainability metrics
       const maintainabilityMetrics = this.analyzeMaintainabilityMetrics(content);
-      
+
       // Predict impact based on change description
       const impactMagnitude = this.calculateMaintainabilityImpact(changeDescription, maintainabilityMetrics);
-      
+
       if (impactMagnitude > 0) {
         const prediction = this.createPrediction(
           "Maintainability Impact",
@@ -348,16 +362,20 @@ export class ImpactPredictionModels extends EventEmitter {
   /**
    * Predict scalability impact.
    */
-  private async predictScalabilityImpact(content: string, filePath: string, changeDescription: string): Promise<ImpactPrediction[]> {
+  private async predictScalabilityImpact(
+    content: string,
+    filePath: string,
+    changeDescription: string
+  ): Promise<ImpactPrediction[]> {
     const predictions: ImpactPrediction[] = [];
-    
+
     try {
       // Analyze scalability metrics
       const scalabilityMetrics = this.analyzeScalabilityMetrics(content);
-      
+
       // Predict impact based on change description
       const impactMagnitude = this.calculateScalabilityImpact(changeDescription, scalabilityMetrics);
-      
+
       if (impactMagnitude > 0) {
         const prediction = this.createPrediction(
           "Scalability Impact",
@@ -380,16 +398,20 @@ export class ImpactPredictionModels extends EventEmitter {
   /**
    * Predict security impact.
    */
-  private async predictSecurityImpact(content: string, filePath: string, changeDescription: string): Promise<ImpactPrediction[]> {
+  private async predictSecurityImpact(
+    content: string,
+    filePath: string,
+    changeDescription: string
+  ): Promise<ImpactPrediction[]> {
     const predictions: ImpactPrediction[] = [];
-    
+
     try {
       // Analyze security metrics
       const securityMetrics = this.analyzeSecurityMetrics(content);
-      
+
       // Predict impact based on change description
       const impactMagnitude = this.calculateSecurityImpact(changeDescription, securityMetrics);
-      
+
       if (impactMagnitude > 0) {
         const prediction = this.createPrediction(
           "Security Impact",
@@ -412,16 +434,20 @@ export class ImpactPredictionModels extends EventEmitter {
   /**
    * Predict reliability impact.
    */
-  private async predictReliabilityImpact(content: string, filePath: string, changeDescription: string): Promise<ImpactPrediction[]> {
+  private async predictReliabilityImpact(
+    content: string,
+    filePath: string,
+    changeDescription: string
+  ): Promise<ImpactPrediction[]> {
     const predictions: ImpactPrediction[] = [];
-    
+
     try {
       // Analyze reliability metrics
       const reliabilityMetrics = this.analyzeReliabilityMetrics(content);
-      
+
       // Predict impact based on change description
       const impactMagnitude = this.calculateReliabilityImpact(changeDescription, reliabilityMetrics);
-      
+
       if (impactMagnitude > 0) {
         const prediction = this.createPrediction(
           "Reliability Impact",
@@ -444,16 +470,20 @@ export class ImpactPredictionModels extends EventEmitter {
   /**
    * Predict cost impact.
    */
-  private async predictCostImpact(content: string, filePath: string, changeDescription: string): Promise<ImpactPrediction[]> {
+  private async predictCostImpact(
+    content: string,
+    filePath: string,
+    changeDescription: string
+  ): Promise<ImpactPrediction[]> {
     const predictions: ImpactPrediction[] = [];
-    
+
     try {
       // Analyze cost metrics
       const costMetrics = this.analyzeCostMetrics(content);
-      
+
       // Predict impact based on change description
       const impactMagnitude = this.calculateCostImpact(changeDescription, costMetrics);
-      
+
       if (impactMagnitude > 0) {
         const prediction = this.createPrediction(
           "Cost Impact",
@@ -479,13 +509,13 @@ export class ImpactPredictionModels extends EventEmitter {
   private async postProcessPredictions(): Promise<void> {
     // Remove duplicates
     this.removeDuplicatePredictions();
-    
+
     // Validate predictions
     this.validatePredictions();
-    
+
     // Calculate risk assessments
     this.calculateRiskAssessments();
-    
+
     // Update historical data
     this.updateHistoricalData();
   }
@@ -505,17 +535,15 @@ export class ImpactPredictionModels extends EventEmitter {
    */
   private deduplicatePredictions(predictions: ImpactPrediction[]): ImpactPrediction[] {
     const unique: ImpactPrediction[] = [];
-    
+
     for (const prediction of predictions) {
-      const isDuplicate = unique.some(existing => 
-        this.predictionsAreSimilar(prediction, existing)
-      );
-      
+      const isDuplicate = unique.some(existing => this.predictionsAreSimilar(prediction, existing));
+
       if (!isDuplicate) {
         unique.push(prediction);
       }
     }
-    
+
     return unique;
   }
 
@@ -527,12 +555,12 @@ export class ImpactPredictionModels extends EventEmitter {
     if (prediction1.type === prediction2.type && prediction1.title === prediction2.title) {
       return true;
     }
-    
+
     // Check if predictions have similar impact magnitudes
     if (Math.abs(prediction1.impact.magnitude - prediction2.impact.magnitude) < 0.1) {
       return true;
     }
-    
+
     return false;
   }
 
@@ -554,17 +582,17 @@ export class ImpactPredictionModels extends EventEmitter {
     if (prediction.impact.confidence < this.config.confidenceThreshold) {
       return false;
     }
-    
+
     // Check impact magnitude
     if (prediction.impact.magnitude < 0 || prediction.impact.magnitude > 10) {
       return false;
     }
-    
+
     // Check title
     if (!prediction.title || prediction.title.trim().length === 0) {
       return false;
     }
-    
+
     return true;
   }
 
@@ -584,21 +612,21 @@ export class ImpactPredictionModels extends EventEmitter {
    */
   private updateHistoricalData(): void {
     const allPredictions = Array.from(this.predictions.values()).flat();
-    
+
     for (const prediction of allPredictions) {
       const key = `${prediction.type}-${prediction.category}`;
       if (!this.historicalData.has(key)) {
         this.historicalData.set(key, []);
       }
-      
+
       const history = this.historicalData.get(key)!;
       history.push({
         timestamp: new Date().toISOString(),
         magnitude: prediction.impact.magnitude,
         confidence: prediction.impact.confidence,
-        direction: prediction.impact.direction
+        direction: prediction.impact.direction,
       });
-      
+
       // Keep only recent history
       if (history.length > 1000) {
         history.splice(0, history.length - 1000);
@@ -614,7 +642,7 @@ export class ImpactPredictionModels extends EventEmitter {
       loops: this.countLoops(content),
       asyncOperations: this.countAsyncOperations(content),
       memoryUsage: this.estimateMemoryUsage(content),
-      cpuIntensive: this.detectCPUIntensiveOperations(content)
+      cpuIntensive: this.detectCPUIntensiveOperations(content),
     };
   }
 
@@ -625,7 +653,7 @@ export class ImpactPredictionModels extends EventEmitter {
       commentRatio: this.calculateCommentRatio(content),
       functionCount: this.countFunctions(content),
       classCount: this.countClasses(content),
-      coupling: this.calculateCoupling(content)
+      coupling: this.calculateCoupling(content),
     };
   }
 
@@ -634,7 +662,7 @@ export class ImpactPredictionModels extends EventEmitter {
       concurrency: this.detectConcurrency(content),
       resourceUsage: this.estimateResourceUsage(content),
       bottlenecks: this.detectBottlenecks(content),
-      loadBalancing: this.detectLoadBalancing(content)
+      loadBalancing: this.detectLoadBalancing(content),
     };
   }
 
@@ -643,7 +671,7 @@ export class ImpactPredictionModels extends EventEmitter {
       vulnerabilities: this.detectVulnerabilities(content),
       encryption: this.detectEncryption(content),
       authentication: this.detectAuthentication(content),
-      authorization: this.detectAuthorization(content)
+      authorization: this.detectAuthorization(content),
     };
   }
 
@@ -652,7 +680,7 @@ export class ImpactPredictionModels extends EventEmitter {
       errorHandling: this.detectErrorHandling(content),
       logging: this.detectLogging(content),
       monitoring: this.detectMonitoring(content),
-      faultTolerance: this.detectFaultTolerance(content)
+      faultTolerance: this.detectFaultTolerance(content),
     };
   }
 
@@ -661,7 +689,7 @@ export class ImpactPredictionModels extends EventEmitter {
       developmentCost: this.estimateDevelopmentCost(content),
       maintenanceCost: this.estimateMaintenanceCost(content),
       infrastructureCost: this.estimateInfrastructureCost(content),
-      operationalCost: this.estimateOperationalCost(content)
+      operationalCost: this.estimateOperationalCost(content),
     };
   }
 
@@ -670,114 +698,114 @@ export class ImpactPredictionModels extends EventEmitter {
   private calculatePerformanceImpact(changeDescription: string, metrics: Record<string, number>): number {
     // Simulate performance impact calculation
     let impact = 1.0;
-    
+
     if (changeDescription.includes("optimize") || changeDescription.includes("performance")) {
       impact *= 1.2; // 20% improvement
     }
-    
+
     if (changeDescription.includes("refactor") || changeDescription.includes("rewrite")) {
       impact *= 0.9; // 10% degradation initially
     }
-    
+
     if (changeDescription.includes("add") || changeDescription.includes("new")) {
       impact *= 0.95; // 5% degradation
     }
-    
+
     return impact;
   }
 
   private calculateMaintainabilityImpact(changeDescription: string, metrics: Record<string, number>): number {
     // Simulate maintainability impact calculation
     let impact = 1.0;
-    
+
     if (changeDescription.includes("refactor") || changeDescription.includes("clean")) {
       impact *= 1.3; // 30% improvement
     }
-    
+
     if (changeDescription.includes("documentation") || changeDescription.includes("comments")) {
       impact *= 1.1; // 10% improvement
     }
-    
+
     if (changeDescription.includes("complex") || changeDescription.includes("complicated")) {
       impact *= 0.8; // 20% degradation
     }
-    
+
     return impact;
   }
 
   private calculateScalabilityImpact(changeDescription: string, metrics: Record<string, number>): number {
     // Simulate scalability impact calculation
     let impact = 1.0;
-    
+
     if (changeDescription.includes("scalable") || changeDescription.includes("distributed")) {
       impact *= 1.4; // 40% improvement
     }
-    
+
     if (changeDescription.includes("cache") || changeDescription.includes("optimize")) {
       impact *= 1.2; // 20% improvement
     }
-    
+
     if (changeDescription.includes("synchronous") || changeDescription.includes("blocking")) {
       impact *= 0.7; // 30% degradation
     }
-    
+
     return impact;
   }
 
   private calculateSecurityImpact(changeDescription: string, metrics: Record<string, number>): number {
     // Simulate security impact calculation
     let impact = 1.0;
-    
+
     if (changeDescription.includes("security") || changeDescription.includes("encrypt")) {
       impact *= 1.3; // 30% improvement
     }
-    
+
     if (changeDescription.includes("vulnerability") || changeDescription.includes("exploit")) {
       impact *= 0.6; // 40% degradation
     }
-    
+
     if (changeDescription.includes("authentication") || changeDescription.includes("authorization")) {
       impact *= 1.1; // 10% improvement
     }
-    
+
     return impact;
   }
 
   private calculateReliabilityImpact(changeDescription: string, metrics: Record<string, number>): number {
     // Simulate reliability impact calculation
     let impact = 1.0;
-    
+
     if (changeDescription.includes("error") || changeDescription.includes("exception")) {
       impact *= 1.2; // 20% improvement
     }
-    
+
     if (changeDescription.includes("logging") || changeDescription.includes("monitoring")) {
       impact *= 1.1; // 10% improvement
     }
-    
+
     if (changeDescription.includes("fault") || changeDescription.includes("failure")) {
       impact *= 0.8; // 20% degradation
     }
-    
+
     return impact;
   }
 
   private calculateCostImpact(changeDescription: string, metrics: Record<string, number>): number {
     // Simulate cost impact calculation
     let impact = 1.0;
-    
+
     if (changeDescription.includes("optimize") || changeDescription.includes("efficient")) {
       impact *= 0.8; // 20% cost reduction
     }
-    
+
     if (changeDescription.includes("refactor") || changeDescription.includes("rewrite")) {
       impact *= 1.3; // 30% cost increase
     }
-    
+
     if (changeDescription.includes("automate") || changeDescription.includes("tool")) {
       impact *= 0.9; // 10% cost reduction
     }
-    
+
     return impact;
   }
 
@@ -893,7 +921,7 @@ export class ImpactPredictionModels extends EventEmitter {
   private calculateRiskAssessmentForPrediction(prediction: ImpactPrediction): ImpactPrediction["riskAssessment"] {
     const magnitude = prediction.impact.magnitude;
     const confidence = prediction.impact.confidence;
-    
+
     let overallRisk: "low" | "medium" | "high" | "critical";
     if (magnitude > 8 && confidence > 0.8) {
       overallRisk = "critical";
@@ -904,30 +932,30 @@ export class ImpactPredictionModels extends EventEmitter {
     } else {
       overallRisk = "low";
     }
-    
+
     const riskFactors = [];
     if (magnitude > 5) riskFactors.push("High impact magnitude");
     if (confidence < 0.7) riskFactors.push("Low confidence in prediction");
     if (prediction.impact.direction === "negative") riskFactors.push("Negative impact direction");
-    
+
     const mitigationStrategies = [
       "Implement gradual rollout",
       "Add comprehensive testing",
       "Prepare rollback plan",
-      "Monitor key metrics"
+      "Monitor key metrics",
     ];
-    
+
     const contingencyPlans = [
       "Immediate rollback if issues detected",
       "Alternative implementation approach",
-      "Emergency response procedures"
+      "Emergency response procedures",
     ];
-    
+
     return {
       overallRisk,
       riskFactors,
       mitigationStrategies,
-      contingencyPlans
+      contingencyPlans,
     };
   }
 
@@ -942,7 +970,7 @@ export class ImpactPredictionModels extends EventEmitter {
   ): ImpactPrediction {
     const confidence = Math.random() * 0.3 + 0.7; // 0.7-1.0
     const direction = impactMagnitude > 1 ? "positive" : impactMagnitude < 1 ? "negative" : "neutral";
-    
+
     return {
       id: `prediction-${Date.now()}-${Math.random()}`,
       type: type as any,
@@ -953,39 +981,39 @@ export class ImpactPredictionModels extends EventEmitter {
         magnitude: impactMagnitude,
         direction,
         confidence,
-        timeframe: this.determineTimeframe(impactMagnitude)
+        timeframe: this.determineTimeframe(impactMagnitude),
       },
       affectedComponents: [
         {
           component: basename(filePath),
           impact: impactMagnitude,
-          risk: this.determineComponentRisk(impactMagnitude, confidence)
-        }
+          risk: this.determineComponentRisk(impactMagnitude, confidence),
+        },
       ],
       metrics: {
         accuracy: Math.random() * 0.2 + 0.8, // 0.8-1.0
         precision: Math.random() * 0.2 + 0.8, // 0.8-1.0
         recall: Math.random() * 0.2 + 0.8, // 0.8-1.0
-        f1Score: Math.random() * 0.2 + 0.8 // 0.8-1.0
+        f1Score: Math.random() * 0.2 + 0.8, // 0.8-1.0
       },
       riskAssessment: {
         overallRisk: "medium",
         riskFactors: [],
         mitigationStrategies: [],
-        contingencyPlans: []
+        contingencyPlans: [],
       },
       context: {
         changeDescription,
         affectedFiles: [filePath],
         dependencies: [],
-        relatedChanges: []
+        relatedChanges: [],
       },
       metadata: {
         model,
         predictedAt: new Date().toISOString(),
         version: "1.0.0",
-        dataPoints: Math.floor(Math.random() * 1000) + 100
-      }
+        dataPoints: Math.floor(Math.random() * 1000) + 100,
+      },
     };
   }
 
@@ -996,7 +1024,7 @@ export class ImpactPredictionModels extends EventEmitter {
       scalability: "scalability",
       security: "security",
       reliability: "reliability",
-      cost: "cost"
+      cost: "cost",
     };
     return categories[type] || "other";
   }
@@ -1029,13 +1057,13 @@ export class ImpactPredictionModels extends EventEmitter {
 
   private async findFilesRecursive(dir: string, pattern: string, files: string[], depth: number): Promise<void> {
     if (depth > 10) return;
-    
+
     try {
       const entries = await readdir(dir);
       for (const entry of entries) {
         const fullPath = join(dir, entry);
         const stat = await this.stat(fullPath);
-        
+
         if (stat.isDirectory()) {
           await this.findFilesRecursive(fullPath, pattern, files, depth + 1);
         } else if (this.matchesPattern(entry, pattern)) {
@@ -1097,38 +1125,39 @@ export class ImpactPredictionModels extends EventEmitter {
   } {
     const allPredictions = this.getAllPredictions();
     const totalPredictions = allPredictions.length;
-    
+
     const predictionsByType: Record<string, number> = {};
     const predictionsByDirection: Record<string, number> = {};
     const predictionCounts: Record<string, number> = {};
-    
+
     let totalMagnitude = 0;
     let totalConfidence = 0;
-    
+
     for (const prediction of allPredictions) {
       predictionsByType[prediction.type] = (predictionsByType[prediction.type] || 0) + 1;
-      predictionsByDirection[prediction.impact.direction] = (predictionsByDirection[prediction.impact.direction] || 0) + 1;
+      predictionsByDirection[prediction.impact.direction] =
+        (predictionsByDirection[prediction.impact.direction] || 0) + 1;
       predictionCounts[prediction.title] = (predictionCounts[prediction.title] || 0) + 1;
-      
+
       totalMagnitude += prediction.impact.magnitude;
       totalConfidence += prediction.impact.confidence;
     }
-    
+
     const averageMagnitude = totalPredictions > 0 ? totalMagnitude / totalPredictions : 0;
     const averageConfidence = totalPredictions > 0 ? totalConfidence / totalPredictions : 0;
-    
+
     const topPredictions = Object.entries(predictionCounts)
       .sort(([, a], [, b]) => b - a)
       .slice(0, 10)
       .map(([title, count]) => ({ title, count }));
-    
+
     return {
       totalPredictions,
       predictionsByType,
       predictionsByDirection,
       averageMagnitude,
       averageConfidence,
-      topPredictions
+      topPredictions,
     };
   }
 
@@ -1137,26 +1166,31 @@ export class ImpactPredictionModels extends EventEmitter {
    */
   async exportPredictions(format: "json" | "csv" | "xml"): Promise<string> {
     const allPredictions = this.getAllPredictions();
-    
+
     switch (format) {
       case "json":
-        return JSON.stringify({
-          predictions: allPredictions,
-          statistics: this.getPredictionStatistics(),
-          metadata: {
-            analyzedAt: new Date().toISOString(),
-            totalFiles: this.predictions.size,
-            config: this.config
-          }
-        }, null, 2);
-      
+        return JSON.stringify(
+          {
+            predictions: allPredictions,
+            statistics: this.getPredictionStatistics(),
+            metadata: {
+              analyzedAt: new Date().toISOString(),
+              totalFiles: this.predictions.size,
+              config: this.config,
+            },
+          },
+          null,
+          2
+        );
+
       case "csv":
         const csvHeader = "id,type,title,file,magnitude,direction,confidence,timeframe";
-        const csvRows = allPredictions.map(prediction => 
-          `${prediction.id},${prediction.type},${prediction.title},${prediction.context.affectedFiles[0]},${prediction.impact.magnitude},${prediction.impact.direction},${prediction.impact.confidence},${prediction.impact.timeframe}`
+        const csvRows = allPredictions.map(
+          prediction =>
+            `${prediction.id},${prediction.type},${prediction.title},${prediction.context.affectedFiles[0]},${prediction.impact.magnitude},${prediction.impact.direction},${prediction.impact.confidence},${prediction.impact.timeframe}`
         );
         return [csvHeader, ...csvRows].join("\n");
-      
+
       case "xml":
         const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <impactPredictions>
@@ -1166,7 +1200,9 @@ export class ImpactPredictionModels extends EventEmitter {
     <totalPredictions>${allPredictions.length}</totalPredictions>
   </metadata>
   <predictions>
-    ${allPredictions.map(prediction => `
+    ${allPredictions
+      .map(
+        prediction => `
     <prediction id="${prediction.id}">
       <type>${prediction.type}</type>
       <title>${prediction.title}</title>
@@ -1175,14 +1211,15 @@ export class ImpactPredictionModels extends EventEmitter {
       <direction>${prediction.impact.direction}</direction>
       <confidence>${prediction.impact.confidence}</confidence>
       <timeframe>${prediction.impact.timeframe}</timeframe>
-    </prediction>`).join("")}
+    </prediction>`
+      )
+      .join("")}
   </predictions>
 </impactPredictions>`;
         return xml;
-      
+
       default:
         throw new Error(`Unsupported export format: ${format}`);
     }
   }
 }
-

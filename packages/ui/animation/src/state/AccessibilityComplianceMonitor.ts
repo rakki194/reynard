@@ -1,8 +1,8 @@
 /**
  * 🦊 Accessibility Compliance Monitor
- * 
+ *
  * Monitors accessibility preferences and provides compliance scoring.
- * 
+ *
  * @author Agile-Prime-90 (Reynard Lizard Specialist)
  * @since 1.0.0
  */
@@ -125,4 +125,3 @@ export class AccessibilityComplianceMonitor {
     this.mediaQueryListeners = [];
   }
 }
-

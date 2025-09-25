@@ -3,12 +3,12 @@
  * Unified file operations for all Reynard dev-tools
  */
 
-import fs from 'fs';
-import path from 'path';
-import type { FileInfo, FileManagerOptions, ScanOptions, BackupResult } from '../types/FileUtils.js';
-import { FileExclusionManager } from './FileExclusionManager.js';
-import { FileTypeDetector } from './FileTypeDetector.js';
-import type { Logger } from '../types/Logger.js';
+import fs from "fs";
+import path from "path";
+import type { FileInfo, FileManagerOptions, ScanOptions, BackupResult } from "../types/FileUtils.js";
+import { FileExclusionManager } from "./FileExclusionManager.js";
+import { FileTypeDetector } from "./FileTypeDetector.js";
+import type { Logger } from "../types/Logger.js";
 
 export class FileManager {
   protected readonly projectRoot: string;
@@ -22,17 +22,19 @@ export class FileManager {
     this.excludePatterns = options.excludePatterns || [];
     this.includePatterns = options.includePatterns || [];
     this.verbose = options.verbose || false;
-    this.logger = options.verbose ? {
-      log: (msg: string) => console.log(msg),
-      info: (msg: string) => console.log(`ℹ️  ${msg}`),
-      warn: (msg: string) => console.warn(`⚠️  ${msg}`),
-      error: (msg: string) => console.error(`❌ ${msg}`),
-      success: (msg: string) => console.log(`✅ ${msg}`),
-      debug: (msg: string) => console.log(`🔍 ${msg}`),
-      section: (title: string) => console.log(`\n🎯 ${title}\n${'='.repeat(30)}`),
-      header: (title: string) => console.log(`\n${title}\n${'='.repeat(title.length)}`),
-      verbose: (msg: string) => console.log(`🔍 ${msg}`)
-    } : undefined;
+    this.logger = options.verbose
+      ? {
+          log: (msg: string) => console.log(msg),
+          info: (msg: string) => console.log(`ℹ️  ${msg}`),
+          warn: (msg: string) => console.warn(`⚠️  ${msg}`),
+          error: (msg: string) => console.error(`❌ ${msg}`),
+          success: (msg: string) => console.log(`✅ ${msg}`),
+          debug: (msg: string) => console.log(`🔍 ${msg}`),
+          section: (title: string) => console.log(`\n🎯 ${title}\n${"=".repeat(30)}`),
+          header: (title: string) => console.log(`\n${title}\n${"=".repeat(title.length)}`),
+          verbose: (msg: string) => console.log(`🔍 ${msg}`),
+        }
+      : undefined;
   }
 
   /**
@@ -42,7 +44,7 @@ export class FileManager {
     let currentDir = process.cwd();
 
     while (currentDir !== path.dirname(currentDir)) {
-      if (fs.existsSync(path.join(currentDir, 'package.json'))) {
+      if (fs.existsSync(path.join(currentDir, "package.json"))) {
         return currentDir;
       }
       currentDir = path.dirname(currentDir);
@@ -58,7 +60,17 @@ export class FileManager {
     const {
       extensions = [],
       recursive = true,
-      excludeDirs = ['node_modules', '.git', '.vscode', '.idea', 'dist', 'build', 'coverage', '.nyc_output', 'third_party'],
+      excludeDirs = [
+        "node_modules",
+        ".git",
+        ".vscode",
+        ".idea",
+        "dist",
+        "build",
+        "coverage",
+        ".nyc_output",
+        "third_party",
+      ],
       includeDirs = [],
     } = options;
 
@@ -75,7 +87,7 @@ export class FileManager {
           if (this.shouldSkipDirectory(entry.name, excludeDirs, includeDirs)) {
             continue;
           }
-          
+
           if (recursive) {
             files.push(...this.scanDirectory(fullPath, options));
           }
@@ -112,7 +124,7 @@ export class FileManager {
     }
 
     // Otherwise, exclude the standard directories
-    return excludeDirs.includes(dirName) || dirName.startsWith('.');
+    return excludeDirs.includes(dirName) || dirName.startsWith(".");
   }
 
   /**
@@ -120,7 +132,7 @@ export class FileManager {
    */
   readFile(filePath: string): string | null {
     try {
-      return fs.readFileSync(filePath, 'utf-8');
+      return fs.readFileSync(filePath, "utf-8");
     } catch (error) {
       if (this.logger) {
         this.logger.warn(`Could not read file ${filePath}: ${(error as Error).message}`);
@@ -141,7 +153,7 @@ export class FileManager {
    */
   writeFile(filePath: string, content: string): boolean {
     try {
-      fs.writeFileSync(filePath, content, 'utf-8');
+      fs.writeFileSync(filePath, content, "utf-8");
       return true;
     } catch (error) {
       if (this.logger) {
@@ -156,14 +168,14 @@ export class FileManager {
    */
   createBackup(filePath: string, backupDir?: string): BackupResult {
     try {
-      const backupDirPath = backupDir || path.join(this.projectRoot, '.catalyst-backups');
+      const backupDirPath = backupDir || path.join(this.projectRoot, ".catalyst-backups");
 
       // Ensure backup directory exists
       if (!fs.existsSync(backupDirPath)) {
         fs.mkdirSync(backupDirPath, { recursive: true });
       }
 
-      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+      const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
       const fileName = path.basename(filePath);
       const backupPath = path.join(backupDirPath, `${fileName}.${timestamp}.backup`);
 

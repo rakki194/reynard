@@ -18,7 +18,7 @@ export interface AIMetadataExtractorProps {
 export interface MetadataJob {
   id: string;
   download_id: string;
-  status: 'pending' | 'processing' | 'completed' | 'error';
+  status: "pending" | "processing" | "completed" | "error";
   progress: number;
   created_at: Date;
   error?: string;
@@ -27,7 +27,7 @@ export interface MetadataJob {
 export interface MetadataResult {
   id: string;
   download_id: string;
-  status: 'completed' | 'error';
+  status: "completed" | "error";
   tags: string[];
   captions: string[];
   objects: string[];
@@ -38,7 +38,7 @@ export interface MetadataResult {
   error?: string;
 }
 
-export const AIMetadataExtractor: Component<AIMetadataExtractorProps> = (props) => {
+export const AIMetadataExtractor: Component<AIMetadataExtractorProps> = props => {
   const [jobs, setJobs] = createSignal<MetadataJob[]>([]);
   const [results, setResults] = createSignal<MetadataResult[]>([]);
   const [, setIsExtracting] = createSignal(false);
@@ -109,12 +109,11 @@ export const AIMetadataExtractor: Component<AIMetadataExtractorProps> = (props) 
         progress: 0,
         created_at: new Date(),
       };
-      
+
       setJobs(prev => [newJob, ...prev]);
-      
+
       // Simulate progress updates
       simulateProgress(newJob.id);
-      
     } catch (error) {
       props.onExtractionError?.(error instanceof Error ? error.message : "Extraction failed");
     } finally {
@@ -129,14 +128,10 @@ export const AIMetadataExtractor: Component<AIMetadataExtractorProps> = (props) 
       if (progress >= 100) {
         progress = 100;
         clearInterval(interval);
-        
+
         // Mark job as completed
-        setJobs(prev => prev.map(job => 
-          job.id === jobId 
-            ? { ...job, status: 'completed', progress: 100 }
-            : job
-        ));
-        
+        setJobs(prev => prev.map(job => (job.id === jobId ? { ...job, status: "completed", progress: 100 } : job)));
+
         // Add mock result
         const mockResult: MetadataResult = {
           id: `result_${Date.now()}`,
@@ -150,15 +145,11 @@ export const AIMetadataExtractor: Component<AIMetadataExtractorProps> = (props) 
           processing_time: 1.5,
           created_at: new Date(),
         };
-        
+
         setResults(prev => [mockResult, ...prev]);
         props.onExtractionComplete?.([mockResult]);
       } else {
-        setJobs(prev => prev.map(job => 
-          job.id === jobId 
-            ? { ...job, progress }
-            : job
-        ));
+        setJobs(prev => prev.map(job => (job.id === jobId ? { ...job, progress } : job)));
       }
     }, 500);
   };
@@ -166,9 +157,9 @@ export const AIMetadataExtractor: Component<AIMetadataExtractorProps> = (props) 
   const exportResults = async () => {
     try {
       const dataStr = JSON.stringify(results(), null, 2);
-      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const dataBlob = new Blob([dataStr], { type: "application/json" });
       const url = URL.createObjectURL(dataBlob);
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
       link.download = `metadata-results-${Date.now()}.json`;
       link.click();
@@ -180,19 +171,27 @@ export const AIMetadataExtractor: Component<AIMetadataExtractorProps> = (props) 
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'completed': return 'success';
-      case 'processing': return 'primary';
-      case 'error': return 'error';
-      default: return 'muted';
+      case "completed":
+        return "success";
+      case "processing":
+        return "primary";
+      case "error":
+        return "error";
+      default:
+        return "muted";
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'completed': return 'CheckCircle';
-      case 'processing': return 'Clock';
-      case 'error': return 'AlertCircle';
-      default: return 'Circle';
+      case "completed":
+        return "CheckCircle";
+      case "processing":
+        return "Clock";
+      case "error":
+        return "AlertCircle";
+      default:
+        return "Circle";
     }
   };
 
@@ -204,21 +203,14 @@ export const AIMetadataExtractor: Component<AIMetadataExtractorProps> = (props) 
             <Icon name="Brain" class="header-icon" />
             <h2>AI Metadata Extractor</h2>
           </div>
-          
+
           <div class="header-actions">
-            <Button
-              onClick={() => setShowResults(!showResults())}
-              variant="secondary"
-            >
+            <Button onClick={() => setShowResults(!showResults())} variant="secondary">
               <Icon name="Eye" />
               {showResults() ? "Hide Results" : "Show Results"}
             </Button>
-            
-            <Button
-              onClick={exportResults}
-              variant="secondary"
-              disabled={results().length === 0}
-            >
+
+            <Button onClick={exportResults} variant="secondary" disabled={results().length === 0}>
               <Icon name="Download" />
               Export Results
             </Button>
@@ -232,52 +224,44 @@ export const AIMetadataExtractor: Component<AIMetadataExtractorProps> = (props) 
           <div class="job-stats">
             <span class="stat">
               <Icon name="Clock" />
-              {jobs().filter(j => j.status === 'processing').length} Processing
+              {jobs().filter(j => j.status === "processing").length} Processing
             </span>
             <span class="stat">
               <Icon name="CheckCircle" />
-              {jobs().filter(j => j.status === 'completed').length} Completed
+              {jobs().filter(j => j.status === "completed").length} Completed
             </span>
             <span class="stat">
               <Icon name="AlertCircle" />
-              {jobs().filter(j => j.status === 'error').length} Errors
+              {jobs().filter(j => j.status === "error").length} Errors
             </span>
           </div>
         </div>
-        
+
         <div class="jobs-list">
           <For each={jobs()}>
-            {(job) => (
+            {job => (
               <div class={`job-item ${job.status}`}>
                 <div class="job-info">
                   <div class="job-header">
-                    <Icon 
-                      name={getStatusIcon(job.status)} 
-                      class={`status-icon ${getStatusColor(job.status)}`}
-                    />
+                    <Icon name={getStatusIcon(job.status)} class={`status-icon ${getStatusColor(job.status)}`} />
                     <span class="job-id">Job {job.id}</span>
                     <span class="job-download-id">Download: {job.download_id}</span>
                   </div>
-                  
+
                   <div class="job-details">
                     <span class="job-status">{job.status}</span>
-                    <span class="job-date">
-                      {job.created_at.toLocaleDateString()}
-                    </span>
+                    <span class="job-date">{job.created_at.toLocaleDateString()}</span>
                   </div>
-                  
-                  <Show when={job.status === 'processing'}>
+
+                  <Show when={job.status === "processing"}>
                     <div class="job-progress">
                       <div class="progress-bar">
-                        <div 
-                          class="progress-fill" 
-                          style={{ width: `${job.progress}%` }}
-                        />
+                        <div class="progress-fill" style={{ width: `${job.progress}%` }} />
                       </div>
                       <span class="progress-text">{Math.round(job.progress)}%</span>
                     </div>
                   </Show>
-                  
+
                   <Show when={job.error}>
                     <div class="job-error">
                       <Icon name="AlertCircle" class="error-icon" />
@@ -285,23 +269,15 @@ export const AIMetadataExtractor: Component<AIMetadataExtractorProps> = (props) 
                     </div>
                   </Show>
                 </div>
-                
+
                 <div class="job-actions">
-                  <Button
-                    onClick={() => console.log('View job:', job.id)}
-                    variant="secondary"
-                    size="sm"
-                  >
+                  <Button onClick={() => console.log("View job:", job.id)} variant="secondary" size="sm">
                     <Icon name="Eye" />
                     View
                   </Button>
-                  
-                  <Show when={job.status === 'completed'}>
-                    <Button
-                      onClick={() => startExtraction(job.download_id)}
-                      variant="secondary"
-                      size="sm"
-                    >
+
+                  <Show when={job.status === "completed"}>
+                    <Button onClick={() => startExtraction(job.download_id)} variant="secondary" size="sm">
                       <Icon name="RefreshCw" />
                       Re-extract
                     </Button>
@@ -319,84 +295,58 @@ export const AIMetadataExtractor: Component<AIMetadataExtractorProps> = (props) 
             <h3>Extraction Results</h3>
             <span class="results-count">{results().length} results</span>
           </div>
-          
+
           <div class="results-list">
             <For each={results()}>
-              {(result) => (
+              {result => (
                 <div class="result-item">
                   <div class="result-header">
                     <Icon name="CheckCircle" class="result-icon success" />
                     <span class="result-id">Result {result.id}</span>
                     <span class="result-download-id">Download: {result.download_id}</span>
                   </div>
-                  
+
                   <div class="result-content">
                     <div class="result-section">
                       <h4>Tags</h4>
                       <div class="tags-list">
-                        <For each={result.tags}>
-                          {(tag) => (
-                            <span class="tag">{tag}</span>
-                          )}
-                        </For>
+                        <For each={result.tags}>{tag => <span class="tag">{tag}</span>}</For>
                       </div>
                     </div>
-                    
+
                     <div class="result-section">
                       <h4>Captions</h4>
                       <div class="captions-list">
-                        <For each={result.captions}>
-                          {(caption) => (
-                            <p class="caption">{caption}</p>
-                          )}
-                        </For>
+                        <For each={result.captions}>{caption => <p class="caption">{caption}</p>}</For>
                       </div>
                     </div>
-                    
+
                     <div class="result-section">
                       <h4>Objects</h4>
                       <div class="objects-list">
-                        <For each={result.objects}>
-                          {(object) => (
-                            <span class="object">{object}</span>
-                          )}
-                        </For>
+                        <For each={result.objects}>{object => <span class="object">{object}</span>}</For>
                       </div>
                     </div>
-                    
+
                     <div class="result-section">
                       <h4>Dominant Colors</h4>
                       <div class="colors-list">
                         <For each={result.dominant_colors}>
-                          {(color) => (
-                            <div 
-                              class="color-swatch" 
-                              style={{ "background-color": color }}
-                              title={color}
-                            />
-                          )}
+                          {color => <div class="color-swatch" style={{ "background-color": color }} title={color} />}
                         </For>
                       </div>
                     </div>
-                    
+
                     <div class="result-section">
                       <h4>Emotions</h4>
                       <div class="emotions-list">
-                        <For each={result.emotions}>
-                          {(emotion) => (
-                            <span class="emotion">{emotion}</span>
-                          )}
-                        </For>
+                        <For each={result.emotions}>{emotion => <span class="emotion">{emotion}</span>}</For>
                       </div>
                     </div>
-                    
+
                     <div class="result-meta">
-                      <span class="processing-time">
-                        Processing time: {result.processing_time}s
-                      </span>
-                      <span class="result-date">
-                        {result.created_at.toLocaleDateString()}
-                      </span>
+                      <span class="processing-time">Processing time: {result.processing_time}s</span>
+                      <span class="result-date">{result.created_at.toLocaleDateString()}</span>
                     </div>
                   </div>
                 </div>

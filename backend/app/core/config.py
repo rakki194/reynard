@@ -271,81 +271,8 @@ def get_config() -> AppConfig:
 
 def get_service_configs() -> dict[str, dict[str, Any]]:
     """Get service configurations as dictionaries."""
-    config = get_config()
-    return {
-        "gatekeeper": {
-            "enabled": config.gatekeeper.enabled,
-            "jwt_secret_key": config.gatekeeper.jwt_secret_key,
-            "jwt_algorithm": config.gatekeeper.jwt_algorithm,
-            "access_token_expire_minutes": config.gatekeeper.access_token_expire_minutes,
-            "refresh_token_expire_days": config.gatekeeper.refresh_token_expire_days,
-        },
-        "comfy": {
-            "comfy_enabled": config.comfy.enabled,
-            "comfy_api_url": config.comfy.api_url,
-            "comfy_timeout": config.comfy.timeout,
-            "comfy_image_dir": config.comfy.image_dir,
-            "comfy_reconnect_max_attempts": config.comfy.reconnect_max_attempts,
-            "comfy_reconnect_base_delay_s": config.comfy.reconnect_base_delay_s,
-            "comfy_reconnect_max_delay_s": config.comfy.reconnect_max_delay_s,
-        },
-        "nlweb": {
-            "nlweb": {
-                "enabled": config.nlweb.enabled,
-                "base_url": config.nlweb.base_url,
-                "suggest_timeout_s": config.nlweb.suggest_timeout_s,
-                "cache_ttl_s": config.nlweb.cache_ttl_s,
-                "cache_max_entries": config.nlweb.cache_max_entries,
-                "allow_stale_on_error": config.nlweb.allow_stale_on_error,
-                "warm_timeout_s": config.nlweb.warm_timeout_s,
-                "rate_limit_window_s": config.nlweb.rate_limit_window_s,
-                "rate_limit_max_requests": config.nlweb.rate_limit_max_requests,
-                "canary_enabled": config.nlweb.canary_enabled,
-                "canary_percentage": config.nlweb.canary_percentage,
-                "rollback_enabled": config.nlweb.rollback_enabled,
-                "performance_monitoring_enabled": config.nlweb.performance_monitoring_enabled,
-                "proxy_max_retries": config.nlweb.proxy_max_retries,
-                "proxy_backoff_ms": config.nlweb.proxy_backoff_ms,
-                "proxy_connect_timeout_ms": config.nlweb.proxy_connect_timeout_ms,
-                "proxy_read_timeout_ms": config.nlweb.proxy_read_timeout_ms,
-                "proxy_sse_idle_timeout_ms": config.nlweb.proxy_sse_idle_timeout_ms,
-            },
-        },
-        "rag": {
-            "rag_enabled": config.rag.enabled,
-            "rag_database_url": config.rag.rag_database_url,
-            "ollama_base_url": config.rag.ollama_base_url,
-            "rag_text_model": config.rag.text_model,
-            "rag_code_model": config.rag.code_model,
-            "rag_caption_model": config.rag.caption_model,
-            "rag_clip_model": config.rag.clip_model,
-            "rag_chunk_max_tokens": config.rag.chunk_max_tokens,
-            "rag_chunk_min_tokens": config.rag.chunk_min_tokens,
-            "rag_chunk_overlap_ratio": config.rag.chunk_overlap_ratio,
-            "rag_ingest_batch_size_text": config.rag.ingest_batch_size_text,
-            "rag_ingest_concurrency": config.rag.ingest_concurrency,
-            "rag_ingest_max_attempts": config.rag.ingest_max_attempts,
-            "rag_ingest_backoff_base_s": config.rag.ingest_backoff_base_s,
-            "rag_query_rate_limit_per_minute": config.rag.query_rate_limit_per_minute,
-            "rag_ingest_rate_limit_per_minute": config.rag.ingest_rate_limit_per_minute,
-            "embedding_backends": config.rag.embedding_backends.to_dict(),
-        },
-        "ollama": {
-            "ollama": {
-                "enabled": config.ollama.enabled,
-                "base_url": config.ollama.base_url,
-                "timeout_seconds": config.ollama.timeout_seconds,
-                "assistant_enabled": config.ollama.assistant_enabled,
-                "tool_calling_enabled": config.ollama.tool_calling_enabled,
-                "streaming_enabled": config.ollama.streaming_enabled,
-            },
-        },
-        "tts": {
-            "tts_enabled": config.tts.enabled,
-            "tts_provider": config.tts.provider,
-            "tts_model": config.tts.model,
-            "tts_voice": config.tts.voice,
-            "tts_speed": config.tts.speed,
-            "tts_format": config.tts.format,
-        },
-    }
+    from app.core.service_config_manager import ServiceConfigManager
+    
+    # Use ServiceConfigManager to get all service configurations
+    config_manager = ServiceConfigManager()
+    return config_manager.get_all_configurations()

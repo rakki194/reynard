@@ -137,15 +137,15 @@ export function createChartIntegration(config: ChartIntegrationConfig): ChartInt
 
     console.log("🦊 createChartIntegration: Canvas context obtained", ctx);
 
-           const chartConfig: ChartConfiguration = {
-             type: config.type as any,
-             data: config.data,
-             options: {
-               responsive: true,
-               maintainAspectRatio: false,
-               ...config.options,
-             },
-           };
+    const chartConfig: ChartConfiguration = {
+      type: config.type as any,
+      data: config.data,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        ...config.options,
+      },
+    };
 
     console.log("🦊 createChartIntegration: Chart config", chartConfig);
 

@@ -25,10 +25,10 @@ export const createESLintCommand = (): Command => {
         const { execSync } = await import("child_process");
         const packagePaths = await getEnabledPackagePaths();
 
-               const command = [
-                 "pnpm exec eslint",
+        const command = [
+          "pnpm exec eslint",
           packagePaths.map(path => `${path}/src/**/*.{ts,tsx}`).join(" "),
-                 "--config eslint.config.js",
+          "--config eslint.config.js",
           `--format ${options.format}`,
           options.fix ? "--fix" : "",
         ]
